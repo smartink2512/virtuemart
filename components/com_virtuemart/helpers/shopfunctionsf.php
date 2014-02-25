@@ -187,7 +187,7 @@ class shopFunctionsF {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0) {
+	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0,$attribs=array()) {
 
 		if (is_array ($stateId)) {
 			$stateId = implode (",", $stateId);
@@ -195,26 +195,29 @@ class shopFunctionsF {
 
 		vmJsApi::JcountryStateList ($stateId,$_prefix);
 
+		$attrs['name'] = $_prefix . 'virtuemart_state_id[]';
 		if ($multiple) {
-			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
+			$attrs['multiple'] = 'multiple';
+			//$attrs[''] = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
 			//$class = 'class="inputbox multiple"';
-		} else {
-			/*$app = JFactory::getApplication();
-			if($app->isSite()) {
-				$class = 'class="chzn-select"';
-			} else {
-				$class = 'class="inputbox multiple"';
-			}*/
-			$attrs = 'name="' . $_prefix . 'virtuemart_state_id" ';
 		}
 
 		if ($required != 0) {
-			$attrs .= ' required';
+			$attrs[''] = 'required';
+
 		}
-		$attrs .= ' class="vm-chzn-select"';
+		$attrs['class'] = 'vm-chzn-select';
+		if (is_array ($attribs)) {
+			$attrs = array_merge ($attrs, $attribs);
+
+		} else {
+			$_a = explode ('=', $attribs, 2);
+			$attrs[$_a[0]] = $_a[1];
+		}
+		$attrString= JArrayHelper::toString($attrs);
 
 
-		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
+		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrString . '>
 						<option value="">' . vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 

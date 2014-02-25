@@ -757,6 +757,9 @@ class VirtueMartModelUserfields extends VmModel {
 
 						if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 						$attrib = array();
+						if ($_fld->size) {
+							$attrib = array('style'=>"width: ".$_fld->size."px");
+						}
 						$_return['fields'][$_fld->name]['formcode'] =
 							ShopFunctionsF::renderCountryList($_return['fields'][$_fld->name]['value'], false, $attrib , $_prefix, $_fld->required);
 
@@ -787,11 +790,16 @@ class VirtueMartModelUserfields extends VmModel {
 					case 'virtuemart_state_id':
 						if (!class_exists ('shopFunctionsF'))
 							require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+						$attrib = array();
+						if ($_fld->size) {
+							$attrib = array('style'=>"width: ".$_fld->size."px");
+						}
 						$_return['fields'][$_fld->name]['formcode'] =
 						shopFunctionsF::renderStateList(	$_return['fields'][$_fld->name]['value'],
 						$_prefix,
 						false,
-						$_fld->required
+						$_fld->required,
+							$attrib
 						);
 
 
@@ -999,6 +1007,9 @@ class VirtueMartModelUserfields extends VmModel {
 									break;
 								case 'select':
 									$_attribs['class'] = 'vm-chzn-select';
+									if ($_fld->size) {
+										$_attribs['style']= "width: ".$_fld->size."px";
+									}
 									$_return['fields'][$_fld->name]['formcode'] = JHtml::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
 										 if (  $_val->fieldvalue==$_selected) {
