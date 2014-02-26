@@ -99,7 +99,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 
 				<?php } else {
 					$tmpPrice = (float) $this->product->prices['costPrice'];
-					if (!( VmConfig::get('askprice', 0) and empty($tmpPrice) ) ) {
+					if (!( VmConfig::get('askprice', true) and empty($tmpPrice) ) ) {
 				?>
 				<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id; ?>" class="quantity_box"><?php echo vmText::_ ('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 				<span class="quantity-box">

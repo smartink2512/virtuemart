@@ -40,7 +40,7 @@ class VirtueMartViewAskquestion extends VmView {
 	function display ($tpl = NULL) {
 
 		$app = JFactory::getApplication();
-		if(!VmConfig::get('ask_question',false) and !VmConfig::get('askprice',false)){
+		if(!VmConfig::get('ask_question',false) and !VmConfig::get('askprice',true)){
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart','Disabled function'));
 		}
 

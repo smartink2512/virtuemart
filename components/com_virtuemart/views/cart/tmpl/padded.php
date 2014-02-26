@@ -22,17 +22,19 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<a class="continue" href="' . $this->continue_link . '" >' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 echo '<a class="showcart floatright" href="' . $this->cart_link . '">' . vmText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
-if($this->product){
-	echo '<h4>'.vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$this->product->product_name,$this->product->quantity).'</h4>';
+if($this->products){
+	foreach($this->products as $product){
+		echo '<h4>'.JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$product->product_name,$product->quantity).'</h4>';
+	}
 }
 
 if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';
 
 if(VmConfig::get('popup_rel',1)){
 	//VmConfig::$echoDebug=true;
-	if($this->product){
+	if($this->products and !empty($this->products[0])){
 		$customFieldsModel = VmModel::getModel('customfields');
-		$this->product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($this->product->allIds,'R');
+		$this->product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($this->products[0]->allIds,'R');
 
 		?>
 		<div class="product-related-products">
@@ -46,7 +48,7 @@ if(VmConfig::get('popup_rel',1)){
 			}
 		}/*/
 
-		$customFieldsModel->displayProductCustomfieldFE($this->product,$this->product->customfields);
+		$customFieldsModel->displayProductCustomfieldFE($this->products[0],$this->products[0]->customfields);
 		foreach($this->product->customfields as $rFields){
 
 				if(!empty($rFields->display)){

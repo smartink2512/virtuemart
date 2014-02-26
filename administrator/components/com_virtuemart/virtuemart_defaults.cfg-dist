@@ -32,9 +32,9 @@ jchosen=1
 ##Shopfront
 pdf_button_enable=1
 show_emailfriend=1
-show_printicon=0
+show_printicon=1
 show_out_of_stock_products=1
-coupons_enable=0
+coupons_enable=1
 show_uncat_child_products=0
 coupons_default_expire=1,D
 weight_unit_default=KG
@@ -45,7 +45,7 @@ reviewMode=registered
 showRatingFor=all
 ratingMode=registered
 reviews_autopublish=1
-reviews_minimum_comment_length=100
+reviews_minimum_comment_length=0
 reviews_maximum_comment_length=2000
 vmtemplate=0
 categorytemplate=default
@@ -85,12 +85,14 @@ latest_products_rows=1
 ##Product order settings
 
 browse_orderby_field=product_name
-browse_orderby_fields=array:product_sku|category_name|mf_name|product_name
+browse_cat_orderby_field=c.ordering
+browse_orderby_fields=array:`p`.product_sku|category_name|mf_name|product_name
 
-browse_search_fields=array:product_sku|category_name|category_description|mf_name|product_name|product_s_desc
+browse_search_fields=array:`p`.product_sku|category_name|category_description|mf_name|product_name|product_s_desc
 
 
 ##Pricing
+	askprice=1
 	roundindig=1
     show_prices=1
     price_show_packaging_pricelabel=0
@@ -125,6 +127,9 @@ browse_search_fields=array:product_sku|category_name|category_description|mf_nam
     taxAmount=1
     taxAmountText=1
     taxAmountRounding=-1
+    unitPrice=1
+    unitPriceText=1
+    unitPriceRounding=-1
 
 ##Check stock
     addtocart_popup=1
