@@ -92,6 +92,7 @@ browse_search_fields=array:`p`.product_sku|category_name|category_description|mf
 
 
 ##Pricing
+	askprice=1
 	roundindig=1
     show_prices=1
     price_show_packaging_pricelabel=0
@@ -126,6 +127,9 @@ browse_search_fields=array:`p`.product_sku|category_name|category_description|mf
     taxAmount=1
     taxAmountText=1
     taxAmountRounding=-1
+    unitPrice=1
+    unitPriceText=1
+    unitPriceRounding=-1
 
 ##Check stock
     addtocart_popup=1

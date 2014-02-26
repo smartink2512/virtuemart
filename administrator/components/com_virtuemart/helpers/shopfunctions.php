@@ -321,7 +321,7 @@ class ShopFunctions {
 	/**
 	 * Render a simple state list
 	 *
-	 * @author jseros, Patrick Kohl
+	 * @author Valerie Isaksen, Max Milbers
 	 *
 	 * @param int $stateID Selected state id
 	 * @param int $countryID Selected country id

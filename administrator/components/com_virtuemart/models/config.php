@@ -431,6 +431,15 @@ class VirtueMartModelConfig extends JModel {
 			$cache->clean();
 		}
 
+		$cache = JFactory::getCache('_virtuemart');
+		$cache->clean();
+		$cache = JFactory::getCache('com_plugins');
+		$cache->clean();
+		$cache = JFactory::getCache('_system');
+		$cache->clean();
+		$cache = JFactory::getCache('page');
+		$cache->clean();
+
 		return true;
 	}
 
