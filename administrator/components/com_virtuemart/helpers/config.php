@@ -611,6 +611,7 @@ class VmConfig {
 
  	}
 
+
 	/**
 	 * Loads the configuration and works as singleton therefore called static. The call using the program cache
 	 * is 10 times faster then taking from the session. The session is still approx. 30 times faster then using the file.
@@ -640,7 +641,8 @@ class VmConfig {
 	static public function loadConfig($force = FALSE,$fresh = FALSE) {
 
 		if($fresh){
-			return new VmConfig();
+			self::$_jpConfig = new VmConfig();
+			return self::$_jpConfig;
 		}
 		vmSetStartTime('loadConfig');
 		if(!$force){
@@ -873,9 +875,7 @@ class VmConfig {
 	 */
 	function toString(){
 		$raw = '';
-		$db = JFactory::getDBO();
 
-		jimport( 'joomla.utilities.arrayhelper' );
 		foreach(self::$_jpConfig->_params as $paramkey => $value){
 
 			//Texts get broken, when serialized, therefore we do a simple encoding,
