@@ -84,7 +84,8 @@ class VirtuemartViewProduct extends VmView {
 				//$this->assignRef('category_tree', $category_tree);
 
 				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility
-				if (isset($product->shoppergroups)) $this->shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups);
+				if (!isset($product->shoppergroups)) $product->shoppergroups = 0;
+				$this->shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups);
 				//$this->assignRef('shoppergroupList', $shoppergroupList);
 
 				// Load the product price

@@ -58,7 +58,7 @@ $i=0;
 				<input type="text" class="inputbox" name="product_sku" id="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
 			</td>
 			<td width="130px">
-				<span class="hastip" title="<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_GTIN_TIP') ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_GTIN') ?></span>:
+				<span class="hastip" title="<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_GTIN_TIP') ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_GTIN') ?></span>
 			</td>
 			<td>
 				<input type="text" class="inputbox" name="product_gtin" id="product_gtin" value="<?php echo $this->product->product_gtin; ?>" size="32" maxlength="64" />
@@ -110,11 +110,9 @@ $i=0;
 			<?php
 			// It is important to have all product information in the form, since we do not preload the parent
 			// I place the ordering here, maybe we make it editable later.
-			if(!isset($this->product->ordering)) {
-				$this->product->ordering = 0;
-				?><input type="hidden" value="<?php echo $this->product->ordering ?>" name="ordering"> <?php
-			} ?>
-
+			if(!isset($this->product->ordering)) $this->product->ordering = 0;
+			?>
+			<input type="hidden" value="<?php echo $this->product->ordering ?>" name="ordering">
 			<td>
 				<span class="hasTip" title="<?php echo vmText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRODUCT_TIP'); ?>">
 				<?php echo vmText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></span>
@@ -147,111 +145,102 @@ $i=0;
 				if (empty($this->product->prices)) {
 					$this->product->prices[] = array();
 				}
-				$this->i = 0;
-				$rowColor = 0;
-				if (!class_exists ('calculationHelper')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-				}
-				$calculator = calculationHelper::getInstance ();
-				$currency_model = VmModel::getModel ('currency');
-				$currencies = $currency_model->getCurrencies ();
-				$nbPrice = count ($this->product->prices);
-				$this->priceCounter = 0;
-				$this->product->prices[$nbPrice] = $this->product_empty_price;
-			
-			
-			
-				if (!class_exists ('calculationHelper')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-				}
-				$calculator = calculationHelper::getInstance ();
-				?>
-			    <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform">
-			        <tbody id="productPriceBody">
-					<?php
-					//vmdebug('grummel ',$this->product->prices);
-					foreach ($this->product->prices as $sPrices) {
-			
-						if(count($sPrices) == 0) continue;
-						if (empty($sPrices['virtuemart_product_price_id'])) {
-							$sPrices['virtuemart_product_price_id'] = '';
-						}
-						//vmdebug('my $sPrices ',$sPrices);
-						$sPrices = (array)$sPrices;
-						$this->tempProduct = (object)array_merge ((array)$this->product, $sPrices);
-						$this->calculatedPrices = $calculator->getProductPrices ($this->tempProduct);
-			
-						if((string)$sPrices['product_price']==='0' or (string)$sPrices['product_price']===''){
-							$this->calculatedPrices['costPrice'] = '';
-						}
-			
-						$currency_model = VmModel::getModel ('currency');
-						$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->tempProduct->product_currency);
-			
-						$DBTax = ''; //vmText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
-						foreach ($calculator->rules['DBTax'] as $rule) {
-							$DBTax .= $rule['calc_name'] . '<br />';
-						}
-						$this->DBTaxRules = $DBTax;
-			
-						$tax = ''; //vmText::_('COM_VIRTUEMART_TAX_EFFECTING').'<br />';
-						foreach ($calculator->rules['Tax'] as $rule) {
-							$tax .= $rule['calc_name'] . '<br />';
-						}
-						foreach ($calculator->rules['VatTax'] as $rule) {
-							$tax .= $rule['calc_name'] . '<br />';
-						}
-						$this->taxRules = $tax;
-			
-						$DATax = ''; //vmText::_('COM_VIRTUEMART_RULES_EFFECTING');
-						foreach ($calculator->rules['DATax'] as $rule) {
-							$DATax .= $rule['calc_name'] . '<br />';
-						}
-						$this->DATaxRules = $DATax;
-			
-						if (!isset($this->tempProduct->product_tax_id)) {
-							$this->tempProduct->product_tax_id = 0;
-						}
-						$this->lists['taxrates'] = ShopFunctions::renderTaxList ($this->tempProduct->product_tax_id, 'mprices[product_tax_id][' . $this->priceCounter . ']');
-						if (!isset($this->tempProduct->product_discount_id)) {
-							$this->tempProduct->product_discount_id = 0;
-						}
-						$this->lists['discounts'] = $this->renderDiscountList ($this->tempProduct->product_discount_id, 'mprices[product_discount_id][' . $this->priceCounter . ']');
-			
-						$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($this->tempProduct->virtuemart_shoppergroup_id, false, 'mprices[virtuemart_shoppergroup_id][' . $this->priceCounter . ']');
-			
-						if ($this->priceCounter == $nbPrice) {
-							$tmpl = "productPriceRowTmpl";
-						} else {
-							$tmpl = "productPriceRowTmpl_" . $this->priceCounter;
-						}
-			
-						?>
-			        <tr id="<?php echo $tmpl ?>" class="removable row<?php echo $rowColor?>">
-				            <td width="100%">
-					        <span class="vmicon vmicon-16-move price_ordering"></span>
-					        <?php /* <span class="vmicon vmicon-16-new price-clone" ></span> */ ?>
-			                <span class="vmicon vmicon-16-remove price-remove"></span>
-							<?php //echo vmText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER');
-							echo $this->loadTemplate ('price'); ?>
-						 </td>
-			        </tr>
-						<?php
-						$this->priceCounter++;
-					}
-					?>
-			        </tbody>
-			    </table>
-			    <div class="button2-left">
-			        <div class="blank">
-			            <a href="#" id="add_new_price"><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_ADD_PRICE') ?> </a>
-			        </div>
-			    </div>
-			</fieldset>
-		</tr>
-	</td>
+	$this->i = 0;
+	$rowColor = 0;
+	if (!class_exists ('calculationHelper')) {
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	}
+	$calculator = calculationHelper::getInstance ();
+	$currency_model = VmModel::getModel ('currency');
+	$currencies = $currency_model->getCurrencies ();
+	$nbPrice = count ($this->product->allPrices);
+	$this->priceCounter = 0;
+	$this->product->allPrices[$nbPrice] = VmModel::getModel()->fillVoidPrice();
+
+	if (!class_exists ('calculationHelper')) {
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	}
+	$calculator = calculationHelper::getInstance ();
+	?>
+    <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform">
+        <tbody id="productPriceBody">
+		<?php
+
+		foreach ($this->product->allPrices as $k => $sPrices) {
+
+			$this->product->selectedPrice = $k;
+			$this->calculatedPrices = $calculator->getProductPrices ($this->product);
+			$this->product->allPrices[$k] = array_merge($this->product->allPrices[$k],$this->calculatedPrices);
+
+			$currency_model = VmModel::getModel ('currency');
+			$this->lists['currencies'] = JHtml::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->product->allPrices[$k]['product_currency']);
+
+			$DBTax = ''; //vmText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
+			foreach ($calculator->rules['DBTax'] as $rule) {
+				$DBTax .= $rule['calc_name'] . '<br />';
+			}
+			$this->DBTaxRules = $DBTax;
+
+			$tax = ''; //vmText::_('COM_VIRTUEMART_TAX_EFFECTING').'<br />';
+			foreach ($calculator->rules['Tax'] as $rule) {
+				$tax .= $rule['calc_name'] . '<br />';
+			}
+			foreach ($calculator->rules['VatTax'] as $rule) {
+				$tax .= $rule['calc_name'] . '<br />';
+			}
+			$this->taxRules = $tax;
+
+			$DATax = ''; //vmText::_('COM_VIRTUEMART_RULES_EFFECTING');
+			foreach ($calculator->rules['DATax'] as $rule) {
+				$DATax .= $rule['calc_name'] . '<br />';
+			}
+			$this->DATaxRules = $DATax;
+
+			if (!isset($this->product->product_tax_id)) {
+				$this->product->product_tax_id = 0;
+			}
+			$this->lists['taxrates'] = ShopFunctions::renderTaxList ($this->product->allPrices[$k]['product_tax_id'], 'mprices[product_tax_id][' . $this->priceCounter . ']');
+			if (!isset($this->product->allPrices[$k]['product_discount_id'])) {
+				$this->product->allPrices[$k]['product_discount_id'] = 0;
+			}
+			$this->lists['discounts'] = $this->renderDiscountList ($this->product->allPrices[$k]['product_discount_id'], 'mprices[product_discount_id][' . $this->priceCounter . ']');
+
+			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($this->product->allPrices[$k]['virtuemart_shoppergroup_id'], false, 'mprices[virtuemart_shoppergroup_id][' . $this->priceCounter . ']');
+
+			if ($this->priceCounter == $nbPrice) {
+				$tmpl = "productPriceRowTmpl";
+				$this->product->allPrices[$k]['virtuemart_product_price_id'] = '';
+			} else {
+				$tmpl = "productPriceRowTmpl_" . $this->priceCounter;
+			}
+
+			?>
+        <tr id="<?php echo $tmpl ?>" class="removable row<?php echo $rowColor?>">
+	            <td width="100%">
+		        <span class="vmicon vmicon-16-move price_ordering"></span>
+		        <?php /* <span class="vmicon vmicon-16-new price-clone" ></span> */ ?>
+                <span class="vmicon vmicon-16-remove price-remove"></span>
+				<?php //echo vmText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER');
+				echo $this->loadTemplate ('price'); ?>
+			 </td>
+        </tr>
+			<?php
+			$this->priceCounter++;
+		}
+		?>
+        </tbody>
+    </table>
+    <div class="button2-left">
+        <div class="blank">
+            <a href="#" id="add_new_price"><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_ADD_PRICE') ?> </a>
+        </div>
+    </div>
+
+</fieldset>
 </tr>
-<tr>
+		</td>
+	</tr>
+	<tr>
 	<td colspan="2" >
 	<fieldset>
 		<legend>
@@ -259,15 +248,15 @@ $i=0;
 		<table class="adminform">
 			<tr class="row<?php echo $i?>">
 				<td width="50%">
-					<?php
-						if ($this->product->virtuemart_product_id) {
-							$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() );
-							$add_child_button="";
-						} else {
-							$link="";
-							$add_child_button=" not-active";
-						}
-					?>
+				<?php
+					if ($this->product->virtuemart_product_id) {
+						$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&'.JSession::getFormToken().'=1' );
+						$add_child_button="";
+					} else {
+						$link="";
+						$add_child_button=" not-active";
+					}
+?>
 					<div class="button2-left <?php echo $add_child_button ?>">
 						<div class="blank">
 							<?php if ($link) { ?>
@@ -290,7 +279,7 @@ $i=0;
 				<td width="71%"> 
 					<?php if ($this->product->product_parent_id) {
 							$result = vmText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
-							echo ' | '.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
+					echo ' | '.JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
 								$this->product_parent->product_name, array('title' => $result)).' | '.$this->parentRelation;
 						}
 					?>
