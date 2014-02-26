@@ -333,6 +333,8 @@ class VirtueMartCart {
 			return false;
 		}
 
+		$products = array();
+
 		//VmConfig::$echoDebug=true;
 		//vmdebug('cart add',$virtuemart_product_ids,$post);
 		$this->_productAdded = true;
@@ -459,7 +461,7 @@ class VirtueMartCart {
 				}
 
 			}
-
+			$products[] = $product;
 			if(!$found){
 				if(!$product)$product = $this->getProduct( (int)$productData['virtuemart_product_id'],$productData['quantity']);
 				if(!empty($product->virtuemart_product_id)){
@@ -478,7 +480,7 @@ class VirtueMartCart {
 		if ($updateSession== false) return false ;
 		// End Iteration through Prod id's
 		$this->setCartIntoSession();
-		return $product;
+		return $products;
 	}
 
 	/**
@@ -739,10 +741,13 @@ class VirtueMartCart {
 		}
 
 		$validUserDataBT = self::validateUserData();
+		if ($validUserDataBT!==true) {	//Important, we can have as result -1,false and true.
+			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
+		}
 
 		$validUserDataCart = self::validateUserData('cartfields');
 		vmdebug('CheckoutData my cart ',$validUserDataBT,$validUserDataCart);
-		if($validUserDataCart!==true and $validUserDataBT!==true){
+		if($validUserDataCart!==true){
 			if($redirect){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
@@ -754,19 +759,14 @@ class VirtueMartCart {
 			$this->BT = array_merge($this->BT,$this->cartfields);
 		}
 
-
 		if (($this->selected_shipto = VmRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');
 			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
 			$stData = get_object_vars($stData[0]);
-			if($this->validateUserData('ST', $stData)){
+			if($validUserDataBT = $this->validateUserData('ST', $stData)){
 				$this->ST = $stData;
 			}
-		}
-
-		if ($validUserDataBT!==true) {	//Important, we can have as result -1,false and true.
-			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
 		}
 
 		if($this->STsameAsBT!==0){
@@ -1252,6 +1252,17 @@ class VirtueMartCart {
 		//it has always the same price
 		foreach($this->products as $k => $product){
 			$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
+		}
+	}
+
+	function prepareVendor(){
+		if(empty($this->vendor)){
+			$vendorModel = VmModel::getModel('vendor');
+			$this->vendor = $vendorModel->getVendor($this->vendorId);
+			$vendorModel->addImages($this->vendor,1);
+			if (VmConfig::get('enable_content_plugin', 0)) {
+				shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_terms_of_service');
+			}
 		}
 	}
 

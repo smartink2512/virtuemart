@@ -116,12 +116,10 @@ class VirtueMartViewCart extends VmView {
 				$mainframe->redirect($this->continue_link);
 			}
 
-			$vendorModel = VmModel::getModel('vendor');
-			$this->cart->vendor = $vendorModel->getVendor(1);
-			$vendorModel->addImages($this->cart->vendor,1);
-            if (VmConfig::get('enable_content_plugin', 0)) {
-				shopFunctionsF::triggerContentPlugin($this->cart->vendor, 'vendor','vendor_terms_of_service');
-			}
+			$this->cart->prepareVendor();
+
+
+
 			if (!class_exists ('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 

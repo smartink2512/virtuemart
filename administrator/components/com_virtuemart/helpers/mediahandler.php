@@ -1178,8 +1178,8 @@ class VmMediaHandler {
 	<label for="published">'. vmText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 </td>
 <td>';
-	if(!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-	$html .= VmHTML::checkbox('media_published',$checked,1,0,'class="inputbox"','media_published'.$identify) ;
+	if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+	$html .= VmHtml::checkbox('media_published',$checked,1,0,'class="inputbox"','media_published'.$identify) ;
 	//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 
 $html .='</td>';

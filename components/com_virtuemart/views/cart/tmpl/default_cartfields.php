@@ -41,7 +41,7 @@ $closeDelimiter = false;
 	$openTable = false;
 	?>
 
-	<table  class="adminForm user-details">
+	<table  class="cart-details">
 
 		<?php
 		}

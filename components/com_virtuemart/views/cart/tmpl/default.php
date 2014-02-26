@@ -19,42 +19,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
-if(VmConfig::get('usefancy',0)){
-	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-	vmJsApi::css('jquery.fancybox-1.3.4');
-	$box = "
-//<![CDATA[
-	jQuery(document).ready(function($) {
-		$('div#full-tos').hide();
-		var con = $('div#full-tos').html();
-		$('a#terms-of-service').click(function(event) {
-			event.preventDefault();
-			$.fancybox ({ div: '#full-tos', content: con });
-		});
-	});
 
-//]]>
-";
-} else {
-	vmJsApi::js ('facebox');
-	vmJsApi::css ('facebox');
-	$box = "
-//<![CDATA[
-	jQuery(document).ready(function($) {
-		$('div#full-tos').hide();
-		$('a#terms-of-service').click(function(event) {
-			event.preventDefault();
-			$.facebox( { div: '#full-tos' }, 'my-groovy-style');
-		});
-	});
-
-//]]>
-";
-}
+//vmJsApi::popup('#full-tos','#terms-of-service');
 
 JHtml::_ ('behavior.formvalidation');
 $document = JFactory::getDocument ();
-$document->addScriptDeclaration ($box);
 $document->addScriptDeclaration ("
 
 //<![CDATA[
@@ -78,7 +47,6 @@ $document->addScriptDeclaration ("
 //]]>
 
 ");
-$document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 ?>
 
@@ -151,7 +119,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 					}
 					echo VmHtml::checkbox ('tosAccepted', $this->cart->tosAccepted, 1, 0, 'class="terms-of-service"');
 			*/
-					if (VmConfig::get ('oncheckout_show_legal_info', 1)) {
+			/*		if (VmConfig::get ('oncheckout_show_legal_info', 1)) {
 						?>
 						<div class="terms-of-service">
 
@@ -172,7 +140,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 						<?php
 					} // VmConfig::get('oncheckout_show_legal_info',1)
 					//echo '<span class="tos">'. vmText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
-		//	}
+		//	}*/
 			echo $this->checkout_link_html;
 			?>
 		</div>

@@ -264,6 +264,54 @@ class vmJsApi{
 		return;
 	}
 
+	/**
+	 * Creates popup, fancy or other for TOS
+	 */
+	static function popup($container,$activator){
+		static $jspopup;
+		if (!$jspopup) {
+			if(VmConfig::get('usefancy',0)){
+				vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+				vmJsApi::css('jquery.fancybox-1.3.4');
+				$box = "
+//<![CDATA[
+	jQuery(document).ready(function($) {
+		$('div".$container."').hide();
+		var con = $('div".$container."').html();
+		$('a".$activator."').click(function(event) {
+			event.preventDefault();
+			$.fancybox ({ div: '".$container."', content: con });
+		});
+	});
+
+//]]>
+";
+			} else {
+				vmJsApi::js ('facebox');
+				vmJsApi::css ('facebox');
+				$box = "
+//<![CDATA[
+	jQuery(document).ready(function($) {
+		$('div".$container."').hide();
+		$('a".$activator."').click(function(event) {
+			event.preventDefault();
+			$.facebox( { div: '".$container."' }, 'my-groovy-style');
+		});
+	});
+
+//]]>
+";
+			}
+
+			$document = JFactory::getDocument ();
+			$document->addScriptDeclaration ($box);
+			$document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
+
+			$jspopup = true;
+		}
+		return;
+	}
+
 	static function chosenDropDowns(){
 
 		static $chosenDropDowns = false;

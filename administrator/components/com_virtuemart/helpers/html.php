@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
  * @subpackage Helpers
  * @author RickG
  */
-class VmHTML{
+class VmHtml{
 
 	/**
 	 * Default values for options. Organized by option group.
@@ -83,7 +83,7 @@ static function vmGetCharset() {
      * @return string: HTML code for row table
      */
     static function row($func,$label){
-		$VmHTML="VmHTML";
+		$VmHTML="VmHtml";
 		if (!is_array($func)) {
 			$func = array($VmHTML, $func);
 		}
@@ -187,7 +187,7 @@ static function vmGetCharset() {
 			vmJsApi::chosenDropDowns();
 			$attrib .= ' class="vm-chzn-select"';
 		}
-		return VmHTML::genericlist($options,$name,$attrib,$key,$text,$default,false,$tranlsate);
+		return VmHtml::genericlist($options,$name,$attrib,$key,$text,$default,false,$tranlsate);
 	}
 
 	/**
