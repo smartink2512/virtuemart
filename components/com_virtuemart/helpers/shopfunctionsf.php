@@ -219,17 +219,25 @@ class shopFunctionsF {
 		$view->addTemplatePath( JPATH_VM_SITE.'/views/'.$viewName.'/tmpl' );
 
 		$vmtemplate = VmConfig::get( 'vmtemplate', 'default' );
-		if($vmtemplate == 'default') {
+		if(is_numeric($vmtemplate)) {
+			$db = JFactory::getDbo();
+			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
+			$db->setQuery($query);
+			$res = $db->loadAssoc();
+			if($res){
+				$registry = new JRegistry;
+				$registry->loadString($res['params']);
+				$template = $res['template'];
+			}
+		} else {
 			if(JVM_VERSION == 2) {
-				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`= 0 AND `home`= 1';
+				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
 			} else {
 				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
 			}
 			$db = JFactory::getDbo();
 			$db->setQuery( $q );
 			$template = $db->loadResult();
-		} else {
-			$template = $vmtemplate;
 		}
 
 		if($template) {
