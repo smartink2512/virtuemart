@@ -153,21 +153,18 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('userInfoID', $virtuemart_userinfo_id_BT);
 
 
-			$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
-			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
+			if ($layoutName == 'edit_shipto') {
+				$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
+				$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
+				if($new ){
+					$virtuemart_userinfo_id = 0;
+				} else {
 
-			if($new ){
-				$virtuemart_userinfo_id = 0;
-// 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
-			} else {
-// 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
-// 				if(empty($virtuemart_userinfo_id)){
-// 					$virtuemart_userinfo_id = $model->getBTuserinfo_id();
-// 				}
+				}
+				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
+				$this->assignRef('shipToFields', $userFieldsST);
 			}
-			$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
 
-			$this->assignRef('shipToFields', $userFieldsST);
 			$this->assignRef('shipToId', $virtuemart_userinfo_id);
 			$this->assignRef('new', $new);
 

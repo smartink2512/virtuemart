@@ -345,9 +345,9 @@ class ShopFunctions {
 			$attrs['name'] = $_prefix . 'virtuemart_state_id';
 		}
 
-		if ($required != 0) {
-			$attrs['class'] .= ' required';
-		}
+		/*if ($required != 0) {
+			$attrs['class'] .= ' required ';
+		}*/
 
 		if (is_array ($attribs)) {
 			$attrs = array_merge ($attrs, $attribs);
