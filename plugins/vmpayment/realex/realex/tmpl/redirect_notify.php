@@ -21,48 +21,57 @@ defined('_JEXEC') or die();
 
 
 ?>
-
-<?php
-if ($viewData["success"]) {
-	?>
-	<p>
-		<?php
-		echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_SUCCESS',  $viewData["shop_name"]);
-		?>
-	</p>
+<div class="realex redirect_notify">
 	<?php
-	if ($viewData["order_history_comments"]) {
+	if ($viewData["success"]) {
 		?>
-		<p>
+		<div class="transaction_success">
+			<div class="notify_success">
+				<?php
+				echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_SUCCESS', $viewData["shop_name"]);
+				?>
+			</div>
 			<?php
-			echo $viewData["order_history_comments"];
+			if ($viewData["order_history_comments"]) {
+				?>
+				<div class="order_history_comments">
+					<?php
+					echo $viewData["order_history_comments"];
+					?>
+				</div>
+			<?php
+			}
 			?>
-		</p>
+			<div class="return_url">
+				<a href="<?php echo $viewData["return_success"] ?>"><?php echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
+			</div>
+		</div>
+	<?php
+	} else {
+		?>
+		<div class="transaction_declined">
+			<div class="notify_declined">
+				<?php
+				echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_DECLINED', $viewData["order_number"], $viewData["shop_name"]);
+				?>
+			</div>
+			<?php
+			if ($viewData["order_history_comments"]) {
+				?>
+				<div class="order_history_comments">
+					<?php
+					echo $viewData["order_history_comments"];
+					?>
+				</div>
+			<?php
+			}
+			?>
+			<div class="return_url">
+				<a href="<?php echo $viewData["return_declined"] ?>"><?php echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
+			</div>
+		</div>
 	<?php
 	}
 	?>
-	<p>
-		<a href="<?php echo $viewData["return_success"] ?>"><?php echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
-	</p>
-<?php
-} else {
-	?>
-	<p>
-		<?php
-		echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_DECLINED', $viewData["order_number"], $viewData["shop_name"]);
-		?>
-		<br/>
-		<?php
 
-		echo $viewData["declined_message"];
-		?>
-	</p>
-	<p>
-		<a href="<?php echo $viewData["return_declined"] ?>"><?php echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
-
-	</p>
-<?php
-}
-?>
-
-
+</div>

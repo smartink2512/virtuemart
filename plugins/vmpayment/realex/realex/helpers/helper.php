@@ -60,6 +60,7 @@ class  RealexHelperRealex {
 	const RESPONSE_CODE_DECLINED = '101';
 	const RESPONSE_CODE_REFERRAL_B = '102';
 	const RESPONSE_CODE_REFERRAL_A = '103';
+	const RESPONSE_CODE_NOT_VALIDATED = '110';
 	const RESPONSE_CODE_INVALID_ORDER_ID = '501'; // This order ID has already been used - please use another one
 	const RESPONSE_CODE_PAYER_REF_NOTEXIST = '501'; // This Payer Ref payerref does not exist
 	const RESPONSE_CODE_INVALID_PAYER_REF_USED = '501'; // This Payer Ref payerref has already been used - please use another one
@@ -124,11 +125,26 @@ class  RealexHelperRealex {
 		$this->order = $order;
 	}
 
-
-	public function stripnonnumeric ($testString) {
-		return preg_replace("/[^0-9]/", "", $testString);
+	/**
+	 * The digits from the first line of the address should be concatanated with the post code digits with a '|' in the middle.
+	 * * For example: Flat 123, No. 7 Grove Park, E98 7QJ
+	* Billing Code: '987|123', the number of digits on each side of the '|' should also be restricted to 5.
+	 * @param $address
+	 */
+	public function getCode ($address) {
+		// get first digits of the address line,
+		$digits_addr=$this->stripnonnumeric($address->address_1);
+		// get digits from zip,
+		$digits_zip=$this->stripnonnumeric($address->zip);
+		// concatenate with |
+		 return $digits_zip."|".$digits_addr;
 	}
 
+	private function stripnonnumeric ($code) {
+		$code= preg_replace("/[^0-9]/", "", $code);
+		$code= substr(  $code, 0 ,5);
+		return $code;
+	}
 	function _getRealexUrl () {
 		if ($this->_method->shop_mode == 'sandbox') {
 			return 'https://realcontrol.sandbox.realexpayments.com';
@@ -396,7 +412,7 @@ class  RealexHelperRealex {
 								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
 								$pasref = $payment->realex_response_pasref;
 							} else {
-								$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED', $this->order['details']['BT']->order_number);
+								$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
 							}
 
 						} elseif ($payment->realex_request_type_response == $this::REQUEST_TYPE_CARD_NEW) {
@@ -427,7 +443,7 @@ class  RealexHelperRealex {
 
 
 							} else {
-								$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED',  $this->order['details']['BT']->order_number);
+								$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
 							}
 						}
 					}
@@ -1053,7 +1069,7 @@ class  RealexHelperRealex {
 		if ($xml_response->result != '00') {
 			return true;
 		}
-		$hash = $this->getSha1Hash($this->_method->shared_secret, (int)$xml_response->attributes()->timestamp, $this->_method->merchant_id, (string)$xml_response->orderid, (string)$xml_response->result, (string)$xml_response->message, (string)$xml_response->pasref, (string)$xml_response->authcode);
+		$hash = $this->getSha1Hash($this->_method->shared_secret, $xml_response->attributes()->timestamp, $this->_method->merchant_id, (string)$xml_response->orderid, (string)$xml_response->result, (string)$xml_response->message, (string)$xml_response->pasref, (string)$xml_response->authcode);
 
 		if ($hash != $xml_response->sha1hash) {
 			$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $xml_response->sha1hash));

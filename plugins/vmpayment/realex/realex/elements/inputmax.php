@@ -22,7 +22,7 @@ defined('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementReferringurl extends JElement
+class JElementInputMax extends JElement
 {
 	/**
 	* Element name
@@ -30,23 +30,18 @@ class JElementReferringurl extends JElement
 	* @access	protected
 	* @var		string
 	*/
-	var	$_name = 'referringurl';
+	var	$_name = 'inputMax';
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 
-			$value= JURI::root().'plugins/vmpayment/realex/jump.php';
 
 		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="text_area"' );
-		if ($node->attributes( 'editable' ) == 'true')
-		{
-			$size = ( $node->attributes('size') ? 'size="'.$node->attributes('size').'"' : '' );
 
-			return '<input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.$name.'" value="'.$value.'" '.$class.' '.$size.' />';
-		}
-		else
-		{
-			return '<label for="'.$name.'"'.$class.'>'.$value.'</label>';
-		}
+			$size = ( $node->attributes('size') ? 'size="'.$node->attributes('size').'"' : '' );
+			$maxlength = ( $node->attributes('maxlength') ? 'maxlength="'.$node->attributes('maxlength').'"' : '' );
+
+			return '<input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.$name.'" value="'.$value.'" '.$class.' '.$size.' '.$maxlength . '/>';
+
 	}
 }

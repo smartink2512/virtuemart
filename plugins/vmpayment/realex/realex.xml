@@ -39,7 +39,7 @@
         <!-- REDIRECT PARAMETERS -->
         <param class="required" name="merchant_id" type="text" size="80" default=""
                label="VMPAYMENT_REALEX_MERCHANT_ID" description="VMPAYMENT_REALEX_MERCHANT_ID_TIP"/>
-        <param class="required" name="shared_secret" type="text" size="80" default=""
+        <param class="required" name="shared_secret" type="password" size="80" default=""
                label="VMPAYMENT_REALEX_SHARED_SECRET" description="VMPAYMENT_REALEX_SHARED_SECRET_TIP" />
 
         <param class="required redirect remote" name="subaccount" type="text" size="80" default=""
@@ -82,7 +82,7 @@
         </param>
 
 
-        <param class="" name="card_payment_button" type="text" size="80" default=""
+        <param  name="card_payment_button" type="inputmax" size="40" maxlength="25" default=""
                label="VMPAYMENT_REALEX_CARD_PAYMENT_BUTTON" description="VMPAYMENT_REALEX_CARD_PAYMENT_BUTTON_TIP"/>
 
         <param name="tss" type="list" default="1"
@@ -105,7 +105,7 @@
             <option value="euroconex">VMPAYMENT_REALEX_DCC_EUROCONEX</option>
         </param>
 
-        <param class="" name="referring_url" type="referringurl" size="80" default=""
+        <param class="" name="referring_url" type="referringurl" size="150" default="" editable="true"
                label="VMPAYMENT_REALEX_REFERRING_URL" description="VMPAYMENT_REALEX_REFERRING_URL_TIP"/>
 
         <param type="vmtitle" default="VMPAYMENT_REALEX_ORDER_STATUS_SECTION"
@@ -122,7 +122,7 @@
         <param name="status_rebate" type="vmorderstate" scope="com_virtuemart" default="R"
                label="VMPAYMENT_REALEX_STATUS_REBATE" description="VMPAYMENT_REALEX_STATUS_REBATE_TIP"/>
 
-        <param class="required dcc_choice" name="rebate_password" type="text" size="80" default=""
+        <param class="required dcc_choice" name="rebate_password" type="password" size="80" default=""
                label="VMPAYMENT_REALEX_REBATE_PASSWORD" description="VMPAYMENT_REALEX_REBATE_PASSWORD_TIP" />
 
         <param name="status_partial_refunded" type="vmorderstate" scope="com_virtuemart" default="R"

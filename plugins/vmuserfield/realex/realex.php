@@ -167,11 +167,16 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		if (!empty($card_ids)) {
 			return $this->deleteStoredCards($card_ids);
 		}
-
-
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
+		if (!class_exists('ShopFunctions'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 // we come from payment
 		if (isset($params['realex_saved_payer_ref'])) {
-			$params['realex_saved_pmt_digits'] = self::encrypt($params['realex_saved_pmt_digits']);
+			// only store the last 4 digits
+			$realex_saved_pmt_digits = shopFunctions::asteriskPad($params['realex_saved_pmt_digits'], strlen($params['realex_saved_pmt_digits'])-4);
+			$params['realex_saved_pmt_digits'] = vmCrypt::encrypt($realex_saved_pmt_digits);
 			$this->storePluginInternalData($params);
 		}
 
@@ -261,8 +266,13 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		if (!($storedCreditCards = $this->_getInternalData($userId))) {
 			return '';
 		}
+
+
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
 		foreach ($storedCreditCards as $storedCreditCard) {
-			$storedCreditCard->realex_saved_pmt_digits = self::decrypt($storedCreditCard->realex_saved_pmt_digits);
+			$storedCreditCard->realex_saved_pmt_digits = vmCrypt::decrypt($storedCreditCard->realex_saved_pmt_digits);
 		}
 		return $storedCreditCards;
 
@@ -314,55 +324,7 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 	}
 
 
-	static function encrypt ($string) {
 
-		$key = self::getKey ();
-		return base64_encode (mcrypt_encrypt (MCRYPT_RIJNDAEL_256, md5 ($key), $string, MCRYPT_MODE_CBC, md5 (md5 ($key))));
-	}
-
-	static function decrypt ($string) {
-
-		$key = self::getKey ();
-		return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, md5 ($key), base64_decode ($string), MCRYPT_MODE_CBC, md5 (md5 ($key))), "\0");
-	}
-
-	static function getKey () {
-
-		$filename = self::_getRealexSafepath () . DS . 'key.php';
-		if (file_exists ($filename)) {
-			include_once $filename;
-		}
-
-		return base64_decode (USERFIELD_REALEX_KEY);
-
-	}
-	static function _getRealexSafepath () {
-
-		$safePath = VmConfig::get ('forSale_path', '');
-		if (empty($safePath)) {
-			return NULL;
-		}
-		$realexSafePath = $safePath . self::REALEX_FOLDERNAME;
-		return $realexSafePath;
-	}
-	static function _createRealexFolder () {
-
-		$folderName = self::_getRealexSafepath ();
-
-		$exists = JFolder::exists ($folderName);
-		if ($exists) {
-			return TRUE;
-		}
-		$created = JFolder::create ($folderName);
-		if ($created) {
-			return TRUE;
-		}
-
-		$uri = JFactory::getURI ();
-		$link = $uri->root () . 'administrator/index.php?option=com_virtuemart&view=config';
-		VmError (JText::sprintf ('VMUSERFIELD_REALEX_CANNOT_STORE_CONFIG', $folderName, '<a href="' . $link . '">' . $link . '</a>', JText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
-		return FALSE;
-	}
 
 }
 

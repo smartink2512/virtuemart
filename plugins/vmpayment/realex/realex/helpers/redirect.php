@@ -152,10 +152,10 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		if ($this->_method->tss) {
 			$post_variables['RETURN_TSS'] = 1; // Transaction Suitability Score
 			// <digits from postcode>|<digits from address>
-			$post_variables['BILLING_CODE'] = $this->stripnonnumeric($BT->zip);
+			$post_variables['BILLING_CODE'] = $this->getCode($BT);
 			$post_variables['BILLING_CO'] = ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_2_code');
 
-			$post_variables['SHIPPING_CODE'] = $this->stripnonnumeric($ST->zip);
+			$post_variables['SHIPPING_CODE'] = $this->getCode($ST);
 			$post_variables['SHIPPING_CO'] = ShopFunctions::getCountryByID($ST->virtuemart_country_id, 'country_2_code');
 
 		}
@@ -260,18 +260,14 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * timestamp.merchantid.orderid.amount.curr.payerref.pmtref
 	 */
 	function validateResponseHash ($post) {
-		$post=$_POST;
 		if (is_array($post)) {
-			if ($post['RESULT'] == self::RESPONSE_CODE_SUCCESS) {
-				$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $this->_method->merchant_id, $post['ORDER_ID'], $post['RESULT'], $post['MESSAGE'], isset($post['PASREF']) ? $post['PASREF'] : "", isset($post['AUTHCODE']) ? $post['AUTHCODE'] : "");
-			} else {
-				$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $this->_method->merchant_id, $post['ORDER_ID'], $post['RESULT'], $post['MESSAGE'], isset($post['PASREF']) ? $post['PASREF'] : "");
-
-			}
+			$message=html_entity_decode($post['MESSAGE'], ENT_QUOTES);
+			$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'],  $post['MERCHANT_ID'], $post['ORDER_ID'], $post['RESULT'], $message, isset($post['PASREF']) ? $post['PASREF'] : "", isset($post['AUTHCODE']) ? $post['AUTHCODE'] : "");
 			if ($hash != $post['SHA1HASH']) {
-				$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash,$post['SHA1HASH'] ));
-				echo vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $post['SHA1HASH']);
-				print_r($_POST);
+				$this->debugLog('validateResponseHash :' . var_export($post, true), 'debug');
+				$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash,print_r($post, true)));
+				//echo vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $post['SHA1HASH']);
+				//print_r($_POST);
 				return FALSE;
 			}
 		} else {
@@ -298,7 +294,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * @return string
 	 */
 	function getJumpUrl () {
-		return JURI::root(false) . 'plugins/vmpayment/realex/jump.php';
+		return  $this->_method->referring_url;
 
 	}
 }

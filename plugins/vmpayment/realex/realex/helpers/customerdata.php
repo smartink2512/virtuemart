@@ -46,7 +46,9 @@ class RealexHelperCustomerData {
 		*/
 		$session = JFactory::getSession();
 		$sessionData = $session->get(self::REALEX_SESSION, 0, 'vm');
-
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
 		if (!empty($sessionData)) {
 			$data = unserialize($sessionData);
 			$this->_redirect_cc_selected = $data->redirect_cc_selected;
@@ -54,7 +56,7 @@ class RealexHelperCustomerData {
 			$this->_selected_method = $data->selected_method;
 			$this->_cc_type = $data->cc_type;
 			$this->_cc_name = $data->cc_name;
-			$this->_cc_number = $this->decrypt($data->cc_number);
+			$this->_cc_number = vmCrypt::decrypt($data->cc_number);
 			$this->_cc_cvv = $data->cc_cvv;
 			$this->_cc_expire_month = $data->cc_expire_month;
 			$this->_cc_expire_year = $data->cc_expire_year;
@@ -104,6 +106,9 @@ class RealexHelperCustomerData {
 	}
 
 	public function save () {
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmCrypt.php');
+		}
 		$session = JFactory::getSession();
 		$sessionData = new stdClass();
 		$sessionData->selected_method = $this->_selected_method;
@@ -112,7 +117,7 @@ class RealexHelperCustomerData {
 		// card information
 		$sessionData->cc_type = $this->_cc_type;
 		$sessionData->cc_name = $this->_cc_name;
-		$sessionData->cc_number = $this->encrypt($this->_cc_number);
+		$sessionData->cc_number = vmCrypt::encrypt($this->_cc_number);
 		$sessionData->cc_cvv = $this->_cc_cvv;
 		$sessionData->cc_expire_month = $this->_cc_expire_month;
 		$sessionData->cc_expire_year = $this->_cc_expire_year;
@@ -134,26 +139,5 @@ class RealexHelperCustomerData {
 		$session->clear(self::REALEX_SESSION, 'vm');
 	}
 
-	static function encrypt ($string) {
 
-		$key = self::getKey();
-		$crypt = new JCrypt(new JCryptCipherSimple, $key);
-		return $crypt->encrypt($string);
-	}
-
-	static function decrypt ($string) {
-
-		$key = self::getKey();
-		$crypt = new JCrypt(new JCryptCipherSimple, $key);
-		return $crypt->decrypt($string);
-	}
-
-	static function getKey () {
-		jimport('joomla.utilities.simplecrypt');
-
-		$privateKey = JApplication::getHash(JFactory::getUser()->id);
-		$key = new JCryptKey('simple', $privateKey, $privateKey);
-		return $key;
-
-	}
 }

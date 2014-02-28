@@ -1167,7 +1167,6 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 				$cart_prices['salesPrice'] = '';
 				$methodSalesPrice = $this->setCartPrices($cart,  $cart_prices, $this->_currentMethod);
 
-				$html .= '<br />';
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);
 

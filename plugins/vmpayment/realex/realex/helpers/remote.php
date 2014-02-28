@@ -146,9 +146,9 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 
 	}
 
-	function displayRemoteCCForm ($response_dcc = NULL) {
+	function displayRemoteCCForm (  $response_dcc = NULL ) {
 		$useSSL = $this->useSSL();
-		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', ''), $this->useXHTML, $useSSL);
+		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', ''), $this->cart->useXHTML, $useSSL);
 		$card_payment_button = $this->getPaymentButton();
 		$xml_response_dcc = "";
 		if ($this->isCC3DSVerifyEnrolled() and $this->_method->threedsecure) {
@@ -175,6 +175,12 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		$amountInCurrency = $this->plugin->getAmountInCurrency($this->order['details']['BT']->order_total, $this->_method->payment_currency);
 		$order_amount = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_TOTAL', $amountInCurrency['display']);
 		$payment_name = $this->plugin->renderPluginName($this->_method);
+		$cvv_info="";
+		if (isset($xml_response_dcc) and isset($xml_response_dcc->dccinfo) ) {
+			$dccinfo=$xml_response_dcc->dccinfo;
+} else {
+			$dccinfo="";
+		}
 		$html = $this->plugin->renderByLayout('remote_cc_form', array(
 		                                                             "order_amount"                => $order_amount,
 		                                                             "payment_name"                => $payment_name,
@@ -182,12 +188,13 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		                                                             "card_payment_button"         => $card_payment_button,
 		                                                             "notificationTask"            => $notificationTask,
 		                                                             'creditcardsDropDown'         => $ccDropdown,
-		                                                             "dccinfo"                     => $xml_response_dcc->dccinfo,
+		                                                             "dccinfo"                     => $dccinfo,
 		                                                             "customerData"                => $this->customerData,
 		                                                             'creditcards'                 => $this->_method->creditcards,
 		                                                             'offer_save_card'             => $this->_method->offer_save_card,
 		                                                             'order_number'                => $this->order['details']['BT']->order_number,
 		                                                             'virtuemart_paymentmethod_id' => $this->_method->virtuemart_paymentmethod_id,
+		                                                             'cvv_info' => $cvv_info,
 		                                                        ));
 		JRequest::setVar('html', $html);
 		JRequest::setVar('display_title', false);

@@ -23,10 +23,11 @@ $payment_name = $viewData['payment_name'];
 $responseData = $viewData['responseData'];
 
 ?>
-<br />
+
 <style>
 	.paypal_ordersummary td {padding:10px;}
 </style>
+<div class="paypal_ordersummary">
 <table cellpadding="2" class="paypal_ordersummary">
 	<?php 
 	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_PAYMENT_NAME', $payment_name);
@@ -45,5 +46,7 @@ $responseData = $viewData['responseData'];
 	}
 	?>
 </table>
-	<br />
+</div>
+<div class="paypal_orderlink">
 	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+</div>
