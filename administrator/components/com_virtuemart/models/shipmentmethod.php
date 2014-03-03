@@ -69,6 +69,17 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				$dispatcher = JDispatcher::getInstance();
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array($this->_data[$this->_id]->shipment_element,$this->_data[$this->_id]->shipment_jplugin_id,&$this->_data[$this->_id]));
 			}
+
+			if($this->_data[$this->_id]->_cryptedFields){
+				if(!class_exists('vmCrypt')){
+					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+				}
+				foreach($this->_data[$this->_id]->_cryptedFields as $field){
+					if(isset($this->_data[$this->_id]->$field)){
+						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field);
+					}
+				}
+			}
 // 			vmdebug('$$this->_data getShipment',$this->_data);
 
 

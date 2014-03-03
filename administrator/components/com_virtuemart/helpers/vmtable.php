@@ -46,7 +46,7 @@ class VmTable extends JTable {
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
-	protected $_cryptedFields = false;
+	public $_cryptedFields = false;
 	protected $_langTag = null;
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
@@ -255,7 +255,11 @@ class VmTable extends JTable {
 	}
 
 
-	public function setEncryptedFields($fieldNames){
+	public function setCryptedFields($fieldNames){
+		if(!$fieldNames){
+			vmTrace('setEncrytped fields false not catched');
+			return;
+		}
 		if(!is_array($fieldNames)) $fieldNames = array($fieldNames);
 		if(isset($fieldNames[$this->_pkey])){
 			unset($fieldNames[$this->_pkey]);
@@ -551,7 +555,6 @@ class VmTable extends JTable {
 			}
 		}
 
-
 		return $this;
 
 	}
@@ -569,8 +572,14 @@ class VmTable extends JTable {
 			if(!class_exists('vmCrypt')){
 				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 			}
+			vmdebug('my crytped fields in store '.get_class($this),$this->_cryptedFields);
 			foreach($this->_cryptedFields as $field){
-				$this->$field = vmCrypt::encrypt($this->$field);
+				if(isset($this->$field)){
+					$this->$field = vmCrypt::encrypt($this->$field);
+				} else {
+					vmdebug('Store vmtable empty property for '.$field);
+				}
+
 			}
 		}
 

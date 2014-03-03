@@ -55,17 +55,29 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
   		if (empty($this->_data[$this->_id])) {
    			$this->_data[$this->_id] = $this->getTable('paymentmethods');
-   			$this->_data[$this->_id]->load((int)$this->_id);
 
-			if(empty($this->_data->virtuemart_vendor_id)){
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$this->_data[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-			}
+   			$this->_data[$this->_id]->load((int)$this->_id);
 
 			if($this->_data[$this->_id]->payment_jplugin_id){
 				JPluginHelper::importPlugin('vmpayment');
 				$dispatcher = JDispatcher::getInstance();
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data[$this->_id]->payment_element,$this->_data[$this->_id]->payment_jplugin_id,&$this->_data[$this->_id]));
+			}
+
+			if($this->_data[$this->_id]->_cryptedFields){
+				if(!class_exists('vmCrypt')){
+					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+				}
+				foreach($this->_data[$this->_id]->_cryptedFields as $field){
+					if(isset($this->_data[$this->_id]->$field)){
+						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field);
+					}
+				}
+			}
+
+			if(empty($this->_data->virtuemart_vendor_id)){
+				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				$this->_data[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
 
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';

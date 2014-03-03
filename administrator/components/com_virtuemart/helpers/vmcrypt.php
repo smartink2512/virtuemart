@@ -69,7 +69,7 @@ class vmCrypt {
 			}
 
 			if(function_exists('password_hash')){
-				$key = password_hash($key, PASSWORD_BCRYPT, $options)."\n";
+				$key = password_hash($key, PASSWORD_BCRYPT, $options);
 			}
 
 			$content = "<?php  defined('DEFINEDKEY') or die();

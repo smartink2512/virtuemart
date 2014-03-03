@@ -53,6 +53,7 @@ abstract class vmPlugin extends JPlugin {
 	protected $_configTableFieldName = 0;
 	protected $_debug = FALSE;
 	protected $_loggable = FALSE;
+	protected $_cryptedFields = false;
 
 	/**
 	 * Constructor
@@ -83,7 +84,7 @@ abstract class vmPlugin extends JPlugin {
 		$this->_loggable = $set;
 	}
 
-	function setEncryptedFields($fieldNames){
+	function setCryptedFields($fieldNames){
 		$this->_cryptedFields = $fieldNames;
 	}
 
@@ -374,7 +375,10 @@ abstract class vmPlugin extends JPlugin {
 			return FALSE;
 		}
 		else {
-			$table->setEncryptedFields($this->_cryptedFields);
+			if($this->_cryptedFields){
+				$table->setCryptedFields($this->_cryptedFields);
+			}
+
 			$table->setParameterable ($this->_xParams, $this->_varsToPushParam);
 			return TRUE;
 		}
@@ -401,9 +405,9 @@ abstract class vmPlugin extends JPlugin {
 		VmTable::bindParameterable ($data, $this->_xParams, $this->_varsToPushParam);
 
 		if($this->_cryptedFields){
-			$data->setEncryptedFields($this->_cryptedFields);
+			$data->setCryptedFields($this->_cryptedFields);
 		}
-		
+
 		return TRUE;
 		// 			vmdebug('getDeclaredPluginParams return '.$this->_xParams);
 		// 			return array($this->_xParams,$this->_varsToPushParam);
@@ -430,7 +434,7 @@ abstract class vmPlugin extends JPlugin {
 			}
 
 			if($this->_cryptedFields){
-				$this->_vmpCtable->setEncryptedFields($this->_cryptedFields);
+				$this->_vmpCtable->setCryptedFields($this->_cryptedFields);
 			}
 
 
@@ -515,7 +519,7 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		if($this->_cryptedFields){
-			$this->_vmpCtable->setEncryptedFields($this->_cryptedFields);
+			$this->_vmpCtable->setCryptedFields($this->_cryptedFields);
 		}
 
 		if (!$this->_tableChecked) {
