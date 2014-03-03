@@ -77,11 +77,13 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->order_status_name; ?></a>
+
 					<?php
 					$lang =JFactory::getLanguage();
 					if ($lang->hasKey($row->order_status_name)) {
-						echo " (".JText::_($row->order_status_name).")";
+						echo '<a href="' . $editlink . '">'. vmText::_($row->order_status_name) .'</a> ('.$row->order_status_name.')';
+					} else {
+						echo '<a href="' . $editlink . '">'. $row->order_status_name .'</a> ';
 					}
 					?>
 				</td>

@@ -399,6 +399,11 @@ abstract class vmPlugin extends JPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
 		}
 		VmTable::bindParameterable ($data, $this->_xParams, $this->_varsToPushParam);
+
+		if($this->_cryptedFields){
+			$data->setEncryptedFields($this->_cryptedFields);
+		}
+		
 		return TRUE;
 		// 			vmdebug('getDeclaredPluginParams return '.$this->_xParams);
 		// 			return array($this->_xParams,$this->_varsToPushParam);
