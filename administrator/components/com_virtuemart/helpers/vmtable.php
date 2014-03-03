@@ -19,7 +19,7 @@
  */
 defined('_JEXEC') or die();
 
-jimport('joomla.user.user');
+//jimport('joomla.user.user');
 
 /**
  * Replaces JTable with some more advanced functions and fitting to the nooku conventions
@@ -46,6 +46,7 @@ class VmTable extends JTable {
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
+	protected $_cryptedFields = false;
 	protected $_langTag = null;
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
@@ -251,6 +252,15 @@ class VmTable extends JTable {
 			}
 		}
 
+	}
+
+
+	public function setEncryptedFields($fieldNames){
+		if(!is_array($fieldNames)) $fieldNames = array($fieldNames);
+		if(isset($fieldNames[$this->_pkey])){
+			unset($fieldNames[$this->_pkey]);
+		}
+		$this->_cryptedFields = $fieldNames;
 	}
 
 	/**
@@ -527,6 +537,15 @@ class VmTable extends JTable {
 					if (isset($result[$tableId])) $this->$tableId = $result[$tableId];
 				}
 			}
+
+			if($this->_cryptedFields){
+				if(!class_exists('vmCrypt')){
+					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+				}
+				foreach($this->_cryptedFields as $field){
+					$this->$field = vmCrypt::encrypt($this->$field);
+				}
+			}
 		}
 
 
@@ -544,6 +563,15 @@ class VmTable extends JTable {
 		$this->setLoggableFieldsForStore();
 
 		$this->storeParams();
+
+		if($this->_cryptedFields){
+			if(!class_exists('vmCrypt')){
+				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+			}
+			foreach($this->_cryptedFields as $field){
+				$this->$field = vmCrypt::decrypt($this->$field);
+			}
+		}
 
 		return parent::store($updateNulls);
 
