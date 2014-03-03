@@ -374,6 +374,7 @@ abstract class vmPlugin extends JPlugin {
 			return FALSE;
 		}
 		else {
+			$table->setEncryptedFields($this->_cryptedFields);
 			$table->setParameterable ($this->_xParams, $this->_varsToPushParam);
 			return TRUE;
 		}

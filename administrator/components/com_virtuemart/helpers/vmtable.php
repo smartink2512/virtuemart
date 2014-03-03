@@ -565,8 +565,6 @@ class VmTable extends JTable {
 
 		$this->setLoggableFieldsForStore();
 
-		$this->storeParams();
-
 		if($this->_cryptedFields){
 			if(!class_exists('vmCrypt')){
 				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
@@ -575,6 +573,8 @@ class VmTable extends JTable {
 				$this->$field = vmCrypt::encrypt($this->$field);
 			}
 		}
+
+		$this->storeParams();
 
 		return parent::store($updateNulls);
 
