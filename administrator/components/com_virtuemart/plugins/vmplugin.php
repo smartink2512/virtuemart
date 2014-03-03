@@ -83,6 +83,10 @@ abstract class vmPlugin extends JPlugin {
 		$this->_loggable = $set;
 	}
 
+	function setEncryptedFields($fieldNames){
+		$this->_cryptedFields = $fieldNames;
+	}
+
 	/**
 	 * @return array
 	 */
@@ -419,6 +423,11 @@ abstract class vmPlugin extends JPlugin {
 				$this->_vmpCtable->setParameterable ($this->_xParams, $this->_varsToPushParam);
 			}
 
+			if($this->_cryptedFields){
+				$this->_vmpCtable->setEncryptedFields($this->_cryptedFields);
+			}
+
+
 			// 			$this->_vmpCtable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
 		}
 
@@ -497,6 +506,10 @@ abstract class vmPlugin extends JPlugin {
 		}
 		if ($loggable) {
 			$table->setLoggable ();
+		}
+
+		if($this->_cryptedFields){
+			$this->_vmpCtable->setEncryptedFields($this->_cryptedFields);
 		}
 
 		if (!$this->_tableChecked) {

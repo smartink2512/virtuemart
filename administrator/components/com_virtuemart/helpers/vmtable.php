@@ -543,7 +543,10 @@ class VmTable extends JTable {
 					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 				}
 				foreach($this->_cryptedFields as $field){
-					$this->$field = vmCrypt::encrypt($this->$field);
+					if(isset($this->$field)){
+						$this->$field = vmCrypt::decrypt($this->$field);
+					}
+
 				}
 			}
 		}
@@ -569,7 +572,7 @@ class VmTable extends JTable {
 				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 			}
 			foreach($this->_cryptedFields as $field){
-				$this->$field = vmCrypt::decrypt($this->$field);
+				$this->$field = vmCrypt::encrypt($this->$field);
 			}
 		}
 

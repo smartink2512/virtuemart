@@ -75,6 +75,8 @@ class TableUserinfos extends VmTableData {
 
 		$this->setTableShortCut('ui');
 
+		//$this->setEncryptedFields(array('company'));
+
 	}
 
 	/**
