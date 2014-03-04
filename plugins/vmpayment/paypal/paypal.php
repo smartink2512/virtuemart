@@ -906,9 +906,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 				return FALSE;
 			}
 		}
-
-		$activeMethod->min_amount = (float)$activeMethod->min_amount;
-		$activeMethod->max_amount = (float)$activeMethod->max_amount;
+		$this->convert_condition_amount($activeMethod);
 
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 

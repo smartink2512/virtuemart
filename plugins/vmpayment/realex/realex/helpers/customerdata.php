@@ -54,22 +54,16 @@ class RealexHelperCustomerData {
 			$this->_redirect_cc_selected = $data->redirect_cc_selected;
 			$this->_save_card = $data->save_card;
 			$this->_selected_method = $data->selected_method;
-			$this->_cc_type = $data->cc_type;
-			$this->_cc_name = $data->cc_name;
-			$this->_cc_number = vmCrypt::decrypt($data->cc_number);
-			$this->_cc_cvv = $data->cc_cvv;
-			$this->_cc_expire_month = $data->cc_expire_month;
-			$this->_cc_expire_year = $data->cc_expire_year;
-			$this->_cc_valid = $data->cc_valid;
+			// card information are not  saved  in session
 		}
 
 	}
 
 	public function loadPost () {
 
-		$this->_selected_method =vmRequest::getInt('virtuemart_paymentmethod_id', 0);
-		$this->_save_card =vmRequest::getInt('save_card', 0);
-		$redirect_cc_selected =vmRequest::getInt('redirect_cc_selected_'.$this->_selected_method, 0);
+		$this->_selected_method = vmRequest::getInt('virtuemart_paymentmethod_id', 0);
+		$this->_save_card = vmRequest::getInt('save_card', 0);
+		$redirect_cc_selected = vmRequest::getInt('redirect_cc_selected_' . $this->_selected_method, 0);
 		if ($redirect_cc_selected) {
 			$this->_redirect_cc_selected = $redirect_cc_selected;
 		}
@@ -105,32 +99,32 @@ class RealexHelperCustomerData {
 
 	}
 
+	public function setCustomerData ($data) {
+		$this->_cc_type = $data['cc_type'];
+		$this->_cc_name = $data['cc_name'];
+		$this->_cc_number = $data['cc_number'];
+		$this->_cc_cvv = $data['cc_cvv'];
+		$this->_cc_expire_month = $data['cc_expire_month'];
+		$this->_cc_expire_year = $data['cc_expire_year'];
+	}
+
 	public function save () {
-		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmCrypt.php');
-		}
+
 		$session = JFactory::getSession();
 		$sessionData = new stdClass();
 		$sessionData->selected_method = $this->_selected_method;
 		$sessionData->redirect_cc_selected = $this->_redirect_cc_selected;
 		$sessionData->save_card = $this->_save_card;
-		// card information
-		$sessionData->cc_type = $this->_cc_type;
-		$sessionData->cc_name = $this->_cc_name;
-		$sessionData->cc_number = vmCrypt::encrypt($this->_cc_number);
-		$sessionData->cc_cvv = $this->_cc_cvv;
-		$sessionData->cc_expire_month = $this->_cc_expire_month;
-		$sessionData->cc_expire_year = $this->_cc_expire_year;
-		$sessionData->cc_valid = $this->_cc_valid;
+		// card information should not be saved  in session
 		$session->set(self::REALEX_SESSION, serialize($sessionData), 'vm');
 	}
 
-	public function getVar($var) {
+	public function getVar ($var) {
 		$this->load();
 		return $this->{'_' . $var};
 	}
 
-	public function setVar($var, $val) {
+	public function setVar ($var, $val) {
 		$this->{'_' . $var} = $val;
 	}
 

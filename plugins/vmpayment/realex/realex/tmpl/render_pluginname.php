@@ -52,7 +52,7 @@ vmJsApi::chosenDropDowns();
 			if ($viewData['where']!= 'order'){
 				echo $viewData['extraInfo']['cc_number'];
 			} else {
-				$this->cc_mask($viewData['extraInfo']['cc_number']);
+				echo $viewData['extraInfo']['cc_number'];
 			}
 			if ($viewData['extraInfo']['cc_expire_month']) {
 				echo " ".$viewData['extraInfo']['cc_expire_month'] .'/'.$viewData['extraInfo']['cc_expire_year'];

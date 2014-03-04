@@ -261,7 +261,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 */
 	function validateResponseHash ($post) {
 		if (is_array($post)) {
-			$message=html_entity_decode($post['MESSAGE'], ENT_QUOTES);
+			$message=stripslashes($post['MESSAGE']);
+			$message=str_replace('&#39;',"'",$message);
 			$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'],  $post['MERCHANT_ID'], $post['ORDER_ID'], $post['RESULT'], $message, isset($post['PASREF']) ? $post['PASREF'] : "", isset($post['AUTHCODE']) ? $post['AUTHCODE'] : "");
 			if ($hash != $post['SHA1HASH']) {
 				$this->debugLog('validateResponseHash :' . var_export($post, true), 'debug');

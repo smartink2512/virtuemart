@@ -6,7 +6,7 @@ defined('JPATH_BASE') or die();
  *
  * @package    VirtueMart
  * @subpackage Helpers
- * @authorValérie Isaksen
+ * @author Max Milbers, Valérie Isaksen
  * @copyright Copyright (c) 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
@@ -24,7 +24,7 @@ class vmCrypt {
 
 	static function encrypt ($string) {
 
-		$key = self::getKey ();
+		$key = self::_getKey ();
 
 		if(function_exists('mcrypt_encrypt')){
 			// create a random IV to use with CBC encoding
@@ -38,9 +38,9 @@ class vmCrypt {
 
 	}
 
-	static function decrypt ($string,$date) {
+	static function decrypt ($string,$date=0) {
 
-		$key = self::getKey ($date);
+		$key = self::_getKey ($date);
 		if(!empty($key)){
 			$ciphertext_dec = base64_decode($string);
 			if(function_exists('mcrypt_encrypt')){
@@ -60,7 +60,7 @@ class vmCrypt {
 
 	}
 
-	static function getKey ($date = 0) {
+	private static function _getKey ($date = 0) {
 
 		$key = self::_checkCreateKeyFile($date);
 
@@ -68,7 +68,7 @@ class vmCrypt {
 
 	}
 
-	static function _checkCreateKeyFile($date){
+	private static function _checkCreateKeyFile($date){
 
 		vmSetStartTime('check');
 		static $existingKeys = false;
@@ -93,7 +93,7 @@ class vmCrypt {
 								}
 
 							} else {
-								vmdebug('Ressource says there is file, but does not exists? '.$keyPath .DS. $file);
+								vmdebug('Resource says there is file, but does not exists? '.$keyPath .DS. $file);
 							}
 						} else {
 							//vmdebug('Directory in they keyfolder?  '.$keyPath .DS. $file);
@@ -170,7 +170,7 @@ class vmCrypt {
 		//return pack('H*',$key);
 	}
 
-	static function _getEncryptSafepath () {
+	private static function _getEncryptSafepath () {
 
 		if (!class_exists('ShopFunctions'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
@@ -186,7 +186,7 @@ class vmCrypt {
 		return $encryptSafePath;
 	}
 
-	static function createEncryptFolder ($folderName) {
+	private static function createEncryptFolder ($folderName) {
 
 		//$folderName = self::_getEncryptSafepath ();
 

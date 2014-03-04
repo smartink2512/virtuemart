@@ -97,31 +97,8 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 	 */
 	function plgVmOnStoreInstallPluginTable ($jplugin_name) {
 
-		$return= $this->onStoreInstallPluginTable($jplugin_name);
-		self::_createRealexFolder();
+		return $this->onStoreInstallPluginTable($jplugin_name);
 
-		$filename =self::_getRealexSafepath () .DS.'key.php';
-		if (JFile::exists($filename)) {
-			return $return;
-		}
-
-		$token = JUtility::getHash(JUserHelper::genRandomPassword());
-		$salt = JUserHelper::getSalt('crypt-md5');
-		$hashedToken = md5($token . $salt)  ;
-		$key = base64_encode($hashedToken);
-		$filecontents = "<?php  defined('USERFIELD_REALEX') or die();
-	define('USERFIELD_REALEX_KEY', '".$key."');
-	?>";
-		$result = JFile::write($filename, $filecontents);
-
-		if (!$result) {
-			VmInfo($result);
-		} else {
-			// vmInfo('File ' . $filename . ' <strong style="color:red;">key stored in file</strong>');
-			VmInfo(Jtext::sprintf('VMUSERFIELD_REALEX_KEY_STORED', $filename));
-
-		}
-		return $return ;
 	}
 
 
@@ -167,21 +144,23 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		if (!empty($card_ids)) {
 			return $this->deleteStoredCards($card_ids);
 		}
-		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
-		}
+
 		if (!class_exists('ShopFunctions'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 // we come from payment
 		if (isset($params['realex_saved_payer_ref'])) {
 			// only store the last 4 digits
-			$realex_saved_pmt_digits = shopFunctions::asteriskPad($params['realex_saved_pmt_digits'], strlen($params['realex_saved_pmt_digits'])-4);
-			$params['realex_saved_pmt_digits'] = vmCrypt::encrypt($realex_saved_pmt_digits);
+			//$realex_saved_pmt_digits = substr_replace($params['realex_saved_pmt_digits'], str_repeat("X", $len-4), 0, $len-4);
+			$realex_saved_pmt_digits = $this->mask_cc($params['realex_saved_pmt_digits']);
+			$params['realex_saved_pmt_digits'] = $realex_saved_pmt_digits;
 			$this->storePluginInternalData($params);
 		}
 
 	}
-
+	function mask_cc($cc, $mask_char='X')
+	{
+		return str_pad(substr($cc, -4), strlen($cc), $mask_char, STR_PAD_LEFT);
+	}
 	/**
 	 * Delete a stored card
 	 * To remove a card from the RealVault system
@@ -250,7 +229,7 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 					$key_text = JText::_($complete_key);
 					$value = JText::_($value);
 					if (!empty($value)) {
-						$html .= "<tr>\n<td>" . $key_text . "</td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
+						$html .= "<tr>\n<td>". $key_text . "</label></td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
 					}
 				}
 
@@ -267,12 +246,8 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 			return '';
 		}
 
-
-		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
-		}
 		foreach ($storedCreditCards as $storedCreditCard) {
-			$storedCreditCard->realex_saved_pmt_digits = vmCrypt::decrypt($storedCreditCard->realex_saved_pmt_digits);
+			$storedCreditCard->realex_saved_pmt_digits =  $storedCreditCard->realex_saved_pmt_digits;
 		}
 		return $storedCreditCards;
 

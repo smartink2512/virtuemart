@@ -51,7 +51,7 @@
         </param>
 
 
-        <param class="redirect dcc_choice" name="settlement" type="list" default="1" label="VMPAYMENT_REALEX_SETTLEMENT"
+        <param class="redirect remote dcc_choice" name="settlement" type="list" default="1" label="VMPAYMENT_REALEX_SETTLEMENT"
                description="VMPAYMENT_REALEX_SETTLEMENT_TIP">
             <option value="1">VMPAYMENT_REALEX_SETTLEMENT_AUTO</option>
             <option value="0">VMPAYMENT_REALEX_SETTLEMENT_DELAYED</option>

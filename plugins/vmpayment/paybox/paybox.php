@@ -181,10 +181,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		} else if ($this->_currentMethod->integration=="subscribe" /*AND ($orderTotalVendorCurrency > $this->_currentMethod->subscribe_min_amount)*/) {
 			$subscribe_cmd = $pbxInterface->getSubscribePayments($cart, $order);
 			// PBX_TOTAL is the order total in this case
-
-			//$post_variables["PBX_CMD"].=$subscribe_cmd;
-			$post_variables["PBX_CMD"].="PBX_2MONT0000000550PBX_NBPAIE10PBX_FREQ03PBX_QUAND31";
-			//$post_variables["PBX_CMD"]="vm2_ref1234PBX_2MONT0000000550PBX_NBPAIE10PBX_FREQ03PBX_QUAND31";
+			$post_variables["PBX_CMD"].=$subscribe_cmd;
 		}
 
 		$post_variables["PBX_HMAC"] = $pbxInterface->getHmac($post_variables, $this->_currentMethod->key);

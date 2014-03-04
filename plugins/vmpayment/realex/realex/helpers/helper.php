@@ -22,6 +22,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 
+/**
+ * @property  request_type
+ */
 class  RealexHelperRealex {
 	var $_method;
 	var $cart;
@@ -65,6 +68,18 @@ class  RealexHelperRealex {
 	const RESPONSE_CODE_PAYER_REF_NOTEXIST = '501'; // This Payer Ref payerref does not exist
 	const RESPONSE_CODE_INVALID_PAYER_REF_USED = '501'; // This Payer Ref payerref has already been used - please use another one
 	const PAYER_SETUP_SUCCESS = "00";
+
+	const ENROLLED_RESULT_ENROLLED = '00';
+	const ENROLLED_RESULT_NOT_ENROLLED = '110';
+	const ENROLLED_RESULT_INVALID_RESPONSE = '5xx';
+	const ENROLLED_RESULT_FATAL_ERROR = '220';
+
+
+	const ENROLLED_TAG_ENROLLED = 'Y';
+	const ENROLLED_TAG_UNABLE_TO_VERIFY = 'U';
+	const ENROLLED_TAG_NOT_ENROLLED = 'N';
+
+
 
 
 	function __construct ($method, $plugin) {
@@ -114,9 +129,9 @@ class  RealexHelperRealex {
 		return $this->context;
 	}
 
-	public function setCart ($cart) {
+	public function setCart ($cart, $doGetCartPrices=true) {
 		$this->cart = $cart;
-		if (!isset($this->cart->pricesUnformatted)) {
+		if ($doGetCartPrices AND !isset($this->cart->pricesUnformatted)) {
 			$this->cart->getCartPrices();
 		}
 	}
@@ -250,16 +265,18 @@ class  RealexHelperRealex {
 			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
 		}
 		$this->plugin->_storeRealexInternalData($response, $this->_method->virtuemart_paymentmethod_id, $this->order['details']['BT']->virtuemart_order_id, $this->order['details']['BT']->order_number, $this->request_type);
-
+/*
 		$xml_response = simplexml_load_string($response);
 
 		$success = $this->isResponseSuccess($xml_response);
-
-		if (!$success) {
+		$reponse_enrolled=($xml_response->result==self::ENROLLED_RESULT_NOT_ENROLLED);
+		$not_enrolled = ($xml_response->enrolled == self::ENROLLED_TAG_NOT_ENROLLED);
+		if (! ($success OR $reponse_enrolled)) {
 			$error = (string)$xml_response->message . " (" . (string)$xml_response->result . ")";
 			$this->displayError($error);
 			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
 		}
+*/
 	}
 
 	/**
@@ -412,8 +429,11 @@ class  RealexHelperRealex {
 								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
 								$pasref = $payment->realex_response_pasref;
 							} else {
-								$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
-							}
+								if ($this->isResponseDeclined($xml_response)) {
+									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_DECLINED');
+								} else {
+									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
+								}							}
 
 						} elseif ($payment->realex_request_type_response == $this::REQUEST_TYPE_CARD_NEW) {
 							$success = $this->isResponseSuccess($xml_response);
@@ -429,7 +449,7 @@ class  RealexHelperRealex {
 							$realex_data = json_decode($payment->realex_fullresponse);
 							$result = $payment->realex_response_result;
 
-							$success = ($result == $this::RESPONSE_CODE_SUCCESS);
+							$success = ($this);
 							if ($success) {
 								$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency) ;
 								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
@@ -443,7 +463,11 @@ class  RealexHelperRealex {
 
 
 							} else {
-								$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
+								if ($this->isResponseDeclined($xml_response)) {
+									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_DECLINED');
+								} else {
+									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
+								}
 							}
 						}
 					}
@@ -1034,6 +1058,12 @@ class  RealexHelperRealex {
 		return $success;
 	}
 
+
+	function  isResponseDeclined ($xml_response) {
+		$result = (string)$xml_response->result;
+		$result = ($result == self::RESPONSE_CODE_DECLINED);
+		return $result;
+	}
 	/**
 	 * get HASH for Realex
 	 * @param      $secret
@@ -1101,7 +1131,7 @@ class  RealexHelperRealex {
 		}
 
 		//$this->debugLog(print_r($request, true), 'debug');
-		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $request->asXML() . '</textarea>', 'Request', 'debug');
+		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $request->asXML() . '</textarea>', 'Request', 'message');
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->getRemoteURL());
@@ -1111,7 +1141,7 @@ class  RealexHelperRealex {
 		$response = curl_exec($ch);
 		curl_close($ch);
 
-		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $response . '</textarea>', 'response :', 'debug');
+		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $response . '</textarea>', 'response :', 'message');
 
 		if (empty($response)) {
 			$this->displayError(vmText::_('VMPAYMENT_REALEX_EMPTY_RESPONSE'));
@@ -1122,6 +1152,9 @@ class  RealexHelperRealex {
 		}
 
 		return $response;
+	}
+	function cc_mask ($cc) {
+		return substr_replace($cc, str_repeat("*", 8), 4, 8);
 	}
 
 	/**
