@@ -26,14 +26,24 @@ class vmCrypt {
 
 		$key = self::getKey ();
 
-		return base64_encode (mcrypt_encrypt (MCRYPT_RIJNDAEL_256, md5 ($key), $string, MCRYPT_MODE_CBC, md5 (md5 ($key))));
+		// create a random IV to use with CBC encoding
+		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+
+		return base64_encode ($iv.mcrypt_encrypt (MCRYPT_RIJNDAEL_256, $key, $string, MCRYPT_MODE_CBC,$iv));
 	}
 
 	static function decrypt ($string,$date) {
 
 		$key = self::getKey ($date);
 		if(!empty($key)){
-			return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, md5 ($key), base64_decode ($string), MCRYPT_MODE_CBC, md5 (md5 ($key))), "\0");
+			$ciphertext_dec = base64_decode($string);
+			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+			// retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
+			$iv_dec = substr($ciphertext_dec, 0, $iv_size);
+			//retrieves the cipher text (everything except the $iv_size in the front)
+    		$ciphertext_dec = substr($ciphertext_dec, $iv_size);
+			return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec), "\0");
 		} else {
 			return $string;
 		}
@@ -110,7 +120,8 @@ class vmCrypt {
 				$usedKey = end($existingKeys);
 				$key = $usedKey['key'];
 			}
-
+			vmTime('my time','check');
+			return $key;
 		} else {
 
 			$usedKey = date("ymd");
@@ -121,30 +132,32 @@ class vmCrypt {
 				$salt = JUserHelper::getSalt('crypt-md5');
 				$hashedToken = md5($token . $salt)  ;
 				$key = base64_encode($hashedToken);
-				$options = array('costs'=>VmConfig::get('cryptCost',8));
+				//$options = array('costs'=>VmConfig::get('cryptCost',8));
 
-				if(!function_exists('password_hash')){
+				/*if(!function_exists('password_hash')){
 					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'password_compat.php');
 				}
 
 				if(function_exists('password_hash')){
 					$key = password_hash($key, PASSWORD_BCRYPT, $options);
-				}
+				}*/
 
 				$date = JFactory::getDate();
 				$today = $date->toUnix();
-
-				$content = ';<?php  defined(\'DEFINEDKEY\') or die(); */
+				//$key = pack('H*',$key);
+				$content = ';<?php die(); */
 						[keys]
 						key = "'.$key.'"
 						unixtime = "'.$today.'"
 						date = "'.date("Y-m-d H:i:s").'"
 						; */ ?>';
 				$result = JFile::write($filename, $content);
+				vmTime('my time','check');
+				return $key;
 			}
 		}
 		vmTime('my time','check');
-		return $key;
+		//return pack('H*',$key);
 	}
 
 	static function _getEncryptSafepath () {
