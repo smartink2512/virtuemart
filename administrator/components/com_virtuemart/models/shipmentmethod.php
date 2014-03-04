@@ -74,9 +74,17 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				if(!class_exists('vmCrypt')){
 					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 				}
+
+				if(isset($this->_data[$this->_id]->modified_on)){
+					$date = JFactory::getDate($this->_data[$this->_id]->modified_on);
+					$date = $date->toUnix();
+				} else {
+					$date = 0;
+				}
+
 				foreach($this->_data[$this->_id]->_cryptedFields as $field){
 					if(isset($this->_data[$this->_id]->$field)){
-						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field);
+						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field,$date);
 					}
 				}
 			}

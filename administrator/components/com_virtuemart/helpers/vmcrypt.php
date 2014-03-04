@@ -29,54 +29,122 @@ class vmCrypt {
 		return base64_encode (mcrypt_encrypt (MCRYPT_RIJNDAEL_256, md5 ($key), $string, MCRYPT_MODE_CBC, md5 (md5 ($key))));
 	}
 
-	static function decrypt ($string) {
+	static function decrypt ($string,$date) {
 
-		$key = self::getKey ();
-		return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, md5 ($key), base64_decode ($string), MCRYPT_MODE_CBC, md5 (md5 ($key))), "\0");
-	}
-
-	static function getKey () {
-
-		//$filename = self::_getEncryptSafepath () . DS . 'key.php';
-
-		//if (!JFile::exists ($filename)) {
-		$filename = self::_checkCreateKeyFile();
-		//}
-
-		if (JFile::exists ($filename)) {
-			if (!defined('DEFINEDKEY')){
-				define('DEFINEDKEY',1);
-			}
-			include_once $filename;
+		$key = self::getKey ($date);
+		if(!empty($key)){
+			return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, md5 ($key), base64_decode ($string), MCRYPT_MODE_CBC, md5 (md5 ($key))), "\0");
+		} else {
+			return $string;
 		}
-
-		return base64_decode (PRIVATE_KEY);
 
 	}
 
-	static function _checkCreateKeyFile(){
-		$filename = self::_getEncryptSafepath () . DS . 'key.php';
-		if (!JFile::exists ($filename)) {
+	static function getKey ($date = 0) {
 
-			$token = JUtility::getHash(JUserHelper::genRandomPassword());
-			$salt = JUserHelper::getSalt('crypt-md5');
-			$hashedToken = md5($token . $salt)  ;
-			$key = base64_encode($hashedToken);
-			$options = array('costs'=>VmConfig::get('cryptCost',8));
+		$key = self::_checkCreateKeyFile($date);
 
-			if(!function_exists('password_hash')){
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'password_compat.php');
+		return base64_decode ($key);
+
+	}
+
+	static function _checkCreateKeyFile($date){
+
+		vmSetStartTime('check');
+		static $existingKeys = false;
+
+		$keyPath = self::_getEncryptSafepath ();
+
+		if(!$existingKeys){
+			$dir = opendir($keyPath);
+			if(is_resource($dir)){
+				$existingKeys = array();
+				while(false !== ( $file = readdir($dir)) ) {
+					if (( $file != '.' ) && ( $file != '..' )) {
+						if ( !is_dir($keyPath .DS. $file)) {
+							$ext = Jfile::getExt($file);
+							if($ext=='ini' and file_exists($keyPath .DS. $file)){
+								$content = parse_ini_file($keyPath .DS. $file);
+								if($content and is_array($content) and isset($content['unixtime'])){
+									$key = $content['unixtime'];
+									unset($content['unixtime']);
+									$existingKeys[$key] = $content;
+									//vmdebug('Reading '.$keyPath .DS. $file,$content);
+								}
+
+							} else {
+								vmdebug('Ressource says there is file, but does not exists? '.$keyPath .DS. $file);
+							}
+						} else {
+							//vmdebug('Directory in they keyfolder?  '.$keyPath .DS. $file);
+						}
+					} else {
+						//vmdebug('Directory in the keyfolder '.$keyPath .DS. $file);
+					}
+				}
+			} else {
+				static $warn = false;
+				if(!$warn)vmWarn('Key folder in safepath unaccessible '.$keyPath);
+				$warn = true;
 			}
-
-			if(function_exists('password_hash')){
-				$key = password_hash($key, PASSWORD_BCRYPT, $options);
-			}
-
-			$content = "<?php  defined('DEFINEDKEY') or die();
- define('PRIVATE_KEY', '".$key."'); ?>";
-			$result = JFile::write($filename, $content);
 		}
-		return $filename;
+
+		if($existingKeys and is_array($existingKeys) and count($existingKeys)>0){
+			ksort($existingKeys);
+
+			if(!empty($date)){
+				$key = '';
+				foreach($existingKeys as $unixDate=>$values){
+					if(($unixDate-30) >= $date ){
+						vmdebug('$unixDate '.$unixDate.' >= $date '.$date);
+						continue;
+					}
+					vmdebug('$unixDate < $date');
+					//$usedKey = $values;
+					$key = $values['key'];
+				}
+
+				vmdebug('Use key file ',$key);
+				//include($keyPath .DS. $usedKey.'.php');
+			} else {
+				$usedKey = end($existingKeys);
+				$key = $usedKey['key'];
+			}
+
+		} else {
+
+			$usedKey = date("ymd");
+			$filename = $keyPath . DS . $usedKey . '.ini';
+			if (!JFile::exists ($filename)) {
+
+				$token = JUtility::getHash(JUserHelper::genRandomPassword());
+				$salt = JUserHelper::getSalt('crypt-md5');
+				$hashedToken = md5($token . $salt)  ;
+				$key = base64_encode($hashedToken);
+				$options = array('costs'=>VmConfig::get('cryptCost',8));
+
+				if(!function_exists('password_hash')){
+					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'password_compat.php');
+				}
+
+				if(function_exists('password_hash')){
+					$key = password_hash($key, PASSWORD_BCRYPT, $options);
+				}
+
+				$date = JFactory::getDate();
+				$today = $date->toUnix();
+
+				$content = ';<?php  defined(\'DEFINEDKEY\') or die(); */
+						[keys]
+						key = "'.$key.'"
+						unixtime = "'.$today.'"
+						date = "'.date("Y-m-d H:i:s").'"
+						; */ ?>';
+				$result = JFile::write($filename, $content);
+			}
+		}
+		vmTime('my time','check');
+		return $key;
 	}
 
 	static function _getEncryptSafepath () {

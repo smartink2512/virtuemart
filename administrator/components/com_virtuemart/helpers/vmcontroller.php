@@ -325,8 +325,17 @@ class VmController extends JController{
 		JArrayHelper::toInteger($order);
 
 		$model = VmModel::getModel($this->_cname);
-		if (!$model->saveorder($cid, $order)) $msg = 'error';
-		else $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVE_ORDER_SUCCESS',$this->mainLangKey);
+		if (!$model->saveorder($cid, $order)) {
+			$msg = 'error';
+		} else {
+			if(JFactory::getApplication()->isAdmin() and VmConfig::showDebug()){
+				$msg = vmText::sprintf('COM_VIRTUEMART_NEW_ORDERING_SAVEDF',$this->mainLangKey);
+			} else {
+				$msg = vmText::sprintf('COM_VIRTUEMART_NEW_ORDERING_SAVED');
+			}
+
+		}
+
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 
