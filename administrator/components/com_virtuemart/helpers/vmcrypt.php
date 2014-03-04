@@ -26,11 +26,16 @@ class vmCrypt {
 
 		$key = self::getKey ();
 
-		// create a random IV to use with CBC encoding
-		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+		if(function_exists('mcrypt_encrypt')){
+			// create a random IV to use with CBC encoding
+			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+			$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 
-		return base64_encode ($iv.mcrypt_encrypt (MCRYPT_RIJNDAEL_256, $key, $string, MCRYPT_MODE_CBC,$iv));
+			return base64_encode ($iv.mcrypt_encrypt (MCRYPT_RIJNDAEL_256, $key, $string, MCRYPT_MODE_CBC,$iv));
+		} else {
+			return base64_encode ($string);
+		}
+
 	}
 
 	static function decrypt ($string,$date) {
@@ -38,12 +43,17 @@ class vmCrypt {
 		$key = self::getKey ($date);
 		if(!empty($key)){
 			$ciphertext_dec = base64_decode($string);
-			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-			// retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
-			$iv_dec = substr($ciphertext_dec, 0, $iv_size);
-			//retrieves the cipher text (everything except the $iv_size in the front)
-    		$ciphertext_dec = substr($ciphertext_dec, $iv_size);
-			return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec), "\0");
+			if(function_exists('mcrypt_encrypt')){
+				$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+				// retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
+				$iv_dec = substr($ciphertext_dec, 0, $iv_size);
+				//retrieves the cipher text (everything except the $iv_size in the front)
+				$ciphertext_dec = substr($ciphertext_dec, $iv_size);
+				return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec), "\0");
+			} else {
+				return $ciphertext_dec;
+			}
+
 		} else {
 			return $string;
 		}
