@@ -34,7 +34,8 @@ class  PayboxHelperPaybox {
 	const TYPE_DIRECT_CAPTURE = '00002';
 	const TYPE_DIRECT_AUTHORIZATION_CAPTURE = '00003';
 
-	function __construct ($plugin) {
+	function __construct ($method, $plugin) {
+		$this->_method = $method;
 		$this->plugin = $plugin;
 	}
 
@@ -65,6 +66,16 @@ class  PayboxHelperPaybox {
 		return $fields;
 	}
 
+	public function unsetNonPayboxData ($paybox_data) {
+		$returnFields = $this->getReturnFields();
+		foreach ($paybox_data as $key => $value) {
+			if (!in_array($key, $returnFields)) {
+				unset($paybox_data[$key]);
+			}
+		}
+		return $paybox_data;
+	}
+
 	public function getReturn () {
 
 		$returnFieldsString = '';
@@ -90,10 +101,27 @@ class  PayboxHelperPaybox {
 
 	}
 
+	/**
+	 * @param $total
+	 * @return string
+	 */
+	function getPbxTotal ($total) {
+		return str_pad($total, 3, "0", STR_PAD_LEFT);
+	}
+
+	/**
+	 * @param $value
+	 * @return string
+	 */
 	function getUniqueId ($value) {
 		return $value . '-' . time();
 	}
 
+	/**
+	 * @param $post
+	 * @param $payboxKey
+	 * @return string
+	 */
 	function getHmac ($post, $payboxKey) {
 
 		$msg = '';
@@ -120,7 +148,7 @@ class  PayboxHelperPaybox {
 
 	public function checkIps () {
 		// TODO REMOVE MY IP
-		$paybox_ips = array('194.2.122.158', '195.25.7.166', '195.101.99.76','88.186.104.215');
+		$paybox_ips = array('194.2.122.158', '195.25.7.166', '195.101.99.76');
 		if (!in_array($_SERVER['REMOTE_ADDR'], $paybox_ips)) {
 			$text = "Received not authorized IP: <br />Server IP=" . $_SERVER['REMOTE_ADDR'];
 			$text .= " <br />authorized IPs: =" . var_export($paybox_ips, true);
@@ -179,7 +207,15 @@ class  PayboxHelperPaybox {
 		return $url;
 
 	}
+	function getOrderHistory ($paybox_data, $order) {
+		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M']*0.01, $order['details']['BT']->order_currency);
+		$order_history['comments'] = vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
+		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' . $paybox_data['S'];
 
+		$order_history['customer_notified'] = true;
+		$order_history['order_status'] = $this->_currentMethod->status_success;
+		return $order_history;
+	}
 
 	/**
 	 * @param        $keyfile
@@ -187,7 +223,7 @@ class  PayboxHelperPaybox {
 	 * @param string $pass
 	 * @return bool|resource
 	 */
-	private function loadKey ($keyfile, $pub = TRUE, $pass = '') {
+	private function loadKey ($keyfile, $public_key = TRUE, $pass = '') {
 
 
 		$fp = $filedata = $key = FALSE; // initialisation variables
@@ -210,7 +246,7 @@ class  PayboxHelperPaybox {
 			$this->plugin->debugLog('loadKey :' . 'Empty Key File' . $keyfile, 'error');
 			return FALSE;
 		}
-		if ($pub) {
+		if ($public_key) {
 			$key = openssl_pkey_get_public($filedata);
 		} // recuperation de la cle publique
 		else // ou recuperation de la cle privee
@@ -219,8 +255,6 @@ class  PayboxHelperPaybox {
 		}
 		return $key; // renvoi cle ( ou erreur )
 	}
-
-
 
 
 	public function PbxVerSign ($keyfile, $qrystr) {
@@ -236,7 +270,11 @@ class  PayboxHelperPaybox {
 		openssl_free_key($key);
 		// openssl_verify: verification : 1 si valide, 0 si invalide, -1 si erreur
 		if ($openSsl !== 1) {
-			$this->plugin->debugLog('PbxVerSign :' . 'openssl_verify ' . $openSsl, 'error');
+			$msg = 'PbxVerSign :' . 'openssl_verify return value: ' . $openSsl . '<br />';
+			$msg .= '            ' . 'query sign ' . $qrystr . '<br />';
+			$msg .= '            ' . 'data ' . $data . '<br />';
+			$msg .= '            ' . 'sig ' . $sig . '<br />';
+			$this->plugin->debugLog($msg, 'error');
 			return false;
 		}
 

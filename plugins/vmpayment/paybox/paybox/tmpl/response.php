@@ -24,8 +24,23 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paybox/paybox/assets/
 
 <div class="paybox response">
 
-	<?php if ( $viewData['success']) { ?>
 
+	<?php if ( $viewData['success']) { ?>
+		<div class="status_confirmed">
+			<?php echo vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED', $viewData['amount']." ".$viewData['currency'], $order['details']['BT']->order_number); ?>
+		</div>
+		<div class="transaction_id">
+			<?php echo vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' .$viewData['transactionId'];
+			?>
+		</div>
+<?php if ( !empty($viewData['recurring_comment']))  { ?>
+<div class="recurring">
+			<?php echo $viewData['recurring_comment'];
+			?>
+</div>
+	<?php
+}
+	?>
 		<div class="vieworder">
 			<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $viewData["order_number"] . '&order_pass=' . $viewData["order_pass"], false) ?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
 		</div>

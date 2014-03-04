@@ -18,7 +18,7 @@ defined ('_JEXEC') or die();
  */
 
 ?>
-<span class="vmpayment">
+<span class="paybox vmpayment">
 	<?php
 	if (!empty($viewData['logo'])) {
 		?>

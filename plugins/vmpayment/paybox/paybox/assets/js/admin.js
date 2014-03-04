@@ -42,13 +42,15 @@ jQuery().ready(function ($) {
             $('.activate_3dsecure').parents('tr').show();
         }
     }
-    handlePaymentplans = function () {
-        var activate_paymentplans = $('#paramsactivate_paymentplans').val();
+    handleIntegration = function () {
+        var integration = $('#paramsintegration').val();
 
-        $('.activate_paymentplans ').parents('tr').hide();
+        $('.integration ').parents('tr').hide();
 
-        if (activate_paymentplans == 1) {
-            $('.activate_paymentplans').parents('tr').show();
+        if (integration == 'recurring') {
+            $('.recurring').parents('tr').show();
+        } else if(integration == 'subscribe') {
+            $('.subscribe').parents('tr').show();
         }
     }
     handleShopMode = function () {
@@ -71,12 +73,16 @@ jQuery().ready(function ($) {
         handle3Dsecure();
 
     });
-    $('#paramsactivate_paymentplans').change(function () {
-        handlePaymentplans();
+    $('#paramsactivate_recurring').change(function () {
+        handlepPaymentplan();
 
     });
     $('#paramsshop_mode').change(function () {
         handleShopMode();
+
+    });
+    $('#paramsintegration').change(function () {
+        handleIntegration();
 
     });
     /*****************/
@@ -85,5 +91,5 @@ jQuery().ready(function ($) {
     handleShopMode();
     handleDebitType();
     handle3Dsecure();
-    handlePaymentplans();
+    handleIntegration();
 });
