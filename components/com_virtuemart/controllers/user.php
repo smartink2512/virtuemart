@@ -237,22 +237,14 @@ class VirtueMartControllerUser extends JController
 
 		}
 
-		$this->saveToCart($data);
-		return $msg;
-	}
-
-	/**
-	 * This function just gets the post data and put the data if there is any to the cart
-	 *
-	 * @author Max Milbers
-	 */
-	private function saveToCart($data){
-
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$cart->saveAddressInCart($data, $data['address_type']);
 
+		return $msg;
 	}
+
+
 
 	/**
 	 * Editing a user address was cancelled when called from the cart; return to the cart

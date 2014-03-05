@@ -40,16 +40,6 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 <?php } ?>
 
-		<tr>
-			<td class="key">
-				<label for="perms">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_PERMS') ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo $this->lists['perms']; ?>
-			</td>
-		</tr>
 
 		<tr>
 			<td class="key">

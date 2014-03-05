@@ -324,17 +324,6 @@ class VirtuemartViewUser extends VmView {
 	    }
 	}
 
-	//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
-	if (Permissions::getInstance()->check("admin,storeadmin")) {
-	    $this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
-	} else {
-	    if (!empty($this->_userDetails->perms)) {
-		$this->_lists['perms'] = $this->_userDetails->perms;
-
-		$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
-		$this->_lists['perms'] .= $_hiddenInfo;
-	    }
-	}
 
 	// Load the required scripts
 	if (count($userFields['scripts']) > 0) {
