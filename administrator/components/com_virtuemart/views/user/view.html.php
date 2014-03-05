@@ -116,7 +116,7 @@ class VirtuemartViewUser extends VmView {
 			$this->lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups,true, 'virtuemart_shoppergroup_id', 'COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS');
+			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups,true, 'virtuemart_shoppergroup_id');
 			$this->lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$model->setId($userDetails->JUser->get('id'));
 			$this->lists['custnumber'] = $model->getCustomerNumberById();

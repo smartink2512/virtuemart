@@ -132,7 +132,7 @@ $doc->addScript($this->baseurl.'/templates/'.$this->template.'/javascript/md_sty
 		<div id="header-image">
 			<jdoc:include type="modules" name="position-15" />
 			<?php if ($this->countModules('position-15')==0): ?>
-				<img src="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/images/fruits.png"  alt="<?php echo JText::_('TPL_BEEZ5_LOGO'); ?>" />
+				<img src="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/images/virtuemart.png"  alt="<?php echo JText::_('TPL_BEEZ5_LOGO'); ?>" />
 			<?php endif; ?>
 		</div>
 		<?php if (!$templateparams->get('html5', 0)): ?>
