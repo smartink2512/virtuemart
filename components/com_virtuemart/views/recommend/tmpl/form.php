@@ -37,7 +37,10 @@ if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else {
+if(!empty($this->login)){
 	echo $this->login;
+}
+if(empty($this->login) or VmConfig::get('recommend_unauth',false)){
 	?>
 
 <div class="ask-a-question-view">
@@ -99,4 +102,5 @@ if (empty ( $this->product )) {
 	</div>
 </div>
 
-<?php } ?>
+<?php }
+}?>

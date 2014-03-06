@@ -36,52 +36,53 @@ if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else {
-	echo $this->login;
+	$session = JFactory::getSession();
+	$askQuestionData = $session->get('askquestion', 0, 'vm');
+	if(!empty($this->login)){
+		echo $this->login;
+	}
+	if(empty($this->login) or VmConfig::get('recommend_unauth',false)){
+		?>
+		<div class="ask-a-question-view">
+			<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')  ?></h1>
 
-$session = JFactory::getSession();
-$askQuestionData = $session->get('askquestion', 0, 'vm');
-?>
+			<div class="product-summary">
+				<div class="width70 floatleft">
+					<h2><?php echo $this->product->product_name ?></h2>
 
-<div class="ask-a-question-view">
-	<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')  ?></h1>
+					<?php // Product Short Description
+					if (!empty($this->product->product_s_desc)) { ?>
+						<div class="short-description">
+							<?php echo $this->product->product_s_desc ?>
+						</div>
+					<?php } // Product Short Description END ?>
 
-	<div class="product-summary">
-		<div class="width70 floatleft">
-			<h2><?php echo $this->product->product_name ?></h2>
-
-			<?php // Product Short Description
-			if (!empty($this->product->product_s_desc)) { ?>
-				<div class="short-description">
-					<?php echo $this->product->product_s_desc ?>
 				</div>
-			<?php } // Product Short Description END ?>
 
-		</div>
+				<div class="width30 floatleft center">
+					<?php // Product Image
+					echo $this->product->images[0]->displayMediaThumb('class="product-image"',false); ?>
+				</div>
 
-		<div class="width30 floatleft center">
-			<?php // Product Image
-			echo $this->product->images[0]->displayMediaThumb('class="product-image"',false); ?>
-		</div>
+				<div class="clear"></div>
+			</div>
 
-	<div class="clear"></div>
-	</div>
+			<div class="form-field">
 
-	<div class="form-field">
-
-		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component', FALSE) ; ?>" name="askform" id="askform">
+				<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component', FALSE) ; ?>" name="askform" id="askform">
 
 			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : <input type="text" class="validate[required,minSize[4],maxSize[64]]" value="<?php echo $this->user->name ? $this->user->name : $askQuestionData['name'] ?>" name="name" id="name" size="30"  validation="required name"/></label>
-			<br />
+					<br />
 			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" class="validate[required,custom[email]]" value="<?php echo $this->user->email ? $this->user->email : $askQuestionData['email'] ?>" name="email" id="email" size="30"  validation="required email"/></label>
-			<br/>
-			<label>
-				<?php
-				$ask_comment = JText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max);
-				echo $ask_comment;
-				?>
-				<br />
+					<br/>
+					<label>
+						<?php
+						$ask_comment = JText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max);
+						echo $ask_comment;
+						?>
+						<br />
 				<textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="10"><?php echo $askQuestionData['comment'] ?></textarea>
-			</label>
+					</label>
 			<? // captcha addition
 			if(VmConfig::get ('ask_question_captcha')){
 				JPluginHelper::importPlugin('captcha');
@@ -92,26 +93,26 @@ $askQuestionData = $session->get('askquestion', 0, 'vm');
 			}
 			// end of captcha addition 
 			?>
-			<div class="submit">
-				<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
+					<div class="submit">
+						<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
 
-				<div class="width50 floatright right paddingtop">
-					<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
-					<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
-				</div>
+						<div class="width50 floatright right paddingtop">
+							<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
+							<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
+						</div>
+					</div>
+
+					<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
+					<input type="hidden" name="tmpl" value="component" />
+					<input type="hidden" name="view" value="productdetails" />
+					<input type="hidden" name="option" value="com_virtuemart" />
+					<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
+					<input type="hidden" name="task" value="mailAskquestion" />
+					<?php echo JHTML::_( 'form.token' ); ?>
+				</form>
+
 			</div>
-
-			<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
-			<input type="hidden" name="tmpl" value="component" />
-			<input type="hidden" name="view" value="productdetails" />
-			<input type="hidden" name="option" value="com_virtuemart" />
-			<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
-			<input type="hidden" name="task" value="mailAskquestion" />
-			<?php echo JHTML::_( 'form.token' ); ?>
-		</form>
-
-	</div>
-
-</div>
-
-<?php } ?>
+		</div>
+<?php
+	}
+} ?>

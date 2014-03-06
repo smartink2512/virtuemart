@@ -97,7 +97,9 @@ class VirtueMartViewCart extends VmView {
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
 		} else if ($layoutName == 'default') {
 			VmConfig::loadJLang('com_virtuemart_shoppers', TRUE);
+
 			$cart->prepareCartViewData();
+
 			if (VmConfig::get('enable_content_plugin', 0)) {
 				shopFunctionsF::triggerContentPlugin($cart->vendor, 'vendor','vendor_terms_of_service');
 			}
