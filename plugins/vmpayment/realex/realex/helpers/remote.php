@@ -76,7 +76,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @return bool
 	 */
 	function isCC3DSVerifyEnrolled () {
-		$CC3DSVerifyEnrolled = array('VISA', 'MC', 'SWITCH');
+		$CC3DSVerifyEnrolled = array('AMEX','VISA', 'MC', 'SWITCH');
 		return in_array($this->customerData->getVar('cc_type'), $CC3DSVerifyEnrolled);
 	}
 
@@ -194,13 +194,16 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		$amountInCurrency = $this->plugin->getAmountInCurrency($this->order['details']['BT']->order_total, $this->_method->payment_currency);
 		$order_amount = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_TOTAL', $amountInCurrency['display']);
 		$payment_name = $this->plugin->renderPluginName($this->_method);
+		$cvv_images = $this->_method->cvv_images;
 		$cvv_info = "";
-		$success = $this->isResponseSuccess($xml_response_dcc);
-		if (isset($xml_response_dcc) and $success AND isset($xml_response_dcc->dccinfo)) {
-			$dccinfo = $xml_response_dcc->dccinfo;
-		} else {
-			$dccinfo = "";
+		$dccinfo = "";
+		if ($xml_response_dcc) {
+			$success = $this->isResponseSuccess($xml_response_dcc);
+			if ( $success AND isset($xml_response_dcc->dccinfo)) {
+				$dccinfo = $xml_response_dcc->dccinfo;
+			}
 		}
+
 		$html = $this->plugin->renderByLayout('remote_cc_form', array(
 		                                                             "order_amount"                => $order_amount,
 		                                                             "payment_name"                => $payment_name,
@@ -215,6 +218,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		                                                             'order_number'                => $this->order['details']['BT']->order_number,
 		                                                             'virtuemart_paymentmethod_id' => $this->_method->virtuemart_paymentmethod_id,
 		                                                             'cvv_info'                    => $cvv_info,
+		                                                             'cvv_images'                    => $cvv_images,
 		                                                        ));
 		JRequest::setVar('html', $html);
 		JRequest::setVar('display_title', false);
@@ -235,65 +239,89 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		return $response;
 	}
 
-	function  getEciFrom3DSVerifysig ($response) {
+	/**
+	 * const VERIFYSIG_RESULT_VALIDATED = '00';
+	const VERIFYSIG_RESULT_NOT_VALIDATED = '110';
+	const VERIFYSIG_RESULT_INVALID_ACS_RESPONSE = '5xx';
+	 *
+	 * /**
+	 * Response results from threedsecure = "3ds-verifysig";
+
+	const THREEDSECURE_STATUS_AUTHENTICATED = 'Y';
+	const THREEDSECURE_STATUS_NOT_AUTHENTICATED = 'N';
+	const THREEDSECURE_STATUS_ACKNOWLEDGED = 'A';
+	const THREEDSECURE_STATUS_UNAVAILABLE = 'U';
+
+
+	 * 6. Take these values returned from the issuer, and create a 3ds-verifysig request. Send it to Realex.
+	7. Depending on the result take the following action:
+	a. If the result is “00” the message has not been tampered with. Continue:
+	i. If the status is “Y”, the cardholder entered their passphrase correctly.
+	 * This is a full 3DSecure transaction, go to step 8b.
+	ii. If the status is “N”, the cardholder entered the wrong passphrase.
+	 * No shift in liability, do not proceed to authorisation.
+	iii. If the status is “U”, then the Issuer was having problems with their systems at the time
+	 * and was unable to check the passphrase. You may continue with the transaction (go to step 8c) but there will be no shift in liability.
+	iv. If the status is “A” the issuing bank acknowledges the attempt made by the merchant and accepts the liability shift. Continue to step 8a.
+	19
+	￼
+	￼￼￼8.
+	b. If the result is “110”, the digital signatures do not match the message and most likely the message has been tampered with. No shift in liability, do not proceed to authorisation.
+	 * @param $response
+	 * @return bool|int|string
+	 */
+	function  getEciFrom3DSVerifysig ($response, $requireLiabilityShift = true) {
 		$xml_response = simplexml_load_string($response);
 		$result = (string)$xml_response->result;
 
 		if (substr($result, 0, 1) == '5') {
 			$result = '5xx';
 		}
-		$eci = false;
-		$cc_type = $this->customerData->getVar('cc_type');
+		$allowLiabilityShift = false;
 		$threedsecure = $xml_response->threedsecure;
 		$threedsecure_status = (string)$threedsecure->status;
 		if ($result == self::VERIFYSIG_RESULT_VALIDATED) {
 			switch ($threedsecure_status) {
 				case self::THREEDSECURE_STATUS_AUTHENTICATED:
-					/**
-					 * go to 8b
-					 * Send a normal Realex authorisation message (set the ECI field to 5 or 2).
-					 * The merchant will not be liable for repudiation chargebacks.
-					 */
-					if ($cc_type == 'VISA') {
-						$eci = RealexHelperRealexRemote::ECI_AUTHENTICATED_VISA;
-					} else {
-						$eci = RealexHelperRealexRemote::ECI_AUTHENTICATED_MASTERCARD;
-					}
+					$allowLiabilityShift = true;
+					$threedSecureAuthentication = true;
 					break;
 
 				case self::THREEDSECURE_STATUS_ACKNOWLEDGED:
 					/**
-					 * If the status is “A” the issuing bank acknowledges the attempt made by the merchant and accepts the liability shift.
+					 * If the status is “A” the issuing bank acknowledges the attempt made by the merchant and
+					 * accepts the liability shift.
 					 * Continue to step 8a.
 					 * a. Send a normal Realex authorisation message (set the ECI field to 6 or 1).
 					 * The merchant will not be liable for repudiation chargebacks.
 					 * */
-					if ($cc_type == 'VISA') {
-						$eci = RealexHelperRealexRemote::ECI_LIABILITY_SHIFT_VISA;
-					} else {
-						$eci = RealexHelperRealexRemote::ECI_LIABILITY_SHIFT_MASTERCARD;
-					}
+					$allowLiabilityShift = true;
+					$threedSecureAuthentication = false;
 					break;
 
 				case self::THREEDSECURE_STATUS_NOT_AUTHENTICATED:
 					/**
-					 * If the status is “N”, the cardholder entered the wrong passphrase. No shift in liability, do not proceed to authorisation.
+					 * If the status is “N”, the cardholder entered the wrong passphrase.
+					 * No shift in liability, do not proceed to authorisation.
+					 * if the merchants chooses "Require liability shift" as "No"
+					 * then the transaction will proceed to authorisation
+					 * but there will not be a liability shift and the ECI value should be 7
 					 */
-					$eci = false;
+					$allowLiabilityShift = false;
+					$threedSecureAuthentication = false;
 					break;
 
 				default:
 				case self::THREEDSECURE_STATUS_UNAVAILABLE:
 					/**
-					 * If the status is “U”, then the Issuer was having problems with their systems at the time and was unable to check the passphrase.
+					 * If the status is “U”, then the Issuer was having problems with their systems at the time
+					 * and was unable to check the passphrase.
 					 * You may continue with the transaction (go to step 8c) but there will be no shift in liability.
-					 * Send a normal Realex authorisation message (set the ECI field to 7 or 0). The merchant will be liable for repudiation chargebacks.
+					 * Send a normal Realex authorisation message (set the ECI field to 7 or 0).
+					 * The merchant will be liable for repudiation chargebacks.
 					 */
-					if ($cc_type == 'VISA') {
-						$eci = RealexHelperRealexRemote::ECI_NO_LIABILITY_SHIFT_VISA;
-					} else {
-						$eci = RealexHelperRealexRemote::ECI_NO_LIABILITY_SHIFT_MASTERCARD;
-					}
+				$allowLiabilityShift = false;
+				$threedSecureAuthentication = false;
 					break;
 			}
 		} else {
@@ -301,16 +329,23 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			 * If the result is “110”, the digital signatures do not match the message
 			 * and most likely the message has been tampered with. No shift in liability, do not proceed to authorisation.
 			 */
-			$eci = false;
+			$allowLiabilityShift = false;
+			$threedSecureAuthentication = false;
 		}
-		if ($eci) {
-			return $eci;
+		if (!$allowLiabilityShift and $requireLiabilityShift) {
+			vmError("Transaction Requires Liability Shit");
 		}
-
-		return false;
+		$eci = $this->getEciValue($allowLiabilityShift, $threedSecureAuthentication);
+		return $eci;
 	}
 
 	/**
+	 * 4. Depending on the response take the following action:
+	a. If the response code is “00” and the enrolled tag is “Y” there will also be a URL returned. Redirect the cardholder to this URL using a hidden form.
+	b. If the response code is “110” and the enrolled tag is “N” the cardholder is not enrolled. Skip to step 8a.
+	c. If the enrolled tag is “U” the enrolled status could not be verified. Skip to step 8c.
+	d. If the response is “220” the card scheme directory server may be unavailable. You may
+	still proceed to authorisation but no liability shift will be received. Skip to step 8c.
 	 * @param $xml_response
 	 * @return bool|int|null
 	 */
@@ -344,9 +379,10 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 
 		// if there is no liability shift, and it is required by the client, throw exception
+		$eci = false;
 		if (!$liabilityShift && $this->_method->require_liability) {
-			//vmInfo('VMPAYMENT_REALEX_NOT_PROCESS_TRANSACTION_LIABILITY');
-			//return NULL;
+			vmError("Transaction Requires Liability Shit");
+			return $eci;
 		}
 
 		// determine the eci value to use if the card is not enrolled in the 3D Secure scheme
@@ -362,20 +398,19 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * Retrieve the ECI value for the provided card type, liability and 3D Secure result.
 	 *
 	 */
-	public function getEciValue ($liabilityShift, $threedSecureAuthentication = false) {
+	public function getEciValue ($allowLiabilityShift, $threedSecureAuthentication = false) {
 		$eci_value = false;
 		$cc_type = $this->customerData->getVar('cc_type');
 
-		if ($cc_type == 'VISA') {
+		if ($cc_type == 'VISA' or $cc_type=='AMEX') {
 			if ($threedSecureAuthentication === true) {
 				$eci_value = RealexHelperRealexRemote::ECI_AUTHENTICATED_VISA;
 
 			} else {
-				if ($liabilityShift === true) {
+				if ($allowLiabilityShift === true) {
 					$eci_value = RealexHelperRealexRemote::ECI_LIABILITY_SHIFT_VISA;
 				} else {
 					$eci_value = RealexHelperRealexRemote::ECI_NO_LIABILITY_SHIFT_VISA;
-
 				}
 			}
 		} else {
@@ -383,7 +418,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 				$eci_value = RealexHelperRealexRemote::ECI_LIABILITY_SHIFT_MASTERCARD;
 
 			} else {
-				if ($liabilityShift === true) {
+				if ($allowLiabilityShift === true) {
 					$eci_value = RealexHelperRealexRemote::ECI_LIABILITY_SHIFT_MASTERCARD;
 				} else {
 					$eci_value = RealexHelperRealexRemote::ECI_NO_LIABILITY_SHIFT_MASTERCARD;
@@ -583,7 +618,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @param null $xml_3Dresponse
 	 * @return bool|mixed
 	 */
-	function requestAuth ($xml_response_dcc = NULL, $xml_3Dresponse = NULL, $eci=NULL) {
+	function requestAuth ($xml_response_dcc = NULL, $xml_3Dresponse = NULL) {
 
 		$timestamp = $this->getTimestamp();
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_AUTH);
@@ -609,10 +644,10 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			$xml_request .= '<eci>' . $xml_3Dresponse->eci . '</eci>
 				 ';
 		}
-		if ($eci) {
-			$xml_request .= '<eci>' . $eci . '</eci>
-				 ';
-		} elseif ($xml_3Dresponse AND !empty($xml_3Dresponse->threedsecure) AND isset($xml_3Dresponse->threedsecure)) {
+		/**
+		 * MPI: Merchant Plug In - it is the component that communicates with the other components during the actual transaction.
+		 */
+		if ($xml_3Dresponse AND !empty($xml_3Dresponse->threedsecure) AND isset($xml_3Dresponse->threedsecure)) {
 			$xml_request .= '<mpi>
 				 <eci>' . $xml_3Dresponse->threedsecure->eci . '</eci>
 				  <cavv>' . $xml_3Dresponse->threedsecure->cavv . '</cavv>
@@ -711,9 +746,6 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 */
 	function manageResponse3DSVerifyEnrolled ($response3D) {
 		$this->manageResponseRequest($response3D);
-		$eci = $this->getEciFrom3DSVerifyEnrolled($response3D);
-		return $eci;
-
 	}
 
 	function manageResponse3DSVerifysig ($response3DSVerifysig) {

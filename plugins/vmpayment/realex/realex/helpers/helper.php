@@ -341,9 +341,7 @@ class  RealexHelperRealex {
 
 	function getOrderBEFields3DS () {
 		$showOrderBEFields = array(
-
 			'status' => 'status',
-
 		);
 
 
@@ -529,7 +527,8 @@ class  RealexHelperRealex {
 
 	// todo
 	/**
-	 * the reference to use for the payment method saved. If this field is not present an alphanumeric reference will be automatically generated.
+	 * the reference to use for the payment method saved.
+	 * If this field is not present an alphanumeric reference will be automatically generated.
 	 * @return string
 	 */
 	function getPmtRef () {
@@ -538,15 +537,21 @@ class  RealexHelperRealex {
 
 	// todo
 	/**
-	 * This field contains the payer reference used for this cardholder. If this field is empty or missing and PAYER_EXIST = 0, then a PAYER_REF will be automatically generated.
+	 * This field contains the payer reference used for this cardholder.
+	 * If this field is empty or missing and PAYER_EXIST = 0, then a PAYER_REF will be automatically generated.
 	 * To add another card to an existing payer the PAYER_REF field should be set to their existing payer reference.
-	 * This field is mandatory if the CARD_STORAGE_ENABLE is set to 1 and the PAYER_EXIST flag is set to 1. If PAYER_EXIST = 1 and CARD_STORAGE_ENABLE = 1, a 5xx error will be returned if the field is empty or missing:
-	 * 5xx “Mandatory field missing. PAYER_REF not present in request”     * @return string
+	 * This field is mandatory if the CARD_STORAGE_ENABLE is set to 1 and
+	 * the PAYER_EXIST flag is set to 1. If PAYER_EXIST = 1 and CARD_STORAGE_ENABLE = 1, a 5xx error will be returned if the field is empty or missing:
+	 * 5xx “Mandatory field missing. PAYER_REF not present in request”
+	 * @return string
 	 */
 	function getPayerExist () {
 		return 0;
 	}
 
+	/**
+	 * @param $payer_exist
+	 */
 	function   getPayerRef ($payer_exist) {
 
 	}
@@ -1064,6 +1069,14 @@ class  RealexHelperRealex {
 		$result = ($result == self::RESPONSE_CODE_DECLINED);
 		return $result;
 	}
+
+	function  isResponseWrongPhrase ($xml_response) {
+		$threedsecure = $xml_response->threedsecure;
+		$threedsecure_status = (string)$threedsecure->status;
+		$result = (string)$xml_response->result;
+		$result = ($result == self::RESPONSE_CODE_SUCCESS AND $threedsecure_status==self::THREEDSECURE_STATUS_NOT_AUTHENTICATED);
+		return $result;
+	}
 	/**
 	 * get HASH for Realex
 	 * @param      $secret
@@ -1076,16 +1089,8 @@ class  RealexHelperRealex {
 		}
 		$args = func_get_args();
 		array_shift($args);
-		$tmp = $args;
-		$this->debugLog($tmp, 'getSha1Hash', 'debug');
-	$this->debugLog($secret, 'getSha1Hash', 'debug');
-		$temp2 = implode('.', $args);
-		$this->debugLog($temp2, 'getSha1Hash', 'debug');
 		$hash = sha1(implode('.', $args));
-		$temp3 = "{$hash}.{$secret}";
-		$this->debugLog($temp3, 'getSha1Hash', 'debug');
 		$hash = sha1("{$hash}.{$secret}");
-		$this->debugLog($hash, 'getSha1Hash', 'debug');
 		return $hash;
 	}
 

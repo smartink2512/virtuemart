@@ -95,7 +95,7 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/
 				<span class="vmpayment_label"><label for="cc_cvv"><?php echo JText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
 
 				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv" maxlength="4" size="5" value="<?php echo $customerData->getVar('cc_cvv'); ?>" autocomplete="off"/>
-                    <span class="hasTip" title="<?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_displayCVVImages($viewData['method'])) ?> ">
+                    <span class="hasTip" title="<?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
                         <?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
                     </span>
 			</div>
