@@ -203,9 +203,9 @@ class shopFunctionsF {
 			$attrs['name'] = $_prefix . 'virtuemart_state_id';
 		}
 
-		if ($required != 0) {
+		/*if ($required != 0) {
 			$attrs['class'] .= ' required';
-		}
+		}*/
 
 		if (is_array ($attribs)) {
 			$attrs = array_merge ($attrs, $attribs);
@@ -283,15 +283,20 @@ class shopFunctionsF {
 		$view->addTemplatePath( JPATH_VM_SITE.'/views/'.$viewName.'/tmpl' );
 
 		$vmtemplate = VmConfig::get( 'vmtemplate', 'default' );
-		if($vmtemplate == 'default') {
-
+		$db = JFactory::getDbo();
+		if(is_numeric($vmtemplate)) {
+			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
+			$db->setQuery($query);
+			$res = $db->loadAssoc();
+			if($res){
+				$registry = new JRegistry;
+				$registry->loadString($res['params']);
+				$template = $res['template'];
+			}
+		} else {
 			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
-
-			$db = JFactory::getDbo();
 			$db->setQuery( $q );
 			$template = $db->loadResult();
-		} else {
-			$template = $vmtemplate;
 		}
 
 		if($template) {

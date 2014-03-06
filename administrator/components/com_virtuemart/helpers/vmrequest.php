@@ -99,6 +99,7 @@ class vmRequest {
 		$tmp = self::get($name, $default);
 		return JComponentHelper::filterText($tmp);
 	}
+
 	/**
 	 * Gets a filtered request value
 	 * - Strips all characters that has a numerical value <32 and >127.
@@ -108,7 +109,6 @@ class vmRequest {
 	 * @param string $default
 	 * @return mixed|null
 	 */
-
 	public static function getCmd($name, $default = ''){
 		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 	}
@@ -156,9 +156,15 @@ class vmRequest {
 	public static function getRequest( ){
 		return  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
 	}
+
 	public static function getPost( ){
 		return  filter_var_array($_POST, FILTER_SANITIZE_STRING);
 	}
+
+	public static function getGet( ){
+		return  filter_var_array($_GET, FILTER_SANITIZE_STRING);
+	}
+
 	public static function getFiles($name){
 		return  filter_var_array($_FILES[$name], FILTER_SANITIZE_STRING);
 	}

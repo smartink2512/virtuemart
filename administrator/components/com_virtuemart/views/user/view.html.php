@@ -105,7 +105,7 @@ class VirtuemartViewUser extends VmView {
 			$this->lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups,true, 'virtuemart_shoppergroup_id', 'COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS');
+			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups,true, 'virtuemart_shoppergroup_id');
 			$this->lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$model->setId($userDetails->JUser->get('id'));
 			$this->lists['custnumber'] = $model->getCustomerNumberById();
@@ -139,21 +139,18 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('userInfoID', $virtuemart_userinfo_id_BT);
 
 
-			$virtuemart_userinfo_id = VmRequest::getString('virtuemart_userinfo_id', '0','');
-			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
+			if ($layoutName == 'edit_shipto') {
+				$virtuemart_userinfo_id = vmRequest::getInt('virtuemart_userinfo_id', 0);
+				$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
+				if($new ){
+					$virtuemart_userinfo_id = 0;
+				} else {
 
-			if($new ){
-				$virtuemart_userinfo_id = 0;
-// 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
-			} else {
-// 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
-// 				if(empty($virtuemart_userinfo_id)){
-// 					$virtuemart_userinfo_id = $model->getBTuserinfo_id();
-// 				}
+				}
+				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
+				$this->assignRef('shipToFields', $userFieldsST);
 			}
-			$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
 
-			$this->assignRef('shipToFields', $userFieldsST);
 			$this->assignRef('shipToId', $virtuemart_userinfo_id);
 			$this->assignRef('new', $new);
 

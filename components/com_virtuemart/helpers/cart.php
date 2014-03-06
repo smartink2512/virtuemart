@@ -1157,8 +1157,11 @@ class VirtueMartCart {
 			$this->setCartIntoSession();
 			return true;
 		} else {
-			$this->automaticSelectedShipment=false;
-			$this->setCartIntoSession();
+			if($this->automaticSelectedShipment){
+				$this->virtuemart_shipmentmethod_id = 0;
+				$this->automaticSelectedShipment=false;
+				$this->setCartIntoSession();
+			}
 			return false;
 		}
 
@@ -1194,9 +1197,11 @@ class VirtueMartCart {
 				$this->setCartIntoSession();
 				return true;
 			} else {
-				$this->automaticSelectedPayment=false;
-				$this->setCartIntoSession();
-				return false;
+				if($this->automaticSelectedPayment){
+					$this->virtuemart_paymentmethod_id = 0;
+					$this->automaticSelectedPayment=false;
+					$this->setCartIntoSession();
+				}
 			}
 		} else {
 			return false;

@@ -4,6 +4,7 @@ $closeDelimiter = false;
 $openTable = true;
 $hiddenFields = '';
 
+if(!empty($this->userFieldsCart['fields'])) {
 // Output: Userfields
 foreach($this->userFieldsCart['fields'] as $field) {
 
@@ -13,10 +14,10 @@ if($field['type'] == 'delimiter') {
 // We need to close the previous
 // table and delimiter
 if($closeDelimiter) { ?>
-</table>
-</fieldset>
-<?php
-$closeDelimiter = false;
+	</table>
+	</fieldset>
+	<?php
+	$closeDelimiter = false;
 } //else {
 ?>
 <fieldset>
@@ -29,9 +30,9 @@ $closeDelimiter = false;
 
 	} elseif ($field['hidden'] == true) {
 
-	// We collect all hidden fields
-	// and output them at the end
-	$hiddenFields .= $field['formcode'] . "\n";
+		// We collect all hidden fields
+		// and output them at the end
+		$hiddenFields .= $field['formcode'] . "\n";
 
 	} else {
 
@@ -70,5 +71,6 @@ $closeDelimiter = false;
 </fieldset>
 
 <?php // Output: Hidden Fields
-echo $hiddenFields
+echo $hiddenFields;
+}
 ?>

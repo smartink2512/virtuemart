@@ -44,12 +44,11 @@ class VirtueMartViewAskquestion extends VmView {
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart','Disabled function'));
 		}
 
+		$this->login = '';
 		if(!VmConfig::get('recommend_unauth',false)){
 			$user = JFactory::getUser();
 			if($user->guest){
 				$this->login = shopFunctionsF::getLoginForm(false);
-			} else {
-				$this->login = '';
 			}
 		}
 

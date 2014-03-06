@@ -19,7 +19,7 @@
  */
 defined('_JEXEC') or die();
 
-jimport('joomla.user.user');
+//jimport('joomla.user.user');
 
 /**
  * Replaces JTable with some more advanced functions and fitting to the nooku conventions
@@ -46,7 +46,9 @@ class VmTable extends JTable {
 	public $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
+	public $_cryptedFields = false;
 	protected $_langTag = null;
+	protected $_ltmp = false;
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
 
@@ -302,6 +304,18 @@ class VmTable extends JTable {
 			}
 		}
 
+	}
+
+	public function setCryptedFields($fieldNames){
+		if(!$fieldNames){
+			vmTrace('setEncrytped fields false not catched');
+			return;
+		}
+		if(!is_array($fieldNames)) $fieldNames = array($fieldNames);
+		if(isset($fieldNames[$this->_pkey])){
+			unset($fieldNames[$this->_pkey]);
+		}
+		$this->_cryptedFields = $fieldNames;
 	}
 
 	/**
@@ -576,14 +590,34 @@ class VmTable extends JTable {
 			$defaultLang= strtolower(strtr($defaultLang,'-','_'));
 
 			if($defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
+				$this->_ltmp = $this->_langTag;
 				$this->_langTag = $defaultLang;
-
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
 			}
-
-
 		}
 
+		if($this->_cryptedFields){
+			if(!class_exists('vmCrypt')){
+				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+			}
+			if(isset($this->modified_on)){
+				$timestamp = strtotime($this->modified_on);
+				$date = $timestamp;
+			} else {
+				$date = 0;
+			}
+
+			foreach($this->_cryptedFields as $field){
+				if(isset($this->$field)){
+					$this->$field = vmCrypt::decrypt($this->$field,$date);
+				}
+			}
+		}
+
+		if($this->_ltmp){
+			$this->_langTag = $this->_ltmp;
+			$this->_ltmp = false;
+		}
 
 		return $this;
 
@@ -597,6 +631,20 @@ class VmTable extends JTable {
 	function store($updateNulls = false) {
 
 		$this->setLoggableFieldsForStore();
+
+		if($this->_cryptedFields){
+			if(!class_exists('vmCrypt')){
+				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+			}
+			vmdebug('my crytped fields in store '.get_class($this),$this->_cryptedFields);
+			foreach($this->_cryptedFields as $field){
+				if(isset($this->$field)){
+					$this->$field = vmCrypt::encrypt($this->$field);
+				} else {
+					vmdebug('Store vmtable empty property for '.$field);
+				}
+			}
+		}
 
 		$this->storeParams();
 

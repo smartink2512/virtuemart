@@ -207,7 +207,7 @@ class VirtuemartViewUserfields extends VmView {
 			,array('type' => 'select'           , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_SINGLE'))
 			,array('type' => 'multiselect'      , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_MULTIPLE'))
 			,array('type' => 'emailaddress'     , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_EMAIL'))
-// 			,array('type' => 'euvatid'          , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_EUVATID'))
+ 			,array('type' => 'custom'          , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CUSTOM'))
 			,array('type' => 'editorta'         , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_EDITORAREA'))
 			,array('type' => 'textarea'         , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_TEXTAREA'))
 			,array('type' => 'radio'            , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_RADIOBUTTON'))

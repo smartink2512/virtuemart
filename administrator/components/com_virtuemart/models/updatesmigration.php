@@ -129,31 +129,31 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	$fields['virtuemart_user_id'] =  $userId;
 	$fields['address_type'] =  'BT';
 	// Don't change this company name; it's used in install_sample_data.sql
-	$fields['company'] =  "Washupito's the virtual mart";
-	$fields['title'] =  'Sire';
-	$fields['last_name'] =  'upito';
-	$fields['first_name'] =  'Wash';
-	$fields['middle_name'] =  'the cheapest';
+	$fields['company'] =  "Sample Company";
+	$fields['title'] =  'Mr';
+	$fields['last_name'] =  'John';
+	$fields['first_name'] =  'Doe';
+	$fields['middle_name'] =  '';
 	$fields['phone_1'] =  '555-555-555';
-	$fields['address_1'] =  'vendorra road 8';
-	$fields['city'] =  'Canangra';
-	$fields['zip'] =  '055555';
-	$fields['virtuemart_state_id'] =  '361';
-	$fields['virtuemart_country_id'] =  '195';
+	$fields['address_1'] =  'PO Box 123';
+	$fields['city'] =  'Seattle';
+	$fields['zip'] =  '98101';
+	$fields['virtuemart_state_id'] =  '48';
+	$fields['virtuemart_country_id'] =  '223';
 // 	$fields['virtuemart_shoppergroup_id'] = '';
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
 	$fields['virtuemart_vendor_id'] = '1';
-	$fields['vendor_name'] =  'Washupito';
+	$fields['vendor_name'] =  'Sample Company';
 	$fields['vendor_phone'] =  '555-555-1212';
-	$fields['vendor_store_name'] =  "Washupito's Tiendita";
-	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
-	//$fields['virtuemart_media_id'] =  1;
-	$fields['vendor_currency'] =  47;
+	$fields['vendor_store_name'] =  "VirtueMart 2 Sample store";
+	$fields['vendor_store_desc'] =  '<p>We have the best clothing for up-to-date people. Check it out!</p> <p>We were established in 1869 in a time when getting good clothes was expensive, but the quality was good. Now that only a select few of those authentic clothes survive, we have dedicated this store to bringing the experience alive for collectors and master carrier everywhere.</p> <p>You can easily find products selecting the category you would like to browse above.</p>';
+	$fields['virtuemart_media_id'] =  1;
+	$fields['vendor_currency'] = '47';
 	$fields['vendor_accepted_currencies'] = '52,26,47,144';
-	$fields['vendor_terms_of_service'] =  '<h5>You haven&#39;t configured any terms of service yet. Click <a href="'.JURI::base(true).'/index.php?option=com_virtuemart&view=user&task=editshop">here</a> to change this text.</h5>';
+	$fields['vendor_terms_of_service'] =  '<h5>You have not configured any terms of service yet. Click <a href="'.JURI::base(true).'/index.php?option=com_virtuemart&view=user&task=editshop">here</a> to change this text.</h5>';
 	$fields['vendor_url'] = JURI::root();
-	$fields['vendor_name'] =  'Washupito';
+	$fields['vendor_name'] =  'Sample Company';
 	$fields['vendor_legal_info']="VAT-ID: XYZ-DEMO<br />Reg.Nr: DEMONUMBER";
 	$fields['vendor_letter_css']='.vmdoc-header { }
 .vmdoc-footer { }

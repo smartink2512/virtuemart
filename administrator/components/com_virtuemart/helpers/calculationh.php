@@ -1314,10 +1314,8 @@ class calculationHelper {
 		$this->_cart->cartPrices['shipment_calc_id'] = 0;
 		// check if there is only one possible shipment method
 
-		if (empty($this->_cart->virtuemart_shipmentmethod_id)){
-			$this->_cart->CheckAutomaticSelectedShipment($this->_cart->cartPrices, $checkAutomaticSelected);
-			if (empty($this->_cart->virtuemart_shipmentmethod_id)) return;
-		}
+		$this->_cart->CheckAutomaticSelectedShipment($this->_cart->cartPrices, $checkAutomaticSelected);
+		if (empty($this->_cart->virtuemart_shipmentmethod_id)) return;
 
 		// Handling shipment plugins
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -1362,10 +1360,9 @@ class calculationHelper {
 		$this->_cart->cartPrices['salesPricePayment'] = 0;
 		$this->_cart->cartPrices['payment_calc_id'] = 0;
 		// check if there is only one possible payment method
-		if (empty($this->_cart->virtuemart_paymentmethod_id)) {
-			$this->_cart->CheckAutomaticSelectedPayment($this->_cart->cartPrices, $checkAutomaticSelected);
-			if (empty($this->_cart->virtuemart_paymentmethod_id)) return;
-		}
+
+		$this->_cart->CheckAutomaticSelectedPayment($this->_cart->cartPrices, $checkAutomaticSelected);
+		if (empty($this->_cart->virtuemart_paymentmethod_id)) return;
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
