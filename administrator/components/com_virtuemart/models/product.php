@@ -768,9 +768,9 @@ class VirtueMartModelProduct extends VmModel {
 
 			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
 			$app = JFactory::getApplication();
-			if($app->isSite()){	//Todo remove this for stable release, just in case 3rd party use it
+			//if($app->isSite()){	//Todo remove this for stable release, just in case 3rd party use it
 				$child->prices = &$child->allPrices[$child->selectedPrice];
-			}
+			//}
 		}
 
 		if (empty($child->product_template)) {

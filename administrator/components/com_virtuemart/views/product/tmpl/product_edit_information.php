@@ -325,7 +325,7 @@ $i=0;
 										<input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][slug]" id="child<?php echo $child->virtuemart_product_id ?>slug" value="<?php echo $child->slug ?>" />
 									</td>
 									<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo htmlspecialchars($child->product_name) ?>" /></td>
-									<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->product_price ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->virtuemart_product_price_id?>"  ></td>
+									<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->allPrices[$child->selectedPrice]['product_price'] ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->allPrices[$child->selectedPrice]['virtuemart_product_price_id'] ?>"  ></td>
 									<td><?php echo $child->product_in_stock ?></td>
 									<td><?php echo $child->product_ordered ?></td>
 									<?php foreach($customs as $custom){
