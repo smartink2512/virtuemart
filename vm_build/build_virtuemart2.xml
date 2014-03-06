@@ -200,6 +200,7 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
+        <exclude name="**/paybox/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
     </fileset>
