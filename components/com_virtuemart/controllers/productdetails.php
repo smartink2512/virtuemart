@@ -104,6 +104,23 @@ class VirtueMartControllerProductdetails extends JController {
 			return;
 		}
 
+		if(JFactory::getUser()->guest == 1 && VmConfig::get ('ask_question_captcha')){
+			$recaptcha = JRequest::getVar ('recaptcha_response_field');
+			JPluginHelper::importPlugin('captcha');
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
+			$session = JFactory::getSession();
+			if(!$res[0]){
+				$askquestionform = array('name' => JRequest::getVar ('name'), 'email' => JRequest::getVar ('email'), 'comment' => JRequest::getString ('comment'));
+				$session->set('askquestion', $askquestionform, 'vm');
+				$errmsg = JText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
+				return;
+			} else {
+				$session->set('askquestion', 0, 'vm');
+			}
+		}
+
 		$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
 		if (is_array ($virtuemart_product_idArray)) {
 			$virtuemart_product_id = (int)$virtuemart_product_idArray[0];
