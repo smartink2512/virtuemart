@@ -92,7 +92,7 @@ if($option=='com_virtuemart'){
 					?>
 					<div class="icon">
 						<a
-							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&'.JSession::getFormToken().'=1') ?>">
+							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&'.JSession::getFormToken().'=1&token='.JSession::getFormToken()) ?>">
 							<span class="vmicon48 vm_install_48"></span> <br />
 						<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
@@ -101,7 +101,7 @@ if($option=='com_virtuemart'){
 		<?php } ?>
 
 				<div class="icon">
-				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&'.JSession::getFormToken().'=1' ) ?>">
+				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&'.JSession::getFormToken().'=1&token='.JSession::getFormToken() ) ?>">
 					<span class="vmicon48 vm_frontpage_48"></span>
 					<br /><?php echo vmText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 				</a>
