@@ -85,6 +85,7 @@ if (empty ( $this->product )) {
 					</label>
 			<? // captcha addition
 			if(VmConfig::get ('ask_question_captcha')){
+				JHTML::_('behavior.framework');
 				JPluginHelper::importPlugin('captcha');
 				$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 				?>
