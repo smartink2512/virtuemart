@@ -132,8 +132,10 @@ class VirtueMartControllerUser extends JController
 	}
 
 	function registerCheckoutUser(){
-		$msg = $this->saveData(true,true);
-		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL ),$msg);
+		if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT') != FALSE) {
+			$msg = $this->saveData(true,true);
+			$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL ),$msg);
+		}
 	}
 
 	/**
@@ -149,8 +151,10 @@ class VirtueMartControllerUser extends JController
 	}
 
 	function registerCartuser(){
-		$msg = $this->saveData(true, true);
-		$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) , $msg);
+		if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT') != FALSE) {
+			$msg = $this->saveData(true, true);
+			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) , $msg);
+		}
 	}
 
 
@@ -163,9 +167,12 @@ class VirtueMartControllerUser extends JController
 	 */
 	function saveUser(){
 
-		$msg = $this->saveData(false,true);
 		$layout = JRequest::getWord('layout','edit');
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
+		if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&layout='.$layout) != FALSE) {
+			$msg = $this->saveData(true, true);
+			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
+		}
+
 	}
 
 	function saveAddressST(){
@@ -287,6 +294,34 @@ class VirtueMartControllerUser extends JController
 
 		$layout = JRequest::getWord('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, $this->useXHTML,$this->useSSL) );
+	}
+
+	/**
+	 * Check the Joomla ReCaptcha Plg
+	 *
+	 * @author Maik Künnemann
+	 */
+	function checkCaptcha($retUrl){
+		if(JFactory::getUser()->guest==1 and VmConfig::get ('reg_captcha')){
+			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			JPluginHelper::importPlugin('captcha');
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
+			if(!$res[0]){
+				$data = vmRequest::getPost();
+				$data['address_type'] = vmRequest::getVar('addrtype','BT');
+				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+				$cart = VirtueMartCart::getCart();
+				$cart->saveAddressInCart($data, $data['address_type']);
+				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+				$this->setRedirect (JRoute::_ ($retUrl . '&captcha=1', FALSE), $errmsg);
+				return FALSE;
+			} else {
+				return TRUE;
+			}
+		} else {
+			return TRUE;
+		}
 	}
 }
 // No closing tag

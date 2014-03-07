@@ -83,14 +83,14 @@ if (empty ( $this->product )) {
 						<br />
 				<textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="10"><?php echo $askQuestionData['comment'] ?></textarea>
 					</label>
-			<? // captcha addition
+			<?php // captcha addition
 			if(VmConfig::get ('ask_captcha')){
 				JHTML::_('behavior.framework');
 				JPluginHelper::importPlugin('captcha');
 				$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 				?>
 				<div id="dynamic_recaptcha_1"></div>
-			<? 
+			<?php 
 			}
 			// end of captcha addition 
 			?>

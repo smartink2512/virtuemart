@@ -39,11 +39,23 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 	function myValidator(f, t) {
 		f.task.value = t; //this is a method to set the task of the form on the fTask.
 		if (document.formvalidator.isValid(f)) {
-			f.submit();
-			return true;
+			if (jQuery('#recaptcha_wrapper').is(':hidden') && ((t == 'registercartuser') || (t == 'registercheckoutuser'))) {
+				jQuery('#recaptcha_wrapper').show();
+				var msg = '<?php echo addslashes (vmText::_ ('COM_VIRTUEMART_USER_FORM_CAPTCHA')); ?>';
+				alert(msg + ' ');
+			} else {
+				f.submit();
+				return true;
+			}
 		} else {
-			var msg = '<?php echo addslashes (JText::_ ('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS')); ?>';
-			alert(msg + ' ');
+			if (jQuery('#recaptcha_wrapper').is(':hidden') && ((t == 'registercartuser') || (t == 'registercheckoutuser'))) {
+				jQuery('#recaptcha_wrapper').show();
+				var msg = '<?php echo addslashes (vmText::_ ('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS')); ?>'+'\n'+'<?php echo addslashes (vmText::_ ('COM_VIRTUEMART_USER_FORM_CAPTCHA')); ?>';
+				alert(msg + ' ');
+			} else {
+				var msg = '<?php echo addslashes (vmText::_ ('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS')); ?>';
+				alert(msg + ' ');
+			}
 		}
 		return false;
 	}
@@ -120,6 +132,18 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 
 				<?php
+				// captcha addition
+				if(VmConfig::get ('reg_captcha')){
+					JHTML::_('behavior.framework');
+					JPluginHelper::importPlugin('captcha');
+					$captcha_visible = vmRequest::getVar('captcha');
+					$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
+					$hide_captcha = (VmConfig::get ('oncheckout_only_registered') or $captcha_visible) ? '' : 'style="display: none;"';
+					?>
+					<fieldset id="recaptcha_wrapper" <?php echo $hide_captcha ?>><div id="dynamic_recaptcha_1"></div></fieldset>
+				<?php 
+				}
+				// end of captcha addition 
 			}
 			else {
 				?>

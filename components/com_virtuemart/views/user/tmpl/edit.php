@@ -121,6 +121,17 @@ if($this->userDetails->virtuemart_user_id!=0) {
 // 	}
 
 // 	echo $this->pane->endPane();
+
+// captcha addition
+if(VmConfig::get ('reg_captcha')){
+	JHTML::_('behavior.framework');
+	JPluginHelper::importPlugin('captcha');
+	$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
+	?>
+	<div id="dynamic_recaptcha_1"></div>
+<?php 
+}
+// end of captcha addition 
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />

@@ -114,7 +114,7 @@ class VirtueMartControllerProductdetails extends JController {
 				$askquestionform = array('name' => vmRequest::getVar ('name'), 'email' => vmRequest::getVar ('email'), 'comment' => vmRequest::getString ('comment'));
 				$session->set('askquestion', $askquestionform, 'vm');
 				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
-				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
+				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . vmRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
 				return;
 			} else {
 				$session->set('askquestion', 0, 'vm');
@@ -170,7 +170,24 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$app = JFactory::getApplication ();
 		if(!VmConfig::get('show_emailfriend',false)){
-			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
+			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=recommend&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
+		}
+
+		if(JFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
+			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			JPluginHelper::importPlugin('captcha');
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
+			$session = JFactory::getSession();
+			if(!$res[0]){
+				$mailrecommend = array('email' => vmRequest::getVar ('email'), 'comment' => vmRequest::getString ('comment'));
+				$session->set('mailrecommend', $mailrecommend, 'vm');
+				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=recommend&virtuemart_product_id=' . vmRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
+				return;
+			} else {
+				$session->set('mailrecommend', 0, 'vm');
+			}
 		}
 
 		// Display it all

@@ -28,6 +28,7 @@ defined('_JEXEC') or die('Restricted access');?>
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_PDF_ICON_SHOW','pdf_icon',VmConfig::get('pdf_icon',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND','show_emailfriend',VmConfig::get('show_emailfriend',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_RECCOMEND_UNATUH','recommend_unauth',VmConfig::get('recommend_unauth',0));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_ASK_QUESTION_CAPTCHA','ask_captcha',VmConfig::get('ask_captcha',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_ASK_QUESTION_SHOW','ask_question',VmConfig::get('ask_question',0));
 	?>
 	<tr>
@@ -55,7 +56,6 @@ defined('_JEXEC') or die('Restricted access');?>
 		</td>
 	</tr>
 	<?php
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ASK_QUESTION_CAPTCHA','ask_captcha',VmConfig::get('ask_captcha',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW','product_navigation',VmConfig::get('product_navigation',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_DISPLAY_STOCK','display_stock',VmConfig::get('display_stock',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_COUPONS_ENABLE','coupons_enable',VmConfig::get('coupons_enable',0));
