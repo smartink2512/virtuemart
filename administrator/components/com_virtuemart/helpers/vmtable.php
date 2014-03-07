@@ -698,9 +698,10 @@ class VmTable extends JTable {
 			$this->$slugName = trim(JString::strtolower($this->$slugName));
 			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
 			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
+
 			// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
-
+			$this->$slugName = urlencode($this->$slugName);
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			//vmdebug('my slugName '.$slugName,$this->slugName);
 			if (!$valid) {

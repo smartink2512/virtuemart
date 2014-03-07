@@ -454,6 +454,7 @@ class VirtueMartCart {
 				}
 
 				$productKey = $product->virtuemart_product_id;
+				//VmConfig::$echoDebug = true;
 				//vmdebug('$post["customPrice"] ',$post['customPrice']);
 				// INDEX NOT FOUND IN JSON HERE
 				// changed name field you know exactly was this is
@@ -509,13 +510,44 @@ class VirtueMartCart {
 					foreach ($product->customPrices as $customPrice) {
 						$found = false;
 						foreach ($customPrice as $customId => $custom_fieldId) {
-
+							vmdebug('The $customId => $custom_fieldId '.$productKey,$customId,$custom_fieldId);
 							//MarkerVarMods
 							if ( is_array($custom_fieldId) ) {
 								foreach ($custom_fieldId as $userfieldId => $userfield) {
 									//$productKey .= (int)$customId . ':' . (int)$userfieldId . ';';
 									//$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
 									foreach($tmpProduct -> customfieldsCart as $k => $customfieldsCart){
+										if(isset($customfieldsCart->options) and is_array($customfieldsCart->options)){
+											$keys= array_keys($customfieldsCart->options);
+											foreach( $keys as $virtuemart_customfield_id){
+												if($virtuemart_customfield_id==$custom_fieldId){
+													$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+													unset($tmpProduct -> customfieldsCart[$k]);
+													$found = true;
+												}
+											}
+										} else {
+											if($customfieldsCart->virtuemart_customfield_id==$custom_fieldId){
+												$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+												unset($tmpProduct -> customfieldsCart[$k]);
+												$found = true;
+											}
+										}
+									}
+								}
+							} else {
+								//TODO productCartId
+								foreach($tmpProduct -> customfieldsCart as $k => $customfieldsCart){
+									if(isset($customfieldsCart->options) and is_array($customfieldsCart->options)){
+										$keys= array_keys($customfieldsCart->options);
+										foreach( $keys as $virtuemart_customfield_id){
+											if($virtuemart_customfield_id==$custom_fieldId){
+												$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+												unset($tmpProduct -> customfieldsCart[$k]);
+												$found = true;
+											}
+										}
+									} else {
 										if($customfieldsCart->virtuemart_customfield_id==$custom_fieldId){
 											$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
 											unset($tmpProduct -> customfieldsCart[$k]);
@@ -523,29 +555,22 @@ class VirtueMartCart {
 										}
 									}
 								}
-							} else {
-								//TODO productCartId
-								foreach($tmpProduct -> customfieldsCart as $k => $customfieldsCart){
-									if($customfieldsCart->virtuemart_customfield_id==$custom_fieldId){
-										$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
-										unset($tmpProduct -> customfieldsCart[$k]);
-										$found = true;
-									}
-								}
-
 							}
 
 							if(!$found){
 
 								foreach($tmpProduct -> customfieldsCart as $k => $cfCart){
 									if($cfCart->field_type=='E'){
-
 										$productKey .= (int)$cfCart->virtuemart_customfield_id . ':' . (int)  $cfCart->virtuemart_custom_id . ';';
 										vmdebug('The $product->customPrice as $customId => $custom_fieldId '.$productKey,$cfCart);
+										$found = true;
 									}
-
 								}
 
+								if(!$found){
+									vmdebug('Cart variant was not found and no fallback found',$tmpProduct -> customfieldsCart,$customfieldsCart);
+									vmError('Cart variant was not found and no fallback found');
+								}
 							}
 						}
 					}

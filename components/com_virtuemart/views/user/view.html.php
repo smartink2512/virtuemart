@@ -183,10 +183,6 @@ class VirtuemartViewUser extends VmView {
 	    }
 	}
 
-	// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
-	// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
-	jimport('joomla.html.pane');
-	$pane = JPane::getInstance((__VM_USER_USE_SLIDERS ? 'Sliders' : 'Tabs'), $_paneOffset);
 
 	$this->assignRef('lists', $this->_lists);
 
