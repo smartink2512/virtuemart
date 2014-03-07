@@ -284,7 +284,7 @@ class shopFunctionsF {
 
 		$vmtemplate = VmConfig::get( 'vmtemplate', 'default' );
 		$db = JFactory::getDbo();
-		if(is_numeric($vmtemplate)) {
+		if(!empty($template) and is_numeric($vmtemplate)) {
 			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
 			$db->setQuery($query);
 			$res = $db->loadAssoc();

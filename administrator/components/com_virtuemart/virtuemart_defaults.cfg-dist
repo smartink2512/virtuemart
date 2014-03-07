@@ -31,7 +31,7 @@ jchosen=1
 
 ##Shopfront
 pdf_button_enable=1
-show_emailfriend=1
+show_emailfriend=0
 show_printicon=1
 show_out_of_stock_products=1
 coupons_enable=1
@@ -47,7 +47,7 @@ ratingMode=registered
 reviews_autopublish=1
 reviews_minimum_comment_length=0
 reviews_maximum_comment_length=2000
-vmtemplate=0
+vmtemplate=default
 categorytemplate=default
 showCategory=1
 categorylayout=0
@@ -84,7 +84,7 @@ latest_products_rows=1
     
 ##Product order settings
 
-browse_orderby_field=product_name
+browse_orderby_field=pc.ordering
 browse_cat_orderby_field=c.ordering
 browse_orderby_fields=array:`p`.product_sku|category_name|mf_name|product_name|pc.ordering
 

@@ -754,7 +754,7 @@ class VmTable extends JTable {
 
 			// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
-
+			$this->$slugName = urlencode($this->$slugName);
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			if (!$valid) {
 				return false;
