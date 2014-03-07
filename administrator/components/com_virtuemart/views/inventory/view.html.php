@@ -57,10 +57,13 @@ class VirtuemartViewInventory extends VmView {
 
 		//vmdebug('my product',$inventorylist[0]);
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
-			//TODO oculd be interesting to show the price for each product, and all stored ones $product->product_in_stock
 
-			$product->product_instock_value = $currencydisplay->priceDisplay($product->allPrices[$product->selectedPrice]['product_price'],'',$product->product_in_stock,false);
-			$product->product_price_display = $currencydisplay->priceDisplay($product->allPrices[$product->selectedPrice]['product_price'],'',1,false);
+			//TODO oculd be interesting to show the price for each product, and all stored ones $product->product_in_stock
+			$price = isset($product->allPrices[$product->selectedPrice]['product_price'])? $product->allPrices[$product->selectedPrice]['product_price']:0;
+
+			$product->product_instock_value = $currencydisplay->priceDisplay($price,'',$product->product_in_stock,false);
+			$product->product_price_display = $currencydisplay->priceDisplay($price,'',1,false);
+
 			$product->weigth_unit_display= ShopFunctions::renderWeightUnit($product->product_weight_uom);
 		}
 		$this->assignRef('inventorylist', $inventorylist);

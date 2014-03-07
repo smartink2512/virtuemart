@@ -601,7 +601,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$user =JFactory::getUser();
 
-		$userinfo   = $this->getTable('userinfos');
+		$userinfo = $this->getTable('userinfos');
 
 		$manager = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'));
 		if($data['address_type'] == 'BT'){
@@ -693,7 +693,8 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
-			if(!$this->validateUserData((array)$dataST,'ST')){
+			if(!is_array($dataST)) $dataST = (array)$dataST;
+			if(!$this->validateUserData($dataST,'ST')){
 				return false;
 			}
 			$dataST['address_type'] = 'ST';
@@ -821,7 +822,6 @@ class VirtueMartModelUser extends VmModel {
 				unset($data[$fldName]);
 				if($userinfo!==0){
 					if(property_exists($userinfo,$fldName)){
-						//vmdebug('property_exists userinfo->$fldName '.$fldName,$userinfo);
 						$data[$fldName] = $userinfo->$fldName;
 					} else {
 						vmError('Your tables seem to be broken, you have fields in your form which have no corresponding field in the db');

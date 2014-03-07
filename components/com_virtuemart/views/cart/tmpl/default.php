@@ -83,10 +83,10 @@ $document->addScriptDeclaration ("
 	echo $this->loadTemplate ('pricelist');
 
 	// added in 2.0.8
-	?>
-	<div id="checkout-advertise-box">
-		<?php
+
+
 		if (!empty($this->checkoutAdvertise)) {
+			?> <div id="checkout-advertise-box"> <?php
 			foreach ($this->checkoutAdvertise as $checkoutAdvertise) {
 				?>
 				<div class="checkout-advertise">
@@ -94,56 +94,16 @@ $document->addScriptDeclaration ("
 				</div>
 				<?php
 			}
+			?></div><?php
 		}
-		?>
-	</div>
-		<?php // Leave A Comment Field ?>
-		<div class="customer-comment marginbottom15">
-			<span class="comment"><?php echo vmText::_ ('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
-			<textarea class="customer-comment" name="customer_comment" cols="60" rows="1"><?php echo $this->cart->customer_comment; ?></textarea>
-		</div>
-		<?php // Leave A Comment Field END ?>
 
 
+		echo $this->loadTemplate ('cartfields');
 
-		<?php // Continue and Checkout Button ?>
-		<div class="checkout-button-top">
-
-			<?php // Terms Of Service Checkbox
-
-			echo $this->loadTemplate ('cartfields');
-
-			/*if ($userFieldsModel->getIfRequired ('agreed')) {
-					if (!class_exists ('VmHtml')) {
-						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-					}
-					echo VmHtml::checkbox ('tosAccepted', $this->cart->tosAccepted, 1, 0, 'class="terms-of-service"');
-			*/
-			/*		if (VmConfig::get ('oncheckout_show_legal_info', 1)) {
-						?>
-						<div class="terms-of-service">
-
-							<label for="tosAccepted">
-								<a href="<?php JRoute::_ ('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1', FALSE) ?>" class="terms-of-service" id="terms-of-service" rel="facebox"
-							  	 target="_blank">
-									<span class="vmicon vm2-termsofservice-icon"></span>
-									<?php echo vmText::_ ('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
-								</a>
-							</label>
-
-							<div id="full-tos">
-								<h2><?php echo vmText::_ ('COM_VIRTUEMART_CART_TOS'); ?></h2>
-								<?php echo $this->cart->vendor->vendor_terms_of_service; ?>
-							</div>
-
-						</div>
-						<?php
-					} // VmConfig::get('oncheckout_show_legal_info',1)
-					//echo '<span class="tos">'. vmText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
-		//	}*/
+		?> <div class="checkout-button-top"> <?php
 			echo $this->checkout_link_html;
-			?>
-		</div>
+		?></div>
+
 		<?php // Continue and Checkout Button END ?>
 		<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
 		<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>

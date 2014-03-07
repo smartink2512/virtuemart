@@ -75,7 +75,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
 		$cart->saveCartFieldsInCart();
-		$cart->getFilterCustomerComment();
+		//$cart->getFilterCustomerComment();
 
 		$cart->updateProductCart();
 		$this->setcoupon();

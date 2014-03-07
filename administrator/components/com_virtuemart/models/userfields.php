@@ -730,7 +730,7 @@ class VirtueMartModelUserfields extends VmModel {
 					     'name' => $_prefix . $_fld->name
 				,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
 				? $_fld->default
-				: @html_entity_decode($_userData[$_fld->name],ENT_COMPAT,'UTF-8'))
+				: @html_entity_decode($_userData[$_fld->name],ENT_QUOTES,'UTF-8'))
 				,'title' => vmText::_($_fld->title)
 				,'type' => $_fld->type
 				,'required' => $_fld->required
