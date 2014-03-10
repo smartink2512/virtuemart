@@ -704,11 +704,28 @@ class VmConfig {
 			if(!$freshInstall){
 				$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
 				if(!$installed){
+
 					$app = JFactory::getApplication();
+
+					$jlang =JFactory::getLanguage();
+					$selectedLang = $jlang->getTag();
+					$knownLangs = $jlang->getKnownLanguages();
+					if(empty($selectedLang)){
+						$selectedLang = $jlang->setLanguage($selectedLang);
+					}
+					//vmdebug('my selected language $jlang', $knownLangs,$jlang);
+					if(!isset($knownLangs[$selectedLang])){
+						if($app->isSite()){
+							$app->redirect(JURI::root(true).'/administrator/index.php?option=com_installer&view=languages','Install your selected language first, you selected '.$selectedLang);
+						} else {
+							$app->redirect('index.php?option=com_installer&view=languages','Install your selected language first, you selected '.$selectedLang);
+						}
+					}
+
 					if($app->isSite()){
-						$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+						$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, click on the menu component and select VirtueMart');
 					} else {
-						$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+						$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, click on the menu component and select VirtueMart');
 					}
 				}
 				if($installed){

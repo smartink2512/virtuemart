@@ -83,6 +83,8 @@ if (file_exists($basePath.DS.'controllers'.DS.$_controller.'.php')) {
 else {
 	// try plugins
 	JPluginHelper::importPlugin('vmextended');
+	JPluginHelper::importPlugin('vmpayment');
+	JPluginHelper::importPlugin('vmshipment');
 	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger($trigger, array($_controller));
 }
