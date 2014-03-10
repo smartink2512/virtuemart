@@ -75,8 +75,6 @@ class TableUserinfos extends VmTableData {
 
 		$this->setTableShortCut('ui');
 
-		//$this->setCryptedFields(array('company'));
-
 	}
 
 	/**
@@ -141,6 +139,14 @@ class TableUserinfos extends VmTableData {
 				$this->virtuemart_userinfo_id = 0;//md5(uniqid($this->virtuemart_user_id));
 			}
 		}
+
+		if(empty($this->virtuemart_user_id)){
+			$user = JFactory::getUser();
+			if(!empty($user->id)){
+				$this->virtuemart_user_id = $user->id;
+			}
+		}
+
 		return parent::check();
 
 	}

@@ -646,10 +646,10 @@ class VmConfig {
 		$tag = $jlang->getTag();
 		$fallback = false;
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-			$fallback = true;
+			$jlang->load($name, $path, 'en-GB');
 		}
-		//vmdebug('loadJLang',$name);
-		$jlang->load($name, $path,$tag,false,$fallback);
+
+		$jlang->load($name, $path,$tag);
 
 	}
 

@@ -62,6 +62,9 @@ class VirtueMartControllerUser extends JController
 
 	}
 
+	/**
+	 * deprecated
+	 */
 	function editAddressST(){
 
 		$view = $this->getView('user', 'html');
@@ -146,7 +149,13 @@ class VirtueMartControllerUser extends JController
 	 */
 	function saveCartUser(){
 
-		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
+		$addressType = vmRequest::getString('address_type');
+		if($addressType=='BT'){
+			$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
+		} else {
+			$msg = $this->saveData(false,false,true);
+		}
+
 		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart', FALSE ),$msg);
 	}
 
@@ -177,7 +186,7 @@ class VirtueMartControllerUser extends JController
 
 	function saveAddressST(){
 
-		$msg = $this->saveData(false,true,true);
+		$msg = $this->saveData(false,false,true);
 		$layout = 'edit';// JRequest::getWord('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 
@@ -200,7 +209,10 @@ class VirtueMartControllerUser extends JController
 
 		$data = JRequest::get('post');
 
-		$data['address_type'] = JRequest::getWord('addrtype','BT');
+		if(empty($data['address_type'])){
+			$data['address_type'] = vmRequest::getCmd('addrtype','BT');
+		}
+
 		if($currentUser->guest!=1 || $register){
 			$userModel = VmModel::getModel('user');
 
@@ -224,7 +236,7 @@ class VirtueMartControllerUser extends JController
 			} else {
 				$ret = $userModel->store($data);
 			}
-			if($currentUser->guest==1){
+			if(!$onlyAddress and $currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );

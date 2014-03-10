@@ -872,7 +872,6 @@ class VirtueMartModelUser extends VmModel {
 
 		$userinfo   = $this->getTable('userinfos');
 
-
 		if($data['address_type'] == 'BT'){
 
 			if(isset($data['virtuemart_userinfo_id']) and $data['virtuemart_userinfo_id']!=0){
@@ -925,7 +924,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
-		if($data['address_type'] == 'ST' or isset($data['shipto_virtuemart_userinfo_id'])){
+		if($data['address_type'] == 'ST' or isset($data['shipto_address_type_name'])){
 			$dataST = array();
 			$_pattern = '/^shipto_/';
 
