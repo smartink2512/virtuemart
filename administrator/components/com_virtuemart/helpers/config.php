@@ -649,7 +649,7 @@ class VmConfig {
 			$jlang->load($name, $path, 'en-GB');
 		}
 
-		$jlang->load($name, $path,$tag);
+		$jlang->load($name, $path,$tag,true);
 
 	}
 
@@ -710,10 +710,12 @@ class VmConfig {
 					$jlang =JFactory::getLanguage();
 					$selectedLang = $jlang->getTag();
 					$knownLangs = $jlang->getKnownLanguages();
+
 					if(empty($selectedLang)){
 						$selectedLang = $jlang->setLanguage($selectedLang);
+
 					}
-					//vmdebug('my selected language $jlang', $knownLangs,$jlang);
+
 					if(!isset($knownLangs[$selectedLang])){
 						if($app->isSite()){
 							$app->redirect(JURI::root(true).'/administrator/index.php?option=com_installer&view=languages','Install your selected language first, you selected '.$selectedLang);
