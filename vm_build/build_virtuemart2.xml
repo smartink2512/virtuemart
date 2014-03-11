@@ -3,7 +3,7 @@
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.9.0"/>
+    <property name="vm.version" value="2.9.1"/>
     <property name="PHING.VM.CODENAME" value="eComCat"/>
     <property file="build.properties"/>
     <target name="title">
