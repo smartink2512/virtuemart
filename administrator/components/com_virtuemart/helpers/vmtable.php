@@ -259,7 +259,7 @@ class VmTable extends JTable {
 	 * @author Max Milbers
 	 * @param $fieldNames
 	 */
-	protected function setCryptedFields($fieldNames){
+	public function setCryptedFields($fieldNames){
 		if(!$fieldNames){
 			vmTrace('setEncrytped fields false not catched');
 			return;
