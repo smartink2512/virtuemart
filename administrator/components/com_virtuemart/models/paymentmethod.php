@@ -68,7 +68,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data[$this->_id]->payment_element,$this->_data[$this->_id]->payment_jplugin_id,&$this->_data[$this->_id]));
 			}
 
-			if($this->_data[$this->_id]->_cryptedFields){
+			if($this->_data[$this->_id]->getCryptedFields()){
 				if(!class_exists('vmCrypt')){
 					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 				}
@@ -80,7 +80,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 					$date = 0;
 				}
 
-				foreach($this->_data[$this->_id]->_cryptedFields as $field){
+				foreach($this->_data[$this->_id]->getCryptedFields() as $field){
 					if(isset($this->_data[$this->_id]->$field)){
 						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field,$date);
 					}

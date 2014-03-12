@@ -46,7 +46,7 @@ class VmTable extends JTable {
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
-	public $_cryptedFields = false;
+	protected $_cryptedFields = false;
 	protected $_langTag = null;
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
@@ -254,8 +254,12 @@ class VmTable extends JTable {
 
 	}
 
-
-	public function setCryptedFields($fieldNames){
+	/**
+	 * Sets fields encrypted
+	 * @author Max Milbers
+	 * @param $fieldNames
+	 */
+	protected function setCryptedFields($fieldNames){
 		if(!$fieldNames){
 			vmTrace('setEncrytped fields false not catched');
 			return;
@@ -265,6 +269,13 @@ class VmTable extends JTable {
 			unset($fieldNames[$this->_pkey]);
 		}
 		$this->_cryptedFields = $fieldNames;
+	}
+
+	/**
+	 *
+	 */
+	public function getCryptedFields(){
+		return $this->_cryptedFields;
 	}
 
 	/**

@@ -528,6 +528,8 @@ class VmConfig {
 		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
 		//But 17 has the best precision, using higher precision adds fantasy numbers to the end
 		//}
+
+
 	}
 
 	static function getStartTime(){
@@ -552,18 +554,26 @@ class VmConfig {
 				}
 				if(Permissions::getInstance()->check('admin')){
 					self::$_debug = TRUE;
+					ini_set('display_errors', '-1');
+					error_reporting(E_ALL ^ E_STRICT);
 				} else {
 					self::$_debug = FALSE;
+					ini_set('display_errors', '0');
+					error_reporting(E_ALL ^ E_STRICT);
 				}
 			}
 			// 2 show debug to anyone
 			else {
 				if ($debug === 'all') {
 					self::$_debug = TRUE;
+					ini_set('display_errors', '-1');
+					error_reporting(E_ALL ^ E_STRICT);
 				}
 				// else dont show debug
 				else {
 					self::$_debug = FALSE;
+					ini_set('display_errors', '0');
+					error_reporting(E_ALL ^ E_STRICT);
 				}
 			}
 
