@@ -651,16 +651,16 @@ class VmConfig {
 		$jlang =JFactory::getLanguage();
 		$tag = $jlang->getTag();
 
+		$path = $basePath = JPATH_VM_ADMINISTRATOR;
+		if($site){
+			$path = $basePath = JPATH_VM_SITE;
+		}
+
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-			$admin_path = JPATH_VM_ADMINISTRATOR.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
-			$site_path = JPATH_VM_SITE.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
-			vmdebug('loadJLang',$path);
-			if(file_exists($admin_path) or file_exists($site_path)){
-				$path = JPATH_VM_ADMINISTRATOR;
-				if($site){
-					$path = JPATH_VM_SITE;
-				}
-			} else {
+
+			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			vmdebug('loadJLang',$testpath);
+			if(!file_exists($testpath)){
 				$path = JPATH_ADMINISTRATOR;
 				if($site){
 					$path = JPATH_SITE;
@@ -669,14 +669,8 @@ class VmConfig {
 			$jlang->load($name, $path, 'en-GB');
 		}
 
-		$admin_path = JPATH_VM_ADMINISTRATOR.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
-		$site_path = JPATH_VM_SITE.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
-		if(file_exists($admin_path) or file_exists($site_path)){
-			$path = JPATH_VM_ADMINISTRATOR;
-			if($site){
-				$path = JPATH_VM_SITE;
-			}
-		} else {
+		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		if(!file_exists($testpath)){
 			$path = JPATH_ADMINISTRATOR;
 			if($site){
 				$path = JPATH_SITE;
