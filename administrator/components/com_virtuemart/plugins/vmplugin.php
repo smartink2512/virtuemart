@@ -70,7 +70,7 @@ abstract class vmPlugin extends JPlugin {
 
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 
-		VmConfig::loadJLang($filename);
+		$this->loadJLang($filename);
 
 		if (!class_exists ('JParameter')) {
 			require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php');
@@ -78,6 +78,29 @@ abstract class vmPlugin extends JPlugin {
 
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
+	}
+
+	public function loadJLang($name){
+
+		$jlang =JFactory::getLanguage();
+		$tag = $jlang->getTag();
+
+		$path = $basePath = JPATH_PLUGINS.DS.$this->_type.DS.$this->_name;
+		vmdebug('my path',$path);
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			if(!file_exists($testpath)){
+				$path = JPATH_ADMINISTRATOR;
+			}
+			$jlang->load($name, $path, 'en-GB');
+		}
+
+		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		if(!file_exists($testpath)){
+			$path = JPATH_ADMINISTRATOR;
+		}
+
+		$jlang->load($name, $path,$tag,true);
 	}
 
 	function setPluginLoggable($set=TRUE){

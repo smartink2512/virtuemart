@@ -657,9 +657,7 @@ class VmConfig {
 		}
 
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
-			vmdebug('loadJLang',$testpath);
 			if(!file_exists($testpath)){
 				$path = JPATH_ADMINISTRATOR;
 				if($site){
