@@ -161,46 +161,46 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 */
 	public function store(&$data)
 	{
-		//$data = JRequest::get('post');
 
-
-		if ($data) {
+		if(is_object($data)){
 			$data = (array)$data;
 		}
-// 		vmdebug('store',$data);
-			if(!empty($data['params'])){
-				foreach($data['params'] as $k=>$v){
-					$data[$k] = $v;
-				}
+		if(!empty($data['params'])){
+			foreach($data['params'] as $k=>$v){
+				$data[$k] = $v;
 			}
+		}
 
 		if(empty($data['virtuemart_vendor_id'])){
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
-		} else {
-			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
-
-		// missing string FIX, Bad way ?
-		if (JVM_VERSION===1) {
-			$tb = '#__plugins';
-			$ext_id = 'id';
-		} else {
-			$tb = '#__extensions';
-			$ext_id = 'extension_id';
-		}
-		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['shipment_jplugin_id'].'"';
-		$this->_db->setQuery($q);
-		$data['shipment_element'] = $this->_db->loadResult();
 
 		$table = $this->getTable('shipmentmethods');
 
 		if(isset($data['shipment_jplugin_id'])){
 
+			// missing string FIX, Bad way ?
+			if (JVM_VERSION===1) {
+				$tb = '#__plugins';
+				$ext_id = 'id';
+			} else {
+				$tb = '#__extensions';
+				$ext_id = 'extension_id';
+			}
+			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['shipment_jplugin_id'].'"';
+			$db = JFactory::getDbo();
+			$db->setQuery($q);
+			$data['shipment_element'] = $db->loadResult();
+
+			$q = 'UPDATE `' . $tb . '` SET `enabled`= 1 WHERE `' . $ext_id . '` = "'.$data['shipment_jplugin_id'].'"';
+			$this->_db->setQuery($q);
+			$this->_db->query();
+
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
 			//bad trigger, we should just give it data, so that the plugins itself can check the data to be stored
-			//so this trigger is now deprecated and will be deleted in vm2.2
+			//so this trigger is now deprecated and will be deleted in vm3
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsShipment',array( $data['shipment_element'],$data['shipment_jplugin_id'],&$table));
 
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginShipment',array( &$data,&$table));

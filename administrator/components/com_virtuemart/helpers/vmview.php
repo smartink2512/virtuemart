@@ -50,7 +50,7 @@ class VmView extends JView{
 	*/
 	public function display($tpl = null)
 	{
-		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
+		$view = vmRequest::getCmd('view', vmRequest::getCmd('controller','virtuemart'));
 		
 		if ($view == 'virtuemart' //Virtuemart view is always allowed since this is the page we redirect to in case the user does not have the rights
 			|| $view == 'about' //About view always displayed
@@ -347,9 +347,10 @@ class VmView extends JView{
 			// $lang = $params->get('site', 'en-GB');
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
-			$defautName = $langs[$selectedLangue]['name'];
+			$defautName = $selectedLangue;
 			$flagImg = $selectedLangue;
 			if(isset($languagesByCode[$selectedLangue])){
+				$defautName = $langs[$selectedLangue]['name'];
 				$flagImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
 			} else {
 				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));

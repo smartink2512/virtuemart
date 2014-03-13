@@ -162,7 +162,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	   		$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
 	  	}
 
-
 		$table = $this->getTable('paymentmethods');
 
 		if(isset($data['payment_jplugin_id'])){

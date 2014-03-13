@@ -542,11 +542,11 @@ class VmConfig {
 
 	static function showDebug(){
 
-		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
+
 		if(self::$_debug===NULL){
 
 			$debug = VmConfig::get('debug_enable','none');
-
+			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
 				if (!class_exists ('Permissions')) {
@@ -646,21 +646,42 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false,$loadCore=false){
+	static public function loadJLang($name,$site=false){
 
-		$path = JPATH_ADMINISTRATOR;
-		if($site){
-			$path = JPATH_SITE;
-		}
 		$jlang =JFactory::getLanguage();
 		$tag = $jlang->getTag();
-		$fallback = false;
+
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+			$path = JPATH_VM_ADMINISTRATOR.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			vmdebug('loadJLang',$path);
+			if(file_exists($path)){
+				$path = JPATH_VM_ADMINISTRATOR;
+				if($site){
+					$path = JPATH_VM_SITE;
+				}
+			} else {
+				$path = JPATH_ADMINISTRATOR;
+				if($site){
+					$path = JPATH_SITE;
+				}
+			}
 			$jlang->load($name, $path, 'en-GB');
 		}
 
-		$jlang->load($name, $path,$tag,true);
+		$path = JPATH_VM_ADMINISTRATOR.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		if(file_exists($path)){
+			$path = JPATH_VM_ADMINISTRATOR;
+			if($site){
+				$path = JPATH_VM_SITE;
+			}
+		} else {
+			$path = JPATH_ADMINISTRATOR;
+			if($site){
+				$path = JPATH_SITE;
+			}
+		}
 
+		$jlang->load($name, $path,$tag,true);
 	}
 
 	/**
@@ -709,7 +730,7 @@ class VmConfig {
 
 		$db = JFactory::getDBO();
 
-		$freshInstall = JRequest::getInt('install',false);
+		$freshInstall = vmRequest::getInt('install',false);
 		if(empty($configTable) or $freshInstall){
 			if(!$freshInstall){
 				$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
@@ -723,22 +744,21 @@ class VmConfig {
 
 					if(empty($selectedLang)){
 						$selectedLang = $jlang->setLanguage($selectedLang);
-
 					}
 
 					if(!isset($knownLangs[$selectedLang])){
-						if($app->isSite()){
-							$app->redirect(JURI::root(true).'/administrator/index.php?option=com_installer&view=languages','Install your selected language first, you selected '.$selectedLang);
-						} else {
-							$app->redirect('index.php?option=com_installer&view=languages','Install your selected language first, you selected '.$selectedLang);
-						}
+						$link = 'index.php?option=com_installer&view=languages';
+						$msg = 'Install your selected language first, you selected '.$selectedLang;
+					} else {
+						$link = 'index.php?option=com_virtuemart&view=updatesmigration&install=1';
+						$msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
 					}
 
 					if($app->isSite()){
-						$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, click on the menu component and select VirtueMart');
-					} else {
-						$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, click on the menu component and select VirtueMart');
+						$link = JURI::root(true).'/administrator/'.$link;
 					}
+
+					$app->redirect($link,$msg);
 				}
 				if($installed){
 					self::$_jpConfig->installVMconfig();

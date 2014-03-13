@@ -29,12 +29,8 @@ VmConfig::loadConfig();
 vmRam('Start');
 vmSetStartTime('Start');
 
-if(VmConfig::get('enableEnglish', 1)){
-    $jlang =JFactory::getLanguage();
-    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, 'en-GB', true);
-    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
-}
+VmConfig::loadJLang('com_virtuemart');
+
 vmJsApi::jQuery();
 
 // check for permission Only vendor and Admin can use VM2 BE
@@ -48,7 +44,7 @@ if(!Permissions::getInstance()->isSuperVendor()){
 }
 
 // Require specific controller if requested
-if($_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart'))) {
+if($_controller = vmRequest::getCmd('view', vmRequest::getCmd('controller', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {
 		// Only if the file exists, since it might be a Joomla view we're requesting...
 		require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
@@ -70,7 +66,7 @@ $_class = 'VirtueMartController'.ucfirst($_controller);
 $controller = new $_class();
 
 // Perform the Request task
-$controller->execute(JRequest::getWord('task', $_controller));
+$controller->execute(vmRequest::getCmd('task', $_controller));
 
 vmTime($_class.' Finished task '.$_controller,'Start');
 vmRam('End');

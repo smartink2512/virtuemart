@@ -30,18 +30,9 @@
 		<folder>assets</folder>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
+        <folder>language</folder>
 		<folder>views</folder>
 	</files>
-
-
-	<!-- Language files -->
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
-		<language tag="en-GB">en-GB/en-GB.com_virtuemart.sys.ini</language>
-		<language tag="en-GB">en-GB/en-GB.com_virtuemart.sef.ini</language>
-        <language tag="en-GB">en-GB/en-GB.com_virtuemart_orders.ini</language>
-        <language tag="en-GB">en-GB/en-GB.com_virtuemart_shoppers.ini</language>
-	</languages>
 
 	<administration>
 		<!-- Administration Menu Section -->
@@ -74,6 +65,7 @@
 			<folder>elements</folder>
 			<folder>helpers</folder>
 			<folder>install</folder>
+            <folder>language</folder>
 			<folder>liveupdate</folder>
 			<folder>models</folder>
 			<folder>plugins</folder>
@@ -81,25 +73,16 @@
 			<folder>views</folder>
 		</files>
 
-		<!-- Language files -->
-		<languages folder="administrator/language">
-			<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
-			<language tag="en-GB">en-GB/en-GB.com_virtuemart.sys.ini</language>
-			<language tag="en-GB">en-GB/en-GB.com_virtuemart.menu.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_virtuemart_countries.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_virtuemart_config.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_virtuemart_help.ini</language>
-		</languages>
-	</administration>
+    </administration>
 
-	<access component="com_virtuemart">
-		<section name="component">
-			<action name="shop.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
-			<action name="shop.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
-		</section>
-		<section name="message">
-			<action name="shop.admin" title="JACTION_DELETE" description="COM_MONCOMPOSANT_ACCESS_ADMIN_DESC" />
-			<action name="shop.manage" title="JACTION_EDIT" description="COM_MONCOMPOSANT_ACCESS_MANAGE_DESC" />
-		</section>
-	</access>
+    <access component="com_virtuemart">
+        <section name="component">
+            <action name="shop.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+            <action name="shop.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+        </section>
+        <section name="message">
+            <action name="shop.admin" title="JACTION_DELETE" description="COM_MONCOMPOSANT_ACCESS_ADMIN_DESC" />
+            <action name="shop.manage" title="JACTION_EDIT" description="COM_MONCOMPOSANT_ACCESS_MANAGE_DESC" />
+        </section>
+    </access>
 </install>
