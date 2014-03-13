@@ -6,9 +6,9 @@
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>${PHING.VM.RELEASE}</version>
-    <description><![CDATA[<a href="http://realex.com" target="_blank">realex</a> is a popular
-	payment provider and available in many countries. ]]>
+    <!--version>${PHING.VM.RELEASE}</version-->
+    <version>Beta1</version>
+    <description><![CDATA[<a href="http://paybox.com" target="_blank">Paybox</a> ]]>
     </description>
 
     <files>
@@ -27,7 +27,8 @@
 
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning"/>
-        <param class="level1" type="vmtitle" default="VMPAYMENT_ACCOUNT_PARAMS"/>
+        <param type="getpaybox" level="level1"/>
+        <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
 
         <param name="shop_mode" type="list" default="N" label="VMPAYMENT_PAYBOX_CONF_SHOP_MODE"
                description="VMPAYMENT_PAYBOX_CONF_SHOP_MODE_TIP">
@@ -42,9 +43,10 @@
                description="VMPAYMENT_PAYBOX_CONF_RANG_TIP"/>
         <param name="identifiant" class="required" type="text" size="15" default="3262411"
                label="VMPAYMENT_PAYBOX_CONF_IDENTIFIANT" description="VMPAYMENT_PAYBOX_CONF_IDENTIFIANT_TIP"/>
-        <param name="key" class="vmwarn required" type="text" size="200" default="" label="VMPAYMENT_PAYBOX_CONF_KEY"
+        <param name="key" class="vmwarn required" type="text" size="200" default="0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF" label="VMPAYMENT_PAYBOX_CONF_KEY"
                description="VMPAYMENT_PAYBOX_CONF_KEY_TIP"/>
         <param class="" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_SECRETKEY_WARNING"/>
+        <param class="" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_SECRETKEY_VALIDATE_WARNING"/>
 
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_CONFIGURATION"/>
@@ -76,8 +78,8 @@
                label="VMPAYMENT_PAYBOX_CONF_3DSECURE_MIN_AMOUNT"
                description="VMPAYMENT_PAYBOX_CONF_3DSECURE_MIN_AMOUNT_TIP"/>
 
-        <param name="typecarte" type="payboxtypecarte" default="" label="VMPAYMENT_PAYBOX_CONF_TYPECARTE"
-               description="VMPAYMENT_ALATAK_PAYBOX_SYSTEM_TYPECARTE_TIP"/>
+        <!--param name="typecarte" type="payboxtypecarte" default="" label="VMPAYMENT_PAYBOX_CONF_TYPECARTE"
+               description="VMPAYMENT_ALATAK_PAYBOX_SYSTEM_TYPECARTE_TIP"/ -->
 
         <param class="" name="integration" type="list" default="recurring"
                label="VMPAYMENT_PAYBOX_CONF_INTEGRATION"
@@ -91,7 +93,7 @@
         <!-- begin recurring -->
         <param class="integration recurring" name="recurring_min_amount"  type="text" size="15" default=""
                label="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT"
-               description="VMPAYMENT_PAYBOX_CONF_RECURRINGS_MIN_AMOUNT_TIP"/>
+               description="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT_TIP"/>
         <param class="integration recurring" name="recurring_number" type="list" default="3"
                label="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER"
                description="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER_TIP">
@@ -112,29 +114,11 @@
         </param>
         <param
                 name="subscribe_customfield"
-                type="sql"
+                type="payboxsubscribe"
                 label="VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE_CUSTOMFIELD"
                 description="VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE_CUSTOMFIELD_TIP"
-                default="0"
-                size="1"
-                class="inputbox integration subscribe"
-                key_field="virtuemart_custom_id"
-                value_field="custom_title"
-                query="
-          SELECT
-          '0' AS 'virtuemart_custom_id',
-          'Select...' AS 'custom_title'
-          UNION
-          SELECT virtuemart_custom_id, custom_title
-          FROM #__virtuemart_customs
-          WHERE (field_type = 'P')
-          AND (custom_title LIKE '%PAYBOX%')
-          UNION
-          SELECT virtuemart_custom_id, custom_title
-          FROM #__virtuemart_customs
-          WHERE (field_type = 'P')
-          AND (custom_title NOT LIKE '%PAYBOX%')
-        " />
+                class="integration subscribe"
+                />
         <param class="integration subscribe" name="subscribe_quand" type="text" size="15" default="2" label="VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE_QUAND" description="VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE_QUAND_TIP"/>
         <param class="integration subscribe" name="subscribe_delais" type="text" size="15" default="2" label="VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE_DELAIS" description="VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE_DELAIS_TIP"/>
 
@@ -143,22 +127,35 @@
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_OPTIONS"/>
 
-        <param class="authorization_only debit_type" name="status_success" type="vmorderstate" scope="com_virtuemart"
+        <param class="authorization_only debit_type" name="status_success_authorization_only" type="vmorderstate" scope="com_virtuemart"
                default="C"
                label="VMPAYMENT_PAYBOX_CONF_STATUS_SUCCESS" description="VMPAYMENT_PAYBOX_CONF_STATUS_SUCCESS_TIP"/>
+
+        <param class="authorization_capture debit_type" name="status_success_authorization_capture" type="vmorderstate" scope="com_virtuemart"
+               default="U"
+               label="VMPAYMENT_PAYBOX_CONF_STATUS_SUCCESS" description="VMPAYMENT_PAYBOX_CONF_STATUS_SUCCESS_TIP"/>
+
 
         <param class="authorization_capture debit_type" name="status_capture" type="vmorderstate" scope="com_virtuemart"
                default="S"
                label="VMPAYMENT_PAYBOX_CONF_STATUS_CAPTURE" description="VMPAYMENT_PAYBOX_CONF_STATUS_CAPTURE_TIP"/>
 
-        <param class="activate_recurring" name="status_recurring" type="vmorderstate" scope="com_virtuemart" default="C"
+        <param class="integration recurring" name="status_success_recurring" type="vmorderstate" scope="com_virtuemart" default="C"
                label="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING" description="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING_TIP"/>
-        <param class="activate_recurring" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_RECURRING_WARNING"/>
-
-        <param class="activate_recurring" name="status_recurring_end" type="vmorderstate" scope="com_virtuemart"
+        <param class="integration recurring" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_CREATE_WARNING"/>
+        <param class="integration recurring" name="status_success_recurring_end" type="vmorderstate" scope="com_virtuemart"
                default="C"
                label="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING_END" description="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING_END_TIP"/>
-        <param class="activate_recurring" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_RECURRING_END_WARNING"/>
+        <param class="integration recurring" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_CREATE_WARNING"/>
+
+
+        <param class="integration subscribe" name="status_success_subscribe" type="vmorderstate" scope="com_virtuemart" default="C"
+               label="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING" description="VMPAYMENT_PAYBOX_CONF_STATUS_SUBSCRIBE_TIP"/>
+        <param class="integration subscribe" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_CREATE_WARNING"/>
+        <param class="integration subscribe" name="status_success_subscribe_end" type="vmorderstate" scope="com_virtuemart"
+               default="C"
+               label="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING_END" description="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING_END_TIP"/>
+        <param class="integration subscribe" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_CREATE_WARNING"/>
 
         <param class="" name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"
                label="VMPAYMENT_PAYBOX_CONF_STATUS_CANCEL" description="VMPAYMENT_PAYBOX_CONF_STATUS_CANCEL_TIP"/>

@@ -27,31 +27,89 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 
 	}
 
-	function getOrderHistory ($paybox_data, $order) {
-		return false;
+	function getOrderHistory ($paybox_data, $order, $payments) {
+		$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
+		$order_history['comments'] = vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED_RECURRING', $amountInCurrency['display'], $order['details']['BT']->order_number);
+
+		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M'] * 0.01, $order['details']['BT']->order_currency);
+		$order_history['comments'] .= "<br />" . vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED_RECURRING_2', $amountInCurrency['display']);
+
+		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' . $paybox_data['S'];
+		$subscribe_comment = '';
+
+		$order_history['customer_notified'] = true;
+		$order_history['comments'] .= $subscribe_comment;
+		$order_history['recurring'] = $subscribe_comment;
+		$order_history['order_status'] = $this->_method->status_success_subscribe;
+		return $order_history;
 
 
 	}
 
-	function getSubscribePayments ($cart, $order) {
-		$subscribe = $this->getSubscribeProducts($cart);
+	function getValueBE_R ($value) {
+		return $this->getOrderNumber($value);
+	}
+
+	function getOrderNumber ($pbx_cmd) {
+		//  [PBX_CMD] => c07a01504PBX_2MONT0000000500PBX_FREQ02PBX_NBPAIE10PBX_QUAND02PBX_DELAIS00
+		// ASSUMES that it is the first one sent
+		// TODO changes
+		$pos = strpos($pbx_cmd, 'PBX_FREQ');
+		if ($pos === false) {
+			return $pbx_cmd;
+		}
+		return substr($pbx_cmd, 0, $pos);
+
+	}
+
+	function getExtraPluginNameInfo () {
+		if (!class_exists('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
+		$cart = VirtueMartCart::getCart();
+		if (!isset($cart->pricesUnformatted)) {
+			$cart->getCartPrices();
+		}
+		$pbxTotalVendorCurrency = $this->getPbxAmount($cart->pricesUnformatted['salesPrice']);
+		$subscribe = $this->getSubscribeProducts($cart, $pbxTotalVendorCurrency);
+		$extraInfo = false;
 		if (!empty($subscribe)) {
-			$subscribe['PBX_2MONT'] = $this->getPbxTotal($subscribe['PBX_2MONT']);
+			$extraInfo['subscribe'] = true;
+			$amount2montInCurrency = vmPSPlugin::getAmountInCurrency($subscribe['PBX_2MONT'] * 0.01, $this->_method->payment_currency);
+			$amount1montInCurrency = vmPSPlugin::getAmountInCurrency( $subscribe['PBX_TOTAL'] * 0.01, $this->_method->payment_currency);
+			$extraInfo['subscribe_2mont']  = $amount2montInCurrency['display'];
+			$extraInfo['subscribe_1mont']  = $amount1montInCurrency['display'];
+			$extraInfo['subscribe_nbpaie'] = $subscribe['PBX_NBPAIE'];
+			$extraInfo['subscribe_freq'] = $subscribe['PBX_FREQ'];
+			$extraInfo['subscribe_quand'] = $this->_method->subscribe_quand;
+			$extraInfo['subscribe_delais'] = $this->_method->subscribe_delais;
+		}
+		return $extraInfo;
+
+	}
+
+	function getSubscribePayments ($cart, $pbxTotalVendorCurrency) {
+		$subscribe_data = false;
+		$subscribe = $this->getSubscribeProducts($cart, $pbxTotalVendorCurrency);
+		if (!empty($subscribe)) {
+			$subscribe['PBX_2MONT'] = str_pad($subscribe['PBX_2MONT'], 10, "0", STR_PAD_LEFT) ;
 			$subscribe['PBX_NBPAIE'] = str_pad($subscribe['PBX_NBPAIE'], 2, "0", STR_PAD_LEFT);
 			$subscribe['PBX_FREQ'] = str_pad($subscribe['PBX_FREQ'], 2, "0", STR_PAD_LEFT);
 			$subscribe['PBX_QUAND'] = str_pad($this->_method->subscribe_quand, 2, "0", STR_PAD_LEFT);
 			$subscribe['PBX_DELAIS'] = str_pad($this->_method->subscribe_delais, 3, "0", STR_PAD_LEFT);
+			$subscribe_data["PBX_TOTAL"] = $subscribe["PBX_TOTAL"];
+			unset($subscribe["PBX_TOTAL"]);
+			$subscribe_cmd = '';
+			foreach ($subscribe as $key => $value) {
+				$subscribe_cmd .= $key . $value;
+			 }
+			$subscribe_data['PBX_CMD'] =$subscribe_cmd;
 		}
-		$subscribe_cmd='';
-		foreach ($subscribe as $key => $value) {
-			$subscribe_cmd .= $key .  $value ;
-		}
-		$subscribe_cmd='PBX_2MONT0000000500PBX_NBPAIE00PBX_FREQ01PBX_QUAND28PBX_DELAIS005';
-		//$subscribe_cmd = substr($subscribe_cmd, 0, -1);
-		return $subscribe_cmd;
+
+		return $subscribe_data;
 	}
 
-	function getSubscribeProducts (VirtueMartCart $cart) {
+	function getSubscribeProducts (VirtueMartCart $cart, $pbxTotalVendorCurrency) {
 
 		if ($this->_method->subscribe_customfield == 0) {
 			return false;
@@ -61,65 +119,82 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 		$paybox_parent_field = $this->_method->subscribe_customfield;
 		vmdebug('PAYBOX getSubscriptionData paybox_parent_field', $paybox_parent_field);
 		// amount in base currency
-		$subscribe=array();
+		$subscribe = array();
+		$pbx_freqs = array();
+		$pbx_nbpaies = array();
 
 		$products = $cart->products;
-
+		$usbscribe_pbx_2mont = 0;
 		// go through basket prods
-
 		foreach ($products as $key => $product) {
 			$product_custom_fields = $this->getProdCustomFields($product->virtuemart_product_id);
 			vmdebug('PAYBOX getSubscriptionData getProdCustomFields', $product_custom_fields);
-			$pbx_freq = $pbx_nbpaie = $pbx_1mont = $pbx_2mont = 0;
+			 $pbx_2mont = 0;
 			$paybox_parent_field_found = false;
 			foreach ($product_custom_fields as $product_custom_field) {
 				if ($product_custom_field->custom_parent_id == $paybox_parent_field) {
-					$paybox_parent_field_found = true;
 					if ($product_custom_field->custom_title == 'PBX_FREQ') {
-						$pbx_freq = $product_custom_field->custom_value;
+						$pbx_freqs[] = $product_custom_field->custom_value;
 					}
 					if ($product_custom_field->custom_title == 'PBX_NBPAIE') {
-						$pbx_nbpaie = $product_custom_field->custom_value;
+						$pbx_nbpaies[] = $product_custom_field->custom_value;
 					}
 					if ($product_custom_field->custom_title == 'PBX_2MONT') {
 						$pbx_2mont = $product_custom_field->custom_value;
 					}
-					/*
-					if ($product_custom_field->custom_title == 'PBX_1MONT' and !empty($product_custom_field->custom_value)) {
-						$pbx_1mont = $product_custom_field->custom_value;
-					}
-					if ($product_custom_field->custom_title == 'PBX_2MONT' and !empty($product_custom_field->custom_value)) {
-						$pbx_2mont = $product_custom_field->custom_value;
-					}
-					*/
+					$paybox_parent_field_found = true;
 				}
 			}
-			$productAmount = $this->getProductAmount($cart->pricesUnformatted[$key]);
-			$pbx_2monts = $pbx_2mont * $product->quantity;
-			if ($paybox_parent_field_found) {
-				vmdebug('PAYBOX getSubscribeProducts $paybox_parent_field_found', $pbx_freq, $pbx_nbpaie);
-				$subscribe['PBX_2MONT'] += round($pbx_2monts) * 100;
-				$subscribe['PBX_2MONT']= str_pad($subscribe['PBX_2MONT'], 10, "0", STR_PAD_LEFT);
 
-				$subscribe['PBX_FREQ'] = $pbx_freq;
-				$subscribe['PBX_NBPAIE'] = $pbx_nbpaie;
+			if ($paybox_parent_field_found) {
+				vmdebug('PAYBOX getSubscribeProducts $paybox_parent_field_found', $pbx_freqs, $pbx_nbpaies);
+				$pbx_2monts = $pbx_2mont * $product->quantity;
+				$usbscribe_pbx_2mont += $this->getPbxAmount($pbx_2monts);
+
 			}
-			$paybox_parent_field_found = false;
 			vmdebug('PAYBOX getSubscriptionData BY PRODUCT', $subscribe);
 		}
-		// Montant total de l’achat en centimes sans virgule ni point.
-		vmdebug('PAYBOX getSubscriptionData TOTAL', $subscribe);
+		if (!empty($pbx_freqs) and !empty($pbx_freqs)) {
+			$pbx_freq = array_unique($pbx_freqs); // Nombre de prélèvements
+			$pbx_nbpaie = array_unique($pbx_nbpaies); // Fréquence des prélèvements en mois.
+			if (count($pbx_freq) > 1 or count($pbx_nbpaie) > 1) {
+				// Fréquence des prélèvements en mois
+				if (count($pbx_freq)) {
+					vmInfo('VMPAYMENT_PAYBOX_ERROR_PBX_FREQ');
+				}
+				// Nombre de prélèvements (0 = toujours).
+				if (count($pbx_nbpaie)) {
+					vmInfo('VMPAYMENT_PAYBOX_ERROR_PBX_NBPAIE');
+				}
+				vmInfo('VMPAYMENT_PAYBOX_ERROR_SUBCRIBE');
+
+				return FALSE;
+			}
+
+
+			if ($usbscribe_pbx_2mont) {
+				$subscribe['PBX_FREQ'] = $pbx_freq[0];
+				$subscribe['PBX_NBPAIE'] = $pbx_nbpaie[0];
+				// Montant total de l’achat en centimes sans virgule ni point.
+				vmdebug('PAYBOX getSubscriptionData TOTAL', $subscribe);
+				$subscribe['PBX_TOTAL'] = $pbxTotalVendorCurrency - ($usbscribe_pbx_2mont * ($subscribe['PBX_NBPAIE']-1));
+				$subscribe['PBX_2MONT'] = str_pad($usbscribe_pbx_2mont, 10, "0", STR_PAD_LEFT);
+			}
+		}
+
 
 		return $subscribe;
 	}
-	function getProdCustomFields($virtuemart_product_id) {
+
+	function getProdCustomFields ($virtuemart_product_id) {
 		$product = new stdClass();
 		$product->virtuemart_product_id = $virtuemart_product_id;
 		$customfields = VmModel::getModel('Customfields');
 		$product_customfields = $customfields->getProductCustomsField($product);
 		return $product_customfields;
 	}
-	function getProductAmount($productPricesUnformatted) {
+
+	function getProductAmount ($productPricesUnformatted) {
 		if ($productPricesUnformatted['salesPriceWithDiscount']) {
 			return $productPricesUnformatted['salesPriceWithDiscount'];
 		} else {

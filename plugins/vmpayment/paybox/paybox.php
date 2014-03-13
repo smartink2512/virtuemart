@@ -27,9 +27,12 @@ if (!class_exists('vmPSPlugin')) {
 if (!class_exists('PayboxHelperPaybox')) {
 	require(JPATH_SITE . '/plugins/vmpayment/paybox/paybox/helpers/paybox.php');
 }
-
+if (!class_exists('pbxRequest')) {
+	require(JPATH_SITE . '/plugins/vmpayment/paybox/paybox/helpers/pbxrequest.php');
+}
 class plgVmpaymentPaybox extends vmPSPlugin {
 	const PAYBOX_FOLDERNAME = "paybox";
+	const PBX_MAX_URL_LEN = 150;
 
 	// instance of class
 
@@ -50,7 +53,10 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 			$doc = JFactory::getDocument();
 			$doc->addScript(JURI::root(true) . '/plugins/vmpayment/' . $this->_name . '/' . $this->_name . '/assets/js/admin.js');
 		}
-		$this->setCryptedFields(array('key'));
+		if (method_exists($this, 'setCryptedFields')) {
+			$this->setCryptedFields(array('key'));
+		}
+
 	}
 
 	protected function getVmPluginCreateTableSQL () {
@@ -128,35 +134,43 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		$currency_numeric_code = $db->loadResult();
 		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $this->_currentMethod->payment_currency);
 		$orderTotalVendorCurrency = $order['details']['BT']->order_total;
-		//$pbxOrderTotalVendorCurrency = round($orderTotalVendorCurrency * 100);
-		$pbxOrderTotalInPaymentCurrency = $totalInPaymentCurrency['value'] * 100;
+		$pbxOrderTotalInPaymentCurrency = $pbxInterface->getPbxAmount($totalInPaymentCurrency['value']);
 		$email_currency = $this->getEmailCurrency($this->_currentMethod);
 
-		$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid');
-		$url_notification = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&tmpl=component&element=paybox';
-		$url_ok = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid');
+		// If the file is not there anylonger, just create it
+		$this->createRootFile($this->_currentMethod->virtuemart_paymentmethod_id);
+
+		if (!$pbxInterface->getPayboxServerUrl()) {
+			$this->redirectToCart();
+			return false;
+		}
+		if (!($payboxReturnUrls = $this->getPayboxReturnUrls($pbxInterface))) {
+			$this->redirectToCart();
+			return false;
+		}
 
 
 		$post_variables = Array(
-			"PBX_SITE"         => $this->_currentMethod->site_id,
-			"PBX_RANG"         => $this->_currentMethod->rang,
-			"PBX_IDENTIFIANT"  => $this->_currentMethod->identifiant,
-			"PBX_TOTAL"        => $pbxInterface->getPbxTotal($pbxOrderTotalInPaymentCurrency),
-			"PBX_DEVISE"       => $currency_numeric_code,
-			"PBX_CMD"          => $order['details']['BT']->order_number,
-			"PBX_PORTEUR"      => $order['details']['BT']->email,
-			"PBX_RETOUR"       => $pbxInterface->getReturn(),
-			"PBX_HASH"         => $pbxInterface->getHashAlgo(),
-			"PBX_TIME"         => $pbxInterface->getTime(),
-			"PBX_LANGUE"       => $pbxInterface->getLangue(),
+			"PBX_SITE"        => $this->_currentMethod->site_id,
+			"PBX_RANG"        => $this->_currentMethod->rang,
+			"PBX_IDENTIFIANT" => $this->_currentMethod->identifiant,
+			"PBX_TOTAL"       => $pbxInterface->getPbxTotal($pbxOrderTotalInPaymentCurrency),
+			"PBX_DEVISE"      => $currency_numeric_code,
+			"PBX_CMD"         => $order['details']['BT']->order_number,
+			"PBX_PORTEUR"     => $order['details']['BT']->email,
+			"PBX_RETOUR"      => $pbxInterface->getReturn(),
+			"PBX_HASH"        => $pbxInterface->getHashAlgo(),
+			"PBX_TIME"        => $pbxInterface->getTime(),
+			"PBX_LANGUE"      => $pbxInterface->getLangue(),
 			//"PBX_TYPEPAIEMENT" => $pbxInterface->getTypePaiement(),
 			//"PBX_TYPECARTE"    => $pbxInterface->getTypeCarte(),
-			"PBX_EFFECTUE"     => $url_ok,
-			"PBX_ANNULE"       => $url_cancelled,
-			"PBX_REFUSE"       => $url_cancelled,
-			"PBX_ERREUR"       => $url_cancelled,
-			"PBX_REPONDRE_A"   => $url_notification,
-			//"PBX_RUF1"         => 'POST',
+			"PBX_EFFECTUE"    => $payboxReturnUrls['url_effectue'],
+			/*	"PBX_ATTENTE"     => $payboxReturnUrls['url_attente'],*/
+			"PBX_ANNULE"      => $payboxReturnUrls['url_annule'],
+			"PBX_REFUSE"      => $payboxReturnUrls['url_refuse'],
+			"PBX_ERREUR"      => $payboxReturnUrls['url_erreur'],
+			"PBX_REPONDRE_A"  => $payboxReturnUrls['url_notification'],
+			"PBX_RUF1"        => 'POST',
 		);
 		if ($this->_currentMethod->debit_type == 'authorization_capture') {
 			$post_variables["PBX_DIFF"] = str_pad($this->_currentMethod->diff, 2, '0', STR_PAD_LEFT);
@@ -174,14 +188,19 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		$subscribe = array();
 		$recurring = array();
 		$post_variables["PBX_CMD"] = $order['details']['BT']->order_number;
-		if ($this->_currentMethod->integration=="recurring" AND ($orderTotalVendorCurrency > $this->_currentMethod->recurring_min_amount)) {
+		if ($this->_currentMethod->integration == "recurring" AND ($orderTotalVendorCurrency > $this->_currentMethod->recurring_min_amount)) {
 			$recurring = $pbxInterface->getRecurringPayments($pbxOrderTotalInPaymentCurrency);
 			// PBX_TOTAL will be replaced in the array_merge.
 			$post_variables = array_merge($post_variables, $recurring);
-		} else if ($this->_currentMethod->integration=="subscribe" /*AND ($orderTotalVendorCurrency > $this->_currentMethod->subscribe_min_amount)*/) {
-			$subscribe_cmd = $pbxInterface->getSubscribePayments($cart, $order);
-			// PBX_TOTAL is the order total in this case
-			$post_variables["PBX_CMD"].=$subscribe_cmd;
+		} else {
+			if ($this->_currentMethod->integration == "subscribe" /*AND ($orderTotalVendorCurrency > $this->_currentMethod->subscribe_min_amount)*/) {
+				$subscribe_data = $pbxInterface->getSubscribePayments($cart, $pbxInterface->getPbxAmount($orderTotalVendorCurrency));
+				if ($subscribe_data) {
+					// PBX_TOTAL is the order total in this case
+					$post_variables["PBX_TOTAL"] = $subscribe_data["PBX_TOTAL"];
+					$post_variables["PBX_CMD"] .= $subscribe_data['PBX_CMD'];
+				}
+			}
 		}
 
 		$post_variables["PBX_HMAC"] = $pbxInterface->getHmac($post_variables, $this->_currentMethod->key);
@@ -227,6 +246,82 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		return;
 	}
 
+	function getPayboxReturnUrls ($pbxInterface) {
+		$urlLength = true;
+		$test=false;
+		if ($test) {
+
+				$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_currentMethod->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . JRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+				$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_currentMethod->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . JRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+				$payboxURLs['url_annule'] = $url_cancelled;
+				$payboxURLs['url_refuse'] = $url_cancelled;
+				$payboxURLs['url_erreur'] = $url_cancelled;
+				$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_currentMethod->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . JRequest::getCmd('lang', '');
+				$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_currentMethod->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . JRequest::getCmd('lang', '');
+
+
+		} else {
+			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . JRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$payboxURLs['url_annule'] = $url_cancelled;
+			$payboxURLs['url_refuse'] = $url_cancelled;
+			$payboxURLs['url_erreur'] = $url_cancelled;
+			$payboxURLs['url_notification'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id;
+			$payboxURLs['url_effectue'] = $this->getUrlOk($pbxInterface);
+		}
+
+
+
+
+		foreach ($payboxURLs as $payboxURL) {
+			//$this->debugLog($payboxURL, 'getPayboxReturnUrls','debug');
+			if (!$this->checkURLsLength($payboxURL)) {
+				$urlLength = false;
+			}
+		}
+		if ($urlLength) {
+			return $payboxURLs;
+		} else {
+			$this->debugLog('FALSE', 'getPayboxReturnUrls','debug');
+			return false;
+		}
+	}
+
+	function checkURLsLength ($url) {
+		$public_msg = "";
+		if (strlen($url) > self::PBX_MAX_URL_LEN) {
+			$msg = 'checking URL length<br />Your URL:' . $url . ' has ' . strlen($url) . '  characters.';
+			$msg .= 'The maximum allowed by the payment is ' . self::PBX_MAX_URL_LEN;
+			$msg .= 'Please contact your payment provider';
+			$this->pbxError($msg);
+			$this->debugLog($msg, 'checkURLsLength FALSE','debug');
+			return false;
+		}
+		return true;
+	}
+
+
+	function getUrlOk ($pbxInterface) {
+		$urlOkParms = $this->getUrlOkParms();
+		$query = $pbxInterface->stringifyArray($urlOkParms);
+		$urlOk = JURI::root() . 'index.php?' . $query;
+		return $urlOk;
+	}
+
+	/**
+	 *        $url_ok = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . pbxRequest::getInt('Itemid');
+	 * @return array
+	 */
+	function getUrlOkParms () {
+		$urlOkParms = array(
+			"option" => "com_virtuemart",
+			"view"   => "pluginresponse",
+			"task"   => "pluginresponsereceived",
+			"pm"     => $this->_currentMethod->virtuemart_paymentmethod_id,
+			"lang"   => pbxRequest::uWord('lang', ''),
+			"Itemid" => pbxRequest::getInt('Itemid'),
+		);
+		return $urlOkParms;
+	}
 
 	function plgVmgetPaymentCurrency ($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
@@ -241,6 +336,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		return TRUE;
 	}
 
+
 	function plgVmOnPaymentResponseReceived (&$html) {
 
 		if (!class_exists('VirtueMartCart')) {
@@ -252,9 +348,13 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
+		if (!class_exists('pbxRequest')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'pbxRequest.php');
+		}
+
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
-		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
+		$virtuemart_paymentmethod_id = pbxRequest::getInt('pm', 0);
 
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -262,29 +362,47 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return NULL;
 		}
-		$paybox_data = vmRequest::getGet();
-		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paybox_data['R']))) {
-			return FALSE;
-		}
-		$orderModel = VmModel::getModel('orders');
-		$order = $orderModel->getOrder($virtuemart_order_id);
+		$paybox_data = pbxRequest::getGet();
+
+		$this->debugLog('"<pre>plgVmOnPaymentResponseReceived :' . var_export($paybox_data, true) . "</pre>", 'debug');
 		$pbxInterface = $this->_loadPayboxInterface($this);
-		if (!$this->checkSignature($pbxInterface)) {
-			$msg = 'Got a Paybox request with invalid signature';
-			$this->debugLog($msg, 'checkSignature', 'error', false);
+		if ($payboxResponseValid = $this->isPayboxResponseValid($pbxInterface, $paybox_data, false, true)) {
+			// we don't do anything actually, it is probably an invalid signature.
+			// we do not update order status and let IPN do his job
+		}
+		$order_number = $pbxInterface->getOrderNumber($paybox_data['R']);
+		if (empty($order_number)) {
+			$this->debugLog($order_number, 'getOrderNumber not correct' . $paybox_data['R'], 'debug', false);
 			return FALSE;
 		}
-		$success = ($paybox_data['E'] == $pbxInterface::RESPONSE_SUCCESS);
-		$paybox_data = $pbxInterface->unsetNonPayboxData($paybox_data);
-		$payments = $this->getDatasByOrderId($virtuemart_order_id);
-		$recurring_comment = "";
-		if (count($payments) == 1) {
-			// NOTIFY not received
-			$order_history = $this->updateOrderStatus($pbxInterface, $paybox_data, $order, $payments);
-			$recurring_comment = $order_history['recurring'];
+		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
+			return FALSE;
 		}
 
-		$html = $this->getResponseHTML($order, $paybox_data, $success, $recurring_comment);
+		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
+			$this->debugLog('no payments found', 'getDatasByOrderId', 'debug', false);
+			return FALSE;
+		}
+
+		$orderModel = VmModel::getModel('orders');
+		$order = $orderModel->getOrder($virtuemart_order_id);
+		$paybox_data = $pbxInterface->unsetNonPayboxData($paybox_data);
+		$success = ($paybox_data['E'] == $pbxInterface::RESPONSE_SUCCESS);
+		$extra_comment = "";
+		// The order status is nly updated if the validation is ok
+
+		if ($payboxResponseValid) {
+			if (count($payments) == 1) {
+				// NOTIFY not received
+				$order_history = $this->updateOrderStatus($pbxInterface, $paybox_data, $order, $payments);
+				if (isset($order_history['extra_comment'])) {
+					$extra_comment = $order_history['extra_comment'];
+				}
+			}
+		}
+
+
+		$html = $this->getResponseHTML($order, $paybox_data, $success, $extra_comment);
 		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
 		JRequest::setVar('display_title', false);
@@ -294,10 +412,10 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 
 	}
 
+
 	function redirectToCart () {
-		$this->customerData->clear();
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vmRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_PAYBOX_ERROR_TRY_AGAIN'));
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . pbxRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_PAYBOX_ERROR_TRY_AGAIN'));
 	}
 
 	function plgVmOnUserPaymentCancel () {
@@ -305,8 +423,11 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-
-		$order_number = JRequest::getWord('on');
+		if (!class_exists('pbxRequest')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'pbxRequest.php');
+		}
+		//  $order_number = pbxRequest::getUword('on');
+		$order_number = pbxRequest::getUword('on');
 		if (!$order_number) {
 			return FALSE;
 		}
@@ -343,51 +464,100 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
+		if (!class_exists('pbxRequest')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'pbxRequest.php');
+		}
+		$paybox_data = pbxRequest::getPost();
+		$virtuemart_paymentmethod_id = pbxRequest::getInt('pm', 0);
+		$this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id);
+		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
+			$this->debugLog('Not this one', 'selectedThisElement', 'debug', false);
+			return;
+		}
+		$this->debugLog(var_export($paybox_data, true), 'plgVmOnPaymentNotification pbxRequest::getPost', 'debug', false);
+		$pbxInterface = $this->_loadPayboxInterface($this);
 
-		$paybox_data = vmRequest::getPost();
-		$order_number = $paybox_data['R'];
-		if (empty($order_number)) {
+		if (!$this->isPayboxResponseValid($pbxInterface, $paybox_data,  true, false)) {
 			return FALSE;
 		}
-
+		$order_number = $pbxInterface->getOrderNumber($paybox_data['R']);
+		if (empty($order_number)) {
+			$this->debugLog($order_number, 'getOrderNumber not correct' . $paybox_data['R'], 'debug', false);
+			return FALSE;
+		}
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
 			return FALSE;
 		}
 
 		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
+			$this->debugLog('no payments found', 'getDatasByOrderId', 'debug', false);
 			return FALSE;
 		}
 
-		$this->_currentMethod = $this->getVmPluginMethod($payments[0]->virtuemart_paymentmethod_id);
-		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
-			return FALSE;
-		}
-
-		$this->debugLog('plgVmOnPaymentNotification :' . var_export($paybox_data, true), 'debug');
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
-		$order_number = $paybox_data['R'];
-		$pbxInterface = $this->_loadPayboxInterface($this);
-
-		if (($msg = $pbxInterface->checkIps()) !== true) {
-			$this->debugLog($msg, 'checkIps', 'error', false);
-			//return FALSE;
+		$extra_comment = "";
+		if (count($payments) == 1) {
+			// NOTIFY not received
+			$order_history = $this->updateOrderStatus($pbxInterface, $paybox_data, $order, $payments);
+			if (isset($order_history['extra_comment'])) {
+				$extra_comment = $order_history['extra_comment'];
+			}
 		}
-		if ($this->checkSignature($pbxInterface, $paybox_data) != 1) {
-			$msg = 'Got a Paybox request with invalid signature';
-			$this->debugLog($msg, 'checkSignature', 'error', false);
-			return FALSE;
-		}
-
-		$this->updateOrderStatus($pbxInterface, $paybox_data, $order, $payments);
 
 		if (!empty($payments[0]->paybox_custom)) {
-			$this->emptyCart($payments[0]->paybox_custom, $order_number);
+			$this->emptyCart($payments[0]->paybox_custom, $order['details']['BT']->order_number);
 			$this->setEmptyCartDone($payments[0]);
 		}
 
 
 		return TRUE;
+	}
+
+	/**
+	 * @param      $pbxInterface
+	 * @param      $paybox_data
+	 * @param      $payments
+	 * @param      $order
+	 * @param bool $checkIps
+	 * @param bool $useQuery
+	 * @return bool
+	 */
+	function isPayboxResponseValid ($pbxInterface, $paybox_data,  $checkIps = false, $useQuery = false) {
+		if ($checkIps) {
+			if (($msg = $pbxInterface->checkIps()) !== true) {
+				$this->debugLog($msg, 'checkIps', 'error', false);
+				return FALSE;
+			}
+		}
+		$unsetNonPayboxData=true;
+		if ($this->checkSignature($pbxInterface, $paybox_data, $unsetNonPayboxData,$useQuery) != 1) {
+			$msg = 'Got a Paybox request with invalid signature';
+			$this->debugLog($msg, 'checkSignature', 'error', false);
+			return FALSE;
+		} else {
+			$this->debugLog('Got a Paybox request VALID signature', 'checkSignature', 'debug', false);
+		}
+
+		$order_number = $pbxInterface->getOrderNumber($paybox_data['R']);
+		if (empty($order_number)) {
+			$this->debugLog($order_number, 'getOrderNumber not correct' . $paybox_data['R'], 'debug', false);
+			return FALSE;
+		}
+		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
+			return FALSE;
+		}
+
+		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
+			$this->debugLog('no payments found', 'getDatasByOrderId', 'debug', false);
+			return FALSE;
+		}
+
+		$orderModel = VmModel::getModel('orders');
+		$order = $orderModel->getOrder($virtuemart_order_id);
+
+
+		return true;
 	}
 
 	/**
@@ -416,6 +586,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 			$order_history['order_status'] = $this->_currentMethod->status_canceled;
 			$order_history['customer_notified'] = true;
 		}
+		//$this->debugLog($success, 'updateOrderStatus', 'error', false);
 
 
 		$db_values['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
@@ -443,16 +614,6 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		return $order_history;
 	}
 
-
-	function getOrderHistory ($paybox_data, $order) {
-		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M'] * 0.01, $order['details']['BT']->order_currency);
-		$order_history['comments'] = vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
-		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' . $paybox_data['S'];
-
-		$order_history['customer_notified'] = true;
-		$order_history['order_status'] = $this->_currentMethod->status_success;
-		return $order_history;
-	}
 
 	/**
 	 * Display stored payment data for an order
@@ -595,20 +756,15 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 
 	}
 
-	function _getPaymentResponseHtml ($paybox_data, $payment_name, $order) {
 
-		vmdebug('paybox response', $paybox_data);
+	private function getExtraPluginNameInfo ($activeMethod) {
+		$this->_currentMethod = $activeMethod;
 
-		$html = '<table>' . "\n";
-		$html .= $this->getHtmlRow('PAYBOX_PAYMENT_NAME', $payment_name);
-		$html .= $this->getHtmlRow('PAYBOX_ORDER_NUMBER', $paybox_data->order_number);
+		$payboxInterface = $this->_loadPayboxInterface();
+		$extraInfo = $payboxInterface->getExtraPluginNameInfo();
 
-		$html .= '<a class="vm-button-correct" href="' . JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $order['details']['BT']->order_number . '&order_pass=' . $order['details']['BT']->order_pass, false) . '">' . JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER') . '</a>';
+		return $extraInfo;
 
-//$html .= $this->getHtmlRow ('PAYBOX_AMOUNT', $paybox_data['montant'] . " " . $paybox_data['mc_currency']);
-		$html .= '</table>' . "\n";
-
-		return $html;
 	}
 
 	/**
@@ -617,31 +773,24 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	 */
 	protected function renderPluginName ($method) {
 		$logos = $method->payment_logos;
+		$display_logos = '';
 		if (!empty($logos)) {
 			$display_logos = $this->displayLogos($logos) . ' ';
 		}
 		$payment_name = $method->payment_name;
-		$recurring = array();
-		if ($method->activate_recurring) {
-			if (!class_exists('VirtueMartCart')) {
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-			}
-			$cart = VirtueMartCart::getCart();
-			if (isset($cart->pricesUnformatted)) {
-				$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->pricesUnformatted['billTotal'], $method->payment_currency);
-				$pbxTotalInPaymentCurrency = $totalInPaymentCurrency['value'] * 100;
-				$this->_currentMethod = $method;
-				//$recurring = $this->getRecurringPayments($pbxTotalInPaymentCurrency);
-			}
-
+		if (!class_exists('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
+		$this->_currentMethod = $method;
+		$extraInfo = $this->getExtraPluginNameInfo($method);
+
 		$html = $this->renderByLayout('render_pluginname', array(
 		                                                        'shop_mode'                   => $method->shop_mode,
 		                                                        'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 		                                                        'logo'                        => $display_logos,
 		                                                        'payment_name'                => $payment_name,
 		                                                        'payment_description'         => $method->payment_desc,
-		                                                        'recurring'                   => $recurring,
+		                                                        'extraInfo'                   => $extraInfo,
 		                                                   ));
 		$html = $this->rmspace($html);
 		return $html;
@@ -672,21 +821,30 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	 *
 	 */
 	protected function checkConditions ($cart, $method, $cart_prices) {
+		//vmTrace('checkConditions', true);
+		//$this->debugLog( $cart_prices['salesPrice'], 'checkConditions','debug');
+		$this->_currentMethod = $method;
+		$payboxInterface = $this->_loadPayboxInterface();
+		if (!$payboxInterface->getPayboxServerUrl()) {
+			$this->debugLog('getPayboxServerUrl FALSE', 'checkConditions','debug');
+			$this->PbxError('No Pbx server available');
+			return false;
+		}
+		if (!$this->getPayboxReturnUrls($payboxInterface)) {
+			$this->debugLog('getPayboxReturnUrls FALSE', 'checkConditions','debug');
+			return false;
+		}
 		$this->convert_condition_amount($method);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 		$amount = $cart_prices['salesPrice'];
 		$amount_cond = true;
 
-		if ($method->activate_recurring AND $amount <= $method->recurring_min_amount) {
-			//$amount_cond =false;
+		if ($method->integration == 'recurring' AND $amount <= $method->recurring_min_amount) {
+			$this->debugLog('recurring_min_amount FALSE'.$amount.' '.$method->recurring_min_amount, 'checkConditions','debug');
 			return false;
 		}
 
-		if ($method->activate_3dsecure AND $amount <= $method->min_amount_3dsecure) {
-			// $amount_cond =false;
-			return false;
-		}
 
 
 		$countries = array();
@@ -711,7 +869,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 				return TRUE;
 			}
 		}
-
+		$this->debugLog(' FALSE', 'checkConditions','debug');
 		return FALSE;
 	}
 
@@ -734,23 +892,89 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	 */
 	function plgVmOnStoreInstallPaymentPluginTable ($jplugin_id) {
 		if ($res = $this->selectedThisByJPluginId($jplugin_id)) {
-			$method = $this->getPluginMethod(JRequest::getInt('virtuemart_paymentmethod_id'));
-			$mandatory_fields = array('site_id', 'rang', 'identifiant', 'key');
-			foreach ($mandatory_fields as $mandatory_field) {
-				if (empty($method->$mandatory_field)) {
-					vmError(vmText::sprintf('VMPAYMENT_PAYBOX_CONF_MANDATORY_PARAM', vmText::_('VMPAYMENT_PAYBOX_CONF_' . $mandatory_field)));
-				}
-			}
+
+			$virtuemart_paymentmethod_id = pbxRequest::getInt('virtuemart_paymentmethod_id');
+			$method = $this->getPluginMethod($virtuemart_paymentmethod_id);
+			vmdebug('plgVmOnStoreInstallPaymentPluginTable', $method, $virtuemart_paymentmethod_id);
+			//$this->createRootFile($method->virtuemart_paymentmethod_id);
+			/*
+						$mandatory_fields = array('site_id', 'rang', 'identifiant', 'key');
+						foreach ($mandatory_fields as $mandatory_field) {
+							if (empty($method->$mandatory_field)) {
+								vmError(vmText::sprintf('VMPAYMENT_PAYBOX_CONF_MANDATORY_PARAM', vmText::_('VMPAYMENT_PAYBOX_CONF_' . $mandatory_field)));
+							}
+						}
+			*/
 			if (!extension_loaded('curl')) {
 				vmError(vmText::sprintf('VMPAYMENT_PAYBOX_CONF_MANDATORY_PHP_EXTENSION', 'curl'));
 			}
 			if (!extension_loaded('openssl')) {
 				vmError(vmText::sprintf('VMPAYMENT_PAYBOX_CONF_MANDATORY_PHP_EXTENSION', 'openssl'));
 			}
-			return $this->onStoreInstallPluginTable($jplugin_id);
 		}
+
+		return $this->onStoreInstallPluginTable($jplugin_id);
 	}
 
+
+	/**
+	 * @param $virtuemart_paymentmethod_id
+	 * @return bool
+	 */
+	function createRootFile ($virtuemart_paymentmethod_id) {
+		$created = false;
+		$filename = $this->getPayboxRootFileName($virtuemart_paymentmethod_id);
+		if (!JFile::exists($filename)) {
+			$content = '
+<?php
+	/**
+	* File used by the Paybox VirtueMart Payment plugin
+	**/
+	$get=filter_var_array($_GET, FILTER_SANITIZE_STRING);
+	$_GET["option"]="com_virtuemart";
+	$_GET["element"]="paybox";
+	$_GET["pm"]=' . $virtuemart_paymentmethod_id . ';
+	$_REQUEST["option"]="com_virtuemart";
+	$_REQUEST["element"]="paybox";
+	$_REQUEST["pm"]=' . $virtuemart_paymentmethod_id . ';
+    if ($get["pbx"]=="ok") {
+		$_GET["view"]="pluginresponse";
+		$_GET["task"]="pluginresponsereceived";
+		$_REQUEST["view"]="pluginresponse";
+		$_REQUEST["task"]="pluginresponsereceived";
+	} elseif ($get["pbx"]=="no") {
+		$_GET["view"]="pluginresponse";
+		$_GET["task"]="pluginnotification";
+		$_GET["format"]="raw";
+		$_GET["tmpl"]="component";
+		$_REQUEST["view"]="pluginresponse";
+		$_REQUEST["task"]="pluginnotification";
+		$_REQUEST["format"]="raw";
+		$_REQUEST["tmpl"]="component";
+	} elseif ($get["pbx"]=="ko") {
+		$_GET["view"]="pluginresponse";
+		$_REQUEST["view"]="pluginresponse";
+		$_REQUEST["view"]="pluginUserPaymentCancel";
+	}
+	include("index.php");
+';
+			if (!JFile::write($filename, $content)) {
+				$msg = 'Could not write in file  ' . $filename . ' to store paybox information. Check your file ' . $filename . ' permissions.';
+				vmError($msg);
+			}
+			$created = true;
+		}
+		return $created;
+	}
+
+	function getPayboxRootFileName ($virtuemart_paymentmethod_id) {
+		$filename = JPATH_SITE . '/' . $this->getPayboxFileName($virtuemart_paymentmethod_id);
+		return $filename;
+	}
+
+	function getPayboxFileName ($virtuemart_paymentmethod_id) {
+		return 'vmpayment' . '_' . $virtuemart_paymentmethod_id . '.php';
+	}
 
 	/**
 	 * This event is fired after the payment method has been selected. It can be used to store
@@ -939,14 +1163,14 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	 * @return string
 	 */
 	function getConfirmedHtml ($post_variables, $pbxInterface) {
-
+		$pbxServer = $pbxInterface->getPayboxServerUrl();
 
 		// add spin image
 		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
 		if ($this->_currentMethod->debug) {
-			$html .= '<form action="' . $pbxInterface->getPayboxUrl($this->_currentMethod->shop_mode) . '" method="post" name="vm_paybox_form" target="paybox">';
+			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" target="paybox">';
 		} else {
-			$html .= '<form action="' . $pbxInterface->getPayboxUrl($this->_currentMethod->shop_mode) . '" method="post" name="vm_paybox_form" accept-charset="UTF-8">';
+			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" >';
 		}
 
 		foreach ($post_variables as $name => $value) {
@@ -954,7 +1178,8 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		}
 
 		if ($this->_currentMethod->debug) {
-
+			$this->debugLog($this->_currentMethod->virtuemart_paymentmethod_id, 'sendPostRequest: payment method', 'debug');
+			$this->debugLog($pbxServer, 'sendPostRequest: Server', 'debug');
 			$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to Paybox" />
 						</div>';
@@ -995,23 +1220,23 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	 * @param $order
 	 * @return null|string
 	 */
-	function getResponseHTML ($order, $paybox_data, $success, $recurring_comment) {
+	function getResponseHTML ($order, $paybox_data, $success, $extra_comment) {
 
-		$payment_name = $this->renderPluginName($this->_method);
+		$payment_name = $this->renderPluginName($this->_currentMethod);
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
-		$q = 'SELECT `currency_numeric_code` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $order['details']['BT']->order_currency . '" ';
+		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $order['details']['BT']->order_currency . '" ';
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		$currency_numeric_code = $db->loadResult();
 		$html = $this->renderByLayout('response', array(
-		                                               "success"           => $success,
-		                                               "payment_name"      => $payment_name,
-		                                               "transactionId"     => $paybox_data['S'],
-		                                               "amount"            => $paybox_data['M'] * 0.01,
-		                                               "recurring_comment" => $recurring_comment,
-		                                               "currency"          => $currency_numeric_code,
-		                                               "order_number"      => $order['details']['BT']->order_number,
-		                                               "order_pass"        => $order['details']['BT']->order_pass,
+		                                               "success"       => $success,
+		                                               "payment_name"  => $payment_name,
+		                                               "transactionId" => $paybox_data['S'],
+		                                               "amount"        => $paybox_data['M'] * 0.01,
+		                                               "extra_comment" => $extra_comment,
+		                                               "currency"      => $currency_numeric_code,
+		                                               "order_number"  => $order['details']['BT']->order_number,
+		                                               "order_pass"    => $order['details']['BT']->order_pass,
 		                                          ));
 		return $html;
 
@@ -1029,7 +1254,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 			}
 			$payboxInterface = new PayboxHelperPayboxRecurring($this->_currentMethod, $this);
 		} elseif ($this->_currentMethod->integration == 'subscribe') {
-			if (!class_exists('PayboxHelperPayboxSubcribe')) {
+			if (!class_exists('PayboxHelperPayboxSubscribe')) {
 				require(JPATH_SITE . '/plugins/vmpayment/paybox/paybox/helpers/subscribe.php');
 			}
 			$payboxInterface = new PayboxHelperPayboxSubscribe($this->_currentMethod, $this);
@@ -1068,17 +1293,64 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		return 'pubkey.pem';
 	}
 
-	private function checkSignature ($pbxInterface) {
-		// TODO pbxVerSign
-		//return true;
+	private function checkSignature ($pbxInterface, $paybox_data, $unsetNonPayboxData = true, $useQuery = true) {
+		if (!$useQuery) {
+			//
+			// some SEF components changes the variable order !!!!!!!
+			$paybox_data = $this->getVariablesInPbxOrder($pbxInterface, $paybox_data);
+			if ($unsetNonPayboxData) {
+				$paybox_data = $pbxInterface->unsetNonPayboxData($paybox_data);
+			}
+			$query_string = $pbxInterface->stringifyArray($paybox_data);
+		} else {
+			$this->debugLog('TAKE QUERY' ,'checkSignature', 'debug');
+			parse_str($_SERVER['QUERY_STRING'], $paybox_data);
+			$paybox_data = $this->getVariablesInPbxOrder($pbxInterface, $paybox_data);
+			$query_string = $pbxInterface->stringifyArray($paybox_data);
+			$query_string=$_SERVER['QUERY_STRING'];
+		}
+		$this->debugLog('checkSignature query:' . $query_string, 'debug');
 		$keyFile = $this->getPayboxSafepath() . '/' . $this->getKeyFileName();
+		$this->debugLog('checkSignature :' . $keyFile, 'debug');
 
-		$checkSig = $pbxInterface->pbxVerSign($keyFile, $_SERVER['QUERY_STRING']);
-
-		return $checkSig;
+		$pbxIsValidSignature = $pbxInterface->pbxIsValidSignature($keyFile, $query_string);
+		if (!$useQuery) {
+			// only send an error message if the error does not come from PBX_EFFECTUE
+			//$msg .= '            ' . 'sig ' . $sig . '<br />';
+			// we cannot send an error at this stage because may be the signature is not valid from the
+			$this->debugLog(JText::_('VMPAYMENT_PAYBOX_ERROR_SIGNATURE_INVALID').var_export($paybox_data, true),'pbxIsValidSignature', 'error');
+		}
+		$this->debugLog('pbxIsValidSignature :' . $pbxIsValidSignature,'checkSignature', 'debug');
+		return $pbxIsValidSignature;
 
 	}
 
+	/**
+	 * some SEF components changes the variable order !!!!!!! ^
+	 * we need to have them in the same order as they are recieved to check the signature
+	 * @param $paybox_data
+	 * @return mixed
+	 */
+	private function getVariablesInPbxOrder ($pbxInterface, $paybox_data) {
+		$this->debugLog('getVariablesInPbxOrder :' . var_export($paybox_data, true), 'debug');
+
+		$paybox_data_ordered = array();
+		$urlOkParms = $this->getUrlOkParms();
+		foreach ($urlOkParms as $key => $urlOkParm) {
+			$paybox_data_ordered[$key] = $paybox_data[$key];
+		}
+		$returnFields = $pbxInterface->getReturnFields();
+		foreach ($returnFields as $returnField) {
+			if (isset($paybox_data[$returnField])) {
+				$paybox_data_ordered[$returnField] = $paybox_data[$returnField];
+			}
+		}
+		$this->debugLog('getVariablesInPbxOrder PBX order:' . var_export($paybox_data_ordered, true), 'debug');
+
+		return $paybox_data_ordered;
+
+
+	}
 
 	private function getContext () {
 
@@ -1086,8 +1358,25 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		return $session->getId();
 	}
 
-	public function debugLog ($message, $title = '', $type = 'message', $echo = false, $doVmDebug = false) {
+	/**
+	 * @param $message
+	 */
+	function pbxError ($message) {
+		$public = "";
+		if ($this->_currentMethod->debug) {
+			$public = $message;
+		}
+		vmError($message, $public);
+	}
 
+	/**
+	 * @param string $message
+	 * @param string $title
+	 * @param string $type
+	 * @param bool   $echo
+	 * @param bool   $doVmDebug
+	 */
+	public function debugLog ($message, $title = '', $type = 'message', $echo = false, $doVmDebug = false) {
 
 		if ($this->_currentMethod->debug) {
 			$this->debug($message, $title, true);
@@ -1109,7 +1398,8 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (is_array($subject)) {
 			$debug .= str_replace("=>", "&#8658;", str_replace("Array", "<font color=\"red\"><b>Array</b></font>", nl2br(str_replace(" ", " &nbsp; ", print_r($subject, true)))));
 		} else {
-			$debug .= str_replace("=>", "&#8658;", str_replace("Array", "<font color=\"red\"><b>Array</b></font>", (str_replace(" ", " &nbsp; ", print_r($subject, true)))));
+			//$debug .= str_replace("=>", "&#8658;", str_replace("Array", "<font color=\"red\"><b>Array</b></font>", (str_replace(" ", " &nbsp; ", print_r($subject, true)))));
+			$debug .= str_replace("=>", "&#8658;", str_replace("Array", "<font color=\"red\"><b>Array</b></font>", print_r($subject, true)));
 
 		}
 

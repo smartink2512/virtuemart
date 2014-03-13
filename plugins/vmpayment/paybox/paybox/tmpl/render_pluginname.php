@@ -43,7 +43,36 @@ defined ('_JEXEC') or die();
 	<?php
 	}
 	?>
-
+	<?php
+	if (isset($viewData['extraInfo']['recurring'])) {
+		?>
+		<div class="vmpayment_recurring">
+			<?php echo vmText::sprintf('VMPAYMENT_PAYBOX_COMMENT_RECURRING_INFO', $viewData['extraInfo']['recurring_number'], $viewData['extraInfo']['recurring_periodicity']) ?>
+		</div>
+	<?php
+	}
+	?>
+	<?php
+	if (isset($viewData['extraInfo']['subscribe'])) {
+		?>
+		<div class="vmpayment_subscribe">
+			<?php
+			echo vmText::_('VMPAYMENT_PAYBOX_SUBSCRIBE_1MONT')." " .$viewData['extraInfo']['subscribe_1mont'] ."<br />" ;
+			echo vmText::_('VMPAYMENT_PAYBOX_SUBSCRIBE_2MONT')." " .$viewData['extraInfo']['subscribe_2mont'] ."<br />" ;
+			echo vmText::_('VMPAYMENT_PAYBOX_SUBSCRIBE_NBPAIE')." " .$viewData['extraInfo']['subscribe_nbpaie']  ."<br />" ;
+			if ($viewData['extraInfo']['subscribe_quand']==1) {
+				$viewData['extraInfo']['subscribe_quand'] ="";
+			}
+				echo vmText::sprintf('VMPAYMENT_PAYBOX_SUBSCRIBE_QUAND', $viewData['extraInfo']['subscribe_quand']  ) ."<br />" ;
+			echo vmText::sprintf('VMPAYMENT_PAYBOX_SUBSCRIBE_FREQ',$viewData['extraInfo']['subscribe_freq'])   ."<br />" ;
+			if ($viewData['extraInfo']['subscribe_delais']) {
+			echo vmText::_('VMPAYMENT_PAYBOX_SUBSCRIBE_DELAIS')." " .$viewData['extraInfo']['subscribe_delais']  ."<br />" ;
+			}
+			?>
+		</div>
+	<?php
+	}
+	?>
 </span>
 
 

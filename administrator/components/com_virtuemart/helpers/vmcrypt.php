@@ -69,6 +69,7 @@ class vmCrypt {
 	}
 
 	private static function _checkCreateKeyFile($date){
+		jimport('joomla.filesystem.file');
 
 		vmSetStartTime('check');
 		static $existingKeys = false;

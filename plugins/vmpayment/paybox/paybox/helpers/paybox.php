@@ -65,7 +65,9 @@ class  PayboxHelperPaybox {
 		);
 		return $fields;
 	}
-
+	public function setOrder($order) {
+		$this->order = $order;
+	}
 	public function unsetNonPayboxData ($paybox_data) {
 		$returnFields = $this->getReturnFields();
 		foreach ($paybox_data as $key => $value) {
@@ -101,6 +103,11 @@ class  PayboxHelperPaybox {
 
 	}
 
+	function getPbxAmount ($amount) {
+		return round($amount * 100);
+
+	}
+
 	/**
 	 * @param $total
 	 * @return string
@@ -126,14 +133,19 @@ class  PayboxHelperPaybox {
 
 		$msg = '';
 
-		foreach ($post as $key => $value) {
-			$msg .= $key . "=" . $value . '&';
-		}
-		$msg = substr($msg, 0, -1);
+
+		$msg = $this->stringifyArray($post);
 		$hmac = $this->generateHMAC($msg, $payboxKey);
 		return $hmac;
 	}
 
+	function stringifyArray ($array) {
+		$string = '';
+		foreach ($array as $key => $value) {
+			$string .= $key . "=" . $value . '&';
+		}
+		return substr($string, 0, -1);
+	}
 
 	public function getHashAlgo () {
 
@@ -197,23 +209,71 @@ class  PayboxHelperPaybox {
 		return date("c");
 	}
 
-	function getPayboxUrl ($shop_mode) {
-		if ($shop_mode == 'test') {
+	function getPayboxServerUrl () {
+
+
+		if ($this->_method->shop_mode == 'test') {
 			$url = 'https://preprod-tpeweb.paybox.com/php/';
-			//$url = 'https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi';
 		} else {
-			$url = "https://tpeweb.paybox.com/php/";
+			$url = $this->getPayboxServerAvailable();
 		}
 		return $url;
 
 	}
+
+	private function getPayboxServerAvailable () {
+
+		$servers = array(
+			'tpeweb.paybox.com', //serveur primaire
+			'tpeweb1.paybox.com' //serveur secondaire
+		);
+		foreach ($servers as $server) {
+			$doc = new DOMDocument();
+			$doc->loadHTMLFile('https://' . $server . '/load.html');
+
+			$server_status = "";
+			$element = $doc->getElementById('server_status');
+			if ($element) {
+				$server_status = $element->textContent;
+			}
+			if ($server_status == "OK") {
+				return $server;
+			}
+		}
+
+		$this->plugin->debugLog('getPayboxServerAvailable : no server are available' . var_export($servers, true), 'error');
+		return FALSE;
+	}
+
+	/**
+	 * @param $paybox_data
+	 * @return mixed
+	 */
+	function getOrderNumber ($order_number) {
+		return $order_number;
+	}
+
+	/**
+	 * @return array
+	 */
+	function getExtraPluginNameInfo () {
+
+		return false;
+	}
+
+	/**
+	 * @param $paybox_data
+	 * @param $order
+	 * @return mixed
+	 */
 	function getOrderHistory ($paybox_data, $order) {
-		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M']*0.01, $order['details']['BT']->order_currency);
+		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M'] * 0.01, $order['details']['BT']->order_currency);
 		$order_history['comments'] = vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
 		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' . $paybox_data['S'];
 
 		$order_history['customer_notified'] = true;
-		$order_history['order_status'] = $this->_currentMethod->status_success;
+		$status_success='status_success_'.$this->_method->debit_type;
+		$order_history['order_status'] = $this->_method->$status_success;
 		return $order_history;
 	}
 
@@ -229,20 +289,20 @@ class  PayboxHelperPaybox {
 		$fp = $filedata = $key = FALSE; // initialisation variables
 		$fsize = filesize($keyfile); // taille du fichier
 		if (!$fsize) {
-			VmError('loadKey :' . 'Key File' . $keyfile . 'not found');
-			$this->plugin->debugLog('loadKey :' . 'Key File' . $keyfile . 'not found', 'error');
+			$this->plugin->pbxError('loadKey :' . 'Key File:' . $keyfile . ' not found');
+			$this->plugin->debugLog('loadKey :' . 'Key File:' . $keyfile . ' not found', 'error');
 			return FALSE;
 		}
 		$fp = fopen($keyfile, 'r'); // ouverture fichier
 		if (!$fp) {
-			vmError('Cannot open Key File' . $keyfile);
+			$this->plugin->pbxError('Cannot open Key File' . $keyfile);
 			$this->plugin->debugLog('loadKey :' . 'Cannot open Key File' . $keyfile, 'error');
 			return FALSE;
 		}
 		$filedata = fread($fp, $fsize);
 		fclose($fp);
 		if (!$filedata) {
-			vmError('Empty Key File' . $keyfile);
+			$this->plugin->pbxError('Empty Key File' . $keyfile);
 			$this->plugin->debugLog('loadKey :' . 'Empty Key File' . $keyfile, 'error');
 			return FALSE;
 		}
@@ -257,24 +317,26 @@ class  PayboxHelperPaybox {
 	}
 
 
-	public function PbxVerSign ($keyfile, $qrystr) {
+	public function pbxIsValidSignature ($keyfile, $queryString) {
 		//return true;
 		$key = $this->loadKey($keyfile);
 		if (!$key) {
 			return false;
 		}
 		$sig = '';
-		$data = "";
-		$this->GetSignedData($qrystr, $data, $sig);
-		$openSsl = openssl_verify($data, $sig, $key);
+		$queryStringNoSig = "";
+		$this->GetSignedData($queryString, $queryStringNoSig, $sig);
+
+		$openSsl = openssl_verify($queryStringNoSig, $sig, $key);
 		openssl_free_key($key);
 		// openssl_verify: verification : 1 si valide, 0 si invalide, -1 si erreur
 		if ($openSsl !== 1) {
 			$msg = 'PbxVerSign :' . 'openssl_verify return value: ' . $openSsl . '<br />';
-			$msg .= '            ' . 'query sign ' . $qrystr . '<br />';
-			$msg .= '            ' . 'data ' . $data . '<br />';
-			$msg .= '            ' . 'sig ' . $sig . '<br />';
-			$this->plugin->debugLog($msg, 'error');
+			$msg .= '            ' . 'query sign ' . $queryString . '<br />';
+			$msg .= '            ' . 'data ' . $queryStringNoSig . '<br />';
+			//$msg .= '            ' . 'sig ' . $sig . '<br />';
+			// we cannot send an error at this stage because may be the signature is not valid from the
+			$this->plugin->debugLog($msg,'pbxIsValidSignature', 'debug');
 			return false;
 		}
 
@@ -283,13 +345,33 @@ class  PayboxHelperPaybox {
 
 	// renvoi les donnes signees et la signature
 	public function GetSignedData ($qrystr, &$data, &$sig) {
+		//$qrystr=$_SERVER['QUERY_STRING'];
 		$pos = strrpos($qrystr, '&'); // cherche dernier separateur
 		$data = substr($qrystr, 0, $pos); // et voila les donnees signees
 		$pos = strpos($qrystr, '=', $pos) + 1; // cherche debut valeur signature
 		$sig = substr($qrystr, $pos);
-		$sig = urldecode($sig);
+		if ($this->isUrlEncoded($qrystr)) {
+			$this->plugin->debugLog('URL encoded', 'debug');
+			$sig = urldecode($sig);
+		} else {
+			$this->plugin->debugLog('URL NOT encoded', 'debug');
+		}
+
 		$sig = base64_decode($sig); //decodage Base 64
+		$msg = 'GetSignedData: ' . 'query sign ' . $qrystr . '<br />';
+		$msg .= '               ' . 'data ' . $data . '<br />';
+		//$msg .= '              ' . 'sig ' . $sig . '<br />';
+		$this->plugin->debugLog($msg, 'debug');
+
 	}
 
+	function isUrlEncoded ($string) {
+		//return preg_match('~%[0-9A-F]{2}~i', $string);
+		if (  urldecode($string) === $string){
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 }

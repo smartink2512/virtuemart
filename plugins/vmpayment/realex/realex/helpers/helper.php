@@ -141,23 +141,23 @@ class  RealexHelperRealex {
 	}
 
 	/**
-	 * The digits from the first line of the address should be concatanated with the post code digits with a '|' in the middle.
+	 * The digits from the first line of the address should be concatenated with the post code digits with a '|' in the middle.
 	 * * For example: Flat 123, No. 7 Grove Park, E98 7QJ
 	* Billing Code: '987|123', the number of digits on each side of the '|' should also be restricted to 5.
 	 * @param $address
 	 */
 	public function getCode ($address) {
 		// get first digits of the address line,
-		$digits_addr=$this->stripnonnumeric($address->address_1);
+		$digits_addr=$this->stripnonnumeric($address->address_1,5);
 		// get digits from zip,
-		$digits_zip=$this->stripnonnumeric($address->zip);
+		$digits_zip=$this->stripnonnumeric($address->zip,5);
 		// concatenate with |
 		 return $digits_zip."|".$digits_addr;
 	}
 
-	private function stripnonnumeric ($code) {
+	private function stripnonnumeric ($code,$maxLg) {
 		$code= preg_replace("/[^0-9]/", "", $code);
-		$code= substr(  $code, 0 ,5);
+		$code= substr(  $code, 0 ,$maxLg);
 		return $code;
 	}
 	function _getRealexUrl () {
@@ -833,11 +833,11 @@ class  RealexHelperRealex {
 
 		$xml_request = '<tssinfo>
 		                <address type="billing">
-		                <code>' . $this->stripnonnumeric($BT->zip) . '</code>
+		                <code>' . $this->stripnonnumeric($BT->zip,5) . '</code>
 						 <country>' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_2_code') . '</country>
 						 </address>
 						<address type="shipping">
-					     <code>' . $this->stripnonnumeric($ST->zip) . '</code>
+					     <code>' . $this->stripnonnumeric($ST->zip,5) . '</code>
 						 <country>' . ShopFunctions::getCountryByID($ST->virtuemart_country_id, 'country_2_code') . '</country>
 						 </address>
 						 <custnum></custnum>
@@ -874,7 +874,7 @@ class  RealexHelperRealex {
 				<line3 />
 				<city>' . $BT->city . '</city>
 				<county>' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_2_code') . '</county>
-				<postcode>' . $this->stripnonnumeric($BT->zip) . '</postcode>
+				<postcode>' . $this->stripnonnumeric($BT->zip,5) . '</postcode>
 				<country code="' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_2_code') . '"> ' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_name') . ' </country>
 				</address>
 				<phonenumbers>
@@ -904,19 +904,20 @@ class  RealexHelperRealex {
 	 */
 	function setNewPayment ($newPayerRef, &$newPaymentRef) {
 		$timestamp = $this->getTimestamp();
+		$cc_number=str_replace(" ","",$this->customerData->getVar('cc_number'));
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_CARD_NEW, false);
 		$newPaymentRef = $this->getUniqueId($this->order['details']['BT']->order_number);
 		$xml_request .= '<card>
 		 <ref>' . $newPaymentRef . '</ref>
 		<payerref>' . $newPayerRef . '</payerref>
-		<number>' . $this->customerData->getVar('cc_number') . '</number>
+		<number>' . $cc_number . '</number>
 		<expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
 		<chname>' . $this->customerData->getVar('cc_name') . '</chname>
 		<type>' . $this->customerData->getVar('cc_type') . '</type>
 		<issueno />
 		</card>
 		';
-		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, '', '', $newPayerRef, $this->customerData->getVar('cc_name'), $this->customerData->getVar('cc_number'));
+		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, '', '', $newPayerRef, $this->customerData->getVar('cc_name'), $cc_number);
 		$xml_request .= $this->setSha1($sha1);
 		$xml_request .= '</request>';
 		$response = $this->getXmlResponse($xml_request);
@@ -1085,11 +1086,12 @@ class  RealexHelperRealex {
 	 */
 	public function getSha1Hash ($secret, $args = null) {
 		if (empty($secret)) {
-			vmError('no secret value for getSha1Hash', 'no secret value for getSha1Hash');
+			vmError('function getSha1Hash:no secret value for getSha1Hash', 'no secret value for getSha1Hash');
 		}
 		$args = func_get_args();
 		array_shift($args);
 		$hash = sha1(implode('.', $args));
+		//$hash =$hash.$secret;
 		$hash = sha1("{$hash}.{$secret}");
 		return $hash;
 	}

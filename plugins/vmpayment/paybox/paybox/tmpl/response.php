@@ -27,15 +27,15 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paybox/paybox/assets/
 
 	<?php if ( $viewData['success']) { ?>
 		<div class="status_confirmed">
-			<?php echo vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED', $viewData['amount']." ".$viewData['currency'], $order['details']['BT']->order_number); ?>
+			<?php echo vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED', $viewData['amount']." ".$viewData['currency'],  $viewData["order_number"]); ?>
 		</div>
 		<div class="transaction_id">
 			<?php echo vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' .$viewData['transactionId'];
 			?>
 		</div>
-<?php if ( !empty($viewData['recurring_comment']))  { ?>
-<div class="recurring">
-			<?php echo $viewData['recurring_comment'];
+<?php if ( !empty($viewData['extra_comment']))  { ?>
+<div class="extra_comment">
+			<?php echo $viewData['extra_comment'];
 			?>
 </div>
 	<?php

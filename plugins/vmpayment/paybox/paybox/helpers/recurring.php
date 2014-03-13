@@ -20,20 +20,27 @@
 
 
 defined('_JEXEC') or die('Restricted access');
-class PayboxHelperPayboxRecurring extends PayboxHelperPaybox{
+class PayboxHelperPayboxRecurring extends PayboxHelperPaybox {
 
-	function __construct($method,$paypalPlugin) {
-		parent::__construct($method,$paypalPlugin);
+	function __construct ($method, $paypalPlugin) {
+		parent::__construct($method, $paypalPlugin);
 
 	}
 
+	function getExtraPluginNameInfo () {
+		$extraInfo['recurring'] = true;
+		$extraInfo['recurring_number'] = $this->_method->recurring_number;
+		$extraInfo['recurring_periodicity'] = $this->_method->recurring_periodicity;
+		return $extraInfo;
+
+	}
 
 	function getRecurringPayments ($pbxTotalInPaymentCurrency) {
-		$pbxTermAmount = round($pbxTotalInPaymentCurrency / $this->_currentMethod->recurring_number);
-		$pbxFirstAmount = $pbxTotalInPaymentCurrency - ($pbxTermAmount * ($this->_currentMethod->recurring_number - 1));
-		for ($i = 1; $i < $this->_currentMethod->recurring_number; $i++) {
+		$pbxTermAmount = round($pbxTotalInPaymentCurrency / $this->_method->recurring_number);
+		$pbxFirstAmount = $pbxTotalInPaymentCurrency - ($pbxTermAmount * ($this->_method->recurring_number - 1));
+		for ($i = 1; $i < $this->_method->recurring_number; $i++) {
 			$recurring["PBX_2MONT" . $i] = $this->getPbxTotal($pbxTermAmount);
-			$recurring["PBX_DATE" . $i] = date('d/m/Y', mktime(0, 0, 0, date('m'), date('d') + ($i * $this->_currentMethod->recurring_periodicity), date('Y')));
+			$recurring["PBX_DATE" . $i] = date('d/m/Y', mktime(0, 0, 0, date('m'), date('d') + ($i * $this->_method->recurring_periodicity), date('Y')));
 		}
 		$recurring["PBX_TOTAL"] = $this->getPbxTotal($pbxFirstAmount);
 		return $recurring;
@@ -43,8 +50,8 @@ class PayboxHelperPayboxRecurring extends PayboxHelperPaybox{
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
 		$order_history['comments'] = vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED_RECURRING', $amountInCurrency['display'], $order['details']['BT']->order_number);
 
-		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M']*0.01, $order['details']['BT']->order_currency);
-		$order_history['comments'] .= "<br />" .vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED_RECURRING_2', $amountInCurrency['display']);
+		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M'] * 0.01, $order['details']['BT']->order_currency);
+		$order_history['comments'] .= "<br />" . vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED_RECURRING_2', $amountInCurrency['display']);
 
 		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' . $paybox_data['S'];
 		$recurring_comment = '';
@@ -56,26 +63,26 @@ class PayboxHelperPayboxRecurring extends PayboxHelperPaybox{
 			$recurring_comment .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_COMMENT_NEXT_DEADLINES');
 
 			$recurring_comment .= $this->getOrderRecurringTerms($payment, $order, 1);
-			$order_history['order_status'] = $this->_currentMethod->status_recurring;
+			$order_history['order_status'] = $this->_method->status_recurring;
 		} else {
 			$nbRecurringDone = $this->getNbRecurringDone($payments);
-			$this->debugLog('getNbRecurringDone:'.$nbRecurringDone, 'getOrderHistoryRecurring', 'debug', false);
+			$this->debugLog('getNbRecurringDone:' . $nbRecurringDone, 'getOrderHistoryRecurring', 'debug', false);
 			if ($nbRecurringDone < $payment->recurring_number) {
 				$recurring_comment .= $this->getOrderRecurringTerms($payment, $order, $nbRecurringDone);
-				$order_history['order_status'] = $this->_currentMethod->status_recurring;
+				$order_history['order_status'] = $this->_method->status_success_recurring;
 			} else {
-				$order_history['order_status'] = $this->_currentMethod->status_recurring_end;
+				$order_history['order_status'] = $this->_method->status_success_recurring_end;
 			}
-			$this->debugLog('Next status:'.$order_history['order_status'], 'getOrderHistoryRecurring', 'debug', false);
+			$this->debugLog('Next status:' . $order_history['order_status'], 'getOrderHistoryRecurring', 'debug', false);
 
 			$index_mont = "PBX_2MONT" . $nbRecurringDone;
 			$index_date = "PBX_DATE" . $nbRecurringDone;
 			//$text_mont = vmText::_('VMPAYMENT_PAYBOX_PAYMENT_RECURRING_2MONT') ;
 			//$text_date = vmText::_('VMPAYMENT_PAYBOX_PAYMENT_RECURRING_DATE');
 			//$recurring_comment .= "<br />" . $text_date . " " . $recurring->$index_date . " ";
-			$amountInCurrency = vmPSPlugin::getAmountInCurrency($recurring->$index_mont*0.01, $order['details']['BT']->order_currency);
+			$amountInCurrency = vmPSPlugin::getAmountInCurrency($recurring->$index_mont * 0.01, $order['details']['BT']->order_currency);
 			//$recurring_comment .= $text_mont . " " . $amountInCurrency['display'];
-			$recurring_comment .=   "<br />" . $recurring->$index_date . " ".$amountInCurrency['display'];
+			$recurring_comment .= "<br />" . $recurring->$index_date . " " . $amountInCurrency['display'];
 		}
 		$order_history['customer_notified'] = true;
 		$order_history['comments'] .= $recurring_comment;
@@ -85,16 +92,17 @@ class PayboxHelperPayboxRecurring extends PayboxHelperPaybox{
 
 
 	}
-	function getOrderRecurringTerms($payment, $order, $start) {
+
+	function getOrderRecurringTerms ($payment, $order, $start) {
 		$recurring = json_decode($payment->recurring);
-		$recurring_comment="";
+		$recurring_comment = "";
 		for ($i = $start; $i < $payment->recurring_number; $i++) {
 			$index_mont = "PBX_2MONT" . $i;
 			$index_date = "PBX_DATE" . $i;
 			$text_mont = vmText::_('VMPAYMENT_PAYBOX_PAYMENT_RECURRING_2MONT') . " ";
-			$text_date = vmText::_('VMPAYMENT_PAYBOX_PAYMENT_RECURRING_DATE') . " " ;
+			$text_date = vmText::_('VMPAYMENT_PAYBOX_PAYMENT_RECURRING_DATE') . " ";
 			$recurring_comment .= "<br />" . $text_date . " " . $recurring->$index_date . " ";
-			$amountInCurrency = vmPSPlugin::getAmountInCurrency(($recurring->$index_mont)*0.01, $order['details']['BT']->order_currency);
+			$amountInCurrency = vmPSPlugin::getAmountInCurrency(($recurring->$index_mont) * 0.01, $order['details']['BT']->order_currency);
 			$recurring_comment .= $text_mont . " " . $amountInCurrency['display'];
 		}
 		return $recurring_comment;
