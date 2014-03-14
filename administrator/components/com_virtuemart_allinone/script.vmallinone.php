@@ -169,17 +169,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				} else {
 					echo "VirtueMart2 modules already installed<br/ >";
 				}
-				// language auto move
-				$src = $this->path . DS . "languageFE";
-				$dst = JPATH_ROOT . DS . "language";
-				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 language moved to the joomla language FE folder<br/ >";
-
-				// language auto move
-				$src = $this->path . DS . "languageBE";
-				$dst = JPATH_ADMINISTRATOR . DS . "language";
-				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 language moved to the joomla language BE folder<br/ >";
 
 				// libraries auto move
 				$src = $this->path . DS . "libraries";
@@ -344,16 +333,18 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			}
 
 			if ($task != 'updateDatabase') {
-				$this->recurse_copy ($src, $dst);
+				$success =$this->recurse_copy ($src, $dst);
 			}
-
-			if ($group != 'search') {
-				$this->updatePluginTable ($name, $type, $element, $group, $dst);
-			} else {
-				if (version_compare (JVERSION, '1.6.0', 'ge')) {
+			if ($success) {
+				if ($group != 'search') {
 					$this->updatePluginTable ($name, $type, $element, $group, $dst);
+				} else {
+					if (version_compare (JVERSION, '1.6.0', 'ge')) {
+						$this->updatePluginTable ($name, $type, $element, $group, $dst);
+					}
 				}
 			}
+
 
 		}
 
@@ -683,11 +674,13 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 								if (!JFile::delete ($dst . DS . $file)) {
 									$app = JFactory::getApplication ();
 									$app->enqueueMessage ('Couldnt delete ' . $dst . DS . $file);
+									return false;
 								}
 							}
 							if (!JFile::move ($src . DS . $file, $dst . DS . $file)) {
 								$app = JFactory::getApplication ();
 								$app->enqueueMessage ('Couldnt move ' . $src . DS . $file . ' to ' . $dst . DS . $file);
+								return false;
 							}
 						}
 					}
@@ -699,8 +692,9 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			} else {
 				$app = JFactory::getApplication ();
 				$app->enqueueMessage ('Couldnt read dir ' . $dir . ' source ' . $src);
+				return false;
 			}
-
+			return true;
 		}
 
 
