@@ -4,6 +4,7 @@
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.5.3"/>
+    <property name="joomla.version" value="2.5.19"/>
     <property name="svn.lastrevision" value="7717"/>
     <property name="PHING.VM.CODENAME" value="PowerFox"/>
     <property file="build.properties"/>
@@ -29,8 +30,12 @@
     <property name="vm.main.filename" value="${component.name}.${vm.version}"/>
     <property name="vm.aio.filename" value="${component.name}.${vm.version}_ext_aio"/>
     <property name="vm.extract.filename" value="${component.name}.${vm.version}_extract_first"/>
+    <property name="full.extract.filename" value="VirtueMart${vm.version}_Joomla_${joomla.version}-Stable-Full_Package"/>
+    <property name="full.folder.from" value="${joomla.path}"/>
+
 
     <!-- DESTINATION -->
+    <property name="full.folder.to" value="${package.abspath}"/>
     <property name="package.folder" value="${package.abspath}/${component.name}.${vm.version}_extract_first"/>
     <property name="package.folder.main" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.${vm.version}"/>
     <property name="package.folder.aio" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.aio.${vm.version}"/>
@@ -42,6 +47,7 @@
 
     <property name="package.language.aio" value="${package.admin.aio}/language"/>
     <property name="package.libraries.aio" value="${package.admin.aio}/libraries"/>
+
 
 
     <!-- ============================================  -->
@@ -112,6 +118,39 @@
         <mkdir dir="${package.folder}"/>
         <mkdir dir="${package.folder}"/>
     </target>
+
+
+    <!-- ============================================  -->
+    <!--  FILESET ALL FUL INSTALLER FILES -->
+    <!-- ============================================  -->
+    <fileset dir="${export.to}" id='full_installer_files.refid' defaultexcludes="true">
+        <include name="**"/>
+        <exclude name=".svn"/>
+        <exclude name=".DS_Store"/>
+        <exclude name=".phpstorm.meta.php"/>
+        <exclude name="**/vm_build/**"/>
+        <exclude name="**/realex/**"/>
+        <exclude name="**/paybox/**"/>
+        <exclude name="**/payzen/**"/>
+        <exclude name="**/systempay/**"/>
+        <exclude name="**/da-DK/**"/>
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/el-GR/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nb-NO/**"/>
+        <exclude name="**/no-NO/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/ru-RU/**"/>
+        <exclude name="**/sv-SE/**"/>
+        <exclude name="**/tr-TR/**"/>
+        <exclude name="**/uk-UA/**"/>
+        <exclude name="**/th-TH/**"/>
+    </fileset>
+
 
     <!-- ============================================  -->
     <!--  FILESET ALL MAIN COMPONENT FILES -->
@@ -212,7 +251,19 @@
     <fileset dir="${package.admin.aio}" id='script.aio.refid' defaultexcludes="true">
         <include name="script.vmallinone.php"/>
     </fileset>
+    <!-- ============================================  -->
+    <!-- TARGET: copy all files for the FULL INSTALLER -->
+    <!-- ============================================  -->
+    <target name="full_installer_files">
+        <echo msg="Copying ALL VM FILES  to directory ${joomla.path}"/>
+        <copy todir="${joomla.path}">
+            <fileset refid="full_installer_files.refid"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
+        </copy>
 
+    </target>
 
 
     <!-- ============================================  -->
@@ -327,7 +378,17 @@
     <target name="clean" depends="delete_package_folder, delete_export_to_folder, create_package_folder">
         <echo msg="Cleaning Package directory OK!"/>
     </target>
-
+    <target name="full_installer" depends="full_installer_files">
+        <echo msg="ZIP ${full.folder.to}/${full.extract.filename}.zip FROM ${full.folder.from}"/>
+        <zip destfile="${full.folder.to}/${full.extract.filename}.zip">
+            <fileset dir="${full.folder.from}">
+                <include name="**"/>
+                <exclude name=".svn"/>
+                <exclude name=".DS_Store"/>
+            </fileset>
+        </zip>
+        <echo msg="Full installer compressed OK!"/>
+    </target>
     <target name="Main" depends="main_files">
         <echo msg="Creating MAIN PACKAGE  ..."/>
         <tar destfile="${package.folder}/${component.name}.${vm.version}.tar.gz" compression="gzip">
@@ -365,7 +426,7 @@
         <echo msg="AIO Component compressed OK!"/>
     </target>
 
-    <target name="VIRTUEMART2" depends="title, clean ,svn.export, Main, AIO">
+    <target name="VIRTUEMART2_ALONE" depends="title, clean ,svn.export, Main, AIO">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
         <!-- DOES not create a correct package for me -->
@@ -378,4 +439,27 @@
         </zip>
         <echo msg="EXTRACT FIRST compressed in directory OK!"/>
     </target>
+
+    <target name="FULLINSTALLER_ALONE" depends="title, clean ,svn.export,  full_installer">
+        <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
+        <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
+
+        <echo msg="FULLINSTALLER_ALONE DONE!"/>
+    </target>
+
+
+    <target name="VIRTUEMART2_AND_FULLINSTALLER" depends="title, clean ,svn.export, Main, AIO,   full_installer">
+        <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
+        <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
+        <!-- DOES not create a correct package for me -->
+        <zip destfile="${package.folder}/${component.name}.${vm.version}_extract_first.zip">
+            <fileset dir="${package.folder}">
+                <include name="${package.folder}/${component.name}.${vm.version}.tar.gz"/>
+                <include name="${package.folder}/${component.name}.${vm.version}_ext_aio.tar.gz"/>
+                <exclude name=".DS_Store"/>
+            </fileset>
+        </zip>
+        <echo msg="EXTRACT FIRST compressed in directory OK!"/>
+    </target>
+
 </project>
