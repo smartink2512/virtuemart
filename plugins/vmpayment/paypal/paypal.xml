@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmpayment" method="upgrade">
-    <name>VMPAYMENT_PAYPAL</name>
+    <name>PayPal</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -12,7 +12,7 @@
     </description>
     <files>
         <filename plugin="paypal">paypal.php</filename>
-    </files>
+      <folder>language</folder></files>
     <params addpath="/administrator/components/com_virtuemart/elements"/>
     <params addpath="/plugins/vmpayment/paypal/paypal/elements"/>
     <params>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" version="2.5" group="vmpayment"
            method="upgrade">
-    <name>VMPAYMENT_HEIDELPAY</name>
+    <name>Heidelpay</name>
     <creationDate>12-Sep-2012</creationDate>
     <author>Heidelberger Payment GmbH</author>
     <authorEmail>info@heidelpay.de</authorEmail>
@@ -10,17 +10,11 @@
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <version>13.11</version>
     <description><![CDATA[<h2>Virtuemart Plugin von:</h2><p><a href="http://www.Heidelpay.de" target="_blank"><img src="http://www.heidelpay.de/gfx/logo.gif" style="margin-right:20px;"/></a></p> ]]></description>
-    <languages folder="languages">
-        <language tag="de-DE" client="administrator">de-DE.plg_vmpayment_heidelpay.ini
-        </language>
-        <language tag="en-GB" client="administrator">en-GB.plg_vmpayment_heidelpay.ini
-        </language>
-        <language tag="en-GB" client="administrator">en-GB.plg_vmpayment_heidelpay.sys.ini
-        </language>
-    </languages>
+
     <files>
         <filename plugin="heidelpay">heidelpay.php</filename>
         <filename>index.html</filename>
+        <folder>language</folder>
         <folder>heidelpay</folder>
     </files>
      <params addpath="/plugins/vmpayment/heidelpay/elements"/>

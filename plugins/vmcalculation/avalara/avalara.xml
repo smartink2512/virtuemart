@@ -8,12 +8,10 @@
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <version>2.0.18b</version>
     <description>On demand tax calculation for whole U.S.A.</description>
-    <languages>
-		<language tag="en-GB">en-GB.plg_vmcalculation_avalara.ini</language>
-    </languages>
     <files>
         <filename plugin="avalara">avalara.php</filename>
         <filename plugin="avalara">AvaTax.php</filename>
         <folder>classes</folder>
+        <folder>language</folder>
     </files>
 </install>

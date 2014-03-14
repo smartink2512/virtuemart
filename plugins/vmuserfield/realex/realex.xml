@@ -8,9 +8,7 @@
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>Card storage plugin for Realex</description>
-    <languages>
-        <language tag="en-GB">en-GB.plg_vmuserfield_realex.ini</language>
-    </languages>
+
     <files>
         <filename plugin="realex">realex.php</filename>
         <folder>realex</folder>

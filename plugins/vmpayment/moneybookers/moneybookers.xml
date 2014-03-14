@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >
-    <name>VMPAYMENT_MONEYBOOKERS</name>
+    <name>Moneybookers</name>
     <creationDate>April 2012</creationDate>
     <author>Skrill Holdings Limited</author>
     <authorUrl>http://www.skrill.com</authorUrl>
@@ -13,11 +13,8 @@
 
     <files>
 	<filename plugin="moneybookers">moneybookers.php</filename>
+        <folder>language</folder>
     </files>
-    <languages>
-	<language tag="en-GB">en-GB.plg_vmpayment_moneybookers.ini</language>
-	<language tag="en-US">en-GB.plg_vmpayment_moneybookers.ini</language>
-    </languages>
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMPAYMENT_MONEYBOOKERS_PAYMENT_TITLE" level="level1" />

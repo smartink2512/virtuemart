@@ -8,13 +8,11 @@
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>text input plugin for product</description>
-    <languages>
-        <language tag="en-GB">en-GB.plg_vmcustom_textinput.ini</language>
-        <language tag="fr-FR">fr-FR.plg_vmcustom_textinput.ini</language>
-    </languages>
+
     <files>
         <filename plugin="textinput">textinput.php</filename>
         <folder>textinput</folder>
+        <folder>language</folder>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />

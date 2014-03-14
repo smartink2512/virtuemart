@@ -15,12 +15,9 @@
     <files>
         <filename plugin="systempay">systempay.php</filename>
         <folder>systempay</folder>
-    </files>
+      <folder>language</folder></files>
 
-    <languages>
-        <language tag="en-GB">languageBE/en-GB.plg_vmpayment_systempay.ini</language>
-        <language tag="fr-FR">languageBE/fr-FR.plg_vmpayment_systempay.ini</language>
-    </languages>
+x
     
 
    	<params addpath="/plugins/vmpayment/systempay/elements" />

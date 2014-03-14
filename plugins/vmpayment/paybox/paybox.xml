@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" method="upgrade">
-    <name>VM Payment - Paybox</name>
+    <name>Paybox</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -14,12 +14,9 @@
     <files>
         <filename plugin="paybox">paybox.php</filename>
         <folder>paybox</folder>
+      <folder>language</folder>
     </files>
 
-    <languages>
-        <language tag="fr-FR">fr-FR.plg_vmpayment_paybox.ini</language>
-        <language tag="en-GB">en-GB.plg_vmpayment_paybox.ini</language>
-    </languages>
 
 
     <params addpath="/plugins/vmpayment/paybox/elements"/>

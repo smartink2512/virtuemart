@@ -13,10 +13,9 @@
 
     <files>
         <filename plugin="sofort">sofort.php</filename>
+      <folder>language</folder>
     </files>
-    <languages>
-        <language tag="en-GB">en-GB.plg_vmpayment_sofort.ini</language>
-    </languages>
+
     <params addpath="/plugins/vmpayment/sofort/elements"/>
     <params addpath="/plugins/vmpayment/sofort/sofort/elements"/>
     <params addpath="/plugins/vmpayment/sofort_ideal/elements"/>

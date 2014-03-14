@@ -25,14 +25,7 @@ if ($viewData['sandbox'] ) {
 	<span style="color:red;font-weight:bold">Sandbox (<?php echo $viewData['virtuemart_paymentmethod_id'] ?>)</span>
 <?php
 }
-?>
- <a href="#"><img id="paypalLogo" src="<?php echo $viewData['img']?>" alt="<?php echo $viewData['text']?>" border="0" style="cursor:pointer;" /></a>
- <script type="text/javascript">window.addEvent("domready", function() {
-        $("paypalLogo").addEvent("click", function() {
-            window.open('<?php echo $viewData['link']?>','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=400, height=500');
-        });
-    });
-</script>
 
-
+$img='<img id="paypalLogo" alt="'.$viewData['text'].'" src="'.$viewData['img'].'"/>';
+echo shopFunctionsF::vmPopupLink( $viewData['link'], $img, 640, 480, '_blank',$viewData['text']);
 

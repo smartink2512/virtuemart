@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmcustom" >
-    <name>VMCUSTOM_STOCKABLE</name>
+    <name>Stockable</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -8,12 +8,9 @@
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>VMCUSTOM_STOCKABLE_DESC</description>
-    <languages>
-        <language tag="en-GB">en-GB.plg_vmcustom_stockable.ini</language>
-        <language tag="fr-FR">fr-FR.plg_vmcustom_stockable.ini</language>
-    </languages>
     <files>
         <filename plugin="stockable">stockable.php</filename>
+        <folder>language</folder>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />

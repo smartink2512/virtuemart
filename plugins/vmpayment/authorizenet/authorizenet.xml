@@ -10,7 +10,7 @@
     <element>authorizenet</element>
     <files>
 	<filename plugin="authorizenet">authorizenet.php</filename>
-    </files>
+      <folder>language</folder></files>
     <params addpath="/administrator/components/com_virtuemart/elements" />
     <params addpath="/plugins/vmpayment/authorizenet/elements" />
     <params addpath="/plugins/vmpayment/authorizenet/authorizenet/elements" />

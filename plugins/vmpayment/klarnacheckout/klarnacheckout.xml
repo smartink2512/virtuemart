@@ -11,6 +11,7 @@
 
     <files>
         <filename plugin="klarnacheckout">klarnacheckout.php</filename>
+        <folder>language</folder>
     </files>
     <params addpath="/plugins/vmpayment/klarna/elements"/>
     <params addpath="/plugins/vmpayment/klarna/klarna/elements"/>
