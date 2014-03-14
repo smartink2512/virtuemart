@@ -112,7 +112,7 @@ CREATE TABLE `#__banners` (
   INDEX `idx_metakey_prefix` (`metakey_prefix`),
   INDEX `idx_banner_catid`(`catid`),
   INDEX `idx_language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -138,7 +138,7 @@ CREATE TABLE `#__banner_clients` (
   PRIMARY KEY  (`id`),
   INDEX `idx_own_prefix` (`own_prefix`),
   INDEX `idx_metakey_prefix` (`metakey_prefix`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -198,7 +198,7 @@ CREATE TABLE `#__categories` (
   KEY `idx_left_right` (`lft`,`rgt`),
   KEY `idx_alias` (`alias`),
   INDEX `idx_language` (`language`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__categories` VALUES
 (1, 0, 0, 0, 13, 0, '', 'system', 'ROOT', 'root', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{}', '', '', '', 0, '2009-10-18 16:07:09', 0, '0000-00-00 00:00:00', 0, '*'),
@@ -331,7 +331,7 @@ CREATE TABLE `#__content_frontpage` (
   `content_id` integer NOT NULL default '0',
   `ordering` integer NOT NULL default '0',
   PRIMARY KEY  (`content_id`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -387,7 +387,7 @@ CREATE TABLE `#__extensions` (
   INDEX `element_clientid`(`element`, `client_id`),
   INDEX `element_folder_clientid`(`element`, `folder`, `client_id`),
   INDEX `extension`(`type`,`element`,`folder`,`client_id`)
-) AUTO_INCREMENT=10000 CHARSET=utf8;
+) Engine=MyISAM AUTO_INCREMENT=10000 CHARSET=utf8;
 
 DELETE FROM `#__extensions`;
 
@@ -1118,7 +1118,7 @@ CREATE TABLE `#__languages` (
   UNIQUE `idx_langcode` (`lang_code`),
   KEY `idx_access` (`access`),
   INDEX `idx_ordering` (`ordering`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `ordering`)
 VALUES
@@ -1161,7 +1161,7 @@ CREATE TABLE `#__menu` (
   KEY `idx_alias` (`alias`),
   KEY `idx_path` (`path`(333)),
   KEY `idx_language` (`language`)
-)   ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)   ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DELETE FROM `#__menu`;
 
@@ -1199,7 +1199,7 @@ CREATE TABLE IF NOT EXISTS `#__menu` (
   KEY `idx_alias` (`alias`),
   KEY `idx_path` (`path`(255)),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=118 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`) VALUES
@@ -1257,7 +1257,7 @@ CREATE TABLE `#__menu_types` (
   `description` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   UNIQUE `idx_menutype` (`menutype`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__menu_types` VALUES (1, 'mainmenu', 'Main Menu', 'The main menu for the site');
 
@@ -1291,7 +1291,7 @@ CREATE TABLE `#__messages_cfg` (
   `cfg_name` varchar(100) NOT NULL default '',
   `cfg_value` varchar(255) NOT NULL default '',
   UNIQUE `idx_user_var_name` (`user_id`,`cfg_name`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 # -------------------------------------------------------
 
 #
@@ -1320,7 +1320,7 @@ CREATE TABLE `#__modules` (
   KEY `published` (`published`,`access`),
   KEY `newsfeeds` (`module`,`published`),
   KEY `idx_language` (`language`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 DELETE FROM `#__modules`;
@@ -1347,7 +1347,7 @@ CREATE TABLE IF NOT EXISTS `#__modules` (
   KEY `published` (`published`,`access`),
   KEY `newsfeeds` (`module`,`published`),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB AUTO_INCREMENT=93 ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=93 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__modules` (`id`, `title`, `note`, `content`, `ordering`, `position`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `published`, `module`, `access`, `showtitle`, `params`, `client_id`, `language`) VALUES
 	(1, 'Main Menu', '', '', 1, 'position-1', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_menu', 1, 1, '{"menutype":"mainmenu","startLevel":"1","endLevel":"0","showAllChildren":"0","tag_id":"","class_sfx":"","window_open":"","layout":"_:default","moduleclass_sfx":"_menu","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
@@ -1382,7 +1382,7 @@ CREATE TABLE `#__modules_menu` (
   `moduleid` integer NOT NULL default '0',
   `menuid` integer NOT NULL default '0',
   PRIMARY KEY  (`moduleid`,`menuid`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Dumping data for table `#__modules_menu`
@@ -1603,7 +1603,7 @@ CREATE TABLE IF NOT EXISTS `#__template_styles` (
   PRIMARY KEY  (`id`),
   KEY `idx_template` (`template`),
   KEY `idx_home` (`home`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `#__template_styles` VALUES (2, 'bluestork', '1', '1', 'Bluestork - Default', '{"useRoundedCorners":"1","showSiteName":"0"}');
 INSERT INTO `#__template_styles` VALUES (3, 'atomic', '0', '0', 'Atomic - Default', '{}');
@@ -1639,7 +1639,7 @@ CREATE TABLE IF NOT EXISTS `#__usergroups` (
   KEY `idx_usergroup_title_lookup` (`title`),
   KEY `idx_usergroup_adjacency_lookup` (`parent_id`),
   KEY `idx_usergroup_nested_set_lookup` USING BTREE (`lft`,`rgt`)
-)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__usergroups` (`id` ,`parent_id` ,`lft` ,`rgt` ,`title`)
 VALUES
@@ -1772,7 +1772,7 @@ CREATE TABLE IF NOT EXISTS `#__viewlevels` (
   `rules` varchar(5120) NOT NULL COMMENT 'JSON encoded access control.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_assetgroup_title_lookup` (`title`)
-)   ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)   ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Dumping data for table `#__viewlevels`
