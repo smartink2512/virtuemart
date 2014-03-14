@@ -215,7 +215,8 @@ class  PayboxHelperPaybox {
 		if ($this->_method->shop_mode == 'test') {
 			$url = 'https://preprod-tpeweb.paybox.com/php/';
 		} else {
-			$url = $this->getPayboxServerAvailable();
+			$url = 'https://'.$this->getPayboxServerAvailable().'/cgi/MYchoix_pagepaiement.cgi';
+		// TO DO 	https://tpeweb.paybox.com/php/
 		}
 		return $url;
 
@@ -229,7 +230,7 @@ class  PayboxHelperPaybox {
 		);
 		foreach ($servers as $server) {
 			$doc = new DOMDocument();
-			$doc->loadHTMLFile('https://' . $server . '/load.html');
+			$doc->loadHTMLFile( $server . '/load.html');
 
 			$server_status = "";
 			$element = $doc->getElementById('server_status');
