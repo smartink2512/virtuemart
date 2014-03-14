@@ -1040,10 +1040,17 @@ class VirtueMartModelUserfields extends VmModel {
 									if ($_fld->size) {
 										$_attribs['style']= "width: ".$_fld->size."px";
 									}
+									if(!$_fld->required){
+										$obj = new stdClass();
+										$obj->fieldtitle = vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION');
+										$obj->fieldvalue = '';
+										array_unshift($_values,$obj);
+									}
+									
 									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
 										 if (  $_val->fieldvalue==$_selected) {
-											 $_return['fields'][$_fld->name]['value'] = JText::_($_val->fieldtitle);
+											 $_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
 										 }
 									}
 									break;
@@ -1052,7 +1059,7 @@ class VirtueMartModelUserfields extends VmModel {
 									$_return['fields'][$_fld->name]['formcode'] =  JHTML::_('select.radiolist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
 										 if (  $_val->fieldvalue==$_selected) {
-											 $_return['fields'][$_fld->name]['value'] = JText::_($_val->fieldtitle);
+											 $_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
 										 }
 									}
 									break;
