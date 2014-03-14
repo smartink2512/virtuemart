@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
+<project name="VIRTUEMART2_AND_FULLINSTALLER" default="VIRTUEMART2_AND_FULLINSTALLER" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.5.3"/>
@@ -123,7 +123,7 @@
     <!-- ============================================  -->
     <!--  FILESET ALL FUL INSTALLER FILES -->
     <!-- ============================================  -->
-    <fileset dir="${export.to}" id='full_installer_files.refid' defaultexcludes="true">
+    <fileset dir="${export.to}" id='full_installer_files.refid' defaultexcludes="true" >
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
@@ -172,17 +172,7 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
     </fileset>
-    <fileset dir="${site.language.path}/en-GB" id='site.language.main.files' defaultexcludes="true">
-        <include name="en-GB.${component.name}**"/>
-        <exclude name=".svn"/>
-        <exclude name=".DS_Store"/>
-    </fileset>
 
-    <fileset dir="${admin.language.path}/en-GB" id='admin.language.main.files' defaultexcludes="true">
-        <include name="en-GB.${component.name}**"/>
-        <exclude name=".svn"/>
-        <exclude name=".DS_Store"/>
-    </fileset>
     <fileset dir="${admin.component.path}" id='xml.main.file' defaultexcludes="true">
         <include name="virtuemart.xml"/>
     </fileset>
@@ -243,11 +233,7 @@
         <exclude name=".DS_Store"/>
     </fileset>
 
-    <fileset dir="${languageBE.path}" id='language.aio.refid' defaultexcludes="true">
-        <include name="**"/>
-        <exclude name=".svn"/>
-        <exclude name=".DS_Store"/>
-    </fileset>
+
     <fileset dir="${package.admin.aio}" id='script.aio.refid' defaultexcludes="true">
         <include name="script.vmallinone.php"/>
     </fileset>
@@ -256,7 +242,7 @@
     <!-- ============================================  -->
     <target name="full_installer_files">
         <echo msg="Copying ALL VM FILES  to directory ${joomla.path}"/>
-        <copy todir="${joomla.path}">
+        <copy todir="${joomla.path}" overwrite="true">
             <fileset refid="full_installer_files.refid"/>
             <filterchain>
                 <expandproperties/>
@@ -440,7 +426,7 @@
         <echo msg="EXTRACT FIRST compressed in directory OK!"/>
     </target>
 
-    <target name="FULLINSTALLER_ALONE" depends="title, clean ,svn.export,  full_installer">
+    <target name="FULLINSTALLER_ALONE" depends="title, clean ,svn.export, full_installer">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
 
@@ -448,7 +434,7 @@
     </target>
 
 
-    <target name="VIRTUEMART2_AND_FULLINSTALLER" depends="title, clean ,svn.export, Main, AIO,   full_installer">
+    <target name="VIRTUEMART2_AND_FULLINSTALLER" depends="title, clean ,svn.export, Main, AIO, full_installer">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
         <!-- DOES not create a correct package for me -->
