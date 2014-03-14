@@ -16,6 +16,7 @@
 	<filename>tmpl/default.php</filename>
 	<filename>tmpl/single.php</filename>
 	<filename>tmpl/index.html</filename>
+        <folder>language</folder>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param	name="layout" type="filelist" label="MOD_VIRTUEMART_PRODUCT_LAYOUT"

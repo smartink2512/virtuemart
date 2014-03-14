@@ -15,6 +15,7 @@
         <filename>helper.php</filename>
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
+        <folder>language</folder>
     </files>
     <params>
         <param name="show" type="list" default="all"
