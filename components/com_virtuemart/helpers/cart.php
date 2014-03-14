@@ -1231,13 +1231,14 @@ class VirtueMartCart {
 					vmdebug(' saveAddressInCart ',$data[$prefix.$name]);
 				}*/
 
-				//vmdebug('saveAddressInCart $prefix='.$prefix.' $name='.$name,$data);
+
 				if(!empty($data[$prefix.$name])){
 					$address[$name] = $data[$prefix.$name];
 				} else {
 					if($fld->required){	//Why we have this fallback to the already stored value?
 						$address[$name] = $this->{$type}[$name];
 					} else {
+						vmdebug('saveAddressInCart empty value for $name='.$name,$data[$prefix.$name]);
 						$address[$name] = '';
 					}
 				}
@@ -1490,7 +1491,7 @@ class VirtueMartCart {
 			$preFix = '';
 		}
 
-		$addresstype = $type.'address';
+		$addresstype = $type.'address';	//for example BTaddress
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
 		$address = $this->$addresstype = $userFieldsModel->getUserFieldsFilled(
 		$userFieldsBT
@@ -1514,10 +1515,9 @@ class VirtueMartCart {
 				} else if (!empty($address['fields'][$k]['value'])){
 					if(!isset($tmp[$k])){
 						$tmp[$k] = $address['fields'][$k]['value'];
+						//vmdebug('Values was empty for key '.$k.', set value to default'.$address['fields'][$k]['value']);
 					}
-
 				}
-
 			}
 			//$this->$type = $tmp;
 		}

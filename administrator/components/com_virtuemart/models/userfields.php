@@ -763,12 +763,12 @@ class VirtueMartModelUserfields extends VmModel {
 				,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
 				? $_fld->default
 				: @html_entity_decode($_userData[$_fld->name],ENT_COMPAT,'UTF-8'))
-				,'title' => JText::_($_fld->title)
+				,'title' => vmText::_($_fld->title)
 				,'type' => $_fld->type
 				,'required' => $_fld->required
 				,'hidden' => false
 				,'formcode' => ''
-				,'description' => JText::_($_fld->description)
+				,'description' => vmText::_($_fld->description)
 				);
 
 				$readonly = '';
@@ -972,7 +972,7 @@ class VirtueMartModelUserfields extends VmModel {
 							// must be translated.
 							// Don't check on the field name though, since others might be added in the future :-(
 							foreach ($_values as $_v) {
-								$_v->fieldtitle = JText::_($_v->fieldtitle);
+								$_v->fieldtitle = vmText::_($_v->fieldtitle);
 							}
 							$_attribs = array();
 							if ($_fld->readonly and !$admin) {
@@ -1049,7 +1049,8 @@ class VirtueMartModelUserfields extends VmModel {
 									
 									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
-										 if (  $_val->fieldvalue==$_selected) {
+										 if ( !empty($_selected) and $_val->fieldvalue==$_selected ) {
+											// vmdebug('getUserFieldsFilled set empty select to value',$_selected,$_fld,$_return['fields'][$_fld->name]);
 											 $_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
 										 }
 									}
