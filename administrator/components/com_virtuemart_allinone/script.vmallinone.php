@@ -92,7 +92,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('VM Custom - Product specification', 'plugin', 'specification', 'vmcustom', 1);
 			$this->installPlugin ('VM Custom - Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
 			$this->installPlugin ('VM Calculation - Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
-			$this->installPlugin ('VM Userfield - Realex', 'plugin', 'realex', 'vmuserfield' );
+			//$this->installPlugin ('VM Userfield - Realex', 'plugin', 'realex', 'vmuserfield' );
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
