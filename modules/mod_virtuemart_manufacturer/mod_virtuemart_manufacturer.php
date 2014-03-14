@@ -24,7 +24,7 @@ if (!class_exists( 'VirtueMartModelManufacturer' ))
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 VmConfig::loadConfig();
-VmConfig::loadJLang('mod_virtuemart_manufacturer', true);
+VmConfig::loadModJLang('mod_virtuemart_manufacturer', true);
 $vendorId = JRequest::getInt('vendorid', 1);
 $model = VmModel::getModel('Manufacturer');
 

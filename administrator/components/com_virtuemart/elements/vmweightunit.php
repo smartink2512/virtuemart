@@ -37,7 +37,9 @@ class JElementVmWeightunit extends JElement {
     var $_name = 'WeightUnit';
 
     function fetchElement($name, $value, &$node, $control_name) {
-        return ShopFunctions::renderWeightUnitList(   $control_name . '[' . $name . ']', $value);
+	    $class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
+
+	    return ShopFunctions::renderWeightUnitList(   $control_name . '[' . $name . ']', $value);
     }
 
 }

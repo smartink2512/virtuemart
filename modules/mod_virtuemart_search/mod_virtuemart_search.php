@@ -18,7 +18,7 @@ if (!class_exists ('VmConfig')) {
 }
 
 VmConfig::loadConfig ();
-VmConfig::loadJLang ('mod_virtuemart_search', true);
+VmConfig::loadModJLang ('mod_virtuemart_search', true);
 
 // Load the virtuemart main parse code
 $button = $params->get ('button', 0);

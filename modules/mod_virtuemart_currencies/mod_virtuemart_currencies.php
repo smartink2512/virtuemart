@@ -27,7 +27,7 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 VmConfig::loadConfig();
-VmConfig::loadJLang('mod_virtuemart_currencies', true);
+VmConfig::loadModJLang('mod_virtuemart_currencies', true);
 $mainframe = Jfactory::getApplication();
 $vendorId = JRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');

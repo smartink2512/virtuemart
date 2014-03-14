@@ -25,6 +25,7 @@ define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
 // define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
 define( 'JPATH_VM_PLUGINS', JPATH_VM_ADMINISTRATOR.DS.'plugins' );
+define( 'JPATH_VM_MODULES', JPATH_ROOT.DS.'modules' );
 
 if(version_compare(JVERSION,'1.7.0','ge')) {
 	defined('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
@@ -673,6 +674,28 @@ class VmConfig {
 			if($site){
 				$path = JPATH_SITE;
 			}
+		}
+
+		$jlang->load($name, $path,$tag,true);
+	}
+	public function loadModJLang($name){
+
+		$jlang =JFactory::getLanguage();
+		$tag = $jlang->getTag();
+
+		$path = $basePath = JPATH_VM_MODULES.DS.$name;
+
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			if(!file_exists($testpath)){
+				$path = JPATH_ADMINISTRATOR;
+			}
+			$jlang->load($name, $path, 'en-GB');
+		}
+
+		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		if(!file_exists($testpath)){
+			$path = JPATH_ADMINISTRATOR;
 		}
 
 		$jlang->load($name, $path,$tag,true);

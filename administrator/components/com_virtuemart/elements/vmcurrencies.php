@@ -50,7 +50,9 @@ class JElementVmCurrencies extends JElement {
             $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
             $value= $currency->virtuemart_currency_id;
         }
-        return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+	    $class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
+
+	    return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
     }
 
 }

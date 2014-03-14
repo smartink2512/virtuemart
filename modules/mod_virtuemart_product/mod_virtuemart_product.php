@@ -20,7 +20,8 @@ defined('_JEXEC') or die( 'Direct Access to '.basename(__FILE__).' is not allowe
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 VmConfig::loadConfig();
-VmConfig::loadJLang('mod_virtuemart_product', true);
+VmConfig::loadJLang('com_virtuemart', true);
+VmConfig::loadModJLang('mod_virtuemart_product', true);
 
 // Setting
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display

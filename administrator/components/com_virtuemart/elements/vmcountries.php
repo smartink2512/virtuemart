@@ -40,9 +40,10 @@ class JElementVmCountries extends JElement {
 
         $db->setQuery($query);
         $fields = $db->loadObjectList();
-        $class = '';
+	    $class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
 
-        $class = 'multiple="true" size="10"  ';
+
+	    $class = 'multiple="true" size="10"  ';
         return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
     }
 

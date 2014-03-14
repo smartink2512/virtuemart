@@ -27,7 +27,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components'
 
 VmConfig::loadConfig();
 VmConfig::loadJLang('com_virtuemart', true);
-VmConfig::loadJLang('mod_virtuemart_cart', true);
+VmConfig::loadModJLang('mod_virtuemart_cart', true);
 
 //This is strange we have the whole thing again in controllers/cart.php public function viewJS()
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
