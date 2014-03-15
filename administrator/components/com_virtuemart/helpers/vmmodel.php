@@ -353,7 +353,7 @@ class VmModel extends JModel {
 		// 		if(USE_SQL_CALC_FOUND_ROWS){
 
 		//and the where conditions
-		$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
+		$joinedTables .="\n".$whereString."\n".$groupBy."\n".$orderBy.' '.$filter_order_Dir ;
 		// 			$joinedTables .= $whereString .$groupBy .$orderBy;
 
 		if($nbrReturnProducts){

@@ -190,8 +190,6 @@ class VirtueMartControllerProductdetails extends JController {
 			}
 		}
 
-		// Display it all
-		$view = $this->getView ('recommend', 'html');
 
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
@@ -200,31 +198,6 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$mainframe = JFactory::getApplication ();
 		$vars = array();
-
-		$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
-		if (is_array ($virtuemart_product_idArray)) {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray[0];
-		} else {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray;
-		}
-		$productModel = VmModel::getModel ('product');
-
-		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
-
-		$user = JFactory::getUser ();
-		$vars['user'] = array('name' => $user->name, 'email' =>  $user->email);
-
-		$vars['vendorEmail'] = $user->email;
-		$vendorModel = VmModel::getModel ('vendor');
-		$vendor = $vendorModel->getVendor ($vars['product']->virtuemart_vendor_id);
-		$vars['vendor']=$vendor;
-		$vendorModel->addImages ($vars['vendor']);
-		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
-		$vars['vendorAddress']= shopFunctions::renderVendorAddress($vars['product']->virtuemart_vendor_id);
-
-		$vars['vendorEmail']=  $user->email;
-		$vars['vendor']->vendor_name =$user->name;
-
 
 		$toMail = JRequest::getVar ('email'); //is sanitized then
 		$toMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $toMail);
@@ -238,6 +211,8 @@ class VirtueMartControllerProductdetails extends JController {
 
 // 		vmdebug('my email vars ',$vars,$TOMail);
 
+		// Display it all
+		$view = $this->getView ('recommend', 'html');
 
 		$view->setLayout ('mail_confirmed');
 		$view->display ();

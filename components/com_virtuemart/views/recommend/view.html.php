@@ -51,6 +51,39 @@ class virtuemartViewrecommend extends VmView {
 				//$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
 			}
 		}
+
+		$layout = $this->getLayout();
+		if($layout != 'form' and $layout != 'mail_confirmed'){
+
+			$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
+			if (is_array ($virtuemart_product_idArray)) {
+				$virtuemart_product_id = (int)$virtuemart_product_idArray[0];
+			} else {
+				$virtuemart_product_id = (int)$virtuemart_product_idArray;
+			}
+			$productModel = VmModel::getModel ('product');
+
+			$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
+
+			$user = JFactory::getUser ();
+			$vars['user'] = array('name' => $user->name, 'email' =>  $user->email);
+
+			$vars['vendorEmail'] = $user->email;
+			$vendorModel = VmModel::getModel ('vendor');
+			$vendor = $vendorModel->getVendor ($vars['product']->virtuemart_vendor_id);
+			$vars['vendor']=$vendor;
+			$vendorModel->addImages ($vars['vendor']);
+			$vendor->vendorFields = $vendorModel->getVendorAddressFields();
+			$vars['vendorAddress']= shopFunctions::renderVendorAddress($vars['product']->virtuemart_vendor_id);
+
+			$vars['vendorEmail']=  $user->email;
+			$vars['vendor']->vendor_name =$user->name;
+
+			foreach( $vars as $key => $val ) {
+				$this->$key = $val;
+			}
+		}
+
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -71,12 +104,7 @@ class virtuemartViewrecommend extends VmView {
 		// Load the product
 		$product_model = VmModel::getModel('product');
 
-		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
-		if(is_array($virtuemart_product_idArray)){
-			$virtuemart_product_id=(int)$virtuemart_product_idArray[0];
-		} else {
-			$virtuemart_product_id=(int)$virtuemart_product_idArray;
-		}
+		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
 
 		if(empty($virtuemart_product_id)){
 			self::showLastCategory($tpl);

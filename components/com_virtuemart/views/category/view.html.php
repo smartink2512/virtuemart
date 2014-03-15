@@ -82,24 +82,17 @@ class VirtuemartViewCategory extends VmView {
 		}
 		$this->setCanonicalLink($tpl,$document,$categoryId,$virtuemart_manufacturer_id);
 
-		/*if ($categoryId === -1 and $virtuemart_manufacturer_id === false){
-
-			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
-			$catType = 'category';
-			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
-		} else if ($categoryId === -1 and $virtuemart_manufacturer_id){
-
+		if ($categoryId === -1 and $virtuemart_manufacturer_id){
+			$categoryId = 0;
 			$catType = 'manufacturer';
 			$this->setCanonicalLink($tpl,$document,$virtuemart_manufacturer_id,$catType);
-		} else {
-			$catType = 'category';
-			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
-		}*/
+		}
 
 		if($categoryId!==-1){
 			$vendorId = 1;
 			$category = $categoryModel->getCategory($categoryId);
 		}
+
 
 		if(!empty($category)){
 
@@ -199,8 +192,12 @@ class VirtuemartViewCategory extends VmView {
 
 			$categoryModel->addImages($category,1);
 
-			$category->children = $categoryModel->getChildCategoryList( $vendorId, $categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
-			$categoryModel->addImages($category->children,1);
+			if($category->category_layout == 'categories' or ($categoryId >0 and $virtuemart_manufacturer_id <1)){
+				$category->children = $categoryModel->getChildCategoryList( $vendorId, $categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
+				$categoryModel->addImages($category->children,1);
+			} else {
+				$category->children = false;
+			}
 
 			if (VmConfig::get('enable_content_plugin', 0)) {
 				shopFunctionsF::triggerContentPlugin($category, 'category','category_description');

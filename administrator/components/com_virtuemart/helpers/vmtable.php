@@ -708,11 +708,16 @@ class VmTable extends JTable {
 			// Trim white spaces at beginning and end of alias and make lowercase
 			$this->$slugName = trim(JString::strtolower($this->$slugName));
 			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
-			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
 
-			// Trim dashes at beginning and end of alias
+			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
+			while(strpos($this->$slugName,'--')){
+				$this->$slugName = str_replace('--','-',$this->$slugName);
+			}
+				// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
+			//vmdebug('my slug before urlencode ',$this->slug);
 			$this->$slugName = urlencode($this->$slugName);
+			//vmdebug('my slug after urlencode ',$this->slug);
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			//vmdebug('my slugName '.$slugName,$this->slugName);
 			if (!$valid) {

@@ -543,7 +543,6 @@ class VmConfig {
 
 	static function showDebug(){
 
-
 		if(self::$_debug===NULL){
 
 			$debug = VmConfig::get('debug_enable','none');
@@ -555,31 +554,34 @@ class VmConfig {
 				}
 				if(Permissions::getInstance()->check('admin')){
 					self::$_debug = TRUE;
-					ini_set('display_errors', '-1');
-					error_reporting(E_ALL ^ E_STRICT);
 				} else {
 					self::$_debug = FALSE;
-					ini_set('display_errors', '0');
-					error_reporting(E_ALL ^ E_STRICT);
 				}
 			}
 			// 2 show debug to anyone
 			else {
 				if ($debug === 'all') {
 					self::$_debug = TRUE;
-					ini_set('display_errors', '-1');
-					error_reporting(E_ALL ^ E_STRICT);
 				}
 				// else dont show debug
 				else {
 					self::$_debug = FALSE;
-					ini_set('display_errors', '0');
-					error_reporting(E_ALL ^ E_STRICT);
 				}
 			}
 
+			if(self::$_debug){
+				ini_set('display_errors', '1');
+				//error_reporting(E_ALL ^ E_STRICT);
+			} else {
+				ini_set('display_errors', '0');
+				if(version_compare(phpversion(),'5.4.0','<' )){
+					error_reporting( E_ALL & ~E_STRICT );
+				} else {
+					error_reporting( E_ALL ^ E_STRICT );
+				}
+			}
 		}
-
+		//$nu = $ha;
 		return self::$_debug;
 	}
 
@@ -678,7 +680,13 @@ class VmConfig {
 
 		$jlang->load($name, $path,$tag,true);
 	}
-	public function loadModJLang($name){
+
+	/**
+	 * @static
+	 * @author Valerie Isaksen
+	 * @param $name
+	 */
+	static public function loadModJLang($name){
 
 		$jlang =JFactory::getLanguage();
 		$tag = $jlang->getTag();

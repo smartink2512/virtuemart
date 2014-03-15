@@ -457,7 +457,7 @@ class calculationHelper {
 					if(!isset($this->_cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'])) $this->_cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'] = $this->productPrices['taxAmount'] * $this->_product->quantity;
 					if(!isset($this->_cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'])) $this->_cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'] = $this->productPrices['salesPrice'] * $this->_product->quantity;
 				}
-				vmdebug('subtotal vattax id '.$rule['virtuemart_calc_id'].' =  '.$this->_cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount']);
+				//vmdebug('subtotal vattax id '.$rule['virtuemart_calc_id'].' =  '.$this->_cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount']);
 			}
 		}
 
