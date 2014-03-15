@@ -55,6 +55,7 @@ class VirtueMartControllerProductdetails extends JController {
 	 * Send the ask question email.
 	 *
 	 * @author Kohl Patrick, Christopher Roussel
+	 * @author Max Milbers
 	 */
 	public function mailAskquestion () {
 
@@ -65,12 +66,6 @@ class VirtueMartControllerProductdetails extends JController {
 			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
 		}
 
-		/*if(!VmConfig::get('recommend_unauth',false)){
-			$user = JFactory::getUser();
-			if($user->guest){
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
-			}
-		}*/
 		$view = $this->getView ('askquestion', 'html');
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
@@ -121,16 +116,6 @@ class VirtueMartControllerProductdetails extends JController {
 			}
 		}
 
-		$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
-		if (is_array ($virtuemart_product_idArray)) {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray[0];
-		} else {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray;
-		}
-		$productModel = VmModel::getModel ('product');
-
-		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
-
 		$user = JFactory::getUser ();
 		if (empty($user->id)) {
 			$fromMail = JRequest::getVar ('email'); //is sanitized then
@@ -143,9 +128,13 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
+		$virtuemart_product_id = vmRequest::getInt ('virtuemart_product_id', 0);
+		$productModel = VmModel::getModel ('product');
+
+		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
+
 		$vendorModel = VmModel::getModel ('vendor');
 		$VendorEmail = $vendorModel->getVendorEmail ($vars['product']->virtuemart_vendor_id);
-		$vars['vendor'] = array('vendor_store_name' => $fromName);
 
 		if (shopFunctionsF::renderMail ('askquestion', $VendorEmail, $vars, 'productdetails')) {
 			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
@@ -162,7 +151,8 @@ class VirtueMartControllerProductdetails extends JController {
 	/**
 	 * Send the Recommend to a friend email.
 	 *
-	 * @author Kohl Patrick,
+	 * @author Kohl Patrick
+	 * @author Max Milbers
 	 */
 	public function mailRecommend () {
 
@@ -190,13 +180,11 @@ class VirtueMartControllerProductdetails extends JController {
 			}
 		}
 
-
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-		$mainframe = JFactory::getApplication ();
 		$vars = array();
 
 		$toMail = JRequest::getVar ('email'); //is sanitized then
@@ -207,9 +195,7 @@ class VirtueMartControllerProductdetails extends JController {
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 		}
-		$mainframe->enqueueMessage (JText::_ ($string));
-
-// 		vmdebug('my email vars ',$vars,$TOMail);
+		$app->enqueueMessage (JText::_ ($string));
 
 		// Display it all
 		$view = $this->getView ('recommend', 'html');

@@ -157,20 +157,46 @@ class VirtueMartViewAskquestion extends VmView {
 		$this->setLayout ('mail_html_question');
 		$this->comment = JRequest::getString ('comment');
 
-		$vendorModel = VmModel::getModel ('vendor');
-		$this->vendor = $vendorModel->getVendor ();
+		$user = JFactory::getUser ();
+		if (empty($user->id)) {
+			$fromMail = JRequest::getVar ('email'); //is sanitized then
+			$fromName = JRequest::getVar ('name', ''); //is sanitized then
+			$fromMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromMail);
+			$fromName = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromName);
+		} else {
+			$fromMail = $user->email;
+			$fromName = $user->name;
+		}
+
+		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
+
+		if(empty($this->vendor)){
+			$vendorModel = VmModel::getModel ('vendor');
+			$this->vendor = $vendorModel->getVendor ();
+			$this->vendor->vendor_store_name = $fromName;
+		}
+
+		$virtuemart_product_id = vmRequest::getInt ('virtuemart_product_id', 0);
+
+		if(empty($this->product)){
+			$productModel = VmModel::getModel ('product');
+			$this->product =  $productModel->getProduct ($virtuemart_product_id);
+		}
 
 		$this->subject = Jtext::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
 		$this->vendorEmail = $this->user['email'];
+
 		// in this particular case, overwrite the value for fix the recipient name
 		$this->vendor->vendor_name = $this->user['name'];
-		//$this->vendorName= $this->user['email'];
+
+
 		if (VmConfig::get ('order_mail_html')) {
 			$tpl = 'mail_html_question';
 		} else {
 			$tpl = 'mail_raw_question';
 		}
 		$this->setLayout ($tpl);
+
 		parent::display ();
 	}
 

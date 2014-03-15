@@ -260,8 +260,15 @@ class VirtueMartModelConfig extends JModel {
 		if (!is_array($searchChecked)) {
 			$searchChecked = (array)$searchChecked;
 		}
+
 		if($type!='browse_cat_orderby_field'){
 			$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
+			if($type=='browse_search_fields'){
+				if($key = array_search('pc.ordering',$searchFieldsArray)){
+					unset($searchFieldsArray[$key]);
+				}
+			}
+
 		} else {
 			$searchFieldsArray = array('category_name','category_description','cx.ordering','c.published');
 		}
