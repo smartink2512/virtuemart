@@ -46,7 +46,6 @@ class Permissions extends JObject{
 	public function __construct() {
 
 		$this->_db = JFactory::getDBO();
- 		$this->getUserGroups();
  		$this->_perms = $this->doAuthentication();
 
 		$user = JFactory::getUser();
@@ -62,18 +61,6 @@ class Permissions extends JObject{
  		return self::$_instance;
     }
 
-	public function getUserGroups() {
-		if (empty($this->_user_groups)) {
-			$this->_db = JFactory::getDBO();
-			$q = ('SELECT `virtuemart_permgroup_id`,`group_name`,`group_level`
-					FROM `#__virtuemart_permgroups`
-					ORDER BY `group_level` ');
-			$this->_db->setQuery($q);
-			$this->_user_groups = $this->_db->loadObjectList('group_name');
-		}
-
-		return $this->_user_groups;
-	}
 
 	/**
 	 * Get permissions for a user ID
@@ -266,7 +253,6 @@ class Permissions extends JObject{
 
 		$user = JFactory::getUser();
 		if(!$this->_vendorId){
-			
 
 			if(!empty( $user->id)){
 				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
@@ -297,24 +283,6 @@ class Permissions extends JObject{
 		return false;
 	}
 
-	/**
-	 * Checks if the user has higher permissions than $perm
-	 * does not work properly, do not use or correct it
-	 * @param string $perm
-	 * @return boolean
-	 * @example $perm->hasHigherPerms( 'storeadmin' );
-	 * 			returns true when user is admin
-	 */
-	function atLeastPerms( $perm ) {
-
-		if( $this->_perms && $this->_user_groups[$perm] >= $this->_user_groups[$this->_perms] ) {
-			return true;
-		}
-		else {
-			return false;
-		}
-
-	}
 
 	/**
 	 * lists the permission levels in a select box

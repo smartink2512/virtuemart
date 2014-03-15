@@ -431,13 +431,20 @@ class VirtueMartModelConfig extends JModel {
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
 
+		/* This conditions is not enough, if the language changes we need to recall the cache.
 		$newbrowse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$newcat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 		if($browse_cat_orderby_field!=$newbrowse_cat_orderby_field or $newcat_brws_orderby_dir!=$cat_brws_orderby_dir){
 			$cache = JFactory::getCache('com_virtuemart_cats','callback');
 			$cache->clean();
-		}
+		}*/
 
+		$cache = JFactory::getCache('com_virtuemart_cats','callback');
+		$cache->clean();
+		$cache = JFactory::getCache('com_virtuemart_rss','callback');
+		$cache->clean();
+		$cache = JFactory::getCache('convertECB','callback');
+		$cache->clean();
 		$cache = JFactory::getCache('_virtuemart');
 		$cache->clean();
 		$cache = JFactory::getCache('com_plugins');

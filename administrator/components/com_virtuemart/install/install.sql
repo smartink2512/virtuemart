@@ -1026,7 +1026,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethod_shoppergroups` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
   `virtuemart_shoppergroup_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
-  `shopper_group_name` char(32),
+  `shopper_group_name` char(64),
   `shopper_group_desc` char(128),
   `custom_price_display` tinyint(1) NOT NULL DEFAULT '0',
   `price_display` blob,

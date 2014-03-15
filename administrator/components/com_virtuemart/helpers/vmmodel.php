@@ -395,7 +395,7 @@ class VmModel extends JModel {
 		if($err=$this->_db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
- 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
+ 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$q );
 
 		if($this->_withCount){
 

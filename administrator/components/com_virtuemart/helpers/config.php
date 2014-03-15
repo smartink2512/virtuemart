@@ -754,6 +754,7 @@ class VmConfig {
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
 		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
 
 		$freshInstall = vmRequest::getInt('install',false);
 		if(empty($configTable) or $freshInstall){
@@ -761,21 +762,27 @@ class VmConfig {
 				$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
 				if(!$installed){
 
-					$app = JFactory::getApplication();
-
 					$jlang =JFactory::getLanguage();
 					$selectedLang = $jlang->getTag();
-					$knownLangs = $jlang->getKnownLanguages();
 
 					if(empty($selectedLang)){
 						$selectedLang = $jlang->setLanguage($selectedLang);
 					}
 
-					if(!isset($knownLangs[$selectedLang])){
+					$q = 'SELECT `element` FROM `#__extensions` WHERE type = "language" and enabled = "1"';
+					$db->setQuery($q);
+					$knownLangs = $db->loadColumn();
+					//vmdebug('Selected language '.$selectedLang.' $knownLangs ',$knownLangs);
+					if($app->isAdmin() and !in_array($selectedLang,$knownLangs)){
 						$link = 'index.php?option=com_installer&view=languages';
-						$msg = 'Install your selected language first, you selected '.$selectedLang;
+						$msg = 'Install your selected language <b>'.$selectedLang.'</b> first, just select then the component VirtueMart under menu "component", to proceed with the installation ';
 					} else {
-						$link = 'index.php?option=com_virtuemart&view=updatesmigration&install=1';
+						if($app->isSite()){
+							$link = 'index.php?option=com_virtuemart';
+						} else {
+							$link = 'index.php?option=com_virtuemart&view=updatesmigration&install=1';
+						}
+
 						$msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
 					}
 
@@ -793,7 +800,7 @@ class VmConfig {
 			}
 		}
 
-		$app = JFactory::getApplication();
+
 		$install = 'no';
 
 		if(empty(self::$_jpConfig->_raw)){
@@ -849,9 +856,10 @@ class VmConfig {
 // 			$pair['sctime'] = microtime(true);
 			self::$_jpConfig->_params = $pair;
 
-			self::$_jpConfig->set('sctime',microtime(TRUE));
+			self::$_jpConfig->_params['sctime'] = microtime(TRUE);
+			//self::$_jpConfig->set('sctime',microtime(TRUE));
 			//self::setdbLanguageTag();
-			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
+			self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
 
 			vmTime('loadConfig db '.$install,'loadConfig');
 
