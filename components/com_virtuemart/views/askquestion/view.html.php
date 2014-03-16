@@ -170,18 +170,20 @@ class VirtueMartViewAskquestion extends VmView {
 
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
+		$vendorModel = VmModel::getModel ('vendor');
 		if(empty($this->vendor)){
-			$vendorModel = VmModel::getModel ('vendor');
 			$this->vendor = $vendorModel->getVendor ();
 			$this->vendor->vendor_store_name = $fromName;
 		}
+		$vendorModel->addImages ($this->vendor);
 
 		$virtuemart_product_id = vmRequest::getInt ('virtuemart_product_id', 0);
 
+		$productModel = VmModel::getModel ('product');
 		if(empty($this->product)){
-			$productModel = VmModel::getModel ('product');
 			$this->product =  $productModel->getProduct ($virtuemart_product_id);
 		}
+		$productModel->addImages($this->product);
 
 		$this->subject = Jtext::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
 		$this->vendorEmail = $this->user['email'];

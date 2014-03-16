@@ -153,6 +153,7 @@ class virtuemartViewrecommend extends VmView {
 	function renderMailLayout($doVendor, $recipient) {
 
 		$this->comment = nl2br(JRequest::getString('comment'));
+		$this->name = vmRequest::getString('name');
 
 		if (VmConfig::get ('order_mail_html')) {
 			$tpl = 'mail_html';
@@ -166,6 +167,7 @@ class virtuemartViewrecommend extends VmView {
 		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
 
 		$this->product = $productModel->getProduct ($virtuemart_product_id);
+		$productModel->addImages($this->product);
 
 		$layout = $this->getLayout();
 		//if($layout != 'form' and $layout != 'mail_confirmed'){
@@ -179,7 +181,7 @@ class virtuemartViewrecommend extends VmView {
 
 		$vendorModel->addImages ($this->vendor);
 		$this->vendor->vendorFields = $vendorModel->getVendorAddressFields();
-		$vars['vendorAddress']= shopFunctions::renderVendorAddress($this->product->virtuemart_vendor_id);
+		$vars['vendorAddress']= shopFunctions::renderVendorAddress($this->product->virtuemart_vendor_id, ' - ');
 
 		$this->vendor->vendor_name =$user->name;
 
@@ -187,7 +189,7 @@ class virtuemartViewrecommend extends VmView {
 			$this->$key = $val;
 		}
 
-		$this->subject = JText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$recipient, $this->product->product_name);
+		$this->subject = JText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$this->name, $this->product->product_name);
 
 		parent::display();
 	}

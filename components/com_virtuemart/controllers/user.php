@@ -337,22 +337,5 @@ class VirtueMartControllerUser extends JController
 		}
 	}
 
-	function viewRecommendMail(){
-
-		$view = $this->getView('recommend', 'html');
-		$viewLayout = JRequest::getCmd('layout', 'mail_html');
-		$view->setLayout($viewLayout);
-		// Display it all
-		$view->display();
-	}
-
-	function viewAskQuestionMail(){
-
-		$view = $this->getView('askquestion', 'html');
-		$viewLayout = JRequest::getCmd('layout', 'mail_confirmed');
-		$view->setLayout($viewLayout);
-		// Display it all
-		$view->display();
-	}
 }
 // No closing tag

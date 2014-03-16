@@ -5,9 +5,9 @@
  *
  * @package	VirtueMart
  * @subpackage
- * @author Kohl Patrick
+ * @author Kohl Patrick, Maik Künnemann
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -26,12 +26,18 @@ $document = JFactory::getDocument();
 $document->addScriptDeclaration('
 	jQuery(function($){
 			$("#askform").validationEngine("attach");
+			var counterResult = $("#comment").val().length;
+			$("#counter").val( counterResult );
 			$("#comment").keyup( function () {
 				var result = $(this).val();
 					$("#counter").val( result.length );
 			});
 	});
-');
+'); 
+
+$vendorModel = VmModel::getModel ('vendor');
+$this->vendor = $vendorModel->getVendor ($this->product->virtuemart_vendor_id);
+
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
@@ -72,44 +78,51 @@ if (empty ( $this->product )) {
 			<div class="form-field">
 
 				<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component', FALSE) ; ?>" name="askform" id="askform" >
-					<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="<?php echo $mailRecommendData['email'] ?>" name="email" id="email" size="30" class="validate[required,custom[email]]"/></label>
-						<br />
-					<label>
-						<?php
-						$ask_comment = JText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max);
-						echo $ask_comment;
-						?>
-						<br />
-						<textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="10"><?php echo $mailRecommendData['comment'] ?></textarea>
-					</label>
-					<?php // captcha addition
-					if(VmConfig::get ('ask_captcha')){
-						JHTML::_('behavior.framework');
-						JPluginHelper::importPlugin('captcha');
-						$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
-						?>
-						<div id="dynamic_recaptcha_1"></div>
-					<?php 
-					}
-					// end of captcha addition 
-					?>
-						<div class="submit">
-							<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" />
 
-							<div class="width50 floatright right paddingtop">
-								<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
-								<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
-							</div>
+					<table class="askform">
+						<tr>
+							<td><label><?php echo JText::_('COM_VIRTUEMART_RECOMMEND_NAME')  ?> : </label></td>
+							<td><input type="text" value="<?php echo $this->user->name ? $this->user->name : $askQuestionData['name'] ?>" name="name" id="name" size="30" class="validate[required,minSize[3],maxSize[64]]"/></td>
+						</tr>
+						<tr>
+							<td><label><?php echo JText::_('COM_VIRTUEMART_RECOMMEND_EMAIL')  ?> : </label></td>
+							<td><input type="text" value="<?php echo $mailRecommendData['email'] ?>" name="email" id="email" size="30" class="validate[required,custom[email]]"/></td>
+						</tr>
+						<tr>
+							<td colspan="2"><label><?php echo JText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max); ?></label><td>
+						</tr>
+						<tr>
+							<td colspan="2"><textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="8"><?php echo $askQuestionData['comment'] ? $askQuestionData['comment'] : JText::sprintf('COM_VIRTUEMART_RECOMMEND_COMMENT', $this->vendor->vendor_store_name) ?></textarea></td>
+						</tr>
+					</table>
+
+					<div class="submit">
+						<div class="width50 floatright right paddingtop">
+							<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
+							<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
 						</div>
+						<?php // captcha addition
+						if(VmConfig::get ('ask_captcha')){
+							JHTML::_('behavior.framework');
+							JPluginHelper::importPlugin('captcha');
+							$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
+							?>
+							<div id="dynamic_recaptcha_1"></div>
+						<?php 
+						}
+						// end of captcha addition 
+						?>
+						<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" />
+					</div>
 
-						<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
-						<input type="hidden" name="tmpl" value="component" />
-						<input type="hidden" name="view" value="productdetails" />
-						<input type="hidden" name="option" value="com_virtuemart" />
-						<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
-						<input type="hidden" name="task" value="mailRecommend" />
-						<?php echo JHTML::_( 'form.token' ); ?>
-					</form>
+					<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
+					<input type="hidden" name="tmpl" value="component" />
+					<input type="hidden" name="view" value="productdetails" />
+					<input type="hidden" name="option" value="com_virtuemart" />
+					<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
+					<input type="hidden" name="task" value="mailRecommend" />
+					<?php echo JHTML::_( 'form.token' ); ?>
+				</form>
 
 			</div>
 		</div>
