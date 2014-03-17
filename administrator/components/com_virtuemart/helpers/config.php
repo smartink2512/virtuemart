@@ -769,6 +769,7 @@ class VmConfig {
 						$selectedLang = $jlang->setLanguage($selectedLang);
 					}
 
+					$msg = '';
 					$q = 'SELECT `element` FROM `#__extensions` WHERE type = "language" and enabled = "1"';
 					$db->setQuery($q);
 					$knownLangs = $db->loadColumn();
@@ -781,9 +782,8 @@ class VmConfig {
 							$link = 'index.php?option=com_virtuemart';
 						} else {
 							$link = 'index.php?option=com_virtuemart&view=updatesmigration&install=1';
+							$msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
 						}
-
-						$msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
 					}
 
 					if($app->isSite()){
