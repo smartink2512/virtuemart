@@ -31,11 +31,13 @@
     <property name="vm.aio.filename" value="${component.name}.${vm.version}_ext_aio"/>
     <property name="vm.extract.filename" value="${component.name}.${vm.version}_extract_first"/>
     <property name="full.extract.filename" value="VirtueMart${vm.version}_Joomla_${joomla.version}-Stable-Full_Package"/>
-    <property name="full.folder.from" value="${joomla.path}"/>
+    <property name="joomla.folder.from" value="${joomla.path}"/>
+    <property name="joomla.zip" value="${joomla.zip.name}"/>
+    <property name="vm.folder.from" value="${export.to}"/>
 
 
     <!-- DESTINATION -->
-    <property name="full.folder.to" value="${package.abspath}"/>
+    <property name="full.folder.to" value="${package.abspath}/${full.extract.filename}"/>
     <property name="package.folder" value="${package.abspath}/${component.name}.${vm.version}_extract_first"/>
     <property name="package.folder.main" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.${vm.version}"/>
     <property name="package.folder.aio" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.aio.${vm.version}"/>
@@ -123,7 +125,7 @@
     <!-- ============================================  -->
     <!--  FILESET ALL FUL INSTALLER FILES -->
     <!-- ============================================  -->
-    <fileset dir="${export.to}" id='full_installer_files.refid' defaultexcludes="true" >
+    <fileset dir="${export.to}" id='vm_full_installer_files.refid' defaultexcludes="true" >
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
@@ -149,6 +151,14 @@
         <exclude name="**/tr-TR/**"/>
         <exclude name="**/uk-UA/**"/>
         <exclude name="**/th-TH/**"/>
+    </fileset>
+    <!-- ============================================  -->
+    <!--  FILESET ALL FUL INSTALLER FILES -->
+    <!-- ============================================  -->
+    <fileset dir="${joomla.folder.from}" id='joomla_full_installer_files.refid' defaultexcludes="true" >
+        <include name="**"/>
+        <exclude name=".svn"/>
+        <exclude name=".DS_Store"/>
     </fileset>
 
 
@@ -241,9 +251,19 @@
     <!-- TARGET: copy all files for the FULL INSTALLER -->
     <!-- ============================================  -->
     <target name="full_installer_files">
-        <echo msg="Copying ALL VM FILES  to directory ${joomla.path}"/>
-        <copy todir="${joomla.path}" overwrite="true">
-            <fileset refid="full_installer_files.refid"/>
+
+        <echo msg="Copying ALL Joomla FILES From folder ${joomla.folder.from} TO ${full.folder.to} "/>
+        <copy todir="${full.folder.to}" overwrite="true">
+            <fileset refid="joomla_full_installer_files.refid"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
+        </copy>
+
+
+        <echo msg="Copying ALL VM FILES From folder ${vm.folder.from} TO ${full.folder.to} "/>
+        <copy todir="${full.folder.to}" overwrite="true">
+            <fileset refid="vm_full_installer_files.refid"/>
             <filterchain>
                 <expandproperties/>
             </filterchain>
@@ -364,16 +384,33 @@
     <target name="clean" depends="delete_package_folder, delete_export_to_folder, create_package_folder">
         <echo msg="Cleaning Package directory OK!"/>
     </target>
-    <target name="full_installer" depends="full_installer_files">
-        <echo msg="ZIP ${full.folder.to}/${full.extract.filename}.zip FROM ${full.folder.from}"/>
-        <zip destfile="${full.folder.to}/${full.extract.filename}.zip">
-            <fileset dir="${full.folder.from}">
+
+    <target name="clean_full_installer"  >
+        <available file="${full.folder.to}" property="full.folder.exists" value="1"/>
+        <if>
+            <equals arg1="${full.folder.exists}" arg2="1"/>
+            <then>
+                <echo message="Deleting existing FULL folder: ${full.folder.to}..."/>
+                <delete dir="${full.folder.to}"/>
+            </then>
+        </if>
+
+        <echo msg="Cleaning Full directory OK! ${full.folder.to}"/>
+    </target>
+
+
+    <target name="full_installer" depends="clean_full_installer,full_installer_files">
+
+        <echo msg="ZIP ${package.abspath}/${full.extract.filename}.zip FROM ${full.folder.to}"/>
+        <zip destfile="${package.abspath}/${full.extract.filename}.zip">
+            <fileset dir="${full.folder.to}">
                 <include name="**"/>
                 <exclude name=".svn"/>
                 <exclude name=".DS_Store"/>
             </fileset>
         </zip>
         <echo msg="Full installer compressed OK!"/>
+
     </target>
     <target name="Main" depends="main_files">
         <echo msg="Creating MAIN PACKAGE  ..."/>
@@ -426,7 +463,7 @@
         <echo msg="EXTRACT FIRST compressed in directory OK!"/>
     </target>
 
-    <target name="FULLINSTALLER_ALONE" depends="title, clean ,svn.export, full_installer">
+    <target name="FULLINSTALLER_ALONE" depends="title, clean ,  svn.export, full_installer">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
 
@@ -434,7 +471,7 @@
     </target>
 
 
-    <target name="VIRTUEMART2_AND_FULLINSTALLER" depends="title, clean ,svn.export, Main, AIO, full_installer">
+    <target name="VIRTUEMART2_AND_FULLINSTALLER" depends="title, clean , svn.export, Main, AIO, full_installer">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
         <!-- DOES not create a correct package for me -->
