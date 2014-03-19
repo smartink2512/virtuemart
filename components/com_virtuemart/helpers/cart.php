@@ -1235,7 +1235,7 @@ class VirtueMartCart {
 				if(!empty($data[$prefix.$name])){
 					$address[$name] = $data[$prefix.$name];
 				} else {
-					if($fld->required){	//Why we have this fallback to the already stored value?
+					if($fld->required and isset($this->{$type}[$name])){	//Why we have this fallback to the already stored value?
 						$address[$name] = $this->{$type}[$name];
 					} else {
 						vmdebug('saveAddressInCart empty value for $name='.$name,$data[$prefix.$name]);

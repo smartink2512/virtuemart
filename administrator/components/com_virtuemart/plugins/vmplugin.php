@@ -16,6 +16,15 @@ defined ('_JEXEC') or die('Restricted access');
  * other free or open source software licenses.
  * @version $Id: vmplugin.php 4599 2011-11-02 18:29:04Z alatak $
  */
+
+if (!class_exists( 'VmConfig' )) {
+	if(file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php')){
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+	} else {
+		echo 'Install VirtueMart first'; return;
+	}
+}
+
 // Load the helper functions that are needed by all plugins
 if (!class_exists ('ShopFunctions')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');

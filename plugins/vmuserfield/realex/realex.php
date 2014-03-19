@@ -5,10 +5,10 @@ if (!defined('_JEXEC')) {
 }
 
 /**
- * @author Valerie Isaksen, Patrick Kohl
+ * @author Valerie Isaksen
  * @package    VirtueMart
  * @subpackage Plugins
- * @copyright Copyright (C) 2012 iStraxx - All rights reserved.
+ * @copyright Copyright (C) 2014 iStraxx - All rights reserved.
  * @license license.txt Proprietary License. This code belongs to iStraxx UG
  * You are not allowed to distribute or sell this code. You bought only a license to use it for ONE virtuemart installation.
  * You are allowed to modify this code for your installation.

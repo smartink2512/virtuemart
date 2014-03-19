@@ -38,9 +38,6 @@ class VirtuemartViewUserfields extends VmView {
 		$option = JRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
 
-		// Load the helper(s)
-
-
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
@@ -59,8 +56,6 @@ class VirtuemartViewUserfields extends VmView {
             $this->assignRef('viewName',$viewName);
 			$userFieldPlugin = '';
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
-
-
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = '';
@@ -92,9 +87,6 @@ class VirtuemartViewUserfields extends VmView {
 			if(Vmconfig::get('multix','none')!=='none'){
 				$lists['vendors']= ShopFunctions::renderVendorList($userField->virtuemart_vendor_id);
 			}
-// 			$vendor_model = VmModel::getModel('vendor');
-// 			$vendor_list = $vendor_model->getVendors();
-// 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $userField->virtuemart_vendor_id);
 
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = VmModel::getModel('shoppergroup');
@@ -138,7 +130,6 @@ class VirtuemartViewUserfields extends VmView {
 			}
 			$this->assignRef('valueCount', --$i);
 
-// 			vmdebug('$userField->shipment',$userField);
 			// Toggles
 			$lists['required']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_REQUIRED','required',$userField->required,$notoggle);
 			$lists['published']    =  VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$userField->published,$notoggle);
@@ -146,7 +137,6 @@ class VirtuemartViewUserfields extends VmView {
 			$lists['shipment']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING','shipment',$userField->shipment,$notoggle);
 			$lists['account']      =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT','account',$userField->account,$notoggle);
 			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$userField->readonly,$notoggle);
-
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
@@ -198,8 +188,7 @@ class VirtuemartViewUserfields extends VmView {
 	 *
 	 * @return string HTML code to write the toggle button
 	 */
-	function toggle( $field, $i, $toggle, $untoggleable = false, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
-	{
+	function toggle( $field, $i, $toggle, $untoggleable = false, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' ){
 
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
@@ -254,37 +243,9 @@ class VirtuemartViewUserfields extends VmView {
 			,array('type' => 'radio'            , 'text' => JText::_('COM_VIRTUEMART_FIELDS_RADIOBUTTON'))
 			,array('type' => 'webaddress'       , 'text' => JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'))
 			,array('type' => 'delimiter'        , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DELIMITER'))
-
 		);
 		$this->renderInstalledUserfieldPlugins($types);
 
-
-// 		vmdebug('my $dispatcher ',$dispatcher);
-// 		if($data['userverifyfailed']==1){
-// 			return false;
-// 		}
-
-		//This should be done via plugins !
-/*		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'client.php')) {
-			$types[] = array('type' => 'captcha', 'text' => JText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
-		}
-		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'class'.DS.'SecurityImagesHelper.php')) {
-			$types[] = array('type' => 'captcha', 'text' => JText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_yanc'.DS.'yanc.php')) {
-			$types[] = array('type' => 'yanc_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (YaNC)');
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_anjel'.DS.'anjel.php')) {
-			$types[] = array('type' => 'anjel_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ANJEL)');
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_letterman'.DS.'letterman.php')) {
-			$types[] = array('type' => 'letterman_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (Letterman)');
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_ccnewsletter'.DS.'ccnewsletter.php')) {
-			$types[] = array('type' => 'ccnewsletter_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ccNewsletter)');
-		}
-		$types[] = array('type' => 'delimiter', 'text' => JText::_('COM_VIRTUEMART_FIELDS_DELIMITER'));
-*/
 		if ($value === null) {
 			return $types;
 		} else {
@@ -296,8 +257,8 @@ class VirtuemartViewUserfields extends VmView {
 			}
 		}
 	}
-	function renderUserfieldPlugin($element, $params)
-	{
+
+	function renderUserfieldPlugin($element, $params){
 		$db = JFactory::getDBO();
 
 		if (JVM_VERSION===1) {
@@ -318,7 +279,6 @@ class VirtuemartViewUserfields extends VmView {
 		$filename = 'plg_vmuserfield_' .  $this->plugin->element;
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		return $parameters->render();
-
 
 	}
 
@@ -343,7 +303,6 @@ class VirtuemartViewUserfields extends VmView {
 		}
 
 		foreach($userfieldplugins as $userfieldplugin){
-		  // $plugins[] = array('type' => $userfieldplugin[$ext_id], 'text' => $userfieldplugin['name']);
             $plugins[] = array('type' => 'plugin'.$userfieldplugin['element'], 'text' => $userfieldplugin['name']);
 		}
 

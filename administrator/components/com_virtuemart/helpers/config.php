@@ -776,7 +776,8 @@ class VmConfig {
 					//vmdebug('Selected language '.$selectedLang.' $knownLangs ',$knownLangs);
 					if($app->isAdmin() and !in_array($selectedLang,$knownLangs)){
 						$link = 'index.php?option=com_installer&view=languages';
-						$msg = 'Install your selected language <b>'.$selectedLang.'</b> first, just select then the component VirtueMart under menu "component", to proceed with the installation ';
+						$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
+						$app->enqueueMessage($msg);
 					} else {
 						if($app->isSite()){
 							$link = 'index.php?option=com_virtuemart';
@@ -784,13 +785,11 @@ class VmConfig {
 							$link = 'index.php?option=com_virtuemart&view=updatesmigration&install=1';
 							$msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
 						}
+						if($app->isSite()){
+							$link = JURI::root(true).'/administrator/'.$link;
+						}
+						$app->redirect($link,$msg);
 					}
-
-					if($app->isSite()){
-						$link = JURI::root(true).'/administrator/'.$link;
-					}
-
-					$app->redirect($link,$msg);
 				}
 				if($installed){
 					self::$_jpConfig->installVMconfig();

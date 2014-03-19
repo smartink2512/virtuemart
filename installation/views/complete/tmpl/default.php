@@ -6,9 +6,7 @@
  */
 
 defined('_JEXEC') or die;
-if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
-VmConfig::loadJLang('com_virtuemart');
+
 ?>
 <div id="step">
 	<div class="far-right">
