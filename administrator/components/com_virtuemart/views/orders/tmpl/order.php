@@ -22,9 +22,9 @@ AdminUIHelper::startAdminArea($this);
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDER_PRINT_PO_LBL');
 
 // Get the plugins
-JPluginHelper::importPlugin('vmpayment');
-JPluginHelper::importPlugin('vmshopper');
 JPluginHelper::importPlugin('vmshipment');
+JPluginHelper::importPlugin('vmshopper');
+JPluginHelper::importPlugin('vmpayment');
 
 $document = JFactory::getDocument();
 $document->addScriptDeclaration ( "
