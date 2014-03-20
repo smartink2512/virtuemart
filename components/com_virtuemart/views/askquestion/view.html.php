@@ -40,7 +40,7 @@ class VirtueMartViewAskquestion extends VmView {
 	function display ($tpl = NULL) {
 
 		$app = JFactory::getApplication();
-		if(!VmConfig::get('ask_question',false) and !VmConfig::get('askprice',true)){
+		if(!VmConfig::get('ask_question',false) and !VmConfig::get('askprice',false)){
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart','Disabled function'));
 		}
 
@@ -49,6 +49,7 @@ class VirtueMartViewAskquestion extends VmView {
 			$user = JFactory::getUser();
 			if($user->guest){
 				$this->login = shopFunctionsF::getLoginForm(false);
+				//$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
 			}
 		}
 
@@ -63,7 +64,7 @@ class VirtueMartViewAskquestion extends VmView {
 
 		$mainframe = JFactory::getApplication ();
 		$pathway = $mainframe->getPathway ();
-		$task = VmRequest::getCmd ('task');
+		$task = JRequest::getCmd ('task');
 
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
@@ -72,7 +73,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$product_model = VmModel::getModel ('product');
 		$category_model = VmModel::getModel ('Category');
 
-		$virtuemart_product_idArray = VmRequest::getInt ('virtuemart_product_id', 0);
+		$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
 		if (is_array ($virtuemart_product_idArray)) {
 			$virtuemart_product_id = $virtuemart_product_idArray[0];
 		} else {
@@ -89,14 +90,14 @@ class VirtueMartViewAskquestion extends VmView {
 		}
 		$product = $product_model->getProduct ($virtuemart_product_id);
 		// Set Canonic link
-		$format = VmRequest::getCmd('format', 'html');
+		$format = JRequest::getWord('format', 'html');
 		if ($format == 'html') {
 			$document->addHeadLink ($product->canonical, 'canonical', 'rel', '');
 		}
 
 
 		// Set the titles
-		$document->setTitle (vmText::sprintf ('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE', $product->product_name . ' - ' . vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
+		$document->setTitle (JText::sprintf ('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE', $product->product_name . ' - ' . JText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
 
 		$this->assignRef ('product', $product);
 
@@ -108,7 +109,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$product_model->addImages ($product, 1);
 
 		/* Get the category ID */
-		$virtuemart_category_id = VmRequest::getInt ('virtuemart_category_id');
+		$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
 			if (array_key_exists ('0', $product->categories)) {
 				$virtuemart_category_id = $product->categories[0];
@@ -123,11 +124,11 @@ class VirtueMartViewAskquestion extends VmView {
 			$pathway->addItem ($category->category_name, JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id, FALSE));
 		}
 
-		//$pathway->addItem(vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
+		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem ($product->product_name, JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id, FALSE));
 
 		// for askquestion
-		$pathway->addItem (vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
+		$pathway->addItem (JText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
 		$this->assignRef ('user', JFactory::getUser ());
 
@@ -154,22 +155,50 @@ class VirtueMartViewAskquestion extends VmView {
 	function renderMailLayout () {
 
 		$this->setLayout ('mail_html_question');
-		$this->comment = VmRequest::getString ('comment');
+		$this->comment = JRequest::getString ('comment');
+
+		$user = JFactory::getUser ();
+		if (empty($user->id)) {
+			$fromMail = JRequest::getVar ('email'); //is sanitized then
+			$fromName = JRequest::getVar ('name', ''); //is sanitized then
+			$fromMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromMail);
+			$fromName = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromName);
+		} else {
+			$fromMail = $user->email;
+			$fromName = $user->name;
+		}
+
+		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
 		$vendorModel = VmModel::getModel ('vendor');
-		$this->vendor = $vendorModel->getVendor ();
+		if(empty($this->vendor)){
+			$this->vendor = $vendorModel->getVendor ();
+			$this->vendor->vendor_store_name = $fromName;
+		}
+		$vendorModel->addImages ($this->vendor);
 
-		$this->subject = vmText::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
+		$virtuemart_product_id = vmRequest::getInt ('virtuemart_product_id', 0);
+
+		$productModel = VmModel::getModel ('product');
+		if(empty($this->product)){
+			$this->product =  $productModel->getProduct ($virtuemart_product_id);
+		}
+		$productModel->addImages($this->product);
+
+		$this->subject = Jtext::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
 		$this->vendorEmail = $this->user['email'];
+
 		// in this particular case, overwrite the value for fix the recipient name
 		$this->vendor->vendor_name = $this->user['name'];
-		//$this->vendorName= $this->user['email'];
+
+
 		if (VmConfig::get ('order_mail_html')) {
 			$tpl = 'mail_html_question';
 		} else {
 			$tpl = 'mail_raw_question';
 		}
 		$this->setLayout ($tpl);
+
 		parent::display ();
 	}
 
@@ -182,7 +211,7 @@ class VirtueMartViewAskquestion extends VmView {
 		}
 		$continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
 
-		$continue_link_html = '<a href="' . $continue_link . '" />' . vmText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+		$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->assignRef ('continue_link_html', $continue_link_html);
 		// Display it all
 		parent::display ($tpl);

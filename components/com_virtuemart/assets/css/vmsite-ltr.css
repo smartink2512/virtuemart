@@ -74,6 +74,9 @@ span.addtocart-button input.addtocart-button-disabled {width:auto;background:#f2
 .ask-a-question-view .form-field textarea.field:hover{background:#fff url(../images/vmgeneral/default_hover_bg.jpg) top repeat-x;color:#000;}
 .ask-a-question-view .form-field .submit{width:418px;}
 .ask-a-question-view input.counter,.ask-a-question-view input#name,.ask-a-question-view input#email{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;display:inline-block;margin:0 0 0 10px;padding:5px 5px 4px;}
+.ask-a-question-view table.askform, .ask-a-question-view table.askform tr, .ask-a-question-view table.askform td {border:0;}
+.ask-a-question-view table.askform td {padding: 5px 0;}
+.ask-a-question-view #recaptcha_area {margin-bottom: 20px;}
 .vmquote{font-size:smaller;}
 .manufacturer-details-view img{float:right;margin:0 0 10px 20px;}
 .manufacturer-details-view .email-weblink a{margin-right:15px;}
@@ -173,7 +176,7 @@ span.addtocart-button input.addtocart-button:hover,span.addtocart-button input.n
 .featured-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.recent-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{font-size:0.85em;color:#666;}
 .browse-view .row .product .spacer img,.related-products-view .row .product .spacer img{max-width:90%;height:auto;}
 .display-number,.control-buttons,.right{text-align:right !important;}
-.ask-a-question-view,.manufacturer-details-view .spacer{padding:30px;}
+.ask-a-question-view,.manufacturer-details-view .spacer{padding:20px;}
 .ask-a-question-view h1,.manufacturer-details-view h1{font-size:18px;margin:0;padding:0;}
 #userForm select,.width80{width:80%;}
 textarea.virtuemart:hover,textarea.customer-comment:hover{color:#000;background:#e8e8e8;}

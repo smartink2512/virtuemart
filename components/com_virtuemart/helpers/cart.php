@@ -643,8 +643,6 @@ class VirtueMartCart {
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 
-
-
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$msg = '';
 			$_dispatcher = JDispatcher::getInstance();
@@ -966,10 +964,11 @@ class VirtueMartCart {
             }
 			$dispatcher = JDispatcher::getInstance();
 
-			JPluginHelper::importPlugin('vmshipment');
-			JPluginHelper::importPlugin('vmcustom');
-			JPluginHelper::importPlugin('vmpayment');
 			JPluginHelper::importPlugin('vmcalculation');
+			JPluginHelper::importPlugin('vmcustom');
+			JPluginHelper::importPlugin('vmshipment');
+			JPluginHelper::importPlugin('vmpayment');
+
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $orderDetails));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
@@ -1104,6 +1103,9 @@ class VirtueMartCart {
 					$tmp = vmRequest::getString($prefix.$name,false);
 					if($tmp){
 						$data[$prefix.$name] = $tmp;
+					}
+					else if($fld->required and isset($this->{$type}[$name])){	//Why we have this fallback to the already stored value?
+						$data[$prefix.$name] = $this->{$type}[$name];
 					}
 					/*if($fld->type=='text'){
 					} else {
@@ -1469,7 +1471,7 @@ class VirtueMartCart {
 			$preFix = '';
 		}
 
-		$addresstype = $type.'address';
+		$addresstype = $type.'address'; //for example BTaddress
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
 		$address = $this->$addresstype = $userFieldsModel->getUserFieldsFilled(
 		$userFieldsBT

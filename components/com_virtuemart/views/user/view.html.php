@@ -56,6 +56,7 @@ class VirtuemartViewUser extends VmView {
 	$useXHTML = false;
 	$this->assignRef('useSSL', $useSSL);
 	$this->assignRef('useXHTML', $useXHTML);
+	VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();

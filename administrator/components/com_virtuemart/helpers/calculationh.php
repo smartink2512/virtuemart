@@ -1336,7 +1336,6 @@ class calculationHelper {
 			$cart->setCartIntoSession();
 		}
 
-
 		return $this->_cart->cartPrices;
 	}
 
@@ -1351,8 +1350,7 @@ class calculationHelper {
 	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 	 */
 	function calculatePaymentPrice($cart, $checkAutomaticSelected=true) {
-		//		if (empty($code)) return 0.0;
-		//		$code=4;
+
 		$this->_cart->cartData['paymentName'] = vmText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
 		$this->_cart->cartPrices['paymentValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cart->cartPrices['paymentTax'] = 0;

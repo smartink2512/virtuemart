@@ -55,6 +55,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	 * Send the ask question email.
 	 *
 	 * @author Kohl Patrick, Christopher Roussel
+	 * @author Max Milbers
 	 */
 	public function mailAskquestion () {
 
@@ -98,7 +99,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			return;
 		}
 
-		if(JFactory::getUser()->guest == 1 && VmConfig::get ('ask_captcha')){
+		if(JFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
 			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
@@ -107,23 +108,13 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			if(!$res[0]){
 				$askquestionform = array('name' => vmRequest::getVar ('name'), 'email' => vmRequest::getVar ('email'), 'comment' => vmRequest::getString ('comment'));
 				$session->set('askquestion', $askquestionform, 'vm');
-				$errmsg = JText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
-				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
+				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . vmRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
 				return;
 			} else {
 				$session->set('askquestion', 0, 'vm');
 			}
 		}
-
-		$virtuemart_product_idArray = VmRequest::getInt ('virtuemart_product_id', 0);
-		if (is_array ($virtuemart_product_idArray)) {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray[0];
-		} else {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray;
-		}
-		$productModel = VmModel::getModel ('product');
-
-		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
 
 		$user = JFactory::getUser ();
 		if (empty($user->id)) {
@@ -136,6 +127,12 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			$fromName = $user->name;
 		}
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
+
+		$virtuemart_product_id = vmRequest::getInt ('virtuemart_product_id', 0);
+		$productModel = VmModel::getModel ('product');
+
+		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
+
 
 		$vendorModel = VmModel::getModel ('vendor');
 		$VendorEmail = $vendorModel->getVendorEmail ($vars['product']->virtuemart_vendor_id);
@@ -156,7 +153,8 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	/**
 	 * Send the Recommend to a friend email.
 	 *
-	 * @author Kohl Patrick,
+	 * @author Kohl Patrick
+	 * @author Max Milbers
 	 */
 	public function mailRecommend () {
 
@@ -167,41 +165,29 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . VmRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
 		}
 
-		// Display it all
-		$view = $this->getView ('recommend', 'html');
+		if(JFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
+			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			JPluginHelper::importPlugin('captcha');
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
+			$session = JFactory::getSession();
+			if(!$res[0]){
+				$mailrecommend = array('email' => vmRequest::getVar ('email'), 'comment' => vmRequest::getString ('comment'));
+				$session->set('mailrecommend', $mailrecommend, 'vm');
+				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=recommend&virtuemart_product_id=' . vmRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
+				return;
+			} else {
+				$session->set('mailrecommend', 0, 'vm');
+			}
+		}
 
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-		$mainframe = JFactory::getApplication ();
 		$vars = array();
-
-		$virtuemart_product_idArray = VmRequest::getInt ('virtuemart_product_id', 0);
-		if (is_array ($virtuemart_product_idArray)) {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray[0];
-		} else {
-			$virtuemart_product_id = (int)$virtuemart_product_idArray;
-		}
-		$productModel = VmModel::getModel ('product');
-
-		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
-
-		$user = JFactory::getUser ();
-		$vars['user'] = array('name' => $user->name, 'email' =>  $user->email);
-
-		$vars['vendorEmail'] = $user->email;
-		$vendorModel = VmModel::getModel ('vendor');
-		$vendor = $vendorModel->getVendor ($vars['product']->virtuemart_vendor_id);
-		$vars['vendor']=$vendor;
-		$vendorModel->addImages ($vars['vendor']);
-		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
-		$vars['vendorAddress']= shopFunctions::renderVendorAddress($vars['product']->virtuemart_vendor_id);
-
-		$vars['vendorEmail']=  $user->email;
-		$vars['vendor']->vendor_name =$user->name;
-
 
 		$toMail = VmRequest::getVar ('email'); //is sanitized then
 		$toMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $toMail);
@@ -211,10 +197,9 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 		}
-		$mainframe->enqueueMessage (vmText::_ ($string));
+		$app->enqueueMessage (vmText::_ ($string));
 
-// 		vmdebug('my email vars ',$vars,$TOMail);
-
+		$view = $this->getView ('recommend', 'html');
 
 		$view->setLayout ('mail_confirmed');
 		$view->display ();
@@ -226,14 +211,6 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	 */
 	public function MailForm () {
 
-		//OSP 2012-03-14 ...Track #375; allowed by setting
-		if (VmConfig::get ('recommend_unauth', 0) == '0') {
-			$user = JFactory::getUser ();
-			if (empty($user->id)) {
-				VmInfo (vmText::_ ('JGLOBAL_YOU_MUST_LOGIN_FIRST'));
-				return;
-			}
-		}
 		if (VmRequest::getCmd ('task') == 'recommend') {
 			$view = $this->getView ('recommend', 'html');
 		} else {
@@ -408,7 +385,25 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		$model = VmModel::getModel ('product');
 	    $model->sentProductEmailToShoppers ();
+	}
 
+	/*
+	 * View email layout on browser
+	 */
+	function viewRecommendMail(){
+
+		$view = $this->getView('recommend', 'html');
+		$viewLayout = vmRequest::getCmd('layout', 'mail_html');
+		$view->setLayout($viewLayout);
+		$view->display();
+	}
+
+	function viewAskQuestionMail(){
+
+		$view = $this->getView('askquestion', 'html');
+		$viewLayout = vmRequest::getCmd('layout', 'mail_confirmed');
+		$view->setLayout($viewLayout);
+		$view->display();
 	}
 
 }

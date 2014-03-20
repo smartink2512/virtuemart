@@ -137,7 +137,7 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
 	    CouponHelper::setInUseCoupon($cart->couponCode, false);
     }
 
-	    JPluginHelper::importPlugin('vmpayment');
+	JPluginHelper::importPlugin('vmpayment');
 	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger('plgVmOnUserPaymentCancel', array());
 

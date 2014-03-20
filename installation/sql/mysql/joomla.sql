@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `#__assets` (
   UNIQUE KEY `idx_asset_name` (`name`),
   KEY `idx_lft_rgt` (`lft`,`rgt`),
   KEY `idx_parent_id` (`parent_id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Dumping data for table `#__assets`
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `#__associations` (
   `key` CHAR(32) NOT NULL COMMENT 'The key for the association computed from an md5 on associated ids.',
   PRIMARY KEY `idx_context_id` (`context`, `id`),
   INDEX `idx_key` (`key`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Table structure for table `#__banners`
@@ -112,7 +112,7 @@ CREATE TABLE `#__banners` (
   INDEX `idx_metakey_prefix` (`metakey_prefix`),
   INDEX `idx_banner_catid`(`catid`),
   INDEX `idx_language` (`language`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -138,7 +138,7 @@ CREATE TABLE `#__banner_clients` (
   PRIMARY KEY  (`id`),
   INDEX `idx_own_prefix` (`own_prefix`),
   INDEX `idx_metakey_prefix` (`metakey_prefix`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -155,7 +155,7 @@ CREATE TABLE  `#__banner_tracks` (
   INDEX `idx_track_date` (`track_date`),
   INDEX `idx_track_type` (`track_type`),
   INDEX `idx_banner_id` (`banner_id`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -198,7 +198,7 @@ CREATE TABLE `#__categories` (
   KEY `idx_left_right` (`lft`,`rgt`),
   KEY `idx_alias` (`alias`),
   INDEX `idx_language` (`language`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__categories` VALUES
 (1, 0, 0, 0, 13, 0, '', 'system', 'ROOT', 'root', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{}', '', '', '', 0, '2009-10-18 16:07:09', 0, '0000-00-00 00:00:00', 0, '*'),
@@ -267,7 +267,7 @@ CREATE TABLE `#__contact_details` (
   KEY `idx_featured_catid` (`featured`,`catid`),
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -319,7 +319,7 @@ CREATE TABLE `#__content` (
   KEY `idx_featured_catid` (`featured`,`catid`),
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -331,7 +331,7 @@ CREATE TABLE `#__content_frontpage` (
   `content_id` integer NOT NULL default '0',
   `ordering` integer NOT NULL default '0',
   PRIMARY KEY  (`content_id`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -345,7 +345,7 @@ CREATE TABLE `#__content_rating` (
   `rating_count` integer unsigned NOT NULL default '0',
   `lastip` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`content_id`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -356,7 +356,7 @@ CREATE TABLE `#__content_rating` (
 CREATE TABLE `#__core_log_searches` (
   `search_term` varchar(128) NOT NULL default '',
   `hits` integer unsigned NOT NULL default '0'
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 # -------------------------------------------------------
@@ -387,7 +387,7 @@ CREATE TABLE `#__extensions` (
   INDEX `element_clientid`(`element`, `client_id`),
   INDEX `element_folder_clientid`(`element`, `folder`, `client_id`),
   INDEX `extension`(`type`,`element`,`folder`,`client_id`)
-) AUTO_INCREMENT=10000 CHARSET=utf8;
+) Engine=MyISAM AUTO_INCREMENT=10000 CHARSET=utf8;
 
 DELETE FROM `#__extensions`;
 
@@ -484,7 +484,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 	(421, 'plg_search_weblinks', 'plugin', 'weblinks', 'search', 0, 1, 1, 0, '{"legacy":false,"name":"plg_search_weblinks","type":"plugin","creationDate":"November 2005","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_SEARCH_WEBLINKS_XML_DESCRIPTION","group":""}', '{"search_limit":"50","search_content":"1","search_archived":"1"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 	(422, 'plg_system_languagefilter', 'plugin', 'languagefilter', 'system', 0, 0, 1, 1, '{"legacy":false,"name":"plg_system_languagefilter","type":"plugin","creationDate":"July 2010","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_SYSTEM_LANGUAGEFILTER_XML_DESCRIPTION","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 	(423, 'plg_system_p3p', 'plugin', 'p3p', 'system', 0, 1, 1, 1, '{"legacy":false,"name":"plg_system_p3p","type":"plugin","creationDate":"September 2010","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_P3P_XML_DESCRIPTION","group":""}', '{"headers":"NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"}', '', '', 0, '0000-00-00 00:00:00', 2, 0),
-	(424, 'plg_system_cache', 'plugin', 'cache', 'system', 0, 0, 1, 1, '{"legacy":false,"name":"plg_system_cache","type":"plugin","creationDate":"February 2007","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_CACHE_XML_DESCRIPTION","group":""}', '{"browsercache":"0","cachetime":"15"}', '', '', 0, '0000-00-00 00:00:00', 9, 0),
+	(424, 'plg_system_cache', 'plugin', 'cache', 'system', 0, 1, 0, 1, '{"legacy":false,"name":"plg_system_cache","type":"plugin","creationDate":"February 2007","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_CACHE_XML_DESCRIPTION","group":""}', '{"browsercache":"0","cachetime":"15"}', '', '', 0, '0000-00-00 00:00:00', 9, 0),
 	(425, 'plg_system_debug', 'plugin', 'debug', 'system', 0, 0, 1, 0, '{"legacy":false,"name":"plg_system_debug","type":"plugin","creationDate":"December 2006","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_DEBUG_XML_DESCRIPTION","group":""}', '{"profile":"1","queries":"1","memory":"1","language_files":"1","language_strings":"1","strip-first":"1","strip-prefix":"","strip-suffix":""}', '', '', 0, '0000-00-00 00:00:00', 4, 0),
 	(426, 'plg_system_log', 'plugin', 'log', 'system', 0, 1, 1, 1, '{"legacy":false,"name":"plg_system_log","type":"plugin","creationDate":"April 2007","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_LOG_XML_DESCRIPTION","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 5, 0),
 	(427, 'plg_system_redirect', 'plugin', 'redirect', 'system', 0, 1, 1, 1, '{"legacy":false,"name":"plg_system_redirect","type":"plugin","creationDate":"April 2009","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"PLG_REDIRECT_XML_DESCRIPTION","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 6, 0),
@@ -518,11 +518,11 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 	(800, 'PKG_JOOMLA', 'package', 'pkg_joomla', '', 0, 1, 1, 1, '{"legacy":false,"name":"PKG_JOOMLA","type":"package","creationDate":"2006","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"http:\\/\\/www.joomla.org","version":"2.5.0","description":"PKG_JOOMLA_XML_DESCRIPTION","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 	(10000, 'VIRTUEMART', 'component', 'com_virtuemart', '', 1, 1, 1, 0, '{"legacy":true,"name":"VIRTUEMART","type":"component","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.","authorEmail":"max|at|virtuemart.net","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 	(10001, 'virtuemart_allinone', 'component', 'com_virtuemart_allinone', '', 1, 1, 0, 0, 'false', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-	(10002, 'VM Payment - Standard', 'plugin', 'standard', 'vmpayment', 0, 0, 1, 0, '{"legacy":true,"name":"Standard","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"Standard payment plugin","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
+	(10002, 'VM Payment - Standard', 'plugin', 'standard', 'vmpayment', 0, 1, 1, 0, '{"legacy":true,"name":"Standard","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"Standard payment plugin","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
 	(10003, 'VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment', 0, 0, 1, 0, '{"legacy":true,"name":"Klarna","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"VMPAYMENT_KLARNA_CONF_PLUGIN_DESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 	(10004, 'VM Payment - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment', 0, 0, 1, 0, '{"legacy":true,"name":"Klarna Checkout","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
-	(10005, 'vSofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment', 0, 0, 1, 0, '{"legacy":true,"name":"Sofort","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"<a href=\\"http:\\/www.sofort.com\\" target=\\"_blank\\">Sofort<\\/a> is a popular\\n\\tpayment provider and available in many countries. \\n    ","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 2, 0),
-	(10006, 'vPayPal', 'plugin', 'paypal', 'vmpayment', 0, 0, 1, 0, '{"legacy":false,"name":"VMPAYMENT_PAYPAL","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"PLG_VMPAYMENT_PAYPALDESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 3, 0),
+	(10005, 'VM Payment - Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment', 0, 0, 1, 0, '{"legacy":true,"name":"Sofort","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"<a href=\\"http:\\/www.sofort.com\\" target=\\"_blank\\">Sofort<\\/a> is a popular\\n\\tpayment provider and available in many countries. \\n    ","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 2, 0),
+	(10006, 'VM Payment - PayPal', 'plugin', 'paypal', 'vmpayment', 0, 0, 1, 0, '{"legacy":false,"name":"VMPAYMENT_PAYPAL","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"PLG_VMPAYMENT_PAYPALDESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 3, 0),
 	(10007, 'VM Payment - Heidelpay', 'plugin', 'heidelpay', 'vmpayment', 0, 0, 1, 0, '{"legacy":false,"name":"VMPAYMENT_HEIDELPAY","type":"plugin","creationDate":"12-Sep-2012","author":"Heidelberger Payment GmbH","copyright":"Copyright Heidelberger Payment GmbH","authorEmail":"info@heidelpay.de","authorUrl":"http:\\/\\/www.heidelpay.de","version":"13.11","description":"<h2>Virtuemart Plugin von:<\\/h2><p><a href=\\"http:\\/\\/www.Heidelpay.de\\" target=\\"_blank\\"><img src=\\"http:\\/\\/www.heidelpay.de\\/gfx\\/logo.gif\\" style=\\"margin-right:20px;\\"\\/><\\/a><\\/p> ","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
 	(10008, 'VM Payment - Realex', 'plugin', 'realex', 'vmpayment', 0, 0, 1, 0, '{"legacy":false,"name":"VMPAYMENT_REALEX","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"PLG_VMPAYMENT_REALEXDESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
 	(10009, 'VM Payment - Moneybookers', 'plugin', 'moneybookers', 'vmpayment', 0, 0, 1, 0, '{"legacy":true,"name":"VMPAYMENT_MONEYBOOKERS","type":"plugin","creationDate":"April 2012","author":"Skrill Holdings Limited","copyright":"Copyright (C) 2012 Skrill.","authorEmail":"","authorUrl":"http:\\/\\/www.skrill.com","version":"2.0.6","description":"<a href=\\"http:\\/\\/www.skrill.com\\" target=\\"_blank\\">Moneybookers<\\/a> is a popular\\n\\tpayment provider authorised by the Financial Services Authority of the United Kingdom (FSA). \\n    ","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
@@ -542,7 +542,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 	(10023, 'VM Custom - Stockable variants', 'plugin', 'stockable', 'vmcustom', 0, 1, 1, 0, '{"legacy":true,"name":"VMCUSTOM_STOCKABLE","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"VMCUSTOM_STOCKABLE_DESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 	(10024, 'VM Calculation - Avalara Tax', 'plugin', 'avalara', 'vmcalculation', 0, 0, 1, 0, '{"legacy":true,"name":"VM - Calculation Avalara Tax","type":"plugin","creationDate":"February 2013","author":"Max Milbers","copyright":"Copyright (C) 2013 iStraxx UG (haftungsbeschr\\u00e4nkt). All rights reserved","authorEmail":"","authorUrl":"http:\\/\\/virtuemart.net","version":"2.0.18b","description":"On demand tax calculation for whole U.S.A.","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 	(10025, 'VM Userfield - Realex', 'plugin', 'realex', 'vmuserfield', 0, 0, 1, 0, '{"legacy":true,"name":"Realex","type":"plugin","creationDate":"${PHING.VM.RELDATE}","author":"Val\\u00e9rie Isaksen","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"Card storage plugin for Realex","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-	(10026, 'VirtueMart Product', 'plugin', 'virtuemart', 'search', 0, 0, 1, 0, '{"legacy":false,"name":"plg_search_virtuemart","type":"plugin","creationDate":"January 09 2013","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"2.0.18a","description":"Allows Searching of VirtueMart Component","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+	(10026, 'VirtueMart Product', 'plugin', 'virtuemart', 'search', 0, 1, 1, 0, '{"legacy":false,"name":"plg_search_virtuemart","type":"plugin","creationDate":"January 09 2013","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGHT}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"2.0.18a","description":"Allows Searching of VirtueMart Component","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 	(10027, 'mod_virtuemart_currencies', 'module', 'mod_virtuemart_currencies', '', 0, 1, 1, 0, '{"legacy":true,"name":"mod_virtuemart_currencies","type":"module","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGH}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"MOD_VIRTUEMART_CURRENCIES_DESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
 	(10028, 'mod_virtuemart_product', 'module', 'mod_virtuemart_product', '', 0, 1, 1, 0, '{"legacy":true,"name":"mod_virtuemart_product","type":"module","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"${PHING.VM.COPYRIGH}","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"MOD_VIRTUEMART_PRODUCT_DESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 3, 0),
 	(10029, 'mod_virtuemart_search', 'module', 'mod_virtuemart_search', '', 0, 1, 1, 0, '{"legacy":true,"name":"mod_virtuemart_search","type":"module","creationDate":"January 09 2013","author":"The VirtueMart Development Team","copyright":"Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.","authorEmail":"","authorUrl":"http:\\/\\/www.virtuemart.net","version":"2.0.18a","description":"MOD_VIRTUEMART_SEARCH_DESC","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 2, 0),
@@ -572,7 +572,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_filters` (
   `data` text NOT NULL,
   `params` mediumtext,
   PRIMARY KEY  (`filter_id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -607,7 +607,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links` (
   KEY `idx_url` (`url`(75)),
   KEY `idx_published_list` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`list_price`),
   KEY `idx_published_sale` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`sale_price`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -622,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms0` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -637,7 +637,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms1` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -652,7 +652,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms2` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -667,7 +667,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms3` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 # --------------------------------------------------------
@@ -683,7 +683,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms4` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -698,7 +698,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms5` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -713,7 +713,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms6` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -728,7 +728,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms7` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -743,7 +743,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms8` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -758,7 +758,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_terms9` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -773,7 +773,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_termsa` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -788,7 +788,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_termsb` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -803,7 +803,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_termsc` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -818,7 +818,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_termsd` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -833,7 +833,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_termse` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -848,7 +848,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links_termsf` (
   PRIMARY KEY  (`link_id`,`term_id`),
   KEY `idx_term_weight` (`term_id`,`weight`),
   KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -869,7 +869,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_taxonomy` (
   KEY `ordering` (`ordering`),
   KEY `access` (`access`),
   KEY `idx_parent_published` (`parent_id`,`state`,`access`)
-)   DEFAULT CHARSET=utf8;
+)   ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 REPLACE INTO `#__finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`, `ordering`) VALUES
 (1, 0, 'ROOT', 0, 0, 0);
@@ -886,7 +886,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_taxonomy_map` (
   PRIMARY KEY  (`link_id`,`node_id`),
   KEY `link_id` (`link_id`),
   KEY `node_id` (`node_id`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -908,7 +908,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_terms` (
   KEY `idx_term_phrase` (`term`,`phrase`),
   KEY `idx_stem_phrase` (`stem`,`phrase`),
   KEY `idx_soundex_phrase` (`soundex`,`phrase`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -921,7 +921,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_terms_common` (
   `language` varchar(3) NOT NULL,
   KEY `idx_word_lang` (`term`,`language`),
   KEY `idx_lang` (`language`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 REPLACE INTO `#__finder_terms_common` (`term`, `language`) VALUES
 ('a', 'en'),
@@ -1055,7 +1055,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_tokens` (
   `context` tinyint(1) unsigned NOT NULL default '2',
   KEY `idx_word` (`term`),
   KEY `idx_context` (`context`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -1076,7 +1076,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_tokens_aggregate` (
   `total_weight` float unsigned NOT NULL,
   KEY `token` (`term`),
   KEY `keyword_id` (`term_id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -1090,7 +1090,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_types` (
   `mime` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `title` (`title`)
-)   DEFAULT CHARSET=utf8;
+)   ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
 
@@ -1118,7 +1118,7 @@ CREATE TABLE `#__languages` (
   UNIQUE `idx_langcode` (`lang_code`),
   KEY `idx_access` (`access`),
   INDEX `idx_ordering` (`ordering`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `ordering`)
 VALUES
@@ -1161,12 +1161,49 @@ CREATE TABLE `#__menu` (
   KEY `idx_alias` (`alias`),
   KEY `idx_path` (`path`(333)),
   KEY `idx_language` (`language`)
-)   DEFAULT CHARSET=utf8;
+)   ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DELETE FROM `#__menu`;
 
+CREATE TABLE IF NOT EXISTS `#__menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `menutype` varchar(24) NOT NULL COMMENT 'The type of menu this item belongs to. FK to #__menu_types.menutype',
+  `title` varchar(255) NOT NULL COMMENT 'The display title of the menu item.',
+  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'The SEF alias of the menu item.',
+  `note` varchar(255) NOT NULL DEFAULT '',
+  `path` varchar(1024) NOT NULL COMMENT 'The computed path of the menu item based on the alias field.',
+  `link` varchar(1024) NOT NULL COMMENT 'The actually link the menu item refers to.',
+  `type` varchar(16) NOT NULL COMMENT 'The type of link: Component, URL, Alias, Separator',
+  `published` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'The published state of the menu link.',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '1' COMMENT 'The parent menu item in the menu tree.',
+  `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The relative level in the tree.',
+  `component_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__extensions.id',
+  `ordering` int(11) NOT NULL DEFAULT '0' COMMENT 'The relative ordering of the menu item in the tree.',
+  `checked_out` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__users.id',
+  `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'The time the menu item was checked out.',
+  `browserNav` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'The click behaviour of the link.',
+  `access` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The access level required to view the menu item.',
+  `img` varchar(255) NOT NULL COMMENT 'The image of the menu item.',
+  `template_style_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `params` text NOT NULL COMMENT 'JSON encoded data for the menu item.',
+  `lft` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
+  `rgt` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
+  `home` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Indicates if this menu item is the home or default page.',
+  `language` char(7) NOT NULL DEFAULT '',
+  `client_id` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_client_id_parent_id_alias_language` (`client_id`,`parent_id`,`alias`,`language`),
+  KEY `idx_componentid` (`component_id`,`menutype`,`published`,`access`),
+  KEY `idx_menutype` (`menutype`),
+  KEY `idx_left_right` (`lft`,`rgt`),
+  KEY `idx_alias` (`alias`),
+  KEY `idx_path` (`path`(255)),
+  KEY `idx_language` (`language`)
+) ENGINE=MyISAM AUTO_INCREMENT=118 ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`) VALUES
-	(1, '', 'Menu_Item_Root', 'root', '', '', '', '', 1, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 51, 0, '*', 0),
+	(1, '', 'Menu_Item_Root', 'root', '', '', '', '', 1, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 75, 0, '*', 0),
 	(2, 'menu', 'com_banners', 'Banners', '', 'Banners', 'index.php?option=com_banners', 'component', 0, 1, 1, 4, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 1, 10, 0, '*', 1),
 	(3, 'menu', 'com_banners', 'Banners', '', 'Banners/Banners', 'index.php?option=com_banners', 'component', 0, 2, 2, 4, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 2, 3, 0, '*', 1),
 	(4, 'menu', 'com_banners_categories', 'Categories', '', 'Banners/Categories', 'index.php?option=com_categories&extension=com_banners', 'component', 0, 2, 2, 6, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners-cat', 0, '', 4, 5, 0, '*', 1),
@@ -1188,13 +1225,23 @@ INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link
 	(20, 'menu', 'com_weblinks_categories', 'Categories', '', 'Weblinks/Categories', 'index.php?option=com_categories&extension=com_weblinks', 'component', 0, 18, 2, 6, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:weblinks-cat', 0, '', 38, 39, 0, '*', 1),
 	(21, 'menu', 'com_finder', 'Smart Search', '', 'Smart Search', 'index.php?option=com_finder', 'component', 0, 1, 1, 27, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:finder', 0, '', 31, 32, 0, '*', 1),
 	(22, 'menu', 'com_joomlaupdate', 'Joomla! Update', '', 'Joomla! Update', 'index.php?option=com_joomlaupdate', 'component', 0, 1, 1, 28, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:joomlaupdate', 0, '', 41, 42, 0, '*', 1),
-	(23, 'top', 'Home', 'home', '', 'home', 'index.php?option=com_virtuemart&view=virtuemart', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 3, 4, 1, '*', 0),
-	(24, 'main', 'VirtueMart AIO', 'virtuemart-aio', '', 'virtuemart-aio', 'index.php?option=com_virtuemart_allinone', 'component', 0, 1, 1, 10001, 0, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '', 75, 76, 0, '', 1),
-	(25, 'main', 'COM_VIRTUEMART', 'com-virtuemart', '', 'com-virtuemart', 'index.php?option=com_virtuemart', 'component', 0, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png', 0, '', 77, 78, 0, '', 1),
-	(26, 'shopmenul', 'Shop', 'shop', '', 'shop', 'index.php?option=com_virtuemart&view=virtuemart', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 43, 44, 0, '*', 0),
-	(27, 'shopmenul', 'Account', 'account', '', 'account', 'index.php?option=com_virtuemart&view=user&layout=edit', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 45, 46, 0, '*', 0),
-	(28, 'shopmenul', 'Orders', 'orders', '', 'orders', 'index.php?option=com_virtuemart&view=orders&layout=list', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 47, 48, 0, '*', 0),
-	(29, 'shopmenul', 'Cart', 'cart', '', 'cart', 'index.php?option=com_virtuemart&view=cart', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 49, 50, 0, '*', 0);
+	(101, 'mainmenu', 'Shop', 'shop', '', 'shop', 'index.php?option=com_virtuemart&view=virtuemart', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":1,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 29, 30, 1, '*', 0),
+	(102, 'main', 'COM_VIRTUEMART', 'com-virtuemart', '', 'com-virtuemart', 'index.php?option=com_virtuemart', 'component', 0, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png', 0, '', 43, 66, 0, '', 1),
+	(103, 'main', 'COM_VIRTUEMART_MENU_ORDERS', 'com-virtuemart-menu-orders', '', 'com-virtuemart/com-virtuemart-menu-orders', 'index.php?option=com_virtuemart&view=orders', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-orders.png', 0, '', 44, 45, 0, '', 1),
+	(104, 'main', 'COM_VIRTUEMART_MENU_PRODUCTS', 'com-virtuemart-menu-products', '', 'com-virtuemart/com-virtuemart-menu-products', 'index.php?option=com_virtuemart&view=product', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-products.png', 0, '', 46, 47, 0, '', 1),
+	(105, 'main', 'COM_VIRTUEMART_MENU_CATEGORIES', 'com-virtuemart-menu-categories', '', 'com-virtuemart/com-virtuemart-menu-categories', 'index.php?option=com_virtuemart&view=category', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-categories.png', 0, '', 48, 49, 0, '', 1),
+	(106, 'main', 'COM_VIRTUEMART_MENU_MANUFACTURERS', 'com-virtuemart-menu-manufacturers', '', 'com-virtuemart/com-virtuemart-menu-manufacturers', 'index.php?option=com_virtuemart&view=manufacturer', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-manufacturers.png', 0, '', 50, 51, 0, '', 1),
+	(107, 'main', 'COM_VIRTUEMART_MENU_USERS', 'com-virtuemart-menu-users', '', 'com-virtuemart/com-virtuemart-menu-users', 'index.php?option=com_virtuemart&view=user', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-shoppers.png', 0, '', 52, 53, 0, '', 1),
+	(108, 'main', 'COM_VIRTUEMART_MENU_MEDIAFILES', 'com-virtuemart-menu-mediafiles', '', 'com-virtuemart/com-virtuemart-menu-mediafiles', 'index.php?option=com_virtuemart&view=media', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-media.png', 0, '', 54, 55, 0, '', 1),
+	(109, 'main', 'COM_VIRTUEMART_MENU_SHIPMENTMETHODS', 'com-virtuemart-menu-shipmentmethods', '', 'com-virtuemart/com-virtuemart-menu-shipmentmethods', 'index.php?option=com_virtuemart&view=shipmentmethod', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-shipmentmethods.png', 0, '', 56, 57, 0, '', 1),
+	(110, 'main', 'COM_VIRTUEMART_MENU_PAYMENTMETHODS', 'com-virtuemart-menu-paymentmethods', '', 'com-virtuemart/com-virtuemart-menu-paymentmethods', 'index.php?option=com_virtuemart&view=paymentmethod', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-paymentmethods.png', 0, '', 58, 59, 0, '', 1),
+	(111, 'main', 'COM_VIRTUEMART_MENU_REPORT', 'com-virtuemart-menu-report', '', 'com-virtuemart/com-virtuemart-menu-report', 'index.php?option=com_virtuemart&view=report', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-report.png', 0, '', 60, 61, 0, '', 1),
+	(112, 'main', 'COM_VIRTUEMART_MENU_STORE', 'com-virtuemart-menu-store', '', 'com-virtuemart/com-virtuemart-menu-store', 'index.php?option=com_virtuemart&view=editshop', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-shop.png', 0, '', 62, 63, 0, '', 1),
+	(113, 'main', 'COM_VIRTUEMART_MENU_CONFIGURATION', 'com-virtuemart-menu-configuration', '', 'com-virtuemart/com-virtuemart-menu-configuration', 'index.php?option=com_virtuemart&view=config', 'component', 0, 102, 2, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_virtuemart/assets/images/icon_16/menu-icon16-config.png', 0, '', 64, 65, 0, '', 1),
+	(114, 'main', 'VirtueMart AIO', 'virtuemart-aio', '', 'virtuemart-aio', 'index.php?option=com_virtuemart_allinone', 'component', 0, 1, 1, 10001, 0, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '', 67, 68, 0, '', 1),
+	(115, 'mainmenu', 'Account', 'account', '', 'account', 'index.php?option=com_virtuemart&view=user&layout=edit', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 69, 70, 0, '*', 0),
+	(116, 'mainmenu', 'Orders', 'orders', '', 'orders', 'index.php?option=com_virtuemart&view=orders&layout=list', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 71, 72, 0, '*', 0),
+	(117, 'mainmenu', 'Cart', 'cart', '', 'cart', 'index.php?option=com_virtuemart&view=cart', 'component', 1, 1, 1, 10000, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 73, 74, 0, '*', 0);
 
 
 # -------------------------------------------------------
@@ -1210,7 +1257,7 @@ CREATE TABLE `#__menu_types` (
   `description` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
   UNIQUE `idx_menutype` (`menutype`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__menu_types` VALUES (1, 'mainmenu', 'Main Menu', 'The main menu for the site');
 
@@ -1232,7 +1279,7 @@ CREATE TABLE `#__messages` (
   `message` text NOT NULL,
   PRIMARY KEY  (`message_id`),
   KEY `useridto_state` (`user_id_to`, `state`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 # -------------------------------------------------------
 
 #
@@ -1244,7 +1291,7 @@ CREATE TABLE `#__messages_cfg` (
   `cfg_name` varchar(100) NOT NULL default '',
   `cfg_value` varchar(255) NOT NULL default '',
   UNIQUE `idx_user_var_name` (`user_id`,`cfg_name`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 # -------------------------------------------------------
 
 #
@@ -1273,13 +1320,37 @@ CREATE TABLE `#__modules` (
   KEY `published` (`published`,`access`),
   KEY `newsfeeds` (`module`,`published`),
   KEY `idx_language` (`language`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 DELETE FROM `#__modules`;
 
+CREATE TABLE IF NOT EXISTS `#__modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL DEFAULT '',
+  `note` varchar(255) NOT NULL DEFAULT '',
+  `content` text NOT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `position` varchar(50) NOT NULL DEFAULT '',
+  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `module` varchar(50) DEFAULT NULL,
+  `access` int(10) unsigned NOT NULL DEFAULT '0',
+  `showtitle` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `params` text NOT NULL,
+  `client_id` tinyint(4) NOT NULL DEFAULT '0',
+  `language` char(7) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `published` (`published`,`access`),
+  KEY `newsfeeds` (`module`,`published`),
+  KEY `idx_language` (`language`)
+) ENGINE=MyISAM AUTO_INCREMENT=93 ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO `#__modules` (`id`, `title`, `note`, `content`, `ordering`, `position`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `published`, `module`, `access`, `showtitle`, `params`, `client_id`, `language`) VALUES
-	(1, 'Main Menu', '', '', 1, 'position-7', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_menu', 1, 1, '{"menutype":"mainmenu","startLevel":"0","endLevel":"0","showAllChildren":"0","tag_id":"","class_sfx":"","window_open":"","layout":"","moduleclass_sfx":"_menu","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
+	(1, 'Main Menu', '', '', 1, 'position-1', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_menu', 1, 1, '{"menutype":"mainmenu","startLevel":"1","endLevel":"0","showAllChildren":"0","tag_id":"","class_sfx":"","window_open":"","layout":"_:default","moduleclass_sfx":"_menu","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
 	(2, 'Login', '', '', 1, 'login', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_login', 1, 1, '', 1, '*'),
 	(3, 'Popular Articles', '', '', 3, 'cpanel', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_popular', 3, 1, '{"count":"5","catid":"","user_id":"0","layout":"_:default","moduleclass_sfx":"","cache":"0","automatic_title":"1"}', 1, '*'),
 	(4, 'Recently Added Articles', '', '', 4, 'cpanel', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_latest', 3, 1, '{"count":"5","ordering":"c_dsc","catid":"","user_id":"0","layout":"_:default","moduleclass_sfx":"","cache":"0","automatic_title":"1"}', 1, '*'),
@@ -1294,7 +1365,13 @@ INSERT INTO `#__modules` (`id`, `title`, `note`, `content`, `ordering`, `positio
 	(17, 'Breadcrumbs', '', '', 1, 'position-2', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_breadcrumbs', 1, 1, '{"moduleclass_sfx":"","showHome":"1","homeText":"Home","showComponent":"1","separator":"","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
 	(79, 'Multilanguage status', '', '', 1, 'status', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 'mod_multilangstatus', 3, 1, '{"layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*'),
 	(86, 'Joomla Version', '', '', 1, 'footer', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_version', 3, 1, '{"format":"short","product":"1","layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*'),
-	(87, 'Top Menu', '', '', 1, 'position-1', 0, '2014-02-17 20:16:48', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_menu', 1, 1, '{"menutype":"shopmenul","startLevel":"1","endLevel":"0","showAllChildren":"0","tag_id":"","class_sfx":"","window_open":"","layout":"_:default","moduleclass_sfx":"_menu","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*');
+	(87, 'VM - Currencies Selector', '', '', 5, 'position-4', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_virtuemart_currencies', 1, 1, '', 0, '*'),
+	(88, 'VM - Featured products', '', '', 3, 'position-4', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_virtuemart_product', 1, 1, '', 0, '*'),
+	(89, 'VM - Search in Shop', '', '', 2, 'position-4', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_virtuemart_search', 1, 1, '', 0, '*'),
+	(90, 'VM - Manufacturer', '', '', 8, 'position-4', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_virtuemart_manufacturer', 1, 1, '', 0, '*'),
+	(91, 'VM - Shopping cart', '', '', 0, 'position-4', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_virtuemart_cart', 1, 1, '', 0, '*'),
+	(92, 'VM - Category', '', '', 4, 'position-4', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_virtuemart_category', 1, 1, '', 0, '*');
+
 # -------------------------------------------------------
 
 #
@@ -1305,7 +1382,7 @@ CREATE TABLE `#__modules_menu` (
   `moduleid` integer NOT NULL default '0',
   `menuid` integer NOT NULL default '0',
   PRIMARY KEY  (`moduleid`,`menuid`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Dumping data for table `#__modules_menu`
@@ -1330,7 +1407,12 @@ INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES
 	(17, 0),
 	(79, 0),
 	(86, 0),
-	(87, 0);
+	(87, 0),
+	(88, 0),
+	(89, 0),
+	(90, 0),
+	(91, 0),
+	(92, 0);
 # -------------------------------------------------------
 
 #
@@ -1375,7 +1457,7 @@ CREATE TABLE `#__newsfeeds` (
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`)
 
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -1389,7 +1471,7 @@ CREATE TABLE IF NOT EXISTS `#__overrider` (
   `string` text NOT NULL,
   `file` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 # -------------------------------------------------------
@@ -1411,7 +1493,7 @@ CREATE TABLE `#__redirect_links` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `idx_link_old` (`old_url`),
   KEY `idx_link_modifed` (`modified_date`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 # -------------------------------------------------------
@@ -1424,7 +1506,7 @@ CREATE TABLE `#__schemas` (
   `extension_id` int(11) NOT NULL,
   `version_id` varchar(20) NOT NULL,
   PRIMARY KEY (`extension_id`, `version_id`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 # -------------------------------------------------------
 
 #
@@ -1444,7 +1526,7 @@ CREATE TABLE `#__session` (
   KEY `whosonline` (`guest`,`usertype`),
   KEY `userid` (`userid`),
   KEY `time` (`time`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 # -------------------------------------------------------
@@ -1466,7 +1548,7 @@ CREATE TABLE  `#__updates` (
   `detailsurl` text NOT NULL,
   `infourl` text NOT NULL,
   PRIMARY KEY  (`update_id`)
-)  DEFAULT CHARSET=utf8 COMMENT='Available Updates';
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available Updates';
 
 CREATE TABLE  `#__update_sites` (
   `update_site_id` int(11) NOT NULL auto_increment,
@@ -1476,7 +1558,7 @@ CREATE TABLE  `#__update_sites` (
   `enabled` int(11) default '0',
   `last_check_timestamp` bigint(20) DEFAULT '0',
   PRIMARY KEY  (`update_site_id`)
-)  DEFAULT CHARSET=utf8 COMMENT='Update Sites';
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Update Sites';
 
 INSERT INTO `#__update_sites` VALUES
 (1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 0),
@@ -1487,7 +1569,7 @@ CREATE TABLE `#__update_sites_extensions` (
   `update_site_id` INT DEFAULT 0,
   `extension_id` INT DEFAULT 0,
   PRIMARY KEY(`update_site_id`, `extension_id`)
-) DEFAULT CHARSET=utf8 COMMENT = 'Links extensions to update sites';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = 'Links extensions to update sites';
 
 INSERT INTO `#__update_sites_extensions` VALUES
 (1, 700),
@@ -1502,7 +1584,7 @@ CREATE TABLE  `#__update_categories` (
   `parent` int(11) default '0',
   `updatesite` int(11) default '0',
   PRIMARY KEY  (`categoryid`)
-)  DEFAULT CHARSET=utf8 COMMENT='Update Categories';
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Update Categories';
 
 
 # -------------------------------------------------------
@@ -1515,19 +1597,19 @@ CREATE TABLE IF NOT EXISTS `#__template_styles` (
   `id` integer unsigned NOT NULL AUTO_INCREMENT,
   `template` varchar(50) NOT NULL DEFAULT '',
   `client_id` tinyint(1) unsigned NOT NULL DEFAULT 0,
-  `home` char(7) NOT NULL DEFAULT '0',
+  `home` tinyint(1) NOT NULL DEFAULT 0,
   `title` varchar(255) NOT NULL DEFAULT '',
   `params` TEXT NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `idx_template` (`template`),
   KEY `idx_home` (`home`)
-)  DEFAULT CHARSET=utf8 ;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `#__template_styles` VALUES (2, 'bluestork', '1', '1', 'Bluestork - Default', '{"useRoundedCorners":"1","showSiteName":"0"}');
 INSERT INTO `#__template_styles` VALUES (3, 'atomic', '0', '0', 'Atomic - Default', '{}');
-INSERT INTO `#__template_styles` VALUES (4, 'beez_20', 0, 0, 'Beez2 - Default', '{"wrapperSmall":"53","wrapperLarge":"72","logo":"images\\/joomla_black.gif","sitetitle":"Joomla!","sitedescription":"Open Source Content Management","navposition":"left","templatecolor":"personal","html5":"0"}');
+INSERT INTO `#__template_styles` VALUES (4, 'beez_20', '0', '0', 'Beez2 - Default', '{"wrapperSmall":"53","wrapperLarge":"72","logo":"images\\/joomla_black.gif","sitetitle":"Joomla!","sitedescription":"Open Source Content Management","navposition":"left","templatecolor":"personal","html5":"0"}');
 INSERT INTO `#__template_styles` VALUES (5, 'hathor', '1', '0', 'Hathor - Default', '{"showSiteName":"0","colourChoice":"","boldText":"0"}');
-INSERT INTO `#__template_styles` VALUES (6, 'beez5', 0, '1', 'Beez5 - Default', '{"wrapperSmall":53,"wrapperLarge":85,"logo":"","sitetitle":"","sitedescription":"Open Source eCommerce Solution","navposition":"left","html5":0}');
+INSERT INTO `#__template_styles` VALUES (6, 'beez5', '0', '1', 'Beez5 - Default', '{"wrapperSmall":53,"wrapperLarge":85,"logo":"","sitetitle":"","sitedescription":"Open Source eCommerce Solution","navposition":"left","html5":0}');
 
 # -------------------------------------------------------
 #
@@ -1538,7 +1620,7 @@ CREATE TABLE IF NOT EXISTS `#__user_usergroup_map` (
   `user_id` integer unsigned NOT NULL default '0' COMMENT 'Foreign Key to #__users.id',
   `group_id` integer unsigned NOT NULL default '0' COMMENT 'Foreign Key to #__usergroups.id',
   PRIMARY KEY  (`user_id`,`group_id`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -1557,7 +1639,7 @@ CREATE TABLE IF NOT EXISTS `#__usergroups` (
   KEY `idx_usergroup_title_lookup` (`title`),
   KEY `idx_usergroup_adjacency_lookup` (`parent_id`),
   KEY `idx_usergroup_nested_set_lookup` USING BTREE (`lft`,`rgt`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `#__usergroups` (`id` ,`parent_id` ,`lft` ,`rgt` ,`title`)
 VALUES
@@ -1597,7 +1679,7 @@ CREATE TABLE `#__users` (
   KEY `idx_block` (`block`),
   KEY `username` (`username`),
   KEY `email` (`email`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -1620,7 +1702,7 @@ CREATE TABLE IF NOT EXISTS `#__user_notes` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_category_id` (`catid`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # -------------------------------------------------------
 
@@ -1630,7 +1712,7 @@ CREATE TABLE IF NOT EXISTS `#__user_profiles` (
   `profile_value` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL default '0',
   UNIQUE KEY `idx_user_id_profile_key` (`user_id`,`profile_key`)
-)  DEFAULT CHARSET=utf8 COMMENT='Simple user profile storage table';
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Simple user profile storage table';
 
 #
 # Table structure for table `#__weblinks`
@@ -1677,7 +1759,7 @@ CREATE TABLE `#__weblinks` (
   KEY `idx_featured_catid` (`featured`,`catid`),
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`)
-)  DEFAULT CHARSET=utf8;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Table structure for table `#__viewlevels`
@@ -1690,7 +1772,7 @@ CREATE TABLE IF NOT EXISTS `#__viewlevels` (
   `rules` varchar(5120) NOT NULL COMMENT 'JSON encoded access control.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_assetgroup_title_lookup` (`title`)
-)   DEFAULT CHARSET=utf8;
+)   ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Dumping data for table `#__viewlevels`

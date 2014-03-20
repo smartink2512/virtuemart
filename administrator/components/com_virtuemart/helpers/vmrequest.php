@@ -1,7 +1,7 @@
 <?php
 /**
- * virtuemart table class, with some additional behaviours.
- *
+ * Class vmRequest
+ * Gets filtered request values.
  *
  * @package    VirtueMart
  * @subpackage Helpers
@@ -16,12 +16,7 @@
  *
  * http://virtuemart.net
  */
- 
-/**
- * Class vmRequest
- * Gets filtered request values.
- * @author Max Milbers
- */
+
 class vmRequest {
 
 	public static function getUword($field, $default='', $custom=''){

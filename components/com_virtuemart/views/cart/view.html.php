@@ -366,8 +366,8 @@ class VirtueMartViewCart extends VmView {
 	private function getCheckoutAdvertise() {
 		$checkoutAdvertise=array();
 		JPluginHelper::importPlugin('vmcoupon');
-		JPluginHelper::importPlugin('vmpayment');
 		JPluginHelper::importPlugin('vmshipment');
+		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckoutAdvertise', array( $this->cart, &$checkoutAdvertise));
 		return $checkoutAdvertise;

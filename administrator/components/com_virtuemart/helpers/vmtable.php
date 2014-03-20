@@ -19,8 +19,6 @@
  */
 defined('_JEXEC') or die();
 
-//jimport('joomla.user.user');
-
 /**
  * Replaces JTable with some more advanced functions and fitting to the nooku conventions
  *
@@ -38,7 +36,7 @@ class VmTable extends JTable {
 	protected $_unique = false;
 	protected $_unique_name = array();
 	protected $_orderingKey = 'ordering';
-	// 	var $_useSlug = false;
+
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
@@ -306,6 +304,11 @@ class VmTable extends JTable {
 
 	}
 
+	/**
+	 * Sets fields encrypted
+	 * @author Max Milbers
+	 * @param $fieldNames
+	 */
 	public function setCryptedFields($fieldNames){
 		if(!$fieldNames){
 			vmTrace('setEncrytped fields false not catched');
@@ -316,6 +319,13 @@ class VmTable extends JTable {
 			unset($fieldNames[$this->_pkey]);
 		}
 		$this->_cryptedFields = $fieldNames;
+	}
+
+	/**
+	 *
+	 */
+	public function getCryptedFields(){
+		return $this->_cryptedFields;
 	}
 
 	/**
@@ -607,9 +617,22 @@ class VmTable extends JTable {
 				$date = 0;
 			}
 
-			foreach($this->_cryptedFields as $field){
-				if(isset($this->$field)){
-					$this->$field = vmCrypt::decrypt($this->$field,$date);
+			if($this->_cryptedFields){
+				if(!class_exists('vmCrypt')){
+					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+				}
+				if(isset($this->modified_on)){
+					$timestamp = strtotime($this->modified_on);
+					$date = $timestamp;
+				} else {
+					$date = 0;
+				}
+
+				foreach($this->_cryptedFields as $field){
+					if(isset($this->$field)){
+						$this->$field = vmCrypt::decrypt($this->$field,$date);
+					}
+
 				}
 			}
 		}
@@ -741,20 +764,28 @@ class VmTable extends JTable {
 
 			}
 
+			//if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
 			//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
+			//vmdebug('my slugName '.$slugName,$this->$slugName);
 			$this->$slugName = str_replace('-', ' ', $this->$slugName);
 
 			$lang = JFactory::getLanguage();
 			$this->$slugName = $lang->transliterate($this->$slugName);
-
+			//vmdebug('my slug after transliterate ',$this->slug);
 			// Trim white spaces at beginning and end of alias and make lowercase
 			$this->$slugName = trim(JString::strtolower($this->$slugName));
 			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
-			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
 
+			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
+			while(strpos($this->$slugName,'--')){
+				$this->$slugName = str_replace('--','-',$this->$slugName);
+			}
 			// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
+			//vmdebug('my slug before urlencode ',$this->slug);
 			$this->$slugName = urlencode($this->$slugName);
+			//vmdebug('my slug after urlencode ',$this->slug);
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			if (!$valid) {
 				return false;

@@ -24,6 +24,7 @@ define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
 // define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
 define( 'JPATH_VM_PLUGINS', JPATH_VM_ADMINISTRATOR.DS.'plugins' );
+define( 'JPATH_VM_MODULES', JPATH_ROOT.DS.'modules' );
 
 if(version_compare(JVERSION,'3.0.0','ge')) {
 	defined('JVM_VERSION') or define ('JVM_VERSION', 3);
@@ -501,14 +502,11 @@ class VmConfig {
 
 	static function showDebug(){
 
-		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
 		if(self::$_debug===NULL){
-
 			$debug = VmConfig::get('debug_enable','none');
-
+			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
-
 				if(VmConfig::$echoAdmin){
 					self::$_debug = TRUE;
 				} else {
@@ -525,7 +523,17 @@ class VmConfig {
 					self::$_debug = FALSE;
 				}
 			}
+		}
 
+		if(self::$_debug){
+			ini_set('display_errors', '1');
+		} else {
+			ini_set('display_errors', '0');
+			if(version_compare(phpversion(),'5.4.0','<' )){
+				error_reporting( E_ALL & ~E_STRICT );
+			} else {
+				error_reporting( E_ALL ^ E_STRICT );
+			}
 		}
 
 		return self::$_debug;
@@ -542,7 +550,6 @@ class VmConfig {
 		$memory_limit = VmConfig::getMemoryLimit();
 
 		if($memory_limit<$minMemory)  @ini_set( 'memory_limit', $minMemory.'M' );
-
 	}
 
 	/**
@@ -595,22 +602,65 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false,$loadCore=false){
+	static public function loadJLang($name,$site=false){
 
-		$path = JPATH_ADMINISTRATOR;
-		if($site){
-			$path = JPATH_SITE;
-		}
 		$jlang =JFactory::getLanguage();
 		$tag = $jlang->getTag();
-		$fallback = false;
-		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-			$fallback = true;
-		}
-		//vmdebug('loadJLang',$name);
-		$jlang->load($name, $path,$tag,false,$fallback);
 
- 	}
+		$path = $basePath = JPATH_VM_ADMINISTRATOR;
+		if($site){
+			$path = $basePath = JPATH_VM_SITE;
+		}
+
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			if(!file_exists($testpath)){
+				$path = JPATH_ADMINISTRATOR;
+				if($site){
+					$path = JPATH_SITE;
+				}
+			}
+			$jlang->load($name, $path, 'en-GB');
+		}
+
+		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		if(!file_exists($testpath)){
+			$path = JPATH_ADMINISTRATOR;
+			if($site){
+				$path = JPATH_SITE;
+			}
+		}
+
+		$jlang->load($name, $path,$tag,true);
+	}
+
+	/**
+	 * @static
+	 * @author Valerie Isaksen
+	 * @param $name
+	 */
+	static public function loadModJLang($name){
+
+		$jlang =JFactory::getLanguage();
+		$tag = $jlang->getTag();
+
+		$path = $basePath = JPATH_VM_MODULES.DS.$name;
+
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			if(!file_exists($testpath)){
+				$path = JPATH_ADMINISTRATOR;
+			}
+			$jlang->load($name, $path, 'en-GB');
+		}
+
+		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		if(!file_exists($testpath)){
+			$path = JPATH_ADMINISTRATOR;
+		}
+
+		$jlang->load($name, $path,$tag,true);
+	}
 
 
 	/**
@@ -720,8 +770,8 @@ class VmConfig {
 					vmError($confTable->getError());
 				}
 			}
-			self::$_jpConfig->set('sctime',microtime(TRUE));
-			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
+			self::$_jpConfig->_params['sctime'] = microtime(TRUE);
+			self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
 
 			vmTime('time to load config','loadConfig');
 
@@ -770,11 +820,16 @@ class VmConfig {
 				$siteLang = self::$langs[0];
 			}
 		}
+
+		self::$_jpConfig->_params['sctime'] = microtime(TRUE);
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		vmdebug('self::$vmlang '.self::$vmlang);
 		defined('VMLANG') or define('VMLANG', self::$vmlang);	//Fallback
 
+		//self::$_jpConfig->set('sctime',microtime(TRUE));
+		//self::setdbLanguageTag();
+		self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
 		return self::$vmlang;
  	}
 

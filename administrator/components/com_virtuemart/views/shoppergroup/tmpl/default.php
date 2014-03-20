@@ -65,10 +65,10 @@ AdminUIHelper::startAdminArea($this);
 				    <?php echo $checked; ?>
 			    </td>
 			    <td align="left">
-			      <a href="<?php echo $editlink; ?>"><?php echo $row->shopper_group_name; ?></a>
+			      <a href="<?php echo $editlink; ?>"><?php echo vmText::_($row->shopper_group_name); ?></a>
 			    </td>
 			    <td align="left">
-				    <?php echo $row->shopper_group_desc; ?>
+				    <?php echo vmText::_($row->shopper_group_desc); ?>
 			    </td>
 			    <td>
 					<?php

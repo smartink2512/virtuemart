@@ -300,7 +300,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$jConfModel = new ConfigModelApplication();
 			$jConfig = $jConfModel->getData();
 
-			$jConfig['caching'] = 1;
+			$jConfig['caching'] = 0;
 			$jConfig['lifetime'] = 60;
 			$jConfig['list_limit'] = 25;
 			$jConfig['MetaDesc'] = 'VirtueMart works with Joomla! - the dynamic portal engine and content management system';

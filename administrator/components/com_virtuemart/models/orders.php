@@ -596,34 +596,35 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
-				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-				// Payment decides what to do when order status is updated
-				JPluginHelper::importPlugin('vmpayment');
-				JPluginHelper::importPlugin('vmcalculation');
-				JPluginHelper::importPlugin('vmcustom');
-				$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
-				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
-				foreach ($_returnValues as $_returnValue) {
-					if ($_returnValue === true) {
-						break; // Plugin was successfull
-					} elseif ($_returnValue === false) {
-						return false; // Plugin failed
-					}
-					// Ignore null status and look for the next returnValue
-				}
+
+			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+
+			JPluginHelper::importPlugin('vmcalculation');
+			JPluginHelper::importPlugin('vmcustom');
 
 			JPluginHelper::importPlugin('vmshipment');
 			$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$data,$old_order_status));
 
+			// Payment decides what to do when order status is updated
+			JPluginHelper::importPlugin('vmpayment');
+			$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
+			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
+			foreach ($_returnValues as $_returnValue) {
+				if ($_returnValue === true) {
+					break; // Plugin was successfull
+				} elseif ($_returnValue === false) {
+					return false; // Plugin failed
+				}
+				// Ignore null status and look for the next returnValue
+			}
 
 			/**
 			* If an order gets cancelled, fire a plugin event, perhaps
 			* some authorization needs to be voided
 			*/
 			if ($data->order_status == "X") {
-				JPluginHelper::importPlugin('vmpayment');			//Should we add this? $inputOrder
-				JPluginHelper::importPlugin('vmcalculation');
+
 				$_dispatcher = JDispatcher::getInstance();
 				//Should be renamed to plgVmOnCancelOrder
 				$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
@@ -1859,8 +1860,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$dispatcher = JDispatcher::getInstance();
 
-		JPluginHelper::importPlugin('vmshipment');
 		JPluginHelper::importPlugin('vmcustom');
+		JPluginHelper::importPlugin('vmshipment');
 		JPluginHelper::importPlugin('vmpayment');
 		if (!class_exists('VirtueMartCart'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');

@@ -71,8 +71,7 @@ class VirtueMartModelWaitingList extends VmModel {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		$vars = array();
-		$waitinglistModel = VmModel::getModel ('waitinglist');
-		$waiting_users = $waitinglistModel->getWaitingusers ($virtuemart_product_id);
+		$waiting_users = $this->getWaitingusers ($virtuemart_product_id);
 
 		/* Load the product details */
 		$db = JFactory::getDbo ();

@@ -185,7 +185,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 				$db = JFactory::getDBO();
 				$db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 				$name = $db->loadResult();
-				vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
+				vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',vmText::_($name),$id));
 				continue;
 			}
 
@@ -193,7 +193,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			if($id == $anonymSgId->virtuemart_shoppergroup_id){
 				$db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 				$name = $db->loadResult();
-				vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
+				vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',vmText::_($name),$id));
 				continue;
 			}
 
@@ -202,7 +202,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			if($db->loadResult()){
 				$db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 				$name = $db->loadResult();
-				vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_WITH_MEMBERS',$name,$id));
+				vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_WITH_MEMBERS',vmText::_($name),$id));
 				continue;
 			}
 

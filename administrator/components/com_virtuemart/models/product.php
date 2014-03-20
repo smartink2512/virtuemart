@@ -72,16 +72,14 @@ class VirtueMartModelProduct extends VmModel {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 			}
 			$browseOrderByFields = ShopFunctions::getValidProductFilterArray ();
-			$this->addvalidOrderingFieldName (array('product_price','p.`product_sales`'));
+			$this->addvalidOrderingFieldName (array('product_price','product_sales'));
 			//$this->addvalidOrderingFieldName (array('product_price'));
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
 		$this->addvalidOrderingFieldName ((array)$browseOrderByFields);
 
-
 		$this->removevalidOrderingFieldName ('virtuemart_product_id');
-		$this->removevalidOrderingFieldName ('product_sales');
-		//unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
+
 		array_unshift ($this->_validOrderingFieldName, 'p.virtuemart_product_id');
 		$this->_selectedOrdering = VmConfig::get ('browse_orderby_field', '`p`.virtuemart_product_id');
 
@@ -233,12 +231,14 @@ class VirtueMartModelProduct extends VmModel {
 
 		//administrative variables to organize the joining of tables
 		$joinCategory = FALSE;
+		$joinCatLang = false;
 		$joinMf = FALSE;
+		$joinMfLang = false;
 		$joinPrice = FALSE;
 		$joinCustom = FALSE;
 		$joinShopper = FALSE;
 		$joinChildren = FALSE;
-		$joinLang = TRUE;
+		$joinLang = false;
 		$orderBy = ' ';
 
 		$where = array();
@@ -267,25 +267,18 @@ class VirtueMartModelProduct extends VmModel {
 
 				foreach ($this->valid_search_fields as $searchField) {
 					if ($searchField == 'category_name' || $searchField == 'category_description') {
-						$joinCategory = TRUE;
+						$joinCatLang = true;
 					}
-					else {
-						if ($searchField == 'mf_name') {
-							$joinMf = TRUE;
-						}
-						else {
-							if ($searchField == 'product_price') {
-								$joinPrice = TRUE;
-							}
-							else {
-								//vmdebug('sortSearchListQuery $searchField',$searchField);
-							/*	if (strpos ($searchField, 'p.') == 1) {
-									$searchField = 'p`.`' . substr ($searchField, 2, (strlen ($searchField)));
-									//vmdebug('sortSearchListQuery $searchField recreated',$searchField);
-								}*/
-							}
-						}
+					else if ($searchField == 'mf_name') {
+						$joinMfLang = true;
 					}
+					else if ($searchField == 'product_price') {
+						$joinPrice = TRUE;
+					}
+					else if (!$joinLang and ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == '`p`.product_sku' or $searchField == '`l`.slug') ){
+						$joinLang = TRUE;
+					}
+
 					if (strpos ($searchField, '`') !== FALSE){
 						$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
 						$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
@@ -300,10 +293,9 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				else {
 					$where[] = '`product_name` LIKE ' . $keyword;
-
+					$joinLang = TRUE;
 					//If they have no check boxes selected it will default to product name at least.
 				}
-				$joinLang = TRUE;
 			}
 
 // 		vmdebug('my $this->searchcustoms ',$this->searchcustoms);
@@ -331,9 +323,7 @@ class VirtueMartModelProduct extends VmModel {
 			if ($virtuemart_category_id > 0) {
 				$joinCategory = TRUE;
 				$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
-			}
-
-			if ($isSite and !VmConfig::get('show_uncat_child_products',TRUE)) {
+			} else if ($isSite and !VmConfig::get('show_uncat_child_products',TRUE)) {
 				$joinCategory = TRUE;
 				$where[] = ' `pc`.`virtuemart_category_id` > 0 ';
 			}
@@ -350,9 +340,9 @@ class VirtueMartModelProduct extends VmModel {
 				if (is_array ($virtuemart_shoppergroup_ids)) {
 					$sgrgroups = array();
 					foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id) {
-						$sgrgroups[] = 's.`virtuemart_shoppergroup_id`= "' . (int)$virtuemart_shoppergroup_id . '" ';
+						$sgrgroups[] = '`ps`.`virtuemart_shoppergroup_id`= "' . (int)$virtuemart_shoppergroup_id . '" ';
 					}
-					$sgrgroups[] = 's.`virtuemart_shoppergroup_id` IS NULL ';
+					$sgrgroups[] = '`ps`.`virtuemart_shoppergroup_id` IS NULL ';
 					$where[] = " ( " . implode (' OR ', $sgrgroups) . " ) ";
 
 					$joinShopper = TRUE;
@@ -406,14 +396,17 @@ class VirtueMartModelProduct extends VmModel {
 				case 'category_name':
 					$orderBy = ' ORDER BY `category_name` ';
 					$joinCategory = TRUE;
+					$joinCatLang = true;
 					break;
 				case 'category_description':
 					$orderBy = ' ORDER BY `category_description` ';
 					$joinCategory = TRUE;
+					$joinCatLang = true;
 					break;
 				case 'mf_name':
 					$orderBy = ' ORDER BY `mf_name` ';
 					$joinMf = TRUE;
+					$joinMfLang = true;
 					break;
 				case 'pc.ordering':
 					$orderBy = ' ORDER BY `pc`.`ordering` ';
@@ -460,6 +453,7 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					case 'topten':
 						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+						$joinPrice = true;
 						$where[] = 'pp.`product_price`>"0.0" ';
 						$this->filter_order_Dir = 'DESC';
 					break;
@@ -476,38 +470,57 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		//write the query, incldue the tables
-		//$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
-		//$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
+		//Maybe we have to join the language to order by product name, description, etc,...
+		if(!$joinLang){
+			$productLangFields = array('product_s_desc','product_desc','product_name','metadesc','metakey','slug');
+			foreach($productLangFields as $field){
+				if(strpos($orderBy,$field,6)!==FALSE){
+					$joinLang = true;
+					break;
+				}
+			}
+		}
+
 		$joinedTables = array();
 		$select = ' p.`virtuemart_product_id` FROM `#__virtuemart_products` as p';
 		if ($joinLang) {
-			//$select = ' l.`virtuemart_product_id` FROM `#__virtuemart_products_' . VMLANG . '` as l';
-			//$joinedTables[] = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
 		}
 
-		if ($joinCategory == TRUE) {
-			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_categories` as pc ON p.`virtuemart_product_id` = `pc`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_categories_' . VmConfig::$vmlang . '` as c ON c.`virtuemart_category_id` = `pc`.`virtuemart_category_id`';
+		if ($joinShopper == TRUE) {
+			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_shoppergroups` as ps ON p.`virtuemart_product_id` = `ps`.`virtuemart_product_id` ';
+			//$joinedTables[] = ' LEFT OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id` ';
 		}
-		if ($joinMf == TRUE) {
-			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_manufacturers_' . VmConfig::$vmlang . '` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
+
+		if ($joinCategory == TRUE or $joinCatLang) {
+			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_categories` as pc ON p.`virtuemart_product_id` = `pc`.`virtuemart_product_id` ';
+			if($joinCatLang){
+				$joinedTables[] = ' LEFT JOIN `#__virtuemart_categories_' . VMLANG . '` as c ON c.`virtuemart_category_id` = `pc`.`virtuemart_category_id`';
+			}
+		}
+
+		if ($joinMf == TRUE or $joinMfLang) {
+			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id` ';
+			if($joinMfLang){
+				$joinedTables[] = 'LEFT JOIN `#__virtuemart_manufacturers_' . VMLANG . '` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
+			}
 		}
 
 		if ($joinPrice == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
 		}
+
 		if ($this->searchcustoms) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_customfields` as pf ON p.`virtuemart_product_id` = pf.`virtuemart_product_id` ';
 		}
+
 		if ($this->searchplugin !== 0) {
 			if (!empty($PluginJoinTables)) {
 				$plgName = $PluginJoinTables[0];
 				$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_custom_plg_' . $plgName . '` as ' . $plgName . ' ON ' . $plgName . '.`virtuemart_product_id` = p.`virtuemart_product_id` ';
 			}
 		}
+
 		if ($joinShopper == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_shoppergroups` ON p.`virtuemart_product_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_product_id`
 			 LEFT  OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
@@ -529,7 +542,7 @@ class VirtueMartModelProduct extends VmModel {
 		if($this->_onlyQuery){
 			return (array($select,$joinedTables,$where,$orderBy));
 		}
-		$joinedTables = implode('',$joinedTables);
+		$joinedTables = " \n".implode(" \n",$joinedTables);
 
 		vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
@@ -2072,14 +2085,8 @@ class VirtueMartModelProduct extends VmModel {
 	function getOrderByList ($virtuemart_category_id = FALSE) {
 
 		$getArray = VmRequest::getRequest();
-		$link = '';
 		$fieldLink = '';
-		// remove setted variable
-		unset ($getArray['globalCurrencyConverter'], $getArray['virtuemart_manufacturer_id'], $getArray['order'], $getArray['orderby']);
 
-		// foreach ($getArray as $key => $value )
-		// $fieldLink .= '&'.$key.'='.$value;
-		//vmdebug('getOrderByList',$getArray);
 		foreach ($getArray as $key => $value) {
 			if (is_array ($value)) {
 				foreach ($value as $k => $v) {
@@ -2210,7 +2217,8 @@ class VirtueMartModelProduct extends VmModel {
 			$orderDirLink = '';
 		}
 
-		$orderDirTxt = vmText::_ ('COM_VIRTUEMART_SEARCH_ORDER_'.$orderDir);
+		$orderDirTxt = JText::_ ('COM_VIRTUEMART_'.$orderDir);
+		//$orderDirTxt = vmText::_ ('COM_VIRTUEMART_SEARCH_ORDER_'.$orderDir);
 
 		$link = JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink . $manufacturerTxt,FALSE);
 

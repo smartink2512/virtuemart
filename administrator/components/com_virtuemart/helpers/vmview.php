@@ -330,9 +330,10 @@ class VmView extends JViewLegacy {
 			// $lang = $params->get('site', 'en-GB');
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
-			$defautName = $langs[$selectedLangue]['name'];
+			$defautName = $selectedLangue;
 			$flagImg = $selectedLangue;
 			if(isset($languagesByCode[$selectedLangue])){
+				$defautName = $langs[$selectedLangue]['name'];
 				$flagImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
 			} else {
 				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));
@@ -343,9 +344,6 @@ class VmView extends JViewLegacy {
 		}
 
 	}
-
-
-
 
 	function SetViewTitle($name ='', $msg ='',$icon ='') {
 

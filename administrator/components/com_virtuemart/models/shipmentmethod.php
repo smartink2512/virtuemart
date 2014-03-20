@@ -70,7 +70,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array($this->_data[$this->_id]->shipment_element,$this->_data[$this->_id]->shipment_jplugin_id,&$this->_data[$this->_id]));
 			}
 
-			if($this->_data[$this->_id]->_cryptedFields){
+			if($this->_data[$this->_id]->getCryptedFields()){
 				if(!class_exists('vmCrypt')){
 					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 				}
@@ -82,7 +82,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 					$date = 0;
 				}
 
-				foreach($this->_data[$this->_id]->_cryptedFields as $field){
+				foreach($this->_data[$this->_id]->getCryptedFields() as $field){
 					if(isset($this->_data[$this->_id]->$field)){
 						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field,$date);
 					}
@@ -92,7 +92,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			/* Add the shipmentcarreir shoppergroups */
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
-			$this->_data[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();#
+			$this->_data[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 			if(empty($this->_data[$this->_id]->virtuemart_shoppergroup_ids)) $this->_data[$this->_id]->virtuemart_shoppergroup_ids = 0;
 
 		}

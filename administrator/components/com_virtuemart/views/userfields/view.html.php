@@ -38,9 +38,6 @@ class VirtuemartViewUserfields extends VmView {
 		$option = VmRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
 
-		// Load the helper(s)
-
-
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
@@ -59,7 +56,6 @@ class VirtuemartViewUserfields extends VmView {
             $this->assignRef('viewName',$viewName);
 			$userFieldPlugin = '';
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
-
 
 				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
@@ -144,7 +140,6 @@ class VirtuemartViewUserfields extends VmView {
 			$lists['account']      =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT','account',$userField->account,$notoggle);
 			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$userField->readonly,$notoggle);
 
-
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
@@ -196,8 +191,7 @@ class VirtuemartViewUserfields extends VmView {
 	 * @param string $value If not null, the type of which the text should be returned
 	 * @return mixed array or string
 	 */
-	function _getTypes ($value = null)
-	{
+	function _getTypes ($value = null){
 		$types = array(
 			 array('type' => 'text'             , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_TEXTFIELD'))
 			,array('type' => 'checkbox'         , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CHECKBOX_SINGLE'))
@@ -217,33 +211,6 @@ class VirtuemartViewUserfields extends VmView {
 		);
 		$this->renderInstalledUserfieldPlugins($types);
 
-
-// 		vmdebug('my $dispatcher ',$dispatcher);
-// 		if($data['userverifyfailed']==1){
-// 			return false;
-// 		}
-
-		//This should be done via plugins !
-/*		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'client.php')) {
-			$types[] = array('type' => 'captcha', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
-		}
-		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'class'.DS.'SecurityImagesHelper.php')) {
-			$types[] = array('type' => 'captcha', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_yanc'.DS.'yanc.php')) {
-			$types[] = array('type' => 'yanc_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (YaNC)');
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_anjel'.DS.'anjel.php')) {
-			$types[] = array('type' => 'anjel_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ANJEL)');
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_letterman'.DS.'letterman.php')) {
-			$types[] = array('type' => 'letterman_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (Letterman)');
-		}
-		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_ccnewsletter'.DS.'ccnewsletter.php')) {
-			$types[] = array('type' => 'ccnewsletter_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ccNewsletter)');
-		}
-		$types[] = array('type' => 'delimiter', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DELIMITER'));
-*/
 		if ($value === null) {
 			return $types;
 		} else {
@@ -255,8 +222,8 @@ class VirtuemartViewUserfields extends VmView {
 			}
 		}
 	}
-	function renderUserfieldPlugin($element, $params)
-	{
+
+	function renderUserfieldPlugin($element, $params){
 		$db = JFactory::getDBO();
 
 		$table = '#__extensions';
@@ -273,12 +240,9 @@ class VirtuemartViewUserfields extends VmView {
 		$filename = 'plg_vmuserfield_' .  $this->plugin->element;
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		return $parameters->render();
-
-
 	}
 
 	function renderInstalledUserfieldPlugins(&$plugins){
-
 
 		$table = '#__extensions';
 		$ext_id = 'extension_id';
@@ -293,7 +257,6 @@ class VirtuemartViewUserfields extends VmView {
 		}
 
 		foreach($userfieldplugins as $userfieldplugin){
-		  // $plugins[] = array('type' => $userfieldplugin[$ext_id], 'text' => $userfieldplugin['name']);
             $plugins[] = array('type' => 'plugin'.$userfieldplugin['element'], 'text' => $userfieldplugin['name']);
 		}
 

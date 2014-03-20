@@ -16,6 +16,15 @@ defined ('_JEXEC') or die('Restricted access');
  * other free or open source software licenses.
  * @version $Id: vmplugin.php 4599 2011-11-02 18:29:04Z alatak $
  */
+
+if (!class_exists( 'VmConfig' )) {
+	if(file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php')){
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+	} else {
+		echo 'Install VirtueMart first'; return;
+	}
+}
+
 // Load the helper functions that are needed by all plugins
 if (!class_exists ('ShopFunctions')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
@@ -70,12 +79,35 @@ abstract class vmPlugin extends JPlugin {
 
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 
-		VmConfig::loadJLang($filename);
+		$this->loadJLang($filename);
 
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
 		$this->_xmlFile	= JPath::clean( JPATH_PLUGINS .'/'. $this->_type .'/'.  $this->_name . '/' . $this->_name . '.xml');
 
+	}
+
+	public function loadJLang($name){
+
+		$jlang =JFactory::getLanguage();
+		$tag = $jlang->getTag();
+
+		$path = $basePath = JPATH_PLUGINS.DS.$this->_type.DS.$this->_name;
+
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			if(!file_exists($testpath)){
+				$path = JPATH_ADMINISTRATOR;
+			}
+			$jlang->load($name, $path, 'en-GB');
+		}
+
+		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		if(!file_exists($testpath)){
+			$path = JPATH_ADMINISTRATOR;
+		}
+
+		$jlang->load($name, $path,$tag,true);
 	}
 
 	function setPluginLoggable($set=TRUE){

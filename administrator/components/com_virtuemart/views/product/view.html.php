@@ -81,7 +81,11 @@ class VirtuemartViewProduct extends VmView {
 				// Get the category tree
 				if (isset($product->categories)) $this->category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $this->category_tree = ShopFunctions::categoryListTree();
-				//$this->assignRef('category_tree', $category_tree);
+
+				//Fallback for categories inherited by parent to correctly calculate the prices
+				if(empty($product->categories) and !empty($product_parent->categories)){
+					$product->categories = $product_parent->categories;
+				}
 
 				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility
 				if (!isset($product->shoppergroups)) $product->shoppergroups = 0;
@@ -106,8 +110,10 @@ class VirtuemartViewProduct extends VmView {
 				// Load Images
 				$model->addImages($product);
 
-				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability'.DS)){
-					$imagePath = VmConfig::get('vmtemplate').'/images/availability/';
+				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+				$vmtemplate = shopFunctionsF::loadVmTemplateStyle();
+				if(is_Dir(JPATH_ROOT.DS.'templates'.DS.$vmtemplate.DS.'images'.DS.'availability'.DS)){
+					$imagePath = '/templates/'.$vmtemplate.'/images/availability/';
 				} else {
 					$imagePath = '/components/com_virtuemart/assets/images/availability/';
 				}

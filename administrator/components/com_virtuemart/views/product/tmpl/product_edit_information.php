@@ -64,7 +64,7 @@ $i=0;
 				<input type="text" class="inputbox" name="product_gtin" id="product_gtin" value="<?php echo $this->product->product_gtin; ?>" size="32" maxlength="64" />
 			</td>
 			<td>
-				<span class="hastip" title="<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MPN_TOOLTIP') ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MPN') ?></span>
+				<span class="hastip" title="<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MPN_TIP') ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MPN') ?></span>
 			</td>
 			<td>
 				<input type="text" class="inputbox" name="product_mpn" id="product_mpn" value="<?php echo $this->product->product_mpn; ?>" size="32" maxlength="64" />
@@ -110,9 +110,10 @@ $i=0;
 			<?php
 			// It is important to have all product information in the form, since we do not preload the parent
 			// I place the ordering here, maybe we make it editable later.
-			if(!isset($this->product->ordering)) $this->product->ordering = 0;
-			?>
-			<input type="hidden" value="<?php echo $this->product->ordering ?>" name="ordering">
+			if(!isset($this->product->ordering)) {
+				$this->product->ordering = 0;
+				?><input type="hidden" value="<?php echo $this->product->ordering ?>" name="ordering"> <?php
+			} ?>
 			<td>
 				<span class="hasTip" title="<?php echo vmText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRODUCT_TIP'); ?>">
 				<?php echo vmText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></span>

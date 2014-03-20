@@ -204,7 +204,7 @@ class shopFunctionsF {
 		}
 
 		/*if ($required != 0) {
-			$attrs['class'] .= ' required';
+			$attrs['class'] .= ' required ';
 		}*/
 
 		if (is_array ($attribs)) {
@@ -282,22 +282,7 @@ class shopFunctionsF {
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		$view->addTemplatePath( JPATH_VM_SITE.'/views/'.$viewName.'/tmpl' );
 
-		$vmtemplate = VmConfig::get( 'vmtemplate', 'default' );
-		$db = JFactory::getDbo();
-		if(!empty($template) and is_numeric($vmtemplate)) {
-			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
-			$db->setQuery($query);
-			$res = $db->loadAssoc();
-			if($res){
-				$registry = new JRegistry;
-				$registry->loadString($res['params']);
-				$template = $res['template'];
-			}
-		} else {
-			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
-			$db->setQuery( $q );
-			$template = $db->loadResult();
-		}
+		$template = self::loadVmTemplateStyle();
 
 		if($template) {
 			$view->addTemplatePath( JPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
@@ -358,6 +343,30 @@ class shopFunctionsF {
 
 	}
 
+	public static function loadVmTemplateStyle(){
+		$vmtemplate = VmConfig::get( 'vmtemplate', 0 );
+		if(!empty($vmtemplate) and is_numeric($vmtemplate)) {
+			$db = JFactory::getDbo();
+			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
+			$db->setQuery($query);
+			$res = $db->loadAssoc();
+			if($res){
+				$registry = new JRegistry;
+				$registry->loadString($res['params']);
+				$template = $res['template'];
+			}
+		} else {
+			if(JVM_VERSION == 2) {
+				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+			} else {
+				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
+			}
+			$db = JFactory::getDbo();
+			$db->setQuery( $q );
+			$template = $db->loadResult();
+		}
+		return $template;
+	}
 
 	/**
 	 * With this function you can use a view to sent it by email.
@@ -443,7 +452,7 @@ class shopFunctionsF {
 	static function setVmTemplate ($view, $catTpl = 0, $prodTpl = 0, $catLayout = 0, $prodLayout = 0) {
 
 		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
-		$template = VmConfig::get( 'vmtemplate', 'default' );
+		$template = VmConfig::get( 'vmtemplate', 0 );
 		$db = JFactory::getDBO();
 		//Set specific category template
 		if(!empty($catTpl) && empty($prodTpl)) {

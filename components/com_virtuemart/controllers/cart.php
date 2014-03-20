@@ -155,7 +155,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if ($virtuemart_category_id) {
 				$categoryLink = '&view=category&virtuemart_category_id=' . $virtuemart_category_id;
 			}
-			$categoryLink = '';
+			//$categoryLink = '';
 			$continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
 			//VmConfig::$echoDebug=true;
 			$virtuemart_product_ids = vmRequest::getInt('virtuemart_product_id');

@@ -1027,11 +1027,19 @@ class VirtueMartModelUserfields extends VmModel {
 									if ($_fld->size) {
 										$_attribs['style']= "width: ".$_fld->size."px";
 									}
-									$_return['fields'][$_fld->name]['formcode'] = JHtml::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
+									if(!$_fld->required){
+										$obj = new stdClass();
+										$obj->fieldtitle = vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION');
+										$obj->fieldvalue = '';
+										array_unshift($_values,$obj);
+									}
+
+									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
-										 if (  $_val->fieldvalue==$_selected) {
-											 $_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
-										 }
+										if ( !empty($_selected) and $_val->fieldvalue==$_selected ) {
+											// vmdebug('getUserFieldsFilled set empty select to value',$_selected,$_fld,$_return['fields'][$_fld->name]);
+											$_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
+										}
 									}
 									break;
 

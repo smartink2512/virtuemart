@@ -166,21 +166,21 @@ class ShopFunctions {
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
+		$attrs = '';
 
 		$attrs['class'] = 'vm-chzn-select';
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
 			$attrs['data-placeholder'] = vmText::_($select_attribute);
-
 			if($name=='virtuemart_shoppergroup_id'){
 				$name.= '[]';
 			}
 		} else {
-			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
+			$emptyOption = JHTML::_ ('select.option', '', JText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
-		//vmdebug('renderShopperGroupList',$name,$shoppergrps);
-		$listHTML = JHtml::_ ('select.genericlist', $shoppergrps, $name, $attrs, 'virtuemart_shoppergroup_id', 'shopper_group_name', $shopperGroupId);
+
+		$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $name, $attrs, 'virtuemart_shoppergroup_id', 'shopper_group_name', $shopperGroupId,false,true);
 		return $listHTML;
 	}
 

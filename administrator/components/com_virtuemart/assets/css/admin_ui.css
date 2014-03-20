@@ -83,6 +83,7 @@ dl#system-message dd .vmdebug  { font-size:10px; }
 /* Inputs */
 .virtuemart-admin-area fieldset input {float: none;clear: none;display: inline-block;}
 .virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;}
+.virtuemart-admin-area div.tabs {margin-bottom: 240px;}
 textarea {width: 100%;}
 /*.datepicker{width: 60px;} seems unused*/
 .translator {

@@ -139,7 +139,7 @@ class VirtueMartModelConfig extends VmModel {
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 
 		$tplpath = VmConfig::get('vmtemplate',0);
-		if(is_numeric($tplpath)){
+		if(!empty($tplpath) and is_numeric($tplpath)){
 			$db = JFactory::getDbo();
 			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$tplpath.'" ';
 			$db->setQuery($query);
@@ -247,6 +247,11 @@ class VirtueMartModelConfig extends VmModel {
 		}
 		if($type!='browse_cat_orderby_field'){
 			$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
+			if($type=='browse_search_fields'){
+				if($key = array_search('pc.ordering',$searchFieldsArray)){
+					unset($searchFieldsArray[$key]);
+				}
+			}
 		} else {
 			$searchFieldsArray = array('category_name','category_description','cx.ordering','c.published');
 		}
@@ -419,13 +424,20 @@ class VirtueMartModelConfig extends VmModel {
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
 
+		/* This conditions is not enough, if the language changes we need to recall the cache.
 		$newbrowse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$newcat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 		if($browse_cat_orderby_field!=$newbrowse_cat_orderby_field or $newcat_brws_orderby_dir!=$cat_brws_orderby_dir){
 			$cache = JFactory::getCache('com_virtuemart_cats','callback');
 			$cache->clean();
-		}
+		}*/
 
+		$cache = JFactory::getCache('com_virtuemart_cats','callback');
+		$cache->clean();
+		$cache = JFactory::getCache('com_virtuemart_rss','callback');
+		$cache->clean();
+		$cache = JFactory::getCache('convertECB','callback');
+		$cache->clean();
 		$cache = JFactory::getCache('_virtuemart');
 		$cache->clean();
 		$cache = JFactory::getCache('com_plugins');

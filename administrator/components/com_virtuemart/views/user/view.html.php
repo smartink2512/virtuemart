@@ -140,7 +140,7 @@ class VirtuemartViewUser extends VmView {
 
 
 			if ($layoutName == 'edit_shipto') {
-				$virtuemart_userinfo_id = vmRequest::getInt('virtuemart_userinfo_id', 0);
+				$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
 				$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
 				if($new ){
 					$virtuemart_userinfo_id = 0;

@@ -141,8 +141,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 			$register = false;
 		}
 
-
-		$data['address_type'] = VmRequest::getCmd('addrtype','BT');
+		if(empty($data['address_type'])){
+			$data['address_type'] = vmRequest::getCmd('addrtype','BT');
+		}
 
 		if(!$register and !$cart and $data['address_type'] == 'ST'){
 			$onlyAddress = true;
@@ -174,7 +175,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 			} else {
 				$ret = $userModel->store($data);
 			}
-			if($currentUser->guest==1){
+			if(!$onlyAddress and $currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );
@@ -232,5 +233,34 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$layout = VmRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, $this->useXHTML,$this->useSSL) );
 	}
+
+	/**
+	 * Check the Joomla ReCaptcha Plg
+	 *
+	 * @author Maik Künnemann
+	 */
+	function checkCaptcha($retUrl){
+		if(JFactory::getUser()->guest==1 and VmConfig::get ('reg_captcha')){
+			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			JPluginHelper::importPlugin('captcha');
+			$dispatcher = JDispatcher::getInstance();
+			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
+			if(!$res[0]){
+				$data = vmRequest::getPost();
+				$data['address_type'] = vmRequest::getVar('addrtype','BT');
+				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+				$cart = VirtueMartCart::getCart();
+				$cart->saveAddressInCart($data, $data['address_type']);
+				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+				$this->setRedirect (JRoute::_ ($retUrl . '&captcha=1', FALSE), $errmsg);
+				return FALSE;
+			} else {
+				return TRUE;
+			}
+		} else {
+			return TRUE;
+		}
+	}
+
 }
 // No closing tag

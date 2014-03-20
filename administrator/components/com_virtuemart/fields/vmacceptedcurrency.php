@@ -37,7 +37,9 @@ class JFormFieldVmAcceptedCurrency extends JFormFieldList {
 	protected $type = 'vmacceptedcurrency';
 
 	protected function getOptions() {
+
 		$options = array();
+		VmConfig::loadJLang('com_virtuemart', false);
 		if (!class_exists('VirtueMartModelVendor'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();

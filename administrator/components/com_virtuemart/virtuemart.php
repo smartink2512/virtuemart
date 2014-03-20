@@ -72,14 +72,7 @@ $output = filter_var($testString,FILTER_SANITIZE_SPECIAL_CHARS);
 vmdebug('Filter test FILTER_SANITIZE_SPECIAL_CHARS ',$output);
 */
 
-
-
-if(VmConfig::get('enableEnglish', 1)){
-    $jlang =JFactory::getLanguage();
-    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, 'en-GB', true);
-    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
-}
+VmConfig::loadJLang('com_virtuemart');
 
 vmJsApi::jQuery(0);
 vmJsApi::jSite();

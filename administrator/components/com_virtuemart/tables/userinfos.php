@@ -139,8 +139,15 @@ class TableUserinfos extends VmTableData {
 				$this->virtuemart_userinfo_id = 0;//md5(uniqid($this->virtuemart_user_id));
 			}
 		}
-		return parent::check();
 
+		if(empty($this->virtuemart_user_id)){
+			$user = JFactory::getUser();
+			if(!empty($user->id)){
+				$this->virtuemart_user_id = $user->id;
+			}
+		}
+
+		return parent::check();
 	}
 
 	/**
