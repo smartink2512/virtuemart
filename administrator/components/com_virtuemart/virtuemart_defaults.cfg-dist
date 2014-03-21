@@ -28,7 +28,7 @@ google_jquery=0
 multix=none
 usefancy=1
 jchosen=1
-enableEnglish=0
+enableEnglish=1
 
 ##Shopfront
 pdf_button_enable=1

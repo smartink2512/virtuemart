@@ -778,7 +778,8 @@ class VmConfig {
 						$link = 'index.php?option=com_installer&view=languages';
 						$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
 						$app->enqueueMessage($msg);
-					} else {
+					}
+					//else {
 						if($app->isSite()){
 							$link = 'index.php?option=com_virtuemart';
 						} else {
@@ -789,7 +790,7 @@ class VmConfig {
 							$link = JURI::root(true).'/administrator/'.$link;
 						}
 						$app->redirect($link,$msg);
-					}
+					//}
 				}
 				if($installed){
 					self::$_jpConfig->installVMconfig();
