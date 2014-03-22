@@ -350,6 +350,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_found', 'size=1', 'value', 'text', VmConfig::get('no_image_found')); ?>
 			</td>
 		</tr>
+		<tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDITIONAL_IMAGES_EXPLAIN'); ?>">
+					<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDITIONAL_IMAGES'); ?>
+				</span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('add_img_main', VmConfig::get('add_img_main', 1)); ?>
+			</td>
+		</tr>
 	</table>
 </fieldset>
 </td>

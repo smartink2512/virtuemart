@@ -28,7 +28,10 @@ jQuery(document).ready(function() {
 		"transitionIn"	:	"elastic",
 		"transitionOut"	:	"elastic"
 	});
-	jQuery(".additional-images .product-image").click(function() {
+	jQuery(".additional-images a.product-image.image-0").removeAttr("rel");
+	jQuery(".additional-images img.product-image").click(function() {
+		jQuery(".additional-images a.product-image").attr("rel","vm-additional-images" );
+		jQuery(this).parent().children("a.product-image").removeAttr("rel");
 		jQuery(".main-image img").attr("src",this.src );
 		jQuery(".main-image img").attr("alt",this.alt );
 		jQuery(".main-image a").attr("href",this.src );
@@ -56,14 +59,21 @@ if (!empty($this->product->images)) {
 		?>
     <div class="additional-images">
 		<?php
-		for ($i = 0; $i < $count_images; $i++) {
+		$start_image = VmConfig::get('add_img_main', 1) ? 0 : 1;
+		for ($i = $start_image; $i < $count_images; $i++) {
 			$image = $this->product->images[$i];
 			?>
-            <div class="floatleft">
-	            <?php
-	                echo $image->displayMediaFull('class="product-image" style="cursor: pointer"',false,"");
-	            ?>
-            </div>
+			<div class="floatleft">
+				<?php
+				if(VmConfig::get('add_img_main', 1)) {
+					echo $image->displayMediaFull('class="product-image" style="cursor: pointer"',false,"");
+					$rel = $i > 0 ? ' rel="vm-additional-images"' : '';
+					echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
+				} else {
+					echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
+				}
+				?>
+			</div>
 			<?php
 		}
 		?>
