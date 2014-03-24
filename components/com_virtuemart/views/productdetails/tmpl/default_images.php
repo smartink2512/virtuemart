@@ -32,9 +32,10 @@ jQuery(document).ready(function() {
 	jQuery(".additional-images img.product-image").click(function() {
 		jQuery(".additional-images a.product-image").attr("rel","vm-additional-images" );
 		jQuery(this).parent().children("a.product-image").removeAttr("rel");
-		jQuery(".main-image img").attr("src",this.src );
+		var src = jQuery(this).parent().children("a.product-image").attr("href");
+		jQuery(".main-image img").attr("src",src);
 		jQuery(".main-image img").attr("alt",this.alt );
-		jQuery(".main-image a").attr("href",this.src );
+		jQuery(".main-image a").attr("href",src );
 		jQuery(".main-image a").attr("title",this.alt );
 		jQuery(".main-image .vm-img-desc").html(this.alt);
 	}); 
@@ -66,11 +67,10 @@ if (!empty($this->product->images)) {
 			<div class="floatleft">
 				<?php
 				if(VmConfig::get('add_img_main', 1)) {
-					echo $image->displayMediaFull('class="product-image" style="cursor: pointer"',false,"");
-					$rel = $i > 0 ? ' rel="vm-additional-images"' : '';
+					echo $image->displayMediaThumb('class="product-image" style="cursor: pointer"',false,"");
 					echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
 				} else {
-					echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
+					echo $image->displayMediaThumb("",true,"rel='vm-additional-images'");
 				}
 				?>
 			</div>
