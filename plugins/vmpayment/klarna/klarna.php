@@ -378,6 +378,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					$partPay = 0;
 				}
 			}
+			if (!KlarnaHandler::checkPartpriceCondition ($cData, $cart)) {
+				$partPay = 0;
+			}
+
 			if ($partPay > 0) {
 				if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'], $cData['vendor_currency'])) {
 					$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
