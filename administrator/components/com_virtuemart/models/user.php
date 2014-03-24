@@ -600,7 +600,7 @@ class VirtueMartModelUser extends VmModel {
 					$newUsertype = 'Registered';
 
 				} else {
-					$newUsertype=2;
+					$newUsertype = 2;
 				}
 			}
 			// Set some initial user values
@@ -644,6 +644,10 @@ class VirtueMartModelUser extends VmModel {
 				vmError(JText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
 				return false;
 			}
+		}
+
+		if(isset($data['language'])){
+			$user->setParam('language',$data['language']);
 		}
 
 		// Save the JUser object
