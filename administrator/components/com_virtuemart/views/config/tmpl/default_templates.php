@@ -352,8 +352,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDITIONAL_IMAGES_EXPLAIN'); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDITIONAL_IMAGES'); ?>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_ADDITIONAL_IMAGES_TIP'); ?>">
+					<?php echo JText::_('COM_VIRTUEMART_CFG_ADDITIONAL_IMAGES'); ?>
 				</span>
 			</td>
 			<td>
