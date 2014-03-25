@@ -1,20 +1,32 @@
 <?php
 /**
- * Class vmRequest
+ * Class vRequest
  * Gets filtered request values.
  *
  * @package    VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2014 VirtueMart Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * @copyright Copyright (c) 2014 iStraxx UG (haftungsbeschränkt). All rights reserved.
+ * @license MIT, see http://opensource.org/licenses/MIT
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
  *
- * http://virtuemart.net
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ *
+ *  http://virtuemart.net
  */
 
 class vmRequest {
@@ -37,9 +49,6 @@ class vmRequest {
 			//$source is string that will be filtered, $custom is string that contains custom characters
 			return mb_ereg_replace('[^\w'.preg_quote($custom).']', $replace, $source);
 		} else {
-			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);	//creates error Warning: preg_replace(): Unknown modifier ']'
-			//return preg_replace('/([^\w'.preg_quote($custom).'])/', '', $source);	//Warning: preg_replace(): Unknown modifier ']'
-			//return preg_replace("[^\w".preg_quote($custom)."]", '', $source);	//This seems to work even there is no seperator, the change is just the use of " instead '
 			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", $replace, $source);	//We use Tilde as separator, and give the preq_quote function the used separator
 		}
 	}
@@ -73,9 +82,7 @@ class vmRequest {
 	 * @return mixed|null
 	 */
 	public static function getVar($name, $default = null){
-
 		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW );
-		//return VmConfig::$vmFilter->getVar($name, $default, $hash, $type, $mask);
 	}
 
 	/**
@@ -94,7 +101,7 @@ class vmRequest {
 		$tmp = self::get($name, $default);
 		return JComponentHelper::filterText($tmp);
 	}
-
+	
 	/**
 	 * Gets a filtered request value
 	 * - Strips all characters that has a numerical value <32 and >127.
@@ -104,6 +111,7 @@ class vmRequest {
 	 * @param string $default
 	 * @return mixed|null
 	 */
+
 	public static function getCmd($name, $default = ''){
 		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 	}
@@ -151,15 +159,15 @@ class vmRequest {
 	public static function getRequest( ){
 		return  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
 	}
-
+	
 	public static function getPost( ){
 		return  filter_var_array($_POST, FILTER_SANITIZE_STRING);
 	}
-
+	
 	public static function getGet( ){
 		return  filter_var_array($_GET, FILTER_SANITIZE_STRING);
 	}
-
+	
 	public static function getFiles($name){
 		return  filter_var_array($_FILES[$name], FILTER_SANITIZE_STRING);
 	}
@@ -177,22 +185,17 @@ class vmRequest {
 
 	/**
 	 * Checks for a form token in the request.
-	 * Use in conjunction with JHtml::_('form.token') or JSession::getFormToken.
-	 * 
-	 * @copyright  Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
-	 * @param   string  $method  The request method in which to look for the token key.
 	 *
-	 * @return  boolean  True if found and valid, false otherwise.
+	 * @return  boolean  True if token valid
 	 *
-	 * @since   12.1
 	 */
 	public static function vmCheckToken($redirectMsg=0){
 
 		$token = self::getFormToken();
 
-		if (!self::uword($token, FALSE)){
+		if (!self::uword($token, false)){
 
-			if ($rToken = self::uword('token', FALSE)){
+			if ($rToken = self::uword('token', false)){
 				if($rToken == $token){
 					return true;
 				}
@@ -216,7 +219,7 @@ class vmRequest {
 				// Redirect to login screen.
 				$app = JFactory::getApplication();
 				$session->close();
-				$app->redirect(JRoute::_('index.php'), vmText::_($redirectMsg));
+				$app->redirect(JRoute::_('index.php'), $redirectMsg);
 				$app->close();
 				return false;
 			}
@@ -226,21 +229,12 @@ class vmRequest {
 		}
 	}
 
-	/**
-	 * Method to determine a hash for anti-spoofing variable names
-	 *
-	 * @copyright  Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
-	 * @param   boolean  $forceNew  If true, force a new token to be created
-	 *
-	 * @return  string  Hashed var name
-	 *
-	 * @since   11.1
-	 */
-	public static function getFormToken($forceNew = false){
+	public static function getFormToken($fNew = false){
 
 		$user = JFactory::getUser();
 		$session = JFactory::getSession();
-		$hash = JApplication::getHash($user->get('id', 0) . $session->getToken($forceNew));
+		if(empty($user->id)) $user->id = 0;
+		$hash = JApplication::getHash($user->id . $session->getToken($fNew));
 
 		return $hash;
 	}

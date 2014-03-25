@@ -689,7 +689,7 @@ class shopFunctionsF {
 		return $itemID;
 	}
 
-	static function triggerContentPlugin(  $article, $context, $field) {
+	static function triggerContentPlugin(  &$article, $context, $field) {
 	// add content plugin //
 		$dispatcher = JDispatcher::getInstance ();
 		JPluginHelper::importPlugin ('content');

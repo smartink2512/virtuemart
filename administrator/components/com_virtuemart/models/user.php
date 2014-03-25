@@ -395,6 +395,10 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
+		if(isset($data['language'])){
+			$user->setParam('language',$data['language']);
+		}
+
 		// Save the JUser object
 		if (!$user->save()) {
 			vmError(vmText::_( $user->getError()) , vmText::_( $user->getError()));

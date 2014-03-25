@@ -133,32 +133,36 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 				<button class="default" type="reset"
 				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
 				<?php
-				// captcha addition
-				if(VmConfig::get ('reg_captcha')){
-					JHTML::_('behavior.framework');
-					JPluginHelper::importPlugin('captcha');
-					$captcha_visible = vmRequest::getVar('captcha');
-					$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
-					$hide_captcha = (VmConfig::get ('oncheckout_only_registered') or $captcha_visible) ? '' : 'style="display: none;"';
-					?>
-					<fieldset id="recaptcha_wrapper" <?php echo $hide_captcha ?>><div id="dynamic_recaptcha_1"></div></fieldset>
-				<?php
-				}
-				// end of captcha addition
 			}
 			else {
 				?>
-
 				<button class="<?php echo $buttonclass ?>" type="submit"
 				        onclick="javascript:return myValidator(userForm);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
 				<button class="default" type="reset"
 				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
-
 				<?php } ?>
 		</div>
 
-
+	<?php
+		// captcha addition
+		if(VmConfig::get ('reg_captcha')){
+			JHTML::_('behavior.framework');
+			JPluginHelper::importPlugin('captcha');
+			$captcha_visible = vmRequest::getVar('captcha');
+			$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
+			$hide_captcha = (VmConfig::get ('oncheckout_only_registered') or $captcha_visible) ? '' : 'style="display: none;"';
+			?>
+			<fieldset id="recaptcha_wrapper" <?php echo $hide_captcha ?>>
+				<?php if(!VmConfig::get ('oncheckout_only_registered')) { ?>
+					<span class="userfields_info"><?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_CAPTCHA'); ?></span>
+				<?php } ?>
+				<div id="dynamic_recaptcha_1"></div>
+			</fieldset>
 		<?php
+		}
+		// end of captcha addition
+
+
 		if (!class_exists ('VirtueMartCart')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
