@@ -648,10 +648,16 @@ class VirtueMartModelCategory extends VmModel {
 		return $parents;
 	}
 
+	var $categoryRecursed = 0;
+
 	function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
 		static $idsArr = array();
 		if($first) {
 			$idsArr = array();
+			$this->categoryRecursed = 0;
+		} else if($this->categoryRecursed>10){
+			vmWarn('Stopped getCategoryRecurse after 10 rekursions');
+			return $idsArr;
 		}
 
 		$db = JFactory::getDBO();
@@ -664,6 +670,7 @@ class VirtueMartModelCategory extends VmModel {
 		}
 		if ($ids->child) $idsArr[] = $ids->child;
 		if($ids->child != 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
+			$this->categoryRecursed++;
 			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
 		}
 		return $idsArr;

@@ -387,6 +387,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			// special  orders case
 			//vmdebug('my filter ordering ',$this->filter_order);
+			$ff_select_price = '';
 			switch ($this->filter_order) {
 				case 'product_special':
 					if($isSite){
@@ -418,7 +419,10 @@ class VirtueMartModelProduct extends VmModel {
 					break;
 				case 'product_price':
 					//$filters[] = 'p.`virtuemart_product_id` = p.`virtuemart_product_id`';
+					//$orderBy = ' ORDER BY `product_price` ';
+					//$orderBy = ' ORDER BY `ff_final_price`, `product_price` ';
 					$orderBy = ' ORDER BY `product_price` ';
+					$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
 					$joinPrice = TRUE;
 					break;
 				case 'created_on':
@@ -448,7 +452,7 @@ class VirtueMartModelProduct extends VmModel {
 					case 'latest':
 						$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days));
 						$dateSql = $date->toMySQL ();
-						$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';
+						//$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';
 						$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '`';
 						$this->filter_order_Dir = 'DESC';
 						break;
@@ -484,7 +488,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		$select = ' p.`virtuemart_product_id` FROM `#__virtuemart_products` as p';
+		$joinedTables = array();
+		$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products` as p ';
 		if ($joinLang) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
 		}

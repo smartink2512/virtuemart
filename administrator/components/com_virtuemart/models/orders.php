@@ -241,7 +241,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}*/
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(!Permissions::getInstance()->check('admin')){
+		if(!Permissions::getInstance()->check('storeadmin')){
 			$myuser		=JFactory::getUser();
 			$where[]= ' u.virtuemart_user_id = ' . (int)$myuser->id.' AND o.virtuemart_vendor_id = "1" ';
 		} else {
@@ -251,7 +251,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$where[]= ' u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
 			}
 		}
-
 
 		if ($search = JRequest::getString('search', false)){
 

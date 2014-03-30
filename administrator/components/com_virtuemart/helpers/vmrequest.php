@@ -43,8 +43,6 @@ class vmRequest {
 	}
 
 	public static function filterUword($source, $custom,$replace=''){
-
-
 		if(function_exists('mb_ereg_replace')){
 			//$source is string that will be filtered, $custom is string that contains custom characters
 			return mb_ereg_replace('[^\w'.preg_quote($custom).']', $replace, $source);

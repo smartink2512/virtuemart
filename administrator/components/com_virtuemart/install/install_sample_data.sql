@@ -650,3 +650,7 @@ INSERT IGNORE INTO `#__virtuemart_rating_votes` (`virtuemart_rating_vote_id`, `v
 	(25, 73, 4, '::1'),
 	(26, 70, 5, '::1'),
 	(27, 69, 4, '::1');
+
+INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`, `published`) VALUES
+(NULL, 1, 'Gold Level', 'Gold Level Shoppers.', 0,1,1),
+(NULL, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', 0,1,1);
