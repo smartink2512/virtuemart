@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" method="upgrade">
-    <name>Paybox</name>
+    <name>VM Payment - Paybox</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <!--version>${PHING.VM.RELEASE}</version-->
-    <version>Beta1</version>
+    <version>Beta3</version>
     <description><![CDATA[<a href="http://paybox.com" target="_blank">Paybox</a> ]]>
     </description>
 
@@ -48,12 +48,12 @@
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_CONFIGURATION"/>
 
-        <param name="debit_type" type="list" default="authorization_only" label="VMPAYMENT_PAYBOX_CONF_DEBIT_TYPE"
+        <param name="debit_type" type="list" default="authorization_capture" label="VMPAYMENT_PAYBOX_CONF_DEBIT_TYPE"
                description="VMPAYMENT_PAYBOX_CONF_DEBIT_TYPE_TIP">
             <option value="authorization_only">VMPAYMENT_PAYBOX_CONF_DEBIT_TYPE_AUTHORIZATION_ONLY</option>
             <option value="authorization_capture">VMPAYMENT_PAYBOX_CONF_DEBIT_TYPE_AUTHORIZATION_CAPTURE</option>
         </param>
-        <param class="authorization_capture debit_type" name="diff" type="list" size="15" default="1"
+        <param class="authorization_only debit_type" name="diff" type="list" size="15" default="1"
                label="VMPAYMENT_PAYBOX_CONF_DIFF" description="VMPAYMENT_PAYBOX_CONF_DIFF_TIP">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -63,7 +63,7 @@
             <option value="6">6</option>
             <option value="7">7</option>
         </param>
-        <param class="" name="activate_3dsecure" type="list" size="15" default="1"
+        <param class="" name="activate_3dsecure" type="list" size="15" default="0"
                label="VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE"
                description="VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
@@ -83,14 +83,14 @@
                description="VMPAYMENT_PAYBOX_CONF_INTEGRATION_TIP">
             <option value="standard">VMPAYMENT_PAYBOX_CONF_INTEGRATION_STANDARD</option>
             <option value="recurring">VMPAYMENT_PAYBOX_CONF_INTEGRATION_RECURRING</option>
-            <option value="subscribe">VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE</option>
+            <!--option value="subscribe">VMPAYMENT_PAYBOX_CONF_INTEGRATION_SUBSCRIBE</option-->
         </param>
         <param class="integration recurring subscribe" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_INTEGRATION_WARNING"/>
 
         <!-- begin recurring -->
-        <param class="integration recurring" name="recurring_min_amount"  type="text" size="15" default=""
+        <!--param class="integration recurring" name="recurring_min_amount"  type="text" size="15" default=""
                label="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT"
-               description="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT_TIP"/>
+               description="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT_TIP"/-->
         <param class="integration recurring" name="recurring_number" type="list" default="3"
                label="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER"
                description="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER_TIP">
@@ -133,9 +133,9 @@
                label="VMPAYMENT_PAYBOX_CONF_STATUS_SUCCESS" description="VMPAYMENT_PAYBOX_CONF_STATUS_SUCCESS_TIP"/>
 
 
-        <param class="authorization_capture debit_type" name="status_capture" type="vmorderstate" scope="com_virtuemart"
+        <!--param class="authorization_capture debit_type" name="status_capture" type="vmorderstate" scope="com_virtuemart"
                default="S"
-               label="VMPAYMENT_PAYBOX_CONF_STATUS_CAPTURE" description="VMPAYMENT_PAYBOX_CONF_STATUS_CAPTURE_TIP"/>
+               label="VMPAYMENT_PAYBOX_CONF_STATUS_CAPTURE" description="VMPAYMENT_PAYBOX_CONF_STATUS_CAPTURE_TIP"/ -->
 
         <param class="integration recurring" name="status_success_recurring" type="vmorderstate" scope="com_virtuemart" default="C"
                label="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING" description="VMPAYMENT_PAYBOX_CONF_STATUS_RECURRING_TIP"/>
@@ -167,15 +167,14 @@
                description="VMPAYMENT_PAYBOX_CONF_RESTRICTIONS_SECTION_TIP"/>
         <param name="countries" type="vmcountries" scope="com_virtuemart" default=""
                label="VMPAYMENT_PAYBOX_CONF_COUNTRIES" description="VMPAYMENT_PAYBOX_CONF_COUNTRIES_TIP"/>
-        <!--param name="min_amount" type="text" label="VMPAYMENT_PAYBOX_CONF_MIN_AMOUNT"
+        <param name="min_amount" type="text" label="VMPAYMENT_PAYBOX_CONF_MIN_AMOUNT"
                description="VMPAYMENT_PAYBOX_CONF_MIN_AMOUNT_TIP"/>
         <param name="max_amount" type="text" label="VMPAYMENT_PAYBOX_CONF_MAX_AMOUNT"
-               description="VMPAYMENT_PAYBOX_CONF_MAX_AMOUNT_TIP"/ -->
+               description="VMPAYMENT_PAYBOX_CONF_MAX_AMOUNT_TIP"/>
 
         <!-- Currencies -->
         <!-- ============ -->
-        <param type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_CURRENCIES_SECTION"
-               description="VMPAYMENT_PAYBOX_CONF_CURRENCIES_SECTION_TIP"/>
+        <param type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_CURRENCIES_SECTION"/>
 
         <param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_PAYBOX_CONF_CURRENCY"
                description="VMPAYMENT_PAYBOX_CONF_CURRENCY_TIP"/>

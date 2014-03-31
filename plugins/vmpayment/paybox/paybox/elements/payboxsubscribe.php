@@ -41,7 +41,7 @@ class JElementpayboxsubscribe extends JElement {
 
 	    $attribs = ' ';
 	    $attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
-        return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . ']', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . '][]', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
     }
 
 }

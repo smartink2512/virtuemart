@@ -63,7 +63,8 @@ class PayboxHelperPayboxRecurring extends PayboxHelperPaybox {
 			$recurring_comment .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_COMMENT_NEXT_DEADLINES');
 
 			$recurring_comment .= $this->getOrderRecurringTerms($payment, $order, 1);
-			$order_history['order_status'] = $this->_method->status_recurring;
+			$status_success='status_success_'.$this->_method->debit_type;
+			$order_history['order_status'] = $this->_method->$status_success;
 		} else {
 			$nbRecurringDone = $this->getNbRecurringDone($payments);
 			$this->debugLog('getNbRecurringDone:' . $nbRecurringDone, 'getOrderHistoryRecurring', 'debug', false);

@@ -133,7 +133,6 @@ class  PayboxHelperPaybox {
 
 		$msg = '';
 
-
 		$msg = $this->stringifyArray($post);
 		$hmac = $this->generateHMAC($msg, $payboxKey);
 		return $hmac;
@@ -215,8 +214,7 @@ class  PayboxHelperPaybox {
 		if ($this->_method->shop_mode == 'test') {
 			$url = 'https://preprod-tpeweb.paybox.com/php/';
 		} else {
-			$url = 'https://'.$this->getPayboxServerAvailable().'/cgi/MYchoix_pagepaiement.cgi';
-		// TO DO 	https://tpeweb.paybox.com/php/
+			$url = 'https://'.$this->getPayboxServerAvailable().'/php/';
 		}
 		return $url;
 
@@ -230,7 +228,7 @@ class  PayboxHelperPaybox {
 		);
 		foreach ($servers as $server) {
 			$doc = new DOMDocument();
-			$doc->loadHTMLFile( $server . '/load.html');
+			$doc->loadHTMLFile('https://' . $server . '/load.html');
 
 			$server_status = "";
 			$element = $doc->getElementById('server_status');
@@ -317,7 +315,11 @@ class  PayboxHelperPaybox {
 		return $key; // renvoi cle ( ou erreur )
 	}
 
-
+	/**
+	 * @param $keyfile
+	 * @param $queryString
+	 * @return bool
+	 */
 	public function pbxIsValidSignature ($keyfile, $queryString) {
 		//return true;
 		$key = $this->loadKey($keyfile);
@@ -327,52 +329,58 @@ class  PayboxHelperPaybox {
 		$sig = '';
 		$queryStringNoSig = "";
 		$this->GetSignedData($queryString, $queryStringNoSig, $sig);
-
-		$openSsl = openssl_verify($queryStringNoSig, $sig, $key);
+		$sigDecoded=$this->getSig($sig, true);
+		$sigNotDecoded=$this->getSig($sig, false);
+		$verifySigDecoded = openssl_verify($queryStringNoSig, $sigDecoded, $key);
+		$verifySigNotDecoded = openssl_verify($queryStringNoSig, $sigNotDecoded, $key);
 		openssl_free_key($key);
 		// openssl_verify: verification : 1 si valide, 0 si invalide, -1 si erreur
-		if ($openSsl !== 1) {
-			$msg = 'PbxVerSign :' . 'openssl_verify return value: ' . $openSsl . '<br />';
-			$msg .= '            ' . 'query sign ' . $queryString . '<br />';
-			$msg .= '            ' . 'data ' . $queryStringNoSig . '<br />';
-			//$msg .= '            ' . 'sig ' . $sig . '<br />';
-			// we cannot send an error at this stage because may be the signature is not valid from the
+		if ($verifySigDecoded or $verifySigNotDecoded) {
+			$msg = 'PbxVerSign :' . 'openssl_verify return value DECODED: ' . $verifySigDecoded . '<br />';
+			$msg .= 'PbxVerSign :' . 'openssl_verify return value NOT DECODED: ' . $verifySigNotDecoded . '<br />';
 			$this->plugin->debugLog($msg,'pbxIsValidSignature', 'debug');
-			return false;
+			return true;
 		}
+		$msg = 'PbxVerSign :' . 'openssl_verify return value DECODED: ' . $verifySigDecoded . '<br />';
+		$msg .= 'PbxVerSign :' . 'openssl_verify return value NOT DECODED: ' . $verifySigNotDecoded . '<br />';
+		$msg .= '            ' . 'query sign ' . $queryString . '<br />';
+		$msg .= '            ' . 'data ' . $queryStringNoSig . '<br />';
+		//$msg .= '            ' . 'sig ' . $sig . '<br />';
+		// we cannot send an error at this stage because may be the signature is not valid from the
+		$this->plugin->debugLog($msg,'pbxIsValidSignature', 'debug');
+		return false;
 
-		return true;
 	}
 
-	// renvoi les donnes signees et la signature
+	/**
+	 * renvoi les donnes signees et la signature
+	 * @param $qrystr
+	 * @param $data
+	 * @param $sig
+	 */
 	public function GetSignedData ($qrystr, &$data, &$sig) {
 		//$qrystr=$_SERVER['QUERY_STRING'];
 		$pos = strrpos($qrystr, '&'); // cherche dernier separateur
 		$data = substr($qrystr, 0, $pos); // et voila les donnees signees
 		$pos = strpos($qrystr, '=', $pos) + 1; // cherche debut valeur signature
 		$sig = substr($qrystr, $pos);
-		if ($this->isUrlEncoded($qrystr)) {
-			$this->plugin->debugLog('URL encoded', 'debug');
+	}
+
+	/**
+	 * @param $sig
+	 * @param $doDecode
+	 * @return string
+	 */
+	function getSig($sig, $doDecode) {
+		if ($doDecode) {
+			$this->plugin->debugLog('URL DO DECODE', 'debug');
 			$sig = urldecode($sig);
 		} else {
-			$this->plugin->debugLog('URL NOT encoded', 'debug');
+			$this->plugin->debugLog('URL NOT DECODE', 'debug');
 		}
-
 		$sig = base64_decode($sig); //decodage Base 64
-		$msg = 'GetSignedData: ' . 'query sign ' . $qrystr . '<br />';
-		$msg .= '               ' . 'data ' . $data . '<br />';
-		//$msg .= '              ' . 'sig ' . $sig . '<br />';
-		$this->plugin->debugLog($msg, 'debug');
-
+		return $sig;
 	}
 
-	function isUrlEncoded ($string) {
-		//return preg_match('~%[0-9A-F]{2}~i', $string);
-		if (  urldecode($string) === $string){
-			return false;
-		} else {
-			return true;
-		}
-	}
 
 }

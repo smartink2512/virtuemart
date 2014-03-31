@@ -61,15 +61,16 @@ class JElementGetPaybox extends JElement {
 		$db = JFactory::getDBO ();
 		$db->setQuery ($query);
 		$params = $db->loadObject();
+		$html ='<img src="http://virtuemart.boutique-paybox.com/PayboxLogo.jpg" width="200px"/><br />';
 
 	if ($params->created_on==$params->modified_on ) {
 		$id = "paybox_getpaybox_link";
-		$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE') . '</a>';
+		$html .= '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE') . '</a>';
 		$display='';
 		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
 	} else {
 		$id = "paybox_getpaybox_link";
-		$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT') . '</a>';
+		$html .= '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT') . '</a>';
 		$display=' style="display: none;"';
 		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
 	}
@@ -80,9 +81,9 @@ class JElementGetPaybox extends JElement {
 
 	;
 		if ($lang=='fr') {
-			$url="http://www1.paybox.com/default.aspx?0.5187125992961228";
+			$url="http://virtuemart.boutique-paybox.com/PayboxPres.html";
 		} else {
-			$url="http://www1.paybox.com/default.aspx?0.6721770374570042";
+			$url="http://virtuemart.boutique-paybox.com/PayboxPres.html";
 		}
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="1400px" width="800px"></iframe>';
 		$html .= "</div>";
