@@ -109,7 +109,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			if ($task != 'updateDatabase') {
 
 				// modules auto move
-				$src = $this->path . DS . "modules";
+				$src = $this->path . DS . "modulesBE";
 				$dst = JPATH_ROOT . DS."administrator". DS . "modules";
 				$this->recurse_copy ($src, $dst);
 
@@ -117,7 +117,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				if (!$this->VmAdminModulesAlreadyInstalled ()) {
 					echo "Installing VirtueMart Administrator modules<br/ >";
 						$defaultParams = '{"show_vmmenu":"1"}';
-						$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, 1,3);
+						$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, 1,'menu',3);
 				}
 
 
@@ -679,7 +679,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		 * @author Max Milbers
 		 * @param String $src path
 		 * @param String $dst path
-		 * @param String $type modules, plugins, languageBE, languageFE
+		 * @param String $type modulesBE, modules, plugins, languageBE, languageFE
 		 */
 		private function recurse_copy ($src, $dst) {
 
