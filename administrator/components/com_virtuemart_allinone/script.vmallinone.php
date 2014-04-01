@@ -471,9 +471,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			if (empty($table->params)) {
 				$table->params = $params;
 			}
-			if (empty($table->access)) {
+			// table is loaded with access=1
 				$table->access = $access;
-			}
 			if (empty($table->position)) {
 				$table->position = $position;
 			}
