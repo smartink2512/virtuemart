@@ -312,7 +312,7 @@ defined('_JEXEC') or die('Restricted access');?>
 							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_REGISTERED')
 							//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_ALL')	//TODO write system for all users (cookies)
 						);
-						echo VmHTML::radioList('ratingMode', VmConfig::get('ratingMode', 2), $showReviewFor); ?>
+						echo VmHTML::radioList('ratingMode', VmConfig::get('ratingMode', 'bought'), $showReviewFor); ?>
 					</fieldset>
 				</td>
 			</tr>

@@ -227,25 +227,36 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function review () {
 		$msg="";
-		$data = JRequest::get ('post');
+
 
 		$model = VmModel::getModel ('ratings');
-		$return= $model->saveRating ($data);
-		if ($return !== FALSE) {
-			$errors = $model->getErrors ();
-			if (empty($errors)) {
-				$msg = JText::sprintf ('COM_VIRTUEMART_STRING_SAVED', JText::_ ('COM_VIRTUEMART_REVIEW'));
+		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
+
+		$allowReview = $this->allowReview($virtuemart_product_id);
+		$allowRating = $this->allowRating($virtuemart_product_id);
+		if($allowReview || $allowRating){
+			$return = $model->saveRating ();
+			if ($return !== FALSE) {
+				$errors = $model->getErrors ();
+				if (empty($errors)) {
+					$msg = JText::sprintf ('COM_VIRTUEMART_STRING_SAVED', JText::_ ('COM_VIRTUEMART_REVIEW'));
+				}
+				foreach ($errors as $error) {
+					$msg = ($error) . '<br />';
+				}
+				if (!class_exists ('ShopFunctionsF')) {
+					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+				}
+				$data = vmRequest::getPost();
+				if($allowReview){
+
+				}
+
+				shopFunctionsF::sendRatingEmailToVendor($data);
 			}
-			foreach ($errors as $error) {
-				$msg = ($error) . '<br />';
-			}
-			if (!class_exists ('ShopFunctionsF')) {
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-			}
-			shopFunctionsF::sendRatingEmailToVendor($data);
 		}
 
-		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . (int)$data['virtuemart_product_id'], FALSE), $msg);
+		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id, FALSE), $msg);
 
 	}
 

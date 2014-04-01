@@ -347,9 +347,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
+		$this->_currencyDisplay = CurrencyDisplay::getInstance();
+		$rounding = $this->_currencyDisplay->_priceConfig['salesPrice'][1];
+
 		if ( $orderUpdate and !empty($data['virtuemart_order_item_id'])) {
-			$this->_currencyDisplay = CurrencyDisplay::getInstance();
-			$rounding = $this->_currencyDisplay->_priceConfig['salesPrice'][1];
 
 			//get tax calc_value of product VatTax
 			$db = JFactory::getDBO();

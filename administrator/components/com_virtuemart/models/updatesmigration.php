@@ -241,7 +241,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$shipment_plg_id = $db->loadResult();
 		if(!empty($shipment_plg_id)){
 			$q = 'INSERT INTO `#__virtuemart_shipmentmethods` (`virtuemart_shipmentmethod_id`, `virtuemart_vendor_id`, `shipment_jplugin_id`, `shipment_element`, `shipment_params`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-			(1, 1, '.$shipment_plg_id.', "weight_countries", \'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="0"|package_fee=""|tax_id="0"|free_shipment=""|\', 0, 0, 1, "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
+			(1, 1, '.$shipment_plg_id.', "weight_countries", \'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="0"|package_fee="2.49"|tax_id="0"|free_shipment="500"|\', 0, 0, 1, "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
 			$db->setQuery($q);
 			$db->query();
  			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.$lang.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
@@ -265,7 +265,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$payment_plg_id = $db->loadResult();
 		if(!empty($payment_plg_id)){
 			$q='INSERT INTO `#__virtuemart_paymentmethods` (`virtuemart_paymentmethod_id`, `virtuemart_vendor_id`, `payment_jplugin_id`,  `payment_element`, `payment_params`, `shared`, `ordering`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-			(1, 1, '.$payment_plg_id.',  "standard", \'payment_logos=""|countries=""|payment_currency="0"|status_pending="U"|send_invoice_on_order_null="1"|min_amount=""|max_amount=""|cost_per_transaction=""|cost_percent_total=""|tax_id="0"|payment_info=""|\', 0, 0, 1,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
+			(1, 1, '.$payment_plg_id.',  "standard", \'payment_logos=""|countries=""|payment_currency="0"|status_pending="U"|send_invoice_on_order_null="1"|min_amount=""|max_amount=""|cost_per_transaction="0.10"|cost_percent_total="1.5"|tax_id="0"|payment_info=""|\', 0, 0, 1,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
 			$db->setQuery($q);
 			$db->query();
 
