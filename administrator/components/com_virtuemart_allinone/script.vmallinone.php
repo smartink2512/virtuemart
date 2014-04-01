@@ -110,10 +110,22 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 				// modules auto move
 				$src = $this->path . DS . "modules";
+				$dst = JPATH_ROOT . DS."administrator". DS . "modules";
+				$this->recurse_copy ($src, $dst);
+
+				echo "Checking VirtueMart modules...";
+				if (!$this->VmAdminModulesAlreadyInstalled ()) {
+					echo "Installing VirtueMart Administrator modules<br/ >";
+						$defaultParams = '{"show_vmmenu":"1"}';
+						$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, 1,3);
+				}
+
+
+				// modules auto move
+				$src = $this->path . DS . "modules";
 				$dst = JPATH_ROOT . DS . "modules";
 				$this->recurse_copy ($src, $dst);
 
-				echo "Checking VirtueMart2 modules...";
 				if (!$this->VmModulesAlreadyInstalled ()) {
 					echo "Installing VirtueMart2 modules<br/ >";
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
@@ -190,11 +202,11 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$this->checkAddFieldToTable('#__virtuemart_shipment_weight_countries',$key,$value);
 				}*/
 
-				echo "<H3>Installing Virtuemart Plugins and modules Success.</h3>";
+				echo "<H3>Installing VirtueMart Plugins and modules Success.</h3>";
 				echo "<H3>You may directly uninstall this component. Your plugins will remain. But we advice to keep the AIO installer for updating</h3>";
 
 			} else {
-				echo "<H3>Updated Virtuemart Plugin tables</h3>";
+				echo "<H3>Updated VirtueMart Plugin tables</h3>";
 			}
 			$this->updateOrderingExtensions();
 
@@ -412,7 +424,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 		}
 
-		public function installModule ($title, $module, $ordering, $params) {
+		public function installModule ($title, $module, $ordering, $params='',$client_id=0, $position='position-4', $access=1) {
 
 			$params = '';
 
@@ -428,6 +440,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				return;
 			}
 			$table->load ();
+			/*
 			if (version_compare (JVERSION, '1.7.0', 'ge')) {
 				// Joomla! 1.7 code here
 				$position = 'position-4';
@@ -442,7 +455,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$access = 0;
 				}
 			}
-
+*/
 			if (empty($table->title)) {
 				$table->title = $title;
 			}
@@ -465,7 +478,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$table->position = $position;
 			}
 			if (empty($table->client_id)) {
-				$table->client_id = $client_id = 0;
+				$table->client_id  = $client_id;
 			}
 
 			$table->language = '*';
@@ -531,7 +544,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 						$manifest_cache = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $module . '.xml'));
 					}
 					$q = 'INSERT INTO `#__extensions` 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `ordering`) VALUES
-																	( "' . $module . '" , "module", "' . $module . '", "", "0", "1","' . $access . '", "0", "' . $db->getEscaped ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
+																	( "' . $module . '" , "module", "' . $module . '", "", "'.$client_id.'", "1","' . $access . '", "0", "' . $db->getEscaped ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
 				} else {
 
 					/*					$q = 'UPDATE `#__extensions` SET 	`name`= "'.$module.'",
@@ -566,6 +579,16 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			return $count;
 		}
 
+		public function VmAdminModulesAlreadyInstalled () {
+
+			// when the modules are already installed publish=-2
+			$table = JTable::getInstance ('module');
+			$db = $table->getDBO ();
+			$q = 'SELECT count(*) FROM `#__modules` WHERE `module` LIKE "mod_vmmenu"';
+			$db->setQuery ($q);
+			$count = $db->loadResult ();
+			return $count;
+		}
 		/**
 		 * @author Max Milbers
 		 * @param string $tablename

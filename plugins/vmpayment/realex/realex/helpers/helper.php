@@ -591,10 +591,12 @@ class  RealexHelperRealex {
 	static $_storedCCsCache;
 
 	function getStoredCCs ($virtuemart_user_id) {
+		$this->debugLog( $virtuemart_user_id, 'getStoredCCs', 'debug');
 
 		if (!empty(self::$_storedCCsCache)) {
 			if (isset(self::$_storedCCsCache[$virtuemart_user_id])) {
 				$storedCCs = self::$_storedCCsCache[$virtuemart_user_id]['storedCC'];
+				$this->debugLog('from cache', 'getStoredCCs', 'debug');
 				return $storedCCs;
 			}
 		}
@@ -606,7 +608,7 @@ class  RealexHelperRealex {
 
 		$storedCCs = "";
 		$app->triggerEvent('plgVmOnPaymentDisplay', array('pluginrealex', $virtuemart_user_id, &$storedCCs));
-
+		$this->debugLog(var_export($storedCCs, true), 'getStoredCCs after plgVmOnPaymentDisplay', 'debug');
 		if (empty(self::$_storedCCsCache)) {
 			self::$_storedCCsCache = array();
 		}
@@ -642,7 +644,8 @@ class  RealexHelperRealex {
 	 */
 	function getCCDropDown ($virtuemart_paymentmethod_id, $virtuemart_user_id, $selected_cc, $use_another_cc = true) {
 
-		$storeCCs = $this->getStoredCCsByPaymentMethod($virtuemart_user_id, $virtuemart_paymentmethod_id);
+		//$storeCCs = $this->getStoredCCsByPaymentMethod($virtuemart_user_id, $virtuemart_paymentmethod_id);
+		$storeCCs = $this->getStoredCCs ($virtuemart_user_id );
 		if (empty($storeCCs)) {
 			return null;
 		}

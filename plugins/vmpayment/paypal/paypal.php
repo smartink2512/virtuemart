@@ -246,7 +246,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return FALSE;
 		}
 
-
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->_currentMethod->paypalproduct == 'exp') {
 				$paypalInterface = $this->_loadPayPalInterface();

@@ -23,6 +23,7 @@
     <property name="admin.language.path" value="${export.to}/administrator/language"/>
 
     <property name="modules.path" value="${export.to}/modules"/>
+    <property name="admin.modules.path" value="${export.to}/administrator/modules"/>
     <property name="plugins.path" value="${export.to}/plugins"/>
     <property name="libraries.path" value="${export.to}/libraries"/>
     <property name="languageBE.path" value="${export.to}/administrator/language"/>
@@ -55,6 +56,7 @@
     <property name="package.admin.aio" value="${package.folder.aio}/admin"/>
     <property name="package.plugins.aio" value="${package.admin.aio}/plugins"/>
     <property name="package.modules.aio" value="${package.admin.aio}/modules"/>
+    <property name="package.admin.modules.aio" value="${package.admin.aio}/modules"/>
 
     <property name="package.language.aio" value="${package.admin.aio}/language"/>
     <property name="package.libraries.aio" value="${package.admin.aio}/libraries"/>
@@ -351,6 +353,16 @@
                 <expandproperties/>
             </filterchain>
         </copy>
+
+        <echo msg="Copying AIO: ADMIN modules files to directory.."/>
+        <copy todir="${package.admin.modules.aio}" overwrite="true">
+            <fileset refid="modules.aio.refid"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
+        </copy>
+
+
 
         <echo msg="Copying AIO: plugins files to directory.."/>
         <copy todir="${package.plugins.aio}" overwrite="true">

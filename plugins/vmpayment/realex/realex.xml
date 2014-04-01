@@ -106,7 +106,7 @@
             <option value="euroconex">VMPAYMENT_REALEX_DCC_EUROCONEX</option>
         </param>
 
-        <param class="" name="referring_url" type="referringurl" size="150" default="" editable="true"
+        <param class="redirect" name="referring_url" type="referringurl" size="150" default="" editable="true"
                label="VMPAYMENT_REALEX_REFERRING_URL" description="VMPAYMENT_REALEX_REFERRING_URL_TIP"/>
 
         <param type="vmtitle" default="VMPAYMENT_REALEX_ORDER_STATUS_SECTION"

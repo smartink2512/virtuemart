@@ -23,11 +23,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-/**
- * @package        Joomla.Administrator
- * @subpackage    mod_menu
- * @since        1.5
- */
+
 abstract class ModVMMenuHelper {
 
 

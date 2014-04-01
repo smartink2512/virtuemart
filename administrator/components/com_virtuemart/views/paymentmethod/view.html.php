@@ -47,6 +47,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 		if (!class_exists ('vmPlugin')) {
 			require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 		}
+		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 
 		$this->assignRef('perms', Permissions::getInstance());
