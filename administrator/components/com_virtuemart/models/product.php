@@ -540,7 +540,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->orderByString = $orderBy;
 
 		if($this->_onlyQuery){
-			return (array($select,$joinedTables,$where,$orderBy));
+			return (array($select,$joinedTables,$where,$orderBy,$joinLang));
 		}
 		$joinedTables = " \n".implode(" \n",$joinedTables);
 
@@ -1402,7 +1402,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * This function retrieves the "neighbor" products of a product specified by $virtuemart_product_id
 	 * Neighbors are the previous and next product in the current list
 	 *
-	 * @author RolandD, Max Milbers
+	 * @author Max Milbers
 	 * @param object $product The product to find the neighours of
 	 * @return array
 	 */
@@ -1410,14 +1410,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		$db = JFactory::getDBO ();
 		$neighbors = array('previous' => '', 'next' => '');
-
-
-		$app = JFactory::getApplication();
-		if ($app->isSite ()) {
-			$usermodel = VmModel::getModel ('user');
-			$currentVMuser = $usermodel->getUser ();
-			$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
-		}
 
 		$oldDir = $this->filter_order_Dir;
 
@@ -1431,60 +1423,63 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$this->filter_order_Dir = $direction;
 
-
 		//We try the method to get exact the next product, the other method would be to get the list of the browse view again and do a match
 		//with the product id and giving back the neighbours
-		foreach ($neighbors as &$neighbor) {
+		$queryArray =  $this->sortSearchListQuery($onlyPublished,(int)$product->virtuemart_category_id,false,1);
 
-			$queryArray =  $this->sortSearchListQuery($onlyPublished,(int)$product->virtuemart_category_id,false,1);
+		if(isset($queryArray[1])){
 
-			if(isset($queryArray[1])){
-				$joinT = $queryArray[1] ;
-
-				if(is_array($queryArray[1])){
-					$joinT = implode('',$joinT);
+			$pos= strpos($queryArray[3],'ORDER BY');
+			$sp = array();
+			if($pos){
+				$orderByName = trim(substr ($queryArray[3],($pos+8)) );
+				$orderByName = str_replace('`','',$orderByName);
+				if(strpos($orderByName,'.')){
+					$sp = explode('.',$orderByName);
+					$orderByName = $sp[1];
 				}
+			}
 
-				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products` as p '.$joinT;
-				$q .= ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND l.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
+			if($queryArray[4]){
+				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products` as p';
+			} else {
+				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products_' . VMLANG . '` as l ';
+				array_unshift($queryArray[1],' LEFT JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = l.`virtuemart_product_id` ');
+			}
 
-				$pos= strpos($queryArray[3],'ORDER BY');
-				$sp = array();
-				if($pos){
-					$orderByName = trim(substr ($queryArray[3],($pos+8)) );
-					$orderByName = str_replace('`','',$orderByName);
-					if(strpos($orderByName,'.')){
-						$sp = explode('.',$orderByName);
-						$orderByName = $sp[1];
-					}
+			$joinT = '';
+			if(is_array($queryArray[1])){
+				$joinT = implode('',$queryArray[1]);
+			}
+
+			$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND l.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
+
+			if(isset($product->$orderByName)){
+				$orderByValue = $product->$orderByName;
+				if(isset($sp[0])){
+					$orderByName = '`'.$sp[0].'`.'.$orderByName;
 				}
-				//vmdebug('my query ',$orderByName);
-				if(isset($product->$orderByName)){
-					$orderByValue = $product->$orderByName;
-					if(isset($sp[0])){
-						$orderByName = '`'.$sp[0].'`.'.$orderByName;
-					}
+			} else {
+				$orderByName = 'product_name';
+				$orderByValue = $product->product_name;
+			}
 
-				} else {
-					$orderByName = 'product_name';
-					$orderByValue = $product->product_name;
-				}
+			foreach ($neighbors as &$neighbor) {
 
 				$qm = ' AND '.$orderByName.' '.$op.' "'.$orderByValue.'" ORDER BY '.$orderByName.' '.$direction.' LIMIT 1';
 				$db->setQuery ($q.$qm);
 
 				if ($result = $db->loadAssocList ()) {
-					//vmdebug('my query ',$qm,$result);
 					$neighbor = $result;
 				}
-			}
 
-			if($this->filter_order_Dir=='ASC'){
-				$direction = 'DESC';
-				$op = '<=';
-			} else {
-				$direction = 'ASC';
-				$op = '>=';
+				if($this->filter_order_Dir=='ASC'){
+					$direction = 'DESC';
+					$op = '<=';
+				} else {
+					$direction = 'ASC';
+					$op = '>=';
+				}
 			}
 		}
 
