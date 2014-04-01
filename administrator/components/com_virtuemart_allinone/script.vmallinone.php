@@ -117,7 +117,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				if (!$this->VmAdminModulesAlreadyInstalled ()) {
 					echo "Installing VirtueMart Administrator modules<br/ >";
 						$defaultParams = '{"show_vmmenu":"1"}';
-						$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, 1,'menu',3);
+						$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, $dst,1,'menu',3);
 				}
 
 
@@ -133,7 +133,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					} else {
 						$defaultParams = "text_before=\nproduct_currency=\ncache=1\nmoduleclass_sfx=\nclass_sfx=\n";
 					}
-					$this->installModule ('VM - Currencies Selector', 'mod_virtuemart_currencies', 5, $defaultParams);
+					$this->installModule ('VM - Currencies Selector', 'mod_virtuemart_currencies', 5, $defaultParams, $dst);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"product_group":"featured","max_items":"1","products_per_row":"1","display_style":"list","show_price":"1","show_addtocart":"1","headerText":"Best products","footerText":"","filter_category":"0","virtuemart_category_id":"0","cache":"0","moduleclass_sfx":"","class_sfx":""}';
@@ -141,14 +141,14 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					} else {
 						$defaultParams = "product_group=featured\nmax_items=1\nproducts_per_row=1\ndisplay_style=list\nshow_price=1\nshow_addtocart=1\nheaderText=Best products\nfooterText=\nfilter_category=0\ncategory_id=1\ncache=0\nmoduleclass_sfx=\nclass_sfx=\n";
 					}
-					$this->installModule ('VM - Featured products', 'mod_virtuemart_product', 3, $defaultParams);
+					$this->installModule ('VM - Featured products', 'mod_virtuemart_product', 3, $defaultParams, $dst);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"product_group":"topten","max_items":"1","products_per_row":"1","display_style":"list","show_price":"1","show_addtocart":"1","headerText":"","footerText":"","filter_category":"0","virtuemart_category_id":"0","cache":"0","moduleclass_sfx":"","class_sfx":""}';
 					} else {
 						$defaultParams = "product_group=topten\nmax_items=1\nproducts_per_row=1\ndisplay_style=list\nshow_price=1\nshow_addtocart=1\nheaderText=\nfooterText=\nfilter_category=0\ncategory_id=1\ncache=0\nmoduleclass_sfx=\nclass_sfx=\n";
 					}
-					$this->installModule ('VM - Best Sales', 'mod_virtuemart_product', 1, $defaultParams);
+					$this->installModule ('VM - Best Sales', 'mod_virtuemart_product', 1, $defaultParams, $dst);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 
@@ -156,28 +156,28 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					} else {
 						$defaultParams = "width=20\ntext=\nbutton=\nbutton_pos=right\nimagebutton=\nbutton_text=\nmoduleclass_sfx=\ncache=1\ncache_time=900\n";
 					}
-					$this->installModule ('VM - Search in Shop', 'mod_virtuemart_search', 2, $defaultParams);
+					$this->installModule ('VM - Search in Shop', 'mod_virtuemart_search', 2, $defaultParams, $dst);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"show":"all","display_style":"list","manufacturers_per_row":"1","headerText":"","footerText":""}';
 					} else {
 						$defaultParams = "show=all\ndisplay_style=div\nmanufacturers_per_row=1\nheaderText=\nfooterText=\ncache=0\nmoduleclass_sfx=\nclass_sfx=";
 					}
-					$this->installModule ('VM - Manufacturer', 'mod_virtuemart_manufacturer', 8, $defaultParams);
+					$this->installModule ('VM - Manufacturer', 'mod_virtuemart_manufacturer', 8, $defaultParams, $dst);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"moduleclass_sfx":"","show_price":"1","show_product_list":"1"}';
 					} else {
 						$defaultParams = "moduleclass_sfx=\nshow_price=1\nshow_product_list=1\n";
 					}
-					$this->installModule ('VM - Shopping cart', 'mod_virtuemart_cart', 0, $defaultParams);
+					$this->installModule ('VM - Shopping cart', 'mod_virtuemart_cart', 0, $defaultParams, $dst);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"Parent_Category_id":"0","layout":"default","cache":"0","moduleclass_sfx":"","class_sfx":""}';
 					} else {
 						$defaultParams = "moduleclass_sfx=\nclass_sfx=\ncategory_name=default\ncache=no\n";
 					}
-					$this->installModule ('VM - Category', 'mod_virtuemart_category', 4, $defaultParams);
+					$this->installModule ('VM - Category', 'mod_virtuemart_category', 4, $defaultParams, $dst);
 				} else {
 					echo "VirtueMart2 modules already installed<br/ >";
 				}
@@ -424,7 +424,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 		}
 
-		public function installModule ($title, $module, $ordering, $params='',$client_id=0, $position='position-4', $access=1) {
+		public function installModule ($title, $module, $ordering, $params, $src, $client_id=0, $position='position-4', $access=1) {
 
 			$params = '';
 
@@ -434,8 +434,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$q = 'SELECT id FROM `#__modules` WHERE `module` = "' . $module . '" ';
 			$db->setQuery ($q);
 			$id = $db->loadResult ();
-			$src = JPATH_ROOT . DS . 'modules' . DS . $module;
 
+			$src .= DS . $module;
 			if (!empty($id)) {
 				return;
 			}
