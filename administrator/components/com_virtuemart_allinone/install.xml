@@ -26,6 +26,7 @@
 			<folder>libraries</folder>
       <folder>plugins</folder>
       <folder>modules</folder>
+      <folder>modulesBE</folder>
         </files>
     </administration>
 	
