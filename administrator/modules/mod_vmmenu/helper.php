@@ -62,6 +62,7 @@ abstract class ModVMMenuHelper {
 						// Add the submenu link if it is defined.
 						if (isset($result->submenu) && !empty($vmComponentItem->link)) {
 							$vmComponentItem->text = $lang->hasKey($vmComponentItem->title) ? JText::_($vmComponentItem->title) : $vmComponentItem->alias;
+
 							$class = preg_replace('#\.[^.]*$#', '', basename($vmComponentItem->img));
 							$class = preg_replace('#\.\.[^A-Za-z0-9\.\_\- ]#', '', $class);
 							$vmComponentItem->class="icon-16-".$class;
