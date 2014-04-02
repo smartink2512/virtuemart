@@ -232,8 +232,8 @@ class VirtueMartControllerProductdetails extends JController {
 		$model = VmModel::getModel ('ratings');
 		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
 
-		$allowReview = $this->allowReview($virtuemart_product_id);
-		$allowRating = $this->allowRating($virtuemart_product_id);
+		$allowReview = $model->allowReview($virtuemart_product_id);
+		$allowRating = $model->allowRating($virtuemart_product_id);
 		if($allowReview || $allowRating){
 			$return = $model->saveRating ();
 			if ($return !== FALSE) {

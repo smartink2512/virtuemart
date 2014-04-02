@@ -679,6 +679,8 @@ class VmConfig {
 		}
 
 		$jlang->load($name, $path,$tag,true);
+
+		return $jlang;
 	}
 
 	/**

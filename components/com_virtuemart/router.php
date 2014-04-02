@@ -715,7 +715,14 @@ class vmrouterHelper {
 		if (!$this->router_disabled = VmConfig::get('seo_disabled', false)) {
 
 			$this->seo_translate = VmConfig::get('seo_translate', false);
-			$this->setLangs();
+			$this->vmlang = VMLANG;
+
+			if ( $this->seo_translate ) {
+				$this->Jlang = VmConfig::loadJLang('com_virtuemart.sef',true);
+			} else {
+				$this->Jlang = JFactory::getLanguage();
+			}
+
 			if ( JVM_VERSION===1 ) $this->setMenuItemId();
 			else $this->setMenuItemIdJ17();
 			$this->setActiveMenu();
@@ -751,10 +758,10 @@ class vmrouterHelper {
 	}
 
 	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
-	public function setLangs(){
+	/*public function setLangs(){
 
 		$this->vmlang = VMLANG;
-		$this->Jlang =JFactory::getLanguage();
+		$this->Jlang = JFactory::getLanguage();
 		if ( $this->seo_translate ) {
 			// use translator
 			$extension = 'com_virtuemart.sef';
@@ -762,7 +769,7 @@ class vmrouterHelper {
 			$this->Jlang->load($extension, $base_dir);
 
 		}
-	}
+	}/*/
 
 	public function getCategoryRoute($virtuemart_category_id){
 

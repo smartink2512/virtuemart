@@ -417,6 +417,10 @@ class VirtueMartModelConfig extends JModel {
 			}
 		}
 
+		if(!$config->get('active_languages',false)){
+			$confData['active_languages'] = array(VmConfig::$langTag);
+		}
+
 		$confData['config'] = $config->toString();
 
 		$confTable = $this->getTable('configs');
