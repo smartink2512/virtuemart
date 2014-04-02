@@ -24,14 +24,10 @@ if (!class_exists('ModVMMenuHelper')) {
 	require dirname(__FILE__).'/helper.php';
 }
 
-if (!class_exists('JAdminCssMenu')) {
-	require dirname(__FILE__).'/../mod_menu/menu.php';
-}
 
 // Initialise variables.
 $lang		= JFactory::getLanguage();
 $user		= JFactory::getUser();
-$menu		= new JAdminCSSMenu();
 $hideMainmenu	= JRequest::getInt('hidemainmenu')  ;
 
 // Render the module layout

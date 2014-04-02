@@ -5,7 +5,7 @@
  * @package VirtueMart
  * @author Valérie Isaksen
  * @subpackage mod_vmmenu
- * @copyright Copyright (C) VirtueMart Team - All rights reserved.
+ * @copyright Copyright (C) 2014 VirtueMart Team - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -19,9 +19,9 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-/* @var $menu JAdminCSSMenu */
 
 $show_vmmenu 	= $params->get('show_vmmenu', 1);
+$vmMenu="";
 $user = JFactory::getUser();
 $lang = JFactory::getLanguage();
 if ($show_vmmenu) {
@@ -35,20 +35,22 @@ $vmComponentItems = ModVMMenuHelper::getVMComponent(true);
 if ($vmComponentItems) {
 	$class = '';
 	if ($hideMainmenu) {
-		$class = "disabled";
+		$class = " disabled";
 	}
-	$menu->addChild(new JMenuNode($vmComponentItems->text, $vmComponentItems->link, $class), true);
+	$vmMenu='<ul id="menu" >';
+	$vmMenu.='<li class="node'.$class.'"><a href="'.$vmComponentItems->link.'">'.$vmComponentItems->text.'</a>';
+
 	if (!$hideMainmenu) {
 		if (!empty($vmComponentItems->submenu)) {
+			$vmMenu.='<ul id="menu-com-virtuemart" class="menu-component">';
 			foreach ($vmComponentItems->submenu as $sub) {
-				$menu->addChild(new JMenuNode($sub->text, $sub->link, $sub->img));
+				$vmMenu.='<li class="'.$sub->class.'"><a href="'.$sub->link.'">'.$sub->text.'</a></li>';
 			}
+			$vmMenu.='</ul>';
 		}
-
-
 	}
-	$menu->getParent();
+	$vmMenu.='</li></ul>';
 }
 
 
-$menu->renderMenu('menu', '');
+echo $vmMenu;
