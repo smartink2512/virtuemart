@@ -4,6 +4,8 @@
  }
 .remote_cc_form  .vmpayment_cardinfo_text{
     font-weight: bold;
+    border-bottom: 1px solid #CCC;
+    margin-top: 15px;
 }
 .remote_cc_form .inputbox {
     width: 220px;
@@ -14,7 +16,6 @@
     -moz-border-radius: 4px;
     font-size: 12px;
     cursor: pointer;
-    text-align: center;
     letter-spacing: 1px;
     display: inline-block;
     text-decoration: none;

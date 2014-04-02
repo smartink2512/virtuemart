@@ -99,7 +99,7 @@ class shopFunctionsF {
 	static public function getAddToCartButton ($orderable) {
 
 		if($orderable) {
-			$html = '<input type="submit" name="addtocart" class="addtocart-button" rel="nofollow" value="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
+			$html = '<input type="submit" name="addtocart" class="addtocart-button" value="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
 		} else {
 			$html = '<input name="addtocart" class="addtocart-button-disabled" value="'.JText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" title="'.JText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" />';
 		}
@@ -737,5 +737,9 @@ class shopFunctionsF {
 			$results = $dispatcher->trigger ('onPrepareContent', array(& $article, & $params, 0));
 		}
 		$article->$field = $article->text;
+	}
+	static public function mask_string($cc, $mask_char='X')
+	{
+		return str_pad(substr($cc, -4), strlen($cc), $mask_char, STR_PAD_LEFT);
 	}
 }

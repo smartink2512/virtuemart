@@ -94,8 +94,9 @@ class mod_virtuemart_product {
 			<input type="text" class="quantity-input" name="quantity[]" value="1"/>
 			</span>
 			<span class="quantity-controls">
-			<input type="button" class="quantity-controls quantity-plus"/>
-			<input type="button" class="quantity-controls quantity-minus"/>
+					<input type="button" class="quantity-controls quantity-plus" value="<?php echo (!empty($product->min_order_level)?$product->min_order_level:1) ?>"/>
+					<input type="button" class="quantity-controls quantity-minus" value="<?php echo (!empty($product->min_order_level)?$product->min_order_level:1) ?>"/>
+
 			</span>
 
 

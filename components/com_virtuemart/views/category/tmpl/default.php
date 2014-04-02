@@ -229,8 +229,9 @@ if (!empty($this->products)) {
 		<div class="product floatleft<?php echo $Browsecellwidth . $show_vertical_separator ?>">
 			<div class="spacer">
 				<div class="width30 floatleft center">
-				    <a title="<?php echo $product->product_name ?>" rel="vm-additional-images" href="<?php echo $product->link; ?>">
+				    <a title="<?php echo $product->product_name ?>"  href="<?php echo $product->link; ?>">
 						<?php
+
 							echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);
 						?>
 					 </a>

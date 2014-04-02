@@ -39,7 +39,7 @@ input.custom-attribute{width:140px;}
 span.quantity-box{float:left;width:27px;padding-top:5px;}
 input.quantity-input{height:19px;width:25px;text-align:center;font-weight:700;padding:2px;}
 span.quantity-controls{width:15px;float:left;padding-top:2px;margin:0 0 0 10px;}
-span.quantity-controls input.quantity-controls{height:14px;border:none;width:15px;}
+span.quantity-controls input.quantity-controls{height:14px;border:none;width:15px;color:transparent}
 span.quantity-controls input.quantity-plus{background:url(../images/vmgeneral/quantity-controls.png) repeat-x;margin-bottom:2px;}
 span.quantity-controls input.quantity-minus{background:url(../images/vmgeneral/quantity-controls.png) repeat-x;background-position:15px 0;}
 .addtocart-bar{margin:0;padding:0;}

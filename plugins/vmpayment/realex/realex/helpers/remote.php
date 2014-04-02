@@ -73,10 +73,11 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 
 
 	/**
+	 * Switch and Solo became Maestro
 	 * @return bool
 	 */
 	function isCC3DSVerifyEnrolled () {
-		$CC3DSVerifyEnrolled = array('AMEX','VISA', 'MC', 'SWITCH');
+		$CC3DSVerifyEnrolled = array( 'VISA', 'MC', 'MAESTRO', 'AMEX');
 		return in_array($this->customerData->getVar('cc_type'), $CC3DSVerifyEnrolled);
 	}
 
@@ -542,7 +543,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @return bool
 	 */
 	private function manageSetNewPayment ($response, $newPayerRef, $newPaymentRef) {
-		$this->plugin->_storeRealexInternalData($response, $this->_currentMethod->virtuemart_paymentmethod_id, $this->order['details']['BT']->virtuemart_order_id, $this->order['details']['BT']->order_number, $this->request_type);
+		$this->plugin->_storeRealexInternalData($response, $this->_method->virtuemart_paymentmethod_id, $this->order['details']['BT']->virtuemart_order_id, $this->order['details']['BT']->order_number, $this->request_type);
 
 		$xml_response = simplexml_load_string($response);
 
@@ -556,19 +557,21 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 
 		$userfield['virtuemart_user_id'] = $this->order['details']['BT']->virtuemart_user_id;
-		$userfield['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
+		$userfield['virtuemart_paymentmethod_id'] = $this->_method->virtuemart_paymentmethod_id;
 		$userfield['realex_saved_pmt_ref'] = $newPaymentRef;
 		$userfield['realex_saved_payer_ref'] = $newPayerRef;
-		$userfield['realex_saved_pmt_type'] = $this->customerData->getVar('remote_cc_type');
-		$userfield['realex_saved_pmt_digits'] = $this->cc_mask($this->customerData->getVar('remote_cc_number'));
-		$userfield['realex_saved_pmt_name'] = $this->customerData->getVar('remote_cc_name');
+		$userfield['realex_saved_pmt_type'] = $this->customerData->getVar('cc_type');
+		if (!class_exists('shopFunctionsF')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		}
+		$userfield['realex_saved_pmt_digits'] = shopFunctionsF::mask_string($this->customerData->getVar('cc_number'),'*');
+		$userfield['realex_saved_pmt_name'] = $this->customerData->getVar('cc_name');
 		if (!class_exists('VmTableData')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
 		}
 		JLoader::import('joomla.plugin.helper');
 		JPluginHelper::importPlugin('vmuserfield');
 		$app = JFactory::getApplication();
-		$data = array();
 		$value = '';
 		$app->triggerEvent('plgVmPrepareUserfieldDataSave', array(
 		                                                         'pluginrealex',

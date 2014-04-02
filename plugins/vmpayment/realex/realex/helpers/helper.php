@@ -503,14 +503,17 @@ class  RealexHelperRealex {
 		$this->customerData = new RealexHelperCustomerData();
 		$this->customerData->load();
 	}
+
+	/**
+	 * @return array
+	 */
 	static function getRealexCreditCards () {
 		return array(
-			'AMEX',
-			'DINERS',
-			'LASER',
-			'MC',
 			'VISA',
-			'SWITCH',
+			'MC',
+			'AMEX',
+			'MAESTRO',
+			'DINERS',
 		);
 
 	}
@@ -591,12 +594,12 @@ class  RealexHelperRealex {
 	static $_storedCCsCache;
 
 	function getStoredCCs ($virtuemart_user_id) {
-		$this->debugLog( $virtuemart_user_id, 'getStoredCCs', 'debug');
+		//$this->debugLog( $virtuemart_user_id, 'getStoredCCs', 'debug');
 
 		if (!empty(self::$_storedCCsCache)) {
 			if (isset(self::$_storedCCsCache[$virtuemart_user_id])) {
 				$storedCCs = self::$_storedCCsCache[$virtuemart_user_id]['storedCC'];
-				$this->debugLog('from cache', 'getStoredCCs', 'debug');
+				//$this->debugLog('from cache', 'getStoredCCs', 'debug');
 				return $storedCCs;
 			}
 		}
@@ -608,7 +611,7 @@ class  RealexHelperRealex {
 
 		$storedCCs = "";
 		$app->triggerEvent('plgVmOnPaymentDisplay', array('pluginrealex', $virtuemart_user_id, &$storedCCs));
-		$this->debugLog(var_export($storedCCs, true), 'getStoredCCs after plgVmOnPaymentDisplay', 'debug');
+		//$this->debugLog(var_export($storedCCs, true), 'getStoredCCs after plgVmOnPaymentDisplay', 'debug');
 		if (empty(self::$_storedCCsCache)) {
 			self::$_storedCCsCache = array();
 		}
@@ -662,7 +665,7 @@ class  RealexHelperRealex {
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
 		}
 
-		return JHTML::_('select.genericlist', $options, $idA, 'class="inputbox vm-chzn-select" style="width: 250px;"', 'value', 'text', $selected_cc);
+		return JHTML::_('select.genericlist', $options, $idA, 'class="inputbox vm-chzn-select" style="width: 350px;"', 'value', 'text', $selected_cc);
 	}
 
 	function getOfferSaveCard ($checked, $paymentmethod_id) {
@@ -1163,9 +1166,7 @@ class  RealexHelperRealex {
 
 		return $response;
 	}
-	function cc_mask ($cc) {
-		return substr_replace($cc, str_repeat("*", 8), 4, 8);
-	}
+
 
 	/**
 	 * @param $message

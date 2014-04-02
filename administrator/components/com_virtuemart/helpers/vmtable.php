@@ -3,7 +3,7 @@
 /**
  * virtuemart table class, with some additional behaviours.
  *
- *
+ * @version $Id$
  * @package    VirtueMart
  * @subpackage Helpers
  * @author Max Milbers

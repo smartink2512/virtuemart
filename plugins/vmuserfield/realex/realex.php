@@ -149,18 +149,12 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 // we come from payment
 		if (isset($params['realex_saved_payer_ref'])) {
-			// only store the last 4 digits
-			//$realex_saved_pmt_digits = substr_replace($params['realex_saved_pmt_digits'], str_repeat("X", $len-4), 0, $len-4);
-			$realex_saved_pmt_digits = $this->mask_cc($params['realex_saved_pmt_digits']);
-			$params['realex_saved_pmt_digits'] = $realex_saved_pmt_digits;
+			// digits have alreay been masked
 			$this->storePluginInternalData($params);
 		}
 
 	}
-	function mask_cc($cc, $mask_char='X')
-	{
-		return str_pad(substr($cc, -4), strlen($cc), $mask_char, STR_PAD_LEFT);
-	}
+
 	/**
 	 * Delete a stored card
 	 * To remove a card from the RealVault system

@@ -23,7 +23,7 @@ vmJsApi::css('jquery.fancybox-1.3.4');
 $document = JFactory::getDocument ();
 $imageJS = '
 jQuery(document).ready(function() {
-	jQuery("a[rel=vm-additional-images]").fancybox({
+	jQuery("a#vm-additional-images").fancybox({
 		"titlePosition" 	: "inside",
 		"transitionIn"	:	"elastic",
 		"transitionOut"	:	"elastic"
@@ -49,7 +49,7 @@ if (!empty($this->product->images)) {
 <div class="main-image">
 
 	<?php
-		echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
+		echo $image->displayMediaFull("",true,"id='vm-additional-images'");
 	?>
 
 	 <div class="clear"></div>

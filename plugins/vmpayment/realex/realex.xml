@@ -45,11 +45,8 @@
 
         <param class="required redirect remote" name="subaccount" type="text" size="80" default=""
                label="VMPAYMENT_REALEX_SUBACCOUNT"/>
-        <param name="creditcards" type="creditcards"   default="" label="VMPAYMENT_REALEX_CREDITCARDS" description="VMPAYMENT_REALEX_CREDITCARDS_TIP">
-            <option value="Visa">VMPAYMENT_REALEX_VISA</option>
-            <option value="MC">VMPAYMENT_REALEX_MASTERCARD</option>
-            <option value="AmericanExpress">VMPAYMENT_REALEX_AMERICANEXPRESS</option>
-        </param>
+        <param name="creditcards" type="creditcards"   default="" label="VMPAYMENT_REALEX_CREDITCARDS" description="VMPAYMENT_REALEX_CREDITCARDS_TIP" />
+
 
 
         <param class="redirect remote dcc_choice" name="settlement" type="list" default="1" label="VMPAYMENT_REALEX_SETTLEMENT"

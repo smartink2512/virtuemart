@@ -29,7 +29,10 @@ vmJsApi::chosenDropDowns();
 $doc = JFactory::getDocument();
 //$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/js/site.js');
 $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/css/realex.css');
-
+$attribute='';
+if ($viewData['dccinfo']) {
+	$attribute=' readonly ';
+}
 ?>
 <div class="realex remote_cc_form">
 
@@ -55,30 +58,40 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/
 
 		<div class="vmpayment_cardinfo">
 			<div class="vmpayment_cardinfo_text">
-				<?php if (empty($viewData['creditcardsDropDown'])) {
+				<?php if ( !$viewData['dccinfo']) {
+				  if (empty($viewData['creditcardsDropDown'])) {
 					echo JText::_('VMPAYMENT_REALEX_CC_COMPLETE_FORM');
 
-				} else {
-					echo JText::_('VMPAYMENT_REALEX_CC_ADD_NEW');
+					} else {
+						echo JText::_('VMPAYMENT_REALEX_CC_ADD_NEW');
+					}
+				}else {
+					echo JText::_('VMPAYMENT_REALEX_CC_YOUR_CC');
 				}
 				?>
 			</div>
 
 
-			<div class="vmpayment_creditcardtype">
+			<div class="vmpayment_cc_info vmpayment_creditcardtype">
 				<span class="vmpayment_label"><label for="creditcardtype"><?php echo JText::_('VMPAYMENT_REALEX_CC_CCTYPE'); ?></label></span>
+				<?php if ( !$viewData['dccinfo']) {
 
-
-				<?php
 				foreach ($viewData['creditcards'] as $creditCard) {
 					$options[] = JHTML::_('select.option', $creditCard, JText::_('VMPAYMENT_REALEX_CC_' . strtoupper($creditCard)));
 				}
 				$attribs = 'class="inputbox vm-chzn-select" style= "width: 250px;" rel="' . $viewData['virtuemart_paymentmethod_id'] . '"';
 				echo JHTML::_('select.genericlist', $options, 'cc_type', $attribs, 'value', 'text', $customerData->getVar('cc_type'));
-				?>
+				} else {
+					echo $customerData->getVar('cc_type');
+					?>
+					<input type="hidden" name="cc_type" value="<?php echo $customerData->getVar('cc_type') ?>" />
+					<?php
+				}?>
 			</div>
-			<div class="vmpayment_cc_type">
+
+			<div class="vmpayment_cc_info vmpayment_cc_type">
 				<span class="vmpayment_label"><label for="cc_type"><?php echo JText::_('VMPAYMENT_REALEX_CC_CCNUM'); ?></label></span>
+				<?php if ( !$viewData['dccinfo']) { ?>
 
 				<input type="text" size="30" class="inputbox" id="cc_number"
 				       name="cc_number" value="<?php echo wordwrap($customerData->getVar('cc_number'), 4, " "); ?>"
@@ -88,32 +101,54 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/
 					this.value='';}"/>
 
 				<div id="cc_cardnumber_errormsg"></div>
-
+				<?php
+				} else {
+				echo  wordwrap($customerData->getMaskedCCnumber(), 4, " ");
+					?>
+					<input type="hidden" name="cc_number" value="<?php echo $customerData->getVar('cc_number') ?>" />
+				<?php
+				}?>
 			</div>
-			<div class="vmpayment_cc_cvv">
+
+			<div class="vmpayment_cc_info vmpayment_cc_cvv">
 
 				<span class="vmpayment_label"><label for="cc_cvv"><?php echo JText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
+				<?php if ( !$viewData['dccinfo']) { ?>
 
 				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv" maxlength="4" size="5" value="<?php echo $customerData->getVar('cc_cvv'); ?>" autocomplete="off"/>
                     <span class="hasTip" title="<?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
                         <?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
                     </span>
+				<?php
+				} else {
+					echo $customerData->getVar('cc_cvv');
+					?>
+					<input type="hidden" name="cc_cvv" value="<?php echo $customerData->getVar('cc_cvv') ?>" />
+				<?php
+				}?>
 			</div>
-			<div class="vmpayment_cc_date">
+			<div class="vmpayment_cc_info vmpayment_cc_date">
 				<span class="vmpayment_label"><label for="creditcardtype"><?php echo JText::_('VMPAYMENT_REALEX_CC_EXPDATE'); ?></label></span>
-
+				<?php if ( !$viewData['dccinfo']) { ?>
 				<?php
 				echo shopfunctions::listMonths('cc_expire_month', $customerData->getVar('cc_expire_month'), "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"", 'm');
 
 				echo shopfunctions::listYears('cc_expire_year', $customerData->getVar('cc_expire_year'), null, null, "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"  onchange=\"var month = document.getElementById('cc_expire_month_'" . $viewData['virtuemart_paymentmethod_id'] . "); if(!CreditCardisExpiryDate(month.value,this.value, '" . $viewData['virtuemart_paymentmethod_id'] . "')){this.value='';month.value='';}\" ","m");
 				?>
 				<div id="cc_expiredate_errormsg"></div>
-
+				<?php
+				} else {
+				echo $customerData->getVar('cc_expire_month').'/' . $customerData->getVar('cc_expire_year');
+					?>
+					<input type="hidden" name="cc_expire_month" value="<?php echo $customerData->getVar('cc_expire_month') ?>" />
+					<input type="hidden" name="cc_expire_year" value="<?php echo $customerData->getVar('cc_expire_year') ?>" />
+				<?php
+				}?>
 			</div>
-			<div class="vmpayment_cc_name">
+			<div class="vmpayment_cc_info vmpayment_cc_name">
 
 				<span class="vmpayment_label"><label for="cc_name"><?php echo JText::_('VMPAYMENT_REALEX_CC_CCNAME'); ?></label></span>
-
+				<?php if ( !$viewData['dccinfo']) { ?>
 				<input type="text" size="30" class="inputbox" id="cc_name"
 				       name="cc_name" value="<?php echo $customerData->getVar('cc_name'); ?>"
 				       autocomplete="off" onchange="ccError=razCCerror(<?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
@@ -122,6 +157,13 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/
 					this.value='';}"/>
 
 				<div id="cc_cardname_errormsg"></div>
+				<?php
+				} else {
+					echo $customerData->getVar('cc_name');
+					?>
+					<input type="hidden" name="cc_name" value="<?php echo $customerData->getVar('cc_name') ?>" />
+				<?php
+				}?>
 			</div>
 			<?php if ($viewData['dccinfo']) { ?>
 				<div class="dccinfo">

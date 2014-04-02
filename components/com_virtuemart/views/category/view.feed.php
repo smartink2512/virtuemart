@@ -81,7 +81,7 @@ class VirtuemartViewCategory extends VmView {
 			if ($feed_show_prices == 1  and  $show_prices == 1) {
 				$description .= $currency->createPriceDiv ('variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $product->prices);
 				if (round ($product->prices['basePriceWithTax'], $currency->_priceConfig['salesPrice'][1]) != $product->prices['salesPrice']) {
-					$description .= '<span class="price-crossed" >' . $currency->createPriceDiv ('basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $product->prices) . "</span>";
+					$description .= '<div class="price-crossed" >' . $currency->createPriceDiv ('basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $product->prices) . "</div>";
 				}
 				if (round ($product->prices['salesPriceWithDiscount'], $currency->_priceConfig['salesPrice'][1]) != $product->prices['salesPrice']) {
 					$description .= $currency->createPriceDiv ('salesPriceWithDiscount', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT', $product->prices);

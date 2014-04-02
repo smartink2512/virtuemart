@@ -112,8 +112,8 @@ $alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 								} ?>"/>
 					</span>
 					<span class="quantity-controls js-recalculate">
-					<input type="button" class="quantity-controls quantity-plus"/>
-					<input type="button" class="quantity-controls quantity-minus"/>
+					<input type="button" class="quantity-controls quantity-plus" value="<?php echo (!empty($this->product->min_order_level)?$this->product->min_order_level:1) ?>"/>
+					<input type="button" class="quantity-controls quantity-minus" value="<?php echo (!empty($this->product->min_order_level)?$this->product->min_order_level:1) ?>"/>
 					</span>
 					<?php // Display the quantity box END
 
