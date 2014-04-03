@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '1',
   `category_template` char(128),
   `category_layout` char(64),
   `category_product_layout` char(64),
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `virtuemart_custom_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `custom_parent_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
+  `virtuemart_vendor_id` smallint(1) NOT NULL DEFAULT '1',
   `custom_jplugin_id` int(11) NOT NULL DEFAULT '0',
   `custom_element` char(50) NOT NULL DEFAULT '',
   `admin_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:Display in admin only',
@@ -412,7 +412,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `virtuemart_media_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
+  `virtuemart_vendor_id` smallint(1) NOT NULL DEFAULT '1',
   `file_title` char(126) NOT NULL DEFAULT '',
   `file_description` char(254) NOT NULL DEFAULT '',
   `file_meta` char(254) NOT NULL DEFAULT '',
@@ -491,7 +491,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_modules` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `virtuemart_order_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '1',
   `order_number` char(64),
   `customer_number` char(32),
   `order_pass` char(8),
