@@ -46,7 +46,6 @@ class VirtuemartViewUser extends VmView {
 
 		$currentUser = JFactory::getUser();
 
-
 		$task = JRequest::getWord('task', 'edit');
 		if($task == 'editshop'){
 
@@ -152,8 +151,8 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('userFieldsBT', $userFieldsBT);
 			$this->assignRef('userInfoID', $virtuemart_userinfo_id_BT);
 
-
-			if ($layoutName == 'edit_shipto') {
+			$addrtype = vmRequest::getCmd('addrtype');
+			if ($layoutName == 'edit_shipto' or $task=='addST' or $addrtype=='ST') {
 				$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
 				$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
 				if($new ){

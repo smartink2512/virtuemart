@@ -222,13 +222,6 @@ class shopFunctionsF {
 
 		if($template) {
 			$view->addTemplatePath( JPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
-		} else {
-			if(isset($db)) {
-				$err = $db->getErrorMsg();
-			} else {
-				$err = 'The selected vmtemplate is not existing';
-			}
-			if($err) vmError( 'renderMail get Template failed: '.$err );
 		}
 
 		foreach( $vars as $key => $val ) {
@@ -290,6 +283,9 @@ class shopFunctionsF {
 				$registry = new JRegistry;
 				$registry->loadString($res['params']);
 				$template = $res['template'];
+			} else {
+				$err = 'The selected vmtemplate is not existing';
+				vmError( 'renderMail get Template failed: '.$err );
 			}
 		} else {
 			if(JVM_VERSION == 2) {
@@ -300,7 +296,13 @@ class shopFunctionsF {
 			$db = JFactory::getDbo();
 			$db->setQuery( $q );
 			$template = $db->loadResult();
+			if(!$template){
+				$err = 'Could not load default template style';
+				vmError( 'renderMail get Template failed: '.$err );
+			}
+
 		}
+
 		return $template;
 	}
 

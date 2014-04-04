@@ -317,7 +317,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if($isSite and !VmConfig::get('use_as_catalog',0)) {
 				if (VmConfig::get('stockhandle','none')=='disableit_children') {
-					$where[] = ' (p.`product_in_stock` - p.`product_ordered` >"0" OR children.`product_in_stock` - children.`product_ordered` > "0") ';
+					$where[] = ' ((p.`product_in_stock` - p.`product_ordered`) >"0" OR (children.`product_in_stock` - children.`product_ordered`) > "0") ';
 					$joinChildren = TRUE;
 				} else if (VmConfig::get('stockhandle','none')=='disableit') {
 					$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';

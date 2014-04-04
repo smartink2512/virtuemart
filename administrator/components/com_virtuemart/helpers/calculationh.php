@@ -701,7 +701,7 @@ class calculationHelper {
 		$this->_cartPrices['taxRulesBill'] = array();
 		$this->_cartPrices['DATaxRulesBill'] = array();
 
-		foreach ($cart->products as $cartproductkey => $product) { 
+		foreach ($cart->products as $cartproductkey => $product) {
 			//for Rules with Categories
 			foreach($this->_cartData['DBTaxRulesBill'] as &$dbrule){
 				if(!empty($dbrule['calc_categories'])){
