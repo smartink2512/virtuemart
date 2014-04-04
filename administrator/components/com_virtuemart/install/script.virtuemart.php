@@ -256,6 +256,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->fixOrdersVendorId();
 
+			$this->updateAdminMenuEntries();
+
 			$this->fixConfigValues();
 
 			//copy sampel media
@@ -361,7 +363,29 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
+		private function updateAdminMenuEntries() {
 
+			if(empty($this->_db)){
+				$this->_db = JFactory::getDBO();
+			}
+			$query = 'SELECT * FROM `#__virtuemart_adminmenuentries` WHERE `view` = "log" ';
+			$this->db->setQuery($query);
+			$result = $this->db->loadResult();
+			if(empty($result) || !$result ){
+				// get the module id of the migration
+				$query = 'SELECT module_id FROM `#__virtuemart_adminmenuentries` WHERE `view` = "updatesmigration" ';
+				$this->db->setQuery($query);
+				$module_id = $this->db->loadResult();
+				if( $module_id){
+					$q = "INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
+								(null, ".$module_id.", 0, 'COM_VIRTUEMART_LOG', '', '', 'vmicon vmicon-16-info', 2, 1, '', 'log', '')";
+					$this->_db->setQuery($q);
+					$this->_db->query();
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('Added Log Menu entry ' );
+				}
+			}
+		}
 
 
 
