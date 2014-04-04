@@ -20,7 +20,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea($this);
-$finfo = finfo_open(FILEINFO_MIME);
+//$finfo = finfo_open(FILEINFO_MIME);
+if(class_exists('finfo')){
+	$finfo = new finfo(FILEINFO_MIME);
+} else {
+	vmInfo('The function finfo should be activated on the server');
+	$finfo = false;
+}
+
 ?>
 		<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
@@ -43,9 +50,9 @@ $finfo = finfo_open(FILEINFO_MIME);
 			foreach ($this->logFiles as $logFile ) {
 				$addLink=false;
 				$fileSize = filesize($this->path.DS.$logFile);
-				$fileInfo= finfo_file($finfo, $this->path.DS.$logFile);
+				$fileInfo= $finfo?$finfo->file($this->path.DS.$logFile):0;
 				$fileInfoMime=substr($fileInfo, 0 ,strlen("text/plain"));
-				if (strcmp("text/plain", $fileInfoMime)==0) {
+				if (!$finfo or strcmp("text/plain", $fileInfoMime)==0) {
 					$addLink=true;
 				}
 				?>
@@ -81,6 +88,5 @@ $finfo = finfo_open(FILEINFO_MIME);
 
 	<?php
 	echo $this->addStandardHiddenToForm();
-	finfo_close($finfo);
     AdminUIHelper::endAdminArea();
 	?>
