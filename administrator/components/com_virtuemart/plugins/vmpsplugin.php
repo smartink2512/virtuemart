@@ -694,7 +694,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			$subject = JText::sprintf('COM_VIRTUEMART_ERROR_SUBJECT', $this->_name, $vendor->vendor_store_name);
 		}
 		if ($message == NULL) {
-			$message = JText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
+			$link=juri::root().'administrator/index.php?option=com_virtuemart&view=log&task=edit&logfile='.$this->getLogFilename().VmConfig::LOGFILEEXT;
+			//$logFileLink='<a href="'.$link.'">'.$this->getLogFilename().VmConfig::LOGFILEEXT.'</a>';
+			$message = JText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $link);
 		}
 		JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
 		if (JVM_VERSION === 1) {
