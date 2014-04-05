@@ -65,7 +65,7 @@ class JElementGetPaybox extends JElement {
 
 	if ($params->created_on==$params->modified_on ) {
 		$id = "paybox_getpaybox_link";
-		$html .= '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE') . '</a>';
+		$html .= '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX__HIDE') . '</a>';
 		$display='';
 		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
 	} else {

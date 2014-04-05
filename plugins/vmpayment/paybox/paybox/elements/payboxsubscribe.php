@@ -7,7 +7,7 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  * @subpackage Plugins  _ Elements
  * @author Valérie Isaksen
  * @link http://www.alatak.net
- * @copyright Copyright (c) alatak;net. All rights reserved.
+ * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -31,7 +31,7 @@ class JElementpayboxsubscribe extends JElement {
           SELECT virtuemart_custom_id, custom_title
           FROM #__virtuemart_customs
           WHERE (field_type = 'P')
-          AND (custom_title LIKE '%PAYBOX%')
+          AND (custom_title LIKE '%'.$this->_name.'%')
 
 ";
 

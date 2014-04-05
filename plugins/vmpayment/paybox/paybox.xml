@@ -7,7 +7,7 @@
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <!--version>${PHING.VM.RELEASE}</version-->
-    <version>Beta3</version>
+    <version>Beta5</version>
     <description><![CDATA[<a href="http://paybox.com" target="_blank">Paybox</a> ]]>
     </description>
 

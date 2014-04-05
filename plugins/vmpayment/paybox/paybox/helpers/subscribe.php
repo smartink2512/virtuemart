@@ -7,7 +7,7 @@
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -22,19 +22,19 @@
 defined('_JEXEC') or die('Restricted access');
 class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 
-	function __construct ($method, $paypalPlugin) {
-		parent::__construct($method, $paypalPlugin);
+	function __construct ($method, $plugin, $plugin_name) {
+		parent::__construct($method, $plugin, $plugin_name);
 
 	}
 
 	function getOrderHistory ($paybox_data, $order, $payments) {
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
-		$order_history['comments'] = vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED_RECURRING', $amountInCurrency['display'], $order['details']['BT']->order_number);
+		$order_history['comments'] = vmText::sprintf('VMPAYMENT_'.$this->plugin_name.'_PAYMENT_STATUS_CONFIRMED_RECURRING', $amountInCurrency['display'], $order['details']['BT']->order_number);
 
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M'] * 0.01, $order['details']['BT']->order_currency);
-		$order_history['comments'] .= "<br />" . vmText::sprintf('VMPAYMENT_PAYBOX_PAYMENT_STATUS_CONFIRMED_RECURRING_2', $amountInCurrency['display']);
+		$order_history['comments'] .= "<br />" . vmText::sprintf('VMPAYMENT_'.$this->plugin_name.'_PAYMENT_STATUS_CONFIRMED_RECURRING_2', $amountInCurrency['display']);
 
-		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_PAYBOX_RESPONSE_S') . ' ' . $paybox_data['S'];
+		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_'.$this->plugin_name.'_RESPONSE_S') . ' ' . $paybox_data['S'];
 		$subscribe_comment = '';
 
 		$order_history['customer_notified'] = true;
@@ -117,7 +117,7 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 
 		// get id of parent custom field
 		$paybox_parent_field = $this->_method->subscribe_customfield;
-		vmdebug('PAYBOX getSubscriptionData paybox_parent_field', $paybox_parent_field);
+		vmdebug(''.$this->plugin_name.' getSubscriptionData paybox_parent_field', $paybox_parent_field);
 		// amount in base currency
 		$subscribe = array();
 		$pbx_freqs = array();
@@ -128,7 +128,7 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 		// go through basket prods
 		foreach ($products as $key => $product) {
 			$product_custom_fields = $this->getProdCustomFields($product->virtuemart_product_id);
-			vmdebug('PAYBOX getSubscriptionData getProdCustomFields', $product_custom_fields);
+			vmdebug(''.$this->plugin_name.' getSubscriptionData getProdCustomFields', $product_custom_fields);
 			 $pbx_2mont = 0;
 			$paybox_parent_field_found = false;
 			foreach ($product_custom_fields as $product_custom_field) {
@@ -147,12 +147,12 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 			}
 
 			if ($paybox_parent_field_found) {
-				vmdebug('PAYBOX getSubscribeProducts $paybox_parent_field_found', $pbx_freqs, $pbx_nbpaies);
+				vmdebug(''.$this->plugin_name.' getSubscribeProducts $paybox_parent_field_found', $pbx_freqs, $pbx_nbpaies);
 				$pbx_2monts = $pbx_2mont * $product->quantity;
 				$usbscribe_pbx_2mont += $this->getPbxAmount($pbx_2monts);
 
 			}
-			vmdebug('PAYBOX getSubscriptionData BY PRODUCT', $subscribe);
+			vmdebug(''.$this->plugin_name.' getSubscriptionData BY PRODUCT', $subscribe);
 		}
 		if (!empty($pbx_freqs) and !empty($pbx_freqs)) {
 			$pbx_freq = array_unique($pbx_freqs); // Nombre de prélèvements
@@ -160,13 +160,13 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 			if (count($pbx_freq) > 1 or count($pbx_nbpaie) > 1) {
 				// Fréquence des prélèvements en mois
 				if (count($pbx_freq)) {
-					vmInfo('VMPAYMENT_PAYBOX_ERROR_PBX_FREQ');
+					vmInfo('VMPAYMENT_'.$this->plugin_name.'_ERROR_PBX_FREQ');
 				}
 				// Nombre de prélèvements (0 = toujours).
 				if (count($pbx_nbpaie)) {
-					vmInfo('VMPAYMENT_PAYBOX_ERROR_PBX_NBPAIE');
+					vmInfo('VMPAYMENT_'.$this->plugin_name.'_ERROR_PBX_NBPAIE');
 				}
-				vmInfo('VMPAYMENT_PAYBOX_ERROR_SUBCRIBE');
+				vmInfo('VMPAYMENT_'.$this->plugin_name.'_ERROR_SUBCRIBE');
 
 				return FALSE;
 			}
@@ -176,7 +176,7 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 				$subscribe['PBX_FREQ'] = $pbx_freq[0];
 				$subscribe['PBX_NBPAIE'] = $pbx_nbpaie[0];
 				// Montant total de l’achat en centimes sans virgule ni point.
-				vmdebug('PAYBOX getSubscriptionData TOTAL', $subscribe);
+				vmdebug(''.$this->plugin_name.' getSubscriptionData TOTAL', $subscribe);
 				$subscribe['PBX_TOTAL'] = $pbxTotalVendorCurrency - ($usbscribe_pbx_2mont * ($subscribe['PBX_NBPAIE']-1));
 				$subscribe['PBX_2MONT'] = str_pad($usbscribe_pbx_2mont, 10, "0", STR_PAD_LEFT);
 			}

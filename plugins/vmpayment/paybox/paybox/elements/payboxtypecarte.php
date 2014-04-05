@@ -6,8 +6,7 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  * @package    VirtueMart
  * @subpackage Plugins  _ Elements
  * @author Valérie Isaksen
- * @link http://www.alatak.net
- * @copyright Copyright (c) alatak;net. All rights reserved.
+ * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -86,7 +85,7 @@ class JElementpayboxtypecarte extends JElement {
         if ($key=="CARTE") { // pour l'instant
             foreach ($fields as $field){
                 $paymentMeansArray[$i]['value'] = $field;
-                $paymentMeansArray[$i++]['text'] =  JText::_('VMPAYMENT_PAYBOX_TYPECARTE_' . strtoupper($field));
+                $paymentMeansArray[$i++]['text'] =  JText::_('VMPAYMENT_'.$this->_name.'_TYPECARTE_' . strtoupper($field));
             }
         }
 
