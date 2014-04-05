@@ -257,6 +257,7 @@
         <exclude name=".DS_Store"/>
         <exclude name="**/realex/**"/>
         <exclude name="**/paybox/**"/>
+        <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
     </fileset>
