@@ -90,7 +90,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		$md = $this->setMd();
 
 		// The URL that the ACS should reply to. This should be on your website and must be an HTTPS address.
-		$url_validation = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&notificationTask=handle3DSRequest&order_number=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
+		$url_validation = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&notificationTask=handle3DSRequest&order_number=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 
 		$this->display3DSForm((string)$xml_response->url, (string)$xml_response->pareq, $md, $url_validation);
 	}
@@ -168,7 +168,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	function displayRemoteCCForm ($response_dcc = NULL) {
 
 		$useSSL = $this->useSSL();
-		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', ''), $this->cart->useXHTML, $useSSL);
+		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $this->cart->useXHTML, $useSSL);
 		$card_payment_button = $this->getPaymentButton();
 		$xml_response_dcc = "";
 		if ($this->isCC3DSVerifyEnrolled() and $this->_method->threedsecure) {
@@ -593,8 +593,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @return bool|mixed
 	 */
 	function request3DSVerifysig () {
-		$paRes = vmRequest::getVar('PaRes', '');
-		$serializedMd = vmRequest::getVar('MD', '');
+		$paRes = vRequest::getVar('PaRes', '');
+		$serializedMd = vRequest::getVar('MD', '');
 		$md=$this->getMd($serializedMd);
 		$this->customerData->setCustomerData($md);
 
@@ -660,7 +660,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 
 		if ($this->_method->dcc ) {
-			$dcc_choice = vmRequest::getInt('dcc_choice', 0);
+			$dcc_choice = vRequest::getInt('dcc_choice', 0);
 			if ($dcc_choice) {
 				$rate = $xml_response_dcc->dccinfo->cardholderrate;
 				$currency = $xml_response_dcc->dccinfo->cardholdercurrency;

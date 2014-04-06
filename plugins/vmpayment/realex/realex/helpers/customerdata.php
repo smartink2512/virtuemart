@@ -61,41 +61,41 @@ class RealexHelperCustomerData {
 
 	public function loadPost () {
 
-		$this->_selected_method = vmRequest::getInt('virtuemart_paymentmethod_id', 0);
-		$this->_save_card = vmRequest::getInt('save_card', 0);
-		$redirect_cc_selected = vmRequest::getInt('redirect_cc_selected_' . $this->_selected_method, 0);
+		$this->_selected_method = vRequest::getInt('virtuemart_paymentmethod_id', 0);
+		$this->_save_card = vRequest::getInt('save_card', 0);
+		$redirect_cc_selected = vRequest::getInt('redirect_cc_selected_' . $this->_selected_method, 0);
 		if ($redirect_cc_selected) {
 			$this->_redirect_cc_selected = $redirect_cc_selected;
 		}
-		$cctype = vmRequest::getString('cc_type', '');
+		$cctype = vRequest::getString('cc_type', '');
 		if ($cctype) {
 			$this->_cc_type = $cctype;
 		}
 		/**
 		 * name on CC should be restricted to letters only.
 		 */
-		$cc_name = vmRequest::getString('cc_name', '');
+		$cc_name = vRequest::getString('cc_name', '');
 		if ($cc_name) {
 			$cc_name = $this->replaceNonAsciiCharacters($cc_name);
 			$this->_cc_name = $cc_name;
 		}
 
-		$cc_number = vmRequest::getString('cc_number', '');
+		$cc_number = vRequest::getString('cc_number', '');
 		if ($cc_number) {
 			$this->_cc_number = $cc_number;
 		}
 
-		$cc_cvv = vmRequest::getInt('cc_cvv', '');
+		$cc_cvv = vRequest::getInt('cc_cvv', '');
 		if ($cc_cvv) {
 			$this->_cc_cvv = $cc_cvv;
 		}
 
-		$cc_expire_month = vmRequest::getInt('cc_expire_month', '');
+		$cc_expire_month = vRequest::getInt('cc_expire_month', '');
 		if ($cc_expire_month) {
 			$this->_cc_expire_month = $cc_expire_month;
 		}
 
-		$cc_expire_year = vmRequest::getInt('cc_expire_year', '');
+		$cc_expire_year = vRequest::getInt('cc_expire_year', '');
 		if ($cc_expire_year) {
 			$this->_cc_expire_year = $cc_expire_year;
 		}

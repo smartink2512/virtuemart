@@ -240,7 +240,7 @@ class VirtueMartModelRatings extends VmModel {
 
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
+		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',0);
 
 		$app = JFactory::getApplication();
 		if( $app->isSite() ){
@@ -258,7 +258,7 @@ class VirtueMartModelRatings extends VmModel {
 		if(!empty($virtuemart_product_id)){
 		//if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
 
-			if(empty($data)) $data = vmRequest::getPost();
+			if(empty($data)) $data = vRequest::getPost();
 
 			if($allowRating){
 				//normalize the rating

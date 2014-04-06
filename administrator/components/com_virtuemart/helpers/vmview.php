@@ -50,7 +50,7 @@ class VmView extends JView{
 	*/
 	public function display($tpl = null)
 	{
-		$view = vmRequest::getCmd('view', vmRequest::getCmd('controller','virtuemart'));
+		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 		
 		if ($view == 'virtuemart' //Virtuemart view is always allowed since this is the page we redirect to in case the user does not have the rights
 			|| $view == 'about' //About view always displayed

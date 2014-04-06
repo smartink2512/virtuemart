@@ -663,8 +663,8 @@ class VirtueMartCart {
 	 */
 	public function updateProductCart($cart_virtuemart_product_id=0,$quantity = null) {
 
-		if (empty($cart_virtuemart_product_id)) $cart_virtuemart_product_id = vmRequest::getString('cart_virtuemart_product_id');
-		if ($quantity === null) $quantity = vmRequest::getInt('quantity');
+		if (empty($cart_virtuemart_product_id)) $cart_virtuemart_product_id = vRequest::getString('cart_virtuemart_product_id');
+		if ($quantity === null) $quantity = vRequest::getInt('quantity');
 
 		$updated = false;
 		if (array_key_exists($cart_virtuemart_product_id, $this->products)) {

@@ -100,16 +100,16 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 
 		if(JFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
-			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			$recaptcha = vRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
 			$session = JFactory::getSession();
 			if(!$res[0]){
-				$askquestionform = array('name' => vmRequest::getVar ('name'), 'email' => vmRequest::getVar ('email'), 'comment' => vmRequest::getString ('comment'));
+				$askquestionform = array('name' => vRequest::getVar ('name'), 'email' => vRequest::getVar ('email'), 'comment' => vRequest::getString ('comment'));
 				$session->set('askquestion', $askquestionform, 'vm');
 				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
-				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . vmRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
+				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . vRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
 				return;
 			} else {
 				$session->set('askquestion', 0, 'vm');
@@ -128,7 +128,7 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
-		$virtuemart_product_id = vmRequest::getInt ('virtuemart_product_id', 0);
+		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', 0);
 		$productModel = VmModel::getModel ('product');
 
 		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
@@ -164,16 +164,16 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 
 		if(JFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
-			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			$recaptcha = vRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
 			$session = JFactory::getSession();
 			if(!$res[0]){
-				$mailrecommend = array('email' => vmRequest::getVar ('email'), 'comment' => vmRequest::getString ('comment'));
+				$mailrecommend = array('email' => vRequest::getVar ('email'), 'comment' => vRequest::getString ('comment'));
 				$session->set('mailrecommend', $mailrecommend, 'vm');
 				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
-				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=recommend&virtuemart_product_id=' . vmRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
+				$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=recommend&virtuemart_product_id=' . vRequest::getInt ('virtuemart_product_id', 0)), $errmsg);
 				return;
 			} else {
 				$session->set('mailrecommend', 0, 'vm');
@@ -230,7 +230,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 
 		$model = VmModel::getModel ('ratings');
-		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
+		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',0);
 
 		$allowReview = $model->allowReview($virtuemart_product_id);
 		$allowRating = $model->allowRating($virtuemart_product_id);
@@ -247,7 +247,7 @@ class VirtueMartControllerProductdetails extends JController {
 				if (!class_exists ('ShopFunctionsF')) {
 					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 				}
-				$data = vmRequest::getPost();
+				$data = vRequest::getPost();
 				if($allowReview){
 
 				}

@@ -440,12 +440,12 @@ class VirtueMartControllerCart extends JController {
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
 		$task = JRequest::getString('task');
 
-		$update = vmRequest::getString('update',false);
+		$update = vRequest::getString('update',false);
 
 		if(($update and is_array($update)) or $task=='update'){
 			reset($update);
 			$key = key($update);
-			$quantity = vmRequest::getInt('quantity');
+			$quantity = vRequest::getInt('quantity');
 			$cart->updateProductCart(key($update),$quantity[$key]);
 			$this->display();
 		} else if(isset($_POST['setcoupon']) or $task=='setcoupon'){
@@ -483,12 +483,12 @@ class VirtueMartControllerCart extends JController {
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
 		$task = JRequest::getString('task');
-		$update = vmRequest::getString('update',false);
+		$update = vRequest::getString('update',false);
 
 		if(($update and is_array($update)) or $task=='update'){
 			reset($update);
 			$key = key($update);
-			$quantity = vmRequest::getInt('quantity');
+			$quantity = vRequest::getInt('quantity');
 			$cart->updateProductCart(key($update),$quantity[$key]);
 			$this->display();
 		} else if(isset($_POST['setcoupon']) or $task=='setcoupon'){

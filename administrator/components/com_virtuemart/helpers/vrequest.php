@@ -29,7 +29,7 @@
  *  http://virtuemart.net
  */
 
-class vmRequest {
+class vRequest {
 
 	public static function getUword($field, $default='', $custom=''){
 		$source = self::getVar($field,$default);
@@ -50,7 +50,6 @@ class vmRequest {
 			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", $replace, $source);	//We use Tilde as separator, and give the preq_quote function the used separator
 		}
 	}
-
 
 
 	public static function getBool($name, $default = 0){
@@ -140,7 +139,7 @@ class vmRequest {
 			}
 
 		} else {
-			vmTrace('empty name in vmRequest::get');
+			vmTrace('empty name in vRequest::get');
 			return $default;
 		}
 
@@ -209,8 +208,8 @@ class vmRequest {
 			}
 			else {
 				if($redirectMsg===0){
-					$redirectMsg = 'Invalid Token, in ' . VmRequest::getCmd('options') .' view='.VmRequest::getCmd('view'). ' task='.VmRequest::getCmd('task');
-					//jexit('Invalid Token, in ' . VmRequest::getCmd('options') .' view='.VmRequest::getCmd('view'). ' task='.VmRequest::getCmd('task'));
+					$redirectMsg = 'Invalid Token, in ' . vRequest::getCmd('options') .' view='.vRequest::getCmd('view'). ' task='.vRequest::getCmd('task');
+					//jexit('Invalid Token, in ' . vRequest::getCmd('options') .' view='.vRequest::getCmd('view'). ' task='.vRequest::getCmd('task'));
 				} else {
 					$redirectMsg =  vmText::_($redirectMsg);
 				}

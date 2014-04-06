@@ -144,7 +144,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 		if(VmConfig::get ('reg_captcha')){
 			JHTML::_('behavior.framework');
 			JPluginHelper::importPlugin('captcha');
-			$captcha_visible = vmRequest::getVar('captcha');
+			$captcha_visible = vRequest::getVar('captcha');
 			$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 			$hide_captcha = (VmConfig::get ('oncheckout_only_registered') or $captcha_visible) ? '' : 'style="display: none;"';
 			?>

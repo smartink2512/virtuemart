@@ -153,7 +153,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if ($this->_currentMethod->integration == 'redirect') {
 			if (!$realexInterface->doRealvault($selectedCCParams)) {
 				$html = $realexInterface->sendPostRequest();
-				vmRequest::setVar('html', $html);
+				vRequest::setVar('html', $html);
 				$cart->_confirmDone = FALSE;
 				$cart->_dataValidated = FALSE;
 				$cart->setCartIntoSession();
@@ -223,7 +223,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 	function redirectToCart () {
 		$this->customerData->clear();
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vmRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
 	}
 
 
@@ -270,7 +270,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethod_id = vmRequest::getInt('pm', 0);
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
 
 		$order_number = JRequest::getString('on', 0);
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
@@ -564,7 +564,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if ($jplugin_id != $this->_jid) {
 			return FALSE;
 		}
-		$this->_currentMethod = $this->getPluginMethod(vmRequest::getInt('virtuemart_paymentmethod_id'));
+		$this->_currentMethod = $this->getPluginMethod(vRequest::getInt('virtuemart_paymentmethod_id'));
 		if ($this->_currentMethod->published) {
 
 			$required_parameters = array('merchant_id', 'shared_secret', 'subaccount');
@@ -892,7 +892,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$notificationTask = vmRequest::getCmd('notificationTask', '');
+		$notificationTask = vRequest::getCmd('notificationTask', '');
 		// this is not our notification
 		if (empty($notificationTask)) {
 			return;
@@ -913,7 +913,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 	private function handleRedirect () {
 
-		$realex_data = vmRequest::getPost();
+		$realex_data = vRequest::getPost();
 		$this->debugLog('plgVmOnPaymentNotification :' . var_export($realex_data, true), 'debug');
 
 		$order_number = $realex_data['ORDER_ID'];
@@ -1017,7 +1017,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 	private function initRealexInterface () {
 		// TODO check if cart is empty
-		$virtuemart_paymentmethod_id = vmRequest::getInt('pm', false);
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', false);
 
 		$this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id);
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
@@ -1029,7 +1029,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$realexInterface = $this->_loadRealexInterface();
 		$realexInterface->loadCustomerData();
 
-		$order_number = vmRequest::getString('order_number', false);
+		$order_number = vRequest::getString('order_number', false);
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
 			$this->redirectToCart();
 			return FALSE;
@@ -1062,7 +1062,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$this->customerData->clear();
 		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
-		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
+		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_($submit_url));
 
@@ -1107,7 +1107,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$this->customerData->clear();
 		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
-		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
+		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_($submit_url));
 
@@ -1160,7 +1160,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$this->customerData->clear();
 		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
-		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
+		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_($submit_url));
 
@@ -1216,7 +1216,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$this->customerData->clear();
 		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
-		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
+		$submit_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&on=' . $realexInterface->order['details']['BT']->order_number . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_($submit_url));
 
@@ -1275,8 +1275,8 @@ class plgVmPaymentRealex extends vmPSPlugin {
 			$try_again = $this->processResult($realex_data['RESULT'], $declined_message);
 		}
 
-		$return_success = JURI::root(false) . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $realex_data['ORDER_ID'] . '&pm=' . $virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
-		$return_declined = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
+		$return_success = JURI::root(false) . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $realex_data['ORDER_ID'] . '&pm=' . $virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+		$return_declined = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		$shop_name = $realexInterface->getVendorInfo('vendor_store_name');
 		$html = $this->renderByLayout('redirect_notify', array(
 		                                                      "success"                => $success,

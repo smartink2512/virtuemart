@@ -211,7 +211,7 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 				$class = 'class="row' . $i . '"';
 				$html .= '<tr class="row1"><td>' . JText::_('COM_VIRTUEMART_DATE') . '</td><td align="left">' . $storedCreditCard->created_on . '</td></tr>';
 				$checked = JHTML::_('grid.id', $i, $storedCreditCard->id, null, 'card_id');
-				$view=vmRequest::getCmd('view');
+				$view=vRequest::getCmd('view');
 				if ($view =='user') {
 					$html .= "<tr>\n<td>" . $checked . "</td>\n <td align='left'>" . 'DELETE' . "</td>\n</tr>\n";
 				}

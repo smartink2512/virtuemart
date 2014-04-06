@@ -149,7 +149,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	function saveCartUser(){
 
-		$addressType = vmRequest::getString('address_type');
+		$addressType = vRequest::getString('address_type');
 		if($addressType=='BT'){
 			$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
 		} else {
@@ -210,7 +210,7 @@ class VirtueMartControllerUser extends JController
 		$data = JRequest::get('post');
 
 		if(empty($data['address_type'])){
-			$data['address_type'] = vmRequest::getCmd('addrtype','BT');
+			$data['address_type'] = vRequest::getCmd('addrtype','BT');
 		}
 
 		if($currentUser->guest!=1 || $register){
@@ -316,13 +316,13 @@ class VirtueMartControllerUser extends JController
 	 */
 	function checkCaptcha($retUrl){
 		if(JFactory::getUser()->guest==1 and VmConfig::get ('reg_captcha')){
-			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			$recaptcha = vRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
 			if(!$res[0]){
-				$data = vmRequest::getPost();
-				$data['address_type'] = vmRequest::getVar('addrtype','BT');
+				$data = vRequest::getPost();
+				$data['address_type'] = vRequest::getVar('addrtype','BT');
 				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 				$cart = VirtueMartCart::getCart();
 				$cart->saveAddressInCart($data, $data['address_type']);

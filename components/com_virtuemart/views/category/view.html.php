@@ -57,11 +57,11 @@ class VirtuemartViewCategory extends VmView {
 
 
 		// set search and keyword
-		if ($keyword = vmRequest::uword('keyword', false, ' ,-,+,.,_')) {
+		if ($keyword = vRequest::uword('keyword', false, ' ,-,+,.,_')) {
 			$pathway->addItem($keyword);
 			//$title .=' ('.$keyword.')';
 		}
-		//$search = VmRequest::uword('keyword', null);
+		//$search = vRequest::uword('keyword', null);
 		$this->searchcustom = '';
 		$this->searchcustomvalues = '';
 		if (!empty($keyword)) {

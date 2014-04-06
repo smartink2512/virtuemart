@@ -44,7 +44,7 @@ if(!Permissions::getInstance()->isSuperVendor()){
 }
 
 // Require specific controller if requested
-if($_controller = vmRequest::getCmd('view', vmRequest::getCmd('controller', 'virtuemart'))) {
+if($_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {
 		// Only if the file exists, since it might be a Joomla view we're requesting...
 		require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
@@ -66,7 +66,7 @@ $_class = 'VirtueMartController'.ucfirst($_controller);
 $controller = new $_class();
 
 // Perform the Request task
-$controller->execute(vmRequest::getCmd('task', $_controller));
+$controller->execute(vRequest::getCmd('task', $_controller));
 
 vmTime($_class.' Finished task '.$_controller,'Start');
 vmRam('End');

@@ -54,7 +54,7 @@ class virtuemartViewrecommend extends VmView {
 
 		// Load the product
 		$productModel = VmModel::getModel('product');
-		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
+		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',0);
 
 		$this->product = $productModel->getProduct ($virtuemart_product_id);
 		$layout = $this->getLayout();
@@ -153,7 +153,7 @@ class virtuemartViewrecommend extends VmView {
 	function renderMailLayout($doVendor, $recipient) {
 
 		$this->comment = nl2br(JRequest::getString('comment'));
-		$this->name = vmRequest::getString('name');
+		$this->name = vRequest::getString('name');
 
 		if (VmConfig::get ('order_mail_html')) {
 			$tpl = 'mail_html';
@@ -164,7 +164,7 @@ class virtuemartViewrecommend extends VmView {
 
 		// Load the product
 		$productModel = VmModel::getModel('product');
-		$virtuemart_product_id = vmRequest::getInt('virtuemart_product_id',0);
+		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',0);
 
 		$this->product = $productModel->getProduct ($virtuemart_product_id);
 		$productModel->addImages($this->product);

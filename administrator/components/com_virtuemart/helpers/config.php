@@ -56,7 +56,7 @@ if (!class_exists ('VmModel')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 }
 
-if(!class_exists('vmRequest')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmrequest.php');
+if(!class_exists('vRequest')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vrequest.php');
 if(!class_exists('vmText')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vmJsApi')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmjsapi.php');
 
@@ -758,7 +758,7 @@ class VmConfig {
 		$db = JFactory::getDBO();
 		$app = JFactory::getApplication();
 
-		$freshInstall = vmRequest::getInt('install',false);
+		$freshInstall = vRequest::getInt('install',false);
 		if(empty($configTable) or $freshInstall){
 			if(!$freshInstall){
 				$installed = VirtueMartModelConfig::checkVirtuemartInstalled();

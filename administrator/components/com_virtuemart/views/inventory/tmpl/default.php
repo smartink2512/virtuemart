@@ -55,7 +55,7 @@ AdminUIHelper::startAdminArea($this);
 	if (count($this->inventorylist) > 0) {
 		$i = 0;
 		$k = 0;
-		$keyword = vmRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
+		$keyword = vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 		foreach ($this->inventorylist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id);
 			$published = JHTML::_('grid.published', $product, $i );

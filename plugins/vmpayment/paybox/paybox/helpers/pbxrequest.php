@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 /**
- * Copy of the vmRequest File, for compatibility reqsons
+ * Copy of the vRequest File, for compatibility reqsons
  *
  *
  * @package    VirtueMart
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 
 /**
- * Class vmRequest
+ * Class vRequest
  * Gets filtered request values.
  * @author Max Milbers
  */
@@ -166,7 +166,7 @@ class  pbxRequest {
 			}
 
 		} else {
-			vmTrace('empty name in vmRequest::get');
+			vmTrace('empty name in vRequest::get');
 			return $default;
 		}
 
@@ -237,8 +237,8 @@ class  pbxRequest {
 			}
 			else {
 				if($redirectMsg===0){
-					$redirectMsg = 'Invalid Token, in ' . VmRequest::getCmd('options') .' view='.VmRequest::getCmd('view'). ' task='.VmRequest::getCmd('task');
-					//jexit('Invalid Token, in ' . VmRequest::getCmd('options') .' view='.VmRequest::getCmd('view'). ' task='.VmRequest::getCmd('task'));
+					$redirectMsg = 'Invalid Token, in ' . vRequest::getCmd('options') .' view='.vRequest::getCmd('view'). ' task='.vRequest::getCmd('task');
+					//jexit('Invalid Token, in ' . vRequest::getCmd('options') .' view='.vRequest::getCmd('view'). ' task='.vRequest::getCmd('task'));
 				} else {
 					$redirectMsg =  vmText::_($redirectMsg);
 				}

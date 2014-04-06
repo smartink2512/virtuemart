@@ -134,9 +134,9 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function updateRequests () {
 
-		$this->keyword = vmRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
+		$this->keyword = vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 		if ($this->keyword == "") {
-			$this->keyword = vmRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
+			$this->keyword = vRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
 			JRequest::setVar('filter_product',$this->keyword);
 			JRequest::setVar('keyword',$this->keyword);
 		} else {
@@ -1064,7 +1064,7 @@ class VirtueMartModelProduct extends VmModel {
 						$product->virtuemart_category_id = $last_category_id;
 						//vmdebug('I take for product the last category ',$last_category_id,$product->categories);
 					} else {
-						$virtuemart_category_id = vmRequest::getInt ('virtuemart_category_id', 0);
+						$virtuemart_category_id = vRequest::getInt ('virtuemart_category_id', 0);
 						if ($virtuemart_category_id!==0 and in_array ($virtuemart_category_id, $product->categories)) {
 							$product->virtuemart_category_id = $virtuemart_category_id;
 							//vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);

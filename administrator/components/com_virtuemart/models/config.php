@@ -309,7 +309,7 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function store(&$data,$replace = FALSE) {
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		//$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
 		//ATM we want to ensure that only one config is used

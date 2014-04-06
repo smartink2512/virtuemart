@@ -709,7 +709,7 @@ class VmTable extends JTable {
 			$this->$slugName = trim(JString::strtolower($this->$slugName));
 			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
 
-			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
+			$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,.,|','-');
 			while(strpos($this->$slugName,'--')){
 				$this->$slugName = str_replace('--','-',$this->$slugName);
 			}
