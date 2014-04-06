@@ -252,7 +252,7 @@ defined('_JEXEC') or die('Restricted access');?>
 							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
 							'all' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_ALL')
 						); //showReviewFor
-						echo VmHTML::radioList('showReviewFor', VmConfig::get('showReviewFor', 2), $showReviewFor); ?>
+						echo VmHTML::radioList('showReviewFor', VmConfig::get('showReviewFor', 'all'), $showReviewFor); ?>
 
 					</fieldset>
 				</td>
@@ -273,7 +273,7 @@ defined('_JEXEC') or die('Restricted access');?>
 							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED')
 							//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
 						);
-						echo VmHTML::radioList('reviewMode', VmConfig::get('reviewMode', 2), $showReviewFor); ?>
+						echo VmHTML::radioList('reviewMode', VmConfig::get('reviewMode', 'bought'), $showReviewFor); ?>
 					</fieldset>
 				</td>
 			</tr>
@@ -292,7 +292,7 @@ defined('_JEXEC') or die('Restricted access');?>
 							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_REGISTERED'),
 							'all' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_ALL')
 						);
-						echo VmHTML::radioList('showRatingFor', VmConfig::get('showRatingFor', 2), $showReviewFor); ?>
+						echo VmHTML::radioList('showRatingFor', VmConfig::get('showRatingFor', 'all'), $showReviewFor); ?>
 					</fieldset>
 				</td>
 			</tr>

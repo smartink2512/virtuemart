@@ -23,7 +23,7 @@ vmJsApi::css('jquery.fancybox-1.3.4');
 $document = JFactory::getDocument ();
 $imageJS = '
 jQuery(document).ready(function() {
-	jQuery("a#vm-additional-images").fancybox({
+	jQuery("a[rel=vm-additional-images]").fancybox({
 		"titlePosition" 	: "inside",
 		"transitionIn"	:	"elastic",
 		"transitionOut"	:	"elastic"
@@ -46,40 +46,40 @@ $document->addScriptDeclaration ($imageJS);
 if (!empty($this->product->images)) {
 	$image = $this->product->images[0];
 	?>
-<div class="main-image">
+	<div class="main-image">
 
+		<?php
+		echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
+		?>
+
+		<div class="clear"></div>
+	</div>
 	<?php
-		echo $image->displayMediaFull("",true,"id='vm-additional-images'");
-	?>
-
-	 <div class="clear"></div>
-</div>
-<?php
 	$count_images = count ($this->product->images);
 	if ($count_images > 1) {
 		?>
-    <div class="additional-images">
-		<?php
-		$start_image = VmConfig::get('add_img_main', 1) ? 0 : 1;
-		for ($i = $start_image; $i < $count_images; $i++) {
-			$image = $this->product->images[$i];
-			?>
-			<div class="floatleft">
-				<?php
-				if(VmConfig::get('add_img_main', 1)) {
-					echo $image->displayMediaThumb('class="product-image" style="cursor: pointer"',false,"");
-					echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
-				} else {
-					echo $image->displayMediaThumb("",true,"rel='vm-additional-images'");
-				}
-				?>
-			</div>
+		<div class="additional-images">
 			<?php
-		}
-		?>
-        <div class="clear"></div>
-    </div>
+			$start_image = VmConfig::get('add_img_main', 1) ? 0 : 1;
+			for ($i = $start_image; $i < $count_images; $i++) {
+				$image = $this->product->images[$i];
+				?>
+				<div class="floatleft">
+					<?php
+					if(VmConfig::get('add_img_main', 1)) {
+						echo $image->displayMediaThumb('class="product-image" style="cursor: pointer"',false,"");
+						echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
+					} else {
+						echo $image->displayMediaThumb("",true,"rel='vm-additional-images'");
+					}
+					?>
+				</div>
+			<?php
+			}
+			?>
+			<div class="clear"></div>
+		</div>
 	<?php
 	}
 }
-  // Showing The Additional Images END ?>
+// Showing The Additional Images END ?>
