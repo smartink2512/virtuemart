@@ -234,7 +234,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
-		$po = vmRequest::getString('po', '');
+		$po = vRequest::getString('po', '');
 
 		if (!$po) {
 			return NULL;
@@ -280,7 +280,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 	function redirectToCart () {
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . vmRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_KLIKANDPAY_ERROR_TRY_AGAIN'));
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . vRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_KLIKANDPAY_ERROR_TRY_AGAIN'));
 	}
 
 	function plgVmOnUserPaymentCancel () {
@@ -289,7 +289,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		//  $order_number = pbxRequest::getUword('on');
-		$order_number = vmRequest::getUword('on');
+		$order_number = vRequest::getUword('on');
 		if (!$order_number) {
 			return FALSE;
 		}
@@ -326,7 +326,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$po = vmRequest::getString('po', '');
+		$po = vRequest::getString('po', '');
 		if (!$po) return;
 
 		$retourParams = $this->getRetourParams($po);
@@ -358,7 +358,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		$extra_comment = "";
-		$klikandpay_data = vmRequest::getGet();
+		$klikandpay_data = vRequest::getGet();
 		$order_history = $this->updateOrderStatus($interface, $klikandpay_data, $order, $payments);
 		if (isset($order_history['extra_comment'])) {
 			$extra_comment = $order_history['extra_comment'];
