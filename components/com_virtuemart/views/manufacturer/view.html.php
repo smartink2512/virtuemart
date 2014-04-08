@@ -40,8 +40,8 @@ class VirtuemartViewManufacturer extends VmView {
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
-		$virtuemart_manufacturer_id = VmRequest::getInt('virtuemart_manufacturer_id', 0);
-		$mf_category_id = VmRequest::getInt('mf_category_id', 0);
+		$virtuemart_manufacturer_id = vRequest::getInt('virtuemart_manufacturer_id', 0);
+		$mf_category_id = vRequest::getInt('mf_category_id', 0);
 
 		// get necessary models
 		$model = VmModel::getModel('manufacturer');

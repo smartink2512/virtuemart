@@ -246,7 +246,7 @@ class VirtueMartModelUser extends VmModel {
 		$newId = 0;
 
 		if($checkToken){
-			vmRequest::vmCheckToken('Invalid Token, while trying to save user');
+			vRequest::vmCheckToken('Invalid Token, while trying to save user');
 		} else {
 			vmError('You try to store a user without a valid token id');
 			return false;
@@ -292,7 +292,7 @@ class VirtueMartModelUser extends VmModel {
 				$data['email'] = $email;
 			}
 		} else {
-			$data['email'] =  VmRequest::getString('email', '');
+			$data['email'] =  vRequest::getString('email', '');
 		}
 		$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
 
@@ -306,7 +306,7 @@ class VirtueMartModelUser extends VmModel {
 				$data['name'] = $name;
 			}
 		} else {
-			$data['name'] = VmRequest::getString('name', '');
+			$data['name'] = vRequest::getString('name', '');
 		}
 		$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
 
@@ -315,16 +315,16 @@ class VirtueMartModelUser extends VmModel {
 			if(!empty($username)){
 				$data['username'] = $username;
 			} else {
-				$data['username'] = VmRequest::getString('username', '');
+				$data['username'] = vRequest::getString('username', '');
 			}
 		}
 
 		if(empty ($data['password'])){
-			$data['password'] = VmRequest::getString('password', '');
+			$data['password'] = vRequest::getString('password', '');
 		}
 
 		if(empty ($data['password2'])){
-			$data['password2'] = VmRequest::getString('password2', '');
+			$data['password2'] = vRequest::getString('password2', '');
 		}
 
 		if(!$new && !empty($data['password']) && empty($data['password2'])){
@@ -386,7 +386,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-		$option = VmRequest::getCmd( 'option');
+		$option = vRequest::getCmd( 'option');
 		// If an exising superadmin gets a new group, make sure enough admins are left...
 		if (!$new && $user->get('gid') != $gid && $gid == __SUPER_ADMIN_GID) {
 			if ($this->getSuperAdminCount() <= 1) {
@@ -707,6 +707,15 @@ class VirtueMartModelUser extends VmModel {
 			if (!$userinfo->bindChecknStore($userfielddata)) {
 				vmError($userinfo->getError());
 			}
+
+			$app = JFactory::getApplication();
+			if($app->isSite()){
+				if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+				$cart = VirtuemartCart::getCart();
+				if($cart){
+					$cart->selected_shipto = $userinfo->virtuemart_userinfo_id;
+				}
+			}
 		}
 
 
@@ -844,7 +853,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if($id == 0){
 			$id = $this->_id;
-			//vmdebug('getBTuserinfo_id is '.$this->_id);
+			vmdebug('getBTuserinfo_id is '.$this->_id);
 		}
 
 		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' .(int)$id .'" AND `address_type`="BT" ';
@@ -908,7 +917,7 @@ class VirtueMartModelUser extends VmModel {
 				$data->address_type = 'BT';
 
 			}
-// 			vmdebug('getUserInfoInUserFields ',$data);
+ 			vmdebug('getUserInfoInUserFields ',$data->name );
 		} else {
 
 			//New Address is filled here with the data of the cart (we are in the userview)
@@ -1142,8 +1151,8 @@ function removeAddress($virtuemart_userinfo_id){
 
 		//$select = ' * ';
 		//$joinedTables = ' FROM #__users AS ju LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id';
-		$search = VmRequest::getString('search', false);
-		$tableToUse = VmRequest::getString('searchTable','juser');
+		$search = vRequest::getString('search', false);
+		$tableToUse = vRequest::getString('searchTable','juser');
 
 		$where = '';
 		if ($search) {
@@ -1210,7 +1219,7 @@ function removeAddress($virtuemart_userinfo_id){
 	 */
 	function _getFilter()
 	{
-		if ($search = VmRequest::getString('search', false)) {
+		if ($search = vRequest::getString('search', false)) {
 			$db = JFactory::getDBO();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);

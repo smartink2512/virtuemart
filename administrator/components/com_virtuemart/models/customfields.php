@@ -474,7 +474,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
 					}
 
-					$selected = VmRequest::getInt ('virtuemart_product_id',0);
+					$selected = vRequest::getInt ('virtuemart_product_id',0);
 					$selectedFound = false;
 					foreach ($uncatChildren as $k => $child) {
 						if(!isset($child[$customfield->customfield_value])){
@@ -483,7 +483,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value]);
 							if($selected==$child['virtuemart_product_id']){
 								$selectedFound = true;
-								vmdebug($customfield->virtuemart_product_id.' $selectedFound by VmRequest '.$selected);
+								vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
 							}
 							//vmdebug('$child productId '.$child['virtuemart_product_id']);
 						}
@@ -879,7 +879,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					//vmdebug('my $productCustom->customfield_price',$selected,$productCustom->virtuemart_custom_id,$productCustom->virtuemart_customfield_id,$cart->cartProductsData[$product->cart_item_id]['customProductData']);
 				} else {
 
-					$pluginFields = VmRequest::getVar ('customProductData', NULL);
+					$pluginFields = vRequest::getVar ('customProductData', NULL);
 
 					if ($pluginFields == NULL and isset($product->customPlugin)) {
 						$pluginFields = json_decode ($product->customPlugin, TRUE);
@@ -984,7 +984,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	public function storeProductCustomfields($table,$datas, $id) {
 
 		//vmdebug('storeProductCustomfields',$datas);
-		vmRequest::vmCheckToken('Invalid token in storeProductCustomfields');
+		vRequest::vmCheckToken('Invalid token in storeProductCustomfields');
 		//Sanitize id
 		$id = (int)$id;
 

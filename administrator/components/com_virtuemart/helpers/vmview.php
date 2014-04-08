@@ -50,7 +50,7 @@ class VmView extends JViewLegacy {
 	*/
 	public function display($tpl = null)
 	{
-		$view = VmRequest::getCmd('view', VmRequest::getCmd('controller','virtuemart'));
+		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 		
 		if ($view == 'virtuemart' //Virtuemart view is always allowed since this is the page we redirect to in case the user does not have the rights
 			|| $view == 'about' //About view always displayed
@@ -107,7 +107,7 @@ class VmView extends JViewLegacy {
 	function addStandardDefaultViewCommands($showNew=true, $showDelete=true, $showHelp=true) {
 
 
-		$view = VmRequest::getCmd('view', VmRequest::getCmd('controller','virtuemart'));
+		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
 		JToolBarHelper::divider();
 		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit.state')) {
@@ -139,8 +139,8 @@ class VmView extends JViewLegacy {
 // 		$this->assignRef('pagination', $pagination);
 
 		/* set list filters */
-		$option = VmRequest::getCmd('option');
-		$view = VmRequest::getCmd('view', VmRequest::getCmd('controller','virtuemart'));
+		$option = vRequest::getCmd('option');
+		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
 		$app = JFactory::getApplication();
 		$lists[$name] = $app->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
@@ -184,12 +184,12 @@ class VmView extends JViewLegacy {
 	}
 
 	function addStandardEditViewCommands($id = 0,$object = null) {
-        $view = VmRequest::getCmd('view', VmRequest::getCmd('controller','virtuemart'));
+        $view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
-        if (VmRequest::getCmd('tmpl') =='component' ) {
+        if (vRequest::getCmd('tmpl') =='component' ) {
             if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
         } else {
-            // 		VmRequest::setVar('hidemainmenu', true);
+            // 		vRequest::setVar('hidemainmenu', true);
 			JToolBarHelper::divider();
 			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
 				JToolBarHelper::save();
@@ -221,7 +221,7 @@ class VmView extends JViewLegacy {
 
 		// LANGUAGE setting
 
-        $editView = VmRequest::getCmd('view',VmRequest::getCmd('controller','' ) );
+        $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
 
 		$params = JComponentHelper::getParams('com_languages');
 		//$config =JFactory::getConfig();$config->getValue('language');
@@ -240,7 +240,7 @@ class VmView extends JViewLegacy {
 			if ($editView =='user') $editView ='vendor';
 			//$params = JComponentHelper::getParams('com_languages');
 			jimport('joomla.language.helper');
-            $lang = VmRequest::getVar('vmlang', $lang);
+            $lang = vRequest::getVar('vmlang', $lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
 			$activeVmLangs = (vmconfig::get('active_languages') );
@@ -347,12 +347,12 @@ class VmView extends JViewLegacy {
 
 	function SetViewTitle($name ='', $msg ='',$icon ='') {
 
-		$view = VmRequest::getCmd('view', VmRequest::getCmd('controller'));
+		$view = vRequest::getCmd('view', vRequest::getCmd('controller'));
 		if ($name == '')
 			$name = strtoupper($view);
 		if ($icon == '')
 			$icon = strtolower($view);
-		if (!$task = VmRequest::getCmd('task'))
+		if (!$task = vRequest::getCmd('task'))
 			$task = 'list';
 
 		if (!empty($msg)) {
@@ -376,8 +376,8 @@ class VmView extends JViewLegacy {
 	}
 
 	public function addStandardHiddenToForm($controller=null, $task=''){
-		if (!$controller)	$controller = VmRequest::getCmd('view');
-		$option = VmRequest::getCmd('option','com_virtuemart' );
+		if (!$controller)	$controller = vRequest::getCmd('view');
+		$option = vRequest::getCmd('option','com_virtuemart' );
 		$hidden ='';
 		if (array_key_exists('filter_order',$this->lists)) {
 			$hidden ='
@@ -472,8 +472,8 @@ class VmView extends JViewLegacy {
 	function showhelp(){
 		/* http://docs.joomla.org/Help_system/Adding_a_help_button_to_the_toolbar */
 
-			$task=VmRequest::getCmd('task', '');
-			$view=VmRequest::getCmd('view', '');
+			$task=vRequest::getCmd('task', '');
+			$view=vRequest::getCmd('view', '');
 			if ($task) {
 				if ($task=="add") {
 					$task="edit";

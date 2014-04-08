@@ -36,7 +36,7 @@ class GenericTableUpdater extends VmModel{
 		$this->starttime = microtime(true);
 
 		$max_execution_time = VmConfig::getExecutionTime();
-		$jrmax_execution_time= VmRequest::getInt('max_execution_time',300);
+		$jrmax_execution_time= vRequest::getInt('max_execution_time',300);
 
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);

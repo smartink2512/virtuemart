@@ -36,18 +36,18 @@ class VirtuemartViewProduct extends VmView {
 
 	function __construct( ){
 
-		$this->type = VmRequest::getCmd('type', false);
-		$this->row = VmRequest::getInt('row', false);
+		$this->type = vRequest::getCmd('type', false);
+		$this->row = vRequest::getInt('row', false);
 		$this->db = JFactory::getDBO();
 		$this->model = VmModel::getModel('Customfields') ;
 
 	}
 	function display($tpl = null) {
 
-		$filter = VmRequest::getVar('q', VmRequest::getVar('term', false) );
+		$filter = vRequest::getVar('q', vRequest::getVar('term', false) );
 
-		$id = VmRequest::getInt('id', false);
-		$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id',array());
+		$id = vRequest::getInt('id', false);
+		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',array());
 		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 			$product_id = (int)$virtuemart_product_id[0];
 		} else {
@@ -93,7 +93,7 @@ class VirtuemartViewProduct extends VmView {
 				if ($field->field_type =='C' ){
 					$this->json['table'] = 'childs';
 					$q='SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`=1
-					AND `product_parent_id`= '.VmRequest::getInt('virtuemart_product_id');
+					AND `product_parent_id`= '.vRequest::getInt('virtuemart_product_id');
 					//$this->db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
 					$this->db->setQuery($q);
 					if ($childIds = $this->db->loadColumn()) {
@@ -164,7 +164,7 @@ class VirtuemartViewProduct extends VmView {
 			$this->json['ok'] = 1 ;
 		} else if ($this->type=='userlist')
 		{
-			$status = VmRequest::getvar('status');
+			$status = vRequest::getvar('status');
 			$productShoppers=0;
 			if ($status) {
 				$productModel = VmModel::getModel('product');

@@ -55,12 +55,12 @@ class VirtuemartControllerTranslate extends VmController {
 		$json['fields'] = 'error' ;
 		$json['msg'] = 'Invalid Token';
 		$json['structure'] = 'empty' ;
-		if (!vmRequest::vmCheckToken(-1)) {
+		if (!vRequest::vmCheckToken(-1)) {
 			echo json_encode($json) ;
 			jexit(  );
 		}
 
-		$lang = VmRequest::getvar('lg');
+		$lang = vRequest::getvar('lg');
 		$langs = VmConfig::get('active_languages',array()) ;
 		$language=JFactory::getLanguage();
 
@@ -75,9 +75,9 @@ class VirtuemartControllerTranslate extends VmController {
 		// if ($language->getDefault() == $lang ) $dblang ='';
 
 		$dblang= strtr($lang,'-','_');
-		$id = VmRequest::getInt('id',0);
+		$id = vRequest::getInt('id',0);
 
-		$viewKey = VmRequest::getCmd('editView');
+		$viewKey = vRequest::getCmd('editView');
 		// TODO temp trick for vendor
 		if ($viewKey == 'vendor') $id = 1 ;
 

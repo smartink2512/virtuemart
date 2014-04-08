@@ -235,11 +235,11 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['night_phone_b'] = $address->phone_1;
 
 
-		$post_variables['return'] =  JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . VmRequest::getInt('Itemid' ). '&lang='.VmRequest::getCmd('lang','')  ;
+		$post_variables['return'] =  JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid' ). '&lang='.vRequest::getCmd('lang','')  ;
 		//Keep this line, needed when testing
 		//$post_variables['return'] 		= JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-		$post_variables['notify_url'] = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang='.VmRequest::getCmd('lang','') ;
-		$post_variables['cancel_return'] =JURI::root(). 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . VmRequest::getInt('Itemid') . '&lang='.VmRequest::getCmd('lang','')  ;
+		$post_variables['notify_url'] = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang='.vRequest::getCmd('lang','') ;
+		$post_variables['cancel_return'] =JURI::root(). 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang='.vRequest::getCmd('lang','')  ;
 
 		//$post_variables['undefined_quantity'] = "0";
 		//$post_variables['test_ipn'] = $this->_method->debug;

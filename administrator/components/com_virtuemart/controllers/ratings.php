@@ -43,7 +43,7 @@ class VirtuemartControllerRatings extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$task = VmRequest::getVar('task');
+		$task = vRequest::getVar('task');
 
 	}
 
@@ -54,10 +54,10 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function edit_review(){
 
-		VmRequest::setVar('controller', $this->_cname);
-		VmRequest::setVar('view', $this->_cname);
-		VmRequest::setVar('layout', 'edit_review');
-// 		VmRequest::setVar('hidemenu', 1);
+		vRequest::setVar('controller', $this->_cname);
+		vRequest::setVar('view', $this->_cname);
+		vRequest::setVar('layout', 'edit_review');
+// 		vRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
 			$document = JFactory::getDocument();
@@ -88,12 +88,12 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function publish(){
 
-		vmRequest::vmCheckToken();
-		$layout = VmRequest::getString('layout','default');
+		vRequest::vmCheckToken();
+		$layout = vRequest::getString('layout','default');
 
 		if($layout=='list_reviews'){
 
-			$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
+			$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {
@@ -113,12 +113,12 @@ class VirtuemartControllerRatings extends VmController {
 
 	function unpublish(){
 
-		vmRequest::vmCheckToken();
-		$layout = VmRequest::getString('layout','default');
+		vRequest::vmCheckToken();
+		$layout = vRequest::getString('layout','default');
 
 		if($layout=='list_reviews'){
 
-			$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
+			$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {
@@ -159,10 +159,10 @@ class VirtuemartControllerRatings extends VmController {
 
 	function storeReview($apply){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		if (empty($data)){
-			$data = VmRequest::get ('post');
+			$data = vRequest::get ('post');
 		}
 
 		$model = VmModel::getModel($this->_cname);
@@ -180,7 +180,7 @@ class VirtuemartControllerRatings extends VmController {
 		if($apply){
 			$redir = 'index.php?option=com_virtuemart&view=ratings&task=edit_review&virtuemart_rating_review_id='.$id;
 		} else {
-			$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
+			$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {
@@ -198,7 +198,7 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function cancelEditReview(){
 
-		$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
+		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 			$virtuemart_product_id = (int)$virtuemart_product_id[0];
 		} else {

@@ -41,7 +41,7 @@ class VirtuemartViewReport extends VmView {
 
 		$model		= VmModel::getModel();
 
-		VmRequest::setvar('task','');
+		vRequest::setvar('task','');
 
 		$this->SetViewTitle('REPORT');
 
@@ -74,7 +74,7 @@ class VirtuemartViewReport extends VmView {
 			}
 			$totalReport['revenueTotal_netto'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal_netto']);
 			$totalReport['revenueTotal_brutto'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal_brutto']);
-			// if ( 'product_quantity'==VmRequest::getCmd('filter_order')) {
+			// if ( 'product_quantity'==vRequest::getCmd('filter_order')) {
 				// foreach ($revenueBasic as $key => $row) {
 					// $created_on[] =$row['created_on'];
 					// $intervals[] =$row['intervals'];
@@ -83,7 +83,7 @@ class VirtuemartViewReport extends VmView {
 					// $revenue[] =$row['revenue'];
 
 				// }
-				// if (VmRequest::getCmd('filter_order_Dir') == 'desc') array_multisort($itemsSold, SORT_DESC,$revenueBasic);
+				// if (vRequest::getCmd('filter_order_Dir') == 'desc') array_multisort($itemsSold, SORT_DESC,$revenueBasic);
 				// else array_multisort($itemsSold, SORT_ASC,$revenueBasic);
 			// }
 		}
@@ -99,7 +99,7 @@ class VirtuemartViewReport extends VmView {
 
 		$orderstatusM =VmModel::getModel('orderstatus');
 		$this->lists['select_date'] = $model->renderDateSelectList();
-		$orderstates = VmRequest::getVar ('order_status_code', array('C','S'));
+		$orderstates = vRequest::getVar ('order_status_code', array('C','S'));
 		$this->lists['state_list'] = $orderstatusM->renderOSList($orderstates,'order_status_code',TRUE);
 		$this->lists['intervals'] = $model->renderIntervalsList();
 		$this->assignRef('from_period', $model->from_period);

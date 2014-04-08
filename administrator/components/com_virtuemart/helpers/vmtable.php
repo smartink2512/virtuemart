@@ -3,7 +3,7 @@
 /**
  * virtuemart table class, with some additional behaviours.
  *
- *
+ * @version $Id$
  * @package    VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
@@ -252,12 +252,12 @@ class VmTable extends JTable {
 
 			} else {
 				if (empty($xParams)) {
-					vmError('There are bindParameterables, but $xParams is empty, this is a programmers error '.$xParams);
-					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ',$xParams , $obj);
+					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
 					vmTrace('$xParams is empty');
 				}
 				if(!isset($obj->$xParams)){
-					vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
+					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
 					vmTrace('$obj->$xParams is empty');
 				}
@@ -286,12 +286,14 @@ class VmTable extends JTable {
 				}
 			} else {
 				if (empty($xParams)) {
-					vmError('There are bindParameterables, but $xParams is empty, this is a programmers error '.$xParams);
-					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ',$xParams , $obj);
+					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
+					vmTrace('$xParams is empty');
 				}
 				if(!isset($obj[$xParams])){
-					vmError('There are bindParameterables, but $obj[$xParams] is empty, this is a programmers error '.$xParams);
-					vmdebug('There are bindParameterables, but $obj[$xParams] is empty, this is a programmers error ',$xParams , $obj);
+					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
+					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
+					vmTrace('$obj->$xParams is empty');
 				}
 			}
 
@@ -413,6 +415,24 @@ class VmTable extends JTable {
 		}
 
 		return $result;
+	}
+
+	function loadTableArray($oid = null, $overWriteLoadName = 0, $andWhere = 0, $tableJoins = array(), $joinKey = 0){
+
+		$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey);
+		$return = array();
+		foreach ($this->getProperties() as $k => $v)
+		{
+			// Only process fields not in the ignore array.
+			if (!in_array($k, $ignore))
+			{
+				if (isset($src[$k]))
+				{
+					$this->$k = $src[$k];
+				}
+			}
+		}
+
 	}
 
 	function checkDataContainsTableFields($from, $ignore = array()) {
@@ -777,7 +797,7 @@ class VmTable extends JTable {
 			$this->$slugName = trim(JString::strtolower($this->$slugName));
 			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
 
-			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
+			$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,.,|','-');
 			while(strpos($this->$slugName,'--')){
 				$this->$slugName = str_replace('--','-',$this->$slugName);
 			}
@@ -1190,12 +1210,12 @@ class VmTable extends JTable {
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
 
-		$cid = VmRequest::getInt($this->_pkeyForm);
+		$cid = vRequest::getInt($this->_pkeyForm);
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {
 			// either we fix custom fields or fix it here:
-			$cid = VmRequest::getVar('virtuemart_custom_id');
+			$cid = vRequest::getVar('virtuemart_custom_id');
 			if (!empty($cid) && (is_array($cid))) {
 				$cid = reset($cid);
 			} else {

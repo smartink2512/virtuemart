@@ -65,8 +65,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	{
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$viewName = VmRequest::getCmd('view', $this->default_view);
-		$viewLayout = VmRequest::getCmd('layout', 'default');
+		$viewName = vRequest::getCmd('view', $this->default_view);
+		$viewLayout = vRequest::getCmd('layout', 'default');
 
 		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 
@@ -75,15 +75,28 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
 		$cart->saveCartFieldsInCart();
+
+		$selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
+		vmdebug('my shipo in request',$selected_shipto);
+		if($selected_shipto and $cart->selected_shipto != $selected_shipto){
+			$db = JFactory::getDbo();
+			if(!class_exists('TableUserinfos')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');
+			$userinfo = new TableUserinfos($db);
+			//$userinfo   = $this->getTable('userinfos');
+			$this->ST = (array)$userinfo -> load($selected_shipto);
+			vmdebug('address loaded',$this->ST);
+		}
+		$cart->selected_shipto = $selected_shipto;
+
 		//$cart->getFilterCustomerComment();
 
 		$cart->updateProductCart();
 		$this->setcoupon();
 
-		$virtuemart_shipmentmethod_id = VmRequest::getInt('virtuemart_shipmentmethod_id', $cart->virtuemart_shipmentmethod_id);
+		$virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $cart->virtuemart_shipmentmethod_id);
 		$cart->setShipment($virtuemart_shipmentmethod_id);
 
-		$virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id', $cart->virtuemart_paymentmethod_id);
+		$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $cart->virtuemart_paymentmethod_id);
 		$cart->setPaymentMethod($virtuemart_paymentmethod_id);
 
 		if($cart && !VmConfig::get('use_as_catalog', 0)){
@@ -121,7 +134,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
-			$virtuemart_product_ids = VmRequest::getInt('virtuemart_product_id');
+			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id');
 			$success = true;
 			if ($cart->add($virtuemart_product_ids,$success)) {
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');
@@ -158,8 +171,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			//$categoryLink = '';
 			$continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
 			//VmConfig::$echoDebug=true;
-			$virtuemart_product_ids = vmRequest::getInt('virtuemart_product_id');
-			//vmdebug('vmRequest get ',$virtuemart_product_ids);
+			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id');
+			//vmdebug('vRequest get ',$virtuemart_product_ids);
 			//VmConfig::$echoDebug=false;jExit();
 			$view = $this->getView ('cart', 'json');
 			$errorMsg = 0;//vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
@@ -230,7 +243,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function setcoupon() {
 
 		/* Get the coupon_code of the cart */
-		$coupon_code = VmRequest::getVar('coupon_code', ''); //TODO VAR OR INT OR WORD?
+		$coupon_code = vRequest::getVar('coupon_code', ''); //TODO VAR OR INT OR WORD?
 		if ($coupon_code) {
 
 			$cart = VirtueMartCart::getCart();
@@ -317,7 +330,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
 		}
 
-		$newUser = JFactory::getUser(VmRequest::getCmd('userID'));
+		$newUser = JFactory::getUser(vRequest::getCmd('userID'));
 
 		//update session
 		$session = JFactory::getSession();
@@ -327,7 +340,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		//update cart data
 		$cart = VirtueMartCart::getCart();
-		$data = $usermodel->getUserAddressList(VmRequest::getCmd('userID'), 'BT');
+		$data = $usermodel->getUserAddressList(vRequest::getCmd('userID'), 'BT');
 		foreach($data[0] as $k => $v) {
 			$data[$k] = $v;
 		}

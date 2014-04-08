@@ -115,13 +115,13 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			}
 
 
-			if (VmConfig::get ('oncheckout_show_register', 1) && $this->userId == 0 && !VmConfig::get ('oncheckout_only_registered', 0) && $this->address_type == 'BT' and $rview == 'cart') {
+			if (VmConfig::get ('oncheckout_show_register', 1) && $this->userDetails->JUser->id == 0 && !VmConfig::get ('oncheckout_only_registered', 0) && $this->address_type == 'BT' and $rview == 'cart') {
 				echo vmText::sprintf ('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
 			}
 			else {
 				//echo vmText::_('COM_VIRTUEMART_REGISTER_ACCOUNT');
 			}
-			if (VmConfig::get ('oncheckout_show_register', 1) && $this->userId == 0 && $this->address_type == 'BT' and $rview == 'cart') {
+			if (VmConfig::get ('oncheckout_show_register', 1) && $this->userDetails->JUser->id == 0 && $this->address_type == 'BT' and $rview == 'cart') {
 				?>
 
 				<button name="register" class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return callValidatorForRegister(userForm);"
@@ -148,7 +148,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 		if(VmConfig::get ('reg_captcha')){
 			JHTML::_('behavior.framework');
 			JPluginHelper::importPlugin('captcha');
-			$captcha_visible = vmRequest::getVar('captcha');
+			$captcha_visible = vRequest::getVar('captcha');
 			$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 			$hide_captcha = (VmConfig::get ('oncheckout_only_registered') or $captcha_visible) ? '' : 'style="display: none;"';
 			?>

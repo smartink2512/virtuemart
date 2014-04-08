@@ -21,7 +21,7 @@ AdminUIHelper::startAdminArea($this);
 jimport('joomla.filesystem.file');
 
 /* Get the component name */
-$option = VmRequest::getCmd('option');
+$option = vRequest::getCmd('option');
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -119,8 +119,8 @@ $productfileslist = $this->files;
 	</tfoot>
 	</table>
 <!-- Hidden Fields -->
-<?php if (VmRequest::getInt('virtuemart_product_id', false)) { ?>
-	<input type="hidden" name="virtuemart_product_id" value="<?php echo VmRequest::getInt('virtuemart_product_id',0); ?>" />
+<?php if (vRequest::getInt('virtuemart_product_id', false)) { ?>
+	<input type="hidden" name="virtuemart_product_id" value="<?php echo vRequest::getInt('virtuemart_product_id',0); ?>" />
 <?php } ?>
 	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>

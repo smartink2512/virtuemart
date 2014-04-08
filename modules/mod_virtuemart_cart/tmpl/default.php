@@ -50,7 +50,7 @@ if ($show_product_list) {
 	</div>
 <?php } ?>
 <div class="total_products"><?php echo  $data->totalProductTxt ?></div>
-<div class="show_cart" rel="nofollow">
+<div class="show_cart">
 	<?php if ($data->totalProduct) echo  $data->cart_show; ?>
 </div>
 <div style="clear:both;"></div>

@@ -43,7 +43,7 @@ class VmController extends JControllerLegacy{
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
 		$this->mainLangKey = vmText::_('COM_VIRTUEMART_'.strtoupper($this->_cname));
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
-		$task = explode ('.',VmRequest::getCmd( 'task'));
+		$task = explode ('.',vRequest::getCmd( 'task'));
 		if ($task[0] == 'toggle') {
 			$val = (isset($task[2])) ? $task[2] : NULL;
 			$this->toggle($task[1],$val);
@@ -70,8 +70,8 @@ class VmController extends JControllerLegacy{
 		$document	= JFactory::getDocument();
 		$viewType	= $document->getType();
 
-		$viewName	= VmRequest::getCmd('view', $this->default_view);
-		$viewLayout	= VmRequest::getCmd('layout', 'default');
+		$viewName	= vRequest::getCmd('view', $this->default_view);
+		$viewLayout	= vRequest::getCmd('layout', 'default');
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
 
@@ -84,7 +84,7 @@ class VmController extends JControllerLegacy{
 
 		// Display the view
 		if ($cachable && $viewType != 'feed' && $conf->get('caching') >= 1) {
-			$option	= VmRequest::getCmd('option');
+			$option	= vRequest::getCmd('option');
 			$cache	= JFactory::getCache($option, 'view');
 
 			if (is_array($urlparams)) {
@@ -123,10 +123,10 @@ class VmController extends JControllerLegacy{
 	 */
 	function edit($layout='edit'){
 
-		VmRequest::setVar('controller', $this->_cname);
-		VmRequest::setVar('view', $this->_cname);
-		VmRequest::setVar('layout', $layout);
-// 		VmRequest::setVar('hidemenu', 1);
+		vRequest::setVar('controller', $this->_cname);
+		vRequest::setVar('view', $this->_cname);
+		vRequest::setVar('layout', $layout);
+// 		vRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
 			$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
@@ -148,9 +148,9 @@ class VmController extends JControllerLegacy{
 	 */
 	function save($data = 0){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
-		if($data===0)$data = VmRequest::getRequest();
+		if($data===0)$data = vRequest::getRequest();
 
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);
@@ -167,7 +167,7 @@ class VmController extends JControllerLegacy{
 
 		$redir = $this->redirectPath;
 		//vmInfo($msg);
-		if(VmRequest::getCmd('task') == 'apply'){
+		if(vRequest::getCmd('task') == 'apply'){
 
 			$redir .= '&task=edit&'.$this->_cidName.'[]='.$id;
 		} //else $this->display();
@@ -182,9 +182,9 @@ class VmController extends JControllerLegacy{
 	 */
 	function remove(){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
-		$ids = VmRequest::getVar($this->_cidName, VmRequest::getInt('cid', array() ));
+		$ids = vRequest::getVar($this->_cidName, vRequest::getInt('cid', array() ));
 
 		if(count($ids) < 1) {
 			$msg = vmText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
@@ -226,7 +226,7 @@ class VmController extends JControllerLegacy{
 
 	public function toggle($field,$val=null){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle($field,$val,$this->_cidName)) {
@@ -245,7 +245,7 @@ class VmController extends JControllerLegacy{
 	 */
 	public function publish($cidname=0,$table=0,$redirect = 0){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -270,7 +270,7 @@ class VmController extends JControllerLegacy{
 	 */
 	function unpublish($cidname=0,$table=0,$redirect = 0){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -289,7 +289,7 @@ class VmController extends JControllerLegacy{
 
 	function orderup() {
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(-1);
@@ -299,7 +299,7 @@ class VmController extends JControllerLegacy{
 
 	function orderdown() {
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(1);
@@ -309,10 +309,10 @@ class VmController extends JControllerLegacy{
 
 	function saveorder() {
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
-		$cid 	= VmRequest::getInt( $this->_cidName, VmRequest::getInt('cid', array() ) );
-		$order 	= VmRequest::getInt( 'order', array() );
+		$cid 	= vRequest::getInt( $this->_cidName, vRequest::getInt('cid', array() ) );
+		$order 	= vRequest::getInt( 'order', array() );
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->saveorder($cid, $order)) {

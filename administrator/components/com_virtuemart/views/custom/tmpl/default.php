@@ -21,16 +21,16 @@ AdminUIHelper::startAdminArea($this);
 jimport('joomla.filesystem.file');
 
 /* Get the component name */
-$option = VmRequest::getCmd('option');
+$option = vRequest::getCmd('option');
 
 /* Load some variables */
-$keyword = VmRequest::getCmd('keyword', null);
+$keyword = vRequest::getCmd('keyword', null);
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
 	<div>
 		<?php
-			if (VmRequest::getInt('virtuemart_product_id', false)) echo JHtml::_('link', JRoute::_('index.php?option='.$option.'&view=custom',FALSE), vmText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
+			if (vRequest::getInt('virtuemart_product_id', false)) echo JHtml::_('link', JRoute::_('index.php?option='.$option.'&view=custom',FALSE), vmText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 		echo $this->customs->customsSelect ;
 		echo vmText::_('COM_VIRTUEMART_SEARCH_LBL') .' '.vmText::_('COM_VIRTUEMART_TITLE') ?>&nbsp;
 		<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
@@ -132,8 +132,8 @@ $customs = $this->customs->items;
 	</table>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
-<?php if (VmRequest::getInt('virtuemart_product_id', false)) { ?>
-	<input type="hidden" name="virtuemart_product_id" value="<?php echo VmRequest::getInt('virtuemart_product_id',0); ?>" />
+<?php if (vRequest::getInt('virtuemart_product_id', false)) { ?>
+	<input type="hidden" name="virtuemart_product_id" value="<?php echo vRequest::getInt('virtuemart_product_id',0); ?>" />
 <?php } ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="custom" />

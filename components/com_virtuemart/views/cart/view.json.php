@@ -34,9 +34,9 @@ class VirtueMartViewCart extends VmView {
 		$document = JFactory::getDocument();
 
 		$layoutName = $this->getLayout();
-		if (!$layoutName) $layoutName = VmRequest::getCmd('layout', 'default');
+		if (!$layoutName) $layoutName = vRequest::getCmd('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
-		$format = VmRequest::getCmd('format');
+		$format = vRequest::getCmd('format');
 
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -51,7 +51,7 @@ class VirtueMartViewCart extends VmView {
 
 	private function prepareContinueLink() {
 		// Get a continue link
-		$menuid = vmRequest::getInt('Itemid','');
+		$menuid = vRequest::getInt('Itemid','');
 		if(!empty($menuid)){
 			$menuid = '&Itemid='.$menuid;
 		} else $menuid = '';

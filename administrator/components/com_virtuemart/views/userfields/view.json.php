@@ -32,7 +32,7 @@ class VirtuemartViewUserfields extends VmView {
 
 	function display($tpl = null) {
 		$db = JFactory::getDBO();
-		if ( $field = VmRequest::getVar('field') ) {
+		if ( $field = vRequest::getVar('field') ) {
 			if (strpos($field, 'plugin') !==false) {
 
 				$table = '#__extensions';

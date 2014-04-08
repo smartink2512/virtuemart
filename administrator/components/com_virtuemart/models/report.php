@@ -52,7 +52,7 @@ class VirtuemartModelReport extends VmModel {
 		$app = JFactory::getApplication ();
 		$this->period = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
-		//$post = VmRequest::get ('post');
+		//$post = vRequest::get ('post');
 		//vmdebug ('$post ', $post);
 		if (empty($this->period) or $this->period != 'none') {
 			$this->setPeriodByPreset ();
@@ -84,8 +84,8 @@ class VirtuemartModelReport extends VmModel {
 	*/
 	function  setPeriod () {
 
-		$this->from_period = VmRequest::getVar ('from_period', $this->date_presets['last30']['from']);
-		$this->until_period = VmRequest::getVar ('until_period', $this->date_presets['last30']['until']);
+		$this->from_period = vRequest::getVar ('from_period', $this->date_presets['last30']['from']);
+		$this->until_period = vRequest::getVar ('until_period', $this->date_presets['last30']['until']);
 
 		$config = JFactory::getConfig();
 		$siteOffset = $config->get('offset');
@@ -132,7 +132,7 @@ class VirtuemartModelReport extends VmModel {
 
 		// group always by intervals (day,week, ... or ID) and set grouping and defaut ordering
 
-		$intervals = VmRequest::getCmd ('intervals', 'day');
+		$intervals = vRequest::getCmd ('intervals', 'day');
 		switch ($intervals) {
 
 			case 'day':
@@ -180,7 +180,7 @@ class VirtuemartModelReport extends VmModel {
 
 		$statusList = array();
 		// Filter by statut
-		if ($orderstates = VmRequest::getVar ('order_status_code', array('C','S'))) {
+		if ($orderstates = vRequest::getVar ('order_status_code', array('C','S'))) {
 			$query = 'SELECT `order_status_code`
 				FROM `#__virtuemart_orderstates`
 				WHERE published=1 ';
@@ -198,8 +198,8 @@ class VirtuemartModelReport extends VmModel {
 		}
 		//getRevenue
 		// select wich table to order sum ordered
-		$filterorders = VmRequest::getvar ('filter_order', 'intervals');
-		$orderdir = (VmRequest::getCmd ('filter_order_Dir', NULL) == 'desc') ? 'desc' : '';
+		$filterorders = vRequest::getvar ('filter_order', 'intervals');
+		$orderdir = (vRequest::getCmd ('filter_order_Dir', NULL) == 'desc') ? 'desc' : '';
 
 		switch ($filterorders) {
 
@@ -253,14 +253,14 @@ class VirtuemartModelReport extends VmModel {
 			return FALSE;
 		}
 
-		$virtuemart_product_id = VmRequest::getInt ('virtuemart_product_id', FALSE);
+		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', FALSE);
 		if ($virtuemart_product_id) {
 			$where[] = 'i.virtuemart_product_id = "' . $virtuemart_product_id . '" ';
 		}
 
 		if (VmConfig::get ('multix', 'none') != 'none') {
 
-			$vendorId = VmRequest::getInt ('virtuemart_vendor_id', 0);
+			$vendorId = vRequest::getInt ('virtuemart_vendor_id', 0);
 			if ($vendorId != 0) {
 				$where[] = 'i.virtuemart_vendor_id = "' . $vendorId . '" ';
 			}
@@ -391,7 +391,7 @@ class VirtuemartModelReport extends VmModel {
 
 	public function renderIntervalsList () {
 
-		$intervals = VmRequest::getCmd ('intervals', 'day');
+		$intervals = vRequest::getCmd ('intervals', 'day');
 
 		$options = array();
 		$options[] = JHtml::_ ('select.option', vmText::_ ('COM_VIRTUEMART_PRODUCT_S'), 'product_s');

@@ -53,8 +53,8 @@ class VirtuemartControllerUser extends VmController {
 
 		//We set here the virtuemart_user_id, when no virtuemart_user_id is set to 0, for adding a new user
 		//In every other case the virtuemart_user_id is sent.
-		$cid = VmRequest::getVar('virtuemart_user_id');
-		if(!isset($cid)) VmRequest::setVar('virtuemart_user_id', (int)0);
+		$cid = vRequest::getVar('virtuemart_user_id');
+		if(!isset($cid)) vRequest::setVar('virtuemart_user_id', (int)0);
 
 		parent::edit('edit');
 	}
@@ -68,13 +68,13 @@ class VirtuemartControllerUser extends VmController {
 
 		$user = JFactory::getUser();
 		//the virtuemart_user_id var gets overriden in the edit function, when not set. So we must set it here
-		VmRequest::setVar('virtuemart_user_id', (int)$user->id);
+		vRequest::setVar('virtuemart_user_id', (int)$user->id);
 		$this->edit();
 
 	}
 	function cancel(){
 
-		$lastTask = VmRequest::getCmd('last_task');
+		$lastTask = vRequest::getCmd('last_task');
 		if ($lastTask == 'edit_shop') $this->setRedirect('index.php?option=com_virtuemart');
 		else $this->setRedirect('index.php?option=com_virtuemart&view=user');
 	}
@@ -99,20 +99,20 @@ class VirtuemartControllerUser extends VmController {
 		} else {
 			$model = VmModel::getModel('user');
 
-			$data = vmRequest::getRequest();
+			$data = vRequest::getRequest();
 
 			// Store multiple selectlist entries as a ; separated string
 			if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 			    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 			}
 			// TODO disallow vendor_store_name as HTML ?
-			$data['vendor_store_name'] = VmRequest::getHtml('vendor_store_name');
-			$data['vendor_store_desc'] = VmRequest::getHtml('vendor_store_desc');
-			$data['vendor_terms_of_service'] = VmRequest::getHtml('vendor_terms_of_service');
-			$data['vendor_legal_info'] = VmRequest::getHtml('vendor_legal_info');
-			$data['vendor_letter_css'] = VmRequest::getHtml('vendor_letter_css');
-			$data['vendor_letter_header_html'] = VmRequest::getHtml('vendor_letter_header_html');
-			$data['vendor_letter_footer_html'] = VmRequest::getHtml('vendor_letter_footer_html');
+			$data['vendor_store_name'] = vRequest::getHtml('vendor_store_name');
+			$data['vendor_store_desc'] = vRequest::getHtml('vendor_store_desc');
+			$data['vendor_terms_of_service'] = vRequest::getHtml('vendor_terms_of_service');
+			$data['vendor_legal_info'] = vRequest::getHtml('vendor_legal_info');
+			$data['vendor_letter_css'] = vRequest::getHtml('vendor_letter_css');
+			$data['vendor_letter_header_html'] = vRequest::getHtml('vendor_letter_header_html');
+			$data['vendor_letter_footer_html'] = vRequest::getHtml('vendor_letter_footer_html');
 
 			$ret=$model->store($data);
 			if(!$ret){
@@ -122,8 +122,8 @@ class VirtuemartControllerUser extends VmController {
 			}
 
 		}
-		$cmd = VmRequest::getCmd('task');
-		$lastTask = VmRequest::getCmd('last_task');
+		$cmd = vRequest::getCmd('task');
+		$lastTask = vRequest::getCmd('last_task');
 		if($cmd == 'apply'){
 			if ($lastTask == 'editshop') $redirection = 'index.php?option=com_virtuemart&view=user&task=editshop';
 			else $redirection = 'index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]='.$ret['newId'];

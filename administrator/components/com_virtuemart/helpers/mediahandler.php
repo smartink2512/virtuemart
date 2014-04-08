@@ -43,7 +43,7 @@ class vmFile {
 		vmdebug('makeSafe',$str);
 		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 
-		//$str = VmRequest::uword($str,'','_,-');
+		//$str = vRequest::uword($str,'','_,-');
 		vmdebug('makeSafe',$str);
 		return $str;
 		/*if(function_exists('mb_ereg_replace')){
@@ -618,7 +618,7 @@ class VmMediaHandler {
 			return false;
 		}
 		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		$media = VmRequest::getFiles('upload');
+		$media = vRequest::getFiles('upload');
 
 		//vmdebug('uploadFile',$data,$media);
 		$app = JFactory::getApplication();
@@ -842,7 +842,7 @@ class VmMediaHandler {
 
 		$this->addMediaAction(0,'COM_VIRTUEMART_NONE');
 
-		$view = VmRequest::getCmd('view');
+		$view = vRequest::getCmd('view');
 		if($view!='media' || empty($this->file_name)){
 			$this->addMediaAction('upload','COM_VIRTUEMART_FORM_MEDIA_UPLOAD');
 		}
@@ -1017,7 +1017,7 @@ class VmMediaHandler {
 		$html .= '<legend>'.vmText::_('COM_VIRTUEMART_IMAGES').'</legend>';
 		$html .=  '<span style="height:18px;vertical-align: middle;margin:4px" class="hasTip always-left" title="'.vmText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.vmText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
 		$html .=   '
-				<input type="text" name="searchMedia" id="searchMedia" style="height:18px;vertical-align: middle;margin:4px;width:250px" data-start="0" value="' .VmRequest::getString('searchMedia') . '" class="text_area always-left" />
+				<input type="text" name="searchMedia" id="searchMedia" style="height:18px;vertical-align: middle;margin:4px;width:250px" data-start="0" value="' .vRequest::getString('searchMedia') . '" class="text_area always-left" />
 				<button class="reset-value fg-button" style="height:18px;vertical-align: middle;margin:4px">'.vmText::_('COM_VIRTUEMART_RESET') .'</button>
 				<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
 				<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>';
@@ -1102,7 +1102,7 @@ class VmMediaHandler {
 		if(!empty($type)){
 			$q .= ' AND `file_type` = "'.$type.'" ';
 		}
-		$search = trim(VmRequest::getString('term', false));
+		$search = trim(vRequest::getString('term', false));
 		if (!empty($search)){
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';

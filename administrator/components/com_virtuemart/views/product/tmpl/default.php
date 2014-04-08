@@ -21,13 +21,13 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea($this);
 
 /* Load some variables */
-$search_date = VmRequest::getVar('search_date', null); // Changed search by date
+$search_date = vRequest::getVar('search_date', null); // Changed search by date
 $now = getdate();
 $nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].".".$now["mon"].".".$now["year"];
-$search_order = VmRequest::getVar('search_order', '>');
-$search_type = VmRequest::getVar('search_type', 'product');
-// OSP in view.html.php $virtuemart_category_id = VmRequest::getInt('virtuemart_category_id', false);
-if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_product_name='COM_VIRTUEMART_PRODUCT_CHILDREN_LIST'; else $col_product_name='COM_VIRTUEMART_PRODUCT_NAME';
+$search_order = vRequest::getVar('search_order', '>');
+$search_type = vRequest::getVar('search_type', 'product');
+// OSP in view.html.php $virtuemart_category_id = vRequest::getInt('virtuemart_category_id', false);
+if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_product_name='COM_VIRTUEMART_PRODUCT_CHILDREN_LIST'; else $col_product_name='COM_VIRTUEMART_PRODUCT_NAME';
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -46,11 +46,11 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 					?>
 
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
-					<input type="text" value="<?php echo VmRequest::getVar('filter_product'); ?>" name="filter_product" size="25" />
+					<input type="text" value="<?php echo vRequest::getVar('filter_product'); ?>" name="filter_product" size="25" />
 				<?php
 					echo $this->lists['search_type'];
 					echo $this->lists['search_order'];
-					echo vmJsApi::jDate(VmRequest::getVar('search_date', $nowstring), 'search_date');
+					echo vmJsApi::jDate(vRequest::getVar('search_date', $nowstring), 'search_date');
 				?>
 				<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
@@ -105,7 +105,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 	if ($total = count($this->productlist) ) {
 		$i = 0;
 		$k = 0;
-		$keyword = VmRequest::getCmd('keyword');
+		$keyword = vRequest::getCmd('keyword');
 		foreach ($this->productlist as $key => $product) {
 			$checked = JHtml::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
 			$published = JHtml::_('grid.published', $product, $i );
@@ -214,7 +214,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 	</table>
 </div>
 <!-- Hidden Fields -->
-<input type="hidden" name="product_parent_id" value="<?php echo VmRequest::getInt('product_parent_id', 0); ?>" />
+<input type="hidden" name="product_parent_id" value="<?php echo vRequest::getInt('product_parent_id', 0); ?>" />
 	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 

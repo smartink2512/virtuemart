@@ -26,7 +26,7 @@ class VirtueMartViewRaw extends VmView
 	{
 		$type='raw';
 		$this->assignRef('type', $type);
-		$viewName = vmRequest::getCmd('view','productdetails');
+		$viewName = vRequest::getCmd('view','productdetails');
 		$class= 'VirtueMartView'.ucfirst($viewName);
 		if(!class_exists($class)) require(JPATH_VM_SITE.DS.'views'.DS.$viewName.DS.'view.html.php');
 		$view = new $class ;

@@ -53,7 +53,7 @@ class VirtuemartViewVendor extends VmView {
 
 		$model = VmModel::getModel();
 
-		$virtuemart_vendor_id = VmRequest::getInt('virtuemart_vendor_id');
+		$virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id');
 
 // 		if ($layoutName=='default') {
 		if (empty($virtuemart_vendor_id)) {
@@ -122,8 +122,8 @@ class VirtuemartViewVendor extends VmView {
 	function renderMailLayout($doVendor, $recipient) {
 
 		$this->setLayout('mail_html_question');
-		$this->comment = VmRequest::getString('comment');
-		$virtuemart_vendor_id = VmRequest::getInt('virtuemart_vendor_id');
+		$this->comment = vRequest::getString('comment');
+		$virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id');
 		$this->doVendor=$doVendor;
 		//$this->doVendor=TRUE;
 		$vendorModel = VmModel::getModel('vendor');

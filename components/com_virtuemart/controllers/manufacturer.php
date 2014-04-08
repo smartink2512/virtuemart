@@ -40,8 +40,8 @@ class VirtueMartControllerManufacturer extends JControllerLegacy
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$viewName = VmRequest::getCmd('view', $this->default_view);
-		$viewLayout = VmRequest::getCmd('layout', 'default');
+		$viewName = vRequest::getCmd('view', $this->default_view);
+		$viewLayout = vRequest::getCmd('layout', 'default');
 
 		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 		$view->assignRef('document', $document);

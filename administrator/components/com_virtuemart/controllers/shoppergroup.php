@@ -52,7 +52,7 @@ class VirtuemartControllerShopperGroup extends VmController
 
 		$model = VmModel::getModel('shoppergroup');
 		$msgtype = '';
-		$cids = VmRequest::getVar('virtuemart_shoppergroup_id',array());
+		$cids = vRequest::getVar('virtuemart_shoppergroup_id',array());
 		if ($model->makeDefault((int)$cids[0])) $msg = vmText::_('COM_VIRTUEMART_SET_TO_DEFAULT_SUCCESSFULLY');
 		else {
 			$msg = '';

@@ -33,10 +33,10 @@ class VirtueMartControllerVirtuemart extends JControllerLegacy
 	function __construct() {
 		parent::__construct();
 		if (VmConfig::get('shop_is_offline') == '1') {
-		    VmRequest::setVar( 'layout', 'off_line' );
+		    vRequest::setVar( 'layout', 'off_line' );
 	    }
 	    else {
-		    VmRequest::setVar( 'layout', 'default' );
+		    vRequest::setVar( 'layout', 'default' );
 	    }
 	}
 
@@ -49,8 +49,8 @@ class VirtueMartControllerVirtuemart extends JControllerLegacy
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$viewName = VmRequest::getCmd('view', 'virtuemart');
-		$viewLayout = VmRequest::getCmd('layout', 'default');
+		$viewName = vRequest::getCmd('view', 'virtuemart');
+		$viewLayout = vRequest::getCmd('layout', 'default');
 
 		//vmdebug('basePath is NOT JPATH_VM_SITE',$this->basePath,JPATH_VM_SITE);
 		$view = $this->getView($viewName, $viewType);

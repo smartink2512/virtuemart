@@ -23,7 +23,7 @@ if (!class_exists( 'VmModel' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helper
 
 //This is for akeeba release system, it must be executed before any other task
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
-if(VmRequest::getCmd('view','') == 'liveupdate') {
+if(vRequest::getCmd('view','') == 'liveupdate') {
 	LiveUpdate::handleRequest();
 	return;
 }
@@ -38,12 +38,12 @@ vmSetStartTime('Start');
 );
 
 $testString = $test['test'].$test['test2'].$test['test3'].$test['test4'];
-VmRequest::setVar('test',$testString);
+vRequest::setVar('test',$testString);
 
-$tmp = VmRequest::getVar('test');
+$tmp = vRequest::getVar('test');
 vmdebug('my getVar ',$tmp);
 
-$tmp = VmRequest::getString('test');
+$tmp = vRequest::getString('test');
 vmdebug('my getString ',$tmp);
 //$output = filter_var($testString,FILTER_UNSAFE_RAW, FILTER_FLAG_ENCODE_LOW);
 /*vmdebug('Filter test UNFILTERED ',$test);
@@ -87,7 +87,7 @@ if(!VmConfig::isSuperVendor()){
 }
 
 // Require specific controller if requested
-if($_controller = VmRequest::getCmd('view', VmRequest::getCmd('controller', 'virtuemart'))) {
+if($_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {
 		// Only if the file exists, since it might be a Joomla view we're requesting...
 		require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
@@ -109,7 +109,7 @@ $_class = 'VirtueMartController'.ucfirst($_controller);
 $controller = new $_class();
 
 // Perform the Request task
-$controller->execute(VmRequest::getCmd('task', $_controller));
+$controller->execute(vRequest::getCmd('task', $_controller));
 
 vmTime($_class.' Finished task '.$_controller,'Start');
 vmRam('End');

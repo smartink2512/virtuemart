@@ -59,12 +59,20 @@
 			<?php
 			if (empty($this->cart->STaddress['fields'])) {
 				echo vmText::sprintf ('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_EXPLAIN', vmText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'));
+				echo '<br>';
+				echo $this->cart->lists['shipTo'];
 			} else {
 				if (!class_exists ('VmHtml')) {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 				}
-				echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
-				echo VmHtml::checkbox ('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
+
+				//if(!empty($this->cart->lists['shipTo'])){
+					echo $this->cart->lists['shipTo'];
+				//} else {
+					echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
+					echo VmHtml::checkbox ('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
+				//}
+
 				?>
 				<div id="output-shipto-display">
 					<?php

@@ -45,7 +45,7 @@ class VirtuemartViewCategory extends VmView {
 		$model = VmModel::getModel();
 		$layoutName = $this->getLayout();
 
-		$task = VmRequest::getCmd('task',$layoutName);
+		$task = vRequest::getCmd('task',$layoutName);
 		$this->assignRef('task', $task);
 
 		$this->user = $user = JFactory::getUser();

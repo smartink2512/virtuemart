@@ -52,7 +52,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 * @author Max Milbers
 	 */
 	private function checkPermissionForTools(){
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 		//Hardcore Block, we may do that better later
 		$user = JFactory::getUser();
 		if(!$user->authorise('core.admin','com_virtuemart') ){
@@ -80,8 +80,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function checkForLatestVersion(){
 		$model = $this->getModel('updatesMigration');
-		VmRequest::setVar('latestverison', $model->getLatestVersion());
-		VmRequest::setVar('view', 'updatesMigration');
+		vRequest::setVar('latestverison', $model->getLatestVersion());
+		vRequest::setVar('view', 'updatesMigration');
 
 		parent::display();
 	}
@@ -94,7 +94,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function installSampleData(){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$model = $this->getModel('updatesMigration');
 
@@ -115,7 +115,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		$model = $this->getModel('updatesMigration');
 
-		$storeOwnerId =VmRequest::getInt('storeOwnerId');
+		$storeOwnerId =vRequest::getInt('storeOwnerId');
 		$msg = $model->setStoreOwner($storeOwnerId);
 
 		$this->setRedirect($this->redirectPath, $msg);
@@ -332,7 +332,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function updateDatabase(){
 
-		VmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
 		$updater = new com_virtuemartInstallerScript();
@@ -560,9 +560,9 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		$session = JFactory::getSession();
 
-		$session->set('migration_task', VmRequest::getString('task',''), 'vm');
-		$session->set('migration_default_category_browse', VmRequest::getString('migration_default_category_browse',''), 'vm');
-		$session->set('migration_default_category_fly', VmRequest::getString('migration_default_category_fly',''), 'vm');
+		$session->set('migration_task', vRequest::getString('task',''), 'vm');
+		$session->set('migration_default_category_browse', vRequest::getString('migration_default_category_browse',''), 'vm');
+		$session->set('migration_default_category_fly', vRequest::getString('migration_default_category_fly',''), 'vm');
 	}
 
 

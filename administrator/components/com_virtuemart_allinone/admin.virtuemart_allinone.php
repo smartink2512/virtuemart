@@ -26,11 +26,11 @@ defined('_JEXEC') or die();
 require_once dirname(__FILE__).'/classes/abstractconfig.php';
 require_once dirname(__FILE__).'/config.php';
 
-if(!class_exists('vmRequest')) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/vmrequest.php');
+if(!class_exists('vRequest')) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/vRequest.php');
 
-$task = vmRequest::getCmd('task');
+$task = vRequest::getCmd('task');
 if($task=='updateDatabase'){
-	vmRequest::vmCheckToken() or jexit('Invalid Token, in ' . $task);
+	vRequest::vmCheckToken() or jexit('Invalid Token, in ' . $task);
 	$app = JFactory::getApplication();
 	//Update Tables
 	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
@@ -113,7 +113,7 @@ class LiveUpdate
 		// Load the controller and let it run the show
 		require_once dirname(__FILE__).'/classes/controller.php';
 		$controller = new LiveUpdateController();
-		$controller->execute(vmRequest::getCmd('task','overview'));
+		$controller->execute(vRequest::getCmd('task','overview'));
 		$controller->redirect();
 	}
 
@@ -143,9 +143,9 @@ class LiveUpdate
 		self::loadLanguage();
 
 		$defaultConfig = array(
-			'option'			=> vmRequest::getCmd('option',''),
+			'option'			=> vRequest::getCmd('option',''),
 			'view'				=> 'liveupdate',
-			'mediaurl'			=> JURI::base().'components/'.vmRequest::getCmd('option','').'/liveupdate/assets/'
+			'mediaurl'			=> JURI::base().'components/'.vRequest::getCmd('option','').'/liveupdate/assets/'
 		);
 		$c = array_merge($defaultConfig, $config);
 

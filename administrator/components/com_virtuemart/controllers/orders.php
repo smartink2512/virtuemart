@@ -60,7 +60,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function nextItem($dir = 'ASC'){
 		$model = VmModel::getModel('orders');
-		$id = VmRequest::getInt('virtuemart_order_id');
+		$id = vRequest::getInt('virtuemart_order_id');
 		if (!$order_id = $model->getOrderId($id, $dir)) {
 			$order_id  = $id;
 			$msg = vmText::_('COM_VIRTUEMART_NO_MORE_ORDERS');
@@ -112,7 +112,7 @@ class VirtuemartControllerOrders extends VmController {
 	public function updatestatus() {
 		//vmdebug('updatestatus');
 		$mainframe = Jfactory::getApplication();
-		$lastTask = VmRequest::getCmd('last_task');
+		$lastTask = vRequest::getCmd('last_task');
 
 
 		/* Load the view object */
@@ -124,8 +124,8 @@ class VirtuemartControllerOrders extends VmController {
 		if ($lastTask == 'updatestatus') {
 			// single order is in POST but we need an array
 			$order = array() ;
-			$virtuemart_order_id = VmRequest::getInt('virtuemart_order_id');
-			$order[$virtuemart_order_id] = (vmRequest::getRequest());
+			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id');
+			$order[$virtuemart_order_id] = (vRequest::getRequest());
 			//vmdebug(  'order',$order);
 			$result = $model->updateOrderStatus($order);
 		} else {
@@ -159,7 +159,7 @@ class VirtuemartControllerOrders extends VmController {
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
 
-		$data = vmRequest::getRequest();
+		$data = vRequest::getRequest();
 		$model = VmModel::getModel();
 		$model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
 
@@ -172,8 +172,8 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function editOrderItem() {
 		//vmdebug('editOrderItem');
-		VmRequest::setVar('layout', 'orders_editorderitem');
-		// 	    VmRequest::setVar('hidemenu', 1);
+		vRequest::setVar('layout', 'orders_editorderitem');
+		// 	    vRequest::setVar('hidemenu', 1);
 
 		parent::display();
 	}
@@ -204,9 +204,9 @@ class VirtuemartControllerOrders extends VmController {
 		//vmdebug('updateOrderItemStatus');
 		$mainframe = Jfactory::getApplication();
 		$model = VmModel::getModel();
-		$_items = VmRequest::getVar('item_id',  0, '', 'array');
+		$_items = vRequest::getVar('item_id',  0, '', 'array');
 
-		$_orderID = VmRequest::getInt('virtuemart_order_id', '');
+		$_orderID = vRequest::getInt('virtuemart_order_id', '');
 
 		foreach ($_items as $key=>$value) {
 			//vmdebug('updateOrderItemStatus VAL  ',$value);
@@ -225,9 +225,9 @@ class VirtuemartControllerOrders extends VmController {
 	{
 		$mainframe = Jfactory::getApplication();
 		$model = VmModel::getModel();
-		$_items = VmRequest::getVar('item_id',  0, '', 'array');
-		$_orderID = VmRequest::getInt('virtuemart_order_id', '');
-		$model->UpdateOrderHead((int)$_orderID, vmRequest::getRequest());
+		$_items = vRequest::getVar('item_id',  0, '', 'array');
+		$_orderID = vRequest::getInt('virtuemart_order_id', '');
+		$model->UpdateOrderHead((int)$_orderID, vRequest::getRequest());
 		$model->deleteInvoice($_orderID);
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
@@ -249,16 +249,16 @@ class VirtuemartControllerOrders extends VmController {
 		$mainframe = Jfactory::getApplication();
 		$model = VmModel::getModel('orders');
 		//	$model->updateSingleItem();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.VmRequest::getInt('virtuemart_order_id', ''));
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.vRequest::getInt('virtuemart_order_id', ''));
 		}
 		*/
 
 	public function newOrderItem() {
 		//vmdebug('newOrderItem');
-		$orderId = VmRequest::getInt('virtuemart_order_id', '');
+		$orderId = vRequest::getInt('virtuemart_order_id', '');
 		$model = VmModel::getModel();
 		$msg = '';
-		$data = vmRequest::getRequest();
+		$data = vRequest::getRequest();
 		if (!$model->saveOrderLineItem($data)) {
 			$msg = $model->getError();
 		}
@@ -274,9 +274,9 @@ class VirtuemartControllerOrders extends VmController {
 		//vmdebug('removeOrderItem');
 		$model = VmModel::getModel();
 		$msg = '';
-		$orderId = VmRequest::getInt('orderId', '');
+		$orderId = vRequest::getInt('orderId', '');
 		// TODO $orderLineItem as int ???
-		$orderLineItem = VmRequest::getVar('orderLineId', '');
+		$orderLineItem = vRequest::getVar('orderLineId', '');
 
 		if (!$model->removeOrderLineItem($orderLineItem)) {
 			$msg = $model->getError();
@@ -290,7 +290,7 @@ class VirtuemartControllerOrders extends VmController {
 
 		$model = VmModel::getModel();
 
-		$idArray = VmRequest::getVar('cid', array() );
+		$idArray = vRequest::getVar('cid', array() );
 
 		$orders = array();
 		foreach($idArray as $orderId){

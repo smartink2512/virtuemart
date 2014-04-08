@@ -36,7 +36,7 @@ $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $Product_group = 	$params->get( 'product_group', 'featured'); // Display a footerText
 
 $mainframe = Jfactory::getApplication();
-$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vmRequest::getInt('virtuemart_currency_id',0) );
+$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id',0) );
 
 
 $key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id;
@@ -50,7 +50,7 @@ if (!($output = $cache->get($key))) {
 	/* Load  VM fonction */
 	if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
 
-	$vendorId = vmRequest::getInt('vendorid', 1);
+	$vendorId = vRequest::getInt('vendorid', 1);
 
 	if ($filter_category ) $filter_category = TRUE;
 

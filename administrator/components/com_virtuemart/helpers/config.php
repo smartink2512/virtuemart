@@ -57,7 +57,7 @@ if (!class_exists ('VmModel')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 }
 
-if(!class_exists('vmRequest')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmrequest.php');
+if(!class_exists('vRequest')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vrequest.php');
 if(!class_exists('vmText')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vmJsApi')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmjsapi.php');
 /**
@@ -504,7 +504,7 @@ class VmConfig {
 
 		if(self::$_debug===NULL){
 			$debug = VmConfig::get('debug_enable','none');
-			//$debug = 'all';	//this is only needed, when you want to debug THIS file
+			$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
 				if(VmConfig::$echoAdmin){
@@ -632,6 +632,8 @@ class VmConfig {
 		}
 
 		$jlang->load($name, $path,$tag,true);
+
+		return $jlang;
 	}
 
 	/**
@@ -660,6 +662,8 @@ class VmConfig {
 		}
 
 		$jlang->load($name, $path,$tag,true);
+
+		return $jlang;
 	}
 
 
@@ -709,76 +713,105 @@ class VmConfig {
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
 		$app = JFactory::getApplication();
-
-		$freshInstall = vmRequest::getInt('install',0);
-		$installed = true;
-		if(empty($configTable) ){
-			$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
-			vmdebug('loadConfig '.$freshInstall.' i '.$installed);
-			if(!$installed and $freshInstall===0){
-				vmdebug('loadConfig doing redirect '.$freshInstall.' i '.$installed);
-				if($app->isSite()){
-					$app->redirect(JURI::root().'administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
-				} else {
-					$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
-				}
-			}
-		}
-
 		$db = JFactory::getDBO();
 
-		$store = false;
-		if(empty(self::$_jpConfig->_raw) and $configTable){
+		$installed = true;
+		$install = vRequest::getInt('install',false);
 
+		if(empty($configTable) ){
+
+			$jlang =JFactory::getLanguage();
+			$selectedLang = $jlang->getTag();
+
+			if(empty($selectedLang)){
+				$selectedLang = $jlang->setLanguage($selectedLang);
+			}
+
+			$q = 'SELECT `element` FROM `#__extensions` WHERE type = "language" and enabled = "1"';
+			$db->setQuery($q);
+			$knownLangs = $db->loadColumn();
+			//vmdebug('Selected language '.$selectedLang.' $knownLangs ',$knownLangs);
+			if($app->isAdmin() and !in_array($selectedLang,$knownLangs)){
+				$link = 'index.php?option=com_installer&view=languages';
+				$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
+				$app->enqueueMessage($msg);
+			}
+
+			$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
+
+		} else {
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
 		}
 
 		if(empty(self::$_jpConfig->_raw)){
-			$_value = VirtueMartModelConfig::readConfigFile(false,$freshInstall);
+			$_value = VirtueMartModelConfig::readConfigFile(false);
 			if (!$_value) {
 				vmError('Serious error, config file could not be filled with data');
 				return FALSE;
 			}
 			$_value = join('|', $_value);
 			VmConfig::$_jpConfig->_raw = $_value;
-			$store = true;
+
 		}
 
-
+		$redirected = vRequest::getInt('redirected',false);
 		if (!empty(self::$_jpConfig->_raw)) {
 
 			VmConfig::$_jpConfig->setParams(VmConfig::$_jpConfig->_raw);
 
-			if($installed and empty($configTable)){
-				VirtueMartModelConfig::installVMconfigTable();
-				$configTable = true;
-			}
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart')){
 
-			if($store and !empty($configTable)){
-				vmdebug('I wanna store and no fresh install');
+				if($redirected or $install){
+					$dangeroustools = VmConfig::$_jpConfig->set('dangeroustools',1);
+				}
+				if($install){
 
-				$confData = array();
-				$confData['virtuemart_config_id'] = 1;
-				$confData['config'] = VmConfig::$_jpConfig->toString();
+					if(empty($configTable)){
+						VirtueMartModelConfig::installVMconfigTable();
+					}
+					vmdebug('I wanna store and no fresh install');
 
-				$confTable = JTable::getInstance('configs', 'Table', array());
-				//$confTable = $this->getTable('configs');
-				//vmdebug('storing config entry ',$confTable);
-				if (!$confTable->bindChecknStore($confData)) {
-					vmError($confTable->getError());
+					$confData = array();
+					$confData['virtuemart_config_id'] = 1;
+					VmConfig::$_jpConfig->set('dangeroustools',$dangeroustools);
+					$confData['config'] = VmConfig::$_jpConfig->toString();
+
+					$confTable = JTable::getInstance('configs', 'Table', array());
+					//$confTable = $this->getTable('configs');
+					//vmdebug('storing config entry ',$confTable);
+					if (!$confTable->bindChecknStore($confData)) {
+						vmError($confTable->getError());
+					}
+					//$dangeroustools = VmConfig::$_jpConfig->set('dangeroustools',1);
+					//$store = true;
 				}
 			}
+
 			self::$_jpConfig->_params['sctime'] = microtime(TRUE);
 			self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
 
 			vmTime('time to load config','loadConfig');
 
-			return self::$_jpConfig;
+		} else {
+			$app ->enqueueMessage('Attention config is empty');
+
 		}
 
-		$app ->enqueueMessage('Attention config is empty');
+
+		if(!$installed and !$redirected and !$install){
+			$link = 'index.php?option=com_virtuemart&view=updatesmigration&redirected=1';
+			$msg = '';
+			if($app->isSite()){
+				$link = JURI::root(true).'/administrator/'.$link;
+			} else {
+				$msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
+			}
+			$app->redirect($link,$msg);
+		}
+
 		return self::$_jpConfig;
 	}
 
@@ -794,9 +827,9 @@ class VmConfig {
 			return self::$vmlang;
 		}
 
-		self::$langs = (array)self::$_jpConfig->get('active_languages',array());
-		self::$langCount = count(self::$langs);
-		$siteLang = VmRequest::getString('vmlang',FALSE );
+		$langs = (array)self::get('active_languages',array());
+
+		$siteLang = vRequest::getString('vmlang',false );
 
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
@@ -813,25 +846,20 @@ class VmConfig {
 			}
 		}
 
-		if(!in_array($siteLang, self::$langs)) {
-			if(count(self::$langs)===0){
+		if(!in_array($siteLang, $langs)) {
+			if(count($langs)===0){
 				$siteLang = $defaultLang;
 			} else {
-				$siteLang = self::$langs[0];
+				$siteLang = $langs[0];
 			}
 		}
-
-		self::$_jpConfig->_params['sctime'] = microtime(TRUE);
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
-		vmdebug('self::$vmlang '.self::$vmlang);
-		defined('VMLANG') or define('VMLANG', self::$vmlang);	//Fallback
+		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang);
+		defined('VMLANG') or define('VMLANG', self::$vmlang );
 
-		//self::$_jpConfig->set('sctime',microtime(TRUE));
-		//self::setdbLanguageTag();
-		self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
 		return self::$vmlang;
- 	}
+	}
 
 	/**
 	 * Find the configuration value for a given key
@@ -992,7 +1020,7 @@ class VmConfig {
 				if ($virtuemart_vendor_id) {
 					self::$_virtuemart_vendor_id = $virtuemart_vendor_id;
 				} else {
-					if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') ){
+					if($user->authorise('core.admin', 'com_virtuemart') or (self::get('multix','none')=='none' and $user->authorise('core.manage', 'com_virtuemart') ) ){
 						self::$_virtuemart_vendor_id = 1;
 					}
 				}

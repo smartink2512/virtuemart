@@ -32,7 +32,7 @@ class JFormFieldVmCurl extends JFormField {
 		$lang = JFactory::getLanguage();
 		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
 
-		$option = vmRequest::getCmd('option');
+		$option = vRequest::getCmd('option');
 		if (!function_exists('curl_init') or !function_exists('curl_exec')) {
 			return vmText::_('COM_VIRTUEMART_PS_CURL_LIBRARY_NOT_INSTALLED');
 		} else {

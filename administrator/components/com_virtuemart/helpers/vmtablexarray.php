@@ -63,11 +63,11 @@ class VmTableXarray extends VmTable {
     		vmError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
     		return false;
     	}
-		$skeyId = VmRequest::getInt($this->_skey, 0);
+		$skeyId = vRequest::getInt($this->_skey, 0);
 		// Initialize variables
 		$db		= JFactory::getDBO();
-		$cid	= VmRequest::getInt( $this->_pkey );
-		$order	= VmRequest::getInt( 'order' ); //I found now two times "order" instead of ordering.
+		$cid	= vRequest::getInt( $this->_pkey );
+		$order	= vRequest::getInt( 'order' ); //I found now two times "order" instead of ordering.
 
 		//This sql is broken
 		$query = 'SELECT `id` FROM `' . $this->_tbl . '` WHERE $this->_pkey = '.(int)$cid[0].' AND `virtuemart_category_id` = '.(int)$skeyId ;

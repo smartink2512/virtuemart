@@ -24,7 +24,7 @@ if ($this->allowRating || $this->showReview) {
 	$maxrating = VmConfig::get ('vm_maximum_rating_scale', 5);
 	$ratingsShow = VmConfig::get ('vm_num_ratings_show', 3); // TODO add  vm_num_ratings_show in vmConfig
 	$stars = array();
-	$showall = VmRequest::getBool ('showall', FALSE);
+	$showall = vRequest::getBool ('showall', FALSE);
 	$ratingWidth = $maxrating * 24;
 	for ($num = 0; $num <= $maxrating; $num++) {
 		$stars[] = '
@@ -203,7 +203,7 @@ if ($this->allowRating || $this->showReview) {
 	?>
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>"/>
 	<input type="hidden" name="option" value="com_virtuemart"/>
-	<input type="hidden" name="virtuemart_category_id" value="<?php echo VmRequest::getInt ('virtuemart_category_id'); ?>"/>
+	<input type="hidden" name="virtuemart_category_id" value="<?php echo vRequest::getInt ('virtuemart_category_id'); ?>"/>
 	<input type="hidden" name="virtuemart_rating_review_id" value="0"/>
 	<input type="hidden" name="task" value="review"/>
 		</form>

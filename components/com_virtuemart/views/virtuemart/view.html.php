@@ -30,7 +30,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 	public function display($tpl = null) {
 
-		$vendorId = VmRequest::getInt('vendorid', 1);
+		$vendorId = vRequest::getInt('vendorid', 1);
 
 		$vendorModel = VmModel::getModel('vendor');
 
@@ -55,7 +55,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			$productModel->withRating = $ratingModel->showRating();
 
 			$products = array();
-			$categoryId = VmRequest::getInt('catid', 0);
+			$categoryId = vRequest::getInt('catid', 0);
 
 			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 
@@ -127,7 +127,7 @@ class VirtueMartViewVirtueMart extends VmView {
 		}
 
 
-		$error = VmRequest::getInt('error',0);
+		$error = vRequest::getInt('error',0);
 
 		//Todo this may not work everytime as expected, because the error must be set in the redirect links.
 		if(!empty($error)){

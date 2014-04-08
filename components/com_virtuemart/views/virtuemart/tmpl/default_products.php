@@ -55,7 +55,7 @@ foreach ( $productList as $product ) {
 					<div>
 					<?php // Product Image
 					if ($product->images) {
-						echo JHtml::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id, FALSE ), $product->images[0]->displayMediaThumb( 'class="featuredProductImage" border="0"',true,'class="modal"' ) );
+						echo   $product->images[0]->displayMediaThumb( 'class="featuredProductImage"',true,'class="modal"' ) ;
 					}
 					?>
 					</div>

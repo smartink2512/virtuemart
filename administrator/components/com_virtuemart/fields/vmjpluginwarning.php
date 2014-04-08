@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * @version $Id$
  */
 
-if (!class_exists('vmRequest')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+if (!class_exists('vRequest')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
 
 class JFormFieldVmjpluginwarning extends JFormField {
 
@@ -42,7 +42,7 @@ class JFormFieldVmjpluginwarning extends JFormField {
 		$lang = JFactory::getLanguage();
 		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
 
-		$option = vmRequest::getCmd('option');
+		$option = vRequest::getCmd('option');
 		if ($option == 'com_virtuemart') {
 			$js = "
  jQuery(document).ready(function( $ ) {

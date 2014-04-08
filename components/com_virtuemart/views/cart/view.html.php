@@ -42,9 +42,9 @@ class VirtueMartViewCart extends VmView {
 		//vmJsApi::jPrice();
 
 		$layoutName = $this->getLayout();
-		if (!$layoutName) $layoutName = VmRequest::getCmd('layout', 'default');
+		if (!$layoutName) $layoutName = vRequest::getCmd('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
-		$format = VmRequest::getCmd('format');
+		$format = vRequest::getCmd('format');
 
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -54,7 +54,7 @@ class VirtueMartViewCart extends VmView {
 		//Why is this here, when we have view.raw.php
 		if ($format == 'raw') {
 			$this->prepareCartViewData();
-			VmRequest::setVar('layout', 'mini_cart');
+			vRequest::setVar('layout', 'mini_cart');
 			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
 		}
@@ -374,10 +374,10 @@ class VirtueMartViewCart extends VmView {
 }
 
 	private function lOrderDone() {
-		$display_title = vmRequest::getBool('display_title',true);
+		$display_title = vRequest::getBool('display_title',true);
 		$this->assignRef('display_title', $display_title);
 
-		$this->html = vmRequest::get('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
+		$this->html = vRequest::get('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 		//Show Thank you page or error due payment plugins like paypal express
 	}
 
@@ -460,7 +460,7 @@ class VirtueMartViewCart extends VmView {
 			$_addressBT[0]->address_type_name = vmText::_('COM_VIRTUEMART_ACC_BILL_DEF');
 
 			$_addressST = $this->cart->user->getUserAddressList($this->cart->userDetails->JUser->get('id') , 'ST');
-
+			//$this->cart->lists['shipTo'] = $_addressST;
 		} else {
 
 			$_addressBT[0]->address_type_name = '<a href="index.php'
@@ -475,7 +475,7 @@ class VirtueMartViewCart extends VmView {
 		$addressList = array_merge(
 			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
 			, $_addressST );
-
+		vmdebug('my shipto $addressList',$addressList);
 		if($this->cart->user){
 			for ($_i = 0; $_i < count($addressList); $_i++) {
 				$addressList[$_i]->address_type_name = '<a href="index.php'
@@ -485,19 +485,20 @@ class VirtueMartViewCart extends VmView {
 					.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
 					.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
 					. '" rel="nofollow">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+				//$addressList[$_i]->
 			}
 
-			if(!empty($addressList[0]->virtuemart_userinfo_id)){
+			//if(!empty($addressList[0]->virtuemart_userinfo_id)){
 				$_selectedAddress = (
 				empty($this->cart->selected_shipto)
 					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
 					: $this->cart->selected_shipto
 				);
 				$this->cart->lists['shipTo'] = JHtml::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
-			}else{
+			/*}else{
 				$_selectedAddress = 0;
 				$this->cart->lists['shipTo'] = '';
-			}
+			}*/
 
 
 		} else {

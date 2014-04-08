@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="VIRTUEMART2_AND_FULLINSTALLER" default="VIRTUEMART2_AND_FULLINSTALLER" basedir=".">
+<project name="Build VirtueMart 2" default="VIRTUEMART2_AND_FULLINSTALLER" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.5.4"/>
+    <property name="vm.version" value="2.6.0"/>
     <property name="joomla.version" value="2.5.19"/>
     <property name="svn.lastrevision" value="7717"/>
     <property name="PHING.VM.CODENAME" value="PowerFox"/>
@@ -23,6 +23,7 @@
     <property name="admin.language.path" value="${export.to}/administrator/language"/>
 
     <property name="modules.path" value="${export.to}/modules"/>
+    <property name="admin.modules.path" value="${export.to}/administrator/modules"/>
     <property name="plugins.path" value="${export.to}/plugins"/>
     <property name="libraries.path" value="${export.to}/libraries"/>
     <property name="languageBE.path" value="${export.to}/administrator/language"/>
@@ -55,6 +56,7 @@
     <property name="package.admin.aio" value="${package.folder.aio}/admin"/>
     <property name="package.plugins.aio" value="${package.admin.aio}/plugins"/>
     <property name="package.modules.aio" value="${package.admin.aio}/modules"/>
+    <property name="package.admin.modules.aio" value="${package.admin.aio}/modulesBE"/>
 
     <property name="package.language.aio" value="${package.admin.aio}/language"/>
     <property name="package.libraries.aio" value="${package.admin.aio}/libraries"/>
@@ -142,6 +144,7 @@
         <exclude name="**/vm_build/**"/>
         <exclude name="**/realex/**"/>
         <exclude name="**/paybox/**"/>
+        <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
         <exclude name="**/da-DK/**"/>
@@ -242,12 +245,19 @@
         <exclude name=".DS_Store"/>
     </fileset>
 
+    <fileset dir="${admin.modules.path}" id='admin.modules.aio.refid' defaultexcludes="true">
+        <include name="**"/>
+        <exclude name=".svn"/>
+        <exclude name=".DS_Store"/>
+    </fileset>
+
     <fileset dir="${plugins.path}" id='plugins.aio.refid' defaultexcludes="true">
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name="**/realex/**"/>
         <exclude name="**/paybox/**"/>
+        <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
     </fileset>
@@ -351,6 +361,16 @@
                 <expandproperties/>
             </filterchain>
         </copy>
+
+        <echo msg="Copying AIO: ADMIN modules files to directory.."/>
+        <copy todir="${package.admin.modules.aio}" overwrite="true">
+            <fileset refid="admin.modules.aio.refid"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
+        </copy>
+
+
 
         <echo msg="Copying AIO: plugins files to directory.."/>
         <copy todir="${package.plugins.aio}" overwrite="true">

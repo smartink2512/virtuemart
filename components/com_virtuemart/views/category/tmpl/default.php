@@ -147,7 +147,7 @@ if (!empty($this->keyword)) {
 } ?>
 <?php if (!empty($this->keyword)) {
 
-	$category_id  = VmRequest::getInt ('virtuemart_category_id', 0); ?>
+	$category_id  = vRequest::getInt ('virtuemart_category_id', 0); ?>
 <form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 
 	<!--BEGIN Search Box -->
@@ -229,7 +229,7 @@ if (!empty($this->products)) {
 		<div class="product floatleft<?php echo $Browsecellwidth . $show_vertical_separator ?>">
 			<div class="spacer">
 				<div class="width30 floatleft center">
-				    <a title="<?php echo $product->product_name ?>" rel="vm-additional-images" href="<?php echo $product->link; ?>">
+				    <a title="<?php echo $product->product_name ?>" href="<?php echo $product->link; ?>">
 						<?php
 							echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);
 						?>

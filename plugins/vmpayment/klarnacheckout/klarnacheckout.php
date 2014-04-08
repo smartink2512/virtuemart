@@ -474,7 +474,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 	function getTermsURI ($vendorId) {
 
-		return JURI::root() . 'index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendorId . '&lang='.VmRequest::getCmd('lang','') ;;
+		return JURI::root() . 'index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendorId . '&lang='.vRequest::getCmd('lang','') ;;
 
 	}
 
@@ -629,7 +629,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		require_once 'klarnacheckout/library/Checkout.php';
-		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', 0);
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
 		if (!($this->method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -698,9 +698,9 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	 */
 	function plgVmOnPaymentNotification () {
 
-		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', '');
-		$checkoutId = VmRequest::getString('klarna_order', '');
-		$cartId = VmRequest::getString('cartId', '');
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', '');
+		$checkoutId = vRequest::getString('klarna_order', '');
+		$cartId = vRequest::getString('cartId', '');
 
 
 		if (empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id) or empty($checkoutId) or empty($cartId)) {
@@ -1039,7 +1039,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			return FALSE;
 		}
 		// fetches PClasses From XML file
-		$call = VmRequest::getCmd('call');
+		$call = vRequest::getCmd('call');
 		$this->$call();
 		// 	jexit();
 	}
@@ -1591,16 +1591,16 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 
 	static function   getSuccessUrl ($order) {
-		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . VmRequest::getInt('Itemid').'&lang='.VmRequest::getCmd('lang','');
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . vRequest::getInt('Itemid').'&lang='.vRequest::getCmd('lang','');
 	}
 
 	static function   getCancelUrl ($order) {
-		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . VmRequest::getInt('Itemid'). '&lang='.VmRequest::getCmd('lang','');
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . vRequest::getInt('Itemid'). '&lang='.vRequest::getCmd('lang','');
 	}
 
 	static function   getNotificationUrl ($order_number) {
 
-		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&on=" . $order_number. '&lang='.VmRequest::getCmd('lang','') ;
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&on=" . $order_number. '&lang='.vRequest::getCmd('lang','') ;
 	}
 
 	/**

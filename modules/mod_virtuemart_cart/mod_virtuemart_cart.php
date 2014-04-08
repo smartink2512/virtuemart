@@ -35,7 +35,7 @@ VmConfig::loadJLang('com_virtuemart', true);
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
 
-$viewName = vmRequest::getString('view',0);
+$viewName = vRequest::getString('view',0);
 if($viewName=='cart'){
 	$checkAutomaticPS = true;
 } else {

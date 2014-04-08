@@ -34,17 +34,17 @@ class VirtuemartControllerPlugin extends JControllerLegacy {
 	 */
 	function display($cachable = false, $urlparams = false)  {
 
-		if (!$type = VmRequest::getCmd ('vmtype', NULL)) {
-			$type = VmRequest::getCmd ('type', 'vmcustom');
+		if (!$type = vRequest::getCmd ('vmtype', NULL)) {
+			$type = vRequest::getCmd ('type', 'vmcustom');
 		}
 		$typeWhiteList = array('vmcustom', 'vmcalculation', 'vmuserfield', 'vmpayment', 'vmshipment');
 		if (!in_array ($type, $typeWhiteList)) {
 			return FALSE;
 		}
 
-// 		if(!$name = VmRequest::getCmd('name', null) ) return $name;
+// 		if(!$name = vRequest::getCmd('name', null) ) return $name;
 
-		$name = VmRequest::getCmd ('name', 'none');
+		$name = vRequest::getCmd ('name', 'none');
 
 		$nameBlackList = array('plgVmValidateCouponCode', 'plgVmRemoveCoupon', 'none');
 		if (in_array ($name, $nameBlackList)) {
@@ -61,11 +61,11 @@ class VirtuemartControllerPlugin extends JControllerLegacy {
 		if ($render) {
 			// Get the document object.
 			$document = JFactory::getDocument ();
-			if (VmRequest::getCmd ('cache') == 'no') {
+			if (vRequest::getCmd ('cache') == 'no') {
 				JResponse::setHeader ('Cache-Control', 'no-cache, must-revalidate');
 				JResponse::setHeader ('Expires', 'Mon, 6 Jul 2000 10:00:00 GMT');
 			}
-			$format = VmRequest::getCmd ('format', 'json');
+			$format = vRequest::getCmd ('format', 'json');
 			if ($format == 'json') {
 				$document->setMimeEncoding ('application/json');
 				// Change the suggested filename.

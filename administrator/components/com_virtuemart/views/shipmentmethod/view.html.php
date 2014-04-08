@@ -43,10 +43,10 @@ class VirtuemartViewShipmentmethod extends VmView {
 
 		$model = VmModel::getModel();
 
-		$layoutName = VmRequest::getCmd('layout', 'default');
+		$layoutName = vRequest::getCmd('layout', 'default');
 		$this->SetViewTitle();
 
-		$layoutName = VmRequest::getCmd('layout', 'default');
+		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 			VmConfig::loadJLang('plg_vmpsplugin', false);
 			$shipment = $model->getShipment();

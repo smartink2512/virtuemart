@@ -23,9 +23,9 @@ JHtml::_( 'behavior.modal' );
 
 <?php # Vendor Store Description
 if (!empty($this->vendor->vendor_store_desc) and VmConfig::get('show_store_desc', 1)) { ?>
-<p class="vendor-store-desc">
+<div class="vendor-store-desc">
 	<?php echo $this->vendor->vendor_store_desc; ?>
-</p>
+</div>
 <?php } ?>
 
 <?php

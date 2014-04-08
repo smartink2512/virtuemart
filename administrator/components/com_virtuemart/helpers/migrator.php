@@ -35,7 +35,7 @@ class Migrator extends VmModel{
 		$this->starttime = microtime(true);
 
 		$max_execution_time = VmConfig::getExecutionTime();
-		$jrmax_execution_time= VmRequest::getInt('max_execution_time');
+		$jrmax_execution_time= vRequest::getInt('max_execution_time');
 
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
@@ -46,7 +46,7 @@ class Migrator extends VmModel{
 
 		$this->maxScriptTime = VmConfig::getExecutionTime()*0.80-1;	//Lets use 30% of the execution time as reserve to store the progress
 
-		$jrmemory_limit= VmRequest::getInt('memory_limit');
+		$jrmemory_limit= vRequest::getInt('memory_limit');
 		if(!empty($jrmemory_limit)){
 			@ini_set( 'memory_limit', $jrmemory_limit.'M' );
 		} else {
@@ -214,9 +214,9 @@ class Migrator extends VmModel{
 	public function portMedia(){
 
 		$ok = true;
-		VmRequest::setVar('synchronise',true);
+		vRequest::setVar('synchronise',true);
 		//Prevents search field from interfering with syncronization
-		VmRequest::setVar('searchMedia', '');
+		vRequest::setVar('searchMedia', '');
 
 		//$imageExtensions = array('jpg','jpeg','gif','png');
 
@@ -753,12 +753,12 @@ class Migrator extends VmModel{
 
 		$catModel = VmModel::getModel('Category');
 
-		$default_category_browse = VmRequest::getString('migration_default_category_browse','');
+		$default_category_browse = vRequest::getString('migration_default_category_browse','');
 		// 		vmdebug('migration_default_category_browse '.$default_category_browse);
 
-		$default_category_fly = VmRequest::getString('migration_default_category_fly','');
+		$default_category_fly = vRequest::getString('migration_default_category_fly','');
 
-		$portFlypages = VmRequest::getInt('portFlypages',0);
+		$portFlypages = vRequest::getInt('portFlypages',0);
 
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
@@ -1071,7 +1071,7 @@ class Migrator extends VmModel{
 		//$oldtonewProducts = array();
 		$oldtonewManus = $this->getMigrationProgress('manus');
 
-		$userSgrpPrices = VmRequest::getInt('userSgrpPrices',0);
+		$userSgrpPrices = vRequest::getInt('userSgrpPrices',0);
 		if($userSgrpPrices){
 			$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
 		}
@@ -1355,8 +1355,8 @@ class Migrator extends VmModel{
 			$continue = true;
 		}
 
-		$reWriteOrderNumber = VmRequest::getInt('reWriteOrderNumber',0);
-		$userOrderId = VmRequest::getInt('userOrderId',0);
+		$reWriteOrderNumber = vRequest::getInt('reWriteOrderNumber',0);
+		$userOrderId = vRequest::getInt('userOrderId',0);
 
 		while($continue){
 
@@ -1965,7 +1965,7 @@ class Migrator extends VmModel{
 			$db->setQuery("SELECT virtuemart_product_id FROM " . $prefix . "_virtuemart_products WHERE product_sku=" . $db->Quote($product->product_sku));
 			$productid = (int)$db->loadResult();
 			if(!in_array($productid,$alreadyKnownIds)){
-				$ignore = VmRequest::getVar('prodIdsToIgnore',array());
+				$ignore = vRequest::getVar('prodIdsToIgnore',array());
 				if(!is_array($ignore)) $ignore = array($ignore);
 				foreach($ignore as &$ig){
 					$ig = (int)$ig;

@@ -25,7 +25,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/administrator/co
 
 VmConfig::loadConfig();
 VmConfig::loadJLang('mod_virtuemart_manufacturer', true);
-$vendorId = vmRequest::getInt('vendorid', 1);
+$vendorId = vRequest::getInt('vendorid', 1);
 $model = VmModel::getModel('Manufacturer');
 
 $display_style = 	$params->get( 'display_style', "div" ); // Display Style

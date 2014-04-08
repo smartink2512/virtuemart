@@ -98,7 +98,7 @@ class shopFunctionsF {
 	static public function getAddToCartButton ($orderable) {
 
 		if($orderable) {
-			$html = '<input type="submit" name="addtocart" class="addtocart-button" rel="nofollow" value="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
+			$html = '<input type="submit" name="addtocart" class="addtocart-button" value="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
 		} else {
 			$html = '<input name="addtocart" class="addtocart-button-disabled" value="'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" title="'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" />';
 		}
@@ -286,13 +286,6 @@ class shopFunctionsF {
 
 		if($template) {
 			$view->addTemplatePath( JPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
-		} else {
-			if(isset($db)) {
-				$err = $db->getErrorMsg();
-			} else {
-				$err = 'The selected vmtemplate is not existing';
-			}
-			if($err) vmError( 'renderMail get Template failed: '.$err );
 		}
 
 		foreach( $vars as $key => $val ) {
@@ -304,7 +297,7 @@ class shopFunctionsF {
 
 			//If the JRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
 			//$name = 'orders['.$order['details']['BT']->virtuemart_order_id.'][customer_notified]';
-			//$customer_notified = VmRequest::getVar($name,-1);
+			//$customer_notified = vRequest::getVar($name,-1);
 			if(!$useDefault and isset($vars['newOrderData']['customer_notified']) and $vars['newOrderData']['customer_notified']==1 ){
 				$user = self::sendVmMail( $view, $recipient, $noVendorMail );
 				vmdebug('renderMail by overwrite');
@@ -354,6 +347,9 @@ class shopFunctionsF {
 				$registry = new JRegistry;
 				$registry->loadString($res['params']);
 				$template = $res['template'];
+			} else {
+				$err = 'The selected vmtemplate is not existing';
+				vmError( 'renderMail get Template failed: '.$err );
 			}
 		} else {
 			if(JVM_VERSION == 2) {
@@ -364,6 +360,10 @@ class shopFunctionsF {
 			$db = JFactory::getDbo();
 			$db->setQuery( $q );
 			$template = $db->loadResult();
+			if(!$template){
+				$err = 'Could not load default template style';
+				vmError( 'renderMail get Template failed: '.$err );
+			}
 		}
 		return $template;
 	}
@@ -481,7 +481,7 @@ class shopFunctionsF {
 		shopFunctionsF::setTemplate( $template );
 
 		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
-		if(VmRequest::getCmd( 'view' ) == 'virtuemart') {
+		if(vRequest::getCmd( 'view' ) == 'virtuemart') {
 			$layout = VmConfig::get( 'vmlayout', 'default' );
 			$view->setLayout( strtolower( $layout ) );
 		} else {
@@ -715,5 +715,7 @@ class shopFunctionsF {
 		$article->$field = $article->text;
 	}
 
-
+	static public function mask_string($cc, $mask_char='X'){
+		return str_pad(substr($cc, -4), strlen($cc), $mask_char, STR_PAD_LEFT);
+	}
 }

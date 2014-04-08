@@ -236,7 +236,8 @@ class JInstallationModelConfiguration extends JModelLegacy
 
 		$db->setQuery($query);
 
-		//By VirtueMart set default language
+		//By VirtueMart set default language, this was a prior idea, but we use now the method to set
+		//the language in the com_language directly
 		/*$session = JFactory::getSession();
 		$langTag = $session->get('setup.language',false);
 		if($langTag){
@@ -323,6 +324,7 @@ class JInstallationModelConfiguration extends JModelLegacy
 			return false;
 		}
 
+		//By VirtueMart set default language, due this method we know which language was selected in the installation
 		$session = JFactory::getSession();
 		$langTag = $session->get('setup.language',false);
 		if($langTag and $langTag!='en-GB'){

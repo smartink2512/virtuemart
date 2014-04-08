@@ -228,7 +228,7 @@ class VirtueMartModelMedia extends VmModel {
 			$whereItems[] = '`#__virtuemart_medias`.`published` = 1';
 		}
 
-		if ($search = VmRequest::getString('searchMedia', false)){
+		if ($search = vRequest::getString('searchMedia', false)){
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$where[] = ' (`file_title` LIKE '.$search.'
 								OR `file_description` LIKE '.$search.'
@@ -237,11 +237,11 @@ class VirtueMartModelMedia extends VmModel {
 								OR `file_url_thumb` LIKE '.$search.'
 							) ';
 		}
-		if ($type = VmRequest::getCmd('search_type')) {
+		if ($type = vRequest::getCmd('search_type')) {
 			$where[] = 'file_type = "'.$type.'" ' ;
 		}
 
-		if ($role = VmRequest::getCmd('search_role')) {
+		if ($role = vRequest::getCmd('search_role')) {
 			if ($role == "file_is_downloadable") {
 				$where[] = '`file_is_downloadable` = 1';
 				$where[] = '`file_is_forSale` = 0';
@@ -305,7 +305,7 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	function storeMedia($data,$type){
 
-		vmRequest::vmCheckToken('Invalid Token, while trying to save media '.$type);
+		vRequest::vmCheckToken('Invalid Token, while trying to save media '.$type);
 
 		if(empty($data['media_action'])){
 			$data['media_action'] = 'none';

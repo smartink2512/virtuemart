@@ -278,8 +278,8 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', 0);
-		$order_number = VmRequest::getString('on', 0);
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
+		$order_number = vRequest::getString('on', 0);
 
 		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			//vmdebug('plgVmOnPaymentResponseReceived NOT getVmPluginMethod');
@@ -324,8 +324,8 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	function plgVmOnUserPaymentCancel () {
 
 
-		$order_number = VmRequest::getString('on', '');
-		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', '');
+		$order_number = vRequest::getString('on', '');
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', '');
 		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
 			vmdebug('plgVmOnUserPaymentCancel', $order_number, $virtuemart_paymentmethod_id);
 			return NULL;
@@ -372,7 +372,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$order_number = VmRequest::getString('on', '');
+		$order_number = vRequest::getString('on', '');
 		if (empty($order_number)) {
 			return FALSE;
 		}
@@ -408,7 +408,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$this->logInfo('plgVmOnPaymentNotification setTransaction OK', 'message');
 
 		// check that secret , and order are identical
-		$security = VmRequest::getString('security', '');
+		$security = vRequest::getString('security', '');
 		if ($security != $payments[0]->security) {
 			$this->logInfo('plgVmOnPaymentNotification SECURITY not the one expected GOT: ' . $security . ' stored: ' . $payments[0]->security, 'message');
 
@@ -927,16 +927,16 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 
 	static function   getSuccessUrl ($order) {
-		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . VmRequest::getInt('Itemid'). '&lang='.VmRequest::getCmd('lang',''); ;
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . vRequest::getInt('Itemid'). '&lang='.vRequest::getCmd('lang',''); ;
 	}
 
 	static function   getCancelUrl ($order) {
-		return  JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . VmRequest::getInt('Itemid').'&lang='.VmRequest::getCmd('lang','');
+		return  JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . vRequest::getInt('Itemid').'&lang='.vRequest::getCmd('lang','');
 	}
 
 	static function   getNotificationUrl ($security, $order_number) {
 
-		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number .'&lang='.VmRequest::getCmd('lang','');
+		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number .'&lang='.vRequest::getCmd('lang','');
 	}
 
 	static function getSecurityKey () {

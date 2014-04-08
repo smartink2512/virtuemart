@@ -49,10 +49,10 @@ class VirtuemartControllerCategory extends VmController {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
-		$data = vmRequest::getRequest();
+		$data = vRequest::getRequest();
 
-		$data['category_name'] = VmRequest::getHtml('category_name','');
-		$data['category_description'] = VmRequest::getHtml('category_description','');
+		$data['category_name'] = vRequest::getHtml('category_name','');
+		$data['category_description'] = vRequest::getHtml('category_description','');
 
 		parent::save($data);
 	}
@@ -71,11 +71,11 @@ class VirtuemartControllerCategory extends VmController {
 		}
 
 		// Check token
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		//capturing virtuemart_category_id
 		$id = 0;
-		$cid	= VmRequest::getInt( 'cid', array() );
+		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -110,11 +110,11 @@ class VirtuemartControllerCategory extends VmController {
 		}
 		
 		// Check token
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		//capturing virtuemart_category_id
 		$id = 0;
-		$cid	= VmRequest::getInt( 'cid', array() );
+		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -147,13 +147,13 @@ class VirtuemartControllerCategory extends VmController {
 		}
 		
 		// Check for request forgeries
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
-		$cid	= VmRequest::getInt( 'cid', array() );	//is sanitized
+		$cid	= vRequest::getInt( 'cid', array() );	//is sanitized
 
 		$model = VmModel::getModel('category');
 
-		$order	= VmRequest::getInt('order', array() );
+		$order	= vRequest::getInt('order', array() );
 
 		if ($model->setOrder($cid,$order)) {
 			$msg = vmText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');

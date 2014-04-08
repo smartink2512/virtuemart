@@ -47,8 +47,8 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 	 * @return  JController  A JController object to support chaining.
 	 */
 	public function display($cachable = false, $urlparams = false)  {
-		$format = VmRequest::getCmd('format','html');
-		$layout = VmRequest::getCmd('layout', 'invoice');
+		$format = vRequest::getCmd('format','html');
+		$layout = vRequest::getCmd('layout', 'invoice');
 
 		if ($format != 'pdf') {
 			$viewName='invoice';
@@ -139,7 +139,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		$orderModel = VmModel::getModel('orders');
 		$orderDetails = 0;
 		// If the user is not logged in, we will check the order number and order pass
-		if ($orderPass = VmRequest::getString('order_pass',false) and $orderNumber = VmRequest::getString('order_number',false)){
+		if ($orderPass = vRequest::getString('order_pass',false) and $orderNumber = vRequest::getString('order_number',false)){
 			$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
 			if(empty($orderId)){
 				vmDebug ('Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
@@ -154,9 +154,9 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			$cuid = $_currentUser->get('id');
 
 			// If the user is logged in, we will check if the order belongs to him
-				$virtuemart_order_id = VmRequest::getInt('virtuemart_order_id',0) ;
+				$virtuemart_order_id = vRequest::getInt('virtuemart_order_id',0) ;
 			if (!$virtuemart_order_id) {
-				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(VmRequest::getString('order_number'));
+				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(vRequest::getString('order_number'));
 			}
 			$orderDetails = $orderModel->getOrder($virtuemart_order_id);
 

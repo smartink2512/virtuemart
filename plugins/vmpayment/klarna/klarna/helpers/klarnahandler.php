@@ -287,7 +287,7 @@ class KlarnaHandler {
 		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 
 		$kIndex = 'klarna_';
-		$klarna['klarna_paymentmethod'] = VmRequest::getVar ($kIndex . 'paymentmethod');
+		$klarna['klarna_paymentmethod'] = vRequest::getVar ($kIndex . 'paymentmethod');
 		if ($klarna['klarna_paymentmethod'] == 'klarna_invoice') {
 			$klarna_option = 'invoice';
 		} elseif ($klarna['klarna_paymentmethod'] == 'klarna_partPayment') {
@@ -300,24 +300,24 @@ class KlarnaHandler {
 		}
 		$prefix=$klarna_option . '_' . $kIndex ;
 		//Removes spaces, tabs, and other delimiters.
-		$klarna['pno'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', VmRequest::getVar ($prefix . 'pnum', ''));
-		$klarna['socialNumber'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', VmRequest::getVar ($prefix . 'socialNumber'));
-		$klarna['phone'] = VmRequest::getVar ($prefix . 'phone');
-		$klarna['email'] = VmRequest::getVar ($prefix . 'emailAddress');
-		$klarna['street'] = VmRequest::getVar ($prefix . 'street');
-		$klarna['house_no'] = VmRequest::getVar ($prefix . 'homenumber');
-		$klarna['house_ext'] = VmRequest::getVar ($prefix . 'house_extension');
-		$klarna['year_salary'] = VmRequest::getVar ($prefix . 'ysalary');
-		$klarna['reference'] = VmRequest::getVar ($prefix . 'reference');
-		$klarna['city'] = VmRequest::getVar ($prefix . 'city');
-		$klarna['zip'] = VmRequest::getVar ($prefix . 'zipcode');
-		$klarna['first_name'] = VmRequest::getVar ($prefix . 'firstName');
-		$klarna['last_name'] = VmRequest::getVar ($prefix . 'lastName');
-		$klarna['invoice_type'] = VmRequest::getVar ('klarna_invoice_type');
-		$klarna['company_name'] = VmRequest::getVar ('klarna_company_name');
-		$klarna['phone'] = VmRequest::getVar ($prefix . 'phone');
-		$klarna['consent'] = VmRequest::getVar ($prefix . 'consent');
-		$klarna['gender'] = VmRequest::getVar ($prefix . 'gender');
+		$klarna['pno'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', vRequest::getVar ($prefix . 'pnum', ''));
+		$klarna['socialNumber'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', vRequest::getVar ($prefix . 'socialNumber'));
+		$klarna['phone'] = vRequest::getVar ($prefix . 'phone');
+		$klarna['email'] = vRequest::getVar ($prefix . 'emailAddress');
+		$klarna['street'] = vRequest::getVar ($prefix . 'street');
+		$klarna['house_no'] = vRequest::getVar ($prefix . 'homenumber');
+		$klarna['house_ext'] = vRequest::getVar ($prefix . 'house_extension');
+		$klarna['year_salary'] = vRequest::getVar ($prefix . 'ysalary');
+		$klarna['reference'] = vRequest::getVar ($prefix . 'reference');
+		$klarna['city'] = vRequest::getVar ($prefix . 'city');
+		$klarna['zip'] = vRequest::getVar ($prefix . 'zipcode');
+		$klarna['first_name'] = vRequest::getVar ($prefix . 'firstName');
+		$klarna['last_name'] = vRequest::getVar ($prefix . 'lastName');
+		$klarna['invoice_type'] = vRequest::getVar ('klarna_invoice_type');
+		$klarna['company_name'] = vRequest::getVar ('klarna_company_name');
+		$klarna['phone'] = vRequest::getVar ($prefix . 'phone');
+		$klarna['consent'] = vRequest::getVar ($prefix . 'consent');
+		$klarna['gender'] = vRequest::getVar ($prefix . 'gender');
 		switch ($klarna['gender']) {
 			case KlarnaFlags::MALE :
 				$klarna['title'] = vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR');
@@ -327,16 +327,16 @@ class KlarnaHandler {
 				$klarna['title'] = vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS');
 				break;
 		}
-		$klarna['birth_day'] = VmRequest::getVar ($prefix . 'birth_day', '');
-		$klarna['birth_month'] = VmRequest::getVar ($prefix . 'birth_month', '');
-		$klarna['birth_year'] = VmRequest::getVar ($prefix . 'birth_year', '');
+		$klarna['birth_day'] = vRequest::getVar ($prefix . 'birth_day', '');
+		$klarna['birth_month'] = vRequest::getVar ($prefix . 'birth_month', '');
+		$klarna['birth_year'] = vRequest::getVar ($prefix . 'birth_year', '');
 		if (isset($klarna['birth_year']) and !empty($klarna['birth_year'])) {
 			// due to the select list
 			if ($klarna['birth_month'] != 0 and $klarna['birth_month'] != 0) {
 				$klarna['birthday'] = $klarna['birth_year'] . "-" . $klarna['birth_month'] . "-" . $klarna['birth_day'];
-				$klarna['pno_frombirthday'] = VmRequest::getVar ($prefix . 'birth_day') .
-					VmRequest::getVar ($prefix . 'birth_month') .
-					VmRequest::getVar ($prefix . 'birth_year');
+				$klarna['pno_frombirthday'] = vRequest::getVar ($prefix . 'birth_day') .
+					vRequest::getVar ($prefix . 'birth_month') .
+					vRequest::getVar ($prefix . 'birth_year');
 			} else {
 				$klarna['birthday'] = '';
 			}
@@ -1198,7 +1198,7 @@ class KlarnaHandler {
 
 		/*
 		if ($country3 == "DEU") {
-			$consent = VmRequest::getVar ('klarna_consent');
+			$consent = vRequest::getVar ('klarna_consent');
 			if ($consent != 'on') {
 				$errors = vmText::_ ('VMPAYMENT_KLARNA_NO_CONSENT');
 			}
@@ -1232,8 +1232,8 @@ class KlarnaHandler {
 		// Quick and durty .. but it works
 		$kIndex = "klarna_";
 		if ($country3 == "SWE") {
-			if (VmRequest::getVar ('klarna_invoice_type') == 'company') {
-				if (strlen (trim ((string)VmRequest::getVar ('klarna_company_name'))) == 0) {
+			if (vRequest::getVar ('klarna_invoice_type') == 'company') {
+				if (strlen (trim ((string)vRequest::getVar ('klarna_company_name'))) == 0) {
 					$errors[] = 'VMPAYMENT_KLARNA_COMPANY_NAME';
 				}
 			} else {

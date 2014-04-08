@@ -40,7 +40,7 @@ class VirtuemartViewShopperGroup extends VmView {
 
 		$layoutName = $this->getLayout();
 
-		$task = VmRequest::getCmd('task',$layoutName);
+		$task = vRequest::getCmd('task',$layoutName);
 		$this->assignRef('task', $task);
 
 		if ($layoutName == 'edit') {

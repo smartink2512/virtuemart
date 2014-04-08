@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
     $text = $this->product->mf_name;
 
     /* Avoid JavaScript on PDF Output */
-    if (strtolower(VmRequest::getCmd('output')) == "pdf") {
+    if (strtolower(vRequest::getCmd('output')) == "pdf") {
 	echo JHtml::_('link', $link, $text);
     } else {
 	?>

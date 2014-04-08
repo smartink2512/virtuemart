@@ -73,7 +73,7 @@ class VirtueMartModelCurrency extends VmModel {
 		}
 
 		if(empty($search)){
-			$search = VmRequest::getString('search', false);
+			$search = vRequest::getString('search', false);
 		}
 		// add filters
 		if($search){

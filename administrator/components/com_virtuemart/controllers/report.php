@@ -41,7 +41,7 @@ class VirtuemartControllerReport extends VmController {
 	
 	function updateOrderItems(){
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$model = VmModel::getModel('report');
 		$model->updateOrderItems();

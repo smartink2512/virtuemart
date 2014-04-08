@@ -57,11 +57,11 @@ class VirtuemartViewCategory extends VmView {
 
 
 		// set search and keyword
-		if ($keyword = VmRequest::uword('keyword', false, ' ,-,+,.,_')) {
+		if ($keyword = vRequest::uword('keyword', false, ' ,-,+,.,_')) {
 			$pathway->addItem($keyword);
 			//$title .=' ('.$keyword.')';
 		}
-		//$search = VmRequest::uword('keyword', null);
+		//$search = vRequest::uword('keyword', null);
 		$this->searchcustom = '';
 		$this->searchcustomvalues = '';
 		if (!empty($keyword)) {
@@ -75,8 +75,8 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
-		$categoryId = vmRequest::getInt('virtuemart_category_id', -1);
-		$virtuemart_manufacturer_id = vmRequest::getInt('virtuemart_manufacturer_id', -1 );
+		$categoryId = vRequest::getInt('virtuemart_category_id', -1);
+		$virtuemart_manufacturer_id = vRequest::getInt('virtuemart_manufacturer_id', -1 );
 		if ($categoryId === -1 and $virtuemart_manufacturer_id === -1){
 			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
 		}
@@ -163,7 +163,7 @@ class VirtuemartViewCategory extends VmView {
 				} else {
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 					if (!$last_category_id or $categoryId == $last_category_id) {
-						$last_category_id = VmRequest::getInt('virtuemart_category_id', false);
+						$last_category_id = vRequest::getInt('virtuemart_category_id', false);
 					}
 					if ($last_category_id and $categoryId != $last_category_id) {
 						$categoryLink = '&view=category&virtuemart_category_id=' . $last_category_id;
@@ -250,7 +250,7 @@ class VirtuemartViewCategory extends VmView {
 			$title = $this->setTitleByJMenu($app);
 		}
 
-	  	if(VmRequest::getInt('error')){
+	  	if(vRequest::getInt('error')){
 			$title .=' '.vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
 		if(!empty($keyword)){
@@ -294,7 +294,7 @@ class VirtuemartViewCategory extends VmView {
 		if (!empty($tpl)) {
 			$format = $tpl;
 		} else {
-			$format = vmRequest::getCmd('format', 'html');
+			$format = vRequest::getCmd('format', 'html');
 		}
 		if ($format == 'html') {
 
@@ -321,7 +321,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
 		$this->options = $this->_db->loadAssocList();
 
-		if ($this->custom_parent_id = VmRequest::getInt('custom_parent_id', 0)) {
+		if ($this->custom_parent_id = vRequest::getInt('custom_parent_id', 0)) {
 			$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE custom_parent_id='.$this->custom_parent_id);
 			$this->selected = $this->_db->loadObjectList();
 			$this->searchCustomValues ='';

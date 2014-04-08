@@ -50,10 +50,10 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	 * @author Max Milbers
 	 */
 	function save($data = 0){
-		$data = vmRequest::getRequest();
+		$data = vRequest::getRequest();
 		// TODO disallow shipment_name as HTML
-		$data['shipment_name'] = VmRequest::getHtml('shipment_name','');
-		$data['shipment_desc'] = VmRequest::getHtml('shipment_desc','');
+		$data['shipment_name'] = vRequest::getHtml('shipment_name','');
+		$data['shipment_desc'] = vRequest::getHtml('shipment_desc','');
 
 		parent::save($data);
 
@@ -72,7 +72,7 @@ class VirtuemartControllerShipmentmethod extends VmController {
 		$model = VmModel::getModel('shipmentmethod');
 		$msgtype = '';
 
-		$cids = VmRequest::getVar($this->_cidName, VmRequest::getInt('virtuemart_shipment_id'));
+		$cids = vRequest::getVar($this->_cidName, vRequest::getInt('virtuemart_shipment_id'));
 
 		foreach($cids as $cid){
 			if ($model->createClone($cid)) $msg = vmText::_('COM_VIRTUEMART_SHIPMENT_CLONED_SUCCESSFULLY');

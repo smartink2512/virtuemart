@@ -75,16 +75,16 @@ class VirtueMartModelInventory extends VmModel {
     private function getInventoryFilter() {
     	/* Check some filters */
      	$filters = array();
-     	if ($search = VmRequest::getVar('filter_inventory', false)){
+     	if ($search = vRequest::getVar('filter_inventory', false)){
 			$db = JFactory::getDBO();
      		$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);
      		$filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$search;
      	}
-     	if (VmRequest::getInt('stockfilter', 0) == 1){
+     	if (vRequest::getInt('stockfilter', 0) == 1){
      		$filters[] = '`#__virtuemart_products`.`product_in_stock` > 0';
      	}
-     	if ($catId = VmRequest::getInt('virtuemart_category_id', 0) > 0){
+     	if ($catId = vRequest::getInt('virtuemart_category_id', 0) > 0){
      		$filters[] = '`#__virtuemart_categories`.`virtuemart_category_id` = '.$catId;
      	}
      	$filters[] = '(`#__virtuemart_shoppergroups`.`default` = 1 OR `#__virtuemart_shoppergroups`.`default` is NULL)';

@@ -27,7 +27,7 @@ if (empty($this->product)) {
 	return;
 }
 
-if(VmRequest::getInt('print',false)){
+if(vRequest::getInt('print',false)){
 ?>
 <body onload="javascript:print();">
 <?php }

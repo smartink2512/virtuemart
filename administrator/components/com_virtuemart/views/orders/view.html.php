@@ -47,7 +47,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$orderModel = VmModel::getModel();
 
-		$curTask = VmRequest::getCmd('task');
+		$curTask = vRequest::getCmd('task');
 		if ($curTask == 'edit') {
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 			VmConfig::loadJLang('com_virtuemart_orders', true);
@@ -57,7 +57,7 @@ class VirtuemartViewOrders extends VmView {
 			$productModel = VmModel::getModel('product');
 
 			// Get the data
-			$virtuemart_order_id = VmRequest::getInt('virtuemart_order_id');
+			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id');
 			$order = $orderModel->getOrder($virtuemart_order_id);
 
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
@@ -147,8 +147,8 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('orderstatuses', $orderStates);
 
 			$model = VmModel::getModel();
-			$orderId = VmRequest::getString('orderId', '');
-			$orderLineItem = VmRequest::getVar('orderLineId', '');
+			$orderId = vRequest::getString('orderId', '');
+			$orderLineItem = vRequest::getVar('orderLineId', '');
 			$this->assignRef('virtuemart_order_id', $orderId);
 			$this->assignRef('virtuemart_order_item_id', $orderLineItem);
 
@@ -161,7 +161,7 @@ class VirtuemartViewOrders extends VmView {
 			$model = VmModel::getModel();
 			$this->addStandardDefaultViewLists($model,'created_on');
 			$orderStatusModel =VmModel::getModel('orderstatus');
-			$orderstates = VmRequest::getCmd('order_status_code','');
+			$orderstates = vRequest::getCmd('order_status_code','');
 			$this->lists['state_list'] = $orderStatusModel->renderOSList($orderstates,'order_status_code',FALSE,' onchange="this.form.submit();" ');
 			$orderslist = $model->getOrdersList();
 

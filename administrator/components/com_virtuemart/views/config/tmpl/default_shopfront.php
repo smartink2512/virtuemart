@@ -167,17 +167,17 @@ defined('_JEXEC') or die('Restricted access');?>
 				'registered' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
 				'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_ALL')
 			); //showReviewFor
-			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW','showReviewFor',VmConfig::get('showReviewFor',2),$showReviewFor);
+			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW','showReviewFor',VmConfig::get('showReviewFor','all'),$showReviewFor);
 
 			$reviewMode = array('none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
 				'bought' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
 				'registered' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED')
 				//	3 => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
 			);
-			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_REVIEW','reviewMode',VmConfig::get('reviewMode',2),$reviewMode);
+			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_REVIEW','reviewMode',VmConfig::get('reviewMode','bought'),$reviewMode);
 
-			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW','showRatingFor',VmConfig::get('showRatingFor',2),$showReviewFor);
-			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_RATING','ratingMode',VmConfig::get('ratingMode',2),$reviewMode);
+			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW','showRatingFor',VmConfig::get('showRatingFor','all'),$showReviewFor);
+			echo VmHTML::row('radioList','COM_VIRTUEMART_ADMIN_CFG_RATING','ratingMode',VmConfig::get('ratingMode','bought'),$reviewMode);
 			?>
 
 			<tr>

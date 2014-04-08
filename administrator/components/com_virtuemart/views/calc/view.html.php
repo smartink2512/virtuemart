@@ -47,7 +47,7 @@ class VirtuemartViewCalc extends VmView {
 		$this->SetViewTitle();
 
 
-		$layoutName = VmRequest::getCmd('layout', 'default');
+		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$calc = $model->getCalc();
@@ -127,7 +127,7 @@ class VirtuemartViewCalc extends VmView {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$search = VmRequest::getCmd('search', false);
+			$search = vRequest::getCmd('search', false);
 			$calcs = $model->getCalcs(false, false, $search);
 
 			$this->assignRef('calcs',	$calcs);

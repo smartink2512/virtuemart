@@ -33,9 +33,9 @@ class VirtuemartViewOrders extends VmView {
 
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
-		$task = VmRequest::getCmd('task', 'list');
+		$task = vRequest::getCmd('task', 'list');
 
-		$layoutName = VmRequest::getCmd('layout', 'list');
+		$layoutName = vRequest::getCmd('layout', 'list');
 
 		$this->setLayout($layoutName);
 
@@ -45,7 +45,7 @@ class VirtuemartViewOrders extends VmView {
 		if(!empty($tpl)){
 			$format = $tpl;
 		} else {
-			$format = VmRequest::getCmd('format', 'html');
+			$format = vRequest::getCmd('format', 'html');
 		}
 		$this->assignRef('format', $format);
 
@@ -134,13 +134,13 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('orderdetails', $orderDetails);
 
 			if($_currentUser->guest){
-				$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&order_pass=' . VmRequest::getString('order_pass',false) .'&order_number='.VmRequest::getString('order_number',false);
+				$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&order_pass=' . vRequest::getString('order_pass',false) .'&order_number='.vRequest::getString('order_number',false);
 			} else {
 				$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&virtuemart_order_id=' . $this->orderdetails['details']['BT']->virtuemart_order_id;
 			}
 			$this->assignRef('details_url', $details_url);
 
-			$tmpl = VmRequest::getCmd('tmpl');
+			$tmpl = vRequest::getCmd('tmpl');
 			$print = false;
 			if($tmpl){
 				$print = true;

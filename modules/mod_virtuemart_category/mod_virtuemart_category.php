@@ -35,7 +35,7 @@ $category_id = $params->get('Parent_Category_id', 0);
 $class_sfx = $params->get('class_sfx', '');
 $moduleclass_sfx = $params->get('moduleclass_sfx','');
 $layout = $params->get('layout','default');
-$active_category_id = vmRequest::getInt('virtuemart_category_id', '0');
+$active_category_id = vRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
 
 $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);

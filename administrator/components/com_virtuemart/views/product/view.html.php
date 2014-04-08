@@ -32,7 +32,7 @@ class VirtuemartViewProduct extends VmView {
 	function display($tpl = null) {
 
 		// Get the task
-		$task = VmRequest::getCmd('task',$this->getLayout());
+		$task = vRequest::getCmd('task',$this->getLayout());
 		vmdebug('VirtuemartViewProduct '.$task);
 		$this->assignRef('task', $task);
 
@@ -56,7 +56,7 @@ class VirtuemartViewProduct extends VmView {
 				VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
-				$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
+				$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 					$virtuemart_product_id = (int)$virtuemart_product_id[0];
@@ -312,7 +312,7 @@ class VirtuemartViewProduct extends VmView {
 				break;
 
 		default:
-			if ($product_parent_id=VmRequest::getInt('product_parent_id',false) ) {
+			if ($product_parent_id=vRequest::getInt('product_parent_id',false) ) {
 				$product_parent= $model->getProductSingle($product_parent_id,false);
 
 				if($product_parent){
@@ -342,7 +342,7 @@ class VirtuemartViewProduct extends VmView {
 			$this->assignRef('pagination', $pagination);
 
 			/* Get the category tree */
-			$categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was VmRequest::getInt('virtuemart_category_id');
+			$categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
 			$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 			$this->assignRef('category_tree', $category_tree);
 
@@ -387,13 +387,13 @@ class VirtuemartViewProduct extends VmView {
 							'price' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'),
 							'withoutprice' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE')
 			);
-			$this->lists['search_type'] = VmHTML::selectList('search_type', VmRequest::getVar('search_type'),$options);
+			$this->lists['search_type'] = VmHTML::selectList('search_type', vRequest::getVar('search_type'),$options);
 
 			/* Search order */
 			$options = array( 'bf' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
 								  'af' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER')
 			);
-			$this->lists['search_order'] = VmHTML::selectList('search_order', VmRequest::getVar('search_order'),$options);
+			$this->lists['search_order'] = VmHTML::selectList('search_order', vRequest::getVar('search_order'),$options);
 
 			// Toolbar
 			JToolBarHelper::custom('massxref_cats', 'new', 'new', vmText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT'), true);

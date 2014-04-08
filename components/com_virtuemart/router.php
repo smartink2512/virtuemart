@@ -718,14 +718,18 @@ class vmrouterHelper {
 
 			$this->seo_translate = VmConfig::get('seo_translate', false);
 
-			$this->setLang();
+			if ( $this->seo_translate ) {
+				$this->Jlang = VmConfig::loadJLang('com_virtuemart.sef',true);
+			} else {
+				$this->Jlang = JFactory::getLanguage();
+			}
 
 			$this->setMenuItemId();
 			$this->setActiveMenu();
 			$this->use_id = VmConfig::get('seo_use_id', false);
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
 			$this->seo_sufix_size = strlen($this->seo_sufix) ;
-			$this->edit = ('edit' == vmRequest::getCmd('task') );
+			$this->edit = ('edit' == vRequest::getCmd('task') );
 			// if language switcher we must know the $query
 			$this->query = $query;
 			//vmdebug('Router construct my query j2',$this->query,$query);
@@ -752,19 +756,6 @@ class vmrouterHelper {
 		}
 		self::$_instance->query = $query;
 		return self::$_instance;
-	}
-
-	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
-	public function setLang(){
-
-		$this->Jlang =JFactory::getLanguage();
-		if ( $this->seo_translate ) {
-			// use translator
-			$extension = 'com_virtuemart.sef';
-			$base_dir = JPATH_SITE;
-			$this->Jlang->load($extension, $base_dir);
-
-		}
 	}
 
 	public function getCategoryRoute($virtuemart_category_id){
@@ -1088,7 +1079,7 @@ class vmrouterHelper {
 			//$menu = JFactory::getApplication()->getMenu();
 			$app		= JFactory::getApplication();
 			$menu		= $app->getMenu('site');
-			if ($Itemid = VmRequest::getInt('Itemid',0) ) {
+			if ($Itemid = vRequest::getInt('Itemid',0) ) {
 				$menuItem = $menu->getItem($Itemid);
 			} else {
 				$menuItem = $menu->getActive();

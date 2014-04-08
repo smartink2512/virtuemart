@@ -52,10 +52,10 @@ class VirtuemartControllerCalc extends VmController {
 	 */
 	function save($data = 0){
 
-		$data = vmRequest::getRequest();
+		$data = vRequest::getRequest();
 
-		$data['calc_name'] = VmRequest::getHtml('calc_name','');
-		$data['calc_descr'] = VmRequest::getHtml('calc_descr','');
+		$data['calc_name'] = vRequest::getHtml('calc_name','');
+		$data['calc_descr'] = vRequest::getHtml('calc_descr','');
 
 		parent::save($data);
 	}
@@ -69,10 +69,10 @@ class VirtuemartControllerCalc extends VmController {
 	public function orderUp()
 	{
 		// Check token
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$id = 0;
-		$cid	= VmRequest::getInt( 'cid', array() );
+		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -102,10 +102,10 @@ class VirtuemartControllerCalc extends VmController {
 	public function orderDown()
 	{
 		// Check token
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$id = 0;
-		$cid	= VmRequest::getInt( 'cid', array() );
+		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -133,13 +133,13 @@ class VirtuemartControllerCalc extends VmController {
 	public function saveOrder()
 	{
 		// Check for request forgeries
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
-		$cid	= VmRequest::getInt( 'cid', array() );
+		$cid	= vRequest::getInt( 'cid', array() );
 
 		$model = VmModel::getModel('calc');
 
-		$order	= VmRequest::getInt('order');
+		$order	= vRequest::getInt('order');
 
 		if ($model->setOrder($cid,$order)) {
 			$msg = vmText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');

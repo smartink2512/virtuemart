@@ -47,7 +47,7 @@ class VirtuemartViewManufacturer extends VmView {
 
 		$this->SetViewTitle();
 
-		$layoutName = VmRequest::getCmd('layout', 'default');
+		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$manufacturer = $model->getManufacturer();

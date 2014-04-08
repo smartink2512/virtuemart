@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea($this);
 /* Get the component name */
-$option = VmRequest::getCmd('option');
+$option = vRequest::getCmd('option');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -33,7 +33,7 @@ $option = VmRequest::getCmd('option');
 	  <tr>
 		 <td align="left" width="100%">
 			<?php echo vmText::_('COM_VIRTUEMART_FILTER'); ?>:
-			<input type="text" name="filter_ratings" value="<?php echo VmRequest::getVar('filter_ratings', ''); ?>" />
+			<input type="text" name="filter_ratings" value="<?php echo vRequest::getVar('filter_ratings', ''); ?>" />
 			<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 			<button onclick="document.adminForm.filter_ratings.value='';"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
 		 </td>
@@ -60,7 +60,7 @@ $option = VmRequest::getCmd('option');
 	if (count($this->reviewslist) > 0) {
 		$i = 2;
 		//$k = 0;
-		$keyword = VmRequest::getCmd('keyword');
+		$keyword = vRequest::getCmd('keyword');
 		foreach ($this->reviewslist as $key => $review) {
 			//vmdebug('my review ',$review);
 			$checked = JHtml::_('grid.id', $i , $review->virtuemart_rating_review_id ,null, 'virtuemart_rating_review_id');
@@ -110,7 +110,7 @@ $option = VmRequest::getCmd('option');
 </div>
 <!-- Hidden Fields -->
 	<input type="hidden" name="layout" value="list_reviews" />
-	<input type="hidden" name="virtuemart_product_id" value="<?php echo VmRequest::getVar('virtuemart_product_id', 0); ?>" />
+	<input type="hidden" name="virtuemart_product_id" value="<?php echo vRequest::getVar('virtuemart_product_id', 0); ?>" />
 	<?php echo $this->addStandardHiddenToForm(null,'listreviews'); ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>

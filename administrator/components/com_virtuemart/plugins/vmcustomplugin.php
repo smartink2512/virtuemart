@@ -274,7 +274,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 			}
 		}
 
-		$pluginFields = VmRequest::getVar ('customProductData', NULL);
+		$pluginFields = vRequest::getVar ('customProductData', NULL);
 		if ($pluginFields == NULL and isset($product->customPlugin)) {
 			$pluginFields = json_decode ($product->customPlugin, TRUE);
 		}

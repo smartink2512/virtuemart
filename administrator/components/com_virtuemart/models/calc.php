@@ -162,7 +162,7 @@ class VirtueMartModelCalc extends VmModel {
 	 */
     public function store(&$data) {
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$table = $this->getTable('calcs');
 
@@ -273,7 +273,7 @@ class VirtueMartModelCalc extends VmModel {
 	*/
 	public function remove($cids) {
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 
 		$table = $this->getTable($this->_maintablename);
 		$cat = $this->getTable('calc_categories');

@@ -29,7 +29,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/administrator/co
 VmConfig::loadConfig();
 VmConfig::loadJLang('mod_virtuemart_currencies', true);
 $mainframe = Jfactory::getApplication();
-$vendorId = vmRequest::getInt('vendorid', 1);
+$vendorId = vRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');
 /* table vm_vendor */
 $db = JFactory::getDBO();
@@ -39,7 +39,7 @@ $db->setQuery($q);
 $vendor_currency = $db->loadAssoc();
 
 
-$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vmRequest::getInt('virtuemart_currency_id', $vendor_currency['vendor_currency']) );
+$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id', $vendor_currency['vendor_currency']) );
 
 //if (!$vendor_currency['vendor_accepted_currencies']) return;
 //$currency_codes = explode(',' , $currencies->vendor_accepted_currencies );

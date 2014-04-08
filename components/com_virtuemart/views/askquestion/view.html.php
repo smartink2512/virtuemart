@@ -177,7 +177,7 @@ class VirtueMartViewAskquestion extends VmView {
 		}
 		$vendorModel->addImages ($this->vendor);
 
-		$virtuemart_product_id = vmRequest::getInt ('virtuemart_product_id', 0);
+		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', 0);
 
 		$productModel = VmModel::getModel ('product');
 		if(empty($this->product)){

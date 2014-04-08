@@ -153,7 +153,7 @@ class VirtueMartModelCustom extends VmModel {
 			$value = $this->virtuemart_custom_id;
 		}
 		else {
-			$value = VmRequest::getInt ('custom_parent_id', 0);
+			$value = vRequest::getInt ('custom_parent_id', 0);
 		}
 		return VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_GROUP', 'custom_parent_id', $customslist, $value);
 	}
@@ -175,7 +175,7 @@ class VirtueMartModelCustom extends VmModel {
 		if ($publishedOnly) {
 			$q .= 'AND `published`=1';
 		}
-		if ($ID = VmRequest::getInt ('virtuemart_custom_id', 0)) {
+		if ($ID = vRequest::getInt ('virtuemart_custom_id', 0)) {
 			$q .= ' AND `virtuemart_custom_id`!=' . (int)$ID;
 		}
 		$db = JFactory::getDBO();
@@ -251,7 +251,7 @@ class VirtueMartModelCustom extends VmModel {
 	 **/
 	public function saveChildCustomRelation($table,$datas) {
 
-		vmRequest::vmCheckToken('Invalid token in saveChildCustomRelation');
+		vRequest::vmCheckToken('Invalid token in saveChildCustomRelation');
 		//Table whitelist
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;

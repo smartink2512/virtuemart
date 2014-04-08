@@ -161,7 +161,7 @@ if (empty ( $this->product )) {
 					$text = $this->product->mf_name;
 
 					/* Avoid JavaScript on PDF Output */
-					if (strtolower(VmRequest::getCmd('output')) == "pdf"){
+					if (strtolower(vRequest::getCmd('output')) == "pdf"){
 						echo JHtml::_('link', $link, $text);
 					} else { ?>
 						<span class="bold"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
@@ -226,7 +226,7 @@ if (empty ( $this->product )) {
 		$ratingsShow = VmConfig::get('vm_num_ratings_show',3); // TODO add  vm_num_ratings_show in vmConfig
 		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
 		$stars = array();
-		$showall = VmRequest::getBool('showall', false);
+		$showall = vRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
 			$title = (vmText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
 			$stars[] = JHtml::image($starsPath.$num.'.gif', vmText::_($num.'_STARS'), array("title" => $title) );

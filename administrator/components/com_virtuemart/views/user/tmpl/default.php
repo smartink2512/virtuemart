@@ -31,7 +31,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo vmText::_('COM_VIRTUEMART_FILTER'); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 					<?php
-					$selected = VmRequest::getString('searchTable','juser');
+					$selected = vRequest::getString('searchTable','juser');
 					$searchOptionTables = array(
 						'0' => array('searchTable' => 'juser', 'searchTable_name' => vmText::_('COM_VIRTUEMART_ONLY_JUSER')),
 						'1' => array('searchTable' => 'all', 'searchTable_name' => vmText::_('JALL'))

@@ -151,7 +151,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 */
 	public function store(&$data)
 	{
-		//$data = vmRequest::getRequest();
+		//$data = vRequest::getRequest();
 
 
 		if ($data) {

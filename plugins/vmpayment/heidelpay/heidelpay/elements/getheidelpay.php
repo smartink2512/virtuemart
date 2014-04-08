@@ -51,7 +51,7 @@ class JFormFieldgetHeidelpay extends JFormField {
 
 		$doc = JFactory::getDocument ();
 		$doc->addScriptDeclaration ($js);
-		$cid = VmRequest::getvar ('cid', NULL, 'array');
+		$cid = vRequest::getvar ('cid', NULL, 'array');
 		if (is_Array ($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {

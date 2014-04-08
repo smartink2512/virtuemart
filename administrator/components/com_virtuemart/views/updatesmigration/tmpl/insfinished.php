@@ -28,8 +28,8 @@ $lang->load('com_virtuemart',JPATH_ADMINISTRATOR,'en_GB',true);
 $lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,null,true);
 $lang->load('com_virtuemart',JPATH_ADMINISTRATOR,null,true);
 
-$update = vmRequest::getInt('update',0);
-$option = vmRequest::getString('option');
+$update = vRequest::getInt('update',0);
+$option = vRequest::getString('option');
 
 if($option=='com_virtuemart'){
 

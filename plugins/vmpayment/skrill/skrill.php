@@ -271,19 +271,19 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . VmRequest::getInt ('Itemid') .
-								    '&lang='.VmRequest::getCmd('lang','')
+		                            '&Itemid=' . vRequest::getInt ('Itemid') .
+								    '&lang='.vRequest::getCmd('lang','')
 		                            ,
 		                        'cancel_url'               => JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . VmRequest::getInt ('Itemid') .
-									'&lang='.VmRequest::getCmd('lang','')
+		                            '&Itemid=' . vRequest::getInt ('Itemid') .
+									'&lang='.vRequest::getCmd('lang','')
 		                        ,
 		                        'status_url'               => JURI::root () .
-			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&lang='.VmRequest::getCmd('lang','') ,
+			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&lang='.vRequest::getCmd('lang','') ,
 		                        'platform'                 => '21477272',
 		                        'hide_login'               => $method->hide_login,
 		                        'prepare_only'             => 1,
@@ -374,7 +374,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 		$cart->_confirmDone = FALSE;
 		$cart->_dataValidated = FALSE;
 		$cart->setCartIntoSession ();
-		VmRequest::setVar ('html', $html);
+		vRequest::setVar ('html', $html);
 	}
 
 	function plgVmgetPaymentCurrency ($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
@@ -403,12 +403,12 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$mb_data = VmRequest::get ('post');
+		$mb_data = vRequest::get ('post');
 
 
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethod_id = VmRequest::getInt ('pm', 0);
-		$order_number = VmRequest::getString ('on', 0);
+		$virtuemart_paymentmethod_id = vRequest::getInt ('pm', 0);
+		$order_number = vRequest::getString ('on', 0);
 		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
 			return NULL;
 		} // Another method was selected, do nothing
@@ -440,8 +440,8 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$order_number = VmRequest::getString ('on', '');
-		$virtuemart_paymentmethod_id = VmRequest::getInt ('pm', '');
+		$order_number = vRequest::getString ('on', '');
+		$virtuemart_paymentmethod_id = vRequest::getInt ('pm', '');
 		if (empty($order_number) or
 			empty($virtuemart_paymentmethod_id) or
 			!$this->selectedThisByMethodId ($virtuemart_paymentmethod_id)
@@ -473,7 +473,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$mb_data = VmRequest::get ('post');
+		$mb_data = vRequest::get ('post');
 
 		if (!isset($mb_data['transaction_id'])) {
 			return;

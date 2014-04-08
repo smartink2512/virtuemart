@@ -292,7 +292,7 @@ class VirtueMartModelConfig extends VmModel {
 	 */
 	function store(&$data) {
 
-		vmRequest::vmCheckToken();
+		vRequest::vmCheckToken();
 		//We create a fresh config
 		$config = VmConfig::loadConfig(false,true);
 
@@ -575,7 +575,7 @@ class VirtueMartModelConfig extends VmModel {
 						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
 					}
 
-					if(($freshInstall or $returnDangerousTools) && $pair[0] == 'dangeroustools' ){
+					/*if(($freshInstall or $returnDangerousTools) && $pair[0] == 'dangeroustools' ){
 
 						if($returnDangerousTools){
 							if ($pair[1] == "0") {
@@ -591,7 +591,7 @@ class VirtueMartModelConfig extends VmModel {
 							$_line = $pair[0].'='.serialize($pair[1]);
 						}
 						vmdebug('dangeroustools '.$pair[1]);
-					}
+					}/*/
 
 				} else {
 					$_line = $pair[0].'=';

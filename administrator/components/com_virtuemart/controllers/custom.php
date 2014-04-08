@@ -55,7 +55,7 @@ class VirtuemartControllerCustom extends VmController {
 	}
 
 	function save($data = 0) {
-		$data = vmRequest::getRequest();
+		$data = vRequest::getRequest();
 		// onSaveCustom plugin;
 		parent::save($data);
 	}
@@ -73,7 +73,7 @@ class VirtuemartControllerCustom extends VmController {
 
 		$model = VmModel::getModel('custom');
 		$msgtype = '';
-		$cids = VmRequest::getInt($this->_cidName, VmRequest::getInt('virtuemart_custom_id'));
+		$cids = vRequest::getInt($this->_cidName, vRequest::getInt('virtuemart_custom_id'));
 
 		foreach ($cids as $custom_id) {
 			if ($model->createClone($custom_id)) $msg = vmText::_('COM_VIRTUEMART_CUSTOM_CLONED_SUCCESSFULLY');

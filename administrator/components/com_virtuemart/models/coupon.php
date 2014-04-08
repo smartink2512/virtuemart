@@ -73,7 +73,7 @@ class VirtueMartModelCoupon extends VmModel {
     function store(&$data)
 	{
 		$table = $this->getTable('coupons');
-		//$data = vmRequest::getRequest();
+		//$data = vRequest::getRequest();
 		$table->bindChecknStore($data);
 		// Convert selected dates to MySQL format for storing.
 		if ($data['coupon_start_date']) {

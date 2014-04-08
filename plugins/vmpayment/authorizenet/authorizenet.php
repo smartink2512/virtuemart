@@ -385,13 +385,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			return NULL; // Another method was selected, do nothing
 		}
 
-		//$cart->creditcard_id = VmRequest::getVar('creditcard', '0');
-		$this->_cc_type = VmRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_name = VmRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_number = str_replace(" ", "", VmRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
-		$this->_cc_cvv = VmRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_expire_month = VmRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_expire_year = VmRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
+		//$cart->creditcard_id = vRequest::getVar('creditcard', '0');
+		$this->_cc_type = vRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_name = vRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_number = str_replace(" ", "", vRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
+		$this->_cc_cvv = vRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_expire_month = vRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_expire_year = vRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
 
 		if (!$this->_validate_creditcard_data(TRUE)) {
 			return FALSE; // returns string containing errors
@@ -577,7 +577,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 				$new_status = $this->_currentMethod->payment_approved_status;
 			} else {
 				if ($this->declined) {
-					VmRequest::setVar('html', $html);
+					vRequest::setVar('html', $html);
 					$new_status = $this->_currentMethod->payment_declined_status;
 					$this->_handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
 					return;
@@ -597,7 +597,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 
 		//We delete the old stuff
 		$cart->emptyCart();
-		VmRequest::setVar('html', $html);
+		vRequest::setVar('html', $html);
 	}
 
 	function _handlePaymentCancel ($virtuemart_order_id, $html)

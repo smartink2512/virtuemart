@@ -42,10 +42,10 @@ class VirtuemartControllerPlugin extends JController
 			return false;
 		}
 
-		$type = VmRequest::getCmd('type', 'vmcustom');
+		$type = vRequest::getCmd('type', 'vmcustom');
 		$typeWhiteList = array('vmshopper','vmcustom','vmcalculation','vmpayment','vmshipment', 'vmuserfield');
 		if(!in_array($type,$typeWhiteList)) return false;
-		$name = VmRequest::getString('name','');
+		$name = vRequest::getString('name','');
 
 		JPluginHelper::importPlugin($type, $name);
 		$dispatcher = JDispatcher::getInstance();
@@ -57,11 +57,11 @@ class VirtuemartControllerPlugin extends JController
 		if ($render ) {
 			// Get the document object.
 			$document =JFactory::getDocument();
-			if (VmRequest::getCmd('cache', 'no')) {
+			if (vRequest::getCmd('cache', 'no')) {
 				JResponse::setHeader('Cache-Control','no-cache, must-revalidate');
 				JResponse::setHeader('Expires','Mon, 6 Jul 2000 10:00:00 GMT');
 			}
-			$format = VmRequest::getCmd('format', 'json');
+			$format = vRequest::getCmd('format', 'json');
 			if ($format == 'json') {
 				$document->setMimeEncoding('application/json');
 				// Change the suggested filename.

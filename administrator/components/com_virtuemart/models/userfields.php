@@ -68,7 +68,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 * Prepare a user field for database update
 	 */
 	public function prepareFieldDataSave($field, &$data) {
-		//		$post = vmRequest::getRequest();
+		//		$post = vRequest::getRequest();
 		$fieldType = $field->type;
 		$fieldName = $field->name;
 		$value = $data[$field->name];
@@ -106,17 +106,17 @@ class VirtueMartModelUserfields extends VmModel {
 				if (is_array($value)) $value = implode("|*|",$value);
 				break;
 			case 'age_verification':
-				$value = VmRequest::getInt('birthday_selector_year')
-				.'-'.VmRequest::getInt('birthday_selector_month')
-				.'-'.VmRequest::getInt('birthday_selector_day');
+				$value = vRequest::getInt('birthday_selector_year')
+				.'-'.vRequest::getInt('birthday_selector_month')
+				.'-'.vRequest::getInt('birthday_selector_day');
 				break;
 			case 'textarea':
-				$value = VmRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+				$value = vRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 				$value = vmFilter::hl( $value,'text' );
 				break;
 
 			case 'editorta':
-				$value = VmRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+				$value = vRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 				$value = vmFilter::hl( $value,'no_js_flash' );
 				break;
 			default:
@@ -1212,7 +1212,7 @@ class VirtueMartModelUserfields extends VmModel {
 	function _getFilter()
 	{
 		$db = JFactory::getDBO();
-		if ($search = VmRequest::getCmd('search', false)) {
+		if ($search = vRequest::getCmd('search', false)) {
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);
 			return (' WHERE `name` LIKE ' .$search);

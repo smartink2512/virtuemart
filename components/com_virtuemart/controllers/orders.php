@@ -36,7 +36,7 @@ class VirtueMartControllerOrders extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)  {
 
-		$format = VmRequest::getCmd('format','html');
+		$format = vRequest::getCmd('format','html');
 		if  ($format == 'pdf') $viewName= 'pdf';
 		else $viewName='orders';
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);

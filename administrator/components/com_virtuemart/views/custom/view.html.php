@@ -42,7 +42,7 @@ class VirtuemartViewCustom extends VmView {
 		// TODO Make an Icon for custom
 		$this->SetViewTitle('PRODUCT_CUSTOM_FIELD');
 
-		$layoutName = VmRequest::getCmd('layout', 'default');
+		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 			$this->addStandardEditViewCommands();
 			$customPlugin = '';
@@ -79,7 +79,7 @@ class VirtuemartViewCustom extends VmView {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$customs = $model->getCustoms(VmRequest::getInt('custom_parent_id'),VmRequest::getCmd('keyword'));
+			$customs = $model->getCustoms(vRequest::getInt('custom_parent_id'),vRequest::getCmd('keyword'));
 			$this->assignRef('customs',	$customs);
 
 			$pagination = $model->getPagination();

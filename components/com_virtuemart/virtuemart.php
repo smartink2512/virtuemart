@@ -32,7 +32,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	//$cache->setCaching (1);
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
-	VmRequest::setVar('view', 'virtuemart');
+	vRequest::setVar('view', 'virtuemart');
 	$task='';
 	$basePath = JPATH_VM_SITE;
 } else {
@@ -43,10 +43,10 @@ if(VmConfig::get('shop_is_offline',0)){
 	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
-	$_controller = VmRequest::getCmd('view', VmRequest::getCmd('controller', 'virtuemart')) ;
+	$_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart')) ;
 	$trigger = 'onVmSiteController';
-// 	$task = VmRequest::getCmd('task',VmRequest::getCmd('layout',$_controller) );		$this makes trouble!
-	$task = VmRequest::getCmd('task','') ;
+// 	$task = vRequest::getCmd('task',vRequest::getCmd('layout',$_controller) );		$this makes trouble!
+	$task = vRequest::getCmd('task','') ;
 
 	if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
 		$app = JFactory::getApplication();

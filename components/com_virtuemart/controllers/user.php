@@ -47,8 +47,8 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$viewName = VmRequest::getCmd('view', 'user');
-		$viewLayout = VmRequest::getCmd('layout', 'default');
+		$viewName = vRequest::getCmd('view', 'user');
+		$viewLayout = vRequest::getCmd('layout', 'default');
 
 		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 		$view->assignRef('document', $document);
@@ -84,7 +84,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 
-		$layout = VmRequest::getCmd('layout','edit');
+		$layout = vRequest::getCmd('layout','edit');
 
 		$msg = $this->saveData($cart);
 		if($cart->fromCart or $cart->getInCheckOut()){
@@ -102,7 +102,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	function saveAddressST(){
 
 		$msg = $this->saveData(false);
-		$layout = 'edit';// VmRequest::getCmd('layout','edit');
+		$layout = 'edit';// vRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 
 	}
@@ -122,7 +122,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$currentUser = JFactory::getUser();
 		$msg = '';
 
-		$data = vmRequest::getPost();
+		$data = vRequest::getPost();
 
 		if($cartObj){
 			if($cartObj->fromCart or $cartObj->getInCheckOut()){
@@ -142,7 +142,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		}
 
 		if(empty($data['address_type'])){
-			$data['address_type'] = vmRequest::getCmd('addrtype','BT');
+			$data['address_type'] = vRequest::getCmd('addrtype','BT');
 		}
 
 		if(!$register and !$cart and $data['address_type'] == 'ST'){
@@ -161,12 +161,12 @@ class VirtueMartControllerUser extends JControllerLegacy
 					$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 				}
 
-				$data['vendor_store_name'] = VmRequest::getHtml('vendor_store_name');
-				$data['vendor_store_desc'] = VmRequest::getHtml('vendor_store_desc');
-				$data['vendor_terms_of_service'] = VmRequest::getHtml('vendor_terms_of_service');
-				$data['vendor_letter_css'] = VmRequest::getHtml('vendor_letter_css');
-				$data['vendor_letter_header_html'] = VmRequest::getHtml('vendor_letter_header_html');
-				$data['vendor_letter_footer_html'] = VmRequest::getHtml('vendor_letter_footer_html');
+				$data['vendor_store_name'] = vRequest::getHtml('vendor_store_name');
+				$data['vendor_store_desc'] = vRequest::getHtml('vendor_store_desc');
+				$data['vendor_terms_of_service'] = vRequest::getHtml('vendor_terms_of_service');
+				$data['vendor_letter_css'] = vRequest::getHtml('vendor_letter_css');
+				$data['vendor_letter_header_html'] = vRequest::getHtml('vendor_letter_header_html');
+				$data['vendor_letter_footer_html'] = vRequest::getHtml('vendor_letter_footer_html');
 			}
 
 			//It should always be stored
@@ -175,6 +175,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 			} else {
 				$ret = $userModel->store($data);
 			}
+
 			if(!$onlyAddress and $currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
@@ -187,7 +188,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 					);
 					$return = $mainframe->login($credentials);
 				} else if(VmConfig::get('oncheckout_only_registered',0)){
-					$layout = VmRequest::getCmd('layout','edit');
+					$layout = vRequest::getCmd('layout','edit');
 					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 				}
 
@@ -224,13 +225,13 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 	function removeAddressST(){
 
-		$virtuemart_userinfo_id = VmRequest::getInt('virtuemart_userinfo_id');
+		$virtuemart_userinfo_id = vRequest::getInt('virtuemart_userinfo_id');
 
 		//Lets do it dirty for now
 		$userModel = VmModel::getModel('user');
 		$userModel->removeAddress($virtuemart_userinfo_id);
 
-		$layout = VmRequest::getCmd('layout','edit');
+		$layout = vRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, $this->useXHTML,$this->useSSL) );
 	}
 
@@ -241,13 +242,13 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 */
 	function checkCaptcha($retUrl){
 		if(JFactory::getUser()->guest==1 and VmConfig::get ('reg_captcha')){
-			$recaptcha = vmRequest::getVar ('recaptcha_response_field');
+			$recaptcha = vRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
 			if(!$res[0]){
-				$data = vmRequest::getPost();
-				$data['address_type'] = vmRequest::getVar('addrtype','BT');
+				$data = vRequest::getPost();
+				$data['address_type'] = vRequest::getVar('addrtype','BT');
 				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 				$cart = VirtueMartCart::getCart();
 				$cart->saveAddressInCart($data, $data['address_type']);

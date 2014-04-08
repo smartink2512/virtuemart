@@ -34,7 +34,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 	function display($tpl = null) {
 
 
-		$latestVersion = VmRequest::getVar('latestverison', '');
+		$latestVersion = vRequest::getVar('latestverison', '');
 
 		JToolBarHelper::title(vmText::_('COM_VIRTUEMART_UPDATE_MIGRATION'), 'head vm_config_48');
 
@@ -47,7 +47,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 		$this->assignRef('downloadbutton_style', $downloadbutton_style);
 		$this->assignRef('latestVersion', $latestVersion);
 
-		$freshInstall = vmRequest::getInt('install',0);
+		$freshInstall = vRequest::getInt('redirected',0);
 		if($freshInstall){
 			$this->setLayout('install');
 		}

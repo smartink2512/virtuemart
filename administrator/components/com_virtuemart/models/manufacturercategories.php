@@ -88,7 +88,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
-		if ( VmRequest::getCmd('view') == 'manufacturercategories') {
+		if ( vRequest::getCmd('view') == 'manufacturercategories') {
 			$ordering = $this->_getOrdering();
 		} else {
 			$ordering = ' order by mf_category_name DESC';

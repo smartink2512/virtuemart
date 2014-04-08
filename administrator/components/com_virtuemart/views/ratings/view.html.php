@@ -32,7 +32,7 @@ class VirtuemartViewRatings extends VmView {
 	function display($tpl = null) {
 
 		$mainframe = Jfactory::getApplication();
-		$option = VmRequest::getCmd('option');
+		$option = vRequest::getCmd('option');
 
 		//Load helpers
 
@@ -41,7 +41,7 @@ class VirtuemartViewRatings extends VmView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
-		$cids = VmRequest::getInt('cid', VmRequest::getVar('virtuemart_rating_review_id',0));
+		$cids = vRequest::getInt('cid', vRequest::getVar('virtuemart_rating_review_id',0));
 		if ($cids && !is_array($cids)) $cids = array($cids);
 
 		// Figure out maximum rating scale (default is 5 stars)
@@ -53,12 +53,12 @@ class VirtuemartViewRatings extends VmView {
 
 
 		/* Get the task */
-		$task = VmRequest::getCmd('task');
+		$task = vRequest::getCmd('task');
 		switch ($task) {
 			case 'listreviews':
 				/* Get the data */
 				$this->addStandardDefaultViewLists($model);
-				$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
+				$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 					$virtuemart_product_id = (int)$virtuemart_product_id[0];
 				} else {
