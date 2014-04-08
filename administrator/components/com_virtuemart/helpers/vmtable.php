@@ -214,7 +214,14 @@ class VmTable extends JTable {
 
 			} else {
 				if (empty($xParams)) {
-					vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error ' . $obj);
+					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
+					vmTrace('$xParams is empty');
+				}
+				if(!isset($obj->$xParams)){
+					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
+					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
+					vmTrace('$obj->$xParams is empty');
 				}
 			}
 
@@ -241,7 +248,14 @@ class VmTable extends JTable {
 				}
 			} else {
 				if (empty($xParams)) {
-					vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error ' . $obj);
+					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
+					vmTrace('$xParams is empty');
+				}
+				if(!isset($obj[$xParams])){
+					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
+					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
+					vmTrace('$obj->$xParams is empty');
 				}
 			}
 
