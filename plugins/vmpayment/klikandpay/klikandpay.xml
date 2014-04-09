@@ -47,12 +47,12 @@
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_ACCOUNT_CONFIGURATION"/>
 
-        <param name="debit_type" type="list" default="authorization_only" label="VMPAYMENT_KLIKANDPAY_CONF_DEBIT_TYPE"
+        <!--param name="debit_type" type="list" default="authorization_capture" label="VMPAYMENT_KLIKANDPAY_CONF_DEBIT_TYPE"
                description="VMPAYMENT_KLIKANDPAY_CONF_DEBIT_TYPE_TIP">
             <option value="authorization_only">VMPAYMENT_KLIKANDPAY_CONF_DEBIT_TYPE_AUTHORIZATION_ONLY</option>
             <option value="authorization_capture">VMPAYMENT_KLIKANDPAY_CONF_DEBIT_TYPE_AUTHORIZATION_CAPTURE</option>
-        </param>
-        <param class="authorization_capture debit_type" name="diff" type="list" size="15" default="1"
+        </param -->
+        <!--param class="authorization_capture debit_type" name="diff" type="list" size="15" default="1"
                label="VMPAYMENT_KLIKANDPAY_CONF_DIFF" description="VMPAYMENT_KLIKANDPAY_CONF_DIFF_TIP">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -61,7 +61,7 @@
             <option value="5">5</option>
             <option value="6">6</option>
             <option value="7">7</option>
-        </param>
+        </param-->
 
 
         <param class="" name="integration" type="list" default="recurring"
@@ -77,16 +77,29 @@
         <!--param class="integration recurring" name="recurring_min_amount"  type="text" size="15" default=""
                label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_MIN_AMOUNT"
                description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_MIN_AMOUNT_TIP"/-->
-        <param class="integration recurring" name="recurring_number" type="list" default="3"
+        <!--param class="integration recurring" name="recurring_type" type="list" default="3"
+               label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_TYPE"
+               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_TYPE_TIP">
+            <option value="recurring_monthly">VMPAYMENT_KLIKANDPAY_CONF_RECURRING_TYPE_MONTHLY</option>
+            <option value="recurring_deposit_monthly">VMPAYMENT_KLIKANDPAY_CONF_RECURRING_TYPE_DEPOSIT_MONTHLY</option>
+            <option value="recurring_deposit">VMPAYMENT_KLIKANDPAY_CONF_RECURRING_TYPE_DEPOSIT</option>
+        </param-->
+        <param class="recurring" name="recurring_number" type="list" default="3"
                label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_NUMBER"
                description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_NUMBER_TIP">
-            <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
         </param>
-        <param class="integration recurring" name="recurring_periodicity"  type="text" size="15" default="30"
-               label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_PERIODICTY"
-               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_PERIODICTY_TIP"/>
+        <param class="integration recurring" name="recurring_deposit" type="text" default="3"
+               label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DEPOSIT"
+               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DEPOSIT_TIP" />
+
+        <param class="integration recurring recurring_deposit" name="recurring_date" type="text" default="3"
+               label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DATE"
+               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DATE_TIP" />
         <!-- end recurring -->
 <!-- Subscribe -->
         <param class="integration subscribe" name="activate_subscribe" type="hidden" default="0"

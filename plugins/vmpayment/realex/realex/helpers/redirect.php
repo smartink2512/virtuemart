@@ -44,8 +44,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 
 	function doRealVault (&$selectedCCParams) {
-		$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
-		$selectedCCParams = $this->getSelectedCCParams($redirect_cc_selected, $this->cart->virtuemart_paymentmethod_id);
+		$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+		$selectedCCParams = $this->getSelectedCCParams($saved_cc_selected, $this->cart->virtuemart_paymentmethod_id);
 		$doRealVault = false;
 		if ($this->_method->realvault and !empty($selectedCCParams)) {
 			if (!$selectedCCParams->addNew) {
@@ -116,13 +116,13 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		//$post_variables['COMMENT2'] = $this->setComment2();
 
 		$post_variables['MERCHANT_RESPONSE_URL'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&notificationTask=handleRedirect&tmpl=component';
-		$post_variables['AUTO_SETTLE_FLAG'] = $this->_method->settlement;
+		$post_variables['AUTO_SETTLE_FLAG'] =  $this->getSettlement();
 		if ($BT->virtuemart_user_id != 0) {
 			$post_variables['VAR_REF'] = $BT->customer_number;
 			$post_variables['PAYER_EXIST'] = 0;
 			$post_variables['CARD_STORAGE_ENABLE'] = $this->_method->realvault;
 			if ($this->_method->realvault) {
-				if ($this->customerData->getVar('redirect_cc_selected') == -1) {
+				if ($this->customerData->getVar('saved_cc_selected') == -1) {
 					$post_variables['PAYER_EXIST'] = 1;
 					$post_variables['PAYER_REF'] = $this->getExistingPayerRef();;
 					$post_variables['PMT_REF'] = '';
@@ -191,8 +191,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 		if ($this->_method->realvault) {
 			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
-				$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
-				if ($this->customerData->getVar('selected_method')  and empty($redirect_cc_selected)) {
+				$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+				if ($this->customerData->getVar('selected_method')  and empty($saved_cc_selected)) {
 					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
 					return false;
 				}
@@ -209,8 +209,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	public function validate ($enqueueMessage = true) {
 		if ($this->_method->realvault) {
 			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
-				$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
-				if ($this->customerData->getVar('selected_method') AND empty($redirect_cc_selected)) {
+				$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+				if ($this->customerData->getVar('selected_method') AND empty($saved_cc_selected)) {
 					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
 					return false;
 				}
@@ -236,9 +236,9 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 	function getExtraPluginInfo () {
 		$extraPluginInfo = array();
-		$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
-		if ($redirect_cc_selected != -1) {
-			$selected_cc = $this->getSelectedCCParams($redirect_cc_selected);
+		$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+		if ($saved_cc_selected != -1) {
+			$selected_cc = $this->getSelectedCCParams($saved_cc_selected);
 			if (!empty($selected_cc)) {
 				$extraPluginInfo['cc_type'] = $selected_cc->realex_saved_pmt_type;
 				$extraPluginInfo['cc_number'] = $selected_cc->realex_saved_pmt_digits;
@@ -281,6 +281,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 	function setComment1 () {
 		$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency);
+		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+
 		$shop_name = $this->getVendorInfo('vendor_store_name');
 		return vmText::sprintf('VMPAYMENT_REALEX_COMMENT1', $amountValue['display'], $this->order['details']['BT']->order_number, $shop_name);
 	}

@@ -70,7 +70,6 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 			'email_currency'                    => 'smallint(1)',
 			'recurring'                         => 'varchar(512)',
 			'recurring_number'                  => 'smallint(1)',
-			'recurring_periodicity'             => 'smallint(1)',
 			'cost_per_transaction'              => 'decimal(10,2) DEFAULT NULL',
 			'cost_percent_total'                => 'decimal(10,2) DEFAULT NULL',
 			'tax_id'                            => 'smallint(1) DEFAULT NULL',
@@ -883,7 +882,14 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	 * @param $order
 	 * @return null|string
 	 */
-	function getResponseHTML ($order, $extra_comment) {
+	function getResponseHTML ($order, $payments, $extra_comment) {
+		$transactionId='';
+		$success=false;
+		if (count($payments)>1){
+			$last_payment=end($payments);
+			$transactionId= $last_payment->klikandpay_response_TRANSACTIONID;
+			$success= $this->isResponseSuccess( $last_payment->klikandpay_response_RESPONSE);
+		}
 
 		$payment_name = $this->renderPluginName($this->_currentMethod);
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
@@ -894,8 +900,8 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$html = $this->renderByLayout('response', array(
 		                                               "success"       => $success,
 		                                               "payment_name"  => $payment_name,
-		                                               "transactionId" => $klikandpay_data['S'],
-		                                               "amount"        => $klikandpay_data['M'] * 0.01,
+		                                               "transactionId" => $transactionId,
+		                                               "amount"        =>  $order['details']['BT']->order_total,
 		                                               "extra_comment" => $extra_comment,
 		                                               "currency"      => $currency_numeric_code,
 		                                               "order_number"  => $order['details']['BT']->order_number,
@@ -905,7 +911,10 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 
 	}
-
+	function  isResponseSuccess ($response) {
+		$success = ($response == self::KLIKANDPAY_RESPONSE_SUCCESS);
+		return $success;
+	}
 	/*********************/
 	/* Private functions */
 	/*********************/

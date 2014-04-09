@@ -30,21 +30,82 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 	function getExtraPluginNameInfo () {
 		$extraInfo['recurring'] = true;
 		$extraInfo['recurring_number'] = $this->_method->recurring_number;
-		$extraInfo['recurring_periodicity'] = $this->_method->recurring_periodicity;
 		return $extraInfo;
 
 	}
 
-	function getRecurringPayments ($pbxTotalInPaymentCurrency) {
-		$pbxTermAmount = round($pbxTotalInPaymentCurrency / $this->_method->recurring_number);
-		$pbxFirstAmount = $pbxTotalInPaymentCurrency - ($pbxTermAmount * ($this->_method->recurring_number - 1));
-		for ($i = 1; $i < $this->_method->recurring_number; $i++) {
-			$recurring["PBX_2MONT" . $i] = $this->getPbxTotal($pbxTermAmount);
-			$recurring["PBX_DATE" . $i] = date('d/m/Y', mktime(0, 0, 0, date('m'), date('d') + ($i * $this->_method->recurring_periodicity), date('Y')));
+	function getRecurringPayments ($totalInPaymentCurrency) {
+
+		if (empty($this->_method->recurring_deposit)) {
+			$recurring = $this->getRecurringIdenticalAmountMonthly($totalInPaymentCurrency);
+
+		} else {
+			$recurring = $this->getRecurringDeposit($totalInPaymentCurrency);
+
 		}
-		$recurring["PBX_TOTAL"] = $this->getPbxTotal($pbxFirstAmount);
+
 		return $recurring;
 	}
+
+	/**
+	 * Le montant total est divisé en 1, 2, .. 6 fois. Tous les montants à débiter sont équivalents.
+	 * Le premier montant est débité au moment de la date d’achat,
+	 * et les autres montants sont présentés en banque à date anniversaire à 1 mois d’intervalle.
+	 * @param $totalInPaymentCurrency
+	 */
+	function getRecurringIdenticalAmountMonthly ($totalInPaymentCurrency) {
+
+		$recurring["MONTANT"] = $totalInPaymentCurrency;
+		$recurring["EXTRA"] = $this->_method->recurring_number . "FOIS";
+		return $recurring;
+	}
+
+	/**
+	 * Après versement d’un acompte immédiat, le solde à payer est divisé en 1, 2, ... 6 fois
+	 * dont la date anniversaire peut être différente de celle du paiement immédiat.
+	 * Chaque échéance pour le paiement du solde sera présentée à 1 mois d’intervalle à la date anniversaire définie
+	 * si elle est différente du paiement initial.
+	 *
+	 * Indiquer une valeur pour la variable MONTANT qui sera immédiatement présentée en banque,
+	 * MONTANT2 le montant du solde.
+	 * EXTRA, le nombre d’échéances souhaitées.
+	 *
+	 *
+	 * OU
+	 *     * Paiement d’un acompte immédiat et paiement du solde à une date définie.
+	 *
+	 * Indiquer le montant à débiter immédiatement dans la variable MONTANT,
+	 * le solde à débiter dans MONTANT2 et
+	 * indiquer la date pour le paiement du solde dans la variable DATE2.
+	 *
+	 * @param $totalInPaymentCurrency
+	 */
+	function getRecurringDeposit ($totalInPaymentCurrency) {
+		if (preg_match('/%$/', $this->_method->recurring_deposit)) {
+			$recurring_deposit = substr($this->_method->recurring_deposit, 0, -1);
+		} else {
+			$recurring_deposit = $this->_method->recurring_deposit;
+		}
+		$deposit = $totalInPaymentCurrency * $recurring_deposit * 0.01;
+
+		$recurring["MONTANT"] = $deposit;
+		$recurring["MONTANT2"] = $totalInPaymentCurrency - $deposit;
+		$recurring["EXTRA"] = $this->_method->recurring_number . "FOIS";
+		if ($this->_method->recurring_date) {
+			$recurring["DATE2"] = $this->getNextTermDate();
+		}
+
+
+		return $recurring;
+	}
+
+	/**
+	 * La valeur DATE, doit être au format : année-mois-jour
+	 */
+	function getNextTermDate () {
+		return date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + ($this->_method->recurring_date), date('Y')));
+	}
+
 
 	function getOrderHistory ($klikandpay_data, $order, $payments) {
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
@@ -59,11 +120,11 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 		$recurring = json_decode($payment->recurring);
 
 		if (count($payments) == 1) {
-			$recurring_comment .= "<br />" . vmText::sprintf('VMPAYMENT_KLIKANDPAY_COMMENT_RECURRING_INFO', $payment->recurring_number, $payment->recurring_periodicity);
+			$recurring_comment .= "<br />" . vmText::sprintf('VMPAYMENT_KLIKANDPAY_COMMENT_RECURRING_INFO', $payment->recurring_number);
 			$recurring_comment .= "<br />" . vmText::_('VMPAYMENT_KLIKANDPAY_COMMENT_NEXT_DEADLINES');
 
 			$recurring_comment .= $this->getOrderRecurringTerms($payment, $order, 1);
-			$status_success='status_success_'.$this->_method->debit_type;
+			$status_success = 'status_success_' . $this->_method->debit_type;
 			$order_history['order_status'] = $this->_method->$status_success;
 		} else {
 			$nbRecurringDone = $this->getNbRecurringDone($payments);
@@ -118,6 +179,7 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 			return $nb;
 		}
 	}
+
 	function getKlikandpayServerUrl () {
 		if ($this->_method->shop_mode == 'test') {
 			$url = 'https://www.klikandpay.com/paiementtest/checkxfois.pl';

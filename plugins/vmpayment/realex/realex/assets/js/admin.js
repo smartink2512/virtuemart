@@ -49,7 +49,7 @@ jQuery().ready(function ($) {
 
         $('.settlement').parents('tr').hide();
 
-        if (settlement == 0) {
+        if (settlement == 'delayed') {
             $('.settlement').parents('tr').show();
         }
     }
@@ -57,9 +57,13 @@ jQuery().ready(function ($) {
         var dcc = $('#paramsdcc').val();
 
         $('.dcc').parents('tr').hide();
+        $('.nodcc').parents('tr').hide();
 
         if (dcc == 1) {
             $('.dcc').parents('tr').show();
+        }
+        if (dcc == 0) {
+            $('.nodcc').parents('tr').show();
         }
     }
     /**********/

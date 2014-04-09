@@ -22,26 +22,18 @@ jQuery().ready(function ($) {
     /************/
     /* Handlers */
     /************/
-    handleDebitType = function () {
-        var debit_type = $('#paramsdebit_type').val();
 
-        $('.authorization_only, .authorization_capture').parents('tr').hide();
+    handleRecurringDate = function () {
+        var recurring_deposit = $('#paramsrecurring_deposit').val();
 
-        if (debit_type == 'authorization_only') {
-            $('.authorization_only').parents('tr').show();
-        } else if (debit_type == 'authorization_capture') {
-            $('.authorization_capture').parents('tr').show();
+        $('.recurring_date').parents('tr').hide();
+
+        if (recurring_deposit == '') {
+        } else {
+            $('.recurring_date').parents('tr').show();
         }
     }
-    handle3Dsecure = function () {
-        var activate_3dsecure = $('#paramsactivate_3dsecure').val();
 
-        $('.activate_3dsecure ').parents('tr').hide();
-
-        if (activate_3dsecure == 1) {
-            $('.activate_3dsecure').parents('tr').show();
-        }
-    }
     handleIntegration = function () {
         var integration = $('#paramsintegration').val();
 
@@ -53,6 +45,7 @@ jQuery().ready(function ($) {
             $('.subscribe').parents('tr').show();
         }
     }
+
     handleShopMode = function () {
         var shop_mode = $('#paramsshop_mode').val();
 
@@ -65,16 +58,10 @@ jQuery().ready(function ($) {
     /**********/
     /* Events */
     /**********/
-    $('#paramsdebit_type').change(function () {
-        handleDebitType();
 
-    });
-    $('#paramsactivate_3dsecure').change(function () {
-        handle3Dsecure();
 
-    });
-    $('#paramsactivate_recurring').change(function () {
-        handlepPaymentplan();
+    $('#paramsrecurring_deposit').change(function () {
+        handleRecurringDate();
 
     });
     $('#paramsshop_mode').change(function () {
@@ -89,7 +76,6 @@ jQuery().ready(function ($) {
     /* Initial calls */
     /*****************/
     handleShopMode();
-    handleDebitType();
-    handle3Dsecure();
+    handleRecurringDate();
     handleIntegration();
 });

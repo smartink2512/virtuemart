@@ -30,7 +30,7 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/klikandpay/klikandpay
 			<?php echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $viewData['amount']." ".$viewData['currency'],  $viewData["order_number"]); ?>
 		</div>
 		<div class="transaction_id">
-			<?php echo vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_S') . ' ' .$viewData['transactionId'];
+			<?php echo vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_TRANSACTIONID') . ' ' .$viewData['transactionId'];
 			?>
 		</div>
 <?php if ( !empty($viewData['extra_comment']))  { ?>

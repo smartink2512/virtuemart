@@ -149,7 +149,6 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 // we come from payment
 		if (isset($params['realex_saved_payer_ref'])) {
-			// digits have alreay been masked
 			$this->storePluginInternalData($params);
 		}
 

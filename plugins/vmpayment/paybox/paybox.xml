@@ -94,7 +94,6 @@
         <param class="integration recurring" name="recurring_number" type="list" default="3"
                label="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER"
                description="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER_TIP">
-            <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
         </param>
