@@ -32,7 +32,12 @@ abstract class ModVMMenuHelper {
 		$q = 'SELECT m.id, m.title, m.alias, m.link, m.parent_id, m.img, e.element FROM `#__menu` as m
 				LEFT JOIN #__extensions AS e ON m.component_id = e.extension_id
 		         WHERE m.client_id = 1 AND e.enabled = 1 AND m.id > 1 AND e.element = \'com_virtuemart\'
+		         AND (m.parent_id=1 OR m.parent_id =
+			                        (SELECT m.id FROM `#__menu` as m
+									LEFT JOIN #__extensions AS e ON m.component_id = e.extension_id
+			                        WHERE m.parent_id=1 AND m.client_id = 1 AND e.enabled = 1 AND m.id > 1 AND e.element = \'com_virtuemart\'))
 		         ORDER BY m.lft';
+
 		$db->setQuery($q);
 
 		$vmComponentItems = $db->loadObjectList();
