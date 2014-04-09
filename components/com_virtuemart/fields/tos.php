@@ -28,8 +28,13 @@ if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS
 $cart = VirtuemartCart::getCart();
 $cart->prepareVendor();
 if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-if(!is_array($cart->BT) or !isset($cart->BT['tos'])) $cart->BT['tos'] = 0;
-$_return['fields'][$_fld->name]['formcode'] = VmHtml::checkbox ('tos', $cart->BT['tos'], 1, 0, 'class="terms-of-service"');
+if(is_array($cart->BT) and isset($cart->BT['tos'])){
+	$tos = $cart->BT['tos'];
+} else {
+	$tos = 0;
+}
+
+$_return['fields'][$_fld->name]['formcode'] = VmHtml::checkbox ('tos', $tos, 1, 0, 'class="terms-of-service"');
 
 if (VmConfig::get ('oncheckout_show_legal_info', 1)) {
 $_return['fields'][$_fld->name]['formcode'] .= '

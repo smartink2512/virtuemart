@@ -112,10 +112,11 @@ class VirtuemartViewUser extends VmView {
 
 	if (($this->cart->fromCart or $this->cart->getInCheckOut()) && empty($virtuemart_userinfo_id)) {
 
-	    //New Address is filled here with the data of the cart (we are in the cart)
-	    $fieldtype = $this->address_type . 'address';
-		$this->cart->prepareAddressDataInCart($this->address_type, $new, $this->userDetails->virtuemart_user_id);
-	    $userFields = $this->cart->$fieldtype;
+		//New Address is filled here with the data of the cart (we are in the cart)
+		$fieldtype = $this->address_type . 'address';
+
+		$this->cart->prepareAddressFieldsInCart();
+		$userFields = $this->cart->$fieldtype;
 
 		//vmdebug('$userFields by prepareAddressDataInCart',$userFields);
 	} else {

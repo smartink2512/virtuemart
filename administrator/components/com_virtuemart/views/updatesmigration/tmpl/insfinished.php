@@ -19,14 +19,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$lang = JFactory::getLanguage();
-//Load first english files
-$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,'en_GB',true);
-$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,'en_GB',true);
+if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+VmConfig::loadConfig();
 
-//load specific language
-$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,null,true);
-$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,null,true);
+VmConfig::loadJLang('com_virtuemart.sys');
+VmConfig::loadJLang('com_virtuemart');
 
 $update = vRequest::getInt('update',0);
 $option = vRequest::getString('option');

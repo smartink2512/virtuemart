@@ -504,7 +504,7 @@ class VmConfig {
 
 		if(self::$_debug===NULL){
 			$debug = VmConfig::get('debug_enable','none');
-			$debug = 'all';	//this is only needed, when you want to debug THIS file
+			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
 				if(VmConfig::$echoAdmin){

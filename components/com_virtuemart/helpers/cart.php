@@ -168,31 +168,25 @@ class VirtueMartCart {
 	public function setPreferred() {
 
 		$userModel = VmModel::getModel('user');
-		$user = $userModel->getCurrentUser();
+		$this->user = $userModel->getCurrentUser();
 
-		if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
-			foreach ($user->userInfo as $address) {
-				if ($address->address_type == 'BT') {
-					$this->saveAddressInCart((array) $address, $address->address_type,false);
-				}
-			}
+		$this->loadSetRenderBTSTAddress();
+
+		if (empty($this->virtuemart_shipmentmethod_id) && !empty($this->user->virtuemart_shipmentmethod_id)) {
+			$this->virtuemart_shipmentmethod_id = $this->user->virtuemart_shipmentmethod_id;
 		}
 
-		if (empty($this->virtuemart_shipmentmethod_id) && !empty($user->virtuemart_shipmentmethod_id)) {
-			$this->virtuemart_shipmentmethod_id = $user->virtuemart_shipmentmethod_id;
-		}
-
-		if (empty($this->virtuemart_paymentmethod_id) && !empty($user->virtuemart_paymentmethod_id)) {
-			$this->virtuemart_paymentmethod_id = $user->virtuemart_paymentmethod_id;
+		if (empty($this->virtuemart_paymentmethod_id) && !empty($this->user->virtuemart_paymentmethod_id)) {
+			$this->virtuemart_paymentmethod_id = $this->user->virtuemart_paymentmethod_id;
 		}
 
 		//$this->tosAccepted is due session stuff always set to 0, so testing for null does not work
-		if((!empty($user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) ){
+		if((!empty($this->user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) ){
 			//$this->tosAccepted = 1;
 			$this->BT['tos'] = 1;
 		}
-		//if(empty($this->customer_number) or ($user->virtuemart_user_id!=0 and strpos($this->customer_number,'nonreg_')!==FALSE ) ){
-		if($user->virtuemart_user_id!=0 and empty($this->customer_number) or strpos($this->customer_number,'nonreg_')!==FALSE){
+		//if(empty($this->customer_number) or ($this->user->virtuemart_user_id!=0 and strpos($this->customer_number,'nonreg_')!==FALSE ) ){
+		if($this->user->virtuemart_user_id!=0 and empty($this->customer_number) or strpos($this->customer_number,'nonreg_')!==FALSE){
 			$this->customer_number = $userModel ->getCustomerNumberById();
 		}
 
@@ -204,6 +198,63 @@ class VirtueMartCart {
 		}
 
 	}
+
+
+	function loadSetRenderBTSTAddress(){
+
+		//$userModel = VmModel::getModel('user');
+		//$user = $userModel->getCurrentUser();
+
+		//If the user is logged in and exists, we check if he has already addresses stored
+		if(!empty($this->user->virtuemart_user_id)){
+
+			foreach ($this->user->userInfo as $address) {
+				if ($address->address_type == 'BT') {
+					$this->saveAddressInCart((array) $address, $address->address_type,false);
+				} else {
+					if(!empty($this->selected_shipto) and $address->virtuemart_userinfo_id==$this->selected_shipto){
+						$this->saveAddressInCart((array) $address, $address->address_type,false,'');
+						$this->STsameAsBT = 0;
+					}
+				}
+			}
+		}
+
+		if(empty($this->selected_shipto)){
+			$this->STsameAsBT = 1;
+			$this->ST = 0;
+		}
+
+		$this->prepareAddressFieldsInCart();
+	}
+
+
+	//function prepareAddressDataInCart($type='BT',$new = false,$virtuemart_user_id = null){
+	function prepareAddressFieldsInCart(){
+
+		$userFieldsModel =VmModel::getModel('Userfields');
+
+		$types = array('BT','ST');
+		foreach($types as $type){
+			$data = $this->$type;
+			if($type=='ST'){
+				$preFix = 'shipto_';
+			} else {
+				$preFix = '';
+			}
+
+			$addresstype = $type.'address'; //for example BTaddress
+			$userFields = $userFieldsModel->getUserFieldsFor('cart',$type);
+			$this->$addresstype = $userFieldsModel->getUserFieldsFilled(
+				$userFields
+				,$data
+				,$preFix
+			);
+
+		}
+
+	}
+
 	/**
 	 * Set the cart in the session
 	 *
@@ -1070,7 +1121,7 @@ class VirtueMartCart {
 		$this->setCartIntoSession();
 	}
 
-	function saveAddressInCart($data, $type, $putIntoSession = true) {
+	function saveAddressInCart($data, $type, $putIntoSession = true,$prefix=0) {
 
 		// VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
@@ -1084,7 +1135,7 @@ class VirtueMartCart {
 		}
 		//STaddress may be obsolete
 		if ($type == 'STaddress' || $type =='ST') {
-			$prefix = 'shipto_';
+			if($prefix===0)$prefix = 'shipto_';
 			$this->STsameAsBT = 0;
 		} else { // BT
 
@@ -1130,7 +1181,7 @@ class VirtueMartCart {
 					}
 					$address[$name] = $data[$prefix.$name];
 				} else {
-					vmdebug('Data not found for '.$name.' ');
+					vmdebug('Data not found for '.$prefix.$name.' ');
 				}
 			}
 		}
@@ -1454,70 +1505,7 @@ class VirtueMartCart {
 		return true;
 	}
 
-	function prepareAddressDataInCart($type='BT',$new = false,$virtuemart_user_id = null){
 
-		$userFieldsModel =VmModel::getModel('Userfields');
-
-		if($new){
-			$data = new stdClass();;
-		} else {
-			$data = (object)$this->$type;
-		}
-
-		if($virtuemart_user_id!==null){
-			$data->virtuemart_user_id = $virtuemart_user_id;
-		}
-
-		if($type=='ST'){
-			$preFix = 'shipto_';
-		} else {
-			$preFix = '';
-		}
-
-		$addresstype = $type.'address'; //for example BTaddress
-		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
-		$address = $this->$addresstype = $userFieldsModel->getUserFieldsFilled(
-		$userFieldsBT
-		,$data
-		,$preFix
-		);
-		//vmdebug('$this->userFieldsCart',$address);
-		if(empty($this->$type) and $type=='BT'){
-			$tmp =&$this->$type ;
-			$tmp = array();
-			//vmdebug('my address ',$address);
-			foreach($address['fields'] as $k =>$field){
-
-				if($k=='virtuemart_country_id'){
-					if(isset($address['fields'][$k]['virtuemart_country_id']) and !isset($tmp['virtuemart_country_id'])){
-						$tmp['virtuemart_country_id'] = $address['fields'][$k]['virtuemart_country_id'];
-					}
-				} else if($k=='virtuemart_state_id') {
-					if(isset($address['fields'][$k]['virtuemart_state_id']) and !isset($tmp['virtuemart_state_id'])){
-						$tmp['virtuemart_state_id'] = $address['fields'][$k]['virtuemart_state_id'];
-					}
-				} else if (!empty($address['fields'][$k]['value'])){
-					if(!isset($tmp[$k])){
-						$tmp[$k] = $address['fields'][$k]['value'];
-					}
-				}
-			}
-		}
-
-		if(!empty($this->ST) && $type!=='ST'){
-			$data = (object)$this->ST;
-			if($new){
-				$data = null;
-			}
-			$userFieldsST = $userFieldsModel->getUserFieldsFor('cart','ST');
-			$this->STaddress = $userFieldsModel->getUserFieldsFilled(
-			$userFieldsST
-			,$data
-			,$preFix
-			);
-		}
-
-	}
 
 	// Render the code for Ajax Cart
 	function prepareAjaxData($checkAutomaticSelected){

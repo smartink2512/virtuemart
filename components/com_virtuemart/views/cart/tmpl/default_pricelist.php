@@ -57,21 +57,18 @@
 		<?php // Output Bill To Address ?>
 		<div class="output-shipto">
 			<?php
-			if (empty($this->cart->STaddress['fields'])) {
-				echo vmText::sprintf ('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_EXPLAIN', vmText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'));
-				echo '<br>';
+			if($this->cart->user->virtuemart_user_id==0){
+				echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
+				echo VmHtml::checkbox ('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
+			} else if(!empty($this->cart->lists['shipTo'])){
 				echo $this->cart->lists['shipTo'];
-			} else {
+			}
+
+			if(!empty($this->cart->ST) and  !empty($this->cart->STaddress['fields'])){
 				if (!class_exists ('VmHtml')) {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 				}
 
-				//if(!empty($this->cart->lists['shipTo'])){
-					echo $this->cart->lists['shipTo'];
-				//} else {
-					echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
-					echo VmHtml::checkbox ('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
-				//}
 
 				?>
 				<div id="output-shipto-display">
@@ -99,8 +96,9 @@
 			<div class="clear"></div>
 		</div>
 		<?php if (!isset($this->cart->lists['current_id'])) {
-		$this->cart->lists['current_id'] = 0;
-	} ?>
+			$this->cart->lists['current_id'] = 0;
+
+		} ?>
 		<a class="details" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&virtuemart_user_id[]=' . $this->cart->lists['current_id'], $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
 			<?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 		</a>
@@ -437,7 +435,7 @@ if ($this->totalInPaymentCurrency) {
 </tr>
 	<?php
 }
-?>
+ ?>
 
 
 </table>

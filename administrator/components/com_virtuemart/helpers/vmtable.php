@@ -417,22 +417,28 @@ class VmTable extends JTable {
 		return $result;
 	}
 
-	function loadTableArray($oid = null, $overWriteLoadName = 0, $andWhere = 0, $tableJoins = array(), $joinKey = 0){
+	function loadFieldValues($array=true){
 
-		$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey);
-		$return = array();
-		foreach ($this->getProperties() as $k => $v)
-		{
-			// Only process fields not in the ignore array.
-			if (!in_array($k, $ignore))
-			{
-				if (isset($src[$k]))
-				{
-					$this->$k = $src[$k];
+		if($array){
+			$return = array();
+			foreach ($this->getProperties() as $k => $v){
+				// Do not process internal variables
+				if (!strpos($k,'_')==0){
+					$return[$k] = $v;
+				}
+			}
+		} else {
+			$return = new stdClass();
+			foreach ($this->getProperties() as $k => $v){
+				// Do not process internal variables
+				if (!strpos($k,'_')==0){
+					$return->$k = $v;
 				}
 			}
 		}
 
+
+		return $return;
 	}
 
 	function checkDataContainsTableFields($from, $ignore = array()) {
@@ -790,9 +796,14 @@ class VmTable extends JTable {
 			//vmdebug('my slugName '.$slugName,$this->$slugName);
 			$this->$slugName = str_replace('-', ' ', $this->$slugName);
 
-			$lang = JFactory::getLanguage();
-			$this->$slugName = $lang->transliterate($this->$slugName);
-			//vmdebug('my slug after transliterate ',$this->slug);
+			//$config =& JFactory::getConfig();
+			//$transliterate = $config->get('unicodeslugs');
+			$transliterate = VmConfig::get('transliterateSlugs',true);
+			if($transliterate){
+				$lang = JFactory::getLanguage();
+				$this->$slugName = $lang->transliterate($this->$slugName);
+			}
+
 			// Trim white spaces at beginning and end of alias and make lowercase
 			$this->$slugName = trim(JString::strtolower($this->$slugName));
 			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
@@ -803,10 +814,11 @@ class VmTable extends JTable {
 			}
 			// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
-			//vmdebug('my slug before urlencode ',$this->slug);
+			//vmdebug('my slug before urlencode ',$this->$slugName);
 			$this->$slugName = urlencode($this->$slugName);
-			//vmdebug('my slug after urlencode ',$this->slug);
+			//vmdebug('my slug after urlencode ',$this->$slugName);
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
+			vmdebug('my Final slugName '.$slugName,$this->slugName);
 			if (!$valid) {
 				return false;
 			}
@@ -1046,20 +1058,20 @@ class VmTable extends JTable {
 							$ok = false;
 							vmdebug('Preloading of language table failed, no id given, cannot store ' . $this->_tbl);
 						}
-					}
-				}
+					} else {
+						if ($ok) {
+							if (!$langTable->bind($data)) {
+								$ok = false;
+								vmdebug('Problem in bind ' . get_class($this) . ' ');
+							}
+						}
 
-				if ($ok) {
-					if (!$langTable->bind($data)) {
-						$ok = false;
-						vmdebug('Problem in bind ' . get_class($this) . ' ');
-					}
-				}
-
-				if ($ok) {
-					if (!$langTable->check()) {
-						$ok = false;
-						vmdebug('Check returned false ' . get_class($langTable) . ' ' . $this->_tbl . ' ' . $langTable->_db->getErrorMsg());
+						if ($ok) {
+							if (!$langTable->check()) {
+								$ok = false;
+								vmdebug('Check returned false ' . get_class($langTable) . ' ' . $this->_tbl . ' ' . $langTable->_db->getErrorMsg());
+							}
+						}
 					}
 				}
 

@@ -168,7 +168,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if(!empty($this->_id)) {
-			$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
+			$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'" ORDER BY `address_type` ASC';
 			$db->setQuery($q);
 			$userInfo_ids = $db->loadColumn(0);
 		} else {

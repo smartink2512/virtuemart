@@ -89,12 +89,11 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	/**
 	 * Install sample data into the database
 	 *
-	 * @author RickG
 	 * @author Max Milbers
 	 */
 	function installSampleData(){
 
-		vRequest::vmCheckToken();
+		$this->checkPermissionForTools();
 
 		$model = $this->getModel('updatesMigration');
 
@@ -149,7 +148,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	/**
 	 * Remove all the Virtuemart tables from the database.
 	 *
-	 * @author RickG
 	 * @author Max Milbers
 	 */
 	function deleteVmTables(){

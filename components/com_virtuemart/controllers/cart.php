@@ -76,17 +76,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->fromCart = true;
 		$cart->saveCartFieldsInCart();
 
-		$selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
-		vmdebug('my shipo in request',$selected_shipto);
-		if($selected_shipto and $cart->selected_shipto != $selected_shipto){
-			$db = JFactory::getDbo();
-			if(!class_exists('TableUserinfos')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');
-			$userinfo = new TableUserinfos($db);
-			//$userinfo   = $this->getTable('userinfos');
-			$this->ST = (array)$userinfo -> load($selected_shipto);
-			vmdebug('address loaded',$this->ST);
-		}
-		$cart->selected_shipto = $selected_shipto;
+		$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
+
 
 		//$cart->getFilterCustomerComment();
 
