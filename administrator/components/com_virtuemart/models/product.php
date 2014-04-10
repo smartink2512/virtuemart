@@ -860,11 +860,9 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($err)){
 				vmError('getProductSingle '.$err);
 			} else {
-
 				if(empty($prices)){
-
 					$loadedProductPrices[$hash] = false; //$this->fillVoidPrice();;
-					vmdebug('getProductSingle getPrice empty  query', count($prices),$productId);
+					//vmdebug('getProductSingle getPrice empty  query', count($prices),$productId);
 				} else {
 					$loadedProductPrices[$hash] = $prices ;
 				}

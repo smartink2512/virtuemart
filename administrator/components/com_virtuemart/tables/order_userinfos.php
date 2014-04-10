@@ -29,7 +29,7 @@ class TableOrder_userinfos extends VmTable {
      */
     function __construct(&$_db){
 		parent::__construct('#__virtuemart_order_userinfos', 'virtuemart_order_userinfo_id', $_db);
-		parent::loadFields($_db);
+		parent::showFullColumns();
 		$this->setLoggable();
 	}
 

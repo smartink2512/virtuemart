@@ -51,6 +51,9 @@ defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
+if(!class_exists('JTable')){
+	require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php');
+}
 JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 
 if (!class_exists ('VmModel')) {
@@ -340,12 +343,12 @@ function vmTime($descr,$name='current'){
 	}
 	$starttime = VmConfig::$_starttime ;
 	if(empty($starttime[$name])){
-		vmdebug('vmTime: '.$descr.' starting '.microtime(TRUE));
+		echo('vmTime: '.$descr.' starting '.microtime(TRUE));
 		VmConfig::$_starttime[$name] = microtime(TRUE);
 	}
 	else {
 		if ($name == 'current') {
-			vmdebug ('vmTime: ' . $descr . ' time consumed ' . (microtime (TRUE) - $starttime[$name]));
+			echo ('vmTime: ' . $descr . ' time consumed ' . (microtime (TRUE) - $starttime[$name]));
 			VmConfig::$_starttime[$name] = microtime (TRUE);
 		}
 		else {
@@ -353,7 +356,7 @@ function vmTime($descr,$name='current'){
 				$descr = $name;
 			}
 			$tmp = 'vmTime: ' . $descr . ': ' . (microtime (TRUE) - $starttime[$name]);
-			vmdebug ($tmp);
+			echo ($tmp);
 		}
 		}
 

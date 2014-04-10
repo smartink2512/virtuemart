@@ -103,6 +103,43 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $q;
 	}
 
+/*	function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
+
+		static $_customfields = array();
+		if (array_key_exists ($virtuemart_customfield_id, $_customfields)) {
+			vmdebug('Return cached getCustomEmbeddedProductCustomField');
+			return $_customfields[$virtuemart_customfield_id];
+		}
+		$db= JFactory::getDBO ();
+		$q = 'SELECT * FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` ="' . (int)$virtuemart_customfield_id . '"';
+		$db->setQuery ($q);
+		$field = $db->loadObject ();
+
+		if($field){
+			static $_customProto = array();
+
+			$field->virtuemart_custom_id = (int)$field->virtuemart_custom_id;
+			$field->fpublished = $field->published;
+			unset($field->published);
+
+			if (!array_key_exists ($field->virtuemart_custom_id, $_customProto)) {
+				$q = 'SELECT * FROM `#__virtuemart_customs` WHERE `virtuemart_custom_id` ="' . (int)$field->virtuemart_custom_id . '"';
+				$db->setQuery ($q);
+				$customProto = $db->loadObject ();
+			} else {
+				vmdebug('found cached customPrototype');
+				$customProto = $_customProto[$field->virtuemart_custom_id];
+			}
+
+			if($customProto){
+				$field = (object) array_merge((array) $customProto, (array) $field);
+				$_customfields[$virtuemart_customfield_id] = $field;
+			}
+
+		}
+		return $field;
+	}*/
+
 	function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
 
 		$db= JFactory::getDBO ();
@@ -120,6 +157,109 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 	function getCustomEmbeddedProductCustomFields($productIds,$virtuemart_custom_id=0,$cartattribute=-1,$forcefront=FALSE){
+
+		$app = JFactory::getApplication();
+		$db= JFactory::getDBO ();
+		$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
+
+		static $_customFieldByProductId = array();
+
+		$productCustomsCached = array();
+		foreach($productIds as $k=>$productId){
+			$hkey = $productId.$cartattribute;
+			vmdebug('Product customfields $hkey '.$hkey);
+			if (array_key_exists ($hkey, $_customFieldByProductId)) {
+				$productCustomsCached[] = $_customFieldByProductId[$hkey];
+				unset($productIds[$k]);
+
+			}
+		}
+
+		if(is_array($productIds) and count($productIds)>0){
+			$q .= 'WHERE `virtuemart_product_id` IN ('.implode(',', $productIds).')';
+		} else if(!empty($productIds)){
+			$q .= 'WHERE `virtuemart_product_id` = "'.$productIds.'" ';
+		} else {
+			return array();
+		}
+		if(!empty($virtuemart_custom_id)){
+			if(is_numeric($virtuemart_custom_id)){
+				$q .= ' AND c.`virtuemart_custom_id`= "' . (int)$virtuemart_custom_id.'" ';
+			} else {
+				$virtuemart_custom_id = substr($virtuemart_custom_id,0,1); //just in case
+				$q .= ' AND c.`field_type`= "' .$virtuemart_custom_id.'" ';
+			}
+		}
+		if($cartattribute){
+			$q .= ' AND ( `is_cart_attribute` = 1 OR `is_input` = 1) ';
+		}
+		if($forcefront or $app->isSite()){
+			$q .= ' AND c.`published` = "1" ';
+			$forcefront = true;
+		}
+
+		if(!empty($virtuemart_custom_id) and $virtuemart_custom_id!==0){
+			$q .= ' ORDER BY field.`ordering` ASC';
+		} else {
+			if($forcefront or $app->isSite()){
+				//$q .= ' GROUP BY c.`virtuemart_custom_id`';
+			}
+
+			$q .= ' ORDER BY field.`ordering`,`virtuemart_custom_id` ASC';
+		}
+
+		$db->setQuery ($q);
+		$productCustoms = $db->loadObjectList ();
+		$err=$db->getErrorMsg();
+		if($err){
+			vmError('getCustomEmbeddedProductCustomFields error in query '.$err);
+		}
+
+		foreach($productCustoms as $customfield){
+			$hkey = $cartattribute.$customfield->virtuemart_product_id;
+			$_customFieldByProductId[$hkey] = $customfield;
+		}
+		$productCustoms = array_merge($productCustomsCached,$productCustoms);
+		//vmdebug('getCustomEmbeddedProductCustomGroup ',$productIds,$q);
+		if($productCustoms){
+
+			$customfield_ids = array();
+			$customfield_override_ids = array();
+			foreach($productCustoms as $field){
+				//vmdebug('$idField',$idField);
+				if($field->override!=0){
+					$customfield_override_ids[] = $field->override;
+				} else if ($field->disabler!=0) {
+					$customfield_override_ids[] = $field->disabler;
+					//$virtuemart_customfield_ids[] = $field->virtuemart_customfield_id;
+				}
+
+				$customfield_ids[] = $field->virtuemart_customfield_id;
+			}
+			//$virtuemart_customfield_ids = array_unique($virtuemart_customfield_ids);
+			$virtuemart_customfield_ids = array_unique( array_diff($customfield_ids,$customfield_override_ids));
+
+			foreach ($productCustoms as $k =>$field) {
+				if(in_array($field->virtuemart_customfield_id,$virtuemart_customfield_ids)){
+
+					if($forcefront and $field->disabler){
+						unset($productCustoms[$k]);
+					} else {
+						VirtueMartModelCustomfields::bindCustomEmbeddedFieldParams($field,$field->field_type);
+					}
+
+				} else{
+					unset($productCustoms[$k]);
+				}
+			}
+			//vmTime('loadtime of customs','getCustomEmbeddedProductCustomFields');
+			return $productCustoms;
+		} else {
+			return array();
+		}
+	}
+
+	function getCustomEmbeddedProductCustomFieldsO($productIds,$virtuemart_custom_id=0,$cartattribute=-1,$forcefront=FALSE){
 
 		//vmSetStartTime('getCustomEmbeddedProductCustomFields');
 		$app = JFactory::getApplication();
@@ -140,7 +280,6 @@ class VirtueMartModelCustomfields extends VmModel {
 				$virtuemart_custom_id = substr($virtuemart_custom_id,0,1); //just in case
 				$q .= ' AND c.`field_type`= "' .$virtuemart_custom_id.'" ';
 			}
-
 		}
 		if($cartattribute!=-1){
 			$q .= ' AND ( `is_cart_attribute` = 1 OR `is_input` = 1) ';

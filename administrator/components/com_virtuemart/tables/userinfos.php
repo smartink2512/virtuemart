@@ -66,7 +66,7 @@ class TableUserinfos extends VmTableData {
 
 		/* Make sure the custom fields are added */
 		parent::__construct('#__virtuemart_userinfos', 'virtuemart_userinfo_id', $db);
-		parent::loadFields();
+		parent::showFullColumns();
 		$this->setPrimaryKey('virtuemart_userinfo_id');
 		$this->setObligatoryKeys('address_type');
 		$this->setObligatoryKeys('virtuemart_user_id');

@@ -158,10 +158,6 @@ AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
 
 <?php $duration = 650;
-$db = JFactory::getDBO();
-$db->setQuery("SHOW COLUMNS FROM `#__virtuemart_userfields`");
-$existingFields = '"'.implode('","',$db->loadColumn()).'"';
-
 ?>
 <script type="text/javascript">
 

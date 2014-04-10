@@ -50,8 +50,7 @@ class VmTable extends JTable {
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
 
-	static $_cache = null;
-	static $_query_cache = null;
+	static $_cache = array();
 
 	/**
 	 * @param string $table
@@ -104,8 +103,6 @@ class VmTable extends JTable {
 		}
 
 
-		self::$_cache = null;
-		self::$_query_cache = null;
 	}
 
 	function setPrimaryKey($key, $keyForm = 0) {
@@ -330,92 +327,50 @@ class VmTable extends JTable {
 		return $this->_cryptedFields;
 	}
 
-	/**
-	 * Load the fieldlist
-	 */
-	public function loadFields() {
 
-		$_fieldlist = array();
-		$_q = 'SHOW COLUMNS FROM `' . $this->_tbl . '`';
-		if (!isset(self::$_query_cache[md5($_q)])) {
-			$this->_db->setQuery($_q);
-			$_fields = $this->_db->loadObjectList();
-		} else $_fields = self::$_query_cache[md5($_q)];
-		if (count($_fields) > 0) {
-			foreach ($_fields as $key => $_f) {
-				$_fieldlist[$_f->Field] = $_f->Default;
+	/**
+	 * Gives Back the columns of the current table, sets the properties on the table.
+	 *
+	 * @author Max Milbers
+	 * @param int $typeKey use "Field" to get the effect of getTableColumns
+	 * @param int $typeValue use "Type" to get the effect of getTableColumns
+	 * @param bool $properties disable setting of columns as table properties
+	 */
+	public function showFullColumns($typeKey=0,$typeValue=0,$properties=true){
+
+		$hash = 'SFL'.$this->_tbl.$typeKey.$typeValue;
+		if (!isset(self::$_cache[$hash])) {
+			$this->_db->setQuery('SHOW FULL COLUMNS  FROM `'.$this->_tbl.'` ') ;
+			self::$_cache[$hash] = $this->_db->loadAssocList();
+		}
+
+		if ($properties and count(self::$_cache[$hash]) > 0) {
+			foreach (self::$_cache[$hash] as $key => $_f) {
+				$_fieldlist[$_f['Field']] = $_f['Default'];
 			}
 			$this->setProperties($_fieldlist);
 		}
-	}
 
-	/**
-	 * Get the columns from database table.
-	 *
-	 * adjusted to vm2, We use the same, except that the cache is not a global static,.. we use static belonging to table
-	 * @return  mixed  An array of the field names, or false if an error occurs.
-	 *
-	 * @since   11.1
-	 */
-
-	public function getFields() {
-
-		if (self::$_cache === null) {
-			// Lookup the fields for this table only once.
-			$name = $this->_tbl;
-
-			$fields = $this->_db->getTableColumns($name, false);
-
-			if (empty($fields)) {
-				$e = new JException(vmText::_('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
-				$this->setError($e);
-				return false;
+		if ($typeKey or $typeValue){
+			foreach (self::$_cache[$hash] as $field){
+				if(empty($typeValue)){
+					$value = $field;
+				} else {
+					$value = $field[$typeValue];
+				}
+				if($typeKey){
+					$result[$field[$typeKey]] = $value;
+				} else {
+					$result[] = $value;
+				}
 			}
-			self::$_cache = $fields;
-		}
-
-		return self::$_cache;
-	}
-
-	/**
-	 * Original from joomla2.5
-	 * Retrieves field information about a given table.
-	 *
-	 * @param   string   $table     The name of the database table.
-	 * @param   boolean  $typeOnly  True to only return field types.
-	 *
-	 * @return  array  An array of fields for the database table.
-	 *
-	 * @since   11.1
-	 * @throws  JDatabaseException
-	 */
-	public function getTableColumns($table, $typeOnly = true)
-	{
-		$result = array();
-
-		// Set the query to get the table fields statement.
-		$this->_db->setQuery('SHOW FULL COLUMNS  FROM `'.$table.'` ') ;
-		$fields = $this->_db->loadObjectList();
-
-		// If we only want the type as the value add just that to the list.
-		if ($typeOnly)
-		{
-			foreach ($fields as $field)
-			{
-				$result[$field->Field] = preg_replace("/[(0-9)]/", '', $field->Type);
-			}
-		}
-		// If we want the whole field data object add that to the list.
-		else
-		{
-			foreach ($fields as $field)
-			{
-				$result[$field->Field] = $field;
-			}
+		} else {
+			$result = self::$_cache[$hash];
 		}
 
 		return $result;
 	}
+
 
 	function loadFieldValues($array=true){
 
@@ -571,9 +526,11 @@ class VmTable extends JTable {
 
 		//Version load the tables using JOIN
 		if ($this->_translatable) {
-			$mainTable = $this->_tbl . '_' . $this->_langTag;
-			$select = 'SELECT `' . $mainTable . '`.* ,`' . $this->_tbl . '`.* ';
-			$from = ' FROM `' . $mainTable . '` JOIN `' . $this->_tbl . '` using (`' . $this->_tbl_key . '`)';
+			$mainTable =  $this->_tbl;
+			$langTable = $this->_tbl . '_' . $this->_langTag;
+
+			$select = 'SELECT `' . $mainTable . '`.* ,`' . $langTable . '`.* ';
+			$from = ' FROM `' . $mainTable . '` INNER JOIN `' . $langTable . '` using (`' . $this->_tbl_key . '`)';
 		} else {
 			$mainTable = $this->_tbl;
 			$select = 'SELECT `' . $mainTable . '`.* ';
@@ -592,21 +549,18 @@ class VmTable extends JTable {
 		if ($andWhere === 0) $andWhere = '';
 		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
-		if (!isset(self::$_query_cache[md5($query)])) {
-			$db = $this->getDBO();
-			$db->setQuery($query);
+		$hash = md5($query);
 
-			$result = $db->loadAssoc();
-			self::$_cache[md5($query)] = $result;
-			$error = $db->getErrorMsg();
-		} else {
-			$result = self::$_cache[md5($query)];
+		if (array_key_exists ($hash, self::$_cache)) {
+			//vmdebug('vmtable found cached ');
+			return self::$_cache[$hash];
 		}
-		// 		vmdebug('vmtable load '.$db->getQuery(),$result);
-		if (!empty($error)) {
-			vmError('vmTable load x' . $error);
-			return false;
-		}
+
+		$db = $this->getDBO();
+		$db->setQuery($query);
+
+		$result = $db->loadAssoc();
+		self::$_cache[$hash] = $result;
 
 		if ($result) {
 			$this->bind($result);
@@ -668,6 +622,7 @@ class VmTable extends JTable {
 			$this->_ltmp = false;
 		}
 
+		self::$_cache[$hash] = $this;
 		return $this;
 
 	}
@@ -877,16 +832,16 @@ class VmTable extends JTable {
 				$className = get_class($this);
 				if (strpos($this->_tbl,'virtuemart_vmusers')===FALSE) {
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
-					if (!isset(self::$_query_cache[md5($q)])) {
+					if (!isset(self::$_cache[md5($q)])) {
 						$this->_db->setQuery($q);
 						$virtuemart_vendor_id = $this->_db->loadResult();
-					} else $virtuemart_vendor_id = self::$_query_cache[md5($q)];
+					} else $virtuemart_vendor_id = self::$_cache[md5($q)];
 				} else {
 					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
-					if (!isset(self::$_query_cache[md5($q)])) {
+					if (!isset(self::$_cache[md5($q)])) {
 						$this->_db->setQuery($q);
 						$vmuser = $this->_db->loadRow();
-					} else $vmuser = self::$_query_cache[md5($q)];
+					} else $vmuser = self::$_cache[md5($q)];
 
 					if ($vmuser and count($vmuser) === 2) {
 						$virtuemart_vendor_id = $vmuser[0];
@@ -1237,11 +1192,11 @@ class VmTable extends JTable {
 		}		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
 		$q = "SELECT `" . $this->_orderingKey . '` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . "` = '" . (int)$cid . "' limit 0,1";
 
-		if (!isset(self::$_query_cache[md5($q)])) {
+		if (!isset(self::$_cache[md5($q)])) {
 			$this->_db->setQuery($q);
 			$c_order = $this->_db->loadResult(); // current ordering value of cid
 		} else {
-			$c_order = self::$_query_cache[md5($q)];
+			$c_order = self::$_cache[md5($q)];
 		}
 
 		$this->$orderingkey = $c_order;
@@ -1285,13 +1240,13 @@ class VmTable extends JTable {
 		}
 
 
-		if (!isset(self::$_query_cache[md5($sql)])) {
+		if (!isset(self::$_cache[md5($sql)])) {
 			$this->_db->setQuery($sql, 0, 1);
 
 
 			$row = null;
 			$row = $this->_db->loadObject();
-		} else $row = self::$_query_cache[md5($sql)];
+		} else $row = self::$_cache[md5($sql)];
 
 
 		if (isset($row)) {
@@ -1367,10 +1322,10 @@ class VmTable extends JTable {
 		$query = 'SELECT MAX(`' . $this->_orderingKey . '`)' .
 			' FROM ' . $this->_tbl .
 			($where ? ' WHERE ' . $where : '');
-		if (!isset(self::$_query_cache[md5($query)])) {
+		if (!isset(self::$_cache[md5($query)])) {
 			$this->_db->setQuery($query);
 			$maxord = $this->_db->loadResult();
-		} else $maxord = self::$_query_cache[md5($query)];
+		} else $maxord = self::$_cache[md5($query)];
 
 		if ($this->_db->getErrorNum()) {
 			vmError(get_class($this) . ' getNextOrder ' . $this->_db->getErrorMsg());
@@ -1607,10 +1562,10 @@ class VmTable extends JTable {
 	function getMysqlVersion() {
 
 		$q = 'select version()';
-		if (!isset(self::$_query_cache[md5($q)])) {
+		if (!isset(self::$_cache[md5($q)])) {
 			$this->_db->setQuery($q);
 			return $this->_db->loadResult();
-		} else return self::$_query_cache[md5($q)];
+		} else return self::$_cache[md5($q)];
 
 	}
 
@@ -1671,7 +1626,8 @@ class VmTable extends JTable {
 		$_check_act = strtoupper(substr($_act, 0, 3));
 		//Check if a column is there
 
-		$columns = $this->_db->getTableColumns($this->_tbl);
+		//$columns = $this->_db->getTableColumns($this->_tbl);
+		$columns = $this->showFullColumns('Field','Type',false);
 
 		$res = array_key_exists($_col, $columns);
 

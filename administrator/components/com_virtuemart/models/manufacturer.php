@@ -125,6 +125,14 @@ class VirtueMartModelManufacturer extends VmModel {
 		$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
+		static $_manufacturers = array();
+
+		$hash = $search.$virtuemart_manufacturercategories_id.VmConfig::$vmlang.(int)$onlyPublished.(int)$this->_noLimit.(int)$getMedia;
+
+		if (array_key_exists ($hash, $_manufacturers)) {
+			vmdebug('Return cached getManufacturers');
+			return $_manufacturers[$hash];
+		}
 
 		$where = array();
 		if ($virtuemart_manufacturercategories_id > 0) {
@@ -161,7 +169,8 @@ class VirtueMartModelManufacturer extends VmModel {
 		$whereString = ' ';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where).' ' ;
 
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,$groupBy,$ordering );
+		$_manufacturers[$hash] = $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,$groupBy,$ordering );
+
 
 	}
 

@@ -131,7 +131,10 @@ class VirtuemartViewUserfields extends VmView {
 			}
 			$this->assignRef('valueCount', --$i);
 
-// 			vmdebug('$userField->shipment',$userField);
+			$userFieldTable = $model->getTable();
+			$this->existingFields =  '"'.implode('","',$userFieldTable->showFullColumns(0,'Field')).'"';
+			vmdebug('My existinFields showFullColumns',$this->existingFields);
+
 			// Toggles
 			$lists['required']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_REQUIRED','required',$userField->required,$notoggle);
 			$lists['published']    =  VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$userField->published,$notoggle);
