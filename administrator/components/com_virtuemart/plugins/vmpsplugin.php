@@ -152,7 +152,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	public function displayListFE (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 
-		vmdebug('displayListFE '.$cart->vendorId,$this->_name);
+		//vmdebug('displayListFE '.$cart->vendorId,$this->_name);
 		if ($this->getPluginMethods ($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				vmAdminInfo ('displayListFE cartVendorId=' . $cart->vendorId);
@@ -994,7 +994,17 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if($this->_psType=='payment'){
 			$cartTotalAmountOrig=$this->getCartAmount($cart->cartPrices);
-			$cartTotalAmount=($cartTotalAmountOrig + $method->cost_per_transaction) / (1 -($method->cost_percent_total * 0.01));
+
+			//Simple
+			$cartTotalAmount=($cartTotalAmountOrig + $method->cost_per_transaction) * (1 +($method->cost_percent_total * 0.01));
+			vmdebug('Simple $cartTotalAmount = ('.$cartTotalAmountOrig.' + '.$method->cost_per_transaction.') * (1 + ('.$method->cost_percent_total.' * 0.01)) = '.$cartTotalAmount );
+			vmdebug('Simple $cartTotalAmount = '.($cartTotalAmountOrig + $method->cost_per_transaction).' * '. (1 + $method->cost_percent_total * 0.01) .' = '.$cartTotalAmount );
+
+			//progressive
+			$cartTotalAmount = ($cartTotalAmountOrig + $method->cost_per_transaction) / (1 -($method->cost_percent_total * 0.01));
+			vmdebug('Progressive $cartTotalAmount = ('.$cartTotalAmountOrig.' + '.$method->cost_per_transaction.') / (1 - ('.$method->cost_percent_total.' * 0.01)) = '.$cartTotalAmount );
+			vmdebug('Progressive $cartTotalAmount = '.($cartTotalAmountOrig + $method->cost_per_transaction) .' / '. (1 - $method->cost_percent_total * 0.01) .' = '.$cartTotalAmount );
+
 			$cart->cartPrices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
 		}
 

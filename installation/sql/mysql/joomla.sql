@@ -1506,7 +1506,7 @@ CREATE TABLE `#__session` (
   `client_id` tinyint(3) unsigned NOT NULL default '0',
   `guest` tinyint(4) unsigned default '1',
   `time` varchar(14) default '',
-  `data` mediumtext default NULL,
+  `data` text default NULL,
   `userid` int(11) default '0',
   `username` varchar(150) default '',
   `usertype` varchar(50) default '',

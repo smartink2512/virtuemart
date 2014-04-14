@@ -50,7 +50,7 @@ class VmTable extends JTable {
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
 
-	static $_cache = array();
+	private static $_cache = array();
 
 	/**
 	 * @param string $table
@@ -545,22 +545,20 @@ class VmTable extends JTable {
 			}
 		}
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
-		// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
+		// $query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 		if ($andWhere === 0) $andWhere = '';
 		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
-		$hash = md5($query);
+		$hash = md5($oid. $select . $k . $andWhere);
 
-		if (array_key_exists ($hash, self::$_cache)) {
-			//vmdebug('vmtable found cached ');
-			return self::$_cache[$hash];
+		if (isset (self::$_cache['l'][$hash])) {
+			return self::$_cache['l'][$hash];
 		}
 
 		$db = $this->getDBO();
 		$db->setQuery($query);
 
 		$result = $db->loadAssoc();
-		self::$_cache[$hash] = $result;
 
 		if ($result) {
 			$this->bind($result);
@@ -622,9 +620,8 @@ class VmTable extends JTable {
 			$this->_ltmp = false;
 		}
 
-		self::$_cache[$hash] = $this;
-		return $this;
-
+		self::$_cache['l'][$hash] = $this->loadFieldValues(false);
+		return self::$_cache['l'][$hash];
 	}
 
 

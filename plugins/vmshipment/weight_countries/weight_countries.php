@@ -205,12 +205,25 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 */
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
-		$this->convert ($method);
-	//vmTrace('checkConditions');
-		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
+		static $result = array();
 
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 		$type = (($cart->ST == 0) ? 'BT' : 'ST');
+
+		if(isset($cart_prices['salesPrice'])){
+			$hashSalesPrice = $cart_prices['salesPrice'];
+		} else {
+			$hashSalesPrice = '';
+		}
+
+		$hash = $method->virtuemart_shipmentmethod_id.$type.$address['virtuemart_country_id'].'_'.$address['zip'].'_'.$hashSalesPrice;
+
+		if(isset($result[$hash])){
+			return $result[$hash];
+		}
+		$this->convert ($method);
+		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
+
 		$countries = array();
 		if (!empty($method->countries)) {
 			if (!is_array ($method->countries)) {
@@ -230,7 +243,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
 			*/
-			vmdebug('checkConditions $address is not an array, set zip and country id = 0');
+			//vmdebug('checkConditions $address is not an array, set zip and country id = 0');
 			$address = array();
 			$address['zip'] = 0;
 			$address['virtuemart_country_id'] = 0;
@@ -277,13 +290,15 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 		$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond + (int)$country_cond;
 		if($allconditions === 5){
+			$result[$hash] = true;
 			return TRUE;
 		} else {
+			$result[$hash] = false;
 			vmdebug('checkConditions '.$method->shipment_name.' does not fit',(int)$nbproducts_cond,(int)$zip_cond);
 			return FALSE;
 		}
 
-
+		$result[$hash] = false;
 		return FALSE;
 	}
 

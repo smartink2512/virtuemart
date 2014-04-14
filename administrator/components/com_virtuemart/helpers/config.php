@@ -343,12 +343,12 @@ function vmTime($descr,$name='current'){
 	}
 	$starttime = VmConfig::$_starttime ;
 	if(empty($starttime[$name])){
-		echo('vmTime: '.$descr.' starting '.microtime(TRUE));
+		vmdebug('vmTime: '.$descr.' starting '.microtime(TRUE));
 		VmConfig::$_starttime[$name] = microtime(TRUE);
 	}
 	else {
 		if ($name == 'current') {
-			echo ('vmTime: ' . $descr . ' time consumed ' . (microtime (TRUE) - $starttime[$name]));
+			vmdebug ('vmTime: ' . $descr . ' time consumed ' . (microtime (TRUE) - $starttime[$name]));
 			VmConfig::$_starttime[$name] = microtime (TRUE);
 		}
 		else {
@@ -356,7 +356,7 @@ function vmTime($descr,$name='current'){
 				$descr = $name;
 			}
 			$tmp = 'vmTime: ' . $descr . ': ' . (microtime (TRUE) - $starttime[$name]);
-			echo ($tmp);
+			vmdebug ($tmp);
 		}
 		}
 

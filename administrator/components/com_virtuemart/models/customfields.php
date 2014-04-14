@@ -167,7 +167,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$productCustomsCached = array();
 		foreach($productIds as $k=>$productId){
 			$hkey = $productId.$cartattribute;
-			vmdebug('Product customfields $hkey '.$hkey);
+			//vmdebug('Product customfields $hkey '.$hkey);
 			if (array_key_exists ($hkey, $_customFieldByProductId)) {
 				$productCustomsCached[] = $_customFieldByProductId[$hkey];
 				unset($productIds[$k]);

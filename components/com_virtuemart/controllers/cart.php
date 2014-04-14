@@ -61,8 +61,21 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 *
 	 * @since   11.1
 	 */
-	public function display($cachable = false, $urlparams = false)
-	{
+	public function display($cachable = false, $urlparams = false){
+
+		if(VmConfig::get('use_as_catalog', 0)){
+			// Get a continue link
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$categoryLink = '';
+			if ($virtuemart_category_id) {
+				$categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
+			}
+			vmInfo('This is a catalogue, you cannot acccess the cart');
+			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
+			$app = JFactory::getApplication();
+			$app ->redirect($continue_link);
+		}
+
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$viewName = vRequest::getCmd('view', $this->default_view);
@@ -72,37 +85,34 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$view->assignRef('document', $document);
 
+		$post = vRequest::getPost();
+
 		$cart = VirtueMartCart::getCart();
-		$cart->fromCart = true;
-		$cart->saveCartFieldsInCart();
-
 		$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
+		$cart->fromCart = true;
 
-
-		//$cart->getFilterCustomerComment();
-
+		$cart->saveCartFieldsInCart();
 		$cart->updateProductCart();
-		$this->setcoupon();
 
-		$virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $cart->virtuemart_shipmentmethod_id);
-		$cart->setShipment($virtuemart_shipmentmethod_id);
+		$coupon_code = vRequest::getString('coupon_code', '');
+		$msg = $cart->setCouponCode($coupon_code);
 
-		$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $cart->virtuemart_paymentmethod_id);
-		$cart->setPaymentMethod($virtuemart_paymentmethod_id);
+		$cart->setShipmentMethod();
+		$cart->setPaymentMethod();
+		$cart->prepareCartData();
 
-		if($cart && !VmConfig::get('use_as_catalog', 0)){
-			if (isset($_POST['checkout'])) {
-				//vmdebug('isset($_POST["checkout"] isset($_POST["checkout"] isset($_POST["checkout"] isset($_POST["checkout"] ');
-				$cart->checkout();
-			} else if(isset($_POST['confirm'])){
-				$cart->confirmDone();
-				$view = $this->getView('cart', 'html');
-				$view->setLayout('order_done');
-				$cart->fromCart = false;
-				$view->display();
-				return true;
-			}
+		if(isset($post['confirm']) and !$cart->getInCheckOut()){
+			$cart->confirmDone();
+			$view = $this->getView('cart', 'html');
+			$view->setLayout('order_done');
+			$cart->fromCart = false;
+			$view->display();
+			return true;
+		} else {
+			$redirect = isset($post['checkout']);
+			$cart->checkoutData($redirect);
 		}
+
 		$cart->fromCart = false;
 		$view->display();
 
@@ -234,11 +244,13 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function setcoupon() {
 
 		/* Get the coupon_code of the cart */
-		$coupon_code = vRequest::getVar('coupon_code', ''); //TODO VAR OR INT OR WORD?
-		if ($coupon_code) {
+		$coupon_code = vRequest::getString('coupon_code', '');
 
-			$cart = VirtueMartCart::getCart();
-			if ($cart) {
+		$cart = VirtueMartCart::getCart();
+		if ($cart) {
+			$this->couponCode = '';
+
+			if (!empty($coupon_code)) {
 				$app = JFactory::getApplication();
 				$msg = $cart->setCouponCode($coupon_code);
 
@@ -251,9 +263,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				//}
 			}
 		}
-		//$this->display();
-
 	}
+
 
 	/**
 	 * For selecting shipment, opens a new layout

@@ -187,9 +187,15 @@ a img.calendar {
 }
 #system-message dd ul
 {
-	color: #000;
+	color: #205020;
 	list-style: none;
 	padding: 0px;
+}
+#system-message dd ul .vmdebug
+{
+    color: #503030;
+    list-style: none;
+    padding: 0px;
 }
 #system-message dd ul li
 {

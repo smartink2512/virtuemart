@@ -170,6 +170,18 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 				<!-- Category name -->
 				<td><?php //echo JHtml::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option=com_virtuemart'), $product->category_name);
 					echo $product->categoriesList;
+					/*if(!empty($product->categories)){
+						$maxFive = 0;
+						foreach($product->categories as $virtuemart_category_id){
+							if ($maxFive<5) {
+								$category = $this->catTable->load ((int)$virtuemart_category_id);
+								echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id[]='.$virtuemart_category_id), $category->category_name);
+								$maxFive++;
+							} else {
+								break;
+							}
+						}
+					}*/
 				?></td>
 				<!-- Reorder only when category ID is present -->
 				<?php if ($this->virtuemart_category_id ) { ?>
@@ -183,7 +195,22 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 					</td>
 				<?php }  ?>
 				<!-- Manufacturer name -->
-				<td><?php if ($product->virtuemart_manufacturer_id) { echo JHtml::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$product->virtuemart_manufacturer_id.'&option=com_virtuemart'), $product->mf_name); } ?></td>
+				<td><?php
+					echo $product->manuList;
+					/*if(!empty($product->virtuemart_manufacturer_id)){
+						$maxFive = 0;
+						foreach($product->virtuemart_manufacturer_id as $virtuemart_manufacturer_id){
+							if ($maxFive<5) {
+								$manufacturer = $this->mfTable->load ((int)$virtuemart_manufacturer_id);
+								echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$virtuemart_manufacturer_id), $manufacturer->mf_name);
+								$maxFive++;
+							} else {
+								break;
+							}
+						}
+					}*/
+				?></td>
+
 				<!-- Reviews -->
 				<?php $link = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td align="center" ><?php echo JHtml::_('link', $link, $product->reviews); ?></td>

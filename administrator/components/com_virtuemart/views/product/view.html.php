@@ -255,10 +255,13 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef('lists', $lists);
 				// Toolbar
 				if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
-				if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
+				//if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
 				if(!empty($product->virtuemart_product_id)){
 					if (!class_exists ('shopFunctionsF')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 					$menuItemID = shopFunctionsF::getMenuItemId(JFactory::getLanguage()->getTag());
+					$canonLink='';
+					if($product->canonCatId) $canonLink = '&virtuemart_category_id='.$product->canonCatId;
+
 					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
 				} else {
 					$text = $product->product_name.$sku;
@@ -352,6 +355,11 @@ class VirtuemartViewProduct extends VmView {
 			$vendor_model = VmModel::getModel('vendor');
 			$productreviews = VmModel::getModel('ratings');
 
+			$loaded_virtuemart_manufacturer_id = array();
+			$this->mfTable = $model->getTable ('manufacturers');
+
+			$this->catTable = $model->getTable ('categories');
+
 			foreach ($productlist as $virtuemart_product_id => $product) {
 				$product->mediaitems = count($product->virtuemart_media_id);
 				$product->reviews = $productreviews->countReviewsForProduct($product->virtuemart_product_id);
@@ -370,9 +378,30 @@ class VirtuemartViewProduct extends VmView {
 					$product->product_price_display = vmText::_('COM_VIRTUEMART_NO_PRICE_SET');
 				}
 
-				/* Write the first 5 categories in the list */
-				$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
+				// Write the first 5 categories in the list
+				//$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
+				$product->categoriesList = '';
+				//
+				if (!empty($product->categories[0])) {
+					foreach($product->categories as $virtuemart_category_id ){
+						$category = $this->catTable->load ((int)$virtuemart_category_id);
+						$product->categoriesList .= JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$virtuemart_category_id), vmText::_($category->category_name)). ', ';
+					}
+				}
+				$product->categoriesList = substr ($product->categoriesList, 0, -2);
+				$product->categoriesList = '<span class="hasTip" title="" >' . $product->categoriesList . '</span>';
 
+				// Write the first 5 manufacturers in the list
+				//$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
+				$product->manuList = '';
+				if (!empty($product->virtuemart_manufacturer_id[0])) {
+					foreach($product->virtuemart_manufacturer_id as $virtuemart_manufacturer_id ){
+						$manufacturer = $this->mfTable->load ((int)$virtuemart_manufacturer_id);
+						$product->manuList .= JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$virtuemart_manufacturer_id), $manufacturer->mf_name). ', ';
+					}
+				}
+				$product->manuList = substr ($product->manuList, 0, -2);
+				$product->manuList = '<span class="hasTip" title="" >' . $product->manuList . '</span>';
 			}
 
 			$mf_model = VmModel::getModel('manufacturer');

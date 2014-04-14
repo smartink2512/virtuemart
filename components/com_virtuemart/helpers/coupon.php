@@ -29,8 +29,11 @@ abstract class CouponHelper
 	 * @author Max Milbers
 	 * @return string Empty when the code is valid, otherwise the error message
 	 */
-	static public function ValidateCouponCode($_code, $_billTotal)
-	{
+	static public function ValidateCouponCode($_code, $_billTotal){
+
+		if(empty($_code) or $_code == vmText::_('COM_VIRTUEMART_COUPON_CODE_ENTER')) {
+			return '';
+		}
 		$couponData = 0;
 
 		JPluginHelper::importPlugin('vmcoupon');
@@ -64,7 +67,7 @@ abstract class CouponHelper
 			$session = JFactory::getSession();
 			$session_id = $session->getId();
 			if ($couponData->coupon_used != $session_id) {
-				return JText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
+				return vmText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
 			}
 		}
 		if (!$couponData->started) {

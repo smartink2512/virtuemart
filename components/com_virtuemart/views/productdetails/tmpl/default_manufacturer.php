@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="manufacturer">
     <?php
-    $link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $this->product->virtuemart_manufacturer_id . '&tmpl=component', FALSE);
+    $link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $this->product->virtuemart_manufacturer_id[0] . '&tmpl=component', FALSE);
     $text = $this->product->mf_name;
 
     /* Avoid JavaScript on PDF Output */

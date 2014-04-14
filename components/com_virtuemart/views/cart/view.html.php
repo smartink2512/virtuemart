@@ -33,7 +33,15 @@ if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 class VirtueMartViewCart extends VmView {
 
 	public function display($tpl = null) {
+
 		$mainframe = JFactory::getApplication();
+
+		$this->prepareContinueLink();
+		if (VmConfig::get('use_as_catalog',0)) {
+			vmInfo('This is a catalogue, you cannot acccess the cart');
+			$mainframe->redirect($this->continue_link);
+		}
+
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
@@ -87,7 +95,7 @@ class VirtueMartViewCart extends VmView {
 
 			$this->renderCompleteAddressList();
 
-			$this->prepareContinueLink();
+
 
 			if (!class_exists ('VirtueMartModelUserfields')) {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
@@ -106,18 +114,7 @@ class VirtueMartViewCart extends VmView {
 				,$this->cart->cartfields
 			);
 
-			if (!$this->cart->_inCheckOut and !VmConfig::get('use_as_catalog', 0)) {
-				$this->cart->checkout(false);
-			} else if(!VmConfig::get('use_as_catalog', 0)) {
-				$this->cart->prepareCartData();
-			} else {
-				vmInfo('This is a catalogue, you cannot acccess the cart');
-				$mainframe->redirect($this->continue_link);
-			}
-
 			$this->cart->prepareVendor();
-
-
 
 			if (!class_exists ('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -133,7 +130,6 @@ class VirtueMartViewCart extends VmView {
 			$totalInPaymentCurrency = $this->getTotalInPaymentCurrency();
 
 			$checkoutAdvertise =$this->getCheckoutAdvertise();
-
 
 			if ($this->cart->getDataValidated()) {
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
@@ -173,12 +169,7 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->assignRef('select_payment_text', $paymentText);
 
-
-			if (!VmConfig::get('use_as_catalog',0)) {
-				$checkout_link_html = '<button type="submit" name="'.$checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
-			} else {
-				$checkout_link_html = '';
-			}
+			$checkout_link_html = '<button type="submit" name="'.$checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 
 			//set order language
@@ -213,9 +204,9 @@ class VirtueMartViewCart extends VmView {
 	function prepareCartViewData(){
 
 		// Get the products for the cart
-		$this->cart->prepareCartData();
+		//$this->cart->prepareCartData();
 
-		$this->cart->prepareAddressFieldsInCart();
+		//$this->cart->prepareAddressFieldsInCart();
 
 		$vendorModel = VmModel::getModel('vendor');
 		$this->cart->vendor = $vendorModel->getVendor(1);
@@ -241,9 +232,8 @@ class VirtueMartViewCart extends VmView {
 
 	private function lSelectCoupon() {
 
-		$this->couponCode = (isset($this->cart->couponCode) ? $this->cart->couponCode : '');
-		$coupon_text = $this->cart->couponCode ? vmText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE') : vmText::_('COM_VIRTUEMART_COUPON_CODE_ENTER');
-		$this->assignRef('coupon_text', $coupon_text);
+		$this->couponCode = (!empty($this->cart->couponCode) ? $this->cart->couponCode : '');
+		$this->coupon_text = $this->cart->couponCode ? vmText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE') : vmText::_('COM_VIRTUEMART_COUPON_CODE_ENTER');
 	}
 
 	/*
@@ -264,6 +254,7 @@ class VirtueMartViewCart extends VmView {
 			$this->assignRef('shipments_shipment_rates',$shipments_shipment_rates);
 			return;
 		}
+		//vmdebug('lSelectShipment setShipment new id, cart id ',$this->cart->virtuemart_shipmentmethod_id);
 		$selectedShipment = (empty($this->cart->virtuemart_shipmentmethod_id) ? 0 : $this->cart->virtuemart_shipmentmethod_id);
 
 		$shipments_shipment_rates = array();
