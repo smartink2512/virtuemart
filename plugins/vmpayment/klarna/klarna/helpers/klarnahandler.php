@@ -338,6 +338,9 @@ class KlarnaHandler {
 			if ($klarna['birth_month'] != 0 and $klarna['birth_month'] != 0) {
 				$klarna['birthday'] = $klarna['birth_year'] . "-" . $klarna['birth_month'] . "-" . $klarna['birth_day'];
 				$klarna['pno_frombirthday'] = JRequest::getVar($prefix . 'birth_day') . JRequest::getVar($prefix . 'birth_month') . JRequest::getVar($prefix . 'birth_year');
+				$klarna['birth_day'] = JRequest::getVar($prefix . 'birth_day') ;
+				$klarna['birth_month'] = JRequest::getVar($prefix . 'birth_month') ;
+				$klarna['birth_year'] = JRequest::getVar($prefix . 'birth_year') ;
 			} else {
 				$klarna['birthday'] = '';
 			}

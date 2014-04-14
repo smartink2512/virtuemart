@@ -108,15 +108,15 @@ class klarna_payments {
 
 		if (($this->country == "nl" ) && isset($klarna_data['pno'])) {
 			$pno = $klarna_data['pno'];
-			$this->klarna_bday['year'] = substr ($pno, 4, 4);
-			$this->klarna_bday['month'] = substr ($pno, 2, 2);
-			$this->klarna_bday['day'] = substr ($pno, 0, 2);
+			$this->birth_year = $klarna_data['birth_year'];
+			$this->birth_month = $klarna_data['birth_month'];
+			$this->birth_day = $klarna_data['birth_day'];
 		}
 		elseif ( $this->country == "de") {
 			$pno = $klarna_data['pno'];
-			$this->klarna_bday['year'] =  $klarna_data['birth_year'];
-			$this->klarna_bday['month'] =  $klarna_data['birth_month'];
-			$this->klarna_bday['day'] =  $klarna_data['birth_day'];
+			$this->birth_year = $klarna_data['birth_year'];
+			$this->birth_month = $klarna_data['birth_month'];
+			$this->birth_day = $klarna_data['birth_day'];
 		} else {
 			$this->socialNumber=$klarna_data['socialNumber'];
 		}
@@ -276,6 +276,9 @@ class klarna_payments {
 		$payment_params['part_name'] = 'klarna_partPayment';
 		$payment_params['spec_name'] = 'klarna_SpecCamp';
 		$payment_params['fields']['socialNumber'] = isset($this->socialNumber)?$this->socialNumber:"";
+		$payment_params['fields']['birth_day'] = isset($this->birth_day)?$this->birth_day:"";
+		$payment_params['fields']['birth_month'] = isset($this->birth_month)?$this->birth_month:"";
+		$payment_params['fields']['birth_year'] = isset($this->birth_year)?$this->birth_year:"";
 
 		return $payment_params;
 	}
