@@ -88,17 +88,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$post = vRequest::getPost();
 
 		$cart = VirtueMartCart::getCart();
-		$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
-		$cart->fromCart = true;
 
-		$cart->saveCartFieldsInCart();
-		$cart->updateProductCart();
-
-		$coupon_code = vRequest::getString('coupon_code', '');
-		$msg = $cart->setCouponCode($coupon_code);
-
-		$cart->setShipmentMethod();
-		$cart->setPaymentMethod();
 		$cart->prepareCartData();
 
 		if(isset($post['confirm']) and !$cart->getInCheckOut()){
@@ -117,6 +107,23 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$view->display();
 
 		return $this;
+	}
+
+	public function updateCart() {
+
+		$cart = VirtueMartCart::getCart();
+		$cart->fromCart = true;
+		$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
+
+		$cart->saveCartFieldsInCart();
+		$cart->updateProductCart();
+
+		$coupon_code = vRequest::getString('coupon_code', '');
+		$msg = $cart->setCouponCode($coupon_code);
+
+		$cart->setShipmentMethod();
+		$cart->setPaymentMethod();
+		$this->display();
 	}
 
 	/**

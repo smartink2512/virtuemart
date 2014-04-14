@@ -17,15 +17,13 @@
     </files>
     <config>
         <fields name="params">
-            <fieldset name="template" addfieldpath="/administrator/components/com_virtuemart/fields">
+            <fieldset name="template">
                 <field type="vmjpluginwarning"/>
-
                 <field name="shipment_logos" type="media" directory="/images/stories/virtuemart/shipment"
                        hide_none="1" label="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS"
                        size="40"
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS_DESC"/>
             </fieldset>
-
             <fieldset name="restrictions" >
                 <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
                        label="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
@@ -56,14 +54,14 @@
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_ORDERAMOUNT_STOP_DESC"/>
             </fieldset>
             <fieldset name="fee">
-                <field name="cost" type="text" label="VMSHIPMENT_WEIGHT_COUNTRIES_COST"
-                       description="VMSHIPMENT_WEIGHT_COUNTRIES_COST_DESC"/>
+                <field name="shipment_cost" type="text" label="VMSHIPMENT_WEIGHT_COUNTRIES_COST"
+                       description="VMSHIPMENT_WEIGHT_COUNTRIES_COST_DESC" default="0"/>
                 <field name="package_fee" type="text" label="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE"
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC"/>
                 <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMSHIPMENT_WEIGHT_COUNTRIES_TAX"
-                       description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC"/>
+                       description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC" default="0"/>
                 <field name="free_shipment" type="text" label="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT"
-                       description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC"/>
+                       description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" default=""/>
             </fieldset>
         </fields>
     </config>

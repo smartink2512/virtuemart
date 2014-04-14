@@ -43,7 +43,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$this->tableFields = array_keys ($this->getTableSQLFields ());
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
-		//vmdebug('Muh constructed plgVmShipmentWeight_countries');
+		//vmdebug('Muh constructed plgVmShipmentWeight_countries',$varsToPush);
 	}
 
 	/**
@@ -117,7 +117,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$values['shipment_name'] = $this->renderPluginName ($method);
 		$values['order_weight'] = $this->getOrderWeight ($cart, $method->weight_unit);
 		$values['shipment_weight_unit'] = $method->weight_unit;
-		$values['shipment_cost'] = $method->cost;
+		$values['shipment_cost'] = $method->shipment_cost;
 		$values['shipment_package_fee'] = $method->package_fee;
 		$values['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($values);
@@ -193,7 +193,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 			return 0;
 		} else {
-			return $method->cost + $method->package_fee;
+			//vmTrace('my method ');
+			return $method->shipment_cost + $method->package_fee;
 		}
 	}
 
