@@ -29,6 +29,7 @@
 		<filename>virtuemart_parser.php</filename>
 		<folder>assets</folder>
 		<folder>controllers</folder>
+        <folder>fields</folder>
 		<folder>helpers</folder>
 		<folder>language</folder>
 		<folder>views</folder>
@@ -62,7 +63,7 @@
 			<filename>access.xml</filename>
 			<folder>assets</folder>
 			<folder>controllers</folder>
-			<folder>elements</folder>
+			<folder>fields</folder>
 			<folder>helpers</folder>
 			<folder>install</folder>
 			<folder>language</folder>
