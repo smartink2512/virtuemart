@@ -642,7 +642,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$product['price'] = $price;
 
 				if(!empty($prices[$k]['discountAmount'])){
-					$product['discount'] = $prices[$k]['discountAmount'];
+					$product['discount'] = abs($prices[$k]['discountAmount']);
 				} else {
 					//avadebug('no discount for '.$k,$prices[$k]);
 					$product['discount'] = FALSE;
@@ -681,7 +681,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$products[] = $payment;
 			}*/
 
-			$products['discountAmount'] = $prices['discountAmount'];
+			$products['discountAmount'] = abs($prices['discountAmount']);
 
 
 		return $products;

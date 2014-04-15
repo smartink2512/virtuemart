@@ -61,7 +61,7 @@ $li = '<br />';
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
-				    echo JText::_('COM_VIRTUEMART_LOGINAME') . ' : ' . $this->user->username . $li;
+				    echo JText::_('COM_VIRTUEMART_USERNAME') . ' : ' . $this->user->username . $li;
 				    echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME') . ' : ' . $this->user->name . $li . $li;
 
 				    echo JText::_('COM_VIRTUEMART_ENTERED_ADDRESS') . $li;
