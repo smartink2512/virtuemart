@@ -49,6 +49,9 @@ class VirtuemartViewShipmentmethod extends VmView {
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 			VmConfig::loadJLang('plg_vmpsplugin', false);
+
+			JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
+
 			$shipment = $model->getShipment();
 
 			// Get the payment XML.
@@ -56,7 +59,7 @@ class VirtuemartViewShipmentmethod extends VmView {
 			if (file_exists($formFile)){
 				$shipment->form = JForm::getInstance($shipment->shipment_element, $formFile, array(),false, '//config');
 				$shipment->params = new stdClass();
-				$varsToPush = vmPSPlugin::getVarsToPushByXML($formFile,'shipmentForm');
+				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'shipmentForm');
 				$shipment->params->shipment_params = $shipment->shipment_params;
 				VmTable::bindParameterable($shipment->params,'shipment_params',$varsToPush);
 				$shipment->form->bind($shipment);

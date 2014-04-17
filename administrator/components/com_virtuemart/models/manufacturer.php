@@ -127,7 +127,7 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		static $_manufacturers = array();
 
-		$hash = $search.$virtuemart_manufacturercategories_id.VmConfig::$vmlang.(int)$onlyPublished.(int)$this->_noLimit.(int)$getMedia;
+		$hash = $search.serialize($virtuemart_manufacturercategories_id).VmConfig::$vmlang.(int)$onlyPublished.(int)$this->_noLimit.(int)$getMedia;
 
 		if (array_key_exists ($hash, $_manufacturers)) {
 			vmdebug('Return cached getManufacturers');
@@ -171,7 +171,7 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$_manufacturers[$hash] = $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,$groupBy,$ordering );
 
-
+		return $_manufacturers[$hash];
 	}
 
 }

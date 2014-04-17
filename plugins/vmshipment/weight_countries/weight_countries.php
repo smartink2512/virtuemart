@@ -193,7 +193,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 			return 0;
 		} else {
-			//vmTrace('my method ');
 			return $method->shipment_cost + $method->package_fee;
 		}
 	}

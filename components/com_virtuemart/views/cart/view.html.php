@@ -59,16 +59,18 @@ class VirtueMartViewCart extends VmView {
 		$this->cart = VirtueMartCart::getCart();
 		//$this->assignRef('cart', $cart);
 
+		$this->cart->prepareVendor();
+
 		//Why is this here, when we have view.raw.php
 		if ($format == 'raw') {
-			$this->prepareCartViewData();
+			//$this->prepareCartViewData();
 			vRequest::setVar('layout', 'mini_cart');
 			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
 		}
 
 		if ($layoutName == 'select_shipment') {
-			$this->prepareCartViewData();
+			//$this->prepareCartViewData();
 
 			$this->lSelectShipment();
 
@@ -77,7 +79,7 @@ class VirtueMartViewCart extends VmView {
 			$document->setTitle(vmText::_('COM_VIRTUEMART_CART_SELECTSHIPMENT'));
 		} else if ($layoutName == 'select_payment') {
 
-			$this->prepareCartViewData();
+			//$this->prepareCartViewData();
 
 			$this->lSelectPayment();
 
@@ -114,7 +116,7 @@ class VirtueMartViewCart extends VmView {
 				,$this->cart->cartfields
 			);
 
-			$this->cart->prepareVendor();
+
 
 			if (!class_exists ('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -201,7 +203,7 @@ class VirtueMartViewCart extends VmView {
 * @author Patrick Kohl
 * @author Valerie Isaksen
 */
-	function prepareCartViewData(){
+/*	function prepareCartViewData(){
 
 		// Get the products for the cart
 		//$this->cart->prepareCartData();
@@ -212,7 +214,7 @@ class VirtueMartViewCart extends VmView {
 		$this->cart->vendor = $vendorModel->getVendor(1);
 		$vendorModel->addImages($this->cart->vendor,1);
 
-	}
+	}*/
 
 
 	private function prepareContinueLink() {
@@ -435,6 +437,7 @@ class VirtueMartViewCart extends VmView {
 	function renderCompleteAddressList(){
 
 		$addressList = false;
+		vmdebug('renderCompleteAddressList',$this->cart->user->virtuemart_user_id);
 		if($this->cart->user->virtuemart_user_id){
 			$addressList = array();
 			foreach($this->cart->user->userInfo as $userInfo){

@@ -61,6 +61,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$this->_selectedOrdering = 'ordering';
 		$this->_selectedOrderingDir = 'ASC';
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	}
 
 
@@ -958,6 +959,7 @@ class VirtueMartModelUserfields extends VmModel {
 							// We need an extra lok here, especially for the Bank info; the values
 							// must be translated.
 							// Don't check on the field name though, since others might be added in the future :-(
+
 							foreach ($_values as $_v) {
 								$_v->fieldtitle = vmText::_($_v->fieldtitle);
 							}
@@ -1041,6 +1043,7 @@ class VirtueMartModelUserfields extends VmModel {
 											$_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
 										}
 									}
+
 									break;
 
 								case 'radio':

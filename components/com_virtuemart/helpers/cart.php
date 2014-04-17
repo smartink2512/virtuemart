@@ -717,17 +717,6 @@ class VirtueMartCart {
 		}
 	}
 
-	/*function checkout($redirect=true) {
-
-		$this->checkoutData($redirect);
-
-		if ($this->_dataValidated && $redirect) {
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
-		}
-
-	}**/
-
 	private function redirecter($relUrl,$redirectMsg){
 
 		$this->_dataValidated = false;
@@ -1493,6 +1482,7 @@ class VirtueMartCart {
 	// Render the code for Ajax Cart
 	function prepareAjaxData($checkAutomaticSelected=true){
 
+		$this->prepareCartData();
 		$data = new stdClass();
 		$data->products = array();
 		$data->totalProduct = 0;

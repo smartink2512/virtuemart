@@ -1285,6 +1285,68 @@ class calculationHelper {
 	}
 
 	/**
+	 * New idea, we load for the display all plugins
+	 * @param $type
+	 */
+	function calculateDisplayedPlugins($type){
+
+		// Handling shipment plugins
+		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+
+		JPluginHelper::importPlugin('vm'.$type);
+
+		//We use one trigger to load all possible plugins and store as result an array of the pluginmethods and their display.
+		//we select the first if there is one.
+		//We work always with linked variables, so the trigger should give back if any method for a plugin was found. So if there is a
+		//positive return value, we know there exists at least one method.
+		//The plugin write the results into the cart array $cartData['$type'] = array($methods);
+		//The methods must have the rendered display
+
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmCalculateDisplayedCartOptions'.ucfirst($type),array(&$this->_cart));
+
+		//Plugin return true if no method is configured for the plugin
+
+		foreach ($returnValues as $returnValue) {
+			if(!$returnValue){
+				//Throw error only for admins or log it, something like that
+			}
+		}
+
+		//Now set the option
+		$virtuemart_typemethod_id = 'virtuemart_'.$type.'method_id';
+
+		$valid = false;
+		if(!empty($this->_cart->cartData[$type])){
+
+
+			//We could resort here the methods by costs or ordering.
+			//and then take the first option
+
+			/*foreach($this->_cart->cartData[$type] as $option){
+
+			}*/
+			if(!empty($this->_cart->cartData[$type][0])){
+				$this->_cart->$virtuemart_typemethod_id = $this->_cart->cartData[$type][0][$virtuemart_typemethod_id];
+				$this->_cart->cartData[$type.'Name'] = vmText::_($this->_cart->cartData[$type][0][$type.'Name']);
+				//Here the values then
+				$this->_cart->cartPrices[$type.'Value'] = $this->_cart->cartData[$type][0][$type.'Value']; //could be automatically set to a default set in the globalconfig
+				$this->_cart->cartPrices[$type.'Tax'] = $this->_cart->cartData[$type][0][$type.'Tax'];
+				$this->_cart->cartPrices[$type.'SalesPrice'] = $this->_cart->cartData[$type][0][$type.'SalesPrice'];
+				$this->_cart->cartPrices[$type.'_calc_id'] = $this->_cart->cartData[$type][0][$type.'_calc_id'];
+				//Just for legacy atm
+				$this->_cart->cartPrices['salesPrice'.ucfirst($type)] = $this->_cart->cartData[$type][0]['salesPrice'.ucfirst($type)];;
+				$valid=true;
+			} else {
+
+			}
+		}
+
+
+		return $this->_cart->cartPrices;
+	}
+
+	/**
 	 * Calculates the effecting Shipment prices for the calculation
 	 * @copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers

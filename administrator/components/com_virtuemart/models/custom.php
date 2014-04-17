@@ -291,13 +291,28 @@ class VirtueMartModelCustom extends VmModel {
 			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
 
-		$tb = '#__extensions';
-		$ext_id = 'extension_id';
+		if(isset($data['custom_jplugin_id'])){
 
-		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
-		$db = JFactory::getDBO();
-		$db->setQuery($q);
-		$data['custom_element'] = $db->loadResult();
+			$tb = '#__extensions';
+			$ext_id = 'extension_id';
+
+			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
+			$db = JFactory::getDBO();
+			$db->setQuery($q);
+			$data['custom_element'] = $db->loadResult();
+
+			$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE `extension_id` = "'.$data['custom_jplugin_id'].'"';
+			$db->setQuery($q);
+			$db->execute();
+
+
+			//JPluginHelper::importPlugin('vmpayment');
+			//$dispatcher = JDispatcher::getInstance();
+			//$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id'],&$table));
+
+		}
+
+
 
 		if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 

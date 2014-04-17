@@ -61,7 +61,7 @@ $li = '<br />';
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
-				    echo vmText::_('COM_VIRTUEMART_LOGINAME') . ' : ' . $this->user->username . $li;
+				    echo vmText::_('COM_VIRTUEMART_USERNAME') . ' : ' . $this->user->username . $li;
 				    echo vmText::_('COM_VIRTUEMART_DISPLAYED_NAME') . ' : ' . $this->user->name . $li . $li;
 
 				    echo vmText::_('COM_VIRTUEMART_ENTERED_ADDRESS') . $li;

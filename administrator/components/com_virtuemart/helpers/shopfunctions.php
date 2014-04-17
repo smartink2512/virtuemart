@@ -203,7 +203,7 @@ class ShopFunctions {
 			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
 			array_unshift ($manufacturers, $emptyOption);
 		}
-		// vmdebug('renderManufacturerList',$name,$manufacturers);
+		vmdebug('renderManufacturerList',$name,$manufacturers);
 		$listHTML = JHtml::_ ('select.genericlist', $manufacturers, $name, $attrs, 'virtuemart_manufacturer_id', 'mf_name', $manufacturerId);
 		return $listHTML;
 	}

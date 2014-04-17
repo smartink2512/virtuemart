@@ -23,7 +23,7 @@ $li = "\n";
 
 <?php echo vmText::sprintf('COM_VIRTUEMART_WELCOME_VENDOR', $this->vendor->vendor_store_name) . $li. $li ?>
 <?php echo vmText::_('COM_VIRTUEMART_VENDOR_REGISTRATION_DATA') . " " . $li; ?>
-<?php echo vmText::_('COM_VIRTUEMART_LOGINAME')   . $this->user->username . $li; ?>
+<?php echo vmText::_('COM_VIRTUEMART_USERNAME')   . $this->user->username . $li; ?>
 <?php echo vmText::_('COM_VIRTUEMART_DISPLAYED_NAME')   . $this->user->name . $li. $li; ?>
 <?php echo vmText::_('COM_VIRTUEMART_ENTERED_ADDRESS')   . $li ?>
 

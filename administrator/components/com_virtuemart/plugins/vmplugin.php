@@ -137,6 +137,46 @@ abstract class vmPlugin extends JPlugin {
 		return shopfunctions::display3rdInfo($this->_name,$intro,$developer,$logolink,$contactlink,$manlink);
 	}
 
+	static public function getVarsToPushByXML ($xmlFile,$name){
+		$data = array();
+
+		if (is_file ( $xmlFile )) {
+
+			//$xml = JFactory::getXML ('simple');
+			//$result = $xml->loadFile ($xmlFile);
+			$xml =  JFactory::getXML($xmlFile);
+			if ($xml) {
+				if (isset( $xml->document->params) ){
+					$params = $xml->document->params;
+					foreach ($params as $param) {
+						if ($param->_name = "params") {
+							if ($children = $param->_children) {
+								foreach ($children as $child) {
+									if (isset($child->_attributes['name'])) {
+										$data[$child->_attributes['name']] = array('', 'char');
+										$result = TRUE;
+									}
+								}
+							}
+						}
+					}
+				} else {
+					$form = JForm::getInstance($name, $xmlFile, array(),false, '//config');
+					$fieldSets = $form->getFieldsets();
+					foreach ($fieldSets as $name => $fieldSet) {
+						foreach ($form->getFieldset($name) as $field) {
+							// todo : type?
+							$type='char';
+							$data[(string)$field->fieldname] = array('',  $type);
+						}
+					}
+				}
+			}
+		}
+
+		return $data;
+	}
+
 	/**
 	 * Checks if this plugin should be active by the trigger
 	 *

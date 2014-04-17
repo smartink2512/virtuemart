@@ -83,7 +83,7 @@ INSERT IGNORE INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, 
 
 INSERT IGNORE INTO `#__virtuemart_manufacturers_XLANG` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_url`, `slug`) VALUES
 	(1, 'Manufacturer', 'manufacturer@example.org', '<p>An example for a manufacturer</p>', 'http://www.example.org', 'manufacturer'),
-	(2, 'Default', 'example@manufacturer.net', '<table class="adminlist" cellspacing="0" cellpadding="0">\r\n<tbody>\r\n<tr class="row0">\r\n<td align="left"> </td>\r\n<td>\r\n<p>Default manufacturer</p>\r\n</td>\r\n</tr>\r\n</tbody>\r\n</table>', 'example.manufacturer.net', 'default'),
+	(2, 'Default', 'example@manufacturer.net', '<p>Default manufacturer</p>', 'example.manufacturer.net', 'default'),
 	(3, 'Producer', 'info@producer.com', '<p>An example for another manufacturer.</p>', 'producer.com', 'producer');
 
 INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`, `virtuemart_manufacturer_id`, `virtuemart_media_id`, `ordering`) VALUES

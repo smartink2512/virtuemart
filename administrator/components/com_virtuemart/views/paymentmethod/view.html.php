@@ -71,6 +71,8 @@ class VirtuemartViewPaymentMethod extends VmView {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');*/
 			VmConfig::loadJLang('plg_vmpsplugin', false);
 
+			JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
+
 			$payment = $model->getPayment();
 
 			// Get the payment XML.
@@ -79,7 +81,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 
 				$payment->form = JForm::getInstance($payment->payment_element, $formFile, array(),false, '//config');
 				$payment->params = new stdClass();
-				$varsToPush = vmPSPlugin::getVarsToPushByXML($formFile,'paymentForm');
+				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'paymentForm');
 				$payment->params->payment_params = $payment->payment_params;
 				VmTable::bindParameterable($payment->params,'payment_params',$varsToPush);
 				$payment->form->bind($payment);

@@ -887,7 +887,7 @@ class VirtueMartModelUser extends VmModel {
 			$JUser = JUser::getInstance($this->_id);
 		}
 
-
+		$data = null;
 		$userFields = array();
 		if(!empty($uid)){
 
@@ -946,8 +946,9 @@ class VirtueMartModelUser extends VmModel {
 							$data['virtuemart_user_id'] = $JUser->id;
 						}
 					}
+					$data = (object)$data;
 				}
-				$data = (object)$data;
+
 			} else {
 
 				if($JUser){
@@ -964,11 +965,8 @@ class VirtueMartModelUser extends VmModel {
 							$data['virtuemart_user_id'] = $JUser->id;
 						}
 					$data = (object)$data;
-				} else {
-				$data = null;
 				}
 			}
-
 		}
 
 		$userFields[$uid] = $userFieldsModel->getUserFieldsFilled(

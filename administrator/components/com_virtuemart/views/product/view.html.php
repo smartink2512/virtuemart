@@ -156,7 +156,7 @@ class VirtuemartViewProduct extends VmView {
 					$product_unit = VmConfig::get('weight_unit_default');
 					$product_lwh_uom= VmConfig::get('lwh_unit_default');
 				}
-				vmdebug('my parent product',$product_weight_uom,$product_unit,$product_lwh_uom);
+
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$product_weight_uom);
 				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$product_unit);
 				$lists['product_lwh_uom'] = ShopFunctions::renderLWHUnitList('product_lwh_uom', $product_lwh_uom);
@@ -178,11 +178,11 @@ class VirtuemartViewProduct extends VmView {
 
 				// Add the virtuemart_shoppergroup_ids
 				$cid = JFactory::getUser()->id;
-				$this->activeShoppergroups = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_vmuser_shoppergroups','virtuemart_user_id',$cid,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergoup_id','category');
+				$this->activeShoppergroups = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_vmuser_shoppergroups','virtuemart_user_id',$cid,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','category');
 				if(!$this->activeShoppergroups or (is_array($this->activeShoppergroups) and count($this->activeShoppergroups)==0)){
 					//vmdebug('$this->activeShoppergroups',$this->activeShoppergroups);
 					$shoppergroupModel = VmModel::getModel('shoppergroup');
-					$this->activeShoppergroups = $shoppergroupModel->getDefault(0)->shopper_group_name;
+					$this->activeShoppergroups = vmText::_($shoppergroupModel->getDefault(0)->shopper_group_name);
 				}
 
 				$fieldTypes = $customfields->getField_types();
