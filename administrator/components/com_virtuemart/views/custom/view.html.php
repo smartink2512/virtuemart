@@ -47,24 +47,38 @@ class VirtuemartViewCustom extends VmView {
 			$this->addStandardEditViewCommands();
 			$customPlugin = '';
 
-			$custom = $model->getCustom();
+			$this->custom = $model->getCustom();
 			$customfields = VmModel::getModel('customfields');
-// 			vmdebug('VirtuemartViewCustom',$custom);
+ 			//vmdebug('VirtuemartViewCustom',$this->custom);
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
-			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($custom->virtuemart_custom_id,&$customPlugin));
+			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($this->custom->virtuemart_custom_id,&$customPlugin));
 
-			$this->SetViewTitle('PRODUCT_CUSTOM_FIELD', $custom->custom_title);
+			$this->SetViewTitle('PRODUCT_CUSTOM_FIELD', $this->custom->custom_title);
 
 			$selected=0;
-			if(!empty($custom->custom_jplugin_id)) {
-				$selected = $custom->custom_jplugin_id;
+			if(!empty($this->custom->custom_jplugin_id)) {
+				VmConfig::loadJLang('plg_vmpsplugin', false);
+				JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
+				$selected = $this->custom->custom_jplugin_id;
+				// Get the payment XML.
+				$formFile	= JPath::clean( JPATH_PLUGINS.'/vmcustom/' . $this->custom->custom_element . '/' . $this->custom->custom_element . '.xml');
+				if (file_exists($formFile)){
+
+					$this->custom->form = JForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//config');
+					$this->custom->params = new stdClass();
+					$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
+					$this->custom->params->custom_params = $this->custom->custom_params;
+					VmTable::bindParameterable($this->custom->params,'custom_params',$varsToPush);
+					$this->custom->form->bind($this->custom);
+
+				} else {
+					$this->custom->form = null;
+				}
 			}
-			$pluginList = self::renderInstalledCustomPlugins($selected);
+			$this->pluginList = self::renderInstalledCustomPlugins($selected);
 			$this->assignRef('customPlugin',	$customPlugin);
 
-			$this->assignRef('pluginList',$pluginList);
-			$this->assignRef('custom',	$custom);
 			$this->assignRef('customfields',	$customfields);
 
         }
@@ -95,12 +109,12 @@ class VirtuemartViewCustom extends VmView {
 	{
 		$db = JFactory::getDBO();
 
-
 		$table = '#__extensions';
 		$enable = 'enabled';
 		$ext_id = 'extension_id';
 
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" AND `'.$enable.'`="1" ';
+		//$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" AND `'.$enable.'`="1" ';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" ';
 		$db->setQuery($q);
 
 		$results = $db->loadAssocList($ext_id);

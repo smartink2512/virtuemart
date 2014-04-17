@@ -1058,7 +1058,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $modificatorSum;
 	}
 
-	static function setParameterableByFieldType(&$table, $type, $custom_element=0,$custom_jplugin_id=0){
+/*	static function setParameterableByFieldType(&$table, $type, $custom_element=0,$custom_jplugin_id=0){
 
 		//$type = $table->field_type;
 		if($custom_element===0){
@@ -1083,11 +1083,12 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 
 	}
-
+*/
 
 	static function bindParameterableByFieldType(&$table, $type){
 
-		$varsToPush = self::getVarsToPush($type);
+		if(!class_exists('VirtueMartModelCustoms')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customs.php');
+		$varsToPush = VirtueMartModelCustoms::getVarsToPush($type);
 		$xParams = $table->_xParams;
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
@@ -1101,17 +1102,6 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	}
 
-	static function getVarsToPush($type){
-
-		$varsToPush = 0;
-		if($type=='A'){
-			$varsToPush = array(
-				'withParent'        => array(0, 'int'),
-				'parentOrderable'   => array(0, 'int')
-			);
-		}
-		return $varsToPush;
-	}
 
 
 	/* Save and delete from database
@@ -1178,7 +1168,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 				}
 				$tableCustomfields->_xParams = 'customfield_params';
-				VirtueMartModelCustomfields::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
+				VirtueMartModelCustoms::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
 
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();

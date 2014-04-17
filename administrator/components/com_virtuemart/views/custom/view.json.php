@@ -56,16 +56,32 @@ class VirtuemartViewCustom extends JView {
 
 			$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$custom_jplugin_id.'"';
 			$db ->setQuery($q);
-			$this->plugin = $db ->loadObject();
+			$this->custom = $db ->loadObject();
+
+			// Get the payment XML.
+			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmpayment/' . $this->custom->element . '/' . $this->custom->element . '.xml');
+			if (file_exists($formFile)){
+
+				$this->custom->form = JForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//config');
+				$this->custom->params = new stdClass();
+				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'paymentForm');
+				$this->custom->params->payment_params = $this->custom->custom_params;
+				VmTable::bindParameterable($this->custom->params,'custom_params',$varsToPush);
+				$this->custom->form->bind($this->custom);
+
+			} else {
+				$this->custom->form = null;
+			}
+		/*
 			if (!class_exists('vmParameters'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
-			$parameters = new vmParameters($this->plugin->params,  $this->plugin->element , 'plugin' ,'vmcustom');
+			$parameters = new vmParameters($this->custom->params,  $this->custom->element , 'plugin' ,'vmcustom');
 			$lang = JFactory::getLanguage();
-			$filename = 'plg_vmcustom_' .  $this->plugin->element;
+			$filename = 'plg_vmcustom_' .  $this->custom->element;
 			$lang->load($filename, JPATH_ADMINISTRATOR);
 			echo $parameters->render();
-			echo '<input type="hidden" value="'.$this->plugin->element.'" name="custom_value">';
-			jExit();
+			echo '<input type="hidden" value="'.$this->custom->element.'" name="custom_value">';
+			jExit();*/
 		}
 		jExit();
 	}

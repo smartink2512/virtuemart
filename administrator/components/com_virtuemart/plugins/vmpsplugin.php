@@ -39,10 +39,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_tableChecked = TRUE;
 	}
 
-	static public function getVarsToPushByXML ($xmlFile,$name){
-		return self:getVarsToPushByXML($xmlFile,$name);
-	}
-
 	public function getVarsToPush () {
 		return self::getVarsToPushByXML($this->_xmlFile,$this->_psType.'Form');
 	}

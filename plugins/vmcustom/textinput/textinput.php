@@ -115,8 +115,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
     }
 
 	/**
-	 * We must reimplement this triggers for joomla 1.7
-	 * vmplugin triggers note by Max Milbers
+	 * Trigger while storing an object using a plugin to create the plugin internal tables in case
+	 *
+	 * @author Max Milbers
 	 */
 	public function plgVmOnStoreInstallPluginTable($psType) {
 		//Should the textinput use an own internal variable or store it in the params?
@@ -124,7 +125,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 		return $this->onStoreInstallPluginTable($psType);
 	}
 
-
+	/**
+	 * Declares the Parameters of a plugin
+	 * @param $data
+	 * @return bool
+	 */
 	function plgVmDeclarePluginParamsCustomVM3(&$data){
 
 		return $this->declarePluginParams('custom', $data);

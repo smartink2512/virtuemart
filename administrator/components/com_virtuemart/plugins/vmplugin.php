@@ -453,9 +453,8 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 	/**
+	 * Does VmTable::bindParameterable and setCryptedFields
 	 * @param $psType
-	 * @param $name
-	 * @param $id
 	 * @param $data
 	 * @return bool
 	 */

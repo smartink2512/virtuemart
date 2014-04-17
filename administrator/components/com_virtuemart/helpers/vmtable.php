@@ -230,7 +230,7 @@ class VmTable extends JTable {
 
 		if(empty($varsToPushParam)) return;
 		//$paramFields = $obj->$xParams;
-		vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$varsToPushParam);
+		//vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$varsToPushParam);
 		if(is_object($obj)){
 			if (!empty($obj->$xParams)) {
 

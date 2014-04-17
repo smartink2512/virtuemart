@@ -58,13 +58,20 @@ class VirtueMartModelCustom extends VmModel {
 		    $customfields = VmModel::getModel('Customfields');
 		    $this->_data->field_types = $customfields->getField_types() ;
 
-		    $this->_data->varsToPush = VirtueMartModelCustomfields::getVarsToPush($this->_data->field_type);
+		    $this->_data->varsToPush = self::getVarsToPush($this->_data->field_type);
 		    $this->_data->_xParams = 'custom_params';
 
+			$this->_data->customfield_params = '';
 		    if ($this->_data->field_type == 'E') {
 			    JPluginHelper::importPlugin ('vmcustom');
 			    $dispatcher = JDispatcher::getInstance ();
 			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_data));
+				foreach ($retValue as $returnValue) {
+					if($returnValue){
+						//Plugin did the job
+						return $this->_data;
+					}
+				}
 		    }
 
 		    if(!empty($varsToPush)){
@@ -305,16 +312,11 @@ class VirtueMartModelCustom extends VmModel {
 			$db->setQuery($q);
 			$db->execute();
 
-
-			//JPluginHelper::importPlugin('vmpayment');
-			//$dispatcher = JDispatcher::getInstance();
-			//$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id'],&$table));
-
 		}
 
 
 
-		if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+
 
 		$table = $this->getTable('customs');
 		$table->field_type = $data['field_type'];
@@ -328,8 +330,9 @@ class VirtueMartModelCustom extends VmModel {
 		if(!empty($data['is_input'])){
 			if(empty($data['layout_pos'])) $data['layout_pos'] = 'addtocart';
 		}
+
 		//We are in the custom and so the table contains the field_type, else not!!
-		VirtueMartModelCustomfields::setParameterableByFieldType($table,$table->field_type);
+		self::setParameterableByFieldType($table,$table->field_type);
 
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
@@ -342,6 +345,45 @@ class VirtueMartModelCustom extends VmModel {
 		return $table->virtuemart_custom_id ;
 
 	}
+
+	static function setParameterableByFieldType(&$table, $type, $custom_element=0,$custom_jplugin_id=0){
+
+		//$type = $table->field_type;
+		if($custom_element===0){
+			$custom_element = $table->custom_element;
+		}
+
+		if($custom_jplugin_id===0){
+			$custom_jplugin_id = $table->custom_jplugin_id;
+		}
+
+		$varsToPush = self::getVarsToPush($type);
+		$xParams = $table->_xParams;
+
+		if ($type == 'E') {
+			JPluginHelper::importPlugin ('vmcustom');
+			$dispatcher = JDispatcher::getInstance ();
+			$retValue = $dispatcher->trigger ('plgVmGetTablePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
+		}
+		$xParams = $table->_xParams;
+		if(!empty($varsToPush)){
+			$table->setParameterable($xParams,$varsToPush,TRUE);
+		}
+
+	}
+
+	static function getVarsToPush($type){
+
+		$varsToPush = 0;
+		if($type=='A'){
+			$varsToPush = array(
+				'withParent'        => array(0, 'int'),
+				'parentOrderable'   => array(0, 'int')
+			);
+		}
+		return $varsToPush;
+	}
+
 
 	/**
 	 * Delete all record ids selected
