@@ -13,7 +13,7 @@ $cellwidth = ' width'.floor ( 100 / $products_per_row );
 $col = 1;
 $nb = 1;
 
-$productTitle = JText::_('COM_VIRTUEMART_'.$type.'_PRODUCT')
+$productTitle = JText::_('COM_VIRTUEMART_'.$type.'_PRODUCT');
 
 ?>
 

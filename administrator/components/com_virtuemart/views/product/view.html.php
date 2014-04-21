@@ -181,7 +181,7 @@ class VirtuemartViewProduct extends VmView {
 				if(!$this->activeShoppergroups or (is_array($this->activeShoppergroups) and count($this->activeShoppergroups)==0)){
 					//vmdebug('$this->activeShoppergroups',$this->activeShoppergroups);
 					$shoppergroupModel = VmModel::getModel('shoppergroup');
-					$this->activeShoppergroups = $shoppergroupModel->getDefault(0)->shopper_group_name;
+					$this->activeShoppergroups = vmText::_($shoppergroupModel->getDefault(0)->shopper_group_name);
 				}
 
 				/* Load protocustom lists */

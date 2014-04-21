@@ -187,7 +187,6 @@ class VirtueMartCart {
 			$lastName = empty($this->BT['last_name'])? '':$this->BT['last_name'];
 			$email = empty($this->BT['email'])? '':$this->BT['email'];
 			$this->customer_number = 'nonreg_'.$firstName.$lastName.$email;
-			vmdebug('getShopperData customer_number  '.$user->virtuemart_user_id);
 		}
 
 	}
