@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author  Patrick Kohl
  */
-class VirtuemartViewCustom extends JView {
+class VirtuemartViewCustom extends JViewLegacy {
 
 	/* json object */
 	private $json = null;
@@ -58,7 +58,7 @@ class VirtuemartViewCustom extends JView {
 			$db ->setQuery($q);
 			$this->jCustom = $db ->loadObject();
 
-			$customModel = VmModel::getModel('custom');
+			$customModel = VmModel::getModel('customs');
 			$this->custom = $customModel -> getCustom();
 
 			// Get the payment XML.
@@ -66,7 +66,7 @@ class VirtuemartViewCustom extends JView {
 			if (file_exists($formFile)){
 				VmConfig::loadJLang('plg_vmpsplugin', false);
 				if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
-				$this->custom = VmModel::getModel('custom')->getCustom();
+				$this->custom = VmModel::getModel('customs')->getCustom();
 				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
 				$this->custom->form = JForm::getInstance($this->jCustom->element, $formFile, array(),false, '//config');
 				$this->custom->params = new stdClass();

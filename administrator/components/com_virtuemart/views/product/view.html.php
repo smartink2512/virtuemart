@@ -189,7 +189,7 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef('fieldTypes', $fieldTypes);
 
 				// Load protocustom lists
-				$customModel = VmModel::getModel ('custom');
+				$customModel = VmModel::getModel ('customs');
 				$customsList = $customModel->getCustomsList ();
 				$attribs='style= "width: 300px;"';
 				$customlist = JHtml::_('select.genericlist', $customsList,'customlist', $attribs);

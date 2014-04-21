@@ -1168,6 +1168,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 				}
 				$tableCustomfields->_xParams = 'customfield_params';
+				if(!class_exists('VirtueMartModelCustoms')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customs.php');
 				VirtueMartModelCustoms::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
 
 				$tableCustomfields->bindChecknStore($fields);
