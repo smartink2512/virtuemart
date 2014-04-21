@@ -199,6 +199,7 @@ class vmParameters extends JParameter {
 	 */
 	function getParam(&$node, $control_name = 'params', $group = '_default')
 	{
+		vmTrace('getParam vmParameters seek and destry '.basename(__FILE__));
 		//get the type of the parameter
 		$type = $node->attributes('type');
 

@@ -44,17 +44,7 @@ AdminUIHelper::startAdminArea($this);
     			<div id="plugin-Container">
 				<?php
 				defined('_JEXEC') or die('Restricted access');
-				if (JVM_VERSION < 3){
-					$control_field_class="width100 floatleft control-field";
-					$control_group_class="width100 control-group";
-					$control_label_class="width25 floatleft control-label";
-					$control_input_class="width74 floatright control-input";
-				} else {
-					$control_field_class="control-field";
-					$control_group_class="control-group";
-					$control_label_class="control-label";
-					$control_input_class="control-input";
-				}
+
 				if ($this->custom->custom_jplugin_id) {
 
 					?>
@@ -62,51 +52,8 @@ AdminUIHelper::startAdminArea($this);
 					<div style="text-align: center;"><?php echo  VmText::_('COM_VIRTUEMART_CUSTOM_CLASS_NAME').": ".$this->custom->custom_element ?></div>
 					<?php
 					if ($this->custom->form) {
-
-						$fieldSets = $this->custom->form->getFieldsets();
-						vmdebug('my custom ',$fieldSets);
-						if (!empty($fieldSets)) {
-							?>
-
-							<?php
-							foreach ($fieldSets as $name => $fieldSet) {
-								?>
-								<div class="<?php echo $control_field_class ?>">
-									<?php
-									$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMPLUGIN_FIELDSET_' . $name);
-
-									if (!empty($label)) {
-										$class = isset($fieldSet->class) && !empty($fieldSet->class) ? "class=\"".$fieldSet->class."\"" : '';
-										?>
-										<h3> <span<?php echo $class  ?>><?php echo vmText::_($label) ?></span></h3>
-										<?php
-										if (isset($fieldSet->description) && trim($fieldSet->description)) {
-											echo '<p class="tip">' . $this->escape(vmText::_($fieldSet->description)) . '</p>';
-										}
-									}
-									?>
-
-									<?php $i=0; ?>
-									<?php foreach ($this->custom->form->getFieldset($name) as $field) { ?>
-										<?php if (!$field->hidden) {
-											?>
-											<div class="<?php echo $control_group_class ?>">
-												<div class="<?php echo $control_label_class ?>">
-													<?php echo $field->label; ?>
-												</div>
-												<div class="<?php echo $control_input_class ?>">
-													<?php echo $field->input; ?>
-												</div>
-											</div>
-										<?php } ?>
-									<?php } ?>
-
-								</div>
-							<?php
-
-							}
-
-						}
+						$form = $this->custom->form;
+						include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
 					}
 				} else {
 					echo vmText::_('COM_VIRTUEMART_SELECT_CUSTOM_METHOD');

@@ -56,32 +56,35 @@ class VirtuemartViewCustom extends JView {
 
 			$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$custom_jplugin_id.'"';
 			$db ->setQuery($q);
-			$this->custom = $db ->loadObject();
+			$this->jCustom = $db ->loadObject();
+
+			$customModel = VmModel::getModel('custom');
+			$this->custom = $customModel -> getCustom();
 
 			// Get the payment XML.
-			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmpayment/' . $this->custom->element . '/' . $this->custom->element . '.xml');
+			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmcustom/' . $this->jCustom->element . '/' . $this->jCustom->element . '.xml');
 			if (file_exists($formFile)){
-
-				$this->custom->form = JForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//config');
+				VmConfig::loadJLang('plg_vmpsplugin', false);
+				if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+				$this->custom = VmModel::getModel('custom')->getCustom();
+				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
+				$this->custom->form = JForm::getInstance($this->jCustom->element, $formFile, array(),false, '//config');
 				$this->custom->params = new stdClass();
-				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'paymentForm');
-				$this->custom->params->payment_params = $this->custom->custom_params;
-				VmTable::bindParameterable($this->custom->params,'custom_params',$varsToPush);
-				$this->custom->form->bind($this->custom);
 
+				foreach($varsToPush as $k => $field){
+					if(strpos($k,'_')!=0){
+						$this->custom->params->$k = $field[0];
+					}
+				}
+				$this->custom->form->bind($this->custom);
+				$form = $this->custom->form;
+				include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
+				echo '<input type="hidden" value="'.$this->jCustom->element.'" name="custom_value">';
 			} else {
 				$this->custom->form = null;
+				VmConfig::$echoDebug = 1;
+				vmdebug ('File does not exist '.$formFile);
 			}
-		/*
-			if (!class_exists('vmParameters'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
-			$parameters = new vmParameters($this->custom->params,  $this->custom->element , 'plugin' ,'vmcustom');
-			$lang = JFactory::getLanguage();
-			$filename = 'plg_vmcustom_' .  $this->custom->element;
-			$lang->load($filename, JPATH_ADMINISTRATOR);
-			echo $parameters->render();
-			echo '<input type="hidden" value="'.$this->custom->element.'" name="custom_value">';
-			jExit();*/
 		}
 		jExit();
 	}

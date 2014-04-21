@@ -35,49 +35,8 @@ if ($this->payment->payment_jplugin_id) {
 	<div style="text-align: center;"><?php echo  VmText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME').": ".$this->payment->payment_element ?></div>
 	<?php
 	if ($this->payment->form) {
-		$fieldSets = $this->payment->form->getFieldsets();
-		if (!empty($fieldSets)) {
-			?>
-
-			<?php
-			foreach ($fieldSets as $name => $fieldSet) {
-				?>
-				<div class="<?php echo $control_field_class ?>">
-					<?php
-				$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMPSPLUGIN_FIELDSET_' . $name);
-
-					if (!empty($label)) {
-						$class = isset($fieldSet->class) && !empty($fieldSet->class) ? "class=\"".$fieldSet->class."\"" : '';
-						?>
-						<h3> <span<?php echo $class  ?>><?php echo vmText::_($label) ?></span></h3>
-						<?php
-						if (isset($fieldSet->description) && trim($fieldSet->description)) {
-							echo '<p class="tip">' . $this->escape(vmText::_($fieldSet->description)) . '</p>';
-						}
-					}
-				?>
-
-				<?php $i=0; ?>
-				<?php foreach ($this->payment->form->getFieldset($name) as $field) { ?>
-					<?php if (!$field->hidden) {
-						?>
-					<div class="<?php echo $control_group_class ?>">
-						<div class="<?php echo $control_label_class ?>">
-								<?php echo $field->label; ?>
-						</div>
-						<div class="<?php echo $control_input_class ?>">
-								<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php } ?>
-				<?php } ?>
-
-			</div>
-			<?php
-
-			}
-
-		}
+		$form = $this->payment->form;
+		include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
 	}
 } else {
 	echo vmText::_('COM_VIRTUEMART_SELECT_PAYMENT_METHOD');

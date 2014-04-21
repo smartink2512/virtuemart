@@ -172,7 +172,7 @@ font-weight: normal;
 .ui-autocomplete{width:600px;height:300px}
 .ui-autocomplete li{background:none repeat scroll 0 0 #FFF;display:inline;float:left;list-style:none outside none;position:relative;margin:0;padding:0}
 .vmpayment_description,.vmshipment_description{margin-left:2px}
-#plugin-Container{display:table}
+/* #plugin-Container{display:table} */
 .vm2-modallink{height:16px;margin-left:3px;width:16px;display:inline-block;background:url(../images/admin_ui/icon_external_link.gif) no-repeat scroll left top transparent}
 .vmquote{background-color:#E9ECEF;border:1px solid #CCC;color:#254D78;font-size:12px;margin:4px;padding:10px}
 ul.newsfeed{list-style:none!important;text-align:left;padding:0}
