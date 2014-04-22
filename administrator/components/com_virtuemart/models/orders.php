@@ -236,10 +236,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		.',u.email as order_email,pm.payment_name AS payment_method ';
 		$from = $this->getOrdersListQuery();
 
-
+		$where = array();
 		$user = JFactory::getUser();
 		$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',false);
 		if($user->authorise('core.admin','com_virtuemart')){
+
 			if($virtuemart_vendor_id){
 				$where[]= ' o.virtuemart_vendor_id = "'.$virtuemart_vendor_id.'" ';
 			}
@@ -259,6 +260,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		} else {
 			//A normal user is only allowed to see its own orders, we map $uid to the user id
 			$uid = (int)$user->id;
+			$where = array();
 		}
 		if(!empty($uid)){
 			$where[]= ' u.virtuemart_user_id = ' . (int)$uid.' ';
