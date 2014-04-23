@@ -27,15 +27,23 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/klikandpay/klikandpay
 
 	<?php if ( $viewData['success']) { ?>
 		<div class="status_confirmed">
-			<?php echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $viewData['amount']." ".$viewData['currency'],  $viewData["order_number"]); ?>
+			<?php echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $viewData['amountInCurrency'] ,  $viewData["order_number"]); ?>
 		</div>
 		<div class="transaction_id">
-			<?php echo vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_TRANSACTIONID') . ' ' .$viewData['transactionId'];
+			<?php echo vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_NUMXKP') . ' ' .$viewData['$numxkp'];
 			?>
 		</div>
+		<?php if ( !empty($viewData['prochaine']))  { ?>
+			<div class="extra_comment">
+				<?php echo  vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_PROCHAINE') . ' ' .$viewData['prochaine'];
+				?>
+			</div>
+		<?php
+		}
+		?>
 <?php if ( !empty($viewData['extra_comment']))  { ?>
 <div class="extra_comment">
-			<?php echo $viewData['extra_comment'];
+			<?php echo  $viewData['extra_comment'];
 			?>
 </div>
 	<?php

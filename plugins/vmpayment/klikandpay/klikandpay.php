@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 /**
  * @version $Id$
  * @package    VirtueMart
- * @subpackage Plugins  - Elements
+ * @subpackage Plugins  - KlikAndPay
  * @package VirtueMart
  * @subpackage Payment
  * @author Valérie Isaksen
@@ -16,8 +16,17 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: view.html.php 2796 2011-03-01 11:29:16Z Milbo $
+ * @version $Id$
  *
+ * https://www.klikandpay.com/marchands/index.cgi
+ * Account set up >Set up > URL transaction accepted
+ * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&po=
+ *
+ * Account set up >Set up > URL refused/cancelled transaction
+ * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&po=
+ *
+ *  * Account set up > Dynamic Set up > Dynamic return URL
+ * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&po=
 
  */
 if (!class_exists('vmPSPlugin')) {
@@ -27,7 +36,7 @@ if (!class_exists('KlikandpayHelperKlikandpay')) {
 	require(JPATH_SITE . '/plugins/vmpayment/klikandpay/klikandpay/helpers/klikandpay.php');
 }
 class plgVmpaymentKlikandpay extends vmPSPlugin {
-	const KLIKANDPAY_RESPONSE_SUCCESS = "00";
+
 
 	function __construct (& $subject, $config) {
 
@@ -60,33 +69,34 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function getTableSQLFields () {
 
 		$SQLfields = array(
-			'id'                                => 'int(1) unsigned NOT NULL AUTO_INCREMENT',
-			'virtuemart_order_id'               => 'int(11) UNSIGNED DEFAULT NULL',
-			'order_number'                      => 'char(64) DEFAULT NULL',
-			'virtuemart_paymentmethod_id'       => 'mediumint(1) UNSIGNED DEFAULT NULL',
-			'payment_name'                      => 'varchar(5000)',
-			'payment_order_total'               => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
-			'payment_currency'                  => 'smallint(1)',
-			'email_currency'                    => 'smallint(1)',
-			'recurring'                         => 'varchar(512)',
-			'recurring_number'                  => 'smallint(1)',
-			'cost_per_transaction'              => 'decimal(10,2) DEFAULT NULL',
-			'cost_percent_total'                => 'decimal(10,2) DEFAULT NULL',
-			'tax_id'                            => 'smallint(1) DEFAULT NULL',
-			'klikandpay_custom'                 => 'varchar(255) DEFAULT NULL',
-			'klikandpay_response_RESPONSE'      => 'varchar(2) DEFAULT NULL',
-			'klikandpay_response_NUMXKP'        => 'varchar(255) DEFAULT NULL',
-			'klikandpay_response_SCOREXKP'      => 'smallint(1) UNSIGNED DEFAULT NULL',
-			'klikandpay_response_TRANSACTIONID' => 'smallint(1) UNSIGNED DEFAULT NULL',
-			'klikandpay_response_AUTHID'        => 'varchar(32) DEFAULT NULL',
-			'klikandpay_response_CERT'          => 'varchar(32) DEFAULT NULL',
-			'klikandpay_response_MONTANTXKP'    =>  'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
-			'klikandpay_response_DEVISEXKP'     => 'varchar(3) DEFAULT NULL',
-			'klikandpay_response_IPXKP'         => 'varchar(32) DEFAULT NULL',
-			'klikandpay_response_PAYSRXKP'      => 'varchar(2) DEFAULT NULL',
-			'klikandpay_response_PAYSBXKP'      => 'varchar(2) DEFAULT NULL',
-			'klikandpay_response_PAIEMENT'      => 'varchar(16) DEFAULT NULL',
-			'klikandpay_fullresponse'           => 'text DEFAULT NULL'
+			'id'                                 => 'int(1) unsigned NOT NULL AUTO_INCREMENT',
+			'virtuemart_order_id'                => 'int(11) UNSIGNED DEFAULT NULL',
+			'order_number'                       => 'char(64) DEFAULT NULL',
+			'virtuemart_paymentmethod_id'        => 'mediumint(1) UNSIGNED DEFAULT NULL',
+			'payment_name'                       => 'varchar(5000)',
+			'payment_order_total'                => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
+			'payment_currency'                   => 'smallint(1)',
+			'email_currency'                     => 'smallint(1)',
+			'recurring'                          => 'text DEFAULT NULL',
+			'subscribe'                          => 'text DEFAULT NULL',
+			'cost_per_transaction'               => 'decimal(10,2) DEFAULT NULL',
+			'cost_percent_total'                 => 'decimal(10,2) DEFAULT NULL',
+			'tax_id'                             => 'smallint(1) DEFAULT NULL',
+			'klikandpay_custom'                  => 'varchar(255) DEFAULT NULL',
+			'klikandpay_response_RESPONSE'       => 'varchar(2) DEFAULT NULL',
+			'klikandpay_response_NUMXKP'         => 'varchar(255) DEFAULT NULL',
+			'klikandpay_response_SCOREXKP'       => 'smallint(1) UNSIGNED DEFAULT NULL',
+			'klikandpay_response_TRANSACTIONID'  => 'smallint(1) UNSIGNED DEFAULT NULL',
+			'klikandpay_response_AUTHID'         => 'varchar(32) DEFAULT NULL',
+			'klikandpay_response_CERT'           => 'varchar(32) DEFAULT NULL',
+			'klikandpay_response_MONTANTXKP'     => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
+			'klikandpay_response_DEVISEXKP'      => 'varchar(3) DEFAULT NULL',
+			'klikandpay_response_IPXKP'          => 'varchar(32) DEFAULT NULL',
+			'klikandpay_response_PAYSRXKP'       => 'varchar(2) DEFAULT NULL',
+			'klikandpay_response_PAYSBXKP'       => 'varchar(2) DEFAULT NULL',
+			'klikandpay_response_PAIEMENT'       => 'varchar(16) DEFAULT NULL',
+			'klikandpay_response_ABONNEMENTTYPE' => 'varchar(32) DEFAULT NULL',
+			'klikandpay_fullresponse'            => 'text DEFAULT NULL'
 		);
 		return $SQLfields;
 	}
@@ -101,8 +111,13 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		}
 
 		$interface = $this->_loadKlikandpayInterface($this);
-		$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
+		$interface->setOrder($order);
+		$interface->setCart($cart);
+		$this->getPaymentCurrency($this->_currentMethod);
+		$interface->setTotal($order['details']['BT']->order_total);
 
+		$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
+		$subscribe_id = NULL;
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
@@ -111,9 +126,6 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		}
 
 
-		$this->getPaymentCurrency($this->_currentMethod);
-		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $this->_currentMethod->payment_currency);
-		$orderTotalVendorCurrency = $order['details']['BT']->order_total;
 		$email_currency = $this->getEmailCurrency($this->_currentMethod);
 
 		$name = $order['details']['BT']->first_name;
@@ -133,11 +145,11 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 			"CODEPOSTAL"     => $order['details']['BT']->zip,
 			"VILLE"          => $order['details']['BT']->city,
 			"PAYS"           => ShopFunctions::getCountryByID($order['details']['BT']->virtuemart_country_id, 'country_2_code'),
-			"TEL"            => $order['details']['BT']->phone_1,
+			"TEL"            => !empty($order['details']['BT']->phone_1) ? $order['details']['BT']->phone_1 : $order['details']['BT']->phone_2,
 			"EMAIL"          => $order['details']['BT']->email,
 			"L"              => $interface->getLanguage(),
 			"ID"             => $this->_currentMethod->account,
-			"MONTANT"        => $totalInPaymentCurrency['value'],
+			"MONTANT"        => $interface->getTotal(),
 			"DETAILS"        => $interface->getOrderDetails($order),
 			"RETOUR"         => $retourParams,
 			"RETOURVOK"      => $retourParams,
@@ -149,16 +161,16 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$subscribe = array();
 		$recurring = array();
 		if ($this->_currentMethod->integration == "recurring") {
-			$recurring = $interface->getRecurringPayments($totalInPaymentCurrency['value']);
-			// PBX_TOTAL will be replaced in the array_merge.
+			$recurring = $interface->getRecurringPayments();
+			unset($recurring['info']);
 			$post_variables = array_merge($post_variables, $recurring);
+			$dbValues['recurring'] = json_encode($recurring);
 		} else {
 			if ($this->_currentMethod->integration == "subscribe" /*AND ($orderTotalVendorCurrency > $this->_currentMethod->subscribe_min_amount)*/) {
-				$subscribe_data = $interface->getSubscribePayments($cart, $interface->getPbxAmount($orderTotalVendorCurrency));
-				if ($subscribe_data) {
-					// PBX_TOTAL is the order total in this case
-					$post_variables["PBX_TOTAL"] = $subscribe_data["PBX_TOTAL"];
-					$post_variables["PBX_CMD"] .= $subscribe_data['PBX_CMD'];
+				$subscribe_id = $interface->getSubscribeId($cart);
+				if ($subscribe_id) {
+					$post_variables["ABONNEMENT"] = $subscribe_id;
+					unset($post_variables["MONTANT"] );
 				}
 			}
 		}
@@ -174,17 +186,9 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$dbValues['payment_currency'] = $this->_currentMethod->payment_currency;
 		$dbValues['email_currency'] = $email_currency;
 		$dbValues['payment_order_total'] = $post_variables["MONTANT"];
-		if (!empty($recurring)) {
-			$dbValues['recurring'] = json_encode($recurring);
-			$dbValues['recurring_number'] = $this->_currentMethod->recurring_number;
-			$dbValues['recurring_periodicity'] = $this->_currentMethod->recurring_periodicity;
-		} else {
-			$dbValues['recurring'] = NULL;
-		}
+
 		if (!empty($subscribe)) {
 			$dbValues['subscribe'] = json_encode($subscribe);
-			//$dbValues['recurring_number'] = $this->_currentMethod->recurring_number;
-			//$dbValues['recurring_periodicity'] = $this->_currentMethod->recurring_periodicity;
 		} else {
 			$dbValues['subscribe'] = NULL;
 		}
@@ -192,7 +196,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$dbValues['tax_id'] = $this->_currentMethod->tax_id;
 		$this->storePSPluginInternalData($dbValues);
 
-		$html = $this->getConfirmedHtml($post_variables, $interface);
+		$html = $this->getConfirmedHtml($post_variables, $interface, $subscribe_id);
 
 		// 	2 = don't delete the cart, don't send email and don't redirect
 		$cart->_confirmDone = FALSE;
@@ -264,9 +268,8 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
-		$extra_comment = "";
 
-		$html = $this->getResponseHTML($order, $extra_comment);
+		$html = $this->getResponseHTML($order, $payments);
 		//$cart = VirtueMartCart::getCart();
 		//$cart->emptyCart();
 		JRequest::setVar('display_title', false);
@@ -287,15 +290,11 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		//  $order_number = pbxRequest::getUword('on');
 		$order_number = vRequest::getUword('on');
 		if (!$order_number) {
 			return FALSE;
 		}
-		$numerr = JRequest::getString('E', '');
-		if ($numerr) {
-			VmInfo('VMPAYMENT_KLIKANDPAY_PBX_NUMERR_' . abs($numerr));
-		}
+
 		if (!$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number)) {
 			return NULL;
 		}
@@ -313,7 +312,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	}
 
 	/**
-	 *   plgVmOnPaymentNotification() - This event is fired by Offline Payment. It can be used to validate the payment data as entered by the user.
+	 *   plgVmOnPaymentNotification() -It can be used to validate the payment data as entered by the user.
 	 * Return:
 	 * Parameters:
 	 *  None
@@ -325,8 +324,11 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
+
 		$po = vRequest::getString('po', '');
-		if (!$po) return;
+		if (!$po) {
+			return;
+		}
 
 		$retourParams = $this->getRetourParams($po);
 
@@ -356,12 +358,12 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		}
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
-		$extra_comment = "";
 		$klikandpay_data = vRequest::getGet();
+
+		$this->debugLog(var_export($klikandpay_data, true), 'plgVmOnPaymentNotification getGet', 'debug', false);
+
 		$order_history = $this->updateOrderStatus($interface, $klikandpay_data, $order, $payments);
-		if (isset($order_history['extra_comment'])) {
-			$extra_comment = $order_history['extra_comment'];
-		}
+
 
 		$this->emptyCart($payments[0]->klikandpay_custom, $order['details']['BT']->order_number);
 		$this->setEmptyCartDone($payments[0]);
@@ -386,17 +388,13 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	 * @return bool
 	 */
 	function updateOrderStatus ($interface, $klikandpay_data, $order, $payments) {
-
-		if ($klikandpay_data['RESPONSE'] == self::KLIKANDPAY_RESPONSE_SUCCESS) {
+		if ($interface->isResponseValid($klikandpay_data, $order, $payments)) {
 			$order_history = $interface->getOrderHistory($klikandpay_data, $order, $payments);
-
 		} else {
 			$order_history['comments'] = JText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CANCELLED', $order['details']['BT']->order_number);
 			$order_history['order_status'] = $this->_currentMethod->status_canceled;
 			$order_history['customer_notified'] = true;
 		}
-		//	$this->debugLog($success, 'updateOrderStatus', 'error', false);
-
 
 		$db_values['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 		$db_values['order_number'] = $order['details']['BT']->order_number;
@@ -453,7 +451,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 				$html .= $this->getHtmlRowBE('KLIKANDPAY_PAYMENT_NAME', $payment->payment_name);
 				// keep that test to have it backwards compatible. Old version was deleting that column  when receiving an IPN notification
 				if ($payment->payment_order_total and  $payment->payment_order_total != 0.00) {
-					$html .= $this->getHtmlRowBE('KLIKANDPAY_PAYMENT_ORDER_TOTAL', ($payment->payment_order_total * 0.01) . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
+					$html .= $this->getHtmlRowBE('KLIKANDPAY_PAYMENT_ORDER_TOTAL', ($payment->payment_order_total) . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
 				}
 				if ($payment->email_currency and  $payment->email_currency != 0) {
 					//$html .= $this->getHtmlRowBE('KLIKANDPAY_PAYMENT_EMAIL_CURRENCY', shopFunctions::getCurrencyByID($payment->email_currency, 'currency_code_3'));
@@ -462,56 +460,55 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 					$recurring_html = '<table class="adminlist">' . "\n";
 					$recurring = json_decode($payment->recurring);
-					$recurring_html .= $this->getHtmlRowBE('KLIKANDPAY_CONF_RECURRING_PERIODICTY', $payment->recurring_periodicity);
-					$recurring_html .= $this->getHtmlRowBE('KLIKANDPAY_CONF_RECURRING_NUMBER', $payment->recurring_number);
-					//$recurring_html .= $this->getHtmlRowBE(VmText::_('VMPAYMENT_KLIKANDPAY_CONF_RECURRING_PERIODICTY').' '. $payment->recurring_periodicity, VmText::_('VMPAYMENT_KLIKANDPAY_CONF_RECURRING_NUMBER').' '. $payment->recurring_number);
-					for ($i = 1; $i < $payment->recurring_number; $i++) {
-						$index_mont = "PBX_2MONT" . $i;
-						$index_date = "PBX_DATE" . $i;
-						$text_mont = vmText::_('VMPAYMENT_KLIKANDPAY_PAYMENT_RECURRING_2MONT') . " " . $i;
-						$text_date = vmText::_('VMPAYMENT_KLIKANDPAY_PAYMENT_RECURRING_DATE') . " " . $i;
-						//$recurring_html .= $this->getHtmlRowBE($text_date, $recurring->$index_date);
-						//$recurring_html .= $this->getHtmlRowBE($text_mont, ($recurring->$index_mont * 0.01) . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
-						$recurring_html .= $this->getHtmlRowBE($recurring->$index_date, ($recurring->$index_mont * 0.01) . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
+					$recurring_html .= $this->getHtmlRowBE('VMPAYMENT_KLIKANDPAY_RECURRING_MONTANT', $recurring->MONTANT);
+					if (isset($recurring->MONTANT2)) {
+						$recurring_html .= $this->getHtmlRowBE('VMPAYMENT_KLIKANDPAY_RECURRING_MONTANT2', $recurring->MONTANT2);
 					}
+					if (isset($recurring->EXTRA)) {
+						$recurring_html .= $this->getHtmlRowBE('VMPAYMENT_KLIKANDPAY_RECURRING_EXTRA', $recurring->EXTRA);
+					}
+					if (isset($recurring->DATE2)) {
+						$recurring_html .= $this->getHtmlRowBE('VMPAYMENT_KLIKANDPAY_RECURRING_DATE2', $recurring->DATE2);
+					}
+
 					$recurring_html .= '</table>' . "\n";
 					$html .= $this->getHtmlRowBE('KLIKANDPAY_RECURRING', $recurring_html);
 				}
 				$first = FALSE;
 			} else {
-					$showOrderBEFields = $this->getOrderBEFields();
-					$keyPrefix = 'KLIKANDPAY_RESPONSE_';
-					$dbPrefix = 'klikandpay_response_';
-					foreach ($showOrderBEFields as $showOrderBEField) {
-						$orderField=$dbPrefix.$showOrderBEField;
-						if (isset($payment->$orderField) and !empty($payment->$orderField)) {
-							$key = $keyPrefix . $showOrderBEField;
-							if (method_exists($this, 'getValueBE_' . $orderField)) {
-								$function = 'getValueBE_' . $orderField;
-								$payment->$orderField = $this->$function($payment->$orderField);
-							}
-							$html .= $this->getHtmlRowBE($key, $payment->$orderField);
+				$showOrderBEFields = $this->getOrderBEFields();
+				$keyPrefix = 'KLIKANDPAY_RESPONSE_';
+				$dbPrefix = 'klikandpay_response_';
+				foreach ($showOrderBEFields as $showOrderBEField) {
+					$orderField = $dbPrefix . $showOrderBEField;
+					if (isset($payment->$orderField) and !empty($payment->$orderField)) {
+						$key = $keyPrefix . $showOrderBEField;
+						if (method_exists($this, 'getValueBE_' . $orderField)) {
+							$function = 'getValueBE_' . $orderField;
+							$payment->$orderField = $this->$function($payment->$orderField);
 						}
+						$html .= $this->getHtmlRowBE($key, $payment->$orderField);
 					}
-					$html .= '<tr><td></td><td>
+				}
+				$html .= '<tr><td></td><td>
     <a href="#" class="KlikandpayLogOpener" rel="' . $payment->id . '" >
         <div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="KlikandpayLog_' . $payment->id . '">';
 				$klikandpay_data = json_decode($payment->klikandpay_fullresponse);
 				foreach ($klikandpay_data as $key => $value) {
-						$langKey = 'VMPAYMENT_' . $keyPrefix . $key;
-						if ($lang->hasKey($langKey)) {
-							$label = vmText::_($langKey);
-						} else {
-							$label = $key;
-						}
-						$html .= ' <b>' . $label . '</b>:&nbsp;' . wordwrap($value, 50, "\n", true) . '<br />';
+					$langKey = 'VMPAYMENT_' . $keyPrefix . $key;
+					if ($lang->hasKey($langKey)) {
+						$label = vmText::_($langKey);
+					} else {
+						$label = $key;
 					}
+					$html .= ' <b>' . $label . '</b>:&nbsp;' . wordwrap($value, 50, "\n", true) . '<br />';
+				}
 
-					$html .= ' </div>
+				$html .= ' </div>
         <span class="icon-nofloat vmicon vmicon-16-xml"></span>&nbsp;';
-					$html .= vmText::_('VMPAYMENT_KLIKANDPAY_VIEW_TRANSACTION_LOG');
-					$html .= '  </a>';
-					$html .= ' </td></tr>';
+				$html .= vmText::_('VMPAYMENT_KLIKANDPAY_VIEW_TRANSACTION_LOG');
+				$html .= '  </a>';
+				$html .= ' </td></tr>';
 			}
 		}
 
@@ -534,8 +531,14 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	private function getExtraPluginNameInfo ($activeMethod) {
 		$this->_currentMethod = $activeMethod;
 
-		$klikandpayInterface = $this->_loadKlikandpayInterface();
-		$extraInfo = $klikandpayInterface->getExtraPluginNameInfo();
+		$interface = $this->_loadKlikandpayInterface();
+		if (!class_exists('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
+		$cart = VirtueMartCart::getCart();
+		$interface->setCart($cart);
+		$interface->setTotal($cart->pricesUnformatted['billTotal']);
+		$extraInfo = $interface->getExtraPluginNameInfo();
 
 		return $extraInfo;
 
@@ -598,8 +601,10 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		//vmTrace('checkConditions', true);
 		//$this->debugLog( $cart_prices['salesPrice'], 'checkConditions','debug');
 		$this->_currentMethod = $method;
-		$klikandpayInterface = $this->_loadKlikandpayInterface();
-
+		$interface = $this->_loadKlikandpayInterface();
+		if (!$return = $interface->checkConditions($cart)) {
+			//return false;
+		}
 		$this->convert_condition_amount($method);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
@@ -670,8 +675,15 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	 *
 	 */
 	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
+			return FALSE;
+		}
 
-		return $this->OnSelectCheck($cart);
+		$interface = $this->_loadKlikandpayInterface($this);
+		return $interface->onSelectCheck($cart);
 	}
 
 	/**
@@ -690,18 +702,6 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		return $this->displayListFE($cart, $selected, $htmlIn);
 	}
 
-	/*
-* plgVmonSelectedCalculatePricePayment
-* Calculate the price (value, tax_id) of the selected method
-* It is called by the calculator
-* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
-* @author Valerie Isaksen
-* @cart: VirtueMartCart the current cart
-* @cart_prices: array the new cart prices
-* @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
-*
-*
-*/
 
 	public function plgVmonSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
@@ -745,7 +745,17 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	 * @author Max Milbers
 	 */
 	public function plgVmOnCheckoutCheckDataPayment (VirtueMartCart $cart) {
-		return true;
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
+			return NULL;
+		}
+
+		$interface = $this->_loadKlikandpayInterface($this);
+		$interface->setCart($cart);
+		$interface->setTotal($cart->pricesUnformatted['billTotal']);
+		return $interface->onCheckoutCheckDataPayment($cart);
 	}
 
 
@@ -825,8 +835,8 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	 * @param $post_variables
 	 * @return string
 	 */
-	function getConfirmedHtml ($post_variables, $interface) {
-		$server = $interface->getKlikandpayServerUrl();
+	function getConfirmedHtml ($post_variables, $interface, $subscribe_id = NULL) {
+		$server = $interface->getKlikandpayServerUrl($subscribe_id);
 		$this->debugLog(var_export($post_variables, true), 'getConfirmedHtml', 'debug', false);
 		// add spin image
 		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
@@ -861,60 +871,53 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	}
 
 
-	function verif_ip ($method) {
-
-		$ip_adresses = explode("-", $method->ips);
-		if (is_array($ip_adresses)) {
-			foreach ($ip_adresses as $ip_adresse) {
-				if (trim($ip_adresse) == $_SERVER['REMOTE_ADDR']) {
-					return TRUE;
-				}
-			}
-			return FALSE;
-		}
-		// it is not an array: the customer does not want ot check for IP
-		return TRUE;
-	}
-
-
 	/**
 	 * @param $response
 	 * @param $order
 	 * @return null|string
 	 */
-	function getResponseHTML ($order, $payments, $extra_comment) {
-		$transactionId='';
-		$success=false;
-		if (count($payments)>1){
-			$last_payment=end($payments);
-			$transactionId= $last_payment->klikandpay_response_TRANSACTIONID;
-			$success= $this->isResponseSuccess( $last_payment->klikandpay_response_RESPONSE);
+	function getResponseHTML ($order, $payments) {
+		$transactionId = '';
+		$success = false;
+		$prochaine = '';
+		$numxkp = '';
+		$interface = $this->_loadKlikandpayInterface($this);
+		if (count($payments) > 1) {
+			$last_payment = end($payments);
+			$numxkp = $last_payment->klikandpay_response_NUMXKP;
+			$success = $interface->isResponseSuccess($last_payment->klikandpay_response_RESPONSE);
+			$fullresponse = json_decode($last_payment->klikandpay_fullresponse);
+			if (isset($fullresponse->PROCHAINE)) {
+				$prochaine = $fullresponse->PROCHAINE;
+			}
 		}
 
 		$payment_name = $this->renderPluginName($this->_currentMethod);
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
-		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $order['details']['BT']->order_currency . '" ';
-		$db = JFactory::getDBO();
-		$db->setQuery($q);
-		$currency_numeric_code = $db->loadResult();
+
+		if (!class_exists('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
+		$cart = VirtueMartCart::getCart();
+		$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
+		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
+
+
 		$html = $this->renderByLayout('response', array(
-		                                               "success"       => $success,
-		                                               "payment_name"  => $payment_name,
-		                                               "transactionId" => $transactionId,
-		                                               "amount"        =>  $order['details']['BT']->order_total,
-		                                               "extra_comment" => $extra_comment,
-		                                               "currency"      => $currency_numeric_code,
-		                                               "order_number"  => $order['details']['BT']->order_number,
-		                                               "order_pass"    => $order['details']['BT']->order_pass,
+		                                               "success"          => $success,
+		                                               "payment_name"     => $payment_name,
+		                                               "numxkp"           => $numxkp,
+		                                               "amountInCurrency" => $amountInCurrency['display'],
+		                                               "prochaine"        => $prochaine,
+		                                               "order_number"     => $order['details']['BT']->order_number,
+		                                               "order_pass"       => $order['details']['BT']->order_pass,
 		                                          ));
 		return $html;
 
 
 	}
-	function  isResponseSuccess ($response) {
-		$success = ($response == self::KLIKANDPAY_RESPONSE_SUCCESS);
-		return $success;
-	}
+
+
 	/*********************/
 	/* Private functions */
 	/*********************/
@@ -989,8 +992,9 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		}
 		return false;
 	}
+
 	function getOrderBEFields () {
-		$fields = array('RESPONSE', 'NUMXKP','SCOREXKP','TRANSACTIONID','AUTHID');
+		$fields = array('RESPONSE', 'NUMXKP', 'SCOREXKP', 'TRANSACTIONID', 'AUTHID');
 		return $fields;
 
 	}

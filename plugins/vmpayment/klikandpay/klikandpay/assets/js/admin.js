@@ -24,13 +24,15 @@ jQuery().ready(function ($) {
     /************/
 
     handleRecurringDate = function () {
-        var recurring_deposit = $('#paramsrecurring_deposit').val();
+        var recurring_number = $('#paramsrecurring_number').val();
+        var integration = $('#paramsintegration').val();
 
         $('.recurring_date').parents('tr').hide();
 
-        if (recurring_deposit == '') {
-        } else {
-            $('.recurring_date').parents('tr').show();
+        if (integration=='recurring') {
+            if (recurring_number=='2') {
+                $('.recurring_date').parents('tr').show();
+            }
         }
     }
 
@@ -46,6 +48,23 @@ jQuery().ready(function ($) {
         }
     }
 
+    handleSubscribeNumber = function () {
+        var subscribe_number = $('#paramssubscribe_number').val();
+        var integration = $('#paramsintegration').val();
+
+        $('.subscribe_number_1 ').parents('tr').hide();
+        $('.subscribe_number_2 ').parents('tr').hide();
+        $('.subscribe_number_3 ').parents('tr').hide();
+        if(integration == 'subscribe') {
+                $('.subscribe_number_1').parents('tr').show();
+            if(subscribe_number == '2') {
+                $('.subscribe_number_2').parents('tr').show();
+            }else if(subscribe_number == '3') {
+                $('.subscribe_number_2').parents('tr').show();
+                $('.subscribe_number_3').parents('tr').show();
+            }
+        }
+    }
     handleShopMode = function () {
         var shop_mode = $('#paramsshop_mode').val();
 
@@ -55,13 +74,14 @@ jQuery().ready(function ($) {
             $('.shop_mode').parents('tr').show();
         }
     }
+
     /**********/
     /* Events */
     /**********/
 
 
-    $('#paramsrecurring_deposit').change(function () {
-        handleRecurringDate();
+    $('#paramsrecurring_number').change(function () {
+        //handleRecurringDate();
 
     });
     $('#paramsshop_mode').change(function () {
@@ -70,12 +90,19 @@ jQuery().ready(function ($) {
     });
     $('#paramsintegration').change(function () {
         handleIntegration();
+        handleRecurringDate();
+        handleSubscribeNumber();
 
+
+    });
+    $('#paramssubscribe_number').change(function () {
+        handleSubscribeNumber();
     });
     /*****************/
     /* Initial calls */
     /*****************/
     handleShopMode();
-    handleRecurringDate();
     handleIntegration();
+   // handleRecurringDate();
+    handleSubscribeNumber();
 });

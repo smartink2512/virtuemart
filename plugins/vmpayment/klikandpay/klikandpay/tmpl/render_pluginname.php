@@ -1,5 +1,5 @@
 <?php
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
@@ -22,7 +22,7 @@ defined ('_JEXEC') or die();
 	<?php
 	if (!empty($viewData['logo'])) {
 		?>
-		<span class="vmCartPaymentLogo" >
+		<span class="vmCartPaymentLogo">
 			<?php echo $viewData['logo'] ?>
         </span>
 	<?php
@@ -47,26 +47,27 @@ defined ('_JEXEC') or die();
 	if (isset($viewData['extraInfo']['recurring'])) {
 		?>
 		<div class="vmpayment_recurring">
-			<?php echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_COMMENT_RECURRING_INFO', $viewData['extraInfo']['recurring_number'], $viewData['extraInfo']['recurring_periodicity']) ?>
+			<?php echo $viewData['extraInfo']['recurring']; ?>
 		</div>
 	<?php
 	}
 	?>
 	<?php
-	if (isset($viewData['extraInfo']['subscribe'])) {
+	if (isset($viewData['extraInfo']['subscribe']) and !empty($viewData['extraInfo']['subscribe'])) {
 		?>
 		<div class="vmpayment_subscribe">
 			<?php
-			echo vmText::_('VMPAYMENT_KLIKANDPAY_SUBSCRIBE_1MONT')." " .$viewData['extraInfo']['subscribe_1mont'] ."<br />" ;
-			echo vmText::_('VMPAYMENT_KLIKANDPAY_SUBSCRIBE_2MONT')." " .$viewData['extraInfo']['subscribe_2mont'] ."<br />" ;
-			echo vmText::_('VMPAYMENT_KLIKANDPAY_SUBSCRIBE_NBPAIE')." " .$viewData['extraInfo']['subscribe_nbpaie']  ."<br />" ;
-			if ($viewData['extraInfo']['subscribe_quand']==1) {
-				$viewData['extraInfo']['subscribe_quand'] ="";
+			if (isset($viewData['extraInfo']['subscribe']['subscribe_test_amount']) and !empty($viewData['extraInfo']['subscribe']['subscribe_test_amount'])) {
+				echo vmText::_('VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT') . ": " . $viewData['extraInfo']['subscribe']['subscribe_test_amount'] . "<br />";
 			}
-				echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_SUBSCRIBE_QUAND', $viewData['extraInfo']['subscribe_quand']  ) ."<br />" ;
-			echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_SUBSCRIBE_FREQ',$viewData['extraInfo']['subscribe_freq'])   ."<br />" ;
-			if ($viewData['extraInfo']['subscribe_delais']) {
-			echo vmText::_('VMPAYMENT_KLIKANDPAY_SUBSCRIBE_DELAIS')." " .$viewData['extraInfo']['subscribe_delais']  ."<br />" ;
+			if (isset($viewData['extraInfo']['subscribe']['subscribe_test_period']) and !empty($viewData['extraInfo']['subscribe']['subscribe_test_period'])) {
+				echo vmText::_('VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD') . ": " . $viewData['extraInfo']['subscribe']['subscribe_test_period'] . "<br />";
+			}
+			if (isset($viewData['extraInfo']['subscribe']['subscribe_due_date_amount']) and !empty($viewData['extraInfo']['subscribe']['subscribe_due_date_amount'])) {
+				echo vmText::_('VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT') . " :" . $viewData['extraInfo']['subscribe']['subscribe_due_date_amount'] . "<br />";
+			}
+			if (isset($viewData['extraInfo']['subscribe']['subscribe_frequency']) and !empty($viewData['extraInfo']['subscribe']['subscribe_frequency'])) {
+				echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY') . ": " . $viewData['extraInfo']['subscribe']['subscribe_frequency'] . "<br />";
 			}
 			?>
 		</div>

@@ -6,8 +6,8 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  * @package    VirtueMart
  * @subpackage Plugins  _ Elements
  * @author Valérie Isaksen
- * @link http://www.alatak.net
- * @copyright Copyright (c) alatak;net. All rights reserved.
+ * @package VirtueMart
+ * @copyright Copyright (c) 2004 - 2012 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -15,7 +15,7 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  * other free or open source software licenses.
  * @version $Id: $
  */
-class JElementklikandpaysubscribe extends JElement {
+class JElementSubscribe extends JElement {
 
     /**
      * Element name
@@ -23,15 +23,13 @@ class JElementklikandpaysubscribe extends JElement {
      * @access    protected
      * @var        string
      */
-    var $_name = "klikandpaysubscribe";
+    var $_name = "Subscribe";
 
     function fetchElement($name, $value, &$node, $control_name) {
 
        $query="
           SELECT virtuemart_custom_id, custom_title
           FROM #__virtuemart_customs
-          WHERE (field_type = 'P')
-          AND (custom_title LIKE '%KLIKANDPAY%')
 
 ";
 
@@ -41,7 +39,7 @@ class JElementklikandpaysubscribe extends JElement {
 
 	    $attribs = ' ';
 	    $attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
-        return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . '][]', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . ']', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
     }
 
 }

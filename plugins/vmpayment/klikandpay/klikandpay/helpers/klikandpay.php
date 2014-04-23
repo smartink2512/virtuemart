@@ -24,48 +24,66 @@ defined('_JEXEC') or die('Restricted access');
 
 class  KlikandpayHelperKlikandpay {
 
-	const RESPONSE_SUCCESS = '00000';
+	const RESPONSE_SUCCESS = "00";
+	const RESPONSE_AWAITING = "AWAITING";
+	const RESPONSE_AWAITINGCHEQUE = "AWAITINGCHEQUE";
 
-	const TYPEPAIEMENT_CARTE = 'CARTE';
-
-	const TYPECARTE_CB = 'CB';
-
-	const TYPE_DIRECT_AUTHORIZATION_ONLY = '00001';
-	const TYPE_DIRECT_CAPTURE = '00002';
-	const TYPE_DIRECT_AUTHORIZATION_CAPTURE = '00003';
 
 	function __construct ($method, $plugin) {
 		$this->_method = $method;
 		$this->plugin = $plugin;
 	}
 
-
-
+	/**
+	 * @param $order
+	 */
 	public function setOrder ($order) {
 		$this->order = $order;
 	}
 
-
-
-
-	public function getType () {
-		switch ($this->_method->type) {
-
-			case 'authorization_capture':
-				return self::TYPE_DIRECT_AUTHORIZATION_CAPTURE;
-				break;
-			case 'authorization_only':
-			default:
-				return self::TYPE_DIRECT_AUTHORIZATION_ONLY;
-				break;
-		}
-
+	/**
+	 * @param $cart
+	 */
+	public function setCart ($cart) {
+		$this->cart = $cart;
 	}
 
 
+	/**
+	 * @param $total
+	 */
+	public function setTotal($total) {
+		if (!class_exists('CurrencyDisplay')) {
+			require(JPATH_VM_ADMINISTRATOR . '/helpers/currencydisplay.php');
+		}
+		$this->total = vmPSPlugin::getAmountValueInCurrency($total, $this->_method->payment_currency);
+
+		$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotal() {
+		return $this->total;
+	}
+
+
+	function checkConditions ($cart) {
+		return true;
+	}
+
+	function onCheckoutCheckDataPayment (VirtueMartCart $cart) {
+		return true;
+	}
+
+	function onSelectCheck (VirtueMartCart $cart) {
+		return true;
+	}
+
 	function getOrderDetails ($order) {
 		$orderDetails = '';
-		foreach ($order['details']['items'] as $item) {
+		foreach ($order['items'] as $item) {
 			$product_sku = str_replace(array('%', ':', '|'), '-', $item->order_item_sku);
 			$product_name = str_replace(array('%', ':', '|'), '-', $item->order_item_name);
 			$price = $item->product_final_price;
@@ -96,7 +114,7 @@ class  KlikandpayHelperKlikandpay {
 	}
 
 
-	function getKlikandpayServerUrl () {
+	function getKlikandpayServerUrl ($id = NULL) {
 
 
 		if ($this->_method->shop_mode == 'test') {
@@ -126,19 +144,32 @@ class  KlikandpayHelperKlikandpay {
 	}
 
 	/**
+	 * KP returns AWAITINGCHEQUE OR AWAITING as response for payments other than CC
 	 * @param $klikandpay_data
 	 * @param $order
 	 * @return mixed
 	 */
-	function getOrderHistory ($klikandpay_data, $order) {
-		$amountInCurrency = vmPSPlugin::getAmountInCurrency($klikandpay_data['MONTANTXKP'] , $klikandpay_data['DEVISEXKP']);
+	function updateOrderHistory ($klikandpay_data, $order, $payments) {
+		$amountInCurrency = vmPSPlugin::getAmountInCurrency($klikandpay_data['MONTANTXKP'], $klikandpay_data['DEVISEXKP']);
 		$order_history['comments'] = vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
-		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_S') . ' ' . $klikandpay_data['S'];
-
 		$order_history['customer_notified'] = true;
-		$status_success = 'status_success_' . $this->_method->debit_type;
-		$order_history['order_status'] = $this->_method->$status_success;
+		if ($klikandpay_data['RESPONSE'] == self::RESPONSE_AWAITINGCHEQUE or $klikandpay_data['RESPONSE'] == self::RESPONSE_AWAITING) {
+			$order_history['order_status'] = $this->_method->status_waiting;
+		} else {
+			$order_history['order_status'] = $this->_method->status_success;
+		}
 		return $order_history;
+	}
+
+	function isResponseValid ($klikandpay_data, $order, $payments) {
+		if ($klikandpay_data['RESPONSE'] == self::RESPONSE_SUCCESS OR $klikandpay_data['RESPONSE'] == self::RESPONSE_AWAITINGCHEQUE or $klikandpay_data['RESPONSE'] == self::RESPONSE_AWAITING) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	function isResponseSuccess ($response) {
+		return ($response == self::RESPONSE_SUCCESS);
 	}
 
 
