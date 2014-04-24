@@ -134,15 +134,14 @@ class vmJsApi{
 	 */
 	static function jQuery($isSite=-1) {
 
-
-		if(JVM_VERSION>2){
-			JHtml::_('jquery.framework');
-			//return true;
-		} else {
+		if(JVM_VERSION<3){
 			//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
 			if (JFactory::getApplication ()->get ('jquery')) {
 				return FALSE;
 			}
+		} else {
+			JHtml::_('jquery.framework');
+			//return true;
 		}
 
 		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
@@ -173,7 +172,10 @@ class vmJsApi{
 		}
 		vmJsApi::js( 'jquery.noconflict');
 		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
-		//JFactory::getApplication()->set('jquery',TRUE);
+		if(JVM_VERSION<3){
+			JFactory::getApplication()->set('jquery',TRUE);
+		}
+
 		return TRUE;
 	}
 	// Virtuemart product and price script

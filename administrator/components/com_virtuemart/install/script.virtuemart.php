@@ -290,6 +290,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->recurse_copy($src,$dst);
 			}
 
+			//fix joomla BE menu
+			$model = VmModel::getModel('updatesmigration');
+			$model->checkFixJoomlaBEMenuEntries();
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
@@ -706,19 +710,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if ($type != 'uninstall') {
 				$this->loadVm();
 				//fix joomla BE menu
-				$db = JFactory::getDbo();
-				$db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart"');
-				$jId = $db->loadResult();
-				if($jId){
-					$db->setQuery('UPDATE `#__menu` SET `component_id`="'.$jId.'" WHERE `menutype` = "main" AND `path`="com-virtuemart"');
-					$db->execute();
+				$model = VmModel::getModel('updatesmigration');
+				$model->checkFixJoomlaBEMenuEntries();
 
-					$db->setQuery('SELECT `id` FROM `#__menu` WHERE `component_id` = "'.$jId.'" ');
-					$mId = $db->loadResult();
-
-					$db->setQuery('UPDATE `#__menu` SET `component_id`="'.$jId.'" WHERE `parent_id` = "'.$mId.'" ');
-					$db->execute();
-				}
 
 				// 				VmConfig::loadConfig(true);
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');

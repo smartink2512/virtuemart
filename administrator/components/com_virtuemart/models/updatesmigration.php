@@ -110,6 +110,48 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	    return $userId;
     }
 
+	/**
+	 *
+	 */
+	public function checkFixJoomlaBEMenuEntries(){
+
+		$db = JFactory::getDbo();
+		$db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart"');
+		$jId = $db->loadResult();
+
+		//The extension entry does not exist, lets insert one.
+		if(!$jId){
+			$q = 'INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`)
+VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 0, \'{"legacy":true,"name":"VIRTUEMART","type":"component","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.","authorEmail":"max|at|virtuemart.net","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"","group":""}\'); ';
+			$db->setQuery($q);
+			if($db->execute($q)){
+				$jId = $db->insertid();
+				vmInfo('VirtueMart extension entry was missing, added with id '.$jId);
+			} else {
+				vmError('Serious Error, could not create entry for com_virtuemart in table extensions');
+			}
+
+		}
+
+		if($jId){
+			//now lets check if there are menue entries
+			$db->setQuery('SELECT `id` FROM `#__menu` WHERE `menutype` = "main" AND `path`="com-virtuemart"');
+
+			if($id = $db->loadResult()){
+				$db->setQuery('UPDATE `#__menu` SET `component_id`="'.$jId.'", `language`="*" WHERE `id` = "'.$id.'" ');
+				$db->execute();
+
+				$db->setQuery('SELECT `id` FROM `#__menu` WHERE `component_id` = "'.$jId.'" ');
+				$mId = $db->loadResult();
+
+				$db->setQuery('UPDATE `#__menu` SET `component_id`="'.$jId.'", `language`="*" WHERE `parent_id` = "'.$mId.'" ');
+				$db->execute();
+			} else {
+				vmError('Could not find VirtueMart submenues, please install VirtueMart again');
+			}
+
+		}
+	}
 
     /**
      * Installs sample data to the current database.
