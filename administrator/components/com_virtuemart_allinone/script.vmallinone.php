@@ -73,15 +73,18 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			//$this->installPlugin ('VM Payment - Realex', 'plugin', 'realex', 'vmpayment');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers', 'plugin', 'moneybookers', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers Giropay', 'plugin', 'moneybookers_gir', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers Sofortueberweisung', 'plugin', 'moneybookers_sft', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers Przelewy24', 'plugin', 'moneybookers_pwy', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
-			$this->installPlugin ('VM Payment - Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers', 'plugin', 'moneybookers', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers Giropay', 'plugin', 'moneybookers_gir', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers Sofortueberweisung', 'plugin', 'moneybookers_sft', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers Przelewy24', 'plugin', 'moneybookers_pwy', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
+			//$this->installPlugin ('VM Payment - Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
+
+			$this->installPlugin ('VM Payment - Skrill', 'plugin', 'skrill', 'vmpayment');
+
 			$this->installPlugin ('VM Payment - Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 
 			$this->installPlugin ('VM Payment - Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
@@ -104,6 +107,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			// 					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
 
 			$this->installPlugin ('VirtueMart Product', 'plugin', 'virtuemart', 'search');
+			$this->updateMoneyBookersToSkrill();
+
 
 			$task = JRequest::getCmd ('task');
 			if ($task != 'updateDatabase') {
@@ -213,6 +218,39 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			return TRUE;
 
 		}
+
+		private function updateMoneyBookersToSkrill() {
+			$db = JFactory::getDBO ();
+			$q="SELECT FROM `#__extension`s WHERE `#__extensions`.`folder` =  'vmpayment' AND `#_extensions`.`element` LIKE  'skrill'";
+			$db->setQuery ($q);
+			$skrill_jplugin_id = $db->loadResult()  ;
+
+			$q="SELECT *
+				FROM `#__virtuemart_paymentmethods`
+				JOIN `#__extensions` ON `#__extensions`.`extension_id` = `#__virtuemart_paymentmethods`.`payment_jplugin_id`
+				WHERE `#__extensionsv.`folder` =  'vmpayment'
+				AND `#_extensionsv.`element` LIKE  'moneybookers_%'";
+			$db->setQuery ($q);
+			$moneybookers = $db->loadObjectList()  ;
+
+			foreach ($moneybookers as $moneybooker) {
+				$payment_params=$moneybooker->payment_params;
+				$mb_element=str_replace('moneybookers_', '',$moneybooker->element);
+				$payment_params='product='.$mb_element.'|'.$payment_params;
+				$q = 'UPDATE `#__virtuemart_paymentmethods`
+						SET `payment_params`= "'.$payment_params.'" , `payment_jplugin_id` = '.$skrill_jplugin_id.' , `payment_jplugin_id`= "skrill"
+						 WHERE `virtuemart_paymentmethod_id` ='.$moneybooker->virtuemart_paymentmethod_id;
+				$db->setQuery($q);
+				$db->query();
+
+				$q="DELETE FROM  `#__extensions` WHERE `extension_id` = ".$moneybooker->extension_id;
+				$db->setQuery($q);
+				$db->query();
+
+			}
+		}
+
+
 
 		private function updateOrderingExtensions(){
 
