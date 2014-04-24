@@ -105,13 +105,17 @@ class VmTable extends JTable {
 
 	}
 
-	function setPrimaryKey($key, $keyForm = 0) {
+	public function setPrimaryKey($key, $keyForm = 0) {
 
 		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
 		$this->setObligatoryKeys('_pkey', $error);
 		$this->_pkey = $key;
 		$this->_pkeyForm = empty($keyForm) ? $key : $keyForm;
 		$this->$key = 0;
+	}
+
+	public function getPrimaryKey(){
+		return $this->_pkey;
 	}
 
 	public function setObligatoryKeys($key) {

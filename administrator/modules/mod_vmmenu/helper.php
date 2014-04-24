@@ -31,13 +31,14 @@ abstract class ModVMMenuHelper {
 		$db = JFactory::getDBO();
 		$q = 'SELECT m.id, m.title, m.alias, m.link, m.parent_id, m.img, e.element FROM `#__menu` as m
 				LEFT JOIN #__extensions AS e ON m.component_id = e.extension_id
-		         WHERE m.client_id = 1 AND e.enabled = 1 AND m.id > 1 AND e.element = \'com_virtuemart\'
+		         WHERE e.enabled = 1 AND e.element = \'com_virtuemart\'
 		         ORDER BY m.lft';
 		$db->setQuery($q);
 
 		$vmComponentItems = $db->loadObjectList();
 		$result = new stdClass();
 		if ($vmComponentItems) {
+			defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 			if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 			VmConfig::loadJLang('com_virtuemart.sys');
 			// Parse the list of extensions.

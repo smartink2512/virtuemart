@@ -63,11 +63,15 @@ class VirtuemartViewUserfields extends VmView {
 				$lists['type'] = JHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
 			} else { // Update existing userfield
 				// Ordering dropdown
-				$qry = 'SELECT ordering AS value, name AS text'
+				/*$qry = 'SELECT ordering AS value, name AS text'
 					. ' FROM #__virtuemart_userfields'
 					. ' ORDER BY ordering';
 				$ordering = JHtml::_('list.specificordering',  $userField, $userField->virtuemart_userfield_id, $qry);
-				$this->assignRef('ordering', $ordering);
+				$this->assignRef('ordering', $ordering);*/
+
+				if (!class_exists('ShopFunctions'))
+					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+				$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$userField->virtuemart_userfield_id);
 
 				$userFieldValues = $model->getUserfieldValues();
 

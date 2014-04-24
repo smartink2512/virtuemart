@@ -16,17 +16,17 @@
 	<uninstallfile>script.vmallinone.php</uninstallfile>
 	
     <administration>
-	 <menu>VirtueMart AIO</menu>
+        <menu>VirtueMart AIO</menu>
         <files folder="admin">
             <filename>index.html</filename>
-			<filename>admin.virtuemart_allinone.php</filename>
-			<filename>config.php</filename>
-			<folder>assets</folder>
-			<folder>classes</folder>
-			<folder>libraries</folder>
-      <folder>plugins</folder>
-      <folder>modules</folder>
-      <folder>modulesBE</folder>
+            <filename>admin.virtuemart_allinone.php</filename>
+            <filename>config.php</filename>
+            <folder>assets</folder>
+            <folder>classes</folder>
+            <folder>libraries</folder>
+            <folder>plugins</folder>
+            <folder>modules</folder>
+            <folder>modulesBE</folder>
         </files>
     </administration>
 	

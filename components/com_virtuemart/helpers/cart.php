@@ -707,7 +707,7 @@ class VirtueMartCart {
 
 	function confirmDone() {
 
-		$this->checkoutData();
+		$this->checkoutData(false);
 		if ($this->_dataValidated) {
 			$this->_confirmDone = true;
 			$this->confirmedOrder();
@@ -779,15 +779,6 @@ class VirtueMartCart {
 			$this->BT = array_merge($this->BT,$this->cartfields);
 		}
 
-		if (($this->selected_shipto = vRequest::getVar('shipto', null)) !== null) {
-			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-			$userModel = JModel::getInstance('user', 'VirtueMartModel');
-			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
-			$stData = get_object_vars($stData[0]);
-			if($validUserDataBT = $this->validateUserData('ST', $stData)){
-				$this->ST = $stData;
-			}
-		}
 		vmdebug('CheckoutData my cart before $this->STsameAsBT!==0 ',$validUserDataBT);
 		if($this->STsameAsBT!==0){
 			if($this->_confirmDone){
@@ -796,7 +787,7 @@ class VirtueMartCart {
 				$this->ST = 0;
 			}
 		} else {
-			if (($this->selected_shipto = vRequest::getVar('shipto', null)) !== null) {
+			if (($this->selected_shipto = vRequest::getVar('shipto', 0)) !== 0) {
 				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 				$userModel = JModel::getInstance('user', 'VirtueMartModel');
 				$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
@@ -898,16 +889,14 @@ class VirtueMartCart {
 
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
-		$this->_dataValidated = true;
 
 		if($this->_blockConfirm){
+			$this->_dataValidated = false;
+			$this->setCartIntoSession();
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
 		} else {
-
-			$this->_dataValidated = true;
 			$this->setCartIntoSession();
-
-			if ($this->_dataValidated && $redirect) {
+			if ($redirect) {
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 			} else {

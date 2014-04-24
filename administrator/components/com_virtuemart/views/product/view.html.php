@@ -178,8 +178,10 @@ class VirtuemartViewProduct extends VmView {
 
 				// Add the virtuemart_shoppergroup_ids
 				$cid = JFactory::getUser()->id;
-				$this->activeShoppergroups = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_vmuser_shoppergroups','virtuemart_user_id',$cid,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','category');
-				if(!$this->activeShoppergroups or (is_array($this->activeShoppergroups) and count($this->activeShoppergroups)==0)){
+				//$this->activeShoppergroups = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_vmuser_shoppergroups','virtuemart_user_id',$cid,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','category');
+
+				$this->activeShoppergroups = shopfunctions::renderGuiList($cid,'shoppergroups','shopper_group_name','category','vmuser_shoppergroups','virtuemart_user_id');
+				if(!empty($this->activeShoppergroups) ){
 					//vmdebug('$this->activeShoppergroups',$this->activeShoppergroups);
 					$shoppergroupModel = VmModel::getModel('shoppergroup');
 					$this->activeShoppergroups = vmText::_($shoppergroupModel->getDefault(0)->shopper_group_name);
@@ -194,13 +196,7 @@ class VirtuemartViewProduct extends VmView {
 				$attribs='style= "width: 300px;"';
 				$customlist = JHtml::_('select.genericlist', $customsList,'customlist', $attribs);
 
-
-
 				$this->assignRef('customsList', $customlist);
-
-				//$ChildCustomRelation = $field_model->getProductChildCustomRelation();
-				//$this->assignRef('ChildCustomRelation',$ChildCustomRelation);
-
 
 				if ($product->product_parent_id > 0) {
 
@@ -369,7 +365,6 @@ class VirtuemartViewProduct extends VmView {
 
 				$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
 
-				//vmdebug('$product->prices',$product->prices);
 				if(!empty($product->allPrices[$product->selectedPrice]['product_price']) && !empty($product->allPrices[$product->selectedPrice]['product_currency']) ){
 					$product->product_price_display = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['product_price'],(int)$product->allPrices[$product->selectedPrice]['product_currency'],1,true);
 				} else if(!empty($product->allPrices) and count($product->allPrices)>1 ) {
@@ -379,29 +374,16 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 				// Write the first 5 categories in the list
-				//$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 				$product->categoriesList = '';
-				//
 				if (!empty($product->categories[0])) {
-					foreach($product->categories as $virtuemart_category_id ){
-						$category = $this->catTable->load ((int)$virtuemart_category_id);
-						$product->categoriesList .= JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$virtuemart_category_id), vmText::_($category->category_name)). ', ';
-					}
+					$product->categoriesList = shopfunctions::renderGuiList($product->categories,'categories','category_name','category');
 				}
-				$product->categoriesList = substr ($product->categoriesList, 0, -2);
-				$product->categoriesList = '<span class="hasTip" title="" >' . $product->categoriesList . '</span>';
 
 				// Write the first 5 manufacturers in the list
-				//$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 				$product->manuList = '';
 				if (!empty($product->virtuemart_manufacturer_id[0])) {
-					foreach($product->virtuemart_manufacturer_id as $virtuemart_manufacturer_id ){
-						$manufacturer = $this->mfTable->load ((int)$virtuemart_manufacturer_id);
-						$product->manuList .= JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$virtuemart_manufacturer_id), $manufacturer->mf_name). ', ';
-					}
+					$product->manuList = shopfunctions::renderGuiList($product->virtuemart_manufacturer_id,'manufacturers','mf_name','manufacturer');
 				}
-				$product->manuList = substr ($product->manuList, 0, -2);
-				$product->manuList = '<span class="hasTip" title="" >' . $product->manuList . '</span>';
 			}
 
 			$mf_model = VmModel::getModel('manufacturer');

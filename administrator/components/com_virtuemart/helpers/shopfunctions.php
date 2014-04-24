@@ -23,6 +23,55 @@ class ShopFunctions {
 	}
 
 
+	static public function renderGuiList ($idList, $table, $name, $view, $tableXref = false, $tableSecondaryKey = false, $quantity = 3, $translate = true ) {
+
+		$list = '';
+		$ttip = '';
+		$link = '';
+
+		if ($view != 'user') {
+			$cid = 'cid';
+		} else {
+			$cid = 'virtuemart_user_id';
+		}
+
+		$model = new VmModel();
+		$table = $model->getTable($table);
+
+		if(!is_array($idList)){
+			$db = JFactory::getDBO ();
+			$q = 'SELECT `' . $table->getPrimaryKey() . '` FROM `#__virtuemart_' . $db->escape ($tableXref) . '` WHERE ' . $db->escape ($tableSecondaryKey) . ' = "' . (int)$idList . '"';
+			$db->setQuery ($q);
+			$idList = $db->loadColumn ();
+			vmdebug('renderGuiList',$q,$list);
+		}
+
+		$i = 0;
+
+		foreach($idList as $id ){
+
+			$item = $table->load ((int)$id);
+			if($translate) $item->$name = vmText::_($item->$name);
+			$link = ', '.JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&'.$cid.'[]='.$id,false), $item->$name);
+			if($i<$quantity and $i<=count($idList)){
+				$list .= $link;
+			} else if ($i==$quantity and $i<count($idList)){
+				$list .= ',...';
+			}
+			$ttip .= ', '.$item->$name;
+			if($i>($quantity + 6)) {
+				$ttip .= ',...';
+				break;
+			}
+			$i++;
+		}
+
+		$list = substr ($list, 2);
+		$ttip = substr ($ttip, 2);
+
+		return '<span class="hasTip" title="'.$ttip.'" >' . $list . '</span>';
+	}
+
 	/**
 	 * Builds an enlist for information (not chooseable)
 	 *
@@ -40,7 +89,7 @@ class ShopFunctions {
 	 * @param $quantity The number of items in the list
 	 * @return List as String
 	 */
-	static public function renderGuiList ($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity = 4, $translate = 1 ) {
+	static public function renderGuiListOld ($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity = 4, $translate = 1 ) {
 
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
 		VmConfig::loadConfig();
@@ -267,6 +316,21 @@ class ShopFunctions {
 		}
 
 		return array_merge ($defaulttemplate, $jtemplates);
+	}
+
+	static function renderOrderingList($table,$fieldname,$selected,$orderingField = 'ordering'){
+		//'order_status_name','orderstates',$orderStatus->virtuemart_orderstate_id
+// Ordering dropdown
+		$qry = 'SELECT ordering AS value, '.$fieldname.' AS text'
+			. ' FROM #__virtuemart_'.$table
+			. ' ORDER BY ordering';
+		$db = JFactory::getDbo();
+		$db->setQuery($qry);
+		$orderStatusList = $db -> loadAssocList();
+		foreach($orderStatusList as &$text){
+			$text = $text['value'].' '.vmText::_($text['text']);
+		}
+		return JHtml::_('select.genericlist',$orderStatusList,'ordering','','value','text',$selected);
 	}
 
 	/**

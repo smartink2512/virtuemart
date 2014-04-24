@@ -92,8 +92,11 @@ class VirtuemartViewShipmentmethod extends VmView {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$shipments = $model->getShipments();
-			$this->assignRef('shipments', $shipments);
+			$this->shipments = $model->getShipments();
+			foreach ($this->shipments as &$data){
+				// Write the first 5 shoppergroups in the list
+				$data->shipmentShoppersList = shopfunctions::renderGuiList($data->virtuemart_shoppergroup_ids,'shoppergroups','shopper_group_name','shopper');
+			}
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);

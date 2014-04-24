@@ -148,7 +148,7 @@ class VirtuemartViewCustom extends VmView {
 
 		$html = "";
 
-		$model = VmModel::getModel();
+		$model = VmModel::getModel('customs');
 
 		// only input when not set else display
 		if ($datas->field_type) {

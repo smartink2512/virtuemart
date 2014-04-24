@@ -107,8 +107,11 @@ class VirtuemartViewPaymentMethod extends VmView {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$payments = $model->getPayments();
-			$this->assignRef('payments',	$payments);
+			$this->payments = $model->getPayments();
+			foreach ($this->payments as &$data){
+				// Write the first 5 shoppergroups in the list
+				$data->paymShoppersList = shopfunctions::renderGuiList($data->virtuemart_shoppergroup_ids,'shoppergroups','shopper_group_name','payment' );
+			}
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);

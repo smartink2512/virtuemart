@@ -61,13 +61,10 @@ class VirtuemartViewOrderstatus extends VmView {
 
 				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 			} else {
-				// Ordering dropdown
-				$qry = 'SELECT ordering AS value, order_status_name AS text'
-				. ' FROM #__virtuemart_orderstates'
-				. ' ORDER BY ordering';
-				$ordering = JHtml::_('list.specificordering',  $orderStatus, $orderStatus->virtuemart_orderstate_id, $qry);
-				$this->assignRef('ordering', $ordering);
 
+				if (!class_exists('ShopFunctions'))
+					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+				$this->ordering = ShopFunctions::renderOrderingList('orderstates','order_status_name',$orderStatus->virtuemart_orderstate_id);
 
 			}
 			$lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();

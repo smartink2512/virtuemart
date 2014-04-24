@@ -87,7 +87,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function preflight ($type, $parent=null) {
 
 			//We want disable the redirect in the installation process
-			if(version_compare(JVERSION,'1.6.0','ge')) {
+			if(version_compare(JVERSION,'1.6.0','ge') and version_compare(JVERSION,'3.0.0','le')) {
 
 				$q = 'DELETE FROM `#__menu` WHERE `menutype` = "main" AND
 						(`link`="index.php?option=com_virtuemart" OR `alias`="virtuemart" )';
@@ -704,8 +704,22 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function postflight ($type, $parent=null) {
 			$_REQUEST['install'] = 0;
 			if ($type != 'uninstall') {
-
 				$this->loadVm();
+				//fix joomla BE menu
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart"');
+				$jId = $db->loadResult();
+				if($jId){
+					$db->setQuery('UPDATE `#__menu` SET `component_id`="'.$jId.'" WHERE `menutype` = "main" AND `path`="com-virtuemart"');
+					$db->execute();
+
+					$db->setQuery('SELECT `id` FROM `#__menu` WHERE `component_id` = "'.$jId.'" ');
+					$mId = $db->loadResult();
+
+					$db->setQuery('UPDATE `#__menu` SET `component_id`="'.$jId.'" WHERE `parent_id` = "'.$mId.'" ');
+					$db->execute();
+				}
+
 				// 				VmConfig::loadConfig(true);
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 				$res  = VirtueMartModelConfig::checkConfigTableExists();
@@ -719,16 +733,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			}
 
-			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			//Test if vm1.1 is installed and rename file to avoid conflicts
-			if(JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'toolbar.php')){
-				JFile::move('toolbar.php','toolbar.vm1.php',JPATH_VM_ADMINISTRATOR);
-			}
-
-			//Prevents overwriting existing file.
-			// 			if(!JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg')){
-			// 				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart_defaults.cfg',JPATH_VM_ADMINISTRATOR);
-			// 			}
 
 			return true;
 		}

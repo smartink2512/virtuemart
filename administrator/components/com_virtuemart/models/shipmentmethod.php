@@ -112,31 +112,20 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		$enable = 'enabled';
 		$ext_id = 'extension_id';
 
-		$query = ' `#__virtuemart_shipmentmethods`.* ,  `'.$table.'`.`name` as shipmentmethod_name FROM `#__virtuemart_shipmentmethods` ';
-		$query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shipmentmethods`.`shipment_jplugin_id` ';
-
 		$whereString = '';
 		$select = ' * FROM `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ';
 		$joinedTables = ' JOIN `#__virtuemart_shipmentmethods`   USING (`virtuemart_shipmentmethod_id`) ';
 		$this->_data =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
-		//$this->_data = $this->exeSortSearchListQuery(0,'',$query,$whereString,'',$this->_getOrdering('ordering'));
 
 		if(isset($this->_data)){
-
 			if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 			foreach ($this->_data as $data){
-				/* Add the shipment shoppergroups */
+				// Add the shipment shoppergroups
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$data->virtuemart_shipmentmethod_id.'"';
 				$db = JFactory::getDBO();
 				$db->setQuery($q);
 				$data->virtuemart_shoppergroup_ids = $db->loadColumn();
-
-				/* Write the first 5 shoppergroups in the list */
-				$data->shipmentShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_shipmentmethod_shoppergroups','virtuemart_shipmentmethod_id',$data->virtuemart_shipmentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup',4,0);
-
-
 			}
-
 		}
 		return $this->_data;
 	}
