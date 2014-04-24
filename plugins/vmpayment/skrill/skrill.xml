@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmpayment">
-    <name>VMPSPLUGIN_SKRILL</name>
+    <name>Skrill</name>
     <creationDate>April 2012</creationDate>
     <author>Skrill Holdings Limited</author>
     <authorUrl>http://www.skrill.com</authorUrl>
@@ -15,7 +15,7 @@
         <filename plugin="skrill">skrill.php</filename>
     </files>
     <languages>
-        <language tag="en-GB">en-GB.plg_VMPSPLUGIN_skrill.ini</language>
+        <language tag="en-GB">en-GB.plg_vmpayment_skrill.ini</language>
     </languages>
     <config>
         <fields name="params">
