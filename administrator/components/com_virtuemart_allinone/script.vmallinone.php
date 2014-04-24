@@ -247,17 +247,26 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					}
 			}
 			$q="DELETE FROM  `#__extensions` WHERE  `#__extensions`.`folder` =  'vmpayment'
-				AND `#__extensions`.`element` LIKE  'moneybookers_%'";
+				AND `#__extensions`.`element` LIKE  'moneybookers%'";
 			$db->setQuery($q);
 			$db->query();
 
 			$path =JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment';
-			$moneybookers_folders=array('', '_acc', '_did','_gir','_idl','_obt', '_pwy','_sft', '_wlt');
-			foreach ($moneybookers_folders as $moneybookers_folder) {
-				$folder=$path.DS.'moneybookers'.$moneybookers_folder;
-				if( !JFolder::delete( $folder )){
-					$app->enqueueMessage ("Failed to delete ". $folder." folder");
+			$moneybookers_variants=array('', '_acc', '_did','_gir','_idl','_obt', '_pwy','_sft', '_wlt');
+			foreach ($moneybookers_variants as $moneybookers_variant) {
+				$folder=$path.DS.'moneybookers'.$moneybookers_variant;
+				if (JFolder::exists($folder) ) {
+					if (!JFolder::delete($folder)) {
+						$app->enqueueMessage ("Failed to delete ". $folder." folder");
+					}
 				}
+				$lang_file=	  JPATH_ROOT . DS."administrator". DS . "language". DS. 'en-GB'. DS.'en-GB.plg_vmpayment_moneybookers'.$moneybookers_variant."ini";
+					if (JFile::exists ($lang_file) ){
+						if (!JFile::delete ($lang_file)) {
+							$app->enqueueMessage ('Couldnt delete ' . $lang_file);
+							return false;
+						}
+					}
 			}
 
 
