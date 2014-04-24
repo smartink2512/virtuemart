@@ -221,33 +221,46 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 		private function updateMoneyBookersToSkrill() {
 			$db = JFactory::getDBO ();
-			$q="SELECT FROM `#__extension`s WHERE `#__extensions`.`folder` =  'vmpayment' AND `#_extensions`.`element` LIKE  'skrill'";
+			$q="SELECT `extension_id` FROM `#__extensions` WHERE `#__extensions`.`folder` =  'vmpayment' AND `#__extensions`.`element` LIKE  'skrill'";
 			$db->setQuery ($q);
 			$skrill_jplugin_id = $db->loadResult()  ;
+			$app = JFactory::getApplication ();
 
 			$q="SELECT *
 				FROM `#__virtuemart_paymentmethods`
 				JOIN `#__extensions` ON `#__extensions`.`extension_id` = `#__virtuemart_paymentmethods`.`payment_jplugin_id`
-				WHERE `#__extensionsv.`folder` =  'vmpayment'
-				AND `#_extensionsv.`element` LIKE  'moneybookers_%'";
+				WHERE `#__extensions`.`folder` =  'vmpayment'
+				AND `#__extensions`.`element` LIKE  'moneybookers_%'";
 			$db->setQuery ($q);
 			$moneybookers = $db->loadObjectList()  ;
-
-			foreach ($moneybookers as $moneybooker) {
-				$payment_params=$moneybooker->payment_params;
-				$mb_element=str_replace('moneybookers_', '',$moneybooker->element);
-				$payment_params='product='.$mb_element.'|'.$payment_params;
-				$q = 'UPDATE `#__virtuemart_paymentmethods`
-						SET `payment_params`= "'.$payment_params.'" , `payment_jplugin_id` = '.$skrill_jplugin_id.' , `payment_jplugin_id`= "skrill"
-						 WHERE `virtuemart_paymentmethod_id` ='.$moneybooker->virtuemart_paymentmethod_id;
-				$db->setQuery($q);
-				$db->query();
-
-				$q="DELETE FROM  `#__extensions` WHERE `extension_id` = ".$moneybooker->extension_id;
-				$db->setQuery($q);
-				$db->query();
-
+			if ($moneybookers) {
+				foreach ($moneybookers as $moneybooker) {
+					$payment_params=$moneybooker->payment_params;
+					$mb_element=str_replace('moneybookers_', '',$moneybooker->element);
+					$payment_params='product='.$mb_element.'|'.$payment_params;
+					$q = 'UPDATE `#__virtuemart_paymentmethods`
+									SET `payment_params`= "'.$payment_params.'" , `payment_jplugin_id` = '.$skrill_jplugin_id.' , `payment_element`= "skrill"
+									 WHERE `virtuemart_paymentmethod_id` ='.$moneybooker->virtuemart_paymentmethod_id;
+					$db->setQuery($q);
+					$db->query();
+					$app->enqueueMessage ("Updated payment method: ".$moneybooker->payment_element.". Uses skrill now");
+					}
 			}
+			$q="DELETE FROM  `#__extensions` WHERE  `#__extensions`.`folder` =  'vmpayment'
+				AND `#__extensions`.`element` LIKE  'moneybookers_%'";
+			$db->setQuery($q);
+			$db->query();
+
+			$path =JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment';
+			$moneybookers_folders=array('', '_acc', '_did','_gir','_idl','_obt', '_pwy','_sft', '_wlt');
+			foreach ($moneybookers_folders as $moneybookers_folder) {
+				$folder=$path.DS.'moneybookers'.$moneybookers_folder;
+				if( !JFolder::delete( $folder )){
+					$app->enqueueMessage ("Failed to delete ". $folder." folder");
+				}
+			}
+
+
 		}
 
 
