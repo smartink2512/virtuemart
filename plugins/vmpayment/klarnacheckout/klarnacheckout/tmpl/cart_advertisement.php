@@ -21,11 +21,13 @@ defined('_JEXEC') or die('Restricted access');
 $css =".totalInPaymentCurrency {display:none;}\n";
 
 JFactory::getDocument()->addStyleDeclaration($css);
+/*
 $js = '
 	jQuery(document).ready(function( $ ) {
 		      $("#checkoutForm").hide();
 	});
 	';
+*/
 if ($viewData ['hide_BTST']) {
 	$js .= '
 	jQuery(document).ready(function( $ ) {
