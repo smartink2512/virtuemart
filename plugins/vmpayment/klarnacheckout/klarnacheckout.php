@@ -315,6 +315,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$message = JText::sprintf('VMPAYMENT_KLARNACHECKOUT_SELECT_SHIPMENT_FIRST', $this->method->payment_name);
 		} else {
 			$session = JFactory::getSession();
+			require_once 'klarnacheckout/library/Checkout.php';
 
 			$cartIdInTable = $this->storeCartInTable($cart);
 			if ($this->method->server == 'beta') {
@@ -322,7 +323,6 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			} else {
 				Klarna_Checkout_Order::$baseUri = 'https://checkout.klarna.com/checkout/orders';
 			}
-			require_once 'klarnacheckout/library/Checkout.php';
 			Klarna_Checkout_Order::$contentType = "application/vnd.klarna.checkout.aggregated-order-v2+json";
 
 			//session_start();
