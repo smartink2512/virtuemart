@@ -137,14 +137,15 @@ class VirtueMartViewCart extends VmView {
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
 				$document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
 				$text = vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
-				$checkout_task = 'confirm';
+				$this->checkout_task = 'confirm';
 			} else {
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$document->setTitle(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$text = vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE');
-				$checkout_task = 'checkout';
+				$this->checkout_task = 'checkout';
 			}
-			$this->assignRef('checkout_task', $checkout_task);
+			$this->checkout_link_html = '<button type="submit" name="'.$this->checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
+
 
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -171,8 +172,6 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->assignRef('select_payment_text', $paymentText);
 
-			$checkout_link_html = '<button type="submit" name="'.$checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
-			$this->assignRef('checkout_link_html', $checkout_link_html);
 
 			//set order language
 			$lang = JFactory::getLanguage();

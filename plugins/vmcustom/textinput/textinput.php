@@ -73,21 +73,44 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	/**
+	 * Function for Vm2
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCart(&$product, &$productCustom, &$html) {
+	function plgVmOnViewCart($product,$row,&$html) {
+		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
+		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 
+		foreach($plgParam as $k => $item){
+
+			if(!empty($item['comment']) ){
+				if($product->productCustom->virtuemart_customfield_id==$k){
+					$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$item['comment'].'</span>';
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Trigger for VM3
+	 * @author Max Milbers
+	 * @param $product
+	 * @param $productCustom
+	 * @param $html
+	 * @return bool|string
+	 */
+	function plgVmOnViewCartVM3(&$product, &$productCustom, &$html) {
 		if (empty($productCustom->custom_element) or $productCustom->custom_element != $this->_name) return '';
 
-		//vmdebug('plgVmOnViewCart',$product->customProductData,$productCustom);
 		foreach($product->customProductData[$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id] as $name => $value){
-
 			$html .='<span>'.JText::_($productCustom->custom_title).' '.$value.'</span>';
 		}
 
 		return true;
 	}
+
 
 
 	/**
@@ -101,6 +124,10 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if (empty($item->productCustom->custom_element) or $item->productCustom->custom_element != $this->_name) return '';
 		$this->plgVmOnViewCart($item,$productCustom,$html); //same render as cart
     }
+
+	function plgVmDisplayInOrderBEVM3(&$item, &$productCustom, &$html) {
+		$this->plgVmOnViewCartVM3($item,$productCustom,$html);
+	}
 
 	/**
 	 *

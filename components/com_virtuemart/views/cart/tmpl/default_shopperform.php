@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 
 				$userList = $this->getUserList();
-				$currentUser = $this->cart->user->_data->virtuemart_user_id;
+				$currentUser = $this->cart->user->virtuemart_user_id;
 
 				echo JHtml::_('Select.genericlist', $userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser);
 

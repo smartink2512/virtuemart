@@ -895,6 +895,7 @@ class VirtueMartCart {
 			$this->setCartIntoSession();
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
 		} else {
+			$this->_dataValidated = true;
 			$this->setCartIntoSession();
 			if ($redirect) {
 				$mainframe = JFactory::getApplication();
@@ -1017,6 +1018,7 @@ class VirtueMartCart {
 		$cart->cartProductsData = array();
 		$cart->cartData = array();
 		$cart->cartPrices = array();
+		$cart->cartfields = array();
 		$cart->_inCheckOut = false;
 		$cart->_dataValidated = false;
 		$cart->_confirmDone = false;
@@ -1027,7 +1029,11 @@ class VirtueMartCart {
 		$cart->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
 		$cart->virtuemart_paymentmethod_id = 0;
 		$cart->order_number=null;
-		vmdebug('emptyCartValues',$cart);
+		$cart->fromCart = false;
+		$cart->totalProduct=false;
+		$cart->productsQuantity=array();
+		$cart->virtuemart_order_id = null;
+		//vmdebug('emptyCartValues',$cart);
 		$cart->setCartIntoSession();
 	}
 

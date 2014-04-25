@@ -71,7 +71,7 @@ class VirtuemartControllerCustom extends VmController {
 		/* Load the view object */
 		$view = $this->getView('custom', 'html');
 
-		$model = VmModel::getModel('customs');
+		$model = VmModel::getModel('custom');
 		$msgtype = '';
 		$cids = vRequest::getInt($this->_cidName, vRequest::getInt('virtuemart_custom_id'));
 

@@ -26,7 +26,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  *
  * @package		VirtueMart
  */
-class VirtueMartModelCustoms extends VmModel {
+class VirtueMartModelCustom extends VmModel {
 
 	private $plugin=null ;
 	/**

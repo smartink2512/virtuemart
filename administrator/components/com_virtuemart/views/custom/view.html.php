@@ -37,7 +37,7 @@ class VirtuemartViewCustom extends VmView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
-		$model = VmModel::getModel('customs');
+		$model = VmModel::getModel('custom');
 
 		// TODO Make an Icon for custom
 		$this->SetViewTitle('PRODUCT_CUSTOM_FIELD');
@@ -148,7 +148,7 @@ class VirtuemartViewCustom extends VmView {
 
 		$html = "";
 
-		$model = VmModel::getModel('customs');
+		$model = VmModel::getModel('custom');
 
 		// only input when not set else display
 		if ($datas->field_type) {
