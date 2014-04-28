@@ -240,6 +240,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
 		}*/
 
+		$where = array();
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('storeadmin')){
 			$myuser		=JFactory::getUser();

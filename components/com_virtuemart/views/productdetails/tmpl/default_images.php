@@ -18,29 +18,46 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-vmJsApi::css('jquery.fancybox-1.3.4');
-$document = JFactory::getDocument ();
-$imageJS = '
-jQuery(document).ready(function() {
-	jQuery("a[rel=vm-additional-images]").fancybox({
-		"titlePosition" 	: "inside",
-		"transitionIn"	:	"elastic",
-		"transitionOut"	:	"elastic"
+if(VmConfig::get('usefancy',0)){
+	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::css('jquery.fancybox-1.3.4');
+	$document = JFactory::getDocument ();
+	$imageJS = '
+	jQuery(document).ready(function() {
+		jQuery("a[rel=vm-additional-images]").fancybox({
+			"titlePosition" 	: "inside",
+			"transitionIn"	:	"elastic",
+			"transitionOut"	:	"elastic"
+		});
+		jQuery(".additional-images a.product-image.image-0").removeAttr("rel");
+		jQuery(".additional-images img.product-image").click(function() {
+			jQuery(".additional-images a.product-image").attr("rel","vm-additional-images" );
+			jQuery(this).parent().children("a.product-image").removeAttr("rel");
+			var src = jQuery(this).parent().children("a.product-image").attr("href");
+			jQuery(".main-image img").attr("src",src);
+			jQuery(".main-image img").attr("alt",this.alt );
+			jQuery(".main-image a").attr("href",src );
+			jQuery(".main-image a").attr("title",this.alt );
+			jQuery(".main-image .vm-img-desc").html(this.alt);
+		}); 
 	});
-	jQuery(".additional-images a.product-image.image-0").removeAttr("rel");
-	jQuery(".additional-images img.product-image").click(function() {
-		jQuery(".additional-images a.product-image").attr("rel","vm-additional-images" );
-		jQuery(this).parent().children("a.product-image").removeAttr("rel");
-		var src = jQuery(this).parent().children("a.product-image").attr("href");
-		jQuery(".main-image img").attr("src",src);
-		jQuery(".main-image img").attr("alt",this.alt );
-		jQuery(".main-image a").attr("href",src );
-		jQuery(".main-image a").attr("title",this.alt );
-		jQuery(".main-image .vm-img-desc").html(this.alt);
-	}); 
-});
-';
+	';
+	
+} else {
+	vmJsApi::js( 'facebox' );
+	vmJsApi::css( 'facebox' );
+	$document = JFactory::getDocument ();
+	$imageJS = '
+	jQuery(document).ready(function() {
+		jQuery("a[rel=vm-additional-images]").facebox();
+
+		var imgtitle = jQuery("span.vm-img-desc").text();
+		jQuery("#facebox span").html(imgtitle);
+		
+		
+	});
+	';
+}
 $document->addScriptDeclaration ($imageJS);
 
 if (!empty($this->product->images)) {

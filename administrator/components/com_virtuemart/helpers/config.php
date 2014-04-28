@@ -513,6 +513,7 @@ class VmConfig {
 	public static $vmlang = FALSE;
 	public static $langTag = FALSE;
 	public static $vmlangTag = FALSE;
+	public static $langCount = 0;
 
 	var $_params = array();
 	var $_raw = array();
@@ -887,7 +888,7 @@ class VmConfig {
 		}
 
 		$langs = (array)self::get('active_languages',array());
-
+		self::$langCount = count($langs);
 		$siteLang = JRequest::getString('vmlang',FALSE );
 		//vmdebug('My $siteLang by JRequest::getString("vmlang",JRequest::getString("lang")) '.$siteLang);
 		$params = JComponentHelper::getParams('com_languages');

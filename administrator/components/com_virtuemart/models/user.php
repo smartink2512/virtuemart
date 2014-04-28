@@ -1542,7 +1542,7 @@ function removeAddress($virtuemart_userinfo_id){
 	function getSuperAdminCount()
 	{
 		$this->_db->setQuery('SELECT COUNT(id) FROM #__users'
-		. ' WHERE gid = ' . __SUPER_ADMIN_GID . ' AND block = 0');
+		. ' WHERE usertype = ' . __SUPER_ADMIN_GID . ' AND block = 0');
 		return ($this->_db->loadResult());
 	}
 

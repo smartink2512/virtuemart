@@ -15,19 +15,19 @@
 	<!-- Custom uninstaller for 1.5 -->
 	<uninstallfile>script.vmallinone.php</uninstallfile>
 	
-    <administration>
-	 <menu>VirtueMart AIO</menu>
-        <files folder="admin">
-            <filename>index.html</filename>
+	<administration>
+		<menu>VirtueMart AIO</menu>
+		<files folder="admin">
+			<filename>index.html</filename>
 			<filename>admin.virtuemart_allinone.php</filename>
 			<filename>config.php</filename>
 			<folder>assets</folder>
 			<folder>classes</folder>
 			<folder>libraries</folder>
-      <folder>plugins</folder>
-      <folder>modules</folder>
-      <folder>modulesBE</folder>
-        </files>
-    </administration>
+			<folder>plugins</folder>
+			<folder>modules</folder>
+			<folder>modulesBE</folder>
+		</files>
+	</administration>
 	
 </install>

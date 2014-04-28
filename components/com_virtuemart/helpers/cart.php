@@ -1176,21 +1176,22 @@ class VirtueMartCart {
 	 * @author Valerie Cartan Isaksen
 	 *
 	 */
-	static public function emptyCartValues($cartData){
+	static public function emptyCartValues($cart){
 
 		//We delete the old stuff
-		$cartData->products = array();
-		$cartData->_inCheckOut = false;
-		$cartData->_dataValidated = false;
-		$cartData->_confirmDone = false;
-		$cartData->customer_comment = '';
-		$cartData->couponCode = '';
-		$cartData->order_language = '';
-		$cartData->tosAccepted = null;
-		$cartData->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
-		$cartData->virtuemart_paymentmethod_id = 0;
-		$cartData->order_number=null;
-
+		$cart->products = array();
+		$cart->_inCheckOut = false;
+		$cart->_dataValidated = false;
+		$cart->_confirmDone = false;
+		$cart->customer_comment = '';
+		$cart->couponCode = '';
+		$cart->order_language = '';
+		$cart->tosAccepted = null;
+		$cart->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
+		$cart->virtuemart_paymentmethod_id = 0;
+		$cart->order_number=null;
+		$cart->pricesUnformatted = null;
+		$cart->cartData = null;
 	}
 
 	function saveAddressInCart($data, $type, $putIntoSession = true) {

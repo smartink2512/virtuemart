@@ -84,3 +84,10 @@
   background-color: #000;
   z-index: 99;
 }
+
+
+#facebox > span {
+    display: block;
+    margin: -25px 0 0 5px;
+    position: relative;
+}

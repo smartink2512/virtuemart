@@ -19,8 +19,6 @@
  */
 defined('_JEXEC') or die();
 
-//jimport('joomla.user.user');
-
 /**
  * Replaces JTable with some more advanced functions and fitting to the nooku conventions
  *
@@ -38,21 +36,21 @@ class VmTable extends JTable {
 	protected $_unique = false;
 	protected $_unique_name = array();
 	protected $_orderingKey = 'ordering';
-	// 	var $_useSlug = false;
+
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
-	protected $_xParams = 0;
-	protected $_varsToPushParam = array();
+	public $_xParams = 0;
+	public $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
-	protected $_cryptedFields = false;
+	public $_cryptedFields = false;
 	protected $_langTag = null;
+	protected $_ltmp = false;
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
 
-	static $_cache = null;
-	static $_query_cache = null;
+	public static $_cache = array();
 
 	/**
 	 * @param string $table
@@ -62,31 +60,73 @@ class VmTable extends JTable {
 	function __construct($table, $key, &$db) {
 
 		$this->_tbl = $table;
-		$this->_tbl_key = $key;
 		$this->_db =& $db;
 		$this->_pkey = $key;
-		self::$_cache = null;
-		self::$_query_cache = null;
+
+		if(JVM_VERSION<3){
+			$this->_tbl_key = $key;
+		} else {
+			// Set the key to be an array.
+			if (is_string($key)){
+				$key = array($key);
+			} elseif (is_object($key)){
+				$key = (array) $key;
+			}
+
+			$this->_tbl_keys = $key;
+
+			if (count($key) == 1) {
+				$this->_autoincrement = true;
+			} else {
+				$this->_autoincrement = false;
+			}
+
+			// Set the singular table key for backwards compatibility.
+			$this->_tbl_key = $this->getKeyName();
+		}
+
+		// If we are tracking assets, make sure an access field exists and initially set the default.
+		if (property_exists($this, 'asset_id')){
+			$this->_trackAssets = true;
+		}
+
+		// If the access property exists, set the default.
+		if (property_exists($this, 'access')){
+			$this->access = (int) JFactory::getConfig()->get('access');
+		}
+
+		if(JVM_VERSION>2){
+			// Implement JObservableInterface:
+			// Create observer updater and attaches all observers interested by $this class:
+			$this->_observers = new JObserverUpdater($this);
+			JObserverMapper::attachAllObservers($this);
+		}
+
+
 	}
 
-	function setPrimaryKey($key, $keyForm = 0) {
+	public function setPrimaryKey($key, $keyForm = 0) {
 
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($key)));
+		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
 		$this->setObligatoryKeys('_pkey', $error);
 		$this->_pkey = $key;
 		$this->_pkeyForm = empty($keyForm) ? $key : $keyForm;
 		$this->$key = 0;
 	}
 
+	public function getPrimaryKey(){
+		return $this->_pkey;
+	}
+
 	public function setObligatoryKeys($key) {
 
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($key)));
+		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
 		$this->_obkeys[$key] = $error;
 	}
 
 	public function setUniqueName($name) {
 
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 		$this->_unique = true;
 		$this->_obkeys[$name] = $error;
 		$this->_unique_name[$name] = $error;
@@ -112,11 +152,10 @@ class VmTable extends JTable {
 		$this->_translatableFields['slug'] = 'slug';
 		$this->_translatable = true;
 
-		if (!defined('VMLANG')) {
-			if (!class_exists('VmConfig')) require(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'config.php');
-			VmConfig::loadConfig();
-		}
-		$this->_langTag = VMLANG;
+		if (!class_exists('VmConfig')) require(JPATH_COMPONENT_ADMINISTRATOR .'helpers/config.php');
+		VmConfig::loadConfig();
+
+		$this->_langTag = VmConfig::$vmlang;
 		$this->_tbl_lang = $this->_tbl . '_' . $this->_langTag;
 	}
 
@@ -193,8 +232,9 @@ class VmTable extends JTable {
 	 */
 	static function bindParameterable(&$obj, $xParams, $varsToPushParam) {
 
+		if(empty($varsToPushParam)) return;
 		//$paramFields = $obj->$xParams;
-		//vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
+		//vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$varsToPushParam);
 		if(is_object($obj)){
 			if (!empty($obj->$xParams)) {
 
@@ -292,94 +332,76 @@ class VmTable extends JTable {
 		return $this->_cryptedFields;
 	}
 
-	/**
-	 * Load the fieldlist
-	 */
-	public function loadFields() {
+	public function loadFields(){
+		return $this->showFullColumns();
+	}
 
-		$_fieldlist = array();
-		$_q = 'SHOW COLUMNS FROM `' . $this->_tbl . '`';
-		if (!isset(self::$_query_cache[md5($_q)])) {
-			$this->_db->setQuery($_q);
-			$_fields = $this->_db->loadObjectList();
-		} else $_fields = self::$_query_cache[md5($_q)];
-		if (count($_fields) > 0) {
-			foreach ($_fields as $key => $_f) {
-				$_fieldlist[$_f->Field] = $_f->Default;
+	/**
+	 * Gives Back the columns of the current table, sets the properties on the table.
+	 *
+	 * @author Max Milbers
+	 * @param int $typeKey use "Field" to get the effect of getTableColumns
+	 * @param int $typeValue use "Type" to get the effect of getTableColumns
+	 * @param bool $properties disable setting of columns as table properties
+	 */
+	public function showFullColumns($typeKey=0,$typeValue=0,$properties=true){
+
+		$hash = 'SFL'.$this->_tbl.$typeKey.$typeValue;
+		if (!isset(self::$_cache[$hash])) {
+			$this->_db->setQuery('SHOW FULL COLUMNS  FROM `'.$this->_tbl.'` ') ;
+			self::$_cache[$hash] = $this->_db->loadAssocList();
+		}
+
+		if ($properties and count(self::$_cache[$hash]) > 0) {
+			foreach (self::$_cache[$hash] as $key => $_f) {
+				$_fieldlist[$_f['Field']] = $_f['Default'];
 			}
 			$this->setProperties($_fieldlist);
 		}
-	}
 
-	/**
-	 * Get the columns from database table.
-	 *
-	 * adjusted to vm2, We use the same, except that the cache is not a global static,.. we use static belonging to table
-	 * @return  mixed  An array of the field names, or false if an error occurs.
-	 *
-	 * @since   11.1
-	 */
-
-	public function getFields() {
-
-		if (self::$_cache === null) {
-			// Lookup the fields for this table only once.
-			$name = $this->_tbl;
-			if(JVM_VERSION===1){
-				$fields = $this->getTableColumns($name, false);
-			} else {
-				$fields = $this->_db->getTableColumns($name, false);
+		if ($typeKey or $typeValue){
+			foreach (self::$_cache[$hash] as $field){
+				if(empty($typeValue)){
+					$value = $field;
+				} else {
+					$value = $field[$typeValue];
+				}
+				if($typeKey){
+					$result[$field[$typeKey]] = $value;
+				} else {
+					$result[] = $value;
+				}
 			}
-
-			if (empty($fields)) {
-				$e = new JException(JText::_('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
-				$this->setError($e);
-				return false;
-			}
-			self::$_cache = $fields;
-		}
-
-		return self::$_cache;
-	}
-
-	/**
-	 * Original from joomla2.5
-	 * Retrieves field information about a given table.
-	 *
-	 * @param   string   $table     The name of the database table.
-	 * @param   boolean  $typeOnly  True to only return field types.
-	 *
-	 * @return  array  An array of fields for the database table.
-	 *
-	 * @since   11.1
-	 * @throws  JDatabaseException
-	 */
-	public function getTableColumns($table, $typeOnly = true)
-	{
-		$result = array();
-
-		// Set the query to get the table fields statement.
-		$this->_db->setQuery('SHOW FULL COLUMNS  FROM `'.$table.'` ') ;
-		$fields = $this->_db->loadObjectList();
-
-		// If we only want the type as the value add just that to the list.
-		if ($typeOnly)
-		{
-			foreach ($fields as $field)
-			{
-				$result[$field->Field] = preg_replace("/[(0-9)]/", '', $field->Type);
-			}
-		}
-		// If we want the whole field data object add that to the list.
-		else
-		{
-			foreach ($fields as $field)
-			{
-				$result[$field->Field] = $field;
-			}
+		} else {
+			$result = self::$_cache[$hash];
 		}
 
 		return $result;
+	}
+
+
+	function loadFieldValues($array=true){
+
+		if($array){
+			$return = array();
+			foreach ($this->getProperties() as $k => $v){
+				// Do not process internal variables
+				if (!strpos($k,'_')==0){
+					$return[$k] = $v;
+				}
+			}
+		} else {
+			$return = new stdClass();
+			foreach ($this->getProperties() as $k => $v){
+				// Do not process internal variables
+				if (!strpos($k,'_')==0){
+					$return->$k = $v;
+				}
+			}
+		}
+
+
+		return $return;
 	}
 
 	function checkDataContainsTableFields($from, $ignore = array()) {
@@ -426,14 +448,13 @@ class VmTable extends JTable {
 
 			//We store in UTC time, dont touch it!
 			$date = JFactory::getDate();
-			$today = $date->toMySQL();
+			$today = $date->toSQL();
 			//vmdebug('my today ',$date);
 			$user = JFactory::getUser();
 
 			$pkey = $this->_pkey;
 			//Lets check if the user is admin or the mainvendor
-			if (!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			$admin = Permissions::getInstance()->check('admin');
+			$admin = JFactory::getUser()->authorise('core.admin', 'com_virtuemart');
 			$adminSessionID = JFactory::getSession()->get('vmAdminID');
 			if ($admin || JFactory::getUser($adminSessionID)->authorise('core.admin', 'com_virtuemart')) {
 //				vmdebug('setLoggableFieldsForStore ', $this->created_on);
@@ -492,7 +513,6 @@ class VmTable extends JTable {
 			$k = $this->_pkey;
 		}
 
-
 		if ($oid !== null) {
 			$this->$k = $oid;
 		} else {
@@ -512,14 +532,13 @@ class VmTable extends JTable {
 			return $this;
 		}
 
-		//Why we have this reset? it is calling getFields, which is calling getTableColumns, which is calling SHOW COLUMNS, which is slow
-		//$this->reset();
-
 		//Version load the tables using JOIN
 		if ($this->_translatable) {
-			$mainTable = $this->_tbl . '_' . VMLANG;
-			$select = 'SELECT `' . $mainTable . '`.* ,`' . $this->_tbl . '`.* ';
-			$from = ' FROM `' . $mainTable . '` JOIN ' . $this->_tbl . ' using (`' . $this->_tbl_key . '`)';
+			$mainTable =  $this->_tbl;
+			$langTable = $this->_tbl . '_' . $this->_langTag;
+
+			$select = 'SELECT `' . $mainTable . '`.* ,`' . $langTable . '`.* ';
+			$from = ' FROM `' . $mainTable . '` INNER JOIN `' . $langTable . '` using (`' . $this->_tbl_key . '`)';
 		} else {
 			$mainTable = $this->_tbl;
 			$select = 'SELECT `' . $mainTable . '`.* ';
@@ -534,25 +553,20 @@ class VmTable extends JTable {
 			}
 		}
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
-		// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
+		// $query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 		if ($andWhere === 0) $andWhere = '';
-		$query = $select . $from . ' WHERE ' . $mainTable . '.`' . $k . '` = "' . $oid . '" ' . $andWhere;
+		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
-		if (!isset(self::$_query_cache[md5($query)])) {
-			$db = $this->getDBO();
-			$db->setQuery($query);
+		$hash = md5($oid. $select . $k . $andWhere);
 
-			$result = $db->loadAssoc();
-			self::$_cache[md5($query)] = $result;
-			$error = $db->getErrorMsg();
-		} else {
-			$result = self::$_cache[md5($query)];
+		if (isset (self::$_cache['l'][$hash])) {
+			return self::$_cache['l'][$hash];
 		}
-		// 		vmdebug('vmtable load '.$db->getQuery(),$result);
-		if (!empty($error)) {
-			vmError('vmTable load x' . $error);
-			return false;
-		}
+
+		$db = $this->getDBO();
+		$db->setQuery($query);
+
+		$result = $db->loadAssoc();
 
 		if ($result) {
 			$this->bind($result);
@@ -565,6 +579,28 @@ class VmTable extends JTable {
 				foreach ($tableJoins as $tableId => $table) {
 					if (isset($result[$tableId])) $this->$tableId = $result[$tableId];
 				}
+			}
+		} else {
+			$params = JComponentHelper::getParams('com_languages');
+			$defaultLang = $params->get('site', 'en-GB');//use default joomla
+			$defaultLang= strtolower(strtr($defaultLang,'-','_'));
+
+			if($defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
+				$this->_ltmp = $this->_langTag;
+				$this->_langTag = $defaultLang;
+				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
+			}
+		}
+
+		if($this->_cryptedFields){
+			if(!class_exists('vmCrypt')){
+				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+			}
+			if(isset($this->modified_on)){
+				$timestamp = strtotime($this->modified_on);
+				$date = $timestamp;
+			} else {
+				$date = 0;
 			}
 
 			if($this->_cryptedFields){
@@ -587,8 +623,13 @@ class VmTable extends JTable {
 			}
 		}
 
-		return $this;
+		if($this->_ltmp){
+			$this->_langTag = $this->_ltmp;
+			$this->_ltmp = false;
+		}
 
+		self::$_cache['l'][$hash] = $this->loadFieldValues(false);
+		return self::$_cache['l'][$hash];
 	}
 
 
@@ -611,7 +652,6 @@ class VmTable extends JTable {
 				} else {
 					vmdebug('Store vmtable empty property for '.$field);
 				}
-
 			}
 		}
 
@@ -694,7 +734,7 @@ class VmTable extends JTable {
 			$slugName = $this->_slugName;
 
 			if (in_array($slugAutoName, $this->_translatableFields)) {
-				$checkTable = $this->_tbl . '_' . VMLANG;
+				$checkTable = $this->_tbl . '_' . VmConfig::$vmlang;
 			} else {
 				$checkTable = $this->_tbl;
 			}
@@ -718,8 +758,8 @@ class VmTable extends JTable {
 
 			//$config =& JFactory::getConfig();
 			//$transliterate = $config->get('unicodeslugs');
-			$transliterate = VmConfig::get('transliterateSlugs',true);
-			if($transliterate){
+			$unicodeslugs = VmConfig::get('transliterateSlugs',false);
+			if($unicodeslugs){
 				$lang = JFactory::getLanguage();
 				$this->$slugName = $lang->transliterate($this->$slugName);
 			}
@@ -732,11 +772,11 @@ class VmTable extends JTable {
 			while(strpos($this->$slugName,'--')){
 				$this->$slugName = str_replace('--','-',$this->$slugName);
 			}
-				// Trim dashes at beginning and end of alias
+			// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
-			//vmdebug('my slug before urlencode ',$this->$slugName);
-			$this->$slugName = urlencode($this->$slugName);
-			//vmdebug('my slug after urlencode ',$this->$slugName);
+
+			if($unicodeslugs)$this->$slugName = rawurlencode($this->$slugName);
+
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			vmdebug('my Final slugName '.$slugName,$this->slugName);
 			if (!$valid) {
@@ -751,7 +791,7 @@ class VmTable extends JTable {
 				if (empty($error)) {
 					$error = 'Serious error cant save ' . $this->_tbl . ' without ' . $obkeys;
 				} else {
-					//	$error = get_class($this).' '.JText::_($error);
+					//	$error = get_class($this).' '.vmText::_($error);
 					$error = get_class($this) . ' ' . $error;
 				}
 				$this->setError($error);
@@ -765,7 +805,7 @@ class VmTable extends JTable {
 			foreach ($this->_unique_name as $obkeys => $error) {
 
 				if (empty($this->$obkeys)) {
-					// 					vmError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
+					// 					vmError(vmText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
 					$this->setError($error);
 					vmError('Non unique ' . $this->_unique_name . ' ' . $error);
 					return false;
@@ -783,32 +823,30 @@ class VmTable extends JTable {
 
 			$multix = Vmconfig::get('multix', 'none');
 			//Lets check if the user is admin or the mainvendor
-			if (!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-
 			$virtuemart_vendor_id = false;
 			if ($multix == 'none' and get_class($this) !== 'TableVmusers') {
 
 				$this->virtuemart_vendor_id = 1;
 				return true;
 			} else {
-
 				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
-				$admin = Permissions::getInstance()->check('admin');
+				$user = JFactory::getUser();
+				$admin = $user->authorise('core.admin','com_virtuemart');
 
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);
 				if (strpos($this->_tbl,'virtuemart_vmusers')===FALSE) {
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
-					if (!isset(self::$_query_cache[md5($q)])) {
+					if (!isset(self::$_cache[md5($q)])) {
 						$this->_db->setQuery($q);
 						$virtuemart_vendor_id = $this->_db->loadResult();
-					} else $virtuemart_vendor_id = self::$_query_cache[md5($q)];
+					} else $virtuemart_vendor_id = self::$_cache[md5($q)];
 				} else {
 					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
-					if (!isset(self::$_query_cache[md5($q)])) {
+					if (!isset(self::$_cache[md5($q)])) {
 						$this->_db->setQuery($q);
 						$vmuser = $this->_db->loadRow();
-					} else $vmuser = self::$_query_cache[md5($q)];
+					} else $vmuser = self::$_cache[md5($q)];
 
 					if ($vmuser and count($vmuser) === 2) {
 						$virtuemart_vendor_id = $vmuser[0];
@@ -898,14 +936,14 @@ class VmTable extends JTable {
 					unset($this->$name);
 
 					if (!empty($this->_unique_name[$name])) {
-						$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_unique_name[$name]);
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 
@@ -922,14 +960,14 @@ class VmTable extends JTable {
 					unset($this->$name);
 
 					if (!empty($this->_unique_name[$name])) {
-						$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_unique_name[$name]);
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 
@@ -979,21 +1017,19 @@ class VmTable extends JTable {
 						if (!$langTable->load($id)) {
 							$ok = false;
 							vmdebug('Preloading of language table failed, no id given, cannot store ' . $this->_tbl);
-						} else {
-							//We have preloaded the data, so we must bind it again
-							if ($ok) {
-								if (!$langTable->bind($data)) {
-									$ok = false;
-									vmdebug('Problem in bind ' . get_class($this) . ' ');
-								}
+						}
+					} else {
+						if ($ok) {
+							if (!$langTable->bind($data)) {
+								$ok = false;
+								vmdebug('Problem in bind ' . get_class($this) . ' ');
 							}
+						}
 
-							//and check it again
-							if ($ok) {
-								if (!$langTable->check()) {
-									$ok = false;
-									vmdebug('Check returned false ' . get_class($langTable) . ' ' . $this->_tbl . ' ' . $langTable->_db->getErrorMsg());
-								}
+						if ($ok) {
+							if (!$langTable->check()) {
+								$ok = false;
+								vmdebug('Check returned false ' . get_class($langTable) . ' ' . $this->_tbl . ' ' . $langTable->_db->getErrorMsg());
 							}
 						}
 					}
@@ -1124,7 +1160,7 @@ class VmTable extends JTable {
 			$q = 'UPDATE  `' . $this->_tbl . '` SET `' . $this->_orderingKey . '` = ' . (int)$start . ' WHERE `' . $this->_tbl_key . '`= ' . $row[$this->_tbl_key] . ' LIMIT 1';
 
 			$this->_db->setQuery($q);
-			$r = $this->_db->query($q);
+			$r = $this->_db->execute($q);
 			$start = $start + 5;
 		}
 
@@ -1146,27 +1182,26 @@ class VmTable extends JTable {
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
 
-		$cid = JRequest::getVar($this->_pkeyForm);
-		if(empty($cid)){
-			$cid = JRequest::getVar('cid');
-		}
-		if(empty($cid)){
-			// either we fix custom fields or fix it here:
-			$cid = JRequest::getVar('virtuemart_custom_id');
-		}
+		$cid = vRequest::getInt($this->_pkeyForm);
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {
-			vmError(get_class($this) . ' is missing cid information !');
-		}
-		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
+			// either we fix custom fields or fix it here:
+			$cid = vRequest::getVar('virtuemart_custom_id');
+			if (!empty($cid) && (is_array($cid))) {
+				$cid = reset($cid);
+			} else {
+				vmError(get_class($this) . ' is missing cid information !');
+				return false;
+			}
+		}		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
 		$q = "SELECT `" . $this->_orderingKey . '` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . "` = '" . (int)$cid . "' limit 0,1";
 
-		if (!isset(self::$_query_cache[md5($q)])) {
+		if (!isset(self::$_cache[md5($q)])) {
 			$this->_db->setQuery($q);
 			$c_order = $this->_db->loadResult(); // current ordering value of cid
 		} else {
-			$c_order = self::$_query_cache[md5($q)];
+			$c_order = self::$_cache[md5($q)];
 		}
 
 		$this->$orderingkey = $c_order;
@@ -1210,13 +1245,13 @@ class VmTable extends JTable {
 		}
 
 
-		if (!isset(self::$_query_cache[md5($sql)])) {
+		if (!isset(self::$_cache[md5($sql)])) {
 			$this->_db->setQuery($sql, 0, 1);
 
 
 			$row = null;
 			$row = $this->_db->loadObject();
-		} else $row = self::$_query_cache[md5($sql)];
+		} else $row = self::$_cache[md5($sql)];
 
 
 		if (isset($row)) {
@@ -1235,7 +1270,7 @@ class VmTable extends JTable {
 			$this->_db->setQuery($query);
 			echo "\n" . $query . '<br />';
 
-			if (!$this->_db->query()) {
+			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500, get_class($this) . ':: move isset row $row->$k' . $err);
 			}
@@ -1246,7 +1281,7 @@ class VmTable extends JTable {
 				. ' WHERE ' . $this->_tbl_key . ' = "' . (int)$cid . '" LIMIT 1';
 			$this->_db->setQuery($query);
 			//echo $query.'<br />'; die();
-			if (!$this->_db->query()) {
+			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500, get_class($this) . ':: move isset row $row->$k' . $err);
 			}
@@ -1260,10 +1295,10 @@ class VmTable extends JTable {
 
 			$query = 'UPDATE ' . $this->_tbl
 				. ' SET `' . $this->_orderingKey . '` = ' . (int)$this->$orderingKey
-				. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '" LIMIT 1';
+				. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '" LIMIT 1';
 			$this->_db->setQuery($query);
 
-			if (!$this->_db->query()) {
+			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500, get_class($this) . ':: move update $this->$k' . $err);
 			}
@@ -1279,8 +1314,8 @@ class VmTable extends JTable {
 	 */
 	function getNextOrder($where = '', $orderingkey = 0) {
 
-		$where = $this->_db->getEscaped($where);
-		$orderingkey = $this->_db->getEscaped($orderingkey);
+		$where = $this->_db->escape($where);
+		$orderingkey = $this->_db->escape($orderingkey);
 
 		if (!empty($orderingkey))
 			$this->_orderingKey = $orderingkey;
@@ -1292,10 +1327,10 @@ class VmTable extends JTable {
 		$query = 'SELECT MAX(`' . $this->_orderingKey . '`)' .
 			' FROM ' . $this->_tbl .
 			($where ? ' WHERE ' . $where : '');
-		if (!isset(self::$_query_cache[md5($query)])) {
+		if (!isset(self::$_cache[md5($query)])) {
 			$this->_db->setQuery($query);
 			$maxord = $this->_db->loadResult();
-		} else $maxord = self::$_query_cache[md5($query)];
+		} else $maxord = self::$_cache[md5($query)];
 
 		if ($this->_db->getErrorNum()) {
 			vmError(get_class($this) . ' getNextOrder ' . $this->_db->getErrorMsg());
@@ -1312,8 +1347,8 @@ class VmTable extends JTable {
 	 */
 	function reorder($where = '', $orderingkey = 0) {
 
-		$where = $this->_db->getEscaped($where);
-		$orderingkey = $this->_db->getEscaped($orderingkey);
+		$where = $this->_db->escape($where);
+		$orderingkey = $this->_db->escape($orderingkey);
 
 		if (!empty($orderingkey))
 			$this->_orderingKey = $orderingkey;
@@ -1346,10 +1381,10 @@ class VmTable extends JTable {
 				if ($orders[$i]->$orderingKey != $i + 1) {
 					$orders[$i]->$orderingKey = $i + 1;
 					$query = 'UPDATE ' . $this->_tbl
-						. ' SET `' . $this->_orderingKey . '` = "' . $this->_db->getEscaped($orders[$i]->$orderingKey) . '"
-					 WHERE ' . $k . ' = "' . $this->_db->getEscaped($orders[$i]->$k) . '"';
+						. ' SET `' . $this->_orderingKey . '` = "' . $this->_db->escape($orders[$i]->$orderingKey) . '"
+					 WHERE ' . $k . ' = "' . $this->_db->escape($orders[$i]->$k) . '"';
 					$this->_db->setQuery($query);
-					$this->_db->query();
+					$this->_db->execute();
 				}
 			}
 		}
@@ -1377,20 +1412,20 @@ class VmTable extends JTable {
 		}
 
 		$config = JFactory::getConfig();
-		$siteOffset = $config->getValue('config.offset');
+		$siteOffset = $config->get('offset');
 		$date = JFactory::getDate('now', $siteOffset);
 
-		$time = $date->toMysql();
+		$time = $date->toSql();
 
-		$query = 'UPDATE ' . $this->_db->nameQuote($this->_tbl) .
-			' SET locked_by = ' . (int)$who . ', locked_on = "' . $this->_db->getEscaped($time) . '"
-			 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '"';
+		$query = 'UPDATE ' . $this->_db->quoteName($this->_tbl) .
+			' SET locked_by = ' . (int)$who . ', locked_on = "' . $this->_db->escape($time) . '"
+			 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '"';
 		$this->_db->setQuery($query);
 
 		$this->locked_by = $who;
 		$this->locked_on = $time;
 
-		return $this->_db->query();
+		return $this->_db->execute();
 	}
 
 	/**
@@ -1420,15 +1455,15 @@ class VmTable extends JTable {
 			return false;
 		}
 
-		$query = 'UPDATE ' . $this->_db->nameQuote($this->_tbl) .
-			' SET locked_by = 0, locked_on = "' . $this->_db->getEscaped($this->_db->getNullDate()) . '"
-				 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '"';
+		$query = 'UPDATE ' . $this->_db->quoteName($this->_tbl) .
+			' SET locked_by = 0, locked_on = "' . $this->_db->escape($this->_db->getNullDate()) . '"
+				 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '"';
 		$this->_db->setQuery($query);
 
 		$this->locked_by = 0;
 		$this->locked_on = '';
 
-		return $this->_db->query();
+		return $this->_db->execute();
 	}
 
 	/**
@@ -1479,7 +1514,7 @@ class VmTable extends JTable {
 		$k = $this->_tbl_key;
 		$q = 'UPDATE `' . $this->_tbl . '` SET `' . $field . '` = "' . $this->$field . '" WHERE `' . $k . '` = "' . $this->$k . '" ';
 		$this->_db->setQuery($q);
-		if (!$res = $this->_db->query()) {
+		if (!$res = $this->_db->execute()) {
 			vmError('There was an error toggling ' . $field, $this->_db->getErrorMsg());
 		} else {
 			vmdebug('Toggled '.$q );
@@ -1507,7 +1542,7 @@ class VmTable extends JTable {
 		if ($this->_translatable) {
 
 			$langs = VmConfig::get('active_languages', array());
-			if (!$langs) $langs[] = VMLANG;
+			if (!$langs) $langs[] = VmConfig::$vmlang;
 			if (!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
 			foreach ($langs as $lang) {
 				$lang = strtolower(strtr($lang, '-', '_'));
@@ -1532,10 +1567,10 @@ class VmTable extends JTable {
 	function getMysqlVersion() {
 
 		$q = 'select version()';
-		if (!isset(self::$_query_cache[md5($q)])) {
+		if (!isset(self::$_cache[md5($q)])) {
 			$this->_db->setQuery($q);
 			return $this->_db->loadResult();
-		} else return self::$_query_cache[md5($q)];
+		} else return self::$_cache[md5($q)];
 
 	}
 
@@ -1553,7 +1588,7 @@ class VmTable extends JTable {
 		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE `' . $whereKey . '` = "' . $this->$k . '" '.$andWhere;
 		$this->_db->setQuery($query);
 		// 		vmdebug('checkAndDelete',$query);
-		$list = $this->_db->loadResultArray();
+		$list = $this->_db->loadColumn();
 		// 		vmdebug('checkAndDelete',$list);
 
 
@@ -1564,7 +1599,7 @@ class VmTable extends JTable {
 				$query = 'DELETE FROM `' . $table . '` WHERE ' . $this->_tbl_key . ' = "' . $row . '"';
 				$this->_db->setQuery($query);
 
-				if (!$this->_db->query()) {
+				if (!$this->_db->execute()) {
 					$this->setError($this->_db->getErrorMsg());
 					vmError('checkAndDelete ' . $this->_db->getErrorMsg());
 					$ok = 0;
@@ -1595,12 +1630,9 @@ class VmTable extends JTable {
 
 		$_check_act = strtoupper(substr($_act, 0, 3));
 		//Check if a column is there
-		$db = JFactory::getDbo();
-		if(JVM_VERSION===1){
-			$columns = $this->getTableColumns($this->_tbl);
-		} else {
-			$columns = $this->_db->getTableColumns($this->_tbl);
-		}
+
+		//$columns = $this->_db->getTableColumns($this->_tbl);
+		$columns = $this->showFullColumns('Field','Type',false);
 
 		$res = array_key_exists($_col, $columns);
 
@@ -1650,7 +1682,7 @@ class VmTable extends JTable {
 
 		$this->_db->setQuery($_sql);
 
-		$this->_db->query();
+		$this->_db->execute();
 		if ($this->_db->getErrorNum() != 0) {
 			vmError(get_class($this) . '::modify table - ' . $this->_db->getErrorMsg() . '<br /> values: action ' . $_act . ', columname: ' . $_col . ', type: ' . $_type . ', columname2: ' . $_col2);
 			return false;
