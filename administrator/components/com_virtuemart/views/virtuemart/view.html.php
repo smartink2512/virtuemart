@@ -35,7 +35,7 @@ class VirtuemartViewVirtuemart extends VmView {
 
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		$model = VmModel::getModel('virtuemart');
 
 		$nbrCustomers = $model->getTotalCustomers();

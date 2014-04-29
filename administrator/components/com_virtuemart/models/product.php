@@ -474,24 +474,27 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		//write the query, incldue the tables
-		//$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
-		//$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
-		//Maybe we have to join the language to order by product name, description, etc,...
-		if(!$joinLang){
-			$productLangFields = array('product_s_desc','product_desc','product_name','metadesc','metakey','slug');
-			foreach($productLangFields as $field){
-				if(strpos($orderBy,$field,6)!==FALSE){
-					$joinLang = true;
-					break;
+		$joinedTables = array();
+		//This option switches between showing products without the selected language or only products with language.
+		if($app->isSite() and VmConfig::get('prodOnlyWLang',false)){
+			//Maybe we have to join the language to order by product name, description, etc,...
+			if(!$joinLang){
+				$productLangFields = array('product_s_desc','product_desc','product_name','metadesc','metakey','slug');
+				foreach($productLangFields as $field){
+					if(strpos($orderBy,$field,6)!==FALSE){
+						$joinLang = true;
+						break;
+					}
 				}
 			}
-		}
 
-		$joinedTables = array();
-		$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products` as p ';
-		if ($joinLang) {
-			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+			$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products` as p ';
+			if ($joinLang) {
+				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+			}
+		} else {
+			$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ';
+			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products` as p using (`virtuemart_product_id`)';
 		}
 
 

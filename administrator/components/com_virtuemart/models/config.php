@@ -106,8 +106,18 @@ class VirtueMartModelConfig extends JModel {
 	function getTCPDFFontsList() {
 
 		$dir = JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
-		$specfiles = glob($dir.DS."*_specs.xml");
 		$result = array();
+		if(function_exists('glob')){
+			$specfiles = glob($dir.DS."*_specs.xml");
+		} else {
+			$specfiles = array();
+			$manual = array('courier_specs.xml','freemono_specs.xml','helvetica_specs.xml');
+			foreach($manual as $file){
+				if(file_exists($dir.DS.$file)){
+					$specfiles[] = $dir.DS.$file;
+				}
+			}
+		}
 		foreach ($specfiles as $file) {
 			$fontxml = @simpleXML_load_file($file);
 			if ($fontxml) {
@@ -120,6 +130,7 @@ class VirtueMartModelConfig extends JModel {
 				vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
 			}
 		}
+
 		return $result;
 	}
 
