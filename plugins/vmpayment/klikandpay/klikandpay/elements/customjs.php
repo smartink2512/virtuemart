@@ -1,13 +1,13 @@
 <?php
 /**
  *
- * Paypal   payment plugin
+ * Paypal payment plugin
  *
  * @author Jeremy Magne
- * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -21,7 +21,7 @@
 
 defined ('_JEXEC') or die();
 
-class JElementPbxCustomjs extends JElement {
+class JElementCustomjs extends JElement {
 
 	/**
 	 * Element name
@@ -29,14 +29,17 @@ class JElementPbxCustomjs extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'pbxcustomjs';
+	var $_name = 'Customjs';
 
 	function fetchElement ($name, $value, &$node, $control_name) {
 		
 
+		
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paybox/paybox/assets/js/admin.js');
+		$doc->addScript(JURI::root(true).'/plugins/vmpayment/klikandpay/klikandpay/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/klikandpay/klikandpay/assets/css/klikandpay.css');
 
+		
 		return '';		
 	}
 

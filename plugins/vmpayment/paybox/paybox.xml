@@ -27,7 +27,7 @@
 
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning"/>
-        <param type="pbxcustomjs" default=""/>
+        <param type="customjs" default=""/>
         <param type="getpaybox" level="level1"/>
         <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
 
