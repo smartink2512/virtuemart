@@ -729,7 +729,7 @@ class calculationHelper {
 							$dbrule['subTotal'] += $this->_cart->cartPrices[$cartproductkey]['subtotal_with_tax'];
 							vmdebug('DB Rule '.$dbrule['calc_name'].' is per category subTotal '.$dbrule['subTotal']);
 							// subarray with subTotal for each taxID necessary to calculate tax correct if there are more than one VatTaxes
-							$dbrule['subTotalPerTaxID'] = array();
+							if(!isset($dbrule['subTotalPerTaxID'])) $dbrule['subTotalPerTaxID'] = array();
 							if($product->product_tax_id != 0) {
 								if(!isset($dbrule['subTotalPerTaxID'][$product->product_tax_id])) $dbrule['subTotalPerTaxID'][$product->product_tax_id] = 0.0;
 								$dbrule['subTotalPerTaxID'][$product->product_tax_id] += $this->_cart->cartPrices[$cartproductkey]['subtotal_with_tax'];
