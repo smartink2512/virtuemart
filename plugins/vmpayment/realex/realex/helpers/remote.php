@@ -380,7 +380,6 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			$threedSecureAuthentication = false;
 		}
 		if (!$allowLiabilityShift and $requireLiabilityShift) {
-			vmError("Transaction Requires Liability Shit");
 			return false;
 		}
 		$eci = $this->getEciValue($allowLiabilityShift, $threedSecureAuthentication);
@@ -429,7 +428,6 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		// if there is no liability shift, and it is required by the client, throw exception
 		$eci = false;
 		if (!$liabilityShift && $this->_method->require_liability) {
-			vmError("Transaction Requires Liability Shit");
 			return $eci;
 		}
 

@@ -7,9 +7,9 @@
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
-    <description>VMPAYMENT_KLARNA_CONF_PLUGIN_DESC</description>
+    <description>Klarna VirtueMart Payment Plugin</description>
     <languages>
-        <language tag="en-GB">en-GB.plg_vmpayment_klarna.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_vmpayment_klarna.ini</language>
     </languages>
     <files>
         <filename plugin="klarna">klarna.php</filename>

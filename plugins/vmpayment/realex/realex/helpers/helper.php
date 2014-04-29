@@ -700,8 +700,8 @@ class  RealexHelperRealex {
 			return null;
 		}
 		$attrs = 'class="inputbox vm-chzn-select"';
-		//$idA = $id = 'saved_cc_selected_' . $virtuemart_paymentmethod_id;
-		$idA = $id = 'saved_cc_selected';
+		$idA = $id = 'saved_cc_selected_' . $virtuemart_paymentmethod_id;
+		//$idA = $id = 'saved_cc_selected_';
 		$options[] = array('value' => '', 'text' => vmText::_('VMPAYMENT_REALEX_PLEASE_SELECT'));
 		if ($use_another_cc) {
 			$options[] = JHTML::_('select.option', -1, vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC'));

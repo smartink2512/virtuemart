@@ -7,10 +7,13 @@
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <!--version>${PHING.VM.RELEASE}</version-->
-    <version>Beta5</version>
+    <version>Beta7</version>
     <description><![CDATA[<a href="http://paybox.com" target="_blank">Paybox</a> ]]>
     </description>
-
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_vmpayment_paybox.ini</language>
+        <language tag="fr-FR">fr-FR/fr-FR.plg_vmpayment_paybox.ini</language>
+    </languages>
     <files>
         <filename plugin="paybox">paybox.php</filename>
         <folder>paybox</folder>
@@ -24,6 +27,7 @@
 
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning"/>
+        <param type="pbxcustomjs" default=""/>
         <param type="getpaybox" level="level1"/>
         <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
 
@@ -63,15 +67,16 @@
             <option value="6">6</option>
             <option value="7">7</option>
         </param>
-        <param class="" name="activate_3dsecure" type="list" size="15" default="0"
+        <param class="" name="activate_3dsecure" type="list" size="15" default="active"
                label="VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE"
                description="VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE_TIP">
-            <option value="0">COM_VIRTUEMART_NO</option>
-            <option value="1">COM_VIRTUEMART_YES</option>
+            <option value="inactive">VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE_INACTIVE</option>
+            <option value="active">VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE_ACTIVE</option>
+            <option value="selective">VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE_SELECTIVE</option>
         </param>
-        <param class="activate_3dsecure" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE_WARNING"/>
+        <param class="activate_3dsecure activate_3dsecure_warning" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_ACTIVATE_3DSECURE_WARNING"/>
 
-        <param name="min_amount_3dsecure" class="activate_3dsecure" type="text" size="15" default=""
+        <param name="min_amount_3dsecure" class="activate_3dsecure required" type="text" size="15" default=""
                label="VMPAYMENT_PAYBOX_CONF_3DSECURE_MIN_AMOUNT"
                description="VMPAYMENT_PAYBOX_CONF_3DSECURE_MIN_AMOUNT_TIP"/>
 

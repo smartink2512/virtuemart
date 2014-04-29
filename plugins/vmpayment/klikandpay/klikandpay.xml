@@ -23,6 +23,8 @@
 
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning"/>
+        <param type="customjs" default=""/>
+
         <param type="getklikandpay" level="level1"/>
         <param class="level1" type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_ACCOUNT_PARAMS"/>
 

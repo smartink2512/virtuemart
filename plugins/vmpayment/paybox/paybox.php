@@ -47,10 +47,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush();
 		//$this->setEncryptedFields(array('params'));
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-		if (!JFactory::getApplication()->isSite()) {
-			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::root(true) . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . '/assets/js/admin.js');
-		}
+
 		if (method_exists($this, 'setCryptedFields')) {
 			$this->setCryptedFields(array('key'));
 		}
@@ -534,11 +531,11 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	 *
 	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
 	 * @author Max Milbers
-	 */
-	public function plgVmOnCheckoutCheckDataPayment (VirtueMartCart $cart) {
-		return true;
-	}
 
+	public function plgVmOnCheckoutCheckDataPayment (VirtueMartCart $cart) {
+		return NULL;
+	}
+*/
 
 	/**
 	 * This method is fired when showing when priting an Order

@@ -107,7 +107,7 @@ class  PayboxHelperPaybox {
 		}
 
 		// min_amount_3dsecure is in vendor currency
-		if (!($this->_method->activate_3dsecure AND ($orderTotalVendorCurrency > $this->_method->min_amount_3dsecure))) {
+		if (!($this->isActivate3ds($orderTotalVendorCurrency) )) {
 			$post_variables["PBX_3DS"] = 'N';
 		}
 		jimport('joomla.environment.browser');
@@ -176,6 +176,11 @@ class  PayboxHelperPaybox {
 		return;
 	}
 
+
+	function isActivate3ds($orderTotalVendorCurrency) {
+		 return $this->_method->activate_3dsecure=='active' OR  ($this->_method->activate_3dsecure=='selective 'AND ($orderTotalVendorCurrency > $this->_method->min_amount_3dsecure));
+
+		}
 
 	/**
 	 * @param $paybox_data

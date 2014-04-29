@@ -51,10 +51,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush();
 		//$this->setEncryptedFields(array('params'));
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-		if (!JFactory::getApplication()->isSite()) {
-			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::root(true) . '/plugins/vmpayment/' . $this->_name . '/' . $this->_name . '/assets/js/admin.js');
-		}
+
 		if (method_exists($this, 'setCryptedFields')) {
 			$this->setCryptedFields(array('account'));
 		}

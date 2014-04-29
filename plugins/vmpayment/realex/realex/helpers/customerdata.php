@@ -63,8 +63,8 @@ class RealexHelperCustomerData {
 
 		$this->_selected_method = vRequest::getInt('virtuemart_paymentmethod_id', 0);
 
-		//$saved_cc_selected = vRequest::getInt('saved_cc_selected_' . $this->_selected_method, 0);
-		$saved_cc_selected = vRequest::getInt('saved_cc_selected' , 0);
+		$saved_cc_selected = vRequest::getInt('saved_cc_selected_' . $this->_selected_method, 0);
+		//$saved_cc_selected = vRequest::getInt('saved_cc_selected' , 0);
 		if ($saved_cc_selected) {
 			$this->_saved_cc_selected = $saved_cc_selected;
 		}

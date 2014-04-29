@@ -20,7 +20,7 @@
 jQuery().ready(function ($) {
 
     /************/
-    /* Handlers */
+    /* handlers */
     /************/
     handleDebitType = function () {
         var debit_type = $('#paramsdebit_type').val();
@@ -36,10 +36,12 @@ jQuery().ready(function ($) {
     handle3Dsecure = function () {
         var activate_3dsecure = $('#paramsactivate_3dsecure').val();
 
-        $('.activate_3dsecure ').parents('tr').hide();
+        $('.activate_3dsecure').parents('tr').hide();
 
-        if (activate_3dsecure == 1) {
+        if (activate_3dsecure == 'selective') {
             $('.activate_3dsecure').parents('tr').show();
+        } else if (activate_3dsecure == 'active') {
+            $('.activate_3dsecure.activate_3dsecure_warning').parents('tr').show();
         }
     }
     handleIntegration = function () {
