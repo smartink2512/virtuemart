@@ -50,7 +50,7 @@ class VmTable extends JTable {
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
 
-	public static $_cache = array();
+	private static $_cache = array();
 
 	/**
 	 * @param string $table
@@ -101,7 +101,6 @@ class VmTable extends JTable {
 			$this->_observers = new JObserverUpdater($this);
 			JObserverMapper::attachAllObservers($this);
 		}
-
 
 	}
 
@@ -193,6 +192,10 @@ class VmTable extends JTable {
 	function setTableShortCut($prefix) {
 
 		$this->_tablePreFix = $prefix . '.';
+	}
+
+	public function emptyCache(){
+		self::$_cache = array();
 	}
 
 	/**
@@ -332,9 +335,6 @@ class VmTable extends JTable {
 		return $this->_cryptedFields;
 	}
 
-	public function loadFields(){
-		return $this->showFullColumns();
-	}
 
 	/**
 	 * Gives Back the columns of the current table, sets the properties on the table.
@@ -379,27 +379,30 @@ class VmTable extends JTable {
 		return $result;
 	}
 
+	public function loadFields(){
+		return $this->showFullColumns();
+	}
 
 	function loadFieldValues($array=true){
 
+		$tmp = get_object_vars($this);
 		if($array){
 			$return = array();
-			foreach ($this->getProperties() as $k => $v){
+			foreach ($tmp as $k => $v){
 				// Do not process internal variables
-				if (!strpos($k,'_')==0){
+				if ('_' != substr($k, 0, 1)){
 					$return[$k] = $v;
 				}
 			}
 		} else {
 			$return = new stdClass();
-			foreach ($this->getProperties() as $k => $v){
+			foreach ($tmp as $k => $v){
 				// Do not process internal variables
-				if (!strpos($k,'_')==0){
+				if ('_' != substr($k, 0, 1)){
 					$return->$k = $v;
 				}
 			}
 		}
-
 
 		return $return;
 	}
@@ -560,7 +563,11 @@ class VmTable extends JTable {
 		$hash = md5($oid. $select . $k . $andWhere);
 
 		if (isset (self::$_cache['l'][$hash])) {
+			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			$this->bind(self::$_cache['l'][$hash]);
 			return self::$_cache['l'][$hash];
+		} else {
+			vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
 
 		$db = $this->getDBO();
