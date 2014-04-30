@@ -270,7 +270,9 @@ class VirtueMartModelUserfields extends VmModel {
 			return false;
 		}
 
-		if (!$field->check(count($fieldValues))) {
+		//We need this value in the check, so we add it to the table with _
+		$field->_nrOfValues = count($fieldValues);
+		if (!$field->check()) {
 			// Perform data checks
 			//vmError($field->getError());
 			return false;

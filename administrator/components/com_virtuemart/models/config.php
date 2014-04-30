@@ -108,20 +108,23 @@ class VirtueMartModelConfig extends VmModel {
 	function getTCPDFFontsList() {
 
 		$dir = JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
-		$specfiles = glob($dir.DS."*_specs.xml");
 		$result = array();
-		foreach ($specfiles as $file) {
-			$fontxml = @simpleXML_load_file($file);
-			if ($fontxml) {
-				if (file_exists($dir . DS . $fontxml->filename . '.php')) {
-					$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+		if(function_exists('glob')){
+			$specfiles = glob($dir.DS."*_specs.xml");
+			foreach ($specfiles as $file) {
+				$fontxml = @simpleXML_load_file($file);
+				if ($fontxml) {
+					if (file_exists($dir . DS . $fontxml->filename . '.php')) {
+						$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+					} else {
+						vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
+					}
 				} else {
-					vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
+					vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
 				}
-			} else {
-				vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
 			}
 		}
+
 		return $result;
 	}
 
@@ -465,16 +468,17 @@ class VirtueMartModelConfig extends VmModel {
 	}
 
 	static public function checkVirtuemartInstalled(){
-
+		//return false;
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
 		$db->setQuery($query);
 		$vmTables = $db->loadColumn();
 		$err = $db->getError();
-		if(!empty($err) or !$vmTables or count($vmTables)<4){
-			vmdebug('checkVirtuemartInstalled, return false ');
+		if(!empty($err) or !$vmTables or count($vmTables)<50){	//52 tables for a normal installation
+			//vmdebug('checkVirtuemartInstalled, return false ');
 			return false;
 		} else {
+			//vmdebug('checkVirtuemartInstalled, return true found tables '.count($vmTables));
 			return true;
 		}
 
@@ -492,9 +496,7 @@ class VirtueMartModelConfig extends VmModel {
 		$qry = self::getCreateConfigTableQuery();
 		$_db = JFactory::getDBO();
 		$_db->setQuery($qry);
-		$_db->execute();
-		return true;
-		vmdebug('installVMconfigTable executed');
+		return $_db->execute();
 	}
 
 	static public function getCreateConfigTableQuery(){
@@ -517,7 +519,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 */
-	static function readConfigFile($returnDangerousTools,$freshInstall=false){
+	static function readConfigFile(){
 
 		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {

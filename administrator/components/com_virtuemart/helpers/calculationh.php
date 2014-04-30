@@ -660,8 +660,6 @@ class calculationHelper {
       		$this->productCurrency = isset($productCart->product_currency)? $productCart->product_currency:0;
 			$variantmod = $customfieldModel->calculateModificators($productCart);
 
-			//$cartproductkey = $name.serialize($productCart->customProductData); //$product->virtuemart_product_id.$variantmod;
-			//$cartproductkey = $productCart->cart_item_id;
 			//$product->allPrices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, $variantmod, $product->quantity, true, false);
 			$producPrice = $this->getProductPrices($productCart,$variantmod, $productCart->quantity);
 			$this->_cart->products[$cartproductkey]->allPrices[$productCart->selectedPrice] = $producPrice;

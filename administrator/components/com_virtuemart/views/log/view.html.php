@@ -41,11 +41,11 @@ class VirtuemartViewLog extends VmView {
 		jimport('joomla.filesystem.file');
 		$config = JFactory::getConfig();
 		$log_path = $config->get('log_path', JPATH_ROOT . "/log");
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = vRequest::getWord('layout', 'default');
 		VmConfig::loadJLang('com_virtuemart_log');
 
 		if ($layoutName == 'edit') {
-			$logFile = JRequest::getString('logfile', '');
+			$logFile = vRequest::getString('logfile', '');
 			$this->SetViewTitle('LOG', $logFile);
 			$fileContent = file_get_contents($log_path . DS . $logFile);
 			$fileContentByLine = explode("\n", $fileContent);
@@ -54,6 +54,8 @@ class VirtuemartViewLog extends VmView {
 			JToolBarHelper::cancel();
 
 		} else {
+			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+
 			$logFiles = JFolder::files($log_path, $filter = '.', true, false, array('index.html'));
 
 			$this->SetViewTitle('LOG');

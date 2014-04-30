@@ -470,22 +470,29 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		//Maybe we have to join the language to order by product name, description, etc,...
-		if(!$joinLang){
-			$productLangFields = array('product_s_desc','product_desc','product_name','metadesc','metakey','slug');
-			foreach($productLangFields as $field){
-				if(strpos($orderBy,$field,6)!==FALSE){
-					$joinLang = true;
-					break;
+		$joinedTables = array();
+		//This option switches between showing products without the selected language or only products with language.
+		if($app->isSite() and !VmConfig::get('prodOnlyWLang',false)){
+			//Maybe we have to join the language to order by product name, description, etc,...
+			if(!$joinLang){
+				$productLangFields = array('product_s_desc','product_desc','product_name','metadesc','metakey','slug');
+				foreach($productLangFields as $field){
+					if(strpos($orderBy,$field,6)!==FALSE){
+						$joinLang = true;
+						break;
+					}
 				}
 			}
+
+			$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products` as p ';
+			if ($joinLang) {
+				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+			}
+		} else {
+			$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ';
+			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products` as p using (`virtuemart_product_id`)';
 		}
 
-		$joinedTables = array();
-		$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products` as p ';
-		if ($joinLang) {
-			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
-		}
 
 		if ($joinShopper == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_shoppergroups` as ps ON p.`virtuemart_product_id` = `ps`.`virtuemart_product_id` ';
@@ -1082,74 +1089,17 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
-			/*if ($front) {
-
-				if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)>1){
-
-					if (!class_exists ('shopFunctionsF')) {
-						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-					}
-
-					//We must first check if we come from another category, due the canoncial link we would have always the same catgory id for a product
-					//But then we would have wrong neighbored products / category and product layouts
-					$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
-					if ($last_category_id!==0 and in_array ($last_category_id, $product->categories)) {
-						$product->virtuemart_category_id = $last_category_id;
-						//vmdebug('I take for product the last category ',$last_category_id,$product->categories);
-					} else {
-						$virtuemart_category_id = vRequest::getInt ('virtuemart_category_id', 0);
-						if ($virtuemart_category_id!==0 and in_array ($virtuemart_category_id, $product->categories)) {
-							$product->virtuemart_category_id = $virtuemart_category_id;
-							//vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
-						} else {
-							if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
-								$product->virtuemart_category_id = $product->categories[0];
-								//vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
-							}
-						}
-					}
-
-				} else if(!empty($product->canonCatLink)) {
-					$product->virtuemart_category_id = $product->canonCatLink;
-				}
-
-			} else {
-				//This construction should allow us to see category depended prices in the BE
-				$virtuemart_category_id = vRequest::getInt ('virtuemart_category_id', 0);
-
-				if($virtuemart_category_id!==0 and !empty($product->categories) ) {
-					if(is_array($product->categories) and in_array ($virtuemart_category_id, $product->categories)){
-						$product->virtuemart_category_id = $virtuemart_category_id;
-					} else if($product->categories==$virtuemart_category_id) {
-						$product->virtuemart_category_id = $virtuemart_category_id;
-					}
-
-				}
-
-				if (empty($product->virtuemart_category_id)) {
-					if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
-						$product->virtuemart_category_id = $product->categories[0];
-					} else {
-						$product->virtuemart_category_id = 0;
-					}
-				}
-
-//				vmdebug('getProductSingle BE request $virtuemart_category_id',$virtuemart_category_id,$product->virtuemart_category_id);
-			}*/
 
 			if(!empty($product->virtuemart_category_id)){
-				/*$db = JFactory::getDbo();
-				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories`
-					WHERE `virtuemart_product_id` = "' . $this->_id . '" and `virtuemart_category_id`= "' . $product->virtuemart_category_id . '" ';
-				$db->setQuery ($q);
-				// change for faster ordering
-				$ordering = $db->loadObject ();*/
+
 				$found = false;
 				foreach($product->categoryItem as $category){
+
 					if($category['virtuemart_category_id'] == $product->virtuemart_category_id){
 						$product->ordering = $category['ordering'];
 						//This is the ordering id in the list to store the ordering notice by Max Milbers
 						$product->id = $category['id'];
+						$product->category_name = $category['category_name'];
 						$found = true;
 						break;
 					}
@@ -1159,19 +1109,7 @@ class VirtueMartModelProduct extends VmModel {
 					$product->id = $this->_autoOrder;
 					vmdebug('$product->virtuemart_category_id no ordering stored for product '.$this->_id);
 				}
-				/*if (!empty($ordering)) {
-					$product->ordering = $ordering->ordering;
-					//This is the ordering id in the list to store the ordering notice by Max Milbers
-					$product->id = $ordering->id;
-				} else {
-					$product->ordering = $this->_autoOrder++;
-					$product->id = $this->_autoOrder;
-					vmdebug('$product->virtuemart_category_id no ordering stored for product '.$this->_id);
-				}*/
 
-				$catTable = $this->getTable ('categories');
-				$catTable->load ($product->virtuemart_category_id);
-				$product->category_name = $catTable->category_name;
 			} else {
 				$product->category_name = null;
 				$product->virtuemart_category_id = null;
@@ -1267,24 +1205,19 @@ class VirtueMartModelProduct extends VmModel {
 
 		$categories = array();
 		if ($virtuemart_product_id > 0) {
-			//$select = '*';
-			//if ($front) {
-				//$select .= ', c.`published`';
-			///}
-			$q = 'SELECT * FROM `#__virtuemart_product_categories` as pc';
-			//if ($front) {
-				$q .= ' LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = pc.`virtuemart_category_id`';
-			//}
-			$q .= ' WHERE pc.`virtuemart_product_id` = ' . (int)$virtuemart_product_id;
-			if ($front) {
-				//$q .= ' AND `published`=1 ORDER BY `c`.`ordering` ASC';
-				$q .= ' AND `published`=1 ORDER BY `c`.`ordering` ASC';
-			}
-			//$q .= ' ORDER BY `pc`.`ordering` DESC ';
 			$db = JFactory::getDbo();
+
+			$q = 'SELECT * FROM `#__virtuemart_product_categories`  WHERE `virtuemart_product_id` = ' . (int)$virtuemart_product_id;
 			$db->setQuery ($q);
-			$categories = $db->loadAssocList();
-			//vmdebug('$product->categories '.$q,$categories);
+			$categoryIds = $db->loadAssocList();
+			$catTable = $this->getTable('categories');
+
+			foreach($categoryIds as $categoryId){
+				$tmp = (array)$catTable->load($categoryId['virtuemart_category_id']);
+				$tmp['id'] = $categoryId['id'];
+				$tmp['ordering'] = $categoryId['ordering'];
+				$categories[] = $tmp;
+			}
 		}
 
 		return $categories;
@@ -1878,7 +1811,9 @@ class VirtueMartModelProduct extends VmModel {
 		$childs = count ($this->getProductChildIds ($id));
 		$db->setQuery ('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
 		$parent = $db->loadObject ();
-		$newslug = $parent->slug . $id . rand (1, 9);
+		$prodTable = $this->getTable ('products');
+		//$newslug = $parent->slug . $id . rand (1, 9);
+		$newslug = $prodTable->checkCreateUnique('products_' . VmConfig::$vmlang,$parent->slug);
 		$data = array('product_name' => $parent->product_name, 'slug' => $newslug, 'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
 
 		$prodTable = $this->getTable ('products');

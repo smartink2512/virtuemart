@@ -335,7 +335,7 @@ class VirtuemartViewProduct extends VmView {
 
 			/* Get the list of products */
 			$productlist = $model->getProductListing(false,false,false,false,true);
-
+			//vmdebug('my product listing',$productlist);
 			//The pagination must now always set AFTER the model load the listing
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);

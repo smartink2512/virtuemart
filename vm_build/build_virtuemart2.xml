@@ -5,7 +5,7 @@
     <property name="releasetype" value="MAYOR"/>
     <property name="vm.version" value="2.9.0"/>
     <property name="joomla.version" value="2.5.19"/>
-    <property name="svn.lastrevision" value="7842"/>
+    <property name="svn.lastrevision" value="7861"/>
     <property name="PHING.VM.CODENAME" value="DreamIn"/>
     <property file="build.properties"/>
     <target name="title">

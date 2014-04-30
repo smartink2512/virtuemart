@@ -55,7 +55,7 @@ class TableUserfields extends VmTable {
 	 *
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check($nrOfValues)
+	function check()
 	{
 
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
@@ -64,7 +64,7 @@ class TableUserfields extends VmTable {
 		}
 		if($this->name !='virtuemart_country_id' and $this->name !='virtuemart_state_id'){
 			$reqValues = array('select', 'multiselect', 'radio', 'multicheckbox');
-			if (in_array($this->type, $reqValues) and $nrOfValues == 0 ) {
+			if (in_array($this->type, $reqValues) and $this->_nrOfValues == 0 ) {
 				vmError(vmText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 				return false;
 			}

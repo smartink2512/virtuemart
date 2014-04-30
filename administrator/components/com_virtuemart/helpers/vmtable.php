@@ -102,7 +102,6 @@ class VmTable extends JTable {
 			JObserverMapper::attachAllObservers($this);
 		}
 
-
 	}
 
 	public function setPrimaryKey($key, $keyForm = 0) {
@@ -114,7 +113,7 @@ class VmTable extends JTable {
 		$this->$key = 0;
 	}
 
-	public function getPrimaryKey(){
+	public function getPKey(){
 		return $this->_pkey;
 	}
 
@@ -193,6 +192,10 @@ class VmTable extends JTable {
 	function setTableShortCut($prefix) {
 
 		$this->_tablePreFix = $prefix . '.';
+	}
+
+	public function emptyCache(){
+		self::$_cache = array();
 	}
 
 	/**
@@ -376,27 +379,30 @@ class VmTable extends JTable {
 		return $result;
 	}
 
+	public function loadFields(){
+		return $this->showFullColumns();
+	}
 
 	function loadFieldValues($array=true){
 
+		$tmp = get_object_vars($this);
 		if($array){
 			$return = array();
-			foreach ($this->getProperties() as $k => $v){
+			foreach ($tmp as $k => $v){
 				// Do not process internal variables
-				if (!strpos($k,'_')==0){
+				if ('_' != substr($k, 0, 1)){
 					$return[$k] = $v;
 				}
 			}
 		} else {
 			$return = new stdClass();
-			foreach ($this->getProperties() as $k => $v){
+			foreach ($tmp as $k => $v){
 				// Do not process internal variables
-				if (!strpos($k,'_')==0){
+				if ('_' != substr($k, 0, 1)){
 					$return->$k = $v;
 				}
 			}
 		}
-
 
 		return $return;
 	}
@@ -557,7 +563,11 @@ class VmTable extends JTable {
 		$hash = md5($oid. $select . $k . $andWhere);
 
 		if (isset (self::$_cache['l'][$hash])) {
+			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			//$this->bind(self::$_cache['l'][$hash]);
 			return self::$_cache['l'][$hash];
+		} else {
+			vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
 
 		$db = $this->getDBO();
@@ -755,8 +765,8 @@ class VmTable extends JTable {
 
 			//$config =& JFactory::getConfig();
 			//$transliterate = $config->get('unicodeslugs');
-			$transliterate = VmConfig::get('transliterateSlugs',true);
-			if($transliterate){
+			$unicodeslugs = VmConfig::get('transliterateSlugs',false);
+			if($unicodeslugs){
 				$lang = JFactory::getLanguage();
 				$this->$slugName = $lang->transliterate($this->$slugName);
 			}
@@ -771,9 +781,9 @@ class VmTable extends JTable {
 			}
 			// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
-			//vmdebug('my slug before urlencode ',$this->$slugName);
-			$this->$slugName = urlencode($this->$slugName);
-			//vmdebug('my slug after urlencode ',$this->$slugName);
+
+			if($unicodeslugs)$this->$slugName = rawurlencode($this->$slugName);
+
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			vmdebug('my Final slugName '.$slugName,$this->slugName);
 			if (!$valid) {

@@ -40,7 +40,7 @@ class ShopFunctions {
 
 		if(!is_array($idList)){
 			$db = JFactory::getDBO ();
-			$q = 'SELECT `' . $table->getPrimaryKey() . '` FROM `#__virtuemart_' . $db->escape ($tableXref) . '` WHERE ' . $db->escape ($tableSecondaryKey) . ' = "' . (int)$idList . '"';
+			$q = 'SELECT `' . $table->getPKey() . '` FROM `#__virtuemart_' . $db->escape ($tableXref) . '` WHERE ' . $db->escape ($tableSecondaryKey) . ' = "' . (int)$idList . '"';
 			$db->setQuery ($q);
 			$idList = $db->loadColumn ();
 			vmdebug('renderGuiList',$q,$list);
