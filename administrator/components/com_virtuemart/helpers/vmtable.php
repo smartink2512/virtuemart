@@ -7,7 +7,7 @@
  * @package    VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2011 -2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -113,7 +113,7 @@ class VmTable extends JTable {
 		$this->$key = 0;
 	}
 
-	public function getPrimaryKey(){
+	public function getPKey(){
 		return $this->_pkey;
 	}
 
@@ -560,7 +560,11 @@ class VmTable extends JTable {
 		if ($andWhere === 0) $andWhere = '';
 		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
-		$hash = md5($oid. $select . $k . $andWhere);
+		$hashVarsToPush = '';
+		if (!empty($this->_xParams)) {
+			$hashVarsToPush = serialize($this->_varsToPushParam);
+		}
+		$hash = md5($oid. $select . $k . $andWhere . $hashVarsToPush);
 
 		if (isset (self::$_cache['l'][$hash])) {
 			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
