@@ -1,6 +1,6 @@
 .ui-autocomplete{position:absolute}
 #cpanel{text-align:center;vertical-align:middle;height:1%;overflow:hidden}
-#cpanel div.icon{margin:3px}
+/*#cpanel div.icon{margin:3px}*/
 .admin-content div.icon a {
 	display: block;
 	height: 93px !important;

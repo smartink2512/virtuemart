@@ -14,6 +14,7 @@
         <filename>index.html</filename>
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
+        <folder>language</folder>
     </files>
     <params>
         <param name="text_before" type="textarea" cols="40" rows="3"

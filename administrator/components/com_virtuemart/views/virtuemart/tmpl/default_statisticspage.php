@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 			<tr>
 		  		<td width="50%">
-		  			<a href="<?php echo $link; ?>"><?php echo $row->order_status_name; ?></a>
+		  			<a href="<?php echo $link; ?>"><?php echo vmText::_($row->order_status_name); ?></a>
 				</td>
 		  		<td width="50%">
 		  			<?php echo $row->order_count; ?>

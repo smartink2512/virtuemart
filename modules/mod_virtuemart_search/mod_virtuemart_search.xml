@@ -14,6 +14,7 @@
 	<filename>index.html</filename>
 	<filename>tmpl/default.php</filename>
 	<filename>tmpl/index.html</filename>
+	<folder>language</folder>
     </files>
     <params>
 	<param name="width" type="text" default="20" label="MOD_VIRTUEMART_SEARCH_BOX_WIDTH" description="MOD_VIRTUEMART_SEARCH_BOX_WIDTH_DESC" />

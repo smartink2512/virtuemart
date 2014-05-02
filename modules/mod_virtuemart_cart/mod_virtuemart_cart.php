@@ -11,7 +11,7 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 */
 
 $doc = JFactory::getDocument();
-$doc->addScript("/modules/mod_virtuemart_cart/assets/js/update_cart.js");
+$doc->addScript("modules/mod_virtuemart_cart/assets/js/update_cart.js");
 $js = '
 jQuery(document).ready(function(){
     jQuery("body").live("updateVirtueMartCartModule", function(e) {

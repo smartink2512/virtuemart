@@ -1234,34 +1234,28 @@ class ShopFunctions {
 
 	static function getValidProductFilterArray () {
 
-		static $filterArray;
+	static $filterArray;
 
-		if (!isset($filterArray)) {
-		/*
-		$filterArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
-		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
-		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
-		'p.product_availability', 'p.product_special', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
-		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
-		}
-        */
+	if (!isset($filterArray)) {
+
 		$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku',
-			'product_s_desc', 'product_desc','`l`.slug',
-				'category_name', 'category_description', 'mf_name',
-			'product_price', 'product_special', 'product_sales', 'product_availability', '`p`.product_available_date',
-			'product_height', 'product_width', 'product_length', 'product_lwh_uom',
-			'product_weight', 'product_weight_uom', 'product_in_stock', 'low_stock_notification',
-			 '`p`.modified_on',
-				'product_unit', 'product_packaging', '`p`.virtuemart_product_id', 'pc.ordering');
+		'product_s_desc', 'product_desc','`l`.slug',
+		'category_name', 'category_description', 'mf_name',
+		'product_price', '`p`.product_special', '`p`.product_sales', '`p`.product_availability', '`p`.product_available_date',
+		'`p`.product_height', '`p`.product_width', '`p`.product_length', '`p`.product_lwh_uom',
+		'`p`.product_weight', '`p`.product_weight_uom', '`p`.product_in_stock', '`p`.low_stock_notification',
+		'`p`.modified_on',
+		'`p`.product_unit', '`p`.product_packaging', '`p`.virtuemart_product_id', 'pc.ordering');
+
 		//other possible fields
 		//'p.intnotes',		this is maybe interesting, but then only for admins or special shoppergroups
 
 		// this fields leads to trouble, because we have this fields in product, category and manufacturer,
 		// they are anyway making not a lot sense for orderby or search.
 		//'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor'
-		}
+	}
 
-		return $filterArray;
+return $filterArray;
 	}
 
 	/**
