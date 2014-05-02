@@ -494,19 +494,18 @@ class PaypalHelperPaypal {
 		// Get the list of IP addresses for www.paypal.com and notify.paypal.com
 
 
-		if ($this->_method->sandbox  ) {
+		 if ($this->_method->sandbox  ) {
 			$paypal_iplist = gethostbynamel('ipn.sandbox.paypal.com');
 			$paypal_iplist = (array)$paypal_iplist;
 			$this->debugLog($paypal_iplist, 'checkPaypalIps SANDBOX', 'debug', false);
 
-		} else {
+		 } else {
 			$paypal_iplist1 = gethostbynamel('www.paypal.com');
 			$paypal_iplist2 = gethostbynamel('notify.paypal.com');
 			$paypal_iplist3 = array('216.113.188.202', '216.113.188.203', '216.113.188.204', '66.211.170.66');
 			$paypal_iplist = array_merge($paypal_iplist1, $paypal_iplist2, $paypal_iplist3);
 // http://forum.virtuemart.net/index.php?topic=115375.msg406664#msg406664
 
-			$paypal_iplist3 = array('216.113.188.202', '216.113.188.203', '216.113.188.204', '66.211.170.66');
 			// Added JH 2013-10-12
 			//Current IP addresses
 			//------------api.paypal.com---------
@@ -535,7 +534,7 @@ class PaypalHelperPaypal {
 				'92.122.143.186', '92.123.151.186', '92.123.159.186', '92.123.163.186', '92.123.167.186', '92.123.179.186', '92.123.183.186');
 			// JH
 
-			$paypal_iplist = array_merge($paypal_iplist, $paypal_iplist2, $paypal_iplist3,
+			$paypal_iplist = array_merge($paypal_iplist,
 				// Added JH 2013-10-12
 				$paypal_iplist_api,
 				$paypal_iplist_api_aa,
@@ -546,10 +545,9 @@ class PaypalHelperPaypal {
 			// JH
 			);
 
-			$paypal_iplist = array_merge($paypal_iplist, $paypal_iplist2, $paypal_iplist3);
 			$this->debugLog($paypal_iplist, 'checkPaypalIps PRODUCTION', 'debug', false);
 
-		}
+		 }
 		$this->debugLog($_SERVER['REMOTE_ADDR'], 'checkPaypalIps REMOTE ADDRESS', 'debug', false);
 
 		//  test if the remote IP connected here is a valid IP address
