@@ -27,7 +27,7 @@ vmJsApi::jCreditCard();
 vmJsApi::jQuery();
 vmJsApi::chosenDropDowns();
 $doc = JFactory::getDocument();
-//$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/js/site.js');
+$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/js/site.js');
 $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/css/realex.css');
 $attribute = '';
 if ($viewData['dccinfo']) {
@@ -67,7 +67,7 @@ if ($viewData['dccinfo']) {
 }
 ?>
 
-<div class="vmpayment_cardinfo">
+<div class="vmpayment_cardinfo realexRemoteCCForm">
 	<div class="vmpayment_cardinfo_text">
 		<?php if (!$viewData['dccinfo']) {
 			if (empty($viewData['creditcardsDropDown'])) {
@@ -250,6 +250,7 @@ if ($viewData['dccinfo']) {
 		<input type="hidden" name="notificationTask" value="<?php echo $viewData['notificationTask']; ?>"/>
 		<input type="hidden" name="order_number" value="<?php echo $viewData['order_number']; ?>"/>
 		<input type="hidden" name="pm" value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"/>
+		<input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"/>
 		</span>
 
 </div>

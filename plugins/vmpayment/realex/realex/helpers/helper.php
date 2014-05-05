@@ -481,7 +481,7 @@ class  RealexHelperRealex {
 								$pasref = $payment->realex_response_pasref;
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
-									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_DECLINED');
+									$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
 								} else {
 									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
 								}
@@ -518,7 +518,7 @@ class  RealexHelperRealex {
 
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
-									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_DECLINED');
+									$auth_info =JText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
 								} else {
 									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
 								}
@@ -739,28 +739,37 @@ class  RealexHelperRealex {
 	 * @param $selected_cc
 	 * @return mixed|null
 	 */
-	function getCCDropDown ($virtuemart_paymentmethod_id, $virtuemart_user_id, $selected_cc, $use_another_cc = true) {
+	function getCCDropDown ($virtuemart_paymentmethod_id, $virtuemart_user_id, $selected_cc, $use_another_cc = true, $radio=false) {
 
 		//$storeCCs = $this->getStoredCCsByPaymentMethod($virtuemart_user_id, $virtuemart_paymentmethod_id);
 		$storeCCs = $this->getStoredCCs($virtuemart_user_id);
 		if (empty($storeCCs)) {
 			return null;
 		}
+		if (!class_exists ('VmHTML')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+		}
 		$attrs = 'class="inputbox vm-chzn-select"';
 		$idA = $id = 'saved_cc_selected_' . $virtuemart_paymentmethod_id;
 		//$idA = $id = 'saved_cc_selected_';
-		$options[] = array('value' => '', 'text' => vmText::_('VMPAYMENT_REALEX_PLEASE_SELECT'));
-		if ($use_another_cc) {
-			$options[] = JHTML::_('select.option', -1, vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC'));
-		}
+		//$options[] = array('value' => '', 'text' => vmText::_('VMPAYMENT_REALEX_PLEASE_SELECT'));
 
 		foreach ($storeCCs as $storeCC) {
 			$cc_type = vmText::_('VMPAYMENT_REALEX_CC_' . $storeCC->realex_saved_pmt_type);
 			$name = $cc_type . ' ' . $storeCC->realex_saved_pmt_digits . ' ' . $storeCC->realex_saved_pmt_expdate . ' (' . $storeCC->realex_saved_pmt_name . ')';
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
+			$radioOptions[$storeCC->id]= $name;
+		}
+		if ($use_another_cc) {
+			$options[] = JHTML::_('select.option', -1, vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC'));
+			$radioOptions[-1] = vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC');
+		}
+		if ($radio) {
+			return VmHTML::radioList($idA, $selected_cc, $radioOptions, 'class="realexListCC"');
+		} else {
+			return JHTML::_('select.genericlist', $options, $idA, 'class="realexListCC inputbox vm-chzn-select" style="width: 350px;"', 'value', 'text', $selected_cc);
 		}
 
-		return JHTML::_('select.genericlist', $options, $idA, 'class="inputbox vm-chzn-select" style="width: 350px;"', 'value', 'text', $selected_cc);
 	}
 
 	function getOfferSaveCard ($checked, $paymentmethod_id) {
@@ -776,7 +785,7 @@ class  RealexHelperRealex {
 		return $html;
 	}
 
-	function doRealVault (&$selectedCCParams) {
+	function doRealVault () {
 		if ($this->_method->realvault AND $this->_method->integration == 'remote') {
 			if (!($this->_method->offer_save_card) OR
 				($this->_method->offer_save_card AND $this->customerData->getVar('save_card'))
@@ -934,11 +943,11 @@ class  RealexHelperRealex {
 
 		$xml_request = '<tssinfo>
 		                <address type="billing">
-		                <code>' . $this->stripnonnumeric($BT->zip, 5) . '</code>
+		                <code>' . $this->getCode($BT) . '</code>
 						 <country>' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_2_code') . '</country>
 						 </address>
 						<address type="shipping">
-					     <code>' . $this->stripnonnumeric($ST->zip, 5) . '</code>
+					     <code>' . $this->getCode($ST) . '</code>
 						 <country>' . ShopFunctions::getCountryByID($ST->virtuemart_country_id, 'country_2_code') . '</country>
 						 </address>
 						 <custnum></custnum>

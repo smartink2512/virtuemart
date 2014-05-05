@@ -332,11 +332,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 // 		$table->order_status = $orderdata->orderstatus;
 
-/*
-// 		JPluginHelper::importPlugin('vmcustom');
-// 		$_dispatcher = JDispatcher::getInstance();
-// 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
-*/
+
+  		JPluginHelper::importPlugin('vmcustom');
+ 		$_dispatcher = JDispatcher::getInstance();
+  		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
+
 		$dataT = get_object_vars($table);
 
 //		$doUpdate = JRequest::getString('update_values');

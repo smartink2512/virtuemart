@@ -7,6 +7,10 @@
     border-bottom: 1px solid #CCC;
     margin-top: 15px;
     margin-bottom: 10px;
+    color: #333;
+}
+.creditcardsDropDown input {
+    margin:5px;
 }
 .remote_cc_form .inputbox {
     width: 220px;

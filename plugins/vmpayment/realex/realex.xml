@@ -56,13 +56,13 @@
         </param>
 
 
-        <param class="remote" name="threedsecure" type="list" default="1" label="VMPAYMENT_REALEX_3DSECURE"
+        <param class="realvault remote" name="threedsecure" type="list" default="1" label="VMPAYMENT_REALEX_3DSECURE"
                description="VMPAYMENT_REALEX_3DSECURE_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
 
-        <param class="remote" name="require_liability" type="list" default="1" label="VMPAYMENT_REALEX_REQUIRE_LIABILITY"
+        <param class="realvault remote" name="require_liability" type="list" default="1" label="VMPAYMENT_REALEX_REQUIRE_LIABILITY"
                description="VMPAYMENT_REALEX_REQUIRE_LIABILITY_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>

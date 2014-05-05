@@ -182,7 +182,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		$ccDropdown = "";
 		if (!JFactory::getUser()->guest AND $this->_method->realvault) {
 			$selected_cc = $this->customerData->getVar('saved_cc_selected');
-			$ccDropdown = $this->getCCDropDown($this->_currentMethod->virtuemart_paymentmethod_id, JFactory::getUser()->id, $selected_cc, false);
+			$ccDropdown = $this->getCCDropDown($this->_method->virtuemart_paymentmethod_id, JFactory::getUser()->id, $selected_cc, true, true);
 			if ($selected_cc > 0) {
 				$realvault = $this->getStoredCCsData($selected_cc);
 			}
@@ -512,19 +512,20 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 
 	}
 
-	function confirmedOrderRealVault () {
-		$selectedCCParams = array();
-
-		if ($this->doRealVault($selectedCCParams)) {
-			$newPayerRef = "";
-			$responseNewPayer = $this->setNewPayer($newPayerRef);
-			$setNewPayerSuccess = $this->manageSetNewPayer($responseNewPayer);
-			if ($setNewPayerSuccess) {
-				$newPaymentRef = "";
-				$responseNewPayment = $this->setNewPayment($newPayerRef, $newPaymentRef);
-				$setNewPaymentSuccess = $this->manageSetNewPayment($responseNewPayment, $newPayerRef, $newPaymentRef);
+	function confirmedOrderRealVault ($saved_cc_selected) {
+		if ($saved_cc_selected == -1) {
+			if ($this->doRealVault()) {
+				$newPayerRef = "";
+				$responseNewPayer = $this->setNewPayer($newPayerRef);
+				$setNewPayerSuccess = $this->manageSetNewPayer($responseNewPayer);
+				if ($setNewPayerSuccess) {
+					$newPaymentRef = "";
+					$responseNewPayment = $this->setNewPayment($newPayerRef, $newPaymentRef);
+					$setNewPaymentSuccess = $this->manageSetNewPayment($responseNewPayment, $newPayerRef, $newPaymentRef);
+				}
 			}
 		}
+
 		return;
 	}
 
@@ -704,6 +705,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		 * MPI: Merchant Plug In - it is the component that communicates with the other components during the actual transaction.
 		 */
 		if ($xml_3Dresponse AND !empty($xml_3Dresponse->threedsecure) AND isset($xml_3Dresponse->threedsecure)) {
+
 			$xml_request .= '<mpi>
 				 <eci>' . $xml_3Dresponse->threedsecure->eci . '</eci>
 				  <cavv>' . $xml_3Dresponse->threedsecure->cavv . '</cavv>
