@@ -611,6 +611,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 		$userfield['realex_saved_pmt_digits'] = shopFunctionsF::mask_string($this->customerData->getVar('cc_number'), '*');
 		$userfield['realex_saved_pmt_name'] = $this->customerData->getVar('cc_name');
+		$userfield['realex_saved_pmt_expdate'] = $this->customerData->getVar('cc_expire_month')."/".  $this->customerData->getVar('cc_expire_year');
+
 		if (!class_exists('VmTableData')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
 		}

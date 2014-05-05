@@ -122,16 +122,22 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 			$post_variables['PAYER_EXIST'] = 0;
 			$post_variables['CARD_STORAGE_ENABLE'] = $this->_method->realvault;
 			if ($this->_method->realvault) {
-				if ($this->customerData->getVar('saved_cc_selected') == -1) {
-					$post_variables['PAYER_EXIST'] = 1;
-					$post_variables['PAYER_REF'] = $this->getExistingPayerRef();;
-					$post_variables['PMT_REF'] = '';
+				if ( $payer_ref=$this->getExistingPayerRef()) {
+					if ($this->customerData->getVar('saved_cc_selected') != -1) {
+						$post_variables['PAYER_EXIST'] = 1;
+						$post_variables['PAYER_REF'] = $payer_ref;
+						$post_variables['PMT_REF'] = '';
+					} else {
+						$post_variables['PAYER_REF'] = $payer_ref;
+						$post_variables['PAYER_EXIST'] = 1;
+						$post_variables['PMT_REF']   =$this->getPmtRef();
+					}
 				} else {
 					$post_variables['PAYER_REF'] = '';
 					$post_variables['PAYER_EXIST'] = 0;
 					$post_variables['PMT_REF'] = '';
-
 				}
+
 				$post_variables['OFFER_SAVE_CARD'] = $this->_method->offer_save_card;
 
 			} else {
@@ -142,7 +148,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 			$post_variables['CARD_PAYMENT_BUTTON'] = $this->getCardPaymentButton($this->_method->card_payment_button);
 		}
 
-		if ($this->_method->offer_save_card  and $this->_method->realvault and $BT->virtuemart_user_id != 0) {
+		if ( $this->_method->realvault and $BT->virtuemart_user_id != 0) {
 			$post_variables['SHA1HASH'] = $this->getSha1Hash($this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY'], $post_variables['PAYER_REF'], $post_variables['PMT_REF']);
 		} else {
 			$post_variables['SHA1HASH'] = $this->getSha1Hash($this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY']);

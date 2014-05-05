@@ -79,7 +79,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 	}
 
-	function renderOSList($value,$name = 'order_status',$multiple=FALSE,$attrs='',$langkey='', $removePending=false){
+	function renderOSList($value,$name = 'order_status',$multiple=FALSE,$attrs='',$langkey='' ){
 
 		$idA = $id = $name;
  		$attrs .= ' class="inputbox" ';
@@ -98,12 +98,9 @@ class VirtueMartModelOrderstatus extends VmModel {
 			$hashValue = $value;
 		}
 
-		$hash = md5($hashValue.$name.$attrs.$removePending);
+		$hash = md5($hashValue.$name.$attrs);
 		if (!isset($this->_renderStatusList[$hash])) {
 			$orderStates = $this->getOrderStatusNames();
-			if ($removePending) {
-				unset($orderStates['P']);
-			}
 			$emptyOption = JHTML::_ ('select.option', -1, JText::_ ($langkey), 'order_status_code', 'order_status_name');
 			array_unshift ($orderStates, $emptyOption);
 			if ($multiple) {

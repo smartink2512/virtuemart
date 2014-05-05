@@ -53,6 +53,7 @@ jQuery().ready(function ($) {
             $('.settlement').parents('tr').show();
         }
     }
+
     handleDcc = function () {
         var dcc = $('#paramsdcc').val();
 
@@ -65,6 +66,10 @@ jQuery().ready(function ($) {
         if (dcc == 0) {
             $('.nodcc').parents('tr').show();
         }
+    }
+
+    handleAutoComplete = function () {
+        $('#paramsmerchant_id').attr('autocomplete','off');
     }
     /**********/
     /* Events */
@@ -89,4 +94,5 @@ jQuery().ready(function ($) {
     handleRealvault();
     handleSettlement();
     handleDcc();
+    handleAutoComplete();
 });

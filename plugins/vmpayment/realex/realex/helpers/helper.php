@@ -359,49 +359,79 @@ class  RealexHelperRealex {
 		return $showOrderBEFields;
 	}
 
-	function onShowOrderBEPayment ($data, $format) {
+	function onShowOrderBEPayment ($data, $format, $request_type_response, $virtuemart_order_id) {
 
 		$showOrderBEFields = $this->getOrderBEFields();
 		$prefix = 'REALEX_RESPONSE_';
 
 		$html = '';
-
-
-		foreach ($showOrderBEFields as $key => $showOrderBEField) {
-			if ($format == "xml") {
-				$showOrderBEField = strtolower($showOrderBEField);
+		if ($request_type_response == 'receipt-in_request') {
+			if (!class_exists('VirtueMartModelOrders')) {
+				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 			}
-			if (isset($data->$showOrderBEField) and !empty($data->$showOrderBEField)) {
-				$key = $prefix . $key;
-				$html .= $this->plugin->getHtmlRowBE($key, $data->$showOrderBEField);
+			$orderModel = VmModel::getModel('orders');
+			$order = $orderModel->getOrder($virtuemart_order_id);
+			$usedCC = $this->getStoredCCByPmt_ref($order['details']['BT']->virtuemart_user_id, $data->paymentmethod);
+			VmConfig::loadJLang('plg_vmuserfield_realex');
+			$display_fields = array(
+				'realex_saved_pmt_type',
+				'realex_saved_pmt_digits',
+				'realex_saved_pmt_expdate',
+				'realex_saved_pmt_name'
+			);
+			foreach ($display_fields as $display_field) {
+				$complete_key = strtoupper('VMUSERFIELD_' . $display_field);
+
+				$value = $usedCC->$display_field;
+				$key_text = JText::_($complete_key);
+				$value = JText::_($value);
+				if (!empty($value)) {
+					$html .= "<tr>\n<td>" . $key_text . "</label></td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
+				}
 			}
 
-		}
-
-		$plugin = $this->plugin;
-		/*
-		if (isset($data->DCCCHOICE) and $data->DCCCHOICE == $plugin::DCCCHOICE_YES) {
-			$showOrderBEFields = $this->getOrderBEFieldsDcc();
-			$prefix = 'REALEX_RESPONSE_';
+		} else {
 			foreach ($showOrderBEFields as $key => $showOrderBEField) {
-
-				if (isset($data->$showOrderBEField)) {
+				if ($format == "xml") {
+					$showOrderBEField = strtolower($showOrderBEField);
+				}
+				if (isset($data->$showOrderBEField) and !empty($data->$showOrderBEField)) {
 					$key = $prefix . $key;
-					$html .= $this->plugin->getHtmlRowBE($key, $data->$showOrderBEField);
+					if ($showOrderBEField == 'tss') {
+						$html .= $this->plugin->getHtmlRowBE($key, $data->tss->result);
+					} else {
+						$html .= $this->plugin->getHtmlRowBE($key, $data->$showOrderBEField);
+					}
 				}
 
 			}
-		}
-		*/
-		if (isset($data->threedsecure)) {
-			$showOrderBEFields = $this->getOrderBEFields3DS();
-			$prefix = 'REALEX_RESPONSE_THREEDSECURE_';
-			foreach ($showOrderBEFields as $key => $showOrderBEField) {
-				if (isset($data->threedsecure->$showOrderBEField)) {
-					$key = $prefix . $key;
-					$html .= $this->plugin->getHtmlRowBE($key, $data->threedsecure->$showOrderBEField);
-				}
 
+
+			$plugin = $this->plugin;
+			/*
+			if (isset($data->DCCCHOICE) and $data->DCCCHOICE == $plugin::DCCCHOICE_YES) {
+				$showOrderBEFields = $this->getOrderBEFieldsDcc();
+				$prefix = 'REALEX_RESPONSE_';
+				foreach ($showOrderBEFields as $key => $showOrderBEField) {
+
+					if (isset($data->$showOrderBEField)) {
+						$key = $prefix . $key;
+						$html .= $this->plugin->getHtmlRowBE($key, $data->$showOrderBEField);
+					}
+
+				}
+			}
+			*/
+			if (isset($data->threedsecure)) {
+				$showOrderBEFields = $this->getOrderBEFields3DS();
+				$prefix = 'REALEX_RESPONSE_THREEDSECURE_';
+				foreach ($showOrderBEFields as $key => $showOrderBEField) {
+					if (isset($data->threedsecure->$showOrderBEField)) {
+						$key = $prefix . $key;
+						$html .= $this->plugin->getHtmlRowBE($key, $data->threedsecure->$showOrderBEField);
+					}
+
+				}
 			}
 		}
 		return $html;
@@ -478,7 +508,7 @@ class  RealexHelperRealex {
 
 								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
 								if (isset($realex_data->DCCCHOICE) and $realex_data->DCCCHOICE == $this::RESPONSE_DCC_CHOICE_YES) {
-									$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($realex_data['DCCMERCHANTAMOUNT']), $realex_data['DCCMERCHANTCURRENCY'], $this->plugin->getCardHolderAmount($realex_data['DCCCARDHOLDERAMOUNT']), $realex_data['DCCCARDHOLDERCURRENCY']);
+									$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($realex_data->DCCMERCHANTAMOUNT), $realex_data->DCCMERCHANTCURRENCY, $this->plugin->getCardHolderAmount($realex_data->DCCCARDHOLDERAMOUNT), $realex_data->DCCCARDHOLDERCURRENCY);
 								}
 								if (isset($realex_data->REALWALLET_CHOSEN) and  $realex_data->REALWALLET_CHOSEN == 1) {
 									$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_SUCCESS');
@@ -539,12 +569,12 @@ class  RealexHelperRealex {
 	 * @param $saved_cc_selected
 	 * @return mixed
 	 */
-	function getStoredCCsData($saved_cc_selected){
-		$realvault=false;
-		$storedCCs = $this->getStoredCCs ( JFactory::getUser()->id );
-		foreach($storedCCs as $storedCC) {
-			if ($storedCC -> id == $saved_cc_selected) {
-				$realvault=$storedCC;
+	function getStoredCCsData ($saved_cc_selected) {
+		$realvault = false;
+		$storedCCs = $this->getStoredCCs(JFactory::getUser()->id);
+		foreach ($storedCCs as $storedCC) {
+			if ($storedCC->id == $saved_cc_selected) {
+				$realvault = $storedCC;
 				break;
 			}
 		}
@@ -686,6 +716,23 @@ class  RealexHelperRealex {
 		return $storedCCsByPaymentMethod;
 	}
 
+
+	function getStoredCCByPmt_ref ($virtuemart_user_id, $pmt_ref) {
+		$storedCCByPmt_ref = array();
+		$storeCCs = $this->getStoredCCs($virtuemart_user_id);
+		if ($storeCCs) {
+			foreach ($storeCCs as $storeCC) {
+				if ($storeCC->realex_saved_pmt_ref == $pmt_ref) {
+					$storedCCByPmt_ref = $storeCC;
+					break;
+				}
+			}
+		}
+
+		return $storedCCByPmt_ref;
+	}
+
+
 	/**
 	 * @param $virtuemart_paymentmethod_id
 	 * @param $virtuemart_user_id
@@ -709,7 +756,7 @@ class  RealexHelperRealex {
 
 		foreach ($storeCCs as $storeCC) {
 			$cc_type = vmText::_('VMPAYMENT_REALEX_CC_' . $storeCC->realex_saved_pmt_type);
-			$name = $cc_type . ' ' . $storeCC->realex_saved_pmt_digits . ' (' . $storeCC->realex_saved_pmt_name . ')';
+			$name = $cc_type . ' ' . $storeCC->realex_saved_pmt_digits . ' ' . $storeCC->realex_saved_pmt_expdate . ' (' . $storeCC->realex_saved_pmt_name . ')';
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
 		}
 
@@ -1116,7 +1163,10 @@ class  RealexHelperRealex {
 	 * @param string $request_type
 	 * @return null
 	 */
-	function getTransactionData ($payments, $request_type = array(self::REQUEST_TYPE_AUTH, self::REQUEST_TYPE_RECEIPT_IN)) {
+	function getTransactionData ($payments, $request_type = array(
+		self::REQUEST_TYPE_AUTH,
+		self::REQUEST_TYPE_RECEIPT_IN
+	)) {
 		foreach ($payments as $payment) {
 			if (in_array($payment->realex_request_type_response, $request_type)) {
 				return $payment;
@@ -1224,6 +1274,12 @@ class  RealexHelperRealex {
 			$cc_length = strlen($card_number);
 			$request->card->number = str_repeat("*", $cc_length);
 		}
+		if (isset($request->sha1hash)) {
+			$sha1hash = $request->sha1hash;
+			$sha1hash_length = strlen($sha1hash);
+			$request->sha1hash = str_repeat("*", $sha1hash_length);
+		}
+
 
 		//$this->debugLog(print_r($request, true), 'debug');
 		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $request->asXML() . '</textarea>', 'Request', 'message');
@@ -1236,7 +1292,15 @@ class  RealexHelperRealex {
 		$response = curl_exec($ch);
 		curl_close($ch);
 
-		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $response . '</textarea>', 'response :', 'message');
+		$responseToLog = $response;
+		if (isset($response->sha1hash)) {
+			$sha1hash = $responseToLog->sha1hash;
+			$sha1hash_length = strlen($sha1hash);
+			$responseToLog->sha1hash = str_repeat("*", $sha1hash_length);
+		}
+
+
+		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $responseToLog . '</textarea>', 'response :', 'message');
 
 		if (empty($response)) {
 			$this->displayError(vmText::_('VMPAYMENT_REALEX_EMPTY_RESPONSE'));

@@ -216,11 +216,7 @@ if ($viewData['dccinfo']) {
 					</label>
 				</div>
 			</div>
-			<div class="dcc_card_payment_button details-button">
-				<div class=" dcc_offer_legal ">
-					<?php echo vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_LEGAL', $viewData['dccinfo']->exchangeratesourcetimestamp, sprintf("%d", $viewData['dccinfo']->marginratepercentage), $viewData['dccinfo']->commissionpercentage); ?>
-				</div>
-			</div>
+
 		</div>
 	<?php } ?>
 	<?php if (!$viewData['dccinfo']) { ?>

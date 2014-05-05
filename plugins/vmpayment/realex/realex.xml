@@ -38,7 +38,7 @@
         </param>
 
         <!-- REDIRECT PARAMETERS -->
-        <param class="required" name="merchant_id" type="text" size="80" default=""
+        <param class="required" name="merchant_id"   type="text" size="80" default=""
                label="VMPAYMENT_REALEX_MERCHANT_ID" description="VMPAYMENT_REALEX_MERCHANT_ID_TIP"/>
         <param class="required" name="shared_secret" type="password" size="80" default=""
                label="VMPAYMENT_REALEX_SHARED_SECRET" description="VMPAYMENT_REALEX_SHARED_SECRET_TIP" />
