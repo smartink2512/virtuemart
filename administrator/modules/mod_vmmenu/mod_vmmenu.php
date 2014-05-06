@@ -24,11 +24,11 @@ if (!class_exists('ModVMMenuHelper')) {
 	require dirname(__FILE__).'/helper.php';
 }
 
-
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/config.php');
 // Initialise variables.
 $lang		= JFactory::getLanguage();
 $user		= JFactory::getUser();
-$hideMainmenu	= JRequest::getInt('hidemainmenu')  ;
+$hideMainmenu	= vRequest::getInt('hidemainmenu')  ;
 
 // Render the module layout
 require JModuleHelper::getLayoutPath('mod_vmmenu', $params->get('layout', 'default'));
