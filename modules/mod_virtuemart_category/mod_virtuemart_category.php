@@ -2,13 +2,12 @@
 defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
 * Best selling Products module for VirtueMart
-* @version $Id: mod_virtuemart_category.php 1160 2008-01-14 20:35:19Z soeren_nb $
+* @version $Id: mod_virtuemart_category.php 1160 2014-05-06 20:35:19Z milbo $
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) John Syben (john@webme.co.nz)
-* Conversion to Mambo and the rest:
-* 	@copyright (C) 2004-2005 Soeren Eberhardt
+* @copyright (C) 2011-2014 The Virtuemart Team
+*
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
@@ -20,8 +19,7 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 * and displays it wherever you want
 *----------------------------------------------------------------------
 */
-/* Load  VM fonction */
-require('helper.php');
+
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
 
 VmConfig::loadConfig();
@@ -44,19 +42,14 @@ $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
 
 if(empty($categories)) return false;
 
-
 foreach ($categories as $category) {
-	//$category->childs = VirtueMartModelCategory::getChildCategoryList($vendorId, $category->virtuemart_category_id);
-	//$category->childs = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category->virtuemart_category_id );
    	$category->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
 	// No image used here
 	//$categoryModel->addImages($category->childs);
 }
-// $catTree = $categoryModel->getCategoriesInfo($vendorId=1 );
-// echo json_encode($catTree,JSON_FORCE_OBJECT);
+
 $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
 
-
-/* Laod tmpl default */
+/* Load tmpl default */
 require(JModuleHelper::getLayoutPath('mod_virtuemart_category',$layout));
 ?>

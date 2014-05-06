@@ -5,7 +5,8 @@ defined ('_JEXEC') or  die('Direct Access to ' . basename (__FILE__) . ' is not 
  * @package VirtueMart
  * @subpackage modules
  *
- * @copyright (C) 2011 Patrick Kohl
+ * @copyright (C) 2010-2014 The VirtueMart Team
+ * @author Valerie Isaksen, Max Milbers
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VirtueMart is Free Software.
  * VirtueMart comes with absolute no warranty.
@@ -13,9 +14,7 @@ defined ('_JEXEC') or  die('Direct Access to ' . basename (__FILE__) . ' is not 
  * www.virtuemart.net
  */
 
-if (!class_exists ('VmConfig')) {
-	require(JPATH_ADMINISTRATOR .'components/com_virtuemart/helpers/config.php');
-}
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
 
 VmConfig::loadConfig ();
 VmConfig::loadJLang ('mod_virtuemart_search', true);

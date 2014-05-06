@@ -25,7 +25,7 @@ $jsVars  = ' jQuery(document).ready(function(){
 	jQuery(".vmCartModule").productUpdate();
 });' ;
 
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
 
 VmConfig::loadConfig();
 VmConfig::loadJLang('mod_virtuemart_cart', true);
