@@ -52,7 +52,7 @@ class PaypalHelperPaypal {
 	const BNCODE = "VirtueMart_Cart_PPA";
 
 
-	function __construct($method, $paypalPlugin) {
+	function __construct ($method, $paypalPlugin) {
 		$session = JFactory::getSession();
 		$this->context = $session->getId();
 		$this->_method = $method;
@@ -67,43 +67,43 @@ class PaypalHelperPaypal {
 		$this->getPaypalPaymentCurrency();
 	}
 
-	function getPaypalPaymentCurrency($getCurrency = FALSE) {
+	function getPaypalPaymentCurrency ($getCurrency = FALSE) {
 
 		vmPSPlugin::getPaymentCurrency($this->_method);
 		$this->currency_code_3 = shopFunctions::getCurrencyByID($this->_method->payment_currency, 'currency_code_3');
 
 	}
 
-	public function getContext() {
+	public function getContext () {
 		return $this->context;
 	}
 
-	public function setCart($cart) {
+	public function setCart ($cart) {
 		$this->cart = $cart;
 		if (!isset($this->cart->pricesUnformatted)) {
 			$this->cart->getCartPrices();
 		}
 	}
 
-	public function setOrder($order) {
+	public function setOrder ($order) {
 		$this->order = $order;
 	}
 
-	public function setCustomerData($customerData) {
+	public function setCustomerData ($customerData) {
 		$this->customerData = $customerData;
 	}
 
-	public function loadCustomerData() {
+	public function loadCustomerData () {
 		$this->customerData = new PaypalHelperCustomerData();
 		$this->customerData->load();
 		$this->customerData->loadPost();
 	}
 
-	function getItemName($name) {
+	function getItemName ($name) {
 		return substr(strip_tags($name), 0, 127);
 	}
 
-	function getProductAmount($productPricesUnformatted) {
+	function getProductAmount ($productPricesUnformatted) {
 		if ($productPricesUnformatted['salesPriceWithDiscount']) {
 			return vmPSPlugin::getAmountValueInCurrency($productPricesUnformatted['salesPriceWithDiscount'], $this->_method->payment_currency);
 		} else {
@@ -112,7 +112,7 @@ class PaypalHelperPaypal {
 	}
 
 
-	function addRulesBill($rules) {
+	function addRulesBill ($rules) {
 		$handling = 0;
 		foreach ($rules as $rule) {
 			$handling += vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted[$rule['virtuemart_calc_id'] . 'Diff'], $this->_method->payment_currency);
@@ -123,7 +123,7 @@ class PaypalHelperPaypal {
 	/**
 	 * @return value
 	 */
-	function getHandlingAmount() {
+	function getHandlingAmount () {
 		$handling = 0;
 		$handling += $this->addRulesBill($this->cart->cartData['DBTaxRulesBill']);
 		$handling += $this->addRulesBill($this->cart->cartData['taxRulesBill']);
@@ -132,7 +132,7 @@ class PaypalHelperPaypal {
 		return $handling;
 	}
 
-	public function setTotal($total) {
+	public function setTotal ($total) {
 		if (!class_exists('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . '/helpers/currencydisplay.php');
 		}
@@ -141,20 +141,20 @@ class PaypalHelperPaypal {
 		$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 	}
 
-	public function getTotal() {
+	public function getTotal () {
 		return $this->total;
 	}
 
-	public function getResponse() {
+	public function getResponse () {
 		return $this->response;
 	}
 
-	public function getRequest() {
+	public function getRequest () {
 		$this->debugLog($this->requestData, 'PayPal ' . $this->requestData['METHOD'] . ' Request variables ', 'debug');
 		return $this->requestData;
 	}
 
-	protected function sendRequest($post_data) {
+	protected function sendRequest ($post_data) {
 		$retryCodes = array('401', '403', '404',);
 
 		$this->post_data = $post_data;
@@ -234,7 +234,7 @@ class PaypalHelperPaypal {
 	 *
 	 * @param string $certPath - path to client certificate file (PEM formatted file)
 	 */
-	public function getSSLCertificate(&$certifPath, &$passPhrase) {
+	public function getSSLCertificate (&$certifPath, &$passPhrase) {
 		$safePath = VmConfig::get('forSale_path', '');
 		if ($safePath) {
 			$sslCertifFolder = $safePath . "paypal";
@@ -243,59 +243,59 @@ class PaypalHelperPaypal {
 		$certifPath = $sslCertifFolder . DS . $this->api_certificate;
 	}
 
-	protected function setTimeOut($value = 45) {
+	protected function setTimeOut ($value = 45) {
 		$this->_timeout = $value;
 	}
 
-	protected function _getPayPalUrl($protocol = 'https://', $includePath = true) {
-		$url = ($this->_method->sandbox ) ? $protocol . 'www.sandbox.paypal.com' : $protocol . 'www.paypal.com';
+	protected function _getPayPalUrl ($protocol = 'https://', $includePath = true) {
+		$url = ($this->_method->sandbox) ? $protocol . 'www.sandbox.paypal.com' : $protocol . 'www.paypal.com';
 		if ($includePath) {
 			$url .= '/cgi-bin/webscr';
 		}
 		return $url;
 	}
 
-	protected function _getApiUrl() {
+	protected function _getApiUrl () {
 		$url_auth = "";
 		if ($this->_method->authentication == 'signature') {
 			$url_auth = "-3t";
 		}
 		$url_environment = "";
-		if ($this->_method->sandbox ) {
+		if ($this->_method->sandbox) {
 			$url_environment = ".sandbox";
 		}
 		//return ($this->_method->sandbox=='sandbox') ? 'https://api-3t.sandbox.paypal.com/nvp' : 'https://api-3t.paypal.com/nvp';
 		return 'https://api' . $url_auth . $url_environment . '.paypal.com/nvp';
 	}
 
-	protected function getDurationValue($duration) {
+	protected function getDurationValue ($duration) {
 		$parts = explode('-', $duration);
 		return $parts[0];
 	}
 
-	protected function getDurationUnit($duration) {
+	protected function getDurationUnit ($duration) {
 		$parts = explode('-', $duration);
 		return $parts[1];
 	}
 
-	protected function truncate($string, $length) {
+	protected function truncate ($string, $length) {
 		return substr($string, 0, $length);
 	}
 
-	protected function _getFormattedDate($month, $year) {
+	protected function _getFormattedDate ($month, $year) {
 
 		return sprintf('%02d%04d', $month, $year);
 	}
 
-	public function validate($enqueueMessage = true) {
+	public function validate ($enqueueMessage = true) {
 		return true;
 	}
 
-	public function validatecheckout($enqueueMessage = true) {
+	public function validatecheckout ($enqueueMessage = true) {
 		return true;
 	}
 
-	function ToUri($post_variables) {
+	function ToUri ($post_variables) {
 		$poststring = '';
 		foreach ($post_variables AS $key => $val) {
 			$poststring .= urlencode($key) . "=" . urlencode($val) . "&";
@@ -304,7 +304,7 @@ class PaypalHelperPaypal {
 		return $poststring;
 	}
 
-	public function displayExtraPluginInfo() {
+	public function displayExtraPluginInfo () {
 		$extraInfo = '';
 		if ($this->_method->payment_type == '_xclick-auto-billing' && $this->customerData->getVar('autobilling_max_amount')) {
 			$cd = CurrencyDisplay::getInstance($this->_method->payment_currency);
@@ -325,12 +325,12 @@ class PaypalHelperPaypal {
 		return $extraInfo;
 	}
 
-	public function getExtraPluginInfo() {
+	public function getExtraPluginInfo () {
 		$extraInfo = '';
 		return $extraInfo;
 	}
 
-	public function getLogoImage() {
+	public function getLogoImage () {
 		if ($this->_method->logoimg) {
 			return JURI::base() . '/images/stories/virtuemart/payment/' . $this->_method->logoimg;
 		} else {
@@ -339,7 +339,7 @@ class PaypalHelperPaypal {
 
 	}
 
-	public function getRecurringProfileDesc() {
+	public function getRecurringProfileDesc () {
 
 //		$recurringDesc = '';
 //		if ($this->_method->subcription_trials) {
@@ -354,7 +354,7 @@ class PaypalHelperPaypal {
 		return $recurringDesc;
 	}
 
-	public function getPaymentPlanDesc() {
+	public function getPaymentPlanDesc () {
 
 //		$recurringDesc = '';
 //		if ($this->_method->subcription_trials) {
@@ -371,10 +371,12 @@ class PaypalHelperPaypal {
 			$defer_unit = $this->getDurationUnit($this->_method->payment_plan_defer_duration);
 			$startDate = JFactory::getDate('+' . $defer_duration . ' ' . $defer_unit);
 			$recurringDesc .= '<br/>' . JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), JText::_('DATE_FORMAT_LC4')));
-		} else if ($this->_method->payment_plan_defer_strtotime) {
-			$startDate = JFactory::getDate($this->_method->payment_plan_defer_strtotime);
-			$recurringDesc .= '<br/>' . JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), JText::_('DATE_FORMAT_LC4')));
-			//$recurringDesc .= '<br/>'.JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT',date(JText::_('DATE_FORMAT_LC4'),strtotime('first day of next month')));
+		} else {
+			if ($this->_method->payment_plan_defer_strtotime) {
+				$startDate = JFactory::getDate($this->_method->payment_plan_defer_strtotime);
+				$recurringDesc .= '<br/>' . JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), JText::_('DATE_FORMAT_LC4')));
+				//$recurringDesc .= '<br/>'.JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT',date(JText::_('DATE_FORMAT_LC4'),strtotime('first day of next month')));
+			}
 		}
 		return $recurringDesc;
 	}
@@ -382,7 +384,7 @@ class PaypalHelperPaypal {
 	/********************************/
 	/* Instant Payment Notification */
 	/********************************/
-	public function processIPN($paypal_data, $payments) {
+	public function processIPN ($paypal_data, $payments) {
 
 		// check that the remote IP is from Paypal.
 		if (!$this->checkPaypalIps($paypal_data)) {
@@ -428,78 +430,80 @@ class PaypalHelperPaypal {
 				$order_history['order_status'] = $this->_method->status_canceled;
 			}
 
-		} else if (strcmp($paypal_data['payment_status'], 'Completed') == 0) {
-			$this->debugLog('Completed', 'payment_status', 'debug');
-
-			// 1. check the payment_status is Completed
-			// 2. check that txn_id has not been previously processed
-			if ($this->_check_txn_id_already_processed($payments, $paypal_data['txn_id'])) {
-				$this->debugLog($paypal_data['txn_id'], '_check_txn_id_already_processed', 'debug');
-				return FALSE;
-			}
-			// 3. check email and amount currency is correct
-			if ($paypal_data['txn_type'] != 'recurring_payment' && !$this->_check_email_amount_currency($payments, $paypal_data)) {
-				return FALSE;
-			}
-			// now we can process the payment
-			if (strcmp($paypal_data['payment_status'], 'Authorization') == 0) {
-				$order_history['order_status'] = $this->_method->status_pending;
-			} else {
-				$order_history['order_status'] = $this->_method->status_success;
-			}
-			$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $this->order['details']['BT']->order_number);
-
-		} elseif (strcmp($paypal_data['payment_status'], 'Pending') == 0) {
-			$lang = JFactory::getLanguage();
-			$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_' . strtoupper($paypal_data['pending_reason']);
-			if (!$lang->hasKey($key)) {
-				$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_DEFAULT';
-			}
-			$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $this->order['details']['BT']->order_number) . JText::_($key);
-			$order_history['order_status'] = $this->_method->status_pending;
-
-		} elseif (strcmp($paypal_data['payment_status'], 'Refunded') == 0) {
-			if ($this->_is_full_refund($payments, $paypal_data)) {
-				$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $this->order['details']['BT']->order_number);
-				$order_history['order_status'] = $this->_method->status_refunded;
-			} else {
-				$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PARTIAL_REFUNDED', $this->order['details']['BT']->order_number);
-				$order_history['order_status'] = isset($this->_method->status_partial_refunded) ? $this->_method->status_partial_refunded : 'R';
-			}
-
-		} elseif (isset ($paypal_data['payment_status'])) {
-			// voided
-			$order_history['order_status'] = $this->_method->status_canceled;
 		} else {
-			/*
-			* a notification was received that concerns one of the payment (since $paypal_data['invoice'] is found in our table),
-			* but the IPN notification has no $paypal_data['payment_status']
-			* We just log the info in the order, and do not change the status, do not notify the customer
-			*/
-			$order_history['comments'] = JText::_('VMPAYMENT_PAYPAL_IPN_NOTIFICATION_RECEIVED');
-			$order_history['customer_notified'] = 0;
+			if (strcmp($paypal_data['payment_status'], 'Completed') == 0) {
+				$this->debugLog('Completed', 'payment_status', 'debug');
+
+				// 1. check the payment_status is Completed
+				// 2. check that txn_id has not been previously processed
+				if ($this->_check_txn_id_already_processed($payments, $paypal_data['txn_id'])) {
+					$this->debugLog($paypal_data['txn_id'], '_check_txn_id_already_processed', 'debug');
+					return FALSE;
+				}
+				// 3. check email and amount currency is correct
+				if ($paypal_data['txn_type'] != 'recurring_payment' && !$this->_check_email_amount_currency($payments, $paypal_data)) {
+					return FALSE;
+				}
+				// now we can process the payment
+				if (strcmp($paypal_data['payment_status'], 'Authorization') == 0) {
+					$order_history['order_status'] = $this->_method->status_pending;
+				} else {
+					$order_history['order_status'] = $this->_method->status_success;
+				}
+				$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $this->order['details']['BT']->order_number);
+
+			} elseif (strcmp($paypal_data['payment_status'], 'Pending') == 0) {
+				$lang = JFactory::getLanguage();
+				$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_' . strtoupper($paypal_data['pending_reason']);
+				if (!$lang->hasKey($key)) {
+					$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_DEFAULT';
+				}
+				$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $this->order['details']['BT']->order_number) . JText::_($key);
+				$order_history['order_status'] = $this->_method->status_pending;
+
+			} elseif (strcmp($paypal_data['payment_status'], 'Refunded') == 0) {
+				if ($this->_is_full_refund($payments, $paypal_data)) {
+					$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $this->order['details']['BT']->order_number);
+					$order_history['order_status'] = $this->_method->status_refunded;
+				} else {
+					$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PARTIAL_REFUNDED', $this->order['details']['BT']->order_number);
+					$order_history['order_status'] = isset($this->_method->status_partial_refunded) ? $this->_method->status_partial_refunded : 'R';
+				}
+
+			} elseif (isset ($paypal_data['payment_status'])) {
+				// voided
+				$order_history['order_status'] = $this->_method->status_canceled;
+			} else {
+				/*
+				* a notification was received that concerns one of the payment (since $paypal_data['invoice'] is found in our table),
+				* but the IPN notification has no $paypal_data['payment_status']
+				* We just log the info in the order, and do not change the status, do not notify the customer
+				*/
+				$order_history['comments'] = JText::_('VMPAYMENT_PAYPAL_IPN_NOTIFICATION_RECEIVED');
+				$order_history['customer_notified'] = 0;
+			}
 		}
 		return $order_history;
 	}
 
-	protected function checkPaypalIps($paypal_data) {
-/*
-		$test_ipn = (array_key_exists('test_ipn', $paypal_data)) ? $paypal_data['test_ipn'] : 0;
-		if ($test_ipn == 1) {
-			return true;
-		}
-*/
+	protected function checkPaypalIps ($paypal_data) {
+		/*
+				$test_ipn = (array_key_exists('test_ipn', $paypal_data)) ? $paypal_data['test_ipn'] : 0;
+				if ($test_ipn == 1) {
+					return true;
+				}
+		*/
 		$order_number = $paypal_data['invoice'];
 
 		// Get the list of IP addresses for www.paypal.com and notify.paypal.com
 
 
-		 if ($this->_method->sandbox  ) {
+		if ($this->_method->sandbox) {
 			$paypal_iplist = gethostbynamel('ipn.sandbox.paypal.com');
 			$paypal_iplist = (array)$paypal_iplist;
 			$this->debugLog($paypal_iplist, 'checkPaypalIps SANDBOX', 'debug', false);
 
-		 } else {
+		} else {
 			$paypal_iplist1 = gethostbynamel('www.paypal.com');
 			$paypal_iplist2 = gethostbynamel('notify.paypal.com');
 			$paypal_iplist3 = array('216.113.188.202', '216.113.188.203', '216.113.188.204', '66.211.170.66');
@@ -509,8 +513,33 @@ class PaypalHelperPaypal {
 			// Added JH 2013-10-12
 			//Current IP addresses
 			//------------api.paypal.com---------
-			$paypal_iplist_api = array('173.0.88.66', '173.0.88.98', '173.0.84.66', '173.0.84.98',
-				'173.0.80.00', '173.0.80.01', '173.0.80.02', '173.0.80.03', '173.0.80.04', '173.0.80.05', '173.0.80.06', '173.0.80.07', '173.0.80.08', '173.0.80.09', '173.0.80.10', '173.0.80.11', '173.0.80.12', '173.0.80.13', '173.0.80.14', '173.0.80.15', '173.0.80.16', '173.0.80.17', '173.0.80.18', '173.0.80.19', '173.0.80.20');
+			$paypal_iplist_api = array(
+				'173.0.88.66',
+				'173.0.88.98',
+				'173.0.84.66',
+				'173.0.84.98',
+				'173.0.80.00',
+				'173.0.80.01',
+				'173.0.80.02',
+				'173.0.80.03',
+				'173.0.80.04',
+				'173.0.80.05',
+				'173.0.80.06',
+				'173.0.80.07',
+				'173.0.80.08',
+				'173.0.80.09',
+				'173.0.80.10',
+				'173.0.80.11',
+				'173.0.80.12',
+				'173.0.80.13',
+				'173.0.80.14',
+				'173.0.80.15',
+				'173.0.80.16',
+				'173.0.80.17',
+				'173.0.80.18',
+				'173.0.80.19',
+				'173.0.80.20'
+			);
 			//------------api-aa.paypal.com------------
 			$paypal_iplist_api_aa = array('173.0.88.67', '173.0.88.99', '173.0.84.99', '173.0.84.67');
 			//'------------api-3t.paypal.com------------'
@@ -520,34 +549,79 @@ class PaypalHelperPaypal {
 			//------------notify.paypal.com (IPN delivery)------------
 			$paypal_iplist_notify = array('173.0.81.1', '173.0.81.33');
 			//'-----------reports.paypal.com-----------'
-			$paypal_iplist_reports = array('66.211.168.93', '173.0.84.161', '173.0.84.198', '173.0.88.161', '173.0.88.198');
+			$paypal_iplist_reports = array(
+				'66.211.168.93',
+				'173.0.84.161',
+				'173.0.84.198',
+				'173.0.88.161',
+				'173.0.88.198'
+			);
 			//'------------www.paypal.com------------'
 			//'Starting September 12, 2012 www.paypal.com will start resolving to a dynamic list of IP addresses and as such should not be whitelisted.'
 			//'For more information on IPNs please go here.'
 			//'------------ipnpb.paypal.com------------'
-			$paypal_iplist_ipnb = array('64.4.240.0', '64.4.240.1', '64.4.240.2', '64.4.240.3', '64.4.240.4', '64.4.240.5', '64.4.240.6', '64.4.240.7', '64.4.240.8', '64.4.240.9', '64.4.240.10', '64.4.240.11', '64.4.240.12', '64.4.240.13', '64.4.240.14', '64.4.240.15', '64.4.240.16', '64.4.240.17', '64.4.240.18', '64.4.240.19', '64.4.240.20',
-				'118.214.15.186', '118.215.103.186', '118.215.119.186', '118.215.127.186', '118.215.15.186', '118.215.151.186', '118.215.159.186', '118.215.167.186', '118.215.199.186', '118.215.207.186', '118.215.215.186', '118.215.231.186', '118.215.255.186', '118.215.39.186', '118.215.63.186', '118.215.7.186', '118.215.79.186', '118.215.87.186', '118.215.95.186',
+			$paypal_iplist_ipnb = array(
+				'64.4.240.0',
+				'64.4.240.1',
+				'64.4.240.2',
+				'64.4.240.3',
+				'64.4.240.4',
+				'64.4.240.5',
+				'64.4.240.6',
+				'64.4.240.7',
+				'64.4.240.8',
+				'64.4.240.9',
+				'64.4.240.10',
+				'64.4.240.11',
+				'64.4.240.12',
+				'64.4.240.13',
+				'64.4.240.14',
+				'64.4.240.15',
+				'64.4.240.16',
+				'64.4.240.17',
+				'64.4.240.18',
+				'64.4.240.19',
+				'64.4.240.20',
+				'118.214.15.186',
+				'118.215.103.186',
+				'118.215.119.186',
+				'118.215.127.186',
+				'118.215.15.186',
+				'118.215.151.186',
+				'118.215.159.186',
+				'118.215.167.186',
+				'118.215.199.186',
+				'118.215.207.186',
+				'118.215.215.186',
+				'118.215.231.186',
+				'118.215.255.186',
+				'118.215.39.186',
+				'118.215.63.186',
+				'118.215.7.186',
+				'118.215.79.186',
+				'118.215.87.186',
+				'118.215.95.186',
 				'202.43.63.186',
 				'69.192.31.186',
 				'72.247.111.186',
 				'88.221.43.186',
-				'92.122.143.186', '92.123.151.186', '92.123.159.186', '92.123.163.186', '92.123.167.186', '92.123.179.186', '92.123.183.186');
+				'92.122.143.186',
+				'92.123.151.186',
+				'92.123.159.186',
+				'92.123.163.186',
+				'92.123.167.186',
+				'92.123.179.186',
+				'92.123.183.186'
+			);
 			// JH
 
-			$paypal_iplist = array_merge($paypal_iplist,
-				// Added JH 2013-10-12
-				$paypal_iplist_api,
-				$paypal_iplist_api_aa,
-				$paypal_iplist_api_3t_aa,
-				$paypal_iplist_api_aa_3t,
-				$paypal_iplist_notify,
-				$paypal_iplist_ipnb
-			// JH
+			$paypal_iplist = array_merge($paypal_iplist, // Added JH 2013-10-12
+				$paypal_iplist_api, $paypal_iplist_api_aa, $paypal_iplist_api_3t_aa, $paypal_iplist_api_aa_3t, $paypal_iplist_notify, $paypal_iplist_ipnb// JH
 			);
 
 			$this->debugLog($paypal_iplist, 'checkPaypalIps PRODUCTION', 'debug', false);
 
-		 }
+		}
 		$this->debugLog($_SERVER['REMOTE_ADDR'], 'checkPaypalIps REMOTE ADDRESS', 'debug', false);
 
 		//  test if the remote IP connected here is a valid IP address
@@ -555,8 +629,7 @@ class PaypalHelperPaypal {
 
 			$text = "Error with REMOTE IP ADDRESS = " . $_SERVER['REMOTE_ADDR'] . ".
                         The remote address of the script posting to this notify script does not match a valid PayPal IP address\n
-            These are the valid IP Addresses: " . implode(",", $paypal_iplist) .
-				"The Order ID received was: " . $order_number;
+            These are the valid IP Addresses: " . implode(",", $paypal_iplist) . "The Order ID received was: " . $order_number;
 			$this->debugLog($text, 'checkPaypalIps', 'error', false);
 			return false;
 		}
@@ -564,7 +637,7 @@ class PaypalHelperPaypal {
 		return true;
 	}
 
-	protected function validateIpnContent($paypal_data) {
+	protected function validateIpnContent ($paypal_data) {
 		$test_ipn = (array_key_exists('test_ipn', $paypal_data)) ? $paypal_data['test_ipn'] : 0;
 		if ($test_ipn == 1) {
 			//return true;
@@ -583,11 +656,11 @@ class PaypalHelperPaypal {
 
 // read the post from PayPal system and add 'cmd'
 		$post_msg = 'cmd=_notify-validate';
-		if(function_exists('get_magic_quotes_gpc')) {
+		if (function_exists('get_magic_quotes_gpc')) {
 			$get_magic_quotes_exists = true;
 		}
 		foreach ($paypal_data as $key => $value) {
-			if($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
+			if ($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
 				$value = str_replace('\r\n', "QQLINEBREAKQQ", $value);
 				$value = urlencode(stripslashes($value));
 				$value = str_replace("QQLINEBREAKQQ", "\r\n", $value);
@@ -598,23 +671,23 @@ class PaypalHelperPaypal {
 		}
 
 
-		$header="POST /cgi-bin/webscr HTTP/1.1\r\n";
-		$header .= "User-Agent: PHP/" . phpversion () . "\r\n";
+		$header = "POST /cgi-bin/webscr HTTP/1.1\r\n";
+		$header .= "User-Agent: PHP/" . phpversion() . "\r\n";
 		$header .= "Referer: " . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . @$_SERVER['QUERY_STRING'] . "\r\n";
 		$header .= "Server: " . $_SERVER['SERVER_SOFTWARE'] . "\r\n";
-		$header .= "Host: "  . $paypal_url_header . ":" . $port . "\r\n";
+		$header .= "Host: " . $paypal_url_header . ":" . $port . "\r\n";
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . strlen ($post_msg) . "\r\n";
+		$header .= "Content-Length: " . strlen($post_msg) . "\r\n";
 		//$header .= "Accept: */*\r\n\r\n";
-		$header .="Connection: close\r\n\r\n";
+		$header .= "Connection: close\r\n\r\n";
 
 		$fps = fsockopen($paypal_url, $port, $errno, $errstr, 30);
 		$valid_ipn = false;
 		if (!$fps) {
-			$this->debugLog(JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno), 'validateIpnContent', 'error' , false);
+			$this->debugLog(JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno), 'validateIpnContent', 'error', false);
 		} else {
 			$return = fputs($fps, $header . $post_msg);
-			if ($return===false) {
+			if ($return === false) {
 				$this->debugLog("FALSE", 'validateIpnContent FPUTS', 'error', false);
 				return FALSE;
 			}
@@ -628,7 +701,7 @@ class PaypalHelperPaypal {
 			$valid_ipn = strstr($res, "VERIFIED");
 			if (!$valid_ipn) {
 				if (strstr($res, "INVALID")) {
-					$errorInfo=array("paypal_data" =>$paypal_data, 'post_msg'=> $post_msg, 'paypal_res' =>$res);
+					$errorInfo = array("paypal_data" => $paypal_data, 'post_msg' => $post_msg, 'paypal_res' => $res);
 					$this->debugLog($errorInfo, JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION'), 'error', false);
 				} else {
 					$this->debugLog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . ": NO ANSWER FROM PAYPAL", 'validateIpnContent', 'error', false);
@@ -640,7 +713,7 @@ class PaypalHelperPaypal {
 		return $valid_ipn;
 	}
 
-	protected function _check_txn_id_already_processed($payments, $txn_id) {
+	protected function _check_txn_id_already_processed ($payments, $txn_id) {
 
 		if ($this->order['details']['BT']->order_status == $this->_method->status_success) {
 			foreach ($payments as $payment) {
@@ -653,7 +726,7 @@ class PaypalHelperPaypal {
 		return false;
 	}
 
-	protected function _check_email_amount_currency($payments, $paypal_data) {
+	protected function _check_email_amount_currency ($payments, $paypal_data) {
 
 		/*
 		 * TODO Not checking yet because config do not have primary email address
@@ -662,25 +735,35 @@ class PaypalHelperPaypal {
 		* the receiver_email is still your primary email.
 		*/
 
-        if ($this->_method->paypalproduct =="std") {
-            if (strcasecmp($paypal_data['business'],$this->merchant_email)!=0 ) {
-	            $errorInfo=array("paypal_data" =>$paypal_data, 'merchant_email' =>$this->merchant_email);
-                $this->debugLog($errorInfo, 'IPN notification: wrong merchant_email', 'error', false);
-                return false;
-            }
-        }
-
-
-		if (($payments[0]->payment_order_total == $paypal_data['mc_gross']) and ($this->currency_code_3 == $paypal_data['mc_currency'])) {
-			return TRUE;
+		if ($this->_method->paypalproduct == "std") {
+			if (strcasecmp($paypal_data['business'], $this->merchant_email) != 0) {
+				$errorInfo = array("paypal_data" => $paypal_data, 'merchant_email' => $this->merchant_email);
+				$this->debugLog($errorInfo, 'IPN notification: wrong merchant_email', 'error', false);
+				return false;
+			}
 		}
-		$errorInfo=array("paypal_data" =>$paypal_data, 'payment_order_total' =>$payments[0]->payment_order_total, 'currency_code_3'=>$this->currency_code_3);
-		$this->debugLog($errorInfo, 'IPN notification with invalid amount or currency or email', 'error', false);
-
-		return FALSE;
+		$result = false;
+		if ($this->_method->paypalproduct == "std" and $paypal_data['txn_type'] == 'cart') {
+			if (abs($payments[0]->payment_order_total - $paypal_data['mc_gross'] < abs($paypal_data['mc_gross'] * 0.001)) and ($this->currency_code_3 == $paypal_data['mc_currency'])) {
+				$result = TRUE;
+			}
+		} else {
+			if (($payments[0]->payment_order_total == $paypal_data['mc_gross']) and ($this->currency_code_3 == $paypal_data['mc_currency'])) {
+				$result = TRUE;
+			}
+		}
+		if (!$result) {
+			$errorInfo = array(
+				"paypal_data" => $paypal_data,
+				'payment_order_total' => $payments[0]->payment_order_total,
+				'currency_code_3' => $this->currency_code_3
+			);
+			$this->debugLog($errorInfo, 'IPN notification with invalid amount or currency or email', 'error', false);
+		}
+		return $result;
 	}
 
-	static function getPaypalCreditCards() {
+	static function getPaypalCreditCards () {
 		return array(
 			'Visa',
 			'Mastercard',
@@ -691,14 +774,15 @@ class PaypalHelperPaypal {
 
 	}
 
-	function  _is_full_refund($payment, $paypal_data) {
+	function  _is_full_refund ($payment, $paypal_data) {
 		if (($payment->payment_order_total == (-1 * $paypal_data['mc_gross']))) {
 			return TRUE;
 		} else {
 			return FALSE;
 		}
 	}
-	function handleResponse() {
+
+	function handleResponse () {
 		if ($this->response) {
 			if ($this->response['ACK'] == 'Failure' || $this->response['ACK'] == 'FailureWithWarning') {
 
@@ -724,7 +808,7 @@ class PaypalHelperPaypal {
 				// transaction must be manually investigated.
 				$error = '';
 				$public_error = '';
-				$error="Unexpected ACK type:". $this->response['ACK'];
+				$error = "Unexpected ACK type:" . $this->response['ACK'];
 				$this->debugLog($this->response, 'Unexpected ACK type:', 'debug');
 				if ($this->_method->debug) {
 					$public_error = $error;
@@ -736,15 +820,13 @@ class PaypalHelperPaypal {
 		}
 	}
 
-	function onShowOrderBEPayment($data) {
+	function onShowOrderBEPayment ($data) {
 
 		$showOrderBEFields = $this->getOrderBEFields();
 		$prefix = 'PAYPAL_RESPONSE_';
 
 		$html = '';
-		if ($data->ACK == 'SuccessWithWarning' &&
-			$data->L_ERRORCODE0 == self::FMF_PENDED_ERROR_CODE &&
-			$data->PAYMENTSTATUS == "Pending"
+		if ($data->ACK == 'SuccessWithWarning' && $data->L_ERRORCODE0 == self::FMF_PENDED_ERROR_CODE && $data->PAYMENTSTATUS == "Pending"
 		) {
 			$showOrderField = 'L_SHORTMESSAGE0';
 			$html .= $this->paypalPlugin->getHtmlRowBE($prefix . $showOrderField, $this->highlight($data->$showOrderField));
@@ -772,13 +854,15 @@ class PaypalHelperPaypal {
 
 		return $html;
 	}
-	function onShowOrderBEPaymentByFields($payment) {
+
+	function onShowOrderBEPaymentByFields ($payment) {
 		return NULL;
 	}
+
 	/*********************/
 	/* Log and Reporting */
 	/*********************/
-	public function debug($subject, $title = '', $echo = true) {
+	public function debug ($subject, $title = '', $echo = true) {
 
 		$debug = '<div style="display:block; margin-bottom:5px; border:1px solid red; padding:5px; text-align:left; font-size:10px;white-space:nowrap; overflow:scroll;">';
 		$debug .= ($title) ? '<br /><strong>' . $title . ':</strong><br />' : '';
@@ -793,11 +877,11 @@ class PaypalHelperPaypal {
 		}
 	}
 
-	function highlight($string) {
+	function highlight ($string) {
 		return '<span style="color:red;font-weight:bold">' . $string . '</span>';
 	}
 
-	public function debugLog($message, $title = '', $type = 'message', $echo = false, $doVmDebug=false) {
+	public function debugLog ($message, $title = '', $type = 'message', $echo = false, $doVmDebug = false) {
 
 		//Nerver log the full credit card number nor the CVV code.
 		if (is_array($message)) {
