@@ -123,7 +123,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
 
-				if (!empty($method->payment_logos)) {
+				if (empty($method->payment_logos)) {
 					$logo = '<img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" />';
 				}
 				$payment_cost = '';
@@ -583,7 +583,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		$payment_logo = "";
 
-		if (!empty($method->payment_logos)) {
+		if ($method->payment_logos) {
 			$payment_logo = '<img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /> ';
 
 		}

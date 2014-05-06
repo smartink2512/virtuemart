@@ -22,12 +22,16 @@ jQuery().ready(function ($) {
     /* Handlers */
     /************/
     handleRealexRemoteCCForm = function () {
-       var CCselected= $(".creditcardsDropDown input[type='radio']:checked").val();
-        $('.realexRemoteCCForm').hide();
+       var hasCreditcardsDropDownClass = $("#vmpayment_cardinfo > *").hasClass("creditcardsDropDown");
+        if (hasCreditcardsDropDownClass) {
+            var CCselected= $(".creditcardsDropDown input[type='radio']:checked").val();
+            $('.realexRemoteCCForm').hide();
 
-        if (CCselected == -1) {
-            $('.realexRemoteCCForm').show();
+            if (CCselected == -1) {
+                $('.realexRemoteCCForm').show();
+            }
         }
+
     }
 
 

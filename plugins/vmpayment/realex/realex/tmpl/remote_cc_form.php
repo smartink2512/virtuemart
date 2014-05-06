@@ -34,7 +34,7 @@ if ($viewData['dccinfo']) {
 	$attribute = ' readonly ';
 }
 ?>
-<div class="realex remote_cc_form">
+<div class="realex remote_cc_form" id="remote_cc_form">
 
 <h3 class="order_amount"><?php echo $viewData['order_amount']; ?></h3>
 
@@ -47,7 +47,7 @@ if ($viewData['dccinfo']) {
 <form method="post" action="<?php echo $viewData['submit_url'] ?>">
 <?php if (!$viewData['dccinfo']) { ?>
 	<?php if (!empty($viewData['creditcardsDropDown'])) { ?>
-		<div class="vmpayment_cardinfo">
+		<div class="vmpayment_cardinfo" id="vmpayment_cardinfo">
 			<div class="vmpayment_cardinfo_text">
 				<?php if (!$viewData['dccinfo']) {
 					echo JText::_('VMPAYMENT_REALEX_PLEASE_SELECT');
