@@ -47,7 +47,20 @@ $document->addScriptDeclaration ("
 //]]>
 
 ");
+$document->addScriptDeclaration ("
 
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	$('#checkoutFormSubmit').click(function(e){
+    $(this).attr('disabled', 'true');
+    $(this).fadeIn( 400 );
+    $('#checkoutForm').submit();
+});
+	});
+
+//]]>
+
+");
 ?>
 
 <div class="cart-view">

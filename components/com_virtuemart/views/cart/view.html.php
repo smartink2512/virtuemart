@@ -144,7 +144,7 @@ class VirtueMartViewCart extends VmView {
 				$text = vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE');
 				$this->checkout_task = 'checkout';
 			}
-			$this->checkout_link_html = '<button type="submit" name="'.$this->checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
+			$this->checkout_link_html = '<button type="submit"  id="checkoutFormSubmit" name="'.$this->checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
 
 
 			if (VmConfig::get('oncheckout_opc', 1)) {
