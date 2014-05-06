@@ -78,6 +78,23 @@ $document->addScriptDeclaration ("
 //]]>
 
 ");
+
+
+$document->addScriptDeclaration ("
+
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	$('#checkoutFormSubmit').click(function(e){
+    $(this).attr('disabled', 'true');
+    $(this).fadeIn( 400 );
+    $('#checkoutForm').submit();
+});
+	});
+
+//]]>
+
+");
+
 $document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 ?>
