@@ -481,6 +481,7 @@ class VmConfig {
 		self::echoAdmin();
 		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
 		//But 15 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
+		ini_set('serialize_precision',16);
 	}
 
 	static function getStartTime(){

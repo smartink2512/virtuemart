@@ -38,8 +38,9 @@ class JFormFieldVmAcceptedCurrency extends JFormFieldList {
 
 	protected function getOptions() {
 
-		$options = array();
 		VmConfig::loadJLang('com_virtuemart', false);
+		/*$options = array();
+
 		if (!class_exists('VirtueMartModelVendor'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
@@ -54,11 +55,14 @@ class JFormFieldVmAcceptedCurrency extends JFormFieldList {
 		}
 		$q = 'SELECT `virtuemart_currency_id` AS value ,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as text FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN (' . $vendor_currency['vendor_accepted_currencies'] . ') and (`virtuemart_vendor_id` = "' . $vendorId . '" OR `shared`="1") AND published = "1" ORDER BY `ordering`,`currency_name`';
 		$db->setQuery($q);
-		$values = $db->loadObjectList();
+		$values = $db->loadObjectList();*/
+
+		$cModel = VmModel::getModel('currency');
+		$values = $cModel->getVendorAcceptedCurrrenciesList();
 
 		$options[] = JHtml::_('select.option', 0, vmText::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
 		foreach ($values as $v) {
-			$options[] = JHtml::_('select.option', $v->value, $v->text);
+			$options[] = JHtml::_('select.option', $v->virtuemart_currency_id, $v->currency_txt);
 		}
 
 		return $options;

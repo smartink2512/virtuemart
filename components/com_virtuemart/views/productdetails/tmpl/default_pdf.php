@@ -108,16 +108,16 @@ if (empty ( $this->product )) {
 				<?php } ?>
 
 				<?php // Ask a question about this product
-				$url = JRoute::_(juri::root().'index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
+				$url = JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
 				<div class="ask-a-question">
 					<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 				</div>
 
 				<?php // Manufacturer of the Product
-				if(VmConfig::get('show_manufacturers', 1) && !empty($this->product->virtuemart_manufacturer_id)) { ?>
+				if(VmConfig::get('show_manufacturers', 1) && !empty($this->product->virtuemart_manufacturer_id[0])) { ?>
 				<div class="manufacturer">
 				<?php
-					$link = JRoute::_(juri::root().'index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id='.$this->product->virtuemart_manufacturer_id.'&tmpl=component');
+					$link = JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id='.$this->product->virtuemart_manufacturer_id[0].'&tmpl=component');
 					$text = $this->product->mf_name;
 
 					/* Avoid JavaScript on PDF Output */

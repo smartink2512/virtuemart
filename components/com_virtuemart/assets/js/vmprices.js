@@ -6,11 +6,12 @@ if(typeof Virtuemart === "undefined")
 				var $ = jQuery, datas = form.serialize();
 				var prices = form.parent(".productdetails").find(".product-price");
 				if (0 == prices.length) {
-					prices = $("#productPrice" + id);
+					prices = jQuery("#productPrice" + id);
 				}
 				datas = datas.replace("&view=cart", "");
 				prices.fadeTo("fast", 0.75);
-				$.getJSON(window.vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&virtuemart_product_id='+id+'&format=json' + window.vmLang, encodeURIComponent(datas),
+                //encodeURIComponent(datas);
+                jQuery.getJSON(window.vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&virtuemart_product_id='+id+'&format=json' + window.vmLang, datas,
 					function (datas, textStatus) {
 						prices.fadeTo("fast", 1);
 						// refresh price

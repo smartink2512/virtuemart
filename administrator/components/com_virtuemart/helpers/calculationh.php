@@ -81,8 +81,7 @@ class calculationHelper {
 		//         $this->vendorCurrency = 1;
 		$this->productVendorId = 1;
 
-		if (!class_exists('CurrencyDisplay')
-		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$this->_currencyDisplay = CurrencyDisplay::getInstance();
 		$this->_debug = false;
 

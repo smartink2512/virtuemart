@@ -227,7 +227,7 @@ class JDocumentPDF extends JDocument
 
 
 		// Initialize PDF Document
-		$pdf->AliasNbPages();
+		$pdf->getAliasNbPages();
 		$pdf->AddPage();
 
 		// Build the PDF Document string from the document buffer

@@ -379,6 +379,11 @@ class VmTable extends JTable {
 		return $result;
 	}
 
+	/**
+	 * proxy for showFullColumns
+	 * @deprecated
+	 * @return array
+	 */
 	public function loadFields(){
 		return $this->showFullColumns();
 	}
@@ -560,19 +565,19 @@ class VmTable extends JTable {
 		if ($andWhere === 0) $andWhere = '';
 		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
-		vmSetStartTime();
 		$hashVarsToPush = '';
 		if (!empty($this->_xParams)) {
 			$hashVarsToPush = serialize($this->_varsToPushParam);
 		}
 		$hash = md5($oid. $select . $k . $andWhere . $hashVarsToPush);
-		vmTime('time to create md5');
+
+
 		if (isset (self::$_cache['l'][$hash])) {
-			vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
-			$this->bind(self::$_cache['l'][$hash]);
+			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			//$this->bind(self::$_cache['l'][$hash]);
 			return self::$_cache['l'][$hash];
 		} else {
-			vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
 
 		$db = $this->getDBO();
