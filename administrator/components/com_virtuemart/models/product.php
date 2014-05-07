@@ -476,7 +476,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$joinedTables = array();
 		//This option switches between showing products without the selected language or only products with language.
-		if($app->isSite() and !VmConfig::get('prodOnlyWLang',false)){
+		if($app->isSite() and !VmConfig::get('prodOnlyWLang',true)){
 			//Maybe we have to join the language to order by product name, description, etc,...
 			if(!$joinLang){
 				$productLangFields = array('product_s_desc','product_desc','product_name','metadesc','metakey','slug');
