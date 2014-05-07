@@ -338,23 +338,15 @@ class VmMediaHandler {
 	 */
 	static private function isImage($file_extension=0){
 
-		//		if(!empty($file_mimetype)){
-		//			if(strpos($file_mimetype,'image')===FALSE){
-		//				$isImage = FALSE;
-		//			}else{
-		//				$isImage = TRUE;
-			//			}
-			//		} else {
-			if($file_extension == 'jpg' || $file_extension == 'jpeg' || $file_extension == 'png' || $file_extension == 'gif'){
-				$isImage = TRUE;
+		if($file_extension == 'jpg' || $file_extension == 'jpeg' || $file_extension == 'png' || $file_extension == 'gif'){
+			$isImage = TRUE;
 
-			} else {
-				$isImage = FALSE;
-			}
-			//		}
-
-			return $isImage;
+		} else {
+			$isImage = FALSE;
 		}
+
+		return $isImage;
+	}
 
 		private $_foldersToTest = array();
 
