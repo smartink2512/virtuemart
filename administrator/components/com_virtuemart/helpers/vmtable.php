@@ -571,7 +571,7 @@ class VmTable extends JTable {
 			$this->bind(self::$_cache['l'][$hash]);
 			return self::$_cache['l'][$hash];
 		} else {
-			vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
 
 		$db = $this->getDBO();

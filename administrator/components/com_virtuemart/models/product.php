@@ -162,7 +162,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$filter_order_Dir = strtoupper (JRequest::getWord ('dir', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
 			$valid_search_fields = VmConfig::get ('browse_search_fields');
-			vmdebug('$valid_search_fields ',$valid_search_fields);
+			//vmdebug('$valid_search_fields ',$valid_search_fields);
 			//unset($valid_search_fields[]
 		}
 		else {
@@ -487,17 +487,14 @@ class VirtueMartModelProduct extends VmModel {
 					}
 				}
 			}
-
-			$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products` as p ';
-			if ($joinLang) {
-				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
-			}
-
 		} else {
-			$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ';
-			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products` as p using (`virtuemart_product_id`)';
+			$joinLang = true;
 		}
 
+		$select = ' p.`virtuemart_product_id`'.$ff_select_price.' FROM `#__virtuemart_products` as p ';
+		if ($joinLang) {
+			$joinedTables[] = ' INNER JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+		}
 
 		if ($joinShopper == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_shoppergroups` as ps ON p.`virtuemart_product_id` = `ps`.`virtuemart_product_id` ';
@@ -1470,12 +1467,8 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
-			if($queryArray[4]){
-				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products` as p';
-			} else {
-				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products_' . VMLANG . '` as l ';
-				array_unshift($queryArray[1],' LEFT JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = l.`virtuemart_product_id` ');
-			}
+
+			$q = 'SELECT p.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products` as p';
 
 			$joinT = '';
 			if(is_array($queryArray[1])){
@@ -1498,7 +1491,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				$qm = ' AND '.$orderByName.' '.$op.' "'.$orderByValue.'" ORDER BY '.$orderByName.' '.$direction.' LIMIT 1';
 				$db->setQuery ($q.$qm);
-
+				//vmdebug('getNeighborProducts ',$q.$qm);
 				if ($result = $db->loadAssocList ()) {
 					$neighbor = $result;
 				}

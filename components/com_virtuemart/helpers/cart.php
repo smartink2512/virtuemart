@@ -710,7 +710,6 @@ class VirtueMartCart {
 	private function checkForQuantities($product, &$quantity=0,&$errorMsg ='') {
 
 		$stockhandle = VmConfig::get('stockhandle','none');
-		$mainframe = JFactory::getApplication();
 		// Check for a valid quantity
 		if (!is_numeric( $quantity)) {
 			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
@@ -727,6 +726,10 @@ class VirtueMartCart {
 			vmInfo($errorMsg,$product->product_name);
 			return false;
 		}
+
+		// update the stock info from the database
+		$product_model = VmModel::getModel('product');
+		$product = $product_model->getProduct($product->virtuemart_product_id);
 
 		// Check to see if checking stock quantity
 		if ($stockhandle!='none' && $stockhandle!='risetime') {
