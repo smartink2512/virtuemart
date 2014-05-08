@@ -134,7 +134,6 @@ class vmJsApi{
 	 */
 	static function jQuery($isSite=-1) {
 
-
 		if(JVM_VERSION>2){
 			JHtml::_('jquery.framework');
 			return true;
@@ -169,11 +168,12 @@ class vmJsApi{
 		}
 		if (!$isSite) {
 			vmJsApi::js ('jquery.ui.autocomplete.html');
-
+		}
+		if(JVM_VERSION<3){
+			//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
+			JFactory::getApplication()->set('jquery',TRUE);
 		}
 		vmJsApi::js( 'jquery.noconflict');
-		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
-		//JFactory::getApplication()->set('jquery',TRUE);
 		return TRUE;
 	}
 	// Virtuemart product and price script
