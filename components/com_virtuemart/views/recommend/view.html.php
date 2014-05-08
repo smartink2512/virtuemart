@@ -36,6 +36,7 @@ class virtuemartViewrecommend extends VmView {
 	* @author Max Milbers
 	*/
 	function display($tpl = null) {
+		VmConfig::loadJLang('com_virtuemart', true);
 
 		$app = JFactory::getApplication();
 		if(!VmConfig::get('show_emailfriend',false)){

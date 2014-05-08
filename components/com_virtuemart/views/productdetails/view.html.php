@@ -42,6 +42,7 @@ class VirtueMartViewProductdetails extends VmView {
 	//TODO get plugins running
 //		$dispatcher	= JDispatcher::getInstance();
 //		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
+	    VmConfig::loadJLang('com_virtuemart', true);
 
 	$show_prices = VmConfig::get('show_prices', 1);
 	if ($show_prices == '1') {
