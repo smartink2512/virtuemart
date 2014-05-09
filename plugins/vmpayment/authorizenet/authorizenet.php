@@ -737,7 +737,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	function _getTransactionKey ()
 	{
 
-		return $this->_currentMethod->get('sandbox') ? $this->_currentMethod->sandbox_transaction_key : $this->_currentMethod->transaction_key;
+		return $this->_currentMethod->sandbox ? $this->_currentMethod->sandbox_transaction_key : $this->_currentMethod->transaction_key;
 	}
 
 	/**
