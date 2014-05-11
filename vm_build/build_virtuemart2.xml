@@ -143,6 +143,7 @@
         <exclude name=".phpstorm.meta.php"/>
         <exclude name="**/vm_build/**"/>
         <exclude name="**/realex/**"/>
+        <exclude name="**/amazon/**"/>
         <exclude name="**/paybox/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
@@ -256,6 +257,7 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name="**/realex/**"/>
+        <exclude name="**/amazon/**"/>
         <exclude name="**/paybox/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
