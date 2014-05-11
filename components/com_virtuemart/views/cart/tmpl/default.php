@@ -120,7 +120,7 @@ $document->addScriptDeclaration ("
 		<?php // Continue and Checkout Button END ?>
 		<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
 		<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
-		<input type='hidden' name='task' value='updateCart'/>
+		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 		<input type='hidden' name='option' value='com_virtuemart'/>
 		<input type='hidden' name='view' value='cart'/>
 	</form>

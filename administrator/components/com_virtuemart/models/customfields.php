@@ -832,33 +832,11 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			if(!is_array($customfield_ids)){
 				$customfield_ids = array( $customfield_ids =>false);
-				vmdebug('displayProductCustomfieldSelected was not array',$customfield_ids);
+				//vmdebug('customfields displayProductCustomfieldSelected was not array',$customfield_ids);
 			}
-			vmdebug('displayProductCustomfieldSelected',$customfield_ids);
+			//vmdebug('customfields displayProductCustomfieldSelected',$customfield_ids);
 			foreach($customfield_ids as $customfield_id=>$params){
-			//if(is_object($selected)) $selected = (array)$selected;
-			/*if(is_array($selected)){
-				reset($selected);
-				$keys = array_keys($selected);
-				foreach($keys as &$key){
-					if(isset($key)){
-						$customfield_ids[] = $key;
-					} else {
-						vmError('displayProductCustomfieldSelected unknown stored parameters');
-					}
-				}
 
-			//	vmdebug('displayProductCustomfieldSelected $custom_id ',$custom_id,$customfield_id,$key,$selected);
-			} else {
-				$customfield_ids = array($selected);
-			//	vmdebug('displayProductCustomfieldSelected NO PARAMS $custom_id ',$custom_id,$customfield_id);
-			}*/
-
-			//vmdebug('displayProductCustomfieldSelected',$customfield_ids);
-			//foreach($selected as $customfield_id){
-
-				//if ($customfield_id) {
-					//$productCustom = self::getCustomEmbeddedProductCustomField ($customfield_id);
 			//vmdebug('displayProductCustomfieldSelected',$customfield_id,$productCustoms);
 				if(empty($productCustoms) or !isset($productCustoms[$customfield_id])){
 					continue;

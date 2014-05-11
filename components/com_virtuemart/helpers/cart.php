@@ -560,7 +560,7 @@ class VirtueMartCart {
 		$updated = false;
 
 		foreach($quantities as $key=>$quantity){
-			if (!empty($quantity) and !isset($_POST['delete'.$key])) {
+			if (!empty($quantity) and !isset($_POST['delete_'.$key])) {
 				if($quantity!=$this->cartProductsData[$key]['quantity']){
 					$productModel = VmModel::getModel('product');
 
@@ -734,10 +734,10 @@ class VirtueMartCart {
 
 	public function checkoutData($redirect = true) {
 
-		vmdebug('CheckoutData my cart $checkoutData ');
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
-
+		//This prevents that people checkout twice
+		$this->setCartIntoSession();
 		$this->STsameAsBT = vRequest::getInt('STsameAsBT', $this->STsameAsBT);
 
 		$this->order_language = vRequest::getString('order_language', $this->order_language);
@@ -786,6 +786,7 @@ class VirtueMartCart {
 			} else {
 				$this->ST = 0;
 			}
+			vmdebug('CheckoutData my cart $this->STsameAsBT ',$this->ST);
 		} else {
 			if (($this->selected_shipto = vRequest::getVar('shipto', 0)) !== 0) {
 				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
@@ -1360,6 +1361,7 @@ class VirtueMartCart {
 
 					$product = null;
 				} else {
+					unset($this->cartProductsData[$k]);
 					vmError('prepareCartData $productdata[virtuemart_product_id] was empty');
 				}
 			}

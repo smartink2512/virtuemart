@@ -210,7 +210,7 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	static function getCoreFields(){
-		return array( 'name','username', 'email', 'password', 'password2' , 'agreed');
+		return array( 'name','username', 'email', 'password', 'password2');// , 'agreed');
 	}
 
 	/**
@@ -450,7 +450,10 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$skips = array();
 		//Maybe there is another method to define the skips
-		$skips = array('address_type');
+		$skips[] = 'address_type';
+
+		$corefields = $this->getCoreFields();
+		unset($corefields[2]); //the 2 is for the email field, it is necessary in almost anycase.
 
 		if((!$register or $type =='ST') and $layoutName !='edit'){
 			$skips[] = 'name';
@@ -458,7 +461,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$skips[] = 'password';
 			$skips[] = 'password2';
 			$skips[] = 'user_is_vendor';
-			$skips[] = 'agreed';
+			//$skips[] = 'agreed';
 			// MattLG: Added this line because it leaves the empty fieldset with just the label when editing the ST addresses
 			// A better solution might be to make this a setting rather than hard coding this whole block here
 			$skips[] = 'delimiter_userinfo';
@@ -483,8 +486,7 @@ class VirtueMartModelUserfields extends VmModel {
 		//Small ugly hack to make registering optional //do we still need that? YES !  notice by Max Milbers
 		if($register && $type == 'BT'  && VmConfig::get('oncheckout_show_register',1) ){
 
-			$corefields = $this->getCoreFields();
-			unset($corefields[2]); //the 2 is for the email field, it is necessary in almost anycase.
+
 			foreach($userFields as $field){
 				if(in_array($field->name,$corefields)){
 					$field->required = 0;

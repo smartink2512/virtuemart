@@ -52,6 +52,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 		$this->useSSL = VmConfig::get('useSSL', 0);
 		$this->useXHTML = false;
+
 	}
 
 	/**
@@ -75,7 +76,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$app = JFactory::getApplication();
 			$app ->redirect($continue_link);
 		}
-
+		$post = vRequest::getPost();
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$viewName = vRequest::getCmd('view', $this->default_view);
@@ -85,13 +86,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$view->assignRef('document', $document);
 
-		$post = vRequest::getPost();
-
 		$cart = VirtueMartCart::getCart();
 
 		$cart->prepareCartData();
+		$task = vRequest::getCmd('task');
+		if(($task == 'confirm' or isset($post['confirm'])) and !$cart->getInCheckOut()){
 
-		if(isset($post['confirm']) and !$cart->getInCheckOut()){
 			$cart->confirmDone();
 			$view = $this->getView('cart', 'html');
 			$view->setLayout('order_done');
@@ -109,13 +109,13 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		return $this;
 	}
 
-	public function updateCart() {
-
+	public function checkout(){
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
 		$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
 
 		$cart->saveCartFieldsInCart();
+
 		$cart->updateProductCart();
 
 		$coupon_code = vRequest::getString('coupon_code', '');
@@ -125,6 +125,11 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->setPaymentMethod();
 		$this->display();
 	}
+
+	public function confirm(){
+		$this->checkout();
+	}
+
 
 	/**
 	 * Add the product to the cart

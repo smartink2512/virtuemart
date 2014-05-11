@@ -26,8 +26,13 @@
 		<?php // Output Bill To Address ?>
 		<div class="output-billto">
 			<?php
+			$cartfieldNames = array();
+			foreach( $this->userFieldsCart['fields'] as $fields){
+				$cartfieldNames[] = $fields['name'];
+			}
 
 			foreach ($this->cart->BTaddress['fields'] as $item) {
+				if(in_array($item['name'],$cartfieldNames)) continue;
 				if (!empty($item['value'])) {
 					if ($item['name'] === 'agreed') {
 						$item['value'] = ($item['value'] === 0) ? vmText::_ ('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_NO') : vmText::_ ('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_YES');
