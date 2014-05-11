@@ -229,7 +229,9 @@ class AdminUIHelper {
 	 * @todo The link should be done better
 	 */
 	static function showAdminMenu() {
-
+		if(!isset(VmConfig::$installed)){
+			VmConfig::$installed = false;
+		}
 		if(!VmConfig::$installed) return false;
 		$document = JFactory::getDocument ();
 		$moduleId = vRequest::getInt ( 'module_id', 0 );

@@ -607,10 +607,10 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false){
+	static public function loadJLang($name,$site=false,$tag=0){
 
 		$jlang =JFactory::getLanguage();
-		$tag = $jlang->getTag();
+		if(empty($tag))$tag = $jlang->getTag();
 
 		$path = $basePath = JPATH_VM_ADMINISTRATOR;
 		if($site){

@@ -574,7 +574,9 @@ class VmTable extends JTable {
 
 		if (isset (self::$_cache['l'][$hash])) {
 			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
-			//$this->bind(self::$_cache['l'][$hash]);
+			//Actually the pattern changed and we should not need the bind, but too many locations in the code
+			// and assumingly also 3rd party developers using it, so we let it here for compatibility reasons.
+			$this->bind(self::$_cache['l'][$hash]);
 			return self::$_cache['l'][$hash];
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);

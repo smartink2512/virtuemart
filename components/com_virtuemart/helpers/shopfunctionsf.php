@@ -380,17 +380,16 @@ class shopFunctionsF {
 	private static function sendVmMail (&$view, $recipient, $noVendorMail = FALSE) {
 
 		VmConfig::ensureMemoryLimit(96);
-		$jlang = JFactory::getLanguage();
-		if(VmConfig::get( 'enableEnglish', 1 )) {
-			$jlang->load( 'com_virtuemart', JPATH_SITE, 'en-GB', TRUE );
-		}
-		$jlang->load( 'com_virtuemart', JPATH_SITE, $jlang->getDefault(), TRUE );
-		$jlang->load( 'com_virtuemart', JPATH_SITE, NULL, TRUE );
+
+		VmConfig::loadJLang('com_virtuemart',true);
 
 		if(!empty($view->orderDetails['details']['BT']->order_language)) {
-			$jlang->load( 'com_virtuemart', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
-			$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
-			$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			//$jlang->load( 'com_virtuemart', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			//$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			//$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			VmConfig::loadJLang('com_virtuemart',true,$view->orderDetails['details']['BT']->order_language);
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$view->orderDetails['details']['BT']->order_language);
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE,$view->orderDetails['details']['BT']->order_language);
 		} else {
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 			VmConfig::loadJLang('com_virtuemart_orders',TRUE);

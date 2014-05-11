@@ -332,7 +332,6 @@ class VirtueMartModelUser extends VmModel {
 			unset($data['password2']);
 		}
 
-
 		// Bind Joomla userdata
 		if (!$user->bind($data)) {
 
@@ -891,10 +890,8 @@ class VirtueMartModelUser extends VmModel {
 		$userFields = array();
 		if(!empty($uid)){
 
-			$data = $this->getTable('userinfos');
-			$data->load($uid);
-
- 			//vmdebug('$data',$data);
+			$dataT = $this->getTable('userinfos');
+			$data = $dataT->load($uid);
 
 			if($data->virtuemart_user_id!==0 and !$isVendor){
 

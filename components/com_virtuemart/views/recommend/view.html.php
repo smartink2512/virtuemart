@@ -87,7 +87,7 @@ class virtuemartViewrecommend extends VmView {
 
 		//$product = $productModel->getProduct($virtuemart_product_id);
 		/* Set Canonic link */
-		$format = JRequest::getWord('format', 'html');
+		$format = vRequest::getCmd('format', 'html');
 		if ($format == 'html') {
 			$document->addHeadLink( $this->product->link , 'canonical', 'rel', '' );
 		}

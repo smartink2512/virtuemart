@@ -41,7 +41,7 @@ class VirtuemartViewLog extends VmView {
 		jimport('joomla.filesystem.file');
 		$config = JFactory::getConfig();
 		$log_path = $config->get('log_path', JPATH_ROOT . "/log");
-		$layoutName = vRequest::getWord('layout', 'default');
+		$layoutName = vRequest::getCmd('layout', 'default');
 		VmConfig::loadJLang('com_virtuemart_log');
 
 		if ($layoutName == 'edit') {

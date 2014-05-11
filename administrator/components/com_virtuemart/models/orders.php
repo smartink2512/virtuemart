@@ -1710,7 +1710,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
-			if(!empty( $_orderData["BT_{$_name}"])){
+			if(isset( $_orderData["BT_{$_name}"])){
 
 				$_userInfoData[$_name] = $_orderData["BT_{$_name}"];
 			}
@@ -1735,7 +1735,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_userInfoData = array();
 		foreach ($_userFieldsST as $_fld) {
 			$_name = $_fld->name;
-			if(!empty( $_orderData["ST_{$_name}"])){
+			if(isset( $_orderData["ST_{$_name}"])){
 
 				$_userInfoData[$_name] = $_orderData["ST_{$_name}"];
 			}

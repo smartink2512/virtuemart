@@ -350,8 +350,8 @@ class VirtueMartModelCategory extends VmModel {
 	public function orderCategory($id, $movement){
 		//retrieving the category table object
 		//and loading data
-		$row = $this->getTable('categories');
-		$row->load($id);
+		$rowT = $this->getTable('categories');
+		$row = $rowT->load($id);
 
 		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_category_categories` WHERE `category_child_id` = '. (int)$row->virtuemart_category_id ;
 		$db = JFactory::getDBO();
@@ -377,7 +377,7 @@ class VirtueMartModelCategory extends VmModel {
 	public function setOrder($cats, $order){
 		$total		= count( $cats );
 		$groupings	= array();
-		$row = $this->getTable('categories');
+		$rowT = $this->getTable('categories');
 
 		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_categories` c
 				  LEFT JOIN `#__virtuemart_category_categories` cx
@@ -388,7 +388,7 @@ class VirtueMartModelCategory extends VmModel {
 		// update ordering values
 		for( $i=0; $i < $total; $i++ ) {
 
-			$row->load( $cats[$i] );
+			$row = $rowT->load( $cats[$i] );
 			$db->setQuery( sprintf($query,  (int)$cats[$i] ), 0 ,1 );
 			$parent = $db->loadObject();
 
@@ -426,8 +426,8 @@ class VirtueMartModelCategory extends VmModel {
 		$data = $this->getRelationInfo( $categoryId );
 		$parentId = isset($data->category_parent_id) ? $data->category_parent_id : 0;
 
-     	$parent = $this->getTable('categories');
-  		$parent->load((int) $parentId);
+     	$parentT = $this->getTable('categories');
+		$parent = $parentT->load((int) $parentId);
 
   		return $parent;
 	}
