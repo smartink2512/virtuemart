@@ -68,6 +68,7 @@ AdminUIHelper::startAdminArea($this);
 		<?php
 		$k = 0;
 		for ($i = 0, $n = count($this->userList); $i < $n; $i++) {
+
 			$row = $this->userList[$i];
 			$checked = JHTML::_('grid.id', $i, $row->id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $row->id);
