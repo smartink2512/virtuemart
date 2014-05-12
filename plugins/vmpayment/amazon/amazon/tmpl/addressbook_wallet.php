@@ -19,49 +19,23 @@ defined ('_JEXEC') or die();
 ?>
 
 <?php
+
 $doc = JFactory::getDocument();
-$js="
-//<![CDATA[
-new OffAmazonPayments.Widgets.AddressBook({
-  sellerId: '".$viewData['sellerId']."',
-  amazonOrderReferenceId: '".$viewData['amazonOrderReferenceId']."',
-    onAddressSelect: function(orderReference) {
-   },
-   design: {
-      size : {width:'".$viewData['addressbook_designWidth']."px', height:'".$viewData['addressbook_designHeight']."px'}
-   },
-   onError: function(error) {
-   $('#amazonAddressBookErrorMsg').text('".vmText::_('VMPAYMENT_AMAZON_ERROR_OCCURRED')."');
-   }
- }).bind('addressBookWidgetDiv');
+//$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/site.js');
+vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+$doc->addScriptDeclaration("
+jQuery(document).ready( function($) {
+	amazonShowAddress('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['addressbook_designWidth']."', '".$viewData['addressbook_designHeight']."');
+	amazonShowWallet('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['wallet_designWidth']."', '".$viewData['wallet_designHeight']."');
+});
 
-
-  var myWalletWidget = new OffAmazonPayments.Widgets.Wallet({
-  sellerId: '".$viewData['sellerId']."',
-  amazonOrderReferenceId: '". $viewData['amazonOrderReferenceId']."',
-    design: {
-      size : {width:'". $viewData['wallet_designWidth']."px', height:'". $viewData['wallet_designHeight']."px'}
-    },
-
-    onPaymentSelect: function(orderReference) {
-    },
-    onError: function(error) {
-      $('#amazonWalletErrorMsg').text('".vmText::_('VMPAYMENT_AMAZON_ERROR_OCCURRED')."');
-    }
-  }).bind('walletWidgetDiv');
-
-
-
-
-
-//]]>
-";
+"); // addScriptDeclaration
 
 ?>
 <h2><?php echo vmText::_('VMPAYMENT_AMAZON_SELECT_ADDRESS')?></h2>
 <?php if ($viewData['renderAddressBook']) { ?>
 <!-- AddressbookWidget -->
-      <div id='addressBookWidgetDiv'></div>
+      <div id='amazonAddressBookWidgetDiv'></div>
 <div id="amazonAddressBookErrorMsg" class="error"></div>
 <?php
 }
@@ -70,13 +44,10 @@ new OffAmazonPayments.Widgets.AddressBook({
 <h2><?php echo vmText::_('VMPAYMENT_AMAZON_SELECT_PAYMENT')?></h2>
 
 <!-- WalletWidget -->
-      <span id='walletWidgetDiv'></span>
+<span id='amazonWalletWidgetDiv'></span>
 <div id="amazonWalletErrorMsg" class="error"></div>
 
 
 <a  class="vm-button-correct" href="<?php echo $viewData['redirect_page']?>"><?php echo vmText::_('VMPAYMENT_AMAZON_BACK_TO_CART') ?></a>
 
-<?php
-echo '<script type="text/javascript">';
-echo $js;
-echo '</script>';
+

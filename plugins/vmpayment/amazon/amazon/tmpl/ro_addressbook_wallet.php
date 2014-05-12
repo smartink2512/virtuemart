@@ -17,46 +17,25 @@ defined ('_JEXEC') or die();
  * http://virtuemart.net
  */
 $doc = JFactory::getDocument();
+vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
 $doc->addScriptDeclaration("
-//<![CDATA[
-
 jQuery(document).ready( function($) {
-$( '.output-shipto-add' ).hide();
-$( '.output-shipto' ).html('<span id=\"readOnlyAddressBookWidgetDiv\"></span>');
+	amazonShowRoAddress('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['ro_addressbook_designWidth']."', '".$viewData['ro_addressbook_designHeight']."');
+	amazonShowRoWallet('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['ro_wallet_designWidth']."', '".$viewData['ro_wallet_designHeight']."');
 
-
-new OffAmazonPayments.Widgets.AddressBook({
-sellerId: '".$viewData['sellerId']."',
-  amazonOrderReferenceId: '".$viewData['amazonOrderReferenceId'] ."',
-// amazonOrderReferenceId obtained from Button widget
-displayMode: \"Read\",
-design: {
-size : {width:'".$viewData['ro_addressbook_designWidth']."px', height:'".$viewData['ro_addressbook_designHeight']."px'}
-},
-onError: function(error) {
-// your error handling code
-}
-}).bind(\"readOnlyAddressBookWidgetDiv\");
-
-new OffAmazonPayments.Widgets.Wallet({
-	 sellerId: '".$viewData['sellerId']."',
-	  amazonOrderReferenceId: '".$viewData['amazonOrderReferenceId'] ."',
-	// amazonOrderReferenceId obtained from Button widget
-	displayMode: \"Read\",
-	design: {
-	size : {width:'".$viewData['ro_wallet_designWidth']."px', height:'".$viewData['ro_wallet_designHeight']."px'}
-	},
-	onError: function(error) {
-	// your error handling code
-	}
-	}).bind(\"readOnlyWalletWidgetDiv\");
-
+	$( '.output-shipto-add' ).hide();
+	$( '.output-shipto' ).html('<div id=\"amazonRoAddressBookDiv\"><div id=\"amazonRoWalletEditDiv\"></div><a href=\"".$viewData['redirect_page']."\">".vmText::_('VMPAYMENT_AMAZON_EDIT')."</a><div id=\"amazonRoAddressBookWidgetDiv\"></div></div>');
 });
-//]]>
+
 ");
 
 ?>
+<div id="amazonRoWalletDiv">
+	<span id="amazonRoWalletEditDiv">
+		<a href="<?php echo $viewData['redirect_page'] ?>"><?php echo vmText::_('VMPAYMENT_AMAZON_EDIT')?></a>
+	</span>
+	<span id="amazonRoWalletWidgetDiv"></span>
+</div>
 
-<span id="readOnlyWalletWidgetDiv"></span>
 
 

@@ -29,21 +29,25 @@ if (!class_exists('VmElements'))
  * This element is used by the menu manager
  * Should be that way
  */
-class JElementcategories extends JElement {
+class JElementLanguages extends JElement {
 
-    var $_name = 'categories';
+    var $_name = 'Languages';
 
 
     function fetchElement($name, $value, &$node, $control_name) {
-        JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
-        $categorylist = ShopFunctions::categoryListTree(array($value));
-	    $class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
 
-        $html = '<select multiple="true" class="inputbox '.$class.'"   name="' . $control_name . '[' . $name . ']' . '" >';
-        $html .= '<option value="0">' . JText::_('COM_VIRTUEMART_NONE') . '</option>';
-        $html .= $categorylist;
-        $html .="</select>";
-        return $html;
+		    $activeLangs = array() ;
+		    $language =JFactory::getLanguage();
+		    $jLangs = $language->getKnownLanguages(JPATH_BASE);
+
+		    foreach ($jLangs as $jLang) {
+			    $jlangTag = strtolower(strtr($jLang['tag'],'-','_'));
+			    $activeLangs[] = JHTML::_('select.option', $jLang['tag'] , $jLang['name']) ;
+		    }
+	    $class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
+	return JHTML::_('select.genericlist', $activeLangs, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+
+
     }
 
 }

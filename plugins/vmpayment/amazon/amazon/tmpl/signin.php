@@ -16,59 +16,31 @@ defined ('_JEXEC') or die();
  *
  * http://virtuemart.net
  */
+
 $doc = JFactory::getDocument();
-$js="
-//<![CDATA[
-$(document).ready(function () {
-
- var amazonOrderReferenceId='".$viewData['amazonOrderReferenceId']."';
-
-if (amazonOrderReferenceId != '') {
-			$('#payWithAmazonDiv').click(function () {
-				window.location = '".$viewData['redirect_page']."&session='
-        + amazonOrderReferenceId';
-			});
-		} else {
-
- new OffAmazonPayments.Widgets.Button ({
-   sellerId: '".$viewData['sellerId']."',
-   onSignIn: function(orderReference) {
-     amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
-     window.location = '".$viewData['redirect_page']."&session='
-        + amazonOrderReferenceId
-   },
-   onError: function(error) {
-   $('#amazonSignInErrorMsg').text('".vmText::_('VMPAYMENT_AMAZON_ERROR_OCCURRED')."');
-   }
- }).bind('payWithAmazonDiv');
- }
+vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/css/amazon-site.css');
+if ( $viewData['sign_in_display'] == 'advertise') {
+	$doc->addScriptDeclaration("
+jQuery(document).ready( function($) {
+$( '.output-shipto-add' ).hide();
+	amazonShowButton('".$viewData['sellerId']."', '".$viewData['redirect_page']."');
+	var amazonButtonHtml = $('#checkout-advertise-box').html();
+	$('#checkout-advertise-box').hide();
+	 $('#checkoutFormSubmit').before(amazonButtonHtml);
+	 $('.checkout-advertise').addClass('checkout-advertise');
 });
-//]]>
-";
+
+");
+}
 
 
-$js="
-//<![CDATA[
- var amazonOrderReferenceId;
-
- new OffAmazonPayments.Widgets.Button ({
-   sellerId: '".$viewData['sellerId']."',
-   onSignIn: function(orderReference) {
-     amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
-     window.location = '".$viewData['redirect_page']."&session='
-        + amazonOrderReferenceId
-   },
-   onError: function(error) {
-   $('#amazonSignInErrorMsg').text('".vmText::_('VMPAYMENT_AMAZON_ERROR_OCCURRED')."');
-   }
- }).bind('payWithAmazonDiv');
-
-//]]>
-";
-$doc->addScriptDeclaration($js);
 
 ?>
 <div id="payWithAmazonDiv">
 	<img src="<?php echo $viewData['buttonWidgetImageURL'] ?>" style="cursor: pointer;" />
 </div>
 <div id="amazonSignInErrorMsg" class="error"></div>
+<?php if ( $viewData['sign_in_display'] == 'advertise') { ?>
+<div><?php echo vmText::_('VMPAYMENT_AMAZON_OR')?></div>
+<?php } ?>

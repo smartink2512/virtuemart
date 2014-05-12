@@ -35,7 +35,7 @@ class JElementCustomjs extends JElement {
 		
 		$doc = JFactory::getDocument();
 		$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/css/amazon-admin.css');
 		
 		return '';		
 	}

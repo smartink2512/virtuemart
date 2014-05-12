@@ -77,6 +77,8 @@
                description="VMPAYMENT_AMAZON_CONF_MAX_AMOUNT_TIP"/>
         <param name="exclude_categories" type="categories" label="VMPAYMENT_AMAZON_CONF_EXCLUDE_CATEGORIES"
                description="VMPAYMENT_AMAZON_CONF_EXCLUDE_CATEGORIES_TIP"/>
+        <param name="languages" type="languages" label="VMPAYMENT_AMAZON_CONF_LANGUAGES"
+               description="VMPAYMENT_AMAZON_CONF_LANGUAGES_TIP"/>
         <param name="ip_whitelist" type="textarea" label="VMPAYMENT_AMAZON_CONF_IP_WHITELIST"
                description="VMPAYMENT_AMAZON_CONF_IP_WHITELIST_TIP"/>
 
