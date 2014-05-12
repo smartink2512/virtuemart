@@ -19,24 +19,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$app = JFactory::getApplication();
+
 $_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
 						. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
 . ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 
-vmJsApi::popup('#full-tos','#terms-of-service');
-if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-$cart = VirtuemartCart::getCart();
-$cart->prepareVendor();
-if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-if(is_array($cart->BT) and isset($cart->BT['tos'])){
-	$tos = $cart->BT['tos'];
+if($app->isSite()){
+	vmJsApi::popup('#full-tos','#terms-of-service');
+	if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	$cart = VirtuemartCart::getCart();
+	$cart->prepareVendor();
+	if(is_array($cart->BT) and isset($cart->BT['tos'])){
+		$tos = $cart->BT['tos'];
+	} else {
+		$tos = 0;
+	}
 } else {
-	$tos = 0;
+	$tos = $_return['fields'][$_fld->name]['value'];
 }
 
-$_return['fields'][$_fld->name]['formcode'] = VmHtml::checkbox ('tos', $tos, 1, 0, 'class="terms-of-service"');
+if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 
-if (VmConfig::get ('oncheckout_show_legal_info', 1)) {
+$_return['fields'][$_fld->name]['formcode'] = VmHtml::checkbox ($_prefix.$_fld->name, $tos, 1, 0, 'class="terms-of-service"');
+
+if (VmConfig::get ('oncheckout_show_legal_info', 1) and $app->isSite()) {
 $_return['fields'][$_fld->name]['formcode'] .= '
 <div class="terms-of-service">
 

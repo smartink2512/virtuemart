@@ -120,8 +120,26 @@ class VirtuemartViewCategory extends VmView {
 				if ($products) {
 					$currency = CurrencyDisplay::getInstance( );
 					$this->assignRef('currency', $currency);
-					foreach($products as $product){
+					$customfieldsModel = VmModel::getModel ('Customfields');
+					if (!class_exists ('vmCustomPlugin')) {
+						require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+					}
+					foreach($products as &$product){
 						$product->stock = $productModel->getStockIndicator($product);
+						$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
+						if ($product->customfields){
+							$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
+						}
+						if (!empty($product->customfields)) {
+							foreach ($product->customfields as $k => $custom) {
+								if (!empty($custom->layout_pos)) {
+									$product->customfieldsSorted[$custom->layout_pos][] = $custom;
+									unset($product->customfields[$k]);
+								}
+							}
+							$product->customfieldsSorted['normal'] = $product->customfields;
+							unset($product->customfields);
+						}
 					}
 				}
 

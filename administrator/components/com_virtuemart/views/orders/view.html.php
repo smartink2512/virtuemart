@@ -94,13 +94,24 @@ class VirtuemartViewOrders extends VmView {
 					, array('captcha' => true, 'delimiters' => true) // Ignore these types
 					, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
 			);
+			$userFieldsCart = $userFieldsModel->getUserFields(
+				'cart'
+				, array('captcha' => true, 'delimiters' => true) // Ignore these types
+				, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+			);
+			$_userFields = array_merge($userFieldsCart,$_userFields);
+
+			//Fallback for customer_note
+			if(empty($orderbt->customer_note) and !empty($orderbt->oc_note)){
+				$orderbt->customer_note = $orderbt->oc_note;
+			}
 
 			$userfields = $userFieldsModel->getUserFieldsFilled(
 					 $_userFields
 					,$orderbt
 					,'BT_'
 			);
-
+			//vmdebug('my fields',$userfields);
 			$_userFields = $userFieldsModel->getUserFields(
 					 'shipment'
 					, array() // Default switches
@@ -135,6 +146,8 @@ class VirtuemartViewOrders extends VmView {
 				}
 				$_orderStatusList[$orderbt->order_status] = vmText::_('COM_VIRTUEMART_UNKNOWN_ORDER_STATUS');
 			}
+
+			$this->lists['search'] = '';
 
 			/* Assign the data */
 			$this->assignRef('orderdetails', $order);

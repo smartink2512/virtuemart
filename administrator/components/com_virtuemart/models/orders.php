@@ -178,8 +178,8 @@ class VirtueMartModelOrders extends VmModel {
 		$order = array();
 
 		// Get the order details
-		$q = "SELECT  u.*,o.*,
-				s.order_status_name
+		$q = "SELECT  o.*,u.*,
+				s.order_status_name, o.customer_note as oc_note
 			FROM #__virtuemart_orders o
 			LEFT JOIN #__virtuemart_orderstates s
 			ON s.order_status_code = o.order_status
@@ -188,7 +188,7 @@ class VirtueMartModelOrders extends VmModel {
 			WHERE o.virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['details'] = $db->loadObjectList('address_type');
-
+		//vmdebug('getOrder',$order['details'],$q);
 		// Get the order history
 		$q = "SELECT *
 			FROM #__virtuemart_order_histories
@@ -843,10 +843,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->virtuemart_paymentmethod_id = $_cart->virtuemart_paymentmethod_id;
 		$_orderData->virtuemart_shipmentmethod_id = $_cart->virtuemart_shipmentmethod_id;
 
-		$_filter = JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
-		if(isset($_cart->BT['customer_comment'])){
-			$_orderData->customer_note = $_filter->clean($_cart->BT['customer_comment']);
-		}
+		//$_filter = JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
+
 
 		$_orderData->order_language = $_cart->order_language;
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
@@ -928,6 +926,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		, array('delimiters'=>true, 'captcha'=>true)
 		, array('username', 'password', 'password2', 'user_is_vendor')
 		);
+
+		$userFieldsCart = $_userFieldsModel->getUserFields(
+			'cart'
+			, array('captcha' => true, 'delimiters' => true) // Ignore these types
+			, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+		);
+		$_userFieldsBT = array_merge($_userFieldsBT,$userFieldsCart);
 
 
 		foreach ($_userFieldsBT as $_fld) {
@@ -1854,7 +1859,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id');
 		$_orderData->virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id');
 
-		$_orderData->customer_note = '';
+		//$_orderData->customer_note = '';
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
 
 		$_orderData->order_number ='';

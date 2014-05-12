@@ -276,8 +276,9 @@ if (!empty($this->products)) {
 						<p class="product_s_desc">
 							<?php echo shopFunctionsF::limitStringByWord ($product->product_s_desc, 40, '...') ?>
 						</p>
-						<?php } ?>
+				<?php }
 
+					?>
 					<div class="product-price marginbottom12" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 						<?php
 						if ($this->show_prices == '1') {
@@ -306,9 +307,15 @@ if (!empty($this->products)) {
 							echo $this->currency->createPriceDiv ('taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $product->prices);
 							$unitPriceDescription = vmText::sprintf ('COM_VIRTUEMART_PRODUCT_UNITPRICE', $product->product_unit);
 							echo $this->currency->createPriceDiv ('unitPrice', $unitPriceDescription, $product->prices);
-						} ?>
+						}
+				echo '</div>';
 
-					</div>
+					$this->product = $product;
+						$this->row = 0;
+					echo $this->loadTemplate('addtocart');
+				?>
+
+
 
 					<p>
 						<?php // Product Details Button

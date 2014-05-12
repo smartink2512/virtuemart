@@ -112,12 +112,13 @@ $document->addScriptDeclaration ( "
 		<input type="hidden" name="view" value="orders" />
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
 		<?php echo JHtml::_( 'form.token' ); ?>
-</form>
+
 
 <table class="adminlist" width="100%">
 	<thead>
 	<tr>
 		<th>
+		<?php echo $this->displayDefaultViewSearch ('COM_VIRTUEMART_ORDER_PRINT_NAME'); ?>
 		<a class="updateOrder" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span>
 		<?php echo vmText::_('COM_VIRTUEMART_ORDER_SAVE_USER_INFO'); ?></a>
 		&nbsp;&nbsp;
@@ -132,6 +133,7 @@ $document->addScriptDeclaration ( "
 	</tr>
 	</thead>
 </table>
+</form>
 
 <table class="adminlist" style="table-layout: fixed;">
 	<tr>
@@ -264,23 +266,9 @@ $document->addScriptDeclaration ( "
 
 <form action="index.php" method="post" name="orderForm" id="orderForm"><!-- Update order head form -->
 <table width="100%">
-	<?php if ($this->orderbt->customer_note || true) { ?>
+	<?php // if ($this->orderbt->customer_note || true) {
+	if(true){ ?>
 	<tr>
-		<td valign="top" width="50%">
-		<table class="adminlist" cellspacing="0" cellpadding="0">
-			<thead>
-				<tr>
-					<th><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
-				</tr>
-			</thead>
-			<tr>
-				<td valign="top" align="left" width="50%">
-					<textarea rows="4" cols="50" name="customer_note"><?php echo $this->orderbt->customer_note; ?></textarea>
-				</td>
-				
-			</tr>
-		</table>
-		</td>
 		<td valign="top" width="50%">
 					<table class="adminlist" cellspacing="0" cellpadding="0">
 						<thead>

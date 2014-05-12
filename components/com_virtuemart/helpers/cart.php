@@ -52,7 +52,7 @@ class VirtueMartCart {
 	var $BT = 0;
 	var $ST = 0;
 	var $cartfields = null;
-	var $customer_comment = '';
+
 	var $couponCode = '';
 	var $order_language = '';
 
@@ -129,7 +129,7 @@ class VirtueMartCart {
 					self::$_cart->ST 							= $sessionCart->ST;
 					self::$_cart->cartfields					= $sessionCart->cartfields;
 
-					self::$_cart->customer_comment 				= base64_decode($sessionCart->customer_comment);
+					//self::$_cart->customer_comment 				= base64_decode($sessionCart->customer_comment);
 					self::$_cart->couponCode 					= $sessionCart->couponCode;
 					self::$_cart->_triesValidateCoupon			= $sessionCart->_triesValidateCoupon;
 					self::$_cart->cartData 						= $sessionCart->cartData;
@@ -266,7 +266,7 @@ class VirtueMartCart {
 		$sessionCart->ST 										= $this->ST;
 		$sessionCart->cartfields					= $this->cartfields;
 
-		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
+		//$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
 		$sessionCart->_triesValidateCoupon				= $this->_triesValidateCoupon;
 		$sessionCart->order_language 						= $this->order_language;
@@ -765,7 +765,7 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
 		}
 
-		$validUserDataCart = self::validateUserData('cartfields');
+		$validUserDataCart = self::validateUserData('cartfields',$this->cartfields);
 
 		if($validUserDataCart!==true){
 			if($redirect){
@@ -773,13 +773,15 @@ class VirtueMartCart {
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
+			$this->_blockConfirm = true;
 		} else {
 			//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
 			// the advantage, that plugins can easily deal with it.
 			$this->BT = array_merge($this->BT,$this->cartfields);
+			vmdebug('CheckoutData array_merge($this->BT,$this->cartfields) ',$this->BT);
 		}
+		//vmdebug('CheckoutData my cart before $this->STsameAsBT!==0 ',$validUserDataBT);
 
-		vmdebug('CheckoutData my cart before $this->STsameAsBT!==0 ',$validUserDataBT);
 		if($this->STsameAsBT!==0){
 			if($this->_confirmDone){
 				$this->ST = $this->BT;
@@ -1023,7 +1025,6 @@ class VirtueMartCart {
 		$cart->_inCheckOut = false;
 		$cart->_dataValidated = false;
 		$cart->_confirmDone = false;
-		$cart->customer_comment = '';
 		$cart->couponCode = '';
 		$cart->order_language = '';
 	//$cart->tosAccepted = null;

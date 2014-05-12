@@ -99,7 +99,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$view->display();
 			return true;
 		} else {
-			$redirect = isset($post['checkout']);
+			$redirect = (isset($post['checkout']) or $task=='checkout');
 			$cart->checkoutData($redirect);
 		}
 

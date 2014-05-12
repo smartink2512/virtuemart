@@ -381,15 +381,17 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
+			vmdebug('my filter ordering ',$this->filter_order);
+
 			// special  orders case
 			$ff_select_price = '';
 			switch ($this->filter_order) {
-				case 'product_special':
+				case '`p`.product_special':
 					if($isSite){
 						$where[] = ' p.`product_special`="1" '; // TODO Change  to  a  individual button
 						$orderBy = 'ORDER BY RAND()';
 					} else {
-						$orderBy = 'ORDER BY `product_special`';
+						$orderBy = 'ORDER BY p.`product_special`';
 					}
 
 					break;
@@ -417,7 +419,7 @@ class VirtueMartModelProduct extends VmModel {
 					$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
 					$joinPrice = TRUE;
 					break;
-				case 'created_on':
+				case '`p`.created_on':
 					$orderBy = ' ORDER BY p.`created_on` ';
 					break;
 				default;

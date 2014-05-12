@@ -20,8 +20,6 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
 
-//vmJsApi::popup('#full-tos','#terms-of-service');
-
 JHtml::_ ('behavior.formvalidation');
 $document = JFactory::getDocument ();
 $document->addScriptDeclaration ("
@@ -69,7 +67,6 @@ $document->addScriptDeclaration ("
 			<h1><?php echo vmText::_ ('COM_VIRTUEMART_CART_TITLE'); ?></h1>
 		</div>
 		<?php if (VmConfig::get ('oncheckout_show_steps', 1) && $this->checkout_task === 'confirm') {
-		vmdebug ('checkout_task', $this->checkout_task);
 		echo '<div class="checkoutStep" id="checkoutStep4">' . vmText::_ ('COM_VIRTUEMART_USER_FORM_CART_STEP4') . '</div>';
 	} ?>
 		<div class="width50 floatleft right">
@@ -92,11 +89,8 @@ $document->addScriptDeclaration ("
 	$taskRoute = '';
 	?><form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 		<?php
-	// This displays the pricelist MUST be done with tables, because it is also used for the emails
-	echo $this->loadTemplate ('pricelist');
-
-	// added in 2.0.8
-
+		// This displays the pricelist MUST be done with tables, because it is also used for the emails
+		echo $this->loadTemplate ('pricelist');
 
 		if (!empty($this->checkoutAdvertise)) {
 			?> <div id="checkout-advertise-box"> <?php
@@ -109,7 +103,6 @@ $document->addScriptDeclaration ("
 			}
 			?></div><?php
 		}
-
 
 		echo $this->loadTemplate ('cartfields');
 

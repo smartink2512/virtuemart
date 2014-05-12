@@ -84,8 +84,6 @@ class TableOrders extends VmTable {
 	var $virtuemart_paymentmethod_id = NULL;
 	/** @var int Shipment method ID */
 	var $virtuemart_shipmentmethod_id = NULL;
-	/** @var text Customer note */
-	var $customer_note = 0;
 	/** @var string Users IP Address */
 	var $ip_address = 0;
 	/** @var char Order language */
