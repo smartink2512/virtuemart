@@ -112,12 +112,16 @@ class VirtuemartViewCustom extends VmView {
 		$db->setQuery($q);
 
 		$results = $db->loadAssocList($ext_id);
-        $lang =JFactory::getLanguage();
-		foreach ($results as &$result) {
-        $filename = 'plg_' .strtolower ( $result['name']).'.sys';
 
-        $lang->load($filename, JPATH_ADMINISTRATOR);
-		//print_r($lang);
+		if (!class_exists('vmPlugin'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'plugins' . DS . 'vmplugin.php');
+
+
+        $lang =JFactory::getLanguage();
+		foreach ($results as $result) {
+			//$filename = 'plg_vmcustom_' .  $this->plugin->element;
+			$filename = 'plg_' .strtolower ( $result['name']).'.sys';
+			vmPlugin::loadJLang($filename,'vmcustom',$result['name']);
 		}
 		return VmHTML::select( 'custom_jplugin_id', $results, $selected,"",$ext_id, 'name');
 

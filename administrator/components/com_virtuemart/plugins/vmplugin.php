@@ -89,27 +89,29 @@ abstract class vmPlugin extends JPlugin {
 		$this->_tableChecked = FALSE;
 	}
 
-	public function loadJLang($name){
+	public function loadJLang($fname,$type=0,$name=0){
 
 		$jlang =JFactory::getLanguage();
 		$tag = $jlang->getTag();
 
-		$path = $basePath = JPATH_PLUGINS.DS.$this->_type.DS.$this->_name;
+		if(empty($type)) $type = $this->_type;
+		if(empty($name)) $name = $this->_name;
+		$path = $basePath = JPATH_PLUGINS.DS.$type.DS.$name;
 
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$fname.'.ini';
 			if(!file_exists($testpath)){
 				$path = JPATH_ADMINISTRATOR;
 			}
-			$jlang->load($name, $path, 'en-GB');
+			$jlang->load($fname, $path, 'en-GB');
 		}
 
-		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$fname.'.ini';
 		if(!file_exists($testpath)){
 			$path = JPATH_ADMINISTRATOR;
 		}
 
-		$jlang->load($name, $path,$tag,true);
+		$jlang->load($fname, $path,$tag,true);
 	}
 
 	function setPluginLoggable($set=TRUE){
