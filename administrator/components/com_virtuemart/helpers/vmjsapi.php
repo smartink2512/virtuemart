@@ -337,7 +337,7 @@ class vmJsApi{
 		if ($jCreditCard) {
 			return;
 		}
-		VmConfig::loadJLang('com_virtuemart');
+		VmConfig::loadJLang('com_virtuemart',true);
 
 
 		$js = "

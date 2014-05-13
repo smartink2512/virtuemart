@@ -663,12 +663,14 @@ class VmConfig {
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
-				$path = JPATH_ADMINISTRATOR;
+				$epath = JPATH_ADMINISTRATOR;
 				if($site){
-					$path = JPATH_SITE;
+					$epath = JPATH_SITE;
 				}
+			} else {
+				$epath = $path;
 			}
-			$jlang->load($name, $path, 'en-GB');
+			$jlang->load($name, $epath, 'en-GB');
 		}
 
 		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
