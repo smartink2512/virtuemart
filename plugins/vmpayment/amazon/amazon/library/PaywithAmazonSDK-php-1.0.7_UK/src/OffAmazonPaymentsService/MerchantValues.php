@@ -18,7 +18,7 @@
 
 require_once 'OffAmazonPaymentsService.config.inc.php';
 require_once 'RegionSpecificProperties.php';
-/*
+
 define('MERCHANT_ID', isset($merchantId) ? $merchantId : null);
 define('ACCESS_KEY', isset($accessKey) ? $accessKey : null);
 define('SECRET_KEY', isset($secretKey) ? $secretKey : null);
@@ -30,21 +30,7 @@ define('SERVICE_URL', isset($serviceUrl) ? $serviceUrl : null);
 define('WIDGET_URL', isset($widgetUrl) ? $widgetUrl : null);
 define('CA_BUNDLEFILE', isset($caBundleFile) ? $caBundleFile : null);
 define('CLIENT_ID', isset($clientId) ? $clientId : null);
-*/
 
-define('MERCHANT_ID', 'AA3KB5JD2CWIH');
-define('ACCESS_KEY', 'AKIAIZTQ37DSUE4NUF7A');
-define('SECRET_KEY', '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');
-define('APPLICATION_NAME', 'VirtueMart');
-define('APPLICATION_VERSION', 'Testing');
-define('REGION', 'UK');
-define('ENVIRONMENT', 'SANDBOX');
-//define('SERVICE_URL', 'https://mws-eu.amazonservices.com/OffAmazonPayments_Sandbox/2013-01-01/');
-define('SERVICE_URL', null);
-//define('WIDGET_URL', 'https://static-eu.payments-amazon.com/OffAmazonPayments/uk/sandbox/js/Widgets.js');
-define('WIDGET_URL', null);
-define('CA_BUNDLEFILE', isset($caBundleFile) ? $caBundleFile : null);
-define('CLIENT_ID', isset($clientId) ? $clientId : null);
 
 
 class OffAmazonPaymentsService_MerchantValues

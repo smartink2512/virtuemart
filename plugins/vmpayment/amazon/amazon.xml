@@ -34,7 +34,7 @@
             <option value="UK">VMPAYMENT_AMAZON_CONF_REGION_UK</option>
             <option value="DE">VMPAYMENT_AMAZON_CONF_REGION_DE</option>
             <option value="US">VMPAYMENT_AMAZON_CONF_REGION_US</option>
-            <option value="OTHER">VMPAYMENT_AMAZON_CONF_REGION_OTHER</option>
+            <!--option value="OTHER">VMPAYMENT_AMAZON_CONF_REGION_OTHER</option-->
         </param>
 
         <param name="sellerId" class="required" type="text" default="" label="VMPAYMENT_AMAZON_CONF_SELLER_ID"
@@ -69,8 +69,8 @@
         <!-- ============ -->
         <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION"
                description="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION_TIP"/>
-        <param name="countries" type="vmcountries" scope="com_virtuemart" default=""
-               label="VMPAYMENT_AMAZON_CONF_COUNTRIES" description="VMPAYMENT_AMAZON_CONF_COUNTRIES_TIP"/>
+        <!--param name="countries" type="vmcountries" scope="com_virtuemart" default=""
+               label="VMPAYMENT_AMAZON_CONF_COUNTRIES" description="VMPAYMENT_AMAZON_CONF_COUNTRIES_TIP"/ -->
         <param name="min_amount" type="text" label="VMPAYMENT_AMAZON_CONF_MIN_AMOUNT"
                description="VMPAYMENT_AMAZON_CONF_MIN_AMOUNT_TIP"/>
         <param name="max_amount" type="text" label="VMPAYMENT_AMAZON_CONF_MAX_AMOUNT"
@@ -102,7 +102,7 @@
         <param name="sign_in_display" type="list" multiple="true" default="login"
                label="VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY">
             <option value="product">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_PRODUCT</option>
-            <option value="login">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_LOGIN</option>
+            <!--option value="login">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_LOGIN</option-->
             <option value="advertise">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_ADVERTISE</option>
             <option value="module">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_MODULE</option>
         </param>

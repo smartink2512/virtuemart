@@ -387,11 +387,11 @@ return NULL;
 	/**
 	 * @return null|string
 	 */
-	private function getClientId () {
+	private function getPlatformId () {
 		if ($this->_currentMethod->region == "UK") {
 			return "AA3KB5JD2CWIH";
 		}
-		// TODO
+		// TODO this is not the correct one
 		if ($this->_currentMethod->region == "DE") {
 			return "AA3KB5JD2CWIH";
 		}
@@ -490,6 +490,7 @@ return NULL;
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setSellerOrderId($order['details']['BT']->order_number);
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setStoreName($this->getStoreName());
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setCustomInformation($order['details']['BT']->customer_note);
+			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setPlatformId($this->getPlatformId());
 
 			$client->setOrderReferenceDetails($setOrderReferenceDetailsRequest);
 		} catch (Exception $e) {
@@ -701,6 +702,7 @@ return true;
 			$this->amazonError("renderRoAddressbookWallet getAmazonOrderReferenceId  is NULL");
 			return NULL;
 		}
+		// buyer can change/edit Payment / shipment address in the cart
 		$redirect_page = $this->getRenderAddressbookWalletRedirectPage();
 
 		$html = $this->renderByLayout('ro_addressbook_wallet', array(

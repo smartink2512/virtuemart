@@ -71,7 +71,7 @@ function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height) {
         },
         onError: function (error) {
             haveAddress = false;
-            console.log(error);
+            console.log('error amazonShowAddress:');
         }
     }).bind("amazonAddressBookWidgetDiv");
 
@@ -113,7 +113,7 @@ function amazonShowRoAddress(sellerId, amazonOrderReferenceId, width, height) {
         },
         onError: function (error) {
             haveAddress = false;
-            console.log(error);
+            console.log('error on ');
         }
     }).bind("amazonRoAddressBookWidgetDiv");
 
