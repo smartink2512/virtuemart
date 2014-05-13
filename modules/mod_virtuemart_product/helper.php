@@ -20,7 +20,7 @@ if (!class_exists ('VmConfig')) {
 VmConfig::loadConfig ();
 
 // Load the language file of com_virtuemart.
-VmConfig::loadJLang('com_virtuemart');
+VmConfig::loadJLang('com_virtuemart',true);
 if (!class_exists ('calculationHelper')) {
 	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'calculationh.php');
 }

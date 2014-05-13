@@ -139,7 +139,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$method_name = $this->_psType . '_name';
 
 		JHTML::script('vmcreditcard.js', 'components/com_virtuemart/assets/js/', FALSE);
-		JFactory::getLanguage()->load('com_virtuemart');
+		JFactory::getLanguage()->load('com_virtuemart',true);
 		vmJsApi::jCreditCard();
 		$htmla = '';
 		$html = array();
