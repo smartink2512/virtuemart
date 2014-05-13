@@ -68,7 +68,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 // $this->productlist
 
 ?>
-	<table class="adminlist" cellspacing="0" cellpadding="0">
+	<table class="adminlist table" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th width="20px"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>

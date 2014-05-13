@@ -34,7 +34,7 @@
                        hide_none="1" label="VMPSPLUGIN_LOGOS"
                        size="40"
                        description="VMPSPLUGIN_LOGOS_TIP"/>
-                <field name="payment_info" type="textarea" cols="40" rows="30" label="VMPAYMENT_STANDARD_PAYMENTINFO"
+                <field name="payment_info" type="textarea" cols="35" rows="5" label="VMPAYMENT_STANDARD_PAYMENTINFO"
                        description="VMPAYMENT_STANDARD_PAYMENTINFO_TIP"/>
             </fieldset>
             <fieldset name="restrictions" >

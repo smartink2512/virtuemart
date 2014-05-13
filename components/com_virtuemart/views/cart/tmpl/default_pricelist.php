@@ -62,7 +62,11 @@
 		<?php // Output Bill To Address ?>
 		<div class="output-shipto">
 			<?php
+			if (!class_exists ('VmHtml')) {
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			}
 			if($this->cart->user->virtuemart_user_id==0){
+
 				echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
 				echo VmHtml::checkbox ('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
 			} else if(!empty($this->cart->lists['shipTo'])){
@@ -70,9 +74,7 @@
 			}
 
 			if(!empty($this->cart->ST) and  !empty($this->cart->STaddress['fields'])){
-				if (!class_exists ('VmHtml')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-				}
+
 
 
 				?>

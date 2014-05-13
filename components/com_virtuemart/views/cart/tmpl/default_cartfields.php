@@ -26,8 +26,8 @@ if(!empty($this->userFieldsCart['fields'])) {
 	</fieldset>
 
 	<?php
-	}// Output: Hidden Fields
-	?> </div> <?php
+	}
+	// Output: Hidden Fields
 	echo $hiddenFields;
 }
 ?>

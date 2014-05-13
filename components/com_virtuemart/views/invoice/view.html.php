@@ -109,10 +109,24 @@ class VirtuemartViewInvoice extends VmView {
 			return 0;
 		}
 		if(!empty($orderDetails['details']['BT']->order_language)) {
-			$jlang = JFactory::getLanguage();
-			$jlang->load( 'com_virtuemart', JPATH_SITE, $orderDetails['details']['BT']->order_language, true );
-			$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $orderDetails['details']['BT']->order_language, true );
-			$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $orderDetails['details']['BT']->order_language, true );
+			VmConfig::loadJLang('com_virtuemart',true, $orderDetails['details']['BT']->order_language);
+			VmConfig::loadJLang('com_virtuemart_shoppers',true, $orderDetails['details']['BT']->order_language);
+			VmConfig::loadJLang('com_virtuemart_orders',true, $orderDetails['details']['BT']->order_language);
+		}
+		$customfieldModel = VmModel::getModel('customfields');
+		foreach($orderDetails['items'] as &$item){
+			$item->customfields = array();
+			if(!empty($item->product_attribute)){
+				$myCustoms = (array)json_decode($item->product_attribute,true);
+				foreach($myCustoms as $custom){
+					if(!is_array($custom)){
+						$custom = array( $custom =>false);
+					}
+					foreach($custom as $id=>$field){
+						$item->customfields[] = $customfieldModel-> getCustomEmbeddedProductCustomField($id);
+					}
+				}
+			}
 		}
 
 		$this->assignRef('orderDetails', $orderDetails);

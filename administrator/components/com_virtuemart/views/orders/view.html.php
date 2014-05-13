@@ -65,19 +65,13 @@ class VirtuemartViewOrders extends VmView {
 					$myCustoms = (array)json_decode($item->product_attribute,true);
 					foreach($myCustoms as $custom){
 						if(!is_array($custom)){
-							vmdebug('displayProductCustomfieldSelected was not array before',$custom);
 							$custom = array( $custom =>false);
-							vmdebug('displayProductCustomfieldSelected was not array after',$custom);
 						}
 						foreach($custom as $id=>$field){
-
 							$item->customfields[] = $customfieldModel-> getCustomEmbeddedProductCustomField($id);
-							//vmdebug('my item',$field);
 						}
-
 					}
 				}
-
 			}
 
 			$_orderID = $order['details']['BT']->virtuemart_order_id;

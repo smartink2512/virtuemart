@@ -65,8 +65,6 @@ if(VmConfig::get('usefancy',0)){
 		
 		var imgtitle = jQuery("span.vm-img-desc").text();
 		jQuery("#facebox span").html(imgtitle);
-		
-		
 	});
 	';
 }
@@ -84,31 +82,5 @@ if (!empty($this->product->images)) {
 		<div class="clear"></div>
 	</div>
 	<?php
-	$count_images = count ($this->product->images);
-	if ($count_images > 1) {
-		?>
-		<div class="additional-images">
-			<?php
-			$start_image = VmConfig::get('add_img_main', 1) ? 0 : 1;
-			for ($i = $start_image; $i < $count_images; $i++) {
-				$image = $this->product->images[$i];
-				?>
-				<div class="floatleft">
-					<?php
-					if(VmConfig::get('add_img_main', 1)) {
-						echo $image->displayMediaThumb('class="product-image" style="cursor: pointer"',false,"");
-						echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
-					} else {
-						echo $image->displayMediaThumb("",true,"rel='vm-additional-images'");
-					}
-					?>
-				</div>
-			<?php
-			}
-			?>
-			<div class="clear"></div>
-		</div>
-	<?php
-	}
 }
-// Showing The Additional Images END ?>
+?>

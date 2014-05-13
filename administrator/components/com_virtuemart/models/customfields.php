@@ -615,11 +615,24 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$selected = vRequest::getInt ('virtuemart_product_id',0);
 					$selectedFound = false;
+					$customfield->withPrices = false;
+					if (empty($calculator) and $customfield->withPrices) {
+						if (!class_exists ('calculationHelper'))
+							require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+						$calculator = calculationHelper::getInstance ();
+					}
+
 					foreach ($uncatChildren as $k => $child) {
 						if(!isset($child[$customfield->customfield_value])){
 							vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
 						} else {
-							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value]);
+							$priceStr = '';
+							if($customfield->withPrices){
+								$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
+								$productPrices = $calculator->getProductPrices ($product);
+								$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
+							}
+							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value].$priceStr);
 							if($selected==$child['virtuemart_product_id']){
 								$selectedFound = true;
 								vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);

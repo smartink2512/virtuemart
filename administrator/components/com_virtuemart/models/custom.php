@@ -52,9 +52,8 @@ class VirtueMartModelCustom extends VmModel {
 
     	if(empty($this->_data)){
 
-    		$cTable = $this->getTable('customs');
-
-    		$this->_data = $cTable->load($this->_id);
+    		$this->_data = $this->getTable('customs');
+    		$this->_data->load($this->_id);
 
 		    $customfields = VmModel::getModel('Customfields');
 		    $this->_data->field_types = $customfields->getField_types() ;

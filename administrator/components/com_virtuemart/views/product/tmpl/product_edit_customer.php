@@ -85,7 +85,7 @@ $i = 0;
 				<?php echo $this->lists['OrderStatus'];?>
 				<br/> <br/>
 				<div style="font-weight:bold;"><?php echo vmText::sprintf ('COM_VIRTUEMART_PRODUCT_SHOPPERS_LIST', htmlspecialchars ($this->product->product_name)); ?></div>
-				<table class="adminlist" cellspacing="0" cellpadding="0">
+				<table class="adminlist table" cellspacing="0" cellpadding="0">
 					<thead>
 					<tr>
 						<th class="title"><?php echo vmText::_ ('COM_VIRTUEMART_NAME');?></th>
@@ -109,7 +109,7 @@ $i = 0;
 
 				<?php if (VmConfig::get ('stockhandle', 0) == 'disableadd' && !empty($this->waitinglist)) { ?>
 				<div style="font-weight:bold;"><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'); ?></div>
-				<table class="adminlist" cellspacing="0" cellpadding="0">
+				<table class="adminlist table" cellspacing="0" cellpadding="0">
 					<thead>
 					<tr>
 						<th class="title"><?php echo vmText::_ ('COM_VIRTUEMART_NAME');?></th>

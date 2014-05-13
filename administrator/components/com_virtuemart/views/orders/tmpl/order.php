@@ -114,7 +114,7 @@ $document->addScriptDeclaration ( "
 		<?php echo JHtml::_( 'form.token' ); ?>
 
 
-<table class="adminlist" width="100%">
+<table class="adminlist table" width="100%">
 	<thead>
 	<tr>
 		<th>
@@ -135,10 +135,10 @@ $document->addScriptDeclaration ( "
 </table>
 </form>
 
-<table class="adminlist" style="table-layout: fixed;">
+<table class="adminlist table" style="table-layout: fixed;">
 	<tr>
 		<td valign="top">
-		<table class="adminlist" cellspacing="0" cellpadding="0">
+		<table class="adminlist table" cellspacing="0" cellpadding="0">
 			<tr>
 				<th colspan="2"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></th>
 			</tr>
@@ -201,7 +201,7 @@ $document->addScriptDeclaration ( "
 		</table>
 		</td>
 		<td valign="top">
-		<table class="adminlist" cellspacing="0" cellpadding="0">
+		<table class="adminlist table" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
 					<th><?php echo vmText::_('COM_VIRTUEMART_ORDER_HISTORY_DATE_ADDED') ?></th>
@@ -270,7 +270,7 @@ $document->addScriptDeclaration ( "
 	if(true){ ?>
 	<tr>
 		<td valign="top" width="50%">
-					<table class="adminlist" cellspacing="0" cellpadding="0">
+					<table class="adminlist table" cellspacing="0" cellpadding="0">
 						<thead>
 						<tr>
 						<th colspan="2"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_SHIPMENT') ?></th>
@@ -329,7 +329,7 @@ $document->addScriptDeclaration ( "
 <table width="100%">
 	<tr>
 		<td width="50%" valign="top">
-		<table class="adminlist" width="100%">
+		<table class="adminlist table" width="100%">
 			<thead>
 				<tr>
 					<th  style="text-align: center;" colspan="2"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></th>
@@ -366,7 +366,7 @@ $document->addScriptDeclaration ( "
 		</table>
 		</td>
 		<td width="50%" valign="top">
-		<table class="adminlist" width="100%">
+		<table class="adminlist table" width="100%">
 			<thead>
 				<tr>
 					<th   style="text-align: center;" colspan="2"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></th>
@@ -405,7 +405,7 @@ $document->addScriptDeclaration ( "
 	<tr>
 		<td colspan="2">
 		<form action="index.php" method="post" name="orderItemForm" id="orderItemForm"><!-- Update linestatus form -->
-		<table class="adminlist" cellspacing="0" cellpadding="0" id="itemTable" >
+		<table class="adminlist table" cellspacing="0" cellpadding="0" id="itemTable" >
 			<thead>
 				<tr>
 					<!--<th class="title" width="5%" align="left"><?php echo vmText::_('COM_VIRTUEMART_ORDER_EDIT_ACTIONS') ?></th> -->

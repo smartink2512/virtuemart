@@ -954,6 +954,7 @@ class VmModel extends JObject {
 	public function setToggleName($togglesName){
 		$this->_togglesName[] = $togglesName ;
 	}
+
 	/**
 	 * toggle (0/1) a field
 	 * or invert by $val for multi IDS;

@@ -39,7 +39,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
 		<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
 	</div>
     <div id="editcell">
-	<table class="adminlist" cellspacing="0" cellpadding="0">
+	<table class="adminlist table" cellspacing="0" cellpadding="0">
 	    <thead>
 		<tr>
 			<th width="10">
