@@ -43,8 +43,7 @@ class JFormFieldLayout extends JFormField
   
 	function getInput() {
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
+		VmConfig::loadJLang('com_virtuemart');
 		$view = substr($this->fieldname,0,-6);;
 		$vmLayoutList =VirtueMartModelConfig::getLayoutList($view);
 		$html = JHTML::_('Select.genericlist',$vmLayoutList, $this->name, 'size=1 width=200', 'value', 'text', array($this->value));

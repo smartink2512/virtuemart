@@ -353,7 +353,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return NULL;
 		}
 
-		JFactory::getLanguage ()->load ('com_virtuemart');
+		VmConfig::loadJLang('com_virtuemart');
 		$html = '<table class="admintable">' . "\n"
 			. '	<thead>' . "\n"
 			. '		<tr>' . "\n"

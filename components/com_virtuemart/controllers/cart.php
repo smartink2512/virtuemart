@@ -165,9 +165,10 @@ class VirtueMartControllerCart extends JController {
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart(false);
 		$this->data = $cart->prepareAjaxData();
-		$lang = JFactory::getLanguage();
+
 		$extension = 'com_virtuemart';
-		$lang->load($extension); //  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !!!
+		VmConfig::loadJLang($extension); //  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !
+ 
 		if ($this->data->totalProduct > 1)
 		$this->data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $this->data->totalProduct);
 		else if ($this->data->totalProduct == 1)

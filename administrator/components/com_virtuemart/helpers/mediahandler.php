@@ -38,8 +38,11 @@ class vmFile {
 		$str = preg_replace('/\xE3\x80\x80/', ' ', $str);
 		$str = str_replace(' ', '-', $str);
 
-		$lang = JFactory::getLanguage();
-		$str = $lang->transliterate($str);
+		$unicodeslugs = VmConfig::get('transliterateSlugs',false);
+		if($unicodeslugs){
+			$lang = JFactory::getLanguage();
+			$str = $lang->transliterate($str);
+		}
 
 		if(function_exists('mb_ereg_replace')){
 			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
