@@ -15,7 +15,9 @@ defined('_JEXEC') or die();
  * @version $Id$
  */
 
-if (!class_exists('vRequest')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+if (!class_exists('vRequest')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/vrequest.php');
+if (!class_exists('VmConfig'))
+	require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 
 class JFormFieldVmjpluginwarning extends JFormField {
 
@@ -39,8 +41,8 @@ class JFormFieldVmjpluginwarning extends JFormField {
 	 * @since   11.1
 	 */
 	protected function getInput() {
-		$lang = JFactory::getLanguage();
-		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
+
+		VmConfig::loadJLang('com_virtuemart');
 
 		$option = vRequest::getCmd('option');
 		if ($option == 'com_virtuemart') {

@@ -5,7 +5,8 @@
  *
  * @package VirtueMart
  * @copyright (C) 2010 - Patrick Kohl
- * @ Email: cyber__fr|at|hotmail.com
+ * @copyright (C) 2011 - 2014 The VirtueMart Team
+ * @ Email: max@virtuemart.net
  *
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * VirtueMart is Free Software.
@@ -20,7 +21,7 @@ if (!class_exists ('VmConfig')) {
 VmConfig::loadConfig ();
 
 // Load the language file of com_virtuemart.
-JFactory::getLanguage ()->load ('com_virtuemart');
+VmConfig::loadJLang('com_virtuemart',true);
 if (!class_exists ('calculationHelper')) {
 	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'calculationh.php');
 }

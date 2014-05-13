@@ -53,8 +53,7 @@ if(VmConfig::get('shop_is_offline',0)){
 
 		$user = JFactory::getUser();
 		if	($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
-			$jlang =JFactory::getLanguage();
-			$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
+			VmConfig::loadJLang('com_virtuemart');
 			$basePath = JPATH_VM_ADMINISTRATOR;
 			$trigger = 'onVmAdminController';
 

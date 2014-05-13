@@ -99,9 +99,11 @@ abstract class vmPlugin extends JPlugin {
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$fname.'.ini';
 			if(!file_exists($testpath)){
-				$path = JPATH_ADMINISTRATOR;
+				$epath = JPATH_ADMINISTRATOR;
+			} else {
+				$epath = $path;
 			}
-			$jlang->load($fname, $path, 'en-GB');
+			$jlang->load($fname, $epath, 'en-GB');
 		}
 
 		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$fname.'.ini';

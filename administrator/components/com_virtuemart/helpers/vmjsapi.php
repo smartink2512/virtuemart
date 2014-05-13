@@ -192,8 +192,8 @@ class vmJsApi{
 		}
 		vmJsApi::jQuery();
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_virtuemart');
+		VmConfig::loadJLang('com_virtuemart',true);
+
 		vmJsApi::jSite();
 
 		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
@@ -388,7 +388,7 @@ class vmJsApi{
 		if ($jCreditCard) {
 			return;
 		}
-		JFactory::getLanguage()->load('com_virtuemart');
+		VmConfig::loadJLang('com_virtuemart',true);
 
 
 		$js = "

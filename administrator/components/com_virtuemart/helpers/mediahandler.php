@@ -36,24 +36,18 @@ class vmFile {
 
 		// Replace double byte whitespaces by single byte (East Asian languages)
 		$str = preg_replace('/\xE3\x80\x80/', ' ', $str);
-		//$str = str_replace(' ', '-', $str);
 
-		$lang = JFactory::getLanguage();
-		$str = $lang->transliterate($str);
+		$unicodeslugs = VmConfig::get('transliterateSlugs',false);
+		if($unicodeslugs){
+			$lang = JFactory::getLanguage();
+			$str = $lang->transliterate($str);
+		}
+
 		vmdebug('makeSafe',$str);
 		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 
-		//$str = vRequest::uword($str,'','_,-');
 		vmdebug('makeSafe',$str);
 		return $str;
-		/*if(function_exists('mb_ereg_replace')){
-			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
-			return mb_ereg_replace($regex, '', $str);
-		} else {
-			$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
-			return preg_replace($regex, '', $str);
-		}*/
-
 	}
 }
 

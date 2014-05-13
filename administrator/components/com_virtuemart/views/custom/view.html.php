@@ -122,7 +122,6 @@ class VirtuemartViewCustom extends VmView {
 		if (!class_exists('vmPlugin'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'plugins' . DS . 'vmplugin.php');
 
-		$lang =JFactory::getLanguage();
 		foreach ($results as $result) {
         //$filename = 'plg_' .strtolower ( $result['name']).'.sys';
         //$lang->load($filename, JPATH_ADMINISTRATOR);

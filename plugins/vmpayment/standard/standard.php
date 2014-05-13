@@ -86,9 +86,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 			return FALSE;
 		}
 		// 		$params = new JParameter($payment->payment_params);
-		$lang = JFactory::getLanguage ();
-		$filename = 'com_virtuemart';
-		$lang->load ($filename, JPATH_ADMINISTRATOR);
+		VmConfig::loadJLang('com_virtuemart',true);
 
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');

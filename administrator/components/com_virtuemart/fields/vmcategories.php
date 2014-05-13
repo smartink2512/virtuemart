@@ -37,8 +37,7 @@ class JFormFieldCategories extends JFormField {
 		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
 		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
+		VmConfig::loadJLang('com_virtuemart');
 
 		$categorylist = ShopFunctions::categoryListTree(array($this->value));
 

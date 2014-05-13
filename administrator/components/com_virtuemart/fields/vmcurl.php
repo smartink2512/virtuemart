@@ -29,6 +29,7 @@ class JFormFieldVmCurl extends JFormField {
 	 * @since   11.1
 	 */
 	protected function getInput() {
+
 		$lang = JFactory::getLanguage();
 		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
 
