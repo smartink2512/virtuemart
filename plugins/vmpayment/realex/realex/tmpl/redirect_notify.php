@@ -50,17 +50,21 @@ defined('_JEXEC') or die();
 	} else {
 		?>
 		<div class="transaction_declined">
-			<div class="notify_declined">
-				<?php
-				echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_DECLINED', $viewData["order_number"], $viewData["shop_name"]);
-				?>
-			</div>
+
 			<?php
 			if ($viewData["order_history_comments"]) {
 				?>
 				<div class="order_history_comments">
 					<?php
 					echo $viewData["order_history_comments"];
+					?>
+				</div>
+			<?php
+			} else {
+				?>
+				<div class="notify_declined">
+					<?php
+					echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_DECLINED', $viewData["order_number"], $viewData["shop_name"]);
 					?>
 				</div>
 			<?php

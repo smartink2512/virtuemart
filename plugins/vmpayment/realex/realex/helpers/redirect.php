@@ -165,6 +165,9 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 			$post_variables['SHIPPING_CO'] = ShopFunctions::getCountryByID($ST->virtuemart_country_id, 'country_2_code');
 
 		}
+
+		$post_variables['gateway_url']=$this->_getRealexUrl ();
+
 		return $post_variables;
 
 	}

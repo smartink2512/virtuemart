@@ -26,9 +26,10 @@ jQuery().ready(function ($) {
         if (hasCreditcardsDropDownClass) {
             var CCselected= $(".creditcardsDropDown input[type='radio']:checked").val();
             $('.realexRemoteCCForm').hide();
-
+            $('.vmpayment_cc_cvv_realvault').show();
             if (CCselected == -1) {
                 $('.realexRemoteCCForm').show();
+                $('.vmpayment_cc_cvv_realvault').hide();
             }
         }
 

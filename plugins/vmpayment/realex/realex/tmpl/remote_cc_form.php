@@ -62,7 +62,23 @@ if ($viewData['dccinfo']) {
 				?>
 			</div>
 		</div>
-	<?php
+		<?php
+
+		if ($viewData['cvn_checking']) {
+			?>
+			<div class="vmpayment_cc_info vmpayment_cc_cvv_realvault">
+
+				<span class="vmpayment_label"><label for="cc_cvv_realvault"><?php echo JText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
+
+				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv_realvault" maxlength="4" size="5" value="<?php echo $ccData['cc_cvv_realvault']; ?>" autocomplete="off"/>
+				<span class="hasTip" title="<?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
+                        <?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
+                    </span>
+
+
+			</div>
+		<?php
+		}
 	}
 }
 ?>

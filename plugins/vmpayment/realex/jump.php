@@ -1,28 +1,25 @@
 <?php
-// *****************************************************************************
-// *
-// * Product: Realex Payments
-// * Version: 2.0.1
-// * Release Date: 16 Nov 2012
-// * For: Joomla 2.5/VirtueMart 2.0.x
-// * Author: E-commerce Solution
-// * Email: support@virtuemart-solutions.com
-// * Website: http://www.virtuemart-solutions.com
-// * Support: http://support.virtuemart-solutions.com
-// * Copyright: (C) 2012 E-commerce Solution
-// * Licence: Commercial
-// * Details: http://www.virtuemart-solutions.com/commercial-licence
-// * Filename: jump.php
-// *
-// *****************************************************************************
-// * This software is licensed, and may be used and copied only in accordance  *
-// * with the terms of such license, and must include this copyright notice.   *
-// *****************************************************************************
+/**
+ *
+ * @package    VirtueMart
+ * @subpackage vmpayment
+ * @version $Id$
+ * @author Valérie Isaksen
+ * @link http://www.virtuemart.net
+ * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ *
+ */
 ?>
 <?php
 
 // url sent in get
-$url = 'https://hpp.sandbox.realexpayments.com/pay';
+$url = $_POST['gateway_url'];
+unset($_POST['gateway_url']);
 ?>
 
 <html>

@@ -170,10 +170,11 @@ class  RealexHelperRealex {
 
 	function _getRealexUrl () {
 		if ($this->_method->shop_mode == 'sandbox') {
-			return 'https://realcontrol.sandbox.realexpayments.com';
+			//return 'https://realcontrol.sandbox.realexpayments.com';
+			return $this->_method->sandbox_gateway_url;
 		} else {
-			return ' https://realcontrol.realexpayments.com';
-		}
+			//return ' https://realcontrol.realexpayments.com';
+			return $this->_method->gateway_url;		}
 
 	}
 
@@ -212,6 +213,9 @@ class  RealexHelperRealex {
 		if (is_array($message)) {
 			if (array_key_exists('REALEX_SAVED_PMT_DIGITS', $message)) {
 				$message['REALEX_SAVED_PMT_DIGITS'] = "**** **** **** " . substr($message['REALEX_SAVED_PMT_DIGITS'], -4);
+			}
+			if (array_key_exists('SHA1HASH', $message)) {
+				$message['SHA1HASH'] = '**MASKED**';
 			}
 			if (array_key_exists('CVV2', $message)) {
 				$message['CVV2'] = str_repeat('*', strlen($message['CVV2']));
@@ -753,17 +757,17 @@ class  RealexHelperRealex {
 		$idA = $id = 'saved_cc_selected_' . $virtuemart_paymentmethod_id;
 		//$idA = $id = 'saved_cc_selected_';
 		//$options[] = array('value' => '', 'text' => vmText::_('VMPAYMENT_REALEX_PLEASE_SELECT'));
-
+		if ($use_another_cc) {
+			$options[] = JHTML::_('select.option', -1, vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC'));
+			$radioOptions[-1] = vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC');
+		}
 		foreach ($storeCCs as $storeCC) {
 			$cc_type = vmText::_('VMPAYMENT_REALEX_CC_' . $storeCC->realex_saved_pmt_type);
 			$name = $cc_type . ' ' . $storeCC->realex_saved_pmt_digits . ' ' . $storeCC->realex_saved_pmt_expdate . ' (' . $storeCC->realex_saved_pmt_name . ')';
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
 			$radioOptions[$storeCC->id]= $name;
 		}
-		if ($use_another_cc) {
-			$options[] = JHTML::_('select.option', -1, vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC'));
-			$radioOptions[-1] = vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC');
-		}
+
 		if ($radio) {
 			return VmHTML::radioList($idA, $selected_cc, $radioOptions, 'class="realexListCC"');
 		} else {
@@ -830,10 +834,10 @@ class  RealexHelperRealex {
 		$timestamp = $this->getTimestamp();
 
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_RECEIPT_IN);
-		if (!empty($selectedCCParams->realex_saved_cvn)) {
+		if (!empty($selectedCCParams->cc_cvv_realvault)) {
 			$xml_request .= '<paymentdata>
 					<cvn>
-						<number>' . $selectedCCParams->realex_saved_cvn . '</number>
+						<number>' . $selectedCCParams->cc_cvv_realvault . '</number>
 					</cvn>
 				</paymentdata>
 				';
@@ -1184,9 +1188,9 @@ class  RealexHelperRealex {
 		return NULL;
 	}
 
-	function getLastTransactionData ($payments, $request_type = self::REQUEST_TYPE_AUTH) {
+	function getLastTransactionData ($payments, $request_type = array(self::REQUEST_TYPE_AUTH, self::REQUEST_TYPE_RECEIPT_IN)) {
 		$payment = end($payments);
-		if ($payment->realex_request_type_response == $request_type) {
+		if (in_array($payment->realex_request_type_response, $request_type)) {
 			return $payment;
 		}
 		return NULL;
@@ -1302,14 +1306,15 @@ class  RealexHelperRealex {
 		curl_close($ch);
 
 		$responseToLog = $response;
-		if (isset($response->sha1hash)) {
-			$sha1hash = $responseToLog->sha1hash;
+		$xml_responseToLog = simplexml_load_string($responseToLog);
+		if (isset($xml_responseToLog->sha1hash)) {
+			$sha1hash = $xml_responseToLog->sha1hash;
 			$sha1hash_length = strlen($sha1hash);
-			$responseToLog->sha1hash = str_repeat("*", $sha1hash_length);
+			$xml_responseToLog->sha1hash = str_repeat("*", $sha1hash_length);
 		}
 
 
-		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $responseToLog . '</textarea>', 'response :', 'message');
+		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $xml_responseToLog->asXML() . '</textarea>', 'response :', 'message');
 
 		if (empty($response)) {
 			$this->displayError(vmText::_('VMPAYMENT_REALEX_EMPTY_RESPONSE'));
@@ -1326,7 +1331,7 @@ class  RealexHelperRealex {
 	/**
 	 * @param $message
 	 */
-
+static $displayErrorDone=false;
 	function displayError ($admin, $public = '') {
 		if ($admin == NULL) {
 			$admin = "an error occurred";

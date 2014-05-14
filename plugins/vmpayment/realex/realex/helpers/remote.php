@@ -181,7 +181,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 		$ccDropdown = "";
 		if (!JFactory::getUser()->guest AND $this->_method->realvault) {
-			$selected_cc = $this->customerData->getVar('saved_cc_selected');
+			//$selected_cc = $this->customerData->getVar('saved_cc_selected');
+			$selected_cc=-1;
 			$ccDropdown = $this->getCCDropDown($this->_method->virtuemart_paymentmethod_id, JFactory::getUser()->id, $selected_cc, true, true);
 			if ($selected_cc > 0) {
 				$realvault = $this->getStoredCCsData($selected_cc);
@@ -234,6 +235,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		                                                             'order_number'                => $this->order['details']['BT']->order_number,
 		                                                             'virtuemart_paymentmethod_id' => $this->_method->virtuemart_paymentmethod_id,
 		                                                             'cvv_info'                    => $cvv_info,
+		                                                             'cvn_checking'                => $this->_method->cvn_checking,
 		                                                             'cvv_images'                  => $cvv_images,
 		                                                        ));
 		JRequest::setVar('html', $html);
@@ -867,7 +869,21 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 
 		return NULL;
 	}
+	function validateCvv ($enqueueMessage = true) {
+		if (!class_exists('Creditcard')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
+		}
+		if (!$this->_method->cvn_checking) return true;
 
+		$cc_cvv_realvault=vRequest::getInt('cc_cvv_realvault','');
+
+		if (!Creditcard::validate_credit_card_cvv('', $cc_cvv_realvault, true)) {
+			$app = JFactory::getApplication();
+			$app->enqueueMessage(vmText::_('VMPAYMENT_REALEX_CC_CARD_CVV_INVALID'), 'error');
+			return false;
+		}
+		return true;
+	}
 	/**
 	 * @param bool $enqueueMessage
 	 * @return bool

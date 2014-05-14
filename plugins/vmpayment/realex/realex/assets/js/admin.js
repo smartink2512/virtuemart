@@ -32,15 +32,28 @@ jQuery().ready(function ($) {
         } else if (integration == 'remote') {
             $('.remote').parents('tr').show();
         }
+
     }
 
     handleRealvault = function () {
         var realvault = $('#paramsrealvault').val();
+        var integration = $('#paramsintegration').val();
+        $('.redirect-realvault').parents('tr').hide();
+        $('.redirect-norealvault').parents('tr').hide();
 
         $('.realvault').parents('tr').hide();
-
+        $('.norealvault').parents('tr').hide();
+if (integration=='redirect') {
+    if (realvault == 1) {
+        $('.redirect-realvault').parents('tr').show();
+    } else  {
+        $('.redirect-norealvault').parents('tr').show();
+    }
+}
         if (realvault == 1) {
             $('.realvault').parents('tr').show();
+        } else  {
+            $('.norealvault').parents('tr').show();
         }
     }
 
@@ -57,8 +70,8 @@ jQuery().ready(function ($) {
     handleDcc = function () {
         var dcc = $('#paramsdcc').val();
 
-        $('.dcc').parents('tr').hide();
-        $('.nodcc').parents('tr').hide();
+         $('.dcc').parents('tr').hide();
+         $('.nodcc').parents('tr').hide();
 
         if (dcc == 1) {
             $('.dcc').parents('tr').show();
@@ -76,6 +89,7 @@ jQuery().ready(function ($) {
     /**********/
     $('#paramsintegration').change(function () {
         handleIntegrationParameters();
+        handleRealvault();
 
     });
     $('#paramsrealvault').change(function () {
@@ -87,9 +101,12 @@ jQuery().ready(function ($) {
     $('#paramsdcc').change(function () {
         handleDcc();
     });
+
+
     /*****************/
     /* Initial calls */
     /*****************/
+
     handleIntegrationParameters();
     handleRealvault();
     handleSettlement();
