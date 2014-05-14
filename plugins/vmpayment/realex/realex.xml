@@ -122,12 +122,12 @@
         </param>
         <param class="level1 redirect" type="vmtitle" default="VMPAYMENT_REALEX_URLS_SECTION" />
 
-        <param class="redirect" name="referring_url" type="referringurl" size="150" default="" editable="true"
+        <param class="redirect" name="referring_url" type="referringurl" size="100" default="" editable="true"
                label="VMPAYMENT_REALEX_REFERRING_URL" description="VMPAYMENT_REALEX_REFERRING_URL_TIP"/>
 
-        <param class="redirect" name="gateway_url" type="text" size="150" default="https://hpp.realexpayments.com/pay" editable="true"
+        <param class="redirect" name="gateway_url" type="text" size="100" default="https://hpp.realexpayments.com/pay" editable="true"
                label="VMPAYMENT_REALEX_GATEWAY_URL" description="VMPAYMENT_REALEX_GATEWAY_URL_TIP"/>
-        <param class="redirect" name="sandbox_gateway_url" type="text" size="150" default="https://hpp.sandbox.realexpayments.com/pay" editable="true"
+        <param class="redirect" name="sandbox_gateway_url" type="text" size="100" default="https://hpp.sandbox.realexpayments.com/pay" editable="true"
                label="VMPAYMENT_REALEX_SANDBOX_GATEWAY_URL" description="VMPAYMENT_REALEX_SANDBOX_GATEWAY_URL_TIP"/>
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_REALEX_ORDER_STATUS_SECTION"
