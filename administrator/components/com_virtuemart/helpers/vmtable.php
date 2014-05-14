@@ -569,7 +569,7 @@ class VmTable extends JTable {
 		if (isset (self::$_cache['l'][$hash])) {
 			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 			$this->bind(self::$_cache['l'][$hash]);
-			return self::$_cache['l'][$hash];
+			return $this;
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
@@ -640,7 +640,7 @@ class VmTable extends JTable {
 		}
 
 		self::$_cache['l'][$hash] = $this->loadFieldValues(false);
-		return self::$_cache['l'][$hash];
+		return $this;
 	}
 
 

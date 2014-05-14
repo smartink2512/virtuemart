@@ -86,7 +86,7 @@ if (!class_exists ('vmPSPlugin')) {
 		if (!$this->selectedThisElement ($method->payment_element)) {
 			return FALSE;
 		}
-		
+
 		VmConfig::loadJLang('com_virtuemart',true);
 
 		if (!class_exists ('VirtueMartModelOrders')) {
