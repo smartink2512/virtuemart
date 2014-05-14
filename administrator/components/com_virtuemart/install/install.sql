@@ -1159,7 +1159,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `readonly` tinyint(1) NOT NULL DEFAULT '0',
   `calculated` tinyint(1) NOT NULL DEFAULT '0',
   `sys` tinyint(4) NOT NULL DEFAULT '0',
-  `params` varchar(17500),
+  `userfield_params` varchar(17500) NOT NULL DEFAULT '',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',

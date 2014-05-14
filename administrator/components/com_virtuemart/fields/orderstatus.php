@@ -19,9 +19,9 @@ class JFormFieldOrderstatus extends JFormField {
 	var $type = 'orderstatus';
 	function getInput () {
 
-		if (!class_exists ('VmConfig')) {
-			require(JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php');
-		}
+		defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
 		if (!class_exists ('VmModel')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 		}

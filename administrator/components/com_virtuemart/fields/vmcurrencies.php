@@ -15,8 +15,8 @@ defined('JPATH_PLATFORM') or die;
  * other free or open source software licenses.
  * @version $Id: $
  */
-if (!class_exists('VmConfig'))
-	require(JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * So It should be an extension of JFormField

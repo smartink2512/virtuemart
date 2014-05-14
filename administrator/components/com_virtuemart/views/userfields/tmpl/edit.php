@@ -241,7 +241,7 @@ function toggleType( sType ) {
 function checkName(field, rules, i, options){
 	name = field.val();
 	field.val(name.replace(/[^0-9a-zA-Z\_]+/g,''));
-	var existingFields = new Array(<?php echo $existingFields ?>);
+	var existingFields = new Array(<?php echo $this->existingFields ?>);
 	if(jQuery.inArray(name,existingFields) > -1) {
 		return options.allrules.onlyLetterNumber.alertText;
 	}

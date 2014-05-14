@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="2.5" type="plugin" group="vmuserfield" method="upgrade">
+    <name>Realex</name>
+    <creationDate>${PHING.VM.RELDATE}</creationDate>
+    <author>Valérie Isaksen</author>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright>${PHING.VM.COPYRIGHT}</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <version>${PHING.VM.RELEASE}</version>
+    <description>Card storage plugin for Realex</description>
+
+    <files>
+        <filename plugin="realex">realex.php</filename>
+        <folder>realex</folder>
+    </files>
+    <config>
+        <fields name="params">
+            <fieldset name="default">
+                <field type="vmjpluginwarning"/>
+            </fieldset>
+       </fields>
+    </config>     
+    <params addpath="/plugins/vmuserfield/realex/elements"/>
+    <params addpath="/plugins/vmuserfield/realex/realex/elements"/>
+    <params addpath="/administrator/components/com_virtuemart/elements"/>
+    <params>
+        <param type="vmjpluginwarning"/>
+    </params>
+</extension>

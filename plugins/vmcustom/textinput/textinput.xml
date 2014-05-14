@@ -27,7 +27,6 @@
                     <option value="0">VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT</option>
                     <option value="1">VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER</option>
                 </field>
-
             </fieldset>
         </fields>
     </config>

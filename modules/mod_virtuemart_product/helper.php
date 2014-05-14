@@ -15,9 +15,9 @@
  * www.virtuemart.net
  */
 
-if (!class_exists ('VmConfig')) {
-	require(JPATH_ADMINISTRATOR  .'/components/com_virtuemart/helpers/config.php');
-}
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
 VmConfig::loadConfig ();
 
 // Load the language file of com_virtuemart.

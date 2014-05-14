@@ -236,6 +236,12 @@ class VmTable extends JTable {
 	static function bindParameterable(&$obj, $xParams, $varsToPushParam) {
 
 		if(empty($varsToPushParam)) return;
+		if (empty($xParams)) {
+			//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+			vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
+			vmTrace('$xParams is empty');
+			return;
+		}
 		//$paramFields = $obj->$xParams;
 		//vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$varsToPushParam);
 		if(is_object($obj)){
@@ -256,15 +262,10 @@ class VmTable extends JTable {
 				}
 
 			} else {
-				if (empty($xParams)) {
-					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
-					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
-					vmTrace('$xParams is empty');
-				}
 				if(!isset($obj->$xParams)){
 					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
-					vmTrace('$obj->$xParams is empty');
+					vmTrace(' ! isset($obj->$xParams)');
 				}
 			}
 
@@ -290,15 +291,10 @@ class VmTable extends JTable {
 					}
 				}
 			} else {
-				if (empty($xParams)) {
-					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
-					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
-					vmTrace('$xParams is empty');
-				}
 				if(!isset($obj[$xParams])){
 					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
-					vmTrace('$obj->$xParams is empty');
+					vmTrace('$obj[$xParams] is empty');
 				}
 			}
 
@@ -577,7 +573,8 @@ class VmTable extends JTable {
 			//Actually the pattern changed and we should not need the bind, but too many locations in the code
 			// and assumingly also 3rd party developers using it, so we let it here for compatibility reasons.
 			$this->bind(self::$_cache['l'][$hash]);
-			return self::$_cache['l'][$hash];
+			return $this;
+			//return self::$_cache['l'][$hash];
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
@@ -648,7 +645,8 @@ class VmTable extends JTable {
 		}
 
 		self::$_cache['l'][$hash] = $this->loadFieldValues(false);
-		return self::$_cache['l'][$hash];
+		return $this;
+		//return self::$_cache['l'][$hash];
 	}
 
 

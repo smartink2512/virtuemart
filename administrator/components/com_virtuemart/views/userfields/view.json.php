@@ -40,21 +40,35 @@ class VirtuemartViewUserfields extends VmView {
 				$field = substr($field, 6);
 				$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `element` = "'.$field.'"';
 				$db ->setQuery($q);
-				$this->plugin = $db ->loadObject();
-				if (!class_exists('vmParameters'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
-				$parameters = new vmParameters($this->plugin ,  $this->plugin->element , 'plugin' ,'vmuserfield');
-				$lang = JFactory::getLanguage();
-				$filename = 'plg_vmuserfield_' .  $this->plugin->element;
-				if(VmConfig::get('enableEnglish', 1)){
-		            $lang->load($filename, JPATH_ADMINISTRATOR, 'en-GB', true);
-				}
-				$lang->load($filename, JPATH_ADMINISTRATOR, $lang->getDefault(), true);
-				$lang->load($filename, JPATH_ADMINISTRATOR, null, true);
+				$this->userField = $db ->loadObject();
+				$this->userField->element = substr($this->userField->type, 6);
 
-				echo $parameters->render();
-				//echo '<input type="hidden" value="'.$this->plugin->element.'" name="custom_value">';
-				jExit();
+				$path = JPATH_PLUGINS .DS. 'vmuserfield' . DS . $this->userField->element . DS . $this->userField->element . '.xml';
+				// Get the payment XML.
+				$formFile	= JPath::clean( $path );
+				if (file_exists($formFile)){
+
+					$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//config');
+					$this->userField->params = new stdClass();
+					$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
+					$this->userField->params->userfield_params = $this->userField->userfield_params;
+					vmdebug('renderUserfieldPlugin ',$this->userField->params);
+					VmTable::bindParameterable($this->userField->params,'userfield_params',$varsToPush);
+					$this->userField->form->bind($this->userField);
+
+				} else {
+					$this->userField->form = false;
+					vmdebug('renderUserfieldPlugin could not find xml for '.$this->userField->type.' at '.$path);
+				}
+				//vmdebug('renderUserfieldPlugin ',$this->userField->form);
+				if ($this->userField->form) {
+					$form = $this->userField->form;
+					ob_start();
+					include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
+					$body = ob_get_contents();
+					ob_end_clean();
+					echo $body;
+				}
 			}
 		}
 		jExit();

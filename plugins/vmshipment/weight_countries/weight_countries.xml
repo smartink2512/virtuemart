@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension version="2.5" type="plugin" group="vmshipment">
+<extension version="2.5" type="plugin" group="vmshipment" method="upgrade">
     <name>By weight, ZIP and countries</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>

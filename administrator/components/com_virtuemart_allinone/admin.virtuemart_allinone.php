@@ -33,7 +33,8 @@ if($task=='updateDatabase'){
 	vRequest::vmCheckToken() or jexit('Invalid Token, in ' . $task);
 	$app = JFactory::getApplication();
 	//Update Tables
-	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
+	defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+	if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 	$user = JFactory::getUser();
 	if(!($user->authorise('core.admin'))){
 		$msg = 'Forget IT';

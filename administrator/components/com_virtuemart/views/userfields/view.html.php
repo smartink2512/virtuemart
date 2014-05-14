@@ -51,16 +51,17 @@ class VirtuemartViewUserfields extends VmView {
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
-			$userField = $model->getUserfield();
-            $this->SetViewTitle('USERFIELD',$userField->name );
+			$this->userField = $model->getUserfield();
+			//vmdebug('user plugin $this->userField',$this->userField);
+            $this->SetViewTitle('USERFIELD',$this->userField->name );
             $this->assignRef('viewName',$viewName);
 			$userFieldPlugin = '';
-			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
+			if ($this->userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
 				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = '';
-				$lists['type'] = JHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
+				$lists['type'] = JHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $this->userField->type);
 			} else { // Update existing userfield
 				// Ordering dropdown
 				/*$qry = 'SELECT ordering AS value, name AS text'
@@ -71,14 +72,17 @@ class VirtuemartViewUserfields extends VmView {
 
 				if (!class_exists('ShopFunctions'))
 					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-				$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$userField->virtuemart_userfield_id);
+				$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$this->userField->virtuemart_userfield_id);
 
 				$userFieldValues = $model->getUserfieldValues();
 
-				$lists['type'] = $this->_getTypes($userField->type)
-					. '<input id="type" type="hidden" name="type" value="'.$userField->type.'" />';
-				if (strpos($userField->type, 'plugin') !==false) 
-					$userFieldPlugin = self::renderUserfieldPlugin(substr($userField->type, 6),$userField);
+				$lists['type'] = $this->_getTypes($this->userField->type)
+					. '<input id="type" type="hidden" name="type" value="'.$this->userField->type.'" />';
+				if (strpos($this->userField->type, 'plugin') !==false) {
+
+					$userFieldPlugin = self::renderUserfieldPlugin(substr($this->userField->type, 6),$this->userField);
+				}
+
 			}
 			$this->assignRef('userFieldPlugin',	$userFieldPlugin);
 			JToolBarHelper::divider();
@@ -86,32 +90,32 @@ class VirtuemartViewUserfields extends VmView {
 			JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
-			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
+			$notoggle = (in_array($this->userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
 
 			// Vendor selection
 			if(Vmconfig::get('multix','none')!=='none'){
-				$lists['vendors']= ShopFunctions::renderVendorList($userField->virtuemart_vendor_id);
+				$lists['vendors']= ShopFunctions::renderVendorList($this->userField->virtuemart_vendor_id);
 			}
 
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = VmModel::getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
 			array_unshift($shoppergroup_list,'0');
-			$lists['shoppergroups'] = JHtml::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $userField->get('virtuemart_shoppergroup_id'));
+			$lists['shoppergroups'] = JHtml::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $this->userField->get('virtuemart_shoppergroup_id'));
 
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
 				$ages[] = array('key' => $i, 'value' => $i.' '.vmText::_('COM_VIRTUEMART_YEAR_S'));
 			}
-			$lists['minimum_age'] = JHtml::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $userField->get('minimum_age', 18));
+			$lists['minimum_age'] = JHtml::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $this->userField->get('minimum_age', 18));
 
 			// Web address types
 			$webaddress_types = array(
 				 array('key' => 0, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_URL_ONLY'))
 				,array('key' => 2, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_HYPERTEXT_URL'))
 			);
-			$lists['webaddresstypes'] = JHtml::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $userField->get('webaddresstype'));
+			$lists['webaddresstypes'] = JHtml::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $this->userField->get('webaddresstype'));
 
 			// Userfield values
 			if (($n = count($userFieldValues)) < 1) {
@@ -137,18 +141,18 @@ class VirtuemartViewUserfields extends VmView {
 
 			$userFieldTable = $model->getTable();
 			$this->existingFields =  '"'.implode('","',$userFieldTable->showFullColumns(0,'Field')).'"';
-			vmdebug('My existinFields showFullColumns',$this->existingFields);
+			//vmdebug('My existinFields showFullColumns',$this->existingFields);
 
 			// Toggles
-			$lists['required']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_REQUIRED','required',$userField->required,$notoggle);
-			$lists['published']    =  VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$userField->published,$notoggle);
-			$lists['cart'] 		=  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_CART','cart',$userField->cart,$notoggle);
-			$lists['shipment']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING','shipment',$userField->shipment,$notoggle);
-			$lists['account']      =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT','account',$userField->account,$notoggle);
-			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$userField->readonly,$notoggle);
+			$lists['required']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_REQUIRED','required',$this->userField->required,$notoggle);
+			$lists['published']    =  VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->userField->published,$notoggle);
+			$lists['cart'] 		=  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_CART','cart',$this->userField->cart,$notoggle);
+			$lists['shipment']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING','shipment',$this->userField->shipment,$notoggle);
+			$lists['account']      =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT','account',$this->userField->account,$notoggle);
+			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$this->userField->readonly,$notoggle);
 
 			$this->assignRef('lists', $lists);
-			$this->assignRef('userField', $userField);
+			//$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
 			$this->assignRef('editor', $editor);
 		} else {
@@ -230,7 +234,45 @@ class VirtuemartViewUserfields extends VmView {
 		}
 	}
 
-	function renderUserfieldPlugin($element, $params){
+	function renderUserfieldPlugin(){
+
+		if(!class_exists('vmUserfieldPlugin')) require(JPATH_VM_PLUGINS.DS.'vmuserfieldtypeplugin.php');
+
+		VmConfig::loadJLang('plg_vmpsplugin', false);
+		JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
+		//$selected = $this->userField->userfield_jplugin_id;
+		$this->userField->element = substr($this->userField->type, 6);
+		//vmdebug('renderUserfieldPlugin $this->userField->element',$this->userField->element);
+		$path = JPATH_PLUGINS .DS. 'vmuserfield' . DS . $this->userField->element . DS . $this->userField->element . '.xml';
+		// Get the payment XML.
+		$formFile	= JPath::clean( $path );
+		if (file_exists($formFile)){
+
+			$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//config');
+			$this->userField->params = new stdClass();
+			$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
+			$this->userField->params->userfield_params = $this->userField->userfield_params;
+			vmdebug('renderUserfieldPlugin ',$this->userField->params);
+			VmTable::bindParameterable($this->userField->params,'userfield_params',$varsToPush);
+			$this->userField->form->bind($this->userField);
+
+		} else {
+			$this->userField->form = false;
+			vmdebug('renderUserfieldPlugin could not find xml for '.$this->userField->type.' at '.$path);
+		}
+		//vmdebug('renderUserfieldPlugin ',$this->userField->form);
+		if ($this->userField->form) {
+			$form = $this->userField->form;
+			ob_start();
+			include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
+			$body = ob_get_contents();
+			ob_end_clean();
+			return $body;
+		}
+		return;
+	}
+
+	function renderUserfieldPlugina($element, $params){
 		$db = JFactory::getDBO();
 
 		$table = '#__extensions';
@@ -256,7 +298,7 @@ class VirtuemartViewUserfields extends VmView {
 		$enable = 'enabled';
 
 		$db = JFactory::getDBO();
- 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmuserfield" AND `'.$enable.'`="1" ';
+ 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmuserfield" ';
 		$db->setQuery($q);
 		$userfieldplugins = $db->loadAssocList($ext_id);
 		if(empty($userfieldplugins)){

@@ -259,6 +259,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
    				)
  			);
 
+			$this->alterTable('#__virtuemart_userfields',array(
+				'params' => '`userfield_params` varchar(17500) NOT NULL DEFAULT "" COMMENT \'userfield params\'',
+			));
+
 			//todo Maik, please take a look, this should not be anylonger necessary
 			/*$this->alterTable('#__virtuemart_order_items',
 				array(
