@@ -142,13 +142,22 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$addressST = ((isset($this->order['details']['ST'])) ? $this->order['details']['ST'] : $this->order['details']['BT']);
 
 		//Ship To
-		$post_variables['SHIPTONAME'] = isset($addressST->first_name) ? $this->truncate($addressST->first_name, 50) : '';
-		$post_variables['SHIPTONAME'] .= isset($addressST->last_name) ? ' '.$this->truncate($addressST->last_name, 50) : '';
+		$shiptoname=$this->getShipToName((isset($addressST->first_name) ? $addressST->first_name:''), (isset($addressST->last_name) ?  $addressST->last_name:''), 50);
+		$post_variables['SHIPTONAME'] =   $shiptoname  ;
 		$post_variables['SHIPTOSTREET'] = isset($addressST->address_1) ? $this->truncate($addressST->address_1, 60) : '';
 		$post_variables['SHIPTOCITY'] = isset($addressST->city) ? $this->truncate($addressST->city, 40) : '';
 		$post_variables['SHIPTOZIP'] = isset($addressST->zip) ? $this->truncate($addressST->zip, 40) : '';
 		$post_variables['SHIPTOSTATE'] = isset($addressST->virtuemart_state_id) ? ShopFunctions::getStateByID($addressST->virtuemart_state_id, 'state_2_code') : '';
 		$post_variables['SHIPTOCOUNTRYCODE'] = ShopFunctions::getCountryByID($addressST->virtuemart_country_id, 'country_2_code');
+	}
+
+	function getShipToName($first_name,$last_name, $max_length) {
+		if (strlen ($first_name.' '.$last_name) > $max_length){
+			$first_name=$this->truncate($first_name, $max_length-strlen($last_name)) ;
+		}
+		// important that we get the last name correctly
+		$shipToName= $this->truncate($first_name.' '.$last_name, $max_length) ;
+		return $shipToName;
 	}
 
 	/**
