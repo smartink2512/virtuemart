@@ -314,10 +314,6 @@ class VirtueMartModelCustom extends VmModel {
 
 		}
 
-
-
-
-
 		$table = $this->getTable('customs');
 		$table->field_type = $data['field_type'];
 		$table->custom_element = $data['custom_element'];
@@ -346,6 +342,14 @@ class VirtueMartModelCustom extends VmModel {
 
 	}
 
+	/**
+	 * Sets the xParams field and $varsToPush to the used table object,
+	 * called in the store functions Customfields::storeProductCustomfields and custom store
+	 * @param $table
+	 * @param $type
+	 * @param int $custom_element
+	 * @param int $custom_jplugin_id
+	 */
 	static function setParameterableByFieldType(&$table, $type, $custom_element=0,$custom_jplugin_id=0){
 
 		//$type = $table->field_type;
@@ -363,6 +367,8 @@ class VirtueMartModelCustom extends VmModel {
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
+			//We call here vmplugin->getTablePluginParams which sets the xParam and the varsToPush of the Plugin
+			vmdebug('setParameterableByFieldType before trigger plgVmGetTablePluginParams ',$xParams,$varsToPush);
 			$retValue = $dispatcher->trigger ('plgVmGetTablePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
 		}
 		$xParams = $table->_xParams;

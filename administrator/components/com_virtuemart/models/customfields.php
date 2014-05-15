@@ -89,6 +89,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
 		//vmdebug('bindCustomEmbeddedFieldParams middle',$obj);
 		$obj ->_xParams = 'customfield_params';
+		if(!isset($obj -> customfield_params)) $obj -> customfield_params = '';
 		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
 		//vmdebug('bindCustomEmbeddedFieldParams end',$obj);
 	}
@@ -190,7 +191,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$q .= ' AND c.`field_type`= "' .$virtuemart_custom_id.'" ';
 			}
 		}
-		if($cartattribute){
+		if(!empty($cartattribute) and $cartattribute!=-1){
 			$q .= ' AND ( `is_cart_attribute` = 1 OR `is_input` = 1) ';
 		}
 		if($forcefront or $app->isSite()){
@@ -220,7 +221,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$_customFieldByProductId[$hkey] = $customfield;
 		}
 		$productCustoms = array_merge($productCustomsCached,$productCustoms);
-		//vmdebug('getCustomEmbeddedProductCustomGroup ',$productIds,$q);
+
 		if($productCustoms){
 
 			$customfield_ids = array();
@@ -1056,46 +1057,20 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $modificatorSum;
 	}
 
-/*	static function setParameterableByFieldType(&$table, $type, $custom_element=0,$custom_jplugin_id=0){
-
-		//$type = $table->field_type;
-		if($custom_element===0){
-			$custom_element = $table->custom_element;
-		}
-
-		if($custom_jplugin_id===0){
-			$custom_jplugin_id = $table->custom_jplugin_id;
-		}
-
-		$varsToPush = self::getVarsToPush($type);
-		$xParams = $table->_xParams;
-
-		if ($type == 'E') {
-			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
-			$retValue = $dispatcher->trigger ('plgVmGetTablePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
-		}
-
-		if(!empty($varsToPush)){
-			$table->setParameterable($xParams,$varsToPush,TRUE);
-		}
-
-	}
-*/
-
 	static function bindParameterableByFieldType(&$table, $type){
 
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 		$varsToPush = VirtueMartModelCustom::getVarsToPush($type);
-		$xParams = $table->_xParams;
+		//$xParams = $table->_xParams;
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
+			//This does not only declare, it directly binds also the values
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
-		}
-
-		if(!empty($varsToPush)){
-			VmTable::bindParameterable($table,$table->_xParams,$varsToPush);
+		} else {
+			if(!empty($varsToPush)){
+				VmTable::bindParameterable($table,$table->_xParams,$varsToPush);
+			}
 		}
 
 	}
@@ -1160,15 +1135,15 @@ class VirtueMartModelCustomfields extends VmModel {
 				$fields['virtuemart_'.$table.'_id'] =$id;
 				$tableCustomfields = $this->getTable($table.'_customfields');
 				$tableCustomfields->setPrimaryKey('virtuemart_product_id');
-				if (!empty($datas['custom_params'][$key]) and !isset($datas['clone']) ) {
-					if (array_key_exists( $key,$datas['custom_params'])) {
-						$fields = array_merge ((array)$fields, (array)$datas['custom_params'][$key]);
+				if (!empty($datas['customfield_params'][$key]) and !isset($datas['clone']) ) {
+					if (array_key_exists( $key,$datas['customfield_params'])) {
+						$fields = array_merge ((array)$fields, (array)$datas['customfield_params'][$key]);
 					}
 				}
 				$tableCustomfields->_xParams = 'customfield_params';
 				if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 				VirtueMartModelCustom::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
-
+				vmdebug('Data to store $tableCustomfields->bindChecknStore',$fields);
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 				foreach($errors as $error){

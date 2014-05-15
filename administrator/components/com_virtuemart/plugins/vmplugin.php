@@ -476,7 +476,9 @@ abstract class vmPlugin extends JPlugin {
 		if (!class_exists ('VmTable')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
 		}
-		VmTable::bindParameterable ($data, $this->_xParams, $this->_varsToPushParam);
+
+		//Is only used for the config tables!
+		VmTable::bindParameterable ($data, $data->_xParams, $this->_varsToPushParam);
 
 		if($this->_cryptedFields){
 			$data->setCryptedFields($this->_cryptedFields);

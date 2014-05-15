@@ -415,7 +415,7 @@ class VirtueMartCart {
 			$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 			$customProductDataTmp=array();
 			//VmConfig::$echoDebug=true;
-			//vmdebug('cart add product $customProductData',$customProductData);
+			vmdebug('cart add product $customProductData',$customProductData);
 			foreach($product->customfields as $customfield){
 
 				if($customfield->is_input==1){
@@ -1352,7 +1352,6 @@ class VirtueMartCart {
 
 					$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 
-					//vmdebug('prepareCartData',$product->customfields);
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
 
