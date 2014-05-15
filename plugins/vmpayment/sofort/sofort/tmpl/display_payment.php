@@ -19,7 +19,7 @@ if (!empty($viewData['payment_logo_link'] )) {
 // addon for joomla modal Box
 	JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
-	if(VmConfig::get('usefancy',0)){
+	if(VmConfig::get('usefancy',1)){
 		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 		vmJsApi::css('jquery.fancybox-1.3.4');
 		$box = "$.fancybox({

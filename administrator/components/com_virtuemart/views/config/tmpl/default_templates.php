@@ -657,7 +657,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</span>
 			</td>
 			<td>
-				<?php echo VmHTML::checkbox('usefancy', VmConfig::get('usefancy', 0)); ?>
+				<?php echo VmHTML::checkbox('usefancy', VmConfig::get('usefancy', 1)); ?>
 			</td>
 		</tr>
 		<tr>
