@@ -73,7 +73,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$fieldType = $field->type;
 		$fieldName = $field->name;
 		$value = $data[$field->name];
-		$params = $field->params;
+		$params = $field->userfield_params;
 
 		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 		switch(strtolower($fieldType)) {
@@ -587,7 +587,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$_address_type->calculated = 0; // what is this???
 			$_address_type->sys = 0;
 			$_address_type->virtuemart_vendor_id = 1;
-			$_address_type->params = '';
+			$_address_type->userfield_params = '';
 			$_fields[] = $_address_type;
 		}
 		// stAn: slow to run the first time:

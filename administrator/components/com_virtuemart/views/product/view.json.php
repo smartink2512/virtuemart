@@ -124,6 +124,7 @@ class VirtuemartViewProduct extends VmView {
 					 } else {
 					     $cartIcone= 'default-off';
 					 }
+					$field->virtuemart_product_id=$product_id;
 					 $html[] = '
 					<tr class="removable">
 						<td><span class="hasTip" title="'.vmText::_($field->custom_tip).'">'.$field->custom_title.'</td>

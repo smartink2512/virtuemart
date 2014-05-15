@@ -720,6 +720,7 @@ class VirtueMartModelProduct extends VmModel {
 			return false;
 		}
 		$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,true,$virtuemart_shoppergroup_ids);
+
 		if (!$child->published && $onlyPublished) {
 			//vmdebug('getProduct child is not published, returning zero');
 			$_products[$productKey] = FALSE;
@@ -733,7 +734,8 @@ class VirtueMartModelProduct extends VmModel {
 		$pId = $child->virtuemart_product_id;
 		$ppId = $child->product_parent_id;
 		$published = $child->published;
-		$child->allIds[] = $pId;
+		if(!empty($pId)) $child->allIds[] = $pId;
+
 		//$this->product_parent_id = $child->product_parent_id;
 
 		$i = 0;
@@ -753,7 +755,8 @@ class VirtueMartModelProduct extends VmModel {
 					break;
 				}
 			}
-			$child->allIds[] = $child->product_parent_id;
+			//$child->allIds[] = $child->product_parent_id;
+			if(!empty($child->product_parent_id)) $child->allIds[] = $child->product_parent_id;
 			$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity);
 			if ($child->product_parent_id === $parentProduct->product_parent_id) {
 				vmError('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
@@ -1000,6 +1003,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$product = $this->getTable ('products');
 			$product->load ($this->_id, 0, 0, $joinIds);
+			$product->allIds = array();
 			//vmdebug('my product after load table ',$product);
 
 			$xrefTable = $this->getTable ('product_medias');

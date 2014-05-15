@@ -1321,10 +1321,11 @@ class VirtueMartCart {
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
-			//vmdebug('$this->cartProductsData',count($this->cartProductsData),$this->products);
+			vmdebug('$this->cartProductsData',$this->cartProductsData);
 			$customFieldsModel = VmModel::getModel('customfields');
 			foreach($this->cartProductsData as $k =>&$productdata){
 				$productdata = (array)$productdata;
+
 				if(isset($productdata['virtuemart_product_id'])){
 					if(empty($productdata['virtuemart_product_id']) or empty($productdata['quantity'])){
 						unset($this->cartProductsData[$k]);
@@ -1333,8 +1334,10 @@ class VirtueMartCart {
 					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,FALSE);
 					if(empty($productTemp->virtuemart_product_id)){
 						vmError('prepareCartData virtuemart_product_id is empty','The product is no longer available');
+						unset($this->cartProductsData[$k]);
 						continue;
 					}
+					//vmdebug('$this->cartProductsData',$productTemp);
 					//Very important! must be cloned, else all products with same id get the same productCustomData due the product cache
 					$product = clone($productTemp);
 					$productdata['quantity'] = (int)$productdata['quantity'];

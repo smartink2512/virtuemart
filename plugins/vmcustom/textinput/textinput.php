@@ -35,6 +35,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
+
 		if ($field->custom_element != $this->_name) return '';
 
 		//VmConfig::$echoDebug = true;
@@ -181,7 +182,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
 
-		$product->product_name = 'Ice Saw';
+		//$product->product_name = 'Ice Saw';
 		//vmdebug('plgVmPrepareCartProduct we can modify the product here',$product);
 
 		if (!empty($selected['comment'])) {

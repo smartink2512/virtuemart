@@ -56,7 +56,7 @@ AdminUIHelper::startAdminArea($this);
 						include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
 					}
 				} else {
-					echo vmText::_('COM_VIRTUEMART_SELECT_CUSTOM_METHOD');
+					echo vmText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN');
 				}
 				?>
 

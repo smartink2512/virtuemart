@@ -33,11 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 				foreach ($this->product->customfields as $k=>$customfield) {
 					//vmdebug('$customfield->field_type '.$customfield->field_type);
-					/*if($this->product->customfields_fromParent){
-						$virtuemart_product_id = $this->product->product_parent_id;
-					} else {
-						$virtuemart_product_id = $this->product->virtuemart_product_id;
-					}*/
+					//vmdebug('displayProductCustomfieldBE',$customfield);
 					$virtuemart_product_id = $this->product->virtuemart_product_id;
 					$customfield->display = $customfieldsModel->displayProductCustomfieldBE ($customfield, $virtuemart_product_id, $i);
 

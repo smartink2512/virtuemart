@@ -70,10 +70,10 @@ class VirtuemartViewProduct extends VmView {
 				$customfields = VmModel::getModel ('Customfields');
 
 				$product->allIds[] = $product->virtuemart_product_id;
-				$product->allIds[] = $product->product_parent_id;
+				if(!empty($product->product_parent_id)) $product->allIds[] = $product->product_parent_id;
 
 				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds);
-
+				//vmdebug('my customfields',$product->customfields);
 				$mf_model = VmModel::getModel('manufacturer');
 				$this->manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 				//$this->assignRef('manufacturers',	$manufacturers);
