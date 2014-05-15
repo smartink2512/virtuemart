@@ -90,7 +90,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			// to_klarna, from_klarna
 			'klarna_status'               => 'varchar(20)',
 			// pre-purchase, purchase, pre-delivery, delivery, post-delivery
-			'data'                        => 'text',
+			'data'                        => 'mediumtext',
 			// what was sent
 		);
 		return $SQLfields;
