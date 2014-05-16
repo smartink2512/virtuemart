@@ -29,5 +29,8 @@
 			<folder>modulesBE</folder>
 		</files>
 	</administration>
-	
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart Update Site"><![CDATA[http://virtuemart.net/releases/virtuemart2-aio-update.xml.xml]]></server>
+    </updateservers>
 </install>

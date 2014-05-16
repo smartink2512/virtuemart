@@ -32,15 +32,15 @@ class JElementVmtitle extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 		
 		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
-        if (empty($class)) {
-            $class="level2";
+         if (empty($class)) {
+            $class.="style=\"margin: 10px 0 5px 0; font-weight: bold; padding: 5px; background-color: #cacaca; float:none; clear:both;\"";
         }
 		$description = ($node->attributes('description') ? JText::_($node->attributes('description')) : '');
 
 		$html = '';
 		if ($value) {
 
-            $html .= '<div '.$class.' style="margin: 10px 0 5px 0; font-weight: bold; padding: 5px; background-color: #cacaca; float:none; clear:both;">';
+            $html .= '<div '.$class.'>';
 			$html .= JText::_($value);
 			$html .= '</div>';
             if ($description){

@@ -67,7 +67,7 @@
 
         <!-- Restrictions -->
         <!-- ============ -->
-        <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION"
+        <param class="level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION"
                description="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION_TIP"/>
         <!--param name="countries" type="vmcountries" scope="com_virtuemart" default=""
                label="VMPAYMENT_AMAZON_CONF_COUNTRIES" description="VMPAYMENT_AMAZON_CONF_COUNTRIES_TIP"/ -->

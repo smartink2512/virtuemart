@@ -262,7 +262,9 @@ return NULL;
 		return $url;
 	}
 
-
+	/**
+	 * @return null
+	 */
 	public function plgVmOnPaymentNotification () {
 
 		$notificationTask = vRequest::getCmd('notificationTask', '');
@@ -371,7 +373,6 @@ return NULL;
 			$config['widgetURL'] == $this->_currentMethod->$widgetURL;
 		}
 
-		$config['clientID'] = $this->getClientId();
 
 		try {
 			$client = new OffAmazonPaymentsService_Client($config);

@@ -23,6 +23,7 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 	var $varsToPush = array();
 
 	const REALEX_FOLDERNAME = "realex";
+
 	function __construct (& $subject, $config) {
 
 		parent::__construct($subject, $config);
@@ -103,7 +104,6 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 	}
 
 
-
 	/**
 	 * This method is fired when showing the order details in the frontend.
 	 * It displays the shipment-specific data.
@@ -146,8 +146,9 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 			return $this->deleteStoredCards($card_ids);
 		}
 
-		if (!class_exists('ShopFunctions'))
+		if (!class_exists('ShopFunctions')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+		}
 // we come from payment
 		if (isset($params['realex_saved_payer_ref'])) {
 			$this->storePluginInternalData($params);
@@ -190,7 +191,12 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		if ($userId == 0) {
 			return;
 		}
-		$display_fields = array('realex_saved_pmt_type', 'realex_saved_pmt_digits', 'realex_saved_pmt_expdate','realex_saved_pmt_name');
+		$display_fields = array(
+			'realex_saved_pmt_type',
+			'realex_saved_pmt_digits',
+			'realex_saved_pmt_expdate',
+			'realex_saved_pmt_name'
+		);
 
 
 		$storedCreditCards = $this->getStoredCreditCards($userId);
@@ -205,31 +211,32 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		if (JFactory::getApplication()->isSite()) {
 			$html = $this->renderByLayout("creditcardlist", array("storedCreditCards" => $storedCreditCards));
 		} else {
-			if ($view =='user') {
-			$html = '<table  class="adminlist" width="50%">' . "\n";
-			$i = 1;
-			foreach ($storedCreditCards as $storedCreditCard) {
-				$class = 'class="row' . $i . '"';
-				$html .= '<tr class="row1"><td>' . JText::_('COM_VIRTUEMART_DATE') . '</td><td align="left">' . $storedCreditCard->created_on . '</td></tr>';
-				$checked = JHTML::_('grid.id', $i, $storedCreditCard->id, null, 'card_id');
-				$view=vRequest::getCmd('view');
+			$view = vRequest::getString('view', '');
+			if ($view == 'user') {
+				$html = '<table  class="adminlist" width="50%">' . "\n";
+				$i = 1;
+				foreach ($storedCreditCards as $storedCreditCard) {
+					$class = 'class="row' . $i . '"';
+					$html .= '<tr class="row1"><td>' . JText::_('COM_VIRTUEMART_DATE') . '</td><td align="left">' . $storedCreditCard->created_on . '</td></tr>';
+					$checked = JHTML::_('grid.id', $i, $storedCreditCard->id, null, 'card_id');
+					$view = vRequest::getCmd('view');
 					$html .= "<tr>\n<td>" . $checked . "</td>\n <td align='left'>" . 'DELETE' . "</td>\n</tr>\n";
 
-				foreach ($display_fields as $display_field) {
-					$complete_key = strtoupper('VMUSERFIELD_' . $display_field);
+					foreach ($display_fields as $display_field) {
+						$complete_key = strtoupper('VMUSERFIELD_' . $display_field);
 
-					$value = $storedCreditCard->$display_field;
-					$key_text = JText::_($complete_key);
-					$value = JText::_($value);
-					if (!empty($value)) {
-						$html .= "<tr>\n<td>". $key_text . "</label></td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
+						$value = $storedCreditCard->$display_field;
+						$key_text = JText::_($complete_key);
+						$value = JText::_($value);
+						if (!empty($value)) {
+							$html .= "<tr>\n<td>" . $key_text . "</label></td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
+						}
 					}
+
 				}
-
+				$html .= '</table>' . "\n";
 			}
-			}
 
-			$html .= '</table>' . "\n";
 
 		}
 		return $html;
@@ -241,7 +248,7 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		}
 
 		foreach ($storedCreditCards as $storedCreditCard) {
-			$storedCreditCard->realex_saved_pmt_digits =  $storedCreditCard->realex_saved_pmt_digits;
+			$storedCreditCard->realex_saved_pmt_digits = $storedCreditCard->realex_saved_pmt_digits;
 		}
 		return $storedCreditCards;
 
@@ -291,8 +298,6 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		}
 		$tableClass->setParameterable('params', $vars);
 	}
-
-
 
 
 }

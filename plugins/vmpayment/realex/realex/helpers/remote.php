@@ -730,7 +730,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 				$amount = $xml_response_dcc->dccinfo->cardholderamount;
 			} else {
 				$rate = 1;
-				if ($xml_response_dcc) {
+				if ($xml_response_dcc AND $this->isResponseSuccess($xml_response_dcc)) {
 					$currency = $xml_response_dcc->dccinfo->merchantcurrency;
 					$amount = $xml_response_dcc->dccinfo->merchantamount;
 				} else {
