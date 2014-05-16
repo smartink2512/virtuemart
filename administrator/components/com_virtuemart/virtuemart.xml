@@ -90,6 +90,6 @@
     <!-- UPDATESERVER DEFINITION -->
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart Update Site"><![CDATA[http:/virtuemart.net/releases/test-virtuemart-update.xml]]></server>
+        <server type="extension" name="VirtueMart Update Site"><![CDATA[http://virtuemart.net/releases/test-virtuemart-update.xml]]></server>
     </updateservers>
 </install>
