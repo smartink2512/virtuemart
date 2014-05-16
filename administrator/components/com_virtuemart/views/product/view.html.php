@@ -129,18 +129,13 @@ class VirtuemartViewProduct extends VmView {
 				$currency_model = VmModel::getModel('currency');
 
 				$vendor_model->setId(VmConfig::isSuperVendor());
-				$vendor = $vendor_model->getVendor();
-				/*if(empty($product->product_currency)){
-					$product->product_currency = $vendor->vendor_currency;
-				}*/
-				//$currencies = JHtml::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
-				//$currency = $currency_model->getCurrency($product->product_currency);
-				//$this->assignRef('product_currency', $currency->currency_symbol);
-				$currency = $currency_model->getCurrency($vendor->vendor_currency);
-				$this->vendor_currency = $currency->currency_symbol;
+				$this->vendor = $vendor_model->getVendor();
+
+				$currency = $currency_model->getCurrency($this->vendor->vendor_currency);
+				$this->vendor_currency_symb = $currency->currency_symbol;
 
 				if(count($this->manufacturers)>0 ){
-					$lists['manufacturers'] = JHtml::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
+					$lists['manufacturers'] = shopFunctions::renderManufacturerList($product->virtuemart_manufacturer_id,true);
 				}
 
 				if(!empty($product->product_weight_uom)){	// or !$task=='add'
@@ -223,7 +218,7 @@ class VirtuemartViewProduct extends VmView {
 
 
 				$this->assignRef('product', $product);
-				$product_empty_price = array(
+				/*$product_empty_price = array(
 					'virtuemart_product_price_id' => 0
 				, 'virtuemart_product_id'         => $virtuemart_product_id
 				, 'virtuemart_shoppergroup_id'    => NULL
@@ -238,7 +233,7 @@ class VirtuemartViewProduct extends VmView {
 				, 'price_quantity_start'          => NULL
 				, 'price_quantity_end'            => NULL
 				);
-				$this->assignRef ('product_empty_price', $product_empty_price);
+				$this->assignRef ('product_empty_price', $product_empty_price);*/
 
 				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */

@@ -80,7 +80,7 @@ $rowColor = 0;
                 name="mprices[basePrice][]"
                 size="12"
                 value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['basePrice']; ?>"/>&nbsp;
-			<?php echo $this->vendor_currency;   ?>
+			<?php echo $this->vendor_currency_symb;   ?>
         </td>
 		<?php /*    <td width="17%"><div style="text-align: right; font-weight: bold;">
 							<?php echo vmText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
@@ -118,7 +118,7 @@ $rowColor = 0;
                 size="12"
                 style="text-align:right;"
                 value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['salesPriceTemp']; ?>"/>
-			<?php echo $this->vendor_currency;   ?>
+			<?php echo $this->vendor_currency_symb;   ?>
         </td>
 		<?php /*  <td width="17%"><div style="text-align: right; font-weight: bold;">
 							<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
@@ -166,7 +166,7 @@ $rowColor = 0;
                    size="12"
                    style="text-align:right;" name="mprices[product_override_price][]"
                    value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['product_override_price'] ?>"/>
-			<?php echo $this->vendor_currency;   ?>
+			<?php echo $this->vendor_currency_symb;   ?>
 </div>
 			<?php
 			$options = array(0 => vmText::_ ('JNO'), 1 => vmText::_ ('JYES'));

@@ -208,7 +208,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 				   onclick="check<?php echo $step?>(this);"
 				   onchange="check<?php echo $step?>(this);"
 				   onsubmit="check<?php echo $step?>(this);"
-				   title="<?php echo  vmText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity[]" value="<?php echo $prow->quantity ?>" />
+				   title="<?php echo  vmText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity[<?php echo $pkey; ?>]" value="<?php echo $prow->quantity ?>" />
 
 			<button type="submit" class="vmicon vm2-add_quantity_cart" name="update.<?php echo $pkey ?>" title="<?php echo  vmText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" />
 

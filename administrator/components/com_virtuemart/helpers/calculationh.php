@@ -282,7 +282,7 @@ class calculationHelper {
 			$productVendorId = !empty($product->virtuemart_vendor_id)? $product->virtuemart_vendor_id:1;
 			$this->setVendorId($productVendorId);
 
-			$this->_cats = $product->categories;
+			$this->_cats = isset($product->categories)? $product->categories: array();
 			$this->_product = $product;
 			$this->_product->amount = $amount;
 			$this->productPrices = array();

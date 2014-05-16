@@ -560,7 +560,7 @@ class VirtueMartCart {
 		$updated = false;
 
 		foreach($quantities as $key=>$quantity){
-			if (!empty($quantity) and !isset($_POST['delete_'.$key])) {
+			if (isset($this->cartProductsData[$key]) and !empty($quantity) and !isset($_POST['delete_'.$key])) {
 				if($quantity!=$this->cartProductsData[$key]['quantity']){
 					$productModel = VmModel::getModel('product');
 

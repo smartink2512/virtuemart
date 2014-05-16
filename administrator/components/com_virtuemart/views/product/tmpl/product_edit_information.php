@@ -169,6 +169,11 @@ $i=0;
 
 		foreach ($this->product->allPrices as $k => $sPrices) {
 
+
+			if(empty($this->product->allPrices[$k]['product_currency'])){
+				$this->product->allPrices[$k]['product_currency'] = $this->vendor->vendor_currency;
+			}
+
 			$this->product->selectedPrice = $k;
 			$this->calculatedPrices = $calculator->getProductPrices ($this->product);
 			$this->product->allPrices[$k] = array_merge($this->product->allPrices[$k],$this->calculatedPrices);

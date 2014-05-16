@@ -12,7 +12,7 @@
 * html .virtuemart-admin-area { /*IE6 only*/ overflow: visible;height: 1px;}
 .virtuemart-admin-area .menu-wrapper {width:190px ;float: left;}
 .virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;padding: 0;overflow: auto; background: left repeat-y #fff;border-left: solid #b4b4b4 1px;height:540px;}
-.virtuemart-admin-area #admin-content-wrapper .admin-content {height:auto;min-height: 540px;}
+.virtuemart-admin-area #admin-content-wrapper .admin-content {height:auto;min-height: 540px;padding: 0 0 0 5px;}
 #header {     background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;padding:3px;padding-left: 10px;padding-right: 10px;}
 
 .ratingbox{position:relative;display:block;width:120px;height:24px;background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x scroll 0 bottom transparent}
@@ -83,7 +83,7 @@ dl#system-message dd .vmdebug  { font-size:10px; }
 /* Inputs */
 .virtuemart-admin-area fieldset input {float: none !important;clear: none;display: inline-block;}
 .virtuemart-admin-area fieldset #custom_fields .key {width:96%;}
-.virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;}
+.virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;margin:0 5px 0 0;}
 .virtuemart-admin-area div.tabs {margin-bottom: 240px;}
 textarea {width: 100%;}
 /*.datepicker{width: 60px;} seems unused*/
@@ -167,6 +167,9 @@ font-weight: normal;
 .deliverynote_32, .deliverynote-32-print {background: url(../images/icon_32/deliverynote.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}
 .deliverynotenew_32, .deliverynote-32-print {background: url(../images/icon_32/deliverynotenew.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}
 .control-group{display: table;margin-top: 15px;}
+.control-label {float: left;padding: 0 5px 0 0;width: 250px;}
+.control-input {float: left;margin: 0 0 0 50px;}
+.control-input textarea{width:100%;min-width:450px;}
 .control-field h3 {font-weight: bold;padding:5px;background-color: #cacaca}
 #limit {width:60px;}
 

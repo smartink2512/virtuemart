@@ -109,7 +109,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		return $this;
 	}
 
-	public function checkout(){
+	public function updatecart(){
+
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
 		$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
@@ -117,7 +118,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->saveCartFieldsInCart();
 
 		$cart->updateProductCart();
-
 		$coupon_code = vRequest::getString('coupon_code', '');
 		$msg = $cart->setCouponCode($coupon_code);
 
@@ -127,7 +127,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	}
 
 	public function confirm(){
-		$this->checkout();
+		$this->updatecart();
 	}
 
 
