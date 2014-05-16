@@ -79,7 +79,10 @@ if ($viewData['dccinfo']) {
 			</div>
 		<?php
 		}
-	}
+	} else { ?>
+		<input type="hidden" name="saved_cc_selected" value="-1"/>
+
+	<?php }
 }
 ?>
 
@@ -152,7 +155,7 @@ if ($viewData['dccinfo']) {
                     </span>
 			<?php
 			} else {
-				echo $ccData['cc_cvv'];
+				echo  $ccData['cc_cvv_masked'];
 				?>
 				<input type="hidden" name="cc_cvv" value="<?php echo $ccData['cc_cvv'] ?>"/>
 			<?php
@@ -245,11 +248,10 @@ if ($viewData['dccinfo']) {
 			?>
 
 			<div class="offer_save_card">
+				<div id="save_card_tip"><?php echo vmText::_('VMPAYMENT_REALEX_SAVE_CARD_DETAILS_TIP') ?></div>
 				<label for="save_card">
 					<input id="save_card" name="save_card" type="checkbox" value="1" <?php echo $checked ?>><span class="save_card"> <?php echo vmText::_('VMPAYMENT_REALEX_SAVE_CARD_DETAILS') ?></span>
 				</label>
-
-				<div id="save_card_tip"><?php echo vmText::_('VMPAYMENT_REALEX_SAVE_CARD_DETAILS_TIP') ?></div>
 			</div>
 		<?php
 		}

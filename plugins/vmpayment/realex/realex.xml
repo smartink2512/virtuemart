@@ -83,13 +83,13 @@
         <param class="redirect-norealvault" type="vmtitle" default="VMPAYMENT_REALEX_ACCOUNT_OPTIONS_3DSECURE_REALEX"/>
         <param class="redirect-realvault" type="vmtitle" default="VMPAYMENT_REALEX_ACCOUNT_OPTIONS_3DSECURE_REALVAULT"/>
 
-        <param class="remote realvault" name="threedsecure" type="list" default="1" label="VMPAYMENT_REALEX_3DSECURE"
+        <param class="redirect-realvault realvault" name="threedsecure" type="list" default="1" label="VMPAYMENT_REALEX_3DSECURE"
                description="VMPAYMENT_REALEX_3DSECURE_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
 
-        <param class="remote realvault" name="require_liability" type="list" default="1" label="VMPAYMENT_REALEX_REQUIRE_LIABILITY"
+        <param class="redirect-realvault threedsecure" name="require_liability" type="list" default="1" label="VMPAYMENT_REALEX_REQUIRE_LIABILITY"
                description="VMPAYMENT_REALEX_REQUIRE_LIABILITY_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>

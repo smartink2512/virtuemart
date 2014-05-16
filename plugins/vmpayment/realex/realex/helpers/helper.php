@@ -174,7 +174,8 @@ class  RealexHelperRealex {
 			return $this->_method->sandbox_gateway_url;
 		} else {
 			//return ' https://realcontrol.realexpayments.com';
-			return $this->_method->gateway_url;		}
+			return $this->_method->gateway_url;
+		}
 
 	}
 
@@ -522,7 +523,7 @@ class  RealexHelperRealex {
 
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
-									$auth_info =JText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
+									$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
 								} else {
 									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
 								}
@@ -743,14 +744,14 @@ class  RealexHelperRealex {
 	 * @param $selected_cc
 	 * @return mixed|null
 	 */
-	function getCCDropDown ($virtuemart_paymentmethod_id, $virtuemart_user_id, $selected_cc, $use_another_cc = true, $radio=false) {
+	function getCCDropDown ($virtuemart_paymentmethod_id, $virtuemart_user_id, $selected_cc, $use_another_cc = true, $radio = false) {
 
 		//$storeCCs = $this->getStoredCCsByPaymentMethod($virtuemart_user_id, $virtuemart_paymentmethod_id);
 		$storeCCs = $this->getStoredCCs($virtuemart_user_id);
 		if (empty($storeCCs)) {
 			return null;
 		}
-		if (!class_exists ('VmHTML')) {
+		if (!class_exists('VmHTML')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		}
 		$attrs = 'class="inputbox vm-chzn-select"';
@@ -765,7 +766,7 @@ class  RealexHelperRealex {
 			$cc_type = vmText::_('VMPAYMENT_REALEX_CC_' . $storeCC->realex_saved_pmt_type);
 			$name = $cc_type . ' ' . $storeCC->realex_saved_pmt_digits . ' ' . $storeCC->realex_saved_pmt_expdate . ' (' . $storeCC->realex_saved_pmt_name . ')';
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
-			$radioOptions[$storeCC->id]= $name;
+			$radioOptions[$storeCC->id] = $name;
 		}
 
 		if ($radio) {
@@ -790,7 +791,8 @@ class  RealexHelperRealex {
 	}
 
 	function doRealVault () {
-		if ($this->_method->realvault AND $this->_method->integration == 'remote') {
+
+			if (!JFactory::getUser()->guest AND $this->_method->realvault AND $this->_method->integration == 'remote') {
 			if (!($this->_method->offer_save_card) OR
 				($this->_method->offer_save_card AND $this->customerData->getVar('save_card'))
 			) {
@@ -974,8 +976,8 @@ class  RealexHelperRealex {
 		$BT = $this->order['details']['BT'];
 		$newPayerRef = $this->getUniqueId($BT->customer_number);
 		$xml_request .= '<payer type="Business" ref="' . $newPayerRef . '">
-				<firstname>' . $BT->first_name . '</firstname>
-				<surname>' . $BT->last_name . '</surname>
+				<firstname>' . $this->sanitize($BT->first_name) . '</firstname>
+				<surname>' . $this->sanitize($BT->last_name) . '</surname>
 				';
 		if (!empty($BT->company)) {
 			$xml_request .= '<company>' . $BT->company . '</company>
@@ -1013,6 +1015,12 @@ class  RealexHelperRealex {
 
 	}
 
+	function sanitize ($string) {
+		$string = $this->replaceNonAsciiCharacters($string);
+		$string = vRequest::filterUword($string, ' ');
+		return $string;
+	}
+
 	/**
 	 * @return bool|mixed
 	 */
@@ -1026,7 +1034,7 @@ class  RealexHelperRealex {
 		<payerref>' . $newPayerRef . '</payerref>
 		<number>' . $cc_number . '</number>
 		<expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
-		<chname>' . $this->customerData->getVar('cc_name') . '</chname>
+		<chname>' . $this->sanitize($this->customerData->getVar('cc_name')) . '</chname>
 		<type>' . $this->customerData->getVar('cc_type') . '</type>
 		<issueno />
 		</card>
@@ -1044,6 +1052,7 @@ class  RealexHelperRealex {
 	 * @return string
 	 */
 	function getUniqueId ($value) {
+		$value = $this->sanitize($value);
 		return $value . '-' . time();
 	}
 
@@ -1188,7 +1197,10 @@ class  RealexHelperRealex {
 		return NULL;
 	}
 
-	function getLastTransactionData ($payments, $request_type = array(self::REQUEST_TYPE_AUTH, self::REQUEST_TYPE_RECEIPT_IN)) {
+	function getLastTransactionData ($payments, $request_type = array(
+		self::REQUEST_TYPE_AUTH,
+		self::REQUEST_TYPE_RECEIPT_IN
+	)) {
 		$payment = end($payments);
 		if (in_array($payment->realex_request_type_response, $request_type)) {
 			return $payment;
@@ -1280,22 +1292,29 @@ class  RealexHelperRealex {
 	 */
 	function getXmlResponse ($xml_request) {
 		$this->xml_request = $xml_request;
+		$requestToLog = $xml_request;
+		$xml_requestToLog = simplexml_load_string($requestToLog);
+		if ($xml_requestToLog) {
+			if (isset($xml_requestToLog->card)) {
+				$card_number = $xml_requestToLog->card->number;
+				$cc_length = strlen($card_number);
+				$xml_requestToLog->card->number = str_repeat("*", $cc_length);
+			}
+			if (isset($xml_requestToLog->sha1hash)) {
+				$sha1hash = $xml_requestToLog->sha1hash;
+				$sha1hash_length = strlen($sha1hash);
+				$xml_requestToLog->sha1hash = str_repeat("*", $sha1hash_length);
+			}
 
-		$request = simplexml_load_string($xml_request);
-		if (isset($request->card)) {
-			$card_number = $request->card->number;
-			$cc_length = strlen($card_number);
-			$request->card->number = str_repeat("*", $cc_length);
+			//$this->debugLog(print_r($request, true), 'debug');
+			$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $xml_requestToLog->asXML() . '</textarea>', 'Request', 'message');
+
+		} else {
+			// THIS IS AN ERROR: cannot log there was an error
+			$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">COULD NOT LOG INT THIS' . $requestToLog . '</textarea>', 'Request', 'error');
+// we do not continue because anyway we will have   <message>Bad XML formation</message>
+			return NULL;
 		}
-		if (isset($request->sha1hash)) {
-			$sha1hash = $request->sha1hash;
-			$sha1hash_length = strlen($sha1hash);
-			$request->sha1hash = str_repeat("*", $sha1hash_length);
-		}
-
-
-		//$this->debugLog(print_r($request, true), 'debug');
-		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $request->asXML() . '</textarea>', 'Request', 'message');
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->getRemoteURL());
@@ -1331,7 +1350,8 @@ class  RealexHelperRealex {
 	/**
 	 * @param $message
 	 */
-static $displayErrorDone=false;
+	static $displayErrorDone = false;
+
 	function displayError ($admin, $public = '') {
 		if ($admin == NULL) {
 			$admin = "an error occurred";
@@ -1341,5 +1361,263 @@ static $displayErrorDone=false;
 			$public = $admin;
 		}
 		vmError((string)$admin, (string)$public);
+	}
+
+	/**
+	 * Realex requires that non asci characters are removed from the cc name
+	 * @param $string
+	 * @return string
+	 */
+	function replaceNonAsciiCharacters ($string) {
+		$replacements = $this->getReplacements();
+		$string = strtr($string, $replacements);
+		return $string;
+	}
+
+	/**
+	 * Return array of URL characters to be replaced.
+	 *
+	 * @return array
+	 */
+	public function getReplacements () {
+		return array(
+			'Á'  => 'A',
+			'Â'  => 'A',
+			'Å'  => 'A',
+			'Ă'  => 'A',
+			'Ä'  => 'A',
+			'À'  => 'A',
+			'Æ'  => 'A',
+			'Ć'  => 'C',
+			'Ç'  => 'C',
+			'Č'  => 'C',
+			'Ď'  => 'D',
+			'É'  => 'E',
+			'È'  => 'E',
+			'Ë'  => 'E',
+			'Ě'  => 'E',
+			'Ê'  => 'E',
+			'Ì'  => 'I',
+			'Í'  => 'I',
+			'Î'  => 'I',
+			'Ï'  => 'I',
+			'Ĺ'  => 'L',
+			'ľ'  => 'l',
+			'Ľ'  => 'L',
+			'Ń'  => 'N',
+			'Ň'  => 'N',
+			'Ñ'  => 'N',
+			'Ò'  => 'O',
+			'Ó'  => 'O',
+			'Ô'  => 'O',
+			'Õ'  => 'O',
+			'Ö'  => 'O',
+			'Ø'  => 'O',
+			'Ŕ'  => 'R',
+			'Ř'  => 'R',
+			'Š'  => 'S',
+			'Ś'  => 'S',
+			'Ť'  => 'T',
+			'Ů'  => 'U',
+			'Ú'  => 'U',
+			'Ű'  => 'U',
+			'Ü'  => 'U',
+			'Û'  => 'U',
+			'Ý'  => 'Y',
+			'Ž'  => 'Z',
+			'Ź'  => 'Z',
+			'á'  => 'a',
+			'â'  => 'a',
+			'å'  => 'a',
+			'ä'  => 'a',
+			'à'  => 'a',
+			'æ'  => 'a',
+			'ć'  => 'c',
+			'ç'  => 'c',
+			'č'  => 'c',
+			'ď'  => 'd',
+			'đ'  => 'd',
+			'é'  => 'e',
+			'ę'  => 'e',
+			'ë'  => 'e',
+			'ě'  => 'e',
+			'è'  => 'e',
+			'ê'  => 'e',
+			'ì'  => 'i',
+			'í'  => 'i',
+			'î'  => 'i',
+			'ï'  => 'i',
+			'ĺ'  => 'l',
+			'ń'  => 'n',
+			'ň'  => 'n',
+			'ñ'  => 'n',
+			'ò'  => 'o',
+			'ó'  => 'o',
+			'ô'  => 'o',
+			'ő'  => 'o',
+			'ö'  => 'o',
+			'ø'  => 'o',
+			'š'  => 's',
+			'ś'  => 's',
+			'ř'  => 'r',
+			'ŕ'  => 'r',
+			'ť'  => 't',
+			'ů'  => 'u',
+			'ú'  => 'u',
+			'ù'  => 'u',
+			'ű'  => 'u',
+			'ü'  => 'u',
+			'û'  => 'u',
+			'ý'  => 'y',
+			'ž'  => 'z',
+			'ź'  => 'z',
+			'˙'  => '-',
+			'ß'  => 'ss',
+			'Ą'  => 'A',
+			'µ'  => 'u',
+			'ą'  => 'a',
+			'Ę'  => 'E',
+			'ż'  => 'z',
+			'Ż'  => 'Z',
+			'ł'  => 'l',
+			'Ł'  => 'L',
+			'А'  => 'A',
+			'а'  => 'a',
+			'Б'  => 'B',
+			'б'  => 'b',
+			'В'  => 'V',
+			'в'  => 'v',
+			'Г'  => 'G',
+			'г'  => 'g',
+			'Д'  => 'D',
+			'д'  => 'd',
+			'Е'  => 'E',
+			'е'  => 'e',
+			'Ж'  => 'Zh',
+			'ж'  => 'zh',
+			'З'  => 'Z',
+			'з'  => 'z',
+			'И'  => 'I',
+			'и'  => 'i',
+			'Й'  => 'I',
+			'й'  => 'i',
+			'К'  => 'K',
+			'к'  => 'k',
+			'Л'  => 'L',
+			'л'  => 'l',
+			'М'  => 'M',
+			'м'  => 'm',
+			'Н'  => 'N',
+			'н'  => 'n',
+			'О'  => 'O',
+			'о'  => 'o',
+			'П'  => 'P',
+			'п'  => 'p',
+			'Р'  => 'R',
+			'р'  => 'r',
+			'С'  => 'S',
+			'с'  => 's',
+			'Т'  => 'T',
+			'т'  => 't',
+			'У'  => 'U',
+			'у'  => 'u',
+			'Ф'  => 'F',
+			'ф'  => 'f',
+			'Х'  => 'Kh',
+			'х'  => 'kh',
+			'Ц'  => 'Tc',
+			'ц'  => 'tc',
+			'Ч'  => 'Ch',
+			'ч'  => 'ch',
+			'Ш'  => 'Sh',
+			'ш'  => 'sh',
+			'Щ'  => 'Shch',
+			'щ'  => 'shch',
+			'Ы'  => 'Y',
+			'ы'  => 'y',
+			'Э'  => 'E',
+			'э'  => 'e',
+			'Ю'  => 'Iu',
+			'ю'  => 'iu',
+			'Я'  => 'Ia',
+			'я'  => 'ia',
+			'Ъ'  => '',
+			'ъ'  => '',
+			'Ь'  => '',
+			'ь'  => '',
+			'Ё'  => 'E',
+			'ё'  => 'e',
+			'ου' => 'ou',
+			'ού' => 'ou',
+			'α'  => 'a',
+			'β'  => 'b',
+			'γ'  => 'g',
+			'δ'  => 'd',
+			'ε'  => 'e',
+			'ζ'  => 'z',
+			'η'  => 'i',
+			'θ'  => 'th',
+			'ι'  => 'i',
+			'κ'  => 'k',
+			'λ'  => 'l',
+			'μ'  => 'm',
+			'ν'  => 'n',
+			'ξ'  => 'ks',
+			'ο'  => 'o',
+			'π'  => 'p',
+			'ρ'  => 'r',
+			'σ'  => 's',
+			'τ'  => 't',
+			'υ'  => 'i',
+			'φ'  => 'f',
+			'χ'  => 'x',
+			'ψ'  => 'ps',
+			'ω'  => 'o',
+			'ά'  => 'a',
+			'έ'  => 'e',
+			'ί'  => 'i',
+			'ή'  => 'i',
+			'ό'  => 'o',
+			'ύ'  => 'i',
+			'ώ'  => 'o',
+			'Ου' => 'ou',
+			'Ού' => 'ou',
+			'Α'  => 'a',
+			'Β'  => 'b',
+			'Γ'  => 'g',
+			'Δ'  => 'd',
+			'Ε'  => 'e',
+			'Ζ'  => 'z',
+			'Η'  => 'i',
+			'Θ'  => 'th',
+			'Ι'  => 'i',
+			'Κ'  => 'k',
+			'Λ'  => 'l',
+			'Μ'  => 'm',
+			'Ν'  => 'n',
+			'Ξ'  => 'ks',
+			'Ο'  => 'o',
+			'Π'  => 'p',
+			'Ρ'  => 'r',
+			'Σ'  => 's',
+			'Τ'  => 't',
+			'Υ'  => 'i',
+			'Φ'  => 'f',
+			'Χ'  => 'x',
+			'Ψ'  => 'ps',
+			'Ω'  => 'o',
+			'ς'  => 's',
+			'Ά'  => 'a',
+			'Έ'  => 'e',
+			'Ή'  => 'i',
+			'Ί'  => 'i',
+			'Ό'  => 'o',
+			'Ύ'  => 'i',
+			'Ώ'  => 'o',
+			'ϊ'  => 'i',
+			'ΐ'  => 'i',
+
+		);
+
 	}
 }

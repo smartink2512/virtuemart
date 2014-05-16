@@ -160,14 +160,14 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 
 	}
 
-	function displayRemoteCCForm ($xml_response_dcc = NULL) {
+	function displayRemoteCCForm ($xml_response_dcc = NULL, $error=FALSE) {
 
 		$useSSL = $this->useSSL();
 		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $this->cart->useXHTML, $useSSL);
 		$card_payment_button = $this->getPaymentButton();
 		if ($xml_response_dcc) {
 			$notificationTask = "handleRemoteDccForm";
-		} elseif ($this->isCC3DSVerifyEnrolled() and $this->_method->threedsecure) {
+		} elseif ($this->isCC3DSVerifyEnrolled() and $this->_method->threedsecure AND !$error) {
 			$notificationTask = "handleVerify3D";
 		} else {
 			$notificationTask = "handleRemoteCCForm";
@@ -180,6 +180,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			$this->_method->creditcards = (array)$this->_method->creditcards;
 		}
 		$ccDropdown = "";
+		$offer_save_card=false;
 		if (!JFactory::getUser()->guest AND $this->_method->realvault) {
 			//$selected_cc = $this->customerData->getVar('saved_cc_selected');
 			$selected_cc=-1;
@@ -187,6 +188,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			if ($selected_cc > 0) {
 				$realvault = $this->getStoredCCsData($selected_cc);
 			}
+			$offer_save_card=$this->_method->offer_save_card;
 		}
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->_method->payment_currency);
 
@@ -213,7 +215,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			$ccData['cc_type'] = $this->customerData->getVar('cc_type');
 			$ccData['cc_number'] = $this->customerData->getVar('cc_number');
 			$ccData['cc_number_masked'] = $this->customerData->getMaskedCCnumber();
-			$ccData['cc_cvv'] = $this->customerData->getVar('cc_cvv');
+			$ccData['cc_cvv'] =  $this->customerData->getVar('cc_cvv');
+			$ccData['cc_cvv_masked'] = '***';
 			$ccData['cc_expire_month'] = $this->customerData->getVar('cc_expire_month');
 			$ccData['cc_expire_year'] = $this->customerData->getVar('cc_expire_year');
 			$ccData['cc_name'] = $this->customerData->getVar('cc_name');
@@ -231,7 +234,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		                                                             "dccinfo"                     => $dccinfo,
 		                                                             "ccData"                      => $ccData,
 		                                                             'creditcards'                 => $this->_method->creditcards,
-		                                                             'offer_save_card'             => $this->_method->offer_save_card,
+		                                                             'offer_save_card'             => $offer_save_card,
 		                                                             'order_number'                => $this->order['details']['BT']->order_number,
 		                                                             'virtuemart_paymentmethod_id' => $this->_method->virtuemart_paymentmethod_id,
 		                                                             'cvv_info'                    => $cvv_info,
@@ -434,7 +437,6 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 
 		// determine the eci value to use if the card is not enrolled in the 3D Secure scheme
-		$eci = false;
 		if ($xml_response->enrolled != self::ENROLLED_TAG_ENROLLED) {
 			$eci = $this->getEciValue($liabilityShift);
 		}
@@ -515,7 +517,9 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	}
 
 	function confirmedOrderRealVault ($saved_cc_selected) {
-		if ($saved_cc_selected == -1) {
+		$setNewPaymentSuccess=true;
+		// if no card are already saved, then
+		if ($saved_cc_selected == -1 OR empty($saved_cc_selected)) {
 			if ($this->doRealVault()) {
 				$newPayerRef = "";
 				$responseNewPayer = $this->setNewPayer($newPayerRef);
@@ -528,7 +532,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			}
 		}
 
-		return;
+		return $setNewPaymentSuccess;
 	}
 
 	/**
@@ -693,7 +697,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 				</card>
 				';
 		if ($this->_method->dcc) {
-			$xml_request .= '<autosettle flag="1" />';
+			$xml_request .= '<autosettle flag="1" />
+			';
 		} else {
 			$xml_request .= '<autosettle flag="' . $this->getSettlement() . '" />
 			';
@@ -717,7 +722,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 
 		if ($this->_method->dcc) {
-			$dcc_choice = vRequest::getInt('dcc_choice', 0);
+			$dcc_choice = $this->customerData->getVar('dcc_choice');
+
 			if ($dcc_choice) {
 				$rate = $xml_response_dcc->dccinfo->cardholderrate;
 				$currency = $xml_response_dcc->dccinfo->cardholdercurrency;
@@ -766,7 +772,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 
 		if ($realvault) {
 			$xml_request .= '<payerref>' . $realvault->realex_saved_payer_ref . '</payerref>
-			<paymentmethod>' . $realvault->realex_saved_pmt_ref . '</paymentmethod>';
+			<paymentmethod>' . $realvault->realex_saved_pmt_ref . '</paymentmethod>
+			';
 			$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), $realvault->realex_saved_payer_ref);
 
 		} else {
@@ -777,7 +784,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		$xml_request .= '<dccinfo>
 			<ccp>' . $this->_method->dcc_service . '</ccp>
 			<type>1</type>
-		</dccinfo>';
+		</dccinfo>
+		';
 
 
 		$xml_request .= $this->setComments();

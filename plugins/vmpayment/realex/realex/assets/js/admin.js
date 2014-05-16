@@ -43,18 +43,17 @@ jQuery().ready(function ($) {
 
         $('.realvault').parents('tr').hide();
         $('.norealvault').parents('tr').hide();
-if (integration=='redirect') {
-    if (realvault == 1) {
-        $('.redirect-realvault').parents('tr').show();
-    } else  {
-        $('.redirect-norealvault').parents('tr').show();
-    }
-}
-        if (realvault == 1) {
+
+        if (integration == 'redirect') {
+            if (realvault == 1) {
+                $('.redirect-realvault').parents('tr').show();
+            } else {
+                $('.redirect-norealvault').parents('tr').show();
+            }
+        } else {
             $('.realvault').parents('tr').show();
-        } else  {
-            $('.norealvault').parents('tr').show();
         }
+
     }
 
     handleSettlement = function () {
@@ -67,11 +66,21 @@ if (integration=='redirect') {
         }
     }
 
+    handlethreedsecure = function () {
+        var threedsecure = $('#paramsthreedsecure').val();
+
+        $('.threedsecure').parents('tr').hide();
+
+        if (threedsecure == 1 ) {
+            $('.threedsecure').parents('tr').show();
+        }
+    }
+
     handleDcc = function () {
         var dcc = $('#paramsdcc').val();
 
-         $('.dcc').parents('tr').hide();
-         $('.nodcc').parents('tr').hide();
+        $('.dcc').parents('tr').hide();
+        $('.nodcc').parents('tr').hide();
 
         if (dcc == 1) {
             $('.dcc').parents('tr').show();
@@ -82,7 +91,7 @@ if (integration=='redirect') {
     }
 
     handleAutoComplete = function () {
-        $('#paramsmerchant_id').attr('autocomplete','off');
+        $('#paramsmerchant_id').attr('autocomplete', 'off');
     }
     /**********/
     /* Events */
@@ -101,7 +110,9 @@ if (integration=='redirect') {
     $('#paramsdcc').change(function () {
         handleDcc();
     });
-
+    $('#paramsthreedsecure').change(function () {
+        handlethreedsecure();
+    });
 
     /*****************/
     /* Initial calls */
@@ -111,5 +122,6 @@ if (integration=='redirect') {
     handleRealvault();
     handleSettlement();
     handleDcc();
+    handlethreedsecure();
     handleAutoComplete();
 });
