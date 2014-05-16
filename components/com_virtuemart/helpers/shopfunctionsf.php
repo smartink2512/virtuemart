@@ -408,15 +408,16 @@ class shopFunctionsF {
 		$mailer->isHTML( VmConfig::get( 'order_mail_html', TRUE ) );
 		$mailer->setBody( $body );
 
-		if(!$noVendorMail) {
-			$replyto[0] = $view->vendorEmail;
-			$replyto[1] = $view->vendor->vendor_name;
-			$mailer->addReplyTo( $replyto );
-		}
-		/*	if (isset($view->replyTo)) {
-				 $mailer->addReplyTo($view->replyTo);
-			 }*/
 
+		if(!$noVendorMail) {
+			$replyTo[0] = $view->vendorEmail;
+			$replyTo[1] = $view->vendor->vendor_name;
+			$mailer->addReplyTo( $replyTo );
+		} else {
+			$replyTo[0] = $view->orderDetails['details']['BT']->email;
+			$replyTo[1] = $view->orderDetails['details']['BT']->first_name.' '.$view->orderDetails['details']['BT']->last_name;
+			$mailer->addReplyTo( $replyTo );
+		}
 		if(isset($view->mediaToSend)) {
 			foreach( (array)$view->mediaToSend as $media ) {
 				$mailer->addAttachment( $media );
