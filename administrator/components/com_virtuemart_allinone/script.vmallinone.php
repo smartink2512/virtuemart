@@ -612,8 +612,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
 		 */
 		function updateJoomlaUpdateServer( $type, $element, $dst  ){
-			echo ('<br /><br />updateJoomlaUpdateServer' .   ' ' . $type . ' ' . $element . ' ' . $dst);
-
+			//echo ('<br /><br />updateJoomlaUpdateServer' .   ' ' . $type . ' ' . $element . ' ' . $dst);
 
 			$db = JFactory::getDBO();
 			$extensionXmlFileName=$this->getExtensionXmlFileName($type, $element, $dst );
@@ -684,7 +683,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				}
 
 			} else {
-				//echo ('<br />UPDATE SERVER NOT FOUND IN XML FILE:'.$extensionXmlFileName);
+				echo ('<br />UPDATE SERVER NOT FOUND IN XML FILE:'.$extensionXmlFileName);
 			}
 		}
 
