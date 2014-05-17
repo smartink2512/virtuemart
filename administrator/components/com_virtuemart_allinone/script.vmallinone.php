@@ -203,7 +203,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				}*/
 
 				echo "<H3>Installing VirtueMart Plugins and modules Success.</h3>";
-				echo "<H3>Keep the AIO component for updating</h3>";
+				echo "<H3>Keep the AIO component for automatic updates of ALL VirtueMart Plugins and modules</h3>";
 
 			} else {
 				echo "<H3>Updated VirtueMart Plugin tables</h3>";
@@ -355,6 +355,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 						$this->updatePluginTable ($name, $type, $element, $group, $dst);
 					}
 				}
+				$this->updateJoomlaUpdateServer( $type, $element, $src   );
 			}
 
 
@@ -565,6 +566,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				}
 
 			}
+
+			$this->updateJoomlaUpdateServer( 'module', $module, $src   );
 		}
 
 		public function VmModulesAlreadyInstalled () {
@@ -588,7 +591,63 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$count = $db->loadResult ();
 			return $count;
 		}
+
+ 		/**
+		 * @param $type= 'plugin'
+		 * @param $element= 'textinput'
+		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
+		 */
+		function updateJoomlaUpdateServer( $type, $element, $src  ){
+			$db = JFactory::getDBO();
+			$extensionXmlFileName=$this->getExtensionXmlFileName($type, $element, $src );
+				$xml=simplexml_load_file($extensionXmlFileName);
+				$element=$this->getElement($xml);
+
+				$query="SELECT COUNT(*) FROM #__updates WHERE type=".$db->quote($element)." AND element=".$db->quote($element);
+				$db->setQuery($query);
+				$result=$db->loadResult();
+				if($result>0) {
+					// the extension is already listed in the table
+					return;
+				}
+
+				if(isset($xml->updateservers->server)) {
+					$query="SELECT extension_id FROM #__extensions WHERE type=".$db->quote($type)." AND element=".$db->quote($element);
+					$db->setQuery($query);
+					$extension_id=$db->loadResult();
+					if(!$extension_id) {
+						return;
+					}
+					$query="INSERT INTO #__update_sites SET name=".$db->quote((string)$xml->updateservers->server['name']).",
+					        type=".$db->quote((string)$xml->updateservers->server['type']).",
+					        location=".$db->quote((string)$xml->updateservers->server).", enabled=1 ";
+					$db->setQuery($query);
+					$db->query();
+
+					$update_site_id=$db->insertId();
+
+					$query="INSERT INTO #__update_sites_extensions SET update_site_id=".$update_site_id.", extension_id=".$extension_id." \n";
+					$db->setQuery($query);
+					$db->query();
+
+				}
+		}
+
 		/**
+		 * @param $type= 'plugin'
+		 * @param $element= 'textinput'
+		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
+		 */
+		function getExtensionXmlFileName($type, $element, $src ){
+			if ($type=='plugin') {
+				$extensionXmlFileName=  $src. DS . $element. DS .'xml';
+			} else if ($type=='module'){
+				$extensionXmlFileName = $src. DS . $element. DS .'xml';
+			}
+			return $extensionXmlFileName;
+		}
+
+	/**
 		 * @author Max Milbers
 		 * @param string $tablename
 		 * @param string $fields
