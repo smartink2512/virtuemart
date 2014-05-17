@@ -89,7 +89,6 @@ class AdminUIHelper {
 		<?php
 		// Include ALU System
 		if (self::$backEnd) {
-		require_once JPATH_VM_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		?>
 
 			<div class="menu-wrapper">
@@ -97,9 +96,6 @@ class AdminUIHelper {
 				<?php AdminUIHelper::showAdminMenu();
 				?>
 				<div class="menu-notice">
-				<?php
-				echo LiveUpdate::getIcon(array(),'notice');
-				?>
 				<?php echo VmConfig::getInstalledVersion(); ?>
 				</div>
 

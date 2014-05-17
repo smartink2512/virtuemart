@@ -16,12 +16,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.net
 */
 
-//This is for akeeba release system, it must be executed before any other task
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
-if(JRequest::getCmd('view','') == 'liveupdate') {
-    LiveUpdate::handleRequest();
-    return;
-}
 
 if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
