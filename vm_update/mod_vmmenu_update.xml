@@ -4,10 +4,10 @@
     <!--update>
         <name>vmpayment Paypal</name>
         <description>vmpayment Paypal</description>
-   <element>mod_virtuemart_currencies</element>
+        <element>paypal</element>
         <type>module</type>
         <version>2.6.2</version>
-        <client>0</client>
+        <client>1</client>
 
         <infourl title="VirtueMart URL">http://dev.virtuemart.net/attachments/download/XXX/plg_vmpayment_paypal.${PHING.VM.RELEASE}.zip</infourl>
         <downloads>

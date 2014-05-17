@@ -2,11 +2,12 @@
 <updates>
 
     <!--update>
-        <name>vmpayment Standard</name>
-        <description>vmpayment Standard</description>
-        <element>paypal</element>
-        <type>plugin</type>
+        <name>mod_virtuemart_search</name>
+        <description>mod_virtuemart_search</description>
+   <element>mod_virtuemart_search</element>
+        <type>module</type>
         <version>2.6.2</version>
+        <client>0</client>
 
         <infourl title="VirtueMart URL">http://dev.virtuemart.net/attachments/download/XXX/plg_vmpayment_standard.${PHING.VM.RELEASE}.zip</infourl>
         <downloads>

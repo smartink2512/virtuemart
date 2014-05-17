@@ -2,10 +2,12 @@
 <updates>
 
     <!--update>
-        <name>vmpayment Paypal</name>
-        <description>vmpayment Paypal</description>
-        <element>paypal</element>
+        <name>PayPal</name>
+        <description>PayPal</description>
         <type>plugin</type>
+        <folder>vmpayment</folder>
+        <element>paypal</element>
+        <client>0</client>
         <version>2.6.2</version>
 
         <infourl title="VirtueMart URL">http://dev.virtuemart.net/attachments/download/XXX/plg_vmpayment_paypal.${PHING.VM.RELEASE}.zip</infourl>

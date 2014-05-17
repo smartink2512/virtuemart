@@ -7,6 +7,7 @@
         <element>paypal</element>
         <type>plugin</type>
         <version>2.6.2</version>
+        <client>0</client>
 
         <infourl title="VirtueMart URL">http://dev.virtuemart.net/attachments/download/XXX/plg_vmpayment_standard.${PHING.VM.RELEASE}.zip</infourl>
         <downloads>
