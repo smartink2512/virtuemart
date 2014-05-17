@@ -96,7 +96,8 @@ class AdminUIHelper {
 				<?php AdminUIHelper::showAdminMenu();
 				?>
 				<div class="menu-notice">
-				<?php echo VmConfig::getInstalledVersion(); ?>
+				<?php
+				echo "VirtueMart ".VmConfig::getInstalledVersion(); ?>
 				</div>
 
 			</div>

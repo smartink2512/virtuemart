@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<install version="1.5" type="plugin" group="vmpayment" method="upgrade">
+<extension version="2.5" type="plugin" group="vmpayment" method="upgrade">
     <name>VM Payment - klikandpay</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
@@ -193,4 +193,4 @@
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
     </params>
-</install>
+</extension>

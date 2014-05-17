@@ -172,4 +172,4 @@
             <option value="1">VMPAYMENT_PAYZEN_YES</option>
         </param>
     </params>
-</install>
+</extension>
