@@ -20,8 +20,6 @@
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>admin.virtuemart_allinone.php</filename>
-			<folder>assets</folder>
-			<folder>classes</folder>
 			<folder>libraries</folder>
 			<folder>plugins</folder>
 			<folder>modules</folder>
