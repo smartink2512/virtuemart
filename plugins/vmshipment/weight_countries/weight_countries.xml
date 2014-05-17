@@ -59,5 +59,8 @@
         <param name="free_shipment" type="text" label="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT"
                description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC"/>
     </params>
-
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart2 plg_vmshipment_weight_countries Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmshipment_weight_countries_update.xml]]></server>
+    </updateservers>
 </install>

@@ -90,5 +90,8 @@
         <param name="cost_percent_total" type="hidden" />
         <param name="cost_per_transaction" type="hidden" />
     </params>
-
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart2 plg_vmpayment_klarnacheckout Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmpayment_klarnacheckout_update.xml]]></server>
+    </updateservers>
 </install>

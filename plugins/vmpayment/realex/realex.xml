@@ -221,6 +221,9 @@
         </param>
 
     </params>
-
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart2 plg_vmpayment_realex Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmpayment_realex_update.xml]]></server>
+    </updateservers>
 
 </extension>

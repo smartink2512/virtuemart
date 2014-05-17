@@ -66,7 +66,6 @@
 			<folder>helpers</folder>
 			<folder>install</folder>
 			<folder>language</folder>
-			<folder>liveupdate</folder>
 			<folder>models</folder>
 			<folder>plugins</folder>
 			<folder>tables</folder>
@@ -90,6 +89,6 @@
     <!-- UPDATESERVER DEFINITION -->
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart Update Site"><![CDATA[http://virtuemart.net/releases/virtuemart2-update.xml]]></server>
+        <server type="extension" name="VirtueMart2 Update Site"><![CDATA[http://virtuemart.net/releases/vm2/virtuemart_update.xml]]></server>
     </updateservers>
 </install>

@@ -20,4 +20,8 @@
         <param name="custom_specification_name2" type="text" size="64"  default="" label="VMCUSTOM_SPECIFICATION_NAME_INFO" description="VMCUSTOM_SPECIFICATION_NAME_INFO_DESC" />
         <param name="custom_specification_default2" type="text"  size="64"  default="" label="VMCUSTOM_SPECIFICATION_DEFAULT_INFO" description="VMCUSTOM_SPECIFICATION_DEFAULT_INFO_DESC" />
     </params>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart2 plg_vmcustom_specification Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmcustom_specification_update.xml]]></server>
+    </updateservers>
 </install>

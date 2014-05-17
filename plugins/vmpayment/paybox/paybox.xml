@@ -221,4 +221,8 @@
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
     </params>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart2 plg_vmpayment_paybox Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmpayment_paybox_update.xml]]></server>
+    </updateservers>
 </install>
