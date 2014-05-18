@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<install version="1.5" type="plugin" group="vmcustom" >
+<extension version="1.5" type="plugin" group="vmcustom" >
     <name>Stockable</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
@@ -28,4 +28,4 @@
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart2 plg_vmcustom_stockable Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmcustom_stockable_update.xml]]></server>
     </updateservers>
-</install>
+</extension>
