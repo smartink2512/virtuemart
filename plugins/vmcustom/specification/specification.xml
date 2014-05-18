@@ -22,6 +22,6 @@
     </params>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart2 plg_vmcustom_specification Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmcustom_specification_update.xml]]></server>
+        <server type="extension" name="VirtueMart plg_vmcustom_specification Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmcustom_specification_update.xml]]></server>
     </updateservers>
 </extension>

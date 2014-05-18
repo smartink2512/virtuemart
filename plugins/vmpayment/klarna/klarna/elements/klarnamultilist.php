@@ -40,7 +40,7 @@ class JElementKlarnaMultiList extends JElement
 		foreach ($node->children() as $option) {
 			$val = $option->attributes('value');
 			$text = $option->data();
-			$options[] = JHTML::_('select.option', $val, JText::_($text));
+			$options[] = JHTML::_('select.option', $val, vmText::_($text));
 		}
 
 		// Construct the various argument calls that are supported.
@@ -55,7 +55,7 @@ class JElementKlarnaMultiList extends JElement
 		}
 		if ($m = $node->attributes('multiple')) {
 
-			$attribs = 'multiple="true"   data-placeholder="' . JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS') . '"';
+			$attribs = 'multiple="true"   data-placeholder="' . vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS') . '"';
 			$ctrl .= '[]';
 		}
 

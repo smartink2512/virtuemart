@@ -56,7 +56,7 @@ if (!empty($viewData['payment_logo_link'] )) {
 <label for="payment_id_<?php echo $viewData['plugin']->virtuemart_paymentmethod_id; ?>">
     <span class="vmpayment">
         <?php if (!empty($viewData['payment_logo_link'] )) { ?>
-	        <a class="payment-logo-link" title="<?php echo JText::_('VMPAYMENT_SOFORT_READMORE')?>" href="<?php echo $viewData ["payment_logo_link"]; ?>" >
+	        <a class="payment-logo-link" title="<?php echo vmText::_('VMPAYMENT_SOFORT_READMORE')?>" href="<?php echo $viewData ["payment_logo_link"]; ?>" >
         <?php } ?>
         <?php if (!empty($viewData['payment_logo'] )) { ?>
 	        <span class="vmCartPaymentLogo"><?php echo $viewData ['payment_logo']; ?> </span>
@@ -69,7 +69,7 @@ if (!empty($viewData['payment_logo_link'] )) {
 		    <span class="vmpayment_description"><?php echo $viewData['plugin']->payment_desc; ?></span>
 	    <?php } ?>
 	    <?php if (!empty($viewData['payment_cost']  )) { ?>
-		    <span class="vmpayment_cost"><?php echo JText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') .  $viewData['payment_cost']  ?></span>
+		    <span class="vmpayment_cost"><?php echo vmText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') .  $viewData['payment_cost']  ?></span>
 	    <?php } ?>
     </span>
 </label>

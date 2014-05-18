@@ -26,6 +26,6 @@ $pmid = $method->virtuemart_paymentmethod_id;
 ?>
 <div id="paymentMethodOptions_<?php echo $pmid; ?>" class="paymentMethodOptions" style="display:none;">
     <br />
-    <label for="autobilling_max_amount_<?php echo $pmid; ?>"><?php echo JText::_('VMPAYMENT_PAYPAL_PAYMENT_BILLING_MAX_AMOUNT'); ?>:</label>
+    <label for="autobilling_max_amount_<?php echo $pmid; ?>"><?php echo vmText::_('VMPAYMENT_PAYPAL_PAYMENT_BILLING_MAX_AMOUNT'); ?>:</label>
     <input type="text" class="inputbox" id="autobilling_max_amount_<?php echo $pmid; ?>" name="autobilling_max_amount_<?php echo $pmid; ?>" maxlength="4" size="5" value="<?php echo $customerData->getVar('autobilling_max_amount'); ?>" autocomplete="off" />
 </div>

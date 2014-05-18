@@ -151,16 +151,16 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 
 			$amountInCurrency = vmPSPlugin::getAmountInCurrency($recurring->MONTANT, $order['details']['BT']->order_currency);
 
-			$recurring_comment .= "<br />" . JText::_('VMPAYMENT_KLIKANDPAY_RECURRING_MONTANT') . ' ' . $amountInCurrency['display'];
+			$recurring_comment .= "<br />" . vmText::_('VMPAYMENT_KLIKANDPAY_RECURRING_MONTANT') . ' ' . $amountInCurrency['display'];
 			if (isset($recurring->MONTANT2)) {
 				$amountInCurrency = vmPSPlugin::getAmountInCurrency($recurring->MONTANT2, $order['details']['BT']->order_currency);
-				$recurring_comment .= "<br />" . JText::_('VMPAYMENT_KLIKANDPAY_RECURRING_MONTANT2') . ' ' . $amountInCurrency['display'];
+				$recurring_comment .= "<br />" . vmText::_('VMPAYMENT_KLIKANDPAY_RECURRING_MONTANT2') . ' ' . $amountInCurrency['display'];
 			}
 			if (isset($recurring->EXTRA)) {
-				$recurring_comment .= "<br />" . Jtext::_('VMPAYMENT_KLIKANDPAY_RECURRING_EXTRA') . ' ' . substr($recurring->EXTRA, 0, 1);
+				$recurring_comment .= "<br />" . vmText::_('VMPAYMENT_KLIKANDPAY_RECURRING_EXTRA') . ' ' . substr($recurring->EXTRA, 0, 1);
 			}
 			if (isset($recurring->DATE2)) {
-				$recurring_comment .= Jtext::_('VMPAYMENT_KLIKANDPAY_RECURRING_DATE2') . ' ' . $recurring->DATE2;
+				$recurring_comment .= vmText::_('VMPAYMENT_KLIKANDPAY_RECURRING_DATE2') . ' ' . $recurring->DATE2;
 			}
 		}
 		$nbRecurringDone = $this->getNbRecurringDone($payments);

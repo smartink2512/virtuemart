@@ -170,8 +170,8 @@ class  PayboxHelperPaybox {
 		$cart->_confirmDone = FALSE;
 		$cart->_dataValidated = FALSE;
 		$cart->setCartIntoSession();
-		JRequest::setVar('display_title', false);
-		JRequest::setVar('html', $html);
+		vRequest::setVar('display_title', false);
+		vRequest::setVar('html', $html);
 
 		return;
 	}
@@ -301,7 +301,7 @@ class  PayboxHelperPaybox {
 		$first = TRUE;
 		$lang = JFactory::getLanguage();
 		foreach ($payments as $payment) {
-			$html .= '<tr class="row1"><td>' . JText::_('VMPAYMENT_' . $this->plugin_name . '_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			$html .= '<tr class="row1"><td>' . vmText::_('VMPAYMENT_' . $this->plugin_name . '_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
 			// Now only the first entry has this data when creating the order
 			if ($first) {
 				$html .= $this->plugin->getHtmlRowBE($this->plugin_name . '_PAYMENT_NAME', $payment->payment_name);
@@ -412,7 +412,7 @@ jQuery().ready(function($) {
 
 		} else {
 
-			$html .= '<input type="submit"  value="' . JText::_('VMPAYMENT_'.$this->plugin_name.'_REDIRECT_MESSAGE') . '" />
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_'.$this->plugin_name.'_REDIRECT_MESSAGE') . '" />
 					<script type="text/javascript">';
 			$html .= '		document.vm_paybox_form.submit();';
 			$html .= '	</script>';
@@ -484,7 +484,7 @@ jQuery().ready(function($) {
 			// only send an error message if the error does not come from PBX_EFFECTUE
 			//$msg .= '            ' . 'sig ' . $sig . '<br />';
 			// we cannot send an error at this stage because may be the signature is not valid from the
-			$this->plugin->debugLog(JText::_('VMPAYMENT_'.$this->plugin_name.'_ERROR_SIGNATURE_INVALID').var_export($paybox_data, true),'pbxIsValidSignature', 'error');
+			$this->plugin->debugLog(vmText::_('VMPAYMENT_'.$this->plugin_name.'_ERROR_SIGNATURE_INVALID').var_export($paybox_data, true),'pbxIsValidSignature', 'error');
 		}
 		$this->plugin->debugLog('pbxIsValidSignature :' . $pbxIsValidSignature,'checkSignature', 'debug');
 		return $pbxIsValidSignature;
@@ -559,7 +559,7 @@ jQuery().ready(function($) {
 			$order_history = $this->getOrderHistory($paybox_data, $order, $payments);
 
 		} else {
-			$order_history['comments'] = JText::sprintf('VMPAYMENT_' . $this->plugin_name . '_PAYMENT_STATUS_CANCELLED', $order['details']['BT']->order_number);
+			$order_history['comments'] = vmText::sprintf('VMPAYMENT_' . $this->plugin_name . '_PAYMENT_STATUS_CANCELLED', $order['details']['BT']->order_number);
 			$order_history['order_status'] = $this->_method->status_canceled;
 			$order_history['customer_notified'] = true;
 		}
@@ -603,17 +603,17 @@ jQuery().ready(function($) {
 		$test = false;
 		if ($test) {
 
-			$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . JRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
-			$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . JRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
 			$payboxURLs['url_annule'] = $url_cancelled;
 			$payboxURLs['url_refuse'] = $url_cancelled;
 			$payboxURLs['url_erreur'] = $url_cancelled;
-			$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . JRequest::getCmd('lang', '');
-			$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . JRequest::getCmd('lang', '');
+			$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
+			$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
 
 
 		} else {
-			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . JRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
 			$payboxURLs['url_annule'] = $url_cancelled;
 			$payboxURLs['url_refuse'] = $url_cancelled;
 			$payboxURLs['url_erreur'] = $url_cancelled;

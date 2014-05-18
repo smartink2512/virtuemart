@@ -109,7 +109,7 @@ return NULL;
 		if ($this->getPluginMethods($vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
-				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
+				$app->enqueueMessage(vmText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
 				return FALSE;
 			} else {
 				return FALSE;
@@ -608,8 +608,8 @@ return true;
 		$html .= "Our order number";
 		$html .= "Amazon Reference";
 		$html .= "Go tot payments.amazon... to see your payment history and other account information.";
-		JRequest::setVar('display_title', false);
-		JRequest::setVar('html', $html);
+		vRequest::setVar('display_title', false);
+		vRequest::setVar('html', $html);
 		return true;
 	}
 

@@ -48,7 +48,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		}
 
 		if (empty($this->api_login_id) || empty($this->api_signature) || empty($this->api_password)) {
-            $text=JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+            $text=vmText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
             vmError($text,$text);
 		}
 	}
@@ -380,7 +380,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		}
 		if (!$cc_valid) {
 			foreach ($errormessages as $msg) {
-				$html .= Jtext::_($msg) . "<br/>";
+				$html .= vmText::_($msg) . "<br/>";
 			}
 		}
 		if (!$cc_valid && $enqueueMessage) {
@@ -401,14 +401,14 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		//if ($this->customerData->getVar('cc_number') && $this->validate()) {
 		if ($this->customerData->getVar('cc_number') ) {
 			$cc_number = "**** **** **** " . substr($this->customerData->getVar('cc_number'), -4);
-			$creditCardInfos = '<br /><span class="vmpayment_cardinfo">' . JText::_('VMPAYMENT_PAYPAL_CC_CCTYPE') . $this->customerData->getVar('cc_type') . '<br />';
-			$creditCardInfos .=JText::_('VMPAYMENT_PAYPAL_CC_CCNUM') . $cc_number . '<br />';
-			$creditCardInfos .= JText::_('VMPAYMENT_PAYPAL_CC_CVV2') . '****' . '<br />';
-			$creditCardInfos .= JText::_('VMPAYMENT_PAYPAL_CC_EXDATE') . $this->customerData->getVar('cc_expire_month') . '/' . $this->customerData->getVar('cc_expire_year');
+			$creditCardInfos = '<br /><span class="vmpayment_cardinfo">' . vmText::_('VMPAYMENT_PAYPAL_CC_CCTYPE') . $this->customerData->getVar('cc_type') . '<br />';
+			$creditCardInfos .=vmText::_('VMPAYMENT_PAYPAL_CC_CCNUM') . $cc_number . '<br />';
+			$creditCardInfos .= vmText::_('VMPAYMENT_PAYPAL_CC_CVV2') . '****' . '<br />';
+			$creditCardInfos .= vmText::_('VMPAYMENT_PAYPAL_CC_EXDATE') . $this->customerData->getVar('cc_expire_month') . '/' . $this->customerData->getVar('cc_expire_year');
 			$creditCardInfos .="</span>";
 			$extraInfo .= $creditCardInfos;
 		} else {
-			$extraInfo .= '<br/><a href="'.JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment&Itemid=' . JRequest::getInt('Itemid'), false).'">'.JText::_('VMPAYMENT_PAYPAL_CC_ENTER_INFO').'</a>';
+			$extraInfo .= '<br/><a href="'.JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment&Itemid=' . vRequest::getInt('Itemid'), false).'">'.vmText::_('VMPAYMENT_PAYPAL_CC_ENTER_INFO').'</a>';
 		}
 		$extraInfo .= parent::getExtraPluginInfo();
 		return $extraInfo;

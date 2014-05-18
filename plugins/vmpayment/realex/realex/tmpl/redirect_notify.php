@@ -28,7 +28,7 @@ defined('_JEXEC') or die();
 		<div class="transaction_success">
 			<div class="notify_success">
 				<?php
-				echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_SUCCESS', $viewData["shop_name"]);
+				echo vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_SUCCESS', $viewData["shop_name"]);
 				?>
 			</div>
 			<?php
@@ -43,7 +43,7 @@ defined('_JEXEC') or die();
 			}
 			?>
 			<div class="return_url">
-				<a href="<?php echo $viewData["return_success"] ?>"><?php echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
+				<a href="<?php echo $viewData["return_success"] ?>"><?php echo vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
 			</div>
 		</div>
 	<?php
@@ -64,14 +64,14 @@ defined('_JEXEC') or die();
 				?>
 				<div class="notify_declined">
 					<?php
-					echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_DECLINED', $viewData["order_number"], $viewData["shop_name"]);
+					echo vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_DECLINED', $viewData["order_number"], $viewData["shop_name"]);
 					?>
 				</div>
 			<?php
 			}
 			?>
 			<div class="return_url">
-				<a href="<?php echo $viewData["return_declined"] ?>"><?php echo JText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
+				<a href="<?php echo $viewData["return_declined"] ?>"><?php echo vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $viewData["shop_name"]); ?></a>
 			</div>
 		</div>
 	<?php

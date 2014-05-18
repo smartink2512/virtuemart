@@ -21,7 +21,7 @@ defined ('_JEXEC') or die();
  		<?php echo  $viewData['paymentName'] ; ?>
     </div>
 <div class="response_transaction" style="width: 100%">
-	<span class="response_transaction_title"><?php echo JText::_ ('VMPAYMENT_SOFORT_RESPONSE_TRANSACTION'); ?> </span>
+	<span class="response_transaction_title"><?php echo vmText::_ ('VMPAYMENT_SOFORT_RESPONSE_TRANSACTION'); ?> </span>
 	<?php echo  $viewData['paymentInfos']->sofort_response_transaction; ?>
 </div>
 

@@ -37,10 +37,10 @@ class JElementGetHeidelpay extends JElement {
 		    jQuery("#heidelpay_getheidelpay_link").click( function() {
 				 if ( $("#heidelpay_getheidelpay_show_hide").is(":visible") ) {
 				  $("#heidelpay_getheidelpay_show_hide").hide("slow");
-			        $("#heidelpay_getheidelpay_link").html("' . addslashes (JText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT')) . '");
+			        $("#heidelpay_getheidelpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT')) . '");
 				} else {
 				 $("#heidelpay_getheidelpay_show_hide").show("slow");
-			       $("#heidelpay_getheidelpay_link").html("' . addslashes (JText::_ ('VMPAYMENT_HEIDELPAY_GET_HEIDELPAY_HIDE')) . '");
+			       $("#heidelpay_getheidelpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_HEIDELPAY_GET_HEIDELPAY_HIDE')) . '");
 			    }
 		    });
 		});
@@ -49,7 +49,7 @@ class JElementGetHeidelpay extends JElement {
 
 		$doc = JFactory::getDocument ();
 		$doc->addScriptDeclaration ($js);
-		$cid = jrequest::getvar ('cid', NULL, 'array');
+		$cid = vRequest::getvar ('cid', NULL, 'array');
 		if (is_Array ($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
@@ -74,11 +74,11 @@ class JElementGetHeidelpay extends JElement {
 		if ($payment_params['HEIDELPAY_SECURITY_SENDER'] == '31HA07BC8124AD82A9E96D9A35FAFD2A' or $payment_params['HEIDELPAY_SECURITY_SENDER'] == '') {
 			$id = "heidelpay_getheidelpay_link";
 			$display='';
-			$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_HEIDELPAY_ALREADY_ACCOUNT') . '</a>';
+			$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_HEIDELPAY_ALREADY_ACCOUNT') . '</a>';
 		} else {
 			$id = "heidelpay_getheidelpay_link";
 			$display=' style="display: none;"';
-			$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
+			$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
 		}
 		$lang = $this->getLang ();
 

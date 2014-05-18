@@ -42,7 +42,7 @@ class JElementGetcertificate extends JElement {
 
 			// Is the path a folder?
 			if (!is_dir($certificatePath)){
-				return '<span '.$class.'>'.JText::sprintf ('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath).'</span>';
+				return '<span '.$class.'>'.vmText::sprintf ('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath).'</span>';
 			}
 
 			$path = str_replace ('/', DS, $certificatePath);
@@ -68,7 +68,7 @@ class JElementGetcertificate extends JElement {
 					$options[] = JHTML::_ ('select.option', $file, $file);
 				}
 			}
-			$class .= ' size="5" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
+			$class .= ' size="5" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
 			return JHTML::_ ('select.genericlist', $options, '' . $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
 		}
 

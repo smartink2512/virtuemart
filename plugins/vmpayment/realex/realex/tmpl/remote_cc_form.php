@@ -50,9 +50,9 @@ if ($viewData['dccinfo']) {
 		<div class="vmpayment_cardinfo" id="vmpayment_cardinfo">
 			<div class="vmpayment_cardinfo_text">
 				<?php if (!$viewData['dccinfo']) {
-					echo JText::_('VMPAYMENT_REALEX_PLEASE_SELECT');
+					echo vmText::_('VMPAYMENT_REALEX_PLEASE_SELECT');
 				} else {
-					echo JText::_('VMPAYMENT_REALEX_CC_YOUR_CC');
+					echo vmText::_('VMPAYMENT_REALEX_CC_YOUR_CC');
 				}
 				?>
 			</div>
@@ -68,11 +68,11 @@ if ($viewData['dccinfo']) {
 			?>
 			<div class="vmpayment_cc_info vmpayment_cc_cvv_realvault">
 
-				<span class="vmpayment_label"><label for="cc_cvv_realvault"><?php echo JText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
+				<span class="vmpayment_label"><label for="cc_cvv_realvault"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
 
 				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv_realvault" maxlength="4" size="5" value="<?php echo $ccData['cc_cvv_realvault']; ?>" autocomplete="off"/>
-				<span class="hasTip" title="<?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
-                        <?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
+				<span class="hasTip" title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
+                        <?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
                     </span>
 
 
@@ -90,24 +90,24 @@ if ($viewData['dccinfo']) {
 	<div class="vmpayment_cardinfo_text">
 		<?php if (!$viewData['dccinfo']) {
 			if (empty($viewData['creditcardsDropDown'])) {
-				echo JText::_('VMPAYMENT_REALEX_CC_COMPLETE_FORM');
+				echo vmText::_('VMPAYMENT_REALEX_CC_COMPLETE_FORM');
 
 			} else {
-				echo JText::_('VMPAYMENT_REALEX_CC_ADD_NEW');
+				echo vmText::_('VMPAYMENT_REALEX_CC_ADD_NEW');
 			}
 		} else {
-			echo JText::_('VMPAYMENT_REALEX_CC_YOUR_CC');
+			echo vmText::_('VMPAYMENT_REALEX_CC_YOUR_CC');
 		}
 		?>
 	</div>
 
 
 	<div class="vmpayment_cc_info vmpayment_creditcardtype">
-		<span class="vmpayment_label"><label for="creditcardtype"><?php echo JText::_('VMPAYMENT_REALEX_CC_CCTYPE'); ?></label></span>
+		<span class="vmpayment_label"><label for="creditcardtype"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CCTYPE'); ?></label></span>
 		<?php if (!$viewData['dccinfo']) {
 
 			foreach ($viewData['creditcards'] as $creditCard) {
-				$options[] = JHTML::_('select.option', $creditCard, JText::_('VMPAYMENT_REALEX_CC_' . strtoupper($creditCard)));
+				$options[] = JHTML::_('select.option', $creditCard, vmText::_('VMPAYMENT_REALEX_CC_' . strtoupper($creditCard)));
 			}
 			$attribs = 'class="inputbox vm-chzn-select" style= "width: 250px;" rel="' . $viewData['virtuemart_paymentmethod_id'] . '"';
 			echo JHTML::_('select.genericlist', $options, 'cc_type', $attribs, 'value', 'text', $ccData['cc_type']);
@@ -124,7 +124,7 @@ if ($viewData['dccinfo']) {
 	</div>
 
 	<div class="vmpayment_cc_info vmpayment_cc_type">
-		<span class="vmpayment_label"><label for="cc_type"><?php echo JText::_('VMPAYMENT_REALEX_CC_CCNUM'); ?></label></span>
+		<span class="vmpayment_label"><label for="cc_type"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CCNUM'); ?></label></span>
 		<?php if (!$viewData['dccinfo']) { ?>
 
 			<input type="text" size="30" class="inputbox" id="cc_number"
@@ -146,12 +146,12 @@ if ($viewData['dccinfo']) {
 	<?php if (isset($ccData['cc_cvv'])) { ?>
 		<div class="vmpayment_cc_info vmpayment_cc_cvv">
 
-			<span class="vmpayment_label"><label for="cc_cvv"><?php echo JText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
+			<span class="vmpayment_label"><label for="cc_cvv"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
 			<?php if (!$viewData['dccinfo']) { ?>
 
 				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv" maxlength="4" size="5" value="<?php echo $ccData['cc_cvv']; ?>" autocomplete="off"/>
-				<span class="hasTip" title="<?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
-                        <?php echo JText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
+				<span class="hasTip" title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
+                        <?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
                     </span>
 			<?php
 			} else {
@@ -165,7 +165,7 @@ if ($viewData['dccinfo']) {
 
 	<?php if (isset($ccData['cc_expire_month']) OR isset($ccData['cc_expire_year'])) { ?>
 		<div class="vmpayment_cc_info vmpayment_cc_date">
-			<span class="vmpayment_label"><label for="creditcardtype"><?php echo JText::_('VMPAYMENT_REALEX_CC_EXPDATE'); ?></label></span>
+			<span class="vmpayment_label"><label for="creditcardtype"><?php echo vmText::_('VMPAYMENT_REALEX_CC_EXPDATE'); ?></label></span>
 			<?php if (!$viewData['dccinfo']) { ?>
 				<?php
 				echo shopfunctions::listMonths('cc_expire_month', $ccData['cc_expire_month'], "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"", 'm');
@@ -186,7 +186,7 @@ if ($viewData['dccinfo']) {
 
 	<div class="vmpayment_cc_info vmpayment_cc_name">
 
-		<span class="vmpayment_label"><label for="cc_name"><?php echo JText::_('VMPAYMENT_REALEX_CC_CCNAME'); ?></label></span>
+		<span class="vmpayment_label"><label for="cc_name"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CCNAME'); ?></label></span>
 		<?php if (!$viewData['dccinfo']) { ?>
 			<input type="text" size="30" class="inputbox" id="cc_name"
 			       name="cc_name" value="<?php echo $ccData['cc_name']; ?>"

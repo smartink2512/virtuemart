@@ -40,7 +40,7 @@ class JElementcategories extends JElement {
 	    $class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
 
         $html = '<select multiple="true" class="inputbox '.$class.'"   name="' . $control_name . '[' . $name . ']' . '" >';
-        $html .= '<option value="0">' . JText::_('COM_VIRTUEMART_NONE') . '</option>';
+        $html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_NONE') . '</option>';
         $html .= $categorylist;
         $html .="</select>";
         return $html;

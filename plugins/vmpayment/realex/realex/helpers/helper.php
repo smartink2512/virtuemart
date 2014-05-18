@@ -388,8 +388,8 @@ class  RealexHelperRealex {
 				$complete_key = strtoupper('VMUSERFIELD_' . $display_field);
 
 				$value = $usedCC->$display_field;
-				$key_text = JText::_($complete_key);
-				$value = JText::_($value);
+				$key_text = vmText::_($complete_key);
+				$value = vmText::_($value);
 				if (!empty($value)) {
 					$html .= "<tr>\n<td>" . $key_text . "</label></td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
 				}
@@ -486,9 +486,9 @@ class  RealexHelperRealex {
 								$pasref = $payment->realex_response_pasref;
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
-									$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
+									$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
 								} else {
-									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
+									$auth_info = vmText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
 								}
 							}
 
@@ -523,9 +523,9 @@ class  RealexHelperRealex {
 
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
-									$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
+									$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
 								} else {
-									$auth_info = JText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
+									$auth_info = vmText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
 								}
 							}
 						}

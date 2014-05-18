@@ -29,21 +29,21 @@ $currency = $viewData["currency"];
 <br />
 <table>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_PAYMENT_NAME'); ?></td>
+    	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_PAYMENT_NAME'); ?></td>
         <td><?php echo $payment_name; ?></td>
     </tr>
 
 	<tr>
-    	<td><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
+    	<td><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
         <td><?php echo $order['details']['BT']->order_number;; ?></td>
     </tr>
 	<tr>
-		<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
+		<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
         <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
     </tr>
 	<?php if ($success) { ?>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
+    	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
         <td><?php echo $payment->txn_id; ?></td>
     </tr>
     <?php }  ?>
@@ -51,5 +51,5 @@ $currency = $viewData["currency"];
 </table>
 <?php if ($success) { ?>
 	<br />
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
 <?php } ?>

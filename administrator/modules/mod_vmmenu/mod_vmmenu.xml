@@ -35,6 +35,6 @@
     </config>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart2 MOD_VMENU Update Site"><![CDATA[http://virtuemart.net/releases/vm2/mod_vmmenu_update.xml]]></server>
+        <server type="extension" name="VirtueMart MOD_VMENU Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/mod_vmmenu_update.xml]]></server>
     </updateservers>
 </extension>

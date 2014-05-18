@@ -23,6 +23,7 @@
 
 defined('_JEXEC') or die();
 
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 $task = JRequest::getCmd('task');
 if($task=='updateDatabase'){
@@ -31,7 +32,6 @@ if($task=='updateDatabase'){
 	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 
 	//Update Tables
-	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 	if(!class_exists('Permissions'))
 	require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' . DS . 'helpers' . DS . 'permissions.php');
 	if(!Permissions::getInstance()->check('admin')){
@@ -48,15 +48,33 @@ if($task=='updateDatabase'){
 }
 
 ?>
-
+<script type="text/javascript">
+	<!--
+	function confirmation(message, destnUrl) {
+		var answer = confirm(message);
+		if (answer) {
+			window.location = destnUrl;
+		}
+	}
+	//-->
+</script>
 
 <table>
-<tr>
-	<td>
-ALL IN ONE VIRTUEMART COMPONENT
-	</td>
-</tr>
 
+	<tr>
+		<td align="center">
+			<?php
+			VmConfig::loadConfig();
+			VmConfig::loadJLang('com_virtuemart');
+
+			?>
+			<?php $link=JROUTE::_('index.php?option=com_virtuemart_allinone&task=updateDatabase&'.JSession::getFormToken().'=1' ); ?>
+			<button onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES') ); ?>', '<?php echo $link; ?>');">
+
+				<?php echo JText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES'); ?>
+			</button>
+		</td>
+	</tr>
 </table>
 
 

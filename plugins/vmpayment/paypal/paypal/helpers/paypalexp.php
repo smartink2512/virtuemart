@@ -58,11 +58,11 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$this->merchant_email = $this->_method->paypal_merchant_email;
 		}
 		if ((!$this->ExpCredentialsValid() OR !$this->isAacceleratedOnboardingValid())) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = vmText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 		if (empty ($this->_method->expected_maxamount)) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 
@@ -276,9 +276,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 
-		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid'). '&lang='.JRequest::getCmd('lang','') ;
+		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid'). '&lang='.vRequest::getCmd('lang','') ;
 
-		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . JRequest::getInt('Itemid') . '&lang='.JRequest::getCmd('lang','') ;
+		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . vRequest::getInt('Itemid') . '&lang='.vRequest::getCmd('lang','') ;
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
 		$post_variables['NOSHIPPING'] = $this->_method->no_shipping;
@@ -825,7 +825,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$extraInfo = '';
 
 		//Are we coming back from Express Checkout?
-		$expressCheckout = JRequest::getVar('expresscheckout', '');
+		$expressCheckout = vRequest::getVar('expresscheckout', '');
 		if ($expressCheckout == 'cancel') {
 			$this->customerData->clear();
 			if (!class_exists('VirtueMartCart')) {

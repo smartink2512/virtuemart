@@ -199,8 +199,8 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$cart->_confirmDone = FALSE;
 		$cart->_dataValidated = FALSE;
 		$cart->setCartIntoSession();
-		JRequest::setVar('display_title', false);
-		JRequest::setVar('html', $html);
+		vRequest::setVar('display_title', false);
+		vRequest::setVar('html', $html);
 
 		return;
 	}
@@ -269,8 +269,8 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$html = $this->getResponseHTML($order, $payments);
 		//$cart = VirtueMartCart::getCart();
 		//$cart->emptyCart();
-		JRequest::setVar('display_title', false);
-		JRequest::setVar('html', $html);
+		vRequest::setVar('display_title', false);
+		vRequest::setVar('html', $html);
 
 		return TRUE;
 
@@ -388,7 +388,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		if ($interface->isResponseValid($klikandpay_data, $order, $payments)) {
 			$order_history = $interface->getOrderHistory($klikandpay_data, $order, $payments);
 		} else {
-			$order_history['comments'] = JText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CANCELLED', $order['details']['BT']->order_number);
+			$order_history['comments'] = vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CANCELLED', $order['details']['BT']->order_number);
 			$order_history['order_status'] = $this->_currentMethod->status_canceled;
 			$order_history['customer_notified'] = true;
 		}
@@ -442,7 +442,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$first = TRUE;
 		$lang = JFactory::getLanguage();
 		foreach ($payments as $payment) {
-			$html .= '<tr class="row1"><td>' . JText::_('VMPAYMENT_KLIKANDPAY_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			$html .= '<tr class="row1"><td>' . vmText::_('VMPAYMENT_KLIKANDPAY_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
 			// Now only the first entry has this data when creating the order
 			if ($first) {
 				$html .= $this->getHtmlRowBE('KLIKANDPAY_PAYMENT_NAME', $payment->payment_name);
@@ -856,7 +856,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 		} else {
 
-			$html .= '<input type="submit"  value="' . JText::_('VMPAYMENT_KLIKANDPAY_REDIRECT_MESSAGE') . '" />
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_KLIKANDPAY_REDIRECT_MESSAGE') . '" />
 					<script type="text/javascript">';
 			$html .= '		document.vm_klikandpay_form.submit();';
 			$html .= '	</script>';

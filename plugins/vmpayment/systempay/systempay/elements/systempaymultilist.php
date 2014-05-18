@@ -44,7 +44,7 @@ class JElementSystempayMultiList extends JElement
                 {
                         $val   = $option->attributes('value');
                         $text  = $option->data();
-                        $options[] = JHTML::_('select.option', $val, JText::_($text));
+                        $options[] = JHTML::_('select.option', $val, vmText::_($text));
                 }
  
                 // Construct the various argument calls that are supported.

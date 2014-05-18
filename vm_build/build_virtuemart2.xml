@@ -7,6 +7,8 @@
     <property name="joomla.version" value="2.5.20"/>
     <property name="svn.lastrevision" value="7923"/>
     <property name="PHING.VM.CODENAME" value="PowerFox"/>
+    <property name="PHING.VM.UPDATEFOLDER" value="vm2"/>
+
     <property file="build.properties"/>
     <target name="title">
         <echo message="BUILD VirtueMart 2 package FROM ${export.to}  TO ${package.abspath}"/>

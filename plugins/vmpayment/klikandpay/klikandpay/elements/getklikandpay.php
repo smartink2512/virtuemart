@@ -37,10 +37,10 @@ class JElementGetKlikandpay extends JElement {
 		    jQuery("#klikandpay_getklikandpay_link").click( function() {
 				 if ( $("#klikandpay_getklikandpay_show_hide").is(":visible") ) {
 				  $("#klikandpay_getklikandpay_show_hide").hide("slow");
-			        $("#klikandpay_getklikandpay_link").html("' . addslashes (JText::_ ('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT')) . '");
+			        $("#klikandpay_getklikandpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT')) . '");
 				} else {
 				 $("#klikandpay_getklikandpay_show_hide").show("slow");
-			       $("#klikandpay_getklikandpay_link").html("' . addslashes (JText::_ ('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE')) . '");
+			       $("#klikandpay_getklikandpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE')) . '");
 			    }
 		    });
 		});
@@ -50,7 +50,7 @@ class JElementGetKlikandpay extends JElement {
 		$doc = JFactory::getDocument ();
 		$doc->addScriptDeclaration ($js);
 
-		$cid = jrequest::getvar ('cid', NULL, 'array');
+		$cid = vRequest::getvar ('cid', NULL, 'array');
 		if (is_Array ($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
@@ -64,12 +64,12 @@ class JElementGetKlikandpay extends JElement {
 
 	if ($params->created_on==$params->modified_on ) {
 		$id = "klikandpay_getklikandpay_link";
-		$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE') . '</a>';
+		$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE') . '</a>';
 		$display='';
 		$html .= '<div id="klikandpay_getklikandpay_show_hide" align=""'.$display.' >';
 	} else {
 		$id = "klikandpay_getklikandpay_link";
-		$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT') . '</a>';
+		$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT') . '</a>';
 		$display=' style="display: none;"';
 		$html .= '<div id="klikandpay_getklikandpay_show_hide" align=""'.$display.' >';
 	}

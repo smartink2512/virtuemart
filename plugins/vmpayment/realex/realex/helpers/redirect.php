@@ -85,7 +85,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 		} else {
 
-			$html .= '<input type="submit"  value="' . JText::_('VMPAYMENT_REALEX_REDIRECT_MESSAGE') . '" />
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_REDIRECT_MESSAGE') . '" />
 					<script type="text/javascript">';
 			$html .= '		document.vm_realex_form.submit();';
 			$html .= '	</script>';

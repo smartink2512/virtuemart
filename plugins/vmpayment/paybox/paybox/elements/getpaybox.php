@@ -37,10 +37,10 @@ class JElementGetPaybox extends JElement {
 		    jQuery("#paybox_getpaybox_link").click( function() {
 				 if ( $("#paybox_getpaybox_show_hide").is(":visible") ) {
 				  $("#paybox_getpaybox_show_hide").hide("slow");
-			        $("#paybox_getpaybox_link").html("' . addslashes (JText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT')) . '");
+			        $("#paybox_getpaybox_link").html("' . addslashes (vmText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT')) . '");
 				} else {
 				 $("#paybox_getpaybox_show_hide").show("slow");
-			       $("#paybox_getpaybox_link").html("' . addslashes (JText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE')) . '");
+			       $("#paybox_getpaybox_link").html("' . addslashes (vmText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE')) . '");
 			    }
 		    });
 		});
@@ -50,7 +50,7 @@ class JElementGetPaybox extends JElement {
 		$doc = JFactory::getDocument ();
 		$doc->addScriptDeclaration ($js);
 
-		$cid = jrequest::getvar ('cid', NULL, 'array');
+		$cid = vRequest::getvar ('cid', NULL, 'array');
 		if (is_Array ($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
@@ -65,12 +65,12 @@ class JElementGetPaybox extends JElement {
 
 	if ($params->created_on==$params->modified_on ) {
 		$id = "paybox_getpaybox_link";
-		$html .= '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX__HIDE') . '</a>';
+		$html .= '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX__HIDE') . '</a>';
 		$display='';
 		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
 	} else {
 		$id = "paybox_getpaybox_link";
-		$html .= '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT') . '</a>';
+		$html .= '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT') . '</a>';
 		$display=' style="display: none;"';
 		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
 	}

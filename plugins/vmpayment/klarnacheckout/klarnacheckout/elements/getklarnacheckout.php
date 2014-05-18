@@ -74,7 +74,7 @@ class JElementGetKlarnacheckout extends JElement {
 			        $("#klarna_getklarna_link").html("' . addslashes ($logo) . '");
 				} else {
 				 $("#klarna_getklarna_show_hide").show("slow");
-			       $("#klarna_getklarna_link").html("' . addslashes (JText::_ ('VMPAYMENT_KLARNA_GET_KLARNA_HIDE')) . '");
+			       $("#klarna_getklarna_link").html("' . addslashes (vmText::_ ('VMPAYMENT_KLARNA_GET_KLARNA_HIDE')) . '");
 			    }
 		    });
 		});

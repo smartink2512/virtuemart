@@ -165,6 +165,6 @@
     </config>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart2 mod_virtuemart_product Update Site"><![CDATA[http://virtuemart.net/releases/vm2/mod_virtuemart_product_update.xml]]></server>
+        <server type="extension" name="VirtueMart mod_virtuemart_product Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/mod_virtuemart_product_update.xml]]></server>
     </updateservers>
 </install>

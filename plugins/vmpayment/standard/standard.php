@@ -115,7 +115,7 @@ if (!class_exists ('vmPSPlugin')) {
 		if (!empty($payment_info)) {
 			$lang = JFactory::getLanguage ();
 			if ($lang->hasKey ($method->payment_info)) {
-				$payment_info = JText::_ ($method->payment_info);
+				$payment_info = vmText::_ ($method->payment_info);
 			} else {
 				$payment_info = $method->payment_info;
 			}
@@ -144,7 +144,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 		//We delete the old stuff
 		$cart->emptyCart ();
-		JRequest::setVar ('html', $html);
+		vRequest::setVar ('html', $html);
 		return TRUE;
 	}
 

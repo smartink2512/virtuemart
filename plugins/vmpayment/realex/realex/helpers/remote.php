@@ -241,8 +241,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		                                                             'cvn_checking'                => $this->_method->cvn_checking,
 		                                                             'cvv_images'                  => $cvv_images,
 		                                                        ));
-		JRequest::setVar('html', $html);
-		JRequest::setVar('display_title', false);
+		vRequest::setVar('html', $html);
+		vRequest::setVar('display_title', false);
 		return $html;
 	}
 
@@ -930,7 +930,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		}
 		if (!$cc_valid) {
 			foreach ($errormessages as $msg) {
-				$html .= Jtext::_($msg) . "<br/>";
+				$html .= vmText::_($msg) . "<br/>";
 			}
 		}
 		if (!$cc_valid) {

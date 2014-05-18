@@ -85,56 +85,56 @@ class PaypalHelperCustomerData {
 	public function loadPost() {
 
 		// card information
-		$virtuemart_paymentmethod_id = JRequest::getVar('virtuemart_paymentmethod_id', 0);
+		$virtuemart_paymentmethod_id = vRequest::getVar('virtuemart_paymentmethod_id', 0);
 		//if ($virtuemart_paymentmethod_id) {
 		//	print_trace();
 		//$this->clear();
 		//}
 
 		$this->_selected_method = $virtuemart_paymentmethod_id;
-		$cctype = JRequest::getVar('cc_type_' . $virtuemart_paymentmethod_id, '');
+		$cctype = vRequest::getVar('cc_type_' . $virtuemart_paymentmethod_id, '');
 		if ($cctype) {
 			$this->_cc_type = $cctype;
 		}
 
-		$cc_name = JRequest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
+		$cc_name = vRequest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_name) {
 			$this->_cc_name = $cc_name;
 		}
 
-		$cc_number = JRequest::getVar('cc_number_' . $virtuemart_paymentmethod_id, '');
+		$cc_number = vRequest::getVar('cc_number_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_number) {
 			$this->_cc_number = $cc_number;
 		}
 
-		$cc_cvv = JRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
+		$cc_cvv = vRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_cvv) {
 			$this->_cc_cvv = $cc_cvv;
 		}
 
-		$cc_expire_month = JRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
+		$cc_expire_month = vRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_expire_month) {
 			$this->_cc_expire_month = $cc_expire_month;
 		}
 
-		$cc_expire_year = JRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
+		$cc_expire_year = vRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_expire_year) {
 			$this->_cc_expire_year = $cc_expire_year;
 		}
 
 		//Customer settings
-		$autobilling_max_amount = JRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
+		$autobilling_max_amount = vRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
 		if ($autobilling_max_amount) {
 			$this->_autobilling_max_amount = $autobilling_max_amount;
 		}
 
-//		$this->_cc_name = JRequest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
-//		$this->_cc_number = str_replace(" ","",JRequest::getVar('cc_number_' . $virtuemart_paymentmethod_id, ''));
-//		$this->_cc_cvv = JRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
-//		$this->_cc_expire_month = JRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
-//		$this->_cc_expire_year = JRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_name = vRequest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_number = str_replace(" ","",vRequest::getVar('cc_number_' . $virtuemart_paymentmethod_id, ''));
+//		$this->_cc_cvv = vRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_expire_month = vRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_expire_year = vRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
 //		//Customer settings
-//		$this->_autobilling_max_amount = JRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
+//		$this->_autobilling_max_amount = vRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
 
 		$this->save();
 	}

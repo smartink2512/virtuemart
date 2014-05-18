@@ -85,7 +85,7 @@ class JElementpayboxtypecarte extends JElement {
         if ($key=="CARTE") { // pour l'instant
             foreach ($fields as $field){
                 $paymentMeansArray[$i]['value'] = $field;
-                $paymentMeansArray[$i++]['text'] =  JText::_('VMPAYMENT_'.$this->_name.'_TYPECARTE_' . strtoupper($field));
+                $paymentMeansArray[$i++]['text'] =  vmText::_('VMPAYMENT_'.$this->_name.'_TYPECARTE_' . strtoupper($field));
             }
         }
 

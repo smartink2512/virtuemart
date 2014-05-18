@@ -40,7 +40,7 @@ class JElementPaypalCreditcards extends JElement {
 		$fields = array();
 		foreach ($creditcards as $creditcard) {
 			$fields[$creditcard]['value'] = $creditcard;
-			$fields[$creditcard]['text'] = JText::_($prefix . strtoupper($fields[$creditcard]['value']));
+			$fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
 		}
 
 		$attribs = ' ';

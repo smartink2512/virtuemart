@@ -48,7 +48,7 @@ vmJsApi::chosenDropDowns();
 	<div class="vmpayment_selected_cc">
 		<?php
 		if ($viewData['extraInfo']['cc_type']) {
-			echo "(". Jtext::_('VMPAYMENT_REALEX_CC_'.$viewData['extraInfo']['cc_type'] ). ' ' ;
+			echo "(". vmText::_('VMPAYMENT_REALEX_CC_'.$viewData['extraInfo']['cc_type'] ). ' ' ;
 			if ($viewData['where']!= 'order'){
 				echo $viewData['extraInfo']['cc_number'];
 			} else {

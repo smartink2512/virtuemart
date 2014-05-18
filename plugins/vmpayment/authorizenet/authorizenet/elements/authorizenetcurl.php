@@ -21,10 +21,10 @@ class JElementAuthorizenetCurl extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 
 		if (!function_exists ('curl_init') or !function_exists ('curl_exec')) {
-			return JText::_ ('VMPAYMENT_AUTHORIZENET_CURL_LIBRARY_NOT_INSTALLED');
+			return vmText::_ ('VMPAYMENT_AUTHORIZENET_CURL_LIBRARY_NOT_INSTALLED');
 		}
 		else {
-			return JText::_ ('VMPAYMENT_AUTHORIZENET_CURL_LIBRARY_INSTALLED');
+			return vmText::_ ('VMPAYMENT_AUTHORIZENET_CURL_LIBRARY_INSTALLED');
 		}
 	}
 }

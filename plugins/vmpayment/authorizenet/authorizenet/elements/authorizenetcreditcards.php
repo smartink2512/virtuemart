@@ -57,7 +57,7 @@ class JElementAuthorizenetCreditCards extends JElement {
 	foreach ($node->children() as $option) {
 	    $text = $option->data();
 	    $val = $option->attributes('value');
-	    $options[] = JHTML::_('select.option', $val, JText::_($text));
+	    $options[] = JHTML::_('select.option', $val, vmText::_($text));
 	}
 
 	// Construct the various argument calls that are supported.

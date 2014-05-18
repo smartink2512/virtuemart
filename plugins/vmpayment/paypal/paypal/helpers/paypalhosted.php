@@ -56,7 +56,7 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		}
 
 		if (empty($this->api_login_id) || empty($this->api_signature) || empty($this->api_password)) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = vmText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 		if ((empty ($this->_method->payflow_partner) OR empty($this->_method->sandbox_payflow_partner))) {
@@ -64,7 +64,7 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 			if ($this->_method->sandbox  ) {
 				$sandbox = 'SANDBOX_';
 			}
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PAYFLOW_PARTNER'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PAYFLOW_PARTNER'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text);
 		}
 	}
@@ -187,9 +187,9 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 	}
 
 	function addUrls(&$post_variables) {
-		$post_variables['L_BUTTONVAR']['return'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid').'&lang='.  JRequest::getCmd('lang','');
-		$post_variables['L_BUTTONVAR']['notify_url'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'.'&lang='.  JRequest::getCmd('lang','');
-		$post_variables['L_BUTTONVAR']['cancel_return'] =JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid').'&lang='.  JRequest::getCmd('lang','');
+		$post_variables['L_BUTTONVAR']['return'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid').'&lang='.  vRequest::getCmd('lang','');
+		$post_variables['L_BUTTONVAR']['notify_url'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'.'&lang='.  vRequest::getCmd('lang','');
+		$post_variables['L_BUTTONVAR']['cancel_return'] =JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid').'&lang='.  vRequest::getCmd('lang','');
 
 	}
 
