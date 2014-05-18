@@ -112,6 +112,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					echo "Installing VirtueMart Administrator modules<br/ >";
 						$defaultParams = '{"show_vmmenu":"1"}';
 						$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, $dst,1,'menu',3);
+						$this->updateJoomlaUpdateServer( 'module', 'mod_vmmenu', $dst   );
 				}
 
 
@@ -173,14 +174,25 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					}
 					$this->installModule ('VM - Category', 'mod_virtuemart_category', 4, $defaultParams, $dst);
 				} else {
-					echo "VirtueMart2 modules already installed<br/ >";
+					echo "VirtueMart3 modules already installed<br/ >";
+				}
+				$modules = array(
+					'mod_virtuemart_currencies',
+					'mod_virtuemart_product',
+					'mod_virtuemart_search',
+					'mod_virtuemart_manufacturer',
+					'mod_virtuemart_cart',
+					'mod_virtuemart_category'
+				);
+				foreach ($modules as $module) {
+					$this->updateJoomlaUpdateServer( 'module', $module, $dst   );
 				}
 
 				// libraries auto move
 				$src = $this->path . DS . "libraries";
 				$dst = JPATH_ROOT . DS . "libraries";
 				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 pdf moved to the joomla libraries folder<br/ >";
+				echo " VirtueMart3 pdf moved to the joomla libraries folder<br/ >";
 
 				//update plugins, make em loggable
 				/*			$loggables = array(	'created_on' => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
@@ -197,7 +209,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				}*/
 
 				echo "<H3>Installing VirtueMart Plugins and modules Success.</h3>";
-				echo "<H3>You may directly uninstall this component. Your plugins will remain. But we advice to keep the AIO installer for updating</h3>";
+				echo "<H3>Keep the AIO component for automatic updates of ALL VirtueMart Plugins and modules</h3>";
 
 			} else {
 				echo "<H3>Updated VirtueMart Plugin tables</h3>";
@@ -405,6 +417,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					}
 				}
 			}
+			$this->updateJoomlaUpdateServer( $type, $element, $dst   );
 
 
 		}
@@ -644,6 +657,103 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$count = $db->loadResult ();
 			return $count;
 		}
+
+ 		/**
+		 * @param $type= 'plugin'
+		 * @param $element= 'textinput'
+		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
+		 * @author Valerie Isaksen
+		 */
+		function updateJoomlaUpdateServer( $type, $element, $dst  ){
+			//echo ('<br /><br />updateJoomlaUpdateServer' .   ' ' . $type . ' ' . $element . ' ' . $dst);
+
+			$db = JFactory::getDBO();
+			$extensionXmlFileName=$this->getExtensionXmlFileName($type, $element, $dst );
+			$xml=simplexml_load_file($extensionXmlFileName);
+
+			// get extension id
+			$query="SELECT extension_id FROM #__extensions WHERE type=".$db->quote($type)." AND element=".$db->quote($element);
+			$db->setQuery($query);
+			$extension_id=$db->loadResult();
+			if(!$extension_id) {
+				//echo ('<br />extension id NOT found: '.$element);
+				return;
+			} else {
+				//echo ('<br />extension id found: '.$element.' '.$extension_id);
+			}
+
+			// Is the extension already in the update table ?
+			$query="SELECT * FROM `#__update_sites_extensions` WHERE extension_id=".$extension_id;
+			$db->setQuery($query);
+			$update_sites_extensions=$db->loadObject();
+			if($update_sites_extensions==NULL ) {
+				// the extension is already listed in the table
+				//echo ('<br />extension is NOT listed in update_sites_extensions');var_export($update_sites_extensions);
+			} else {
+				//echo ('<br />extension is already listed in update_sites_extensions');
+				//var_export($update_sites_extensions);
+			}
+
+			// Update the version number for all
+			if(isset($xml->version)) {
+					$query="UPDATE `#__extensions` SET `version`=".$db->quote((string)$xml->version).",
+					         WHERE extension_id=".$extension_id;
+					$db->setQuery($query);
+					$db->query();
+					//echo ('<br /> Update Version number: '.$element.' '.(string)$xml->version);
+			} else {
+				//echo ('<br /> COULD NOT Update Version number '.$element );
+				//var_export($xml);
+			}
+
+
+			if(isset($xml->updateservers->server)) {
+				if ($update_sites_extensions==NULL) {
+					$query="INSERT INTO `#__update_sites` SET `name`=".$db->quote((string)$xml->updateservers->server['name']).",
+				        `type`=".$db->quote((string)$xml->updateservers->server['type']).",
+				        `location`=".$db->quote((string)$xml->updateservers->server).", enabled=1 ";
+					$db->setQuery($query);
+					$db->query();
+
+					$update_site_id=$db->insertId();
+					//echo ('<br /> Update of '.$update_site_id.' '.$query);
+
+					$query="INSERT INTO #__update_sites_extensions SET update_site_id=".$update_site_id.", extension_id=".$extension_id." \n";
+					$db->setQuery($query);
+					$db->query();
+					//echo ('<br />Update of ' .$query);
+				} else {
+					if (strcmp($update_sites_extensions->location, (string)$xml->updateservers->server) != 0) {
+						// the extension was already there: we just update the server if different
+						$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server).",
+					         WHERE update_site_id=".$update_sites_extensions->update_site_id;
+						$db->setQuery($query);
+						$db->query();
+						//echo ('<br /> __update_sites with new updateservers '.$query);
+					} else {
+						//echo ('<br /> __update_sites updateservers has NOT changed'.$query);
+					}
+				}
+
+			} else {
+				echo ('<br />UPDATE SERVER NOT FOUND IN XML FILE:'.$extensionXmlFileName);
+			}
+		}
+
+		/**
+		 * @param $type= 'plugin'
+		 * @param $element= 'textinput'
+		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
+		 */
+		function getExtensionXmlFileName($type, $element, $dst ){
+			if ($type=='plugin') {
+				$extensionXmlFileName=  $dst. DS . $element.  '.xml';
+			} else if ($type=='module'){
+				$extensionXmlFileName = $dst. DS . $element.DS . $element. '.xml';
+			}
+			return $extensionXmlFileName;
+		}
+
 		/**
 		 * @author Max Milbers
 		 * @param string $tablename

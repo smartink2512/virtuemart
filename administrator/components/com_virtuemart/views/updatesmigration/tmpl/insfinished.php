@@ -67,11 +67,10 @@ if($option=='com_virtuemart'){
 				<?php
 				if($update){
 					echo vmText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-					echo '<br />'.vmText::_('COM_VIRTUEMART_EXTENSION_UPGRADE_REMIND');
-
 				} else {
 					echo vmText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
 				}
+				echo '<br />'.vmText::_('COM_VIRTUEMART_EXTENSION_UPGRADE_REMIND');
 				?>
 				</h2> <br />
 
@@ -81,7 +80,7 @@ if($option=='com_virtuemart'){
 				
 				//We do this dirty here, is just the finish page for installation, we must know if we are allowed to add sample data
 				$db = JFactory::getDbo();
-				$q = 'SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id`!="0" ';
+				$q = 'SELECT count(*) FROM `#__virtuemart_products` WHERE `virtuemart_product_id`!="0" ';
 				$db->setQuery($q);
 				$productsExists = $db->loadResult();
 

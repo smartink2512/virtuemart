@@ -157,8 +157,6 @@
     </config>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" priority="1" name="VM Payment Heidelpay">
-            http://testshops.heidelpay.de/downloads/plg_vm_heidelpay.xml
-        </server>
+        <server type="extension" name="VirtueMart3 plg_vmpayment_heidelpay Update Site"><![CDATA[http://virtuemart.net/releases/vm3/plg_vmpayment_heidelpay_update.xml]]></server>
     </updateservers>
 </extension>

@@ -51,7 +51,7 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 			$loggablefields = $this->getTableSQLLoggablefields();
 			$tablesFields = array_merge($SQLfields, $loggablefields);
 			$update[$this->_tablename] = array($tablesFields, array(), array());
-			vmdebug(get_class($this) . ':: VirtueMart2 update ' . $this->_tablename);
+			vmdebug(get_class($this) . ':: VirtueMart3 update ' . $this->_tablename);
 			if (!class_exists('GenericTableUpdater')) {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+    <update>
+        <name>VirtueMart</name>
+        <description>VirtueMart Component</description>
+        <element>com_virtuemart</element>
+        <type>component</type>
+        <version>${PHING.VM.RELEASE}</version>
+
+        <infourl title="VirtueMart URL">http://dev.virtuemart.net/attachments/download/XXX/com_virtuemart.${PHING.VM.RELEASE}.zip</infourl>
+        <downloads>
+            <!--downloadurl type="full" format="zip">http://dev.virtuemart.net/attachments/download/XXX/com_virtuemart.${PHING.VM.RELEASE}.zip</downloadurl-->
+            <downloadurl type="full" format="zip">http://virtuemart.net/releases/testing-updates/com_virtuemart.2.6.2.zip</downloadurl>
+        </downloads>
+
+        <maintainer>VirtueMart Team</maintainer>
+        <maintainerurl>http://virtuemart.net</maintainerurl>
+        <targetplatform name="joomla" version="2.5" />
+    </update>
+
+</updates>

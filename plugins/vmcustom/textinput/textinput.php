@@ -74,7 +74,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	/**
-	 * Function for Vm2
+	 * Function for vm3
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */

@@ -21,12 +21,6 @@ VmConfig::loadConfig();
 if (!class_exists( 'VmController' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
 if (!class_exists( 'VmModel' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
-//This is for akeeba release system, it must be executed before any other task
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
-if(vRequest::getCmd('view','') == 'liveupdate') {
-	LiveUpdate::handleRequest();
-	return;
-}
 
 vmRam('Start');
 vmSetStartTime('Start');

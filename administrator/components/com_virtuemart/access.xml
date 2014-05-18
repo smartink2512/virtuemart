@@ -55,7 +55,6 @@
         <action name="vm.country" title="COM_VIRTUEMART_COUNTRY_S" description="" />
         <action name="vm.updatesmigration" title="COM_VIRTUEMART_MIGRATION_UPDATE" description="" />
         <action name="vm.about" title="COM_VIRTUEMART_ABOUT" description="" />
-        <action name="vm.liveupdate" title="Live Update" description="" />
 	</section>
 </access>
 

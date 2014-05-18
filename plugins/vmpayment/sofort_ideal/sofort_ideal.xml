@@ -96,6 +96,9 @@
             </fieldset>
         </fields>
     </config>
-
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart3 plg_vmpayment_sofort_ideal Update Site"><![CDATA[http://virtuemart.net/releases/vm3/plg_vmpayment_sofort_ideal_update.xml]]></server>
+    </updateservers>
 
 </extension>

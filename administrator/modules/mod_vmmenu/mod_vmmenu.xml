@@ -33,4 +33,8 @@
     </fieldset>
     </fields>
     </config>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart3 MOD_VMENU Update Site"><![CDATA[http://virtuemart.net/releases/vm3/mod_vmmenu_update.xml]]></server>
+    </updateservers>
 </extension>

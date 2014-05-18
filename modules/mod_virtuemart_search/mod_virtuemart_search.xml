@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
 <extension type="module" version="2.5.0">
     <name>mod_virtuemart_search</name>
     <creationDate>January 09 2013</creationDate>
@@ -100,4 +99,8 @@
 	    </fieldset>
 	</fields>
     </config>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart3 mod_virtuemart_search Update Site"><![CDATA[http://virtuemart.net/releases/vm3/mod_virtuemart_search_update.xml]]></server>
+    </updateservers>
 </extension>

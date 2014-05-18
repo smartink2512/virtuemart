@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
 <extension type="module" version="2.5.0">
     <name>mod_virtuemart_category</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
@@ -58,4 +57,8 @@
 	    </fieldset>
 	</fields>
     </config>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart3 mod_virtuemart_category Update Site"><![CDATA[http://virtuemart.net/releases/vm3/mod_virtuemart_category_update.xml]]></server>
+    </updateservers>
 </extension>

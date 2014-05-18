@@ -89,7 +89,6 @@ class AdminUIHelper {
 		<?php
 		// Include ALU System
 		if (self::$backEnd) {
-		require_once JPATH_VM_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		?>
 
 			<div class="menu-wrapper">
@@ -98,12 +97,9 @@ class AdminUIHelper {
 				?>
 				<div class="menu-notice">
 				<?php
-				if(JVM_VERSION<3){
-					echo LiveUpdate::getIcon(array(),'notice');
-				}
 
 				if(JVM_VERSION<3){
-					echo VmConfig::getInstalledVersion();
+					echo "VirtueMart ".VmConfig::getInstalledVersion();
 				}
 				?>
 				</div>
