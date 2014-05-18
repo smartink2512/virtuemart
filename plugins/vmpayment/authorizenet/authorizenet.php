@@ -6,7 +6,7 @@
  * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * @copyright ${PHING.VM.COPYRIGHT}
+ * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -78,11 +78,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$varsToPush = $this->getVarsToPush();
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-		if ( !JFactory::getApplication ()->isSite () ) {
-			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::root(true).'/plugins/vmpayment/authorizenet/authorizenet/assets/js/admin.js');
-		}
-
 	}
 
 	protected function getVmPluginCreateTableSQL ()
@@ -352,7 +347,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			return NULL; // Another method was selected, do nothing
 		}
 		$this->_getAuthorizeNetFromSession();
-		return $this->_validate_creditcard_data(TRUE);
+        return $this->_validate_creditcard_data(TRUE);
 
 	}
 
@@ -443,7 +438,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		}
 		$sandboxWarning='';
 		if ($plugin->sandbox ) {
-			$sandboxWarning .= ' <span style="color:red;font-weight:bold">Sandbox (' . $plugin->virtuemart_paymentmethod_id . ')</span><br />';
+		$sandboxWarning .= ' <span style="color:red;font-weight:bold">Sandbox (' . $plugin->virtuemart_paymentmethod_id . ')</span><br />';
 		}
 		if (!empty($plugin->$plugin_desc)) {
 			$description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc  . '</span>';
@@ -742,7 +737,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	function _getTransactionKey ()
 	{
 
-		return $this->_currentMethod->get('sandbox') ? $this->_currentMethod->sandbox_transaction_key : $this->_currentMethod->transaction_key;
+		return $this->_currentMethod->sandbox ? $this->_currentMethod->sandbox_transaction_key : $this->_currentMethod->transaction_key;
 	}
 
 	/**
@@ -1218,15 +1213,15 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	}
 	function removeCC($data) {
 		$keys=array('x_card_num=','x_card_code=');
-		foreach($keys as $key) {
-			preg_match('/'.$key.'[^&]+&/i',$data, $result);
-			if (is_array($result) and isset($result[0])){
-				$field=$result[0];
-				$old_value=substr($field,strlen($key), -1);
-				$new_value=str_repeat('*', strlen($old_value));
-				$data=str_replace($old_value,$new_value,$data);
-			}
-		}
+		 foreach($keys as $key) {
+			 preg_match('/'.$key.'[^&]+&/i',$data, $result);
+			 if (is_array($result) and isset($result[0])){
+				 $field=$result[0];
+				 $old_value=substr($field,strlen($key), -1);
+				 $new_value=str_repeat('*', strlen($old_value));
+				 $data=str_replace($old_value,$new_value,$data);
+			 }
+		 }
 
 		return $data;
 	}

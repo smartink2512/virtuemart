@@ -234,7 +234,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			* Add debug informations for merchiant support
 				 */
 
-		$params['SHOP.TYPE'] = 'VirtueMart2.0.26b';
+		$params['SHOP.TYPE'] = 'VirtueMart${PHING.VM.RELEASE}';
 		$params['SHOPMODUL.VERSION'] = $this->version;
 
 		$params['CRITERION.PAYMENT_NAME'] = vmText::_ ('VMPAYMENT_HEIDELPAY_' . $method->HEIDELPAY_PAYMENT_TYPE);

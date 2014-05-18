@@ -4,10 +4,10 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * @author Valérie Isaksen
- * @version $Id: klarnacheckout.php 7451 2013-12-05 19:18:58Z alatak $
+ * @version $Id: klarnacheckout.php 7927 2014-05-15 07:29:17Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * @copyright Copyright (C) 2004-Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.   - All rights reserved.
+ * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -40,7 +40,7 @@ if (!class_exists ('Klarna')) {
 	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna'. DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 }
 class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
-	const RELEASE = 'VM 2.0.26b';
+	const RELEASE = 'VM ${PHING.VM.RELEASE}';
 	protected $currency_code_3;
 	protected $currency_id;
 	protected $country_code_2;
@@ -90,7 +90,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			// to_klarna, from_klarna
 			'klarna_status'               => 'varchar(20)',
 			// pre-purchase, purchase, pre-delivery, delivery, post-delivery
-			'data'                        => 'text',
+			'data'                        => 'mediumtext',
 			// what was sent
 		);
 		return $SQLfields;
@@ -123,7 +123,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
 
-				if (!empty($method->payment_logos)) {
+				if (empty($method->payment_logos)) {
 					$logo = '<img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" />';
 				}
 				$payment_cost = '';
@@ -315,11 +315,14 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$message = vmText::sprintf('VMPAYMENT_KLARNACHECKOUT_SELECT_SHIPMENT_FIRST', $this->method->payment_name);
 		} else {
 			$session = JFactory::getSession();
-
-			$cartIdInTable = $this->storeCartInTable($cart);
 			require_once 'klarnacheckout/library/Checkout.php';
 
-			Klarna_Checkout_Order::$baseUri = 'https://checkout.testdrive.klarna.com/checkout/orders';
+			$cartIdInTable = $this->storeCartInTable($cart);
+			if ($this->method->server == 'beta') {
+				Klarna_Checkout_Order::$baseUri = 'https://checkout.testdrive.klarna.com/checkout/orders';
+			} else {
+				Klarna_Checkout_Order::$baseUri = 'https://checkout.klarna.com/checkout/orders';
+			}
 			Klarna_Checkout_Order::$contentType = "application/vnd.klarna.checkout.aggregated-order-v2+json";
 
 			//session_start();
@@ -431,7 +434,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		$return = true;
 		$db = JFactory::getDBO();
-		$q = 'SELECT ' . $db->escape('country_2_code') . '  , ' . $db->escape('country_3_code') . ' FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$method->purchase_country;
+		$q = 'SELECT ' . $db->getEscaped('country_2_code') . '  , ' . $db->getEscaped('country_3_code') . ' FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$method->purchase_country;
 		$db->setQuery($q);
 		$country = $db->loadObject();
 		if (!$country) {
@@ -580,7 +583,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		$payment_logo = "";
 
-		if (!empty($method->payment_logos)) {
+		if ($method->payment_logos) {
 			$payment_logo = '<img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /> ';
 
 		}
@@ -1039,7 +1042,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			return FALSE;
 		}
 		// fetches PClasses From XML file
-		$call = vRequest::getCmd('call');
+		$call = vRequest::getWord('call');
 		$this->$call();
 		// 	jexit();
 	}

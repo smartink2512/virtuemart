@@ -7,7 +7,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -23,23 +23,20 @@ $payment_name = $viewData['payment_name'];
 $responseData = $viewData['responseData'];
 
 ?>
-<br />
+
 <style>
 	.paypal_ordersummary td {padding:10px;}
 </style>
+<div class="paypal_ordersummary">
 <table cellpadding="2" class="paypal_ordersummary">
 	<?php 
 	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_PAYMENT_NAME', $payment_name);
+	echo $this->getHtmlRow('COM_VIRTUEMART_ORDER_NUMBER', $viewData["order"]['details']['BT']->order_number);
+	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AMOUNT', $responseData['AMT'] . ' ' . $responseData['CURRENCYCODE']);
+
 	if ($viewData['success']) {
-		echo $this->getHtmlRow('COM_VIRTUEMART_ORDER_NUMBER', $viewData["order"]['details']['BT']->order_number);
-		if ($viewData['method']->payment_type == '_xclick-subscriptions' || $viewData['method']->payment_type == '_xclick-payment-plan') {
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILEID', $responseData['PROFILEID']);
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILESTATUS', $responseData['STATUS']);
-		} else {
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AMOUNT', $responseData['AMT'] . ' ' . $responseData['CURRENCYCODE']);
 			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_TRANSACTION_ID', $responseData['TRANSACTIONID']);
-		}
-		//echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AUTHORIZATION_CODE', $responseData['CORRELATIONID']);
+
 	} else {
 		for ($i = 0; isset($responseData["L_ERRORCODE".$i]); $i++) {
 			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_ERROR_CODE', $responseData["L_ERRORCODE".$i]);
@@ -49,7 +46,7 @@ $responseData = $viewData['responseData'];
 	}
 	?>
 </table>
-<?php if ($viewData['success']) { ?>
-	<br />
+</div>
+<div class="paypal_orderlink">
 	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
-<?php } ?>
+</div>

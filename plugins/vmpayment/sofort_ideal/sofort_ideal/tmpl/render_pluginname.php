@@ -6,7 +6,7 @@ defined ('_JEXEC') or die();
  * @version $Id$
  * @package VirtueMart
  * @subpackage vmpayment
- * ${PHING.VM.COPYRIGHT}
+ * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or

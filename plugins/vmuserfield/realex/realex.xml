@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension version="2.5" type="plugin" group="vmuserfield" method="upgrade">
+<extension version="1.5" type="plugin" group="vmuserfield" method="upgrade">
     <name>Realex</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>Valérie Isaksen</author>
@@ -13,17 +13,14 @@
         <filename plugin="realex">realex.php</filename>
         <folder>realex</folder>
     </files>
-    <config>
-        <fields name="params">
-            <fieldset name="default">
-                <field type="vmjpluginwarning"/>
-            </fieldset>
-       </fields>
-    </config>     
     <params addpath="/plugins/vmuserfield/realex/elements"/>
     <params addpath="/plugins/vmuserfield/realex/realex/elements"/>
     <params addpath="/administrator/components/com_virtuemart/elements"/>
     <params>
         <param type="vmjpluginwarning"/>
     </params>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart plg_vmuserfield_realex Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmuserfield_realex_update.xml]]></server>
+    </updateservers>
 </extension>

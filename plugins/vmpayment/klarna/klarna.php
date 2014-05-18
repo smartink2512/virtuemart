@@ -19,8 +19,11 @@ if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
 
-require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-
+if (JVM_VERSION === 2) {
+	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+} else {
+	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+}
 if (!class_exists ('Klarna')) {
 	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 }
@@ -65,9 +68,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
-		VmConfig::loadJLang('plg_vmpayment_klarna');
-		VmConfig::loadJLang('com_virtuemart_countries');
-
+		$jlang = JFactory::getLanguage ();
+		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', TRUE);
+		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault (), TRUE);
+		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, NULL, TRUE);
 	}
 
 	/**
@@ -374,6 +378,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					$partPay = 0;
 				}
 			}
+			if (!KlarnaHandler::checkPartpriceCondition ($cData, $cart)) {
+				$partPay = 0;
+			}
+
 			if ($partPay > 0) {
 				if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'], $cData['vendor_currency'])) {
 					$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');

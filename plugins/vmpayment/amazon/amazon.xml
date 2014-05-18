@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="2.5" type="plugin" group="vmpayment" method="upgrade">
+    <name>AMAZON</name>
+    <creationDate>${PHING.VM.RELDATE}</creationDate>
+    <author>The VirtueMart Development Team</author>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright>${PHING.VM.COPYRIGHT}</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <version>${PHING.VM.RELEASE}</version>
+    <description>AMAZON payment plugin</description>
+    <languages>
+        <language tag="en-GB">en-GB.plg_vmpayment_amazon.ini</language>
+    </languages>
+    <files>
+        <filename plugin="amazon">amazon.php</filename>
+        <folder>language</folder>
+    </files>
+    <params addpath="/administrator/components/com_virtuemart/elements"/>
+    <params addpath="/plugins/vmpayment/amazon/amazon/elements"/>
+    <params>
+        <param type="customjs" default=""/>
+        <param type="vmcurl" />
+        <param type="vmtitle" default="AMAZON LOGO TODO"/>
+
+        <param name="environment" type="list" default="sandbox" label="VMPAYMENT_AMAZON_CONF_ENVIRONMENT"
+               description="VMPAYMENT_AMAZON_CONF_ENVIRONMENT_TIP">
+            <option value="sandbox">VMPAYMENT_AMAZON_CONF_ENVIRONMENT_SANDBOX</option>
+            <option value="live">VMPAYMENT_AMAZON_CONF_ENVIRONMENT_LIVE</option>
+        </param>
+        <param class="sandbox_warning" type="vmtitle" default="" description="VMPAYMENT_AMAZON_SANDBOX_WARNING"/>
+
+        <param name="region" type="list" default="UK" label="VMPAYMENT_AMAZON_CONF_REGION"
+               description="VMPAYMENT_AMAZON_CONF_REGION_TIP">
+            <option value="UK">VMPAYMENT_AMAZON_CONF_REGION_UK</option>
+            <option value="DE">VMPAYMENT_AMAZON_CONF_REGION_DE</option>
+            <option value="US">VMPAYMENT_AMAZON_CONF_REGION_US</option>
+            <!--option value="OTHER">VMPAYMENT_AMAZON_CONF_REGION_OTHER</option-->
+        </param>
+
+        <param name="sellerId" class="required" type="text" default="" label="VMPAYMENT_AMAZON_CONF_SELLER_ID"
+               description="VMPAYMENT_AMAZON_CONF_SELLER_ID_TIP"/>
+
+        <param name="accessKey" class="required" type="text" size="80" default="" label="VMPAYMENT_AMAZON_CONF_ACCESS_KEY"
+               description="VMPAYMENT_AMAZON_CONF_ACCESS_KEY_TIP"/>
+        <param name="secretKey" class="required" type="text" size="80" default="" label="VMPAYMENT_AMAZON_CONF_SECRET_KEY"
+               description="VMPAYMENT_AMAZON_CONF_SECRET_KEY_TIP"/>
+
+
+        <param class="region region-other required" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ENDPOINTS_SECTION" />
+        <param class="region region-other required" size="120" name="sandbox_serviceURL" type="text" default=""
+               label="VMPAYMENT_AMAZON_CONF_SANDBOX_SERVICEURL"
+               description="VMPAYMENT_AMAZON_CONF_SANDBOX_SERVICEURL_TIP"/>
+        <param class="region region-other required" size="120" name="production_serviceURL" type="text" default=""
+               label="VMPAYMENT_AMAZON_CONF_PRODUCTION_SERVICEURL"
+               description="VMPAYMENT_AMAZON_CONF_PRODUCTION_SERVICEURL_TIP"/>
+        <param class="region region-other required" size="120" name="sandbox_widgetURL" type="text" default=""
+               label="VMPAYMENT_AMAZON_CONF_SANDBOX_WIDGETURL"
+               description="VMPAYMENT_AMAZON_CONF_SANDBOX_WIDGETURL_TIP"/>
+        <param class="region region-other required" size="120" name="production_widgetURL" type="text" default=""
+               label="VMPAYMENT_AMAZON_CONF_PRODUCTION_WIDGETURL"
+               description="VMPAYMENT_AMAZON_CONF_PRODUCTION_WIDGETURL_TIP"/>
+        <param class="region region-other required" size="120" name="sandbox_signin" type="text" default=""
+               label="VMPAYMENT_AMAZON_CONF_SANDBOX_SIGNIN" description="VMPAYMENT_AMAZON_CONF_SANDBOX_SIGNIN_TIP"/>
+        <param class="region region-other required" size="120" name="production_signin" type="text" default=""
+               label="VMPAYMENT_AMAZON_CONF_PRODUCTION_SIGNIN"
+               description="VMPAYMENT_AMAZON_CONF_PRODUCTION_SIGNIN_TIP"/>
+
+        <!-- Restrictions -->
+        <!-- ============ -->
+        <param class="level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION"
+               description="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION_TIP"/>
+        <!--param name="countries" type="vmcountries" scope="com_virtuemart" default=""
+               label="VMPAYMENT_AMAZON_CONF_COUNTRIES" description="VMPAYMENT_AMAZON_CONF_COUNTRIES_TIP"/ -->
+        <param name="min_amount" type="text" label="VMPAYMENT_AMAZON_CONF_MIN_AMOUNT"
+               description="VMPAYMENT_AMAZON_CONF_MIN_AMOUNT_TIP"/>
+        <param name="max_amount" type="text" label="VMPAYMENT_AMAZON_CONF_MAX_AMOUNT"
+               description="VMPAYMENT_AMAZON_CONF_MAX_AMOUNT_TIP"/>
+        <param name="exclude_categories" type="categories" label="VMPAYMENT_AMAZON_CONF_EXCLUDE_CATEGORIES"
+               description="VMPAYMENT_AMAZON_CONF_EXCLUDE_CATEGORIES_TIP"/>
+        <param name="languages" type="languages" label="VMPAYMENT_AMAZON_CONF_LANGUAGES"
+               description="VMPAYMENT_AMAZON_CONF_LANGUAGES_TIP"/>
+        <param name="ip_whitelist" type="textarea" label="VMPAYMENT_AMAZON_CONF_IP_WHITELIST"
+               description="VMPAYMENT_AMAZON_CONF_IP_WHITELIST_TIP"/>
+
+        <!-- Template -->
+        <!-- ============ -->
+        <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_SECTION"
+               description=""/>
+        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_SIGN_IN"
+               description=""/>
+        <param name="sign_in_widget_size" type="radio" default="medium"
+               label="VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_SIZE">
+            <option value="medium">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_SIZE_MEDIUM</option>
+            <option value="large">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_SIZE_LARGE</option>
+            <option value="x-large">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_SIZE_X_LARGE</option>
+        </param>
+        <param name="sign_in_widget_color" type="radio" default="Orange"
+                         label="VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR">
+        <option value="Orange">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_ORANGE</option>
+        <option value="Tan">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_TAN</option>
+    </param>
+        <param name="sign_in_display" type="list" multiple="true" default="login"
+               label="VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY">
+            <option value="product">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_PRODUCT</option>
+            <!--option value="login">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_LOGIN</option-->
+            <option value="advertise">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_ADVERTISE</option>
+            <option value="module">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_MODULE</option>
+        </param>
+
+        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_ADDRESSBOOK"
+               description=""/>
+        <param name="addressbook_designWidth" type="text" default="400"
+               label="VMPAYMENT_AMAZON_CONF_ADDRESSBOOK_DESIGNWIDTH"
+               description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
+        <param name="addressbook_designHeight" type="text" default="260"
+               label="VMPAYMENT_AMAZON_CONF_ADDRESSBOOK_DESIGNHEIGHT"
+               description="VMPAYMENT_AMAZON_CONF_DESIGNHEIGHT_TIP"/>
+
+        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_WALLET"
+               description=""/>
+        <param name="wallet_designWidth" type="text" default="400" label="VMPAYMENT_AMAZON_CONF_WALLET_DESIGNWIDTH"
+               description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
+        <param name="wallet_designHeight" type="text" default="260" label="VMPAYMENT_AMAZON_CONF_WALLET_DESIGNHEIGHT"
+               description="VMPAYMENT_AMAZON_CONF_DESIGNHEIGHT_TIP"/>
+
+        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_RO_ADDRESSBOOK"
+               description=""/>
+        <param name="ro_addressbook_designWidth" type="text" default="400"
+               label="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_DESIGNWIDTH"
+               description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
+        <param name="ro_addressbook_designHeight" type="text" editable="false" default="185"
+               label="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_DESIGNHEIGHT"
+               description="VMPAYMENT_AMAZON_CONF_RO_DESIGNWIDTH_TIP"/>
+
+        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_RO_WALLET"
+               description=""/>
+        <param name="ro_wallet_designWidth" type="text" default="400"
+               label="VMPAYMENT_AMAZON_CONF_RO_WALLET_DESIGNWIDTH"
+               description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
+        <param name="ro_wallet_designHeight" type="text" editable="false" default="185"
+               label="VMPAYMENT_AMAZON_CONF_RO_WALLET_DESIGNHEIGHT"
+               description="VMPAYMENT_AMAZON_CONF_RO_DESIGNHEIGHT_TIP"/>
+
+
+
+        <param class="sandbox level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION"
+               description=""/>
+
+        <param class="sandbox" name="sandbox_error_simulation" type="list" default="0"
+               label="VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_CONFIG">
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="PaymentMethodNotAllowed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PAYMENTMETHODNOTALLOWED</option>
+            <option value="AmazonClosed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONCLOSED</option>
+            <option value="InvalidPaymentMethod">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_INVALIDPAYMENTMETHOD</option>
+            <option value="AmazonRejected">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONREJECTED</option>
+            <option value="TransactionTimedOut">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_TRANSACTIONTIMEOUT</option>
+            <option value="ExpiredUnused">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_EXPIREDUNUSED</option>
+            <option value="Pending">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PENDING</option>
+        </param>
+
+
+        <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION"
+               description="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION_TIP"/>
+        <param name="debug" type="radio" default="0" label="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION">
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+        </param>
+        <param name="log" type="radio" default="0" label="VMPAYMENT_AMAZON_CONF_LOG"
+               description="VMPAYMENT_AMAZON_CONF_LOG_TIP">
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+        </param>
+
+    </params>
+
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart plg_vmpayment_amazon Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_amazon_update.xml]]></server>
+    </updateservers>
+</extension>

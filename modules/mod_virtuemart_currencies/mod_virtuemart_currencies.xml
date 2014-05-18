@@ -65,6 +65,6 @@
     </config>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart3 mod_virtuemart_currencies Update Site"><![CDATA[http://virtuemart.net/releases/vm3/mod_virtuemart_currencies_update.xml]]></server>
+        <server type="extension" name="VirtueMart3 mod_virtuemart_currencies Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/mod_virtuemart_currencies_update.xml]]></server>
     </updateservers>
 </extension>

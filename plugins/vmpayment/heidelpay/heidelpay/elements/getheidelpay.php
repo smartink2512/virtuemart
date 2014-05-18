@@ -18,9 +18,7 @@ defined ('JPATH_BASE') or die();
  */
 
 
-jimport('joomla.form.formfield');
-
-class JFormFieldgetHeidelpay extends JFormField {
+class JElementGetHeidelpay extends JElement {
 
 	/**
 	 * Element name
@@ -28,9 +26,9 @@ class JFormFieldgetHeidelpay extends JFormField {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type =  'getHeidelpay';
+	var $_name = 'getHeidelpay';
 
-	protected function getInput() {
+	function fetchElement ($name, $value, &$node, $control_name) {
 
 		$js = '
 //<![CDATA[

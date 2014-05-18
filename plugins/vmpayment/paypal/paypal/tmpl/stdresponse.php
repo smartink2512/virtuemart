@@ -7,7 +7,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -23,6 +23,7 @@ $success = $viewData["success"];
 $payment_name = $viewData["payment_name"];
 $payment = $viewData["payment"];
 $order = $viewData["order"];
+$currency = $viewData["currency"];
 
 ?>
 <br />
@@ -36,11 +37,11 @@ $order = $viewData["order"];
     	<td><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
         <td><?php echo $order['details']['BT']->order_number;; ?></td>
     </tr>
-	<?php if ($success) { ?>
 	<tr>
-    	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
+		<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
         <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
     </tr>
+	<?php if ($success) { ?>
 	<tr>
     	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
         <td><?php echo $payment->txn_id; ?></td>

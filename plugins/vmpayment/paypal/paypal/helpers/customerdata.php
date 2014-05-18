@@ -128,13 +128,13 @@ class PaypalHelperCustomerData {
 			$this->_autobilling_max_amount = $autobilling_max_amount;
 		}
 
-//		$tvRequest::Request::equest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
-//		$this->_cc_number = svRequest::mRequest::Request::getVar('cc_number_' . $virtuemart_paymentmethod_id, ''));
+//		$this->_cc_name = vRequest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_number = str_replace(" ","",vRequest::getVar('cc_number_' . $virtuemart_paymentmethod_id, ''));
 //		$this->_cc_cvv = vRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
-//		$thivRequest::ivRequest:: JRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
-//		$vRequest::exvRequest::= JRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_expire_month = vRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_expire_year = vRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
 //		//Customer settings
-//		$this->vRequest::ng_vRequest:: = JRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
+//		$this->_autobilling_max_amount = vRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
 
 		$this->save();
 	}

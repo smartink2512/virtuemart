@@ -142,12 +142,22 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$addressST = ((isset($this->order['details']['ST'])) ? $this->order['details']['ST'] : $this->order['details']['BT']);
 
 		//Ship To
-		$post_variables['SHIPTONAME'] = isset($addressST->first_name) ? $this->truncate($addressST->first_name, 50) : '';
-		$post_variables['SHIPTOSTREET'] = isset($addressST->first_name) ? $this->truncate($addressST->address_1, 60) : '';
+		$shiptoname=$this->getShipToName((isset($addressST->first_name) ? $addressST->first_name:''), (isset($addressST->last_name) ?  $addressST->last_name:''), 50);
+		$post_variables['SHIPTONAME'] =   $shiptoname  ;
+		$post_variables['SHIPTOSTREET'] = isset($addressST->address_1) ? $this->truncate($addressST->address_1, 60) : '';
 		$post_variables['SHIPTOCITY'] = isset($addressST->city) ? $this->truncate($addressST->city, 40) : '';
 		$post_variables['SHIPTOZIP'] = isset($addressST->zip) ? $this->truncate($addressST->zip, 40) : '';
 		$post_variables['SHIPTOSTATE'] = isset($addressST->virtuemart_state_id) ? ShopFunctions::getStateByID($addressST->virtuemart_state_id, 'state_2_code') : '';
 		$post_variables['SHIPTOCOUNTRYCODE'] = ShopFunctions::getCountryByID($addressST->virtuemart_country_id, 'country_2_code');
+	}
+
+	function getShipToName($first_name,$last_name, $max_length) {
+		if (strlen ($first_name.' '.$last_name) > $max_length){
+			$first_name=$this->truncate($first_name, $max_length-strlen($last_name)) ;
+		}
+		// important that we get the last name correctly
+		$shipToName= $this->truncate($first_name.' '.$last_name, $max_length) ;
+		return $shipToName;
 	}
 
 	/**
@@ -172,7 +182,15 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			}
 		}
 
-		$post_variables["PAYMENTREQUEST_0_ITEMAMT"] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPrice'], $this->_method->payment_currency);
+		// Handling Coupon (handling must be positive value, add then coupon as a product with negative value
+		if (!empty($this->cart->pricesUnformatted['salesPriceCoupon'])) {
+			$post_variables["L_PAYMENTREQUEST_0_NAME" . $i] = vmText::_('COM_VIRTUEMART_COUPON_DISCOUNT').': '. $this->cart->couponCode;
+			$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] =  vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
+			$post_variables["L_PAYMENTREQUEST_0_QTY" . $i] = 1;
+		}
+
+
+		$post_variables["PAYMENTREQUEST_0_ITEMAMT"] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPrice']+$this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
 		$salesPriceShipment = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceShipment'], $this->_method->payment_currency);
 		if ($salesPriceShipment >= 0) {
 			$post_variables["PAYMENTREQUEST_0_SHIPPINGAMT"] = $salesPriceShipment;
@@ -181,9 +199,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 
 		$handling = $this->getHandlingAmount();
-		if (!empty($this->cart->pricesUnformatted['salesPriceCoupon'])) {
-			$handling += vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
-		}
+
 		$post_variables["PAYMENTREQUEST_0_HANDLINGAMT"] = $handling;
 		$post_variables['PAYMENTREQUEST_0_AMT'] = $this->total;
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
@@ -254,7 +270,8 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 		$post_variables = $this->initPostVariables('SetExpressCheckout');
 		$this->addAcceleratedOnboarding($post_variables);
-		$this->addPrices($post_variables);
+		// It is almost impossible to have the same amount as the one calultaed by paypal
+		//$this->addPrices($post_variables);
 
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
@@ -288,8 +305,8 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$post_variables['PAYMENTREQUEST_0_PAYMENTACTION'] = $this->getPaymentAction();
 			// done in addPrices
 			// Total of order, including shipping, handling, tax, and any other billing adjustments such as a credit due.
-			// $post_variables['PAYMENTREQUEST_0_AMT'] = $this->total;
-			// $post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
+			$post_variables['PAYMENTREQUEST_0_AMT'] = $this->total;
+			$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 		}
 
 
@@ -366,7 +383,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$this->addAcceleratedOnboarding($post_variables);
 		$this->addBillTo($post_variables);
 		$this->addShipTo($post_variables);
-		$this->addPrices($post_variables);
+		//$this->addPrices($post_variables);
 
 
 		$this->addToken($post_variables);

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die();
 
 $response = $viewData['response'];
-
+$currency = $viewData["currency"];
 ?>
 <br />
 <style>
@@ -29,27 +29,20 @@ $response = $viewData['response'];
 <table cellpadding="2" class="paypal_ordersummary">
 	<?php 
 	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_PAYMENT_NAME',  $viewData['payment_name']);
+	echo $this->getHtmlRow('COM_VIRTUEMART_ORDER_NUMBER', $response['invoice']);
+	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AMOUNT', $response['PAYMENTINFO_0_AMT'] . ' ' . $response['PAYMENTINFO_0_CURRENCYCODE']);
+
+
 	if ( $viewData['success']) {
-		echo $this->getHtmlRow('COM_VIRTUEMART_ORDER_NUMBER', $response['invoice']);
-		if ($viewData['method']->payment_type == '_xclick-subscriptions' || $viewData['method']->payment_type == '_xclick-payment-plan') {
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILEID', $response['PROFILEID']);
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILESTATUS', $response['STATUS']);
-		} else {
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AMOUNT', $response['PAYMENTINFO_0_AMT'] . ' ' . $response['PAYMENTINFO_0_CURRENCYCODE']);
 			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_TRANSACTION_ID', $response['PAYMENTINFO_0_TRANSACTIONID']);
-		}
-		//echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AUTHORIZATION_CODE', $response['CORRELATIONID']);
 	} else {
 		for ($i = 0; isset($response["L_ERRORCODE".$i]); $i++) {
 			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_ERROR_CODE', $response["L_ERRORCODE".$i]);
 			$message = isset($response["L_LONGMESSAGE".$i]) ? $response["L_LONGMESSAGE".$i]: $response["L_SHORTMESSAGE".$i];
 			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_ERROR_DESC', $message);
 		}
-
 	}
 	?>
 </table>
-<?php if ( $viewData['success']) { ?>
 	<br />
 	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
-<?php } ?>

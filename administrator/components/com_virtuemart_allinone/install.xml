@@ -30,6 +30,6 @@
     </administration>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart3 AIO Update Site"><![CDATA[http://virtuemart.net/releases/vm3/virtuemart_aio_update.xml]]></server>
+        <server type="extension" name="VirtueMart3 AIO Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/virtuemart_aio_update.xml]]></server>
     </updateservers>
 </extension>

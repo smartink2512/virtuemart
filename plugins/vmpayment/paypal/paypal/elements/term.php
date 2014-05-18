@@ -21,7 +21,7 @@
 
 defined ('_JEXEC') or die();
 
-class JFormFieldTerm extends JFormFieldList {
+class JElementTerm extends JElement {
 
 	/**
 	 * Element name
@@ -29,21 +29,19 @@ class JFormFieldTerm extends JFormFieldList {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type = 'Term';
+	var $_name = 'Term';
 
-	protected function getOptions(){
-
-	$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-		$max = $this->element['max'] ? intval($this->element['max']) : 52;
-
-	$options = array();
+	function fetchElement ($name, $value, &$node, $control_name) {
+		
+		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
+		$max = ($node->attributes('max') ? intval($node->attributes('max')) : 52);
+		
+		$options = array();
 		for($i=1; $i<=$max; $i++) {
 			$options[] = JHTML::_('select.option', $i, $i);
 		}
 
-		//return JHTML::_ ('select.genericlist', $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
-	return JHtml::_('select.genericlist', $options, $this->name, trim($class), 'value', 'text', $this->value, $this->id);
-
-}
+		return JHTML::_ ('select.genericlist', $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
+	}
 
 }

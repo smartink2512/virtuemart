@@ -20,16 +20,20 @@
 
 
 defined ('_JEXEC') or die();
-jimport('joomla.form.formfield');
 
-class JFormFieldDuration extends JFormField {
+class JElementDuration extends JElement {
 
-	protected $type = 'Duration';
+	/**
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $_name = 'Duration';
 
-	protected function getInput() {
-
-		//$class = ($node->attributes('class') ? $node->attributes('class') : '');
-		$class = (string) $this->element['class'];
+	function fetchElement ($name, $value, &$node, $control_name) {
+		
+		$class = ($node->attributes('class') ? $node->attributes('class') : '');
 		$field_id = uniqid('duration');
 		$duration_value_id = $field_id.'_value';
 		$duration_unit_id = $field_id.'_unit';
@@ -63,8 +67,7 @@ class JFormFieldDuration extends JFormField {
 		$html .= JHTML::_ ('select.genericlist', $options, $duration_unit_id, '', 'value', 'text', $duration_unit, $duration_unit_id);
 		$html .= '<input type="hidden" name="'.$control_name.'['.$name.']'.'" id="'.$control_name . $name.'" value="'.$value.'" class="'.$class.'" >';
 		
-		return $html;
-
+		return $html;		
 	}
 
 }

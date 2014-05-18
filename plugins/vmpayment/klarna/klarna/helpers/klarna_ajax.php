@@ -69,12 +69,12 @@ class KlarnaAjax {
 			$this->template['name'] = "default";
 		}
 		if ($sSubAction == "klarna_box") {
-			$sNewISO     = vRequest::getCmd('newIso');
-			$sCountry    = vRequest::getCmd('country');
+			$sNewISO     = vRequest::getWord('newIso');
+			$sCountry    = vRequest::getWord('country');
 			$iSum        = vRequest::getFloat('sum', 0);
 			$iInvoiceFee = vRequest::getFloat('fee', 0);
 			$iFlag       = vRequest::getInt('flag');
-			$sType       = vRequest::getCmd('type');
+			$sType       = vRequest::getWord('type');
 			$aParams     = vRequest::getVar('params');
 			$aValues     = vRequest::getVar('values');
 
@@ -139,7 +139,7 @@ class KlarnaAjax {
 		}
 
 		$sPNO     = vRequest::getWord('socialNumber'); //vRequest::getWord('pno');
-		$sCountry = strtolower(vRequest::getCmd('country'));
+		$sCountry = strtolower(vRequest::getWord('country'));
 
 		if (array_key_exists($sPNO, $aSessionCalls)) {
 			$addrs = $aSessionCalls[$sPNO];

@@ -4,7 +4,7 @@
  * Paypal   payment plugin
  *
  * @author Jeremy Magne
- * ${PHING.VM.COPYRIGHT}
+ * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
  * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
@@ -20,18 +20,24 @@
 
 
 defined ('_JEXEC') or die();
-jimport('joomla.form.formfield');
 
-class JFormFieldCustomjs extends JFormField {
+class JElementCustomjs extends JElement {
 
-	protected $type = 'Customjs';
+	/**
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $_name = 'Customjs';
 
-	protected function getInput() {
+	function fetchElement ($name, $value, &$node, $control_name) {
 		
 		JHtml::_('behavior.colorpicker');
 		
 		$doc = JFactory::getDocument();
 		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
 
 		
 		return '';		

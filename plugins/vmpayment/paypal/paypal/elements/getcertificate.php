@@ -1,5 +1,5 @@
 <?php
-defined('_JEXEC') or die();
+defined ('_JEXEC') or die();
 /**
  *
  * @package    VirtueMart
@@ -15,65 +15,61 @@ defined('_JEXEC') or die();
  * @version $Id:$
  */
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-JFormHelper::loadFieldClass('list');
+class JElementGetcertificate extends JElement {
 
-class JFormFieldGetcertificate extends JFormField{
+	/**
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $_name = 'Getcertificate';
 
-	protected $type = 'Getcertificate';
 
-	protected function getInput() {
+		function fetchElement ($name, $value, &$node, $control_name) {
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
+			jimport ('joomla.filesystem.folder');
+			jimport ('joomla.filesystem.file');
+			$lang = JFactory::getLanguage ();
+			$lang->load ('com_virtuemart', JPATH_ADMINISTRATOR);
+			// path to images directory
+			$folder = $node->attributes ('directory');
+			$safePath = VmConfig::get ('forSale_path', '');
 
-		$filter = (string)$this->element['filter'];
-		$exclude = (string)$this->element['exclude'];
-		$stripExt = (string)$this->element['stripext'];
-		$hideNone = (string)$this->element['hide_none'];
-		$hideDefault = (string)$this->element['hide_default'];
-		$class = $this->element['class'] ? ' class="' . (string)$this->element['class'] . '"' : '';
+			$certificatePath=$safePath.$folder;
+			$certificatePath = JPath::clean($certificatePath);
+			$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
 
-		// Get the path in which to search for file options.
-		$folder = (string)$this->element['directory'];
-		$safePath = VmConfig::get('forSale_path', '');
-
-		$certificatePath = $safePath . $folder;
-
-		// Is the path a folder?
-		if (!is_dir($certificatePath)) {
-			return '<span ' . $class . '>' . JText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
-		}
-		$path = str_replace('/', DS, $certificatePath);
-		// Get a list of files in the search path with the given filter.
-		$files = JFolder::files($path, $filter);
-
-		// Build the options list from the list of files.
-		if (is_array($files)) {
-			foreach ($files as $file) {
-				// Check to see if the file is in the exclude mask.
-				if ($exclude) {
-					if (preg_match(chr(1) . $exclude . chr(1), $file)) {
-						continue;
-					}
-				}
-
-				// If the extension is to be stripped, do it.
-				if ($stripExt) {
-					$file = JFile::stripExt($file);
-				}
-				$options[] = JHtml::_('select.option', $file, $file);
+			// Is the path a folder?
+			if (!is_dir($certificatePath)){
+				return '<span '.$class.'>'.vmText::sprintf ('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath).'</span>';
 			}
-		}
-		if (empty($options)) {
-			return '<span ' . $class . '>' . JText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
-		}
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
 
-		return $options;
-	}
+			$path = str_replace ('/', DS, $certificatePath);
+			$filter = $node->attributes ('filter');
+			$exclude = array($node->attributes ('exclude'), '.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html');
+			$pattern = implode ( "|", $exclude);
+			$stripExt = $node->attributes ('stripext');
 
+			$files = JFolder::files ($path, $filter, FALSE, FALSE, $exclude);
+
+			$options = array();
+
+			if (is_array ($files)) {
+				foreach ($files as $file) {
+					if ($exclude) {
+						if (preg_match (chr (1) . $pattern . chr (1), $file)) {
+							continue;
+						}
+					}
+					if ($stripExt) {
+						$file = JFile::stripExt ($file);
+					}
+					$options[] = JHTML::_ ('select.option', $file, $file);
+				}
+			}
+			$class .= ' size="5" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
+			return JHTML::_ ('select.genericlist', $options, '' . $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
+		}
 
 }

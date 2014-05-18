@@ -18,6 +18,6 @@
     </files>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart3 plg_vmcalculation_avalara Update Site"><![CDATA[http://virtuemart.net/releases/vm3/plg_vmcalculation_avalara_update.xml]]></server>
+        <server type="extension" name="VirtueMart3 plg_vmcalculation_avalara Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmcalculation_avalara_update.xml]]></server>
     </updateservers>
 </extension>

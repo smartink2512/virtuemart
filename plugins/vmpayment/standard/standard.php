@@ -24,7 +24,7 @@ if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
 
-class plgVmPaymentStandard extends vmPSPlugin {
+	class plgVmPaymentStandard extends vmPSPlugin {
 
 	function __construct (& $subject, $config) {
 
@@ -36,6 +36,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$this->_tableId = 'id';
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
+
 	}
 
 	/**
@@ -85,7 +86,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		if (!$this->selectedThisElement ($method->payment_element)) {
 			return FALSE;
 		}
-		// 		$params = new JParameter($payment->payment_params);
+
 		VmConfig::loadJLang('com_virtuemart',true);
 
 		if (!class_exists ('VirtueMartModelOrders')) {
@@ -291,7 +292,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 * @author Max Milbers
 	 */
-	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected, &$htmlIn) {
+	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 
 		return $this->displayListFE ($cart, $selected, $htmlIn);
 	}

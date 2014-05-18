@@ -16,7 +16,7 @@ defined ('JPATH_BASE') or die();
 /**
  * Renders a label element
  */
-if (JVM_VERSION > 1) {
+if (JVM_VERSION === 2) {
 	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
 	if (!class_exists ('KlarnaHandler')) {
 		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
@@ -28,9 +28,7 @@ if (JVM_VERSION > 1) {
 	}
 }
 
-jimport('joomla.form.formfield');
-
-class JFormFieldGetKlarnacheckout extends JFormField {
+class JElementGetKlarnacheckout extends JElement {
 
 	/**
 	 * Element name
@@ -38,9 +36,12 @@ class JFormFieldGetKlarnacheckout extends JFormField {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type =  'GetKlarnacheckout';
+	var $_name = 'getKlarnacheckout';
 
-	protected function getInput() {
+	function fetchElement ($name, $value, &$node, $control_name) {
+
+
+		return "TO DO ";
 
 		$jlang = JFactory::getLanguage ();
 		$lang = $jlang->getTag ();
