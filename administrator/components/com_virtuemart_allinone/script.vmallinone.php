@@ -266,7 +266,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		 *
 		 */
 		private function installPlugin ($name, $type, $element, $group, $published = 0, $createJPluginTable = 1) {
-			echo ('<br />installPlugin' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+			//echo ('<br />installPlugin' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
 
 			$task = JRequest::getCmd ('task');
 
