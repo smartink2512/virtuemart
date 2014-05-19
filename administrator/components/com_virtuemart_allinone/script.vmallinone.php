@@ -643,7 +643,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			// Update the version number for all
 			if(isset($xml->version)) {
-					$query="UPDATE `#__extensions` SET `version`=".$db->quote((string)$xml->version).",
+					$query="UPDATE `#__updates` SET `version`=".$db->quote((string)$xml->version).",
 					         WHERE extension_id=".$extension_id;
 					$db->setQuery($query);
 					$db->query();
