@@ -13,7 +13,7 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 *
 * www.virtuemart.net
 */
-if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/administrator/components/com_virtuemart/helpers/config.php');
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
 VmConfig::loadConfig();
 if (!class_exists( 'VmImage' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'image.php');
 if(!class_exists('TableMedias')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'medias.php');
