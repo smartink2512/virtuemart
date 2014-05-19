@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Build VirtueMart 2" default="VIRTUEMART2_AND_FULLINSTALLER" basedir=".">
+<project name="Build VirtueMart" default="VIRTUEMART_AND_FULLINSTALLER" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MAYOR"/>
     <property name="vm.version" value="2.9.4"/>
@@ -10,7 +10,7 @@
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
     <target name="title">
-        <echo message="BUILD VirtueMart 3 package FROM ${export.to}  TO ${package.abspath}"/>
+        <echo message="BUILD VirtueMart package FROM ${export.to}  TO ${package.abspath}"/>
     </target>
 
     <!-- ============================================  -->
@@ -143,6 +143,7 @@
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
         <exclude name="**/vm_build/**"/>
+        <exclude name="**/amazon/**"/>
         <exclude name="**/realex/**"/>
         <exclude name="**/paybox/**"/>
         <exclude name="**/klikandpay/**"/>
@@ -256,6 +257,7 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
+        <exclude name="**/amazon/**"/>
         <exclude name="**/realex/**"/>
         <exclude name="**/paybox/**"/>
         <exclude name="**/klikandpay/**"/>
@@ -488,7 +490,7 @@
         <echo msg="AIO Component compressed OK!"/>
     </target>
 
-    <target name="VIRTUEMART2_ALONE" depends="title, clean ,svn.export, Main, AIO">
+    <target name="VIRTUEMART_ALONE" depends="title, clean ,svn.export, Main, AIO">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
         <!-- DOES not create a correct package for me -->
@@ -510,7 +512,7 @@
     </target>
 
 
-    <target name="VIRTUEMART2_AND_FULLINSTALLER" depends="title, clean , svn.export, Main, AIO, full_installer">
+    <target name="VIRTUEMART_AND_FULLINSTALLER" depends="title, clean , svn.export, Main, AIO, full_installer">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
         <!-- DOES not create a correct package for me -->
