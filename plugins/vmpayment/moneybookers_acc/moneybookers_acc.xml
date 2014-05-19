@@ -56,4 +56,8 @@
 	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_STATUS_FAILED" description="VMPAYMENT_STATUS_FAILED_DESC" />
 	<param type="spacer" default="" level="level1" />
     </params>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart plg_vmpayment_moneybookers_acc Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_moneybookers_acc_update.xml]]></server>
+    </updateservers>
 </extension>
