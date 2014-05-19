@@ -46,24 +46,23 @@ class VirtueMartModelManufacturer extends VmModel {
 	}
 
 
-    /**
-     * Load a single manufacturer
-     */
-     public function getManufacturer() {
+	/**
+	* Load a single manufacturer
+	*/
+	public function getManufacturer($id = 0) {
 
-	    static $_manus = array();
-		if (!array_key_exists ($this->_id, $_manus)) {
-		    $this->_data = $this->getTable('manufacturers');
-		    $this->_data->load($this->_id);
+		if(!empty($id)) $this->_id = (int)$id;
 
-		    $xrefTable = $this->getTable('manufacturer_medias');
-		    $this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
+		if(empty($this->_cache[$this->_id])){
+			$this->_cache[$this->_id] = $this->getTable('manufacturers');
+			$this->_cache[$this->_id]->load($this->_id);
 
-			$_manus[$this->_id] = $this->_data;
-	    }
+			$xrefTable = $this->getTable('manufacturer_medias');
+			$this->_cache[$this->_id]->virtuemart_media_id = $xrefTable->load($this->_id);
+		}
 
-     	return $_manus[$this->_id];
-     }
+		return $this->_cache[$this->_id];
+	}
 
      /**
 	 * Bind the post data to the manufacturer table and save it

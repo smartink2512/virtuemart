@@ -67,6 +67,7 @@ class VmModel extends JObject {
 
 	var $_id 			= 0;
 	var $_data			= null;
+	private static $_cache = array();
 	var $_query 		= null;
 
 	var $_total			= null;
@@ -895,20 +896,22 @@ class VmModel extends JObject {
 	 *
 	 */
 
-	public function getData(){
+	public function getData($id = 0){
 
-		if (empty($this->_data)) {
-			$this->_data = $this->getTable($this->_maintablename);
-			$this->_data->load($this->_id);
+		if(!empty($id)) $this->_id = (int)$id;
+
+		if (empty($this->_cache[$this->_id])) {
+			$this->_cache[$this->_id] = $this->getTable($this->_maintablename);
+			$this->_cache[$this->_id]->load($this->_id);
 
 			//just an idea
-			if(isset($this->_data->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
+			if(isset($this->_cache[$this->_id]->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
 		}
 
-		return $this->_data;
+		return $this->_cache[$this->_id];
 	}
 
 

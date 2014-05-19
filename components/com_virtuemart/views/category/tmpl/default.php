@@ -154,7 +154,7 @@ if (!empty($this->keyword)) {
 	<div class="virtuemart_search">
 		<?php echo $this->searchcustom ?>
 		<br/>
-		<?php echo $this->searchcustomvalues ?>
+		<?php echo $this->searchCustomValues ?>
 		<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
 		<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
 	</div>

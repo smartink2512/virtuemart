@@ -76,30 +76,29 @@ class VirtueMartModelVendor extends VmModel {
 	 * @author Max Milbers
 	 * @return object Vendor details
 	 */
-	function getVendor ($vendor_id = NULL) {
+	function getVendor ($vendor_id = 0) {
 
-		if ($vendor_id) {
-			$this->_id = $vendor_id;
-		}
-		if (empty($this->_data)) {
+		if(!empty($id)) $this->_id = (int)$id;
 
-			$this->_data = $this->getTable ('vendors');
-			$this->_data->load ($this->_id);
+		if (empty($this->_cache[$this->_id])) {
+
+			$this->_cache[$this->_id] = $this->getTable ('vendors');
+			$this->_cache[$this->_id]->load ($this->_id);
 // 			vmdebug('getVendor',$this->_id,$this->_data);
 			// Convert ; separated string into array
-			if ($this->_data->vendor_accepted_currencies) {
-				$this->_data->vendor_accepted_currencies = explode (',', $this->_data->vendor_accepted_currencies);
+			if ($this->_cache[$this->_id]->vendor_accepted_currencies) {
+				$this->_cache[$this->_id]->vendor_accepted_currencies = explode (',', $this->_cache[$this->_id]->vendor_accepted_currencies);
 			} else {
-				$this->_data->vendor_accepted_currencies = array();
+				$this->_cache[$this->_id]->vendor_accepted_currencies = array();
 			}
 
 			//Todo, check this construction
 			$xrefTable = $this->getTable ('vendor_medias');
-			$this->_data->virtuemart_media_id = $xrefTable->load ($this->_id);
+			$this->_cache[$this->_id]->virtuemart_media_id = $xrefTable->load ($this->_id);
 
 		}
 
-		return $this->_data;
+		return $this->_cache[$this->_id];
 	}
 
 	/**

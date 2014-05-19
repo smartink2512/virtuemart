@@ -51,50 +51,52 @@ class VirtueMartModelCalc extends VmModel {
      *
      * @author Max Milbers
      */
-	public function getCalc(){
+	public function getCalc($id = 0){
 
-		if (empty($this->_data)) {
+		if(!empty($id)) $this->_id = (int)$id;
 
-			$this->_data = $this->getTable('calcs');
-			$this->_data->load((int)$this->_id);
+		if (empty($this->_cache[$this->_id])) {
+
+			$this->_cache[$this->_id] = $this->getTable('calcs');
+			$this->_cache[$this->_id]->load((int)$this->_id);
 
 			$xrefTable = $this->getTable('calc_categories');
-			$this->_data->calc_categories = $xrefTable->load($this->_id);
+			$this->_cache[$this->_id]->calc_categories = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
 				vmError(get_class( $this ).' calc_categories '.$xrefTable->getError());
 			}
 
 			$xrefTable = $this->getTable('calc_shoppergroups');
-			$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id);
+			$this->_cache[$this->_id]->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
 				vmError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
 			}
 
 			$xrefTable = $this->getTable('calc_countries');
-			$this->_data->calc_countries = $xrefTable->load($this->_id);
+			$this->_cache[$this->_id]->calc_countries = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
 				vmError(get_class( $this ).' calc_countries '.$xrefTable->getError());
 			}
 
 			$xrefTable = $this->getTable('calc_states');
-			$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id);
+			$this->_cache[$this->_id]->virtuemart_state_ids = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
 				vmError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
 			}
 
 			$xrefTable = $this->getTable('calc_manufacturers');
-			$this->_data->virtuemart_manufacturers = $xrefTable->load($this->_id);
+			$this->_cache[$this->_id]->virtuemart_manufacturers = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
 				vmError(get_class( $this ).' calc_manufacturers '.$xrefTable->getError());
 			}
 
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_data));
+			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_cache[$this->_id]));
 
   		}
 
-  		return $this->_data;
+  		return $this->_cache[$this->_id];
 	}
 
 	/**
@@ -122,10 +124,10 @@ class VirtueMartModelCalc extends VmModel {
 		$whereString= '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering());
+		$datas = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering());
 
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-		foreach ($this->_data as $data){
+		foreach ($datas as &$data){
 
 			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.(int)$data->calc_currency.'" ';
 			$db->setQuery($query);
@@ -136,7 +138,7 @@ class VirtueMartModelCalc extends VmModel {
 			$error = $dispatcher->trigger('plgVmGetPluginInternalDataCalcList',array(&$data));
 		}
 
-		return $this->_data;
+		return $data;
 	}
 
 	/**

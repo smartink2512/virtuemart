@@ -46,14 +46,10 @@ class VirtueMartModelShopperGroup extends VmModel {
      *
      * @author Markus Öhler
      */
-    function getShopperGroup() {
+    function getShopperGroup($id = 0) {
 
-	    if (empty($this->_data)) {
-	      $this->_data = $this->getTable('shoppergroups');
-	      $this->_data->load((int) $this->_id);
-	   }
+		return $this->getData($id);
 
-		return $this->_data;
 	}
 
 

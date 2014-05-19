@@ -161,30 +161,32 @@ class VirtueMartModelUserfields extends VmModel {
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
-	function getUserfield($id = 0,$name = 0)
-	{
-		if($id === 0){
-			$id = $this->_id;
-		}
+	function getUserfield($id = 0,$name = 0) {
 
-		if (empty($this->_data)) {
-			$this->_data = $this->getTable('userfields');
+		if(!empty($id)) $this->_id = (int)$id;
+
+		if (empty($this->_cache[$this->_id])) {
+			$this->_cache[$this->_id] = $this->getTable('userfields');
 			if($name !==0){
-				$this->_data->load($id, $name);
+				$this->_cache[$this->_id]->load($id, $name);
+			} else {
+				$this->_cache[$this->_id]->load($id);
 			}
-			$this->_data->load($id);
 		}
 
-		if(strpos($this->_data->type,'plugin')!==false){
+		if(strpos($this->_cache[$this->_id]->type,'plugin')!==false){
   			JPluginHelper::importPlugin('vmuserfield');
   			$dispatcher = JDispatcher::getInstance();
-			$plgName = substr($this->_data->type,6);
+			$plgName = substr($this->_cache->type,6);
 			$type = 'userfield';
-  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_data->userfield_jplugin_id,&$this->_data));
-			// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_data);
+  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_cache[$this->_id]->userfield_jplugin_id,&$this->_cache[$this->_id]));
+			// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_cache);
+			if(!empty($this->_cache[$this->_id]->_varsToPush)){
+				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPush);
+			}
 		}
 
-		return $this->_data;
+		return $this->_cache[$this->_id];
 	}
 
 
@@ -198,7 +200,7 @@ class VirtueMartModelUserfields extends VmModel {
 	function getUserfieldValues($id=null)
 	{
 	    if (empty($id)) $id = $this->_id;
-		$this->_data = $this->getTable('userfield_values');
+		//$this->_data = $this->getTable('userfield_values');
 		if ($id > 0) {
 			$query = 'SELECT * FROM `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . (int)$id
 			. ' ORDER BY `ordering`';

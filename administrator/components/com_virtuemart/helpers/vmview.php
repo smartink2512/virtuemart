@@ -498,8 +498,12 @@ class VmView extends JViewLegacy {
 		if ($this->canDo->get('core.admin')) {
 			JToolBarHelper::divider();
 			$bar = JToolBar::getInstance('toolbar');
-			// Add a configuration button.
-			$bar->appendButton('Popup', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component', 875, 550, 0, 0, '');
+			if(JVM_VERSION<3){
+				$bar->appendButton('Popup', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component', 875, 550, 0, 0, '');
+			} else {
+				$bar->appendButton('Link', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component');
+			}
+
 		}
 
 	}

@@ -48,39 +48,35 @@ class VirtueMartModelCustom extends VmModel {
      * @param string $mime mime type of custom, use for exampel image
      * @return customobject
      */
-    function getCustom(){
+    function getCustom($id = 0){
 
-    	if(empty($this->_data)){
+		if(!empty($id)) $this->_id = (int)$id;
 
-    		$this->_data = $this->getTable('customs');
-    		$this->_data->load($this->_id);
+    	if(empty($this->_cache[$this->_id])){
+
+    		$this->_cache[$this->_id] = $this->getTable('customs');
+    		$this->_cache[$this->_id]->load($this->_id);
 
 		    $customfields = VmModel::getModel('Customfields');
-		    $this->_data->field_types = $customfields->getField_types() ;
+		    $this->_cache[$this->_id]->field_types = $customfields->getField_types() ;
 
-		    $this->_data->varsToPush = self::getVarsToPush($this->_data->field_type);
-		    $this->_data->_xParams = 'custom_params';
+		    $this->_cache[$this->_id]->_varsToPush = self::getVarsToPush($this->_cache[$this->_id]->field_type);
+		    $this->_cache[$this->_id]->_xParams = 'custom_params';
 
-			$this->_data->customfield_params = '';
-		    if ($this->_data->field_type == 'E') {
+			$this->_cache[$this->_id]->customfield_params = '';
+		    if ($this->_cache[$this->_id]->field_type == 'E') {
 			    JPluginHelper::importPlugin ('vmcustom');
 			    $dispatcher = JDispatcher::getInstance ();
-			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_data));
-				foreach ($retValue as $returnValue) {
-					if($returnValue){
-						//Plugin did the job
-						return $this->_data;
-					}
-				}
+			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_cache[$this->_id]));
 		    }
 
-		    if(!empty($varsToPush)){
-			    VmTable::bindParameterable($this->_data,$this->_data->_xParams,$this->_data->varsToPush);
+		    if(!empty( $this->_cache[$this->_id]->_varsToPush)){
+			    VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPush);
 		    }
 
     	}
 
-  		return $this->_data;
+  		return $this->_cache[$this->_id];
 
     }
 

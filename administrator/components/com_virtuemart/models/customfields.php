@@ -73,14 +73,10 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * @param string $mime mime type of custom, use for exampel image
 	 * @return customobject
 	 */
-	function getCustomfield () {
+	function getCustomfield ($id = 0) {
 
-		if(empty($this->data)){
-			$this->data = $this->getTable ('product_customfields');
-			$this->data->load ($this->_id);
-		}
+		return $this->getData($id);
 
-		return $this;
 	}
 
 	static function bindCustomEmbeddedFieldParams(&$obj,$fieldtype){
@@ -608,7 +604,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$html = '';
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
-					vmdebug($customfield->virtuemart_product_id.' $child productId ');
+					//vmdebug($customfield->virtuemart_product_id.' $child productId ',$child);
 
 					if(!$customfield->withParent or ($customfield->withParent and $customfield->parentOrderable)){
 						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
@@ -638,7 +634,7 @@ class VirtueMartModelCustomfields extends VmModel {
 								$selectedFound = true;
 								vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
 							}
-							//vmdebug('$child productId '.$child['virtuemart_product_id']);
+							vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
 						}
 					}
 					if(!$selectedFound){
@@ -1060,17 +1056,16 @@ class VirtueMartModelCustomfields extends VmModel {
 	static function bindParameterableByFieldType(&$table, $type){
 
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-		$varsToPush = VirtueMartModelCustom::getVarsToPush($type);
-		//$xParams = $table->_xParams;
-		if ($type == 'E') {
+		$table->_varsToPush = $varsToPush = VirtueMartModelCustom::getVarsToPush($type);
+
+		if ($table->field_type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
-			//This does not only declare, it directly binds also the values
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
-		} else {
-			if(!empty($varsToPush)){
-				VmTable::bindParameterable($table,$table->_xParams,$varsToPush);
-			}
+		}
+
+		if(!empty($table->_varsToPush)){
+			VmTable::bindParameterable($table,$table->_xParams,$table->_varsToPush);
 		}
 
 	}

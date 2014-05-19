@@ -457,12 +457,12 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 	/**
-	 * Does VmTable::bindParameterable and setCryptedFields
+	 * Does VmTable::bindParameterable and setCryptedFields $name, $id, $data
 	 * @param $psType
 	 * @param $data
 	 * @return bool
 	 */
-	protected function declarePluginParams ($psType, &$data) {
+	protected function declarePluginParams ($psType, &$data, $blind=0, $blind2=0) {
 
 		//vmdebug('declarePluginParams ',$this->_psType,$data);
 		if(!empty($this->_psType)){
@@ -473,12 +473,19 @@ abstract class vmPlugin extends JPlugin {
 				return FALSE;
 			}
 		}
+
 		if (!class_exists ('VmTable')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
 		}
 
+		//New Vm3 way
+
 		//Is only used for the config tables!
-		VmTable::bindParameterable ($data, $data->_xParams, $this->_varsToPushParam);
+		//VmTable::bindParameterable ($data, $data->_xParams, $this->_varsToPushParam);
+		if($this->_varsToPushParam){
+			$data->_varsToPushParam = array_merge((array)$data->_varsToPushParam, (array)$this->_varsToPushParam);
+			//$data->_varsToPushParam = $this->_varsToPushParam;
+		}
 
 		if($this->_cryptedFields){
 			$data->setCryptedFields($this->_cryptedFields);

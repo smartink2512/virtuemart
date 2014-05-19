@@ -49,14 +49,9 @@ class VirtueMartModelState extends VmModel {
      *
      * @author Max Milbers
      */
-	function getSingleState(){
+	function getSingleState($id = 0){
 
-		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('states');
-   			$this->_data->load((int)$this->_id);
-  		}
-
-		return $this->_data;
+		return $this->getData($id);
 	}
 
 

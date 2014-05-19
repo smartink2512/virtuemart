@@ -60,37 +60,37 @@ class VirtueMartModelCategory extends VmModel {
      */
 	public function getCategory($virtuemart_category_id=0,$childs=TRUE){
 
-		if(!empty($virtuemart_category_id)) $this->setId((int)$virtuemart_category_id);
-
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('categories');
-   			$this->_data->load((int)$this->_id);
+		if(!empty($virtuemart_category_id)) $this->_id = (int)$virtuemart_category_id;
+		$childs = (int)$childs;
+  		if (empty($this->_cache[$this->_id][$childs])) {
+   			$this->_cache[$this->_id][$childs] = $this->getTable('categories');
+   			$this->_cache[$this->_id][$childs]->load($this->_id);
 
    			$xrefTable = $this->getTable('category_medias');
-   			$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
+   			$this->_cache[$this->_id][$childs]->virtuemart_media_id = $xrefTable->load((int)$this->_id);
 
    			if($xrefTable->getError()) vmError($xrefTable->getError());
 
-   			if(empty($this->_data->category_template)){
-   				$this->_data->category_template = VmConfig::get('categorytemplate');
+   			if(empty($this->_cache[$this->_id][$childs]->category_template)){
+   				$this->_cache[$this->_id][$childs]->category_template = VmConfig::get('categorytemplate');
    			}
 
-   			if(empty($this->_data->category_layout)){
-   				$this->_data->category_layout = VmConfig::get('categorylayout');
+   			if(empty($this->_cache[$this->_id][$childs]->category_layout)){
+   				$this->_cache[$this->_id][$childs]->category_layout = VmConfig::get('categorylayout');
    			}
 
    			if($childs){
-   				$this->_data->haschildren = $this->hasChildren($this->_id);
+   				$this->_cache[$this->_id][$childs]->haschildren = $this->hasChildren($this->_id);
 
    				/* Get children if they exist */
-   				if ($this->_data->haschildren) $this->_data->children = $this->getCategories(true,$this->_id);
-   				else $this->_data->children = null;
+   				if ($this->_cache[$this->_id][$childs]->haschildren) $this->_cache[$this->_id][$childs]->children = $this->getCategories(true,$this->_id);
+   				else $this->_cache[$this->_id][$childs]->children = null;
 
    				/* Get the product count */
-   				$this->_data->productcount = $this->countProducts($this->_id);
+   				$this->_cache[$this->_id][$childs]->productcount = $this->countProducts($this->_id);
 
    				/* Get parent for breatcrumb */
-   				$this->_data->parents = $this->getParentsList($this->_id);
+   				$this->_cache[$this->_id][$childs]->parents = $this->getParentsList($this->_id);
 
    			}
 
@@ -103,7 +103,7 @@ class VirtueMartModelCategory extends VmModel {
   		}
 
 
-  		return $this->_data;
+  		return $this->_cache[$this->_id][$childs];
 
 	}
 
@@ -541,7 +541,7 @@ class VirtueMartModelCategory extends VmModel {
 
 			$db = JFactory::getDbo();
 			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
-			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`custom_value` = "' . $cid . '" AND `field_type`= "Z"';
+			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`customfield_value` = "' . $cid . '" AND `field_type`= "Z"';
 			$db->setQuery($q);
 			$list = $db->loadColumn();
 

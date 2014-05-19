@@ -52,24 +52,31 @@ class VirtueMartModelPaymentmethod extends VmModel{
      *
      * @author Max Milbers
      */
-	public function getPayment(){
+	public function getPayment($id = 0){
 
-		if (empty($this->_data[$this->_id])) {
-			$this->_data[$this->_id] = $this->getTable('paymentmethods');
-			$this->_data[$this->_id]->load((int)$this->_id);
+		if(!empty($id)) $this->_id = (int)$id;
 
-			if(empty($this->_data->virtuemart_vendor_id)){
+		if (empty($this->_cache[$this->_id])) {
+			$this->_cache[$this->_id] = $this->getTable('paymentmethods');
+			$this->_cache[$this->_id]->load((int)$this->_id);
+
+			if(empty($this->_cache->virtuemart_vendor_id)){
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$this->_data[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
 
-			if($this->_data[$this->_id]->payment_jplugin_id){
+			if($this->_cache[$this->_id]->payment_jplugin_id){
 				JPluginHelper::importPlugin('vmpayment');
 				$dispatcher = JDispatcher::getInstance();
-				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data[$this->_id]->payment_element,$this->_data[$this->_id]->payment_jplugin_id,&$this->_data));
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_cache[$this->_id]->payment_element,$this->_cache[$this->_id]->payment_jplugin_id,&$this->_cache));
 			}
 
-			if($this->_data[$this->_id]->getCryptedFields()){
+			if(!empty($this->_cache[$this->_id]->_varsToPush)){
+				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPush);
+			}
+
+			//todo check if we still need this
+			/*if($this->_data[$this->_id]->getCryptedFields()){
 				if(!class_exists('vmCrypt')){
 					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 				}
@@ -86,16 +93,16 @@ class VirtueMartModelPaymentmethod extends VmModel{
 						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field,$date);
 					}
 				}
-			}
+			}*/
 
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
-			$this->_data[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
-			if(empty($this->_data[$this->_id]->virtuemart_shoppergroup_ids)) $this->_data[$this->_id]->virtuemart_shoppergroup_ids = 0;
+			$this->_cache[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
+			if(empty($this->_cache[$this->_id]->virtuemart_shoppergroup_ids)) $this->_cache[$this->_id]->virtuemart_shoppergroup_ids = 0;
 
 		}
 
-		return $this->_data[$this->_id];
+		return $this->_cache[$this->_id];
 	}
 
 	/**
@@ -117,14 +124,14 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 		$select = ' * FROM `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ';
 		$joinedTables = ' JOIN `#__virtuemart_paymentmethods`   USING (`virtuemart_paymentmethod_id`) ';
-		$this->_data =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
+		$datas =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
 
 			//$this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_paymentmethods`',$whereString,'',$this->_getOrdering('ordering'));
 
-		if(isset($this->_data)){
+		if(isset($datas)){
 
 			if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-			foreach ($this->_data as $data){
+			foreach ($datas as &$data){
 				/* Add the paymentmethod shoppergroups */
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$data->virtuemart_paymentmethod_id.'"';
 				$db = JFactory::getDBO();
@@ -134,7 +141,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			}
 
 		}
-		return $this->_data;
+		return $datas;
 	}
 
 

@@ -45,22 +45,10 @@ class VirtueMartModelCoupon extends VmModel {
      *
      * @author RickG
      */
-	function getCoupon()
-	{
-		$db = JFactory::getDBO();
+	function getCoupon($id = 0){
 
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('coupons');
-   			$this->_data->load((int)$this->_id);
-  		}
+		return $this->getData($id);
 
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
-   			$this->_data = null;
-  		}
-
-  		return $this->_data;
 	}
 
 
@@ -85,7 +73,7 @@ class VirtueMartModelCoupon extends VmModel {
 		    $data['coupon_expiry_date'] = $expireDate->toSQL();
 		}
 		parent::store($data);
-                return $table->virtuemart_coupon_id;
+        return $table->virtuemart_coupon_id;
 	}
 
 

@@ -47,14 +47,7 @@ class VirtueMartModelCurrency extends VmModel {
 	 * @author Max Milbers
 	 */
 	function getCurrency($currency_id=0) {
-		if(!empty($currency_id)) $this->setId((int)$currency_id);
-		static $data = array();
-		if (empty($data[$currency_id])   ) {
-			$dataT = $this->getTable('currencies');
-			$data[$currency_id] = $dataT->load((int)$this->_id);
-		}
-
-		return $data[$currency_id];
+		return $this->getData($currency_id);
 	}
 
 
@@ -87,9 +80,9 @@ class VirtueMartModelCurrency extends VmModel {
 		$whereString='';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_currencies`',$whereString,'',$this->_getOrdering());
+		$data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_currencies`',$whereString,'',$this->_getOrdering());
 
-		return $this->_data;
+		return $data;
 	}
 
 	function getVendorAcceptedCurrrenciesList($vendorId = 0){
@@ -138,7 +131,7 @@ class VirtueMartModelCurrency extends VmModel {
 	 */
 	function getCurrencies($vendorId=1) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
+		$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `ordering`,`#__virtuemart_currencies`.`currency_name`';
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}

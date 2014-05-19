@@ -63,14 +63,14 @@ class VirtuemartViewCategory extends VmView {
 		}
 		//$search = vRequest::uword('keyword', null);
 		$this->searchcustom = '';
-		$this->searchcustomvalues = '';
-		if (!empty($keyword)) {
+		$this->searchCustomValues = '';
+		//if (!empty($keyword)) {
 			$this->searchcustom = $this->getSearchCustom();
 			$search = $keyword;
-		} else {
+		/*} else {
 			$keyword ='';
 			$search = NULL;
-		}
+		}*/
 
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
