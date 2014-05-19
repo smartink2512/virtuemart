@@ -1813,8 +1813,11 @@ class VirtueMartModelProduct extends VmModel {
 		$db->setQuery ('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
 		$parent = $db->loadObject ();
 		$prodTable = $this->getTable ('products');
+
 		//$newslug = $parent->slug . $id . rand (1, 9);
-		$newslug = $prodTable->checkCreateUnique('products_' . VmConfig::$vmlang,$parent->slug);
+		if(empty($parent->slug)) $parent->slug = $parent->product_name;
+		$newslug = $prodTable->createUniqueSlug('products_' . VmConfig::$vmlang,$parent->slug);
+		//$newslug = $prodTable->checkCreateUnique('products_' . VmConfig::$vmlang,$parent->slug);
 		$data = array('product_name' => $parent->product_name, 'slug' => $newslug, 'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
 
 		$prodTable = $this->getTable ('products');

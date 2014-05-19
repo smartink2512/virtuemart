@@ -698,37 +698,44 @@ class VmTable extends JTable {
 	}
 
 
-	function checkCreateUnique($tbl_name, $name) {
+	function checkCreateUnique($slugName) {
 
 		$i = 0;
+		if (in_array($slugName, $this->_translatableFields)) {
+			$checkTable = $this->_tbl . '_' . VmConfig::$vmlang;
+		} else {
+			$checkTable = $this->_tbl;
+		}
 
 		while ($i < 20) {
 
 			$tbl_key = $this->_tbl_key;
-			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $name . '` =  "' . $this->$name . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
+			$q = 'SELECT `' . $slugName . '` FROM `' . $checkTable . '` WHERE `' . $slugName . '` =  "' . $this->$slugName . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
 
 			$this->_db->setQuery($q);
 			$existingSlugName = $this->_db->loadResult();
 
 			if (!empty($existingSlugName)) {
 
-				if($posNbr = strrpos($this->$name,'-')){
-					$existingNbr = substr($this->$name,$posNbr+1);
+				if($posNbr = strrpos($this->$slugName,'-')){
+					$existingNbr = substr($this->$slugName,$posNbr+1);
 
 					if(is_numeric($existingNbr)){
 						$existingNbr++;
-						if($i>10){
+						/*if($i>10){
 							$existingNbr = $existingNbr +  rand (1, 9);
-						}
-						$this->$name = substr($this->$name,0,$posNbr+1) . $existingNbr;
+						}*/
+						$this->$slugName = substr($this->$slugName,0,$posNbr+1) . $existingNbr;
 					} else{
-						$this->$name = $this->$name . '-1';
+						$this->$slugName = $this->$slugName . '-1';
 					}
 				} else {
-					$this->$name = $this->$name . '-1';
+					$this->$slugName = $this->$slugName . '-1';
+					//vmdebug('No - and no number at the end, new slug ',$this->$slugName);
 				}
 
 			} else {
+				//vmdebug('Slug got tested with query and is unique ',$q,$this->$slugName,$existingSlugName);
 				return true;
 			}
 			$i++;
@@ -738,6 +745,39 @@ class VmTable extends JTable {
 
 	}
 
+	function createUniqueSlug($slugName){
+
+		//if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+		//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
+		//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
+		//vmdebug('my slugName ',$this->$slugName);
+		$this->$slugName = str_replace('-', ' ', $this->$slugName);
+
+		//$config =& JFactory::getConfig();
+		//$transliterate = $config->get('unicodeslugs');
+		$unicodeslugs = VmConfig::get('transliterateSlugs',false);
+		if($unicodeslugs){
+			$lang = JFactory::getLanguage();
+			$this->$slugName = $lang->transliterate($this->$slugName);
+		}
+
+		// Trim white spaces at beginning and end of alias and make lowercase
+		$this->$slugName = trim(JString::strtolower($this->$slugName));
+		$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
+
+		$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,.,|','-');
+		while(strpos($this->$slugName,'--')){
+			$this->$slugName = str_replace('--','-',$this->$slugName);
+		}
+		// Trim dashes at beginning and end of alias
+		$this->$slugName = trim($this->$slugName, '-');
+
+		if($unicodeslugs) $this->$slugName = rawurlencode($this->$slugName);
+
+		$this->checkCreateUnique($slugName);
+		//vmdebug('my Final slugName '.$slugName,$this->$slugName);
+		return $this->$slugName;
+	}
 
 	/**
 	 * @author Max Milbers
@@ -750,55 +790,18 @@ class VmTable extends JTable {
 			$slugAutoName = $this->_slugAutoName;
 			$slugName = $this->_slugName;
 
-			if (in_array($slugAutoName, $this->_translatableFields)) {
-				$checkTable = $this->_tbl . '_' . VmConfig::$vmlang;
-			} else {
-				$checkTable = $this->_tbl;
-			}
-
 			if (empty($this->$slugName)) {
 				// 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
 				if (!empty($this->$slugAutoName)) {
 					$this->$slugName = $this->$slugAutoName;
 				} else {
-					vmError('VmTable ' . $checkTable . ' Check not passed. Neither slug nor obligatory value at ' . $slugAutoName . ' for auto slug creation is given');
+					vmError('VmTable ' . $this->_tbl . '_' . VmConfig::$vmlang . ' Check not passed. Neither slug nor obligatory value at ' . $slugAutoName . ' for auto slug creation is given');
 					return false;
 				}
 
 			}
 
-			//if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
-			//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
-			//vmdebug('my slugName '.$slugName,$this->$slugName);
-			$this->$slugName = str_replace('-', ' ', $this->$slugName);
-
-			//$config =& JFactory::getConfig();
-			//$transliterate = $config->get('unicodeslugs');
-			$unicodeslugs = VmConfig::get('transliterateSlugs',false);
-			if($unicodeslugs){
-				$lang = JFactory::getLanguage();
-				$this->$slugName = $lang->transliterate($this->$slugName);
-			}
-
-			// Trim white spaces at beginning and end of alias and make lowercase
-			$this->$slugName = trim(JString::strtolower($this->$slugName));
-			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
-
-			$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,.,|','-');
-			while(strpos($this->$slugName,'--')){
-				$this->$slugName = str_replace('--','-',$this->$slugName);
-			}
-			// Trim dashes at beginning and end of alias
-			$this->$slugName = trim($this->$slugName, '-');
-
-			if($unicodeslugs)$this->$slugName = rawurlencode($this->$slugName);
-
-			$valid = $this->checkCreateUnique($checkTable, $slugName);
-			vmdebug('my Final slugName '.$slugName,$this->slugName);
-			if (!$valid) {
-				return false;
-			}
+			$this->$slugName = $this->createUniqueSlug($slugName);
 
 		}
 
@@ -828,7 +831,7 @@ class VmTable extends JTable {
 					return false;
 				} else {
 
-					$valid = $this->checkCreateUnique($this->_tbl, $obkeys);
+					$valid = $this->checkCreateUnique($obkeys, $this->$obkeys);
 					if (!$valid) {
 						return false;
 					}

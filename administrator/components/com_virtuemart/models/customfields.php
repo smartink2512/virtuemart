@@ -634,7 +634,7 @@ class VirtueMartModelCustomfields extends VmModel {
 								$selectedFound = true;
 								vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
 							}
-							vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
+							//vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
 						}
 					}
 					if(!$selectedFound){
@@ -1056,16 +1056,18 @@ class VirtueMartModelCustomfields extends VmModel {
 	static function bindParameterableByFieldType(&$table, $type){
 
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-		$table->_varsToPush = $varsToPush = VirtueMartModelCustom::getVarsToPush($type);
+		$table->_varsToPushParam = VirtueMartModelCustom::getVarsToPush($type);
 
 		if ($table->field_type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
+			vmdebug('bindParameterableByFieldType bindParameterableByFieldType plugin ',$table->_xParams,$table->_varsToPushParam);
 		}
 
-		if(!empty($table->_varsToPush)){
-			VmTable::bindParameterable($table,$table->_xParams,$table->_varsToPush);
+		if(!empty($table->_varsToPushParam)){
+			VmTable::bindParameterable($table,$table->_xParams,$table->_varsToPushParam);
+			vmdebug('bindParameterableByFieldType plugin bounded variables ');
 		}
 
 	}

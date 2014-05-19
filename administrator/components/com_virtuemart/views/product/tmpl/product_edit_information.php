@@ -312,16 +312,16 @@ $i=0;
 							<tr>
 								<th style="text-align: left !important;"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></th>
 								<th style="text-align: left !important;"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME')?></th>
-								<th style="text-align: left !important;"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST')?></th>
+								<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST')?></th>
 								<th style="text-align: left !important;"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK')?></th>
 								<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK')?></th>
 								<?php foreach($customs as $custom){ ?>
-									<th>
-										<?php echo vmText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',vmText::_('COM_VIRTUEMART_'.strtoupper($custom->custom_value)))?>
+									<th style="text-align: left !important;">
+										<?php echo vmText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',vmText::_('COM_VIRTUEMART_'.strtoupper($custom->customfield_value)))?>
 									</th>
 								<?php } ?>
-								<th><?php echo vmText::_('COM_VIRTUEMART_ORDERING')?></th>
-								<th><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED')?> foo</th>
+								<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_ORDERING')?></th>
+								<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED')?></th>
 							</tr>
 							<?php foreach ($this->product_childs as $child  ) {
 								$i = 1 - $i; ?>
@@ -335,13 +335,14 @@ $i=0;
 									<td><?php echo $child->product_in_stock ?></td>
 									<td><?php echo $child->product_ordered ?></td>
 									<?php foreach($customs as $custom){
-										$attrib = $custom->custom_value;
+										$attrib = $custom->customfield_value;
 										if(isset($child->$attrib)){
 											$childAttrib = $child->$attrib;
 										} else {
 											//vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$child);
 											$childAttrib = $child->product_name;
 										}
+										//vmdebug(' $attrib '.$attrib,$child,$childAttrib);
 										?>
 										<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][<?php echo $attrib ?>]" size="20" value="<?php echo $childAttrib ?>" /></td>
 										<?php

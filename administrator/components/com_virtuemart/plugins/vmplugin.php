@@ -482,9 +482,16 @@ abstract class vmPlugin extends JPlugin {
 
 		//Is only used for the config tables!
 		//VmTable::bindParameterable ($data, $data->_xParams, $this->_varsToPushParam);
-		if($this->_varsToPushParam){
-			$data->_varsToPushParam = array_merge((array)$data->_varsToPushParam, (array)$this->_varsToPushParam);
+		if(isset($this->_varsToPushParam)){
+			if(isset($data->_varsToPushParam)){
+				$data->_varsToPushParam = array_merge((array)$data->_varsToPushParam, (array)$this->_varsToPushParam);
+			} else {
+				$data->_varsToPushParam = (array)$this->_varsToPushParam;
+			}
+			//vmdebug(' vars to push',$data->_varsToPushParam);
 			//$data->_varsToPushParam = $this->_varsToPushParam;
+		} else{
+			vmdebug('no vars to push?',$this);
 		}
 
 		if($this->_cryptedFields){

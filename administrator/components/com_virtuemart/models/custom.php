@@ -60,7 +60,7 @@ class VirtueMartModelCustom extends VmModel {
 		    $customfields = VmModel::getModel('Customfields');
 		    $this->_cache[$this->_id]->field_types = $customfields->getField_types() ;
 
-		    $this->_cache[$this->_id]->_varsToPush = self::getVarsToPush($this->_cache[$this->_id]->field_type);
+		    $this->_cache[$this->_id]->_varsToPushParam = self::getVarsToPush($this->_cache[$this->_id]->field_type);
 		    $this->_cache[$this->_id]->_xParams = 'custom_params';
 
 			$this->_cache[$this->_id]->customfield_params = '';
@@ -70,8 +70,8 @@ class VirtueMartModelCustom extends VmModel {
 			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_cache[$this->_id]));
 		    }
 
-		    if(!empty( $this->_cache[$this->_id]->_varsToPush)){
-			    VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPush);
+		    if(!empty( $this->_cache[$this->_id]->_varsToPushParam)){
+			    VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPushParam);
 		    }
 
     	}

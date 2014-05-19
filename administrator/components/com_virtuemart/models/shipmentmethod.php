@@ -72,8 +72,8 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsShipment', array(&$this->_cache[$this->_id]));
 			}
 
-			if(!empty($this->_cache[$this->_id]->_varsToPush)){
-				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPush);
+			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
+				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPushParam);
 			}
 
 			/*if($this->_data[$this->_id]->shipment_jplugin_id){

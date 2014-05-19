@@ -71,8 +71,8 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_cache[$this->_id]->payment_element,$this->_cache[$this->_id]->payment_jplugin_id,&$this->_cache));
 			}
 
-			if(!empty($this->_cache[$this->_id]->_varsToPush)){
-				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPush);
+			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
+				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPushParam);
 			}
 
 			//todo check if we still need this
