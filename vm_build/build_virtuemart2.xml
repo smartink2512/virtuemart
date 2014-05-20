@@ -4,7 +4,7 @@
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MAYOR"/>
     <property name="vm.version" value="2.9.4"/>
-    <property name="joomla.version" value="2.5.20"/>
+    <property name="joomla.version" value="3.3.0"/>
     <property name="svn.lastrevision" value="7934"/>
     <property name="PHING.VM.CODENAME" value="DreamIn"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
@@ -142,6 +142,7 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
+        <exclude name="**/vm_update/**"/>
         <exclude name="**/vm_build/**"/>
         <exclude name="**/amazon/**"/>
         <exclude name="**/realex/**"/>
