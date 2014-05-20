@@ -612,7 +612,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
 		 */
 		function updateJoomlaUpdateServer( $type, $element, $dst  ){
-			//echo ('<br /><br />updateJoomlaUpdateServer' .   ' ' . $type . ' ' . $element . ' ' . $dst);
 
 			$db = JFactory::getDBO();
 			$extensionXmlFileName=$this->getExtensionXmlFileName($type, $element, $dst );
@@ -622,24 +621,11 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$query="SELECT extension_id FROM #__extensions WHERE type=".$db->quote($type)." AND element=".$db->quote($element);
 			$db->setQuery($query);
 			$extension_id=$db->loadResult();
-			if(!$extension_id) {
-				//echo ('<br />extension id NOT found: '.$element);
-				return;
-			} else {
-				//echo ('<br />extension id found: '.$element.' '.$extension_id);
-			}
 
 			// Is the extension already in the update table ?
 			$query="SELECT * FROM `#__update_sites_extensions` WHERE extension_id=".$extension_id;
 			$db->setQuery($query);
 			$update_sites_extensions=$db->loadObject();
-			if($update_sites_extensions==NULL ) {
-				// the extension is already listed in the table
-				//echo ('<br />extension is NOT listed in update_sites_extensions');var_export($update_sites_extensions);
-			} else {
-				//echo ('<br />extension is already listed in update_sites_extensions');
-				//var_export($update_sites_extensions);
-			}
 
 			// Update the version number for all
 			if(isset($xml->version)) {
@@ -647,10 +633,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					         WHERE extension_id=".$extension_id;
 					$db->setQuery($query);
 					$db->query();
-					//echo ('<br /> Update Version number: '.$element.' '.(string)$xml->version);
-			} else {
-				//echo ('<br /> COULD NOT Update Version number '.$element );
-				//var_export($xml);
 			}
 
 
@@ -663,22 +645,17 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$db->query();
 
 					$update_site_id=$db->insertId();
-					//echo ('<br /> Update of '.$update_site_id.' '.$query);
 
-					$query="INSERT INTO #__update_sites_extensions SET update_site_id=".$update_site_id.", extension_id=".$extension_id." \n";
+					$query="INSERT INTO #__update_sites_extensions SET update_site_id=".$update_site_id.", extension_id=".$extension_id;
 					$db->setQuery($query);
 					$db->query();
-					//echo ('<br />Update of ' .$query);
 				} else {
 					if (strcmp($update_sites_extensions->location, (string)$xml->updateservers->server) != 0) {
 						// the extension was already there: we just update the server if different
-						$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server).",
+						$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server)."
 					         WHERE update_site_id=".$update_sites_extensions->update_site_id;
 						$db->setQuery($query);
 						$db->query();
-						//echo ('<br /> __update_sites with new updateservers '.$query);
-					} else {
-						//echo ('<br /> __update_sites updateservers has NOT changed'.$query);
 					}
 				}
 
