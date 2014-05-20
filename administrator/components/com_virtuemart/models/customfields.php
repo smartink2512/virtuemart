@@ -1062,12 +1062,10 @@ class VirtueMartModelCustomfields extends VmModel {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
-			vmdebug('bindParameterableByFieldType bindParameterableByFieldType plugin ',$table->_xParams,$table->_varsToPushParam);
 		}
 
 		if(!empty($table->_varsToPushParam)){
 			VmTable::bindParameterable($table,$table->_xParams,$table->_varsToPushParam);
-			vmdebug('bindParameterableByFieldType plugin bounded variables ');
 		}
 
 	}

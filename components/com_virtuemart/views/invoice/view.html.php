@@ -113,21 +113,6 @@ class VirtuemartViewInvoice extends VmView {
 			VmConfig::loadJLang('com_virtuemart_shoppers',true, $orderDetails['details']['BT']->order_language);
 			VmConfig::loadJLang('com_virtuemart_orders',true, $orderDetails['details']['BT']->order_language);
 		}
-		$customfieldModel = VmModel::getModel('customfields');
-		foreach($orderDetails['items'] as &$item){
-			$item->customfields = array();
-			if(!empty($item->product_attribute)){
-				$myCustoms = (array)json_decode($item->product_attribute,true);
-				foreach($myCustoms as $custom){
-					if(!is_array($custom)){
-						$custom = array( $custom =>false);
-					}
-					foreach($custom as $id=>$field){
-						$item->customfields[] = $customfieldModel-> getCustomEmbeddedProductCustomField($id);
-					}
-				}
-			}
-		}
 
 		$this->assignRef('orderDetails', $orderDetails);
         // if it is order print, invoice number should not be created, either it is there, either it has not been created

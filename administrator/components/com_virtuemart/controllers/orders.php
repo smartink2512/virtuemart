@@ -286,50 +286,6 @@ class VirtuemartControllerOrders extends VmController {
 		$this->setRedirect($editLink, $msg);
 	}
 
-	public function exportOrdersAsCSV(){
-
-		$model = VmModel::getModel();
-
-		$idArray = vRequest::getVar('cid', array() );
-
-		$orders = array();
-		foreach($idArray as $orderId){
-			$orders[] = $model -> getOrder($orderId);
-		}
-
-		$csv = '';
-
-		$head = array('virtuemart_order_userinfo_id','virtuemart_vendor_id','order_number','order_total','order_subtotal','order_tax','order_status','user_currency_rate','customer_note');
-
-		foreach($head as $item){
-			$csv .= '"'.$item.'";"';
-		}
-
-		foreach($orders as $order){
-// 			$order = (array) $order;7
-// 			$order['details']
-// 			$order['items']
-// 			$order['calc_rules']
-			$attribs = get_object_vars($order['details']['BT']);
-
-// 			$csv = '"BT"';
-// 			foreach($attribs as $k=>$v){
-// 				$csv .= ';"'.$k.':'$v;
-// 			}
-// 			$csv .= "\n";
-		}
-
-		$jUser = JFactory::getUser();
-		$date = date("Y-m-d");
-		$name = $jUser->name.$date.'.csv';
-// 		header("Content-Disposition: attachment; filename=\"".JFile::getName($media->file_url)."\"");
-// 		header("Content-Disposition: attachment; filename=\"".$name."\"");
-// 		echo $csv;
-		parent::display();
-// 		jExit();
-	}
-
-
 }
 // pure php no closing tag
 

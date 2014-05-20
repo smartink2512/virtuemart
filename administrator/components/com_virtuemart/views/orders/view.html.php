@@ -54,25 +54,12 @@ class VirtuemartViewOrders extends VmView {
 
 			// Load addl models
 			$userFieldsModel = VmModel::getModel('userfields');
-			$customfieldModel = VmModel::getModel('customfields');
+
 
 			// Get the data
 			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id');
 			$order = $orderModel->getOrder($virtuemart_order_id);
-			foreach($order['items'] as &$item){
-				$item->customfields = array();
-				if(!empty($item->product_attribute)){
-					$myCustoms = (array)json_decode($item->product_attribute,true);
-					foreach($myCustoms as $custom){
-						if(!is_array($custom)){
-							$custom = array( $custom =>false);
-						}
-						foreach($custom as $id=>$field){
-							$item->customfields[] = $customfieldModel-> getCustomEmbeddedProductCustomField($id);
-						}
-					}
-				}
-			}
+
 
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
 			$orderbt = $order['details']['BT'];

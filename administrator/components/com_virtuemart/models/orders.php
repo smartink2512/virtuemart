@@ -213,6 +213,30 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 //lets try group by `virtuemart_order_item_id`
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
+
+		$customfieldModel = VmModel::getModel('customfields');
+		foreach($order['items'] as &$item){
+			$item->customfields = array();
+			if(!empty($item->product_attribute)){
+				//Format now {"9":7,"20":{"126":{"comment":"test1"},"127":{"comment":"t2"},"128":{"comment":"topic 3"},"129":{"comment":"4 44 4 4 44 "}}}
+				//$old = '{"46":" <span class=\"costumTitle\">Cap Size<\/span><span class=\"costumValue\" >S<\/span>","109":{"textinput":{"comment":"test"}}}';
+				//$myCustomsOld = @json_decode($old,true);
+				//vmdebug('$myCustomsOld',$myCustomsOld);
+				$myCustoms = @json_decode($item->product_attribute,true);
+				$myCustoms = (array) $myCustoms;
+
+				foreach($myCustoms as $custom){
+					if(!is_array($custom)){
+						$custom = array( $custom =>false);
+					}
+					foreach($custom as $id=>$field){
+						$item->customfields[] = $customfieldModel-> getCustomEmbeddedProductCustomField($id);
+						vmdebug('getOrder',$id,$field);
+					}
+				}
+			}
+		}
+
 // Get the order items
 		$q = "SELECT  *
 			FROM #__virtuemart_order_calc_rules AS z

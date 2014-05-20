@@ -119,7 +119,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	}
 
-	function appendShopperGroups(&$shopperGroups,$user,$onlyPublished = FALSE,$vendorId=1,$keepDefault = false){
+	function appendShopperGroups(&$shopperGroups,$user,$onlyPublished = FALSE,$vendorId=1,$keepDefault = true){
 
 		$this->mergeSessionSgrps($shopperGroups);
 
