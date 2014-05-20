@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
 
-<install method="upgrade" type="component" version="1.5.0">
+<install method="upgrade" type="component" version="2.5">
 
 	<name>VIRTUEMART</name>
 
@@ -12,7 +12,7 @@
 	<copyright>Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version status="${PHING.VM.DEV_STATUS}">${PHING.VM.RELEASE}</version>
-<description></description>
+    <description></description>
    <!-- Custom un/installer for 1.6 -->
    <scriptfile>install/script.virtuemart.php</scriptfile>
 	<!-- Custom installer for 1.5 -->
