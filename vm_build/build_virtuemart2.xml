@@ -143,6 +143,7 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
+        <exclude name="**/vm_update/**"/>
         <exclude name="**/vm_build/**"/>
         <exclude name="**/realex/**"/>
         <exclude name="**/amazon/**"/>
