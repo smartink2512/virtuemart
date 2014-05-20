@@ -32,6 +32,7 @@
 		<folder>helpers</folder>
 		<folder>language</folder>
 		<folder>views</folder>
+		<folder>liveupdate</folder>
 	</files>
 
 	<administration>
