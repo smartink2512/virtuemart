@@ -156,9 +156,8 @@ function auf(key) {
 	if (el.style.display == 'none') {
 		el.setStyle('display', 'block');
 		el.setProperty('aria-expanded', 'true');
-
 		if (key != 'right') {
-			el.slide('hide').slide('in');
+			//el.slide('hide').slide('in');
 			el.getParent().setProperty('class', 'slide');
 			eltern = el.getParent().getParent();
 			elternh = eltern.getElement('h3');
