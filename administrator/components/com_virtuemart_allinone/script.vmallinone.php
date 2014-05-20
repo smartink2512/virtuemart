@@ -122,7 +122,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$this->recurse_copy ($src, $dst);
 
 				if (!$this->VmModulesAlreadyInstalled ()) {
-					echo "Installing VirtueMart2 modules<br/ >";
+					echo "Installing VirtueMart3 modules<br/ >";
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"text_before":"","product_currency":"","cache":"1","moduleclass_sfx":"","class_sfx":""}';
 					} else {
@@ -438,7 +438,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					require_once ($pluginfilename);	//require_once cause is more failproof and is just for install
 				} else {
 					$app = JFactory::getApplication ();
-					$app->enqueueMessage (get_class ($this) . ':: VirtueMart2 could not find file '.$pluginfilename);
+					$app->enqueueMessage (get_class ($this) . ':: VirtueMart3 could not find file '.$pluginfilename);
 					return false;
 				}
 
