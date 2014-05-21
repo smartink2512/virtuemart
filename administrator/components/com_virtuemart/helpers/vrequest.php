@@ -113,6 +113,10 @@ class vRequest {
 		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 	}
 
+	public static function getWord($name, $default = ''){
+		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
+	}
+
 	/**
 	 * Main filter function, called by the others with set Parameters
 	 * The standard filter is non restrictiv.
