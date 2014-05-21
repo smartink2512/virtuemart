@@ -334,7 +334,6 @@ class shopFunctionsF {
 		}
 
 		ob_start();
-
 		$view->renderMailLayout( $noVendorMail, $recipient );
 		$body = ob_get_contents();
 		ob_end_clean();
