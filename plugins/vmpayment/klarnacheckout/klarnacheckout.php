@@ -1042,7 +1042,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			return FALSE;
 		}
 		// fetches PClasses From XML file
-		$call = vRequest::getWord('call');
+		$call = vRequest::getCmd('call');
 		$this->$call();
 		// 	jexit();
 	}

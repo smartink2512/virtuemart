@@ -633,7 +633,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$paypal_data = vRequest::get('post');
+		$paypal_data = vRequest::getPost();
 
 		//Recuring payment return rp_invoice_id instead of invoice
 		if (array_key_exists('rp_invoice_id', $paypal_data)) {
@@ -1254,7 +1254,7 @@ return true;
 		if ($name != $this->_name || $type != 'vmpayment') {
 			return FALSE;
 		}
-		$action = vRequest::getWord('action');
+		$action = vRequest::getCmd('action');
 		$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id');
 		//Load the method
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {

@@ -186,7 +186,7 @@ return NULL;
 		if ($AmazonOrderReferenceId) {
 			$url .= '&session=' . $AmazonOrderReferenceId;
 		}
-		return JRoute::_($url, $cart->useXHTML, $useSSL);
+		return JRoute::_($url, $cart->useXHTML, $cart->useSSL);
 
 	}
 

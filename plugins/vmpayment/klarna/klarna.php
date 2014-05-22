@@ -800,7 +800,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$parameters = new vmParameters($payment, $payment->payment_element, 'plugin', 'vmpayment');
 		$method = $parameters->getParamByName ('data');
 
-		$country = vRequest::getWord ('country');
+		$country = vRequest::getCmd ('country');
 		$country = KlarnaHandler::convertToThreeLetterCode ($country);
 
 		if (!class_exists ('klarna_virtuemart')) {
@@ -813,10 +813,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
 
 		$SelfCall = new KlarnaAjax($klarna, (int)$settings['eid'], JPATH_VMKLARNAPLUGIN, Juri::base ());
-		$action = vRequest::getWord ('action');
+		$action = vRequest::getCmd ('action');
 		$jlang = JFactory::getLanguage ();
 		$currentLang = substr ($jlang->getDefault (), 0, 2);
-		$newIso = vRequest::getWord ('newIso');
+		$newIso = vRequest::getCmd ('newIso');
 		if ($currentLang != $newIso) {
 			$iso = array(
 				"sv" => "sv-SE",
@@ -845,7 +845,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
             return FALSE;
         }
 		// fetches PClasses From XML file
-		$call = vRequest::getWord ('call');
+		$call = vRequest::getCmd ('call');
 		$this->$call();
 		// 	jexit();
 	}
@@ -1363,7 +1363,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		$session = JFactory::getSession ();
 		$sessionKlarna = new stdClass();
-		//$post = vRequest::get('post');
+
 		$errors = array();
 		$klarnaData_paymentmethod = vRequest::getVar ('klarna_paymentmethod', '');
 		if ($klarnaData_paymentmethod == 'klarna_invoice') {

@@ -894,6 +894,7 @@ class VirtueMartCart {
 
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
+		$this->setCartIntoSession();
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->order_language = JRequest::getVar('order_language', $this->order_language);

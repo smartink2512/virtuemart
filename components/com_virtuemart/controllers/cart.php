@@ -183,7 +183,7 @@ class VirtueMartControllerCart extends JController {
 			$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
 		}
 		$this->data->cart_show = '<a class="floatright" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart" . $taskRoute, $this->useXHTML, $this->useSSL) . '" rel="nofollow">' . $linkName . '</a>';
-		$this->data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL') . ' : <strong>' . $this->data->billTotal . '</strong>';
+		$this->data->billTotal = vmText::_('COM_VIRTUEMART_CART_TOTAL') . ' : <strong>' . $this->data->billTotal . '</strong>';
 		echo json_encode($this->data);
 		Jexit();
 	}
