@@ -195,7 +195,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			vmError('No path set to store invoices');
 			return false;
 		} else {
-			$path .= shopFunctions::getInvoiceFolderName().DS;
+			$path .= shopFunctionsF::getInvoiceFolderName().DS;
 			if(!file_exists($path)){
 				vmError('Path wrong to store invoices, folder invoices does not exist '.$path);
 				return false;
@@ -221,7 +221,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			vmError('Cant create pdf, createInvoiceNumber failed');
 			return 0;
 		}
-		if (shopFunctions::InvoiceNumberReserved($invoiceNumber)) {
+		if (shopFunctionsF::InvoiceNumberReserved($invoiceNumber)) {
 			return 0;
 		}
 		

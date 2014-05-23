@@ -86,14 +86,16 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		$layout = vRequest::getCmd('layout','edit');
 
-		$msg = $this->saveData($cart);
+
 		if($cart->fromCart or $cart->getInCheckOut()){
+			$msg = $this->saveData($cart);
 			$task = '';
 			if ($cart->getInCheckOut()){
 				$task = '&task=checkout';
 			}
 			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) , $msg);
 		} else {
+			$msg = $this->saveData(false);
 			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 		}
 

@@ -101,21 +101,27 @@ class VirtueMartModelShopperGroup extends VmModel {
 	 */
 	function getDefault($kind = 1, $onlyPublished = FALSE, $vendorId = 1){
 
+		static $default = array();
 		$kind = $kind + 1;
-		$q = 'SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "'.$kind.'" AND (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared` = "1") ';
-		if($onlyPublished){
-			$q .= ' AND `published`="1" ';
-		}
-		$db = JFactory::getDBO();
-		$db->setQuery($q);
+		if(!isset($default[$vendorId][$kind])){
+			$q = 'SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "'.$kind.'" AND (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared` = "1") ';
+			if($onlyPublished){
+				$q .= ' AND `published`="1" ';
+			}
+			$db = JFactory::getDBO();
+			$db->setQuery($q);
 
-		if(!$res = $db->loadObject()){
-			$app = JFactory::getApplication();
-			$app->enqueueMessage('Attention no standard shopper group set '.$db->getErrorMsg());
-		} else {
-			//vmdebug('getDefault', $res);
-			return $res;
+			if(!$res = $db->loadObject()){
+				$app = JFactory::getApplication();
+				$app->enqueueMessage('Attention no standard shopper group set '.$db->getErrorMsg());
+				$default[$vendorId][$kind] = false;
+			} else {
+				//vmdebug('getDefault', $res);
+				$default[$vendorId][$kind] =  $res;
+			}
 		}
+
+		return $default[$vendorId][$kind];
 
 	}
 

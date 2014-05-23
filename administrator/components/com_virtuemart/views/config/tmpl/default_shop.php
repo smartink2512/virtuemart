@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');?>
 			</td>
 		</tr>
 		<?php
-			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR','useVendorEmail',VmConfig::get('useVendorEmail',1));
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR','useVendorEmail',VmConfig::get('useVendorEmail',0));
 		?>
 
 		<?php /*?>		<!-- NOT YET -->

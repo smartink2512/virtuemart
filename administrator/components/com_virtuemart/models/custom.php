@@ -28,7 +28,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelCustom extends VmModel {
 
-	private $plugin=null ;
+
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -55,13 +55,11 @@ class VirtueMartModelCustom extends VmModel {
     	if(empty($this->_cache[$this->_id])){
 
     		$this->_cache[$this->_id] = $this->getTable('customs');
-    		$this->_cache[$this->_id]->load($this->_id);
 
 		    $customfields = VmModel::getModel('Customfields');
 		    $this->_cache[$this->_id]->field_types = $customfields->getField_types() ;
 
 		    $this->_cache[$this->_id]->_varsToPushParam = self::getVarsToPush($this->_cache[$this->_id]->field_type);
-		    $this->_cache[$this->_id]->_xParams = 'custom_params';
 
 			$this->_cache[$this->_id]->customfield_params = '';
 		    if ($this->_cache[$this->_id]->field_type == 'E') {
@@ -70,9 +68,8 @@ class VirtueMartModelCustom extends VmModel {
 			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_cache[$this->_id]));
 		    }
 
-		    if(!empty( $this->_cache[$this->_id]->_varsToPushParam)){
-			    VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPushParam);
-		    }
+			$this->_cache[$this->_id]->_xParams = 'custom_params';
+			$this->_cache[$this->_id]->load($this->_id);
 
     	}
 

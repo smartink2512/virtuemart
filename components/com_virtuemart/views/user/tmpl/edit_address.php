@@ -82,7 +82,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 		var elem = jQuery('#password2_field');
 		elem.attr('class', "required");
 
-		var elem = jQuery('#userForm');
+		//var elem = jQuery('#userForm');
 
 		return myValidator(f);
 

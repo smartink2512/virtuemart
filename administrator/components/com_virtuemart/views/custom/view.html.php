@@ -62,7 +62,7 @@ class VirtuemartViewCustom extends VmView {
 				JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
 				$selected = $this->custom->custom_jplugin_id;
 				// Get the payment XML.
-				$formFile	= JPath::clean( JPATH_PLUGINS.'/vmcustom/' . $this->custom->custom_element . '/' . $this->custom->custom_element . '.xml');
+				$formFile	= JPath::clean( JPATH_ROOT .DS. 'plugins'.DS. 'vmcustom' .DS. $this->custom->custom_element . DS . $this->custom->custom_element . '.xml');
 				if (file_exists($formFile)){
 
 					$this->custom->form = JForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//config');

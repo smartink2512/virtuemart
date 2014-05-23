@@ -22,7 +22,21 @@ class ShopFunctions {
 
 	}
 
-
+	/**
+	 * Builds an enlist for information (not chooseable)
+	 *
+	 * @author Max Milbers
+	 *
+	 * @param array $idList ids
+	 * @param string $table vmTable to use
+	 * @param string $name fieldname for the name
+	 * @param string $view view for the links
+	 * @param bool $tableXref the xref table
+	 * @param bool $tableSecondaryKey the fieldname of the xref table
+	 * @param int $quantity
+	 * @param bool $translate
+	 * @return string
+	 */
 	static public function renderGuiList ($idList, $table, $name, $view, $tableXref = false, $tableSecondaryKey = false, $quantity = 3, $translate = true ) {
 
 		$list = '';
@@ -70,77 +84,6 @@ class ShopFunctions {
 		$ttip = substr ($ttip, 2);
 
 		return '<span class="hasTip" title="'.$ttip.'" >' . $list . '</span>';
-	}
-
-	/**
-	 * Builds an enlist for information (not chooseable)
-	 *
-	 * //TODO check for misuse by code injection
-	 *
-	 * @author Max Milbers
-	 *
-	 * @param $fieldnameXref datafield for the xreftable, where the name is stored
-	 * @param $tableXref xref table
-	 * @param $fieldIdXref datafield for the xreftable, where the id is stored
-	 * @param $idXref The id to query in the xref table
-	 * @param $fieldname the name of the datafield in the main table
-	 * @param $table main table
-	 * @param $fieldId the name of the field where the id is stored
-	 * @param $quantity The number of items in the list
-	 * @return List as String
-	 */
-	static public function renderGuiListOld ($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity = 4, $translate = 1 ) {
-
-		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
-		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart_countries');
-
-		//Sanitize input
-		$quantity = (int)$quantity;
-
-		$db = JFactory::getDBO ();
-		$q = 'SELECT ' . $db->escape ($fieldnameXref) . ' FROM ' . $db->escape ($tableXref) . ' WHERE ' . $db->escape ($fieldIdXref) . ' = "' . (int)$idXref . '"';
-		$db->setQuery ($q);
-		$tempArray = $db->loadColumn ();
-
-		if ($tempArray) {
-			$links = '';
-			$ttip = '';
-			$i = 0;
-			foreach ($tempArray as $value) {
-				if ($translate) {
-					$mainTable = $table . '_' . VmConfig::$vmlang;
-					$q = 'SELECT ' . $db->escape ($fieldname) . ' FROM ' . $db->escape ($mainTable) . ' JOIN ' . $table . ' using (`' . $fieldnameXref . '`) WHERE ' . $db->escape ($fieldId) . ' = "' . (int)$value . '"';
-				} else {
-					$q = 'SELECT ' . $db->escape ($fieldname) . ' FROM ' . $db->escape ($table) . ' WHERE ' . $db->escape ($fieldId) . ' = "' . (int)$value . '"';
-				}
-				$db->setQuery ($q);
-				$tmp = $db->loadResult ();
-				if ($i < $quantity) {
-					if ($view != 'user') {
-						$cid = 'cid';
-					} else {
-						$cid = 'virtuemart_user_id';
-					}
-
-					$links .= JHtml::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), vmText::_($tmp)) . ', ';
-
-				}
-				$ttip .= $tmp . ', ';
-
-				//				$list .= $tmp. ', ';
-				$i++;
-				//if($i==$quantity) break;
-			}
-			$links = substr ($links, 0, -2);
-			$ttip = substr ($ttip, 0, -2);
-
-			$list = '<span class="hasTip" title="' . $ttip . '" >' . $links . '</span>';
-
-			return $list;
-		} else {
-			return '';
-		}
 	}
 
 	/**
@@ -1048,12 +991,8 @@ class ShopFunctions {
 	 * @author Valerie
 	 */
 	static function InvoiceNumberReserved ($invoice_number) {
-
-		if (($pos = strpos ($invoice_number, 'reservedByPayment_')) === FALSE) {
-	       return FALSE;
-	   } else {
-	        return TRUE;
-	   }
+		if(!class_exists('ShopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		return shopFunctionsF::InvoiceNumberReserved();
 	}
 
 	/**
@@ -1234,28 +1173,28 @@ class ShopFunctions {
 
 	static function getValidProductFilterArray () {
 
-	static $filterArray;
+		static $filterArray;
 
-	if (!isset($filterArray)) {
+		if (!isset($filterArray)) {
 
-		$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku',
-		'product_s_desc', 'product_desc','`l`.slug',
-		'category_name', 'category_description', 'mf_name',
-		'product_price', '`p`.product_special', '`p`.product_sales', '`p`.product_availability', '`p`.product_available_date',
-		'`p`.product_height', '`p`.product_width', '`p`.product_length', '`p`.product_lwh_uom',
-		'`p`.product_weight', '`p`.product_weight_uom', '`p`.product_in_stock', '`p`.low_stock_notification',
-		'`p`.modified_on',
-		'`p`.product_unit', '`p`.product_packaging', '`p`.virtuemart_product_id', 'pc.ordering');
+			$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku',
+			'product_s_desc', 'product_desc','`l`.slug',
+			'category_name', 'category_description', 'mf_name',
+			'product_price', '`p`.product_special', '`p`.product_sales', '`p`.product_availability', '`p`.product_available_date',
+			'`p`.product_height', '`p`.product_width', '`p`.product_length', '`p`.product_lwh_uom',
+			'`p`.product_weight', '`p`.product_weight_uom', '`p`.product_in_stock', '`p`.low_stock_notification',
+			'`p`.modified_on',
+			'`p`.product_unit', '`p`.product_packaging', '`p`.virtuemart_product_id', 'pc.ordering');
 
-		//other possible fields
-		//'p.intnotes',		this is maybe interesting, but then only for admins or special shoppergroups
+			//other possible fields
+			//'p.intnotes',		this is maybe interesting, but then only for admins or special shoppergroups
 
-		// this fields leads to trouble, because we have this fields in product, category and manufacturer,
-		// they are anyway making not a lot sense for orderby or search.
-		//'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor'
-	}
+			// this fields leads to trouble, because we have this fields in product, category and manufacturer,
+			// they are anyway making not a lot sense for orderby or search.
+			//'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor'
+		}
 
-return $filterArray;
+		return $filterArray;
 	}
 
 	/**
@@ -1341,7 +1280,8 @@ return $filterArray;
 	 * @return the invoice folder name
 	 */
 	static function getInvoiceFolderName() {
-		return   'invoices' ;
+		if(!class_exists('ShopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctions.php');
+		return ShopFunctionsF::getInvoiceFolderName();
 	}
 	/*
 	 * get The invoice path

@@ -43,7 +43,7 @@ class VirtuemartViewUserfields extends VmView {
 				$this->userField = $db ->loadObject();
 				$this->userField->element = substr($this->userField->type, 6);
 
-				$path = JPATH_PLUGINS .DS. 'vmuserfield' . DS . $this->userField->element . DS . $this->userField->element . '.xml';
+				$path = JPATH_ROOT .DS. 'plugins' .DS. 'vmuserfield' . DS . $this->userField->element . DS . $this->userField->element . '.xml';
 				// Get the payment XML.
 				$formFile	= JPath::clean( $path );
 				if (file_exists($formFile)){

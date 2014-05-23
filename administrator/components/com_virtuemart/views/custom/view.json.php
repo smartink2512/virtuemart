@@ -62,7 +62,7 @@ class VirtuemartViewCustom extends JViewLegacy {
 			$this->custom = $customModel -> getCustom();
 
 			// Get the payment XML.
-			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmcustom/' . $this->jCustom->element . '/' . $this->jCustom->element . '.xml');
+			$formFile	= JPath::clean( JPATH_ROOT .DS. 'plugins' .DS. 'vmcustom' .DS . $this->jCustom->element . DS . $this->jCustom->element . '.xml');
 			if (file_exists($formFile)){
 				VmConfig::loadJLang('plg_vmpsplugin', false);
 				if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');

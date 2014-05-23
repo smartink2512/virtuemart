@@ -718,4 +718,24 @@ class shopFunctionsF {
 	static public function mask_string($cc, $mask_char='X'){
 		return str_pad(substr($cc, -4), strlen($cc), $mask_char, STR_PAD_LEFT);
 	}
+
+	/*
+	 * get The invoice Folder Name
+	 * @return the invoice folder name
+	 */
+	static function getInvoiceFolderName() {
+		return   'invoices' ;
+	}
+
+	/*
+	 * @author Valerie
+	 */
+	static function InvoiceNumberReserved ($invoice_number) {
+
+		if (($pos = strpos ($invoice_number, 'reservedByPayment_')) === FALSE) {
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 }
