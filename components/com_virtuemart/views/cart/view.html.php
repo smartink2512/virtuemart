@@ -348,7 +348,7 @@ class VirtueMartViewCart extends VmView {
 		$display_title = vRequest::getBool('display_title',true);
 		$this->assignRef('display_title', $display_title);
 
-		$this->html = vRequest::get('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
+		$this->html = vRequest::getHtml('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 		//Show Thank you page or error due payment plugins like paypal express
 	}
 

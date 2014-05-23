@@ -402,7 +402,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$mb_data = vRequest::get ('post');
+		$mb_data = vRequest::getPost();
 
 
 		// the payment itself should send the parameter needed.
@@ -472,7 +472,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$mb_data = vRequest::get ('post');
+		$mb_data = vRequest::getPost();
 
 		if (!isset($mb_data['transaction_id'])) {
 			return;

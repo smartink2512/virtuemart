@@ -311,7 +311,7 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 		//$this->_debug = true; // enable debug
 		$this->logInfo ('plgVmOnPaymentResponseReceived -- user returned back from ' . $this->_name, 'message');
 
-		$data = vRequest::get ('request');
+		$data = vRequest::getRequest();
 
 		// Load API
 		if (!class_exists ('SystempayResponse')) {
@@ -432,7 +432,7 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 	 */
 	function plgVmOnPaymentNotification () {
 		// platform params and payment data
-		$data = vRequest::get ('post');
+		$data = vRequest::getPost();
 
 		$this->logInfo ('plgVmOnPaymentNotification START ', 'error');
 		if (!array_key_exists ('vads_order_id', $data) || !isset($data['vads_order_id'])) {
