@@ -53,6 +53,10 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 		$view->assignRef('document', $document);
 
+		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		$cart = VirtueMartCart::getCart();
+		$cart->fromCart = false;
+		$cart->setCartIntoSession();
 		$view->display();
 
 		return $this;
@@ -60,8 +64,8 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 
 	function editAddressCart(){
-		$view = $this->getView('user', 'html');
 
+		$view = $this->getView('user', 'html');
 		$view->setLayout('edit_address');
 
 		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -128,33 +132,25 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		if($cartObj){
 			if($cartObj->fromCart or $cartObj->getInCheckOut()){
-				$cart = true;
-			} else {
-				$cart = false;
+				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+				$cart = VirtueMartCart::getCart();
+				$cart->saveAddressInCart($data, $data['address_type']);
 			}
-		} else {
-			$cart = false;
 		}
 
 
-		if (isset($_POST['register'])) {
-			$register = true;
-		} else {
-			$register = false;
-		}
+		if (isset($_POST['register']) or (!$cart and $currentUser->guest)) {
 
-		if(empty($data['address_type'])){
-			$data['address_type'] = vRequest::getCmd('addrtype','BT');
-		}
+			if(empty($data['address_type'])){
+				$data['address_type'] = vRequest::getCmd('addrtype','BT');
+			}
 
-		if(!$register and !$cart and $data['address_type'] == 'ST'){
-			$onlyAddress = true;
-		} else {
-			$onlyAddress = false;
-		}
+			if($data['address_type'] == 'ST'){
+				$onlyAddress = true;
+			} else {
+				$onlyAddress = false;
+			}
 
-
-		if($currentUser->guest!=1 || $register){
 			$userModel = VmModel::getModel('user');
 
 			if(!$cart){
@@ -170,10 +166,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 				$data['vendor_letter_header_html'] = vRequest::getHtml('vendor_letter_header_html');
 				$data['vendor_letter_footer_html'] = vRequest::getHtml('vendor_letter_footer_html');
 			}
-
+			vmdebug('saveData store user',$data);
 			//It should always be stored
 			if($onlyAddress){
 				$ret = $userModel->storeAddress($data);
+				vmdebug('saveData storeAddress only');
 			} else {
 				$ret = $userModel->store($data);
 			}
@@ -198,9 +195,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		}
 
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-		$cart = VirtueMartCart::getCart();
-		$cart->saveAddressInCart($data, $data['address_type']);
+
 		return $msg;
 	}
 

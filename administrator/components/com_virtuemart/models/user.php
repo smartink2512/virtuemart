@@ -305,8 +305,10 @@ class VirtueMartModelUser extends VmModel {
 			if(!empty($name)){
 				$data['name'] = $name;
 			}
+
 		} else {
 			$data['name'] = vRequest::getString('name', '');
+
 		}
 		$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
 
@@ -339,17 +341,17 @@ class VirtueMartModelUser extends VmModel {
 				// 				vmError('user bind '.$error);
 				vmError('user bind '.$error,vmText::sprintf('COM_VIRTUEMART_USER_STORE_ERROR',$error));
 			}
-			$message = 'Couldnt bind data to joomla user';
-			array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);
+			vmdebug('Couldnt bind data to joomla user');
+			//array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);
 		}
-
+		vmdebug('wie was wo? ',$user);
 		if($new){
 			// If user registration is not allowed, show 403 not authorized.
 			// But it is possible for admins and storeadmins to save
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
 
-			$user = JFactory::getUser();
-			if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')) and $usersConfig->get('allowUserRegistration') == '0') {
+			$cUser = JFactory::getUser();
+			if(!($cUser->authorise('core.admin','com_virtuemart') or $cUser->authorise('core.manage','com_virtuemart')) and $usersConfig->get('allowUserRegistration') == '0') {
 				VmConfig::loadJLang('com_virtuemart');
 				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;
@@ -966,6 +968,11 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
+		if(empty($data) ) {
+			vmdebug('getUserInfoInUserFields ',$data);
+			$cart = VirtueMartCart::getCart();
+			$data = $cart->BT;
+		}
 		$userFields[$uid] = $userFieldsModel->getUserFieldsFilled(
 		$prepareUserFields
 		,$data
