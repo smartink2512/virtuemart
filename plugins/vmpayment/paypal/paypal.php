@@ -577,7 +577,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 		if (!class_exists('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
-
+		$paypal_data= new stdClass();
 		if ($payment->paypal_fullresponse) {
 			$paypal_data = json_decode($payment->paypal_fullresponse);
 			$success = ($paypal_data->payment_status == 'Completed' or $paypal_data->payment_status == 'Pending');

@@ -47,7 +47,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if (method_exists($this, 'setCryptedFields')) {
 			$this->setCryptedFields(array('accessKey', 'secretKey'));
 		}
-		$inlucde_path = get_include_path();
 		$amazon_library = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name . '/library/PaywithAmazonSDK-php-1.0.7_UK/src';
 
 		//set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) . "/../../."));
@@ -88,7 +87,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	}
 
 	function plgVmDisplayLogin (VirtuemartViewUser $user, &$html, $from_cart = FALSE) {
-return NULL;
+
 		// only to display it in the cart, not in list orders view
 		if (!$from_cart) {
 			return NULL;
@@ -181,7 +180,7 @@ return NULL;
 	}
 
 	function getRenderAddressbookWalletRedirectPage ($cart) {
-		$url = 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&notificationTask=renderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+		$url = 'index.php?option=com_virtuemart&view=cart&task=pluginnotification&tmpl=component&notificationTask=renderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		$AmazonOrderReferenceId = $this->getAmazonOrderReferenceId();
 		if ($AmazonOrderReferenceId) {
 			$url .= '&session=' . $AmazonOrderReferenceId;
@@ -261,14 +260,29 @@ return NULL;
 
 		return $url;
 	}
+	function xxxplgVmOnMainController () {
 
+		$notificationTask = vRequest::getCmd('notificationTask', '');
+		$validNotificationTasks = array('renderAddressbookWallet', 'renderAddressbookWalletIframe', 'returnRenderAddressbookWallet');
+
+		if (!in_array($notificationTask, $validNotificationTasks)) {
+			return;
+		}
+
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
+		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+			$this->debug('THIS SHOULD NOT HAPPENNED', 'plgVmOnPaymentNotification', 'debug');
+			return NULL; // Another method was selected, do nothing
+		}
+		$this->$notificationTask();
+	}
 	/**
 	 * @return null
 	 */
 	public function plgVmOnPaymentNotification () {
 
 		$notificationTask = vRequest::getCmd('notificationTask', '');
-		$validNotificationTasks = array('renderAddressbookWallet', 'returnRenderAddressbookWallet');
+		$validNotificationTasks = array('renderAddressbookWallet', 'renderAddressbookWalletIframe', 'returnRenderAddressbookWallet');
 
 		if (!in_array($notificationTask, $validNotificationTasks)) {
 			return;
@@ -280,15 +294,40 @@ return NULL;
 			return NULL; // Another method was selected, do nothing
 		}
 
-		$this->$notificationTask($amazonOrderReferenceId);
+		//$this->$notificationTask();
 
 
 	}
+	function renderAddressbookWallet () {
+		//$redirect_page = JRoute::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&notificationTask=renderAddressbookWalletIframe&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&session='.vRequest::getString('session').'&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
+		$redirect_page = JRoute::_('index.php?option=com_virtuemart&view=cart&task=pluginnotification&tmpl=component&notificationTask=renderAddressbookWalletIframe&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&session='.vRequest::getString('session').'&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
+		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+		vmJsApi::css('jquery.fancybox-1.3.4');
+		$amazonBox = "jQuery.fancybox({
+				href: '" . $redirect_page . "',
+				type: 'iframe',
+				height: '550',
+				afterClose: function () {
+                parent.location.reload(true);
+            }
+			});";
 
-	function renderAddressbookWallet ($amazonOrderReferenceId) {
+
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration("
+//<![CDATA[
+	jQuery(document).ready(function($) {
+		".$amazonBox."
+	});
+//]]>
+");
+	}
+
+	function renderAddressbookWalletIframe () {
+	//function renderAddressbookWallet () {
 		$client = $this->getOffAmazonPaymentsService_Client();
 		$this->addWidgetUrlScript($client);
-		$redirect_page = JRoute::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&format=raw&notificationTask=returnRenderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
+		 $redirect_page = JRoute::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&format=raw&notificationTask=returnRenderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
 		$amazonOrderReferenceId = vRequest::getString('session', '');
 		if (empty($amazonOrderReferenceId)) {
 			$this->debug('no $amazonOrderReferenceId', 'renderAddressbookWallet', 'debug');
@@ -296,6 +335,9 @@ return NULL;
 		}
 		$this->setAmazonOrderReferenceId($amazonOrderReferenceId);
 
+		if (!class_exists('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
 		$cart = VirtueMartCart::getCart();
 		$cart->virtuemart_paymentmethod_id = vRequest::getInt('pm');
 		$cart->setCartIntoSession();
@@ -311,7 +353,9 @@ return NULL;
 		                                                         'renderAddressBook'           => (!$onlyDigitalGoods),
 		                                                         'redirect_page'               => $redirect_page,
 		                                                    ));
+
 		echo $html;
+
 	}
 
 	private function returnRenderAddressbookWallet () {
@@ -938,8 +982,10 @@ return true;
 	 * @param $cart
 	 */
 	function saveAmazonPartialShipmentAddressIncart () {
-
-		$this->debug($client, 'saveAmazonPartialShipmentAddressIncart', 'debug');
+		if (!class_exists('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
+		$this->debug('', 'saveAmazonPartialShipmentAddressIncart', 'debug');
 		$cart = VirtueMartCart::getCart();
 		$onlyDigitalGoods = $this->isOnlyDigitalGoods($cart);
 		if ($onlyDigitalGoods) {

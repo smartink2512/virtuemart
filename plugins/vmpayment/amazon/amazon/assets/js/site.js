@@ -71,7 +71,8 @@ function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height) {
         },
         onError: function (error) {
             haveAddress = false;
-            console.log('error amazonShowAddress:');
+            console.log('error amazonShowAddress:' + error);
+            alert(error);
         }
     }).bind("amazonAddressBookWidgetDiv");
 
@@ -96,7 +97,7 @@ function amazonShowWallet(sellerId, amazonOrderReferenceId, width, height) {
             //showFinalizeButton();
         },
         onError: function (error) {
-            console.log(error);
+            console.log('error amazonShowWallet:' + error);
         }
     }).bind("amazonWalletWidgetDiv");
 

@@ -915,11 +915,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return;
 	}
 
-	/*
-	 * @author Valérie Isaksen
+	/**
 	 *
-		  * @return int|null
-		  */
+	* @return int|null
+	 */
 	function checkOrderStatus () {
 
 		if (!class_exists ('VirtueMartModelOrders')) {

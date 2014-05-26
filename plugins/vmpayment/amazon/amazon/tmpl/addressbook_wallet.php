@@ -23,10 +23,14 @@ defined ('_JEXEC') or die();
 $doc = JFactory::getDocument();
 //$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/site.js');
 vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+
 $doc->addScriptDeclaration("
 jQuery(document).ready( function($) {
 	amazonShowAddress('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['addressbook_designWidth']."', '".$viewData['addressbook_designHeight']."');
 	amazonShowWallet('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['wallet_designWidth']."', '".$viewData['wallet_designHeight']."');
+$('#amazonCloseIframe' ).click(function( event ) {
+       $.fancybox.close()
+    });
 });
 
 "); // addScriptDeclaration
@@ -48,6 +52,6 @@ jQuery(document).ready( function($) {
 <div id="amazonWalletErrorMsg" class="error"></div>
 
 
-<a  class="vm-button-correct" href="<?php echo $viewData['redirect_page']?>"><?php echo vmText::_('VMPAYMENT_AMAZON_BACK_TO_CART') ?></a>
+<a  id="amazonCloseIframe" class="vm-button-correct" href="<?php echo $viewData['redirect_page']?>"><?php echo vmText::_('VMPAYMENT_AMAZON_PREVIEW_ORDER') ?></a>
 
 

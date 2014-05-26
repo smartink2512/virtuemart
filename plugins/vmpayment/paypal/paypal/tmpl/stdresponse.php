@@ -35,13 +35,14 @@ $currency = $viewData["currency"];
 
 	<tr>
     	<td><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
-        <td><?php echo $order['details']['BT']->order_number;; ?></td>
+        <td><?php echo $order['details']['BT']->order_number; ?></td>
     </tr>
+	<?php if ($success) { ?>
 	<tr>
 		<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
         <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
     </tr>
-	<?php if ($success) { ?>
+
 	<tr>
     	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
         <td><?php echo $payment->txn_id; ?></td>
