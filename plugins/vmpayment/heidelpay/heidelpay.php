@@ -314,7 +314,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			                                                 ));
 		} else {
 			$html = JText::_ ('VMPAYMENT_HEIDELPAY_TECHNICAL_ERROR') .
-				" <br /> - " . addslashes ($response[PROCESSING_RETURN]) . "<br />" .
+				" <br /> - " . addslashes ($response['PROCESSING_RETURN']) . "<br />" .
 				JText::_ ('VMPAYMENT_HEIDELPAY_CONTACT_SHOPOWNER');
 		}
 		/*
