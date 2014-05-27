@@ -35,7 +35,7 @@ class FileUtilities {
 	 */
 	function list_available_classes($name, $preselected='payment') {
 
-		$files = self::vmReadDirectory(JPATH_PLUGINS . DS . 'vmpayment', ".php$", true, true);
+		$files = self::vmReadDirectory(JPATH_ROOT .DS. 'plugins' . DS . 'vmpayment', ".php$", true, true);
 		$list = array();
 		foreach ($files as $file) {
 			$file_info = pathinfo($file);
@@ -161,9 +161,9 @@ class vmParameters extends JParameter {
 		$lang->load('plg_'.$pluginfolder.'_' . $element,JPATH_ADMINISTRATOR);
 
 		if (JVM_VERSION === 2) {
-			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
+			$path = JPATH_ROOT .DS. 'plugins' . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
 		} else {
-			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element) . '.xml';
+			$path = JPATH_ROOT .DS. 'plugins' . DS . $pluginfolder . DS . basename($element) . '.xml';
 		}
 		parent::__construct($element, $path);
 		$this->_type = $type;

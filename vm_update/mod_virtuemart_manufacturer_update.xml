@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
-
     <!--update>
         <name>vmpayment Paypal</name>
         <description>vmpayment Paypal</description>
@@ -18,5 +17,4 @@
         <maintainerurl>http://virtuemart.net</maintainerurl>
         <targetplatform name="joomla" version="2.5" />
     </update-->
-
 </updates>

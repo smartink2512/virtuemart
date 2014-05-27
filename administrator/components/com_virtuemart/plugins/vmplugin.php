@@ -96,7 +96,7 @@ abstract class vmPlugin extends JPlugin {
 
 		if(empty($type)) $type = $this->_type;
 		if(empty($name)) $name = $this->_name;
-		$path = $basePath = JPATH_PLUGINS.DS.$type.DS.$name;
+		$path = $basePath = JPATH_ROOT .DS. 'plugins' .DS. $type .DS. $name;
 
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$fname.'.ini';
