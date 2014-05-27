@@ -138,6 +138,8 @@ class vmJsApi{
 			//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
 			if (JFactory::getApplication ()->get ('jquery')) {
 				return FALSE;
+			} else {
+
 			}
 		} else {
 			JHtml::_('jquery.framework');
@@ -159,7 +161,10 @@ class vmJsApi{
 			}
 			// if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {
-			if(JVM_VERSION<3) vmJsApi::js( 'jquery',FALSE,'',TRUE);
+			if(JVM_VERSION<3) {
+				vmJsApi::js( 'jquery',FALSE,'',TRUE);
+				vmJsApi::js( 'jquery-migrate',FALSE,'',TRUE );
+			}
 			//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
 			if (!$isSite) {
 				vmJsApi::js ('jquery-ui', FALSE, '', TRUE);

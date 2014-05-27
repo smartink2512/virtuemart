@@ -126,19 +126,17 @@ class VirtueMartModelCalc extends VmModel {
 
 		$datas = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering());
 
-		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		foreach ($datas as &$data){
 
-			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.(int)$data->calc_currency.'" ';
-			$db->setQuery($query);
-			$data->currencyName = $db->loadResult();
+			$data->currencyName = ShopFunctions::getCurrencyByID($data->calc_currency);
 
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$error = $dispatcher->trigger('plgVmGetPluginInternalDataCalcList',array(&$data));
 		}
 
-		return $data;
+		return $datas;
 	}
 
 	/**

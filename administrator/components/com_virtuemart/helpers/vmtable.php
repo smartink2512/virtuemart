@@ -7,7 +7,7 @@
  * @package    VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2011 - 2014 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2011 -2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -236,12 +236,6 @@ class VmTable extends JTable {
 	static function bindParameterable(&$obj, $xParams, $varsToPushParam) {
 
 		if(empty($varsToPushParam)) return;
-		if (empty($xParams)) {
-			//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
-			vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
-			vmTrace('$xParams is empty');
-			return;
-		}
 		//$paramFields = $obj->$xParams;
 		//vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$varsToPushParam);
 		if(is_object($obj)){
@@ -262,10 +256,15 @@ class VmTable extends JTable {
 				}
 
 			} else {
+				if (empty($xParams)) {
+					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
+					vmTrace('$xParams is empty');
+				}
 				if(!isset($obj->$xParams)){
 					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
-					vmTrace(' ! isset($obj->$xParams)');
+					vmTrace('$obj->$xParams is empty');
 				}
 			}
 
@@ -291,10 +290,15 @@ class VmTable extends JTable {
 					}
 				}
 			} else {
+				if (empty($xParams)) {
+					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
+					vmTrace('$xParams is empty');
+				}
 				if(!isset($obj[$xParams])){
 					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
-					vmTrace('$obj[$xParams] is empty');
+					vmTrace('$obj->$xParams is empty');
 				}
 			}
 
@@ -375,11 +379,6 @@ class VmTable extends JTable {
 		return $result;
 	}
 
-	/**
-	 * proxy for showFullColumns
-	 * @deprecated
-	 * @return array
-	 */
 	public function loadFields(){
 		return $this->showFullColumns();
 	}
@@ -567,14 +566,10 @@ class VmTable extends JTable {
 		}
 		$hash = md5($oid. $select . $k . $andWhere . $hashVarsToPush);
 
-
 		if (isset (self::$_cache['l'][$hash])) {
 			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
-			//Actually the pattern changed and we should not need the bind, but too many locations in the code
-			// and assumingly also 3rd party developers using it, so we let it here for compatibility reasons.
 			$this->bind(self::$_cache['l'][$hash]);
 			return $this;
-			//return self::$_cache['l'][$hash];
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
@@ -646,7 +641,6 @@ class VmTable extends JTable {
 
 		self::$_cache['l'][$hash] = $this->loadFieldValues(false);
 		return $this;
-		//return self::$_cache['l'][$hash];
 	}
 
 
@@ -698,44 +692,37 @@ class VmTable extends JTable {
 	}
 
 
-	function checkCreateUnique($slugName) {
+	function checkCreateUnique($tbl_name, $name) {
 
 		$i = 0;
-		if (in_array($slugName, $this->_translatableFields)) {
-			$checkTable = $this->_tbl . '_' . VmConfig::$vmlang;
-		} else {
-			$checkTable = $this->_tbl;
-		}
 
 		while ($i < 20) {
 
 			$tbl_key = $this->_tbl_key;
-			$q = 'SELECT `' . $slugName . '` FROM `' . $checkTable . '` WHERE `' . $slugName . '` =  "' . $this->$slugName . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
+			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $this->_slugName . '` =  "' . $this->$name . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
 
 			$this->_db->setQuery($q);
 			$existingSlugName = $this->_db->loadResult();
 
 			if (!empty($existingSlugName)) {
 
-				if($posNbr = strrpos($this->$slugName,'-')){
-					$existingNbr = substr($this->$slugName,$posNbr+1);
+				if($posNbr = strrpos($this->$name,'-')){
+					$existingNbr = substr($this->$name,$posNbr+1);
 
 					if(is_numeric($existingNbr)){
 						$existingNbr++;
-						/*if($i>10){
+						if($i>10){
 							$existingNbr = $existingNbr +  rand (1, 9);
-						}*/
-						$this->$slugName = substr($this->$slugName,0,$posNbr+1) . $existingNbr;
+						}
+						$this->$name = substr($this->$name,0,$posNbr+1) . $existingNbr;
 					} else{
-						$this->$slugName = $this->$slugName . '-1';
+						$this->$name = $this->$name . '-1';
 					}
 				} else {
-					$this->$slugName = $this->$slugName . '-1';
-					//vmdebug('No - and no number at the end, new slug ',$this->$slugName);
+					$this->$name = $this->$name . '-1';
 				}
 
 			} else {
-				//vmdebug('Slug got tested with query and is unique ',$q,$this->$slugName,$existingSlugName);
 				return true;
 			}
 			$i++;
@@ -745,39 +732,6 @@ class VmTable extends JTable {
 
 	}
 
-	function createUniqueSlug($slugName){
-
-		//if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-		//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
-		//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
-		//vmdebug('my slugName ',$this->$slugName);
-		$this->$slugName = str_replace('-', ' ', $this->$slugName);
-
-		//$config =& JFactory::getConfig();
-		//$transliterate = $config->get('unicodeslugs');
-		$unicodeslugs = VmConfig::get('transliterateSlugs',false);
-		if($unicodeslugs){
-			$lang = JFactory::getLanguage();
-			$this->$slugName = $lang->transliterate($this->$slugName);
-		}
-
-		// Trim white spaces at beginning and end of alias and make lowercase
-		$this->$slugName = trim(JString::strtolower($this->$slugName));
-		$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
-
-		$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,.,|','-');
-		while(strpos($this->$slugName,'--')){
-			$this->$slugName = str_replace('--','-',$this->$slugName);
-		}
-		// Trim dashes at beginning and end of alias
-		$this->$slugName = trim($this->$slugName, '-');
-
-		if($unicodeslugs) $this->$slugName = rawurlencode($this->$slugName);
-
-		$this->checkCreateUnique($slugName);
-		//vmdebug('my Final slugName '.$slugName,$this->$slugName);
-		return $this->$slugName;
-	}
 
 	/**
 	 * @author Max Milbers
@@ -790,18 +744,55 @@ class VmTable extends JTable {
 			$slugAutoName = $this->_slugAutoName;
 			$slugName = $this->_slugName;
 
+			if (in_array($slugAutoName, $this->_translatableFields)) {
+				$checkTable = $this->_tbl . '_' . VmConfig::$vmlang;
+			} else {
+				$checkTable = $this->_tbl;
+			}
+
 			if (empty($this->$slugName)) {
 				// 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
 				if (!empty($this->$slugAutoName)) {
 					$this->$slugName = $this->$slugAutoName;
 				} else {
-					vmError('VmTable ' . $this->_tbl . '_' . VmConfig::$vmlang . ' Check not passed. Neither slug nor obligatory value at ' . $slugAutoName . ' for auto slug creation is given');
+					vmError('VmTable ' . $checkTable . ' Check not passed. Neither slug nor obligatory value at ' . $slugAutoName . ' for auto slug creation is given');
 					return false;
 				}
 
 			}
 
-			$this->$slugName = $this->createUniqueSlug($slugName);
+			//if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
+			//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
+			//vmdebug('my slugName '.$slugName,$this->$slugName);
+			$this->$slugName = str_replace('-', ' ', $this->$slugName);
+
+			//$config =& JFactory::getConfig();
+			//$transliterate = $config->get('unicodeslugs');
+			$unicodeslugs = VmConfig::get('transliterateSlugs',false);
+			if($unicodeslugs){
+				$lang = JFactory::getLanguage();
+				$this->$slugName = $lang->transliterate($this->$slugName);
+			}
+
+			// Trim white spaces at beginning and end of alias and make lowercase
+			$this->$slugName = trim(JString::strtolower($this->$slugName));
+			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
+
+			$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,.,|','-');
+			while(strpos($this->$slugName,'--')){
+				$this->$slugName = str_replace('--','-',$this->$slugName);
+			}
+			// Trim dashes at beginning and end of alias
+			$this->$slugName = trim($this->$slugName, '-');
+
+			if($unicodeslugs)$this->$slugName = rawurlencode($this->$slugName);
+
+			$valid = $this->checkCreateUnique($checkTable, $slugName);
+			vmdebug('my Final slugName '.$slugName,$this->slugName);
+			if (!$valid) {
+				return false;
+			}
 
 		}
 
@@ -831,7 +822,7 @@ class VmTable extends JTable {
 					return false;
 				} else {
 
-					$valid = $this->checkCreateUnique($obkeys, $this->$obkeys);
+					$valid = $this->checkCreateUnique($this->_tbl, $obkeys);
 					if (!$valid) {
 						return false;
 					}

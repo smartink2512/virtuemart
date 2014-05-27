@@ -44,16 +44,18 @@ class CurrencyDisplay {
 		$this->_app = JFactory::getApplication();
 		if(empty($vendorId)) $vendorId = 1;
 
+		$vendorM = VmModel::getModel('vendor');
+		$vendorCurrency = $vendorM->getVendorCurrency($vendorId);
 		$this->_db = JFactory::getDBO();
-		$q = 'SELECT `vendor_currency`,`currency_code_3`,`currency_numeric_code` FROM `#__virtuemart_vendors` AS v
+		/*$q = 'SELECT `vendor_currency`,`currency_code_3`,`currency_numeric_code` FROM `#__virtuemart_vendors` AS v
 		LEFT JOIN `#__virtuemart_currencies` AS c ON virtuemart_currency_id = vendor_currency
 		WHERE v.`virtuemart_vendor_id`="'.(int)$vendorId.'"';
 
 		$this->_db->setQuery($q);
-		$row = $this->_db->loadRow();
-		$this->_vendorCurrency = $row[0];
-		$this->_vendorCurrency_code_3 = $row[1];
-		$this->_vendorCurrency_numeric = (int)$row[2];
+		$row = $this->_db->loadRow();/*/
+		$this->_vendorCurrency = $vendorCurrency->vendor_currency;;
+		$this->_vendorCurrency_code_3 = $vendorCurrency->currency_code_3;
+		$this->_vendorCurrency_numeric = $vendorCurrency->currency_numeric_code;
 
 		//vmdebug('$row ',$row);
 		$converterFile  = VmConfig::get('currency_converter_module','convertECB.php');
@@ -115,10 +117,8 @@ class CurrencyDisplay {
 				self::$_instance->_currency_id = $currencyId;
 			}
 
-
-			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)self::$_instance->_currency_id.'"';
-			self::$_instance->_db->setQuery($q);
-			$style = self::$_instance->_db->loadObject();
+			$vendorM = VmModel::getModel('currency');
+			$style = $vendorM->getData((int)self::$_instance->_currency_id);
 
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($style);
