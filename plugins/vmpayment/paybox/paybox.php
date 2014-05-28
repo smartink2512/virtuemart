@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: view.html.php 2796 2011-03-01 11:29:16Z Milbo $
+ * @version $Id$
  *
  * http://www1.paybox.com/telechargements/ManuelIntegrationPaybox_V5.08_FR.pdf
  * Pour accéder au Back-office commerçant: https://preprod-admin.paybox.com
