@@ -124,7 +124,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 			$post_variables['CARD_STORAGE_ENABLE'] = $this->_method->realvault;
 			if ($this->_method->realvault) {
 				if ($payer_ref = $this->getExistingPayerRef()) {
-					if ($this->customerData->getVar('saved_cc_selected') != -1) {
+					if ($this->customerData->getVar('saved_cc_selected') == -1) {
 						$post_variables['PAYER_EXIST'] = 1;
 						$post_variables['PAYER_REF'] = $payer_ref;
 						$post_variables['PMT_REF'] = '';
@@ -174,7 +174,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	}
 
 	function  getExistingPayerRef () {
-		$storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id);
+		$storedCCs = $this->getStoredCCs(JFactory::getUser()->id);
 		if (is_array($storedCCs)) {
 			return $storedCCs[0]->realex_saved_payer_ref;
 		}
@@ -183,9 +183,9 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	}
 
 	function  getExistingPmtRef () {
-		$storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id);
+		$storedCCs = $this->getStoredCCs(JFactory::getUser()->id);
 		if (is_array($storedCCs)) {
-			return $storedCCs[0]->realex_saved_payer_ref;
+			return $storedCCs[0]->realex_saved_pmt_ref;
 		}
 		return NULL;
 
@@ -199,16 +199,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 	function validateConfirmedOrder ($enqueueMessage = true) {
 
-		if (!JFactory::getUser()->guest AND $this->_method->realvault) {
-			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
-				$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
-				if ($this->customerData->getVar('selected_method')  and empty($saved_cc_selected)) {
-					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
-					return false;
-				}
-			}
-		}
-		return true;
+		return $this->validate();
 
 	}
 
@@ -218,7 +209,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 */
 	public function validate ($enqueueMessage = true) {
 		if (!JFactory::getUser()->guest AND $this->_method->realvault) {
-			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
+			if ($storedCCs = $this->getStoredCCs(JFactory::getUser()->id)) {
 				$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
 				if ($this->customerData->getVar('selected_method') AND empty($saved_cc_selected)) {
 					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');

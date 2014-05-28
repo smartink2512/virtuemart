@@ -71,6 +71,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			'virtuemart_order_id'         => 'int(11) UNSIGNED DEFAULT NULL',
 			'order_number'                => 'char(64) DEFAULT NULL',
 			'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
+			'amazonAuthorizationId' => 'char(16) DEFAULT NULL',
 			'payment_name'                => 'varchar(5000)',
 			'payment_order_total'         => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
 			'payment_currency'            => 'smallint(1)',
@@ -87,7 +88,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	}
 
 	function plgVmDisplayLogin (VirtuemartViewUser $user, &$html, $from_cart = FALSE) {
-
+		return NULL;
 		// only to display it in the cart, not in list orders view
 		if (!$from_cart) {
 			return NULL;
@@ -179,12 +180,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		return $display;
 	}
 
-	function getRenderAddressbookWalletRedirectPage ($cart) {
-		$url = 'index.php?option=com_virtuemart&view=cart&task=pluginnotification&tmpl=component&notificationTask=renderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+	function getRenderAddressbookWalletRedirectPage () {
+		$url = 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&notificationTask=renderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		$AmazonOrderReferenceId = $this->getAmazonOrderReferenceId();
 		if ($AmazonOrderReferenceId) {
 			$url .= '&session=' . $AmazonOrderReferenceId;
 		}
+		$cart = VirtueMartCart::getCart();
 		return JRoute::_($url, $cart->useXHTML, $cart->useSSL);
 
 	}
@@ -260,29 +262,14 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		return $url;
 	}
-	function xxxplgVmOnMainController () {
 
-		$notificationTask = vRequest::getCmd('notificationTask', '');
-		$validNotificationTasks = array('renderAddressbookWallet', 'renderAddressbookWalletIframe', 'returnRenderAddressbookWallet');
-
-		if (!in_array($notificationTask, $validNotificationTasks)) {
-			return;
-		}
-
-		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
-		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
-			$this->debug('THIS SHOULD NOT HAPPENNED', 'plgVmOnPaymentNotification', 'debug');
-			return NULL; // Another method was selected, do nothing
-		}
-		$this->$notificationTask();
-	}
 	/**
 	 * @return null
 	 */
 	public function plgVmOnPaymentNotification () {
 
 		$notificationTask = vRequest::getCmd('notificationTask', '');
-		$validNotificationTasks = array('renderAddressbookWallet', 'renderAddressbookWalletIframe', 'returnRenderAddressbookWallet');
+		$validNotificationTasks = array('renderAddressbookWallet', 'returnRenderAddressbookWallet');
 
 		if (!in_array($notificationTask, $validNotificationTasks)) {
 			return;
@@ -294,40 +281,15 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return NULL; // Another method was selected, do nothing
 		}
 
-		//$this->$notificationTask();
+		$this->$notificationTask();
 
 
 	}
+
 	function renderAddressbookWallet () {
-		//$redirect_page = JRoute::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&notificationTask=renderAddressbookWalletIframe&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&session='.vRequest::getString('session').'&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
-		$redirect_page = JRoute::_('index.php?option=com_virtuemart&view=cart&task=pluginnotification&tmpl=component&notificationTask=renderAddressbookWalletIframe&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&session='.vRequest::getString('session').'&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
-		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-		vmJsApi::css('jquery.fancybox-1.3.4');
-		$amazonBox = "jQuery.fancybox({
-				href: '" . $redirect_page . "',
-				type: 'iframe',
-				height: '550',
-				afterClose: function () {
-                parent.location.reload(true);
-            }
-			});";
-
-
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration("
-//<![CDATA[
-	jQuery(document).ready(function($) {
-		".$amazonBox."
-	});
-//]]>
-");
-	}
-
-	function renderAddressbookWalletIframe () {
-	//function renderAddressbookWallet () {
 		$client = $this->getOffAmazonPaymentsService_Client();
 		$this->addWidgetUrlScript($client);
-		 $redirect_page = JRoute::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&format=raw&notificationTask=returnRenderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
+		$redirect_page = JRoute::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&format=raw&notificationTask=returnRenderAddressbookWallet&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $cart->useXHTML, $useSSL);
 		$amazonOrderReferenceId = vRequest::getString('session', '');
 		if (empty($amazonOrderReferenceId)) {
 			$this->debug('no $amazonOrderReferenceId', 'renderAddressbookWallet', 'debug');
@@ -353,9 +315,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		                                                         'renderAddressBook'           => (!$onlyDigitalGoods),
 		                                                         'redirect_page'               => $redirect_page,
 		                                                    ));
-
 		echo $html;
-
 	}
 
 	private function returnRenderAddressbookWallet () {
@@ -373,7 +333,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	private function addWidgetUrlScript ($client) {
 		if (!self::$widgetScriptLoaded) {
 			$widgetURL = $client->getMerchantValues()->getWidgetUrl();
-			$doc = JFactory::getDocument();
 			JHTML::script('', $widgetURL, false);
 			self::$widgetScriptLoaded = true;
 		}
@@ -469,10 +428,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	}
 
-	private function getSellerNoteAuthorization () {
+	private function getSellerAuthorizationNote () {
 		if ($this->_currentMethod->sandbox_error_simulation != 'authorization_InvalidPaymentMethod') {
 			$simString = '{"SandboxSimulation": {"State":"Declined","ReasonCode":"InvalidPaymentMethod","PaymentMethodUpdateTimeInMins":100}';
 		}
+		return '';
 	}
 
 
@@ -495,12 +455,95 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return FALSE;
 		}
 		if (!$this->setOrderDetails($client, $cart, $order)) {
+			$this->redirectToCart();
 			return FALSE;
 		}
 		$this->confirmPurchase($client);
+		if (! ($amazonAuthorizationId=$this->getAuthorization($client, $cart, $order))) {
+			$this->redirectToCart();
+		return FALSE;
+	}
+		$payment_name = $this->renderPluginName($this->_currentMethod);
+
+		$db_values['order_number'] = $order['details']['BT']->order_number;
+		$db_values['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
+		$db_values['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
+		$db_values['amazonAuthorizationId'] = $amazonAuthorizationId;
+		$db_values['payment_name'] = $payment_name;
 
 
+		//$preload=true   preload the data here too preserve not updated data
+		return $this->storePSPluginInternalData($db_values, $this->_tablepkey, 0);
 		return;
+	}
+
+
+
+	function redirectToCart ($msg = NULL) {
+		if (!$msg) {
+			$msg = vmText::_('VMPAYMENT_AMAZON_ERROR_TRY_AGAIN');
+		}
+		$this->clearAmazonSession();
+		$app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vRequest::getInt('Itemid'), false), $msg);
+	}
+	/**
+	 * @param $client
+	 * @param $cart
+	 * @param $order
+	 */
+	function getAuthorization($client, $cart, $order) {
+		if (!class_exists('OffAmazonPaymentsService_Model_AuthorizeRequest')) {
+			require('OffAmazonPaymentsService/Model/AuthorizeRequest.php');
+		}
+		if (!class_exists('OffAmazonPaymentsService_Model_Price')) {
+			require('OffAmazonPaymentsService/Model/Price.php');
+		}
+		$authorizeRequest = new OffAmazonPaymentsService_Model_AuthorizeRequest();
+		$authorizeRequest->setAmazonOrderReferenceId($this->getAmazonOrderReferenceId());
+		$authorizeRequest->setSellerId($this->_currentMethod->sellerId);
+		$authorizeRequest->setAuthorizationReferenceId($order['details']['BT']->order_number);
+		$authorizeRequest->setSellerAuthorizationNote($this->getSellerAuthorizationNote());
+		if ($captureNow != "true") {
+			$authorizeRequest->setCaptureNow(false);
+		} else {
+			$authorizeRequest->setCaptureNow(true);
+		}
+		$authorizeRequest->setAuthorizationAmount(new OffAmazonPaymentsService_Model_Price());
+		$authorizeRequest->getAuthorizationAmount()->setAmount($this->getTotalInPaymentCurrency($client, $order['details']['BT']->order_total,  $cart->pricesCurrency));
+		$authorizeRequest->getAuthorizationAmount()->setCurrencyCode($this->getCurrencyCode3($client));
+
+		try {
+			$authorizationResponseWrapper = $client->authorize($authorizeRequest);
+			$amazonAuthorizationId = $authorizationResponseWrapper->getAuthorizeResult()->getAuthorizationDetails()->getAmazonAuthorizationId();
+			$this->debugLog("Authorization ID: " . $amazonAuthorizationId, 'plgVmOnPaymentNotification', 'debug');
+		}
+		catch (Exception $e) {
+			$msg="An exception was thrown when trying to do the authorization:" . $e->getMessage()."\n".$e->getTraceAsString();
+			while($e = $e->getPrevious()) {
+				$msg.=("Caused by: ".$e->getMessage()."\n".$e->getTraceAsString(). "");
+				$msg.= "\n";
+			}
+			$this->debugLog($msg, 'getAuthorization', 'debug');
+			return false;
+		}
+		return $amazonAuthorizationId;
+	}
+
+
+
+	private function _storeAmazonInternalData( $order, $amazonState, $payment_name=NULL) {
+
+		$db_values['order_number'] = $order['details']['BT']->order_number;
+		$db_values['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
+		$db_values['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
+		$db_values['amazon_state'] = $amazonState;
+		$db_values['payment_name'] = $payment_name;
+
+
+		//$preload=true   preload the data here too preserve not updated data
+		return $this->storePSPluginInternalData($db_values, $this->_tablepkey, 0);
+
 	}
 
 	/**
@@ -548,7 +591,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	}
 
 	function updateAmazonFullShipmentAddressInOrder ($client, $cart, $order) {
-		$this->debug($client, 'saveAmazonPartialShipmentAddressIncart', 'debug');
+		$this->debug($client, 'updateAmazonFullShipmentAddressInOrder', 'debug');
 		$onlyDigitalGoods = $this->isOnlyDigitalGoods($cart);
 		if ($onlyDigitalGoods) {
 			return;
@@ -581,13 +624,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			'address_type'                    => 'ST'
 		);
 		$order_userinfosTable = $orderModel->getTable('order_userinfos');
-		$order_userinfosTable->load($virtuemart_order_id, 'virtuemart_order_id', " AND address_type='ST'");
+		$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='ST'");
 		if (!$order_userinfosTable->bindChecknStore($_userInfoData, true)) {
 			vmError($order_userinfosTable->getError());
 			return false;
 		}
 
-return true;
+		return true;
 	}
 
 	/**
@@ -601,8 +644,9 @@ return true;
 			$client->confirmOrderReference($confirmOrderReferenceRequest);
 		} catch (Exception $e) {
 			$this->amazonError($e->getMessage(), $e->getCode());
-			return;
+			return false;
 		}
+		return true;
 	}
 
 
@@ -895,7 +939,7 @@ return true;
 	 */
 	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
-		return $this->OnSelectCheck($cart);
+		return $this->onSelectCheck($cart);
 	}
 
 	/**
@@ -912,7 +956,25 @@ return true;
 	 */
 	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 
-		return $this->displayListFE($cart, $selected, $htmlIn);
+
+		if ($this->getPluginMethods ($cart->vendorId) === 0) {
+			if (empty($this->_name)) {
+				vmAdminInfo ('displayListFE cartVendorId=' . $cart->vendorId);
+				$app = JFactory::getApplication ();
+				$app->enqueueMessage (JText::_ ('COM_VIRTUEMART_CART_NO_' . strtoupper ($this->_psType)));
+				return FALSE;
+			} else {
+				return FALSE;
+			}
+		}
+
+		$signInButton = $this->renderSignInButton('listFE');
+		if (!empty($signInButton)) {
+			$htmlIn[] = $signInButton;
+			return TRUE;
+		}
+
+		return FALSE;
 	}
 
 	/**

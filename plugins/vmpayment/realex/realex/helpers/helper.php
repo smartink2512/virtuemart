@@ -610,7 +610,6 @@ class  RealexHelperRealex {
 
 	}
 
-	// todo
 	/**
 	 * the reference to use for the payment method saved.
 	 * If this field is not present an alphanumeric reference will be automatically generated.

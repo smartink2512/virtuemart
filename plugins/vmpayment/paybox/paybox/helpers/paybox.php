@@ -178,7 +178,7 @@ class  PayboxHelperPaybox {
 
 
 	function isActivate3ds($orderTotalVendorCurrency) {
-		 return $this->_method->activate_3dsecure=='active' OR  ($this->_method->activate_3dsecure=='selective 'AND ($orderTotalVendorCurrency > $this->_method->min_amount_3dsecure));
+		 return $this->_method->activate_3dsecure=='active' OR  ($this->_method->activate_3dsecure=='selective' AND ($orderTotalVendorCurrency > $this->_method->min_amount_3dsecure));
 
 		}
 

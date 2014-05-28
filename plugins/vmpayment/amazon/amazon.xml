@@ -45,6 +45,14 @@
         <param name="secretKey" class="required" type="text" size="80" default="" label="VMPAYMENT_AMAZON_CONF_SECRET_KEY"
                description="VMPAYMENT_AMAZON_CONF_SECRET_KEY_TIP"/>
 
+        <param name="authorization_mode" type="radio" default="synchronous"
+               label="VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE">
+            <option value="synchronous">VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_SYNCHRONOUS</option>
+            <option value="asynchronous">VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_ASYNCHRONOUS</option>
+        </param>
+
+
+
 
         <param class="region region-other required" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ENDPOINTS_SECTION" />
         <param class="region region-other required" size="120" name="sandbox_serviceURL" type="text" default=""
@@ -77,8 +85,8 @@
                description="VMPAYMENT_AMAZON_CONF_MAX_AMOUNT_TIP"/>
         <param name="exclude_categories" type="categories" label="VMPAYMENT_AMAZON_CONF_EXCLUDE_CATEGORIES"
                description="VMPAYMENT_AMAZON_CONF_EXCLUDE_CATEGORIES_TIP"/>
-        <param name="languages" type="languages" label="VMPAYMENT_AMAZON_CONF_LANGUAGES"
-               description="VMPAYMENT_AMAZON_CONF_LANGUAGES_TIP"/>
+        <!--param name="languages" type="languages" label="VMPAYMENT_AMAZON_CONF_LANGUAGES"
+               description="VMPAYMENT_AMAZON_CONF_LANGUAGES_TIP"/ -->
         <param name="ip_whitelist" type="textarea" label="VMPAYMENT_AMAZON_CONF_IP_WHITELIST"
                description="VMPAYMENT_AMAZON_CONF_IP_WHITELIST_TIP"/>
 
@@ -105,6 +113,7 @@
             <!--option value="login">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_LOGIN</option-->
             <option value="advertise">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_ADVERTISE</option>
             <option value="module">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_MODULE</option>
+            <option value="listFE">VMPAYMENT_AMAZON_CONF_SIGN_IN_LISTFE</option>
         </param>
 
         <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_ADDRESSBOOK"

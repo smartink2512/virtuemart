@@ -752,12 +752,12 @@ class plgVmPaymentRealex extends vmPSPlugin {
 					$checked = '';
 				}
 				$ccDropdown = "";
-			//	if ($this->_currentMethod->integration == 'redirect') {
+				if ($this->_currentMethod->integration == 'redirect') {
 					if (!JFactory::getUser()->guest AND $this->_currentMethod->realvault) {
 						$selected_cc = $this->customerData->getVar('saved_cc_selected');
 						$ccDropdown = $realexInterface->getCCDropDown($this->_currentMethod->virtuemart_paymentmethod_id, JFactory::getUser()->id, $selected_cc);
 					}
-				//}
+				}
 
 				$html .= $this->renderByLayout('redirect_form', array(
 				                                                     'creditcardsDropDown'         => $ccDropdown,

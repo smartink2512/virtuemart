@@ -37,6 +37,14 @@ $( '.output-shipto-add' ).hide();
 
 
 ?>
+<?php if ( $viewData['sign_in_display'] != 'advertise') { ?>
+
+	<input type="radio" name="virtuemart_paymentmethod_id"
+	       id="payment_id_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"
+	       value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" <?php echo $viewData ['checked']; ?>>
+<?php } ?>
+
+
 <div id="payWithAmazonDiv">
 	<img src="<?php echo $viewData['buttonWidgetImageURL'] ?>" style="cursor: pointer;" />
 </div>
