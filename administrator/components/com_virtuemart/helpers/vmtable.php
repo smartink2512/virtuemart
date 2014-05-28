@@ -699,7 +699,7 @@ class VmTable extends JTable {
 		while ($i < 20) {
 
 			$tbl_key = $this->_tbl_key;
-			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $this->_slugName . '` =  "' . $this->$name . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
+			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $name . '` =  "' . $this->$name . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
 
 			$this->_db->setQuery($q);
 			$existingSlugName = $this->_db->loadResult();

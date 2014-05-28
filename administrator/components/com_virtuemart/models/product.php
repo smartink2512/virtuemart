@@ -1816,9 +1816,9 @@ class VirtueMartModelProduct extends VmModel {
 
 		//$newslug = $parent->slug . $id . rand (1, 9);
 		if(empty($parent->slug)) $parent->slug = $parent->product_name;
-		$newslug = $prodTable->createUniqueSlug('products_' . VmConfig::$vmlang,$parent->slug);
+		$prodTable->checkCreateUnique('#__virtuemart_products_' . VmConfig::$vmlang,'slug');
 		//$newslug = $prodTable->checkCreateUnique('products_' . VmConfig::$vmlang,$parent->slug);
-		$data = array('product_name' => $parent->product_name, 'slug' => $newslug, 'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
+		$data = array('product_name' => $parent->product_name, 'slug' => $prodTable->slug, 'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
 
 		$prodTable = $this->getTable ('products');
 		$prodTable->bindChecknStore ($data);
@@ -1830,7 +1830,7 @@ class VirtueMartModelProduct extends VmModel {
 				$db->setQuery ('SELECT `product_name` FROM `#__virtuemart_products_' . $lang . '` WHERE `virtuemart_product_id` = "' . $prodTable->virtuemart_product_id . '" ');
 				$res = $db->loadResult ();
 				if (!$res) {
-					$db->setQuery ('INSERT INTO `#__virtuemart_products_' . $lang . '` (`virtuemart_product_id`,`slug`) VALUES ("' . $prodTable->virtuemart_product_id . '","' . $newslug . '");');
+					$db->setQuery ('INSERT INTO `#__virtuemart_products_' . $lang . '` (`virtuemart_product_id`,`slug`) VALUES ("' . $prodTable->virtuemart_product_id . '","' . $prodTable->slug . '");');
 					$db->query ();
 					$err = $db->getErrorMsg ();
 					if (!empty($err)) {
