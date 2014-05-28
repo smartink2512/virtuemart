@@ -19,11 +19,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-// Include the module helper classes.
-if (!class_exists('ModVMMenuHelper')) {
-	require dirname(__FILE__).'/helper.php';
-}
-
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists( 'VmConfig' )) {
 	$path = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php';
@@ -35,6 +30,12 @@ if (!class_exists( 'VmConfig' )) {
 		return false;
 	}
 }
+
+// Include the module helper classes.
+if (!class_exists('ModVMMenuHelper')) {
+	require dirname(__FILE__).'/helper.php';
+}
+
 // Initialise variables.
 $lang		= JFactory::getLanguage();
 $user		= JFactory::getUser();

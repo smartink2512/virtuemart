@@ -23,18 +23,24 @@
 
 defined('_JEXEC') or die();
 
-require_once dirname(__FILE__).'/classes/abstractconfig.php';
-require_once dirname(__FILE__).'/config.php';
-
-if(!class_exists('vRequest')) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/vRequest.php');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) {
+	$path = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php';
+	if(file_exists($path)){
+		require($path);
+		VmConfig::loadConfig();
+	} else {
+		$app = JFactory::getApplication();
+		$app->enqueueMessage('VirtueMart Core is not installed, please install VirtueMart again, or uninstall the AIO component by the joomla extension manager');
+		return false;
+	}
+}
 
 $task = vRequest::getCmd('task');
 if($task=='updateDatabase'){
-	vRequest::vmCheckToken() or jexit('Invalid Token, in ' . $task);
+	vRequest::vmCheckToken('Invalid Token, in ' . $task);
 	$app = JFactory::getApplication();
-	//Update Tables
-	defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-	if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
 	$user = JFactory::getUser();
 	if(!($user->authorise('core.admin'))){
 		$msg = 'Forget IT';
