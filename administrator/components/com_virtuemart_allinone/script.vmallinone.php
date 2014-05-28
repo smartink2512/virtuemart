@@ -693,7 +693,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 
 			if(isset($xml->updateservers->server)) {
-				if ($update_sites_extensions==NULL) {
+				if (!$update_sites_extensions) {
 					$query="INSERT INTO `#__update_sites` SET `name`=".$db->quote((string)$xml->updateservers->server['name']).",
 				        `type`=".$db->quote((string)$xml->updateservers->server['type']).",
 				        `location`=".$db->quote((string)$xml->updateservers->server).", enabled=1 ";
