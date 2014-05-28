@@ -52,7 +52,7 @@ class JElementGetPaybox extends JElement {
 		if (!class_exists('pbxRequest')) {
 			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'paybox' . DS . 'paybox' . DS . 'helpers' . DS . 'pbxrequest.php');
 		}
-		$cid = vRequest::getvar ('cid', NULL, 'array');
+		$cid = pbxRequest::getvar ('cid', NULL, 'array');
 		if (is_Array ($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {

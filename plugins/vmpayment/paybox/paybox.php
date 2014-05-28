@@ -161,8 +161,8 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		$this->debugLog('"<pre>plgVmOnPaymentResponseReceived :' . var_export($paybox_data, true) . "</pre>", 'debug');
 		$payboxInterface = $this->_loadPayboxInterface($this);
 		$html = $payboxInterface->paymentResponseReceived($paybox_data);
-		vRequest::setVar('display_title', false);
-		vRequest::setVar('html', $html);
+		pbxRequest::setVar('display_title', false);
+		pbxRequest::setVar('html', $html);
 		return true;
 	}
 
@@ -178,7 +178,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!$order_number) {
 			return FALSE;
 		}
-		$numerr = vRequest::getString('E', '');
+		$numerr = pbxRequest::getString('E', '');
 		if ($numerr) {
 			VmInfo('VMPAYMENT_' . $this->_name . '_PBX_NUMERR_' . abs($numerr));
 		}
