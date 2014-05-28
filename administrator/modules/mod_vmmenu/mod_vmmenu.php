@@ -19,6 +19,18 @@
 // no direct access
 defined('_JEXEC') or die;
 
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) {
+	$path = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php';
+	if(file_exists($path)){
+		require($path);
+	} else {
+		$app = JFactory::getApplication();
+		$app->enqueueMessage('VirtueMart Administration module is still installed, please install VirtueMart again, or uninstall the modul by the joomla extension manager');
+		return false;
+	}
+}
+
 // Include the module helper classes.
 if (!class_exists('ModVMMenuHelper')) {
 	require dirname(__FILE__).'/helper.php';

@@ -358,6 +358,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$dst = JPATH_ROOT . DS . 'plugins' . DS . $group;
 			}
 
+			$success = true;
 			if ($task != 'updateDatabase') {
 				$success =$this->recurse_copy ($src, $dst);
 			}
@@ -622,12 +623,15 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$db->setQuery($query);
 			$extension_id=$db->loadResult();
 			if(!$extension_id) {
+				vmdebug('updateJoomlaUpdateServer no extension id ',$query);
 				return;
 			}
 			// Is the extension already in the update table ?
 			$query="SELECT * FROM `#__update_sites_extensions` WHERE extension_id=".$extension_id;
 			$db->setQuery($query);
 			$update_sites_extensions=$db->loadObject();
+			//VmConfig::$echoDebug=true;
+
 
 			// Update the version number for all
 			if(isset($xml->version)) {
@@ -652,13 +656,30 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$db->setQuery($query);
 					$db->query();
 				} else {
-					if (strcmp($update_sites_extensions->location, (string)$xml->updateservers->server) != 0) {
-						// the extension was already there: we just update the server if different
-						$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server)."
-					         WHERE update_site_id=".$update_sites_extensions->update_site_id;
-						$db->setQuery($query);
-						$db->query();
+					if(empty($update_sites_extensions->update_site_id)){
+						vmWarn('Update site id not found for '.$element);
+						vmdebug('Update site id not found for '.$element,$update_sites_extensions);
+						return false;
 					}
+					$query="SELECT * FROM `#__update_sites` WHERE `update_site_id`=".$update_sites_extensions->update_site_id;
+					$db->setQuery($query);
+					$update_sites= $db->loadAssocList();
+					vmdebug('updateJoomlaUpdateServer',$update_sites);
+					if(empty($update_sites)){
+						vmdebug('No update sites found, they should be inserted');
+						return false;
+					}
+					//Todo this is written with an array, but actually it is only tested to run with one server
+					foreach($update_sites as $upSite){
+						if (strcmp($upSite->location, (string)$xml->updateservers->server) != 0) {
+							// the extension was already there: we just update the server if different
+							$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server)."
+					         WHERE update_site_id=".$update_sites_extensions->update_site_id;
+							$db->setQuery($query);
+							$db->query();
+						}
+					}
+
 				}
 
 			} else {
