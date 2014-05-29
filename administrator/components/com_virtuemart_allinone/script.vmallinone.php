@@ -70,6 +70,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('VM Payment - Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
 			$this->installPlugin ('VM Payment - PayPal', 'plugin', 'paypal', 'vmpayment');
 			$this->installPlugin ('VM Payment - Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
+			$this->installPlugin ('VM Payment - Paybox', 'plugin', 'paybox', 'vmpayment');
 			//$this->installPlugin ('VM Payment - Realex', 'plugin', 'realex', 'vmpayment');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
