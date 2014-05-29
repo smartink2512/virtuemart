@@ -34,11 +34,9 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		//if (self::$_this)
 		//   return self::$_this;
 		parent::__construct($subject, $config);
-		if (!class_exists('PayboxHelperPaybox')) {
-			//require(JPATH_SITE . DS. 'plugins'. DS. 'vmpayment'. DS. $this->_name. DS. $this->_name. DS. 'helpers'. DS. 'paybox.php');
-		}
+
 		if (!class_exists('pbxRequest')) {
-			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'pbxrequest.php');
+			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'paybox' . DS . 'paybox' . DS . 'helpers' . DS . 'pbxrequest.php');
 		}
 		$this->_loggable = TRUE;
 		$this->tableFields = array_keys($this->getTableSQLFields());
