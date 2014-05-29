@@ -1,6 +1,6 @@
 /**
  *
- * Realex payment plugin
+ * Paybox payment plugin
  *
  * @author Valérie Isaksen
  * @version $Id$

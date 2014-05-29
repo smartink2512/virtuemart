@@ -149,6 +149,7 @@
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
+        <exclude name="**/vm_update/**"/>
         <exclude name="**/da-DK/**"/>
         <exclude name="**/de-DE/**"/>
         <exclude name="**/es-ES/**"/>
