@@ -306,7 +306,7 @@ class VirtueMartModelMedia extends VmModel {
 	function storeMedia($data,$type){
 
 // 		vmdebug('my data in media to store start',$data['virtuemart_media_id']);
-		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
+		vRequest::vmCheckToken() or jexit( 'Invalid Token, while trying to save media' );
 
 		if(empty($data['media_action'])){
 			$data['media_action'] = 'none';
