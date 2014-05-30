@@ -367,7 +367,7 @@ class VirtueMartViewCart extends VmView {
 	private function lOrderDone() {
 		$display_title = vRequest::getBool('display_title',true);
 		$this->assignRef('display_title', $display_title);
-
+		// // Do not change this. It contains the payment form
 		$this->html = vRequest::get('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 		//Show Thank you page or error due payment plugins like paypal express
 	}

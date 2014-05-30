@@ -170,15 +170,15 @@ class  PayboxHelperPaybox {
 		$cart->_confirmDone = FALSE;
 		$cart->_dataValidated = FALSE;
 		$cart->setCartIntoSession();
-		vRequest::setVar('display_title', false);
-		vRequest::setVar('html', $html);
+		pbxRequest::setVar('display_title', false);
+		pbxRequest::setVar('html', $html);
 
 		return;
 	}
 
 
 	function isActivate3ds($orderTotalVendorCurrency) {
-		 return $this->_method->activate_3dsecure=='active' OR  ($this->_method->activate_3dsecure=='selective 'AND ($orderTotalVendorCurrency > $this->_method->min_amount_3dsecure));
+		 return $this->_method->activate_3dsecure=='active' OR  ($this->_method->activate_3dsecure=='selective' AND ($orderTotalVendorCurrency > $this->_method->min_amount_3dsecure));
 
 		}
 
@@ -603,17 +603,17 @@ jQuery().ready(function($) {
 		$test = false;
 		if ($test) {
 
-			$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
-			$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . pbxRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . pbxRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
 			$payboxURLs['url_annule'] = $url_cancelled;
 			$payboxURLs['url_refuse'] = $url_cancelled;
 			$payboxURLs['url_erreur'] = $url_cancelled;
-			$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
-			$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
+			$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . pbxRequest::getCmd('lang', '');
+			$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . pbxRequest::getCmd('lang', '');
 
 
 		} else {
-			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . pbxRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
 			$payboxURLs['url_annule'] = $url_cancelled;
 			$payboxURLs['url_refuse'] = $url_cancelled;
 			$payboxURLs['url_erreur'] = $url_cancelled;

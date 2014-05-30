@@ -7,7 +7,7 @@
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <!--version>${PHING.VM.RELEASE}</version-->
-    <version>Beta7</version>
+    <version>${PHING.VM.RELEASE}</version>
     <description><![CDATA[<a href="http://paybox.com" target="_blank">Paybox</a> ]]>
     </description>
     <languages folder="language">
@@ -21,15 +21,13 @@
     </files>
 
 
+    <params addpath="/administrator/components/com_virtuemart/elements" />
+    <params addpath="/plugins/vmpayment/paybox/paybox/elements">
 
-    <params addpath="/plugins/vmpayment/paybox/elements"/>
-    <params addpath="/plugins/vmpayment/paybox/paybox/elements"/>
-
-    <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning"/>
         <param type="customjs" default=""/>
         <param type="getpaybox" level="level1"/>
-        <param class="" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
+        <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
 
         <param name="shop_mode" type="list" default="N" label="VMPAYMENT_PAYBOX_CONF_SHOP_MODE"
                description="VMPAYMENT_PAYBOX_CONF_SHOP_MODE_TIP">
@@ -160,12 +158,12 @@
                label="VMPAYMENT_PAYBOX_CONF_STATUS_CANCEL" description="VMPAYMENT_PAYBOX_CONF_STATUS_CANCEL_TIP"/>
 
 
-        <param class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_OPTIONAL_PARAMS"/>
+        <param  class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_OPTIONAL_PARAMS"/>
 
 
         <!-- Restrictions -->
         <!-- ============ -->
-        <param type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_RESTRICTIONS_SECTION"
+        <param class="level2" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_RESTRICTIONS_SECTION"
                description="VMPAYMENT_PAYBOX_CONF_RESTRICTIONS_SECTION_TIP"/>
         <param name="countries" type="vmcountries" scope="com_virtuemart" default=""
                label="VMPAYMENT_PAYBOX_CONF_COUNTRIES" description="VMPAYMENT_PAYBOX_CONF_COUNTRIES_TIP"/>

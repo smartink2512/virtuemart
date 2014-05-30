@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: view.html.php 2796 2011-03-01 11:29:16Z Milbo $
+ * @version $Id$
  *
  * http://www1.paybox.com/telechargements/ManuelIntegrationPaybox_V5.08_FR.pdf
  * Pour accéder au Back-office commerçant: https://preprod-admin.paybox.com
@@ -34,11 +34,9 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		//if (self::$_this)
 		//   return self::$_this;
 		parent::__construct($subject, $config);
-		if (!class_exists('PayboxHelperPaybox')) {
-			//require(JPATH_SITE . DS. 'plugins'. DS. 'vmpayment'. DS. $this->_name. DS. $this->_name. DS. 'helpers'. DS. 'paybox.php');
-		}
+
 		if (!class_exists('pbxRequest')) {
-			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'pbxrequest.php');
+			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'paybox' . DS . 'paybox' . DS . 'helpers' . DS . 'pbxrequest.php');
 		}
 		$this->_loggable = TRUE;
 		$this->tableFields = array_keys($this->getTableSQLFields());
@@ -161,8 +159,8 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		$this->debugLog('"<pre>plgVmOnPaymentResponseReceived :' . var_export($paybox_data, true) . "</pre>", 'debug');
 		$payboxInterface = $this->_loadPayboxInterface($this);
 		$html = $payboxInterface->paymentResponseReceived($paybox_data);
-		vRequest::setVar('display_title', false);
-		vRequest::setVar('html', $html);
+		pbxRequest::setVar('display_title', false);
+		pbxRequest::setVar('html', $html);
 		return true;
 	}
 
@@ -178,7 +176,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!$order_number) {
 			return FALSE;
 		}
-		$numerr = vRequest::getString('E', '');
+		$numerr = pbxRequest::getString('E', '');
 		if ($numerr) {
 			VmInfo('VMPAYMENT_' . $this->_name . '_PBX_NUMERR_' . abs($numerr));
 		}

@@ -36,6 +36,7 @@ class JElementCustomjs extends JElement {
 
 		$doc = JFactory::getDocument();
 		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paybox/paybox/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/paybox/paybox/assets/css/admin.css');
 
 		return '';		
 	}

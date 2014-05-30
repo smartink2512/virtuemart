@@ -49,8 +49,10 @@ class JElementGetPaybox extends JElement {
 
 		$doc = JFactory::getDocument ();
 		$doc->addScriptDeclaration ($js);
-
-		$cid = vRequest::getvar ('cid', NULL, 'array');
+		if (!class_exists('pbxRequest')) {
+			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'paybox' . DS . 'paybox' . DS . 'helpers' . DS . 'pbxrequest.php');
+		}
+		$cid = pbxRequest::getvar ('cid', NULL, 'array');
 		if (is_Array ($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
@@ -65,7 +67,7 @@ class JElementGetPaybox extends JElement {
 
 	if ($params->created_on==$params->modified_on ) {
 		$id = "paybox_getpaybox_link";
-		$html .= '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX__HIDE') . '</a>';
+		$html .= '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE') . '</a>';
 		$display='';
 		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
 	} else {

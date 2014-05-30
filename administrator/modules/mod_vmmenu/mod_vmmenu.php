@@ -26,7 +26,7 @@ if (!class_exists( 'VmConfig' )) {
 		require($path);
 	} else {
 		$app = JFactory::getApplication();
-		$app->enqueueMessage('VirtueMart Administration module is still installed, please install VirtueMart again, or uninstall the modul by the joomla extension installer');
+		$app->enqueueMessage('VirtueMart Administration module is still installed, please install VirtueMart again, or uninstall the module via the joomla extension manager');
 		return false;
 	}
 }

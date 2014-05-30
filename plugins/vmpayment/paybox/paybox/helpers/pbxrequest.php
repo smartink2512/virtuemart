@@ -166,7 +166,7 @@ class  pbxRequest {
 			}
 
 		} else {
-			vmTrace('empty name in vRequest::get');
+			vmTrace('empty name in pbxRequest::get');
 			return $default;
 		}
 
@@ -237,8 +237,8 @@ class  pbxRequest {
 			}
 			else {
 				if($redirectMsg===0){
-					$redirectMsg = 'Invalid Token, in ' . vRequest::getCmd('options') .' view='.vRequest::getCmd('view'). ' task='.vRequest::getCmd('task');
-					//jexit('Invalid Token, in ' . vRequest::getCmd('options') .' view='.vRequest::getCmd('view'). ' task='.vRequest::getCmd('task'));
+					$redirectMsg = 'Invalid Token, in ' . pbxRequest::getCmd('options') .' view='.pbxRequest::getCmd('view'). ' task='.pbxRequest::getCmd('task');
+					//jexit('Invalid Token, in ' . pbxRequest::getCmd('options') .' view='.pbxRequest::getCmd('view'). ' task='.pbxRequest::getCmd('task'));
 				} else {
 					$redirectMsg =  vmText::_($redirectMsg);
 				}

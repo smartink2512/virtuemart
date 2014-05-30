@@ -31,7 +31,7 @@ class JElementpayboxsubscribe extends JElement {
           SELECT virtuemart_custom_id, custom_title
           FROM #__virtuemart_customs
           WHERE (field_type = 'P')
-          AND (custom_title LIKE '%'.$this->_name.'%')
+          AND (custom_title LIKE '%".$this->_name."%')
 
 ";
 

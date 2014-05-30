@@ -67,7 +67,7 @@
     <!-- ============================================  -->
     <!-- SVN EXPORT variables -->
     <!-- ============================================  -->
-    <property name="svn.main.repository" value="https://dev.virtuemart.net/svn/virtuemart/branches/com_virtuemart2.0.14mp/"/>
+    <property name="svn.main.repository" value="https://dev.virtuemart.net/svn/virtuemart/trunk/virtuemart/"/>
     <property name="svn.main.path" value="virtuemart"/>
 
     <svnlastrevision
@@ -146,10 +146,10 @@
         <exclude name="**/vm_build/**"/>
         <exclude name="**/amazon/**"/>
         <exclude name="**/realex/**"/>
-        <exclude name="**/paybox/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
+        <exclude name="**/vm_update/**"/>
         <exclude name="**/da-DK/**"/>
         <exclude name="**/de-DE/**"/>
         <exclude name="**/es-ES/**"/>
@@ -260,7 +260,6 @@
         <exclude name=".DS_Store"/>
         <exclude name="**/amazon/**"/>
         <exclude name="**/realex/**"/>
-        <exclude name="**/paybox/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
