@@ -380,9 +380,8 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 				echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
 			}
 		} else {
-		echo JText::_ ('COM_VIRTUEMART_CART_PAYMENT');
-	} ?> </td>
-
+			echo JText::_ ('COM_VIRTUEMART_CART_PAYMENT');
+		} ?>
 	</td>
 	<?php } else { ?>
 	<td colspan="4" align="left"><?php echo $this->cart->cartData['paymentName']; ?> </td>
