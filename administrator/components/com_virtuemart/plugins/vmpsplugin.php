@@ -36,7 +36,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		// 		$this->_configTableIdName = $this->_psType.'_jplugin_id';
 		$this->_loggable = TRUE;
 
-		$this->_tableChecked = TRUE;
+		//$this->_tableChecked = TRUE;
 	}
 
 	public function getVarsToPush () {

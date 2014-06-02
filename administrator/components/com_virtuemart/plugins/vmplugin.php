@@ -127,7 +127,7 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	function getTableSQLFields () {
 
-		return array();
+		return false;
 	}
 
 	function getOwnUrl(){
@@ -327,6 +327,8 @@ abstract class vmPlugin extends JPlugin {
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
+	 * Or updates the table, if it exists. Please be aware that this function is slowing and is only called
+	 * storing a method or installing/udpating a plugin.
 	 *
 	 * @param string $psType shipment,payment,custom
 	 * @author Valérie Isaksen
@@ -334,12 +336,54 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function onStoreInstallPluginTable ($psType,$name=FALSE) {
 
+		vmdebug('Executing onStoreInstallPluginTable ');
+
 		if(!empty($name) and $name!=$this->_name){
 			return false;
 		}
+
 		//Todo the psType should be name of the plugin.
 		if ($psType == $this->_psType) {
-			$query = $this->getVmPluginCreateTableSQL ();
+
+			$SQLfields = $this->getTableSQLFields();
+			if(empty($SQLfields)) return false;
+
+			$loggablefields = $this->getTableSQLLoggablefields();
+			$tablesFields = array_merge($SQLfields, $loggablefields);
+
+			$db = JFactory::getDBO();
+			$query = 'SHOW TABLES LIKE "%' . str_replace('#__', '', $this->_tablename) . '"';
+			$db->setQuery($query);
+			$result = $db->loadResult();
+
+			if ($result) {
+				$update[$this->_tablename] = array($tablesFields, array(), array());
+				$app = JFactory::getApplication();
+				$app->enqueueMessage(get_class($this) . ':: VirtueMart2 update ' . $this->_tablename);
+				if (!class_exists('GenericTableUpdater'))
+					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+				$updater = new GenericTableUpdater();
+				$updater->updateMyVmTables($update);
+			} else {
+				$query = $this->createTableSQL($name,$tablesFields);
+				if(empty($query)){
+					return false;
+				} else {
+					$db->setQuery ($query);
+					if (!$db->execute ()) {
+						vmWarn($this->_name . '::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
+						echo $this->_name . '::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE);
+					} else {
+						return true;
+					}
+				}
+			}
+
+			/*$query = $this->getVmPluginCreateTableSQL ();
+
+			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+			$updater = new GenericTableUpdater();
+
 			if(empty($query)){
 				return false;
 			} else {
@@ -353,7 +397,7 @@ abstract class vmPlugin extends JPlugin {
 				} else {
 					return true;
 				}
-			}
+			}*/
 		}
 		return false;
 	}
@@ -606,10 +650,10 @@ abstract class vmPlugin extends JPlugin {
 			$this->_vmpCtable->setCryptedFields($this->_cryptedFields);
 		}
 
-		if (!$this->_tableChecked) {
+		/*if (!$this->_tableChecked) {
 			$this->onStoreInstallPluginTable ($this->_psType);
 			$this->_tableChecked = TRUE;
-		}
+		}*/
 
 		return $table;
 	}

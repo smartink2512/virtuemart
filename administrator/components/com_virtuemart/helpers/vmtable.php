@@ -526,10 +526,14 @@ class VmTable extends JTable {
 			$oid = 0;
 		} else if (empty($oid)) {
 			if (!empty($this->_xParams)) {
-				foreach ($this->_varsToPushParam as $key => $v) {
-					if (!isset($this->$key)) {
-						$this->$key = $v[0];
+				if(!empty($this->_varsToPushParam)){
+					foreach ($this->_varsToPushParam as $key => $v) {
+						if (!isset($this->$key)) {
+							$this->$key = $v[0];
+						}
 					}
+				} else {
+					//vmdebug('_varsToPushParam empty ',$this);
 				}
 			}
 			return $this;
@@ -903,7 +907,8 @@ class VmTable extends JTable {
 					}
 					else if (empty($virtuemart_vendor_id)) {
 						if(strpos($this->_tbl,'virtuemart_vendors')===FALSE and strpos($this->_tbl,'virtuemart_vmusers')===FALSE){
-							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
+							vmInfo('Fallback to 1: We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
+							$this->virtuemart_vendor_id = 1;
 						}
 					}
 				}

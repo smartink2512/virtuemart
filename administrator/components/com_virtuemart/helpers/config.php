@@ -44,6 +44,8 @@ else {
 	}
 }
 
+defined('VM_VERSION') or define ('VM_VERSION', 3);
+
 //This number is for obstruction, similar to the prefix jos_ of joomla it should be avoided
 //to use the standard 7, choose something else between 1 and 99, it is added to the ordernumber as counter
 // and must not be lowered.

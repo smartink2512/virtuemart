@@ -574,7 +574,8 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				JPluginHelper::importPlugin ('vmcustom');
 				$dispatcher = JDispatcher::getInstance ();
-				$ret = $dispatcher->trigger ('plgVmOnDisplayProductFE', array(&$product, &$customfield));
+				$dummyVar = 0;
+				$ret = $dispatcher->trigger ('plgVmOnDisplayProductFEVM3', array(&$product, &$customfield,&$dummyVar));
 				continue;
 			}
 
