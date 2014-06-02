@@ -992,7 +992,7 @@ class ShopFunctions {
 	 */
 	static function InvoiceNumberReserved ($invoice_number) {
 		if(!class_exists('ShopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		return shopFunctionsF::InvoiceNumberReserved();
+		return shopFunctionsF::InvoiceNumberReserved($invoice_number);
 	}
 
 	/**
@@ -1280,7 +1280,7 @@ class ShopFunctions {
 	 * @return the invoice folder name
 	 */
 	static function getInvoiceFolderName() {
-		if(!class_exists('ShopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		return ShopFunctionsF::getInvoiceFolderName();
 	}
 	/*
