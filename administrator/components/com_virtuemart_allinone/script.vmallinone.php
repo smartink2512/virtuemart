@@ -631,8 +631,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$query="SELECT * FROM `#__update_sites_extensions` WHERE extension_id=".$extension_id;
 			$db->setQuery($query);
 			$update_sites_extensions=$db->loadObject();
-			//VmConfig::$echoDebug=true;
-
 
 			// Update the version number for all
 			if(isset($xml->version)) {
@@ -641,7 +639,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$db->setQuery($query);
 					$db->query();
 			}
-
 
 			if(isset($xml->updateservers->server)) {
 				if (!$update_sites_extensions) {

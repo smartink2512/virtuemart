@@ -5,7 +5,7 @@
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.6.6"/>
     <property name="joomla.version" value="2.5.20"/>
-    <property name="svn.lastrevision" value="8001"/>
+    <property name="svn.lastrevision" value="8005"/>
     <property name="PHING.VM.CODENAME" value="loadFox"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm2"/>
 

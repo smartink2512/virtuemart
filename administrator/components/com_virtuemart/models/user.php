@@ -486,7 +486,7 @@ class VirtueMartModelUser extends VmModel {
 		$newId = 0;
 
 		if($checkToken){
-			vRequest::vmCheckToken() or jexit( 'Invalid Token, while trying to save user' );
+			vRequest::vmCheckToken( 'Invalid Token, while trying to save user' );
 			$mainframe = JFactory::getApplication() ;
 		}
 
