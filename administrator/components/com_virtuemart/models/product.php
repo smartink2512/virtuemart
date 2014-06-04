@@ -695,7 +695,7 @@ class VirtueMartModelProduct extends VmModel {
 		$onlyPublished = $onlyPublished?TRUE:0;
 		$customfields = $customfields?TRUE:0;
 		$this->withRating = $this->withRating?TRUE:0;
-		$productKey = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.$withCalc.$customfields.$this->withRating;
+		$productKey = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.$withCalc.$customfields.$this->withRating;
 
 		static $_products = array();
 		   // vmdebug('$productKey, not from cache : '.$productKey);
