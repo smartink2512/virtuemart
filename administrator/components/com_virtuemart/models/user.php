@@ -1236,7 +1236,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 		}
-
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 		$userFields[$uid] = $userFieldsModel->getUserFieldsFilled(
 		$prepareUserFields
 		,$data
