@@ -168,14 +168,15 @@ class VmController extends JControllerLegacy{
 		$redir = $this->redirectPath;
 		//vmInfo($msg);
 		$task = vRequest::getCmd('task');
-		if($task == 'apply' or $task == 'save'){
+		if($task == 'apply'){
 
 			$redir .= '&task=edit&'.$this->_cidName.'[]='.$id;
-			if( $task == 'save'){
-				$redir .= '&tmpl=component';
-			}
-		} //else $this->display();
 
+		} //else $this->display();
+		if($task == 'save' and JFactory::getApplication()->isSite()){
+			$redir .= '&task=edit&'.$this->_cidName.'[]='.$id;
+			$redir .= '&tmpl=component';
+		}
 		$this->setRedirect($redir, $msg,$type);
 	}
 
