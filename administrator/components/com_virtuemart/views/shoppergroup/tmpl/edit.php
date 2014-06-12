@@ -76,7 +76,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
     			</label>
     		    </td>
     		    <td>
-    			<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo vmText::_('Default'); ?>" />
+					<?php echo JHtml::_('image','menu/icon-16-default.png', vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true); ?>
     		    </td>
     		</tr>
 		    <?php } ?>
