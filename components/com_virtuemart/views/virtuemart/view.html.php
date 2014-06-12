@@ -30,11 +30,13 @@ class VirtueMartViewVirtueMart extends VmView {
 
 	public function display($tpl = null) {
 
-		$vendorId = vRequest::getInt('vendorid', 1);
+		$vendorId = vRequest::getInt('vendorid', 0);
+
 
 		$vendorModel = VmModel::getModel('vendor');
 
-		$vendorModel->setId(1);
+		$vendorIdUser = VmConfig::isSuperVendor();
+		$vendorModel->setId($vendorIdUser);
 		$vendor = $vendorModel->getVendor();
 
 		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
@@ -49,6 +51,16 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		if(!VmConfig::get('shop_is_offline',0)){
 
+			//if($vendorIdUser){
+				//$user = JFactory::getUser();
+				if( $vendorIdUser ){
+					$add_product_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=0' ;
+					$add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_NEW', 'edit', false, false);
+				} else {
+					$add_product_link = "";
+				}
+				$this->assignRef('add_product_link', $add_product_link);
+			//}
 			$categoryModel = VmModel::getModel('category');
 			$productModel = VmModel::getModel('product');
 			$ratingModel = VmModel::getModel('ratings');

@@ -39,6 +39,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_shoppergroup_id');
 		$this->setMainTable('shoppergroups');
+
 	}
 
     /**
@@ -116,7 +117,9 @@ class VirtueMartModelShopperGroup extends VmModel {
 				$app->enqueueMessage('Attention no standard shopper group set '.$db->getErrorMsg());
 				$default[$vendorId][$kind] = false;
 			} else {
-				//vmdebug('getDefault', $res);
+				$res->shopper_group_name = vmText::_($res->shopper_group_name);
+				$res->shopper_group_desc = vmText::_($res->shopper_group_desc);
+
 				$default[$vendorId][$kind] =  $res;
 			}
 		}
@@ -125,17 +128,26 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	}
 
-	function appendShopperGroups(&$shopperGroups,$user,$onlyPublished = FALSE,$vendorId=1,$keepDefault = true){
+	function appendShopperGroups(&$shopperGroups,$user,$onlyPublished = FALSE,$vendorId=1){
 
 		$this->mergeSessionSgrps($shopperGroups);
 
-		if(count($shopperGroups)<1 or $keepDefault){
+		$testshopperGroups = array();
+		foreach($shopperGroups as $groupId){
+			$group = $this->getData($groupId);
+			if(!$group->sgrp_additional){
+				$testshopperGroups[] = $groupId;
+			}
+		}
+
+		if(count($testshopperGroups)<1){
 
 			$_defaultShopperGroup = $this->getDefault($user->guest,$onlyPublished,$vendorId);
 			if(!in_array($_defaultShopperGroup->virtuemart_shoppergroup_id,$shopperGroups)){
 				$shopperGroups[] = $_defaultShopperGroup->virtuemart_shoppergroup_id;
 			}
 		}
+
 		$this->removeSessionSgrps($shopperGroups);
 
 	}

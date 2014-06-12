@@ -53,11 +53,13 @@ if(VmConfig::get('shop_is_offline',0)){
 		$app = JFactory::getApplication();
 
 		$user = JFactory::getUser();
-		if	($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
+		$vendorIdUser = VmConfig::isSuperVendor();
+
+		if	($vendorIdUser) {
 			VmConfig::loadJLang('com_virtuemart');
 			$basePath = JPATH_VM_ADMINISTRATOR;
 			$trigger = 'onVmAdminController';
-
+			vmdebug('$vendorIdUser use FE managing '.$vendorIdUser);
 			vmJsApi::jQuery(false);
 			//vmJsApi::js('vmsite');
 		} else {

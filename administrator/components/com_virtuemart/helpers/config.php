@@ -1032,6 +1032,7 @@ class VmConfig {
 				}
 			} else {
 				self::$_virtuemart_vendor_id = 0;
+				vmdebug('Not a vendor');
 			}
 
 		}

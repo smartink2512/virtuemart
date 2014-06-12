@@ -40,8 +40,9 @@ class VirtuemartViewUser extends VmView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
-
 		$currentUser = JFactory::getUser();
+
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
 		$task = vRequest::getCmd('task', 'edit');
 		if($task == 'editshop'){
@@ -216,9 +217,9 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('pagination', $pagination);
 
 			$shoppergroupmodel = VmModel::getModel('shopperGroup');
-			$defaultShopperGroup = $shoppergroupmodel->getDefault(0)->shopper_group_name;
-			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);
+			$this->defaultShopperGroup = $shoppergroupmodel->getDefault(0)->shopper_group_name;
 		}
+
 
 		if(!empty($this->orderlist)){
 			VmConfig::loadJLang('com_virtuemart_orders',TRUE);

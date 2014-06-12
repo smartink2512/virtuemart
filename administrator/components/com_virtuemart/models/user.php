@@ -344,7 +344,7 @@ class VirtueMartModelUser extends VmModel {
 			vmdebug('Couldnt bind data to joomla user');
 			//array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);
 		}
-		vmdebug('wie was wo? ',$user);
+
 		if($new){
 			// If user registration is not allowed, show 403 not authorized.
 			// But it is possible for admins and storeadmins to save
@@ -432,7 +432,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		//The extra check for isset vendor_name prevents storing of the vendor if there is no form (edit address cart)
-		if((int)$data['user_is_vendor']==1 and isset($data['vendor_name'])){
+		if((int)$data['user_is_vendor']==1 ){
 			vmdebug('vendor recognised '.$data['virtuemart_vendor_id']);
 			if($this ->storeVendorData($data)){
 				if ($new) {
@@ -795,7 +795,6 @@ class VirtueMartModelUser extends VmModel {
 		if($i==$required) $return = -1;
 		//vmdebug('my i '.$i.' my data size '.$required,$return,$data);
 		if(!$return){
-			VmConfig::loadJLang('com_virtuemart_shoppers', true);
 			foreach($missingFields as $fieldname){
 				vmInfo(vmText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$fieldname) );
 			}
@@ -973,6 +972,7 @@ class VirtueMartModelUser extends VmModel {
 			$cart = VirtueMartCart::getCart();
 			$data = $cart->BT;
 		}
+
 		$userFields[$uid] = $userFieldsModel->getUserFieldsFilled(
 		$prepareUserFields
 		,$data
@@ -1192,6 +1192,7 @@ function removeAddress($virtuemart_userinfo_id){
 			, ju.email AS email
 			, IFNULL(vmu.user_is_vendor,"0") AS is_vendor
 			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name ';
+
 		if ($search) {
 			if($tableToUse!='juser'){
 				$select .= ' , ui.name as uiname ';
@@ -1201,6 +1202,7 @@ function removeAddress($virtuemart_userinfo_id){
 				$select .= ' , '.$ufield;
 			}
 		}
+
 		$joinedTables = ' FROM #__users AS ju
 			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id
 			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id

@@ -57,7 +57,7 @@ AdminUIHelper::startAdminArea($this);
 			<th><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>
 			<th><?php echo $this->sort('ju.name', 'COM_VIRTUEMART_USER_DISPLAYED_NAME')  ?></th>
 			<th><?php echo vmText::_('COM_VIRTUEMART_EMAIL'); ?></th>
-			<th><?php echo vmText::_('COM_VIRTUEMART_USER_GROUP'); ?></th>
+<?php	/*	<th><?php echo vmText::_('COM_VIRTUEMART_USER_GROUP'); ?></th> 	*/ ?>
 			<th><?php echo $this->sort('shopper_group_name', 'COM_VIRTUEMART_SHOPPERGROUP')  ?></th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
 			<th width="80"><?php echo vmText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?></th>
@@ -72,6 +72,7 @@ AdminUIHelper::startAdminArea($this);
 			$checked = JHtml::_('grid.id', $i, $row->id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $row->id);
 			$is_vendor = $this->toggle($row->is_vendor, $i, 'toggle.user_is_vendor');
+			vmdebug('my row',$row);
 		?>
 			<tr class="row<?php echo $k ; ?>">
 				<td>

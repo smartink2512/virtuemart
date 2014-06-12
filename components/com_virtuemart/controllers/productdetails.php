@@ -275,7 +275,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 
 		$virtuemart_product_idArray = vRequest::getInt ('virtuemart_product_id', array()); //is sanitized then
-		if(is_array($virtuemart_product_idArray)){
+		if(is_array($virtuemart_product_idArray) and !empty($virtuemart_product_idArray[0])){
 			$virtuemart_product_id = $virtuemart_product_idArray[0];
 		} else {
 			$virtuemart_product_id = $virtuemart_product_idArray;
@@ -310,14 +310,10 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		$product_model = VmModel::getModel ('product');
 
-		//VmConfig::$echoDebug=1;
 
-		if(isset($customProductData[$virtuemart_product_id])){
+		if(!empty($virtuemart_product_id)){
 			$prices = $product_model->getPrice ($virtuemart_product_id, $quantity);
-			//vmdebug('Wie siehts aus? ',$customProductData,$prices);
 		} else {
-			//VmConfig::$echoDebug=true;
-			//vmdebug('recalculate',$customProductData);
 			jexit ();
 		}
 		$priceFormated = array();

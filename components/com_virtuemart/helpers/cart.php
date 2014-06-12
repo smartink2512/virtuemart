@@ -1331,7 +1331,8 @@ class VirtueMartCart {
 						unset($this->cartProductsData[$k]);
 						continue;
 					}
-					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,FALSE);
+					$productdata['quantity'] = (int)$productdata['quantity'];
+					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,FALSE,TRUE,$productdata['quantity']);
 					if(empty($productTemp->virtuemart_product_id)){
 						vmError('prepareCartData virtuemart_product_id is empty','The product is no longer available');
 						unset($this->cartProductsData[$k]);
@@ -1340,7 +1341,7 @@ class VirtueMartCart {
 					//vmdebug('$this->cartProductsData',$productTemp);
 					//Very important! must be cloned, else all products with same id get the same productCustomData due the product cache
 					$product = clone($productTemp);
-					$productdata['quantity'] = (int)$productdata['quantity'];
+
 					$productdata['virtuemart_product_id'] = (int)$productdata['virtuemart_product_id'];
 
 					$product -> customProductData = $productdata['customProductData'];

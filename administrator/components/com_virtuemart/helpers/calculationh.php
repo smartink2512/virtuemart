@@ -660,6 +660,7 @@ class calculationHelper {
 			$variantmod = $customfieldModel->calculateModificators($productCart);
 
 			//$product->allPrices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, $variantmod, $product->quantity, true, false);
+
 			$producPrice = $this->getProductPrices($productCart,$variantmod, $productCart->quantity);
 			$this->_cart->products[$cartproductkey]->allPrices[$productCart->selectedPrice] = $producPrice;
 

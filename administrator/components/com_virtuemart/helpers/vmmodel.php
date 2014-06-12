@@ -1200,5 +1200,61 @@ class VmPagination extends JPagination {
 		return $html;
 	}
 
+	/**
+	 * Return the icon to move an item UP.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
+	 * @param   integer  $i          The row index.
+	 * @param   boolean  $condition  True to show the icon.
+	 * @param   string   $task       The task to fire.
+	 * @param   string   $alt        The image alternative text string.
+	 * @param   boolean  $enabled    An optional setting for access control on the action.
+	 * @param   string   $checkbox   An optional prefix for checkboxes.
+	 *
+	 * @return  string   Either the icon to move an item up or a space.
+	 *
+	 * @since   11.1
+	 */
+	public function orderUpIcon($i, $ordering, $task = 'orderup', $alt = 'JLIB_HTML_MOVE_UP', $enabled = true, $checkbox = 'cb')
+	{
 
+		if (($ordering > 1))
+		{
+			return JHtml::_('jgrid.orderUp', $i, $task, '', $alt, $enabled, $checkbox);
+		}
+		else
+		{
+			return '&#160;';
+		}
+	}
+
+	/**
+	 * Return the icon to move an item DOWN.
+	 *
+	 * @param   integer  $i          The row index.
+	 * @param   integer  $n          The number of items in the list.
+	 * @param   boolean  $condition  True to show the icon.
+	 * @param   string   $task       The task to fire.
+	 * @param   string   $alt        The image alternative text string.
+	 * @param   boolean  $enabled    An optional setting for access control on the action.
+	 * @param   string   $checkbox   An optional prefix for checkboxes.
+	 *
+	 * @return  string   Either the icon to move an item down or a space.
+	 *
+	 * @since   11.1
+	 */
+	public function orderDownIcon($i, $ordering, $n, $condition = true, $task = 'orderdown', $alt = 'JLIB_HTML_MOVE_DOWN', $enabled = true, $checkbox = 'cb')
+	{
+		vmdebug('joomla pagination orderDownIcon '.$i.' '.$ordering.' '.$n);
+			//if (($i < $n - 1 || $i + $this->limitstart < $this->total - 1) && $condition)
+			if (  $ordering < $n )
+		{
+			return JHtml::_('jgrid.orderDown', $i, $task, '', $alt, $enabled, $checkbox);
+		}
+		else
+		{
+			return '&#160;';
+		}
+	}
 }

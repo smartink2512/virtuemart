@@ -220,6 +220,66 @@ class GenericTableUpdater extends VmModel{
 
 	}
 
+	public function getTablesBySql($file){
+
+		$data = fopen($file, 'r');
+
+		$tables = array();
+		$tableDefStarted = false;
+		while ($line = fgets ($data)) {
+			$line = trim($line);
+			if (empty($line)) continue; // Empty line
+
+			if (strpos($line, '#') === 0) continue; // Commentline
+			if (strpos($line, '--') === 0) continue; // Commentline
+
+			if(strpos($line,'CREATE TABLE IF NOT EXISTS')!==false){
+				$tableDefStarted = true;
+				$fieldLines = array();
+				$tableKeys = array();
+				$start = strpos($line,'`');
+
+				$tablename = trim(substr($line,$start+1,-3));
+				// 				vmdebug('my $tablename ',$start,$end,$line);
+			} else if($tableDefStarted && strpos($line,'KEY')!==false){
+
+				$start = strpos($line,"`");
+				$temp = substr($line,$start+1);
+				$end = strpos($temp,"`");
+				$keyName = substr($temp,0,$end);
+
+				if(strrpos($line,',')==strlen($line)-1){
+					$line = substr($line,0,-1);
+				}
+				$tableKeys[$keyName] = $line;
+
+			} else if(strpos($line,'ENGINE')!==false){
+				$tableDefStarted = false;
+
+				$start = strpos($line,"COMMENT='");
+				$temp = substr($line,$start+9);
+				$end = strpos($temp,"'");
+				$comment = substr($temp,0,$end);
+
+				$tables[$tablename] = array($fieldLines, $tableKeys,$comment);
+			} else if($tableDefStarted){
+
+				$start = strpos($line,"`");
+				$temp = substr($line,$start+1);
+				$end = strpos($temp,"`");
+				$keyName = substr($temp,0,$end);
+
+				$line = trim(substr($line,$end+2));
+				if(strrpos($line,',')==strlen($line)-1){
+					$line = substr($line,0,-1);
+				}
+
+				$fieldLines[$keyName] = $line;
+			}
+		}
+		return $tables;
+	}
+
 	public function updateMyVmTables($file = 0, $like ='_virtuemart_'){
 
 		if(empty($file)){
@@ -230,61 +290,7 @@ class GenericTableUpdater extends VmModel{
 			$tables = $file;
 		} else {
 
-			$data = fopen($file, 'r');
-
-			$tables = array();
-			$tableDefStarted = false;
-			while ($line = fgets ($data)) {
-				$line = trim($line);
-				if (empty($line)) continue; // Empty line
-
-				if (strpos($line, '#') === 0) continue; // Commentline
-				if (strpos($line, '--') === 0) continue; // Commentline
-
-				if(strpos($line,'CREATE TABLE IF NOT EXISTS')!==false){
-					$tableDefStarted = true;
-					$fieldLines = array();
-					$tableKeys = array();
-					$start = strpos($line,'`');
-
-					$tablename = trim(substr($line,$start+1,-3));
-					// 				vmdebug('my $tablename ',$start,$end,$line);
-				} else if($tableDefStarted && strpos($line,'KEY')!==false){
-
-					$start = strpos($line,"`");
-					$temp = substr($line,$start+1);
-					$end = strpos($temp,"`");
-					$keyName = substr($temp,0,$end);
-
-					if(strrpos($line,',')==strlen($line)-1){
-						$line = substr($line,0,-1);
-					}
-					$tableKeys[$keyName] = $line;
-
-				} else if(strpos($line,'ENGINE')!==false){
-					$tableDefStarted = false;
-
-					$start = strpos($line,"COMMENT='");
-					$temp = substr($line,$start+9);
-					$end = strpos($temp,"'");
-					$comment = substr($temp,0,$end);
-
-					$tables[$tablename] = array($fieldLines, $tableKeys,$comment);
-				} else if($tableDefStarted){
-
-					$start = strpos($line,"`");
-					$temp = substr($line,$start+1);
-					$end = strpos($temp,"`");
-					$keyName = substr($temp,0,$end);
-
-					$line = trim(substr($line,$end+2));
-					if(strrpos($line,',')==strlen($line)-1){
-						$line = substr($line,0,-1);
-					}
-
-					$fieldLines[$keyName] = $line;
-				}
-			}
+			$tables = $this->getTablesBySql($file);
 		}
 
 // 		vmdebug('updateMyVmTables $tables',$tables); return false;

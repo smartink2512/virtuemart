@@ -635,7 +635,7 @@ class ShopFunctions {
 	 */
 	static public function getCPsRssFeed($rssUrl,$max) {
 
-		$cache_time=86400*3; // 3days
+		$cache_time=86400*2; // 2days
 		$cache = JFactory::getCache ('com_virtuemart_rss');
 		$cached = $cache->getCaching();
 		$cache->setLifeTime($cache_time);
@@ -672,6 +672,7 @@ class ShopFunctions {
 	static public function getRssFeed ($rssURL,$max) {
 		// prevent Strict Standards errors in simplepie
 		error_reporting(E_ALL ^ E_STRICT);
+
 		$rssFeed = JFactory::getFeedParser($rssURL);
 
 		$count = $rssFeed->get_item_quantity();
@@ -1110,65 +1111,6 @@ class ShopFunctions {
 		}
 
 		return ($str);
-	}
-
-	/**
-	 * Return the icon to move an item UP
-	 *
-	 * @access	public
-	 * @param	int		$i The row index
-	 * @param	boolean	$condition True to show the icon
-	 * @param	string	$task The task to fire
-	 * @param	string	$alt The image alternate text string
-	 * @return	string	Either the icon to move an item up or a space
-	 * @since	1.0
-	 */
-	function orderUpIcon ($i, $condition = TRUE, $task = 'orderup', $alt = 'COM_VIRTUEMART_MOVE_UP', $enabled = TRUE) {
-
-		$alt = vmText::_ ($alt);
-
-		$html = '&nbsp;';
-		if ($i > 0) {
-			if ($enabled) {
-				$html = '<a href="#reorder"  class="orderUp" title="' . $alt . '">';
-				$html .= '   <img src="images/uparrow.png" width="16" height="16" border="0" alt="' . $alt . '" />';
-				$html	.= '</a>';
-			} else {
-				$html = '<img src="images/uparrow0.png" width="16" height="16" border="0" alt="' . $alt . '" />';
-			}
-		}
-
-		return $html;
-	}
-
-	/**
-	 * Return the icon to move an item DOWN
-	 *
-	 * @access	public
-	 * @param	int		$i The row index
-	 * @param	int		$n The number of items in the list
-	 * @param	boolean	$condition True to show the icon
-	 * @param	string	$task The task to fire
-	 * @param	string	$alt The image alternate text string
-	 * @return	string	Either the icon to move an item down or a space
-	 * @since	1.0
-	 */
-	function orderDownIcon ($i, $n, $condition = TRUE, $task = 'orderdown', $alt = 'Move Down', $enabled = TRUE) {
-
-		$alt = vmText::_ ($alt);
-
-		$html = '&nbsp;';
-		if ($i < $n - 1) {
-			if ($enabled) {
-				$html = '<a href="#reorder" class="orderDown" title="' . $alt . '">';
-				$html .= '  <img src="images/downarrow.png" width="16" height="16" border="0" alt="' . $alt . '" />';
-				$html	.= '</a>';
-			} else {
-				$html = '<img src="images/downarrow0.png" width="16" height="16" border="0" alt="' . $alt . '" />';
-			}
-		}
-
-		return $html;
 	}
 
 	static function getValidProductFilterArray () {

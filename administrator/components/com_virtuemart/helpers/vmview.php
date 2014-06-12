@@ -60,12 +60,6 @@ class VmView extends JViewLegacy {
 			return;
 		}
 
-        //Super administrator always has access
-        if ($this->canDo->get('core.admin')) {
-            parent::display($tpl);
-            return;
-        }
-
 		if (!$this->canDo->get('vm.'.$view)) {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}

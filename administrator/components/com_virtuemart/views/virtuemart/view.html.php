@@ -71,8 +71,7 @@ class VirtuemartViewVirtuemart extends VmView {
 
 		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.'/helpers/shopfunctions.php');
 
-		$extensionsFeed = ShopFunctions::getExtensionsRssFeed();
-		$this->assignRef('extensionsFeed', $extensionsFeed);
+		$this->extensionsFeed = ShopFunctions::getExtensionsRssFeed();
 
 		$virtuemartFeed = ShopFunctions::getVirtueMartRssFeed();
 		$this->assignRef('virtuemartFeed', $virtuemartFeed);

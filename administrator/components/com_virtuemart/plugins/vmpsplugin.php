@@ -591,14 +591,14 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	protected function getOrderWeight (VirtueMartCart $cart, $to_weight_unit) {
 
-		static $weight = 0.0;
-		if(count($cart->products)>0 and empty($weight)){
+		static $weight = array();
+		if(count($cart->products)>0 and !isset($weight[$to_weight_unit])){
 			foreach ($cart->products as $product) {
 
-				$weight += (ShopFunctions::convertWeightUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
+				$weight[$to_weight_unit] += (ShopFunctions::convertWeightUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
 			}
 		}
-		return $weight;
+		return $weight[$to_weight_unit];
 	}
 
 	/**

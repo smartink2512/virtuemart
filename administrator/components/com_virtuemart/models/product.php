@@ -242,235 +242,220 @@ class VirtueMartModelProduct extends VmModel {
 		$orderBy = ' ';
 
 		$where = array();
-		$useCore = TRUE;
-		if ($this->searchplugin !== 0) {
-			//reset generic filters ! Why? the plugin can do it, if it wishes it.
-			// 			if ($this->keyword ==='') $where=array();
-			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
-			$PluginJoinTables = array();
-			$ret = $dispatcher->trigger ('plgVmAddToSearch', array(&$where, &$PluginJoinTables, $this->searchplugin));
-			foreach ($ret as $r) {
-				if (!$r) {
-					$useCore = FALSE;
+
+		$isSite = $app->isSite ();
+
+		if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
+
+			$keyword =  '"%' .str_replace(array(' ','-'),'%',$db->escape( $this->keyword, true )). '%"';
+			//$keyword = '"%' . $db->escape ($this->keyword, TRUE) . '%"';
+
+			foreach ($this->valid_search_fields as $searchField) {
+				if ($searchField == 'category_name' || $searchField == 'category_description') {
+					$joinCatLang = true;
 				}
+				else if ($searchField == 'mf_name') {
+					$joinMfLang = true;
+				}
+				else if ($searchField == 'product_price') {
+					$joinPrice = TRUE;
+				}
+				else if (!$joinLang and ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == '`p`.product_sku' or $searchField == '`l`.slug') ){
+					$joinLang = TRUE;
+				}
+
+				if (strpos ($searchField, '`') !== FALSE){
+					$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
+					$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
+				} else {
+					$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
+					$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
+					//$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
+				}
+			}
+			if (!empty($filter_search)) {
+				$where[] = '(' . implode (' OR ', $filter_search) . ')';
+			}
+			else {
+				$where[] = '`product_name` LIKE ' . $keyword;
+				$joinLang = TRUE;
+				//If they have no check boxes selected it will default to product name at least.
 			}
 		}
-
-		if ($useCore) {
-			$isSite = $app->isSite ();
-// 		if ( $this->keyword !== "0" and $group ===false) {
-			if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
-
-				$keyword =  '"%' .str_replace(array(' ','-'),'%',$db->escape( $this->keyword, true )). '%"';
-				//$keyword = '"%' . $db->escape ($this->keyword, TRUE) . '%"';
-
-				foreach ($this->valid_search_fields as $searchField) {
-					if ($searchField == 'category_name' || $searchField == 'category_description') {
-						$joinCatLang = true;
-					}
-					else if ($searchField == 'mf_name') {
-						$joinMfLang = true;
-					}
-					else if ($searchField == 'product_price') {
-						$joinPrice = TRUE;
-					}
-					else if (!$joinLang and ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == '`p`.product_sku' or $searchField == '`l`.slug') ){
-						$joinLang = TRUE;
-					}
-
-					if (strpos ($searchField, '`') !== FALSE){
-						$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
-						$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
-					} else {
-						$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
-						$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
-						//$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
-					}
-				}
-				if (!empty($filter_search)) {
-					$where[] = '(' . implode (' OR ', $filter_search) . ')';
-				}
-				else {
-					$where[] = '`product_name` LIKE ' . $keyword;
-					$joinLang = TRUE;
-					//If they have no check boxes selected it will default to product name at least.
-				}
-			}
 
 // 		vmdebug('my $this->searchcustoms ',$this->searchcustoms);
-			if (!empty($this->searchcustoms)) {
-				$joinCustom = TRUE;
-				foreach ($this->searchcustoms as $key => $searchcustom) {
-					$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`custom_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
-				}
-				$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
+		if (!empty($this->searchcustoms)) {
+			$joinCustom = TRUE;
+			foreach ($this->searchcustoms as $key => $searchcustom) {
+				$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`custom_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
 			}
+			$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
+		}
 
-			if ($onlyPublished) {
-				$where[] = ' p.`published`="1" ';
-			}
+		if ($onlyPublished) {
+			$where[] = ' p.`published`="1" ';
+		}
 
-			if($isSite and !VmConfig::get('use_as_catalog',0)) {
-				if (VmConfig::get('stockhandle','none')=='disableit_children') {
-					$where[] = ' ( (p.`product_in_stock` - p.`product_ordered`) >"0" OR (children.`product_in_stock` - children.`product_ordered`) > "0") ';
-					$joinChildren = TRUE;
-				} else if (VmConfig::get('stockhandle','none')=='disableit') {
-					$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';
-				}
- 			}
-
-			if ($virtuemart_category_id > 0) {
-				$joinCategory = TRUE;
-				$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
-			} else if ($isSite and !VmConfig::get('show_uncat_child_products',TRUE)) {
-				$joinCategory = TRUE;
-				$where[] = ' `pc`.`virtuemart_category_id` > 0 ';
-			}
-
-			if ($this->product_parent_id) {
-				$where[] = ' p.`product_parent_id` = ' . $this->product_parent_id;
-			}
-
-			if ($isSite) {
-				$usermodel = VmModel::getModel ('user');
-				$currentVMuser = $usermodel->getUser ();
-				$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
-
-				if (is_array ($virtuemart_shoppergroup_ids)) {
-					$sgrgroups = array();
-					foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id) {
-						$sgrgroups[] = '`ps`.`virtuemart_shoppergroup_id`= "' . (int)$virtuemart_shoppergroup_id . '" ';
-					}
-					$sgrgroups[] = '`ps`.`virtuemart_shoppergroup_id` IS NULL ';
-					$where[] = " ( " . implode (' OR ', $sgrgroups) . " ) ";
-
-					$joinShopper = TRUE;
-				}
-			}
-
-			if ($this->virtuemart_manufacturer_id) {
-				$joinMf = TRUE;
-				$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = ' . $this->virtuemart_manufacturer_id;
-			}
-
-			// Time filter
-			if ($this->search_type != '') {
-				$search_order = $db->escape (vRequest::getCmd ('search_order') == 'bf' ? '<' : '>');
-				switch ($this->search_type) {
-					case 'parent':
-						$where[] = 'p.`product_parent_id` = "0"';
-						break;
-					case 'product':
-						$where[] = 'p.`modified_on` ' . $search_order . ' "' . $db->escape (vRequest::getVar ('search_date')) . '"';
-						break;
-					case 'price':
-						$joinPrice = TRUE;
-						$where[] = 'pp.`modified_on` ' . $search_order . ' "' . $db->escape (vRequest::getVar ('search_date')) . '"';
-						break;
-					case 'withoutprice':
-						$joinPrice = TRUE;
-						$where[] = 'pp.`product_price` IS NULL';
-						break;
-					case 'stockout':
-						$where[] = ' p.`product_in_stock`- p.`product_ordered` < 1';
-						break;
-					case 'stocklow':
-						$where[] = 'p.`product_in_stock`- p.`product_ordered` < p.`low_stock_notification`';
-						break;
-				}
-			}
-
-			vmdebug('my filter ordering ',$this->filter_order);
-
-			// special  orders case
-			$ff_select_price = '';
-			switch ($this->filter_order) {
-				case '`p`.product_special':
-					if($isSite){
-						$where[] = ' p.`product_special`="1" '; // TODO Change  to  a  individual button
-						$orderBy = 'ORDER BY RAND()';
-					} else {
-						$orderBy = 'ORDER BY p.`product_special`';
-					}
-
-					break;
-				case 'category_name':
-					$orderBy = ' ORDER BY `category_name` ';
-					$joinCategory = TRUE;
-					$joinCatLang = true;
-					break;
-				case 'category_description':
-					$orderBy = ' ORDER BY `category_description` ';
-					$joinCategory = TRUE;
-					$joinCatLang = true;
-					break;
-				case 'mf_name':
-					$orderBy = ' ORDER BY `mf_name` ';
-					$joinMf = TRUE;
-					$joinMfLang = true;
-					break;
-				case 'pc.ordering':
-					$orderBy = ' ORDER BY `pc`.`ordering` ';
-					$joinCategory = TRUE;
-					break;
-				case 'product_price':
-					$orderBy = ' ORDER BY `product_price` ';
-					$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
-					$joinPrice = TRUE;
-					break;
-				case '`p`.created_on':
-					$orderBy = ' ORDER BY p.`created_on` ';
-					break;
-				default;
-					if (!empty($this->filter_order)) {
-						$orderBy = ' ORDER BY ' . $this->filter_order . ' ';
-					}
-					else {
-						$this->filter_order_Dir = '';
-					}
-					break;
-			}
-
-			//Group case from the modules
-			if ($group) {
-
-				$latest_products_days = VmConfig::get ('latest_products_days', 7);
-				$latest_products_orderBy = VmConfig::get ('latest_products_orderBy','created_on');
-				$groupBy = 'group by p.`virtuemart_product_id` ';
-				switch ($group) {
-					case 'featured':
-						$where[] = 'p.`product_special`="1" ';
-						$orderBy = 'ORDER BY RAND()';
-						break;
-					case 'latest':
-						/*$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days));
-						$dateSql = $date->toSQL ();
-						$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';*/
-						$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '`';
-						$this->filter_order_Dir = 'DESC';
-						break;
-					case 'random':
-						$orderBy = ' ORDER BY RAND() '; //LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
-						break;
-					case 'topten':
-						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
-						$joinPrice = true;
-						$where[] = 'pp.`product_price`>"0.0" ';
-						$this->filter_order_Dir = 'DESC';
-					break;
-					case 'recent':
-						$rSession = JFactory::getSession();
-						$rIds = $rSession->get('vmlastvisitedproductids', array(), 'vm'); // get recent viewed from browser session
-						return $rIds;
-				}
-				// 			$joinCategory 	= false ; //creates error
-				// 			$joinMf 		= false ;	//creates error
-				$joinPrice = TRUE;
-				$this->searchplugin = FALSE;
-// 			$joinLang = false;
+		if($isSite and !VmConfig::get('use_as_catalog',0)) {
+			if (VmConfig::get('stockhandle','none')=='disableit_children') {
+				$where[] = ' ( (p.`product_in_stock` - p.`product_ordered`) >"0" OR (children.`product_in_stock` - children.`product_ordered`) > "0") ';
+				$joinChildren = TRUE;
+			} else if (VmConfig::get('stockhandle','none')=='disableit') {
+				$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';
 			}
 		}
+
+		if ($virtuemart_category_id > 0) {
+			$joinCategory = TRUE;
+			$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
+		} else if ($isSite and !VmConfig::get('show_uncat_child_products',TRUE)) {
+			$joinCategory = TRUE;
+			$where[] = ' `pc`.`virtuemart_category_id` > 0 ';
+		}
+
+		if ($this->product_parent_id) {
+			$where[] = ' p.`product_parent_id` = ' . $this->product_parent_id;
+		}
+
+		if ($isSite) {
+			$usermodel = VmModel::getModel ('user');
+			$currentVMuser = $usermodel->getUser ();
+			$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
+
+			if (is_array ($virtuemart_shoppergroup_ids)) {
+				$sgrgroups = array();
+				foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id) {
+					$sgrgroups[] = '`ps`.`virtuemart_shoppergroup_id`= "' . (int)$virtuemart_shoppergroup_id . '" ';
+				}
+				$sgrgroups[] = '`ps`.`virtuemart_shoppergroup_id` IS NULL ';
+				$where[] = " ( " . implode (' OR ', $sgrgroups) . " ) ";
+
+				$joinShopper = TRUE;
+			}
+		}
+
+		if ($this->virtuemart_manufacturer_id) {
+			$joinMf = TRUE;
+			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = ' . $this->virtuemart_manufacturer_id;
+		}
+
+		// Time filter
+		if ($this->search_type != '') {
+			$search_order = $db->escape (vRequest::getCmd ('search_order') == 'bf' ? '<' : '>');
+			switch ($this->search_type) {
+				case 'parent':
+					$where[] = 'p.`product_parent_id` = "0"';
+					break;
+				case 'product':
+					$where[] = 'p.`modified_on` ' . $search_order . ' "' . $db->escape (vRequest::getVar ('search_date')) . '"';
+					break;
+				case 'price':
+					$joinPrice = TRUE;
+					$where[] = 'pp.`modified_on` ' . $search_order . ' "' . $db->escape (vRequest::getVar ('search_date')) . '"';
+					break;
+				case 'withoutprice':
+					$joinPrice = TRUE;
+					$where[] = 'pp.`product_price` IS NULL';
+					break;
+				case 'stockout':
+					$where[] = ' p.`product_in_stock`- p.`product_ordered` < 1';
+					break;
+				case 'stocklow':
+					$where[] = 'p.`product_in_stock`- p.`product_ordered` < p.`low_stock_notification`';
+					break;
+			}
+		}
+
+		vmdebug('my filter ordering ',$this->filter_order);
+
+		// special  orders case
+		$ff_select_price = '';
+		switch ($this->filter_order) {
+			case '`p`.product_special':
+				if($isSite){
+					$where[] = ' p.`product_special`="1" '; // TODO Change  to  a  individual button
+					$orderBy = 'ORDER BY RAND()';
+				} else {
+					$orderBy = 'ORDER BY p.`product_special`';
+				}
+
+				break;
+			case 'category_name':
+				$orderBy = ' ORDER BY `category_name` ';
+				$joinCategory = TRUE;
+				$joinCatLang = true;
+				break;
+			case 'category_description':
+				$orderBy = ' ORDER BY `category_description` ';
+				$joinCategory = TRUE;
+				$joinCatLang = true;
+				break;
+			case 'mf_name':
+				$orderBy = ' ORDER BY `mf_name` ';
+				$joinMf = TRUE;
+				$joinMfLang = true;
+				break;
+			case 'pc.ordering':
+				$orderBy = ' ORDER BY `pc`.`ordering` ';
+				$joinCategory = TRUE;
+				break;
+			case 'product_price':
+				$orderBy = ' ORDER BY `product_price` ';
+				$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
+				$joinPrice = TRUE;
+				break;
+			case '`p`.created_on':
+				$orderBy = ' ORDER BY p.`created_on` ';
+				break;
+			default;
+				if (!empty($this->filter_order)) {
+					$orderBy = ' ORDER BY ' . $this->filter_order . ' ';
+				}
+				else {
+					$this->filter_order_Dir = '';
+				}
+				break;
+		}
+
+		//Group case from the modules
+		if ($group) {
+
+			$latest_products_days = VmConfig::get ('latest_products_days', 7);
+			$latest_products_orderBy = VmConfig::get ('latest_products_orderBy','created_on');
+			$groupBy = 'group by p.`virtuemart_product_id` ';
+			switch ($group) {
+				case 'featured':
+					$where[] = 'p.`product_special`="1" ';
+					$orderBy = 'ORDER BY RAND()';
+					break;
+				case 'latest':
+					/*$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days));
+					$dateSql = $date->toSQL ();
+					$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';*/
+					$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '`';
+					$this->filter_order_Dir = 'DESC';
+					break;
+				case 'random':
+					$orderBy = ' ORDER BY RAND() '; //LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
+					break;
+				case 'topten':
+					$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+					$joinPrice = true;
+					$where[] = 'pp.`product_price`>"0.0" ';
+					$this->filter_order_Dir = 'DESC';
+				break;
+				case 'recent':
+					$rSession = JFactory::getSession();
+					$rIds = $rSession->get('vmlastvisitedproductids', array(), 'vm'); // get recent viewed from browser session
+					return $rIds;
+			}
+			// 			$joinCategory 	= false ; //creates error
+			// 			$joinMf 		= false ;	//creates error
+			$joinPrice = TRUE;
+			$this->searchplugin = FALSE;
+// 			$joinLang = false;
+		}
+
 
 		$joinedTables = array();
 		//This option switches between showing products without the selected language or only products with language.
@@ -546,6 +531,13 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		//vmdebug ( $joinedTables.' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
 		$this->orderByString = $orderBy;
+
+		if ($this->searchplugin !== 0) {
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmBeforeProductSearch', array(&$select, &$joinedTables, &$where, &$groupBy, &$orderBy,&$joinLang));
+		}
+
 
 		if($this->_onlyQuery){
 			return (array($select,$joinedTables,$where,$orderBy,$joinLang));
@@ -699,7 +691,8 @@ class VirtueMartModelProduct extends VmModel {
 		$withCalc = $withCalc?TRUE:0;
 		$onlyPublished = $onlyPublished?TRUE:0;
 		$this->withRating = $this->withRating?TRUE:0;
-		$productKey = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.$withCalc.$this->withRating;
+		//$productKey = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.$withCalc.$this->withRating;
+		$productKey = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.$withCalc.$this->withRating;
 
 		static $_products = array();
 		// vmdebug('$productKey, not from cache : '.$productKey);
@@ -1175,7 +1168,7 @@ class VirtueMartModelProduct extends VmModel {
 			$product->related = '';
 			$product->box = '';
 		}
-
+		$product->virtuemart_vendor_id = VmConfig::isSuperVendor();
 		return $product;
 	}
 

@@ -100,7 +100,7 @@ class TableUserinfos extends VmTableData {
 			$this->virtuemart_userinfo_id = (int)$this->virtuemart_userinfo_id;
 
 			$user = JFactory::getUser();
-			if($user->authorise('core.admin','com_virtuemart')){
+			if(!$user->authorise('core.admin','com_virtuemart')){
 				$q = "SELECT virtuemart_user_id
 										FROM #__virtuemart_userinfos
 										WHERE virtuemart_userinfo_id = ".$this->virtuemart_userinfo_id;

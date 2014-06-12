@@ -58,7 +58,9 @@ AdminUIHelper::startAdminArea($this);
 		    $row = $this->shoppergroups[$i];
 			$published = JHtml::_('grid.published', $row, $i );
 		    $checked = JHtml::_('grid.id', $i, $row->virtuemart_shoppergroup_id,null,'virtuemart_shoppergroup_id');
-		    $editlink = JROUTE::_('index.php?option=com_virtuemart&view=shoppergroup&task=edit&virtuemart_shoppergroup_id[]=' . $row->virtuemart_shoppergroup_id); ?>
+		    $editlink = JROUTE::_('index.php?option=com_virtuemart&view=shoppergroup&task=edit&virtuemart_shoppergroup_id[]=' . $row->virtuemart_shoppergroup_id);
+
+			?>
 
 			<tr class="row<?php echo $k ; ?>">
 			    <td width="10">

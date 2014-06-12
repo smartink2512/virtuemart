@@ -80,10 +80,10 @@ if (empty ( $this->product )) {
 					echo "<strong>" . vmText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
 				}
 
-				if ($this->showBasePrice) {
+				//if ($this->showBasePrice) {
 					echo $this->currency->createPriceDiv ( 'basePrice', 'COM_VIRTUEMART_PRODUCT_BASEPRICE', $this->product->prices );
 					echo $this->currency->createPriceDiv ( 'basePriceVariant', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT', $this->product->prices );
-				}
+				//}
 
 				echo $this->currency->createPriceDiv ( 'variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $this->product->prices );
 				echo $this->currency->createPriceDiv ( 'basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $this->product->prices );

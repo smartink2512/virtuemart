@@ -1134,7 +1134,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderItems->order_item_sku = $product->product_sku;
 			$_orderItems->order_item_name = $product->product_name;
 			$_orderItems->product_quantity = $product->quantity;
-			$_orderItems->product_item_price = $product->allPrices[$product->selectedPrice]['basePrice'];
+			$_orderItems->product_item_price = $product->allPrices[$product->selectedPrice]['basePriceVariant'];
 			$_orderItems->product_basePriceWithTax = $product->allPrices[$product->selectedPrice]['basePriceWithTax'];
 
 			//$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_tax_amount'];

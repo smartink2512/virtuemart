@@ -81,6 +81,13 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
     		</tr>
 		    <?php } ?>
 		<?php echo VmHTML::row('textarea', 'COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION', 'shopper_group_desc', $this->shoppergroup->shopper_group_desc); ?>
+
+		<?php if ($this->shoppergroup->default != 1) {
+			echo VmHTML::row('checkbox', 'COM_VIRTUEMART_SHOPPERGROUP_ADDITIONAL', 'sgrp_additional', $this->shoppergroup->sgrp_additional);
+		} else {
+			echo '<tr></tr>';
+		}
+		?>
 	    </table>
 	</fieldset>
 

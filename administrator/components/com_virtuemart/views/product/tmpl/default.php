@@ -102,7 +102,8 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 	</thead>
 	<tbody>
 	<?php
-	if ($total = count($this->productlist) ) {
+	$total = $this->pagination->total;
+	if ($totalList = count($this->productlist) ) {
 		$i = 0;
 		$k = 0;
 		$keyword = vRequest::getCmd('keyword');
@@ -147,7 +148,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 					<?php
 					// We show the images only when less than 21 products are displayeed -->
 					$mediaLimit = (int)VmConfig::get('mediaLimit',20);
-					if($this->pagination->limit<=$mediaLimit or $total<=$mediaLimit){
+					if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 						// Product list should be ordered
 						$this->model->addImages($product,1);
 						$img = '<span >('.$product->mediaitems.')</span>'.$product->images[0]->displayMediaThumb('class="vm_mini_image"',false );
@@ -168,27 +169,15 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 					}
 				?></td>
 				<!-- Category name -->
-				<td><?php //echo JHtml::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option=com_virtuemart'), $product->category_name);
+				<td><?php
 					echo $product->categoriesList;
-					/*if(!empty($product->categories)){
-						$maxFive = 0;
-						foreach($product->categories as $virtuemart_category_id){
-							if ($maxFive<5) {
-								$category = $this->catTable->load ((int)$virtuemart_category_id);
-								echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id[]='.$virtuemart_category_id), $category->category_name);
-								$maxFive++;
-							} else {
-								break;
-							}
-						}
-					}*/
 				?></td>
 				<!-- Reorder only when category ID is present -->
 				<?php if ($this->virtuemart_category_id ) { ?>
 					<td class="order" >
 						<span class="vmicon vmicon-16-move"></span>
-						<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP'), $product->ordering ); ?></span>
-						<span><?php echo $this->pagination->orderDownIcon( $i, $total , true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN'), $product->ordering ); ?></span>
+						<span><?php echo $this->pagination->orderUpIcon( $i, $product->ordering, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP')  ); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon( $i, $product->ordering, $total , true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN') ); ?></span>
 						<input class="ordering" type="text" name="order[<?php echo $product->id?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->ordering; ?>" style="text-align: center" />
 
 						<?php // echo vmCommonHTML::getOrderingField( $product->ordering ); ?>
@@ -197,18 +186,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 				<!-- Manufacturer name -->
 				<td><?php
 					echo $product->manuList;
-					/*if(!empty($product->virtuemart_manufacturer_id)){
-						$maxFive = 0;
-						foreach($product->virtuemart_manufacturer_id as $virtuemart_manufacturer_id){
-							if ($maxFive<5) {
-								$manufacturer = $this->mfTable->load ((int)$virtuemart_manufacturer_id);
-								echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$virtuemart_manufacturer_id), $manufacturer->mf_name);
-								$maxFive++;
-							} else {
-								break;
-							}
-						}
-					}*/
+
 				?></td>
 
 				<!-- Reviews -->

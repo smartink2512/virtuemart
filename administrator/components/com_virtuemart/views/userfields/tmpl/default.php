@@ -136,8 +136,8 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $account; ?>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP'), $ordering ); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN'), $ordering ); ?></span>
+					<span><?php echo $this->pagination->orderUpIcon( $i, $ordering, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP')  ); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $ordering, $n, true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN') ); ?></span>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<td width="10">

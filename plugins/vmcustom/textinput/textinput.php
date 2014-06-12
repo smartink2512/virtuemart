@@ -68,7 +68,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModule( $product,$row,&$html) {
+	function plgVmOnViewCartModuleVM3( $product,$row,&$html) {
 
 		return $this->plgVmOnViewCart($product,$row,$html);
 	}

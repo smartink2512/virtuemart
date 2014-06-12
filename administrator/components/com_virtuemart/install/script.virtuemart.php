@@ -295,8 +295,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			//fix joomla BE menu
-			$model = VmModel::getModel('updatesmigration');
-			$model->checkFixJoomlaBEMenuEntries();
+			//$model = VmModel::getModel('updatesmigration');
+			//$model->checkFixJoomlaBEMenuEntries();
 
 			if($loadVm) $this->displayFinished(true);
 
@@ -337,8 +337,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			}
 
-
-
 		}
 
 		private function adjustDefaultOrderStates(){
@@ -369,7 +367,106 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
-		private function updateAdminMenuEntries() {
+		private function updateAdminMenuEntries(){
+
+			$sqlfile = JPATH_VM_ADMINISTRATOR .DS. 'install' .DS. 'install_essential_data.sql';
+			$db = JFactory::getDBO();
+			$queries = $db->splitSql(file_get_contents($sqlfile));
+
+			if (count($queries) == 0) {
+				vmError('SQL file has no queries!');
+				return false;
+			}
+			$query = trim($queries[0]);
+
+			$q = 'SELECT * FROM `#__virtuemart_adminmenuentries` ';
+			$db->setQuery($q);
+			$existing = $db->loadAssocList();
+
+			if($existing){
+
+				$queryLines = explode("\n",$query);
+				$oldIds = array();
+				foreach($queryLines as $n=>$line){
+					if(empty($line)){
+						unset($queryLines[$n]);
+					} else {
+						$line = trim($line);
+						if(empty($line) or strpos($line, '--' )===0){
+							unset($queryLines[$n]);
+						}
+
+						if(strpos($line, 'CREATE' )===0 or strpos( $line, 'INSERT')===0){
+							$open = strpos($line,'(')+1;
+							$close = strrpos($line,')') - $open;
+							$keyLine = substr($line,$open,$close);
+							//vmdebug('Update Admin menu entries define ',$length,$open,$close,$line,$keyLine);
+							$keys = explode(',',$keyLine);
+
+						} else if(strpos($line, '(' )===0){
+							$open = strpos($line,'(')+1;
+							$close = strrpos($line,')') - $open;
+							$valueLine = substr($line,$open,$close);
+							$values = explode(',',$valueLine);
+
+							foreach($existing as $entry){
+								$name = '\''.$entry['name'].'\'';
+								if($name==trim($values[3])){
+									//The entry exists, lets update it
+									$oldIds[$entry['id']] = $values;
+									unset($queryLines[$n]);
+								}
+							}
+						}
+					}
+				}
+
+
+				if(count($queryLines)>1){
+					$query = trim(implode("\n",$queryLines));
+					$query = substr($query,0,-1).';';
+				} else {
+					$query = false;
+				}
+
+				if(count($oldIds)>0){
+
+					$updateBase = 'UPDATE `#__virtuemart_adminmenuentries` SET ';
+					foreach($oldIds as $id=>$values){
+						$updateQuery = '';
+						foreach($keys as $index => $key){
+							if($key=='`id`'){
+								continue;
+							}
+							$value = trim($values[$index]);
+							if(strpos($value,'\'')===0){
+								$value = substr($value,1,-1);
+							}
+							$updateQuery .= $key . ' = "'.$value.'", ';
+						}
+						$updateQuery = substr($updateQuery,0,-2);
+						$updateQuery .= ' WHERE `id` = '.$id.';';
+						$db->setQuery($updateBase.$updateQuery);
+						if (!$db->execute()) {
+							vmWarn( 'JInstaller::install: '.$sqlfile.' '.vmText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
+							$ok = false;
+						}
+						vmdebug('Update Admin menu entries value $updateQuery',$updateBase.$updateQuery);
+					}
+				}
+
+			}
+
+			if(!empty($query)){
+				$db->setQuery($query);
+				if (!$db->execute()) {
+					vmWarn( 'JInstaller::install: '.$sqlfile.' '.vmText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
+				}
+			}
+
+		}
+
+		private function updateAdminMenuEntriesOld() {
 
 			if(empty($this->_db)){
 				$this->_db = JFactory::getDBO();
@@ -715,7 +812,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->loadVm();
 				//fix joomla BE menu
 				$model = VmModel::getModel('updatesmigration');
-				$model->checkFixJoomlaBEMenuEntries();
+
 
 
 				// 				VmConfig::loadConfig(true);

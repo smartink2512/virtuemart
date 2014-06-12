@@ -62,6 +62,7 @@ class VmTable extends JTable {
 		$this->_tbl = $table;
 		$this->_db =& $db;
 		$this->_pkey = $key;
+		$this->_pkeyForm = 'cid';
 
 		if(JVM_VERSION<3){
 			$this->_tbl_key = $key;
@@ -703,8 +704,10 @@ class VmTable extends JTable {
 		while ($i < 20) {
 
 			$tbl_key = $this->_tbl_key;
-			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $name . '` =  "' . $this->$name . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
-
+			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $name . '` =  "' . $this->$name . '" ';
+			if(!empty($this->$tbl_key)){
+				$q .= '  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key.' ';
+			}
 			$this->_db->setQuery($q);
 			$existingSlugName = $this->_db->loadResult();
 
@@ -834,8 +837,13 @@ class VmTable extends JTable {
 			}
 		}
 
-		if (isset($this->virtuemart_vendor_id)) {
 
+		if (isset($this->virtuemart_vendor_id) ) {
+
+			if(empty($this->virtuemart_vendor_id) and $this->_pkey=='virtuemart_vendor_id'){
+				$this->virtuemart_vendor_id = $this->_pvalue;
+			}
+			//vmdebug('my vm vendor ',$this->virtuemart_vendor_id);
 			$multix = Vmconfig::get('multix', 'none');
 			//Lets check if the user is admin or the mainvendor
 			$virtuemart_vendor_id = false;
@@ -907,8 +915,8 @@ class VmTable extends JTable {
 					}
 					else if (empty($virtuemart_vendor_id)) {
 						if(strpos($this->_tbl,'virtuemart_vendors')===FALSE and strpos($this->_tbl,'virtuemart_vmusers')===FALSE){
-							vmInfo('Fallback to 1: We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
-							$this->virtuemart_vendor_id = 1;
+							vmdebug('Fallback to '.$this->virtuemart_vendor_id.': We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
+							$this->virtuemart_vendor_id = $this->virtuemart_vendor_id;
 						}
 					}
 				}
@@ -1203,13 +1211,13 @@ class VmTable extends JTable {
 			$cid = reset($cid);
 		} else {
 			// either we fix custom fields or fix it here:
-			$cid = vRequest::getVar('virtuemart_custom_id');
+			/*$cid = vRequest::getVar($this->_pkeyForm);
 			if (!empty($cid) && (is_array($cid))) {
 				$cid = reset($cid);
-			} else {
+			} else {*/
 				vmError(get_class($this) . ' is missing cid information !');
 				return false;
-			}
+			//}
 		}		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
 		$q = "SELECT `" . $this->_orderingKey . '` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . "` = '" . (int)$cid . "' limit 0,1";
 
