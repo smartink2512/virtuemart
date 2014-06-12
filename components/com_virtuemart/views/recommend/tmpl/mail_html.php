@@ -50,7 +50,7 @@ defined('_JEXEC') or die('');
 
 					<tr>
 						<td align="center" style="border-bottom : 1px solid #dad8d8;">
-							<span style="font-size: 14px; font-weight: bold"><?php echo JText::sprintf ('COM_VIRTUEMART_RECOMMEND_MAIL_BODY', $this->name, $this->product->product_name); ?></span>
+							<span style="font-size: 14px; font-weight: bold"><?php echo vmText::sprintf ('COM_VIRTUEMART_RECOMMEND_MAIL_BODY', $this->name, $this->product->product_name); ?></span>
 							<br /><br /><?php echo $this->comment; ?><br /><br />
 						</td>
 					</tr>

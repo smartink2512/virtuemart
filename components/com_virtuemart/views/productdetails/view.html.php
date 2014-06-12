@@ -236,7 +236,9 @@ class VirtueMartViewProductdetails extends VmView {
 	// @todo build edit page
 
 	$user = JFactory::getUser();
-	if($user->authorise('core.admin','com_virtuemart') or (VmConfig::isSuperVendor()==$product->virtuemart_vendor_id and $user->authorise('core.manage','com_virtuemart'))){
+	$superVendor = VmConfig::isSuperVendor();
+	vmdebug('product edit link ',$superVendor,$product->virtuemart_vendor_id);
+	if($superVendor == 1 or $superVendor==$product->virtuemart_vendor_id or ($superVendor)){
 	    $edit_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=' . $product->virtuemart_product_id;
 	    $edit_link = $this->linkIcon($edit_link, 'COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT', 'edit', false, false);
 	} else {

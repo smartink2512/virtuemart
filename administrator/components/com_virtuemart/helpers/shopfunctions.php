@@ -168,7 +168,7 @@ class ShopFunctions {
 				$name.= '[]';
 			}
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
+			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
 
@@ -1033,21 +1033,21 @@ class ShopFunctions {
 			$selected = date ('m');
 		}
 		$months=array(
-			"01"=>JText::_ ('JANUARY'),
-			"02"=>JText::_ ('FEBRUARY'),
-			"03"=>JText::_ ('MARCH'),
-			"04"=>JText::_ ('APRIL'),
-			"05"=>JText::_ ('MAY'),
-			"06"=>JText::_ ('JUNE'),
-			"07"=>JText::_ ('JULY'),
-			"08"=>JText::_ ('AUGUST'),
-			"09"=>JText::_ ('SEPTEMBER'),
-			"10"=>JText::_ ('OCTOBER'),
-			"11"=>JText::_ ('NOVEMBER'),
-			"12"=>JText::_ ('DECEMBER')
+			"01"=>vmText::_ ('JANUARY'),
+			"02"=>vmText::_ ('FEBRUARY'),
+			"03"=>vmText::_ ('MARCH'),
+			"04"=>vmText::_ ('APRIL'),
+			"05"=>vmText::_ ('MAY'),
+			"06"=>vmText::_ ('JUNE'),
+			"07"=>vmText::_ ('JULY'),
+			"08"=>vmText::_ ('AUGUST'),
+			"09"=>vmText::_ ('SEPTEMBER'),
+			"10"=>vmText::_ ('OCTOBER'),
+			"11"=>vmText::_ ('NOVEMBER'),
+			"12"=>vmText::_ ('DECEMBER')
 		);
 
-		$options[] = JHTML::_ ('select.option', 0, JText::_ ('MONTH'));
+		$options[] = JHTML::_ ('select.option', 0, vmText::_ ('MONTH'));
 		foreach($months as  $key => $value) {
 			if ($format=='F') {
 				$text=$value;

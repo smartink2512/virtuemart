@@ -2198,7 +2198,7 @@ class VirtueMartModelProduct extends VmModel {
 			$orderDirLink = '';
 		}
 
-		$orderDirTxt = JText::_ ('COM_VIRTUEMART_'.$orderDir);
+		$orderDirTxt = vmText::_ ('COM_VIRTUEMART_'.$orderDir);
 		//$orderDirTxt = vmText::_ ('COM_VIRTUEMART_SEARCH_ORDER_'.$orderDir);
 
 		$link = JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink . $manufacturerTxt,FALSE);

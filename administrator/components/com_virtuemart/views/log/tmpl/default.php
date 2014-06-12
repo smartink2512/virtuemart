@@ -33,13 +33,13 @@ if(class_exists('finfo')){
 		<thead>
 		<tr>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_LOG_FILENAME'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_LOG_FILENAME'); ?>
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_LOG_FILEINFO'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_LOG_FILEINFO'); ?>
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_LOG_FILESIZE'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_LOG_FILESIZE'); ?>
 			</th>
 
 		</tr>
@@ -74,7 +74,7 @@ if(class_exists('finfo')){
 				</td>
 					<td align="left">
 <?php
-						echo  $fileSize." ".JText::_('COM_VIRTUEMART_LOG_KB'); ?>
+						echo  $fileSize." ".vmText::_('COM_VIRTUEMART_LOG_KB'); ?>
 
 					</td>
 

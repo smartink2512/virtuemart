@@ -24,7 +24,7 @@ echo '<a class="continue" href="' . $this->continue_link . '" >' . vmText::_('CO
 echo '<a class="showcart floatright" href="' . $this->cart_link . '">' . vmText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
 if($this->products){
 	foreach($this->products as $product){
-		echo '<h4>'.JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$product->product_name,$product->quantity).'</h4>';
+		echo '<h4>'.vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$product->product_name,$product->quantity).'</h4>';
 	}
 }
 

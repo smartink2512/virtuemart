@@ -213,7 +213,7 @@ class shopFunctionsF {
 
 		$attrString= JArrayHelper::toString($attrs);
 		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrString . '>
-						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
+						<option value="">' . vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
 		return $listHTML;
@@ -295,7 +295,7 @@ class shopFunctionsF {
 		$user = FALSE;
 		if(isset($vars['orderDetails'])){
 
-			//If the JRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
+			//If the vRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
 			//$name = 'orders['.$order['details']['BT']->virtuemart_order_id.'][customer_notified]';
 			//$customer_notified = vRequest::getVar($name,-1);
 			if(!$useDefault and isset($vars['newOrderData']['customer_notified']) and $vars['newOrderData']['customer_notified']==1 ){
@@ -528,8 +528,8 @@ class shopFunctionsF {
 		$vars = array();
 		$productModel = VmModel::getModel ('product');
 		$product = $productModel->getProduct ($data['virtuemart_product_id']);
-		$vars['subject'] = JText::sprintf('COM_VIRTUEMART_RATING_EMAIL_SUBJECT', $product->product_name);
-		$vars['mailbody'] = JText::sprintf('COM_VIRTUEMART_RATING_EMAIL_BODY', $product->product_name);
+		$vars['subject'] = vmText::sprintf('COM_VIRTUEMART_RATING_EMAIL_SUBJECT', $product->product_name);
+		$vars['mailbody'] = vmText::sprintf('COM_VIRTUEMART_RATING_EMAIL_BODY', $product->product_name);
 
 		$vendorModel = VmModel::getModel ('vendor');
 		$vendor = $vendorModel->getVendor ($product->virtuemart_vendor_id);

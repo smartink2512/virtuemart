@@ -67,8 +67,8 @@ defined('_JEXEC') or die('Restricted access');?>
 </tr>
 	<tr>
 		<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_REMOVE_TIP'); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_COUPONS_REMOVE'); ?>
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_COUPONS_REMOVE_TIP'); ?>">
+					<?php echo vmText::_('COM_VIRTUEMART_COUPONS_REMOVE'); ?>
 				 </span>
 		</td>
 		<td>
@@ -182,8 +182,8 @@ defined('_JEXEC') or die('Restricted access');?>
 
 			<tr>
 				<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_OS_TIP'); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_REVIEWS_OS'); ?>
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_REVIEWS_OS_TIP'); ?>">
+					<?php echo vmText::_('COM_VIRTUEMART_REVIEWS_OS'); ?>
 				 </span>
 				</td>
 				<td>

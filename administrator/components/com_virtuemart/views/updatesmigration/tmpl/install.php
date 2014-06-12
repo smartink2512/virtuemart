@@ -26,7 +26,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	?>
 
 	<div class="vmquote" style="text-align:left;margin-left:20px;">
-		<span style="font-weight:bold;color:green;"> <?php echo JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_ENABLED_JS',JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link) ?></span>
+		<span style="font-weight:bold;color:green;"> <?php echo vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_ENABLED_JS',vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link) ?></span>
 	</div>
 
 <?php
@@ -39,14 +39,14 @@ $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=inst
 
 <div class="icon"><a onclick="javascript:confirmation('<?php echo $link; ?>');">
 		<span class="vmicon48"></span>
-		<br /><?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
+		<br /><?php echo vmText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 
 	</a></div>
 
 <?php	$link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installCompleteSamples&'.JSession::getFormToken().'=1&token='.JSession::getFormToken().'&install=1'); ?>
 	<div class="icon"><a onclick="javascript:confirmation('<?php echo $link; ?>');">
 			<span class="vmicon48"></span>
-			<br /><?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE'); ?>
+			<br /><?php echo vmText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE'); ?>
 
 		</a></div>
 	</table>

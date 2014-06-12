@@ -769,7 +769,7 @@ class VirtueMartCart {
 
 		if($validUserDataCart!==true){
 			if($redirect){
-				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}

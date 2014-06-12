@@ -268,7 +268,7 @@ class VirtueMartViewCart extends VmView {
 		$found_shipment_method =count($shipments_shipment_rates);
 
 		if ($found_shipment_method== 0 AND empty($this->cart->BT))  {
-			$redirectMsg = JText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
+			$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				vmInfo($redirectMsg);
 			} else {
@@ -318,7 +318,7 @@ class VirtueMartViewCart extends VmView {
 			$payment_not_found_text = vmText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'" rel="nofollow">'.$link.'</a>');
 		}
 		if ($found_payment_method== 0 AND empty($this->cart->BT))  {
-			$redirectMsg = JText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
+			$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				vmInfo($redirectMsg);
 			} else {
@@ -368,7 +368,7 @@ class VirtueMartViewCart extends VmView {
 		$display_title = vRequest::getBool('display_title',true);
 		$this->assignRef('display_title', $display_title);
 		// // Do not change this. It contains the payment form
-		$this->html = vRequest::get('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
+		$this->html = vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 		//Show Thank you page or error due payment plugins like paypal express
 	}
 

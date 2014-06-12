@@ -63,8 +63,8 @@ class VirtueMartModelShopperGroup extends VmModel {
      * @return object List of shopper group objects
      */
     function getShopperGroups($onlyPublished=false, $noLimit = false) {
-    	$db = JFactory::getDBO();
 
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	    $query = 'SELECT * FROM `#__virtuemart_shoppergroups` ORDER BY `virtuemart_vendor_id`,`shopper_group_name` ';
 
 		if ($noLimit) {
@@ -117,6 +117,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 				$app->enqueueMessage('Attention no standard shopper group set '.$db->getErrorMsg());
 				$default[$vendorId][$kind] = false;
 			} else {
+				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 				$res->shopper_group_name = vmText::_($res->shopper_group_name);
 				$res->shopper_group_desc = vmText::_($res->shopper_group_desc);
 

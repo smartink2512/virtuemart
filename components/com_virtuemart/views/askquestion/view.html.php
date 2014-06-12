@@ -64,7 +64,7 @@ class VirtueMartViewAskquestion extends VmView {
 
 		$mainframe = JFactory::getApplication ();
 		$pathway = $mainframe->getPathway ();
-		$task = JRequest::getCmd ('task');
+		$task = vRequest::getCmd ('task');
 
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
@@ -73,7 +73,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$product_model = VmModel::getModel ('product');
 		$category_model = VmModel::getModel ('Category');
 
-		$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
+		$virtuemart_product_idArray = vRequest::getInt ('virtuemart_product_id', 0);
 		if (is_array ($virtuemart_product_idArray)) {
 			$virtuemart_product_id = $virtuemart_product_idArray[0];
 		} else {
@@ -97,7 +97,7 @@ class VirtueMartViewAskquestion extends VmView {
 
 
 		// Set the titles
-		$document->setTitle (JText::sprintf ('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE', $product->product_name . ' - ' . JText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
+		$document->setTitle (vmText::sprintf ('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE', $product->product_name . ' - ' . vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
 
 		$this->assignRef ('product', $product);
 
@@ -109,7 +109,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$product_model->addImages ($product, 1);
 
 		/* Get the category ID */
-		$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id');
+		$virtuemart_category_id = vRequest::getInt ('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
 			if (array_key_exists ('0', $product->categories)) {
 				$virtuemart_category_id = $product->categories[0];
@@ -124,11 +124,11 @@ class VirtueMartViewAskquestion extends VmView {
 			$pathway->addItem ($category->category_name, JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id, FALSE));
 		}
 
-		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
+		//$pathway->addItem(vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem ($product->product_name, JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id, FALSE));
 
 		// for askquestion
-		$pathway->addItem (JText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
+		$pathway->addItem (vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
 		$this->assignRef ('user', JFactory::getUser ());
 
@@ -155,12 +155,12 @@ class VirtueMartViewAskquestion extends VmView {
 	function renderMailLayout () {
 
 		$this->setLayout ('mail_html_question');
-		$this->comment = JRequest::getString ('comment');
+		$this->comment = vRequest::getString ('comment');
 
 		$user = JFactory::getUser ();
 		if (empty($user->id)) {
-			$fromMail = JRequest::getVar ('email'); //is sanitized then
-			$fromName = JRequest::getVar ('name', ''); //is sanitized then
+			$fromMail = vRequest::getVar ('email'); //is sanitized then
+			$fromName = vRequest::getVar ('name', ''); //is sanitized then
 			$fromMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromMail);
 			$fromName = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromName);
 		} else {
@@ -211,7 +211,7 @@ class VirtueMartViewAskquestion extends VmView {
 		}
 		$continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
 
-		$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+		$continue_link_html = '<a href="' . $continue_link . '" />' . vmText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->assignRef ('continue_link_html', $continue_link_html);
 		// Display it all
 		parent::display ($tpl);

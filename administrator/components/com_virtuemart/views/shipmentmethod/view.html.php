@@ -87,7 +87,7 @@ class VirtuemartViewShipmentmethod extends VmView {
 			$this->addStandardEditViewCommands($shipment->virtuemart_shipmentmethod_id);
 
 		} else {
-			JToolBarHelper::custom('cloneshipment', 'copy', 'copy', JText::_('COM_VIRTUEMART_SHIPMENT_CLONE'), true);
+			JToolBarHelper::custom('cloneshipment', 'copy', 'copy', vmText::_('COM_VIRTUEMART_SHIPMENT_CLONE'), true);
 
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
@@ -135,11 +135,11 @@ class VirtuemartViewShipmentmethod extends VmView {
 		$result = $db->loadAssocList($ext_id);
 		if(empty($result)){
 			$app = JFactory::getApplication();
-			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_SHIPMENT_PLUGINS_INSTALLED'));
+			$app -> enqueueMessage(vmText::_('COM_VIRTUEMART_NO_SHIPMENT_PLUGINS_INSTALLED'));
 		}
 
 		foreach ($result as &$sh) {
-			$sh['name'] = JText::_($sh['name']);
+			$sh['name'] = vmText::_($sh['name']);
 		}
 		$attribs='style= "width: 300px;"';
 		return JHtml::_('select.genericlist', $result, 'shipment_jplugin_id', $attribs, $ext_id, 'name', $selected);

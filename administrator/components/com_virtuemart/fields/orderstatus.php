@@ -32,7 +32,7 @@ class JFormFieldOrderstatus extends JFormField {
 		$model = VmModel::getModel ('Orderstatus');
 		$orderStatus = $model->getOrderStatusList ();
 		foreach ($orderStatus as $orderState) {
-			$orderState->order_status_name = JText::_ ($orderState->order_status_name);
+			$orderState->order_status_name = vmText::_ ($orderState->order_status_name);
 		}
 		return JHtml::_ ('select.genericlist', $orderStatus, $this->name, 'class="inputbox" multiple="true" size="1"', 'order_status_code', 'order_status_name', $this->value, $this->id);
 	}

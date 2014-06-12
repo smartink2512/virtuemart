@@ -99,7 +99,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->updateMoneyBookersToSkrill();
 
 
-			$task = JRequest::getCmd ('task');
+			$task = vRequest::getCmd ('task');
 			if ($task != 'updateDatabase') {
 
 				// modules auto move
@@ -359,7 +359,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 		 */
 		private function installPlugin ($name, $type, $element, $group, $published = 0, $createJPluginTable = 1) {
 
-			$task = JRequest::getCmd ('task');
+			$task = vRequest::getCmd ('task');
 
 			if ($task != 'updateDatabase') {
 				$data = array();
