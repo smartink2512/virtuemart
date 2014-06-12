@@ -499,8 +499,8 @@ class vmJsApi{
 		});
 //]]>
 		');
-		vmJsApi::js ('jquery.ui.core',FALSE,'',TRUE);
-		vmJsApi::js ('jquery.ui.datepicker',FALSE,'',TRUE);
+		//vmJsApi::js ('jquery.ui.core',FALSE,'',TRUE);
+		//vmJsApi::js ('jquery.ui.datepicker',FALSE,'',TRUE);
 
 		vmJsApi::css ('jquery.ui.all',$front.'css/ui' ) ;
 		$lg = JFactory::getLanguage();
@@ -513,7 +513,7 @@ class vmJsApi{
 		elseif (!in_array ($lang, $existingLang)) {
 			$lang = "en-GB";
 		}
-		vmJsApi::js ('jquery.ui.datepicker-'.$lang, $front.'js/i18n' ) ;
+		//vmJsApi::js ('jquery.ui.datepicker-'.$lang, $front.'js/i18n' ) ;
 		$jDate = TRUE;
 		return $display;
 	}
