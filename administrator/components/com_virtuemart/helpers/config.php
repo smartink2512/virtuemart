@@ -909,7 +909,7 @@ class VmConfig {
 				} else  {
 					jimport('joomla.language.helper');
 					$siteLang = JFactory::getLanguage()->getTag();
-					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
+					//vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 				}
 			}
 		} else {
@@ -927,7 +927,7 @@ class VmConfig {
 		}
 		self::$vmlangTag = self::$langTag = $siteLang;
 		self::$vmlang = self::$lang = strtolower(strtr($siteLang,'-','_'));
-		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$lang);
+		vmdebug('Joomla Language tag: '.$siteLang.' Virtuemart is using for db '.self::$lang);
 		defined('VMLANG') or define('VMLANG', self::$lang );
 
 		return self::$lang;

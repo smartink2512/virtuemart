@@ -623,18 +623,18 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 * @param object $cart Cart object
 	 * @return float Total weight for the order
-	 * @author Oscar van Eijk
 	 */
 	protected function getOrderWeight (VirtueMartCart $cart, $to_weight_unit) {
 
-		static $weight = 0.0;
-		if(count($cart->products)>0 and empty($weight)){
-			foreach ($cart->products as $product) {
+		static $weight = array();
+		if(!isset($weight[$to_weight_unit])) $weight[$to_weight_unit] = 0.0;
+		if(count($cart->products)>0 and empty($weight[$to_weight_unit])){
 
-				$weight += (ShopFunctions::convertWeightUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
+			foreach ($cart->products as $product) {
+				$weight[$to_weight_unit] += (ShopFunctions::convertWeightUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
 			}
 		}
-		return $weight;
+		return $weight[$to_weight_unit];
 	}
 
 	/**

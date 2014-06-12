@@ -27,7 +27,6 @@ vmSetStartTime('Start');
 
 VmConfig::loadJLang('com_virtuemart', true);
 
-
 if(VmConfig::get('shop_is_offline',0)){
 	//$cache->setCaching (1);
 	$_controller = 'virtuemart';
@@ -37,6 +36,16 @@ if(VmConfig::get('shop_is_offline',0)){
 	$basePath = JPATH_VM_SITE;
 } else {
 
+
+	/*menuItemId Fix Dirty
+	$menuid = vRequest::getInt('Itemid',false);
+	$session = JFactory::getSession();
+	if($menuid){
+		$session->set('vmitemid', $menuid,'vm');
+	} else {
+		$menuid = $session->get('vmitemid', false,'vm');
+		if($menuid) vRequest::setVar('Itemid',$menuid );
+	}*/
 	//$cache->setCaching (0);
 
 	/* Front-end helpers */
