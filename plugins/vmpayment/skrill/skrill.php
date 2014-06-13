@@ -63,7 +63,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 
 	function _getSKRILLURL ($method) {
 
-		$url = 'www.SKRILL.com';
+		$url = 'www.skrill.com';
 
 		return $url;
 	}

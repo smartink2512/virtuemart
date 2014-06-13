@@ -1480,7 +1480,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @author RolandD, Christopher Roussel, Valérie Isaksen, Max Milbers
 	 *
 	 */
-	private function notifyCustomer($virtuemart_order_id, $newOrderData = 0 ) {
+	public function notifyCustomer($virtuemart_order_id, $newOrderData = 0 ) {
 
 // 		vmdebug('notifyCustomer', $newOrderData);
 		if (isset($newOrderData['customer_notified']) && $newOrderData['customer_notified']==0) {

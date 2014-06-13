@@ -1074,7 +1074,7 @@ class ShopFunctions {
 			$selected = date ('Y');
 		}
 		$start = $start ? $start : date ('Y');
-		$end = $end ? $end : $start + 7;
+		$end = $end ? $end : $start + 11;
 		$options[] = JHtml::_ ('select.option', 0, vmText::_ ('YEAR'));
 		for ($i = $start; $i <= $end; $i++) {
 			$options[] = JHtml::_ ('select.option', $i, $i);
