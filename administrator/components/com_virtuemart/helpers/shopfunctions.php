@@ -1235,7 +1235,7 @@ class ShopFunctions {
 			$selected = date ('Y');
 		}
 		$start = $start ? $start : date ('Y');
-		$end = $end ? $end : $start + 7;
+		$end = $end ? $end : $start + 11;
 		$options[] = JHTML::_ ('select.option', 0, JText::_ ('YEAR'));
 		for ($i = $start; $i <= $end; $i++) {
 			$options[] = JHTML::_ ('select.option', $i, $i);
@@ -1521,6 +1521,7 @@ class ShopFunctions {
 		}
 
 		if($warn){
+			self::$tested = true;
 			$suggestedPath=shopFunctions::getSuggestedSafePath();
 			VmConfig::loadJLang('com_virtuemart_config');
 			VmWarn($warn,JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);

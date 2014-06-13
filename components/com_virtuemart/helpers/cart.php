@@ -1141,7 +1141,7 @@ class VirtueMartCart {
                 echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
                 return;
             }
-
+			$orderModel->notifyCustomer($orderID, $orderDetails);
 			$dispatcher = JDispatcher::getInstance();
 
 			JPluginHelper::importPlugin('vmcalculation');
