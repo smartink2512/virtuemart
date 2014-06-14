@@ -46,12 +46,13 @@ class AdminUIHelper {
 		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
 		//$document->addStyleSheet($admin.'css/jqtransform.css');
 
-		//loading defaut script
+		//loading default script
 
 		$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
 		$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
 		$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
 		$document->addScript($admin.'js/jquery.coookie.js');
+		$document->addScript($front.'js/jquery.jqtransform.js');
 		$document->addScript($front.'js/chosen.jquery.min.js');
 		$document->addScript($admin.'js/vm2admin.js');
 

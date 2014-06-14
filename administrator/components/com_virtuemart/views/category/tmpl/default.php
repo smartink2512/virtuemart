@@ -149,8 +149,8 @@ AdminUIHelper::startAdminArea($this);
 					}
 
 					//vmdebug('$cat ',$cat);
-					echo $this->catpagination->orderUpIcon( $i, $cat->ordering, 'orderUp', vmText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
-					<span><?php echo $this->catpagination->orderDownIcon( $i, $cat->ordering, $childCount , $cond2, 'orderDown', vmText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
+					echo $this->catpagination->vmOrderUpIcon( $i, $cat->ordering, 'orderUp', vmText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->catpagination->vmOrderDownIcon( $i, $cat->ordering, $childCount , $cond2, 'orderDown', vmText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center">

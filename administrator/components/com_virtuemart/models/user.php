@@ -731,7 +731,7 @@ class VirtueMartModelUser extends VmModel {
 	* @param Object If given, an object with data address data that must be formatted to an array
 	* @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
 	*/
-	public function validateUserData(&$data,$type='BT') {
+	public function validateUserData(&$data,$type='BT',$showInfo = false) {
 
 		if (!class_exists('VirtueMartModelUserfields'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
@@ -756,6 +756,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$required  = 0;
 		$missingFields = array();
+		$lang = JFactory::getLanguage();
 		foreach ($neededFields as $field) {
 
 			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
@@ -767,7 +768,7 @@ class VirtueMartModelUser extends VmModel {
 					if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
 						//The state is invalid, so we set the state 0 here.
 						$data['virtuemart_state_id'] = 0;
-						vmdebug('State was not fitting to country, set to 0');
+						vmdebug('State was not fitting to country, set virtuemart_state_id to 0');
 					} else if(empty($data['virtuemart_state_id'])){
 						vmdebug('virtuemart_state_id is empty, but valid (country has not states, set to unrequired');
 						$field->required = false;
@@ -780,7 +781,13 @@ class VirtueMartModelUser extends VmModel {
 			if($field->required ){
 				$required++;
 				if(empty($data[$field->name])){
-					$missingFields[] = vmText::_($field->title);
+					if($lang->hasKey('COM_VIRTUEMART_MISSING_'.$field->name)){
+						$missingFields[] = vmText::_('COM_VIRTUEMART_MISSING_'.$field->name);
+					} else {
+						vmdebug('my field titel',$field->title);
+						$missingFields[] = vmText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$field->title );
+					}
+
 					$i++;
 					$return = false;
 				}
@@ -793,10 +800,19 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if($i==$required) $return = -1;
-		//vmdebug('my i '.$i.' my data size '.$required,$return,$data);
-		if(!$return){
+		vmdebug('my i '.$i.' my data size '.$required,$return,$showInfo);
+
+		if(!$return or $showInfo){
+
 			foreach($missingFields as $fieldname){
-				vmInfo(vmText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$fieldname) );
+				vmInfo($fieldname);
+				/*if($lang->hasKey('COM_VIRTUEMART_MISSING_'.$fieldname)){
+					vmInfo('COM_VIRTUEMART_MISSING_'.$fieldname );
+				} else {
+					vmInfo(vmText::vsprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$fieldname) );
+					vmdebug('What the fuck '.vmText::_('COM_VIRTUEMART_MISSING_'.$fieldname));
+				}*/
+
 			}
 		}
 		return $return;

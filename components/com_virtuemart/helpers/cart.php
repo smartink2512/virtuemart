@@ -765,12 +765,12 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
 		}
 
-		$validUserDataCart = self::validateUserData('cartfields',$this->cartfields);
+		$validUserDataCart = self::validateUserData('cartfields',$this->cartfields,$redirect);
 
 		if($validUserDataCart!==true){
 			if($redirect){
 				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				//vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
 			$this->_blockConfirm = true;
@@ -940,14 +940,14 @@ class VirtueMartCart {
 	 * @param Object If given, an object with data address data that must be formatted to an array
 	 * @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
 	 */
-	private function validateUserData($type='BT', $obj = null) {
+	private function validateUserData($type='BT', $obj = null,$redirect = false) {
 
 		if($obj==null){
 			$obj = $this->{$type};
 		}
 
 		$usersModel = VmModel::getModel('user');
-		return $usersModel->validateUserData($obj,$type,true);
+		return $usersModel->validateUserData($obj,$type,$redirect);
 
 	}
 

@@ -176,8 +176,8 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 				<?php if ($this->virtuemart_category_id ) { ?>
 					<td class="order" >
 						<span class="vmicon vmicon-16-move"></span>
-						<span><?php echo $this->pagination->orderUpIcon( $i, $product->ordering, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP')  ); ?></span>
-						<span><?php echo $this->pagination->orderDownIcon( $i, $product->ordering, $total , true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN') ); ?></span>
+						<span><?php echo $this->pagination->vmOrderUpIcon( $i, $product->ordering, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP')  ); ?></span>
+						<span><?php echo $this->pagination->vmOrderDownIcon( $i, $product->ordering, $total , true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN') ); ?></span>
 						<input class="ordering" type="text" name="order[<?php echo $product->id?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->ordering; ?>" style="text-align: center" />
 
 						<?php // echo vmCommonHTML::getOrderingField( $product->ordering ); ?>

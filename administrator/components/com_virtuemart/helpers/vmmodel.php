@@ -1216,7 +1216,8 @@ class VmPagination extends JPagination {
 	 *
 	 * @since   11.1
 	 */
-	public function orderUpIcon($i, $ordering, $task = 'orderup', $alt = 'JLIB_HTML_MOVE_UP', $enabled = true, $checkbox = 'cb')
+
+	public function vmOrderUpIcon($i, $ordering=true, $task = 'orderup', $alt = 'JLIB_HTML_MOVE_UP', $enabled = true, $checkbox = 'cb')
 	{
 
 		if (($ordering > 1))
@@ -1244,7 +1245,7 @@ class VmPagination extends JPagination {
 	 *
 	 * @since   11.1
 	 */
-	public function orderDownIcon($i, $ordering, $n, $condition = true, $task = 'orderdown', $alt = 'JLIB_HTML_MOVE_DOWN', $enabled = true, $checkbox = 'cb')
+	public function vmOrderDownIcon($i, $ordering, $n, $condition = true, $task = 'orderdown', $alt = 'JLIB_HTML_MOVE_DOWN', $enabled = true, $checkbox = 'cb')
 	{
 		vmdebug('joomla pagination orderDownIcon '.$i.' '.$ordering.' '.$n);
 			//if (($i < $n - 1 || $i + $this->limitstart < $this->total - 1) && $condition)

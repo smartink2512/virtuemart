@@ -96,8 +96,8 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo vmText::_($row->order_status_description); ?>
 				</td>
 				<td align="center" class="order">
-					<span><?php echo $this->pagination->orderUpIcon($i, $row->ordering, 'orderUp', vmText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $row->ordering,$n, true, 'orderDown', vmText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
+					<span><?php echo $this->pagination->vmOrderUpIcon($i, $row->ordering, 'orderUp', vmText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->pagination->vmOrderDownIcon( $i, $row->ordering,$n, true, 'orderDown', vmText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center"><?php echo $published; ?></td>

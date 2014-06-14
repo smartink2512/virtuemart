@@ -142,9 +142,9 @@ class VirtueMartViewCart extends VmView {
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$document->setTitle(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$text = vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE');
-				$this->checkout_task = 'updatecart';
+				$this->checkout_task = 'checkout';
 			}
-			$this->checkout_link_html = '<button type="submit"  id="checkoutFormSubmit" name="'.$this->checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
+			$this->checkout_link_html = '<button type="submit"  id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" ><span>' . $text . '</span> </button>';
 
 
 			if (VmConfig::get('oncheckout_opc', 1)) {

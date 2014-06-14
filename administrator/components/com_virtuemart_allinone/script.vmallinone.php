@@ -11,6 +11,15 @@ defined ('_JEXEC') or die('Restricted access');
  */
 
 defined ('DS') or define('DS', DIRECTORY_SEPARATOR);
+//Update Tables
+if (!class_exists ('VmConfig')) {
+	if(file_exists(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php')){
+		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+	} else {
+		jExit('Install the virtuemart Core first ');
+	}
+
+}
 
 $max_execution_time = ini_get ('max_execution_time');
 if ((int)$max_execution_time < 120) {

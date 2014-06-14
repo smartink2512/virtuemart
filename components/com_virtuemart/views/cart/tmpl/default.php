@@ -45,21 +45,24 @@ $document->addScriptDeclaration ("
 //]]>
 
 ");
-$document->addScriptDeclaration ("
+$document->addScriptDeclaration ('
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
-	$('#checkoutFormSubmit').click(function(e){
-    $(this).attr('disabled', 'true');
-    $(this).fadeIn( 400 );
-    $('#checkoutForm').submit();
+	$("#checkoutFormSubmit").click(function(e){
+
+	$(this).attr("disabled", "true");
+	var name = $(this).attr("name");
+	$("#checkoutForm").append("<input name=\""+name+"\" value=\"1\" type=\"hidden\">");
+	$(this).fadeIn( 400 );
+	$("#checkoutForm").submit();
 });
 	});
 
 //]]>
 
-");
-?>
+');
+ ?>
 
 <div class="cart-view">
 	<div>
@@ -112,8 +115,7 @@ $document->addScriptDeclaration ("
 
 		<?php // Continue and Checkout Button END ?>
 		<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
-		<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
-		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
+		<input type='hidden' name='task' value='updatecart'/>
 		<input type='hidden' name='option' value='com_virtuemart'/>
 		<input type='hidden' name='view' value='cart'/>
 	</form>
