@@ -175,6 +175,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'logoimg' => array('', 'char'),
 			'payment_action' => array('sale', 'char'),
 			'template' => array('', 'char'),
+			'add_prices_api' => array('', 'int'),
 
 		);
 
@@ -240,7 +241,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 * @return bool
 	 */
 	function plgVmOnProductDisplayPayment($product, &$productDisplay) {
-
+return;
 		$vendorId = 1;
 		if ($this->getPluginMethods($vendorId) === 0) {
 			return FALSE;
@@ -466,8 +467,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$this->customerData->clear();
 				$returnValue = 1;
 			} else {
-				$new_status = $this->_currentMethod->status_canceled;
-				$returnValue = 2;
+				$cart->virtuemart_paymentmethod_id = 0;
+				$cart->setCartIntoSession();
+				$this->redirectToCart();
+				return;
 			}
 //			$this->customerData->clear();
 			$html = $this->renderByLayout('apiresponse', array('method' => $this->_currentMethod, 'success' => $success, 'payment_name' => $payment_name, 'responseData' => $response,  "order" => $order));
@@ -494,7 +497,14 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		}
 	}
 
-
+	function redirectToCart ($msg = NULL) {
+		if (!$msg) {
+			$msg = vmText::_('VMPAYMENT_PAYPAL_ERROR_TRY_AGAIN');
+		}
+		$this->customerData->clear();
+		$app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vRequest::getInt('Itemid'), false), $msg);
+	}
 	function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
@@ -1071,7 +1081,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 
 		//Load only when updating status to shipped
 		if ($order->order_status != $this->_currentMethod->status_capture AND $order->order_status != $this->_currentMethod->status_refunded) {
-			return null;
+			 //return null;
 		}
 		//Load the payments
 		if (!($payments = $this->_getPaypalInternalData($order->virtuemart_order_id))) {

@@ -151,6 +151,12 @@
         <param class="expected_maxamount required" name="expected_maxamount" required="true" type="text" default="" label="VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT"
                description="VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT_DESC"/>
 
+        <param class="add_prices_api" name="add_prices_api" type="list" default="0"
+               label="VMPAYMENT_PAYPAL_ADD_PRICES_API" description="VMPAYMENT_PAYPAL_ADD_PRICES_API_TIP">
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+        </param>
+
         <!-- param class="refund_on_cancel" name="refund_on_cancel" type="list" default="0" label="VMPAYMENT_PAYPAL_REFUND_CANCEL" description="VMPAYMENT_PAYPAL_REFUND_CANCEL_DESC" >
         <option value="0">COM_VIRTUEMART_NO</option>
         <option value="1">COM_VIRTUEMART_YES</option>
