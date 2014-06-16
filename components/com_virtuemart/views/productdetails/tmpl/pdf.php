@@ -126,7 +126,7 @@ if (empty ( $this->product )) {
 			<?php foreach ($this->product->customsChilds as $field) {  ?>
 				<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field->field_type ?>">
 				<span class="product-fields-title" ><strong><?php echo $field->field->custom_title ?></strong></span>
-				<span class="product-field-desc"><?php echo $field->field->custom_value ?></span>
+				<span class="product-field-desc"><?php echo $field->field->customfield_value ?></span>
 				<span class="product-field-display"><?php echo $field->display ?></span>
 
 				</div><br/ >

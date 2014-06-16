@@ -463,7 +463,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$document=& JFactory::getDocument();
 				if (get_class($document) == 'JDocumentHTML') {
 					$editor =& JFactory::getEditor();
-					return $editor->display('field['.$row.'][custom_value]',$field->custom_value, '550', '400', '60', '20', false).'</td><td>';
+					return $editor->display('field['.$row.'][customfield_value]',$field->custom_value, '550', '400', '60', '20', false).'</td><td>';
 				}
 				return '<textarea class="mceInsertContentNew" name="field[' . $row . '][customfield_value]" id="field-' . $row . '-customfield_value">' . $field->customfield_value . '</textarea>
 						<script type="text/javascript">// Creates a new editor instance
@@ -871,7 +871,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						if (($productCustom->field_type == "G")) {
 
 							$db = JFactory::getDBO ();
-							$db->setQuery ('SELECT  `product_name` FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` WHERE virtuemart_product_id=' . (int)$productCustom->custom_value);
+							$db->setQuery ('SELECT  `product_name` FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` WHERE virtuemart_product_id=' . (int)$productCustom->customfield_value);
 							$child = $db->loadObject ();
 							$value = $child->product_name;
 						}

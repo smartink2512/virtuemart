@@ -168,23 +168,24 @@ class VirtueMartModelUserfields extends VmModel {
 		if (empty($this->_cache[$this->_id])) {
 			$this->_cache[$this->_id] = $this->getTable('userfields');
 			if($name !==0){
-				$this->_cache[$this->_id]->load($id, $name);
+				$this->_cache[$this->_id]->load($this->_id, $name);
 			} else {
-				$this->_cache[$this->_id]->load($id);
+				$this->_cache[$this->_id]->load($this->_id);
 			}
-		}
-
-		if(strpos($this->_cache[$this->_id]->type,'plugin')!==false){
-  			JPluginHelper::importPlugin('vmuserfield');
-  			$dispatcher = JDispatcher::getInstance();
-			$plgName = substr($this->_cache->type,6);
-			$type = 'userfield';
-  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_cache[$this->_id]->userfield_jplugin_id,&$this->_cache[$this->_id]));
-			// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_cache);
+			//vmdebug('getUserfield',$this->_id,$name,$this->_cache[$this->_id]);
+			if(strpos($this->_cache[$this->_id]->type,'plugin')!==false){
+				JPluginHelper::importPlugin('vmuserfield');
+				$dispatcher = JDispatcher::getInstance();
+				$plgName = substr($this->_cache->type,6);
+				$type = 'userfield';
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_cache[$this->_id]->userfield_jplugin_id,&$this->_cache[$this->_id]));
+				// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_cache);
+			}
 			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
 				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPushParam);
 			}
 		}
+
 
 		return $this->_cache[$this->_id];
 	}

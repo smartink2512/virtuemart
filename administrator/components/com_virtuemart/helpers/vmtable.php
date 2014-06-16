@@ -523,9 +523,7 @@ class VmTable extends JTable {
 			$oid = $this->$k;
 		}
 
-		if ($oid === null) {
-			$oid = 0;
-		} else if (empty($oid)) {
+		if (empty($oid)) {
 			if (!empty($this->_xParams)) {
 				if(!empty($this->_varsToPushParam)){
 					foreach ($this->_varsToPushParam as $key => $v) {
@@ -537,6 +535,7 @@ class VmTable extends JTable {
 					//vmdebug('_varsToPushParam empty ',$this);
 				}
 			}
+			//vmdebug('vmtable load empty $oid return proto',$this);
 			return $this;
 		}
 

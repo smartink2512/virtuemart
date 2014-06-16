@@ -287,7 +287,7 @@ class VirtueMartModelProduct extends VmModel {
 		if (!empty($this->searchcustoms)) {
 			$joinCustom = TRUE;
 			foreach ($this->searchcustoms as $key => $searchcustom) {
-				$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`custom_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
+				$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`customfield_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
 			}
 			$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
 		}

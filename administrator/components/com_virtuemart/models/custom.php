@@ -67,7 +67,8 @@ class VirtueMartModelCustom extends VmModel {
 			    $dispatcher = JDispatcher::getInstance ();
 			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_cache[$this->_id]));
 		    }
-
+			//exaample 	vm2 withParent="0"|parentOrderable="0"|
+			//			vm3 withParent="1"|parentOrderable="1"|
 			$this->_cache[$this->_id]->_xParams = 'custom_params';
 			$this->_cache[$this->_id]->load($this->_id);
 

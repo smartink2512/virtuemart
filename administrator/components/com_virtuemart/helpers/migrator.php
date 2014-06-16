@@ -2025,7 +2025,7 @@ class Migrator extends VmModel{
 								//get ordering of the last element and add 1 to it
 								$db->setQuery('SELECT MAX(ordering) from ' . $prefix . '_virtuemart_product_customfields');
 								$ordering = $db->loadResult() + 1;
-								$query = 'INSERT INTO ' . $prefix . '_virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,custom_price,ordering) VALUES
+								$query = 'INSERT INTO ' . $prefix . '_virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,customfield_value,customfield_price,ordering) VALUES
                 (' . $productid . ',' . $pid . ',' . $db->Quote($cleaned) . ',' . $price . ',' . $ordering . ')';
 								$db->setQuery($query);
 								if (!$db->execute()) {
@@ -2141,7 +2141,7 @@ class Migrator extends VmModel{
 				vmError("Port Related products: Error while inserting new related products " );
 				break;
 			}
-			$q="INSERT INTO #__virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,modified_on) values ".substr($sql,1);
+			$q="INSERT INTO #__virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,customfield_value,modified_on) values ".substr($sql,1);
 			$this->_db->setQuery($q) ;
 			$this->_db->execute();
 
