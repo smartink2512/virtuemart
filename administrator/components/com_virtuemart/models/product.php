@@ -843,7 +843,7 @@ class VirtueMartModelProduct extends VmModel {
 			$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->escape($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->escape($this->_now) . '" )
 		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->escape($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->escape($this->_now) . '" ) )';
 		/*	//We disable this filter, usually it is interesting to show a table with the different pricing options,
-			//therefore we load now all prices
+			//therefore we load all prices
 			$quantity = (int)$quantity;
 			if(!empty($quantity)){
 				$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
@@ -853,7 +853,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		static $loadedProductPrices = array();
-		$hash = md5($q);
+		$hash = $productId.','.implode($virtuemart_shoppergroup_ids,'.').','.(int)$front; //md5($q);
+		//vmdebug('loadProductPrices my hash',$hash);
 		if(!isset($loadedProductPrices[$hash])){
 			$db->setQuery($q);
 			$prices = $db->loadAssocList();
@@ -913,28 +914,32 @@ class VirtueMartModelProduct extends VmModel {
 
 		if(!empty($product->allPrices) and is_array($product->allPrices)){
 
-			foreach($product->allPrices as $pInd=>$price){
+			foreach($product->allPrices as $k=>$price){
 				if(empty($price['price_quantity_start'])){
 					$price['price_quantity_start'] = 0;
 				}
-				if( (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
-					$product->selectedPrice = $pInd;
-					break;
+				if(empty($price['virtuemart_shoppergroup_id']) and empty($emptySpgrpPrice) and (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
+					$emptySpgrpPrice = $k;
+					//unset($product->allPrices[$k]);
+				} else if(!empty($price['virtuemart_shoppergroup_id']) and !in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
+					//vmdebug('Unset price, shoppergroup does not fit '.$k.' '.$price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids);
+					unset($product->allPrices[$k]);
+				} else if( (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
+					//vmdebug('Set selectedPrice to '.$k);
+					$product->selectedPrice = $k;
 				}
 			}
+
+			if(!isset($product->selectedPrice)){
+				$product->selectedPrice = $emptySpgrpPrice;
+			}
+
 		}
 
-		//vmdebug(' use of $child->prices = $this->getPrice($child,array(),1)');
 		if(!isset($product->selectedPrice)){
 			$product->selectedPrice = 0;
 			$product->allPrices[$product->selectedPrice] = $this->fillVoidPrice();
 		}
-
-		//We map the new price to the old variable for easy updating
-		//We cannot use this here, cause it creates trouble in the cart calculator,
-		//even a product can have different prices, this construction would link them, we need another place for the
-		//fallback
-
 
 	}
 

@@ -23,19 +23,10 @@ defined('_JEXEC') or die('Restricted access');
 
 if ($this->category->haschildren) {
 
-// Category and Columns Counter
-//$iCol = 1;
-//$iCategory = 1;
+	// Calculating Categories Per Row
+	//$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
 
-// Calculating Categories Per Row
-$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
+	// Start the Output
+	echo ShopFunctionsF::renderVmField('categories',array('categories'=> $this->category->children));
 
-?>
-
-
-<?php
-// Start the Output
-echo ShopFunctionsF::renderVmField('categories',array('categories'=> $this->category->children));
-
-?>
-<?php } ?>
+} ?>
