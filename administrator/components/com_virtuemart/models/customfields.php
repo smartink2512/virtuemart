@@ -559,8 +559,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		$session = JFactory::getSession ();
 		$virtuemart_category_id = $session->get ('vmlastvisitedcategoryid', 0, 'vm');
 
-
-		vmdebug('$customfields count ('.count($customfields).')$product->allIds',$product->allIds);
 		foreach($customfields as $k => &$customfield){
 
 			if(!isset($customfield->display))$customfield->display = '';
@@ -641,15 +639,14 @@ class VirtueMartModelCustomfields extends VmModel {
 						$pos = array_search($customfield->virtuemart_product_id, $product->allIds);
 						if(isset($product->allIds[$pos-1])){
 							$selected = $product->allIds[$pos-1];
-							vmdebug($customfield->virtuemart_product_id.' Set selected to - 1 allIds['.($pos-1).'] = '.$selected.' and count '.$dynChilds);
+							//vmdebug($customfield->virtuemart_product_id.' Set selected to - 1 allIds['.($pos-1).'] = '.$selected.' and count '.$dynChilds);
 							//break;
 						} elseif(isset($product->allIds[$pos])){
 							$selected = $product->allIds[$pos];
-							vmdebug($customfield->virtuemart_product_id.' Set selected to allIds['.$pos.'] = '.$selected.' and count '.$dynChilds);
-
+							//vmdebug($customfield->virtuemart_product_id.' Set selected to allIds['.$pos.'] = '.$selected.' and count '.$dynChilds);
 						} else {
 							$selected = $customfield->virtuemart_product_id;
-							vmdebug($customfield->virtuemart_product_id.' Set selected to $customfield->virtuemart_product_id ',$selected,$product->allIds);
+							//vmdebug($customfield->virtuemart_product_id.' Set selected to $customfield->virtuemart_product_id ',$selected,$product->allIds);
 						}
 					}
 

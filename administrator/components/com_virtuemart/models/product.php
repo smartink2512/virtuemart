@@ -366,8 +366,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		vmdebug('my filter ordering ',$this->filter_order);
-
+		//vmdebug('my filter ordering ',$this->filter_order);
 		// special  orders case
 		$ff_select_price = '';
 		switch ($this->filter_order) {
@@ -784,10 +783,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($withCalc) {
 
 			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
-			$app = JFactory::getApplication();
-			//if($app->isSite()){	//Todo remove this for stable release, just in case 3rd party use it
-				$child->prices = &$child->allPrices[$child->selectedPrice];
-			//}
+			$child->prices = &$child->allPrices[$child->selectedPrice];
 		}
 
 		if (empty($child->product_template)) {

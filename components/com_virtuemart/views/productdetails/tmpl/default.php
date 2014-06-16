@@ -107,7 +107,7 @@ if(!empty($boxFuncAsk) or !empty($boxFuncReco)){
 }
 // This is the rows for the customfields, as long you have only one product, just increase it by one,
 // if you have more than one product, reset it for every product
-$this->row = 0;
+//$this->row = 0;
 ?>
 
 <div class="productdetails-view productdetails">
@@ -216,26 +216,8 @@ echo $this->loadTemplate('images');
 		?>
 
 		<?php
-		if ($this->showRating) {
-		    $maxrating = VmConfig::get('vm_maximum_rating_scale', 5);
+		echo shopFunctionsF::renderVmField('rating',array('showRating'=>$this->showRating,'product'=>$this->product));
 
-		    if (empty($this->rating)) {
-			?>
-			<span class="vote"><?php echo vmText::_('COM_VIRTUEMART_RATING') . ' ' . vmText::_('COM_VIRTUEMART_UNRATED') ?></span>
-			    <?php
-			} else {
-			    $ratingwidth = $this->rating->rating * 24; //I don't use round as percetntage with works perfect, as for me
-			    ?>
-			<span class="vote">
-	<?php echo vmText::_('COM_VIRTUEMART_RATING') . ' ' . round($this->rating->rating) . '/' . $maxrating; ?><br/>
-			    <span title=" <?php echo (vmText::_("COM_VIRTUEMART_RATING_TITLE") . round($this->rating->rating) . '/' . $maxrating) ?>" class="ratingbox" style="display:inline-block;">
-				<span class="stars-orange" style="width:<?php echo $ratingwidth.'px'; ?>">
-				</span>
-			    </span>
-			</span>
-			<?php
-		    }
-		}
 		if (is_array($this->productDisplayShipments)) {
 		    foreach ($this->productDisplayShipments as $productDisplayShipment) {
 			echo $productDisplayShipment . '<br />';
@@ -246,62 +228,22 @@ echo $this->loadTemplate('images');
 			echo $productDisplayPayment . '<br />';
 		    }
 		}
-		// Product Price
-		    // the test is done in show_prices
-		//if ($this->show_prices and (empty($this->product->images[0]) or $this->product->images[0]->file_is_downloadable == 0)) {
-		    echo $this->loadTemplate('showprices');
-		//}
-		?>
 
-		<?php
-		// Add To Cart Button
-// 			if (!empty($this->product->prices) and !empty($this->product->images[0]) and $this->product->images[0]->file_is_downloadable==0 ) {
-//		if (!VmConfig::get('use_as_catalog', 0) and !empty($this->product->prices['salesPrice'])) {
-		    echo $this->loadTemplate('addtocart');
-//		}  // Add To Cart Button END
-		?>
+		//In case you are not happy using everywhere the same price display fromat, just create your own layout
+		//in override /html/fields and use as first parameter the name of your file
+		echo shopFunctionsF::renderVmField('prices',array('product'=>$this->product,'currency'=>$this->currency));
+		echo shopFunctionsF::renderVmField('addtocart',array('product'=>$this->product));
 
-		<?php
-		// Availability
-		$stockhandle = VmConfig::get('stockhandle', 'none');
-		$product_available_date = substr($this->product->product_available_date,0,10);
-		$current_date = date("Y-m-d");
-		if (($this->product->product_in_stock - $this->product->product_ordered) < 1) {
-			if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
-			?>	<div class="availability">
-					<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHtml::_('date', $this->product->product_available_date, vmText::_('DATE_FORMAT_LC4')); ?>
-				</div>
-		    <?php
-			} else if ($stockhandle == 'risetime' and VmConfig::get('rised_availability') and empty($this->product->product_availability)) {
-			?>	<div class="availability">
-			    <?php echo (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability'))) ? JHtml::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')) : vmText::_(VmConfig::get('rised_availability')); ?>
-			</div>
-		    <?php
-			} else if (!empty($this->product->product_availability)) {
-			?>
-			<div class="availability">
-			<?php echo (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability)) ? JHtml::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability, $this->product->product_availability, array('class' => 'availability')) : vmText::_($this->product->product_availability); ?>
-			</div>
-			<?php
-			}
-		}
-		else if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
-		?>	<div class="availability">
-				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHtml::_('date', $this->product->product_available_date, vmText::_('DATE_FORMAT_LC4')); ?>
+		echo shopFunctionsF::renderVmField('stockhandle',array('product'=>$this->product));
+
+		// Ask a question about this product
+		if (VmConfig::get('ask_question', 0) == 1) { ?>
+			<div class="ask-a-question">
+				<a class="ask-a-question" href="<?php echo $this->askquestion_url ?>" rel="nofollow" ><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+				<!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $this->askquestion_url ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
 			</div>
 		<?php
 		}
-		?>
-
-<?php
-// Ask a question about this product
-if (VmConfig::get('ask_question', 0) == 1) {
-    ?>
-    		<div class="ask-a-question">
-    		    <a class="ask-a-question" href="<?php echo $this->askquestion_url ?>" rel="nofollow" ><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
-    		    <!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $this->askquestion_url ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
-    		</div>
-		<?php }
 		?>
 
 		<?php

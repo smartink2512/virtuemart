@@ -52,10 +52,10 @@ class AdminUIHelper {
 		$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
 		$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
 		$document->addScript($admin.'js/jquery.coookie.js');
-		$document->addScript($front.'js/jquery.jqtransform.js');
-		$document->addScript($front.'js/chosen.jquery.min.js');
+		//$document->addScript($front.'js/jquery.jqtransform.js');
+		//$document->addScript($front.'js/chosen.jquery.min.js');
+		VmJsApi::chosenDropDowns();
 		$document->addScript($admin.'js/vm2admin.js');
-
 
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
 		$document->addScriptDeclaration ( "
@@ -64,12 +64,12 @@ class AdminUIHelper {
 		var vm2string ={".$vm2string."} ;
 		 jQuery( function($) {
 
-			$('dl#system-message').hide().slideDown(400);
-			$('.virtuemart-admin-area .toggler').vm2admin('toggle');
-			$('#admin-ui-menu').vm2admin('accordeon');
+			jQuery('dl#system-message').hide().slideDown(400);
+			jQuery('.virtuemart-admin-area .toggler').vm2admin('toggle');
+			jQuery('#admin-ui-menu').vm2admin('accordeon');
 			if ( $('#admin-ui-tabs').length  ) {
-
-				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text}); 
+				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie);
+				//$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text});
 			}
 
 			$('#content-box [title]').vm2admin('tips',tip_image);

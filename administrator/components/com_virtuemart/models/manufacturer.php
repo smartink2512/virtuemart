@@ -97,7 +97,7 @@ class VirtueMartModelManufacturer extends VmModel {
      * @author Max Milbers
 	 * @return object List of manufacturer to build filter select box
 	 */
-	function getManufacturerDropDown() {
+	function getManufacturerDropdown() {
 		$db = JFactory::getDBO();
 		$query = "SELECT `virtuemart_manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
 						FROM `#__virtuemart_manufacturers_".VmConfig::$vmlang."` ORDER BY `mf_name` ASC";

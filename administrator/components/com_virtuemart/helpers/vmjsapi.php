@@ -324,19 +324,25 @@ class vmJsApi{
 		static $chosenDropDowns = false;
 
 		if(!$chosenDropDowns){
-
-			if(VmConfig::get ('jchosen', 0)){
+			$be = JFactory::getApplication()->isAdmin();
+			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::js('chosen.jquery.min');
 				vmJsApi::css('chosen');
 
 				$document = JFactory::getDocument();
 				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
 				$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
+				if($be){
+					$selector = '$("select")';
+				} else {
+					$selector = '$(".vm-chzn-select")';
+				}
+
 				$document->addScriptDeclaration ( '
 //<![CDATA[
 		var vm2string ={'.$vm2string.'} ;
 		 jQuery( function($) {
-			$(".vm-chzn-select").chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text});
+			'.$selector.'.chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text,disable_search_threshold: 5});
 		});
 //]]>
 				');

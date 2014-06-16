@@ -784,7 +784,7 @@ class VirtueMartModelUser extends VmModel {
 					if($lang->hasKey('COM_VIRTUEMART_MISSING_'.$field->name)){
 						$missingFields[] = vmText::_('COM_VIRTUEMART_MISSING_'.$field->name);
 					} else {
-						vmdebug('my field titel',$field->title);
+						//vmdebug('my field titel',$field->title);
 						$missingFields[] = vmText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$field->title );
 					}
 

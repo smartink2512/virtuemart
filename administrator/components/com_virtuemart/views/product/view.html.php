@@ -74,9 +74,6 @@ class VirtuemartViewProduct extends VmView {
 
 				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds);
 				//vmdebug('my customfields',$product->customfields);
-				$mf_model = VmModel::getModel('manufacturer');
-				$this->manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
-				//$this->assignRef('manufacturers',	$manufacturers);
 
 				// Get the category tree
 				if (isset($product->categories)) $this->category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -134,9 +131,9 @@ class VirtuemartViewProduct extends VmView {
 				$currency = $currency_model->getCurrency($this->vendor->vendor_currency);
 				$this->vendor_currency_symb = $currency->currency_symbol;
 
-				if(count($this->manufacturers)>0 ){
-					$lists['manufacturers'] = shopFunctions::renderManufacturerList($product->virtuemart_manufacturer_id,true);
-				}
+
+				$lists['manufacturers'] = shopFunctions::renderManufacturerList($product->virtuemart_manufacturer_id,true);
+
 
 				if(!empty($product->product_weight_uom)){	// or !$task=='add'
 					$product_weight_uom = $product->product_weight_uom;

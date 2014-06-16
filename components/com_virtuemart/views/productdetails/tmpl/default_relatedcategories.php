@@ -20,7 +20,6 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 ?>
-
         <div class="product-related-categories">
     	<h4><?php echo vmText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></h4>
 	    <?php foreach ($this->product->customfieldsRelatedCategories as $field) { ?>

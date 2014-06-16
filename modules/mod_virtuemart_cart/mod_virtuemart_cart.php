@@ -9,6 +9,14 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 *
 * www.virtuemart.net
 */
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+//if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
+
+VmConfig::loadConfig();
+VmConfig::loadJLang('mod_virtuemart_cart', true);
+VmConfig::loadJLang('com_virtuemart', true);
+vmJsApi::jQuery();
 
 $doc = JFactory::getDocument();
 $doc->addScript("modules/mod_virtuemart_cart/assets/js/update_cart.js");
@@ -25,13 +33,7 @@ $jsVars  = ' jQuery(document).ready(function(){
 	jQuery(".vmCartModule").productUpdate();
 });' ;
 
-defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-//if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/components/com_virtuemart/helpers/config.php');
 
-VmConfig::loadConfig();
-VmConfig::loadJLang('mod_virtuemart_cart', true);
-VmConfig::loadJLang('com_virtuemart', true);
 
 //This is strange we have the whole thing again in controllers/cart.php public function viewJS()
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');

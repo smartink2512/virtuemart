@@ -1324,7 +1324,7 @@ class VirtueMartCart {
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
-			vmdebug('$this->cartProductsData',$this->cartProductsData);
+			//vmdebug('$this->cartProductsData',$this->cartProductsData);
 			$customFieldsModel = VmModel::getModel('customfields');
 			foreach($this->cartProductsData as $k =>&$productdata){
 				$productdata = (array)$productdata;

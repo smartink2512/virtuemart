@@ -127,12 +127,12 @@ class ShopFunctions {
 				$db->setQuery ($q);
 				$vendors = $db->loadAssocList ();
 
-				$attrs = '';
+				$attrs = array();
 				$name = 'vendor_name';
 				$idA = $id = 'virtuemart_vendor_id';
-
+				$attrs['class'] = 'vm-chzn-select';
 				if ($multiple) {
-					$attrs = ' multiple="multiple" ';
+					$attrs['multiple'] = 'multiple';
 					$idA .= '[]';
 				} else {
 					$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
@@ -186,10 +186,12 @@ class ShopFunctions {
 
 		$manufacturerModel = VmModel::getModel ('manufacturer');
 		$manufacturers = $manufacturerModel->getManufacturers (FALSE, TRUE);
-		$attrs = '';
+		$attrs = array('style'=>"width: 210px");
+		//$attrs = 'style="width:210px"';
 
 		if ($multiple) {
-			$attrs = 'multiple="multiple"';
+			//$attrs .= 'multiple="multiple"';
+			$attrs['multiple'] = 'multiple';
 			if($name=='virtuemart_manufacturer_id')	$name.= '[]';
 		} else {
 			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');

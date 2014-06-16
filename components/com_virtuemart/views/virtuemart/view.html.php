@@ -30,8 +30,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 	public function display($tpl = null) {
 
-		$vendorId = vRequest::getInt('vendorid', 0);
-
+		$vendorId = vRequest::getInt('vendorid', 1);
 
 		$vendorModel = VmModel::getModel('vendor');
 
@@ -64,7 +63,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			$categoryModel = VmModel::getModel('category');
 			$productModel = VmModel::getModel('product');
 			$ratingModel = VmModel::getModel('ratings');
-			$productModel->withRating = $ratingModel->showRating();
+			$productModel->withRating = $this->showRating = $ratingModel->showRating();
 
 			$products = array();
 			$categoryId = vRequest::getInt('catid', 0);

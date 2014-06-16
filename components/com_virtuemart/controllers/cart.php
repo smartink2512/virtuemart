@@ -76,7 +76,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$app = JFactory::getApplication();
 			$app ->redirect($continue_link);
 		}
-		$post = vRequest::getPost();
+
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$viewName = vRequest::getCmd('view', $this->default_view);
@@ -89,8 +89,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 
 		$cart->prepareCartData();
+		$request = vRequest::getRequest();
 		$task = vRequest::getCmd('task');
-		if(($task == 'confirm' or isset($post['confirm'])) and !$cart->getInCheckOut()){
+		if(($task == 'confirm' or isset($request['confirm'])) and !$cart->getInCheckOut()){
 
 			$cart->confirmDone();
 			$view = $this->getView('cart', 'html');
@@ -99,7 +100,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$view->display();
 			return true;
 		} else {
-			$redirect = (isset($post['checkout']) or $task=='checkout');
+			$redirect = (isset($request['checkout']) or $task=='checkout');
 			$cart->checkoutData($redirect);
 		}
 
@@ -123,6 +124,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart->setShipmentMethod();
 		$cart->setPaymentMethod();
+
 		$this->display();
 	}
 

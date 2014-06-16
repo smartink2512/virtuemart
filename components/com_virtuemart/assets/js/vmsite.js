@@ -65,7 +65,7 @@
 								$(dest).find('[value='+id+']').attr("selected","selected");
 							});
 						}
-                        jQuery(dest).trigger("chosen:updated");
+                        jQuery(dest).trigger("liszt:updated"); //in new chosen this is chosen:updated
 					}
 				);
 			} else {

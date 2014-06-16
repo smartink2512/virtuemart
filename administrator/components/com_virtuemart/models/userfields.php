@@ -939,8 +939,10 @@ class VirtueMartModelUserfields extends VmModel {
 							else {
 								$layout = JPATH_VM_SITE . DS . 'fields' . DS . $_fld->name . '.php';
 							}
-							
+							ob_start ();
 							include ($layout);
+							$_return['fields'][$_fld->name]['formcode'] =  ob_get_clean ();
+							//include ($layout);
 
 							break;
 							// /*##mygruz20120223193710 { :*/

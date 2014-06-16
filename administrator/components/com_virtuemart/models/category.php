@@ -150,6 +150,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id.$selectedOrdering.$orderDir.VmConfig::$vmlang ;
 		//We have here our internal key to preven calling of the cache
+		//$useCache = false;
 		if (! array_key_exists ($key,$_childCategoryList)){
 			if($useCache){
 				$cache = JFactory::getCache('com_virtuemart_cats','callback');
@@ -184,15 +185,20 @@ class VirtueMartModelCategory extends VmModel {
 		$query = 'SELECT L.* FROM `#__virtuemart_categories_'.$lang.'` as L
 					JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
 		$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on c.`virtuemart_category_id` = cx.`category_child_id` ';
-		$query .= 'WHERE cx.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
-		$query .= 'AND c.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
-		$query .= 'AND c.`published` = 1 ';
+		$query .= ' WHERE cx.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
+		if(empty($vendorId) and VmConfig::get('multix')!='none'){
+			$query .= ' AND c.`shared` = 1' ;
+		} else if(!empty($vendorId)){
+			$query .= ' AND c.`virtuemart_vendor_id` = ' . (int)$vendorId ;
+		}
+
+		$query .= ' AND c.`published` = 1 ';
 		$query .= ' ORDER BY '.$selectedOrdering.' '.$orderDir;
 
 		$db = JFactory::getDBO();
 		$db->setQuery( $query);
 		$childList = $db->loadObjectList();
-
+		//vmdebug('getChildCategoryListObject in model category ',$childList,$query);
 		if(!empty($childList)){
 			if(!class_exists('TableCategory_medias'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'category_medias.php');
 			foreach($childList as $child){
@@ -246,7 +252,6 @@ class VirtueMartModelCategory extends VmModel {
 
 	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
 		$level++;
-
 
 		if($childs = $this->hasChildren($virtuemart_category_id)){
 
