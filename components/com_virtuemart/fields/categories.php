@@ -44,10 +44,8 @@ $verticalseparator = " vertical-separator";
 <?php 
 
 // Start the Output
-
-
     foreach ( $categories as $category ) {
-		vmdebug('Whats going on here?');
+
 	    // Show the horizontal seperator
 	    if ($iCol == 1 && $iCategory > $categories_per_row) { ?>
 	    <div class="horizontal-separator"></div>

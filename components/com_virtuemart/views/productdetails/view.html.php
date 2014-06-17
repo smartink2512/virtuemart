@@ -85,7 +85,8 @@ class VirtueMartViewProductdetails extends VmView {
 	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 
 	$customfieldsModel = VmModel::getModel ('Customfields');
-	$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
+
+	//$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
 	if ($product->customfields){
 
 		if (!class_exists ('vmCustomPlugin')) {
@@ -93,7 +94,6 @@ class VirtueMartViewProductdetails extends VmView {
 		}
 		$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
 	}
-
 
 	if (empty($product->slug)) {
 
