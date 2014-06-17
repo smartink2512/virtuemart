@@ -50,6 +50,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		if(!VmConfig::get('shop_is_offline',0)){
 
+			vmJsApi::jPrice();
 			//if($vendorIdUser){
 				//$user = JFactory::getUser();
 				if( $vendorIdUser ){
@@ -112,7 +113,32 @@ class VirtueMartViewVirtueMart extends VmView {
 				$products['recent']= $productModel->getProductListing('recent', $recent_products_count);
 				$productModel->addImages($products['recent'],1);
 			}
-			
+
+			if ($products) {
+				foreach($products as &$productSeries){
+					$currency = CurrencyDisplay::getInstance( );
+					$this->assignRef('currency', $currency);
+					$customfieldsModel = VmModel::getModel ('Customfields');
+					if (!class_exists ('vmCustomPlugin')) {
+						require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+					}
+					foreach($productSeries as &$product){
+						$product->stock = $productModel->getStockIndicator($product);
+						if (!empty($product->customfields)) {
+							$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
+							foreach ($product->customfields as $k => $custom) {
+								if (!empty($custom->layout_pos)) {
+									$product->customfieldsSorted[$custom->layout_pos][] = $custom;
+									unset($product->customfields[$k]);
+								}
+							}
+							$product->customfieldsSorted['normal'] = $product->customfields;
+							unset($product->customfields);
+						}
+					}
+				}
+			}
+
 			$this->assignRef('products', $products);
 
 			$user = JFactory::getUser();

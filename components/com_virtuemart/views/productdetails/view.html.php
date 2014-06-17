@@ -47,13 +47,14 @@ class VirtueMartViewProductdetails extends VmView {
 	if ($show_prices == '1') {
 	    if (!class_exists('calculationHelper'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		vmJsApi::jPrice();
 	}
 	$this->assignRef('show_prices', $show_prices);
 
 	$document = JFactory::getDocument();
 
 	// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
-	vmJsApi::jPrice();
+
 
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();

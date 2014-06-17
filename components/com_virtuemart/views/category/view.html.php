@@ -144,7 +144,7 @@ class VirtuemartViewCategory extends VmView {
 							}
 						}
 
-				}
+					}
 
 
 

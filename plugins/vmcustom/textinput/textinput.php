@@ -58,9 +58,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return true ;
 	}
 
-	function plgVmOnDisplayProductFE(&$product,&$group) {
+	function plgVmOnDisplayProductFEVM3(&$product,&$group) {
+
 		if ($group->custom_element != $this->_name) return '';
 		$group->display .= $this->renderByLayout('default',array(&$product,&$group) );
+
 		return true;
 	}
 
@@ -105,7 +107,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	function plgVmOnViewCartVM3(&$product, &$productCustom, &$html) {
 		if (empty($productCustom->custom_element) or $productCustom->custom_element != $this->_name) return '';
 
+		if(empty($product->customProductData[$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])) return '';
 		foreach($product->customProductData[$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id] as $name => $value){
+
 			$html .='<span>'.JText::_($productCustom->custom_title).' '.$value.'</span>';
 		}
 
