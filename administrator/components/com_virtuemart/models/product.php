@@ -842,15 +842,17 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->escape($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->escape($this->_now) . '" )
 		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->escape($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->escape($this->_now) . '" ) )';
+			//$q .= ' ORDER BY `product_price` DESC';
 		/*	//We disable this filter, usually it is interesting to show a table with the different pricing options,
 			//therefore we load all prices
 			$quantity = (int)$quantity;
 			if(!empty($quantity)){
 				$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
 			}*/
-		} else {
-			$q .= ' ORDER BY `product_price` DESC';
 		}
+		//else {
+			$q .= ' ORDER BY `product_price` DESC';
+		//}
 
 		static $loadedProductPrices = array();
 		$hash = $productId.','.implode($virtuemart_shoppergroup_ids,'.').','.(int)$front; //md5($q);
@@ -882,9 +884,10 @@ class VirtueMartModelProduct extends VmModel {
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
 
-		//Check for all attributes to inherited by parent products
+		//Check for all prices to inherited by parent products
 		if(($front or $withParent)and !empty($product_parent_id)) {
-			while ( $product_parent_id and count($product->allPrices)==0) {
+
+			while ( $product_parent_id and (empty($product->allPrices) or count($product->allPrices)==0) ) {
 				$runtime = microtime (TRUE) - $this->starttime;
 				if ($runtime >= $this->maxScriptTime) {
 					vmdebug ('Max execution time reached in model product getProductPrices() ', $product);
@@ -899,7 +902,6 @@ class VirtueMartModelProduct extends VmModel {
 					}
 				}
 				$product->allPrices = $this->loadProductPrices($product_parent_id,$virtuemart_shoppergroup_ids,$front);
-
 				$i++;
 
 				if(!isset($product->allPrices['salesPrice']) and $product_parent_id!=0){

@@ -49,7 +49,8 @@ if(VmConfig::get('shop_is_offline',0)){
 // 	$task = vRequest::getCmd('task',vRequest::getCmd('layout',$_controller) );		$this makes trouble!
 	$task = vRequest::getCmd('task','') ;
 
-	if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
+	if($manage = vRequest::getCmd('manage',false) or (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ){
+	//if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
 		$app = JFactory::getApplication();
 
 		$user = JFactory::getUser();
@@ -65,7 +66,7 @@ if(VmConfig::get('shop_is_offline',0)){
 		} else {
 			$app->redirect('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}
-
+		vRequest::setVar('tmpl','component') ;
 	} elseif($_controller) {
 			vmJsApi::jQuery();
 			vmJsApi::jSite();

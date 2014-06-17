@@ -119,7 +119,7 @@ foreach ($viewData['products'] as $type => $products ) {
 	if(!empty($type)){
 		// Do we need a final closing row tag?
 		//if ($col != 1) {
-		vmdebug('Type not empty '.$type);?>
+		?>
 			<div class="clear"></div>
 			</div>
 		<?php

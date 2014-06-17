@@ -28,7 +28,8 @@ class AdminUIHelper {
      */
    static function startAdminArea($vmView,$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
 		if (vRequest::getCmd ( 'format') =='pdf') return;
-		if (vRequest::getCmd ( 'tmpl') =='component') self::$backEnd=false;
+		if (vRequest::getCmd ( 'manage',false)) self::$backEnd=false;
+
     	if(self::$vmAdminAreaStarted) return;
     	self::$vmAdminAreaStarted = true;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
@@ -89,7 +90,7 @@ class AdminUIHelper {
 		<div class="virtuemart-admin-area">
 		<?php
 		// Include ALU System
-		if (self::$backEnd) {
+		//if (self::$backEnd) {
 		?>
 
 			<div class="menu-wrapper">
@@ -106,7 +107,7 @@ class AdminUIHelper {
 				</div>
 
 			</div>
-		<?php } ?>
+		<?php // } ?>
 			<div id="admin-content-wrapper">
 			<div class="toggler vmicon-show"></div>
 				<div id="admin-content" class="admin-content">
@@ -196,9 +197,9 @@ class AdminUIHelper {
 
 		$user = JFactory::getUser();
 
-		if(!$user->authorise('core.admin', 'com_virtuemart') and !$user->authorise('core.manage', 'com_virtuemart') ){
+		/*if(!$user->authorise('core.admin', 'com_virtuemart') and !$user->authorise('core.manage', 'com_virtuemart') ){
 			$filter [] = "jmmod.is_admin='0'";
-		}
+		}*/
 
 		if (! empty ( $moduleId )) {
 			$filter [] = 'vmmod.module_id=' . ( int ) $moduleId;
@@ -235,50 +236,60 @@ class AdminUIHelper {
 		$user = JFactory::getUser();
 
 		$menuItems = AdminUIHelper::_getAdminMenu ( $moduleId );
+		$app = JFactory::getApplication();
+		$isSite = $app->isSite();
 		?>
 
 		<div id="admin-ui-menu" class="admin-ui-menu">
 
+
+
 		<?php
 		$modCount = 1;
-		foreach ( $menuItems as $item ) { ?>
+		foreach ( $menuItems as $item ) {
 
-			<h3 class="menu-title">
-				<?php echo vmText::_ ( $item ['title'] )?>
-			</h3>
-
-			<div class="menu-list">
-				<ul>
-				<?php
-				foreach ( $item ['items'] as $link ) {
-				    $target='';
-					if ($link ['name'] == '-') {
-						// it was emtpy before
+			$html = '';
+			foreach ( $item ['items'] as $link ) {
+				$target='';
+				if ($link ['name'] == '-') {
+					// it was emtpy before
+				} else {
+					if (strncmp ( $link ['link'], 'http', 4 ) === 0) {
+						$url = $link ['link'];
+						$target='target="_blank"';
 					} else {
-						if (strncmp ( $link ['link'], 'http', 4 ) === 0) {
-							$url = $link ['link'];
-							$target='target="_blank"';
-						} else {
-							$url = ($link ['link'] === '') ? 'index.php?option=com_virtuemart' :$link ['link'] ;
-							$url .= $link ['view'] ? "&view=" . $link ['view'] : '';
-							$url .= $link ['task'] ? "&task=" . $link ['task'] : '';
-							// $url .= $link['extra'] ? $link['extra'] : '';
-						}
-						if ($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart')|| $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
-							?>
-							<li>
-								<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo vmText::_ ( $link ['name'] )?></a>
-							</li>
-							<?php
-						}
+						$url = ($link ['link'] === '') ? 'index.php?option=com_virtuemart' :$link ['link'] ;
+						$url .= $link ['view'] ? "&view=" . $link ['view'] : '';
+						$url .= $link ['task'] ? "&task=" . $link ['task'] : '';
+						$url .= $isSite ? '&tmpl=component&manage=1':'';
+						// $url .= $link['extra'] ? $link['extra'] : '';
+					}
+
+					if ($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
+						$html .= '
+						<li>
+							<a href="'.$url.'" '.$target.'><span class="'.$link ['icon_class'].'"></span>'. vmText::_ ( $link ['name'] ).'</a>
+						</li>';
 					}
 				}
+			}
+			if(!empty($html)){
 				?>
-			    </ul>
-			</div>
+				<h3 class="menu-title">
+					<?php echo vmText::_ ( $item ['title'] )?>
+				</h3>
 
-			<?php
-			$modCount ++;
+				<div class="menu-list">
+					<ul>
+						<?php echo $html ?>
+					</ul>
+				</div>
+
+				<?php
+				$modCount ++;
+			}
+
+
 		}
 		?>
 		</div>

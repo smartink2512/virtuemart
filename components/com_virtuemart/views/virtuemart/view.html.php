@@ -53,8 +53,8 @@ class VirtueMartViewVirtueMart extends VmView {
 			//if($vendorIdUser){
 				//$user = JFactory::getUser();
 				if( $vendorIdUser ){
-					$add_product_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=0' ;
-					$add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_NEW', 'edit', false, false);
+					$add_product_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=0&manage=1' ;
+					$add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT', 'edit', false, false);
 				} else {
 					$add_product_link = "";
 				}
