@@ -64,6 +64,11 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
+				//$user = JFactory::getUser();
+				$superVendor =  VmConfig::isSuperVendor();
+				if( $superVendor !=1 and $superVendor!=$product->virtuemart_vendor_id){
+					JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+				}
 				$product_parent= $model->getProductSingle($product->product_parent_id,false);
 
 				$customfields = VmModel::getModel ('Customfields');

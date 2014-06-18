@@ -68,7 +68,7 @@ class TableProduct_customfields extends VmTable {
 
 	function check(){
 
-		if(!empty($this->custom_price)){
+		if(!empty($this->customfield_price)){
 			$this->customfield_price = str_replace(array(',',' '),array('.',''),$this->customfield_price);
 		} else {
 			$this->customfield_price = null;

@@ -436,9 +436,14 @@ if (!class_exists ('vmPSPlugin')) {
 		return $this->onShowOrderPrint ($order_number, $method_id);
 	}
 
-	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
+	function plgVmDeclarePluginParamsPayment (&$data, $id=0, &$dataOld=0) {
 
-		return $this->declarePluginParams ('payment', $name, $id, $data);
+		if(VM_VERSION==2){
+			return $this->declarePluginParams ('payment', $data, $id, $dataOld);
+		} else {
+			return $this->declarePluginParams ('payment', $data);
+		}
+
 	}
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {

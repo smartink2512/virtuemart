@@ -61,21 +61,23 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$this->_cache[$this->_id] = $this->getTable('shipmentmethods');
 			$this->_cache[$this->_id]->load((int)$this->_id);
 
+
 			if(empty($this->_cache[$this->_id]->virtuemart_vendor_id)){
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
 			}
 
-			if ($this->_cache[$this->_id]->field_type == 'E') {
+			if ($this->_cache[$this->_id]->shipment_jplugin_id) {
 				JPluginHelper::importPlugin ('vmshipment');
 				$dispatcher = JDispatcher::getInstance ();
-				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsShipment', array(&$this->_cache[$this->_id]));
+				$blind = 0;
+				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsShipment', array(&$this->_cache[$this->_id],0,&$blind));
 			}
 
 			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
-				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPushParam);
+				VmTable::bindParameterable($this->_cache[$this->_id],'shipment_params',$this->_cache[$this->_id]->_varsToPushParam);
 			}
-
+			vmdebug('getShipment',$this->_cache[$this->_id]);
 			/*if($this->_data[$this->_id]->shipment_jplugin_id){
 				JPluginHelper::importPlugin('vmshipment');
 				$dispatcher = JDispatcher::getInstance();

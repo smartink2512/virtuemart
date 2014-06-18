@@ -184,7 +184,10 @@ class VirtueMartCart {
 				if($multixcart=='byselection'){
 					self::$_cart->vendorId = vRequest::get('virtuemart_vendor_id',1);
 				}
+			} else {
+				self::$_cart->vendorId = 1;
 			}
+			vmdebug('getCart',self::$_cart->vendorId);
 		}
 
 		return self::$_cart;

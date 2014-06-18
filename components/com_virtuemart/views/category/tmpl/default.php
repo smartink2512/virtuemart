@@ -53,10 +53,7 @@ if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 	if (!empty($this->category->haschildren)) {
 
 		echo ShopFunctionsF::renderVmField('categories',array('categories'=>$this->category->children));
-		?>
-	</div>
 
-	<?php
 	}
 }
 ?>
@@ -116,7 +113,7 @@ if (!empty($this->products)) {
 
 	?>
 
-<div class="vm-pagination"><?php echo $this->vmPagination->getPagesLinks (); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
+<div class="vm-pagination"><?php echo $this->vmPagination->getPagesLinks (); ?><span class="vm-page-counter"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
 
 	<?php
 } elseif (!empty($this->keyword)) {

@@ -452,8 +452,8 @@ abstract class vmPlugin extends JPlugin {
 	 * @param array  $varsToPushParam
 	 */
 	function setConfigParameterable ($paramsFieldName, $varsToPushParam) {
-		$this->_varsToPushParam = $varsToPushParam;
 		$this->_xParams = $paramsFieldName;
+		$this->_varsToPushParam = $varsToPushParam;
 	}
 
 	/**

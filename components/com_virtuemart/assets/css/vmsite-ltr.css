@@ -198,7 +198,7 @@ label.invalid,span.red{color:red;}
 .vm-pagination ul{text-align:center !important;}
 .vm-pagination ul li{display: inline;}
 .vm-pagination  .counter{text-align: right !important;}
-
+.vm-page-counter {float:right;}
 .vm-bottom div{text-align:center !important;}
 .vm-bottom ul{text-align:center !important;}
 .vm-bottom ul li{display: inline;}
