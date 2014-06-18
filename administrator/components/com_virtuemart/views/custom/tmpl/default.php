@@ -48,7 +48,7 @@ $customs = $this->customs->items;
 
 
 
-<table class="adminlist table" cellspacing="0" cellpadding="0">
+<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>

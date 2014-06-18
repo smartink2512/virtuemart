@@ -25,14 +25,14 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 ?>
 <div class="col50">
 	<p><?php echo vmText::_('COM_VIRTUEMART_VENDORLETTER_DESC') ?></p>
-	<table class="admintable">
+	<table class="admintable table-striped">
 		<tr>
 			<td valign="top">
 				<fieldset>
 					<legend>
 						<?php echo vmText::_('COM_VIRTUEMART_VENDOR_LETTER_PAGE') ?>
 					</legend>
-					<table class="admintable">
+					<table class="admintable table-striped">
 						<?php echo VmHTML::row('select', 'COM_VIRTUEMART_VENDOR_LETTER_FORMAT', 
 							'vendor_letter_format', array('A4'=>vmText::_('COM_VIRTUEMART_VENDOR_LETTER_A4'), 'Letter'=>vmText::_('COM_VIRTUEMART_VENDOR_LETTER_LETTER')),
 							$default=$this->vendor->vendor_letter_format, $attrib='', 'value', 'text', 
@@ -117,7 +117,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 					<legend>
 						<?php echo vmText::_('COM_VIRTUEMART_VENDOR_LETTER_FONTS') ?>
 					</legend>
-					<table class="admintable">
+					<table class="admintable table-striped">
 						<tr>
 							<td class="key"><span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_VENDOR_LETTER_FONT_TIP'); ?>">
 								<label for="vendor_letter_font"><?php echo vmText::_('COM_VIRTUEMART_VENDOR_LETTER_FONT') ?></label> </span>
@@ -170,7 +170,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			<legend>
 				<?php echo vmText::_('COM_VIRTUEMART_VENDOR_LETTER_HEAD') ?>
 			</legend>
-			<table class="admintable" width="100%">
+			<table class="admintable table-striped" width="100%">
 				<columns>
 					<col width=25%>
 					<col width=25%>
@@ -237,7 +237,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			<legend>
 				<?php echo vmText::_('COM_VIRTUEMART_VENDOR_LETTER_FOOT') ?>
 			</legend>
-			<table class="admintable" width="100%">
+			<table class="admintable table-striped" width="100%">
 				<columns>
 					<col width=25%>
 					<col width=25%>

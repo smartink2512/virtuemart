@@ -41,7 +41,7 @@ $document->addScriptDeclaration($js);
 ?>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS'); ?></legend>
-	<table class="admintable">
+	<table class="admintable table-striped">
 		<?php
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP','addtocart_popup',VmConfig::get('addtocart_popup',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_POPUP_REL','popup_rel',VmConfig::get('popup_rel',1));

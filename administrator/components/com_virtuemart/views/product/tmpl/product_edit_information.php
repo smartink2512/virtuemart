@@ -29,7 +29,7 @@ $i=0;
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); echo ' id: '.$this->product->virtuemart_product_id ?></legend>
-    <table class="adminform" width="100%">
+    <table class="adminform table-striped" width="100%">
 		<tr class="row<?php echo $i?>">
 			<td style="min-width:75px;max-width:200px;width:130px;">
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?>
@@ -163,7 +163,7 @@ $i=0;
 	}
 	$calculator = calculationHelper::getInstance ();
 	?>
-    <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform">
+    <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform  ">
         <tbody id="productPriceBody">
 		<?php
 
@@ -236,9 +236,9 @@ $i=0;
 		?>
         </tbody>
     </table>
-    <div class="button2-left">
+    <div class="button2-left btn-wrapper">
         <div class="blank">
-            <a href="#" id="add_new_price"><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_ADD_PRICE') ?> </a>
+            <a  class="btn btn-small" href="#" id="add_new_price"><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_ADD_PRICE') ?> </a>
         </div>
     </div>
 
@@ -251,7 +251,7 @@ $i=0;
 	<fieldset>
 		<legend>
 		<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
-		<table class="adminform">
+		<table class="adminform table-striped">
 			<tr class="row<?php echo $i?>">
 				<td width="50%">
 				<?php
@@ -263,10 +263,10 @@ $i=0;
 						$add_child_button=" not-active";
 					}
 ?>
-					<div class="button2-left <?php echo $add_child_button ?>">
+					<div class="button2-left <?php echo $add_child_button ?> btn-wrapper">
 						<div class="blank">
 							<?php if ($link) { ?>
-								<a href="<?php echo $link ?>">
+								<a href="<?php echo $link ?>" class="btn btn-small">
 							<?php } else { ?>
 								<span class="hasTip" title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_ADD_CHILD_TIP'); ?>">
 							<?php } ?>

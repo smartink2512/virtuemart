@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 <br />
 <fieldset>
     <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SETTINGS') ?></legend>
-    <table class="admintable">
+    <table class="admintable table-striped">
 	<tr>
 	    <td class="key">
 		<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP'); ?>">

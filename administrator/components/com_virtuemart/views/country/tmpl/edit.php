@@ -29,7 +29,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 <div class="col50">
 	<fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_COUNTRY_DETAILS'); ?></legend>
-	<table class="admintable">
+	<table class="admintable table-striped">
 		<?php
 		$lang = JFactory::getLanguage();
 		$prefix="COM_VIRTUEMART_COUNTRY_";

@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="col50">
 	<fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS'); ?></legend>
-	<table class="admintable">
+	<table class="admintable table-striped">
 
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_NAME','mf_name',$this->manufacturer->mf_name); ?>
 	    	<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->manufacturer->published); ?>

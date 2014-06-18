@@ -31,7 +31,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 <div class="col50">
 	<fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_USERFIELD_DETAILS'); ?></legend>
-	<table class="admintable" width="100%">
+	<table class="admintable table-striped" width="100%">
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_FIELDMANAGER_TYPE', $this->lists['type'] ); ?>
 
 		<!-- Start Type specific attributes -->
@@ -40,7 +40,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<div id="divText">
 					<fieldset>
 					<legend><?php echo vmText::_('COM_VIRTUEMART_TEXTFIELD_ATTRIBUTES'); ?></legend>
-						<table class="admintable">
+						<table class="admintable table-striped">
 							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_MAXLENGTH','maxlength',$this->userField->maxlength,'class="inputbox"','',5); ?>
 						</table>
 					</fieldset>
@@ -49,7 +49,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<div id="divColsRows">
 					<fieldset>
 					<legend><?php echo vmText::_('COM_VIRTUEMART_COL_ROWS_ATTRIBUTES'); ?></legend>
-						<table class="admintable">
+						<table class="admintable table-striped">
 							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_COLUMNS','cols',$this->userField->cols,'class="inputbox"','',5); ?>
 							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_ROWS','rows',$this->userField->rows,'class="inputbox"','',5); ?>
 						</table>
@@ -59,7 +59,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<div id="divAgeVerification" style="text-align:left;">
 					<fieldset>
 					<legend><?php echo vmText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_ATTRIBUTES'); ?></legend>
-						<table class="admintable">
+						<table class="admintable table-striped">
 							<?php echo VmHTML::row('raw','COM_VIRTUEMART_FIELDS_AGEVERIFICATION_MINIMUM', $this->lists['minimum_age'] ); ?>
 						</table>
 					</fieldset>
@@ -68,7 +68,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<div id="divWeb">
 					<fieldset>
 					<legend><?php echo vmText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'); ?></legend>
-						<table class="admintable">
+						<table class="admintable table-striped">
 							<?php echo VmHTML::row('raw','COM_VIRTUEMART_FIELDMANAGER_TYPE', $this->lists['webaddresstypes'] ); ?>
 						</table>
 					</fieldset>
@@ -77,7 +77,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<div id="divValues" style="text-align:left;">
 					<fieldset>
 					<legend><?php echo vmText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUES_TIP'); ?></legend>
-						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
+						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable table-striped">
 							<thead>
 								<tr>
 									<th class="title" width="20%"><?php echo vmText::_('COM_VIRTUEMART_VALUE') ?></th>

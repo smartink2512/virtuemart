@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 					?>
 				<li class="newsfeed-item" style="font-size: 100%;font-style: italic;">
-					<button>
+					<button class="btn btn-small">
 					<a href="http://virtuemart.net/news/list-all-news" target="_blank" title="<?php echo vmText::_('COM_VIRTUEMART_ALL_NEWS'); ?>"><?php echo vmText::_('COM_VIRTUEMART_ALL_NEWS'); ?></a>
 					</button>
 				</li>

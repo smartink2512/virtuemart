@@ -38,7 +38,7 @@ AdminUIHelper::startAdminArea($this);
 	</div>
 	<br />
 	<div id="editcell">
-		<table class="adminlist table" cellspacing="0" cellpadding="0">
+		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
 

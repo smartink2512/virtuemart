@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<legend>
 						<?php echo vmText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 					</legend>
-					<table class="admintable">
+					<table class="admintable table-striped">
 						<tr>
 							<td class="key">
 								<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_STORE_NAME'); ?>:
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<legend>
 						<?php echo vmText::_('COM_VIRTUEMART_STORE_CURRENCY_DISPLAY') ?>
 					</legend>
-					<table class="admintable">
+					<table class="admintable table-striped">
 						<tr>
 							<td class="key">
 								<?php echo vmText::_('COM_VIRTUEMART_CURRENCY'); ?>:

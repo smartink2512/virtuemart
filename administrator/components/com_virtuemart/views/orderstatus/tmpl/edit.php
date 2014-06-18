@@ -37,7 +37,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 		$readonly = '';
 	    }
 	    ?>
-	    <table class="admintable">
+	    <table class="admintable table-striped">
 		<?php
 		$lang = JFactory::getLanguage();
 		$text = $lang->hasKey($this->orderStatus->order_status_name) ? ' (' . vmText::_($this->orderStatus->order_status_name) . ')' : ' ';

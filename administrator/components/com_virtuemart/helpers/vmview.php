@@ -173,8 +173,8 @@ class VmView extends JViewLegacy {
 	function displayDefaultViewSearch($searchLabel='COM_VIRTUEMART_NAME',$name ='search') {
 		return vmText::_('COM_VIRTUEMART_FILTER') . ' ' . vmText::_($searchLabel) . ':
 		<input type="text" name="' . $name . '" id="' . $name . '" value="' .$this->lists[$name] . '" class="text_area" />
-		<button onclick="this.form.submit();">' . vmText::_('COM_VIRTUEMART_GO') . '</button>
-		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . vmText::_('COM_VIRTUEMART_RESET') . '</button>';
+		<button class="btn btn-small" onclick="this.form.submit();">' . vmText::_('COM_VIRTUEMART_GO') . '</button>
+		<button class="btn btn-small" onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . vmText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}
 
 	function addStandardEditViewCommands($id = 0,$object = null) {

@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');?>
 <td valign="top" width="50%">
 <fieldset>
 <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS'); ?></legend>
-<table class="admintable">
+<table class="admintable table-striped">
 <?php
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_SHOW_PRINTICON','show_printicon',VmConfig::get('show_printicon',1));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_PDF_ICON_SHOW','pdf_icon',VmConfig::get('pdf_icon',0));
@@ -157,7 +157,7 @@ defined('_JEXEC') or die('Restricted access');?>
 	</fieldset>
 	<fieldset>
 		<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE'); ?></legend>
-		<table class="admintable">
+		<table class="admintable table-striped">
 			<?php
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_REVIEWS_AUTOPUBLISH','reviews_autopublish',VmConfig::get('reviews_autopublish',0));
 			echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH','reviews_minimum_comment_length',VmConfig::get('reviews_minimum_comment_length',0));

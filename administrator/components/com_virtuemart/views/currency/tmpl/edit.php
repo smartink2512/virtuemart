@@ -29,7 +29,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 <div class="col50">
 	<fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_CURRENCY_DETAILS'); ?></legend>
-	<table class="admintable">
+	<table class="admintable table-striped">
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NAME','currency_name',$this->currency->currency_name); ?>
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->currency->published); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE','currency_exchange_rate',$this->currency->currency_exchange_rate,'class="inputbox"','',6); ?>

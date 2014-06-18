@@ -52,8 +52,8 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 					echo $this->lists['search_order'];
 					echo vmJsApi::jDate(vRequest::getVar('search_date', $nowstring), 'search_date');
 				?>
-				<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
-				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
+				<button  class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+				<button  class="btn btn-small" onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
 			</td>
 
 		</tr>
@@ -68,7 +68,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 // $this->productlist
 
 ?>
-	<table class="adminlist table" cellspacing="0" cellpadding="0">
+	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th width="20px"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>

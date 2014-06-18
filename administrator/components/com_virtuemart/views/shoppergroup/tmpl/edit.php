@@ -46,7 +46,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
     <div class="col50">
 	<fieldset>
 	    <legend><?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DETAILS'); ?></legend>
-	    <table class="admintable">
+	    <table class="admintable table-striped">
 
 		<?php echo VmHTML::row('input', 'COM_VIRTUEMART_SHOPPERGROUP_NAME', 'shopper_group_name', $this->shoppergroup->shopper_group_name); ?>
 		<?php echo VmHTML::row('booleanlist', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->shoppergroup->published); ?>
@@ -94,7 +94,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	<fieldset>
 	    <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend>
 
-	    <table class="admintable">
+	    <table class="admintable table-striped">
 		<tr>
 		    <td>
 <?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY'); ?>
@@ -106,7 +106,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 		    </td>
 		</tr>
 		</table>
-		<table class="admintable" id="show_hide_prices">
+		<table class="admintable table-striped" id="show_hide_prices">
 		<tr>
 		    <td>
 			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">

@@ -45,7 +45,7 @@ $option = vRequest::getCmd('option');
 
 
 <div style="text-align: left;">
-	<table class="adminlist table" cellspacing="0" cellpadding="0">
+	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th width="20"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>

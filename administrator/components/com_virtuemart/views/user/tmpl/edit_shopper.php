@@ -161,7 +161,7 @@ function gotocontact(id) {
 	<legend>
 		<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_LEGEND_USERDETAILS'); ?>
 	</legend>
-	<table class="admintable" cellspacing="1">
+	<table class="admintable table-striped" cellspacing="1">
 
 
 		<?php if ($this->lists['canBlock']) : ?>
@@ -218,7 +218,7 @@ function gotocontact(id) {
 	<legend>
 		<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_LEGEND_PARAMETERS'); ?>
 		</legend>
-	<table class="admintable" cellspacing="1">
+	<table class="admintable table-striped" cellspacing="1">
 		<tr>
 			<td>
 			<?php
@@ -236,7 +236,7 @@ function gotocontact(id) {
 		<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_LEGEND_CONTACTINFO'); ?>
 	</legend>
 	<?php if ( !$this->contactDetails ) { ?>
-	<table class="admintable" cellspacing="1">
+	<table class="admintable table-striped" cellspacing="1">
 		<tr>
 			<td>
 				<br />
@@ -248,7 +248,7 @@ function gotocontact(id) {
 		</tr>
 	</table>
 	<?php  } else { ?>
-	<table class="admintable" cellspacing="1">
+	<table class="admintable table-striped" cellspacing="1">
 		<tr>
 			<td width="15%">
 				<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_CONTACTDETAILS_NAME'); ?>:

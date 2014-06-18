@@ -130,7 +130,7 @@ defined('_JEXEC') or die('Restricted access');
 				<legend><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE' );?></legend>
 				<div><?php echo  '<div class="inline">'.$this->customsList; ?></div>
 
-				<table id="custom_fields" class="adminlist" cellspacing="0" cellpadding="0">
+				<table id="custom_fields" class="adminlist table-striped" cellspacing="0" cellpadding="2">
 					<thead>
 					<tr class="row1">
 						<th><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>
