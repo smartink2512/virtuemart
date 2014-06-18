@@ -285,6 +285,7 @@ class VirtueMartModelCustom extends VmModel {
 			}
 		}
 
+		//I think this is obsolete, note by Max
 		if(empty($data['virtuemart_vendor_id'])){
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();

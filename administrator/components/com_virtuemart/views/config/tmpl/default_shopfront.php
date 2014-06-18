@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');?>
 
 	echo VmHTML::row('input','COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH','asks_minimum_comment_length',VmConfig::get('asks_minimum_comment_length',50),'class="inputbox"','',4,4);
 	echo VmHTML::row('input','COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH','asks_maximum_comment_length',VmConfig::get('asks_maximum_comment_length',2000),'class="inputbox"','',5,5);
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_ASK_QUESTION_CAPTCHA','ask_question_captcha',VmConfig::get('ask_question_captcha',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW','product_navigation',VmConfig::get('product_navigation',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_DISPLAY_STOCK','display_stock',VmConfig::get('display_stock',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_COUPONS_ENABLE','coupons_enable',VmConfig::get('coupons_enable',0));

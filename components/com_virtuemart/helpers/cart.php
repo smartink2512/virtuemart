@@ -43,7 +43,7 @@ class VirtueMartCart {
 	var $_redirect_disabled = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
 	//todo multivendor stuff must be set in the add function, first product determines ownership of cart, or a fixed vendor is used
-	var $vendorId = 1;
+	var $vendorId = 0;
 	var $lastVisitedCategoryId = 0;
 	var $virtuemart_shipmentmethod_id = 0;
 	var $virtuemart_paymentmethod_id = 0;
@@ -174,6 +174,16 @@ class VirtueMartCart {
 				$lastName = empty(self::$_cart->BT['last_name'])? '':self::$_cart->BT['last_name'];
 				$email = empty(self::$_cart->BT['email'])? '':self::$_cart->BT['email'];
 				self::$_cart->customer_number = 'nonreg_'.$firstName.$lastName.$email;
+			}
+			$multixcart = VmConfig::get('multixcart',0);
+			if(!empty($multixcart)){
+				if($multixcart=='byvendor' and empty(self::$_cart->vendorId) or self::$_cart->vendorId==1){
+					$vendor = VmModel::getModel('vendor');
+					self::$_cart->vendorId = $vendor->getLoggedVendor();
+				}
+				if($multixcart=='byselection'){
+					self::$_cart->vendorId = vRequest::get('virtuemart_vendor_id',1);
+				}
 			}
 		}
 
@@ -411,6 +421,18 @@ class VirtueMartCart {
 			//Now we check if the delivered customProductData is correct and add missing
 			//if(!$product)
 			$product = $productModel->getProduct($virtuemart_product_id, true, false,true,$productData['quantity']);
+			//$productVendorId = $product->virtuemart_vendor_id;
+
+			if(VmConfig::get('multixcart',0)=='byproduct'){
+				if(empty($this->vendorId)) $this->vendorId = $product->virtuemart_vendor_id;
+				if(!empty($this->vendorId) and $this->vendorId != $product->virtuemart_vendor_id){
+					//Product of another vendor recognised, for now we just return false,
+					//later we will create here another cart (multicart)
+					return false;
+				}
+			}
+
+
 			//$product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
 			$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 			$customProductDataTmp=array();
@@ -917,16 +939,17 @@ class VirtueMartCart {
 	 */
 	private function checkPurchaseValue() {
 
-		$vendor = VmModel::getModel('vendor');
-		$vendor->setId($this->vendorId);
-		$store = $vendor->getVendor();
-		if ($store->vendor_min_pov > 0) {
+		//$vendor = VmModel::getModel('vendor');
+		//$vendor->setId($this->vendorId);
+		//$store = $vendor->getVendor();
+		$this->prepareVendor();
+		if ($this->vendor->vendor_min_pov > 0) {
 			$prices = $this->getCartPrices();
-			if ($prices['salesPrice'] < $store->vendor_min_pov) {
+			if ($prices['salesPrice'] < $this->vendor->vendor_min_pov) {
 				if (!class_exists('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();
-				return vmText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $currency->priceDisplay($store->vendor_min_pov));
+				return vmText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $currency->priceDisplay($this->vendor->vendor_min_pov));
 			}
 		}
 		return null;

@@ -135,9 +135,19 @@ defined('_JEXEC') or die('Restricted access');?>
 			$optMultiX = array(
 				'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_NONE'),
 				'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_ADMIN')
+
 				// 				'all'	=> vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 			);
 			echo VmHTML::row('radiolist','COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX','multix',VmConfig::get('multix','none'), $optMultiX);
+		$optMultiX = array(
+			'0' => vmText::_('COM_VIRTUEMART_CFG_MULTIX_CART_NONE'),
+			'byproduct' => vmText::_('COM_VIRTUEMART_CFG_MULTIX_CART_BYPRODUCT'),
+			'byvendor' => vmText::_('COM_VIRTUEMART_CFG_MULTIX_CART_BYVENDOR'),
+			'byselection' => vmText::_('COM_VIRTUEMART_CFG_MULTIX_CART_BYSELECTION')
+			// 				'all'	=> vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+		);
+		echo VmHTML::row('radiolist','COM_VIRTUEMART_CFG_MULTIX_CART','multixcart',VmConfig::get('multixcart',0), $optMultiX);
+
 		?>
 
 	</table>

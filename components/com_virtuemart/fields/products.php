@@ -73,10 +73,10 @@ foreach ($viewData['products'] as $type => $products ) {
 
 				if ( VmConfig::get ('display_stock', 1)) { ?>
 					<!-- 						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none')){?> -->
-					<div class="paddingtop8">
+					<!--div class="stock-level" -->
 						<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
-						<span class="stock-level"><?php echo vmText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
-					</div>
+						<!--span class="stock-level"><?php echo vmText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span -->
+					<!--/div -->
 				<?php } ?>
 
 

@@ -27,88 +27,11 @@ if (empty($this->product)) {
 	return;
 }
 
-if(vRequest::getInt('print',false)){
-?>
+echo shopFunctionsF::renderVmField('askrecomjs',array('product'=>$this->product));
+
+if(vRequest::getInt('print',false)){ ?>
 <body onload="javascript:print();">
-<?php }
-
-// addon for joomla modal Box
-JHtml::_('behavior.modal');
-
-$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
-
-$boxFuncReco = '';
-$boxFuncAsk = '';
-if(VmConfig::get('usefancy',1)){
-	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-	vmJsApi::css('jquery.fancybox-1.3.4');
-	if(VmConfig::get('show_emailfriend',0)){
-		$boxReco = "jQuery.fancybox({
-				href: '" . $MailLink . "',
-				type: 'iframe',
-				height: '550'
-			});";
-	}
-	if(VmConfig::get('ask_question', 0)){
-		$boxAsk = "jQuery.fancybox({
-				href: '" . $this->askquestion_url . "',
-				type: 'iframe',
-				height: '550'
-			});";
-	}
-
-} else {
-	vmJsApi::js( 'facebox' );
-	vmJsApi::css( 'facebox' );
-	if(VmConfig::get('show_emailfriend',0)){
-		$boxReco = "jQuery.facebox({
-				iframe: '" . $MailLink . "',
-				rev: 'iframe|550|550'
-			});";
-	}
-	if(VmConfig::get('ask_question', 0)){
-		$boxAsk = "jQuery.facebox({
-				iframe: '" . $this->askquestion_url . "',
-				rev: 'iframe|550|550'
-			});";
-	}
-}
-if(VmConfig::get('show_emailfriend',0) ){
-	$boxFuncReco = "jQuery('a.recommened-to-friend').click( function(){
-					".$boxReco."
-			return false ;
-		});";
-}
-if(VmConfig::get('ask_question', 0)){
-	$boxFuncAsk = "jQuery('a.ask-a-question').click( function(){
-					".$boxAsk."
-			return false ;
-		});";
-}
-
-if(!empty($boxFuncAsk) or !empty($boxFuncReco)){
-	$document = JFactory::getDocument();
-	$document->addScriptDeclaration("
-//<![CDATA[
-	jQuery(document).ready(function($) {
-		".$boxFuncReco."
-		".$boxFuncAsk."
-	/*	$('.additional-images a').mouseover(function() {
-			var himg = this.href ;
-			var extension=himg.substring(himg.lastIndexOf('.')+1);
-			if (extension =='png' || extension =='jpg' || extension =='gif') {
-				$('.main-image img').attr('src',himg );
-			}
-			console.log(extension)
-		});*/
-	});
-//]]>
-");
-}
-// This is the rows for the customfields, as long you have only one product, just increase it by one,
-// if you have more than one product, reset it for every product
-//$this->row = 0;
-?>
+<?php } ?>
 
 <div class="productdetails-view productdetails">
 
@@ -170,6 +93,7 @@ if(!empty($boxFuncAsk) or !empty($boxFuncReco)){
 
 		echo $this->linkIcon($link . '&format=pdf', 'COM_VIRTUEMART_PDF', 'pdf_button', 'pdf_icon', false);
 	    echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon');
+		$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
 	    echo $this->linkIcon($MailLink, 'COM_VIRTUEMART_EMAIL', 'emailButton', 'show_emailfriend', false,true,false,'class="recommened-to-friend"');
 	    ?>
     	<div class="clear"></div>
