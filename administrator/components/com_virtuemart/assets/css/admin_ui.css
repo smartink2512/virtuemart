@@ -13,6 +13,9 @@
 .virtuemart-admin-area .menu-wrapper {width:190px ;float: left;}
 .virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;padding: 0;overflow: auto; background: left repeat-y #fff;border-left: solid #b4b4b4 1px;height:540px;}
 .virtuemart-admin-area #admin-content-wrapper .admin-content {height:auto;min-height: 540px;padding: 0 0 0 5px;}
+.virtuemart-admin-area button.btn.btn-small {
+    margin-bottom: 5px;
+}
 #header {     background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;padding:3px;padding-left: 10px;padding-right: 10px;}
 
 .ratingbox{position:relative;display:block;width:120px;height:24px;background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x scroll 0 bottom transparent}
