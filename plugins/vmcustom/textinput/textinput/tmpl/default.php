@@ -10,7 +10,6 @@ $name = 'customProductData['.$product->virtuemart_product_id.']['.$params->virtu
 		   type="text" value=""
 		   size="<?php echo $params->custom_size ?>"
 		   name="<?php echo $name?>"
-		   oninput="javascript:setTextInputPrice(this);"
 		><br />
 <?php
 	// preventing 2 x load javascript

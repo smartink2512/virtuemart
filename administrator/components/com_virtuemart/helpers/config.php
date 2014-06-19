@@ -535,11 +535,14 @@ class VmConfig {
 		if(self::$_debug){
 			ini_set('display_errors', '1');
 		} else {
-			ini_set('display_errors', '0');
-			if(version_compare(phpversion(),'5.4.0','<' )){
-				error_reporting( E_ALL & ~E_STRICT );
-			} else {
-				error_reporting( E_ALL ^ E_STRICT );
+			$jconfig = JFactory::getConfig(); 
+			if ($jconfig->get('error_reporting') == 'none') {
+				ini_set('display_errors', '0'); 
+				if(version_compare(phpversion(),'5.4.0','<' )){
+					error_reporting( E_ALL & ~E_STRICT );
+				} else {
+					error_reporting( E_ALL ^ E_STRICT );
+				}
 			}
 		}
 

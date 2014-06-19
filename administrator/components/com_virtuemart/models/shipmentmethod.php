@@ -71,7 +71,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				JPluginHelper::importPlugin ('vmshipment');
 				$dispatcher = JDispatcher::getInstance ();
 				$blind = 0;
-				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsShipment', array(&$this->_cache[$this->_id],0,&$blind));
+				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsShipmentVM3', array(&$this->_cache[$this->_id]));
 			}
 
 			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){

@@ -736,17 +736,22 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods,true);
+		} else {
+			vmdebug('Old order?',$variantmods);
 		}
 
 		$productCustoms = array();
 		foreach($product->customfields as $prodcustom){
-			//We just add the customfields to be shown in the cart to the variantmods
-			if($prodcustom->is_cart_attribute and !$prodcustom->is_input){
-				$variantmods[$prodcustom->virtuemart_custom_id] = $prodcustom->virtuemart_customfield_id;
-			} else if(!empty($variantmods) and !empty($variantmods[$prodcustom->virtuemart_custom_id])){
 
+			//We just add the customfields to be shown in the cart to the variantmods
+			if(is_object($prodcustom)){
+				if($prodcustom->is_cart_attribute and !$prodcustom->is_input){
+					$variantmods[$prodcustom->virtuemart_custom_id] = $prodcustom->virtuemart_customfield_id;
+				} else if(!empty($variantmods) and !empty($variantmods[$prodcustom->virtuemart_custom_id])){
+
+				}
+				$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 			}
-			$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 		}
 		//if(empty($productCustoms)) return $html . '</div>';
 		//vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods,$productCustoms);
@@ -1051,7 +1056,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$tableCustomfields->_xParams = 'customfield_params';
 				if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 				VirtueMartModelCustom::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
-				vmdebug('Data to store $tableCustomfields->bindChecknStore',$fields);
+				//vmdebug('Data to store $tableCustomfields->bindChecknStore',$fields,$tableCustomfields);
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 				foreach($errors as $error){

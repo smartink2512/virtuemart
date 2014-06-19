@@ -773,7 +773,7 @@ class VirtueMartModelUser extends VmModel {
 						vmdebug('virtuemart_state_id is empty, but valid (country has not states, set to unrequired');
 						$field->required = false;
 					} else {
-						vmdebug('validateUserData my country '.$data['virtuemart_country_id'].' my state '.$data['virtuemart_state_id']);
+						//vmdebug('validateUserData my country '.$data['virtuemart_country_id'].' my state '.$data['virtuemart_state_id']);
 					}
 				}
 			}
@@ -800,7 +800,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if($i==$required) $return = -1;
-		vmdebug('my i '.$i.' my data size '.$required,$return,$showInfo);
+		//vmdebug('my i '.$i.' my data size '.$required,$return,$showInfo);
 
 		if(!$return or $showInfo){
 

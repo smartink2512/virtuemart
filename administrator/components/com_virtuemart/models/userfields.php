@@ -178,11 +178,11 @@ class VirtueMartModelUserfields extends VmModel {
 				$dispatcher = JDispatcher::getInstance();
 				$plgName = substr($this->_cache->type,6);
 				$type = 'userfield';
-				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_cache[$this->_id]->userfield_jplugin_id,&$this->_cache[$this->_id]));
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfieldVM3',array($type,&$this->_cache[$this->_id]));
 				// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_cache);
 			}
 			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
-				VmTable::bindParameterable($this->_cache[$this->_id],$this->_cache[$this->_id]->_xParams,$this->_cache[$this->_id]->_varsToPushParam);
+				VmTable::bindParameterable($this->_cache[$this->_id],'userfield_params',$this->_cache[$this->_id]->_varsToPushParam);
 			}
 		}
 

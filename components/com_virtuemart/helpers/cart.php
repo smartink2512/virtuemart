@@ -118,7 +118,6 @@ class VirtueMartCart {
 
 				if(isset($sessionCart->cartProductsData)){
 					self::$_cart->cartProductsData = $sessionCart->cartProductsData;
-					//vmdebug('getCart product',self::$_cart->cartProductsData);
 					self::$_cart->vendorId	 					= $sessionCart->vendorId;
 					self::$_cart->lastVisitedCategoryId	 		= $sessionCart->lastVisitedCategoryId;
 					self::$_cart->virtuemart_shipmentmethod_id	= $sessionCart->virtuemart_shipmentmethod_id;
@@ -187,7 +186,7 @@ class VirtueMartCart {
 			} else {
 				self::$_cart->vendorId = 1;
 			}
-			vmdebug('getCart',self::$_cart->vendorId);
+			vmdebug('getCart $_cart->vendorId',self::$_cart->vendorId);
 		}
 
 		return self::$_cart;
@@ -786,7 +785,7 @@ class VirtueMartCart {
 
 		$validUserDataBT = self::validateUserData();
 		if ($validUserDataBT!==true) {	//Important, we can have as result -1,false and true.
-			vmdebug('CheckoutData my cart $validUserDataBT failed ',$validUserDataBT);
+			//vmdebug('CheckoutData my cart $validUserDataBT failed ',$validUserDataBT);
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
 		}
 
@@ -803,7 +802,7 @@ class VirtueMartCart {
 			//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
 			// the advantage, that plugins can easily deal with it.
 			$this->BT = array_merge($this->BT,$this->cartfields);
-			vmdebug('CheckoutData array_merge($this->BT,$this->cartfields) ',$this->BT);
+			//vmdebug('CheckoutData array_merge($this->BT,$this->cartfields) ',$this->BT);
 		}
 		//vmdebug('CheckoutData my cart before $this->STsameAsBT!==0 ',$validUserDataBT);
 
@@ -813,7 +812,7 @@ class VirtueMartCart {
 			} else {
 				$this->ST = 0;
 			}
-			vmdebug('CheckoutData my cart $this->STsameAsBT ',$this->ST);
+			//vmdebug('CheckoutData my cart $this->STsameAsBT ',$this->ST);
 		} else {
 			if (($this->selected_shipto = vRequest::getVar('shipto', 0)) !== 0) {
 				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');

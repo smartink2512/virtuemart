@@ -200,7 +200,7 @@ abstract class vmPlugin extends JPlugin {
 
 		if ($name !== 0) {
 			if ($name != $this->_name) {
-				vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
+				//vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
 				return FALSE;
 			}
 		}
@@ -508,10 +508,10 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function declarePluginParams ($psType, &$data, $blind=0, $blind2=0) {
 
-		//vmdebug('declarePluginParams ',$this->_psType,$data);
 		if(!empty($this->_psType)){
 			$element = $this->_psType.'_element';
 			$jplugin_id = $this->_psType.'_jplugin_id';
+			//vmdebug('declarePluginParams ',$this->_psType,$data->$element,$data->$jplugin_id);
 			if(!isset($data->$element) or !isset($data->$jplugin_id)) return FALSE;
 			if(!$this->selectedThis($psType,$data->$element,$data->$jplugin_id)){
 				return FALSE;

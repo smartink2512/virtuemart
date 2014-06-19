@@ -99,3 +99,4 @@ $verticalseparator = " vertical-separator";
 	<?php
 	}
  } ?>
+ </div>

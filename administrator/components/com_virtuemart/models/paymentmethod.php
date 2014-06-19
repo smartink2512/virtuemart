@@ -68,8 +68,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			if($this->_cache[$this->_id]->payment_jplugin_id){
 				JPluginHelper::importPlugin('vmpayment');
 				$dispatcher = JDispatcher::getInstance();
-				$blind = 0;
-				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsPayment', array(&$this->_cache[$this->_id],0,&$blind));
+				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsPaymentVM3', array(&$this->_cache[$this->_id]));
 				//$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_cache[$this->_id]->payment_element,$this->_cache[$this->_id]->payment_jplugin_id,&$this->_cache));
 			}
 
