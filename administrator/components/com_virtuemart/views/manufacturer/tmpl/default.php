@@ -72,7 +72,7 @@ AdminUIHelper::startAdminArea($this);
 		$row = $this->manufacturers[$i];
 
 		$checked = JHtml::_('grid.id', $i, $row->virtuemart_manufacturer_id,null,'virtuemart_manufacturer_id');
-		$published = JHtml::_('grid.published', $row, $i);
+		$published = $this->gridPublished( $row, $i );
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id=' . $row->virtuemart_manufacturer_id);
 		?>
 	    <tr class="row<?php echo $k ; ?>">

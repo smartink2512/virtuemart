@@ -94,7 +94,8 @@ AdminUIHelper::startAdminArea($this);
 		foreach($this->categories as $i=>$cat){
 
 			$checked = JHtml::_('grid.id', $i, $cat->virtuemart_category_id);
-			$published = JHtml::_('grid.published', $cat, $i);
+			$published = $this->gridPublished( $cat, $i );
+
 			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id, FALSE);
 // 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $cat->virtuemart_category_id);
 			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id, FALSE);

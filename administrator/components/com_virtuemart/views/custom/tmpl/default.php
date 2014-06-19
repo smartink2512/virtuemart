@@ -37,7 +37,7 @@ $keyword = vRequest::getCmd('keyword', null);
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
 		<input type="hidden" name="view" value="custom" />
 
-		<input class="button" type="submit" name="search" value="<?php echo vmText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
+		<input class="button btn btn-small" type="submit" name="search" value="<?php echo vmText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
 	</div>
 </div>
 <?php
@@ -76,7 +76,10 @@ $customs = $this->customs->items;
 		foreach ($customs as $key => $custom) {
 
 			$checked = JHtml::_('grid.id', $i , $custom->virtuemart_custom_id,false,'virtuemart_custom_id');
-			if (!is_null($custom->virtuemart_custom_id)) $published = JHtml::_('grid.published', $custom, $i );
+			if (!is_null($custom->virtuemart_custom_id))
+			{
+				$published = $this->gridPublished( $custom, $i );
+			}
 			else $published = '';
 			?>
 			<tr class="row<?php echo $k ; ?>">

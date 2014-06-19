@@ -31,8 +31,8 @@ AdminUIHelper::startAdminArea($this);
 				<td width="100%">
 					<?php echo vmText::_('COM_VIRTUEMART_FILTER'); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-					<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
-					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
+					<button class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+					<button class="btn btn-small" onclick="document.adminForm.search.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
 				</td>
 			</tr>
 		</table>
@@ -42,7 +42,7 @@ AdminUIHelper::startAdminArea($this);
 	</div>
 
 	<div id="editcell">
-		<table class="adminlist jgrid">
+		<table class="adminlist jgrid table-striped">
 		<thead>
 		<tr>
 			<th width="10">
@@ -139,7 +139,7 @@ AdminUIHelper::startAdminArea($this);
 				<td class="order">
 					<span><?php echo $this->pagination->vmOrderUpIcon( $i, $ordering, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP')  ); ?></span>
 					<span><?php echo $this->pagination->vmOrderDownIcon( $i, $ordering, $n, true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN') ); ?></span>
-					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
+					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="ordering" style="text-align: center" />
 			</td>
 			<td width="10">
 					<?php echo $row->virtuemart_userfield_id; ?>

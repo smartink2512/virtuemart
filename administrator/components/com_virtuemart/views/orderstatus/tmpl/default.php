@@ -58,7 +58,8 @@ AdminUIHelper::startAdminArea($this);
                 $vmCoreStatusCode= $this->lists['vmCoreStatusCode'];
 		for ($i = 0, $n = count($this->orderStatusList); $i < $n; $i++) {
 			$row = $this->orderStatusList[$i];
-			$published = JHtml::_('grid.published', $row, $i );
+			$published = $this->gridPublished( $row, $i );
+
 			$checked = JHtml::_('grid.id', $i, $row->virtuemart_orderstate_id);
 
                         $coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));

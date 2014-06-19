@@ -58,8 +58,8 @@ AdminUIHelper::startAdminArea($this);
 		$keyword = vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 		foreach ($this->inventorylist as $key => $product) {
 			$checked = JHtml::_('grid.id', $i , $product->virtuemart_product_id);
-			$published = JHtml::_('grid.published', $product, $i );
-			
+			$published = $this->gridPublished( $product, $i );
+
 			//<!-- low_stock_notification  -->
 			if ( $product->product_in_stock - $product->product_ordered < 1) $stockstatut ="out";
 			elseif ( $product->product_in_stock - $product->product_ordered < $product->low_stock_notification ) $stockstatut ="low";

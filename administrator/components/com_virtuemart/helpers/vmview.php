@@ -447,7 +447,7 @@ class VmView extends JViewLegacy {
 		}
 
 		$img = 'admin/' . $img;
-
+		$icon 	= $field ? 'publish' : 'unpublish';
 		if ($untoggleable) {
 			$attribs='style="opacity: 0.6;"';
 		} else {
@@ -457,12 +457,26 @@ class VmView extends JViewLegacy {
 
 		if($untoggleable) return $image;
 
-
+		if (JVM_VERSION < 3){
 		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				. $image .'</a>');
+		} else {
+			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
+				. '<span class="icon-'.$icon.'"><span>' .'</a>');
+		}
 
 
 	}
+
+	function gridPublished($name,$i) {
+		if (JVM_VERSION < 3){
+		$published = JHtml::_('grid.published', $name, $i );
+		} else {
+			$published = JHtml::_('jgrid.published', $name->published, $i );
+		}
+		return $published;
+	}
+
 	function showhelp(){
 		/* http://docs.joomla.org/Help_system/Adding_a_help_button_to_the_toolbar */
 

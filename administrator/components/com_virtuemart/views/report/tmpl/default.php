@@ -45,7 +45,7 @@ JHtml::_('behavior.framework', true);
                         	$vendorId = vRequest::getInt('virtuemart_vendor_id',1);
                         	echo ShopFunctions::renderVendorList($vendorId,false);
                         } ?>
-                        <button onclick="this.form.period.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?>
+                        <button class="btn btn-small" onclick="this.form.period.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?>
                         </button>
                     </td>
                 </tr>

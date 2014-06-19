@@ -54,7 +54,7 @@ AdminUIHelper::startAdminArea($this);
 		$k = 0;
 		for ($i=0, $n=count( $this->shipments ); $i < $n; $i++) {
 			$row = $this->shipments[$i];
-			$published = JHtml::_('grid.published', $row, $i );
+			$published = $this->gridPublished( $row, $i );
 			/**
 			 * @todo Add to database layout published column
 			 */

@@ -31,7 +31,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
 				<td align="left" width="100%">
 					<?php echo vmText::_('COM_VIRTUEMART_FILTER') ?>:
 					&nbsp;<input type="text" value="<?php echo vRequest::getVar('filter_country'); ?>" name="filter_country" size="25" />
-					<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+					<button class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 				</td>
 			</tr>
 		</table>
@@ -71,7 +71,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
 		$row = $this->countries[$i];
 
 		$checked = JHtml::_('grid.id', $i, $row->virtuemart_country_id);
-		$published = JHtml::_('grid.published', $row, $i);
+		$published = $this->gridPublished( $row, $i );
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=country&task=edit&cid[]=' . $row->virtuemart_country_id);
 		$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
 		?>

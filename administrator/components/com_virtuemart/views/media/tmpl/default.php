@@ -63,7 +63,7 @@ $productfileslist = $this->files;
 		foreach ($productfileslist as $key => $productfile) {
 
 			$checked = JHtml::_('grid.id', $i , $productfile->virtuemart_media_id,null,'virtuemart_media_id');
-			if (!is_null($productfile->virtuemart_media_id)) $published = JHtml::_('grid.published', $productfile, $i );
+			if (!is_null($productfile->virtuemart_media_id)) 	$published = $this->gridPublished( $productfile, $i );
 			else $published = '';
 			?>
 			<tr class="row<?php echo $k ; ?>">

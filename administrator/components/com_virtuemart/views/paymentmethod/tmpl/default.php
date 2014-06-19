@@ -70,7 +70,8 @@ AdminUIHelper::startAdminArea($this);
 
 			$row = $this->payments[$i];
 			$checked = JHtml::_('grid.id', $i, $row->virtuemart_paymentmethod_id);
-			$published = JHtml::_('grid.published', $row, $i);
+			$published = $this->gridPublished( $row, $i );
+
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
