@@ -58,7 +58,7 @@ foreach ($viewData['products'] as $type => $products ) {
 		<div class="product floatleft<?php echo $cellwidth . $show_vertical_separator ?>">
 			<div class="spacer">
 
-				<div class="width30 floatleft center">
+				<div class="vm-products-media-container">
 					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link; ?>">
 						<?php
 						echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);

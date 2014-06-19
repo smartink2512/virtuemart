@@ -13,7 +13,7 @@ span.title{font-weight:700;display:block;border-bottom:solid #CAC9C9 1px;font-si
 .product-packaging{margin:15px 0 0;}
 .icons{text-align:right;float:right;margin:4px 0 10px 30px;}
 .additional-images img{margin-right:8px;width:50px;height:auto;}
-.product-price{margin:0 0 15px;}
+.product-price{margin:0 0 15px;height: 80px;}
 .price-crossed div.PricebasePriceWithTax .PricebasePriceWithTax{text-decoration: line-through;}
 .productdetails-view .addtocart-bar{margin:15px 0 0;padding:0 0 0 0px;}
 .availability{text-align:center;margin:15px 0 0;}
@@ -96,7 +96,7 @@ button.default{display:inline-block;cursor:pointer;padding:5px 8px 4px;}
 button.default:hover{color:#777;}
 a.highlight,a.highlight:visited{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #00a000 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;font-size:12px;display:inline-block;text-decoration:none;background-position:0 -160px;color:#fff;padding:3px 8px 1px;}
 textarea.virtuemart{background:#fff;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;text-align:left;padding:5px 5px 4px;}
-p.product_s_desc{margin-bottom:6px;padding:0;}
+p.product_s_desc{margin-bottom:6px;padding:0;height: 40px;}
 span.stock-level{font-size:10px;color:#7d7b7b;}
 .horizontal-separator{height:1px;background:#e9e8e8;margin:10px 0;}
 .invalid{background-color:#ffd;color:#000;border-color:red;}
@@ -171,6 +171,9 @@ span.bold,div.bold{font-weight:700;}
 .vm2-warning{background-position:0 -1383px;width:50px;height:40px;}
 .vendor-store-desc,.category-view,.featured-view,.latest-view,.topten-view,.recent-view,.related-products-view,.browse-view,.order-view{margin-bottom:25px;}
 .main-image,.featured-view .product,.latest-view .product,.topten-view .product,.recent-view .product,.related-products-view .product,.center,span.center{text-align:center;}
+.vm-products-media-container {float:left;width:30%;text-align:center;}
+.vm-product-media-container {float:left;width:60%;}
+.vm-product-details-container {float:right;width:40%;}
 /* .main-image img {max-width:100%;height:auto}*/
 .main-image img {max-width:100%;max-height:260px}
 .main-image img.product-image,.featured-view .spacer img,.latest-view .spacer img,.topten-view .spacer img,.recent-view .spacer img{max-width:100%;height:auto;width:auto;}

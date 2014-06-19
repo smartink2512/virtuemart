@@ -839,7 +839,8 @@ class VirtueMartModelUserfields extends VmModel {
 						//	break;
 					case 'password':
 					case 'password2':
-						$_return['fields'][$_fld->name]['formcode'] = '<input type="password" id="' . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" size="30" class="inputbox" />'."\n";
+						$_return['fields'][$_fld->name]['formcode'] = '<input type="password" id="' . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name .'" '.($_fld->required ? ' class="required"' : ''). ' size="30" class="inputbox" />'."\n";
+					break;
 						break;
 
 					//case 'agreed':

@@ -121,14 +121,14 @@ if(vRequest::getInt('print',false)){ ?>
     } // Product Custom ontop end
     ?>
 
-    <div>
-	<div class="width60 floatleft">
+    <div class="vm-product-container">
+	<div class="vm-product-media-container">
 <?php
 echo $this->loadTemplate('images');
 ?>
 	</div>
 
-	<div class="width40 floatright">
+	<div class="vm-product-details-container">
 	    <div class="spacer-buy-area">
 
 		<?php
