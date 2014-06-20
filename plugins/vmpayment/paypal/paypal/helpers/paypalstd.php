@@ -182,12 +182,10 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
 		if ($this->_method->debug ) {
-			if ($this->_method->debug) {
 
 				$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to PayPal" />
 						</div>';
-			}
 			$this->debugLog($post_variables, 'PayPal request:', 'debug');
 
 		} else {

@@ -30,11 +30,11 @@ $doc = JFactory::getDocument();
 $doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/js/site.js');
 
 ?>
-<div id="paymentMethodOptions_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" class="paymentMethodOptions" style="display:none;">
+<div id="paymentMethodOptions_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" class="paymentMethodOptions" >
     <br />
     <span class="vmpayment_cardinfo">
         <?php 
-        echo vmText::_('VMPAYMENT_PAYPAL_CC_COMPLETE_FORM');
+       echo vmText::_('VMPAYMENT_PAYPAL_CC_COMPLETE_FORM');
         if ($viewData['sandbox'] ) {
             echo '<br />' . vmText::_('VMPAYMENT_PAYPAL_CC_SANDBOX_INFO');
         }

@@ -271,7 +271,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables = $this->initPostVariables('SetExpressCheckout');
 		$this->addAcceleratedOnboarding($post_variables);
 		// It is almost impossible to have the same amount as the one calultaed by paypal
-		//$this->addPrices($post_variables);
+		if (isset($this->_method->add_prices_api) and $this->_method->add_prices_api) {
+			$this->addPrices($post_variables);
+		}
 
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
@@ -383,7 +385,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$this->addAcceleratedOnboarding($post_variables);
 		$this->addBillTo($post_variables);
 		$this->addShipTo($post_variables);
-		//$this->addPrices($post_variables);
+		if (isset($this->_method->add_prices_api) and $this->_method->add_prices_api) {
+			$this->addPrices($post_variables);
+		}
 
 
 		$this->addToken($post_variables);

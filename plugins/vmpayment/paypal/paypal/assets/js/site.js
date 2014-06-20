@@ -53,7 +53,7 @@ jQuery().ready(function($) {
 
 	$('input[name=virtuemart_paymentmethod_id]').change(function() {
 		var selectedMethod = $('input[name=virtuemart_paymentmethod_id]:checked').val();
-		$('.paymentMethodOptions').hide();
+		//$('.paymentMethodOptions').hide();
 		$('#paymentMethodOptions_'+selectedMethod).show();
 	});
 

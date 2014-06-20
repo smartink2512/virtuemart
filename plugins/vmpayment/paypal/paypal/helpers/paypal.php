@@ -111,6 +111,19 @@ class PaypalHelperPaypal {
 		}
 	}
 
+	function getProductAmountWithoutTax ($productPricesUnformatted) {
+		if ($productPricesUnformatted['discountedPriceWithoutTax']) {
+			return vmPSPlugin::getAmountValueInCurrency($productPricesUnformatted['discountedPriceWithoutTax'], $this->_method->payment_currency);
+		} else {
+			return vmPSPlugin::getAmountValueInCurrency($productPricesUnformatted['priceBeforeTax'], $this->_method->payment_currency);
+		}
+	}
+
+	function getProductTaxAmount ($productPricesUnformatted) {
+		if ($productPricesUnformatted['subtotal_tax_amount']) {
+			return vmPSPlugin::getAmountValueInCurrency($productPricesUnformatted['subtotal_tax_amount'], $this->_method->payment_currency);
+		}
+	}
 
 	function addRulesBill ($rules) {
 		$handling = 0;
@@ -642,7 +655,7 @@ class PaypalHelperPaypal {
 		if ($test_ipn == 1) {
 			//return true;
 		}
-
+		$paypal_data=$_POST;
 		// Paypal wants to open the socket in SSL
 		$port = 443;
 		$paypal_url = $this->_getPaypalURL('ssl://', false);
@@ -754,9 +767,9 @@ class PaypalHelperPaypal {
 		}
 		if (!$result) {
 			$errorInfo = array(
-				"paypal_data" => $paypal_data,
+				"paypal_data"         => $paypal_data,
 				'payment_order_total' => $payments[0]->payment_order_total,
-				'currency_code_3' => $this->currency_code_3
+				'currency_code_3'     => $this->currency_code_3
 			);
 			$this->debugLog($errorInfo, 'IPN notification with invalid amount or currency or email', 'error', false);
 		}
@@ -882,21 +895,15 @@ class PaypalHelperPaypal {
 	}
 
 	public function debugLog ($message, $title = '', $type = 'message', $echo = false, $doVmDebug = false) {
-
+		$masked_fields = array('ACCT', 'CVV2', 'signature', 'SIGNATURE', 'api_password', 'PWD');
 		//Nerver log the full credit card number nor the CVV code.
 		if (is_array($message)) {
-			if (array_key_exists('ACCT', $message)) {
-				$message['ACCT'] = "**** **** **** " . substr($message['ACCT'], -4);
+			foreach ($masked_fields as $masked_field) {
+				if (array_key_exists($masked_field, $message)) {
+					$message[$masked_field] = '**MASKED**';
+				}
 			}
-			if (array_key_exists('CVV2', $message)) {
-				$message['CVV2'] = str_repeat('*', strlen($message['CVV2']));
-			}
-			if (array_key_exists('signature', $message)) {
-				$message['signature'] = '**MASKED**';
-			}
-			if (array_key_exists('api_password', $message)) {
-				$message['api_password'] = '**MASKED**';
-			}
+
 		}
 
 		if ($this->_method->debug) {

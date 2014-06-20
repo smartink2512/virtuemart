@@ -378,7 +378,15 @@ jQuery().ready(function ($) {
         }
     }
 
-
+    handleProductPricesApi = function() {
+        var paypalproduct = $('#paramspaypalproduct').val();
+        var add_prices_api = $('#paramsadd_prices_api').val();
+        if (paypalproduct == 'api'  || paypalproduct == 'exp' ) {
+            $('.add_prices_api').parents('tr').show();
+        } else {
+            $('.add_prices_api').parents('tr').hide();
+        }
+}
     /**********/
     /* Events */
     /**********/
@@ -399,6 +407,8 @@ jQuery().ready(function ($) {
         handleWarningAuthorizeStd();
         handlePaymentType();
         handlePaymentPlanDefer();
+        handleProductPricesApi();
+
     });
     $('#paramsauthentication').change(function () {
         handleAuthentication();
@@ -453,5 +463,6 @@ jQuery().ready(function ($) {
     handleWarningHeaderImage();
     handlePaymentFeesWarning();
     handlePaymentPlanDefer();
+    handleProductPricesApi();
 
 });
