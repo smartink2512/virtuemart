@@ -112,7 +112,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 			$published = JHtml::_('grid.published', $product, $i );
 			$published = $this->gridPublished( $product, $i );
 
-			$is_featured = $this->toggle($product->product_special, $i);
+			$is_featured = $this->toggle($product->product_special, $i,'toggle.product_special');
 			$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id;
 			?>
 			<tr class="row<?php echo $k ; ?>">

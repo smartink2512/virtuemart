@@ -92,16 +92,25 @@ class TableShoppergroups extends VmTable
 		} else {
 
 			if(function_exists('mb_strlen') ){
-				if (mb_strlen($this->shopper_group_name) > 32) {
+				if (mb_strlen($this->shopper_group_name) > 128) {
 					vmError(vmText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
 					return false;
 				}
 			} else {
-				if (strlen($this->shopper_group_name) > 32) {
+				if (strlen($this->shopper_group_name) > 128) {
 					vmError(vmText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
 					return false;
 				}
 			}
+		}
+
+		if($this->virtuemart_shoppergroup_id==1){
+			$this->default=2;
+			$this->sgrp_additional = 0;
+		}
+		if($this->virtuemart_shoppergroup_id==2){
+			$this->default=1;
+			$this->sgrp_additional = 0;
 		}
 
 		return parent::check();

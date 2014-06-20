@@ -896,9 +896,9 @@ class VmModel extends JObject {
 	 *
 	 */
 
-	public function getData($id = -1){
+	public function getData($id = 0){
 
-		if($id!=-1) $this->_id = (int)$id;
+		if($id!=0) $this->_id = (int)$id;
 
 		if (empty($this->_cache[$this->_id])) {
 			$this->_cache[$this->_id] = $this->getTable($this->_maintablename);

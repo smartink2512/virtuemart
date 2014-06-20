@@ -60,8 +60,6 @@ class VirtuemartViewShopperGroup extends VmView {
 		} else {
 			$this->SetViewTitle();
 
-			JToolBarHelper::makeDefault();
-
 			$showVendors = $this->showVendors();
 			$this->assignRef('showVendors',$showVendors);
 

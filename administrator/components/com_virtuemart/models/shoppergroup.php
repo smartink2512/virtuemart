@@ -65,7 +65,11 @@ class VirtueMartModelShopperGroup extends VmModel {
     function getShopperGroups($onlyPublished=false, $noLimit = false) {
 
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-	    $query = 'SELECT * FROM `#__virtuemart_shoppergroups` ORDER BY `virtuemart_vendor_id`,`shopper_group_name` ';
+	    $query = 'SELECT * FROM `#__virtuemart_shoppergroups`  ';
+		if($onlyPublished){
+			$query .= ' WHERE `published` = "1" ';
+		}
+		$query .= 'ORDER BY `virtuemart_vendor_id`,`shopper_group_name` ';
 
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
@@ -77,7 +81,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	    return $this->_data;
     }
 
-	function makeDefault($id,$kind = 1) {
+/*	function makeDefault($id,$kind = 1) {
 
 		//Prevent making anonymous Shoppergroup as default
 		$adId = $this->getDefault(1);
@@ -93,7 +97,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 		$db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = "'.$kind.'" WHERE virtuemart_shoppergroup_id='.(int)$id);
 		if (!$db->execute()) return ;
 		return true;
-	}
+	}/*
 
 	/**
 	 *

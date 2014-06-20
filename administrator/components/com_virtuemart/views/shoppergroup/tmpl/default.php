@@ -62,7 +62,11 @@ AdminUIHelper::startAdminArea($this);
 			$row = $this->shoppergroups[$i];
 			$published = $this->gridPublished( $row, $i );
 
-			$checked = JHtml::_('grid.id', $i, $row->virtuemart_shoppergroup_id,null,'virtuemart_shoppergroup_id');
+			$checked = '';
+			if ($row->default == 0) {
+				$checked = JHtml::_('grid.id', $i, $row->virtuemart_shoppergroup_id,null,'virtuemart_shoppergroup_id');
+			}
+
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shoppergroup&task=edit&virtuemart_shoppergroup_id[]=' . $row->virtuemart_shoppergroup_id);
 
 			?>
@@ -79,7 +83,7 @@ AdminUIHelper::startAdminArea($this);
 			</td>
 			<td align="center">
 				<?php
-				if ($row->default == 1) {
+				if ($row->default != 0) {
 					echo JHtml::_('image','menu/icon-16-default.png', vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true);
 				}
 				?>

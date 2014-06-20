@@ -447,7 +447,7 @@ class VmView extends JViewLegacy {
 		}
 
 		$img = 'admin/' . $img;
-		$icon 	= $field ? 'publish' : 'unpublish';
+
 		if ($untoggleable) {
 			$attribs='style="opacity: 0.6;"';
 		} else {
@@ -458,9 +458,10 @@ class VmView extends JViewLegacy {
 		if($untoggleable) return $image;
 
 		if (JVM_VERSION < 3){
-		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				. $image .'</a>');
+			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
+					. $image .'</a>');
 		} else {
+			$icon 	= $field ? 'publish' : 'unpublish';
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				. '<span class="icon-'.$icon.'"><span>' .'</a>');
 		}
@@ -470,7 +471,7 @@ class VmView extends JViewLegacy {
 
 	function gridPublished($name,$i) {
 		if (JVM_VERSION < 3){
-		$published = JHtml::_('grid.published', $name, $i );
+			$published = JHtml::_('grid.published', $name, $i );
 		} else {
 			$published = JHtml::_('jgrid.published', $name->published, $i );
 		}

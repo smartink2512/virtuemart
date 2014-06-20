@@ -948,6 +948,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 
 				if($selected === -1) {
+					//VmConfig::$echoDebug = 1;
+					//vmdebug('Selected is minus 1');
 					continue;
 				}
 

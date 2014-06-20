@@ -51,7 +51,7 @@ class calculationHelper {
 	private $checkAutomaticSelected = false;
 	protected $exchangeRateVendor = 0;
 	protected $exchangeRateShopper = 0;
-	protected $_internalDigits = 8;
+	protected $_internalDigits = 9;
 	protected $_revert = false;
 	static $_instance;
 
@@ -460,6 +460,11 @@ class calculationHelper {
 			}
 		}
 
+		foreach($this->productPrices as $k => &$price){
+			if(!is_array($price)){
+				$price = round($price,$this->_internalDigits-4);
+			}
+		}
 		$this->productPrices = array_merge($prices,$this->productPrices);
 // 		vmdebug('getProductPrices',$this->productPrices);
 

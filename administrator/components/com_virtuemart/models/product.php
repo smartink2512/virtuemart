@@ -394,6 +394,7 @@ class VirtueMartModelProduct extends VmModel {
 				$joinMf = TRUE;
 				$joinMfLang = true;
 				break;
+			case 'ordering':
 			case 'pc.ordering':
 				$orderBy = ' ORDER BY `pc`.`ordering` ';
 				$joinCategory = TRUE;
@@ -403,6 +404,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
 				$joinPrice = TRUE;
 				break;
+			case 'created_on':
 			case '`p`.created_on':
 				$orderBy = ' ORDER BY p.`created_on` ';
 				break;
@@ -420,7 +422,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($group) {
 
 			$latest_products_days = VmConfig::get ('latest_products_days', 7);
-			$latest_products_orderBy = VmConfig::get ('latest_products_orderBy','created_on');
+			$latest_products_orderBy = VmConfig::get ('latest_products_orderBy','p.`created_on`');
 			$groupBy = 'group by p.`virtuemart_product_id` ';
 			switch ($group) {
 				case 'featured':
@@ -885,7 +887,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product_parent_id = $product->product_parent_id;
 
 		//Check for all prices to inherited by parent products
-		if(($front or $withParent)and !empty($product_parent_id)) {
+		if(($front or $withParent) and !empty($product_parent_id)) {
 
 			while ( $product_parent_id and (empty($product->allPrices) or count($product->allPrices)==0) ) {
 				$runtime = microtime (TRUE) - $this->starttime;
@@ -915,24 +917,27 @@ class VirtueMartModelProduct extends VmModel {
 		$product->selectedPrice = null;
 
 		if(!empty($product->allPrices) and is_array($product->allPrices)){
-
+			$emptySpgrpPrice = 0;
+			//vmdebug('Set selectedPrice to ',$product->allPrices);
 			foreach($product->allPrices as $k=>$price){
 				if(empty($price['price_quantity_start'])){
 					$price['price_quantity_start'] = 0;
 				}
-				if(empty($price['virtuemart_shoppergroup_id']) and empty($emptySpgrpPrice) and (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
+				$quantityFits = (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ;
+				if(empty($price['virtuemart_shoppergroup_id']) and empty($emptySpgrpPrice) and $quantityFits ){
 					$emptySpgrpPrice = $k;
 					//unset($product->allPrices[$k]);
 				} else if(!empty($price['virtuemart_shoppergroup_id']) and !in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
 					//vmdebug('Unset price, shoppergroup does not fit '.$k.' '.$price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids);
-					unset($product->allPrices[$k]);
-				} else if( (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
+					if($front) unset($product->allPrices[$k]);
+				} else if( $quantityFits ){
 					//vmdebug('Set selectedPrice to '.$k);
 					$product->selectedPrice = $k;
 				}
 			}
 
 			if(!isset($product->selectedPrice)){
+				//if(!$front and empty($emptySpgrpPrice)) $emptySpgrpPrice = 1;
 				$product->selectedPrice = $emptySpgrpPrice;
 			}
 
