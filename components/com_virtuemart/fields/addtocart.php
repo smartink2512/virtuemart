@@ -49,9 +49,10 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 						<span class="product-field-display"><?php echo $field->display ?></span>
 
 						<span class="product-field-desc"><?php echo $field->custom_desc ?></span>
-					</div><br/>
+					</div>
 					<?php
 				} ?>
+				<div class="clear"></div>
 			</div>
 		<?php
 		}
