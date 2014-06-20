@@ -184,20 +184,20 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmPrepareCartProduct($product, &$productCustomsPrice,$selected,&$modificatorSum){
+	public function plgVmPrepareCartProduct(&$product, &$customfield,$selected,&$modificatorSum){
 
-		if ($productCustomsPrice->custom_element !==$this->_name) return ;
+		if ($customfield->custom_element !==$this->_name) return ;
 
 		//$product->product_name = 'Ice Saw';
-		//vmdebug('plgVmPrepareCartProduct we can modify the product here',$product);
+		//vmdebug('plgVmPrepareCartProduct we can modify the product here');
 
 		if (!empty($selected['comment'])) {
-			if ($productCustomsPrice->custom_price_by_letter ==1) {
+			if ($customfield->custom_price_by_letter ==1) {
 				$charcount = strlen ($selected['comment']);
 			} else {
 				$charcount = 1.0;
 			}
-			$modificatorSum += $charcount * $productCustomsPrice->customfield_price ;
+			$modificatorSum += $charcount * $customfield->customfield_price ;
 		} else {
 			$modificatorSum += 0.0;
 		}

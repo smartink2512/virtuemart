@@ -1182,8 +1182,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		foreach($productKeys as $key){
 			foreach($calculation_kinds as $calculation_kind) {
 
-				if(!isset($_cart->pricesUnformatted[$key][$calculation_kind])) continue;
-				$productRules = $_cart->pricesUnformatted[$key][$calculation_kind];
+				if(!isset($_cart->cartPrices[$key][$calculation_kind])) continue;
+				$productRules = $_cart->cartPrices[$key][$calculation_kind];
 
 				foreach($productRules as $rule){
 					$orderCalcRules = $this->getTable('order_calc_rules');
@@ -1194,7 +1194,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$orderCalcRules->calc_amount =  0;
 					$orderCalcRules->calc_result =  0;
 					if ($calculation_kind == 'VatTax') {
-						$orderCalcRules->calc_amount =  $_cart->pricesUnformatted[$key]['taxAmount'];
+						$orderCalcRules->calc_amount =  $_cart->cartPrices[$key]['taxAmount'];
 						$orderCalcRules->calc_result =  $_cart->cartData['VatTax'][$rule[7]]['result'];
 					}
 					$orderCalcRules->calc_value = $rule[1];

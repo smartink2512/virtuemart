@@ -73,6 +73,9 @@ class VirtueMartCart {
 	var $cartData = array();
 	var $cartPrices = array();
 
+	/* @deprecated */
+	var $pricesUnformatted = array();
+
 	private static $_cart = null;
 
 	var $useSSL = 1;
@@ -1324,11 +1327,17 @@ class VirtueMartCart {
 
 		$calculator->getCheckoutPrices($this);
 
+		//Fallback for old extensions
+		$this->pricesUnformatted = $this->cartPrices;
+		vmdebug('getCartPrices my format pricesUnformatted',$this->pricesUnformatted);
 		//We must do this here, otherwise if we have a product more than one time in the cart
 		//it has always the same price
 		foreach($this->products as $k => $product){
+			//vmdebug('my product',$product);
 			$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
+			//$this->pricesUnformatted[$product->cart_item_id] = $product->prices;
 		}
+		//vmdebug('getCartPrices my format pricesUnformatted',$this->pricesUnformatted);
 	}
 
 	function prepareVendor(){

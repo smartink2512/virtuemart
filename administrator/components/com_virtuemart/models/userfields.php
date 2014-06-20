@@ -487,7 +487,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 
 		//Small ugly hack to make registering optional //do we still need that? YES !  notice by Max Milbers
-		if($register && $type == 'BT'  && VmConfig::get('oncheckout_show_register',1) ){
+		if($register and $type == 'BT'  and VmConfig::get('oncheckout_show_register',1) ){
 
 
 			foreach($userFields as $field){
@@ -928,24 +928,8 @@ class VirtueMartModelUserfields extends VmModel {
 							 }
 							break;
 						case 'custom':
-
-							$app = JFactory::getApplication ();
-							// get the template and default paths for the layout
-							$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . 'fields' . DS . $_fld->name . '.php';
-
-							// if the site template has a layout override, use it
-							if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-							if (JFile::exists ($templatePath)) {
-								$layout =  $templatePath;
-							}
-							else {
-								$layout = JPATH_VM_SITE . DS . 'fields' . DS . $_fld->name . '.php';
-							}
-							ob_start ();
-							include ($layout);
-							$_return['fields'][$_fld->name]['formcode'] =  ob_get_clean ();
-							//include ($layout);
-
+							if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+							$_return['fields'][$_fld->name]['formcode'] =  shopFunctionsF::renderVmField($_fld->name,array('field'=>$_return['fields'][$_fld->name],'userData' => $_userData,'prefix' => $_prefix));
 							break;
 							// /*##mygruz20120223193710 { :*/
 						// case 'userfieldplugin': //why not just vmuserfieldsplugin ?

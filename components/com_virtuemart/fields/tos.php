@@ -12,7 +12,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+$_prefix = $viewData['prefix'];
+$field = $viewData['field'];
+//$userData = $viewData['userData'];
 $app = JFactory::getApplication();
 if($app->isSite()){
 	vmJsApi::popup('#full-tos','#terms-of-service');
@@ -25,11 +27,11 @@ if($app->isSite()){
 		$tos = 0;
 	}
 } else {
-	$tos = $_return['fields'][$_fld->name]['value'];
+	$tos = $field['value'];
 }
 
 if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-echo VmHtml::checkbox ($_prefix.$_fld->name, $tos, 1, 0, 'class="terms-of-service"');
+echo VmHtml::checkbox ($_prefix.$field['name'], $tos, 1, 0, 'class="terms-of-service"');
 
 if (VmConfig::get ('oncheckout_show_legal_info', 1) and $app->isSite()) {
 ?>
