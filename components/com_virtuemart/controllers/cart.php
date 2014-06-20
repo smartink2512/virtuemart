@@ -363,6 +363,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 		$cart->BT['email'] = $newUser->email;
 		unset($cart->ST);
+		$cart->STsameAsBT = 1;
 		$cart->saveAddressInCart($data, 'BT');
 
 		$mainframe = JFactory::getApplication();
