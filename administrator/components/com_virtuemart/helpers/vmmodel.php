@@ -448,8 +448,9 @@ class VmModel extends JModel {
 	 *
 	 */
 
-	public function getData(){
+	public function getData($id=0){
 
+		if($id!=0) $this->_id = (int)$id;
 		if (empty($this->_data)) {
 			$this->_data = $this->getTable($this->_maintablename);
 			$this->_data->load($this->_id);

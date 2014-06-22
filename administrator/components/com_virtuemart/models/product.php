@@ -425,6 +425,7 @@ class VirtueMartModelProduct extends VmModel {
 					$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
 					$joinPrice = TRUE;
 					break;
+				case 'created_on':
 				case '`p`.created_on':
 					$orderBy = ' ORDER BY p.`created_on` ';
 					break;

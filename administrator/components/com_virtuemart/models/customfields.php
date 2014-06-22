@@ -1072,6 +1072,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						break;
 					}
 
+					if(!$customfield->withParent or ($customfield->withParent and $customfield->parentOrderable)){
+						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
+					}
 					foreach ($uncatChildren as $child) {
 						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id'],FALSE), 'text' => $child['product_name']);
 					}
