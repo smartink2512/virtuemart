@@ -47,48 +47,38 @@ class VirtuemartViewConfig extends VmView {
 
 		$this->addStandardEditViewCommands();
 
-		$config = VmConfig::loadConfig();
-		if(!empty($config->_params)){
-			unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
+		$this->config = VmConfig::loadConfig();
+		if(!empty($this->config->_params)){
+			unset ($this->config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
 		}
 
-		$this->assignRef('config', $config);
+		$this->userparams = JComponentHelper::getParams('com_users');
 
-		$mainframe = JFactory::getApplication();
-		$this->assignRef('joomlaconfig', $mainframe);
+		$this->jTemplateList = ShopFunctions::renderTemplateList(vmText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
 
-		$userparams = JComponentHelper::getParams('com_users');
-		$this->assignRef('userparams', $userparams);
+		$this->vmLayoutList = $model->getLayoutList('virtuemart');
 
-		$templateList = ShopFunctions::renderTemplateList(vmText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
+		$this->categoryLayoutList = $model->getLayoutList('category');
 
-		$this->assignRef('jTemplateList', $templateList);
+		$this->productLayoutList = $model->getLayoutList('productdetails');
 
-		$vmLayoutList = $model->getLayoutList('virtuemart');
-		$this->assignRef('vmLayoutList', $vmLayoutList);
+		$this->productsFieldList  = $model->getFieldList('products');
+		//vmdebug('my productsFieldList',$this->productsFieldList);
+		$this->noimagelist = $model->getNoImageList();
 
-		$categoryLayoutList = $model->getLayoutList('category');
-		$this->assignRef('categoryLayoutList', $categoryLayoutList);
+		$orderStatusModel= VmModel::getModel('orderstatus');
+		$this->inv_osList = $orderStatusModel->renderOSList(VmConfig::get('inv_os',array('C')),'inv_os',TRUE);
+		$this->email_os_sList = $orderStatusModel->renderOSList(VmConfig::get('email_os_s',array('U','C','S','R','X')),'email_os_s',TRUE);
+		$this->email_os_vList = $orderStatusModel->renderOSList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v',TRUE);
+		$this->cp_rmList = $orderStatusModel->renderOSList(VmConfig::get('cp_rm',array('C')),'cp_rm',TRUE);
+		$this->rr_osList = $orderStatusModel->renderOSList(VmConfig::get('rr_os',array('C')),'rr_os',TRUE);
 
-		$productLayoutList = $model->getLayoutList('productdetails');
-		$this->assignRef('productLayoutList', $productLayoutList);
-
-		$noimagelist = $model->getNoImageList();
-		$this->assignRef('noimagelist', $noimagelist);
-
-		$orderStatusModel=VmModel::getModel('orderstatus');
-		$this->assignRef('orderStatusModel', $orderStatusModel);
-
-		$currConverterList = $model->getCurrencyConverterList();
-		$this->assignRef('currConverterList', $currConverterList);
+		$this->currConverterList = $model->getCurrencyConverterList();
 		//$moduleList = $model->getModuleList();
-		//$this->assignRef('moduleList', $moduleList);
 
-		$activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
-		$this->assignRef('activeLanguages', $activeLanguages);
+		$this->activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 
-		$orderByFieldsProduct = $model->getProductFilterFields('browse_orderby_fields');
-		$this->assignRef('orderByFieldsProduct', $orderByFieldsProduct);
+		$this->orderByFieldsProduct = $model->getProductFilterFields('browse_orderby_fields');
 
 		VmModel::getModel('category');
 
@@ -102,30 +92,23 @@ class VirtuemartViewConfig extends VmView {
 			}
 
 			$text = vmText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
-
 			$orderByFieldsCat[] =  JHtml::_('select.option', $field, $text) ;
 		}
 
+		$this->orderByFieldsCat = $orderByFieldsCat;
 
-		//$orderByFieldsCat = $model->get;
-		$this->assignRef('orderByFieldsCat', $orderByFieldsCat);
+		$this->searchFields = $model->getProductFilterFields( 'browse_search_fields');
 
-		$searchFields = $model->getProductFilterFields( 'browse_search_fields');
-		$this->assignRef('searchFields', $searchFields);
-
-		$aclGroups = $usermodel->getAclGroupIndentedTree();
-		$this->assignRef('aclGroups', $aclGroups);
+		$this->aclGroups = $usermodel->getAclGroupIndentedTree();
 
 		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		$vmtemplate = shopFunctionsF::loadVmTemplateStyle();
+		$this->vmtemplate = shopFunctionsF::loadVmTemplateStyle();
 
-		if(is_Dir(JPATH_ROOT.DS.'templates'.DS.$vmtemplate.DS.'images'.DS.'availability'.DS)){
-			$imagePath = '/templates/'.$vmtemplate.'/images/availability/';
-
+		if(is_Dir(JPATH_ROOT.DS.'templates'.DS.$this->vmtemplate.DS.'images'.DS.'availability'.DS)){
+			$this->imagePath = '/templates/'.$this->vmtemplate.'/images/availability/';
 		} else {
-			$imagePath = '/components/com_virtuemart/assets/images/availability/';
+			$this->imagePath = '/components/com_virtuemart/assets/images/availability/';
 		}
-		$this->assignRef('imagePath', $imagePath);
 
 		shopFunctions::checkSafePath();
 		$this -> checkVmUserVendor();

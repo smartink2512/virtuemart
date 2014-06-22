@@ -565,6 +565,7 @@ class VmModel extends JObject {
 	 * Resets the id and data
 	 *
 	 * @author Max Milbers
+	 *
 	 */
 	function setId($id){
 

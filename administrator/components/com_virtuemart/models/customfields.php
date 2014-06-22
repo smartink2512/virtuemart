@@ -294,8 +294,8 @@ class VirtueMartModelCustomfields extends VmModel {
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			if(!class_exists('VirtueMartModelCurrency')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'currency.php');
 			$vendor_model = VmModel::getModel('vendor');
-			$vendor_model->setId(1);
-			$vendor = $vendor_model->getVendor();
+			$virtuemart_vendor_id = 1;
+			$vendor = $vendor_model->getVendor($virtuemart_vendor_id);
 			$currency_model = VmModel::getModel('currency');
 			$vendor_currency = $currency_model->getCurrency($vendor->vendor_currency);
 

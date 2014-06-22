@@ -78,7 +78,7 @@ class VirtueMartModelVendor extends VmModel {
 	 */
 	function getVendor ($vendor_id = 0) {
 
-		if(!empty($id)) $this->_id = (int)$id;
+		if(!empty($vendor_id)) $this->_id = (int)$vendor_id;
 
 		if (empty($this->_cache[$this->_id])) {
 
@@ -393,8 +393,8 @@ class VirtueMartModelVendor extends VmModel {
 	}
 
 	private $_vendorFields = FALSE;
-	public function getVendorAddressFields(){
-
+	public function getVendorAddressFields($vendorId=0){
+		if($vendorId!=0) $this->_id = (int)$vendorId;
 		if(!$this->_vendorFields){
 			$userId = VirtueMartModelVendor::getUserIdByVendorId ($this->_id);
 			$userModel = VmModel::getModel ('user');

@@ -589,7 +589,6 @@ class ShopFunctions {
 	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />", $skips = array('name','username','email','agreed')) {
 
 		$vendorModel = VmModel::getModel('vendor');
-		$vendorModel->setId($vendorId);
 		$vendorFields = $vendorModel->getVendorAddressFields($vendorId);
 
 		$vendorAddress = '';

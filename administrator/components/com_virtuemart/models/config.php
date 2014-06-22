@@ -37,7 +37,23 @@ class VirtueMartModelConfig extends VmModel {
 
 	}
 
+	function getFieldList($fieldname){
 
+		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'fields';
+
+		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
+
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+
+		$tplnames = $db->loadResult();
+		if($tplnames){
+			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'fields')){
+				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'fields';
+			}
+		}
+		return self::getLayouts($dirs,$fieldname.'_');
+	}
 
 	/**
 	 * Retrieve a list of layouts from the default and chosen templates directory.
@@ -46,17 +62,10 @@ class VirtueMartModelConfig extends VmModel {
 	 * @param name of the view
 	 * @return object List of flypage objects
 	 */
-	static function getLayoutList($view) {
+	function getLayoutList($view) {
 
+		$dirs = array();
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
-
-		//This does not work, joomla takes only overrides of their standard template
-		//		$tplpath = VmConfig::get('vmtemplate',0);
-		//So we look for template overrides in the joomla standard template
-
-		//This method does not work, we get the Template of the backend
-		//$app = JFactory::getApplication('site');
-		//$tplpath = $app->getTemplate();vmdebug('template',$tplpath);
 
 		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 
@@ -69,6 +78,11 @@ class VirtueMartModelConfig extends VmModel {
 				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
 			}
 		}
+		return self::getLayouts($dirs);
+	}
+
+	static function getLayouts($dirs,$type=0){
+
 
 		$result = array();
 		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
@@ -76,21 +90,24 @@ class VirtueMartModelConfig extends VmModel {
 
 		$alreadyAddedFile = array();
 		foreach($dirs as $dir){
+
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
-					if(!empty($file) and strpos($file,'.')!==0 and strpos($file,'_')==0 and $file != 'index.html' and !is_Dir($file)){
-						//Handling directly for extension is much cleaner
-						$path_info = pathinfo($file);
-						if(empty($path_info['extension'])){
-							vmError('Attention file '.$file.' has no extension in view '.$view.' and directory '.$dir);
-							$path_info['extension'] = '';
+					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_Dir($file)){
+
+						if( (!empty($type) and strpos($file,$type)===0) or (empty($type) and strpos($file,'_')==0) ){
+							//Handling directly for extension is much cleaner
+							$path_info = pathinfo($file);
+							if(empty($path_info['extension'])){
+								vmError('Attention file '.$file.' has no extension and directory '.$dir);
+								$path_info['extension'] = '';
+							}
+							if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
+								$alreadyAddedFile[] = $file;
+								$result[] = JHtml::_('select.option', $path_info['filename'], $path_info['filename']);
+							}
 						}
-						if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
-							$alreadyAddedFile[] = $file;
-							//There is nothing to translate here
-// 							$result[] = JHtml::_('select.option', $file, $path_info['filename']);
-							$result[] = JHtml::_('select.option', $path_info['filename'], $path_info['filename']);
-						}
+
 					}
 				}
 			}

@@ -36,7 +36,7 @@ if ($this->categories and VmConfig::get('show_categories', 1)) echo ShopFunction
 # Show template for : topten,Featured, Latest Products if selected in config BE
 if (!empty($this->products) ) {
 	$products_per_row = VmConfig::get ( 'homepage_products_per_row', 3 ) ;
-	echo shopFunctionsF::renderVmField('products',array('products'=>$this->products,'currency'=>$this->currency,'products_per_row'=>$products_per_row,'showRating'=>$this->showRating)); //$this->loadTemplate('products');
+	echo shopFunctionsF::renderVmField('products',array($this->productsLayout=>$this->products,'currency'=>$this->currency,'products_per_row'=>$products_per_row,'showRating'=>$this->showRating)); //$this->loadTemplate('products');
 }
 
 ?> <?php vmTime('vm view Finished task ','Start'); ?>

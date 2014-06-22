@@ -167,6 +167,16 @@ class VirtuemartViewInvoice extends VmView {
 		$userfields = $userFieldsModel->getUserFieldsFilled( $_userFields ,$orderDetails['details']['BT']);
 		$this->assignRef('userfields', $userfields);
 
+		/*$userFieldsCart = $userFieldsModel->getUserFields(
+			'cart'
+			, array('captcha' => true, 'delimiters' => true) // Ignore these types
+			, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+		);
+
+		$this->userFieldsCart = $userFieldsModel->getUserFieldsFilled(
+			$userFieldsCart
+			,$this->cart->cartfields
+		);*/
 
 		//Create ST address fields
 		$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderDetails['details']['BT'];
@@ -232,7 +242,7 @@ class VirtuemartViewInvoice extends VmView {
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vendorModel->addImages($vendor);
-		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
 		if (VmConfig::get ('enable_content_plugin', 0)) {
 			if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');

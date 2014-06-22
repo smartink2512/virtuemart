@@ -85,7 +85,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			$vendorModel = VmModel::getModel('vendor');
 			$this->vendor = $vendorModel->getVendor($this->virtuemart_vendor_id);
 			$vendorModel->addImages($this->vendor,1);
-			$this->vendor->vendorFields = $vendorModel->getVendorAddressFields();
+			$this->vendor->vendorFields = $vendorModel->getVendorAddressFields($this->virtuemart_vendor_id);
 			
 			parent::__construct($this->vendor->vendor_letter_orientation, 'mm', $this->vendor->vendor_letter_format);
 

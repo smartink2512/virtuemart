@@ -100,7 +100,7 @@ $document->addScriptDeclaration($js);
 				</span>
 			</td>
 			<td>
-				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('inv_os',array('C')),'inv_os',TRUE); ?>
+				<?php echo $this->inv_osList; ?>
 			</td>
 		</tr>
 		<tr>
@@ -110,7 +110,7 @@ $document->addScriptDeclaration($js);
 				 </span>
 			</td>
 			<td>
-				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_s',array('U','C','S','R','X')),'email_os_s',TRUE); ?>
+				<?php echo $this->email_os_sList; ?>
 			</td>
 		</tr>
 		<tr>
@@ -120,7 +120,7 @@ $document->addScriptDeclaration($js);
 				</span>
 			</td>
 			<td>
-				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v',TRUE); ?>
+				<?php echo $this->email_os_vList; ?>
 			</td>
 		</tr>
 		<?php

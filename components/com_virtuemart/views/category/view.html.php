@@ -52,9 +52,6 @@ class VirtuemartViewCategory extends VmView {
 
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-		$categoryModel = VmModel::getModel('category');
-		$productModel = VmModel::getModel('product');
-
 
 		// set search and keyword
 		if ($keyword = vRequest::uword('keyword', false, ' ,-,+,.,_')) {
@@ -75,18 +72,34 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
+		$menus	= $app->getMenu();
+		$menu = $menus->getActive();
+
 		$categoryId = vRequest::getInt('virtuemart_category_id', -1);
 		$virtuemart_manufacturer_id = vRequest::getInt('virtuemart_manufacturer_id', -1 );
 		if ($categoryId === -1 and $virtuemart_manufacturer_id === -1){
 			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
 		}
+		if(!empty($menu->query['virtuemart_category_id']) and $menu->query['virtuemart_category_id']!=$categoryId){
+			vmdebug('category id by request '.$categoryId.' by menu item '.$menu->query['virtuemart_category_id']);
+			$categoryId = $menu->query['virtuemart_category_id'];
+			vRequest::setVar('virtuemart_category_id',$categoryId);
+		}
+		if(!empty($menu->query['virtuemart_manufacturer_id']) and $menu->query['virtuemart_manufacturer_id']!=$virtuemart_manufacturer_id){
+			$virtuemart_manufacturer_id = $menu->query['virtuemart_manufacturer_id'];
+			vRequest::setVar('virtuemart_manufacturer_id',$virtuemart_manufacturer_id);
+			vmdebug('$virtuemart_manufacturer_id by menu item '.$virtuemart_manufacturer_id);
+		}
 		$this->setCanonicalLink($tpl,$document,$categoryId,$virtuemart_manufacturer_id);
 
-		if ($categoryId === -1 and $virtuemart_manufacturer_id){
+		if (($categoryId === -1 or $categoryId === 0 ) and $virtuemart_manufacturer_id){
 			$categoryId = 0;
 			$catType = 'manufacturer';
 			$this->setCanonicalLink($tpl,$document,$virtuemart_manufacturer_id,$catType);
 		}
+
+		$categoryModel = VmModel::getModel('category');
+		$productModel = VmModel::getModel('product');
 
 		if($categoryId!==-1){
 			$vendorId = 1;
@@ -250,6 +263,7 @@ class VirtuemartViewCategory extends VmView {
 			if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$categoryId){
 				$category->category_layout = $menu->query['categorylayout'];
 			}
+			$this->productsLayout = empty($menu->query['productsublayout'])? VmConfig::get('productsublayout','products'):$menu->query['productsublayout'];
 			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		} else {
 			//Backward compatibility

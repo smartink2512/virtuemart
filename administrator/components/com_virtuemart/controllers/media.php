@@ -94,6 +94,12 @@ class VirtuemartControllerMedia extends VmController {
 
 		$user = JFactory::getUser();
 		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+
+			$configPaths = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
+			foreach($configPaths as $path){
+				$this -> renameFileExtension(JPATH_ROOT.DS.VmConfig::get($path) );
+			}
+
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 			$migrator = new Migrator();
 			$result = $migrator->portMedia();
@@ -107,5 +113,37 @@ class VirtuemartControllerMedia extends VmController {
 
 	}
 
+	function renameFileExtension($path){
+
+		$results = array();
+		$handler = opendir($path);
+
+		// open directory and walk through the filenames
+		while ($file = readdir($handler)) {
+			// if file isn't this directory or its parent, add it to the results
+			if ($file != "." && $file != "..") {
+				if(preg_match('/JPEG$/', $file)) {
+					$results['jpeg'][] = $file;
+				} else if(preg_match('/JPG$/', $file)) {
+					$results['jpg'][] = $file;
+				} else if(preg_match('/PNG$/', $file)) {
+					$results['png'][] = $file;
+				} else if(preg_match('/GIF$/', $file)) {
+					$results['gif'][] = $file;
+				}
+			}
+		}
+		//vmdebug('renameFileExtension',$results);
+		foreach($results as $filetype => $files){
+			foreach($files as $file){
+				$new = JFile::stripExt($file);
+				//vmdebug('Rename file ',$path.$file,$path.$new.'.'.$filetype);
+				if(!JFile::exists($file)){
+					$succ = rename ($path.$file,$path.$new.'.'.$filetype);
+				}
+			}
+		}
+
+	}
 }
 // pure php no closing tag

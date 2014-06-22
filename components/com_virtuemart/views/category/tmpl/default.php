@@ -109,7 +109,7 @@ if (!empty($this->products)) {
 	<?php
 	$products = array();
 	$products[0] = $this->products;
-	echo shopFunctionsF::renderVmField('products',array('products'=>$products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));
+	echo shopFunctionsF::renderVmField($this->productsLayout,array('products'=>$products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));
 
 	?>
 
