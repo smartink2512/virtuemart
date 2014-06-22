@@ -14,8 +14,9 @@ defined ('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id:$
  */
+jimport('joomla.form.formfield');
 
-class JElementGetcertificate extends JElement {
+class JFormFieldGetcertificate extends JFormField {
 
 	/**
 	 * Element name
@@ -24,10 +25,10 @@ class JElementGetcertificate extends JElement {
 	 * @var        string
 	 */
 	var $_name = 'Getcertificate';
+	protected $type = 'Getcertificate';
 
-
-		function fetchElement ($name, $value, &$node, $control_name) {
-
+		//function fetchElement ($name, $value, &$node, $control_name) {
+	function getInput () {
 			jimport ('joomla.filesystem.folder');
 			jimport ('joomla.filesystem.file');
 			$lang = JFactory::getLanguage ();

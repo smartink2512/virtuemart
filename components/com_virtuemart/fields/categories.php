@@ -100,3 +100,4 @@ $verticalseparator = " vertical-separator";
 	}
  } ?>
  </div>
+</div>

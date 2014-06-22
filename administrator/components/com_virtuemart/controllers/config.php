@@ -57,7 +57,7 @@ class VirtuemartControllerConfig extends VmController {
 		vRequest::vmCheckToken();
 		$model = VmModel::getModel('config');
 
-		$data = vRequest::getRequest();
+		$data = vRequest::getPost();
 		//$data['offline_message'] = vRequest::get('offline_message', '', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW );
 		//array(FILTER_FLAG_STRIP_LOW,!FILTER_FLAG_STRIP_HIGH,FILTER_FLAG_ENCODE_HIGH)
 		if(strpos($data['offline_message'],'|')!==false){

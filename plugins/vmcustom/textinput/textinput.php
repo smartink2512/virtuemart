@@ -66,14 +66,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return true;
 	}
 
-	/**
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
-	 * @author Patrick Kohl
-	 */
-	function plgVmOnViewCartModuleVM3( $product,$row,&$html) {
-
-		return $this->plgVmOnViewCart($product,$row,$html);
-	}
 
 	/**
 	 * Function for vm3
@@ -105,17 +97,31 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @return bool|string
 	 */
 	function plgVmOnViewCartVM3(&$product, &$productCustom, &$html) {
-		if (empty($productCustom->custom_element) or $productCustom->custom_element != $this->_name) return '';
+		if (empty($productCustom->custom_element) or $productCustom->custom_element != $this->_name) return false;
 
-		if(empty($product->customProductData[$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])) return '';
-		foreach($product->customProductData[$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id] as $name => $value){
-
-			$html .='<span>'.JText::_($productCustom->custom_title).' '.$value.'</span>';
+		if(empty($product->customProductData[$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])) return false;
+		foreach( $product->customProductData[$productCustom->virtuemart_custom_id] as $k =>$item ) {
+			if($productCustom->virtuemart_customfield_id == $k) {
+				if(isset($item['comment'])){
+					$html .='<span>'.JText::_($productCustom->custom_title).' '.$item['comment'].'</span>';
+				}
+			}
 		}
 
 		return true;
 	}
 
+	function plgVmOnViewCartModuleVM3( &$product, &$productCustom, &$html) {
+		return $this->plgVmOnViewCartVM3($product,$productCustom,$html);
+	}
+
+	function plgVmDisplayInOrderBEVM3( &$product, &$productCustom, &$html) {
+		$this->plgVmOnViewCartVM3($product,$productCustom,$html);
+	}
+
+	function plgVmDisplayInOrderFEVM3( &$product, &$productCustom, &$html) {
+		$this->plgVmOnViewCartVM3($product,$productCustom,$html);
+	}
 
 
 	/**
@@ -130,9 +136,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		$this->plgVmOnViewCart($item,$productCustom,$html); //same render as cart
     }
 
-	function plgVmDisplayInOrderBEVM3(&$item, &$productCustom, &$html) {
-		$this->plgVmOnViewCartVM3($item,$productCustom,$html);
-	}
 
 	/**
 	 *
@@ -145,6 +148,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if (empty($item->productCustom->custom_element) or $item->productCustom->custom_element != $this->_name) return '';
 		$this->plgVmOnViewCart($item,$productCustom,$html); //same render as cart
     }
+
+
 
 	/**
 	 * Trigger while storing an object using a plugin to create the plugin internal tables in case

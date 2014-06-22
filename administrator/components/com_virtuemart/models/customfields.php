@@ -737,7 +737,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods,true);
 		} else {
-			vmdebug('Old order?',$variantmods);
+			//vmdebug('displayProductCustomfieldSelected $variantmods?',$variantmods);
 		}
 
 		$productCustoms = array();

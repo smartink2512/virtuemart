@@ -15,9 +15,9 @@ defined('_JEXEC') or die();
  * @version $Id$
  */
 
-if (!class_exists('vRequest')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/vrequest.php');
-if (!class_exists('VmConfig'))
-	require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 class JFormFieldVmjpluginwarning extends JFormField {
 

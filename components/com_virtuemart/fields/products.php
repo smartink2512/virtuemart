@@ -119,7 +119,7 @@ foreach ($viewData['products'] as $type => $products ) {
 					echo shopFunctionsF::renderVmField('prices',array('product'=>$product,'currency'=>$currency));
 					echo shopFunctionsF::renderVmField('addtocart',array('product'=>$product,'row'=>0)); ?>
 
-					<div>
+					<div class="vm-details-button">
 						<?php // Product Details Button
 						echo JHtml::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id , FALSE), vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
 						?>

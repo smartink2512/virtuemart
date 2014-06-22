@@ -15,8 +15,8 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-if (!class_exists('VmConfig'))
-	require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 if (!class_exists('ShopFunctions'))
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');

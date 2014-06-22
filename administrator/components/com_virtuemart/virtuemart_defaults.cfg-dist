@@ -51,6 +51,7 @@ reviews_autopublish=1
 reviews_minimum_comment_length=0
 reviews_maximum_comment_length=2000
 product_navigation=1
+display_stock=1
 vmtemplate=0
 categorytemplate=0
 showCategory=1

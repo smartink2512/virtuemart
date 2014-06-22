@@ -20,8 +20,9 @@
 
 
 defined ('_JEXEC') or die();
+jimport('joomla.form.formfield');
 
-class JElementCustomjs extends JElement {
+class JFormFieldCustomjs extends JFormField {
 
 	/**
 	 * Element name
@@ -30,8 +31,9 @@ class JElementCustomjs extends JElement {
 	 * @var        string
 	 */
 	var $_name = 'Customjs';
+	protected $type = 'Customjs';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+		function getInput () {
 		
 		JHtml::_('behavior.colorpicker');
 		

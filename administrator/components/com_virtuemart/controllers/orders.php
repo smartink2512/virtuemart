@@ -53,6 +53,79 @@ class VirtuemartControllerOrders extends VmController {
 		parent::edit($layout);
 	}
 
+	public function updateCustomsOrderItems(){
+
+		$q = 'SELECT `product_attribute` FROM `#__virtuemart_order_items` LIMIT ';
+		$do = true;
+		$db = JFactory::getDbo();
+		$start = 0;
+		$hunk  = 1000;
+		while($do){
+			$db->setQuery($q.$start.','.$hunk);
+			$items = $db->loadColumn();
+			if(!$items){
+				vmdebug('updateCustomsOrderItems Reached end after '.$start/$hunk.' loops');
+				break;
+			}
+			//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
+			//{"96":"18"} download plugin
+			// 46 is virtuemart_customfield_id
+			//{"46":" <span class=\"costumTitle\">Cap Size<\/span><span class=\"costumValue\" >S<\/span>","110":{"istraxx_customsize":{"invala":"10","invalb":"10"}}}
+			//and now {"32":[{"invala":"100"}]}
+			foreach($items as $field){
+				if(strpos($field,'{')!==FALSE){
+					$jsField = json_decode($field);
+					$fieldProps = get_object_vars($jsField);
+					vmdebug('updateCustomsOrderItems',$fieldProps);
+					$nJsField = array();
+					foreach($fieldProps as $k=>$props){
+						if(is_object($props)){
+
+							//vmdebug('my props',$props);
+							$props = (array)$props;
+							//vmdebug('my props',$props);
+							foreach($props as $ke=>$prop){
+								if(!is_numeric($ke)){
+									vmdebug('Found old param style',$ke,$prop);
+									if(is_object($prop)){
+										$prop = (array)$prop;
+										$nJsField[$k] = $prop;
+										/*foreach($prop as $name => $propvalue){
+											$nJsField[$k][$name] = $propvalue;
+										}*/
+									}
+								}
+								 else {
+									//$nJsField[$k][$name] = $prop;
+								}
+							}
+						} else {
+							if(is_numeric($k) and is_numeric($props)){
+							$nJsField[$props] = $k;
+							} else {
+								$nJsField[$k] = $props;
+								//vmdebug('updateCustomsOrderItems What do we have here?',$k,$props);
+							}
+						}
+					}
+					$nJsField = json_encode($nJsField);
+					vmdebug('updateCustomsOrderItems json $field encoded',$field,$nJsField);
+				} else {
+					vmdebug('updateCustomsOrderItems $field',$field);
+				}
+
+			}
+			if(count($items)<$hunk){
+				vmdebug('Reached end');
+				break;
+			}
+			$start += $hunk;
+		}
+		// Create the view object
+		$view = $this->getView('orders', 'html');
+		$view->display();
+	}
+
 	/**
 	 * NextOrder
 	 * renamed, the name was ambigous notice by Max Milbers

@@ -9,8 +9,8 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2011 virtuemart team - All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+* @copyright (C) 2014 virtuemart team - All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl2.html GNU/GPL
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
 *

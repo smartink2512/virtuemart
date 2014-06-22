@@ -1329,7 +1329,7 @@ class VirtueMartCart {
 
 		//Fallback for old extensions
 		$this->pricesUnformatted = $this->cartPrices;
-		vmdebug('getCartPrices my format pricesUnformatted',$this->pricesUnformatted);
+		//vmdebug('getCartPrices my format pricesUnformatted',$this->pricesUnformatted);
 		//We must do this here, otherwise if we have a product more than one time in the cart
 		//it has always the same price
 		foreach($this->products as $k => $product){
