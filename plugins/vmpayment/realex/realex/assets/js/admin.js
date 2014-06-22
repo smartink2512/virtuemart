@@ -47,10 +47,17 @@ jQuery().ready(function ($) {
         if (integration == 'redirect') {
             if (realvault == 1) {
                 $('.redirect-realvault').parents('tr').show();
+                $('.realvault').parents('tr').show();
             } else {
                 $('.redirect-norealvault').parents('tr').show();
             }
         } else {
+            if (realvault == 0) {
+                $('#paramsthreedsecure option').eq(0).attr('selected', 'selected');
+                // depends on the chosen version
+                $('#paramsthreedsecure').trigger("chosen:updated"); //newer
+                $("#paramsthreedsecure").trigger("liszt:updated"); // our
+            }
             $('.realvault').parents('tr').show();
         }
 

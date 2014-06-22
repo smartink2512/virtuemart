@@ -44,18 +44,19 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 
 	function doRealVault (&$selectedCCParams) {
-		$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
-		$selectedCCParams = $this->getSelectedCCParams($saved_cc_selected, $this->cart->virtuemart_paymentmethod_id);
+		//$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+		//$selectedCCParams = $this->getSelectedCCParams($saved_cc_selected, $this->cart->virtuemart_paymentmethod_id);
 		$doRealVault = false;
 
-		if (!JFactory::getUser()->guest AND $this->_method->realvault and !empty($selectedCCParams)) {
-			if (!$selectedCCParams->addNew) {
+		if (!JFactory::getUser()->guest AND $this->_method->realvault and $this->getStoredCCs(JFactory::getUser()->id)) {
+			//if (!$selectedCCParams->addNew) {
 				$doRealVault = true;
-			}
+			//}
 		}
 		$this->debugLog((int)$doRealVault, 'Realex doRealVault:', 'debug');
 		return $doRealVault;
 	}
+
 
 	function sendPostRequest () {
 		$post_variables = $this->getPostVariables();

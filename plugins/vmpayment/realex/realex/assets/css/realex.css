@@ -31,7 +31,7 @@
     text-decoration: none;
     padding: 3px 12px 1px;
 }
-.remote_cc_form .inputbox.remote_cc_cvv {
+.remote_cc_form .cc_cvv {
     width: 100px;
 
 }

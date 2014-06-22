@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmpayment" method="upgrade">
-    <description>PLG_VMPAYMENT_REALEXDESC</description>
-    <name>VMPAYMENT_REALEX</name>
+    <description>Realex</description>
+    <name>Realex</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -64,17 +64,17 @@
         <param class="dcc" type="vmtitle" default="" description="VMPAYMENT_REALEX_SETTLEMENT_WARNING"/>
         <param class="level2" type="vmtitle" default="VMPAYMENT_REALEX_ACCOUNT_OPTIONS_REALVAULT"/>
 
-        <param class="redirect remote" name="realvault" type="list" default="1" label="VMPAYMENT_REALEX_REALVAULT"
+        <param class="redirect remote" name="realvault" type="list" default="0" label="VMPAYMENT_REALEX_REALVAULT"
                description="VMPAYMENT_REALEX_REALVAULT_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
-        <param class="realvault" name="offer_save_card" type="list" default="1" label="VMPAYMENT_REALEX_OFFER_SAVE_CARD"
+        <param class="realvault" name="offer_save_card" type="list" default="0" label="VMPAYMENT_REALEX_OFFER_SAVE_CARD"
                description="VMPAYMENT_REALEX_OFFER_SAVE_CARD_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
-        <param class="realvault" name="cvn_checking" type="list" default="1" label="VMPAYMENT_REALEX_CVN_CHECKING"
+        <param class="realvault" name="cvn_checking" type="list" default="0" label="VMPAYMENT_REALEX_CVN_CHECKING"
                description="VMPAYMENT_REALEX_CVN_CHECKING_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -89,7 +89,7 @@
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
 
-        <param class="redirect-realvault threedsecure" name="require_liability" type="list" default="1" label="VMPAYMENT_REALEX_REQUIRE_LIABILITY"
+        <param class="redirect-realvault threedsecure" name="require_liability" type="list" default="0" label="VMPAYMENT_REALEX_REQUIRE_LIABILITY"
                description="VMPAYMENT_REALEX_REQUIRE_LIABILITY_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -99,7 +99,7 @@
 
         <param class="level2" type="vmtitle" default="VMPAYMENT_REALEX_FRAUD_SECTION" />
 
-        <param name="tss" type="list" default="1"
+        <param name="tss" type="list" default="0"
                label="VMPAYMENT_REALEX_TSS"
                description="VMPAYMENT_REALEX_TSS_TIP" >
             <option value="0">COM_VIRTUEMART_NO</option>

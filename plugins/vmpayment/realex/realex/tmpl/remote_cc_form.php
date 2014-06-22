@@ -87,6 +87,7 @@ if ($viewData['dccinfo']) {
 ?>
 
 <div class="vmpayment_cardinfo realexRemoteCCForm">
+	<?php if ($viewData['integration'] =='remote') { ?>
 	<div class="vmpayment_cardinfo_text">
 		<?php if (!$viewData['dccinfo']) {
 			if (empty($viewData['creditcardsDropDown'])) {
@@ -104,7 +105,7 @@ if ($viewData['dccinfo']) {
 
 	<div class="vmpayment_cc_info vmpayment_creditcardtype">
 		<span class="vmpayment_label"><label for="creditcardtype"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CCTYPE'); ?></label></span>
-		<?php if (!$viewData['dccinfo']) {
+		<?php if (!$viewData['dccinfo']  ) {
 
 			foreach ($viewData['creditcards'] as $creditCard) {
 				$options[] = JHTML::_('select.option', $creditCard, vmText::_('VMPAYMENT_REALEX_CC_' . strtoupper($creditCard)));
@@ -119,6 +120,7 @@ if ($viewData['dccinfo']) {
 			?>
 			</span>
 			<input type="hidden" name="cc_type" value="<?php echo $ccData['cc_type'] ?>"/>
+			<input type="hidden" name="saved_cc_selected" value="<?php echo $ccData['saved_cc_selected'] ?>"/>
 		<?php
 		}?>
 	</div>
@@ -204,7 +206,27 @@ if ($viewData['dccinfo']) {
 		<?php
 		}?>
 	</div>
+	<?php  } ?>
+	<?php if ( isset($ccData['cc_cvv_realvault'])) { ?>
+		<div class="vmpayment_cc_info vmpayment_cc_cvv">
 
+			<span class="vmpayment_label"><label for="cc_cvv"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
+			<?php if (!$viewData['dccinfo']) { ?>
+
+				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv" maxlength="4" size="5" value="<?php echo $ccData['cc_cvv']; ?>" autocomplete="off"/>
+				<span class="hasTip" title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
+                        <?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
+                    </span>
+			<?php
+			} else {
+				echo  $ccData['cc_cvv_masked'];
+				?>
+				<input type="hidden" name="cc_cvv_realvault" value="<?php echo $ccData['cc_cvv_realvault'] ?>"/>
+			<?php
+			}?>
+		</div>
+		<input type="hidden" name="cc_type" value="<?php echo $ccData['cc_type'] ?>"/>
+	<?php } ?>
 	<?php if ($viewData['dccinfo']) { ?>
 		<div class="dccinfo">
 			<div class="dcc_offer_title">
@@ -238,6 +260,7 @@ if ($viewData['dccinfo']) {
 
 		</div>
 	<?php } ?>
+	<?php if (!$viewData['integration'] =='remote') { ?>
 	<?php if (!$viewData['dccinfo']) { ?>
 		<?php if ($viewData['offer_save_card']) {
 			if ($ccData['save_card']) {
@@ -255,6 +278,7 @@ if ($viewData['dccinfo']) {
 			</div>
 		<?php
 		}
+	}
 	}
 	?>
 
