@@ -1060,6 +1060,7 @@ class VirtueMartCart {
 
 		if($this->_blockConfirm){
 			$this->_dataValidated = false;
+			$this->setCartIntoSession();
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
 		} else {
 
@@ -1124,7 +1125,7 @@ class VirtueMartCart {
 	 function confirmedOrder() {
 
 		//Just to prevent direct call
-		if ($this->_dataValidated && $this->_confirmDone) {
+		if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut) {
 
 			$orderModel = VmModel::getModel('orders');
 
