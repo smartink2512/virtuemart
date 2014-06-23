@@ -39,7 +39,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	function getFieldList($fieldname){
 
-		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'fields';
+		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'sublayouts';
 
 		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 
@@ -48,8 +48,8 @@ class VirtueMartModelConfig extends VmModel {
 
 		$tplnames = $db->loadResult();
 		if($tplnames){
-			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'fields')){
-				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'fields';
+			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'sublayouts')){
+				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'sublayouts';
 			}
 		}
 		return self::getLayouts($dirs,$fieldname.'_');

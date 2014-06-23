@@ -685,7 +685,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @return  string  The path to the type layout
 	 * original from libraries\joomla\application\module\helper.php
 	 * @since   11.1
-	 * @author Patrick Kohl, Valérie Isaksen
+	 * @author Patrick Kohl, Valérie Isaksen, Max Milbers
 	 */
 	public function renderByLayout ($layout = 'default', $viewData = NULL, $name = NULL, $psType = NULL) {
 		if ($name === NULL) {
@@ -695,34 +695,28 @@ abstract class vmPlugin extends JPlugin {
 		if ($psType === NULL) {
 			$psType = $this->_psType;
 		}
-		$layout = vmPlugin::_getLayoutPath ($name, 'vm' . $psType, $layout);
 
-		ob_start ();
-		include ($layout);
-		return ob_get_clean ();
-
-	}
-
-	/**
-	 *  Note: We have 2 subfolders for versions > J15 for 3rd parties developers, to avoid 2 installers
-	 *
-	 * @author Patrick Kohl, Valérie Isaksen
-	 */
-	private function _getLayoutPath ($pluginName, $group, $layout = 'default') {
 		$app = JFactory::getApplication ();
-		// get the template and default paths for the layout
+		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . $psType . DS . $name . DS . $layout . '.php';
+		$defaultPath = JPATH_SITE . DS . 'plugins' . DS . $psType . DS . $name . DS . $name . DS . 'tmpl' . DS . $layout . '.php';
 
-		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
-		$defaultPath = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
-
-		// if the site template has a layout override, use it
+		$layout = false;
 		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		if (JFile::exists ($templatePath)) {
-			return $templatePath;
+			$layout = $templatePath;
+		} else if (JFile::exists ($defaultPath)) {
+			$layout = $defaultPath;
 		}
-		else {
-			return $defaultPath;
+
+		if($layout){
+			ob_start ();
+			include ($layout);
+			return ob_get_clean ();
+		} else {
+			vmdebug('renderByLayout layout not found '.$psType. ' '.$name);
 		}
+
 	}
+
 
 }

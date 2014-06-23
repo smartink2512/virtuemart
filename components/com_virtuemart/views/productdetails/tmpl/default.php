@@ -27,7 +27,7 @@ if (empty($this->product)) {
 	return;
 }
 
-echo shopFunctionsF::renderVmField('askrecomjs',array('product'=>$this->product));
+echo shopFunctionsF::renderVmSubLayout('askrecomjs',array('product'=>$this->product));
 
 if(vRequest::getInt('print',false)){ ?>
 <body onload="javascript:print();">
@@ -140,7 +140,7 @@ echo $this->loadTemplate('images');
 		?>
 
 		<?php
-		echo shopFunctionsF::renderVmField('rating',array('showRating'=>$this->showRating,'product'=>$this->product));
+		echo shopFunctionsF::renderVmSubLayout('rating',array('showRating'=>$this->showRating,'product'=>$this->product));
 
 		if (is_array($this->productDisplayShipments)) {
 		    foreach ($this->productDisplayShipments as $productDisplayShipment) {
@@ -155,10 +155,10 @@ echo $this->loadTemplate('images');
 
 		//In case you are not happy using everywhere the same price display fromat, just create your own layout
 		//in override /html/fields and use as first parameter the name of your file
-		echo shopFunctionsF::renderVmField('prices',array('product'=>$this->product,'currency'=>$this->currency));
-		echo shopFunctionsF::renderVmField('addtocart',array('product'=>$this->product));
+		echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$this->product,'currency'=>$this->currency));
+		echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$this->product));
 
-		echo shopFunctionsF::renderVmField('stockhandle',array('product'=>$this->product));
+		echo shopFunctionsF::renderVmSubLayout('stockhandle',array('product'=>$this->product));
 
 		// Ask a question about this product
 		if (VmConfig::get('ask_question', 0) == 1) { ?>

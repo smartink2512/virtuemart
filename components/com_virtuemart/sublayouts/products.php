@@ -86,7 +86,7 @@ foreach ($viewData['products'] as $type => $products ) {
 						<div class="valign-content-wrapper" style="position: absolute; height: 100%; top: 50%; width: 100%;">
 						<div class="valign-content" style="position: absolute; margin: 0 auto; left:0; right: 0;">
 						<?php
-						echo shopFunctionsF::renderVmField('rating',array('showRating'=>$showRating, 'product'=>$product));
+						echo shopFunctionsF::renderVmSubLayout('rating',array('showRating'=>$showRating, 'product'=>$product));
 						if ( VmConfig::get ('display_stock', 1)) { ?>
 							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
 						<?php
@@ -101,7 +101,7 @@ foreach ($viewData['products'] as $type => $products ) {
 							<!-- The "Average Customer Rating" Part -->
 					<?php // Output: Average Product Rating
 					
-					//echo shopFunctionsF::renderVmField('stockhandle',array('product'=>$product));
+					//echo shopFunctionsF::renderVmSubLayout('stockhandle',array('product'=>$product));
 					?>
 
 					<?php //	<div class="width70 floatright"> ?>
@@ -116,8 +116,8 @@ foreach ($viewData['products'] as $type => $products ) {
 							</p>
 						<?php }
 
-					echo shopFunctionsF::renderVmField('prices',array('product'=>$product,'currency'=>$currency));
-					echo shopFunctionsF::renderVmField('addtocart',array('product'=>$product,'row'=>0)); ?>
+					echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$product,'currency'=>$currency));
+					echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'row'=>0)); ?>
 
 					<div class="vm-details-button">
 						<?php // Product Details Button

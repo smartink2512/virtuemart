@@ -27,6 +27,6 @@ if ($this->category->haschildren) {
 	//$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
 
 	// Start the Output
-	echo ShopFunctionsF::renderVmField('categories',array('categories'=> $this->category->children));
+	echo ShopFunctionsF::renderVmSubLayout('categories',array('categories'=> $this->category->children));
 
 } ?>

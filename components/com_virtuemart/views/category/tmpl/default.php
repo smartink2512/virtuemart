@@ -52,7 +52,7 @@ if (empty($this->keyword) and !empty($this->category)) {
 if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 	if (!empty($this->category->haschildren)) {
 
-		echo ShopFunctionsF::renderVmField('categories',array('categories'=>$this->category->children));
+		echo ShopFunctionsF::renderVmSubLayout('categories',array('categories'=>$this->category->children));
 
 	}
 }
@@ -109,7 +109,7 @@ if (!empty($this->products)) {
 	<?php
 	$products = array();
 	$products[0] = $this->products;
-	echo shopFunctionsF::renderVmField($this->productsLayout,array('products'=>$products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));
+	echo shopFunctionsF::renderVmSubLayout($this->productsLayout,array('products'=>$products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));
 
 	?>
 

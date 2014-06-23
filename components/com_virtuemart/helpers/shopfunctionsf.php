@@ -255,21 +255,37 @@ class shopFunctionsF {
 		return $session->get( 'vmlastvisitedproductids', array(), 'vm' );
 	}
 
-	static public function renderVmField($name,$viewData=0){
+	/**
+	 * Renders sublayouts
+	 *
+	 * @param $name
+	 * @param int $viewData viewdata for the rendered sublayout, do not remove
+	 * @return string
+	 */
+	static public function renderVmSubLayout($name,$viewData=0){
 
 		$app = JFactory::getApplication ();
 		// get the template and default paths for the layout if the site template has a layout override, use it
-		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . 'com_virtuemart' . DS . 'fields' . DS . $name . '.php';
+		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
 
+		$layout = false;
 		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		if (JFile::exists ($templatePath)) {
 			$layout =  $templatePath;
 		} else {
-			$layout = JPATH_VM_SITE . DS . 'fields' . DS . $name . '.php';
+			if (JFile::exists (JPATH_VM_SITE . DS . 'sublayouts' . DS . $name . '.php')) {
+				$layout = JPATH_VM_SITE . DS . 'sublayouts' . DS . $name . '.php';
+			}
 		}
-		ob_start ();
-		include ($layout);
-		return ob_get_clean ();
+
+		if($layout){
+			ob_start ();
+			include ($layout);
+			return ob_get_clean ();
+		} else {
+			vmdebug('renderVmSubLayout layout not found '.$name);
+		}
+
 	}
 
 	/**
