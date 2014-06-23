@@ -154,7 +154,10 @@ class VirtueMartViewVirtueMart extends VmView {
 			$layout = VmConfig::get('vmlayout','default');
 			$this->setLayout($layout);
 
-			$this->productsLayout = empty($menu->query['productsublayout'])? VmConfig::get('productsublayout','products'):$menu->query['productsublayout'];
+			$productsLayout = VmConfig::get('productsublayout','products');
+			if(empty($productsLayout)) $productsLayout = 'products';
+			$this->productsLayout = empty($menu->query['productsublayout'])? $productsLayout:$menu->query['productsublayout'];
+
 			// Add feed links
 			if ($products  && (VmConfig::get('feed_featured_published', 0)==1 or VmConfig::get('feed_topten_published', 0)==1 or VmConfig::get('feed_latest_published', 0)==1)) {
 				$link = '&format=feed&limitstart=';

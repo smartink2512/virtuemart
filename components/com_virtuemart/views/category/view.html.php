@@ -263,7 +263,11 @@ class VirtuemartViewCategory extends VmView {
 			if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$categoryId){
 				$category->category_layout = $menu->query['categorylayout'];
 			}
-			$this->productsLayout = empty($menu->query['productsublayout'])? VmConfig::get('productsublayout','products'):$menu->query['productsublayout'];
+
+			$productsLayout = VmConfig::get('productsublayout','products');
+			if(empty($productsLayout)) $productsLayout = 'products';
+			$this->productsLayout = empty($menu->query['productsublayout'])? $productsLayout:$menu->query['productsublayout'];
+
 			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		} else {
 			//Backward compatibility

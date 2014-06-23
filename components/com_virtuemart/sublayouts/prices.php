@@ -23,7 +23,7 @@ $currency = $viewData['currency'];
 <div class="product-price" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 	<?php
 	if (!empty($product->prices['salesPrice'])) {
-		echo "<strong>" . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . "</strong>";
+		echo '<div class="vm-cart-price">' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . '</div>';
 	}
 	//vmdebug('view productdetails layout default show prices, prices',$product);
 	if ($product->prices['salesPrice']<=0 and VmConfig::get ('askprice', 1) and isset($product->images[0]) and !$product->images[0]->file_is_downloadable) {
