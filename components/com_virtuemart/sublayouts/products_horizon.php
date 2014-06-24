@@ -22,6 +22,7 @@ foreach ($viewData['products'] as $type => $products ) {
 	// Category and Columns Counter
 	$col = 1;
 	$nb = 1;
+	$row = 1;
 	$BrowseTotalProducts = count($products);
 	//vmdebug('amount to browse '.$type,$BrowseTotalProducts);
 	if(!empty($type)){
@@ -31,6 +32,59 @@ foreach ($viewData['products'] as $type => $products ) {
 		<h4><?php echo $productTitle ?></h4>
 		<?php // Start the Output
 	}
+
+	$rowHeights = array();
+	$rowsHeight = array();
+	foreach($products as $product){
+		// This is the structure below
+
+		//structure
+		if ($col == 1 && $nb > $products_per_row) {
+
+		}
+
+		if ($col == 1) {
+
+		}
+
+		if ($nb == $products_per_row or $nb % $products_per_row == 0) {
+			$show_vertical_separator = ' ';
+		} else {
+			$show_vertical_separator = $verticalseparator;
+		}
+		//structure
+		//I wonder if we can simplify it using the $row variable
+
+		$priceRows = 0;
+		//Lets calculate the height of the prices
+		foreach($currency->_priceConfig as $name=>$values){
+			if(!empty($currency->_priceConfig[$name][0])){
+				if(!empty($product->prices[$name]) or $name == 'billTotal' or $name == 'billTaxAmount'){
+					$priceRows++;
+
+				}
+			}
+		}
+		$rowHeights[$row][] = $priceRows;
+		$nb ++;
+		if ($col == $products_per_row || $nb>$BrowseTotalProducts) {
+			$col = 1;
+			$max = 0;
+			foreach($rowHeights[$row] as $rows){
+				$max = max($max,$rows);
+			}
+			$rowsHeight[$row]['prices'] = $max;
+			$rowHeights = array();
+			$row++;
+		} else {
+			$col ++;
+		}
+	}
+	vmdebug('my rows heights',$rowsHeight);
+
+	$col = 1;
+	$nb = 1;
+	$row = 1;
 
 	foreach ( $products as $product ) {
 
@@ -72,8 +126,8 @@ foreach ($viewData['products'] as $type => $products ) {
           ?>
         </div>
         <h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
-      </div>		
-
+      </div>
+		<?php vmdebug('my number of rows for the prices rows heights',$rowsHeight[$row]); ?>
       <div class="vm-products-details-container">
         <?php // Product Short Description
           if (!empty($product->product_s_desc)) {
@@ -103,6 +157,7 @@ foreach ($viewData['products'] as $type => $products ) {
 			</div>
 			<?php
 			$col = 1;
+			$row++;
 		} else {
 			$col ++;
 		}

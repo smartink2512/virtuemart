@@ -22,7 +22,7 @@
         <filename>index.html</filename>
         <folder>assets</folder>
         <folder>controllers</folder>
-        <folder>fields</folder>
+        <folder>sublayouts</folder>
         <folder>helpers</folder>
         <folder>language</folder>
         <folder>views</folder>

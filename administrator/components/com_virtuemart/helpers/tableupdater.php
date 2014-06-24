@@ -322,7 +322,7 @@ class GenericTableUpdater extends VmModel{
 						$this->alterKey($tablename,$table[1],false);
 					}
 				}
-
+				$this->optimizeTable($tablename);
 				// 				unset($todelete[$tablename]);
 			} else {
 
@@ -357,6 +357,11 @@ class GenericTableUpdater extends VmModel{
 */
 	}
 
+	public function optimizeTable($tablename){
+		$q ='OPTIMIZE TABLE '.$tablename;
+		$this->_db->setQuery($q);
+		$this->_db->query();
+	}
 
 	public function createTable($tablename,$table){
 

@@ -451,7 +451,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							vmWarn( 'JInstaller::install: '.$sqlfile.' '.vmText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
 							$ok = false;
 						}
-						vmdebug('Update Admin menu entries value $updateQuery',$updateBase.$updateQuery);
+						//vmdebug('Update Admin menu entries value $updateQuery',$updateBase.$updateQuery);
 					}
 				}
 

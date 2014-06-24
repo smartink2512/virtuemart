@@ -34,6 +34,7 @@ class VirtueMartCart {
 	//	var $productIds = array();
 	var $products = array();
 	var $_productAdded = false;
+	var $_cartProcessed = false;
 	var $_inCheckOut = false;
 	var $fromCart = false;
 	var $_dataValidated = false;
@@ -142,6 +143,7 @@ class VirtueMartCart {
 					self::$_cart->pricesCurrency				= $sessionCart->pricesCurrency;
 					self::$_cart->paymentCurrency				= $sessionCart->paymentCurrency;
 
+					self::$_cart->_cartProcessed						= $sessionCart->_cartProcessed;
 					self::$_cart->_inCheckOut 					= $sessionCart->_inCheckOut;
 					self::$_cart->_dataValidated				= $sessionCart->_dataValidated;
 					self::$_cart->_confirmDone					= $sessionCart->_confirmDone;
@@ -292,6 +294,7 @@ class VirtueMartCart {
 		$sessionCart->paymentCurrency						= $this->paymentCurrency;
 
 		//private variables
+		$sessionCart->_cartProcessed						= $this->_cartProcessed;
 		$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
@@ -371,7 +374,7 @@ class VirtueMartCart {
 
 		$updateSession = false;
 		$post = vRequest::getRequest();
-
+		$this->_cartProcessed = false;
 		if(empty($virtuemart_product_ids)){
 			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id'); //is sanitized then
 		}
@@ -564,7 +567,7 @@ class VirtueMartCart {
 			$dispatcher = JDispatcher::getInstance();
 			$addToCartReturnValues = $dispatcher->trigger('plgVmOnRemoveFromCart',array($this,$prod_id));
 			unset($this->cartProductsData[$prod_id]);
-
+			$this->_cartProcessed = false;
 			$this->setCartIntoSession();
 			return true;
 		} else {
@@ -604,7 +607,7 @@ class VirtueMartCart {
 				$updated = true;
 			}
 		}
-
+		$this->_cartProcessed = false;
 		$this->setCartIntoSession();
 		if ($updated)
 		return true;
@@ -944,9 +947,6 @@ class VirtueMartCart {
 	 */
 	private function checkPurchaseValue() {
 
-		//$vendor = VmModel::getModel('vendor');
-		//$vendor->setId($this->vendorId);
-		//$store = $vendor->getVendor();
 		$this->prepareVendor();
 		if ($this->vendor->vendor_min_pov > 0) {
 			$prices = $this->getCartPrices();
@@ -987,10 +987,11 @@ class VirtueMartCart {
 	 * will show the orderdone page (thank you page)
 	 *
 	 */
-	 function confirmedOrder() {
+	function confirmedOrder() {
 
 		//Just to prevent direct call
-		if ($this->_dataValidated && $this->_confirmDone) {
+		if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut and !$this->_cartProcessed) {
+			$this->_cartProcessed = true;
 
 			$orderModel = VmModel::getModel('orders');
 
@@ -1001,12 +1002,12 @@ class VirtueMartCart {
 			}
 			$this->virtuemart_order_id = $orderID;
 			$order= $orderModel->getOrder($orderID);
-            $orderDetails = $orderModel ->getMyOrderDetails($orderID);
+			$orderDetails = $orderModel ->getMyOrderDetails($orderID);
 
-            if(!$orderDetails or empty($orderDetails['details'])){
-                echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
-                return;
-            }
+			if(!$orderDetails or empty($orderDetails['details'])){
+				echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+				return;
+			}
 
 			$orderModel->notifyCustomer($orderID, $orderDetails);
 
@@ -1023,8 +1024,6 @@ class VirtueMartCart {
 			// 1 = cart should be emptied, 0 cart should not be emptied
 
 		}
-
-
 	}
 
 	/**

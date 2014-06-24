@@ -84,7 +84,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -107,7 +106,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 				}
 			}
 		}
-
 		return true;
 	}
 
