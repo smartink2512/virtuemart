@@ -6,8 +6,9 @@
    padding-left:100px !important;
 }
 .level1{background-color: #cacaca !important;}
-.level2, .level1 {margin: 10px 0 5px 0; font-weight: bold; padding: 5px;  float:none; clear:both;}
+.level2, .level1 {margin: 15px 0 5px 0; font-weight: bold; padding: 5px;  float:none; clear:both;}
 .level2  {background-color: #f0f0f0;}
 .level3 {font-weight: bold;}
+.level4 {color: #f0f0f0;}
 
 

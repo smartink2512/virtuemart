@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -21,13 +21,13 @@ defined('_JEXEC') or die('Restricted access');
  * So It should be an extension of JElement
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
-if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if (!class_exists('VmConfig')) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
 /**
- * @copyright	Copyright (C) 2009 Open Source Matters. All rights reserved.
- * @license	GNU/GPL
+ * @copyright    Copyright (C) 2009 Open Source Matters. All rights reserved.
+ * @license    GNU/GPL
  */
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
@@ -37,37 +37,39 @@ defined('JPATH_BASE') or die();
  *
  */
 
-class JElementCreditCards extends JElement {
+class JElementCreditCards extends JElement
+{
 
-    /**
-     * Element name
-     *
-     * @access	protected
-     * @var		string
-     */
+	/**
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
 
-    var $_name = 'creditcards';
+	var $_name = 'creditcards';
 
-	    function fetchElement($name, $value, &$node, $control_name) {
-		    JFactory::getLanguage ()->load ('plg_vmpayment_realex', JPATH_ADMINISTRATOR);
+	function fetchElement($name, $value, &$node, $control_name)
+	{
+		JFactory::getLanguage()->load('plg_vmpayment_realex', JPATH_ADMINISTRATOR);
 
-		    $creditcards= RealexHelperRealex::getRealexCreditCards();
+		$creditcards = RealexHelperRealex::getRealexCreditCards();
 
-		    $prefix = 'VMPAYMENT_REALEX_CC_';
+		$prefix = 'VMPAYMENT_REALEX_CC_';
 
-		    $fields = array();
-		    foreach ($creditcards as $creditcard) {
-			    $fields[$creditcard]['value'] = $creditcard;
-			    $fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
-		    }
+		$fields = array();
+		foreach ($creditcards as $creditcard) {
+			$fields[$creditcard]['value'] = $creditcard;
+			$fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
+		}
 
-		    $attribs = ' ';
-		    $attribs .= ' multiple="multiple"';
-		    $attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
+		$attribs = ' ';
+		$attribs .= ' multiple="multiple"';
+		$attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
 
 
-		    return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $attribs, 'value', 'text', $value, $control_name . $name);
+		return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $attribs, 'value', 'text', $value, $control_name . $name);
 
-	    }
+	}
 
 }

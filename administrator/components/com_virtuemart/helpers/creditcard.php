@@ -167,8 +167,14 @@ class Creditcard {
 	 * @author Valerie Isaksen
 	 */
 
-	function validate_credit_card_date($creditcard_type, $month, $year) {
+	static function validate_credit_card_date($creditcard_type, $month, $year) {
+		$today_ts= time();
+		$cc_ts = mktime(0, 0, 0, $month + 1, 1, $year );
+		if ($cc_ts > $today_ts) {
 		return true;
+		} else {
+			return false;
+		}
 	}
 
 

@@ -52,7 +52,7 @@ function isValidCountry() {
 }
 
 
-function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height) {
+function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height, isMobile) {
 
     console.log("amazonShowAddress: " + amazonOrderReferenceId);
     new OffAmazonPayments.Widgets.AddressBook({
@@ -79,7 +79,7 @@ function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height) {
 }
 
 
-function amazonShowWallet(sellerId, amazonOrderReferenceId, width, height) {
+function amazonShowWallet(sellerId, amazonOrderReferenceId, width, height, isMobile) {
     window.onError = null;
 
     console.log("amazonShowWallet: " + amazonOrderReferenceId);

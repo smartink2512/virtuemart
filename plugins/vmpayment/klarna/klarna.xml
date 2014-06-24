@@ -137,7 +137,7 @@
         <param name="status_denied" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_KLARNA_CONF_STATUS_DENIED" description="VMPAYMENT_KLARNA_CONF_STATUS_DENIED_DESC"/>
 
         <param name="send_invoice" type="radio" default="1" label="VMPAYMENT_KLARNA_CONF_EMAIL_INVOICE" description
-                ="VMPAYMENT_KLARNA_CONFEMAIL_INVOICE_DESC">
+                ="VMPAYMENT_KLARNA_CONF_EMAIL_INVOICE_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
@@ -331,7 +331,7 @@
                 </field>
                 <field name="send_invoice" type="list" default="1" label="VMPAYMENT_KLARNA_CONF_EMAIL_INVOICE"
                        description
-                               ="VMPAYMENT_KLARNA_CONFEMAIL_INVOICE_DESC">
+                               ="VMPAYMENT_KLARNA_CONF_EMAIL_INVOICE_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>

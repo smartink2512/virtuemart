@@ -277,7 +277,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	}
 
 
-	function redirectToCart () {
+	private function redirectToCart () {
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . vRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_KLIKANDPAY_ERROR_TRY_AGAIN'));
 	}

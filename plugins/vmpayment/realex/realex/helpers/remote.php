@@ -22,16 +22,18 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-class RealexHelperRealexRemote extends RealexHelperRealex {
+class RealexHelperRealexRemote extends RealexHelperRealex
+{
 
 
-
-	function __construct ($method, $plugin) {
+	function __construct($method, $plugin)
+	{
 		parent::__construct($method, $plugin);
 
 	}
 
-	public function confirmedOrder (&$postRequest, &$request3DSecure) {
+	public function confirmedOrder(&$postRequest, &$request3DSecure)
+	{
 		$postRequest = false;
 		$request3DSecure = false;
 		if ($this->_method->dcc) {
@@ -49,18 +51,19 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	}
 
 
-
 	/**
 	 * @return array
 	 */
 
-	function getExtraPluginInfo () {
+	function getExtraPluginInfo()
+	{
 		return NULL;
 
 
 	}
 
-	function confirmedOrderDccRequest ($response_dcc) {
+	function confirmedOrderDccRequest($response_dcc)
+	{
 		$request3DSecure = false;
 		if ($this->_method->threedsecure and $this->isCC3DSVerifyEnrolled()) {
 			$request3DSecure = true;
@@ -87,11 +90,11 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	}
 
 
-
 	/**
 	 * @return string
 	 */
-	function displayExtraPluginInfo () {
+	function displayExtraPluginInfo()
+	{
 
 		return NULL;
 	}
@@ -100,7 +103,8 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @param bool $enqueueMessage
 	 * @return bool
 	 */
-	function validateRemoteCCForm ($enqueueMessage = true) {
+	function validateRemoteCCForm($enqueueMessage = true)
+	{
 		if (!class_exists('Creditcard')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
 		}
@@ -146,7 +150,6 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 
 
 	}
-
 
 
 }

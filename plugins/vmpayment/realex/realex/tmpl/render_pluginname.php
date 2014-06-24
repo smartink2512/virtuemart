@@ -1,5 +1,5 @@
 <?php
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
@@ -23,7 +23,7 @@ vmJsApi::chosenDropDowns();
 	<?php
 	if (!empty($viewData['logo'])) {
 		?>
-		<span class="vmCartPaymentLogo" >
+		<span class="vmCartPaymentLogo">
 			<?php echo $viewData['logo'] ?>
         </span>
 	<?php
@@ -45,39 +45,39 @@ vmJsApi::chosenDropDowns();
 	}
 	?>
 	<?php if (isset($viewData['extraInfo']) AND isset($viewData['extraInfo']['cc_number']) AND $viewData['extraInfo']['cc_number']) { ?>
-	<div class="vmpayment_selected_cc">
-		<?php
-		if ($viewData['extraInfo']['cc_type']) {
-			echo "(". vmText::_('VMPAYMENT_REALEX_CC_'.$viewData['extraInfo']['cc_type'] ). ' ' ;
-			if ($viewData['where']!= 'order'){
-				echo $viewData['extraInfo']['cc_number'];
-			} else {
-				echo $viewData['extraInfo']['cc_number'];
+		<div class="vmpayment_selected_cc">
+			<?php
+			if ($viewData['extraInfo']['cc_type']) {
+				echo "(" . vmText::_('VMPAYMENT_REALEX_CC_' . $viewData['extraInfo']['cc_type']) . ' ';
+				if ($viewData['where'] != 'order') {
+					echo $viewData['extraInfo']['cc_number'];
+				} else {
+					echo $viewData['extraInfo']['cc_number'];
+				}
+				if ($viewData['extraInfo']['cc_expire_month']) {
+					echo " " . $viewData['extraInfo']['cc_expire_month'] . '/' . $viewData['extraInfo']['cc_expire_year'];
+				}
+				if ($viewData['extraInfo']['cc_name']) {
+					echo ' (' . $viewData['extraInfo']['cc_name'] . ')';
+				}
+				?>
+				)
+			<?php
 			}
-			if ($viewData['extraInfo']['cc_expire_month']) {
-				echo " ".$viewData['extraInfo']['cc_expire_month'] .'/'.$viewData['extraInfo']['cc_expire_year'];
-			}
-			if ($viewData['extraInfo']['cc_name']) {
-				echo ' ('.$viewData['extraInfo']['cc_name'] . ')' ;
-			}
-		?>
-		)
-		<?php
-		}
-		?>
+			?>
 
-	</div>
+		</div>
 	<?php
 	}
 	?>
 	<?php if (isset($viewData['remote_save_card']) AND isset($viewData['extraInfo']['remote_save_card']) AND $viewData['extraInfo']['remote_save_card']) {
-	?>
-	<div class="vmpayment_description">
-		<?php
-		echo  vmText::_('VMPAYMENT_REALEX_SAVE_CARD_DETAILS_YES') ;
 		?>
+		<div class="vmpayment_description">
+			<?php
+			echo vmText::_('VMPAYMENT_REALEX_SAVE_CARD_DETAILS_YES');
+			?>
 
-	</div>
+		</div>
 	<?php
 	}
 	?>

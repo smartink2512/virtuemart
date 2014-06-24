@@ -16,17 +16,12 @@ defined ('JPATH_BASE') or die();
 /**
  * Renders a label element
  */
-if (JVM_VERSION === 2) {
+
 	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
 	if (!class_exists ('KlarnaHandler')) {
 		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 	}
-} else {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-	if (!class_exists ('KlarnaHandler')) {
-		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
-	}
-}
+
 
 class JElementGetKlarna extends JElement {
 

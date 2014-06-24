@@ -1228,13 +1228,13 @@ class ShopFunctions {
 	 * @param string $list_name The name of the select element
 	 * @param string $selected_item The pre-selected value
 	 */
-	static function listYears ($list_name, $selected = FALSE, $start = NULL, $end = NULL, $attr = '') {
+	static function listYears ($list_name, $selected = FALSE, $start = NULL, $end = NULL, $attr = '', $format='Y') {
 
 		$options = array();
 		if (!$selected) {
-			$selected = date ('Y');
+			$selected = date ($format);
 		}
-		$start = $start ? $start : date ('Y');
+		$start = $start ? $start : date ($format);
 		$end = $end ? $end : $start + 11;
 		$options[] = JHTML::_ ('select.option', 0, JText::_ ('YEAR'));
 		for ($i = $start; $i <= $end; $i++) {

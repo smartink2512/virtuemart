@@ -22,16 +22,19 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-class RealexHelperRealexRedirect extends RealexHelperRealex {
+class RealexHelperRealexRedirect extends RealexHelperRealex
+{
 
 
-	function __construct ($method, $plugin) {
+	function __construct($method, $plugin)
+	{
 		parent::__construct($method, $plugin);
 
 
 	}
 
-	public function confirmedOrder (&$postRequest) {
+	public function confirmedOrder(&$postRequest)
+	{
 		$selectedCCParams = array();
 		if (!$this->doRealvault($selectedCCParams)) {
 			$response = $this->sendPostRequest();
@@ -43,14 +46,15 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	}
 
 
-	function doRealVault (&$selectedCCParams) {
+	function doRealVault(&$selectedCCParams)
+	{
 		//$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
 		//$selectedCCParams = $this->getSelectedCCParams($saved_cc_selected, $this->cart->virtuemart_paymentmethod_id);
 		$doRealVault = false;
 
 		if (!JFactory::getUser()->guest AND $this->_method->realvault and $this->getStoredCCs(JFactory::getUser()->id)) {
 			//if (!$selectedCCParams->addNew) {
-				$doRealVault = true;
+			$doRealVault = true;
 			//}
 		}
 		$this->debugLog((int)$doRealVault, 'Realex doRealVault:', 'debug');
@@ -58,7 +62,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	}
 
 
-	function sendPostRequest () {
+	function sendPostRequest()
+	{
 		$post_variables = $this->getPostVariables();
 
 		$jump_url = $this->getJumpUrl();
@@ -97,7 +102,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		return $html;
 	}
 
-	function getPostVariables () {
+	function getPostVariables()
+	{
 
 		$BT = $this->order['details']['BT'];
 		$ST = ((isset($this->order['details']['ST'])) ? $this->order['details']['ST'] : $this->order['details']['BT']);
@@ -174,7 +180,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 	}
 
-	function  getExistingPayerRef () {
+	function  getExistingPayerRef()
+	{
 		$storedCCs = $this->getStoredCCs(JFactory::getUser()->id);
 		if (is_array($storedCCs)) {
 			return $storedCCs[0]->realex_saved_payer_ref;
@@ -183,7 +190,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 	}
 
-	function  getExistingPmtRef () {
+	function  getExistingPmtRef()
+	{
 		$storedCCs = $this->getStoredCCs(JFactory::getUser()->id);
 		if (is_array($storedCCs)) {
 			return $storedCCs[0]->realex_saved_pmt_ref;
@@ -198,7 +206,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * @return bool
 	 */
 
-	function validateConfirmedOrder ($enqueueMessage = true) {
+	function validateConfirmedOrder($enqueueMessage = true)
+	{
 
 		return $this->validate();
 
@@ -208,7 +217,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * @param bool $enqueueMessage
 	 * @return bool
 	 */
-	public function validate ($enqueueMessage = true) {
+	public function validate($enqueueMessage = true)
+	{
 		if (!JFactory::getUser()->guest AND $this->_method->realvault) {
 			if ($storedCCs = $this->getStoredCCs(JFactory::getUser()->id)) {
 				$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
@@ -225,18 +235,21 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * @param bool $enqueueMessage
 	 * @return bool
 	 */
-	public function validateSelectCheckPayment ($enqueueMessage = true) {
+	public function validateSelectCheckPayment($enqueueMessage = true)
+	{
 		return $this->validate();
 	}
 
 	/**
 	 * @return bool
 	 */
-	function validateCheckoutCheckDataPayment () {
+	function validateCheckoutCheckDataPayment()
+	{
 		return $this->validate();
 	}
 
-	function getExtraPluginInfo () {
+	function getExtraPluginInfo()
+	{
 		$extraPluginInfo = array();
 		$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
 		if ($saved_cc_selected != -1) {
@@ -261,7 +274,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * Validate the response hash from Realex.
 	 * timestamp.merchantid.orderid.amount.curr.payerref.pmtref
 	 */
-	function validateResponseHash ($post) {
+	function validateResponseHash($post)
+	{
 		if (is_array($post)) {
 			$message = stripslashes($post['MESSAGE']);
 			$message = str_replace('&#39;', "'", $message);
@@ -281,7 +295,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		return true;
 	}
 
-	function setComment1 () {
+	function setComment1()
+	{
 		$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency);
 		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
@@ -289,7 +304,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		return vmText::sprintf('VMPAYMENT_REALEX_COMMENT1', $amountValue['display'], $this->order['details']['BT']->order_number, $shop_name);
 	}
 
-	function setComment2 () {
+	function setComment2()
+	{
 		$shop_name = $this->getVendorInfo('vendor_store_name');
 		return vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $shop_name);
 	}
@@ -298,7 +314,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * JumpUrl is a prefined URL that must be configurated in Realex
 	 * @return string
 	 */
-	function getJumpUrl () {
+	function getJumpUrl()
+	{
 		return $this->_method->referring_url;
 
 	}

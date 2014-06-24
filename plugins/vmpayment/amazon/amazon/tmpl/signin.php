@@ -16,9 +16,11 @@ defined ('_JEXEC') or die();
  *
  * http://virtuemart.net
  */
-
+JHtml::_('behavior.tooltip');
 $doc = JFactory::getDocument();
-vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+echo JURI::root(true);
+//vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/site.js');
 $doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/css/amazon-site.css');
 if ( $viewData['sign_in_display'] == 'advertise') {
 	$doc->addScriptDeclaration("
@@ -37,7 +39,7 @@ $( '.output-shipto-add' ).hide();
 
 
 ?>
-<?php if ( $viewData['sign_in_display'] != 'advertise') { ?>
+<?php if ( $viewData['sign_in_display'] == 'listFE') { ?>
 
 	<input type="radio" name="virtuemart_paymentmethod_id"
 	       id="payment_id_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"
@@ -45,8 +47,9 @@ $( '.output-shipto-add' ).hide();
 <?php } ?>
 
 
-<div id="payWithAmazonDiv">
+<div id="payWithAmazonDiv" class="hasTip" title="::<?php echo vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')?> ">
 	<img src="<?php echo $viewData['buttonWidgetImageURL'] ?>" style="cursor: pointer;" />
+
 </div>
 <div id="amazonSignInErrorMsg" class="error"></div>
 <?php if ( $viewData['sign_in_display'] == 'advertise') { ?>

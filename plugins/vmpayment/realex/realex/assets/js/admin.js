@@ -78,7 +78,7 @@ jQuery().ready(function ($) {
 
         $('.threedsecure').parents('tr').hide();
 
-        if (threedsecure == 1 ) {
+        if (threedsecure == 1) {
             $('.threedsecure').parents('tr').show();
         }
     }

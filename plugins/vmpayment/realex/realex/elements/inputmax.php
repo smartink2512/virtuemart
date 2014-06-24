@@ -25,23 +25,23 @@ defined('JPATH_BASE') or die();
 class JElementInputMax extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'inputMax';
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $_name = 'inputMax';
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 
 
-		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="text_area"' );
+		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : 'class="text_area"');
 
-			$size = ( $node->attributes('size') ? 'size="'.$node->attributes('size').'"' : '' );
-			$maxlength = ( $node->attributes('maxlength') ? 'maxlength="'.$node->attributes('maxlength').'"' : '' );
+		$size = ($node->attributes('size') ? 'size="' . $node->attributes('size') . '"' : '');
+		$maxlength = ($node->attributes('maxlength') ? 'maxlength="' . $node->attributes('maxlength') . '"' : '');
 
-			return '<input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.$name.'" value="'.$value.'" '.$class.' '.$size.' '.$maxlength . '/>';
+		return '<input type="text" name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '" value="' . $value . '" ' . $class . ' ' . $size . ' ' . $maxlength . '/>';
 
 	}
 }

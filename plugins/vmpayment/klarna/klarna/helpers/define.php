@@ -17,21 +17,13 @@ defined('JPATH_BASE') or die();
  * http://virtuemart.net
  */
 
-if (JVM_VERSION === 2) {
     if (!defined('JPATH_VMKLARNAPLUGIN'))
 	define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
     if (!defined('VMKLARNAPLUGINWEBROOT'))
 	define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna');
     if (!defined('VMKLARNAPLUGINWEBASSETS'))
 	define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets');
-} else {
-    if (!defined('JPATH_VMKLARNAPLUGIN'))
-	define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
-    if (!defined('VMKLARNAPLUGINWEBROOT'))
-	define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment');
-    if (!defined('VMKLARNAPLUGINWEBASSETS'))
-	define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets');
-}
+
 if (!defined('VMKLARNA_PC_TYPE'))
     define('VMKLARNA_PC_TYPE', 'json');
 if (!defined('VMKLARNA_CONFIG_FILE'))

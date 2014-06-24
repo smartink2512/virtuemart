@@ -19,18 +19,23 @@ defined ('_JEXEC') or die();
 ?>
 
 <?php
-
 $doc = JFactory::getDocument();
-//$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/site.js');
-vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+
+jimport('joomla.environment.browser');
+$browser = JBrowser::getInstance();
+$isMobile=$browser->isMobile();
+if ( $isMobile) {
+	$doc->setMetaData('viewport', "width=device-width, initial-scale=1, maximum-scale=1");
+}
+
+$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/site.js');
+//vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
 
 $doc->addScriptDeclaration("
 jQuery(document).ready( function($) {
-	amazonShowAddress('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['addressbook_designWidth']."', '".$viewData['addressbook_designHeight']."');
-	amazonShowWallet('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['wallet_designWidth']."', '".$viewData['wallet_designHeight']."');
-$('#amazonCloseIframe' ).click(function( event ) {
-       $.fancybox.close()
-    });
+	amazonShowAddress('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['addressbook_designWidth']."', '".$viewData['addressbook_designHeight']."', '".$isMobile."');
+	amazonShowWallet('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['wallet_designWidth']."', '".$viewData['wallet_designHeight']."', '".$isMobile."');
+
 });
 
 "); // addScriptDeclaration

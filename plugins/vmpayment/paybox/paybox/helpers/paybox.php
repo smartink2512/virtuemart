@@ -679,7 +679,7 @@ jQuery().ready(function($) {
 	 *
 	 */
 
-	function redirectToCart () {
+	private function redirectToCart () {
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . pbxRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_PAYBOX_ERROR_TRY_AGAIN'));
 	}

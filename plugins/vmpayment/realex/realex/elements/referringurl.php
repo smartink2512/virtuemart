@@ -25,28 +25,25 @@ defined('JPATH_BASE') or die();
 class JElementReferringurl extends JElement
 {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'referringurl';
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $_name = 'referringurl';
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 
-			$value= JURI::root().'plugins/vmpayment/realex/jump.php';
+		$value = JURI::root() . 'plugins/vmpayment/realex/jump.php';
 
-		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="text_area"' );
-		if ($node->attributes( 'editable' ) == 'true')
-		{
-			$size = ( $node->attributes('size') ? 'size="'.$node->attributes('size').'"' : '' );
+		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : 'class="text_area"');
+		if ($node->attributes('editable') == 'true') {
+			$size = ($node->attributes('size') ? 'size="' . $node->attributes('size') . '"' : '');
 
-			return '<input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.$name.'" value="'.$value.'" '.$class.' '.$size.' />';
-		}
-		else
-		{
-			return '<label for="'.$name.'"'.$class.'>'.$value.'</label>';
+			return '<input type="text" name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '" value="' . $value . '" ' . $class . ' ' . $size . ' />';
+		} else {
+			return '<label for="' . $name . '"' . $class . '>' . $value . '</label>';
 		}
 	}
 }

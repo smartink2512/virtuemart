@@ -23,8 +23,8 @@ jQuery(document).ready( function($) {
 	amazonShowRoAddress('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['ro_addressbook_designWidth']."', '".$viewData['ro_addressbook_designHeight']."');
 	amazonShowRoWallet('".$viewData['sellerId']."','".$viewData['amazonOrderReferenceId']."', '".$viewData['ro_wallet_designWidth']."', '".$viewData['ro_wallet_designHeight']."');
 
-	$( '.output-shipto-add' ).hide();
-	$( '.output-shipto' ).html('<div id=\"amazonRoAddressBookDiv\"><div id=\"amazonRoWalletEditDiv\"></div><a href=\"".$viewData['redirect_page']."\">".vmText::_('VMPAYMENT_AMAZON_EDIT')."</a><div id=\"amazonRoAddressBookWidgetDiv\"></div></div>');
+	$( '#".$viewData['ro_addressbook_output_shipto_add_id']."' ).hide();
+	$( '#".$viewData['ro_addressbook_output_shipto_id']."' ).html('<div id=\"amazonRoAddressBookDiv\"><div id=\"amazonRoWalletEditDiv\"></div><a href=\"".$viewData['redirect_page']."\">".vmText::_('VMPAYMENT_AMAZON_EDIT')."</a><div id=\"amazonRoAddressBookWidgetDiv\"></div></div>');
 });
 
 ");

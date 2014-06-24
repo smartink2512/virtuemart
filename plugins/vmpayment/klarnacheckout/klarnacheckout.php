@@ -59,8 +59,8 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		$this->_loggable = TRUE;
 		$this->tableFields = array_keys($this->getTableSQLFields());
-		$this->_tablepkey = 'id'; //virtuemart_sofort_id';
-		$this->_tableId = 'id'; //'virtuemart_sofort_id';
+		$this->_tablepkey = 'id';
+		$this->_tableId = 'id';
 		$varsToPush = $this->getVarsToPush();
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 		plgVmPaymentKlarnaCheckout::includeKlarnaFiles();

@@ -936,7 +936,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 	static function   getNotificationUrl ($security, $order_number) {
 
-		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number .'&lang='.vRequest::getCmd('lang','');
+		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&security=" . $security . "&on=" . $order_number .'&lang='.vRequest::getCmd('lang','');
 	}
 
 	static function getSecurityKey () {

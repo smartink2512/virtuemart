@@ -571,7 +571,6 @@
                 <!-- Cart -->
                 <field class="cart" type="vmnote"
                        description="VMPAYMENT_PAYPAL_PAYMENT_SHOPPING_CART_TIP"/>
-                <field class="xclick" type="vmnote" default="" description="VMPAYMENT_PAYPAL_PAYMENT_XCLICK_TIP"/>
 
                 <field name="payment_action" type="list" default="Sale" label="VMPAYMENT_PAYPAL_ACTION"
                        description="VMPAYMENT_PAYPAL_ACTION_TIP">
