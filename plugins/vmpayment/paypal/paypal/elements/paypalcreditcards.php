@@ -25,6 +25,7 @@ if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.'/helpers/sho
 if (!class_exists('PaypalHelperPaypal')){
 	 require (JPATH_ROOT   . '/plugins/vmpayment/paypal/paypal/helpers/paypal.php');
 }
+if (JVM_VERSION <  3) {
 
 class JElementPaypalCreditcards extends JElement {
 
@@ -52,4 +53,29 @@ class JElementPaypalCreditcards extends JElement {
 
     }
 
+}
+} else {
+	jimport('joomla.form.formfield');
+	class JElementPaypalCreditcards extends JFormField {
+
+		 public $type  = 'Paypalcreditcards';
+
+		 protected function getInput() {
+			JFactory::getLanguage ()->load ('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
+
+			$creditcards= PaypalHelperPaypal::getPaypalCreditCards();
+
+			$prefix = 'VMPAYMENT_PAYPAL_CC_';
+
+			$fields = array();
+			foreach ($creditcards as $creditcard) {
+				$fields[$creditcard]['value'] = $creditcard;
+				$fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
+			}
+
+			 return JHTML::_('select.genericlist', $creditcards, $this->name , 'size="1"', 'value', 'title', $this->value);
+
+		}
+
+	}
 }

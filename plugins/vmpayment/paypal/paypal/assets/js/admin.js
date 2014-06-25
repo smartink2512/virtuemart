@@ -19,12 +19,38 @@
  */
 
 jQuery().ready(function ($) {
-
+    /* BC compatibillities function */
+    hideParent = function(param) {
+        $(param).parents('tr').hide();
+        $(param).parents('.control-group').hide();
+    }
+    showParent = function(param) {
+        $(param).parents('tr').show();
+        $(param).parents('.control-group').show();
+    }
+    getParamId = function(param) {
+        if($("#params_"+param).length == 0) {
+            //it doesn't exist
+            var newparam=   '#params'+param;
+        } else {
+            var newparam= "#params_"+param;
+        }
+        return newparam;
+    }
+    getParamValue = function(param) {
+        if($("#params_"+param).length == 0) {
+            //it doesn't exist
+            return   $('#params'+param).val();
+        } else {
+            return  $("#params_"+param).val();
+        }
+    }
     /************/
     /* Handlers */
     /************/
     handleCredentials = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
+
+        var paypalproduct=getParamValue('paypalproduct');
         var sandbox = $("input[name='params[sandbox]']:checked").val();
         if (sandbox==1) {
             var sandboxmode = 'sandbox';
@@ -32,204 +58,204 @@ jQuery().ready(function ($) {
             var sandboxmode = 'production';
         }
 
-
-        $('.std,.api,.live,.sandbox,.sandbox_warning, .accelerated_onboarding').parents('tr').hide();
+        hideParent('.std,.api,.live,.sandbox,.sandbox_warning, .accelerated_onboarding');
         $('.get_sandbox_credentials').hide();
         $('.get_paypal_credentials').hide();
         // $('.authentication').hide();
-        $('.authentication').parents('tr').hide();
+        hideParent('.authentication');
 
 
         if (paypalproduct == 'std' && sandboxmode == 'production') {
-            $('.std.live').parents('tr').show();
+            showParent('.std.live') ;
             $('.get_paypal_credentials').show();
-            $('#paramspaypal_merchant_email').addClass("required");
+            $(getParamId('paypal_merchant_email')).addClass("required");
 
         } else if (paypalproduct == 'std' && sandboxmode == 'sandbox') {
-            $('.std.sandbox').parents('tr').show();
+            showParent('.std.sandbox');
             $('.get_sandbox_credentials').show();
-            $('#paramssandbox_merchant_email').addClass("required");
+            $(getParamId('sandbox_merchant_email')).addClass("required");
 
         } else if (paypalproduct == 'api' && sandboxmode == 'production') {
-            $('.api.live').parents('tr').show();
+            showParent('.api.live');
             $('.get_paypal_credentials').show();
-            $('#paramspaypal_merchant_email').removeClass("required");
+            $(getParamId('paypal_merchant_email')).removeClass("required");
 
         } else if (paypalproduct == 'api' && sandboxmode == 'sandbox') {
-            $('.api.sandbox').parents('tr').show();
+            showParent('.api.sandbox');
             $('.get_sandbox_credentials').show();
-            $('#paramssandbox_merchant_email').removeClass("required");
+            $(getParamId('sandbox_merchant_email')).removeClass("required");
 
         } else if (paypalproduct == 'exp' && sandboxmode == 'production') {
-            $('.api.live').parents('tr').show();
-            $('.exp.live').parents('tr').show();
-            $('.accelerated_onboarding').parents('tr').show();
+            showParent('.api.live');
+            $('.exp.live');
+            showParent('.accelerated_onboarding');
             $('.get_paypal_credentials').show();
-            $('#paramspaypal_merchant_email').removeClass("required");
+            $(getParamId('paypal_merchant_email')).removeClass("required");
 
-            //$('.authentication.live.certificate').parents('tr').show();
+            //$('.authentication.live.certificate');
 
         } else if (paypalproduct == 'exp' && sandboxmode == 'sandbox') {
-            $('.api.sandbox').parents('tr').show();
-            $('.exp.sandbox').parents('tr').show();
-            $('.accelerated_onboarding').parents('tr').show();
+            showParent('.api.sandbox');
+            showParent('.exp.sandbox');
+            showParent('.accelerated_onboarding');
             $('.get_sandbox_credentials').show();
-            $('#paramssandbox_merchant_email').removeClass("required");
+            $(getParamId('sandbox_merchant_email')).removeClass("required");
             // $('.sandbox.authentication').show();
 
         } else if (paypalproduct == 'hosted' && sandboxmode == 'production') {
-            $('.api.live').parents('tr').show();
-            $('.hosted.live').parents('tr').show();
+            showParent('.api.live');
+            showParent('.hosted.live');
             $('.get_paypal_credentials').show();
-            $('#paramspaypal_merchant_email').removeClass("required");
+            $(getParamId('paypal_merchant_email')).removeClass("required");
 
         } else if (paypalproduct == 'hosted' && sandboxmode == 'sandbox') {
-            $('.api.sandbox').parents('tr').show();
-            $('.hosted.sandbox').parents('tr').show();
+            showParent('.api.sandbox');
+            showParent('.hosted.sandbox');
             $('.get_sandbox_credentials').show();
-            $('#paramssandbox_merchant_email').removeClass("required");
+            $(getParamId('sandbox_merchant_email')).removeClass("required");
         }
 
         if (sandboxmode == 'sandbox') {
-            $('.sandbox_warning').parents('tr').show();
+            showParent('.sandbox_warning');
         }
     }
 
     handlePaymentType = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        var currentval = $('#paramspayment_type').val();
-        $('.payment_type').parents('tr').hide();
+        var paypalproduct=getParamValue('paypalproduct');
+        var currentval = getParamValue('payment_type');
+        hideParent('.payment_type');
         if (paypalproduct == 'std') {
-            $('.payment_type').parents('tr').show();
+            $('.payment_type');
         }
 
         if (paypalproduct == 'exp' || paypalproduct == 'api' || paypalproduct == 'hosted') {
-            $('#paramspayment_type option[value=_cart]').attr('disabled', '');
-            $('#paramspayment_type option[value=_oe-gift-certificate]').attr('disabled', '');
-            $('#paramspayment_type option[value=_donations]').attr('disabled', '');
-            $('#paramspayment_type option[value=_xclick-auto-billing]').attr('disabled', '');
+            $(getParamId('payment_type')+' option[value=_cart]').attr('disabled', '');
+            $(getParamId('payment_type')+' option[value=_oe-gift-certificate]').attr('disabled', '');
+            $(getParamId('payment_type')+' option[value=_donations]').attr('disabled', '');
+            $(getParamId('payment_type')+' option[value=_xclick-auto-billing]').attr('disabled', '');
             if (currentval == '_cart' || currentval == '_oe-gift-certificate' || currentval == '_donations' || currentval == '_xclick-auto-billing') {
-                $('#paramspayment_type').val('_xclick');
+                $(getParamId('payment_type')).val('_xclick');
             }
 
         } else {
-            $('#paramspayment_type option[value=_cart]').removeAttr('disabled');
-            $('#paramspayment_type option[value=_oe-gift-certificate]').removeAttr('disabled');
-            $('#paramspayment_type option[value=_donations]').removeAttr('disabled');
-            $('#paramspayment_type option[value=_xclick-auto-billing]').removeAttr('disabled');
+            $(getParamId('payment_type')+' option[value=_cart]').removeAttr('disabled');
+            $(getParamId('payment_type')+' option[value=_oe-gift-certificate]').removeAttr('disabled');
+            $(getParamId('payment_type')+' option[value=_donations]').removeAttr('disabled');
+            $(getParamId('payment_type')+' option[value=_xclick-auto-billing]').removeAttr('disabled');
         }
-        $('#paramspayment_type').trigger("liszt:updated");
+        $(getParamId('payment_type')).trigger("liszt:updated");
 
 
     }
 
     handleCreditCard = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.creditcard').parents('tr').hide();
-        $('.cvv_required').parents('tr').hide();
+        var paypalproduct = $(getParamValue('paypalproduct'));
+        hideParent('.creditcard');
+        hideParent('.cvv_required');
         if (paypalproduct == 'api') {
-            $('.creditcard').parents('tr').show();
-            $('.cvv_required').parents('tr').show();
+            showParent('.creditcard');
+            showParent('.cvv_required');
 
         }
     }
     handleRefundOnCancel = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.paypal_vm').parents('tr').show();
+        var paypalproduct=getParamValue('paypalproduct');
+        showParent('.paypal_vm');
         if (paypalproduct == 'std') {
-            $('.paypal_vm').parents('tr').hide();
+            hideParent('.paypal_vm');
         }
     }
 
     handleCapturePayment = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        var payment_action = $('#paramspayment_action').val();
-        $('.capture').parents('tr').hide();
+        var paypalproduct=getParamValue('paypalproduct');
+        var payment_action=getParamValue('payment_action');
+        hideParent('.capture');
         if (paypalproduct == 'hosted' && payment_action == 'Authorization') {
-            $('.capture').parents('tr').show();
+            showParent('.capture');
         }
     }
     handleTemplate = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.paypaltemplate').parents('tr').hide();
+        var paypalproduct=getParamValue('paypalproduct');
+        hideParent('.paypaltemplate');
 
         if (paypalproduct == 'hosted') {
-            $('.paypaltemplate').parents('tr').show();
+            showParent('.paypaltemplate');
         }
     }
 
     handleTemplateParams = function () {
-        var paypaltemplate = $('#paramstemplate').val();
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.hosted.templateA,.hosted.templateB,.hosted.templateC,.hosted.template_warning').parents('tr').hide();
+        var paypaltemplate=getParamValue('template');
+        var paypalproduct=getParamValue('paypalproduct');
+        hideParent('.hosted.templateA,.hosted.templateB,.hosted.templateC,.hosted.template_warning');
 
         if (paypalproduct == 'hosted' && paypaltemplate == 'templateA') {
-            $('.hosted.templateA,.hosted.template_warning').parents('tr').show();
+            showParent('.hosted.templateA,.hosted.template_warning');
         }
         if (paypalproduct == 'hosted' && paypaltemplate == 'templateB') {
-            $('.hosted.templateB,.hosted.template_warning').parents('tr').show();
+            showParent('.hosted.templateB,.hosted.template_warning');
         }
         if (paypalproduct == 'hosted' && paypaltemplate == 'templateC') {
-            $('.hosted.templateC,.hosted.template_warning').parents('tr').show();
+            showParent('.hosted.templateC,.hosted.template_warning');
         }
     }
 
     handlePaymentAction = function () {
-        var paymenttype = $('#paramspayment_type').val();
-        //var currentval = $('#paramspayment_action').val();
+        var paymenttype = $(getParamId('payment_type')).val();
+        //var currentval = $(getParamId('payment_action')).val();
         if (paymenttype == '_xclick-subscriptions' || paymenttype == '_xclick-payment-plan' || paymenttype == '_xclick-auto-billing') {
-            $('#paramspayment_action').val('Sale');
-            $('#paramspayment_action').parents('tr').hide();
-            $('#paramspayment_action').trigger("liszt:updated");
+            $(getParamId('payment_action')).val('Sale');
+            hideParent(getParamId('payment_action'));
+            $(getParamId('payment_action')).trigger("liszt:updated");
         } else {
-            $('#paramspayment_action').parents('tr').show();
+            showParent(getParamId('payment_action'));
         }
     }
 
     handleLayout = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.paypallayout').parents('tr').hide();
-        $('.stdlayout').parents('tr').hide();
-        $('.explayout').parents('tr').hide();
-        // $('.hosted.paypallayout').parents('tr').hide();
+        var paypalproduct=getParamValue('paypalproduct');
+        hideParent('.paypallayout');
+        hideParent('.stdlayout');
+        hideParent('.explayout');
+        // $('.hosted.paypallayout');
         if (paypalproduct == 'std' || paypalproduct == 'exp' || paypalproduct == 'hosted') {
-            $('.paypallayout').parents('tr').show();
+            showParent('.paypallayout');
         }
         if (paypalproduct == 'std') {
-            $('.stdlayout').parents('tr').show();
+            showParent('.stdlayout');
         }
         if (paypalproduct == 'exp') {
-            $('.explayout').parents('tr').show();
+            showParent('.explayout');
         }
     }
     handleAuthentication = function () {
-        var paypalAuthentication = $('#paramsauthentication').val();
+        var paypalAuthentication=getParamValue('authentication');
         var sandbox = $("input[name='params[sandbox]']:checked").val();
+        var paypalproduct=getParamValue('paypalproduct');
+
         if (sandbox==1) {
             var sandboxmode = 'sandbox';
         } else {
             var sandboxmode = 'production';
         }
 
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.authentication').parents('tr').hide();
+        hideParent('.authentication');
         if (paypalproduct != 'std') {
             if (sandboxmode == 'sandbox') {
-                $('.authentication.sandbox.select').parents('tr').show();
+                showParent('.authentication.sandbox.select');
                 if (paypalAuthentication == 'certificate') {
-                    $('.authentication.sandbox.certificate').parents('tr').show();
+                    showParent('.authentication.sandbox.certificate');
                 } else {
-                    $('.authentication.sandbox.signature').parents('tr').show();
+                    showParent('.authentication.sandbox.signature');
 
                 }
             }
             else if (sandboxmode == 'production') {
-                // $('.authentication.live.certificate').parents('tr').show();
-                $('.authentication.live.select').parents('tr').show();
+                // $('.authentication.live.certificate');
+                showParent('.authentication.live.select');
                 if (paypalAuthentication == 'certificate') {
-                    $('.authentication.live.certificate').parents('tr').show();
+                    showParent('.authentication.live.certificate');
                 } else {
-                    $('.authentication.live.signature').parents('tr').show();
+                    showParent('.authentication.live.signature');
 
                 }
             }
@@ -237,156 +263,159 @@ jQuery().ready(function ($) {
 
     }
     handleExpectedMaxAmount = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.expected_maxamount').parents('tr').hide();
+        var paypalproduct=getParamValue('paypalproduct');
+        hideParent('.expected_maxamount');
 
         if (paypalproduct == 'exp') {
-            $('.expected_maxamount').parents('tr').show();
+            showParent('.expected_maxamount');
         }
     }
     handleWarningAuthorizeStd = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        var payment_action = $('#paramspayment_action').val();
-        $('.warning_std_authorize').parents('tr').hide();
+        var paypalproduct=getParamValue('paypalproduct');
+        var payment_action=getParamValue('payment_action');
+        hideParent('.warning_std_authorize');
         if (paypalproduct == 'std' && payment_action == 'Authorization') {
-            $('.warning_std_authorize').parents('tr').show();
+            showParent('.warning_std_authorize');
         }
     }
 
     handleWarningHeaderImage = function () {
-        var headerimage = $('#paramheaderimg').val();
-        $('.warning_headerimg').parents('tr').hide();
+        var headerimage=getParamValue('headerimg');
+        hideParent('.warning_headerimg');
         if (headerimage != '-1') {
-            $('.warning_headerimg').parents('tr').show();
+            showParent('.warning_headerimg');
         }
     }
 
     handlePaymentTypeDetails = function () {
-        var selectedMode = $('#paramspayment_type').val();
-        $('.xclick').parents('tr').hide();
-        $('.cart').parents('tr').hide();
-        $('.subscribe').parents('tr').hide();
-        $('.plan').parents('tr').hide();
-        $('.billing').parents('tr').hide();
-        var paypalproduct = $('#paramspaypalproduct').val();
+        var selectedMode=getParamValue('payment_type');
+        hideParent('.xclick');
+        hideParent('.cart');
+        hideParent('.subscribe');
+        hideParent('.plan');
+        hideParent('.billing');
+        var paypalproduct=getParamValue('paypalproduct');
         if (paypalproduct == 'std') {
             switch (selectedMode) {
                 case '_xclick':
-                    $('.xclick').parents('tr').show();
-                    $('.cart').parents('tr').hide();
-                    $('.subscribe').parents('tr').hide();
-                    $('.plan').parents('tr').hide();
-                    $('.billing').parents('tr').hide();
+                    showParent('.xclick');
+                    hideParent('.cart');
+                    hideParent('.subscribe');
+                    hideParent('.plan');
+                    hideParent('.billing');
                     break;
                 case '_cart':
-                    $('.xclick').parents('tr').hide();
-                    $('.cart').parents('tr').show();
-                    $('.subscribe').parents('tr').hide();
-                    $('.plan').parents('tr').hide();
-                    $('.billing').parents('tr').hide();
+                    hideParent('.xclick');
+                    showParent('.cart');
+                    hideParent('.subscribe');
+                    hideParent('.plan');
+                    hideParent('.billing');
                     break;
                 case '_oe-gift-certificate':
-                    $('.cart').parents('tr').hide();
-                    $('.subscribe').parents('tr').hide();
-                    $('.plan').parents('tr').hide();
-                    $('.billing').parents('tr').hide();
+                    hideParent('.cart');
+                    hideParent('.subscribe');
+                    hideParent('.plan');
+                    hideParent('.billing');
                     break;
                 case '_xclick-subscriptions':
-                    $('.cart').parents('tr').hide();
-                    $('.subscribe').parents('tr').show();
-                    $('.plan').parents('tr').hide();
-                    $('#paramssubcription_trials').trigger('change');
-                    $('.billing').parents('tr').hide();
+                    hideParent('.cart');
+                    showParent('.subscribe');
+                    hideParent('.plan');
+                    $('#params_subcription_trials').trigger('change');
+                    hideParent('.billing');
                     handleSubscriptionTrials();
                     break;
                 case '_xclick-auto-billing':
-                    $('.cart').parents('tr').hide();
-                    $('.subscribe').parents('tr').hide();
-                    $('.plan').parents('tr').hide();
-                    $('.billing').parents('tr').show();
+                    hideParent('.cart');
+                    hideParent('.subscribe');
+                    hideParent('.plan');
+                    showParent('.billing');
                     handleMaxAmountType();
                     break;
                 case '_xclick-payment-plan':
-                    $('.cart').parents('tr').hide();
-                    $('.subscribe').parents('tr').hide();
-                    $('.plan').parents('tr').show();
-                    $('.billing').parents('tr').hide();
+                    hideParent('.cart');
+                    hideParent('.subscribe');
+                    showParent('.plan');
+                    hideParent('.billing');
                     handlePaymentPlanDefer();
                     break;
                 case '_donations':
-                    $('.cart').parents('tr').hide();
-                    $('.subscribe').parents('tr').hide();
-                    $('.plan').parents('tr').hide();
-                    $('.billing').parents('tr').hide();
+                    hideParent('.cart');
+                    hideParent('.subscribe');
+                    hideParent('.plan');
+                    hideParent('.billing');
                     break;
             }
         }
     }
 
     handleSubscriptionTrials = function () {
-        var nbTrials = $('#paramssubcription_trials').val();
+        var nbTrials=getParamValue('subcription_trials');
+
         switch (nbTrials) {
             case '0':
-                $('.trial1').parents('tr').hide();
-                //$('.trial2').parents('tr').hide();
+                hideParent('.trial1');
+                //$('.trial2');
                 break;
             case '1':
-                $('.trial1').parents('tr').show();
-                //$('.trial2').parents('tr').hide();
+                showParent('.trial1');
+                //$('.trial2');
                 break;
             //case '2':
-            //	$('.trial1').parents('tr').show();
-            //	$('.trial2').parents('tr').show();
+            //	$('.trial1');
+            //	$('.trial2');
             //	break;
         }
     }
 
     handlePaymentPlanDefer = function () {
-        var doDefer = $('#paramspayment_plan_defer').val();
-        var paypalproduct = $('#paramspaypalproduct').val();
-        $('.defer').parents('tr').hide();
+        var doDefer=getParamValue('payment_plan_defer');
+        var paypalproduct=getParamValue('paypalproduct');
+
+        hideParent('.defer');
         if (doDefer == 1) {
             if (paypalproduct == 'std') {
-                $('.defer_std').parents('tr').show();
+                showParent('.defer_std');
             } else {
-                $('.defer_api').parents('tr').show();
+                showParent('.defer_api');
             }
         }
     }
 
     handleMaxAmountType = function () {
-        var max_amount_type = $('#paramsbilling_max_amount_type').val();
+        var max_amount_type=getParamValue('billing_max_amount_type');
+
         switch (max_amount_type) {
             case 'cart':
             case 'cust':
-                $('.billing_max_amount').parents('tr').hide();
+                hideParent('.billing_max_amount');
                 break;
             case 'value':
             case 'perc':
-                $('.billing_max_amount').parents('tr').show();
+                showParent('.billing_max_amount');
                 break;
         }
     }
 
     handlePaymentFeesWarning = function () {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        var selectedMode = $('#paramspayment_type').val();
+        var paypalproduct=getParamValue('paypalproduct');
+        var selectedMode=getParamValue('payment_type');
         if ((paypalproduct == 'api' || paypalproduct == 'exp') && (selectedMode == '_xclick-subscriptions' || selectedMode == '_xclick-payment-plan')) {
-            $('.warning_transaction_cost').parents('tr').show();
+            showParent('.warning_transaction_cost');
         } else {
-            $('.warning_transaction_cost').parents('tr').hide();
+            hideParent('.warning_transaction_cost');
         }
     }
 
     handleProductPricesApi = function() {
-        var paypalproduct = $('#paramspaypalproduct').val();
-        var add_prices_api = $('#paramsadd_prices_api').val();
+        var paypalproduct=getParamValue('paypalproduct');
+        var add_prices_api=getParamValue('add_prices_api');
         if (paypalproduct == 'api'  || paypalproduct == 'exp' ) {
-            $('.add_prices_api').parents('tr').show();
+            showParent('.add_prices_api');
         } else {
-            $('.add_prices_api').parents('tr').hide();
+            hideParent('.add_prices_api');
         }
-}
+    }
     /**********/
     /* Events */
     /**********/
@@ -395,7 +424,7 @@ jQuery().ready(function ($) {
         handleAuthentication();
     });
 
-    $('#paramspaypalproduct').change(function () {
+    $(getParamId('paypalproduct')).change(function () {
         handleCredentials();
         handleAuthentication();
         handleExpectedMaxAmount();
@@ -410,36 +439,36 @@ jQuery().ready(function ($) {
         handleProductPricesApi();
 
     });
-    $('#paramsauthentication').change(function () {
+    $(getParamId('authentication')).change(function () {
         handleAuthentication();
     });
-    $('#paramstemplate').change(function () {
+    $(getParamId('template')).change(function () {
         handleTemplateParams();
     });
-    $('#paramspayment_action').change(function () {
+    $(getParamId('payment_action')).change(function () {
         handleWarningAuthorizeStd();
         handleCapturePayment();
     });
 
-    $('#paramspayment_type').change(function () {
+    $(getParamId('payment_type')).change(function () {
         handlePaymentAction();
         handlePaymentTypeDetails();
         handlePaymentFeesWarning();
     });
 
-    $('#paramheaderimg').change(function () {
+    $(getParamId('headerimg')).change(function () {
         handleWarningHeaderImage();
     });
 
-    $('#paramssubcription_trials').change(function () {
+    $(getParamId('subcription_trials')).change(function () {
         handleSubscriptionTrials();
     });
 
-    $('#paramspayment_plan_defer').change(function () {
+    $(getParamId('payment_plan_defer')).change(function () {
         handlePaymentPlanDefer();
     });
 
-    $('#paramsbilling_max_amount_type').change(function () {
+    $(getParamId('billing_max_amount_type')).change(function () {
         handleMaxAmountType();
     });
 

@@ -830,7 +830,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 		}
 
 		//$html = $this->renderByLayout('orderbepayment', array($payments, $this->_psType));
-		$html = '<table class="adminlist" width="50%">' . "\n";
+		$html = '<table class="adminlist table table-striped" >' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$code = "paypal_response_";
 		$first = TRUE;

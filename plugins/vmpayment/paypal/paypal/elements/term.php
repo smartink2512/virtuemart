@@ -20,7 +20,7 @@
 
 
 defined ('_JEXEC') or die();
-
+if (JVM_VERSION <  3) {
 class JElementTerm extends JElement {
 
 	/**
@@ -43,5 +43,25 @@ class JElementTerm extends JElement {
 
 		return JHTML::_ ('select.genericlist', $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
 	}
+	}
 
+} else {
+		jimport('joomla.form.formfield');
+
+		class JElementTerm extends JFormField {
+
+			public $type = 'Term';
+
+			protected function getInput() {
+
+$max=52;
+			$options = array();
+			for($i=1; $i<=$max; $i++) {
+				$options[] = JHTML::_('select.option', $i, $i);
+			}
+
+				return JHTML::_('select.genericlist', $options, $this->name , 'size="1"', 'value', 'title', $this->value);
+
+			}
+	}
 }

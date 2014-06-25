@@ -150,10 +150,11 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
 			/* Toolbar */
-			JToolBarHelper::custom( 'prevItem', 'back','','COM_VIRTUEMART_ITEM_PREVIOUS',false);
+			if (VM_VERSION < 3) { $backward="back";} else {$backward='backward';}
+			JToolBarHelper::custom( 'prevItem', $backward,'','COM_VIRTUEMART_ITEM_PREVIOUS',false);
 			JToolBarHelper::custom( 'nextItem', 'forward','','COM_VIRTUEMART_ITEM_NEXT',false);
 			JToolBarHelper::divider();
-			JToolBarHelper::custom( 'cancel', 'back','back','back',false,false);
+			JToolBarHelper::custom( 'cancel', 'list','back','COM_VIRTUEMART_ORDER_LIST_LBL',false,false);
 		}
 		else if ($curTask == 'editOrderItem') {
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');

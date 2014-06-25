@@ -258,7 +258,8 @@ class VirtueMartModelUserfields extends VmModel {
 			$ext_id = 'extension_id';
 
 			$plgName = substr($data['type'],6);
-			$q = 'SELECT `' . $ext_id . '` FROM `' . $tb . '` WHERE `element` = "'.$plgName.'"';
+			$q = 'SELECT `' . $ext_id . '` FROM `' . $tb . '` WHERE `folder` = "vmuserfield" and `state`="0" AND `element` = "'.$plgName.'"';
+
 			$db = JFactory::getDBO();
 			$db->setQuery($q);
 			$data['userfield_jplugin_id'] = $db->loadResult();
