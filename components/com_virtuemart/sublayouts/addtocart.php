@@ -25,7 +25,7 @@ if(!VmConfig::get('use_as_catalog', 0)){
 	$addtoCartButton = shopFunctionsF::getAddToCartButton ($product->orderable);
 }
 $position = 'addtocart';
-if (!empty($product->customfieldsSorted[$position]) or !empty($addtoCartButton)) {
+//if (!empty($product->customfieldsSorted[$position]) or !empty($addtoCartButton)) {
 if (isset($product->step_order_level))
 	$step=$product->step_order_level;
 else
@@ -121,4 +121,5 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 	<div class="clear"></div>
 </div>
 
-<?php } ?>
+<?php // }
+?>

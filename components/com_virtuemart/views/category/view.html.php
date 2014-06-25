@@ -129,7 +129,7 @@ class VirtuemartViewCategory extends VmView {
 					$products = $productModel->getProducts ($ids);
 					//$products = $productModel->getProductsInCategory($categoryId);
 					$productModel->addImages($products,1);
-
+					//vmdebug('my product',$products);
 					$this->assignRef('products', $products);
 
 					if ($products) {

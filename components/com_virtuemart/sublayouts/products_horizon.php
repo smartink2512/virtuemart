@@ -118,11 +118,11 @@ foreach ($viewData['products'] as $type => $products ) {
 		} else {
 			$show_vertical_separator = $verticalseparator;
 		}
-		vmdebug('my number of rows for the prices rows heights',$rowsHeight[$row]);
+
 		// Show Products ?>
-		<div class="product vm-col<?php echo ' vm-col-' . $products_per_row . $show_vertical_separator ?>">
-      <div class="vm-products-media-rating">
-        <div class="vm-products-media-container">
+	<div class="product vm-product-horizon vm-col<?php echo ' vm-col-' . $products_per_row . $show_vertical_separator ?>">
+      <div class="vm-product-media-rating">
+        <div class="vm-product-media-container">
 					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link; ?>">
 					<?php
 						echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);
@@ -134,25 +134,28 @@ foreach ($viewData['products'] as $type => $products ) {
           <?php
             echo shopFunctionsF::renderVmSubLayout('rating',array('showRating'=>$showRating, 'product'=>$product));
             if ( VmConfig::get ('display_stock', 1)) { ?>
-              <div class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></div>
           <?php } ?>
           <?php //echo shopFunctionsF::renderVmField('stockhandle',array('product'=>$product));
           ?>
-        </div>
+        <div class="clear"></div>
         <h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
       </div>
-
-      <div class="vm-products-details-container">
+		<?php vmdebug('my number of rows for the prices rows heights',$rowsHeight[$row]); ?>
+      <div class="vm-product-details-container">
         <?php // Product Short Description
           if (!empty($product->product_s_desc)) {
             ?>
             <p class="product_s_desc">
               <?php echo shopFunctionsF::limitStringByWord ($product->product_s_desc, 40, '...') ?>
             </p>
-        <?php }
-
-        echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$product,'currency'=>$currency));
-        echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'row'=>0)); ?>
+        <?php } ?>
+        <div class="vm3pr-<?php echo $rowsHeight[$row]['price'] ?>">
+          <?php echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$product,'currency'=>$currency)); ?>
+        </div>
+        <?php echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'row'=>0)); ?>
 
         <div class="vm-details-button">
           <?php // Product Details Button
