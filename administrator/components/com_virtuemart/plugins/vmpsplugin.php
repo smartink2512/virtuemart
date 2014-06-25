@@ -1054,6 +1054,8 @@ abstract class vmPSPlugin extends vmPlugin {
 					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
 					vmdebug('Part $denominator '.$denominator.' $frac '.$frac,$rule['subTotal']);
+					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $calculator->roundInternal($calculator->roundInternal($calculator->interpreteMathOp($rule, $rule['subTotal'])) - $rule['subTotal'], 'salesPrice');
+					$cart_prices[$this->_psType . 'Tax'] += $cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']];
 				}
 			}
 		}
@@ -1066,12 +1068,14 @@ abstract class vmPSPlugin extends vmPlugin {
 
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],true,false), 'salesPrice');
 			//vmdebug('I am in '.get_class($this).' and have this rules now',$taxrules,$cart_prices[$this->_psType . 'Value'],$cart_prices['salesPrice' . $_psType]);
-			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
+//			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);
-			$taxrule =  current($taxrules);
-			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
+//			$taxrule =  current($taxrules);
+//			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
 
 			foreach($taxrules as &$rule){
+				if(empty($cart_prices[$this->_psType . '_calc_id'])) $cart_prices[$this->_psType . '_calc_id'] = array();
+				$cart_prices[$this->_psType . '_calc_id'][] = $rule['virtuemart_calc_id'];
 				if(isset($rule['subTotalOld'])) $rule['subTotal'] += $rule['subTotalOld'];
 				if(isset($rule['taxAmountOld'])) $rule['taxAmount'] += $rule['taxAmountOld'];
 			}

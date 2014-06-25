@@ -894,8 +894,16 @@ class calculationHelper {
 		}
 
 		//Calculate VatTax result
-		if ($this->_cartPrices['shipment_calc_id']) $this->_cartData['VatTax'][$this->_cartPrices['shipment_calc_id']]['shipmentTax'] = $this->_cartPrices['shipmentTax'];
-		if ($this->_cartPrices['payment_calc_id']) $this->_cartData['VatTax'][$this->_cartPrices['payment_calc_id']]['paymentTax'] = $this->_cartPrices['paymentTax'];
+		if ($this->_cartPrices['shipment_calc_id']) {
+			foreach($this->_cartPrices['shipment_calc_id'] as $calcID) {
+				$this->_cartData['VatTax'][$calcID]['shipmentTax'] = $this->_cartPrices['shipmentTaxPerID'][$calcID];
+			}
+		}
+		if ($this->_cartPrices['payment_calc_id']) {
+			foreach($this->_cartPrices['payment_calc_id'] as $calcID) {
+				$this->_cartData['VatTax'][$calcID]['paymentTax'] = $this->_cartPrices['paymentTaxPerID'][$calcID];
+			}
+		}
 		foreach($this->_cartData['VatTax'] as $k=>&$vattax){
 			$vattax['result'] = isset($vattax['taxAmount']) ? $vattax['taxAmount'] : 0;
 			if (isset($vattax['discountTaxAmount'])) $vattax['result'] += $vattax['discountTaxAmount'];
