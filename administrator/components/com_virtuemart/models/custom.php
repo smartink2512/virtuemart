@@ -334,7 +334,7 @@ class VirtueMartModelCustom extends VmModel {
 
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
-		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('custom' , $data, $data['custom_element']));
+		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('custom' , $data, $table));
 
 		return $table->virtuemart_custom_id ;
 

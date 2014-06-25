@@ -61,27 +61,41 @@ foreach ($viewData['products'] as $type => $products ) {
 			if(!empty($currency->_priceConfig[$name][0])){
 				if(!empty($product->prices[$name]) or $name == 'billTotal' or $name == 'billTaxAmount'){
 					$priceRows++;
-
 				}
 			}
 		}
-		$rowHeights[$row][] = $priceRows;
+		$rowHeights[$row]['price'][] = $priceRows;
+		$position = 'addtocart';
+		if(!empty($product->customfieldsSorted[$position])){
+			$customs = count($product->customfieldsSorted[$position]);
+		} else {
+			$customs = 0;
+		}
+		$rowHeights[$row]['customs'][] = $customs;
 		$nb ++;
+
 		if ($col == $products_per_row || $nb>$BrowseTotalProducts) {
 			$col = 1;
 			$max = 0;
-			foreach($rowHeights[$row] as $rows){
-				$max = max($max,$rows);
+			foreach($rowHeights[$row] as $type => $cols){
+				//vmdebug('my rows heights $type',$type);
+				$rowsHeight[$row][$type] = 0;
+				foreach($cols as $col){
+					$rowsHeight[$row][$type] =  max($rowsHeight[$row][$type],$col);
+					//vmdebug('my rows  $cols',$col);
+				}
+				//vmdebug('my rows  $type',$type);
 			}
-			$rowsHeight[$row]['prices'] = $max;
+
 			$rowHeights = array();
 			$row++;
 		} else {
 			$col ++;
 		}
-	}
-	vmdebug('my rows heights',$rowsHeight);
 
+	}
+
+	//vmdebug('my rows heights',$rowsHeight);
 	$col = 1;
 	$nb = 1;
 	$row = 1;
@@ -104,7 +118,7 @@ foreach ($viewData['products'] as $type => $products ) {
 		} else {
 			$show_vertical_separator = $verticalseparator;
 		}
-
+		vmdebug('my number of rows for the prices rows heights',$rowsHeight[$row]);
 		// Show Products ?>
 		<div class="product vm-col<?php echo ' vm-col-' . $products_per_row . $show_vertical_separator ?>">
       <div class="vm-products-media-rating">
@@ -127,7 +141,7 @@ foreach ($viewData['products'] as $type => $products ) {
         </div>
         <h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
       </div>
-		<?php vmdebug('my number of rows for the prices rows heights',$rowsHeight[$row]); ?>
+
       <div class="vm-products-details-container">
         <?php // Product Short Description
           if (!empty($product->product_s_desc)) {

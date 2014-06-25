@@ -19,6 +19,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $product = $viewData['product'];
+
+$addtoCartButton = '';
+if(!VmConfig::get('use_as_catalog', 0)){
+	$addtoCartButton = shopFunctionsF::getAddToCartButton ($product->orderable);
+}
+$position = 'addtocart';
+if (!empty($product->customfieldsSorted[$position]) or !empty($addtoCartButton)) {
 if (isset($product->step_order_level))
 	$step=$product->step_order_level;
 else
@@ -31,7 +38,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 <div class="addtocart-area">
 	<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ ('index.php',false); ?>">
 		<?php
-		$position = 'addtocart';
+
 		if (!empty($product->customfieldsSorted[$position])) {
 			?>
 			<div class="product-fields">
@@ -98,7 +105,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 							<input type="button" class="quantity-controls quantity-minus"/>
 						</span>
 						<span class="addtocart-button">
-							<?php echo shopFunctionsF::getAddToCartButton ($product->orderable); ?>
+							<?php echo $addtoCartButton ?>
 						</span>
 						<noscript><input type="hidden" name="task" value="add"/></noscript> <?php
 					}
@@ -113,3 +120,5 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 	</form>
 	<div class="clear"></div>
 </div>
+
+<?php } ?>
