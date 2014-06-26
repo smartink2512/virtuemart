@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $product = $viewData['product'];
-
+$rowHeights = $viewData['rowHeights'];
 $addtoCartButton = '';
 if(!VmConfig::get('use_as_catalog', 0)){
 	$addtoCartButton = shopFunctionsF::getAddToCartButton ($product->orderable);
@@ -39,30 +39,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 	<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ ('index.php',false); ?>">
 		<?php
 
-		if (!empty($product->customfieldsSorted[$position])) {
-			?>
-			<div class="product-fields">
-				<?php
-				$product->row = 0;
-
-				foreach ($product->customfieldsSorted[$position] as $field) { ?>
-					<div class="product-field product-field-type-<?php echo $field->field_type ?>">
-						<?php if ($field->show_title) { ?>
-							<span class="product-fields-title-wrapper"><span class="product-fields-title"><strong><?php echo vmText::_ ($field->custom_title) ?></strong></span>
-							<?php if ($field->custom_tip) {
-								echo JHtml::tooltip ($field->custom_tip, vmText::_ ($field->custom_title), 'tooltip.png');
-							} ?></span>
-						<?php } ?>
-						<span class="product-field-display"><?php echo $field->display ?></span>
-
-						<span class="product-field-desc"><?php echo $field->custom_desc ?></span>
-					</div>
-					<?php
-				} ?>
-				<div class="clear"></div>
-			</div>
-		<?php
-		}
+		echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$product,'rowHeights'=>$rowHeights,'position'=>'addtocart'));
 
 		if (!VmConfig::get('use_as_catalog', 0)  ) { ?>
 

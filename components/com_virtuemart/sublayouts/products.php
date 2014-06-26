@@ -1,9 +1,8 @@
 <?php
 /**
- * field tos
+ * sublayout products
  *
  * @package	VirtueMart
- * @subpackage Cart
  * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2014 VirtueMart Team. All rights reserved.
@@ -49,11 +48,11 @@ foreach ($viewData['products'] as $type => $products ) {
 			$customs = 0;
 		}
 		$rowHeights[$row]['customs'][] = $customs;
+		$rowHeights[$row]['product_s_desc'][] = empty($product->product_s_desc)? 0:1;
 		$nb ++;
+		//vmdebug('my $nb',$nb,$BrowseTotalProducts);
+		if ($col == $products_per_row || $nb>=$BrowseTotalProducts) {
 
-		if ($col == $products_per_row || $nb>$BrowseTotalProducts) {
-			$col = 1;
-			$max = 0;
 			foreach($rowHeights[$row] as $group => $cols){
 				//vmdebug('my rows heights $type',$type);
 				$rowsHeight[$row][$group] = 0;
@@ -61,7 +60,7 @@ foreach ($viewData['products'] as $type => $products ) {
 					$rowsHeight[$row][$group] =  max($rowsHeight[$row][$group],$col);
 				}
 			}
-
+			$col = 1;
 			$rowHeights = array();
 			$row++;
 		} else {
@@ -69,7 +68,7 @@ foreach ($viewData['products'] as $type => $products ) {
 		}
 
 	}
-	vmdebug('amount to browse '.$type,$BrowseTotalProducts,$rowsHeight);
+
 	if(!empty($type)){
 		$productTitle = vmText::_('COM_VIRTUEMART_'.strtoupper($type).'_PRODUCT'); ?>
 <div class="<?php echo $type ?>-view">
@@ -125,22 +124,28 @@ foreach ($viewData['products'] as $type => $products ) {
 				?>
 			</div>
 			<div class="clear"></div>
-			<div class="vm-product-descr-container">
-				<h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
-				<p class="product_s_desc">
-				<?php // Product Short Description
-				if (!empty($product->product_s_desc)) {
-					echo shopFunctionsF::limitStringByWord ($product->product_s_desc, 40, '...') ?>
-				<?php } ?>
-				</p>
-			</div>
-			<div class="clear"></div> <?php echo $rowsHeight[$row]['price'] ?>
+
+				<div class="vm-product-descr-container-<?php echo $rowsHeight[$row]['product_s_desc'] ?>">
+					<h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
+					<?php if(!empty($rowsHeight[$row]['product_s_desc'])){
+					?>
+					<p class="product_s_desc">
+						<?php // Product Short Description
+						if (!empty($product->product_s_desc)) {
+							echo shopFunctionsF::limitStringByWord ($product->product_s_desc, 70, ' ...') ?>
+						<?php } ?>
+					</p>
+			<?php  } ?>
+				</div>
+
+
+			<div class="clear"></div> <?php //echo $rowsHeight[$row]['price'] ?>
 			<div class="vm3pr-<?php echo $rowsHeight[$row]['price'] ?>"> <?php
 				echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$product,'currency'=>$currency)); ?>
 			</div>
-			<div class="clear"></div> <?php echo $rowsHeight[$row]['customs'] ?>
+			<div class="clear"></div> <?php //echo $rowsHeight[$row]['customs'] ?>
 			<div class="vm3pr-<?php echo $rowsHeight[$row]['customs'] ?>"> <?php
-				echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'row'=>0)); ?>
+				echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'rowHeights'=>$rowsHeight[$row])); ?>
 			</div>
 			<div class="clear"></div>
 			<div class="vm-details-button">
