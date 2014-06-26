@@ -1131,8 +1131,9 @@ class VirtueMartCart {
 			$data = get_object_vars($data);
 		}
 		//STaddress may be obsolete
+
 		if ($type == 'STaddress' || $type =='ST') {
-			if($prefix===0)$prefix = 'shipto_';
+			if($prefix==0)$prefix = 'shipto_';
 			$this->STsameAsBT = 0;
 		} else { // BT
 
@@ -1178,7 +1179,7 @@ class VirtueMartCart {
 					}
 					$address[$name] = $data[$prefix.$name];
 				} else {
-					vmdebug('Data not found for '.$prefix.$name.' ');
+					vmdebug('Data not found for type '.$type.' and name '.$prefix.$name.' ');
 				}
 			}
 		}

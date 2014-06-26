@@ -693,7 +693,7 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		if ($psType === NULL) {
-			$psType = $this->_psType;
+			$psType = 'vm'.$this->_psType;
 		}
 
 		$app = JFactory::getApplication ();
@@ -713,7 +713,7 @@ abstract class vmPlugin extends JPlugin {
 			include ($layout);
 			return ob_get_clean ();
 		} else {
-			vmdebug('renderByLayout layout not found '.$psType. ' '.$name);
+			vmdebug('renderByLayout: layout '.$layout.'not found '.$psType. ' '.$name.' default path '.$defaultPath);
 		}
 
 	}

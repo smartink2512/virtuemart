@@ -114,11 +114,7 @@ if(vRequest::getInt('print',false)){ ?>
 	<?php
     } // Product Short Description END
 
-
-    if (!empty($this->product->customfieldsSorted['ontop'])) {
-	$this->position = 'ontop';
-	echo $this->loadTemplate('customfields');
-    } // Product Custom ontop end
+	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'ontop'));
     ?>
 
     <div class="vm-product-container">
@@ -204,10 +200,8 @@ echo $this->loadTemplate('images');
 	<?php
     } // Product Description END
 
-    if (!empty($this->product->customfieldsSorted['normal'])) {
-	$this->position = 'normal';
-	echo $this->loadTemplate('customfields');
-    } // Product custom_fields END
+	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'normal'));
+
     // Product Packaging
     $product_packaging = '';
     if ($this->product->product_box) {
@@ -223,19 +217,11 @@ echo $this->loadTemplate('images');
     if (VmConfig::get('showCategory', 1)) {
 		echo $this->loadTemplate('showcategory');
     }
-    if (!empty($this->product->customfieldsSorted['onbot'])) {
-    	$this->position='onbot';
-    	echo $this->loadTemplate('customfields');
-    } // Product Custom ontop end
-    if (!empty($this->product->customfieldsSorted['related_products'])) {
-	    $this->position = 'related_products';
-	    echo $this->loadTemplate('customfields');
-    }
-    if (!empty($this->product->customfieldsSorted['related_categories'])) {
-	    $this->position = 'related_categories';
-	    echo $this->loadTemplate('customfields');
-    }
-    ?>
+	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'ontop'));
+	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_products','class'=> 'product-related-products'));
+	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_categories','class'=> 'product-related-categories'));
+
+	?>
 
 <?php // onContentAfterDisplay event
 echo $this->product->event->afterDisplayContent; ?>

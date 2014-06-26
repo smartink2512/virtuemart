@@ -19,7 +19,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $product = $viewData['product'];
-$rowHeights = $viewData['rowHeights'];
+
+if(isset($viewData['rowHeights'])){
+	$rowHeights = $viewData['rowHeights'];
+} else {
+	$rowHeights['customfields'] = TRUE;
+}
+
 $addtoCartButton = '';
 if(!VmConfig::get('use_as_catalog', 0)){
 	$addtoCartButton = shopFunctionsF::getAddToCartButton ($product->orderable);
@@ -39,7 +45,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 	<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ ('index.php',false); ?>">
 		<?php
 
-		echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$product,'rowHeights'=>$rowHeights,'position'=>'addtocart'));
+		if(!empty($rowHeights['customfields'])) echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$product,'position'=>'addtocart'));
 
 		if (!VmConfig::get('use_as_catalog', 0)  ) { ?>
 

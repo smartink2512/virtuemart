@@ -129,7 +129,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$msg = '';
 
 		$data = vRequest::getPost();
-
+		$cart = false;
 		if($cartObj){
 			if($cartObj->fromCart or $cartObj->getInCheckOut()){
 				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
@@ -139,7 +139,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		}
 
 
-		if (isset($_POST['register']) or (!$cart and $currentUser->guest)) {
+		//if (isset($_POST['register']) or ()) {
 
 			if(empty($data['address_type'])){
 				$data['address_type'] = vRequest::getCmd('addrtype','BT');
@@ -175,7 +175,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 				$ret = $userModel->store($data);
 			}
 
-			if(!$onlyAddress and $currentUser->guest==1){
+			if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) and !$onlyAddress ){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );
@@ -190,10 +190,8 @@ class VirtueMartControllerUser extends JControllerLegacy
 					$layout = vRequest::getCmd('layout','edit');
 					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 				}
-
 			}
-
-		}
+		//}
 
 
 		return $msg;

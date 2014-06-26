@@ -154,13 +154,19 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * @author Max Milbers
 	 */
-/*	public function plgVmOnStoreInstallPluginTable($psType,$data) {
-
-		//if(empty($data['is_cart_attribute']) or empty($data['is_cart_attribute'])){
+	public function plgVmOnStoreInstallPluginTable($psType,$data,$table) {
+		if(!empty($table->custom_element) and $table->custom_element!=$this->_name){
+			return false;
+		}
+		if(empty($table->is_cart_attribute) or empty($table->is_input)){
+			$table->is_input = 1;
+			$table->is_cart_attribute = 1;
+			$table->store();
+		}
 		//Should the textinput use an own internal variable or store it in the params?
 		//Here is no getVmPluginCreateTableSQL defined
-// 		return $this->onStoreInstallPluginTable($psType);
-	}*/
+ 		//return $this->onStoreInstallPluginTable($psType);
+	}
 
 	/**
 	 * Declares the Parameters of a plugin

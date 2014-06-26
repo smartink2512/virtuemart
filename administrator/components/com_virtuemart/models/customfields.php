@@ -425,9 +425,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					if ($media_id = $db->loadResult ()) {
 						$thumb = $this->displayCustomMedia ($media_id,'category');
 					}
+
 					$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
-					//return $display . JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $field->customfield_value,FALSE), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
-					$display .= JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->customfield_value,FALSE), '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">' . $category->category_name, array('title' => $category->category_name)).'</span>';
+					$display .= '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">';
+					$display .= JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->customfield_value,FALSE), $category->category_name, array('title' => $category->category_name,'target'=>'blank')).'</span>';
 					return $display;
 				}
 				else {
@@ -441,17 +442,14 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$pModel = VmModel::getModel('product');
 				$related = $pModel->getProduct((int)$field->customfield_value,TRUE,FALSE,FALSE,1);
-				//$thumb ='';
-				//$tmp = get_object_vars($related);
-				//vmdebug('Mist',$tmp);
 				if (!empty($related->virtuemart_media_id[0])) {
 					$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
 				} else {
 					$thumb = $this->displayCustomMedia (0).' ';
 				}
 				$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
-				//$display .= JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
-				$display .= JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">'. $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
+				$display .= '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">';
+				$display .= JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
 				return $display;
 
 		}

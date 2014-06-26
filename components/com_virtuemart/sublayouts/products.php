@@ -47,7 +47,7 @@ foreach ($viewData['products'] as $type => $products ) {
 		} else {
 			$customs = 0;
 		}
-		$rowHeights[$row]['customs'][] = $customs;
+		$rowHeights[$row]['customfields'][] = $customs;
 		$rowHeights[$row]['product_s_desc'][] = empty($product->product_s_desc)? 0:1;
 		$nb ++;
 		//vmdebug('my $nb',$nb,$BrowseTotalProducts);
@@ -103,7 +103,7 @@ foreach ($viewData['products'] as $type => $products ) {
 		}
 
     // Show Products ?>
-	<div class="product vm-product-horizon vm-col<?php echo ' vm-col-' . $products_per_row . $show_vertical_separator ?>">
+	<div class="product vm-col<?php echo ' vm-col-' . $products_per_row . $show_vertical_separator ?>">
 		<div class="spacer">
 			<div class="vm-product-media-container">
 
@@ -144,7 +144,7 @@ foreach ($viewData['products'] as $type => $products ) {
 				echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$product,'currency'=>$currency)); ?>
 			</div>
 			<div class="clear"></div> <?php //echo $rowsHeight[$row]['customs'] ?>
-			<div class="vm3pr-<?php echo $rowsHeight[$row]['customs'] ?>"> <?php
+			<div class="vm3pr-<?php echo $rowsHeight[$row]['customfields'] ?>"> <?php
 				echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'rowHeights'=>$rowsHeight[$row])); ?>
 			</div>
 			<div class="clear"></div>
