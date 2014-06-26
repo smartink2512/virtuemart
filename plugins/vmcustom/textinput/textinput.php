@@ -160,7 +160,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		}
 		if(empty($table->is_cart_attribute) or empty($table->is_input)){
 			$table->is_input = 1;
-			$table->is_cart_attribute = 1;
 			$table->store();
 		}
 		//Should the textinput use an own internal variable or store it in the params?

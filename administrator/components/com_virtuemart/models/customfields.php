@@ -166,9 +166,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		$productCustomsCached = array();
 		foreach($productIds as $k=>$productId){
 			$hkey = (int)$productId.$hashCwAttribute;
-			//vmdebug('Product customfields $hkey '.$hkey,$productId,$cartattribute);
 			if (array_key_exists ($hkey, $_customFieldByProductId)) {
-				$productCustomsCached[] = $_customFieldByProductId[$hkey];
+				$productCustomsCached[$hkey] = $_customFieldByProductId[$hkey];
 				unset($productIds[$k]);
 			}
 		}
@@ -178,7 +177,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		} else if(!empty($productIds)){
 			$q .= 'WHERE `virtuemart_product_id` = "'.$productIds.'" ';
 		} else {
-			return $productCustomsCached;
+			return $productCustomsCached[$hkey];
 		}
 		if(!empty($virtuemart_custom_id)){
 			if(is_numeric($virtuemart_custom_id)){
@@ -214,9 +213,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 
 		foreach($productCustoms as $customfield){
-			//$hkey = $cartattribute.$customfield->virtuemart_product_id;
 			$hkey = (int)$customfield->virtuemart_product_id.$hashCwAttribute;
-			$_customFieldByProductId[$hkey] = $customfield;
+			$_customFieldByProductId[$hkey][] = $customfield;
 		}
 
 		$productCustoms = array_merge($productCustomsCached,$productCustoms);
@@ -250,7 +248,6 @@ class VirtueMartModelCustomfields extends VmModel {
 					unset($productCustoms[$k]);
 				}
 			}
-			//vmdebug('Product customfields  merged '.implode(',', $productIds).' count = '.count($productCustoms),$productCustoms);
 			return $productCustoms;
 		} else {
 			return array();
@@ -752,22 +749,21 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 		}
 		//if(empty($productCustoms)) return $html . '</div>';
-		//vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods,$productCustoms);
-		foreach ($variantmods as $custom_id => $customfield_ids) {
 
+		foreach ($variantmods as $custom_id => $customfield_ids) {
 
 			if(!is_array($customfield_ids)){
 				$customfield_ids = array( $customfield_ids =>false);
-				//vmdebug('customfields displayProductCustomfieldSelected was not array',$customfield_ids);
 			}
-			//vmdebug('customfields displayProductCustomfieldSelected',$customfield_ids);
+
 			foreach($customfield_ids as $customfield_id=>$params){
 
-			//vmdebug('displayProductCustomfieldSelected',$customfield_id,$productCustoms);
 				if(empty($productCustoms) or !isset($productCustoms[$customfield_id])){
+					$keys = array_keys($productCustoms);
 					continue;
 				}
 				$productCustom = $productCustoms[$customfield_id];
+
 				//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
 				//and now {"32":[{"invala":"100"}]}
 				if (!empty($productCustom)) {
@@ -776,11 +772,12 @@ class VirtueMartModelCustomfields extends VmModel {
 
 						//$product->productCustom = $productCustom;
 						//$product->row = $row;
+						//
 						if (!class_exists ('vmCustomPlugin'))
 							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 						JPluginHelper::importPlugin ('vmcustom');
 						$dispatcher = JDispatcher::getInstance ();
-						//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$customfield_id);
+						//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$product->virtuemart_product_id,$productCustom->virtuemart_customfield_id,$productCustom->custom_element);
 						$dispatcher->trigger ($trigger.'VM3', array(&$product, &$productCustom, &$html));
 
 					}
@@ -807,7 +804,6 @@ class VirtueMartModelCustomfields extends VmModel {
 							//vmdebug('customFieldDisplay',$productCustom);
 							$value = $productCustom->customfield_value;
 						}
-						//vmdebug('displayProductCustomfieldSelected ',$productCustom);
 						$html .= ShopFunctionsF::translateTwoLangKeys ($productCustom->custom_title, $value);
 					}
 					$html .= '</span><br />';
@@ -818,7 +814,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$html .= '<br/ >Couldnt find customfield' . ($key ? '<span>' . $key . ' </span>' : '') . $value;
 					}
 					//vmdebug ('CustomsFieldOrderDisplay, $item->productCustom empty? ' . $variant);
-					vmdebug ('customFieldDisplay, $productCustom is EMPTY ');
+					vmdebug ('customFieldDisplay, $productCustom is EMPTY '.$customfield_id);
 				}
 				//}
 			}
