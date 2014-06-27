@@ -25,36 +25,7 @@ if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.'/helpers/sho
 if (!class_exists('PaypalHelperPaypal')){
 	 require (JPATH_ROOT   . '/plugins/vmpayment/paypal/paypal/helpers/paypal.php');
 }
-if (JVM_VERSION <  3) {
 
-class JElementPaypalCreditcards extends JElement {
-
-    var $_name = 'Paypalcreditcards';
-
-    function fetchElement($name, $value, &$node, $control_name) {
-		JFactory::getLanguage ()->load ('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
-
-		$creditcards= PaypalHelperPaypal::getPaypalCreditCards();
-
-			$prefix = 'VMPAYMENT_PAYPAL_CC_';
-
-		$fields = array();
-		foreach ($creditcards as $creditcard) {
-			$fields[$creditcard]['value'] = $creditcard;
-			$fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
-		}
-
-		$attribs = ' ';
-		$attribs .= ' multiple="multiple"';
-		$attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
-
-
-		return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $attribs, 'value', 'text', $value, $control_name . $name);
-
-    }
-
-}
-} else {
 	jimport('joomla.form.formfield');
 	class JElementPaypalCreditcards extends JFormField {
 
@@ -77,5 +48,4 @@ class JElementPaypalCreditcards extends JElement {
 
 		}
 
-	}
 }

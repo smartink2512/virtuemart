@@ -37,7 +37,7 @@ $document->addScriptDeclaration ( "
 
 <form action="index.php" method="post" name="orderStatForm" id="orderStatForm">
 <fieldset>
-<table class="admintable table-striped" width="100%">
+<table class="admintable table" >
 	<tr>
 		<td align="center" colspan="2">
 		<h1><?php echo vmText::_('COM_VIRTUEMART_ORDER_UPDATE_STATUS') ?></h1>

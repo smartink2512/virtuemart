@@ -119,11 +119,14 @@ $document->addScriptDeclaration ( "
 	<tr>
 		<th>
 		<?php echo $this->displayDefaultViewSearch ('COM_VIRTUEMART_ORDER_PRINT_NAME'); ?>
+			<span class="btn btn-small " >
 		<a class="updateOrder" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span>
-		<?php echo vmText::_('COM_VIRTUEMART_ORDER_SAVE_USER_INFO'); ?></a>
+		<?php echo vmText::_('COM_VIRTUEMART_ORDER_SAVE_USER_INFO'); ?></a></span>
 		&nbsp;&nbsp;
+				<span class="btn btn-small " >
 		<a href="#" onClick="javascript:resetOrderHead(event);" ><span class="icon-nofloat vmicon vmicon-16-cancel"></span>
 		<?php echo vmText::_('COM_VIRTUEMART_ORDER_RESET'); ?></a>
+					</span>
 		<!--
 		&nbsp;&nbsp;
 		<a class="createOrder" href="#"><span class="icon-nofloat vmicon vmicon-16-new"></span>

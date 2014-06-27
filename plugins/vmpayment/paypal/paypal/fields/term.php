@@ -20,32 +20,7 @@
 
 
 defined ('_JEXEC') or die();
-if (JVM_VERSION <  3) {
-class JElementTerm extends JElement {
 
-	/**
-	 * Element name
-	 *
-	 * @access    protected
-	 * @var        string
-	 */
-	var $_name = 'Term';
-
-	function fetchElement ($name, $value, &$node, $control_name) {
-		
-		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
-		$max = ($node->attributes('max') ? intval($node->attributes('max')) : 52);
-		
-		$options = array();
-		for($i=1; $i<=$max; $i++) {
-			$options[] = JHTML::_('select.option', $i, $i);
-		}
-
-		return JHTML::_ ('select.genericlist', $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
-	}
-	}
-
-} else {
 		jimport('joomla.form.formfield');
 
 		class JElementTerm extends JFormField {
@@ -63,5 +38,4 @@ $max=52;
 				return JHTML::_('select.genericlist', $options, $this->name , 'size="1"', 'value', 'title', $this->value);
 
 			}
-	}
 }

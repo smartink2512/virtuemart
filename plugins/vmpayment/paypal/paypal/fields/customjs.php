@@ -21,32 +21,7 @@
 
 defined('_JEXEC') or die();
 
-if (JVM_VERSION < 3) {
-	class JElementCustomjs extends JElement {
 
-		/**
-		 * Element name
-		 *
-		 * @access    protected
-		 * @var        string
-		 */
-		var $_name = 'Customjs';
-
-		function fetchElement($name, $value, &$node, $control_name) {
-
-			JHtml::_('behavior.colorpicker');
-
-			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
-			$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
-
-
-			return '';
-		}
-
-	}
-
-} else {
 	jimport('joomla.form.formfield');
 	class JFormFieldCustomjs extends JFormField {
 
@@ -72,4 +47,3 @@ if (JVM_VERSION < 3) {
 		}
 
 	}
-}

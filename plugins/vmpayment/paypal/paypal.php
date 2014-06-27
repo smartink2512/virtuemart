@@ -830,12 +830,12 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 		}
 
 		//$html = $this->renderByLayout('orderbepayment', array($payments, $this->_psType));
-		$html = '<table class="adminlist table table-striped" >' . "\n";
+		$html = '<table class="adminlist table" >' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$code = "paypal_response_";
 		$first = TRUE;
 		foreach ($payments as $payment) {
-			$html .= '<tr class="row1"><td>' . vmText::_('VMPAYMENT_PAYPAL_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			$html .= ' <tr class="row1"><td><strong>' . vmText::_('VMPAYMENT_PAYPAL_DATE') . '</strong></td><td align="left"><strong>' . $payment->created_on . '</strong></td></tr> ';
 			// Now only the first entry has this data when creating the order
 			if ($first) {
 				$html .= $this->getHtmlRowBE('COM_VIRTUEMART_PAYMENT_NAME', $payment->payment_name);
