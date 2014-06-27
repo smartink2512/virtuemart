@@ -203,11 +203,17 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param array           $cart_prices
 	 * @return bool
 	 */
-	protected function checkConditions ($cart, $method, $cart_prices) {
+	protected function checkConditions ($cart, $method, $cart_prices,$product=0) {
 
 		$this->convert ($method);
-	//vmTrace('checkConditions');
-		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
+
+		if(!empty($product)){
+			$orderWeight = $product->product_weight;
+			$nbproducts_cond = $this->_nbproductsCond (array($product), $method);
+		} else {
+			$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
+			$nbproducts_cond = $this->_nbproductsCond ($cart->products, $method);
+		}
 
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 		$type = (($cart->ST == 0) ? 'BT' : 'ST');
@@ -219,32 +225,38 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				$countries = $method->countries;
 			}
 		}
-		// probably did not gave his BT:ST address
+
+		$userFieldsModel =VmModel::getModel('Userfields');
+
 		if (!is_array ($address)) {
-			// there are some address dependant conditions, redirect then
-			/*
-			if ($method->zip_start or $method->zip_stop or empty($countries)) {
-				$mainframe = JFactory::getApplication ();
-				$redirectMsg = JText::_ ('VMSHIPMENT_WEIGHT_COUNTRIES_ADDRESS_FIRST');
-				//vmWarn($redirectMsg);
-				$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
-			}
-			*/
-			vmdebug('checkConditions $address is not an array, set zip and country id = 0');
+
 			$address = array();
-			$address['zip'] = 0;
-			$address['virtuemart_country_id'] = 0;
+
+			if ($type == 'BT') $_sec = 'account';
+			else if ($type == 'ST') $_sec = 'shipment';
+
+			$fields = $userFieldsModel->getUserFields($_sec, array(), array());//('virtuemart_country_id', $type);
+			foreach($fields as $field){
+				if($field->name=='virtuemart_country_id' and !empty($field->default)) $address['virtuemart_country_id'] = $field->default;
+				if($field->name=='zip' and !empty($field->default)) $address['zip'] = $field->default;
+			}
+			///vmdebug('checkConditions $address is not an array, set zip and country id = 0',$address['virtuemart_country_id'],$address['zip']);
+
+			if(!isset($address['zip'])) $address['zip'] = 0;
+			if(!isset($address['virtuemart_country_id'])) $address['virtuemart_country_id'] = 0;
+
 		}
 
 		$weight_cond = $this->testRange($orderWeight,$method,'weight_start','weight_stop','weight');
-		$nbproducts_cond = $this->_nbproductsCond ($cart, $method);
-		if(isset($cart_prices['salesPrice'])){
+
+		if (empty($method->orderamount_start) and empty($method->orderamount_stop)) {
+			$orderamount_cond = TRUE;
+		} else if(isset($cart_prices['salesPrice'])){
 			$orderamount_cond = $this->testRange($cart_prices['salesPrice'],$method,'orderamount_start','orderamount_stop','order amount');
 		} else {
 			$orderamount_cond = FALSE;
 		}
 
-		$userFieldsModel =VmModel::getModel('Userfields');
 		if ($userFieldsModel->fieldPublished('zip', $type)){
 			if (!isset($address['zip'])) {
 				$address['zip'] = '';
@@ -308,7 +320,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param $method
 	 * @return bool
 	 */
-	private function _nbproductsCond ($cart, $method) {
+	private function _nbproductsCond ($products, $method) {
 
 		if (empty($method->nbproducts_start) and empty($method->nbproducts_stop)) {
 			//vmdebug('_nbproductsCond',$method);
@@ -316,7 +328,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		}
 
 		$nbproducts = 0;
-		foreach ($cart->products as $product) {
+		foreach ($products as $product) {
 			$nbproducts += $product->quantity;
 		}
 
@@ -369,6 +381,42 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 		vmdebug('shipmentmethod '.$method->shipment_name.' = '.$result.' for variable '.$name.' = '.$value.' Reason: '.$reason);
 		return $cond;
+	}
+
+	function plgVmOnProductDisplayShipment($product, &$productDisplayShipments){
+
+		$vendorId = 1;
+		if ($this->getPluginMethods($vendorId) === 0) {
+			return FALSE;
+		}
+		if (!class_exists('VirtueMartCart'))
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		$cart = VirtueMartCart::getCart();
+		$html = '';
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+
+		foreach ($this->methods as $this->_currentMethod) {
+			if($this->checkConditions($cart,$this->_currentMethod,$cart->pricesUnformatted,$product)){
+
+				$product->prices['shipmentPrice'] = $this->getCosts($cart,$this->_currentMethod,$cart->pricesUnformatted);
+
+				if(isset($product->prices['VatTax']) and count($product->prices['VatTax'])>0){
+					reset($product->prices['VatTax']);
+					$rule = current($product->prices['VatTax']);
+					if(isset($rule[1])){
+						$product->prices['shipmentTax'] = $product->prices['shipmentPrice'] * $rule[1]/100.0;
+						$product->prices['shipmentPrice'] = $product->prices['shipmentPrice'] * (1 + $rule[1]/100.0);
+					}
+				}
+
+				$html = $this->renderByLayout( 'default', array("method" => $this->_currentMethod, "cart" => $cart,"product" => $product,"currency" => $currency) );
+			}
+		}
+
+		$productDisplayShipments[] = $html;
+
 	}
 
 	/**

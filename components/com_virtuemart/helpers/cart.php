@@ -36,6 +36,7 @@ class VirtueMartCart {
 	var $_dataValidated = false;
 	var $_blockConfirm = false;
 	var $_confirmDone = false;
+	var $_cartProcessed = false;
 	var $_redirect = false;
 	var $_redirect_disabled = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
@@ -125,6 +126,7 @@ class VirtueMartCart {
 				self::$_cart->pricesCurrency						= $sessionCart->pricesCurrency;
 				self::$_cart->paymentCurrency						= $sessionCart->paymentCurrency;
 
+				self::$_cart->_cartProcessed						= $sessionCart->_cartProcessed;
 				self::$_cart->_inCheckOut 							= $sessionCart->_inCheckOut;
 				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
 				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
@@ -254,6 +256,7 @@ class VirtueMartCart {
 		$sessionCart->paymentCurrency						= $this->paymentCurrency;
 
 		//private variables
+		$sessionCart->_cartProcessed						= $this->_cartProcessed;
 		$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
@@ -351,7 +354,7 @@ class VirtueMartCart {
 		$mainframe = JFactory::getApplication();
 		$success = false;
 		$post = JRequest::get('default');
-
+		$this->_cartProcessed = false;
 		if(empty($virtuemart_product_ids)){
 			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
 		}
@@ -649,6 +652,7 @@ class VirtueMartCart {
 			$addToCartReturnValues = $dispatcher->trigger('plgVmOnRemoveFromCart',array($this,$prod_id));
 			unset($this->cartProductsData[$prod_id]);
 		}
+		$this->_cartProcessed = false;
 		$this->setCartIntoSession();
 		return true;
 	}
@@ -677,6 +681,7 @@ class VirtueMartCart {
 				unset($this->products[$cart_virtuemart_product_id]);
 				$updated = true;
 			}
+			$this->_cartProcessed = false;
 			// Save the cart
 			$this->setCartIntoSession();
 		}
@@ -1125,8 +1130,8 @@ class VirtueMartCart {
 	 function confirmedOrder() {
 
 		//Just to prevent direct call
-		if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut) {
-
+		if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut and !$this->_cartProcessed) {
+			$this->_cartProcessed = true;
 			$orderModel = VmModel::getModel('orders');
 
 			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
