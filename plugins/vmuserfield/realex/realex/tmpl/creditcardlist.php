@@ -53,10 +53,10 @@ $storedCreditCards = $viewData['storedCreditCards'];
 				<span class="vmpayment_label"><label
 						for="creditcardtype"><?php echo vmText::_('VMPAYMENT_REALEX_CC_EXPDATE'); ?></label></span>
 				<?php
-				$exp_date = explode("/", $storedCreditCard->realex_saved_pmt_expdate);
+				$exp_date = $this->explodeExpDate($storedCreditCard->realex_saved_pmt_expdate);
 				if (count($exp_date) == 2) {
-					echo shopfunctions::listMonths('cc_expire_month_' . $storedCreditCard->id, $exp_date[0], "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"", 'm');
-					echo shopfunctions::listYears('cc_expire_year_' . $storedCreditCard->id, $exp_date[1], null, null, "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"  onchange=\"var month = document.getElementById('cc_expire_month_'" . $viewData['virtuemart_paymentmethod_id'] . "); if(!CreditCardisExpiryDate(month.value,this.value, '" . $viewData['virtuemart_paymentmethod_id'] . "')){this.value='';month.value='';}\" ", "y");
+					echo shopfunctions::listMonths('cc_expire_month_' . $storedCreditCard->id, $exp_date['mm'], "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"", 'm');
+					echo shopfunctions::listYears('cc_expire_year_' . $storedCreditCard->id, $exp_date['yy'], null, null, "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"  onchange=\"var month = document.getElementById('cc_expire_month_'" . $storedCreditCard->virtuemart_paymentmethod_id . "); if(!CreditCardisExpiryDate(month.value,this.value, '" . $storedCreditCard->virtuemart_paymentmethod_id . "')){this.value='';month.value='';}\" ",'y');
 				}
 				?>
 				<div id="cc_expiredate_errormsg"></div>
@@ -71,8 +71,8 @@ $storedCreditCards = $viewData['storedCreditCards'];
 				       name="cc_name_<?php echo $storedCreditCard->id; ?>"
 				       value="<?php echo $storedCreditCard->realex_saved_pmt_name; ?>"
 				       autocomplete="off"
-				       onchange="ccError=razCCerror(<?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
-					       CheckCreditCardNumber(this . value, <?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
+				       onchange="ccError=razCCerror(<?php echo $storedCreditCard->virtuemart_paymentmethod_id; ?>);
+					       CheckCreditCardNumber(this . value, <?php echo $storedCreditCard->virtuemart_paymentmethod_id; ?>);
 					       if (!ccError) {
 					       this.value='';}"/>
 

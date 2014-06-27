@@ -22,8 +22,7 @@ defined('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementInputMax extends JElement
-{
+class JElementInputMax extends JElement {
 	/**
 	 * Element name
 	 *
@@ -32,8 +31,7 @@ class JElementInputMax extends JElement
 	 */
 	var $_name = 'inputMax';
 
-	function fetchElement($name, $value, &$node, $control_name)
-	{
+	function fetchElement ($name, $value, &$node, $control_name) {
 
 
 		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : 'class="text_area"');

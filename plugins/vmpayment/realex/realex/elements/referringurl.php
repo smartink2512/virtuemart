@@ -22,8 +22,7 @@ defined('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementReferringurl extends JElement
-{
+class JElementReferringurl extends JElement {
 	/**
 	 * Element name
 	 *
@@ -32,8 +31,7 @@ class JElementReferringurl extends JElement
 	 */
 	var $_name = 'referringurl';
 
-	function fetchElement($name, $value, &$node, $control_name)
-	{
+	function fetchElement ($name, $value, &$node, $control_name) {
 
 		$value = JURI::root() . 'plugins/vmpayment/realex/jump.php';
 

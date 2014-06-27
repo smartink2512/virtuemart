@@ -22,19 +22,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-class RealexHelperRealexRedirect extends RealexHelperRealex
-{
+class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 
-	function __construct($method, $plugin)
-	{
+	function __construct ($method, $plugin) {
 		parent::__construct($method, $plugin);
 
 
 	}
 
-	public function confirmedOrder(&$postRequest)
-	{
+	public function confirmedOrder (&$postRequest) {
 		$selectedCCParams = array();
 		if (!$this->doRealvault($selectedCCParams)) {
 			$response = $this->sendPostRequest();
@@ -46,8 +43,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 	}
 
 
-	function doRealVault(&$selectedCCParams)
-	{
+	function doRealVault (&$selectedCCParams) {
 		//$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
 		//$selectedCCParams = $this->getSelectedCCParams($saved_cc_selected, $this->cart->virtuemart_paymentmethod_id);
 		$doRealVault = false;
@@ -62,8 +58,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 	}
 
 
-	function sendPostRequest()
-	{
+	function sendPostRequest () {
 		$post_variables = $this->getPostVariables();
 
 		$jump_url = $this->getJumpUrl();
@@ -102,8 +97,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 		return $html;
 	}
 
-	function getPostVariables()
-	{
+	function getPostVariables () {
 
 		$BT = $this->order['details']['BT'];
 		$ST = ((isset($this->order['details']['ST'])) ? $this->order['details']['ST'] : $this->order['details']['BT']);
@@ -125,25 +119,26 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 
 		$post_variables['MERCHANT_RESPONSE_URL'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&notificationTask=handleRedirect&tmpl=component';
 		$post_variables['AUTO_SETTLE_FLAG'] = $this->getSettlement();
+
 		if ($BT->virtuemart_user_id != 0) {
-			$post_variables['VAR_REF'] = $BT->customer_number;
-			$post_variables['PAYER_EXIST'] = 0;
+			//$post_variables['VAR_REF'] = $BT->order_number;
 			$post_variables['CARD_STORAGE_ENABLE'] = $this->_method->realvault;
 			if ($this->_method->realvault) {
-				if ($payer_ref = $this->getExistingPayerRef()) {
-					if ($this->customerData->getVar('saved_cc_selected') == -1) {
-						$post_variables['PAYER_EXIST'] = 1;
-						$post_variables['PAYER_REF'] = $payer_ref;
-						$post_variables['PMT_REF'] = '';
-					} else {
-						$post_variables['PAYER_REF'] = $payer_ref;
-						$post_variables['PAYER_EXIST'] = 1;
-						$post_variables['PMT_REF'] = $this->getPmtRef();
-					}
-				} else {
-					$post_variables['PAYER_REF'] = '';
+				$payerRef = $this->getSavedPayerRef();
+				if (!$payerRef) {
 					$post_variables['PAYER_EXIST'] = 0;
 					$post_variables['PMT_REF'] = '';
+					$post_variables['PAYER_REF'] = $this->getNewPayerRef();
+				} else {
+					$post_variables['PAYER_REF'] = $payerRef;
+					$post_variables['PAYER_EXIST'] = 1;
+					$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+					// -1: use another card, empty no CC are stored
+					if ($saved_cc_selected == -1 or empty($saved_cc_selected)) {
+						$post_variables['PMT_REF'] = '';
+					} else {
+						$post_variables['PMT_REF'] = $this->getPmtRef();
+					}
 				}
 
 				$post_variables['OFFER_SAVE_CARD'] = $this->_method->offer_save_card;
@@ -151,7 +146,11 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 			} else {
 				$post_variables['OFFER_SAVE_CARD'] = 0;
 			}
+		} else {
+			$post_variables['OFFER_SAVE_CARD'] = 0;
+			$post_variables['CARD_STORAGE_ENABLE'] = 0;
 		}
+
 		if ($this->_method->card_payment_button) {
 			$post_variables['CARD_PAYMENT_BUTTON'] = $this->getCardPaymentButton($this->_method->card_payment_button);
 		}
@@ -180,34 +179,68 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 
 	}
 
-	function  getExistingPayerRef()
-	{
-		$storedCCs = $this->getStoredCCs(JFactory::getUser()->id);
-		if (is_array($storedCCs)) {
-			return $storedCCs[0]->realex_saved_payer_ref;
+	/**
+	 * @param $realex_data
+	 * @return bool
+	 */
+	function cardStorageResponse ($realex_data) {
+		$userfield=false;
+		if (isset($realex_data['REALWALLET_CHOSEN']) and  $realex_data['REALWALLET_CHOSEN'] == 0) {
+			return false;
 		}
-		return NULL;
 
+		if (isset($realex_data['PAYER_SETUP']) and  $realex_data['PAYER_SETUP'] != self::PAYER_SETUP_SUCCESS) {
+			$this->debugLog('cardStorageResponse PAYER_SETUP not successfull:' . $realex_data['PAYER_SETUP'] . ' ' . $realex_data['PAYER_SETUP_MSG'], 'debug');
+			return false;
+		}
+		if ((isset($realex_data['PAYER_SETUP']) and  $realex_data['PAYER_SETUP'] == self::PAYER_SETUP_SUCCESS)) {
+			$this->saveNewPayerRef($realex_data['SAVED_PAYER_REF']);
+		}
+
+		if ((isset($realex_data['PMT_SETUP']) and  $realex_data['PMT_SETUP'] != self::PMT_SETUP_SUCCESS)) {
+			$this->debugLog('cardStorageResponse PMT_SETUP not successfull:' . $realex_data['PMT_SETUP'] . ' ' . $realex_data['PMT_SETUP_MSG'], 'debug');
+			return false;
+		}
+		if ((isset($realex_data['PMT_SETUP']) and  $realex_data['PMT_SETUP'] == self::PMT_SETUP_SUCCESS)) {
+			$userfield = $this->getPaymentRef($realex_data);
+			//$this->storeNewPayment($userfield);
+		}
+		return $userfield;
 	}
 
-	function  getExistingPmtRef()
-	{
-		$storedCCs = $this->getStoredCCs(JFactory::getUser()->id);
-		if (is_array($storedCCs)) {
-			return $storedCCs[0]->realex_saved_pmt_ref;
+
+	/**
+	 * @param $realex_data
+	 * @return mixed
+	 */
+	function getPaymentRef ($realex_data) {
+
+		$fields = array(
+			'SAVED_PMT_TYPE',
+			'SAVED_PMT_REF',
+			'SAVED_PMT_DIGITS',
+			'SAVED_PMT_EXPDATE',
+			'SAVED_PMT_NAME',
+		);
+		$userfield['virtuemart_user_id'] = $this->order['details']['BT']->virtuemart_user_id;
+		$userfield['merchant_id'] = $this->_method->merchant_id;
+		foreach ($fields as $field) {
+			if (isset($realex_data[$field])) {
+				if ($field == 'SAVED_PMT_DIGITS') {
+					$realex_data[$field] = shopFunctionsF::mask_string($realex_data[$field], '*');
+				}
+				$userfield['realex_' . strtolower($field)] = $realex_data[$field];
+			}
 		}
-		return NULL;
-
+		return $userfield;
 	}
-
 
 	/**
 	 * @param bool $enqueueMessage
 	 * @return bool
 	 */
 
-	function validateConfirmedOrder($enqueueMessage = true)
-	{
+	function validateConfirmedOrder ($enqueueMessage = true) {
 
 		return $this->validate();
 
@@ -217,8 +250,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 	 * @param bool $enqueueMessage
 	 * @return bool
 	 */
-	public function validate($enqueueMessage = true)
-	{
+	public function validate ($enqueueMessage = true) {
 		if (!JFactory::getUser()->guest AND $this->_method->realvault) {
 			if ($storedCCs = $this->getStoredCCs(JFactory::getUser()->id)) {
 				$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
@@ -235,21 +267,18 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 	 * @param bool $enqueueMessage
 	 * @return bool
 	 */
-	public function validateSelectCheckPayment($enqueueMessage = true)
-	{
+	public function validateSelectCheckPayment ($enqueueMessage = true) {
 		return $this->validate();
 	}
 
 	/**
 	 * @return bool
 	 */
-	function validateCheckoutCheckDataPayment()
-	{
+	function validateCheckoutCheckDataPayment () {
 		return $this->validate();
 	}
 
-	function getExtraPluginInfo()
-	{
+	function getExtraPluginInfo () {
 		$extraPluginInfo = array();
 		$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
 		if ($saved_cc_selected != -1) {
@@ -274,15 +303,14 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 	 * Validate the response hash from Realex.
 	 * timestamp.merchantid.orderid.amount.curr.payerref.pmtref
 	 */
-	function validateResponseHash($post)
-	{
+	function validateResponseHash ($post) {
 		if (is_array($post)) {
 			$message = stripslashes($post['MESSAGE']);
 			$message = str_replace('&#39;', "'", $message);
 			$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $post['MERCHANT_ID'], $post['ORDER_ID'], $post['RESULT'], $message, isset($post['PASREF']) ? $post['PASREF'] : "", isset($post['AUTHCODE']) ? $post['AUTHCODE'] : "");
 			if ($hash != $post['SHA1HASH']) {
 				$this->debugLog('validateResponseHash :' . var_export($post, true), 'debug');
-				$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, print_r($post, true)));
+				//$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, print_r($post, true)));
 				//echo vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $post['SHA1HASH']);
 				//print_r($_POST);
 				return FALSE;
@@ -295,8 +323,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 		return true;
 	}
 
-	function setComment1()
-	{
+	function setComment1 () {
 		$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency);
 		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
@@ -304,8 +331,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 		return vmText::sprintf('VMPAYMENT_REALEX_COMMENT1', $amountValue['display'], $this->order['details']['BT']->order_number, $shop_name);
 	}
 
-	function setComment2()
-	{
+	function setComment2 () {
 		$shop_name = $this->getVendorInfo('vendor_store_name');
 		return vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $shop_name);
 	}
@@ -314,8 +340,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex
 	 * JumpUrl is a prefined URL that must be configurated in Realex
 	 * @return string
 	 */
-	function getJumpUrl()
-	{
+	function getJumpUrl () {
 		return $this->_method->referring_url;
 
 	}

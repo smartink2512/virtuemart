@@ -35,7 +35,9 @@
 	    <?php } ?>
     </span>
 
-	<?php if (!empty($viewData['creditcardsDropDown'])) { ?>
+	<?php
+	/*
+	if (!empty($viewData['creditcardsDropDown'])) { ?>
 		<div class="creditcardsDropDown">
 			<?php
 			echo $viewData['creditcardsDropDown'];
@@ -43,6 +45,7 @@
 		</div>
 	<?php
 	}
+	*/
 	if (!empty($viewData['offerSaveCard'])) {
 		?>
 		<div class="realex_offerSaveCard">

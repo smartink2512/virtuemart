@@ -21,9 +21,12 @@ defined('_JEXEC') or die('Restricted access');
  * So It should be an extension of JElement
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
-if (!class_exists('VmConfig')) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
-if (!class_exists('ShopFunctions'))
+if (!class_exists('VmConfig')) {
+	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+}
+if (!class_exists('ShopFunctions')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+}
 
 /**
  * @copyright    Copyright (C) 2009 Open Source Matters. All rights reserved.
@@ -37,8 +40,7 @@ defined('JPATH_BASE') or die();
  *
  */
 
-class JElementCreditCards extends JElement
-{
+class JElementCreditCards extends JElement {
 
 	/**
 	 * Element name
@@ -49,8 +51,7 @@ class JElementCreditCards extends JElement
 
 	var $_name = 'creditcards';
 
-	function fetchElement($name, $value, &$node, $control_name)
-	{
+	function fetchElement ($name, $value, &$node, $control_name) {
 		JFactory::getLanguage()->load('plg_vmpayment_realex', JPATH_ADMINISTRATOR);
 
 		$creditcards = RealexHelperRealex::getRealexCreditCards();
