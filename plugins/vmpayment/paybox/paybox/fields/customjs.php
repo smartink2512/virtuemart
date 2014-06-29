@@ -19,9 +19,9 @@
  */
 
 
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
-class JElementCustomjs extends JElement {
+class JFormFieldCustomjs extends JFormField {
 
 	/**
 	 * Element name
@@ -29,16 +29,16 @@ class JElementCustomjs extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'customjs';
+	var $type = 'customjs';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-		
+	function getInput() {
+
 
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paybox/paybox/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/paybox/paybox/assets/css/admin.css');
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/paybox/paybox/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paybox/paybox/assets/css/admin.css');
 
-		return '';		
+		return '';
 	}
 
 }

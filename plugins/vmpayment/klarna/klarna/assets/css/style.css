@@ -59,9 +59,11 @@
     background-repeat: repeat-x;
     cursor: pointer;
 }
+
 .klarna_PPBox_topMid_nl {
     min-width: 162px !important;
 }
+
 .klarna_PPBox_topMid p {
     padding: 0 3px 0 5px;
     text-align: center;
@@ -114,15 +116,19 @@
     position: static;
     text-align: center !important;
 }
+
 #klarna_PPBox_pullDown {
     position: relative !important;
 }
+
 #klarna_PPBox_pullDown img {
     position: static;
 }
+
 .nlBanner {
     z-index: 400;
 }
-.klarna_PPBox_bottomMid td,.klarna_PPBox_bottomMid tr{
-	border:none;
+
+.klarna_PPBox_bottomMid td, .klarna_PPBox_bottomMid tr {
+    border: none;
 }

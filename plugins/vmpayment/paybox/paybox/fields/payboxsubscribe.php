@@ -15,33 +15,39 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  * other free or open source software licenses.
  * @version $Id: $
  */
-class JElementpayboxsubscribe extends JElement {
+JFormHelper::loadFieldClass('list');
+jimport('joomla.form.formfield');
 
-    /**
-     * Element name
-     *
-     * @access    protected
-     * @var        string
-     */
-    var $_name = "payboxsubscribe";
+class JFormFieldpayboxsubscribe extends JFormFieldList {
 
-    function fetchElement($name, $value, &$node, $control_name) {
+	/**
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $type = "payboxsubscribe";
 
-       $query="
+	function getOptions() {
+
+		$query = "
           SELECT virtuemart_custom_id, custom_title
           FROM #__virtuemart_customs
           WHERE (field_type = 'P')
-          AND (custom_title LIKE '%".$this->_name."%')
-
+          AND (custom_title LIKE '%" . $this->_name . "%')
 ";
 
-	    $db = JFactory::getDBO();
-	    $db->setQuery($query);
-	    $customFieldList = $db->loadObjectList();
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
 
-	    $attribs = ' ';
-	    $attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
-        return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . '][]', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
-    }
+		$values = $db->loadObjectList();
+
+		foreach ($values as $v) {
+			$options[] = JHtml::_('select.option', $v->value, $v->text);
+		}
+
+
+		return $options;
+	}
 
 }

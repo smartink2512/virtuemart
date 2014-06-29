@@ -51,7 +51,7 @@ jQuery().ready(function ($) {
 
         if (integration == 'recurring') {
             $('.recurring').parents('tr').show();
-        } else if(integration == 'subscribe') {
+        } else if (integration == 'subscribe') {
             $('.subscribe').parents('tr').show();
         }
     }

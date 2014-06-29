@@ -30,7 +30,7 @@
                 <field type="getpaybox" level="level1"/>
                 <field class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
 
-                <field name="shop_mode" type="list" default="N" label="VMPAYMENT_PAYBOX_CONF_SHOP_MODE"
+                <field name="shop_mode" type="list" default="test" label="VMPAYMENT_PAYBOX_CONF_SHOP_MODE"
                        description="VMPAYMENT_PAYBOX_CONF_SHOP_MODE_TIP">
                     <option value="test">VMPAYMENT_PAYBOX_CONF_SHOP_MODE_TEST</option>
                     <option value="production">VMPAYMENT_PAYBOX_CONF_SHOP_MODE_PRODUCTION</option>

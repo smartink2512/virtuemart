@@ -29,7 +29,7 @@
 
                 <field name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION"
                        default="&lt;a href=&quot;https://static.klarna.com/integration_sales/partner/VirtueMart/v1.0/Klarna_documentation.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>
-                />
+
                 <field type="getklarna" level="level1"/>
 
                 <field type="klarnacountrylogo" default="SV" level="level1"/>

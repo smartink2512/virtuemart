@@ -11,14 +11,13 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined ('JPATH_BASE') or die();
+defined('JPATH_BASE') or die();
 
-/**
- * Renders a label element
- */
+jimport('joomla.form.formfield');
 
 
-class JElementGetPaybox extends JElement {
+
+class JFormFieldGetPaybox extends JFormField {
 
 	/**
 	 * Element name
@@ -26,9 +25,9 @@ class JElementGetPaybox extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getPaybox';
+	var $type = 'getPaybox';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	function getInput() {
 
 		$js = '
 //<![CDATA[
@@ -37,66 +36,64 @@ class JElementGetPaybox extends JElement {
 		    jQuery("#paybox_getpaybox_link").click( function() {
 				 if ( $("#paybox_getpaybox_show_hide").is(":visible") ) {
 				  $("#paybox_getpaybox_show_hide").hide("slow");
-			        $("#paybox_getpaybox_link").html("' . addslashes (vmText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT')) . '");
+			        $("#paybox_getpaybox_link").html("' . addslashes(vmText::_('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT')) . '");
 				} else {
 				 $("#paybox_getpaybox_show_hide").show("slow");
-			       $("#paybox_getpaybox_link").html("' . addslashes (vmText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE')) . '");
+			       $("#paybox_getpaybox_link").html("' . addslashes(vmText::_('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE')) . '");
 			    }
 		    });
 		});
 //]]>
 ';
 
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration($js);
 		if (!class_exists('pbxRequest')) {
 			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'paybox' . DS . 'paybox' . DS . 'helpers' . DS . 'pbxrequest.php');
 		}
-		$cid = pbxRequest::getvar ('cid', NULL, 'array');
-		if (is_Array ($cid)) {
+		$cid = pbxRequest::getvar('cid', NULL, 'array');
+		if (is_Array($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
 			$virtuemart_paymentmethod_id = $cid;
 		}
 
 		$query = "SELECT * FROM `#__virtuemart_paymentmethods` WHERE  virtuemart_paymentmethod_id = '" . $virtuemart_paymentmethod_id . "'";
-		$db = JFactory::getDBO ();
-		$db->setQuery ($query);
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
 		$params = $db->loadObject();
-		$html ='<img src="http://virtuemart.boutique-paybox.com/PayboxLogo.jpg" width="200px"/><br />';
+		$html = '<img src="http://virtuemart.boutique-paybox.com/PayboxLogo.jpg" width="200px"/><br />';
 
-	if ($params->created_on==$params->modified_on ) {
-		$id = "paybox_getpaybox_link";
-		$html .= '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE') . '</a>';
-		$display='';
-		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
-	} else {
-		$id = "paybox_getpaybox_link";
-		$html .= '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT') . '</a>';
-		$display=' style="display: none;"';
-		$html .= '<div id="paybox_getpaybox_show_hide" align=""'.$display.' >';
-	}
-		$id="";
-
-
-		$lang = $this->getLang ();
-
-	;
-		if ($lang=='fr') {
-			$url="http://virtuemart.boutique-paybox.com/PayboxPres.html";
+		if ($params->created_on == $params->modified_on) {
+			$id = "paybox_getpaybox_link";
+			$html .= '<a href="#" id="' . $id . '">' . vmText::_('VMPAYMENT_PAYBOX_GET_PAYBOX_HIDE') . '</a>';
+			$display = '';
+			$html .= '<div id="paybox_getpaybox_show_hide" align=""' . $display . ' >';
 		} else {
-			$url="http://virtuemart.boutique-paybox.com/PayboxPres.html";
+			$id = "paybox_getpaybox_link";
+			$html .= '<a href="#" id="' . $id . '">' . vmText::_('VMPAYMENT_PAYBOX_ALREADY_ACCOUNT') . '</a>';
+			$display = ' style="display: none;"';
+			$html .= '<div id="paybox_getpaybox_show_hide" align=""' . $display . ' >';
+		}
+		$id = "";
+
+
+		$lang = $this->getLang();;
+		if ($lang == 'fr') {
+			$url = "http://virtuemart.boutique-paybox.com/PayboxPres.html";
+		} else {
+			$url = "http://virtuemart.boutique-paybox.com/PayboxPres.html";
 		}
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="1400px" width="800px"></iframe>';
 		$html .= "</div>";
 		return $html;
 	}
 
-	protected function getLang () {
+	protected function getLang() {
 
 
-		$language =& JFactory::getLanguage ();
-		$tag = strtolower (substr ($language->get ('tag'), 0, 2));
+		$language =  JFactory::getLanguage();
+		$tag = strtolower(substr($language->get('tag'), 0, 2));
 		return $tag;
 	}
 
