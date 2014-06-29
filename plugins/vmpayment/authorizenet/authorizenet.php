@@ -1062,7 +1062,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 
 		$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', TRUE);
 
-		$html = '<table class="adminlist">' . "\n";
+		$html = '<table class="adminlist table-striped">' . "\n";
 		$html .= $this->getHtmlRow('AUTHORIZENET_PAYMENT_NAME', $payment_name);
 		$html .= $this->getHtmlRow('AUTHORIZENET_ORDER_NUMBER', $authorizeNetResponse['invoice_number']);
 		$html .= $this->getHtmlRow('AUTHORIZENET_AMOUNT', $authorizeNetResponse['amount'] . ' ' . self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY);

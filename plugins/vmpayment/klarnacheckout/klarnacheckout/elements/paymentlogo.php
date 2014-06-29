@@ -40,7 +40,6 @@ class JElementPaymentlogo extends JElement {
 
 	function fetchElement ($name, $value, &$node, $control_name) {
 
-		function fetchElement($name, $value, &$node, $control_name) {
 			$countriesData = KlarnaHandler::countriesData();
 			$logo = '<a href="https://www.klarna.com" target="_blank"><img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /></a> ';
 
@@ -48,7 +47,6 @@ class JElementPaymentlogo extends JElement {
 
 
 
-		}
 	}
 
 }

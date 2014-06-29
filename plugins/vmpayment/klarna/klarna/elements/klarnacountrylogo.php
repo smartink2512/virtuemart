@@ -29,8 +29,11 @@ class JElementKlarnaCountryLogo extends JElement {
 
 	function fetchElement ($name, $value, &$node, $control_name) {
 
-		//$flagImg = JURI::root (TRUE) . '/administrator/components/com_virtuemart/assets/images/flag/' . strtolower ($value) . '.png';
-		return '<strong>'.vmText::_ ('VMPAYMENT_KLARNA_CONF_SETTINGS_' . $value) . '</strong>';
+		$flag=$this->value;
+		if ($this->value=='NB') $flag='NO';
+		$flagImg = JURI::root (TRUE) . '/media/mod_languages/images/' . strtolower ($flag) . '.gif';
+
+		return '<strong>'.JText::_ ('VMPAYMENT_KLARNA_CONF_SETTINGS_' . $this->value) . '</strong><img style="margin-left: 5px;" src="' . $flagImg. '" />';
 
 	}
 }

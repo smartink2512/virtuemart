@@ -296,7 +296,7 @@ class  PayboxHelperPaybox {
 		$db->setQuery($q);
 		$payments = $db->loadObjectList();
 
-		$html = '<table class="adminlist" width="50%">' . "\n";
+		$html = '<table class="adminlist table-striped" >' . "\n";
 		$html .= $this->plugin->getHtmlHeaderBE();
 		$first = TRUE;
 		$lang = JFactory::getLanguage();
@@ -314,7 +314,7 @@ class  PayboxHelperPaybox {
 				}
 				if ($payment->recurring) {
 
-					$recurring_html = '<table class="adminlist">' . "\n";
+					$recurring_html = '<table class="adminlist table-striped">' . "\n";
 					$recurring = json_decode($payment->recurring);
 					$recurring_html .= $this->plugin->getHtmlRowBE($this->plugin_name . '_CONF_RECURRING_PERIODICTY', $payment->recurring_periodicity);
 					$recurring_html .= $this->plugin->getHtmlRowBE($this->plugin_name . '_CONF_RECURRING_NUMBER', $payment->recurring_number);

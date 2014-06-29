@@ -114,6 +114,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		}
 		$htmla = array();
 		$html = '';
+		$logo='';
 
 		VmConfig::loadJLang('com_virtuemart');
 		$currency = CurrencyDisplay::getInstance();
