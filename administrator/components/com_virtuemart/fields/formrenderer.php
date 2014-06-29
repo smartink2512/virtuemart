@@ -37,7 +37,7 @@ if ($form) {
 			?>
 			<div class="<?php echo $control_field_class ?>">
 				<?php
-				$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMPLUGIN_FIELDSET_' . $name);
+				$label = !empty($fieldSet->label) ? $fieldSet->label: '';
 
 				if (!empty($label)) {
 					$class = isset($fieldSet->class) && !empty($fieldSet->class) ? "class=\"".$fieldSet->class."\"" : '';

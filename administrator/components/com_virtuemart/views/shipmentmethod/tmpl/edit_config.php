@@ -39,7 +39,7 @@ if ($this->shipment->shipment_jplugin_id) {
 		include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
 	}
 } else {
-	echo vmText::_('COM_VIRTUEMART_SELECT_SHIPMENT_METHOD');
+	echo vmText::_('COM_VIRTUEMART_SELECT_SHIPMENT_METHOD_VM3');
 }
 
 

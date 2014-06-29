@@ -27,17 +27,13 @@ class JFormFieldVmCountries extends JFormFieldList {
 	 * @var        string
 	 */
 	protected $type = 'vmCountries';
-
+	protected function getInput() {
+		$this->multiple=true;
+		return parent::getInput();
+	}
 	protected function getOptions() {
 		$options = array();
-		$attr = '';
-
-		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="' . (string)$this->element['class'] . '"' : '';
-		$attr .= ((string)$this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-		$attr .= $this->element['size'] ? ' size="' . (int)$this->element['size'] . '"' : '';
-		$attr .= $this->multiple ? ' multiple="multiple"' : '';
-
+		$this->multiple=true;
 
 		$query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries`
                		WHERE `published` = 1 ORDER BY `country_name` ASC ';
