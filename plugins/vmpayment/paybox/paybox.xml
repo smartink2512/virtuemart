@@ -23,7 +23,7 @@
     <config>
         <fields name="params">
 
-            <fieldset name="basic" addfieldpath="/plugins/vmpayment/paypal/paypal/fields">
+            <fieldset name="basic" addfieldpath="/plugins/vmpayment/paybox/paybox/fields">
 
                 <field type="vmjpluginwarning"/>
                 <field type="customjs" default=""/>
