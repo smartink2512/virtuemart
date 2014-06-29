@@ -1283,7 +1283,7 @@ class  RealexHelperRealex {
 	 * @return mixed
 	 */
 	function getNewPayerRef () {
-		return $this->sanitize($this->order['details']['BT']->customer_number);
+		return  $this->getUniqueId($this->order['details']['BT']->customer_number);
 	}
 
 	/**
