@@ -34,7 +34,7 @@ vmJsApi::jDate();
 <div class="col50">
 	<fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_CALC_DETAILS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CALC_NAME','calc_name',$this->calc->calc_name); ?>
 		<?php echo VmHTML::row('checkbox','COM_VIRTUEMART_PUBLISHED','published',$this->calc->published); ?>
 		<?php if($this->showVendors() ){

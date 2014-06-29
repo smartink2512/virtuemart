@@ -19,7 +19,7 @@
 defined ('_JEXEC') or die('Restricted access');
 $i = 0;
 ?>
-<table class="adminform table-striped">
+<table class="adminform">
 	<tbody>
 	<tr class="row<?php echo $i?>">
 		<td width="21%" valign="top">
@@ -49,9 +49,9 @@ $i = 0;
 			<br/>
 
 			<div class="mailing">
-				<div class="button2-left btn-wrapper" data-type="sendmail">
+				<div class="button2-left btn-wrapper btn btn-small" data-type="sendmail">
 					<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SEND_TIP'); ?>">
-						<span class="vmicon vmicon-16-email btn btn-small"></span>
+						<span class="vmicon vmicon-16-email"></span>
 						<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SEND'); ?>
 					</div>
 
@@ -155,7 +155,7 @@ $i = 0;
 		<td>
 			<?php
 
-			$aflink = '<a target="_blank" href="http://www.acyba.com/acymailing.html?partner_id=19513"><img title="AcyMailing 2" height=60 src="http://www.acyba.com/images/banners/acymailing_450-109.png"/></a>';
+			$aflink = '<a target="_blank" href="http://www.acyba.com/acymailing.html?partner_id=19513"><img title="AcyMailing 2"  src="http://www.acyba.com/images/banners/acymailing_450-109.png" style="width: 150px;" /></a>';
 			echo vmText::sprintf('COM_VIRTUEMART_AD_ACY',$aflink);
 			?>
 		</td>

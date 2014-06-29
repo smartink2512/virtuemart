@@ -41,7 +41,7 @@ $document->addScriptDeclaration($js);
 		<td valign="top">
 			<fieldset>
 				<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CONFIGURATION'); ?></legend>
-				<table class="admintable table-striped">
+				<table class="admintable">
 					<?php
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX','show_tax',VmConfig::get('show_tax',1));
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE','askprice',VmConfig::get('askprice',1));
@@ -55,12 +55,12 @@ $document->addScriptDeclaration($js);
 		<td valign="top">
 			<fieldset>
 				<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES'); ?></legend>
-				<table class="admintable table-striped">
+				<table class="admintable">
 					<?php
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES','show_prices',VmConfig::get('show_prices',1),1,0,'id="show_prices"');
 					?>
 				</table>
-				<table class="admintable table-striped" id="show_hide_prices">
+				<table class="admintable" id="show_hide_prices">
 					<tr>
 						<th></th>
 						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>

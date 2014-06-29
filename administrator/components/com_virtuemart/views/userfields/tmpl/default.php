@@ -42,7 +42,7 @@ AdminUIHelper::startAdminArea($this);
 	</div>
 
 	<div id="editcell">
-		<table class="adminlist jgrid table-striped">
+		<table class="adminlist jgrid table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
 			<th width="10">

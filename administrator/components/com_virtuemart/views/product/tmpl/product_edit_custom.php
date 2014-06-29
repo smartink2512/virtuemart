@@ -112,7 +112,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo vmText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
 				<div class="jsonSuggestResults" style="width: auto;">
 					<input type="text" size="40" name="search" id="relatedcategoriesSearch" value="" />
-					<button class="reset-value"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
+					<button class="reset-value btn"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
 				<div id="custom_categories" class="ui-sortable" ><?php echo  $tables['categories']; ?></div>
 			</fieldset>
@@ -121,7 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
 				<div class="jsonSuggestResults" style="width: auto;">
 					<input type="text" size="40" name="search" id="relatedproductsSearch" value="" />
-					<button class="reset-value"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
+					<button class="reset-value btn"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
 				<div id="custom_products" class="ui-sortable"><?php echo  $tables['products']; ?></div>
 			</fieldset>
@@ -130,7 +130,7 @@ defined('_JEXEC') or die('Restricted access');
 				<legend><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE' );?></legend>
 				<div><?php echo  '<div class="inline">'.$this->customsList; ?></div>
 
-				<table id="custom_fields" class="adminlist table-striped" cellspacing="0" cellpadding="2">
+				<table id="custom_fields" class="adminlist" cellspacing="0" cellpadding="2">
 					<thead>
 					<tr class="row1">
 						<th><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>

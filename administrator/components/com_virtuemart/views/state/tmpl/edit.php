@@ -28,7 +28,7 @@ AdminUIHelper::startAdminArea($this);
 	<fieldset>
 <?php /*	<legend><?php echo vmText::_('COM_VIRTUEMART_STATE_DETAILS'); ?></legend> */?>
 	<legend><?php echo JHtml::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. vmText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="state_name">

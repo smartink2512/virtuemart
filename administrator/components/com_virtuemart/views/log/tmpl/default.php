@@ -29,7 +29,7 @@ if(class_exists('finfo')){
 }
 
 ?>
-		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
+<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
 			<th>

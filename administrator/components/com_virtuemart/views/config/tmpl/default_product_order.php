@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<td valign="top">
 			<fieldset>
 				<legend><?php echo vmText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_TITLE'); ?></legend>
-				<table class="admintable table-striped">
+				<table class="admintable">
 					<tr>
 						<td class="key">
 								<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>">

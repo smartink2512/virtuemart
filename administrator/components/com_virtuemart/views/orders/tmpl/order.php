@@ -114,7 +114,7 @@ $document->addScriptDeclaration ( "
 		<?php echo JHtml::_( 'form.token' ); ?>
 
 
-<table class="adminlist table table-striped" width="100%">
+<table class="adminlist" width="100%">
 	<thead>
 	<tr>
 		<th>
@@ -141,7 +141,7 @@ $document->addScriptDeclaration ( "
 <table class="adminlist table" style="table-layout: fixed;">
 	<tr>
 		<td valign="top">
-		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
+		<table class="adminlist" cellspacing="0" cellpadding="0">
 			<thead>
 			<tr>
 				<th colspan="2"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></th>
@@ -206,7 +206,7 @@ $document->addScriptDeclaration ( "
 		</table>
 		</td>
 		<td valign="top">
-		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
+		<table class="adminlist" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
 					<th><?php echo vmText::_('COM_VIRTUEMART_ORDER_HISTORY_DATE_ADDED') ?></th>

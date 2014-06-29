@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');?>
-   <table class="adminform table-striped">
+   <table class="adminform">
    <tbody>
 
     <tr class="row1">

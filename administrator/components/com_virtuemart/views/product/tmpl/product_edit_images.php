@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 			} else {
 				$url = 'http://www.removethebackground.co.uk/virtuemart.aspx';
 			}
-			echo '<a href="'.$url.'" target="_blank" alt="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"><img  height="60" src="'.$imgUrl.'" title="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"></a>';
+			echo '<a href="'.$url.'" target="_blank" alt="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"><img  style="width: 150px;" src="'.$imgUrl.'" title="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"></a>';
 		?>
 	</div>
 </div>

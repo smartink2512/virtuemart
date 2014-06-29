@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <td valign="top" width="50%">
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE',$this->jTemplateList, 'vmtemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('vmtemplate', 'default'));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE',$this->jTemplateList, 'categorytemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('categorytemplate', 'default'));
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </fieldset>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PAGINATION_SEQUENCE'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 		echo VmHTML::row('input','COM_VIRTUEMART_LIST_MEDIA','mediaLimit',VmConfig::get('mediaLimit',20));
 		echo VmHTML::row('input','COM_VIRTUEMART_LLIMIT_INIT_BE','llimit_init_BE',VmConfig::get('llimit_init_BE',20));
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_CAT_FEED_SETTINGS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE', 'feed_cat_published', VmConfig::get('feed_cat_published', 0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWIMAGES', 'feed_cat_show_images', VmConfig::get('feed_cat_show_images', 0));
@@ -108,7 +108,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <td valign="top">
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_HOMEPAGE_SETTINGS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT',$this->vmLayoutList, 'vmlayout', 'size=1', 'value', 'text', VmConfig::get('vmlayout',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC','show_store_desc', VmConfig::get('show_store_desc',1));
@@ -128,7 +128,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </fieldset>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_HOME_FEED_SETTINGS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_LATEST_ENABLE','feed_latest_published', VmConfig::get('feed_latest_published',0));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEED_LATEST_NB','feed_latest_nb', VmConfig::get('feed_latest_nb',5),'',10,10);
@@ -155,7 +155,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<legend class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS_TIP'); ?>">
 		<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS'); ?>
 	</legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_FANCY','usefancy', VmConfig::get('usefancy',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS','css', VmConfig::get('css',1));

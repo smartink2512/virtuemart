@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_SETTINGS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE','shop_is_offline',VmConfig::get('shop_is_offline',0));
 		?>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');?>
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_LANGUAGES'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<tr>
 			<td class="key">
 					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_EXPLAIN'); ?>">
@@ -69,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');?>
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_EMAILS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<tr>
 			<td class="key">
 					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
@@ -122,7 +122,7 @@ defined('_JEXEC') or die('Restricted access');?>
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_ADVANCED'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 			$optDebug = array(
 				'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),

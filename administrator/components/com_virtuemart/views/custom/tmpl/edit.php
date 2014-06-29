@@ -32,7 +32,7 @@ AdminUIHelper::startAdminArea($this);
 	if (!empty($attribute_id))
 	    $this->customfields->addHidden('attribute_id', $attribute_id);
 	?>
-	<table class="admintable table-striped">
+	<table class="admintable">
 	    <?php echo $this->displayCustomFields($this->custom); ?>
 
 	    <tr id="custom_plg">

@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="col50">
     <fieldset>
         <legend><?php echo vmText::_('COM_VIRTUEMART_PAYMENTMETHOD'); ?></legend>
-        <table class="admintable table-striped">
+        <table class="admintable">
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_PAYMENTMETHOD_FORM_NAME','payment_name',$this->payment->payment_name); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_SLUG','slug',$this->payment->slug); ?>
      	<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->payment->published); ?>

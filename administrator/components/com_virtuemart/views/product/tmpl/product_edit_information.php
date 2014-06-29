@@ -29,7 +29,7 @@ $i=0;
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); echo ' id: '.$this->product->virtuemart_product_id ?></legend>
-    <table class="adminform table-striped" width="100%">
+    <table class="adminform" width="100%">
 		<tr class="row<?php echo $i?>">
 			<td style="min-width:75px;max-width:200px;width:130px;">
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?>
@@ -251,7 +251,7 @@ $i=0;
 	<fieldset>
 		<legend>
 		<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
-		<table class="adminform table-striped">
+		<table class="adminform">
 			<tr class="row<?php echo $i?>">
 				<td width="50%">
 				<?php

@@ -19,7 +19,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_SETTINGS'); ?></legend>
-	<table class="admintable table-striped">
+	<table class="admintable">
 		<?php
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE','seo_disabled', VmConfig::get('seo_disabled', 0));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_SEO_SUFIX','seo_sufix', VmConfig::get('seo_sufix', '-detail'));

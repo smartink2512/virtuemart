@@ -86,6 +86,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 				VmTable::bindParameterable($payment->params,'payment_params',$varsToPush);
 				$payment->form->bind($payment);
 
+
 			} else {
 				$payment->form = null;
 			}

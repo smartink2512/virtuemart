@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 <fieldset>
 				<legend><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL'); ?></legend>
-<table class="adminform table-striped" width="100%">
+<table class="adminform" width="100%">
 	<tr class="row0">
 		<th style="text-align:right;" width="25%">
 		<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?>
