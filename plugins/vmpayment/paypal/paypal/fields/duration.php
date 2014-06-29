@@ -19,49 +19,49 @@
  */
 
 
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
-	jimport('joomla.form.formfield');
-	class JElementDuration extends JFormField {
+jimport('joomla.form.formfield');
+class JElementDuration extends JFormField {
 
-		public $type  = 'Duration';
+	public $type = 'Duration';
 
-		protected function getInput() {
+	protected function getInput() {
 
-			$field_id = uniqid('duration');
-			$duration_value_id = $field_id.'_value';
-			$duration_unit_id = $field_id.'_unit';
+		$field_id = uniqid('duration');
+		$duration_value_id = $field_id . '_value';
+		$duration_unit_id = $field_id . '_unit';
 
-			if ($value) {
-				$duration_parts = explode('-',$value);
-				$duration_value = $duration_parts[0];
-				$duration_unit = $duration_parts[1];
-			}
+		if ($value) {
+			$duration_parts = explode('-', $value);
+			$duration_value = $duration_parts[0];
+			$duration_unit = $duration_parts[1];
+		}
 
-			$doc = JFactory::getDocument();
+		$doc = JFactory::getDocument();
 
-			$js = "
+		$js = "
 		jQuery().ready(function($) {
-			$('#".$duration_value_id."').change(function() {
-				$('#".$control_name . $name."').val($('#".$duration_value_id."').val()+'-'+$('#".$duration_unit_id."').val());
+			$('#" . $duration_value_id . "').change(function() {
+				$('#" . $control_name . $name . "').val($('#" . $duration_value_id . "').val()+'-'+$('#" . $duration_unit_id . "').val());
 			});
-			$('#".$duration_unit_id."').change(function() {
-				$('#".$control_name . $name."').val($('#".$duration_value_id."').val()+'-'+$('#".$duration_unit_id."').val());
+			$('#" . $duration_unit_id . "').change(function() {
+				$('#" . $control_name . $name . "').val($('#" . $duration_value_id . "').val()+'-'+$('#" . $duration_unit_id . "').val());
 			});
 		});";
-			$doc->addScriptDeclaration($js );
+		$doc->addScriptDeclaration($js);
 
-			$options = array();
-			$options[] = JHTML::_('select.option', 'D', vmText::_('VMPAYMENT_PAYPAL_DURATION_D'));
-			$options[] = JHTML::_('select.option', 'W', vmText::_('VMPAYMENT_PAYPAL_DURATION_W'));
-			$options[] = JHTML::_('select.option', 'M', vmText::_('VMPAYMENT_PAYPAL_DURATION_M'));
-			$options[] = JHTML::_('select.option', 'Y', vmText::_('VMPAYMENT_PAYPAL_DURATION_Y'));
+		$options = array();
+		$options[] = JHTML::_('select.option', 'D', vmText::_('VMPAYMENT_PAYPAL_DURATION_D'));
+		$options[] = JHTML::_('select.option', 'W', vmText::_('VMPAYMENT_PAYPAL_DURATION_W'));
+		$options[] = JHTML::_('select.option', 'M', vmText::_('VMPAYMENT_PAYPAL_DURATION_M'));
+		$options[] = JHTML::_('select.option', 'Y', vmText::_('VMPAYMENT_PAYPAL_DURATION_Y'));
 
-			$html = '<input type="text" style="width:25px;position:relative;font-size:14px;margin-right:10px;" name="'.$duration_value_id.'" id="'.$duration_value_id.'" value="'.$duration_value.'" >';
-			$html .= JHTML::_ ('select.genericlist', $options, $duration_unit_id, '', 'value', 'text', $duration_unit, $duration_unit_id);
-			$html .= '<input type="hidden" name="'.$control_name.'['.$name.']'.'" id="'.$control_name . $name.'" value="'.$value.'" class="'.$class.'" >';
+		$html = '<input type="text" style="width:25px;position:relative;font-size:14px;margin-right:10px;" name="' . $duration_value_id . '" id="' . $duration_value_id . '" value="' . $duration_value . '" >';
+		$html .= JHTML::_('select.genericlist', $options, $duration_unit_id, '', 'value', 'text', $duration_unit, $duration_unit_id);
+		$html .= '<input type="hidden" name="' . $control_name . '[' . $name . ']' . '" id="' . $control_name . $name . '" value="' . $value . '" class="' . $class . '" >';
 
-			return $html;
-		}
+		return $html;
+	}
 
 }

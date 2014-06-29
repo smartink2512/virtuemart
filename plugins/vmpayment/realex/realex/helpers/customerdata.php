@@ -28,16 +28,17 @@ class RealexHelperCustomerData {
 	private $_cc_type = '';
 	private $_cc_number = '';
 	private $_cc_cvv = '';
+	private $_cc_cvv_realvault = '';
 	private $_cc_expire_month = '';
 	private $_cc_expire_year = '';
 	private $_cc_valid = false;
 	private $_selected_method = '';
 	private $_saved_cc_selected = '';
 	private $_save_card = '';
-	private $_dcc_choice  = '';
+	private $_dcc_choice = '';
 
 
-	public function load () {
+	public function load() {
 
 		//$this->_clear();
 		/* TODO
@@ -56,16 +57,18 @@ class RealexHelperCustomerData {
 			$this->_save_card = $data->save_card;
 			$this->_selected_method = $data->selected_method;
 			$this->_dcc_choice = $data->dcc_choice;
+			$this->_cc_cvv_realvault = $data->cc_cvv_realvault;
+			$this->_cc_type = $data->cc_type;
 			// card information are not  saved  in session
 		}
 
 	}
 
-	public function loadPost () {
+	public function loadPost() {
 
 		$this->_selected_method = vRequest::getInt('virtuemart_paymentmethod_id', 0);
 
-		$saved_cc_selected = vRequest::getInt('saved_cc_selected_' . $this->_selected_method, 0);
+		$saved_cc_selected = vRequest::getInt('saved_cc_selected', 0);
 		//$saved_cc_selected = vRequest::getInt('saved_cc_selected' , 0);
 		if ($saved_cc_selected) {
 			$this->_saved_cc_selected = $saved_cc_selected;
@@ -109,20 +112,53 @@ class RealexHelperCustomerData {
 		if ($cc_expire_year) {
 			$this->_cc_expire_year = $cc_expire_year;
 		}
+
+		$cc_cvv_realvault = vRequest::getInt('cc_cvv_realvault', '');
+		if ($cc_cvv_realvault) {
+			$this->_cc_cvv_realvault = $cc_cvv_realvault;
+		}
+
 		$this->save();
 
 	}
 
-	public function setCustomerData ($data) {
-		$this->_cc_type = $data['cc_type'];
-		$this->_cc_name = $data['cc_name'];
-		$this->_cc_number = $data['cc_number'];
-		$this->_cc_cvv = $data['cc_cvv'];
-		$this->_cc_expire_month = $data['cc_expire_month'];
-		$this->_cc_expire_year = $data['cc_expire_year'];
+	/**
+	 * save CustomerData when realvault
+	 * @param $data
+	 *
+	 */
+	public function saveCustomerRealVaultData($data) {
+		if (isset($data['realex_saved_pmt_type'])) {
+			$this->_cc_type = $data['realex_saved_pmt_type'];
+		}
+		if (isset($data['realex_saved_pmt_digits'])) {
+			$this->_cc_number = $data['realex_saved_pmt_digits'];
+		}
+		if (isset($data['realex_saved_pmt_name'])) {
+			$this->_cc_name = $data['realex_saved_pmt_name'];
+		}
+		$this->save();
 	}
 
-	public function unsetCustomerData () {
+	/**
+	 * save the cc infos returned in the md (3DSverifySig)
+	 * @param $md
+	 */
+	public function saveCustomerMDData($md) {
+
+		$this->_cc_type = $md['cc_type'];
+		$this->_cc_number = $md['cc_number'];
+		$this->_cc_name = $md['cc_name'];
+		$this->_cc_cvv = $md['cc_cvv'];
+		$this->_cc_expire_month = $md['cc_expire_month'];
+		$this->_cc_expire_year = $md['cc_expire_year'];
+		$this->save();
+	}
+
+	/**
+	 *
+	 */
+	public function unsetCustomerData() {
 		$this->_cc_type = '';
 		$this->_cc_name = '';
 		$this->_cc_number = '';
@@ -131,7 +167,10 @@ class RealexHelperCustomerData {
 		$this->_cc_expire_year = '';
 	}
 
-	public function save () {
+	/**
+	 * save data in session
+	 */
+	public function save() {
 
 		$session = JFactory::getSession();
 		$sessionData = new stdClass();
@@ -139,20 +178,31 @@ class RealexHelperCustomerData {
 		$sessionData->saved_cc_selected = $this->_saved_cc_selected;
 		$sessionData->save_card = $this->_save_card;
 		$sessionData->dcc_choice = $this->_dcc_choice;
+		$sessionData->cc_cvv_realvault = $this->_cc_cvv_realvault;
+		$sessionData->cc_type = $this->_cc_type;
 		// card information should not be saved  in session
 		$session->set(self::REALEX_SESSION, serialize($sessionData), 'vm');
 	}
 
-	public function getVar ($var) {
+
+	/**
+	 * @param $var
+	 * @return mixed
+	 */
+	public function getVar($var) {
 		$this->load();
 		return $this->{'_' . $var};
 	}
 
-	public function setVar ($var, $val) {
+	/**
+	 * @param $var
+	 * @param $val
+	 */
+	public function setVar($var, $val) {
 		$this->{'_' . $var} = $val;
 	}
 
-	public function clear () {
+	public function clear() {
 		$session = JFactory::getSession();
 		$session->clear(self::REALEX_SESSION, 'vm');
 	}
@@ -162,7 +212,7 @@ class RealexHelperCustomerData {
 	 * when debug or log option is on
 	 *
 	 */
-	function getMaskedCCnumber () {
+	function getMaskedCCnumber() {
 		if (!class_exists('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}

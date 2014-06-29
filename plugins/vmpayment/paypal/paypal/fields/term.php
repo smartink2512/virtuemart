@@ -19,23 +19,23 @@
  */
 
 
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
-		jimport('joomla.form.formfield');
+jimport('joomla.form.formfield');
 
-		class JElementTerm extends JFormField {
+class JElementTerm extends JFormField {
 
-			public $type = 'Term';
+	public $type = 'Term';
 
-			protected function getInput() {
+	protected function getInput() {
 
-$max=52;
-			$options = array();
-			for($i=1; $i<=$max; $i++) {
-				$options[] = JHTML::_('select.option', $i, $i);
-			}
+		$max = 52;
+		$options = array();
+		for ($i = 1; $i <= $max; $i++) {
+			$options[] = JHTML::_('select.option', $i, $i);
+		}
 
-				return JHTML::_('select.genericlist', $options, $this->name , 'size="1"', 'value', 'title', $this->value);
+		return JHTML::_('select.genericlist', $options, $this->name, 'size="1"', 'value', 'title', $this->value);
 
-			}
+	}
 }

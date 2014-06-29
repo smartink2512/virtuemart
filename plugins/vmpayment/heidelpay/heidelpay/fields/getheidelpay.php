@@ -11,14 +11,13 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined ('JPATH_BASE') or die();
-
-/**
- * Renders a label element
- */
+defined('JPATH_BASE') or die();
 
 
-class JElementGetHeidelpay extends JElement {
+jimport('joomla.form.formfield');
+
+
+class JFormFieldGetHeidelpay extends JFormField {
 
 	/**
 	 * Element name
@@ -26,9 +25,9 @@ class JElementGetHeidelpay extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getHeidelpay';
+	var $type = 'getHeidelpay';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	function getInput() {
 
 		$js = '
 //<![CDATA[
@@ -37,62 +36,62 @@ class JElementGetHeidelpay extends JElement {
 		    jQuery("#heidelpay_getheidelpay_link").click( function() {
 				 if ( $("#heidelpay_getheidelpay_show_hide").is(":visible") ) {
 				  $("#heidelpay_getheidelpay_show_hide").hide("slow");
-			        $("#heidelpay_getheidelpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT')) . '");
+			        $("#heidelpay_getheidelpay_link").html("' . addslashes(vmText::_('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT')) . '");
 				} else {
 				 $("#heidelpay_getheidelpay_show_hide").show("slow");
-			       $("#heidelpay_getheidelpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_HEIDELPAY_GET_HEIDELPAY_HIDE')) . '");
+			       $("#heidelpay_getheidelpay_link").html("' . addslashes(vmText::_('VMPAYMENT_HEIDELPAY_GET_HEIDELPAY_HIDE')) . '");
 			    }
 		    });
 		});
 //]]>
 ';
 
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
-		$cid = vRequest::getvar ('cid', NULL, 'array');
-		if (is_Array ($cid)) {
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration($js);
+		$cid = vRequest::getvar('cid', NULL, 'array');
+		if (is_Array($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
 			$virtuemart_paymentmethod_id = $cid;
 		}
 
 		$query = "SELECT payment_params FROM `#__virtuemart_paymentmethods` WHERE  virtuemart_paymentmethod_id = '" . $virtuemart_paymentmethod_id . "'";
-		$db = JFactory::getDBO ();
-		$db->setQuery ($query);
-		$params = $db->loadResult ();
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		$params = $db->loadResult();
 
-		$payment_params = explode ("|", $params);
+		$payment_params = explode("|", $params);
 		foreach ($payment_params as $payment_param) {
 			if (empty($payment_param)) {
 				continue;
 			}
-			$param = explode ('=', $payment_param);
-			$payment_params[$param[0]] = substr ($param[1], 1, -1);
+			$param = explode('=', $payment_param);
+			$payment_params[$param[0]] = substr($param[1], 1, -1);
 		}
-		$id="";
+		$id = "";
 
-		if ($payment_params['HEIDELPAY_SECURITY_SENDER'] == '31HA07BC8124AD82A9E96D9A35FAFD2A' or $payment_params['HEIDELPAY_SECURITY_SENDER'] == '') {
+		if (isset($payment_params['HEIDELPAY_SECURITY_SENDER']) AND ($payment_params['HEIDELPAY_SECURITY_SENDER'] == '31HA07BC8124AD82A9E96D9A35FAFD2A' or $payment_params['HEIDELPAY_SECURITY_SENDER'] == '')) {
 			$id = "heidelpay_getheidelpay_link";
-			$display='';
-			$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_HEIDELPAY_ALREADY_ACCOUNT') . '</a>';
+			$display = '';
+			$html = '<a href="#" id="' . $id . '">' . vmText::_('VMPAYMENT_HEIDELPAY_ALREADY_ACCOUNT') . '</a>';
 		} else {
 			$id = "heidelpay_getheidelpay_link";
-			$display=' style="display: none;"';
-			$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
+			$display = ' style="display: none;"';
+			$html = '<a href="#" id="' . $id . '">' . vmText::_('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
 		}
-		$lang = $this->getLang ();
+		$lang = $this->getLang();
 
-		$html .= '<div id="heidelpay_getheidelpay_show_hide" align=""'.$display.' >';
+		$html .= '<div id="heidelpay_getheidelpay_show_hide" align=""' . $display . ' >';
 		$url = "http://demoshops.heidelpay.de/contactform/?campaign=vituemart&shop=vituemart&lang=" . $lang;
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="1400px" width="300px"></iframe>';
 		$html .= "</div>";
 		return $html;
 	}
 
-	protected function getLang () {
+	protected function getLang() {
 
-		$language =& JFactory::getLanguage ();
-		$tag = strtolower (substr ($language->get ('tag'), 0, 2));
+		$language = JFactory::getLanguage();
+		$tag = strtolower(substr($language->get('tag'), 0, 2));
 		return $tag;
 	}
 

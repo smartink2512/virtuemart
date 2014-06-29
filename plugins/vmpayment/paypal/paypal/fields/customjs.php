@@ -22,28 +22,22 @@
 defined('_JEXEC') or die();
 
 
-	jimport('joomla.form.formfield');
-	class JFormFieldCustomjs extends JFormField {
-
-		/**
-		 * Element name
-		 *
-		 * @access    protected
-		 * @var        string
-		 */
-		var $_name = 'Customjs';
-		protected $type = 'Customjs';
-
-		function getInput() {
-
-			JHtml::_('behavior.colorpicker');
-
-			$doc = JFactory::getDocument();
-			$doc->addScript(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
-			$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
+jimport('joomla.form.formfield');
+class JFormFieldCustomjs extends JFormField {
 
 
-			return '';
-		}
+	protected $type = 'Customjs';
 
+	function getInput() {
+
+		JHtml::_('behavior.colorpicker');
+
+		$doc = JFactory::getDocument();
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
+
+
+		return '';
 	}
+
+}

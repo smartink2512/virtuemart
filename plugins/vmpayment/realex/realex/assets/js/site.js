@@ -22,9 +22,9 @@ jQuery().ready(function ($) {
     /* Handlers */
     /************/
     handleRealexRemoteCCForm = function () {
-       var hasCreditcardsDropDownClass = $("#vmpayment_cardinfo > *").hasClass("creditcardsDropDown");
+        var hasCreditcardsDropDownClass = $("#vmpayment_cardinfo > *").hasClass("creditcardsDropDown");
         if (hasCreditcardsDropDownClass) {
-            var CCselected= $(".creditcardsDropDown input[type='radio']:checked").val();
+            var CCselected = $(".creditcardsDropDown input[type='radio']:checked").val();
             $('.realexRemoteCCForm').hide();
             $('.vmpayment_cc_cvv_realvault').show();
             if (CCselected == -1) {

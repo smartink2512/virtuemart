@@ -1,13 +1,13 @@
 <?php
 /**
  *
- * Paypal payment plugin
+ * Paypal   payment plugin
  *
  * @author Jeremy Magne
- * @version $Id: customjs.php 7301 2013-10-29 17:45:07Z alatak $
+ * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -19,9 +19,11 @@
  */
 
 
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
-class JElementCustomjs extends JElement {
+
+jimport('joomla.form.formfield');
+class JFormFieldCustomjs extends JFormField {
 
 	/**
 	 * Element name
@@ -30,17 +32,17 @@ class JElementCustomjs extends JElement {
 	 * @var        string
 	 */
 	var $_name = 'Customjs';
+	protected $type = 'Customjs';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-		
+	function getInput() {
 
-		
+
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css/klarnacheckout.css');
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/css/admin.css');
 
-		
-		return '';		
+
+		return '';
 	}
 
 }

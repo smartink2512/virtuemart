@@ -27,7 +27,7 @@ jQuery().ready(function ($) {
 
         var sandbox = $('#params_sandbox').val();
 
-        if (sandbox==1) {
+        if (sandbox == 1) {
             var sandboxmode = 'sandbox';
         } else {
             var sandboxmode = 'live';
@@ -38,19 +38,15 @@ jQuery().ready(function ($) {
         $('.get_sandbox_credentials').hide();
         $('.get_live_credentials').hide();
 
-        if (  sandboxmode == 'live') {
+        if (sandboxmode == 'live') {
             $('.live').closest('.control-group').show();
             $('.get_live_credentials').show();
 
-        } else   {
+        } else {
             $('.sandbox').closest('.control-group').show();
             $('.get_sandbox_credentials').show();
         }
     }
-
-
-
-
 
 
     /**********/

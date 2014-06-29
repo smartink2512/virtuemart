@@ -21,27 +21,27 @@ defined('JPATH_BASE') or die();
 /**
  * Renders a label element
  */
-
-class JElementInputMax extends JElement
-{
+jimport('joomla.form.formfield');
+class JFormFieldReferringurl extends JFormField {
 	/**
-	* Element name
-	*
-	* @access	protected
-	* @var		string
-	*/
-	var	$_name = 'inputMax';
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	public $type = 'referringurl';
 
-	function fetchElement($name, $value, &$node, $control_name)
-	{
+	protected function getInput() {
 
+		$this->value = JURI::root() . 'plugins/vmpayment/realex/jump.php';
 
-		$class = ( $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="text_area"' );
+		$class = ($this->class ? 'class="' . $this->class . '"' : 'class="text_area"');
+		if ($this->editable == 'true') {
+			$size = ($this->size) ? 'size="' . $this->size . '"' : '';
 
-			$size = ( $node->attributes('size') ? 'size="'.$node->attributes('size').'"' : '' );
-			$maxlength = ( $node->attributes('maxlength') ? 'maxlength="'.$node->attributes('maxlength').'"' : '' );
-
-			return '<input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.$name.'" value="'.$value.'" '.$class.' '.$size.' '.$maxlength . '/>';
-
+			return '<input type="text" name="' . $this->name . '" id="' . $this->name . '" value="' . $this->value . '" ' . $class . ' ' . $size . ' />';
+		} else {
+			return '<label for="' . $this->name . '"' . $class . '>' . $this->value . '</label>';
+		}
 	}
 }

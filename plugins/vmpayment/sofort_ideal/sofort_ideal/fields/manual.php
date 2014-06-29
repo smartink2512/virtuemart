@@ -11,13 +11,12 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined ('JPATH_BASE') or die();
+defined('JPATH_BASE') or die();
 
-/**
- * Renders a label element
- */
+jimport('joomla.form.formfield');
 
-class JElementManual extends JElement {
+
+class JFormFieldManual extends JFormField {
 
 	/**
 	 * Element name
@@ -25,35 +24,32 @@ class JElementManual extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'Manual';
+	var $type = 'Manual';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	function getInput() {
 
-		$jlang = JFactory::getLanguage ();
-		$lang = $jlang->getTag ();
-		$langArray = explode ("-", $lang);
-		$lang = strtolower ($langArray[1]);
-		$getSofortLang='eng-DE';
-		 if ($lang=='de') {
-			 $getSofortLang = "ger-DE";
-	}
-
-
+		$jlang = JFactory::getLanguage();
+		$lang = $jlang->getTag();
+		$langArray = explode("-", $lang);
+		$lang = strtolower($langArray[1]);
+		$getSofortLang = 'eng-DE';
+		if ($lang == 'de') {
+			$getSofortLang = "ger-DE";
+		}
 
 
 		//iDEAL (EN): https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4945
 // iDEAL (DE): https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4945
-		if ($lang=='de') {
-			$manualLink="https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4945";
+		if ($lang == 'de') {
+			$manualLink = "https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4945";
 		} else {
-			$manualLink="https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4945";
+			$manualLink = "https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4945";
 		}
-		$html = '<div><a target="_blank" href="'.$manualLink.'" id="getsogort_link" ">' . vmText::_ ('VMPAYMENT_SOFORT_DOCUMENTATION') . '</a>';
+		$html = '<div><a target="_blank" href="' . $manualLink . '" id="getsogort_link" ">' . vmText::_('VMPAYMENT_SOFORT_DOCUMENTATION') . '</a>';
 		$html .= '</div>';
 
 		return $html;
 	}
-
 
 
 }

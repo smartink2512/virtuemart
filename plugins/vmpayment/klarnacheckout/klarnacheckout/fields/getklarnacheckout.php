@@ -11,24 +11,17 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined ('JPATH_BASE') or die();
+defined('JPATH_BASE') or die();
 
-/**
- * Renders a label element
- */
-if (JVM_VERSION === 2) {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-	if (!class_exists ('KlarnaHandler')) {
-		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
-	}
-} else {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-	if (!class_exists ('KlarnaHandler')) {
-		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
-	}
+
+require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+if (!class_exists('KlarnaHandler')) {
+	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 }
 
-class JElementGetKlarnacheckout extends JElement {
+jimport('joomla.form.formfield');
+
+class JFormFieldGetKlarnacheckout extends JFormField {
 
 	/**
 	 * Element name
@@ -36,18 +29,18 @@ class JElementGetKlarnacheckout extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getKlarnacheckout';
+	var $type = 'getKlarnacheckout';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	function getInput() {
 
 
 		return "TO DO ";
 
-		$jlang = JFactory::getLanguage ();
-		$lang = $jlang->getTag ();
-		$langArray = explode ("-", $lang);
-		$lang = strtolower ($langArray[1]);
-		$countriesData = KlarnaHandler::countriesData ();
+		$jlang = JFactory::getLanguage();
+		$lang = $jlang->getTag();
+		$langArray = explode("-", $lang);
+		$lang = strtolower($langArray[1]);
+		$countriesData = KlarnaHandler::countriesData();
 		$signLang = "en";
 		foreach ($countriesData as $countryData) {
 			if ($countryData['country_code'] == $lang) {
@@ -59,7 +52,7 @@ class JElementGetKlarnacheckout extends JElement {
 		$logo = '<a href="https://merchants.klarna.com/signup?locale=' . $signLang . '&partner_id=7829355537eae268a17667c199e7c7662d3391f7" target="_blank">
 	             <img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.png" /></a> ';
 */
-		$logo = '<img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.jpg" />';
+		$logo = '<img src="' . JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.jpg" />';
 		$html = '<a href="#" id="klarna_getklarna_link" ">' . $logo . '</a>';
 // https://merchants.klarna.com/signup?locale=en&partner_id=7829355537eae268a17667c199e7c7662d3391f7&utm_campaign=Platform&utm_medium=Partners&utm_source=Virtuemart
 		$html .= '<div id="klarna_getklarna_show_hide" >';
@@ -71,17 +64,17 @@ class JElementGetKlarnacheckout extends JElement {
 			jQuery("#klarna_getklarna_link").click( function() {
 				 if ( $("#klarna_getklarna_show_hide").is(":visible") ) {
 				  $("#klarna_getklarna_show_hide").hide("slow");
-			        $("#klarna_getklarna_link").html("' . addslashes ($logo) . '");
+			        $("#klarna_getklarna_link").html("' . addslashes($logo) . '");
 				} else {
 				 $("#klarna_getklarna_show_hide").show("slow");
-			       $("#klarna_getklarna_link").html("' . addslashes (vmText::_ ('VMPAYMENT_KLARNA_GET_KLARNA_HIDE')) . '");
+			       $("#klarna_getklarna_link").html("' . addslashes(vmText::_('VMPAYMENT_KLARNA_GET_KLARNA_HIDE')) . '");
 			    }
 		    });
 		});
 ';
 
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration($js);
 
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="600px" width="850px"></iframe>';
 		$html .= '</div>';

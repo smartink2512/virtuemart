@@ -24,7 +24,7 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/
 
 <div class="realex response">
 
-	<?php if ( $viewData['success']) { ?>
+	<?php if ($viewData['success']) { ?>
 		<div class="realex_auth_info">
 			<span class="realex_auth_value"><?php echo $viewData['auth_info']; ?></span>
 		</div>
@@ -39,11 +39,12 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/
 			<span class="realex_pasref_value"><?php echo $viewData['pasref']; ?></span>
 		</div>
 		<div class="realex_vieworder">
-			<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $viewData["order_number"] . '&order_pass=' . $viewData["order_pass"], false) ?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+			<a class="vm-button-correct"
+			   href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $viewData["order_number"] . '&order_pass=' . $viewData["order_pass"], false) ?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
 		</div>
 	<?php } else { ?>
-	<div class="realex_auth_info">
-	<span class="realex_auth_value"><?php echo $viewData['auth_info']; ?></span>
-</div>
+		<div class="realex_auth_info">
+			<span class="realex_auth_value"><?php echo $viewData['auth_info']; ?></span>
+		</div>
 	<?php } ?>
 </div>

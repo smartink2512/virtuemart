@@ -16,134 +16,126 @@ defined('_JEXEC') or die();
  */
 
 
-	JFormHelper::loadFieldClass('filelist');
-	class JFormFieldGetcertificate extends JFormFieldFileList {
+JFormHelper::loadFieldClass('filelist');
+class JFormFieldGetcertificate extends JFormFieldFileList {
 
-		/**
-		 * Element name
-		 *
-		 * @access    protected
-		 * @var        string
-		 */
-		protected $type = 'Getcertificate';
+	/**
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	protected $type = 'Getcertificate';
 
-		/*
-		protected function getInput() {
+	/*
+	protected function getInput() {
 
-			$options = array();
+		$options = array();
 
-			$folder =$this->directory;
-			$safePath = VmConfig::get('forSale_path', '');
+		$folder =$this->directory;
+		$safePath = VmConfig::get('forSale_path', '');
 
-			$certificatePath = $safePath . $folder;
-			$certificatePath = JPath::clean($certificatePath);
+		$certificatePath = $safePath . $folder;
+		$certificatePath = JPath::clean($certificatePath);
 
-			// Is the path a folder?
-			if (!is_dir($certificatePath)) {
-				return '<span>' . vmText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
-			}
-			$path = str_replace('/', DS, $certificatePath);
-
-			// Prepend some default options based on field attributes.
-			if (!$this->hideNone)
-			{
-				$options[] = JHtml::_('select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
-			}
-
-			if (!$this->hideDefault)
-			{
-				$options[] = JHtml::_('select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
-			}
-
-			// Get a list of files in the search path with the given filter.
-			$files = JFolder::files($path, $this->filter);
-
-			// Build the options list from the list of files.
-			if (is_array($files))
-			{
-				foreach ($files as $file)
-				{
-					// Check to see if the file is in the exclude mask.
-					if ($this->exclude)
-					{
-						if (preg_match(chr(1) . $this->exclude . chr(1), $file))
-						{
-							continue;
-						}
-					}
-
-					// If the extension is to be stripped, do it.
-					if ($this->stripExt)
-					{
-						$file = JFile::stripExt($file);
-					}
-
-					$options[] = JHtml::_('select.option', $file, $file);
-				}
-			}
-
-			// Merge any additional options in the XML definition.
-			//$options = array_merge(parent::getOptions(), $options);
-
-			return $options;
-
+		// Is the path a folder?
+		if (!is_dir($certificatePath)) {
+			return '<span>' . vmText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
 		}
-		*/
-		protected function getOptions()
+		$path = str_replace('/', DS, $certificatePath);
+
+		// Prepend some default options based on field attributes.
+		if (!$this->hideNone)
 		{
-			$options = array();
-			$folder =$this->directory;
-			$safePath = VmConfig::get('forSale_path', '');
-
-			$certificatePath = $safePath . $folder;
-			$certificatePath = JPath::clean($certificatePath);
-
-			// Is the path a folder?
-			if (!is_dir($certificatePath)) {
-				return '<span>' . vmText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
-			}
-			$path = str_replace('/', DS, $certificatePath);
-
-
-			// Prepend some default options based on field attributes.
-			if (!$this->hideNone)
-			{
-				$options[] = JHtml::_('select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
-			}
-
-			if (!$this->hideDefault)
-			{
-				$options[] = JHtml::_('select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
-			}
-
-			// Get a list of files in the search path with the given filter.
-			$files = JFolder::files($path, $this->filter);
-
-			// Build the options list from the list of files.
-			if (is_array($files))
-			{
-				foreach ($files as $file)
-				{
-					// Check to see if the file is in the exclude mask.
-					if ($this->exclude)
-					{
-						if (preg_match(chr(1) . $this->exclude . chr(1), $file))
-						{
-							continue;
-						}
-					}
-
-					// If the extension is to be stripped, do it.
-					if ($this->stripExt)
-					{
-						$file = JFile::stripExt($file);
-					}
-
-					$options[] = JHtml::_('select.option', $file, $file);
-				}
-			}
-
-			return $options;
+			$options[] = JHtml::_('select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
 		}
+
+		if (!$this->hideDefault)
+		{
+			$options[] = JHtml::_('select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+		}
+
+		// Get a list of files in the search path with the given filter.
+		$files = JFolder::files($path, $this->filter);
+
+		// Build the options list from the list of files.
+		if (is_array($files))
+		{
+			foreach ($files as $file)
+			{
+				// Check to see if the file is in the exclude mask.
+				if ($this->exclude)
+				{
+					if (preg_match(chr(1) . $this->exclude . chr(1), $file))
+					{
+						continue;
+					}
+				}
+
+				// If the extension is to be stripped, do it.
+				if ($this->stripExt)
+				{
+					$file = JFile::stripExt($file);
+				}
+
+				$options[] = JHtml::_('select.option', $file, $file);
+			}
+		}
+
+		// Merge any additional options in the XML definition.
+		//$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+
+	}
+	*/
+	protected function getOptions() {
+		$options = array();
+		$folder = $this->directory;
+		$safePath = VmConfig::get('forSale_path', '');
+
+		$certificatePath = $safePath . $folder;
+		$certificatePath = JPath::clean($certificatePath);
+
+		// Is the path a folder?
+		if (!is_dir($certificatePath)) {
+			return '<span>' . vmText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
+		}
+		$path = str_replace('/', DS, $certificatePath);
+
+
+		// Prepend some default options based on field attributes.
+		if (!$this->hideNone) {
+			$options[] = JHtml::_('select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+		}
+
+		if (!$this->hideDefault) {
+			$options[] = JHtml::_('select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)));
+		}
+
+		// Get a list of files in the search path with the given filter.
+		$files = JFolder::files($path, $this->filter);
+
+		// Build the options list from the list of files.
+		if (is_array($files)) {
+			foreach ($files as $file) {
+				// Check to see if the file is in the exclude mask.
+				if ($this->exclude) {
+					if (preg_match(chr(1) . $this->exclude . chr(1), $file)) {
+						continue;
+					}
+				}
+
+				// If the extension is to be stripped, do it.
+				if ($this->stripExt) {
+					$file = JFile::stripExt($file);
+				}
+
+				$options[] = JHtml::_('select.option', $file, $file);
+			}
+		}
+
+		return $options;
+	}
 
 }

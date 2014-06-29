@@ -14,36 +14,24 @@
 defined('JPATH_BASE') or die();
 
 
-/**
- * Renders a label element
- */
-if (JVM_VERSION > 1) {
-    require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-    if (!class_exists('KlarnaHandler'))
-    require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
-} else {
-    require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-    if (!class_exists('KlarnaHandler'))
-    require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
+require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+if (!class_exists('KlarnaHandler')) {
+	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 }
+
 
 jimport('joomla.form.formfield');
 
 class JFormFieldKlarnalogo extends JFormField {
 
-    /**
-     * Element name
-     *
-     * @access	protected
-     * @var		string
-     */
+
 	protected $type = 'KlarnaLogo';
 
 	function getInput() {
 		$countriesData = KlarnaHandler::countriesData();
 		$logo = '<a href="https://www.klarna.com" target="_blank"><img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /></a> ';
 
-		return $logo ;
+		return $logo;
 
 	}
 }

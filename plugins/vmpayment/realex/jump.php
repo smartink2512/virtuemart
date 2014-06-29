@@ -24,40 +24,40 @@ unset($_POST['gateway_url']);
 
 <html>
 <head>
-  <title>Transferring...</title>
-  <meta http-equiv="Content-Type"
-    content="text/html; charset=iso-8859-1">
+	<title>Transferring...</title>
+	<meta http-equiv="Content-Type"
+		  content="text/html; charset=iso-8859-1">
 </head>
 
 <body bgcolor="#FFFFFF" text="#000000">
 
 <form
-  name="form1"
-  action="<?php echo $url; ?>"
-  method="POST">
+	name="form1"
+	action="<?php echo $url; ?>"
+	method="POST">
 
-<?php
-  // get the posted vars
-  $field_array = array_keys($_POST);
+	<?php
+	// get the posted vars
+	$field_array = array_keys($_POST);
 
-  //loop posted fields
-  for($i = 0;$i < count($field_array);$i++) {
-    $actual_var = $field_array[$i];
-    $actual_val = stripslashes($_POST[$actual_var]);
+	//loop posted fields
+	for ($i = 0; $i < count($field_array); $i++) {
+		$actual_var = $field_array[$i];
+		$actual_val = stripslashes($_POST[$actual_var]);
 
-    //hidden form field
-    echo ("<input type=\"hidden\" name=\"");
-    echo ($actual_var . "\" value=\"");
-    echo (trim($actual_val) . "\" />\n");
-  }
+		//hidden form field
+		echo("<input type=\"hidden\" name=\"");
+		echo($actual_var . "\" value=\"");
+		echo(trim($actual_val) . "\" />\n");
+	}
 
-?>
+	?>
 </form>
 
 <script language="javascript">
-  var f=document.forms;
-  f = f[0];
-  f.submit();
+	var f = document.forms;
+	f = f[0];
+	f.submit();
 </script>
 
 </body>

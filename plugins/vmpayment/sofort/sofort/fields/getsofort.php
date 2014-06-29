@@ -11,13 +11,11 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined ('JPATH_BASE') or die();
+defined('JPATH_BASE') or die();
 
-/**
- * Renders a label element
- */
+jimport('joomla.form.formfield');
 
-class JElementGetSofort extends JElement {
+class JFormFieldGetSofort extends JFormField {
 
 	/**
 	 * Element name
@@ -25,23 +23,23 @@ class JElementGetSofort extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getSofort';
+	var $type = 'getSofort';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	function getInput() {
 
-		$jlang = JFactory::getLanguage ();
-		$lang = $jlang->getTag ();
-		$langArray = explode ("-", $lang);
-		$lang = strtolower ($langArray[1]);
-		$getSofortLang='eng-DE';
-		 if ($lang=='de') {
-			 $getSofortLang = "ger-DE";
-	}
+		$jlang = JFactory::getLanguage();
+		$lang = $jlang->getTag();
+		$langArray = explode("-", $lang);
+		$lang = strtolower($langArray[1]);
+		$getSofortLang = 'eng-DE';
+		if ($lang == 'de') {
+			$getSofortLang = "ger-DE";
+		}
 
 		// MOre information
-	$getSofortLInk="https://www.sofort.com/".$getSofortLang."/merchant/products/";
+		$getSofortLInk = "https://www.sofort.com/" . $getSofortLang . "/merchant/products/";
 		//$getSofortLInk="https://www.sofort.com/payment/users/register/688";
-		$html = '<a href="#" id="sofortmoreinfo_link" ">' . vmText::_ ('VMPAYMENT_SOFORT_READMORE') . '</a>';
+		$html = '<a href="#" id="sofortmoreinfo_link" ">' . vmText::_('VMPAYMENT_SOFORT_READMORE') . '</a>';
 		$html .= '<div id="sofortmoreinfo_show_hide" >';
 
 		$js = '
@@ -50,30 +48,29 @@ class JElementGetSofort extends JElement {
 			jQuery("#sofortmoreinfo_link").click( function() {
 				 if ( $("#sofortmoreinfo_show_hide").is(":visible") ) {
 				  $("#sofortmoreinfo_show_hide").hide("slow");
-			        $("#sofortmoreinfo_link").html("' . addslashes (vmText::_ ('VMPAYMENT_SOFORT_READMORE')) . '");
+			        $("#sofortmoreinfo_link").html("' . addslashes(vmText::_('VMPAYMENT_SOFORT_READMORE')) . '");
 				} else {
 				 $("#sofortmoreinfo_show_hide").show("slow");
-			       $("#sofortmoreinfo_link").html("' . addslashes (vmText::_ ('VMPAYMENT_SOFORT_HIDE')) . '");
+			       $("#sofortmoreinfo_link").html("' . addslashes(vmText::_('VMPAYMENT_SOFORT_HIDE')) . '");
 			    }
 		    });
 		});
 ';
 
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration($js);
 
 		$html .= '<iframe src="' . $getSofortLInk . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="500px" width="850px"></iframe>';
 		$html .= '</div>';
 // Get Sofort
 
 		// MOre information
-		$getSofortLInk="https://www.sofort.com/payment/users/register/688";
-		$html .= '<div><a target="_blank" href="'.$getSofortLInk.'" id="getsogort_link" ">' . vmText::_ ('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
+		$getSofortLInk = "https://www.sofort.com/payment/users/register/688";
+		$html .= '<div><a target="_blank" href="' . $getSofortLInk . '" id="getsogort_link" ">' . vmText::_('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
 		$html .= '</div>';
 
 		return $html;
 	}
-
 
 
 }

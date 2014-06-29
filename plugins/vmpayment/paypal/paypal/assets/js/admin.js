@@ -26,7 +26,7 @@ jQuery().ready(function ($) {
     handleCredentials = function () {
         var paypalproduct = $('#params_paypalproduct').val();
         var sandbox = $("input[name='params[sandbox]']:checked").val();
-        if (sandbox==1) {
+        if (sandbox == 1) {
             var sandboxmode = 'sandbox';
         } else {
             var sandboxmode = 'production';
@@ -205,7 +205,7 @@ jQuery().ready(function ($) {
     handleAuthentication = function () {
         var paypalAuthentication = $('#params_authentication').val();
         var sandbox = $("input[name='params[sandbox]']:checked").val();
-        if (sandbox==1) {
+        if (sandbox == 1) {
             var sandboxmode = 'sandbox';
         } else {
             var sandboxmode = 'production';
@@ -378,10 +378,10 @@ jQuery().ready(function ($) {
         }
     }
 
-    handleProductPricesApi = function() {
+    handleProductPricesApi = function () {
         var paypalproduct = $('#params_paypalproduct').val();
         var add_prices_api = $('#params_add_prices_api').val();
-        if (paypalproduct == 'api'  || paypalproduct == 'exp' ) {
+        if (paypalproduct == 'api' || paypalproduct == 'exp') {
             $('.add_prices_api').parents('.control-group').show();
         } else {
             $('.add_prices_api').parents('.control-group').hide();
