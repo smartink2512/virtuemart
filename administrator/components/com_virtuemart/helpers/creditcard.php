@@ -155,10 +155,27 @@ class Creditcard {
 	 * @author Valerie Isaksen
 	 */
 
-	static function validate_credit_card_cvv($creditcard_type, $cvv, $required = true) {
+	static function validate_credit_card_cvv($creditcard_type,  $cvv, $required = true, $creditcard_number='') {
 
 		if ($required and empty($cvv)) return false;
-		return true;
+		if (empty($creditcard_number)) return true; // for BC reasons
+		$firstnumber = substr($creditcard_number, 0, 1);
+
+		switch (strtoupper($firstnumber)) {
+			case '3':
+				$cvv_digits = 4;
+				break;
+			default:
+				$cvv_digits = 3;
+		}
+
+		if (strlen($cvv) == $cvv_digits
+			&& strspn($cvv, '0123456789') == $cvv_digits) {
+			return true;
+		}
+
+		return false;
+
 	}
 
 	/*
