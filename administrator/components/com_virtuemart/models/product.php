@@ -155,9 +155,7 @@ class VirtueMartModelProduct extends VmModel {
 				$filter_order_raw = $this->getLastProductOrdering($this->_selectedOrdering);
 				$filter_order = $this->checkFilterOrder ($filter_order_raw);
 			} else {
-				vmdebug('my $filter_order ',$filter_order);
 				$filter_order = $this->checkFilterOrder ($filter_order);
-				vmdebug('my $filter_order after check',$filter_order);
 				$this->setLastProductOrdering($filter_order);
 
 			}

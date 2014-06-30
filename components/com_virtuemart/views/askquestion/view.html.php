@@ -130,7 +130,7 @@ class VirtueMartViewAskquestion extends VmView {
 		// for askquestion
 		$pathway->addItem (vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
-		$this->assignRef ('user', JFactory::getUser ());
+		$this->user = JFactory::getUser ();
 
 		if ($product->metadesc) {
 			$document->setDescription ($product->metadesc);
@@ -157,15 +157,15 @@ class VirtueMartViewAskquestion extends VmView {
 		$this->setLayout ('mail_html_question');
 		$this->comment = vRequest::getString ('comment');
 
-		$user = JFactory::getUser ();
-		if (empty($user->id)) {
+		$this->user = JFactory::getUser ();
+		if (empty($this->user->id)) {
 			$fromMail = vRequest::getVar ('email'); //is sanitized then
 			$fromName = vRequest::getVar ('name', ''); //is sanitized then
 			$fromMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromMail);
 			$fromName = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromName);
 		} else {
-			$fromMail = $user->email;
-			$fromName = $user->name;
+			$fromMail = $this->user->email;
+			$fromName = $this->user->name;
 		}
 
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);

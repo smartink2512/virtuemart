@@ -80,8 +80,9 @@ class vmJsApi{
 		if (!empty($loaded[$namespace])) {
 			return;
 		}
-		$file = vmJsApi::setPath( $namespace,$path,  $version='', $minified , 'css');
 
+		$file = vmJsApi::setPath( $namespace,$path,  $version='', $minified , 'css');
+		vmdebug('css',$namespace,$file);
 		$document = JFactory::getDocument();
 		$document->addStyleSheet($file);
 		$loaded[$namespace] = TRUE;
@@ -444,9 +445,33 @@ class vmJsApi{
 		$direction = $document->getDirection ();
 		$cssFile = 'vmsite-' . $direction ;
 
-		// If exist exit
-		vmJsApi::css ( $cssFile ) ;
-		$cssSite = TRUE;
+		//mJsApi::css ( $cssFile ) ;
+
+		$template = JFactory::getApplication()->getTemplate() ;
+		if($template){
+			//Fallback for old templates
+			$path= 'templates'. DS . $template . DS . 'css' .DS. $cssFile.'.css' ;
+			if(file_exists($path)){
+				// If exist exit
+				vmJsApi::css ( $cssFile ) ;
+			} else {
+
+				$cssFile = 'vm-' . $direction .'-common';
+				//vmdebug('cssSite old File not found load new ',$cssFile);
+				vmJsApi::css ( $cssFile ) ;
+
+				$cssFile = 'vm-' . $direction .'-site';
+				vmdebug('cssSite old File not found load new ',$cssFile);
+				vmJsApi::css ( $cssFile ) ;
+
+				$cssFile = 'vm-' . $direction .'-reviews';
+				vmJsApi::css ( $cssFile ) ;
+
+			}
+
+			$cssSite = TRUE;
+		}
+
 		return TRUE;
 	}
 
