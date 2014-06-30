@@ -1276,7 +1276,7 @@ function removeAddress($virtuemart_userinfo_id){
 				$_q .= ' AND address_type="'.$_type.'"';
 			}
 		}
-// 		vmdebug('getUserAddressList execute '.$_q);
+ 		//vmdebug('getUserAddressList execute '.$_q);
 		return ($this->_getList($_q));
 	}
 

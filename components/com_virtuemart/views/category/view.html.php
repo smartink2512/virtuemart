@@ -360,8 +360,8 @@ class VirtuemartViewCategory extends VmView {
 		$this->_db =JFactory::getDBO();
 		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
 		$this->options = $this->_db->loadAssocList();
-
-		if ($this->custom_parent_id = vRequest::getInt('custom_parent_id', 0)) {
+		$this->custom_parent_id = 0;
+		//if ($this->custom_parent_id = vRequest::getInt('custom_parent_id', 0)) {
 			$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE custom_parent_id='.$this->custom_parent_id);
 			$this->selected = $this->_db->loadObjectList();
 			$this->searchCustomValues ='';
@@ -371,7 +371,7 @@ class VirtuemartViewCategory extends VmView {
 				 $valueOptions = array_merge(array($emptyOption), $valueOptions);
 				$this->searchCustomValues .= vmText::_($selected->custom_title).' '.JHtml::_('select.genericlist', $valueOptions, 'customfields['.$selected->virtuemart_custom_id.']', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', 0);
 			}
-		}
+		//}
 
 		// add search for declared plugins
 		JPluginHelper::importPlugin('vmcustom');

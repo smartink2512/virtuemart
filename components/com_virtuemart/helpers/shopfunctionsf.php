@@ -255,6 +255,57 @@ class shopFunctionsF {
 		return $session->get( 'vmlastvisitedproductids', array(), 'vm' );
 	}
 
+	public function calculateProductRowsHeights($products,$currency,$products_per_row){
+
+		$col = 1;
+		$nb = 1;
+		$row = 1;
+		$BrowseTotalProducts = count($products);
+		$rowHeights = array();
+		$rowsHeight = array();
+
+		foreach($products as $product){
+
+			$priceRows = 0;
+			//Lets calculate the height of the prices
+			foreach($currency->_priceConfig as $name=>$values){
+				if(!empty($currency->_priceConfig[$name][0])){
+					if(!empty($product->prices[$name]) or $name == 'billTotal' or $name == 'billTaxAmount'){
+						$priceRows++;
+					}
+				}
+			}
+			$rowHeights[$row]['price'][] = $priceRows;
+			$position = 'addtocart';
+			if(!empty($product->customfieldsSorted[$position])){
+				$customs = count($product->customfieldsSorted[$position]);
+			} else {
+				$customs = 0;
+			}
+			$rowHeights[$row]['customfields'][] = $customs;
+			$rowHeights[$row]['product_s_desc'][] = empty($product->product_s_desc)? 0:1;
+			$nb ++;
+			//vmdebug('my $nb',$nb,$BrowseTotalProducts);
+			if ($col == $products_per_row || $nb>=$BrowseTotalProducts) {
+
+				foreach($rowHeights[$row] as $group => $cols){
+					//vmdebug('my rows heights $type',$type);
+					$rowsHeight[$row][$group] = 0;
+					foreach($cols as $col){
+						$rowsHeight[$row][$group] =  max($rowsHeight[$row][$group],$col);
+					}
+				}
+				$col = 1;
+				$rowHeights = array();
+				$row++;
+			} else {
+				$col ++;
+			}
+
+		}
+
+		return $rowsHeight;
+	}
 	/**
 	 * Renders sublayouts
 	 *

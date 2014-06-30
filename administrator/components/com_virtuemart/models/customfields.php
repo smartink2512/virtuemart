@@ -167,7 +167,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach($productIds as $k=>$productId){
 			$hkey = (int)$productId.$hashCwAttribute;
 			if (array_key_exists ($hkey, $_customFieldByProductId)) {
-				$productCustomsCached[$hkey] = $_customFieldByProductId[$hkey];
+				//$productCustomsCached = $_customFieldByProductId[$hkey];
+				$productCustomsCached = array_merge($productCustomsCached,$_customFieldByProductId[$hkey]);
 				unset($productIds[$k]);
 			}
 		}
@@ -177,7 +178,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		} else if(!empty($productIds)){
 			$q .= 'WHERE `virtuemart_product_id` = "'.$productIds.'" ';
 		} else {
-			return $productCustomsCached[$hkey];
+			return $productCustomsCached;
 		}
 		if(!empty($virtuemart_custom_id)){
 			if(is_numeric($virtuemart_custom_id)){
@@ -216,15 +217,13 @@ class VirtueMartModelCustomfields extends VmModel {
 			$hkey = (int)$customfield->virtuemart_product_id.$hashCwAttribute;
 			$_customFieldByProductId[$hkey][] = $customfield;
 		}
-
 		$productCustoms = array_merge($productCustomsCached,$productCustoms);
-
 		if($productCustoms){
 
 			$customfield_ids = array();
 			$customfield_override_ids = array();
 			foreach($productCustoms as $field){
-				//vmdebug('$idField',$idField);
+
 				if($field->override!=0){
 					$customfield_override_ids[] = $field->override;
 				} else if ($field->disabler!=0) {

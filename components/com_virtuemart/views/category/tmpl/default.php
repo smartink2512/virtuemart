@@ -65,7 +65,7 @@ if (!empty($this->keyword)) {
 <h3><?php echo $this->keyword; ?></h3>
 	<?php
 } ?>
-<?php if (!empty($this->keyword)) {
+<?php // if (!empty($this->keyword)) {
 
 	$category_id  = vRequest::getInt ('virtuemart_category_id', 0); ?>
 <form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
@@ -85,10 +85,10 @@ if (!empty($this->keyword)) {
 
 </form>
 <!-- End Search Box -->
-	<?php } ?>
+	<?php // } ?>
 
 <?php // Show child categories
-if (!empty($this->products)) {
+
 	?>
 <div class="orderby-displaynumber">
 	<div class="width70 floatleft">
@@ -107,6 +107,7 @@ if (!empty($this->products)) {
 <h1><?php echo $this->category->category_name; ?></h1>
 
 	<?php
+	if (!empty($this->products)) {
 	$products = array();
 	$products[0] = $this->products;
 	echo shopFunctionsF::renderVmSubLayout($this->productsLayout,array('products'=>$products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));

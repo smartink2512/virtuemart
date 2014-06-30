@@ -134,7 +134,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 			if($cartObj->fromCart or $cartObj->getInCheckOut()){
 				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 				$cart = VirtueMartCart::getCart();
-				$cart->saveAddressInCart($data, $data['address_type']);
+				$prefix= '';
+				if ($data['address_type'] == 'STaddress' || $data['address_type'] =='ST') {
+					$prefix = 'shipto_';
+				}
+				$cart->saveAddressInCart($data, $data['address_type'],true,$prefix);
 			}
 		}
 
@@ -246,7 +250,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 				$data['address_type'] = vRequest::getVar('addrtype','BT');
 				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 				$cart = VirtueMartCart::getCart();
-				$cart->saveAddressInCart($data, $data['address_type']);
+				$prefix= '';
+				if ($data['address_type'] == 'STaddress' || $data['address_type'] =='ST') {
+					$prefix = 'shipto_';
+				}
+				$cart->saveAddressInCart($data, $data['address_type'],true,$prefix);
 				$errmsg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
 				$this->setRedirect (JRoute::_ ($retUrl . '&captcha=1', FALSE), $errmsg);
 				return FALSE;

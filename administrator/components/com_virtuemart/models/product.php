@@ -422,7 +422,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($group) {
 
 			$latest_products_days = VmConfig::get ('latest_products_days', 7);
-			$latest_products_orderBy = VmConfig::get ('latest_products_orderBy','p.`created_on`');
+			$latest_products_orderBy = VmConfig::get ('latest_products_orderBy','created_on');
 			$groupBy = 'group by p.`virtuemart_product_id` ';
 			switch ($group) {
 				case 'featured':
@@ -433,6 +433,7 @@ class VirtueMartModelProduct extends VmModel {
 					/*$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days));
 					$dateSql = $date->toSQL ();
 					$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';*/
+					//vmdebug('product model ',$latest_products_orderBy);
 					$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '`';
 					$this->filter_order_Dir = 'DESC';
 					break;
@@ -531,20 +532,20 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 		//vmdebug ( $joinedTables.' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
-		$this->orderByString = $orderBy;
 
 		if ($this->searchplugin !== 0) {
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmBeforeProductSearch', array(&$select, &$joinedTables, &$where, &$groupBy, &$orderBy,&$joinLang));
 		}
-
+		$this->orderByString = $orderBy;
 
 		if($this->_onlyQuery){
 			return (array($select,$joinedTables,$where,$orderBy,$joinLang));
 		}
 		$joinedTables = " \n".implode(" \n",$joinedTables);
 
+		//vmdebug('exeSortSearchLIstquery orderby '.$orderBy);
 		//vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
 		//vmTime('sortSearchQuery','sortSearchQuery');

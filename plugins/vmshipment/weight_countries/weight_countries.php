@@ -210,11 +210,15 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 		$type = (($cart->ST == 0) ? 'BT' : 'ST');
 
+		if(!is_array($address)) $address = array();
 		if(isset($cart_prices['salesPrice'])){
 			$hashSalesPrice = $cart_prices['salesPrice'];
 		} else {
 			$hashSalesPrice = '';
 		}
+
+		if(!isset($address['virtuemart_country_id'])) $address['virtuemart_country_id'] = 0;
+		if(!isset($address['zip'])) $address['zip'] = 0;
 
 		$hash = $method->virtuemart_shipmentmethod_id.$type.$address['virtuemart_country_id'].'_'.$address['zip'].'_'.$hashSalesPrice;
 

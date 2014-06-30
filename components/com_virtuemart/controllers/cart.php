@@ -88,6 +88,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart = VirtueMartCart::getCart();
 
+
+		$cart->order_language = vRequest::getString('order_language', $cart->order_language);
+
 		$cart->prepareCartData();
 		$request = vRequest::getRequest();
 		$task = vRequest::getCmd('task');
@@ -114,13 +117,21 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
-		$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
-
+		//$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
+		//vmdebug('updatecart $cart->selected_shipto',$cart->selected_shipto);
 		$cart->saveCartFieldsInCart();
 
 		$cart->updateProductCart();
 		$coupon_code = vRequest::getString('coupon_code', '');
 		$msg = $cart->setCouponCode($coupon_code);
+
+		$cart->selected_shipto = vRequest::getVar('shipto', -1);
+		if($cart->selected_shipto<1){
+			$cart->STsameAsBT = 1;
+			$cart->selected_shipto = 0;
+		} else {
+			$cart->STsameAsBT = 0;//vRequest::getInt('STsameAsBT', $this->STsameAsBT);
+		}
 
 		$cart->setShipmentMethod();
 		$cart->setPaymentMethod();

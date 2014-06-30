@@ -768,9 +768,7 @@ class VirtueMartCart {
 		$this->_inCheckOut = true;
 		//This prevents that people checkout twice
 		$this->setCartIntoSession();
-		$this->STsameAsBT = vRequest::getInt('STsameAsBT', $this->STsameAsBT);
 
-		$this->order_language = vRequest::getString('order_language', $this->order_language);
 
 		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
 		if (count($this->cartProductsData) ===0 and $this->_redirect) {
@@ -811,19 +809,19 @@ class VirtueMartCart {
 			//vmdebug('CheckoutData array_merge($this->BT,$this->cartfields) ',$this->BT);
 		}
 		//vmdebug('CheckoutData my cart before $this->STsameAsBT!==0 ',$validUserDataBT);
-
+		$currentUser = JFactory::getUser();
 		if($this->STsameAsBT!==0){
 			if($this->_confirmDone){
 				$this->ST = $this->BT;
 			} else {
 				$this->ST = 0;
 			}
-			//vmdebug('CheckoutData my cart $this->STsameAsBT ',$this->ST);
+			vmdebug('CheckoutData my cart $this->STsameAsBT ',$this->ST);
 		} else {
-			if (($this->selected_shipto = vRequest::getVar('shipto', 0)) !== 0) {
-				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-				$userModel = JModel::getInstance('user', 'VirtueMartModel');
-				$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
+			if ($this->selected_shipto >0 ) {
+				$userModel = VmModel::getModel('user');
+				$stData = $userModel->getUserAddressList($currentUser->id, 'ST', $this->selected_shipto);
+				vmdebug('my $stData',$stData);
 				$stData = get_object_vars($stData[0]);
 				if($this->validateUserData('ST', $stData)>0){
 					$this->ST = $stData;
@@ -837,7 +835,7 @@ class VirtueMartCart {
 		}
 
 		if(VmConfig::get('oncheckout_only_registered',0)) {
-			$currentUser = JFactory::getUser();
+
 			if(empty($currentUser->id)){
 				$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , $redirectMsg);
@@ -1118,12 +1116,12 @@ class VirtueMartCart {
 		$this->setCartIntoSession();
 	}
 
-	function saveAddressInCart($data, $type, $putIntoSession = true,$prefix=0) {
+	function saveAddressInCart($data, $type, $putIntoSession = true,$prefix='') {
 
 		// VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = VmModel::getModel('userfields');
-		$prefix = '';
+		//$prefix = '';
 
 		$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
 
@@ -1133,7 +1131,7 @@ class VirtueMartCart {
 		//STaddress may be obsolete
 
 		if ($type == 'STaddress' || $type =='ST') {
-			if($prefix==0)$prefix = 'shipto_';
+			//if($prefix==0)$prefix = 'shipto_';
 			$this->STsameAsBT = 0;
 		} else { // BT
 
