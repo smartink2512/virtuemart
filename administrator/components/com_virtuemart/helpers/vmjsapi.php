@@ -76,13 +76,12 @@ class vmJsApi{
 		// Only load once
 		// using of namespace assume same css have same namespace
 		// loading 2 time css with this method simply return and do not load it the second time
-
 		if (!empty($loaded[$namespace])) {
 			return;
 		}
 
 		$file = vmJsApi::setPath( $namespace,$path,  $version='', $minified , 'css');
-		vmdebug('css',$namespace,$file);
+
 		$document = JFactory::getDocument();
 		$document->addStyleSheet($file);
 		$loaded[$namespace] = TRUE;
@@ -457,16 +456,13 @@ class vmJsApi{
 			} else {
 
 				$cssFile = 'vm-' . $direction .'-common';
-				//vmdebug('cssSite old File not found load new ',$cssFile);
 				vmJsApi::css ( $cssFile ) ;
 
 				$cssFile = 'vm-' . $direction .'-site';
-				vmdebug('cssSite old File not found load new ',$cssFile);
 				vmJsApi::css ( $cssFile ) ;
 
 				$cssFile = 'vm-' . $direction .'-reviews';
 				vmJsApi::css ( $cssFile ) ;
-
 			}
 
 			$cssSite = TRUE;

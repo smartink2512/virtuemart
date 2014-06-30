@@ -108,7 +108,7 @@ class VirtuemartViewCategory extends VmView {
 
 
 		$this->showproducts = vRequest::getInt('showproducts',$menu->query['showproducts']);
-		vmdebug('my showproducts',(int)$this->showproducts,$this->categoryId);
+
 		if(!empty($category)){
 
 

@@ -93,15 +93,16 @@ if (!empty($this->keyword)) {
 
 	?>
 <div class="orderby-displaynumber">
-	<div class="width70 floatleft">
+	<div class="floatleft">
 		<?php echo $this->orderByList['orderby']; ?>
 		<?php echo $this->orderByList['manufacturer']; ?>
 	</div>
-	<div class="width30 floatright display-number"><?php echo $this->vmPagination->getResultsCounter ();?><br/><?php echo $this->vmPagination->getLimitBox ($this->category->limit_list_step); ?></div>
 	<div class="vm-pagination">
 		<?php echo $this->vmPagination->getPagesLinks (); ?>
-		<span style="float:right"><?php echo $this->vmPagination->getPagesCounter (); ?></span>
+		<span><?php echo $this->vmPagination->getPagesCounter (); ?></span>
 	</div>
+	<div class="floatright display-number"><?php echo $this->vmPagination->getResultsCounter ();?><br/><?php echo $this->vmPagination->getLimitBox ($this->category->limit_list_step); ?></div>
+
 
 	<div class="clear"></div>
 </div> <!-- end of orderby-displaynumber -->

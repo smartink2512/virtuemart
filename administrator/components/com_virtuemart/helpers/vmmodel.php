@@ -728,9 +728,9 @@ class VmModel extends JObject {
 		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
 		if(empty($limit)){
 			if($app->isSite()){
-				$limit = VmConfig::get ('llimit_init_FE');
+				$limit = VmConfig::get ('llimit_init_FE',24);
 			} else {
-				$limit = VmConfig::get ('llimit_init_BE');
+				$limit = VmConfig::get ('llimit_init_BE',30);
 			}
 			if(empty($limit)){
 				$limit = 30;

@@ -604,7 +604,7 @@ class VirtueMartModelProduct extends VmModel {
 			else if(!empty($limit)){
 				$suglimit = $limit;
 			} else {
-				$suglimit = VmConfig::get ('llimit_init_FE', 20);
+				$suglimit = VmConfig::get ('llimit_init_FE', 24);
 			}
 			if(empty($category->products_per_row)){
 				$category->products_per_row = VmConfig::get ('products_per_row', 3);
@@ -631,9 +631,9 @@ class VirtueMartModelProduct extends VmModel {
 
 		if(empty($limit)){
 			if($app->isSite()){
-				$limit = VmConfig::get ('llimit_init_FE');
+				$limit = VmConfig::get ('llimit_init_FE',24);
 			} else {
-				$limit = VmConfig::get ('llimit_init_BE');
+				$limit = VmConfig::get ('llimit_init_BE',30);
 			}
 			if(empty($limit)){
 				$limit = 30;
