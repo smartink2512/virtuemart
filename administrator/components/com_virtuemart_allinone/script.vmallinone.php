@@ -779,7 +779,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 					foreach($update_sites as $upSite){
 						if (strcmp($upSite->location, (string)$xml->updateservers->server) != 0) {
 							// the extension was already there: we just update the server if different
-							$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server)."
+							$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server['name'])."
 					         WHERE update_site_id=".$update_sites_extensions->update_site_id;
 							$db->setQuery($query);
 							$db->query();
