@@ -70,7 +70,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			$ratingModel = VmModel::getModel('ratings');
 			$productModel->withRating = $this->showRating = $ratingModel->showRating();
 
-			$products = array();
+			$this->products = array();
 			$categoryId = vRequest::getInt('catid', 0);
 
 			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
@@ -89,24 +89,24 @@ class VirtueMartViewVirtueMart extends VmView {
 			$featured_products_count = $products_per_row * $featured_products_rows;
 
 			if (!empty($featured_products_count) and VmConfig::get('show_featured', 1)) {
-				$products['featured'] = $productModel->getProductListing('featured', $featured_products_count);
-				$productModel->addImages($products['featured'],1);
+				$this->products['featured'] = $productModel->getProductListing('featured', $featured_products_count);
+				$productModel->addImages($this->products['featured'],1);
 			}
 			
 			$latest_products_rows = VmConfig::get('latest_products_rows');
 			$latest_products_count = $products_per_row * $latest_products_rows;
 
 			if (!empty($latest_products_count) and VmConfig::get('show_latest', 1)) {
-				$products['latest']= $productModel->getProductListing('latest', $latest_products_count);
-				$productModel->addImages($products['latest'],1);
+				$this->products['latest']= $productModel->getProductListing('latest', $latest_products_count);
+				$productModel->addImages($this->products['latest'],1);
 			}
 
 			$topTen_products_rows = VmConfig::get('topTen_products_rows');
 			$topTen_products_count = $products_per_row * $topTen_products_rows;
 			
 			if (!empty($topTen_products_count) and VmConfig::get('show_topTen', 1)) {
-				$products['topten']= $productModel->getProductListing('topten', $topTen_products_count);
-				$productModel->addImages($products['topten'],1);
+				$this->products['topten']= $productModel->getProductListing('topten', $topTen_products_count);
+				$productModel->addImages($this->products['topten'],1);
 			}
 			
 			$recent_products_rows = VmConfig::get('recent_products_rows');
@@ -114,42 +114,53 @@ class VirtueMartViewVirtueMart extends VmView {
 			$recent_products = $productModel->getProductListing('recent');
 			
 			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1) and !empty($recent_products)) {
-				$products['recent']= $productModel->getProductListing('recent', $recent_products_count);
-				$productModel->addImages($products['recent'],1);
+				$this->products['recent']= $productModel->getProductListing('recent', $recent_products_count);
+				$productModel->addImages($this->products['recent'],1);
 			}
 
-			if ($products) {
-				foreach($products as &$productSeries){
-					$currency = CurrencyDisplay::getInstance( );
-					$this->assignRef('currency', $currency);
-					$customfieldsModel = VmModel::getModel ('Customfields');
-					if (!class_exists ('vmCustomPlugin')) {
-						require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
-					}
-					foreach($productSeries as &$product){
-						$product->stock = $productModel->getStockIndicator($product);
-						if (!empty($product->customfields)) {
-							$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
-							foreach ($product->customfields as $k => $custom) {
-								if (!empty($custom->layout_pos)) {
-									$product->customfieldsSorted[$custom->layout_pos][] = $custom;
-									unset($product->customfields[$k]);
+			if ($this->products) {
+
+				$currency = CurrencyDisplay::getInstance( );
+				$this->assignRef('currency', $currency);
+				$customfieldsModel = VmModel::getModel ('Customfields');
+				if (!class_exists ('vmCustomPlugin')) {
+					require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+				}
+
+				foreach($this->products as $pType => $productSeries){
+					foreach($productSeries as $i => $productItem){
+
+						$productItem->stock = $productModel->getStockIndicator($productItem);
+
+						if (!empty($productItem->customfields)) {
+							$product = clone($productItem);
+							$customfields = array();
+							foreach($productItem->customfields as $cu){
+								$customfields[] = clone ($cu);
+							}
+
+							$customfieldsSorted = array();
+							$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+
+							foreach ($customfields as $k => $custom) {
+								if (!empty($custom->layout_pos)  ) {
+									$customfieldsSorted[$custom->layout_pos][] = $custom;
+									unset($customfields[$k]);
 								}
 							}
-							$product->customfieldsSorted['normal'] = $product->customfields;
+							$customfieldsSorted['normal'] = $customfields;
+							$product->customfieldsSorted = $customfieldsSorted;
 							unset($product->customfields);
+							$this->products[$pType][$i] = $product;
 						}
 					}
 				}
 			}
 
-			$this->assignRef('products', $products);
 
 			$user = JFactory::getUser();
 			$showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
 			$this->assignRef('showBasePrice', $showBasePrice);
-
-			//		$layoutName = VmConfig::get('vmlayout','default');
 
 			$layout = VmConfig::get('vmlayout','default');
 			$this->setLayout($layout);
@@ -159,7 +170,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			$this->productsLayout = empty($menu->query['productsublayout'])? $productsLayout:$menu->query['productsublayout'];
 
 			// Add feed links
-			if ($products  && (VmConfig::get('feed_featured_published', 0)==1 or VmConfig::get('feed_topten_published', 0)==1 or VmConfig::get('feed_latest_published', 0)==1)) {
+			if ($this->products  && (VmConfig::get('feed_featured_published', 0)==1 or VmConfig::get('feed_topten_published', 0)==1 or VmConfig::get('feed_latest_published', 0)==1)) {
 				$link = '&format=feed&limitstart=';
 				$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 				$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);

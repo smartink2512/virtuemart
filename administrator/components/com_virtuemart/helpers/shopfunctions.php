@@ -326,11 +326,7 @@ class ShopFunctions {
 		}
 		$listHTML = JHtml::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
 		return $listHTML;
-		/*
-		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		return VmHTML::selectList($name, $selected, $weight_unit_default);
-		 *
-		 */
+
 	}
 
 	static function renderUnitIsoList($name, $selected){

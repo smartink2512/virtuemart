@@ -458,6 +458,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function displayProductCustomfieldFE (&$product, &$customfields) {
 
+		static $idUnique = array();
 		if (!class_exists ('calculationHelper')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
@@ -494,6 +495,18 @@ class VirtueMartModelCustomfields extends VmModel {
 			//$value = $customfield->customfield_value;
 			$type = $customfield->field_type;
 
+			$idTag = (int)$product->virtuemart_product_id.'-'.$customfield->virtuemart_customfield_id;
+
+			if(!isset($idUnique[$idTag])){
+				$idUnique[$idTag] = 0;
+				//vmdebug('use tag first time',$idTag);
+			}  else {
+				$counter = $idUnique[$idTag]++;
+				$idTag = $idTag.'-'.$counter;
+				//$customProductDataName = $customProductDataName.'-'.$counter;
+				//vmdebug('created unique tag',$idTag);
+			}
+			$idTag = $idTag . 'customProductData';
 			if (!class_exists ('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance ();
@@ -560,9 +573,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}
 
-					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
-						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));
 
+					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="vm-chzn-select"', "value", "text",
+						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected),$idTag);
 
 					if($customfield->parentOrderable==0 and $product->product_parent_id==0){
 						$product->orderable = FALSE;
@@ -613,7 +626,8 @@ class VirtueMartModelCustomfields extends VmModel {
 							}
 
 							$currentValue = $customfield->customfield_value;
-							$customfield->display = JHtml::_ ('select.genericlist', $options, $customProductDataName, NULL, 'value', 'text', $currentValue);
+
+							$customfield->display = JHtml::_ ('select.genericlist', $options, $customProductDataName, NULL, 'value', 'text', $currentValue,$idTag);
 
 							//$customfield->display =  '<input type="text" readonly value="' . vmText::_ ($customfield->customfield_value) . '" name="'.$customProductDataName.'" /> ' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
 						} else {
@@ -621,7 +635,6 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					} else {
 						if(!empty($customfield->is_input)){
-
 
 							if(!isset($selectList[$customfield->virtuemart_custom_id])) {
 								$tmpField = clone($customfield);
@@ -650,14 +663,11 @@ class VirtueMartModelCustomfields extends VmModel {
 								//$productCustom->formname = '['.$productCustom->virtuemart_customfield_id.'][selected]';
 							}
 
-							$customfields[$selectList[$customfield->virtuemart_custom_id]]->display = VmHTML::select ($customfields[$selectList[$customfield->virtuemart_custom_id]]->customProductDataName,
-								$customfields[$selectList[$customfield->virtuemart_custom_id]]->options,
-								$default->customfield_value,
-								'',
-								'virtuemart_customfield_id',
-								'text',
-								FALSE);
-							//vmdebug('my selectList',$customfields[$selectList[$customfield->virtuemart_custom_id]]->options);
+							//$customfield->display
+							$customfields[$selectList[$customfield->virtuemart_custom_id]]->display = JHtml::_ ('select.genericlist', $customfields[$selectList[$customfield->virtuemart_custom_id]]->options,
+								$customfields[$selectList[$customfield->virtuemart_custom_id]]->customProductDataName,
+								'class="vm-chzn-select"', 'virtuemart_customfield_id', 'text', $default->customfield_value,$idTag);	//*/
+
 						} else {
 							$customfield->display =  vmText::_ ($customfield->customfield_value);
 						}

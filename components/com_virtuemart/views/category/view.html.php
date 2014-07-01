@@ -106,7 +106,8 @@ class VirtuemartViewCategory extends VmView {
 		$vendorId = 1;
 		$category = $categoryModel->getCategory($this->categoryId);
 
-
+		//vmdebug('my menu',$menu);
+		if(!isset($menu->query['showproducts'])) $menu->query['showproducts'] = 1;
 		$this->showproducts = vRequest::getInt('showproducts',$menu->query['showproducts']);
 
 		if(!empty($category)){
@@ -130,8 +131,6 @@ class VirtuemartViewCategory extends VmView {
 				$this->products = $productModel->getProducts ($ids);
 				//$products = $productModel->getProductsInCategory($this->categoryId);
 				$productModel->addImages($this->products,1);
-				//vmdebug('my product',$products);
-				//$this->assignRef('products', $products);
 
 				if ($this->products) {
 					$currency = CurrencyDisplay::getInstance( );
@@ -140,27 +139,32 @@ class VirtuemartViewCategory extends VmView {
 					if (!class_exists ('vmCustomPlugin')) {
 						require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 					}
-					foreach($this->products as &$product){
-						$product->stock = $productModel->getStockIndicator($product);
-						//$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
-						if ($product->customfields){
-							$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
-						}
-						if (!empty($product->customfields)) {
-							foreach ($product->customfields as $k => $custom) {
-								if (!empty($custom->layout_pos)) {
-									$product->customfieldsSorted[$custom->layout_pos][] = $custom;
-									unset($product->customfields[$k]);
+					foreach($this->products as $i => $productItem){
+
+						$productItem->stock = $productModel->getStockIndicator($productItem);
+						if (!empty($productItem->customfields)) {
+							$product = clone($productItem);
+							$customfields = array();
+							foreach($productItem->customfields as $cu){
+								$customfields[] = clone ($cu);
+							}
+
+							$customfieldsSorted = array();
+							$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+
+							foreach ($customfields as $k => $custom) {
+								if (!empty($custom->layout_pos)  ) {
+									$customfieldsSorted[$custom->layout_pos][] = $custom;
+									unset($customfields[$k]);
 								}
 							}
-							$product->customfieldsSorted['normal'] = $product->customfields;
+							$customfieldsSorted['normal'] = $customfields;
+							$product->customfieldsSorted = $customfieldsSorted;
 							unset($product->customfields);
+							$this->products[$i] = $product;
 						}
 					}
 				}
-
-
-
 
 				// Add feed links
 				if ($this->showproducts and $this->products  && VmConfig::get('feed_cat_published', 0)==1) {
@@ -291,10 +295,10 @@ class VirtuemartViewCategory extends VmView {
 			$title .=' ('.$keyword.')';
 		}
 
-		if ($virtuemart_manufacturer_id>0 and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
+		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
 		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
-		if ($virtuemart_manufacturer_id>0 and !empty($products[0]) and isset($category->category_name)) $category->category_name =$products[0]->mf_name ;
+		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0]) and isset($category->category_name)) $category->category_name =$products[0]->mf_name ;
 
 		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);

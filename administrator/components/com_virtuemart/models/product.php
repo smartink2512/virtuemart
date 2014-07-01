@@ -1611,7 +1611,6 @@ class VirtueMartModelProduct extends VmModel {
 			return FALSE;
 		}
 
-
 		$this->_id = $data['virtuemart_product_id'] = (int)$product_data->virtuemart_product_id;
 
 		if (empty($this->_id)) {
@@ -1621,13 +1620,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		//We may need to change this, the reason it is not in the other list of commands for parents
 		if (!$isChild) {
-			/*if (!empty($data['save_customfields'])) {
-				if (!class_exists ('VirtueMartModelCustomfields')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
-				}*/
-				$modelCustomfields = VmModel::getModel ('Customfields');
-				$modelCustomfields->storeProductCustomfields ('product', $data, $product_data->virtuemart_product_id);
-			//}
+			$modelCustomfields = VmModel::getModel ('Customfields');
+			$modelCustomfields->storeProductCustomfields ('product', $data, $product_data->virtuemart_product_id);
 		}
 
 		// Get old IDS
@@ -2256,8 +2250,6 @@ class VirtueMartModelProduct extends VmModel {
 	 * @return array containing product objects
 	 */
 	public function getStockIndicator ($product) {
-
-		$db = JFactory::getDBO ();
 
 		/* Assign class to indicator */
 		$stock_level = $product->product_in_stock - $product->product_ordered;
