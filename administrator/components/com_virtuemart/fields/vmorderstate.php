@@ -24,7 +24,7 @@ class JFormFieldVmOrderState extends JFormFieldList {
 	 * @var    string
 	 * @since  11.1
 	 */
-	protected $type = 'vmOrderState';
+	var $type = 'vmOrderState';
 
 	protected function getOptions() {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);

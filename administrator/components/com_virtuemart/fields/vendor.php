@@ -31,7 +31,7 @@ jimport('joomla.form.formfield');
  */
 class JFormFieldVendor extends JFormField
 {
-	protected $type = 'vendor';
+	var $type = 'vendor';
 
 
      function getInput() {

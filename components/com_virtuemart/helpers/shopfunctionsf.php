@@ -255,7 +255,7 @@ class shopFunctionsF {
 		return $session->get( 'vmlastvisitedproductids', array(), 'vm' );
 	}
 
-	public function calculateProductRowsHeights($products,$currency,$products_per_row){
+	static public function calculateProductRowsHeights($products,$currency,$products_per_row){
 
 		$col = 1;
 		$nb = 1;

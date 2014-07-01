@@ -30,7 +30,7 @@ class JFormFieldVmTaxes extends JFormField {
 	 * @var    string
 	 * @since  11.1
 	 */
-	protected $type = 'vmtaxes';
+	var $type = 'vmtaxes';
 
 	protected function getInput() {
 

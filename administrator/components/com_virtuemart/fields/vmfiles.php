@@ -23,7 +23,7 @@ class JFormFieldVMFiles extends JFormFieldFileList {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type  = 'Files';
+	var $type  = 'Files';
 
 	protected function getInput() {
 		$this->multiple=true;

@@ -31,7 +31,7 @@ if (!class_exists('VirtueMartModelManufacturer'))
 class JFormFieldManufacturersmenu extends JFormField {
 
 
-	protected $_name = 'manufacturersmenu';
+	var $_name = 'manufacturersmenu';
 
 	function getInput() {
 

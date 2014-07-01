@@ -25,10 +25,10 @@ class JFormFieldVmTitle extends JFormField
 	/**
 	 * Element name
 	 *
-	 * @access    protected
+	 * @access    public
 	 * @var        string
 	 */
-	protected $type = 'Vmtitle';
+	var $type = 'Vmtitle';
 
 	protected function getLabel()
 	{

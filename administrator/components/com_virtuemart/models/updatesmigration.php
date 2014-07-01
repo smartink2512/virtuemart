@@ -152,7 +152,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	$fields['virtuemart_media_id'] =  1;
 	$fields['vendor_currency'] = '47';
 	$fields['vendor_accepted_currencies'] = '52,26,47,144';
-	$fields['vendor_terms_of_service'] =  '<h5>You have not configured any terms of service yet. Click <a href="'.JURI::base(true).'/index.php?option=com_virtuemart&view=user&task=editshop">here</a> to change this text.</h5>';
+	$fields['vendor_terms_of_service'] =  '<h5>This is a demo store. Your orders will not proceed. You have not configured any terms of service yet. Click <a href="'.JURI::base(true).'/index.php?option=com_virtuemart&view=user&task=editshop">here</a> to change this text.</h5>';
 	$fields['vendor_url'] = JURI::root();
 	$fields['vendor_name'] =  'Sample Company';
 	$fields['vendor_legal_info']="VAT-ID: XYZ-DEMO<br />Reg.Nr: DEMONUMBER";

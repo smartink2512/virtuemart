@@ -14,9 +14,7 @@
     </files>
     <config>
         <fields name="params">
-
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/paypal/paypal/fields">
-
                 <field type="vmtitle" class="paypal_title" default="VMPAYMENT_PAYPAL_PAYMENT_TITLE"
                        description="VMPAYMENT_PAYPAL_REGISTER_DESC"/>
                 <field type="spacer" default="" level="level1"/>

@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package VirtueMart
  * @subpackage core
  * @author Max Milbers
- * @copyright Copyright (C) 2011 by the virtuemart team - All rights reserved.
+ * @copyright Copyright (C) 2014 by the virtuemart team - All rights reserved.
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL 2, see COPYRIGHT.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -197,9 +197,13 @@ class GenericTableUpdater extends VmModel{
 			}
 			$lines[0] =	$fields;
 
-			$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`)';
+
 			if($slug){
-				$lines[1]['slug'] = 'UNIQUE KEY `slug` (`slug`)';
+				//$lines[1]['slug'] = 'UNIQUE KEY `slug` (`slug`)';
+				//a slug must anyway be unique and so oine index for both is faster
+				$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`,`slug`)';
+			} else {
+				$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`)';
 			}
 
 			$table[3] = '';
@@ -426,12 +430,12 @@ class GenericTableUpdater extends VmModel{
 		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
 		$this->_db->setQuery($query);
 		if(!$eKeys = $this->_db->loadObjectList() ){
-			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
+			$this->_app->enqueueMessage('alterKey show index for table '.$tablename.':' );
 		} else {
 			$eKeyNames= $this->_db->loadColumn(2);
 		}
 
-// 				vmdebug('my $eKeys',$eKeys);
+ 		vmdebug('my $eKeys',$eKeys);
 
 		$dropped = 0;
 		$existing = array();

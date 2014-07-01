@@ -46,7 +46,7 @@
 	position:absolute;
 }
 
-div.vote, span.vote {display:block;margin-bottom:4px;min-height: 32px;float:right;}
+div.vote, span.vote {display:block;margin-bottom:4px;float:right;}
 
 .category-ratingbox {
     position:relative;

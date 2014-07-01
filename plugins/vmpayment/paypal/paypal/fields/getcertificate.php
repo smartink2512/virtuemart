@@ -25,7 +25,7 @@ class JFormFieldGetcertificate extends JFormFieldFileList {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type = 'Getcertificate';
+	var $type = 'Getcertificate';
 
 	/*
 	protected function getInput() {

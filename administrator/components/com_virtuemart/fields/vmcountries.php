@@ -26,7 +26,8 @@ class JFormFieldVmCountries extends JFormFieldList {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type = 'vmCountries';
+	var $type = 'vmCountries';
+
 	protected function getInput() {
 		$this->multiple=true;
 		return parent::getInput();

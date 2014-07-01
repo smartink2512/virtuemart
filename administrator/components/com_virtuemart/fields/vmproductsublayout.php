@@ -29,8 +29,8 @@ jimport('joomla.form.formfield');
  *
  */
 class JFormFieldVmproductsublayout extends JFormField
-{ 
-	protected $type = 'layout';
+{
+	var $type = 'layout';
 
 	/**
 	 * Method to get the field input markup. Use as name the view of the desired layout list + "layout".

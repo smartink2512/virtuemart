@@ -30,7 +30,7 @@ jimport('joomla.form.formfield');
  */
 class JFormFieldCategories extends JFormField {
 
-	protected $type = 'vmcategories';
+	var $type = 'vmcategories';
 
 	// This line is required to keep Joomla! 1.6/1.7 from complaining
 	protected function getInput() {

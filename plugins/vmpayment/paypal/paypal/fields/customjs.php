@@ -26,7 +26,7 @@ jimport('joomla.form.formfield');
 class JFormFieldCustomjs extends JFormField {
 
 
-	protected $type = 'Customjs';
+	public $type = 'Customjs';
 
 	function getInput() {
 

@@ -466,31 +466,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
-		private function updateAdminMenuEntriesOld() {
-
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-			$query = 'SELECT * FROM `#__virtuemart_adminmenuentries` WHERE `view` = "log" ';
-			$this->_db->setQuery($query);
-			$result = $this->_db->loadResult();
-			if(empty($result) || !$result ){
-				// get the module id of the migration
-				$query = 'SELECT module_id FROM `#__virtuemart_adminmenuentries` WHERE `view` = "updatesmigration" ';
-				$this->_db->setQuery($query);
-				$module_id = $this->_db->loadResult();
-				if( $module_id){
-					$q = "INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
-								(null, ".$module_id.", 0, 'COM_VIRTUEMART_LOG', '', '', 'vmicon vmicon-16-info', 2, 1, '', 'log', '')";
-					$this->_db->setQuery($q);
-					$this->_db->query();
-					$app = JFactory::getApplication();
-					$app->enqueueMessage('Added Log Menu entry ' );
-				}
-			}
-		}
-
-
 		private function migrateCustoms(){
 
 			$db = JFactory::getDBO();
@@ -531,6 +506,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='addtocart' WHERE `is_input`='1'";
+			$db->setQuery($q);
+			$db->execute();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='ontop',`is_cart_attribute`=1 WHERE `field_type`='A'";
 			$db->setQuery($q);
 			$db->execute();
 			$err = $db->getErrorMsg();

@@ -27,7 +27,7 @@ class JFormFieldVmjpluginwarning extends JFormField {
 	 * @var    string
 	 * @since  11.1
 	 */
-	protected $type = 'vmjpluginwarning';
+	var $type = 'vmjpluginwarning';
 
 	protected function getLabel() {
 

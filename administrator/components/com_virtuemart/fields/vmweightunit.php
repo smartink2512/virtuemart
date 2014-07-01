@@ -29,7 +29,7 @@ class JFormFieldVmWeightunit extends JFormField {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type = 'vmWeightUnit';
+	var $type = 'vmWeightUnit';
 
 	protected function getInput() {
 		return ShopFunctions::renderWeightUnitList($this->name, $this->value);

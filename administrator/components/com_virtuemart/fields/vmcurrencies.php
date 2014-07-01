@@ -33,7 +33,7 @@ class JFormFieldVmCurrencies extends JFormFieldList {
 	 * @var    string
 	 * @since  11.1
 	 */
-	protected $type = 'vmCurrencies';
+	var $type = 'vmCurrencies';
 
 	protected function getOptions() {
 		$options = array();

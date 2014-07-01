@@ -30,15 +30,7 @@ class JFormFieldManufacturer extends JFormField
 	 * @var		string
 	 *
 	 */
-	protected $type = 'manufacturer';
-
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return	string	The field input markup.
-	 * @since	1.6
-	 */
-
+	var $type = 'manufacturer';
 
 	function getInput() {
 

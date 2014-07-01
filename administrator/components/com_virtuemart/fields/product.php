@@ -27,7 +27,7 @@ class JFormFieldProduct extends JFormField
 	 * @var		string
 	 *
 	 */
-	protected $type = 'product';
+	var $type = 'product';
 
 	/**
 	 * Method to get the field input markup.

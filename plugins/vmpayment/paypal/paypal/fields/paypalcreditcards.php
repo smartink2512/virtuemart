@@ -31,7 +31,7 @@ if (!class_exists('PaypalHelperPaypal')) {
 jimport('joomla.form.formfield');
 class JFormFieldPaypalCreditcards extends JFormField {
 
-	public $type = 'Paypalcreditcards';
+	var $type = 'Paypalcreditcards';
 
 	protected function getInput() {
 		JFactory::getLanguage()->load('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);

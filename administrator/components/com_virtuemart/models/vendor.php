@@ -129,7 +129,6 @@ class VirtueMartModelVendor extends VmModel {
 	static function getUserIdByVendorId ($vendorId) {
 
 		//this function is used static, needs its own db
-
 		if (empty($vendorId)) {
 			return;
 		} else {

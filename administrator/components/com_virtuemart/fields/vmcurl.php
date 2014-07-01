@@ -19,7 +19,7 @@ jimport('joomla.form.formfield');
 
 class JFormFieldVmCurl extends JFormField {
 
-	protected $type = 'vmcurl';
+	var $type = 'vmcurl';
 
 	/**
 	 * Method to get the field input markup.

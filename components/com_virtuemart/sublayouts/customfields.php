@@ -22,7 +22,7 @@ if(isset($viewData['class'])){
 
 if (!empty($product->customfieldsSorted[$position])) {
 	?>
-	<div class="<?php echo $class?>'">
+	<div class="<?php echo $class?>">
 		<?php
 		$custom_title = null;
 		foreach ($product->customfieldsSorted[$position] as $field) {

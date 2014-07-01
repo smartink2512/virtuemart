@@ -29,8 +29,8 @@ jimport('joomla.form.formfield');
  *
  */
 class JFormFieldVmCategory extends JFormField
-{ 
-	protected $type = 'category';
+{
+	var $type = 'category';
 
 	/**
 	 * Method to get the field input markup.
