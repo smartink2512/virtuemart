@@ -22,7 +22,7 @@
 defined('_JEXEC') or die();
 
 jimport('joomla.form.formfield');
-class JElementDuration extends JFormField {
+class JFormFieldDuration extends JFormField {
 
 	public $type = 'Duration';
 

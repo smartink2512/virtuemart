@@ -23,67 +23,67 @@ jQuery().ready(function ($) {
     /* handlers */
     /************/
     handleDebitType = function () {
-        var debit_type = $('#paramsdebit_type').val();
+        var debit_type = $('#params_debit_type').val();
 
-        $('.authorization_only, .authorization_capture').parents('tr').hide();
+        $('.authorization_only, .authorization_capture').parents('.control-group').hide();
 
         if (debit_type == 'authorization_only') {
-            $('.authorization_only').parents('tr').show();
+            $('.authorization_only').parents('.control-group').show();
         } else if (debit_type == 'authorization_capture') {
-            $('.authorization_capture').parents('tr').show();
+            $('.authorization_capture').parents('.control-group').show();
         }
     }
     handle3Dsecure = function () {
-        var activate_3dsecure = $('#paramsactivate_3dsecure').val();
+        var activate_3dsecure = $('#params_activate_3dsecure').val();
 
-        $('.activate_3dsecure').parents('tr').hide();
+        $('.activate_3dsecure').parents('.control-group').hide();
 
         if (activate_3dsecure == 'selective') {
-            $('.activate_3dsecure').parents('tr').show();
+            $('.activate_3dsecure').parents('.control-group').show();
         } else if (activate_3dsecure == 'active') {
-            $('.activate_3dsecure.activate_3dsecure_warning').parents('tr').show();
+            $('.activate_3dsecure.activate_3dsecure_warning').parents('.control-group').show();
         }
     }
     handleIntegration = function () {
-        var integration = $('#paramsintegration').val();
+        var integration = $('#params_integration').val();
 
-        $('.integration ').parents('tr').hide();
+        $('.integration ').parents('.control-group').hide();
 
         if (integration == 'recurring') {
-            $('.recurring').parents('tr').show();
+            $('.recurring').parents('.control-group').show();
         } else if (integration == 'subscribe') {
-            $('.subscribe').parents('tr').show();
+            $('.subscribe').parents('.control-group').show();
         }
     }
     handleShopMode = function () {
-        var shop_mode = $('#paramsshop_mode').val();
+        var shop_mode = $('#params_shop_mode').val();
 
-        $('.shop_mode ').parents('tr').hide();
+        $('.shop_mode ').parents('.control-group').hide();
 
         if (shop_mode == 'test') {
-            $('.shop_mode').parents('tr').show();
+            $('.shop_mode').parents('.control-group').show();
         }
     }
     /**********/
     /* Events */
     /**********/
-    $('#paramsdebit_type').change(function () {
+    $('#params_debit_type').change(function () {
         handleDebitType();
 
     });
-    $('#paramsactivate_3dsecure').change(function () {
+    $('#params_activate_3dsecure').change(function () {
         handle3Dsecure();
 
     });
-    $('#paramsactivate_recurring').change(function () {
+    $('#params_activate_recurring').change(function () {
         handlepPaymentplan();
 
     });
-    $('#paramsshop_mode').change(function () {
+    $('#params_shop_mode').change(function () {
         handleShopMode();
 
     });
-    $('#paramsintegration').change(function () {
+    $('#params_integration').change(function () {
         handleIntegration();
 
     });

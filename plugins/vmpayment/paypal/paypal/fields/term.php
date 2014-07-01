@@ -23,7 +23,7 @@ defined('_JEXEC') or die();
 
 jimport('joomla.form.formfield');
 
-class JElementTerm extends JFormField {
+class JFormFieldTerm extends JFormField {
 
 	var $type = 'Term';
 
