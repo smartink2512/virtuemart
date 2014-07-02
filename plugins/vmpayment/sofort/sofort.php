@@ -909,7 +909,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	return null;
 	}
 	 */
-	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
+	function plgVmDeclarePluginParamsPaymentVM3 ($name, $id, &$data) {
 
 		return $this->declarePluginParams('payment', $name, $id, $data);
 	}

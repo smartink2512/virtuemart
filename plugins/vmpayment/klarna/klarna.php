@@ -109,7 +109,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param $data
 	 * @return bool
 	 */
-	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
+	function plgVmDeclarePluginParamsPaymentVM3 ($name, $id, &$data) {
 
 		return $this->declarePluginParams ('payment', $name, $id, $data);
 	}
