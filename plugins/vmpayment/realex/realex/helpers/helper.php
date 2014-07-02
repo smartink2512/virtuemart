@@ -1443,7 +1443,7 @@ class  RealexHelperRealex {
 			if (JFactory::getApplication()->isSite()) {
 				$userId = $this->order['details']['BT']->virtuemart_user_id;
 			} else {
-				$userId = JRequest::getVar('virtuemart_user_id', 0);
+				$userId = vRequest::getVar('virtuemart_user_id', 0);
 				if (is_array($userId)) {
 					$userId = $userId[0];
 				}

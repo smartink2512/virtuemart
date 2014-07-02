@@ -20,8 +20,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (!class_exists('VmModel'))
+if (!class_exists('VmModel')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
+}
 
 /**
  * Model class for shop credit cards
@@ -59,9 +60,12 @@ class Creditcard {
 	 * @param string $cardnum
 	 * @return boolean
 	 */
-	function validate_credit_card_number($creditcard_code, $cardnum) {
-
-		$this->number = self::_strtonum($cardnum);
+	static function validate_credit_card_number ($creditcard_code, $cardnum) {
+		$cardnum = str_replace(" ", "", $cardnum);
+		if (!is_int($cardnum)) {
+			return false;
+		}
+		$number = self::_strtonum($cardnum);
 		/*
 		  if(!$this->detectType($this->number))
 		  {
@@ -70,7 +74,7 @@ class Creditcard {
 		  return false;
 		  } */
 
-		if (empty($this->number) || !self::mod10($this->number)) {
+		if (empty($number) || !self::mod10($number)) {
 			//JError::raiseWarning('', JText::_('COM_VIRTUEMART_CC_ENUMBER'));
 //			$this->errno = CC_ENUMBER;
 //			$d['error'] = $this->errno;
@@ -85,11 +89,10 @@ class Creditcard {
 	 *   return formated string - only digits
 	 */
 
-	function _strtonum($string) {
+	static function _strtonum ($string) {
 		$nstr = "";
 		for ($i = 0; $i < strlen($string); $i++) {
-			if (!is_numeric($string{$i}))
-				continue;
+
 			$nstr = "$nstr" . $string{$i};
 		}
 		return $nstr;
@@ -100,7 +103,7 @@ class Creditcard {
 	 *   return 0 if true and !0 if false
 	 */
 
-	function mod10($card_number) {
+	static function mod10 ($card_number) {
 
 		$digit_array = array();
 		$cnt = 0;
@@ -154,11 +157,14 @@ class Creditcard {
 	 * The three- or four-digit number on the back of a credit card (on the front for American Express).
 	 * @author Valerie Isaksen
 	 */
+	static function validate_credit_card_cvv ($creditcard_type, $cvv, $required = true, $creditcard_number = '') {
 
-	static function validate_credit_card_cvv($creditcard_type,  $cvv, $required = true, $creditcard_number='') {
-
-		if ($required and empty($cvv)) return false;
-		if (empty($creditcard_number)) return true; // for BC reasons
+		if ($required and empty($cvv)) {
+			return false;
+		}
+		if (empty($creditcard_number)) {
+			return true;
+		} // for BC reasons
 		$firstnumber = substr($creditcard_number, 0, 1);
 
 		switch (strtoupper($firstnumber)) {
@@ -169,8 +175,7 @@ class Creditcard {
 				$cvv_digits = 3;
 		}
 
-		if (strlen($cvv) == $cvv_digits
-			&& strspn($cvv, '0123456789') == $cvv_digits) {
+		if (strlen($cvv) == $cvv_digits && strspn($cvv, '0123456789') == $cvv_digits) {
 			return true;
 		}
 
@@ -178,22 +183,22 @@ class Creditcard {
 
 	}
 
+
 	/*
 	 * validate_credit_card_date
 	 * expiration date should be tested
 	 * @author Valerie Isaksen
 	 */
 
-	static function validate_credit_card_date($creditcard_type, $month, $year) {
-		$today_ts= time();
-		$cc_ts = mktime(0, 0, 0, $month + 1, 1, $year );
+	static function validate_credit_card_date ($creditcard_type, $month, $year) {
+		$today_ts = time();
+		$cc_ts = mktime(0, 0, 0, $month + 1, 1, $year);
 		if ($cc_ts > $today_ts) {
-		return true;
+			return true;
 		} else {
 			return false;
 		}
 	}
-
 
 
 }

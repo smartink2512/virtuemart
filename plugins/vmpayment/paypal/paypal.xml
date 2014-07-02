@@ -99,7 +99,7 @@
 
         <!-- PayPal settings -->
         <param type="vmtitle" default="VMPAYMENT_PAYPAL_SETTINGS" description="VMPAYMENT_PAYPAL_SETTINGS_DESC"/>
-        <!--param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
+        <!--param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_TIP">
         <option value="0">COM_VIRTUEMART_NO</option>
         <option value="1">COM_VIRTUEMART_YES</option>
         </param-->
@@ -234,22 +234,22 @@
             <option value="1">COM_VIRTUEMART_YES</option>
         </param-->
         <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U"
-               label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN"/>
+               label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_TIP"/>
         <param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C"
-               label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN"/>
+               label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_TIP"/>
         <param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"
-               label="VMPAYMENT_PAYPAL_STATUS_CANCEL" description="VMPAYMENT_PAYPAL_STATUS_CANCEL_EXPLAIN"/>
+               label="VMPAYMENT_PAYPAL_STATUS_CANCEL" description="VMPAYMENT_PAYPAL_STATUS_CANCEL_TIP"/>
         <param class="Authorization" name="status_capture" type="vmorderstate" scope="com_virtuemart" default="S"
-               label="VMPAYMENT_PAYPAL_STATUS_CAPTURE" description="VMPAYMENT_PAYPAL_STATUS_CAPTURE_EXPLAIN"/>
+               label="VMPAYMENT_PAYPAL_STATUS_CAPTURE" description="VMPAYMENT_PAYPAL_STATUS_CAPTURE_TIP"/>
         <!--param name="status_expired" type="vmorderstate" scope="com_virtuemart" default="X"
-               label="VMPAYMENT_PAYPAL_STATUS_EXPIRED" description="VMPAYMENT_PAYPAL_STATUS_EXPIRED_EXPLAIN"/ -->
+               label="VMPAYMENT_PAYPAL_STATUS_EXPIRED" description="VMPAYMENT_PAYPAL_STATUS_EXPIRED_TIP"/ -->
         <!--param name="status_fraud" type="vmorderstate" scope="com_virtuemart" default="U"
-               label="VMPAYMENT_PAYPAL_STATUS_FRAUD" description="VMPAYMENT_PAYPAL_STATUS_FRAUD_EXPLAIN"/ -->
+               label="VMPAYMENT_PAYPAL_STATUS_FRAUD" description="VMPAYMENT_PAYPAL_STATUS_FRAUD_TIP"/ -->
         <param name="status_refunded" type="vmorderstate" scope="com_virtuemart" default="R"
-               label="VMPAYMENT_PAYPAL_STATUS_REFUND" description="VMPAYMENT_PAYPAL_STATUS_REFUND_EXPLAIN"/>
+               label="VMPAYMENT_PAYPAL_STATUS_REFUND" description="VMPAYMENT_PAYPAL_STATUS_REFUND_TIP"/>
         <param name="status_partial_refunded" type="vmorderstate" scope="com_virtuemart" default="R"
                label="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND"
-               description="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND_EXPLAIN"/>
+               description="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND_TIP"/>
 
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_OPTIONAL_PARAMS"/>
@@ -277,9 +277,9 @@
         <param name="countries" type="vmcountries" scope="com_virtuemart" default=""
                label="VMPAYMENT_PAYPAL_COUNTRIES" description="VMPAYMENT_PAYPAL_COUNTRIES_DESC"/>
         <param name="min_amount" type="text" label="VMPAYMENT_PAYPAL_MIN_AMOUNT"
-               description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN"/>
+               description="VMPAYMENT_PAYPAL_MIN_AMOUNT_TIP"/>
         <param name="max_amount" type="text" label="VMPAYMENT_PAYPAL_MAX_AMOUNT"
-               description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN"/>
+               description="VMPAYMENT_PAYPAL_MAX_AMOUNT_TIP"/>
         <param name="publishup" type="calendar" default="" label="VMPAYMENT_PAYPAL_PUBLISH_UP"
                description="VMPAYMENT_PAYPAL_PUBLISH_UP_DESC"/>
         <param name="publishdown" type="calendar" default="" label="VMPAYMENT_PAYPAL_PUBLISH_DOWN"
@@ -306,11 +306,11 @@
         <param class="warning_transaction_cost" type="vmtitle" default=""
                description="VMPAYMENT_PAYPAL_DISCOUNTS_WARNING"/>
         <param name="cost_per_transaction" type="text" label="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION"
-               description="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION_EXPLAIN"/>
+               description="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION_TIP"/>
         <param name="cost_percent_total" type="text" label="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL"
-               description="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL_EXPLAIN"/>
+               description="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL_TIP"/>
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_PAYPAL_TAX"
-               description="VMPAYMENT_PAYPAL_TAX_EXPLAIN"/>
+               description="VMPAYMENT_PAYPAL_TAX_TIP"/>
 
         <!-- LAYOUT -->
         <!-- ============ -->

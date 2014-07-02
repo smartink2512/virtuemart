@@ -1366,7 +1366,11 @@ class plgVmPaymentRealex extends vmPSPlugin {
 				}
 			}
 		} else {
-
+			if (!$realexInterface->validateRemoteCCForm()) {
+				$html = $realexInterface->displayRemoteCCForm();
+				echo $html;
+				return;
+			}
 		}
 
 		if ($this->_currentMethod->dcc AND empty($response_dcc)) {

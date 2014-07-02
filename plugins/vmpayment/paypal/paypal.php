@@ -643,7 +643,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$paypal_data = vRequest::getPost();
+		$paypal_data = $_POST;
 
 		//Recuring payment return rp_invoice_id instead of invoice
 		if (array_key_exists('rp_invoice_id', $paypal_data)) {
