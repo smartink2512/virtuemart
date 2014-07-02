@@ -246,13 +246,19 @@ class vmJsApi{
 	}
 
 	// Virtuemart Site Js script
-	static function jSite()
-	{
-
+	static function jSite() {
 		if (!VmConfig::get ('jsite', TRUE) and JFactory::getApplication ()->isSite ()) {
 			return FALSE;
 		}
 		vmJsApi::js('vmsite');
+	}
+
+	// Virtuemart Site Js script
+	static function jDynUpdate() {
+		if (!VmConfig::get ('jdynupdate', TRUE) and JFactory::getApplication ()->isSite ()) {
+			return FALSE;
+		}
+		vmJsApi::js('dynupdate');
 	}
 
 	static function JcountryStateList($stateIds, $prefix='') {

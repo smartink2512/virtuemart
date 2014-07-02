@@ -5,11 +5,9 @@
  *
  * @package	VirtueMart
  * @subpackage
- * @author Max Milbers, Eugen Stranz
- * @author RolandD,
- * @todo handle child products
+ * @author Max Milbers, Eugen Stranz, Max Galt
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -29,6 +27,20 @@ if (empty($this->product)) {
 
 echo shopFunctionsF::renderVmSubLayout('askrecomjs',array('product'=>$this->product));
 
+vmJsApi::jDynUpdate();
+$document = JFactory::getDocument();
+$document->addScriptDeclaration("
+//<![CDATA[
+// GALT: Start listening for dynamic content update.
+jQuery(document).ready(function() {
+	// If template is aware of dynamic update and provided a variable let's
+	// set-up the event listeners.
+	if (Virtuemart.container)
+		Virtuemart.updateDynamicUpdateListeners();
+});
+//]]>
+");
+
 if(vRequest::getInt('print',false)){ ?>
 <body onload="javascript:print();">
 <?php } ?>
@@ -44,11 +56,11 @@ if(vRequest::getInt('print',false)){ ?>
 	    if (!empty($this->product->neighbours ['previous'][0])) {
 		$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE);
 		echo JHtml::_('link', $prev_link, $this->product->neighbours ['previous'][0]
-			['product_name'], array('rel'=>'prev', 'class' => 'previous-page'));
+			['product_name'], array('rel'=>'prev', 'class' => 'previous-page','data-dynamic-update' => '1'));
 	    }
 	    if (!empty($this->product->neighbours ['next'][0])) {
 		$next_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE);
-		echo JHtml::_('link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array('rel'=>'next','class' => 'next-page'));
+		echo JHtml::_('link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array('rel'=>'next','class' => 'next-page','data-dynamic-update' => '1'));
 	    }
 	    ?>
     	<div class="clear"></div>
@@ -230,3 +242,21 @@ echo $this->product->event->afterDisplayContent; ?>
 echo $this->loadTemplate('reviews');
 ?>
 </div>
+<script>
+	// GALT
+	jQuery(function($) {
+		/*
+		 * Notice for Template Developers!
+		 * Templates must set a Virtuemart.container variable as it takes part in
+		 * dynamic content update.
+		 * This variable points to a topmost element that holds other content.
+		 */
+		// If this <script> block goes right after the element itself there is no
+		// need in ready() handler, which is much better.
+		//$(document).ready(function() {
+		Virtuemart.container = $('.productdetails-view');
+		Virtuemart.containerSelector = '.productdetails-view';
+		//});
+
+	});
+</script>

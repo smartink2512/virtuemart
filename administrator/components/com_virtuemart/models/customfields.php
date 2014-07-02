@@ -573,9 +573,10 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}
 
-
-					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="vm-chzn-select"', "value", "text",
-						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected),$idTag);
+					$url = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.
+						$virtuemart_category_id .'&virtuemart_product_id='. $selected;
+					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="vm-chzn-select" data-dynamic-update="1" ', "value", "text",
+						JRoute::_ ($url,false),$idTag);
 
 					if($customfield->parentOrderable==0 and $product->product_parent_id==0){
 						$product->orderable = FALSE;

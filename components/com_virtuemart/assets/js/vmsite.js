@@ -1,11 +1,12 @@
 /**
- * list country.js: General Javascript Library for VirtueMart Administration
+ * vmsite.js: General Javascript Library for VirtueMart Frontpage
  *
  *
  * @package	VirtueMart
  * @subpackage Javascript Library
  * @author Patrick Kohl
- * @copyright Copyright (c) 2011VirtueMart Team. All rights reserved.
+ * @author Max Milbers
+ * @copyright Copyright (c) 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
