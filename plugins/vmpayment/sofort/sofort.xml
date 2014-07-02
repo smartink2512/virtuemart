@@ -25,7 +25,7 @@
          <field type="vmjpluginwarning"/>
          <field type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_TITLE" level="level1"/>
          <field type="getsofort" level="level1"/>
-         <field type="manual" level="level1"/>
+         <field type="sofortmanual" level="level1"/>
 
          <field type="spacer" default="" level="level1"/>
          <field type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_SETTINGS" level="level1"/>

@@ -23,9 +23,9 @@ defined('_JEXEC') or die();
 
 
 jimport('joomla.form.formfield');
-class JFormFieldCustomjs extends JFormField {
+class JFormFieldklarnacheckoutjs extends JFormField {
 
-	protected $type = 'Customjs';
+	protected $type = 'klarnacheckoutjs';
 
 	function getInput() {
 

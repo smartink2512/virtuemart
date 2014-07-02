@@ -32,8 +32,8 @@ class JFormFieldDuration extends JFormField {
 		$duration_value_id = $field_id . '_value';
 		$duration_unit_id = $field_id . '_unit';
 
-		if ($value) {
-			$duration_parts = explode('-', $value);
+		if ($this->value) {
+			$duration_parts = explode('-', $this->value);
 			$duration_value = $duration_parts[0];
 			$duration_unit = $duration_parts[1];
 		}
@@ -43,10 +43,10 @@ class JFormFieldDuration extends JFormField {
 		$js = "
 		jQuery().ready(function($) {
 			$('#" . $duration_value_id . "').change(function() {
-				$('#" . $control_name . $name . "').val($('#" . $duration_value_id . "').val()+'-'+$('#" . $duration_unit_id . "').val());
+				$('#" . $this->name . "').val($('#" . $duration_value_id . "').val()+'-'+$('#" . $duration_unit_id . "').val());
 			});
 			$('#" . $duration_unit_id . "').change(function() {
-				$('#" . $control_name . $name . "').val($('#" . $duration_value_id . "').val()+'-'+$('#" . $duration_unit_id . "').val());
+				$('#" . $this->name . "').val($('#" . $duration_value_id . "').val()+'-'+$('#" . $duration_unit_id . "').val());
 			});
 		});";
 		$doc->addScriptDeclaration($js);
@@ -59,7 +59,7 @@ class JFormFieldDuration extends JFormField {
 
 		$html = '<input type="text" style="width:25px;position:relative;font-size:14px;margin-right:10px;" name="' . $duration_value_id . '" id="' . $duration_value_id . '" value="' . $duration_value . '" >';
 		$html .= JHTML::_('select.genericlist', $options, $duration_unit_id, '', 'value', 'text', $duration_unit, $duration_unit_id);
-		$html .= '<input type="hidden" name="' . $control_name . '[' . $name . ']' . '" id="' . $control_name . $name . '" value="' . $value . '" class="' . $class . '" >';
+		$html .= '<input type="hidden" name="' . $this->name . '" id="' . $this->name. '" value="' . $this->value . '" class="' . $this->class . '" >';
 
 		return $html;
 	}

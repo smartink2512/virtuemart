@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die();
 
-class JFormFieldCustomjs extends JFormField {
+class JFormFieldPayboxjs extends JFormField {
 
 	/**
 	 * Element name
@@ -29,7 +29,7 @@ class JFormFieldCustomjs extends JFormField {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $type = 'customjs';
+	var $type = 'payboxjs';
 
 	function getInput() {
 

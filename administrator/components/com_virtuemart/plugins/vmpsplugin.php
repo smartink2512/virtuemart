@@ -40,7 +40,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	public function getVarsToPush () {
-		return self::getVarsToPushByXML($this->_xmlFile,$this->_psType.'Form');
+		return self::getVarsToPushByXML($this->_xmlFile,$this->_name.'Form');
 	}
 
 

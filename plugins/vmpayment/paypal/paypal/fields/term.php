@@ -35,7 +35,7 @@ class JFormFieldTerm extends JFormField {
 			$options[] = JHTML::_('select.option', $i, $i);
 		}
 
-		return JHTML::_('select.genericlist', $options, $this->name, 'size="1"', 'value', 'title', $this->value);
+		return JHTML::_('select.genericlist', $options, $this->name, 'size="1"', 'value', 'text', $this->value);
 
 	}
 }

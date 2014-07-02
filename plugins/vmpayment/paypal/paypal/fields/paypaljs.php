@@ -23,10 +23,10 @@ defined('_JEXEC') or die();
 
 
 jimport('joomla.form.formfield');
-class JFormFieldCustomjs extends JFormField {
+class JFormFieldPaypaljs extends JFormField {
 
 
-	public $type = 'Customjs';
+	public $type = 'Paypaljs';
 
 	function getInput() {
 

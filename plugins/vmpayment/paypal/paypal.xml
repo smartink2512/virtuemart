@@ -19,7 +19,7 @@
                        description="VMPAYMENT_PAYPAL_REGISTER_DESC"/>
                 <field type="spacer" default="" level="level1"/>
 
-                <field type="customjs" default=""/>
+                <field type="paypaljs" default=""/>
                 <field class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_BASIC_PARAMS"/>
 
                 <field name="paypalproduct" type="list" default="std" label="VMPAYMENT_PAYPAL_PRODUCTS"
@@ -171,29 +171,28 @@
 
 
                 <!-- Subscribe -->
-                <field class="subscribe" type="vmtitle" default="VMPAYMENT_PAYPAL_SUBSCRIPTION_SECTION"
+                <!-- field class="subscribe" type="vmtitle" default="VMPAYMENT_PAYPAL_SUBSCRIPTION_SECTION"
                        description="VMPAYMENT_PAYPAL_SUBSCRIPTION_DESC"/>
                 <field class="subscribe" name="subcription_trials" type="list" default="0"
                        label="VMPAYMENT_PAYPAL_TRIAL_PERIODS" description="VMPAYMENT_PAYPAL_TRIAL_PERIODS_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
-                    <!--option value="2">2</option-->
+                    <option value="2">2</option>
                 </field>
                 <field class="subscribe trial1" type="text" name="trial1_price" default="0"
                        label="VMPAYMENT_PAYPAL_TRIAL1_PRICE" description="VMPAYMENT_PAYPAL_TRIAL1_PRICE_DESC"/>
                 <field class="subscribe trial1" type="duration" name="trial1_duration" default="1-M"
                        label="VMPAYMENT_PAYPAL_TRIAL1_DURATION" description="VMPAYMENT_PAYPAL_TRIAL1_DURATION_DESC"/>
-                <!--param class="subscribe trial2" type="text" name="trial2_price" default="0" label="VMPAYMENT_PAYPAL_TRIAL2_PRICE" description="VMPAYMENT_PAYPAL_TRIAL2_PRICE_DESC" />
-                <field class="subscribe trial2" type="duration" name="trial2_duration" default="1-M" label="VMPAYMENT_PAYPAL_TRIAL2_DURATION" description="VMPAYMENT_PAYPAL_TRIAL2_DURATION_DESC" /-->
+                <field class="subscribe trial2" type="duration" name="trial2_duration" default="1-M" label="VMPAYMENT_PAYPAL_TRIAL2_DURATION" description="VMPAYMENT_PAYPAL_TRIAL2_DURATION_DESC" />
                 <field class="subscribe" type="duration" name="subscription_duration" default="1-M"
                        label="VMPAYMENT_PAYPAL_SUBSCRIPTION_DURATION"
                        description="VMPAYMENT_PAYPAL_SUBSCRIPTION_DURATION_DESC"/>
                 <field class="subscribe" type="term" name="subscription_term" default="1"
                        label="VMPAYMENT_PAYPAL_SUBSCRIPTION_TERM"
-                       description="VMPAYMENT_PAYPAL_SUBSCRIPTION_TERM_DESC"/>
+                       description="VMPAYMENT_PAYPAL_SUBSCRIPTION_TERM_DESC"/ -->
 
-                <!-- Payment plan -->
-                <field class="plan" type="vmtitle" default="VMPAYMENT_PAYPAL_PAYMENT_PLAN_SECTION"
+                <!-- Payment plan : NOT DONE YET -->
+                <!-- field class="plan" type="vmtitle" default="VMPAYMENT_PAYPAL_PAYMENT_PLAN_SECTION"
                        description="VMPAYMENT_PAYPAL_PAYMENT_PLAN_DESC"/>
                 <field class="plan" type="duration" name="payment_plan_duration" default="1-M"
                        label="VMPAYMENT_PAYPAL_PAYMENT_PLAN_DURATION"
@@ -214,7 +213,7 @@
                 <field class="plan defer defer_api" type="text" name="payment_plan_defer_strtotime" default="+1 Month"
                        label="VMPAYMENT_PAYPAL_PAYMENT_PLAN_DEFER_DATE"/>
                 <field class="plan defer defer_api" type="vmtitle" default=""
-                       description="VMPAYMENT_PAYPAL_PAYMENT_PLAN_DEFER_DATE_DESC"/>
+                       description="VMPAYMENT_PAYPAL_PAYMENT_PLAN_DEFER_DATE_DESC"/ -->
 
                 <!-- Automatic billing -->
                 <field class="billing" type="vmtitle" default="VMPAYMENT_PAYPAL_BILLING_SECTION"

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Id: getsofort.php 7200 2013-09-16 15:00:06Z alatak $
+ * @version $Id: manual.php 7261 2013-10-01 10:27:46Z alatak $
  *
  * @author Valérie Isaksen
  * @package VirtueMart
@@ -16,7 +16,7 @@ defined('JPATH_BASE') or die();
 jimport('joomla.form.formfield');
 
 
-class JFormFieldManual extends JFormField {
+class JFormFieldsofortmanual extends JFormField {
 
 	/**
 	 * Element name
@@ -24,7 +24,7 @@ class JFormFieldManual extends JFormField {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $type = 'Manual';
+	var $type = 'sofortmanual';
 
 	function getInput() {
 
@@ -38,12 +38,12 @@ class JFormFieldManual extends JFormField {
 		}
 
 
-		//iDEAL (EN): https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4945
-// iDEAL (DE): https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4945
+// SOFORT Banking (EN): https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4947
+		//	SOFORT Banking (DE): https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4947
 		if ($lang == 'de') {
-			$manualLink = "https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4945";
+			$manualLink = "https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4947";
 		} else {
-			$manualLink = "https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4945";
+			$manualLink = "https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4947";
 		}
 		$html = '<div><a target="_blank" href="' . $manualLink . '" id="getsogort_link" ">' . vmText::_('VMPAYMENT_SOFORT_DOCUMENTATION') . '</a>';
 		$html .= '</div>';

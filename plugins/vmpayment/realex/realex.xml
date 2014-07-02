@@ -24,7 +24,7 @@
                        description="VMPAYMENT_REALEX_REGISTER_TIP"/>
                 <field type="spacer" default="" level="level1"/>
 
-                <field type="customjs" default=""/>
+                <field type="realexjs" default=""/>
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_ACCOUNT_PARAMS"/>
 
                 <field name="integration" type="list" default="redirect" label="VMPAYMENT_REALEX_INTEGRATION"

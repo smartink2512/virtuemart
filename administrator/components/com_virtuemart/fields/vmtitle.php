@@ -32,6 +32,7 @@ class JFormFieldVmTitle extends JFormField
 
 	protected function getLabel()
 	{
+
 		$description = $this->element['description'];
 
 		$html = '';
@@ -44,11 +45,7 @@ class JFormFieldVmTitle extends JFormField
 			$html .= '<div ' . $class . '>';
 			$html .= JText::_($this->value);
 			$html .= '</div>';
-			if ($description) {
-				$html .= $description . '<br/>';
-			}
-		} else {
-			$html .= '<div ' . $class. '>' . $description . '</div>';
+
 		}
 
 		return $html;

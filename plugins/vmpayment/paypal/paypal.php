@@ -180,7 +180,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		);
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-
 		//self::$_this = $this;
 	}
 

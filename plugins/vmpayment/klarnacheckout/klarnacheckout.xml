@@ -18,7 +18,7 @@
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/klarnacheckout/klarnacheckout/fields">
                 <field type="klarnalogo" level="level1"/>
                 <field type="vmcurl"/>
-                <field type="customjs"/>
+                <field type="klarnacheckoutjs"/>
 
                 <field type="spacer" default="VMPAYMENT_KLARNACHECKOUT_WARNING" level="level1"/>
                 <field name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION"
