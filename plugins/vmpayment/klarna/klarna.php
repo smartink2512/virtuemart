@@ -1633,7 +1633,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param                $cart_prices
 	 * @param                $method
 	 */
-	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
+	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method, $progressive = true) {
 
 		$country = NULL;
 		$countryId = 0;
