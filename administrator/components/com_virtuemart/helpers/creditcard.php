@@ -60,7 +60,10 @@ class Creditcard {
 	 * @return boolean
 	 */
 	static function validate_credit_card_number($creditcard_code, $cardnum) {
-
+		$cardnum = str_replace(" ", "", $cardnum);
+		if (!is_int($cardnum)) {
+			return false;
+		}
 		$number = self::_strtonum($cardnum);
 		/*
 		  if(!$this->detectType($this->number))
