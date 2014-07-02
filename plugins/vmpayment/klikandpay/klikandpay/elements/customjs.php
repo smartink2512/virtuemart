@@ -19,7 +19,7 @@
  */
 
 
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
 class JElementCustomjs extends JElement {
 
@@ -31,16 +31,15 @@ class JElementCustomjs extends JElement {
 	 */
 	var $_name = 'Customjs';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-		
+	function fetchElement($name, $value, &$node, $control_name) {
 
-		
+
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/plugins/vmpayment/klikandpay/klikandpay/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/klikandpay/klikandpay/assets/css/klikandpay.css');
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/klikandpay/klikandpay/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/klikandpay/klikandpay/assets/css/klikandpay.css');
 
-		
-		return '';		
+
+		return '';
 	}
 
 }

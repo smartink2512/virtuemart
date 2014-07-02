@@ -17,29 +17,29 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  */
 class JElementSubscribe extends JElement {
 
-    /**
-     * Element name
-     *
-     * @access    protected
-     * @var        string
-     */
-    var $_name = "Subscribe";
+	/**
+	 * Element name
+	 *
+	 * @access    protected
+	 * @var        string
+	 */
+	var $_name = "Subscribe";
 
-    function fetchElement($name, $value, &$node, $control_name) {
+	function fetchElement($name, $value, &$node, $control_name) {
 
-       $query="
+		$query = "
           SELECT virtuemart_custom_id, custom_title
           FROM #__virtuemart_customs
 
 ";
 
-	    $db = JFactory::getDBO();
-	    $db->setQuery($query);
-	    $customFieldList = $db->loadObjectList();
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		$customFieldList = $db->loadObjectList();
 
-	    $attribs = ' ';
-	    $attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
-        return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . ']', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
-    }
+		$attribs = ' ';
+		$attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
+		return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . ']', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
+	}
 
 }

@@ -1348,9 +1348,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return $this->onShowOrderPrint($order_number, $method_id);
 	}
 
-	function plgVmDeclarePluginParamsPaymentVM3(&$paymentMethod) {
-
-		return $this->declarePluginParams('payment', $paymentMethod);
+	function plgVmDeclarePluginParamsPaymentVM3( &$data) {
+		return $this->declarePluginParams('payment', $data);
 	}
 
 	function plgVmSetOnTablePluginParamsPayment($name, $id, &$table) {

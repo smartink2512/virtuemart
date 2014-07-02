@@ -22,19 +22,19 @@
 defined('_JEXEC') or die('Restricted access');
 class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 
-	function __construct ($method, $plugin) {
+	function __construct($method, $plugin) {
 		parent::__construct($method, $plugin);
 
 	}
 
-	function getExtraPluginNameInfo () {
+	function getExtraPluginNameInfo() {
 		$recurring = $this->getRecurringPayments();
 		$extraInfo['recurring'] = $recurring['info'];
 		return $extraInfo;
 
 	}
 
-	function onCheckoutCheckDataPayment (VirtueMartCart $cart) {
+	function onCheckoutCheckDataPayment(VirtueMartCart $cart) {
 		static $displayInfoMsg = true;
 		if ($cart->BT) {
 			if (empty($cart->BT['phone_1']) and empty($cart->BT['phone_2']) and $displayInfoMsg) {
@@ -47,11 +47,11 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 		return $return;
 	}
 
-	function onSelectCheck (VirtueMartCart $cart) {
+	function onSelectCheck(VirtueMartCart $cart) {
 		$this->onCheckoutCheckDataPayment($cart);
 	}
 
-	function getRecurringPayments () {
+	function getRecurringPayments() {
 		if (empty($this->_method->recurring_deposit) and $this->_method->subscribe_number != 2) {
 			$recurring = $this->getRecurringIdenticalAmountMonthly();
 
@@ -68,7 +68,7 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 	 * et les autres montants sont présentés en banque à date anniversaire à 1 mois d’intervalle.
 	 * @param $totalInPaymentCurrency
 	 */
-	function getRecurringIdenticalAmountMonthly () {
+	function getRecurringIdenticalAmountMonthly() {
 		$totalInPaymentCurrency = $this->getTotal();
 		$recurring["MONTANT"] = $totalInPaymentCurrency;
 		$recurring["EXTRA"] = ($this->_method->recurring_number - 1) . "FOIS";
@@ -96,7 +96,7 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 	 *
 	 * @param $totalInPaymentCurrency
 	 */
-	function getRecurringDeposit () {
+	function getRecurringDeposit() {
 		$totalInPaymentCurrency = $this->getTotal();
 		if (preg_match('/%$/', $this->_method->recurring_deposit)) {
 			$deposit = substr($this->_method->recurring_deposit, 0, -1);
@@ -131,20 +131,20 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 	/**
 	 * La valeur DATE, doit être au format : année-mois-jour
 	 */
-	function getNextTermDate () {
+	function getNextTermDate() {
 		return date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + ($this->_method->recurring_date), date('Y')));
 	}
 
 
-	function getOrderHistory ($klikandpay_data, $order, $payments) {
-		if (count($payments)==1) {
+	function getOrderHistory($klikandpay_data, $order, $payments) {
+		if (count($payments) == 1) {
 			$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
 			$order_history['comments'] = vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED_RECURRING', $amountInCurrency['display'], $order['details']['BT']->order_number);
 		}
 
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($klikandpay_data['MONTANTXKP'], $order['details']['BT']->order_currency);
 		$order_history['comments'] .= "<br />" . vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED_RECURRING_2', $amountInCurrency['display']);
-		if (count($payments)==1) {
+		if (count($payments) == 1) {
 			$recurring_comment = '';
 			$payment = $payments[0];
 			$recurring = json_decode($payment->recurring);
@@ -178,7 +178,7 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 	}
 
 
-	function getNbRecurringDone ($payments) {
+	function getNbRecurringDone($payments) {
 		$nb = 0;
 		foreach ($payments as $payment) {
 			if (!empty($payment->klikandpay_fullresponse)) {
@@ -189,7 +189,7 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 		return $nb;
 	}
 
-	function getKlikandpayServerUrl ($id = NULL) {
+	function getKlikandpayServerUrl($id = NULL) {
 		if ($this->_method->shop_mode == 'test') {
 			$url = 'https://www.klikandpay.com/paiementtest/checkxfois.pl';
 		} else {

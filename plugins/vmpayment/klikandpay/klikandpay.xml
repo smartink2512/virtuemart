@@ -14,9 +14,8 @@
     <files>
         <filename plugin="klikandpay">klikandpay.php</filename>
         <folder>klikandpay</folder>
-      <folder>language</folder>
+        <folder>language</folder>
     </files>
-
 
 
     <params addpath="/plugins/vmpayment/klikandpay/klikandpay/elements"/>
@@ -38,7 +37,7 @@
         <param name="account" class="required" type="text" size="20" default=""
                label="VMPAYMENT_KLIKANDPAY_CONF_ACCOUNT" description="VMPAYMENT_KLIKANDPAY_CONF_ACCOUNT_TIP"/>
 
-        <param name="dynamic_return_url" class="required" type="urls" label="VMPAYMENT_KLIKANDPAY_CONF_URLS" />
+        <param name="dynamic_return_url" class="required" type="urls" label="VMPAYMENT_KLIKANDPAY_CONF_URLS"/>
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_ACCOUNT_CONFIGURATION"/>
 
@@ -49,7 +48,8 @@
             <option value="recurring">VMPAYMENT_KLIKANDPAY_CONF_INTEGRATION_RECURRING</option>
             <option value="subscribe">VMPAYMENT_KLIKANDPAY_CONF_INTEGRATION_SUBSCRIBE</option>
         </param>
-        <param class="integration recurring subscribe" type="vmtitle" default="" description="VMPAYMENT_KLIKANDPAY_CONF_INTEGRATION_WARNING"/>
+        <param class="integration recurring subscribe" type="vmtitle" default=""
+               description="VMPAYMENT_KLIKANDPAY_CONF_INTEGRATION_WARNING"/>
 
         <!-- begin recurring -->
 
@@ -64,14 +64,14 @@
         </param>
         <param class="integration recurring" name="recurring_deposit" type="text" default=""
                label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DEPOSIT"
-               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DEPOSIT_TIP" />
+               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DEPOSIT_TIP"/>
 
         <param class="integration recurring" name="recurring_date" type="text" default=""
                label="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DATE"
-               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DATE_TIP" />
+               description="VMPAYMENT_KLIKANDPAY_CONF_RECURRING_DATE_TIP"/>
         <!-- end recurring -->
 
-<!-- Subscribe -->
+        <!-- Subscribe -->
         <param class="integration subscribe" name="subscribe_number" type="list" default="2"
                label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_NUMBER"
                description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_NUMBER_TIP">
@@ -86,26 +86,59 @@
                 description="VMPAYMENT_KLIKANDPAY_CONF_INTEGRATION_SUBSCRIBE_CUSTOMFIELD_TIP"
                 class="integration subscribe"
                 />
-        <param class="subscribe_number subscribe_number_1 level2" type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_1"/>
-        <param class="subscribe_number subscribe_number_1 required" name="subscribe_id_1" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID_TIP"/>
-        <param class="subscribe_number subscribe_number_1" name="subscribe_test_amount_1" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT_TIP"/>
-        <param class="subscribe_number subscribe_number_1" name="subscribe_test_period_1" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD_TIP"/>
-        <param class="subscribe_number subscribe_number_1" name="subscribe_due_date_amount_1" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT_TIP"/>
-        <param class="subscribe_number subscribe_number_1" name="subscribe_frequency_1" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY_TIP" />
+        <param class="subscribe_number subscribe_number_1 level2" type="vmtitle"
+               default="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_1"/>
+        <param class="subscribe_number subscribe_number_1 required" name="subscribe_id_1" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID_TIP"/>
+        <param class="subscribe_number subscribe_number_1" name="subscribe_test_amount_1" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT_TIP"/>
+        <param class="subscribe_number subscribe_number_1" name="subscribe_test_period_1" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD_TIP"/>
+        <param class="subscribe_number subscribe_number_1" name="subscribe_due_date_amount_1" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT_TIP"/>
+        <param class="subscribe_number subscribe_number_1" name="subscribe_frequency_1" type="text" size="50" default=""
+               label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY_TIP"/>
 
-        <param class="subscribe_number subscribe_number_2 level2" type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_2"/>
-        <param class="subscribe_number subscribe_number_2 required" name="subscribe_id_2" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID_TIP"/>
-        <param class="subscribe_number subscribe_number_2" name="subscribe_test_amount_2" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT_TIP"/>
-        <param class="subscribe_number subscribe_number_2" name="subscribe_test_period_2" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD_TIP"/>
-        <param class="subscribe_number subscribe_number_2" name="subscribe_due_date_amount_2" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT_TIP"/>
-        <param class="subscribe_number subscribe_number_2" name="subscribe_frequency_2" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY_TIP" />
+        <param class="subscribe_number subscribe_number_2 level2" type="vmtitle"
+               default="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_2"/>
+        <param class="subscribe_number subscribe_number_2 required" name="subscribe_id_2" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID_TIP"/>
+        <param class="subscribe_number subscribe_number_2" name="subscribe_test_amount_2" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT_TIP"/>
+        <param class="subscribe_number subscribe_number_2" name="subscribe_test_period_2" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD_TIP"/>
+        <param class="subscribe_number subscribe_number_2" name="subscribe_due_date_amount_2" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT_TIP"/>
+        <param class="subscribe_number subscribe_number_2" name="subscribe_frequency_2" type="text" size="50" default=""
+               label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY_TIP"/>
 
-        <param class="subscribe_number subscribe_number_3 level2" type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_3"/>
-        <param class="subscribe_number subscribe_number_3 required" name="subscribe_id_3" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID_TIP"/>
-        <param class="subscribe_number subscribe_number_3" name="subscribe_test_amount_3" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT_TIP"/>
-        <param class="subscribe_number subscribe_number_3" name="subscribe_test_period_3" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD_TIP"/>
-        <param class="subscribe_number subscribe_number_3" name="subscribe_due_date_amount_3" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT_TIP"/>
-        <param class="subscribe_number subscribe_number_3" name="subscribe_frequency_3" type="text" size="50" default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY" description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY_TIP" />
+        <param class="subscribe_number subscribe_number_3 level2" type="vmtitle"
+               default="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_3"/>
+        <param class="subscribe_number subscribe_number_3 required" name="subscribe_id_3" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_ID_TIP"/>
+        <param class="subscribe_number subscribe_number_3" name="subscribe_test_amount_3" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_AMOUNT_TIP"/>
+        <param class="subscribe_number subscribe_number_3" name="subscribe_test_period_3" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_TEST_PERIOD_TIP"/>
+        <param class="subscribe_number subscribe_number_3" name="subscribe_due_date_amount_3" type="text" size="50"
+               default="" label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_DUE_DATE_AMOUNT_TIP"/>
+        <param class="subscribe_number subscribe_number_3" name="subscribe_frequency_3" type="text" size="50" default=""
+               label="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY"
+               description="VMPAYMENT_KLIKANDPAY_CONF_SUBSCRIBE_FREQUENCY_TIP"/>
 
         <!-- end subscribe -->
 
@@ -113,26 +146,36 @@
 
         <param class="" name="status_success" type="vmorderstate" scope="com_virtuemart"
                default="C"
-               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_SUCCESS_TIP"/>
+               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_SUCCESS"
+               description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_SUCCESS_TIP"/>
 
         <param class="" name="status_waiting" type="vmorderstate" scope="com_virtuemart"
                default="U"
-               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_WAITING" description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_WAITING_TIP"/>
+               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_WAITING"
+               description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_WAITING_TIP"/>
 
 
-        <param class="integration recurring" name="status_success_recurring" type="vmorderstate" scope="com_virtuemart" default="C"
-               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING" description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING_TIP"/>
-        <param class="integration recurring" name="status_success_recurring_end" type="vmorderstate" scope="com_virtuemart" default="C"
-               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING_END" description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING_END_TIP"/>
+        <param class="integration recurring" name="status_success_recurring" type="vmorderstate" scope="com_virtuemart"
+               default="C"
+               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING"
+               description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING_TIP"/>
+        <param class="integration recurring" name="status_success_recurring_end" type="vmorderstate"
+               scope="com_virtuemart" default="C"
+               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING_END"
+               description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING_END_TIP"/>
 
 
-        <param class="integration subscribe" name="status_success_subscribe" type="vmorderstate" scope="com_virtuemart" default="C"
-               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING" description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_SUBSCRIBE_TIP"/>
-        <param class="integration subscribe" type="vmtitle" default="" description="VMPAYMENT_KLIKANDPAY_CONF_ORDERSTATUS_CREATE_WARNING"/>
+        <param class="integration subscribe" name="status_success_subscribe" type="vmorderstate" scope="com_virtuemart"
+               default="C"
+               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_RECURRING"
+               description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_SUBSCRIBE_TIP"/>
+        <param class="integration subscribe" type="vmtitle" default=""
+               description="VMPAYMENT_KLIKANDPAY_CONF_ORDERSTATUS_CREATE_WARNING"/>
 
 
         <param class="" name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"
-               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_CANCEL" description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_CANCEL_TIP"/>
+               label="VMPAYMENT_KLIKANDPAY_CONF_STATUS_CANCEL"
+               description="VMPAYMENT_KLIKANDPAY_CONF_STATUS_CANCEL_TIP"/>
 
 
         <param class="level1" type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_OPTIONAL_PARAMS"/>

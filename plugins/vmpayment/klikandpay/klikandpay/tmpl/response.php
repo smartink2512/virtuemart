@@ -25,32 +25,33 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/klikandpay/klikandpay
 <div class="klikandpay response">
 
 
-	<?php if ( $viewData['success']) { ?>
+	<?php if ($viewData['success']) { ?>
 		<div class="status_confirmed">
-			<?php echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $viewData['amountInCurrency'] ,  $viewData["order_number"]); ?>
+			<?php echo vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $viewData['amountInCurrency'], $viewData["order_number"]); ?>
 		</div>
 		<div class="transaction_id">
-			<?php echo vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_NUMXKP') . ' ' .$viewData['$numxkp'];
+			<?php echo vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_NUMXKP') . ' ' . $viewData['$numxkp'];
 			?>
 		</div>
-		<?php if ( !empty($viewData['prochaine']))  { ?>
+		<?php if (!empty($viewData['prochaine'])) { ?>
 			<div class="extra_comment">
-				<?php echo  vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_PROCHAINE') . ' ' .$viewData['prochaine'];
+				<?php echo vmText::_('VMPAYMENT_KLIKANDPAY_RESPONSE_PROCHAINE') . ' ' . $viewData['prochaine'];
 				?>
 			</div>
 		<?php
 		}
 		?>
-<?php if ( !empty($viewData['extra_comment']))  { ?>
-<div class="extra_comment">
-			<?php echo  $viewData['extra_comment'];
-			?>
-</div>
-	<?php
-}
-	?>
+		<?php if (!empty($viewData['extra_comment'])) { ?>
+			<div class="extra_comment">
+				<?php echo $viewData['extra_comment'];
+				?>
+			</div>
+		<?php
+		}
+		?>
 		<div class="vieworder">
-			<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $viewData["order_number"] . '&order_pass=' . $viewData["order_pass"], false) ?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+			<a class="vm-button-correct"
+			   href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $viewData["order_number"] . '&order_pass=' . $viewData["order_pass"], false) ?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
 		</div>
 	<?php } else { ?>
 		<div class="">

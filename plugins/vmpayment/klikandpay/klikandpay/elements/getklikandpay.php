@@ -11,7 +11,7 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined ('JPATH_BASE') or die();
+defined('JPATH_BASE') or die();
 
 /**
  * Renders a label element
@@ -28,7 +28,7 @@ class JElementGetKlikandpay extends JElement {
 	 */
 	var $_name = 'getKlikandpay';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	function fetchElement($name, $value, &$node, $control_name) {
 
 		$js = '
 //<![CDATA[
@@ -37,63 +37,61 @@ class JElementGetKlikandpay extends JElement {
 		    jQuery("#klikandpay_getklikandpay_link").click( function() {
 				 if ( $("#klikandpay_getklikandpay_show_hide").is(":visible") ) {
 				  $("#klikandpay_getklikandpay_show_hide").hide("slow");
-			        $("#klikandpay_getklikandpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT')) . '");
+			        $("#klikandpay_getklikandpay_link").html("' . addslashes(vmText::_('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT')) . '");
 				} else {
 				 $("#klikandpay_getklikandpay_show_hide").show("slow");
-			       $("#klikandpay_getklikandpay_link").html("' . addslashes (vmText::_ ('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE')) . '");
+			       $("#klikandpay_getklikandpay_link").html("' . addslashes(vmText::_('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE')) . '");
 			    }
 		    });
 		});
 //]]>
 ';
 
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration($js);
 
-		$cid = vRequest::getvar ('cid', NULL, 'array');
-		if (is_Array ($cid)) {
+		$cid = vRequest::getvar('cid', NULL, 'array');
+		if (is_Array($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
 			$virtuemart_paymentmethod_id = $cid;
 		}
 
 		$query = "SELECT * FROM `#__virtuemart_paymentmethods` WHERE  virtuemart_paymentmethod_id = '" . $virtuemart_paymentmethod_id . "'";
-		$db = JFactory::getDBO ();
-		$db->setQuery ($query);
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
 		$params = $db->loadObject();
 
-	if ($params->created_on==$params->modified_on ) {
-		$id = "klikandpay_getklikandpay_link";
-		$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE') . '</a>';
-		$display='';
-		$html .= '<div id="klikandpay_getklikandpay_show_hide" align=""'.$display.' >';
-	} else {
-		$id = "klikandpay_getklikandpay_link";
-		$html = '<a href="#" id="' . $id . '">' . vmText::_ ('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT') . '</a>';
-		$display=' style="display: none;"';
-		$html .= '<div id="klikandpay_getklikandpay_show_hide" align=""'.$display.' >';
-	}
-		$id="";
-
-
-		$lang = $this->getLang ();
-
-	;
-		if ($lang=='fr') {
-			$url="http://www1.klikandpay.com/default.aspx?0.5187125992961228";
+		if ($params->created_on == $params->modified_on) {
+			$id = "klikandpay_getklikandpay_link";
+			$html = '<a href="#" id="' . $id . '">' . vmText::_('VMPAYMENT_KLIKANDPAY_GET_KLIKANDPAY_HIDE') . '</a>';
+			$display = '';
+			$html .= '<div id="klikandpay_getklikandpay_show_hide" align=""' . $display . ' >';
 		} else {
-			$url="http://www1.klikandpay.com/default.aspx?0.6721770374570042";
+			$id = "klikandpay_getklikandpay_link";
+			$html = '<a href="#" id="' . $id . '">' . vmText::_('VMPAYMENT_KLIKANDPAY_ALREADY_ACCOUNT') . '</a>';
+			$display = ' style="display: none;"';
+			$html .= '<div id="klikandpay_getklikandpay_show_hide" align=""' . $display . ' >';
+		}
+		$id = "";
+
+
+		$lang = $this->getLang();;
+		if ($lang == 'fr') {
+			$url = "http://www1.klikandpay.com/default.aspx?0.5187125992961228";
+		} else {
+			$url = "http://www1.klikandpay.com/default.aspx?0.6721770374570042";
 		}
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="1400px" width="800px"></iframe>';
 		$html .= "</div>";
 		return $html;
 	}
 
-	protected function getLang () {
+	protected function getLang() {
 
 
-		$language =& JFactory::getLanguage ();
-		$tag = strtolower (substr ($language->get ('tag'), 0, 2));
+		$language =& JFactory::getLanguage();
+		$tag = strtolower(substr($language->get('tag'), 0, 2));
 		return $tag;
 	}
 

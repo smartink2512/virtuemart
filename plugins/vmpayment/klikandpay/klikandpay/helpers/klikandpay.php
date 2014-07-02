@@ -29,7 +29,7 @@ class  KlikandpayHelperKlikandpay {
 	const RESPONSE_AWAITINGCHEQUE = "AWAITINGCHEQUE";
 
 
-	function __construct ($method, $plugin) {
+	function __construct($method, $plugin) {
 		$this->_method = $method;
 		$this->plugin = $plugin;
 	}
@@ -37,14 +37,14 @@ class  KlikandpayHelperKlikandpay {
 	/**
 	 * @param $order
 	 */
-	public function setOrder ($order) {
+	public function setOrder($order) {
 		$this->order = $order;
 	}
 
 	/**
 	 * @param $cart
 	 */
-	public function setCart ($cart) {
+	public function setCart($cart) {
 		$this->cart = $cart;
 	}
 
@@ -69,19 +69,19 @@ class  KlikandpayHelperKlikandpay {
 	}
 
 
-	function checkConditions ($cart) {
+	function checkConditions($cart) {
 		return true;
 	}
 
-	function onCheckoutCheckDataPayment (VirtueMartCart $cart) {
+	function onCheckoutCheckDataPayment(VirtueMartCart $cart) {
 		return true;
 	}
 
-	function onSelectCheck (VirtueMartCart $cart) {
+	function onSelectCheck(VirtueMartCart $cart) {
 		return true;
 	}
 
-	function getOrderDetails ($order) {
+	function getOrderDetails($order) {
 		$orderDetails = '';
 		foreach ($order['items'] as $item) {
 			$product_sku = str_replace(array('%', ':', '|'), '-', $item->order_item_sku);
@@ -94,7 +94,7 @@ class  KlikandpayHelperKlikandpay {
 	}
 
 
-	function getLanguage () {
+	function getLanguage() {
 
 		$langKlikandpay = array(
 			'fr' => 'fr',
@@ -114,7 +114,7 @@ class  KlikandpayHelperKlikandpay {
 	}
 
 
-	function getKlikandpayServerUrl ($id = NULL) {
+	function getKlikandpayServerUrl($id = NULL) {
 
 
 		if ($this->_method->shop_mode == 'test') {
@@ -131,14 +131,14 @@ class  KlikandpayHelperKlikandpay {
 	 * @param $klikandpay_data
 	 * @return mixed
 	 */
-	function getOrderNumber ($order_number) {
+	function getOrderNumber($order_number) {
 		return $order_number;
 	}
 
 	/**
 	 * @return array
 	 */
-	function getExtraPluginNameInfo () {
+	function getExtraPluginNameInfo() {
 
 		return false;
 	}
@@ -149,7 +149,7 @@ class  KlikandpayHelperKlikandpay {
 	 * @param $order
 	 * @return mixed
 	 */
-	function updateOrderHistory ($klikandpay_data, $order, $payments) {
+	function updateOrderHistory($klikandpay_data, $order, $payments) {
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($klikandpay_data['MONTANTXKP'], $klikandpay_data['DEVISEXKP']);
 		$order_history['comments'] = vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
 		$order_history['customer_notified'] = true;
@@ -161,14 +161,15 @@ class  KlikandpayHelperKlikandpay {
 		return $order_history;
 	}
 
-	function isResponseValid ($klikandpay_data, $order, $payments) {
+	function isResponseValid($klikandpay_data, $order, $payments) {
 		if ($klikandpay_data['RESPONSE'] == self::RESPONSE_SUCCESS OR $klikandpay_data['RESPONSE'] == self::RESPONSE_AWAITINGCHEQUE or $klikandpay_data['RESPONSE'] == self::RESPONSE_AWAITING) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	function isResponseSuccess ($response) {
+
+	function isResponseSuccess($response) {
 		return ($response == self::RESPONSE_SUCCESS);
 	}
 

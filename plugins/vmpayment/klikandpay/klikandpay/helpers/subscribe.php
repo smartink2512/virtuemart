@@ -22,7 +22,7 @@
 defined('_JEXEC') or die('Restricted access');
 class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 
-	function __construct ($method, $paypalPlugin) {
+	function __construct($method, $paypalPlugin) {
 		parent::__construct($method, $paypalPlugin);
 
 	}
@@ -33,7 +33,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 	 * @param $payments
 	 * @return mixed
 	 */
-	function getOrderHistory ($klikandpay_data, $order, $payments) {
+	function getOrderHistory($klikandpay_data, $order, $payments) {
 		$subscribe_comment = '';
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
 		$order_history['comments'] = vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
@@ -60,7 +60,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 	 * @param $payments
 	 * @return bool
 	 */
-	function isResponseValid ($klikandpay_data, $order, $payments) {
+	function isResponseValid($klikandpay_data, $order, $payments) {
 		if ($klikandpay_data['RESPONSE'] == self::RESPONSE_SUCCESS) {
 			if (isset($klikandpay_data['ORNUMXKP'])) {
 				foreach ($payments as $payment) {
@@ -80,7 +80,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 	/**
 	 * check if mixed products incart
 	 * */
-	function checkConditions ($cart) {
+	function checkConditions($cart) {
 		$subscribe = $this->getSubscribeProducts($cart);
 		if ($subscribe === false) {
 			return false;
@@ -89,7 +89,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 		}
 	}
 
-	function onCheckoutCheckDataPayment (VirtueMartCart $cart) {
+	function onCheckoutCheckDataPayment(VirtueMartCart $cart) {
 		static $displayInfoMsg = true;
 		$return = true;
 		if (!$this->getSubscribeProducts($cart)) {
@@ -106,11 +106,11 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 		return $return;
 	}
 
-	function onSelectCheck (VirtueMartCart $cart) {
+	function onSelectCheck(VirtueMartCart $cart) {
 		$this->onCheckoutCheckDataPayment($cart);
 	}
 
-	function getExtraPluginNameInfo () {
+	function getExtraPluginNameInfo() {
 		if (!class_exists('VirtueMartCart')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
@@ -124,7 +124,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 
 	}
 
-	function getSubscribeId ($cart) {
+	function getSubscribeId($cart) {
 		$subscribe = $this->getSubscribeProducts($cart);
 		if ($subscribe) {
 			return $subscribe['subscribe_id'];
@@ -144,7 +144,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 	 * @param VirtueMartCart $cart
 	 * @return array or boolean
 	 */
-	function getSubscribeProducts (VirtueMartCart $cart) {
+	function getSubscribeProducts(VirtueMartCart $cart) {
 		static $displayErrorMsg = true;
 
 		$subscribe = array();
@@ -174,11 +174,11 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 							$subscribe_test_amount = 'subscribe_test_amount_' . $subscribeOptionSelected;
 							$subscribe_test_period = 'subscribe_test_period_' . $subscribeOptionSelected;
 							$subscribe_id = 'subscribe_id_' . $subscribeOptionSelected;
-							$amountInCurrency = vmPSPlugin::getAmountInCurrency($this->_method->$subscribe_due_date_amount,$cart->pricesCurrency );
-							$subscribe['subscribe_due_date_amount'] =  $amountInCurrency['display'];
+							$amountInCurrency = vmPSPlugin::getAmountInCurrency($this->_method->$subscribe_due_date_amount, $cart->pricesCurrency);
+							$subscribe['subscribe_due_date_amount'] = $amountInCurrency['display'];
 							$subscribe['subscribe_frequency'] = $this->_method->$subscribe_frequency;
 							if ($this->_method->$subscribe_test_amount) {
-								$amountInCurrency = vmPSPlugin::getAmountInCurrency($this->_method->$subscribe_test_amount,$cart->pricesCurrency );
+								$amountInCurrency = vmPSPlugin::getAmountInCurrency($this->_method->$subscribe_test_amount, $cart->pricesCurrency);
 								$subscribe['subscribe_test_amount'] = $amountInCurrency['display'];
 							}
 
@@ -206,8 +206,8 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 
 	}
 
-	function getSubscribeOptionSelected ($product_custom_field, $priceKey) {
-		$variants=$this->parseModifier($priceKey);
+	function getSubscribeOptionSelected($product_custom_field, $priceKey) {
+		$variants = $this->parseModifier($priceKey);
 		$i = 1;
 		foreach ($product_custom_field->options as $key => $option) {
 			if ($key == $variants[$product_custom_field->virtuemart_custom_id]) {
@@ -226,33 +226,34 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 	 */
 	public function parseModifier($priceKey) {
 
-	$variants = array();
-	if ($index = strpos($priceKey, '::')) {
-		$virtuemart_product_id = substr($priceKey, 0, $index);
-		$allItems = substr($priceKey, $index + 2);
-		$items = explode(';', $allItems);
+		$variants = array();
+		if ($index = strpos($priceKey, '::')) {
+			$virtuemart_product_id = substr($priceKey, 0, $index);
+			$allItems = substr($priceKey, $index + 2);
+			$items = explode(';', $allItems);
 
-		foreach ($items as $item) {
-			if (!empty($item)) {
-				//vmdebug('parseModifier $item',$item);
-				$index2 = strpos($item, ':');
-				if($index2!=false){
-					$selected = substr($item, 0, $index2);
-					$variant = substr($item, $index2 + 1);
-					//	echo 'My selected '.$selected;
-					//	echo ' My $variant '.$variant.' ';
-					//TODO productCartId
-					//MarkerVarMods
-					//$variants[$selected] = $variant; //this works atm not for the cart
-					$variants[$variant] = $selected; //but then the orders are broken
+			foreach ($items as $item) {
+				if (!empty($item)) {
+					//vmdebug('parseModifier $item',$item);
+					$index2 = strpos($item, ':');
+					if ($index2 != false) {
+						$selected = substr($item, 0, $index2);
+						$variant = substr($item, $index2 + 1);
+						//	echo 'My selected '.$selected;
+						//	echo ' My $variant '.$variant.' ';
+						//TODO productCartId
+						//MarkerVarMods
+						//$variants[$selected] = $variant; //this works atm not for the cart
+						$variants[$variant] = $selected; //but then the orders are broken
+					}
 				}
 			}
 		}
+		//vmdebug('parseModifier $variants',$variants);
+		return $variants;
 	}
-	//vmdebug('parseModifier $variants',$variants);
-	return $variants;
-}
-	function getProdCustomFields ($virtuemart_product_id) {
+
+	function getProdCustomFields($virtuemart_product_id) {
 		$product = new stdClass();
 		$product->virtuemart_product_id = $virtuemart_product_id;
 		$customfields = VmModel::getModel('Customfields');
@@ -260,7 +261,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 		return $product_customfields;
 	}
 
-	function getProductAmount ($productPricesUnformatted) {
+	function getProductAmount($productPricesUnformatted) {
 		if ($productPricesUnformatted['salesPriceWithDiscount']) {
 			return $productPricesUnformatted['salesPriceWithDiscount'];
 		} else {
@@ -268,7 +269,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 		}
 	}
 
-	function getKlikandpayServerUrl ($subscribe_id) {
+	function getKlikandpayServerUrl($subscribe_id) {
 		if ($subscribe_id) {
 			if ($this->_method->shop_mode == 'test') {
 				$url = 'https://www.klikandpay.com/paiementtest/checkabon.pl';

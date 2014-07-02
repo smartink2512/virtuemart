@@ -29,8 +29,8 @@ jQuery().ready(function ($) {
 
         $('.recurring_date').parents('tr').hide();
 
-        if (integration=='recurring') {
-            if (recurring_number=='2') {
+        if (integration == 'recurring') {
+            if (recurring_number == '2') {
                 $('.recurring_date').parents('tr').show();
             }
         }
@@ -43,7 +43,7 @@ jQuery().ready(function ($) {
 
         if (integration == 'recurring') {
             $('.recurring').parents('tr').show();
-        } else if(integration == 'subscribe') {
+        } else if (integration == 'subscribe') {
             $('.subscribe').parents('tr').show();
         }
     }
@@ -55,11 +55,11 @@ jQuery().ready(function ($) {
         $('.subscribe_number_1 ').parents('tr').hide();
         $('.subscribe_number_2 ').parents('tr').hide();
         $('.subscribe_number_3 ').parents('tr').hide();
-        if(integration == 'subscribe') {
-                $('.subscribe_number_1').parents('tr').show();
-            if(subscribe_number == '2') {
+        if (integration == 'subscribe') {
+            $('.subscribe_number_1').parents('tr').show();
+            if (subscribe_number == '2') {
                 $('.subscribe_number_2').parents('tr').show();
-            }else if(subscribe_number == '3') {
+            } else if (subscribe_number == '3') {
                 $('.subscribe_number_2').parents('tr').show();
                 $('.subscribe_number_3').parents('tr').show();
             }
@@ -103,6 +103,6 @@ jQuery().ready(function ($) {
     /*****************/
     handleShopMode();
     handleIntegration();
-   // handleRecurringDate();
+    // handleRecurringDate();
     handleSubscribeNumber();
 });

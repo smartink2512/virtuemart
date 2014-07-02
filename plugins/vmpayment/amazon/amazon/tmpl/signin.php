@@ -1,5 +1,5 @@
 <?php
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
@@ -19,12 +19,12 @@ defined ('_JEXEC') or die();
 
 $doc = JFactory::getDocument();
 vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
-$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/css/amazon-site.css');
-if ( $viewData['sign_in_display'] == 'advertise') {
+$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon-site.css');
+if ($viewData['sign_in_display'] == 'advertise') {
 	$doc->addScriptDeclaration("
 jQuery(document).ready( function($) {
 $( '.output-shipto-add' ).hide();
-	amazonShowButton('".$viewData['sellerId']."', '".$viewData['redirect_page']."');
+	amazonShowButton('" . $viewData['sellerId'] . "', '" . $viewData['redirect_page'] . "');
 	var amazonButtonHtml = $('#checkout-advertise-box').html();
 	$('#checkout-advertise-box').hide();
 	 $('#checkoutFormSubmit').before(amazonButtonHtml);
@@ -37,10 +37,10 @@ $( '.output-shipto-add' ).hide();
 
 
 ?>
-<div id="payWithAmazonDiv">
-	<img src="<?php echo $viewData['buttonWidgetImageURL'] ?>" style="cursor: pointer;" />
-</div>
-<div id="amazonSignInErrorMsg" class="error"></div>
-<?php if ( $viewData['sign_in_display'] == 'advertise') { ?>
-<div><?php echo vmText::_('VMPAYMENT_AMAZON_OR')?></div>
+	<div id="payWithAmazonDiv">
+		<img src="<?php echo $viewData['buttonWidgetImageURL'] ?>" style="cursor: pointer;"/>
+	</div>
+	<div id="amazonSignInErrorMsg" class="error"></div>
+<?php if ($viewData['sign_in_display'] == 'advertise') { ?>
+	<div><?php echo vmText::_('VMPAYMENT_AMAZON_OR') ?></div>
 <?php } ?>
