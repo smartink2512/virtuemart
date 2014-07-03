@@ -61,7 +61,10 @@ class Creditcard {
 	 */
 	static function validate_credit_card_number($creditcard_code, $cardnum) {
 		$cardnum = str_replace(" ", "", $cardnum);
-		if (!is_int($cardnum)) {
+		$matches = array();
+		$regex = '/^[0-9]{11,19}$/';
+
+		if(!preg_match ($regex, $cardnum, $matches)){
 			return false;
 		}
 		$number = self::_strtonum($cardnum);
