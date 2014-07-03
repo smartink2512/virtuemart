@@ -84,11 +84,14 @@ $document->addScriptDeclaration ("
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
-	$('#checkoutFormSubmit').click(function(e){
+	$('#checkoutFormSubmit').bind('click dblclick', function(){
     $(this).attr('disabled', 'true');
-    $(this).fadeIn( 400 );
+    $(this).removeClass( 'vm-button-correct' );
+    $(this).addClass( 'vm-button' );
     $('#checkoutForm').submit();
+
 });
+
 	});
 
 //]]>
