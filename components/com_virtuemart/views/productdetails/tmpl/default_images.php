@@ -24,6 +24,9 @@ if(VmConfig::get('usefancy',1)){
 	$document = JFactory::getDocument ();
 	$imageJS = '
 	jQuery(document).ready(function() {
+		Virtuemart.updateImageEventListeners()
+	});
+	Virtuemart.updateImageEventListeners = function() {
 		jQuery("a[rel=vm-additional-images]").fancybox({
 			"titlePosition" 	: "inside",
 			"transitionIn"	:	"elastic",
@@ -40,7 +43,7 @@ if(VmConfig::get('usefancy',1)){
 			jQuery(".main-image a").attr("title",this.alt );
 			jQuery(".main-image .vm-img-desc").html(this.alt);
 		}); 
-	});
+	}
 	';
 } else {
 	vmJsApi::js( 'facebox' );
@@ -48,10 +51,13 @@ if(VmConfig::get('usefancy',1)){
 	$document = JFactory::getDocument ();
 	$imageJS = '
 	jQuery(document).ready(function() {
+		Virtuemart.updateImageEventListeners()
+	});
+	Virtuemart.updateImageEventListeners = function() {
 		jQuery("a[rel=vm-additional-images]").facebox();
 		var imgtitle = jQuery("span.vm-img-desc").text();
 		jQuery("#facebox span").html(imgtitle);
-	});
+	}
 	';
 }
 $document->addScriptDeclaration ($imageJS);

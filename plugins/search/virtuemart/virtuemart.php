@@ -5,6 +5,7 @@
  * A search plugin for com_search
  *
  * @author Valérie Isaksen
+ * @author Samuel Mehrbrodt
  * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage search
@@ -80,7 +81,7 @@ class PlgSearchVirtuemart extends JPlugin {
 					$id = intval($id);
 				}
 				// The custom field ID must be either in the list specified or NULL.
-				$customfield_ids_condition = "cf.virtuemart_custom_id IN (" .
+				$customfield_ids_condition = "AND cf.virtuemart_custom_id IN (" .
 					implode(',', $customfield_ids) . ")";
 			}
 
@@ -108,7 +109,7 @@ class PlgSearchVirtuemart extends JPlugin {
 				if ($search_product_description)
 					$wheres2[] = "a.product_desc LIKE $text";
 				if ($search_customfields)
-					$wheres2[] = "(cf.custom_value LIKE $text AND $customfield_ids_condition)";
+					$wheres2[] = "(cf.customfield_value LIKE $text $customfield_ids_condition)";
 				$where = '(' . implode (') OR (', $wheres2) . ')';
 				break;
 			case 'all':
@@ -128,7 +129,7 @@ class PlgSearchVirtuemart extends JPlugin {
 					if ($search_product_description)
 						$wheres2[] = "a.product_desc LIKE $word";
 					if ($search_customfields)
-						$wheres2[] = "(cf.custom_value LIKE $word AND $customfield_ids_condition)";
+						$wheres2[] = "(cf.customfield_value LIKE $word $customfield_ids_condition)";
 
 					$wheres[] = implode (' OR ', $wheres2);
 				}
@@ -165,11 +166,11 @@ class PlgSearchVirtuemart extends JPlugin {
 				$sgrgroups[] = 'psgr.`virtuemart_shoppergroup_id`= "' . (int)$virtuemart_shoppergroup_id . '" ';
 			}
 			$sgrgroups[] = 'psgr.`virtuemart_shoppergroup_id` IS NULL ';
-			$shopper_group_condition = "AND ( " . implode (' OR ', $sgrgroups) . " ) ";
+			$shopper_group_condition = " AND ( " . implode (' OR ', $sgrgroups) . " ) ";
 		}
 
 		$uncategorized_products_condition = VmConfig::get('show_uncat_child_products') ?
-			'' : 'AND b.virtuemart_category_id > 0 ';
+			'' : ' AND b.virtuemart_category_id > 0 ';
 
 		$query = "
 				SELECT DISTINCT
@@ -183,11 +184,11 @@ class PlgSearchVirtuemart extends JPlugin {
 					(SELECT pc2.virtuemart_category_id
 						FROM #__virtuemart_product_categories as pc2
 						WHERE pc2.virtuemart_product_id = a.virtuemart_product_id LIMIT 1) AS cat_id
-				FROM `#__virtuemart_products_" . VMLANG . "` AS a
+				FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` AS a
 				JOIN #__virtuemart_products AS p USING (`virtuemart_product_id`)
 				LEFT JOIN `#__virtuemart_product_categories` AS xref
 						ON xref.`virtuemart_product_id` = a.`virtuemart_product_id`
-				LEFT JOIN `#__virtuemart_categories_" . VMLANG . "` AS b
+				LEFT JOIN `#__virtuemart_categories_" . VmConfig::$vmlang . "` AS b
 						ON b.`virtuemart_category_id` = xref.`virtuemart_category_id`
 				LEFT JOIN `#__virtuemart_product_shoppergroups` as `psgr`
 						ON (`psgr`.`virtuemart_product_id`=`a`.`virtuemart_product_id`)

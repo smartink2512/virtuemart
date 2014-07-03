@@ -91,7 +91,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			$this->installPlugin ('VM Custom - Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
 			$this->installPlugin ('VM Custom - Product specification', 'plugin', 'specification', 'vmcustom', 1);
-			$this->installPlugin ('VM Custom - Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
+			//$this->installPlugin ('VM Custom - Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
 			$this->installPlugin ('VM Calculation - Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
 			//$this->installPlugin ('VM Userfield - Realex', 'plugin', 'realex', 'vmuserfield' );
 
@@ -227,8 +227,31 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			$this->checkFixJoomlaBEMenuEntries();
 
+			$this->replaceStockableByDynamicChilds();
 			return TRUE;
 
+		}
+
+		/**
+		 *
+		 */
+		public function replaceStockableByDynamicChilds(){
+			$db = JFactory::getDbo();
+			$db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "plugin" AND `folder` = "vmcustom" AND `element`="stockable"');
+			$jId = $db->loadResult();
+
+			if($jId){
+				$db->setQuery('SELECT `virtuemart_custom_id` FROM #__virtuemart_customs WHERE `custom_jplugin_id` = "'.$jId.'" ');
+				$cId = $db->loadResult();
+
+				$db->setQuery('SELECT `virtuemart_custom_id` FROM #__virtuemart_customs WHERE `field_type` = "A" ');
+				$acId = $db->loadResult();
+
+				if($cId){
+					$db->setQuery('UPDATE #__virtuemart_product_customfields SET `virtuemart_custom_id` = "'.$acId.'" WHERE `virtuemart_custom_id` = "'.$cId.'" ');
+					$db->execute();
+				}
+			}
 		}
 
 		/**

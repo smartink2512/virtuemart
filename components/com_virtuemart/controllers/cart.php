@@ -126,7 +126,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$msg = $cart->setCouponCode($coupon_code);
 
 		$cart->selected_shipto = vRequest::getVar('shipto', -1);
-		if($cart->selected_shipto<1){
+		if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
 			$cart->STsameAsBT = 1;
 			$cart->selected_shipto = 0;
 		} else {

@@ -154,7 +154,7 @@ if (empty ( $this->product )) {
 				<?php //echo JHtml::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
-			<span class="product-field-desc"><?php echo vmText::_($field->custom_field_desc) ?></span>
+			<span class="product-field-desc"><?php echo vmText::_($field->custom_desc) ?></span>
 			</div>
 			<?php
 			$custom_title = $field->custom_title;

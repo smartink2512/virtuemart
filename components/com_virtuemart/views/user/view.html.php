@@ -75,10 +75,10 @@ class VirtuemartViewUser extends VmView {
 	if (!class_exists('ShopFunctions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
-
-	if (!class_exists('VirtuemartModelUser'))
+	$this->_model = VmModel::getModel('user');
+	/*if (!class_exists('VirtuemartModelUser'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
-	$this->_model = new VirtuemartModelUser();
+	$this->_model = new VirtuemartModelUser();*/
 
 	//$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 	$editor = JFactory::getEditor();
@@ -89,7 +89,6 @@ class VirtuemartViewUser extends VmView {
 	$this->userDetails = $this->_model->getUser();
 
 	$this->address_type = vRequest::getCmd('addrtype', 'BT');
-	//$this->assignRef('address_type', $address_type);
 
 	$new = false;
 	if (vRequest::getInt('new', '0') == 1) {
@@ -205,13 +204,13 @@ class VirtuemartViewUser extends VmView {
 			$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 	    }
 	}
-	  $add_product_link="";
+
+		$this->add_product_link="";
 
 	if(VmConfig::isSuperVendor() ){
-	    $add_product_link = JRoute::_( 'index.php?option=com_virtuemart&tmpl=component&view=product&view=product&task=edit&virtuemart_product_id=0' );
-	    $add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
+	    $add_product_link = JRoute::_( 'index.php?option=com_virtuemart&tmpl=component&view=product&view=product&task=edit&virtuemart_product_id=0&manage=1' );
+	    $this->add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
 	}
-	$this->assignRef('add_product_link', $add_product_link);
 
 	$document = JFactory::getDocument();
 	$document->setTitle($pathway_text);
@@ -261,9 +260,9 @@ class VirtuemartViewUser extends VmView {
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'shoppergroup.php');
 
 	$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById($this->_model->getId());
+	$user = JFactory::getUser();
 
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')) {
+	if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')) {
 
 		$shoppergrps = array();
 		foreach($_shoppergroup as $group){
@@ -347,11 +346,11 @@ class VirtuemartViewUser extends VmView {
 
 			$vendorModel = VmModel::getModel('vendor');
 
-			if (Vmconfig::get('multix', 'none') === 'none') {
-			$vendorModel->setId(1);
-			} else {
-			$vendorModel->setId($this->userDetails->virtuemart_vendor_id);
-			}
+			/*if (Vmconfig::get('multix', 'none') === 'none') {
+				//$vendorModel->setId(1);
+			} else {*/
+				$vendorModel->setId($this->userDetails->virtuemart_vendor_id);
+			//}
 			$vendor = $vendorModel->getVendor();
 			$vendorModel->addImages($vendor);
 			$this->assignRef('vendor', $vendor);

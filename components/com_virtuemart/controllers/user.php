@@ -92,10 +92,12 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 
 		if($cart->fromCart or $cart->getInCheckOut()){
+			vmdebug('saveUser fromCart',(int)$cart->fromCart);
 			$msg = $this->saveData($cart);
 			$task = '';
 			if ($cart->getInCheckOut()){
 				$task = '&task=checkout';
+				vmdebug('saveUser InCheckOut',(int)$cart->fromCart);
 			}
 			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) , $msg);
 		} else {
@@ -137,49 +139,42 @@ class VirtueMartControllerUser extends JControllerLegacy
 				$prefix= '';
 				if ($data['address_type'] == 'STaddress' || $data['address_type'] =='ST') {
 					$prefix = 'shipto_';
+					vmdebug('Storing user ST prefix '.$prefix);
 				}
 				$cart->saveAddressInCart($data, $data['address_type'],true,$prefix);
 			}
 		}
 
+		if(empty($data['address_type'])){
+			$data['address_type'] = vRequest::getCmd('addrtype','BT');
+		}
 
-		//if (isset($_POST['register']) or ()) {
 
-			if(empty($data['address_type'])){
-				$data['address_type'] = vRequest::getCmd('addrtype','BT');
+		$userModel = VmModel::getModel('user');
+
+		if(!$cart){
+			// Store multiple selectlist entries as a ; separated string
+			if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
+				$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 			}
 
-			if($data['address_type'] == 'ST'){
-				$onlyAddress = true;
-			} else {
-				$onlyAddress = false;
-			}
+			$data['vendor_store_name'] = vRequest::getHtml('vendor_store_name');
+			$data['vendor_store_desc'] = vRequest::getHtml('vendor_store_desc');
+			$data['vendor_terms_of_service'] = vRequest::getHtml('vendor_terms_of_service');
+			$data['vendor_letter_css'] = vRequest::getHtml('vendor_letter_css');
+			$data['vendor_letter_header_html'] = vRequest::getHtml('vendor_letter_header_html');
+			$data['vendor_letter_footer_html'] = vRequest::getHtml('vendor_letter_footer_html');
+		}
+		//vmdebug('saveData store user',$data);
 
-			$userModel = VmModel::getModel('user');
+		//It should always be stored
+		if($data['address_type'] == 'ST' or (!isset($_POST['register']) and $currentUser->guest)){
+			$ret = $userModel->storeAddress($data);
+			//vmdebug('saveData storeAddress only');
+		} else {
+			$ret = $userModel->store($data);
 
-			if(!$cart){
-				// Store multiple selectlist entries as a ; separated string
-				if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
-					$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
-				}
-
-				$data['vendor_store_name'] = vRequest::getHtml('vendor_store_name');
-				$data['vendor_store_desc'] = vRequest::getHtml('vendor_store_desc');
-				$data['vendor_terms_of_service'] = vRequest::getHtml('vendor_terms_of_service');
-				$data['vendor_letter_css'] = vRequest::getHtml('vendor_letter_css');
-				$data['vendor_letter_header_html'] = vRequest::getHtml('vendor_letter_header_html');
-				$data['vendor_letter_footer_html'] = vRequest::getHtml('vendor_letter_footer_html');
-			}
-			vmdebug('saveData store user',$data);
-			//It should always be stored
-			if($onlyAddress){
-				$ret = $userModel->storeAddress($data);
-				vmdebug('saveData storeAddress only');
-			} else {
-				$ret = $userModel->store($data);
-			}
-
-			if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) and !$onlyAddress ){
+			if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) ){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );
@@ -187,7 +182,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 				if (is_array($ret) and $ret['success'] and !$useractivation) {
 					// Username and password must be passed in an array
 					$credentials = array('username' => $ret['user']->username,
-			  					'password' => $ret['user']->password_clear
+						'password' => $ret['user']->password_clear
 					);
 					$return = $mainframe->login($credentials);
 				} else if(VmConfig::get('oncheckout_only_registered',0)){
@@ -195,8 +190,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 				}
 			}
-		//}
-
+		}
 
 		return $msg;
 	}

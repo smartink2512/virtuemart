@@ -65,7 +65,7 @@ class VirtueMartCart {
 	//var $pricesUnformatted = null;
 	var $pricesCurrency = null;
 	var $paymentCurrency = null;
-	var $STsameAsBT = TRUE;
+	var $STsameAsBT = 1;
 	var $selected_shipto = 0;
 	var $productParentOrderable = TRUE;
 	var $_triesValidateCoupon = array();
@@ -212,15 +212,13 @@ class VirtueMartCart {
 				} else {
 					if(!empty($this->selected_shipto) and $address->virtuemart_userinfo_id==$this->selected_shipto){
 						$this->saveAddressInCart((array) $address, $address->address_type,false,'');
-						$this->STsameAsBT = 0;
 					}
 				}
 			}
-		}
-
-		if(empty($this->selected_shipto)){
-			$this->STsameAsBT = 1;
-			$this->ST = 0;
+			if(empty($this->selected_shipto)){
+				$this->STsameAsBT = 1;
+				$this->ST = 0;
+			}
 		}
 
 		$this->prepareAddressFieldsInCart();
@@ -810,11 +808,11 @@ class VirtueMartCart {
 		}
 		//vmdebug('CheckoutData my cart before $this->STsameAsBT!==0 ',$validUserDataBT);
 		$currentUser = JFactory::getUser();
-		if($this->STsameAsBT!==0){
+		if($this->STsameAsBT!=0){
 			if($this->_confirmDone){
 				$this->ST = $this->BT;
 			} else {
-				$this->ST = 0;
+				//$this->ST = 0;
 			}
 			vmdebug('CheckoutData my cart $this->STsameAsBT ',$this->ST);
 		} else {
@@ -989,7 +987,7 @@ class VirtueMartCart {
 
 		//Just to prevent direct call
 		if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut and !$this->_cartProcessed) {
-			$this->_cartProcessed = true;
+			//$this->_cartProcessed = true;
 
 			$orderModel = VmModel::getModel('orders');
 
@@ -1122,15 +1120,16 @@ class VirtueMartCart {
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = VmModel::getModel('userfields');
 		//$prefix = '';
-
+		if ($type == 'STaddress' or $type == 'BTaddress'){
+			vmTrace('STaddress found, seek and destroy');
+		}
 		$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
 
 		if(!is_array($data)){
 			$data = get_object_vars($data);
 		}
-		//STaddress may be obsolete
 
-		if ($type == 'STaddress' || $type =='ST') {
+		if ($type =='ST') {
 			//if($prefix==0)$prefix = 'shipto_';
 			$this->STsameAsBT = 0;
 		} else { // BT
@@ -1187,7 +1186,7 @@ class VirtueMartCart {
 		unset($address['password2']);
 
 		$this->{$type} = $address;
-
+		//vmdebug('saveAddressInCart my type ',$type,$this->{$type});
 		if($putIntoSession){
 			$this->setCartIntoSession();
 		}

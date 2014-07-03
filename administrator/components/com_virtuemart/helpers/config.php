@@ -1039,7 +1039,7 @@ class VmConfig {
 			}
 
 		}
-		vmdebug('isSuperVendor',self::$_virtuemart_vendor_id);
+		//vmdebug('isSuperVendor',self::$_virtuemart_vendor_id);
 		return self::$_virtuemart_vendor_id;
 
 	}

@@ -244,19 +244,16 @@ echo $this->loadTemplate('reviews');
 </div>
 <script>
 	// GALT
-	jQuery(function($) {
-		/*
-		 * Notice for Template Developers!
-		 * Templates must set a Virtuemart.container variable as it takes part in
-		 * dynamic content update.
-		 * This variable points to a topmost element that holds other content.
-		 */
-		// If this <script> block goes right after the element itself there is no
-		// need in ready() handler, which is much better.
-		//$(document).ready(function() {
-		Virtuemart.container = $('.productdetails-view');
-		Virtuemart.containerSelector = '.productdetails-view';
-		//});
-
-	});
+	/*
+	 * Notice for Template Developers!
+	 * Templates must set a Virtuemart.container variable as it takes part in
+	 * dynamic content update.
+	 * This variable points to a topmost element that holds other content.
+	 */
+	// If this <script> block goes right after the element itself there is no
+	// need in ready() handler, which is much better.
+	//jQuery(document).ready(function() {
+	Virtuemart.container = jQuery('.productdetails-view');
+	Virtuemart.containerSelector = '.productdetails-view';
+	//});
 </script>

@@ -14,16 +14,21 @@ jQuery(function($) {
     Virtuemart.isUpdatingContent = false;
     Virtuemart.updateContent = function(url) {
         Virtuemart.isUpdatingContent = true;
-        url += '&tmpl=component';
+        url += url.indexOf('&') == -1 ? '?tmpl=component' : '&tmpl=component';
         $.ajax({
             url: url,
             dataType: 'html',
             success: function(data) {
                 var el = $(data).find(Virtuemart.containerSelector);
-                Virtuemart.container.html(el.html());
-                Virtuemart.updateDynamicUpdateListeners();
-                Virtuemart.updateCartListener();
-                Virtuemart.isUpdatingContent = false;
+				if (! el.length) el = $(data).filter(Virtuemart.containerSelector);
+				if (el.length) {
+					Virtuemart.container.html(el.html());
+					Virtuemart.updateDynamicUpdateListeners();
+					Virtuemart.updateCartListener();
+					if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners()
+					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout()
+				}
+				Virtuemart.isUpdatingContent = false;
             }
         });
     }
@@ -44,6 +49,7 @@ jQuery(function($) {
             el = $(el);
             switch (nodeName) {
                 case 'A':
+					el[0].onclick = null;
                     el.click(function(event) {
                         event.preventDefault();
                         var url = el.attr('href');
@@ -52,7 +58,9 @@ jQuery(function($) {
                     });
                     break;
                 default:
+					el[0].onchange = null;
                     el.change(function(event) {
+					
                         event.preventDefault();
                         var url = el.val();
                         setBrowserNewState(url);
@@ -89,7 +97,7 @@ jQuery(function($) {
         } else {
             url = event.state.url;
         }
-        console.log(url);
+        //console.log(url);
         Virtuemart.updateContent(url);
     }
     window.onpopstate = browserStateChangeEvent;

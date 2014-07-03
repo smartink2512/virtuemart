@@ -379,6 +379,9 @@ class VmView extends JViewLegacy {
 			<input type="hidden" name="filter_order_Dir" value="'.$this->lists['filter_order_Dir'].'" />';
 		}
 
+		if(vRequest::get('manage',false)){
+			$hidden .='<input type="hidden" name="manage" value="1" />';
+		}
 		return  $hidden.'
 		<input type="hidden" name="task" value="'.$task.'" />
 		<input type="hidden" name="option" value="'.$option.'" />

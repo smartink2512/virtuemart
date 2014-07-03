@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
 <?php ///echo $this->langList; ?>
-<div class="col50">
+<!--div class="col50"-->
 	<table class="admintable">
 		<tr>
 			<td valign="top">
@@ -137,7 +137,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 		</tr>
 	</table>
-</div>
+<!--/div -->
 <input type="hidden" name="user_is_vendor" value="1" />
 <input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendor->virtuemart_vendor_id; ?>" />
 <input type="hidden" name="last_task" value="<?php echo vRequest::getCmd('task'); ?>" />

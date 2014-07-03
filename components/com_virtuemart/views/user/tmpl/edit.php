@@ -53,9 +53,9 @@ function myValidator(f, t)
 <h1><?php echo $this->page_title ?></h1>
 <?php echo shopFunctionsF::getLoginForm(false); ?>
 
-<h2><?php if($this->userDetails->virtuemart_user_id==0) {
-	echo vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG');
-}?></h2>
+<?php if($this->userDetails->virtuemart_user_id==0) {
+	echo '<h2>'.vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG').'</h2>';
+}?>
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">

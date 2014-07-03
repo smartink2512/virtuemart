@@ -436,19 +436,20 @@ class VirtueMartViewCart extends VmView {
 	function renderCompleteAddressList(){
 
 		$addressList = false;
-		vmdebug('renderCompleteAddressList',$this->cart->user->virtuemart_user_id);
+		//vmdebug('renderCompleteAddressList',$this->cart->user);
 		if($this->cart->user->virtuemart_user_id){
 			$addressList = array();
+			$newBT = '<a href="index.php'
+				.'?option=com_virtuemart'
+				.'&view=user'
+				.'&task=editaddresscart'
+				.'&addrtype=BT'
+				. '">'.vmText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a></br>';
 			foreach($this->cart->user->userInfo as $userInfo){
 				$address = $userInfo->loadFieldValues(false);
 				if($address->address_type=='BT'){
 					$address->virtuemart_userinfo_id = 0;
-					$address->address_type_name = '<a href="index.php'
-						.'?option=com_virtuemart'
-						.'&view=user'
-						.'&task=editaddresscart'
-						.'&addrtype=BT'
-						. '">'.vmText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a></br>';
+					$address->address_type_name = $newBT;
 					array_unshift($addressList,$address);
 				} else {
 					$address->address_type_name = '<a href="index.php'
@@ -461,6 +462,12 @@ class VirtueMartViewCart extends VmView {
 					$addressList[] = $address;
 				}
 			}
+			if(count($addressList)==0){
+				$addressList[0] = new stdClass();
+				$addressList[0]->virtuemart_userinfo_id = 0;
+				$addressList[0]->address_type_name = $newBT;
+			}
+
 			$_selectedAddress = (
 			empty($this->cart->selected_shipto)
 				? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo

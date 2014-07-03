@@ -329,7 +329,6 @@ class vmJsApi{
 	}
 
 	static function chosenDropDowns(){
-
 		static $chosenDropDowns = false;
 
 		if(!$chosenDropDowns){
@@ -349,10 +348,13 @@ class vmJsApi{
 
 				$document->addScriptDeclaration ( '
 //<![CDATA[
-		var vm2string ={'.$vm2string.'} ;
-		 jQuery( function($) {
+	Virtuemart.updateChosenDropdownLayout = function() {
+		var vm2string = {'.$vm2string.'};
+		jQuery(function($) {
 			'.$selector.'.chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text,disable_search_threshold: 5});
 		});
+	}
+	Virtuemart.updateChosenDropdownLayout();
 //]]>
 				');
 			}

@@ -121,10 +121,11 @@ class VirtueMartModelProduct extends VmModel {
 		$this->searchcustoms = FALSE;
 		$this->searchplugin = 0;
 		$this->filter_order = VmConfig::get ('browse_orderby_field');
-		;
 		$this->filter_order_Dir = VmConfig::get('prd_brws_orderby_dir', 'ASC');
 
 		$this->_uncategorizedChildren = null;
+
+		$this->virtuemart_vendor_id = 1;
 	}
 
 	/**
@@ -185,6 +186,10 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->searchplugin = vRequest::getInt ('custom_parent_id', 0);
 
+		$this->virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id',0);
+		if(vRequest::getInt('manage')==1){
+			$this->virtuemart_vendor_id = VmConfig::isSuperVendor();
+		}
 	}
 
 	/**
@@ -241,7 +246,11 @@ class VirtueMartModelProduct extends VmModel {
 
 		$where = array();
 
-		$isSite = $app->isSite ();
+		//$isSite = $app->isSite ();
+		$isSite = true;
+		if($app->isAdmin() or (vRequest::get('manage',false) and VmConfig::isSuperVendor()) ){
+			$isSite = false;
+		}
 
 		if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
@@ -288,10 +297,6 @@ class VirtueMartModelProduct extends VmModel {
 				$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`customfield_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
 			}
 			$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
-		}
-
-		if ($onlyPublished) {
-			$where[] = ' p.`published`="1" ';
 		}
 
 		if($isSite and !VmConfig::get('use_as_catalog',0)) {
@@ -455,6 +460,18 @@ class VirtueMartModelProduct extends VmModel {
 			$this->searchplugin = FALSE;
 // 			$joinLang = false;
 		}
+
+		/*if ($onlyPublished and !empty($this->virtuemart_vendor_id) and vRequest::get('manage',false) and VmConfig::isSuperVendor()) {
+			$where[] = ' p.`virtuemart_vendor_id` = "'.$this->virtuemart_vendor_id.'" ';
+		} else {*/
+			if(!empty($onlyPublished) and $isSite){
+				$where[] = ' p.`published`="1" ';
+			}
+			if(!empty($this->virtuemart_vendor_id)){
+				$where[] = ' p.`virtuemart_vendor_id` = "'.$this->virtuemart_vendor_id.'" ';
+			}
+		//}
+
 
 
 		$joinedTables = array();
@@ -1804,7 +1821,7 @@ class VirtueMartModelProduct extends VmModel {
 		$db = JFactory::getDBO ();
 		$vendorId = 1;
 		$childs = count ($this->getProductChildIds ($id));
-		$db->setQuery ('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
+		$db->setQuery ('SELECT `product_name`,`slug`,`virtuemart_vendor_id` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
 		$parent = $db->loadObject ();
 		$prodTable = $this->getTable ('products');
 
@@ -1812,7 +1829,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(empty($parent->slug)) $parent->slug = $parent->product_name;
 		$prodTable->checkCreateUnique('#__virtuemart_products_' . VmConfig::$vmlang,'slug');
 		//$newslug = $prodTable->checkCreateUnique('products_' . VmConfig::$vmlang,$parent->slug);
-		$data = array('product_name' => $parent->product_name, 'slug' => $prodTable->slug, 'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
+		$data = array('product_name' => $parent->product_name, 'slug' => $prodTable->slug, 'virtuemart_vendor_id' => (int)$prodTable->virtuemart_vendor_id, 'product_parent_id' => (int)$id);
 
 		$prodTable = $this->getTable ('products');
 		$prodTable->bindChecknStore ($data);
@@ -2334,7 +2351,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		}
 
 		/* Load the product details */
-		$q = "SELECT l.product_name,product_in_stock FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` l
+		$q = "SELECT l.product_name,product_in_stock,virtuemart_vendor_id FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` l
 				JOIN `#__virtuemart_products` p ON p.virtuemart_product_id=l.virtuemart_product_id
 			   WHERE p.virtuemart_product_id = " . $virtuemart_product_id;
 		$db = JFactory::getDbo();
@@ -2347,6 +2364,10 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		$vars['mailbody'] =vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
 
 		$virtuemart_vendor_id = 1;
+		if(Vmconfig::get('multix','none')!=='none'){
+			$virtuemart_vendor_id = $vars['virtuemart_vendor_id'];
+		}
+
 		$vendorModel = VmModel::getModel ('vendor');
 		$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
 		$vendorModel->addImages ($vendor);

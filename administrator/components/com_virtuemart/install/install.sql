@@ -493,7 +493,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_modules` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `virtuemart_order_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '1',
+  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `order_number` char(64),
   `customer_number` char(32),

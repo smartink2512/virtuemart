@@ -199,9 +199,10 @@ class GenericTableUpdater extends VmModel{
 
 
 			if($slug){
-				//$lines[1]['slug'] = 'UNIQUE KEY `slug` (`slug`)';
-				//a slug must anyway be unique and so oine index for both is faster
-				$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`,`slug`)';
+				$lines[1]['slug'] = 'UNIQUE KEY `slug` (`slug`)';
+				//a slug must anyway be unique and so one index for both is faster
+				//testing revealed that it is slower
+				//$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`,`slug`)';
 			} else {
 				$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`)';
 			}
@@ -331,6 +332,7 @@ class GenericTableUpdater extends VmModel{
 			} else {
 
 				$this->createTable($tablename,$table);
+				$this->optimizeTable($tablename);
 			}
 			// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
 			// 			$this->_db->query();
@@ -364,7 +366,15 @@ class GenericTableUpdater extends VmModel{
 	public function optimizeTable($tablename){
 		$q ='OPTIMIZE TABLE '.$tablename;
 		$this->_db->setQuery($q);
-		$this->_db->query();
+		$res1 = $this->_db->loadAssocList();
+
+		$q = 'Show Index FROM '.$tablename;
+		$this->_db->setQuery($q);
+		$res2 = $this->_db->loadAssocList();
+		//vmdebug('Optimised table '.$tablename,$res1,$res2);
+		/*foreach($res2 as $m){
+			vmdebug($tablename.': '.$m['Key_name'].' '.$m['Cardinality']);
+		}*/
 	}
 
 	public function createTable($tablename,$table){
@@ -435,7 +445,7 @@ class GenericTableUpdater extends VmModel{
 			$eKeyNames= $this->_db->loadColumn(2);
 		}
 
- 		vmdebug('my $eKeys',$eKeys);
+ 		//vmdebug('my $eKeys',$eKeys);
 
 		$dropped = 0;
 		$existing = array();
@@ -469,7 +479,7 @@ class GenericTableUpdater extends VmModel{
 						$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
 					} else {
 						$dropped++;
-						// 					vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
+						 					vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
 					}
 				}
 			} else {
@@ -506,7 +516,7 @@ class GenericTableUpdater extends VmModel{
 					$this->_app = JFactory::getApplication();
 					$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$name.': '.$this->_db->getErrorMsg() );
 				} else {
-// 					vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
+ 					vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
 				}
 			}
 		}

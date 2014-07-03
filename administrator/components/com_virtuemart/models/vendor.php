@@ -171,12 +171,32 @@ class VirtueMartModelVendor extends VmModel {
 		 $app = JFactory::getApplication();
 		 //$app->enqueueMessage('Data contains no Info for vendor, storing not needed');
 		 return $this->_id;
-	 }*/
+	 	}*/
 
 		// Store multiple selectlist entries as a ; separated string
 		if (key_exists ('vendor_accepted_currencies', $data) && is_array ($data['vendor_accepted_currencies'])) {
 			$data['vendor_accepted_currencies'] = implode (',', $data['vendor_accepted_currencies']);
 		}
+
+		if(empty($data['vendor_name'])){
+			if(!empty($data['title'])){
+				$data['vendor_name'] = '';
+				$data['vendor_name'] = $data['title'].' ';
+			}
+			if(!empty($data['last_name'])){
+				$data['vendor_name'] .= $data['last_name'];
+			}
+		}
+		if(empty($data['vendor_store_name'])){
+			if(!empty($data['vendor_name'])){
+				$data['vendor_store_name'] = $data['vendor_name'];
+			} else if(!empty($data['company'])){
+				$data['vendor_store_name'] = $data['company'];
+			} else {
+				$data['vendor_store_name'] = vmText::_('COM_VIRTUEMART_VENDOR').' '.$data['vendor_name'];
+			}
+		}
+		if(empty($data['vendor_name'])) $data['vendor_name'] = $data['vendor_store_name'];
 
 		$table->bindChecknStore ($data);
 		$errors = $table->getErrors ();
@@ -194,11 +214,14 @@ class VirtueMartModelVendor extends VmModel {
 
 		if ($this->_id != $oldVendorId) {
 
-			vmdebug('Developer notice, tried to update vendor xref should not appear in singlestore $oldVendorId = '.$oldVendorId.' newId = '.$this->_id);
+			vmdebug('Developer notice, tried to update vendor xref should not appear in singlestore $oldVendorId = '.$oldVendorId.' newId = '.$this->_id.' updating');
 
 			//update user table
 			$usertable = $this->getTable ('vmusers');
-			$usertable->bindChecknStore ($data, TRUE);
+			$usertable->load($data['virtuemart_user_id']);
+
+			$usertable->virtuemart_vendor_id = $this->_id;
+			$usertable->store();
 
 			$errors = $usertable->getErrors ();
 			foreach ($errors as $error) {

@@ -61,6 +61,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			$basePath = JPATH_VM_ADMINISTRATOR;
 			$trigger = 'onVmAdminController';
 			vmdebug('$vendorIdUser use FE managing '.$vendorIdUser);
+			//vRequest::setVar('manage','1');
 			vmJsApi::jQuery(false);
 			//vmJsApi::js('vmsite');
 		} else {
