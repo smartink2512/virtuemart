@@ -137,8 +137,12 @@ class vmCrypt {
 			$usedKey = date("ymd");
 			$filename = $keyPath . DS . $usedKey . '.ini';
 			if (!JFile::exists ($filename)) {
+				if(JVM_VERSION<3){
+					$token = JUtility::getHash(JUserHelper::genRandomPassword());
+				} else {
+					$token = JApplication::getHash(JUserHelper::genRandomPassword());
+				}
 
-				$token = JUtility::getHash(JUserHelper::genRandomPassword());
 				$salt = JUserHelper::getSalt('crypt-md5');
 				$hashedToken = md5($token . $salt)  ;
 				$key = base64_encode($hashedToken);
