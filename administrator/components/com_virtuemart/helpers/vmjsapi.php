@@ -335,6 +335,8 @@ class vmJsApi{
 			$be = JFactory::getApplication()->isAdmin();
 			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::js('chosen.jquery.min');
+				//vmJsApi::js('dynupdate');
+				vmJsApi::js('vmprices');
 				vmJsApi::css('chosen');
 
 				$document = JFactory::getDocument();

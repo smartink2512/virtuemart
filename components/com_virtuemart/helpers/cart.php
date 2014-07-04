@@ -1385,6 +1385,10 @@ class VirtueMartCart {
 					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHtml::link($url, $product->product_name);
 					$product->cart_item_id = $k ;
 
+					if ( VmConfig::get('oncheckout_show_images')){
+						$productsModel->addImages($product,1);
+					}
+
 					$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;

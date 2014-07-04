@@ -39,21 +39,26 @@ span.variant-name,span.custom-variant-name{width:100px;float:left;display:block;
 .browse-view .row .product .spacer img,.related-products-view .row .product .spacer img{width:auto;height:auto;}
 .display-number,.control-buttons,.right{text-align:right !important;}
 .general-bg,input.custom-attribute,input.quantity-input,.manufacturer-product-link a,a.ask-a-question,input.vm-default,a.product-details,a.details,div.details,button.default{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #CAC9C9 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;text-decoration:none;padding:5px 5px 4px;}
-span.custom-variant-inputbox input.custom-attribute:hover,span.quantity-box input.quantity-input:hover,input.vm-default:hover,span.quantity-box input.quantity-input:hover,.ask-a-question-view input.counter:hover,.ask-a-question-view input#email:hover,table.user-details input:hover,a.ask-a-question:hover,a.details:hover,div.details:hover,a.product-details:hover,button.default:hover{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position:0 -40px;color:#000;text-decoration:none;}
+span.custom-variant-inputbox input.custom-attribute:hover,span.quantity-box input.quantity-input:hover,input.vm-default:hover,span.quantity-box input.quantity-input:hover,.ask-a-question-view input.counter:hover,.ask-a-question-view input#email:hover,table.user-details input:hover,a.ask-a-question:hover,a.details:hover,div.details:hover,a.product-details:hover,button.default:hover{
+    background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;
+    background-position:0 -40px;
+    color:#000;
+    text-decoration:none;
+}
 /* Let's have a general button for pagination, backtocat, whatever
 button, .button {padding: 4px 6px;border: 1px solid #666;background-color: #f5fffa;}
 */
 /* general style END */
 
 #ui-tabs ul#tabs{list-style-type:none;overflow:hidden;margin:0;padding:1.0em 1.0em 0;}
-#ui-tabs ul#tabs li{display:inline-block;cursor:pointer;background:#f2f2f2;padding:0.5em 1.0em 7px;}
+#ui-tabs ul#tabs li{display:inline-block;cursor:pointer;background:#f2f2f2;padding:0.5em 1.0em 0.2em;}
 #ui-tabs ul#tabs li.current{display:inline-block;background:#ccc;color:#444;}
 #ui-tabs .tabs{padding:1.0em;}
 #ui-tabs .dyn-tabs{overflow:auto;display:none;}
 
 /* Align rows in products sublayout */
 .vm-col {margin: 0 0.5%;width: 60%;}
-.vm-col-1 {width: 100%;} .vm-col-2 {width: 48%;} .vm-col-3 {width: 31.914893614%;} .vm-col-4 {width: 24%;} .vm-col-5 {width: 19%;} .vm-col-6 {width: 16%;} .vm-col-8 {width: 12%;} .vm-col-9 {width: 11%;} .vm-col-10 {width: 9%;} .vm-col-11 {width: 8%;} .vm-col-12 {width: 7%;}
+.vm-col-1 {width: 100%;} .vm-col-2 {width: 48%;} .vm-col-3 {width: 31.914893614%;} .vm-col-4 {width: 23.83%;} .vm-col-5 {width: 19%;} .vm-col-6 {width: 16%;} .vm-col-8 {width: 12%;} .vm-col-9 {width: 11%;} .vm-col-10 {width: 9%;} .vm-col-11 {width: 8%;} .vm-col-12 {width: 7%;}
 
 /* Products sublayout end */
 
@@ -61,13 +66,12 @@ button, .button {padding: 4px 6px;border: 1px solid #666;background-color: #f5ff
 .vm2-modallink{height:16px;margin-left: 3px;vertical-align:top;width:16px;display:inline-block; background: url("../images/icon_external_link.gif") no-repeat scroll left top transparent;}
 .vm2-warning{background-position:0 -1383px;width:50px;height:40px;}
 
-input.vm-default{margin-bottom:2px;}
 input.highlight-button{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position:0 -160px;color:#fff;border:1px solid #00a000;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;font-size:12px;cursor:pointer;text-align:center;letter-spacing:1px;display:inline-block;text-decoration:none;padding:4px 8px 2px;}
 input.highlight-button:visited{color:#fff;}
 
 button.default{display:inline-block;cursor:pointer;padding:5px 8px 4px;}
 button.default:hover{color:#777;}
-a.highlight,a.highlight:visited{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #00a000 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;font-size:12px;display:inline-block;text-decoration:none;background-position:0 -160px;color:#fff;padding:3px 8px 1px;}
+a.highlight,a.highlight:visited{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #00a000 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;display:inline-block;text-decoration:none;background-position:0 -160px;color:#fff;padding:3px 8px 1px;}
 textarea.virtuemart{background:#fff;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;text-align:left;padding:5px 5px 4px;}
 
 .vm-button-correct,.vm-button-correct:hover,.vm-button-correct:visited{font-size:1.2em;font-weight:700;display:inline-block;text-decoration:none;color:#777;}

@@ -233,7 +233,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		}
 
 		/**
-		 *
+		 * Replaces the old stockable plugin by the native method of vm
 		 */
 		public function replaceStockableByDynamicChilds(){
 			$db = JFactory::getDbo();
@@ -252,6 +252,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$db->execute();
 				}
 			}
+			$db->setQuery('UPDATE #__extensions SET `published` = "0" WHERE `extension_id` = "'.$jId.'" ');
+
 		}
 
 		/**

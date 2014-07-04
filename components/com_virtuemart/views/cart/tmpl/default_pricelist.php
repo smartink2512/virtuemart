@@ -155,8 +155,8 @@ foreach ($this->cart->products as $pkey => $prow) {
 		<?php if ($prow->virtuemart_media_id) { ?>
 		<span class="cart-images">
 						 <?php
-			if (!empty($prow->image)) {
-				echo $prow->image->displayMediaThumb ('', FALSE);
+			if (!empty($prow->images[0])) {
+				echo $prow->images[0]->displayMediaThumb ('', FALSE);
 			}
 			?>
 						</span>

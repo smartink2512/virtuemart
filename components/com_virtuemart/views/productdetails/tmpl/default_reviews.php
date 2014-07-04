@@ -186,7 +186,7 @@ if ($this->showReview) {
 				} ?></textarea>
 				<br/>
 				<span><?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_COUNT') ?>
-					<input type="text" value="0" size="4" class="vm-default" name="counter" maxlength="4" readonly="readonly"/>
+					<input type="text" value="0" size="4" name="counter" maxlength="4" readonly="readonly"/>
 				</span>
 				<br/><br/>
 				<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>"/>

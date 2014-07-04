@@ -286,14 +286,15 @@ class shopFunctionsF {
 			$rowHeights[$row]['product_s_desc'][] = empty($product->product_s_desc)? 0:1;
 			$nb ++;
 			//vmdebug('my $nb',$nb,$BrowseTotalProducts);
-			if ($col == $products_per_row || $nb>=$BrowseTotalProducts) {
+			if ($col == $products_per_row || $nb>$BrowseTotalProducts) {
 
 				foreach($rowHeights[$row] as $group => $cols){
-					//vmdebug('my rows heights $type',$type);
+
 					$rowsHeight[$row][$group] = 0;
-					foreach($cols as $col){
-						$rowsHeight[$row][$group] =  max($rowsHeight[$row][$group],$col);
+					foreach($cols as $c){
+						$rowsHeight[$row][$group] =  max($rowsHeight[$row][$group],$c);
 					}
+
 				}
 				$col = 1;
 				$rowHeights = array();

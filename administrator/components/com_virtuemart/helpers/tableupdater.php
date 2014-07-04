@@ -479,7 +479,7 @@ class GenericTableUpdater extends VmModel{
 						$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
 					} else {
 						$dropped++;
-						 					vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
+						//vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
 					}
 				}
 			} else {
@@ -516,7 +516,7 @@ class GenericTableUpdater extends VmModel{
 					$this->_app = JFactory::getApplication();
 					$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$name.': '.$this->_db->getErrorMsg() );
 				} else {
- 					vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
+ 					//vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
 				}
 			}
 		}
