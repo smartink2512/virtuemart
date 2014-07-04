@@ -29,9 +29,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY', 'showCategory', VmConfig::get('showCategory', 1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS', 'show_manufacturers', VmConfig::get('show_manufacturers', 1));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT', $this->categoryLayoutList, 'categorylayout', 'size=1', 'value', 'text', VmConfig::get('categorylayout', 0));
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_PRODUCTS_SUBLAYOUT', $this->productsFieldList, 'productsublayout', 'size=1', 'value', 'text', VmConfig::get('productsublayout', 'products'));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW', 'categories_per_row', VmConfig::get('categories_per_row', 3),'class="inputbox"','',4,4);
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LAYOUT', $this->productLayoutList, 'productlayout', 'size=1', 'value', 'text', VmConfig::get('productlayout', 0));
-		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_PRODUCTS_SUBLAYOUT', $this->productsFieldList, 'productsublayout', 'size=1', 'value', 'text', VmConfig::get('productsublayout', 'products'));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW', 'products_per_row', VmConfig::get('products_per_row', 3),'class="inputbox"','',4,4);
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MANUFACTURER_PER_ROW', 'manufacturer_per_row', VmConfig::get('manufacturer_per_row', 3),'class="inputbox"','',4,4);
 		?>

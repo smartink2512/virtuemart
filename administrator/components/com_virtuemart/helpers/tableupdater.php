@@ -461,6 +461,7 @@ class GenericTableUpdater extends VmModel{
 
 
 			if(!in_array($oldcolum,$keys)){
+				$isPrim = false;
 				if(!$reCreatePrimary){
 					if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false){
 						$isPrim = true;

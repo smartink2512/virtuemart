@@ -155,7 +155,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Max Milbers
 	 */
 	public function plgVmOnStoreInstallPluginTable($psType,$data,$table) {
-		if(!empty($table->custom_element) and $table->custom_element!=$this->_name){
+		if(empty($table->custom_element) or (!empty($table->custom_element) and $table->custom_element!=$this->_name) ){
 			return false;
 		}
 		if(empty($table->is_cart_attribute) or empty($table->is_input)){

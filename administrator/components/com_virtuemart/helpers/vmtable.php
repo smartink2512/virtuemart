@@ -1123,7 +1123,7 @@ class VmTable extends JTable {
 			if (!$this->check()) {
 				$ok = false;
 				$msg .= ' check';
-				vmdebug('Check no lang returned false ' . get_class($this) . ' ' . $this->_db->getErrorMsg());
+				vmdebug('Check returned false ' . get_class($this) . ' ' . $this->_db->getErrorMsg());
 				return false;
 			}
 		}

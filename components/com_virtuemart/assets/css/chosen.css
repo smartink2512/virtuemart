@@ -6,6 +6,17 @@
   zoom: 1;
   *display: inline;
 }
+
+.product-field-display .chzn-container {
+    /* font-size: 13px; */
+    position: relative;
+    display: inline-block;
+    max-width: 100% !important;
+    min-width: 80%;
+    zoom: 1;
+    *display: inline;
+}
+
 .tabs select{ width:180px;}
 .chzn-container .chzn-drop {
   background: #fff;
@@ -46,8 +57,8 @@
   overflow: visible !important;
   white-space: nowrap;
   position: relative;
-  height: 23px;
-  line-height: 24px;
+  height: 2.15em;
+  line-height: 2.16em;
 
   padding: 0 0 0 8px;
   color: #444444;
@@ -401,3 +412,4 @@
 div.moduletable_js div.slide, div.moduletable_js div.module_content{
     overflow:visible !important;
 }
+

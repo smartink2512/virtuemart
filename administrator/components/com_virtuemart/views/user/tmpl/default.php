@@ -72,7 +72,6 @@ AdminUIHelper::startAdminArea($this);
 			$checked = JHtml::_('grid.id', $i, $row->id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $row->id);
 			$is_vendor = $this->toggle($row->is_vendor, $i, 'toggle.user_is_vendor');
-			vmdebug('my row',$row);
 		?>
 			<tr class="row<?php echo $k ; ?>">
 				<td>
