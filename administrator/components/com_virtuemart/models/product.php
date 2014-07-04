@@ -240,7 +240,7 @@ class VirtueMartModelProduct extends VmModel {
 		$joinChildren = FALSE;
 		$joinLang = false;
 		$orderBy = ' ';
-
+		$ff_select_price = '';
 		$where = array();
 		$useCore = TRUE;
 		if ($this->searchplugin !== 0) {
@@ -387,7 +387,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			// special  orders case
 			//vmdebug('my filter ordering ',$this->filter_order);
-			$ff_select_price = '';
+
 			switch ($this->filter_order) {
 				case '`p`.product_special':
 					if($isSite){
