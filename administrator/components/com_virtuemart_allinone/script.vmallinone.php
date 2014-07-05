@@ -116,7 +116,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$dst = JPATH_ROOT . DS."administrator". DS . "modules";
 				$this->recurse_copy ($src, $dst);
 
-				echo "Checking VirtueMart modules...";
+				//echo "Checking VirtueMart modules...";
 				if (!$this->VmAdminModulesAlreadyInstalled ()) {
 					echo "Installing VirtueMart Administrator modules<br/ >";
 						$defaultParams = '{"show_vmmenu":"1"}';
@@ -201,7 +201,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$src = $this->path . DS . "libraries";
 				$dst = JPATH_ROOT . DS . "libraries";
 				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart3 pdf moved to the joomla libraries folder<br/ >";
+				echo "VirtueMart3 pdf moved to the joomla libraries folder<br/ >";
 
 				//update plugins, make em loggable
 				/*			$loggables = array(	'created_on' => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
