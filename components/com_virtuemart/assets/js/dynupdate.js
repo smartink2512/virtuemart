@@ -8,6 +8,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
+if (typeof Virtuemart === "undefined")
+	var Virtuemart = {};
 jQuery(function($) {
     // Add to cart and other scripts may check this variable and return while
     // the content is being updated.
@@ -37,8 +39,7 @@ jQuery(function($) {
     // and all other VM init scripts placed in here.
     Virtuemart.updateCartListener = function() {
         // init VM's "Add to Cart" scripts
-        if (typeof Virtuemart != "undefined")
-            Virtuemart.product(jQuery(".product"));
+		Virtuemart.product(jQuery(".product"));
     }
 
     Virtuemart.updateDynamicUpdateListeners = function() {

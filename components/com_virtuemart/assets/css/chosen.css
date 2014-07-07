@@ -11,8 +11,8 @@
     /* font-size: 13px; */
     position: relative;
     display: inline-block;
-    max-width: 100% !important;
-    min-width: 80%;
+    max-width: 18em !important;
+    min-width: 4em;
     zoom: 1;
     *display: inline;
 }

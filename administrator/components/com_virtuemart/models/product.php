@@ -540,6 +540,12 @@ class VirtueMartModelProduct extends VmModel {
 			$joinedTables[] = ' LEFT OUTER JOIN `#__virtuemart_products` children ON p.`virtuemart_product_id` = children.`product_parent_id` ';
 		}
 
+		if ($this->searchplugin !== 0) {
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmBeforeProductSearch', array(&$select, &$joinedTables, &$where, &$groupBy, &$orderBy,&$joinLang));
+		}
+
 		if (count ($where) > 0) {
 			$whereString = ' WHERE (' . implode (' AND ', $where) . ') ';
 		}
@@ -548,11 +554,6 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		//vmdebug ( $joinedTables.' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
 
-		if ($this->searchplugin !== 0) {
-			JPluginHelper::importPlugin('vmcustom');
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('plgVmBeforeProductSearch', array(&$select, &$joinedTables, &$where, &$groupBy, &$orderBy,&$joinLang));
-		}
 		$this->orderByString = $orderBy;
 
 		if($this->_onlyQuery){

@@ -10,6 +10,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
+if (typeof Virtuemart === "undefined")
+	var Virtuemart = {};
 (function($){
 	var undefined,
 	methods = {
