@@ -149,6 +149,19 @@ class VirtueMartControllerUser extends JControllerLegacy
 			$data['address_type'] = vRequest::getCmd('addrtype','BT');
 		}
 
+		if (isset($_POST['register'])) {
+			if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT') == FALSE) {
+				$msg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+				if($cartObj->fromCart) {
+					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
+				} else if($cartObj->getInCheckOut()) {
+					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $msg );
+				} else {
+					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
+				}
+				return $msg;
+			}
+		}
 
 		$userModel = VmModel::getModel('user');
 
