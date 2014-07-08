@@ -342,7 +342,7 @@ class vmJsApi{
 				$document = JFactory::getDocument();
 				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
 				$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
-				if($be){
+				if($be or vRequest::getInt('manage',false)){
 					$selector = '$("select")';
 				} else {
 					$selector = '$(".vm-chzn-select")';

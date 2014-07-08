@@ -75,21 +75,21 @@ class VirtuemartViewCategory extends VmView {
 		$menus	= $app->getMenu();
 		$menu = $menus->getActive();
 
-		$this->categoryId = vRequest::getInt('virtuemart_category_id', -1);
+
 		$virtuemart_manufacturer_id = vRequest::getInt('virtuemart_manufacturer_id', -1 );
-		if ($this->categoryId === -1 and $virtuemart_manufacturer_id === -1){
-			$this->categoryId = ShopFunctionsF::getLastVisitedCategoryId();
-		}
-		if(!empty($menu->query['virtuemart_category_id']) and $menu->query['virtuemart_category_id']!=$this->categoryId){
-			vmdebug('category id by request '.$this->categoryId.' by menu item '.$menu->query['virtuemart_category_id']);
-			$this->categoryId = $menu->query['virtuemart_category_id'];
-			vRequest::setVar('virtuemart_category_id',$this->categoryId);
-		}
-		if(!empty($menu->query['virtuemart_manufacturer_id']) and $menu->query['virtuemart_manufacturer_id']!=$virtuemart_manufacturer_id){
+		if($virtuemart_manufacturer_id ===-1 and !empty($menu->query['virtuemart_manufacturer_id'])){
 			$virtuemart_manufacturer_id = $menu->query['virtuemart_manufacturer_id'];
 			vRequest::setVar('virtuemart_manufacturer_id',$virtuemart_manufacturer_id);
-			vmdebug('$virtuemart_manufacturer_id by menu item '.$virtuemart_manufacturer_id);
 		}
+
+		$this->categoryId = vRequest::getInt('virtuemart_category_id', -1);
+		if($this->categoryId === -1 and !empty($menu->query['virtuemart_category_id'])){
+			$this->categoryId = $menu->query['virtuemart_category_id'];
+			vRequest::setVar('virtuemart_category_id',$this->categoryId);
+		} else if ( $this->categoryId === -1 and $virtuemart_manufacturer_id === -1){
+			$this->categoryId = ShopFunctionsF::getLastVisitedCategoryId();
+		}
+
 		$this->setCanonicalLink($tpl,$document,$this->categoryId,$virtuemart_manufacturer_id);
 
 		if (($this->categoryId === -1 or $this->categoryId === 0 ) and $virtuemart_manufacturer_id){
@@ -135,35 +135,49 @@ class VirtuemartViewCategory extends VmView {
 				if ($this->products) {
 					$currency = CurrencyDisplay::getInstance( );
 					$this->assignRef('currency', $currency);
-					$customfieldsModel = VmModel::getModel ('Customfields');
-					if (!class_exists ('vmCustomPlugin')) {
-						require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
-					}
-					foreach($this->products as $i => $productItem){
 
-						$productItem->stock = $productModel->getStockIndicator($productItem);
-						if (!empty($productItem->customfields)) {
-							$product = clone($productItem);
-							$customfields = array();
-							foreach($productItem->customfields as $cu){
-								$customfields[] = clone ($cu);
+					$display_stock = VmConfig::get('display_stock',1);
+					$showCustoms = VmConfig::get('show_pcustoms',1);
+					if($display_stock or $showCustoms){
+
+						if(!$showCustoms){
+							foreach($this->products as $i => $productItem){
+								$productItem->stock = $productModel->getStockIndicator($productItem);
 							}
+						} else {
+							$customfieldsModel = VmModel::getModel ('Customfields');
+							if (!class_exists ('vmCustomPlugin')) {
+								require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+							}
+							foreach($this->products as $i => $productItem){
 
-							$customfieldsSorted = array();
-							$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+								$productItem->stock = $productModel->getStockIndicator($productItem);
 
-							foreach ($customfields as $k => $custom) {
-								if (!empty($custom->layout_pos)  ) {
-									$customfieldsSorted[$custom->layout_pos][] = $custom;
-									unset($customfields[$k]);
+								if (!empty($productItem->customfields)) {
+									$product = clone($productItem);
+									$customfields = array();
+									foreach($productItem->customfields as $cu){
+										$customfields[] = clone ($cu);
+									}
+
+									$customfieldsSorted = array();
+									$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+
+									foreach ($customfields as $k => $custom) {
+										if (!empty($custom->layout_pos)  ) {
+											$customfieldsSorted[$custom->layout_pos][] = $custom;
+											unset($customfields[$k]);
+										}
+									}
+									$customfieldsSorted['normal'] = $customfields;
+									$product->customfieldsSorted = $customfieldsSorted;
+									unset($product->customfields);
+									$this->products[$i] = $product;
 								}
 							}
-							$customfieldsSorted['normal'] = $customfields;
-							$product->customfieldsSorted = $customfieldsSorted;
-							unset($product->customfields);
-							$this->products[$i] = $product;
 						}
 					}
+
 				}
 
 				// Add feed links
@@ -226,7 +240,9 @@ class VirtuemartViewCategory extends VmView {
 
 			$categoryModel->addImages($category,1);
 
-			$this->showcategory = vRequest::getInt('showcategory',true);
+			if(!isset($menu->query['showcategory'])) $menu->query['showcategory'] = 1;
+			$this->showcategory = vRequest::getInt('showcategory',$menu->query['showcategory']);
+			//$this->showcategory = vRequest::getInt('showcategory',true);
 			if($this->showcategory){
 			//if($category->category_layout == 'categories' or ($this->categoryId >0 and $virtuemart_manufacturer_id <1)){
 				$category->children = $categoryModel->getChildCategoryList( $vendorId, $this->categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
@@ -258,7 +274,8 @@ class VirtuemartViewCategory extends VmView {
 				$category->category_template = VmConfig::get('categorytemplate');
 			}
 
-			if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$this->categoryId){
+			if(!empty($menu->query['categorylayout'])){
+			//if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$this->categoryId){
 				$category->category_layout = $menu->query['categorylayout'];
 			}
 

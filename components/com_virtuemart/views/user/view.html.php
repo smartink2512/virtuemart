@@ -87,7 +87,7 @@ class VirtuemartViewUser extends VmView {
 	if($virtuemart_user_id and is_array($virtuemart_user_id)) $virtuemart_user_id = $virtuemart_user_id[0];
 	$this->_model->setId($virtuemart_user_id);
 	$this->userDetails = $this->_model->getUser();
-
+	//vmdebug('my userdetails ',$this->userDetails);
 	$this->address_type = vRequest::getCmd('addrtype', 'BT');
 
 	$new = false;
@@ -123,12 +123,13 @@ class VirtuemartViewUser extends VmView {
 			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
 			vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
 		}
-		$userFields = $this->_model->getUserInfoInUserFields($layoutName, $this->address_type, $virtuemart_userinfo_id);
+		$userFields = $this->_model->getUserInfoInUserFields($layoutName, $this->address_type, $virtuemart_userinfo_id,false);
 		if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
 			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
+			vmdebug('$userFields by getBTuserinfo_id',$userFields);
 		}
 		$userFields = $userFields[$virtuemart_userinfo_id];
-		//vmdebug('$userFields by getUserInfoInUserFields',$userFields);
+
 		//$task = 'editaddressST';
 	}
 
@@ -331,10 +332,11 @@ class VirtuemartViewUser extends VmView {
 			$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
 			$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
 
-			vmJsApi::js ('jquery-ui', FALSE, '', TRUE);
+			vmJsApi::chosenDropDowns();
+			/*vmJsApi::js ('jquery-ui', FALSE, '', TRUE);
 			vmJsApi::js ('jquery.ui.autocomplete.html');
 			vmJsApi::js( 'jquery.noConflict');
-			$document->addScript($admin.'js/vm2admin.js');
+			$document->addScript($admin.'js/vm2admin.js');*/
 
 			$currencymodel = VmModel::getModel('currency', 'VirtuemartModel');
 			$currencies = $currencymodel->getCurrencies();
@@ -351,9 +353,9 @@ class VirtuemartViewUser extends VmView {
 			} else {*/
 				$vendorModel->setId($this->userDetails->virtuemart_vendor_id);
 			//}
-			$vendor = $vendorModel->getVendor();
-			$vendorModel->addImages($vendor);
-			$this->assignRef('vendor', $vendor);
+			$this->vendor = $vendorModel->getVendor();
+			$vendorModel->addImages($this->vendor);
+
 		}
     }
 

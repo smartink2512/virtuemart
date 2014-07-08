@@ -169,10 +169,11 @@ echo $this->loadTemplate('images');
 		echo shopFunctionsF::renderVmSubLayout('stockhandle',array('product'=>$this->product));
 
 		// Ask a question about this product
-		if (VmConfig::get('ask_question', 0) == 1) { ?>
+		if (VmConfig::get('ask_question', 0) == 1) {
+			$askquestion_url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component', FALSE);
+			?>
 			<div class="ask-a-question">
-				<a class="ask-a-question" href="<?php echo $this->askquestion_url ?>" rel="nofollow" ><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
-				<!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $this->askquestion_url ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
+				<a class="ask-a-question" href="<?php echo $askquestion_url ?>" rel="nofollow" ><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 			</div>
 		<?php
 		}
@@ -229,7 +230,7 @@ echo $this->loadTemplate('images');
     if (VmConfig::get('showCategory', 1)) {
 		echo $this->loadTemplate('showcategory');
     }
-	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'ontop'));
+	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'onbottom'));
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_products','class'=> 'product-related-products'));
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_categories','class'=> 'product-related-categories'));
 

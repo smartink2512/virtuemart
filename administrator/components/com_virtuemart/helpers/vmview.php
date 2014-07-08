@@ -182,7 +182,8 @@ class VmView extends JViewLegacy {
 
         if (vRequest::getCmd('tmpl') =='component' ) {
             if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
-        } else {
+        }
+		//else {
             // 		vRequest::setVar('hidemainmenu', true);
 			JToolBarHelper::divider();
 			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
@@ -192,7 +193,7 @@ class VmView extends JViewLegacy {
 			JToolBarHelper::cancel();
 			self::showHelp();
 			self::showACLPref($view);
-		}
+	//	}
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
 

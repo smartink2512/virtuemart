@@ -904,6 +904,9 @@ class VmTable extends JTable {
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 						vmdebug('Non admin is storing using loaded vendor_id');
 					} else {
+						if(empty($this->virtuemart_vendor_id)){
+							$this->virtuemart_vendor_id = $loggedVendorId;
+						}
 						//No id is stored, even users are allowed to use for the storage and vendorId, no change
 					}
 

@@ -100,6 +100,11 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 		<input type="hidden" name="view" value="cart"/>
 		<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $product->virtuemart_product_id ?>"/>
 		<input type="hidden" class="pname" value="<?php echo htmlentities($product->product_name, ENT_QUOTES, 'utf-8') ?>"/>
+		<?php
+		$itemId=vRequest::getInt('Itemid',false);
+		if($itemId){
+			echo '<input type="hidden" name="Itemid" value="'.$itemId.'"/>';
+		} ?>
 	</form>
 	<div class="clear"></div>
 </div>

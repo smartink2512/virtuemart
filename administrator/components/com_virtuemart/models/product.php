@@ -809,7 +809,7 @@ class VirtueMartModelProduct extends VmModel {
 			$child->product_template = VmConfig::get ('producttemplate');
 		}
 
-		if($child->canonCatId) {
+		if(!empty($child->canonCatId) ) {
 			// Add the product link  for canonical
 			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->canonCatId;
 		} else {

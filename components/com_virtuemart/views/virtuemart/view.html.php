@@ -122,41 +122,61 @@ class VirtueMartViewVirtueMart extends VmView {
 
 				$currency = CurrencyDisplay::getInstance( );
 				$this->assignRef('currency', $currency);
-				$customfieldsModel = VmModel::getModel ('Customfields');
-				if (!class_exists ('vmCustomPlugin')) {
-					require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
-				}
+				$display_stock = VmConfig::get('display_stock',1);
+				$showCustoms = VmConfig::get('show_pcustoms',1);
+				if($display_stock or $showCustoms){
 
-				foreach($this->products as $pType => $productSeries){
-					foreach($productSeries as $i => $productItem){
-
-						$productItem->stock = $productModel->getStockIndicator($productItem);
-
-						if (!empty($productItem->customfields)) {
-							$product = clone($productItem);
-							$customfields = array();
-							foreach($productItem->customfields as $cu){
-								$customfields[] = clone ($cu);
+					if(!$showCustoms){
+						foreach($this->products as $pType => $productSeries){
+							foreach($productSeries as $i => $productItem){
+								$productItem->stock = $productModel->getStockIndicator($productItem);
 							}
+						}
+					} else {
+						$customfieldsModel = VmModel::getModel ('Customfields');
+						if (!class_exists ('vmCustomPlugin')) {
+							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+						}
+						foreach($this->products as $pType => $productSeries){
 
-							$customfieldsSorted = array();
-							$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+							foreach($productSeries as $i => $productItem){
 
-							foreach ($customfields as $k => $custom) {
-								if (!empty($custom->layout_pos)  ) {
-									$customfieldsSorted[$custom->layout_pos][] = $custom;
-									unset($customfields[$k]);
+								$productItem->stock = $productModel->getStockIndicator($productItem);
+
+								if(!$showCustoms){
+									foreach($this->products as $i => $productItem){
+										$productItem->stock = $productModel->getStockIndicator($productItem);
+									}
+								} else {
+
+									if (!empty($productItem->customfields)) {
+
+										$product = clone($productItem);
+										$customfields = array();
+										foreach($productItem->customfields as $cu){
+											$customfields[] = clone ($cu);
+										}
+
+										$customfieldsSorted = array();
+										$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+
+										foreach ($customfields as $k => $custom) {
+											if (!empty($custom->layout_pos)  ) {
+												$customfieldsSorted[$custom->layout_pos][] = $custom;
+												unset($customfields[$k]);
+											}
+										}
+										$customfieldsSorted['normal'] = $customfields;
+										$product->customfieldsSorted = $customfieldsSorted;
+										unset($product->customfields);
+										$this->products[$pType][$i] = $product;
+									}
 								}
 							}
-							$customfieldsSorted['normal'] = $customfields;
-							$product->customfieldsSorted = $customfieldsSorted;
-							unset($product->customfields);
-							$this->products[$pType][$i] = $product;
 						}
 					}
 				}
 			}
-
 
 			$user = JFactory::getUser();
 			$showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
