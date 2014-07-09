@@ -1242,7 +1242,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 		}
 		if(empty($calc)){
-			avadebug('Retrieving calculation rule for avatax failed',$orderDetails->virtuemart_order_id);
+			avadebug('Retrieving calculation rule for avatax failed',$orderDetails);
 			return false;
 		}
 

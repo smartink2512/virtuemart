@@ -419,7 +419,7 @@ class VirtueMartControllerCart extends JController {
 			$data[$k] = $v;
 		}
 		$cart->BT['email'] = $newUser->email;
-		unset($cart->ST);
+		$cart->ST = 0;
 		$cart->STsameAsBT = 1;
 		$cart->saveAddressInCart($data, 'BT');
 
