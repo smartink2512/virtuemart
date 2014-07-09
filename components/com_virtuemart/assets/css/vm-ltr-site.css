@@ -24,16 +24,17 @@ span.variant-dropdown select{width:150px;}
 span.custom-variant-inputbox{width:152px;float:left;display:block;margin-bottom:5px;}
 input.custom-attribute{width:140px;}
 
-span.quantity-box{vertical-align:middle;}
+.addtocart-area{margin: 0 0 15px;}
+span.quantity-box{display: inline-block; vertical-align:middle;}
 input.quantity-input{height:2.0em;width:2.2em;text-align:center;font-weight:700;padding:0.1em;}
 span.quantity-controls{width:15px;display: inline-block;vertical-align:middle;margin:0 0 0 1px;}
 span.quantity-controls input.quantity-controls{height:15px;border:none;width:15px;color:transparent}
 span.quantity-controls input.quantity-plus{background:url(../images/vmgeneral/quantity-controls.png) no-repeat;margin: 1px 0;}
 span.quantity-controls input.quantity-minus{background:url(../images/vmgeneral/quantity-controls.png) repeat-x;background-position:15px 0;margin: 1px 0;}
 
-.addtocart-bar{margin:0;padding:0;position:absolute; bottom: 4.2em;}
-.productdetails-view .addtocart-bar{margin:1.5em 0 0;padding:0 0 0 0px;position:relative; bottom: 0.0em;}
-span.addtocart-button{display: inline-block;vertical-align:middle;margin:0 0 0 4px;float:right;}
+.addtocart-bar{margin:0;padding:0;position:absolute; bottom: 4.2em; left: 0; right: 0; text-align: center;}
+.productdetails-view .addtocart-bar{margin:1.5em 0 0;padding:0 0 0 0px;position:relative; bottom: 0.0em;text-align: left;}
+span.addtocart-button{display: inline-block;vertical-align:middle;margin:0 0 0 2px;}
 span.cart-images img {
     float: left;
     margin: 0;
@@ -196,7 +197,7 @@ a:hover .vm-img-desc{background: #095197}
 .vmpayment_cardinfo {color:gray;font-size:9px;}
 .virtuemart_search .inputbox{height:16px;vertical-align :middle}
 /* Custom Field Images */
-.product-fields .product-field,.product-related-categories .product-field {width:100%;float:left;display:inline-block;}
+.product-fields .product-field,.product-related-categories .product-field {width:100%;float:left;display:inline-block;margin-bottom: 0.4em;}
 .product-fields .product-field label.other-customfield {width:25%;float:left;position:relative;top:20px;left:-18px;margin-bottom:27px;text-align:center;}  /* For 4 images across use width:17% */
 .product-fields .product-field input[type=radio] {position:relative;left:33px;}
 .product-fields .product-field .vm-img-desc {font-size:9px;}
