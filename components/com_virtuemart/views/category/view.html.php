@@ -159,9 +159,10 @@ class VirtuemartViewCategory extends VmView {
 
 				//Fallback
 				$categoryLink = '';
-				if ($category->category_parent_id) {
+				//This id is here not loaded. Fallback to last used category is adequate
+				/*if ($category->category_parent_id) {
 					$categoryLink = '&view=category&virtuemart_category_id=' .$category->category_parent_id;
-				} else {
+				} else {*/
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 					if (!$last_category_id or $categoryId == $last_category_id) {
 						$last_category_id = JRequest::getInt('virtuemart_category_id', false);
@@ -169,7 +170,7 @@ class VirtuemartViewCategory extends VmView {
 					if ($last_category_id and $categoryId != $last_category_id) {
 						$categoryLink = '&view=category&virtuemart_category_id=' . $last_category_id;
 					}
-				}
+				//}
 
 			    if (VmConfig::get('handle_404',1)) {
 					$app->redirect(JRoute::_('index.php?option=com_virtuemart' . $categoryLink . '&error=404', FALSE));
