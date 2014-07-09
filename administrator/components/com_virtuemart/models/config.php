@@ -62,7 +62,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @param name of the view
 	 * @return object List of flypage objects
 	 */
-	function getLayoutList($view) {
+	static function getLayoutList($view) {
 
 		$dirs = array();
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
@@ -82,7 +82,6 @@ class VirtueMartModelConfig extends VmModel {
 	}
 
 	static function getLayouts($dirs,$type=0){
-
 
 		$result = array();
 		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));

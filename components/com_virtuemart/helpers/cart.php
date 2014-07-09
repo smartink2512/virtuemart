@@ -1249,7 +1249,7 @@ class VirtueMartCart {
 		$nbPayment = 0;
 		$virtuemart_paymentmethod_id=0;
 
-		if (empty($this->_cart->virtuemart_shipmentmethod_id) and VmConfig::get('automatic_payment','1')=='1' ) {
+		if (empty($this->virtuemart_shipmentmethod_id) and VmConfig::get('automatic_payment','1')=='1' ) {
 
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
