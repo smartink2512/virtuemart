@@ -284,7 +284,7 @@ return;
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			return FALSE;
 		}
-		if ($cart->pricesUnformatted['salesPrice'] <= 0.0) {
+		if (isset($cart->pricesUnformatted['salesPrice']) AND $cart->pricesUnformatted['salesPrice'] <= 0.0) {
 			return FALSE;
 		}
 		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {

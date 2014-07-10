@@ -1283,7 +1283,7 @@ class  RealexHelperRealex {
 	 * @return mixed
 	 */
 	function getNewPayerRef () {
-		return  $this->getUniqueId($this->order['details']['BT']->customer_number);
+		return $this->getUniqueId($this->order['details']['BT']->customer_number);
 	}
 
 	/**
@@ -1312,7 +1312,6 @@ class  RealexHelperRealex {
 
 		//vmInfo('VMPAYMENT_REALEX_CARD_STORAGE_SUCCESS');
 	}
-
 
 
 	public function loadCustomerData ($loadCDFromPost = true) {
@@ -1421,7 +1420,7 @@ class  RealexHelperRealex {
 
 		if (!$this->getSavedPayerRef($virtuemart_user_id)) {
 			$PayerRefTableName = $this->plugin->getPayerRefTableName();
-			$q = 'INSERT INTO `' . $PayerRefTableName . '` (`virtuemart_user_id`,`payer_ref`) VALUES ("' . $virtuemart_user_id . '","' . $payerRef . '")';
+			$q = 'INSERT INTO `' . $PayerRefTableName . '` (`virtuemart_user_id`,`payer_ref`, `merchant_id`) VALUES ("' . $virtuemart_user_id . '","' . $payerRef . '","' . $this->_method->merchant_id . '")';
 
 			$db = JFactory::getDBO();
 			$db->setQuery($q);
@@ -1451,7 +1450,7 @@ class  RealexHelperRealex {
 		}
 
 		$PayerRefTableName = $this->plugin->getPayerRefTableName();
-		$q = 'SELECT `payer_ref` FROM `' . $PayerRefTableName . '` WHERE `virtuemart_user_id`="' . $userId . '" ';
+		$q = 'SELECT `payer_ref` FROM `' . $PayerRefTableName . '` WHERE `virtuemart_user_id`="' . $userId . '" AND `merchant_id`="' . $this->_method->merchant_id . '" ';
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		$payer_ref = $db->loadResult();
@@ -1638,7 +1637,8 @@ class  RealexHelperRealex {
 			$ccData['save_card'] = $this->customerData->getVar('save_card');
 		}
 
-
+		$token = $this->plugin->createToken();
+		$this->plugin->saveTokenInSession ($token);
 		$html = $this->plugin->renderByLayout('remote_cc_form', array(
 		                                                             "order_amount"                => $order_amount,
 		                                                             "payment_name"                => $payment_name,
@@ -1651,6 +1651,7 @@ class  RealexHelperRealex {
 		                                                             'creditcards'                 => $this->_method->creditcards,
 		                                                             'offer_save_card'             => $offer_save_card,
 		                                                             'order_number'                => $this->order['details']['BT']->order_number,
+		                                                             'token'                       => $token,
 		                                                             'virtuemart_paymentmethod_id' => $this->_method->virtuemart_paymentmethod_id,
 		                                                             'integration'                 => $this->_method->integration,
 		                                                             'cvv_info'                    => $cvv_info,
@@ -1736,6 +1737,7 @@ class  RealexHelperRealex {
 		$html .= ' <label for="' . $id . '">' . vmText::_('VMPAYMENT_REALEX_OFFERSAVECARD_YES') . '</label>';
 		return $html;
 	}
+
 
 	function doRealVault () {
 
@@ -2393,6 +2395,8 @@ class  RealexHelperRealex {
 		}
 		vmError((string)$admin, (string)$public);
 	}
+
+
 
 	/**
 	 * Realex requires that non asci characters are removed from the cc name

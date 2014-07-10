@@ -29,6 +29,7 @@ vmJsApi::chosenDropDowns();
 $doc = JFactory::getDocument();
 $doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/js/site.js');
 $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/css/realex.css');
+
 $attribute = '';
 if ($viewData['dccinfo']) {
 	$attribute = ' readonly ';
@@ -44,7 +45,7 @@ if ($viewData['dccinfo']) {
 	?>
 </div>
 
-<form method="post" action="<?php echo $viewData['submit_url'] ?>">
+<form method="post" action="<?php echo $viewData['submit_url'] ?>" id="checkoutRealexFormSubmit">
 <?php if (!$viewData['dccinfo']) { ?>
 	<?php if (!empty($viewData['creditcardsDropDown'])) { ?>
 		<div class="vmpayment_cardinfo" id="vmpayment_cardinfo">
@@ -295,6 +296,10 @@ if ($viewData['dccinfo']) {
 			</div>
 		<?php
 		}
+	} else {
+		?>
+		<input type="hidden" name="save_card" value="<?php echo $ccData['save_card'] ?>"/>
+<?php
 	}
 }
 ?>
@@ -307,6 +312,7 @@ if ($viewData['dccinfo']) {
 		<input type="hidden" name="option" value="com_virtuemart"/>
 		<input type="hidden" name="view" value="pluginresponse"/>
 		<input type="hidden" name="task" value="pluginnotification"/>
+		<input type="hidden" name="token" value="<?php echo $viewData['token'] ?>"/>
 		<input type="hidden" name="notificationTask" value="<?php echo $viewData['notificationTask']; ?>"/>
 		<input type="hidden" name="order_number" value="<?php echo $viewData['order_number']; ?>"/>
 		<input type="hidden" name="pm" value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"/>

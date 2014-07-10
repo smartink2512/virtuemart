@@ -17,13 +17,13 @@
  *
  */
 ?>
-<div class="billto-shipto">
+<div class="billto-shipto" >
 	<div class="width50 floatleft">
 
 		<span><span class="vmicon vm2-billto-icon"></span>
 			<?php echo JText::_ ('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
 		<?php // Output Bill To Address ?>
-		<div class="output-billto">
+		<div class="output-billto" id="output-billto">
 			<?php
 
 			foreach ($this->cart->BTaddress['fields'] as $item) {
@@ -42,7 +42,7 @@
 			<div class="clear"></div>
 		</div>
 
-		<a class="details output-billto-edit" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT', $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
+		<a class="details output-billto-edit" id="output-billto-edit" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT', $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
 			<?php echo JText::_ ('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
 		</a>
 
@@ -54,7 +54,7 @@
 		<span><span class="vmicon vm2-shipto-icon"></span>
 			<?php echo JText::_ ('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
 		<?php // Output Bill To Address ?>
-		<div class="output-shipto">
+		<div class="output-shipto" id="output-shipto">
 			<?php
 			if (empty($this->cart->STaddress['fields'])) {
 				echo JText::sprintf ('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_EXPLAIN', JText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'));
@@ -92,7 +92,7 @@
 		<?php if (!isset($this->cart->lists['current_id'])) {
 		$this->cart->lists['current_id'] = 0;
 	} ?>
-		<a class="details output-shipto-add" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&virtuemart_user_id[]=' . $this->cart->lists['current_id'], $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
+		<a class="details output-shipto-add" id="output-shipto-add" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&virtuemart_user_id[]=' . $this->cart->lists['current_id'], $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
 			<?php echo JText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 		</a>
 	</div>

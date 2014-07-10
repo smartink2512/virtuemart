@@ -267,6 +267,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 	}
 
 	function redirectToCart ($msg = NULL) {
+
 		if (!$msg) {
 			$msg = vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN');
 		}
@@ -293,7 +294,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 				}
 				$realexInterface = new RealexHelperRealexRemote($this->_currentMethod, $this);
 			} else {
-				Vmerror('Wrong Realex Integration method - developer error ', 'Wrong Realex Integration method ');
+				Vmerror('Wrong Realex Integration method - developer error '.$this->_currentMethod->integration, 'Wrong Realex Integration method ');
 				return NULL;
 			}
 		}
@@ -793,6 +794,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 			'id'                 => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'virtuemart_user_id' => 'int(11) UNSIGNED',
 			'payer_ref'          => 'char(32)',
+			'merchant_id'        => 'varchar(128)',
 		);
 		return $SQLfields;
 	}
@@ -1137,6 +1139,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if (!class_exists('VirtueMartCart')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
+
 		$notificationTask = vRequest::getCmd('notificationTask', '');
 		// this is not our notification
 		if (empty($notificationTask)) {
@@ -1336,41 +1339,8 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$realexInterface = $this->initRealexInterface($loadFromPost);
 		$realvaultData = false;
 
-		if (!JFactory::getUser()->guest AND $this->_currentMethod->realvault) {
-			$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
-			if ($saved_cc_selected > 0) {
-				$realvaultData = $realexInterface->getStoredCCsData($saved_cc_selected);
-				if (!$cvv_realvault = $realexInterface->validateCvv()) {
-					$html = $realexInterface->displayRemoteCCForm(NULL, true);
-					echo $html;
-					return;
-				}
-				$realvaultData->cc_cvv_realvault = $this->customerData->getVar('cc_cvv_realvault');
-				$this->customerData->saveCustomerRealVaultData((array)$realvaultData);
-			} else {
-
-				if ($this->_currentMethod->integration == 'redirect') {
-					$html = $realexInterface->sendPostRequest();
-					echo $html;
-					$cart = VirtueMartCart::getCart();
-					$cart->_confirmDone = FALSE;
-					$cart->_dataValidated = FALSE;
-					$cart->setCartIntoSession();
-					return;
-				} else {
-					if (!$realexInterface->validateRemoteCCForm()) {
-						$html = $realexInterface->displayRemoteCCForm();
-						echo $html;
-						return;
-					}
-				}
-			}
-		} else {
-			if (!$realexInterface->validateRemoteCCForm()) {
-				$html = $realexInterface->displayRemoteCCForm();
-				echo $html;
-				return;
-			}
+		if (! $this->validateCCForm($realexInterface, $realvaultData)) {
+			return;
 		}
 
 		if ($this->_currentMethod->dcc AND empty($response_dcc)) {
@@ -1446,6 +1416,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		//$payments = $this->getDatasByOrderId($realexInterface->order['details']['BT']->virtuemart_order_id);
 		$success = $this->updateOrderStatus($realexInterface->order, false);
 		if ($success) {
+			$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
 			$userfield = $realexInterface->handleCardStorage($saved_cc_selected);
 			$realexInterface->storeNewPayment($userfield);
 			$this->customerData->clear();
@@ -1461,11 +1432,62 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 	}
 
+
+	private function validateCCForm($realexInterface, &$realvaultData) {
+		$realvaultData = false;
+		$return=false;
+		if (!JFactory::getUser()->guest AND $this->_currentMethod->realvault) {
+			$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+			if ($saved_cc_selected > 0) {
+				$realvaultData = $realexInterface->getStoredCCsData($saved_cc_selected);
+				if (!$cvv_realvault = $realexInterface->validateCvv()) {
+					$html = $realexInterface->displayRemoteCCForm(NULL, true);
+					echo $html;
+					return false;
+				}
+				$realvaultData->cc_cvv_realvault = $this->customerData->getVar('cc_cvv_realvault');
+				$this->customerData->saveCustomerRealVaultData((array)$realvaultData);
+				return true;
+			} else {
+
+				if ($this->_currentMethod->integration == 'redirect') {
+					$html = $realexInterface->sendPostRequest();
+					echo $html;
+					$cart = VirtueMartCart::getCart();
+					$cart->_confirmDone = FALSE;
+					$cart->_dataValidated = FALSE;
+					$cart->setCartIntoSession();
+					return false;
+				} else {
+					if (!$realexInterface->validateRemoteCCForm()) {
+						$html = $realexInterface->displayRemoteCCForm();
+						echo $html;
+						return false;
+					} else {
+						return true;
+					}
+				}
+			}
+		} else {
+			if (!$realexInterface->validateRemoteCCForm()) {
+				$html = $realexInterface->displayRemoteCCForm();
+				echo $html;
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return $return;
+	}
 	/**
 	 * @return bool
 	 */
 	private function handleVerify3D () {
 		$realexInterface = $this->initRealexInterface();
+		$realvaultData=false;
+		if (! $this->validateCCForm($realexInterface, $realvaultData)) {
+			return;
+		}
 		$cart = VirtueMartCart::getCart();
 		$realexInterface->setCart($cart, false);
 
@@ -1553,7 +1575,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$xml_response3DSVerifysig = simplexml_load_string($response3DSVerifysig);
 		if ($eci !== false) {
 			$xml_response3DSVerifysig->threedsecure->eci = $eci;
-			$userfield = $realexInterface->handleCardStorage($saved_cc_selected);
+
 			if ($realvault) {
 				$response = $realexInterface->requestReceiptIn($realvault, $xml_dcc_payment, $xml_response3DSVerifysig);
 			} else {
@@ -1571,6 +1593,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$order_history = array();
 		$redirectToCart = false;
 		if ($success) {
+			$userfield = $realexInterface->handleCardStorage($saved_cc_selected);
 			$realexInterface->storeNewPayment($userfield);
 			$status = $this->_currentMethod->status_success;
 			$amountValue = vmPSPlugin::getAmountInCurrency($realexInterface->order['details']['BT']->order_total, $realexInterface->order['details']['BT']->order_currency);
@@ -1712,10 +1735,6 @@ class plgVmPaymentRealex extends vmPSPlugin {
 				break;
 			}
 		}
-		if (empty($this->_currentMethod)) {
-			Vmerror('Not payment has been found with ' . $storedCC['merchant_id']);
-			return FALSE;
-		}
 
 		$realexInterface = $this->_loadRealexInterface();
 		if (!$realexInterface) {
@@ -1745,7 +1764,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 			}
 		}
 		if (empty($this->_currentMethod)) {
-			Vmerror('Not payment has been found with ' . $storedCC['merchant_id']);
+			Vmerror('No payment has been found with ' . $storedCC['merchant_id']);
 			return FALSE;
 		}
 		//vmdebug('plgVmOnRealexUpdateStoredCard',$this->_currentMethod );
@@ -1792,6 +1811,44 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 		$this->storePSPluginInternalData($db_values);
 		return $db_values;
+	}
+
+
+	/**
+ * createToken to avoid double form submit
+ * @return string
+ */
+	function createToken () {
+		static $chars = '0123456789abcdef';
+		$max = strlen($chars) - 1;
+		$token = '';
+		$name = session_name();
+		$length = 32;
+		for ($i = 0; $i < $length; ++$i) {
+			$token .= $chars[(rand(0, $max))];
+		}
+
+		return md5($token . $name);
+	}
+
+	function saveTokenInSession ($token) {
+		$session = JFactory::getSession();
+		$session->set('RealexToken', $token, 'vm');
+	}
+
+	function checkToken ($token) {
+		$session = JFactory::getSession();
+		$sessionToken = $session->get('RealexToken', 0, 'vm');
+		if ($token == $sessionToken) {
+			return true;
+		}
+		return false;
+	}
+
+
+	function clearToken() {
+		$session = JFactory::getSession();
+		$session->clear('RealexToken', 'vm');
 	}
 
 
