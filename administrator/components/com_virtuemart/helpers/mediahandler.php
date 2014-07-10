@@ -1062,11 +1062,12 @@ class VmMediaHandler {
 		foreach ($list['images'] as $key =>$image) {
 			$htmlImages ='';
 			if ($image->file_url_thumb > "0" ) {
-				// $imagesList->file_root = JURI::root(true).'/';
-				// $imagesList->msg =  'OK';
-				$htmlImages .= '<div class="vm_thumb_image">
+				/*$htmlImages .= '<div class="vm_thumb_image">
 				<span><a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >'
-				.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span></a>';
+				.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span></a>';*/
+				$htmlImages .= '<div class="vm_thumb_image">
+				<span>'
+					.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span>';
 			} else {
 				$htmlImages .=  '<div class="vm_thumb_image">'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 			}

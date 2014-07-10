@@ -88,6 +88,19 @@ class vmJsApi{
 
 	}
 
+	public static function loadBECSS (){
+
+		$document = JFactory::getDocument();
+
+		$file = '/administrator/templates/system/css/system.css';
+		$document->addStyleSheet($file);
+
+		//Todo load BE standard template first
+		$file = '/administrator/templates/bluestork/css/template.css';
+		$document->addStyleSheet($file);
+
+	}
+
 	/*
 	 * Set file path(look in template if relative path)
 	 */

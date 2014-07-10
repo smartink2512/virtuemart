@@ -13,7 +13,7 @@
 .vm-price-desc {min-width: 1em;}
 .vm-price-value span {display: inline-block; min-width: 4em; padding: 0 0.2em;}
 .vm3pr-1 .product-price {height: 1.25em;} .vm3pr-2 .product-price {height: 2.5em;}.vm3pr-3 .product-price {height: 3.75em;}.vm3pr-4 .product-price {height: 5.0em;}.vm3pr-5 .product-price {height: 6.25em;}.vm3pr-6 .product-price {height: 6.25em;}
-.vm3pr-0 .addtocart-area {height: 3.8em;} .vm3pr-1 .addtocart-area {height: 7.6em;}.vm3pr-2 .addtocart-area {height: 10.6em;}.vm3pr-3 .addtocart-area  {height: 14.6em;}.vm3pr-4 .addtocart-area  {height: 19.6em;}.vm3pr-5 .addtocart-area  {height: 20.0em;}
+.vm3pr-0 .addtocart-area {height: 0.0em;} .vm3pr-1 .addtocart-area {height: 3.2em;}.vm3pr-2 .addtocart-area {height: 6.4em;}.vm3pr-3 .addtocart-area  {height: 9.6em;}.vm3pr-4 .addtocart-area  {height: 12.8em;}.vm3pr-5 .addtocart-area  {height: 16.0em;}
 .vm-cart-price{float:left;}
 
 .price-crossed div.PricebasePriceWithTax .PricebasePriceWithTax{text-decoration: line-through;}
@@ -24,7 +24,7 @@ span.variant-dropdown select{width:150px;}
 span.custom-variant-inputbox{width:152px;float:left;display:block;margin-bottom:5px;}
 input.custom-attribute{width:140px;}
 
-.addtocart-area{margin: 0 0 15px;}
+.addtocart-area{margin: 0 0 4.2em;}
 span.quantity-box{display: inline-block; vertical-align:middle;}
 input.quantity-input{height:2.0em;width:2.2em;text-align:center;font-weight:700;padding:0.1em;}
 span.quantity-controls{width:15px;display: inline-block;vertical-align:middle;margin:0 0 0 1px;}

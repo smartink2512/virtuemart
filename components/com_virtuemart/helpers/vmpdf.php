@@ -114,6 +114,9 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			}
 			$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
 			if($this->tcpdf6){
+				$this->tcpdf6 = method_exists('TCPDF','getAllSpotColors');
+			}
+			if($this->tcpdf6){
 				$getAllSpotColors = TCPDF::getAllSpotColors();
 				$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);
 			} else {
@@ -207,6 +210,9 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
 				$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
+				if($this->tcpdf6){
+					$this->tcpdf6 = method_exists('TCPDF','getAllSpotColors');
+				}
 				if($this->tcpdf6){
 					$getAllSpotColors = TCPDF::getAllSpotColors();
 					$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);

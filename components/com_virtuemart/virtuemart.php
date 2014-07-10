@@ -58,11 +58,18 @@ if(VmConfig::get('shop_is_offline',0)){
 
 		if	($vendorIdUser) {
 			VmConfig::loadJLang('com_virtuemart');
+			$jlang = JFactory::getLanguage();
+			$tag = $jlang->getTag();
+			$jlang->load('', JPATH_ADMINISTRATOR,$tag,true);
+			VmConfig::loadJLang('com_virtuemart');
 			$basePath = JPATH_VM_ADMINISTRATOR;
 			$trigger = 'onVmAdminController';
 			vmdebug('$vendorIdUser use FE managing '.$vendorIdUser);
 			vRequest::setVar('manage','1');
+
 			vmJsApi::jQuery(false);
+			vmJsApi::loadBECSS();
+
 			//vmJsApi::js('vmsite');
 		} else {
 			$app->redirect('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );

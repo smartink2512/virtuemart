@@ -873,6 +873,29 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->order_language = $_cart->order_language;
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
 
+		$maskIP = VmConfig::get('maskIP','last');
+		if($maskIP=='last'){
+			$rpos = strrpos($_orderData->ip_address,'.');
+			$_orderData->ip_address = substr($_orderData->ip_address,0,($rpos+1)).'xx';
+		}
+
+		$db = JFactory::getDbo();
+		$jnow = JFactory::getDate();
+		$jnow->sub(new DateInterval('PT1H'));
+		$minushour = $jnow->toMySQL();
+
+		$q = 'SELECT * FROM `#__virtuemart_orders` ';
+		//$q .= 'LEFT JOIN `#_virtuemart_order_userinfos` as oui using `virtuemart_order_id` ';
+		$q .= 'WHERE `customer_number`= "'.$_orderData->customer_number.'" AND
+				`ip_address` = "'.$_orderData->ip_address.'" AND `order_status` = "P"
+				AND `created_on`> "'.$minushour.'" ';
+		$db->setQuery($q);
+		$order = $db->loadAssoc();
+		if($order){
+			//So and what we do now?
+			$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
+		}
+
 		$_orderData->order_number ='';
 		JPluginHelper::importPlugin('vmshopper');
 		$dispatcher = JDispatcher::getInstance();

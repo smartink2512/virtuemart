@@ -89,6 +89,9 @@ em
         right:0px;
         width:100%
 }
+#adminForm #header {
+    overflow: visible !important;
+}
 
 #header ul li a:link,
 #header ul li a:visited

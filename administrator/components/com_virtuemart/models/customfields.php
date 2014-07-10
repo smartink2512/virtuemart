@@ -445,7 +445,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 				$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
 				$display .= '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">';
-				$display .= JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
+				$display .= JHtml::link ('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=' . $related->virtuemart_product_id , $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
 				return $display;
 
 		}
