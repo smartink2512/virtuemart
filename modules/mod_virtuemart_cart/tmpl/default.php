@@ -27,11 +27,10 @@ if ($show_product_list) {
 
 		<?php
 			foreach ($data->products as $product){
-
 				?><div class="product_row">
 					<span class="quantity"><?php echo  $product['quantity'] ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product['product_name'] ?></span>
 				<?php if ($show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
-				  <div class="subtotal_with_tax" style="float: right;"><?php echo  $product['subtotal_with_tax'] ?></div>
+				  <div class="subtotal_with_tax" style="float: right;"><?php echo $product['subtotal_with_tax'] ?></div>
 				<?php } ?>
 				<?php if ( !empty($product['customProductData']) ) { ?>
 					<div class="customProductData"><?php echo $product['customProductData'] ?></div><br>

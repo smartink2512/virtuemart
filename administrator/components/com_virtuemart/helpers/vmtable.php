@@ -422,8 +422,8 @@ class VmTable extends JTable {
 		if (!is_array($ignore)) {
 			$ignore = explode(' ', $ignore);
 		}
-
-		foreach ($this->getProperties() as $k => $v) {
+		$properties = $this->getProperties();
+		foreach ($properties as $k => $v) {
 			// internal attributes of an object are ignored
 			if (!in_array($k, $ignore)) {
 
@@ -434,7 +434,7 @@ class VmTable extends JTable {
 				}
 			}
 		}
-		vmdebug('VmTable developer notice, table ' . get_class($this) . ' means that there is no data to store. When you experience that something does not get stored as expected, please write in the forum.virtuemart.net');
+		vmdebug('VmTable developer notice, table ' . get_class($this) . ' means that there is no data to store. When you experience that something does not get stored as expected, please write in the forum.virtuemart.net',$properties);
 		return false;
 	}
 

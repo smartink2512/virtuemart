@@ -46,6 +46,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		parent::__construct();
 		$this->setMainTable('shipmentmethods');
 		$this->_selectedOrdering = 'ordering';
+		$this->setToggleName('shared');
 	}
 
 	/**

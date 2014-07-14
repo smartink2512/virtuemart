@@ -337,12 +337,16 @@ class VirtueMartModelRatings extends VmModel {
 				//
 				$app = JFactory::getApplication();
 				if( $app->isSite() ){
-					if (!class_exists ('Permissions')) {
-						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-					}
-					if(!Permissions::getInstance()->check('admin')){
-						if (VmConfig::get ('reviews_autopublish', 1)) {
-							$data['published'] = 1;
+
+					if (VmConfig::get ('reviews_autopublish', 1)) {
+						$data['published'] = 1;
+					} else {
+						$model = new VmModel();
+						$product = $model->getTable('products');
+						$product->load($data['virtuemart_product_id']);
+						$vendorId = VmConfig::isSuperVendor();
+						if(!$user->authorise('core.admin','com_virtuemart') and !$user->authorise('core.manage','com_virtuemart') or $vendorId!=$product->virtuemart_vendor_id){
+							$data['published'] = 0;
 						}
 					}
 

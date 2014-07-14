@@ -55,8 +55,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		             'X' => 'COM_VIRTUEMART_CUSTOM_EDITOR',
 		             'Y' => 'COM_VIRTUEMART_CUSTOM_TEXTAREA',
 		             'E' => 'COM_VIRTUEMART_CUSTOM_EXTENSION',
-		             'R'=>'COM_VIRTUEMART_RELATED_PRODUCT',
-					'Z'=>'COM_VIRTUEMART_RELATED_CATEGORY'
+		             'R'=>'COM_VIRTUEMART_RELATED_PRODUCTS',
+					'Z'=>'COM_VIRTUEMART_RELATED_CATEGORIES'
 		);
 
 		// 'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT',

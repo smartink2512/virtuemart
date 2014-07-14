@@ -312,10 +312,10 @@ class VirtuemartViewCategory extends VmView {
 			$title .=' ('.$keyword.')';
 		}
 
-		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0])) $title .=' '.$products[0]->mf_name ;
+		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0])) $title .=' '.$this->products[0]->mf_name ;
 		$document->setTitle( $title );
 		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
-		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0]) and isset($category->category_name)) $category->category_name =$products[0]->mf_name ;
+		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0]) and isset($category->category_name)) $category->category_name = $this->products[0]->mf_name ;
 
 		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);

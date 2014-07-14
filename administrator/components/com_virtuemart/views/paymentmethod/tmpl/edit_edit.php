@@ -33,9 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_PAYMENTMETHOD_FORM_SHOPPER_GROUP', $this->shopperGroupList ); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_LIST_ORDER','ordering',$this->payment->ordering,'class="inputbox"','',4,4); ?>
 	    <?php
-	    if (Vmconfig::get('multix', 'none') !== 'none') {
+	    if ($this->showVendors()) {
 			echo VmHTML::row('raw', 'COM_VIRTUEMART_VENDOR', $this->vendorList);
 	    }
+		if($this->showVendors ){
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_SHARED', 'shared', $this->shipment->shared );
+		}
 	    ?>
           </table>
     </fieldset>

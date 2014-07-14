@@ -529,7 +529,7 @@ class VmView extends JViewLegacy {
 		$user=JFactory::getUser();
 
 		if($this->showVendors===null){
-			if(VmConfig::get('multix','none')!=='none' and $user->authorise('core.admin','com_virtuemart')){
+			if(VmConfig::get('multix','none')!='none' and $user->authorise('core.admin','com_virtuemart')){
 				$this->showVendors = true;
 			} else {
 				$this->showVendors = false;

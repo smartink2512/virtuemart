@@ -39,7 +39,7 @@ class VirtueMartModelCalc extends VmModel {
 			$this->setMainTable('calcs');
 			$this->setToggleName('calc_shopper_published');
 			$this->setToggleName('calc_vendor_published');
-	  	$this->setToggleName('shared');
+	  		$this->setToggleName('shared');
 			$this->addvalidOrderingFieldName(array('virtuemart_category_id','virtuemart_country_id','virtuemart_state_id','virtuemart_shoppergroup_id'
 				,'virtuemart_manufacturer_id'
 			)); 

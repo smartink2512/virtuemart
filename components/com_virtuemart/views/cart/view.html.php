@@ -186,11 +186,12 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 		// @max: quicknirty
-		$this->cart->setCartIntoSession();
+		//$this->cart->setCartIntoSession(true);
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
+
 
 		parent::display($tpl);
 	}
@@ -280,6 +281,8 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
 		$this->assignRef('found_shipment_method', $found_shipment_method);
+
+
 		return;
 	}
 

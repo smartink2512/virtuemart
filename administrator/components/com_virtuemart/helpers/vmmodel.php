@@ -971,6 +971,7 @@ class VmModel extends JObject {
 		$ok = true;
 
 		if (!in_array($field, $this->_togglesName)) {
+			vmdebug('vmModel function toggle, field '.$field.' is not in white list');
 			return false ;
 		}
 		if($tablename === 0) $tablename = $this->_maintablename;

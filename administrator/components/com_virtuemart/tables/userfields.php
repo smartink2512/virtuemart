@@ -97,7 +97,7 @@ class TableUserfields extends VmTable {
 				break;
 
 			case 'age_verification':
-				$this->params = 'minimum_age='.(int)$_data['minimum_age']."\n";
+				//$this->params = 'minimum_age='.(int)$_data['minimum_age']."\n";
 			default:
 				$_fieldType = 'VARCHAR(255)';
 				break;

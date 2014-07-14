@@ -102,14 +102,29 @@ class VirtueMartCart {
 
 		if(empty(self::$_cart)){
 
+			self::$_cart = new VirtueMartCart;
+
 			if (empty($cartData)) {
 				$session = JFactory::getSession($options);
 				$cartSession = $session->get('vmcart', 0, 'vm');
+				if (!empty($cartSession)) {
+					$sessionCart = unserialize( $cartSession );
+
+					if(empty($sessionCart->cartProductsData) or ($sessionCart->_guest and $sessionCart->_guest!=JFactory::getUser()->guest)){
+						self::$_cart->loadCart($sessionCart);
+						//vmdebug('my session getCart ',$cartSession,$cartSession);
+					}
+				}
+				if(empty($cartSession) or empty($cartSession->BT)){
+					//
+					//
+				} else {
+					//$sessionCart = unserialize( $cartSession );
+				}
 			} else {
 				$cartSession=$cartData;
+				$sessionCart = unserialize( $cartSession );
 			}
-
-			self::$_cart = new VirtueMartCart;
 
 			$userModel = VmModel::getModel('user');
 			self::$_cart->user = $userModel->getCurrentUser();
@@ -118,7 +133,7 @@ class VirtueMartCart {
 			self::$_cart->order_language = $lang->getTag();
 
 			if (!empty($cartSession)) {
-				$sessionCart = unserialize( $cartSession );
+				//$sessionCart = unserialize( $cartSession );
 
 				if(isset($sessionCart->cartProductsData)){
 					self::$_cart->cartProductsData = $sessionCart->cartProductsData;
@@ -135,15 +150,16 @@ class VirtueMartCart {
 					//self::$_cart->customer_comment 				= base64_decode($sessionCart->customer_comment);
 					self::$_cart->couponCode 					= $sessionCart->couponCode;
 					self::$_cart->_triesValidateCoupon			= $sessionCart->_triesValidateCoupon;
-					self::$_cart->cartData 						= $sessionCart->cartData;
+					//self::$_cart->cartData 						= $sessionCart->cartData;
 					self::$_cart->order_number					= $sessionCart->order_number;
 
-					self::$_cart->lists 						= $sessionCart->lists;
+					//self::$_cart->lists 						= $sessionCart->lists;
 
 					self::$_cart->pricesCurrency				= $sessionCart->pricesCurrency;
 					self::$_cart->paymentCurrency				= $sessionCart->paymentCurrency;
 
-					self::$_cart->_cartProcessed						= $sessionCart->_cartProcessed;
+					self::$_cart->_guest						=  $sessionCart->_guest;
+					self::$_cart->_cartProcessed				= $sessionCart->_cartProcessed;
 					self::$_cart->_inCheckOut 					= $sessionCart->_inCheckOut;
 					self::$_cart->_dataValidated				= $sessionCart->_dataValidated;
 					self::$_cart->_confirmDone					= $sessionCart->_confirmDone;
@@ -184,6 +200,7 @@ class VirtueMartCart {
 				if($multixcart=='byvendor' and empty(self::$_cart->vendorId) or self::$_cart->vendorId==1){
 					$vendor = VmModel::getModel('vendor');
 					self::$_cart->vendorId = $vendor->getLoggedVendor();
+					if(empty(self::$_cart->vendorId)) self::$_cart->vendorId = 1;
 				}
 				if($multixcart=='byselection'){
 					self::$_cart->vendorId = vRequest::get('virtuemart_vendor_id',1);
@@ -252,21 +269,79 @@ class VirtueMartCart {
 	}
 
 	/**
+	 * @author Max Milbers
+	 */
+	public function loadCart(&$existingSession){
+		$currentUser = JFactory::getUser();
+		if(!$currentUser->guest and $existingSession){
+			$model = new VmModel();
+			$carts = $model->getTable('carts');
+			$carts->load($currentUser->id);
+			$cartData = $carts->loadFieldValues();
+			if($cartData and !empty($cartData['cartData'])){
+				$cartData['cartData'] = unserialize($cartData['cartData']);
+
+				foreach($cartData['cartData'] as $key=>$value){
+					if(is_array($value)){
+						$existingSession->$key = array_merge( $value,(array)$existingSession->$key);
+					} else if(empty($existingSession->$key)){
+						$existingSession->$key = $cartData['cartData']->$key;
+					}
+				}
+
+			}
+		}
+	}
+
+	public function storeCart($cartDataToStore = false){
+		$currentUser = JFactory::getUser();
+		if(!$currentUser->guest){
+			$model = new VmModel();
+			$carts = $model->getTable('carts');
+			if(!$cartDataToStore) $cartDataToStore = $this->getCartDataToStore();
+
+			$cObj = new StdClass();
+			$cObj->virtuemart_user_id = $currentUser->id;
+			$cObj->virtumart_vendor_id = $this->vendorId;
+			$cObj->cartData = serialize($cartDataToStore);
+			//vmdebug('storeCart ',$cartDataToStore,unserialize($cObj->cartData));
+			$carts->bindChecknStore($cObj);
+		}
+	}
+
+	public function deleteCart(){
+
+		$currentUser = JFactory::getUser();
+		if(!$currentUser->guest){
+			$model = new VmModel();
+			$carts = $model->getTable('carts');
+			$carts->delete($currentUser->id);
+		}
+	}
+
+	/**
 	 * Set the cart in the session
-	 *
-	 * @author RolandD
 	 *
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public function setCartIntoSession() {
+	public function setCartIntoSession($storeDb = false) {
 
 		$session = JFactory::getSession();
 
+		$sessionCart = $this->getCartDataToStore();
+		if($storeDb){
+			$this->storeCart($sessionCart);
+		}
+		$session->set('vmcart', serialize($sessionCart),'vm');
+
+	}
+
+	public function getCartDataToStore(){
 		$sessionCart = new stdClass();
 
 		// 		$sessionCart->products = $products;
-	//	$sessionCart->products = $this->products;
+		//	$sessionCart->products = $this->products;
 		// 		echo '<pre>'.print_r($products,1).'</pre>';die;
 		$sessionCart->cartProductsData = $this->cartProductsData;
 		$sessionCart->vendorId	 							= $this->vendorId;
@@ -281,27 +356,28 @@ class VirtueMartCart {
 		$sessionCart->ST 										= $this->ST;
 		$sessionCart->cartfields					= $this->cartfields;
 
-		//$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
 		$sessionCart->_triesValidateCoupon				= $this->_triesValidateCoupon;
 		$sessionCart->order_language 						= $this->order_language;
-		$sessionCart->cartData 								= $this->cartData;
-		$sessionCart->lists 									= $this->lists;
+		//$sessionCart->cartData 								= $this->cartData;
 
 		$sessionCart->pricesCurrency						= $this->pricesCurrency;
 		$sessionCart->paymentCurrency						= $this->paymentCurrency;
 
 		//private variables
 		$sessionCart->_cartProcessed						= $this->_cartProcessed;
+		//We nee to store this, so that we now if a user logged in before
+		$sessionCart->_guest								= JFactory::getUser()->guest;
 		$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 		$sessionCart->selected_shipto 				= $this->selected_shipto;
 		$sessionCart->fromCart						= $this->fromCart;
-		$session->set('vmcart', serialize($sessionCart),'vm');
-
+		return $sessionCart;
 	}
+
+
 
 	/**
 	 * Remove the cart from the session
@@ -542,7 +618,7 @@ class VirtueMartCart {
 		}
 		if ($updateSession== false) return false ;
 		// End Iteration through Prod id's
-		$this->setCartIntoSession();
+		$this->setCartIntoSession(true);
 		return $products;
 	}
 
@@ -566,7 +642,7 @@ class VirtueMartCart {
 			$addToCartReturnValues = $dispatcher->trigger('plgVmOnRemoveFromCart',array($this,$prod_id));
 			unset($this->cartProductsData[$prod_id]);
 			$this->_cartProcessed = false;
-			$this->setCartIntoSession();
+			$this->setCartIntoSession(true);
 			return true;
 		} else {
 			vmdebug('removeProductCart $prod_id '.$prod_id,$this->cartProductsData);
@@ -606,7 +682,7 @@ class VirtueMartCart {
 			}
 		}
 		$this->_cartProcessed = false;
-		$this->setCartIntoSession();
+		$this->setCartIntoSession(true);
 		if ($updated)
 		return true;
 		else
@@ -668,7 +744,7 @@ class VirtueMartCart {
 			return $msg;
 		}
 		$this->couponCode = $coupon_code;
-		$this->setCartIntoSession();
+		$this->setCartIntoSession(true);
 		return vmText::_('COM_VIRTUEMART_CART_COUPON_VALID');
 	}
 
@@ -755,7 +831,7 @@ class VirtueMartCart {
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
 			$this->_inCheckOut = false;
-			$this->setCartIntoSession();
+			$this->setCartIntoSession(true);
 			return false;
 		}
 	}
@@ -921,11 +997,11 @@ class VirtueMartCart {
 
 		if($this->_blockConfirm){
 			$this->_dataValidated = false;
-			$this->setCartIntoSession();
+			$this->setCartIntoSession(true);
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
 		} else {
 			$this->_dataValidated = true;
-			$this->setCartIntoSession();
+			$this->setCartIntoSession(true);
 			if ($redirect) {
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
@@ -1062,6 +1138,7 @@ class VirtueMartCart {
 		$cart->productsQuantity=array();
 		$cart->virtuemart_order_id = null;
 		//vmdebug('emptyCartValues',$cart);
+		$cart->deleteCart();
 		$cart->setCartIntoSession();
 	}
 
@@ -1188,7 +1265,7 @@ class VirtueMartCart {
 		$this->{$type} = $address;
 		//vmdebug('saveAddressInCart my type ',$type,$this->{$type});
 		if($putIntoSession){
-			$this->setCartIntoSession();
+			$this->setCartIntoSession(true);
 		}
 
 	}
@@ -1323,7 +1400,7 @@ class VirtueMartCart {
 		$this->pricesCurrency = $calculator->_currencyDisplay->getCurrencyForDisplay();
 
 		$calculator->getCheckoutPrices($this);
-
+		//vmdebug('getCartPrices ',$this->cartPrices);
 		//Fallback for old extensions
 		$this->pricesUnformatted = $this->cartPrices;
 		//vmdebug('getCartPrices my format pricesUnformatted',$this->pricesUnformatted);
@@ -1334,7 +1411,7 @@ class VirtueMartCart {
 			$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
 			//$this->pricesUnformatted[$product->cart_item_id] = $product->prices;
 		}
-		//vmdebug('getCartPrices my format pricesUnformatted',$this->pricesUnformatted);
+
 	}
 
 	function prepareVendor(){
@@ -1562,10 +1639,10 @@ class VirtueMartCart {
 			$data->products[$i]['prices'] = $currencyDisplay->priceDisplay( $product->allPrices[$product->selectedPrice]['subtotal']);
 
 			// other possible option to use for display
-			$data->products[$i]['subtotal'] = $product->allPrices[$product->selectedPrice]['subtotal'];
-			$data->products[$i]['subtotal_tax_amount'] = $product->allPrices[$product->selectedPrice]['subtotal_tax_amount'];
-			$data->products[$i]['subtotal_discount'] = $product->allPrices[$product->selectedPrice]['subtotal_discount'];
-			$data->products[$i]['subtotal_with_tax'] = $product->allPrices[$product->selectedPrice]['subtotal_with_tax'];
+			$data->products[$i]['subtotal'] = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['subtotal']);
+			$data->products[$i]['subtotal_tax_amount'] = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['subtotal_tax_amount']);
+			$data->products[$i]['subtotal_discount'] = $currencyDisplay->priceDisplay( $product->allPrices[$product->selectedPrice]['subtotal_discount']);
+			$data->products[$i]['subtotal_with_tax'] = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['subtotal_with_tax']);
 
 			// UPDATE CART / DELETE FROM CART
 			$data->products[$i]['quantity'] = $product->quantity;

@@ -1,6 +1,6 @@
 # Required configuration data for the VirtueMart installer
 # http://www.virtuemart.net
-# Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+# Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
 # http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 # VirtueMart is free software. This version may have been modified pursuant
 # to the GNU General Public License, and as distributed it includes or
@@ -29,7 +29,7 @@ google_jquery=0
 multix=none
 usefancy=1
 jchosen=1
-enableEnglish=0
+enableEnglish=1
 
 ##Shopfront
 pdf_button_enable=1
@@ -109,13 +109,13 @@ browse_search_fields=array:`p`.product_sku|category_name|category_description|mf
     variantModification=0
     variantModificationText=1
     variantModificationRounding=-1
-    basePriceVariant=0
+    basePriceVariant=1
     basePriceVariantText=1
     basePriceVariantRounding=-1
     basePriceWithTax=0
     basePriceWithTaxText=1
     basePriceWithTaxRounding=-1
-    discountedPriceWithoutTax=0
+    discountedPriceWithoutTax=1
     discountedPriceWithoutTaxText=1
     discountedPriceWithoutTaxRounding=-1
     salesPriceWithDiscount=0

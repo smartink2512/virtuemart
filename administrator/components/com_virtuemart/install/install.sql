@@ -248,8 +248,21 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
    KEY `idx_coupon_code` (`coupon_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store coupon codes' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `#__virtuemart_carts` (
+  `virtuemart_cart_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_user_id` INT(11) UNSIGNED NOT NULL,
+  `virtuemart_vendor_id` INT(11) UNSIGNED NOT NULL,
+  `cartData` VARBINARY(50000),
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`virtuemart_cart_id`),
+  KEY `idx_virtuemart_vendor_id` (`virtuemart_vendor_id`),
+  KEY `idx_virtuemart_user_id` (`virtuemart_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store the cart' AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_currencies`
 --

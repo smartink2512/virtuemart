@@ -32,6 +32,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		parent::__construct();
 		$this->setMainTable('paymentmethods');
 		$this->_selectedOrdering = 'ordering';
+		$this->setToggleName('shared');
 	}
 
 	/**

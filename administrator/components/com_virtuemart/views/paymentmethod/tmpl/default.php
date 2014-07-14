@@ -55,7 +55,7 @@ AdminUIHelper::startAdminArea($this);
 			<th >
 				<?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
-			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
+			<?php if($this->showVendors){ ?>
 			<th width="10">
 				<?php echo vmText::_('COM_VIRTUEMART_SHARED'); ?>
 			</th>
@@ -71,7 +71,9 @@ AdminUIHelper::startAdminArea($this);
 			$row = $this->payments[$i];
 			$checked = JHtml::_('grid.id', $i, $row->virtuemart_paymentmethod_id);
 			$published = $this->gridPublished( $row, $i );
-
+			if($this->showVendors){
+				$shared = $this->toggle($row->shared, $i, 'toggle.shared');
+			}
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
@@ -103,9 +105,9 @@ AdminUIHelper::startAdminArea($this);
 				<td align="center">
 					<?php echo $published; ?>
 				</td>
-				<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
+				<?php if($this->showVendors){ ?>
 				<td align="center">
-					<?php echo $row->shared; ?>
+					<?php echo $shared; ?>
 				</td>
 				<?php } ?>
 				<td align="center">

@@ -518,7 +518,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$q .= ' LEFT JOIN `' . $extPlgTable . '` as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';
 		$q .= ' LEFT OUTER JOIN `#__virtuemart_' . $this->_psType . 'method_shoppergroups` AS s ON v.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
 		$q .= ' WHERE v.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
-	    						AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
+	    						AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR v.`virtuemart_vendor_id` = "0" OR v.`shared` = "1")
 	    						AND  (';
 
 		foreach ($user->shopper_groups as $groups) {
@@ -949,7 +949,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$_psType = ucfirst ($this->_psType);
 		$calculator = calculationHelper::getInstance ();
 
-		$cart->cartPrices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart->cartPrices), 'salesPrice');
+		$cart->cartPrices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
 
 		if($this->_psType=='payment'){
 			$cartTotalAmountOrig=$this->getCartAmount($cart->cartPrices);
@@ -1244,42 +1244,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $_r['passkey'];
 	}
 
-	/**
-	 * validateVendor
-	 * Check if this plugin has methods for the current vendor.
-	 *
-	 * @author Oscar van Eijk
-	 * @param integer $_vendorId The vendor ID taken from the cart.
-	 * @return True when a  id was found for this vendor, false otherwise
-	 *
-	 * @deprecated ????
-	 */
-	protected function validateVendor ($_vendorId) {
-
-		if (!$_vendorId) {
-			$_vendorId = 1;
-		}
-
-		$_db = JFactory::getDBO ();
-
-		$_q = 'SELECT 1 '
-			. 'FROM   #__virtuemart_' . $this->_psType . 'methods AS v '
-			. ',      #__extensions   AS     j '
-			. 'WHERE j.`folder` = "' . $this->_type . '" '
-			. 'AND j.`element` = "' . $this->_name . '" '
-			. 'AND   v.`' . $this->_psType . '_jplugin_id` = j.`extension_id` '
-			. 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-			. 'AND   v.`published` = 1 ';
-
-		$_db->setQuery ($_q);
-		$_r = $_db->loadAssoc ();
-
-		if ($_r) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
 	/**
 	 *  @param integer $virtuemart_order_id the id of the order
 	 */
