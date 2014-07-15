@@ -17,7 +17,7 @@
 * http://virtuemart.net
 */
 
-vmdebug('lets see what we have here ',$viewData['product']->prices,$viewData['method']);
+//vmdebug('we have here ',$viewData['product']->prices,$viewData['method']);
 $currency = $viewData['currency'];
 if(!empty($viewData['method']->countries) and is_array($viewData['method']->countries) and count($viewData['method']->countries)>0){
 	$countryM = VmModel::getModel('country');

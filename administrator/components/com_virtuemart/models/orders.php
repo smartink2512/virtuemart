@@ -852,15 +852,17 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$db = JFactory::getDbo();
 		$jnow = JFactory::getDate();
 		$jnow->sub(new DateInterval('PT1H'));
-		$yesterday = $jnow->toMySQL();
+		$minushour = $jnow->toMySQL();
 
 		$q = 'SELECT * FROM `#__virtuemart_orders` ';
 		//$q .= 'LEFT JOIN `#_virtuemart_order_userinfos` as oui using `virtuemart_order_id` ';
-		$q .= 'WHERE `customer_number`= "'.$_orderData->customer_number.'" AND
-				`ip_address` = "'.$_orderData->ip_address.'" AND `order_status` = "P"
-				AND `created_on`> "'.$yesterday.'" ';
+		$q .= 'WHERE `customer_number`= "'.$_orderData->customer_number.'"
+		 		AND `order_status` = "P"
+				AND `created_on` > "'.$minushour.'" ';
+				//AND	`ip_address` = "'.$_orderData->ip_address.'"';
 		$db->setQuery($q);
 		$order = $db->loadAssoc();
+		//vmdebug('Create order by cart, query and res',$q,$order);
 		if($order){
 			//So and what we do now?
 			$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
@@ -889,13 +891,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if (!empty($_cart->couponCode)) {
 			//set the virtuemart_order_id in the Request for 3rd party coupon components (by Seyi and Max)
-			JRequest::setVar ( 'virtuemart_order_id', $_orderData->virtuemart_order_id );
+			JRequest::setVar ( 'virtuemart_order_id', $orderTable->virtuemart_order_id );
 			// If a gift coupon was used, remove it now
 			//CouponHelper::RemoveCoupon($_cart->couponCode);
 			CouponHelper::setInUseCoupon($_cart->couponCode, true);
 		}
 		// the order number is saved into the session to make sure that the correct cart is emptied with the payment notification
-		$_cart->order_number=$_orderData->order_number;
+		$_cart->order_number = $orderTable->order_number;
 		$_cart->setCartIntoSession ();
 
 		return $_orderData->virtuemart_order_id;

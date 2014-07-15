@@ -79,7 +79,6 @@ $document->addScriptDeclaration ("
 
 ");
 
-
 $document->addScriptDeclaration ("
 
 //<![CDATA[
@@ -89,6 +88,7 @@ $document->addScriptDeclaration ("
     $(this).removeClass( 'vm-button-correct' );
     $(this).addClass( 'vm-button' );
     $('#checkoutForm').submit();
+    $('#checkoutForm').preventDefault();
 
 });
 

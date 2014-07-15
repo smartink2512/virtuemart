@@ -113,7 +113,9 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			}
 			$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
 			if($this->tcpdf6){
-				require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
+				$this->tcpdf6 = method_exists('TCPDF','getAllSpotColors');
+			}
+			if($this->tcpdf6){
 				$getAllSpotColors = TCPDF::getAllSpotColors();
 				$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);
 			} else {
@@ -203,11 +205,13 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				$currentCHRF = $this->getCellHeightRatio();
 				$this->setCellHeightRatio($this->vendor->vendor_letter_footer_cell_height_ratio);
 
-
 				if (!class_exists ('JFile')) {
 					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
 				$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
+				if($this->tcpdf6){
+					$this->tcpdf6 = method_exists('TCPDF','getAllSpotColors');
+				}
 				if($this->tcpdf6){
 					$getAllSpotColors = TCPDF::getAllSpotColors();
 					$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);
@@ -261,6 +265,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				}
 				$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 				if($this->tcpdf6){
+					require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 					$imgtype = TCPDF_IMAGES::getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
 				} else {
 					$imgtype = $this->getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
