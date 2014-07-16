@@ -26,7 +26,7 @@ jimport('joomla.form.formfield');
 class JFormFieldPaypaljs extends JFormField {
 
 
-	public $type = 'Paypaljs';
+	protected $type = 'Paypaljs';
 
 	function getInput() {
 

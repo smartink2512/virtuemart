@@ -20,15 +20,9 @@
 defined('_JEXEC') or die();
 
 jimport('joomla.form.formfield');
-class JFormFieldVmTitle extends JFormField
-{
-	/**
-	 * Element name
-	 *
-	 * @access    public
-	 * @var        string
-	 */
-	var $type = 'Vmtitle';
+class JFormFieldVmtitle extends JFormField {
+
+	public $type = 'Vmtitle';
 
 	protected function getLabel()
 	{
@@ -36,14 +30,14 @@ class JFormFieldVmTitle extends JFormField
 		$description = $this->element['description'];
 
 		$html = '';
-		$class =  $this->class ? 'class="' .  $this->class . '"' : '';
+		$class = !empty($this->class)? 'class="' .  $this->class . '"' : '';
 		if (empty($class)) {
 			$class.="style=\"font-weight: bold; padding: 5px; background-color: #cacaca; float:none; clear:both;\"";
 		}
 		if ($this->value) {
 
 			$html .= '<div ' . $class . '>';
-			$html .= JText::_($this->value);
+			$html .= vmText::_($this->value);
 			$html .= '</div>';
 
 		}
@@ -54,7 +48,7 @@ class JFormFieldVmTitle extends JFormField
 	protected function getInput()
 	{
 		if (empty($this->element['description'])) {
-			return '';
+			//return '';
 		}
 
 		$description = (string)$this->element['description'];

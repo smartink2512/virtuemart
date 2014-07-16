@@ -35,7 +35,7 @@ class JFormFieldReferringurl extends JFormField {
 
 		$this->value = JURI::root() . 'plugins/vmpayment/realex/jump.php';
 
-		$class = ($this->class ? 'class="' . $this->class . '"' : 'class="text_area"');
+		$class = !empty($this->class)? 'class="' . $this->class . '"' : 'class="text_area"';
 		if ($this->editable == 'true') {
 			$size = ($this->size) ? 'size="' . $this->size . '"' : '';
 

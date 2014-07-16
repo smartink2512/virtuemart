@@ -22,7 +22,7 @@ class JFormFieldKlarnaLabel extends JFormField {
 	var $type = 'KlarnaLabel';
 
 	function getInput() {
-		$class = ($this->class ? 'class="' . $this->class . '"' : 'class="text_area"');
+		$class = !empty($this->class)? 'class="' . $this->class . '"' : 'class="text_area"';
 		return '<label for="' . $this->name . '"' . $class . '>' . $this->value . '</label>';
 	}
 }

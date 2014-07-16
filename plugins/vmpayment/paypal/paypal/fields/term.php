@@ -25,7 +25,7 @@ jimport('joomla.form.formfield');
 
 class JFormFieldTerm extends JFormField {
 
-	var $type = 'Term';
+	protected $type = 'Term';
 
 	protected function getInput() {
 
