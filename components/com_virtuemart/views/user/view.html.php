@@ -109,7 +109,7 @@ class VirtuemartViewUser extends VmView {
 	$this->cart = VirtueMartCart::getCart();
 	$task = vRequest::getCmd('task', '');
 
-	if (($this->cart->fromCart or $this->cart->getInCheckOut()) && empty($virtuemart_userinfo_id)) {
+	if (($this->cart->_fromCart or $this->cart->getInCheckOut()) && empty($virtuemart_userinfo_id)) {
 
 		//New Address is filled here with the data of the cart (we are in the cart)
 		$fieldtype = $this->address_type . 'address';
@@ -176,14 +176,14 @@ class VirtuemartViewUser extends VmView {
 	} else {
 	    $corefield_title = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 	}
-	if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
+	if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
 	    $pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 	} else {
 	    //$pathway->addItem(vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'), JRoute::_('index.php?option=com_virtuemart&view=user&&layout=edit'));
 	}
 	$pathway_text = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 	if (!$this->userDetails->JUser->get('id')) {
-	    if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
+	    if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
 		if ($this->address_type == 'BT') {
 		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
 		} else {

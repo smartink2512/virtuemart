@@ -1379,7 +1379,7 @@ class calculationHelper {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
-		$this->_cart->CheckAutomaticSelectedShipment();
+		$this->_cart->checkAutomaticSelectedPlug('shipment');
 		if (empty($this->_cart->virtuemart_shipmentmethod_id)) return;
 
 		$dispatcher = JDispatcher::getInstance();
@@ -1421,7 +1421,7 @@ class calculationHelper {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 
-		$this->_cart->CheckAutomaticSelectedPayment();
+		$this->_cart->checkAutomaticSelectedPlug('payment');
 		if (empty($this->_cart->virtuemart_paymentmethod_id)) return;
 
 		$dispatcher = JDispatcher::getInstance();

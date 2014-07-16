@@ -910,7 +910,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		} else {
 			$method->cost_percent_total = $method->cost_percent_total;
 		}
-		$cartPrice = !empty($cart_prices['withTax'])? $cart_prices['withTax']:$cart_prices['salesPrice'];
+		$cartPrice = !empty($cart->cartPrices['withTax'])? $cart->cartPrices['withTax']:$cart->cartPrices['salesPrice'];
 		return ($method->cost_per_transaction + ($cartPrice * $method->cost_percent_total * 0.01));
 	}
 
@@ -950,7 +950,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$calculator = calculationHelper::getInstance ();
 
 		$cart->cartPrices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
-
+		if(!isset($cart_prices[$this->_psType . 'Value'])) $cart_prices[$this->_psType . 'Value'] = 0.0;
 		if($this->_psType=='payment'){
 			$cartTotalAmountOrig=$this->getCartAmount($cart->cartPrices);
 
@@ -1047,6 +1047,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 
 		} else {
+
 			$cart->cartPrices['salesPrice' . $_psType] = $cart_prices[$this->_psType . 'Value'];
 			$cart->cartPrices[$this->_psType . 'Tax'] = 0;
 			$cart->cartPrices[$this->_psType . '_calc_id'] = 0;

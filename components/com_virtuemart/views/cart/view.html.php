@@ -70,8 +70,8 @@ class VirtueMartViewCart extends VmView {
 		}
 
 		if ($layoutName == 'select_shipment') {
-			//$this->prepareCartViewData();
 
+			$this->cart->prepareCartData();
 			$this->lSelectShipment();
 
 			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
@@ -79,7 +79,7 @@ class VirtueMartViewCart extends VmView {
 			$document->setTitle(vmText::_('COM_VIRTUEMART_CART_SELECTSHIPMENT'));
 		} else if ($layoutName == 'select_payment') {
 
-			//$this->prepareCartViewData();
+			$this->cart->prepareCartData();
 
 			$this->lSelectPayment();
 

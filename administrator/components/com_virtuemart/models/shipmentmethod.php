@@ -78,31 +78,6 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
 				VmTable::bindParameterable($this->_cache[$this->_id],'shipment_params',$this->_cache[$this->_id]->_varsToPushParam);
 			}
-			vmdebug('getShipment',$this->_cache[$this->_id]);
-			/*if($this->_data[$this->_id]->shipment_jplugin_id){
-				JPluginHelper::importPlugin('vmshipment');
-				$dispatcher = JDispatcher::getInstance();
-				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array($this->_data[$this->_id]->shipment_element,$this->_data[$this->_id]->shipment_jplugin_id,&$this->_data[$this->_id]));
-			}
-
-			if($this->_data[$this->_id]->getCryptedFields()){
-				if(!class_exists('vmCrypt')){
-					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
-				}
-
-				if(isset($this->_data[$this->_id]->modified_on)){
-					$date = JFactory::getDate($this->_data[$this->_id]->modified_on);
-					$date = $date->toUnix();
-				} else {
-					$date = 0;
-				}
-
-				foreach($this->_data[$this->_id]->getCryptedFields() as $field){
-					if(isset($this->_data[$this->_id]->$field)){
-						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field,$date);
-					}
-				}
-			}*/
 
 			/* Add the shipmentcarreir shoppergroups */
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$this->_id.'"';
@@ -228,7 +203,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 		//	if (is_array($cids)) $cids = array($cids);
 		$this->setId ($id);
-		$shipment = $this->getShipment ();
+		$shipment = $this->getShipment();
 		$shipment->virtuemart_shipmentmethod_id = 0;
 		$shipment->shipment_name = $shipment->shipment_name.' Copy';
 		if (!$clone = $this->store($shipment)) {

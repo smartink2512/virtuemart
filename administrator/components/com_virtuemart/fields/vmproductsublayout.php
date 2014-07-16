@@ -44,8 +44,9 @@ class JFormFieldVmproductsublayout extends JFormField
 	function getInput() {
 
 		VmConfig::loadJLang('com_virtuemart');
-		$view = substr($this->fieldname,0,-6);;
-		$vmLayoutList =VirtueMartModelConfig::getFieldList('products');
+		$view = substr($this->fieldname,0,-6);
+		$model = new VmModel();
+		$vmLayoutList = $model->getFieldList('products');
 		$html = JHtml::_('Select.genericlist',$vmLayoutList, $this->name, 'size=1 width=200', 'value', 'text', array($this->value));
 
         return $html;

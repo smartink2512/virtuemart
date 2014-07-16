@@ -28,7 +28,7 @@ JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/as
 if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 $this->cart = VirtueMartCart::getCart();
 $url = 0;
-if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
+if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
 	$rview = 'cart';
 }
 else {

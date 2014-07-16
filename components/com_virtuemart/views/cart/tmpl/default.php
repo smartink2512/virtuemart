@@ -56,6 +56,7 @@ $document->addScriptDeclaration ('
 	$("#checkoutForm").append("<input name=\""+name+"\" value=\"1\" type=\"hidden\">");
 	$(this).fadeIn( 400 );
 	$("#checkoutForm").submit();
+	$("#checkoutForm").preventDefault();
 });
 	});
 

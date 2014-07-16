@@ -46,7 +46,7 @@ if ($this->layoutName!='default') {
 
 <div class="buttonBar-right">
 
-<button name="setpayment" class="<?php echo $buttonclass ?>" type="submit"><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
+<button name="updatecart" class="<?php echo $buttonclass ?>" type="submit"><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
      &nbsp;
    <?php   if ($this->layoutName!='default') { ?>
 <button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
@@ -74,7 +74,7 @@ if ($this->layoutName!='default') {
 if ($this->layoutName!='default') {
 ?>    <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />
-    <input type="hidden" name="task" value="setpayment" />
+    <input type="hidden" name="task" value="updatecart" />
     <input type="hidden" name="controller" value="cart" />
 </form>
 <?php

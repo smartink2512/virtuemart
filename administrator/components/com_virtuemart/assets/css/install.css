@@ -92,6 +92,7 @@ body {
   float: left;
 }
 
+/* .install we cannot use it, is used by joomla already, created weird view in j3
 .install {
 	margin-left: auto;
 	margin-right: auto;
@@ -102,7 +103,7 @@ body {
 	width: 750px;
 	background: #F1F3F5;
 }
-	
+*/
 .install h1 {
 	font-size: 15px;
 	font-weight: bold;

@@ -266,6 +266,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				}
 				$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 				if($this->tcpdf6){
+					require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 					$imgtype = TCPDF_IMAGES::getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
 				} else {
 					$imgtype = $this->getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);

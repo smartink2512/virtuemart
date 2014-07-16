@@ -36,11 +36,12 @@ class VirtueMartCart {
 	var $_productAdded = false;
 	var $_cartProcessed = false;
 	var $_inCheckOut = false;
-	var $fromCart = false;
+	var $_fromCart = false;
 	var $_dataValidated = false;
 	var $_blockConfirm = false;
 	var $_confirmDone = false;
 	var $_redirect = false;
+	var $_redirected = false;
 	var $_redirect_disabled = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
 	//todo multivendor stuff must be set in the add function, first product determines ownership of cart, or a fixed vendor is used
@@ -165,7 +166,7 @@ class VirtueMartCart {
 					self::$_cart->_confirmDone					= $sessionCart->_confirmDone;
 					self::$_cart->STsameAsBT					= $sessionCart->STsameAsBT;
 					self::$_cart->selected_shipto 				= $sessionCart->selected_shipto;
-					self::$_cart->fromCart						= $sessionCart->fromCart;
+					self::$_cart->_fromCart						= $sessionCart->_fromCart;
 				}
 			}
 
@@ -278,8 +279,22 @@ class VirtueMartCart {
 			$carts = $model->getTable('carts');
 			$carts->load($currentUser->id);
 			$cartData = $carts->loadFieldValues();
+			unset($cartData['_inCheckOut']);
+			unset($cartData['_dataValidated']);
+			unset($cartData['_confirmDone']);
+			unset($cartData['_fromCart']);
+
 			if($cartData and !empty($cartData['cartData'])){
 				$cartData['cartData'] = unserialize($cartData['cartData']);
+
+				foreach($cartData['cartData']->cartProductsData as $k => $product){
+					foreach($existingSession->cartProductsData as $kses => $productses){
+						if($product==$productses){
+							vmdebug('Found the same product');
+							unset($cartData['cartData']->cartProductsData[$k]);
+						}
+					}
+				}
 
 				foreach($cartData['cartData'] as $key=>$value){
 					if(is_array($value)){
@@ -373,7 +388,7 @@ class VirtueMartCart {
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 		$sessionCart->selected_shipto 				= $this->selected_shipto;
-		$sessionCart->fromCart						= $this->fromCart;
+		$sessionCart->_fromCart						= $this->_fromCart;
 		return $sessionCart;
 	}
 
@@ -452,8 +467,7 @@ class VirtueMartCart {
 		if(empty($virtuemart_product_ids)){
 			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id'); //is sanitized then
 		}
-		//vmConfig::$echoDebug = 1;
-		//vmdebug('cart add ',$virtuemart_product_ids);
+
 		if (empty($virtuemart_product_ids)) {
 			vmWarn('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS');
 			vmdebug('cart helper add No product ids found');
@@ -462,8 +476,6 @@ class VirtueMartCart {
 
 		$products = array();
 
-		//VmConfig::$echoDebug=true;
-		//vmdebug('cart add',$virtuemart_product_ids,$post);
 		$this->_productAdded = true;
 		$productModel = VmModel::getModel('product');
 		$customFieldsModel = VmModel::getModel('customfields');
@@ -519,7 +531,7 @@ class VirtueMartCart {
 			$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 			$customProductDataTmp=array();
 			//VmConfig::$echoDebug=true;
-			vmdebug('cart add product $customProductData',$customProductData);
+			//vmdebug('cart add product $customProductData',$customProductData);
 			foreach($product->customfields as $customfield){
 
 				if($customfield->is_input==1){
@@ -825,11 +837,12 @@ class VirtueMartCart {
 
 		$this->_dataValidated = false;
 		$app = JFactory::getApplication();
-		if($this->_redirect and !$this->_redirect_disabled){
-
+		if($this->_redirect and !$this->_redirected and !$this->_redirect_disabled){
+			$this->_redirected = true;
 			$this->setCartIntoSession();
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
+			$this->_redirected = false;
 			$this->_inCheckOut = false;
 			$this->setCartIntoSession(true);
 			return false;
@@ -838,7 +851,12 @@ class VirtueMartCart {
 
 	public function checkoutData($redirect = true) {
 
-		$this->_redirect = $redirect;
+		if($this->_redirected){
+			$this->_redirect = false;
+		} else {
+			$this->_redirect = $redirect;
+		}
+
 		$this->_inCheckOut = true;
 		//This prevents that people checkout twice
 		$this->setCartIntoSession();
@@ -888,9 +906,7 @@ class VirtueMartCart {
 			if($this->_confirmDone){
 				$this->ST = $this->BT;
 			} else {
-				//$this->ST = 0;
 			}
-			vmdebug('CheckoutData my cart $this->STsameAsBT ',$this->ST);
 		} else {
 			if ($this->selected_shipto >0 ) {
 				$userModel = VmModel::getModel('user');
@@ -993,7 +1009,11 @@ class VirtueMartCart {
 		}
 
 		//Show cart and checkout data overview
-		$this->_inCheckOut = false;
+		if($this->_redirected){
+			$this->_redirected = false;
+		} else {
+			$this->_inCheckOut = false;
+		}
 
 		if($this->_blockConfirm){
 			$this->_dataValidated = false;
@@ -1133,7 +1153,7 @@ class VirtueMartCart {
 		$cart->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
 		$cart->virtuemart_paymentmethod_id = 0;
 		$cart->order_number=null;
-		$cart->fromCart = false;
+		$cart->_fromCart = false;
 		$cart->totalProduct=false;
 		$cart->productsQuantity=array();
 		$cart->virtuemart_order_id = null;
@@ -1270,116 +1290,68 @@ class VirtueMartCart {
 
 	}
 
-/*
-	 * CheckAutomaticSelectedShipment
-	* If only one shipment is available for this amount, then automatically select it
-	*
-	* @author Valérie Isaksen
-	*/
-	function CheckAutomaticSelectedShipment() {
+	/**
+	 * @author Valérie Isaksen, Max Milbers
+	 * @param $type
+	 * @return bool
+	 */
+	function checkAutomaticSelectedPlug($type){
 
-		if (!empty($this->virtuemart_shipmentmethod_id) or count($this->products) == 0 or  VmConfig::get('automatic_shipment','1')!='1') {
-			//vmdebug('CheckAutomaticSelectedShipment cart has shipmentmethod id ! ',$this->virtuemart_shipmentmethod_id);
+		$vm_method_name = 'virtuemart_'.$type.'method_id';
+		if (count($this->products) == 0 or  VmConfig::get('automatic_'.$type,'1')!='1') {
+			vmdebug('CheckAutomaticSelectedShipment cart has shipmentmethod id ! ',$this->$vm_method_name);
 			return false;
 		}
-		$nbShipment = 0;
-		$virtuemart_shipmentmethod_id = 0;
+
 		if (!class_exists('vmPSPlugin')) {
 			require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		}
 
-		$shipCounter=0;
+		$counter=0;
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$this->cartPrices, &$shipCounter));
+		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected'.ucfirst($type), array(  $this,$this->cartPrices, &$counter));
 
+		$nb = 0;
+		$method_id = 0;
 		foreach ($returnValues as $returnValue) {
 			if ( isset($returnValue )) {
-				$nbShipment ++;
-				if ($returnValue) $virtuemart_shipmentmethod_id = $returnValue;
+				$nb ++;
+				if ($returnValue) $method_id = $returnValue;
 			}
 		}
-		if ($nbShipment==1 && $virtuemart_shipmentmethod_id) {
-			$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
-			$this->automaticSelectedShipment=true;
+		
+		$vm_autoSelected_name = 'automaticSelected'.ucfirst($type);
+		if ($nb==1 && $method_id) {
+			$this->$vm_method_name = $method_id;
+			$this->$vm_autoSelected_name=true;
 			$this->setCartIntoSession();
-			vmdebug('FOUND automatic SELECTED SHIPMENT ! ! ! ! ! ! !! ! !',$this->virtuemart_shipmentmethod_id);
+			vmdebug('FOUND automatic SELECTED '.$type.' !!',$this->$vm_method_name);
 			return true;
 		} else {
-			if($this->automaticSelectedShipment){
-				$this->virtuemart_shipmentmethod_id = 0;
-				$this->automaticSelectedShipment=false;
-				$this->setCartIntoSession();
-			}
+			$this->$vm_autoSelected_name=false;
 			return false;
 		}
 
+	}
+
+	/*
+	 * CheckAutomaticSelectedShipment
+	* If only one shipment is available for this amount, then automatically select it
+	* @deprecated
+	* @author Valérie Isaksen
+	*/
+	function CheckAutomaticSelectedShipment() {
+		return $this->checkAutomaticSelectedPlug('shipment');
 	}
 
 	/*
 	 * CheckAutomaticSelectedPayment
 	* If only one payment is available for this amount, then automatically select it
-	*
+	* @deprecated
 	* @author Valérie Isaksen
 	*/
 	function CheckAutomaticSelectedPayment() {
-
-		$nbPayment = 0;
-		$virtuemart_paymentmethod_id=0;
-
-		if (empty($this->virtuemart_shipmentmethod_id) and VmConfig::get('automatic_payment','1')=='1' ) {
-
-			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JDispatcher::getInstance();
-			$paymentCounter=0;
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $this->cartPrices, &$paymentCounter));
-			foreach ($returnValues as $returnValue) {
-				if ( isset($returnValue )) {
-					$nbPayment++;
-					if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
-				}
-			}
-			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
-				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
-				$this->automaticSelectedPayment=true;
-				$this->setCartIntoSession();
-				return true;
-			} else {
-				if($this->automaticSelectedPayment){
-					$this->virtuemart_paymentmethod_id = 0;
-					$this->automaticSelectedPayment=false;
-					$this->setCartIntoSession();
-				}
-			}
-		} else {
-			return false;
-		}
-
-	}
-
-
-	/*
-	 * CheckShipmentIsValid:
-	* check if the selected shipment is still valid for this new cart
-	*
-	* @author Valerie Isaksen
-	*/
-	function CheckShipmentIsValid() {
-		if ($this->virtuemart_shipmentmethod_id===0)
-		return;
-		$shipmentValid = false;
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-
-		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnCheckShipmentIsValid', array( $this));
-		foreach ($returnValues as $returnValue) {
-			$shipmentValid += $returnValue;
-		}
-		if (!$shipmentValid) {
-			$this->virtuemart_shipmentmethod_id = 0;
-			$this->setCartIntoSession();
-		}
+		return $this->checkAutomaticSelectedPlug('payment');
 	}
 
 	/**

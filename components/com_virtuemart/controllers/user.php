@@ -55,7 +55,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
-		$cart->fromCart = false;
+		$cart->_fromCart = false;
 		$cart->setCartIntoSession();
 		$view->display();
 
@@ -70,7 +70,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
-		$cart->fromCart = true;
+		$cart->_fromCart = true;
 		$cart->setCartIntoSession();
 		// Display it all
 		$view->display();
@@ -91,13 +91,13 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$layout = vRequest::getCmd('layout','edit');
 
 
-		if($cart->fromCart or $cart->getInCheckOut()){
-			vmdebug('saveUser fromCart',(int)$cart->fromCart);
+		if($cart->_fromCart or $cart->getInCheckOut()){
+			vmdebug('saveUser _fromCart',(int)$cart->_fromCart);
 			$msg = $this->saveData($cart);
 			$task = '';
 			if ($cart->getInCheckOut()){
 				$task = '&task=checkout';
-				vmdebug('saveUser InCheckOut',(int)$cart->fromCart);
+				vmdebug('saveUser InCheckOut',(int)$cart->_fromCart);
 			}
 			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) , $msg);
 		} else {
@@ -133,7 +133,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$data = vRequest::getPost();
 		$cart = false;
 		if($cartObj){
-			if($cartObj->fromCart or $cartObj->getInCheckOut()){
+			if($cartObj->_fromCart or $cartObj->getInCheckOut()){
 				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 				$cart = VirtueMartCart::getCart();
 				$prefix= '';
@@ -152,7 +152,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		if (isset($_POST['register'])) {
 			if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT') == FALSE) {
 				$msg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
-				if($cartObj->fromCart) {
+				if($cartObj->_fromCart) {
 					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
 				} else if($cartObj->getInCheckOut()) {
 					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $msg );
@@ -219,7 +219,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		vmdebug('cancel executed' );
-		if($cart->fromCart){
+		if($cart->_fromCart){
 			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE)  );
 		} else {
 			$return = JURI::base();

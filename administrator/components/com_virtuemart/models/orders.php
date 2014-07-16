@@ -882,13 +882,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$db = JFactory::getDbo();
 		$jnow = JFactory::getDate();
 		$jnow->sub(new DateInterval('PT1H'));
-		$minushour = $jnow->toMySQL();
+		$minushour = $jnow->toSQL();
 
 		$q = 'SELECT * FROM `#__virtuemart_orders` ';
 		//$q .= 'LEFT JOIN `#_virtuemart_order_userinfos` as oui using `virtuemart_order_id` ';
-		$q .= 'WHERE `customer_number`= "'.$_orderData->customer_number.'" AND
-				`ip_address` = "'.$_orderData->ip_address.'" AND `order_status` = "P"
+		$q .= 'WHERE `customer_number`= "'.$_orderData->customer_number.'"
+				AND `order_status` = "P"
 				AND `modified_on`> "'.$minushour.'" ';
+				//AND	`ip_address` = "'.$_orderData->ip_address.'"
 		$db->setQuery($q);
 		$order = $db->loadAssoc();
 		vmdebug('_createOrder',$minushour,$order);
@@ -928,7 +929,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			CouponHelper::setInUseCoupon($_cart->couponCode, true);
 		}
 		// the order number is saved into the session to make sure that the correct cart is emptied with the payment notification
-		$_cart->order_number=$orderTable->order_number;
+		$_cart->order_number = $orderTable->order_number;
 		$_cart->setCartIntoSession ();
 
 		return $orderTable->virtuemart_order_id;

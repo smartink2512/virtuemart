@@ -88,7 +88,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart = VirtueMartCart::getCart();
 
-
 		$cart->order_language = vRequest::getString('order_language', $cart->order_language);
 
 		$cart->prepareCartData();
@@ -99,15 +98,15 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$cart->confirmDone();
 			$view = $this->getView('cart', 'html');
 			$view->setLayout('order_done');
-			$cart->fromCart = false;
+			$cart->_fromCart = false;
 			$view->display();
 			return true;
 		} else {
-			$redirect = (isset($request['checkout']) or $task=='checkout');
+			$redirect = (isset($request['checkout']) or $task=='checkout' or $cart->getInCheckOut());
 			$cart->checkoutData($redirect);
 		}
 
-		$cart->fromCart = false;
+		$cart->_fromCart = false;
 		$view->display();
 
 		return $this;
@@ -116,7 +115,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function updatecart(){
 
 		$cart = VirtueMartCart::getCart();
-		$cart->fromCart = true;
+		$cart->_fromCart = true;
+		$cart->_redirected = false;
 		//$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
 		//vmdebug('updatecart $cart->selected_shipto',$cart->selected_shipto);
 		$cart->saveCartFieldsInCart();
@@ -139,10 +139,21 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$this->display();
 	}
 
+	/**
+	 * legacy
+	 * @deprecated
+	 */
 	public function confirm(){
 		$this->updatecart();
 	}
 
+	public function setshipment(){
+		$this->updatecart();
+	}
+
+	public function setpayment(){
+		$this->updatecart();
+	}
 
 	/**
 	 * Add the product to the cart
