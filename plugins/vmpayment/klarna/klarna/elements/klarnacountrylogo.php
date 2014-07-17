@@ -29,6 +29,7 @@ class JElementKlarnaCountryLogo extends JElement {
 
 	function fetchElement ($name, $value, &$node, $control_name) {
 
+		if(empty($this->value)) $this->value = '';
 		$flag=$this->value;
 		if ($this->value=='NB') $flag='NO';
 		$flagImg = JURI::root (TRUE) . '/media/mod_languages/images/' . strtolower ($flag) . '.gif';

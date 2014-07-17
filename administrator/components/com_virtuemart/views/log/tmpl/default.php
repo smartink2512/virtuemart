@@ -49,7 +49,7 @@ if(class_exists('finfo')){
 		if ($this->logFiles) {
 			foreach ($this->logFiles as $logFile ) {
 				$addLink=false;
-				$fileSize = filesize($this->path.DS.$logFile);
+				$fileSize = round(filesize($this->path.DS.$logFile)/1024.0,2);
 				$fileInfo= $finfo?$finfo->file($this->path.DS.$logFile):0;
 				$fileInfoMime=substr($fileInfo, 0 ,strlen("text/plain"));
 				if (!$finfo or strcmp("text/plain", $fileInfoMime)==0) {

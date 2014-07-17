@@ -84,7 +84,10 @@ function virtuemartBuildRoute(&$query) {
 					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
 					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 					//http://forum.virtuemart.net/index.php?topic=121642.0
-					if (!empty($categoryRoute->itemId)) {
+					$Itemid = vRequest::get('Itemid',false);
+					if($Itemid){
+						$query['Itemid'] = $Itemid;
+					} else if (!empty($categoryRoute->itemId)) {
 						$query['Itemid'] = $categoryRoute->itemId;
 					} else {
 						$query['Itemid'] = false;
