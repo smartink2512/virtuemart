@@ -460,6 +460,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return NULL;
 		}
+
 		//Load the payments
 		if (!($payments = $this->getDatasByOrderId($order->virtuemart_order_id))) {
 			// JError::raiseWarning(500, $db->getErrorMsg());

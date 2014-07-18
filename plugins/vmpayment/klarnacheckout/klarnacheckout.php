@@ -1303,14 +1303,20 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	 * skipped!), or null when this method is not actived.
 	 */
 	public function plgVmOnUpdateOrderPayment (&$order, $old_order_status) {
+
 		// get latest info from DB
-		if (!$this->selectedThisByMethodId($order->virtuemart_paymentmethod_id)) {
+		/*if (!$this->selectedThisByMethodId($order->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
-		}
+		}*/
 
 		if (!($this->method = $this->getVmPluginMethod($order->virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
+
+		if (!$this->selectedThisElement($this->_currentMethod ->payment_element)) {
+			return NULL;
+		}
+
 		if (!($payments = $this->getDatasByOrderId($order->virtuemart_order_id))) {
 			vmError(vmText::sprintf('VMPAYMENT_KLARNA_ERROR_NO_DATA', $order->virtuemart_order_id), vmText::sprintf('VMPAYMENT_KLARNACHECKOUT_ERROR_OCCURRED', $this->method->payment_name));
 			$this->debugLog('No klarna data for this order:' . $order->virtuemart_order_id, 'plgVmOnUpdateOrderPayment', 'error');

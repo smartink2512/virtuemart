@@ -1079,6 +1079,10 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 			return NULL; // Another method was selected, do nothing
 		}
 
+		if (!$this->selectedThisElement($this->_currentMethod ->payment_element)) {
+			return NULL;
+		}
+
 		//Load only when updating status to shipped
 		if ($order->order_status != $this->_currentMethod->status_capture AND $order->order_status != $this->_currentMethod->status_refunded) {
 			 //return null;

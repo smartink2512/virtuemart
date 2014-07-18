@@ -1114,13 +1114,18 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 */
 	public function plgVmOnUpdateOrderPayment (&$order, $old_order_status) {
 
-		if (!$this->selectedThisByMethodId ($order->virtuemart_paymentmethod_id)) {
+		/*if (!$this->selectedThisByMethodId ($order->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
-		}
+		}*/
 
 		if (!($method = $this->getVmPluginMethod ($order->virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
+
+		if (!$this->selectedThisElement($this->_currentMethod ->payment_element)) {
+			return NULL;
+		}
+
 		if (!($payments = $this->_getKlarnaInternalData ($order->virtuemart_order_id))) {
 			vmError (vmText::sprintf ('VMPAYMENT_KLARNA_ERROR_NO_DATA', $order->virtuemart_order_id));
 			return NULL;
