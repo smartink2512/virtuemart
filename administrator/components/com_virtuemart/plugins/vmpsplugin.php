@@ -991,6 +991,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		$calculator = calculationHelper::getInstance ();
 
 		$cart_prices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
+		if(!isset($cart_prices[$this->_psType . 'Value'])) $cart_prices[$this->_psType . 'Value'] = 0.0;
+		if(!isset($cart_prices[$this->_psType . 'Tax'])) $cart_prices[$this->_psType . 'Tax'] = 0.0;
 
 		if($this->_psType=='payment'){
 			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
@@ -1074,7 +1076,7 @@ abstract class vmPSPlugin extends vmPlugin {
 //			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
 
 			foreach($taxrules as &$rule){
-				if(!is_array($cart_prices[$this->_psType . '_calc_id'])) $cart_prices[$this->_psType . '_calc_id'] = array();
+				if(!isset($cart_prices[$this->_psType . '_calc_id']) or !is_array($cart_prices[$this->_psType . '_calc_id'])) $cart_prices[$this->_psType . '_calc_id'] = array();
 				$cart_prices[$this->_psType . '_calc_id'][] = $rule['virtuemart_calc_id'];
 				if(isset($rule['subTotalOld'])) $rule['subTotal'] += $rule['subTotalOld'];
 				if(isset($rule['taxAmountOld'])) $rule['taxAmount'] += $rule['taxAmountOld'];

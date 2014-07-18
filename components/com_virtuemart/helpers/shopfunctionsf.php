@@ -60,20 +60,26 @@ class shopFunctionsF {
 	 * @author Max Milbers
 	 */
 	static public function getLastVisitedCategoryId ($default = 0) {
-
 		$session = JFactory::getSession();
 		return $session->get( 'vmlastvisitedcategoryid', $default, 'vm' );
-
 	}
 
 	/**
 	 * @author Max Milbers
 	 */
 	static public function setLastVisitedCategoryId ($categoryId) {
-
 		$session = JFactory::getSession();
 		return $session->set( 'vmlastvisitedcategoryid', (int)$categoryId, 'vm' );
+	}
 
+	static public function getLastVisitedItemId ($default = 0) {
+		$session = JFactory::getSession();
+		return $session->get( 'vmlastvisItemid', $default, 'vm' );
+	}
+
+	static public function setLastVisitedItemId ($id) {
+		$session = JFactory::getSession();
+		return $session->set( 'vmlastvisItemid', (int)$id, 'vm' );
 	}
 
 	/**

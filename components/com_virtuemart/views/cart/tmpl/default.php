@@ -87,8 +87,8 @@ $document->addScriptDeclaration ("
     $(this).attr('disabled', 'true');
     $(this).removeClass( 'vm-button-correct' );
     $(this).addClass( 'vm-button' );
-    $('#checkoutForm').submit();
     $('#checkoutForm').preventDefault();
+    $('#checkoutForm').trigger('submit');
 
 });
 

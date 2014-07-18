@@ -183,7 +183,7 @@ class VirtuemartViewCategory extends VmView {
 
 			shopFunctionsF::setLastVisitedCategoryId($categoryId);
 			shopFunctionsF::setLastVisitedManuId($virtuemart_manufacturer_id);
-
+			shopFunctionsF::setLastVisitedItemId(vRequest::getInt('Itemid',false));
 			// Add the category name to the pathway
 			if ($category->parents) {
 				foreach ($category->parents as $c){

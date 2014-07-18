@@ -1122,7 +1122,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			return NULL; // Another method was selected, do nothing
 		}
 
-		if (!$this->selectedThisElement($this->_currentMethod ->payment_element)) {
+		if (!$this->selectedThisElement($method ->payment_element)) {
 			return NULL;
 		}
 

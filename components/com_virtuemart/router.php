@@ -81,17 +81,21 @@ function virtuemartBuildRoute(&$query) {
 				if (isset($jmenu['virtuemart_category_id'][ $query['virtuemart_category_id'] ] ) )
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$query['virtuemart_category_id']];
 				else {
+
 					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
 					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 					//http://forum.virtuemart.net/index.php?topic=121642.0
-					$Itemid = vRequest::get('Itemid',false);
+					/*$Itemid = vRequest::get('Itemid',false);
 					if($Itemid){
 						$query['Itemid'] = $Itemid;
-					} else if (!empty($categoryRoute->itemId)) {
+					} else */
+					if (!empty($categoryRoute->itemId)) {
 						$query['Itemid'] = $categoryRoute->itemId;
 					} else {
-						$query['Itemid'] = false;
+						$query['Itemid'] = vRequest::get('Itemid',false);
+						//$query['Itemid'] = false;
 					}
+
 				}
 				unset($query['virtuemart_category_id']);
 			}
@@ -759,20 +763,6 @@ class vmrouterHelper {
 		}
 		return self::$_instance;
 	}
-
-	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
-	/*public function setLangs(){
-
-		$this->vmlang = VMLANG;
-		$this->Jlang = JFactory::getLanguage();
-		if ( $this->seo_translate ) {
-			// use translator
-			$extension = 'com_virtuemart.sef';
-			$base_dir = JPATH_SITE;
-			$this->Jlang->load($extension, $base_dir);
-
-		}
-	}/*/
 
 	public function getCategoryRoute($virtuemart_category_id){
 
