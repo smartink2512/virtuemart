@@ -6,7 +6,6 @@
  * @package    VirtueMart
  * @subpackage Helpers
  *
- * @author RolandD
  * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -55,44 +54,34 @@ class shopFunctionsF {
 		return $body;
 	}
 
-	/**
-	 * @author Max Milbers
-	 */
 	static public function getLastVisitedCategoryId ($default = 0) {
-
 		$session = JFactory::getSession();
 		return $session->get( 'vmlastvisitedcategoryid', $default, 'vm' );
-
 	}
 
-	/**
-	 * @author Max Milbers
-	 */
 	static public function setLastVisitedCategoryId ($categoryId) {
-
 		$session = JFactory::getSession();
 		return $session->set( 'vmlastvisitedcategoryid', (int)$categoryId, 'vm' );
-
 	}
 
-	/**
-	 * @author Max Milbers
-	 */
-	static public function getLastVisitedManuId () {
+	static public function getLastVisitedItemId ($default = 0) {
+		$session = JFactory::getSession();
+		return $session->get( 'vmlastvisItemid', $default, 'vm' );
+	}
 
+	static public function setLastVisitedItemId ($id) {
+		$session = JFactory::getSession();
+		return $session->set( 'vmlastvisItemid', (int)$id, 'vm' );
+	}
+
+	static public function getLastVisitedManuId () {
 		$session = JFactory::getSession();
 		return $session->get( 'vmlastvisitedmanuid', 0, 'vm' );
-
 	}
 
-	/**
-	 * @author Max Milbers
-	 */
 	static public function setLastVisitedManuId ($manuId) {
-
 		$session = JFactory::getSession();
 		return $session->set( 'vmlastvisitedmanuid', (int)$manuId, 'vm' );
-
 	}
 
 	static public function getAddToCartButton ($orderable) {

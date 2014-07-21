@@ -46,22 +46,20 @@ $document->addScriptDeclaration ("
 
 ");
 $document->addScriptDeclaration ('
-
 //<![CDATA[
 	jQuery(document).ready(function($) {
-	$("#checkoutFormSubmit").click(function(e){
-
-	$(this).attr("disabled", "true");
-	var name = $(this).attr("name");
-	$("#checkoutForm").append("<input name=\""+name+"\" value=\"1\" type=\"hidden\">");
-	$(this).fadeIn( 400 );
-	$("#checkoutForm").submit();
-	$("#checkoutForm").preventDefault();
-});
+		jQuery("#checkoutFormSubmit").bind("click dblclick", function(e){
+			e.preventDefault();
+			jQuery(this).attr("disabled", "true");
+			jQuery(this).removeClass( "vm-button-correct" );
+			jQuery(this).addClass( "vm-button" );
+			jQuery(this).fadeIn( 400 );
+			var name = jQuery(this).attr("name");
+			$("#checkoutForm").append("<input name=\""+name+"\" value=\"1\" type=\"hidden\">");
+			$("#checkoutForm").submit();
+		});
 	});
-
 //]]>
-
 ');
  ?>
 

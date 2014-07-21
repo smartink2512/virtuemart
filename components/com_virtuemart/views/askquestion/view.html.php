@@ -202,18 +202,9 @@ class VirtueMartViewAskquestion extends VmView {
 		parent::display ();
 	}
 
-	private function showLastCategory ($tpl) {
+	public function showLastCategory ($tpl) {
 
-		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId ();
-		$categoryLink = '';
-		if ($virtuemart_category_id) {
-			$categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
-		}
-		$continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
-
-		$continue_link_html = '<a href="' . $continue_link . '" />' . vmText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-		$this->assignRef ('continue_link_html', $continue_link_html);
-		// Display it all
+		$this->prepareContinueLink();
 		parent::display ($tpl);
 	}
 

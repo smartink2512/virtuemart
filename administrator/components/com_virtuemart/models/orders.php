@@ -892,9 +892,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				//AND	`ip_address` = "'.$_orderData->ip_address.'"
 		$db->setQuery($q);
 		$order = $db->loadAssoc();
-		vmdebug('_createOrder',$minushour,$order);
+		//vmdebug('_createOrder',$minushour,$order);
 		if($order){
 			$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
+			$_orderData->order_number = $order['order_number'];
+			$_orderData->order_pass = $order['order_pass'];
+			//Dirty hack
+			$this->removeOrderItems($order['virtuemart_order_id']);
 		}
 
 		$_orderData->order_number ='';
@@ -1965,7 +1969,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 		// rename invoice pdf file
-		$invoice_prefix='vminvoice_';
+		$invoice_prefix='vminvoice_'.VmConfig::$vmlang.'_';
 		$path = shopFunctions::getInvoicePath(VmConfig::get('forSale_path',0));
 		$invoice_name_src = $path.DS.$invoice_prefix.$data['invoice_number'].'.pdf';
 

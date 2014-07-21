@@ -1169,7 +1169,7 @@ class VmMediaHandler {
 		$html .= '<tr>';
 		//  The following was removed bacause the check box (publish/unpublish) was not functioning...
 		// 			$this->media_published = $this->published;
-		$html .= '<td class="labelcell">
+		$html .= '<td class="labelcell" style="width:20em">
 	<label for="published">'. vmText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 </td>
 <td>';
@@ -1178,8 +1178,9 @@ class VmMediaHandler {
 	//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 
 $html .='</td>';
-		$html .= '<td rowspan = "8">';
-		$html .= JHtml::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
+		$html .= '<td rowspan = "8" min-width = "'.(VmConfig::get('img_width',90)+10).'px">';
+		$thumbArgs = 'id="vm_thumb_image" style="overflow: auto;"';
+		$html .= $this->displayMediaThumb($thumbArgs); //JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		// $html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		$html .= '</td>';
 

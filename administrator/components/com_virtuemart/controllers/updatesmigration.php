@@ -138,11 +138,87 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$msg = vmText::_('COM_VIRTUEMART_SYSTEM_DEFAULTS_RESTORED');
 			$msg .= ' User id of the main vendor is ' . $model->setStoreOwner();
 			$this->setDangerousToolsOff();
-		}else {
+		} else {
 			$msg = $this->_getMsgDangerousTools();
 		}
 
 		$this->setRedirect($this->redirectPath, $msg);
+	}
+
+	/**
+	 * Quite unsophisticated, but it does it jobs if there are not too much products/customfields.
+	 *
+	 */
+	public function deleteInheritedCustoms () {
+
+		$msg = '';
+		$this->checkPermissionForTools();
+		if(VmConfig::get('dangeroustools', false)){
+
+			$db = JFactory::getDbo();
+
+			/*$q = 'SELECT customfield_id ';
+			$q .= 'FROM `#__virtuemart_product_customfields` as pc WHERE
+					LEFT JOIN `#__virtuemart_products` as c using (`virtuemart_product_id`) ';
+			$q .= 'WHERE c.product_parent_id =';*/
+			$q = ' SELECT `product_parent_id` FROM `#__virtuemart_products`
+					INNER JOIN `#__virtuemart_product_customfields` as pc using (`virtuemart_product_id`)
+					WHERE `product_parent_id` != "0" GROUP BY `product_parent_id` ';
+			$db->setQuery($q);
+			$childs = $db->loadColumn();
+			vmdebug('my children with customfields ',$childs);
+			$toDelete = array();
+			foreach($childs as $child_id){
+
+				$q = ' SELECT pc.virtuemart_customfield_id,pc.virtuemart_custom_id,pc.customfield_value,pc.customfield_price,pc.customfield_params
+					FROM `#__virtuemart_product_customfields` as pc
+					LEFT JOIN `#__virtuemart_products` as c using (`virtuemart_product_id`) ';
+				$q .= ' WHERE c.virtuemart_product_id = "'.$child_id.'" ';
+				$db->setQuery($q);
+				$pcfs = $db->loadAssocList();
+				vmdebug('load PCFS '.$q);
+				if($pcfs){
+					vmdebug('There are PCFS');
+					$q = ' SELECT pc.virtuemart_customfield_id,pc.virtuemart_custom_id,pc.customfield_value,pc.customfield_price,pc.customfield_params
+					FROM `#__virtuemart_product_customfields` as pc
+					LEFT JOIN `#__virtuemart_products` as c using (`virtuemart_product_id`) ';
+					$q .= ' WHERE c.product_parent_id = "'.$child_id.'" ';
+
+					$db->setQuery($q);
+					$cfs = $db->loadAssocList();
+
+					foreach($cfs as $cf){
+						foreach($pcfs as $pcf){
+							if($cf['virtuemart_custom_id'] == $pcf['virtuemart_custom_id']){
+									vmdebug('virtuemart_custom_id same');
+								if($cf['customfield_value'] == $pcf['customfield_value'] and
+								$cf['customfield_price'] == $pcf['customfield_price'] and
+								$cf['customfield_params'] == $pcf['customfield_params']){
+									$toDelete[] = $cf['virtuemart_customfield_id'];
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+			if(count($toDelete)>0){
+				$toDelete = array_unique($toDelete,SORT_NUMERIC);
+				$toDeleteString = implode(',',$toDelete);
+				$q = 'DELETE FROM `#__virtuemart_product_customfields` WHERE virtuemart_customfield_id IN ('.$toDeleteString.') ';
+				$db->setQuery($q);
+				$db->execute();
+			}
+
+			/*$q = 'SELECT `virtuemart_customfield_id`
+					FROM `#__virtuemart_product_customfields` as pc
+					LEFT JOIN `#__virtuemart_products` as c using (`virtuemart_product_id`)';
+			$q .= ' WHERE c.product_parent_id != "0" AND ';*/
+		} else {
+			$msg = $this->_getMsgDangerousTools();
+		}
+		$this->setredirect($this->redirectPath, $msg);
 	}
 
 	/**

@@ -654,9 +654,6 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 		}
 	}
 
-	/**
-	 * We must reimplement this triggers for joomla 1.7
-	 */
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
@@ -711,8 +708,6 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 	* @cart: VirtueMartCart the current cart
 	* @cart_prices: array the new cart prices
 	* @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
-	*
-	*
 	*/
 
 	public function plgVmonSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
@@ -747,18 +742,6 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 	}
 
 	/**
-	 * This event is fired during the checkout process. It can be used to validate the
-	 * method data as entered by the user.
-	 *
-	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
-	 * @author Max Milbers
-
-	 public function plgVmOnCheckoutCheckDataPayment($psType, VirtueMartCart $cart) {
-	 return null;
-	 }
-	 */
-
-	/**
 	 * This method is fired when showing when priting an Order
 	 * It displays the the payment method-specific data.
 	 *
@@ -771,55 +754,6 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 		return $this->onShowOrderPrint ($order_number, $method_id);
 	}
 
-	/**
-	 * Save updated order data to the method specific table
-	 *
-	 * @param array $_formData Form data
-	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
-
-	 public function plgVmOnUpdateOrderPayment(  $_formData) {
-	 return null;
-	 }
-	 */
-	/**
-	 * Save updated orderline data to the method specific table
-	 *
-	 * @param array $_formData Form data
-	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
-
-	 public function plgVmOnUpdateOrderLine(  $_formData) {
-	 return null;
-	 }
-	 */
-	/**
-	 * plgVmOnEditOrderLineBE
-	 * This method is fired when editing the order line details in the backend.
-	 * It can be used to add line specific package codes
-	 *
-	 * @param integer $_orderId The order ID
-	 * @param integer $_lineId
-	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-
-	 public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
-	 return null;
-	 }
-	 */
-
-	/**
-	 * This method is fired when showing the order details in the frontend, for every orderline.
-	 * It can be used to display line specific package codes, e.g. with a link to external tracking and
-	 * tracing systems
-	 *
-	 * @param integer $_orderId The order ID
-	 * @param integer $_lineId
-	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-
-	 public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
-	 return null;
-	 }
-	 */
 	function plgVmDeclarePluginParamsPaymentVM3( &$data) {
 		return $this->declarePluginParams('payment', $data);
 	}

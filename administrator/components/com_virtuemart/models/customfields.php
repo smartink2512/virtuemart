@@ -913,7 +913,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		$modificatorSum = 0.0;
 
 		//VmConfig::$echoDebug=true;
-		//vmdebug('my $productCustom->customfield_price',$product->customfields);
 		if (!empty($product->customfields)){
 
 			foreach($product->customfields as $k=>$productCustom){
@@ -923,13 +922,15 @@ class VirtueMartModelCustomfields extends VmModel {
 					if (!class_exists('VirtueMartCart'))
 						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 					$cart = VirtueMartCart::getCart();
+
 					//vmdebug('my $productCustom->customfield_price '.$productCustom->virtuemart_customfield_id,$cart->cartProductsData,$cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]);
 					if(isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])){
 						$selected = $cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id];
 
 					} else if( isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id])){
 						if($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]== $productCustom->virtuemart_customfield_id){
-							$selected = 1;
+							$selected = $productCustom->virtuemart_customfield_id;	//= 1;
+
 						}
 					}
 					//vmdebug('my $productCustom->customfield_price',$selected,$productCustom->virtuemart_custom_id,$productCustom->virtuemart_customfield_id,$cart->cartProductsData[$product->cart_item_id]['customProductData']);

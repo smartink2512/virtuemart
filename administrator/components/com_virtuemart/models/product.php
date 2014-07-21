@@ -674,6 +674,7 @@ class VirtueMartModelProduct extends VmModel {
 		return array($this->_limitStart, $this->_limit);
 	}
 
+
 	/**
 	 * This function creates a product with the attributes of the parent.
 	 *
@@ -721,7 +722,7 @@ class VirtueMartModelProduct extends VmModel {
 			$productKeyTmp = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.TRUE.TRUE;
 			if (array_key_exists ($productKeyTmp, $_products)) {
 				//vmdebug('getProduct, take from cache full product '.$productKeyTmp);
-				return $_products[$productKeyTmp];
+				return clone($_products[$productKeyTmp]);
 			}
 		}
 
@@ -855,7 +856,7 @@ class VirtueMartModelProduct extends VmModel {
 			$_products[$productKey] = $child;
 		}
 
-		return $_products[$productKey];
+		return clone($_products[$productKey]);
 	}
 
 	public function loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front){
@@ -913,7 +914,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 		}
-		//vmdebug('getRawProductPrices ',$productId);
+
 		return $loadedProductPrices[$hash];
 	}
 
@@ -954,25 +955,46 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$product->selectedPrice = null;
-
+		//VmConfig::$echoDebug=true;
+		//vmdebug('getRawProductPrices $product->allPrices',$product->allPrices);
 		if(!empty($product->allPrices) and is_array($product->allPrices)){
 			$emptySpgrpPrice = 0;
 			//vmdebug('Set selectedPrice to ',$product->allPrices);
 			foreach($product->allPrices as $k=>$price){
+
 				if(empty($price['price_quantity_start'])){
 					$price['price_quantity_start'] = 0;
 				}
-				$quantityFits = (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ;
+
+				if(!empty($price['virtuemart_shoppergroup_id']) and !in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
+					//vmdebug('Unset price, shoppergroup does not fit '.$k.' '.$price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids);
+					if($front) unset($product->allPrices[$k]);
+					continue;
+				}
+
+				//This does not work correctly :-( , maybe someone could explain me
+				//$quantityFits = (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ;
+				$quantityFits = false;
+				if(empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity){
+					$quantityFits = true;
+					//vmdebug('<br>$quantityFits '.$price['price_quantity_start'].' <= '.$quantity.' <= endless');
+				} else if ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) {
+					$quantityFits = true;
+					//vmdebug('<br>$quantityFits '.$price['price_quantity_start'].' <= '.$quantity.' <= '.$price['price_quantity_end']);
+				} else {
+					$quantityFits = false;
+					//vmdebug('<br>$quantity DOES NOT FIT '.$price['price_quantity_start'].' <= '.$quantity.' <= '.$price['price_quantity_end']);
+				}
+
+
 				if(empty($price['virtuemart_shoppergroup_id']) and empty($emptySpgrpPrice) and $quantityFits ){
 					$emptySpgrpPrice = $k;
 					//unset($product->allPrices[$k]);
-				} else if(!empty($price['virtuemart_shoppergroup_id']) and !in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
-					//vmdebug('Unset price, shoppergroup does not fit '.$k.' '.$price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids);
-					if($front) unset($product->allPrices[$k]);
 				} else if( $quantityFits ){
 					//vmdebug('Set selectedPrice to '.$k);
 					$product->selectedPrice = $k;
 				}
+
 			}
 
 			if(!isset($product->selectedPrice)){
@@ -1028,7 +1050,7 @@ class VirtueMartModelProduct extends VmModel {
 			//vmdebug('getProductSingle, recreate $productKey '.$productKey);
 			if (array_key_exists ($productKey, $_productsSingle)) {
 				//vmdebug('getProductSingle, take from cache recreated key',$_productsSingle[$productKey]);
-				return $_productsSingle[$productKey];
+				return clone($_productsSingle[$productKey]);
 			}
 		}
 
@@ -1178,7 +1200,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->product = $_productsSingle[$productKey];
 
-		return $_productsSingle[$productKey];
+		return clone($_productsSingle[$productKey]);
 	}
 
 	/**

@@ -102,7 +102,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$view->display();
 			return true;
 		} else {
+			//$cart->_inCheckOut = false;
 			$redirect = (isset($request['checkout']) or $task=='checkout' or $cart->getInCheckOut());
+
 			$cart->checkoutData($redirect);
 		}
 
@@ -117,6 +119,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = true;
 		$cart->_redirected = false;
+		$cart->_inConfirm = false;
 		//$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
 		//vmdebug('updatecart $cart->selected_shipto',$cart->selected_shipto);
 		$cart->saveCartFieldsInCart();
@@ -347,7 +350,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		else
 		$mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
 
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
+		$this->display();
+		//$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 	}
 
 	/**
@@ -401,8 +405,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		if ($cart) {
 			$cart->setOutOfCheckout();
 		}
-		$mainframe = JFactory::getApplication();
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), 'Cancelled');
+		$this->display();
+		//$mainframe = JFactory::getApplication();
+		//$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), 'Cancelled');
 	}
 
 }

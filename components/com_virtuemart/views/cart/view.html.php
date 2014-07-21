@@ -217,20 +217,6 @@ class VirtueMartViewCart extends VmView {
 	}*/
 
 
-	private function prepareContinueLink() {
-		// Get a continue link */
-		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
-		$categoryLink = '';
-		if ($virtuemart_category_id) {
-			$categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
-		}
-		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
-
-		$continue_link_html = '<a class="continue_link" href="' . $continue_link . '" ><span>' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</span></a>';
-		$this->assignRef('continue_link_html', $continue_link_html);
-		$this->assignRef('continue_link', $continue_link);
-
-	}
 
 	private function lSelectCoupon() {
 

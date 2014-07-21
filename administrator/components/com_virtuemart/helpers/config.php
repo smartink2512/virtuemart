@@ -865,6 +865,7 @@ class VmConfig {
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang);
+		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );
 
 		return self::$vmlang;

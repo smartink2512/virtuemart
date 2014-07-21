@@ -496,28 +496,6 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		return $this->setOnTablePluginParams ($name, $id, $table);
 	}
 
-	public function plgVmOnUpdateOrderPayment ($_formData) {
-
-		return NULL;
-	}
-
-	public function plgVmOnUpdateOrderLine ($_formData) {
-
-		return NULL;
-	}
-
-
-	public function plgVmOnEditOrderLineBE ($_orderId, $_lineId) {
-
-		return NULL;
-	}
-
-
-	public function plgVmOnShowOrderLineFE ($_orderId, $_lineId) {
-
-		return NULL;
-	}
-
 
 	protected function getLang () {
 

@@ -25,6 +25,30 @@ jimport( 'joomla.application.component.view');
 
 class VmView extends JViewLegacy{
 
+	function prepareContinueLink(){
+
+		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId ();
+		$categoryStr = '';
+		if ($virtuemart_category_id) {
+			$categoryStr = '&virtuemart_category_id=' . $virtuemart_category_id;
+		}
+
+		$ItemidStr = '';
+		$Itemid = shopFunctionsF::getLastVisitedItemId();
+		if(!empty($Itemid)){
+			$ItemidStr = '&Itemid='.$Itemid;
+		}
+
+		$this->continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryStr.$ItemidStr, FALSE);
+
+		//$this->continue_link_html = '<a class="continue_link" href="' . $continue_link . '" ><span>' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</span></a>';
+		$this->continue_link_html = '<a href="' . $this->continue_link . '" />' . JText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+
+		$this->cart_link = JRoute::_('index.php?option=com_virtuemart&view=cart'.$ItemidStr, FALSE);
+
+		return;
+	}
+
 	function linkIcon($link,$altText ='',$boutonName,$verifyConfigValue=false, $modal = true, $use_icon=true,$use_text=false,$class = ''){
 		if ($verifyConfigValue) {
 			if ( !VmConfig::get($verifyConfigValue, 0) ) return '';

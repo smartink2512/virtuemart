@@ -37,7 +37,7 @@ else {
 
 $task = '';
 if ($this->cart->getInCheckOut()){
-	$task = '&task=checkout';
+	//$task = '&task=checkout';
 }
 $url = JRoute::_ ('index.php?option=com_virtuemart&view='.$rview.$task, $this->useXHTML, $this->useSSL);
 
@@ -124,7 +124,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 					        onclick="javascript:return myValidator(userForm, false);"><?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
 					<?php } ?>
 				<button class="default" type="reset"
-				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
+				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview.'&task=cancel'); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
 				<?php
 			}
 			else {
@@ -132,7 +132,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 				<button class="<?php echo $buttonclass ?>" type="submit"
 				        onclick="javascript:return myValidator(userForm);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
 				<button class="default" type="reset"
-				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
+				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview.'&task=cancel'); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
 				<?php } ?>
 		</div>
 
