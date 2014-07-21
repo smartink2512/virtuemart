@@ -1132,8 +1132,10 @@ abstract class vmPSPlugin extends vmPlugin {
 		} elseif ($returnValue == 2) {
 			$cart->_confirmDone = FALSE;
 			$cart->_dataValidated = FALSE;
+			$cart->_inConfirm = false;
 			$cart->setCartIntoSession ();
 			JRequest::setVar ('html', $html);
+			session_write_close();
 		} elseif ($returnValue == 0) {
 			// error while processing the payment
 			$mainframe = JFactory::getApplication ();

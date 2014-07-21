@@ -83,12 +83,12 @@ $document->addScriptDeclaration ("
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
-	$('#checkoutFormSubmit').bind('click dblclick', function(){
-    $(this).attr('disabled', 'true');
-    $(this).removeClass( 'vm-button-correct' );
-    $(this).addClass( 'vm-button' );
-    $('#checkoutForm').preventDefault();
-    $('#checkoutForm').trigger('submit');
+	jQuery('#checkoutFormSubmit').bind('click dblclick', function(e){
+	e.preventDefault();
+    jQuery(this).attr('disabled', 'true');
+    jQuery(this).removeClass( 'vm-button-correct' );
+    jQuery(this).addClass( 'vm-button' );
+    jQuery(#checkoutForm).submit();
 
 });
 

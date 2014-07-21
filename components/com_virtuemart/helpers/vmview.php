@@ -25,7 +25,7 @@ jimport( 'joomla.application.component.view');
 
 class VmView extends JView{
 
-	function prepareContinueLink(){
+	public function prepareContinueLink(){
 
 		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId ();
 		$categoryStr = '';

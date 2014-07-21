@@ -325,7 +325,10 @@ class VirtueMartViewProductdetails extends VmView {
 		parent::display();
 	}
 
-
+	public function showLastCategory($tpl) {
+		$this->prepareContinueLink();
+		parent::display ($tpl);
+	}
 }
 
 // pure php no closing tag

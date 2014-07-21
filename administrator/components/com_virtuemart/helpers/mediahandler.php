@@ -1163,17 +1163,18 @@ class VmMediaHandler {
 			$html .= '<tr>';
 			//  The following was removed bacause the check box (publish/unpublish) was not functioning...
 			// 			$this->media_published = $this->published;
-			$html .= '<td class="labelcell">
+			$html .= '<td class="labelcell" style="width:20em">
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 	</td>
-	<td>';
+	<td style="width:20em">';
 		if(!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		$html .= VmHTML::checkbox('media_published',$checked,1,0,'class="inputbox"','media_published'.$identify) ;
 		//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 
 	$html .='</td>';
-			$html .= '<td rowspan = "8">';
-			$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
+			$html .= '<td rowspan = "8" min-width = "'.(VmConfig::get('img_width',90)+10).'px">';
+			$thumbArgs = 'id="vm_thumb_image" style="overflow: auto;"';
+			$html .= $this->displayMediaThumb($thumbArgs); //JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
 			// $html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 			$html .= '</td>';
 

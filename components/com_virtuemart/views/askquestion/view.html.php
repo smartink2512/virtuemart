@@ -202,7 +202,7 @@ class VirtueMartViewAskquestion extends VmView {
 		parent::display ();
 	}
 
-	private function showLastCategory ($tpl) {
+	public function showLastCategory ($tpl) {
 
 		$this->prepareContinueLink();
 		parent::display ($tpl);

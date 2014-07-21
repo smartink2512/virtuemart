@@ -36,7 +36,7 @@ class VirtueMartCart {
 	var $_dataValidated = false;
 	var $_blockConfirm = false;
 	var $_confirmDone = false;
-	//var $_cartProcessed = false;
+	var $_inConfirm = false;
 	var $_redirect = false;
 	var $_redirect_disabled = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
@@ -122,11 +122,10 @@ class VirtueMartCart {
 				self::$_cart->order_number							= $sessionCart->order_number;
 				self::$_cart->lists 									= $sessionCart->lists;
 
-				//self::$_cart->pricesUnformatted					= $sessionCart->pricesUnformatted;
+				self::$_cart->_inConfirm							= $sessionCart->_inConfirm;
 				self::$_cart->pricesCurrency						= $sessionCart->pricesCurrency;
 				self::$_cart->paymentCurrency						= $sessionCart->paymentCurrency;
 
-				//self::$_cart->_cartProcessed						= $sessionCart->_cartProcessed;
 				self::$_cart->_inCheckOut 							= $sessionCart->_inCheckOut;
 				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
 				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
@@ -256,7 +255,7 @@ class VirtueMartCart {
 		$sessionCart->paymentCurrency						= $this->paymentCurrency;
 
 		//private variables
-		//$sessionCart->_cartProcessed						= $this->_cartProcessed;
+		$sessionCart->_inConfirm							= $this->_inConfirm;
 		$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
@@ -354,7 +353,7 @@ class VirtueMartCart {
 		$mainframe = JFactory::getApplication();
 		$success = false;
 		$post = JRequest::get('default');
-	//	$this->_cartProcessed = false;
+
 		if(empty($virtuemart_product_ids)){
 			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
 		}
@@ -652,7 +651,7 @@ class VirtueMartCart {
 			$addToCartReturnValues = $dispatcher->trigger('plgVmOnRemoveFromCart',array($this,$prod_id));
 			unset($this->cartProductsData[$prod_id]);
 		}
-		//$this->_cartProcessed = false;
+
 		$this->setCartIntoSession();
 		return true;
 	}
@@ -681,7 +680,6 @@ class VirtueMartCart {
 				unset($this->products[$cart_virtuemart_product_id]);
 				$updated = true;
 			}
-			//$this->_cartProcessed = false;
 			// Save the cart
 			$this->setCartIntoSession();
 		}
@@ -897,9 +895,12 @@ class VirtueMartCart {
 
 	private function checkoutData($redirect = true) {
 
+		if($this->_inConfirm) return false;
+
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
 		$this->setCartIntoSession();
+		session_write_close();
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->order_language = JRequest::getVar('order_language', $this->order_language);
@@ -1127,28 +1128,31 @@ class VirtueMartCart {
 	 * will show the orderdone page (thank you page)
 	 *
 	 */
-	 function confirmedOrder() {
+	function confirmedOrder() {
 
 		//Just to prevent direct call
-		//if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut and !$this->_cartProcessed) {
 		if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut  ) {
-			//$this->_cartProcessed = true;
+
+			if($this->_inConfirm) return false;
+			$this->_inConfirm = true;
+			$this->setCartIntoSession();
+			session_write_close();
+
 			$orderModel = VmModel::getModel('orders');
 
-			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
+			if (($this->virtuemart_order_id = $orderModel->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
 				JError::raiseWarning(500, 'No order created '.$orderModel->getError());
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );
 			}
-			$this->virtuemart_order_id = $orderID;
-			//$order= $orderModel->getOrder($orderID);
-            $orderDetails = $orderModel ->getMyOrderDetails($orderID);
 
-            if(!$orderDetails or empty($orderDetails['details'])){
-                echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
-                return;
-            }
-			$orderModel->notifyCustomer($orderID, $orderDetails);
+			$orderDetails = $orderModel ->getMyOrderDetails($this->virtuemart_order_id);
+
+			if(!$orderDetails or empty($orderDetails['details'])){
+				echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+				return;
+			}
+			$orderModel->notifyCustomer($this->virtuemart_order_id, $orderDetails);
 			$dispatcher = JDispatcher::getInstance();
 
 			JPluginHelper::importPlugin('vmcalculation');
@@ -1160,11 +1164,12 @@ class VirtueMartCart {
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
-			return $orderID;
-
+			$this->_inConfirm = false;
+			$this->setCartIntoSession();
+			session_write_close();
+			return $this->virtuemart_order_id;
 		}
 		return NULL;
-
 	}
 
 	/**
@@ -1203,6 +1208,7 @@ class VirtueMartCart {
 		$cart->order_number=null;
 		$cart->pricesUnformatted = null;
 		$cart->cartData = null;
+		$cart->_inConfirm = false;
 	}
 
 	function saveAddressInCart($data, $type, $putIntoSession = true) {
