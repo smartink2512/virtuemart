@@ -842,6 +842,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
 		$_orderData->order_language = $_cart->order_language;
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
+		if(!empty( $_cart->order_number)){
+			$_orderData->order_number = $_cart->order_number;
+		} else {
+			$_orderData->order_number = '';
+		}
+
+
 		$maskIP = VmConfig::get('maskIP','last');
 		if($maskIP=='last'){
 			$rpos = strrpos($_orderData->ip_address,'.');
@@ -850,29 +857,40 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$orderTable =  $this->getTable('orders');
 
 		$db = JFactory::getDbo();
-		$jnow = JFactory::getDate();
-		$jnow->sub(new DateInterval('PT1H'));
-		$minushour = $jnow->toMySQL();
 
 		$q = 'SELECT * FROM `#__virtuemart_orders` ';
-		//$q .= 'LEFT JOIN `#_virtuemart_order_userinfos` as oui using `virtuemart_order_id` ';
-		$q .= 'WHERE `customer_number`= "'.$_orderData->customer_number.'"
-		 		AND `order_status` = "P"
+		if(!empty($_cart->order_number)){
+			$db->setQuery($q . ' WHERE `order_number`= "'.$_cart->order_number.'" ');
+			$order = $db->loadAssoc();
+			if(!$order){
+				vmdebug('This should not happen, there is a cart with order_number, but not order stored');
+			}
+		}
+
+		if(!$order){
+			$jnow = JFactory::getDate();
+			$jnow->sub(new DateInterval('PT1H'));
+			$minushour = $jnow->toMySQL();
+			$q .= ' WHERE `customer_number`= "'.$_orderData->customer_number.'" ';
+			$q .= '	AND `order_status` = "P"
 				AND `created_on` > "'.$minushour.'" ';
-				//AND	`ip_address` = "'.$_orderData->ip_address.'"';
-		$db->setQuery($q);
-		$order = $db->loadAssoc();
-		//vmdebug('Create order by cart, query and res',$q,$order);
+			$db->setQuery($q);
+			$order = $db->loadAssoc();
+		}
+
 		if($order){
 
 			$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
-			$_orderData->order_number = $order['order_number'];
+			if(!empty($order['order_number'])){
+				$_orderData->order_number = $order['order_number'];
+			}
+			
 			$_orderData->order_pass = $order['order_pass'];
 			//Dirty hack
 			$this->removeOrderItems($order['virtuemart_order_id']);
 		}
 
-		$_orderData->order_number ='';
+
 		JPluginHelper::importPlugin('vmshopper');
 		$dispatcher = JDispatcher::getInstance();
 		$plg_datas = $dispatcher->trigger('plgVmOnUserOrder',array(&$_orderData));
@@ -964,6 +982,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
 		$_userInfoData['address_type'] = 'BT';
 
+		$db = JFactory::getDBO();
+		$q = ' SELECT `virtuemart_order_userinfo_id` FROM `#__virtuemart_order_userinfos` ';
+		$q .= ' WHERE `virtuemart_order_id` = "'.$_id.'" AND `address_type` = "BT" ';
+		$db->setQuery($q);
+		if($vmOId = $db->loadResult()){
+			$_userInfoData['virtuemart_order_userinfo_id'] = $vmOId;
+		}
+
 		$order_userinfosTable = $this->getTable('order_userinfos');
 		if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
 			vmError($order_userinfosTable->getError());
@@ -987,6 +1013,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_userInfoData['virtuemart_order_id'] = $_id;
 			$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
 			$_userInfoData['address_type'] = 'ST';
+
+			$q = ' SELECT `virtuemart_order_userinfo_id` FROM `#__virtuemart_order_userinfos` ';
+			$q .= ' WHERE `virtuemart_order_id` = "'.$_id.'" AND `address_type` = "ST" ';
+			$db->setQuery($q);
+			if($vmOId = $db->loadResult()){
+				$_userInfoData['virtuemart_order_userinfo_id'] = $vmOId;
+			}
+
 			$order_userinfosTable = $this->getTable('order_userinfos');
 			if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
 				vmError($order_userinfosTable->getError());
