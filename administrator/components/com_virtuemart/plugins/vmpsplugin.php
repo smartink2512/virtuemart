@@ -129,8 +129,8 @@ abstract class vmPSPlugin extends vmPlugin {
 
 				//$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
 				/* Because of OPC: the price must not be overwritten directly in the cart */
-				//$pricesUnformatted= $cart->pricesUnformatted;
-				$methodSalesPrice = $this->setCartPrices ($cart, $cart->cartPrices,$method);
+				$prices= $cart->cartPrices;
+				$methodSalesPrice = $this->setCartPrices ($cart,$prices ,$method);
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 			}
@@ -158,13 +158,13 @@ abstract class vmPSPlugin extends vmPlugin {
 	public function onSelectedCalculatePrice (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
 
-		$id = $this->_idName;
+		$idName = $this->_idName;
+
 		//vmTime('onSelectedCalculatePrice before test '.$cart->$id,'prepareCartData');
-		if (!($method = $this->selectedThisByMethodId ($cart->$id))) {
+		if (!($method = $this->selectedThisByMethodId ($cart->$idName))) {
 			return NULL; // Another method was selected, do nothing
 		}
-
-		if (!($method = $this->getVmPluginMethod ($cart->$id))) {
+		if (!$method = $this->getVmPluginMethod ($cart->$idName) or empty($method->$idName)) {
 			return NULL;
 		}
 
@@ -176,6 +176,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$cart_prices_name = $this->renderPluginName ($method);
+		vmdebug('onSelectedCalculatePrice',$idName,$method->$idName,$cart_prices_name);
 		$this->setCartPrices ($cart, $cart_prices, $method);
 
 		return TRUE;
@@ -949,12 +950,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		$_psType = ucfirst ($this->_psType);
 		$calculator = calculationHelper::getInstance ();
 
-		$cart->cartPrices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
+		$cart_prices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
 		if(!isset($cart_prices[$this->_psType . 'Value'])) $cart_prices[$this->_psType . 'Value'] = 0.0;
 		if(!isset($cart_prices[$this->_psType . 'Tax'])) $cart_prices[$this->_psType . 'Tax'] = 0.0;
 
 		if($this->_psType=='payment'){
-			$cartTotalAmountOrig=$this->getCartAmount($cart->cartPrices);
+			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
 
 			if(!$progressive){
 				//Simple
@@ -968,16 +969,16 @@ abstract class vmPSPlugin extends vmPlugin {
 				//vmdebug('Progressive $cartTotalAmount = '.($cartTotalAmountOrig + $method->cost_per_transaction) .' / '. (1 - $method->cost_percent_total * 0.01) .' = '.$cartTotalAmount );
 			}
 
-			$cart->cartPrices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
+			$cart_prices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
 		}
 
-		if(!isset($cart_prices['salesPrice' . $_psType])) $cart_prices['salesPrice' . $_psType] = $cart->cartPrices[$this->_psType . 'Value'];
+		if(!isset($cart_prices['salesPrice' . $_psType])) $cart_prices['salesPrice' . $_psType] = $cart_prices[$this->_psType . 'Value'];
 
 		$taxrules = array();
 		if(isset($method->tax_id) and (int)$method->tax_id === -1){
 
 		} else if (!empty($method->tax_id)) {
-			$cart->cartPrices[$this->_psType . '_calc_id'] = $method->tax_id;
+			$cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;
 
 			$db = JFactory::getDBO ();
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
@@ -991,7 +992,7 @@ abstract class vmPSPlugin extends vmPlugin {
 					$rule['subTotalOld'] = $rule['subTotal'];
 					$rule['taxAmountOld'] = $rule['taxAmount'];
 					$rule['taxAmount'] = 0;
-					$rule['subTotal'] = $cart->cartPrices[$this->_psType . 'Value'];
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
 				}
 			}
 		} else {
@@ -1017,7 +1018,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 				foreach($taxrules as &$rule){
 					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
-					$rule['subTotal'] = $cart->cartPrices[$this->_psType . 'Value'] * $frac;
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
 					//vmdebug('Part $denominator '.$denominator.' $frac '.$frac,$rule['subTotal']);
 					if(!isset($cart_prices[$this->_psType . 'Tax'])) $cart_prices[$this->_psType . 'Tax'] = 0.0;
 					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $calculator->roundInternal($calculator->roundInternal($calculator->interpreteMathOp($rule, $rule['subTotal'])) - $rule['subTotal'], 'salesPrice');
@@ -1033,12 +1034,12 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if (count ($taxrules) > 0 ) {
 
-			$cart->cartPrices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart->cartPrices[$this->_psType . 'Value'],true,false), 'salesPrice');
+			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],true,false), 'salesPrice');
 			//vmdebug('I am in '.get_class($this).' and have this rules now',$taxrules,$cart_prices[$this->_psType . 'Value'],$cart_prices['salesPrice' . $_psType]);
-//			$cart->cartPrices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart->cartPrices['salesPrice' . $_psType] -  $cart->cartPrices[$this->_psType . 'Value']), 'salesPrice');
+//			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);
 //			$taxrule =  current($taxrules);
-//			$cart->cartPrices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
+//			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
 
 			foreach($taxrules as &$rule){
 				if(!isset($cart_prices[$this->_psType . '_calc_id']) or !is_array($cart_prices[$this->_psType . '_calc_id'])) $cart_prices[$this->_psType . '_calc_id'] = array();
@@ -1050,12 +1051,12 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		} else {
 
-			$cart->cartPrices['salesPrice' . $_psType] = $cart_prices[$this->_psType . 'Value'];
-			$cart->cartPrices[$this->_psType . 'Tax'] = 0;
-			$cart->cartPrices[$this->_psType . '_calc_id'] = 0;
+			$cart_prices['salesPrice' . $_psType] = $cart_prices[$this->_psType . 'Value'];
+			$cart_prices[$this->_psType . 'Tax'] = 0;
+			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
-
-
+		//$cart_prices = $cart_prices;
+		vmdebug('setCartPrices '.$_psType,$cart_prices['salesPrice' . $_psType]);
 		return $cart_prices['salesPrice' . $_psType];
 
 	}

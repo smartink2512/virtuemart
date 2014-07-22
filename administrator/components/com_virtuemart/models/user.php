@@ -157,13 +157,15 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->JUser = JUser::getInstance($this->_id);
 
 		// Add the virtuemart_shoppergroup_ids
-		$xrefTable = $this->getTable('vmuser_shoppergroups');
-		$this->_data->shopper_groups = $xrefTable->load($this->_id);
+		if(!empty($this->_id)){
+			$xrefTable = $this->getTable('vmuser_shoppergroups');
+			$this->_data->shopper_groups = $xrefTable->load($this->_id);
+		}
+		if(empty($this->_data->shopper_groups)) $this->_data->shopper_groups = array();
 
-		$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 		$site = JFactory::getApplication ()->isSite ();
 		if ($site) {
-			if(empty($this->_data->shopper_groups)) $this->_data->shopper_groups = array();
+			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 			$shoppergroupmodel->appendShopperGroups($this->_data->shopper_groups,$this->_data->JUser,$site);
 		}
 
@@ -806,13 +808,6 @@ class VirtueMartModelUser extends VmModel {
 
 			foreach($missingFields as $fieldname){
 				vmInfo($fieldname);
-				/*if($lang->hasKey('COM_VIRTUEMART_MISSING_'.$fieldname)){
-					vmInfo('COM_VIRTUEMART_MISSING_'.$fieldname );
-				} else {
-					vmInfo(vmText::vsprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$fieldname) );
-					vmdebug('What the fuck '.vmText::_('COM_VIRTUEMART_MISSING_'.$fieldname));
-				}*/
-
 			}
 		}
 		return $return;

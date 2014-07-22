@@ -665,12 +665,19 @@ class VirtueMartModelCategory extends VmModel {
 
 	function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
 		static $idsArr = array();
+
+		$hash = $virtuemart_category_id.'c'.$catMenuId;
+
 		if($first) {
-			$idsArr = array();
+			$idsArr[$hash] = array();
 			$this->categoryRecursed = 0;
 		} else if($this->categoryRecursed>10){
 			vmWarn('Stopped getCategoryRecurse after 10 rekursions');
-			return $idsArr;
+			return $idsArr[$hash];
+		}
+
+		if(empty($virtuemart_category_id)){
+			return $idsArr[$hash];
 		}
 
 		$db = JFactory::getDBO();
@@ -679,14 +686,14 @@ class VirtueMartModelCategory extends VmModel {
 			WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;
 		$db->setQuery($q);
 		if (!$ids = $db->loadObject()) {
-			return $idsArr;
+			return $idsArr[$hash];
 		}
-		if ($ids->child) $idsArr[] = $ids->child;
-		if($ids->child != 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
+		if ($ids->child) $idsArr[$hash][] = $ids->child;
+		if($ids->parent !== 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
 			$this->categoryRecursed++;
 			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
 		}
-		return $idsArr;
+		return $idsArr[$hash];
 	}
 
 	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {

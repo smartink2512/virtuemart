@@ -178,101 +178,55 @@ class CurrencyDisplay {
 
 		if(count($this->_priceConfig)>0)return true;
 
-		$user = JFactory::getUser();
+		$userModel = VmModel::getModel('user');
+		$user = $userModel->getCurrentUser();
+		$shopperModel = VmModel::getModel('shoppergroup');
 
-		$result = false;
-		if(!empty($user->id)){
-			$q = 'SELECT `vx`.`virtuemart_shoppergroup_id` FROM `#__virtuemart_vmusers` as `u`
-									LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
-									LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
-									WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
-			$this->_db->setQuery($q);
-			$result = $this->_db->loadResult();
-		}
-
-		if(!$result){
-			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
-							WHERE `sg`.`default` = "'.($user->guest+1).'" ';
-
-			$this->_db->setQuery($q);
-			$result = $this->_db->loadRow();
+		if(count($user->shopper_groups)>0){
+			$sprgrp = $shopperModel->getShopperGroup($user->shopper_groups[0]);
 		} else {
-			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
-										WHERE `sg`.`virtuemart_shoppergroup_id` = "'.$result.'" ';
+			//This Fallback is not tested
+			$sprgrp = $shopperModel->getDefault($user->JUser->guest);
 
-			$this->_db->setQuery($q);
-			$result = $this->_db->loadRow();
 		}
-
-		if(!class_exists('TableShoppergroups')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shoppergroups.php');
-		$db = JFactory::getDbo();
-		$table = new TableShoppergroups($db);
 
 		$priceFieldsRoots = array('basePrice','variantModification','basePriceVariant',
 			'basePriceWithTax','discountedPriceWithoutTax',
 			'salesPrice','priceWithoutTax',
 			'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
 
-		if($result){
+		if($sprgrp){
 
-			$custom_price_display = 0;
-			if(!empty($result[1])){
-				$custom_price_display = $result[1];
-			}
-
-			if($custom_price_display && !empty($result[0])){
-				$show_prices = $result[0]['show_prices'];
-			} else {
-				$show_prices = VmConfig::get('show_prices', 1);
-			}
-
-			if($show_prices==1){
-
-				if($custom_price_display==1){
-
-					if(empty($result[0])) vmdebug('currencydisplay set array query ',$q);
-					$priceFields = array();
-					$priceFields['params'] = $result[0];
-					$table->bindParameterable($priceFields,'params',$table->_varsToPushParam);
-					unset($priceFields['params']);
-
+			if($sprgrp->custom_price_display){
+				if($sprgrp->show_prices){
 					foreach($priceFieldsRoots as $name){
-						$show = (int)$priceFields[$name];
-						$round = (int)$priceFields[$name.'Rounding'];
-						$text = $priceFields[$name.'Text'];
+						$show = (int)$sprgrp->$name;
+						$text = (int)$sprgrp->{$name.'Text'};
+						$round = (int)$sprgrp->{$name.'Rounding'};
 						if($round==-1){
 							$round = $this->_nbDecimal;
-							//vmdebug('Use currency rounding '.$round);
 						}
 						$this->_priceConfig[$name] = array($show,$round,$text);
 					}
-				} else {
+				}
+			} else {
+				if(VmConfig::get('show_prices', 1)){
 					foreach($priceFieldsRoots as $name){
 						$show = VmConfig::get($name,0);
-						$round = VmConfig::get($name.'Rounding',$this->_nbDecimal);
 						$text = VmConfig::get($name.'Text',0);
+						$round = VmConfig::get($name.'Rounding',$this->_nbDecimal);
 						if($round==-1){
 							$round = $this->_nbDecimal;
 						}
 						$this->_priceConfig[$name] = array($show,$round,$text);
 					}
 				}
-
-			} else {
-				foreach($priceFieldsRoots as $name){
-					$this->_priceConfig[$name] = array(0,0,0);
-				}
 			}
+		}
 
-		} else {
+		if(!count($this->_priceConfig)){
 			foreach($priceFieldsRoots as $name){
-				$show = VmConfig::get($name,0);
-				$round = VmConfig::get($name.'Rounding',$this->_nbDecimal);
-				$text = VmConfig::get($name.'Text',0);
-				if($round==-1){
-					$round = $this->_nbDecimal;
-				}
-				$this->_priceConfig[$name] = array($show,$round,$text);
+				$this->_priceConfig[$name] = array(0,0,0);
 			}
 		}
 

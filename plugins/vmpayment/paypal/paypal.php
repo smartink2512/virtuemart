@@ -283,6 +283,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			return FALSE;
 		}
+		$cart->prepareCartData();
 		if ($cart->pricesUnformatted['salesPrice'] <= 0.0) {
 			return FALSE;
 		}

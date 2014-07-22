@@ -153,8 +153,11 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    public function store(&$data)
-	{
+    public function store(&$data){
+
+		if ($data) {
+			$data = (array)$data;
+		}
 
 		if(!empty($data['params'])){
 			foreach($data['params'] as $k=>$v){
@@ -211,30 +214,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	}
 
 
-	/**
-     * Publish a field
-     *
-     * @author Max Milbers
-     *
-     */
-/*	public function published( $row, $i, $variable = 'published' )
-	{
-		$imgY = 'tick.png';
-		$imgX = 'publish_x.png';
-		$img 	= $row->$variable ? $imgY : $imgX;
-		$task 	= $row->$variable ? 'unpublish' : 'publish';
-		$alt 	= $row->$variable ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_UNPUBLISHED');
-		$action = $row->$variable ? vmText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : vmText::_('COM_VIRTUEMART_PUBLISH_ITEM');
-
-		$href = '
-		<a title="'. $action .'">
-		<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>'
-		;
-		return $href;
-	}*/
-
-
-
 
 	/**
 	 * Due the new plugin system this should be obsolete
@@ -262,6 +241,16 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 	}
 
+	public function createClone ($id) {
 
+		$this->setId ($id);
+		$payment = $this->getPayment();
+		$payment->virtuemart_paymentmethod_id = 0;
+		$payment->payment_name = $payment->payment_name.' Copy';
+		if (!$clone = $this->store($payment)) {
+			JError::raiseError(500, 'createClone '. $payment->getError() );
+		}
+		return $clone;
+	}
 
 }

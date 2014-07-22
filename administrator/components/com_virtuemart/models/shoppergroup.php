@@ -121,10 +121,13 @@ class VirtueMartModelShopperGroup extends VmModel {
 				$app->enqueueMessage('Attention no standard shopper group set '.$db->getErrorMsg());
 				$default[$vendorId][$kind] = false;
 			} else {
+				if(!$res = $this->getShopperGroup($res->virtuemart_shoppergroup_id)){
+
+				}
 				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 				$res->shopper_group_name = vmText::_($res->shopper_group_name);
 				$res->shopper_group_desc = vmText::_($res->shopper_group_desc);
-
+				//vmdebug('my default shoppergroup ',$res);
 				$default[$vendorId][$kind] =  $res;
 			}
 		}

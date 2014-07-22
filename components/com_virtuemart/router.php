@@ -778,7 +778,7 @@ class vmrouterHelper {
 					$ismenu = true;
 					$category->itemId = $this->menu['virtuemart_category_id'][$virtuemart_category_id] ;
 				} else {
-					$CatParentIds = $this->getCategoryRecurse($virtuemart_category_id,0) ;
+					$CatParentIds = VmModel::getModel('category')->getCategoryRecurse($virtuemart_category_id,0) ;
 					/* control if parent categories are joomla menu */
 					foreach ($CatParentIds as $CatParentId) {
 						// No ? then find the parent menu categorie !
@@ -810,7 +810,7 @@ class vmrouterHelper {
 		static $categoryNamesCache = array();
 		$strings = array();
 		$db = JFactory::getDBO();
-		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
+		$parents_id = array_reverse(VmModel::getModel('category')->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
 
 		foreach ($parents_id as $id ) {
 			if(!isset($categoryNamesCache[$id])){
@@ -837,7 +837,7 @@ class vmrouterHelper {
 
 	}
 	/* Get parents of category*/
-	public function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
+/*	public function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
 		static $idsArr = array();
 		if ($first==true) $idsArr = array();
 

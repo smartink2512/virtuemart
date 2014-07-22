@@ -1388,7 +1388,7 @@ class calculationHelper {
 		if (empty($this->_cart->virtuemart_shipmentmethod_id)) return;
 
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePriceShipment',array(  $this->_cart, &$this->_cart->cartPrices, &$this->_cart->cartData['shipmentName']  ));
+		$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePriceShipment',array(  $this->_cart, &$this->_cart->cartPrices, &$this->_cart->cartData['shipmentName']  ));
 
 		//Plugin return true if shipment rate is still valid false if not any more
 		$shipmentValid=0;

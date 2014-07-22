@@ -708,7 +708,7 @@ class VirtueMartCart {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 		}
 		if(!isset($this->cartPrices['salesPrice'])){
-			$this->getCartPrices();
+			$this->getCartPrices(true);
 		}
 		if(!in_array($coupon_code,$this->_triesValidateCoupon)){
 			$this->_triesValidateCoupon[] = $coupon_code;
@@ -724,7 +724,7 @@ class VirtueMartCart {
 			$this->couponCode = '';
 			$this->_dataValidated = false;
 			$this->_blockConfirm = true;
-			$this->getCartPrices();
+			$this->getCartPrices(true);
 			$this->setCartIntoSession();
 			return $msg;
 		}
@@ -1131,6 +1131,7 @@ class VirtueMartCart {
 		$cart->deleteCart();
 		$cart->setCartIntoSession();
 		session_write_close();
+		session_start();
 	}
 
 	function saveCartFieldsInCart(){
@@ -1334,27 +1335,27 @@ class VirtueMartCart {
 	 * @return array of product objects
 	 */
 
-	public function getCartPrices() {
+	public function getCartPrices($force=false) {
 
+		if(empty($this->cartPrices) or $force){
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
 
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
+			$this->pricesCurrency = $calculator->_currencyDisplay->getCurrencyForDisplay();
 
-		$this->pricesCurrency = $calculator->_currencyDisplay->getCurrencyForDisplay();
-
-		$calculator->getCheckoutPrices($this);
-		//vmdebug('getCartPrices ',$this->cartPrices);
-		//Fallback for old extensions
-		$this->pricesUnformatted = $this->cartPrices;
-		//vmdebug('getCartPrices my format pricesUnformatted',$this->pricesUnformatted);
-		//We must do this here, otherwise if we have a product more than one time in the cart
-		//it has always the same price
-		foreach($this->products as $k => $product){
-			//vmdebug('my product',$product);
-			$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
-			//$this->pricesUnformatted[$product->cart_item_id] = $product->prices;
+			$calculator->getCheckoutPrices($this);
+			//vmdebug('getCartPrices ',$this->cartPrices);
+			//Fallback for old extensions
+			$this->pricesUnformatted = $this->cartPrices;
+			//vmdebug('getCartPrices my format pricesUnformatted');
+			//We must do this here, otherwise if we have a product more than one time in the cart
+			//it has always the same price
+			foreach($this->products as $k => $product){
+				//vmdebug('my product',$product);
+				$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
+				//$this->pricesUnformatted[$product->cart_item_id] = $product->prices;
+			}
 		}
-
 	}
 
 	function prepareVendor(){

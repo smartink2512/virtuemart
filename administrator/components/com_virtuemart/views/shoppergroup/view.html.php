@@ -46,7 +46,7 @@ class VirtuemartViewShopperGroup extends VmView {
 		if ($layoutName == 'edit') {
 			//For shoppergroup specific price display
 			VmConfig::loadJLang('com_virtuemart_config');
-
+			VmConfig::loadJLang('com_virtuemart_shoppers',true);
 			$shoppergroup = $model->getShopperGroup();
 			$this->SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
 

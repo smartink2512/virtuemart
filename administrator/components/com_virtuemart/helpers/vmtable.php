@@ -119,17 +119,15 @@ class VmTable extends JTable {
 	}
 
 	public function setObligatoryKeys($key) {
-
-		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
-		$this->_obkeys[$key] = $error;
+		//$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
+		$this->_obkeys[$key] = 1;
 	}
 
 	public function setUniqueName($name) {
-
-		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
+		//$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 		$this->_unique = true;
-		$this->_obkeys[$name] = $error;
-		$this->_unique_name[$name] = $error;
+		$this->_obkeys[$name] = 1;//$error;
+		$this->_unique_name[$name] = 1;//$error;
 	}
 
 	public function setLoggable() {
@@ -802,16 +800,9 @@ class VmTable extends JTable {
 
 		}
 
-
 		foreach ($this->_obkeys as $obkeys => $error) {
 			if (empty($this->$obkeys)) {
-				if (empty($error)) {
-					$error = 'Serious error cant save ' . $this->_tbl . ' without ' . $obkeys;
-				} else {
-					//	$error = get_class($this).' '.vmText::_($error);
-					$error = get_class($this) . ' ' . $error;
-				}
-				$this->setError($error);
+				$error = get_class($this) . ' ' .vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', 'COM_VIRTUEMART_' . strtoupper($obkeys) );
 				vmError($error);
 				return false;
 			}
@@ -822,8 +813,7 @@ class VmTable extends JTable {
 			foreach ($this->_unique_name as $obkeys => $error) {
 
 				if (empty($this->$obkeys)) {
-					// 					vmError(vmText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
-					$this->setError($error);
+					$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', 'COM_VIRTUEMART_' . strtoupper($obkeys));
 					vmError('Non unique ' . $this->_unique_name . ' ' . $error);
 					return false;
 				} else {
@@ -842,7 +832,7 @@ class VmTable extends JTable {
 			if(empty($this->virtuemart_vendor_id) and $this->_pkey=='virtuemart_vendor_id'){
 				$this->virtuemart_vendor_id = $this->_pvalue;
 			}
-			//vmdebug('my vm vendor ',$this->virtuemart_vendor_id);
+
 			$multix = Vmconfig::get('multix', 'none');
 			//Lets check if the user is admin or the mainvendor
 			$virtuemart_vendor_id = false;
@@ -962,14 +952,14 @@ class VmTable extends JTable {
 					unset($this->$name);
 
 					if (!empty($this->_unique_name[$name])) {
-						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langUniqueKeys[$name] = 1;
 						unset($this->_unique_name[$name]);
-						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = 1;
 						unset($this->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
-						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = 1;
 						unset($this->_obkeys[$name]);
 					}
 
@@ -986,14 +976,14 @@ class VmTable extends JTable {
 					unset($this->$name);
 
 					if (!empty($this->_unique_name[$name])) {
-						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langUniqueKeys[$name] = 1;
 						unset($this->_unique_name[$name]);
-						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = 1;
 						unset($this->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
-						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = 1;
 						unset($this->_obkeys[$name]);
 					}
 

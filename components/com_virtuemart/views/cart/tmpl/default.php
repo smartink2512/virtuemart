@@ -91,6 +91,7 @@ $document->addScriptDeclaration ('
 	$taskRoute = '';
 	?><form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 		<?php
+		echo $this->loadTemplate ('address');
 		// This displays the pricelist MUST be done with tables, because it is also used for the emails
 		echo $this->loadTemplate ('pricelist');
 

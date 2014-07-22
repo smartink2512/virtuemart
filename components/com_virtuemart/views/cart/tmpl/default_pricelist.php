@@ -1,119 +1,4 @@
-<?php defined ('_JEXEC') or die('Restricted access');
-/**
- *
- * Layout for the shopping cart
- *
- * @package    VirtueMart
- * @subpackage Cart
- * @author Max Milbers
- * @author Patrick Kohl
- * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- *
- */
-//vmdebug('my cart prices in cartview ',$this->cart->cartPrices);
-?>
-<div class="billto-shipto">
-	<div class="width50 floatleft">
 
-		<span><span class="vmicon vm2-billto-icon"></span>
-			<?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
-		<?php // Output Bill To Address ?>
-		<div class="output-billto">
-			<?php
-			$cartfieldNames = array();
-			foreach( $this->userFieldsCart['fields'] as $fields){
-				$cartfieldNames[] = $fields['name'];
-			}
-
-			foreach ($this->cart->BTaddress['fields'] as $item) {
-				if(in_array($item['name'],$cartfieldNames)) continue;
-				if (!empty($item['value'])) {
-					if ($item['name'] === 'agreed') {
-						$item['value'] = ($item['value'] === 0) ? vmText::_ ('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_NO') : vmText::_ ('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_YES');
-					}
-					?><!-- span class="titles"><?php echo $item['title'] ?></span -->
-					<span class="values vm2<?php echo '-' . $item['name'] ?>"><?php echo $this->escape ($item['value']) ?></span>
-					<?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
-						<br class="clear"/>
-						<?php
-					}
-				}
-			} ?>
-			<div class="clear"></div>
-		</div>
-
-		<a class="details" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT', $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
-			<?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
-		</a>
-
-		<input type="hidden" name="billto" value="<?php echo $this->cart->lists['billTo']; ?>"/>
-	</div>
-
-	<div class="width50 floatleft">
-
-		<span><span class="vmicon vm2-shipto-icon"></span>
-			<?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
-		<?php // Output Bill To Address ?>
-		<div class="output-shipto">
-			<?php
-			if (!class_exists ('VmHtml')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-			}
-			if($this->cart->user->virtuemart_user_id==0){
-
-				echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
-				echo VmHtml::checkbox ('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
-			} else if(!empty($this->cart->lists['shipTo'])){
-				echo $this->cart->lists['shipTo'];
-			}
-
-			if(!empty($this->cart->ST) and  !empty($this->cart->STaddress['fields'])){
-
-
-
-				?>
-				<div id="output-shipto-display">
-					<?php
-					foreach ($this->cart->STaddress['fields'] as $item) {
-						if (!empty($item['value'])) {
-							?>
-							<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
-							<?php
-							if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') {
-								?>
-								<span class="values<?php echo '-' . $item['name'] ?>"><?php echo $this->escape ($item['value']) ?></span>
-								<?php } else { ?>
-								<span class="values"><?php echo $this->escape ($item['value']) ?></span>
-								<br class="clear"/>
-								<?php
-							}
-						}
-					}
-					?>
-				</div>
-				<?php
-			}
-			?>
-			<div class="clear"></div>
-		</div>
-		<?php if (!isset($this->cart->lists['current_id'])) {
-			$this->cart->lists['current_id'] = 0;
-
-		} ?>
-		<a class="details" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&virtuemart_user_id[]=' . $this->cart->lists['current_id'], $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
-			<?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
-		</a>
-
-	</div>
-
-	<div class="clear"></div>
-</div>
 
 <fieldset>
 <table
@@ -350,27 +235,27 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	}
 } ?>
 
-
+<?php // if ( $this->cart->automaticSelectedShipment or !empty($this->cart->virtuemart_shipmentmethod_id) or VmConfig::get('oncheckout_opc',1) ) { ?>
 <tr class="sectiontableentry1" valign="top">
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
+		<td colspan="4" align="left">
+			<?php
+			if(!VmConfig::get('oncheckout_opc',1)){
+				echo $this->cart->cartData['shipmentName'].'<br/>';
+			}
 
-	<?php /*	<td colspan="2" align="right"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */ ?>
-				<td colspan="4" align="left">
-				<?php echo $this->cart->cartData['shipmentName']; ?>
-	<br/>
-	<?php
-	if (!empty($this->layoutName) && $this->layoutName == 'default' && !$this->cart->automaticSelectedShipment) {
-		if (VmConfig::get('oncheckout_opc', 0)) {
-			$previouslayout = $this->setLayout('select');
-			echo $this->loadTemplate('shipment');
-			$this->setLayout($previouslayout);
+		if (!empty($this->layoutName) and $this->layoutName == 'default') {
+			if (VmConfig::get('oncheckout_opc', 0)) {
+				$previouslayout = $this->setLayout('select');
+				echo $this->loadTemplate('shipment');
+				$this->setLayout($previouslayout);
+			} else {
+				echo JHtml::_('link', JRoute::_('index.php?view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
+			}
 		} else {
-			echo JHtml::_('link', JRoute::_('index.php?view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
+			echo vmText::_ ('COM_VIRTUEMART_CART_SHIPPING');
 		}
 	} else {
-		echo vmText::_ ('COM_VIRTUEMART_CART_SHIPPING');
-	}
-} else {
 	?>
 	<td colspan="4" align="left">
 		<?php echo $this->cart->cartData['shipmentName']; ?>
@@ -383,14 +268,16 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?></td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?> </td>
 </tr>
-<?php if ($this->cart->cartPrices['salesPrice']>0.0 ) { ?>
+<?php // } ?>
+<?php // if ( $this->cart->automaticSelectedShipment or !empty($this->cart->virtuemart_shipmentmethod_id) or VmConfig::get('oncheckout_opc',1) ) { //$this->cart->cartPrices['salesPrice']>0.0  ?>
 <tr class="sectiontableentry1"  valign="top">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
+		<td colspan="4" align="left">
+			<?php if(!VmConfig::get('oncheckout_opc',1)){
+				echo $this->cart->cartData['paymentName'].'<br/>';
+			}
 
-	<td colspan="4" align="left">
-		<?php echo $this->cart->cartData['paymentName']; ?>
-		<br/>
-		<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
+		if (!empty($this->layoutName) && $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {
 				$previouslayout = $this->setLayout('select');
 				echo $this->loadTemplate('payment');
@@ -412,7 +299,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?></td>
 	<td align="right"><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?> </td>
 </tr>
-<?php } ?>
+<?php // } ?>
 <tr>
 	<td colspan="4">&nbsp;</td>
 	<td colspan="<?php echo $colspan ?>">

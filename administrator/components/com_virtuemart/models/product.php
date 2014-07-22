@@ -531,10 +531,10 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		if ($joinShopper == TRUE) {
+		/*if ($joinShopper == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_shoppergroups` ON p.`virtuemart_product_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_product_id`
 			 LEFT  OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
-		}
+		}/*/
 
 		if ($joinChildren) {
 			$joinedTables[] = ' LEFT OUTER JOIN `#__virtuemart_products` children ON p.`virtuemart_product_id` = children.`product_parent_id` ';
@@ -1044,7 +1044,7 @@ class VirtueMartModelProduct extends VmModel {
 		static $_productsSingle = array();
 		if (array_key_exists ($productKey, $_productsSingle)) {
 			//vmdebug('getProduct, take from cache '.$productKey);
-			return $_productsSingle[$productKey];
+			return clone($_productsSingle[$productKey]);
 		} else if(!$this->withRating){
 			$productKey = $virtuemart_product_id.$virtuemart_shoppergroup_idsString.$quantity.$front.TRUE;
 			//vmdebug('getProductSingle, recreate $productKey '.$productKey);
@@ -1197,8 +1197,6 @@ class VirtueMartModelProduct extends VmModel {
 		else {
 			$_productsSingle[$productKey] = $this->fillVoidProduct ($front);
 		}
-
-		$this->product = $_productsSingle[$productKey];
 
 		return clone($_productsSingle[$productKey]);
 	}
