@@ -895,12 +895,11 @@ class VirtueMartCart {
 
 	private function checkoutData($redirect = true) {
 
-		if($this->_inConfirm) return false;
-
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
 		$this->setCartIntoSession();
 		session_write_close();
+		session_start();
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->order_language = JRequest::getVar('order_language', $this->order_language);
@@ -1133,10 +1132,14 @@ class VirtueMartCart {
 		//Just to prevent direct call
 		if ($this->_dataValidated && $this->_confirmDone and !$this->_inCheckOut  ) {
 
-			if($this->_inConfirm) return false;
+			if($this->_inConfirm){
+				vmdebug('Already in CONFIRM,.. RETURN');
+				return false;
+			}
 			$this->_inConfirm = true;
 			$this->setCartIntoSession();
 			session_write_close();
+			session_start();
 
 			$orderModel = VmModel::getModel('orders');
 
@@ -1167,6 +1170,7 @@ class VirtueMartCart {
 			$this->_inConfirm = false;
 			$this->setCartIntoSession();
 			session_write_close();
+			session_start();
 			return $this->virtuemart_order_id;
 		}
 		return NULL;

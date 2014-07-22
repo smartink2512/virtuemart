@@ -1136,6 +1136,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart->setCartIntoSession ();
 			JRequest::setVar ('html', $html);
 			session_write_close();
+			session_start();
 		} elseif ($returnValue == 0) {
 			// error while processing the payment
 			$mainframe = JFactory::getApplication ();

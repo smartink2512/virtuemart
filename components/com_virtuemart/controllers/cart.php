@@ -443,7 +443,7 @@ class VirtueMartControllerCart extends JController {
 		$task = JRequest::getString('task');
 
 		$update = vRequest::getString('update',false);
-
+		$cart->_inConfirm=false;
 		if(($update and is_array($update)) or $task=='update'){
 			reset($update);
 			$key = key($update);
@@ -492,6 +492,7 @@ class VirtueMartControllerCart extends JController {
 			$key = key($update);
 			$quantity = vRequest::getInt('quantity');
 			$cart->updateProductCart(key($update),$quantity[$key]);
+			$cart->_inConfirm=false;
 			$this->display();
 		} else if(isset($_POST['setcoupon']) or $task=='setcoupon'){
 			$this->setcoupon();
@@ -500,6 +501,7 @@ class VirtueMartControllerCart extends JController {
 		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
 			$this->setpayment();
 		} else if($task=='confirm'){
+
 			$cart->confirmDone();
 			$view = $this->getView('cart', 'html');
 			$view->setLayout('order_done');
