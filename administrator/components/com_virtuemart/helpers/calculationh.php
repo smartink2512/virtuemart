@@ -1628,9 +1628,8 @@ class calculationHelper {
 				}
 
 				if (!empty($productCustomsPrice->custom_price)) {
-					vmdebug('calculateModificators davor',$productCustomsPrice->custom_price);
+
 					$productCustomsPrice->custom_price = $this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $productCustomsPrice->custom_price,true);
-					vmdebug('calculateModificators danach',$productCustomsPrice->custom_price);
 
 					//TODO adding % and more We should use here $this->interpreteMathOp
 					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;

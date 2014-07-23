@@ -195,7 +195,8 @@ class Creditcard {
 
 	static function validate_credit_card_date ($creditcard_type, $month, $year) {
 		$today_ts = time();
-		$cc_ts = mktime(0, 0, 0, $month + 1, 1, $year);
+
+		$cc_ts = mktime(0, 0, 0, $month + 1, 1, (int)$year);
 		if ($cc_ts > $today_ts) {
 			return true;
 		} else {
