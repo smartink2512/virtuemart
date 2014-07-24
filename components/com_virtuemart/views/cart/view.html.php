@@ -122,19 +122,23 @@ class VirtueMartViewCart extends VmView {
 			}
 
 			if ($cart->getDataValidated()) {
-				$pathway->addItem(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
-				$document->setTitle(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
-				$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
-				$checkout_task = 'confirm';
+				if($this->cart->_inConfirm){
+					$pathway->addItem(vmText::_('COM_VIRTUEMART_CANCEL_CONFIRM_MNU'));
+					$document->setTitle(vmText::_('COM_VIRTUEMART_CANCEL_CONFIRM_MNU'));
+					$text = vmText::_('COM_VIRTUEMART_CANCEL_CONFIRM');
+					$this->checkout_task = 'cancel';
+				} else {
+					$pathway->addItem(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
+					$document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
+					$text = vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+					$this->checkout_task = 'confirm';
+				}
 			} else {
 				$pathway->addItem(JText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$document->setTitle(JText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$text = JText::_('COM_VIRTUEMART_CHECKOUT_TITLE');
-				$checkout_task = 'checkout';
+				$this->checkout_task = 'checkout';
 			}
-			$this->assignRef('checkout_task', $checkout_task);
-
-
 
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -163,7 +167,7 @@ class VirtueMartViewCart extends VmView {
 
 			if (!VmConfig::get('use_as_catalog')) {
 				//$checkout_link_html = '<a name="'.$checkout_task.'"  class="vm-button-correct" href="javascript:document.checkoutForm.submit();" ><span>' . $text . '</span></a>';
-				$checkout_link_html = '<button name="'.$checkout_task.'" id="checkoutFormSubmit" class="vm-button-correct"  ><span>' . $text . '</span></button>';
+				$checkout_link_html = '<button name="'.$this->checkout_task.'" id="checkoutFormSubmit" class="vm-button-correct"  ><span>' . $text . '</span></button>';
 			} else {
 				$checkout_link_html = '';
 			}
@@ -188,7 +192,8 @@ class VirtueMartViewCart extends VmView {
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
-// 		vmdebug('my cart ',$cart);
+		if($this->cart->_inConfirm) vmInfo('COM_VIRTUEMART_IN_CONFIRM');
+
 		parent::display($tpl);
 	}
 

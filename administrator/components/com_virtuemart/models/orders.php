@@ -842,11 +842,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
 		$_orderData->order_language = $_cart->order_language;
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
-		if(!empty( $_cart->order_number)){
+
+
+		/*if(!empty( $_cart->order_number)){
 			$_orderData->order_number = $_cart->order_number;
-		} else {
+		} else {*/
 			$_orderData->order_number = '';
-		}
+			$_orderData->order_pass = '';
+		//}
 
 
 		$maskIP = VmConfig::get('maskIP','last');
@@ -856,14 +859,16 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		$orderTable =  $this->getTable('orders');
 
-		$db = JFactory::getDbo();
+		$order = false;
 
+		$db = JFactory::getDbo();
 		$q = 'SELECT * FROM `#__virtuemart_orders` ';
-		if(!empty($_cart->order_number)){
-			$db->setQuery($q . ' WHERE `order_number`= "'.$_cart->order_number.'" ');
+		if(!empty($_cart->virtuemart_order_id)){
+			$db->setQuery($q . ' WHERE `virtuemart_order_id`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P"');
 			$order = $db->loadAssoc();
 			if(!$order){
-				vmdebug('This should not happen, there is a cart with order_number, but not order stored');
+				$_cart->virtuemart_order_id = null;
+				vmdebug('This should not happen (but does due some payments deleting the order in the cancel case), there is a cart with virtuemart_order_id, but not order stored');
 			}
 		}
 
@@ -876,16 +881,22 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				AND `created_on` > "'.$minushour.'" ';
 			$db->setQuery($q);
 			$order = $db->loadAssoc();
+			if(!$order){
+				$_cart->virtuemart_order_id = null;
+
+			}
 		}
 
 		if($order){
 
 			$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
-			if(!empty($order['order_number'])){
+
+			//We do not keep the order_number anylonger, makes too much trouble.
+			/*if(!empty($order['order_number'])){
 				$_orderData->order_number = $order['order_number'];
-			}
-			
-			$_orderData->order_pass = $order['order_pass'];
+				$_orderData->order_pass = $order['order_pass'];
+			}*/
+
 			//Dirty hack
 			$this->removeOrderItems($order['virtuemart_order_id']);
 		}
@@ -920,9 +931,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		// the order number is saved into the session to make sure that the correct cart is emptied with the payment notification
 		$_cart->order_number = $orderTable->order_number;
+		$_cart->virtuemart_order_id = $orderTable->virtuemart_order_id;
 		$_cart->setCartIntoSession ();
 
-		return $_orderData->virtuemart_order_id;
+		return $orderTable->virtuemart_order_id;
 	}
 
 

@@ -602,6 +602,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		$modelOrder = VmModel::getModel('orders');
+		//Removing order should be obsolete since vm2.6.8
 		$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
 		// error while processing the payment
 		$mainframe = JFactory::getApplication();

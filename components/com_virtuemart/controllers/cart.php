@@ -197,7 +197,8 @@ class VirtueMartControllerCart extends JController {
 
 		$view = $this->getView('cart', 'html');
 		$view->setLayout('edit_coupon');
-
+		$cart = VirtueMartCart::getCart();
+		$cart->_inConfirm=false;
 		// Display it all
 		$view->display();
 	}
@@ -296,7 +297,8 @@ class VirtueMartControllerCart extends JController {
 
 		$view = $this->getView('cart', 'html');
 		$view->setLayout('select_payment');
-
+		$cart = VirtueMartCart::getCart();
+		$cart->_inConfirm=false;
 		// Display it all
 		$view->display();
 	}
@@ -436,7 +438,6 @@ class VirtueMartControllerCart extends JController {
 	 */
 	public function checkout() {
 
-
 		$cart = VirtueMartCart::getCart();
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
@@ -495,10 +496,13 @@ class VirtueMartControllerCart extends JController {
 			$cart->_inConfirm=false;
 			$this->display();
 		} else if(isset($_POST['setcoupon']) or $task=='setcoupon'){
+			$cart->_inConfirm=false;
 			$this->setcoupon();
 		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
+			$cart->_inConfirm=false;
 			$this->setshipment();
 		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
+			$cart->_inConfirm=false;
 			$this->setpayment();
 		} else if($task=='confirm'){
 
@@ -516,8 +520,9 @@ class VirtueMartControllerCart extends JController {
 		if ($cart) {
 			$cart->setOutOfCheckout();
 		}
-		$mainframe = JFactory::getApplication();
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), 'Cancelled');
+		$this->display();
+		//$mainframe = JFactory::getApplication();
+		//$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), 'Cancelled');
 	}
 
 }

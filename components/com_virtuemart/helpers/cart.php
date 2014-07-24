@@ -40,7 +40,7 @@ class VirtueMartCart {
 	var $_redirect = false;
 	var $_redirect_disabled = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
-	//todo multivendor stuff must be set in the add function, first product determines ownership of cart, or a fixed vendor is used
+
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
 	var $virtuemart_shipmentmethod_id = 0;
@@ -56,6 +56,7 @@ class VirtueMartCart {
 	var $cartData = null;
 	var $lists = null;
 	var $order_number=null; // added to solve emptying cart for payment notification
+	var $virtuemart_order_id = null;
 	var $customer_number=null;
 	// 	var $user = null;
 // 	var $prices = null;
@@ -120,6 +121,7 @@ class VirtueMartCart {
 				self::$_cart->order_language 						= $sessionCart->order_language;
 				self::$_cart->cartData 								= $sessionCart->cartData;
 				self::$_cart->order_number							= $sessionCart->order_number;
+				self::$_cart->virtuemart_order_id					= $sessionCart->virtuemart_order_id;
 				self::$_cart->lists 									= $sessionCart->lists;
 
 				self::$_cart->_inConfirm							= $sessionCart->_inConfirm;
@@ -238,6 +240,7 @@ class VirtueMartCart {
 		$sessionCart->automaticSelectedShipment 		= $this->automaticSelectedShipment;
 		$sessionCart->automaticSelectedPayment 		= $this->automaticSelectedPayment;
 		$sessionCart->order_number 		            = $this->order_number;
+		$sessionCart->virtuemart_order_id 		            = $this->virtuemart_order_id;
 
 		$sessionCart->BT 										= $this->BT;
 		$sessionCart->ST 										= $this->ST;
@@ -248,9 +251,7 @@ class VirtueMartCart {
 		$sessionCart->order_language 						= $this->order_language;
 		$sessionCart->cartData 								= $this->cartData;
 		$sessionCart->lists 									= $this->lists;
-		// 		$sessionCart->user 									= $this->user;
-// 		$sessionCart->prices 								= $this->prices;
-		//$sessionCart->pricesUnformatted					= $this->pricesUnformatted;
+
 		$sessionCart->pricesCurrency						= $this->pricesCurrency;
 		$sessionCart->paymentCurrency						= $this->paymentCurrency;
 
@@ -309,6 +310,7 @@ class VirtueMartCart {
 	public function setOutOfCheckout(){
 		$this->_inCheckOut = false;
 		$this->_dataValidated = false;
+		$this->_inConfirm = false;
 		$this->setCartIntoSession();
 	}
 
@@ -1037,6 +1039,7 @@ class VirtueMartCart {
 			if (empty($this->virtuemart_paymentmethod_id)) {
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
 			} else if ($this->virtuemart_paymentmethod_id != JRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id)) {
+				vmdebug('checkoutData $this->virtuemart_paymentmethod_id not equal request',$this->virtuemart_paymentmethod_id);
 				$obj = new VirtueMartControllerCart();
 				$obj->setpayment();
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
@@ -1052,6 +1055,7 @@ class VirtueMartCart {
 						break; // Plugin completed succesful; nothing else to do
 					} elseif ($retVal === false) {
 						// Missing data, ask for it (again)
+						vmdebug('checkoutData payment plugin is missing data, trigger plgVmOnCheckoutCheckDataPayment',$this->virtuemart_paymentmethod_id);
 						return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
 						// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 					}
@@ -1136,6 +1140,7 @@ class VirtueMartCart {
 				vmdebug('Already in CONFIRM,.. RETURN');
 				return false;
 			}
+
 			$this->_inConfirm = true;
 			$this->setCartIntoSession();
 			session_write_close();
@@ -1164,6 +1169,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmpayment');
 
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $orderDetails));
+
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
@@ -1210,6 +1216,7 @@ class VirtueMartCart {
 		$cart->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
 		$cart->virtuemart_paymentmethod_id = 0;
 		$cart->order_number=null;
+		$cart->virtuemart_order_id=false;
 		$cart->pricesUnformatted = null;
 		$cart->cartData = null;
 		$cart->_inConfirm = false;
