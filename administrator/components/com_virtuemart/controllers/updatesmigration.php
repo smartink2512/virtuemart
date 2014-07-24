@@ -145,6 +145,39 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
+	public function fixCustomsParams(){
+		$this->checkPermissionForTools();
+		$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` LEFT JOIN `#__virtuemart_customs` USING (`virtuemart_custom_id`) ';
+		$q = 'SELECT `virtuemart_customfield_id`,`customfield_params` FROM `#__virtuemart_product_customfields` ';
+		$q .= ' WHERE `customfield_params`!="" ';
+		$db = JFactory::getDbo();
+		$db->setQuery($q);
+
+		$rows = $db->loadAssocList();
+
+		foreach($rows as $fields){
+			$store = '';
+			$json = @json_decode($fields['customfield_params']);
+
+			if($json){
+
+				$vars = get_object_vars($json);
+
+				foreach($vars as $key=>$value){
+					$store .= $key . '=' . json_encode($value) . '|';
+				}
+
+				if(!empty($store)){
+					$q = 'UPDATE `#__virtuemart_product_customfields` SET `customfield_params` = "'.$db->escape($store).'" WHERE `virtuemart_customfield_id` = "'.$fields['virtuemart_customfield_id'].'" ';
+					$db->setQuery($q);
+					$db->execute();
+
+				}
+
+			}
+		}
+	}
+
 	/**
 	 * Quite unsophisticated, but it does it jobs if there are not too much products/customfields.
 	 *

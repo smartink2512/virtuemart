@@ -140,7 +140,7 @@ ul.VMmenu,.VMmenu ul,.VMmenu li{list-style-type:none!important;background-image:
 .vm-product-media-rating {width: 100%;float:left;}
 .vm-product-media-rating h2 {border: 0;margin: 6px 0;}
 .vm-rating-header {float:right;margin: 0 6px 0 0;}
-.vm-product-media-container {text-align:center;height: 90px;max-width: 100%;}
+.vm-product-media-container {float:left;text-align:center;height: 95%;max-width: 100%;}
 .vm-product-descr-container {float:left;width:100%;text-align:center;width: 100%;}
 .vm-product-details-container {float:right;width:45%;}
 

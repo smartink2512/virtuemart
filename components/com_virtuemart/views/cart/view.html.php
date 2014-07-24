@@ -134,10 +134,19 @@ class VirtueMartViewCart extends VmView {
 			$checkoutAdvertise =$this->getCheckoutAdvertise();
 
 			if ($this->cart->getDataValidated()) {
-				$pathway->addItem(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
-				$document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
-				$text = vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
-				$this->checkout_task = 'confirm';
+				if($this->cart->_inConfirm){
+					$pathway->addItem(vmText::_('COM_VIRTUEMART_CANCEL_CONFIRM_MNU'));
+					$document->setTitle(vmText::_('COM_VIRTUEMART_CANCEL_CONFIRM_MNU'));
+					$text = vmText::_('COM_VIRTUEMART_CANCEL_CONFIRM');
+					$this->checkout_task = 'cancel';
+				} else {
+					$pathway->addItem(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
+					$document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
+					$text = vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+					$this->checkout_task = 'confirm';
+				}
+
+
 			} else {
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$document->setTitle(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
@@ -192,7 +201,7 @@ class VirtueMartViewCart extends VmView {
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
-
+		if($this->cart->_inConfirm) vmInfo('COM_VIRTUEMART_IN_CONFIRM');
 		parent::display($tpl);
 	}
 

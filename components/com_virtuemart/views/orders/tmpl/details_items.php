@@ -54,11 +54,11 @@ if($this->format == 'pdf'){
 				<div><a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a></div>
 				<?php
 // 				vmdebug('tmpl details_item $item',$item);
-					if (!empty($item->product_attribute)) {
+					//if (!empty($item->product_attribute)) {
 							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');
 						echo $product_attribute;
-					}
+					//}
 				?>
 			</td>
 			<td align="center">

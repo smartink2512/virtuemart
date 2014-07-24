@@ -739,12 +739,19 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
 
+		if(empty($variantmods)){
+			$productDB = VmModel::getModel('product')->getProduct($product->virtuemart_product_id);
+			if($productDB){
+				$product->customfields = $productDB->customfields;
+			}
+		}
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods,true);
 		} else {
 			//vmdebug('displayProductCustomfieldSelected $variantmods?',$variantmods);
 		}
 
+		//vmdebug('displayProductCustomfieldSelected $product?',$product);
 		$productCustoms = array();
 		foreach($product->customfields as $prodcustom){
 
@@ -769,7 +776,6 @@ class VirtueMartModelCustomfields extends VmModel {
 			foreach($customfield_ids as $customfield_id=>$params){
 
 				if(empty($productCustoms) or !isset($productCustoms[$customfield_id])){
-					$keys = array_keys($productCustoms);
 					continue;
 				}
 				$productCustom = $productCustoms[$customfield_id];
@@ -863,12 +869,14 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if (!empty($item->product_attribute)) {
 			$item->customProductData = json_decode ($item->product_attribute, TRUE);
-			if (!empty($item->customProductData)) {
-				return self::displayProductCustomfieldSelected ($item, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
-			} else {
-				vmdebug ('CustomsFieldOrderDisplay $item->param empty? ');
-			}
 		}
+		//vmdebug ('CustomsFieldOrderDisplay ',$item);
+			//if (!empty($item->customProductData)) {
+				return self::displayProductCustomfieldSelected ($item, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
+			/*} else {
+
+			}
+		}*/
 
 		return FALSE;
 	}

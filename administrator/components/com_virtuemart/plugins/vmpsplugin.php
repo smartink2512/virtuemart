@@ -176,7 +176,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$cart_prices_name = $this->renderPluginName ($method);
-		vmdebug('onSelectedCalculatePrice',$idName,$method->$idName,$cart_prices_name);
+		//vmdebug('onSelectedCalculatePrice',$idName,$method->$idName,$cart_prices_name);
 		$this->setCartPrices ($cart, $cart_prices, $method);
 
 		return TRUE;
@@ -1056,7 +1056,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
 		//$cart_prices = $cart_prices;
-		vmdebug('setCartPrices '.$_psType,$cart_prices['salesPrice' . $_psType]);
+		//vmdebug('setCartPrices '.$_psType,$cart_prices['salesPrice' . $_psType]);
 		return $cart_prices['salesPrice' . $_psType];
 
 	}
@@ -1101,10 +1101,8 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart->_confirmDone = false;
 			$cart->_dataValidated = false;
 			$cart->_inConfirm = false;
-			$cart->setCartIntoSession ();
+			$cart->setCartIntoSession (false,true);
 			vRequest::setVar ('html', $html);
-			session_write_close();
-			session_start();
 		} elseif ($returnValue == 0) {
 			// error while processing the payment
 			$mainframe = JFactory::getApplication ();

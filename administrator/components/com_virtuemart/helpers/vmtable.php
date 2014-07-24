@@ -119,15 +119,14 @@ class VmTable extends JTable {
 	}
 
 	public function setObligatoryKeys($key) {
-		//$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
+
 		$this->_obkeys[$key] = 1;
 	}
 
 	public function setUniqueName($name) {
-		//$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 		$this->_unique = true;
-		$this->_obkeys[$name] = 1;//$error;
-		$this->_unique_name[$name] = 1;//$error;
+		$this->_obkeys[$name] = 1;
+		$this->_unique_name[$name] = 1;
 	}
 
 	public function setLoggable() {

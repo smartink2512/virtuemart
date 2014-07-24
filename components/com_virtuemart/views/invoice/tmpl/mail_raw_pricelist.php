@@ -45,12 +45,12 @@ echo vmText::_('COM_VIRTUEMART_ORDER_ITEM') . "\n";
 foreach ($this->orderDetails['items'] as $item) {
     echo "\n";
     echo $item->product_quantity . ' X ' . $item->order_item_name . ' (' . strtoupper(vmText::_('COM_VIRTUEMART_SKU')) . $item->order_item_sku . ')' . "\n";
-    if (!empty($item->product_attribute)) {
+    //if (!empty($item->product_attribute)) {
 	if (!class_exists('VirtueMartModelCustomfields'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
 	$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item, 'FE');
 	echo "\n" . $product_attribute . "\n";
-    }
+    //}
     if (!empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price) {
 	echo $item->product_basePriceWithTax . "\n";
     }

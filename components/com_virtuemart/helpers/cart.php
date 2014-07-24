@@ -59,6 +59,7 @@ class VirtueMartCart {
 
 	var $lists = null;
 	var $order_number=null; // added to solve emptying cart for payment notification
+	var $virtuemart_order_id = false;
 	var $customer_number=null;
 	// 	var $user = null;
 // 	var $prices = null;
@@ -324,7 +325,7 @@ class VirtueMartCart {
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public function setCartIntoSession($storeDb = false) {
+	public function setCartIntoSession($storeDb = false, $forceWrite = false) {
 
 		$session = JFactory::getSession();
 
@@ -334,6 +335,10 @@ class VirtueMartCart {
 		}
 		$session->set('vmcart', serialize($sessionCart),'vm');
 
+		if($forceWrite){
+			session_write_close();
+			session_start();
+		}
 	}
 
 	public function getCartDataToStore(){
@@ -406,7 +411,7 @@ class VirtueMartCart {
 		$this->_blockConfirm = true;
 		$this->_redirected = true;
 		$this->_redirect = false;
-		$this->setCartIntoSession();
+		$this->setCartIntoSession(false,true);
 	}
 	
 	public function blockConfirm(){
@@ -603,6 +608,7 @@ class VirtueMartCart {
 			}
 		}
 		if ($updateSession== false) return false ;
+		$this->_dataValidated = false;
 		// End Iteration through Prod id's
 		$this->setCartIntoSession(true);
 		return $products;
@@ -742,6 +748,7 @@ class VirtueMartCart {
 
 		$virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $this->virtuemart_shipmentmethod_id);
 		if($this->virtuemart_shipmentmethod_id != $virtuemart_shipmentmethod_id or $force){
+			$this->_dataValidated = false;
 			//Now set the shipment ID into the cart
 			$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -769,7 +776,7 @@ class VirtueMartCart {
 
 		$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id);
 		if($this->virtuemart_paymentmethod_id != $virtuemart_paymentmethod_id or $force){
-
+			$this->_dataValidated = false;
 			$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
@@ -833,9 +840,7 @@ class VirtueMartCart {
 
 		$this->_inCheckOut = true;
 		//This prevents that people checkout twice
-		$this->setCartIntoSession();
-		session_write_close();
-		session_start();
+		$this->setCartIntoSession(false,true);
 
 		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
 		if (count($this->cartProductsData) ===0 and $this->_redirect) {
@@ -973,7 +978,6 @@ class VirtueMartCart {
 			$this->_inCheckOut = false;
 		}
 
-		vmdebug('Hmm',(int)$this->_inCheckOut,(int)$this->_redirected,(int)$this->_redirect);
 		if($this->_blockConfirm){
 			$this->_dataValidated = false;
 			$this->_inCheckOut = false;
@@ -1047,26 +1051,26 @@ class VirtueMartCart {
 			if($this->_inConfirm) return false;
 
 			$this->_inConfirm = true;
-			$this->setCartIntoSession();
-			session_write_close();
-			session_start();
+			$this->setCartIntoSession(false,true);
+
 			$orderModel = VmModel::getModel('orders');
 
-			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
-				$mainframe = JFactory::getApplication();
-				vmError('No order created '.$orderModel->getError());
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );
+			if(!$this->virtuemart_order_id){
+				if (($this->virtuemart_order_id = $orderModel->createOrderFromCart($this)) === false) {
+					$mainframe = JFactory::getApplication();
+					vmError('No order created '.$orderModel->getError());
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );
+				}
 			}
-			$this->virtuemart_order_id = $orderID;
-			$order= $orderModel->getOrder($orderID);
-			$orderDetails = $orderModel ->getMyOrderDetails($orderID);
+
+			$orderDetails = $orderModel ->getMyOrderDetails($this->virtuemart_order_id);
 
 			if(!$orderDetails or empty($orderDetails['details'])){
 				echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
 				return;
 			}
 
-			$orderModel->notifyCustomer($orderID, $orderDetails);
+			$orderModel->notifyCustomer($this->virtuemart_order_id, $orderDetails);
 
 			$dispatcher = JDispatcher::getInstance();
 
@@ -1076,14 +1080,13 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmpayment');
 
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $orderDetails));
+
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
-			$this->_inConfirm = false;
-			$this->_inConfirm = false;
-			$this->setCartIntoSession();
-			session_write_close();
-			session_start();
+			//$this->_inConfirm = false;
+			$this->setCartIntoSession(false,true);
+
 			return $this->virtuemart_order_id;
 		}
 	}
@@ -1129,9 +1132,8 @@ class VirtueMartCart {
 		$cart->virtuemart_order_id = null;
 		//vmdebug('emptyCartValues',$cart);
 		$cart->deleteCart();
-		$cart->setCartIntoSession();
-		session_write_close();
-		session_start();
+		$cart->setCartIntoSession(false,true);
+
 	}
 
 	function saveCartFieldsInCart(){
@@ -1337,23 +1339,21 @@ class VirtueMartCart {
 
 	public function getCartPrices($force=false) {
 
-		if(empty($this->cartPrices) or $force){
+		if(empty($this->cartPrices) or count($this->cartPrices<8) or $force){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 
 			$this->pricesCurrency = $calculator->_currencyDisplay->getCurrencyForDisplay();
 
 			$calculator->getCheckoutPrices($this);
-			//vmdebug('getCartPrices ',$this->cartPrices);
+
 			//Fallback for old extensions
 			$this->pricesUnformatted = $this->cartPrices;
-			//vmdebug('getCartPrices my format pricesUnformatted');
+
 			//We must do this here, otherwise if we have a product more than one time in the cart
 			//it has always the same price
 			foreach($this->products as $k => $product){
-				//vmdebug('my product',$product);
 				$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
-				//$this->pricesUnformatted[$product->cart_item_id] = $product->prices;
 			}
 		}
 	}
@@ -1376,7 +1376,7 @@ class VirtueMartCart {
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
-			//vmdebug('$this->cartProductsData',$this->cartProductsData);
+			vmdebug('$this->cartProductsData',$this->cartProductsData);
 			$customFieldsModel = VmModel::getModel('customfields');
 			foreach($this->cartProductsData as $k =>&$productdata){
 				$productdata = (array)$productdata;
