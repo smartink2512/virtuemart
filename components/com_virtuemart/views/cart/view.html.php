@@ -325,7 +325,7 @@ class VirtueMartViewCart extends VmView {
 			}
 
 		}
-		$this->assignRef('payment_not_found_text', $payment_not_found_text);
+		$this->payment_not_found_text = $payment_not_found_text;
 		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
 		$this->assignRef('found_payment_method', $found_payment_method);
 	}

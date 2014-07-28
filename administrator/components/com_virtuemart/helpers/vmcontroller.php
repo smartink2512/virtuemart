@@ -131,7 +131,6 @@ class VmController extends JControllerLegacy{
 		vRequest::setVar('controller', $this->_cname);
 		vRequest::setVar('view', $this->_cname);
 		vRequest::setVar('layout', $layout);
-// 		vRequest::setVar('hidemenu', 1);
 
 		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
 		$document = JFactory::getDocument();

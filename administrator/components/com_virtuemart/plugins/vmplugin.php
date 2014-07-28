@@ -280,7 +280,6 @@ abstract class vmPlugin extends JPlugin {
 		else {
 			$db = JFactory::getDBO ();
 
-
 			$q = 'SELECT vm.* FROM `' . $this->_configTable . '` AS vm,
 						#__extensions AS j WHERE vm.`' . $this->_psType . '_jplugin_id`  = "' . $jplugin_id . '"
 						AND vm.`' . $this->_psType . '_jplugin_id` = j.extension_id
@@ -309,10 +308,8 @@ abstract class vmPlugin extends JPlugin {
 		}
 		$db = JFactory::getDBO ();
 
-
 		$q = 'SELECT j.`extension_id` AS c FROM #__extensions AS j
 					WHERE j.element = "' . $this->_name . '" AND j.`folder` = "' . $this->_type . '"';
-
 
 		$db->setQuery ($q);
 		$this->_jid = $db->loadResult ();
@@ -378,26 +375,6 @@ abstract class vmPlugin extends JPlugin {
 					}
 				}
 			}
-
-			/*$query = $this->getVmPluginCreateTableSQL ();
-
-			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
-			$updater = new GenericTableUpdater();
-
-			if(empty($query)){
-				return false;
-			} else {
-			//if ($query !== 0) {
-				// 				vmdebug('onStoreInstallPluginTable '.$query);
-				$db = JFactory::getDBO ();
-				$db->setQuery ($query);
-				if (!$db->execute ()) {
-					vmWarn($this->_name . '::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
-					echo $this->_name . '::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE);
-				} else {
-					return true;
-				}
-			}*/
 		}
 		return false;
 	}
@@ -532,8 +509,6 @@ abstract class vmPlugin extends JPlugin {
 			} else {
 				$data->_varsToPushParam = (array)$this->_varsToPushParam;
 			}
-			//vmdebug(' vars to push',$data->_varsToPushParam);
-			//$data->_varsToPushParam = $this->_varsToPushParam;
 		} else{
 			vmdebug('no vars to push?',$this);
 		}

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $product = $viewData['product'];
 $position = $viewData['position'];
+$customTitle = isset($viewData['customTitle'])? $viewData['customTitle']: false;;
 if(isset($viewData['class'])){
 	$class = $viewData['class'];
 } else {
@@ -24,12 +25,20 @@ if (!empty($product->customfieldsSorted[$position])) {
 	?>
 	<div class="<?php echo $class?>">
 		<?php
+		if($customTitle and isset($product->customfieldsSorted[$position][0])){
+			$field = $product->customfieldsSorted[$position][0]; ?>
+		<div class="product-fields-title-wrapper"><span class="product-fields-title"><strong><?php echo vmText::_ ($field->custom_title) ?></strong></span>
+			<?php if ($field->custom_tip) {
+				echo JHtml::tooltip (vmText::_($field->custom_tip), vmText::_ ($field->custom_title), 'tooltip.png');
+			} ?>
+		</div> <?php
+		}
 		$custom_title = null;
 		foreach ($product->customfieldsSorted[$position] as $field) {
 			if ( $field->is_hidden ) //OSP http://forum.virtuemart.net/index.php?topic=99320.0
 			continue;
 			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
-				<?php if ($field->custom_title != $custom_title and $field->show_title) { ?>
+				<?php if (!$customTitle and $field->custom_title != $custom_title and $field->show_title) { ?>
 					<span class="product-fields-title-wrapper"><span class="product-fields-title"><strong><?php echo vmText::_ ($field->custom_title) ?></strong></span>
 						<?php if ($field->custom_tip) {
 							echo JHtml::tooltip ($field->custom_tip, vmText::_ ($field->custom_title), 'tooltip.png');
@@ -38,7 +47,7 @@ if (!empty($product->customfieldsSorted[$position])) {
 				if (!empty($field->display)){
 					?><span class="product-field-display"><?php echo $field->display ?></span><?php
 				}
-				if (!empty($field->display)){
+				if (!empty($field->custom_desc)){
 					?><span class="product-field-desc"><?php echo vmText::_($field->custom_desc) ?></span> <?php
 				}
 				?>

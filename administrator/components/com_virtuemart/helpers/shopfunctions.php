@@ -154,7 +154,7 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id', $select_attribute='JOPTION_USE_DEFAULT' ) {
+	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id', $select_attribute='COM_VIRTUEMART_DRDOWN_AVA2ALL' ) {
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);

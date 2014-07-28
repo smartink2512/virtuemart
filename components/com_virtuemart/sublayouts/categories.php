@@ -94,6 +94,7 @@ $verticalseparator = " vertical-separator";
 	// Do we need a final closing row tag?
 	if ($iCol != 1) { ?>
 		<div class="clear"></div>
+	</div>
 	<?php
 	}
 	?></div><?php

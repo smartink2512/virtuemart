@@ -424,7 +424,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
 					$display .= '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">';
-					$display .= JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->customfield_value,FALSE), $category->category_name, array('title' => $category->category_name,'target'=>'blank')).'</span>';
+					$display .= JHtml::link ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->customfield_value, $category->category_name, array('title' => $category->category_name,'target'=>'blank')).'</span>';
 					return $display;
 				}
 				else {
@@ -714,8 +714,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					} else {
 						$thumb = $this->displayCustomMedia (0).' ';
 					}
-
-					$customfield->display = JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+					//juri::root() For whatever reason, we used this here, maybe it was for the mails
+					$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id), $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
 					//
 					break;
 			}

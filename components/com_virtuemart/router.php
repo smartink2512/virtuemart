@@ -1076,7 +1076,7 @@ class vmrouterHelper {
 			} else {
 				$menuItem = $menu->getActive();
 			}
-			vmdebug('what is my active menu now?',$menuItem->alias);
+
 			$this->activeMenu = new stdClass();
 			$this->activeMenu->view			= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
 			$this->activeMenu->virtuemart_category_id	= (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];

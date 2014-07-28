@@ -47,31 +47,33 @@ class VirtueMartModelCountry extends VmModel {
     /**
      * Retreive a country record given a country code.
      *
-     * @author RickG
+     * @author RickG, Max Milbers
      * @param string $code Country code to lookup
      * @return object Country object from database
      */
     function getCountryByCode($code) {
-	$db = JFactory::getDBO();
 
-	$countryCodeLength = strlen($code);
-	switch ($countryCodeLength) {
-	    case 2:
-		$countryCodeFieldname = 'country_2_code';
-		break;
-	    case 3:
-		$countryCodeFieldname = 'country_3_code';
-		break;
-	    default:
-		return false;
-	}
+		if(empty($code)) return false;
+		$db = JFactory::getDBO();
 
-	$query = 'SELECT *';
-	$query .= ' FROM `#__virtuemart_countries`';
-    $query .= ' WHERE `' . $countryCodeFieldname . '` = "' . $code . '"';
-	$db->setQuery($query);
+		$countryCodeLength = strlen($code);
+		switch ($countryCodeLength) {
+			case 2:
+			$countryCodeFieldname = 'country_2_code';
+			break;
+			case 3:
+			$countryCodeFieldname = 'country_3_code';
+			break;
+			default:
+			return false;
+		}
 
-	return $db->loadObject();
+		$query = 'SELECT *';
+		$query .= ' FROM `#__virtuemart_countries`';
+		$query .= ' WHERE `' . $countryCodeFieldname . '` = "' . $code . '"';
+		$db->setQuery($query);
+
+		return $db->loadObject();
     }
 
     /**

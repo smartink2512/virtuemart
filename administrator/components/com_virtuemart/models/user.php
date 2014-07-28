@@ -1052,9 +1052,18 @@ class VirtueMartModelUser extends VmModel {
 		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 
 		//get all super administrator
-		$query = 'SELECT name, email, sendEmail' .
+		if(!defined('VM_VERSION') or VM_VERSION < 3){
+			$query = 'SELECT name, email, sendEmail' .
 				' FROM #__users' .
 				' WHERE LOWER( usertype ) = "super administrator"';
+		} else {
+			$query = 'SELECT `name`, `email`, `sendEmail` ' .
+				' FROM #__users as us '.
+				' INNER JOIN #__user_usergroup_map as um ON us.id = um.user_id ' .
+				' INNER JOIN #__usergroups as ug ON um.group_id = ug.id ' .
+				' WHERE ug.id = "8" ';
+		}
+
 		$db = JFactory::getDBO();
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
