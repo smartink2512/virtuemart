@@ -1141,7 +1141,8 @@ class VirtueMartCart {
 				return false;
 			}
 
-			$this->_inConfirm = true;
+			//We set this in the trigger of the plugin. so old plugins keep the old behaviour
+			//$this->_inConfirm = true;
 			$this->setCartIntoSession();
 			session_write_close();
 			session_start();

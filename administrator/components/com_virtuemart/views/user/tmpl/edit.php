@@ -76,7 +76,7 @@ function myValidator(f) {
 		jQuery('#element-box').before(msg);
 	}
 	//Funny, works for chrome etc, but throws error on FF, but the error stops the script, so the effect is the same
-    jQuery().event.preventDefault();
+    f.event.preventDefault();
     return false;
 }
 </script>

@@ -859,47 +859,50 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		$orderTable =  $this->getTable('orders');
 
-		$order = false;
+		if($_cart->_inConfirm){
+			$order = false;
 
-		$db = JFactory::getDbo();
-		$q = 'SELECT * FROM `#__virtuemart_orders` ';
-		if(!empty($_cart->virtuemart_order_id)){
-			$db->setQuery($q . ' WHERE `virtuemart_order_id`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P"');
-			$order = $db->loadAssoc();
-			if(!$order){
-				$_cart->virtuemart_order_id = null;
-				vmdebug('This should not happen (but does due some payments deleting the order in the cancel case), there is a cart with virtuemart_order_id, but not order stored');
+			$db = JFactory::getDbo();
+			$q = 'SELECT * FROM `#__virtuemart_orders` ';
+			if(!empty($_cart->virtuemart_order_id)){
+				$db->setQuery($q . ' WHERE `virtuemart_order_id`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P"');
+				$order = $db->loadAssoc();
+				if(!$order){
+					$_cart->virtuemart_order_id = null;
+					vmdebug('This should not happen (but does due some payments deleting the order in the cancel case), there is a cart with virtuemart_order_id, but not order stored');
+				}
 			}
-		}
 
-		if(!$order){
-			$jnow = JFactory::getDate();
-			$jnow->sub(new DateInterval('PT1H'));
-			$minushour = $jnow->toMySQL();
-			$q .= ' WHERE `customer_number`= "'.$_orderData->customer_number.'" ';
-			$q .= '	AND `order_status` = "P"
+			if(!$order){
+				$jnow = JFactory::getDate();
+				$jnow->sub(new DateInterval('PT1H'));
+				$minushour = $jnow->toMySQL();
+				$q .= ' WHERE `customer_number`= "'.$_orderData->customer_number.'" ';
+				$q .= '	AND `order_status` = "P"
 				AND `created_on` > "'.$minushour.'" ';
-			$db->setQuery($q);
-			$order = $db->loadAssoc();
-			if(!$order){
-				$_cart->virtuemart_order_id = null;
+				$db->setQuery($q);
+				$order = $db->loadAssoc();
+				if(!$order){
+					$_cart->virtuemart_order_id = null;
 
+				}
+			}
+
+			if($order){
+
+				$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
+
+				//We do not keep the order_number anylonger, makes too much trouble.
+				/*if(!empty($order['order_number'])){
+					$_orderData->order_number = $order['order_number'];
+					$_orderData->order_pass = $order['order_pass'];
+				}*/
+
+				//Dirty hack
+				$this->removeOrderItems($order['virtuemart_order_id']);
 			}
 		}
 
-		if($order){
-
-			$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
-
-			//We do not keep the order_number anylonger, makes too much trouble.
-			/*if(!empty($order['order_number'])){
-				$_orderData->order_number = $order['order_number'];
-				$_orderData->order_pass = $order['order_pass'];
-			}*/
-
-			//Dirty hack
-			$this->removeOrderItems($order['virtuemart_order_id']);
-		}
 
 
 		JPluginHelper::importPlugin('vmshopper');
