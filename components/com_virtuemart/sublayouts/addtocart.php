@@ -93,7 +93,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 						<noscript><input type="hidden" name="task" value="add"/></noscript> <?php
 					}
 				} ?>
-			<div class="clear"></div>
+
 			</div><?php
 		} ?>
 		<input type="hidden" name="option" value="com_virtuemart"/>
@@ -106,7 +106,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 			echo '<input type="hidden" name="Itemid" value="'.$itemId.'"/>';
 		} ?>
 	</form>
-	<div class="clear"></div>
+
 </div>
 
 <?php // }

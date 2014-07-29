@@ -67,7 +67,7 @@ foreach ($viewData['products'] as $type => $products ) {
 					</a>
 
 			</div>
-			<div class="clear"></div>
+
 			<div class="vm-product-rating-container">
 				<?php echo shopFunctionsF::renderVmSubLayout('rating',array('showRating'=>$showRating, 'product'=>$product));
 				if ( VmConfig::get ('display_stock', 1)) { ?>
@@ -76,7 +76,7 @@ foreach ($viewData['products'] as $type => $products ) {
 				echo shopFunctionsF::renderVmSubLayout('stockhandle',array('product'=>$product));
 				?>
 			</div>
-			<div class="clear"></div>
+
 
 				<div class="vm-product-descr-container-<?php echo $rowsHeight[$row]['product_s_desc'] ?>">
 					<h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
@@ -92,15 +92,15 @@ foreach ($viewData['products'] as $type => $products ) {
 				</div>
 
 
-			<div class="clear"></div> <?php //echo $rowsHeight[$row]['price'] ?>
+			<?php //echo $rowsHeight[$row]['price'] ?>
 			<div class="vm3pr-<?php echo $rowsHeight[$row]['price'] ?>"> <?php
 				echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$product,'currency'=>$currency)); ?>
 			</div>
-			<div class="clear"></div> <?php //echo $rowsHeight[$row]['customs'] ?>
+			<?php //echo $rowsHeight[$row]['customs'] ?>
 			<div class="vm3pr-<?php echo $rowsHeight[$row]['customfields'] ?>"> <?php
 				echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'rowHeights'=>$rowsHeight[$row])); ?>
 			</div>
-			<div class="clear"></div>
+
 			<div class="vm-details-button">
 				<?php // Product Details Button
 				$link = empty($product->link)? $product->canonical:$product->link;
@@ -108,7 +108,7 @@ foreach ($viewData['products'] as $type => $products ) {
 				//echo JHtml::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id , FALSE), vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
 				?>
 			</div>
-			<div class="clear"></div>
+
 		</div>
 	</div>
 

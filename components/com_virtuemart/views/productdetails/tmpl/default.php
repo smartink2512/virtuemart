@@ -129,7 +129,7 @@ if(vRequest::getInt('print',false)){ ?>
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'ontop'));
     ?>
 
-    <div class="vm-product-container">
+    <div class="vm-product-container clr">
 	<div class="vm-product-media-container">
 <?php
 echo $this->loadTemplate('images');

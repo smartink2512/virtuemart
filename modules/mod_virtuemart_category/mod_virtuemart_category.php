@@ -38,6 +38,7 @@ $active_category_id = vRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
 
 $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
+
 // We dont use image here
 //$categoryModel->addImages($categories);
 
