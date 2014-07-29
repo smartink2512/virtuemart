@@ -896,41 +896,44 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderData->ip_address = substr($_orderData->ip_address,0,($rpos+1)).'xx';
 		}
 
-		$order = false;
-		$db = JFactory::getDbo();
-		$q = 'SELECT * FROM `#__virtuemart_orders` ';
-		if(!empty($_cart->virtuemart_order_id)){
-			$db->setQuery($q . ' WHERE `order_number`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P" ');
-			$order = $db->loadAssoc();
+		if($_cart->_inConfirm){
+			$order = false;
+			$db = JFactory::getDbo();
+			$q = 'SELECT * FROM `#__virtuemart_orders` ';
+			if(!empty($_cart->virtuemart_order_id)){
+				$db->setQuery($q . ' WHERE `order_number`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P" ');
+				$order = $db->loadAssoc();
+				if(!$order){
+					vmdebug('This should not happen, there is a cart with order_number, but not order stored '.$_cart->virtuemart_order_id);
+				}
+			}
+
 			if(!$order){
-				vmdebug('This should not happen, there is a cart with order_number, but not order stored '.$_cart->virtuemart_order_id);
-			}
-		}
-
-		if(!$order){
-			$jnow = JFactory::getDate();
-			$jnow->sub(new DateInterval('PT1H'));
-			$minushour = $jnow->toSQL();
-			$q .= ' WHERE `customer_number`= "'.$_orderData->customer_number.'" ';
-			$q .= '	AND `order_status` = "P"
+				$jnow = JFactory::getDate();
+				$jnow->sub(new DateInterval('PT1H'));
+				$minushour = $jnow->toSQL();
+				$q .= ' WHERE `customer_number`= "'.$_orderData->customer_number.'" ';
+				$q .= '	AND `order_status` = "P"
 				AND `created_on` > "'.$minushour.'" ';
-			$db->setQuery($q);
-			$order = $db->loadAssoc();
-		}
-
-		if($order){
-			if(!empty($order['virtuemart_order_id'])){
-				$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
+				$db->setQuery($q);
+				$order = $db->loadAssoc();
 			}
 
-			/*if(!empty($order['order_number'])){
-				$_orderData->order_number = $order['order_number'];
-				$_orderData->order_pass = $order['order_pass'];
-			}*/
+			if($order){
+				if(!empty($order['virtuemart_order_id'])){
+					$_orderData->virtuemart_order_id = $order['virtuemart_order_id'];
+				}
 
-			//Dirty hack
-			$this->removeOrderItems($order['virtuemart_order_id']);
+				/*if(!empty($order['order_number'])){
+					$_orderData->order_number = $order['order_number'];
+					$_orderData->order_pass = $order['order_pass'];
+				}*/
+
+				//Dirty hack
+				$this->removeOrderItems($order['virtuemart_order_id']);
+			}
 		}
+
 
 		JPluginHelper::importPlugin('vmshopper');
 		$dispatcher = JDispatcher::getInstance();

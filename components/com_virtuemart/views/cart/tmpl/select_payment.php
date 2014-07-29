@@ -49,7 +49,7 @@ if ($this->layoutName!='default') {
 <button name="updatecart" class="<?php echo $buttonclass ?>" type="submit"><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
      &nbsp;
    <?php   if ($this->layoutName!='default') { ?>
-<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 	<?php  } ?>
     </div>
 

@@ -1050,8 +1050,9 @@ class VirtueMartCart {
 
 			if($this->_inConfirm) return false;
 
-			$this->_inConfirm = true;
-			$this->setCartIntoSession(false,true);
+			//We set this in the trigger of the plugin. so old plugins keep the old behaviour
+			//$this->_inConfirm = true;
+			//$this->setCartIntoSession(false,true);
 
 			$orderModel = VmModel::getModel('orders');
 
@@ -1376,7 +1377,7 @@ class VirtueMartCart {
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
-			vmdebug('$this->cartProductsData',$this->cartProductsData);
+			//vmdebug('$this->cartProductsData',$this->cartProductsData);
 			$customFieldsModel = VmModel::getModel('customfields');
 			foreach($this->cartProductsData as $k =>&$productdata){
 				$productdata = (array)$productdata;

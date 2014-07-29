@@ -810,18 +810,26 @@ class vmrouterHelper {
 		static $categoryNamesCache = array();
 		$strings = array();
 		$db = JFactory::getDBO();
-		$parents_id = array_reverse(VmModel::getModel('category')->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
-
-		foreach ($parents_id as $id ) {
+		$catModel = VmModel::getModel('category');
+		$parent_ids = array_reverse($catModel->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
+		//vmdebug('Router getCategoryNames getCategoryRecurse finished '.$virtuemart_category_id,$parent_ids);
+		foreach ($parent_ids as $id ) {
 			if(!isset($categoryNamesCache[$id])){
-				$q = 'SELECT `slug` as name
-					FROM  `#__virtuemart_categories_'.VmConfig::$vmlang.'`
-					WHERE  `virtuemart_category_id`='.(int)$id;
+				//if($catModel->checkIfCached($id,1) ){	//test is never true, therefore costs just energy
+				if(true){
+					$cat = $catModel->getCategory($id,0);
+					$categoryNamesCache[$id] = $cat->slug;
+					$strings[] = $cat->slug;
+				} else {
+					$q = 'SELECT `slug` as name
+				FROM  `#__virtuemart_categories_'.VmConfig::$vmlang.'`
+				WHERE  `virtuemart_category_id`='.(int)$id;
 
-				$db->setQuery($q);
-				$cslug = $db->loadResult();
-				$categoryNamesCache[$id] = $cslug;
-				$strings[] = $cslug;
+					$db->setQuery($q);
+					$cslug = $db->loadResult();
+					$categoryNamesCache[$id] = $cslug;
+					$strings[] = $cslug;
+				}
 			} else {
 				$strings[] = $categoryNamesCache[$id];
 			}
@@ -836,25 +844,7 @@ class vmrouterHelper {
 
 
 	}
-	/* Get parents of category*/
-/*	public function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
-		static $idsArr = array();
-		if ($first==true) $idsArr = array();
 
-		$db			= JFactory::getDBO();
-		$q = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
-				FROM  #__virtuemart_category_categories AS `xref`
-				WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;
-		$db->setQuery($q);
-		$ids = $db->loadObject();
-		if (isset ($ids->child)) {
-			$idsArr[] = $ids->child;
-			if($ids->parent != 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
-				$this->getCategoryRecurse($ids->parent,$catMenuId,false);
-			}
-		}
-		return $idsArr ;
-	}
 	/* return id of categories
 	 * $names are segments
 	 * $virtuemart_category_ids is joomla menu virtuemart_category_id
@@ -877,19 +867,23 @@ class vmrouterHelper {
 	public function getProductName($id){
 
 		static $productNamesCache = array();
+		$pModel = VmModel::getModel('product');
 
 		if(!isset($productNamesCache[$id])){
-			$db = JFactory::getDBO();
-			$query = 'SELECT `slug` FROM `#__virtuemart_products_'.VmConfig::$vmlang.'`  ' .
-				' WHERE `virtuemart_product_id` = ' . (int) $id;
-			$db->setQuery($query);
-			$name = $db->loadResult();
-			$productNamesCache[$id] = $name ;
-		} else {
-			$name = $productNamesCache[$id];
+			//if($pModel->checkIfCached($id, true, false)){  vmdebug('Router getProductName found cached'); //takes more sql
+			if(true){
+				$pr = $pModel->getProduct($id, true, false);
+				$productNamesCache[$id] = $pr->slug;
+			} else {
+				$db = JFactory::getDBO();
+				$query = 'SELECT `slug` FROM `#__virtuemart_products_'.VmConfig::$vmlang.'`  ' .
+					' WHERE `virtuemart_product_id` = ' . (int) $id;
+				$db->setQuery($query);
+				$productNamesCache[$id] = $db->loadResult();
+			}
 		}
 
-		return $name.$this->seo_sufix;
+		return $productNamesCache[$id].$this->seo_sufix;
 	}
 
 	var $counter = 0;
@@ -945,11 +939,16 @@ class vmrouterHelper {
 
 	/* Get URL safe Manufacturer name */
 	public function getManufacturerName($virtuemart_manufacturer_id ){
-		$db = JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;
-		$db->setQuery($query);
 
-		return $db->loadResult();
+		static $manNamesCache = array();
+		if(!isset($manNamesCache[$virtuemart_manufacturer_id])){
+			$db = JFactory::getDBO();
+			$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;
+			$db->setQuery($query);
+			$manNamesCache[$virtuemart_manufacturer_id] = $db->loadResult();
+		}
+
+		return $manNamesCache[$virtuemart_manufacturer_id];
 
 	}
 

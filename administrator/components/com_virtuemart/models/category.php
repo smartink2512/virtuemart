@@ -53,6 +53,11 @@ class VirtueMartModelCategory extends VmModel {
 	}
 
 
+	public function checkIfCached($virtuemart_category_id,$childs=TRUE){
+		//return true;
+		return !empty($this->_cache[$virtuemart_category_id][(int)$childs]);
+	}
+
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
@@ -663,38 +668,45 @@ class VirtueMartModelCategory extends VmModel {
 
 	private $categoryRecursed = 0;
 
-	function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
+	function getCategoryRecurse($virtuemart_category_id,$catMenuId,$ids=false ) {
 		static $idsArr = array();
+
+		//The root has no parents
+		if(empty($virtuemart_category_id)){
+			return array();
+		}
 
 		$hash = $virtuemart_category_id.'c'.$catMenuId;
 
-		if($first) {
-			$idsArr[$hash] = array();
-			$this->categoryRecursed = 0;
-		} else if($this->categoryRecursed>10){
-			vmWarn('Stopped getCategoryRecurse after 10 rekursions');
+		if (isset($idsArr[$hash])){
 			return $idsArr[$hash];
-		}
+		} else {
+			if(!$ids){
+				$ids = array();
+				$this->categoryRecursed = 0;
+			} else if($this->categoryRecursed>10){
+				vmWarn('Stopped getCategoryRecurse after 10 rekursions');
+				return $idsArr[$hash];
+			}
 
-		if(empty($virtuemart_category_id)){
-			return $idsArr[$hash];
-		}
-
-		$db = JFactory::getDBO();
-		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
+			$db = JFactory::getDBO();
+			$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
 			FROM  `#__virtuemart_category_categories` AS `xref`
 			WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;
-		$db->setQuery($q);
-		if (!$ids = $db->loadObject()) {
-			return $idsArr[$hash];
+			$db->setQuery($q);
+			if ($parent = $db->loadObject()) {
+				if ($parent->child) $ids[] = $parent->child;
+				if($parent->parent !== 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $parent->parent) {
+					$this->categoryRecursed++;
+					$this->getCategoryRecurse($parent->parent,$catMenuId,$ids);
+				}
+			}
 		}
-		if ($ids->child) $idsArr[$hash][] = $ids->child;
-		if($ids->parent !== 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
-			$this->categoryRecursed++;
-			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
-		}
+		$idsArr[$hash] = $ids;
+
 		return $idsArr[$hash];
 	}
+
 
 	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {
 

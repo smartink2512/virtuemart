@@ -801,7 +801,12 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-		if($i==$required) $return = -1;
+		if(empty($required)){
+			vmdebug('Nothing to require');
+			$return = true;
+		} else if($i==$required){
+			$return = -1;
+		}
 		//vmdebug('my i '.$i.' my data size '.$required,$return,$showInfo);
 
 		if(!$return or $showInfo){

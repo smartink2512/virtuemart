@@ -295,9 +295,12 @@ class calculationHelper {
 		}
 
 		if(VmConfig::get('multix','none')!='none' and (empty($this->vendorCurrency) or $this->vendorCurrency!=$this->productVendorId)){
-			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
-			$single = $this->_db->loadResult();
-			$this->vendorCurrency = $single;
+			static $vendorCurrencies = array();
+			if(!isset($vendorCurrencies[$this->productVendorId])){
+				$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
+				$vendorCurrencies[$this->productVendorId] = $this->_db->loadResult();
+			}
+			$this->vendorCurrency = $vendorCurrencies[$this->productVendorId];
 		}
 
 		if (!empty($amount)) {
@@ -512,9 +515,11 @@ class calculationHelper {
 // 		vmTime('getProductPrices no object given query time','getProductCalcs');
 
 		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){
-			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
-			$single = $this->_db->loadResult();
-			$this->vendorCurrency = $single;
+			if(!isset($vendorCurrencies[$this->productVendorId])){
+				$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
+				$vendorCurrencies[$this->productVendorId] = $this->_db->loadResult();
+			}
+			$this->vendorCurrency = $vendorCurrencies[$this->productVendorId];
 		}
 
 		if (!empty($amount)) {
