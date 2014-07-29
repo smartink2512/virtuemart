@@ -49,7 +49,7 @@ if(VmConfig::get('shop_is_offline',0)){
 // 	$task = vRequest::getCmd('task',vRequest::getCmd('layout',$_controller) );		$this makes trouble!
 	$task = vRequest::getCmd('task','') ;
 
-	if($manage = vRequest::getCmd('manage',false) or (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ){
+	if($manage = vRequest::getCmd('manage',false) or (($_controller == 'product' || $_controller == 'category') ) || ($_controller == 'translate' && $task='paste') ){
 	//if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
 		$app = JFactory::getApplication();
 
@@ -69,6 +69,12 @@ if(VmConfig::get('shop_is_offline',0)){
 
 			vmJsApi::jQuery(false);
 			vmJsApi::loadBECSS();
+
+			$app = JFactory::getApplication();
+			$router = $app->getRouter();
+			$router->setMode(0);
+			//vmdebug('my conf',$router->getMode());
+			//JFactory::getConfig()->set('sef',0);
 
 			//vmJsApi::js('vmsite');
 		} else {

@@ -723,7 +723,8 @@ class vmrouterHelper {
 			$this->use_id = VmConfig::get('seo_use_id', false);
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
 			$this->seo_sufix_size = strlen($this->seo_sufix) ;
-			$this->edit = ('edit' == vRequest::getCmd('task') );
+
+			$this->edit = ('edit' == vRequest::getCmd('task') or vRequest::getInt('manage')=='1');
 			// if language switcher we must know the $query
 			$this->query = $query;
 			//vmdebug('Router construct my query j2',$this->query,$query);

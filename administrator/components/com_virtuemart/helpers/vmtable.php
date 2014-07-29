@@ -669,8 +669,16 @@ class VmTable extends JTable {
 
 		$this->storeParams();
 
-		return parent::store($updateNulls);
-
+		if($ok = parent::store($updateNulls)){
+			//reset Params
+			if($this->_tmpParams){
+				foreach($this->_tmpParams as $k => $v){
+					$this->$k = $v;
+				}
+			}
+		}
+		$this->_tmpParams = false;
+		return $ok;
 	}
 
 
@@ -679,13 +687,17 @@ class VmTable extends JTable {
 		if (!empty($this->_xParams)) {
 			$paramFieldName = $this->_xParams;
 			$this->$paramFieldName = '';
+			$this->_tmpParams = array();
 			foreach ($this->_varsToPushParam as $key => $v) {
 
 				if (isset($this->$key)) {
 					$this->$paramFieldName .= $key . '=' . json_encode($this->$key) . '|';
+					$this->_tmpParams[$key] = $this->$key;
 				} else {
 					$this->$paramFieldName .= $key . '=' . json_encode($v[0]) . '|';
+					$this->_tmpParams[$key] = $v[0];
 				}
+
 				unset($this->$key);
 			}
 		}

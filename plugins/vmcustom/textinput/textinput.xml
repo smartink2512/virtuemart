@@ -20,7 +20,7 @@
     <config>
         <fields name="params">
             <fieldset name="template">
-            <field type="vmjpluginwarning"/>
+            <field type="vmjpluginwarning" addfieldpath="/administrator/components/com_virtuemart/fields" />
             <field name="custom_size" type="text"  size="15"  default="10" label="VMCUSTOM_TEXTINPUT_SIZE" description="VMCUSTOM_TEXTINPUT_SIZE_DESC" />
             <field name="custom_price_by_letter" type="list"  default="0" label="VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER_OR_INPUT" description="VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER_OR_INPUT_DESC" >
                 <option value="0">VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT</option>

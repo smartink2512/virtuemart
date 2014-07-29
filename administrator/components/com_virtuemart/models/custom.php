@@ -326,6 +326,7 @@ class VirtueMartModelCustom extends VmModel {
 		self::setParameterableByFieldType($table,$table->field_type);
 
 		$table->bindChecknStore($data);
+
 		$errors = $table->getErrors();
 
 		foreach($errors as $error){

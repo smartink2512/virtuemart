@@ -158,7 +158,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if(empty($table->custom_element) or (!empty($table->custom_element) and $table->custom_element!=$this->_name) ){
 			return false;
 		}
-		if(empty($table->is_cart_attribute) or empty($table->is_input)){
+		if(empty($table->is_input)){
+
 			$table->is_input = 1;
 			$table->store();
 		}
