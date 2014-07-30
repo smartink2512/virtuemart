@@ -295,6 +295,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	}
 
+	/**
+	 * @param $cart
+	 * @param $payment_advertise
+	 * @return bool|null
+	 */
 	function plgVmOnCheckoutAdvertise($cart, &$payment_advertise) {
 
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
@@ -310,6 +315,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	}
 
+	/**
+	 * @param $currentMethod
+	 * @param $cart
+	 * @return null|string
+	 */
 	function getExpressCheckoutHtml($currentMethod, $cart) {
 
 		if ($currentMethod->paypalproduct == 'exp') {
@@ -360,6 +370,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return $html;
 	}
 
+	/**
+	 *
+	 * @param $cart
+	 * @param $order
+	 * @return bool|null|void
+	 */
 	function plgVmConfirmedOrder($cart, $order) {
 
 		if (!($this->_currentMethod = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
@@ -375,6 +391,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelCurrency')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 		}
+		$this->setInConfirmOrder($cart);
 
 		$this->getPaymentCurrency($this->_currentMethod);
 		$email_currency = $this->getEmailCurrency($this->_currentMethod);
@@ -417,7 +434,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$success = $paypalInterface->ManageCheckout();
 				$response = $paypalInterface->getResponse();
 
-				$payment = $this->_storePaypalInternalData($response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id);
+			$payment = $this->_storePaypalInternalData(  $response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id, $order['details']['BT']->order_number);
 
 				if ($success) {
 					$new_status = $paypalInterface->getNewOrderStatus();
@@ -425,7 +442,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 					if ($this->_currentMethod->payment_type == '_xclick-subscriptions' || $this->_currentMethod->payment_type == '_xclick-payment-plan') {
 						$profilesuccess = $paypalInterface->GetRecurringPaymentsProfileDetails($response['PROFILEID']);
 						$response = $paypalInterface->getResponse();
-						$this->_storePaypalInternalData($response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id);
+					$this->_storePaypalInternalData(  $response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id, $order['details']['BT']->order_number);
 					}
 					$this->customerData->clear();
 					$returnValue = 1;
@@ -454,7 +471,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				if ($this->_currentMethod->paypalproduct == 'api') {
 					$success = $paypalInterface->ManageCheckout();
 					$response = $paypalInterface->getResponse();
-					$payment = $this->_storePaypalInternalData($response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id);
+			$payment = $this->_storePaypalInternalData(  $response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id, $order['details']['BT']->order_number);
 					if ($success) {
 						if ($this->_currentMethod->payment_action == 'Authorization' || $this->_currentMethod->payment_type == '_xclick-payment-plan') {
 							$new_status = $this->_currentMethod->status_pending;
@@ -464,7 +481,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 						if ($this->_currentMethod->payment_type == '_xclick-subscriptions' || $this->_currentMethod->payment_type == '_xclick-payment-plan') {
 							$profilesuccess = $paypalInterface->GetRecurringPaymentsProfileDetails($response['PROFILEID']);
 							$response = $paypalInterface->getResponse();
-							$this->_storePaypalInternalData($response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id);
+					$this->_storePaypalInternalData(  $response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id, $order['details']['BT']->order_number);
 						}
 						$this->customerData->clear();
 						$returnValue = 1;
@@ -512,6 +529,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vRequest::getInt('Itemid'), false), $msg);
 	}
 
+	/**
+	 * @param $virtuemart_paymentmethod_id
+	 * @param $paymentCurrencyId
+	 * @return bool|null
+	 */
 	function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
@@ -548,6 +570,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	}
 
+	/**
+	 * @param $html
+	 * @return bool|null|string
+	 */
 	function plgVmOnPaymentResponseReceived(&$html) {
 
 		if (!class_exists('VirtueMartCart')) {
@@ -580,7 +606,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
 			return NULL;
 		}
-		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
+		if (!($payments = $this->getDatasByOrderNumber($order_number))) {
 			return '';
 		}
 		$payment_name = $this->renderPluginName($this->_currentMethod);
@@ -631,7 +657,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
 			return NULL;
 		}
-		if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id))) {
+		if (!($paymentTable = $this->getDataByOrderNumber($order_number))) {
 			return NULL;
 		}
 
@@ -666,7 +692,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return FALSE;
 		}
 
-		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
+		if (!($payments = $this->getDatasByOrderNumber($order_number))) {
 			return FALSE;
 		}
 
@@ -687,7 +713,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!$order_history) {
 			return false;
 		} else {
-			$this->_storePaypalInternalData($paypal_data, $virtuemart_order_id, $payments[0]->virtuemart_paymentmethod_id);
+			$this->_storePaypalInternalData( $paypal_data, $virtuemart_order_id, $payments[0]->virtuemart_paymentmethod_id, $order_number);
 			$paypalInterface->debugLog('order_number:' . $order_number . ' new_status:' . $order_history['order_status'], 'plgVmOnPaymentNotification', 'debug');
 
 			$orderModel->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
@@ -780,14 +806,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	}
 
 	private function _getPaypalInternalData($virtuemart_order_id, $order_number = '') {
-
+		if (empty($order_number)) {
+			$order_number = VirtueMartModelOrders::getOrderNumber ($virtuemart_order_id);
+		}
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
-		if ($order_number) {
-			$q .= " `order_number` = '" . $order_number . "'";
-		} else {
-			$q .= ' `virtuemart_order_id` = ' . $virtuemart_order_id;
-		}
+		$q .= " `order_number` = '" . $order_number . "'";
 
 		$db->setQuery($q);
 		if (!($payments = $db->loadObjectList())) {
@@ -1125,7 +1149,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$paypalInterface->loadCustomerData();
 			if ($paypalInterface->DoCapture($payment)) {
 				$paypalInterface->debugLog(vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_CAPTURED'), 'plgVmOnUpdateOrderShipment', 'message', true);
-				$this->_storePaypalInternalData($paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
+				$this->_storePaypalInternalData(  $paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id, $order->order_number);
 			}
 
 		} elseif ($order->order_status == $this->_currentMethod->status_refunded OR $order->order_status == $this->_currentMethod->status_canceled) {
@@ -1141,7 +1165,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 					// $order->order_status = $method->status_refunded;
 					$paypalInterface->debugLog(vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_REFUNDED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
 				}
-				$this->_storePaypalInternalData($paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
+				$this->_storePaypalInternalData( $paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id, $order->order_number);
 			}
 		}
 

@@ -36,10 +36,10 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	var $api_password = '';
 
 
-	function __construct($method,$paypalPlugin) {
-		parent::__construct($method,$paypalPlugin);
+	function __construct ($method, $paypalPlugin) {
+		parent::__construct($method, $paypalPlugin);
 		//Set the credentials
-		if ($this->_method->sandbox  ) {
+		if ($this->_method->sandbox) {
 			$this->api_login_id = $this->_method->sandbox_api_login_id;
 			if ($this->_method->authentication == 'signature') {
 				$this->api_signature = $this->_method->sandbox_api_signature;
@@ -68,7 +68,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 	}
 
-	function expCredentialsValid() {
+	function expCredentialsValid () {
 		return $this->api_login_id && $this->api_password && ($this->api_signature || $this->api_certificate);
 
 	}
@@ -77,21 +77,23 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 *      * Check if it is  Accelerated Boarding  possible for Express Checkout
 	 * @return bool
 	 */
-	function isAacceleratedOnboarding() {
+	function isAacceleratedOnboarding () {
 		return $this->_method->accelerated_onboarding;
 	}
+
 	/**
 	 *      * Check if it is  Accelerated Boarding  possible for Express Checkout
 	 * @return bool
 	 */
-	function isAacceleratedOnboardingValid() {
+	function isAacceleratedOnboardingValid () {
 		if ($this->_method->accelerated_onboarding AND empty($this->merchant_email)) {
-				return false;
+			return false;
 		} else {
 			return true;
 		}
 	}
-	function initPostVariables($paypalMethod) {
+
+	function initPostVariables ($paypalMethod) {
 		$post_variables = Array();
 		$post_variables['METHOD'] = $paypalMethod;
 		$post_variables['version'] = "104.0";
@@ -108,22 +110,24 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 		if (is_array($this->order) && is_object($this->order['details']['BT'])) {
 			$post_variables['INVNUM'] = $this->order['details']['BT']->order_number;
-		} else if (is_object($this->order)) {
-			$post_variables['INVNUM'] = $this->order->order_number;
+		} else {
+			if (is_object($this->order)) {
+				$post_variables['INVNUM'] = $this->order->order_number;
+			}
 		}
 		$post_variables['IPADDRESS'] = ($_SERVER['REMOTE_ADDR'] == '::1') ? '127.0.0.1' : $_SERVER['REMOTE_ADDR'];
 
 		return $post_variables;
 	}
 
-	function addAcceleratedOnboarding(&$post_variables) {
+	function addAcceleratedOnboarding (&$post_variables) {
 		if ($this->_method->accelerated_onboarding) {
 			$post_variables['SUBJECT'] = $this->merchant_email;
 		}
 
 	}
 
-	function addBillTo(&$post_variables) {
+	function addBillTo (&$post_variables) {
 
 		$addressBT = $this->order['details']['BT'];
 
@@ -137,13 +141,13 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['COUNTRYCODE'] = ShopFunctions::getCountryByID($addressBT->virtuemart_country_id, 'country_2_code');
 	}
 
-	function addShipTo(&$post_variables) {
+	function addShipTo (&$post_variables) {
 
 		$addressST = ((isset($this->order['details']['ST'])) ? $this->order['details']['ST'] : $this->order['details']['BT']);
 
 		//Ship To
-		$shiptoname=$this->getShipToName((isset($addressST->first_name) ? $addressST->first_name:''), (isset($addressST->last_name) ?  $addressST->last_name:''), 50);
-		$post_variables['SHIPTONAME'] =   $shiptoname  ;
+		$shiptoname = $this->getShipToName((isset($addressST->first_name) ? $addressST->first_name : ''), (isset($addressST->last_name) ? $addressST->last_name : ''), 50);
+		$post_variables['SHIPTONAME'] = $shiptoname;
 		$post_variables['SHIPTOSTREET'] = isset($addressST->address_1) ? $this->truncate($addressST->address_1, 60) : '';
 		$post_variables['SHIPTOCITY'] = isset($addressST->city) ? $this->truncate($addressST->city, 40) : '';
 		$post_variables['SHIPTOZIP'] = isset($addressST->zip) ? $this->truncate($addressST->zip, 40) : '';
@@ -151,12 +155,12 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['SHIPTOCOUNTRYCODE'] = ShopFunctions::getCountryByID($addressST->virtuemart_country_id, 'country_2_code');
 	}
 
-	function getShipToName($first_name,$last_name, $max_length) {
-		if (strlen ($first_name.' '.$last_name) > $max_length){
-			$first_name=$this->truncate($first_name, $max_length-strlen($last_name)) ;
+	function getShipToName ($first_name, $last_name, $max_length) {
+		if (strlen($first_name . ' ' . $last_name) > $max_length) {
+			$first_name = $this->truncate($first_name, $max_length - strlen($last_name));
 		}
 		// important that we get the last name correctly
-		$shipToName= $this->truncate($first_name.' '.$last_name, $max_length) ;
+		$shipToName = $this->truncate($first_name . ' ' . $last_name, $max_length);
 		return $shipToName;
 	}
 
@@ -164,11 +168,12 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 * https://developer.paypal.com/webapps/developer/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
 	 * @param $post_variables
 	 */
-	function addPrices(&$post_variables) {
+	function addPrices (&$post_variables) {
 
 		$paymentCurrency = CurrencyDisplay::getInstance($this->_method->payment_currency);
 		$i = 0;
 		$taxAmount = 0;
+		$total = 0;
 		// Product prices
 		if ($this->cart->products) {
 			foreach ($this->cart->products as $key => $product) {
@@ -178,36 +183,40 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 				}
 				$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] = $this->getProductAmount($this->cart->pricesUnformatted[$key]);
 				$post_variables["L_PAYMENTREQUEST_0_QTY" . $i] = $product->quantity;
+				$total += $post_variables["L_PAYMENTREQUEST_0_AMT" . $i] * $post_variables["L_PAYMENTREQUEST_0_QTY" . $i];
 				$i++;
 			}
 		}
 
 		// Handling Coupon (handling must be positive value, add then coupon as a product with negative value
 		if (!empty($this->cart->pricesUnformatted['salesPriceCoupon'])) {
-			$post_variables["L_PAYMENTREQUEST_0_NAME" . $i] = vmText::_('COM_VIRTUEMART_COUPON_DISCOUNT').': '. $this->cart->couponCode;
-			$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] =  vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
+			$post_variables["L_PAYMENTREQUEST_0_NAME" . $i] = vmText::_('COM_VIRTUEMART_COUPON_DISCOUNT') . ': ' . $this->cart->couponCode;
+			$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
 			$post_variables["L_PAYMENTREQUEST_0_QTY" . $i] = 1;
+			$total += $post_variables["L_PAYMENTREQUEST_0_AMT" . $i] * $post_variables["L_PAYMENTREQUEST_0_QTY" . $i];
 		}
 
 
-		$post_variables["PAYMENTREQUEST_0_ITEMAMT"] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPrice']+$this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
+		$post_variables["PAYMENTREQUEST_0_ITEMAMT"] = $total;
 		$salesPriceShipment = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceShipment'], $this->_method->payment_currency);
 		if ($salesPriceShipment >= 0) {
 			$post_variables["PAYMENTREQUEST_0_SHIPPINGAMT"] = $salesPriceShipment;
 		} else {
 			$post_variables["PAYMENTREQUEST_0_SHIPDISCAMT"] = $salesPriceShipment;
 		}
-
+		$total += $salesPriceShipment;
 		$handling = $this->getHandlingAmount();
 
 		$post_variables["PAYMENTREQUEST_0_HANDLINGAMT"] = $handling;
-		$post_variables['PAYMENTREQUEST_0_AMT'] = $this->total;
+		$total += $handling;
+
+		$post_variables['PAYMENTREQUEST_0_AMT'] = $total;
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 
 		$pricesCurrency = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 	}
 
-	function addToken(&$post_variables) {
+	function addToken (&$post_variables) {
 
 		$post_variables['TOKEN'] = $this->customerData->getVar('token');
 		$post_variables['PAYERID'] = $this->customerData->getVar('payer_id');
@@ -216,10 +225,11 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	/*
 	 * languages supported according to this https://cms.paypal.com/uk/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_ECCustomizing
 	 */
-	function getLocaleCode() {
+	function getLocaleCode () {
 		$jlang = JFactory::getLanguage();
 		$tag = $jlang->getTag();
-		$languageSpecific = array('da_DK', //', // – Danish (for Denmark only)
+		$languageSpecific = array(
+			'da_DK', //', // – Danish (for Denmark only)
 			'he_IL', //', // – Hebrew (all)
 			'id_ID', //– Indonesian (for Indonesia only)
 			'ja_JP', //', // – Japanese (for Japan only)
@@ -237,7 +247,8 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			return $tag;
 		}
 
-		$paypalLanguages = array('AU',
+		$paypalLanguages = array(
+			'AU',
 			'AT', // Austria
 			'BE', //',  Belgium
 			'BR', //  Brazil
@@ -266,21 +277,18 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 	}
 
-	public function getToken() {
+	public function getToken () {
 
 		$post_variables = $this->initPostVariables('SetExpressCheckout');
 		$this->addAcceleratedOnboarding($post_variables);
-		// It is almost impossible to have the same amount as the one calultaed by paypal
-		if (isset($this->_method->add_prices_api) and $this->_method->add_prices_api) {
-			$this->addPrices($post_variables);
-		}
+
 
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 
-		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid'). '&lang='.vRequest::getCmd('lang','') ;
+		$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 
-		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . vRequest::getInt('Itemid') . '&lang='.vRequest::getCmd('lang','') ;
+		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
 		$post_variables['NOSHIPPING'] = $this->_method->no_shipping;
@@ -310,7 +318,10 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$post_variables['PAYMENTREQUEST_0_AMT'] = $this->total;
 			$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 		}
-
+		// It is almost impossible to have the same amount as the one calultaed by paypal
+		if (isset($this->_method->add_prices_api) and $this->_method->add_prices_api) {
+			$this->addPrices($post_variables);
+		}
 
 		$this->sendRequest($post_variables);
 		$valid = $this->handleResponse();
@@ -327,7 +338,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 	}
 
-	public function getExpressCheckoutDetails() {
+	public function getExpressCheckoutDetails () {
 
 		$post_variables = $this->initPostVariables('GetExpressCheckoutDetails');
 		$this->addAcceleratedOnboarding($post_variables);
@@ -351,11 +362,11 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 	}
 
-	public function ManageLogin() {
+	public function ManageLogin () {
 
 	}
 
-	public function ManageCheckout() {
+	public function ManageCheckout () {
 		switch ($this->_method->payment_type) {
 			case '_xclick':
 				return $this->DoPayment();
@@ -366,7 +377,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 	}
 
-	public function ManageCancelOrder($payment) {
+	public function ManageCancelOrder ($payment) {
 		$this->RefundTransaction($payment);
 		/*
 		switch ($this->_method->payment_type) {
@@ -379,7 +390,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		*/
 	}
 
-	public function DoPayment() {
+	public function DoPayment () {
 		static $redirect = 0;
 		$post_variables = $this->initPostVariables('DoExpressCheckoutPayment');
 		$this->addAcceleratedOnboarding($post_variables);
@@ -410,7 +421,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return true;
 	}
 
-	public function CreateRecurringPaymentsProfile() {
+	public function CreateRecurringPaymentsProfile () {
 		//https://developer.paypal.com/webapps/developer/docs/classic/direct-payment/ht_dp-recurringPaymentProfile-curl-etc/
 		//https://developer.paypal.com/webapps/developer/docs/classic/api/merchant/CreateRecurringPaymentsProfile_API_Operation_NVP/
 
@@ -451,7 +462,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $this->handleResponse();
 	}
 
-	public function CreatePaymentPlanProfile() {
+	public function CreatePaymentPlanProfile () {
 		//Payment plans are not implemented in the API.
 		//A workaround is to create a subscription profile and divide the total amount by the term.
 
@@ -499,7 +510,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $this->handleResponse();
 	}
 
-	function GetRecurringPaymentsProfileDetails($profileId) {
+	function GetRecurringPaymentsProfileDetails ($profileId) {
 
 		$post_variables = $this->initPostVariables('GetRecurringPaymentsProfileDetails');
 		$post_variables['PROFILEID'] = $profileId;
@@ -508,7 +519,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $this->handleResponse();
 	}
 
-	function ManageRecurringPaymentsProfileStatus($payment) {
+	function ManageRecurringPaymentsProfileStatus ($payment) {
 
 		$paypal_data = json_decode($payment->paypal_fullresponse);
 		$post_variables = $this->initPostVariables('ManageRecurringPaymentsProfileStatus');
@@ -523,7 +534,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $this->GetRecurringPaymentsProfileDetails($paypal_data->PROFILEID);
 	}
 
-	function DoCapture($payment) {
+	function DoCapture ($payment) {
 
 		$paypal_data = json_decode($payment->paypal_fullresponse);
 		//Only capture payment if it still pending
@@ -556,7 +567,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $success;
 	}
 
-	function doReauthorize($AuthorizationID, $paypal_data) {
+	function doReauthorize ($AuthorizationID, $paypal_data) {
 		// TODO
 		return false;
 		$post_variables = $this->initPostVariables('DoReauthorization');
@@ -584,16 +595,18 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 	}
 
-	function RefundTransaction($payment) {
+	function RefundTransaction ($payment) {
 
 		$paypal_data = json_decode($payment->paypal_fullresponse);
 		if ($payment->paypal_response_payment_status == 'Completed') {
 			$post_variables = $this->initPostVariables('RefundTransaction');
 			$post_variables['REFUNDTYPE'] = 'Full';
-		} else if ($payment->paypal_response_payment_status == 'Pending' && $payment->paypal_response_pending_reason == 'authorization') {
-			$post_variables = $this->initPostVariables('DoVoid');
 		} else {
-			return false;
+			if ($payment->paypal_response_payment_status == 'Pending' && $payment->paypal_response_pending_reason == 'authorization') {
+				$post_variables = $this->initPostVariables('DoVoid');
+			} else {
+				return false;
+			}
 		}
 
 		$post_variables['AuthorizationID'] = $payment->paypal_response_txn_id;
@@ -605,7 +618,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $this->handleResponse();
 	}
 
-	function doVoid($payment) {
+	function doVoid ($payment) {
 		$paypal_data = json_decode($payment->paypal_fullresponse);
 		$post_variables = $this->initPostVariables('DoVoid');
 		$post_variables['AuthorizationID'] = $payment->paypal_response_txn_id;
@@ -617,11 +630,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $this->handleResponse();
 	}
 
-	function  isFraudDetected() {
+	function  isFraudDetected () {
 
-		if ($this->response['ACK'] == 'SuccessWithWarning' &&
-			$this->response['L_ERRORCODE0'] == self::FMF_PENDED_ERROR_CODE &&
-			$this->response['PAYMENTSTATUS'] == "Pending"
+		if ($this->response['ACK'] == 'SuccessWithWarning' && $this->response['L_ERRORCODE0'] == self::FMF_PENDED_ERROR_CODE && $this->response['PAYMENTSTATUS'] == "Pending"
 		) {
 			$this->debugLog($this->response, 'Fraud Detected', 'error');
 
@@ -631,7 +642,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 	}
 
-	function getNewOrderStatus() {
+	function getNewOrderStatus () {
 		if ($this->isFraudDetected()) {
 			$new_status = $this->_method->status_fraud;
 		} elseif ($this->_method->payment_action == 'Authorization' || $this->_method->payment_type == '_xclick-payment-plan' || $this->response['ACK'] == 'SuccessWithWarning' || $this->response['PAYMENTINFO_0_PAYMENTSTATUS'] == 'Pending') {
@@ -647,7 +658,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 * https://developer.paypal.com/docs/classic/express-checkout/ht_ec_fundingfailure10486/
 	 * @return bool
 	 */
-	function handleResponse() {
+	function handleResponse () {
 		if ($this->response) {
 			if ($this->response['ACK'] == 'Failure' || $this->response['ACK'] == 'FailureWithWarning') {
 				if ($this->response['L_ERRORCODE0'] != self::FRAUD_FAILURE_ERROR_CODE) {
@@ -675,7 +686,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 				// transaction must be manually investigated.
 				$error = '';
 				$public_error = '';
-				$error="Unexpected ACK type:". $this->response['ACK'];
+				$error = "Unexpected ACK type:" . $this->response['ACK'];
 				$this->debugLog($this->response, 'Unexpected ACK type:', 'debug');
 				if ($this->_method->debug) {
 					$public_error = $error;
@@ -687,7 +698,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	}
 
 
-	function storeAddresses() {
+	function storeAddresses () {
 		$this->cart = VirtueMartCart::getCart();
 		$addressST = $addressBT = array();
 		if ($this->response['SHIPTONAME'] == $this->response['FIRSTNAME'] . ' ' . $this->response['LASTNAME']) {
@@ -723,13 +734,13 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$addressST['shipto_virtuemart_state_id'] = ShopFunctions::getStateIDByName($this->response['SHIPTOSTATE']);
 		$addressST['shipto_virtuemart_country_id'] = ShopFunctions::getCountryIDByName($this->response['SHIPTOCOUNTRYCODE']);
 		$this->cart->STsameAsBT = 0;
-		$this->cart->setCartIntoSession ();
+		$this->cart->setCartIntoSession();
 		$this->cart->saveAddressInCart($addressST, 'ST', true);
 
 
 	}
 
-	function storeNoteToSeller() {
+	function storeNoteToSeller () {
 		if (array_key_exists('PAYMENTREQUEST_0_NOTETEXT', $this->response)) {
 			$this->cart = VirtueMartCart::getCart();
 			$this->cart->customer_comment = $this->response['PAYMENTREQUEST_0_NOTETEXT'];
@@ -737,21 +748,21 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 	}
 
-	function storePayerId() {
+	function storePayerId () {
 		if (array_key_exists('PAYERID', $this->response)) {
 			$this->customerData->setVar('payer_id', $this->response['PAYERID']);
 			$this->customerData->save();
 		}
 	}
 
-	function storePayerStatus() {
+	function storePayerStatus () {
 		if (array_key_exists('PAYERSTATUS', $this->response)) {
 			$this->customerData->setVar('payerstatus', $this->response['PAYERSTATUS']);
 			$this->customerData->save();
 		}
 	}
 
-	function redirectToPayPal($token = '') {
+	function redirectToPayPal ($token = '') {
 		$useraction = '';
 		if ($this->response['method'] == 'DoExpressCheckoutPayment') {
 			$useraction = '&useraction=commit';
@@ -777,7 +788,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 	}
 
-	function validate($enqueueMessage = true) {
+	function validate ($enqueueMessage = true) {
 		//if (!$this->customerData->getVar('token') || $this->cart->virtuemart_paymentmethod_id != $this->customerData->getVar('selected_method')) {
 		if (!$this->customerData->getVar('token')) {
 			$this->getToken();
@@ -792,7 +803,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 	}
 
-	function setExpressCheckout($enqueueMessage = true) {
+	function setExpressCheckout ($enqueueMessage = true) {
 		//if (!$this->customerData->getVar('token') || $this->cart->virtuemart_paymentmethod_id != $this->customerData->getVar('selected_method')) {
 		// Checks if there is already a token. If not create one.
 
@@ -806,13 +817,15 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$response = $this->getResponse();
 	}
 
-	public function getResponse($withCustomerData = true) {
+	public function getResponse ($withCustomerData = true) {
 		$response = parent::getResponse();
 
 		if (is_array($this->order) && is_object($this->order['details']['BT'])) {
 			$response['invoice'] = $this->order['details']['BT']->order_number;
-		} else if (is_object($this->order)) {
-			$response['invoice'] = $this->order->order_number;
+		} else {
+			if (is_object($this->order)) {
+				$response['invoice'] = $this->order->order_number;
+			}
 		}
 
 		if ($withCustomerData) {
@@ -825,7 +838,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	}
 
 
-	function getExtraPluginInfo() {
+	function getExtraPluginInfo () {
 		$extraInfo = '';
 
 		//Are we coming back from Express Checkout?
@@ -850,7 +863,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	}
 
 
-	protected function getDurationUnit($duration) {
+	protected function getDurationUnit ($duration) {
 		$parts = explode('-', $duration);
 		switch ($parts[1]) {
 			case 'D':
@@ -868,7 +881,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 * ￼Accelerated Onboarding only allowed for Sales Payment
 	 * @return string
 	 */
-	function GetPaymentAction() {
+	function GetPaymentAction () {
 		if ($this->isAacceleratedOnboarding()) {
 			return 'Sale';
 		} else {
@@ -884,7 +897,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 * https://www.paypalobjects.com/IntegrationCenter/ic_express-buttons.html
 	 * @return array
 	 */
-	function getExpressCheckoutButton() {
+	function getExpressCheckoutButton () {
 		$button = array();
 
 		$lang = jFactory::getLanguage();
@@ -901,11 +914,12 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $button;
 	}
 
-	function getExpressProduct() {
+	function getExpressProduct () {
 
 		$lang = jFactory::getLanguage();
 		$lang_iso = str_replace('-', '_', $lang->gettag());
-		$paypal_buttonurls = array('en_US' => 'https://www.paypal.com/en_US/i/logo/PayPal_mark_60x38.gif',
+		$paypal_buttonurls = array(
+			'en_US' => 'https://www.paypal.com/en_US/i/logo/PayPal_mark_60x38.gif',
 			'en_GB' => 'https://www.paypal.com/en_GB/i/bnr/horizontal_solution_PP.gif',
 			'de_DE' => 'https://www.paypal.com/de_DE/DE/i/logo/lockbox_150x47.gif',
 			'es_ES' => 'https://www.paypalobjects.com/WEBSCR-600-20100105-1/en_US/FR/i/bnr/bnr_horizontal_solution_PP_327wx80h.gif',
@@ -913,8 +927,10 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			'nl_NL' => 'https://www.paypalobjects.com/WEBSCR-600-20100105-1/en_US/FR/i/bnr/bnr_horizontal_solution_PP_327wx80h.gif',
 			'fr_FR' => 'https://www.paypalobjects.com/WEBSCR-600-20100105-1/en_US/FR/i/bnr/bnr_horizontal_solution_PP_327wx80h.gif',
 			'it_IT' => 'https://www.paypalobjects.com/WEBSCR-600-20100105-1/it_IT/IT/i/bnr/bnr_horizontal_solution_PP_178wx80h.gif',
-			'zn_CN' => 'https://www.paypalobjects.com/WEBSCR-600-20100105-1/en_US/FR/i/bnr/bnr_horizontal_solution_PP_327wx80h.gif');
-		$paypal_infolink = array('en_US' => 'https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
+			'zn_CN' => 'https://www.paypalobjects.com/WEBSCR-600-20100105-1/en_US/FR/i/bnr/bnr_horizontal_solution_PP_327wx80h.gif'
+		);
+		$paypal_infolink = array(
+			'en_US' => 'https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
 			'en_GB' => 'https://www.paypal.com/uk/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
 			'de_DE' => 'https://www.paypal.com/de/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
 			'es_ES' => 'https://www.paypal.com/es/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
@@ -922,7 +938,8 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			'nl_NL' => 'https://www.paypal.com/nl/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
 			'fr_FR' => 'https://www.paypal.com/fr/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
 			'it_IT' => 'https://www.paypal.com/it/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside',
-			'zn_CN' => 'https://www.paypal.com/cn/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside');
+			'zn_CN' => 'https://www.paypal.com/cn/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside'
+		);
 		if (!isset($paypal_buttonurls[$lang_iso])) {
 			$lang_iso = 'en_US';
 		}
@@ -934,27 +951,27 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	}
 
 
-	function getOrderBEFields() {
+	function getOrderBEFields () {
 		$showOrderFields = array(
-			'ACK' => 'PAYMENTINFO_0_ACK',
-			'TXN_ID' => 'PAYMENTINFO_0_TRANSACTIONID',
-			'CORRELATIONID' => 'CORRELATIONID',
-			'PAYER_ID' => 'payer_id',
-			'MC_GROSS' => 'PAYMENTINFO_0_AMT',
-			'MC_FEE' => 'PAYMENTINFO_0_FEEAMT',
-			'TAXAMT' => 'PAYMENTINFO_0_TAXAMT',
-			'MC_CURRENCY' => 'PAYMENTINFO_0_CURRENCYCODE',
-			'PAYMENT_STATUS' => 'PAYMENTINFO_0_PAYMENTSTATUS',
-			'PENDING_REASON' => 'PAYMENTINFO_0_PENDINGREASON',
-			'REASON_CODE' => 'PAYMENTINFO_0_REASONCODE',
-			'ERRORCODE' => 'PAYMENTINFO_0_ERRORCODE',
-			'PROTECTION_ELIGIBILITY' => 'PAYMENTINFO_0_PROTECTIONELIGIBILITY',
+			'ACK'                        => 'PAYMENTINFO_0_ACK',
+			'TXN_ID'                     => 'PAYMENTINFO_0_TRANSACTIONID',
+			'CORRELATIONID'              => 'CORRELATIONID',
+			'PAYER_ID'                   => 'payer_id',
+			'MC_GROSS'                   => 'PAYMENTINFO_0_AMT',
+			'MC_FEE'                     => 'PAYMENTINFO_0_FEEAMT',
+			'TAXAMT'                     => 'PAYMENTINFO_0_TAXAMT',
+			'MC_CURRENCY'                => 'PAYMENTINFO_0_CURRENCYCODE',
+			'PAYMENT_STATUS'             => 'PAYMENTINFO_0_PAYMENTSTATUS',
+			'PENDING_REASON'             => 'PAYMENTINFO_0_PENDINGREASON',
+			'REASON_CODE'                => 'PAYMENTINFO_0_REASONCODE',
+			'ERRORCODE'                  => 'PAYMENTINFO_0_ERRORCODE',
+			'PROTECTION_ELIGIBILITY'     => 'PAYMENTINFO_0_PROTECTIONELIGIBILITY',
 			'PROTECTION_ELIGIBILITYTYPE' => 'PAYMENTINFO_0_PROTECTIONELIGIBILITYTYPE'
 		);
 		return $showOrderFields;
 	}
 
-	function highlight($field) {
+	function highlight ($field) {
 		return '<span style="color:red;font-weight:bold">' . $field . '</span>';
 	}
 }

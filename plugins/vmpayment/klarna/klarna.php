@@ -513,7 +513,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-
+		$this->setInConfirmOrder($cart);
 		$sessionKlarnaData = $this->getKlarnaSessionData ();
 
 		try {

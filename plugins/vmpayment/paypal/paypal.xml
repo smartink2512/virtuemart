@@ -164,7 +164,7 @@
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
 
-                <!-- param class="refund_on_cancel" name="refund_on_cancel" type="list" default="0" label="VMPAYMENT_PAYPAL_REFUND_CANCEL" description="VMPAYMENT_PAYPAL_REFUND_CANCEL_DESC" >
+                <!-- field class="refund_on_cancel" name="refund_on_cancel" type="list" default="0" label="VMPAYMENT_PAYPAL_REFUND_CANCEL" description="VMPAYMENT_PAYPAL_REFUND_CANCEL_DESC" >
                 <option value="0">COM_VIRTUEMART_NO</option>
                 <option value="1">COM_VIRTUEMART_YES</option>
                 </field -->

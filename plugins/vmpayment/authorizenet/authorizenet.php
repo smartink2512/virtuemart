@@ -501,6 +501,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return FALSE;
 		}
+		$this->setInConfirmOrder($cart);
 		$usrBT = $order['details']['BT'];
 		$usrST = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 		$session = JFactory::getSession();
