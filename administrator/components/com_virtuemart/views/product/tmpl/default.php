@@ -37,7 +37,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 		<tr>
 			<td align="left">
 			<?php echo vmText::_('COM_VIRTUEMART_FILTER') ?>:
-				<select class="inputbox" id="virtuemart_category_id" name="virtuemart_category_id" onchange="document.adminForm.submit(); return false;">
+				<select class="inputbox" id="virtuemart_category_id" name="virtuemart_category_id" onchange="this.form.submit(); return false;">
 					<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY')) ; ?></option>
 					<?php echo $this->category_tree; ?>
 				</select>

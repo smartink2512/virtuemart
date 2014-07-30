@@ -376,7 +376,7 @@ class VmView extends JViewLegacy {
 	}
 
 	public function addStandardHiddenToForm($controller=null, $task=''){
-		if (!$controller)	$controller = vRequest::getCmd('view');
+		if (!$controller) $controller = vRequest::getCmd('view');
 		$option = vRequest::getCmd('option','com_virtuemart' );
 		$hidden ='';
 		if (array_key_exists('filter_order',$this->lists)) {
@@ -385,9 +385,9 @@ class VmView extends JViewLegacy {
 			<input type="hidden" name="filter_order_Dir" value="'.$this->lists['filter_order_Dir'].'" />';
 		}
 
-		//if(vRequest::get('manage',false)){
+		if(vRequest::get('manage',false) or JFactory::getApplication()->isSite()){
 			$hidden .='<input type="hidden" name="manage" value="1" />';
-		//}
+		}
 		return  $hidden.'
 		<input type="hidden" name="task" value="'.$task.'" />
 		<input type="hidden" name="option" value="'.$option.'" />

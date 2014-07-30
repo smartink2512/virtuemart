@@ -671,7 +671,7 @@ class ShopFunctions {
 		error_reporting(E_ALL ^ E_STRICT);
 
 		$rssFeed = JFactory::getFeedParser($rssURL);
-		if(empty($rssFeed)) return false;
+		if(empty($rssFeed) or !is_object($rssFeed)) return false;
 		$count = $rssFeed->get_item_quantity();
 		$limit=min($max,$count);
 			for ($i = 0; $i < $limit; $i++) {

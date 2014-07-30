@@ -860,7 +860,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$child->quantity = $quantity;
-
+		$child->addToCartButton = false;
 		if(empty($child->categories)) $child->categories = array();
 		$app = JFactory::getApplication ();
 		if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
@@ -1270,6 +1270,7 @@ class VirtueMartModelProduct extends VmModel {
 			$product->packaging = '';
 			$product->related = '';
 			$product->box = '';
+			$product->addToCartButton = false;
 		}
 		$product->virtuemart_vendor_id = VmConfig::isSuperVendor();
 		return $product;

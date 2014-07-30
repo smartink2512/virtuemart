@@ -1184,19 +1184,19 @@ function removeAddress($virtuemart_userinfo_id){
 		$where = '';
 		if ($search) {
 			$where = ' WHERE ';
-
+			$db = JFactory::getDbo();
 			$searchArray = array('ju.name','username','email','usertype','shopper_group_name');
 			if($tableToUse!='juser'){
 
 				if(!class_exists('TableUserinfos'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');
-				$db = JFactory::getDbo();
+
 				$userfieldTable = new TableUserinfos($db);
 				$userfieldFields = get_object_vars($userfieldTable);
 				$userFieldSearchArray = array('company','first_name','last_name');
 				//We must validate if the userfields actually exists, they could be removed
 				$userFieldsValid = array();
 				foreach($userFieldSearchArray as $ufield){
-					if(key_exists($ufield,$userfieldFields)){
+					if(array_key_exists($ufield,$userfieldFields)){
 						$userFieldsValid[] = $ufield;
 					}
 				}

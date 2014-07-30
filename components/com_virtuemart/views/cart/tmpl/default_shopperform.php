@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 				}
 
-				$userList = $this->getUserList();
+				$userList = $this->b();
 				$currentUser = $this->cart->user->virtuemart_user_id;
 
 				echo JHtml::_('Select.genericlist', $userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser);

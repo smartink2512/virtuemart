@@ -420,9 +420,14 @@ class VirtueMartViewCart extends VmView {
 		return true;
 	}
 
+/**
+	 * Todo, works only for small stores, we need a new solution there with a bit filtering
+	 * For example by time, if already shopper, and a simple search
+	 * @return object list of users
+	 */
 	function getUserList() {
 		$db = JFactory::getDbo();
-		$q = 'SELECT * FROM #__users ORDER BY name';
+		$q = 'SELECT `name`,`username` FROM `#__users` ORDER BY `name` LIMIT 0,10000';
 		$db->setQuery($q);
 		$result = $db->loadObjectList();
 		foreach($result as $user) {

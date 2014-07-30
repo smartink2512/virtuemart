@@ -28,7 +28,12 @@ if(isset($viewData['rowHeights'])){
 
 $addtoCartButton = '';
 if(!VmConfig::get('use_as_catalog', 0)){
-	$addtoCartButton = shopFunctionsF::getAddToCartButton ($product->orderable);
+	if($product->addToCartButton){
+		$addtoCartButton = $product->addToCartButton;
+	} else {
+		$addtoCartButton = shopFunctionsF::getAddToCartButton ($product->orderable);
+	}
+
 }
 $position = 'addtocart';
 //if (!empty($product->customfieldsSorted[$position]) or !empty($addtoCartButton)) {

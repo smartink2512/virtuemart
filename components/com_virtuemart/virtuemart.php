@@ -49,7 +49,7 @@ if(VmConfig::get('shop_is_offline',0)){
 // 	$task = vRequest::getCmd('task',vRequest::getCmd('layout',$_controller) );		$this makes trouble!
 	$task = vRequest::getCmd('task','') ;
 
-	if($manage = vRequest::getCmd('manage',false) or (($_controller == 'product' || $_controller == 'category') ) || ($_controller == 'translate' && $task='paste') ){
+	if($manage = vRequest::getCmd('manage',false) or ( ($_controller == 'product' or $_controller == 'category') and ($task == 'save' || $task == 'edit') ) or ($_controller == 'translate' && $task='paste') ){
 	//if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
 		$app = JFactory::getApplication();
 
