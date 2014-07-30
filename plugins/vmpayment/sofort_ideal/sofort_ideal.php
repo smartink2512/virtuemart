@@ -230,6 +230,10 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		if (!$this->selectedThisElement($method->payment_element)) {
 			return FALSE;
 		}
+
+		$this->setInConfirmOrder($cart);
+
+
 		$session = JFactory::getSession();
 		$return_context = $session->getId();
 

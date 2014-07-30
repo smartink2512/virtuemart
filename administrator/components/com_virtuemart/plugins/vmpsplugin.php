@@ -616,7 +616,43 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		return $methodData;
 	}
+	/**
+	 * Get Method Data for a given Payment ID
+	 *
+	 * @author Valérie Isaksen
+	 * @param int $order_number The order Number
+	 * @return  $methodData
+	 */
+	final protected function getDataByOrderNumber ($order_number) {
 
+		$db = JFactory::getDBO ();
+		$q = 'SELECT * FROM `' . $this->_tablename . '` '
+			. 'WHERE `order_number`="'.$db->getEscaped($order_number).'"';
+
+		$db->setQuery ($q);
+		$methodData = $db->loadObject ();
+
+		return $methodData;
+	}
+
+	/**
+	 * Get Method Datas for a given Payment ID
+	 *
+	 * @author Valérie Isaksen
+	 * @param int $order_number The order Number
+	 * @return  $methodData
+	 */
+	final protected function getDatasByOrderNumber ($order_number) {
+
+		$db = JFactory::getDBO ();
+		$q = 'SELECT * FROM `' . $this->_tablename . '` '
+			. 'WHERE `order_number`="'.$db->getEscaped($order_number).'"';
+
+		$db->setQuery ($q);
+		$methodData = $db->loadObjectList ();
+
+		return $methodData;
+	}
 	/**
 	 * Get the total weight for the order, based on which the proper shipping rate
 	 * can be selected.
@@ -1106,7 +1142,20 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $this -> setCartPrices($cart,$cart_prices,$method);
 	}
 
-
+	/**
+	 * setInConfirmOrder
+	 * In VM 2.6.7, we introduced a double order checking.
+	 * Now plugin itself can define if it should be possible to use the same trigger more than one time.
+	 * this should be done at the begin of the trigger
+	 * @author Valérie Isaksen
+	 * @param $cart
+	 */
+	function setInConfirmOrder($cart) {
+		$cart->_inConfirm = true;
+		$cart->setCartIntoSession();
+		session_write_close();
+		session_start();
+	}
 
 
 	public function processConfirmedOrderPaymentResponse ($returnValue, $cart, $order, $html, $payment_name, $new_status = '') {
