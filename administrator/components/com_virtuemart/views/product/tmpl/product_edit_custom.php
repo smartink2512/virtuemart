@@ -78,14 +78,14 @@ defined('_JEXEC') or die('Restricted access');
 							}
 
 						} else if($customfield->virtuemart_product_id==$this->product->product_parent_id){
-							$titel = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED');
+							$titel = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED').'<br/>';
 						}
 
 						if(!empty($titel)){
-							$text = ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler,$checkValue).' o:'.VmHtml::checkbox('field['.$i.'][override]',$customfield->override,$checkValue);
+							$text = '<span style="white-space: nowrap;" > d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler,$checkValue).' o:'.VmHtml::checkbox('field['.$i.'][override]</span>',$customfield->override,$checkValue);
 						}
 						$tables['fields'] .= '<tr class="removable">
-							<td><span >'.$titel.$text.vmText::_($customfield->custom_title).'</span></td>
+							<td><span >'.$titel.$text.'<br />'.vmText::_($customfield->custom_title).'</span></td>
 							<td>'.$customfield->display.'</td>
 							<td>
 								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.vmText::_($this->fieldTypes[$customfield->field_type]).

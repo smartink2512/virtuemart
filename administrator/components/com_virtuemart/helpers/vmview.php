@@ -180,9 +180,9 @@ class VmView extends JViewLegacy {
 	function addStandardEditViewCommands($id = 0,$object = null) {
         $view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
-        if (vRequest::getCmd('tmpl') =='component' ) {
+        //if (vRequest::getCmd('tmpl') =='component' ) {
             if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
-        }
+       	//}
 		//else {
             // 		vRequest::setVar('hidemainmenu', true);
 			JToolBarHelper::divider();
@@ -194,12 +194,16 @@ class VmView extends JViewLegacy {
 			self::showHelp();
 			self::showACLPref($view);
 	//	}
+		$wait = '';
+		//if(JFactory::getApplication()->isSite()){
+			$wait = 'alert(\''. vmText::_('COM_VIRTUEMART_PROCESSING') .'\');';
+		//}
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
-
 		$j = "
 //<![CDATA[
 	Joomla.submitbutton=function(a){
+
 		var options = { path: '/', expires: 2}
 		if (a == 'apply') {
 			var idx = jQuery('#tabs li.current').index();
@@ -210,10 +214,13 @@ class VmView extends JViewLegacy {
 		jQuery( '#media-dialog' ).remove();
 		form = document.getElementById('adminForm');
 		form.task.value = a;
-		form.option.value = 'com_virtuemart';
 		form.submit();
 
+		//jQuery.delay(1000);
+		".$wait."
+
 		//Joomla.submitform(a,form);
+		return false;
 	};
 //]]>
 	" ;
@@ -397,7 +404,7 @@ class VmView extends JViewLegacy {
 		'. JHtml::_( 'form.token' );
 	}
 
-	static function getToolbar($vmView) {
+/*	static function getToolbar($vmView) {
 
 		// add required stylesheets from admin template
 		$document    = JFactory::getDocument();
@@ -417,13 +424,13 @@ class VmView extends JViewLegacy {
 		$html = '<div class="toolbar-list" id="toolbar">';
 		$html .= '<ul>';
 		$html .= '<li id="toolbar-save" class="button">';
-		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'save\')" >
+		$html .= '<a class="toolbar" onclick="Virtuemart.submitbutton(event,\'save\')" >
 <span class="icon-32-save"> </span>
 		'.vmText::_('COM_VIRTUEMART_SAVE').'
 </a>';
 		$html .= '</li>';
 		$html .= '<li id="toolbar-cancel" class="button">';
-		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'cancel\')" >
+		$html .= '<a class="toolbar" onclick="Virtuemart.submitbutton(event,\'cancel\')" >
 <span class="icon-32-cancel"> </span>
 		'.vmText::_('COM_VIRTUEMART_CANCEL').'
 </a>';
@@ -433,7 +440,7 @@ class VmView extends JViewLegacy {
 		$html .= '</div>';
 		return $html;
 
-	}
+	}*/
 
 	/**
 	 * Additional grid function for custom toggles

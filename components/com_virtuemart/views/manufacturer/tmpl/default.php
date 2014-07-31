@@ -24,7 +24,7 @@ $iColumn = 1;
 $iManufacturer = 1;
 
 // Calculating Categories Per Row
-$manufacturerPerRow = 3;
+$manufacturerPerRow = VmConfig::get ('categories_per_row', 3);
 if ($manufacturerPerRow != 1) {
 	$manufacturerCellWidth = ' width'.floor ( 100 / $manufacturerPerRow );
 } else {
