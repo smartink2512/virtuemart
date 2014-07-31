@@ -783,14 +783,14 @@ class vmrouterHelper {
 			$category->itemId = 0;
 			$menuCatid = 0 ;
 			$ismenu = false ;
-
+			$catModel = VmModel::getModel('category');
 			// control if category is joomla menu
 			if (isset($this->menu['virtuemart_category_id'])) {
 				if (isset( $this->menu['virtuemart_category_id'][$virtuemart_category_id])) {
 					$ismenu = true;
 					$category->itemId = $this->menu['virtuemart_category_id'][$virtuemart_category_id] ;
 				} else {
-					$CatParentIds = $this->getCategoryRecurse($virtuemart_category_id,0) ;
+					$CatParentIds = $catModel->getCategoryRecurse($virtuemart_category_id,0) ;
 					/* control if parent categories are joomla menu */
 					foreach ($CatParentIds as $CatParentId) {
 						// No ? then find the parent menu categorie !
@@ -822,16 +822,19 @@ class vmrouterHelper {
 		static $categoryNamesCache = array();
 		$strings = array();
 		$db = JFactory::getDBO();
-		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
+
+		$parents_id = array_reverse(VmModel::getModel('category')->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
 
 		foreach ($parents_id as $id ) {
 			if(!isset($categoryNamesCache[$id])){
+
 				$q = 'SELECT `slug` as name
-					FROM  `#__virtuemart_categories_'.$this->vmlang.'`
+					FROM  `#__virtuemart_categories_'.VmConfig::$vmlang.'`
 					WHERE  `virtuemart_category_id`='.(int)$id;
 
 				$db->setQuery($q);
 				$cslug = $db->loadResult();
+
 				$categoryNamesCache[$id] = $cslug;
 				$strings[] = $cslug;
 			} else {
@@ -848,25 +851,8 @@ class vmrouterHelper {
 
 
 	}
-	/* Get parents of category*/
-	public function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
-		static $idsArr = array();
-		if ($first==true) $idsArr = array();
 
-		$db			= JFactory::getDBO();
-		$q = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
-				FROM  #__virtuemart_category_categories AS `xref`
-				WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;
-		$db->setQuery($q);
-		$ids = $db->loadObject();
-		if (isset ($ids->child)) {
-			$idsArr[] = $ids->child;
-			if($ids->parent != 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
-				$this->getCategoryRecurse($ids->parent,$catMenuId,false);
-			}
-		}
-		return $idsArr ;
-	}
+
 	/* return id of categories
 	 * $names are segments
 	 * $virtuemart_category_ids is joomla menu virtuemart_category_id

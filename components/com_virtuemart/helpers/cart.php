@@ -1143,9 +1143,9 @@ class VirtueMartCart {
 
 			//We set this in the trigger of the plugin. so old plugins keep the old behaviour
 			//$this->_inConfirm = true;
-			$this->setCartIntoSession();
-			session_write_close();
-			session_start();
+			//$this->setCartIntoSession();
+			//session_write_close();
+			//session_start();
 
 			$orderModel = VmModel::getModel('orders');
 

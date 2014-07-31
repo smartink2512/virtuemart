@@ -650,30 +650,43 @@ class VirtueMartModelCategory extends VmModel {
 
 	var $categoryRecursed = 0;
 
-	function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
+	function getCategoryRecurse($virtuemart_category_id,$catMenuId,$ids=true ) {
 		static $idsArr = array();
-		if($first) {
-			$idsArr = array();
-			$this->categoryRecursed = 0;
-		} else if($this->categoryRecursed>10){
-			vmWarn('Stopped getCategoryRecurse after 10 rekursions');
-			return $idsArr;
+
+		//The root has no parents
+		if(empty($virtuemart_category_id)){
+			return array();
 		}
 
-		$db = JFactory::getDBO();
-		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
+		$hash = $virtuemart_category_id.'c'.$catMenuId;
+
+		if (isset($idsArr[$hash])){
+			return $idsArr[$hash];
+		} else {
+			if($ids and !is_array($ids)){
+				$ids = array();
+				$this->categoryRecursed = 0;
+			} else if($this->categoryRecursed>10){
+				vmWarn('Stopped getCategoryRecurse after 10 rekursions');
+				return $idsArr[$hash];
+			}
+
+			$db = JFactory::getDBO();
+			$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
 			FROM  `#__virtuemart_category_categories` AS `xref`
 			WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;
-		$db->setQuery($q);
-		if (!$ids = $db->loadObject()) {
-			return $idsArr;
+			$db->setQuery($q);
+			if ($parent = $db->loadObject()) {
+				if ($parent->child) $ids[] = $parent->child;
+				if($parent->parent !== 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $parent->parent) {
+					$this->categoryRecursed++;
+					$this->getCategoryRecurse($parent->parent,$catMenuId,$ids);
+				}
+			}
 		}
-		if ($ids->child) $idsArr[] = $ids->child;
-		if($ids->child != 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
-			$this->categoryRecursed++;
-			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
-		}
-		return $idsArr;
+		$idsArr[$hash] = $ids;
+
+		return $idsArr[$hash];
 	}
 
 	/**
