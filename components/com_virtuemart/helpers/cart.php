@@ -534,6 +534,7 @@ class VirtueMartCart {
 								$customData = (string)preg_replace('#^\'#si','',$value);
 							}
 						}
+						$customProductDataTmp[$customfield->virtuemart_custom_id]=array();
 						$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
 					}
 					else if(isset($customProductData[$customfield->virtuemart_custom_id])) {

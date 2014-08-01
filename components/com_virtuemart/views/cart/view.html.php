@@ -290,16 +290,14 @@ class VirtueMartViewCart extends VmView {
 
 	private function lSelectPayment() {
 
-		$payment_not_found_text='';
-		$payments_payment_rates=array();
-		//
-		$tmp = 1;
-		$this->assignRef('found_payment_method', $tmp);
+		$this->payment_not_found_text='';
+		$this->payments_payment_rates=array();
+
+		$this->found_payment_method = 0;
 		$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
 
-		$paymentplugins_payments = array();
+		$this->paymentplugins_payments = array();
 		if (!$this->checkPaymentMethodsConfigured()) {
-			$this->assignRef('payments_payment_rates',$paymentplugins_payments);
 			return;
 		}
 
@@ -307,15 +305,14 @@ class VirtueMartViewCart extends VmView {
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
 
-		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
-		// if no payment defined
-		$found_payment_method =count($paymentplugins_payments);
+		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$this->paymentplugins_payments));
 
-		if (!$found_payment_method) {
+		$this->found_payment_method =count($this->paymentplugins_payments);
+		if (!$this->found_payment_method) {
 			$link=''; // todo
-			$payment_not_found_text = vmText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'" rel="nofollow">'.$link.'</a>');
+			$this->payment_not_found_text = vmText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'" rel="nofollow">'.$link.'</a>');
 		}
-		if ($found_payment_method== 0 AND empty($this->cart->BT))  {
+		if ($this->found_payment_method == 0 AND empty($this->cart->BT))  {
 			$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				vmInfo($redirectMsg);
@@ -323,11 +320,8 @@ class VirtueMartViewCart extends VmView {
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $redirectMsg);
 			}
-
 		}
-		$this->payment_not_found_text = $payment_not_found_text;
-		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
-		$this->assignRef('found_payment_method', $found_payment_method);
+
 	}
 
 	private function getTotalInPaymentCurrency() {
