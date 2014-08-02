@@ -115,7 +115,11 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 				$post_variables['INVNUM'] = $this->order->order_number;
 			}
 		}
-		$post_variables['IPADDRESS'] = ($_SERVER['REMOTE_ADDR'] == '::1') ? '127.0.0.1' : $_SERVER['REMOTE_ADDR'];
+
+		$IP=$this->getRemoteIPAddress();
+
+
+		$post_variables['IPADDRESS'] = ($IP == '::1') ? '127.0.0.1' : $IP;
 
 		return $post_variables;
 	}
