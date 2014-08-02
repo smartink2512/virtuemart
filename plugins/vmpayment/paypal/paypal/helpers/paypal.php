@@ -635,10 +635,11 @@ class PaypalHelperPaypal {
 			$this->debugLog($paypal_iplist, 'checkPaypalIps PRODUCTION', 'debug', false);
 
 		}
-		$this->debugLog($_SERVER['REMOTE_ADDR'], 'checkPaypalIps REMOTE ADDRESS', 'debug', false);
+		$IP=$this->getRemoteIPAddress();
+		$this->debugLog($IP, 'checkPaypalIps REMOTE ADDRESS', 'debug', false);
 
 		//  test if the remote IP connected here is a valid IP address
-		if (!in_array($_SERVER['REMOTE_ADDR'], $paypal_iplist)) {
+		if (!in_array($IP, $paypal_iplist)) {
 
 			$text = "Error with REMOTE IP ADDRESS = " . $_SERVER['REMOTE_ADDR'] . ".
                         The remote address of the script posting to this notify script does not match a valid PayPal IP address\n
@@ -648,6 +649,21 @@ class PaypalHelperPaypal {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get IP address in enviroment with reverse proxy (squid, ngnix, varnish,....)
+	 * @return mixed
+	 */
+	function getRemoteIPAddress() {
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {  //check ip from share internet
+			$IP=$_SERVER['HTTP_CLIENT_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {  //to check ip is pass from proxy
+			$IP=$_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$IP=$_SERVER['REMOTE_ADDR'];
+		}
+		return $IP;
 	}
 
 	protected function validateIpnContent ($paypal_data) {
