@@ -17,7 +17,6 @@
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/paypal/paypal/fields">
                 <field type="vmtitle" class="paypal_title" default="VMPAYMENT_PAYPAL_PAYMENT_TITLE"
                        description="VMPAYMENT_PAYPAL_REGISTER_DESC"/>
-                <field type="spacer" default="" level="level1"/>
 
                 <field type="paypaljs" default=""/>
                 <field class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_BASIC_PARAMS"/>
@@ -29,7 +28,7 @@
                     <option value="api">VMPAYMENT_PAYPAL_PRODUCTS_API</option>
                     <option value="hosted">VMPAYMENT_PAYPAL_PRODUCTS_HOSTED</option>
                 </field>
-                <field class="sandbox" name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SHOP_MODE"
+                <field class="" name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SHOP_MODE"
                        description="VMPAYMENT_PAYPAL_SHOP_MODE_DESC">
                     <option value="0">VMPAYMENT_PAYPAL_PRODUCTION</option>
                     <option value="1">VMPAYMENT_PAYPAL_SANDBOX</option>

@@ -48,7 +48,7 @@ class JFormFieldVmtitle extends JFormField {
 	protected function getInput()
 	{
 		if (empty($this->element['description'])) {
-			//return '';
+			 return '';
 		}
 
 		$description = (string)$this->element['description'];
