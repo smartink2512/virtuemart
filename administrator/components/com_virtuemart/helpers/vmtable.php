@@ -249,7 +249,7 @@ class VmTable extends JTable {
 					$item = implode('=', $item);
 					$item = json_decode($item);
 
-					if (isset($item) && isset($varsToPushParam[$key][1])) {
+					if ($item != null && isset($varsToPushParam[$key][1])) {
 						$obj->$key = $item;
 						vmdebug('bindParameterable '.$key,$varsToPushParam[$key]);
 					}
