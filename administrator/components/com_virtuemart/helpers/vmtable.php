@@ -247,9 +247,9 @@ class VmTable extends JTable {
 					unset($item[0]);
 
 					$item = implode('=', $item);
-
+					$item = json_decode($item);
 					if (!empty($item) && isset($varsToPushParam[$key][1])) {
-						$obj->$key = json_decode($item);
+						$obj->$key = $item;
 					}
 				}
 
@@ -282,9 +282,9 @@ class VmTable extends JTable {
 					unset($item[0]);
 
 					$item = implode('=', $item);
-
+					$item = json_decode($item);
 					if (!empty($item) && isset($varsToPushParam[$key][1])) {
-						$obj[$key] = json_decode($item);
+						$obj[$key] = $item;
 					}
 				}
 			} else {

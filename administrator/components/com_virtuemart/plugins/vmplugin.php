@@ -141,6 +141,14 @@ abstract class vmPlugin extends JPlugin {
 		return shopfunctions::display3rdInfo($this->_name,$intro,$developer,$logolink,$contactlink,$manlink);
 	}
 
+	/**
+	 * This function gets the parameters of a plugin by an xml file.
+	 * This is used for the configuration GUI in the BE.
+	 * Attention: the xml Params must be always a subset of the varsToPushParams declared in the constructor
+	 * @param $xmlFile
+	 * @param $name
+	 * @return array
+	 */
 	static public function getVarsToPushByXML ($xmlFile,$name){
 		$data = array();
 

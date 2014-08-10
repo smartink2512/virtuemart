@@ -206,34 +206,35 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 	}
 
+
 	static function bindCustomEmbeddedFieldParams(&$obj,$fieldtype){
 
 		//vmdebug('bindCustomEmbeddedFieldParams begin',$obj);
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-		$obj->_varsToPushParam = VirtueMartModelCustom::getVarsToPush($fieldtype);
 
-		$obj ->_xParams = 'custom_params';
-		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
-		//vmdebug('bindCustomEmbeddedFieldParams middle',$obj);
-		$obj ->_xParams = 'customfield_params';
-		if(!isset($obj -> customfield_params)) $obj -> customfield_params = '';
-		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
-		//vmdebug('bindCustomEmbeddedFieldParams end',$obj);
-	}
-
-	static function bindParameterableByFieldType(&$table){
-
-		if ($table->field_type == 'E') {
+		if ($obj->field_type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
-			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
+			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$obj));
+			if(!empty($obj->_varsToPushParam)){
+				if(empty($obj->_varsToPushParamCustom)) $obj->_varsToPushParamCustom = $obj->_varsToPushParam;
+				if(empty($obj->_varsToPushParamCustomField)) $obj->_varsToPushParamCustomField = $obj->_varsToPushParam;
+			}
+		} else {
+			$obj->_varsToPushParamCustom = VirtueMartModelCustom::getVarsToPush($fieldtype);
+			$obj->_varsToPushParamCustomField = $obj->_varsToPushParamCustom;
 		}
 
-		if(!empty($table->_varsToPushParam)){
-			VmTable::bindParameterable($table,$table->_xParams,$table->_varsToPushParam);
+		if(!empty($obj->_varsToPushParam)){
+			$obj ->_xParams = 'custom_params';
+			VmTable::bindParameterable($obj,$obj->_xParams,$obj->_varsToPushParamCustom);
+
+			$obj ->_xParams = 'customfield_params';
+			VmTable::bindParameterable($obj,$obj->_xParams,$obj->_varsToPushParamCustomField);
 		}
 
 	}
+
 
 	/**
 	 *
