@@ -195,9 +195,9 @@ class VmView extends JViewLegacy {
 			self::showACLPref($view);
 	//	}
 		$wait = '';
-		//if(JFactory::getApplication()->isSite()){
+		if(JFactory::getApplication()->isSite()){
 			$wait = 'alert(\''. vmText::_('COM_VIRTUEMART_PROCESSING') .'\');';
-		//}
+		}
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
 		$j = "

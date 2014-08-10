@@ -235,10 +235,10 @@ class VmTable extends JTable {
 
 		if(empty($varsToPushParam)) return;
 		//$paramFields = $obj->$xParams;
-		//vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$varsToPushParam);
+
 		if(is_object($obj)){
 			if (!empty($obj->$xParams)) {
-
+				//vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$obj->$xParams,$varsToPushParam);
 				$params = explode('|', $obj->$xParams);
 				foreach ($params as $item) {
 
@@ -248,9 +248,14 @@ class VmTable extends JTable {
 
 					$item = implode('=', $item);
 					$item = json_decode($item);
-					if (!empty($item) && isset($varsToPushParam[$key][1])) {
+
+					if (isset($item) && isset($varsToPushParam[$key][1])) {
 						$obj->$key = $item;
+						vmdebug('bindParameterable '.$key,$varsToPushParam[$key]);
 					}
+					//else {
+					//	Unsolicited Parameter
+					//}
 				}
 
 			} else {
@@ -283,7 +288,7 @@ class VmTable extends JTable {
 
 					$item = implode('=', $item);
 					$item = json_decode($item);
-					if (!empty($item) && isset($varsToPushParam[$key][1])) {
+					if (isset($item) && isset($varsToPushParam[$key][1])) {
 						$obj[$key] = $item;
 					}
 				}

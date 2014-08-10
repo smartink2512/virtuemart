@@ -164,9 +164,18 @@ abstract class vmPlugin extends JPlugin {
 						if ($param->_name = "params") {
 							if ($children = $param->_children) {
 								foreach ($children as $child) {
-									if (isset($child->_attributes['name'])) {
-										$data[$child->_attributes['name']] = array('', 'char');
-										$result = TRUE;
+									if (!empty($child->_attributes['name'])) {
+										$fieldname = (string)$child->_attributes['name'];
+										$private = false;
+										if(strlen($fieldname)>1){
+											if(substr($fieldname,0,2)=='__'){
+												$private = true;
+											}
+										}
+
+										if(!$private){
+											$data[$child->_attributes['name']] = array('', 'char');
+										}
 									}
 								}
 							}
@@ -177,9 +186,20 @@ abstract class vmPlugin extends JPlugin {
 					$fieldSets = $form->getFieldsets();
 					foreach ($fieldSets as $name => $fieldSet) {
 						foreach ($form->getFieldset($name) as $field) {
-							// todo : type?
-							$type='char';
-							$data[(string)$field->fieldname] = array('',  $type);
+							if(!empty($field->fieldname)){
+								$fieldname = (string)$field->fieldname;
+								$private = false;
+								if(strlen($fieldname)>1){
+									if(substr($fieldname,0,2)=='__'){
+										$private = true;
+									}
+								}
+
+								if(!$private){
+									$type='char';
+									$data[(string)$field->fieldname] = array('',  $type);
+								}
+							}
 						}
 					}
 				}

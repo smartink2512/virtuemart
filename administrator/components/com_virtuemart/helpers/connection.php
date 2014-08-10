@@ -225,7 +225,7 @@ class VmConnector {
 	    }
 	    fclose( $fp );
 
-	    // If didnt get content-lenght, something is wrong, return false.
+	    // If didnt get content-length, something is wrong, return false.
 	    if ( trim($data) == '' ) {
 			vmWarn('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
 			return false;
