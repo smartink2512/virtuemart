@@ -79,17 +79,6 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	}
 
-	static function bindCustomEmbeddedFieldParams(&$obj,$fieldtype){
-		//vmdebug('bindCustomEmbeddedFieldParams begin',$obj);
-		$obj ->_xParams = 'custom_params';
-		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
-		//vmdebug('bindCustomEmbeddedFieldParams middle',$obj);
-		$obj ->_xParams = 'customfield_params';
-		if(!isset($obj -> customfield_params)) $obj -> customfield_params = '';
-		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
-		//vmdebug('bindCustomEmbeddedFieldParams end',$obj);
-	}
-
 	public static function getProductCustomSelectFieldList(){
 
 		$q = 'SELECT c.`virtuemart_custom_id`, c.`custom_parent_id`, c.`virtuemart_vendor_id`, c.`custom_jplugin_id`, c.`custom_element`, c.`admin_only`, c.`custom_title`, c.`show_title` , c.`custom_tip`,
@@ -100,42 +89,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $q;
 	}
 
-/*	function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
-
-		static $_customfields = array();
-		if (array_key_exists ($virtuemart_customfield_id, $_customfields)) {
-			vmdebug('Return cached getCustomEmbeddedProductCustomField');
-			return $_customfields[$virtuemart_customfield_id];
-		}
-		$db= JFactory::getDBO ();
-		$q = 'SELECT * FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` ="' . (int)$virtuemart_customfield_id . '"';
-		$db->setQuery ($q);
-		$field = $db->loadObject ();
-
-		if($field){
-			static $_customProto = array();
-
-			$field->virtuemart_custom_id = (int)$field->virtuemart_custom_id;
-			$field->fpublished = $field->published;
-			unset($field->published);
-
-			if (!array_key_exists ($field->virtuemart_custom_id, $_customProto)) {
-				$q = 'SELECT * FROM `#__virtuemart_customs` WHERE `virtuemart_custom_id` ="' . (int)$field->virtuemart_custom_id . '"';
-				$db->setQuery ($q);
-				$customProto = $db->loadObject ();
-			} else {
-				vmdebug('found cached customPrototype');
-				$customProto = $_customProto[$field->virtuemart_custom_id];
-			}
-
-			if($customProto){
-				$field = (object) array_merge((array) $customProto, (array) $field);
-				$_customfields[$virtuemart_customfield_id] = $field;
-			}
-
-		}
-		return $field;
-	}*/
 
 	function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
 
@@ -251,6 +204,35 @@ class VirtueMartModelCustomfields extends VmModel {
 		} else {
 			return array();
 		}
+	}
+
+	static function bindCustomEmbeddedFieldParams(&$obj,$fieldtype){
+
+		//vmdebug('bindCustomEmbeddedFieldParams begin',$obj);
+		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+		$obj->_varsToPushParam = VirtueMartModelCustom::getVarsToPush($fieldtype);
+
+		$obj ->_xParams = 'custom_params';
+		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
+		//vmdebug('bindCustomEmbeddedFieldParams middle',$obj);
+		$obj ->_xParams = 'customfield_params';
+		if(!isset($obj -> customfield_params)) $obj -> customfield_params = '';
+		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
+		//vmdebug('bindCustomEmbeddedFieldParams end',$obj);
+	}
+
+	static function bindParameterableByFieldType(&$table){
+
+		if ($table->field_type == 'E') {
+			JPluginHelper::importPlugin ('vmcustom');
+			$dispatcher = JDispatcher::getInstance ();
+			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
+		}
+
+		if(!empty($table->_varsToPushParam)){
+			VmTable::bindParameterable($table,$table->_xParams,$table->_varsToPushParam);
+		}
+
 	}
 
 	/**
@@ -986,22 +968,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $modificatorSum;
 	}
 
-	static function bindParameterableByFieldType(&$table, $type){
 
-		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-		$table->_varsToPushParam = VirtueMartModelCustom::getVarsToPush($type);
-
-		if ($table->field_type == 'E') {
-			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
-			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
-		}
-
-		if(!empty($table->_varsToPushParam)){
-			VmTable::bindParameterable($table,$table->_xParams,$table->_varsToPushParam);
-		}
-
-	}
 
 
 

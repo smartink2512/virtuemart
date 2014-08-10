@@ -469,7 +469,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 */
 	function plgVmonShowOrderPrint ($order_number, $method_id) {
-
 		return $this->onShowOrderPrint ($order_number, $method_id);
 	}
 
@@ -478,7 +477,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	}
 
 	function plgVmDeclarePluginParamsShipmentVM3 (&$data) {
-			return $this->declarePluginParams ('shipment', $data);
+		return $this->declarePluginParams ('shipment', $data);
 	}
 
 

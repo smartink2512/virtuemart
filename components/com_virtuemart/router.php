@@ -874,7 +874,12 @@ class vmrouterHelper {
 			//if($pModel->checkIfCached($id, true, false)){  vmdebug('Router getProductName found cached'); //takes more sql
 			if(true){
 				$pr = $pModel->getProduct($id, true, false);
-				$productNamesCache[$id] = $pr->slug;
+				if(!$pr or empty($pr->slug)){
+					$productNamesCache[$id] = false;
+				} else {
+					$productNamesCache[$id] = $pr->slug;
+				}
+
 			} else {
 				$db = JFactory::getDBO();
 				$query = 'SELECT `slug` FROM `#__virtuemart_products_'.VmConfig::$vmlang.'`  ' .

@@ -865,17 +865,15 @@ class VirtueMartModelProduct extends VmModel {
 		$app = JFactory::getApplication ();
 		if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 			vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
-			$_products[$productKey] = FALSE;
+			$_products[$productKey] = false;
 		} else {
 
 			$stockhandle = VmConfig::get('stockhandle', 'none');
 			$product_available_date = substr($child->product_available_date,0,10);
 			$current_date = date("Y-m-d");
 			if (($child->product_in_stock - $child->product_ordered) < 1) {
-
-
 				if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
-					$child->availability = avmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHtml::_('date', $child->product_available_date, vmText::_('DATE_FORMAT_LC4'));
+					$child->availability = vmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHtml::_('date', $child->product_available_date, vmText::_('DATE_FORMAT_LC4'));
 				} else if ($stockhandle == 'risetime' and VmConfig::get('rised_availability') and empty($child->product_availability)) {
 					$child->availability =  (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability'))) ? JHtml::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')) : vmText::_(VmConfig::get('rised_availability'));
 
@@ -892,7 +890,12 @@ class VirtueMartModelProduct extends VmModel {
 			$_products[$productKey] = $child;
 		}
 
-		return clone($_products[$productKey]);
+		if(!$_products[$productKey]){
+			return false;
+		} else {
+			return clone($_products[$productKey]);
+		}
+
 	}
 
 	public function loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front){
