@@ -95,7 +95,7 @@ class VirtueMartViewCart extends VmView {
 
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
-		} else if ($layoutName == 'default') {
+		} else  {
 			VmConfig::loadJLang('com_virtuemart_shoppers', TRUE);
 
 			$cart->prepareCartViewData();
