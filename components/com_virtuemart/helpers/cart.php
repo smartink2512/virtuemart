@@ -49,14 +49,14 @@ class VirtueMartCart {
 	var $automaticSelectedPayment  = false;
 	var $BT = 0;
 	var $ST = 0;
-	var $tosAccepted = null;
+	var $tosAccepted = false;
 	var $customer_comment = '';
 	var $couponCode = '';
 	var $order_language = '';
 	var $cartData = null;
 	var $lists = null;
 	var $order_number=null; // added to solve emptying cart for payment notification
-	var $virtuemart_order_id = null;
+	var $virtuemart_order_id = false;
 	var $customer_number=null;
 	// 	var $user = null;
 // 	var $prices = null;

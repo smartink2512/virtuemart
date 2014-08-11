@@ -179,7 +179,7 @@ class VirtueMartModelCustom extends VmModel {
 
 	public function store(&$data){
 
-		if(!empty($data['params'])){
+		if(!empty($data['params']) and is_array($data['params'])){
 			foreach($data['params'] as $k=>$v){
 				$data[$k] = $v;
 			}

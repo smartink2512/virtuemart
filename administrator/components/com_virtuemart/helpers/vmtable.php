@@ -248,10 +248,14 @@ class VmTable extends JTable {
 					$key = $item[0];
 					unset($item[0]);
 
-					$item = implode('=', $item);
-
-					if (!empty($item) && isset($varsToPushParam[$key][1])) {
-						$obj->$key = json_decode($item);
+					if(isset($varsToPushParam[$key][1])) {
+						$item = implode('=', $item);
+						$item = json_decode($item);
+						if ($item != null){
+							$obj->$key = $item;
+						} else {
+							//vmdebug('bindParameterable $item ==null '.$key,$varsToPushParam[$key]);
+						}
 					}
 				}
 
@@ -283,10 +287,12 @@ class VmTable extends JTable {
 					$key = $item[0];
 					unset($item[0]);
 
-					$item = implode('=', $item);
-
-					if (!empty($item) && isset($varsToPushParam[$key][1])) {
-						$obj[$key] = json_decode($item);
+					if (isset($item) && isset($varsToPushParam[$key][1])) {
+						$item = implode('=', $item);
+						$item = json_decode($item);
+						if ($item != null){
+							$obj[$key] = $item;
+						}
 					}
 				}
 			} else {

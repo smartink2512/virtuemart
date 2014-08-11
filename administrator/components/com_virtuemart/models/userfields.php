@@ -194,10 +194,14 @@ class VirtueMartModelUserfields extends VmModel {
 			$type = 'userfield';
   			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_data->userfield_jplugin_id,&$this->_data));
 			// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_data);
+		} // Parse the parameters, if any
+		else {
+			if(!isset($this->_data->params)){
+				$this->_data->params = '';
+			} else {
+				$this->_params->parseParam($this->_data->params);
+			}
 		}
-
-		// Parse the parameters, if any
-		else $this->_params->parseParam($this->_data->params);
 
 		return $this->_data;
 	}
