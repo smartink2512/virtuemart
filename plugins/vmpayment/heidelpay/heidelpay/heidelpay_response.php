@@ -114,19 +114,42 @@ function updateHeidelpay($orderID, $connect) {
 				}				
 			}
 		
-				if($_POST['ACCOUNT_BRAND'] == 'BARPAY')
-						{
-							$comment = '(-'.$_POST['CRITERION_BARPAY_PAYCODE_URL'].'-)
-									</b><br />
-									</b><br />
-									Drucken Sie den Barcode aus oder speichern Sie diesen auf Ihrem mobilen Endger&auml;t. 
-									Gehen Sie nun zu einer Kasse der 18.000 Akzeptanzstellen in Deutschland und bezahlen 
-									Sie ganz einfach in bar. In dem Augenblick, wenn der Rechnungsbetrag beglichen wird, 
-									erh&auml;lt der Online-H&auml;ndler die Information &uuml;ber den Zahlungseingang.Die bestellte Ware 
-									oder Dienstleistung geht umgehend in den Versand
-								';
-						}
+			if($_POST['ACCOUNT_BRAND'] == 'BARPAY'){
+				$comment = '(-'.$_POST['CRITERION_BARPAY_PAYCODE_URL'].'-)
+					</b><br />
+					</b><br />
+					Drucken Sie den Barcode aus oder speichern Sie diesen auf Ihrem mobilen Endger&auml;t.
+					Gehen Sie nun zu einer Kasse der 18.000 Akzeptanzstellen in Deutschland und bezahlen
+					Sie ganz einfach in bar. In dem Augenblick, wenn der Rechnungsbetrag beglichen wird,
+					erh&auml;lt der Online-H&auml;ndler die Information &uuml;ber den Zahlungseingang.Die bestellte Ware
+					oder Dienstleistung geht umgehend in den Versand';
+			}
+		}elseif($paymentCode[0] == "DD"){
+			if(strtoupper ($_POST['CRITERION_LANG']) == 'DE'){
+				$identCreditor = '';
+				if($_POST['IDENTIFICATION_CREDITOR_ID'] != ''){
+					$identCreditor = 'und die Gl&auml;ubiger ID: '.$_POST['IDENTIFICATION_CREDITOR_ID'].'<br />';
+				}
+				$comment = 'Der Betrag wird in den n&auml;chsten Tagen von folgendem Konto abgebucht:<br /><br />
+				IBAN: '.$_POST['ACCOUNT_IBAN'].'<br />
+				BIC: '.$_POST['ACCOUNT_BIC'].'<br />
+				Die Abbuchung enth&auml;lt die Mandatsreferenz-ID: '.$_POST['ACCOUNT_IDENTIFICATION'].'<br />
+				'.$identCreditor.'
+				<br />Bitte sorgen Sie f&uuml;r ausreichende Deckung auf dem entsprechenden Konto.';
+			}else{
+				$identCreditor = '';
+				if($_POST['IDENTIFICATION_CREDITOR_ID'] != ''){
+					$identCreditor = 'and the creditor identifier: '.$_POST['IDENTIFICATION_CREDITOR_ID'].'<br />';
+				}
+				$comment = 'The amount will be debited from this account within the next days:<br /><br />
+				IBAN: '.$_POST['ACCOUNT_IBAN'].'<br />
+				BIC: '.$_POST['ACCOUNT_BIC'].'<br />
+				The booking contains the mandate reference ID: '.$_POST['ACCOUNT_IDENTIFICATION'].'<br />
+				'.$identCreditor.'
+				<br />Please ensure that there will be sufficient funds on the corresponding account.';
+			}
 		}
+		
 		if (!empty($row->virtuemart_order_id)) {
 			$sql = "INSERT ".$connect->dbprefix."virtuemart_payment_plg_heidelpay SET " .
 					"virtuemart_order_id			= \"".mysql_real_escape_string($row->virtuemart_order_id). "\"," .
@@ -147,7 +170,6 @@ function updateHeidelpay($orderID, $connect) {
 		}
 	}
 }
-
 
 $returnvalue=$_POST['PROCESSING_RESULT'];
 if (!empty($returnvalue)){

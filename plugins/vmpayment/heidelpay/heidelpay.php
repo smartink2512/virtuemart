@@ -19,7 +19,7 @@ if (!class_exists ('vmPSPlugin')) {
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	public static $_this = FALSE;
-	protected $version = '14.05.26';
+	protected $version = '14.07.14';
 
 	function __construct (& $subject, $config) {
 		//if (self::$_this)
@@ -127,8 +127,6 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		if (!$this->selectedThisElement ($method->payment_element)) {
 			return FALSE;
 		}
-		$this->setInConfirmOrder($cart);
-
 		$session = JFactory::getSession ();
 		$return_context = $session->getId ();
 		$this->_debug = $method->HEIDELPAY_DEBUG;
@@ -219,7 +217,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			$toCheck = array('last_name', 'first_name', 'middle_name', 'phone_1', 'phone_2', 'fax', 'address_1', 'address_2', 'city', 'virtuemart_state_id', 'virtuemart_country_id', 'zip');
 
 			$bsError = false;
-
+			
 			foreach($toCheck as $val){
 				if(isset($order['details']['ST']->$val)){
 					if($order['details']['ST']->$val != $order['details']['BT']->$val){
@@ -230,11 +228,11 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 				}
 			}
 
-			if($bsError){
+			if($bsError){			
 				$msg = JText::_('VMPAYMENT_HEIDELPAY_TECHNICAL_ERROR')."<br />".
 					JText::_('VMPAYMENT_HEIDELPAY_BILLSAFE_ERROR')."<br />";
-				$app = JFactory::getApplication();
-				$app->redirect('index.php?option=com_virtuemart&page=shop.cart', $msg);
+				$app = JFactory::getApplication();				
+				$app->redirect('index.php?option=com_virtuemart&view=cart', $msg);
 			}
 			$params['PAYMENT.CODE']	= "IV.PA";
 			$params['ACCOUNT.BRAND']	= "BILLSAFE";
@@ -258,7 +256,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		* Add debug informations for merchiant support
 		*/
 		$params['SHOP.TYPE'] = 'VirtueMart '.VmConfig::getInstalledVersion();
-		$params['SHOPMODUL.VERSION'] = $this->version;
+		$params['SHOPMODULE.VERSION'] = $this->version;
 
 		$params['CRITERION.PAYMENT_NAME'] = JText::_ ('VMPAYMENT_HEIDELPAY_' . $method->HEIDELPAY_PAYMENT_TYPE);
 		$params['CRITERION.PAYMENT_NAME'] = strip_tags($params['CRITERION.PAYMENT_NAME']);
@@ -479,6 +477,24 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {
 		return $this->setOnTablePluginParams ($name, $id, $table);
+	}
+
+	public function plgVmOnUpdateOrderPayment ($_formData) {
+		return NULL;
+	}
+
+	public function plgVmOnUpdateOrderLine ($_formData) {
+		return NULL;
+	}
+
+
+	public function plgVmOnEditOrderLineBE ($_orderId, $_lineId) {
+		return NULL;
+	}
+
+
+	public function plgVmOnShowOrderLineFE ($_orderId, $_lineId) {
+		return NULL;
 	}
 
 

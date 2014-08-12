@@ -119,7 +119,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 			</div>
 			<div class="clear"></div>
 		</div>
-
+		<?php echo shopFunctionsF::getLoginForm ($this->cart, FALSE); ?>
 		<div id="amazonAddressBookWalletWidgetDiv">
 			<div id="amazonAddressBookWidgetDiv" class="width50 floatleft"></div>
 
@@ -128,6 +128,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 
 		<div class="clear"></div>
 		<div id="amazonShipmentsDiv"></div>
+		<div id="amazonCartDiv">
 
 
 		<?php //echo shopFunctionsF::getLoginForm ($this->cart, FALSE);
@@ -146,7 +147,6 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 			$taskRoute = '';
 			$this->readonly_cart=false;
 		}
-
 		?>
 		<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 			<?php
@@ -212,8 +212,8 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 			<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 			<input type='hidden' name='option' value='com_virtuemart'/>
 			<input type='hidden' name='view' value='cart'/>
-			<input type='hidden' name='layout' value='amazon'/>
 		</form>
+	</div>
 	</div>
 
 <?php vmTime('Cart view Finished task ','Start'); ?>

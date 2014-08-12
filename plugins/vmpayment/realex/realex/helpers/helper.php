@@ -957,17 +957,22 @@ class  RealexHelperRealex {
 	function getOrderBEFields () {
 		$showOrderBEFields = array(
 
-			'RESULT'            => 'RESULT',
-			'PASREF'            => 'PASREF',
-			'AUTHCODE'          => 'AUTHCODE',
-			'MESSAGE'           => 'MESSAGE',
-			'TSS'               => 'TSS',
-			'CAVV'              => 'CAVV',
-			'CVNRESULT'         => 'CVNRESULT',
-			'AVSPOSTCODERESULT' => 'AVSPOSTCODERESULT',
-			'DCCCHOICE'         => 'DCCCHOICE',
-			'REALWALLET_CHOSEN' => 'REALWALLET_CHOSEN',
-
+			'RESULT'            => 'result',
+			'PASREF'            => 'pasref',
+			'AUTHCODE'          => 'authcode',
+			'MESSAGE'           => 'message',
+			'TSS'               => 'tss->result',
+			'CAVV'              => 'cavv',
+			'CVNRESULT'         => 'cvnresult',
+			'AVSPOSTCODERESULT' => 'avspostcoderesult',
+			'AVSPOSTCODERESPONSE' => 'avspostcoderesponse',
+			'AVSADDRESSRESPONSE' => 'avsaddressresponse',
+			'DCCCHOICE'         => 'dccchoice',
+			'REALWALLET_CHOSEN' => 'realwallet_chosen',
+			'DCCCARDHOLDERAMOUNT'            => 'dccinfo->dcccardholderamount',
+			'DCCCARDHOLDERCURRENCY'          => 'dccinfo->dcccardholdercurrency',
+			'DCCMERCHANTAMOUNT'              => 'dccinfo->dccmerchantamount',
+			'DCCMERCHANTCURRENCY'            => 'dccinfo->dccmerchantcurrency',
 		);
 
 
@@ -997,6 +1002,7 @@ class  RealexHelperRealex {
 	function getOrderBEFields3DS () {
 		$showOrderBEFields = array(
 			'status' => 'status',
+			'eci' => 'eci',
 		);
 
 
@@ -1038,14 +1044,12 @@ class  RealexHelperRealex {
 			foreach ($showOrderBEFields as $key => $showOrderBEField) {
 				if ($format == "xml") {
 					$showOrderBEField = strtolower($showOrderBEField);
+				} else {
+					$showOrderBEField=$key;
 				}
 				if (isset($data->$showOrderBEField) and !empty($data->$showOrderBEField)) {
 					$key = $prefix . $key;
-					if ($showOrderBEField == 'tss') {
-						$html .= $this->plugin->getHtmlRowBE($key, $data->tss->result);
-					} else {
 						$html .= $this->plugin->getHtmlRowBE($key, $data->$showOrderBEField);
-					}
 				}
 
 			}
@@ -2312,13 +2316,22 @@ class  RealexHelperRealex {
 	 */
 	function obscureSha1hash ($xml) {
 		if (isset($xml->sha1hash)) {
-			$sha1hash = $xml->sha1hash;
-			$sha1hash_length = strlen($sha1hash);
-			$xml->sha1hash = str_repeat("*", $sha1hash_length);
+			$xml->sha1hash = $this->obscureValue($xml->sha1hash);
 		}
 		return $xml;
 	}
 
+	/**
+	 * @param $value
+	 * @return string
+	 */
+	function obscureValue ($value) {
+
+		$value_length = strlen($value);
+		$value = str_repeat("*", $value_length);
+
+		return $value;
+	}
 	/**
 	 * @param $xml_request
 	 * @return bool|mixed

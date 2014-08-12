@@ -66,6 +66,7 @@ class VirtueMartCart {
 	var $STsameAsBT = TRUE;
 	var $productParentOrderable = TRUE;
 	var $_triesValidateCoupon = array();
+	var $layout ;
 
 	private static $_cart = null;
 
@@ -75,6 +76,7 @@ class VirtueMartCart {
 	private function __construct() {
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = false;
+		$this->layout = VmConfig::get('cartlayout','default');
 	}
 
 	/**
@@ -133,6 +135,7 @@ class VirtueMartCart {
 				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
 				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
 				self::$_cart->customer_number						= $sessionCart->customer_number;
+				self::$_cart->layout						        = $sessionCart->layout;
 			}
 
 		}
@@ -262,6 +265,7 @@ class VirtueMartCart {
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 		$sessionCart->customer_number						= $this->customer_number;
+		$sessionCart->layout						        = $this->layout;
 
 		if(!empty($sessionCart->pricesUnformatted)){
 			foreach($sessionCart->pricesUnformatted as &$prices){
@@ -852,12 +856,8 @@ class VirtueMartCart {
 			$this->_confirmDone = true;
 			$this->confirmedOrder();
 		} else {
-			$layoutName = vRequest::getCmd('layout', '');
-			if(!empty($layoutName)){
-				$layoutName = '&layout='.$layoutName;
-			}
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
 
@@ -866,12 +866,8 @@ class VirtueMartCart {
 		$this->checkoutData($redirect);
 
 		if ($this->_dataValidated && $redirect) {
-			$layoutName = vRequest::getCmd('layout', '');
-			if(!empty($layoutName)){
-				$layoutName = '&layout='.$layoutName;
-			}
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 
 	}

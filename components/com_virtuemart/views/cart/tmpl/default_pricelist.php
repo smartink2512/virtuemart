@@ -348,7 +348,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 				<?php echo $this->cart->cartData['shipmentName']; ?>
 	<br/>
 	<?php
-	if (!empty($this->layoutName) and $this->layoutName != 'default_shipment' and !$this->cart->automaticSelectedShipment) {
+	if (!empty($this->layoutName) && $this->layoutName == 'default' && !$this->cart->automaticSelectedShipment)	{
 		if (VmConfig::get('oncheckout_opc', 1)) {
 			$previouslayout = $this->setLayout('select');
 			echo $this->loadTemplate('shipment');
@@ -386,7 +386,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td colspan="<?php echo $readonly_colspan ?>" align="left">
 		<?php echo $this->cart->cartData['paymentName']; ?>
 		<br/>
-		<?php if (!empty($this->layoutName) and $this->layoutName != 'default_payment' and !$this->cart->automaticSelectedPayment) {
+		<?php if (!empty($this->layoutName)    && !$this->cart->automaticSelectedPayment) {
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				$previouslayout = $this->setLayout('select');
 				echo $this->loadTemplate('payment');

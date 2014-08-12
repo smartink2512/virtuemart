@@ -113,6 +113,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelCurrency')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 		}
+		$this->setInConfirmOrder($cart);
 
 		$email_currency = $this->getEmailCurrency($this->_currentMethod);
 
@@ -405,6 +406,9 @@ class plgVmPaymentRealex extends vmPSPlugin {
         <div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="RealexLog_' . $payment->id . '">';
 					if ($payment->realex_fullresponse_format != 'xml') {
 						foreach ($realex_data as $key => $value) {
+							if ($key=='SHA1HASH' OR $key=='SAVED_PMT_DIGITS') {
+								$value = $realexInterface->obscureValue($value);
+							}
 							$html .= ' <b>' . $key . '</b>:&nbsp;' . $value . '<br />';
 						}
 					} else {
