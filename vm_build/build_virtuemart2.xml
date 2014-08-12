@@ -131,7 +131,6 @@
     <target name="create_package_folder">
         <echo msg="Create Package destination directory"/>
         <mkdir dir="${package.folder}"/>
-        <mkdir dir="${package.folder}"/>
     </target>
 
 
@@ -144,7 +143,6 @@
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
         <exclude name="**/vm_build/**"/>
-        <exclude name="**/realex/**"/>
         <exclude name="**/amazon/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
@@ -258,7 +256,6 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-        <exclude name="**/realex/**"/>
         <exclude name="**/amazon/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
