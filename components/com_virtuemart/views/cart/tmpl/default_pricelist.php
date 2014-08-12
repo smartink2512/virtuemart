@@ -113,7 +113,7 @@
 	<th
 		align="center"
 		width="60px"><?php echo JText::_ ('COM_VIRTUEMART_CART_PRICE') ?></th>
-	<?php if (!$this->readonly_cart) { ?>
+	<?php if (!$this->cart->_dataValidated) { ?>
 	<th
 		align="right"
 		width="140px"><?php echo JText::_ ('COM_VIRTUEMART_CART_QUANTITY') ?>
@@ -160,7 +160,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 		// 					echo $prow->salesPrice ;
 		?>
 	</td>
-	<?php if (!$this->readonly_cart) { ?>
+	<?php if (!$this->cart->_dataValidated) { ?>
 	<td align="right"><?php
 //				$step=$prow->min_order_level;
 				if ($prow->step_order_level)
@@ -221,7 +221,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 	$colspan = 2;
 } ?>
 <?php
-if (isset($this->readonly_cart) and $this->readonly_cart) {
+if ($this->cart->_dataValidated) {
 	$readonly_colspan=3;
 } else {
 	$readonly_colspan=4;
@@ -339,6 +339,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 }
 
 ?>
+<?php if ( VmConfig::get('oncheckout_opc',true) or (!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and !empty($this->cart->virtuemart_shipmentmethod_id))) { ?>
 <tr class="sectiontableentry1" valign="top" >
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
 
@@ -347,7 +348,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 				<?php echo $this->cart->cartData['shipmentName']; ?>
 	<br/>
 	<?php
-	if (!empty($this->layoutName) && ($this->layoutName == 'default' OR $this->layoutName == 'amazon')  && !$this->cart->automaticSelectedShipment) {
+	if (!empty($this->layoutName) and $this->layoutName != 'default_shipment' and !$this->cart->automaticSelectedShipment) {
 		if (VmConfig::get('oncheckout_opc', 1)) {
 			$previouslayout = $this->setLayout('select');
 			echo $this->loadTemplate('shipment');
@@ -373,14 +374,19 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php if($this->cart->pricesUnformatted['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->pricesUnformatted['salesPriceShipment'], FALSE); ?></td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->pricesUnformatted['salesPriceShipment'], FALSE); ?> </td>
 </tr>
-<?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 ) { ?>
+<?php } ?>
+<?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 and
+			( VmConfig::get('oncheckout_opc',true) or
+				( !VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and !empty($this->cart->virtuemart_paymentmethod_id))
+			)
+		) { ?>
 <tr class="sectiontableentry1" valign="top">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
 
 	<td colspan="<?php echo $readonly_colspan ?>" align="left">
 		<?php echo $this->cart->cartData['paymentName']; ?>
 		<br/>
-		<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
+		<?php if (!empty($this->layoutName) and $this->layoutName != 'default_payment' and !$this->cart->automaticSelectedPayment) {
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				$previouslayout = $this->setLayout('select');
 				echo $this->loadTemplate('payment');

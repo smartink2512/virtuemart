@@ -852,9 +852,12 @@ class VirtueMartCart {
 			$this->_confirmDone = true;
 			$this->confirmedOrder();
 		} else {
-			$layoutName = JRequest::getWord('layout', 'default');
+			$layoutName = vRequest::getCmd('layout', '');
+			if(!empty($layoutName)){
+				$layoutName = '&layout='.$layoutName;
+			}
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&layout='.$layoutName, FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
 
@@ -863,9 +866,12 @@ class VirtueMartCart {
 		$this->checkoutData($redirect);
 
 		if ($this->_dataValidated && $redirect) {
-			$layoutName = JRequest::getWord('layout', 'default');
+			$layoutName = vRequest::getCmd('layout', '');
+			if(!empty($layoutName)){
+				$layoutName = '&layout='.$layoutName;
+			}
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&layout='.$layoutName, FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 
 	}
