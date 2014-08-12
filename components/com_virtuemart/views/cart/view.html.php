@@ -196,7 +196,8 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 		// @max: quicknirty
 		//$this->cart->setCartIntoSession(true);
-		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
+		//$this->setLayout($this->cart->layout);
+		shopFunctionsF::setVmTemplate($this, 0, 0, $this->cart->layout);
 
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');

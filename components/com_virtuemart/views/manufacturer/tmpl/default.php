@@ -23,8 +23,8 @@ defined('_JEXEC') or die('Restricted access');
 $iColumn = 1;
 $iManufacturer = 1;
 
-// Calculating Categories Per Row
-$manufacturerPerRow = VmConfig::get ('categories_per_row', 3);
+// Calculating Manufacturers Per Row
+$manufacturerPerRow = VmConfig::get ('manufacturer_per_row', 3);
 if ($manufacturerPerRow != 1) {
 	$manufacturerCellWidth = ' width'.floor ( 100 / $manufacturerPerRow );
 } else {

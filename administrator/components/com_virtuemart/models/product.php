@@ -862,13 +862,15 @@ class VirtueMartModelProduct extends VmModel {
 		$child->quantity = $quantity;
 		$child->addToCartButton = false;
 		if(empty($child->categories)) $child->categories = array();
+		$stockhandle = VmConfig::get('stockhandle', 'none');
+		//vmdebug(' $stockhandle '.$stockhandle.' '.$child->slug,$child->product_in_stock,$child->product_ordered);
 		$app = JFactory::getApplication ();
-		if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
+		if ($app->isSite () and ($stockhandle == 'disableit' or $stockhandle == 'disableit_children') and ($child->product_in_stock - $child->product_ordered) <= 0) {
 			vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
 			$_products[$productKey] = false;
 		} else {
 
-			$stockhandle = VmConfig::get('stockhandle', 'none');
+
 			$product_available_date = substr($child->product_available_date,0,10);
 			$current_date = date("Y-m-d");
 			if (($child->product_in_stock - $child->product_ordered) < 1) {

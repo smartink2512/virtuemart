@@ -84,7 +84,7 @@ JHtml::_ ( 'behavior.modal' );
 
 	    <div class="order-view">
 
-	    <h1><?php echo vmText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></h1>
+	    <h2><?php echo vmText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></h2>
 
 	    <form action="<?php echo JRoute::_( 'index.php', 1, $this->useSSL); ?>" method="post" name="com-login" >
 

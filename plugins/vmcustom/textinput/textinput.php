@@ -159,7 +159,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			return false;
 		}
 		if(empty($table->is_input)){
-
+			vmInfo('COM_VIRTUEMART_CUSTOM_IS_CART_INPUT_SET');
 			$table->is_input = 1;
 			$table->store();
 		}

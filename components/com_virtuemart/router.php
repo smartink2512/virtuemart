@@ -257,11 +257,18 @@ function virtuemartBuildRoute(&$query) {
 
 			break;
 		case 'cart';
-			if ( isset($jmenu['cart']) ) $query['Itemid'] = $jmenu['cart'];
+			if(!isset($query['Itemid'])){
+				if ( isset($jmenu['cart']) ) {
+					$query['Itemid'] = $jmenu['cart'];
+				} else if ( isset($jmenu['virtuemart']) ) {
+					$query['Itemid'] = $jmenu['virtuemart'];
+				}
+			}
+			/*if ( isset($jmenu['cart']) ) $query['Itemid'] = $jmenu['cart'];
 			else {
 				$segments[] = $helper->lang('cart') ;
 				$query['Itemid'] = $jmenu['virtuemart'];
-			}
+			}*/
 
 			break;
 		case 'orders';
@@ -381,7 +388,7 @@ function virtuemartParseRoute($segments) {
 
 	// $orderby = explode(',',$segments[0],2);
 	$orderby = explode(',',end($segments),2);
-	if (  $helper->compareKey($orderby[0] , 'by') ) {
+	if ( count($orderby) == 2 and $helper->compareKey($orderby[0] , 'by') ) {
 		$vars['orderby'] = $helper->getOrderingKey($orderby[1]) ;
 		// array_shift($segments);
 		array_pop($segments);

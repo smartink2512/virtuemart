@@ -37,6 +37,7 @@
 	width:120px;
 	height:24px;
 	background:url("../images/color-stars.png") repeat-x scroll 0 bottom transparent;
+	margin: 0 auto 15px;
 }
 .ratingbox div, .ratingbox span {
 	background:url(../images/color-stars.png) repeat-x;
@@ -44,6 +45,14 @@
 	width:1%;
 	height:24px;
 	position:absolute;
+}
+
+.browse-view .ratingbox{
+    margin: 0 auto;
+}
+
+.spacer-buy-area .ratingbox {
+    margin-bottom:15px;
 }
 
 div.vote, span.vote {display:block;margin-bottom:4px;float:right;margin-left: 130px;}
@@ -68,4 +77,10 @@ div.vote, span.vote {display:block;margin-bottom:4px;float:right;margin-left: 13
 .stars-green{background-position:0 -108px !important;}
 .stars-blue{background-position:0 -162px !important;}
 .stars-purple{background-position:0 -216px !important;}
+
+@media (max-width: 768px){
+	.spacer-buy-area .ratingbox {
+      margin: 0 auto 15px;
+    }
+}
 

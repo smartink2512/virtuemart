@@ -222,12 +222,13 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 		} else {
 			$obj->_varsToPushParamCustom = VirtueMartModelCustom::getVarsToPush($fieldtype);
-			$obj->_varsToPushParamCustomField = $obj->_varsToPushParamCustom;
+			$obj->_varsToPushParam = $obj->_varsToPushParamCustomField = $obj->_varsToPushParamCustom;
+			//vmdebug('my $obj->_varsToPushParamCustom',$obj->_varsToPushParamCustomField);
 		}
 
 		if(!empty($obj->_varsToPushParam)){
-			$obj ->_xParams = 'custom_params';
-			VmTable::bindParameterable($obj,$obj->_xParams,$obj->_varsToPushParamCustom);
+			//$obj ->_xParams = 'custom_params';
+			VmTable::bindParameterable($obj,'custom_params',$obj->_varsToPushParamCustom);
 
 			$obj ->_xParams = 'customfield_params';
 			VmTable::bindParameterable($obj,$obj->_xParams,$obj->_varsToPushParamCustomField);

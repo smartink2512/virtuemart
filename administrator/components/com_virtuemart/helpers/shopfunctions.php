@@ -123,26 +123,33 @@ class ShopFunctions {
 				return $html;
 			} else {
 
-				$q = 'SELECT `virtuemart_vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
-				$db->setQuery ($q);
-				$vendors = $db->loadAssocList ();
-
-				$attrs = array();
-				$name = 'vendor_name';
-				$idA = $id = 'virtuemart_vendor_id';
-				$attrs['class'] = 'vm-chzn-select';
-				if ($multiple) {
-					$attrs['multiple'] = 'multiple';
-					$idA .= '[]';
-				} else {
-					$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-					array_unshift ($vendors, $emptyOption);
-				}
-				$listHTML = JHtml::_ ('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId);
-				return $listHTML;
+				return self::renderVendorFullVendorList($vendorId);
 			}
 		}
 
+	}
+
+	static public function renderVendorFullVendorList($vendorId,$multiple=false){
+
+		$db = JFactory::getDBO ();
+
+		$q = 'SELECT `virtuemart_vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
+		$db->setQuery ($q);
+		$vendors = $db->loadAssocList ();
+
+		$attrs = array();
+		$name = 'vendor_name';
+		$idA = $id = 'virtuemart_vendor_id';
+		$attrs['class'] = 'vm-chzn-select';
+		if ($multiple) {
+			$attrs['multiple'] = 'multiple';
+			$idA .= '[]';
+		} else {
+			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			array_unshift ($vendors, $emptyOption);
+		}
+		$listHTML = JHtml::_ ('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId);
+		return $listHTML;
 	}
 
 	/**

@@ -87,6 +87,7 @@ class VirtueMartCart {
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = false;
 		$this->cartProductsData = array();
+		$this->layout = VmConfig::get('cartlayout','default');
 	}
 
 	/**
@@ -809,8 +810,12 @@ class VirtueMartCart {
 			$this->_confirmDone = true;
 			$this->confirmedOrder();
 		} else {
+			$layoutName = vRequest::getCmd('layout', '');
+			if(!empty($layoutName)){
+				$layoutName = '&layout='.$layoutName;
+			}
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
 
@@ -839,6 +844,11 @@ class VirtueMartCart {
 			$this->_redirect = $redirect;
 		}
 
+		$layoutName = vRequest::getCmd('layout', '');
+		if(!empty($layoutName)){
+			$layoutName = '&layout='.$layoutName;
+		}
+
 		$this->_inCheckOut = true;
 		//This prevents that people checkout twice
 		$this->setCartIntoSession(false,true);
@@ -850,7 +860,7 @@ class VirtueMartCart {
 
 		// Check if a minimun purchase value is set
 		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
-			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName , $redirectMsg);
 		}
 
 		$validUserDataBT = self::validateUserData();
@@ -864,7 +874,7 @@ class VirtueMartCart {
 			if($this->_redirect){
 				$this->_inCheckOut = false;
 				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName , $redirectMsg);
 			}
 			$this->_blockConfirm = true;
 		} else {
@@ -923,7 +933,7 @@ class VirtueMartCart {
 				$this->couponCode = '';
 				//$this->getCartPrices(); //Todo check if we need to enable this also in vm2.1
 				$this->setCartIntoSession();
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName , $redirectMsg);
 			}
 		}
 		$redirectMsg = '';
@@ -983,13 +993,13 @@ class VirtueMartCart {
 			$this->_dataValidated = false;
 			$this->_inCheckOut = false;
 			$this->setCartIntoSession(true);
-			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName,'');
 		} else {
 			$this->_dataValidated = true;
 			$this->setCartIntoSession(true);
 			if ($this->_redirect) {
 				$mainframe = JFactory::getApplication();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 			} else {
 				return true;
 			}

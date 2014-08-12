@@ -104,7 +104,8 @@ if(vRequest::getInt('print',false)){ ?>
 	    $link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id;
 
 		echo $this->linkIcon($link . '&format=pdf', 'COM_VIRTUEMART_PDF', 'pdf_button', 'pdf_icon', false);
-	    echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon');
+	    //echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon');
+		echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon',false,true,false,'class="printModal"');
 		$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
 	    echo $this->linkIcon($MailLink, 'COM_VIRTUEMART_EMAIL', 'emailButton', 'show_emailfriend', false,true,false,'class="recommened-to-friend"');
 	    ?>
@@ -129,7 +130,7 @@ if(vRequest::getInt('print',false)){ ?>
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'ontop'));
     ?>
 
-    <div class="vm-product-container clr">
+    <div class="vm-product-container">
 	<div class="vm-product-media-container">
 <?php
 echo $this->loadTemplate('images');
@@ -224,15 +225,12 @@ echo $this->loadTemplate('images');
 	        echo vmText::_('COM_VIRTUEMART_PRODUCT_UNITS_IN_BOX') .$this->product->product_box;
 	    ?>
         </div>
-    <?php } // Product Packaging END
+    <?php } // Product Packaging END ?>
 
-    // Show child categories
-    if (VmConfig::get('showCategory', 1)) {
-		echo $this->loadTemplate('showcategory');
-    }
+    <?php 
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'onbot'));
 
-		echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_products','class'=> 'product-related-products','customTitle' => true ));
+    echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_products','class'=> 'product-related-products','customTitle' => true ));
 
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_categories','class'=> 'product-related-categories'));
 
@@ -244,6 +242,10 @@ echo $this->product->event->afterDisplayContent; ?>
 <?php
 echo $this->loadTemplate('reviews');
 ?>
+<?php // Show child categories
+    if (VmConfig::get('showCategory', 1)) {
+		echo $this->loadTemplate('showcategory');
+    }?>
 </div>
 <script>
 	// GALT
@@ -259,4 +261,47 @@ echo $this->loadTemplate('reviews');
 	Virtuemart.container = jQuery('.productdetails-view');
 	Virtuemart.containerSelector = '.productdetails-view';
 	//});
+
+	// Open print and manufacturer link to Modal window
+	  <?php if(VmConfig::get('usefancy',1)) : 
+	  $manulink = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $this->product->virtuemart_manufacturer_id[0] . '&tmpl=component', FALSE);
+	  ?>
+	  jQuery('a.printModal').click(function(e){
+		  jQuery.fancybox({
+					href: '<?php echo $link.'&print=1'; ?>',
+	                type: 'iframe',
+	                height: '500'
+				  });
+                  e.preventDefault();
+	  });
+
+	  jQuery('a.manuModal').click(function(e){
+		   jQuery.fancybox({
+					href: '<?php echo $manulink ?>',
+	                type: 'iframe'
+				  });
+	              e.preventDefault();
+	  });
+	  
+	  <?php else : 
+	  $manulink = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $this->product->virtuemart_manufacturer_id[0] . '&tmpl=component', FALSE);
+	  ?>
+
+	  jQuery('a.printModal').click(function(e){
+		  jQuery.facebox({
+					iframe: '<?php echo $link.'&print=1'; ?>',
+					rev: 'iframe|550|550'
+				  });
+		          e.preventDefault();
+	  });
+
+	  jQuery('a.manuModal').click(function(e){
+			jQuery.facebox({
+					iframe: '<?php echo $manulink; ?>',
+					rev: 'iframe|550|550'
+					});
+			        e.preventDefault();
+      });
+      
+	  <?php endif; ?>	  	
 </script>

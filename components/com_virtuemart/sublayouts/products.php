@@ -127,7 +127,7 @@ foreach ($viewData['products'] as $type => $products ) {
     }
   }
 
-      if(!empty($type)){
+      if(!empty($type)and count($products)>0){
         // Do we need a final closing row tag?
         //if ($col != 1) {
       ?>

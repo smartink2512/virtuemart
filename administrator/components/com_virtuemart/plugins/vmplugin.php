@@ -159,6 +159,7 @@ abstract class vmPlugin extends JPlugin {
 			$xml =  JFactory::getXML($xmlFile);
 			if ($xml) {
 				if (isset( $xml->document->params) ){
+
 					$params = $xml->document->params;
 					foreach ($params as $param) {
 						if ($param->_name = "params") {
@@ -174,7 +175,7 @@ abstract class vmPlugin extends JPlugin {
 										}
 
 										if(!$private){
-											$data[$child->_attributes['name']] = array('', 'char');
+											$data[$fieldname] = array('', 'char');
 										}
 									}
 								}
@@ -182,24 +183,26 @@ abstract class vmPlugin extends JPlugin {
 						}
 					}
 				} else {
+
 					$form = JForm::getInstance($name, $xmlFile, array(),false, '//config');
 					$fieldSets = $form->getFieldsets();
 					foreach ($fieldSets as $name => $fieldSet) {
 						foreach ($form->getFieldset($name) as $field) {
-							if(!empty($field->fieldname)){
-								$fieldname = (string)$field->fieldname;
-								$private = false;
-								if(strlen($fieldname)>1){
-									if(substr($fieldname,0,2)=='__'){
-										$private = true;
-									}
-								}
 
-								if(!$private){
-									$type='char';
-									$data[(string)$field->fieldname] = array('',  $type);
+							$fieldname = (string)$field->fieldname;
+							$private = false;
+
+							if(strlen($fieldname)>1){
+								if(substr($fieldname,0,2)=='__'){
+									$private = true;
 								}
 							}
+
+							if(!$private){
+								$type='char';
+								$data[$fieldname] = array('',  $type);
+							}
+
 						}
 					}
 				}
