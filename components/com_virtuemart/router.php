@@ -264,6 +264,7 @@ function virtuemartBuildRoute(&$query) {
 					$query['Itemid'] = $jmenu['virtuemart'];
 				}
 			}
+			$segments[] = $helper->lang('cart') ;
 			/*if ( isset($jmenu['cart']) ) $query['Itemid'] = $jmenu['cart'];
 			else {
 				$segments[] = $helper->lang('cart') ;

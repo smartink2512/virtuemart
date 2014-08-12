@@ -1423,9 +1423,16 @@ class VirtueMartCart {
 					}
 
 					$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
+
+					$enough = $this->checkForQuantities($product,$product -> quantity);
+
+					if($product->quantity<=0){
+						unset($this->cartProductsData[$k]);
+						continue;
+					}
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
-
+					$productdata['quantity'] = $product -> quantity;
 
 					if(isset($this->productsQuantity[$product->virtuemart_product_id])){
 						$this->productsQuantity[$product->virtuemart_product_id] += $product -> quantity;
@@ -1439,11 +1446,10 @@ class VirtueMartCart {
 					vmError('prepareCartData $productdata[virtuemart_product_id] was empty');
 				}
 			}
+			$this->setCartIntoSession();
 		} else {
 			//vmdebug('The array count($this->cartProductsData) is 0 ',$this->cartProductsData);
 		}
-
-		$this->checkCartQuantities();
 
 		$this->getCartPrices();
 
@@ -1457,21 +1463,6 @@ class VirtueMartCart {
 
 	}
 
-	private function checkCartQuantities(){
-
-		if(!isset($this->productsQuantity)) return false;
-		if(count($this->products)==0)return false;
-		foreach($this->productsQuantity as $productId => $quantity){
-			foreach($this->products as $product){
-				if($product->virtuemart_product_id == $productId) break;
-			}
-
-			$enough = $this->checkForQuantities($product,$quantity);
-			if(!$enough) return FALSE;
-		}
-
-		return TRUE;
-	}
 
 	/** Checks if the quantity is correct
 	 *
@@ -1504,13 +1495,14 @@ class VirtueMartCart {
 			// TODO $productsleft = $product->product_in_stock - $product->product_ordered - $quantityincart ;
 			if ($quantity > $productsleft ){
 				vmdebug('my products left '.$productsleft.' and my quantity '.$quantity);
-				if($productsleft>0 and $stockhandle=='disableadd'){
+				if($productsleft>0 and ($stockhandle=='disableadd' or $stockhandle=='disableit_children') ){
 					$quantity = $productsleft;
 					$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
 					$this->setError($errorMsg);
 					vmInfo($errorMsg.' '.$product->product_name);
 					// $mainframe->enqueueMessage($errorMsg);
 				} else {
+					$quantity = 0;
 					$errorMsg = vmText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 					$this->setError($errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
 					// todo better key string

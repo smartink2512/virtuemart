@@ -28,7 +28,7 @@ jimport('joomla.form.formfield');
  * This element is used by the menu manager
  * Should be that way
  */
-class JFormFieldCategories extends JFormField {
+class JFormFieldVmcategories extends JFormField {
 
 	var $type = 'vmcategories';
 

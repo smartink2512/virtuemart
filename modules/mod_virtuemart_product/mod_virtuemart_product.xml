@@ -89,8 +89,8 @@
     </params>
 
     <config>
-	<fields name="params">
-	    <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/elements">
+	<fields name="params" addfieldpath="/administrator/components/com_virtuemart/fields">
+	    <fieldset name="basic">
 		<field	name="layout" type="filelist" label="MOD_VIRTUEMART_PRODUCT_LAYOUT"
              	description="MOD_VIRTUEMART_PRODUCT_LAYOUT_DESC"
              	directory="/modules/mod_virtuemart_product/tmpl"

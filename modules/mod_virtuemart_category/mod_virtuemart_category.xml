@@ -34,8 +34,8 @@
     </params>
 
     <config>
-	<fields name = "params">
-	    <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/elements">
+	<fields name = "params" addfieldpath="/administrator/components/com_virtuemart/fields">
+	    <fieldset name="basic" >
 		<field name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY" description="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_DESC" />
 		<field	name="layout" type="filelist" label="MOD_VIRTUEMART_CATEGORY_LAYOUT"
              	description="MOD_VIRTUEMART_CATEGORY_LAYOUT_DESC"

@@ -524,14 +524,23 @@ class VirtueMartModelCustomfields extends VmModel {
 						$calculator = calculationHelper::getInstance ();
 					}
 
+					$parentStock = 0;
 					foreach ($uncatChildren as $k => $child) {
 						if(!isset($child[$customfield->customfield_value])){
 							vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
 						} else {
+
+							$productChild = $productModel->getProduct((int)$child['virtuemart_product_id'],false);
+							if(!$productChild) continue;
+							$available = $productChild->product_in_stock - $productChild->product_ordered;
+							if(VmConfig::get('stockhandle','none')=='disableit_children' and $available <= 0){
+								continue;
+							}
+							$parentStock += $available;
 							$priceStr = '';
 							if($customfield->withPrices){
-								$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
-								$productPrices = $calculator->getProductPrices ($product);
+								//$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
+								$productPrices = $calculator->getProductPrices ($productChild);
 								$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
 							}
 							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value].$priceStr);
@@ -564,7 +573,13 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					if($customfield->parentOrderable==0 and $product->product_parent_id==0){
 						$product->orderable = FALSE;
+					} else { //if($product->product_parent_id==0) {
+
+
 					}
+					vmdebug('my parent product had stock '.$product->product_in_stock);
+					$product->product_in_stock = $parentStock;
+					vmdebug('my parent product has stock '.$product->product_in_stock);
 					$dynChilds++;
 					$customfield->display = $html;
 					break;

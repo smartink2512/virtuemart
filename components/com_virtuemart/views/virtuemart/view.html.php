@@ -141,37 +141,32 @@ class VirtueMartViewVirtueMart extends VmView {
 
 							foreach($productSeries as $i => $productItem){
 
-								$productItem->stock = $productModel->getStockIndicator($productItem);
+								if (!empty($productItem->customfields)) {
 
-								if(!$showCustoms){
-									foreach($this->products as $i => $productItem){
-										$productItem->stock = $productModel->getStockIndicator($productItem);
+									$product = clone($productItem);
+									$customfields = array();
+									foreach($productItem->customfields as $cu){
+										$customfields[] = clone ($cu);
 									}
+
+									$customfieldsSorted = array();
+									$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+									$product->stock = $productModel->getStockIndicator($product);
+									foreach ($customfields as $k => $custom) {
+										if (!empty($custom->layout_pos)  ) {
+											$customfieldsSorted[$custom->layout_pos][] = $custom;
+											unset($customfields[$k]);
+										}
+									}
+									$customfieldsSorted['normal'] = $customfields;
+									$product->customfieldsSorted = $customfieldsSorted;
+									unset($product->customfields);
+									$this->products[$pType][$i] = $product;
 								} else {
-
-									if (!empty($productItem->customfields)) {
-
-										$product = clone($productItem);
-										$customfields = array();
-										foreach($productItem->customfields as $cu){
-											$customfields[] = clone ($cu);
-										}
-
-										$customfieldsSorted = array();
-										$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
-
-										foreach ($customfields as $k => $custom) {
-											if (!empty($custom->layout_pos)  ) {
-												$customfieldsSorted[$custom->layout_pos][] = $custom;
-												unset($customfields[$k]);
-											}
-										}
-										$customfieldsSorted['normal'] = $customfields;
-										$product->customfieldsSorted = $customfieldsSorted;
-										unset($product->customfields);
-										$this->products[$pType][$i] = $product;
-									}
+									$productItem->stock = $productModel->getStockIndicator($productItem);
+									$this->products[$pType][$i] = $productItem;
 								}
+
 							}
 						}
 					}

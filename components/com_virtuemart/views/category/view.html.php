@@ -152,8 +152,6 @@ class VirtuemartViewCategory extends VmView {
 							}
 							foreach($this->products as $i => $productItem){
 
-								$productItem->stock = $productModel->getStockIndicator($productItem);
-
 								if (!empty($productItem->customfields)) {
 									$product = clone($productItem);
 									$customfields = array();
@@ -163,7 +161,7 @@ class VirtuemartViewCategory extends VmView {
 
 									$customfieldsSorted = array();
 									$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
-
+									$product->stock = $productModel->getStockIndicator($product);
 									foreach ($customfields as $k => $custom) {
 										if (!empty($custom->layout_pos)  ) {
 											$customfieldsSorted[$custom->layout_pos][] = $custom;
@@ -174,6 +172,9 @@ class VirtuemartViewCategory extends VmView {
 									$product->customfieldsSorted = $customfieldsSorted;
 									unset($product->customfields);
 									$this->products[$i] = $product;
+								} else {
+									$productItem->stock = $productModel->getStockIndicator($productItem);
+									$this->products[$i] = $productItem;
 								}
 							}
 						}

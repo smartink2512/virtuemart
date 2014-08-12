@@ -865,7 +865,7 @@ class VirtueMartModelProduct extends VmModel {
 		$stockhandle = VmConfig::get('stockhandle', 'none');
 		//vmdebug(' $stockhandle '.$stockhandle.' '.$child->slug,$child->product_in_stock,$child->product_ordered);
 		$app = JFactory::getApplication ();
-		if ($app->isSite () and ($stockhandle == 'disableit' or $stockhandle == 'disableit_children') and ($child->product_in_stock - $child->product_ordered) <= 0) {
+		if ($app->isSite () and $stockhandle == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 			vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
 			$_products[$productKey] = false;
 		} else {
