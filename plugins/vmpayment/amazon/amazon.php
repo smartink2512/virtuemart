@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * @package    VirtueMart
  * @subpackage vmpayment
- * @version $Id$
+ * @version $Id: amazon.php 8177 2014-08-13 07:55:04Z alatak $
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
@@ -22,7 +22,7 @@ if (!class_exists('vmPSPlugin')) {
 }
 /**
  * Class plgVmpaymentAmazon
- *     * payments.amazon.co.uk
+ * payments.amazon.co.uk
  * payments.amazon.de
  * https://sellercentral.amazon.co.uk
  */
@@ -32,8 +32,12 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	static $widgetScriptLoaded = false;
 	var $_amazonOrderReferenceId = NULL;
-	const AMAZON_EMPTY_USER_FIELD = "amazon";
+	const AMAZON_EMPTY_USER_FIELD = "given by amazon";
 	const AMAZON_EMPTY_USER_FIELD_EMAIL = "dummy@domain.com";
+	var $languages_region = array(
+		'en' => 'UK',
+		'de' => 'DE',
+	);
 
 	function __construct (& $subject, $config) {
 
@@ -158,9 +162,15 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$client = $this->getOffAmazonPaymentsService_Client();
 		$this->addWidgetUrlScript($client);
 		if (empty($this->_amazonOrderReferenceId)) {
-			$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceId();
+			$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
 			if (empty($this->_amazonOrderReferenceId)) {
 				$this->debug('no $_amazonOrderReferenceId', 'renderAddressbookWallet', 'debug');
+				$previousAddress = $this->getBTandSTFromSession();
+				if ($previousAddress) {
+					$cart->BT = $previousAddress['BT'];
+					$cart->ST = $previousAddress['ST'];
+				}
+
 				return;
 			}
 		}
@@ -214,7 +224,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		//vmTrace('checkConditions', true);
 		//$this->debugLog( $cart_prices['salesPrice'], 'checkConditions','debug');
 		$this->_currentMethod = $method;
-		if ($this->isValidCountry($cart) && $this->isValidLanguage() && $this->isValidAmount($cart) && $this->isValidProductCategories($cart) && $this->isValidIP()
+		if ($this->isValidLanguage() && $this->isValidAmount($cart_prices['salesPrice']) && $this->isValidProductCategories($cart) && $this->isValidIP()
 		) {
 			return true;
 		}
@@ -224,24 +234,48 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	/**
 	 * @return bool
 	 */
-	private function isValidCountry () {
-		return true;
+	private function isValidCountry ($virtuemart_country_id) {
+		$countries = array();
+		if (!empty($this->_currentMethod->countries)) {
+			if (!is_array($this->_currentMethod->countries)) {
+				$countries[0] = $this->_currentMethod->countries;
+			} else {
+				$countries = $this->_currentMethod->countries;
+			}
+		}
+		if (count($countries) == 0 || in_array($virtuemart_country_id, $countries)) {
+			return TRUE;
+		}
+		return false;
 	}
 
 	/**
-	 * in VM2, the payment is not showed if the buyer browse in another language
+	 * in VM, the payment is not showed if the buyer browse in another language
 	 * @return bool
 	 */
 
 	private function isValidLanguage () {
-
-		return true;
+		$lang = JFactory::getLanguage();
+		$tag = strtolower(substr($lang->get('tag'), 0, 2));
+		if (array_key_exists($tag, $this->languages_region) AND $this->languages_region[$tag] == $this->_currentMethod->region) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
 	 * @return bool
 	 */
-	private function isValidAmount () {
+	private function isValidAmount ($amount) {
+		$this->_currentMethod->min_amount = (float)str_replace(',', '.', $this->_currentMethod->min_amount);
+		$this->_currentMethod->max_amount = (float)str_replace(',', '.', $this->_currentMethod->max_amount);
+		$amount_cond = ($amount >= $this->_currentMethod->min_amount AND $amount <= $this->_currentMethod->max_amount
+			OR
+			($this->_currentMethod->min_amount <= $amount AND ($this->_currentMethod->max_amount == 0)));
+		if (!$amount_cond) {
+			vmdebug('AMAZON checkConditions $amount_cond false');
+			return false;
+		}
 		return true;
 	}
 
@@ -257,7 +291,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		} else {
 			$exclude_categories = $this->_currentMethod->exclude_categories;
 		}
-
 
 		foreach ($cart->products as $product) {
 			if (array_intersect($exclude_categories, $product->categories)) {
@@ -290,7 +323,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * Switch for enabling / disabling Hidden Button Mode.
 	 * @return bool
 	 */
-
 	private function isValidIP () {
 		if (empty($this->_currentMethod->ip_whitelist)) {
 			return true;
@@ -314,7 +346,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * 'applicationVersion'
 	 */
 	private function  getOffAmazonPaymentsService_Client () {
-
 
 		$config['merchantId'] = $this->_currentMethod->sellerId;
 		$config['accessKey'] = $this->_currentMethod->accessKey;
@@ -451,6 +482,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				$cart = VirtueMartCart::getCart(false);
 				$this->saveAmazonOrderReferenceId($cart);
 				$this->setCartLayout($cart);
+				$this->updateCartWithDefaultAddress($cart, $this->isOnlyDigitalGoods($cart));
 				$this->redirectToCart();
 				break;
 			case 'ipn':
@@ -492,6 +524,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				$return = $this->updateCartWithAmazonAddress();
 				$json = array();
 				$json['reload'] = $return;
+				if ($return == 'deliveryCountryNotAllowed') {
+					$json['errormsg'] = '<dl id="system-message"><dt class="error">Error</dt><dd class="error message"><ul><li>' . vmText::_('VMPAYMENT_AMAZON_UPDATECART_' . $return) . '</li></ul></dd></dl>';
+				}
 
 				JResponse::setHeader('Cache-Control', 'no-cache, must-revalidate');
 				JResponse::setHeader('Expires', 'Mon, 6 Jul 2000 10:00:00 GMT');
@@ -517,7 +552,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				}
 				VmConfig::loadConfig();
 				$cart = VirtueMartCart::getCart();
-				$this->unsetcartLayout($cart);
+				$this->unsetCartLayoutAndPaymentMethod($cart);
 				break;
 			case 'resetAmazonReferenceId':
 				$this->clearAmazonSession();
@@ -606,8 +641,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$plgVmOnCheckoutCheckDataPayment = $plgVmOnCheckoutCheckDataPayment + 1;;
 		$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
 		if (empty($this->_amazonOrderReferenceId)) {
-			$message = vmText::_('VMPAYMENT_AMAZON_PAYWITHAMAZON_BUTTON');
-			vmError($message, $message);
+			//$message = vmText::_('VMPAYMENT_AMAZON_PAYWITHAMAZON_BUTTON');
+			//vmError($message, $message);
 			return false;
 		}
 		$client = $this->getOffAmazonPaymentsService_Client();
@@ -779,7 +814,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				return FALSE;
 			}
 
-			$order_history['order_status'] = $this->onAuthorizationSuccessGetNewStatus();
+			$order_history['order_status'] = $this->onAuthorizationSuccessGetNewStatus($cart);
 			$order_history['customer_notified'] = 1;
 			$order_history['comments'] = '';
 			$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
@@ -940,11 +975,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 
 	private function getUserInfoFromAmazon ($amazonAddress, $prefix = '', $all = true, $getEmail = false) {
-		$userInfoData = array(
-			'title'       => "&nbsp;",
-			'first_name'  => "&nbsp;",
-			'middle_name' => "&nbsp;",
-		);
+
 		if ($amazonAddress->isSetName()) {
 			$userInfoData[$prefix . 'last_name'] = $amazonAddress->getName();
 		}
@@ -986,9 +1017,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			if ($amazonAddress->isSetStateOrRegion()) {
 				$stateId = shopFunctions::getStateIDByName($amazonAddress->GetStateOrRegion());
 				if ($stateId) {
-					$userInfoData[$prefix . 'state'] = $amazonAddress->GetStateOrRegion();
+					$userInfoData[$prefix . 'virtuemart_state_id'] = $stateId;
 				} else {
-					$userInfoData[$prefix . 'state'] = 0;
+					$userInfoData[$prefix . 'virtuemart_state_id'] = 0;
 				}
 			}
 			if ($amazonAddress->isSetPostalCode()) {
@@ -1377,7 +1408,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$authorizeRequest->setAuthorizationReferenceId($order['details']['BT']->order_number);
 		$authorizeRequest->setSellerAuthorizationNote($this->getSellerAuthorizationNote());
 		$authorizeRequest->setTransactionTimeout(0);
-		if ($this->isImmediateCapture()) {
+		if ($this->isImmediateCapture($cart)) {
 			$authorizeRequest->setCaptureNow(true);
 		} else {
 			$authorizeRequest->setCaptureNow(false);
@@ -1442,16 +1473,16 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	/**
 	 * @return bool
 	 */
-	private function isImmediateCapture () {
-		return ($this->_currentMethod->capture_mode == "immediate_capture");
+	private function isImmediateCapture ($cart) {
+		return ($this->_currentMethod->capture_mode == "immediate_capture" OR $this->isOnlyDigitalGoods($cart));
 	}
 
 
 	/**
 	 * @return mixed
 	 */
-	private function onAuthorizationSuccessGetNewStatus () {
-		if ($this->isImmediateCapture()) {
+	private function onAuthorizationSuccessGetNewStatus ($cart) {
+		if ($this->isImmediateCapture($cart)) {
 			return $this->_currentMethod->status_capture;
 		} else {
 			return $this->_currentMethod->status_authorization;
@@ -1472,7 +1503,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 
 		//Load the payments
-		if (!($payments = $this->_getAmazonInternalData($order->virtuemart_order_id))) {
+		if (!($payments = $this->getDataByOrderId($order->virtuemart_order_id))) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return null;
 		}
@@ -1865,7 +1896,7 @@ jQuery().ready(function($) {
 		//$this->debug('', 'updateCartWithAmazonAddress', 'debug');
 		$cart = VirtueMartCart::getCart();
 		if (empty($cart->products) and $cart->layout == $this->_currentMethod->cart_layout) {
-			$this->unsetCartLayout($cart);
+			$this->unsetCartLayoutAndPaymentMethod($cart);
 		}
 		$amazonOrderReferenceIdWeight = $this->getAmazonOrderReferenceIdWeightFromSession();
 		$this->_amazonOrderReferenceId = $amazonOrderReferenceIdWeight['_amazonOrderReferenceId'];
@@ -1878,13 +1909,15 @@ jQuery().ready(function($) {
 	}
 
 
-	private function unsetCartLayout ($cart) {
+	private function unsetCartLayoutAndPaymentMethod ($cart) {
 		if (!class_exists('VmConfig')) {
 			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 		}
 		VmConfig::loadConfig();
 		$cart->layout = VmConfig::get('cartlayout', 'default');
+		$cart->virtuemart_paymentmethod_id = 0;
 		$cart->setCartIntoSession();
+		return;
 	}
 
 
@@ -1922,6 +1955,8 @@ jQuery().ready(function($) {
 		$cart_prices['cost'] = 0;
 
 		if (!$this->checkConditions($cart, $this->_currentMethod, $cart_prices)) {
+			vmInfo('VMPAYMENT_AMAZON_PAYMENT_NOT_AVAILABLE');
+			$this->unsetCartLayoutAndPaymentMethod($cart);
 			return FALSE;
 		}
 		$layout = $cart->layout;
@@ -2135,14 +2170,42 @@ jQuery().ready(function($) {
 	 * @param $client
 	 * @param $cart
 	 */
-	function updateCartWithAmazonAddress ($saveShimentAsBillTo = true) {
+	function updateCartWithAmazonAddress () {
 
 		$this->vmClassLoad('VirtueMartCart', JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
 		//$this->debug('', 'updateCartWithAmazonAddress', 'debug');
 		$cart = VirtueMartCart::getCart();
-		// this should be done only the first time.
-		$this->saveBTandSTInSession($cart);
+
+		$physicalDestination = $this->getPhysicalDestination();
+		if (!$physicalDestination) {
+			return 'NoPhysicalDestination';
+		}
+
+		$update_data = $this->getUserInfoFromAmazon($physicalDestination);
+		if (!$this->isValidCountry($update_data['virtuemart_country_id'])) {
+			return 'deliveryCountryNotAllowed';
+		}
+		if ($this->isSameAddress($update_data, $cart)) {
+			return 'sameAddress';
+		}
+		$update_data ['address_type'] = 'BT';
+		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE);
+
+
+		// update BT and ST with Amazon Partial Address
+		$prefix = 'shipto_';
+		$update_data = $this->getUserInfoFromAmazon($physicalDestination, $prefix);
+		$update_data ['address_type'] = 'ST';
+		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE);
+		$cart->STsameAsBT = 0;
+		$cart->setCartIntoSession();
+
+		return 'addressUpdated';
+	}
+
+
+	function getPhysicalDestination () {
 		$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
 		if (empty($this->_amazonOrderReferenceId)) {
 			//vmError('VMPAYMENT_AMAZON_LOGIN');
@@ -2159,34 +2222,53 @@ jQuery().ready(function($) {
 			return false;
 		}
 		$physicalDestination = $destination->getPhysicalDestination();
+		return $physicalDestination;
 
-		if (!$physicalDestination) {
-			return false;
+	}
+
+	function updateCartWithDefaultAddress ($cart, $STsameAsBT = true) {
+
+		$this->vmClassLoad('VirtueMartCart', JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+
+		// this should be done only the first time.
+		$this->saveBTandSTInSession($cart);
+		$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
+		if (empty($this->_amazonOrderReferenceId)) {
+			//vmError('VMPAYMENT_AMAZON_LOGIN');
+			return FALSE;
 		}
 
-		$update_data = $this->getUserInfoFromAmazon($physicalDestination);
+		$update_data['title'] = self::AMAZON_EMPTY_USER_FIELD;
+		$update_data['first_name'] = self::AMAZON_EMPTY_USER_FIELD;
 		$update_data['address_1'] = self::AMAZON_EMPTY_USER_FIELD;
 		$update_data['email'] = self::AMAZON_EMPTY_USER_FIELD_EMAIL;
 		$update_data['first_name'] = self::AMAZON_EMPTY_USER_FIELD;
 		$update_data['last_name'] = self::AMAZON_EMPTY_USER_FIELD;
+		$update_data['virtuemart_country_id'] = self::AMAZON_EMPTY_USER_FIELD;
+		$update_data['city'] = self::AMAZON_EMPTY_USER_FIELD;
+		$update_data['zip'] = self::AMAZON_EMPTY_USER_FIELD;
+		$update_data['virtuemart_state_id'] = self::AMAZON_EMPTY_USER_FIELD;
 		$update_data ['address_type'] = 'BT';
-		if ($this->isSameAddress($update_data, $cart)) {
-			return false;
+
+		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE);
+
+		if (!$STsameAsBT) {
+			$prefix = 'shipto_';
+			$update_data = array();
+			$update_data ['address_type'] = 'ST';
+			$update_data[$prefix . 'last_name'] = self::AMAZON_EMPTY_USER_FIELD;
+			$update_data[$prefix . 'first_name'] = self::AMAZON_EMPTY_USER_FIELD;
+			$update_data[$prefix . 'address_1'] = self::AMAZON_EMPTY_USER_FIELD;
+			$update_data[$prefix . 'zip'] = self::AMAZON_EMPTY_USER_FIELD;
+			$update_data[$prefix . 'city'] = self::AMAZON_EMPTY_USER_FIELD;
+			$update_data[$prefix . 'virtuemart_country_id'] = self::AMAZON_EMPTY_USER_FIELD;
+			$update_data[$prefix . 'virtuemart_state_id'] = self::AMAZON_EMPTY_USER_FIELD;
+
+			$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE);
+		} else {
+			$cart->STsameAsBT = 1;
+			$cart->setCartIntoSession();
 		}
-
-		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE);
-
-
-		// update BT and ST with Amazon Partial Address
-		$prefix = 'shipto_';
-		$update_data = $this->getUserInfoFromAmazon($physicalDestination, $prefix);
-		$update_data[$prefix . 'last_name'] = self::AMAZON_EMPTY_USER_FIELD;
-		$update_data[$prefix . 'first_name'] = self::AMAZON_EMPTY_USER_FIELD;
-		$update_data[$prefix . 'address_1'] = self::AMAZON_EMPTY_USER_FIELD;
-
-		$update_data ['address_type'] = 'ST';
-		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE);
-
 
 		return true;
 	}
@@ -2219,31 +2301,6 @@ jQuery().ready(function($) {
 				fwrite($fp,var_export($body,true));
 				fclose($fp);
 		*/
-		$headers = array(
-			'x-amz-sns-message-type'     => 'Notification',
-			'x-amz-sns-message-id'       => 'bb775cbe-4bc0-59dd-aabd-10e36f80411d',
-			'x-amz-sns-topic-arn'        => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH',
-			'x-amz-sns-subscription-arn' => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:21953ab6-f671-41ab-b8ed-acde085ff9af',
-			'Content-Length'             => '2560',
-			'Content-Type'               => 'text/plain; charset=UTF-8',
-			'Host'                       => 'joomla-virtuemart.org',
-			'Connection'                 => 'Keep-Alive',
-			'User-Agent'                 => 'Amazon Simple Notification Service Agent',
-			'Accept-Encoding'            => 'gzip,deflate',
-		);
-
-		$body = '{
-  "Type" : "Notification",
-  "MessageId" : "bb775cbe-4bc0-59dd-aabd-10e36f80411d",
-  "TopicArn" : "arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH",
-  "Message" : "{\\"NotificationReferenceId\\":\\"a5f994ad-75d3-48a3-81fb-c8963fd64746\\",\\"MarketplaceID\\":\\"136291\\",\\"NotificationType\\":\\"PaymentAuthorize\\",\\"SellerId\\":\\"AA3KB5JD2CWIH\\",\\"ReleaseEnvironment\\":\\"Sandbox\\",\\"Version\\":\\"2013-01-01\\",\\"NotificationData\\":\\"<?xml version=\\\\\\"1.0\\\\\\" encoding=\\\\\\"UTF-8\\\\\\"?><AuthorizationNotification xmlns=\\\\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\\\\">\\\\n    <AuthorizationDetails>\\\\n        <AmazonAuthorizationId>S02-3174360-5556899-A075667<\\\\/AmazonAuthorizationId>\\\\n        <AuthorizationReferenceId>773a0213<\\\\/AuthorizationReferenceId>\\\\n        <AuthorizationAmount>\\\\n            <Amount>22.51<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/AuthorizationAmount>\\\\n        <CapturedAmount>\\\\n            <Amount>0.0<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/CapturedAmount>\\\\n        <AuthorizationFee>\\\\n            <Amount>0.0<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/AuthorizationFee>\\\\n        <IdList/>\\\\n        <CreationTimestamp>2014-08-07T06:51:42.831Z<\\\\/CreationTimestamp>\\\\n        <ExpirationTimestamp>2014-09-06T06:51:42.831Z<\\\\/ExpirationTimestamp>\\\\n        <AuthorizationStatus>\\\\n            <State>Open<\\\\/State>\\\\n            <LastUpdateTimestamp>2014-08-07T06:51:42.831Z<\\\\/LastUpdateTimestamp>\\\\n        <\\\\/AuthorizationStatus>\\\\n        <OrderItemCategories/>\\\\n        <CaptureNow>false<\\\\/CaptureNow>\\\\n        <SoftDescriptor/>\\\\n    <\\\\/AuthorizationDetails>\\\\n<\\\\/AuthorizationNotification>\\",\\"Timestamp\\":\\"2014-08-07T06:51:44Z\\"}",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "Timestamp" : "2014-08-07T06:51:44.404Z",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "SignatureVersion" : "1",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "Signature" : "GuOvtLQQaR0Wk1KzTqypn5kqDmsrHN69AigKSNYPFeQ6EVkkQPI+T9sTQ+THU5HTtyxc5HusU2gQYv3kaFoLhn4MX4e9dRZlS9Vs7BI9pLGweGzVTjyzJbI7pi0MFC8wjXDEWHpnaF3uB0Tble2yMEN9w8sHWwr+0G/L9mDsp9rPmp72R9D+1l3PH0KzbsIVJJXVMqFfbHSEt9cu9vrZaF8cpJPbqXrePOSW1VZZzhSOotdXxz6alzaCuNJPqKs+VEgbneNvKRZSika4ZiA+lCSa4Nye74nv3x6G13SNVGfz3qjQmaUi1jtJ9LIH+x6DwSMpjCPG1sLG9wZB4gLs7A==",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "SigningCertURL" : "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-e372f8ca30337fdb084e8ac449342c77.pem",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "UnsubscribeURL" : "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:21953ab6-f671-41ab-b8ed-acde085ff9af"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }';
-
 
 		$this->debugLog($headers, 'AMAZON IPN HEADERS debug');
 		$this->debugLog($body, 'AMAZON IPN HEADERS debug');
@@ -2346,6 +2403,22 @@ jQuery().ready(function($) {
 			$session->set('amazon', serialize($sessionAmazonData), 'vm');
 		}
 
+	}
+
+
+	private function getBTandSTFromSession () {
+		$session = JFactory::getSession();
+		$sessionAmazon = $session->get('amazon', 0, 'vm');
+
+		if ($sessionAmazon) {
+			$sessionAmazonData = unserialize($sessionAmazon);
+			if (isset($sessionAmazonData['BT']) OR ($sessionAmazonData['ST'])) {
+				$address['BT'] = $sessionAmazonData['BT'];
+				$address['ST'] = $sessionAmazonData['ST'];
+			}
+		}
+
+		return NULL;
 	}
 
 	/**

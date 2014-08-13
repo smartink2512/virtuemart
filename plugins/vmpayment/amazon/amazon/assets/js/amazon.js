@@ -53,13 +53,15 @@ var  amazonPayment = {
                     var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=updateCartWithAmazonAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id  + vmLang;
                     jQuery.getJSON(url,
                         function(datas, textStatus) {
-                           // alert('json return' + datas.reload + textStatus);
+                            var errormsg='';
                             console.log('json return:' + datas.reload + ' ' + textStatus);
-                            if (datas.reload) {
-                                console.log('reload then' );
+                            if (datas.reload === 'addressUpdated') {
                                 var reloadurl = vmSiteurl + 'index.php?option=com_virtuemart&view=cart&task=checkout' + vmLang;
                                 window.location.href = reloadurl;
+                            } else if (datas.reload === 'deliveryCountryNotAllowed') {
+                                errormsg= datas.errormsg;
                             }
+                            document.id('amazonErrorDiv').set('html', errormsg);
                         }
                     );
 
@@ -97,7 +99,7 @@ var  amazonPayment = {
                     console.log('selectShipment DONE' );
                     var shipments = "";
                     if (data.shipments) {
-                        shipments = '<h2>Select Shipment</h2>';
+                        shipments = '<h2>Select Shipment xxxx</h2>';
                         console.log('selectShipment:' + data.shipments.length);
                         for (var i = 0; i < data.shipments.length; i++) {
                             shipments += '<div>' + data.shipments[i].toString() + '</div>';

@@ -57,10 +57,10 @@ jQuery(document).ready( function($) {
 	//<![CDATA[
 jQuery(document).ready( function($) {
 $('#leave_amazon').click(function($){
-	var url =  'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazon&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
+	var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazon&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
     console.log('leaveAmazon');
     jQuery.getJSON(url);
-         var reloadurl = 'index.php?option=com_virtuemart&view=cart&task=checkout';
+         var reloadurl = 'index.php?option=com_virtuemart&view=cart';
          window.location.href = reloadurl;
 	});
 });

@@ -57,7 +57,7 @@ jQuery(document).ready( function($) {
 $('" . $viewData['addressbook_billto_shipto'] . "').hide();
 $('" . $viewData['loginform'] . "').hide();
 $('#leave_amazon').click(function(){
-	var url =  'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazon&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
+	var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazon&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
     console.log('leaveAmazon'  );
     jQuery.getJSON(url);
          var reloadurl = vmSiteurl + 'index.php?option=com_virtuemart&view=cart' + vmLang;
