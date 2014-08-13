@@ -130,7 +130,6 @@
     <target name="create_package_folder">
         <echo msg="Create Package destination directory"/>
         <mkdir dir="${package.folder}"/>
-        <mkdir dir="${package.folder}"/>
     </target>
 
 
@@ -145,7 +144,6 @@
         <exclude name="**/vm_update/**"/>
         <exclude name="**/vm_build/**"/>
         <exclude name="**/amazon/**"/>
-        <exclude name="**/realex/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
@@ -259,7 +257,6 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name="**/amazon/**"/>
-        <exclude name="**/realex/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
