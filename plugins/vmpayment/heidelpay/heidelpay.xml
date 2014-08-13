@@ -36,7 +36,7 @@
 
                 <field type="text" name="HEIDELPAY_PAYMENT_URL" size="50"
                        label="VMPAYMENT_HEIDELPAY_PAYMENT_URL" description="VMPAYMENT_HEIDELPAY_PAYMENT_URL_DESC"
-                       default="https://test-heidelpay.hpcgw.net/sgw/gtwu"/>
+                       default="https://test-heidelpay.hpcgw.net/sgw/gtw"/>
                 <field type="spacer" default=""/>
                 <field type="text" name="HEIDELPAY_SECURITY_SENDER" size="50"
                        label="VMPAYMENT_HEIDELPAY_SECURITY_SENDER"

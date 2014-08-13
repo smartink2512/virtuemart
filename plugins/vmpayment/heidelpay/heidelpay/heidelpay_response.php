@@ -51,51 +51,105 @@ function updateHeidelpay($orderID, $connect) {
 		if ($_POST['PROCESSING_RESULT'] == "NOK") {
 				$comment = $_POST['PROCESSING_RETURN'];
 		} elseif ($paymentCode[0] == "PP" or $paymentCode[0] == "IV") {
-			if (strtoupper ($_POST['CRITERION_LANG']) == 'DE') {
-					$comment = '<b>Bitte &uuml;berweisen Sie uns den Betrag von '.$_POST['CLEARING_CURRENCY'].' '.$_POST['PRESENTATION_AMOUNT'].' auf folgendes Konto:</b>
-					<br /><br/>
-					Land : '.$_POST['CONNECTOR_ACCOUNT_COUNTRY'].'<br />
-					Kontoinhaber : '.$_POST['CONNECTOR_ACCOUNT_HOLDER'].'<br />
-					Konto-Nr. : '.$_POST['CONNECTOR_ACCOUNT_NUMBER'].'<br />
-					Bankleitzahl:  '.$_POST['CONNECTOR_ACCOUNT_BANK'].'<br />
-					IBAN: '.$_POST['CONNECTOR_ACCOUNT_IBAN'].'<br />
-					BIC: '.$_POST['CONNECTOR_ACCOUNT_BIC'].'<br />
-					<br />
-					<b>Geben sie bitte im Verwendungszweck UNBEDINGT die Identifikationsnummer<br />
-					'.$_POST['IDENTIFICATION_SHORTID'].'<br />
-					und NICHTS ANDERES an.</b><br />';
+			
+			if($_POST['ACCOUNT_BRAND'] == 'BILLSAFE'){
+				if (strtoupper ($_POST['CRITERION_LANG']) == 'DE') {
+						$comment = '<b>Bitte &uuml;berweisen Sie uns den Betrag von '.$_POST['CRITERION_BILLSAFE_CURRENCY'].' '.sprintf('%1.2f', $_POST['CRITERION_BILLSAFE_AMOUNT']).' auf folgendes Konto:</b>
+						<br /><br/>
+						Kontoinhaber : '.$_POST['CRITERION_BILLSAFE_RECIPIENT'].'<br />
+						Konto-Nr. : '.$_POST['CRITERION_BILLSAFE_ACCOUNTNUMBER'].'<br />
+						Bankleitzahl:  '.$_POST['CRITERION_BILLSAFE_BANKCODE'].'<br />
+						Bank: '.$_POST['CRITERION_BILLSAFE_BANKNAME'].'<br />
+						IBAN: '.$_POST['CRITERION_BILLSAFE_IBAN'].'<br />
+						BIC: '.$_POST['CRITERION_BILLSAFE_BIC'].'<br />
+						<br />
+						<b>Geben sie bitte im Verwendungszweck UNBEDINGT die Identifikationsnummer<br />
+						'.$_POST['CRITERION_BILLSAFE_REFERENCE'].'<br />
+						und NICHTS ANDERES an.</b><br /><br/>'.
+						$_POST['CRITERION_BILLSAFE_LEGALNOTE'].'<br />
+						Bitte &uuml;berweisen Sie den ausstehenden Betrag '.$_POST['CRITERION_BILLSAFE_PERIOD'].' Tage nach dem Sie &uuml;ber den Versand informiert wurden.';
 				} else {
-					$comment = '<b>Please transfer the amount of '.$_POST['CLEARING_CURRENCY'].' '.$_POST['PRESENTATION_AMOUNT'].' to the following account:</b>
-					<br /><br/>
-					Country: '.$_POST['CONNECTOR_ACCOUNT_COUNTRY'].'<br />
-					Account holder: '.$_POST['CONNECTOR_ACCOUNT_HOLDER'].'<br />
-					Account No.: '.$_POST['CONNECTOR_ACCOUNT_NUMBER'].'<br />
-					Bank Code:  '.$_POST['CONNECTOR_ACCOUNT_BANK'].'<br />
-					IBAN: '.$_POST['CONNECTOR_ACCOUNT_IBAN'].'<br />
-					BIC: '.$_POST['CONNECTOR_ACCOUNT_BIC'].'<br />
-					<br />
-					<b>When you transfer the money you HAVE TO use the identification number<br />
-					'.$_POST['IDENTIFICATION_SHORTID'].'<br />
-					as the descriptor and nothing else. Otherwise we cannot match your transaction!</b><br />';
+						$comment = '<b>Please transfer the amount of '.$_POST['CRITERION_BILLSAFE_CURRENCY'].' '.sprintf('%1.2f', $_POST['CRITERION_BILLSAFE_AMOUNT']).' to the following account:</b>
+						<br /><br/>
+						Account holder: '.$_POST['CRITERION_BILLSAFE_RECIPIENT'].'<br />
+						Account No.: '.$_POST['CRITERION_BILLSAFE_ACCOUNTNUMBER'].'<br />
+						Bank Code:  '.$_POST['CRITERION_BILLSAFE_BANKCODE'].'<br />
+						Bank: '.$_POST['CRITERION_BILLSAFE_BANKNAME'].'<br />
+						IBAN: '.$_POST['CRITERION_BILLSAFE_IBAN'].'<br />
+						BIC: '.$_POST['CRITERION_BILLSAFE_BIC'].'<br />
+						<br />
+						<b>When you transfer the money you HAVE TO use the identification number<br />
+						'.$_POST['CRITERION_BILLSAFE_REFERENCE'].'<br />
+						as the descriptor and nothing else. Otherwise we cannot match your transaction!</b><br /><br />'.
+						$_POST['CRITERION_BILLSAFE_LEGALNOTE'].'<br />
+						Please remit the outstanding amount '.$_POST['CRITERION_BILLSAFE_PERIOD'].' days after you have been notified about shipping';
+				}
+			}else{
+				if (strtoupper ($_POST['CRITERION_LANG']) == 'DE') {
+						$comment = '<b>Bitte &uuml;berweisen Sie uns den Betrag von '.$_POST['CLEARING_CURRENCY'].' '.$_POST['PRESENTATION_AMOUNT'].' auf folgendes Konto:</b>
+						<br /><br/>
+						Land : '.$_POST['CONNECTOR_ACCOUNT_COUNTRY'].'<br />
+						Kontoinhaber : '.$_POST['CONNECTOR_ACCOUNT_HOLDER'].'<br />
+						Konto-Nr. : '.$_POST['CONNECTOR_ACCOUNT_NUMBER'].'<br />
+						Bankleitzahl:  '.$_POST['CONNECTOR_ACCOUNT_BANK'].'<br />
+						IBAN: '.$_POST['CONNECTOR_ACCOUNT_IBAN'].'<br />
+						BIC: '.$_POST['CONNECTOR_ACCOUNT_BIC'].'<br />
+						<br />
+						<b>Geben sie bitte im Verwendungszweck UNBEDINGT die Identifikationsnummer<br />
+						'.$_POST['IDENTIFICATION_SHORTID'].'<br />
+						und NICHTS ANDERES an.</b><br />';
+				} else {
+						$comment = '<b>Please transfer the amount of '.$_POST['CLEARING_CURRENCY'].' '.$_POST['PRESENTATION_AMOUNT'].' to the following account:</b>
+						<br /><br/>
+						Country: '.$_POST['CONNECTOR_ACCOUNT_COUNTRY'].'<br />
+						Account holder: '.$_POST['CONNECTOR_ACCOUNT_HOLDER'].'<br />
+						Account No.: '.$_POST['CONNECTOR_ACCOUNT_NUMBER'].'<br />
+						Bank Code:  '.$_POST['CONNECTOR_ACCOUNT_BANK'].'<br />
+						IBAN: '.$_POST['CONNECTOR_ACCOUNT_IBAN'].'<br />
+						BIC: '.$_POST['CONNECTOR_ACCOUNT_BIC'].'<br />
+						<br />
+						<b>When you transfer the money you HAVE TO use the identification number<br />
+						'.$_POST['IDENTIFICATION_SHORTID'].'<br />
+						as the descriptor and nothing else. Otherwise we cannot match your transaction!</b><br />';
+				}				
 			}
 		
-				if($_POST['ACCOUNT_BRAND'] == 'BARPAY')
-						
-						{
-										
-										
-							$comment = '(-'.$_POST['CRITERION_BARPAY_PAYCODE_URL'].'-)
-									</b><br />
-									</b><br />
-									Drucken Sie den Barcode aus oder speichern Sie diesen auf Ihrem mobilen Endger�t. 
-									Gehen Sie nun zu einer Kasse der 18.000 Akzeptanzstellen in Deutschland und bezahlen 
-									Sie ganz einfach in bar. In dem Augenblick, wenn der Rechnungsbetrag beglichen wird, 
-									erh�lt der Online-H�ndler die Information �ber den Zahlungseingang.Die bestellte Ware 
-									oder Dienstleistung geht umgehend in den Versand
-								';
-						}	
-						
+			if($_POST['ACCOUNT_BRAND'] == 'BARPAY'){
+				$comment = '(-'.$_POST['CRITERION_BARPAY_PAYCODE_URL'].'-)
+					</b><br />
+					</b><br />
+					Drucken Sie den Barcode aus oder speichern Sie diesen auf Ihrem mobilen Endger&auml;t.
+					Gehen Sie nun zu einer Kasse der 18.000 Akzeptanzstellen in Deutschland und bezahlen
+					Sie ganz einfach in bar. In dem Augenblick, wenn der Rechnungsbetrag beglichen wird,
+					erh&auml;lt der Online-H&auml;ndler die Information &uuml;ber den Zahlungseingang.Die bestellte Ware
+					oder Dienstleistung geht umgehend in den Versand';
+			}
+		}elseif($paymentCode[0] == "DD"){
+			if(strtoupper ($_POST['CRITERION_LANG']) == 'DE'){
+				$identCreditor = '';
+				if($_POST['IDENTIFICATION_CREDITOR_ID'] != ''){
+					$identCreditor = 'und die Gl&auml;ubiger ID: '.$_POST['IDENTIFICATION_CREDITOR_ID'].'<br />';
+				}
+				$comment = 'Der Betrag wird in den n&auml;chsten Tagen von folgendem Konto abgebucht:<br /><br />
+				IBAN: '.$_POST['ACCOUNT_IBAN'].'<br />
+				BIC: '.$_POST['ACCOUNT_BIC'].'<br />
+				Die Abbuchung enth&auml;lt die Mandatsreferenz-ID: '.$_POST['ACCOUNT_IDENTIFICATION'].'<br />
+				'.$identCreditor.'
+				<br />Bitte sorgen Sie f&uuml;r ausreichende Deckung auf dem entsprechenden Konto.';
+			}else{
+				$identCreditor = '';
+				if($_POST['IDENTIFICATION_CREDITOR_ID'] != ''){
+					$identCreditor = 'and the creditor identifier: '.$_POST['IDENTIFICATION_CREDITOR_ID'].'<br />';
+				}
+				$comment = 'The amount will be debited from this account within the next days:<br /><br />
+				IBAN: '.$_POST['ACCOUNT_IBAN'].'<br />
+				BIC: '.$_POST['ACCOUNT_BIC'].'<br />
+				The booking contains the mandate reference ID: '.$_POST['ACCOUNT_IDENTIFICATION'].'<br />
+				'.$identCreditor.'
+				<br />Please ensure that there will be sufficient funds on the corresponding account.';
+			}
 		}
+		
 		if (!empty($row->virtuemart_order_id)) {
 			$sql = "INSERT ".$connect->dbprefix."virtuemart_payment_plg_heidelpay SET " .
 					"virtuemart_order_id			= \"".mysql_real_escape_string($row->virtuemart_order_id). "\"," .
@@ -117,7 +171,6 @@ function updateHeidelpay($orderID, $connect) {
 	}
 }
 
-
 $returnvalue=$_POST['PROCESSING_RESULT'];
 if (!empty($returnvalue)){
 	if (strstr($returnvalue,"ACK")) {
@@ -134,5 +187,3 @@ if (!empty($returnvalue)){
 }
 
 ?>
-
-
