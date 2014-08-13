@@ -114,9 +114,8 @@ class VirtueMartModelCategory extends VmModel {
 	 * @return object List of objects containing the child categories
 	 *
 	 */
-	public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null, $cache = true) {
+	public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null, $useCache = true) {
 
-		$useCache = true;
 		if(empty($this) or get_class($this)!='VirtueMartModelCategory'){
 			$useCache = false;
 		}

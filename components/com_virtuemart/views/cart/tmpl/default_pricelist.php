@@ -386,7 +386,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td colspan="<?php echo $readonly_colspan ?>" align="left">
 		<?php echo $this->cart->cartData['paymentName']; ?>
 		<br/>
-		<?php if (!empty($this->layoutName)    && !$this->cart->automaticSelectedPayment) {
+		<?php if (!empty($this->layoutName) && !$this->cart->automaticSelectedPayment) {
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				$previouslayout = $this->setLayout('select');
 				echo $this->loadTemplate('payment');

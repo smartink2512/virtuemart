@@ -4,8 +4,8 @@
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.6.8"/>
-    <property name="joomla.version" value="2.5.22"/>
-    <property name="svn.lastrevision" value="8143"/>
+    <property name="joomla.version" value="2.5.24"/>
+    <property name="svn.lastrevision" value="8173"/>
     <property name="PHING.VM.CODENAME" value="FlyingBrant"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm2"/>
 

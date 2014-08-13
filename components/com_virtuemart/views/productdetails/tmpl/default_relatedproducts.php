@@ -32,3 +32,4 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 	<?php }
 	    } ?>
         </div>
+<div class="clear"></div>

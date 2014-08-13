@@ -204,6 +204,7 @@ td.orders-key{font-weight: bold; text-align: left; }
 .product-fields .product-field-type-P{clear: both; border-bottom: 1px solid #EEEEEE; margin-top: 18px;}
 .product-field-type-P .product-fields-title{ font-size: 120%;}
 .product-field-type-B,.product-field-type-S,.product-field-type-I{padding-left:3%;float:left;width:30%}
+.product-field-type-R,.product-field-type-Z {width:25%; float:left;}
 .product-fields-title{ font-weight: bold;}
 
 .vm-customfield-mod img,.vm-customfield-cart img{ vertical-align: middle; width: 16px;}
@@ -214,7 +215,7 @@ a:hover .vm-img-desc{background: #095197}
 .vmpayment_cardinfo {color:gray;font-size:9px;}
 .virtuemart_search .inputbox{height:16px;vertical-align :middle}
 /* Custom Field Images */
-.product-fields .product-field,.product-related-categories .product-field {width:100%;float:left;display:inline-block;}
+.product-fields .product-field,.product-related-categories .product-field {float:left;display:inline-block;}
 .product-fields .product-field label.other-customfield {width:25%;float:left;position:relative;top:20px;left:-18px;margin-bottom:27px;text-align:center;}  /* For 4 images across use width:17% */
 .product-fields .product-field input[type=radio] {position:relative;left:33px;}
 .product-fields .product-field .vm-img-desc {font-size:9px;}
