@@ -1126,12 +1126,12 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		return $this->onShowOrderPrint($order_number, $method_id);
 	}
 
-	public function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
-		return $this->declarePluginParams('payment', $name, $id, $data);
+
+	public function plgVmDeclarePluginParamsPaymentVM3( &$data) {
+		return $this->declarePluginParams('payment', $data);
 	}
 
 	public function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {
-
 		return $this->setOnTablePluginParams($name, $id, $table);
 	}
 
