@@ -1,5 +1,5 @@
 <?php
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
@@ -16,42 +16,55 @@ defined ('_JEXEC') or die();
  *
  * http://virtuemart.net
  */
+?>
+<?php
 JHtml::_('behavior.tooltip');
-$doc = JFactory::getDocument();
-echo JURI::root(true);
-//vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
-$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/site.js');
-$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/css/amazon-site.css');
-if ( $viewData['sign_in_display'] == 'advertise') {
-	$doc->addScriptDeclaration("
-jQuery(document).ready( function($) {
-$( '.output-shipto-add' ).hide();
-	amazonShowButton('".$viewData['sellerId']."', '".$viewData['redirect_page']."');
-	var amazonButtonHtml = $('#checkout-advertise-box').html();
-	$('#checkout-advertise-box').hide();
-	 $('#checkoutFormSubmit').before(amazonButtonHtml);
-	 $('.checkout-advertise').addClass('checkout-advertise');
-});
+vmJsApi::jPrice();
+static $jsSILoaded = false;
+if (!$jsSILoaded) {
+	$doc = JFactory::getDocument();
+	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" class=\"hasTip\" title=\"::' . vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP') . '\"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\" class=\"error\"></div></div>';
+	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\"  \"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\" class=\"error\"></div></div>';
 
+//vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+
+	$renderAmazonAddressBook = $viewData['renderAmazonAddressBook'] ? 'true' : 'false';
+
+	$doc->addScriptDeclaration("
+	//<![CDATA[
+jQuery(document).ready( function($) {
+	amazonPayment.showAmazonButton('" . $viewData['sellerId'] . "', '" . $viewData['redirect_page'] . "', " . $renderAmazonAddressBook . ");
+	$( '" . $viewData['sign_in_css'] . "' ).before('" . $signInButton . "');
+
+});
+//]]>
+");
+	if ( $viewData['layout'] == 'amazon') {
+		$doc->addScriptDeclaration("
+		//<![CDATA[
+	jQuery(document).ready( function($) {
+		$('" . $viewData['addressbook_billto_shipto'] . "').hide();
+		$('" . $viewData['loginform'] . "').hide();
+		$('" . $viewData['paymentForm'] . "').hide();
+	});
+	//]]>
+");
+	}
+
+	$doc->addScriptDeclaration("
+	//<![CDATA[
+jQuery(document).ready( function($) {
+$('#leave_amazon').click(function($){
+	var url =  'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazon&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
+    console.log('leaveAmazon');
+    jQuery.getJSON(url);
+         var reloadurl = 'index.php?option=com_virtuemart&view=cart&task=checkout';
+         window.location.href = reloadurl;
+	});
+});
+//]]>
 ");
 }
-
-
-
 ?>
-<?php if ( $viewData['sign_in_display'] == 'listFE') { ?>
-
-	<input type="radio" name="virtuemart_paymentmethod_id"
-	       id="payment_id_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"
-	       value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" <?php echo $viewData ['checked']; ?>>
-<?php } ?>
-
-
-<div id="payWithAmazonDiv" class="hasTip" title="::<?php echo vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')?> ">
-	<img src="<?php echo $viewData['buttonWidgetImageURL'] ?>" style="cursor: pointer;" />
-
-</div>
-<div id="amazonSignInErrorMsg" class="error"></div>
-<?php if ( $viewData['sign_in_display'] == 'advertise') { ?>
-<div><?php echo vmText::_('VMPAYMENT_AMAZON_OR')?></div>
-<?php } ?>

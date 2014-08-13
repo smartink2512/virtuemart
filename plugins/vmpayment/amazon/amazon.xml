@@ -206,14 +206,8 @@
             <option value="Orange">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_ORANGE</option>
             <option value="Tan">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_TAN</option>
         </param>
-        <param name="sign_in_display" type="list" multiple="true" default="login"
-               label="VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY">
-            <option value="product">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_PRODUCT</option>
-            <!--option value="login">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_LOGIN</option-->
-            <option value="advertise">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_ADVERTISE</option>
-            <option value="module">VMPAYMENT_AMAZON_CONF_SIGN_IN_DISPLAY_MODULE</option>
-            <option value="listFE">VMPAYMENT_AMAZON_CONF_SIGN_IN_LISTFE</option>
-        </param>
+
+
 
         <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_ADDRESSBOOK"
                description=""/>
@@ -230,32 +224,31 @@
                description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
         <param name="wallet_designHeight" type="text" default="260" label="VMPAYMENT_AMAZON_CONF_WALLET_DESIGNHEIGHT"
                description="VMPAYMENT_AMAZON_CONF_DESIGNHEIGHT_TIP"/>
-
-        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_RO_ADDRESSBOOK"
+        <param name="cart_layout" type="list" default="amazon" label="VMPAYMENT_AMAZON_CONF_CART_LAYOUT"
+               description="VMPAYMENT_AMAZON_CONF_CART_LAYOUT_TIP">
+            <option value="default">VMPAYMENT_AMAZON_CONF_CART_LAYOUT_DEFAULT</option>
+            <option value="amazon">VMPAYMENT_AMAZON_CONF_CART_LAYOUT_AMAZON</option>
+        </param>
+        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_JOOMLA_TEMPLATE"
                description=""/>
-        <param name="ro_addressbook_designWidth" type="text" default="400"
-               label="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_DESIGNWIDTH"
-               description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
-        <param name="ro_addressbook_designHeight" type="text" editable="false" default="185"
-               label="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_DESIGNHEIGHT"
-               description="VMPAYMENT_AMAZON_CONF_RO_DESIGNWIDTH_TIP"/>
-        <param name="ro_addressbook_output_shipto_add_id" type="text" default="output-shipto-add"
-               label="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_OUTPUT_SHIPTO_ADD_ID"
-               description="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_OUTPUT_SHIPTO_ADD_ID_TIP"/>
+        <param name="addressbook_billto_shipto" type="text" default=".billto-shipto"
+               label="VMPAYMENT_AMAZON_CONF_ADDRESSBOOK_WALLET_ID"
+               description="VMPAYMENT_AMAZON_CONF_ADDRESSBOOK_WALLET_ID_TIP"/>
 
-        <param name="ro_addressbook_output_shipto_id" type="text" default="output-shipto"
-               label="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_OUTPUT_SHIPTO_ID"
-               description="VMPAYMENT_AMAZON_CONF_RO_ADDRESSBOOK_OUTPUT_SHIPTO_ID_TIP"/>
+        <param name="sign_in_css" type="text" default="#com-form-login"
+               label="VMPAYMENT_AMAZON_CONF_SIGN_IN_CSS"
+               description="VMPAYMENT_AMAZON_CONF_SIGN_IN_CSS_TIP"/>
+        <param name="loginform" type="text" default=".billto-shipto"
+               label="VMPAYMENT_AMAZON_CONF_LOGINFORM_ID"
+               description="VMPAYMENT_AMAZON_CONF_LOGINFORM_ID_TIP"/>
 
+        <param name="paymentForm" type="text" default="#paymentsDiv"
+               label="VMPAYMENT_AMAZON_CONF_PAYMENTFORM_ID"
+               description="VMPAYMENT_AMAZON_CONF_PAYMENTFORM_ID_TIP"/>
 
-        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_RO_WALLET"
-               description=""/>
-        <param name="ro_wallet_designWidth" type="text" default="400"
-               label="VMPAYMENT_AMAZON_CONF_RO_WALLET_DESIGNWIDTH"
-               description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
-        <param name="ro_wallet_designHeight" type="text" editable="false" default="185"
-               label="VMPAYMENT_AMAZON_CONF_RO_WALLET_DESIGNHEIGHT"
-               description="VMPAYMENT_AMAZON_CONF_RO_DESIGNHEIGHT_TIP"/>
+        <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_COMMENTS_SECTION"/>
+        <param  type="vmtitle" description="VMPAYMENT_AMAZON_CONF_STATE_NOT_REQUIRED" />
+        <param  type="vmtitle" description="VMPAYMENT_AMAZON_CONF_ADD_LOGO_AT_AMAZON" />
 
 
         <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION"/>
