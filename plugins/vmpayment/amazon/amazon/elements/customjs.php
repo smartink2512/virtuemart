@@ -4,7 +4,7 @@
  * Realex payment plugin
  *
  * @author Valerie Isaksen
- * @version $Id$
+ * @version $Id: customjs.php 7913 2014-05-12 19:28:36Z alatak $
  * @package VirtueMart
  * @subpackage payment
  * ${PHING.VM.COPYRIGHT}

@@ -6,7 +6,7 @@ defined('_JEXEC') or die();
  * @package	VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
- * @version $Id$
+ * @version $Id: languages.php 7913 2014-05-12 19:28:36Z alatak $
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
