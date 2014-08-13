@@ -75,10 +75,12 @@ jQuery().ready(function ($) {
 
     handlethreedsecure = function () {
         var threedsecure = $('#params_threedsecure').val();
+        var realvault = $('#params_realvault').val();
+        var integration = $('#params_integration').val();
 
         $('.threedsecure').parents('.control-group').hide();
 
-        if (threedsecure == 1) {
+        if ((threedsecure == 1 && integration == 'redirect' && realvault == 1) ||  (threedsecure == 1 && integration == 'remote')) {
             $('.threedsecure').parents('.control-group').show();
         }
     }

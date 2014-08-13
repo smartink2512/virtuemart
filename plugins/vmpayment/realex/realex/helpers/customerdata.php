@@ -38,7 +38,7 @@ class RealexHelperCustomerData {
 	private $_dcc_choice = '';
 
 
-	public function load() {
+	public function load () {
 
 		//$this->_clear();
 		/* TODO
@@ -64,7 +64,7 @@ class RealexHelperCustomerData {
 
 	}
 
-	public function loadPost() {
+	public function loadPost () {
 
 		$this->_selected_method = vRequest::getInt('virtuemart_paymentmethod_id', 0);
 
@@ -127,7 +127,7 @@ class RealexHelperCustomerData {
 	 * @param $data
 	 *
 	 */
-	public function saveCustomerRealVaultData($data) {
+	public function saveCustomerRealVaultData ($data) {
 		if (isset($data['realex_saved_pmt_type'])) {
 			$this->_cc_type = $data['realex_saved_pmt_type'];
 		}
@@ -144,7 +144,7 @@ class RealexHelperCustomerData {
 	 * save the cc infos returned in the md (3DSverifySig)
 	 * @param $md
 	 */
-	public function saveCustomerMDData($md) {
+	public function saveCustomerMDData ($md) {
 
 		$this->_cc_type = $md['cc_type'];
 		$this->_cc_number = $md['cc_number'];
@@ -158,7 +158,7 @@ class RealexHelperCustomerData {
 	/**
 	 *
 	 */
-	public function unsetCustomerData() {
+	public function unsetCustomerData () {
 		$this->_cc_type = '';
 		$this->_cc_name = '';
 		$this->_cc_number = '';
@@ -170,7 +170,7 @@ class RealexHelperCustomerData {
 	/**
 	 * save data in session
 	 */
-	public function save() {
+	public function save () {
 
 		$session = JFactory::getSession();
 		$sessionData = new stdClass();
@@ -189,7 +189,7 @@ class RealexHelperCustomerData {
 	 * @param $var
 	 * @return mixed
 	 */
-	public function getVar($var) {
+	public function getVar ($var) {
 		$this->load();
 		return $this->{'_' . $var};
 	}
@@ -198,11 +198,11 @@ class RealexHelperCustomerData {
 	 * @param $var
 	 * @param $val
 	 */
-	public function setVar($var, $val) {
+	public function setVar ($var, $val) {
 		$this->{'_' . $var} = $val;
 	}
 
-	public function clear() {
+	public function clear () {
 		$session = JFactory::getSession();
 		$session->clear(self::REALEX_SESSION, 'vm');
 	}
@@ -212,7 +212,7 @@ class RealexHelperCustomerData {
 	 * when debug or log option is on
 	 *
 	 */
-	function getMaskedCCnumber() {
+	function getMaskedCCnumber () {
 		if (!class_exists('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}

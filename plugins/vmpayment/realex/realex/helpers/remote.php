@@ -25,12 +25,12 @@ defined('_JEXEC') or die('Restricted access');
 class RealexHelperRealexRemote extends RealexHelperRealex {
 
 
-	function __construct($method, $plugin) {
+	function __construct ($method, $plugin) {
 		parent::__construct($method, $plugin);
 
 	}
 
-	public function confirmedOrder(&$postRequest, &$request3DSecure) {
+	public function confirmedOrder (&$postRequest, &$request3DSecure) {
 		$postRequest = false;
 		$request3DSecure = false;
 		if ($this->_method->dcc) {
@@ -52,13 +52,13 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @return array
 	 */
 
-	function getExtraPluginInfo() {
+	function getExtraPluginInfo () {
 		return NULL;
 
 
 	}
 
-	function confirmedOrderDccRequest($response_dcc) {
+	function confirmedOrderDccRequest ($response_dcc) {
 		$request3DSecure = false;
 		if ($this->_method->threedsecure and $this->isCC3DSVerifyEnrolled()) {
 			$request3DSecure = true;
@@ -88,7 +88,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	/**
 	 * @return string
 	 */
-	function displayExtraPluginInfo() {
+	function displayExtraPluginInfo () {
 
 		return NULL;
 	}
@@ -97,49 +97,51 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @param bool $enqueueMessage
 	 * @return bool
 	 */
-	function validateRemoteCCForm($enqueueMessage = true) {
+	function validateRemoteCCForm ($enqueueMessage = true) {
 		if (!class_exists('Creditcard')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
 		}
 		$html = '';
 		$cc_valid = true;
 		$errormessages = array();
+		$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
+	$cc_type = $this->customerData->getVar('cc_type');
+	$cc_number = $this->customerData->getVar('cc_number');
+	$cc_name = $this->customerData->getVar('cc_name');
+	$cc_cvv = $this->customerData->getVar('cc_cvv');
+	$cc_expire_month = $this->customerData->getVar('cc_expire_month');
+	$cc_expire_year = $this->customerData->getVar('cc_expire_year');
 
-		$cc_type = $this->customerData->getVar('cc_type');
-		$cc_number = $this->customerData->getVar('cc_number');
-		$cc_name = $this->customerData->getVar('cc_name');
-		$cc_cvv = $this->customerData->getVar('cc_cvv');
-		$cc_expire_month = $this->customerData->getVar('cc_expire_month');
-		$cc_expire_year = $this->customerData->getVar('cc_expire_year');
+	if (!Creditcard::validate_credit_card_number($cc_type, $cc_number)) {
+		$errormessages[] = 'VMPAYMENT_REALEX_CC_CARD_NUMBER_INVALID';
+		$cc_valid = false;
+	}
 
-		if (!Creditcard::validate_credit_card_number($cc_type, $cc_number)) {
-			$errormessages[] = 'VMPAYMENT_REALEX_CC_CARD_NUMBER_INVALID';
-			$cc_valid = false;
+	if (!Creditcard::validate_credit_card_cvv($cc_type, $cc_cvv, true, $cc_number)) {
+		$errormessages[] = 'VMPAYMENT_REALEX_CC_CARD_CVV_INVALID';
+		$cc_valid = false;
+	}
+	if (!Creditcard::validate_credit_card_date($cc_type, $cc_expire_month, $cc_expire_year)) {
+		$errormessages[] = 'VMPAYMENT_REALEX_CC_CARD_DATE_INVALID';
+		$cc_valid = false;
+	}
+	if (empty($cc_name)) {
+		$errormessages[] = 'VMPAYMENT_REALEX_CC_NAME_INVALID';
+		$cc_valid = false;
+	}
+	if (!$cc_valid) {
+		foreach ($errormessages as $msg) {
+			$html .= vmText::_($msg) . "<br/>";
 		}
-
-		if (!Creditcard::validate_credit_card_cvv($cc_type, $cc_cvv, true)) {
-			$errormessages[] = 'VMPAYMENT_REALEX_CC_CARD_CVV_INVALID';
-			$cc_valid = false;
-		}
-		if (!Creditcard::validate_credit_card_date($cc_type, $cc_expire_month, $cc_expire_year)) {
-			$errormessages[] = 'VMPAYMENT_REALEX_CC_CARD_DATE_INVALID';
-			$cc_valid = false;
-		}
-		if (empty($cc_name)) {
-			$errormessages[] = 'VMPAYMENT_REALEX_CC_NAME_INVALID';
-			$cc_valid = false;
-		}
-		if (!$cc_valid) {
-			foreach ($errormessages as $msg) {
-				$html .= vmText::_($msg) . "<br/>";
-			}
-		}
-		if (!$cc_valid) {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($html, 'error');
-			return false;
-		}
+	}
+	if (!$cc_valid) {
+		$app = JFactory::getApplication();
+		$app->enqueueMessage($html, 'error');
+		return false;
+	}
 		return true;
+
+
 
 
 	}

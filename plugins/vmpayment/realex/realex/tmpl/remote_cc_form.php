@@ -29,6 +29,7 @@ vmJsApi::chosenDropDowns();
 $doc = JFactory::getDocument();
 $doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/js/site.js');
 $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/css/realex.css');
+
 $attribute = '';
 if ($viewData['dccinfo']) {
 	$attribute = ' readonly ';
@@ -44,7 +45,7 @@ if ($viewData['dccinfo']) {
 	?>
 </div>
 
-<form method="post" action="<?php echo $viewData['submit_url'] ?>">
+<form method="post" action="<?php echo $viewData['submit_url'] ?>" id="checkoutRealexFormSubmit">
 <?php if (!$viewData['dccinfo']) { ?>
 	<?php if (!empty($viewData['creditcardsDropDown'])) { ?>
 		<div class="vmpayment_cardinfo" id="vmpayment_cardinfo">
@@ -72,9 +73,9 @@ if ($viewData['dccinfo']) {
 						for="cc_cvv_realvault"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CVV2') ?></label></span>
 
 				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv_realvault" maxlength="4" size="5"
-					   value="<?php echo $ccData['cc_cvv_realvault']; ?>" autocomplete="off"/>
+				       value="<?php echo $ccData['cc_cvv_realvault']; ?>" autocomplete="off"/>
 				<span class="hasTip"
-					  title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
+				      title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
                         <?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
                     </span>
 
@@ -137,12 +138,12 @@ if ($viewData['dccinfo']) {
 		<?php if (!$viewData['dccinfo']) { ?>
 
 			<input type="text" size="30" class="inputbox" id="cc_number"
-				   name="cc_number" value="<?php echo wordwrap($ccData['cc_number'], 4, " "); ?>"
-				   autocomplete="off"
-				   onchange="ccError=razCCerror(<?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
-					   CheckCreditCardNumber(this . value, <?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
-					   if (!ccError) {
-					   this.value='';}"/>
+			       name="cc_number" value="<?php echo wordwrap($ccData['cc_number'], 4, " "); ?>"
+			       autocomplete="off"
+			       onchange="ccError=razCCerror(<?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
+				       CheckCreditCardNumber(this . value, <?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
+				       if (!ccError) {
+				       this.value='';}"/>
 
 			<div id="cc_cardnumber_errormsg"></div>
 		<?php
@@ -161,9 +162,9 @@ if ($viewData['dccinfo']) {
 			<?php if (!$viewData['dccinfo']) { ?>
 
 				<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv" maxlength="4" size="5"
-					   value="<?php echo $ccData['cc_cvv']; ?>" autocomplete="off"/>
+				       value="<?php echo $ccData['cc_cvv']; ?>" autocomplete="off"/>
 				<span class="hasTip"
-					  title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
+				      title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
                         <?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
                     </span>
 			<?php
@@ -204,12 +205,12 @@ if ($viewData['dccinfo']) {
 					for="cc_name"><?php echo vmText::_('VMPAYMENT_REALEX_CC_CCNAME'); ?></label></span>
 		<?php if (!$viewData['dccinfo']) { ?>
 			<input type="text" size="30" class="inputbox" id="cc_name"
-				   name="cc_name" value="<?php echo $ccData['cc_name']; ?>"
-				   autocomplete="off"
-				   onchange="ccError=razCCerror(<?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
-					   CheckCreditCardNumber(this . value, <?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
-					   if (!ccError) {
-					   this.value='';}"/>
+			       name="cc_name" value="<?php echo $ccData['cc_name']; ?>"
+			       autocomplete="off"
+			       onchange="ccError=razCCerror(<?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
+				       CheckCreditCardNumber(this . value, <?php echo $viewData['virtuemart_paymentmethod_id']; ?>);
+				       if (!ccError) {
+				       this.value='';}"/>
 
 			<div id="cc_cardname_errormsg"></div>
 		<?php
@@ -229,9 +230,9 @@ if ($viewData['dccinfo']) {
 		<?php if (!$viewData['dccinfo']) { ?>
 
 			<input type="text" class="inputbox cc_cvv" id="cc_cvv" name="cc_cvv" maxlength="4" size="5"
-				   value="<?php echo $ccData['cc_cvv']; ?>" autocomplete="off"/>
+			       value="<?php echo $ccData['cc_cvv']; ?>" autocomplete="off"/>
 			<span class="hasTip"
-				  title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
+			      title="<?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV') ?>::<?php echo vmText::sprintf("VMPAYMENT_REALEX_CC_WHATISCVV_TOOLTIP", $this->_getCVVImages($viewData['cvv_images'])) ?> ">
                         <?php echo vmText::_('VMPAYMENT_REALEX_CC_WHATISCVV'); ?>
                     </span>
 		<?php
@@ -269,7 +270,7 @@ if ($viewData['dccinfo']) {
 			</div>
 			<div class="dcc_choice">
 				<input class="dcc_offer_btn vm-button" name="dcc_choice" id="dcc_choice_0" type="radio" value="0"
-					   checked="checked"> <label for="dcc_choice_0">
+				       checked="checked"> <label for="dcc_choice_0">
 					<?php echo vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_NO', $this->getCardHolderAmount($viewData['dccinfo']->merchantamount), $viewData['dccinfo']->merchantcurrency); ?>
 				</label>
 			</div>
@@ -295,6 +296,10 @@ if ($viewData['dccinfo']) {
 			</div>
 		<?php
 		}
+	} else {
+		?>
+		<input type="hidden" name="save_card" value="<?php echo $ccData['save_card'] ?>"/>
+<?php
 	}
 }
 ?>
@@ -303,15 +308,16 @@ if ($viewData['dccinfo']) {
 <div class="dcc_card_payment_button details-button">
 		<span class="addtocart-button">
 		<input type="submit" class="dcc_offer_btn addtocart-button"
-			   value="<?php echo $viewData['card_payment_button'] ?>"/>
+		       value="<?php echo $viewData['card_payment_button'] ?>"/>
 		<input type="hidden" name="option" value="com_virtuemart"/>
 		<input type="hidden" name="view" value="pluginresponse"/>
 		<input type="hidden" name="task" value="pluginnotification"/>
+		<input type="hidden" name="token" value="<?php echo $viewData['token'] ?>"/>
 		<input type="hidden" name="notificationTask" value="<?php echo $viewData['notificationTask']; ?>"/>
 		<input type="hidden" name="order_number" value="<?php echo $viewData['order_number']; ?>"/>
 		<input type="hidden" name="pm" value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"/>
 		<input type="hidden" name="virtuemart_paymentmethod_id"
-			   value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"/>
+		       value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"/>
 		</span>
 
 </div>
