@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * @package    VirtueMart
  * @subpackage vmpayment
- * @version $Id: amazon.php 8177 2014-08-13 07:55:04Z alatak $
+ * @version $Id$
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
