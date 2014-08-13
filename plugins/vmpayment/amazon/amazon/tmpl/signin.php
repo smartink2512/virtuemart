@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
- * @version $Id: render_pluginname.php 7198 2013-09-13 13:09:01Z alatak $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage vmpayment
  * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.

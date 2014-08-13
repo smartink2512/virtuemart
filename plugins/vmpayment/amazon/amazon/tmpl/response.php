@@ -4,7 +4,7 @@
  * Amazon payment plugin
  *
  * @author Valérie Isaksen
- * @version $Id:$
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
  * ${PHING.VM.COPYRIGHT}
