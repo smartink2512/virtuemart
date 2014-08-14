@@ -52,6 +52,13 @@ class VirtueMartViewCart extends VmView {
 		//$cart->getCartPrices();
 		$this->assignRef('cart', $cart);
 
+		// this has been moved because of payment cart layout: the cart content is always displayed
+		if (!class_exists ('CurrencyDisplay')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		}
+		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+		$this->assignRef('currencyDisplay',$currencyDisplay);
+
 		//Why is this here, when we have view.raw.php
 		if ($format == 'raw') {
 			$cart->prepareCartViewData();
@@ -108,11 +115,7 @@ class VirtueMartViewCart extends VmView {
 
 			$this->prepareContinueLink();
 			$this->lSelectCoupon();
-			if (!class_exists ('CurrencyDisplay')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-			}
-			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
-			$this->assignRef('currencyDisplay',$currencyDisplay);
+
 
 			$totalInPaymentCurrency = $this->getTotalInPaymentCurrency();
 
