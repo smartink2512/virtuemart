@@ -52,11 +52,11 @@ class JElementCreditCards extends JElement {
 	var $_name = 'creditcards';
 
 	function fetchElement ($name, $value, &$node, $control_name) {
-		JFactory::getLanguage()->load('plg_vmpayment_realex', JPATH_ADMINISTRATOR);
+		JFactory::getLanguage()->load('plg_vmpayment_realex_hpp_api', JPATH_ADMINISTRATOR);
 
 		$creditcards = RealexHelperRealex::getRealexCreditCards();
 
-		$prefix = 'VMPAYMENT_REALEX_CC_';
+		$prefix = 'VMPAYMENT_REALEX_HPP_API_CC_';
 
 		$fields = array();
 		foreach ($creditcards as $creditcard) {

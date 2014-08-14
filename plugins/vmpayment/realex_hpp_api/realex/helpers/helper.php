@@ -253,7 +253,7 @@ class  RealexHelperRealex {
 		?>
 		<HTML>
 		<HEAD>
-			<TITLE><?php echo vmText::_('VMPAYMENT_REALEX_3DS_VERIFICATION') ?></TITLE>
+			<TITLE><?php echo vmText::_('VMPAYMENT_REALEX_HPP_API_3DS_VERIFICATION') ?></TITLE>
 			<SCRIPT LANGUAGE="Javascript">
 				<!--
 				function OnLoadEvent() {
@@ -558,7 +558,7 @@ class  RealexHelperRealex {
 	function request3DSVerifysig ($realvault = false) {
 		$paRes = vRequest::getVar('PaRes', '');
 		if (empty($paRes)) {
-			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
 		}
 
 		$serializedMd = vRequest::getVar('MD', '');
@@ -911,10 +911,10 @@ class  RealexHelperRealex {
 
 	function manageResponseRequest ($response) {
 		if ($response == NULL) {
-			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
 		}
 		if (!$this->validateResponseHash($response)) {
-			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
 		}
 		$this->plugin->_storeRealexInternalData($response, $this->_method->virtuemart_paymentmethod_id, $this->order['details']['BT']->virtuemart_order_id, $this->order['details']['BT']->order_number, $this->request_type);
 		/*
@@ -926,7 +926,7 @@ class  RealexHelperRealex {
 				if (! ($success OR $reponse_enrolled)) {
 					$error = (string)$xml_response->message . " (" . (string)$xml_response->result . ")";
 					$this->displayError($error);
-					$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+					$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
 				}
 		*/
 	}
@@ -1117,30 +1117,30 @@ class  RealexHelperRealex {
 							if ($success) {
 								if (isset($xml_response->dccinfo) AND isset($xml_response->dccinfo->cardholderrate)) {
 									if ($xml_response->dccinfo->cardholderrate != 1.0) {
-										$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($xml_response->dccinfo->merchantamount), $xml_response->dccinfo->merchantcurrency, $this->plugin->getCardHolderAmount($xml_response->dccinfo->cardholderamount), $xml_response->dccinfo->cardholdercurrency);
+										$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($xml_response->dccinfo->merchantamount), $xml_response->dccinfo->merchantcurrency, $this->plugin->getCardHolderAmount($xml_response->dccinfo->cardholderamount), $xml_response->dccinfo->cardholdercurrency);
 									} else {
-										$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_MERCHANT_CURRENCY', $this->plugin->getCardHolderAmount($xml_response->dccinfo->merchantamount), $xml_response->dccinfo->merchantcurrency);
+										$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_DCC_PAY_MERCHANT_CURRENCY', $this->plugin->getCardHolderAmount($xml_response->dccinfo->merchantamount), $xml_response->dccinfo->merchantcurrency);
 									}
 								}
 								$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency);
 								$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
-								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
+								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
 								$pasref = $payment->realex_response_pasref;
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
-									$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
+									$auth_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
 								} else {
-									$auth_info = vmText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
+									$auth_info = vmText::_('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CANCELLED');
 								}
 							}
 
 						} elseif ($payment->realex_request_type_response == $this::REQUEST_TYPE_CARD_NEW) {
 							$success = $this->isResponseSuccess($xml_response);
 							if ($success) {
-								$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_SUCCESS');
+								$payer_info = vmText::_('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_SUCCESS');
 							} else {
-								$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_FAILED');
+								$payer_info = vmText::_('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_FAILED');
 							}
 						}
 
@@ -1155,15 +1155,15 @@ class  RealexHelperRealex {
 								$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency);
 								$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
-								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
+								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
 								if (isset($realex_data->DCCCHOICE) and $realex_data->DCCCHOICE == $this::RESPONSE_DCC_CHOICE_YES) {
-									$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($realex_data->DCCMERCHANTAMOUNT), $realex_data->DCCMERCHANTCURRENCY, $this->plugin->getCardHolderAmount($realex_data->DCCCARDHOLDERAMOUNT), $realex_data->DCCCARDHOLDERCURRENCY);
+									$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($realex_data->DCCMERCHANTAMOUNT), $realex_data->DCCMERCHANTCURRENCY, $this->plugin->getCardHolderAmount($realex_data->DCCCARDHOLDERAMOUNT), $realex_data->DCCCARDHOLDERCURRENCY);
 								}
 								if (isset($realex_data->REALWALLET_CHOSEN) and  $realex_data->REALWALLET_CHOSEN == 1) {
 									if ((isset($realex_data->PMT_SETUP) and  $realex_data->PMT_SETUP == self::PMT_SETUP_SUCCESS)) {
-										$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_SUCCESS');
+										$payer_info = vmText::_('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_SUCCESS');
 									} else {
-										$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_FAILED');
+										$payer_info = vmText::_('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_FAILED');
 									}
 								}
 								$pasref = $realex_data->PASREF;
@@ -1171,9 +1171,9 @@ class  RealexHelperRealex {
 
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
-									$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
+									$auth_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
 								} else {
-									$auth_info = vmText::_('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED');
+									$auth_info = vmText::_('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CANCELLED');
 								}
 							}
 						}
@@ -1241,7 +1241,7 @@ class  RealexHelperRealex {
 		if (!$success) {
 			$error = $xml_response->message . " (" . (string)$xml_response->result . ")";
 			$this->displayError($error);
-			vmInfo('VMPAYMENT_REALEX_CARD_STORAGE_FAILED');
+			vmInfo('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_FAILED');
 			return false;
 		}
 		return true;
@@ -1263,7 +1263,7 @@ class  RealexHelperRealex {
 		if (!$success) {
 			$error = $xml_response->message . " (" . (string)$xml_response->result . ")";
 			$this->displayError($error);
-			vmInfo('VMPAYMENT_REALEX_CARD_STORAGE_FAILED');
+			vmInfo('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_FAILED');
 			return false;
 		}
 
@@ -1314,13 +1314,13 @@ class  RealexHelperRealex {
 		                                                    ));
 
 
-		//vmInfo('VMPAYMENT_REALEX_CARD_STORAGE_SUCCESS');
+		//vmInfo('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_SUCCESS');
 	}
 
 
 	public function loadCustomerData ($loadCDFromPost = true) {
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
 		}
 		$this->getCustomerData();
 		if ($loadCDFromPost) {
@@ -1331,7 +1331,7 @@ class  RealexHelperRealex {
 
 	public function getCustomerData () {
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
 		}
 		$this->customerData = new RealexHelperCustomerData();
 		$this->customerData->load();
@@ -1353,7 +1353,7 @@ class  RealexHelperRealex {
 
 		if (!Creditcard::validate_credit_card_cvv('', $cc_cvv_realvault, true)) {
 			$app = JFactory::getApplication();
-			$app->enqueueMessage(vmText::_('VMPAYMENT_REALEX_CC_CARD_CVV_INVALID'), 'error');
+			$app->enqueueMessage(vmText::_('VMPAYMENT_REALEX_HPP_API_CC_CARD_CVV_INVALID'), 'error');
 			return false;
 		}
 		return true;
@@ -1609,7 +1609,7 @@ class  RealexHelperRealex {
 		}
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->_method->payment_currency);
 
-		$order_amount = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_TOTAL', $amountInCurrency['display']);
+		$order_amount = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_TOTAL', $amountInCurrency['display']);
 		$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
 		$payment_name = $this->plugin->renderPluginName($this->_method);
@@ -1699,13 +1699,13 @@ class  RealexHelperRealex {
 		$attrs = 'class="inputbox vm-chzn-select"';
 		$idA = $id = 'saved_cc_selected';
 		//$idA = $id = 'saved_cc_selected_';
-		//$options[] = array('value' => '', 'text' => vmText::_('VMPAYMENT_REALEX_PLEASE_SELECT'));
+		//$options[] = array('value' => '', 'text' => vmText::_('VMPAYMENT_REALEX_HPP_API_PLEASE_SELECT'));
 		if ($use_another_cc) {
-			$options[] = JHTML::_('select.option', -1, vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC'));
-			$radioOptions[-1] = vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC');
+			$options[] = JHTML::_('select.option', -1, vmText::_('VMPAYMENT_REALEX_HPP_API_USE_ANOTHER_CC'));
+			$radioOptions[-1] = vmText::_('VMPAYMENT_REALEX_HPP_API_USE_ANOTHER_CC');
 		}
 		foreach ($storeCCs as $storeCC) {
-			$cc_type = vmText::_('VMPAYMENT_REALEX_CC_' . $storeCC->realex_saved_pmt_type);
+			$cc_type = vmText::_('VMPAYMENT_REALEX_HPP_API_CC_' . $storeCC->realex_saved_pmt_type);
 			$name = $cc_type . ' ' . $storeCC->realex_saved_pmt_digits . ' ' . $this->renderExpDate($storeCC->realex_saved_pmt_expdate) . ' (' . $storeCC->realex_saved_pmt_name . ')';
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
 			$radioOptions[$storeCC->id] = $name;
@@ -1735,10 +1735,10 @@ class  RealexHelperRealex {
 			$param = "checked";
 		}
 		$id = 'realex_offersavecard_' . $paymentmethod_id;
-		$html = vmText::_('VMPAYMENT_REALEX_OFFERSAVECARD');
+		$html = vmText::_('VMPAYMENT_REALEX_HPP_API_OFFERSAVECARD');
 		$html .= "<br />";
 		$html .= '<input type="checkbox" name="' . $id . '" id="' . $id . '" value="1" ' . $param . '/>';
-		$html .= ' <label for="' . $id . '">' . vmText::_('VMPAYMENT_REALEX_OFFERSAVECARD_YES') . '</label>';
+		$html .= ' <label for="' . $id . '">' . vmText::_('VMPAYMENT_REALEX_HPP_API_OFFERSAVECARD_YES') . '</label>';
 		return $html;
 	}
 
@@ -1770,7 +1770,7 @@ class  RealexHelperRealex {
 
 	function getPaymentButton () {
 		if (empty($this->_method->card_payment_button)) {
-			$card_payment_button = vmText::_('VMPAYMENT_REALEX_DCC_PAY_NOW');
+			$card_payment_button = vmText::_('VMPAYMENT_REALEX_HPP_API_DCC_PAY_NOW');
 		} else {
 			$card_payment_button = $this->_method->card_payment_button;
 		}
@@ -2297,7 +2297,7 @@ class  RealexHelperRealex {
 		$hash = $this->getSha1Hash($this->_method->shared_secret, $xml_response->attributes()->timestamp, $this->_method->merchant_id, (string)$xml_response->orderid, (string)$xml_response->result, (string)$xml_response->message, (string)$xml_response->pasref, (string)$xml_response->authcode);
 
 		if ($hash != $xml_response->sha1hash) {
-			$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $xml_response->sha1hash));
+			$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_HPP_API_ERROR_WRONG_HASH', $hash, $xml_response->sha1hash));
 			return false;
 		}
 
@@ -2379,7 +2379,7 @@ class  RealexHelperRealex {
 		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $xml_responseToLog->asXML() . '</textarea>', 'response :', 'message');
 
 		if (empty($response)) {
-			$this->displayError(vmText::_('VMPAYMENT_REALEX_EMPTY_RESPONSE'));
+			$this->displayError(vmText::_('VMPAYMENT_REALEX_HPP_API_EMPTY_RESPONSE'));
 			return FALSE;
 		}
 		if (!$this->validateResponseHash($response)) {

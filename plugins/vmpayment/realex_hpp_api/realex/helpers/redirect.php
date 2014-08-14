@@ -86,7 +86,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 		} else {
 
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_REDIRECT_MESSAGE') . '" />
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE') . '" />
 					<script type="text/javascript">';
 			$html .= '		document.vm_realex_form.submit();';
 			$html .= '	</script>';
@@ -255,7 +255,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 			if ($storedCCs = $this->getStoredCCs(JFactory::getUser()->id)) {
 				$saved_cc_selected = $this->customerData->getVar('saved_cc_selected');
 				if ($this->customerData->getVar('selected_method') AND empty($saved_cc_selected)) {
-					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
+					vmInfo('VMPAYMENT_REALEX_HPP_API_PLEASE_SELECT_OPTION');
 					return false;
 				}
 			}
@@ -292,7 +292,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 				$extraPluginInfo['cc_expire_year'] = "";
 			}
 		} else {
-			$extraPluginInfo['cc_number'] = vmText::_('VMPAYMENT_REALEX_USE_ANOTHER_CC');
+			$extraPluginInfo['cc_number'] = vmText::_('VMPAYMENT_REALEX_HPP_API_USE_ANOTHER_CC');
 		}
 
 
@@ -310,8 +310,8 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 			$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $post['MERCHANT_ID'], $post['ORDER_ID'], $post['RESULT'], $message, isset($post['PASREF']) ? $post['PASREF'] : "", isset($post['AUTHCODE']) ? $post['AUTHCODE'] : "");
 			if ($hash != $post['SHA1HASH']) {
 				$this->debugLog('validateResponseHash :' . var_export($post, true), 'debug');
-				//$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, print_r($post, true)));
-				//echo vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $post['SHA1HASH']);
+				//$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_HPP_API_ERROR_WRONG_HASH', $hash, print_r($post, true)));
+				//echo vmText::sprintf('VMPAYMENT_REALEX_HPP_API_ERROR_WRONG_HASH', $hash, $post['SHA1HASH']);
 				//print_r($_POST);
 				return FALSE;
 			}
@@ -328,12 +328,12 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
 		$shop_name = $this->getVendorInfo('vendor_store_name');
-		return vmText::sprintf('VMPAYMENT_REALEX_COMMENT1', $amountValue['display'], $this->order['details']['BT']->order_number, $shop_name);
+		return vmText::sprintf('VMPAYMENT_REALEX_HPP_API_COMMENT1', $amountValue['display'], $this->order['details']['BT']->order_number, $shop_name);
 	}
 
 	function setComment2 () {
 		$shop_name = $this->getVendorInfo('vendor_store_name');
-		return vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $shop_name);
+		return vmText::sprintf('VMPAYMENT_REALEX_HPP_API_NOTIFY_RETURN_URL', $shop_name);
 	}
 
 	/**

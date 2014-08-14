@@ -19,7 +19,7 @@
  */
 defined('_JEXEC') or die();
 $doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/css/realex.css');
+$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex/assets/css/realex.css');
 ?>
 
 <div class="realex response">
@@ -35,7 +35,7 @@ $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/
 			<span class="realex_payer_value"><?php echo $viewData['payer_info']; ?></span>
 		</div>
 		<div class="realex_pasref">
-			<span class="realex_pasref_label"><?php echo vmText::_('VMPAYMENT_REALEX_RESPONSE_PASREF'); ?></span>
+			<span class="realex_pasref_label"><?php echo vmText::_('VMPAYMENT_REALEX_HPP_API_RESPONSE_PASREF'); ?></span>
 			<span class="realex_pasref_value"><?php echo $viewData['pasref']; ?></span>
 		</div>
 		<div class="realex_vieworder">
