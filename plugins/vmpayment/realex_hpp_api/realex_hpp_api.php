@@ -745,7 +745,10 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			$app->enqueueMessage(JText::_('VMPAYMENT_REALEX_HPP_API_NO_PLUGIN_INSTALLED'));
 			return;
 		}
-
+		// publish the plugin
+		$q="UPDATE  `#__extensions` SET  `enabled` =  '1' WHERE  `extension_id` =".$extension_id;
+		$db->setQuery($q);
+		$db->query();
 
 // is this plugin already
 		$q = 'SELECT `virtuemart_userfield_id` FROM `#__virtuemart_userfields` WHERE `userfield_jplugin_id` = ' . $extension_id;
@@ -780,7 +783,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		}
 
 		JLoader::import('joomla.plugin.helper');
-		JPluginHelper::importPlugin('vmuserfield', null, false);
+		JPluginHelper::importPlugin('vmuserfield', 'realex_hpp_api');
 		$app = JFactory::getApplication();
 		$app->triggerEvent('plgVmOnStoreInstallPluginTable', array(
 		                                                          'userfield',

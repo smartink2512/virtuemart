@@ -72,7 +72,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('VM Payment - Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			$this->installPlugin ('VM Payment - Paybox', 'plugin', 'paybox', 'vmpayment');
 			$this->installPlugin ('VM Payment - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmpayment');
-			$this->installPlugin ('VM Userfield - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmuserfield',1);
+			$this->installPlugin ('VM Userfield - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmuserfield');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
 			$this->installPlugin ('VM Payment - Moneybookers', 'plugin', 'moneybookers', 'vmpayment');

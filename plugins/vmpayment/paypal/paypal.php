@@ -829,7 +829,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 		}
 		$pluginName = $return . '<span class="' . $this->_type . '_name">' . $activeMethod->$plugin_name . '</span>';
 		if ($activeMethod->sandbox ) {
-			$pluginName .= ' <span style="color:red;font-weight:bold">Sandbox (' . $activeMethod->virtuemart_paymentmethod_id . ')</span><br />';
+			$pluginName .= ' <span style="color:red;font-weight:bold">Sandbox (' . $activeMethod->virtuemart_paymentmethod_id . ')</span>';
 		}
 		if (!empty($activeMethod->$plugin_desc)) {
 			$pluginName .= '<span class="' . $this->_type . '_description">' . $activeMethod->$plugin_desc . '</span>';

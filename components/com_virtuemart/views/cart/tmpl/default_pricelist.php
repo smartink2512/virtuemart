@@ -116,7 +116,7 @@
 	<th
 		align="right"
 		width="140px"><?php echo JText::_ ('COM_VIRTUEMART_CART_QUANTITY') ?>
-		> <?php echo JText::_ ('COM_VIRTUEMART_CART_ACTION') ?></th>
+		/ <?php echo JText::_ ('COM_VIRTUEMART_CART_ACTION') ?></th>
 
 
 	<?php if (VmConfig::get ('show_tax')) { ?>
