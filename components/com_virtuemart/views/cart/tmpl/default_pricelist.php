@@ -339,13 +339,17 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 }
 
 ?>
-<?php if ( VmConfig::get('oncheckout_opc',true) or (!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and !empty($this->cart->virtuemart_shipmentmethod_id))) { ?>
+<?php if ( 	VmConfig::get('oncheckout_opc',true) or
+			!VmConfig::get('oncheckout_show_steps',false) or
+			(!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and
+			!empty($this->cart->virtuemart_shipmentmethod_id) )
+		) { ?>
 <tr class="sectiontableentry1" valign="top" >
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
 
 	<?php /*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */ ?>
 				<td colspan="<?php echo $readonly_colspan ?>" align="left">
-				<?php echo $this->cart->cartData['shipmentName']; ?>
+		 		<?php echo $this->cart->cartData['shipmentName']; ?>
 	<br/>
 	<?php
 	if (!empty($this->layoutName) && $this->layoutName == 'default' && !$this->cart->automaticSelectedShipment)	{
@@ -376,10 +380,12 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 </tr>
 <?php } ?>
 <?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 and
-			( VmConfig::get('oncheckout_opc',true) or
-				( !VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and !empty($this->cart->virtuemart_paymentmethod_id))
+			( 	VmConfig::get('oncheckout_opc',true) or
+				!VmConfig::get('oncheckout_show_steps',false) or
+				( (!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) ) and !empty($this->cart->virtuemart_paymentmethod_id))
 			)
 		) { ?>
+
 <tr class="sectiontableentry1" valign="top">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
 
