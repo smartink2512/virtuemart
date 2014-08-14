@@ -785,7 +785,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$app = JFactory::getApplication();
 		$app->triggerEvent('plgVmOnStoreInstallPluginTable', array(
 		                                                          'userfield',
-		                                                          'realex'
+		                                                          'realex_hpp_api'
 		                                                     ));
 	}
 
