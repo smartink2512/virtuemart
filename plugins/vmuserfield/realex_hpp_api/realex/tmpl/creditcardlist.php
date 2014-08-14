@@ -6,7 +6,7 @@
  * @author Valerie Isaksen
  * @version $Id$
  * @package VirtueMart
- * @subpackage payment
+ * @subpackage userfield
  * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
