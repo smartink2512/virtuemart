@@ -52,20 +52,13 @@ function isValidCountry() {
 }
 
 
-function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height) {
+function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height, onAddressSelect) {
 
     console.log("amazonShowAddress: " + amazonOrderReferenceId);
     new OffAmazonPayments.Widgets.AddressBook({
         sellerId: sellerId,
         amazonOrderReferenceId: amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
-        onAddressSelect: function (orderReference) {
-            haveAddress = true;
-            // amazonShowWallet();
-            if (isValidCountry()) {
-                // amazonShowWallet();
-            }
-
-        },
+        onAddressSelect: onAddressSelect,
         design: {
             size: {width: width, height: height}
         },
@@ -77,6 +70,15 @@ function amazonShowAddress(sellerId, amazonOrderReferenceId, width, height) {
 
 }
 
+function onAddressSelect() {
+    new Ajax.Request('getShipment', {
+        method: "post",
+        evalScripts: true,
+        onSuccess: APA.successCallback,
+        onFailure: APA.ajaxFailureCallback
+    })
+
+}
 
 function amazonShowWallet(sellerId, amazonOrderReferenceId, width, height) {
     window.onError = null;
