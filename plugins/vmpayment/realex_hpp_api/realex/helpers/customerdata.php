@@ -128,14 +128,14 @@ class RealexHelperCustomerData {
 	 *
 	 */
 	public function saveCustomerRealVaultData ($data) {
-		if (isset($data['realex_saved_pmt_type'])) {
-			$this->_cc_type = $data['realex_saved_pmt_type'];
+		if (isset($data['realex_hpp_api_saved_pmt_type'])) {
+			$this->_cc_type = $data['realex_hpp_api_saved_pmt_type'];
 		}
-		if (isset($data['realex_saved_pmt_digits'])) {
-			$this->_cc_number = $data['realex_saved_pmt_digits'];
+		if (isset($data['realex_hpp_api_saved_pmt_digits'])) {
+			$this->_cc_number = $data['realex_hpp_api_saved_pmt_digits'];
 		}
-		if (isset($data['realex_saved_pmt_name'])) {
-			$this->_cc_name = $data['realex_saved_pmt_name'];
+		if (isset($data['realex_hpp_api_saved_pmt_name'])) {
+			$this->_cc_name = $data['realex_hpp_api_saved_pmt_name'];
 		}
 		$this->save();
 	}

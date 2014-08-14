@@ -82,13 +82,13 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			'cost_per_transaction'         => 'decimal(10,2)',
 			'cost_percent_total'           => 'decimal(10,2)',
 			'tax_id'                       => 'smallint(1)',
-			'realex_custom'                => 'varchar(255)',
-			'realex_request_type_response' => 'varchar(32) DEFAULT NULL',
-			'realex_response_result'       => 'varchar(3) DEFAULT NULL',
-			'realex_response_pasref'       => 'varchar(50) DEFAULT NULL',
-			'realex_response_authcode'     => 'varchar(10) DEFAULT NULL',
-			'realex_fullresponse_format'   => 'varchar(10) DEFAULT NULL',
-			'realex_fullresponse'          => 'text',
+			'realex_hpp_api_custom'                => 'varchar(255)',
+			'realex_hpp_api_request_type_response' => 'varchar(32) DEFAULT NULL',
+			'realex_hpp_api_response_result'       => 'varchar(3) DEFAULT NULL',
+			'realex_hpp_api_response_pasref'       => 'varchar(50) DEFAULT NULL',
+			'realex_hpp_api_response_authcode'     => 'varchar(10) DEFAULT NULL',
+			'realex_hpp_api_fullresponse_format'   => 'varchar(10) DEFAULT NULL',
+			'realex_hpp_api_fullresponse'          => 'text',
 		);
 		return $SQLfields;
 	}
@@ -140,7 +140,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$dbValues['payment_name'] = str_replace(array('\t', '\n'), '', $payment_name);
 
 		$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
-		$dbValues['realex_custom'] = $realexInterface->getContext();
+		$dbValues['realex_hpp_api_custom'] = $realexInterface->getContext();
 		$dbValues['cost_per_transaction'] = $this->_currentMethod->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $this->_currentMethod->cost_percent_total;
 		$dbValues['payment_currency'] = $realexInterface->getPaymentCurrency();
@@ -193,7 +193,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 				$this->customerData->clear();
 
 				if ($success) {
-					if (isset($payments[0]->realex_custom)) {
+					if (isset($payments[0]->realex_hpp_api_custom)) {
 						$cart->emptyCart();
 					}
 				}
@@ -222,7 +222,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			return null;
 		}
 		$payment = end($payments);
-		$xml_response = simplexml_load_string($payment->realex_fullresponse);
+		$xml_response = simplexml_load_string($payment->realex_hpp_api_fullresponse);
 		$order_history = array();
 
 		$success = $realexInterface->isResponseSuccess($xml_response);
@@ -373,7 +373,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		//$html = $this->renderByLayout('orderbepayment', array($payments, $this->_psType));
 		$html = '<table class="adminlist table-striped" >' . "\n";
 		$html .= $this->getHtmlHeaderBE();
-		$code = "realex_response_";
+		$code = "realex_hpp_api_response_";
 		$first = TRUE;
 		foreach ($payments as $payment) {
 			$html .= '<tr class="row1"><td>' . vmText::_('VMPAYMENT_REALEX_HPP_API_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
@@ -389,22 +389,22 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			} else {
 				$realexInterface = $this->_loadRealexInterface();
 
-				if (isset($payment->realex_fullresponse) and !empty($payment->realex_fullresponse)) {
-					//$realex_data = json_decode($payment->realex_fullresponse);
-					if ($payment->realex_fullresponse_format == 'json') {
-						$realex_data = json_decode($payment->realex_fullresponse);
-					} elseif ($payment->realex_fullresponse_format == 'xml') {
-						$html .= $this->getHtmlRowBE('VMPAYMENT_REALEX_HPP_API_RESPONSE_TYPE', $payment->realex_request_type_response);
+				if (isset($payment->realex_hpp_api_fullresponse) and !empty($payment->realex_hpp_api_fullresponse)) {
+					//$realex_data = json_decode($payment->realex_hpp_api_fullresponse);
+					if ($payment->realex_hpp_api_fullresponse_format == 'json') {
+						$realex_data = json_decode($payment->realex_hpp_api_fullresponse);
+					} elseif ($payment->realex_hpp_api_fullresponse_format == 'xml') {
+						$html .= $this->getHtmlRowBE('VMPAYMENT_REALEX_HPP_API_RESPONSE_TYPE', $payment->realex_hpp_api_request_type_response);
 
-						$realex_data = simplexml_load_string($payment->realex_fullresponse);
+						$realex_data = simplexml_load_string($payment->realex_hpp_api_fullresponse);
 					}
 
-					$html .= $realexInterface->onShowOrderBEPayment($realex_data, $payment->realex_fullresponse_format, $payment->realex_request_type_response, $virtuemart_order_id);
+					$html .= $realexInterface->onShowOrderBEPayment($realex_data, $payment->realex_hpp_api_fullresponse_format, $payment->realex_hpp_api_request_type_response, $virtuemart_order_id);
 
 					$html .= '<tr><td></td><td>
     <a href="#" class="RealexLogOpener" rel="' . $payment->id . '" >
         <div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="RealexLog_' . $payment->id . '">';
-					if ($payment->realex_fullresponse_format != 'xml') {
+					if ($payment->realex_hpp_api_fullresponse_format != 'xml') {
 						foreach ($realex_data as $key => $value) {
 							if ($key=='SHA1HASH' OR $key=='SAVED_PMT_DIGITS') {
 								$value = $realexInterface->obscureValue($value);
@@ -412,11 +412,11 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 							$html .= ' <b>' . $key . '</b>:&nbsp;' . $value . '<br />';
 						}
 					} else {
-						$xml_realex_fullresponse = simplexml_load_string($payment->realex_fullresponse);
-						$xml_realex_fullresponse = $realexInterface->obscureSha1hash($xml_realex_fullresponse);
-						//$html .= "<pre>" . htmlentities(wordwrap($realex_fullresponse, 100, "\n", true)) . "</pre>";
-						//$html .= $xml_realex_fullresponse->asXML();
-						$html .= "<pre>" . wordwrap(print_r($xml_realex_fullresponse, true), 100, "\n", true) . "</pre>";
+						$xml_realex_hpp_api_fullresponse = simplexml_load_string($payment->realex_hpp_api_fullresponse);
+						$xml_realex_hpp_api_fullresponse = $realexInterface->obscureSha1hash($xml_realex_hpp_api_fullresponse);
+						//$html .= "<pre>" . htmlentities(wordwrap($realex_hpp_api_fullresponse, 100, "\n", true)) . "</pre>";
+						//$html .= $xml_realex_hpp_api_fullresponse->asXML();
+						$html .= "<pre>" . wordwrap(print_r($xml_realex_hpp_api_fullresponse, true), 100, "\n", true) . "</pre>";
 					}
 
 
@@ -1259,20 +1259,20 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$db_values['virtuemart_order_id'] = $virtuemart_order_id;
 		$db_values['order_number'] = $order_number;
 		$db_values['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
-		$db_values['realex_response_result'] = $realex_data['RESULT'];
-		$db_values['realex_request_type_response'] = $realexInterface::REQUEST_TYPE_AUTH;
-		$db_values['realex_response_pasref'] = isset($realex_data['PASREF']) ? $realex_data['PASREF'] : "";
-		$db_values['realex_response_authcode'] = isset($realex_data['AUTHCODE']) ? $realex_data['AUTHCODE'] : "";
-		$db_values['realex_fullresponse'] = json_encode($realex_data);
-		$db_values['realex_fullresponse_format'] = 'json';
+		$db_values['realex_hpp_api_response_result'] = $realex_data['RESULT'];
+		$db_values['realex_hpp_api_request_type_response'] = $realexInterface::REQUEST_TYPE_AUTH;
+		$db_values['realex_hpp_api_response_pasref'] = isset($realex_data['PASREF']) ? $realex_data['PASREF'] : "";
+		$db_values['realex_hpp_api_response_authcode'] = isset($realex_data['AUTHCODE']) ? $realex_data['AUTHCODE'] : "";
+		$db_values['realex_hpp_api_fullresponse'] = json_encode($realex_data);
+		$db_values['realex_hpp_api_fullresponse_format'] = 'json';
 
 		$this->storePSPluginInternalData($db_values);
 
 		$modelOrder = VmModel::getModel('orders');
 		$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
 		if ($result == $realexInterface::RESPONSE_CODE_SUCCESS) {
-			if (isset($payments[0]->realex_custom)) {
-				$this->emptyCart($payments[0]->realex_custom, $order_number);
+			if (isset($payments[0]->realex_hpp_api_custom)) {
+				$this->emptyCart($payments[0]->realex_hpp_api_custom, $order_number);
 			}
 		}
 		//$this->displayMessageToRealex($realexInterface, $realex_data, $success, $order_history['comments'], $payments[0]->virtuemart_paymentmethod_id);
@@ -1325,9 +1325,9 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			return FALSE;
 		}
 
-		$this->handleRemoteCCForm($dcc_payment->realex_fullresponse);
+		$this->handleRemoteCCForm($dcc_payment->realex_hpp_api_fullresponse);
 		/*
-				$realexInterface->confirmedOrderDccRequest($dcc_payment->realex_fullresponse);
+				$realexInterface->confirmedOrderDccRequest($dcc_payment->realex_hpp_api_fullresponse);
 				$this->updateOrderStatus($realexInterface->order);
 
 				$this->customerData->clear();
@@ -1370,7 +1370,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		}
 		if ($realvaultData) {
-			$pmt_type = $realvaultData->realex_saved_pmt_type;
+			$pmt_type = $realvaultData->realex_hpp_api_saved_pmt_type;
 		} else {
 			$pmt_type = NULL;
 		}
@@ -1568,7 +1568,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		                                                                    $realexInterface::REQUEST_TYPE_REALVAULT_DCCRATE
 		                                                               ));
 		if ($dcc_payment) {
-			$xml_dcc_payment = simplexml_load_string($dcc_payment->realex_fullresponse);
+			$xml_dcc_payment = simplexml_load_string($dcc_payment->realex_hpp_api_fullresponse);
 		} else {
 			$xml_dcc_payment = NULL;
 		}
@@ -1802,16 +1802,16 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$db_values['virtuemart_order_id'] = $virtuemart_order_id;
 		$db_values['order_number'] = $order_number;
 		$db_values['virtuemart_paymentmethod_id'] = $virtuemart_paymentmethod_id;
-		$db_values['realex_response_result'] = (string)$xml_response->result;
+		$db_values['realex_hpp_api_response_result'] = (string)$xml_response->result;
 		if (isset($xml_response->pasref)) {
-			$db_values['realex_response_pasref'] = (string)$xml_response->pasref;
+			$db_values['realex_hpp_api_response_pasref'] = (string)$xml_response->pasref;
 		}
 		if (isset($xml_response->authcode)) {
-			$db_values['realex_response_authcode'] = (string)$xml_response->authcode;
+			$db_values['realex_hpp_api_response_authcode'] = (string)$xml_response->authcode;
 		}
-		$db_values['realex_request_type_response'] = $request_type;
-		$db_values['realex_fullresponse_format'] = 'xml';
-		$db_values['realex_fullresponse'] = $response;
+		$db_values['realex_hpp_api_request_type_response'] = $request_type;
+		$db_values['realex_hpp_api_fullresponse_format'] = 'xml';
+		$db_values['realex_hpp_api_fullresponse'] = $response;
 
 
 		$this->storePSPluginInternalData($db_values);

@@ -3,7 +3,7 @@
  *
  * Realex payment plugin
  *
- * @author Valérie Isaksen
+ * @author Valerie Isaksen
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
@@ -229,7 +229,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 				if ($field == 'SAVED_PMT_DIGITS') {
 					$realex_data[$field] = shopFunctionsF::mask_string($realex_data[$field], '*');
 				}
-				$userfield['realex_' . strtolower($field)] = $realex_data[$field];
+				$userfield['realex_hpp_api_' . strtolower($field)] = $realex_data[$field];
 			}
 		}
 		return $userfield;
@@ -284,9 +284,9 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		if ($saved_cc_selected != -1) {
 			$selected_cc = $this->getSelectedCCParams($saved_cc_selected);
 			if (!empty($selected_cc)) {
-				$extraPluginInfo['cc_type'] = $selected_cc->realex_saved_pmt_type;
-				$extraPluginInfo['cc_number'] = $selected_cc->realex_saved_pmt_digits;
-				$extraPluginInfo['cc_name'] = $selected_cc->realex_saved_pmt_name;
+				$extraPluginInfo['cc_type'] = $selected_cc->realex_hpp_api_saved_pmt_type;
+				$extraPluginInfo['cc_number'] = $selected_cc->realex_hpp_api_saved_pmt_digits;
+				$extraPluginInfo['cc_name'] = $selected_cc->realex_hpp_api_saved_pmt_name;
 
 				$extraPluginInfo['cc_expire_month'] = "";
 				$extraPluginInfo['cc_expire_year'] = "";

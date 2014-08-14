@@ -3,7 +3,7 @@
  *
  * Realex payment plugin
  *
- * @author Valérie Isaksen
+ * @author Valerie Isaksen
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment

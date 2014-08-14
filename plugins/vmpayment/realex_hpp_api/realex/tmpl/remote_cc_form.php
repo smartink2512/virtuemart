@@ -1,9 +1,10 @@
 <?php
 /**
  *
- * REALEX  payment plugin
+ * Realex payment plugin
  *
- * @version $Id: REALEX.php 7217 2013-09-18 13:42:54Z alatak $
+ * @author Valerie Isaksen
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
  * ${PHING.VM.COPYRIGHT}

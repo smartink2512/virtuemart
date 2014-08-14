@@ -3,7 +3,7 @@
  *
  * Realex payment plugin
  *
- * @author Valérie Isaksen
+ * @author Valerie Isaksen
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
@@ -321,7 +321,7 @@ class  RealexHelperRealex {
 		$timestamp = $this->getTimestamp();
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_REALVAULT_3DS_VERIFYENROLLED);
 		$xml_request .= '<payerref>' . $payerRef . '</payerref>
-			<paymentmethod>' . $realvault->realex_saved_pmt_ref . '</paymentmethod>';
+			<paymentmethod>' . $realvault->realex_hpp_api_saved_pmt_ref . '</paymentmethod>';
 		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), $payerRef);
 		$xml_request .= $this->setSha1($sha1);
 		$xml_request .= '</request>';
@@ -764,7 +764,7 @@ class  RealexHelperRealex {
 
 		if ($realvault) {
 			$xml_request .= '<payerref>' . $payerRef . '</payerref>
-			<paymentmethod>' . $realvault->realex_saved_pmt_ref . '</paymentmethod>
+			<paymentmethod>' . $realvault->realex_hpp_api_saved_pmt_ref . '</paymentmethod>
 			';
 			$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), $payerRef);
 
@@ -1022,12 +1022,12 @@ class  RealexHelperRealex {
 			$orderModel = VmModel::getModel('orders');
 			$order = $orderModel->getOrder($virtuemart_order_id);
 			$usedCC = $this->getStoredCCByPmt_ref($order['details']['BT']->virtuemart_user_id, $data->paymentmethod);
-			VmConfig::loadJLang('plg_vmuserfield_realex');
+			VmConfig::loadJLang('plg_vmuserfield_realex_hpp_api');
 			$display_fields = array(
-				'realex_saved_pmt_type',
-				'realex_saved_pmt_digits',
-				'realex_saved_pmt_expdate',
-				'realex_saved_pmt_name'
+				'realex_hpp_api_saved_pmt_type',
+				'realex_hpp_api_saved_pmt_digits',
+				'realex_hpp_api_saved_pmt_expdate',
+				'realex_hpp_api_saved_pmt_name'
 			);
 			foreach ($display_fields as $display_field) {
 				$complete_key = strtoupper('VMUSERFIELD_' . $display_field);
@@ -1108,10 +1108,10 @@ class  RealexHelperRealex {
 		// FROM PAYMENT LOG??? why not from history
 		if ($payments) {
 			foreach ($payments as $payment) {
-				if (isset($payment->realex_fullresponse) and !empty($payment->realex_fullresponse)) {
-					if ($payment->realex_fullresponse_format == 'xml') {
-						$xml_response = simplexml_load_string($payment->realex_fullresponse);
-						if ($payment->realex_request_type_response == $this::REQUEST_TYPE_AUTH OR $payment->realex_request_type_response == $this::REQUEST_TYPE_RECEIPT_IN) {
+				if (isset($payment->realex_hpp_api_fullresponse) and !empty($payment->realex_hpp_api_fullresponse)) {
+					if ($payment->realex_hpp_api_fullresponse_format == 'xml') {
+						$xml_response = simplexml_load_string($payment->realex_hpp_api_fullresponse);
+						if ($payment->realex_hpp_api_request_type_response == $this::REQUEST_TYPE_AUTH OR $payment->realex_hpp_api_request_type_response == $this::REQUEST_TYPE_RECEIPT_IN) {
 							$success = $this->isResponseSuccess($xml_response);
 
 							if ($success) {
@@ -1126,7 +1126,7 @@ class  RealexHelperRealex {
 								$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
 								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
-								$pasref = $payment->realex_response_pasref;
+								$pasref = $payment->realex_hpp_api_response_pasref;
 							} else {
 								if ($this->isResponseDeclined($xml_response)) {
 									$auth_info = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_DECLINED', $this->order['details']['BT']->order_number);
@@ -1135,7 +1135,7 @@ class  RealexHelperRealex {
 								}
 							}
 
-						} elseif ($payment->realex_request_type_response == $this::REQUEST_TYPE_CARD_NEW) {
+						} elseif ($payment->realex_hpp_api_request_type_response == $this::REQUEST_TYPE_CARD_NEW) {
 							$success = $this->isResponseSuccess($xml_response);
 							if ($success) {
 								$payer_info = vmText::_('VMPAYMENT_REALEX_HPP_API_CARD_STORAGE_SUCCESS');
@@ -1145,9 +1145,9 @@ class  RealexHelperRealex {
 						}
 
 					} else {
-						if ($payment->realex_fullresponse_format == 'json') {
-							$realex_data = json_decode($payment->realex_fullresponse);
-							$result = $payment->realex_response_result;
+						if ($payment->realex_hpp_api_fullresponse_format == 'json') {
+							$realex_data = json_decode($payment->realex_hpp_api_fullresponse);
+							$result = $payment->realex_hpp_api_response_result;
 							$payer_info = '';
 							$success = ($result == self::RESPONSE_CODE_SUCCESS);
 
@@ -1269,15 +1269,15 @@ class  RealexHelperRealex {
 
 		$userfield['virtuemart_user_id'] = $this->order['details']['BT']->virtuemart_user_id;
 		$userfield['merchant_id'] = $this->_method->merchant_id;
-		$userfield['realex_saved_pmt_ref'] = $newPaymentRef;
+		$userfield['realex_hpp_api_saved_pmt_ref'] = $newPaymentRef;
 		//$userfield['realex_saved_payer_ref'] = $newPayerRef;
-		$userfield['realex_saved_pmt_type'] = $this->customerData->getVar('cc_type');
+		$userfield['realex_hpp_api_saved_pmt_type'] = $this->customerData->getVar('cc_type');
 		if (!class_exists('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
-		$userfield['realex_saved_pmt_digits'] = shopFunctionsF::mask_string($this->customerData->getVar('cc_number'), '*');
-		$userfield['realex_saved_pmt_name'] = $this->customerData->getVar('cc_name');
-		$userfield['realex_saved_pmt_expdate'] = $this->getFormattedExpiryDateForRequest();
+		$userfield['realex_hpp_api_saved_pmt_digits'] = shopFunctionsF::mask_string($this->customerData->getVar('cc_number'), '*');
+		$userfield['realex_hpp_api_saved_pmt_name'] = $this->customerData->getVar('cc_name');
+		$userfield['realex_hpp_api_saved_pmt_expdate'] = $this->getFormattedExpiryDateForRequest();
 
 		return $userfield;
 	}
@@ -1307,7 +1307,7 @@ class  RealexHelperRealex {
 		$userfield['fromPayment'] = true;
 		$app->triggerEvent('plgVmPrepareUserfieldDataSave', array(
 		                                                         'pluginrealex',
-		                                                         'realex',
+		                                                         'realex_hpp_api',
 		                                                         &$userfield,
 		                                                         &$value,
 		                                                         $userfield
@@ -1526,7 +1526,7 @@ class  RealexHelperRealex {
 		$app = JFactory::getApplication();
 
 		$storedCCs = "";
-		$app->triggerEvent('plgVmOnPaymentDisplay', array('pluginrealex', $virtuemart_user_id, &$storedCCs));
+		$app->triggerEvent('plgVmOnPaymentDisplay', array('pluginrealex_hpp_api', $virtuemart_user_id, &$storedCCs));
 		//$this->debugLog(var_export($storedCCs, true), 'getStoredCCs after plgVmOnPaymentDisplay', 'debug');
 		if (empty(self::$_storedCCsCache)) {
 			self::$_storedCCsCache = array();
@@ -1561,7 +1561,7 @@ class  RealexHelperRealex {
 		$storeCCs = $this->getStoredCCs($virtuemart_user_id);
 		if ($storeCCs) {
 			foreach ($storeCCs as $storeCC) {
-				if ($storeCC->realex_saved_pmt_ref == $pmt_ref) {
+				if ($storeCC->realex_hpp_api_saved_pmt_ref == $pmt_ref) {
 					$storedCCByPmt_ref = $storeCC;
 					break;
 				}
@@ -1623,10 +1623,10 @@ class  RealexHelperRealex {
 			}
 		}
 		if ($xml_response_dcc AND $realvault) {
-			$ccData['cc_type'] = $realvault->realex_saved_pmt_type;
-			$ccData['cc_number'] = $realvault->realex_saved_pmt_digits;
-			$ccData['cc_number_masked'] = $realvault->realex_saved_pmt_digits;
-			$ccData['cc_name'] = $realvault->realex_saved_pmt_name;
+			$ccData['cc_type'] = $realvault->realex_hpp_api_saved_pmt_type;
+			$ccData['cc_number'] = $realvault->realex_hpp_api_saved_pmt_digits;
+			$ccData['cc_number_masked'] = $realvault->realex_hpp_api_saved_pmt_digits;
+			$ccData['cc_name'] = $realvault->realex_hpp_api_saved_pmt_name;
 			$ccData['cc_cvv_realvault'] = $this->customerData->getVar('cc_cvv_realvault');
 			$ccData['cc_cvv_masked'] = '***';
 		} else {
@@ -1705,8 +1705,8 @@ class  RealexHelperRealex {
 			$radioOptions[-1] = vmText::_('VMPAYMENT_REALEX_HPP_API_USE_ANOTHER_CC');
 		}
 		foreach ($storeCCs as $storeCC) {
-			$cc_type = vmText::_('VMPAYMENT_REALEX_HPP_API_CC_' . $storeCC->realex_saved_pmt_type);
-			$name = $cc_type . ' ' . $storeCC->realex_saved_pmt_digits . ' ' . $this->renderExpDate($storeCC->realex_saved_pmt_expdate) . ' (' . $storeCC->realex_saved_pmt_name . ')';
+			$cc_type = vmText::_('VMPAYMENT_REALEX_HPP_API_CC_' . $storeCC->realex_hpp_api_saved_pmt_type);
+			$name = $cc_type . ' ' . $storeCC->realex_hpp_api_saved_pmt_digits . ' ' . $this->renderExpDate($storeCC->realex_hpp_api_saved_pmt_expdate) . ' (' . $storeCC->realex_hpp_api_saved_pmt_name . ')';
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
 			$radioOptions[$storeCC->id] = $name;
 		}
@@ -1806,7 +1806,7 @@ class  RealexHelperRealex {
 		$xml_request .= $this->setMpi($xml_3Dresponse);
 		$payerRef = $this->getSavedPayerRef();
 		$xml_request .= '<payerref>' . $this->getSavedPayerRef() . '</payerref>
-		<paymentmethod>' . $selectedCCParams->realex_saved_pmt_ref . '</paymentmethod>';
+		<paymentmethod>' . $selectedCCParams->realex_hpp_api_saved_pmt_ref . '</paymentmethod>';
 		if ($xml_response_dcc) {
 			$xml_request .= $this->setDccInfo($xml_response_dcc);
 			/*
@@ -1879,10 +1879,10 @@ class  RealexHelperRealex {
 				<request timestamp="' . $timestamp . '" type="' . self::REQUEST_TYPE_CARD_CANCEL_CARD . '">
 					<merchantid>' . $this->_method->merchant_id . '</merchantid>
 					<card>
-						<ref>' . $storedCC['realex_saved_pmt_ref'] . '</ref>
+						<ref>' . $storedCC['realex_hpp_api_saved_pmt_ref'] . '</ref>
 						<payerref>' . $payerRef . '</payerref>
 					</card>';
-		$sha1_request = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $payerRef, $storedCC['realex_saved_pmt_ref']);
+		$sha1_request = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $payerRef, $storedCC['realex_hpp_api_saved_pmt_ref']);
 		$xml_request .= $this->setSha1($sha1_request);
 		$xml_request .= '</request>';
 
@@ -1892,7 +1892,7 @@ class  RealexHelperRealex {
 
 		$merchantid = (string)$xml_response->merchantid;
 		$sha1hash = (string)$xml_response->sha1hash;
-		$sha1_temp_response = sha1($timestamp . '.' . $merchantid . '.' . $payerRef . '.' . $storedCC['realex_saved_pmt_ref']);
+		$sha1_temp_response = sha1($timestamp . '.' . $merchantid . '.' . $payerRef . '.' . $storedCC['realex_hpp_api_saved_pmt_ref']);
 		$sha1_response = sha1($sha1_temp_response . '.' . $this->_method->shared_secret);
 		// 501 : Card Ref and Payer combination does not exist: ignore those cases
 		if (($result == '00' || $result == '501') && $sha1_response == $sha1_request) {
@@ -1919,13 +1919,13 @@ class  RealexHelperRealex {
 				<request timestamp="' . $timestamp . '" type="' . self::REQUEST_TYPE_CARD_UPDATE_CARD . '">
 					<merchantid>' . $this->_method->merchant_id . '</merchantid>
 					<card>
-						<ref>' . $storedCC['realex_saved_pmt_ref'] . '</ref>
+						<ref>' . $storedCC['realex_hpp_api_saved_pmt_ref'] . '</ref>
 						<payerref>' . $payerRef . '</payerref>
-						<expdate>' . $storedCC['realex_saved_pmt_expdate'] . '</expdate>
-						<chname>' . $storedCC['realex_saved_pmt_name'] . '</chname>
+						<expdate>' . $storedCC['realex_hpp_api_saved_pmt_expdate'] . '</expdate>
+						<chname>' . $storedCC['realex_hpp_api_saved_pmt_name'] . '</chname>
 						<type>card</type>
 					</card>';
-		$sha1_request = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $payerRef, $storedCC['realex_saved_pmt_ref'], $storedCC['realex_saved_pmt_expdate'], "");
+		$sha1_request = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $payerRef, $storedCC['realex_hpp_api_saved_pmt_ref'], $storedCC['realex_hpp_api_saved_pmt_expdate'], "");
 		$xml_request .= $this->setSha1($sha1_request);
 		$xml_request .= '</request>';
 
@@ -1935,7 +1935,7 @@ class  RealexHelperRealex {
 
 		$merchantid = (string)$xml_response->merchantid;
 		$sha1hash = (string)$xml_response->sha1hash;
-		$sha1_temp_response = sha1($timestamp . '.' . $merchantid . '.' . $payerRef . '.' . $storedCC['realex_saved_pmt_ref'] . '.' . $storedCC['realex_saved_pmt_expdate'] . '.');
+		$sha1_temp_response = sha1($timestamp . '.' . $merchantid . '.' . $payerRef . '.' . $storedCC['realex_hpp_api_saved_pmt_ref'] . '.' . $storedCC['realex_hpp_api_saved_pmt_expdate'] . '.');
 		$sha1_response = sha1($sha1_temp_response . '.' . $this->_method->shared_secret);
 		// 501 : Card Ref and Payer combination does not exist: ignore those cases
 		if (($result == '00' || $result == '501') && $sha1_response == $sha1_request) {
@@ -2127,8 +2127,8 @@ class  RealexHelperRealex {
 		}
 		$timestamp = $this->getTimestamp();
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_REBATE);
-		$xml_request .= '<pasref>' . $payment->realex_response_pasref . '</pasref>
-				<authcode>' . $payment->realex_response_authcode . '</authcode>
+		$xml_request .= '<pasref>' . $payment->realex_hpp_api_response_pasref . '</pasref>
+				<authcode>' . $payment->realex_hpp_api_response_authcode . '</authcode>
 				';
 
 		$refundhash = sha1($this->_method->rebate_password);
@@ -2157,8 +2157,8 @@ class  RealexHelperRealex {
 		$timestamp = $this->getTimestamp();
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_SETTLE);
 		$xml_request .= '
-				<pasref>' . $payment->realex_response_pasref . '</pasref>
-				<authcode>' . $payment->realex_response_authcode . '</authcode>
+				<pasref>' . $payment->realex_hpp_api_response_pasref . '</pasref>
+				<authcode>' . $payment->realex_hpp_api_response_authcode . '</authcode>
 				';
 
 
@@ -2188,8 +2188,8 @@ class  RealexHelperRealex {
 		$timestamp = $this->getTimestamp();
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_VOID);
 		$xml_request .= '
-				<pasref>' . $payment->realex_response_pasref . '</pasref>
-				<authcode>' . $payment->realex_response_authcode . '</authcode>
+				<pasref>' . $payment->realex_hpp_api_response_pasref . '</pasref>
+				<authcode>' . $payment->realex_hpp_api_response_authcode . '</authcode>
 				';
 
 		$xml_request .= $this->setComments();
@@ -2215,7 +2215,7 @@ class  RealexHelperRealex {
 		self::REQUEST_TYPE_RECEIPT_IN
 	)) {
 		foreach ($payments as $payment) {
-			if (in_array($payment->realex_request_type_response, $request_type)) {
+			if (in_array($payment->realex_hpp_api_request_type_response, $request_type)) {
 				return $payment;
 			}
 		}
@@ -2227,7 +2227,7 @@ class  RealexHelperRealex {
 		self::REQUEST_TYPE_RECEIPT_IN
 	)) {
 		$payment = end($payments);
-		if (in_array($payment->realex_request_type_response, $request_type)) {
+		if (in_array($payment->realex_hpp_api_request_type_response, $request_type)) {
 			return $payment;
 		}
 		return NULL;
