@@ -27,10 +27,10 @@ if (!class_exists('vmPSPlugin')) {
 }
 
 if (!class_exists('RealexHelperRealex')) {
-	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/helper.php');
+	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/helper.php');
 }
 if (!class_exists('RealexHelperCustomerData')) {
-	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
+	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 }
 
 if (!class_exists('vmPSPlugin')) {
@@ -44,7 +44,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	function __construct (& $subject, $config) {
 		parent::__construct($subject, $config);
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 		}
 		$this->customerData = new RealexHelperCustomerData();
 		$this->_loggable = TRUE;
@@ -285,13 +285,13 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		if ($this->_currentMethod->integration == 'redirect') {
 			if (!class_exists('RealexHelperRealexRedirect')) {
-				require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/redirect.php');
+				require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/redirect.php');
 			}
 			$realexInterface = new RealexHelperRealexRedirect($this->_currentMethod, $this);
 		} else {
 			if ($this->_currentMethod->integration == 'remote') {
 				if (!class_exists('RealexHelperRealexRemote')) {
-					require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/remote.php');
+					require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/remote.php');
 				}
 				$realexInterface = new RealexHelperRealexRemote($this->_currentMethod, $this);
 			} else {
@@ -737,7 +737,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 	private function createPmtRefTable () {
 		$db = JFactory::getDBO();
-		$q = 'SELECT `extension_id` FROM `#__extensions` WHERE `folder` = "vmuserfield" and `state`="0" ';
+		$q = 'SELECT `extension_id` FROM `#__extensions` WHERE `folder` = "vmuserfield" and `state`="0" AND `element` = "'.$this->_name.'"';
 		$db->setQuery($q);
 		$extension_id = $db->loadResult();
 		if (empty($extension_id)) {
@@ -751,37 +751,36 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$q = 'SELECT `virtuemart_userfield_id` FROM `#__virtuemart_userfields` WHERE `userfield_jplugin_id` = ' . $extension_id;
 		$db->setQuery($q);
 		$virtuemart_userfield_id = $db->loadResult();
-		if (!empty($virtuemart_userfield_id)) {
+		if (empty($virtuemart_userfield_id)) {
 			//$app = JFactory::getApplication();
 			//$app -> enqueueMessage(JText::_('VMUSERFIELD_REALEX_NO_PLUGIN_ALREADY_INSTALLED'));
-			return;
+
+			$userFieldsModel = VmModel::getModel('UserFields');
+
+			$data['virtuemart_userfield_id'] = 0;
+
+			$data['published'] = 1;
+			$data['userfield_jplugin_id'] = $extension_id;
+			$data['required'] = 0;
+			$data['account'] = 1;
+			$data['shipment'] = 0;
+			$data['registration'] = 0;
+			$data['vNames'] = array();
+			$data['vValues'] = array();
+			$data['name'] = 'realex_hpp_api';
+			$data['type'] = 'pluginrealex_hpp_api';
+			$data['title'] = 'Payment means';
+			$ret = $userFieldsModel->store($data);
+
+			if (!$ret) {
+				vmError(JText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_FAILED') . " " . $data['name'] . " " . $ret);
+			} else {
+				vmInfo(JText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_OK') . " " . $data['name']);
+			}
 		}
-		$userFieldsModel = VmModel::getModel('UserFields');
-
-		$data['virtuemart_userfield_id'] = 0;
-
-		$data['published'] = 1;
-		$data['userfield_jplugin_id'] = $extension_id;
-		$data['required'] = 0;
-		$data['account'] = 1;
-		$data['shipment'] = 0;
-		$data['registration'] = 0;
-		$data['vNames'] = array();
-		$data['vValues'] = array();
-		$data['name'] = 'realex';
-		$data['type'] = 'pluginrealex_hpp_api';
-		$data['title'] = 'Payment means';
-		$ret = $userFieldsModel->store($data);
-
-		if (!$ret) {
-			vmError(JText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_FAILED') . " " . $data['name'] . " " . $ret);
-		} else {
-			vmInfo(JText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_OK') . " " . $data['name']);
-		}
-
 
 		JLoader::import('joomla.plugin.helper');
-		JPluginHelper::importPlugin('vmuserfield');
+		JPluginHelper::importPlugin('vmuserfield', null, false);
 		$app = JFactory::getApplication();
 		$app->triggerEvent('plgVmOnStoreInstallPluginTable', array(
 		                                                          'userfield',
@@ -1035,7 +1034,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		$display_logos = "";
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 		}
 		$this->_currentMethod = $method;
 		$realexInterface = $this->_loadRealexInterface();

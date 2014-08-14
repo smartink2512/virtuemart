@@ -1320,7 +1320,7 @@ class  RealexHelperRealex {
 
 	public function loadCustomerData ($loadCDFromPost = true) {
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 		}
 		$this->getCustomerData();
 		if ($loadCDFromPost) {
@@ -1331,7 +1331,7 @@ class  RealexHelperRealex {
 
 	public function getCustomerData () {
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 		}
 		$this->customerData = new RealexHelperCustomerData();
 		$this->customerData->load();

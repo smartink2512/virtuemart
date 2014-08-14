@@ -16,7 +16,7 @@
         <folder>language</folder>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements"/>
-    <params addpath="/plugins/vmpayment/realex_hpp_api/realex/elements"/>
+    <params addpath="/plugins/vmpayment/realex_hpp_api/realex_hpp_api/elements"/>
     <params>
 
         <param type="vmtitle" class="realex_title" default="VMPAYMENT_REALEX_HPP_API_PAYMENT_TITLE"/>

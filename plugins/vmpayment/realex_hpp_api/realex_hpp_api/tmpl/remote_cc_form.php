@@ -28,8 +28,8 @@ vmJsApi::jCreditCard();
 vmJsApi::jQuery();
 vmJsApi::chosenDropDowns();
 $doc = JFactory::getDocument();
-$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex/assets/js/site.js');
-$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex/assets/css/realex.css');
+$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/site.js');
+$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/realex.css');
 
 $attribute = '';
 if ($viewData['dccinfo']) {

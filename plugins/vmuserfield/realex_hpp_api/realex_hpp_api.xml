@@ -13,7 +13,7 @@
         <filename plugin="realex_hpp_api">realex_hpp_api.php</filename>
         <folder>realex_hpp_api</folder>
     </files>
-    <params addpath="/plugins/vmuserfield/realex_hpp_api/realex/elements"/>
+    <params addpath="/plugins/vmuserfield/realex_hpp_api/realex_hpp_api/elements"/>
     <params addpath="/administrator/components/com_virtuemart/elements"/>
     <params>
         <param type="vmjpluginwarning"/>

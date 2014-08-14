@@ -34,8 +34,8 @@ class JElementCustomjs extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex/assets/css/admin.css');
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/admin.css');
 
 
 		return '';
