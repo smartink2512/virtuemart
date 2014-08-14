@@ -608,13 +608,11 @@ class VmTable extends JTable {
 				}
 			}
 		} else {
-			$params = JComponentHelper::getParams('com_languages');
-			$defaultLang = $params->get('site', 'en-GB');//use default joomla
-			$defaultLang= strtolower(strtr($defaultLang,'-','_'));
 
-			if($defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
+
+			if(VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
 				$this->_ltmp = $this->_langTag;
-				$this->_langTag = $defaultLang;
+				$this->_langTag = VmConfig::$defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
 			}
 		}
@@ -686,7 +684,7 @@ class VmTable extends JTable {
 
 		if($ok = parent::store($updateNulls)){
 			//reset Params
-			if($this->_tmpParams){
+			if(isset($this->_tmpParams)){
 				foreach($this->_tmpParams as $k => $v){
 					$this->$k = $v;
 				}

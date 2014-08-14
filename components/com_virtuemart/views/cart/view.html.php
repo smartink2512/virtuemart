@@ -46,9 +46,6 @@ class VirtueMartViewCart extends VmView {
 		$document = JFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
-		// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
-		//vmJsApi::jPrice();
-
 		$layoutName = $this->getLayout();
 		if (!$layoutName) $layoutName = vRequest::getCmd('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
@@ -194,9 +191,7 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('useXHTML', $useXHTML);
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
-		// @max: quicknirty
-		//$this->cart->setCartIntoSession(true);
-		//$this->setLayout($this->cart->layout);
+
 		shopFunctionsF::setVmTemplate($this, 0, 0, $this->cart->layout);
 
 		//We never want that the cart is indexed

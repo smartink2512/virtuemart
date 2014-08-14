@@ -590,10 +590,15 @@ class VirtueMartCart {
 				//add products to remove to array
 				if($cartProductData['quantity']==0){
 					$unsetA[] = $k;
+					$product = false;
 				}
 
 			}
-			$products[] = $product;
+
+			if($product){
+				$products[] = $product;
+			}
+
 			if(!$found){
 				if(!$product)$product = $this->getProduct( (int)$productData['virtuemart_product_id'],$productData['quantity']);
 				if(!empty($product->virtuemart_product_id)){

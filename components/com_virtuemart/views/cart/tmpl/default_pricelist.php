@@ -236,6 +236,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 } ?>
 
 <?php // if ( $this->cart->automaticSelectedShipment or !empty($this->cart->virtuemart_shipmentmethod_id) or VmConfig::get('oncheckout_opc',1) ) { ?>
+<?php if ( VmConfig::get('oncheckout_opc',true) or (!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and !empty($this->cart->virtuemart_shipmentmethod_id))) { ?>
 <tr class="sectiontableentry1" valign="top">
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
 		<td colspan="4" align="left">
@@ -268,8 +269,14 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?></td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?> </td>
 </tr>
-<?php // } ?>
-<?php // if ( $this->cart->automaticSelectedShipment or !empty($this->cart->virtuemart_shipmentmethod_id) or VmConfig::get('oncheckout_opc',1) ) { //$this->cart->cartPrices['salesPrice']>0.0  ?>
+<?php } ?>
+<?php // if ( $this->cart->automaticSelectedShipment or !empty($this->cart->virtuemart_shipmentmethod_id) or VmConfig::get('oncheckout_opc',1) ) { //$this->cart->cartPrices['salesPrice']>0.0
+if ($this->cart->pricesUnformatted['salesPrice']>0.0 and
+( VmConfig::get('oncheckout_opc',true) or
+	( !VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and !empty($this->cart->virtuemart_paymentmethod_id))
+)
+) {
+?>
 <tr class="sectiontableentry1"  valign="top">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
 		<td colspan="4" align="left">
@@ -299,7 +306,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?></td>
 	<td align="right"><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?> </td>
 </tr>
-<?php // } ?>
+<?php  } ?>
 <tr>
 	<td colspan="4">&nbsp;</td>
 	<td colspan="<?php echo $colspan ?>">

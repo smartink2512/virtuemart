@@ -466,6 +466,7 @@ class VmConfig {
 
 	public static $_virtuemart_vendor_id = null;
 	public static $vmlang = false;
+	public static $defaultLang = false;
 	public static $vmlangTag = '';
 	public static $langs = array();
 	public static $langCount = 0;
@@ -864,6 +865,7 @@ class VmConfig {
 		}
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
+		self::$defaultLang = strtolower(strtr($defaultLang,'-','_'));
 		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );

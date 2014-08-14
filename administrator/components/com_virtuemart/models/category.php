@@ -119,9 +119,8 @@ class VirtueMartModelCategory extends VmModel {
 	 * @return object List of objects containing the child categories
 	 *
 	 */
-	public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null, $cache = true) {
+	public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null, $useCache = true) {
 
-		$useCache = true;
 		if(empty($this) or get_class($this)!='VirtueMartModelCategory'){
 			$useCache = false;
 		}
@@ -187,8 +186,23 @@ class VirtueMartModelCategory extends VmModel {
 		if(!$lang){
 			$lang = VmConfig::$vmlang;
 		}
-		$query = 'SELECT L.* FROM `#__virtuemart_categories_'.$lang.'` as L
+
+		//vmdebug('get list of products',$defaultLang,VmConfig::$vmlang);
+		if(VmConfig::$defaultLang!=$lang and Vmconfig::$langCount>1){
+			$query = 'SELECT c.*, IFNULL(l.category_name,ld.category_name) as category_name,
+			 					IFNULL(l.category_description,ld.category_description) as category_description,
+			 					IFNULL(l.metadesc,ld.metadesc) as metadesc,
+			 					IFNULL(l.metakey,ld.metakey) as metakey,
+			 					IFNULL(l.customtitle,ld.customtitle) as customtitle,
+			 					IFNULL(l.slug,ld.slug) as slug
+			 FROM `#__virtuemart_categories` as c
+					INNER JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_category_id`)
+					LEFT JOIN `#__virtuemart_categories_'.$lang.'` as l using (`virtuemart_category_id`)';
+		} else {
+			$query = 'SELECT L.* FROM `#__virtuemart_categories_'.$lang.'` as L
 					JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
+		}
+
 		$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on c.`virtuemart_category_id` = cx.`category_child_id` ';
 		$query .= ' WHERE cx.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
 		if(empty($vendorId) and VmConfig::get('multix')!='none'){
@@ -211,7 +225,7 @@ class VirtueMartModelCategory extends VmModel {
 				$child->virtuemart_media_id = $xrefTable->load($child->virtuemart_category_id);
 			}
 		}
-
+		//vmdebug('my child list '.$query,$childList);
 		return $childList;
 	}
 
@@ -654,10 +668,20 @@ class VirtueMartModelCategory extends VmModel {
 		$menuCatid = (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
 		if ($menuCatid == $virtuemart_category_id) return ;
 		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$menuCatid));
-		foreach ($parents_id as $id ) {
+
+		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			$q = 'SELECT IFNULL(l.category_name,ld.category_name) as `category_name`,`virtuemart_category_id`
+				FROM  `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld
+				LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l using (`virtuemart_category_id`)
+				WHERE  `virtuemart_category_id`=';
+		} else {
 			$q = 'SELECT `category_name`,`virtuemart_category_id`
 				FROM  `#__virtuemart_categories_'.VmConfig::$vmlang.'`
-				WHERE  `virtuemart_category_id`='.(int)$id;
+				WHERE  `virtuemart_category_id`=';
+		}
+
+		foreach ($parents_id as $id ) {
+			$q .= (int)$id;
 
 			$db->setQuery($q);
 

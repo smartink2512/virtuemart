@@ -80,6 +80,11 @@ class VmController extends JControllerLegacy{
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
 
+		$app = JFactory::getApplication();
+		if($app->isSite()){
+			$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.$viewName.DS.'tmpl');
+		}
+
 		// Set the layout
 		$view->setLayout($viewLayout);
 

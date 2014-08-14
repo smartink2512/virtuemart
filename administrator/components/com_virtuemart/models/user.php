@@ -1057,17 +1057,17 @@ class VirtueMartModelUser extends VmModel {
 		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 
 		//get all super administrator
-		if(!defined('VM_VERSION') or VM_VERSION < 3){
+		//if(!defined('JVM_VERSION') or JVM_VERSION < 3){
 			$query = 'SELECT name, email, sendEmail' .
 				' FROM #__users' .
-				' WHERE LOWER( usertype ) = "super administrator"';
-		} else {
+				' WHERE sendEmail = 1';
+		/*} else {
 			$query = 'SELECT `name`, `email`, `sendEmail` ' .
 				' FROM #__users as us '.
 				' INNER JOIN #__user_usergroup_map as um ON us.id = um.user_id ' .
 				' INNER JOIN #__usergroups as ug ON um.group_id = ug.id ' .
 				' WHERE ug.id = "8" ';
-		}
+		}*/
 
 		$db = JFactory::getDBO();
 		$db->setQuery( $query );
@@ -1152,7 +1152,7 @@ class VirtueMartModelUser extends VmModel {
 		return $_status;
 	}
 
-function removeAddress($virtuemart_userinfo_id){
+	function removeAddress($virtuemart_userinfo_id){
 
 		$db = JFactory::getDBO();
 
@@ -1321,8 +1321,17 @@ function removeAddress($virtuemart_userinfo_id){
 	function getSuperAdminCount(){
 
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT COUNT(id) FROM #__users'
-		. ' WHERE gid = ' . __SUPER_ADMIN_GID . ' AND block = 0');
+		if(JVM_VERSION>2){
+			$q = ' SELECT COUNT(id)  FROM #__users as us '.
+				' INNER JOIN #__user_usergroup_map as um ON us.id = um.user_id ' .
+				' INNER JOIN #__usergroups as ug ON um.group_id = ug.id ' .
+				' WHERE ug.id = "8" AND block = "0" ';
+		} else {
+			$q = 'SELECT COUNT(id) FROM #__users'
+				. ' WHERE gid = ' . __SUPER_ADMIN_GID . ' AND block = 0';
+		}
+
+		$db->setQuery($q);
 		return ($db->loadResult());
 	}
 

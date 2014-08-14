@@ -73,7 +73,7 @@ class VmTableData extends VmTable {
 
 
 		//reset Params
-		if($this->_tmpParams){
+		if(isset($this->_tmpParams)){
 			foreach($this->_tmpParams as $k => $v){
 				$this->$k = $v;
 			}

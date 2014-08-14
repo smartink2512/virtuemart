@@ -577,9 +577,9 @@ class VirtueMartModelCustomfields extends VmModel {
 
 
 					}
-					vmdebug('my parent product had stock '.$product->product_in_stock);
+					//vmdebug('my parent product had stock '.$product->product_in_stock);
 					$product->product_in_stock = $parentStock;
-					vmdebug('my parent product has stock '.$product->product_in_stock);
+					//vmdebug('my parent product has stock '.$product->product_in_stock);
 					$dynChilds++;
 					$customfield->display = $html;
 					break;

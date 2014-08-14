@@ -51,7 +51,7 @@ class VirtuemartViewProduct extends VmView {
 			case 'edit':
 
 				//this was in the controller for the edit tasks, we need this for the access by FE
-				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
+				//$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
 				VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
