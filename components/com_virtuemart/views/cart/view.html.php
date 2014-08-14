@@ -176,6 +176,7 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 
+			$layoutName = $this->cart->layout;
 			//set order language
 			$lang = JFactory::getLanguage();
 			$order_language = $lang->getTag();
@@ -191,7 +192,7 @@ class VirtueMartViewCart extends VmView {
 		// @max: quicknirty
 		$cart->setCartIntoSession();
 		//$this->setLayout($this->cart->layout);
-		shopFunctionsF::setVmTemplate($this, 0, 0, $this->cart->layout);
+		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
