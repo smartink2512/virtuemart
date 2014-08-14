@@ -44,7 +44,7 @@ class VirtueMartViewCart extends VmView {
 		$layoutName = $this->getLayout();
 		if (!$layoutName) $layoutName = JRequest::getWord('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
-		$format = JRequest::getWord('format');
+		$format = vRequest::getCmd('format');
 
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
