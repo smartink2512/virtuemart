@@ -66,7 +66,11 @@ class VirtuemartViewProduct extends VmView {
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
 				//$product_parent= $model->getProductParent($product->product_parent_id);
-				$product_parent= $model->getProductSingle($product->product_parent_id,false);
+				$product_parent = false;
+				if(!empty($product->product_parent_id)){
+					$product_parent= $model->getProductSingle($product->product_parent_id,false);
+				}
+
 
 				$mf_model = VmModel::getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
@@ -138,20 +142,30 @@ class VirtuemartViewProduct extends VmView {
 					$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
 
-
-				if(!empty($product->product_weight_uom)){	// or !$task=='add'
+				if(!empty($product->product_weight_uom)){
 					$product_weight_uom = $product->product_weight_uom;
-					$product_unit = $product->product_unit;
-					$product_lwh_uom = $product->product_lwh_uom;
 				} else if(!empty($product_parent)){
 					$product_weight_uom = $product_parent->product_weight_uom;
-					$product_unit = $product_parent->product_unit;
-					$product_lwh_uom = $product_parent->product_lwh_uom;
 				} else {
 					$product_weight_uom = VmConfig::get('weight_unit_default');
-					$product_unit = VmConfig::get('weight_unit_default');
-					$product_lwh_uom= VmConfig::get('lwh_unit_default');
 				}
+
+				if(!empty($product->product_lwh_uom)){
+					$product_lwh_uom = $product->product_lwh_uom;
+				} else if(!empty($product_parent)){
+					$product_lwh_uom = $product_parent->product_lwh_uom;
+				} else {
+					$product_lwh_uom = VmConfig::get('lwh_unit_default');
+				}
+
+				if(!empty($product->product_unit)){
+					$product_unit = $product->product_unit;
+				} else if(!empty($product_parent)){
+					$product_unit = $product_parent->product_unit;
+				} else {
+					$product_unit = VmConfig::get('product_unit_default','KG');
+				}
+
 
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$product_weight_uom);
 				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$product_unit);
