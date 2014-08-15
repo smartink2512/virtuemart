@@ -2390,7 +2390,7 @@ class  RealexHelperRealex {
 	}
 
 	function useSSL () {
-		return false;
+		return true;
 	}
 
 	/**
