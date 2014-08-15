@@ -47,6 +47,7 @@ class VirtueMartViewCart extends VmView {
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		$layoutName = $this->getLayout();
+
 		if (!$layoutName) $layoutName = vRequest::getCmd('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 		$format = vRequest::getCmd('format');
@@ -178,12 +179,13 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->assignRef('select_payment_text', $paymentText);
 
-
+			$layoutName = $this->cart->layout;
 			//set order language
 			$lang = JFactory::getLanguage();
 			$order_language = $lang->getTag();
 			$this->assignRef('order_language',$order_language);
 		}
+
 		//dump ($this->cart,'cart');
 		$useSSL = VmConfig::get('useSSL', 0);
 		$useXHTML = false;
@@ -192,7 +194,7 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 
-		shopFunctionsF::setVmTemplate($this, 0, 0, $this->cart->layout);
+		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
@@ -417,7 +419,7 @@ class VirtueMartViewCart extends VmView {
 	 */
 	function getUserList() {
 		$db = JFactory::getDbo();
-		$q = 'SELECT `name`,`username` FROM `#__users` ORDER BY `name` LIMIT 0,10000';
+		$q = 'SELECT `id`,`name`,`username` FROM `#__users` ORDER BY `name` LIMIT 0,10000';
 		$db->setQuery($q);
 		$result = $db->loadObjectList();
 		foreach($result as $user) {

@@ -684,7 +684,7 @@ class VmTable extends JTable {
 
 		if($ok = parent::store($updateNulls)){
 			//reset Params
-			if(isset($this->_tmpParams)){
+			if(isset($this->_tmpParams) and is_array($this->_tmpParams)){
 				foreach($this->_tmpParams as $k => $v){
 					$this->$k = $v;
 				}

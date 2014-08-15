@@ -269,6 +269,9 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				else if ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == '`l`.slug' ){
 					$langFields[] = $searchField;
+					//if (strpos ($searchField, '`') !== FALSE){
+						$searchField = '`l`.'.$searchField;
+					//}
 				}
 
 				if (strpos ($searchField, '`') !== FALSE){
@@ -284,7 +287,7 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = '(' . implode (' OR ', $filter_search) . ')';
 			}
 			else {
-				$where[] = '`product_name` LIKE ' . $keyword;
+				$where[] = '`l`.product_name LIKE ' . $keyword;
 				$langFields[] = 'product_name';
 				//If they have no check boxes selected it will default to product name at least.
 			}
@@ -506,10 +509,11 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`)';
 				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+				$langFields = array_unique($langFields);
 				vmdebug('Strange my fields',$langFields);
 				if(count($langFields)>0){
 					foreach($langFields as $langField){
-						$selectLang .= ', (IFNULL(l.`'.$langField.'`,ld.`'.$langField.'`)) as '.$langField.'';
+						$selectLang .= ', IFNULL(l.'.$langField.',ld.'.$langField.') as '.$langField.'';
 					}
 				}
 			} else {
@@ -1132,7 +1136,6 @@ class VirtueMartModelProduct extends VmModel {
 			$product = $this->getTable ('products');
 			$product->load ($this->_id, 0, 0, $joinIds);
 			$product->allIds = array();
-			vmdebug('my product after load table ',$product->virtuemart_product_id,$product->product_name);
 
 			$xrefTable = $this->getTable ('product_medias');
 			$product->virtuemart_media_id = $xrefTable->load ((int)$this->_id);
@@ -1560,7 +1563,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 
-			$selectLang = ' l.`product_name`';
+			$selectLang = ' `l`.`product_name`';
 
 			$q = 'SELECT p.`virtuemart_product_id`,'.$selectLang.' FROM `#__virtuemart_products` as p';
 
@@ -1580,7 +1583,7 @@ class VirtueMartModelProduct extends VmModel {
 					$orderByName = '`l`.'.$orderByName;
 				}
 			} else {
-				$orderByName = 'l.product_name';
+				$orderByName = '`l`.product_name';
 
 				$orderByValue = $product->product_name;
 			}

@@ -885,7 +885,7 @@ class VirtueMartCart {
 		} else {
 			//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
 			//the advantage, that plugins can easily deal with it.
-			$this->BT = array_merge($this->BT,$this->cartfields);
+			$this->BT = array_merge((array)$this->BT,(array)$this->cartfields);
 		}
 
 		$currentUser = JFactory::getUser();
