@@ -35,9 +35,9 @@ class VirtueMartViewVirtueMart extends VmView {
 		$vendorModel = VmModel::getModel('vendor');
 
 		$vendorIdUser = VmConfig::isSuperVendor();
-		$vendorModel->setId($vendorIdUser);
+		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();
-
+		vmdebug('my vendor '.$vendorId,$vendor);
 		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if (VmConfig::get ('enable_content_plugin', 0)) {
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');

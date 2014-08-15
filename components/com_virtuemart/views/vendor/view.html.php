@@ -85,7 +85,7 @@ class VirtuemartViewVendor extends VmView {
 			//$usermodel->getVendor($virtuemart_vendor_id);
 			//$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id,true,true);
 			//$this->assignRef('userFields', $userFields);
-
+vmdebug('my layout '.$layoutName);
 			if ($layoutName=='tos') {
 				$document->setTitle( vmText::_('COM_VIRTUEMART_VENDOR_TOS') );
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_VENDOR_TOS'));

@@ -69,7 +69,10 @@ class VirtuemartViewProduct extends VmView {
 				if( $superVendor !=1 and $superVendor!=$product->virtuemart_vendor_id){
 					JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 				}
-				$product_parent= $model->getProductSingle($product->product_parent_id,false);
+				if(!empty($product->product_parent_id)){
+					$product_parent= $model->getProductSingle($product->product_parent_id,false);
+				}
+
 
 				$customfields = VmModel::getModel ('Customfields');
 
@@ -139,18 +142,28 @@ class VirtuemartViewProduct extends VmView {
 				$lists['manufacturers'] = shopFunctions::renderManufacturerList($product->virtuemart_manufacturer_id,true);
 
 
-				if(!empty($product->product_weight_uom)){	// or !$task=='add'
+				if(!empty($product->product_weight_uom)){
 					$product_weight_uom = $product->product_weight_uom;
-					$product_unit = $product->product_unit;
-					$product_lwh_uom = $product->product_lwh_uom;
 				} else if(!empty($product_parent)){
 					$product_weight_uom = $product_parent->product_weight_uom;
-					$product_unit = $product_parent->product_unit;
-					$product_lwh_uom = $product_parent->product_lwh_uom;
 				} else {
 					$product_weight_uom = VmConfig::get('weight_unit_default');
-					$product_unit = VmConfig::get('weight_unit_default');
-					$product_lwh_uom= VmConfig::get('lwh_unit_default');
+				}
+
+				if(!empty($product->product_lwh_uom)){
+					$product_lwh_uom = $product->product_lwh_uom;
+				} else if(!empty($product_parent)){
+					$product_lwh_uom = $product_parent->product_lwh_uom;
+				} else {
+					$product_lwh_uom = VmConfig::get('lwh_unit_default');
+				}
+
+				if(!empty($product->product_unit)){
+					$product_unit = $product->product_unit;
+				} else if(!empty($product_parent)){
+					$product_unit = $product_parent->product_unit;
+				} else {
+					$product_unit = VmConfig::get('product_unit_default','KG');
 				}
 
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$product_weight_uom);

@@ -762,32 +762,6 @@ class VirtueMartModelProduct extends VmModel {
 			return clone(self::$_products[$checkedProductKey[1]]);
 		}
 		$productKey = $checkedProductKey[1];
-		/*if($virtuemart_shoppergroup_ids !=0 and is_array($virtuemart_shoppergroup_ids)){
-			$virtuemart_shoppergroup_idsString = implode('',$virtuemart_shoppergroup_ids);
-		} else {
-			$virtuemart_shoppergroup_idsString = $virtuemart_shoppergroup_ids;
-		}
-
-
-		$front = $front?TRUE:0;
-		$withCalc = $withCalc?TRUE:0;
-		$onlyPublished = $onlyPublished?TRUE:0;
-		$this->withRating = $this->withRating?TRUE:0;
-		//$productKey = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.$withCalc.$this->withRating;
-		$productKey = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.$withCalc.$this->withRating;
-
-		static $_products = array();
-		// vmdebug('$productKey, not from cache : '.$productKey);
-		if (array_key_exists ($productKey, $_products)) {
-			//vmdebug('getProduct, take from cache : '.$productKey);
-			return $_products[$productKey];
-		} else if(!$withCalc){
-			$productKeyTmp = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.TRUE.TRUE;
-			if (array_key_exists ($productKeyTmp, $_products)) {
-				//vmdebug('getProduct, take from cache full product '.$productKeyTmp);
-				return clone($_products[$productKeyTmp]);
-			}
-		}*/
 
 		if ($this->memory_limit<$mem = round(memory_get_usage(FALSE)/(1024*1024),2)) {
 			vmdebug ('Memory limit reached in model product getProduct('.$virtuemart_product_id.'), consumed: '.$mem.'M');

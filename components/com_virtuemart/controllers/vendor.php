@@ -30,25 +30,6 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerVendor extends JControllerLegacy
 {
 
-	/**
-	 * Override of display to prevent caching
-	 *
-	 * @return  JController  A JController object to support chaining.
-	 */
-	public function display($cachable = false, $urlparams = false){
-
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$viewName = vRequest::getCmd('view', 'vendor');
-		$viewLayout = vRequest::getCmd('layout', 'default');
-
-		$view = $this->getView($viewName, $viewType);
-		$view->assignRef('document', $document);
-
-		$view->display();
-
-		return $this;
-	}
 
 	/**
 	* Send the ask question email.
