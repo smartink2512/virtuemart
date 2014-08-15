@@ -783,7 +783,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		}
 
 		JLoader::import('joomla.plugin.helper');
-		JPluginHelper::importPlugin('vmuserfield', 'realex_hpp_api');
+		JPluginHelper::importPlugin('vmuserfield');
 		$app = JFactory::getApplication();
 		$app->triggerEvent('plgVmOnStoreInstallPluginTable', array(
 		                                                          'userfield',

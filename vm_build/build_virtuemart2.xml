@@ -5,7 +5,7 @@
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.6.8"/>
     <property name="joomla.version" value="2.5.24"/>
-    <property name="svn.lastrevision" value="8173"/>
+    <!--property name="svn.lastrevision" value="8173"/-->
     <property name="PHING.VM.CODENAME" value="FlyingBrant"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm2"/>
 
@@ -301,7 +301,8 @@
     <!-- ============================================  -->
     <target name="main_files">
         <echo msg="Copying ADMIN COMPONENT files to directory..."/>
-        <copy todir="${package.folder.main}/administrator/components/${component.name}">
+
+        <copy todir="${package.folder.main}/administrator/components/${component.name}" overwrite="true">
             <fileset refid="admin.main.refid"/>
             <filterchain>
                 <expandproperties/>

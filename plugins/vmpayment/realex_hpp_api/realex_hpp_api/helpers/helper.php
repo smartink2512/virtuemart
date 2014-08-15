@@ -1012,7 +1012,7 @@ class  RealexHelperRealex {
 	function onShowOrderBEPayment ($data, $format, $request_type_response, $virtuemart_order_id) {
 
 		$showOrderBEFields = $this->getOrderBEFields();
-		$prefix = 'REALEX_RESPONSE_';
+		$prefix = 'REALEX_HPP_API_RESPONSE_';
 
 		$html = '';
 		if ($request_type_response == 'receipt-in_request') {
@@ -1072,7 +1072,7 @@ class  RealexHelperRealex {
 			*/
 			if (isset($data->threedsecure)) {
 				$showOrderBEFields = $this->getOrderBEFields3DS();
-				$prefix = 'REALEX_RESPONSE_THREEDSECURE_';
+				$prefix = 'REALEX_HPP_API_RESPONSE_THREEDSECURE_';
 				foreach ($showOrderBEFields as $key => $showOrderBEField) {
 					if (isset($data->threedsecure->$showOrderBEField)) {
 						$key = $prefix . $key;
@@ -1306,7 +1306,7 @@ class  RealexHelperRealex {
 		$value = '';
 		$userfield['fromPayment'] = true;
 		$app->triggerEvent('plgVmPrepareUserfieldDataSave', array(
-		                                                         'pluginrealex',
+		                                                         'pluginrealex_hpp_api',
 		                                                         'realex_hpp_api',
 		                                                         &$userfield,
 		                                                         &$value,
@@ -1431,7 +1431,7 @@ class  RealexHelperRealex {
 			$db->query();
 			$err = $db->getErrorMsg();
 			if (!empty($err)) {
-				vmError('Database error: createChild ' . $err);
+				vmError('Database error: Realex saveNewPayerRef ' . $err);
 			}
 		}
 
