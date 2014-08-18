@@ -398,21 +398,24 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$currency = CurrencyDisplay::getInstance();
 
 		foreach ($this->methods as $this->_currentMethod) {
-			if($this->checkConditions($cart,$this->_currentMethod,$cart->pricesUnformatted,$product)){
+			if($this->_currentMethod->show_on_pdetails){
+				if($this->checkConditions($cart,$this->_currentMethod,$cart->pricesUnformatted,$product)){
 
-				$product->prices['shipmentPrice'] = $this->getCosts($cart,$this->_currentMethod,$cart->pricesUnformatted);
+					$product->prices['shipmentPrice'] = $this->getCosts($cart,$this->_currentMethod,$cart->pricesUnformatted);
 
-				if(isset($product->prices['VatTax']) and count($product->prices['VatTax'])>0){
-					reset($product->prices['VatTax']);
-					$rule = current($product->prices['VatTax']);
-					if(isset($rule[1])){
-						$product->prices['shipmentTax'] = $product->prices['shipmentPrice'] * $rule[1]/100.0;
-						$product->prices['shipmentPrice'] = $product->prices['shipmentPrice'] * (1 + $rule[1]/100.0);
+					if(isset($product->prices['VatTax']) and count($product->prices['VatTax'])>0){
+						reset($product->prices['VatTax']);
+						$rule = current($product->prices['VatTax']);
+						if(isset($rule[1])){
+							$product->prices['shipmentTax'] = $product->prices['shipmentPrice'] * $rule[1]/100.0;
+							$product->prices['shipmentPrice'] = $product->prices['shipmentPrice'] * (1 + $rule[1]/100.0);
+						}
 					}
-				}
 
-				$html = $this->renderByLayout( 'default', array("method" => $this->_currentMethod, "cart" => $cart,"product" => $product,"currency" => $currency) );
+					$html = $this->renderByLayout( 'default', array("method" => $this->_currentMethod, "cart" => $cart,"product" => $product,"currency" => $currency) );
+				}
 			}
+
 		}
 
 		$productDisplayShipments[] = $html;
