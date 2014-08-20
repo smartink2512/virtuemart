@@ -63,7 +63,6 @@ class VirtuemartViewReport extends VmView {
 		if($revenueBasic){
 			$totalReport['revenueTotal_brutto']= $totalReport['revenueTotal_netto']= $totalReport['number_of_ordersTotal'] = $totalReport['itemsSoldTotal'] = 0 ;
 			foreach($revenueBasic as &$j){
-				vmdebug('VirtuemartViewReport revenue',$j);
 				$totalReport['revenueTotal_netto'] += $j['order_subtotal_netto'];
 				$totalReport['revenueTotal_brutto'] += $j['order_subtotal_brutto'];
 				$totalReport['number_of_ordersTotal'] += $j['count_order_id'];

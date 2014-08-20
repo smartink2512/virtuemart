@@ -183,7 +183,7 @@ class VirtuemartControllerProduct extends VmController {
 				$msgtype = 'error';
 				$redirect = 'index.php?option=com_virtuemart&view=product';
 			}
-// 			vmdebug('$redirect '.$redirect);
+
 			$app->redirect($redirect, $msg, $msgtype);
 		}
 
@@ -337,7 +337,6 @@ class VirtuemartControllerProduct extends VmController {
 
 	public function ajax_notifyUsers(){
 
-		//vmdebug('updatestatus');
 		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
 		if(is_array($virtuemart_product_id) and count($virtuemart_product_id) > 0){
 			$virtuemart_product_id = (int)$virtuemart_product_id[0];

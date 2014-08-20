@@ -339,7 +339,7 @@ class VirtueMartControllerCart extends JController {
 				}
 			}
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
-// 			vmdebug('setpayment $cart',$cart);
+
 			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1)) {
 				$app = JFactory::getApplication();
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE), $msg);
@@ -481,7 +481,6 @@ class VirtueMartControllerCart extends JController {
 	 */
 	public function confirm() {
 
-		vmdebug('confirm my post, get and so on',$_POST,$_GET);
 		$cart = VirtueMartCart::getCart();
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);

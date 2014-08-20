@@ -70,7 +70,7 @@ class VirtuemartViewUser extends VmView {
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 	$layoutName = $this->getLayout();
-	// 	vmdebug('layout by view '.$layoutName);
+
 	if (empty($layoutName) or $layoutName == 'default') {
 	    $layoutName = JRequest::getWord('layout', 'edit');
 		if ($layoutName == 'default'){
@@ -88,7 +88,6 @@ class VirtuemartViewUser extends VmView {
 	if (!class_exists('ShopFunctions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
-	// 	vmdebug('my layoutname',$layoutName);
 	if ($layoutName == 'login') {
 
 	    parent::display($tpl);
@@ -145,7 +144,6 @@ class VirtuemartViewUser extends VmView {
 		$userFields = $this->_model->getUserInfoInUserFields($layoutName, $address_type, $virtuemart_userinfo_id);
 		if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
 			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
-// 			vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
 		}
 		$userFields = $userFields[$virtuemart_userinfo_id];
 		$task = 'editaddressST';

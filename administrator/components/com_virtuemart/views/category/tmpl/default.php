@@ -185,7 +185,6 @@ AdminUIHelper::startAdminArea($this);
 </div>
 
 	<?php
-	vmdebug('my name here is '.$this->_name);
 	echo $this->addStandardHiddenToForm($this->_name,$this->task);
 
 	  ?>

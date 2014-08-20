@@ -52,7 +52,7 @@ class VirtuemartViewCustom extends VmView {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 			$custom = $model->getCustom();
 			$customfields = VmModel::getModel('customfields');
-// 			vmdebug('VirtuemartViewCustom',$custom);
+
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($custom->virtuemart_custom_id,&$customPlugin));

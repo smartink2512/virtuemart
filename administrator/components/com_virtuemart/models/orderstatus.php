@@ -59,7 +59,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 		else $ordering = $this->_getOrdering();
 		$this->_noLimit=true;
 		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$ordering);
-		// 		vmdebug('order data',$this->_data);
+
 		return $this->_data ;
 	}
 	/**

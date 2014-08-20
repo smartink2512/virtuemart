@@ -384,14 +384,6 @@ class VirtueMartModelMedia extends VmModel {
 
 		$table = $this->getTable('medias');
 
-	/*	$a = trim($data['file_url_thumb']);
-		$b = trim(JText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$data['file_url_thumb']));
-		vmdebug(' the miese Assi',$a,$b);
-		if( $a == $b ){
-			vmdebug('Unset the miese Assi');
-			unset($data['file_url_thumb']);
-		}*/
-		//unset($data['file_url_thumb']);
 		$data['virtuemart_media_id'] = $this->getId();
 		$table->bind($data);
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
@@ -401,7 +393,6 @@ class VirtueMartModelMedia extends VmModel {
 		if (isset($data['media_published'])){
 			$tmpPublished = $data['published'];
 			$data['published'] = $data['media_published'];
-			//vmdebug('$data["published"]',$data['published']);
 		}
 
 		$table->bindChecknStore($data);

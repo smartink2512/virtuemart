@@ -76,7 +76,6 @@ class Permissions extends JObject{
 		}
 
 		// only re-run authentication if we have a different user
-		//vmdebug('getPermissions',$this->_virtuemart_user_id,$userId);
 		if ($userId != $this->_virtuemart_user_id) {
 			$perms = $this->doAuthentication($userId);
 		} else {
@@ -224,21 +223,7 @@ class Permissions extends JObject{
 			}
 		}
 		return false;
-		/* Set the authorization for use */
 
-		// Parse all permissions in argument, comma separated
-		// It is assumed auth_user only has one group per user.
-/*			$p1 = explode(",", $this->_perms);
-			$p2 = explode(",", $perms);
-// 			vmdebug('check '.$perms,$p1,$p2);
-			while (list($key1, $value1) = each($p1)) {
-				while (list($key2, $value2) = each($p2)) {
-					if ($value1 == $value2) {
-						return true;
-					}
-				}
-			}
-		return false;*/
 	}
 
 	/**

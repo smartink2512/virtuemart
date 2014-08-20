@@ -353,7 +353,7 @@ class VirtueMartViewCart extends VmView {
 		//For the selection of the payment method we need the total amount to pay.
 		$paymentModel = VmModel::getModel('Paymentmethod');
 		$this->payments = $paymentModel->getPayments(true, false);
-		//vmdebug('checkPaymentMethodsConfigured',$this->payments);
+
 		if (empty($this->payments)) {
 
 			$text = '';
@@ -380,7 +380,7 @@ class VirtueMartViewCart extends VmView {
 		//For the selection of the shipment method we need the total amount to pay.
 		$shipmentModel = VmModel::getModel('Shipmentmethod');
 		$shipments = $shipmentModel->getShipments();
-		//vmdebug('checkShipmentMethodsConfigured',$shipments);
+
 		if (empty($shipments)) {
 
 			$text = '';

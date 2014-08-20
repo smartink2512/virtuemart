@@ -65,7 +65,7 @@ class VirtuemartViewManufacturer extends VmView {
 			$pathway->addItem(strip_tags($manufacturer->mf_name));
 
 			$this->setLayout('details');
-// 			vmdebug('$manufacturer',$manufacturer);
+
 		} else {
 			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
 			$manufacturers = $model->getManufacturers(true, true,  true);

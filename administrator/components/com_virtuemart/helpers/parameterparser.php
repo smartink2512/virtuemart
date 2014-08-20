@@ -186,12 +186,7 @@ class vmParameters extends JParameter {
 	 */
 	function render($name = 'params', $group = '_default') {
 
-// 		vmdebug('render',$this);
-		//             if (JVM_VERSION === 2) {
 		$parameters = $this->vmRender($name, $group);
-		//             } else {
-		//                 $parameters = parent::render($name, $group);
-		//             }
 
 		return $parameters;
 	}
@@ -250,7 +245,7 @@ class vmParameters extends JParameter {
 		}
 
 		$params = $this->getParams($name, $group);
-// 		vmdebug('vmRender',$params);
+
 		$html = array ();
 		$html[] = '<table width="100%" class="paramlist admintable" cellspacing="1">';
 

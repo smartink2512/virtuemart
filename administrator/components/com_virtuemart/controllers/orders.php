@@ -110,15 +110,10 @@ class VirtuemartControllerOrders extends VmController {
 	 * @author Max Milbers
 	 */
 	public function updatestatus() {
-		//vmdebug('updatestatus');
+
 		$mainframe = Jfactory::getApplication();
 		$lastTask = JRequest::getWord('last_task');
 
-
-		/* Load the view object */
-		$view = $this->getView('orders', 'html');
-
-		/* Update the statuses */
 		$model = VmModel::getModel('orders');
 
 		if ($lastTask == 'updatestatus') {
@@ -126,7 +121,7 @@ class VirtuemartControllerOrders extends VmController {
 			$order = array() ;
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 			$order[$virtuemart_order_id] = (JRequest::get('post'));
-			//vmdebug(  'order',$order);
+
 			$result = $model->updateOrderStatus($order);
 		} else {
 			$result = $model->updateOrderStatus();
@@ -153,11 +148,8 @@ class VirtuemartControllerOrders extends VmController {
 	 *
 	 */
 	public function saveItemStatus() {
-		//vmdebug('saveItemStatus');
-		$mainframe = Jfactory::getApplication();
 
-		/* Load the view object */
-		$view = $this->getView('orders', 'html');
+		$mainframe = Jfactory::getApplication();
 
 		$data = JRequest::get('post');
 		$model = VmModel::getModel();
@@ -171,9 +163,8 @@ class VirtuemartControllerOrders extends VmController {
 	 * Display the order item details for editing
 	 */
 	public function editOrderItem() {
-		//vmdebug('editOrderItem');
+
 		JRequest::setVar('layout', 'orders_editorderitem');
-		// 	    JRequest::setVar('hidemenu', 1);
 
 		parent::display();
 	}
@@ -201,7 +192,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updateOrderItemStatus()
 	{
-		//vmdebug('updateOrderItemStatus');
+
 		$mainframe = Jfactory::getApplication();
 		$model = VmModel::getModel();
 		$_items = JRequest::getVar('item_id',  0, '', 'array');
@@ -210,7 +201,7 @@ class VirtuemartControllerOrders extends VmController {
 		$_orderID = JRequest::getInt('virtuemart_order_id', '');
 
 		foreach ($_items as $key=>$value) {
-			//vmdebug('updateOrderItemStatus VAL  ',$value);
+
 			if (!isset($value['comments'])) $value['comments'] = '';
 
 			$data = (object)$value;
@@ -241,21 +232,9 @@ class VirtuemartControllerOrders extends VmController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$orderid );
 	}
 
-	/**
-	 * Update a single order item
-
-	 public function updateOrderItem()
-	 {
-		//vmdebug('updateOrderItem');
-		$mainframe = Jfactory::getApplication();
-		$model = VmModel::getModel('orders');
-		//	$model->updateSingleItem();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.JRequest::getInt('virtuemart_order_id', ''));
-		}
-		*/
 
 	public function newOrderItem() {
-		//vmdebug('newOrderItem');
+
 		$orderId = JRequest::getInt('virtuemart_order_id', '');
 		$model = VmModel::getModel();
 		$msg = '';
@@ -272,7 +251,7 @@ class VirtuemartControllerOrders extends VmController {
 	 * Removes the given order item
 	 */
 	public function removeOrderItem() {
-		//vmdebug('removeOrderItem');
+
 		$model = VmModel::getModel();
 		$msg = '';
 		$orderId = JRequest::getInt('orderId', '');

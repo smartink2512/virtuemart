@@ -98,7 +98,6 @@ class TableCategories extends VmTable {
 				$csV = (int)trim($csV);
 			}
 			$this->limit_list_step = implode(',',$sequenceArray);
-			vmdebug('my check',$this->limit_list_step);
 		}
 
 		return parent::check();

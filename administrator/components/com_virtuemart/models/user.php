@@ -1058,7 +1058,6 @@ class VirtueMartModelUser extends VmModel {
 			VmConfig::loadJLang('com_virtuemart_shoppers', true);
 			foreach($missingFields as $fieldname){
 				vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$fieldname) );
-				vmdebug('');
 			}
 		}
 		return $return;

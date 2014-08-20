@@ -168,14 +168,13 @@ $i=0;
 			    <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform">
 			        <tbody id="productPriceBody">
 					<?php
-					//vmdebug('grummel ',$this->product->prices);
 					foreach ($this->product->prices as $sPrices) {
 			
 						if(count($sPrices) == 0) continue;
 						if (empty($sPrices['virtuemart_product_price_id'])) {
 							$sPrices['virtuemart_product_price_id'] = '';
 						}
-						//vmdebug('my $sPrices ',$sPrices);
+
 						$sPrices = (array)$sPrices;
 						$this->tempProduct = (object)array_merge ((array)$this->product, $sPrices);
 						$this->calculatedPrices = $calculator->getProductPrices ($this->tempProduct);
@@ -303,13 +302,12 @@ $i=0;
 		                	$customs = array();
 		                	if(!empty($this->product->customfields)){
 		                		foreach($this->product->customfields as $custom){
-		                			//vmdebug('my custom',$custom);
+
 		                			if($custom->field_type=='A'){
 		                				$customs[] = $custom;
 		                			}
 		                		}
 		                	}
-							// vmdebug('ma $customs',$customs);
 							?>
 
 						<table class="adminform">

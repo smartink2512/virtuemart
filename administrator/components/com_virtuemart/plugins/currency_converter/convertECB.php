@@ -69,14 +69,12 @@ class convertECB {
 
 
 		if(!$globalCurrencyConverter ){
-			//vmdebug('convert convert No $globalCurrencyConverter convert '.$amountA);
 			return $amountA;
 		} else {
 			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1.0;
 			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1.0;
 
 			$val = (float)$amountA * (float)$valB / (float)$valA;
-			//vmdebug('convertECB with '.$currA.' '.$amountA.' * '.$valB.' / '.$valA.' = '.$val,$globalCurrencyConverter[$currA]);
 
 			return $val;
 		}

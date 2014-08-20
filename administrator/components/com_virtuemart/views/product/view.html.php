@@ -33,7 +33,7 @@ class VirtuemartViewProduct extends VmView {
 
 		// Get the task
 		$task = JRequest::getWord('task',$this->getLayout());
-		vmdebug('VirtuemartViewProduct '.$task);
+
 		$this->assignRef('task', $task);
 
 		// Load helpers

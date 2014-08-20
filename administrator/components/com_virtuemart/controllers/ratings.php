@@ -44,7 +44,7 @@ class VirtuemartControllerRatings extends VmController {
 		parent::__construct();
 
 		$task = JRequest::getVar('task');
-		vmdebug('cconstruct',$task);
+
 	}
 
 	/**

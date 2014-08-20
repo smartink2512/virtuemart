@@ -162,7 +162,6 @@ class VirtuemartViewOrders extends VmView {
 			}
 			$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $vendorId);
 			if ($emailCurrencyId) {
-				vmdebug ('exchangerate', $orderDetails['details']['BT']->user_currency_rate);
 				$currency->exchangeRateShopper = $orderDetails['details']['BT']->user_currency_rate;
 			}
 			$this->assignRef ('currency', $currency);
@@ -198,7 +197,6 @@ class VirtuemartViewOrders extends VmView {
 					$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $vendorId);
 					$this->assignRef ('currency', $currency);
 					if ($emailCurrencyId) {
-						vmdebug ('exchangerate', $order->user_currency_rate);
 						$currency->exchangeRateShopper = $order->user_currency_rate;
 					}
 					$order->currency = $currency;

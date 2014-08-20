@@ -381,7 +381,6 @@ class VirtueMartModelConfig extends JModel {
 			if(DS!='/' and strpos($safePath,'/')!==false){
 				$safePath=str_replace('/',DS,$safePath);
 				vmInfo('Corrected safe path, replaced / by '.DS);
-				vmdebug('$safePath',$safePath);
 			}
 			$length = strlen($safePath);
 			if(strrpos($safePath,DS)!=($length-1)){

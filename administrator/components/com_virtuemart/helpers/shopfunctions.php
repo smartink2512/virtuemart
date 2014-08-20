@@ -222,7 +222,7 @@ class ShopFunctions {
 			$emptyOption = JHTML::_ ('select.option', '', JText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
-		//vmdebug('renderShopperGroupList',$name,$shoppergrps);
+
 		$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $name, $attrs, 'virtuemart_shoppergroup_id', 'shopper_group_name', $shopperGroupId,false,true);
 		return $listHTML;
 	}
@@ -246,7 +246,7 @@ class ShopFunctions {
 			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
 			array_unshift ($manufacturers, $emptyOption);
 		}
-		// vmdebug('renderManufacturerList',$name,$manufacturers);
+
 		$listHTML = JHTML::_ ('select.genericlist', $manufacturers, $name, $attrs, 'virtuemart_manufacturer_id', 'mf_name', $manufacturerId);
 		return $listHTML;
 	}
@@ -1481,7 +1481,6 @@ class ShopFunctions {
 	static function displayLinkButton($title, $link, $bgrndImage,$width,$height,$linesHeight,$additionalStyles=''){
 
 		//$lineHeight = ((int)$height)/$lines;
-		//vmdebug('displayLinkButton '.$height.' '.$lineHeight);
 		$html = '<div style="line-height:'.$linesHeight.';background-image:url('.$bgrndImage.');width:'.$width.';height:'.$height.';'.$additionalStyles.'">'
 			.'<a  title="'.$title.'" href="'.$link.'" target="_blank" >'.$title .'</a></div>';
 

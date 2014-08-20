@@ -119,7 +119,7 @@ class VmTableXarray extends VmTable {
 		$this->_db->setQuery($q);
 
 		$result = $this->_db->loadResultArray();
-// 		vmdebug('my q ',$q,$result);
+
 		$error = $this->_db->getErrorMsg();
 		if(!empty($error)){
 			vmError(get_class( $this ).':: load'.$error  );

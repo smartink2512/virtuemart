@@ -32,7 +32,7 @@ AdminUIHelper::startAdminArea($this);
 	$_set = false;
 	$_table = false;
 	$_hiddenFields = '';
-// 	vmdebug('shipToFields',$this->shipToFields);
+
 	if (count($this->shipToFields['functions']) > 0) {
 		echo '<script language="javascript">'."\n";
 		echo join("\n", $this->shipToFields['functions']);
