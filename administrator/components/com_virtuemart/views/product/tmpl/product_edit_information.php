@@ -256,7 +256,7 @@ $i=0;
 				<td width="50%">
 				<?php
 					if ($this->product->virtuemart_product_id) {
-						$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&'.JSession::getFormToken().'=1' );
+						$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createChild&virtuemart_product_id='.$this->product->virtuemart_product_id.'&'.JSession::getFormToken().'=1' );
 						$add_child_button="";
 					} else {
 						$link="";
@@ -294,7 +294,7 @@ $i=0;
 			<?php $i = 1 - $i; ?>
 			<tr class="row<?php echo $i?>" >
 				<td width="79%" colspan = "3">
-					<?php if (count($this->product_childs)>0 ) {
+					<?php if (false ){//count($this->product_childs)>0 ) {
 					
 		                	$customs = array();
 		                	if(!empty($this->product->customfields)){

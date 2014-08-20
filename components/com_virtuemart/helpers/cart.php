@@ -468,7 +468,7 @@ class VirtueMartCart {
 		}
 
 		$products = array();
-
+		//VmConfig::$echoDebug = true;
 		$this->_productAdded = true;
 		$productModel = VmModel::getModel('product');
 		$customFieldsModel = VmModel::getModel('customfields');
@@ -577,6 +577,11 @@ class VirtueMartCart {
 							} else {
 
 								$this->checkForQuantities($product, $cartProductData['quantity']);
+								if(($cartProductData['quantity']-$productData['quantity'])>0){
+									$product->quantity = $cartProductData['quantity'];
+								} else {
+									$product = false;
+								}
 								//$quantityChecked = true;
 							}
 							$found = TRUE;
@@ -595,18 +600,29 @@ class VirtueMartCart {
 
 			}
 
-			if($product){
-				$products[] = $product;
-			}
-
 			if(!$found){
 				if(!$product)$product = $this->getProduct( (int)$productData['virtuemart_product_id'],$productData['quantity']);
 				if(!empty($product->virtuemart_product_id)){
-					$this->checkForQuantities($product, $productData['quantity']);
-					if(!empty($productData['quantity'])){
+					//$this->checkForQuantities($product, $productData['quantity']);
+					//$product->quantity = $productData['quantity'];
+					//if(!empty($productData['quantity'])){
+					//	$this->cartProductsData[] = $productData;
+					//}
+					$this->checkForQuantities($product, $product->quantity);
+
+					if(!empty($product->quantity)){
+						$productData['quantity'] = $product->quantity;
 						$this->cartProductsData[] = $productData;
+					} else {
+
 					}
 				}
+
+
+			}
+
+			if($product and $product->quantity>0){
+				$products[] = $product;
 			}
 
 			//Remove the products which have quantity=0
@@ -614,6 +630,9 @@ class VirtueMartCart {
 				unset($this->cartProductsData[$v]);
 			}
 		}
+
+		//vmdebug('not found, therefore added product ',$products[0]->quantity);
+		//die;
 		if ($updateSession== false) return false ;
 		$this->_dataValidated = false;
 		// End Iteration through Prod id's
@@ -720,21 +739,23 @@ class VirtueMartCart {
 		if (!class_exists('CouponHelper')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 		}
-		if(!isset($this->cartPrices['salesPrice'])){
+
+		//if(!isset($this->cartPrices['salesPrice'])){
 			$this->getCartPrices(true);
-		}
+		//}
 		if(!in_array($coupon_code,$this->_triesValidateCoupon)){
 			$this->_triesValidateCoupon[] = $coupon_code;
 		}
 
 		if(count($this->_triesValidateCoupon)<8){
-
+			vmdebug('setCouponCode',$coupon_code, $this->cartPrices['salesPrice']);
 			$msg = CouponHelper::ValidateCouponCode($coupon_code, $this->cartPrices['salesPrice']);;
 		} else{
 			$msg = vmText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 		}
+		vmdebug('My Coupon code '.$coupon_code,$msg);
 		if (!empty($msg)) {
-			$this->couponCode = '';
+			//$this->couponCode = '';
 			$this->_dataValidated = false;
 			$this->_blockConfirm = true;
 			$this->getCartPrices(true);
@@ -1504,7 +1525,7 @@ class VirtueMartCart {
 					$quantity = $productsleft;
 					$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
 					$this->setError($errorMsg);
-					vmInfo($errorMsg.' '.$product->product_name);
+					//vmInfo($errorMsg.' '.$product->product_name);
 					// $mainframe->enqueueMessage($errorMsg);
 				} else {
 					$quantity = 0;

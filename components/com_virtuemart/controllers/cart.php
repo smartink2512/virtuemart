@@ -129,7 +129,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart->updateProductCart();
 		$coupon_code = vRequest::getString('coupon_code', '');
-		$msg = $cart->setCouponCode($coupon_code);
+		if(!empty($coupon_code)){
+			$cart->prepareCartData();
+			$msg = $cart->setCouponCode($coupon_code);
+			if($msg) vmInfo($msg);
+		}
+
 
 		$cart->selected_shipto = vRequest::getVar('shipto', -1);
 		if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
@@ -222,10 +227,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$errorMsg = 0;//vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 
 			$products = $cart->add($virtuemart_product_ids, $errorMsg );
-			if ($products) {
-				if(is_array($products) and isset($products[0])){
-					$view->assignRef('product',$products[0]);
-				}
+			if ($products and is_array($products) and isset($products[0]) ) {
+
+				$view->assignRef('product',$products[0]);
 				$view->setLayout('padded');
 				$this->json->stat = '1';
 			} else {

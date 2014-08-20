@@ -43,14 +43,14 @@ Virtuemart.sendtocart = function (form){
 
 Virtuemart.cartEffect = function(form) {
 	var $ = jQuery ;
-	$.ajaxSetup({ cache: false });
+    jQuery.ajaxSetup({ cache: false });
 	var dat = form.serialize();
 
 	if(usefancy){
-		$.fancybox.showActivity();
+        jQuery.fancybox.showActivity();
 	}
 
-	$.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json'+vmLang, dat,
+	jQuery.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json'+vmLang, dat,
 	function(datas, textStatus) {
 
 		if(datas.stat ==1){
@@ -62,7 +62,7 @@ Virtuemart.cartEffect = function(form) {
 			var txt = "<H4>"+vmCartError+"</H4>"+datas.msg;
 		}
 		if(usefancy){
-			$.fancybox({
+            jQuery.fancybox({
 					"titlePosition" : 	"inside",
 					"transitionIn"	:	"fade",
 					"transitionOut"	:	"fade",
@@ -75,17 +75,17 @@ Virtuemart.cartEffect = function(form) {
 				}
 			);
 		} else {
-			$.facebox.settings.closeImage = closeImage;
-			$.facebox.settings.loadingImage = loadingImage;
+            jQuery.facebox.settings.closeImage = closeImage;
+            jQuery.facebox.settings.loadingImage = loadingImage;
 			//$.facebox.settings.faceboxHtml = faceboxHtml;
-			$.facebox({ text: txt }, 'my-groovy-style');
+            jQuery.facebox({ text: txt }, 'my-groovy-style');
 		}
 
 
 		Virtuemart.productUpdate();
 	});
 
-	$.ajaxSetup({ cache: true });
+    jQuery.ajaxSetup({ cache: true });
 }
 
 Virtuemart.product = function(carts) {

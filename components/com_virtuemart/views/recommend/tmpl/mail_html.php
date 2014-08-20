@@ -72,7 +72,7 @@ defined('_JEXEC') or die('');
 									<td width="70%" valign="top">
 										<h2><?php  echo $this->product->product_name ?></h2>
 										<p style="margin: 15px 0; display:block;"><?php  echo $this->product->product_s_desc ?></p>
-										<a href="<?php  echo $product_link ?>" class="product-details">Product details</a>
+										<a href="<?php  echo $product_link ?>" class="product-details"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS') ?></a>
 									</td>
 								</tr>
 							</table>

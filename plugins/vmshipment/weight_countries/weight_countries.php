@@ -390,6 +390,46 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		return $cond;
 	}
 
+
+	function plgVmOnProductDisplayShipment($product, &$productDisplayShipments){
+
+		$vendorId = 1;
+		if ($this->getPluginMethods($vendorId) === 0) {
+			return FALSE;
+		}
+		if (!class_exists('VirtueMartCart'))
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		$cart = VirtueMartCart::getCart();
+		$html = '';
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+
+		foreach ($this->methods as $this->_currentMethod) {
+			if($this->_currentMethod->show_on_pdetails){
+				if($this->checkConditions($cart,$this->_currentMethod,$cart->pricesUnformatted,$product)){
+
+					$product->prices['shipmentPrice'] = $this->getCosts($cart,$this->_currentMethod,$cart->pricesUnformatted);
+
+					if(isset($product->prices['VatTax']) and count($product->prices['VatTax'])>0){
+						reset($product->prices['VatTax']);
+						$rule = current($product->prices['VatTax']);
+						if(isset($rule[1])){
+							$product->prices['shipmentTax'] = $product->prices['shipmentPrice'] * $rule[1]/100.0;
+							$product->prices['shipmentPrice'] = $product->prices['shipmentPrice'] * (1 + $rule[1]/100.0);
+						}
+					}
+
+					$html = $this->renderByLayout( 'default', array("method" => $this->_currentMethod, "cart" => $cart,"product" => $product,"currency" => $currency) );
+				}
+			}
+
+		}
+
+		$productDisplayShipments[] = $html;
+
+	}
+
 	/**
 	 * Create the table for this plugin if it does not yet exist.
 	 * This functions checks if the called plugin is active one.

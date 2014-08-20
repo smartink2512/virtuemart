@@ -1832,7 +1832,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!empty($data['childs'])) {
 			foreach ($data['childs'] as $productId => $child) {
-				$child['product_parent_id'] = $data['virtuemart_product_id'];
+				if(empty($child['product_parent_id'])) $child['product_parent_id'] = $data['virtuemart_product_id'];
 				$child['virtuemart_product_id'] = $productId;
 				$child['isChild'] = TRUE;
 				$this->store ($child);
@@ -2533,18 +2533,22 @@ function lowStockWarningEmail($virtuemart_product_id) {
 	 * @param int $virtuemart_product_id Product ID
 	 * @return bool True if there are child products, false if there are no child products
 	 */
-	public function checkChildProducts ($virtuemart_product_id) {
+	public function checkChildProducts ($product_ids) {
 
-		if($virtuemart_product_id!==0){
+		if($product_ids!=0){
+
 			$db = JFactory::getDbo();
-			$q = 'SELECT IF(COUNT(virtuemart_product_id) > 0, "0", "1") FROM `#__virtuemart_products` WHERE `product_parent_id` = "' . (int)$virtuemart_product_id . '"';
-			$db->setQuery ($q);
-			return $db->loadResult ();
-		} else {
-			return FALSE;
+			if(!is_array($product_ids)) $product_ids = array($product_ids);
+			$vmpid = implode('","',$product_ids);
+			if(!empty($vmpid)){
+				//$q = 'SELECT IF(COUNT(virtuemart_product_id) > 0, "0", "1") FROM `#__virtuemart_products` WHERE `product_parent_id` = "' . (int)$virtuemart_product_id . '"';
+				$q = 'SELECT COUNT(virtuemart_product_id) FROM `#__virtuemart_products` WHERE `product_parent_id` IN ('.$vmpid.');'; //  "' . $virtuemart_product_id . '"';
+				$db->setQuery ($q);
+				//vmdebug('checkChildProducts my query ',$q);
+				return $db->loadResult ();
+			}
 		}
-
-
+		return FALSE;
 	}
 
 	function getProductChilds ($product_id) {
@@ -2571,6 +2575,34 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		return $db->loadColumn ();
 
 	}
+
+
+	public function getAllProductChildIds($product_ids,&$childIds){
+
+		if (empty($product_ids)) {
+			return array();
+		}
+
+		if(!is_array($product_ids)) $product_ids = array($product_ids);
+
+		if($productsWithChilds = self::checkChildProducts($product_ids)){
+
+			if($productsWithChilds){
+				foreach($product_ids as $product_id){
+					if(empty($product_id)) continue;
+					$tmp = self::getProductChildIds($product_id);
+					if($tmp){
+						$childIds[$product_id] = $tmp;
+						foreach($tmp as $t){
+							self::getAllProductChildIds($t,$childIds[$product_id]);
+						}
+					}
+				}
+			}
+
+		}
+	}
+
 
 	function getProductParent ($product_parent_id) {
 

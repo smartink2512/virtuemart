@@ -385,6 +385,15 @@ class VirtueMartModelCustom extends VmModel {
 				'withParent'        => array(0, 'int'),
 				'parentOrderable'   => array(0, 'int')
 			);
+		} else if($type=='C'){
+			$varsToPush = array(
+				'withParent'        => array(0, 'int'),
+				'parentOrderable'   => array(0, 'int'),
+				'selectoptions'		=> array(array(), 'int'),
+				'clabels'   => array(array(), 'int'),
+				'options'	=> array(array(), 'int'),
+				'childs'		=> array(array(), 'int'),
+			);
 		}
 		return $varsToPush;
 	}

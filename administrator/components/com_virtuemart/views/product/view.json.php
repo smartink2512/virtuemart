@@ -90,7 +90,7 @@ class VirtuemartViewProduct extends VmView {
 
 			$html = array ();
 			foreach ($rows as $field) {
-				if ($field->field_type =='C' ){
+				if ($field->field_type =='deprecatedwasC' ){
 					$this->json['table'] = 'childs';
 					$q='SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`=1
 					AND `product_parent_id`= '.vRequest::getInt('virtuemart_product_id');

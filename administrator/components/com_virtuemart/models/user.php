@@ -1185,7 +1185,7 @@ class VirtueMartModelUser extends VmModel {
 		if ($search) {
 			$where = ' WHERE ';
 			$db = JFactory::getDbo();
-			$searchArray = array('ju.name','username','email','usertype','shopper_group_name');
+			$searchArray = array('ju.name','username','email','shopper_group_name');	// removed ,'usertype' should be handled by extra dropdown
 			if($tableToUse!='juser'){
 
 				if(!class_exists('TableUserinfos'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');

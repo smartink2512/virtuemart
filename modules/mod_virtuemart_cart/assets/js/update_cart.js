@@ -16,15 +16,16 @@
                     if (datas.totalProduct > 0) {
                         $this.find(".vm_cart_products").html("");
                         jQuery.each(datas.products, function (key, val) {
-                            jQuery("#hiddencontainer .vmcontainer").clone().appendTo(".vmcontainer .vm_cart_products");
+                            //jQuery("#hiddencontainer .vmcontainer").clone().appendTo(".vmcontainer .vm_cart_products");
+                            jQuery("#hiddencontainer .vmcontainer").clone().appendTo(".vmCartModule .vm_cart_products");
                             jQuery.each(val, function (key, val) {
                                 if (jQuery("#hiddencontainer .vmcontainer ." + key)) $this.find(".vm_cart_products ." + key + ":last").html(val);
                             });
                         });
-                        $this.find(".total").html(datas.billTotal);
-                        $this.find(".show_cart").html(datas.cart_show);
                     }
+                    $this.find(".show_cart").html(datas.cart_show);
                     $this.find(".total_products").html(datas.totalProductTxt);
+                    $this.find(".total").html(datas.billTotal);
                 }
             );
         });

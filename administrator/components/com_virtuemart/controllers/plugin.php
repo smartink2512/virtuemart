@@ -18,14 +18,14 @@ defined('_JEXEC') or die();
 */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
 
 /**
  * VirtueMart default administrator controller
  *
  * @package		VirtueMart
  */
-class VirtuemartControllerPlugin extends JController
+class VirtuemartControllerPlugin extends VmController
 {
 	/**
 	 * Method to render the plugin datas

@@ -23,14 +23,13 @@ defined ('_JEXEC') or die('Restricted access');
 JHtml::_ ('behavior.formvalidation');
 $document = JFactory::getDocument ();
 $document->addScriptDeclaration ("
-
 //<![CDATA[
 	jQuery(document).ready(function($) {
-	if ( $('#STsameAsBTjs').is(':checked') ) {
-				$('#output-shipto-display').hide();
-			} else {
-				$('#output-shipto-display').show();
-			}
+		if ( $('#STsameAsBTjs').is(':checked') ) {
+			$('#output-shipto-display').hide();
+		} else {
+			$('#output-shipto-display').show();
+		}
 		$('#STsameAsBTjs').click(function(event) {
 			if($(this).is(':checked')){
 				$('#STsameAsBT').val('1') ;
@@ -39,11 +38,10 @@ $document->addScriptDeclaration ("
 				$('#STsameAsBT').val('0') ;
 				$('#output-shipto-display').show();
 			}
+			location.reload();
 		});
 	});
-
 //]]>
-
 ");
 $document->addScriptDeclaration ('
 //<![CDATA[

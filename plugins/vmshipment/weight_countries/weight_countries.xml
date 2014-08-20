@@ -26,6 +26,12 @@
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS_DESC"/>
             </fieldset>
             <fieldset name="restrictions">
+                <field name="show_on_pdetails" type="radio" scope="com_virtuemart" default="1"
+                               label="VMSHIPMENT_WEIGHT_COUNTRIES_SHOW_ON_PRDETAILS"
+                               description="VMSHIPMENT_WEIGHT_COUNTRIES_SHOW_ON_PRDETAILS_TIP">
+                            <option value="0">COM_VIRTUEMART_NO</option>
+                            <option value="1">COM_VIRTUEMART_YES</option>
+                </field>
                 <field name="countries" type="vmcountries" multiple="true" scope="com_virtuemart" default=""
                        label="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
                 <field name="zip_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START"

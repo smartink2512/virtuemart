@@ -43,11 +43,13 @@ if ($show_product_list) {
 		</div>
 	</div>
 <?php } ?>
-<?php if ($data->totalProduct and $show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
+
 	<div class="total" style="float: right;">
+		<?php if ($data->totalProduct and $show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
 		<?php echo $data->billTotal; ?>
+		<?php } ?>
 	</div>
-<?php } ?>
+
 <div class="total_products"><?php echo  $data->totalProductTxt ?></div>
 <div class="show_cart">
 	<?php if ($data->totalProduct) echo  $data->cart_show; ?>
