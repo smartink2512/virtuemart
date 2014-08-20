@@ -19,8 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//AdminMenuHelper::startAdminArea($this);
-// vmdebug('User edit',$this);
 // Implement Joomla's form validation
 JHtml::_('behavior.formvalidation');
 JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL

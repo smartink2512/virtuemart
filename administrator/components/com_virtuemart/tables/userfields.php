@@ -48,6 +48,8 @@ class TableUserfields extends VmTable {
 		$this->setLoggable();
 
 		$this->setOrderable('ordering',false);
+		$this->_xParams = 'userfield_params';
+		//vmdebug('TableUserfields',$this);
 	}
 
 	/**

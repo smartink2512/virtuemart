@@ -17,7 +17,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
-// vmdebug('user edit address',$this->userFields['fields']);
+
 // Implement Joomla's form validation
 JHtml::_ ('behavior.formvalidation');
 JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/assets/css/');

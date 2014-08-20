@@ -53,6 +53,7 @@ function virtuemartBuildRoute(&$query) {
 		$view = $query['view'];
 		unset($query['view']);
 	}
+
 	switch ($view) {
 		case 'virtuemart';
 			$query['Itemid'] = $jmenu['virtuemart'] ;
@@ -322,7 +323,7 @@ function virtuemartParseRoute($segments) {
 		}
 		return $vars;
 	}
-
+	vmdebug('virtuemartParseRoute',$segments);
 	if (empty($segments)) {
 		return $vars;
 	}
@@ -364,7 +365,7 @@ function virtuemartParseRoute($segments) {
 		//$vars['Itemid'] = $helper->activeMenu->id;
 		return $vars;
 	}
-
+	vmdebug('virtuemartParseRoute',$segments);
 	//Translation of the ordering direction is not really useful and costs just energy
 	//if (  $helper->compareKey(end($segments),'dirDesc') ){
 	if ( end($segments) == 'dirDesc' ){
@@ -408,7 +409,7 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 
-	if ( $segments[0] == 'checkout') {
+	if ( $segments[0] == 'checkout' or $segments[0] == 'cart' or $helper->compareKey($segments[0] ,'cart')) {
 		$vars['view'] = 'cart';
 		$vars['task'] = $segments[0];
 		return $vars;

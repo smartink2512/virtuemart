@@ -87,7 +87,7 @@ class VirtuemartViewUser extends VmView {
 	if($virtuemart_user_id and is_array($virtuemart_user_id)) $virtuemart_user_id = $virtuemart_user_id[0];
 	$this->_model->setId($virtuemart_user_id);
 	$this->userDetails = $this->_model->getUser();
-	//vmdebug('my userdetails ',$this->userDetails);
+
 	$this->address_type = vRequest::getCmd('addrtype', 'BT');
 
 	$new = false;
@@ -117,7 +117,6 @@ class VirtuemartViewUser extends VmView {
 		$this->cart->prepareAddressFieldsInCart();
 		$userFields = $this->cart->$fieldtype;
 
-		//vmdebug('$userFields by prepareAddressDataInCart',$userFields);
 	} else {
 		if(!$new and empty($virtuemart_userinfo_id)){
 			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
@@ -129,8 +128,6 @@ class VirtuemartViewUser extends VmView {
 			vmdebug('$userFields by getBTuserinfo_id',$userFields);
 		}
 		$userFields = $userFields[$virtuemart_userinfo_id];
-
-		//$task = 'editaddressST';
 	}
 
 	$this->assignRef('userFields', $userFields);

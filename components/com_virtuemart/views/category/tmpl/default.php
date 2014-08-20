@@ -18,15 +18,9 @@
  * @version $Id$
  */
 
-//vmdebug('$this->category',$this->category);
-//vmdebug ('$this->category ' . $this->category->category_name);
-// Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
 JHtml::_ ('behavior.modal');
-/* javascript for list Slide
-  Only here for the order list
-  can be changed by the template maker
-*/
+
 $js = "
 jQuery(document).ready(function () {
 	jQuery('.orderlistcontainer').hover(
@@ -47,8 +41,7 @@ if (empty($this->keyword) and !empty($this->category)) {
 <?php
 }
 
-/* Show child categories */
-
+// Show child categories
 if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 	if (!empty($this->category->haschildren)) {
 

@@ -45,7 +45,7 @@ if($viewName=='cart'){
 	$checkAutomaticPS = false;
 }
 $data = $cart->prepareAjaxData($checkAutomaticPS);
-//vmdebug('my cart module ',$cart);
+
 if (!class_exists('CurrencyDisplay')) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/currencydisplay.php');
 $currencyDisplay = CurrencyDisplay::getInstance( );
 
@@ -54,6 +54,6 @@ vmJsApi::cssSite();
 $moduleclass_sfx = $params->get('moduleclass_sfx', '');
 $show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
 $show_product_list = (bool)$params->get( 'show_product_list', 1 ); // Display the Product Price?
-/* Laod tmpl default */
+
 require(JModuleHelper::getLayoutPath('mod_virtuemart_cart'));
  ?>

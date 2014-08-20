@@ -38,7 +38,7 @@ class VirtuemartViewUserfields extends VmView {
 				$table = '#__extensions';
 
 				$field = substr($field, 6);
-				$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `element` = "'.$field.'"';
+				$q = 'SELECT `params`,`element`,`type` FROM `' . $table . '` WHERE `element` = "'.$field.'"';
 				$db ->setQuery($q);
 				$this->userField = $db ->loadObject();
 				$this->userField->element = substr($this->userField->type, 6);

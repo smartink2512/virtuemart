@@ -252,7 +252,6 @@ class VirtuemartViewInvoice extends VmView {
 
 		$this->assignRef('vendor', $vendor);
 
-// 		vmdebug('vendor', $vendor);
 		if (strpos($layout,'mail') !== false) {
 			$lineSeparator="<br />";
 		} else {
@@ -271,7 +270,6 @@ class VirtuemartViewInvoice extends VmView {
 		// this is no setting in BE to change the layout !
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
-		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
 		if (strpos($layout,'mail') !== false) {
 		    if ($this->doVendor) {
 		    	 //Old text key COM_VIRTUEMART_MAIL_SUBJ_VENDOR_C
@@ -285,16 +283,6 @@ class VirtuemartViewInvoice extends VmView {
 		}
 
 		$tpl = null;
-
-// 		vmdebug('my view data',$this->getLayout(),$layout);
-// 		ob_start();
-// 		echo '<pre>';
-// 		echo debug_print_backtrace();
-// 		echo '</pre>';
-// 		$dumptrace = ob_get_contents();
-// 		ob_end_clean();
-// 		return false;
-
 
 		parent::display($tpl);
 	}

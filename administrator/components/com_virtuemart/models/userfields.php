@@ -176,7 +176,7 @@ class VirtueMartModelUserfields extends VmModel {
 			if(strpos($this->_cache[$this->_id]->type,'plugin')!==false){
 				JPluginHelper::importPlugin('vmuserfield');
 				$dispatcher = JDispatcher::getInstance();
-				$plgName = substr($this->_cache->type,6);
+				$plgName = substr($this->_cache[$this->_id]->type,6);
 				$type = 'userfield';
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfieldVM3',array($type,&$this->_cache[$this->_id]));
 				// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_cache);
@@ -267,7 +267,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmOnBeforeUserfieldSave',array( $plgName , &$data, &$field ) );
 		}
-
+		vmdebug('my table ',$field,$data);
 		if (!$field->bind($data)) {
 			// Bind data
 			vmError($field->getError());
@@ -304,6 +304,9 @@ class VirtueMartModelUserfields extends VmModel {
 		if ($isNew) {
 			$field->ordering = $field->getNextOrder();
 		}
+
+
+		//return false;
 
 		$_id = $field->store();
 

@@ -434,7 +434,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		//The extra check for isset vendor_name prevents storing of the vendor if there is no form (edit address cart)
-		if((int)$data['user_is_vendor']==1 ){
+		if((int)$data['user_is_vendor']==1 and isset($data['vendor_accepted_currencies'])){
 			vmdebug('vendor recognised '.$data['virtuemart_vendor_id']);
 			if($this ->storeVendorData($data)){
 				if ($new) {

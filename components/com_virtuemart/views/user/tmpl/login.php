@@ -34,7 +34,6 @@ if (empty($this->url)){
 
 $user = JFactory::getUser();
 
-//vmdebug('login form my user ',$user);
 if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
 JHtml::_ ( 'behavior.modal' );
@@ -149,18 +148,6 @@ JHtml::_ ( 'behavior.modal' );
             <a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>" rel="nofollow">
             <?php echo vmText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
         </div>
-
-
-
-        <?php /*
-          $usersConfig = &JComponentHelper::getParams( 'com_users' );
-          if ($usersConfig->get('allowUserRegistration')) { ?>
-          <div class="width30 floatleft">
-          <a  class="details" href="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=user' ); ?>">
-          <?php echo vmText::_('COM_VIRTUEMART_ORDER_REGISTER'); ?></a>
-          </div>
-          <?php }
-         */ ?>
 
         <div class="clr"></div>
 

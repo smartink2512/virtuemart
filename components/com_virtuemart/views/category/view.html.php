@@ -78,7 +78,6 @@ class VirtuemartViewCategory extends VmView {
 
 		$virtuemart_manufacturer_id = vRequest::getInt('virtuemart_manufacturer_id', -1 );
 		if($virtuemart_manufacturer_id ===-1 and !empty($menu->query['virtuemart_manufacturer_id'])){
-			vmdebug('Manufacturer link');
 			$virtuemart_manufacturer_id = $menu->query['virtuemart_manufacturer_id'];
 			vRequest::setVar('virtuemart_manufacturer_id',$virtuemart_manufacturer_id);
 		}
@@ -107,7 +106,6 @@ class VirtuemartViewCategory extends VmView {
 		$vendorId = 1;
 		$category = $categoryModel->getCategory($this->categoryId);
 
-		//vmdebug('my menu',$menu);
 		if(!isset($menu->query['showproducts'])) $menu->query['showproducts'] = 1;
 		$this->showproducts = vRequest::getInt('showproducts',$menu->query['showproducts']);
 
