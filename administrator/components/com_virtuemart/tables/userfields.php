@@ -49,7 +49,7 @@ class TableUserfields extends VmTable {
 
 		$this->setOrderable('ordering',false);
 		$this->_xParams = 'userfield_params';
-		//vmdebug('TableUserfields',$this);
+
 	}
 
 	/**

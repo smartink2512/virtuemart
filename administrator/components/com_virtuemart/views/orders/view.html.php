@@ -92,7 +92,7 @@ class VirtuemartViewOrders extends VmView {
 					,$orderbt
 					,'BT_'
 			);
-			//vmdebug('my fields',$userfields);
+
 			$_userFields = $userFieldsModel->getUserFields(
 					 'shipment'
 					, array() // Default switches

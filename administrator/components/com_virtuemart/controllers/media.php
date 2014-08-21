@@ -133,11 +133,10 @@ class VirtuemartControllerMedia extends VmController {
 				}
 			}
 		}
-		//vmdebug('renameFileExtension',$results);
+
 		foreach($results as $filetype => $files){
 			foreach($files as $file){
 				$new = JFile::stripExt($file);
-				//vmdebug('Rename file ',$path.$file,$path.$new.'.'.$filetype);
 				if(!JFile::exists($file)){
 					$succ = rename ($path.$file,$path.$new.'.'.$filetype);
 				}

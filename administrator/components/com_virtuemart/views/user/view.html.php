@@ -171,7 +171,6 @@ class VirtuemartViewUser extends VmView {
 				$this->assignRef('currency',$currency);
 			}
 
-// 			vmdebug('user $userDetails ',	$userDetails 	);
 			if (!empty($userDetails->user_is_vendor)) {
 
 				$vendorModel = VmModel::getModel('vendor');

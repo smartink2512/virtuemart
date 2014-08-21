@@ -570,15 +570,9 @@ class Migrator extends VmModel{
 
 		$JUserString = '`p`.`'.implode('`,`p`.`',$jUserArray).'`';
 
-		//$continue=false;
-
-		/*$q = 'SELECT * FROM `#__vm_auth_group` ';
-		$this->_db->setQuery($q);
-		$groups = $this->_db->loadAssocList();*/
-
 		while($continue){
 
-			//Lets load all users from the joomla hmm or vm? VM1 users does NOT exist
+			//Lets load all users from the joomla and vm1? VM1 users does NOT exist
 			$q = 'SELECT `ui`.*,`svx`.*,'.$JUserString.',`vmu`.virtuemart_user_id FROM #__vm_user_info AS `ui`
 				LEFT OUTER JOIN #__vm_shopper_vendor_xref AS `svx` ON `svx`.user_id = `ui`.user_id
 				LEFT OUTER JOIN #__users AS `p` ON `p`.id = `ui`.user_id
@@ -634,12 +628,6 @@ class Migrator extends VmModel{
 							vmError('Migrator portUsers '.$userModel->getError());
 						}
 					}
-				/*} else //There is no joomla user, but there is a user
-					if(!empty($user['user_email'])){
-
-						//vmdebug('Hmm joomla user is missing, what todo?',$user['user_id']);
-				}*/
-
 
 				$i++;
 

@@ -75,8 +75,6 @@ if(VmConfig::get('shop_is_offline',0)){
 			$router->setMode(0);
 			//vmdebug('my conf',$router->getMode());
 			//JFactory::getConfig()->set('sef',0);
-
-			//vmJsApi::js('vmsite');
 		} else {
 			$app->redirect('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}

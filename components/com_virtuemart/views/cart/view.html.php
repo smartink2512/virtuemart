@@ -249,7 +249,7 @@ class VirtueMartViewCart extends VmView {
 			$this->assignRef('shipments_shipment_rates',$shipments_shipment_rates);
 			return;
 		}
-		//vmdebug('lSelectShipment setShipment new id, cart id ',$this->cart->virtuemart_shipmentmethod_id);
+
 		$selectedShipment = (empty($this->cart->virtuemart_shipmentmethod_id) ? 0 : $this->cart->virtuemart_shipmentmethod_id);
 
 		$shipments_shipment_rates = array();
@@ -431,7 +431,7 @@ class VirtueMartViewCart extends VmView {
 	function renderCompleteAddressList(){
 
 		$addressList = false;
-		//vmdebug('renderCompleteAddressList',$this->cart->user);
+
 		if($this->cart->user->virtuemart_user_id){
 			$addressList = array();
 			$newBT = '<a href="index.php'

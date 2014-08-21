@@ -76,9 +76,6 @@ class VirtuemartViewUser extends VmView {
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
 	$this->_model = VmModel::getModel('user');
-	/*if (!class_exists('VirtuemartModelUser'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
-	$this->_model = new VirtuemartModelUser();*/
 
 	//$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 	$editor = JFactory::getEditor();

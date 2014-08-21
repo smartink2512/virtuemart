@@ -123,8 +123,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$cart->_inConfirm = false;
 		}
 
-		//$cart->selected_shipto = vRequest::getInt('shipto',$cart->selected_shipto);
-		//vmdebug('updatecart $cart->selected_shipto',$cart->selected_shipto);
 		$cart->saveCartFieldsInCart();
 
 		$cart->updateProductCart();
@@ -217,12 +215,11 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if ($virtuemart_category_id) {
 				$categoryLink = '&view=category&virtuemart_category_id=' . $virtuemart_category_id;
 			}
-			//$categoryLink = '';
+
 			$continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
-			//VmConfig::$echoDebug=true;
+
 			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id');
-			//vmdebug('vRequest get ',$virtuemart_product_ids);
-			//VmConfig::$echoDebug=false;jExit();
+
 			$view = $this->getView ('cart', 'json');
 			$errorMsg = 0;//vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 

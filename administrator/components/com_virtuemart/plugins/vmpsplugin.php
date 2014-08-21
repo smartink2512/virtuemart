@@ -89,7 +89,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	public function onSelectCheck (VirtueMartCart $cart) {
 
-		$idName = $this->_idName; //vmdebug('OnSelectCheck',$idName);
+		$idName = $this->_idName;
 		if (!$this->selectedThisByMethodId ($cart->$idName)) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -110,7 +110,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	public function displayListFE (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 
-		//vmdebug('displayListFE '.$cart->vendorId,$this->_name);
 		if ($this->getPluginMethods ($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				vmAdminInfo ('displayListFE cartVendorId=' . $cart->vendorId);
@@ -157,10 +156,8 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	public function onSelectedCalculatePrice (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
-
 		$idName = $this->_idName;
 
-		//vmTime('onSelectedCalculatePrice before test '.$cart->$id,'prepareCartData');
 		if (!($method = $this->selectedThisByMethodId ($cart->$idName))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -176,7 +173,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$cart_prices_name = $this->renderPluginName ($method);
-		//vmdebug('onSelectedCalculatePrice',$idName,$method->$idName,$cart_prices_name);
+
 		$this->setCartPrices ($cart, $cart_prices, $method);
 
 		return TRUE;
@@ -304,7 +301,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valerie Isaksen
 	 */
 	function onShowOrderBE ($_virtuemart_order_id, $_method_id) {
-
 		return NULL;
 	}
 
@@ -366,7 +362,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Oscar van Eijk
 	 */
 	public function onUpdateOrder ($formData) {
-
 		return NULL;
 	}
 
@@ -379,7 +374,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Oscar van Eijk
 	 */
 	public function onUpdateOrderLine ($formData) {
-
 		return NULL;
 	}
 
@@ -394,7 +388,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Oscar van Eijk
 	 */
 	public function onEditOrderLineBE ($orderId, $lineId) {
-
 		return NULL;
 	}
 
@@ -409,7 +402,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Oscar van Eijk
 	 */
 	public function onShowOrderLineFE ($orderId, $lineId) {
-
 		return NULL;
 	}
 
@@ -431,7 +423,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	public function onNotification () {
-
 		return NULL;
 	}
 
@@ -451,17 +442,14 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	function onResponseReceived (&$virtuemart_order_id, &$html) {
-
 		return NULL;
 	}
 
 	function getDebug () {
-
 		return $this->_debug;
 	}
 
 	function setDebug ($params) {
-
 		return $this->_debug = $params->get ('debug', 0);
 	}
 
@@ -742,10 +730,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $img;
 	}
 
-	/**
-	 * @param $plugin plugin
-	 */
-
 	protected function renderPluginName ($plugin) {
 
 		$return = '';
@@ -790,10 +774,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
-	/**
-	 *
-	 */
-
 	protected function getHtmlHeaderBE () {
 
 		$class = "class='key'";
@@ -806,17 +786,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
-	/**
-	 *
-	 */
 
 	protected function getHtmlRow ($key, $value, $class = '') {
 
 		$lang = JFactory::getLanguage ();
 		$key_text = '';
 		$complete_key = strtoupper ($this->_type . '_' . $key);
-		// vmdebug('getHtmlRow',$key,$complete_key);
-		// vmdebug('getHtmlRow',$key,$complete_key);
+
 		if ($lang->hasKey($complete_key)) {
 			$key_text = vmText::_ ($complete_key);
 		} else {
@@ -830,8 +806,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
-	 function getHtmlRowBE ($key, $value) {
-
+	function getHtmlRowBE ($key, $value) {
 		return $this->getHtmlRow ($key, $value, "class='key'");
 	}
 
@@ -843,7 +818,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param $method_id eg $virtuemart_shipmentmethod_id
 	 *
 	 */
-
 	function getSelectable (VirtueMartCart $cart, &$method_id, $cart_prices) {
 
 		$nbMethod = 0;
@@ -924,7 +898,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param int $tax_id
 	 * @return string $html:
 	 */
-
 	function displayTaxRule ($tax_id) {
 
 		$html = '';
@@ -1037,7 +1010,6 @@ abstract class vmPSPlugin extends vmPlugin {
 			if(!empty($taxrules) ){
 				$denominator = 0.0;
 				foreach($taxrules as &$rule){
-					//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
 					if(!isset($rule['subTotal'])) $rule['subTotal'] = 0;
 					if(!isset($rule['taxAmount'])) $rule['taxAmount'] = 0;
 					$denominator += ($rule['subTotal']-$rule['taxAmount']);
@@ -1045,7 +1017,6 @@ abstract class vmPSPlugin extends vmPlugin {
 					$rule['subTotal'] = 0;
 					$rule['taxAmountOld'] = $rule['taxAmount'];
 					$rule['taxAmount'] = 0;
-					//$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
 				}
 				if(empty($denominator)){
 					$denominator = 1;
@@ -1054,7 +1025,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				foreach($taxrules as &$rule){
 					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
-					//vmdebug('Part $denominator '.$denominator.' $frac '.$frac,$rule['subTotal']);
+
 					if(!isset($cart_prices[$this->_psType . 'Tax'])) $cart_prices[$this->_psType . 'Tax'] = 0.0;
 					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $calculator->roundInternal($calculator->roundInternal($calculator->interpreteMathOp($rule, $rule['subTotal'])) - $rule['subTotal'], 'salesPrice');
 					$cart_prices[$this->_psType . 'Tax'] += $cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']];
@@ -1070,11 +1041,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (count ($taxrules) > 0 ) {
 
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],true,false), 'salesPrice');
-			//vmdebug('I am in '.get_class($this).' and have this rules now',$taxrules,$cart_prices[$this->_psType . 'Value'],$cart_prices['salesPrice' . $_psType]);
 //			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);
-//			$taxrule =  current($taxrules);
-//			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
 
 			foreach($taxrules as &$rule){
 				if(!isset($cart_prices[$this->_psType . '_calc_id']) or !is_array($cart_prices[$this->_psType . '_calc_id'])) $cart_prices[$this->_psType . '_calc_id'] = array();
@@ -1090,8 +1058,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
-		//$cart_prices = $cart_prices;
-		//vmdebug('setCartPrices '.$_psType,$cart_prices['salesPrice' . $_psType]);
+
 		return $cart_prices['salesPrice' . $_psType];
 
 	}
@@ -1103,7 +1070,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param $tax_id: tax id
 	 * @return $salesPrice
 	 */
-
 	protected function calculateSalesPrice ($cart, $method, $cart_prices) {
 
 		return $this -> setCartPrices($cart,$cart_prices,$method);
@@ -1173,6 +1139,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$return['display'] = $paymentCurrency->getFormattedCurrency($return['value']) ;
 		return $return;
 	}
+
 	/**
 	 * @param $amount
 	 * @param $currencyId
@@ -1356,7 +1323,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	public function debugLog($message, $title='', $type = 'message', $doDebug=true) {
 		if ( isset($this->_currentMethod) and isset($this->_currentMethod->debug) and $this->_currentMethod->debug  AND $doDebug) {
-			//vmdebug($title, $message);
 		}
 		if ( isset($this->_currentMethod) and !$this->_currentMethod->log and $type !='error') {
 			//Do not log message messages if we are not in LOG mode
@@ -1368,7 +1334,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$this->logInfo($title.': '.print_r($message,true), $type, true);
-
 	}
 
 

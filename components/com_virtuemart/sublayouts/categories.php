@@ -20,9 +20,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $categories = $viewData['categories'];
-$categories_per_row = VmConfig::get ( 'categories_per_row', 3 ); //$viewData['categories_per_row'];
+$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
 
-//vmdebug('my categories ',$categories);
+
 if ($categories) {
 
 // Category and Columns Counter
@@ -30,7 +30,6 @@ $iCol = 1;
 $iCategory = 1;
 
 // Calculating Categories Per Row
-
 $category_cellwidth = ' width'.floor ( 100 / $categories_per_row );
 
 // Separator

@@ -84,7 +84,7 @@ AdminUIHelper::startAdminArea($this);
 		$k = 0;
 		for ($i = 0, $n = count($this->userfieldsList); $i < $n; $i++) {
 			$row = $this->userfieldsList[$i];
-// 			vmdebug('my rows',$row);
+
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = 'admin/checked_out.png';
 			$image = JHtml::_('image', $image, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'),null,true);

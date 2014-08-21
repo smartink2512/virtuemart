@@ -311,7 +311,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$value = trim($child->{$selectoption->voption});
 
 			}
-			//vmdebug('Hmmm renderProductChildLine',$selectoption);
+			//vmdebug('renderProductChildLine',$selectoption);
 			$html .= '<td>'.JHtml::_ ('select.genericlist', $selectoption->comboptions,$name , '', 'value', 'text',
 					$value ,$idTag) .'</td>';
 			$html .= '<input type="hidden" name="field[' . $row . '][options]['.$product_id.']['.$k.']" value="'.$value .'" />';

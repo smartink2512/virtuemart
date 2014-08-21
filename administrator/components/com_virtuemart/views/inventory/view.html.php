@@ -55,7 +55,6 @@ class VirtuemartViewInventory extends VmView {
 		// Apply currency
 		$currencydisplay = CurrencyDisplay::getInstance();
 
-		//vmdebug('my product',$inventorylist[0]);
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
 
 			//TODO oculd be interesting to show the price for each product, and all stored ones $product->product_in_stock

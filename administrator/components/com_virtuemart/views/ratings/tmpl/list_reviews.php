@@ -62,7 +62,7 @@ $option = vRequest::getCmd('option');
 		//$k = 0;
 		$keyword = vRequest::getCmd('keyword');
 		foreach ($this->reviewslist as $key => $review) {
-			//vmdebug('my review ',$review);
+
 			$checked = JHtml::_('grid.id', $i , $review->virtuemart_rating_review_id ,null, 'virtuemart_rating_review_id');
 			$published = JHtml::_('grid.published', $review, $i);
 			?>

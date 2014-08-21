@@ -67,8 +67,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 			// Load the helper(s)
 			if (!class_exists('VmImage'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-			/*if (!class_exists('vmParameters'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');*/
+
 			VmConfig::loadJLang('plg_vmpsplugin', false);
 
 			JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
@@ -86,14 +85,12 @@ class VirtuemartViewPaymentMethod extends VmView {
 				VmTable::bindParameterable($payment->params,'payment_params',$varsToPush);
 				$payment->form->bind($payment);
 
-
 			} else {
 				$payment->form = null;
 			}
 
 			$this->assignRef('payment',	$payment);
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($payment->payment_jplugin_id));
-
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true));
 
 			if(Vmconfig::get('multix','none')!=='none'){

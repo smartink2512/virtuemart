@@ -63,7 +63,7 @@ class VirtuemartViewConfig extends VmView {
 		$this->productLayoutList = $model->getLayoutList('productdetails');
 
 		$this->productsFieldList  = $model->getFieldList('products');
-		//vmdebug('my productsFieldList',$this->productsFieldList);
+
 		$this->noimagelist = $model->getNoImageList();
 
 		$orderStatusModel= VmModel::getModel('orderstatus');

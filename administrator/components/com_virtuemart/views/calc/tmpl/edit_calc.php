@@ -26,7 +26,6 @@ vmJsApi::jDate();
 		// $html = '';
 		// $returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array('vmcalculation' , $html));
 		// print_r( $returnValues );
-		// vmdebug('pluginstuff',$returnValues);
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">

@@ -1111,12 +1111,10 @@ class vmrouterHelper {
 		if ($this->seo_translate ) {
 			$jtext = (strtoupper( $key ) );
 			if ($this->Jlang->hasKey('COM_VIRTUEMART_SEF_'.$jtext) ){
-				//vmdebug('router lang translated '.$jtext);
 				return vmText::_('COM_VIRTUEMART_SEF_'.$jtext);
 			}
 		}
-		//vmdebug('router lang '.$key);
-		//falldown
+
 		return $key;
 	}
 

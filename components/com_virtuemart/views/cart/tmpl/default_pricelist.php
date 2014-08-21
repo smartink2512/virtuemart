@@ -30,10 +30,9 @@
 
 <?php
 $i = 1;
-//vmdebug('cart',$this->cart->cartProductsData);
+
 foreach ($this->cart->products as $pkey => $prow) {
 
-	//vmdebug('cart',$prow->prices['basePriceVariant']);
 	?>
 <tr valign="top" class="sectiontableentry<?php echo $i ?>">
 	<td align="left">
@@ -67,7 +66,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 		?>
 	</td>
 	<td align="right"><?php
-//				$step=$prow->min_order_level;
+
 				if ($prow->step_order_level)
 					$step=$prow->step_order_level;
 				else
@@ -147,7 +146,6 @@ if (VmConfig::get ('coupons_enable')) {
 <tr class="sectiontableentry2">
 <td colspan="4" align="left">
 	<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
-	// echo JHtml::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), vmText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
 	echo $this->loadTemplate ('coupon');
 }
 	?>
@@ -235,7 +233,6 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	}
 } ?>
 
-<?php // if ( $this->cart->automaticSelectedShipment or !empty($this->cart->virtuemart_shipmentmethod_id) or VmConfig::get('oncheckout_opc',1) ) { ?>
 <?php if ( 	VmConfig::get('oncheckout_opc',true) or
 	!VmConfig::get('oncheckout_show_steps',false) or
 	(!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and
@@ -340,8 +337,7 @@ if ($this->totalInPaymentCurrency) {
 </tr>
 	<?php
 }
- ?>
-
+?>
 
 </table>
 </fieldset>

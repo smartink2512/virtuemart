@@ -136,7 +136,6 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function updateRequests () {
 
-		//hmm how to trigger that in the module or so?
 		$this->keyword = vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 		if ($this->keyword == "") {
 			$this->keyword = vRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');

@@ -23,9 +23,6 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  */
 class convertECB {
 
-// 	var $archive = true;
-// 	var $last_updated = '';
-
 	var $document_address = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
 
 	var $info_address = 'http://www.ecb.int/stats/eurofxref/';
@@ -40,7 +37,6 @@ class convertECB {
 	 * @param string $currB defaults to
 	 * @return mixed The converted amount when successful, false on failure
 	 */
-// 	function convert( $amountA, $currA='', $currB='', $a2b = true ) {
 	function convert( $amountA, $currA='', $currB='', $a2rC = true, $relatedCurrency = 'EUR') {
 
 		// cache subfolder(group) 'convertECB', cache method: callback
@@ -52,11 +48,9 @@ class convertECB {
 		$cache->setLifeTime(86400/4); // check 4 time per day
 
 		// save cache conf
-
 		$conf = JFactory::getConfig();
 
 		// check if cache is enabled in configuration
-
 		$cacheactive = $conf->get('caching');
 
 		$cache->setCaching(1); //enable caching
@@ -64,19 +58,16 @@ class convertECB {
 		$globalCurrencyConverter = $cache->call( array( 'convertECB', 'getSetExchangeRates' ),$this->document_address );
 
 		// revert configuration
-
 		$cache->setCaching($cacheactive);
 
 
 		if(!$globalCurrencyConverter ){
-			//vmdebug('convert convert No $globalCurrencyConverter convert '.$amountA);
 			return $amountA;
 		} else {
 			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1.0;
 			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1.0;
 
 			$val = (float)$amountA * (float)$valB / (float)$valA;
-			//vmdebug('convertECB with '.$currA.' '.$amountA.' * '.$valB.' / '.$valA.' = '.$val,$globalCurrencyConverter[$currA]);
 
 			return $val;
 		}
@@ -104,7 +95,6 @@ class convertECB {
 			$archivefile_name = $store_path.'/daily.xml';
 
 			$val = '';
-
 
 			if(file_exists($archivefile_name) && filesize( $archivefile_name ) > 0 ) {
 				// timestamp for the Filename
