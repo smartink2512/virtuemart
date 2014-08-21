@@ -16,7 +16,7 @@
         <folder>klarna</folder>
         <folder>language</folder>
     </files>
-    <config>
+    <vmconfig>
         <fields name="fields">
 
             <fieldset name="klarna" addfieldpath="/plugins/vmpayment/klarna/klarna/fields">
@@ -209,7 +209,7 @@
                     </field -->
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
 
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->

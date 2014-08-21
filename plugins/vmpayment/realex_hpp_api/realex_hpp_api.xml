@@ -15,7 +15,7 @@
         <filename plugin="realex_hpp_api">realex_hpp_api.php</filename>
         <folder>language</folder>
     </files>
-    <config>
+    <vmconfig>
         <fields name="params">
 
             <fieldset name="Realex" addfieldpath="/plugins/vmpayment/realex_hpp_api/realex/fields">
@@ -237,7 +237,7 @@
 
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart plg_vmpayment_realex_hpp_api Update Site">

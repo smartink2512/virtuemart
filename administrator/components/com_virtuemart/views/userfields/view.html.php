@@ -248,7 +248,7 @@ class VirtuemartViewUserfields extends VmView {
 		$formFile	= JPath::clean( $path );
 		if (file_exists($formFile)){
 
-			$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//config');
+			$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 			$this->userField->params = new stdClass();
 			$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
 			$this->userField->params->userfield_params = $this->userField->userfield_params;

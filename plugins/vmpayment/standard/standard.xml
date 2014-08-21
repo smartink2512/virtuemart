@@ -14,7 +14,7 @@
         <folder>language</folder>
     </files>
 
-    <config>
+    <vmconfig>
         <fields name="params">
             <fieldset name="payment"  addfieldpath="/administrator/components/com_virtuemart/fields">
                 <field type="vmjpluginwarning"/>
@@ -54,7 +54,7 @@
                        description="VMPAYMENT_STANDARD_TAX_TIP"/>
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart plg_vmpayment_standard Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_standard_update.xml]]></server>

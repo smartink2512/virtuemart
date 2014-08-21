@@ -509,7 +509,7 @@ class VirtueMartModelProduct extends VmModel {
 				$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`)';
 				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
 				$langFields = array_unique($langFields);
-				vmdebug('Strange my fields',$langFields);
+
 				if(count($langFields)>0){
 					foreach($langFields as $langField){
 						$selectLang .= ', IFNULL(l.'.$langField.',ld.'.$langField.') as '.$langField.'';

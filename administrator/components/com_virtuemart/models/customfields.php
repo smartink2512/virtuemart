@@ -314,7 +314,10 @@ class VirtueMartModelCustomfields extends VmModel {
 			//vmdebug('renderProductChildLine',$selectoption);
 			$html .= '<td>'.JHtml::_ ('select.genericlist', $selectoption->comboptions,$name , '', 'value', 'text',
 					$value ,$idTag) .'</td>';
-			$html .= '<input type="hidden" name="field[' . $row . '][options]['.$product_id.']['.$k.']" value="'.$value .'" />';
+			if($selectoption->voption!='clabels'){
+				$html .= '<input type="hidden" name="field[' . $row . '][options]['.$product_id.']['.$k.']" value="'.$value .'" />';
+			}
+
 		}
 		$html .= '</tr>';
 		return $html;
@@ -322,7 +325,6 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	/**
 	 * @author Max Milbers
-	 * @author Patrick Kohl
 	 * @param $field
 	 * @param $product_id
 	 * @param $row
@@ -366,7 +368,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html = vmText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'');
 				$html .= vmText::_('COM_VIRTUEMART_CUSTOM_PO').VmHTML::checkbox('field[' . $row . '][parentOrderable]',$field->parentOrderable,1,0,'').'<br />';
 
-				//vmdebug('my $field->selectoptions',$field->selectoptions);
+				vmdebug('my $field->selectoptions',$field->options);
 
 				if(empty($field->selectoptions) or count($field->selectoptions)==0){
 					$selectOption = new stdClass();	//The json conversts it anyway in an object, so suitable to use an object here
@@ -706,19 +708,16 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			//This is a kind of fallback, setting default of custom if there is no value of the productcustom
 			$customfield->customfield_value = empty($customfield->customfield_value) ? $customfield->custom_value : $customfield->customfield_value;
-			//$value = $customfield->customfield_value;
+
 			$type = $customfield->field_type;
 
 			$idTag = (int)$product->virtuemart_product_id.'-'.$customfield->virtuemart_customfield_id;
 
 			if(!isset($idUnique[$idTag])){
 				$idUnique[$idTag] = 0;
-				//vmdebug('use tag first time',$idTag);
 			}  else {
 				$counter = $idUnique[$idTag]++;
 				$idTag = $idTag.'-'.$counter;
-				//$customProductDataName = $customProductDataName.'-'.$counter;
-				//vmdebug('created unique tag',$idTag);
 			}
 			$idTag = $idTag . 'customProductData';
 			if (!class_exists ('CurrencyDisplay'))
@@ -729,50 +728,97 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				case 'C':
 
-					$options = array();
 					$html = '';
 
-					$productModel = VmModel::getModel ('product');
-					$productModel->setId($customfield->virtuemart_product_id);
-					$product->virtuemart_product_id;
-					//unset($product->_db);
-					//vmdebug('displayProductCustomfieldFE my C', $customfield->selectoptions,$customfield->options);
-
 					$dropdowns = array();
-					$selectedProduct = false;
+
+					if(isset($customfield->options->{$product->virtuemart_product_id})){
+						$productSelection = $customfield->options->{$product->virtuemart_product_id};
+					} else {
+						$productSelection = false;
+					}
+
+
+					$ignore = array();
 					foreach($customfield->options as $product_id=>$variants){
+						if(in_array($product_id,$ignore)) continue;
 						foreach($variants as $k => $variant){
 							if(!isset($dropdowns[$k]) or !is_array($dropdowns[$k])) $dropdowns[$k] = array();
-							if(!in_array($variant,$dropdowns[$k])){
-								$dropdowns[$k][] = $variant;
+
+							if(!in_array($variant,$dropdowns[$k])  ){
+								if($k==0 or !$productSelection){
+									$dropdowns[$k][] = $variant;
+								} else if($k>0 and $productSelection[$k-1] == $variants[$k-1]){
+									vmdebug('my ',$variant,$productSelection[$k-1]);
+									$dropdowns[$k][] = $variant;
+								} else {
+									$ignore[] = $product_id;
+								}
+
 							}
 						}
-						if($product_id==$product->virtuemart_product_id){
-							$selectedProduct = $variants;
-						}
 					}
-					//vmdebug('displayProductCustomfieldFE my C', $selectedProduct);
+
 					foreach($customfield->selectoptions as $k => $soption){
 						$options = array();
 						$selected = 0;
 						foreach($dropdowns[$k] as $i=> $elem){
-							//$tmp = $customfield->selectoptions[$i];
-							//$tmp->slabel = empty($tmp->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($tmp->voption)): vmText::_($tmp->clabel);
-							//$options[] = array('value'=>$elem,'text'=>$tmp->slabel);
+
 							$elem = trim((string)$elem);
 							$options[] = array('value'=>$elem,'text'=>$elem);
-							if($selectedProduct[$k]==$elem){
-								$selected = $elem;
 
+							if($productSelection and $productSelection[$k] == $elem){
+								$selected = $elem;
 							}
 
 						}
 						$idTag = 'cvard'.$k;
 						$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);
-						//vmdebug('displayProductCustomfieldFE my $tmp',$options,$selected);
-						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select"', "value", "text", $selected,$idTag);
-						//$html .= JHtml::_ ('select.genericlist', $options, $fieldname, '', "value", "text", $selected,$idTag);
+
+						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection"', "value", "text", $selected,$idTag);
+
 					}
+					vmdebug('displayProductCustomfieldFE my C', $customfield->options,$dropdowns);
+					//create array for js
+					$jsArray = array();
+
+					foreach($customfield->options as $product_id=>$variants){
+						$jsArray[] = '["'.$product_id.'","'.implode('","',$variants).'"]';
+					}
+					$jsVariants = implode(',',$jsArray);
+					$script = "
+	jQuery( function($) {
+		$('.cvselection').change(function() {
+				var variants = [".$jsVariants."];
+				var selection = [];
+				$('.cvselection').each(function() {
+					selection[selection.length] = $(this).val();
+					//console.log('My selection '+selection[selection.length-1]);
+				});
+				var index ;
+				var i2 ;
+				var hitcount;
+				for	(index = 0; index < variants.length; index++) {
+					hitcount = 0;
+					for	(i2 = 0; i2 < selection.length; i2++) {
+						//console.log('hmm '+variants[index][i2+1]+' selection '+selection[i2]);
+						if(selection[i2]==variants[index][i2+1]){
+							hitcount++;
+							//console.log('Attribute hit selection '+i2+' '+selection[i2]+' '+variants[index][i2+1] );
+							if(hitcount == selection.length){
+								console.log('Product found '+variants[index][0]+' '+variants[index][1]+' '+variants[index][2]+' '+variants[index][3]);
+
+								window.top.location.href='http://vm3j2.stuprecht/en/?option=com_virtuemart&view=productdetails&virtuemart_product_id='+variants[index][0]+'&virtuemart_category_id=10&Itemid=127';
+							}
+						} else {
+							break;
+						}
+					}
+				}
+			});
+		});
+	";
+					$html .= '<script type="text/javascript">'.$script.'</script>';
 
 					//Now we need just the JS to reload the correct product
 					$customfield->display = $html;
@@ -791,7 +837,6 @@ class VirtueMartModelCustomfields extends VmModel {
 					$productModel->setId($customfield->virtuemart_product_id);
 
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
-					//vmdebug($customfield->virtuemart_product_id.' $child productId ',$child);
 
 					if(!$customfield->withParent or ($customfield->withParent and $customfield->parentOrderable)){
 						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
@@ -860,13 +905,11 @@ class VirtueMartModelCustomfields extends VmModel {
 							$product->product_in_stock = $parentStock;
 						}
 
-					} else { //if($product->product_parent_id==0) {
+					} else {
 
 
 					}
-					//vmdebug('my parent product had stock '.$product->product_in_stock);
 
-					//vmdebug('my parent product has stock '.$product->product_in_stock);
 					$dynChilds++;
 					$customfield->display = $html;
 					break;
@@ -966,7 +1009,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'G':
 					//$customfield->display =  '<span class="product_custom_parent">' . vmText::_ ($value) . '</span>';
 					break;
-				/* image */
+				// image
 				case 'M':
 					$customfield->display =  $this->displayCustomMedia ($customfield->customfield_value);
 					break;
@@ -1002,7 +1045,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 					//juri::root() For whatever reason, we used this here, maybe it was for the mails
 					$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id), $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
-					//
+
 					break;
 			}
 		}
@@ -1033,11 +1076,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods,true);
-		} else {
-			//vmdebug('displayProductCustomfieldSelected $variantmods?',$variantmods);
 		}
 
-		//vmdebug('displayProductCustomfieldSelected $product?',$product);
 		$productCustoms = array();
 		foreach($product->customfields as $prodcustom){
 
@@ -1051,7 +1091,6 @@ class VirtueMartModelCustomfields extends VmModel {
 				$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 			}
 		}
-		//if(empty($productCustoms)) return $html . '</div>';
 
 		foreach ($variantmods as $custom_id => $customfield_ids) {
 
@@ -1118,12 +1157,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					//vmdebug ('CustomsFieldOrderDisplay, $item->productCustom empty? ' . $variant);
 					vmdebug ('customFieldDisplay, $productCustom is EMPTY '.$customfield_id);
 				}
-				//}
 			}
 
 		}
 
-	//	vmdebug ('customFieldDisplay html begin: ' . $html . ' end');
 		return $html . '</div>';
 	}
 
@@ -1156,15 +1193,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		if (!empty($item->product_attribute)) {
 			$item->customProductData = json_decode ($item->product_attribute, TRUE);
 		}
-		//vmdebug ('CustomsFieldOrderDisplay ',$item);
-			//if (!empty($item->customProductData)) {
-				return self::displayProductCustomfieldSelected ($item, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
-			/*} else {
 
-			}
-		}*/
-
-		return FALSE;
+		return self::displayProductCustomfieldSelected ($item, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
 	}
 
 	function displayCustomMedia ($media_id, $table = 'product', $absUrl = FALSE) {
@@ -1271,9 +1301,6 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		return $modificatorSum;
 	}
-
-
-
 
 
 	/* Save and delete from database
@@ -1400,7 +1427,6 @@ class VirtueMartModelCustomfields extends VmModel {
 	/**
 	 * Use this to adjust the hidden fields of the displaycustomHandler to your form
 	 *
-	 * @author Max Milbers
 	 * @param string $name for exampel view
 	 * @param string $value for exampel custom
 	 */

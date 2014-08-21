@@ -391,8 +391,7 @@ class VirtueMartModelCustom extends VmModel {
 				'parentOrderable'   => array(0, 'int'),
 				'selectoptions'		=> array(array(), 'int'),
 				'clabels'   => array(array(), 'int'),
-				'options'	=> array(array(), 'int'),
-				'childs'		=> array(array(), 'int'),
+				'options'	=> array(array(), 'int')
 			);
 		}
 		return $varsToPush;

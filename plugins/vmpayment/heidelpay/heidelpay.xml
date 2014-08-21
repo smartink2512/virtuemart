@@ -16,7 +16,7 @@
         <filename>index.html</filename>
         <folder>heidelpay</folder>
     </files>
-    <config>
+    <vmconfig>
         <fields name="params">
 
             <fieldset name="heidelpay" addfieldpath="/plugins/vmpayment/heidelpay/heidelpay/fields">
@@ -139,7 +139,7 @@
                 <field type="spacer" default=""/>
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
 
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->

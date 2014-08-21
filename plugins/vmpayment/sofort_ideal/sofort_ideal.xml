@@ -16,7 +16,7 @@
         <folder>language</folder>
     </files>
 
-    <config>
+    <vmconfig>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/sofort/sofort/fields">
                 <field type="vmjpluginwarning"/>
@@ -89,7 +89,7 @@
             </fieldset>
 
         </fields>
-    </config>
+    </vmconfig>
 
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->

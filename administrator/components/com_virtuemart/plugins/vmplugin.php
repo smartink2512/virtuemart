@@ -184,7 +184,7 @@ abstract class vmPlugin extends JPlugin {
 					}
 				} else {
 
-					$form = JForm::getInstance($name, $xmlFile, array(),false, '//config');
+					$form = JForm::getInstance($name, $xmlFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$fieldSets = $form->getFieldsets();
 					foreach ($fieldSets as $name => $fieldSet) {
 						foreach ($form->getFieldset($name) as $field) {

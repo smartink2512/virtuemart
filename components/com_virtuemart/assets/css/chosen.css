@@ -4,6 +4,7 @@
   position: relative;
   display: inline-block;
   zoom: 1;
+    min-width: 8em;
   *display: inline;
 }
 
@@ -12,7 +13,6 @@
     position: relative;
     display: inline-block;
     max-width: 18em !important;
-    min-width: 4em;
     zoom: 1;
     *display: inline;
 }
@@ -30,6 +30,7 @@
   -o-box-shadow     : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
   z-index: 999;
+    min-width: 7.89em !important;
 }
 /* @end */
 
@@ -319,6 +320,7 @@
   -o-box-shadow     : 0 0 5px rgba(0,0,0,.3);
   box-shadow        : 0 0 5px rgba(0,0,0,.3);
   border: 1px solid #5897fb;
+
 }
 .chzn-container-active .chzn-single-with-drop {
   border: 1px solid #aaa;

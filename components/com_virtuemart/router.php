@@ -323,7 +323,7 @@ function virtuemartParseRoute($segments) {
 		}
 		return $vars;
 	}
-	vmdebug('virtuemartParseRoute',$segments);
+
 	if (empty($segments)) {
 		return $vars;
 	}
@@ -365,7 +365,7 @@ function virtuemartParseRoute($segments) {
 		//$vars['Itemid'] = $helper->activeMenu->id;
 		return $vars;
 	}
-	vmdebug('virtuemartParseRoute',$segments);
+
 	//Translation of the ordering direction is not really useful and costs just energy
 	//if (  $helper->compareKey(end($segments),'dirDesc') ){
 	if ( end($segments) == 'dirDesc' ){
@@ -402,6 +402,7 @@ function virtuemartParseRoute($segments) {
 		}
 	}
 
+	//Maybe I should just disable that to get FE editing working?
 	if ( $segments[0] == 'product') {
 		$vars['view'] = 'product';
 		$vars['task'] = $segments[1];
@@ -940,10 +941,20 @@ class vmrouterHelper {
 
 		$product['virtuemart_category_id'] = $this->getCategoryId($categoryName,$virtuemart_category_id ) ;
 		$db = JFactory::getDBO();
-		$q = 'SELECT `p`.`virtuemart_product_id`
-			FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p` ';
+		$q = '';
+		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			$q = 'SELECT IFNULL(l.`virtuemart_product_id`,ld.`virtuemart_product_id`) as `virtuemart_product_id` ';
+			$q .= ' FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ';
+			$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`) ';
+			$q .= ' WHERE IFNULL(l.`slug`,ld.`slug`) = "'.$db->escape($productName).'" ';
+		} else {
+			$q = 'SELECT p.`virtuemart_product_id` ';
+			$q .= ' FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p` ';
+			$q .= ' WHERE `slug` = "'.$db->escape($productName).'" ';
+		}
+
 			//LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`virtuemart_product_id` = `xref`.`virtuemart_product_id`
-		$q .= 'WHERE `p`.`slug` = "'.$db->escape($productName).'" ';
+		//$q .= 'WHERE `p`.`slug` = "'.$db->escape($productName).'" ';
 		//$q .= "	AND `xref`.`virtuemart_category_id` = ".(int)$product['virtuemart_category_id'];
 		$db->setQuery($q);
 		$product['virtuemart_product_id'] = $db->loadResult();

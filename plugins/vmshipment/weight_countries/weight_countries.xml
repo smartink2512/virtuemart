@@ -16,7 +16,7 @@
         <folder>weight_countries</folder>
     </files>
 
-    <config>
+    <vmconfig>
         <fields name="params">
             <fieldset name="template">
                 <field type="vmjpluginwarning"/>
@@ -71,7 +71,7 @@
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" default=""/>
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart3 plg_vmshipment_weight_countries Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmshipment_weight_countries_update.xml]]></server>

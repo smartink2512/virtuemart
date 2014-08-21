@@ -17,7 +17,7 @@
         <filename plugin="textinput">textinput.php</filename>
         <folder>textinput</folder>
     </files>
-    <config>
+    <vmconfig>
         <fields name="params">
             <fieldset name="template">
             <field type="vmjpluginwarning" addfieldpath="/administrator/components/com_virtuemart/fields" />
@@ -28,7 +28,7 @@
             </field>
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param name="custom_size" type="text"  size="15"  default="10" label="VMCUSTOM_TEXTINPUT_SIZE" description="VMCUSTOM_TEXTINPUT_SIZE_DESC" />

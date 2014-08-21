@@ -20,7 +20,7 @@
         <folder>language</folder>
     </files>
 
-    <config>
+    <vmconfig>
         <fields name="params">
 
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/paybox/paybox/fields">
@@ -253,7 +253,7 @@
                 </field>
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart plg_vmpayment_paybox Update Site">

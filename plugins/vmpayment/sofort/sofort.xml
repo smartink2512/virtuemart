@@ -18,7 +18,7 @@
     <languages>
         <language tag="en-GB">en-GB.plg_vmpayment_sofort.ini</language>
     </languages>
-    <config>
+    <vmconfig>
     <fields name="params">
 
     <fieldset name="basic" addfieldpath="/plugins/vmpayment/sofort/sofort/fields">
@@ -93,7 +93,7 @@
 
     </fieldset>
     </fields>
-    </config>
+    </vmconfig>
 
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->

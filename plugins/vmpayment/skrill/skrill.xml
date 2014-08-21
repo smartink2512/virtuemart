@@ -17,7 +17,7 @@
     <languages>
         <language tag="en-GB">en-GB.plg_vmpayment_skrill.ini</language>
     </languages>
-    <config>
+    <vmconfig>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/fields">
                 <field type="vmjpluginwarning"/>
@@ -93,7 +93,7 @@
             </fieldset>
 
         </fields>
-    </config>
+    </vmconfig>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart3 plg_vmpayment_skrill Update Site">

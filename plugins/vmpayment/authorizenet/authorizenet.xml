@@ -14,7 +14,7 @@
     </files>
 
 
-    <config>
+    <vmconfig>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/authorizenet/authorizenet/fields">
                 <field type="spacer" default="VMPAYMENT_AUTHORIZENET_AIM" level="level1"/>
@@ -122,7 +122,7 @@
                 </field>
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
 
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->

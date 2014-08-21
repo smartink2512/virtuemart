@@ -12,7 +12,7 @@
         <filename plugin="klarnacheckout">klarnacheckout.php</filename>
         <folder>language</folder>
     </files>
-    <config>
+    <vmconfig>
         <fields name="params">
 
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/klarnacheckout/klarnacheckout/fields">
@@ -92,7 +92,7 @@
                 <field name="cost_per_transaction" type="hidden"/>
             </fieldset>
         </fields>
-    </config>
+    </vmconfig>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart plg_vmpayment_klarnacheckout Update Site">
