@@ -18,13 +18,23 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  */
 
-class amazonHelperConfirmOrderReferenceResponse extends amazonHelper
-{
-	protected $confirmOrderReferenceResponse = null;
-	public function __construct(OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse) {
-		$this->confirmOrderReferenceResponse = $confirmOrderReferenceResponse;
+class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
+
+	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse) {
+		parent::__construct($confirmOrderReferenceResponse);
 	}
 
+	function getStoreInternalData () {
+		$amazonInternalDatas = new stdClass();
+		if ($this->amazonData->isSetResponseMetadata()) {
+			$responseMetadata = $this->amazonData->getResponseMetadata();
+			if ($responseMetadata->isSetRequestId()) {
 
+				$amazonInternalDatas->amazon_response_amazonRequestId = $responseMetadata->getRequestId();
+			}
+		}
+		return $amazonInternalDatas;
+	}
+	  function getContents(){}
 
 }

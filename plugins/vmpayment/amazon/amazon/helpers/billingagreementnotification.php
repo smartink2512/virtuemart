@@ -18,14 +18,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  */
 
-class billingAgreementNotification extends amazonHelper
-{
-	protected $billingAgreementNotification = null;
-	public function __construct(OffAmazonPaymentsNotifications_Model_billingAgreement $billingAgreementNotification) {
-		$this->billingAgreementNotification = $billingAgreementNotification;
+class billingAgreementNotification extends amazonHelperNotification {
+	public function __construct (OffAmazonPaymentsNotifications_Model_billingAgreement $billingAgreementNotification) {
+		parent::__construct($billingAgreementNotification);
 	}
-
-
 
 
 }

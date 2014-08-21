@@ -30,6 +30,8 @@ if ($isMobile) {
 }
 if (!$jsAWLoaded) {
 	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+
 //vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
 
 	if ($viewData['renderAddressBook']) {
@@ -53,54 +55,24 @@ jQuery(document).ready( function($) {
 
 	$doc->addScriptDeclaration("
 	//<![CDATA[
-	jQuery(document).ready( function($) {
-$('" . $viewData['addressbook_billto_shipto'] . "').hide();
-$('" . $viewData['loginform'] . "').hide();
-$('#leave_amazon').click(function(){
-	var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazon&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
-    console.log('leaveAmazon'  );
-    jQuery.getJSON(url);
-         var reloadurl = vmSiteurl + 'index.php?option=com_virtuemart&view=cart' + vmLang;
+jQuery(document).ready( function($) {
+$('#leaveAmazonCheckout').click(function(){
+	var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazonCheckout&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
+    console.log('leaveAmazonCheckout');
+    jQuery.getJSON(url, function(data) {
+            var reloadurl = 'index.php?option=com_virtuemart&view=cart';
          window.location.href = reloadurl;
+        });
+
 	});
 });
 //]]>
 ");
-		$doc->addScriptDeclaration("
-		//<![CDATA[
-	jQuery(document).ready( function($) {
-		$('" . $viewData['paymentForm'] . "').hide();
-		//$('" . $viewData['loginform'] . "').hide();
-	});
-	//]]>
-");
 
 }
 
 ?>
 
-<?php
-if (false) {
 
-	if ($viewData['renderAddressBook']) {
-		?>
-		<h2><?php echo vmText::_('VMPAYMENT_AMAZON_SELECT_ADDRESS') ?></h2>
-
-		<!-- AddressbookWidget -->
-		<div id='amazonAddressBookWidgetDiv'></div>
-		<div id="amazonAddressBookErrorMsg" class="error"></div>
-	<?php
-	}
-	?>
-
-	<h2><?php echo vmText::_('VMPAYMENT_AMAZON_SELECT_PAYMENT') ?></h2>
-
-	<!-- WalletWidget -->
-	<span id='amazonWalletWidgetDiv'></span>
-	<div id="amazonWalletErrorMsg" class="error"></div>
-
-<?php
-}
-?>
 
 

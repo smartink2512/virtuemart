@@ -20,11 +20,11 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 abstract class amazonHelper
 {
-	protected $notification = null;
-	public function __construct($notification)
+	var $amazonData = null;
+	public function __construct($amazonData)
 	{
 
-			$this->notification = $notification;
+			$this->amazonData = $amazonData;
 
 	}
 
@@ -47,8 +47,8 @@ abstract class amazonHelper
 
 
 	function getAuthorizationId() {
-		if ($this->notification->isSetAuthorizationDetails()) {
-			$authorizationDetails = $this->notification->getAuthorizationDetails();
+		if ($this->amazonData->isSetAuthorizationDetails()) {
+			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
 
 			if ($authorizationDetails->isSetAuthorizationReferenceId()) {
 				return $authorizationDetails->getAuthorizationReferenceId();
@@ -59,5 +59,7 @@ abstract class amazonHelper
 function storeResults(){
 
 }
+
+	protected abstract function getContents();
 
 }

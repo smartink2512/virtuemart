@@ -18,30 +18,30 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  */
 
-class amazonHelperSetOrderReferenceDetailsRequest extends amazonHelper
-{
+class amazonHelperSetOrderReferenceDetailsRequest extends amazonHelper {
 	protected $SetOrderReferenceDetailsRequest = null;
-	public function __construct(OffAmazonPaymentsService_Model_SetOrderReferenceDetailsRequest $SetOrderReferenceDetailsRequest) {
+
+	public function __construct (OffAmazonPaymentsService_Model_SetOrderReferenceDetailsRequest $SetOrderReferenceDetailsRequest) {
 		$this->setOrderReferenceDetailsRequest = $SetOrderReferenceDetailsRequest;
 	}
 
-	public function storeResultParams() {
+	public function getStoreInternalData () {
 		$authorizationDetails = $this->setOrderReferenceDetailsRequest->getAuthorizationDetails();
-		$storeResult = $this->getStoreResultParams();
+		$amazonInternalData = $this->getStoreResultParams();
 		if ($authorizationDetails->isSetAuthorizationStatus()) {
 
 			$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 			if ($authorizationStatus->isSetState()) {
-				$storeResult->amazon_state= $authorizationStatus->getState();
+				$amazonInternalData->amazon_state = $authorizationStatus->getState();
 			}
 			if ($authorizationStatus->isSetReasonCode()) {
-				$storeResult->amazon_reasonCode= $authorizationStatus->getReasonCode();
+				$amazonInternalData->amazon_reasonCode = $authorizationStatus->getReasonCode();
 			}
 			if ($authorizationStatus->isSetReasonDescription()) {
-				$storeResult->amazon_reasonDescription= $authorizationStatus->getReasonDescription();
+				$amazonInternalData->amazon_reasonDescription = $authorizationStatus->getReasonDescription();
 			}
 		}
-		return $storeResult;
+		return $amazonInternalData;
 	}
 	/**
 	 * Log the authorization detail contents

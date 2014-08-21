@@ -348,6 +348,27 @@ class VirtueMartCart {
 	public function setRedirectDisabled($bool = TRUE){
 		$this->_redirect_disabled = $bool;
 	}
+
+	/**
+	 * @author Valerie Isaksen
+	 * @param      $layout
+	 * @param bool $inSession
+	 */
+	public function setCartLayout($layout,$intoSession=true) {
+		$this->layout = $layout;
+		if ($intoSession) {
+			$this->setCartIntoSession();
+		}
+	}
+
+	/**
+	 * @author Valerie Isaksen
+	 * @return Value
+	 */
+	public function getCartLayout() {
+		return $this->layout;
+	}
+
 	/**
 	 * Add a product to the cart
 	 *

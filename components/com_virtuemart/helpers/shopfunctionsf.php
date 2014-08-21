@@ -748,8 +748,11 @@ class shopFunctionsF {
 		}
 		$article->$field = $article->text;
 	}
+
 	static public function mask_string($cc, $mask_char='X')
 	{
 		return str_pad(substr($cc, -4), strlen($cc), $mask_char, STR_PAD_LEFT);
 	}
+
+
 }

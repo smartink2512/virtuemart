@@ -27,36 +27,67 @@ jQuery().ready(function ($) {
 
         $('.region-other').parents('tr').hide();
 
-        if (region == 'OTHER') {
+        if (region === 'OTHER') {
             $('.region-other').parents('tr').show();
         }
     }
 
-    handleAuthorizationModeParameters= function () {
-        var authorization_mode = $('#paramsauthorization_mode').val();
+    handleAuthorizationERPDisabled= function () {
+        var authorization = $('#paramsauthorization_mode_erp_disabled').val();
+        var erp_mode = $('#paramserp_mode').val();
+
         $('.automatic_synchronous').hide();
         $('.automatic_asynchronous').hide();
         $('.manual_non_synchronous').hide();
-        if (authorization_mode =='automatic_synchronous') {
-            $('.automatic_synchronous').show();
-        } else if (authorization_mode =='manual_non_synchronous') {
-            $('.manual_non_synchronous').show();
-        } else {
-            $('.automatic_asynchronous').show();
+        if (erp_mode ==='erp_mode_disabled') {
+
+            if (authorization === 'automatic_synchronous') {
+                $('.automatic_synchronous').show();
+            } else if (authorization === 'automatic_asynchronous') {
+                $('.automatic_asynchronous').show();
+            } else {
+                $('.automatic_asynchronous').show();
+            }
         }
     }
 
+    handleAuthorizationERPEnabled= function () {
+        var authorization = $('#paramsauthorization_mode_erp_enabled').val();
+        var erp_mode = $('#paramserp_mode').val();
+
+        $('.automatic_synchronous').hide();
+        $('.automatic_asynchronous').hide();
+        $('.manual_non_synchronous').hide();
+        if (erp_mode ==='erp_mode_enabled') {
+            if (authorization === 'automatic_synchronous') {
+                $('.automatic_synchronous').show();
+            } else if (authorization === 'automatic_asynchronous') {
+                $('.automatic_asynchronous').show();
+            } else {
+                $('.automatic_asynchronous').show();
+            }
+        }
+    }
+
+
     handleCaptureModeParameters= function () {
         var capture_mode = $('#paramscapture_mode').val();
+        var authorization = $('#paramsauthorization_mode_erp_disabled').val();
+        var erp_mode = $('#paramserp_mode').val();
 
+        $('.capture_mode').parents('tr').hide();
         $('.immediate_capture').parents('tr').hide();
-        $('.capture_on_shipment').parents('tr').hide();
-
-        if (capture_mode =='immediate_capture') {
-            $('.immediate_capture').parents('tr').show();
-        }  else if (capture_mode == 'capture_on_shipment') {
-            $('.capture_on_shipment').parents('tr').show();
-        }
+        $('.capture_delayed').parents('tr').hide();
+        if (erp_mode ==='erp_mode_disabled') {
+            if (authorization === 'automatic_synchronous') {
+                $('.capture_mode').parents('tr').show();
+                if (capture_mode ==='immediate_capture') {
+                    $('.immediate_capture').parents('tr').show();
+                }  else if (capture_mode === 'capture_delayed') {
+                    $('.capture_delayed').parents('tr').show();
+                }
+             }
+         }
     }
 
     handleERPModeParameters= function () {
@@ -64,7 +95,7 @@ jQuery().ready(function ($) {
         $('.erp_mode_enabled').parents('tr').hide();
         $('.erp_mode_disabled').parents('tr').hide();
 
-        if (erp_mode =='erp_mode_enabled') {
+        if (erp_mode ==='erp_mode_enabled') {
             $('.erp_mode_enabled').parents('tr').show();
         } else {
             $('.erp_mode_disabled').parents('tr').show();
@@ -79,8 +110,8 @@ jQuery().ready(function ($) {
         $('.ipn_reception_enabled').parents('tr').hide();
         $('.ipn_reception_disabled').parents('tr').hide();
 
-        if (erp_mode =='erp_mode_disabled') {
-            if (ipn_reception =='ipn_reception_enabled') {
+        if (erp_mode ==='erp_mode_disabled') {
+            if (ipn_reception ==='ipn_reception_enabled') {
                 $('.ipn_reception_enabled').parents('tr').show();
             } else {
                 $('.ipn_reception_disabled').parents('tr').show();
@@ -94,7 +125,7 @@ jQuery().ready(function ($) {
         $('.sandbox').parents('tr').hide();
         $('.live').parents('tr').hide();
 
-        if (environment =='sandbox') {
+        if (environment ==='sandbox') {
             $('.sandbox').parents('tr').show();
         } else {
             $('.live').parents('tr').show();
@@ -105,7 +136,7 @@ jQuery().ready(function ($) {
         var environment = $('#paramsenvironment').val();
         $('.ipn-sandbox').hide();
 
-        if (environment =='sandbox') {
+        if (environment ==='sandbox') {
             $('.ipn-sandbox').show();
         }
     }
@@ -116,8 +147,16 @@ jQuery().ready(function ($) {
         handleRegionParameters();
 
     });
-    $('#paramsauthorization_mode').change(function () {
-        handleAuthorizationModeParameters();
+    $('#paramsauthorization_mode_erp_disabled').change(function () {
+        handleAuthorizationERPDisabled();
+        handleAuthorizationERPEnabled();
+        handleCaptureModeParameters();
+
+    });
+    $('#paramsauthorization_mode_erp_enabled').change(function () {
+        handleAuthorizationERPEnabled();
+        handleAuthorizationERPDisabled();
+        handleCaptureModeParameters();
 
     });
     $('#paramscapture_mode').change(function () {
@@ -127,6 +166,7 @@ jQuery().ready(function ($) {
     $('#paramserp_mode').change(function () {
         handleERPModeParameters();
         handleIPNReceptionParameters();
+        handleCaptureModeParameters();
 
     });
     $('#paramsipn_reception').change(function () {
@@ -144,7 +184,8 @@ jQuery().ready(function ($) {
     /* Initial calls */
     /*****************/
     handleRegionParameters();
-    handleAuthorizationModeParameters();
+    handleAuthorizationERPDisabled();
+    handleAuthorizationERPEnabled();
     handleCaptureModeParameters();
 
     handleIPNReceptionParameters();
