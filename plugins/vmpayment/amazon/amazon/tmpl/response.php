@@ -27,28 +27,28 @@ $currency = $viewData["currency"];
 
 ?>
 <div id="amazonResponse">
-<div class="amazonResponseItem">
+	<div class="amazonResponseItem">
 		<span class=""> <?php echo vmText::_('VMPAYMENT_AMAZON_PAYMENT_NAME'); ?></span>
 		<span class=""><?php echo $viewData["payment_name"]; ?></span>
-</div>
+	</div>
 	<div class="amazonResponseItem">
 
-	<span class=""><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></span>
-	<span class=""><?php echo $order['details']['BT']->order_number; ?></span>
+		<span class=""><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></span>
+		<span class=""><?php echo $order['details']['BT']->order_number; ?></span>
 	</div>
 	<div class="amazonResponseItem">
-	<?php if ($success) { ?>
-			<span class=""><?php echo vmText::_('VMPAYMENT_AMAZON_AMOUNT'); ?></span>
-			<span class=""><?php echo $payment->payment_order_total . ' ' . $payment->payment_currency; ?></span>
+		<?php if ($success) { ?>
+		<span class=""><?php echo vmText::_('VMPAYMENT_AMAZON_AMOUNT'); ?></span>
+		<span class=""><?php echo $payment->payment_order_total . ' ' . $payment->payment_currency; ?></span>
 	</div>
 	<div class="amazonResponseItem">
-			<span class=""><?php echo vmText::_('VMPAYMENT_AMAZON_AUTHORIZATION_ID'); ?> </span>
-			<span class=""><?php echo $viewData["amazonAuthorizationId"] ; ?></span>
-	<?php }  ?>
-	</div>
-<?php if ($success) { ?>
-	<div class="amazonResponseItem">
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
-</div>
+		<span class=""><?php echo vmText::_('VMPAYMENT_AMAZON_AUTHORIZATION_ID'); ?> </span>
+		<span class=""><?php echo $viewData["amazonAuthorizationId"]; ?></span>
 		<?php } ?>
+	</div>
+	<?php if ($success) { ?>
+		<div class="amazonResponseItem">
+			<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $viewData["order"]['details']['BT']->order_number . '&order_pass=' . $viewData["order"]['details']['BT']->order_pass, false) ?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+		</div>
+	<?php } ?>
 </div>

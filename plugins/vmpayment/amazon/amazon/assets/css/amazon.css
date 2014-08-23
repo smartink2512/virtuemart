@@ -1,8 +1,9 @@
-#billToFromAmazonDiv{
+#billToFromAmazonDiv {
     border: 1px solid #DDD;
-    border-radius:3px;
+    border-radius: 3px;
 }
-.amazonError{
+
+.amazonError {
     color: #C00;
     padding-left: 40px;
     padding: 10px 10px 10px 40px;

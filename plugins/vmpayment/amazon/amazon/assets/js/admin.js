@@ -32,14 +32,14 @@ jQuery().ready(function ($) {
         }
     }
 
-    handleAuthorizationERPDisabled= function () {
+    handleAuthorizationERPDisabled = function () {
         var authorization = $('#paramsauthorization_mode_erp_disabled').val();
         var erp_mode = $('#paramserp_mode').val();
 
         $('.automatic_synchronous').hide();
         $('.automatic_asynchronous').hide();
         $('.manual_non_synchronous').hide();
-        if (erp_mode ==='erp_mode_disabled') {
+        if (erp_mode === 'erp_mode_disabled') {
 
             if (authorization === 'automatic_synchronous') {
                 $('.automatic_synchronous').show();
@@ -51,14 +51,14 @@ jQuery().ready(function ($) {
         }
     }
 
-    handleAuthorizationERPEnabled= function () {
+    handleAuthorizationERPEnabled = function () {
         var authorization = $('#paramsauthorization_mode_erp_enabled').val();
         var erp_mode = $('#paramserp_mode').val();
 
         $('.automatic_synchronous').hide();
         $('.automatic_asynchronous').hide();
         $('.manual_non_synchronous').hide();
-        if (erp_mode ==='erp_mode_enabled') {
+        if (erp_mode === 'erp_mode_enabled') {
             if (authorization === 'automatic_synchronous') {
                 $('.automatic_synchronous').show();
             } else if (authorization === 'automatic_asynchronous') {
@@ -70,39 +70,39 @@ jQuery().ready(function ($) {
     }
 
 
-    handleCaptureModeParameters= function () {
+    handleCaptureModeParameters = function () {
         var capture_mode = $('#paramscapture_mode').val();
         var authorization = $('#paramsauthorization_mode_erp_disabled').val();
         var erp_mode = $('#paramserp_mode').val();
 
         $('.capture_mode').parents('tr').hide();
-        $('.immediate_capture').parents('tr').hide();
+        $('.capture_immediate').parents('tr').hide();
         $('.capture_delayed').parents('tr').hide();
-        if (erp_mode ==='erp_mode_disabled') {
+        if (erp_mode === 'erp_mode_disabled') {
             if (authorization === 'automatic_synchronous') {
                 $('.capture_mode').parents('tr').show();
-                if (capture_mode ==='immediate_capture') {
-                    $('.immediate_capture').parents('tr').show();
-                }  else if (capture_mode === 'capture_delayed') {
+                if (capture_mode === 'capture_immediate') {
+                    $('.capture_immediate').parents('tr').show();
+                } else if (capture_mode === 'capture_delayed') {
                     $('.capture_delayed').parents('tr').show();
                 }
-             }
-         }
+            }
+        }
     }
 
-    handleERPModeParameters= function () {
+    handleERPModeParameters = function () {
         var erp_mode = $('#paramserp_mode').val();
         $('.erp_mode_enabled').parents('tr').hide();
         $('.erp_mode_disabled').parents('tr').hide();
 
-        if (erp_mode ==='erp_mode_enabled') {
+        if (erp_mode === 'erp_mode_enabled') {
             $('.erp_mode_enabled').parents('tr').show();
         } else {
             $('.erp_mode_disabled').parents('tr').show();
         }
     }
 
-    handleIPNReceptionParameters= function () {
+    handleIPNReceptionParameters = function () {
         var ipn_reception = $('#paramsipn_reception').val();
         var erp_mode = $('#paramserp_mode').val();
 
@@ -110,8 +110,8 @@ jQuery().ready(function ($) {
         $('.ipn_reception_enabled').parents('tr').hide();
         $('.ipn_reception_disabled').parents('tr').hide();
 
-        if (erp_mode ==='erp_mode_disabled') {
-            if (ipn_reception ==='ipn_reception_enabled') {
+        if (erp_mode === 'erp_mode_disabled') {
+            if (ipn_reception === 'ipn_reception_enabled') {
                 $('.ipn_reception_enabled').parents('tr').show();
             } else {
                 $('.ipn_reception_disabled').parents('tr').show();
@@ -120,23 +120,23 @@ jQuery().ready(function ($) {
     }
 
 
-    handleSandboxSimulationParameters= function () {
+    handleSandboxSimulationParameters = function () {
         var environment = $('#paramsenvironment').val();
         $('.sandbox').parents('tr').hide();
         $('.live').parents('tr').hide();
 
-        if (environment ==='sandbox') {
+        if (environment === 'sandbox') {
             $('.sandbox').parents('tr').show();
         } else {
             $('.live').parents('tr').show();
         }
     }
 
-    handleSandboxIPN= function () {
+    handleSandboxIPN = function () {
         var environment = $('#paramsenvironment').val();
         $('.ipn-sandbox').hide();
 
-        if (environment ==='sandbox') {
+        if (environment === 'sandbox') {
             $('.ipn-sandbox').show();
         }
     }

@@ -20,15 +20,75 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperAuthorizationNotification extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsNotifications_Model_authorizationNotification $authorizationNotification) {
-		parent::__construct($authorizationNotification);
+	public function __construct (OffAmazonPaymentsNotifications_Model_authorizationNotification $authorizationNotification, $plugin) {
+		parent::__construct($authorizationNotification, $plugin);
 	}
 
-	function handleNotification () {
+
+	/**
+	 * if asynchronous mode= state= pending
+	 * if asynchronous mode=> timeOut was set to > 0
+	 * if synchronous mode=> timeOut ==0
+	 * -- if InvalidPaymentMethod and asynchronous mode, the state= suspended ==> send an email
+	 * -- if InvalidPaymentMethod and synchronous mode: return to cart, redisplay wallet widget
+	 * -- AmazonRejected: if state == open, then retry authorization, else Declined
+	 * -- Processing failure: retry the request in 2 minutes ???
+	 * --
+	 * @return mixed
+	 */
+	function onNotificationUpdateOrderHistory ($order, $payments) {
+		$order_history = array();
+		$amazonState = "";
+		$reasonCode = "";
+		if (!$this->amazonData->isSetAuthorizationDetails()) {
+			$this->debugLog('NO isSetAuthorizationDetails' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
+			return false;
+		}
 		$authorizationDetails = $this->amazonData->getAuthorizationDetails();
+		if (!$authorizationDetails->isSetAuthorizationStatus()) {
+			$this->debugLog('NO isSetAuthorizationStatus' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
+			return false;
+		}
 		$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
+		if (!$authorizationStatus->isSetState()) {
+			$this->debugLog('NO isSetState' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
+			return false;
+		}
 		$amazonState = $authorizationStatus->getState();
-		return $amazonState;
+
+		if ($authorizationStatus->isSetReasonCode()) {
+			$reasonCode = $authorizationStatus->getReasonCode();
+		}
+		$order_history['customer_notified'] = 1;
+
+		if ($amazonState == 'Open') {
+			$order_history['order_status'] = $this->_currentMethod->status_authorization_synchronous;
+			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
+		} elseif ($amazonState == 'Declined') {
+			if ($reasonCode == 'InvalidPaymentMethod') {
+				// contact the buyer bye email
+				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+			} elseif ($reasonCode == 'AmazonRejected') {
+				$order_history['order_status'] = $this->_currentMethod->status_cancel;
+			} elseif ($reasonCode == 'TransactionTimedOut') {
+// TODO  retry the authorization again
+				$order_history['order_status'] = $this->_currentMethod->status_cancel;
+			}
+			$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
+			$order_history['customer_notified'] = 0;
+		} elseif ($amazonState == 'Pending') {
+			$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_PENDING');
+			$order_history['customer_notified'] = 0;
+		} elseif ($amazonState == 'Closed') {
+			$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+			$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
+			$order_history['customer_notified'] = 0;
+		}
+
+		$orderModel = VmModel::getModel('orders');
+		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+
 	}
 
 	public function getStoreInternalData () {
@@ -37,15 +97,12 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		if ($this->amazonData->isSetAuthorizationDetails()) {
 			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
 			if ($authorizationDetails->isSetAmazonAuthorizationId()) {
-				$amazonInternalData->amazon_response_amazonAuthorizationId = $authorizationDetails->notification();
+				$amazonInternalData->amazon_response_amazonAuthorizationId = $authorizationDetails->getAmazonAuthorizationId();
 			}
 			if ($authorizationDetails->isSetAuthorizationStatus()) {
 				$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 				if ($authorizationStatus->isSetState()) {
 					$amazonInternalData->amazon_response_state = $authorizationStatus->getState();
-				}
-				if ($authorizationStatus->isSetLastUpdateTimestamp()) {
-					$amazonInternalData->amazon_response_reasonCode = $authorizationStatus->getReasonCode();
 				}
 				if ($authorizationStatus->isSetReasonCode()) {
 					$amazonInternalData->amazon_response_reasonCode = $authorizationStatus->getReasonCode();
@@ -58,92 +115,113 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		return $amazonInternalData;
 	}
 
-	public function getContents () {
-		$contents = "Authorization Notification";
-		$contents .= "\n=============================================================================";
+
+	public function getReferenceId () {
 		if ($this->amazonData->isSetAuthorizationDetails()) {
-			$contents .= "\n    AuthorizeDetails";
+			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
+			if ($authorizationDetails->isSetAuthorizationReferenceId()) {
+				return $authorizationDetails->getAuthorizationReferenceId();
+			}
+		}
+		return NULL;
+	}
+
+	public function getAmazonId () {
+		if ($this->amazonData->isSetAuthorizationDetails()) {
 			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
 			if ($authorizationDetails->isSetAmazonAuthorizationId()) {
-				$contents .= "\n    AmazonAuthorizationId: ".$authorizationDetails->getAmazonAuthorizationId();
+				return $authorizationDetails->getAmazonAuthorizationId();
+			}
+		}
+		return NULL;
+	}
+
+	public function getContents () {
+		$contents = "Authorization Notification";
+		$contents .= "<br />====================================";
+		if ($this->amazonData->isSetAuthorizationDetails()) {
+			$contents .= "<br />    AuthorizeDetails";
+			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
+			if ($authorizationDetails->isSetAmazonAuthorizationId()) {
+				$contents .= "<br />    AmazonAuthorizationId: " . $authorizationDetails->getAmazonAuthorizationId();
 			}
 			if ($authorizationDetails->isSetAuthorizationReferenceId()) {
-				$contents .= "\n      AuthorizationReferenceId: ".$authorizationDetails->getAuthorizationReferenceId();
+				$contents .= "<br />      AuthorizationReferenceId: " . $authorizationDetails->getAuthorizationReferenceId();
 			}
 			if ($authorizationDetails->isSetAuthorizationAmount()) {
-				$contents .= "\n      AuthorizationAmount";
+				$contents .= "<br />      AuthorizationAmount";
 				$authorizationAmount = $authorizationDetails->getAuthorizationAmount();
 				if ($authorizationAmount->isSetAmount()) {
-					$contents .= "\n          Amount: ". $authorizationAmount->getAmount();
+					$contents .= "<br /> Amount: " . $authorizationAmount->getAmount();
 				}
 				if ($authorizationAmount->isSetCurrencyCode()) {
-					$contents .= "\n          CurrencyCode: ".$authorizationAmount->getCurrencyCode();
+					$contents .= "<br /> CurrencyCode: " . $authorizationAmount->getCurrencyCode();
 				}
 			}
 			if ($authorizationDetails->isSetCapturedAmount()) {
-				$contents .= "\n       CapturedAmount";
+				$contents .= "<br />       CapturedAmount";
 				$capturedAmount = $authorizationDetails->getCapturedAmount();
 				if ($capturedAmount->isSetAmount()) {
-					$contents .= "\n          Amount: ". $capturedAmount->getAmount();
+					$contents .= "<br /> Amount: " . $capturedAmount->getAmount();
 				}
 				if ($capturedAmount->isSetCurrencyCode()) {
-					$contents .= "\n          CurrencyCode: ". $capturedAmount->getCurrencyCode();
+					$contents .= "<br /> CurrencyCode: " . $capturedAmount->getCurrencyCode();
 				}
 			}
 			if ($authorizationDetails->isSetAuthorizationFee()) {
-				$contents .= "\n      AuthorizationFee";
+				$contents .= "<br />      AuthorizationFee";
 				$authorizationFee = $authorizationDetails->getAuthorizationFee();
 				if ($authorizationFee->isSetAmount()) {
-					$contents .= "\n          Amount: ". $authorizationFee->getAmount();
+					$contents .= "<br /> Amount: " . $authorizationFee->getAmount();
 				}
 				if ($authorizationFee->isSetCurrencyCode()) {
-					$contents .= "\n          CurrencyCode: ". $authorizationFee->getCurrencyCode();
+					$contents .= "<br /> CurrencyCode: " . $authorizationFee->getCurrencyCode();
 				}
 			}
 			if ($authorizationDetails->isSetIdList()) {
-				$contents .= "\n      IdList";
+				$contents .= "<br />      IdList";
 				$idList = $authorizationDetails->getIdList();
 				$memberList = $idList->getId();
 				foreach ($memberList as $member) {
-					$contents .= "\n          member: ".$member;
+					$contents .= "<br /> member: " . $member;
 				}
 			}
 			if ($authorizationDetails->isSetCreationTimestamp()) {
-				$contents .= "\n      CreationTimestamp: ".$authorizationDetails->getCreationTimestamp();
+				$contents .= "<br />      CreationTimestamp: " . $authorizationDetails->getCreationTimestamp();
 			}
 			if ($authorizationDetails->isSetExpirationTimestamp()) {
-				$contents .= "\n      ExpirationTimestamp";
-				$contents .= "\n           " . $authorizationDetails->getExpirationTimestamp();
+				$contents .= "<br />      ExpirationTimestamp";
+				$contents .= "<br />  " . $authorizationDetails->getExpirationTimestamp();
 			}
 			if ($authorizationDetails->isSetAuthorizationStatus()) {
-				$contents .= "\n      AuthorizationStatus";
+				$contents .= "<br />      AuthorizationStatus";
 				$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 				if ($authorizationStatus->isSetState()) {
-					$contents .= "\n          State: ". $authorizationStatus->getState();
+					$contents .= "<br /> State: " . $authorizationStatus->getState();
 				}
 				if ($authorizationStatus->isSetLastUpdateTimestamp()) {
-					$contents .= "\n          LastUpdateTimestamp: ".$authorizationStatus->getLastUpdateTimestamp();
+					$contents .= "<br /> LastUpdateTimestamp: " . $authorizationStatus->getLastUpdateTimestamp();
 				}
 				if ($authorizationStatus->isSetReasonCode()) {
-					$contents .= "\n          ReasonCode: ".$authorizationStatus->getReasonCode();
+					$contents .= "<br /> ReasonCode: " . $authorizationStatus->getReasonCode();
 				}
 				if ($authorizationStatus->isSetReasonDescription()) {
-					$contents .= "\n          ReasonDescription: ". $authorizationStatus->getReasonDescription();
+					$contents .= "<br /> ReasonDescription: " . $authorizationStatus->getReasonDescription();
 				}
 			}
 			if ($authorizationDetails->isSetOrderItemCategories()) {
-				$contents .= "\n       OrderItemCategories";
+				$contents .= "<br />       OrderItemCategories";
 				$orderItemCategories = $authorizationDetails->getOrderItemCategories();
 				$orderItemCategoryList = $orderItemCategories->getOrderItemCategory();
 				foreach ($orderItemCategoryList as $orderItemCategory) {
-					$contents .= "\n          OrderItemCategory: ".$orderItemCategory;
+					$contents .= "<br /> OrderItemCategory: " . $orderItemCategory;
 				}
 			}
 			if ($authorizationDetails->isSetCaptureNow()) {
-				$contents .= "\n      CaptureNow: ".$authorizationDetails->getCaptureNow();
+				$contents .= "<br />      CaptureNow: " . $authorizationDetails->getCaptureNow();
 			}
 			if ($authorizationDetails->isSetSoftDescriptor()) {
-				$contents .= "\n      SoftDescriptor: ".$authorizationDetails->getSoftDescriptor();
+				$contents .= "<br />      SoftDescriptor: " . $authorizationDetails->getSoftDescriptor();
 			}
 		}
 		return $contents;

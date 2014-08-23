@@ -23,7 +23,7 @@ vmJsApi::jPrice();
 static $jsSILoaded = false;
 if (!$jsSILoaded) {
 	$doc = JFactory::getDocument();
-	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" class=\"hasTip\" title=\"::'  . addslashes(vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')) . '\"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\" class=\"error\"></div></div>';
+	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" class=\"hasTip\" title=\"::' . addslashes(vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')) . '\"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\" class=\"error\"></div></div>';
 
 	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
 	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
@@ -39,7 +39,7 @@ jQuery(document).ready( function($) {
 });
 //]]>
 ");
-	if ( $viewData['layout'] == 'amazon') {
+	if ($viewData['layout'] == 'amazon') {
 
 		$doc->addScriptDeclaration("
 	//<![CDATA[
@@ -56,6 +56,6 @@ $('#leaveAmazonCheckout').click(function(){
 });
 //]]>
 ");
-}
+	}
 }
 ?>

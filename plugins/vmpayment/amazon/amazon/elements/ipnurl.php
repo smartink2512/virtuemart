@@ -42,7 +42,7 @@ class JElementIpnURL extends JElement {
 			$virtuemart_paymentmethod_id = $cid;
 		}
 
-		$http = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
+		$http = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
 
 		$https = str_replace('http', 'https', $http);
 
@@ -52,11 +52,11 @@ class JElementIpnURL extends JElement {
 
 			return '<input type="text" name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '" value="' . $value . '" ' . $class . ' ' . $size . ' />';
 		} else {
-$string="<span ".$class.">";
+			$string = "<span " . $class . ">";
 			$string .= '<span class="environment ipn-sandbox">' . $http . ' <br /></span>';
 			$string .= '<span class="environment ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></span>';
 			$string .= $https;
-			$string.="</span>";
+			$string .= "</span>";
 			return $string;
 		}
 	}

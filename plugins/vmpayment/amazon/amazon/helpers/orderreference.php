@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperOrderReference extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $orderReference) {
-		parent::__construct($orderReference);
+	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $orderReference,$method) {
+		parent::__construct($orderReference,$method);
 	}
 
 	public function getStoreInternalData () {
@@ -43,5 +43,6 @@ class amazonHelperOrderReference extends amazonHelper {
 		return $amazonInternalData;
 	}
 
-	function getContents(){}
+	function getContents () {
+	}
 }

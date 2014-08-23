@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 /**
  *
  * @package    VirtueMart
- * @subpackage vmpayment
+ * @subpackage vmpayment Amazon
  * @version $Id$
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -18,48 +18,39 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  */
 
-abstract class amazonHelper
-{
+abstract class amazonHelper {
 	var $amazonData = null;
-	public function __construct($amazonData)
-	{
+	var $plugin = null;
+	var $_currentMethod = null;
 
-			$this->amazonData = $amazonData;
-
+	public function __construct ($amazonData, $plugin) {
+		$this->amazonData = $amazonData;
+		$this->plugin = $plugin;
+		$this->_currentMethod = $this->_currentMethod;
 	}
 
-	function getAmazonReponseState($status) {
-		$storeResult =new stdClass();
+	function getAmazonResponseState ($status) {
+		$amazonResponseState = new stdClass();
 
 		if ($status->isSetState()) {
-			$storeResult->amazon_response_state= $status->getState();
+			$amazonResponseState->amazon_response_state = $status->getState();
 		}
 		if ($status->isSetReasonCode()) {
-			$storeResult->amazon_response_reasonCode= $status->getReasonCode();
+			$amazonResponseState->amazon_response_reasonCode = $status->getReasonCode();
 		}
 		if ($status->isSetReasonDescription()) {
-			$storeResult->amazon_response_reasonDescription= $status->getReasonDescription();
+			$amazonResponseState->amazon_response_reasonDescription = $status->getReasonDescription();
 		}
 
 
-		return 	$storeResult;
+		return $amazonResponseState;
 	}
 
-
-	function getAuthorizationId() {
-		if ($this->amazonData->isSetAuthorizationDetails()) {
-			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
-
-			if ($authorizationDetails->isSetAuthorizationReferenceId()) {
-				return $authorizationDetails->getAuthorizationReferenceId();
-			}
-		}
-		return FALSE;
+	function getVmReferenceId($referenceId) {
+		$pos= strrpos($referenceId, '-');
+		return substr($referenceId,0,$pos);
 	}
-function storeResults(){
 
-}
-
-	protected abstract function getContents();
+	protected abstract function getContents ();
 
 }

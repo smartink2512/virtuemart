@@ -43,7 +43,7 @@ jQuery(document).ready( function($) {
 //]]>
 "); // addScriptDeclaration
 	}
-if ($viewData['renderWalletBook']) {
+	if ($viewData['renderWalletBook']) {
 		$doc->addScriptDeclaration("
 		//<![CDATA[
 jQuery(document).ready( function($) {

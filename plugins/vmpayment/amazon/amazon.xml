@@ -20,7 +20,7 @@
     <params>
         <param type="customjs" default=""/>
         <param type="vmcurl"/>
-        <param class="level1" type="getamazon" />
+        <param class="level1" type="getamazon"/>
         <param class="level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ACCOUNT_PARAMS"/>
 
         <param name="environment" type="list" default="sandbox" label="VMPAYMENT_AMAZON_CONF_ENVIRONMENT"
@@ -60,13 +60,15 @@
                description="VMPAYMENT_AMAZON_CONF_ERP_MODE_ENABLED_WARNING"/>
 
 
-        <param class="erp_mode erp_mode_disabled" name="authorization_mode_erp_disabled" type="list" default="automatic_asynchronous"
+        <param class="erp_mode erp_mode_disabled" name="authorization_mode_erp_disabled" type="list"
+               default="automatic_asynchronous"
                label="VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE">
             <option value="automatic_synchronous">VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_AUTOMATIC_SYNCHRONOUS</option>
             <option value="automatic_asynchronous">VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_AUTOMATIC_ASYNCHRONOUS</option>
             <!--option value="manual_non_synchronous">VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_MANUAL_ASYNCHRONOUS</option-->
         </param>
-        <param class="erp_mode erp_mode_enabled" name="authorization_mode_erp_enabled" type="list" default="automatic_asynchronous"
+        <param class="erp_mode erp_mode_enabled" name="authorization_mode_erp_enabled" type="list"
+               default="automatic_asynchronous"
                label="VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE">
             <option value="automatic_synchronous">VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_AUTOMATIC_SYNCHRONOUS</option>
             <option value="automatic_asynchronous">VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_AUTOMATIC_ASYNCHRONOUS</option>
@@ -80,15 +82,14 @@
         <param class="authorization_mode manual_non_synchronous" type="vmtitle" default=""
                description="VMPAYMENT_AMAZON_CONF_AUTHORIZATION_MODE_MANUAL_ASYNCHRONOUS_WARNING"/>
 
-        <param class="authorization_mode automatic_synchronous capture_mode" name="capture_mode" type="list" default="capture_delayed"
+        <param class="authorization_mode automatic_synchronous capture_mode" name="capture_mode" type="list"
+               default="capture_delayed"
                label="VMPAYMENT_AMAZON_CONF_CAPTURE_MODE">
-            <option value="immediate_capture">VMPAYMENT_AMAZON_CONF_CAPTURE_MODE_IMMEDIATE_CAPTURE</option>
+            <option value="capture_immediate">VMPAYMENT_AMAZON_CONF_CAPTURE_MODE_CAPTURE_IMMEDIATE</option>
             <option value="capture_delayed">VMPAYMENT_AMAZON_CONF_CAPTURE_MODE_CAPTURE_DELAYED</option>
         </param>
-        <param class="erp_mode erp_mode_disabled capture_mode capture_delayed" type="vmtitle" default=""
-               description="VMPAYMENT_AMAZON_CONF_CAPTURE_IMMEDIATE_CAPTURE_WARNING"/>
-
-
+        <param class="authorization_mode automatic_synchronous capture_mode capture_immediate" type="vmtitle" default=""
+               description="VMPAYMENT_AMAZON_CONF_CAPTURE_CAPTURE_IMMEDIATE_WARNING"/>
 
 
         <param class="erp_mode erp_mode_disabled" name="ipn_reception" type="list" default="ipn_reception_enabled"
@@ -104,10 +105,12 @@
                label="VMPAYMENT_AMAZON_CONF_POLLING_FREQUENCY"
                description="VMPAYMENT_AMAZON_CONF_POLLING_FREQUENCY_TIP"/ -->
 
-        <param class="erp_mode erp_mode_disabled ipn_reception ipn_reception_enabled level3" name="ipn_url" type="ipnurl" size="100" default=""
+        <param class="erp_mode erp_mode_disabled ipn_reception ipn_reception_enabled level3" name="ipn_url"
+               type="ipnurl" size="100" default=""
                editable="false"
                label="VMPAYMENT_AMAZON_CONF_IPN_URL" description="VMPAYMENT_AMAZON_IPN_WARNING"/>
-        <param class="erp_mode erp_mode_disabled ipn_reception ipn_reception_enabled ipn_warning" type="vmtitle" default="" description="VMPAYMENT_AMAZON_IPN_WARNING"/>
+        <param class="erp_mode erp_mode_disabled ipn_reception ipn_reception_enabled ipn_warning" type="vmtitle"
+               default="" description="VMPAYMENT_AMAZON_IPN_WARNING"/>
 
 
         <!--param class="region region-other required" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ENDPOINTS_SECTION" />
@@ -130,26 +133,37 @@
                description="VMPAYMENT_AMAZON_CONF_PRODUCTION_SIGNIN_TIP"/-->
 
 
-
-
         <!-- STATUS    DEFAULT ARE FOR CAPTURE ON SHIPMENT   -->
         <!-- ============ -->
-        <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ORDER_STATUS_SECTION" />
-        <param name="status_orderconfirmed" class="erp_mode erp_mode_enabled" type="vmorderstate" scope="com_virtuemart" default="U"
-               label="VMPAYMENT_AMAZON_CONF_STATUS_ORDERCONFIRMED" description="VMPAYMENT_AMAZON_CONF_STATUS_ORDERCONFIRMED_TIP"/>
+        <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ORDER_STATUS_SECTION"/>
+        <param name="status_orderconfirmed" class="erp_mode erp_mode_enabled" type="vmorderstate" scope="com_virtuemart"
+               default="U"
+               label="VMPAYMENT_AMAZON_CONF_STATUS_ORDERCONFIRMED"
+               description="VMPAYMENT_AMAZON_CONF_STATUS_ORDERCONFIRMED_TIP"/>
 
-        <param name="status_authorization_asynchronous" class="erp_mode erp_mode_disabled authorization_mode automatic_asynchronous" type="vmorderstate" scope="com_virtuemart" default="U"
-               label="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_ASYNCHRONOUS" description="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_ASYNCHRONOUS_TIP"/>
+        <param name="status_authorization_asynchronous"
+               class="erp_mode erp_mode_disabled authorization_mode automatic_asynchronous" type="vmorderstate"
+               scope="com_virtuemart" default="U"
+               label="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_ASYNCHRONOUS"
+               description="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_ASYNCHRONOUS_TIP"/>
 
-        <param name="status_authorization_synchronous" class="erp_mode erp_mode_disabled authorization_mode automatic_asynchronous" type="vmorderstate" scope="com_virtuemart" default="C"
-               label="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION" description="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_TIP"/>
+        <param name="status_authorization_synchronous"
+               class="erp_mode erp_mode_disabled authorization_mode automatic_synchronous" type="vmorderstate"
+               scope="com_virtuemart" default="C"
+               label="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION"
+               description="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_TIP"/>
 
         <param name="status_capture" class="erp_mode erp_mode_disabled" type="vmorderstate" scope="com_virtuemart"
                default="S"
                label="VMPAYMENT_AMAZON_CONF_STATUS_CAPTURE" description="VMPAYMENT_AMAZON_CONF_STATUS_CAPTURE_TIP"/>
 
-        <param name="status_refunded" class="erp_mode erp_mode_disabled" type="vmorderstate" scope="com_virtuemart" default="R"
+        <param name="status_refunded" class="erp_mode erp_mode_disabled" type="vmorderstate" scope="com_virtuemart"
+               default="R"
                label="VMPAYMENT_AMAZON_CONF_STATUS_REFUND" description="VMPAYMENT_AMAZON_CONF_STATUS_REFUND_TIP"/>
+
+        <param name="status_cancel" class="erp_mode erp_mode_disabled" type="vmorderstate" scope="com_virtuemart"
+               default="X"
+               label="VMPAYMENT_AMAZON_CONF_STATUS_CANCEL" description="VMPAYMENT_AMAZON_CONF_STATUS_CANCEL_TIP"/>
 
         <!--param name="status_pending" class="erp_mode erp_mode_disabled" type="vmorderstate" scope="com_virtuemart" default="U"
                label="VMPAYMENT_AMAZON_STATUS_PENDINGxxxxxxx" description="VMPAYMENT_AMAZON_STATUS_PENDING_TIP"/-->
@@ -169,15 +183,18 @@
 
         <!-- Advanced -->
         <!-- ============ -->
-        <param class="erp_mode erp_mode_disabled level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ADVANCED_SECTION"/>
+        <param class="erp_mode erp_mode_disabled level1" type="vmtitle"
+               default="VMPAYMENT_AMAZON_CONF_ADVANCED_SECTION"/>
 
-        <param name="soft_decline" class="erp_mode erp_mode_disabled" type="list" label="VMPAYMENT_AMAZON_CONF_SOFT_DECLINE" default="soft_decline_enabled"
+        <param name="soft_decline" class="erp_mode erp_mode_disabled" type="list"
+               label="VMPAYMENT_AMAZON_CONF_SOFT_DECLINE" default="soft_decline_enabled"
                description="VMPAYMENT_AMAZON_CONF_SOFT_DECLINE_TIP">
             <option value="soft_decline_enabled">VMPAYMENT_AMAZON_CONF_SOFT_DECLINE_ENABLED</option>
             <option value="soft_decline_disabled">VMPAYMENT_AMAZON_CONF_SOFT_DECLINE_DISABLED</option>
 
         </param>
-        <param class="environment sandbox erp_mode erp_mode_disabled" name="sandbox_error_simulation" type="list" default="0"
+        <param class="environment sandbox erp_mode erp_mode_disabled" name="sandbox_error_simulation" type="list"
+               default="0"
                label="VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_CONFIG">
             <option value="">COM_VIRTUEMART_NO</option>
             <!--option value="PaymentMethodNotAllowed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PAYMENTMETHODNOTALLOWED</option-->
@@ -227,7 +244,6 @@
         </param>
 
 
-
         <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_ADDRESSBOOK"
                description=""/>
         <param name="addressbook_designWidth" type="text" default="400"
@@ -253,8 +269,8 @@
 
 
         <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_COMMENTS_SECTION"/>
-        <param  type="vmtitle" description="VMPAYMENT_AMAZON_CONF_STATE_NOT_REQUIRED" />
-        <param  type="vmtitle" description="VMPAYMENT_AMAZON_CONF_ADD_LOGO_AT_AMAZON" />
+        <param type="vmtitle" description="VMPAYMENT_AMAZON_CONF_STATE_NOT_REQUIRED"/>
+        <param type="vmtitle" description="VMPAYMENT_AMAZON_CONF_ADD_LOGO_AT_AMAZON"/>
 
 
         <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION"/>

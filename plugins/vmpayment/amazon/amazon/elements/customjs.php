@@ -19,7 +19,7 @@
  */
 
 
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 
 class JElementCustomjs extends JElement {
 
@@ -32,12 +32,12 @@ class JElementCustomjs extends JElement {
 	var $_name = 'Customjs';
 
 	function fetchElement ($name, $value, &$node, $control_name) {
-		
+
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/css/amazon-admin.css');
-		
-		return '';		
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon-admin.css');
+
+		return '';
 	}
 
 }

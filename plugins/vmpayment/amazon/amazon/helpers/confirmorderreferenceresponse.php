@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse) {
-		parent::__construct($confirmOrderReferenceResponse);
+	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse,$plugin) {
+		parent::__construct($confirmOrderReferenceResponse,$plugin);
 	}
 
 	function getStoreInternalData () {
@@ -35,6 +35,17 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 		}
 		return $amazonInternalDatas;
 	}
-	  function getContents(){}
+
+	 function onResponseUpdateOrderHistory ($order) {
+		$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+		$order_history['customer_notified'] = !$this->plugin->canDoAuthorization();
+		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_ORDERCONFIRMED');
+		$modelOrder = VmModel::getModel('orders');
+		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+	}
+
+
+	function getContents () {
+	}
 
 }
