@@ -23,10 +23,9 @@ abstract class amazonHelper {
 	var $plugin = null;
 	var $_currentMethod = null;
 
-	public function __construct ($amazonData, $plugin) {
+	public function __construct ($amazonData, $method) {
 		$this->amazonData = $amazonData;
-		$this->plugin = $plugin;
-		$this->_currentMethod = $this->_currentMethod;
+		$this->_currentMethod = $method;
 	}
 
 	function getAmazonResponseState ($status) {

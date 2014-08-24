@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse,$plugin) {
-		parent::__construct($confirmOrderReferenceResponse,$plugin);
+	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse,$method) {
+		parent::__construct($confirmOrderReferenceResponse,$method);
 	}
 
 	function getStoreInternalData () {
@@ -36,9 +36,19 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 		return $amazonInternalDatas;
 	}
 
-	 function onResponseUpdateOrderHistory ($order) {
+	/**
+	 * Only send an email if the ERP is enabled, and authorization is done by ERP
+	 * IN all other cases, there will be an authorization after OrderConfirmed, that will send an email
+	 * @param $order
+	 */
+	function onResponseUpdateOrderHistory ($order) {
 		$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-		$order_history['customer_notified'] = !$this->plugin->canDoAuthorization();
+		 if ($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_done_by_erp ) {
+			 $order_history['customer_notified'] = 1;
+		 } else {
+			 $order_history['customer_notified'] = 0;
+		 }
+
 		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_ORDERCONFIRMED');
 		$modelOrder = VmModel::getModel('orders');
 		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);

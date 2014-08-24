@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperAuthorizationNotification extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsNotifications_Model_authorizationNotification $authorizationNotification, $plugin) {
-		parent::__construct($authorizationNotification, $plugin);
+	public function __construct (OffAmazonPaymentsNotifications_Model_authorizationNotification $authorizationNotification, $method) {
+		parent::__construct($authorizationNotification, $method);
 	}
 
 
@@ -55,14 +55,18 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 			return false;
 		}
 		$amazonState = $authorizationStatus->getState();
-
+		// In synchronous Mode, order history has been updated by the Authorization Response
+		// Other notifications may be received, but they are more informative: MaxCapturesProcessed if the FULL amount Capture has been done
+		if ($this->isSynchronousMode()) {
+			return $amazonState;
+		}
 		if ($authorizationStatus->isSetReasonCode()) {
 			$reasonCode = $authorizationStatus->getReasonCode();
 		}
 		$order_history['customer_notified'] = 1;
 
 		if ($amazonState == 'Open') {
-			$order_history['order_status'] = $this->_currentMethod->status_authorization_synchronous;
+			$order_history['order_status'] = $this->_currentMethod->status_authorization;
 			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
 		} elseif ($amazonState == 'Declined') {
 			if ($reasonCode == 'InvalidPaymentMethod') {
@@ -88,7 +92,18 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 
 		$orderModel = VmModel::getModel('orders');
 		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		return $amazonState;
+	}
 
+
+	private function isSynchronousMode () {
+		if (($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == "automatic_synchronous")
+			or
+			($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled == "automatic_synchronous")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public function getStoreInternalData () {

@@ -141,13 +141,8 @@
                label="VMPAYMENT_AMAZON_CONF_STATUS_ORDERCONFIRMED"
                description="VMPAYMENT_AMAZON_CONF_STATUS_ORDERCONFIRMED_TIP"/>
 
-        <param name="status_authorization_asynchronous"
-               class="erp_mode erp_mode_disabled authorization_mode automatic_asynchronous" type="vmorderstate"
-               scope="com_virtuemart" default="U"
-               label="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_ASYNCHRONOUS"
-               description="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_ASYNCHRONOUS_TIP"/>
 
-        <param name="status_authorization_synchronous"
+        <param name="status_authorization"
                class="erp_mode erp_mode_disabled authorization_mode automatic_synchronous" type="vmorderstate"
                scope="com_virtuemart" default="C"
                label="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION"

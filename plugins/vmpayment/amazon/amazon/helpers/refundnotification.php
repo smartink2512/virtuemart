@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperRefundNotification extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsNotifications_Model_RefundNotification $refundNotification,$plugin) {
-		parent::__construct($refundNotification,$plugin);
+	public function __construct (OffAmazonPaymentsNotifications_Model_RefundNotification $refundNotification, $method) {
+		parent::__construct($refundNotification, $method);
 	}
 
 	function onNotificationUpdateOrderHistory ($order, $payments) {
@@ -29,40 +29,43 @@ class amazonHelperRefundNotification extends amazonHelper {
 		$order_history = array();
 		$amazonState = "";
 		$reasonCode = "";
-		if ($this->amazonData->isSetRefundDetails()) {
-			$details = $this->amazonData->getRefundDetails();
-			if ($details->isSetRefundStatus()) {
-				$status = $details->getRefundStatus();
-				if ($status->isSetState()) {
-					$amazonState = $status->getState();
-				} else {
-					// TODO THIS IS AN ERROR
-				}
-				if ($status->isSetReasonCode()) {
-					$reasonCode = $status->getReasonCode();
-				}
-			}
-			// default value
-			$order_history['customer_notified'] = 1;
-			if ($amazonState == 'Completed') {
-				$order_history['order_status'] = $this->_currentMethod->status_refunded;
-				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_COMPLETED');
-
-
-			} elseif ($amazonState == 'Declined') {
-				$order_history['customer_notified'] = 0;
-				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_DECLINED', $reasonCode);
-				$order_history['order_status'] = $order['details']['BT']->order_status;
-
-			} elseif ($amazonState == 'Pending') {
-				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_PENDING');
-
-				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-			}
-
-			$orderModel = VmModel::getModel('orders');
-			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		if (!$this->amazonData->isSetRefundDetails()) {
+			$this->debugLog('NO isSetRefundDetails' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
+			return;
 		}
+		$details = $this->amazonData->getRefundDetails();
+		if (!$details->isSetRefundStatus()) {
+			$this->debugLog('NO isSetRefundStatus' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
+			return;
+		}
+		$status = $details->getRefundStatus();
+		if (!$status->isSetState()) {
+			$this->debugLog('NO isSetState' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
+return;
+		}
+		$amazonState = $status->getState();
+
+		if ($status->isSetReasonCode()) {
+			$reasonCode = $status->getReasonCode();
+		}
+		// default value
+		$order_history['customer_notified'] = 1;
+		if ($amazonState == 'Completed') {
+			$order_history['order_status'] = $this->_currentMethod->status_refunded;
+			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_COMPLETED');
+		} elseif ($amazonState == 'Declined') {
+			$order_history['customer_notified'] = 0;
+			$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_DECLINED', $reasonCode);
+			$order_history['order_status'] = $order['details']['BT']->order_status;
+
+		} elseif ($amazonState == 'Pending') {
+			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_PENDING');
+			$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+		}
+
+		$orderModel = VmModel::getModel('orders');
+		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		return $amazonState;
 	}
 
 	public function getReferenceId () {
@@ -108,11 +111,9 @@ class amazonHelperRefundNotification extends amazonHelper {
 		}
 		return $amazonInternalData;
 	}
-	
-	
-	
-	
-	 function getContents () {
+
+
+	function getContents () {
 		$contents = "<br />Refund Notification";
 		$contents .= "<br />===============================";
 		if ($this->amazonData->isSetRefundDetails()) {

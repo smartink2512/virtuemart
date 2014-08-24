@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperAuthorizeResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $authorizationResponse, $plugin) {
-		parent::__construct($authorizationResponse, $plugin);
+	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $authorizationResponse, $method) {
+		parent::__construct($authorizationResponse, $method);
 	}
 
 	/**
@@ -43,7 +43,8 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 		$amazonState = "";
 		$reasonCode = "";
 		$authorizeResponse = $this->amazonData;
-		$authorization_mode = ($this->plugin->getAuthorizationTransactionTimeout() == 0) ? 'synchronous' : 'asynchronous';
+		// if am
+
 		$authorizeResult = $authorizeResponse->getAuthorizeResult();
 		$authorizationDetails = $authorizeResult->getAuthorizationDetails();
 		if ($authorizationDetails->isSetAuthorizationStatus()) {
@@ -51,51 +52,42 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 			if (!$authorizationStatus->isSetState()) {
 				return false;
 			}
-				$amazonState = $authorizationStatus->getState();
+			$amazonState = $authorizationStatus->getState();
 
 			if ($authorizationStatus->isSetReasonCode()) {
 				$reasonCode = $authorizationStatus->getReasonCode();
 			}
 		}
-		if ($authorization_mode == 'asynchronous') {
-			if ($amazonState == 'Pending') {
-				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-				$order_history['customer_notified'] = 0;
-				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_ORDERCONFIRMED');
+		// In asynchronous mode, AuthorizationResponse is always Pending. Order status is not updated
+		if ($amazonState == 'Pending') {
+			return $amazonState;
+		}
 
-			} else {
-				// we should only get pending..
-				// the final status will be return by the IPN
-				$this->debugLog('AYNCHRONOUS MODE AND STATS is not PENDING' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
-				return false;
+		// SYNCHRONOUS MODE: amazon returns in real time the final process status
+		if ($amazonState == 'Open') {
+			// it should always be the case if the CaptureNow == false
+			$order_history['order_status'] = $this->_currentMethod->status_authorization;
+			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
+			$order_history['customer_notified'] = 1;
+		} elseif ($amazonState == 'Closed') {
+			// it should always be the case if the CaptureNow == true
+			if (!($authorizationDetails->isSetCaptureNow() and $authorizationDetails->getCaptureNow())) {
+				$this->debugLog('SYNCHRONOUS , capture Now, and Amazon State is NOT CLOSED' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
+				return $amazonState;
 			}
-		} else {
-			// SYNCHRONOUS MODE: amazon returns in real time the final process status
-			if ($amazonState == 'Open') {
-				// it should always be the case if the CaptureNow == false
-				$order_history['order_status'] = $this->_currentMethod->status_authorization_synchronous;
-				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
-				$order_history['customer_notified'] = 1;
-			} elseif ($amazonState == 'Closed') {
-				// it should always be the case if the CaptureNow == true
-				if (! ($authorizationDetails->isSetCaptureNow() and $authorizationDetails->getCaptureNow())) {
-					$this->debugLog('SYNCHRONOUS , capture Now, and Amazon State is NOT CLOSED' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
-					return false;
-				}
-					$order_history['order_status'] = $this->_currentMethod->status_capture;
-					$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURED');
-					$order_history['customer_notified'] = 1;
+			$order_history['order_status'] = $this->_currentMethod->status_capture;
+			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURED');
+			$order_history['customer_notified'] = 1;
 
-			} elseif ($amazonState == 'Declined') {
-				// handling Declined Authorizations
-				$order_history['order_status'] = $this->_currentMethod->status_cancel;
-				$order_history['comments'] = $reasonCode;
-				if ($authorizationStatus->isSetReasonDescription()) {
-					$order_history['comments'] .= " " . $authorizationStatus->getReasonDescription();
-				}
-				$order_history['customer_notified'] = 0;
-
+		} elseif ($amazonState == 'Declined') {
+			// handling Declined Authorizations
+			$order_history['order_status'] = $this->_currentMethod->status_cancel;
+			$order_history['comments'] = $reasonCode;
+			if ($authorizationStatus->isSetReasonDescription()) {
+				$order_history['comments'] .= " " . $authorizationStatus->getReasonDescription();
 			}
+			$order_history['customer_notified'] = 0;
+
 		}
 		$order_history['amazonState'] = $amazonState;
 		$modelOrder = VmModel::getModel('orders');
@@ -104,8 +96,6 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 
 		return $amazonState;
 	}
-
-
 
 
 	public function getStoreInternalData () {

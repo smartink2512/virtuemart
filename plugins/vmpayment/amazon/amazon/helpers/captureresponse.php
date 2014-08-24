@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperCaptureResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_CaptureResponse $captureResponse,$plugin) {
-		parent::__construct($captureResponse,$plugin);
+	public function __construct (OffAmazonPaymentsService_Model_CaptureResponse $captureResponse,$method) {
+		parent::__construct($captureResponse,$method);
 
 	}
 	public function onResponseUpdateOrderHistory($order) {

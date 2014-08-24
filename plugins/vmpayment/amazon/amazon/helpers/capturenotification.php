@@ -20,8 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 class amazonHelperCaptureNotification extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsNotifications_Model_CaptureNotification $captureNotification,$plugin) {
-		parent::__construct($captureNotification,$plugin);
+	public function __construct (OffAmazonPaymentsNotifications_Model_CaptureNotification $captureNotification,$method) {
+		parent::__construct($captureNotification,$method);
 	}
 
 	/**

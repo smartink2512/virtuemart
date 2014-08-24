@@ -991,6 +991,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setSellerNote($this->getSellerNote());
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setSellerOrderAttributes(new OffAmazonPaymentsService_Model_SellerOrderAttributes());
 			//$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setSellerOrderId($order['details']['BT']->order_number);
+			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setSellerOrderId('123456789');
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setStoreName($this->getStoreName());
 			//$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setCustomInformation($order['details']['BT']->customer_note);
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setPlatformId($this->getPlatformId());
@@ -1286,7 +1287,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 		$this->debugLog("<pre>" . var_export($confirmOrderReferenceResponse, true) . "</pre>", __FUNCTION__, 'debug');
 
-		$amazonHelperconfirmOrderReferenceResponse = new amazonHelperConfirmOrderReferenceResponse($confirmOrderReferenceResponse ,$this);
+		$amazonHelperconfirmOrderReferenceResponse = new amazonHelperConfirmOrderReferenceResponse($confirmOrderReferenceResponse ,$this->_currentMethod);
 		 $amazonHelperconfirmOrderReferenceResponse->onResponseUpdateOrderHistory ($order ) ;
 		$storeInternalData = $amazonHelperconfirmOrderReferenceResponse->getStoreInternalData();
 		$this->storeAmazonInternalData($order, $confirmOrderReferenceRequest, $confirmOrderReferenceResponse, NULL, NULL, $storeInternalData);
@@ -1340,7 +1341,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		$this->updateAuthorizeBillingAddressInOrder($authorizeResponse, $order);
 
-		$amazonHelperAuthorizeResponse = new amazonHelperAuthorizeResponse($authorizeResponse, $this);
+		$amazonHelperAuthorizeResponse = new amazonHelperAuthorizeResponse($authorizeResponse, $this->_currentMethod);
 		$amazonState =$amazonHelperAuthorizeResponse->onResponseUpdateOrderHistory ($order ) ;
 
 		$storeInternalData = $amazonHelperAuthorizeResponse->getStoreInternalData();
@@ -1540,7 +1541,7 @@ return true;
 			return false;
 		}
 		$this->loadHelperClass('amazonHelperCaptureResponse');
-		$amazonHelperCaptureResponse = new amazonHelperCaptureResponse($captureResponse, $this);
+		$amazonHelperCaptureResponse = new amazonHelperCaptureResponse($captureResponse, $this->_currentMethod);
 		$amazonHelperCaptureResponse->onResponseUpdateOrderHistory($order);
 		//$orderModel = VmModel::getModel('orders');
 
@@ -1591,7 +1592,7 @@ return true;
 			return false;
 		}
 		$this->loadHelperClass('amazonHelperRefundResponse');
-		$amazonHelperRefundResponse = new amazonHelperRefundResponse($refundResponse, $this);
+		$amazonHelperRefundResponse = new amazonHelperRefundResponse($refundResponse, $this->_currentMethod);
 		$storeInternalData = $amazonHelperRefundResponse->getStoreInternalData();
 		$this->storeAmazonInternalData($order, $refundRequest, $refundResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
 
@@ -1832,7 +1833,7 @@ return true;
 					$amazon_data = unserialize($amazon_data_serialized);
 					$this->loadHelperClass($vmClassName);
 					if (class_exists($vmClassName)) {
-						$obj = new $vmClassName($amazon_data, $this);
+						$obj = new $vmClassName($amazon_data, $this->_currentMethod);
 						$contents = $obj->getContents();
 						if (!empty($contents)) {
 							$html .= '<tr><td></td><td>' . '
@@ -2482,40 +2483,41 @@ jQuery().ready(function($) {
 		$headers = getallheaders();
 		$body = file_get_contents('php://input');
 		// TODO REMOVE THIS TESTING ALONE
-		$fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
+		/*
+	 	$fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
 		fwrite($fp, var_export($headers, true));
 		fwrite($fp, var_export($body, true));
-		fclose($fp);
-
-		$headersx = array(
-			'x-amz-sns-message-type'     => 'Notification',
-			'x-amz-sns-message-id'       => 'be34f85a-fa3d-5cbe-b97b-b42bb8cef9d7',
-			'x-amz-sns-topic-arn'        => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH',
+		fclose($fp);*/
+		$headersx=array (
+			'x-amz-sns-message-type' => 'Notification',
+			'x-amz-sns-message-id' => 'f2c43aec-fe6f-5a2d-8f29-769f4e655f2c',
+			'x-amz-sns-topic-arn' => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH',
 			'x-amz-sns-subscription-arn' => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:da5fca1a-9e90-455a-9f0c-53262833a0d2',
-			'Content-Length'             => '2243',
-			'Content-Type'               => 'text/plain; charset=UTF-8',
-			'Host'                       => 'joomla-virtuemart.org',
-			'Connection'                 => 'Keep-Alive',
-			'User-Agent'                 => 'Amazon Simple Notification Service Agent',
-			'Cookie'                     => '53369989722c841763ad3ab697b54ad2=40e440c19dafc49970e40c2d51609359',
-			'Cookie2'                    => '$Version=1',
-			'Accept-Encoding'            => 'gzip,deflate',
+			'Content-Length' => '2561',
+			'Content-Type' => 'text/plain; charset=UTF-8',
+			'Host' => 'joomla-virtuemart.org',
+			'Connection' => 'Keep-Alive',
+			'User-Agent' => 'Amazon Simple Notification Service Agent',
+			'Cookie' => '53369989722c841763ad3ab697b54ad2=77e72caf2f0b1d40641c9b3f71470c28',
+			'Cookie2' => '$Version=1',
+			'Accept-Encoding' => 'gzip,deflate',
 		);
-		$bodyx = '{
+		$bodyx='{
   "Type" : "Notification",
-  "MessageId" : "be34f85a-fa3d-5cbe-b97b-b42bb8cef9d7",
+  "MessageId" : "f2c43aec-fe6f-5a2d-8f29-769f4e655f2c",
   "TopicArn" : "arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH",
-  "Message" : "{\\"NotificationReferenceId\\":\\"a2abcea8-3b3a-4f31-be3b-e9a1ad34b221\\",\\"MarketplaceID\\":\\"136291\\",\\"NotificationType\\":\\"PaymentRefund\\",\\"SellerId\\":\\"AA3KB5JD2CWIH\\",\\"ReleaseEnvironment\\":\\"Sandbox\\",\\"Version\\":\\"2013-01-01\\",\\"NotificationData\\":\\"<?xml version=\\\\\\"1.0\\\\\\" encoding=\\\\\\"UTF-8\\\\\\"?><RefundNotification xmlns=\\\\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\\\\">\\\\n    <RefundDetails>\\\\n        <AmazonRefundId>S02-3833629-3508394-R057550<\\\\/AmazonRefundId>\\\\n        <RefundReferenceId>ec4f0308-1408712850<\\\\/RefundReferenceId>\\\\n        <RefundType>SellerInitiated<\\\\/RefundType>\\\\n        <RefundAmount>\\\\n            <Amount>122.78<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/RefundAmount>\\\\n        <FeeRefunded>\\\\n            <Amount>0.0<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/FeeRefunded>\\\\n        <CreationTimestamp>2014-08-22T13:07:31.176Z<\\\\/CreationTimestamp>\\\\n        <RefundStatus>\\\\n            <State>Completed<\\\\/State>\\\\n            <LastUpdateTimestamp>2014-08-22T13:08:02.309Z<\\\\/LastUpdateTimestamp>\\\\n        <\\\\/RefundStatus>\\\\n        <SoftDescriptor>AMZ*iStraxx<\\\\/SoftDescriptor>\\\\n    <\\\\/RefundDetails>\\\\n<\\\\/RefundNotification>\\",\\"Timestamp\\":\\"2014-08-22T01:08:03Z\\"}",
-  "Timestamp" : "2014-08-22T13:08:03.228Z",
+  "Message" : "{\\"NotificationReferenceId\\":\\"9984f079-2d61-47b5-ad86-af899bee0193\\",\\"MarketplaceID\\":\\"136291\\",\\"NotificationType\\":\\"PaymentAuthorize\\",\\"SellerId\\":\\"AA3KB5JD2CWIH\\",\\"ReleaseEnvironment\\":\\"Sandbox\\",\\"Version\\":\\"2013-01-01\\",\\"NotificationData\\":\\"<?xml version=\\\\\\"1.0\\\\\\" encoding=\\\\\\"UTF-8\\\\\\"?><AuthorizationNotification xmlns=\\\\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\\\\">\\\\n    <AuthorizationDetails>\\\\n        <AmazonAuthorizationId>S02-8115025-7461074-A086676<\\\\/AmazonAuthorizationId>\\\\n        <AuthorizationReferenceId>ebb70324<\\\\/AuthorizationReferenceId>\\\\n        <AuthorizationAmount>\\\\n            <Amount>122.78<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/AuthorizationAmount>\\\\n        <CapturedAmount>\\\\n            <Amount>0.0<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/CapturedAmount>\\\\n        <AuthorizationFee>\\\\n            <Amount>0.0<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/AuthorizationFee>\\\\n        <IdList/>\\\\n        <CreationTimestamp>2014-08-24T09:17:29.953Z<\\\\/CreationTimestamp>\\\\n        <ExpirationTimestamp>2014-09-23T09:17:29.953Z<\\\\/ExpirationTimestamp>\\\\n        <AuthorizationStatus>\\\\n            <State>Open<\\\\/State>\\\\n            <LastUpdateTimestamp>2014-08-24T09:18:01.316Z<\\\\/LastUpdateTimestamp>\\\\n        <\\\\/AuthorizationStatus>\\\\n        <OrderItemCategories/>\\\\n        <CaptureNow>false<\\\\/CaptureNow>\\\\n        <SoftDescriptor/>\\\\n    <\\\\/AuthorizationDetails>\\\\n<\\\\/AuthorizationNotification>\\",\\"Timestamp\\":\\"2014-08-24T09:18:02Z\\"}",
+  "Timestamp" : "2014-08-24T09:18:02.608Z",
   "SignatureVersion" : "1",
-  "Signature" : "I6gZ3PV5KCXv+7+jU9aZaH2rfYImRZdTdTrnJhpxcGXusA5oiLwo22+XpF4A6873mHDw9qK1dZLuha63oWRedysDGQq231GYeYS5yb7tNQMTu50lge1es5ZJ7hts6A7HmIvhgVWeTsaROXTEib9wU5HP6hiw3wSPkCKq8jxn/PDregZHUPDklpHTTzB7/2bZlmep4Z4KwmuyS48JpUZ3IELB5iUPlSjk+lBS4oB7awEArf6aOc+IXg8HWcktcQXnxbDZMpw4+O4VH5zoPpKsbcnHycUkiKm6n3TScjlw9eUbdq8HP6N8ymKNU+vQ9OwcnI4KsdPmy15PjhWv3mcxUQ==",
+  "Signature" : "nKXQniAkrqqMdrpxGjxVWPek9Nduwfvo3gUcblM5IIlmFZxeXcdCbhIJlsNz6DqPGn8Md6b3CDAwyaNMicLf82vnYiEBNwGP1Jp+rlG+bS1IQlq8R7/lRNg4FxFweEtIzeH4B6AGILUWAW0vw3hTC3Nv2Wsply+IGLkWTCmjaBgNfu/RhF7Gq/WJ5DzFLjnQ4XADaUwZeErhEbFLMZpQ7YhuEP89FImcoNHL+XI7lVV5FAFNkKPWXINW7Ld7EEMKOy6JFTwTZlqEGrSuUiiFKp7rg8kLUW0hZx4j16rLzHlMCY72q8WrAIfYDL+vVLkpHaaGbwzVgffFRkjz4pU7kA==",
   "SigningCertURL" : "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-e372f8ca30337fdb084e8ac449342c77.pem",
   "UnsubscribeURL" : "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:da5fca1a-9e90-455a-9f0c-53262833a0d2"
 }';
 
 
-		$this->debugLog($headers, 'AMAZON IPN HEADERS debug');
-		$this->debugLog($body, 'AMAZON IPN HEADERS debug');
+
+		$this->debugLog($headers, 'AMAZON IPN HEADERS debug', 'debug');
+		$this->debugLog($body, 'AMAZON IPN HEADERS debug', 'debug');
 
 		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Client');
 		$this->loadVmClass('VirtueMartModelOrders', JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
@@ -2549,12 +2551,12 @@ jQuery().ready(function($) {
 
 		$this->debugLog($notificationType, 'ipn', 'debug');
 
-		$notificationResponse = new $newClass($notification, $this);
+		$notificationResponse = new $newClass($notification, $this->_currentMethod);
 		$this->debugLog("<pre>" . var_export($notificationResponse->amazonData, true) . "</pre>", __FUNCTION__, 'debug');
 
 
 		if (!($order_number = $notificationResponse->getReferenceId())) {
-			$this->debugLog('no Authorization in IPN received', $newClass, 'error');
+			$this->debugLog('no ReferenceId IPN received', $newClass, 'error');
 			return true;
 		}
 
@@ -2570,9 +2572,7 @@ jQuery().ready(function($) {
 			return true;
 		}
 		$order_history = $notificationResponse->onNotificationUpdateOrderHistory($order, $payments);
-
 		$this->storeAmazonInternalData($order, NULL, NULL, $notification, NULL, $notificationResponse->getStoreInternalData());
-		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
 
 	}
 
@@ -2593,9 +2593,6 @@ jQuery().ready(function($) {
 
 	}
 
-	private function getOrderStatus ($amazonState) {
-		return $this->_currentMethod->status_authorization;
-	}
 
 	private function getWidgetURL () {
 		$region = $this->_currentMethod->region;
