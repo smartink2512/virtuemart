@@ -105,10 +105,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			'amazon_response_reasonDescription'     => 'char(64) DEFAULT NULL',
 			'amazon_request_type'                   => 'text DEFAULT NULL',
 			'amazon_request'                        => 'text DEFAULT NULL',
-			'amazon_response_type'                  => 'text DEFAULT NULL',
+			'amazon_class_response_type'                  => 'text DEFAULT NULL',
 			'amazon_response'                       => 'text DEFAULT NULL',
 			'amazon_notification'                   => 'text DEFAULT NULL',
-			'amazon_notification_type'              => 'text DEFAULT NULL'
+			'amazon_class_notification_type'              => 'text DEFAULT NULL'
 		);
 		return $SQLfields;
 	}
@@ -757,9 +757,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$db_values['amazon_request'] = $request ? serialize($request) : "";
 		$db_values['amazon_request_type'] = $request ? get_class($request) : '';
 		$db_values['amazon_response'] = $response ? serialize($response) : "";
-		$db_values['amazon_response_type'] = $response ? get_class($response) : '';
+		$db_values['amazon_class_response_type'] = $response ? get_class($response) : '';
 		$db_values['amazon_notification'] = $notification ? serialize($notification) : "";
-		$db_values['amazon_notification_type'] = $notification ? get_class($notification) : '';
+		$db_values['amazon_class_notification_type'] = $notification ? get_class($notification) : '';
 		$db_values['amazonOrderReferenceId'] = $amazonOrderReferenceId ? $amazonOrderReferenceId : '';
 		$db_values['payment_name'] = $payment_name;
 		if ($amazonParams) {
