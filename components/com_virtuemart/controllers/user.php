@@ -164,9 +164,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 			$data['vendor_letter_header_html'] = vRequest::getHtml('vendor_letter_header_html');
 			$data['vendor_letter_footer_html'] = vRequest::getHtml('vendor_letter_footer_html');
 		}
-		//vmdebug('saveData store user',$data);
 
-		if($cart and (!isset($_POST['register']) or $currentUser->guest)){
+		if($data['address_type'] == 'ST' and !$currentUser->guest){
+		//if($cart and (!isset($_POST['register']) or $currentUser->guest)){
 		//if($data['address_type'] == 'ST' or (!isset($_POST['register']) and $currentUser->guest)){
 			$ret = $userModel->storeAddress($data);
 			//vmdebug('saveData storeAddress only');
@@ -186,7 +186,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 				}
 			}
 
-			$ret = $userModel->store($data);
+			if(!$cart or ($currentUser->guest==1 and isset($_POST['register'])) ){
+				$ret = $userModel->store($data);
+			}
 
 			//if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) ){
 			if($currentUser->guest==1 and (isset($_POST['register']) or !$cart )){

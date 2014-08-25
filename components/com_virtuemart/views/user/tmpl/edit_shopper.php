@@ -44,5 +44,5 @@ defined('_JEXEC') or die('Restricted access');
 }
 ?>
 <input type="hidden" name="task" value="saveUser" />
-<input type="hidden" name="address_type" value="BT" />
+<input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>"/>
 
