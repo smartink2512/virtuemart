@@ -149,23 +149,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 			$data['address_type'] = vRequest::getCmd('addrtype','BT');
 		}
 
-		if (isset($_POST['register'])) {
-			if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT') == FALSE) {
-				$msg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
-				if($cartObj->_fromCart) {
-					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
-				} else if($cartObj->getInCheckOut()) {
-					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $msg );
-				} else {
-					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
-				}
-				return $msg;
-			}
-		}
-
 		$userModel = VmModel::getModel('user');
 
-		if(!$cart){
+		if(isset($data['vendor_accepted_currencies'])){
 			// Store multiple selectlist entries as a ; separated string
 			if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 				$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
@@ -180,14 +166,30 @@ class VirtueMartControllerUser extends JControllerLegacy
 		}
 		//vmdebug('saveData store user',$data);
 
-		//It should always be stored
-		if($data['address_type'] == 'ST' or (!isset($_POST['register']) and $currentUser->guest)){
+		if($cart and (!isset($_POST['register']) or $currentUser->guest)){
+		//if($data['address_type'] == 'ST' or (!isset($_POST['register']) and $currentUser->guest)){
 			$ret = $userModel->storeAddress($data);
 			//vmdebug('saveData storeAddress only');
 		} else {
+
+			if($currentUser->guest==1 and (isset($_POST['register']) or !$cart )){
+				if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT') == FALSE) {
+					$msg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
+					if($cartObj->_fromCart) {
+						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
+					} else if($cartObj->getInCheckOut()) {
+						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $msg );
+					} else {
+						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
+					}
+					return $msg;
+				}
+			}
+
 			$ret = $userModel->store($data);
 
-			if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) ){
+			//if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) ){
+			if($currentUser->guest==1 and (isset($_POST['register']) or !$cart )){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );
