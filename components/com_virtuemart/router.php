@@ -862,9 +862,17 @@ class vmrouterHelper {
 	 */
 	public function getCategoryId($slug,$virtuemart_category_id ){
 		$db = JFactory::getDBO();
-		$q = "SELECT `virtuemart_category_id`
+
+		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			$q = 'SELECT IFNULL(l.`virtuemart_category_id`,ld.`virtuemart_category_id`) as `virtuemart_category_id` ';
+			$q .= ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` AS `l` ';
+			$q .= ' RIGHT JOIN `#__virtuemart_categories_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_category_id`) ';
+			$q .= ' WHERE IFNULL(l.`slug`,ld.`slug`) = "'.$db->escape($slug).'" ';
+		} else {
+			$q = "SELECT `virtuemart_category_id`
 				FROM  `#__virtuemart_categories_".VmConfig::$vmlang."`
 				WHERE `slug` = '".$db->escape($slug)."' ";
+		}
 
 		$db->setQuery($q);
 		if (!$category_id = $db->loadResult()) {
@@ -953,9 +961,6 @@ class vmrouterHelper {
 			$q .= ' WHERE `slug` = "'.$db->escape($productName).'" ';
 		}
 
-			//LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`virtuemart_product_id` = `xref`.`virtuemart_product_id`
-		//$q .= 'WHERE `p`.`slug` = "'.$db->escape($productName).'" ';
-		//$q .= "	AND `xref`.`virtuemart_category_id` = ".(int)$product['virtuemart_category_id'];
 		$db->setQuery($q);
 		$product['virtuemart_product_id'] = $db->loadResult();
 		/* WARNING product name must be unique or you can't acces the product */

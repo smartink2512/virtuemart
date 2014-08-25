@@ -380,7 +380,7 @@ abstract class vmPlugin extends JPlugin {
 			$tablesFields = array_merge($SQLfields, $loggablefields);
 
 			$db = JFactory::getDBO();
-			$query = 'SHOW TABLES LIKE "%' . str_replace('#__', '', $this->_tablename) . '"';
+			$query = 'SHOW TABLES LIKE "%' . str_replace('#__', $db->getPrefix(), $this->_tablename) . '"';
 			$db->setQuery($query);
 			$result = $db->loadResult();
 

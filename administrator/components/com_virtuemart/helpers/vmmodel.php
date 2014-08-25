@@ -569,7 +569,10 @@ class VmModel extends JObject {
 	 */
 	function setId($id){
 
-		if(is_array($id) && count($id)!==0) $id = $id[0];
+		if(is_array($id) && count($id)!=0){
+			reset($id);
+			$id = current($id);
+		}
 		if($this->_id!=$id){
 			$this->_id = (int)$id;
 			$this->_data = null;

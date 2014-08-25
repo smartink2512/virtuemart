@@ -1831,8 +1831,15 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!empty($data['childs'])) {
 			foreach ($data['childs'] as $productId => $child) {
-				if(empty($child['product_parent_id'])) $child['product_parent_id'] = $data['virtuemart_product_id'];
-				$child['virtuemart_product_id'] = $productId;
+				if($child['virtuemart_product_id']!=$data['virtuemart_product_id']){
+					if(empty($child['product_parent_id'])) $child['product_parent_id'] = $data['virtuemart_product_id'];
+					$child['virtuemart_product_id'] = $productId;
+				}
+
+				if(!empty($child['product_parent_id']) and $child['product_parent_id'] == $child['virtuemart_product_id']){
+					$child['product_parent_id'] = 0;
+				}
+
 				$child['isChild'] = TRUE;
 				$this->store ($child);
 			}
@@ -2591,9 +2598,14 @@ function lowStockWarningEmail($virtuemart_product_id) {
 					if(empty($product_id)) continue;
 					$tmp = self::getProductChildIds($product_id);
 					if($tmp){
-						$childIds[$product_id] = $tmp;
-						foreach($tmp as $t){
-							self::getAllProductChildIds($t,$childIds[$product_id]);
+						if(!isset($childIds[$product_id])){
+							$childIds[$product_id] = $tmp;
+							foreach($tmp as $t){
+								//prevent looop
+								if($t=!$product_id){
+									self::getAllProductChildIds($t,$childIds[$product_id]);
+								}
+							}
 						}
 					}
 				}

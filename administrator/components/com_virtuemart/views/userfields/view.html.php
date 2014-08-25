@@ -241,8 +241,9 @@ class VirtuemartViewUserfields extends VmView {
 		VmConfig::loadJLang('plg_vmpsplugin', false);
 		JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
 		//$selected = $this->userField->userfield_jplugin_id;
+		//vmdebug('renderUserfieldPlugin $this->userField->element',$this->userField->type,$this->userField->element);
 		$this->userField->element = substr($this->userField->type, 6);
-		//vmdebug('renderUserfieldPlugin $this->userField->element',$this->userField->element);
+
 		$path = JPATH_ROOT .DS. 'plugins' .DS. 'vmuserfield' . DS . $this->userField->element . DS . $this->userField->element . '.xml';
 		// Get the payment XML.
 		$formFile	= JPath::clean( $path );
@@ -252,7 +253,6 @@ class VirtuemartViewUserfields extends VmView {
 			$this->userField->params = new stdClass();
 			$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
 			$this->userField->params->userfield_params = $this->userField->userfield_params;
-			vmdebug('renderUserfieldPlugin ',$this->userField->params);
 			VmTable::bindParameterable($this->userField->params,'userfield_params',$varsToPush);
 			$this->userField->form->bind($this->userField);
 
@@ -270,25 +270,6 @@ class VirtuemartViewUserfields extends VmView {
 			return $body;
 		}
 		return;
-	}
-
-	function renderUserfieldPlugina($element, $params){
-		$db = JFactory::getDBO();
-
-		$table = '#__extensions';
-		$jelement = 'element';
-
-		$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $jelement . '` = "'.$element.'"';
-		$db ->setQuery($q);
-		$this->plugin = $db ->loadObject();
-		
-		if (!class_exists('vmParameters'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
-		$parameters = new vmParameters($params,  $this->plugin->element , 'plugin' ,'vmuserfield');
-		$lang = JFactory::getLanguage();
-		$filename = 'plg_vmuserfield_' .  $this->plugin->element;
-		$lang->load($filename, JPATH_ADMINISTRATOR);
-		return $parameters->render();
 	}
 
 	function renderInstalledUserfieldPlugins(&$plugins){
