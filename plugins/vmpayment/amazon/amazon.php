@@ -2091,8 +2091,8 @@ jQuery().ready(function($) {
 
 
 	private function setCartLayout ($cart,$intoSession=true) {
-		$cart->layoutPath = vmPlugin::getTemplatePath ($this->_name,  'vmpayment', 'cart');
-		$cart->layout = $this->_name;
+		$cart->layoutPath = vmPlugin::getTemplatePath ($this->_name,  'payment', 'cart');
+		$cart->layout = 'cart';
 		if ($intoSession) {
 			$cart->setCartIntoSession();
 		}

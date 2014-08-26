@@ -135,21 +135,22 @@ var amazonPayment = {
 
 
         updateCart: function () {
-            var url = vmSiteurl+'index.php?option=com_virtuemart&view=cart&format=json&task=checkoutJS'+vmLang;
+            var url = vmSiteurl+'index.php?option=com_virtuemart&view=cart&format=json&task=checkoutJS&layout=cart'+vmLang;
+            console.log('updateCart url'  + ' ' + url);
             jQuery.getJSON(url,
                 function (datas, textStatus) {
-                    console.log('json return:' + datas.reload + ' ' + textStatus);
                     var cartview = "";
-                    console.log('updateCart:' + datas.cartview.length);
-                    if (datas.cartview) {
-                        datas.cartview = datas.cartview.replace('amazonHeader', 'amazonHeaderHide');
-                        for (var i = 0; i < datas.cartview.length; i++) {
-                            cartview += datas.cartview[i].toString();
+                    console.log('updateCart:' + datas.msg.length);
+                    if (datas.msg) {
+                        datas.cartview = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
+                        for (var i = 0; i < datas.msg.length; i++) {
+                            cartview += datas.msg[i].toString();
                         }
                         document.id('amazonCartDiv').set('html', cartview);
                         document.id('amazonHeaderHide').set('html', '');
                         amazonPayment.amazonStopLoading();
                     }
+
                 }
             );
 
