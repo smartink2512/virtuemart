@@ -93,10 +93,15 @@ class VirtuemartViewCategory extends VmView {
 			$category = $categoryModel->getCategory($categoryId);
 		}
 
-
+		$menus	= $app->getMenu();
+		$menu = $menus->getActive();
+		if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$categoryId){
+			$category_layout = $menu->query['categorylayout'];
+		}
+		$category_layout = empty($category->category_layout) ? vRequest::get('layout',$category_layout):$category->category_layout;
 		if(!empty($category)){
 
-			if(empty($category->category_layout) or $category->category_layout != 'categories') {
+			if(empty($category_layout) or $category_layout != 'categories') {
 				// Load the products in the given category
 				$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
 
@@ -193,7 +198,7 @@ class VirtuemartViewCategory extends VmView {
 
 			$categoryModel->addImages($category,1);
 
-			if($category->category_layout == 'categories' or ($categoryId >0 and $virtuemart_manufacturer_id <1)){
+			if( $category_layout == 'categories' or ($categoryId >0 and $virtuemart_manufacturer_id <1)){
 				$category->children = $categoryModel->getChildCategoryList( $vendorId, $categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
 				$categoryModel->addImages($category->children,1);
 			} else {
@@ -223,12 +228,8 @@ class VirtuemartViewCategory extends VmView {
 				$category->category_template = VmConfig::get('categorytemplate');
 			}
 
-			$menus	= $app->getMenu();
-			$menu = $menus->getActive();
-			if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$categoryId){
-				$category->category_layout = $menu->query['categorylayout'];
-			}
-			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
+
+			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category_layout);
 		} else {
 			//Backward compatibility
 			if(!isset($category)) {

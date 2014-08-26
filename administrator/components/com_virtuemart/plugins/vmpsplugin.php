@@ -1066,6 +1066,8 @@ abstract class vmPSPlugin extends vmPlugin {
 					$rule['taxAmountOld'] = $rule['taxAmount'];
 					$rule['taxAmount'] = 0;
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $calculator->roundInternal($calculator->roundInternal($calculator->interpreteMathOp($rule, $rule['subTotal'])) - $rule['subTotal'], 'salesPrice');
+					$cart_prices[$this->_psType . 'Tax'] += $cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']];
 				}
 			}
 		} else {

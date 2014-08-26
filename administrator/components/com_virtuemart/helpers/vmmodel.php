@@ -720,8 +720,7 @@ class VmPagination extends JPagination {
 					$link .= '&'.$key.'='.$value;
 				}
 			}
-			$link[0] = "?";
-			$link = 'index.php'.$link ;
+			$link = 'index.php?'. ltrim ($link,'&');
 			if(empty($sequence)){
 				$sequence = VmConfig::get('pagseq_'.$this->_perRow);
 			}

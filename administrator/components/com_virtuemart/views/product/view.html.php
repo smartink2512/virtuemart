@@ -95,7 +95,10 @@ class VirtuemartViewProduct extends VmView {
 				$product_childIds = $model->getProductChildIds($virtuemart_product_id);
 
 				$product_childs = array();
+				$childs = 0;
+				$maxChilds = 30;
 				foreach($product_childIds as $id){
+					if($childs++>$maxChilds) break;
 					$product_childs[] = $model->getProductSingle($id,false);
 				}
 				$this->assignRef('product_childs', $product_childs);
