@@ -641,4 +641,15 @@ abstract class vmPlugin extends JPlugin {
 		}
 	}
 
+	/**
+	 * @param        $pluginName
+	 * @param        $group
+	 * @param string $layout
+	 * @return mixed
+	 * @author Valérie Isaksen
+	 */
+	public function getTemplatePath($pluginName, $group, $layout = 'default') {
+		$layoutPath = vmPlugin::_getLayoutPath ($pluginName, 'vm' . $group, $layout);
+		return str_replace(DS . $layout . '.php','',$layoutPath );
+	}
 }

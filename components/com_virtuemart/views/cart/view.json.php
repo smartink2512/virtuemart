@@ -42,7 +42,11 @@ class VirtueMartViewCart extends VmView {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$this->assignRef('cart', $cart);
-
+		if (!class_exists ('CurrencyDisplay')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		}
+		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
+		$this->currencyDisplay = $currencyDisplay;
 		$this->prepareContinueLink();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 

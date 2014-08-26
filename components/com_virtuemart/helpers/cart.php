@@ -67,6 +67,7 @@ class VirtueMartCart {
 	var $productParentOrderable = TRUE;
 	var $_triesValidateCoupon = array();
 	var $layout ;
+	var $layoutPath='';
 
 	private static $_cart = null;
 
@@ -136,6 +137,7 @@ class VirtueMartCart {
 				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
 				self::$_cart->customer_number						= $sessionCart->customer_number;
 				self::$_cart->layout						        = $sessionCart->layout;
+				self::$_cart->layoutPath						    = $sessionCart->layoutPath;
 			}
 
 		}
@@ -266,6 +268,7 @@ class VirtueMartCart {
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 		$sessionCart->customer_number						= $this->customer_number;
 		$sessionCart->layout						        = $this->layout;
+		$sessionCart->layoutPath						        = $this->layoutPath;
 
 		if(!empty($sessionCart->pricesUnformatted)){
 			foreach($sessionCart->pricesUnformatted as &$prices){
@@ -349,25 +352,6 @@ class VirtueMartCart {
 		$this->_redirect_disabled = $bool;
 	}
 
-	/**
-	 * @author Valerie Isaksen
-	 * @param      $layout
-	 * @param bool $inSession
-	 */
-	public function setCartLayout($layout,$intoSession=true) {
-		$this->layout = $layout;
-		if ($intoSession) {
-			$this->setCartIntoSession();
-		}
-	}
-
-	/**
-	 * @author Valerie Isaksen
-	 * @return Value
-	 */
-	public function getCartLayout() {
-		return $this->layout;
-	}
 
 	/**
 	 * Add a product to the cart

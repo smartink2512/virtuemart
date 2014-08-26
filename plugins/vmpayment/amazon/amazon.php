@@ -2037,7 +2037,7 @@ jQuery().ready(function($) {
 
 		//$this->debug('', 'updateCartWithAmazonAddress', 'debug');
 		$cart = VirtueMartCart::getCart();
-		$cartLayout = $cart->getCartLayout();
+		$cartLayout = $cart->layout;
 		if (empty($cart->products) and $cartLayout == $this->_name) {
 			$this->unsetCartLayoutAndPaymentMethod($cart);
 		}
@@ -2075,6 +2075,7 @@ jQuery().ready(function($) {
 		VmConfig::loadConfig();
 		$cart = VirtueMartCart::getCart();
 		$cart->layout = VmConfig::get('cartlayout', 'default');
+		$cart->layoutPath = '';
 		$cart->virtuemart_paymentmethod_id = 0;
 		$previousAddress = $this->getBTandSTFromSession();
 		$cart->BT = $previousAddress['BT'];
@@ -2089,8 +2090,12 @@ jQuery().ready(function($) {
 	}
 
 
-	private function setCartLayout ($cart) {
-		$cart->setCartLayout($this->_name);
+	private function setCartLayout ($cart,$intoSession=true) {
+		$cart->layoutPath = vmPlugin::getTemplatePath ($this->_name,  'vmpayment', 'cart');
+		$cart->layout = $this->_name;
+		if ($intoSession) {
+			$cart->setCartIntoSession();
+		}
 
 	}
 
@@ -2303,7 +2308,6 @@ jQuery().ready(function($) {
 		$this->_amazonOrderReferenceId = vRequest::getString('session', '');
 		$this->setAmazonOrderReferenceIdInSession($this->_amazonOrderReferenceId, $this->isOnlyDigitalGoods($cart));
 		$cart->virtuemart_paymentmethod_id = vRequest::getInt('pm');
-
 
 	}
 
