@@ -5,7 +5,7 @@
  *
  * @package	VirtueMart
  * @subpackage Cart
- * @author Valérie Isakesn
+ * @author Max Milbers, Valérie Isakesn
  *
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.

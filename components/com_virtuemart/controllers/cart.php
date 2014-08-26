@@ -471,7 +471,52 @@ class VirtueMartControllerCart extends JController {
 
 
 	}
+	/**
+	 * Checks for the data that is needed to process the order
+	 *
+	 * @author Valérie Isaksen
+	 *
+	 */
+	public function checkoutJS() {
+		$this->json = new stdClass();
+		$cart = VirtueMartCart::getCart();
+		$cart->getFilterCustomerComment();
+		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
+		$task = JRequest::getString('task');
 
+		$view = $this->getView ('cart', 'json');
+
+		$update = vRequest::getString('update',false);
+		$cart->_inConfirm=false;
+		if(($update and is_array($update)) or $task=='update'){
+			reset($update);
+			$key = key($update);
+			$quantity = vRequest::getInt('quantity');
+			$cart->updateProductCart(key($update),$quantity[$key]);
+			$this->display();
+		/*} else if(isset($_POST['setcoupon']) or $task=='setcoupon'){
+			$this->setcoupon();
+		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
+			$this->setshipment();
+		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
+			$this->setpayment();*/
+		} else {
+			if ($cart->virtuemart_shipmentmethod_id != JRequest::getInt('virtuemart_shipmentmethod_id')) {
+				$this->setshipment();
+			}
+			if ($cart->virtuemart_paymentmethod_id != JRequest::getInt('virtuemart_paymentmethod_id')) {
+				$this->setpayment();
+			}
+			/*if ($cart && !VmConfig::get('use_as_catalog', 0)) {
+				$cart->checkout();
+			}*/
+		}
+		ob_start();
+		$view->display ('');
+		$this->json->msg = ob_get_clean();
+		echo json_encode($this->json);
+		jExit();
+	}
 	/**
 	 * Executes the confirmDone task,
 	 * cart object checks itself, if the data is valid

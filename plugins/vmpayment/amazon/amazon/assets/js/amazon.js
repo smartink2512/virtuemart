@@ -135,7 +135,7 @@ var amazonPayment = {
 
 
         updateCart: function () {
-            var url = 'index.php?option=com_virtuemart&view=cart&format=json&task=checkout';
+            var url = vmSiteurl+'index.php?option=com_virtuemart&view=cart&format=json&task=checkoutJS'+vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     console.log('json return:' + datas.reload + ' ' + textStatus);

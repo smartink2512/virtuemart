@@ -28,7 +28,7 @@
             <option value="sandbox">VMPAYMENT_AMAZON_CONF_ENVIRONMENT_SANDBOX</option>
             <option value="live">VMPAYMENT_AMAZON_CONF_ENVIRONMENT_LIVE</option>
         </param>
-        <param class="sandbox_warning" type="vmtitle" default="" description="VMPAYMENT_AMAZON_SANDBOX_WARNING"/>
+        <param class="sandbox_warning warning" type="vmtitle" default="" description="VMPAYMENT_AMAZON_SANDBOX_WARNING"/>
 
         <param name="region" type="list" default="UK" label="VMPAYMENT_AMAZON_CONF_REGION"
                description="VMPAYMENT_AMAZON_CONF_REGION_TIP">
@@ -87,7 +87,7 @@
             <option value="capture_immediate">VMPAYMENT_AMAZON_CONF_CAPTURE_MODE_CAPTURE_IMMEDIATE</option>
             <option value="capture_delayed">VMPAYMENT_AMAZON_CONF_CAPTURE_MODE_CAPTURE_DELAYED</option>
         </param>
-        <param class="capture_mode_warning" type="vmtitle" default=""
+        <param class="capture_mode_warning warning" type="vmtitle" default=""
                description="VMPAYMENT_AMAZON_CONF_CAPTURE_CAPTURE_IMMEDIATE_WARNING"/>
 
 
@@ -108,7 +108,7 @@
                type="ipnurl" size="100" default=""
                editable="false"
                label="VMPAYMENT_AMAZON_CONF_IPN_URL" description="VMPAYMENT_AMAZON_IPN_WARNING"/>
-        <param class="ipn_warning" type="vmtitle"
+        <param class="ipn_warning warning" type="vmtitle"
                default="" description="VMPAYMENT_AMAZON_IPN_WARNING"/>
 
 

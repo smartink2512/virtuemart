@@ -38,6 +38,8 @@ jQuery().ready(function ($) {
 
         if (authorization === 'authorization_done_by_erp') {
             $('.capture_mode').parents('tr').hide();
+            $('.capture_mode_warning').parents('tr').hide();
+            $('.capture_mode_warning').hide();
             $('.status_authorization').parents('tr').hide();
             $('.status_capture').parents('tr').hide();
             $('.status_refunded').parents('tr').hide();
@@ -55,16 +57,14 @@ jQuery().ready(function ($) {
             $('.ipn_warning').parents('tr').show();
             $('.soft_decline').parents('tr').show();
             $('.sandbox_error_simulation').parents('tr').show();
+            handleCaptureMode();
         }
     }
 
     handleAuthorizationERPDisabled = function () {
         var authorization = $('#paramsauthorization_mode_erp_disabled').val();
-        if (authorization === 'automatic_asynchronous') {
-            $('.capture_mode').parents('tr').hide();
-        } else {
-            handleCaptureMode();
-        }
+        $('.capture_mode').parents('tr').show();
+        handleCaptureMode();
     }
 
     handleERPMode = function () {
@@ -88,9 +88,11 @@ jQuery().ready(function ($) {
     handleCaptureMode = function () {
         var capture_mode = $('#paramscapture_mode').val();
         $('.capture_mode_warning').parents('tr').hide();
+        $('.capture_mode_warning').hide();
 
         if (capture_mode === 'capture_immediate') {
             $('.capture_mode_warning').parents('tr').show();
+            $('.capture_mode_warning').show();
         }
     }
 
@@ -108,11 +110,9 @@ jQuery().ready(function ($) {
     /**********/
     $('#paramsregion').change(function () {
         handleRegionParameters();
-
     });
     $('#paramserp_mode').change(function () {
         handleERPMode();
-
     });
     $('#paramsauthorization_mode_erp_enabled').change(function () {
         handleAuthorizationERPEnabled();
@@ -121,12 +121,11 @@ jQuery().ready(function ($) {
         handleAuthorizationERPDisabled();
     });
     $('#paramscapture_mode').change(function () {
-        handleCaptureModeParameters();
+        handleCaptureMode();
     });
 
     $('#paramsenvironment').change(function () {
         handleEnvironment();
-
     });
 
 

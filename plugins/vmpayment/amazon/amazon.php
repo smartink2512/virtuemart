@@ -105,10 +105,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			'amazon_response_reasonDescription'     => 'char(64) DEFAULT NULL',
 			'amazon_request_type'                   => 'text DEFAULT NULL',
 			'amazon_request'                        => 'text DEFAULT NULL',
-			'amazon_class_response_type'                  => 'text DEFAULT NULL',
+			'amazon_class_response_type'            => 'text DEFAULT NULL',
 			'amazon_response'                       => 'text DEFAULT NULL',
 			'amazon_notification'                   => 'text DEFAULT NULL',
-			'amazon_class_notification_type'              => 'text DEFAULT NULL'
+			'amazon_class_notification_type'        => 'text DEFAULT NULL'
 		);
 		return $SQLfields;
 	}
@@ -792,12 +792,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			$BTFromAmazon['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 			$BTFromAmazon['address_type'] = 'BT';
 			$this->debugLog("<pre>" . var_export($BTFromAmazon, true) . "</pre>", __FUNCTION__, 'debug');
-
+			$order_userinfosTable->emptyCache();
 			$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='BT'");
 			if (!$order_userinfosTable->bindChecknStore($BTFromAmazon, true)) {
 				vmError($order_userinfosTable->getError());
 				return false;
 			}
+
 		}
 
 		// at this step, we should get it from amazon
@@ -810,7 +811,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				$ST = $this->getUserInfoFromAmazon($physicalDestination);
 				$ST['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 				$ST['address_type'] = 'ST';
-
+				$order_userinfosTable->emptyCache();
 				$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='ST'");
 				if (!$order_userinfosTable->bindChecknStore($ST, true)) {
 					vmError($order_userinfosTable->getError());
@@ -855,6 +856,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$userInfoData = $this->getUserInfoFromAmazon($billingAddress);
 
 		$order_userinfosTable = $orderModel->getTable('order_userinfos');
+		$order_userinfosTable->emptyCache();
 		$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='BT'");
 		if (!$order_userinfosTable->bindChecknStore($userInfoData, true)) {
 			vmError($order_userinfosTable->getError());
@@ -1103,7 +1105,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return string
 	 */
 	private function getSellerAuthorizationNote () {
-		if (empty($this->_currentMethod->sandbox_error_simulation) ) {
+		if (empty($this->_currentMethod->sandbox_error_simulation)) {
 			return NULL;
 		}
 		return $this->getAuthorizeSandboxSimulationString();
@@ -1114,7 +1116,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return null|string
 	 */
 	private function getSellerRefundNote () {
-		if (empty($this->_currentMethod->sandbox_error_simulation) ) {
+		if (empty($this->_currentMethod->sandbox_error_simulation)) {
 			return NULL;
 		}
 		return $this->getRefundSandboxSimulationString();
@@ -1124,7 +1126,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 *
 	 */
 	private function getSetOrderReferenceSandboxSimulationString () {
-		if (empty($this->_currentMethod->sandbox_error_simulation) ) {
+		if (empty($this->_currentMethod->sandbox_error_simulation)) {
 			return NULL;
 		}
 		$setOrderReferenceSandboxSimulation = array(
@@ -1287,8 +1289,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 		$this->debugLog("<pre>" . var_export($confirmOrderReferenceResponse, true) . "</pre>", __FUNCTION__, 'debug');
 
-		$amazonHelperconfirmOrderReferenceResponse = new amazonHelperConfirmOrderReferenceResponse($confirmOrderReferenceResponse ,$this->_currentMethod);
-		 $amazonHelperconfirmOrderReferenceResponse->onResponseUpdateOrderHistory ($order ) ;
+		$amazonHelperconfirmOrderReferenceResponse = new amazonHelperConfirmOrderReferenceResponse($confirmOrderReferenceResponse, $this->_currentMethod);
+		$amazonHelperconfirmOrderReferenceResponse->onResponseUpdateOrderHistory($order);
 		$storeInternalData = $amazonHelperconfirmOrderReferenceResponse->getStoreInternalData();
 		$this->storeAmazonInternalData($order, $confirmOrderReferenceRequest, $confirmOrderReferenceResponse, NULL, NULL, $storeInternalData);
 
@@ -1342,44 +1344,45 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->updateAuthorizeBillingAddressInOrder($authorizeResponse, $order);
 
 		$amazonHelperAuthorizeResponse = new amazonHelperAuthorizeResponse($authorizeResponse, $this->_currentMethod);
-		$amazonState =$amazonHelperAuthorizeResponse->onResponseUpdateOrderHistory ($order ) ;
+		$amazonState = $amazonHelperAuthorizeResponse->onResponseUpdateOrderHistory($order);
 
 		$storeInternalData = $amazonHelperAuthorizeResponse->getStoreInternalData();
 		$this->storeAmazonInternalData($order, $authorizeRequest, $authorizeResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
 
-if ($amazonState=='Declined') {
-	$this->handledDeclinedAuthorizationResponse($authorizeResponse);
+		if ($amazonState == 'Declined') {
+			$this->handledDeclinedAuthorizationResponse($authorizeResponse);
 
-}
+		}
 		return $amazonAuthorizationId;
 	}
 
 
 	function updateAuthorizeBillingAddressInOrder ($authorizeResponse, $order) {
-		if ($authorizeResponse->isSetAuthorizeResult()) {
-			$authorizeResult = $authorizeResponse->getAuthorizeResult();
-			if ($authorizeResult->isSetAuthorizationDetails()) {
-				$authorizationDetails = $authorizeResult->getAuthorizationDetails();
-
-				if ($authorizationDetails->isSetAuthorizationBillingAddress()) {
-					$authorizationBillingAddress = $authorizationDetails->getAuthorizationBillingAddress();
-					$BT = $this->getUserInfoFromAmazon($authorizationBillingAddress);
-
-
-				}
-			}
+		if (!$authorizeResponse->isSetAuthorizeResult()) {
+			return;
 		}
+		$authorizeResult = $authorizeResponse->getAuthorizeResult();
+		if (!$authorizeResult->isSetAuthorizationDetails()) {
+			return;
+		}
+		$authorizationDetails = $authorizeResult->getAuthorizationDetails();
+		if (!$authorizationDetails->isSetAuthorizationBillingAddress()) {
+			return;
+		}
+		$authorizationBillingAddress = $authorizationDetails->getAuthorizationBillingAddress();
+		$BT = $this->getUserInfoFromAmazon($authorizationBillingAddress );
 
 		$orderModel = VmModel::getModel('orders');
 		$BT['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 		$order_userinfosTable = $orderModel->getTable('order_userinfos');
 		$BT['address_type'] = 'BT';
-
-		$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='ST'");
+		$order_userinfosTable->emptyCache();
+		$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='BT'");
 		if (!$order_userinfosTable->bindChecknStore($BT, true)) {
 			vmError($order_userinfosTable->getError());
 			return false;
 		}
+
 	}
 
 
@@ -1403,7 +1406,6 @@ if ($amazonState=='Declined') {
 	}
 
 
-
 	private function handledDeclinedAuthorizationResponse ($authorizeResponse) {
 		$authorizeResult = $authorizeResponse->getAuthorizeResult();
 		$authorizationDetails = $authorizeResult->getAuthorizationDetails();
@@ -1420,9 +1422,6 @@ if ($amazonState=='Declined') {
 			$this->leaveAmazonCheckout(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'));
 		}
 	}
-
-
-
 
 
 	public function plgVmOnUpdateOrderPayment (&$order, $old_order_status) {
@@ -1483,7 +1482,7 @@ if ($amazonState=='Declined') {
 	 * if authorization object is in Open State, then the funds can be captured
 	 */
 	private function canDoCapture ($payments) {
-return true;
+		return true;
 		$payment = end($payments);
 		if ($payment->amazon_response_state == 'Open') {
 			return true;
@@ -2055,6 +2054,17 @@ jQuery().ready(function($) {
 		return $html;
 	}
 
+	private function unsetCartLayoutAndPaymentMethod ($cart) {
+		if (!class_exists('VmConfig')) {
+			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+		}
+		VmConfig::loadConfig();
+		$cart->layout = VmConfig::get('cartlayout', 'default');
+		$cart->virtuemart_paymentmethod_id = 0;
+		$cart->setCartIntoSession();
+		return;
+	}
+
 	/**
 	 * reset the cart layout, unset the paymentmethod, put back the storeAddress
 	 */
@@ -2484,36 +2494,11 @@ jQuery().ready(function($) {
 		$body = file_get_contents('php://input');
 		// TODO REMOVE THIS TESTING ALONE
 		/*
-	 	$fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
-		fwrite($fp, var_export($headers, true));
-		fwrite($fp, var_export($body, true));
-		fclose($fp);*/
-		$headersx=array (
-			'x-amz-sns-message-type' => 'Notification',
-			'x-amz-sns-message-id' => 'f2c43aec-fe6f-5a2d-8f29-769f4e655f2c',
-			'x-amz-sns-topic-arn' => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH',
-			'x-amz-sns-subscription-arn' => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:da5fca1a-9e90-455a-9f0c-53262833a0d2',
-			'Content-Length' => '2561',
-			'Content-Type' => 'text/plain; charset=UTF-8',
-			'Host' => 'joomla-virtuemart.org',
-			'Connection' => 'Keep-Alive',
-			'User-Agent' => 'Amazon Simple Notification Service Agent',
-			'Cookie' => '53369989722c841763ad3ab697b54ad2=77e72caf2f0b1d40641c9b3f71470c28',
-			'Cookie2' => '$Version=1',
-			'Accept-Encoding' => 'gzip,deflate',
-		);
-		$bodyx='{
-  "Type" : "Notification",
-  "MessageId" : "f2c43aec-fe6f-5a2d-8f29-769f4e655f2c",
-  "TopicArn" : "arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH",
-  "Message" : "{\\"NotificationReferenceId\\":\\"9984f079-2d61-47b5-ad86-af899bee0193\\",\\"MarketplaceID\\":\\"136291\\",\\"NotificationType\\":\\"PaymentAuthorize\\",\\"SellerId\\":\\"AA3KB5JD2CWIH\\",\\"ReleaseEnvironment\\":\\"Sandbox\\",\\"Version\\":\\"2013-01-01\\",\\"NotificationData\\":\\"<?xml version=\\\\\\"1.0\\\\\\" encoding=\\\\\\"UTF-8\\\\\\"?><AuthorizationNotification xmlns=\\\\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\\\\">\\\\n    <AuthorizationDetails>\\\\n        <AmazonAuthorizationId>S02-8115025-7461074-A086676<\\\\/AmazonAuthorizationId>\\\\n        <AuthorizationReferenceId>ebb70324<\\\\/AuthorizationReferenceId>\\\\n        <AuthorizationAmount>\\\\n            <Amount>122.78<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/AuthorizationAmount>\\\\n        <CapturedAmount>\\\\n            <Amount>0.0<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/CapturedAmount>\\\\n        <AuthorizationFee>\\\\n            <Amount>0.0<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/AuthorizationFee>\\\\n        <IdList/>\\\\n        <CreationTimestamp>2014-08-24T09:17:29.953Z<\\\\/CreationTimestamp>\\\\n        <ExpirationTimestamp>2014-09-23T09:17:29.953Z<\\\\/ExpirationTimestamp>\\\\n        <AuthorizationStatus>\\\\n            <State>Open<\\\\/State>\\\\n            <LastUpdateTimestamp>2014-08-24T09:18:01.316Z<\\\\/LastUpdateTimestamp>\\\\n        <\\\\/AuthorizationStatus>\\\\n        <OrderItemCategories/>\\\\n        <CaptureNow>false<\\\\/CaptureNow>\\\\n        <SoftDescriptor/>\\\\n    <\\\\/AuthorizationDetails>\\\\n<\\\\/AuthorizationNotification>\\",\\"Timestamp\\":\\"2014-08-24T09:18:02Z\\"}",
-  "Timestamp" : "2014-08-24T09:18:02.608Z",
-  "SignatureVersion" : "1",
-  "Signature" : "nKXQniAkrqqMdrpxGjxVWPek9Nduwfvo3gUcblM5IIlmFZxeXcdCbhIJlsNz6DqPGn8Md6b3CDAwyaNMicLf82vnYiEBNwGP1Jp+rlG+bS1IQlq8R7/lRNg4FxFweEtIzeH4B6AGILUWAW0vw3hTC3Nv2Wsply+IGLkWTCmjaBgNfu/RhF7Gq/WJ5DzFLjnQ4XADaUwZeErhEbFLMZpQ7YhuEP89FImcoNHL+XI7lVV5FAFNkKPWXINW7Ld7EEMKOy6JFTwTZlqEGrSuUiiFKp7rg8kLUW0hZx4j16rLzHlMCY72q8WrAIfYDL+vVLkpHaaGbwzVgffFRkjz4pU7kA==",
-  "SigningCertURL" : "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-e372f8ca30337fdb084e8ac449342c77.pem",
-  "UnsubscribeURL" : "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:da5fca1a-9e90-455a-9f0c-53262833a0d2"
-}';
-
+				 $fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
+				fwrite($fp, var_export($headers, true));
+				fwrite($fp, var_export($body, true));
+				fclose($fp);
+		*/
 
 
 		$this->debugLog($headers, 'AMAZON IPN HEADERS debug', 'debug');
