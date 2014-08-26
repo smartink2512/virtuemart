@@ -825,16 +825,19 @@ class VirtueMartModelCustomfields extends VmModel {
 							}
 
 						}
-						$idTag = 'cvard'.$k;
+						$idTag .= 'cvard'.$k;
 						$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);
 
 						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection" ', "value", "text", $selected,$idTag);
 
 					}
-					vmdebug('displayProductCustomfieldFE my C', $customfield->options,$dropdowns);
+					//vmdebug('displayProductCustomfieldFE my C', $customfield->options,$dropdowns);
 					//'http://vm3j2.stuprecht/en/?option=com_virtuemart&view=productdetails&virtuemart_product_id='+variants[index][0]+'&virtuemart_category_id=10&Itemid=127'
-					$Itemid = ''; // '&Itemid=127';
-					$url = 'http://vm3j2.stuprecht/?option=com_virtuemart&view=productdetails&virtuemart_category_id=10&virtuemart_product_id=';
+					$Itemid = vRequest::getInt('Itemid',''); // '&Itemid=127';
+					if(!empty($Itemid)){
+						$Itemid = '&Itemid='.$Itemid;
+					}
+					$url = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=';
 					//create array for js
 					$jsArray = array();
 

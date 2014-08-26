@@ -169,6 +169,10 @@ class VirtueMartControllerUser extends JControllerLegacy
 		//if($cart and (!isset($_POST['register']) or $currentUser->guest)){
 		//if($data['address_type'] == 'ST' or (!isset($_POST['register']) and $currentUser->guest)){
 			$ret = $userModel->storeAddress($data);
+			if($cartObj and !empty($ret)){
+				$cartObj->selected_shipto = $ret;
+				$cartObj->setCartIntoSession();
+			}
 			//vmdebug('saveData storeAddress only');
 		} else {
 
