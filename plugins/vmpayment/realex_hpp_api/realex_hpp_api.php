@@ -727,7 +727,6 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			}
 
 		}
-
 		$this->createPayerRefTable();
 		$this->createPmtRefTable();
 

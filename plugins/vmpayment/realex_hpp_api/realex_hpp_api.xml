@@ -18,14 +18,9 @@
     <vmconfig>
         <fields name="params">
 
-            <fieldset name="Realex" addfieldpath="/plugins/vmpayment/realex_hpp_api/realex/fields">
-                <field type="vmtitle" class="realex_title" default="VMPAYMENT_REALEX_HPP_API_PAYMENT_TITLE"
-                       description="VMPAYMENT_REALEX_HPP_API_REGISTER_TIP"/>
-                <field type="spacer" default="" level="level1"/>
-
-                <field type="realexjs" default=""/>
+            <fieldset name="Realex" addfieldpath="/plugins/vmpayment/realex_hpp_api/realex_hpp_api/fields">
+                <field type="getrealex" default=""/>
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_ACCOUNT_PARAMS"/>
-
                 <field name="integration" type="list" default="redirect" label="VMPAYMENT_REALEX_HPP_API_INTEGRATION"
                        description="VMPAYMENT_REALEX_HPP_API_INTEGRATION_TIP">
                     <option value="redirect">VMPAYMENT_REALEX_HPP_API_INTEGRATION_REDIRECT</option>
@@ -145,7 +140,7 @@
                        description="VMPAYMENT_REALEX_HPP_API_SANDBOX_GATEWAY_URL_TIP"/>
 
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_ORDER_STATUS_SECTION"
-                       description="VMPAYMENT_REALEX_HPP_API_ORDER_STATUS_SECTION_DESC"/>
+                       description=""/>
 
 
                 <field name="status_success" type="vmorderstate" scope="com_virtuemart" default="C"
@@ -172,7 +167,7 @@
                 <!-- Restrictions -->
                 <!-- ============ -->
                 <field class="level2" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_RESTRICTIONS_SECTION"
-                       description="VMPAYMENT_REALEX_HPP_API_RESTRICTIONS_SECTION_DESC"/>
+                       description=""/>
                 <field name="countries" type="vmcountries" scope="com_virtuemart" default=""
                        label="VMPAYMENT_REALEX_HPP_API_COUNTRIES" description="VMPAYMENT_REALEX_HPP_API_COUNTRIES_DESC"/>
                 <field name="min_amount" type="text" label="VMPAYMENT_REALEX_HPP_API_MIN_AMOUNT"
@@ -183,7 +178,7 @@
                 <!-- Currencies -->
                 <!-- ============ -->
                 <field class="level2" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_CURRENCIES_SECTION"
-                       description="VMPAYMENT_REALEX_HPP_API_CURRENCIES_SECTION_DESC"/>
+                       description=""/>
 
                 <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_REALEX_HPP_API_CURRENCY"
                        description="VMPAYMENT_REALEX_HPP_API_CURRENCY_DESC"/>
@@ -197,7 +192,7 @@
                 <!-- Discounts -->
                 <!-- ============ -->
                 <field class="level2" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_DISCOUNT_FEE_SECTION"
-                       description="VMPAYMENT_REALEX_HPP_API_DISCOUNT_FEE_SECTION_DESC"/>
+                       description=""/>
                 <field name="cost_per_transaction" type="text" label="VMPAYMENT_REALEX_HPP_API_COST_PER_TRANSACTION"
                        description="VMPAYMENT_REALEX_HPP_API_COST_PER_TRANSACTION_TIP"/>
                 <field name="cost_percent_total" type="text" label="VMPAYMENT_REALEX_HPP_API_COST_PERCENT_TOTAL"
@@ -224,7 +219,7 @@
 
 
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_DEBUG_SECTION"
-                       description="VMPAYMENT_REALEX_HPP_API_DEBUG_SECTION_DESC"/>
+                       description=""/>
                 <field name="debug" type="radio" default="0" label="VMPAYMENT_REALEX_HPP_API_DEBUG_SECTION">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>

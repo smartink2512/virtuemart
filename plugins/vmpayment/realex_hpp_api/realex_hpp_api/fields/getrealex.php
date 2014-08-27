@@ -33,7 +33,9 @@ class JFormFieldGetRealex extends JFormField {
 	public $type = 'getrealex';
 
 	protected function getInput() {
-
+		$doc = JFactory::getDocument();
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/admin.css');
 
 		$url = "http://www.realexpayments.com/partner-referral?id=virtuemart";
 		$logo = '<img src="http://www.realexpayments.com/images/logo_realex_large.png" width="150"/>';

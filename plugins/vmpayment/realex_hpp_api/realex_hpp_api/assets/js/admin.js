@@ -23,103 +23,103 @@ jQuery().ready(function ($) {
     /* Handlers */
     /************/
     handleIntegrationParameters = function () {
-        var integration = $('#paramsintegration').val();
+        var integration = $('#params_integration').val();
 
-        $('.redirect, .remote').parents('tr').hide();
+        $('.redirect, .remote').parents('.control-group').hide();
 
         if (integration == 'redirect') {
-            $('.redirect').parents('tr').show();
+            $('.redirect').parents('.control-group').show();
         } else if (integration == 'remote') {
-            $('.remote').parents('tr').show();
+            $('.remote').parents('.control-group').show();
         }
 
     }
 
     handleRealvault = function () {
-        var realvault = $('#paramsrealvault').val();
-        var integration = $('#paramsintegration').val();
-        $('.redirect-realvault').parents('tr').hide();
-        $('.redirect-norealvault').parents('tr').hide();
+        var realvault = $('#params_realvault').val();
+        var integration = $('#params_integration').val();
+        $('.redirect-realvault').parents('.control-group').hide();
+        $('.redirect-norealvault').parents('.control-group').hide();
 
-        $('.realvault').parents('tr').hide();
-        $('.norealvault').parents('tr').hide();
+        $('.realvault').parents('.control-group').hide();
+        $('.norealvault').parents('.control-group').hide();
 
         if (integration == 'redirect') {
             if (realvault == 1) {
-                $('.redirect-realvault').parents('tr').show();
-                $('.realvault').parents('tr').show();
+                $('.redirect-realvault').parents('.control-group').show();
+                $('.realvault').parents('.control-group').show();
             } else {
-                $('.redirect-norealvault').parents('tr').show();
+                $('.redirect-norealvault').parents('.control-group').show();
             }
         } else {
             if (realvault == 0) {
-                $('#paramsthreedsecure option').eq(0).attr('selected', 'selected');
+                $('#params_threedsecure option').eq(0).attr('selected', 'selected');
                 // depends on the chosen version
-                $('#paramsthreedsecure').trigger("chosen:updated"); //newer
-                $("#paramsthreedsecure").trigger("liszt:updated"); // our
+                $('#params_threedsecure').trigger("chosen:updated"); //newer
+                $("#params_threedsecure").trigger("liszt:updated"); // our
             }
-            $('.realvault').parents('tr').show();
+            $('.realvault').parents('.control-group').show();
         }
 
     }
 
     handleSettlement = function () {
-        var settlement = $('#paramssettlement').val();
+        var settlement = $('#params_settlement').val();
 
-        $('.settlement').parents('tr').hide();
+        $('.settlement').parents('.control-group').hide();
 
         if (settlement == 'delayed') {
-            $('.settlement').parents('tr').show();
+            $('.settlement').parents('.control-group').show();
         }
     }
 
     handlethreedsecure = function () {
-        var threedsecure = $('#paramsthreedsecure').val();
-        var realvault = $('#paramsrealvault').val();
-        var integration = $('#paramsintegration').val();
+        var threedsecure = $('#params_threedsecure').val();
+        var realvault = $('#params_realvault').val();
+        var integration = $('#params_integration').val();
 
-        $('.threedsecure').parents('tr').hide();
+        $('.threedsecure').parents('.control-group').hide();
 
         if ((threedsecure == 1 && integration == 'redirect' && realvault == 1) ||  (threedsecure == 1 && integration == 'remote')) {
-            $('.threedsecure').parents('tr').show();
+            $('.threedsecure').parents('.control-group').show();
         }
     }
 
     handleDcc = function () {
-        var dcc = $('#paramsdcc').val();
+        var dcc = $('#params_dcc').val();
 
-        $('.dcc').parents('tr').hide();
-        $('.nodcc').parents('tr').hide();
+        $('.dcc').parents('.control-group').hide();
+        $('.nodcc').parents('.control-group').hide();
 
         if (dcc == 1) {
-            $('.dcc').parents('tr').show();
+            $('.dcc').parents('.control-group').show();
         }
         if (dcc == 0) {
-            $('.nodcc').parents('tr').show();
+            $('.nodcc').parents('.control-group').show();
         }
     }
 
     handleAutoComplete = function () {
-        $('#paramsmerchant_id').attr('autocomplete', 'off');
+        $('#params_merchant_id').attr('autocomplete', 'off');
     }
     /**********/
     /* Events */
     /**********/
-    $('#paramsintegration').change(function () {
+    $('#params_integration').change(function () {
         handleIntegrationParameters();
         handleRealvault();
 
     });
-    $('#paramsrealvault').change(function () {
+    $('#params_realvault').change(function () {
         handleRealvault();
     });
-    $('#paramssettlement').change(function () {
+    $('#params_settlement').change(function () {
         handleSettlement();
     });
-    $('#paramsdcc').change(function () {
+    $('#params_dcc').change(function () {
         handleDcc();
     });
-    $('#paramsthreedsecure').change(function () {
+    $('#params_threedsecure').change(function () {
         handlethreedsecure();
     });
 
