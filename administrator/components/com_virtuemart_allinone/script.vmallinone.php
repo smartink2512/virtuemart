@@ -2,11 +2,12 @@
 defined ('_JEXEC') or die('Restricted access');
 
 /**
+ *
  * VirtueMart script file
  *
  * This file is executed during install/upgrade and uninstall
  *
- * @author Patrick Kohl, Max Milbers
+ * @author Patrick Kohl, Max Milbers, Valérie Isaksen
  * @package VirtueMart
  */
 
@@ -80,6 +81,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('VM Payment - PayPal', 'plugin', 'paypal', 'vmpayment');
 			$this->installPlugin ('VM Payment - Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			$this->installPlugin ('VM Payment - Paybox', 'plugin', 'paybox', 'vmpayment');
+			$this->installPlugin ('VM Payment - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmpayment');
+			$this->installPlugin ('VM UserField - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmuserfield');
 
 			$this->installPlugin ('VM Payment - Skrill', 'plugin', 'skrill', 'vmpayment');
 

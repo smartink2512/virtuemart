@@ -35,10 +35,10 @@ class JFormFieldGetRealex extends JFormField {
 	protected function getInput() {
 
 
-		$url = "http://www.realexpayments.com/";
+		$url = "http://www.realexpayments.com/partner-referral?id=virtuemart";
 		$logo = '<img src="http://www.realexpayments.com/images/logo_realex_large.png" width="150"/>';
-		$html = '<a target="_blank" href="' . $url . '" id="klarna_getrealex_link" ">' . $logo . '</a><br />';
-		$html .= '<a target="_blank" href="' . $url . '" id="klarna_getrealex_link" ">' . vmText::_('VMPAYMENT_REALEX_HPP_API_REGISTER') . '</a>';
+		$html = '<a target="_blank" href="' . $url . '" id="getrealex_link" ">' . $logo . '</a><br />';
+		$html .= '<a target="_blank" href="' . $url . '" id="getrealex_link" ">' . vmText::_('VMPAYMENT_REALEX_HPP_API_REGISTER') . '</a>';
 
 		return $html;
 	}

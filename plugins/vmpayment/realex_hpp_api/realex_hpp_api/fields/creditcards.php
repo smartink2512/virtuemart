@@ -52,7 +52,7 @@ class JFormFieldCreditCards extends JFormField {
 	public $type = 'creditcards';
 
 	protected function getInput() {
-		JFactory::getLanguage()->load('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
+		JFactory::getLanguage()->load('plg_vmpayment_realex_hpp_api', JPATH_ADMINISTRATOR);
 
 		$creditcards = RealexHelperRealex::getRealexCreditCards();
 
