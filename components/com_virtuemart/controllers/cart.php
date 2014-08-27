@@ -251,7 +251,7 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @author Max Milbers
 	 */
-	public function setshipment() {
+	public function setshipment($redirect=true) {
 
 		/* Get the shipment ID from the cart */
 
@@ -271,21 +271,30 @@ class VirtueMartControllerCart extends JController {
 					// Plugin completed successfull; nothing else to do
 					$cart->setCartIntoSession();
 					break;
-				} else if ($_retVal === false ) {
+				} else if ($_retVal === false and $redirect) {
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
 					break;
+				} else {
+					return false;
 				}
 			}
 
 			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1)) {
+				if ($redirect) {
+					$mainframe = JFactory::getApplication();
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE) );
+				} else {
+					return false;
+				}
 
-				$mainframe = JFactory::getApplication();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE) );
 			}
 		}
-		// 	self::Cart();
-		$this->display();
+		if ($redirect) {
+			$this->display();
+		}
+		return true;
+
 	}
 
 	/**
@@ -310,7 +319,7 @@ class VirtueMartControllerCart extends JController {
 	 * @author Oscar van Eijk
 	 * @author Valerie Isaksen
 	 */
-	function setpayment() {
+	function setpayment($redirect=true) {
 
 		// Get the payment id of the cart
 		//Now set the payment rate into the cart
@@ -332,21 +341,30 @@ class VirtueMartControllerCart extends JController {
 					// Plugin completed succesfull; nothing else to do
 					$cart->setCartIntoSession();
 					break;
-				} else if ($_retVal === false ) {
-		   		$app = JFactory::getApplication();
-		   		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
-		   		break;
+				} else if ($_retVal === false and $redirect) {
+			        $app = JFactory::getApplication();
+			        $app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
+			        break;
+				} else {
+					return false;
 				}
 			}
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
 
-			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1)) {
-				$app = JFactory::getApplication();
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE), $msg);
+			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1) ) {
+				if ($redirect) {
+					$app = JFactory::getApplication();
+					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE), $msg);
+				} else {
+					return false;
+				}
+
 			}
 		}
 
-		$this->display();
+		if (!$redirect) {
+			$this->display();
+		}
 	}
 
 	/**
@@ -429,7 +447,6 @@ class VirtueMartControllerCart extends JController {
 		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
 		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
 	}
-
 	/**
 	 * Checks for the data that is needed to process the order
 	 *
@@ -468,9 +485,11 @@ class VirtueMartControllerCart extends JController {
 				$cart->checkout();
 			}
 		}
-
-
 	}
+
+
+
+
 	/**
 	 * Checks for the data that is needed to process the order
 	 *
@@ -478,13 +497,15 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 */
 	public function checkoutJS() {
-		$this->json = new stdClass();
+		$json = new stdClass();
 		$cart = VirtueMartCart::getCart();
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
 		$task = JRequest::getString('task');
-
-		$view = $this->getView ('cart', 'json');
+		$setShipment="";
+		$setPayment="";
+		$checkout="";
+		$view = $this->getView ('cart','html');
 
 		$update = vRequest::getString('update',false);
 		$cart->_inConfirm=false;
@@ -493,38 +514,35 @@ class VirtueMartControllerCart extends JController {
 			$key = key($update);
 			$quantity = vRequest::getInt('quantity');
 			$cart->updateProductCart(key($update),$quantity[$key]);
-			$this->display();
-			/*
+			//$this->display();
+
 		 } else if(isset($_POST['setcoupon']) or $task=='setcoupon'){
 			$this->setcoupon();
 		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
 			$this->setshipment();
 		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
 			$this->setpayment();
-*/
-		} else {
-			if ($cart->virtuemart_shipmentmethod_id != JRequest::getInt('virtuemart_shipmentmethod_id')) {
-				$this->setshipment();
-			}
-			if ($cart->virtuemart_paymentmethod_id != JRequest::getInt('virtuemart_paymentmethod_id')) {
-				$this->setpayment();
-			}
-			/*
-			 if ($cart && !VmConfig::get('use_as_catalog', 0)) {
-				$cart->checkout();
-			}
-			*/
-		}
 
+		} else {
+			if (VmConfig::get('oncheckout_opc', 1)  && JRequest::getInt('virtuemart_shipmentmethod_id',false) && $cart->virtuemart_shipmentmethod_id != JRequest::getInt('virtuemart_shipmentmethod_id')) {
+				$setShipment = $this->setshipment(false);
+			}
+			if (VmConfig::get('oncheckout_opc', 1) && JRequest::getInt('virtuemart_paymentmethod_id',false) && $cart->virtuemart_paymentmethod_id != JRequest::getInt('virtuemart_paymentmethod_id')) {
+				$setPayment = $this->setpayment(false);
+			}
+
+			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
+				$checkout =$cart->checkout(false);
+			}
+		}
 		ob_start();
 		$view->display ();
-		$this->json->msg = ob_get_clean();
-		echo json_encode($this->json);
+		$json->msg = ob_get_clean();
+		echo json_encode($json);
 		jExit();
 
-
-
 	}
+
 	/**
 	 * Executes the confirmDone task,
 	 * cart object checks itself, if the data is valid

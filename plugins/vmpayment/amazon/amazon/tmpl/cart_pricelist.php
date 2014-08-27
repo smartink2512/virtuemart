@@ -16,13 +16,6 @@
  *
  */
 ?>
-<?php
-if ($this->readonly_cart) {
-	$readonly_colspan = 3;
-} else {
-	$readonly_colspan = 4;
-}
-?>
 
 
 <?php if ($this->display_billto_shipto) { ?>

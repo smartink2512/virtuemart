@@ -50,6 +50,7 @@ var amazonPayment = {
                 amazonOrderReferenceId: amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
                 onAddressSelect: function (orderReference) {
                     var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=updateCartWithAmazonAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + vmLang;
+                    //document.id('amazonShipmentNotFoundDiv').set('html', '');
                     amazonPayment.amazonLoading();
                     jQuery.getJSON(url,
                         function (datas, textStatus) {
@@ -57,15 +58,11 @@ var amazonPayment = {
                             var checkoutFormSubmit = document.getElementById("checkoutFormSubmit");
                             checkoutFormSubmit.className = 'vm-button-correct';
                             checkoutFormSubmit.removeAttribute('disabled');
-                            console.log('json return:' + datas.reload + ' ' + textStatus);
                             if (datas.reload === 'addressUpdated') {
-                                console.log('get cart updated');
-                                amazonPayment.updateCart();
+                                amazonPayment.updateCart(virtuemart_paymentmethod_id);
                             }
                             if (typeof datas.error_msg != 'undefined' && datas.error_msg != '') {
                                 errormsg = datas.error_msg;
-                                //document.id('amazonErrorDiv').set('amazonShipmentsDiv', '');
-                                //document.id('checkoutFormSubmit').set('amazonShipmentsDiv', '');
                                 checkoutFormSubmit.className = 'vm-button';
                                 checkoutFormSubmit.setAttribute('disabled', 'true');
                                 document.id('amazonShipmentsDiv').style.display = 'none';
@@ -135,14 +132,13 @@ var amazonPayment = {
 
 
         updateCart: function () {
-            var url = vmSiteurl+'index.php?option=com_virtuemart&view=cart&format=json&task=checkoutJS&layout=cart'+vmLang;
-            console.log('updateCart url'  + ' ' + url);
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS' + vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = "";
                     console.log('updateCart:' + datas.msg.length);
                     if (datas.msg) {
-                        datas.cartview = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
+                        datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
                         for (var i = 0; i < datas.msg.length; i++) {
                             cartview += datas.msg[i].toString();
                         }

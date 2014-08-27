@@ -54,29 +54,7 @@ if (VmConfig::get('usefancy', 1)) {
 JHtml::_('behavior.formvalidation');
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($box);
-$document->addScriptDeclaration("
 
-//<![CDATA[
-	jQuery(document).ready(function($) {
-	if ( $('#STsameAsBTjs').is(':checked') ) {
-				$('#output-shipto-display').hide();
-			} else {
-				$('#output-shipto-display').show();
-			}
-		$('#STsameAsBTjs').click(function(event) {
-			if($(this).is(':checked')){
-				$('#STsameAsBT').val('1') ;
-				$('#output-shipto-display').hide();
-			} else {
-				$('#STsameAsBT').val('0') ;
-				$('#output-shipto-display').show();
-			}
-		});
-	});
-
-//]]>
-
-");
 
 $document->addScriptDeclaration("
 
@@ -100,7 +78,25 @@ $document->addScriptDeclaration("
 $document->addStyleDeclaration('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 ?>
-	<div id="amazonErrorDiv"></div>
+	<div id="amazonShipmentNotFoundDiv">
+		<?php	if (!$this->found_shipment_method  ) { ?>
+			<div id="system-message-container">
+				<dl id="system-message">
+					<dt class="info">info</dt>
+					<dd class="info message">
+						<ul>
+							<li>found_shipment_method<?php echo JText::_('VMPAYMENT_AMAZON_UPDATECART_SHIPMENT_NOT_FOUND'); ?></li>
+						</ul>
+					</dd>
+				</dl>
+			</div>
+		<?php
+		}
+		?>
+	</div>
+	<div id="amazonErrorDiv">
+	</div>
+
 	<div id="amazonLoading"></div>
 
 	<div class="cart-view" id ="cart-view">
@@ -153,9 +149,8 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 
 				<div id="amazonShipmentsDiv"><?php
 				//if (!$this->readonly_cart) {
-				 if (!$this->cart->automaticSelectedShipment and $this->found_shipment_method and !$this->cart->_dataValidated) {
+				 if (!$this->cart->automaticSelectedShipment  and !$this->cart->_dataValidated) {
 					?>
-
 						<?php echo $this->loadTemplate('shipment'); ?>
 
 					<?php
@@ -220,6 +215,8 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 				<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
 				<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
 				<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
+				<input type='hidden' name='virtuemart_paymentmethod_id' value='<?php echo $this->cart->virtuemart_paymentmethod_id; ?>'/>
+				<input type='hidden' name='doRedirect' value='false'/>
 				<input type='hidden' name='option' value='com_virtuemart'/>
 				<input type='hidden' name='view' value='cart'/>
 			</form>

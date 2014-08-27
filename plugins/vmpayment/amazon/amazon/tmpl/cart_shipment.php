@@ -3,7 +3,7 @@
  *
  * Template for the shipment selection for Amazon Cart layout
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Cart
  * @author Max Milbers, Valérie Isaksen
  *
@@ -18,38 +18,72 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+vmJsApi::jPrice();
+$document = JFactory::getDocument();
+$document->addScriptDeclaration("
+
+//<![CDATA[
+function setShipment() {
+ amazonPayment.amazonLoading();
+  var virtuemart_shipmentmethod_ids = document.getElementsByName('virtuemart_shipmentmethod_id');
+  var virtuemart_shipmentmethod_id = '';
+
+  for (var i = 0, length = virtuemart_shipmentmethod_ids.length; i < length; i++) {
+    if (virtuemart_shipmentmethod_ids[i].checked) {
+      virtuemart_shipmentmethod_id = virtuemart_shipmentmethod_ids[i].value;
+      break;
+    }
+  }
+ var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS&virtuemart_shipmentmethod_id=' + virtuemart_shipmentmethod_id + vmLang;
+            jQuery.getJSON(url,
+                function (datas, textStatus) {
+                    var cartview = '';
+                    console.log('updateCart:' + datas.msg.length);
+                    if (datas.msg) {
+                        datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
+                        for (var i = 0; i < datas.msg.length; i++) {
+                            cartview += datas.msg[i].toString();
+                        }
+                        document.id('amazonCartDiv').set('html', cartview);
+                        document.id('amazonHeaderHide').set('html', '');
+                         amazonPayment.amazonStopLoading();
+                    }
+                }
+            );
+
+}
 
 
 
+//]]>
+
+");
 $buttonclass = 'button vm-button-correct';
 $buttonclass = 'default';
 ?>
 <?php
-if ($this->found_shipment_method  ) {
-echo "<h3>".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h3>";
-
-?>
-<div class="buttonBar-right">
-	<button  name="setshipment" class="<?php echo $buttonclass ?>" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
-</div>
+if ($this->found_shipment_method) {
+	echo "<h3>" . JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT') . "</h3>";
+	?>
 
 
-<fieldset>
-	<?php
-	// if only one Shipment , should be checked by default
-	foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
-		if (is_array($shipment_shipment_rates)) {
-			foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
-				echo "<div>".$shipment_shipment_rate."</div>\n";
+	<fieldset>
+		<?php
+		// if only one Shipment , should be checked by default
+		foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
+			if (is_array($shipment_shipment_rates)) {
+				foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
+					$shipment_shipment_rate = str_replace('input', 'input onClick="setShipment();"', $shipment_shipment_rate);
+					echo "<div>" . $shipment_shipment_rate . "</div>\n";
+				}
 			}
 		}
-	}
-	echo "</fieldset>\n";
-	} else {
-		echo "<div class='amazonError'>".$this->shipment_not_found_text."</div>";
-	}
+		?>
+	</fieldset>
+<?php
+}
 
 
 
-	?>
+?>
 

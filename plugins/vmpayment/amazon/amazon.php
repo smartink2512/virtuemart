@@ -34,7 +34,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	var $_amazonOrderReferenceId = NULL;
 	const AMAZON_EMPTY_USER_FIELD = "amazon";
 	const AMAZON_EMPTY_USER_FIELD_EMAIL = "dummy@domain.com";
-	const AUTHORIZE_TRANSACTION_TIMEOUT = 5;
+	const AUTHORIZE_TRANSACTION_TIMEOUT = 60;
 	var $_currentMethod = NULL;
 	var $languages_region = array(
 		'en' => 'UK',
