@@ -630,6 +630,7 @@ class VirtueMartModelCategory extends VmModel {
 		$menuCatid = (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
 		if ($menuCatid == $virtuemart_category_id) return ;
 		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$menuCatid));
+
 		foreach ($parents_id as $id ) {
 			$q = 'SELECT `category_name`,`virtuemart_category_id`
 				FROM  `#__virtuemart_categories_'.VMLANG.'`
@@ -674,7 +675,7 @@ class VirtueMartModelCategory extends VmModel {
 				if ($parent->child) $ids[] = $parent->child;
 				if($parent->parent !== 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $parent->parent) {
 					$this->categoryRecursed++;
-					$this->getCategoryRecurse($parent->parent,$catMenuId,$ids);
+					$ids = $this->getCategoryRecurse($parent->parent,$catMenuId,$ids);
 				}
 			}
 		}
