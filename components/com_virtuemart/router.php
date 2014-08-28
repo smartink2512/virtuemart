@@ -828,7 +828,7 @@ class vmrouterHelper {
 		$db = JFactory::getDBO();
 
 		$parents_id = array_reverse(VmModel::getModel('category')->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
-		$parents_id[] = $virtuemart_category_id;
+
 		foreach ($parents_id as $id ) {
 			if(!isset($categoryNamesCache[$id])){
 
@@ -852,7 +852,6 @@ class vmrouterHelper {
 		} else {
 			return strtolower(implode ('/', $strings ) );
 		}
-
 
 	}
 
