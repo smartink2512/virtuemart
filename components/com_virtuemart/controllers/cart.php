@@ -251,7 +251,7 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @author Max Milbers
 	 */
-	public function setshipment($redirect=true) {
+	public function setshipment() {
 
 		/* Get the shipment ID from the cart */
 
@@ -290,7 +290,6 @@ class VirtueMartControllerCart extends JController {
 		
 			$this->display();
 		
-		return true;
 
 	}
 
@@ -316,7 +315,7 @@ class VirtueMartControllerCart extends JController {
 	 * @author Oscar van Eijk
 	 * @author Valerie Isaksen
 	 */
-	function setpayment($redirect=true) {
+	function setpayment() {
 
 		// Get the payment id of the cart
 		//Now set the payment rate into the cart
