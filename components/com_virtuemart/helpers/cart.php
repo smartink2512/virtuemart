@@ -268,7 +268,7 @@ class VirtueMartCart {
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 		$sessionCart->customer_number						= $this->customer_number;
 		$sessionCart->layout						        = $this->layout;
-		$sessionCart->layoutPath						        = $this->layoutPath;
+		$sessionCart->layoutPath						    = $this->layoutPath;
 
 		if(!empty($sessionCart->pricesUnformatted)){
 			foreach($sessionCart->pricesUnformatted as &$prices){

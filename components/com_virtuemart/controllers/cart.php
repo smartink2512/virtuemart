@@ -271,28 +271,25 @@ class VirtueMartControllerCart extends JController {
 					// Plugin completed successfull; nothing else to do
 					$cart->setCartIntoSession();
 					break;
-				} else if ($_retVal === false and $redirect) {
+				} else if ($_retVal === false) {
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
 					break;
-				} else {
-					return false;
+				
 				}
 			}
 
 			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1)) {
-				if ($redirect) {
+				
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE) );
-				} else {
-					return false;
-				}
+			
 
 			}
 		}
-		if ($redirect) {
+		
 			$this->display();
-		}
+		
 		return true;
 
 	}
@@ -341,30 +338,23 @@ class VirtueMartControllerCart extends JController {
 					// Plugin completed succesfull; nothing else to do
 					$cart->setCartIntoSession();
 					break;
-				} else if ($_retVal === false and $redirect) {
+				} else if ($_retVal === false ) {
 			        $app = JFactory::getApplication();
 			        $app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
 			        break;
-				} else {
-					return false;
+				
 				}
 			}
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
 
 			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1) ) {
-				if ($redirect) {
+			
 					$app = JFactory::getApplication();
 					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE), $msg);
-				} else {
-					return false;
-				}
-
+				} 
 			}
-		}
 
-		if (!$redirect) {
 			$this->display();
-		}
 	}
 
 	/**
