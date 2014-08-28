@@ -176,7 +176,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 			//vmdebug('saveData storeAddress only');
 		} else {
 
-			if($currentUser->guest==1 and (isset($_POST['register']) or !$cart )){
+			if($currentUser->guest==1 and (isset($_POST['register']) or !$cartObj )){
 				if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT') == FALSE) {
 					$msg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
 					if($cartObj->_fromCart) {
@@ -190,12 +190,12 @@ class VirtueMartControllerUser extends JControllerLegacy
 				}
 			}
 
-			if(!$cart or ($currentUser->guest==1 and isset($_POST['register'])) ){
+			if(!$cartObj or ($currentUser->guest==1 and isset($_POST['register'])) ){
 				$ret = $userModel->store($data);
 			}
 
 			//if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) ){
-			if($currentUser->guest==1 and (isset($_POST['register']) or !$cart )){
+			if($currentUser->guest==1 and (isset($_POST['register']) or !$cartObj )){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );

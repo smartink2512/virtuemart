@@ -80,12 +80,14 @@ function virtuemartBuildRoute(&$query) {
 				unset($query['keyword']);
 			}
 			if ( isset($query['virtuemart_category_id']) ) {
+				$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
+				//vmdebug('my categoryRoute '.$query['virtuemart_category_id'],$categoryRoute);
+				if ($categoryRoute->route) {
+					$segments[] = $categoryRoute->route;
+				}
 				if (isset($jmenu['virtuemart_category_id'][ $query['virtuemart_category_id'] ] ) )
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$query['virtuemart_category_id']];
 				else {
-					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
-
-					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 					//http://forum.virtuemart.net/index.php?topic=121642.0
 					if (!empty($categoryRoute->itemId)) {
 						$query['Itemid'] = $categoryRoute->itemId;
@@ -782,14 +784,14 @@ class vmrouterHelper {
 			$category->itemId = 0;
 			$menuCatid = 0 ;
 			$ismenu = false ;
-
+			$catModel = VmModel::getModel('category');
 			// control if category is joomla menu
 			if (isset($this->menu['virtuemart_category_id'])) {
 				if (isset( $this->menu['virtuemart_category_id'][$virtuemart_category_id])) {
 					$ismenu = true;
 					$category->itemId = $this->menu['virtuemart_category_id'][$virtuemart_category_id] ;
 				} else {
-					$CatParentIds = VmModel::getModel('category')->getCategoryRecurse($virtuemart_category_id,0) ;
+					$CatParentIds = $catModel->getCategoryRecurse($virtuemart_category_id,0) ;
 					/* control if parent categories are joomla menu */
 					foreach ($CatParentIds as $CatParentId) {
 						// No ? then find the parent menu categorie !
@@ -844,7 +846,6 @@ class vmrouterHelper {
 			} else {
 				$strings[] = $categoryNamesCache[$id];
 			}
-
 		}
 
 		if(function_exists('mb_strtolower')){

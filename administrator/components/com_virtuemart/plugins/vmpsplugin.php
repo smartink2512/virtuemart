@@ -580,7 +580,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
-			. 'WHERE `order_number`="'.$db->getEscaped($order_number).'"';
+			. 'WHERE `order_number`="'.$db->escape($order_number).'"';
 
 		$db->setQuery ($q);
 		$methodData = $db->loadObject ();
@@ -599,7 +599,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
-			. 'WHERE `order_number`="'.$db->getEscaped($order_number).'"';
+			. 'WHERE `order_number`="'.$db->escape($order_number).'"';
 
 		$db->setQuery ($q);
 		$methodData = $db->loadObjectList ();

@@ -55,7 +55,7 @@ abstract class CouponHelper
 				. ', `coupon_value_valid` '
 				. ', `coupon_used` '
 				. 'FROM `#__virtuemart_coupons` '
-				. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
+				. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
 			$_db->setQuery($_q);
 			$couponData = $_db->loadObject();
 		}

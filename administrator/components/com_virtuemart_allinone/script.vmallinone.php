@@ -693,7 +693,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 						$manifest_cache = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $module . '.xml'));
 					}
 					$q = 'INSERT INTO `#__extensions` 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `ordering`) VALUES
-																	( "' . $module . '" , "module", "' . $module . '", "", "'.$client_id.'", "1","' . $access . '", "0", "' . $db->getEscaped ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
+																	( "' . $module . '" , "module", "' . $module . '", "", "'.$client_id.'", "1","' . $access . '", "0", "' . $db->escape ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
 				} else {
 
 					/*					$q = 'UPDATE `#__extensions` SET 	`name`= "'.$module.'",

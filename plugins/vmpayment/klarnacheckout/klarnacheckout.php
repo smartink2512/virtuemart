@@ -431,7 +431,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		$return = true;
 		$db = JFactory::getDBO();
-		$q = 'SELECT ' . $db->getEscaped('country_2_code') . '  , ' . $db->getEscaped('country_3_code') . ' FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$method->purchase_country;
+		$q = 'SELECT ' . $db->escape('country_2_code') . '  , ' . $db->escape('country_3_code') . ' FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$method->purchase_country;
 		$db->setQuery($q);
 		$country = $db->loadObject();
 		if (!$country) {
