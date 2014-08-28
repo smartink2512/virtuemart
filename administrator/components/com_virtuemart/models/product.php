@@ -576,7 +576,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$lastCatId = ShopFunctionsF::getLastVisitedCategoryId ();
 			$lastManId = ShopFunctionsF::getLastVisitedManuId ();
-			vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$lastCatId,$manid);
+			//vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$lastCatId,$manid);
 			if( !empty($cateid) and $cateid != -1) {
 				$gCatId = $cateid;
 			} else if( !empty($lastCatId) ) {

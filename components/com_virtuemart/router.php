@@ -78,12 +78,15 @@ function virtuemartBuildRoute(&$query) {
 				unset($query['keyword']);
 			}
 			if ( isset($query['virtuemart_category_id']) ) {
+
+				$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
+				//vmdebug('my categoryRoute '.$query['virtuemart_category_id'],$categoryRoute);
+				if ($categoryRoute->route) {
+					$segments[] = $categoryRoute->route;
+				}
 				if (isset($jmenu['virtuemart_category_id'][ $query['virtuemart_category_id'] ] ) )
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$query['virtuemart_category_id']];
 				else {
-
-					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
-					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 					//http://forum.virtuemart.net/index.php?topic=121642.0
 					/*$Itemid = vRequest::get('Itemid',false);
 					if($Itemid){
@@ -809,6 +812,7 @@ class vmrouterHelper {
 				}
 				$category->route .= $this->CategoryName[$virtuemart_category_id] ;
 				if ($menuCatid == 0  && $this->menu['virtuemart']) $category->itemId = $this->menu['virtuemart'] ;
+
 			}
 			self::$_catRoute[$virtuemart_category_id . $this->vmlang] = $category;
 		}
@@ -824,7 +828,7 @@ class vmrouterHelper {
 		$db = JFactory::getDBO();
 
 		$parents_id = array_reverse(VmModel::getModel('category')->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
-
+		$parents_id[] = $virtuemart_category_id;
 		foreach ($parents_id as $id ) {
 			if(!isset($categoryNamesCache[$id])){
 
