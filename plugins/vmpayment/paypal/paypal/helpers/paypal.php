@@ -812,6 +812,10 @@ class PaypalHelperPaypal {
 		}
 	}
 
+	function RefundTransaction ($payment) {
+		return false;
+	}
+
 	function handleResponse () {
 		if ($this->response) {
 			if ($this->response['ACK'] == 'Failure' || $this->response['ACK'] == 'FailureWithWarning') {
