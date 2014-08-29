@@ -321,7 +321,7 @@ class VirtueMartControllerCart extends JController {
 	 * @author Oscar van Eijk
 	 * @author Valerie Isaksen
 	 */
-	function setpayment($redirect=false) {
+	function setpayment($redirect=true) {
 
 		// Get the payment id of the cart
 		//Now set the payment rate into the cart

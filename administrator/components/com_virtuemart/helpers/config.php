@@ -873,7 +873,7 @@ class VmConfig {
 			// try plugins
 			JPluginHelper::importPlugin('vmuserfield');
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('plgVmInitialize', array());
+			$dispatcher->trigger('plgVmInitialise', array());
 
 			return self::$_jpConfig;
 		}
