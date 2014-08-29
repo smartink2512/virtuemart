@@ -250,7 +250,7 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @author Max Milbers
 	 */
-	public function setshipment() {
+	public function setshipment($redirect=true) {
 
 		/* Get the shipment ID from the cart */
 
@@ -271,24 +271,31 @@ class VirtueMartControllerCart extends JController {
 					$cart->setCartIntoSession();
 					break;
 				} else if ($_retVal === false) {
-					$mainframe = JFactory::getApplication();
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
-					break;
+					if ($redirect) {
+						$mainframe = JFactory::getApplication();
+						$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
+						break;
+					} else {
+						return;
+					}
+
 				
 				}
 			}
 
 			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1)) {
-				
+				if ($redirect) {
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE) );
-			
+				} else {
+					return;
+				}
 
 			}
 		}
-		
+		if ($redirect) {
 			$this->display();
-		
+		}
 
 	}
 
@@ -314,7 +321,7 @@ class VirtueMartControllerCart extends JController {
 	 * @author Oscar van Eijk
 	 * @author Valerie Isaksen
 	 */
-	function setpayment() {
+	function setpayment($redirect=false) {
 
 		// Get the payment id of the cart
 		//Now set the payment rate into the cart
@@ -337,22 +344,31 @@ class VirtueMartControllerCart extends JController {
 					$cart->setCartIntoSession();
 					break;
 				} else if ($_retVal === false ) {
+					if ($redirect) {
 			        $app = JFactory::getApplication();
 			        $app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
 			        break;
+				} else {
+					return;
+				}
 				
 				}
 			}
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
 
 			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1) ) {
-			
+				if ($redirect) {
 					$app = JFactory::getApplication();
 					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE), $msg);
+			} else {
+				return;
+			}
 				} 
 			}
 
+		if ($redirect) {
 			$this->display();
+		}
 	}
 
 	/**
