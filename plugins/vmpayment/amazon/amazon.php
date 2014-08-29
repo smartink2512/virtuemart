@@ -969,6 +969,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 
 	/**
+	 * If we are going back to the cart beause of InvalidPaymentMethod, then the order reference is not anylonger in a draft state
 	 * @return bool
 	 */
 	private function setOrderReferenceDetails ($client, $cart) {
@@ -1098,6 +1099,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return null|string
 	 */
 	private function getSellerNote () {
+		return NULL;
 		return $this->getSetOrderReferenceSandboxSimulationString();
 	}
 
@@ -1105,7 +1107,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return string
 	 */
 	private function getSellerAuthorizationNote () {
-		if (empty($this->_currentMethod->sandbox_error_simulation)) {
+		if (empty($this->_currentMethod->sandbox_error_simulation_auth)) {
 			return NULL;
 		}
 		return $this->getAuthorizeSandboxSimulationString();
@@ -1116,16 +1118,17 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return null|string
 	 */
 	private function getSellerRefundNote () {
-		if (empty($this->_currentMethod->sandbox_error_simulation)) {
+		if (empty($this->_currentMethod->sandbox_error_simulation_refund)) {
 			return NULL;
 		}
-		return $this->getRefundSandboxSimulationString();
+		return $this->getSandboxSimulationString($this->_currentMethod->sandbox_error_simulation_refund);
 	}
 
 	/**
 	 *
 	 */
 	private function getSetOrderReferenceSandboxSimulationString () {
+		return NULL;
 		if (empty($this->_currentMethod->sandbox_error_simulation)) {
 			return NULL;
 		}
@@ -1144,15 +1147,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 *
 	 */
 	private function getAuthorizeSandboxSimulationString () {
-		$authorizeSandboxSimulation = array(
-			'InvalidPaymentMethod',
-			'PaymentMethodNotAllowed',
-			'AmazonRejected',
-			'TransactionTimedOut',
-			'ExpiredUnused',
-			'AmazonClosed',
-		);
-		return $this->getSandboxSimulationString($authorizeSandboxSimulation, $this->_currentMethod->sandbox_error_simulation);
+		if (empty($this->_currentMethod->sandbox_error_simulation_auth)) {
+			return NULL;
+		}
+		return $this->getSandboxSimulationString($this->_currentMethod->sandbox_error_simulation_auth);
 	}
 
 	/**
@@ -1169,24 +1167,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 *
 	 */
 	private function getCaptureSandboxSimulationString () {
-		$captureSandboxSimulation = array(
-			'Pending',
-			'AmazonRejected',
-			'AmazonClosed',
-		);
-		return $this->getSandboxSimulationString($captureSandboxSimulation, $this->_currentMethod->sandbox_error_simulation);
+
+		return $this->getSandboxSimulationString($this->_currentMethod->sandbox_error_simulation_capture);
 	}
 
-	/**
-	 *
-	 */
-	private function getRefundSandboxSimulationString () {
-
-		$refundSandboxSimulation = array(
-			'AmazonRejected'
-		);
-		return $this->getSandboxSimulationString($refundSandboxSimulation, $this->_currentMethod->sandbox_error_simulation);
-	}
 
 	/**
 	 *
@@ -1194,32 +1178,26 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @param $reason
 	 * @return null|string
 	 */
-	private function getSandboxSimulationString ($authorizedSimulationReasons, $reason) {
-		if ($this->_currentMethod->environment != 'sandbox' OR $this->_currentMethod->sandbox_error_simulation == '') {
+	private function getSandboxSimulationString ($reason) {
+		if ($this->_currentMethod->environment != 'sandbox') {
 			return NULL;
 		}
 
-		if (in_array($this->_currentMethod->sandbox_error_simulation, $authorizedSimulationReasons)) {
 
-			$sandboxSimulationStrings = array(
-				'InvalidPaymentMethod' => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"InvalidPaymentMethod"}}',
-				//'PaymentMethodNotAllowed' => '{"SandboxSimulation": {"State":"Declined","ReasonCode":"InvalidPaymentMethod","PaymentMethodUpdateTimeInMins":100}}',
-				'AmazonRejected'       => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"AmazonRejected" }}',
-				'TransactionTimedOut'  => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"TransactionTimedOut"}}',
-				'ExpiredUnused'        => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"ExpiredUnused" ,"ExpirationTimeInMins":1}}',
-				'AmazonClosed'         => '{"SandboxSimulation":{"State":"Closed", "ReasonCode":"AmazonClosed"}}',
-				'Pending'              => '{"SandboxSimulation":{"State":"Pending"}}',
+		$sandboxSimulationStrings = array(
+			'InvalidPaymentMethod' => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"InvalidPaymentMethod"}}',
+			//'PaymentMethodNotAllowed' => '{"SandboxSimulation": {"State":"Declined","ReasonCode":"InvalidPaymentMethod","PaymentMethodUpdateTimeInMins":100}}',
+			'AmazonRejected'       => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"AmazonRejected" }}',
+			'TransactionTimedOut'  => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"TransactionTimedOut"}}',
+			'ExpiredUnused'        => '{"SandboxSimulation":{"State":"Declined","ReasonCode":"ExpiredUnused" ,"ExpirationTimeInMins":1}}',
+			'AmazonClosed'         => '{"SandboxSimulation":{"State":"Closed", "ReasonCode":"AmazonClosed"}}',
+			'Pending'              => '{"SandboxSimulation":{"State":"Pending"}}',
 
-			);
-			//$simString = urlencode('{"SandboxSimulation": {"State":"Declined","ReasonCode":"InvalidPaymentMethod","PaymentMethodUpdateTimeInMins":100}}'); // softDecline / InvalidPaymentMethod
+		);
 
-			$simulationString = $sandboxSimulationStrings[$reason];
-			//$app = JFactory::getApplication();
-			//$app->enqueueMessage(vmText::_('VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_'.strtoupper($this->_currentMethod->sandbox_error_simulation)));
-			//$app->enqueueMessage($simulationString);
-			return urlencode($simulationString);
-		}
-		return NULL;
+		$simulationString = $sandboxSimulationStrings[$reason];
+		return $simulationString;
+
 	}
 
 	/**
@@ -1304,55 +1282,80 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @param $order
 	 */
 	private function getAuthorization ($client, $cart, $order) {
+		$shouldRetry = false;
+		$retries = 0;
+
+
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_AuthorizeRequest');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_Price');
 		$this->loadHelperClass('amazonHelperAuthorizeResponse');
-
-		$authorizeRequest = new OffAmazonPaymentsService_Model_AuthorizeRequest();
-		$authorizeRequest->setAmazonOrderReferenceId($this->_amazonOrderReferenceId);
-		$authorizeRequest->setSellerId($this->_currentMethod->sellerId);
-		$authorizeRequest->setAuthorizationReferenceId($order['details']['BT']->order_number);
-		$authorizeRequest->setSellerAuthorizationNote($this->getSellerAuthorizationNote());
-		$authorizeRequest->setTransactionTimeout($this->getAuthorizationTransactionTimeout());
-		// directly do the capture without the need to call the Capture Request
-		if ($this->isCaptureImmediate($cart)) {
-			$authorizeRequest->setCaptureNow(true);
-		} else {
-			$authorizeRequest->setCaptureNow(false);
-		}
-		$authorizeRequest->setAuthorizationAmount(new OffAmazonPaymentsService_Model_Price());
-		$authorizeRequest->getAuthorizationAmount()->setAmount($this->getTotalInPaymentCurrency($client, $order['details']['BT']->order_total, $cart->pricesCurrency));
-		$authorizeRequest->getAuthorizationAmount()->setCurrencyCode($this->getCurrencyCode3($client));
-
-		try {
-			$authorizeResponse = $client->authorize($authorizeRequest);
-			$amazonAuthorizationId = $authorizeResponse->getAuthorizeResult()->getAuthorizationDetails()->getAmazonAuthorizationId();
-			$this->debugLog("<pre>" . var_export($authorizeRequest, true) . "</pre>", __FUNCTION__, 'debug');
-			$this->debugLog("<pre>" . var_export($authorizeResponse, true) . "</pre>", __FUNCTION__, 'debug');
-
-		} catch (Exception $e) {
-			$msg = "An exception was thrown when trying to do the authorization:" . $e->getMessage() . "\n" . $e->getTraceAsString();
-			while ($e = $e->getPrevious()) {
-				$msg .= ("Caused by: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "");
-				$msg .= "\n";
+		do {
+			$authorizeRequest = new OffAmazonPaymentsService_Model_AuthorizeRequest();
+			$authorizeRequest->setAmazonOrderReferenceId($this->_amazonOrderReferenceId);
+			$authorizeRequest->setSellerId($this->_currentMethod->sellerId);
+			$authorizeRequest->setAuthorizationReferenceId($order['details']['BT']->order_number);
+			$authorizeRequest->setSellerAuthorizationNote($this->getSellerAuthorizationNote());
+			$authorizeRequest->setTransactionTimeout($this->getAuthorizationTransactionTimeout());
+			// directly do the capture without the need to call the Capture Request
+			if ($this->isCaptureImmediate($cart)) {
+				$authorizeRequest->setCaptureNow(true);
+			} else {
+				$authorizeRequest->setCaptureNow(false);
 			}
-			$this->debugLog($msg, __FUNCTION__, 'error');
-			$this->amazonError(__FUNCTION__ . ' ' . $msg);
-			return false;
-		}
+			$authorizeRequest->setAuthorizationAmount(new OffAmazonPaymentsService_Model_Price());
+			$authorizeRequest->getAuthorizationAmount()->setAmount($this->getTotalInPaymentCurrency($client, $order['details']['BT']->order_total, $cart->pricesCurrency));
+			$authorizeRequest->getAuthorizationAmount()->setCurrencyCode($this->getCurrencyCode3($client));
 
-		$this->updateAuthorizeBillingAddressInOrder($authorizeResponse, $order);
+			try {
+				$authorizeResponse = $client->authorize($authorizeRequest);
+				$amazonAuthorizationId = $authorizeResponse->getAuthorizeResult()->getAuthorizationDetails()->getAmazonAuthorizationId();
+				$this->debugLog("<pre>" . var_export($authorizeRequest, true) . "</pre>", __FUNCTION__, 'debug');
+				$this->debugLog("<pre>" . var_export($authorizeResponse, true) . "</pre>", __FUNCTION__, 'debug');
 
-		$amazonHelperAuthorizeResponse = new amazonHelperAuthorizeResponse($authorizeResponse, $this->_currentMethod);
-		$amazonState = $amazonHelperAuthorizeResponse->onResponseUpdateOrderHistory($order);
+			} catch (Exception $e) {
+				$msg = "An exception was thrown when trying to do the authorization:" . $e->getMessage() . "\n" . $e->getTraceAsString();
+				while ($e = $e->getPrevious()) {
+					$msg .= ("Caused by: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "");
+					$msg .= "\n";
+				}
+				$this->debugLog($msg, __FUNCTION__, 'error');
+				$this->amazonError(__FUNCTION__ . ' ' . $msg);
+				return false;
+			}
 
-		$storeInternalData = $amazonHelperAuthorizeResponse->getStoreInternalData();
-		$this->storeAmazonInternalData($order, $authorizeRequest, $authorizeResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
+			$this->updateAuthorizeBillingAddressInOrder($authorizeResponse, $order);
 
-		if ($amazonState == 'Declined') {
-			$this->handledDeclinedAuthorizationResponse($authorizeResponse);
+			$amazonHelperAuthorizeResponse = new amazonHelperAuthorizeResponse($authorizeResponse, $this->_currentMethod);
+			$amazonState = $amazonHelperAuthorizeResponse->onResponseUpdateOrderHistory($order);
 
-		}
+			$storeInternalData = $amazonHelperAuthorizeResponse->getStoreInternalData();
+			$this->storeAmazonInternalData($order, $authorizeRequest, $authorizeResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
+
+			$reasonCode = $authorizeResponse->getAuthorizeResult()->getAuthorizationDetails()->getAuthorizationStatus()->getReasonCode();
+
+			if ($amazonState == 'Declined' && $reasonCode == 'InvalidPaymentMethod' && $this->_currentMethod->soft_decline) {
+					//$shouldRetry = true;
+				// TODO
+					//$this->renderAddressbookWallet();
+
+			} elseif (($amazonState == 'Open' && $reasonCode == 'AmazonRejected') or ($amazonState == 'Declined' && $reasonCode == 'TransactionTimedOut')) {
+				if ($retries < 2) {
+					$shouldRetry = true;
+					$retries++;
+				} else {
+						$this->setOutConfirmOrder($cart);
+						$this->leaveAmazonCheckout();
+						$this->redirectToCart(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'), true);
+				}
+
+			} elseif ($amazonState == 'Declined') {
+				$this->setOutConfirmOrder($cart);
+				$this->leaveAmazonCheckout();
+				$this->redirectToCart(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'), true);
+			}
+		} while ($shouldRetry);
+
+
 		return $amazonAuthorizationId;
 	}
 
@@ -1370,7 +1373,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return;
 		}
 		$authorizationBillingAddress = $authorizationDetails->getAuthorizationBillingAddress();
-		$BT = $this->getUserInfoFromAmazon($authorizationBillingAddress );
+		$BT = $this->getUserInfoFromAmazon($authorizationBillingAddress);
 
 		$orderModel = VmModel::getModel('orders');
 		$BT['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
@@ -1402,24 +1405,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			} else {
 				return self::AUTHORIZE_TRANSACTION_TIMEOUT;
 			}
-		}
-	}
-
-
-	private function handledDeclinedAuthorizationResponse ($authorizeResponse) {
-		$authorizeResult = $authorizeResponse->getAuthorizeResult();
-		$authorizationDetails = $authorizeResult->getAuthorizationDetails();
-		$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
-		if ($authorizationStatus->isSetReasonCode()) {
-			$reasonCode = $authorizationStatus->getReasonCode();
-		}
-
-		if ($reasonCode == 'InvalidPaymentMethod') {
-			$this->onErrorRedirectToCart(vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD'));
-		} elseif ($reasonCode == 'AmazonRejected' or $reasonCode == 'ProcessingFailure') {
-			// should try again later ...
-			// Redirect to cart and and buyer can select another payment method (VM)
-			$this->leaveAmazonCheckout(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'));
 		}
 	}
 
@@ -1835,14 +1820,14 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 						$obj = new $vmClassName($amazon_data, $this->_currentMethod);
 						$contents = $obj->getContents();
 						if (!empty($contents)) {
-							$html .= '<tr><td></td><td>' . '
-<a href="#" class="amazonPrintOpener" rel="' . $payment->id . '" >
-	<div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="amazonPrint_' . $payment->id . '">';
+							$html .= '<tr><td colspan="2">' ;
+							//$html .= '<a href="#" class="amazonDetailsOpener" rel="' . $payment->id . '" >';
+							//$html .= '<div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="amazonDetails_' . $payment->id . '">';
 							$html .= $contents;
-							$html .= ' </div>
-	<span class="icon-nofloat vmicon vmicon-16-xml"></span>&nbsp;';
-							$html .= vmText::_('VMPAYMENT_' . $this->_name . '_VIEW_TRANSACTION_PRINT');
-							$html .= '  </a>';
+							//$html .= ' </div>';
+							$html .= ' <span class="icon-nofloat vmicon vmicon-16-xml"></span>&nbsp;';
+							$html .= vmText::_('VMPAYMENT_AMAZON_VIEW_TRANSACTION_DETAILS');
+							//$html .= '  </a>';
 							$html .= ' </td></tr>';
 						}
 					}
@@ -1856,7 +1841,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 						$html .= ' </div>
 	<span class="icon-nofloat vmicon vmicon-16-xml"></span>&nbsp;';
-						$html .= vmText::_('VMPAYMENT_' . $this->_name . '_VIEW_TRANSACTION_LOG');
+						$html .= vmText::_('VMPAYMENT_AMAZON_VIEW_TRANSACTION_LOG');
 						$html .= '  </a>';
 						$html .= ' </td></tr>';
 					}
@@ -1877,9 +1862,9 @@ jQuery().ready(function($) {
 		$('#amazonLog_'+logId).toggle();
 		return false;
 	});
-	$('.amazonPrintOpener').click(function() {
+	$('.amazonDetailsOpener').click(function() {
 		var logId = $(this).attr('rel');
-		$('#amazonPrint_'+logId).toggle();
+		$('#amazonDetails_'+logId).toggle();
 		return false;
 	});
 });";
@@ -2073,6 +2058,7 @@ jQuery().ready(function($) {
 			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 		}
 		VmConfig::loadConfig();
+		vmConfig::set('oncheckout_opc', $this->getVMOPCConfigFromSession());
 		$cart = VirtueMartCart::getCart();
 		$cart->layout = VmConfig::get('cartlayout', 'default');
 		$cart->layoutPath = '';
@@ -2090,8 +2076,15 @@ jQuery().ready(function($) {
 	}
 
 
-	private function setCartLayout ($cart,$intoSession=true) {
-		$cart->layoutPath = vmPlugin::getTemplatePath ($this->_name,  'payment', 'cart');
+	private function setCartLayout ($cart, $intoSession = true) {
+		if (!class_exists('VmConfig')) {
+			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+		}
+		VmConfig::loadConfig();
+		$olgConfig = vmConfig::get('oncheckout_opc', true);
+		$this->saveVMOPCConfigInSession($olgConfig);
+		vmConfig::set('oncheckout_opc', true);
+		$cart->layoutPath = vmPlugin::getTemplatePath($this->_name, 'payment', 'cart');
 		$cart->layout = 'cart';
 		if ($intoSession) {
 			$cart->setCartIntoSession();
@@ -2603,6 +2596,33 @@ jQuery().ready(function($) {
 			}
 		}
 		return $url;
+	}
+
+
+	/**
+	 * save the Old Config to force the OPC behaviour in VM
+	 * @param $cart
+	 */
+	private function saveVMOPCConfigInSession ($oldConfig) {
+		$session = JFactory::getSession();
+		$sessionAmazon = $session->get('amazon', 0, 'vm');
+		$sessionAmazonData = unserialize($sessionAmazon);
+		$sessionAmazonData['oldConfig'] = $oldConfig;
+		$session->set('amazon', serialize($sessionAmazonData), 'vm');
+
+	}
+
+	/**
+	 * save the Old Config to force the OPC behaviour in VM
+	 * @param $cart
+	 */
+	private function getVMOPCConfigFromSession () {
+		$session = JFactory::getSession();
+		$sessionAmazon = $session->get('amazon', 0, 'vm');
+		$sessionAmazonData = unserialize($sessionAmazon);
+		$oldConfig = $sessionAmazonData['oldConfig'];
+		return $oldConfig;
+
 	}
 
 

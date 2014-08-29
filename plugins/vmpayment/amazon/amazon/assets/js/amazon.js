@@ -42,100 +42,149 @@ var amazonPayment = {
 
         },
 
+        init: function (sellerId, amazonOrderReferenceId, width, height, isMobile, virtuemart_paymentmethod_id, displayMode) {
+            amazonPayment.sellerId = sellerId;
+            amazonPayment.amazonOrderReferenceId = amazonOrderReferenceId;
+            amazonPayment.width = width;
+            amazonPayment.height = height;
+            amazonPayment.isMobile = isMobile;
+            amazonPayment.virtuemart_paymentmethod_id = virtuemart_paymentmethod_id;
+            amazonPayment.displayMode = displayMode;
+        },
 
-        showAmazonAddress: function (sellerId, amazonOrderReferenceId, width, height, isMobile, virtuemart_paymentmethod_id, displayMode) {
-            console.log("amazonShowAddress: " + amazonOrderReferenceId);
+        showAmazonWallet: function () {
+            window.onError = null;
+            console.log("amazonShowWallet: " + amazonPayment.amazonOrderReferenceId);
+            new OffAmazonPayments.Widgets.Wallet({
+                sellerId: amazonPayment.sellerId,
+                amazonOrderReferenceId: amazonPayment.amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
+                displayMode: amazonPayment.displayMode,
+                design: {
+                    size: {width: amazonPayment.width, height: amazonPayment.height}
+                },
+                onPaymentSelect: function (orderReference) {
+                    haveWallet = true;
+                },
+                onError: function (error) {
+                    amazonPayment.onErrorAmazon('amazonShowWallet', error);
+                }
+            }).bind("amazonWalletWidgetDiv");
+
+        },
+
+        showAmazonAddress: function () {
+            console.log("amazonShowAddress: " + amazonPayment.amazonOrderReferenceId);
             new OffAmazonPayments.Widgets.AddressBook({
-                sellerId: sellerId,
-                amazonOrderReferenceId: amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
+                sellerId: amazonPayment.sellerId,
+                amazonOrderReferenceId: amazonPayment.amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
                 onAddressSelect: function (orderReference) {
-                    var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=updateCartWithAmazonAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + vmLang;
+                    var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=updateCartWithAmazonAddress&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang;
                     //document.id('amazonShipmentNotFoundDiv').set('html', '');
-                    amazonPayment.amazonLoading();
+                    amazonPayment.startLoading();
                     jQuery.getJSON(url,
                         function (datas, textStatus) {
                             var errormsg = '';
                             var checkoutFormSubmit = document.getElementById("checkoutFormSubmit");
                             checkoutFormSubmit.className = 'vm-button-correct';
                             checkoutFormSubmit.removeAttribute('disabled');
-                            if (datas.reload === 'addressUpdated') {
-                                amazonPayment.updateCart(virtuemart_paymentmethod_id);
-                            }
+                            amazonPayment.updateCart();
+                            amazonPayment.showAmazonWallet();
                             if (typeof datas.error_msg != 'undefined' && datas.error_msg != '') {
                                 errormsg = datas.error_msg;
                                 checkoutFormSubmit.className = 'vm-button';
                                 checkoutFormSubmit.setAttribute('disabled', 'true');
                                 document.id('amazonShipmentsDiv').style.display = 'none';
-                                amazonPayment.amazonStopLoading();
+                                amazonPayment.stopLoading();
                             }
                             document.id('amazonErrorDiv').set('html', errormsg);
-                            if (datas.reload === 'sameAddress') {
-                                amazonPayment.amazonStopLoading();
-                            }
                         }
                     );
+                    amazonPayment.stopLoading();
 
                 },
-                displayMode: displayMode,
+                displayMode: amazonPayment.displayMode,
                 design: {
-                    size: {width: width, height: height}
+                    size: {width:amazonPayment.width, height: amazonPayment.height}
                 },
                 onError: function (error) {
-                    amazonPayment.onErrorAmazon('amazonShowAddress', error, virtuemart_paymentmethod_id);
+                    amazonPayment.onErrorAmazon('amazonShowAddress', error, amazonPayment.virtuemart_paymentmethod_id);
                 },
             }).bind("amazonAddressBookWidgetDiv");
 
         },
 
-        amazonLoading: function () {
-            var amazonLoading = vmSiteurl + 'plugins/vmpayment/amazon/amazon/assets/images/loader.gif';
+        startLoading: function () {
+            var amazonLoading = vmSiteurl + '/components/com_virtuemart/assets/images/facebox/loading.gif';
             document.id('amazonLoading').position('center');
             document.id('amazonLoading').setStyle('z-index', '200');
             document.id('amazonCartDiv').setStyle('opacity', 0.75);
             document.id('amazonLoading').set('html', '<img src="' + amazonLoading + '">');
         },
 
-        amazonStopLoading: function () {
+        stopLoading: function () {
             document.id('amazonLoading').set('html', '');
             document.id('amazonCartDiv').setStyle('opacity', 1);
         },
 
-        onAmazonAddressSelect: function (virtuemart_paymentmethod_id) {
+        onAmazonAddressSelect: function () {
             console.log('onAddressSelect');
-            amazonPayment.updateCartWithAmazonAddress(virtuemart_paymentmethod_id);
+            amazonPayment.updateCartWithAmazonAddress();
         },
 
-
-        updateCartWithAmazonAddress: function (virtuemart_paymentmethod_id) {
-            var url = 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=updateCartWithAmazonAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id;
-
-            jQuery.ajax({
-                url: url,
-                type: 'POST', // Notice
-                headers: {
-                    "cache-control": "no-cache"
-                },
-                data: JSON.stringify(),
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-            }).done(function (data) {
-                    console.log('updateCartWithAmazonAddress DONE  SUCCESS' + data.isSameAddress);
-                    if (data.isSameAddress === false) {
-                        console.log('reload then');
-                        var reloadurl = 'index.php?option=com_virtuemart&view=cart';
-                        window.location.href = reloadurl;
-                    }
-                });
-
-            console.log('updateCartWithAmazonAddress OUSIDE  SUCCESS');
-        },
 
 
         updateCart: function () {
-            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS' + vmLang;
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS&virtuemart_paymentmethod_id='+amazonPayment.virtuemart_paymentmethod_id + vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = "";
+                    console.log('updateCart:' + datas.msg.length);
+                    if (datas.msg) {
+                        datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
+                        datas.msg = datas.msg.replace('amazonShipmentNotFoundDiv', 'amazonShipmentNotFoundDivHide');
+                        for (var i = 0; i < datas.msg.length; i++) {
+                            cartview += datas.msg[i].toString();
+                        }
+                        document.id('amazonCartDiv').set('html', cartview);
+                        document.id('amazonHeaderHide').set('html', '');
+                        document.id('amazonShipmentNotFoundDivHide').set('html', '');
+                        amazonPayment.stopLoading();
+                    }
+
+                }
+            );
+        },
+
+        onErrorAmazon: function (from, error) {
+            var sessionExpired = "BuyerSessionExpired";
+            if (error.getErrorCode() == sessionExpired) {
+                var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=resetAmazonReferenceId&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id;
+                console.log('resetAmazonReferenceId');
+                jQuery.getJSON(url, function (data) {
+                    var reloadurl = 'index.php?option=com_virtuemart&view=cart';
+                    window.location.href = reloadurl;
+                });
+
+            }
+        },
+
+
+
+        setShipmentReloadWallet: function() {
+            amazonPayment.startLoading();
+            var virtuemart_shipmentmethod_ids = document.getElementsByName('virtuemart_shipmentmethod_id');
+            var virtuemart_shipmentmethod_id = '';
+
+            for (var i = 0, length = virtuemart_shipmentmethod_ids.length; i < length; i++) {
+                if (virtuemart_shipmentmethod_ids[i].checked) {
+                    virtuemart_shipmentmethod_id = virtuemart_shipmentmethod_ids[i].value;
+                    break;
+                }
+            }
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS&virtuemart_shipmentmethod_id=' + virtuemart_shipmentmethod_id + vmLang;
+            jQuery.getJSON(url,
+                function (datas, textStatus) {
+                    var cartview = '';
                     console.log('updateCart:' + datas.msg.length);
                     if (datas.msg) {
                         datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
@@ -144,50 +193,14 @@ var amazonPayment = {
                         }
                         document.id('amazonCartDiv').set('html', cartview);
                         document.id('amazonHeaderHide').set('html', '');
-                        amazonPayment.amazonStopLoading();
+                        amazonPayment.stopLoading();
+                        amazonPayment.showAmazonWallet();
                     }
-
                 }
             );
-
-
-        },
-
-        onErrorAmazon: function (from, error, virtuemart_paymentmethod_id) {
-            var sessionExpired = "BuyerSessionExpired";
-            if (error.getErrorCode() == sessionExpired) {
-                var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=resetAmazonReferenceId&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id;
-                console.log('resetAmazonReferenceId');
-                jQuery.getJSON(url, function (data) {
-                    var reloadurl = 'index.php?option=com_virtuemart&view=cart';
-                    window.location.href = reloadurl;
-                });
-
-            }
-            alert(from + error.getErrorCode() + ": " + error.getErrorMessage());
-        },
-
-        showAmazonWallet: function (sellerId, amazonOrderReferenceId, width, height, isMobile, virtuemart_paymentmethod_id, displayMode) {
-            window.onError = null;
-
-            console.log("amazonShowWallet: " + amazonOrderReferenceId);
-            new OffAmazonPayments.Widgets.Wallet({
-                sellerId: sellerId,
-                amazonOrderReferenceId: amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
-                displayMode: displayMode,
-                design: {
-                    size: {width: width, height: height}
-                },
-                onPaymentSelect: function (orderReference) {
-                    haveWallet = true;
-                },
-                onError: function (error) {
-                    amazonPayment.onErrorAmazon('amazonShowWallet', error, virtuemart_paymentmethod_id);
-                }
-            }).bind("amazonWalletWidgetDiv");
-
         }
-    }
+
+}
     ;
 
 

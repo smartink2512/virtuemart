@@ -33,12 +33,18 @@ if (!$jsAWLoaded) {
 	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
 
 //vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
-
+	$doc->addScriptDeclaration("
+		//<![CDATA[
+jQuery(document).ready( function($) {
+	amazonPayment.init('" . $viewData['sellerId'] . "','" . $viewData['amazonOrderReferenceId'] . "', '" . $viewData['addressbook_designWidth'] . "', '" . $viewData['addressbook_designHeight'] . "', '" . $isMobile . "', '" . $viewData['virtuemart_paymentmethod_id'] . "', '" . $viewData['readOnlyWidgets'] . "');
+});
+//]]>
+"); // addScriptDeclaration
 	if ($viewData['renderAddressBook']) {
 		$doc->addScriptDeclaration("
 		//<![CDATA[
 jQuery(document).ready( function($) {
-	amazonPayment.showAmazonAddress('" . $viewData['sellerId'] . "','" . $viewData['amazonOrderReferenceId'] . "', '" . $viewData['addressbook_designWidth'] . "', '" . $viewData['addressbook_designHeight'] . "', '" . $isMobile . "', '" . $viewData['virtuemart_paymentmethod_id'] . "', '" . $viewData['readOnlyWidgets'] . "');
+	amazonPayment.showAmazonAddress();
 });
 //]]>
 "); // addScriptDeclaration
@@ -47,7 +53,7 @@ jQuery(document).ready( function($) {
 		$doc->addScriptDeclaration("
 		//<![CDATA[
 jQuery(document).ready( function($) {
-	amazonPayment.showAmazonWallet('" . $viewData['sellerId'] . "','" . $viewData['amazonOrderReferenceId'] . "', '" . $viewData['wallet_designWidth'] . "', '" . $viewData['wallet_designHeight'] . "', '" . $isMobile . "', '" . $viewData['virtuemart_paymentmethod_id'] . "', '" . $viewData['readOnlyWidgets'] . "');
+	amazonPayment.showAmazonWallet();
 });
 //]]>
 "); // addScriptDeclaration

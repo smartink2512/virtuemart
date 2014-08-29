@@ -187,9 +187,9 @@
             <option value="soft_decline_disabled">VMPAYMENT_AMAZON_CONF_SOFT_DECLINE_DISABLED</option>
 
         </param>
-        <param class="sandbox_error_simulation" name="sandbox_error_simulation" type="list"
+        <param class="sandbox_error_simulation" name="sandbox_error_simulation_auth" type="list"
                default="0"
-               label="VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_CONFIG">
+               label="VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AUTH">
             <option value="">COM_VIRTUEMART_NO</option>
             <!--option value="PaymentMethodNotAllowed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PAYMENTMETHODNOTALLOWED</option-->
             <option value="AmazonClosed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONCLOSED</option>
@@ -200,6 +200,24 @@
             <option value="Pending">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PENDING</option>
         </param>
 
+        <param class="sandbox_error_simulation" name="sandbox_error_simulation_capture" type="list"
+               default="0"
+               label="VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_CAPTURE">
+            <option value="">COM_VIRTUEMART_NO</option>
+            <!--option value="PaymentMethodNotAllowed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PAYMENTMETHODNOTALLOWED</option-->
+            <option value="AmazonClosed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONCLOSED</option>
+            <option value="InvalidPaymentMethod">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_INVALIDPAYMENTMETHOD</option>
+            <option value="AmazonRejected">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONREJECTED</option>
+            <option value="TransactionTimedOut">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_TRANSACTIONTIMEOUT</option>
+            <option value="ExpiredUnused">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_EXPIREDUNUSED</option>
+            <option value="Pending">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PENDING</option>
+        </param>
+        <param class="sandbox_error_simulation" name="sandbox_error_simulation_refund" type="list"
+               default="0"
+               label="VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_REFUND">
+            <option value="">COM_VIRTUEMART_NO</option>
+            <option value="AmazonRejected">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONREJECTED</option>
+        </param>
         <!-- Restrictions -->
         <!-- ============ -->
         <param class="level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_RESTRICTIONS_SECTION"

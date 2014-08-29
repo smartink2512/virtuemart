@@ -133,11 +133,9 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 	}
 
 	function getContents () {
-		$contents = "";
-		$contents .= "<br />Service Response";
-		$contents .= "<br />================================";
 
-		$contents .= "<br />         AuthorizeResponse";
+		$contents='';
+
 		if ($this->amazonData->isSetAuthorizeResult()) {
 			$contents .= "<br />             AuthorizeResult";
 			$authorizeResult = $this->amazonData->getAuthorizeResult();

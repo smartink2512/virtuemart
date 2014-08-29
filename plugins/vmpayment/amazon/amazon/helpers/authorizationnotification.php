@@ -99,7 +99,8 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 	private function isSynchronousMode () {
 		if (($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == "automatic_synchronous")
 			or
-			($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled == "automatic_synchronous")) {
+			($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled == "automatic_synchronous")
+		) {
 			return true;
 		}
 
@@ -152,95 +153,110 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 	}
 
 	public function getContents () {
-		$contents = "Authorization Notification";
-		$contents .= "<br />====================================";
+
+		$contents=$this->tableStart("Authorization Notification");
 		if ($this->amazonData->isSetAuthorizationDetails()) {
-			$contents .= "<br />    AuthorizeDetails";
+			$contents .=$this->getRowFirstCol("AuthorizeDetails");
 			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
 			if ($authorizationDetails->isSetAmazonAuthorizationId()) {
-				$contents .= "<br />    AmazonAuthorizationId: " . $authorizationDetails->getAmazonAuthorizationId();
+				$contents .=$this->getRow("AmazonAuthorizationId: ",$authorizationDetails->getAmazonAuthorizationId() );
 			}
 			if ($authorizationDetails->isSetAuthorizationReferenceId()) {
-				$contents .= "<br />      AuthorizationReferenceId: " . $authorizationDetails->getAuthorizationReferenceId();
+				$contents .=$this->getRow("AuthorizationReferenceId: ", $authorizationDetails->getAuthorizationReferenceId() );
 			}
 			if ($authorizationDetails->isSetAuthorizationAmount()) {
-				$contents .= "<br />      AuthorizationAmount";
+				$more='';
 				$authorizationAmount = $authorizationDetails->getAuthorizationAmount();
 				if ($authorizationAmount->isSetAmount()) {
-					$contents .= "<br /> Amount: " . $authorizationAmount->getAmount();
+					$more .= "Amount: " . $authorizationAmount->getAmount() . "<br />";
 				}
 				if ($authorizationAmount->isSetCurrencyCode()) {
-					$contents .= "<br /> CurrencyCode: " . $authorizationAmount->getCurrencyCode();
+					$more .= "CurrencyCode: " . $authorizationAmount->getCurrencyCode() . "<br />";
 				}
+				$contents .=$this->getRow("AuthorizationAmount: ",$more);
 			}
 			if ($authorizationDetails->isSetCapturedAmount()) {
-				$contents .= "<br />       CapturedAmount";
+				$more='';
 				$capturedAmount = $authorizationDetails->getCapturedAmount();
 				if ($capturedAmount->isSetAmount()) {
-					$contents .= "<br /> Amount: " . $capturedAmount->getAmount();
+					$more .= "Amount: " . $capturedAmount->getAmount() . "<br />";
 				}
 				if ($capturedAmount->isSetCurrencyCode()) {
-					$contents .= "<br /> CurrencyCode: " . $capturedAmount->getCurrencyCode();
+					$more .= "CurrencyCode: " . $capturedAmount->getCurrencyCode() . "<br />";
 				}
+				$contents .=$this->getRow("CapturedAmount: ",$more);
 			}
 			if ($authorizationDetails->isSetAuthorizationFee()) {
-				$contents .= "<br />      AuthorizationFee";
+				$more='';
+
 				$authorizationFee = $authorizationDetails->getAuthorizationFee();
 				if ($authorizationFee->isSetAmount()) {
-					$contents .= "<br /> Amount: " . $authorizationFee->getAmount();
+					$more .= "Amount: " . $authorizationFee->getAmount() . "<br />";
 				}
 				if ($authorizationFee->isSetCurrencyCode()) {
-					$contents .= "<br /> CurrencyCode: " . $authorizationFee->getCurrencyCode();
+					$more .= "CurrencyCode: " . $authorizationFee->getCurrencyCode() . "<br />";
 				}
+				$contents .=$this->getRow("AuthorizationFee: ",$more);
 			}
 			if ($authorizationDetails->isSetIdList()) {
-				$contents .= "<br />      IdList";
+
 				$idList = $authorizationDetails->getIdList();
 				$memberList = $idList->getId();
+				$more='';
 				foreach ($memberList as $member) {
-					$contents .= "<br /> member: " . $member;
+					$more .= "<br /> member: " . $member;
 				}
+				$contents .=$this->getRow("IdList: ",$more);
 			}
 			if ($authorizationDetails->isSetCreationTimestamp()) {
-				$contents .= "<br />      CreationTimestamp: " . $authorizationDetails->getCreationTimestamp();
+				$contents .=$this->getRow("CreationTimestamp: ",$authorizationDetails->getCreationTimestamp());
 			}
 			if ($authorizationDetails->isSetExpirationTimestamp()) {
-				$contents .= "<br />      ExpirationTimestamp";
-				$contents .= "<br />  " . $authorizationDetails->getExpirationTimestamp();
+				$contents .=$this->getRow("ExpirationTimestamp: ",$authorizationDetails->getExpirationTimestamp());
 			}
 			if ($authorizationDetails->isSetAuthorizationStatus()) {
-				$contents .= "<br />      AuthorizationStatus";
 				$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
+				$more='';
 				if ($authorizationStatus->isSetState()) {
-					$contents .= "<br /> State: " . $authorizationStatus->getState();
+					$more .= "State: " . $authorizationStatus->getState() . "<br />";
 				}
 				if ($authorizationStatus->isSetLastUpdateTimestamp()) {
-					$contents .= "<br /> LastUpdateTimestamp: " . $authorizationStatus->getLastUpdateTimestamp();
+					$more .= "LastUpdateTimestamp: " . $authorizationStatus->getLastUpdateTimestamp() . "<br />";
 				}
 				if ($authorizationStatus->isSetReasonCode()) {
-					$contents .= "<br /> ReasonCode: " . $authorizationStatus->getReasonCode();
+					$more .= "ReasonCode: " . $authorizationStatus->getReasonCode() . "<br />";
 				}
 				if ($authorizationStatus->isSetReasonDescription()) {
-					$contents .= "<br /> ReasonDescription: " . $authorizationStatus->getReasonDescription();
+					$more .= "ReasonDescription: " . $authorizationStatus->getReasonDescription() . "<br />";
 				}
+				$contents .=$this->getRow("AuthorizationStatus",$more);
+
 			}
 			if ($authorizationDetails->isSetOrderItemCategories()) {
-				$contents .= "<br />       OrderItemCategories";
 				$orderItemCategories = $authorizationDetails->getOrderItemCategories();
 				$orderItemCategoryList = $orderItemCategories->getOrderItemCategory();
+				$more='';
 				foreach ($orderItemCategoryList as $orderItemCategory) {
-					$contents .= "<br /> OrderItemCategory: " . $orderItemCategory;
+					$more .= "OrderItemCategory: " . $orderItemCategory . "<br />";
 				}
+				$contents .=$this->getRow("OrderItemCategories",$more);
+
 			}
 			if ($authorizationDetails->isSetCaptureNow()) {
-				$contents .= "<br />      CaptureNow: " . $authorizationDetails->getCaptureNow();
+				$contents .=$this->getRow("CaptureNow",$authorizationDetails->getCaptureNow());
+
 			}
 			if ($authorizationDetails->isSetSoftDescriptor()) {
-				$contents .= "<br />      SoftDescriptor: " . $authorizationDetails->getSoftDescriptor();
+				$contents .=$this->getRow("SoftDescriptor",$authorizationDetails->getSoftDescriptor());
 			}
 		}
+		$contents .= $this->tableEnd();
+
 		return $contents;
 	}
+
+
+
 
 
 }

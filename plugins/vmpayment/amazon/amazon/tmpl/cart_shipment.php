@@ -24,33 +24,7 @@ $document->addScriptDeclaration("
 
 //<![CDATA[
 function setShipment() {
- amazonPayment.amazonLoading();
-  var virtuemart_shipmentmethod_ids = document.getElementsByName('virtuemart_shipmentmethod_id');
-  var virtuemart_shipmentmethod_id = '';
-
-  for (var i = 0, length = virtuemart_shipmentmethod_ids.length; i < length; i++) {
-    if (virtuemart_shipmentmethod_ids[i].checked) {
-      virtuemart_shipmentmethod_id = virtuemart_shipmentmethod_ids[i].value;
-      break;
-    }
-  }
- var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS&virtuemart_shipmentmethod_id=' + virtuemart_shipmentmethod_id + vmLang;
-            jQuery.getJSON(url,
-                function (datas, textStatus) {
-                    var cartview = '';
-                    console.log('updateCart:' + datas.msg.length);
-                    if (datas.msg) {
-                        datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
-                        for (var i = 0; i < datas.msg.length; i++) {
-                            cartview += datas.msg[i].toString();
-                        }
-                        document.id('amazonCartDiv').set('html', cartview);
-                        document.id('amazonHeaderHide').set('html', '');
-                         amazonPayment.amazonStopLoading();
-                    }
-                }
-            );
-
+    amazonPayment.setShipmentReloadWallet();
 }
 
 

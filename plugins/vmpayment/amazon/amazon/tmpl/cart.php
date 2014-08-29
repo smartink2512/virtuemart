@@ -85,7 +85,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 					<dt class="info">info</dt>
 					<dd class="info message">
 						<ul>
-							<li>found_shipment_method<?php echo JText::_('VMPAYMENT_AMAZON_UPDATECART_SHIPMENT_NOT_FOUND'); ?></li>
+							<li><?php echo JText::_('VMPAYMENT_AMAZON_UPDATECART_SHIPMENT_NOT_FOUND'); ?></li>
 						</ul>
 					</dd>
 				</dl>
