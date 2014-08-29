@@ -657,7 +657,6 @@ class VirtueMartModelCategory extends VmModel {
 		$hash = $virtuemart_category_id.'c'.$catMenuId;
 
 		if(isset($resId[$hash])){
-			vmdebug('Found hashed');
 			$ids = $resId[$hash];
 		} else{
 			$db	= JFactory::getDBO();

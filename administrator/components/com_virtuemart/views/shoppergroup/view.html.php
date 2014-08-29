@@ -34,7 +34,7 @@ class VirtuemartViewShopperGroup extends VmView {
 	function display($tpl = null) {
 		// Load the helper(s)
 
-
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 
 // 		$this->assignRef('perms', Permissions::getInstance());
