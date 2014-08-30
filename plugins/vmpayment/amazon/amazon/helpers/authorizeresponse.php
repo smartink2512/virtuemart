@@ -135,149 +135,170 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 	function getContents () {
 
 		$contents='';
-
+		$contents=$this->tableStart("AuthorizeResult");
 		if ($this->amazonData->isSetAuthorizeResult()) {
-			$contents .= "<br />             AuthorizeResult";
+			$contents=$this->tableStart("AuthorizeResult");
 			$authorizeResult = $this->amazonData->getAuthorizeResult();
 			if ($authorizeResult->isSetAuthorizationDetails()) {
-				$contents .= "<br />                 AuthorizationDetails";
+				$contents .=$this->getRowFirstCol("AuthorizationDetails");
+
 				$authorizationDetails = $authorizeResult->getAuthorizationDetails();
 				if ($authorizationDetails->isSetAmazonAuthorizationId()) {
-					$contents .= "<br />AmazonAuthorizationId: " . $authorizationDetails->getAmazonAuthorizationId();
+					$contents .=$this->getRow("AmazonAuthorizationId: ",$authorizationDetails->getAmazonAuthorizationId() );
+
 				}
 				if ($authorizationDetails->isSetAuthorizationReferenceId()) {
-					$contents .= "<br />AuthorizationReferenceId: " . $authorizationDetails->getAuthorizationReferenceId();
+					$contents .=$this->getRow("AuthorizationReferenceId: ", $authorizationDetails->getAuthorizationReferenceId() );
+
 				}
 				if ($authorizationDetails->isSetAuthorizationBillingAddress()) {
-					$contents .= "<br />AuthorizationBillingAddress";
 					$authorizationBillingAddress = $authorizationDetails->getAuthorizationBillingAddress();
+					$address='';
 					if ($authorizationBillingAddress->isSetName()) {
-						$contents .= "<br />Name: " . $authorizationBillingAddress->getName();
+						$address .= "<br />Name: " . $authorizationBillingAddress->getName();
 					}
 					if ($authorizationBillingAddress->isSetAddressLine1()) {
-						$contents .= "<br />AddressLine1: " . $authorizationBillingAddress->getAddressLine1();
+						$address .= "<br />AddressLine1: " . $authorizationBillingAddress->getAddressLine1();
 					}
 					if ($authorizationBillingAddress->isSetAddressLine2()) {
-						$contents .= "<br />AddressLine2: " . $authorizationBillingAddress->getAddressLine2();
+						$address .= "<br />AddressLine2: " . $authorizationBillingAddress->getAddressLine2();
 					}
 					if ($authorizationBillingAddress->isSetAddressLine3()) {
-						$contents .= "<br />AddressLine3: " . $authorizationBillingAddress->getAddressLine3();
+						$address .= "<br />AddressLine3: " . $authorizationBillingAddress->getAddressLine3();
 					}
 					if ($authorizationBillingAddress->isSetCity()) {
-						$contents .= "<br />City: " . $authorizationBillingAddress->getCity();
+						$address .= "<br />City: " . $authorizationBillingAddress->getCity();
 					}
 					if ($authorizationBillingAddress->isSetCounty()) {
-						$contents .= "<br />County: " . $authorizationBillingAddress->getCounty();
+						$address .= "<br />County: " . $authorizationBillingAddress->getCounty();
 					}
 					if ($authorizationBillingAddress->isSetDistrict()) {
-						$contents .= "<br />District: " . $authorizationBillingAddress->getDistrict();
+						$address .= "<br />District: " . $authorizationBillingAddress->getDistrict();
 					}
 					if ($authorizationBillingAddress->isSetStateOrRegion()) {
-						$contents .= "<br />StateOrRegion: " . $authorizationBillingAddress->getStateOrRegion();
+						$address .= "<br />StateOrRegion: " . $authorizationBillingAddress->getStateOrRegion();
 					}
 					if ($authorizationBillingAddress->isSetPostalCode()) {
-						$contents .= "<br />PostalCode: " . $authorizationBillingAddress->getPostalCode();
+						$address .= "<br />PostalCode: " . $authorizationBillingAddress->getPostalCode();
 					}
 					if ($authorizationBillingAddress->isSetCountryCode()) {
-						$contents .= "<br />CountryCode: " . $authorizationBillingAddress->getCountryCode();
+						$address .= "<br />CountryCode: " . $authorizationBillingAddress->getCountryCode();
 					}
 					if ($authorizationBillingAddress->isSetPhone()) {
-						$contents .= "<br />Phone: " . $authorizationBillingAddress->getPhone();
+						$address .= "<br />Phone: " . $authorizationBillingAddress->getPhone();
 					}
+					$contents .=$this->getRow("AuthorizationBillingAddress: ", $address );
+
 				}
 				if ($authorizationDetails->isSetSellerAuthorizationNote()) {
-					$contents .= "<br />SellerAuthorizationNote";
-					$contents .= "<br />    " . $authorizationDetails->getSellerAuthorizationNote();
+					$contents .=$this->getRow("SellerAuthorizationNote: ",  $authorizationDetails->getSellerAuthorizationNote());
+
 				}
 				if ($authorizationDetails->isSetAuthorizationAmount()) {
-					$contents .= "<br />AuthorizationAmount";
 					$authorizationAmount = $authorizationDetails->getAuthorizationAmount();
+					$more='';
 					if ($authorizationAmount->isSetAmount()) {
-						$contents .= "<br />    Amount: " . $authorizationAmount->getAmount();
+						$more .= "<br />    Amount: " . $authorizationAmount->getAmount();
 					}
 					if ($authorizationAmount->isSetCurrencyCode()) {
-						$contents .= "<br />    CurrencyCode: " . $authorizationAmount->getCurrencyCode();
+						$more .= "<br />    CurrencyCode: " . $authorizationAmount->getCurrencyCode();
 					}
+					$contents .=$this->getRow("AuthorizationAmount: ",  $more);
+
 				}
 				if ($authorizationDetails->isSetCapturedAmount()) {
-					$contents .= "<br />CapturedAmount";
 					$capturedAmount = $authorizationDetails->getCapturedAmount();
+					$more='';
 					if ($capturedAmount->isSetAmount()) {
-						$contents .= "<br />    Amount: " . $capturedAmount->getAmount();
+						$more .= "<br />    Amount: " . $capturedAmount->getAmount();
 					}
 					if ($capturedAmount->isSetCurrencyCode()) {
-						$contents .= "<br />    CurrencyCode: " . $capturedAmount->getCurrencyCode();
+						$more .= "<br />    CurrencyCode: " . $capturedAmount->getCurrencyCode();
 					}
+					$contents .=$this->getRow("CapturedAmount: ",  $more);
+
 				}
 				if ($authorizationDetails->isSetAuthorizationFee()) {
-					$contents .= "<br />AuthorizationFee";
-					$authorizationFee = $authorizationDetails->getAuthorizationFee();
+					$more='';					$authorizationFee = $authorizationDetails->getAuthorizationFee();
 					if ($authorizationFee->isSetAmount()) {
-						$contents .= "<br />    Amount: " . $authorizationFee->getAmount();
+						$more .= "<br />    Amount: " . $authorizationFee->getAmount();
 					}
 					if ($authorizationFee->isSetCurrencyCode()) {
-						$contents .= "<br />    CurrencyCode: " . $authorizationFee->getCurrencyCode();
+						$more .= "<br />    CurrencyCode: " . $authorizationFee->getCurrencyCode();
 					}
+					$contents .=$this->getRow("AuthorizationFee: ",  $more);
+
 				}
 				if ($authorizationDetails->isSetIdList()) {
-					$contents .= "<br />IdList";
+					$more='';
 					$idList = $authorizationDetails->getIdList();
 					$memberList = $idList->getmember();
 					foreach ($memberList as $member) {
-						$contents .= "<br />    member: " . $member;
+						$more .= "<br />    member: " . $member;
 					}
+					$contents .=$this->getRow("IdList: ",  $more);
+
 				}
 				if ($authorizationDetails->isSetCreationTimestamp()) {
-					$contents .= "<br />CreationTimestamp: " . $authorizationDetails->getCreationTimestamp();
+					$contents .=$this->getRow("CreationTimestamp: ",  $authorizationDetails->getCreationTimestamp());
 				}
 				if ($authorizationDetails->isSetExpirationTimestamp()) {
-					$contents .= "<br />ExpirationTimestamp :" . $authorizationDetails->getExpirationTimestamp();
+					$contents .=$this->getRow("ExpirationTimestamp: ",  $authorizationDetails->getExpirationTimestamp());
+
 				}
 				if ($authorizationDetails->isSetAuthorizationStatus()) {
-					$contents .= "<br />AuthorizationStatus";
+					$more='';
 					$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 					if ($authorizationStatus->isSetState()) {
-						$contents .= "<br />    State: " . $authorizationStatus->getState();
+						$more .= "<br />    State: " . $authorizationStatus->getState();
 					}
 					if ($authorizationStatus->isSetLastUpdateTimestamp()) {
-						$contents .= "<br />    LastUpdateTimestamp: " . $authorizationStatus->getLastUpdateTimestamp();
+						$more .= "<br />    LastUpdateTimestamp: " . $authorizationStatus->getLastUpdateTimestamp();
 					}
 					if ($authorizationStatus->isSetReasonCode()) {
-						$contents .= "<br />    ReasonCode: " . $authorizationStatus->getReasonCode();
+						$more .= "<br />    ReasonCode: " . $authorizationStatus->getReasonCode();
 					}
 					if ($authorizationStatus->isSetReasonDescription()) {
-						$contents .= "<br />    ReasonDescription: " . $authorizationStatus->getReasonDescription();
+						$more .= "<br />    ReasonDescription: " . $authorizationStatus->getReasonDescription();
 					}
+					$contents .=$this->getRow("AuthorizationStatus: ",  $more);
+
 				}
 				if ($authorizationDetails->isSetOrderItemCategories()) {
-					$contents .= "<br />OrderItemCategories";
+					$more='';
 					$orderItemCategories = $authorizationDetails->getOrderItemCategories();
 					$orderItemCategoryList = $orderItemCategories->getOrderItemCategory();
 					foreach ($orderItemCategoryList as $orderItemCategory) {
-						$contents .= "<br />    OrderItemCategory";
-						$contents .= "<br />" . $orderItemCategory;
+						$more .= "<br />    OrderItemCategory";
+						$more .= "<br />" . $orderItemCategory;
 					}
+					$contents .=$this->getRow("OrderItemCategories: ",  $more);
 				}
 				if ($authorizationDetails->isSetCaptureNow()) {
-					$contents .= "<br />CaptureNow: " . $authorizationDetails->getCaptureNow();
+					$contents .=$this->getRow("CaptureNow: ",  $authorizationDetails->getCaptureNow());
+
 				}
 				if ($authorizationDetails->isSetSoftDescriptor()) {
-					$contents .= "<br />SoftDescriptor: " . $authorizationDetails->getSoftDescriptor();
+					$contents .=$this->getRow("SoftDescriptor: ",  $authorizationDetails->getSoftDescriptor());
+
 				}
 				if ($authorizationDetails->isSetAddressVerificationCode()) {
-					$contents .= "<br />AddressVerificationCode: " . $authorizationDetails->getAddressVerificationCode();
+					$contents .=$this->getRow("AddressVerificationCode: ",  $authorizationDetails->getAddressVerificationCode());
+
 				}
-			}
-		}
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .= "<br />             ResponseMetadata";
-			$responseMetadata = $this->amazonData->getResponseMetadata();
-			if ($responseMetadata->isSetRequestId()) {
-				$contents .= "<br />                 RequestId: " . $responseMetadata->getRequestId();
 			}
 		}
 
-		$contents .= "<br />             ResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata();
+		if ($this->amazonData->isSetResponseMetadata()) {
+			$contents .=$this->getRowFirstCol("ResponseMetadata");
+			$responseMetadata = $this->amazonData->getResponseMetadata();
+			if ($responseMetadata->isSetRequestId()) {
+				$contents .=$this->getRow("RequestId: ",  $responseMetadata->getRequestId());
+			}
+		}
+		$contents .=$this->getRowFirstCol("ResponseHeaderMetadata ". $this->amazonData->getResponseHeaderMetadata());
+
+		$contents .= $this->tableEnd();
 
 		return $contents;
 	}
