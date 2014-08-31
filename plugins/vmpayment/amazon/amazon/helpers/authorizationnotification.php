@@ -69,9 +69,14 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 			$order_history['order_status'] = $this->_currentMethod->status_authorization;
 			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
 		} elseif ($amazonState == 'Declined') {
-			if ($reasonCode == 'InvalidPaymentMethod') {
-				// contact the buyer bye email
-				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+			if ($reasonCode == 'InvalidPaymentMethod'  ) {
+				if (  $this->_currentMethod->soft_decline=='soft_decline_enabled' and $authorizationDetails->getCaptureNow()==false) {
+					// contact the buyer bye email
+					$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+					$amazonState='SoftDecline';
+				} else {
+					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+				}
 			} elseif ($reasonCode == 'AmazonRejected') {
 				$order_history['order_status'] = $this->_currentMethod->status_cancel;
 			} elseif ($reasonCode == 'TransactionTimedOut') {

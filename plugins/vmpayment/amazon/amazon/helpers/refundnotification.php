@@ -113,20 +113,63 @@ return;
 	}
 
 	function getContents () {
-		$contents = '<table>';
-		$contents .= '	<tr><th colspan="3">';
-		$contents .= " Refund Notification";
-		$contents .= '</th></tr>';
-		if ($this->amazonData->isSetAuthorizationDetails()) {
-			$contents .=$this->getContentsRefundDetails( $this->amazonData->getAuthorizationDetails());
+		$contents = "<br />Refund Notification";
+		$contents .= "<br />===============================";
+		if ($this->amazonData->isSetRefundDetails()) {
+			$contents .= "<br />  RefundDetails";
+			$refundDetails = $this->amazonData->getRefundDetails();
+			if ($refundDetails->isSetAmazonRefundId()) {
+				$contents .= "<br />      AmazonRefundId: " . $refundDetails->getAmazonRefundId();
+			}
+			if ($refundDetails->isSetRefundReferenceId()) {
+				$contents .= "<br />  RefundReferenceId: " . $refundDetails->getRefundReferenceId();
+			}
+			if ($refundDetails->isSetRefundType()) {
+				$contents .= "<br />  RefundType: " . $refundDetails->getRefundType();
+			}
+			if ($refundDetails->isSetRefundAmount()) {
+				$contents .= "<br />  RefundAmount";
+				$refundAmount = $refundDetails->getRefundAmount();
+				if ($refundAmount->isSetAmount()) {
+					$contents .= "<br />      Amount " . $refundAmount->getAmount();
+				}
+				if ($refundAmount->isSetCurrencyCode()) {
+					$contents .= "<br />      CurrencyCode: " . $refundAmount->getCurrencyCode();
+				}
+			}
+			if ($refundDetails->isSetFeeRefunded()) {
+				$contents .= "<br />  FeeRefunded";
+				$feeRefunded = $refundDetails->getFeeRefunded();
+				if ($feeRefunded->isSetAmount()) {
+					$contents .= "<br />      Amount " . $feeRefunded->getAmount();
+				}
+				if ($feeRefunded->isSetCurrencyCode()) {
+					$contents .= "<br />      CurrencyCode " . $feeRefunded->getCurrencyCode();
+				}
+			}
+			if ($refundDetails->isSetCreationTimestamp()) {
+				$contents .= "<br />  CreationTimestamp " . $refundDetails->getCreationTimestamp();
+			}
+			if ($refundDetails->isSetRefundStatus()) {
+				$contents .= "<br />  RefundStatus";
+				$refundStatus = $refundDetails->getRefundStatus();
+				if ($refundStatus->isSetState()) {
+					$contents .= "<br />      State " . $refundStatus->getState();
+				}
+				if ($refundStatus->isSetLastUpdateTimestamp()) {
+					$contents .= "<br />      LastUpdateTimestamp " . $refundStatus->getLastUpdateTimestamp();
+				}
+				if ($refundStatus->isSetReasonCode()) {
+					$contents .= "<br />      ReasonCode " . $refundStatus->getReasonCode();
+				}
+				if ($refundStatus->isSetReasonDescription()) {
+					$contents .= "<br />      ReasonDescription " . $refundStatus->getReasonDescription();
+				}
+			}
+			if ($refundDetails->isSetSoftDescriptor()) {
+				$contents .= "<br />  SoftDescriptor " . $refundDetails->getSoftDescriptor();
+			}
 		}
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .=$this->getContentsResponseMetadata($this->amazonData->getResponseMetadata());
-		}
-		$contents .=$this->getContentsResponseHeaderMetadata($this->amazonData->getResponseHeaderMetadata());
-
-		$contents .= '</table>';
-
 		return $contents;
 	}
 	}

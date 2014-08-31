@@ -61,32 +61,99 @@ class amazonHelperCaptureResponse extends amazonHelper {
 		return NULL;
 	}
 	function getContents () {
-		$contents = '<table>';
-		$contents .= '	<tr><th colspan="3">';
-		$contents .= "CaptureResponse";
-		$contents .= '</th></tr>';
+		$contents = "";
+		$contents .= "<br />Service Response";
+		$contents .= "<br />=============================================================================";
+
+		$contents .= "<br />\tCaptureResponse";
 		if ($this->amazonData->isSetCaptureResult()) {
-			$contents .= '<tr>';
-			$contents .= "<td>";
-			$contents .= "CaptureResult";
-			$contents .= "</td>";
-			$contents .= "<td></td>";
-			$contents .= '</tr>';
-			$authorizeResult = $this->amazonData->getCaptureResult();
-			if ($authorizeResult->isSetCaptureDetails()) {
-				$contents .=$this->getContentsCaptureDetails($authorizeResult->getCaptureDetails());
+			$contents .= "<br />\t\tCaptureResult";
+			$captureResult = $this->amazonData->getCaptureResult();
+			if ($captureResult->isSetCaptureDetails()) {
+				$contents .= "<br />\t\t\tCaptureDetails";
+				$captureDetails = $captureResult->getCaptureDetails();
+				if ($captureDetails->isSetAmazonCaptureId()) {
+					$contents .= "<br />\t\t\t\tAmazonCaptureId: " . $captureDetails->getAmazonCaptureId();
+				}
+				if ($captureDetails->isSetCaptureReferenceId()) {
+					$contents .= "<br />\t\t\t\tCaptureReferenceId: " . $captureDetails->getCaptureReferenceId();
+				}
+				if ($captureDetails->isSetSellerCaptureNote()) {
+					$contents .= "<br />\t\t\t\tSellerCaptureNote: " . $captureDetails->getSellerCaptureNote();
+				}
+				if ($captureDetails->isSetCaptureAmount()) {
+					$contents .= "<br />\t\t\t\tCaptureAmount";
+					$captureAmount = $captureDetails->getCaptureAmount();
+					if ($captureAmount->isSetAmount()) {
+						$contents .= "<br />\t\t\t\t\tAmount: " . $captureAmount->getAmount();
+					}
+					if ($captureAmount->isSetCurrencyCode()) {
+						$contents .= "<br />\t\t\t\t\tCurrencyCode: " . $captureAmount->getCurrencyCode();
+					}
+				}
+				if ($captureDetails->isSetRefundedAmount()) {
+					$contents .= "<br />\t\t\t\tRefundedAmount";
+					$refundedAmount = $captureDetails->getRefundedAmount();
+					if ($refundedAmount->isSetAmount()) {
+						$contents .= "<br />\t\t\t\t\tAmount: " . $refundedAmount->getAmount();
+					}
+					if ($refundedAmount->isSetCurrencyCode()) {
+						$contents .= "<br />\t\t\t\t\tCurrencyCode: " . $refundedAmount->getCurrencyCode();
+					}
+				}
+				if ($captureDetails->isSetCaptureFee()) {
+					$contents .= "<br />\t\t\t\tCaptureFee";
+					$captureFee = $captureDetails->getCaptureFee();
+					if ($captureFee->isSetAmount()) {
+						$contents .= "<br />\t\t\t\t\tAmount: " . $captureFee->getAmount();
+					}
+					if ($captureFee->isSetCurrencyCode()) {
+						$contents .= "<br />\t\t\t\t\tCurrencyCode: " . $captureFee->getCurrencyCode();
+					}
+				}
+				if ($captureDetails->isSetIdList()) {
+					$contents .= "<br />\t\t\t\tIdList";
+					$idList = $captureDetails->getIdList();
+					$memberList = $idList->getmember();
+					foreach ($memberList as $member) {
+						$contents .= "<br />\t\t\t\t\tmember: " . $member;
+					}
+				}
+				if ($captureDetails->isSetCreationTimestamp()) {
+					$contents .= "<br />\t\t\t\tCreationTimestamp: " . $captureDetails->getCreationTimestamp();
+				}
+				if ($captureDetails->isSetCaptureStatus()) {
+					$contents .= "<br />\t\t\t\tCaptureStatus";
+					$captureStatus = $captureDetails->getCaptureStatus();
+					if ($captureStatus->isSetState()) {
+						$contents .= "<br />\t\t\t\t\tState: " . $captureStatus->getState();
+					}
+					if ($captureStatus->isSetLastUpdateTimestamp()) {
+						$contents .= "<br />\t\t\t\t\tLastUpdateTimestamp: " . $captureStatus->getLastUpdateTimestamp();
+					}
+					if ($captureStatus->isSetReasonCode()) {
+						$contents .= "<br />\t\t\t\t\tReasonCode: " . $captureStatus->getReasonCode();
+					}
+					if ($captureStatus->isSetReasonDescription()) {
+						$contents .= "<br />\t\t\t\t\tReasonDescription: " . $captureStatus->getReasonDescription();
+					}
+					if ($captureDetails->isSetSoftDescriptor()) {
+						$contents .= "<br />\t\t\t\t\tSoftDescriptor: " . $captureDetails->getSoftDescriptor();
+					}
+				}
 			}
 		}
 		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .=$this->getContentsResponseMetadata($this->amazonData->getResponseMetadata());
+			$contents .= "<br />\t\tResponseMetadata";
+			$responseMetadata = $this->amazonData->getResponseMetadata();
+			if ($responseMetadata->isSetRequestId()) {
+				$contents .= "<br />\t\t\tRequestId: " . $responseMetadata->getRequestId();
+			}
 		}
-		$contents .=$this->getContentsResponseHeaderMetadata($this->amazonData->getResponseHeaderMetadata());
 
-		$contents .= '</table>';
-
+		$contents .= "<br />\t\tResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata();
 		return $contents;
 	}
-
 
 
 }

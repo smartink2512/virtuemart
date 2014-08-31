@@ -125,33 +125,84 @@ class amazonHelperCaptureNotification extends amazonHelper {
 		return $amazonInternalData;
 	}
 
+
 	function getContents () {
-		$contents = '<table>';
-		$contents .= '	<tr><th colspan="3">';
-		$contents .= "CaptureNotification";
-		$contents .= '</th></tr>';
-		if ($this->amazonData->isSetCaptureResult()) {
-			$contents .= '<tr>';
-			$contents .= "<td>";
-			$contents .= "CaptureResult";
-			$contents .= "</td>";
-			$contents .= "<td></td>";
-			$contents .= '</tr>';
-			$authorizeResult = $this->amazonData->getCaptureResult();
-			if ($authorizeResult->isSetCaptureDetails()) {
-				$contents .=$this->getContentsCaptureDetails($authorizeResult->getCaptureDetails());
+		$contents = "Capture Notification";
+		$contents .= "<br />===================================";
+		if ($this->amazonData->isSetCaptureDetails()) {
+			$contents .= "<br /> CaptureDetails";
+			$captureDetails = $this->amazonData->getCaptureDetails();
+			if ($captureDetails->isSetAmazonCaptureId()) {
+				$contents .= "<br /> AmazonCaptureId: " . $captureDetails->getAmazonCaptureId();
 			}
-		}
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .=$this->getContentsResponseMetadata($this->amazonData->getResponseMetadata());
-		}
-		$contents .=$this->getContentsResponseHeaderMetadata($this->amazonData->getResponseHeaderMetadata());
+			if ($captureDetails->isSetCaptureReferenceId()) {
+				$contents .= "<br />     CaptureReferenceId: " . $captureDetails->getCaptureReferenceId();
+			}
+			if ($captureDetails->isSetCaptureAmount()) {
+				$contents .= "<br />     CaptureAmount";
+				$captureAmount = $captureDetails->getCaptureAmount();
+				if ($captureAmount->isSetAmount()) {
+					$contents .= "<br />         Amount: " . $captureAmount->getAmount();
+				}
+				if ($captureAmount->isSetCurrencyCode()) {
+					$contents .= "<br />      CurrencyCode: " . $captureAmount->getCurrencyCode();
+				}
+			}
+			if ($captureDetails->isSetRefundedAmount()) {
+				$contents .= "<br />      RefundedAmount";
+				$refundedAmount = $captureDetails->getRefundedAmount();
+				if ($refundedAmount->isSetAmount()) {
+					$contents .= "<br />          Amount: " . $refundedAmount->getAmount();
+				}
+				if ($refundedAmount->isSetCurrencyCode()) {
+					$contents .= "<br />          CurrencyCode: " . $refundedAmount->getCurrencyCode();
+				}
+			}
+			if ($captureDetails->isSetCaptureFee()) {
+				$contents .= "<br />      CaptureFee";
+				$captureFee = $captureDetails->getCaptureFee();
+				if ($captureFee->isSetAmount()) {
+					$contents .= "<br />          Amount: " . $captureFee->getAmount();
+				}
+				if ($captureFee->isSetCurrencyCode()) {
+					$contents .= "<br />         CurrencyCode: " . $captureFee->getCurrencyCode();
+				}
+			}
+			if ($captureDetails->isSetIdList()) {
+				$contents .= "<br />  IdList";
+				$idList = $captureDetails->getIdList();
+				$memberList = $idList->getId();
+				foreach ($memberList as $member) {
+					$contents .= "<br />      member: " . $member;
+				}
+			}
+			if ($captureDetails->isSetCreationTimestamp()) {
+				$contents .= "<br />     CreationTimestamp: " . $captureDetails->getCreationTimestamp();
+			}
+			if ($captureDetails->isSetCaptureStatus()) {
+				$contents .= "<br />    CaptureStatus";
+				$captureStatus = $captureDetails->getCaptureStatus();
+				if ($captureStatus->isSetState()) {
+					$contents .= "<br />          State";
+					$contents .= "<br />              " . $captureStatus->getState();
+				}
+				if ($captureStatus->isSetLastUpdateTimestamp()) {
+					$contents .= "<br />         LastUpdateTimestamp: " . $captureStatus->getLastUpdateTimestamp();
+				}
+				if ($captureStatus->isSetReasonCode()) {
+					$contents .= "<br />          ReasonCode: " . $captureStatus->getReasonCode();
+				}
+				if ($captureStatus->isSetReasonDescription()) {
+					$contents .= "<br />          ReasonDescription: " . $captureStatus->getReasonDescription();
+				}
+			}
+			if ($captureDetails->isSetSoftDescriptor()) {
+				$contents .= "<br />      SoftDescriptor: " . $captureDetails->getSoftDescriptor();
+			}
 
-		$contents .= '</table>';
-
+		}
 		return $contents;
 	}
-
 
 
 }
