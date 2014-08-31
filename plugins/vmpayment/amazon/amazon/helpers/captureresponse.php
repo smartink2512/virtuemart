@@ -61,97 +61,106 @@ class amazonHelperCaptureResponse extends amazonHelper {
 		return NULL;
 	}
 	function getContents () {
-		$contents = "";
-		$contents .= "<br />Service Response";
-		$contents .= "<br />=============================================================================";
+		$contents=$this->tableStart("CaptureResponse");
 
-		$contents .= "<br />\tCaptureResponse";
 		if ($this->amazonData->isSetCaptureResult()) {
-			$contents .= "<br />\t\tCaptureResult";
+			$contents .=$this->getRowFirstCol("CaptureResult");
+
 			$captureResult = $this->amazonData->getCaptureResult();
 			if ($captureResult->isSetCaptureDetails()) {
-				$contents .= "<br />\t\t\tCaptureDetails";
+				$contents .=$this->getRowFirstCol("CaptureDetails");
 				$captureDetails = $captureResult->getCaptureDetails();
 				if ($captureDetails->isSetAmazonCaptureId()) {
-					$contents .= "<br />\t\t\t\tAmazonCaptureId: " . $captureDetails->getAmazonCaptureId();
+					$contents .=$this->getRow("AmazonCaptureId: ", $captureDetails->getAmazonCaptureId() );
 				}
 				if ($captureDetails->isSetCaptureReferenceId()) {
-					$contents .= "<br />\t\t\t\tCaptureReferenceId: " . $captureDetails->getCaptureReferenceId();
+					$contents .=$this->getRow("CaptureReferenceId: ", $captureDetails->getCaptureReferenceId() );
+
 				}
 				if ($captureDetails->isSetSellerCaptureNote()) {
-					$contents .= "<br />\t\t\t\tSellerCaptureNote: " . $captureDetails->getSellerCaptureNote();
+					$contents .=$this->getRow("SellerCaptureNote: ", $captureDetails->getSellerCaptureNote() );
+
 				}
 				if ($captureDetails->isSetCaptureAmount()) {
-					$contents .= "<br />\t\t\t\tCaptureAmount";
+					$more='';
 					$captureAmount = $captureDetails->getCaptureAmount();
 					if ($captureAmount->isSetAmount()) {
-						$contents .= "<br />\t\t\t\t\tAmount: " . $captureAmount->getAmount();
+						$more .= "<br />Amount: " . $captureAmount->getAmount();
 					}
 					if ($captureAmount->isSetCurrencyCode()) {
-						$contents .= "<br />\t\t\t\t\tCurrencyCode: " . $captureAmount->getCurrencyCode();
+						$more .= "<br />CurrencyCode: " . $captureAmount->getCurrencyCode();
 					}
+					$contents .=$this->getRow("CaptureAmount: ", $more );
+
 				}
 				if ($captureDetails->isSetRefundedAmount()) {
-					$contents .= "<br />\t\t\t\tRefundedAmount";
+					$more='';
 					$refundedAmount = $captureDetails->getRefundedAmount();
 					if ($refundedAmount->isSetAmount()) {
-						$contents .= "<br />\t\t\t\t\tAmount: " . $refundedAmount->getAmount();
+						$more .= "<br />Amount: " . $refundedAmount->getAmount();
 					}
 					if ($refundedAmount->isSetCurrencyCode()) {
-						$contents .= "<br />\t\t\t\t\tCurrencyCode: " . $refundedAmount->getCurrencyCode();
+						$more .= "<br />CurrencyCode: " . $refundedAmount->getCurrencyCode();
 					}
+					$contents .=$this->getRow("RefundedAmount: ", $more);
 				}
 				if ($captureDetails->isSetCaptureFee()) {
-					$contents .= "<br />\t\t\t\tCaptureFee";
+					$more='';
 					$captureFee = $captureDetails->getCaptureFee();
 					if ($captureFee->isSetAmount()) {
-						$contents .= "<br />\t\t\t\t\tAmount: " . $captureFee->getAmount();
+						$more .= "<br />Amount: " . $captureFee->getAmount();
 					}
 					if ($captureFee->isSetCurrencyCode()) {
-						$contents .= "<br />\t\t\t\t\tCurrencyCode: " . $captureFee->getCurrencyCode();
+						$more .= "<br />CurrencyCode: " . $captureFee->getCurrencyCode();
 					}
+					$contents .=$this->getRow("CaptureFee: ", $more );
 				}
 				if ($captureDetails->isSetIdList()) {
-					$contents .= "<br />\t\t\t\tIdList";
+					$more='';
 					$idList = $captureDetails->getIdList();
 					$memberList = $idList->getmember();
 					foreach ($memberList as $member) {
-						$contents .= "<br />\t\t\t\t\tmember: " . $member;
+						$more .= "<br />member: " . $member;
 					}
+					$contents .=$this->getRow("IdList: ", $more );
 				}
 				if ($captureDetails->isSetCreationTimestamp()) {
-					$contents .= "<br />\t\t\t\tCreationTimestamp: " . $captureDetails->getCreationTimestamp();
+					$contents .=$this->getRow("CreationTimestamp: ", $captureDetails->getCreationTimestamp() );
 				}
 				if ($captureDetails->isSetCaptureStatus()) {
-					$contents .= "<br />\t\t\t\tCaptureStatus";
+					$more='';
 					$captureStatus = $captureDetails->getCaptureStatus();
 					if ($captureStatus->isSetState()) {
-						$contents .= "<br />\t\t\t\t\tState: " . $captureStatus->getState();
+						$more .= "<br />State: " . $captureStatus->getState();
 					}
 					if ($captureStatus->isSetLastUpdateTimestamp()) {
-						$contents .= "<br />\t\t\t\t\tLastUpdateTimestamp: " . $captureStatus->getLastUpdateTimestamp();
+						$more .= "<br />LastUpdateTimestamp: " . $captureStatus->getLastUpdateTimestamp();
 					}
 					if ($captureStatus->isSetReasonCode()) {
-						$contents .= "<br />\t\t\t\t\tReasonCode: " . $captureStatus->getReasonCode();
+						$more .= "<br />ReasonCode: " . $captureStatus->getReasonCode();
 					}
 					if ($captureStatus->isSetReasonDescription()) {
-						$contents .= "<br />\t\t\t\t\tReasonDescription: " . $captureStatus->getReasonDescription();
+						$more .= "<br />ReasonDescription: " . $captureStatus->getReasonDescription();
 					}
 					if ($captureDetails->isSetSoftDescriptor()) {
-						$contents .= "<br />\t\t\t\t\tSoftDescriptor: " . $captureDetails->getSoftDescriptor();
+						$more .= "<br />SoftDescriptor: " . $captureDetails->getSoftDescriptor();
 					}
+					$contents .=$this->getRow("CaptureStatus: ",$more );
 				}
 			}
 		}
 		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .= "<br />\t\tResponseMetadata";
+			$more='';
 			$responseMetadata = $this->amazonData->getResponseMetadata();
 			if ($responseMetadata->isSetRequestId()) {
-				$contents .= "<br />\t\t\tRequestId: " . $responseMetadata->getRequestId();
+				$more .= "<br />RequestId: " . $responseMetadata->getRequestId();
 			}
+			$contents .=$this->getRow("ResponseMetadata: ", $more );
 		}
 
-		$contents .= "<br />\t\tResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata();
+		$contents .=$this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata() );
+
+
 		return $contents;
 	}
 

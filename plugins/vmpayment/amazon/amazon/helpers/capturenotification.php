@@ -127,80 +127,90 @@ class amazonHelperCaptureNotification extends amazonHelper {
 
 
 	function getContents () {
-		$contents = "Capture Notification";
-		$contents .= "<br />===================================";
+		$contents=$this->tableStart("Capture Notification");
 		if ($this->amazonData->isSetCaptureDetails()) {
-			$contents .= "<br /> CaptureDetails";
+			$contents .=$this->getRowFirstCol("CaptureDetails");
 			$captureDetails = $this->amazonData->getCaptureDetails();
 			if ($captureDetails->isSetAmazonCaptureId()) {
-				$contents .= "<br /> AmazonCaptureId: " . $captureDetails->getAmazonCaptureId();
+				$contents .=$this->getRow("AmazonCaptureId: ",$captureDetails->getAmazonCaptureId() );
+
 			}
 			if ($captureDetails->isSetCaptureReferenceId()) {
-				$contents .= "<br />     CaptureReferenceId: " . $captureDetails->getCaptureReferenceId();
+				$contents .=$this->getRow("CaptureReferenceId: ",$captureDetails->getCaptureReferenceId() );
+
 			}
 			if ($captureDetails->isSetCaptureAmount()) {
-				$contents .= "<br />     CaptureAmount";
+				$more='';
 				$captureAmount = $captureDetails->getCaptureAmount();
 				if ($captureAmount->isSetAmount()) {
-					$contents .= "<br />         Amount: " . $captureAmount->getAmount();
+					$more .= "<br />Amount: " . $captureAmount->getAmount();
 				}
 				if ($captureAmount->isSetCurrencyCode()) {
-					$contents .= "<br />      CurrencyCode: " . $captureAmount->getCurrencyCode();
+					$more .= "<br />CurrencyCode: " . $captureAmount->getCurrencyCode();
 				}
+				$contents .=$this->getRow("CaptureAmount: ",$more );
+
 			}
 			if ($captureDetails->isSetRefundedAmount()) {
-				$contents .= "<br />      RefundedAmount";
+				$more='';
 				$refundedAmount = $captureDetails->getRefundedAmount();
 				if ($refundedAmount->isSetAmount()) {
-					$contents .= "<br />          Amount: " . $refundedAmount->getAmount();
+					$more .= "<br />Amount:" . $refundedAmount->getAmount();
 				}
 				if ($refundedAmount->isSetCurrencyCode()) {
-					$contents .= "<br />          CurrencyCode: " . $refundedAmount->getCurrencyCode();
+					$more .= "<br />CurrencyCode: " . $refundedAmount->getCurrencyCode();
 				}
+				$contents .=$this->getRow("RefundedAmount: ",$more );
 			}
 			if ($captureDetails->isSetCaptureFee()) {
-				$contents .= "<br />      CaptureFee";
+$more='';
 				$captureFee = $captureDetails->getCaptureFee();
 				if ($captureFee->isSetAmount()) {
-					$contents .= "<br />          Amount: " . $captureFee->getAmount();
+					$more .= "<br />Amount: " . $captureFee->getAmount();
 				}
 				if ($captureFee->isSetCurrencyCode()) {
-					$contents .= "<br />         CurrencyCode: " . $captureFee->getCurrencyCode();
+					$more .= "<br />CurrencyCode: " . $captureFee->getCurrencyCode();
 				}
+				$contents .=$this->getRow("CaptureFee: ",$more );
+
 			}
 			if ($captureDetails->isSetIdList()) {
-				$contents .= "<br />  IdList";
+				$more='';
 				$idList = $captureDetails->getIdList();
 				$memberList = $idList->getId();
 				foreach ($memberList as $member) {
-					$contents .= "<br />      member: " . $member;
+					$more .= "<br />      member: " . $member;
 				}
+				$contents .=$this->getRow("IdList: ",$more );
 			}
 			if ($captureDetails->isSetCreationTimestamp()) {
-				$contents .= "<br />     CreationTimestamp: " . $captureDetails->getCreationTimestamp();
+				$contents .=$this->getRow("CreationTimestamp: ",$captureDetails->getCreationTimestamp() );
+
 			}
 			if ($captureDetails->isSetCaptureStatus()) {
-				$contents .= "<br />    CaptureStatus";
+				$more='';
 				$captureStatus = $captureDetails->getCaptureStatus();
 				if ($captureStatus->isSetState()) {
-					$contents .= "<br />          State";
-					$contents .= "<br />              " . $captureStatus->getState();
+					$more .= "<br />          State";
+					$more .= $captureStatus->getState();
 				}
 				if ($captureStatus->isSetLastUpdateTimestamp()) {
-					$contents .= "<br />         LastUpdateTimestamp: " . $captureStatus->getLastUpdateTimestamp();
+					$more .= "<br /> LastUpdateTimestamp: " . $captureStatus->getLastUpdateTimestamp();
 				}
 				if ($captureStatus->isSetReasonCode()) {
-					$contents .= "<br />          ReasonCode: " . $captureStatus->getReasonCode();
+					$more .= "<br /> ReasonCode: " . $captureStatus->getReasonCode();
 				}
 				if ($captureStatus->isSetReasonDescription()) {
-					$contents .= "<br />          ReasonDescription: " . $captureStatus->getReasonDescription();
+					$more .= "<br /> ReasonDescription: " . $captureStatus->getReasonDescription();
 				}
+				$contents .=$this->getRow("CaptureStatus: ",$more );
 			}
 			if ($captureDetails->isSetSoftDescriptor()) {
-				$contents .= "<br />      SoftDescriptor: " . $captureDetails->getSoftDescriptor();
-			}
+				$contents .=$this->getRow("SoftDescriptor: ",$captureDetails->getSoftDescriptor() );
 
+			}
 		}
+		$contents .= $this->tableEnd();
 		return $contents;
 	}
 

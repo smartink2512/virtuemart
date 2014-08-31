@@ -2656,9 +2656,7 @@ jQuery().ready(function($) {
 		}
 		$amazonState = $notificationResponse->onNotificationUpdateOrderHistory($order, $payments);
 		$this->storeAmazonInternalData($order, NULL, NULL, $notification, NULL, $notificationResponse->getStoreInternalData());
-		if ($amazonState == 'SoftDecline') {
-			// send an email
-		}
+
 
 	}
 

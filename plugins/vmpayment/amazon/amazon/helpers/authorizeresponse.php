@@ -134,10 +134,8 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 
 	function getContents () {
 
-		$contents='';
 		$contents=$this->tableStart("AuthorizeResult");
 		if ($this->amazonData->isSetAuthorizeResult()) {
-			$contents=$this->tableStart("AuthorizeResult");
 			$authorizeResult = $this->amazonData->getAuthorizeResult();
 			if ($authorizeResult->isSetAuthorizationDetails()) {
 				$contents .=$this->getRowFirstCol("AuthorizationDetails");

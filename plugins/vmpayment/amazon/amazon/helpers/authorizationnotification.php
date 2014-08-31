@@ -49,6 +49,10 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 			$this->debugLog('NO isSetAuthorizationStatus' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return false;
 		}
+		//  if capture now, then the
+		if($authorizationDetails->getCaptureNow()) {
+			return true;
+		}
 		$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 		if (!$authorizationStatus->isSetState()) {
 			$this->debugLog('NO isSetState' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
@@ -57,12 +61,19 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		$amazonState = $authorizationStatus->getState();
 		// In synchronous Mode, order history has been updated by the Authorization Response
 		// Other notifications may be received, but they are more informative: MaxCapturesProcessed if the FULL amount Capture has been done
-		if ($this->isSynchronousMode()) {
+		$captureNow=false;
+		if ($authorizationDetails->isSetCaptureNow()) {
+			$captureNow=$authorizationDetails->getCaptureNow();
+		}
+		if($this->isSynchronousMode() or $captureNow ) {
 			return $amazonState;
 		}
+
+
 		if ($authorizationStatus->isSetReasonCode()) {
 			$reasonCode = $authorizationStatus->getReasonCode();
 		}
+
 		$order_history['customer_notified'] = 1;
 
 		if ($amazonState == 'Open') {
@@ -70,11 +81,11 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
 		} elseif ($amazonState == 'Declined') {
 			if ($reasonCode == 'InvalidPaymentMethod'  ) {
-				if (  $this->_currentMethod->soft_decline=='soft_decline_enabled' and $authorizationDetails->getCaptureNow()==false) {
-					// contact the buyer bye email
+				if (  $this->_currentMethod->soft_decline=='soft_decline_enabled' ) {
+					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD_SOFT_DECLINED', $reasonCode);
 					$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-					$amazonState='SoftDecline';
 				} else {
+					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD', $reasonCode);
 					$order_history['order_status'] = $this->_currentMethod->status_cancel;
 				}
 			} elseif ($reasonCode == 'AmazonRejected') {
