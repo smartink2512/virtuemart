@@ -114,7 +114,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			}
 			$item = new JFeedItem();
 			$item->title = $title;
-			$item->link = $product->link;
+			$item->link = JRoute::_($product->link);
 			$item->date = $product->created_on;
 			$item->description = '<div class="feed-description">' . $description . '</div>';
 			$item->category = $product->virtuemart_catgory_id;
