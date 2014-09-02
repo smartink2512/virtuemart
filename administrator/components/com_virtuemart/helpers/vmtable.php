@@ -580,7 +580,10 @@ class VmTable extends JTable {
 		if (!empty($this->_xParams)) {
 			$hashVarsToPush = serialize($this->_varsToPushParam);
 		}
-		$hash = md5($oid. $select . $k . $andWhere . $hashVarsToPush);
+		$hash = md5($oid. $select . $k . $mainTable . $andWhere . $hashVarsToPush);
+
+		//Very important
+		$this->reset();
 
 		if (isset (self::$_cache['l'][$hash])) {
 			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);

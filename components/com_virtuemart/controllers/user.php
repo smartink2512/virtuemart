@@ -184,13 +184,13 @@ class VirtueMartControllerUser extends JControllerLegacy
 					} else if($cartObj->getInCheckOut()) {
 						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $msg );
 					} else {
-						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
+						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=edit&addrtype=BT'), $msg );
 					}
 					return $msg;
 				}
 			}
 
-			if(!$cartObj or ($currentUser->guest==1 and isset($_POST['register'])) ){
+			if($currentUser->guest!=1 or !$cartObj or ($currentUser->guest==1 and isset($_POST['register'])) ){
 				$ret = $userModel->store($data);
 			}
 

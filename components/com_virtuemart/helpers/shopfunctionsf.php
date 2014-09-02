@@ -426,13 +426,16 @@ class shopFunctionsF {
 			}
 		} else {
 			if(JVM_VERSION > 1) {
-				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+				//$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+				$app =& JFactory::getApplication();
+				$template = $app->getTemplate();
 			} else {
 				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
+				$db = JFactory::getDbo();
+				$db->setQuery( $q );
+				$template = $db->loadResult();
 			}
-			$db = JFactory::getDbo();
-			$db->setQuery( $q );
-			$template = $db->loadResult();
+
 			if(!$template){
 				$err = 'Could not load default template style';
 				vmError( 'renderMail get Template failed: '.$err );

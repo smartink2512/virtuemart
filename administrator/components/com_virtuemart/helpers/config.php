@@ -790,6 +790,12 @@ class VmConfig {
 		self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
 
 		vmTime('time to load config','loadConfig');
+
+		// try plugins
+		JPluginHelper::importPlugin('vmuserfield');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('plgVmInitialise', array());
+
 		if(!self::$installed){
 			$user = JFactory::getUser();
 			if($user->authorise('core.admin','com_virtuemart') and ($install or $redirected)){

@@ -87,6 +87,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	}
 }
 
+
 /* Create the controller name */
 $_class = 'VirtuemartController'.ucfirst($_controller);
 
@@ -105,11 +106,6 @@ else {
 
 if (class_exists($_class)) {
     $controller = new $_class();
-
-	// try plugins
-	JPluginHelper::importPlugin('vmuserfield');
-	$dispatcher = JDispatcher::getInstance();
-	$dispatcher->trigger('plgVmOnMainController', array($_controller));
 
     /* Perform the Request task */
     $controller->execute($task);

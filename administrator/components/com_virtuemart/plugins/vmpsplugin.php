@@ -68,7 +68,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valérie Isaksen
 	 *
 	 */
-	protected function onStoreInstallPluginTable ($jplugin_id, $name = FALSE) {
+	public function onStoreInstallPluginTable ($jplugin_id, $name = FALSE) {
 
 		if ($res = $this->selectedThisByJPluginId ($jplugin_id)) {
 			parent::onStoreInstallPluginTable ($this->_psType);

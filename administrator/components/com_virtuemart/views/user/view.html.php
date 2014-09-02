@@ -46,13 +46,12 @@ class VirtuemartViewUser extends VmView {
 
 		$task = vRequest::getCmd('task', 'edit');
 		if($task == 'editshop'){
-
-			if(Vmconfig::get('multix','none') !=='none'){
-				//Maybe we must check here if the user is vendor and if he has an own id and else map to mainvendor.
-				$userId = 0;
+			$isSuperOrVendor = VmConfig::isSuperVendor();
+			if(empty($isSuperOrVendor)){
+				JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 			} else {
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$userId = VirtueMartModelVendor::getUserIdByVendorId(1);
+				$userId = VirtueMartModelVendor::getUserIdByVendorId($isSuperOrVendor);
 			}
 			$this->SetViewTitle('STORE'  );
 		} else if ($task == 'add'){

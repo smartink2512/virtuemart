@@ -30,6 +30,7 @@ abstract class vmCalculationPlugin extends vmPlugin {
 
 		$this->_tablepkey = 'virtuemart_calc_id';
 		$this->_tablename = '#__virtuemart_calc_plg_'. $this->_name;
+		$this->_psType = 'vmcalculation';
 	}
 
 

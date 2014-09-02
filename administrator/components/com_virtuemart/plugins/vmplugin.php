@@ -362,9 +362,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @author Valérie Isaksen
 	 * @author Max Milbers
 	 */
-	protected function onStoreInstallPluginTable ($psType,$name=FALSE) {
-
-		vmdebug('Executing onStoreInstallPluginTable ');
+	public function onStoreInstallPluginTable ($psType,$name=FALSE) {
 
 		if(!empty($name) and $name!=$this->_name){
 			return false;
