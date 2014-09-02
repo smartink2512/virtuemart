@@ -27,7 +27,6 @@
         <fields name="params">
             <fieldset name="basic"
                       addpath="/administrator/components/com_virtuemart/elements">
-                <field type="vmjpluginwarning"/>
                 <field type="spacer" default="VMPAYMENT_SYSTEMPAY_MODULE_INFORMATION_TITLE" level="level1"/>
 
                 <field type="spacer" default="" level="level1"/>

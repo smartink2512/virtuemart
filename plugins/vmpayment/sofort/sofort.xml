@@ -22,7 +22,6 @@
     <fields name="params">
 
     <fieldset name="basic" addfieldpath="/plugins/vmpayment/sofort/sofort/fields">
-         <field type="vmjpluginwarning"/>
          <field type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_TITLE" level="level1"/>
          <field type="getsofort" level="level1"/>
          <field type="sofortmanual" level="level1"/>

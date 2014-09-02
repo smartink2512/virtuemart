@@ -15,9 +15,7 @@
     </files>
     <params addpath="/plugins/vmuserfield/realex_hpp_api/realex/elements"/>
     <params addpath="/administrator/components/com_virtuemart/elements"/>
-    <params>
-        <param type="vmjpluginwarning"/>
-    </params>
+
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart plg_vmuserfield_realex Update Site">

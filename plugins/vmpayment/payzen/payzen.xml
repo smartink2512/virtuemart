@@ -25,7 +25,6 @@
     <vmconfig>
         <fields name="params" >
             <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/fields" >
-                <field type="vmjpluginwarning"/>
                 <field type="spacer" default="VMPAYMENT_PAYZEN_MODULE_INFORMATION_TITLE" level="level1"/>
 
                 <field type="spacer" default="" level="level1"/>

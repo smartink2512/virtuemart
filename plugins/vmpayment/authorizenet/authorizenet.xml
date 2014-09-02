@@ -18,7 +18,6 @@
         <fields name="params">
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/authorizenet/authorizenet/fields">
                 <field type="spacer" default="VMPAYMENT_AUTHORIZENET_AIM" level="level1"/>
-                <field type="vmjpluginwarning"/>
                 <field type="spacer" default="VMPAYMENT_AUTHORIZENET_MUST_SSL" level="level1"/>
                 <field type="vmtitle" default="VMPAYMENT_AUTHORIZENET_LIVE_PARAMS" level="level1"/>
                 <field name="hostname" type="text" size="50" default="https://secure.authorize.net/gateway/transact.dll"

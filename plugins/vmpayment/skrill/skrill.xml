@@ -20,7 +20,6 @@
     <vmconfig>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/fields">
-                <field type="vmjpluginwarning"/>
                 <field type="spacer" default="VMPAYMENT_SKRILL_PAYMENT_TITLE" level="level1"/>
                 <field type="list" name="product" label="VMPAYMENT_SKRILL_PRODUCT"
                        default="" description="VMPAYMENT_SKRILL_LOGOURL_TIP">

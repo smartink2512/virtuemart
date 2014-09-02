@@ -19,7 +19,6 @@
     <vmconfig>
         <fields name="params">
             <fieldset name="template">
-                <field type="vmjpluginwarning"/>
                 <field name="shipment_logos" type="media" directory="/images/stories/virtuemart/shipment"
                        hide_none="1" label="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS"
                        size="40"

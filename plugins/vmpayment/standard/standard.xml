@@ -17,7 +17,7 @@
     <vmconfig>
         <fields name="params">
             <fieldset name="payment"  addfieldpath="/administrator/components/com_virtuemart/fields">
-                <field type="vmjpluginwarning"/>
+
                 <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_STANDARD_CURRENCY"
                        description="VMPAYMENT_STANDARD_CURRENCY_TIP"/>
                 <field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U"
