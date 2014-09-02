@@ -1339,13 +1339,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 					$shouldRetry = true;
 					$retries++;
 				} else {
-					$this->setOutConfirmOrder($cart);
+					$cart->setOutOfCheckout();
 					$this->leaveAmazonCheckout();
 					$this->redirectToCart(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'), true);
 				}
 
 			} elseif ($amazonState == 'Declined') {
-				$this->setOutConfirmOrder($cart);
+				$cart->setOutOfCheckout();
 				$this->leaveAmazonCheckout();
 				$this->redirectToCart(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'), true);
 			}

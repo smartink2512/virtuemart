@@ -97,7 +97,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valérie Isaksen
 	 *
 	 */
-	protected function onStoreInstallPluginTable ($jplugin_id, $name = FALSE) {
+	public function onStoreInstallPluginTable ($jplugin_id, $name = FALSE) {
 
 		if ($res = $this->selectedThisByJPluginId ($jplugin_id)) {
 			parent::onStoreInstallPluginTable ($this->_psType);
@@ -1158,20 +1158,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		session_write_close();
 		session_start();
 	}
-	/**
-	 * setOutConfirmOrder
-	 * In VM 2.6.7, we introduced a double order checking.
-	 * Now plugin itself can define if it should be possible to use the same trigger more than one time.
-	 * this should be done at the begin of the trigger
-	 * @author Valérie Isaksen
-	 * @param $cart
-	 */
-	function setOutConfirmOrder($cart) {
-		$cart->_inConfirm = false;
-		$cart->setCartIntoSession();
-		session_write_close();
-		session_start();
-	}
+
 
 	public function processConfirmedOrderPaymentResponse ($returnValue, $cart, $order, $html, $payment_name, $new_status = '') {
 

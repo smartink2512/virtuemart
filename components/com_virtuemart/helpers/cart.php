@@ -319,6 +319,8 @@ class VirtueMartCart {
 		$this->_dataValidated = false;
 		$this->_inConfirm = false;
 		$this->setCartIntoSession();
+		session_write_close();
+		session_start();
 	}
 
 	public function blockConfirm(){

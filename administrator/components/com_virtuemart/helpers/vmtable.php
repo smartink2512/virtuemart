@@ -570,20 +570,23 @@ class VmTable extends JTable {
 		if (!empty($this->_xParams)) {
 			$hashVarsToPush = serialize($this->_varsToPushParam);
 		}
-		$hash = md5($oid. $select . $k . $andWhere . $hashVarsToPush);
+		$hash = md5($oid. $select . $k . $mainTable . $andWhere . $hashVarsToPush);
+		$this->reset();
 
 		if (isset (self::$_cache['l'][$hash])) {
-			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			vmdebug('Return cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 			$this->bind(self::$_cache['l'][$hash]);
 			return $this;
 		} else {
-			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
 
 		$db = $this->getDBO();
 		$db->setQuery($query);
 
 		$result = $db->loadAssoc();
+
+
 
 		if ($result) {
 			$this->bind($result);
