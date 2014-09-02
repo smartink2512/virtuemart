@@ -871,9 +871,12 @@ class VmConfig {
 			vmTime('loadConfig db '.$install,'loadConfig');
 
 			// try plugins
-			JPluginHelper::importPlugin('vmuserfield');
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('plgVmInitialise', array());
+			if($app->isSite()){
+				JPluginHelper::importPlugin('vmuserfield');
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('plgVmInitialise', array());
+			}
+
 
 			return self::$_jpConfig;
 		}
