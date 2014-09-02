@@ -574,11 +574,11 @@ class VmTable extends JTable {
 		$this->reset();
 
 		if (isset (self::$_cache['l'][$hash])) {
-			vmdebug('Return cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			//vmdebug('Return cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 			$this->bind(self::$_cache['l'][$hash]);
 			return $this;
 		} else {
-			vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
+			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 		}
 
 		$db = $this->getDBO();

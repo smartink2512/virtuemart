@@ -107,7 +107,7 @@ class VmView extends JView{
 	function addStandardDefaultViewCommands($showNew=true, $showDelete=true, $showHelp=true) {
 
 		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
-
+		JToolBarHelper::spacer('30');
 		JToolBarHelper::divider();
 		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit.state')) {
 			JToolBarHelper::publishList();
@@ -119,10 +119,12 @@ class VmView extends JView{
 		if ($this->canDo->get('core.admin') || $showNew && $this->canDo->get('vm.'.$view.'.create')) {
 			JToolBarHelper::addNewX();
 		}
+		JToolBarHelper::spacer('30');
+		JToolBarHelper::divider();
 		if ($this->canDo->get('core.admin') || $showDelete && $this->canDo->get('vm.'.$view.'.delete')) {
 			JToolBarHelper::deleteList();
 		}
-		self::showHelp ( $showHelp);
+		if($showHelp) self::showHelp ();
 		self::showACLPref($view);
 	}
 

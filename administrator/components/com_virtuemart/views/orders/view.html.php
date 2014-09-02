@@ -205,6 +205,8 @@ class VirtuemartViewOrders extends VmView {
 			//JToolBarHelper::customX( 'CreateOrderHead', 'new','new','New',false);
 			JToolBarHelper::save('updatestatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
+			JToolBarHelper::spacer('50'); // new spacer quorvia
+
 			JToolBarHelper::deleteListX();
 
 			/* Assign the data */
