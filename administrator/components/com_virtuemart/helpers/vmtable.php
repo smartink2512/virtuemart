@@ -303,8 +303,8 @@ class VmTable extends JTable {
 				}
 				if(!isset($obj[$xParams])){
 					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
-					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
-					vmTrace('$obj->$xParams is empty');
+					vmdebug('There are bindParameterables, but $obj[$xParams] is empty, this is a programmers error ',$xParams , $obj);
+					vmTrace('$obj[$xParams] is empty');
 				}
 			}
 
