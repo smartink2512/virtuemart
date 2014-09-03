@@ -221,8 +221,10 @@ $document->addScriptDeclaration ( "
 				if(!isset($this->orderstatuslist[$this->orderbt_event->order_status_code])){
 					if(empty($this->orderbt_event->order_status_code)){
 						$this->orderbt_event->order_status_code = 'unknown';
+					} else if($this->orderbt_event->order_status_code == '-'){
+						$this->orderbt_event->order_status_code = 'D';
 					}
-					$_orderStatusList[$this->orderbt_event->order_status_code] = JText::_('COM_VIRTUEMART_UNKNOWN_ORDER_STATUS');
+					$this->orderstatuslist[$this->orderbt_event->order_status_code] = vmText::_('COM_VIRTUEMART_UNKNOWN_ORDER_STATUS');
 				}
 
 				echo '<td align="center">'.$this->orderstatuslist[$this->orderbt_event->order_status_code].'</td>';

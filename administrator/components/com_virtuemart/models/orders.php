@@ -1774,6 +1774,17 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			foreach( $item_ids as $item_id ) {
 			    $this->removeOrderLineItem($item_id);
 			}
+
+			$q = "DELETE FROM `#__virtuemart_order_histories`
+				WHERE `virtuemart_order_id`=".$id;
+			$this->_db->setQuery($q);
+			$this->_db->execute();
+
+			$q = "DELETE FROM `#__virtuemart_order_calc_rules`
+				WHERE `virtuemart_order_id`=".$id;
+			$this->_db->setQuery($q);
+			$this->_db->execute();
+
 			// rename invoice number by adding the date, and update the invoice table
 			 $this->renameInvoice($id );
 
