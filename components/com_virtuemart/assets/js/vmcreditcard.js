@@ -161,12 +161,13 @@ function checkCreditCard (cardnumber, cardname) {
     // Establish card type
     var cardType = -1;
     for (var i=0; i<cards.length; i++) {
-
         // See if it is this card (ignoring the case of the string)
-        if (cardname.toLowerCase () == cards[i].name.toLowerCase()) {
-            cardType = i;
-            break;
-        }
+        if (typeof cardname != 'undefined')
+            if (cardname != null)
+                if (cardname.toLowerCase () == cards[i].name.toLowerCase()) {
+                    cardType = i;
+                    break;
+                }
     }
 
     // If card type not found, report an error

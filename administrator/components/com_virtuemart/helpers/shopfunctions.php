@@ -676,8 +676,11 @@ class ShopFunctions {
 	static public function getRssFeed ($rssURL,$max) {
 		// prevent Strict Standards errors in simplepie
 		error_reporting(E_ALL ^ E_STRICT);
-
-		$rssFeed = JFactory::getFeedParser($rssURL);
+		jimport('joomla.feed.factory');
+		$feed   = new JFeedFactory;
+		$rssFeed = $feed->getFeed($rssURL);
+		//$rssFeed = JFactory::getFeedParser($rssURL);
+		/*
 		if(empty($rssFeed) or !is_object($rssFeed)) return false;
 		$count = $rssFeed->get_item_quantity();
 		$limit=min($max,$count);
@@ -689,7 +692,7 @@ class ShopFunctions {
 				$feed->description = $item->get_description();
 				$feeds[] = $feed;
 			}
-
+*/
 		return $feeds;
 	}
 	/**
