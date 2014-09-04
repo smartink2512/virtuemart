@@ -569,8 +569,19 @@ class VirtueMartModelUser extends VmModel {
 			unset($data['password2']);
 		}
 
+		if(!$user->authorise('core.admin','com_virtuemart')){
+			$whiteDataToBind = array();
+			$whiteDataToBind['name'] = $data['name'];
+			$whiteDataToBind['username'] = $data['username'];
+			$whiteDataToBind['email'] = $data['email'];
+			if(isset($data['password'])) $whiteDataToBind['password'] = $data['password'];
+			if(isset($data['password2'])) $whiteDataToBind['password2'] = $data['password2'];
+		} else {
+			$whiteDataToBind = $data;
+		}
+
 		// Bind Joomla userdata
-		if (!$user->bind($data)) {
+		if (!$user->bind($whiteDataToBind)) {
 
 			foreach($user->getErrors() as $error) {
 				// 				vmError('user bind '.$error);
@@ -682,7 +693,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		//The extra check for isset vendor_name prevents storing of the vendor if there is no form (edit address cart)
-		if((int)$data['user_is_vendor']==1 and isset($data['vendor_name'])){
+		if((int)$data['user_is_vendor']==1 and isset($data['vendor_currency'])){
 			vmdebug('vendor recognised '.$data['virtuemart_vendor_id']);
 			if($this ->storeVendorData($data)){
 				if ($new) {
