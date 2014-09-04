@@ -91,16 +91,16 @@
                description="VMPAYMENT_AMAZON_CONF_CAPTURE_CAPTURE_IMMEDIATE_WARNING"/>
 
 
-        <!-- param class="erp_mode erp_mode_disabled" name="ipn_reception" type="list" default="ipn_reception_enabled"
+        <param class="ipn_reception" name="ipn_reception" type="list" default="ipn_reception_enabled"
                label="VMPAYMENT_AMAZON_CONF_IPN_RECEPTION">
             <option value="ipn_reception_enabled">VMPAYMENT_AMAZON_CONF_IPN_RECEPTION_ENABLED</option>
             <option value="ipn_reception_disabled">VMPAYMENT_AMAZON_CONF_IPN_RECEPTION_DISABLED</option>
-        </param -->
+        </param>
 
-        <!--param class="erp_mode erp_mode_disabled ipn_reception ipn_reception_disabled" type="vmtitle" default=""
+        <param class="ipn_reception_disabled warning" type="vmtitle" default=""
                description="VMPAYMENT_AMAZON_CONF_IPN_RECEPTION_POLLING"/>
 
-        <param name="polling_frequency" class="ipn_reception ipn_reception_disabled" type="text" default="10"
+        <!--param name="polling_frequency" class="ipn_reception ipn_reception_disabled" type="text" default="10"
                label="VMPAYMENT_AMAZON_CONF_POLLING_FREQUENCY"
                description="VMPAYMENT_AMAZON_CONF_POLLING_FREQUENCY_TIP"/ -->
 

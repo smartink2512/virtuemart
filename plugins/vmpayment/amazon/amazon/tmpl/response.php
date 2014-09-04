@@ -20,31 +20,18 @@
 defined('_JEXEC') or die();
 
 $success = $viewData["success"];
-$payment_name = $viewData["payment_name"];
-$payment = $viewData["payment"];
 $order = $viewData["order"];
-$currency = $viewData["currency"];
 
 ?>
 <div id="amazonResponse">
-	<div class="amazonResponseItem">
-		<span class=""> <?php echo vmText::_('VMPAYMENT_AMAZON_PAYMENT_NAME'); ?></span>
-		<span class=""><?php echo $viewData["payment_name"]; ?></span>
-	</div>
-	<div class="amazonResponseItem">
 
-		<span class=""><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></span>
-		<span class=""><?php echo $order['details']['BT']->order_number; ?></span>
-	</div>
-	<div class="amazonResponseItem">
-		<?php if ($success) { ?>
-		<span class=""><?php echo vmText::_('VMPAYMENT_AMAZON_AMOUNT'); ?></span>
-		<span class=""><?php echo $payment->payment_order_total . ' ' . $payment->payment_currency; ?></span>
-	</div>
-	<div class="amazonResponseItem">
-		<span class=""><?php echo vmText::_('VMPAYMENT_AMAZON_AUTHORIZATION_ID'); ?> </span>
-		<span class=""><?php echo $viewData["amazonAuthorizationId"]; ?></span>
-		<?php } ?>
+	<h3> <?php echo vmText::_('VMPAYMENT_AMAZON_THANK_YOU'); ?></h3>
+
+
+	<div class="amazonResponseOrderId">
+		<label><?php echo vmText::_('VMPAYMENT_AMAZON_ORDER_ID'); ?> </label>
+		 <?php echo $viewData["amazonOrderId"]; ?>
+
 	</div>
 	<?php if ($success) { ?>
 		<div class="amazonResponseItem">

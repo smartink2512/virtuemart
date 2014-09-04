@@ -39,7 +39,7 @@ jQuery(document).ready( function($) {
 });
 //]]>
 ");
-	if ($viewData['layout'] == 'amazon') {
+	if ($viewData['layout'] == 'cart') {
 
 		$doc->addScriptDeclaration("
 	//<![CDATA[
@@ -56,6 +56,25 @@ $('#leaveAmazonCheckout').click(function(){
 });
 //]]>
 ");
+
+
+if (vRequest::getWord('view') == 'cart') {
+$doc->addScriptDeclaration("
+
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	jQuery('#checkoutFormSubmit').attr('disabled', 'true');
+	jQuery('#checkoutFormSubmit').removeClass( 'vm-button-correct' );
+	jQuery('#checkoutFormSubmit').addClass( 'vm-button' );
+	jQuery('#checkoutFormSubmit').text( '".JText::_('VMPAYMENT_AMAZON_CLICK_PAY_AMAZON', true)."' );
+	});
+
+//]]>
+
+");
+}
+
+
 	}
 }
 ?>

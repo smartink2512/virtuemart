@@ -105,6 +105,13 @@ jQuery().ready(function ($) {
         }
     }
 
+    handleIPNDisabled = function () {
+        var ipn_reception = $('#paramsipn_reception').val();
+        $('.ipn_reception_disabled').parents('tr').hide();
+        if (ipn_reception === 'ipn_reception_disabled') {
+            $('.ipn_reception_disabled').parents('tr').show();
+        }
+    }
     /**********/
     /* Events */
     /**********/
@@ -127,7 +134,9 @@ jQuery().ready(function ($) {
     $('#paramsenvironment').change(function () {
         handleEnvironment();
     });
-
+    $('#paramsipn_reception').change(function () {
+        handleIPNDisabled();
+    });
 
     /*****************/
     /* Initial calls */
@@ -138,5 +147,6 @@ jQuery().ready(function ($) {
     handleAuthorizationERPDisabled();
     handleEnvironment();
     handleCaptureMode();
+    handleIPNDisabled();
 
 });

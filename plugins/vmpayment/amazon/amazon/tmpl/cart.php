@@ -123,6 +123,8 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 
 			<div id="amazonWalletWidgetDiv" class="width50 floatleft"></div>
 		</div>
+		<div class="clear"></div>
+		<div id="amazonChargeNowWarning"></div>
 
 		<div class="clear"></div>
 		<div id="amazonCartDiv">
@@ -208,8 +210,17 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 						<?php
 						}
 					}
+					?>
+					<div id="amazon_checkout">
+					<div id="amazon_checkout_text">
+						<?php
+					echo Jtext::_('VMPAYMENT_AMAZON_CHECKOUT');
+						?>
+					</div>
+						<?php
 					echo $this->checkout_link_html;
 					?>
+					</div>
 				</div>
 				<?php // Continue and Checkout Button END ?>
 				<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>

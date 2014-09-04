@@ -23,7 +23,7 @@ var amazonPayment = {
 
         showAmazonButton: function (sellerId, redirect_page, useAmazonAddressBook) {
 //    window.onError = null;  // some of the amazon scripts can load in error handlers to report back errors to amazon.  helps them, but keeps you in the dark.
-            console.log("amazonShowButton called");
+            console.log("amazonShowButton called: useAmazonAddressBook=" + useAmazonAddressBook);
 
             new OffAmazonPayments.Widgets.Button({
                 sellerId: sellerId,
@@ -198,8 +198,11 @@ var amazonPayment = {
                     }
                 }
             );
-        }
+        },
 
+        displayCaptureNowWarning: function(warning) {
+            document.id('amazonChargeNowWarning').set('html',warning);
+        }
 }
     ;
 

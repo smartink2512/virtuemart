@@ -66,7 +66,7 @@ $('#leaveAmazonCheckout').click(function(){
 	var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazonCheckout&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
     console.log('leaveAmazonCheckout');
     jQuery.getJSON(url, function(data) {
-            var reloadurl = 'index.php?option=com_virtuemart&view=cart';
+            var reloadurl = vmSiteurl +'index.php?option=com_virtuemart&view=cart';
          window.location.href = reloadurl;
         });
 
@@ -74,6 +74,17 @@ $('#leaveAmazonCheckout').click(function(){
 });
 //]]>
 ");
+
+	if ($viewData['captureNow']) {
+		$doc->addScriptDeclaration("
+		//<![CDATA[
+jQuery(document).ready( function($) {
+	amazonPayment.displayCaptureNowWarning('".JText::_('VMPAYMENT_AMAZON_CHARGE_NOW')."');
+});
+//]]>
+"); // addScriptDeclaration
+	}
+
 
 }
 
