@@ -200,6 +200,9 @@ class VirtueMartViewCart extends VmView {
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		if($this->cart->_inConfirm) vmInfo('COM_VIRTUEMART_IN_CONFIRM');
+		if ($this->cart->layoutPath) {
+			$this->addTemplatePath($this->cart->layoutPath);
+		}
 		parent::display($tpl);
 	}
 

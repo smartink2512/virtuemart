@@ -679,17 +679,12 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 	/**
-	 * Get the path to a layout for a type
-	 *
-	 * @param   string  $type  The name of the type
-	 * @param   string  $layout  The name of the type layout. If alternative
-	 *                           layout, in the form template:filename.
-	 * @param   array   $viewData  The data you want to use in the layout
-	 *                           can be an object/array/string... to reuse in the template
-	 * @return  string  The path to the type layout
-	 * original from libraries\joomla\application\module\helper.php
-	 * @since   11.1
-	 * @author Patrick Kohl, Valérie Isaksen, Max Milbers
+	 * @param string $layout
+	 * @param null $viewData
+	 * @param null $name
+	 * @param null $psType
+	 * @return string
+	 * @author Patrick Kohl, Valérie Isaksen
 	 */
 	public function renderByLayout ($layout = 'default', $viewData = NULL, $name = NULL, $psType = NULL) {
 		if ($name === NULL) {
@@ -700,27 +695,48 @@ abstract class vmPlugin extends JPlugin {
 			$psType = 'vm'.$this->_psType;
 		}
 
-		$app = JFactory::getApplication ();
-		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . $psType . DS . $name . DS . $layout . '.php';
-		$defaultPath = JPATH_SITE . DS . 'plugins' . DS . $psType . DS . $name . DS . $name . DS . 'tmpl' . DS . $layout . '.php';
-
-		$layout = false;
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		if (JFile::exists ($templatePath)) {
-			$layout = $templatePath;
-		} else if (JFile::exists ($defaultPath)) {
-			$layout = $defaultPath;
-		}
+		$layout = vmPlugin::_getLayoutPath ($name,  $psType, $layout);
 
 		if($layout){
 			ob_start ();
 			include ($layout);
 			return ob_get_clean ();
 		} else {
-			vmdebug('renderByLayout: layout '.$layout.'not found '.$psType. ' '.$name.' default path '.$defaultPath);
+			vmdebug('renderByLayout: layout '.$layout.'not found '.$psType. ' '.$name.' default path '.$layout);
 		}
 
 	}
 
+	/**
+	 *  Note: We have 2 subfolders for versions > J15 for 3rd parties developers, to avoid 2 installers
+	 *
+	 * @author Patrick Kohl, Valérie Isaksen
+	 */
+	private function _getLayoutPath ($pluginName, $group, $layout = 'default') {
+		$app = JFactory::getApplication ();
+
+		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
+		$defaultPath = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
+		// if the site template has a layout override, use it
+		jimport ('joomla.filesystem.file');
+		if (JFile::exists ($templatePath)) {
+			return $templatePath;
+		}
+		else {
+			return $defaultPath;
+		}
+	}
+
+	/**
+	 * @param        $pluginName
+	 * @param        $group
+	 * @param string $layout
+	 * @return mixed
+	 * @author Valérie Isaksen
+	 */
+	public function getTemplatePath($pluginName, $group, $layout = 'default') {
+		$layoutPath = vmPlugin::_getLayoutPath ($pluginName, 'vm' . $group, $layout);
+		return str_replace(DS . $layout . '.php','',$layoutPath );
+	}
 
 }

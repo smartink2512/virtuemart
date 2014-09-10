@@ -6,7 +6,7 @@ defined('_JEXEC') or die();
  * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
- * @version $Id: languages.php 7913 2014-05-12 19:28:36Z alatak $
+ * @version $Id: categories.php 8229 2014-08-23 16:56:12Z alatak $
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -26,32 +26,23 @@ if (!class_exists('TableCategories')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 }
 
-if (!class_exists('VmElements')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
-}
-/*
- * This element is used by the menu manager
- * Should be that way
- */
-class JElementLanguages extends JElement {
 
-	var $_name = 'Languages';
+jimport('joomla.form.formfield');
+
+class JFormFieldcategories extends JFormFieldList {
+
+	var $type = 'categories';
 
 
-	function fetchElement($name, $value, &$node, $control_name) {
+	protected function getInput() {
+		JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+		$categorylist = ShopFunctions::categoryListTree(array($this->value));
 
-		$activeLangs = array();
-		$language = JFactory::getLanguage();
-		$jLangs = $language->getKnownLanguages(JPATH_BASE);
-
-		foreach ($jLangs as $jLang) {
-			$jlangTag = strtolower(strtr($jLang['tag'], '-', '_'));
-			$activeLangs[] = JHTML::_('select.option', $jLang['tag'], $jLang['name']);
-		}
-		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
-		return JHTML::_('select.genericlist', $activeLangs, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
-
-
+		$html = '<select multiple="true" class="inputbox ' .  $this->class . '"   name="' . $this->name   . '" >';
+		$html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_NONE') . '</option>';
+		$html .= $categorylist;
+		$html .= "</select>";
+		return $html;
 	}
 
 }

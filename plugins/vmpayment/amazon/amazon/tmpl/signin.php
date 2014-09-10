@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
- * @version $Id: render_pluginname.php 7198 2013-09-13 13:09:01Z alatak $
+ * @version $Id: signin.php 8272 2014-09-04 19:57:55Z alatak $
  * @package VirtueMart
  * @subpackage vmpayment
  * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.
@@ -16,31 +16,60 @@ defined('_JEXEC') or die();
  *
  * http://virtuemart.net
  */
+?>
+<?php
+JHtml::_('behavior.tooltip');
+vmJsApi::jPrice();
+static $jsSILoaded = false;
+if (!$jsSILoaded) {
+	$doc = JFactory::getDocument();
+	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" class=\"hasTip\" title=\"::' . addslashes(vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')) . '\"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\" class=\"error\"></div></div>';
 
-$doc = JFactory::getDocument();
-vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
-$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon-site.css');
-if ($viewData['sign_in_display'] == 'advertise') {
+	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	if ($viewData['include_amazon_css']) {
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+	}
+	$renderAmazonAddressBook = $viewData['renderAmazonAddressBook'] ? 'true' : 'false';
+
 	$doc->addScriptDeclaration("
+	//<![CDATA[
 jQuery(document).ready( function($) {
-$( '.output-shipto-add' ).hide();
-	amazonShowButton('" . $viewData['sellerId'] . "', '" . $viewData['redirect_page'] . "');
-	var amazonButtonHtml = $('#checkout-advertise-box').html();
-	$('#checkout-advertise-box').hide();
-	 $('#checkoutFormSubmit').before(amazonButtonHtml);
-	 $('.checkout-advertise').addClass('checkout-advertise');
+	amazonPayment.showAmazonButton('" . $viewData['sellerId'] . "', '" . $viewData['redirect_page'] . "', " . $renderAmazonAddressBook . ");
+	$( '" . $viewData['sign_in_css'] . "' ).append('" . $signInButton . "');
+
 });
+//]]>
+");
+	if ($viewData['layout'] == 'cart') {
+
+		$doc->addScriptDeclaration("
+	//<![CDATA[
+jQuery(document).ready( function($) {
+$('#leaveAmazonCheckout').click(function(){
+	amazonPayment.leaveAmazonCheckout();
+	});
+});
+//]]>
+");
+
+
+if (vRequest::getWord('view') == 'cart') {
+$doc->addScriptDeclaration("
+
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	jQuery('#checkoutFormSubmit').attr('disabled', 'true');
+	jQuery('#checkoutFormSubmit').removeClass( 'vm-button-correct' );
+	jQuery('#checkoutFormSubmit').addClass( 'vm-button' );
+	jQuery('#checkoutFormSubmit').text( '".JText::_('VMPAYMENT_AMAZON_CLICK_PAY_AMAZON', true)."' );
+	});
+
+//]]>
 
 ");
 }
 
 
-
+	}
+}
 ?>
-	<div id="payWithAmazonDiv">
-		<img src="<?php echo $viewData['buttonWidgetImageURL'] ?>" style="cursor: pointer;"/>
-	</div>
-	<div id="amazonSignInErrorMsg" class="error"></div>
-<?php if ($viewData['sign_in_display'] == 'advertise') { ?>
-	<div><?php echo vmText::_('VMPAYMENT_AMAZON_OR') ?></div>
-<?php } ?>

@@ -74,7 +74,8 @@ class VirtueMartCart {
 	var $cartProductsData = array();
 	var $cartData = array();
 	var $cartPrices = array();
-
+	var $layout ;
+	var $layoutPath='';
 	/* @deprecated */
 	var $pricesUnformatted = array();
 
@@ -155,6 +156,8 @@ class VirtueMartCart {
 					self::$_cart->STsameAsBT					= $sessionCart->STsameAsBT;
 					self::$_cart->selected_shipto 				= $sessionCart->selected_shipto;
 					self::$_cart->_fromCart						= $sessionCart->_fromCart;
+					self::$_cart->layout						= $sessionCart->layout;
+					self::$_cart->layoutPath				    = $sessionCart->layoutPath;
 				}
 			}
 
@@ -372,6 +375,8 @@ class VirtueMartCart {
 		$sessionCart->STsameAsBT					= $this->STsameAsBT;
 		$sessionCart->selected_shipto 				= $this->selected_shipto;
 		$sessionCart->_fromCart						= $this->_fromCart;
+		$sessionCart->layout						= $this->layout;
+		$sessionCart->layoutPath					= $this->layoutPath;
 		return $sessionCart;
 	}
 
@@ -754,7 +759,7 @@ class VirtueMartCart {
 	 * @param integer $shipment_id Shipment ID taken from the form data
 	 * @author Max Milbers
 	 */
-	public function setShipmentMethod($force=false) {
+	public function setShipmentMethod($force=false, $redirect=true) {
 
 		$virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $this->virtuemart_shipmentmethod_id);
 		if($this->virtuemart_shipmentmethod_id != $virtuemart_shipmentmethod_id or $force){
@@ -773,16 +778,20 @@ class VirtueMartCart {
 					// Plugin completed successfull; nothing else to do
 					break;
 				} else if ($_retVal === false ) {
-					$mainframe = JFactory::getApplication();
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
-					break;
+					if ($redirect) {
+						$mainframe = JFactory::getApplication();
+						$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
+						break;
+					} else {
+						return;
+					}
 				}
 			}
 			$this->setCartIntoSession();
 		}
 	}
 
-	public function setPaymentMethod($force=false) {
+	public function setPaymentMethod($force=false, $redirect=true) {
 
 		$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id);
 		if($this->virtuemart_paymentmethod_id != $virtuemart_paymentmethod_id or $force){
@@ -801,9 +810,13 @@ class VirtueMartCart {
 					// Plugin completed succesfull; nothing else to do
 					break;
 				} else if ($_retVal === false ) {
-					$app = JFactory::getApplication();
-					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
-					break;
+					if ($redirect) {
+						$app = JFactory::getApplication();
+						$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
+						break;
+					} else {
+						return;
+					}
 				}
 			}
 			$this->setCartIntoSession();

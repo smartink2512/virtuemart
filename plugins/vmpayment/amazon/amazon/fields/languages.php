@@ -6,7 +6,7 @@ defined('_JEXEC') or die();
  * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
- * @version $Id: categories.php 7913 2014-05-12 19:28:36Z alatak $
+ * @version $Id: languages.php 8229 2014-08-23 16:56:12Z alatak $
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -29,25 +29,25 @@ if (!class_exists('TableCategories')) {
 if (!class_exists('VmElements')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
 }
-/*
- * This element is used by the menu manager
- * Should be that way
- */
-class JElementcategories extends JElement {
+jimport('joomla.form.formfield');
 
-	var $_name = 'categories';
+class JFormFieldLanguages extends JFormField {
+
+	var $type = 'Languages';
 
 
-	function fetchElement($name, $value, &$node, $control_name) {
-		JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
-		$categorylist = ShopFunctions::categoryListTree(array($value));
-		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
+	protected function getInput() {
 
-		$html = '<select multiple="true" class="inputbox ' . $class . '"   name="' . $control_name . '[' . $name . ']' . '" >';
-		$html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_NONE') . '</option>';
-		$html .= $categorylist;
-		$html .= "</select>";
-		return $html;
+		$activeLangs = array();
+		$language = JFactory::getLanguage();
+		$jLangs = $language->getKnownLanguages(JPATH_BASE);
+
+		foreach ($jLangs as $jLang) {
+			$jlangTag = strtolower(strtr($jLang['tag'], '-', '_'));
+			$activeLangs[] = JHTML::_('select.option', $jLang['tag'], $jLang['name']);
+		}
+		return JHTML::_('select.genericlist', $activeLangs, $this->name, 'size="1"', 'value', 'text', $this->value);
+
 	}
 
 }

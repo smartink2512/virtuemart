@@ -114,7 +114,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		return $this;
 	}
 
-	public function updatecart(){
+	public function updatecart($html=true){
 
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = true;
@@ -142,11 +142,27 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$cart->STsameAsBT = 0;//vRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		}
 
-		$cart->setShipmentMethod();
-		$cart->setPaymentMethod();
+		$cart->setShipmentMethod($html);
+		$cart->setPaymentMethod($html);
+		if ($html) {
+			$this->display();
+		} else {
+			$json = new stdClass();
+			ob_start();
+			$this->display ();
+			$json->msg = ob_get_clean();
+			echo json_encode($json);
+			jExit();
+		}
 
-		$this->display();
 	}
+
+
+	public function updatecartJS(){
+
+		$this->updatecart(false);
+	}
+
 
 	/**
 	 * legacy
@@ -163,7 +179,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function setpayment(){
 		$this->updatecart();
 	}
-
 	/**
 	 * Add the product to the cart
 	 *

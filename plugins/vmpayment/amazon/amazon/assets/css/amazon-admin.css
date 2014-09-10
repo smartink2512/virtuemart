@@ -15,7 +15,7 @@
 }
 
 .level2, .level1 {
-    margin: 10px 0 5px 0;
+    margin: 15px 0 5px 0;
     font-weight: bold;
     padding: 5px;
     float: none;
@@ -30,4 +30,14 @@
     font-weight: bold;
 }
 
+.level4 {
+    color: #f0f0f0;
+}
 
+
+.warning {
+    margin-bottom:10px;
+}
+.ipnurl {
+    margin-top:10px;
+}

@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
- * @version $Id$
+ * @version $Id: addressbook_wallet.php 8272 2014-09-04 19:57:55Z alatak $
  * @package VirtueMart
  * @subpackage vmpayment
  * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.
@@ -19,36 +19,74 @@ defined('_JEXEC') or die();
 ?>
 
 <?php
-
+static $jsAWLoaded = false;
 $doc = JFactory::getDocument();
-//$doc->addScript(JURI::root(true).'/plugins/vmpayment/amazon/amazon/assets/js/site.js');
-vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
-$doc->addScriptDeclaration("
-jQuery(document).ready( function($) {
-	amazonShowAddress('" . $viewData['sellerId'] . "','" . $viewData['amazonOrderReferenceId'] . "', '" . $viewData['addressbook_designWidth'] . "', '" . $viewData['addressbook_designHeight'] . "');
-	amazonShowWallet('" . $viewData['sellerId'] . "','" . $viewData['amazonOrderReferenceId'] . "', '" . $viewData['wallet_designWidth'] . "', '" . $viewData['wallet_designHeight'] . "');
-});
-
-"); // addScriptDeclaration
-
-?>
-<h2><?php echo vmText::_('VMPAYMENT_AMAZON_SELECT_ADDRESS') ?></h2>
-<?php if ($viewData['renderAddressBook']) { ?>
-	<!-- AddressbookWidget -->
-	<div id='amazonAddressBookWidgetDiv'></div>
-	<div id="amazonAddressBookErrorMsg" class="error"></div>
-<?php
+vmJsApi::jPrice();
+jimport('joomla.environment.browser');
+$browser = JBrowser::getInstance();
+$isMobile = $browser->isMobile();
+if ($isMobile) {
+	$doc->setMetaData('viewport', "width=device-width, initial-scale=1, maximum-scale=1");
 }
+if (!$jsAWLoaded) {
+	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	if ($viewData['include_amazon_css']) {
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+	}
+
+
+//vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+	$doc->addScriptDeclaration("
+		//<![CDATA[
+jQuery(document).ready( function($) {
+	amazonPayment.init('" . $viewData['sellerId'] . "','" . $viewData['amazonOrderReferenceId'] . "', '" . $viewData['addressbook_designWidth'] . "', '" . $viewData['addressbook_designHeight'] . "', '" . $isMobile . "', '" . $viewData['virtuemart_paymentmethod_id'] . "', '" . $viewData['readOnlyWidgets'] . "');
+});
+//]]>
+"); // addScriptDeclaration
+	if ($viewData['renderAddressBook']) {
+		$doc->addScriptDeclaration("
+		//<![CDATA[
+jQuery(document).ready( function($) {
+	amazonPayment.showAmazonAddress();
+});
+//]]>
+"); // addScriptDeclaration
+	}
+	if ($viewData['renderWalletBook']) {
+		$doc->addScriptDeclaration("
+		//<![CDATA[
+jQuery(document).ready( function($) {
+	amazonPayment.showAmazonWallet();
+});
+//]]>
+"); // addScriptDeclaration
+	}
+
+	$doc->addScriptDeclaration("
+	//<![CDATA[
+jQuery(document).ready( function($) {
+$('#leaveAmazonCheckout').click(function(){
+	amazonPayment.leaveAmazonCheckout();
+	});
+});
+//]]>
+");
+
+	if ($viewData['captureNow']) {
+		$doc->addScriptDeclaration("
+		//<![CDATA[
+jQuery(document).ready( function($) {
+	amazonPayment.displayCaptureNowWarning('" . JText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
+});
+//]]>
+"); // addScriptDeclaration
+	}
+
+
+}
+
 ?>
 
-<h2><?php echo vmText::_('VMPAYMENT_AMAZON_SELECT_PAYMENT') ?></h2>
 
-<!-- WalletWidget -->
-<span id='amazonWalletWidgetDiv'></span>
-<div id="amazonWalletErrorMsg" class="error"></div>
-
-
-<a class="vm-button-correct"
-   href="<?php echo $viewData['redirect_page'] ?>"><?php echo vmText::_('VMPAYMENT_AMAZON_BACK_TO_CART') ?></a>
 
 
