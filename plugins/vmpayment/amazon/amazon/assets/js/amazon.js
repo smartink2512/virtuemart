@@ -134,7 +134,7 @@ var amazonPayment = {
 
 
         updateCart: function () {
-            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS&virtuemart_paymentmethod_id='+amazonPayment.virtuemart_paymentmethod_id + vmLang;
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = "";
@@ -168,8 +168,9 @@ var amazonPayment = {
             }
         },
 
-
-
+        /**
+         * used in cart_shipment tmpl
+         */
         setShipmentReloadWallet: function() {
             amazonPayment.startLoading();
             var virtuemart_shipmentmethod_ids = document.getElementsByName('virtuemart_shipmentmethod_id');
@@ -200,10 +201,24 @@ var amazonPayment = {
             );
         },
 
+        /**
+         * used in addressbook_wallet tmpl
+         * @param warning
+         */
         displayCaptureNowWarning: function(warning) {
             document.id('amazonChargeNowWarning').set('html',warning);
+        },
+
+        leaveAmazonCheckout: function() {
+            var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazonCheckout&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang ;
+            console.log('leaveAmazonCheckout');
+            jQuery.getJSON(url, function(data) {
+                var reloadurl = vmSiteurl +'index.php?option=com_virtuemart&view=cart' + vmLang;
+                window.location.href = reloadurl;
+            });
+
         }
-}
+    }
     ;
 
 

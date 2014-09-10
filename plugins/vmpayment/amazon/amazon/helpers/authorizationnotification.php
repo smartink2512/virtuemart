@@ -49,10 +49,7 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 			$this->debugLog('NO isSetAuthorizationStatus' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return false;
 		}
-		//  if capture now, then the
-		if($authorizationDetails->getCaptureNow()) {
-			return true;
-		}
+
 		$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 		if (!$authorizationStatus->isSetState()) {
 			$this->debugLog('NO isSetState' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
@@ -61,13 +58,6 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		$amazonState = $authorizationStatus->getState();
 		// In synchronous Mode, order history has been updated by the Authorization Response
 		// Other notifications may be received, but they are more informative: MaxCapturesProcessed if the FULL amount Capture has been done
-		$captureNow=false;
-		if ($authorizationDetails->isSetCaptureNow()) {
-			$captureNow=$authorizationDetails->getCaptureNow();
-		}
-		if($this->isSynchronousMode() or $captureNow ) {
-			return $amazonState;
-		}
 
 
 		if ($authorizationStatus->isSetReasonCode()) {
@@ -101,7 +91,7 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_PENDING');
 			$order_history['customer_notified'] = 0;
 		} elseif ($amazonState == 'Closed') {
-			$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+			$order_history['order_status'] = $this->_currentMethod->status_cancel;
 			$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
 			$order_history['customer_notified'] = 0;
 		}
@@ -147,6 +137,20 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		return $amazonInternalData;
 	}
 
+	/**
+	 * move to Pending =>GetAuthorizationDetails, closeAuhtorization
+	 * move to Open => GetAuthorizationDetails, capture, closeAuhtorization
+	 * move to Declined => GetAuthorizationDetails
+	 * move to Closed => GetAuthorizationDetails
+	 * @param $order
+	 * @param $payments
+	 * @param $amazonState
+	 * @return bool|string
+	 */
+	public function onNotificationNextOperation($order, $payments, $amazonState) {
+		return false;
+
+	}
 
 	public function getReferenceId () {
 		if ($this->amazonData->isSetAuthorizationDetails()) {
@@ -158,14 +162,18 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		return NULL;
 	}
 
-	public function getAmazonId () {
-		if ($this->amazonData->isSetAuthorizationDetails()) {
-			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
-			if ($authorizationDetails->isSetAmazonAuthorizationId()) {
-				return $authorizationDetails->getAmazonAuthorizationId();
-			}
+
+	public function isCaptureNow () {
+		$authorizationDetails = $this->amazonData->getAuthorizationDetails();
+		if ($authorizationDetails->isSetCaptureNow()) {
+			return $authorizationDetails->getCaptureNow();
 		}
-		return NULL;
+		return false;
+	}
+
+
+	public function getAmazonAuthorizationId () {
+		return $this->amazonData->getAuthorizationDetails()->getAmazonAuthorizationId();
 	}
 
 	public function getContents () {

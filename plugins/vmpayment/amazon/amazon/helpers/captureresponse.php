@@ -51,7 +51,6 @@ class amazonHelperCaptureResponse extends amazonHelper {
 					if ($captureStatus->isSetReasonDescription()) {
 						$amazonInternalData->amazon_response_reasonDescription = $captureStatus->getReasonDescription();
 					}
-
 				}
 				return $amazonInternalData;
 			}
@@ -60,6 +59,8 @@ class amazonHelperCaptureResponse extends amazonHelper {
 		}
 		return NULL;
 	}
+
+
 	function getContents () {
 		$contents=$this->tableStart("CaptureResponse");
 
@@ -160,7 +161,7 @@ class amazonHelperCaptureResponse extends amazonHelper {
 
 		$contents .=$this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata() );
 
-
+		$contents .= $this->tableEnd();
 		return $contents;
 	}
 

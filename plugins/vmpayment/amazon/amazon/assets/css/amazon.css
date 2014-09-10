@@ -22,3 +22,6 @@
 #amazonChargeNowWarning{
     margin-top:10px;
 }
+#updateOrderId, .amazonResponseOrderId{
+    margin-bottom:10px;
+}

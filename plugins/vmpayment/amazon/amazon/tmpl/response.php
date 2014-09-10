@@ -18,7 +18,9 @@
  * http://virtuemart.net
  */
 defined('_JEXEC') or die();
-
+if ($viewData['include_amazon_css']) {
+	$doc = JFactory::getDocument()->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+}
 $success = $viewData["success"];
 $order = $viewData["order"];
 

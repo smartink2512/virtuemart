@@ -56,6 +56,19 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 
 
 	function getContents () {
+		$contents=$this->tableStart("ConfirmOrderReferenceResponse");
+		$contents .=$this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata() );
+		if ($this->amazonData->isSetResponseMetadata()) {
+			$more='';
+			$responseMetadata = $this->amazonData->getResponseMetadata();
+			if ($responseMetadata->isSetRequestId()) {
+				$more .= "<br />RequestId: " . $responseMetadata->getRequestId();
+			}
+			$contents .=$this->getRow("ResponseMetadata: ", $more );
+		}
+
+		$contents .= $this->tableEnd();
+		return $contents;
 	}
 
 }

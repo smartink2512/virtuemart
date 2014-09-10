@@ -52,11 +52,11 @@ class JElementIpnURL extends JElement {
 
 			return '<input type="text" name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '" value="' . $value . '" ' . $class . ' ' . $size . ' />';
 		} else {
-			$string = "<span " . $class . ">";
-			$string .= '<span class="environment ipn-sandbox">' . $http . ' <br /></span>';
-			$string .= '<span class="environment ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></span>';
+			$string = "<div " . $class . ">";
+			$string .= '<div class="ipn-sandbox">' . $http . ' <br /></div>';
+			$string .= '<div class="ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></div>';
 			$string .= $https;
-			$string .= "</span>";
+			$string .= "</div>";
 			return $string;
 		}
 	}

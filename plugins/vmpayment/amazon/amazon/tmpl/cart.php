@@ -79,7 +79,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 
 ?>
 	<div id="amazonShipmentNotFoundDiv">
-		<?php	if (!$this->found_shipment_method  ) { ?>
+		<?php if (!$this->found_shipment_method) { ?>
 			<div id="system-message-container">
 				<dl id="system-message">
 					<dt class="info">info</dt>
@@ -99,12 +99,12 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 
 	<div id="amazonLoading"></div>
 
-	<div class="cart-view" id ="cart-view">
+	<div class="cart-view" id="cart-view">
 		<div id="amazonHeader">
 			<div class="width50 floatleft">
 				<h1><?php echo JText::_('VMPAYMENT_AMAZON_PAY_WITH_AMAZON'); ?></h1>
 
-			<div class="payments_signin_button"></div>
+				<div class="payments_signin_button"></div>
 			</div>
 			<div class="width50 floatleft right">
 				<?php // Continue Shopping Button
@@ -113,7 +113,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 				}
 				?>
 				<div>
-					<a href="#" id="leaveAmazonCheckout" ><?php echo vmText::_('VMPAYMENT_AMAZON_LEAVE_PAY_WITH_AMAZON') ?></a>
+					<a href="#" id="leaveAmazonCheckout"><?php echo vmText::_('VMPAYMENT_AMAZON_LEAVE_PAY_WITH_AMAZON') ?></a>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -138,29 +138,27 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 				$taskRoute = '';
 			}
 
-			if ($this->cart->_dataValidated ) {
+			if ($this->cart->_dataValidated) {
 				$this->readonly_cart = true;
-
 			} else {
 				$this->readonly_cart = false;
-
 			}
 
 			?>
 			<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 
 				<div id="amazonShipmentsDiv"><?php
-				//if (!$this->readonly_cart) {
-				 if (!$this->cart->automaticSelectedShipment  and !$this->cart->_dataValidated) {
-					?>
+					//if (!$this->readonly_cart) {
+					if (!$this->cart->automaticSelectedShipment  and !$this->cart->_dataValidated) {
+						?>
 						<?php echo $this->loadTemplate('shipment'); ?>
 
 					<?php
 
-				 }
-				?>
+					}
+					?>
 				</div>
-		<?php
+				<?php
 				//}
 				// This displays the pricelist MUST be done with tables, because it is also used for the emails
 				echo $this->loadTemplate('pricelist');
@@ -212,14 +210,14 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 					}
 					?>
 					<div id="amazon_checkout">
-					<div id="amazon_checkout_text">
+						<div id="amazon_checkout_text">
+							<?php
+							echo Jtext::_('VMPAYMENT_AMAZON_CHECKOUT');
+							?>
+						</div>
 						<?php
-					echo Jtext::_('VMPAYMENT_AMAZON_CHECKOUT');
+						echo $this->checkout_link_html;
 						?>
-					</div>
-						<?php
-					echo $this->checkout_link_html;
-					?>
 					</div>
 				</div>
 				<?php // Continue and Checkout Button END ?>

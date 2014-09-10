@@ -118,18 +118,23 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 					$amazonInternalData->amazon_response_amazonAuthorizationId = $authorizationDetails->getAmazonAuthorizationId();
 				}
 			}
-			if ($this->amazonData->isSetResponseMetadata()) {
-				$responseMetadata = $this->amazonData->getResponseMetadata();
-				if ($responseMetadata->isSetRequestId()) {
-					$amazonInternalData->amazon_response_requestId = $responseMetadata->getRequestId();
-				}
-			}
+
 		}
 		return $amazonInternalData;
 	}
 
-	function getAmazonAuthorizationId () {
+	public function isCaptureNow () {
+		$authorizeResult = $this->amazonData->getAuthorizeResult();
+		$authorizationDetails = $authorizeResult->getAuthorizationDetails()		;
+		if ($authorizationDetails->isSetCaptureNow()) {
+			return $authorizationDetails->getCaptureNow();
+		}
+		return false;
+	}
 
+
+	function getAmazonAuthorizationId () {
+		return $this->amazonData->getAuthorizeResult()->getAuthorizationDetails()->getAmazonAuthorizationId();
 	}
 
 	function getContents () {

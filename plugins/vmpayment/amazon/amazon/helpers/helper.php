@@ -45,75 +45,77 @@ abstract class amazonHelper {
 		return $amazonResponseState;
 	}
 
-	function getVmReferenceId($referenceId) {
-		$pos= strrpos($referenceId, '-');
-		return substr($referenceId,0,$pos);
+	function getVmReferenceId ($referenceId) {
+		$pos = strrpos($referenceId, '-');
+		return substr($referenceId, 0, $pos);
 	}
 
+	public function onNotificationNextOperation($order, $payments, $amazonState){
+		return false;
+	}
 
 	protected abstract function getContents ();
-function tableStart($title) {
-	$contents = '<table class="adminlist table">';
-	$contents .= '	<tr><th colspan="3">';
-	$contents .= $title;
-	$contents .= '</th></tr>';
-	return $contents;
-}
-	function tableEnd() {
+
+	function tableStart ($title) {
+		$contents = '<table class="adminlist table">';
+		$contents .= '	<tr><th colspan="3">';
+		$contents .= $title;
+		$contents .= '</th></tr>';
+		return $contents;
+	}
+
+	function tableEnd () {
 		$contents = '</table>';
 		return $contents;
 	}
-function getRow($title, $value) {
-	$contents = '<tr><td></td><td>';
 
-	$contents .= $title;
-	$contents .= '</td><td>';
+	function getRow ($title, $value) {
+		$contents = '<tr><td></td><td>';
 
-	$contents .= $value;
-	$contents .= '</td></tr>';
-	return $contents;
-}
+		$contents .= $title;
+		$contents .= '</td><td>';
 
-	function getRowFirstCol($title) {
+		$contents .= $value;
+		$contents .= '</td></tr>';
+		return $contents;
+	}
+
+	function getRowFirstCol ($title) {
 		$contents = '<tr><td colspan="3">';
 		$contents .= $title;
-		$contents .='</td><tr>';
+		$contents .= '</td><tr>';
 
 		return $contents;
 	}
 
 
-
-
-	
-	
-public function getContentsResponseMetadata($responseMetadata) {
-	$contents='';
-	if ($responseMetadata->isSetRequestId()) {
-		$contents .= '<tr><td>';
-		$contents .= "RequestId: " ;
-		$contents .= '</td><td>';
-
-		$contents .= $responseMetadata->getRequestId();
-		$contents .= '</td><td>';
-		$contents .= '</td><td>';
-		$contents .= '</td></tr>';
-
-	}
-	return $contents;
-
-}
-
-	public function getContentsResponseHeaderMetadata($responseHeaderMetadata) {
-		$contents='';
+	public function getContentsResponseMetadata ($responseMetadata) {
+		$contents = '';
+		if ($responseMetadata->isSetRequestId()) {
 			$contents .= '<tr><td>';
-			$contents .= "ResponseHeaderMetadata: " ;
+			$contents .= "RequestId: ";
 			$contents .= '</td><td>';
 
-			$contents .= $responseHeaderMetadata;
+			$contents .= $responseMetadata->getRequestId();
 			$contents .= '</td><td>';
 			$contents .= '</td><td>';
 			$contents .= '</td></tr>';
+
+		}
+		return $contents;
+
+	}
+
+	public function getContentsResponseHeaderMetadata ($responseHeaderMetadata) {
+		$contents = '';
+		$contents .= '<tr><td>';
+		$contents .= "ResponseHeaderMetadata: ";
+		$contents .= '</td><td>';
+
+		$contents .= $responseHeaderMetadata;
+		$contents .= '</td><td>';
+		$contents .= '</td><td>';
+		$contents .= '</td></tr>';
 
 		return $contents;
 

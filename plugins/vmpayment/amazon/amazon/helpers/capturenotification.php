@@ -73,7 +73,6 @@ class amazonHelperCaptureNotification extends amazonHelper {
 				$order_history['customer_notified'] = 0;
 				$order_history['order_status'] = $order['details']['BT']->order_status;
 				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_CLOSED',$reasonCode );
-
 			}
 
 			$order_history['amazonState'] = $amazonState;
@@ -81,6 +80,26 @@ class amazonHelperCaptureNotification extends amazonHelper {
 			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
 		}
 	}
+
+
+
+	/**
+	 * move to Pending => GetCaptureDetails
+	 * move to Declined => GetCaptureDetails
+	 * move to Closed => GetCaptureDetails
+	 * move to Completed => GetCaptureDetails, Refund
+
+	 * @param $order
+	 * @param $payments
+	 * @param $amazonState
+	 * @return bool|string
+	 */
+	/*
+	public function onNotificationNextOperation($order, $payments, $amazonState) {
+		return false;
+
+	}
+*/
 
 	public function getReferenceId () {
 		if ($this->amazonData->isSetCaptureDetails()) {

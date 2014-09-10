@@ -26,8 +26,9 @@ if (!$jsSILoaded) {
 	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" class=\"hasTip\" title=\"::' . addslashes(vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')) . '\"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\" class=\"error\"></div></div>';
 
 	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
-	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
-
+	if ($viewData['include_amazon_css']) {
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+	}
 	$renderAmazonAddressBook = $viewData['renderAmazonAddressBook'] ? 'true' : 'false';
 
 	$doc->addScriptDeclaration("
@@ -45,13 +46,7 @@ jQuery(document).ready( function($) {
 	//<![CDATA[
 jQuery(document).ready( function($) {
 $('#leaveAmazonCheckout').click(function(){
-	var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazonCheckout&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
-    console.log('leaveAmazonCheckout');
-    jQuery.getJSON(url, function(data) {
-            var reloadurl = 'index.php?option=com_virtuemart&view=cart';
-         window.location.href = reloadurl;
-        });
-
+	amazonPayment.leaveAmazonCheckout();
 	});
 });
 //]]>

@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
 
 /**
  *
- * @package    VirtueMart
+ * @package VirtueMart
  * @subpackage vmpayment
  * @version $Id$
  * @author Valérie Isaksen
@@ -67,181 +67,180 @@ class amazonHelperSetOrderReferenceDetailsResponse extends amazonHelper {
 	 */
 	function getContents () {
 
-		$array = json_decode(json_encode($this->amazonData), true);
 		$contents = "";
 		$contents .= "Service Response" . "<br />";
 		$contents .= "=============================" . "<br />";
 
-		$contents .= "        SetOrderReferenceDetailsResponse" . "<br />";
+		$contents .= "SetOrderReferenceDetailsResponse" . "<br />";
 		if ($this->amazonData->isSetSetOrderReferenceDetailsResult()) {
-			$contents .= "            SetOrderReferenceDetailsResult" . "<br />";
+			$contents .= "SetOrderReferenceDetailsResult" . "<br />";
 			$setOrderReferenceDetailsResult = $this->amazonData->getSetOrderReferenceDetailsResult();
 			if ($setOrderReferenceDetailsResult->isSetOrderReferenceDetails()) {
-				$contents .= "                OrderReferenceDetails" . "<br />";
+				$contents .= " OrderReferenceDetails" . "<br />";
 				$orderReferenceDetails = $setOrderReferenceDetailsResult->getOrderReferenceDetails();
 				if ($orderReferenceDetails->isSetAmazonOrderReferenceId()) {
-					$contents .= "                    AmazonOrderReferenceId: " . $orderReferenceDetails->getAmazonOrderReferenceId() . "<br />";
+					$contents .= "AmazonOrderReferenceId: " . $orderReferenceDetails->getAmazonOrderReferenceId() . "<br />";
 				}
 				if ($orderReferenceDetails->isSetBuyer()) {
-					$contents .= "                    Buyer" . "<br />";
+					$contents .= "Buyer" . "<br />";
 					$buyer = $orderReferenceDetails->getBuyer();
 					if ($buyer->isSetName()) {
-						$contents .= "                        Name: " . $buyer->getName() . "<br />";
+						$contents .= "Name: " . $buyer->getName() . "<br />";
 					}
 					if ($buyer->isSetEmail()) {
-						$contents .= "                        Email: " . $buyer->getEmail() . "<br />";
+						$contents .= "Email: " . $buyer->getEmail() . "<br />";
 					}
 					if ($buyer->isSetPhone()) {
-						$contents .= "                        Phone: " . $buyer->getPhone() . "<br />";
+						$contents .= "Phone: " . $buyer->getPhone() . "<br />";
 					}
 				}
 				if ($orderReferenceDetails->isSetOrderTotal()) {
-					$contents .= "                    OrderTotal" . "<br />";
+					$contents .= "OrderTotal" . "<br />";
 					$orderTotal = $orderReferenceDetails->getOrderTotal();
 					if ($orderTotal->isSetCurrencyCode()) {
-						$contents .= "                        CurrencyCode: " . $orderTotal->getCurrencyCode() . "<br />";
+						$contents .= "CurrencyCode: " . $orderTotal->getCurrencyCode() . "<br />";
 					}
 					if ($orderTotal->isSetAmount()) {
-						$contents .= "                        Amount: " . $orderTotal->getAmount() . "<br />";
+						$contents .= "Amount: " . $orderTotal->getAmount() . "<br />";
 					}
 				}
 				if ($orderReferenceDetails->isSetSellerNote()) {
-					$contents .= "                    SellerNote: " . $orderReferenceDetails->getSellerNote() . "<br />";
+					$contents .= "SellerNote: " . $orderReferenceDetails->getSellerNote() . "<br />";
 				}
 				if ($orderReferenceDetails->isSetDestination()) {
-					$contents .= "                    Destination" . "<br />";
+					$contents .= "Destination" . "<br />";
 					$destination = $orderReferenceDetails->getDestination();
 					if ($destination->isSetDestinationType()) {
-						$contents .= "                        DestinationType: " . $destination->getDestinationType() . "<br />";
+						$contents .= "DestinationType: " . $destination->getDestinationType() . "<br />";
 					}
 					if ($destination->isSetPhysicalDestination()) {
-						$contents .= "                        PhysicalDestination" . "<br />";
+						$contents .= "PhysicalDestination" . "<br />";
 						$physicalDestination = $destination->getPhysicalDestination();
 						if ($physicalDestination->isSetName()) {
-							$contents .= "                            Name: " . $physicalDestination->getName() . "<br />";
+							$contents .= " Name: " . $physicalDestination->getName() . "<br />";
 						}
 						if ($physicalDestination->isSetAddressLine1()) {
-							$contents .= "                            AddressLine1: " . $physicalDestination->getAddressLine1() . "<br />";
+							$contents .= " AddressLine1: " . $physicalDestination->getAddressLine1() . "<br />";
 						}
 						if ($physicalDestination->isSetAddressLine2()) {
-							$contents .= "                            AddressLine2: " . $physicalDestination->getAddressLine2() . "<br />";
+							$contents .= " AddressLine2: " . $physicalDestination->getAddressLine2() . "<br />";
 						}
 						if ($physicalDestination->isSetAddressLine3()) {
-							$contents .= "                            AddressLine3: " . $physicalDestination->getAddressLine3() . "<br />";
+							$contents .= " AddressLine3: " . $physicalDestination->getAddressLine3() . "<br />";
 						}
 						if ($physicalDestination->isSetCity()) {
-							$contents .= "                            City: " . $physicalDestination->getCity() . "<br />";
+							$contents .= " City: " . $physicalDestination->getCity() . "<br />";
 						}
 						if ($physicalDestination->isSetCounty()) {
-							$contents .= "                            County: " . $physicalDestination->getCounty() . "<br />";
+							$contents .= " County: " . $physicalDestination->getCounty() . "<br />";
 						}
 						if ($physicalDestination->isSetDistrict()) {
-							$contents .= "                            District: " . $physicalDestination->getDistrict() . "<br />";
+							$contents .= " District: " . $physicalDestination->getDistrict() . "<br />";
 						}
 						if ($physicalDestination->isSetStateOrRegion()) {
-							$contents .= "                            StateOrRegion: " . $physicalDestination->getStateOrRegion() . "<br />";
+							$contents .= " StateOrRegion: " . $physicalDestination->getStateOrRegion() . "<br />";
 						}
 						if ($physicalDestination->isSetPostalCode()) {
-							$contents .= "                            PostalCode: " . $physicalDestination->getPostalCode() . "<br />";
+							$contents .= " PostalCode: " . $physicalDestination->getPostalCode() . "<br />";
 						}
 						if ($physicalDestination->isSetCountryCode()) {
-							$contents .= "                            CountryCode: " . $physicalDestination->getCountryCode() . "<br />";
+							$contents .= " CountryCode: " . $physicalDestination->getCountryCode() . "<br />";
 						}
 						if ($physicalDestination->isSetPhone()) {
-							$contents .= "                            Phone: " . $physicalDestination->getPhone() . "<br />";
+							$contents .= " Phone: " . $physicalDestination->getPhone() . "<br />";
 						}
 					}
 				}
 				if ($orderReferenceDetails->isSetReleaseEnvironment()) {
-					$contents .= "                    ReleaseEnvironment" . "<br />";
-					$contents .= "                        " . $orderReferenceDetails->getReleaseEnvironment() . "<br />";
+					$contents .= "ReleaseEnvironment" . "<br />";
+					$contents .= "" . $orderReferenceDetails->getReleaseEnvironment() . "<br />";
 				}
 				if ($orderReferenceDetails->isSetIdList()) {
-					$contents .= "                    IdList" . "<br />";
+					$contents .= "IdList" . "<br />";
 					$idList = $orderReferenceDetails->getIdList();
 					$memberList = $idList->getmember();
 					foreach ($memberList as $member) {
-						$contents .= "                        member: " . $member . "<br />";;
+						$contents .= "member: " . $member . "<br />";;
 					}
 				}
 				if ($orderReferenceDetails->isSetSellerOrderAttributes()) {
-					$contents .= "                    SellerOrderAttributes" . "<br />";
+					$contents .= "SellerOrderAttributes" . "<br />";
 					$sellerOrderAttributes = $orderReferenceDetails->getSellerOrderAttributes();
 					if ($sellerOrderAttributes->isSetSellerOrderId()) {
-						$contents .= "                        SellerOrderId: " . $sellerOrderAttributes->getSellerOrderId() . "<br />";
+						$contents .= "SellerOrderId: " . $sellerOrderAttributes->getSellerOrderId() . "<br />";
 					}
 					if ($sellerOrderAttributes->isSetStoreName()) {
-						$contents .= "                        StoreName: " . $sellerOrderAttributes->getStoreName() . "<br />";
+						$contents .= "StoreName: " . $sellerOrderAttributes->getStoreName() . "<br />";
 					}
 					if ($sellerOrderAttributes->isSetOrderItemCategories()) {
-						$contents .= "                        OrderItemCategories" . "<br />";
+						$contents .= "OrderItemCategories" . "<br />";
 						$orderItemCategories = $sellerOrderAttributes->getOrderItemCategories();
 						$orderItemCategoryList = $orderItemCategories->getOrderItemCategory();
 						foreach ($orderItemCategoryList as $orderItemCategory) {
-							$contents .= "                            OrderItemCategory: " . $orderItemCategory;
+							$contents .= " OrderItemCategory: " . $orderItemCategory;
 						}
 					}
 					if ($sellerOrderAttributes->isSetCustomInformation()) {
-						$contents .= "                        CustomInformation: " . $sellerOrderAttributes->getCustomInformation() . "<br />";
+						$contents .= "CustomInformation: " . $sellerOrderAttributes->getCustomInformation() . "<br />";
 					}
 				}
 				if ($orderReferenceDetails->isSetOrderReferenceStatus()) {
-					$contents .= "                    OrderReferenceStatus" . "<br />";
+					$contents .= "OrderReferenceStatus" . "<br />";
 					$orderReferenceStatus = $orderReferenceDetails->getOrderReferenceStatus();
 					if ($orderReferenceStatus->isSetState()) {
-						$contents .= "                        State: " . $orderReferenceStatus->getState() . "<br />";
+						$contents .= "State: " . $orderReferenceStatus->getState() . "<br />";
 					}
 					if ($orderReferenceStatus->isSetLastUpdateTimestamp()) {
-						$contents .= "                        LastUpdateTimestamp: " . $orderReferenceStatus->getLastUpdateTimestamp() . "<br />";
+						$contents .= "LastUpdateTimestamp: " . $orderReferenceStatus->getLastUpdateTimestamp() . "<br />";
 					}
 					if ($orderReferenceStatus->isSetReasonCode()) {
-						$contents .= "                        ReasonCode: " . $orderReferenceStatus->getReasonCode() . "<br />";
+						$contents .= "ReasonCode: " . $orderReferenceStatus->getReasonCode() . "<br />";
 					}
 					if ($orderReferenceStatus->isSetReasonDescription()) {
-						$contents .= "                        ReasonDescription: " . $orderReferenceStatus->getReasonDescription() . "<br />";
+						$contents .= "ReasonDescription: " . $orderReferenceStatus->getReasonDescription() . "<br />";
 					}
 				}
 				if ($orderReferenceDetails->isSetConstraints()) {
-					$contents .= "                    Constraints" . "<br />";
+					$contents .= "Constraints" . "<br />";
 					$constraints = $orderReferenceDetails->getConstraints();
 					$constraintList = $constraints->getConstraint();
 					foreach ($constraintList as $constraint) {
-						$contents .= "                        Constraint" . "<br />";
+						$contents .= "Constraint" . "<br />";
 						if ($constraint->isSetConstraintID()) {
-							$contents .= "                            ConstraintID: " . $constraint->getConstraintID() . "<br />";
+							$contents .= " ConstraintID: " . $constraint->getConstraintID() . "<br />";
 						}
 						if ($constraint->isSetDescription()) {
-							$contents .= "                            Description: " . $constraint->getDescription() . "<br />";
+							$contents .= " Description: " . $constraint->getDescription() . "<br />";
 						}
 					}
 				}
 				if ($orderReferenceDetails->isSetCreationTimestamp()) {
-					$contents .= "                    CreationTimestamp: " . $orderReferenceDetails->getCreationTimestamp() . "<br />";
+					$contents .= "CreationTimestamp: " . $orderReferenceDetails->getCreationTimestamp() . "<br />";
 				}
 				if ($orderReferenceDetails->isSetExpirationTimestamp()) {
-					$contents .= "                    ExpirationTimestamp: " . $orderReferenceDetails->getExpirationTimestamp() . "<br />";
+					$contents .= "ExpirationTimestamp: " . $orderReferenceDetails->getExpirationTimestamp() . "<br />";
 				}
 				if ($orderReferenceDetails->isSetParentDetails()) {
-					$contents .= "                    ParentDetails" . "<br />";
+					$contents .= "ParentDetails" . "<br />";
 					$parentDetails = $orderReferenceDetails->getParentDetails();
 					if ($parentDetails->isSetId()) {
-						$contents .= "                        Id: " . $parentDetails->getId() . "<br />";
+						$contents .= "Id: " . $parentDetails->getId() . "<br />";
 					}
 					if ($parentDetails->isSetType()) {
-						$contents .= "                        Type: " . $parentDetails->getType() . "<br />";
+						$contents .= "Type: " . $parentDetails->getType() . "<br />";
 					}
 				}
 			}
 		}
 		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .= "            ResponseMetadata" . "<br />";
+			$contents .= "ResponseMetadata" . "<br />";
 			$responseMetadata = $this->amazonData->getResponseMetadata();
 			if ($responseMetadata->isSetRequestId()) {
-				$contents .= "                RequestId: " . $responseMetadata->getRequestId() . "<br />";
+				$contents .= " RequestId: " . $responseMetadata->getRequestId() . "<br />";
 			}
 		}
 
-		$contents .= "            ResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata() . "<br />";
+		$contents .= "ResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata() . "<br />";
 
 		return $contents;
 	}

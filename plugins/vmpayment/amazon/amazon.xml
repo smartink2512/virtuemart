@@ -44,7 +44,7 @@
         <param name="accessKey" class="required" type="text" size="80" default=""
                label="VMPAYMENT_AMAZON_CONF_ACCESS_KEY"
                description="VMPAYMENT_AMAZON_CONF_ACCESS_KEY_TIP"/>
-        <param name="secretKey" class="required" type="text" size="80" default=""
+        <param name="secretKey" class="required" type="password" size="80" default=""
                label="VMPAYMENT_AMAZON_CONF_SECRET_KEY"
                description="VMPAYMENT_AMAZON_CONF_SECRET_KEY_TIP"/>
 
@@ -279,6 +279,11 @@
                label="VMPAYMENT_AMAZON_CONF_SIGN_IN_CSS"
                description="VMPAYMENT_AMAZON_CONF_SIGN_IN_CSS_TIP"/>
 
+        <param name="include_amazon_css" type="radio" default="1" label="VMPAYMENT_AMAZON_CONF_INCLUDE_AMAZON_CSS"
+               description="VMPAYMENT_AMAZON_CONF_INCLUDE_AMAZON_CSS_TIP">
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+        </param>
 
         <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_COMMENTS_SECTION"/>
         <param type="vmtitle" description="VMPAYMENT_AMAZON_CONF_STATE_NOT_REQUIRED"/>

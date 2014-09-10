@@ -68,6 +68,24 @@ return;
 		return $amazonState;
 	}
 
+	/**
+	 * move to Pending => GetRefundDetails
+	 * move to Declined => GetRefundDetails
+	 * move to Completed => GetRefundDetails
+
+	 * @param $order
+	 * @param $payments
+	 * @param $amazonState
+	 * @return bool|string
+	 */
+	/*
+	public function onNotificationNextOperation($order, $payments, $amazonState) {
+		return false;
+
+	}
+	*/
+
+
 	public function getReferenceId () {
 		if ($this->amazonData->isSetRefundDetails()) {
 			$details = $this->amazonData->getRefundDetails();

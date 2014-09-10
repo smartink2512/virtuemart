@@ -19,7 +19,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
+if ($viewData['include_amazon_css']) {
+	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+}
 JHtml::_('behavior.formvalidation');
 $document = JFactory::getDocument();
 /*
@@ -44,12 +46,12 @@ $document->addScriptDeclaration("
 */
 
 ?>
-<h2><?php echo vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD') ?></h2>
+<h3><?php echo vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD') ?></h3>
 <p><?php echo vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD_CLICK_DECLINE') ?></p>
 	<div id="amazonWalletWidgetDiv" ></div>
 <form method="post" id="updateOrderId" name="updateOrderForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart' , $this->useXHTML, $this->useSSL); ?>">
 
-				<button name="updateOrderButton" id="updateOrderId" class="vm-button-correct"><span><?php echo vmText::_('xxxx') ?></span></button>
+				<button name="updateOrderButton" id="updateOrderId" class="vm-button-correct"><span><?php echo vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE') ?></span></button>
 				<input type='hidden' name='type' value='vmpayment'/>
 				<input type='hidden' name='name' value='amazon'/>
 				<input type='hidden' name='view' value='plugin'/>

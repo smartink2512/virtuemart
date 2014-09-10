@@ -100,18 +100,26 @@ jQuery().ready(function ($) {
     handleEnvironment = function () {
         var environment = $('#paramsenvironment').val();
         $('.sandbox_error_simulation').parents('tr').hide();
+        $('.ipn-sandbox').hide();
         if (environment === 'sandbox') {
             $('.sandbox_error_simulation').parents('tr').show();
+            $('.ipn-sandbox').show();
         }
     }
 
     handleIPNDisabled = function () {
         var ipn_reception = $('#paramsipn_reception').val();
         $('.ipn_reception_disabled').parents('tr').hide();
+        $('.ipnurl').parents('tr').hide();
+        $('.ipn_warning').parents('tr').hide();
         if (ipn_reception === 'ipn_reception_disabled') {
             $('.ipn_reception_disabled').parents('tr').show();
+        } else {
+            $('.ipnurl').parents('tr').show();
+            $('.ipn_warning').parents('tr').show();
         }
     }
+
     /**********/
     /* Events */
     /**********/

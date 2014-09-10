@@ -30,7 +30,10 @@ if ($isMobile) {
 }
 if (!$jsAWLoaded) {
 	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
-	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+	if ($viewData['include_amazon_css']) {
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+	}
+
 
 //vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
 	$doc->addScriptDeclaration("
@@ -63,13 +66,7 @@ jQuery(document).ready( function($) {
 	//<![CDATA[
 jQuery(document).ready( function($) {
 $('#leaveAmazonCheckout').click(function(){
-	var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazonCheckout&virtuemart_paymentmethod_id=" . $viewData['virtuemart_paymentmethod_id'] . "' ;
-    console.log('leaveAmazonCheckout');
-    jQuery.getJSON(url, function(data) {
-            var reloadurl = vmSiteurl +'index.php?option=com_virtuemart&view=cart';
-         window.location.href = reloadurl;
-        });
-
+	amazonPayment.leaveAmazonCheckout();
 	});
 });
 //]]>
@@ -79,7 +76,7 @@ $('#leaveAmazonCheckout').click(function(){
 		$doc->addScriptDeclaration("
 		//<![CDATA[
 jQuery(document).ready( function($) {
-	amazonPayment.displayCaptureNowWarning('".JText::_('VMPAYMENT_AMAZON_CHARGE_NOW')."');
+	amazonPayment.displayCaptureNowWarning('" . JText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
 });
 //]]>
 "); // addScriptDeclaration
