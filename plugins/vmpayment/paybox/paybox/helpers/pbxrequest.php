@@ -183,12 +183,15 @@ class  pbxRequest {
 	public static function getRequest( ){
 		return  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
 	}
+
 	public static function getPost( ){
 		return  filter_var_array($_POST, FILTER_SANITIZE_STRING);
 	}
+
 	public static function getGet( ){
 		return  filter_var_array($_GET, FILTER_SANITIZE_STRING);
 	}
+
 	public static function getFiles($name){
 		return  filter_var_array($_FILES[$name], FILTER_SANITIZE_STRING);
 	}

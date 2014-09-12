@@ -45,6 +45,9 @@ class JElementGetAmazon extends JElement {
 		$logo = '<img src="https://images-na.ssl-images-amazon.com/images/G/02/Iris3_UK/en_GB/inca/images/37x23-whitegrad-x2.png" />';
 		$html = '<a target="_blank" href="' . $url . '"  ">' . $logo . '</a><br />';
 		$html .= '<a target="_blank" href="' . $url . '"  ">' . vmText::_('VMPAYMENT_AMAZON_GETAMAZON') . '</a>';
+		$html .= '<br /><br /><a target="_blank" href="http://docs.virtuemart.net/manual/shop-menu/payment-methods/amazon.html"  ">' . vmText::_('VMPAYMENT_AMAZON_DOCUMENTATION') . '</a>';
+
+
 
 		return $html;
 	}

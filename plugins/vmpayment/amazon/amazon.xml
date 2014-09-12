@@ -18,9 +18,9 @@
     <params addpath="/administrator/components/com_virtuemart/elements"/>
     <params addpath="/plugins/vmpayment/amazon/amazon/elements"/>
     <params>
-        <param type="customjs" default=""/>
         <param type="vmcurl"/>
         <param class="level1" type="getamazon"/>
+
         <param class="level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ACCOUNT_PARAMS"/>
 
         <param name="environment" type="list" default="sandbox" label="VMPAYMENT_AMAZON_CONF_ENVIRONMENT"
@@ -272,7 +272,7 @@
         <param name="wallet_designHeight" type="text" default="260" label="VMPAYMENT_AMAZON_CONF_WALLET_DESIGNHEIGHT"
                description="VMPAYMENT_AMAZON_CONF_DESIGNHEIGHT_TIP"/>
 
-        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_JOOMLA_TEMPLATE"
+        <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_VM_TEMPLATE"
                description=""/>
 
         <param name="sign_in_css" type="text" size="50" default=".payments_signin_button"

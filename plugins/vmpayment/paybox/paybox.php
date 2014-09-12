@@ -216,7 +216,9 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return;
 		}
-		$this->debugLog(var_export($paybox_data, true), 'plgVmOnPaymentNotification pbxRequest::getPost', 'debug', false);
+		$paybox_data_log=$paybox_data;
+		unset($paybox_data_log['K']);
+		$this->debugLog(var_export($paybox_data_log, true), 'plgVmOnPaymentNotification', 'debug', false);
 		$payboxInterface = $this->_loadPayboxInterface($this);
 		$payboxInterface->paymentNotification($paybox_data);
 

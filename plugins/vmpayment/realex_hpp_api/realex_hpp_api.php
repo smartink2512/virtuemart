@@ -22,6 +22,8 @@ defined('_JEXEC') or die();
  */
 
 defined('_JEXEC') or die('Restricted access');
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
 if (!class_exists('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
@@ -351,6 +353,18 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		return TRUE;
 	}
 
+
+	public function plgVmOnUserPaymentCancel(&$order, $old_order_status) {
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
+
+		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
+			return NULL;
+		}
+		JFactory::getApplication()->enqueueMessage(JText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
+	}
 
 	/**
 	 * Display stored payment data for an order
@@ -784,8 +798,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		JLoader::import('joomla.plugin.helper');
 		JPluginHelper::importPlugin('vmuserfield');
-		$app = JFactory::getApplication();
-		$app->triggerEvent('plgVmOnStoreInstallPluginTable', array(
+		JFactory::getApplication()->triggerEvent('plgVmOnStoreInstallPluginTable', array(
 		                                                          'userfield',
 		                                                          'realex_hpp_api'
 		                                                     ));
@@ -1170,8 +1183,13 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	private function handleRedirect () {
 
 		$realex_data = vRequest::getPost();
+	/*
+		$bb=	'{"RESULT":"101","AUTHCODE":"","MESSAGE":"[ test system ] DECLINED","PASREF":"14104463569597170","AVSPOSTCODERESULT":"U","AVSADDRESSRESULT":"U","CVNRESULT":"N","ACCOUNT":"localhost3dsecure","MERCHANT_ID":"virtuemart","ORDER_ID":"c68e0422","TIMESTAMP":"20140911163739","AMOUNT":"3156","MERCHANT_RESPONSE_URL":"http:\/\/88.186.104.215\/VM2\/VM2024\/index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&notificationTask=handleRedirect&tmpl=component","COMMENT1":"Payment of \u00a331.56 for order c68e0422 on VirtueMart 2 Sample store","DCC_ENABLE":"0","CARD_STORAGE_ENABLE":"0","ECI":"6","CAVV":"CAACAQknmZMAERAmNCeZAAAAAAA=","XID":"G3AfuoNORKmeM3ETVfnGLI2hN6k=","SHA1HASH":"521d4d116438cc57d1359aa7220dd946935cb5f1","charset":"utf-8","LANG":"en","BATCHID":"-1"}';
 
-		$this->debugLog('plgVmOnPaymentNotification :' . var_export($realex_data, true), 'debug');
+		$realex_dataxxx=json_decode($bb);
+		$realex_data=(array)$realex_dataxxx;
+	*/
+				$this->debugLog('plgVmOnPaymentNotification :' . var_export($realex_data, true), 'debug');
 		if (!isset($realex_data['ORDER_ID'])) {
 			return false;
 		}
@@ -1683,11 +1701,11 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
 		$html .= '<input type="hidden" name="view" value="pluginresponse" />';
-		if ($success) {
+		 if ($success) {
 			$html .= '<input type="hidden" name="task" value="pluginresponsereceived" />';
-		} else {
+		 } else {
 			$html .= '<input type="hidden" name="task" value="pluginUserPaymentCancel" />';
-		}
+		 }
 
 		$html .= '<input type="hidden" name="on" value="' . $realex_data['ORDER_ID'] . '" />';
 		$html .= '<input type="hidden" name="pm" value="' . $virtuemart_paymentmethod_id . '" />';

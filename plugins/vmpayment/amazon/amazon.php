@@ -17,6 +17,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
 if (!class_exists('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
@@ -2245,16 +2247,7 @@ jQuery().ready(function($) {
 	 */
 	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
-			/*
-			if ($cart->layout==$this->_name) {
-				if (!class_exists('VmConfig')) {
-					require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
-				}
-				VmConfig::loadConfig();
-				$cart->layout = VmConfig::get('cartlayout', 'default');
-				$cart->setCartIntoSession();
-			}
-			*/
+
 			return NULL;
 		}
 		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
@@ -2798,7 +2791,7 @@ jQuery().ready(function($) {
 		}
 
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
-			$this->debugLog('Received a ' . $newClass . ' with order number ' . $order_number . 'but no order in DB with that number', $newClass, 'error');
+			$this->debugLog('Received a ' . $newClass . ' with order number ' . $order_number . ' but no order in DB with that number', $newClass, 'error');
 			return true;
 		}
 		$orderModel = VmModel::getModel('orders');

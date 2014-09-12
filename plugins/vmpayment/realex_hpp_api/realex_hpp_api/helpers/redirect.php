@@ -115,7 +115,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		$post_variables['DCC_ENABLE'] = $this->_method->dcc;
 
 		$post_variables['COMMENT1'] = $this->setComment1();
-		//$post_variables['COMMENT2'] = $this->setComment2();
+		$post_variables['COMMENT2'] = 'virtuemart-rlx';
 
 		$post_variables['MERCHANT_RESPONSE_URL'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&notificationTask=handleRedirect&tmpl=component';
 		$post_variables['AUTO_SETTLE_FLAG'] = $this->getSettlement();
@@ -331,10 +331,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		return vmText::sprintf('VMPAYMENT_REALEX_HPP_API_COMMENT1', $amountValue['display'], $this->order['details']['BT']->order_number, $shop_name);
 	}
 
-	function setComment2 () {
-		$shop_name = $this->getVendorInfo('vendor_store_name');
-		return vmText::sprintf('VMPAYMENT_REALEX_HPP_API_NOTIFY_RETURN_URL', $shop_name);
-	}
+
 
 	/**
 	 * JumpUrl is a prefined URL that must be configurated in Realex

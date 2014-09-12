@@ -450,7 +450,7 @@ jQuery().ready(function($) {
 		$unsetNonPayboxData = true;
 		if ($this->checkSignature($paybox_data, $unsetNonPayboxData, $useQuery) != 1) {
 			$msg = 'Got a Paybox request with invalid signature';
-			$this->plugin->debugLog($msg, 'checkSignature', 'error', false);
+			//$this->plugin->debugLog($msg, 'checkSignature', 'error', false);
 			return FALSE;
 		} else {
 			$this->plugin->debugLog('Got a Paybox request VALID signature', 'checkSignature', 'debug', false);
@@ -469,22 +469,22 @@ jQuery().ready(function($) {
 			}
 			$query_string = $this->stringifyArray($paybox_data);
 		} else {
-			$this->plugin->debugLog('TAKE QUERY' ,'checkSignature', 'debug');
+			//$this->plugin->debugLog('TAKE QUERY' ,'checkSignature', 'debug');
 			parse_str($_SERVER['QUERY_STRING'], $paybox_data);
 			$paybox_data = $this->getVariablesInPbxOrder( $paybox_data);
 			$query_string = $this->stringifyArray($paybox_data);
 			$query_string=$_SERVER['QUERY_STRING'];
 		}
-		$this->plugin->debugLog('checkSignature query:' . $query_string, 'debug');
+		//$this->plugin->debugLog('checkSignature query:' . $query_string, 'debug');
 		$keyFile = $this->getKeyFileName();
-		$this->plugin->debugLog('checkSignature :' . $keyFile, 'debug');
+		//$this->plugin->debugLog('checkSignature :' . $keyFile, 'debug');
 
 		$pbxIsValidSignature = $this->pbxIsValidSignature($keyFile, $query_string);
 		if (!$useQuery and !$pbxIsValidSignature) {
 			// only send an error message if the error does not come from PBX_EFFECTUE
 			//$msg .= '            ' . 'sig ' . $sig . '<br />';
 			// we cannot send an error at this stage because may be the signature is not valid from the
-			$this->plugin->debugLog(vmText::_('VMPAYMENT_'.$this->plugin_name.'_ERROR_SIGNATURE_INVALID').var_export($paybox_data, true),'pbxIsValidSignature', 'error');
+			$this->plugin->debugLog(vmText::_('VMPAYMENT_'.$this->plugin_name.'_ERROR_SIGNATURE_INVALID'),'pbxIsValidSignature', 'error');
 		}
 		$this->plugin->debugLog('pbxIsValidSignature :' . $pbxIsValidSignature,'checkSignature', 'debug');
 		return $pbxIsValidSignature;
@@ -717,7 +717,7 @@ jQuery().ready(function($) {
 	 * @return mixed
 	 */
 	private function getVariablesInPbxOrder ($paybox_data) {
-		$this->plugin->debugLog('getVariablesInPbxOrder :' . var_export($paybox_data, true), 'debug');
+		//$this->plugin->debugLog('getVariablesInPbxOrder :' . var_export($paybox_data, true), 'debug');
 
 		$paybox_data_ordered = array();
 		$urlOkParms = $this->getUrlOkParms();
@@ -730,7 +730,7 @@ jQuery().ready(function($) {
 				$paybox_data_ordered[$returnField] = $paybox_data[$returnField];
 			}
 		}
-		$this->plugin->debugLog('getVariablesInPbxOrder PBX order:' . var_export($paybox_data_ordered, true), 'debug');
+		//$this->plugin->debugLog('getVariablesInPbxOrder PBX order:' . var_export($paybox_data_ordered, true), 'debug');
 
 		return $paybox_data_ordered;
 

@@ -24,26 +24,7 @@ if ($viewData['include_amazon_css']) {
 }
 JHtml::_('behavior.formvalidation');
 $document = JFactory::getDocument();
-/*
-$document->addScriptDeclaration("
 
-//<![CDATA[
-	jQuery(document).ready(function($) {
-	jQuery('#updateOrderId').bind('click dblclick', function(e){
-	e.preventDefault();
-    jQuery(this).attr('disabled', 'true');
-    jQuery(this).removeClass( 'vm-button-correct' );
-    jQuery(this).addClass( 'vm-button' );
-    jQuery('#checkoutForm').submit();
-
-});
-
-	});
-
-//]]>
-
-");
-*/
 
 ?>
 <h3><?php echo vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD') ?></h3>

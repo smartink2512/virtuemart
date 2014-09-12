@@ -155,7 +155,7 @@ if ($viewData['dccinfo']) {
 		<?php
 		}?>
 	</div>
-	<?php if (isset($ccData['cc_cvv'])) { ?>
+	<?php if (  ($viewData['cvn_checking'])  and isset($ccData['cc_cvv'])) { ?>
 		<div class="vmpayment_cc_info vmpayment_cc_cvv">
 
 				<span class="vmpayment_label"><label
