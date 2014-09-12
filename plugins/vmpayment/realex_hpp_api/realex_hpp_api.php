@@ -22,6 +22,8 @@ defined('_JEXEC') or die();
  */
 
 defined('_JEXEC') or die('Restricted access');
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
 if (!class_exists('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }

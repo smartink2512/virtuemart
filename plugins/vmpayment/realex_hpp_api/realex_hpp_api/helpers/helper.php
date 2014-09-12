@@ -595,6 +595,8 @@ class  RealexHelperRealex {
 
 		$timestamp = $this->getTimestamp();
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_AUTH);
+		// 4 indicates the CVN was not requested by the merchant.
+		$presind = $this->_method->cvn_checking ? 1:4;
 		$xml_request .= '<card>
 				<number>' . $this->getCCnumber() . '</number>
 				<expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
@@ -603,7 +605,7 @@ class  RealexHelperRealex {
 				<issueno></issueno>
 				<cvn>
 				<number>' . $this->customerData->getVar('cc_cvv') . '</number>
-				<presind>1</presind>
+				<presind>' . $presind . '</presind>
 				</cvn>
 				</card>
 				';
@@ -614,55 +616,10 @@ class  RealexHelperRealex {
 			$xml_request .= '<autosettle flag="' . $this->getSettlement() . '" />
 			';
 		}
-		/*
-		if (!empty($xml_3Dresponse->eci) AND isset($xml_3Dresponse->eci)) {
-			$xml_request .= '<mpi>' . '<eci>' . $xml_3Dresponse->eci . '</eci>
-							</mpi>
-							';
-		}
 
-		 //* MPI: Merchant Plug In - it is the component that communicates with the other components during the actual transaction.
-
-		if ($xml_3Dresponse AND !empty($xml_3Dresponse->threedsecure) AND isset($xml_3Dresponse->threedsecure)) {
-
-			$xml_request .= '<mpi>
-				 <eci>' . $xml_3Dresponse->threedsecure->eci . '</eci>
-				  <cavv>' . $xml_3Dresponse->threedsecure->cavv . '</cavv>
-				  <xid>' . $xml_3Dresponse->threedsecure->xid . '</xid>
-				 </mpi>
-				 ';
-		}
-*/
 		$xml_request .= $this->setMpi($xml_3Dresponse);
 		if ($this->_method->dcc) {
 			$xml_request .= $this->setDccInfo($xml_response_dcc);
-			/*
-			$dcc_choice = $this->customerData->getVar('dcc_choice');
-
-			if ($dcc_choice) {
-				$rate = $xml_response_dcc->dccinfo->cardholderrate;
-				$currency = $xml_response_dcc->dccinfo->cardholdercurrency;
-				$amount = $xml_response_dcc->dccinfo->cardholderamount;
-			} else {
-				$rate = 1;
-				if ($xml_response_dcc AND $this->isResponseSuccess($xml_response_dcc)) {
-					$currency = $xml_response_dcc->dccinfo->merchantcurrency;
-					$amount = $xml_response_dcc->dccinfo->merchantamount;
-				} else {
-					$currency = $this->getPaymentCurrency();
-					$amount = $this->getTotalInPaymentCurrency();
-				}
-
-			}
-			$xml_request .= '<dccinfo>
-						<ccp>' . $this->_method->dcc_service . '</ccp>
-						<type>1</type>
-						<rate>' . $rate . '</rate>
-						<ratetype>S</ratetype>
-						<amount currency="' . $currency . '">' . $amount . '</amount>
-						</dccinfo>
-				';
-			*/
 		}
 		$xml_request .= $this->setComments();
 		$xml_request .= $this->setTssInfo();
@@ -969,10 +926,6 @@ class  RealexHelperRealex {
 			'AVSADDRESSRESPONSE' => 'avsaddressresponse',
 			'DCCCHOICE'         => 'dccchoice',
 			'REALWALLET_CHOSEN' => 'realwallet_chosen',
-			'DCCCARDHOLDERAMOUNT'            => 'dccinfo->dcccardholderamount',
-			'DCCCARDHOLDERCURRENCY'          => 'dccinfo->dcccardholdercurrency',
-			'DCCMERCHANTAMOUNT'              => 'dccinfo->dccmerchantamount',
-			'DCCMERCHANTCURRENCY'            => 'dccinfo->dccmerchantcurrency',
 		);
 
 
@@ -983,15 +936,11 @@ class  RealexHelperRealex {
 	function getOrderBEFieldsDcc () {
 		$showOrderBEFields = array(
 
-			'DCCRATE'                        => 'DCCRATE',
-			'DCCMERCHANTAMOUNT'              => 'DCCMERCHANTAMOUNT',
-			'DCCMERCHANTCURRENCY'            => 'DCCMERCHANTCURRENCY',
-			'DCCCARDHOLDERAMOUNT'            => 'DCCCARDHOLDERAMOUNT',
-			'DCCCARDHOLDERCURRENCY'          => 'DCCCARDHOLDERCURRENCY',
-			'DCCMARGINRATEPERCENTAGE'        => 'DCCMARGINRATEPERCENTAGE',
-			'DCCEXCHANGERATESOURCENAME'      => 'DCCEXCHANGERATESOURCENAME',
-			'DCCCOMMISSIONPERCENTAGE'        => 'DCCCOMMISSIONPERCENTAGE',
-			'DCCEXCHANGERATESOURCETIMESTAMP' => 'DCCEXCHANGERATESOURCETIMESTAMP',
+			'DCCRATE'                        => 'dccrate',
+			'DCCMERCHANTAMOUNT'              => 'merchantamount',
+			'DCCMERCHANTCURRENCY'            => 'merchantcurrency',
+			'DCCCARDHOLDERAMOUNT'            => 'cardholderamount',
+			'DCCCARDHOLDERCURRENCY'          => 'cardholdercurrency',
 
 		);
 
@@ -1012,7 +961,7 @@ class  RealexHelperRealex {
 	function onShowOrderBEPayment ($data, $format, $request_type_response, $virtuemart_order_id) {
 
 		$showOrderBEFields = $this->getOrderBEFields();
-		$prefix = 'REALEX_RESPONSE_';
+		$prefix = 'REALEX_HPP_API_RESPONSE_';
 
 		$html = '';
 		if ($request_type_response == 'receipt-in_request') {
@@ -1054,25 +1003,30 @@ class  RealexHelperRealex {
 
 			}
 
-
-			$plugin = $this->plugin;
-			/*
-			if (isset($data->DCCCHOICE) and $data->DCCCHOICE == $plugin::DCCCHOICE_YES) {
+			if (isset($data->DCCCHOICE) or  isset($data->dccinfo)) {
+				if ($format == "xml") {
+					$dccinfo=$data->dccinfo;
+				} else {
+					$dccinfo=$data;
+				}
 				$showOrderBEFields = $this->getOrderBEFieldsDcc();
-				$prefix = 'REALEX_RESPONSE_';
 				foreach ($showOrderBEFields as $key => $showOrderBEField) {
-
-					if (isset($data->$showOrderBEField)) {
+					if ($format == "xml") {
+						$showOrderBEField = strtolower($showOrderBEField);
+					} else {
+						$showOrderBEField=$key;
+					}
+					if (isset($dccinfo->$showOrderBEField)) {
 						$key = $prefix . $key;
-						$html .= $this->plugin->getHtmlRowBE($key, $data->$showOrderBEField);
+						$html .= $this->plugin->getHtmlRowBE($key, $dccinfo->$showOrderBEField);
 					}
 
 				}
 			}
-			*/
+
 			if (isset($data->threedsecure)) {
 				$showOrderBEFields = $this->getOrderBEFields3DS();
-				$prefix = 'REALEX_RESPONSE_THREEDSECURE_';
+				$prefix = 'REALEX_HPP_API_RESPONSE_THREEDSECURE_';
 				foreach ($showOrderBEFields as $key => $showOrderBEField) {
 					if (isset($data->threedsecure->$showOrderBEField)) {
 						$key = $prefix . $key;
@@ -1306,7 +1260,7 @@ class  RealexHelperRealex {
 		$value = '';
 		$userfield['fromPayment'] = true;
 		$app->triggerEvent('plgVmPrepareUserfieldDataSave', array(
-		                                                         'pluginrealex',
+		                                                         'pluginrealex_hpp_api',
 		                                                         'realex_hpp_api',
 		                                                         &$userfield,
 		                                                         &$value,
@@ -1320,7 +1274,7 @@ class  RealexHelperRealex {
 
 	public function loadCustomerData ($loadCDFromPost = true) {
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 		}
 		$this->getCustomerData();
 		if ($loadCDFromPost) {
@@ -1331,7 +1285,7 @@ class  RealexHelperRealex {
 
 	public function getCustomerData () {
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex/helpers/customerdata.php');
+			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 		}
 		$this->customerData = new RealexHelperCustomerData();
 		$this->customerData->load();
@@ -1431,7 +1385,7 @@ class  RealexHelperRealex {
 			$db->query();
 			$err = $db->getErrorMsg();
 			if (!empty($err)) {
-				vmError('Database error: createChild ' . $err);
+				vmError('Database error: Realex saveNewPayerRef ' . $err);
 			}
 		}
 
@@ -1954,8 +1908,7 @@ class  RealexHelperRealex {
 	 */
 	function setComments () {
 		$xml_request = '<comments>
-				<comment id="1"></comment>
-				<comment id="2" />
+				<comment id="2">virtuemart-rlx</comment>
 			</comments>
 			';
 		return $xml_request;
@@ -2094,12 +2047,14 @@ class  RealexHelperRealex {
 	 * @param $type
 	 * @return string
 	 */
-	function setHeader ($timestamp, $type, $include_amount = true) {
+	function setHeader ($timestamp, $type, $include_amount = true, $include_account=true) {
 		$this->request_type = $type;
 		$xml_request = '<request timestamp="' . $timestamp . '" type="' . $type . '">
-						<merchantid>' . $this->_method->merchant_id . '</merchantid>
-						 <account>' . $this->_method->subaccount . '</account>
-						 <orderid>' . $this->order['details']['BT']->order_number . '</orderid>
+						<merchantid>' . $this->_method->merchant_id . '</merchantid>';
+		if ($include_account) {
+		$xml_request .=			 '<account>' . $this->_method->subaccount . '</account>';
+		}
+		$xml_request .=			 '<orderid>' . $this->order['details']['BT']->order_number . '</orderid>
 						 ';
 		if ($include_amount) {
 			$xml_request .= '<amount currency="' . $this->getPaymentCurrency() . '">' . $this->getTotalInPaymentCurrency() . '</amount>
@@ -2126,7 +2081,7 @@ class  RealexHelperRealex {
 			return NULL;
 		}
 		$timestamp = $this->getTimestamp();
-		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_REBATE);
+		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_REBATE, true, false);
 		$xml_request .= '<pasref>' . $payment->realex_hpp_api_response_pasref . '</pasref>
 				<authcode>' . $payment->realex_hpp_api_response_authcode . '</authcode>
 				';
@@ -2390,7 +2345,10 @@ class  RealexHelperRealex {
 	}
 
 	function useSSL () {
-		return false;
+		if ($this->_method->shop_mode == 'sandbox') {
+			return false;
+		}
+			return true;
 	}
 
 	/**

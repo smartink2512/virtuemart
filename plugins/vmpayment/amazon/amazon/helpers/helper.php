@@ -47,7 +47,12 @@ abstract class amazonHelper {
 
 	function getVmReferenceId ($referenceId) {
 		$pos = strrpos($referenceId, '-');
-		return substr($referenceId, 0, $pos);
+		if ($pos===false) {
+			return $referenceId;
+		} else {
+			return substr($referenceId, 0, $pos);
+		}
+
 	}
 
 	public function onNotificationNextOperation($order, $payments, $amazonState){

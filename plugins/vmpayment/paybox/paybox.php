@@ -209,14 +209,16 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$paybox_data = pbxRequest::getPost();
+		$paybox_data = $_POST;
 
 		$virtuemart_paymentmethod_id = pbxRequest::getInt('pm', 0);
 		$this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id);
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return;
 		}
-		$this->debugLog(var_export($paybox_data, true), 'plgVmOnPaymentNotification pbxRequest::getPost', 'debug', false);
+		$paybox_data_log=$paybox_data;
+		unset($paybox_data_log['K']);
+		$this->debugLog(var_export($paybox_data_log, true), 'plgVmOnPaymentNotification', 'debug', false);
 		$payboxInterface = $this->_loadPayboxInterface($this);
 		$payboxInterface->paymentNotification($paybox_data);
 

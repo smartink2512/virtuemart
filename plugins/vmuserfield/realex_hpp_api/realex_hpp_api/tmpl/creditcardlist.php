@@ -19,8 +19,8 @@
  */
 defined('_JEXEC') or die();
 $doc = JFactory::getDocument();
-$doc->addScript(JURI::root(true) . '/plugins/vmuserfield/realex_hpp_api/realex/assets/js/site.js');
-$doc->addStyleSheet(JURI::root(true) . '/plugins/vmuserfield/realex_hpp_api/realex/assets/css/realex.css');
+$doc->addScript(JURI::root(true) . '/plugins/vmuserfield/realex_hpp_api/realex_hpp_api/assets/js/site.js');
+$doc->addStyleSheet(JURI::root(true) . '/plugins/vmuserfield/realex_hpp_api/realex_hpp_api/assets/css/realex.css');
 $storedCreditCards = $viewData['storedCreditCards'];
 ?>
 <div class="vmuserfield_cardinfo realex_cardinfo">

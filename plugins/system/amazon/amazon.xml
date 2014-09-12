@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="plugin" version="1.5" method="upgrade" group="system">
+<extension type="plugin" version="1.5" method="upgrade" group="system">
     <name>AMAZON</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
@@ -25,4 +25,4 @@
             </fieldset>
         </fields>
     </config>
-</install>
+</extension>

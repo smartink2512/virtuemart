@@ -469,22 +469,22 @@ jQuery().ready(function($) {
 			}
 			$query_string = $this->stringifyArray($paybox_data);
 		} else {
-			$this->plugin->debugLog('TAKE QUERY' ,'checkSignature', 'debug');
+			//$this->plugin->debugLog('TAKE QUERY' ,'checkSignature', 'debug');
 			parse_str($_SERVER['QUERY_STRING'], $paybox_data);
 			$paybox_data = $this->getVariablesInPbxOrder( $paybox_data);
 			$query_string = $this->stringifyArray($paybox_data);
 			$query_string=$_SERVER['QUERY_STRING'];
 		}
-		$this->plugin->debugLog('checkSignature query:' . $query_string, 'debug');
+		//$this->plugin->debugLog('checkSignature query:' . $query_string, 'debug');
 		$keyFile = $this->getKeyFileName();
-		$this->plugin->debugLog('checkSignature :' . $keyFile, 'debug');
+		//$this->plugin->debugLog('checkSignature :' . $keyFile, 'debug');
 
 		$pbxIsValidSignature = $this->pbxIsValidSignature($keyFile, $query_string);
 		if (!$useQuery and !$pbxIsValidSignature) {
 			// only send an error message if the error does not come from PBX_EFFECTUE
 			//$msg .= '            ' . 'sig ' . $sig . '<br />';
 			// we cannot send an error at this stage because may be the signature is not valid from the
-			$this->plugin->debugLog(vmText::_('VMPAYMENT_'.$this->plugin_name.'_ERROR_SIGNATURE_INVALID').var_export($paybox_data, true),'pbxIsValidSignature', 'error');
+			$this->plugin->debugLog(vmText::_('VMPAYMENT_'.$this->plugin_name.'_ERROR_SIGNATURE_INVALID'),'pbxIsValidSignature', 'error');
 		}
 		$this->plugin->debugLog('pbxIsValidSignature :' . $pbxIsValidSignature,'checkSignature', 'debug');
 		return $pbxIsValidSignature;
@@ -679,7 +679,7 @@ jQuery().ready(function($) {
 	 *
 	 */
 
-	function redirectToCart () {
+	private function redirectToCart () {
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . pbxRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_PAYBOX_ERROR_TRY_AGAIN'));
 	}
