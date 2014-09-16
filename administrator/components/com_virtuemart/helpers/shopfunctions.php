@@ -661,6 +661,7 @@ class ShopFunctions {
 		}
 		return self::$extFeeds;
 	}
+
 	/**
 	 * @author Valerie Isaksen
 	 * Returns the RSS feed from virtuemart.net
@@ -673,28 +674,33 @@ class ShopFunctions {
 		}
 		return self::$vmFeeds;
 	}
+
+	/**
+	 * @param $rssURL
+	 * @param $max
+	 * @return array|bool
+	 */
 	static public function getRssFeed ($rssURL,$max) {
 		// prevent Strict Standards errors in simplepie
 		error_reporting(E_ALL ^ E_STRICT);
-		jimport('joomla.feed.factory');
-		$feed   = new JFeedFactory;
-		$rssFeed = $feed->getFeed($rssURL);
-		//$rssFeed = JFactory::getFeedParser($rssURL);
-		/*
+		jimport('simplepie.simplepie');
+
+		$rssFeed = JFactory::getFeedParser($rssURL);
 		if(empty($rssFeed) or !is_object($rssFeed)) return false;
 		$count = $rssFeed->get_item_quantity();
 		$limit=min($max,$count);
-			for ($i = 0; $i < $limit; $i++) {
-				$feed = new StdClass();
-				$item = $rssFeed->get_item($i);
-				$feed->link = $item->get_link();
-				$feed->title = $item->get_title();
-				$feed->description = $item->get_description();
-				$feeds[] = $feed;
-			}
-*/
+		for ($i = 0; $i < $limit; $i++) {
+			$feed = new StdClass();
+			$item = $rssFeed->get_item($i);
+			$feed->link = $item->get_link();
+			$feed->title = $item->get_title();
+			$feed->description = $item->get_description();
+			$feeds[] = $feed;
+		}
+
 		return $feeds;
 	}
+
 	/**
 	 * Creates structured option fields for all categories
 	 *
