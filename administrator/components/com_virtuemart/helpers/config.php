@@ -872,6 +872,7 @@ class VmConfig {
 
 			// try plugins
 			if($app->isSite()){
+				if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 				JPluginHelper::importPlugin('vmuserfield');
 				$dispatcher = JDispatcher::getInstance();
 				$dispatcher->trigger('plgVmInitialise', array());
