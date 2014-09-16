@@ -341,12 +341,8 @@ class VirtuemartViewUser extends VmView {
 			}
 
 			$vendorModel = VmModel::getModel('vendor');
+			$vendorModel->setId($this->userDetails->virtuemart_vendor_id);
 
-			/*if (Vmconfig::get('multix', 'none') === 'none') {
-				//$vendorModel->setId(1);
-			} else {*/
-				$vendorModel->setId($this->userDetails->virtuemart_vendor_id);
-			//}
 			$this->vendor = $vendorModel->getVendor();
 			$vendorModel->addImages($this->vendor);
 

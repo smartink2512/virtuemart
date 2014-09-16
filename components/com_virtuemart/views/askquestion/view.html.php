@@ -170,13 +170,6 @@ class VirtueMartViewAskquestion extends VmView {
 
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
-		$vendorModel = VmModel::getModel ('vendor');
-		if(empty($this->vendor)){
-			$this->vendor = $vendorModel->getVendor ();
-			$this->vendor->vendor_store_name = $fromName;
-		}
-		$vendorModel->addImages ($this->vendor);
-
 		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', 0);
 
 		$productModel = VmModel::getModel ('product');
@@ -186,10 +179,18 @@ class VirtueMartViewAskquestion extends VmView {
 		$productModel->addImages($this->product);
 
 		$this->subject = Jtext::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
-		$this->vendorEmail = $this->vendor->email;
+
+		$vendorModel = VmModel::getModel ('vendor');
+		//if(empty($this->vendor)){
+			$this->vendor = $vendorModel->getVendor ($this->product->virtuemart_vendor_id);
+			$this->vendor->vendor_store_name = $fromName;
+		//}
+		$vendorModel->addImages ($this->vendor);
+
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);;
 
 		// in this particular case, overwrite the value for fix the recipient name
-		$this->vendor->vendor_name = $this->user['name'];
+		$this->vendor->vendor_name = $this->user->get('name');
 
 
 		if (VmConfig::get ('order_mail_html')) {

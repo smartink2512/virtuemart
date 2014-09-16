@@ -713,21 +713,21 @@ class VirtueMartModelProduct extends VmModel {
 		$withCalc = $withCalc?TRUE:0;
 		$onlyPublished = $onlyPublished?TRUE:0;
 		$this->withRating = $this->withRating?TRUE:0;
-		//$productKey = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.$withCalc.$this->withRating;
+
 		$productKey = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.$withCalc.$this->withRating;
 
 		// vmdebug('$productKey, not from cache : '.$productKey);
 		if (array_key_exists ($productKey, self::$_products)) {
-			//vmdebug('getProduct, take from cache : '.$productKey);
+			vmdebug('getProduct, take from cache : '.$productKey);
 			return  array(true,$productKey);
 		} else if(!$withCalc){
-			$productKeyTmp = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.TRUE.TRUE;
+			$productKeyTmp = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.TRUE.$this->withRating;
 			if (array_key_exists ($productKeyTmp,  self::$_products)) {
-				//vmdebug('getProduct, take from cache full product '.$productKeyTmp);
+				vmdebug('getProduct, take from cache full product '.$productKeyTmp);
 				return  array(true,$productKeyTmp);
 			}
 		} else {
-			return array(false,$productKey);;
+			return array(false,$productKey);
 		}
 	}
 
@@ -852,9 +852,8 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
 		}
-		//$child->canonical = JRoute::_ ($child->canonical,FALSE);
+
 		if(!empty($child->virtuemart_category_id)) {
-			//$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id, FALSE);
 			$child->link = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id;
 		} else {
 			$child->link = $child->canonical;
@@ -863,6 +862,15 @@ class VirtueMartModelProduct extends VmModel {
 		$child->quantity = $quantity;
 		$child->addToCartButton = false;
 		if(empty($child->categories)) $child->categories = array();
+
+		if($this->withRating){
+			$ratings = $this->getTable('ratings');
+			$ratings->load($virtuemart_product_id,'virtuemart_product_id');
+			if($ratings->published){
+				$child->rating = $ratings->rating;
+			}
+		}
+
 		$stockhandle = VmConfig::get('stockhandle', 'none');
 		//vmdebug(' $stockhandle '.$stockhandle.' '.$child->slug,$child->product_in_stock,$child->product_ordered);
 		$app = JFactory::getApplication ();
@@ -870,8 +878,6 @@ class VirtueMartModelProduct extends VmModel {
 			vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
 			$_products[$productKey] = false;
 		} else {
-
-
 			$product_available_date = substr($child->product_available_date,0,10);
 			$current_date = date("Y-m-d");
 			if (($child->product_in_stock - $child->product_ordered) < 1) {
@@ -885,11 +891,8 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 			else if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
-
 				$child->availability = vmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHtml::_('date', $child->product_available_date, vmText::_('DATE_FORMAT_LC4'));
-
 			}
-
 			$_products[$productKey] = $child;
 		}
 
@@ -1079,35 +1082,40 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$front = $front?TRUE:0;
-
-		$this->withRating = $this->withRating?TRUE:0;
-		$productKey = $virtuemart_product_id.$virtuemart_shoppergroup_idsString.$quantity.$front.$this->withRating;
+		$productKey = $virtuemart_product_id.':'.$virtuemart_shoppergroup_idsString.':'.$quantity.':'.$front;
 		//$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields.$this->withRating.$virtuemart_shoppergroup_idsString);
 		static $_productsSingle = array();
 		if (array_key_exists ($productKey, $_productsSingle)) {
-			//vmdebug('getProduct, take from cache '.$productKey);
+			vmdebug('getProduct, take from cache '.$productKey);
 			return clone($_productsSingle[$productKey]);
-		} else if(!$this->withRating){
+		}
+		/*else if(!$this->withRating){
 			$productKey = $virtuemart_product_id.$virtuemart_shoppergroup_idsString.$quantity.$front.TRUE;
 			//vmdebug('getProductSingle, recreate $productKey '.$productKey);
 			if (array_key_exists ($productKey, $_productsSingle)) {
 				//vmdebug('getProductSingle, take from cache recreated key',$_productsSingle[$productKey]);
 				return clone($_productsSingle[$productKey]);
 			}
-		}
+		}*/
 
 
 		if (!empty($this->_id)) {
 
-			if($this->withRating){
+			/*if($this->withRating){
 				//$joinIds = array('rating' => '#__virtuemart_ratings','virtuemart_manufacturer_id' => '#__virtuemart_product_manufacturers', 'virtuemart_customfield_id' => '#__virtuemart_product_customfields');
-				$joinIds = array('rating' => '#__virtuemart_ratings');
-			} else {
+				$joinIds = array('rating,published as rpublished' => '#__virtuemart_ratings');
+				//$joinIds = array('rating' => '#__virtuemart_ratings');
+			} else {*/
 				//$joinIds = array('virtuemart_manufacturer_id' => '#__virtuemart_product_manufacturers', 'virtuemart_customfield_id' => '#__virtuemart_product_customfields');
 				$joinIds = array();
-			}
+			//}
 			$product = $this->getTable ('products');
 			$product->load ($this->_id, 0, 0, $joinIds);
+
+			/*if($this->withRating and empty($product->rpublished)){
+				$product->rating = false;
+			}*/
+			//vmdebug('my product',$product->rating);
 			$product->allIds = array();
 
 			$xrefTable = $this->getTable ('product_medias');

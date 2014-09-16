@@ -50,7 +50,7 @@ defined('_JEXEC') or die('');
 
 						<tr>
 							<td align="center" style="border-bottom : 1px solid #dad8d8;">
-								<span style="font-size: 14px; font-weight: bold"><?php echo vmText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_FROM', $this->user['name'], $this->user['email']); ?></span>
+								<span style="font-size: 14px; font-weight: bold"><?php echo vmText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_FROM', $this->user->name, $this->user->email); ?></span>
 								<br /><br /><?php echo $this->comment; ?><br /><br />
 							</td>
 						</tr>
@@ -72,7 +72,7 @@ defined('_JEXEC') or die('');
 										<td width="70%" valign="top">
 											<h2>
 												<?php  echo $this->product->product_name ?>
-												<?php if ($this->product->product_sku) echo ' ('vmTextt::_('COM_VIRTUEMART_PRODUCT_SKU').' '.$this->product->product_sku .')' ; ?>
+												<?php if ($this->product->product_sku) echo ' ('.vmText::_('COM_VIRTUEMART_PRODUCT_SKU').' '.$this->product->product_sku .')' ; ?>
 											</h2>
 											<p style="margin: 15px 0; display:block;"><?php  echo $this->product->product_s_desc ?></p>
 											<a href="<?php  echo $product_link ?>" class="product-details">Product details</a>

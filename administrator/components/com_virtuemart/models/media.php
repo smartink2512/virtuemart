@@ -409,7 +409,9 @@ class VirtueMartModelMedia extends VmModel {
 		if(!empty($objects)){
 			if(!is_array($objects)) $objects = array($objects);
 			foreach($objects as $k => $object){
-				if(!is_object($object)) $object = new stdClass();
+				if(!is_object($object)){
+					$object = $this->createVoidMedia($type,$mime);
+				}
 
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
 				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime,$limit);

@@ -167,8 +167,11 @@ class VirtueMartModelRatings extends VmModel {
      * @param int $product_id
      */
 
-    function getRatingByProduct($product_id){
+    function getRatingByProduct($product_id,$onlyPublished=true){
     	$q = 'SELECT * FROM `#__virtuemart_ratings` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" ';
+		if($onlyPublished){
+			$q .= 'AND `published`="1" ';
+		}
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		return $db->loadObject();

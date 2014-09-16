@@ -27,5 +27,5 @@ if(VmConfig::get('usefancy',1)){
 ?>
 <div class="productdetails-view">
 	<?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_THANK_YOU'); ?>
-	<button onclick="<?php echo $onclick ?>" type="button"><?php echovmTextt::_('COM_VIRTUEMART_CLOSE'); ?></button>
+	<button onclick="<?php echo $onclick ?>" type="button"><?php echo vmText::_('COM_VIRTUEMART_CLOSE'); ?></button>
 </div>

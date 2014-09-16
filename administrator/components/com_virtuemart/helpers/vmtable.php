@@ -567,11 +567,27 @@ class VmTable extends JTable {
 
 		if (count($tableJoins)) {
 			if (!$joinKey) $joinKey = $this->_tbl_key;
+
 			foreach ($tableJoins as $tableId => $table) {
-				$select .= ',`' . $table . '`.`' . $tableId . '` ';
+
+				if(strpos($tableId,',')!==false){
+					$tableIds = explode(',',$tableId);
+					foreach($tableIds as $sel){
+						if(strpos($sel,' as ')!==false){
+							$temp = explode(' as ',$sel);
+							$select .= ',`' . $table . '`.`' . trim($temp[0]) . '` as '.$temp[1].' ';
+						} else {
+							$select .= ',`' . $table . '`.`' . $sel . '` ';
+						}
+					}
+				} else {
+					$select .= ',`' . $table . '`.`' . $tableId . '` ';
+				}
+
 				$from .= ' LEFT JOIN `' . $table . '` on `' . $table . '`.`' . $joinKey . '`=`' . $mainTable . '`.`' . $joinKey . '`';
 			}
 		}
+
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
 		// $query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 		if ($andWhere === 0) $andWhere = '';
@@ -608,7 +624,27 @@ class VmTable extends JTable {
 
 			if (count($tableJoins)) {
 				foreach ($tableJoins as $tableId => $table) {
-					if (isset($result[$tableId])) $this->$tableId = $result[$tableId];
+
+					if(strpos($tableId,',')!==false){
+
+						$tableIds = explode(',',$tableId);
+						foreach($tableIds as $sel){
+
+							if(strpos($sel,' as ')!==false){
+								$temp = explode(' as ',$sel);
+								$key = trim($temp[1]);
+								//vmdebug('my $result ',$result[$key]);
+								if (isset($result[$key])) $this->$key = $result[$key]; else $this->$key = false;
+								vmdebug('$tableJoins $tableJoins',$key,(int)$this->$key);
+							} else {
+								if (isset($result[$sel])) $this->$sel = $result[$sel];
+							}
+						}
+					} else {
+
+						if (isset($result[$tableId])) $this->$tableId = $result[$tableId];
+					}
+
 				}
 			}
 		} else {
