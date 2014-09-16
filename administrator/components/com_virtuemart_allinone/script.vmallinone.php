@@ -498,7 +498,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 					}
 				}
 			}
-			$this->updateJoomlaUpdateServer( $type, $element, $dst   );
+			$this->updateJoomlaUpdateServer( $type, $element, $dst , $group  );
 
 
 		}
@@ -745,14 +745,18 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
 		 * @author Valerie Isaksen
 		 */
-		function updateJoomlaUpdateServer( $type, $element, $dst  ){
+		function updateJoomlaUpdateServer( $type, $element, $dst, $group=''  ){
 
 			$db = JFactory::getDBO();
 			$extensionXmlFileName=$this->getExtensionXmlFileName($type, $element, $dst );
 			$xml=simplexml_load_file($extensionXmlFileName);
 
 			// get extension id
-			$query="SELECT extension_id FROM #__extensions WHERE type=".$db->quote($type)." AND element=".$db->quote($element);
+			$query="SELECT `extension_id` FROM `#__extensions` WHERE `type`=".$db->quote($type)." AND `element`=".$db->quote($element);
+			if ($group) {
+				$query.=" AND `folder`=".$db->quote($group);
+			}
+
 			$db->setQuery($query);
 			$extension_id=$db->loadResult();
 			if(!$extension_id) {
@@ -760,7 +764,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 				return;
 			}
 			// Is the extension already in the update table ?
-			$query="SELECT * FROM `#__update_sites_extensions` WHERE extension_id=".$extension_id;
+			$query="SELECT * FROM `#__update_sites_extensions` WHERE `extension_id`=".$extension_id;
 			$db->setQuery($query);
 			$update_sites_extensions=$db->loadObject();
 			//VmConfig::$echoDebug=true;
@@ -769,7 +773,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 			// Update the version number for all
 			if(isset($xml->version)) {
 				$query="UPDATE `#__updates` SET `version`=".$db->quote((string)$xml->version)."
-					         WHERE extension_id=".$extension_id;
+					         WHERE `extension_id`=".$extension_id;
 				$db->setQuery($query);
 				$db->query();
 			}
@@ -786,7 +790,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 
 					$update_site_id=$db->insertId();
 
-					$query="INSERT INTO #__update_sites_extensions SET update_site_id=".$update_site_id." , extension_id=".$extension_id;
+					$query="INSERT INTO `#__update_sites_extensions` SET `update_site_id`=".$update_site_id." , `extension_id`=".$extension_id;
 					$db->setQuery($query);
 					$db->query();
 				} else {
