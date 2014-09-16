@@ -374,7 +374,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				}
 
 			}
-			$this->updateJoomlaUpdateServer( $type, $element, $dst   );
+			$this->updateJoomlaUpdateServer( $type, $element, $dst ,$group );
 
 		}
 
@@ -614,14 +614,17 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		 * @param $element= 'textinput'
 		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
 		 */
-		function updateJoomlaUpdateServer( $type, $element, $dst  ){
+		function updateJoomlaUpdateServer( $type, $element, $dst , $group='' ){
 
 			$db = JFactory::getDBO();
 			$extensionXmlFileName=$this->getExtensionXmlFileName($type, $element, $dst );
 			$xml=simplexml_load_file($extensionXmlFileName);
 
 			// get extension id
-			$query="SELECT extension_id FROM #__extensions WHERE type=".$db->quote($type)." AND element=".$db->quote($element);
+			$query="SELECT extension_id FROM `#__extensions` WHERE `type`=".$db->quote($type)." AND `element`=".$db->quote($element);
+			if ($group) {
+				$query.=" AND `folder`=".$db->quote($group);
+			}
 			$db->setQuery($query);
 			$extension_id=$db->loadResult();
 			if(!$extension_id) {
@@ -629,14 +632,14 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				return;
 			}
 			// Is the extension already in the update table ?
-			$query="SELECT * FROM `#__update_sites_extensions` WHERE extension_id=".$extension_id;
+			$query="SELECT * FROM `#__update_sites_extensions` WHERE `extension_id`=".$extension_id;
 			$db->setQuery($query);
 			$update_sites_extensions=$db->loadObject();
 
 			// Update the version number for all
 			if(isset($xml->version)) {
 					$query="UPDATE `#__updates` SET `version`=".$db->quote((string)$xml->version)."
-					         WHERE extension_id=".$extension_id;
+					         WHERE `extension_id`=".$extension_id;
 					$db->setQuery($query);
 					$db->query();
 			}
@@ -651,7 +654,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 					$update_site_id=$db->insertId();
 
-					$query="INSERT INTO #__update_sites_extensions SET update_site_id=".$update_site_id." , extension_id=".$extension_id;
+					$query="INSERT INTO #__update_sites_extensions SET `update_site_id`=".$update_site_id." , `extension_id`=".$extension_id;
 					$db->setQuery($query);
 					$db->query();
 				} else {
