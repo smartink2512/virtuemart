@@ -40,6 +40,8 @@ class vmCrypt {
 
 	static function decrypt ($string,$date=0) {
 
+		if(empty($string)) return '';
+
 		$key = self::_getKey ($date);
 		if(!empty($key)){
 			$ciphertext_dec = base64_decode($string);

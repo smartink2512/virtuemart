@@ -225,7 +225,7 @@ class VirtueMartCart {
 			}
 		}
 
-		$this->prepareAddressFieldsInCart();
+		//$this->prepareAddressFieldsInCart();
 	}
 
 

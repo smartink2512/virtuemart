@@ -259,8 +259,11 @@ class VirtueMartViewProductdetails extends VmView {
 	$this->assignRef('more_reviews', $uristring);
 
 	if ($product->metadesc) {
-	    $document->setDescription($product->metadesc);
+		$document->setDescription($product->metadesc);
+	} else {
+		$document->setDescription( $product->product_name . " " . $category->category_name . " " . $product->product_s_desc );
 	}
+
 	if ($product->metakey) {
 	    $document->setMetaData('keywords', $product->metakey);
 	}

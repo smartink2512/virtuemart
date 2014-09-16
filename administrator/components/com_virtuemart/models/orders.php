@@ -274,8 +274,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$where = array();
 		$user = JFactory::getUser();
 		$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',false);
-		if($user->authorise('core.admin','com_virtuemart')){
 
+		if($user->authorise('core.admin','com_virtuemart')){
+			vmdebug('Vendor is core.admin and should see all');
 			if($virtuemart_vendor_id){
 				$where[]= ' o.virtuemart_vendor_id = "'.$virtuemart_vendor_id.'" ';
 			}
@@ -283,15 +284,15 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$where[]= ' u.virtuemart_user_id = ' . (int)$uid.' ';
 			}
 		}
-		else if( $user->authorise('core.manage','com_virtuemart')){
-
+		else if( $user->authorise('core.manage','com_virtuemart') or $user->authorise('vm.orders','com_virtuemart')){
+			vmdebug('Vendor is manager and should only see its own orders');
 			$virtuemart_vendor_id = VmConfig::isSuperVendor();
-			if(!empty($virtuemart_vendor_id)){
+			//if(!empty($virtuemart_vendor_id)){
 				$where[]= ' o.virtuemart_vendor_id = '.$virtuemart_vendor_id.' ';
-			} else {
+			/*} else {
 				//We map here as fallback to vendor 1.
 				$where[]= ' o.virtuemart_vendor_id = 1 ';
-			}
+			}*/
 		} else {
 			//A normal user is only allowed to see its own orders, we map $uid to the user id
 			$uid = (int)$user->id;
@@ -1762,18 +1763,20 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		foreach($ids as $id) {
 
-			// remove order_item and update stock
-			$q = "SELECT `virtuemart_order_item_id` FROM `#__virtuemart_order_items`
-				WHERE `virtuemart_order_id`=".$id;
-			$db = JFactory::getDBO();
-			$db->setQuery($q);
-			$item_ids = $db->loadColumn();
-			foreach( $item_ids as $item_id ) {
-			    $this->removeOrderLineItem($item_id);
-			}
-			// rename invoice number by adding the date, and update the invoice table
-			 $this->renameInvoice($id );
+			$this->removeOrderItems($id);
 
+			$q = "DELETE FROM `#__virtuemart_order_histories`
+				WHERE `virtuemart_order_id`=".$id;
+			$this->_db->setQuery($q);
+			$this->_db->execute();
+
+			$q = "DELETE FROM `#__virtuemart_order_calc_rules`
+				WHERE `virtuemart_order_id`=".$id;
+			$this->_db->setQuery($q);
+			$this->_db->execute();
+
+			// rename invoice number by adding the date, and update the invoice table
+			$this->renameInvoice($id );
 
 			if (!$table->delete((int)$id)) {
 				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());

@@ -684,7 +684,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @param null $name
 	 * @param null $psType
 	 * @return string
-	 * @author Patrick Kohl, Valérie Isaksen
+	 * @author Patrick Kohl, Valérie Isaksen, Max Milbers
 	 */
 	public function renderByLayout ($layout = 'default', $viewData = NULL, $name = NULL, $psType = NULL) {
 		if ($name === NULL) {
@@ -710,7 +710,7 @@ abstract class vmPlugin extends JPlugin {
 	/**
 	 *  Note: We have 2 subfolders for versions > J15 for 3rd parties developers, to avoid 2 installers
 	 *
-	 * @author Patrick Kohl, Valérie Isaksen
+	 * @author Max Milbers, Valérie Isaksen
 	 */
 	private function _getLayoutPath ($pluginName, $group, $layout = 'default') {
 		$app = JFactory::getApplication ();

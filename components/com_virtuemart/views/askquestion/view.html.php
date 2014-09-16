@@ -186,7 +186,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$productModel->addImages($this->product);
 
 		$this->subject = Jtext::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
-		$this->vendorEmail = $this->user['email'];
+		$this->vendorEmail = $this->vendor->email;
 
 		// in this particular case, overwrite the value for fix the recipient name
 		$this->vendor->vendor_name = $this->user['name'];

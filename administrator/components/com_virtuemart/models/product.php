@@ -1561,13 +1561,16 @@ class VirtueMartModelProduct extends VmModel {
 				$orderByValue = $product->product_name;
 			}
 
+			$alreadyFound = '';
 			foreach ($neighbors as &$neighbor) {
 
-				$qm = ' AND '.$orderByName.' '.$op.' "'.$orderByValue.'" ORDER BY '.$orderByName.' '.$direction.' LIMIT 1';
+				if(!empty($alreadyFound)) $alreadyFound = 'AND p.`virtuemart_product_id`!="'.$alreadyFound.'"';
+				$qm = $alreadyFound.' AND '.$orderByName.' '.$op.' "'.$orderByValue.'"  ORDER BY '.$orderByName.' '.$direction.' LIMIT 1';
 				$db->setQuery ($q.$qm);
 				//vmdebug('getneighbors '.$q.$qm);
 				if ($result = $db->loadAssocList ()) {
 					$neighbor = $result;
+					$alreadyFound = $result[0]['virtuemart_product_id'];
 				}
 
 				if($this->filter_order_Dir=='ASC'){
@@ -2183,12 +2186,13 @@ class VirtueMartModelProduct extends VmModel {
 	 **/
 	function getOrderByList ($virtuemart_category_id = FALSE) {
 
-		$getArray = vRequest::getRequest();
+		$getArray = vRequest::getGet();
 		$fieldLink = '';
 
 		foreach ($getArray as $key => $value) {
 			if (is_array ($value)) {
 				foreach ($value as $k => $v) {
+					if(empty($v)) continue;
 					$fieldLink .= '&' . $key . '[' . $k . ']' . '=' . $v;
 				}
 			}
@@ -2200,7 +2204,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$fieldLink[0] = "?";
 		$fieldLink = 'index.php' . $fieldLink;
-
+		vmdebug('my field link ',$fieldLink);
 		$orderDirLink = '';
 		$orderDirConf = VmConfig::get ('prd_brws_orderby_dir');
 		$orderDir = vRequest::getCmd ('dir', $orderDirConf);
@@ -2244,7 +2248,9 @@ class VirtueMartModelProduct extends VmModel {
 			if (count ($manufacturers) > 0) {
 				$manufacturerLink = '<div class="orderlist">';
 				if ($virtuemart_manufacturer_id > 0) {
-					$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink , FALSE) . '">' . vmText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
+					$allLink = str_replace($manufacturerTxt,$fieldLink,'');
+					$allLink .= '&virtuemart_manufacturer_id=0';
+					$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($allLink . $orderbyTxt . $orderDirLink , FALSE) . '">' . vmText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
 				}
 				if (count ($manufacturers) > 1) {
 					foreach ($manufacturers as $mf) {

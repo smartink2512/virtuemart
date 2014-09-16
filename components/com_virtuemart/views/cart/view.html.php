@@ -179,6 +179,8 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->assignRef('select_payment_text', $paymentText);
 
+			$this->cart->prepareAddressFieldsInCart();
+
 			$layoutName = $this->cart->layout;
 			//set order language
 			$lang = JFactory::getLanguage();

@@ -105,12 +105,12 @@ class VirtueMartViewVirtueMart extends VmView {
 				$description .= $currency->createPriceDiv ('priceWithoutTax', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX', $product->prices);
 				$description .= $currency->createPriceDiv ('discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $product->prices);
 				$description .= $currency->createPriceDiv ('taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $product->prices);
-				$unitPriceDescription = JText::sprintf ('COM_VIRTUEMART_PRODUCT_UNITPRICE', $product->product_unit);
+				$unitPriceDescription = vmText::sprintf ('COM_VIRTUEMART_PRODUCT_UNITPRICE', $product->product_unit);
 				$description .= $currency->createPriceDiv ('unitPrice', $unitPriceDescription, $product->prices);
 
 			}
 			if ($feed_description_type == 'product_s_desc'  OR $feed_max_text_length > 0) {
-				$description .= '<p class="feed-readmore"><a target="_blank" href ="' . rtrim (JURI::base (), "/") . str_replace (' ', '%20', $product->link) . '">' . JText::_ ('COM_VIRTUEMART_FEED_READMORE') . '</a></p>';
+				$description .= '<p class="feed-readmore"><a target="_blank" href ="' . rtrim (JURI::base (), "/") . str_replace (' ', '%20', $product->link) . '">' . vmText::_ ('COM_VIRTUEMART_FEED_READMORE') . '</a></p>';
 			}
 			$item = new JFeedItem();
 			$item->title = $title;

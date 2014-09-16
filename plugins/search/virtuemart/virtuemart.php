@@ -21,6 +21,7 @@
  */
 // no direct access
 defined ('_JEXEC') or die('Restricted access');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 class PlgSearchVirtuemart extends JPlugin {
 	/**

@@ -85,7 +85,8 @@ AdminUIHelper::startAdminArea($this);
 
 			$row = $this->calcs[$i];
 			$checked = JHtml::_('grid.id', $i, $row->virtuemart_calc_id);
-			$published = $this->toggle($row, $i, 'published');
+			$published = $this->toggle($row->published, $i, 'toggle.published');
+
 			if($this->showVendors){
 				$shared = $this->toggle($row->shared, $i, 'toggle.shared');
 			}

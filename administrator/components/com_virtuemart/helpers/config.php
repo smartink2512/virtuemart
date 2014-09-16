@@ -791,10 +791,12 @@ class VmConfig {
 
 		vmTime('time to load config','loadConfig');
 
-		// try plugins
-		JPluginHelper::importPlugin('vmuserfield');
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('plgVmInitialise', array());
+		if($app->isSite()){
+			// try plugins
+			JPluginHelper::importPlugin('vmuserfield');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmInitialise', array());
+		}
 
 		if(!self::$installed){
 			$user = JFactory::getUser();

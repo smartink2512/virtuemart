@@ -674,7 +674,8 @@ class VmModel extends JObject {
 			}
 			if(!$break){
 				$app = JFactory::getApplication();
-				$view = vRequest::getCmd('view','virtuemart');
+				$view = vRequest::getCmd('view');
+				if (empty($view)) $view = 'virtuemart';
 				$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
 			}
 			//vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
@@ -694,7 +695,8 @@ class VmModel extends JObject {
 // 			vmdebug('checkFilterDir: programmer choosed invalid ordering direction '.$filter_order_Dir,$this->_validFilterDir);
 // 			vmTrace('checkFilterDir');
 			$filter_order_Dir = $this->_selectedOrderingDir;
-			$view = vRequest::getCmd('view','virtuemart');
+			$view = vRequest::getCmd('view');
+			if (empty($view)) $view = 'virtuemart';
 			$app = JFactory::getApplication();
 			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order_Dir',$filter_order_Dir);
 		}
@@ -712,21 +714,20 @@ class VmModel extends JObject {
 	 */
 	public function getPagination($perRow = 5) {
 
-			if(empty($this->_limit) ){
-				$this->setPaginationLimits();
-			}
+		if(empty($this->_limit) ){
+			$this->setPaginationLimits();
+		}
 
-			$this->_pagination = new VmPagination($this->_total , $this->_limitStart, $this->_limit , $perRow );
+		$this->_pagination = new VmPagination($this->_total , $this->_limitStart, $this->_limit , $perRow );
 
-// 		}
-// 		vmdebug('$this->pagination $total '.$this->_total,$this->_pagination);vmTrace('getPagination');
 		return $this->_pagination;
 	}
 
 	public function setPaginationLimits(){
 
 		$app = JFactory::getApplication();
-		$view = vRequest::getCmd('view',$this->_maintablename);
+		$view = vRequest::getCmd('view');
+		if (empty($view)) $view = $this->_maintablename;
 
 		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
 		if(empty($limit)){
