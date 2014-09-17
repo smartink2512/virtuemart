@@ -827,19 +827,25 @@ class ShopFunctions {
 		}
 		return self::$vmFeeds;
 	}
-	static public function getRssFeed ($rssURL,$max) {
-		jimport('simplepie.simplepie');
-		$rssFeed = new SimplePie($rssURL);
 
-		$feeds = array();
-		$count = $rssFeed->get_item_quantity();
-		$limit=min($max,$count);
-		for ($i = 0; $i < $limit; $i++) {
+	static public function getRssFeed($rssURL, $max) {
+
+		jimport('joomla.feed.factory');
+		$feed = new JFeedFactory;
+		$rssFeed = $feed->getFeed($rssURL);
+
+		if (empty($rssFeed) or !is_object($rssFeed)) return false;
+
+		for ($i = 0; $i < $max; $i++) {
+			if (!$rssFeed->offsetExists($i)) {
+				break;
+			}
 			$feed = new StdClass();
-			$item = $rssFeed->get_item($i);
-			$feed->link = $item->get_link();
-			$feed->title = $item->get_title();
-			$feed->description = $item->get_description();
+			$uri = (!empty($rssFeed[$i]->uri) || !is_null($rssFeed[$i]->uri)) ? $rssFeed[$i]->uri : $rssFeed[$i]->guid;
+			$text = !empty($rssFeed[$i]->content) || !is_null($rssFeed[$i]->content) ? $rssFeed[$i]->content : $rssFeed[$i]->description;
+			$feed->link = $uri;
+			$feed->title = $rssFeed[$i]->title;
+			$feed->description = $text;
 			$feeds[] = $feed;
 		}
 

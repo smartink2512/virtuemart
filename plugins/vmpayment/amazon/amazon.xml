@@ -285,11 +285,6 @@
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
 
-        <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_COMMENTS_SECTION"/>
-        <param type="vmtitle" description="VMPAYMENT_AMAZON_CONF_STATE_NOT_REQUIRED"/>
-        <param type="vmtitle" description="VMPAYMENT_AMAZON_CONF_ADD_LOGO_AT_AMAZON"/>
-
-
         <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION"/>
         <param name="debug" type="radio" default="0" label="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION">
             <option value="0">COM_VIRTUEMART_NO</option>
@@ -300,7 +295,7 @@
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
-
+        <param	name="payment_logos" type="hidden" />
     </params>
 
     <updateservers>

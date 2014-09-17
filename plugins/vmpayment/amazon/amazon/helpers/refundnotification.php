@@ -41,7 +41,7 @@ class amazonHelperRefundNotification extends amazonHelper {
 		$status = $details->getRefundStatus();
 		if (!$status->isSetState()) {
 			$this->debugLog('NO isSetState' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
-return;
+			return;
 		}
 		$amazonState = $status->getState();
 

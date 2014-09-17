@@ -26,64 +26,64 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 
 
 	public function onResponseUpdateOrderHistory ($order) {
-/*
-		$order_history = array();
-		$amazonState = "";
-		$reasonCode = "";
-		$authorizeResponse = $this->amazonData;
-		// if am
+		/*
+				$order_history = array();
+				$amazonState = "";
+				$reasonCode = "";
+				$authorizeResponse = $this->amazonData;
+				// if am
 
-		$authorizeResult = $authorizeResponse->getAuthorizeResult();
-		$captureDetails = $authorizeResult->getCaptureDetails();
-		if ($captureDetails->isSetCaptureStatus()) {
-			$captureStatus = $captureDetails->getCaptureStatus();
-			if (!$captureStatus->isSetState()) {
-				return false;
-			}
-			$amazonState = $captureStatus->getState();
+				$authorizeResult = $authorizeResponse->getAuthorizeResult();
+				$captureDetails = $authorizeResult->getCaptureDetails();
+				if ($captureDetails->isSetCaptureStatus()) {
+					$captureStatus = $captureDetails->getCaptureStatus();
+					if (!$captureStatus->isSetState()) {
+						return false;
+					}
+					$amazonState = $captureStatus->getState();
 
-			if ($captureStatus->isSetReasonCode()) {
-				$reasonCode = $captureStatus->getReasonCode();
-			}
-		}
-		// In asynchronous mode, CaptureResponse is always Pending. Order status is not updated
-		if ($amazonState == 'Pending') {
-			return $amazonState;
-		}
+					if ($captureStatus->isSetReasonCode()) {
+						$reasonCode = $captureStatus->getReasonCode();
+					}
+				}
+				// In asynchronous mode, CaptureResponse is always Pending. Order status is not updated
+				if ($amazonState == 'Pending') {
+					return $amazonState;
+				}
 
-		// SYNCHRONOUS MODE: amazon returns in real time the final process status
-		if ($amazonState == 'Open') {
-			// it should always be the case if the CaptureNow == false
-			$order_history['order_status'] = $this->_currentMethod->status_capture;
-			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
-			$order_history['customer_notified'] = 1;
-		} elseif ($amazonState == 'Closed') {
-			// it should always be the case if the CaptureNow == true
-			if (!($captureDetails->isSetCaptureNow() and $captureDetails->getCaptureNow())) {
-				$this->debugLog('SYNCHRONOUS , capture Now, and Amazon State is NOT CLOSED' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
+				// SYNCHRONOUS MODE: amazon returns in real time the final process status
+				if ($amazonState == 'Open') {
+					// it should always be the case if the CaptureNow == false
+					$order_history['order_status'] = $this->_currentMethod->status_capture;
+					$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
+					$order_history['customer_notified'] = 1;
+				} elseif ($amazonState == 'Closed') {
+					// it should always be the case if the CaptureNow == true
+					if (!($captureDetails->isSetCaptureNow() and $captureDetails->getCaptureNow())) {
+						$this->debugLog('SYNCHRONOUS , capture Now, and Amazon State is NOT CLOSED' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
+						return $amazonState;
+					}
+					$order_history['order_status'] = $this->_currentMethod->status_capture;
+					$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURED');
+					$order_history['customer_notified'] = 1;
+
+				} elseif ($amazonState == 'Declined') {
+					// handling Declined Captures
+					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+					$order_history['comments'] = $reasonCode;
+					if ($captureStatus->isSetReasonDescription()) {
+						$order_history['comments'] .= " " . $captureStatus->getReasonDescription();
+					}
+					$order_history['customer_notified'] = 0;
+
+				}
+				$order_history['amazonState'] = $amazonState;
+				$modelOrder = VmModel::getModel('orders');
+				$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+
+
 				return $amazonState;
-			}
-			$order_history['order_status'] = $this->_currentMethod->status_capture;
-			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURED');
-			$order_history['customer_notified'] = 1;
-
-		} elseif ($amazonState == 'Declined') {
-			// handling Declined Captures
-			$order_history['order_status'] = $this->_currentMethod->status_cancel;
-			$order_history['comments'] = $reasonCode;
-			if ($captureStatus->isSetReasonDescription()) {
-				$order_history['comments'] .= " " . $captureStatus->getReasonDescription();
-			}
-			$order_history['customer_notified'] = 0;
-
-		}
-		$order_history['amazonState'] = $amazonState;
-		$modelOrder = VmModel::getModel('orders');
-		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
-
-
-		return $amazonState;
-*/
+		*/
 	}
 
 
@@ -93,119 +93,128 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 			$getCaptureDetailsResult = $this->amazonData->getGetCaptureDetailsResult();
 			if ($getCaptureDetailsResult->isSetCaptureDetails()) {
 				$captureDetails = $getCaptureDetailsResult->getCaptureDetails();
-			if ($captureDetails->isSetCaptureStatus()) {
-				$captureStatus = $captureDetails->getCaptureStatus();
-				if ($captureStatus->isSetState()) {
-					$amazonInternalData->amazon_response_state = $captureStatus->getState();
+				if ($captureDetails->isSetCaptureStatus()) {
+					$captureStatus = $captureDetails->getCaptureStatus();
+					if ($captureStatus->isSetState()) {
+						$amazonInternalData->amazon_response_state = $captureStatus->getState();
+					}
+					if ($captureStatus->isSetReasonCode()) {
+						$amazonInternalData->amazon_response_reasonCode = $captureStatus->getReasonCode();
+					}
+					if ($captureStatus->isSetReasonDescription()) {
+						$amazonInternalData->amazon_response_reasonDescription = $captureStatus->getReasonDescription();
+					}
+					if ($captureDetails->isSetAmazonCaptureId()) {
+						$amazonInternalData->amazon_response_amazonCaptureId = $captureDetails->getAmazonCaptureId();
+					}
 				}
-				if ($captureStatus->isSetReasonCode()) {
-					$amazonInternalData->amazon_response_reasonCode = $captureStatus->getReasonCode();
-				}
-				if ($captureStatus->isSetReasonDescription()) {
-					$amazonInternalData->amazon_response_reasonDescription = $captureStatus->getReasonDescription();
-				}
-				if ($captureDetails->isSetAmazonCaptureId()) {
-					$amazonInternalData->amazon_response_amazonCaptureId = $captureDetails->getAmazonCaptureId();
-				}
+
 			}
-
+			return $amazonInternalData;
 		}
-		return $amazonInternalData;
-	}
 	}
 
+	function getState () {
+		if (!$this->amazonData->isSetGetCaptureDetailsResult()) {
+			return NULL;
+		}
+		if (!$this->amazonData->isSetGetCaptureDetailsResult()) {
+			return NULL;
+		}
+		$getCaptureDetailsResult = $this->amazonData->getGetCaptureDetailsResult();
 
+		if (!$getCaptureDetailsResult->isSetCaptureDetails()) {
+			return NULL;
+		}
+		$captureDetails = $getCaptureDetailsResult->getCaptureDetails();
+		if (!$captureDetails->isSetCaptureStatus()) {
+			return NULL;
+		}
+
+		$captureStatus = $captureDetails->getCaptureStatus();
+		if (!$captureStatus->isSetState()) {
+			return NULL;
+		}
+		return $captureStatus->getState();
+
+	}
 
 	function getContents () {
 
-		$contents=$this->tableStart("GetCaptureDetailsResponse");
+		$contents = $this->tableStart("GetCaptureDetailsResponse");
 		if ($this->amazonData->isSetGetCaptureDetailsResult()) {
 			$getCaptureDetailsResult = $this->amazonData->getGetCaptureDetailsResult();
 
 			if ($getCaptureDetailsResult->isSetCaptureDetails()) {
-				$contents .=$this->getRowFirstCol("GetCaptureDetailsResult");
+				$contents .= $this->getRowFirstCol("GetCaptureDetailsResult");
 				$captureDetails = $getCaptureDetailsResult->getCaptureDetails();
 
-				$captureDetails = $captureDetails->getCaptureDetails();
 				if ($captureDetails->isSetAmazonCaptureId()) {
-					$contents .=$this->getRow("AmazonCaptureId: ",$captureDetails->getAmazonCaptureId() );
+					$contents .= $this->getRow("AmazonCaptureId: ", $captureDetails->getAmazonCaptureId());
 
 				}
 				if ($captureDetails->isSetCaptureReferenceId()) {
-					$contents .=$this->getRow("CaptureReferenceId: ", $captureDetails->getCaptureReferenceId() );
+					$contents .= $this->getRow("CaptureReferenceId: ", $captureDetails->getCaptureReferenceId());
 				}
 
 
 				if ($captureDetails->isSetSellerCaptureNote()) {
-					$contents .=$this->getRow("SellerCaptureNote: ",  $captureDetails->getSellerCaptureNote());
+					$contents .= $this->getRow("SellerCaptureNote: ", $captureDetails->getSellerCaptureNote());
 
 				}
 				if ($captureDetails->isSetCaptureAmount()) {
 					$captureAmount = $captureDetails->getCaptureAmount();
-					$more='';
+					$more = '';
 					if ($captureAmount->isSetAmount()) {
 						$more .= "<br />    Amount: " . $captureAmount->getAmount();
 					}
 					if ($captureAmount->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $captureAmount->getCurrencyCode();
 					}
-					$contents .=$this->getRow("CaptureAmount: ",  $more);
+					$contents .= $this->getRow("CaptureAmount: ", $more);
 
 				}
-				if ($captureDetails->isSetCapturedAmount()) {
-					$capturedAmount = $captureDetails->getCapturedAmount();
-					$more='';
-					if ($capturedAmount->isSetAmount()) {
-						$more .= "<br />    Amount: " . $capturedAmount->getAmount();
-					}
-					if ($capturedAmount->isSetCurrencyCode()) {
-						$more .= "<br />    CurrencyCode: " . $capturedAmount->getCurrencyCode();
-					}
-					$contents .=$this->getRow("CapturedAmount: ",  $more);
 
-				}
 				if ($captureDetails->isSetRefundedAmount()) {
 					$refundedAmount = $captureDetails->getRefundedAmount();
-					$more='';
+					$more = '';
 					if ($refundedAmount->isSetAmount()) {
 						$more .= "<br />    Amount: " . $refundedAmount->getAmount();
 					}
 					if ($refundedAmount->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $refundedAmount->getCurrencyCode();
 					}
-					$contents .=$this->getRow("RefundedAmount: ",  $more);
+					$contents .= $this->getRow("RefundedAmount: ", $more);
 
 				}
 				if ($captureDetails->isSetCaptureFee()) {
-					$more='';					$captureFee = $captureDetails->getCaptureFee();
+					$more = '';
+					$captureFee = $captureDetails->getCaptureFee();
 					if ($captureFee->isSetAmount()) {
 						$more .= "<br />    Amount: " . $captureFee->getAmount();
 					}
 					if ($captureFee->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $captureFee->getCurrencyCode();
 					}
-					$contents .=$this->getRow("CaptureFee: ",  $more);
+					$contents .= $this->getRow("CaptureFee: ", $more);
 
 				}
 				if ($captureDetails->isSetIdList()) {
-					$more='';
+					$more = '';
 					$idList = $captureDetails->getIdList();
 					$memberList = $idList->getmember();
 					foreach ($memberList as $member) {
 						$more .= "<br />    member: " . $member;
 					}
-					$contents .=$this->getRow("IdList: ",  $more);
+					$contents .= $this->getRow("IdList: ", $more);
 
 				}
 				if ($captureDetails->isSetCreationTimestamp()) {
-					$contents .=$this->getRow("CreationTimestamp: ",  $captureDetails->getCreationTimestamp());
+					$contents .= $this->getRow("CreationTimestamp: ", $captureDetails->getCreationTimestamp());
 				}
-				if ($captureDetails->isSetExpirationTimestamp()) {
-					$contents .=$this->getRow("ExpirationTimestamp: ",  $captureDetails->getExpirationTimestamp());
 
-				}
 				if ($captureDetails->isSetCaptureStatus()) {
-					$more='';
+					$more = '';
 					$captureStatus = $captureDetails->getCaptureStatus();
 					if ($captureStatus->isSetState()) {
 						$more .= "<br />    State: " . $captureStatus->getState();
@@ -219,25 +228,25 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 					if ($captureStatus->isSetReasonDescription()) {
 						$more .= "<br />    ReasonDescription: " . $captureStatus->getReasonDescription();
 					}
-					$contents .=$this->getRow("CaptureStatus: ",  $more);
+					$contents .= $this->getRow("CaptureStatus: ", $more);
 
 				}
 
 				if ($captureDetails->isSetSoftDescriptor()) {
-					$contents .=$this->getRow("SoftDescriptor: ",  $captureDetails->getSoftDescriptor());
+					$contents .= $this->getRow("SoftDescriptor: ", $captureDetails->getSoftDescriptor());
 				}
 
 			}
 		}
 
 		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .=$this->getRowFirstCol("ResponseMetadata");
+			$contents .= $this->getRowFirstCol("ResponseMetadata");
 			$responseMetadata = $this->amazonData->getResponseMetadata();
 			if ($responseMetadata->isSetRequestId()) {
-				$contents .=$this->getRow("RequestId: ",  $responseMetadata->getRequestId());
+				$contents .= $this->getRow("RequestId: ", $responseMetadata->getRequestId());
 			}
 		}
-		$contents .=$this->getRowFirstCol("ResponseHeaderMetadata ". $this->amazonData->getResponseHeaderMetadata());
+		$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
 
 		$contents .= $this->tableEnd();
 

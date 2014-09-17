@@ -138,7 +138,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 				$taskRoute = '';
 			}
 
-			if ($this->cart->_dataValidated) {
+			if ($this->cart->getDataValidated()) {
 				$this->readonly_cart = true;
 			} else {
 				$this->readonly_cart = false;

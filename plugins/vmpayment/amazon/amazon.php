@@ -461,12 +461,25 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * IPNs requires SSL. All merchant cannot have SSL. A system plugin simulate a cron job
 	 */
 	public function plgVmRetrieveIPN () {
-		$q = "SELECT  * FROM " . $this->_tablename . " WHERE `amazon_response_state` NOT IN ('Draft',  'Canceled',  'Closed') AND  `amazon_class_response_type` IS NOT NULL ORDER BY `created_on` DESC ";
+
+
+		$q = "SELECT  * FROM " . $this->_tablename ." WHERE
+		 ( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse' AND `amazon_response_state`  IN ('Draft',  'Cancelled',  'Open', 'Suspended', 'Closed') )
+		  OR
+		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_AuthorizeResponse' AND `amazon_response_state`  IN ('Pending',  'Open',  'Closed', 'Declined') )
+        OR
+  		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_CaptureResponse' AND `amazon_response_state`  IN ('Pending',  'Completed', 'Closed', 'Declined') )
+        OR
+  		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_RefundResponse' AND `amazon_response_state`  IN ('Pending',  'Completed', 'Declined') )
+
+		ORDER BY `created_on` DESC ";
 
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		$payments = $db->loadObjectList();
 		$done = array();
+		$this->debugLog("<pre>" . var_export($payments, true) . "</pre>", __FUNCTION__, 'debug');
+
 		foreach ($payments as $payment) {
 			if (in_array($payment->order_number, $done)) {
 				continue;
@@ -474,13 +487,16 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			if (!$payment->amazon_request) {
 				continue;
 			}
-			if ($payment->amazon_request_type == 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse') {
+			if (!($this->_currentMethod = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id))) {
+				continue;
+			}
+			if ($payment->amazon_class_response_type == 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse') {
 				$this->retrieveIPNConfirmOrderReference($payment);
-			} elseif ($payment->amazon_request_type == 'OffAmazonPaymentsService_Model_RefundResponse') {
+			} elseif ($payment->amazon_class_response_type == 'OffAmazonPaymentsService_Model_RefundResponse') {
 				$this->retrieveIPNRefund($payment);
-			} elseif ($payment->amazon_request_type == 'OffAmazonPaymentsService_Model_AuthorizeResponse') {
+			} elseif ($payment->amazon_class_response_type == 'OffAmazonPaymentsService_Model_AuthorizeResponse') {
 				$this->retrieveIPNAuthorization($payment);
-			} elseif ($payment->amazon_request_type == 'OffAmazonPaymentsService_Model_CaptureResponse') {
+			} elseif ($payment->amazon_class_response_type == 'OffAmazonPaymentsService_Model_CaptureResponse') {
 				$this->retrieveIPNCapture($payment);
 			}
 			$done[] = $payment->order_number;
@@ -491,8 +507,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	private function getNumberOfDays ($payments) {
 		$created_on = strtotime($payments[0]->created_on);
 		$now = date_create(date('Y-m-d'));
-		$number = date_diff($now, $created_on);
-		$number->format('%a');
+		$now = time();
+		//$number = date_diff($now, $created_on);
+		//$number->format('%a');
+		$days_between = ceil(abs($created_on - $now) / 86400);
+		return $days_between;
 	}
 
 
@@ -2371,7 +2390,8 @@ jQuery().ready(function($) {
 		$previousAddress = $this->getBTandSTFromSession();
 		$cart->BT = $previousAddress['BT'];
 		$cart->ST = $previousAddress['ST'];
-		$cart->setCartIntoSession();
+		$cart->setOutOfCheckout();
+		//$cart->setCartIntoSession();
 		$this->clearAmazonSession();
 		if ($msg) {
 			$app = JFactory::getApplication();
@@ -2768,42 +2788,46 @@ jQuery().ready(function($) {
 			return;
 		}
 
-		$newClass = 'amazonHelper' . $notificationType;
-		$newFile = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'helpers' . DS . strtolower($notificationType . '.php');
-		if (!file_exists($newFile)) {
+		$notificationClass = 'amazonHelper' . $notificationType;
+		$notificationFile = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'helpers' . DS . strtolower($notificationType . '.php');
+		if (!file_exists($notificationFile)) {
 			$this->debugLog("Unknown notification Type: " . $notificationType, __FUNCTION__, 'error');
 			return false;
 		}
-		if (!class_exists($newClass)) {
+		if (!class_exists($notificationClass)) {
 			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'helpers' . DS . 'helper.php');
-			require($newFile);
+			require($notificationFile);
 		}
 
 		$this->debugLog($notificationType, 'ipn', 'debug');
 
-		$notificationResponse = new $newClass($notification, $this->_currentMethod);
+
+		$notificationResponse = new $notificationClass($notification, $this->_currentMethod);
 		$this->debugLog("<pre>" . var_export($notificationResponse->amazonData, true) . "</pre>", __FUNCTION__, 'debug');
 
 
 		if (!($order_number = $notificationResponse->getReferenceId())) {
-			$this->debugLog('no ReferenceId IPN received', $newClass, 'error');
+			$this->debugLog('no ReferenceId IPN received', $notificationClass, 'error');
 			return true;
 		}
 
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
-			$this->debugLog('Received a ' . $newClass . ' with order number ' . $order_number . ' but no order in DB with that number', $newClass, 'error');
+			$this->debugLog('Received a ' . $notificationClass . ' with order number ' . $order_number . ' but no order in DB with that number', $notificationClass, 'error');
 			return true;
 		}
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
+
 
 		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
 			// we ignore it because we receive also notification when refund/capture is done in the Amazon BE, and there is no valid reference
 			//$this->debugLog('Received a ' . $newClass . ' with order number ' . $order_number . 'but no order in DB with that number in AMAZON payment table', $newClass, 'error');
 			return true;
 		}
+
 		$amazonState = $notificationResponse->onNotificationUpdateOrderHistory($order, $payments);
 		$this->storeAmazonInternalData($order, NULL, NULL, $notification, NULL, $notificationResponse->getStoreInternalData());
+
 		$nextOperation = $notificationResponse->onNotificationNextOperation($order, $payments, $amazonState);
 		if ($nextOperation == false) {
 			return;
@@ -3240,6 +3264,8 @@ jQuery().ready(function($) {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_Status');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CaptureDetails');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CaptureResult');
+		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetCaptureDetailsResponse');
+		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetCaptureDetailsResult');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_RefundResult');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_RefundDetails');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CloseOrderReferenceRequest');

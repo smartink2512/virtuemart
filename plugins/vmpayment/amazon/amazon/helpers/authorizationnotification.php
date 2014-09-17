@@ -40,6 +40,11 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		$order_history = array();
 		$amazonState = "";
 		$reasonCode = "";
+
+		// get Old amazon State
+		$lastPayment = end($payments);
+		$previousAmazonState= $lastPayment->amazon_response_state;
+
 		if (!$this->amazonData->isSetAuthorizationDetails()) {
 			$this->debugLog('NO isSetAuthorizationDetails' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return false;
@@ -65,39 +70,41 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		}
 
 		$order_history['customer_notified'] = 1;
-
-		if ($amazonState == 'Open') {
-			$order_history['order_status'] = $this->_currentMethod->status_authorization;
-			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
-		} elseif ($amazonState == 'Declined') {
-			if ($reasonCode == 'InvalidPaymentMethod'  ) {
-				if (  $this->_currentMethod->soft_decline=='soft_decline_enabled' ) {
-					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD_SOFT_DECLINED', $reasonCode);
-					$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-				} else {
-					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD', $reasonCode);
-					$order_history['order_status'] = $this->_currentMethod->status_cancel;
-				}
-			} elseif ($reasonCode == 'AmazonRejected') {
-				$order_history['order_status'] = $this->_currentMethod->status_cancel;
-			} elseif ($reasonCode == 'TransactionTimedOut') {
-// TODO  retry the authorization again
+if ($amazonState != $previousAmazonState) {
+	if ($amazonState == 'Open') {
+		$order_history['order_status'] = $this->_currentMethod->status_authorization;
+		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
+	} elseif ($amazonState == 'Declined') {
+		if ($reasonCode == 'InvalidPaymentMethod'  ) {
+			if (  $this->_currentMethod->soft_decline=='soft_decline_enabled' ) {
+				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD_SOFT_DECLINED', $reasonCode);
+				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+			} else {
+				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD', $reasonCode);
 				$order_history['order_status'] = $this->_currentMethod->status_cancel;
 			}
-			$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
-			$order_history['customer_notified'] = 0;
-		} elseif ($amazonState == 'Pending') {
-			$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_PENDING');
-			$order_history['customer_notified'] = 0;
-		} elseif ($amazonState == 'Closed') {
+		} elseif ($reasonCode == 'AmazonRejected') {
 			$order_history['order_status'] = $this->_currentMethod->status_cancel;
-			$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
-			$order_history['customer_notified'] = 0;
+		} elseif ($reasonCode == 'TransactionTimedOut') {
+// TODO  retry the authorization again
+			$order_history['order_status'] = $this->_currentMethod->status_cancel;
 		}
+		$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
+		$order_history['customer_notified'] = 0;
+	} elseif ($amazonState == 'Pending') {
+		$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_PENDING');
+		$order_history['customer_notified'] = 0;
+	} elseif ($amazonState == 'Closed') {
+		$order_history['order_status'] = $this->_currentMethod->status_cancel;
+		$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
+		$order_history['customer_notified'] = 0;
+	}
 
-		$orderModel = VmModel::getModel('orders');
-		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+	$orderModel = VmModel::getModel('orders');
+	$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+}
+
 		return $amazonState;
 	}
 
@@ -162,6 +169,15 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		return NULL;
 	}
 
+	public function getAmazonId () {
+		if ($this->amazonData->isSetAuthorizationDetails()) {
+			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
+			if ($authorizationDetails->isSetAmazonAuthorizationId()) {
+				return $authorizationDetails->getAmazonAuthorizationId();
+			}
+		}
+		return NULL;
+	}
 
 	public function isCaptureNow () {
 		$authorizationDetails = $this->amazonData->getAuthorizationDetails();
