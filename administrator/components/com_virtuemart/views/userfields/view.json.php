@@ -63,8 +63,7 @@ class VirtuemartViewUserfields extends VmView {
 					$this->userField->params->userfield_params = $this->userField->params;
 					VmTable::bindParameterable($this->userField->params,'userfield_params',$varsToPush);*/
 					if(empty($this->userField->userfield_params)) $this->userField->userfield_params = '';
-					$this->userField->params->userfield_params = $this->userField->userfield_params;
-					VmTable::bindParameterable($this->userField->params,'userfield_params',$varsToPush);
+					VmTable::bindParameterableToSubField($this->userField,$varsToPush);
 					$this->userField->form->bind($this->userField);
 				} else {
 					$this->userField->form = false;

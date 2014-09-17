@@ -194,8 +194,8 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-				vmError($error);
-			}
+			vmError($error);
+		}
 
 		$xrefTable = $this->getTable('paymentmethod_shoppergroups');
 		$xrefTable->bindChecknStore($data);

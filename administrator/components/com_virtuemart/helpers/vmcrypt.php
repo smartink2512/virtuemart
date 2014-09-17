@@ -52,7 +52,7 @@ class vmCrypt {
 				$iv_dec = substr($ciphertext_dec, 0, $iv_size);
 				//retrieves the cipher text (everything except the $iv_size in the front)
 				$ciphertext_dec = substr($ciphertext_dec, $iv_size);
-				vmdebug('decrypt $iv_dec',$iv_dec,$ciphertext_dec);
+				//vmdebug('decrypt $iv_dec',$iv_dec,$ciphertext_dec);
 				if(empty($iv_dec) and empty($ciphertext_dec)){
 					vmdebug('Seems something not encrytped should be decrypted, return default ',$string);
 					return $string;

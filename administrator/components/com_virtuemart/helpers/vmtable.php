@@ -222,6 +222,22 @@ class VmTable extends JTable {
 		//vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
 	}
 
+	/**
+	 * Maps the parameters to a subfield. usefull for the JForm
+	 * @author Max Milbers
+	 * @param $obj
+	 * @param $varsToPush
+	 * @param string $field
+	 */
+	static function bindParameterableToSubField(&$obj,$varsToPush,$field ='params'){
+		foreach($varsToPush as $name=>$values){
+			if(isset($obj->$name)){
+				$obj->$field->$name = $obj->$name;
+			} else {
+				$obj->$field->$name = $values[0];
+			}
+		}
+	}
 
 	/**
 	 * This function must be

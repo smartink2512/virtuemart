@@ -252,8 +252,7 @@ class VirtuemartViewUserfields extends VmView {
 			$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 			$this->userField->params = new stdClass();
 			$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
-			$this->userField->params->userfield_params = $this->userField->userfield_params;
-			VmTable::bindParameterable($this->userField->params,'userfield_params',$varsToPush);
+			VmTable::bindParameterableToSubField($this->userField,$varsToPush);
 			$this->userField->form->bind($this->userField);
 
 		} else {

@@ -60,8 +60,7 @@ class VirtuemartViewShipmentmethod extends VmView {
 				$shipment->form = JForm::getInstance($shipment->shipment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 				$shipment->params = new stdClass();
 				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'shipmentForm');
-				$shipment->params->shipment_params = $shipment->shipment_params;
-				VmTable::bindParameterable($shipment->params,'shipment_params',$varsToPush);
+				VmTable::bindParameterableToSubField($shipment,$varsToPush);
 				$shipment->form->bind($shipment);
 
 			} else {
