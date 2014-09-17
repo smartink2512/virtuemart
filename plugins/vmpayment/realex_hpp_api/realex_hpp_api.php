@@ -85,11 +85,11 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			'cost_percent_total'           => 'decimal(10,2)',
 			'tax_id'                       => 'smallint(1)',
 			'realex_hpp_api_custom'                => 'varchar(255)',
-			'realex_hpp_api_request_type_response' => 'varchar(32) DEFAULT NULL',
-			'realex_hpp_api_response_result'       => 'varchar(3) DEFAULT NULL',
-			'realex_hpp_api_response_pasref'       => 'varchar(50) DEFAULT NULL',
-			'realex_hpp_api_response_authcode'     => 'varchar(10) DEFAULT NULL',
-			'realex_hpp_api_fullresponse_format'   => 'varchar(10) DEFAULT NULL',
+			'realex_hpp_api_request_type_response' => 'varchar(32)',
+			'realex_hpp_api_response_result'       => 'varchar(3)',
+			'realex_hpp_api_response_pasref'       => 'varchar(50)',
+			'realex_hpp_api_response_authcode'     => 'varchar(10)',
+			'realex_hpp_api_fullresponse_format'   => 'varchar(10)',
 			'realex_hpp_api_fullresponse'          => 'text',
 		);
 		return $SQLfields;

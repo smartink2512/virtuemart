@@ -287,9 +287,9 @@
             <option value="1">COM_VIRTUEMART_YES</option>
         </field>
 
-        <field type="vmtitle" default="VMPAYMENT_AMAZON_CONF_COMMENTS_SECTION"/>
-        <field type="vmtitle" description="VMPAYMENT_AMAZON_CONF_STATE_NOT_REQUIRED"/>
-        <field type="vmtitle" description="VMPAYMENT_AMAZON_CONF_ADD_LOGO_AT_AMAZON"/>
+        <field type="hidden"  name="cost_percent_total" />
+        <field type="hidden"  name="cost_per_transaction" />
+        <field type="hidden"  name="payment_logos" />
 
 
         <field class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_DEBUG_SECTION"/>
