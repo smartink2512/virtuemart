@@ -38,9 +38,10 @@ defined('JPATH_BASE') or die();
  * Renders a multiple item select element
  *
  */
+JFormHelper::loadFieldClass('list');
 jimport('joomla.form.formfield');
 
-class JFormFieldCreditCards extends JFormField {
+class JFormFieldCreditCards extends JFormFieldList {
 
 	/**
 	 * Element name
@@ -51,21 +52,17 @@ class JFormFieldCreditCards extends JFormField {
 
 	public $type = 'creditcards';
 
-	protected function getInput() {
-		JFactory::getLanguage()->load('plg_vmpayment_realex_hpp_api', JPATH_ADMINISTRATOR);
+	protected function getOptions() {
 
 		$creditcards = RealexHelperRealex::getRealexCreditCards();
 
-		$prefix = 'VMPAYMENT_REALEX_CC_';
+		$prefix = 'VMPAYMENT_REALEX_HPP_API_CC_';
 
-		$fields = array();
 		foreach ($creditcards as $creditcard) {
-			$fields[$creditcard]['value'] = $creditcard;
-			$fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
+			$options[] = JHtml::_('select.option', $creditcard, vmText::_($prefix . strtoupper($creditcard)));
 		}
 
-		return JHTML::_('select.genericlist', $creditcards, $this->name, 'size="1"', 'value', 'title', $this->value);
-
+		return $options;
 	}
 
 }

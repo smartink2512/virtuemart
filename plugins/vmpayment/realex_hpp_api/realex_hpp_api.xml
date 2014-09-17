@@ -45,7 +45,7 @@
 
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_ACCOUNT_OPTIONS"/>
 
-                <field name="creditcards" type="creditcards" default="" label="VMPAYMENT_REALEX_HPP_API_CREDITCARDS"
+                <field name="creditcards" type="creditcards" multiple="multiple" default="" label="VMPAYMENT_REALEX_HPP_API_CREDITCARDS"
                        description="VMPAYMENT_REALEX_HPP_API_CREDITCARDS_TIP"/>
 
 
