@@ -142,8 +142,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$cart->STsameAsBT = 0;//vRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		}
 
-		$cart->setShipmentMethod($html);
-		$cart->setPaymentMethod($html);
+		$cart->setShipmentMethod(false,!$html);
+		$cart->setPaymentMethod(false,!$html);
 		if ($html) {
 			$this->display();
 		} else {

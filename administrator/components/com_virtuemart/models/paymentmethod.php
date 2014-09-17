@@ -77,25 +77,25 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				VmTable::bindParameterable($this->_cache[$this->_id],'payment_params',$this->_cache[$this->_id]->_varsToPushParam);
 			}
 
-			//todo check if we still need this
-			/*if($this->_data[$this->_id]->getCryptedFields()){
+			//We still need this, because the table is already loaded, but the keys are set later
+			if($this->_cache[$this->_id]->getCryptedFields()){
 				if(!class_exists('vmCrypt')){
 					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 				}
 
-				if(isset($this->_data[$this->_id]->modified_on)){
-					$date = JFactory::getDate($this->_data[$this->_id]->modified_on);
+				if(isset($this->_cache[$this->_id]->modified_on)){
+					$date = JFactory::getDate($this->_cache[$this->_id]->modified_on);
 					$date = $date->toUnix();
 				} else {
 					$date = 0;
 				}
 
-				foreach($this->_data[$this->_id]->getCryptedFields() as $field){
-					if(isset($this->_data[$this->_id]->$field)){
-						$this->_data[$this->_id]->$field = vmCrypt::decrypt($this->_data[$this->_id]->$field,$date);
+				foreach($this->_cache[$this->_id]->getCryptedFields() as $field){
+					if(isset($this->_cache[$this->_id]->$field)){
+						$this->_cache[$this->_id]->$field = vmCrypt::decrypt($this->_cache[$this->_id]->$field,$date);
 					}
 				}
-			}*/
+			}
 
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);

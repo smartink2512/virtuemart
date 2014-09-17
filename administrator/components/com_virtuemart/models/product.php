@@ -716,17 +716,17 @@ class VirtueMartModelProduct extends VmModel {
 
 		$productKey = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.$withCalc.$this->withRating;
 
-		// vmdebug('$productKey, not from cache : '.$productKey);
 		if (array_key_exists ($productKey, self::$_products)) {
-			vmdebug('getProduct, take from cache : '.$productKey);
+			//vmdebug('getProduct, take from cache : '.$productKey);
 			return  array(true,$productKey);
 		} else if(!$withCalc){
 			$productKeyTmp = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.TRUE.$this->withRating;
 			if (array_key_exists ($productKeyTmp,  self::$_products)) {
-				vmdebug('getProduct, take from cache full product '.$productKeyTmp);
+				//vmdebug('getProduct, take from cache full product '.$productKeyTmp);
 				return  array(true,$productKeyTmp);
 			}
 		} else {
+			//vmdebug('getProduct, not cached '.$productKey);
 			return array(false,$productKey);
 		}
 	}
@@ -1086,7 +1086,7 @@ class VirtueMartModelProduct extends VmModel {
 		//$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields.$this->withRating.$virtuemart_shoppergroup_idsString);
 		static $_productsSingle = array();
 		if (array_key_exists ($productKey, $_productsSingle)) {
-			vmdebug('getProduct, take from cache '.$productKey);
+			//vmdebug('getProductSingle, take from cache '.$productKey);
 			return clone($_productsSingle[$productKey]);
 		}
 		/*else if(!$this->withRating){

@@ -566,6 +566,7 @@ abstract class vmPlugin extends JPlugin {
 			if ($this->_xParams !== 0) {
 				$this->_vmpCtable->setParameterable ($this->_configTableFieldName, $this->_varsToPushParam);
 			}
+
 			if($this->_cryptedFields){
 				$this->_vmpCtable->setCryptedFields($this->_cryptedFields);
 			}

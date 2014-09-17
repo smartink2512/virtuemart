@@ -338,7 +338,7 @@ class VmTable extends JTable {
 		if(!is_array($fieldNames)) $fieldNames = array($fieldNames);
 		if(isset($fieldNames[$this->_pkey])){
 			unset($fieldNames[$this->_pkey]);
-		}
+
 		$this->_cryptedFields = $fieldNames;
 	}
 
@@ -649,15 +649,15 @@ class VmTable extends JTable {
 			}
 		} else {
 
-
 			if(VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = VmConfig::$defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
 			}
 		}
-
+		vmdebug('There are _cryptedFields '.$this->_tbl,$this->_cryptedFields);
 		if($this->_cryptedFields){
+
 			if(!class_exists('vmCrypt')){
 				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 			}
@@ -668,23 +668,11 @@ class VmTable extends JTable {
 				$date = 0;
 			}
 
-			if($this->_cryptedFields){
-				if(!class_exists('vmCrypt')){
-					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
-				}
-				if(isset($this->modified_on)){
-					$timestamp = strtotime($this->modified_on);
-					$date = $timestamp;
-				} else {
-					$date = 0;
+			foreach($this->_cryptedFields as $field){
+				if(isset($this->$field)){
+					$this->$field = vmCrypt::decrypt($this->$field,$date);
 				}
 
-				foreach($this->_cryptedFields as $field){
-					if(isset($this->$field)){
-						$this->$field = vmCrypt::decrypt($this->$field,$date);
-					}
-
-				}
 			}
 		}
 

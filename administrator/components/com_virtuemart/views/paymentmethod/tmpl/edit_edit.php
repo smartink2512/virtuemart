@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 			echo VmHTML::row('raw', 'COM_VIRTUEMART_VENDOR', $this->vendorList);
 	    }
 		if($this->showVendors ){
-			echo VmHTML::row('checkbox','COM_VIRTUEMART_SHARED', 'shared', $this->shipment->shared );
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_SHARED', 'shared', $this->payment->shared );
 		}
 	    ?>
           </table>

@@ -47,11 +47,21 @@ class vmCrypt {
 			$ciphertext_dec = base64_decode($string);
 			if(function_exists('mcrypt_encrypt')){
 				$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+				//vmdebug('decrypt $iv_size', $iv_size ,MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 				// retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
 				$iv_dec = substr($ciphertext_dec, 0, $iv_size);
 				//retrieves the cipher text (everything except the $iv_size in the front)
 				$ciphertext_dec = substr($ciphertext_dec, $iv_size);
-				return rtrim (mcrypt_decrypt (MCRYPT_RIJNDAEL_256, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec), "\0");
+				vmdebug('decrypt $iv_dec',$iv_dec,$ciphertext_dec);
+				if(empty($iv_dec) and empty($ciphertext_dec)){
+					vmdebug('Seems something not encrytped should be decrypted, return default ',$string);
+					return $string;
+				} else {
+					$mcrypt_decrypt = mcrypt_decrypt (MCRYPT_RIJNDAEL_256, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
+
+					return rtrim ($mcrypt_decrypt, "\0");
+				}
+
 			} else {
 				return $ciphertext_dec;
 			}
@@ -71,6 +81,7 @@ class vmCrypt {
 	}
 
 	private static function _checkCreateKeyFile($date){
+		jimport('joomla.filesystem.file');
 
 		vmSetStartTime('check');
 		static $existingKeys = false;
