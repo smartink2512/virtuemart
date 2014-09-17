@@ -56,7 +56,7 @@
                     <option value="AUTH_CAPTURE">VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE_AUTH_CAPTURE</option>
                     <option value="AUTH_ONLY">VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE_AUTH_ONLY</option>
                 </field>
-                <field name="creditcards" type="authorizenetcreditcards" default=""
+                <field name="creditcards" type="authorizenetcreditcards" default="" multiple="multiple"
                        label="VMPAYMENT_AUTHORIZENET_CREDITCARDS" description="VMPAYMENT_AUTHORIZENET_CREDITCARDS_DESC">
                     <option value="Visa">VMPAYMENT_AUTHORIZENET_VISA</option>
                     <option value="Mastercard">VMPAYMENT_AUTHORIZENET_MASTERCARD</option>

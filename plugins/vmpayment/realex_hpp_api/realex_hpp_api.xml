@@ -36,7 +36,7 @@
                 <!-- REDIRECT PARAMETERS -->
                 <field class="required" name="merchant_id" type="text" size="80" default=""
                        label="VMPAYMENT_REALEX_HPP_API_MERCHANT_ID" description="VMPAYMENT_REALEX_HPP_API_MERCHANT_ID_TIP"/>
-                <field class="required" name="shared_secret" type="text" size="80" default=""
+                <field class="required" name="shared_secret" type="password" size="80" default=""
                        label="VMPAYMENT_REALEX_HPP_API_SHARED_SECRET" description="VMPAYMENT_REALEX_HPP_API_SHARED_SECRET_TIP"/>
 
                 <field class="required redirect remote" name="subaccount" type="text" size="80" default=""

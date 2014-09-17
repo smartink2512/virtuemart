@@ -30,6 +30,7 @@ if (!class_exists('ShopFunctions')) {
  */
 JFormHelper::loadFieldClass('list');
 jimport('joomla.form.formfield');
+
 class JFormFieldAuthorizenetCreditCards extends JFormFieldList {
 
 	var $type = 'authorizenetcreditcards';

@@ -119,7 +119,7 @@
                     <option value="2">VMPAYMENT_PAYPAL_NO_SHIPPING_PROMPT_REQUIRE</option>
                 </field>
 
-                <field class="api creditcard" name="creditcards" type="paypalcreditcards" default=""
+                <field class="api creditcard" name="creditcards" type="paypalcreditcards" default="" multiple="multiple"
                        label="VMPAYMENT_PAYPAL_CC_CREDITCARDS" description="VMPAYMENT_PAYPAL_CC_CREDITCARDS_DESC"/>
 
                 <field name="cvv_required" class="api creditcard" type="list" default="1"
