@@ -338,7 +338,7 @@ class VmTable extends JTable {
 		if(!is_array($fieldNames)) $fieldNames = array($fieldNames);
 		if(isset($fieldNames[$this->_pkey])){
 			unset($fieldNames[$this->_pkey]);
-
+		}
 		$this->_cryptedFields = $fieldNames;
 	}
 
