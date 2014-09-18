@@ -83,9 +83,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		$SQLfields = array(
 			'id'                                    => 'int(1) unsigned NOT NULL AUTO_INCREMENT',
-			'virtuemart_order_id'                   => 'int(11) UNSIGNED DEFAULT NULL',
-			'order_number'                          => 'char(64) DEFAULT NULL',
-			'virtuemart_paymentmethod_id'           => 'mediumint(1) UNSIGNED DEFAULT NULL',
+			'virtuemart_order_id'                   => 'int(11) UNSIGNED',
+			'order_number'                          => 'char(64)',
+			'virtuemart_paymentmethod_id'           => 'mediumint(1) UNSIGNED',
 			'payment_name'                          => 'varchar(5000)',
 			//'payment_params'                          => 'varchar(5000)',
 			'payment_order_total'                   => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
@@ -94,22 +94,22 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			'recurring'                             => 'varchar(512)',
 			'recurring_number'                      => 'smallint(1)',
 			'recurring_periodicity'                 => 'smallint(1)',
-			'cost_per_transaction'                  => 'decimal(10,2) DEFAULT NULL',
-			'cost_percent_total'                    => 'decimal(10,2) DEFAULT NULL',
-			'tax_id'                                => 'smallint(1) DEFAULT NULL',
-			'amazon_response_amazonReferenceId'     => 'char(64) DEFAULT NULL',
-			'amazon_response_amazonAuthorizationId' => 'char(64) DEFAULT NULL',
-			'amazon_response_amazonCaptureId'       => 'char(64) DEFAULT NULL',
-			'amazon_response_amazonRefundId'        => 'char(64) DEFAULT NULL',
-			'amazon_response_state'                 => 'char(64) DEFAULT NULL',
-			'amazon_response_reasonCode'            => 'char(64) DEFAULT NULL',
-			'amazon_response_reasonDescription'     => 'char(64) DEFAULT NULL',
-			'amazon_request_type'                   => 'text DEFAULT NULL',
-			'amazon_request'                        => 'text DEFAULT NULL',
-			'amazon_class_response_type'            => 'text DEFAULT NULL',
-			'amazon_response'                       => 'text DEFAULT NULL',
-			'amazon_class_notification_type'        => 'text DEFAULT NULL',
-			'amazon_notification'                   => 'text DEFAULT NULL',
+			'cost_per_transaction'                  => 'decimal(10,2)',
+			'cost_percent_total'                    => 'decimal(10,2)',
+			'tax_id'                                => 'smallint(1)',
+			'amazon_response_amazonReferenceId'     => 'char(64)',
+			'amazon_response_amazonAuthorizationId' => 'char(64)',
+			'amazon_response_amazonCaptureId'       => 'char(64)',
+			'amazon_response_amazonRefundId'        => 'char(64)',
+			'amazon_response_state'                 => 'char(64)',
+			'amazon_response_reasonCode'            => 'char(64)',
+			'amazon_response_reasonDescription'     => 'char(64)',
+			'amazon_request_type'                   => 'text',
+			'amazon_request'                        => 'text',
+			'amazon_class_response_type'            => 'text',
+			'amazon_response'                       => 'text',
+			'amazon_class_notification_type'        => 'text',
+			'amazon_notification'                   => 'text',
 		);
 		return $SQLfields;
 	}
@@ -639,10 +639,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			default:
 				vmError('VMPAYMENT_AMAZON_UPDATEPAYMENT_UNKNOWN_ACTION');
 		}
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $virtuemart_order_id;
 
-		$mainframe->redirect(JRoute::_($link, FALSE));
+		$app->redirect(JRoute::_($link, FALSE));
 
 	}
 
