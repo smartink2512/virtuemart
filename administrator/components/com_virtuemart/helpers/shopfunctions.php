@@ -681,6 +681,7 @@ class ShopFunctions {
 	 * @return array|bool
 	 */
 	static public function getRssFeed($rssURL, $max) {
+
 		if (JVM_VERSION < 3){
 			jimport('simplepie.simplepie');
 			$rssFeed = new SimplePie($rssURL);
@@ -696,8 +697,8 @@ class ShopFunctions {
 				$feed->description = $item->get_description();
 				$feeds[] = $feed;
 			}
-
 			return $feeds;
+
 		} else {
 			jimport('joomla.feed.factory');
 			$feed = new JFeedFactory;
@@ -717,9 +718,7 @@ class ShopFunctions {
 				$feed->description = $text;
 				$feeds[] = $feed;
 			}
-
 			return $feeds;
-
 		}
 
 	}

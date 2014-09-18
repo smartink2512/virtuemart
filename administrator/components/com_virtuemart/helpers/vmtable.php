@@ -250,6 +250,13 @@ class VmTable extends JTable {
 	static function bindParameterable(&$obj, $xParams, $varsToPushParam) {
 
 		if(empty($varsToPushParam)) return;
+
+		if (empty($xParams)) {
+			//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
+			vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
+			vmTrace('$xParams is empty');
+		}
+
 		//$paramFields = $obj->$xParams;
 		//vmdebug('$obj->_xParams '.$xParams.' $varsToPushParam ',$obj->$xParams,$varsToPushParam);
 		if(is_object($obj)){
@@ -275,22 +282,14 @@ class VmTable extends JTable {
 					//else {
 					//	Unsolicited Parameter
 					//}
-
 				}
 
 			} else {
-				if (empty($xParams)) {
-					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
-					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
-					vmTrace('$xParams is empty');
-				}
-				if(!isset($obj->{$xParams})){
+
+				if(!property_exists($obj,$xParams)){
 					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
-					$value = $obj->{$xParams};
-					vmdebug('There are bindParameterables, but $obj->$xParams is not isset, this is a programmers error ',$xParams , $value, $obj);
-					//vmTrace('$obj->$xParams is empty');
-				} else {
-					//vmdebug('There are bindParameterables, but $obj->$xParams is not isset, this is a programmers error ',$xParams , $obj);
+					vmdebug('There are bindParameterables, but $obj->$xParams is not isset, this is a programmers error ',$xParams , $obj);
+					vmTrace('$obj->$xParams is not isset');
 				}
 
 			}
@@ -320,12 +319,8 @@ class VmTable extends JTable {
 					}
 				}
 			} else {
-				if (empty($xParams)) {
-					//vmError('There are bindParameterables, but $xParams is empty, this is a programmers error ',$varsToPushParam);
-					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ', $obj);
-					vmTrace('$xParams is empty');
-				}
-				if(!isset($obj[$xParams])){
+
+				if($obj[$xParams]==null){
 					//vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $obj[$xParams] is empty, this is a programmers error ',$xParams , $obj);
 					vmTrace('$obj[$xParams] is empty');
@@ -671,7 +666,7 @@ class VmTable extends JTable {
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
 			}
 		}
-		vmdebug('There are _cryptedFields '.$this->_tbl,$this->_cryptedFields);
+
 		if($this->_cryptedFields){
 
 			if(!class_exists('vmCrypt')){
@@ -851,7 +846,7 @@ class VmTable extends JTable {
 			$this->$slugName = trim(JString::strtolower($this->$slugName));
 			$this->$slugName = str_replace(array('`','´',"'"),'',$this->$slugName);
 
-			$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,.,|','-');
+			$this->$slugName = vRequest::filterUword($this->$slugName,'-,_,|','-');
 			while(strpos($this->$slugName,'--')){
 				$this->$slugName = str_replace('--','-',$this->$slugName);
 			}

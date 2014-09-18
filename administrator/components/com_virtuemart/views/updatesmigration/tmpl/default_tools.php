@@ -148,7 +148,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	<tr>
 		<td align="center">
 			<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteInheritedCustoms&'.JSession::getFormToken().'=1' ); ?>
-			<div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_DELETE_INHERITEDC_JS') ); ?>', '<?php echo $link; ?>');">
+			<div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_UPDATE_DELETE_INHERITEDC') ); ?>', '<?php echo $link; ?>');">
 					<span class="vmicon48"></span>
 					<br />
 					<?php echo vmText::_('COM_VIRTUEMART_UPDATE_DELETE_INHERITEDC'); ?>
@@ -156,10 +156,10 @@ if(!VmConfig::get('dangeroustools', false)){
 		</td>
 		<td align="center">
 			<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=fixCustomsParams&'.JSession::getFormToken().'=1' ); ?>
-			<div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_FIX_OLD_CUSTOMPARAMS_FORMAT') ); ?>', '<?php echo $link; ?>');">
+			<div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_UPDATE_OLD_CUSTOMFORMAT') ); ?>', '<?php echo $link; ?>');">
 					<span class="vmicon48"></span>
 					<br />
-					<?php echo vmText::_('COM_VIRTUEMART_FIX_OLD_CUSTOMFORMAT'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_UPDATE_OLD_CUSTOMFORMAT'); ?>
 				</a></div>
 		</td>
 	</tr>

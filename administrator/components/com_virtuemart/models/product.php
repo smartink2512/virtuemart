@@ -970,7 +970,7 @@ class VirtueMartModelProduct extends VmModel {
 		$i = 0;
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
-
+		//vmdebug('getRawProductPrices',$product->allPrices);
 		//Check for all prices to inherited by parent products
 		if(($front or $withParent) and !empty($product_parent_id)) {
 
@@ -1089,33 +1089,12 @@ class VirtueMartModelProduct extends VmModel {
 			//vmdebug('getProductSingle, take from cache '.$productKey);
 			return clone($_productsSingle[$productKey]);
 		}
-		/*else if(!$this->withRating){
-			$productKey = $virtuemart_product_id.$virtuemart_shoppergroup_idsString.$quantity.$front.TRUE;
-			//vmdebug('getProductSingle, recreate $productKey '.$productKey);
-			if (array_key_exists ($productKey, $_productsSingle)) {
-				//vmdebug('getProductSingle, take from cache recreated key',$_productsSingle[$productKey]);
-				return clone($_productsSingle[$productKey]);
-			}
-		}*/
-
 
 		if (!empty($this->_id)) {
 
-			/*if($this->withRating){
-				//$joinIds = array('rating' => '#__virtuemart_ratings','virtuemart_manufacturer_id' => '#__virtuemart_product_manufacturers', 'virtuemart_customfield_id' => '#__virtuemart_product_customfields');
-				$joinIds = array('rating,published as rpublished' => '#__virtuemart_ratings');
-				//$joinIds = array('rating' => '#__virtuemart_ratings');
-			} else {*/
-				//$joinIds = array('virtuemart_manufacturer_id' => '#__virtuemart_product_manufacturers', 'virtuemart_customfield_id' => '#__virtuemart_product_customfields');
-				$joinIds = array();
-			//}
 			$product = $this->getTable ('products');
-			$product->load ($this->_id, 0, 0, $joinIds);
+			$product->load ($this->_id, 0, 0);
 
-			/*if($this->withRating and empty($product->rpublished)){
-				$product->rating = false;
-			}*/
-			//vmdebug('my product',$product->rating);
 			$product->allIds = array();
 
 			$xrefTable = $this->getTable ('product_medias');
@@ -1292,7 +1271,7 @@ class VirtueMartModelProduct extends VmModel {
 	public function fillVoidPrice(){
 
 		$prices = array();
-		$prices['product_price'] = 0;
+		$prices['product_price'] = '';
 		$prices['virtuemart_product_price_id'] = 0;
 		$prices['product_currency'] = NULL;
 		$prices['price_quantity_start'] = NULL;
@@ -1697,7 +1676,6 @@ class VirtueMartModelProduct extends VmModel {
 			$product_data -> load($data['virtuemart_product_id']);
 		}
 		//Set the decimals like product packaging
-		//$decimals = array('product_length','product_width','product_height','product_weight','product_packaging');
 		foreach($this->decimals as $decimal){
 			if (array_key_exists ($decimal, $data)) {
 				if(!empty($data[$decimal])){
@@ -1705,7 +1683,7 @@ class VirtueMartModelProduct extends VmModel {
 				} else {
 					$data[$decimal] = null;
 					$product_data->$decimal = null;
-					//vmdebug('Store product, set $decimal '.$decimal.' = null');
+					vmdebug('Store product, set $decimal '.$decimal.' = null');
 				}
 			}
 		}
@@ -1787,7 +1765,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,false);
 
-				if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='') || (isset($childPrices) and count($childPrices)>1)) {
+				if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='' and $pricesToStore['product_price']!='0') || (isset($childPrices) and count($childPrices)>1)) {
 
 					if ($isChild) {
 						//$childPrices = $this->loadProductPrices($pricesToStore['virtuemart_product_price_id'],0,0,false);
@@ -2194,7 +2172,13 @@ class VirtueMartModelProduct extends VmModel {
 	 **/
 	function getOrderByList ($virtuemart_category_id = FALSE) {
 
-		$getArray = vRequest::getGet();
+		if(JVM_VERSION<3){
+			$getArray = vRequest::getGet();
+		} else {
+			$router = JFactory::getApplication()->getRouter();
+			$getArray = filter_var_array($router->getVars(), FILTER_SANITIZE_STRING);
+		}
+
 		$fieldLink = '';
 
 		foreach ($getArray as $key => $value) {
@@ -2210,9 +2194,8 @@ class VirtueMartModelProduct extends VmModel {
 				$fieldLink .= '&' . $key . '=' . $value;
 			}
 		}
-		$fieldLink[0] = "?";
-		$fieldLink = 'index.php' . $fieldLink;
-		vmdebug('my field link ',$fieldLink);
+		$fieldLink = 'index.php?'. ltrim ($fieldLink,'&');
+
 		$orderDirLink = '';
 		$orderDirConf = VmConfig::get ('prd_brws_orderby_dir');
 		$orderDir = vRequest::getCmd ('dir', $orderDirConf);
