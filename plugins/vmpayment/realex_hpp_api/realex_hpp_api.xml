@@ -160,7 +160,6 @@
                        label="VMPAYMENT_REALEX_HPP_API_STATUS_PARTIAL_REFUND"
                        description="VMPAYMENT_REALEX_HPP_API_STATUS_PARTIAL_REFUND_TIP"/>
 
-
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_OPTIONAL_PARAMS"/>
 
 
