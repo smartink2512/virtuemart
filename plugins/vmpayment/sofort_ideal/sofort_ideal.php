@@ -386,10 +386,12 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	function plgVmOnUserPaymentCancel () {
 
 		$order_number = vRequest::getString('on', '');
-		$virtuemart_paymentmethod_id = vRequest::getInt('pm', '');
 		// cancel / abort link must be insterted in the SOFORT BE
 		// must be http://mysite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=-REASON1-
-
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', '');
+		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
+			return NULL;
+		}
 		$error_codes = vRequest::getString('error_codes', '');
 		if (!empty($error_codes)) {
 			$errors = explode(",", $error_codes);

@@ -34,15 +34,15 @@ class VirtueMartViewCart extends VmView {
 
 	public function display($tpl = null) {
 
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->prepareContinueLink();
 		if (VmConfig::get('use_as_catalog',0)) {
 			vmInfo('This is a catalogue, you cannot acccess the cart');
-			$mainframe->redirect($this->continue_link);
+			$app->redirect($this->continue_link);
 		}
 
-		$pathway = $mainframe->getPathway();
+		$pathway = $app->getPathway();
 		$document = JFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 

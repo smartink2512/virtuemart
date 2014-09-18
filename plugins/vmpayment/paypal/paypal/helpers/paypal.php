@@ -642,7 +642,7 @@ class PaypalHelperPaypal {
 		//  test if the remote IP connected here is a valid IP address
 		if (!in_array($IP, $paypal_iplist)) {
 
-			$text = "Error with REMOTE IP ADDRESS = " . $_SERVER['REMOTE_ADDR'] . ".
+			$text = "Error with REMOTE IP ADDRESS = " . $IP . ".
                         The remote address of the script posting to this notify script does not match a valid PayPal IP address\n
             These are the valid IP Addresses: " . implode(",", $paypal_iplist) . "The Order ID received was: " . $order_number;
 			$this->debugLog($text, 'checkPaypalIps', 'error', false);

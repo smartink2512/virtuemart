@@ -131,6 +131,7 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
     $cart = VirtueMartCart::getCart ();
+		$cart->prepareCartData();
     if (!empty($cart->couponCode)) {
 	    if (!class_exists('CouponHelper'))
 		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');

@@ -354,7 +354,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	}
 
 
-	public function plgVmOnUserPaymentCancel(&$order, $old_order_status) {
+	public function plgVmOnUserPaymentCancel() {
 		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
 
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {

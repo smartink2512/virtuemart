@@ -242,9 +242,8 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
 		<td colspan="4" align="left">
 			<?php
-			if(!VmConfig::get('oncheckout_opc',1)){
 				echo $this->cart->cartData['shipmentName'].'<br/>';
-			}
+
 
 		if (!empty($this->layoutName) and $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {
