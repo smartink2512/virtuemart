@@ -279,9 +279,8 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 <tr class="sectiontableentry1"  valign="top">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
 		<td colspan="4" align="left">
-			<?php if(!VmConfig::get('oncheckout_opc',1)){
+			<?php
 				echo $this->cart->cartData['paymentName'].'<br/>';
-			}
 
 		if (!empty($this->layoutName) && $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {
