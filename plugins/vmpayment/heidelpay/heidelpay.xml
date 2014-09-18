@@ -136,7 +136,8 @@
                 <field type="text" name="HEIDELPAY_STYLE" size="50"
                        label="VMPAYMENT_HEIDELPAY_STYLE" description="VMPAYMENT_HEIDELPAY_STYLE_DESC"
                        default="heidelpay_default.css"/>
-                <field type="spacer" default=""/>
+                <field type="hidden" name="cost_percent_total"/>
+                <field type="hidden" name="cost_per_transaction"/>
             </fieldset>
         </fields>
     </vmconfig>

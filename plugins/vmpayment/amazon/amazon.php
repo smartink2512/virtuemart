@@ -43,8 +43,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	function __construct (& $subject, $config) {
 
-		//if (self::$_this)
-		//   return self::$_this;
 		parent::__construct($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -54,7 +52,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush();
 		//$this->setEncryptedFields(array('params'));
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-// TODO ATTENTION LOOKS LIKE IT DOES NOT WORK FOR VM3
 		if (method_exists($this, 'setCryptedFields')) {
 			$this->setCryptedFields(array('accessKey', 'secretKey'));
 		}

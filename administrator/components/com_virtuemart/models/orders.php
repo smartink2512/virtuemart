@@ -1421,7 +1421,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderHist->customer_notified = $_notified;
 		$_orderHist->comments = nl2br($_comment);
 		$_orderHist->store();
-	}	/**
+	}
+
+	/**
 	 * Update the order item history
 	 *
 	 * @author Oscar van Eijk,kohl patrick

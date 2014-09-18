@@ -88,6 +88,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		}
 
 		VmConfig::loadJLang('com_virtuemart',true);
+		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
@@ -109,33 +110,26 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
-
-		$html = '<table class="vmorder-done">' . "\n";
-		$html .= $this->getHtmlRow ('STANDARD_PAYMENT_INFO', $dbValues['payment_name'], 'class="vmorder-done-payinfo"');
-		if (!empty($payment_info)) {
+		$payment_info='';
+		if (!empty($method->payment_info)) {
 			$lang = JFactory::getLanguage ();
 			if ($lang->hasKey ($method->payment_info)) {
 				$payment_info = vmText::_ ($method->payment_info);
 			} else {
 				$payment_info = $method->payment_info;
 			}
-			$html .= $this->getHtmlRow ('STANDARD_PAYMENTINFO', $payment_info, 'class="vmorder-done-payinfo"');
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 		}
 		$currency = CurrencyDisplay::getInstance ('', $order['details']['BT']->virtuemart_vendor_id);
-		$html .= $this->getHtmlRow ('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number, 'class="vmorder-done-nr"');
-		$html .= $this->getHtmlRow ('STANDARD_AMOUNT', $currency->priceDisplay ($order['details']['BT']->order_total), 'class="vmorder-done-amount"');
 
-		if ($method->payment_currency != $order['details']['BT']->order_currency) {
-			$html .= $this->getHtmlRow ('COM_VIRTUEMART_CART_TOTAL_PAYMENT', $totalInPaymentCurrency['display'], 'class="vmorder-done-amount"');
-		}
-
-		//$html .= $this->getHtmlRow('STANDARD_INFO', $method->payment_info);
-		//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
-		$html .= '</table>' . "\n";
-
+		$html = $this->renderByLayout('post_payment', array(
+			'order_number' =>$order['details']['BT']->order_number,
+			'order_pass' =>$order['details']['BT']->order_pass,
+			'payment_name' => $dbValues['payment_name'],
+			'displayTotalInPaymentCurrency' => $totalInPaymentCurrency['display']
+		));
 		$modelOrder = VmModel::getModel ('orders');
 		$order['order_status'] = $this->getNewStatus ($method);
 		$order['customer_notified'] = 1;

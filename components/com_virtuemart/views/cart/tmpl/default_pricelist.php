@@ -1,5 +1,3 @@
-
-
 <fieldset>
 <table
 	class="cart-summary"

@@ -96,11 +96,9 @@ static function vmGetCharset() {
 			}
 		$lang =JFactory::getLanguage();
 		if($lang->hasKey($label.'_TIP')){
-			$labelHint = vmText::_($label.'_TIP');
 			$label = '<span class="hasTip" title="'.vmText::_($label.'_TIP').'">'.vmText::_($label).'</span>' ;
 		} //Fallback
 		else if($lang->hasKey($label.'_EXPLAIN')){
-			$labelHint = vmText::_($label.'_EXPLAIN');
 			$label = '<span class="hasTip" title="'.vmText::_($label.'_EXPLAIN').'">'.vmText::_($label).'</span>' ;
 		} else {
 			$label = vmText::_($label);
