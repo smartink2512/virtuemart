@@ -414,7 +414,7 @@ function virtuemartParseRoute($segments) {
 
 	if ( $segments[0] == 'checkout' or $segments[0] == 'cart' or $helper->compareKey($segments[0] ,'cart')) {
 		$vars['view'] = 'cart';
-		$vars['task'] = $segments[0];
+		$vars['task'] = array_pop($segments);
 		return $vars;
 	}
 
