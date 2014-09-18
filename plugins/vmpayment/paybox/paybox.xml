@@ -25,8 +25,8 @@
 
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/paybox/paybox/fields">
                 <field type="payboxjs" default=""/>
-                <field type="getpaybox" level="level1"/>
-                <field class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
+                <field type="getpaybox" level="level1 "/>
+                <field class="level1 " type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
 
                 <field name="shop_mode" type="list" default="test" label="VMPAYMENT_PAYBOX_CONF_SHOP_MODE"
                        description="VMPAYMENT_PAYBOX_CONF_SHOP_MODE_TIP">
@@ -51,7 +51,7 @@
                        description="VMPAYMENT_PAYBOX_CONF_SECRETKEY_VALIDATE_WARNING"/>
 
 
-                <field class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_CONFIGURATION"/>
+                <field class="level1 " type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_CONFIGURATION"/>
 
                 <field name="debit_type" type="list" default="authorization_capture"
                        label="VMPAYMENT_PAYBOX_CONF_DEBIT_TYPE"
@@ -99,6 +99,7 @@
                 <!--param class="integration recurring" name="recurring_min_amount"  type="text" size="15" default=""
                        label="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT"
                        description="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT_TIP"/-->
+                <field   name="recurring_min_amount"  type="hidden" />
                 <field class="integration recurring" name="recurring_number" type="list" default="3"
                        label="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER"
                        description="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER_TIP">
@@ -133,7 +134,7 @@
 
                 <!-- end subscribe -->
 
-                <field class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_OPTIONS"/>
+                <field class="level1 " type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ORDERSTATUS_OPTIONS"/>
 
                 <field class="authorization_only debit_type" name="status_success_authorization_only"
                        type="vmorderstate"
@@ -190,12 +191,12 @@
                        description="VMPAYMENT_PAYBOX_CONF_STATUS_CANCEL_TIP"/>
 
 
-                <field class="level1" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_OPTIONAL_PARAMS"/>
+                <field class="level1 " type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_OPTIONAL_PARAMS"/>
 
 
                 <!-- Restrictions -->
                 <!-- ============ -->
-                <field class="level2" type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_RESTRICTIONS_SECTION"
+                <field  type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_RESTRICTIONS_SECTION"
                        description="VMPAYMENT_PAYBOX_CONF_RESTRICTIONS_SECTION_TIP"/>
                 <field name="countries" type="vmcountries" scope="com_virtuemart" default=""
                        label="VMPAYMENT_PAYBOX_CONF_COUNTRIES" description="VMPAYMENT_PAYBOX_CONF_COUNTRIES_TIP"/>

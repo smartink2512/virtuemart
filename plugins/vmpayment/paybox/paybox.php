@@ -35,9 +35,6 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		//   return self::$_this;
 		parent::__construct($subject, $config);
 
-		if (!class_exists('pbxRequest')) {
-			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'paybox' . DS . 'paybox' . DS . 'helpers' . DS . 'pbxrequest.php');
-		}
 		$this->_loggable = TRUE;
 		$this->tableFields = array_keys($this->getTableSQLFields());
 		$this->_tablepkey = 'id'; //virtuemart_paybox_id';
@@ -61,9 +58,9 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 
 		$SQLfields = array(
 			'id' => 'int(1) unsigned NOT NULL AUTO_INCREMENT',
-			'virtuemart_order_id' => 'int(11) UNSIGNED DEFAULT NULL',
-			'order_number' => 'char(64) DEFAULT NULL',
-			'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
+			'virtuemart_order_id' => 'int(11) UNSIGNED',
+			'order_number' => 'char(64)',
+			'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
 			'payment_name' => 'varchar(5000)',
 			'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
 			'payment_currency' => 'smallint(1)',
@@ -71,31 +68,31 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 			'recurring' => 'varchar(512)',
 			'recurring_number' => 'smallint(1)',
 			'recurring_periodicity' => 'smallint(1)',
-			'cost_per_transaction' => 'decimal(10,2) DEFAULT NULL',
-			'cost_percent_total' => 'decimal(10,2) DEFAULT NULL',
-			'tax_id' => 'smallint(1) DEFAULT NULL',
+			'cost_per_transaction' => 'decimal(10,2)',
+			'cost_percent_total' => 'decimal(10,2)',
+			'tax_id' => 'smallint(1)',
 			'paybox_custom' => 'varchar(255) ',
 // ONLY SAVE THE ONE WE EVENTUALLY WANT TO DO A SEARCH
-			'paybox_response_T' => 'smallint(1) DEFAULT NULL',
+			'paybox_response_T' => 'smallint(1)',
 			//Numéro d’appel Paybox
-			'paybox_response_A' => 'char(10) DEFAULT NULL',
+			'paybox_response_A' => 'char(10)',
 			//numéro d’Autorisation (numéro remis par le centre d’autorisation) : URL encodé
-			'paybox_response_B' => 'char(13) DEFAULT NULL',
+			'paybox_response_B' => 'char(13)',
 			// numéro d’aBonnement (numéro remis par Paybox)
-			//'paybox_response_C'            => 'char(13) DEFAULT NULL', // Type de Carte retenu (cf. PBX_TYPECARTE)
-			//'paybox_response_D'           => 'char(28) DEFAULT NULL', // Date de fin de validité de la carte du porteur. Format : AAMM
-			'paybox_response_E' => 'char(6) DEFAULT NULL',
+			//'paybox_response_C'            => 'char(13)', // Type de Carte retenu (cf. PBX_TYPECARTE)
+			//'paybox_response_D'           => 'char(28)', // Date de fin de validité de la carte du porteur. Format : AAMM
+			'paybox_response_E' => 'char(6)',
 			// Code réponse de la transaction (cf. Tableau 3 : Codes réponse PBX_RETOUR)
-			//'paybox_response_F'             => 'char(1) DEFAULT NULL', //Etat de l’authentiFication du porteur vis-à-vis du programme 3-D Secure :
-			//'paybox_response_G'              => 'char(1) DEFAULT NULL', // Garantie du paiement par le programme 3-D Secure. Format : O ou N
-			//'paybox_response_J'       => 'smallint(1) DEFAULT NULL', // 2 derniers chiffres du numéro de carte du porteur
-			//'paybox_response_N'       => 'smallint(1) DEFAULT NULL', // 6 premiers chiffres (« biN6 ») du numéro de carte de l’acheteur
-			//'paybox_response_O'       => 'char(1) DEFAULT NULL', // 6 premiers chiffres (« biN6 ») du numéro de carte de l’acheteur
-			'paybox_response_S' => 'smallint(1) DEFAULT NULL',
+			//'paybox_response_F'             => 'char(1)', //Etat de l’authentiFication du porteur vis-à-vis du programme 3-D Secure :
+			//'paybox_response_G'              => 'char(1)', // Garantie du paiement par le programme 3-D Secure. Format : O ou N
+			//'paybox_response_J'       => 'smallint(1)', // 2 derniers chiffres du numéro de carte du porteur
+			//'paybox_response_N'       => 'smallint(1)', // 6 premiers chiffres (« biN6 ») du numéro de carte de l’acheteur
+			//'paybox_response_O'       => 'char(1)', // 6 premiers chiffres (« biN6 ») du numéro de carte de l’acheteur
+			'paybox_response_S' => 'smallint(1)',
 			//Numéro de TranSaction Paybox
 
 
-			'paybox_fullresponse' => 'text DEFAULT NULL'
+			'paybox_fullresponse' => 'text'
 		);
 		return $SQLfields;
 	}
@@ -146,7 +143,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
-		$virtuemart_paymentmethod_id = pbxRequest::getInt('pm', 0);
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
 
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -154,13 +151,13 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return NULL;
 		}
-		$paybox_data = pbxRequest::getGet();
+		$paybox_data = vRequest::getGet();
 
 		$this->debugLog('"<pre>plgVmOnPaymentResponseReceived :' . var_export($paybox_data, true) . "</pre>", 'debug');
 		$payboxInterface = $this->_loadPayboxInterface($this);
 		$html = $payboxInterface->paymentResponseReceived($paybox_data);
-		pbxRequest::setVar('display_title', false);
-		pbxRequest::setVar('html', $html);
+		vRequest::setVar('display_title', false);
+		vRequest::setVar('html', $html);
 		return true;
 	}
 
@@ -171,12 +168,12 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		//  $order_number = pbxRequest::getUword('on');
-		$order_number = pbxRequest::getUword('on');
-		if (!$order_number) {
-			return FALSE;
+		$order_number = vRequest::getUword('on');
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', '');
+		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
+			return NULL;
 		}
-		$numerr = pbxRequest::getString('E', '');
+		$numerr = vRequest::getString('E', '');
 		if ($numerr) {
 			VmInfo('VMPAYMENT_' . $this->_name . '_PBX_NUMERR_' . abs($numerr));
 		}
@@ -211,7 +208,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		}
 		$paybox_data = $_POST;
 
-		$virtuemart_paymentmethod_id = pbxRequest::getInt('pm', 0);
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
 		$this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id);
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return;
@@ -363,7 +360,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
 		if ($res = $this->selectedThisByJPluginId($jplugin_id)) {
 
-			$virtuemart_paymentmethod_id = pbxRequest::getInt('virtuemart_paymentmethod_id');
+			$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id');
 			$method = $this->getPluginMethod($virtuemart_paymentmethod_id);
 			vmdebug('plgVmOnStoreInstallPaymentPluginTable', $method, $virtuemart_paymentmethod_id);
 			//$this->createRootFile($method->virtuemart_paymentmethod_id);

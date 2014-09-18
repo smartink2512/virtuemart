@@ -76,7 +76,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 		}
 
-		$_html = '<table class="adminlist">' . "\n";
+		$_html = '<table class="adminlist table">' . "\n";
 		$_html .= '	<thead>' . "\n";
 		$_html .= '		<tr>' . "\n";
 		$_html .= '			<th colspan="2" width="100%">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') . '</th>' . "\n";

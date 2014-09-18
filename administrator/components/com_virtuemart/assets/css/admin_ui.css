@@ -179,6 +179,9 @@ font-weight: normal;
 .control-input {float: left;margin: 0 0 0 50px;}
 .control-input textarea{width:100%;min-width:450px;}
 .control-field h3 {font-weight: bold;padding:5px;background-color: #cacaca}
+.control-input input { width: initial;}
+.control-label .level1 {background-color: #7c7d7f !important;font-weight: bold;padding: 5px;float: none;clear: both;}
+
 #limit {width:60px;}
 
 /* jqeury ui autocomplete */
@@ -198,3 +201,4 @@ ul.newsfeed li{font-size:120%;line-height:150%;margin:0;padding:0 0 0 25px}
 .virtuemart-admin-area input.ordering {
     max-width: 30px;
 }
+

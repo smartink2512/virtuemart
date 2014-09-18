@@ -1015,7 +1015,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (!($method = $this->getVmPluginMethod ($payment_method_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
-		$html = '<table class="adminlist" width="50%">' . "\n";
+		$html = '<table class="adminlist" >' . "\n";
 		$html .= $this->getHtmlHeaderBE ();
 
 		$code = "klarna_";

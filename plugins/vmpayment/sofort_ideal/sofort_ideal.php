@@ -649,7 +649,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			return '';
 		}
 
-		$html = '<table class="adminlist" width="50%">' . "\n";
+		$html = '<table class="adminlist" >' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$code = "sofort_ideal_response_";
 		$first = TRUE;

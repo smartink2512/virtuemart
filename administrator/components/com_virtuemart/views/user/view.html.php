@@ -184,7 +184,8 @@ class VirtuemartViewUser extends VmView {
 				$this->assignRef('currencies', $_currencies);
 				
 				$configModel = VmModel::getModel('config');
-				$this->assignRef('pdfFonts', $configModel->getTCPDFFontsList());
+				$TCPDFFontsList = $configModel->getTCPDFFontsList();
+				$this->assignRef('pdfFonts', $TCPDFFontsList);
 
 			}
 

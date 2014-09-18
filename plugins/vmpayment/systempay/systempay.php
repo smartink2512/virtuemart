@@ -539,7 +539,7 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 			return NULL;
 		}
 
-		$html = '<table class="adminlist">' . "\n";
+		$html = '<table class="adminlist table">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();
 		$html .= $this->getHtmlRowBE (strtoupper ($this->_name) . '_PAYMENT_NAME', $paymentTable->payment_name);
 		$payment_status = $this->_name . '_response_payment_status';

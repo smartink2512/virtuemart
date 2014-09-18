@@ -14,6 +14,7 @@
 
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 /**
  * DocumentPDF class, provides an easy interface to parse and display a pdf document

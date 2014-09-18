@@ -474,7 +474,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$actionList = JHTML::_('select.genericlist', $options, 'action', '', 'value', 'text', 'capturePayment', 'action', true);
 
 
-		$html = '<table class="adminlist table-striped"  >' . "\n";
+		$html = '<table class="adminlist table"  >' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$html .= '<form action="index.php" method="post" name="updateOrderBEPayment" id="updateOrderBEPayment">';
 

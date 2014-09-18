@@ -558,7 +558,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 		$db = JFactory::getDBO ();
 		$db->setQuery ($q);
 		$currency_code_3 = $db->loadResult ();
-		$html = '<table class="adminlist">' . "\n";
+		$html = '<table class="adminlist table">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();
 		$html .= $this->getHtmlRowBE ('PAYMENT_NAME', $paymentTable->payment_name);
 
