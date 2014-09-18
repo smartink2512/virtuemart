@@ -17,16 +17,21 @@ $name = 'customProductData['.$product->virtuemart_product_id.']['.$params->virtu
 	if ($textinputjs) return true;
 	$textinputjs = true ;
 	//javascript to update price
-	$document = JFactory::getDocument();
-	$document->addScriptDeclaration('
+
+	$script = '
 /* <![CDATA[ */
-jQuery(document).ready( function($) {
+var test = function($) {
 	jQuery(".vmcustom-textinput").keyup(function() {
-			formProduct = $(this).parents("form.product");
+			formProduct = jQuery(this).parents("form.product");
 			virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
 		Virtuemart.setproducttype(formProduct,virtuemart_product_id);
 		});
-
-});
+};
+jQuery("body").on("updateVirtueMartProductDetail", test);
+jQuery(document).ready(test);
 /* ]]> */
-	');
+	';
+	//$document = JFactory::getDocument();
+	//$document->addScriptDeclaration($script);
+//We need the echo now, else the ajax cannot add the JS to the head, because the JS is added to the header of the ajax
+	echo '<script>'.$script.'</script>';

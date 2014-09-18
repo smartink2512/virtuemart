@@ -40,6 +40,7 @@ jQuery(function($) {
     Virtuemart.updateCartListener = function() {
         // init VM's "Add to Cart" scripts
 		Virtuemart.product(jQuery(".product"));
+		jQuery('body').trigger('updateVirtueMartProductDetail');
     }
 
     Virtuemart.updateDynamicUpdateListeners = function() {
