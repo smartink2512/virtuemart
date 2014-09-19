@@ -89,8 +89,8 @@ class VirtuemartViewPaymentMethod extends VmView {
 			}
 
 			$this->assignRef('payment',	$payment);
-			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($payment->payment_jplugin_id));
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true));
+			$this->vmPPaymentList = self::renderInstalledPaymentPlugins($payment->payment_jplugin_id);
+			$this->shopperGroupList = ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true);
 
 			if(Vmconfig::get('multix','none')!=='none'){
 				$vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);

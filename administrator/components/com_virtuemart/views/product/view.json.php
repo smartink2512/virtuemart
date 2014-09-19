@@ -80,8 +80,10 @@ class VirtuemartViewProduct extends VmView {
 		}
 		else if ($this->type=='fields')
 		{
-			$fieldTypes= $this->model->getField_types() ;
-
+			if (!class_exists ('VirtueMartModelCustom')) {
+				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'custom.php');
+			}
+			$fieldTypes = VirtueMartModelCustom::getCustomTypes();
 			$query = 'SELECT *,`custom_value` as value FROM `#__virtuemart_customs`
 			WHERE (`virtuemart_custom_id`='.$id.' or `custom_parent_id`='.$id.') ';
 			$query .= 'order by `ordering` asc';

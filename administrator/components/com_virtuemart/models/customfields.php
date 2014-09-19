@@ -42,31 +42,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		$this->setMainTable ('product_customfields');
 	}
 
-	/** @return autorized Types of data **/
-	function getField_types () {
-
-		return array('S' => 'COM_VIRTUEMART_CUSTOM_STRING',
-					 'C' => 'COM_VIRTUEMART_CHILDVARIANT',
-		             'D' => 'COM_VIRTUEMART_DATE',
-		             'T' => 'COM_VIRTUEMART_TIME',
-		             'M' => 'COM_VIRTUEMART_IMAGE',
-		             'B' => 'COM_VIRTUEMART_CUSTOM_BOOLEAN',
-		             'G' => 'COM_VIRTUEMART_CUSTOM_GROUP',
-		             'A' => 'COM_VIRTUEMART_CHILD_GENERIC_VARIANT',
-		             'X' => 'COM_VIRTUEMART_CUSTOM_EDITOR',
-		             'Y' => 'COM_VIRTUEMART_CUSTOM_TEXTAREA',
-		             'E' => 'COM_VIRTUEMART_CUSTOM_EXTENSION',
-		             'R'=>'COM_VIRTUEMART_RELATED_PRODUCTS',
-					'Z'=>'COM_VIRTUEMART_RELATED_CATEGORIES'
-		);
-
-		// 'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT',
-		// 'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
-		// 'G'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD_GROUP',
-		//
-	}
-
-
 	/**
 	 * Gets a single custom by virtuemart_customfield_id
 	 *
@@ -343,16 +318,21 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if(is_object($product)){
 			$product_id = $product->virtuemart_product_id;
+			$virtuemart_vendor_id = $product->virtuemart_vendor_id;
 		} else {
+
 			$product_id = $product;
+			$virtuemart_vendor_id = VmConfig::isSuperVendor();
+			vmdebug('displayProductCustomfieldBE product was not object, use for productId '.$product_id.' and $virtuemart_vendor_id = '.$virtuemart_vendor_id);
 		}
+		//vmdebug('displayProductCustomfieldBE',$product_id,$field,$virtuemart_vendor_id,$product);
 		//the option "is_cart_attribute" gives the possibility to set a price, there is no sense to set a price,
 		//if the custom is not stored in the order.
 		if ($field->is_input) {
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			if(!class_exists('VirtueMartModelCurrency')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'currency.php');
 			$vendor_model = VmModel::getModel('vendor');
-			$virtuemart_vendor_id = 1;
+			//$virtuemart_vendor_id = 1;
 			$vendor = $vendor_model->getVendor($virtuemart_vendor_id);
 			$currency_model = VmModel::getModel('currency');
 			$vendor_currency = $currency_model->getCurrency($vendor->vendor_currency);
@@ -620,14 +600,9 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 			/* image */
 			case 'M':
-				if (empty($product)) {
-					$vendorId = 1;
-				}
-				else {
-					$vendorId = $product->virtuemart_vendor_id;
-				}
+
 				$q = 'SELECT `virtuemart_media_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
-					AND (`virtuemart_vendor_id`= "' . $vendorId . '" OR `shared` = "1")';
+					AND (`virtuemart_vendor_id`= "' . $virtuemart_vendor_id . '" OR `shared` = "1")';
 				$db = JFactory::getDBO();
 				$db->setQuery ($q);
 				$options = $db->loadObjectList ();
@@ -873,9 +848,9 @@ class VirtueMartModelCustomfields extends VmModel {
 									console.log('Would redirect to '+url+variants[index][0])
 									//break;
 									window.top.location.href=url+variants[index][0]+Itemid;
-									i2 = 200;
-									index = 200;
-									runs = 200;
+									//i2 = 200;
+									//index = 200;
+									//runs = 200;
 								}
 							} else {
 								break;
@@ -1105,17 +1080,26 @@ class VirtueMartModelCustomfields extends VmModel {
 						break;
 					}
 					$pModel = VmModel::getModel('product');
-					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,FALSE,TRUE,1);
+					vmdebug('in customfield R my field',$customfield);
+
+					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,$customfield->wPrice,TRUE,1);
 
 					if(!$related) break;
 
-					if (!empty($related->virtuemart_media_id[0])) {
-						$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
-					} else {
-						$thumb = $this->displayCustomMedia (0).' ';
+					$thumb = '';
+					if($customfield->wImage){
+						if (!empty($related->virtuemart_media_id[0])) {
+							$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
+						} else {
+							$thumb = $this->displayCustomMedia (0).' ';
+						}
 					}
+
 					//juri::root() For whatever reason, we used this here, maybe it was for the mails
 					$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id), $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+					if($customfield->wDescr){
+						$customfield->display .= $related->product_s_desc;
+					}
 
 					break;
 			}

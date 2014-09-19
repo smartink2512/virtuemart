@@ -39,13 +39,15 @@ AdminUIHelper::startAdminArea($this);
 		<td valign="top"><?php echo vmText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN') ?></td>
 		<td>
 		    <fieldset>
-			<?php echo $this->pluginList ?>
+			<?php if (!$this->custom->form) {
+				echo $this->pluginList;
+			} ?>
 			<div class="clear"></div>
     			<div id="plugin-Container">
 				<?php
 				defined('_JEXEC') or die('Restricted access');
 
-				if ($this->custom->custom_jplugin_id) {
+				if ($this->custom->form) {
 
 					?>
 					<h2 style="text-align: center;"><?php echo vmText::_($this->custom->custom_title) ?></h2>
@@ -85,7 +87,7 @@ function submitbutton(pressbutton) {
 }
 jQuery(function($) {
 
-<?php if ($this->custom->field_type !== "E") { ?>$('#custom_plg').hide();<?php } ?>
+<?php if (!$this->custom->form) { ?>$('#custom_plg').hide();<?php } ?>
     $('#field_type').change(function () {
 	var $selected = $(this).val();
 	if ($selected == "E" ) $('#custom_plg').show();

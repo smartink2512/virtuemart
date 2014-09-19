@@ -48,6 +48,8 @@ class VirtuemartViewCustom extends VmView {
 			$customPlugin = '';
 
 			$this->custom = $model->getCustom();
+			$this->fieldTypes = VirtueMartModelCustom::getCustomTypes();
+
 			$customfields = VmModel::getModel('customfields');
  			//vmdebug('VirtuemartViewCustom',$this->custom);
 			JPluginHelper::importPlugin('vmcustom');
@@ -57,6 +59,7 @@ class VirtuemartViewCustom extends VmView {
 			$this->SetViewTitle('PRODUCT_CUSTOM_FIELD', $this->custom->custom_title);
 
 			$selected=0;
+			$this->custom->form = false;
 			if(!empty($this->custom->custom_jplugin_id)) {
 				VmConfig::loadJLang('plg_vmpsplugin', false);
 				JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
@@ -68,14 +71,42 @@ class VirtuemartViewCustom extends VmView {
 					$this->custom->form = JForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->custom->params = new stdClass();
 					$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
-					$this->custom->params->custom_params = $this->custom->custom_params;
-					VmTable::bindParameterable($this->custom->params,'custom_params',$varsToPush);
+					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
 					$this->custom->form->bind($this->custom);
 
-				} else {
-					$this->custom->form = null;
+				}
+			} else {
+				$varsToPush = VirtueMartModelCustom::getVarsToPush($this->custom->field_type);
+				if(!empty($varsToPush)){
+					$formString = '<vmconfig><fields name="params"><fieldset name="extraParams">';
+					//vmdebug('$varsToPush',$varsToPush);
+					foreach($varsToPush as $key => $push){
+						$formString .= '<field
+						name="'.$key.'"
+        				id="'.$key.'Field"
+        				label="COM_VIRTUEMART_CUSTOM_PARAM_'.strtoupper($key).'"
+        				description="COM_VIRTUEMART_CUSTOM_PARAM_'.strtoupper($key).'_DESC"
+        				default="'.$push[0].'"
+						';
+
+						if($push[1]=='int'){
+							$formString .= 'type="radio" >
+    											<option value="0">JNO</option>
+    											<option value="1">JYES</option>';
+						} else if($push[1]=='string'){
+							$formString .= 'type="text" >';
+						}
+						$formString .= '</field>';
+					}
+					$formString .= '</fieldset></fields></vmconfig>';
+					$this->custom->form = JForm::getInstance($this->custom->field_type, $formString, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+					$this->custom->params = new stdClass();
+					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
+					$this->custom->form->bind($this->custom);
+					vmdebug('$this->custom->form',$this->custom->form);
 				}
 			}
+
 			$this->pluginList = self::renderInstalledCustomPlugins($selected);
 			$this->assignRef('customPlugin',	$customPlugin);
 
@@ -153,12 +184,14 @@ class VirtuemartViewCustom extends VmView {
 
 		$model = VmModel::getModel('custom');
 
+
+
 		// only input when not set else display
 		if ($datas->field_type) {
-			$html .= VmHTML::row ('value', 'COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type]);
+			$html .= VmHTML::row ('value', 'COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $this->fieldTypes[$datas->field_type]);
 		}
 		else {
-			$html .= VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_FIELD_TYPE', 'field_type', $this->getOptions ($datas->field_types), $datas->field_type, VmHTML::validate ('R'));
+			$html .= VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_FIELD_TYPE', 'field_type', $this->getOptions ($this->fieldTypes), $datas->field_type, VmHTML::validate ('R'));
 		}
 		$html .= VmHTML::row ('input', 'COM_VIRTUEMART_TITLE', 'custom_title', $datas->custom_title, VmHTML::validate ('S'));
 		$html .= VmHTML::row ('booleanlist', 'COM_VIRTUEMART_SHOW_TITLE', 'show_title', $datas->show_title);

@@ -41,6 +41,30 @@ class VirtueMartModelCustom extends VmModel {
 		$this->setToggleName('is_hidden');
 	}
 
+	/** @return autorized Types of data **/
+	static function getCustomTypes () {
+
+		return array('S' => 'COM_VIRTUEMART_CUSTOM_STRING',
+			'C' => 'COM_VIRTUEMART_CHILDVARIANT',
+			'D' => 'COM_VIRTUEMART_DATE',
+			'T' => 'COM_VIRTUEMART_TIME',
+			'M' => 'COM_VIRTUEMART_IMAGE',
+			'B' => 'COM_VIRTUEMART_CUSTOM_BOOLEAN',
+			'G' => 'COM_VIRTUEMART_CUSTOM_GROUP',
+			'A' => 'COM_VIRTUEMART_CHILD_GENERIC_VARIANT',
+			'X' => 'COM_VIRTUEMART_CUSTOM_EDITOR',
+			'Y' => 'COM_VIRTUEMART_CUSTOM_TEXTAREA',
+			'E' => 'COM_VIRTUEMART_CUSTOM_EXTENSION',
+			'R'=>'COM_VIRTUEMART_RELATED_PRODUCTS',
+			'Z'=>'COM_VIRTUEMART_RELATED_CATEGORIES'
+		);
+
+		// 'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT',
+		// 'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
+		// 'G'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD_GROUP',
+		//
+	}
+
     /**
      * Gets a single custom by virtuemart_custom_id
      * .
@@ -55,9 +79,10 @@ class VirtueMartModelCustom extends VmModel {
     	if(empty($this->_cache[$this->_id])){
 
     		$this->_cache[$this->_id] = $this->getTable('customs');
+			$this->_cache[$this->_id]->load($this->_id);
 
-		    $customfields = VmModel::getModel('Customfields');
-		    $this->_cache[$this->_id]->field_types = $customfields->getField_types() ;
+		    //$customfields = VmModel::getModel('Customfields');
+		    //$this->_cache[$this->_id]->field_types = $customfields->getField_types() ;
 
 		    $this->_cache[$this->_id]->_varsToPushParam = self::getVarsToPush($this->_cache[$this->_id]->field_type);
 
@@ -70,7 +95,10 @@ class VirtueMartModelCustom extends VmModel {
 			//exaample 	vm2 withParent="0"|parentOrderable="0"|
 			//			vm3 withParent="1"|parentOrderable="1"|
 			$this->_cache[$this->_id]->_xParams = 'custom_params';
-			$this->_cache[$this->_id]->load($this->_id);
+			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
+				VmTable::bindParameterable($this->_cache[$this->_id],'custom_params',$this->_cache[$this->_id]->_varsToPushParam);
+			}
+
 
     	}
 
@@ -110,18 +138,18 @@ class VirtueMartModelCustom extends VmModel {
 	    $datas = new stdClass();
 		$datas->items = $this->exeSortSearchListQuery(0, $query, '',$whereString,$this->_getOrdering());
 
-		$customfields = VmModel::getModel('Customfields');
+		//$customfields = VmModel::getModel('Customfields');
 
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		$datas->field_types = $customfields->getField_types() ;
+		$field_types = self::getCustomTypes() ;
 
 		foreach ($datas->items as $key => & $data) {
 	  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = $this->getCustomParentTitle($data->custom_parent_id);
 			else {
 				$data->custom_parent_title =  '-' ;
 			}
-			if(!empty($datas->field_types[$data->field_type ])){
-				$data->field_type_display = vmText::_( $datas->field_types[$data->field_type ] );
+			if(!empty($field_types[$data->field_type ])){
+				$data->field_type_display = vmText::_( $field_types[$data->field_type ] );
 			} else {
 				$data->field_type_display = 'not valid, delete this line';
 				vmError('The field with id '.$data->virtuemart_custom_id.' and title '.$data->custom_title.' is not longer valid, please delete it from the list');
@@ -324,7 +352,7 @@ class VirtueMartModelCustom extends VmModel {
 
 		//We are in the custom and so the table contains the field_type, else not!!
 		self::setParameterableByFieldType($table,$table->field_type);
-
+		vmdebug('Store custom ',$data);
 		$table->bindChecknStore($data);
 
 		$errors = $table->getErrors();
@@ -387,11 +415,20 @@ class VirtueMartModelCustom extends VmModel {
 			);
 		} else if($type=='C'){
 			$varsToPush = array(
-				'withParent'        => array(0, 'int'),
-				'parentOrderable'   => array(0, 'int'),
 				'selectoptions'		=> array(array(), 'int'),
 				'clabels'   => array(array(), 'int'),
 				'options'	=> array(array(), 'int')
+			);
+		} else if($type=='R'){
+			$varsToPush = array(
+				'wPrice'	=> array(0, 'int'),
+				'wImage'	=> array(0, 'int'),
+				'wDescr'	=> array(0, 'int')
+			);
+		} else if($type=='Z'){
+			$varsToPush = array(
+				'wImage'	=> array(0, 'int'),
+				'wDescr'	=> array(0, 'int')
 			);
 		}
 		return $varsToPush;

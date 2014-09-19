@@ -228,6 +228,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$cart = VirtueMartCart::getCart();
 		vmdebug('cancel executed' );
 		if($cart->_fromCart){
+			$cart->setOutOfCheckout();
 			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE)  );
 		} else {
 			$return = JURI::base();

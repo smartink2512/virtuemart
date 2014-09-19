@@ -199,11 +199,11 @@ class VirtuemartViewProduct extends VmView {
 					$this->activeShoppergroups = vmText::_($shoppergroupModel->getDefault(0)->shopper_group_name);
 				}
 
-				$fieldTypes = $customfields->getField_types();
-				$this->assignRef('fieldTypes', $fieldTypes);
-
 				// Load protocustom lists
 				$customModel = VmModel::getModel ('custom');
+
+				$this->fieldTypes = VirtueMartModelCustom::getCustomTypes();
+
 				$customsList = $customModel->getCustomsList ();
 				$attribs='style= "width: 300px;"';
 				$customlist = JHtml::_('select.genericlist', $customsList,'customlist', $attribs);

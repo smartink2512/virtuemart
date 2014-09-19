@@ -79,9 +79,9 @@ class VirtuemartViewShipmentmethod extends VmView {
 					$this->assignRef('vendorList', $vendorList);
 			 }
 
-			$this->assignRef('pluginList', self::renderInstalledShipmentPlugins($shipment->shipment_jplugin_id));
-			$this->assignRef('shipment',	$shipment);
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shipment->virtuemart_shoppergroup_ids,true));
+			$this->pluginList = self::renderInstalledShipmentPlugins($shipment->shipment_jplugin_id);
+			$this->assignRef('shipment', $shipment);
+			$this->shopperGroupList = ShopFunctions::renderShopperGroupList($shipment->virtuemart_shoppergroup_ids,true);
 
 			$this->addStandardEditViewCommands($shipment->virtuemart_shipmentmethod_id);
 
