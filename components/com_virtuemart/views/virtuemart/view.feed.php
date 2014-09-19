@@ -110,7 +110,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 			}
 			if ($feed_description_type == 'product_s_desc'  OR $feed_max_text_length > 0) {
-				$description .= '<p class="feed-readmore"><a target="_blank" href ="' . rtrim (JURI::base (), "/") . str_replace (' ', '%20', $product->link) . '">' . vmText::_ ('COM_VIRTUEMART_FEED_READMORE') . '</a></p>';
+				$description .= '<p class="feed-readmore"><a target="_blank" href ="' .JRoute::_($product->link). '">' . vmText::_ ('COM_VIRTUEMART_FEED_READMORE') . '</a></p>';
 			}
 			$item = new JFeedItem();
 			$item->title = $title;

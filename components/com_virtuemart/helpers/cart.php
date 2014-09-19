@@ -419,7 +419,7 @@ class VirtueMartCart {
 	}
 
 	/**
-	 * Set the last error that occured.
+	 * Set the last error that occurred.
 	 * This is used on error to pass back to the cart when addJS() is invoked.
 	 * @param string $txt Error message
 	 * @author Oscar van Eijk
@@ -430,7 +430,7 @@ class VirtueMartCart {
 
 	/**
 	 * Retrieve the last error message
-	 * @return string The last error message that occured
+	 * @return string The last error message that occurred
 	 * @author Oscar van Eijk
 	 */
 	public function getError() {
