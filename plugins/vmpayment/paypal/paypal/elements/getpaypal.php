@@ -4,7 +4,7 @@
  * Realex payment plugin
  *
  * @author Valerie Isaksen
- * @version $Id$
+ * @version $Id: getrealex.php 8206 2014-08-14 13:52:35Z alatak $
  * @package VirtueMart
  * @subpackage payment
  * ${PHING.VM.COPYRIGHT}
@@ -24,7 +24,7 @@ defined('JPATH_BASE') or die();
  */
 
 
-class JElementGetRealex extends JElement {
+class JElementGetPaypal extends JElement {
 
 	/**
 	 * Element name
@@ -32,16 +32,16 @@ class JElementGetRealex extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getRealex';
+	var $_name = 'getPaypal';
 
 	function fetchElement ($name, $value, &$node, $control_name) {
 
 
-		$url = "http://www.realexpayments.com/partner-referral?id=virtuemart";
-		$logo = '<img src="http://www.realexpayments.com/images/logo_realex_large.png" width="150"/>';
+		$url = "https://www.paypal.com/us/webapps/mpp/referral/paypal-payments-standard?partner_id=83EP5DJG9FU6L";
+		$logo = '<img src="https://www.paypalobjects.com/webstatic/en_US/logo/pp_cc_mark_111x69.png" />';
 		$html = '<p><a target="_blank" href="' . $url . '"  >' . $logo . '</a></p>';
-		$html .= '<p><a target="_blank" href="' . $url . '" class="signin-button-link">' . vmText::_('VMPAYMENT_REALEX_HPP_API_REGISTER') . '</a>';
-		$html .= ' <a target="_blank" href="http://docs.virtuemart.net/manual/shop-menu/payment-methods/realex-hpp-and-api.html" class="signin-button-link">' . vmText::_('VMPAYMENT_REALEX_HPP_API_DOCUMENTATION') . '</a></p>';
+		$html .= '<p><a target="_blank" href="' . $url . '" class="signin-button-link">' . vmText::_('VMPAYMENT_PAYPAL_REGISTER') . '</a>';
+		$html .= ' <a target="_blank" href="http://docs.virtuemart.net/manual/shop-menu/payment-methods/paypal.html" class="signin-button-link">' . vmText::_('VMPAYMENT_PAYPAL_DOCUMENTATION') . '</a></p>';
 
 		return $html;
 	}

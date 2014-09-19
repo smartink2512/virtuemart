@@ -170,8 +170,8 @@ class  PayboxHelperPaybox {
 		$cart->_confirmDone = FALSE;
 		$cart->_dataValidated = FALSE;
 		$cart->setCartIntoSession();
-		pbxRequest::setVar('display_title', false);
-		pbxRequest::setVar('html', $html);
+		vRequest::setVar('display_title', false);
+		vRequest::setVar('html', $html);
 
 		return;
 	}
@@ -459,6 +459,13 @@ jQuery().ready(function($) {
 
 		return true;
 	}
+
+	/**
+	 * @param $paybox_data
+	 * @param bool $unsetNonPayboxData
+	 * @param bool $useQuery
+	 * @return bool
+	 */
 	private function checkSignature (  $paybox_data, $unsetNonPayboxData = true, $useQuery = true) {
 		if (!$useQuery) {
 			//
@@ -603,17 +610,17 @@ jQuery().ready(function($) {
 		$test = false;
 		if ($test) {
 
-			$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . pbxRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
-			$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . pbxRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . vRequest::getInt('Itemid');
+			$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . vRequest::getInt('Itemid');
 			$payboxURLs['url_annule'] = $url_cancelled;
 			$payboxURLs['url_refuse'] = $url_cancelled;
 			$payboxURLs['url_erreur'] = $url_cancelled;
-			$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . pbxRequest::getCmd('lang', '');
-			$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . pbxRequest::getCmd('lang', '');
+			$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
+			$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
 
 
 		} else {
-			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . pbxRequest::getCmd('lang', '') . '&Itemid=' . pbxRequest::getInt('Itemid');
+			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . vRequest::getInt('Itemid');
 			$payboxURLs['url_annule'] = $url_cancelled;
 			$payboxURLs['url_refuse'] = $url_cancelled;
 			$payboxURLs['url_erreur'] = $url_cancelled;
@@ -659,7 +666,6 @@ jQuery().ready(function($) {
 	}
 
 	/**
-	 *        $url_ok = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . pbxRequest::getInt('Itemid');
 	 * @return array
 	 */
 
@@ -669,8 +675,8 @@ jQuery().ready(function($) {
 			"view"   => "pluginresponse",
 			"task"   => "pluginresponsereceived",
 			"pm"     => $this->_method->virtuemart_paymentmethod_id,
-			"lang"   => pbxRequest::uWord('lang', ''),
-			"Itemid" => pbxRequest::getInt('Itemid'),
+			"lang"   => vRequest::uWord('lang', ''),
+			"Itemid" => vRequest::getInt('Itemid'),
 		);
 		return $urlOkParms;
 	}
@@ -681,7 +687,7 @@ jQuery().ready(function($) {
 
 	private function redirectToCart () {
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . pbxRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_PAYBOX_ERROR_TRY_AGAIN'));
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&lg=&Itemid=' . vRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_PAYBOX_ERROR_TRY_AGAIN'));
 	}
 
 	public function getReturnFields () {
@@ -1008,7 +1014,7 @@ jQuery().ready(function($) {
 	 * @return mixed
 	 */
 
-	function getOrderHistory ($paybox_data, $order) {
+	function getOrderHistory ($paybox_data, $order, $payments) {
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($paybox_data['M'] * 0.01, $order['details']['BT']->order_currency);
 		$order_history['comments'] = vmText::sprintf('VMPAYMENT_' . $this->plugin_name . '_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
 		$order_history['comments'] .= "<br />" . vmText::_('VMPAYMENT_' . $this->plugin_name . '_RESPONSE_S') . ' ' . $paybox_data['S'];

@@ -862,16 +862,18 @@ class PaypalHelperPaypal {
 		$prefix = 'PAYPAL_RESPONSE_';
 
 		$html = '';
-		if ($data->ACK == 'SuccessWithWarning' && $data->L_ERRORCODE0 == self::FMF_PENDED_ERROR_CODE && $data->PAYMENTSTATUS == "Pending"
-		) {
-			$showOrderField = 'L_SHORTMESSAGE0';
-			$html .= $this->paypalPlugin->getHtmlRowBE($prefix . $showOrderField, $this->highlight($data->$showOrderField));
-		}
-		if (($data->ACK == 'Failure' OR $data->ACK == 'FailureWithWarning')) {
-			$showOrderField = 'L_SHORTMESSAGE0';
-			$html .= $this->paypalPlugin->getHtmlRowBE($prefix . 'ERRORMSG', $this->highlight($data->$showOrderField));
-			$showOrderField = 'L_LONGMESSAGE0';
-			$html .= $this->paypalPlugin->getHtmlRowBE($prefix . 'ERRORMSG', $this->highlight($data->$showOrderField));
+		if (isset($data->ACK)) {
+			if ($data->ACK == 'SuccessWithWarning' && $data->L_ERRORCODE0 == self::FMF_PENDED_ERROR_CODE && $data->PAYMENTSTATUS == "Pending"
+			) {
+				$showOrderField = 'L_SHORTMESSAGE0';
+				$html .= $this->paypalPlugin->getHtmlRowBE($prefix . $showOrderField, $this->highlight($data->$showOrderField));
+			}
+			if (($data->ACK == 'Failure' OR $data->ACK == 'FailureWithWarning')) {
+				$showOrderField = 'L_SHORTMESSAGE0';
+				$html .= $this->paypalPlugin->getHtmlRowBE($prefix . 'ERRORMSG', $this->highlight($data->$showOrderField));
+				$showOrderField = 'L_LONGMESSAGE0';
+				$html .= $this->paypalPlugin->getHtmlRowBE($prefix . 'ERRORMSG', $this->highlight($data->$showOrderField));
+			}
 		}
 
 

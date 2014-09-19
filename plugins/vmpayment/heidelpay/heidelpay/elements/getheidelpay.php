@@ -74,18 +74,22 @@ class JElementGetHeidelpay extends JElement {
 		if ($payment_params['HEIDELPAY_SECURITY_SENDER'] == '31HA07BC8124AD82A9E96D9A35FAFD2A' or $payment_params['HEIDELPAY_SECURITY_SENDER'] == '') {
 			$id = "heidelpay_getheidelpay_link";
 			$display='';
-			$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_HEIDELPAY_ALREADY_ACCOUNT') . '</a>';
+			$html = '<a href="#" id="' . $id . '" class="signin-button-link">' . JText::_ ('VMPAYMENT_HEIDELPAY_ALREADY_ACCOUNT') . '</a>';
 		} else {
 			$id = "heidelpay_getheidelpay_link";
 			$display=' style="display: none;"';
-			$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
+			$html = '<a href="#" id="' . $id . '" class="signin-button-link">' . JText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
 		}
 		$lang = $this->getLang ();
 
-		$html .= '<div id="heidelpay_getheidelpay_show_hide" align=""'.$display.' >';
+		$html .= '<div id="heidelpay_getheidelpay_show_hide" align=""'.$display.'  >';
 		$url = "http://demoshops.heidelpay.de/contactform/?campaign=vituemart&shop=vituemart&lang=" . $lang;
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="1400px" width="300px"></iframe>';
 		$html .= "</div>";
+
+		$html .= '<a target="_blank" href="http://docs.virtuemart.net/manual/shop-menu/payment-methods/heidelpay.html"  class="signin-button-link">' . vmText::_('VMPAYMENT_AMAZON_DOCUMENTATION') . '</a></p></div>';
+
+
 		return $html;
 	}
 

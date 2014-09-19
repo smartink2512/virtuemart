@@ -464,14 +464,16 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 
 		$q = "SELECT  * FROM " . $this->_tablename ." WHERE
-		 ( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse' AND `amazon_response_state`  IN ('Draft',  'Cancelled',  'Open', 'Suspended', 'Closed') )
+		 ( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse' AND `amazon_response_state`  IN (  'Open', 'Suspended') )
 		  OR
 		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_AuthorizeResponse' AND `amazon_response_state`  IN ('Pending',  'Open',  'Closed', 'Declined') )
         OR
   		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_CaptureResponse' AND `amazon_response_state`  IN ('Pending',  'Completed', 'Closed', 'Declined') )
         OR
   		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_RefundResponse' AND `amazon_response_state`  IN ('Pending',  'Completed', 'Declined') )
-
+		AND `created_on`  IN (SELECT MAX( `created_on` )
+                FROM " . $this->_tablename ."  GROUP BY `virtuemart_order_id`
+                )
 		ORDER BY `created_on` DESC ";
 
 		$db = JFactory::getDBO();

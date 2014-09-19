@@ -41,8 +41,6 @@ class JElementGetKlarnacheckout extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 
 
-		return "TO DO ";
-
 		$jlang = JFactory::getLanguage ();
 		$lang = $jlang->getTag ();
 		$langArray = explode ("-", $lang);
@@ -60,7 +58,7 @@ class JElementGetKlarnacheckout extends JElement {
 	             <img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.png" /></a> ';
 */
 		$logo = '<img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.jpg" />';
-		$html = '<a href="#" id="klarna_getklarna_link" ">' . $logo . '</a>';
+		$html = '<p><a href="#" id="klarna_getklarna_link" ">' . $logo . '</a></p>';
 // https://merchants.klarna.com/signup?locale=en&partner_id=7829355537eae268a17667c199e7c7662d3391f7&utm_campaign=Platform&utm_medium=Partners&utm_source=Virtuemart
 		$html .= '<div id="klarna_getklarna_show_hide" >';
 		$url = "https://merchants.klarna.com/signup/?locale=" . $signLang . "&partner_id=7829355537eae268a17667c199e7c7662d3391f7&utm_campaign=Platform&utm_medium=Partners&utm_source=Virtuemart";
@@ -85,6 +83,8 @@ class JElementGetKlarnacheckout extends JElement {
 
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="600px" width="850px"></iframe>';
 		$html .= '</div>';
+		$html .= '<p><a target="_blank" href="http://cdn.klarna.com/1.0/shared/content/integration/guide/virtuemart.pdf" class="signin-button-link">' . vmText::_('VMPAYMENT_KLARNA_DOCUMENTATION') . '</a></p>';
+
 		return $html;
 	}
 

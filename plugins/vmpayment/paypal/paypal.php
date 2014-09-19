@@ -204,7 +204,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'tax_id' => 'smallint(1)',
 			'paypal_custom' => 'varchar(255)',
 			'paypal_method' => 'varchar(200)',
-
 			'paypal_response_mc_gross' => 'decimal(10,2)',
 			'paypal_response_mc_currency' => 'char(10)',
 			'paypal_response_invoice' => 'char(32)',
@@ -289,6 +288,7 @@ return;
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			return FALSE;
 		}
+		$cart->prepareCartData();
 		if (isset($cart->pricesUnformatted['salesPrice']) AND $cart->pricesUnformatted['salesPrice'] <= 0.0) {
 			return FALSE;
 		}
@@ -396,7 +396,6 @@ return;
 		if (!class_exists('VirtueMartModelCurrency')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 		}
-		$this->setInConfirmOrder($cart);
 
 		$this->getPaymentCurrency($this->_currentMethod);
 		$email_currency = $this->getEmailCurrency($this->_currentMethod);
@@ -472,6 +471,8 @@ return;
 
 
 		} else if ($this->_currentMethod->paypalproduct == 'api') {
+					$this->setInConfirmOrder($cart);
+
 			$success = $paypalInterface->ManageCheckout();
 			$response = $paypalInterface->getResponse();
 			$payment = $this->_storePaypalInternalData(  $response, $order['details']['BT']->virtuemart_order_id, $cart->virtuemart_paymentmethod_id, $order['details']['BT']->order_number);
@@ -801,7 +802,8 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 	 */
 	private function _getPaypalInternalData($virtuemart_order_id, $order_number = '') {
 		if (empty($order_number)) {
-			$order_number = VirtueMartModelOrders::getOrderNumber ($virtuemart_order_id);
+			$orderModel = VmModel::getModel('orders');
+			$order_number = $orderModel->getOrderNumber($virtuemart_order_id);
 		}
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';

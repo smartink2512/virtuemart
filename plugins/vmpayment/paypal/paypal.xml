@@ -17,8 +17,8 @@
     <params addpath="/plugins/vmpayment/paypal/paypal/elements"/>
     <params>
 
-        <param type="vmtitle" class="paypal_title"  default="VMPAYMENT_PAYPAL_PAYMENT_TITLE"
-               description="VMPAYMENT_PAYPAL_REGISTER_DESC"/>
+        <param type="getpaypal" level="level1"/>
+
         <param type="spacer" default="" level="level1"/>
 
         <param type="customjs" default=""/>

@@ -89,9 +89,7 @@
         <param class="integration recurring subscribe" type="vmtitle" default="" description="VMPAYMENT_PAYBOX_CONF_INTEGRATION_WARNING"/>
 
         <!-- begin recurring -->
-        <!--param class="integration recurring" name="recurring_min_amount"  type="text" size="15" default=""
-               label="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT"
-               description="VMPAYMENT_PAYBOX_CONF_RECURRING_MIN_AMOUNT_TIP"/-->
+        <param   name="recurring_min_amount"  type="hidden" />
         <param class="integration recurring" name="recurring_number" type="list" default="3"
                label="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER"
                description="VMPAYMENT_PAYBOX_CONF_RECURRING_NUMBER_TIP">
