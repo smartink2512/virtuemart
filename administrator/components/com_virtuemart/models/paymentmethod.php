@@ -128,6 +128,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$this->_db->setQuery($q);
 				$data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
+				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
 				/* Write the first 5 shoppergroups in the list */
 				$data->paymShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup',4,0);
