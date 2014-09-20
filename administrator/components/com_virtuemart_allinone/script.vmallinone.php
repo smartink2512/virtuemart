@@ -853,7 +853,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 
 			$query = 'SHOW COLUMNS FROM `' . $tablename . '` ';
 			$this->db->setQuery ($query);
-			$columns = $this->db->loadResultArray (0);
+			$columns = $this->db->loadColumn (0);
 
 			foreach ($fields as $fieldname => $alterCommand) {
 				if (in_array ($fieldname, $columns)) {
@@ -878,7 +878,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 
 			$query = 'SHOW COLUMNS FROM `' . $table . '` ';
 			$this->db->setQuery ($query);
-			$columns = $this->db->loadResultArray (0);
+			$columns = $this->db->loadColumn (0);
 
 			if (!in_array ($field, $columns)) {
 

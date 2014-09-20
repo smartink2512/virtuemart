@@ -2052,7 +2052,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$db = JFactory::getDBO();
 		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
+		$columns = $db->loadColumn(0);
 
 		//$html = '<table class="adminlist table-striped"  >' . "\n";
 		//$html .= $this->getHtmlHeaderBE();

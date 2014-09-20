@@ -499,7 +499,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			return '';
 		}
 
-		$html = '<table class="adminlist">' . "\n";
+		$html = '<table class="adminlist table">' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$code = "sofort_response_";
 		$first = TRUE;

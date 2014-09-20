@@ -99,7 +99,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
-			$this->_cache[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
+			$this->_cache[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadColumn();
 			if(empty($this->_cache[$this->_id]->virtuemart_shoppergroup_ids)) $this->_cache[$this->_id]->virtuemart_shoppergroup_ids = 0;
 
 		}

@@ -105,6 +105,8 @@ class VirtuemartViewPaymentMethod extends VmView {
 			$this->addStandardDefaultViewLists($model);
 
 			$this->payments = $model->getPayments();
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+
 			foreach ($this->payments as &$data){
 				// Write the first 5 shoppergroups in the list
 				$data->paymShoppersList = shopfunctions::renderGuiList($data->virtuemart_shoppergroup_ids,'shoppergroups','shopper_group_name','payment' );

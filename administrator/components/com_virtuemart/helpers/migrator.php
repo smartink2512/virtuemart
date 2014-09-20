@@ -1895,7 +1895,7 @@ class Migrator extends VmModel{
 					}
 
 					// Rename the current table to the backup table.
-					$this->_db->setQuery('RENAME TABLE '.$this->_db->nameQuote($table).' TO '.$this->_db->nameQuote($restoreTable));
+					$this->_db->setQuery('RENAME TABLE '.$this->_db->quoteName($table).' TO '.$this->_db->quoteName($restoreTable));
 					$this->_db->execute();
 
 					// Check for errors.

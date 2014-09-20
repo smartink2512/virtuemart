@@ -92,6 +92,8 @@ class VirtuemartViewShipmentmethod extends VmView {
 			$this->addStandardDefaultViewLists($model);
 
 			$this->shipments = $model->getShipments();
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+
 			foreach ($this->shipments as &$data){
 				// Write the first 5 shoppergroups in the list
 				$data->shipmentShoppersList = shopfunctions::renderGuiList($data->virtuemart_shoppergroup_ids,'shoppergroups','shopper_group_name','shopper');

@@ -400,7 +400,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$db = JFactory::getDBO();
 		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
+		$columns = $db->loadColumn(0);
 		foreach ($klikandpay_data as $key => $value) {
 			$table_key = 'klikandpay_response_' . $key;
 			if (in_array($table_key, $columns)) {
