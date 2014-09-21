@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.version');
 
 /**
@@ -35,10 +35,10 @@ class VirtuemartViewConfig extends VmView {
 	function display($tpl = null) {
 
 		if (!class_exists('VmImage'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 		if (!class_exists('VmHTML'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 		$usermodel = VmModel::getModel('user');
@@ -101,7 +101,7 @@ class VirtuemartViewConfig extends VmView {
 
 		$this->aclGroups = $usermodel->getAclGroupIndentedTree();
 
-		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$this->vmtemplate = shopFunctionsF::loadVmTemplateStyle();
 
 		if(is_Dir(JPATH_ROOT.DS.'templates'.DS.$this->vmtemplate.DS.'images'.DS.'availability'.DS)){

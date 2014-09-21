@@ -19,7 +19,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -34,12 +34,12 @@ class VirtuemartViewOrders extends VmView {
 
 		//Load helpers
 		if (!class_exists('CurrencyDisplay'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 
 		if (!class_exists('VmHTML'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 		$orderStatusModel=VmModel::getModel('orderstatus');
 		$orderStates = $orderStatusModel->getOrderStatusList();
 
@@ -157,7 +157,7 @@ class VirtuemartViewOrders extends VmView {
 			JToolBarHelper::custom( 'cancel', $list,'','COM_VIRTUEMART_ORDER_LIST_LBL',false,false);
 		}
 		else if ($curTask == 'editOrderItem') {
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 
 			$this->assignRef('orderstatuses', $orderStates);
 
@@ -182,7 +182,7 @@ class VirtuemartViewOrders extends VmView {
 
 			$this->assignRef('orderstatuses', $orderStates);
 
-			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
@@ -194,7 +194,7 @@ class VirtuemartViewOrders extends VmView {
 				    if(!empty($order->order_currency)){
 					    $currency = $order->order_currency;
 				    } else if($order->virtuemart_vendor_id){
-					    if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+					    if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 					    $currObj = VirtueMartModelVendor::getVendorCurrency($order->virtuemart_vendor_id);
 				        $currency = $currObj->virtuemart_currency_id;
 				   }

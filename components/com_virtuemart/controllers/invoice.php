@@ -18,8 +18,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access for invoices');
-if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-if(!class_exists('VmPdf'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpdf.php');
+if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('VmPdf'))require(VMPATH_SITE.DS.'helpers'.DS.'vmpdf.php');
 
 // Load the controller framework
 jimport('joomla.application.component.controller');
@@ -234,10 +234,10 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		//We come from the be, so we need to load the FE language
 		VmConfig::loadJLang('com_virtuemart',true);
 
-		$this->addViewPath( JPATH_VM_SITE.DS.'views' );
+		$this->addViewPath( VMPATH_SITE.DS.'views' );
 		$view = $this->getView($viewName, $format);
 
-		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
+		$view->addTemplatePath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
 		$vmtemplate = VmConfig::get('vmtemplate',0);
 		if(!empty($vmtemplate) and $vmtemplate=='default'){
 

@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of Coupons
@@ -41,7 +41,7 @@ class VirtuemartViewCoupon extends VmView {
 
 
 		if (!class_exists('VmHTML'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 

@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 if (!class_exists('VmView'))
-    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmview.php');
+    require(VMPATH_SITE . DS . 'helpers' . DS . 'vmview.php');
 
 // Set to '0' to use tabs i.s.o. sliders
 // Might be a config option later on, now just here for testing.
@@ -73,7 +73,7 @@ class VirtuemartViewUser extends VmView {
 	}
 
 	if (!class_exists('ShopFunctions'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+	    require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 
 	$this->_model = VmModel::getModel('user');
 
@@ -102,7 +102,7 @@ class VirtuemartViewUser extends VmView {
 
 	$userFields = null;
 
-	if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 	$this->cart = VirtueMartCart::getCart();
 	$task = vRequest::getCmd('task', '');
 
@@ -236,7 +236,7 @@ class VirtuemartViewUser extends VmView {
 
 	    if (empty($this->currency)) {
 		if (!class_exists('CurrencyDisplay'))
-		    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		    require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 
 		$currency = CurrencyDisplay::getInstance();
 		$this->assignRef('currency', $currency);
@@ -252,7 +252,7 @@ class VirtuemartViewUser extends VmView {
 
 	// Shopper info
 	if (!class_exists('VirtueMartModelShopperGroup'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'shoppergroup.php');
+	    require(VMPATH_ADMIN . DS . 'models' . DS . 'shoppergroup.php');
 
 	$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById($this->_model->getId());
 	$user = JFactory::getUser();

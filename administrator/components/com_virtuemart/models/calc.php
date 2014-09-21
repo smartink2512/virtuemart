@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 */
 
 
-if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 class VirtueMartModelCalc extends VmModel {
 
@@ -126,7 +126,7 @@ class VirtueMartModelCalc extends VmModel {
 
 		$datas = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering());
 
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 		foreach ($datas as &$data){
 
 			$data->currencyName = ShopFunctions::getCurrencyByID($data->calc_currency);
@@ -199,7 +199,7 @@ class VirtueMartModelCalc extends VmModel {
 			vmError('Calculation store '.$xrefTable->getError());
 		}
 
-		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
+		if (!class_exists('vmCalculationPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
 		$dispatcher = JDispatcher::getInstance();
 		$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array(&$data));
@@ -303,7 +303,7 @@ class VirtueMartModelCalc extends VmModel {
 				$ok = false;
 			}
 
-// 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+// 			if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmDeleteCalculationRow', array( $id));

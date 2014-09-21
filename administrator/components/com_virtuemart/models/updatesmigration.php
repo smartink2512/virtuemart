@@ -50,7 +50,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      * @author Max Milbers
      */
     function determineStoreOwner() {
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 		$virtuemart_user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
 		if (isset($virtuemart_user_id) && $virtuemart_user_id > 0) {
 		    $this->_user = JFactory::getUser($virtuemart_user_id);
@@ -162,7 +162,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	$fields['vendor_letter_header_html']='<h1>{vm:vendorname}</h1><p>{vm:vendoraddress}</p>';
 	$fields['vendor_letter_header_image']='1';
 	$fields['vendor_letter_footer_html']='{vm:vendorlegalinfo}<br /> Page {vm:pagenum}/{vm:pagecount}';
-	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+	if(!class_exists('VirtueMartModelUser')) require(VMPATH_ADMIN.DS.'models'.DS.'user.php');
 	$usermodel = VmModel::getModel('user');
 	$usermodel->setId($userId);
 
@@ -288,7 +288,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
 
-			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+			if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
 		$updater = new GenericTableUpdater();
 		$updater->createLanguageTables();
 
@@ -311,7 +311,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
 
-		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+		if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
 		$updater = new GenericTableUpdater();
 		$updater->createLanguageTables();
 
@@ -334,7 +334,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		}
 
 		if(!class_exists('VmConfig')){
-			require_once(JPATH_VM_ADMINISTRATOR .'/helpers/config.php');
+			require_once(VMPATH_ADMIN .'/helpers/config.php');
 			VmConfig::loadConfig(false,true);
 		}
 

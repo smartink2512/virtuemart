@@ -81,7 +81,7 @@ class calculationHelper {
 		//         $this->vendorCurrency = 1;
 		$this->productVendorId = 1;
 
-		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		if (!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		$this->_currencyDisplay = CurrencyDisplay::getInstance();
 		$this->_debug = false;
 
@@ -217,7 +217,7 @@ class calculationHelper {
 			return;
 
 		if(empty($this->_cart)){
-			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			$this->_cart = VirtueMartCart::getCart();
 		}
 
@@ -994,7 +994,7 @@ class calculationHelper {
 		}
 
 		if (!class_exists('CouponHelper'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'coupon.php');
 		if (!($_data = CouponHelper::getCouponDetails($_code))) {
 			return; // TODO give some error here
 		}
@@ -1317,7 +1317,7 @@ class calculationHelper {
 	function calculateDisplayedPlugins($type){
 
 		// Handling shipment plugins
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vm'.$type);
 
@@ -1390,7 +1390,7 @@ class calculationHelper {
 		$this->_cart->cartPrices['shipment_calc_id'] = 0;
 
 		// Handling shipment plugins
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
 		$this->_cart->checkAutomaticSelectedPlug('shipment');
@@ -1432,7 +1432,7 @@ class calculationHelper {
 		$this->_cart->cartPrices['salesPricePayment'] = 0;
 		$this->_cart->cartPrices['payment_calc_id'] = 0;
 
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 
 		$this->_cart->checkAutomaticSelectedPlug('payment');

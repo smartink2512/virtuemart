@@ -55,7 +55,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php
 					if ($this->custom->form) {
 						$form = $this->custom->form;
-						include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
+						include(VMPATH_ADMIN.DS.'fields'.DS.'formrenderer.php');
 					}
 				} else {
 					echo vmText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN');

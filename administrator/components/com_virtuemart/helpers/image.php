@@ -13,7 +13,7 @@
 
 defined('_JEXEC') or die();
 
-if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');
 
 class VmImage extends VmMediaHandler {
 
@@ -156,7 +156,7 @@ class VmImage extends VmMediaHandler {
 		$this->checkPathCreateFolders($file_path_thumb);
 
 		if (file_exists($fullSizeFilenamePath)) {
-			if (!class_exists('Img2Thumb')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'img2thumb.php');
+			if (!class_exists('Img2Thumb')) require(VMPATH_ADMIN.DS.'helpers'.DS.'img2thumb.php');
 			$createdImage = new Img2Thumb($fullSizeFilenamePath, (int)$width, (int)$height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
 			if($createdImage){
 				return $this->file_url_folder_thumb.$this->file_name_thumb.'.'.$this->file_extension;

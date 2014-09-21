@@ -670,7 +670,7 @@ class VmTable extends JTable {
 		if($this->_cryptedFields){
 
 			if(!class_exists('vmCrypt')){
-				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			}
 			if(isset($this->modified_on)){
 				$timestamp = strtotime($this->modified_on);
@@ -707,7 +707,7 @@ class VmTable extends JTable {
 
 		if($this->_cryptedFields){
 			if(!class_exists('vmCrypt')){
-				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			}
 			vmdebug('my crytped fields in store '.get_class($this),$this->_cryptedFields);
 			foreach($this->_cryptedFields as $field){
@@ -995,7 +995,7 @@ class VmTable extends JTable {
 		$tblKey = $this->_tbl_key;
 		$ok = true;
 		if ($this->_translatable) {
-			if (!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
+			if (!class_exists('VmTableData')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtabledata.php');
 			$db = JFactory::getDBO();
 
 			$langTable = new VmTableData($this->_tbl_lang, $tblKey, $db);
@@ -1623,7 +1623,7 @@ class VmTable extends JTable {
 
 			$langs = VmConfig::get('active_languages', array());
 			if (!$langs) $langs[] = VmConfig::$vmlang;
-			if (!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
+			if (!class_exists('VmTableData')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtabledata.php');
 			foreach ($langs as $lang) {
 				$lang = strtolower(strtr($lang, '-', '_'));
 				$langError = $this->checkAndDelete($this->_tbl . '_' . $lang);

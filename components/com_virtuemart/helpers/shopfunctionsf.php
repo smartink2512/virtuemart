@@ -37,7 +37,7 @@ class shopFunctionsF {
 		}
 		if($show == 1) {
 
-			if(!class_exists( 'VirtuemartViewUser' )) require(JPATH_VM_SITE.DS.'views'.DS.'user'.DS.'view.html.php');
+			if(!class_exists( 'VirtuemartViewUser' )) require(VMPATH_SITE.DS.'views'.DS.'user'.DS.'view.html.php');
 			$view = new VirtuemartViewUser();
 			$view->setLayout( 'login' );
 			$view->assignRef( 'show', $show );
@@ -314,8 +314,8 @@ class shopFunctionsF {
 		if (JFile::exists ($templatePath)) {
 			$layout =  $templatePath;
 		} else {
-			if (JFile::exists (JPATH_VM_SITE . DS . 'sublayouts' . DS . $name . '.php')) {
-				$layout = JPATH_VM_SITE . DS . 'sublayouts' . DS . $name . '.php';
+			if (JFile::exists (VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php')) {
+				$layout = VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php';
 			}
 		}
 
@@ -340,20 +340,20 @@ class shopFunctionsF {
 	//TODO this is quirk, why it is using here $noVendorMail, but everywhere else it is using $doVendor => this make logic trouble
 	static public function renderMail ($viewName, $recipient, $vars = array(), $controllerName = NULL, $noVendorMail = FALSE,$useDefault=true) {
 
-		if(!class_exists( 'VirtueMartControllerVirtuemart' )) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
+		if(!class_exists( 'VirtueMartControllerVirtuemart' )) require(VMPATH_SITE.DS.'controllers'.DS.'virtuemart.php');
 // 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-		$controller->addViewPath( JPATH_VM_SITE.DS.'views' );
+		$controller->addViewPath( VMPATH_SITE.DS.'views' );
 
 		$view = $controller->getView( $viewName, 'html' );
 		if(!$controllerName) $controllerName = $viewName;
 		$controllerClassName = 'VirtueMartController'.ucfirst( $controllerName );
-		if(!class_exists( $controllerClassName )) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');
+		if(!class_exists( $controllerClassName )) require(VMPATH_SITE.DS.'controllers'.DS.$controllerName.'.php');
 
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-		$view->addTemplatePath( JPATH_VM_SITE.'/views/'.$viewName.'/tmpl' );
+		$view->addTemplatePath( VMPATH_SITE.'/views/'.$viewName.'/tmpl' );
 
 		$template = self::loadVmTemplateStyle();
 
@@ -600,7 +600,7 @@ class shopFunctionsF {
 	}
 
 	function sendRatingEmailToVendor ($data) {
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 		$vars = array();
 		$productModel = VmModel::getModel ('product');
 		$product = $productModel->getProduct ($data['virtuemart_product_id']);

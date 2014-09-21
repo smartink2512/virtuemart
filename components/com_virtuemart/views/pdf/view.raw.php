@@ -17,7 +17,7 @@
  */
 defined('_JEXEC') or die;
 
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 class VirtueMartViewRaw extends VmView
 {
@@ -28,7 +28,7 @@ class VirtueMartViewRaw extends VmView
 		$this->assignRef('type', $type);
 		$viewName = vRequest::getCmd('view','productdetails');
 		$class= 'VirtueMartView'.ucfirst($viewName);
-		if(!class_exists($class)) require(JPATH_VM_SITE.DS.'views'.DS.$viewName.DS.'view.html.php');
+		if(!class_exists($class)) require(VMPATH_SITE.DS.'views'.DS.$viewName.DS.'view.html.php');
 		$view = new $class ;
 	
 		$view->display($tpl);

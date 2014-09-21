@@ -22,7 +22,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * View for the shopping cart
@@ -53,7 +53,7 @@ class VirtueMartViewCart extends VmView {
 		$format = vRequest::getCmd('format');
 
 		if (!class_exists('VirtueMartCart'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$this->cart = VirtueMartCart::getCart();
 		//$this->assignRef('cart', $cart);
 
@@ -98,7 +98,7 @@ class VirtueMartViewCart extends VmView {
 
 
 			if (!class_exists ('VirtueMartModelUserfields')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+				require(VMPATH_ADMIN . DS . 'models' . DS . 'userfields.php');
 			}
 
 			$userFieldsModel = VmModel::getModel ('userfields');
@@ -117,7 +117,7 @@ class VirtueMartViewCart extends VmView {
 
 
 			if (!class_exists ('CurrencyDisplay'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 
 			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 			$this->assignRef('currencyDisplay',$currencyDisplay);

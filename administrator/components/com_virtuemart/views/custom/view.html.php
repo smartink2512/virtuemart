@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -34,8 +34,8 @@ class VirtuemartViewCustom extends VmView {
 
 		// Load the helper(s)
 		if (!class_exists('VmHTML'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
+		if(!class_exists('vmCustomPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
 
 		$model = VmModel::getModel('custom');
 
@@ -62,7 +62,7 @@ class VirtuemartViewCustom extends VmView {
 			$this->custom->form = false;
 			if(!empty($this->custom->custom_jplugin_id)) {
 				VmConfig::loadJLang('plg_vmpsplugin', false);
-				JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
+				JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 				$selected = $this->custom->custom_jplugin_id;
 				// Get the payment XML.
 				$formFile	= JPath::clean( JPATH_ROOT .DS. 'plugins'.DS. 'vmcustom' .DS. $this->custom->custom_element . DS . $this->custom->custom_element . '.xml');
@@ -151,7 +151,7 @@ class VirtuemartViewCustom extends VmView {
 		$results = $db->loadAssocList($ext_id);
 
 		if (!class_exists('vmPlugin'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'plugins' . DS . 'vmplugin.php');
+			require(VMPATH_ADMIN . DS . 'plugins' . DS . 'vmplugin.php');
 
 		foreach ($results as $result) {
         //$filename = 'plg_' .strtolower ( $result['name']).'.sys';
@@ -173,7 +173,7 @@ class VirtuemartViewCustom extends VmView {
 
 		$identify = ''; // ':'.$this->virtuemart_custom_id;
 		if (!class_exists ('VmHTML')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 		}
 		if ($datas->field_type) {
 			$this->addHidden ('field_type', $datas->field_type);

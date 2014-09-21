@@ -449,7 +449,7 @@ $document->addScriptDeclaration ( "
 					<input class='orderedit' type="text"  name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][order_item_name]" value="<?php echo $item->order_item_name; ?>"/><?php
 						//echo $item->order_item_name;
 						//if (!empty($item->product_attribute)) {
-								if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+								if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
 								$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'BE');
 							if($product_attribute) echo '<div>'.$product_attribute.'</div>';
 						//}

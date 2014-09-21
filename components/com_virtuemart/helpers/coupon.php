@@ -80,7 +80,7 @@ abstract class CouponHelper
 
 		if ($_billTotal < $couponData->coupon_value_valid) {
 			if (!class_exists('CurrencyDisplay'))
-			    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			    require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance();
 
 			$coupon_value_valid = $currency->priceDisplay($couponData->coupon_value_valid);

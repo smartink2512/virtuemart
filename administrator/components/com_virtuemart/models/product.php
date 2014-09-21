@@ -21,10 +21,10 @@ defined ('_JEXEC') or die('Restricted access');
 
 
 if (!class_exists ('VmModel')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
 }
 
-// JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+// JTable::addIncludePath(VMPATH_ADMIN.DS.'tables');
 /**
  * Model for VirtueMart Products
  *
@@ -69,7 +69,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		else {
 			if (!class_exists ('shopFunctions')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 			}
 			$browseOrderByFields = ShopFunctions::getValidProductFilterArray ();
 			$this->addvalidOrderingFieldName (array('product_price','product_sales'));
@@ -1113,7 +1113,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if (!empty($product->shoppergroups) and $front) {
 				if (!class_exists ('VirtueMartModelUser')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+					require(VMPATH_ADMIN . DS . 'models' . DS . 'user.php');
 				}
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
 				if (empty($commonShpgrps)) {
@@ -1161,7 +1161,7 @@ class VirtueMartModelProduct extends VmModel {
 			if (!empty($product->categories) and is_array ($product->categories)){
 				if ($front) {
 					if (!class_exists ('shopFunctionsF')) {
-						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+						require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 					}
 
 					//We must first check if we come from another category, due the canoncial link we would have always the same catgory id for a product
@@ -1248,7 +1248,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product->virtuemart_product_price_id = NULL;
 
 		if (!class_exists ('VirtueMartModelVendor')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 		}
 		//$product->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 		$product->selectedPrice = 0;
@@ -1750,7 +1750,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				if (!$isChild and isset($data['mprices']['use_desired_price'][$k]) and $data['mprices']['use_desired_price'][$k] == "1") {
 					if (!class_exists ('calculationHelper')) {
-						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+						require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 					}
 					$calculator = calculationHelper::getInstance ();
 					$pricesToStore['salesPrice'] = $data['mprices']['salesPrice'][$k];
@@ -2143,7 +2143,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		// Loads the product price details
 		if (!class_exists ('calculationHelper')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		$calculator = calculationHelper::getInstance ();
 
@@ -2444,7 +2444,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 	if(VmConfig::get('lstockmail',TRUE)){
 		if (!class_exists ('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 
 		/* Load the product details */
@@ -2628,7 +2628,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 		jimport ('joomla.utilities.arrayhelper');
 		if (!class_exists ('ShopFunctions')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 		}
 
 		$product_id = vRequest::getVar ('virtuemart_product_id', '');

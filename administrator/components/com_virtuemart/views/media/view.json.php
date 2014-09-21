@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Json View class for the VirtueMart Component
@@ -55,7 +55,7 @@ class VirtuemartViewMedia extends VmView {
 			}
 		}
 		else {
-			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+			if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');
 			$start = vRequest::getInt('start',0);
 
 			$type = vRequest::getCmd('mediatype',0);

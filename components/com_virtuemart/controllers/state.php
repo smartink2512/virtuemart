@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
-if(!class_exists('VirtueMartModelState')) require( JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'state.php' );
+if(!class_exists('VirtueMartModelState')) require( VMPATH_ADMIN.DS.'models'.DS.'state.php' );
 
 class VirtueMartControllerState extends JControllerLegacy
 {

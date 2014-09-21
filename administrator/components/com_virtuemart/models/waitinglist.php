@@ -68,7 +68,7 @@ class VirtueMartModelWaitingList extends VmModel {
 		$max_number = (int)$max_number;
 
 		if (!class_exists ('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		$vars = array();
 		$waiting_users = $this->getWaitingusers ($virtuemart_product_id);

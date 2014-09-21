@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 if (!class_exists('VmView'))
-    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmview.php');
+    require(VMPATH_SITE . DS . 'helpers' . DS . 'vmview.php');
 
 /**
  * Product details
@@ -46,7 +46,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$show_prices = VmConfig::get('show_prices', 1);
 	if ($show_prices == '1') {
 	    if (!class_exists('calculationHelper'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		vmJsApi::jPrice();
 	}
 	$this->assignRef('show_prices', $show_prices);
@@ -61,7 +61,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$task = vRequest::getCmd('task');
 
 	if (!class_exists('VmImage'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+		require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 	// Load the product
 	//$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
@@ -82,7 +82,7 @@ class VirtueMartViewProductdetails extends VmView {
     }
     $product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
-	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+	if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 
 	$customfieldsModel = VmModel::getModel ('Customfields');

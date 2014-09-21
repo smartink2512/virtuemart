@@ -199,7 +199,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @return object List of theme objects
 	 */
 	function getCurrencyConverterList() {
-		$dir = JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter';
+		$dir = VMPATH_ADMIN.DS.'plugins'.DS.'currency_converter';
 		$result = '';
 
 		if ($handle = opendir($dir)) {
@@ -406,7 +406,7 @@ class VirtueMartModelConfig extends VmModel {
 			}*/
 		}
 
-		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('shopfunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 		$safePath = shopFunctions::checkSafePath($safePath);
 
 		if(!empty($safePath)){
@@ -439,7 +439,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		VmConfig::loadConfig(true);
 
-		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+		if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
 
@@ -537,11 +537,11 @@ class VirtueMartModelConfig extends VmModel {
 	 */
 	static function readConfigFile(){
 
-		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
+		$_datafile = VMPATH_ADMIN.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
-			if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg-dist')) {
+			if (file_exists(VMPATH_ADMIN.DS.'virtuemart_defaults.cfg-dist')) {
 				if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',JPATH_VM_ADMINISTRATOR);
+				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',VMPATH_ADMIN);
 			} else {
 				vmWarn('The data file with the default configuration could not be found. You must configure the shop manually.');
 				return FALSE;

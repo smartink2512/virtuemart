@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 if (!class_exists ('shopFunctionsF'))
-	require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+	require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 
 AdminUIHelper::startAdminArea($this);
 

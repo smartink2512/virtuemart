@@ -219,7 +219,7 @@ class ShopFunctions {
 	static function renderTaxList ($selected, $name = 'product_tax_id', $class = '') {
 
 		if (!class_exists ('VirtueMartModelCalc')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'calc.php');
+					require(VMPATH_ADMIN . DS . 'models' . DS . 'calc.php');
 				}
 		$taxes = VirtueMartModelCalc::getTaxes ();
 
@@ -478,7 +478,7 @@ class ShopFunctions {
 	static function renderLWHUnitList ($name, $selected) {
 
 		if (!class_exists ('VmHTML')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 		}
 
 		$lwh_unit_default = array('M' => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_M')
@@ -507,7 +507,7 @@ class ShopFunctions {
 	static function writePriceConfigLine ($array, $name, $langkey) {
 
 		if (!class_exists ('VmHTML')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 		}
 		if(is_object($array)) $array = get_object_vars($array);
 		$html =
@@ -1028,7 +1028,7 @@ class ShopFunctions {
 	 * @author Valerie
 	 */
 	static function InvoiceNumberReserved ($invoice_number) {
-		if(!class_exists('ShopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		return shopFunctionsF::InvoiceNumberReserved($invoice_number);
 	}
 
@@ -1155,7 +1155,7 @@ class ShopFunctions {
 
 		if (!isset($filterArray)) {
 
-			$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku',
+			$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku','product_mpn',
 			'product_s_desc', 'product_desc','`l`.slug',
 			'category_name', 'category_description', 'mf_name',
 			'product_price', '`p`.product_special', '`p`.product_sales', '`p`.product_availability', '`p`.product_available_date',
@@ -1258,7 +1258,7 @@ class ShopFunctions {
 	 * @return the invoice folder name
 	 */
 	static function getInvoiceFolderName() {
-		if(!class_exists('ShopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		return ShopFunctionsF::getInvoiceFolderName();
 	}
 	/*

@@ -18,7 +18,7 @@ $field = $viewData['field'];
 $app = JFactory::getApplication();
 if($app->isSite()){
 	vmJsApi::popup('#full-tos','#terms-of-service');
-	if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 	$cart = VirtuemartCart::getCart();
 	$cart->prepareVendor();
 	if(is_array($cart->BT) and isset($cart->BT['tos'])){
@@ -30,7 +30,7 @@ if($app->isSite()){
 	$tos = $field['value'];
 }
 
-if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 echo VmHtml::checkbox ($_prefix.$field['name'], $tos, 1, 0, 'class="terms-of-service"');
 
 if (VmConfig::get ('oncheckout_show_legal_info', 1) and $app->isSite()) {

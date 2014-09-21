@@ -19,7 +19,7 @@
  * http://virtuemart.net
  */
 jimport('joomla.application.component.controller');
-if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
 class VmController extends JControllerLegacy{
 
@@ -348,7 +348,7 @@ class VmController extends JControllerLegacy{
 	 * @see JController::getModel()
 	 */
 	function getModel($name = '', $prefix = '', $config = array()){
-		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions'))require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
 		if(empty($name)) $name = false;
 		return VmModel::getModel($name);

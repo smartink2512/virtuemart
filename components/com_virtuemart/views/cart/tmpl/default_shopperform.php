@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td  style="border:0px;">
 				<?php 
 				if (!class_exists ('VirtueMartModelUser')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+					require(VMPATH_ADMIN . DS . 'models' . DS . 'user.php');
 				}
 
 				$userList = $this->getUserList();

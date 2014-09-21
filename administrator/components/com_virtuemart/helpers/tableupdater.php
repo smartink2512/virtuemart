@@ -22,13 +22,13 @@ defined('_JEXEC') or die('Restricted access');
  * @author Milbo
  *
  */
-if(!class_exists('VmModel')) require JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php';
+if(!class_exists('VmModel')) require VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php';
 
 class GenericTableUpdater extends VmModel{
 
 	public function __construct(){
 
-// 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+// 		JTable::addIncludePath(VMPATH_ADMIN . DS . 'tables');
 
 		$this->_app = JFactory::getApplication();
 		$this->_db = JFactory::getDBO();
@@ -94,7 +94,7 @@ class GenericTableUpdater extends VmModel{
 
 // 			if($i>1) continue;
 			$className = 'Table'.ucfirst ($table);
-			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
+			if(!class_exists($className)) require(VMPATH_ADMIN.DS.'tables'.DS.$table.'.php');
 			$tableName = '#__virtuemart_'.$table;
 
 			$langTable = $this->getTable($table);
@@ -288,7 +288,7 @@ class GenericTableUpdater extends VmModel{
 	public function updateMyVmTables($file = 0, $like ='_virtuemart_'){
 
 		if(empty($file)){
-			$file = JPATH_VM_ADMINISTRATOR.DS.'install'.DS.'install.sql';
+			$file = VMPATH_ADMIN.DS.'install'.DS.'install.sql';
 		}
 
 		if(is_array($file)){

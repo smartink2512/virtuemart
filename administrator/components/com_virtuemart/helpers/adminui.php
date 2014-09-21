@@ -128,7 +128,7 @@ class AdminUIHelper {
 		self::$vmAdminAreaStarted = false;
 		if (VmConfig::get('debug') == '1') {
 		//TODO maybe add debuggin again here
-//		include(JPATH_VM_ADMINISTRATOR.'debug.php');
+//		include(VMPATH_ADMIN.'debug.php');
 		}
 		?>
 					<div class="clear"></div>

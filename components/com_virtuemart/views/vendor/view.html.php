@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 // Set to '0' to use tabs i.s.o. sliders
 // Might be a config option later on, now just here for testing.
@@ -70,13 +70,13 @@ class VirtuemartViewVendor extends VmView {
 			$vendor = $model->getVendor($virtuemart_vendor_id);
 			$model->addImages($vendor);
 			if (VmConfig::get ('enable_content_plugin', 0)) {
-				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+				if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 				shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
 				shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
 			}
 			$this->assignRef('vendor', $vendor);
 
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 			$userId = VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
 
 			if ($layoutName=='tos') {

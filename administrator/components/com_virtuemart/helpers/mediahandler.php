@@ -104,7 +104,7 @@ class VmMediaHandler {
 		}
 		else if($type == 'forSale' || $type== 'file_is_forSale'){
 			if (!class_exists ('shopFunctionsF'))
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 			$relUrl = shopFunctions::checkSafePath();
 			if($relUrl){
 				$choosed = true;
@@ -159,7 +159,7 @@ class VmMediaHandler {
 		$isImage = self::isImage($extension);
 
 		if($isImage){
-			if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+			if (!class_exists('VmImage')) require(VMPATH_ADMIN.DS.'helpers'.DS.'image.php');
 			$media = new VmImage();
 		} else {
 			$media = new VmMediaHandler();
@@ -228,7 +228,7 @@ class VmMediaHandler {
 			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
 			if (!class_exists ('shopFunctions'))
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctions.php');
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctions.php');
 			$safePath = shopFunctions::checkSafePath();
 			if(!$safePath){
 				return FALSE;
@@ -1173,7 +1173,7 @@ class VmMediaHandler {
 	<label for="published">'. vmText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 </td>
 <td>';
-	if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+	if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 	$html .= VmHtml::checkbox('media_published',$checked,1,0,'class="inputbox"','media_published'.$identify) ;
 	//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 

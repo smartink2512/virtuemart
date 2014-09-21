@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
 * Product details
@@ -64,7 +64,7 @@ class virtuemartViewrecommend extends VmView {
 
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
 		$document = JFactory::getDocument();
@@ -77,7 +77,7 @@ class virtuemartViewrecommend extends VmView {
 		$task = vRequest::getCmd('task');
 
 		if (!class_exists('VmImage'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 
 		if(empty($virtuemart_product_id)){
@@ -111,7 +111,7 @@ class virtuemartViewrecommend extends VmView {
 			if (array_key_exists('0', $this->product->categories)) $virtuemart_category_id = $this->product->categories[0];
 		}
 
-		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
 
 		if($category_model){

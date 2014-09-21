@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 
 
 /**
@@ -34,7 +34,7 @@ class VirtuemartViewVirtuemart extends VmView {
 	function display($tpl = null) {
 
 		if (!class_exists('VmImage'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 		$model = VmModel::getModel('virtuemart');
@@ -53,7 +53,7 @@ class VirtuemartViewVirtuemart extends VmView {
 		$this->assignRef('ordersByStatus', $ordersByStatus);
 
 		$recentOrders = $model->getRecentOrders();
-			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
@@ -69,7 +69,7 @@ class VirtuemartViewVirtuemart extends VmView {
 		$recentCustomers = $model->getRecentCustomers();
 		$this->assignRef('recentCustomers', $recentCustomers);
 
-		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.'/helpers/shopfunctions.php');
+		if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.'/helpers/shopfunctions.php');
 
 		$this->extensionsFeed = ShopFunctions::getExtensionsRssFeed();
 

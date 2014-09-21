@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model for product categories
@@ -219,7 +219,7 @@ class VirtueMartModelCategory extends VmModel {
 		$childList = $db->loadObjectList();
 		//vmdebug('getChildCategoryListObject in model category ',$childList,$query);
 		if(!empty($childList)){
-			if(!class_exists('TableCategory_medias'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'category_medias.php');
+			if(!class_exists('TableCategory_medias'))require(VMPATH_ADMIN.DS.'tables'.DS.'category_medias.php');
 			foreach($childList as $child){
 				$xrefTable = new TableCategory_medias($db);
 				$child->virtuemart_media_id = $xrefTable->load($child->virtuemart_category_id);

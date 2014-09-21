@@ -32,17 +32,17 @@ VmConfig::loadJLang('com_virtuemart', true);
 if(VmConfig::get('shop_is_offline',0)){
 	//$cache->setCaching (1);
 	$_controller = 'virtuemart';
-	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
+	require (VMPATH_SITE.DS.'controllers'.DS.'virtuemart.php');
 	vRequest::setVar('view', 'virtuemart');
 	$task='';
-	$basePath = JPATH_VM_SITE;
+	$basePath = VMPATH_SITE;
 } else {
 
 	//$cache->setCaching (0);
 
 	/* Front-end helpers */
-	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
-	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
+	if(!class_exists('VmImage')) require(VMPATH_ADMIN.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
+	if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 	$_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart')) ;
 	$trigger = 'onVmSiteController';
@@ -62,7 +62,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			$tag = $jlang->getTag();
 			$jlang->load('', JPATH_ADMINISTRATOR,$tag,true);
 			VmConfig::loadJLang('com_virtuemart');
-			$basePath = JPATH_VM_ADMINISTRATOR;
+			$basePath = VMPATH_ADMIN;
 			$trigger = 'onVmAdminController';
 			vmdebug('$vendorIdUser use FE managing '.$vendorIdUser);
 			vRequest::setVar('manage','1');
@@ -83,7 +83,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			vmJsApi::jQuery();
 			vmJsApi::jSite();
 			vmJsApi::cssSite();
-			$basePath = JPATH_VM_SITE;
+			$basePath = VMPATH_SITE;
 	}
 }
 

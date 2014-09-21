@@ -53,7 +53,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 		$view->assignRef('document', $document);
 
-		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = false;
 		$cart->setCartIntoSession();
@@ -68,7 +68,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$view = $this->getView('user', 'html');
 		$view->setLayout('edit_address');
 
-		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = true;
 		$cart->setCartIntoSession();
@@ -85,7 +85,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 */
 	function saveUser(){
 
-		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 
 		$layout = vRequest::getCmd('layout','edit');
@@ -134,7 +134,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$cart = false;
 		if($cartObj){
 			if($cartObj->_fromCart or $cartObj->getInCheckOut()){
-				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+				if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 				$cart = VirtueMartCart::getCart();
 				$prefix= '';
 				if ($data['address_type'] == 'STaddress' || $data['address_type'] =='ST') {
@@ -224,7 +224,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 */
 	function cancel()
 	{
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		vmdebug('cancel executed' );
 		if($cart->_fromCart){
@@ -264,7 +264,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 			if(!$res[0]){
 				$data = vRequest::getPost();
 				$data['address_type'] = vRequest::getVar('addrtype','BT');
-				if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+				if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 				$cart = VirtueMartCart::getCart();
 				$prefix= '';
 				if ($data['address_type'] == 'STaddress' || $data['address_type'] =='ST') {

@@ -39,7 +39,7 @@ class VirtueMartControllerVendor extends JControllerLegacy
 
 		vRequest::vmCheckToken();
 
-		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		$model = VmModel::getModel('vendor');
 		$mainframe = JFactory::getApplication();
@@ -51,7 +51,7 @@ class VirtueMartControllerVendor extends JControllerLegacy
 
 		$virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id',1);
 
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 		$userId = VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
 
 		//$vendorUser = JFactory::getUser($userId);

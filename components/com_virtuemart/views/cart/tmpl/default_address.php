@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="output-shipto">
 			<?php
 			if (!class_exists ('VmHtml')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 			}
 			if($this->cart->user->virtuemart_user_id==0){
 

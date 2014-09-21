@@ -27,10 +27,10 @@ if (!class_exists( 'VmConfig' )) {
 
 // Load the helper functions that are needed by all plugins
 if (!class_exists ('ShopFunctions')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 }
 // if (!class_exists('DbScheme'))
-// require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
+// require(VMPATH_ADMIN . DS . 'helpers' . DS . 'dbscheme.php');
 // Get the plugin library
 jimport ('joomla.plugin.plugin');
 
@@ -387,7 +387,7 @@ abstract class vmPlugin extends JPlugin {
 				$app = JFactory::getApplication();
 				$app->enqueueMessage(get_class($this) . ':: VirtueMart2 update ' . $this->_tablename);
 				if (!class_exists('GenericTableUpdater'))
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
 				$updater = new GenericTableUpdater();
 				$updater->updateMyVmTables($update);
 			} else {
@@ -525,7 +525,7 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		if (!class_exists ('VmTable')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtable.php');
 		}
 
 		//New Vm3 way
@@ -560,7 +560,7 @@ abstract class vmPlugin extends JPlugin {
 			$db = JFactory::getDBO ();
 
 			if (!class_exists ($this->_configTableClassName)) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . $this->_configTableFileName . '.php');
+				require(VMPATH_ADMIN . DS . 'tables' . DS . $this->_configTableFileName . '.php');
 			}
 			$this->_vmpCtable = new $this->_configTableClassName($db);
 			if ($this->_xParams !== 0) {
@@ -636,7 +636,7 @@ abstract class vmPlugin extends JPlugin {
 	protected function createPluginTableObject ($tableName, $tableFields, $primaryKey, $tableId, $loggable = FALSE) {
 
 		if (!class_exists ('VmTableData')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtabledata.php');
 		}
 		$db = JFactory::getDBO ();
 		$table = new VmTableData($tableName, $tableId, $db);

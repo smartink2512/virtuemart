@@ -30,7 +30,7 @@ $option = vRequest::getString('option');
 
 if($option=='com_virtuemart'){
 
-	if (!class_exists('AdminUIHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'adminui.php');
+	if (!class_exists('AdminUIHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'adminui.php');
 	if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 	AdminUIHelper::startAdminArea($this);
 }

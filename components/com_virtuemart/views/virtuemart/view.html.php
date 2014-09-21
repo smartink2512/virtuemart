@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 # Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Default HTML View class for the VirtueMart Component
@@ -38,7 +38,7 @@ class VirtueMartViewVirtueMart extends VmView {
 		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();
 
-		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if (VmConfig::get ('enable_content_plugin', 0)) {
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
@@ -79,7 +79,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 			$this->assignRef('categories',	$categoryChildren);
 
-			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance( );
 			$this->assignRef('currency', $currency);
 			

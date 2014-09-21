@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
 * Handle the category view
@@ -36,11 +36,11 @@ class VirtuemartViewCategory extends VmView {
 
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
 
-		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
 		vmJsApi::jPrice();
@@ -51,7 +51,7 @@ class VirtuemartViewCategory extends VmView {
 		$pathway = $app->getPathway();
 
 		if (!class_exists('VmImage'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 		// set search and keyword
 		if ($keyword = vRequest::uword('keyword', false, ' ,-,+,.,_')) {

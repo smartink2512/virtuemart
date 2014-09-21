@@ -22,7 +22,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmModel')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('VmModel')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model for VirtueMart Orders
@@ -395,7 +395,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data = array_merge($dataT,(array)$orderdatacopy);
 // 		$data['order_status'] = $orderdata->orderstatus;
 		if (!class_exists('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
 		$this->_currencyDisplay = CurrencyDisplay::getInstance();
@@ -646,14 +646,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if ( in_array((string) $data->order_status,$cp_rm) ){
 			if (!empty($data->coupon_code)) {
 				if (!class_exists('CouponHelper'))
-					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+					require(VMPATH_SITE . DS . 'helpers' . DS . 'coupon.php');
 				CouponHelper::RemoveCoupon($data->coupon_code);
 			}
 		}
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
 
-			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+			if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 
 			JPluginHelper::importPlugin('vmcalculation');
 			JPluginHelper::importPlugin('vmcustom');
@@ -1004,9 +1004,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	{
 		$_userInfoData = array();
 
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
+		if(!class_exists('VirtueMartModelUserfields')) require(VMPATH_ADMIN.DS.'models'.DS.'userfields.php');
 
-		//if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		//if(!class_exists('shopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
 		$_userFieldsModel = VmModel::getModel('userfields');
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
@@ -1144,7 +1144,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$productModel = VmModel::getModel('product');
 
 		if (!empty($tableOrderItems->product_attribute)) {
-			if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+			if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
 			$virtuemart_product_id = $tableOrderItems->virtuemart_product_id;
 			$product_attributes = json_decode($tableOrderItems->product_attribute,true);
 			foreach ($product_attributes as $virtuemart_customfield_id=>$param){
@@ -1161,7 +1161,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 						if ($productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($customfield_id ) ) {
 						if ($productCustom->field_type == "E") {
 								//$product = self::addParam($product);
-								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+								if(!class_exists('vmCustomPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
 								JPluginHelper::importPlugin('vmcustom');
 								$dispatcher = JDispatcher::getInstance();
 							//vmdebug('handleStockAfterStatusChangedPerProduct ',$param);
@@ -1307,7 +1307,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		foreach($Bill_calculation_kinds as $calculation_kind) {
 // 			if(empty($_cart->cartData)){
 // 				vmError('Cart data was empty, why?');
-// 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+// 				if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 // 				$calculator = calculationHelper::getInstance();
 // 				$_cart->cartData = $calculator->getCartData();
 // 			}
@@ -1488,7 +1488,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$db->setQuery($q);
 		$result = $db->loadAssoc();
 // 		vmdebug('my createInvoiceNumber $q '.$q,$result);
-		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+		if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 		if(!$result or   empty($result['invoice_number']) ){
 
 			$data['virtuemart_order_id'] = $orderDetails['virtuemart_order_id'];
@@ -1567,7 +1567,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if (isset($newOrderData['customer_notified']) && $newOrderData['customer_notified']==0) {
 		    return true;
 		}
-		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		//Important, the data of the order update mails, payments and invoice should
 		//always be in the database, so using getOrder is the right method
@@ -1575,7 +1575,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$order = $orderModel->getOrder($virtuemart_order_id);
 
 		$payment_name = $shipment_name='';
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
 		JPluginHelper::importPlugin('vmpayment');
@@ -1619,10 +1619,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			//TODO we need an array of orderstatus
 			if ( (in_array($order['details']['BT']->order_status,$orderstatusForInvoice))  or $pdfInvoice==1  or $force_create_invoice==1 ){
 				if (!shopFunctions::InvoiceNumberReserved($invoiceNumberDate[0])) {
-					if(!class_exists('VirtueMartControllerInvoice')) require( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
+					if(!class_exists('VirtueMartControllerInvoice')) require( VMPATH_SITE.DS.'controllers'.DS.'invoice.php' );
 					$controller = new VirtueMartControllerInvoice( array(
-						'model_path' => JPATH_VM_SITE.DS.'models',
-						'view_path' => JPATH_VM_SITE.DS.'views'
+						'model_path' => VMPATH_SITE.DS.'models',
+						'view_path' => VMPATH_SITE.DS.'views'
 					));
 
 					$vars['mediaToSend'][] = $controller->getInvoicePDF($order);
@@ -1686,7 +1686,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$curDate = JFactory::getDate();
 		$data['modified_on'] = $curDate->toMySql();*/
 
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipment',array( $data));
@@ -1696,7 +1696,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				return;
 			}
 		}
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLinePayment',array( $data));
 		foreach ($_returnValues as $_retVal) {
@@ -1809,7 +1809,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$_userInfoData = array();
 
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
+		if(!class_exists('VirtueMartModelUserfields')) require(VMPATH_ADMIN.DS.'models'.DS.'userfields.php');
 
 		$_userFieldsModel = VmModel::getModel('userfields');
 
@@ -1869,7 +1869,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$dispatcher = JDispatcher::getInstance();
 
 		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
 		// Update Payment Method
@@ -1914,7 +1914,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 //		JPluginHelper::importPlugin('vmcustom');
 
 		if (!class_exists('VirtueMartCart'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$cart->virtuemart_paymentmethod_id = $_orderData['virtuemart_paymentmethod_id'];
 		$cart->virtuemart_shipmentmethod_id = $_orderData['virtuemart_shipmentmethod_id'];
@@ -1999,7 +1999,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		JPluginHelper::importPlugin('vmshipment');
 		JPluginHelper::importPlugin('vmpayment');
 		if (!class_exists('VirtueMartCart'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($cart, $order));
 

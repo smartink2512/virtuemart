@@ -162,7 +162,7 @@ class vmCrypt {
 				//$options = array('costs'=>VmConfig::get('cryptCost',8));
 
 				/*if(!function_exists('password_hash')){
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'password_compat.php');
+					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'password_compat.php');
 				}
 
 				if(function_exists('password_hash')){
@@ -190,7 +190,7 @@ class vmCrypt {
 	private static function _getEncryptSafepath () {
 
 		if (!class_exists('ShopFunctions'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 		$safePath = ShopFunctions::checkSafePath();
 		if (empty($safePath)) {
 			return NULL;

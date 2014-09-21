@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 
-	if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+	if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 	echo shopFunctions::renderVendorAddress($this->vendor->virtuemart_vendor_id);
 
 /*	foreach($this->userFields as $userfields){

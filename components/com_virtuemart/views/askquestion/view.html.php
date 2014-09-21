@@ -21,7 +21,7 @@ defined ('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 if (!class_exists ('VmView')) {
-	require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmview.php');
+	require(VMPATH_SITE . DS . 'helpers' . DS . 'vmview.php');
 }
 
 /**
@@ -56,7 +56,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$show_prices = VmConfig::get ('show_prices', 1);
 		if ($show_prices == '1') {
 			if (!class_exists ('calculationHelper')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 			}
 		}
 		$this->assignRef ('show_prices', $show_prices);
@@ -67,7 +67,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$task = vRequest::getCmd ('task');
 
 		if (!class_exists('VmImage'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 		// Load the product
 		$product_model = VmModel::getModel ('product');
@@ -86,7 +86,7 @@ class VirtueMartViewAskquestion extends VmView {
 		}
 
 		if (!class_exists ('VirtueMartModelVendor')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 		}
 		$product = $product_model->getProduct ($virtuemart_product_id);
 		// Set Canonic link

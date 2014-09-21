@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.version');
 
 /**
@@ -39,7 +39,7 @@ class VirtuemartViewUserfields extends VmView {
 		$mainframe = JFactory::getApplication() ;
 
 		if (!class_exists('VmHTML'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$layoutName = vRequest::getCmd('layout', 'default');
 		$model = VmModel::getModel();
@@ -71,7 +71,7 @@ class VirtuemartViewUserfields extends VmView {
 				$this->assignRef('ordering', $ordering);*/
 
 				if (!class_exists('ShopFunctions'))
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 				$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$this->userField->virtuemart_userfield_id);
 
 				$userFieldValues = $model->getUserfieldValues();
@@ -236,10 +236,10 @@ class VirtuemartViewUserfields extends VmView {
 
 	function renderUserfieldPlugin(){
 
-		if(!class_exists('vmUserfieldPlugin')) require(JPATH_VM_PLUGINS.DS.'vmuserfieldtypeplugin.php');
+		if(!class_exists('vmUserfieldPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmuserfieldtypeplugin.php');
 
 		VmConfig::loadJLang('plg_vmpsplugin', false);
-		JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
+		JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 		//$selected = $this->userField->userfield_jplugin_id;
 		//vmdebug('renderUserfieldPlugin $this->userField->element',$this->userField->type,$this->userField->element);
 		$this->userField->element = substr($this->userField->type, 6);
@@ -263,7 +263,7 @@ class VirtuemartViewUserfields extends VmView {
 		if ($this->userField->form) {
 			$form = $this->userField->form;
 			ob_start();
-			include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
+			include(VMPATH_ADMIN.DS.'fields'.DS.'formrenderer.php');
 			$body = ob_get_contents();
 			ob_end_clean();
 			return $body;

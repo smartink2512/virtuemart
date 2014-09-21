@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 vmJsApi::jDate();
 
-// if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
+// if (!class_exists('vmCalculationPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmcalculationplugin.php');
 		// JPluginHelper::importPlugin('vmcalculation');
 		// $dispatcher = & JDispatcher::getInstance();
 		// $html = '';
@@ -73,7 +73,7 @@ vmJsApi::jDate();
         </table></fieldset>
 		<?php
 
-		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
+		if (!class_exists('vmCalculationPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
 		$dispatcher = JDispatcher::getInstance();
 		$html ='';

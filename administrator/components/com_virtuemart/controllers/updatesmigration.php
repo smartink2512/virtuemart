@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 if(!class_exists('VmController'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcontroller.php');
+require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcontroller.php');
 
 /**
  * updatesMigration Controller
@@ -383,7 +383,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		if(VmConfig::get('dangeroustools', true)){
 
-			if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
+			if(!class_exists('com_virtuemartInstallerScript')) require(VMPATH_ADMIN . DS . 'install' . DS . 'script.virtuemart.php');
 			$updater = new com_virtuemartInstallerScript();
 			$updater->install(true,false);
 
@@ -398,7 +398,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			if($sample) $model->installSampleData($sid);
 
-			if(!class_exists('VmConfig')) require_once(JPATH_VM_ADMINISTRATOR .'/models/config.php');
+			if(!class_exists('VmConfig')) require_once(VMPATH_ADMIN .'/models/config.php');
 			VirtueMartModelConfig::installVMconfigTable();
 
 			//Now lets set some joomla variables
@@ -441,7 +441,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		vRequest::vmCheckToken();
 
-		if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
+		if(!class_exists('com_virtuemartInstallerScript')) require(VMPATH_ADMIN . DS . 'install' . DS . 'script.virtuemart.php');
 		$updater = new com_virtuemartInstallerScript();
 		$updater->update(false);
 		$this->setRedirect($this->redirectPath, 'Database updated');
@@ -471,7 +471,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function setDangerousToolsOff(){
 
-		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
+		if(!class_exists('VirtueMartModelConfig')) require(VMPATH_ADMIN .'/models/config.php');
 		$res  = VirtueMartModelConfig::checkConfigTableExists();
 		if(!empty($res)){
 			$model = $this->getModel('config');
@@ -498,7 +498,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->portMedia();
 
@@ -510,7 +510,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateGeneral();
 		if($result){
@@ -527,7 +527,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateUsers();
 		if($result){
@@ -545,7 +545,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateProducts();
 		if($result){
@@ -562,7 +562,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateOrders();
 		if($result){
@@ -590,7 +590,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		}
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateAllInOne();
 		if($result){
@@ -612,7 +612,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		}
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->portVm1Attributes();
 		if($result){
@@ -634,7 +634,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		}
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->portVm1RelatedProducts();
 		if($result){
@@ -656,7 +656,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		}
 
 		$this->storeMigrationOptionsInSession();
-		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+		if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
 		$updater = new GenericTableUpdater();
 		$result = $updater->reOrderChilds();
 

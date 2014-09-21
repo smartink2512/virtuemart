@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
-if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+if(!class_exists('VmController'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
 
 
 /**
@@ -100,7 +100,7 @@ class VirtuemartControllerMedia extends VmController {
 				$this -> renameFileExtension(JPATH_ROOT.DS.VmConfig::get($path) );
 			}
 
-			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+			if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');
 			$migrator = new Migrator();
 			$result = $migrator->portMedia();
 

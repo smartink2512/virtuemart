@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+if(!class_exists('VmTableData'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * Orders table class
@@ -109,7 +109,7 @@ class TableOrders extends VmTableData {
 	function check(){
 
 		if(empty($this->order_number)){
-			if(!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orders.php');
+			if(!class_exists('VirtueMartModelOrders')) require(VMPATH_ADMIN.DS.'models'.DS.'orders.php');
 			$this->order_number = VirtueMartModelOrders::generateOrderNumber((string)time());
 		}
 

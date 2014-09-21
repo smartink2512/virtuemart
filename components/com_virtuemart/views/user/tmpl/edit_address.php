@@ -25,7 +25,7 @@ JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/as
 ?>
 <h1><?php echo $this->page_title ?></h1>
 <?php
-if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 $this->cart = VirtueMartCart::getCart();
 $url = 0;
 if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
@@ -157,7 +157,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 
 		if (!class_exists ('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
 		if (count ($this->userFields['functions']) > 0) {

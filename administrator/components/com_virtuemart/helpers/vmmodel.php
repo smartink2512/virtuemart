@@ -529,7 +529,7 @@ class VmModel extends JObject {
 		if(empty(self::$_vmmodels[strtolower($className)])){
 			if( !class_exists($className) ){
 
-				$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
+				$modelPath = VMPATH_ADMIN.DS."models".DS.$name.".php";
 
 				if( file_exists($modelPath) ){
 					require( $modelPath );
@@ -911,7 +911,7 @@ class VmModel extends JObject {
 
 			//just an idea
 			if(isset($this->_cache[$this->_id]->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
 		}

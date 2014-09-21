@@ -19,14 +19,14 @@ defined ('_JEXEC') or die('Direct Access to ' . basename (__FILE__) . ' is not a
  */
 // Load the helper functions that are needed by all plugins
 if (!class_exists ('VmHTML')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 }
 
 // Get the plugin library
 jimport ('joomla.plugin.plugin');
 
 if (!class_exists ('vmPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmplugin.php');
 }
 
 /**
@@ -74,7 +74,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 
 			if (empty($this->plugin->virtuemart_vendor_id)) {
 				if (!class_exists ('VirtueMartModelVendor')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+					require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 				}
 				$this->plugin->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor ();
 			}
@@ -266,7 +266,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 
 		if(isset($product->cart_item_id)){
 			if (!class_exists('VirtueMartCart'))
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();
 			//vmdebug('Return getCustomVariant',$cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustomsPrice->virtuemart_custom_id][$productCustomsPrice->virtuemart_customfield_id]);
 

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Json View class for the VirtueMart Component
@@ -35,7 +35,7 @@ class VirtuemartViewUserfields extends VmView {
 		if ( $field = vRequest::getVar('field') ) {
 			if (strpos($field, 'plugin') !==false) {
 
-				JForm::addFieldPath(JPATH_VM_ADMINISTRATOR . DS . 'fields');
+				JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 
 				$table = '#__extensions';
 
@@ -45,7 +45,7 @@ class VirtuemartViewUserfields extends VmView {
 				$this->userField = $db ->loadObject();
 				//$this->userField->element = substr($this->userField->type, 6);
 
-				if (!class_exists ('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+				if (!class_exists ('vmPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmplugin.php');
 
 				vmPlugin::loadJLang('plg_vmuserfield_'.$this->userField->element, 'vmuserfield',$this->userField->element);
 
@@ -54,7 +54,7 @@ class VirtuemartViewUserfields extends VmView {
 				$formFile	= JPath::clean( $path );
 				if (file_exists($formFile)){
 					if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-					if (!class_exists ('VmTable')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
+					if (!class_exists ('VmTable')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtable.php');
 
 					$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->userField->params = new stdClass();
@@ -73,7 +73,7 @@ class VirtuemartViewUserfields extends VmView {
 				if ($this->userField->form) {
 					$form = $this->userField->form;
 					ob_start();
-					include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
+					include(VMPATH_ADMIN.DS.'fields'.DS.'formrenderer.php');
 					$body = ob_get_contents();
 					ob_end_clean();
 					echo $body;

@@ -128,13 +128,13 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
 	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	    require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 
     $cart = VirtueMartCart::getCart ();
 		$cart->prepareCartData();
     if (!empty($cart->couponCode)) {
 	    if (!class_exists('CouponHelper'))
-		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+		    require(VMPATH_SITE . DS . 'helpers' . DS . 'coupon.php');
 	    CouponHelper::setInUseCoupon($cart->couponCode, false);
     }
 
@@ -163,10 +163,10 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
 	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	    require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 
 	if (!class_exists('VirtueMartModelOrders'))
-	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+	    require( VMPATH_ADMIN . DS . 'models' . DS . 'orders.php' );
 
 	JPluginHelper::importPlugin('vmpayment');
 

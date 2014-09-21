@@ -20,8 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
-if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
+if (!class_exists('VmImage')) require(VMPATH_ADMIN.DS.'helpers'.DS.'image.php');
 
 
 /**
@@ -149,7 +149,7 @@ class VirtuemartViewInvoice extends VmView {
 		  JPluginHelper::importPlugin('vmpayment');
 	    $dispatcher = JDispatcher::getInstance();
 	    $dispatcher->trigger('plgVmgetEmailCurrency',array( $orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$emailCurrencyId));
-		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		if(!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance($emailCurrencyId,$vendorId);
 			if ($emailCurrencyId) {
 				$currency->exchangeRateShopper=$orderDetails['details']['BT']->user_currency_rate;
@@ -244,7 +244,7 @@ class VirtuemartViewInvoice extends VmView {
 		$vendorModel->addImages($vendor);
 		$vendor->vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
 		if (VmConfig::get ('enable_content_plugin', 0)) {
-			if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+			if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_legal_info');
@@ -260,7 +260,7 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('headFooter', $this->showHeaderFooter);
 
 		//Attention, this function will be removed, it wont be deleted, but it is obsoloete in any view.html.php
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 	    $vendorAddress= shopFunctions::renderVendorAddress($virtuemart_vendor_id, $lineSeparator);
 		$this->assignRef('vendorAddress', $vendorAddress);
 

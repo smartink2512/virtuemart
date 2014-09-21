@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model for VirtueMart Product Files
@@ -55,7 +55,7 @@ class VirtueMartModelMedia extends VmModel {
 			$data = $this->getTable('medias');
 			$data->load((int)$this->_id);
 
-			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+			if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');
 
 			$this->_data = VmMediaHandler::createMedia($data,$type,$mime);
 		}
@@ -74,7 +74,7 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	function createMediaByIds($virtuemart_media_ids,$type='',$mime='',$limit =0){
 
-		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+		if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');
 
 		$app = JFactory::getApplication();
 
@@ -377,7 +377,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		VmConfig::loadJLang('com_virtuemart_media');
 		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
-		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+		if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
 

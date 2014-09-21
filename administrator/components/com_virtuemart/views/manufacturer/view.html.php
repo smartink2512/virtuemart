@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of manufacturers
@@ -37,7 +37,7 @@ class VirtuemartViewManufacturer extends VmView {
 
 
 		if (!class_exists('VmHTML'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 
 		// get necessary models
@@ -67,7 +67,7 @@ class VirtuemartViewManufacturer extends VmView {
 
 			$this->addStandardEditViewCommands($manufacturer->virtuemart_manufacturer_id);
 
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 			$virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			$this->assignRef('virtuemart_vendor_id', $virtuemart_vendor_id);
 

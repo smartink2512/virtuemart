@@ -68,7 +68,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		$view = $this->getView ('askquestion', 'html');
 		if (!class_exists ('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 
 		$vars = array();
@@ -182,9 +182,9 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		}
 
 		if (!class_exists ('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
 		$vars = array();
 
@@ -246,7 +246,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 					$msg = ($error) . '<br />';
 				}
 				if (!class_exists ('ShopFunctionsF')) {
-					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+					require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 				}
 				$data = vRequest::getPost();
 				if($allowReview){
@@ -317,7 +317,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		}
 		$priceFormated = array();
 		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		$currency = CurrencyDisplay::getInstance ();
 

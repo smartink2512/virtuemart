@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.version');
 
 /**
@@ -37,7 +37,7 @@ class VirtuemartViewUser extends VmView {
 
 		// Load the helper(s)
 		if (!class_exists('VmHTML'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 		$currentUser = JFactory::getUser();
@@ -50,7 +50,7 @@ class VirtuemartViewUser extends VmView {
 			if(empty($isSuperOrVendor)){
 				JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 			} else {
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 				$userId = VirtueMartModelVendor::getUserIdByVendorId($isSuperOrVendor);
 			}
 			$this->SetViewTitle('STORE'  );
@@ -73,7 +73,7 @@ class VirtuemartViewUser extends VmView {
 			$editor = JFactory::getEditor();
 
 			if (!class_exists('VmImage'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 			$userDetails = $model->getUser();
 
@@ -165,7 +165,7 @@ class VirtuemartViewUser extends VmView {
 
 
 			if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
-				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+				if (!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();
 				$this->assignRef('currency',$currency);
 			}

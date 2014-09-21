@@ -46,9 +46,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$app->redirect('index.php');
 		} else {
 			if (!class_exists('VirtueMartCart'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			if (!class_exists('calculationHelper'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		$this->useSSL = VmConfig::get('useSSL', 0);
 		$this->useXHTML = false;
@@ -273,7 +273,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function viewJS() {
 
 		if (!class_exists('VirtueMartCart'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart(false);
 		$cart -> prepareCartData();
 		$data = $cart -> prepareAjaxData(true);

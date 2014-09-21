@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 
 /**
@@ -158,7 +158,7 @@ class VirtuemartViewOrders extends VmView {
 			$dispatcher = JDispatcher::getInstance ();
 			$dispatcher->trigger ('plgVmgetEmailCurrency', array($orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$emailCurrencyId));
 			if (!class_exists ('CurrencyDisplay')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 			}
 			$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $vendorId);
 			if ($emailCurrencyId) {
@@ -188,7 +188,7 @@ class VirtuemartViewOrders extends VmView {
 					$dispatcher = JDispatcher::getInstance ();
 					$dispatcher->trigger ('plgVmgetEmailCurrency', array($order->virtuemart_paymentmethod_id, $order->virtuemart_order_id, &$emailCurrencyId));
 					if (!class_exists ('CurrencyDisplay')) {
-						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+						require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 					}
 					$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $vendorId);
 					$this->assignRef ('currency', $currency);
@@ -201,7 +201,7 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('orderlist', $orderList);
 		}
 /*
-		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		if (!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 
 		$currency = CurrencyDisplay::getInstance();
 		$this->assignRef('currency', $currency);
@@ -217,7 +217,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$this->assignRef('orderstatuses', $orderstatuses);
 
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
 		$document = JFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');

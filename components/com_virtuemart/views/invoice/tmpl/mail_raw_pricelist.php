@@ -47,7 +47,7 @@ foreach ($this->orderDetails['items'] as $item) {
     echo $item->product_quantity . ' X ' . $item->order_item_name . ' (' . strtoupper(vmText::_('COM_VIRTUEMART_SKU')) . $item->order_item_sku . ')' . "\n";
     //if (!empty($item->product_attribute)) {
 	if (!class_exists('VirtueMartModelCustomfields'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
+	    require(VMPATH_ADMIN . DS . 'models' . DS . 'customfields.php');
 	$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item, 'FE');
 	echo "\n" . $product_attribute . "\n";
     //}

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of manufacturers
@@ -38,7 +38,7 @@ class VirtuemartViewManufacturer extends VmView {
 		$pathway = $mainframe->getPathway();
 
 		if (!class_exists('VmImage'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 		$virtuemart_manufacturer_id = vRequest::getInt('virtuemart_manufacturer_id', 0);
 		$mf_category_id = vRequest::getInt('mf_category_id', 0);
@@ -52,7 +52,7 @@ class VirtuemartViewManufacturer extends VmView {
 
 			$manufacturerImage = $manufacturer->images[0]->displayMediaThumb('class="manufacturer-image"',false);
 			if (VmConfig::get('enable_content_plugin', 0)) {
-				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+				if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 				shopFunctionsF::triggerContentPlugin($manufacturer, 'manufacturer','mf_desc');
 			}
 

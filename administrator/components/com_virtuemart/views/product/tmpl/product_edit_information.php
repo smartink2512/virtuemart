@@ -149,7 +149,7 @@ $i=0;
 	$this->i = 0;
 	$rowColor = 0;
 	if (!class_exists ('calculationHelper')) {
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 	}
 	$calculator = calculationHelper::getInstance ();
 	$currency_model = VmModel::getModel ('currency');
@@ -159,7 +159,7 @@ $i=0;
 	$this->product->allPrices[$nbPrice] = VmModel::getModel()->fillVoidPrice();
 
 	if (!class_exists ('calculationHelper')) {
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 	}
 	$calculator = calculationHelper::getInstance ();
 	?>

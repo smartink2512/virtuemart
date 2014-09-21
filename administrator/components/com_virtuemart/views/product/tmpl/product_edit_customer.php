@@ -98,7 +98,7 @@ $i = 0;
 					</thead>
 					<tbody id="customers-list">
 					<?php
-					if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+					if(!class_exists('ShopFunctions'))require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 					echo ShopFunctions::renderProductShopperList($this->productShoppers);
 					?>
 					</tbody>

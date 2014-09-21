@@ -65,7 +65,7 @@ class VirtuemartViewCustom extends JViewLegacy {
 			$formFile	= JPath::clean( JPATH_ROOT .DS. 'plugins' .DS. 'vmcustom' .DS . $this->jCustom->element . DS . $this->jCustom->element . '.xml');
 			if (file_exists($formFile)){
 				VmConfig::loadJLang('plg_vmpsplugin', false);
-				if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+				if (!class_exists('vmPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmplugin.php');
 				$filename = 'plg_vmcustom_' .  $this->jCustom->element;
 				vmPlugin::loadJLang($filename,'vmcustom',$this->jCustom->element);
 
@@ -81,7 +81,7 @@ class VirtuemartViewCustom extends JViewLegacy {
 				}
 				$this->custom->form->bind($this->custom);
 				$form = $this->custom->form;
-				include(JPATH_VM_ADMINISTRATOR.DS.'fields'.DS.'formrenderer.php');
+				include(VMPATH_ADMIN.DS.'fields'.DS.'formrenderer.php');
 				echo '<input type="hidden" value="'.$this->jCustom->element.'" name="custom_value">';
 			} else {
 				$this->custom->form = null;

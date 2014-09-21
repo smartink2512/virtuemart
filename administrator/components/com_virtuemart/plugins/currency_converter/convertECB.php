@@ -125,7 +125,7 @@ class convertECB {
 			//			JError::raiseNotice(1, "The file $archivefile_name should be in the directory $store_path " );
 			if( $curr_filename == $ecb_filename ) {
 				// Fetch the file from the internet
-				if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
+				if(!class_exists('VmConnector')) require(VMPATH_ADMIN.DS.'helpers'.DS.'connection.php');
 				//				JError::raiseNotice(1, "Updating currency " );
 				if (!$contents = VmConnector::handleCommunication( $curr_filename )) {
 					if (isset($file_datestamp)) {
