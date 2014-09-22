@@ -10,6 +10,7 @@ Virtuemart.setproducttype = function(form, id) {
 	}
 	datas = datas.replace("&view=cart", "");
 	prices.fadeTo("fast", 0.75);
+   //datas = jQuery.param(datas);
 	//encodeURIComponent(datas);
 	jQuery.getJSON(window.vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&virtuemart_product_id='+id+'&format=json' + window.vmLang, datas,
 		function (datas, textStatus) {
@@ -113,7 +114,7 @@ Virtuemart.product = function(carts) {
 			var Qtt = parseInt(quantity.val());
 			if (!isNaN(Qtt)) {
 				quantity.val(Qtt + Ste);
-			Virtuemart.setproducttype(cart,virtuemart_product_id);
+				Virtuemart.setproducttype(cart,virtuemart_product_id);
 			}
 			
 		});
@@ -138,13 +139,13 @@ Virtuemart.product = function(carts) {
 
 jQuery.noConflict();
 jQuery(document).ready(function($) {
-	Virtuemart.product($("form.product"));
+	Virtuemart.product(jQuery("form.product"));
 
-	$("form.js-recalculate").each(function(){
+	/*$("form.js-recalculate").each(function(){
 		if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
 			var id= $(this).find('input[name="virtuemart_product_id[]"]').val();
 			Virtuemart.setproducttype($(this),id);
 
 		}
-	});
+	});*/
 });

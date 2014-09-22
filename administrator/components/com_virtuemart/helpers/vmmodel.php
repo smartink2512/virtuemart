@@ -1165,7 +1165,7 @@ class VmPagination extends JPagination {
 				$router = JFactory::getApplication()->getRouter();
 				$getArray = filter_var_array($router->getVars(), FILTER_SANITIZE_STRING);
 			}
-			
+
 			$link ='';
 			unset ($getArray['limit']);
 

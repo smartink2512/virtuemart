@@ -1153,7 +1153,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			if(!is_array($customfield_ids)){
 				$customfield_ids = array( $customfield_ids =>false);
 				//$customfield_ids = array( $custom_id =>$customfield_ids);
-				vmdebug('displayProductCustomfieldSelected !is_array($customfield_ids)',$customfield_ids);
+				//vmdebug('displayProductCustomfieldSelected !is_array($customfield_ids)',$customfield_ids,$productCustoms[$customfield_ids]);
 			}
 
 			foreach($customfield_ids as $customfield_id=>$params){
@@ -1163,7 +1163,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					continue;
 				}
 				$productCustom = $productCustoms[$customfield_id];
-
+				//vmdebug('displayProductCustomfieldSelected',$productCustom);
 				//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
 				//and now {"32":[{"invala":"100"}]}
 				if (!empty($productCustom)) {
@@ -1196,7 +1196,8 @@ class VirtueMartModelCustomfields extends VmModel {
 							$value = self::displayCustomMedia ($productCustom->customfield_value);
 						}
 						elseif (($productCustom->field_type == "S")) {
-							if($productCustom->is_input){
+
+							if($productCustom->is_list){
 								$value = $params;
 							} else {
 								$value = $productCustom->customfield_value;
@@ -1207,7 +1208,6 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 						else {
 							// 						$html .= $productCustom->custom_title.' '.$productCustom->custom_value;
-							//vmdebug('customFieldDisplay',$productCustom);
 							$value = $productCustom->customfield_value;
 						}
 						$html .= ShopFunctionsF::translateTwoLangKeys ($productCustom->custom_title, $value);

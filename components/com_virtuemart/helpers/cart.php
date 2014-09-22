@@ -302,8 +302,8 @@ class VirtueMartCart {
 			if(!$cartDataToStore) $cartDataToStore = $this->getCartDataToStore();
 
 			$cObj = new StdClass();
-			$cObj->virtuemart_user_id = $currentUser->id;
-			$cObj->virtumart_vendor_id = $this->vendorId;
+			$cObj->virtuemart_user_id = (int) $currentUser->id;
+			$cObj->virtumart_vendor_id = (int) $this->vendorId;
 			$cObj->cartData = serialize($cartDataToStore);
 
 			$carts->bindChecknStore($cObj);
@@ -560,9 +560,27 @@ class VirtueMartCart {
 				} else {
 					if($cartProductData['virtuemart_product_id'] == $productData['virtuemart_product_id']){
 						//Okey, the id is already the same, so lets check the customProductData
-						$diff1 = array_diff_assoc($cartProductData['virtuemart_product_id'],$productData['virtuemart_product_id']);
-						$diff2 = array_diff_assoc($productData['virtuemart_product_id'],$cartProductData['virtuemart_product_id']);
-						if(!empty($diff1) or !empty($diff2)){
+						//if(!is_array($cartProductData['virtuemart_product_id'])) $cartProductData['virtuemart_product_id'] = array();
+						//if(!is_array($productData['virtuemart_product_id'])) $productData['virtuemart_product_id'] = array();
+						$arr1 = is_array($cartProductData['customProductData']);
+						$arr2 = is_array($productData['customProductData']);
+
+						$diff = false;
+						if($arr1 and $arr2){
+							$diff1 = array_diff_assoc($cartProductData['customProductData'],$productData['customProductData']);
+							$diff2 = array_diff_assoc($productData['customProductData'],$cartProductData['customProductData']);
+							if(!empty($diff1) or !empty($diff2)){
+								$diff = true;
+							}
+						} else if($arr1 or $arr2){
+							$diff = true;
+						} else if($cartProductData['customProductData']!=$productData['customProductData']){
+							$diff = true;
+						}
+
+						//VmConfig::$echoDebug=true;
+						//vmdebug('my add to cart',$cartProductData['customProductData'],$productData['customProductData'],$diff1,$diff2);
+						if(!$diff){
 						//if($cartProductData['customProductData'] == $productData['customProductData']){
 
 							vmdebug('Same product variant recognised',$cartProductData['customProductData'] ,$productData['customProductData']);
@@ -1404,6 +1422,7 @@ class VirtueMartCart {
 
 	function prepareCartData($checkAutomaticSelected=true){
 
+		//vmdebug('prepareCartData',$this->cartProductsData);
 		$this->totalProduct = 0;
 		if(count($this->products) != count($this->cartProductsData) or $this->_productAdded){
 			$productsModel = VmModel::getModel('product');
