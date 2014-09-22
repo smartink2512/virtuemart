@@ -1276,8 +1276,8 @@ class ShopFunctions {
 	 * @return string: suggested safe path
 	 */
 	static public function getSuggestedSafePath() {
-		$lastIndex= strrpos(JPATH_ROOT,DS);
-		return substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
+		$lastIndex= strrpos(VMPATH_ROOT,DS);
+		return substr(VMPATH_ROOT,0,$lastIndex).DS.'vmfiles';
 	}
 	/*
 	 * @author Valerie Isaksen

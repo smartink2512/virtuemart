@@ -58,7 +58,7 @@ class VmImage extends VmMediaHandler {
 				$file_alt = $this->file_title;
 			} else {
 				$rel_path = str_replace('/',DS,$this->file_url_folder);
-				$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+				$fullSizeFilenamePath = VMPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
 				if (!file_exists($fullSizeFilenamePath)) {
 					$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
 					$file_alt = vmText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
@@ -145,13 +145,13 @@ class VmImage extends VmMediaHandler {
 
 		if($this->file_is_forSale==0){
 			$rel_path = str_replace('/',DS,$this->file_url_folder);
-			$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+			$fullSizeFilenamePath = VMPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
 		} else {
 			$fullSizeFilenamePath = $this->file_url_folder.$this->file_name.'.'.$this->file_extension;
 		}
 
 		$file_path_thumb = str_replace('/',DS,$this->file_url_folder_thumb);
-		$resizedFilenamePath = JPATH_ROOT.DS.$file_path_thumb.$this->file_name_thumb.'.'.$this->file_extension;
+		$resizedFilenamePath = VMPATH_ROOT.DS.$file_path_thumb.$this->file_name_thumb.'.'.$this->file_extension;
 
 		$this->checkPathCreateFolders($file_path_thumb);
 
@@ -173,7 +173,7 @@ class VmImage extends VmMediaHandler {
 	public function checkPathCreateFolders($path){
 
 		$elements = explode(DS,$path);
-		$examine = JPATH_ROOT;
+		$examine = VMPATH_ROOT;
 		if(!class_exists('JFolder')){
 			require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 		}

@@ -560,7 +560,9 @@ class VirtueMartCart {
 				} else {
 					if($cartProductData['virtuemart_product_id'] == $productData['virtuemart_product_id']){
 						//Okey, the id is already the same, so lets check the customProductData
-						if(!empty(array_diff_assoc($cartProductData['virtuemart_product_id'],$productData['virtuemart_product_id'])) or !empty(array_diff_assoc($productData['virtuemart_product_id'],$cartProductData['virtuemart_product_id']))){
+						$diff1 = array_diff_assoc($cartProductData['virtuemart_product_id'],$productData['virtuemart_product_id']);
+						$diff2 = array_diff_assoc($productData['virtuemart_product_id'],$cartProductData['virtuemart_product_id']);
+						if(!empty($diff1) or !empty($diff2)){
 						//if($cartProductData['customProductData'] == $productData['customProductData']){
 
 							vmdebug('Same product variant recognised',$cartProductData['customProductData'] ,$productData['customProductData']);

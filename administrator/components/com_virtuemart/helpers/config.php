@@ -393,7 +393,7 @@ function logInfo ($text, $type = 'message') {
 	if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
 	$config = JFactory::getConfig();
-	$log_path = $config->get('log_path', JPATH_ROOT . "/log" );
+	$log_path = $config->get('log_path', VMPATH_ROOT . "/log" );
 	$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 
 	if (!is_dir($log_path)) {

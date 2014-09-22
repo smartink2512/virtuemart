@@ -392,7 +392,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			$msg = 'System and sampledata succesfull installed, user id of the mainvendor is ' . $sid;
 
-			if(!class_exists('com_virtuemart_allinoneInstallerScript')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart_allinone' . DS . 'script.vmallinone.php');
+			if(!class_exists('com_virtuemart_allinoneInstallerScript')) require(VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart_allinone' . DS . 'script.vmallinone.php');
 			$updater = new com_virtuemart_allinoneInstallerScript(false);
 			$updater->vmInstall(true);
 

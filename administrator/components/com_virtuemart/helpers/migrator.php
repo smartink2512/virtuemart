@@ -230,7 +230,7 @@ class Migrator extends VmModel{
 		foreach($this->storedMedias as $media){
 
 			if($media->file_is_forSale!=1){
-				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$media->file_url);
+				$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$media->file_url);
 			} else {
 				$media_path = $media->file_url;
 			}
@@ -326,7 +326,7 @@ class Migrator extends VmModel{
 		if($type!='forSale'){
 
 			$path = str_replace('/', DS, $url);
-			$foldersInDir = array(JPATH_ROOT . DS . $path);
+			$foldersInDir = array(VMPATH_ROOT . DS . $path);
 		} else {
 			$foldersInDir = array($url);
 		}
@@ -341,7 +341,7 @@ class Migrator extends VmModel{
 				$subfoldersInDir = null;
 				$subfoldersInDir = array();
 				if($type!='forSale'){
-					$relUrl = str_replace(DS, '/', substr($dir, strlen(JPATH_ROOT . DS)));
+					$relUrl = str_replace(DS, '/', substr($dir, strlen(VMPATH_ROOT . DS)));
 				} else {
 // 					vmdebug('$dir',$dir);
 					$relUrl = $dir;

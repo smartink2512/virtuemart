@@ -909,7 +909,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				}
 			}
 
-			if(!$order){
+			if(VmConfig::get('reuseorders',true) and !$order){
 				$jnow = JFactory::getDate();
 				$jnow->sub(new DateInterval('PT1H'));
 				$minushour = $jnow->toSQL();

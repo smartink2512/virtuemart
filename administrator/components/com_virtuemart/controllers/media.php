@@ -97,7 +97,7 @@ class VirtuemartControllerMedia extends VmController {
 
 			$configPaths = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 			foreach($configPaths as $path){
-				$this -> renameFileExtension(JPATH_ROOT.DS.VmConfig::get($path) );
+				$this -> renameFileExtension(VMPATH_ROOT.DS.VmConfig::get($path) );
 			}
 
 			if(!class_exists('Migrator')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'migrator.php');

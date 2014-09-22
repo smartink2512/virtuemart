@@ -199,12 +199,12 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 		$defaultSgId = $this->getDefault(0);
 		$anonymSgId = $this->getDefault(1);
-
+		$db = JFactory::getDBO();
 		foreach($ids as $id){
 
 			//Test if shoppergroup is default
 			if($id == $defaultSgId->virtuemart_shoppergroup_id){
-				$db = JFactory::getDBO();
+
 				$db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 				$name = $db->loadResult();
 				vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',vmText::_($name),$id));

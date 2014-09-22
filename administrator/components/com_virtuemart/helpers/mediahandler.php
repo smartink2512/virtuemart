@@ -279,7 +279,7 @@ class VmMediaHandler {
 					//	vmdebug('MediaHandler, file does not exist in safepath '.$file_url);
 					}
 				} else {
-					$pathToTest = JPATH_ROOT.DS.str_replace('/',DS,$file_url);
+					$pathToTest = VMPATH_ROOT.DS.str_replace('/',DS,$file_url);
 					if(JFile::exists($pathToTest)){
 						$this->file_url = $file_url;
 					} else {
@@ -317,13 +317,13 @@ class VmMediaHandler {
 	public function getFullPath(){
 
 		$rel_path = str_replace('/',DS,$this->file_url_folder);
-		return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+		return VMPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
 	}
 
 	public function getThumbPath(){
 
 		$rel_path = str_replace('/',DS,$this->file_url_folder);
-		return JPATH_ROOT.DS.$rel_path.$this->file_name_thumb.'.'.$this->file_extension;
+		return VMPATH_ROOT.DS.$rel_path.$this->file_name_thumb.'.'.$this->file_extension;
 	}
 
 	/**
@@ -366,12 +366,12 @@ class VmMediaHandler {
 		if($this->file_is_forSale){
 			$this->addFoldersToTest($file_path);
 		} else {
-			$this->addFoldersToTest(JPATH_ROOT.DS.$file_path);
+			$this->addFoldersToTest(VMPATH_ROOT.DS.$file_path);
 		}
 
 
 		$file_path_thumb = str_replace('/',DS,$this->file_url_folder_thumb);
-		$this->addFoldersToTest(JPATH_ROOT.DS.$file_path_thumb);
+		$this->addFoldersToTest(VMPATH_ROOT.DS.$file_path_thumb);
 
 	}
 
@@ -493,7 +493,7 @@ class VmMediaHandler {
 			$file_url_thumb = '';
 		}
 
-		$media_path = JPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
+		$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
 
 		if(empty($this->file_meta)){
 			if(!empty($this->file_description)){
@@ -515,7 +515,7 @@ class VmMediaHandler {
 			$file_url_thumb = $this->createThumb($width,$height);
 			//vmTime('Time to create thumb','thumb');
 			// 				vmdebug('displayMediaThumb',$this->file_url_thumb);
-			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
+			$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
 			//$file_url = $this->file_url_thumb;
 
 			//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
@@ -643,21 +643,21 @@ class VmMediaHandler {
 				vmdebug('uploadFile $safeMediaName',$media['name'],$safeMediaName,$mediaPure,$mediaExtension);
 
 				if(!$overwrite){
-					while (file_exists(JPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
+					while (file_exists(VMPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
 						$mediaPure = $mediaPure.rand(1,9);
 					}
 				}
 
 				$media['name'] = $this->file_name =$mediaPure.$mediaExtension;
 				if($this->file_is_forSale==0){
-					JFile::upload($media['tmp_name'],JPATH_ROOT.DS.$path_folder.$media['name']);
+					JFile::upload($media['tmp_name'],VMPATH_ROOT.DS.$path_folder.$media['name']);
 				} else {
 					JFile::upload($media['tmp_name'],$path_folder.$media['name']);
 				}
 
 				$this->file_mimetype = $media['type'];
 				$this->media_published = 1;
-				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
+				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',VMPATH_ROOT.DS.$path_folder.$media['name']));
 				return $media['name'];
 
 			case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
@@ -687,7 +687,7 @@ class VmMediaHandler {
 	function deleteFile($url){
 
 		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		$file_path = JPATH_ROOT.DS.str_replace('/',DS,$url);
+		$file_path = VMPATH_ROOT.DS.str_replace('/',DS,$url);
 		$app = JFactory::getApplication();
 
 		$msg_path = '';

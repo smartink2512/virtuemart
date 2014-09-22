@@ -1081,7 +1081,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						break;
 					}
 					$pModel = VmModel::getModel('product');
-					vmdebug('in customfield R my field',$customfield);
+					//vmdebug('in customfield R my field',$customfield);
 
 					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,$customfield->wPrice,TRUE,1);
 
@@ -1270,6 +1270,9 @@ class VirtueMartModelCustomfields extends VmModel {
 		$db = JFactory::getDBO ();
 		$data = new TableMedias($db);
 		$data->load ((int)$media_id);
+		if(!empty($data->file_type)){
+			$table = $data->file_type;
+		}
 
 		if (!class_exists ('VmMediaHandler'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'mediahandler.php');

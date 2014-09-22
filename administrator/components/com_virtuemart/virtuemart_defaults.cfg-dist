@@ -12,7 +12,7 @@
 # - The hash-sign (#) is a comment character, but only if it's the first non-blank char on a line
 # - The equal-sign (=) when the default value is empty, is optional
 # - Constant values can be used by enclosing them in curly brackets ({}), eg:
-	# some_path_value={JPATH_ROOT}{DS}virtuemart{DS}somewhere
+	# some_path_value={VMPATH_ROOT}{DS}virtuemart{DS}somewhere
 
 [config]
 ##shop settings

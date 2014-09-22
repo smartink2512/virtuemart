@@ -75,7 +75,7 @@ class VmController extends JControllerLegacy{
 
 		if(vRequest::getCmd('manage')){
 			$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
-			$this->basePath = JPATH_ROOT.'/administrator/components/com_virtuemart';
+			$this->basePath = VMPATH_ROOT.'/administrator/components/com_virtuemart';
 		}
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
