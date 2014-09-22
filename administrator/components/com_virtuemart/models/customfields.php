@@ -20,7 +20,7 @@
 defined ('_JEXEC') or die('Restricted access');
 
 if (!class_exists ('VmModel')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
 }
 
 /**
@@ -186,7 +186,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	static function bindCustomEmbeddedFieldParams(&$obj,$fieldtype){
 
 		//vmdebug('bindCustomEmbeddedFieldParams begin',$obj);
-		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+		if(!class_exists('VirtueMartModelCustom')) require(VMPATH_ADMIN.DS.'models'.DS.'custom.php');
 
 		if ($obj->field_type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
@@ -329,8 +329,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		//the option "is_cart_attribute" gives the possibility to set a price, there is no sense to set a price,
 		//if the custom is not stored in the order.
 		if ($field->is_input) {
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-			if(!class_exists('VirtueMartModelCurrency')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'currency.php');
+			if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
+			if(!class_exists('VirtueMartModelCurrency')) require(VMPATH_ADMIN.DS.'models'.DS.'currency.php');
 			$vendor_model = VmModel::getModel('vendor');
 			//$virtuemart_vendor_id = 1;
 			$vendor = $vendor_model->getVendor($virtuemart_vendor_id);
@@ -350,7 +350,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				if(!isset($field->withParent)) $field->withParent = 0;
 				if(!isset($field->parentOrderable)) $field->parentOrderable = 0;
 				//vmdebug('displayProductCustomfieldBE',$field);
-				if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+				if (!class_exists('VmHTML')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 				$html = vmText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'');
 				$html .= vmText::_('COM_VIRTUEMART_CUSTOM_PO').VmHTML::checkbox('field[' . $row . '][parentOrderable]',$field->parentOrderable,1,0,'').'<br />';
 
@@ -557,7 +557,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				if(!isset($field->withParent)) $field->withParent = 0;
 				if(!isset($field->parentOrderable)) $field->parentOrderable = 0;
 				//vmdebug('displayProductCustomfieldBE',$field);
-				if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+				if (!class_exists('VmHTML')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 				$html = vmText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'').'<br />';
 				$html .= vmText::_('COM_VIRTUEMART_CUSTOM_PO').VmHTML::checkbox('field[' . $row . '][parentOrderable]',$field->parentOrderable,1,0,'');
 
@@ -637,7 +637,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$html = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
 				if (!class_exists ('vmCustomPlugin')) {
-					require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+					require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 				}
 				//vmdebug('displayProductCustomfieldBE $field',$field);
 				JPluginHelper::importPlugin ('vmcustom', $field->custom_element);
@@ -704,7 +704,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		static $idUnique = array();
 		if (!class_exists ('calculationHelper')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		$calculator = calculationHelper::getInstance ();
 
@@ -720,7 +720,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			$calculator ->_product = $product;
 			if (!class_exists ('vmCustomPlugin')) {
-				require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+				require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 			}
 
 			if ($customfield->field_type == "E") {
@@ -749,7 +749,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 			$idTag = $idTag . 'customProductData';
 			if (!class_exists ('CurrencyDisplay'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance ();
 
 			switch ($type) {
@@ -803,7 +803,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$idTag .= 'cvard'.$k;
 						$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);
 
-						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection" ', "value", "text", $selected,$idTag);
+						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection" data-dynamic-update="1"  ', "value", "text", $selected,$idTag);
 
 					}
 					//vmdebug('displayProductCustomfieldFE my C', $customfield->options,$dropdowns);
@@ -846,8 +846,9 @@ class VirtueMartModelCustomfields extends VmModel {
 								if(hitcount == (selection.length-runs)){
 									console.log('Product found '+variants[index][0]+' '+variants[index][1]+' '+variants[index][2]);
 									console.log('Would redirect to '+url+variants[index][0])
-									//break;
+
 									window.top.location.href=url+variants[index][0]+Itemid;
+									break;
 									//i2 = 200;
 									//index = 200;
 									//runs = 200;
@@ -893,7 +894,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$customfield->withPrices = false;
 					if (empty($calculator) and $customfield->withPrices) {
 						if (!class_exists ('calculationHelper'))
-							require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+							require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 						$calculator = calculationHelper::getInstance ();
 					}
 
@@ -1003,7 +1004,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 							$currentValue = $customfield->customfield_value;
 
-							$customfield->display = JHtml::_ ('select.genericlist', $options, $customProductDataName, NULL, 'value', 'text', $currentValue,$idTag);
+							$customfield->display = JHtml::_ ('select.genericlist', $options, $customProductDataName.'[' . $customfield->virtuemart_customfield_id . ']', 'class="vm-chzn-select"', 'value', 'text', $currentValue,$idTag);
 
 							//$customfield->display =  '<input type="text" readonly value="' . vmText::_ ($customfield->customfield_value) . '" name="'.$customProductDataName.'" /> ' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
 						} else {
@@ -1119,7 +1120,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 		$row = 0;
 		if (!class_exists ('shopFunctionsF'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 
 		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
 
@@ -1151,11 +1152,14 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			if(!is_array($customfield_ids)){
 				$customfield_ids = array( $customfield_ids =>false);
+				//$customfield_ids = array( $custom_id =>$customfield_ids);
+				vmdebug('displayProductCustomfieldSelected !is_array($customfield_ids)',$customfield_ids);
 			}
 
 			foreach($customfield_ids as $customfield_id=>$params){
 
 				if(empty($productCustoms) or !isset($productCustoms[$customfield_id])){
+					vmdebug('displayProductCustomfieldSelected continue !isset($productCustoms[$customfield_id]',$customfield_id,$variantmods);
 					continue;
 				}
 				$productCustom = $productCustoms[$customfield_id];
@@ -1170,7 +1174,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						//$product->row = $row;
 						//
 						if (!class_exists ('vmCustomPlugin'))
-							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+							require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 						JPluginHelper::importPlugin ('vmcustom');
 						$dispatcher = JDispatcher::getInstance ();
 						//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$product->virtuemart_product_id,$productCustom->virtuemart_customfield_id,$productCustom->custom_element);
@@ -1192,8 +1196,14 @@ class VirtueMartModelCustomfields extends VmModel {
 							$value = self::displayCustomMedia ($productCustom->customfield_value);
 						}
 						elseif (($productCustom->field_type == "S")) {
+							if($productCustom->is_input){
+								$value = $params;
+							} else {
+								$value = $productCustom->customfield_value;
+							}
 							//$value = $productCustom->custom_title.' '.vmText::_($productCustom->customfield_value);
-							$value = $productCustom->customfield_value;
+							//vmdebug('displayProductCustomfieldSelected $variantmods',$productCustom->is_input,$params);
+
 						}
 						else {
 							// 						$html .= $productCustom->custom_title.' '.$productCustom->custom_value;
@@ -1255,14 +1265,14 @@ class VirtueMartModelCustomfields extends VmModel {
 	function displayCustomMedia ($media_id, $table = 'product', $absUrl = FALSE) {
 
 		if (!class_exists ('TableMedias'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'medias.php');
+			require(VMPATH_ADMIN . DS . 'tables' . DS . 'medias.php');
 
 		$db = JFactory::getDBO ();
 		$data = new TableMedias($db);
 		$data->load ((int)$media_id);
 
 		if (!class_exists ('VmMediaHandler'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'mediahandler.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'mediahandler.php');
 		$media = VmMediaHandler::createMedia ($data, $table);
 
 		return $media->displayMediaThumb ('', FALSE, '', TRUE, TRUE, $absUrl);
@@ -1299,7 +1309,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				if(isset($product->cart_item_id)){
 					if (!class_exists('VirtueMartCart'))
-						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+						require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 					$cart = VirtueMartCart::getCart();
 
 					//vmdebug('my $productCustom->customfield_price '.$productCustom->virtuemart_customfield_id,$cart->cartProductsData,$cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]);
@@ -1340,7 +1350,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				//vmdebug('my $productCustom->customfield_price',$selected,$productCustom->customfield_price);
 				if (!empty($productCustom) and $productCustom->field_type =='E') {
 
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+					if(!class_exists('vmCustomPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
 					$dispatcher->trigger('plgVmPrepareCartProduct',array(&$product, &$product->customfields[$k],$selected,&$modificatorSum));
@@ -1422,7 +1432,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 				}
 				$tableCustomfields->_xParams = 'customfield_params';
-				if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+				if(!class_exists('VirtueMartModelCustom')) require(VMPATH_ADMIN.DS.'models'.DS.'custom.php');
 				VirtueMartModelCustom::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
 				//vmdebug('Data to store $tableCustomfields->bindChecknStore',$fields,$tableCustomfields);
 				$tableCustomfields->bindChecknStore($fields);

@@ -519,7 +519,7 @@ class VirtueMartCart {
 					if(isset($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
 
 						if(is_array($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
-							if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
+							if(!class_exists('vmFilter'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmfilter.php');
 							foreach($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] as &$customData){
 
 								$value = vmFilter::hl( $customData,array('deny_attribute'=>'*'));
@@ -532,12 +532,12 @@ class VirtueMartCart {
 								$customData = (string)preg_replace('#^\'#si','',$value);
 							}
 						}
-						$customProductDataTmp[$customfield->virtuemart_custom_id]=array();
+						if(!isset($customProductDataTmp[$customfield->virtuemart_custom_id])) $customProductDataTmp[$customfield->virtuemart_custom_id] = array();
 						$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
 					}
 					else if(isset($customProductData[$customfield->virtuemart_custom_id])) {
-						$customProductDataTmp[$customfield->virtuemart_custom_id] = (int)$customProductData[$customfield->virtuemart_custom_id];
-
+						$customProductDataTmp[$customfield->virtuemart_custom_id] = $customProductData[$customfield->virtuemart_custom_id];
+						vmdebug('my customp product data ',$customProductData[$customfield->virtuemart_custom_id]);
 					}
 					//	$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
 				} else {
@@ -560,9 +560,10 @@ class VirtueMartCart {
 				} else {
 					if($cartProductData['virtuemart_product_id'] == $productData['virtuemart_product_id']){
 						//Okey, the id is already the same, so lets check the customProductData
-						if($cartProductData['customProductData'] == $productData['customProductData']){
+						if(!empty(array_diff_assoc($cartProductData['virtuemart_product_id'],$productData['virtuemart_product_id'])) or !empty(array_diff_assoc($productData['virtuemart_product_id'],$cartProductData['virtuemart_product_id']))){
+						//if($cartProductData['customProductData'] == $productData['customProductData']){
 
-							vmdebug('Same product variant recognised');
+							vmdebug('Same product variant recognised',$cartProductData['customProductData'] ,$productData['customProductData']);
 							$cartProductData['quantity'] = $cartProductData['quantity'] + $productData['quantity'];
 
 							if(!$product)$product = $this->getProduct((int) $productData['virtuemart_product_id'],$cartProductData['quantity']);
@@ -599,7 +600,7 @@ class VirtueMartCart {
 				if(!empty($product->virtuemart_product_id)){
 
 					$this->checkForQuantities($product, $product->quantity);
-
+					vmdebug('my $productData $productData ',$productData);
 					if(!empty($product->quantity)){
 						$productData['quantity'] = $product->quantity;
 						$this->cartProductsData[] = $productData;
@@ -724,7 +725,7 @@ class VirtueMartCart {
 		}
 
 		if (!class_exists('CouponHelper')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'coupon.php');
 		}
 
 		//if(!isset($this->cartPrices['salesPrice'])){
@@ -938,7 +939,7 @@ class VirtueMartCart {
 		if (!empty($this->couponCode)) {
 			//$prices = $this->getCartPrices();
 			if (!class_exists('CouponHelper')) {
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'coupon.php');
 			}
 
 			if(!in_array($this->couponCode,$this->_triesValidateCoupon)){
@@ -1040,7 +1041,7 @@ class VirtueMartCart {
 			$prices = $this->getCartPrices();
 			if ($prices['salesPrice'] < $this->vendor->vendor_min_pov) {
 				if (!class_exists('CurrencyDisplay'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();
 				return vmText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $currency->priceDisplay($this->vendor->vendor_min_pov));
 			}
@@ -1172,7 +1173,7 @@ class VirtueMartCart {
 	function saveCartFieldsInCart(){
 
 		if (!class_exists('VirtueMartModelUserfields'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'userfields.php');
 		$userFieldsModel = VmModel::getModel('userfields');
 
 		$cartFields = $userFieldsModel->getUserFields(
@@ -1180,7 +1181,7 @@ class VirtueMartCart {
 			, array('delimiters' => true, 'captcha' => true, 'system' => false)
 			, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
 
-		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
+		if(!class_exists('vmFilter'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmfilter.php');
 		foreach ($cartFields as $fld) {
 			if(!empty($fld->name)){
 				$name = $fld->name;
@@ -1220,7 +1221,7 @@ class VirtueMartCart {
 	function saveAddressInCart($data, $type, $putIntoSession = true,$prefix='') {
 
 		// VirtueMartModelUserfields::getUserFields() won't work
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
+		if(!class_exists('VirtueMartModelUserfields')) require(VMPATH_ADMIN.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = VmModel::getModel('userfields');
 
 		if ($type == 'STaddress' or $type == 'BTaddress'){
@@ -1244,7 +1245,7 @@ class VirtueMartCart {
 		}
 
 		$address = array();
-		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
+		if(!class_exists('vmFilter'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmfilter.php');
 		foreach ($prepareUserFields as $fld) {
 			if(!empty($fld->name)){
 				$name = $fld->name;
@@ -1370,7 +1371,7 @@ class VirtueMartCart {
 	public function getCartPrices($force=false) {
 
 		if(empty($this->cartPrices) or count($this->cartPrices<8) or $force){
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 
 			$this->pricesCurrency = $calculator->_currencyDisplay->getCurrencyForDisplay();
@@ -1570,7 +1571,7 @@ class VirtueMartCart {
 		//$i=0;
 		//OSP when prices removed needed to format billTotal for AJAX
 		if (!class_exists('CurrencyDisplay'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currencyDisplay = CurrencyDisplay::getInstance();
 
 		foreach ($this->products as $i=>$product){
@@ -1582,7 +1583,7 @@ class VirtueMartCart {
 			// @todo Add variants
 			$data->products[$i]['product_name'] = JHtml::link($url, $product->product_name);
 
-			if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+			if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
 			//  custom product fields display for cart
 			$data->products[$i]['customProductData'] = VirtueMartModelCustomfields::CustomsFieldCartModDisplay($product);
 
