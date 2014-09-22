@@ -119,7 +119,7 @@ class KlarnaHandler {
 			}
 			$cData['payments_activated'] = $method->$payment_activated;
 			if (!class_exists('VirtueMartModelVendor')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+				require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 			}
 			$vendor_id = 1;
 			$cData['vendor_currency'] = VirtueMartModelVendor::getVendorCurrency($vendor_id)->vendor_currency;
@@ -217,14 +217,14 @@ class KlarnaHandler {
 		$invoice_tax_id = self::getInvoiceTaxId($method, $country);
 		vmdebug('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee);
 		if (!class_exists('calculationHelper')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		if (!class_exists('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
 		if (!class_exists('VirtueMartModelVendor')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 		}
 
 		$vendor_id = 1;
@@ -1216,7 +1216,7 @@ class KlarnaHandler {
 	static function checkDataFromEditPayment ($data, $country3) {
 
 		if (!class_exists('VirtueMartModelUserfields')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'userfields.php');
 		}
 		$errors = array();
 

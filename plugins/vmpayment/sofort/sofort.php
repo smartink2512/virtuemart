@@ -135,17 +135,17 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		//$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
 		vmdebug('SOFORT sendTransactionRequest');
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		if (!class_exists('VirtueMartModelCurrency')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}
 		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
 		if (!class_exists('TableVendors')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'vendors.php');
+			require(VMPATH_ADMIN . DS . 'tables' . DS . 'vendors.php');
 		}
 
 		$this->getPaymentCurrency($method);
@@ -268,13 +268,13 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	function plgVmOnPaymentResponseReceived (&$html) {
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		if (!class_exists('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		// the payment itself should send the parameter needed.
@@ -331,7 +331,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			return NULL;
 		}
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
 			return NULL;
@@ -370,7 +370,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		//$this->_debug = true;
 
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		$order_number = vRequest::getString('on', '');
 		if (empty($order_number)) {
@@ -544,11 +544,11 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 		if (!class_exists('CurrencyDisplay')
 		) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);

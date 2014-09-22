@@ -20,14 +20,14 @@ if (!class_exists('VmConfig')) {
 }
 
 if (!class_exists('ShopFunctions')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 }
 if (!class_exists('TableCategories')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
+	require(VMPATH_ADMIN . DS . 'tables' . DS . 'categories.php');
 }
 
 if (!class_exists('VmElements')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
+	require(VMPATH_ADMIN . DS . 'elements' . DS . 'vmelements.php');
 }
 jimport('joomla.form.formfield');
 

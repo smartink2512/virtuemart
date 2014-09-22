@@ -232,6 +232,7 @@ class amazonHelperSetOrderReferenceDetailsResponse extends amazonHelper {
 				}
 			}
 		}
+		/*
 		if ($this->amazonData->isSetResponseMetadata()) {
 			$contents .= "ResponseMetadata" . "<br />";
 			$responseMetadata = $this->amazonData->getResponseMetadata();
@@ -241,7 +242,7 @@ class amazonHelperSetOrderReferenceDetailsResponse extends amazonHelper {
 		}
 
 		$contents .= "ResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata() . "<br />";
-
+		*/
 		return $contents;
 	}
 

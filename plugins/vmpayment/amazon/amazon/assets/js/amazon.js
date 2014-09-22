@@ -42,7 +42,7 @@ var amazonPayment = {
 
         },
 
-        init: function (sellerId, amazonOrderReferenceId, width, height, isMobile, virtuemart_paymentmethod_id, displayMode) {
+        initPayment: function (sellerId, amazonOrderReferenceId, width, height, isMobile, virtuemart_paymentmethod_id, displayMode) {
             amazonPayment.sellerId = sellerId;
             amazonPayment.amazonOrderReferenceId = amazonOrderReferenceId;
             amazonPayment.width = width;
@@ -156,6 +156,7 @@ var amazonPayment = {
         },
 
         onErrorAmazon: function (from, error) {
+            console.log('onErrorAmazon:' + from +' '+ error.getErrorCode());
             var sessionExpired = "BuyerSessionExpired";
             if (error.getErrorCode() == sessionExpired) {
                 var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=resetAmazonReferenceId&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id;

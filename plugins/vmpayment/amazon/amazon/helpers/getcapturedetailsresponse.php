@@ -114,7 +114,30 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 	}
 	}
 
+	function getState () {
+		if (!$this->amazonData->isSetGetCaptureDetailsResult()) {
+			return NULL;
+		}
+		if (!$this->amazonData->isSetGetCaptureDetailsResult()) {
+			return NULL;
+		}
+		$getCaptureDetailsResult = $this->amazonData->getGetCaptureDetailsResult();
 
+		if (!$getCaptureDetailsResult->isSetCaptureDetails()) {
+			return NULL;
+		}
+		$captureDetails = $getCaptureDetailsResult->getCaptureDetails();
+		if (!$captureDetails->isSetCaptureStatus()) {
+			return NULL;
+		}
+
+		$captureStatus = $captureDetails->getCaptureStatus();
+		if (!$captureStatus->isSetState()) {
+			return NULL;
+		}
+		return $captureStatus->getState();
+
+	}
 
 	function getContents () {
 
@@ -229,16 +252,16 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 
 			}
 		}
-
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .=$this->getRowFirstCol("ResponseMetadata");
-			$responseMetadata = $this->amazonData->getResponseMetadata();
-			if ($responseMetadata->isSetRequestId()) {
-				$contents .=$this->getRow("RequestId: ",  $responseMetadata->getRequestId());
-			}
-		}
-		$contents .=$this->getRowFirstCol("ResponseHeaderMetadata ". $this->amazonData->getResponseHeaderMetadata());
-
+		/*
+				if ($this->amazonData->isSetResponseMetadata()) {
+					$contents .= $this->getRowFirstCol("ResponseMetadata");
+					$responseMetadata = $this->amazonData->getResponseMetadata();
+					if ($responseMetadata->isSetRequestId()) {
+						$contents .= $this->getRow("RequestId: ", $responseMetadata->getRequestId());
+					}
+				}
+				$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
+		*/
 		$contents .= $this->tableEnd();
 
 		return $contents;

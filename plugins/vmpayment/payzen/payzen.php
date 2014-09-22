@@ -174,7 +174,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 		// Set currency
 		if (!class_exists ('VirtueMartModelCurrency')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}
 		$currencyModel = new VirtueMartModelCurrency();
 		$currencyObj = $currencyModel->getCurrency ($cart->pricesCurrency);
@@ -293,7 +293,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 */
 	function plgVmOnPaymentResponseReceived (&$html) {
 		if (!class_exists ('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		// the payment itself should send the parameter needed.
 		$virtuemart_paymentmethod_id = vRequest::getInt ('pm', 0);
@@ -328,7 +328,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 		// Retrieve order info from database
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		// $resp->get ('order_id') is the virtuemart order_number
 		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($resp->get ('order_id'));
@@ -398,7 +398,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 */
 	function plgVmOnUserPaymentCancel () {
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		$order_number = vRequest::getString ('on');
@@ -443,7 +443,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 		// Retrieve order info from database
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($data['vads_order_id']);
@@ -630,7 +630,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$this->savePaymentData ($virtuemart_order_id, $resp);
 
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		// save order data
 		$modelOrder = new VirtueMartModelOrders();
@@ -645,7 +645,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
 
 		if (!class_exists ('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
 		if ($resp->isAcceptedPayment ()) {

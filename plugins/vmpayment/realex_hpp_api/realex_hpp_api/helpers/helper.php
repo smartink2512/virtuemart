@@ -124,7 +124,7 @@ class  RealexHelperRealex {
 	public function setTotalInPaymentCurrency ($total) {
 
 		if (!class_exists('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . '/helpers/currencydisplay.php');
+			require(VMPATH_ADMIN . '/helpers/currencydisplay.php');
 		}
 		$this->total = vmPSPlugin::getAmountValueInCurrency($total, $this->_method->payment_currency) * 100;
 
@@ -213,7 +213,7 @@ class  RealexHelperRealex {
 
 	function setMd () {
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmCrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmCrypt.php');
 		}
 
 		$md = array(
@@ -232,7 +232,7 @@ class  RealexHelperRealex {
 
 	function getMd ($cryptedMd) {
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmCrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmCrypt.php');
 		}
 		$decryptedMd = vmCrypt::decrypt($cryptedMd);
 		$md = unserialize($decryptedMd);
@@ -966,7 +966,7 @@ class  RealexHelperRealex {
 		$html = '';
 		if ($request_type_response == 'receipt-in_request') {
 			if (!class_exists('VirtueMartModelOrders')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+				require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 			}
 			$orderModel = VmModel::getModel('orders');
 			$order = $orderModel->getOrder($virtuemart_order_id);
@@ -1227,7 +1227,7 @@ class  RealexHelperRealex {
 		//$userfield['realex_saved_payer_ref'] = $newPayerRef;
 		$userfield['realex_hpp_api_saved_pmt_type'] = $this->customerData->getVar('cc_type');
 		if (!class_exists('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		$userfield['realex_hpp_api_saved_pmt_digits'] = shopFunctionsF::mask_string($this->customerData->getVar('cc_number'), '*');
 		$userfield['realex_hpp_api_saved_pmt_name'] = $this->customerData->getVar('cc_name');
@@ -1252,7 +1252,7 @@ class  RealexHelperRealex {
 			return;
 		}
 		if (!class_exists('VmTableData')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtabledata.php');
 		}
 		JLoader::import('joomla.plugin.helper');
 		JPluginHelper::importPlugin('vmuserfield');
@@ -1297,7 +1297,7 @@ class  RealexHelperRealex {
 	 */
 	function validateCvv ($enqueueMessage = true) {
 		if (!class_exists('Creditcard')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'creditcard.php');
 		}
 		if (!$this->_method->cvn_checking) {
 			return true;
@@ -1648,7 +1648,7 @@ class  RealexHelperRealex {
 			return null;
 		}
 		if (!class_exists('VmHTML')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 		}
 		$attrs = 'class="inputbox vm-chzn-select"';
 		$idA = $id = 'saved_cc_selected';

@@ -620,13 +620,13 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	function plgVmOnPaymentResponseReceived(&$html) {
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		if (!class_exists('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		require_once 'klarnacheckout/library/Checkout.php';
 		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
@@ -740,7 +740,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		$klarna_order->update($update);
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		$values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($vmOrderNumber);
 		$dbValues = array(
@@ -772,13 +772,13 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	function createVmOrder($klarna_order, $cartData, $cartId) {
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		if (!class_exists('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		$cartData->_confirmDone = true;
@@ -786,7 +786,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
 		$cart = VirtueMartCart::getCart(false, array(), serialize($cartData));
@@ -796,7 +796,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$this->debugLog($orderId, 'createVmOrder', 'debug');
 
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		$modelOrder = VmModel::getModel('orders');
 		$order_number = VirtueMartModelOrders::getOrderNumber($orderId);
@@ -1000,7 +1000,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 	function onShowOrderBE_activate($payment) {
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		$html = $this->getHtmlRowBE(vmText::_('VMPAYMENT_KLARNACHECKOUT_STATUS'), $payment->klarna_status);
 		$activate_data = unserialize($payment->data);
@@ -1109,7 +1109,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		if ($this->method->debug) {
 			if (!class_exists('VirtueMartCart')) {
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			}
 			$cart = VirtueMartCart::getCart(false, array(), $payment->data);
 			$html = "<tr>\n<td class='key'>" . vmText::_('storeCart') . "</td>\n <td align='left'><pre>" . var_export($cart->products, true) . "</pre></td>\n</tr>\n";
@@ -1613,7 +1613,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	function _getVendorCurrencyId() {
 
 		if (!class_exists('VirtueMartModelVendor')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 		}
 		$vendor_id = 1;
 		$vendor_currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
@@ -1667,7 +1667,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	function getInvoicePdfLink($virtuemart_order_id) {
 
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		if (!class_exists('JFile')) {

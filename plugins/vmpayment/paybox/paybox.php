@@ -131,13 +131,13 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	function plgVmOnPaymentResponseReceived(&$html) {
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		if (!class_exists('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 
@@ -165,7 +165,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	function plgVmOnUserPaymentCancel() {
 
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		$order_number = vRequest::getUword('on');
@@ -204,7 +204,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	function plgVmOnPaymentNotification() {
 
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		$paybox_data = $_POST;
 
@@ -285,7 +285,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		}
 		$payment_name = $method->payment_name;
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$this->_currentMethod = $method;
 		$extraInfo = $this->getExtraPluginNameInfo($method);
@@ -662,7 +662,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	function getEmailCurrency(&$method) {
 
 		if (!isset($method->email_currency)  or $method->email_currency == 'vendor') {
-			// 	    if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+			// 	    if (!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 			$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
 			$db = JFactory::getDBO();
 

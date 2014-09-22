@@ -147,7 +147,7 @@ class PaypalHelperPaypal {
 
 	public function setTotal ($total) {
 		if (!class_exists('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . '/helpers/currencydisplay.php');
+			require(VMPATH_ADMIN . '/helpers/currencydisplay.php');
 		}
 		$this->total = vmPSPlugin::getAmountValueInCurrency($total, $this->_method->payment_currency);
 

@@ -49,7 +49,7 @@ class RealexHelperCustomerData {
 		$session = JFactory::getSession();
 		$sessionData = $session->get(self::REALEX_SESSION, 0, 'vm');
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		if (!empty($sessionData)) {
 			$data = unserialize($sessionData);
@@ -214,7 +214,7 @@ class RealexHelperCustomerData {
 	 */
 	function getMaskedCCnumber () {
 		if (!class_exists('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		return shopFunctionsF::mask_string($this->getVar('cc_number'), '*');
 		$this->getVar('cc_number');

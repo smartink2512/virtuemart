@@ -116,10 +116,10 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
 		$subscribe_id = NULL;
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		if (!class_exists('VirtueMartModelCurrency')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}
 
 
@@ -223,13 +223,13 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function plgVmOnPaymentResponseReceived(&$html) {
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		if (!class_exists('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
@@ -285,7 +285,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function plgVmOnUserPaymentCancel() {
 
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 		$order_number = vRequest::getUword('on');
 		if (!$order_number) {
@@ -319,7 +319,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function plgVmOnPaymentNotification() {
 
 		if (!class_exists('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		$po = vRequest::getString('po', '');
@@ -530,7 +530,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 		$interface = $this->_loadKlikandpayInterface();
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart();
 		$interface->setCart($cart);
@@ -553,7 +553,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		}
 		$payment_name = $method->payment_name;
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$this->_currentMethod = $method;
 		$extraInfo = $this->getExtraPluginNameInfo($method);
@@ -892,7 +892,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
 		if (!class_exists('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart();
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
@@ -939,7 +939,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function getEmailCurrency(&$method) {
 
 		if (!isset($method->email_currency)  or $method->email_currency == 'vendor') {
-			// 	    if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+			// 	    if (!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 			$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
 			$db = JFactory::getDBO();
 
@@ -955,7 +955,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	private function setRetourParams($order, $context) {
 		$params = $order['details']['BT']->virtuemart_paymentmethod_id . ':' . $order['details']['BT']->order_number . ':' . $context;
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		$cryptedParams = vmCrypt::encrypt($params);
 		$cryptedParams = base64_encode($cryptedParams);
@@ -964,7 +964,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 	private function getRetourParams($cryptedParams) {
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		$cryptedParams = base64_decode($cryptedParams);
 		$params = vmCrypt::decrypt($cryptedParams);

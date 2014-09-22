@@ -27,7 +27,7 @@ class klarna_productPrice {
 
 		$this->path = JPATH_VMKLARNAPLUGIN . '/klarna/';
 		if (!class_exists ('ShopFunctions')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 		}
 
 		$this->cData = $cData;
@@ -97,7 +97,7 @@ class klarna_productPrice {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}
 
 		$price = $product->prices['salesPrice'];

@@ -141,7 +141,7 @@ class klarna_payments {
 	public function get_payment_params ($method, $payment_type, $cart = NULL, $country_currency_code = '', $vendor_currency='') {
 
 		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		if (!class_exists ('KlarnaAPI')) {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
@@ -194,7 +194,7 @@ class klarna_payments {
 				return NULL;
 			}
 			if (!class_exists ('VirtueMartModelCurrency')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+				require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 			}
 			// Cheapest is in the Klarna country currency, convert it to the current currency display
 			//$currencyDisplay = CurrencyDisplay::getInstance( );
@@ -289,7 +289,7 @@ class klarna_payments {
 	public function getCheapestMonthlyCost ($cart = NULL, $cData) {
 
 		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		if (!class_exists ('KlarnaAPI')) {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
@@ -318,7 +318,7 @@ vmdebug('getCheapestMonthlyCost',$cart->pricesUnformatted['billTotal'], $billTot
 			return NULL;
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}
 
 		$sFee = $kCheckout->getPresentableValuta ($cheapest);

@@ -91,7 +91,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
 		$this->getPaymentCurrency($method);
@@ -120,7 +120,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 			}
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}
 		$currency = CurrencyDisplay::getInstance ('', $order['details']['BT']->virtuemart_vendor_id);
 

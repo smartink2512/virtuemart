@@ -291,15 +291,16 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 				}
 			}
 		}
-
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .=$this->getRowFirstCol("ResponseMetadata");
-			$responseMetadata = $this->amazonData->getResponseMetadata();
-			if ($responseMetadata->isSetRequestId()) {
-				$contents .=$this->getRow("RequestId: ",  $responseMetadata->getRequestId());
-			}
-		}
-		$contents .=$this->getRowFirstCol("ResponseHeaderMetadata ". $this->amazonData->getResponseHeaderMetadata());
+		/*
+				if ($this->amazonData->isSetResponseMetadata()) {
+					$contents .=$this->getRowFirstCol("ResponseMetadata");
+					$responseMetadata = $this->amazonData->getResponseMetadata();
+					if ($responseMetadata->isSetRequestId()) {
+						$contents .=$this->getRow("RequestId: ",  $responseMetadata->getRequestId());
+					}
+				}
+		*/
+		$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
 
 		$contents .= $this->tableEnd();
 

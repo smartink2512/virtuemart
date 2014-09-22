@@ -104,7 +104,7 @@ class KlikandpayHelperKlikandpayRecurring extends KlikandpayHelperKlikandpay {
 		} else {
 			$recurring_deposit = $this->_method->recurring_deposit;
 			if (!class_exists('CurrencyDisplay')) {
-				require(JPATH_VM_ADMINISTRATOR . '/helpers/currencydisplay.php');
+				require(VMPATH_ADMIN . '/helpers/currencydisplay.php');
 			}
 			$recurring_deposit = vmPSPlugin::getAmountValueInCurrency($recurring_deposit, $this->_method->payment_currency);
 			$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);

@@ -138,7 +138,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 				$taskRoute = '';
 			}
 
-			if ($this->cart->_dataValidated) {
+			if ($this->cart->getDataValidated()) {
 				$this->readonly_cart = true;
 			} else {
 				$this->readonly_cart = false;
@@ -180,12 +180,12 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 
 					<?php // Terms Of Service Checkbox
 					if (!class_exists('VirtueMartModelUserfields')) {
-						require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+						require(VMPATH_ADMIN . DS . 'models' . DS . 'userfields.php');
 					}
 					$userFieldsModel = VmModel::getModel('userfields');
 					if ($userFieldsModel->getIfRequired('agreed')) {
 						if (!class_exists('VmHtml')) {
-							require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+							require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 						}
 						echo VmHtml::checkbox('tosAccepted', $this->cart->tosAccepted, 1, 0, 'class="terms-of-service"');
 

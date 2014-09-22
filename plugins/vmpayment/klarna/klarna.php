@@ -139,7 +139,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_productprice.php');
 		}
 		if (!class_exists ('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart ();
 
@@ -174,7 +174,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		if ($cart == '') {
 			if (!class_exists ('VirtueMartCart')) {
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			}
 			$cart = VirtueMartCart::getCart ();
 		}
@@ -662,7 +662,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	function getKlarnaPaymentCurrency ($method) {
 
 		if (!class_exists ('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart (FALSE);
 		$country = NULL;
@@ -1556,7 +1556,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		$vendorId = 1;
 		if (!class_exists ('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart ();
 		if ($cart->BT != 0 or $cart->virtuemart_paymentmethod_id) {

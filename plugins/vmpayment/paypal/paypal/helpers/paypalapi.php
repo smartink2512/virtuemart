@@ -432,7 +432,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 	function validate ($enqueueMessage = true) {
 
 		if (!class_exists('Creditcard')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'creditcard.php');
 		}
 		$html = '';
 		$cc_valid = true;

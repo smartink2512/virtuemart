@@ -136,6 +136,7 @@ class amazonHelperRefundResponse extends amazonHelper {
 				}
 			}
 		}
+		/*
 		if ($this->amazonData->isSetResponseMetadata()) {
 			$more='';
 			$responseMetadata = $this->amazonData->getResponseMetadata();
@@ -145,8 +146,8 @@ class amazonHelperRefundResponse extends amazonHelper {
 			}
 			$contents .=$this->getRow("ResponseMetadata: ",$more );
 		}
-
-		$contents .=$this->getRow("ResponseHeaderMetadata: ",$this->amazonData->getResponseHeaderMetadata()  );
+*/
+		$contents .= $this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata());
 
 		return $contents;
 	}

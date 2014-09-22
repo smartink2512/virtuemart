@@ -22,7 +22,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 if (!class_exists('ShopFunctions')) {
-	require(JPATH_VM_ADMINISTRATOR . '/helpers/shopfunctions.php');
+	require(VMPATH_ADMIN . '/helpers/shopfunctions.php');
 }
 if (!class_exists('PaypalHelperPaypal')) {
 	require(JPATH_ROOT . '/plugins/vmpayment/paypal/paypal/helpers/paypal.php');
