@@ -152,7 +152,7 @@ class VmMediaHandler {
 	 */
 	static public function createMedia($table,$type='',$file_mimetype=''){
 
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
 		$extension = strtolower(JFile::getExt($table->file_url));
 
@@ -249,7 +249,7 @@ class VmMediaHandler {
 			$this->file_name = '';
 			$this->file_extension = '';
 		} else {
-			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
 			if($this->file_is_forSale==1){
 
@@ -611,7 +611,7 @@ class VmMediaHandler {
 			vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
 			return false;
 		}
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		$media = vRequest::getFiles('upload');
 
 		//vmdebug('uploadFile',$data,$media);
@@ -686,7 +686,7 @@ class VmMediaHandler {
 	 */
 	function deleteFile($url){
 
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		$file_path = VMPATH_ROOT.DS.str_replace('/',DS,$url);
 		$app = JFactory::getApplication();
 
@@ -801,7 +801,7 @@ class VmMediaHandler {
 			vmdebug('the Urls',$data['media_roles'],$typelessUrl,$this->file_url_folder.$this->file_name);
 			if(!file_exists($this->file_url_folder.$this->file_name) and file_exists($typelessUrl)){
 				vmdebug('Execute move');
-				if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+				if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 				JFile::move($typelessUrl, $this->file_url_folder.$this->file_name);
 			}
 		}

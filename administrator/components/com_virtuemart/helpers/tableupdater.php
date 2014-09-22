@@ -554,7 +554,7 @@ class GenericTableUpdater extends VmModel{
 	public function alterColumns($tablename,$fields,$reCreatePrimary){
 
 
-		$after ='FIRST';
+		$after =' FIRST';
 		$dropped = 0;
 		$altered = 0;
 		$added = 0;
@@ -569,7 +569,7 @@ class GenericTableUpdater extends VmModel{
 		$this->_db->setQuery($query);
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadColumn(0);
-
+		//vmdebug('alterColumns',$fullColumns);
 		//Attention user_infos is not in here, because it an contain customised fields. #__virtuemart_order_userinfos #__virtuemart_userinfos
 		//This is currently not working as intended, because the config is not deleted before, it is better to create an extra command for this, when we need it later
 		$upDelCols = (int) VmConfig::get('updelcols',0);
@@ -590,9 +590,6 @@ class GenericTableUpdater extends VmModel{
 				}
 			}
 
-
-
-// 		vmdebug('$$columns ',$columns);
 
 		foreach($fields as $fieldname => $alterCommand){
 
@@ -640,13 +637,14 @@ class GenericTableUpdater extends VmModel{
 // 					if (!empty($compare)) {
 					$oldColumn = strtoupper($oldColumn);
 					$alterCommand = strtoupper(trim($alterCommand));
-
+				//	vmdebug('reCreateColumnByTableAttributes ',$fullColumns[$key]);
 					if ($oldColumn != $alterCommand ) {
 
-						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand. $after;
 						$action = 'CHANGE';
 						$altered++;
 						vmdebug($tablename.' Alter field '.$fieldname.' oldcolumn ',$oldColumn,$alterCommand);
+
 // 						vmdebug('Alter field new column ',$fullColumns[$key]);
 // 						vmdebug('Alter field new column '.$this->reCreateColumnByTableAttributes($fullColumns[$key])); //,$fullColumns[$key]);
 					}
@@ -666,9 +664,8 @@ class GenericTableUpdater extends VmModel{
 				} else {
 					vmInfo('alterTable '.$action.' '.$tablename.'.'.$fieldname.' : '. $query);
 				}
-
-				$after = 'AFTER '.$fieldname;
 			}
+			$after = ' AFTER `'.$fieldname.'`';
 		}
 
 		if($dropped != 0 or $altered !=0 or $added!=0){
@@ -693,7 +690,7 @@ class GenericTableUpdater extends VmModel{
 		}
 		$oldColumn .= $this->formatExtra($fullColumn->Extra).$this->formatComment($fullColumn->Comment);
 
-		return $oldColumn;
+		return trim($oldColumn);
 	}
 
 	private function reCreateColumnByTableAttributesol($fullColumn){

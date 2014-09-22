@@ -119,7 +119,7 @@ class VirtuemartViewProduct extends VmView {
 
 				if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 				$vmtemplate = shopFunctionsF::loadVmTemplateStyle();
-				if(is_Dir(JPATH_ROOT.DS.'templates'.DS.$vmtemplate.DS.'images'.DS.'availability'.DS)){
+				if(is_Dir(VMPATH_ROOT.DS.'templates'.DS.$vmtemplate.DS.'images'.DS.'availability'.DS)){
 					$imagePath = '/templates/'.$vmtemplate.'/images/availability/';
 				} else {
 					$imagePath = '/components/com_virtuemart/assets/images/availability/';

@@ -74,7 +74,7 @@ class VmController extends JControllerLegacy{
 		$viewLayout	= vRequest::getCmd('layout', 'default');
 
 		if(vRequest::getCmd('manage')){
-			$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
+			$this->addViewPath(VMPATH_ADMIN . DS . 'views');
 			$this->basePath = VMPATH_ROOT.'/administrator/components/com_virtuemart';
 		}
 
@@ -82,7 +82,7 @@ class VmController extends JControllerLegacy{
 
 		$app = JFactory::getApplication();
 		if($app->isSite()){
-			$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.$viewName.DS.'tmpl');
+			$view->addTemplatePath(VMPATH_ADMIN.DS.'views'.DS.$viewName.DS.'tmpl');
 		}
 
 		// Set the layout
@@ -137,7 +137,7 @@ class VmController extends JControllerLegacy{
 		vRequest::setVar('view', $this->_cname);
 		vRequest::setVar('layout', $layout);
 
-		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
+		$this->addViewPath(VMPATH_ADMIN . DS . 'views');
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);

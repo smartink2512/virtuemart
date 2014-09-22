@@ -856,7 +856,7 @@ class VmTable extends JTable {
 			if($unicodeslugs)$this->$slugName = rawurlencode($this->$slugName);
 
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
-			vmdebug('my Final slugName '.$slugName,$this->_slugName);
+			vmdebug('my Final slugName '.$slugName,$this->slugName);
 			if (!$valid) {
 				return false;
 			}

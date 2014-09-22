@@ -39,7 +39,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	function getFieldList($fieldname){
 
-		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'sublayouts';
+		$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'sublayouts';
 
 		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 
@@ -48,8 +48,8 @@ class VirtueMartModelConfig extends VmModel {
 
 		$tplnames = $db->loadResult();
 		if($tplnames){
-			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'sublayouts')){
-				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'sublayouts';
+			if(is_dir(VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'sublayouts')){
+				$dirs[] = VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.'sublayouts';
 			}
 		}
 		return self::getLayouts($dirs,$fieldname.'_');
@@ -65,7 +65,7 @@ class VirtueMartModelConfig extends VmModel {
 	static function getLayoutList($view) {
 
 		$dirs = array();
-		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
+		$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
 
 		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 
@@ -74,8 +74,8 @@ class VirtueMartModelConfig extends VmModel {
 
 		$tplnames = $db->loadResult();
 		if($tplnames){
-			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view)){
-				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
+			if(is_dir(VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view)){
+				$dirs[] = VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
 			}
 		}
 		return self::getLayouts($dirs);
@@ -123,7 +123,7 @@ class VirtueMartModelConfig extends VmModel {
 	 */
 	function getTCPDFFontsList() {
 
-		$dir = JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
+		$dir = VMPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
 		$result = array();
 		if(function_exists('glob')){
 			$specfiles = glob($dir.DS."*_specs.xml");
@@ -155,7 +155,7 @@ class VirtueMartModelConfig extends VmModel {
 	function getNoImageList() {
 
 		//TODO set config value here
-		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
+		$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 
 		$tplpath = VmConfig::get('vmtemplate',0);
 		if(!empty($tplpath) and is_numeric($tplpath)){
@@ -170,8 +170,8 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 		if($tplpath){
-			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
-				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';
+			if(is_dir(VMPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
+				$dirs[] = VMPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';
 			}
 		}
 
@@ -367,7 +367,7 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
-		if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+		if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
 		$safePath = trim($config->get('forSale_path'));
 		if(!empty($safePath)){
@@ -383,7 +383,7 @@ class VirtueMartModelConfig extends VmModel {
 			$config->set('forSale_path',$safePath);
 		} else {
 			VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
-		/*	$safePath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'vmfiles';
+		/*	$safePath = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'vmfiles';
 
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
@@ -540,7 +540,7 @@ class VirtueMartModelConfig extends VmModel {
 		$_datafile = VMPATH_ADMIN.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
 			if (file_exists(VMPATH_ADMIN.DS.'virtuemart_defaults.cfg-dist')) {
-				if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+				if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',VMPATH_ADMIN);
 			} else {
 				vmWarn('The data file with the default configuration could not be found. You must configure the shop manually.');

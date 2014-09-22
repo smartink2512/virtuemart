@@ -20,7 +20,7 @@ if($maxtime < 140){
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VMPATH_ADMIN') or define('VMPATH_ADMIN', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
-
+defined('VMPATH_ROOT') or define('VMPATH_ROOT', JPATH_ROOT);
 
 
 // hack to prevent defining these twice in 1.6 installation
@@ -119,8 +119,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->update($loadVm);
 			}
 			$_REQUEST['install'] = 1;
-			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
 			$this -> joomlaSessionDBToMediumText();
 
@@ -144,23 +144,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
 			// 			if(version_compare(JVERSION,'1.6.0','ge')) {
 
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'shipment');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'payment');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category'.DS.'resized');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer'.DS.'resized');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product'.DS.'resized');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale'.DS.'invoices');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale'.DS.'resized');
-			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'typeless');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'shipment');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'payment');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale'.DS.'invoices');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'typeless');
 
 
-			$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+			$dst = VMPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
 
 			$this->recurse_copy($src,$dst);
 
@@ -191,7 +191,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			if(JFolder::create($path)) {
 				if(!JFile::exists($path .DS. 'index.html')){
-					JFile::copy(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
+					JFile::copy(VMPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
 				}
 				return true;
 			}
@@ -213,8 +213,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->install($loadVm);
 			}
 
-			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
 			//Delete Cache
 			$cache = JFactory::getCache();
@@ -290,7 +290,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//copy sampel media
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
 			if(JFolder::exists($src)){
-				$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+				$dst = VMPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
 				$this->recurse_copy($src,$dst);
 			}
 

@@ -73,7 +73,7 @@ defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 require(VMPATH_ADMIN.DS.'version.php');
 
 if(!class_exists('JTable')){
-	require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php');
+	require(VMPATH_LIBS.DS.'joomla'.DS.'database'.DS.'table.php');
 }
 JTable::addIncludePath(VMPATH_ADMIN.DS.'tables');
 
@@ -390,7 +390,7 @@ function vmTime($descr,$name='current'){
  */
 function logInfo ($text, $type = 'message') {
 
-	if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+	if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
 	$config = JFactory::getConfig();
 	$log_path = $config->get('log_path', VMPATH_ROOT . "/log" );
@@ -425,7 +425,7 @@ function logInfo ($text, $type = 'message') {
 	}
 
 	// Initialise variables.
-	if(!class_exists('JClientHelper')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'client'.DS.'helper.php');
+	if(!class_exists('JClientHelper')) require(VMPATH_LIBS.DS.'joomla'.DS.'client'.DS.'helper.php');
 	$FTPOptions = JClientHelper::getCredentials('ftp');
 
 	if ($FTPOptions['enabled'] == 0){
@@ -1081,7 +1081,7 @@ class vmURI{
 
 	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
 
-		if(!class_exists('JFilterInput')) require (JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filter'.DS.'input.php');
+		if(!class_exists('JFilterInput')) require (VMPATH_LIBS.DS.'joomla'.DS.'filter'.DS.'input.php');
 		$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		if($JURIInstance===0)$JURIInstance = JURI::getInstance();
 		return $_filter->clean($JURIInstance->toString($parts));

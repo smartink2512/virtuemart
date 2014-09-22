@@ -46,7 +46,7 @@ if($viewName=='cart'){
 }
 $data = $cart->prepareAjaxData($checkAutomaticPS);
 
-if (!class_exists('CurrencyDisplay')) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/currencydisplay.php');
+if (!class_exists('CurrencyDisplay')) require(VMPATH_ROOT .'/administrator/components/com_virtuemart/helpers/currencydisplay.php');
 $currencyDisplay = CurrencyDisplay::getInstance( );
 
 vmJsApi::cssSite();

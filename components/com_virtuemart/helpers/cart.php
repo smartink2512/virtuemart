@@ -101,7 +101,7 @@ class VirtueMartCart {
 	public static function getCart($setCart=true, $options = array(), $cartData=NULL) {
 
 		//What does this here? for json stuff?
-		if (!class_exists('JTable')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table.php');
+		if (!class_exists('JTable')) require(VMPATH_LIBS . DS . 'joomla' . DS . 'database' . DS . 'table.php');
 
 		if(empty(self::$_cart)){
 

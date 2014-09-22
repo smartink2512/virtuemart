@@ -1227,7 +1227,7 @@ class ShopFunctions {
 			$warn = 'COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET';
 		} else {
 			//jimport('joomla.filesystem.folder');
-			if(!class_exists('JFolder')) require_once(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('JFolder')) require_once(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
 				$warn = 'COM_VIRTUEMART_WARN_SAFE_PATH_WRONG';

@@ -38,7 +38,7 @@ class VirtuemartControllerProduct extends VmController {
 	 */
 	function __construct() {
 		parent::__construct('virtuemart_product_id');
-		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
+		$this->addViewPath( VMPATH_ADMIN . DS . 'views');
 	}
 
 
@@ -251,7 +251,7 @@ class VirtuemartControllerProduct extends VmController {
 			vmInfo('COM_VIRTUEMART_PRODUCT_XREF_NAMES',implode(', ',$productNames));
 		}
 
-		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
+		$this->addViewPath(VMPATH_ADMIN . DS . 'views');
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);

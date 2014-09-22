@@ -135,10 +135,9 @@ class VmModel extends JObject {
 		{
 			$this->addTablePath($config['table_path']);
 		}
-		elseif (defined('JPATH_COMPONENT_ADMINISTRATOR'))
+		elseif (defined('VMPATH_ADMIN'))
 		{
-			$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
-			$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR . '/table');
+			$this->addTablePath(VMPATH_ADMIN . '/tables');
 		}
 
 		// Set the internal state marker - used to ignore setting state from the request

@@ -310,7 +310,7 @@ class shopFunctionsF {
 		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
 
 		$layout = false;
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		if (JFile::exists ($templatePath)) {
 			$layout =  $templatePath;
 		} else {
@@ -358,7 +358,7 @@ class shopFunctionsF {
 		$template = self::loadVmTemplateStyle();
 
 		if($template) {
-			$view->addTemplatePath( JPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
+			$view->addTemplatePath( VMPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
 		}
 
 		foreach( $vars as $key => $val ) {

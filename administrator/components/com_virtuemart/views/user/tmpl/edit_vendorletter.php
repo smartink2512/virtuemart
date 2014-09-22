@@ -19,8 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
-	vmError('vmPdf: For the pdf, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
+if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
+	vmError('vmPdf: For the pdf, you must install the tcpdf library at '.VMPATH_LIBS.DS.'tcpdf');
 }
 ?>
 <div class="col50">

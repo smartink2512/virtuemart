@@ -236,7 +236,7 @@ class TableMedias extends VmTable {
 			}
 			else {*/
 				if (!class_exists ('JFile')) {
-					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+					require(VMPATH_LIBS . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
 
 				if (!$this->file_is_forSale) {

@@ -39,7 +39,7 @@ class VmPdf {
 		}
 
 		if(!class_exists('VmVendorPDF')){
-			vmError('vmPdf: For the pdf, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
+			vmError('vmPdf: For the pdf, you must install the tcpdf library at '.VMPATH_LIBS.DS.'tcpdf');
 			return 0;
 		}
 
@@ -66,10 +66,10 @@ class VmPdf {
 }
 
 
-if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
-	vmError('VmPDF helper: For the PDF invoice and other PDF business letters, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
+if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
+	vmError('VmPDF helper: For the PDF invoice and other PDF business letters, you must install the tcpdf library at '.VMPATH_LIBS.DS.'tcpdf');
 } else {
-	if(!class_exists('TCPDF'))require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php');
+	if(!class_exists('TCPDF'))require(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php');
 	// Extend the TCPDF class to create custom Header and Footer as configured in the Backend
 	class VmVendorPDF extends TCPDF {
 		var $vendor = 0;
@@ -101,7 +101,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				vmError('Warning extension of the image is a png, tpcdf has problems with that in the header, choose a jpg or gif');
 			} else {
 				$imagePath = str_replace('/',DS, $this->vendor->images[0]->file_url_folder.$this->vendor->images[0]->file_name.'.'.$this->vendor->images[0]->file_extension);
-				if(!file_exists(JPATH_ROOT . DS . $imagePath)){
+				if(!file_exists(VMPATH_ROOT . DS . $imagePath)){
 					vmError('Vendor image missing '.$imagePath);
 				} else {
 					$this->vendorImage=$imagePath;
@@ -109,9 +109,9 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			}
 			// Generate PDF header
 			if (!class_exists ('JFile')) {
-				require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+				require(VMPATH_LIBS . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 			}
-			$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
+			$this->tcpdf6 = JFile::exists(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
 			if($this->tcpdf6){
 				$this->tcpdf6 = method_exists('TCPDF','getAllSpotColors');
 			}
@@ -206,9 +206,9 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				$this->setCellHeightRatio($this->vendor->vendor_letter_footer_cell_height_ratio);
 
 				if (!class_exists ('JFile')) {
-					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+					require(VMPATH_LIBS . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
-				$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
+				$this->tcpdf6 = JFile::exists(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_colors.php');
 				if($this->tcpdf6){
 					$this->tcpdf6 = method_exists('TCPDF','getAllSpotColors');
 				}
@@ -261,12 +261,12 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			$cw = $this->w - $this->original_lMargin - $this->original_rMargin;
 			if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
 				if (!class_exists ('JFile')) {
-					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+					require(VMPATH_LIBS . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
-				$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
+				$this->tcpdf6 = JFile::exists(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 				if($this->tcpdf6){
 					if (!class_exists ('TCPDF_IMAGES')) {
-						require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
+						require(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 					}
 
 					$imgtype = TCPDF_IMAGES::getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
