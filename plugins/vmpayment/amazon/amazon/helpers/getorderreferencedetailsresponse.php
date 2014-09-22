@@ -1,6 +1,6 @@
 <?php
 
-defined('_JEXEC')or die('Direct Access to' . basename(__FILE__) . 'isnotallowed.');
+defined('_JEXEC') or die('Direct Access to' . basename(__FILE__) . 'isnotallowed.');
 
 /**
  *
@@ -17,7 +17,6 @@ defined('_JEXEC')or die('Direct Access to' . basename(__FILE__) . 'isnotallowed.
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperGetOrderReferenceDetailsResponse extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsService_Model_GetOrderReferenceDetailsResponse $getOrderReferenceDetailsResponse, $method) {
@@ -304,16 +303,16 @@ class amazonHelperGetOrderReferenceDetailsResponse extends amazonHelper {
 				}
 			}
 		}
-
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .= $this->getRowFirstCol("ResponseMetadata");
-			$responseMetadata = $this->amazonData->getResponseMetadata();
-			if ($responseMetadata->isSetRequestId()) {
-				$contents .= $this->getRow("RequestId:", $responseMetadata->getRequestId());
-			}
-		}
-		$contents .= $this->getRowFirstCol("ResponseHeaderMetadata" . $this->amazonData->getResponseHeaderMetadata());
-
+		/*
+				if ($this->amazonData->isSetResponseMetadata()) {
+					$contents .= $this->getRowFirstCol("ResponseMetadata");
+					$responseMetadata = $this->amazonData->getResponseMetadata();
+					if ($responseMetadata->isSetRequestId()) {
+						$contents .= $this->getRow("RequestId:", $responseMetadata->getRequestId());
+					}
+				}
+				$contents .= $this->getRowFirstCol("ResponseHeaderMetadata" . $this->amazonData->getResponseHeaderMetadata());
+		*/
 		$contents .= $this->tableEnd();
 
 		return $contents;

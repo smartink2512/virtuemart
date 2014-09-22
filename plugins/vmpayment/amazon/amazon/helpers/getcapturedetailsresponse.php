@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsService_Model_GetCaptureDetailsResponse $getCaptureDetailsResponse, $method) {
@@ -174,7 +173,18 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 					$contents .= $this->getRow("CaptureAmount: ", $more);
 
 				}
+				if ($captureDetails->isSetCapturedAmount()) {
+					$capturedAmount = $captureDetails->getCapturedAmount();
+					$more='';
+					if ($capturedAmount->isSetAmount()) {
+						$more .= "<br />    Amount: " . $capturedAmount->getAmount();
+					}
+					if ($capturedAmount->isSetCurrencyCode()) {
+						$more .= "<br />    CurrencyCode: " . $capturedAmount->getCurrencyCode();
+					}
+					$contents .=$this->getRow("CapturedAmount: ",  $more);
 
+				}
 				if ($captureDetails->isSetRefundedAmount()) {
 					$refundedAmount = $captureDetails->getRefundedAmount();
 					$more = '';
@@ -238,16 +248,16 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 
 			}
 		}
-
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .= $this->getRowFirstCol("ResponseMetadata");
-			$responseMetadata = $this->amazonData->getResponseMetadata();
-			if ($responseMetadata->isSetRequestId()) {
-				$contents .= $this->getRow("RequestId: ", $responseMetadata->getRequestId());
-			}
-		}
-		$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
-
+		/*
+				if ($this->amazonData->isSetResponseMetadata()) {
+					$contents .= $this->getRowFirstCol("ResponseMetadata");
+					$responseMetadata = $this->amazonData->getResponseMetadata();
+					if ($responseMetadata->isSetRequestId()) {
+						$contents .= $this->getRow("RequestId: ", $responseMetadata->getRequestId());
+					}
+				}
+				$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
+		*/
 		$contents .= $this->tableEnd();
 
 		return $contents;

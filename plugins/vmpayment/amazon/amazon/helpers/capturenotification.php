@@ -17,11 +17,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperCaptureNotification extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsNotifications_Model_CaptureNotification $captureNotification,$method) {
-		parent::__construct($captureNotification,$method);
+	public function __construct (OffAmazonPaymentsNotifications_Model_CaptureNotification $captureNotification, $method) {
+		parent::__construct($captureNotification, $method);
 	}
 
 	/**
@@ -30,7 +29,7 @@ class amazonHelperCaptureNotification extends amazonHelper {
 	 * @param $payments
 	 */
 	function onNotificationUpdateOrderHistory ($order, $payments) {
-		if ($this->_currentMethod->authorization_mode_erp_disabled=='automatic_synchronous') {
+		if ($this->_currentMethod->authorization_mode_erp_disabled == 'automatic_synchronous') {
 			return;
 		}
 		$order_history = array();
@@ -62,7 +61,7 @@ class amazonHelperCaptureNotification extends amazonHelper {
 					// TODO  retry the Capture again if in Open State, and then call the capture again
 					$order_history['order_status'] = $this->_currentMethod->status_cancel;
 				}
-				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_DECLINED',$reasonCode );
+				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_DECLINED', $reasonCode);
 			} elseif ($amazonState == 'Pending') {
 				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
 				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_PENDING');
@@ -72,7 +71,7 @@ class amazonHelperCaptureNotification extends amazonHelper {
 				// keep old status
 				$order_history['customer_notified'] = 0;
 				$order_history['order_status'] = $order['details']['BT']->order_status;
-				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_CLOSED',$reasonCode );
+				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_CLOSED', $reasonCode);
 			}
 
 			$order_history['amazonState'] = $amazonState;
@@ -88,7 +87,6 @@ class amazonHelperCaptureNotification extends amazonHelper {
 	 * move to Declined => GetCaptureDetails
 	 * move to Closed => GetCaptureDetails
 	 * move to Completed => GetCaptureDetails, Refund
-
 	 * @param $order
 	 * @param $payments
 	 * @param $amazonState
@@ -120,6 +118,7 @@ class amazonHelperCaptureNotification extends amazonHelper {
 		}
 		return NULL;
 	}
+
 	public function getStoreInternalData () {
 		//$amazonInternalData = $this->getStoreResultParams();
 		$amazonInternalData = new stdClass();
@@ -146,20 +145,20 @@ class amazonHelperCaptureNotification extends amazonHelper {
 
 
 	function getContents () {
-		$contents=$this->tableStart("Capture Notification");
+		$contents = $this->tableStart("Capture Notification");
 		if ($this->amazonData->isSetCaptureDetails()) {
-			$contents .=$this->getRowFirstCol("CaptureDetails");
+			$contents .= $this->getRowFirstCol("CaptureDetails");
 			$captureDetails = $this->amazonData->getCaptureDetails();
 			if ($captureDetails->isSetAmazonCaptureId()) {
-				$contents .=$this->getRow("AmazonCaptureId: ",$captureDetails->getAmazonCaptureId() );
+				$contents .= $this->getRow("AmazonCaptureId: ", $captureDetails->getAmazonCaptureId());
 
 			}
 			if ($captureDetails->isSetCaptureReferenceId()) {
-				$contents .=$this->getRow("CaptureReferenceId: ",$captureDetails->getCaptureReferenceId() );
+				$contents .= $this->getRow("CaptureReferenceId: ", $captureDetails->getCaptureReferenceId());
 
 			}
 			if ($captureDetails->isSetCaptureAmount()) {
-				$more='';
+				$more = '';
 				$captureAmount = $captureDetails->getCaptureAmount();
 				if ($captureAmount->isSetAmount()) {
 					$more .= "<br />Amount: " . $captureAmount->getAmount();
@@ -167,11 +166,11 @@ class amazonHelperCaptureNotification extends amazonHelper {
 				if ($captureAmount->isSetCurrencyCode()) {
 					$more .= "<br />CurrencyCode: " . $captureAmount->getCurrencyCode();
 				}
-				$contents .=$this->getRow("CaptureAmount: ",$more );
+				$contents .= $this->getRow("CaptureAmount: ", $more);
 
 			}
 			if ($captureDetails->isSetRefundedAmount()) {
-				$more='';
+				$more = '';
 				$refundedAmount = $captureDetails->getRefundedAmount();
 				if ($refundedAmount->isSetAmount()) {
 					$more .= "<br />Amount:" . $refundedAmount->getAmount();
@@ -179,10 +178,10 @@ class amazonHelperCaptureNotification extends amazonHelper {
 				if ($refundedAmount->isSetCurrencyCode()) {
 					$more .= "<br />CurrencyCode: " . $refundedAmount->getCurrencyCode();
 				}
-				$contents .=$this->getRow("RefundedAmount: ",$more );
+				$contents .= $this->getRow("RefundedAmount: ", $more);
 			}
 			if ($captureDetails->isSetCaptureFee()) {
-$more='';
+				$more = '';
 				$captureFee = $captureDetails->getCaptureFee();
 				if ($captureFee->isSetAmount()) {
 					$more .= "<br />Amount: " . $captureFee->getAmount();
@@ -190,24 +189,24 @@ $more='';
 				if ($captureFee->isSetCurrencyCode()) {
 					$more .= "<br />CurrencyCode: " . $captureFee->getCurrencyCode();
 				}
-				$contents .=$this->getRow("CaptureFee: ",$more );
+				$contents .= $this->getRow("CaptureFee: ", $more);
 
 			}
 			if ($captureDetails->isSetIdList()) {
-				$more='';
+				$more = '';
 				$idList = $captureDetails->getIdList();
 				$memberList = $idList->getId();
 				foreach ($memberList as $member) {
 					$more .= "<br />      member: " . $member;
 				}
-				$contents .=$this->getRow("IdList: ",$more );
+				$contents .= $this->getRow("IdList: ", $more);
 			}
 			if ($captureDetails->isSetCreationTimestamp()) {
-				$contents .=$this->getRow("CreationTimestamp: ",$captureDetails->getCreationTimestamp() );
+				$contents .= $this->getRow("CreationTimestamp: ", $captureDetails->getCreationTimestamp());
 
 			}
 			if ($captureDetails->isSetCaptureStatus()) {
-				$more='';
+				$more = '';
 				$captureStatus = $captureDetails->getCaptureStatus();
 				if ($captureStatus->isSetState()) {
 					$more .= "<br />          State";
@@ -222,10 +221,10 @@ $more='';
 				if ($captureStatus->isSetReasonDescription()) {
 					$more .= "<br /> ReasonDescription: " . $captureStatus->getReasonDescription();
 				}
-				$contents .=$this->getRow("CaptureStatus: ",$more );
+				$contents .= $this->getRow("CaptureStatus: ", $more);
 			}
 			if ($captureDetails->isSetSoftDescriptor()) {
-				$contents .=$this->getRow("SoftDescriptor: ",$captureDetails->getSoftDescriptor() );
+				$contents .= $this->getRow("SoftDescriptor: ", $captureDetails->getSoftDescriptor());
 
 			}
 		}

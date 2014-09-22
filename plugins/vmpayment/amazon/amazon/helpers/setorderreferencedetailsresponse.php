@@ -17,11 +17,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperSetOrderReferenceDetailsResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_SetOrderReferenceDetailsResponse $setOrderReferenceDetailsResponse,$method) {
-		parent::__construct($setOrderReferenceDetailsResponse,$method);
+	public function __construct (OffAmazonPaymentsService_Model_SetOrderReferenceDetailsResponse $setOrderReferenceDetailsResponse, $method) {
+		parent::__construct($setOrderReferenceDetailsResponse, $method);
 	}
 
 	public function getStoreInternalData () {
@@ -232,6 +231,7 @@ class amazonHelperSetOrderReferenceDetailsResponse extends amazonHelper {
 				}
 			}
 		}
+		/*
 		if ($this->amazonData->isSetResponseMetadata()) {
 			$contents .= "ResponseMetadata" . "<br />";
 			$responseMetadata = $this->amazonData->getResponseMetadata();
@@ -241,7 +241,7 @@ class amazonHelperSetOrderReferenceDetailsResponse extends amazonHelper {
 		}
 
 		$contents .= "ResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata() . "<br />";
-
+		*/
 		return $contents;
 	}
 

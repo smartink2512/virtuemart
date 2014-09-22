@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperGetAuthorizationDetailsResponse extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsService_Model_GetAuthorizationDetailsResponse $getAuthorizationDetailsResponse, $method) {
@@ -291,16 +290,16 @@ class amazonHelperGetAuthorizationDetailsResponse extends amazonHelper {
 				}
 			}
 		}
-
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .= $this->getRowFirstCol("ResponseMetadata");
-			$responseMetadata = $this->amazonData->getResponseMetadata();
-			if ($responseMetadata->isSetRequestId()) {
-				$contents .= $this->getRow("RequestId: ", $responseMetadata->getRequestId());
-			}
-		}
-		$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
-
+		/*
+				if ($this->amazonData->isSetResponseMetadata()) {
+					$contents .= $this->getRowFirstCol("ResponseMetadata");
+					$responseMetadata = $this->amazonData->getResponseMetadata();
+					if ($responseMetadata->isSetRequestId()) {
+						$contents .= $this->getRow("RequestId: ", $responseMetadata->getRequestId());
+					}
+				}
+				$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
+		*/
 		$contents .= $this->tableEnd();
 
 		return $contents;

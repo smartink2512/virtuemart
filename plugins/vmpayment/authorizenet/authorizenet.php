@@ -1052,7 +1052,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$db = JFactory::getDBO();
 		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
+		$columns = $db->loadColumn(0);
 
 		foreach ($authorizeNetResponse as $key => $value) {
 			$table_key = 'authorizenet_response_' . $key;

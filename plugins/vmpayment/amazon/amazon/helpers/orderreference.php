@@ -17,11 +17,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperOrderReference extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $orderReference,$method) {
-		parent::__construct($orderReference,$method);
+	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $orderReference, $method) {
+		parent::__construct($orderReference, $method);
 	}
 
 	public function getStoreInternalData () {

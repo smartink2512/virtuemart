@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 abstract class amazonHelper {
 	var $amazonData = null;
 	var $plugin = null;
@@ -47,7 +46,7 @@ abstract class amazonHelper {
 
 	function getVmReferenceId ($referenceId) {
 		$pos = strrpos($referenceId, '-');
-		if ($pos===false) {
+		if ($pos === false) {
 			return $referenceId;
 		} else {
 			return substr($referenceId, 0, $pos);
@@ -55,7 +54,7 @@ abstract class amazonHelper {
 
 	}
 
-	public function onNotificationNextOperation($order, $payments, $amazonState){
+	public function onNotificationNextOperation ($order, $payments, $amazonState) {
 		return false;
 	}
 

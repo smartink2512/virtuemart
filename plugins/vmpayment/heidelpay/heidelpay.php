@@ -197,19 +197,27 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			$params['FRONTEND.PM.0.SUBTYPES']	= "PAYPAL";
 		}
 		/*
-		* Special case for MangirKart without hco iframe
-		*/
+		  * Special case for MangirKart without hco iframe
+		  */
 		if ($method->HEIDELPAY_PAYMENT_TYPE == "PCMANGIR") {
-			$params['PAYMENT.CODE'] 	= "PC.PA";
-			$params['ACCOUNT.BRAND']	= "MANGIRKART";
+			$params['PAYMENT.CODE']  = "PC.PA";
+			$params['ACCOUNT.BRAND'] = "MANGIRKART";
 		}
 		/*
-		 * Special case for BarPay without hco iframe
-		*/
-		if ($method->HEIDELPAY_PAYMENT_TYPE == "PPBARPAY") {
-			$params['PAYMENT.CODE'] 	= "PP.PA";
-			$params['ACCOUNT.BRAND']	= "BARPAY";
+		   * case for GiroPay
+		  */
+		if ($method->HEIDELPAY_PAYMENT_TYPE == "OTGIR") {
+			$params['FRONTEND.SEPA']     = 'YES';
+			$params['FRONTEND.SEPASWITCH'] = 'NO';
 		}
+		/*
+		   * Special case for BarPay without hco iframe
+		  */
+		if ($method->HEIDELPAY_PAYMENT_TYPE == "PPBARPAY") {
+			$params['PAYMENT.CODE']  = "PP.PA";
+			$params['ACCOUNT.BRAND'] = "BARPAY";
+		}
+
 		/*
 		 * Special case for BillSAFE
 		*/

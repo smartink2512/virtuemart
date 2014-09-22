@@ -581,7 +581,7 @@ jQuery().ready(function($) {
 		$tablename= $this->plugin->getTablename();
 		$query = 'SHOW COLUMNS FROM `' . $tablename . '` ';
 		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
+		$columns = $db->loadColumn(0);
 		foreach ($paybox_data as $key => $value) {
 			$table_key = $this->plugin_name . '_response_' . $key;
 			if (in_array($table_key, $columns)) {

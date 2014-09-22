@@ -753,7 +753,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 		$db = JFactory::getDBO();
 		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
+		$columns = $db->loadColumn(0);
 
 		$post_msg = '';
 		/*

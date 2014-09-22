@@ -17,16 +17,17 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperRefundResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_RefundResponse $refundResponse,$method) {
-		parent::__construct($refundResponse,$method);
+	public function __construct (OffAmazonPaymentsService_Model_RefundResponse $refundResponse, $method) {
+		parent::__construct($refundResponse, $method);
 
 	}
-	public function onResponseUpdateOrderHistory($order) {
+
+	public function onResponseUpdateOrderHistory ($order) {
 
 	}
+
 	function getStoreInternalData () {
 		$amazonInternalData = new stdClass();
 		if ($this->amazonData->isSetRefundResult()) {
@@ -60,82 +61,82 @@ class amazonHelperRefundResponse extends amazonHelper {
 	}
 
 
-
 	function getContents () {
-		$contents=$this->tableStart("RefundResponse");
+		$contents = $this->tableStart("RefundResponse");
 		if ($this->amazonData->isSetRefundResult()) {
-			$contents .=$this->getRowFirstCol("RefundResult");
+			$contents .= $this->getRowFirstCol("RefundResult");
 			$refundResult = $this->amazonData->getRefundResult();
 			if ($refundResult->isSetRefundDetails()) {
-				$contents .=$this->getRowFirstCol("RefundDetails");
+				$contents .= $this->getRowFirstCol("RefundDetails");
 				$refundDetails = $refundResult->getRefundDetails();
 				if ($refundDetails->isSetAmazonRefundId()) {
-					$contents .=$this->getRow("AmazonRefundId: ",$refundDetails->getAmazonRefundId() );
+					$contents .= $this->getRow("AmazonRefundId: ", $refundDetails->getAmazonRefundId());
 				}
 				if ($refundDetails->isSetRefundReferenceId()) {
-					$contents .=$this->getRow("RefundReferenceId: ",$refundDetails->getRefundReferenceId() );
+					$contents .= $this->getRow("RefundReferenceId: ", $refundDetails->getRefundReferenceId());
 				}
 				if ($refundDetails->isSetSellerRefundNote()) {
-					$contents .=$this->getRow("SellerRefundNote: ",$refundDetails->getSellerRefundNote() );
+					$contents .= $this->getRow("SellerRefundNote: ", $refundDetails->getSellerRefundNote());
 				}
 				if ($refundDetails->isSetRefundType()) {
-					$contents .=$this->getRow("RefundType: ",$refundDetails->getRefundType() );
+					$contents .= $this->getRow("RefundType: ", $refundDetails->getRefundType());
 				}
 				if ($refundDetails->isSetRefundAmount()) {
-					$more='';
+					$more = '';
 					$refundAmount = $refundDetails->getRefundAmount();
 					if ($refundAmount->isSetAmount()) {
 						$more .= "Amount: ";
-						$more .=  $refundAmount->getAmount() . "<br/>";;
+						$more .= $refundAmount->getAmount() . "<br/>";;
 					}
 					if ($refundAmount->isSetCurrencyCode()) {
 						$more .= "CurrencyCode: ";
-						$more .=  $refundAmount->getCurrencyCode() . "<br/>";;
+						$more .= $refundAmount->getCurrencyCode() . "<br/>";;
 					}
-					$contents .=$this->getRow("RefundAmount: ",$more );
+					$contents .= $this->getRow("RefundAmount: ", $more);
 				}
 				if ($refundDetails->isSetFeeRefunded()) {
-					$more='';
+					$more = '';
 					$feeRefunded = $refundDetails->getFeeRefunded();
 					if ($feeRefunded->isSetAmount()) {
 						$more .= "Amount: ";
-						$more .=  $feeRefunded->getAmount() . "<br/>";;
+						$more .= $feeRefunded->getAmount() . "<br/>";;
 					}
 					if ($feeRefunded->isSetCurrencyCode()) {
 						$more .= "CurrencyCode: ";
-						$more .=  $feeRefunded->getCurrencyCode() . "<br/>";;
+						$more .= $feeRefunded->getCurrencyCode() . "<br/>";;
 					}
-					$contents .=$this->getRow("FeeRefunded: ",$more );
+					$contents .= $this->getRow("FeeRefunded: ", $more);
 				}
 				if ($refundDetails->isSetCreationTimestamp()) {
-					$contents .=$this->getRow("CreationTimestamp: ",$refundDetails->getCreationTimestamp() );
+					$contents .= $this->getRow("CreationTimestamp: ", $refundDetails->getCreationTimestamp());
 				}
 				if ($refundDetails->isSetRefundStatus()) {
-					$more='';
+					$more = '';
 					$refundStatus = $refundDetails->getRefundStatus();
 					if ($refundStatus->isSetState()) {
 						$more .= "State: ";
-						$more .=  $refundStatus->getState() . "<br/>";;
+						$more .= $refundStatus->getState() . "<br/>";;
 					}
 					if ($refundStatus->isSetLastUpdateTimestamp()) {
 						$more .= "LastUpdateTimestamp: ";
-						$more .=  $refundStatus->getLastUpdateTimestamp() . "<br/>";;
+						$more .= $refundStatus->getLastUpdateTimestamp() . "<br/>";;
 					}
 					if ($refundStatus->isSetReasonCode()) {
 						$more .= "ReasonCode: ";
-						$more .=  $refundStatus->getReasonCode() . "<br/>";;
+						$more .= $refundStatus->getReasonCode() . "<br/>";;
 					}
 					if ($refundStatus->isSetReasonDescription()) {
 						$more .= "ReasonDescription: ";
-						$more .=  $refundStatus->getReasonDescription() . "<br/>";;
+						$more .= $refundStatus->getReasonDescription() . "<br/>";;
 					}
-					$contents .=$this->getRow("RefundStatus: ",$more );
+					$contents .= $this->getRow("RefundStatus: ", $more);
 				}
 				if ($refundDetails->isSetSoftDescriptor()) {
-					$contents .=$this->getRow("SoftDescriptor: ",$refundDetails->getSoftDescriptor() );
+					$contents .= $this->getRow("SoftDescriptor: ", $refundDetails->getSoftDescriptor());
 				}
 			}
 		}
+		/*
 		if ($this->amazonData->isSetResponseMetadata()) {
 			$more='';
 			$responseMetadata = $this->amazonData->getResponseMetadata();
@@ -145,12 +146,11 @@ class amazonHelperRefundResponse extends amazonHelper {
 			}
 			$contents .=$this->getRow("ResponseMetadata: ",$more );
 		}
-
-		$contents .=$this->getRow("ResponseHeaderMetadata: ",$this->amazonData->getResponseHeaderMetadata()  );
+*/
+		$contents .= $this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata());
 
 		return $contents;
 	}
-
 
 
 }

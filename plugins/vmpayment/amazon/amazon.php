@@ -466,11 +466,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$q = "SELECT  * FROM " . $this->_tablename ." WHERE
 		 ( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse' AND `amazon_response_state`  IN (  'Open', 'Suspended') )
 		  OR
-		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_AuthorizeResponse' AND `amazon_response_state`  IN ('Pending',  'Open',  'Closed', 'Declined') )
+		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_AuthorizeResponse' AND `amazon_response_state`  IN ('Pending',  'Open') )
         OR
-  		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_CaptureResponse' AND `amazon_response_state`  IN ('Pending',  'Completed', 'Closed', 'Declined') )
+  		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_CaptureResponse' AND `amazon_response_state`  IN ('Pending') )
         OR
-  		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_RefundResponse' AND `amazon_response_state`  IN ('Pending',  'Completed', 'Declined') )
+  		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_RefundResponse' AND `amazon_response_state`  IN ('Pending') )
 		AND `created_on`  IN (SELECT MAX( `created_on` )
                 FROM " . $this->_tablename ."  GROUP BY `virtuemart_order_id`
                 )
@@ -481,7 +481,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$payments = $db->loadObjectList();
 		$done = array();
 		$this->debugLog("<pre>" . var_export($payments, true) . "</pre>", __FUNCTION__, 'debug');
-
+$this->loadAmazonServicesClasses();
 		foreach ($payments as $payment) {
 			if (in_array($payment->order_number, $done)) {
 				continue;
@@ -531,10 +531,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return null;
 		}
-		$state = $this->getConfirmedOrderReferenceState($payments, $order);
-		if ($state == 'Suspended' OR ($state == 'Open' AND $this->getNumberOfDays($payments) > 180)) {
-			// poll
+
+		if ($payment->amazon_response_state == 'Suspended' OR ($payment->amazon_response_state == 'Open' AND $this->getNumberOfDays($payments) > 180)) {
+			$this->getAuthorizationState($payments, $order);
 		}
+
+
+
 	}
 
 	/**
@@ -551,14 +554,40 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if (!($payments = $this->getDatasByOrderId($payment->virtuemart_order_id))) {
 			return null;
 		}
-		$refundState = $this->getRefundState($payments, $order);
-		if ($refundState == 'Pending') {
-			// poll
-		} elseif ($refundState == 'Declined' or $refundState == 'Completed') {
-			// check if status has changed
-			// fetch capture
+		// poll because refund state = pending
+		$refundState = $this->getRefundState($payment, $order);
+		if ($refundState == 'Declined' or $refundState == 'Completed') {
+			$this->capturePayment($payments, $order)
+			;
 		}
 	}
+
+
+	private function getRefundState($payment, $order) {
+
+		$amazonRefundId =$payment->amazon_response_amazonRefundId;
+
+		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetRefundDetailsRequest');
+		$client = $this->getOffAmazonPaymentsService_Client();
+		try {
+		$getRefundDetailsRequest
+			= new OffAmazonPaymentsService_Model_GetRefundDetailsRequest();
+		$getRefundDetailsRequest->setSellerId($this->_currentMethod->sellerId);
+		$getRefundDetailsRequest->setAmazonRefundId($amazonRefundId);
+			$getRefundDetails = $client->getRefundDetails($getRefundDetailsRequest);
+		} catch (Exception $e) {
+			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
+			return;
+		}
+		$this->loadHelperClass('amazonHelperGetRefundDetailsResponse');
+		$amazonHelperGetRefundDetailsResponse = new amazonHelperGetRefundDetailsResponse($getRefundDetails, $this->_currentMethod);
+		$storeInternalData = $amazonHelperGetRefundDetailsResponse->getStoreInternalData();
+		$this->storeAmazonInternalData($order, $getRefundDetailsRequest, $getRefundDetails, NULL, NULL, $storeInternalData);
+
+		return  $amazonHelperGetRefundDetailsResponse->getState();
+
+	}
+
 
 	/**
 	 * if Pending, authorization > 30 days ==> poll
@@ -573,14 +602,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($payment->virtuemart_order_id);
-
-		$state = $this->getAuthorizationState($payments, $order);
-		if ($state == 'Pending' OR ($state == 'Open' AND $this->getNumberOfDays($payments) > 30)) {
-			// poll
-		} elseif ($state == 'Closed' OR $state == 'Declined') {
+		if ($payment->amazon_response_state == 'Pending' OR ($payment->amazon_response_state == 'Open' AND $this->getNumberOfDays($payments) > 30)) {
+			$newState = $this->getAuthorizationState($payments, $order);
+		 if ($newState == 'Closed' OR $newState == 'Declined') {
 			// check if status has changed
-
 			// fetch Order
+			 $this->vmConfirmedOrder(NULL, $order, FALSE);
+		}
 		}
 	}
 
@@ -601,11 +629,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return null;
 		}
 		$captureState = $this->getCaptureState($payments, $order);
-		if ($captureState == 'Pending') {
-			// poll
-		} elseif ($captureState == 'Completed' OR $captureState == 'Declined') {
-			// check if status has changed
-			// fetch AUTH
+
+		if ($captureState == 'Completed'  OR $captureState == 'Closed' OR $captureState == 'Declined') {
+			// will update Billing address
+			$this->getAuthorization($client = $this->getOffAmazonPaymentsService_Client(), NULL, $order, false) ;
 		}
 
 	}
@@ -1691,7 +1718,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$captureState = $amazonHelperCaptureDetailsResponse->getState();
 
 		$storeInternalData = $amazonHelperCaptureDetailsResponse->getStoreInternalData();
-		$this->storeAmazonInternalData($order, NULL, $amazonHelperCaptureDetailsResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
+		$this->storeAmazonInternalData($order, NULL, $captureDetailsResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
 
 		return $captureState;
 	}
@@ -2078,7 +2105,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$db = JFactory::getDBO();
 		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
+		$columns = $db->loadColumn(0);
 
 		//$html = '<table class="adminlist table-striped"  >' . "\n";
 		//$html .= $this->getHtmlHeaderBE();
@@ -2909,10 +2936,14 @@ jQuery().ready(function($) {
 	 * save the Old Config to force the OPC behaviour in VM
 	 * @param $cart
 	 */
+
 	private function saveVMOPCConfigInSession ($oldConfig) {
 		$session = JFactory::getSession();
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
-		$sessionAmazonData = unserialize($sessionAmazon);
+		if ($sessionAmazon) {
+			$sessionAmazonData = unserialize($sessionAmazon);
+		}
+
 		$sessionAmazonData['oldConfig'] = $oldConfig;
 		$session->set('amazon', serialize($sessionAmazonData), 'vm');
 
@@ -3083,7 +3114,11 @@ jQuery().ready(function($) {
 	 * @return bool
 	 */
 	private function isCaptureImmediate ($cart) {
-		return ($this->_currentMethod->capture_mode == "capture_immediate" OR $this->isSomeDigitalGoods($cart));
+		if ($cart) {
+			return ($this->_currentMethod->capture_mode == "capture_immediate" OR $this->isSomeDigitalGoods($cart));
+		} else {
+			return false;
+		}
 	}
 
 
@@ -3270,12 +3305,14 @@ jQuery().ready(function($) {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetCaptureDetailsResult');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_RefundResult');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_RefundDetails');
+		$this->loadAmazonClass('OffAmazonPaymentsService_Model_RefundResponse');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CloseOrderReferenceRequest');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetAuthorizationDetailsResult');
 	}
 
 
 	function loadAmazonNotificationClasses () {
+		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Client');
 		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Model_AuthorizationNotification');
 		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Model_AuthorizationDetails');
 		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Model_Price');
@@ -3294,31 +3331,39 @@ jQuery().ready(function($) {
 
 	function loadAmazonClass ($className) {
 		if (!class_exists($className)) {
-			$filePath = str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-			$includePaths = explode(PATH_SEPARATOR, get_include_path());
-			foreach ($includePaths as $includePath) {
-				if (file_exists($includePath . DIRECTORY_SEPARATOR . $filePath)) {
+			$filePath = JPATH_PLUGINS .DS.'vmpayment'.DS.'amazon'.DS.'amazon'.DS.'library' .DS.'PaywithAmazonSDK-php-1.0.7_UK'.DS.'src'.DS. str_replace('_', DS, $className) . '.php';
+				if (file_exists( $filePath)) {
 					require $filePath;
 					return;
+				} else {
+					vmError('Programming error: trying to load:'. $filePath);
 				}
-			}
 		}
 	}
 
 	function loadHelperClass ($className) {
 		if (!class_exists('amazonHelper')) {
-			require('amazon/helpers/helper.php');
+			require('amazon'.DS.'helpers'.DS.'helper.php');
 		}
 		if (!class_exists($className)) {
 			$fileName = strtolower(str_replace('amazonHelper', '', $className)) . '.php';
-			require('amazon/helpers/' . $fileName);
+			$fileNameAbsPath=JPATH_PLUGINS .DS.'vmpayment'.DS.'amazon'.DS.'amazon'.DS.'helpers'.DS. $fileName;
+			if (file_exists($fileNameAbsPath)) {
+				require($fileNameAbsPath);
+			} else  {
+				vmError('Programming error: trying to load:'. $fileNameAbsPath);
+			}
 		}
 
 	}
 
 	function loadVmClass ($className, $fileName) {
 		if (!class_exists($className)) {
-			require($fileName);
+			if (file_exists($fileName)) {
+				require($fileName);
+			} else  {
+				vmError('Programming error: trying to load:'. $fileName);
+			}
 		}
 	}
 }

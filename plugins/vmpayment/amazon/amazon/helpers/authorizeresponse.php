@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperAuthorizeResponse extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $authorizationResponse, $method) {
@@ -125,7 +124,7 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 
 	public function isCaptureNow () {
 		$authorizeResult = $this->amazonData->getAuthorizeResult();
-		$authorizationDetails = $authorizeResult->getAuthorizationDetails()		;
+		$authorizationDetails = $authorizeResult->getAuthorizationDetails();
 		if ($authorizationDetails->isSetCaptureNow()) {
 			return $authorizationDetails->getCaptureNow();
 		}
@@ -139,24 +138,24 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 
 	function getContents () {
 
-		$contents=$this->tableStart("AuthorizeResult");
+		$contents = $this->tableStart("AuthorizeResult");
 		if ($this->amazonData->isSetAuthorizeResult()) {
 			$authorizeResult = $this->amazonData->getAuthorizeResult();
 			if ($authorizeResult->isSetAuthorizationDetails()) {
-				$contents .=$this->getRowFirstCol("AuthorizationDetails");
+				$contents .= $this->getRowFirstCol("AuthorizationDetails");
 
 				$authorizationDetails = $authorizeResult->getAuthorizationDetails();
 				if ($authorizationDetails->isSetAmazonAuthorizationId()) {
-					$contents .=$this->getRow("AmazonAuthorizationId: ",$authorizationDetails->getAmazonAuthorizationId() );
+					$contents .= $this->getRow("AmazonAuthorizationId: ", $authorizationDetails->getAmazonAuthorizationId());
 
 				}
 				if ($authorizationDetails->isSetAuthorizationReferenceId()) {
-					$contents .=$this->getRow("AuthorizationReferenceId: ", $authorizationDetails->getAuthorizationReferenceId() );
+					$contents .= $this->getRow("AuthorizationReferenceId: ", $authorizationDetails->getAuthorizationReferenceId());
 
 				}
 				if ($authorizationDetails->isSetAuthorizationBillingAddress()) {
 					$authorizationBillingAddress = $authorizationDetails->getAuthorizationBillingAddress();
-					$address='';
+					$address = '';
 					if ($authorizationBillingAddress->isSetName()) {
 						$address .= "<br />Name: " . $authorizationBillingAddress->getName();
 					}
@@ -190,67 +189,68 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 					if ($authorizationBillingAddress->isSetPhone()) {
 						$address .= "<br />Phone: " . $authorizationBillingAddress->getPhone();
 					}
-					$contents .=$this->getRow("AuthorizationBillingAddress: ", $address );
+					$contents .= $this->getRow("AuthorizationBillingAddress: ", $address);
 
 				}
 				if ($authorizationDetails->isSetSellerAuthorizationNote()) {
-					$contents .=$this->getRow("SellerAuthorizationNote: ",  $authorizationDetails->getSellerAuthorizationNote());
+					$contents .= $this->getRow("SellerAuthorizationNote: ", $authorizationDetails->getSellerAuthorizationNote());
 
 				}
 				if ($authorizationDetails->isSetAuthorizationAmount()) {
 					$authorizationAmount = $authorizationDetails->getAuthorizationAmount();
-					$more='';
+					$more = '';
 					if ($authorizationAmount->isSetAmount()) {
 						$more .= "<br />    Amount: " . $authorizationAmount->getAmount();
 					}
 					if ($authorizationAmount->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $authorizationAmount->getCurrencyCode();
 					}
-					$contents .=$this->getRow("AuthorizationAmount: ",  $more);
+					$contents .= $this->getRow("AuthorizationAmount: ", $more);
 
 				}
 				if ($authorizationDetails->isSetCapturedAmount()) {
 					$capturedAmount = $authorizationDetails->getCapturedAmount();
-					$more='';
+					$more = '';
 					if ($capturedAmount->isSetAmount()) {
 						$more .= "<br />    Amount: " . $capturedAmount->getAmount();
 					}
 					if ($capturedAmount->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $capturedAmount->getCurrencyCode();
 					}
-					$contents .=$this->getRow("CapturedAmount: ",  $more);
+					$contents .= $this->getRow("CapturedAmount: ", $more);
 
 				}
 				if ($authorizationDetails->isSetAuthorizationFee()) {
-					$more='';					$authorizationFee = $authorizationDetails->getAuthorizationFee();
+					$more = '';
+					$authorizationFee = $authorizationDetails->getAuthorizationFee();
 					if ($authorizationFee->isSetAmount()) {
 						$more .= "<br />    Amount: " . $authorizationFee->getAmount();
 					}
 					if ($authorizationFee->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $authorizationFee->getCurrencyCode();
 					}
-					$contents .=$this->getRow("AuthorizationFee: ",  $more);
+					$contents .= $this->getRow("AuthorizationFee: ", $more);
 
 				}
 				if ($authorizationDetails->isSetIdList()) {
-					$more='';
+					$more = '';
 					$idList = $authorizationDetails->getIdList();
 					$memberList = $idList->getmember();
 					foreach ($memberList as $member) {
 						$more .= "<br />    member: " . $member;
 					}
-					$contents .=$this->getRow("IdList: ",  $more);
+					$contents .= $this->getRow("IdList: ", $more);
 
 				}
 				if ($authorizationDetails->isSetCreationTimestamp()) {
-					$contents .=$this->getRow("CreationTimestamp: ",  $authorizationDetails->getCreationTimestamp());
+					$contents .= $this->getRow("CreationTimestamp: ", $authorizationDetails->getCreationTimestamp());
 				}
 				if ($authorizationDetails->isSetExpirationTimestamp()) {
-					$contents .=$this->getRow("ExpirationTimestamp: ",  $authorizationDetails->getExpirationTimestamp());
+					$contents .= $this->getRow("ExpirationTimestamp: ", $authorizationDetails->getExpirationTimestamp());
 
 				}
 				if ($authorizationDetails->isSetAuthorizationStatus()) {
-					$more='';
+					$more = '';
 					$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 					if ($authorizationStatus->isSetState()) {
 						$more .= "<br />    State: " . $authorizationStatus->getState();
@@ -264,42 +264,43 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 					if ($authorizationStatus->isSetReasonDescription()) {
 						$more .= "<br />    ReasonDescription: " . $authorizationStatus->getReasonDescription();
 					}
-					$contents .=$this->getRow("AuthorizationStatus: ",  $more);
+					$contents .= $this->getRow("AuthorizationStatus: ", $more);
 
 				}
 				if ($authorizationDetails->isSetOrderItemCategories()) {
-					$more='';
+					$more = '';
 					$orderItemCategories = $authorizationDetails->getOrderItemCategories();
 					$orderItemCategoryList = $orderItemCategories->getOrderItemCategory();
 					foreach ($orderItemCategoryList as $orderItemCategory) {
 						$more .= "<br />    OrderItemCategory";
 						$more .= "<br />" . $orderItemCategory;
 					}
-					$contents .=$this->getRow("OrderItemCategories: ",  $more);
+					$contents .= $this->getRow("OrderItemCategories: ", $more);
 				}
 				if ($authorizationDetails->isSetCaptureNow()) {
-					$contents .=$this->getRow("CaptureNow: ",  $authorizationDetails->getCaptureNow());
+					$contents .= $this->getRow("CaptureNow: ", $authorizationDetails->getCaptureNow());
 
 				}
 				if ($authorizationDetails->isSetSoftDescriptor()) {
-					$contents .=$this->getRow("SoftDescriptor: ",  $authorizationDetails->getSoftDescriptor());
+					$contents .= $this->getRow("SoftDescriptor: ", $authorizationDetails->getSoftDescriptor());
 
 				}
 				if ($authorizationDetails->isSetAddressVerificationCode()) {
-					$contents .=$this->getRow("AddressVerificationCode: ",  $authorizationDetails->getAddressVerificationCode());
+					$contents .= $this->getRow("AddressVerificationCode: ", $authorizationDetails->getAddressVerificationCode());
 
 				}
 			}
 		}
-
-		if ($this->amazonData->isSetResponseMetadata()) {
-			$contents .=$this->getRowFirstCol("ResponseMetadata");
-			$responseMetadata = $this->amazonData->getResponseMetadata();
-			if ($responseMetadata->isSetRequestId()) {
-				$contents .=$this->getRow("RequestId: ",  $responseMetadata->getRequestId());
-			}
-		}
-		$contents .=$this->getRowFirstCol("ResponseHeaderMetadata ". $this->amazonData->getResponseHeaderMetadata());
+		/*
+				if ($this->amazonData->isSetResponseMetadata()) {
+					$contents .=$this->getRowFirstCol("ResponseMetadata");
+					$responseMetadata = $this->amazonData->getResponseMetadata();
+					if ($responseMetadata->isSetRequestId()) {
+						$contents .=$this->getRow("RequestId: ",  $responseMetadata->getRequestId());
+					}
+				}
+		*/
+		$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
 
 		$contents .= $this->tableEnd();
 

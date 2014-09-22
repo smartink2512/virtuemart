@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperAuthorizationNotification extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsNotifications_Model_authorizationNotification $authorizationNotification, $method) {
@@ -43,7 +42,7 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 
 		// get Old amazon State
 		$lastPayment = end($payments);
-		$previousAmazonState= $lastPayment->amazon_response_state;
+		$previousAmazonState = $lastPayment->amazon_response_state;
 
 		if (!$this->amazonData->isSetAuthorizationDetails()) {
 			$this->debugLog('NO isSetAuthorizationDetails' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
@@ -70,49 +69,47 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		}
 
 		$order_history['customer_notified'] = 1;
-if ($amazonState != $previousAmazonState) {
-	if ($amazonState == 'Open') {
-		$order_history['order_status'] = $this->_currentMethod->status_authorization;
-		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
-	} elseif ($amazonState == 'Declined') {
-		if ($reasonCode == 'InvalidPaymentMethod'  ) {
-			if (  $this->_currentMethod->soft_decline=='soft_decline_enabled' ) {
-				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD_SOFT_DECLINED', $reasonCode);
-				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-			} else {
-				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD', $reasonCode);
-				$order_history['order_status'] = $this->_currentMethod->status_cancel;
-			}
-		} elseif ($reasonCode == 'AmazonRejected') {
-			$order_history['order_status'] = $this->_currentMethod->status_cancel;
-		} elseif ($reasonCode == 'TransactionTimedOut') {
+		if ($amazonState != $previousAmazonState) {
+			if ($amazonState == 'Open') {
+				$order_history['order_status'] = $this->_currentMethod->status_authorization;
+				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
+			} elseif ($amazonState == 'Declined') {
+				if ($reasonCode == 'InvalidPaymentMethod') {
+					if ($this->_currentMethod->soft_decline == 'soft_decline_enabled') {
+						$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD_SOFT_DECLINED', $reasonCode);
+						$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+					} else {
+						$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD', $reasonCode);
+						$order_history['order_status'] = $this->_currentMethod->status_cancel;
+					}
+				} elseif ($reasonCode == 'AmazonRejected') {
+					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+				} elseif ($reasonCode == 'TransactionTimedOut') {
 // TODO  retry the authorization again
-			$order_history['order_status'] = $this->_currentMethod->status_cancel;
-		}
-		$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
-		$order_history['customer_notified'] = 0;
-	} elseif ($amazonState == 'Pending') {
-		$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_PENDING');
-		$order_history['customer_notified'] = 0;
-	} elseif ($amazonState == 'Closed') {
-		$order_history['order_status'] = $this->_currentMethod->status_cancel;
-		$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
-		$order_history['customer_notified'] = 0;
-	}
+					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+				}
+				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
+				$order_history['customer_notified'] = 0;
+			} elseif ($amazonState == 'Pending') {
+				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
+				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_PENDING');
+				$order_history['customer_notified'] = 0;
+			} elseif ($amazonState == 'Closed') {
+				$order_history['order_status'] = $this->_currentMethod->status_cancel;
+				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
+				$order_history['customer_notified'] = 0;
+			}
 
-	$orderModel = VmModel::getModel('orders');
-	$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
-}
+			$orderModel = VmModel::getModel('orders');
+			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		}
 
 		return $amazonState;
 	}
 
 
 	private function isSynchronousMode () {
-		if (($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == "automatic_synchronous")
-			or
-			($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled == "automatic_synchronous")
+		if (($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == "automatic_synchronous") or ($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled == "automatic_synchronous")
 		) {
 			return true;
 		}
@@ -154,7 +151,7 @@ if ($amazonState != $previousAmazonState) {
 	 * @param $amazonState
 	 * @return bool|string
 	 */
-	public function onNotificationNextOperation($order, $payments, $amazonState) {
+	public function onNotificationNextOperation ($order, $payments, $amazonState) {
 		return false;
 
 	}
@@ -194,18 +191,18 @@ if ($amazonState != $previousAmazonState) {
 
 	public function getContents () {
 
-		$contents=$this->tableStart("Authorization Notification");
+		$contents = $this->tableStart("Authorization Notification");
 		if ($this->amazonData->isSetAuthorizationDetails()) {
-			$contents .=$this->getRowFirstCol("AuthorizeDetails");
+			$contents .= $this->getRowFirstCol("AuthorizeDetails");
 			$authorizationDetails = $this->amazonData->getAuthorizationDetails();
 			if ($authorizationDetails->isSetAmazonAuthorizationId()) {
-				$contents .=$this->getRow("AmazonAuthorizationId: ",$authorizationDetails->getAmazonAuthorizationId() );
+				$contents .= $this->getRow("AmazonAuthorizationId: ", $authorizationDetails->getAmazonAuthorizationId());
 			}
 			if ($authorizationDetails->isSetAuthorizationReferenceId()) {
-				$contents .=$this->getRow("AuthorizationReferenceId: ", $authorizationDetails->getAuthorizationReferenceId() );
+				$contents .= $this->getRow("AuthorizationReferenceId: ", $authorizationDetails->getAuthorizationReferenceId());
 			}
 			if ($authorizationDetails->isSetAuthorizationAmount()) {
-				$more='';
+				$more = '';
 				$authorizationAmount = $authorizationDetails->getAuthorizationAmount();
 				if ($authorizationAmount->isSetAmount()) {
 					$more .= "Amount: " . $authorizationAmount->getAmount() . "<br />";
@@ -213,10 +210,10 @@ if ($amazonState != $previousAmazonState) {
 				if ($authorizationAmount->isSetCurrencyCode()) {
 					$more .= "CurrencyCode: " . $authorizationAmount->getCurrencyCode() . "<br />";
 				}
-				$contents .=$this->getRow("AuthorizationAmount: ",$more);
+				$contents .= $this->getRow("AuthorizationAmount: ", $more);
 			}
 			if ($authorizationDetails->isSetCapturedAmount()) {
-				$more='';
+				$more = '';
 				$capturedAmount = $authorizationDetails->getCapturedAmount();
 				if ($capturedAmount->isSetAmount()) {
 					$more .= "Amount: " . $capturedAmount->getAmount() . "<br />";
@@ -224,10 +221,10 @@ if ($amazonState != $previousAmazonState) {
 				if ($capturedAmount->isSetCurrencyCode()) {
 					$more .= "CurrencyCode: " . $capturedAmount->getCurrencyCode() . "<br />";
 				}
-				$contents .=$this->getRow("CapturedAmount: ",$more);
+				$contents .= $this->getRow("CapturedAmount: ", $more);
 			}
 			if ($authorizationDetails->isSetAuthorizationFee()) {
-				$more='';
+				$more = '';
 
 				$authorizationFee = $authorizationDetails->getAuthorizationFee();
 				if ($authorizationFee->isSetAmount()) {
@@ -236,27 +233,27 @@ if ($amazonState != $previousAmazonState) {
 				if ($authorizationFee->isSetCurrencyCode()) {
 					$more .= "CurrencyCode: " . $authorizationFee->getCurrencyCode() . "<br />";
 				}
-				$contents .=$this->getRow("AuthorizationFee: ",$more);
+				$contents .= $this->getRow("AuthorizationFee: ", $more);
 			}
 			if ($authorizationDetails->isSetIdList()) {
 
 				$idList = $authorizationDetails->getIdList();
 				$memberList = $idList->getId();
-				$more='';
+				$more = '';
 				foreach ($memberList as $member) {
 					$more .= "<br /> member: " . $member;
 				}
-				$contents .=$this->getRow("IdList: ",$more);
+				$contents .= $this->getRow("IdList: ", $more);
 			}
 			if ($authorizationDetails->isSetCreationTimestamp()) {
-				$contents .=$this->getRow("CreationTimestamp: ",$authorizationDetails->getCreationTimestamp());
+				$contents .= $this->getRow("CreationTimestamp: ", $authorizationDetails->getCreationTimestamp());
 			}
 			if ($authorizationDetails->isSetExpirationTimestamp()) {
-				$contents .=$this->getRow("ExpirationTimestamp: ",$authorizationDetails->getExpirationTimestamp());
+				$contents .= $this->getRow("ExpirationTimestamp: ", $authorizationDetails->getExpirationTimestamp());
 			}
 			if ($authorizationDetails->isSetAuthorizationStatus()) {
 				$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
-				$more='';
+				$more = '';
 				if ($authorizationStatus->isSetState()) {
 					$more .= "State: " . $authorizationStatus->getState() . "<br />";
 				}
@@ -269,34 +266,31 @@ if ($amazonState != $previousAmazonState) {
 				if ($authorizationStatus->isSetReasonDescription()) {
 					$more .= "ReasonDescription: " . $authorizationStatus->getReasonDescription() . "<br />";
 				}
-				$contents .=$this->getRow("AuthorizationStatus",$more);
+				$contents .= $this->getRow("AuthorizationStatus", $more);
 
 			}
 			if ($authorizationDetails->isSetOrderItemCategories()) {
 				$orderItemCategories = $authorizationDetails->getOrderItemCategories();
 				$orderItemCategoryList = $orderItemCategories->getOrderItemCategory();
-				$more='';
+				$more = '';
 				foreach ($orderItemCategoryList as $orderItemCategory) {
 					$more .= "OrderItemCategory: " . $orderItemCategory . "<br />";
 				}
-				$contents .=$this->getRow("OrderItemCategories",$more);
+				$contents .= $this->getRow("OrderItemCategories", $more);
 
 			}
 			if ($authorizationDetails->isSetCaptureNow()) {
-				$contents .=$this->getRow("CaptureNow",$authorizationDetails->getCaptureNow());
+				$contents .= $this->getRow("CaptureNow", $authorizationDetails->getCaptureNow());
 
 			}
 			if ($authorizationDetails->isSetSoftDescriptor()) {
-				$contents .=$this->getRow("SoftDescriptor",$authorizationDetails->getSoftDescriptor());
+				$contents .= $this->getRow("SoftDescriptor", $authorizationDetails->getSoftDescriptor());
 			}
 		}
 		$contents .= $this->tableEnd();
 
 		return $contents;
 	}
-
-
-
 
 
 }

@@ -17,11 +17,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse,$method) {
-		parent::__construct($confirmOrderReferenceResponse,$method);
+	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse, $method) {
+		parent::__construct($confirmOrderReferenceResponse, $method);
 	}
 
 	function getStoreInternalData () {
@@ -43,11 +42,11 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 	 */
 	function onResponseUpdateOrderHistory ($order) {
 		$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-		 if ($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_done_by_erp ) {
-			 $order_history['customer_notified'] = 1;
-		 } else {
-			 $order_history['customer_notified'] = 0;
-		 }
+		if ($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_done_by_erp) {
+			$order_history['customer_notified'] = 1;
+		} else {
+			$order_history['customer_notified'] = 0;
+		}
 
 		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_ORDERCONFIRMED');
 		$modelOrder = VmModel::getModel('orders');
@@ -56,15 +55,15 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 
 
 	function getContents () {
-		$contents=$this->tableStart("ConfirmOrderReferenceResponse");
-		$contents .=$this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata() );
+		$contents = $this->tableStart("ConfirmOrderReferenceResponse");
+		$contents .= $this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata());
 		if ($this->amazonData->isSetResponseMetadata()) {
-			$more='';
+			$more = '';
 			$responseMetadata = $this->amazonData->getResponseMetadata();
 			if ($responseMetadata->isSetRequestId()) {
 				$more .= "<br />RequestId: " . $responseMetadata->getRequestId();
 			}
-			$contents .=$this->getRow("ResponseMetadata: ", $more );
+			$contents .= $this->getRow("ResponseMetadata: ", $more);
 		}
 
 		$contents .= $this->tableEnd();

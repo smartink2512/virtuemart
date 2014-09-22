@@ -17,10 +17,9 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class billingAgreementNotification extends amazonHelperNotification {
-	public function __construct (OffAmazonPaymentsNotifications_Model_billingAgreement $billingAgreementNotification ,$method) {
-		parent::__construct($billingAgreementNotification,$method);
+	public function __construct (OffAmazonPaymentsNotifications_Model_billingAgreement $billingAgreementNotification, $method) {
+		parent::__construct($billingAgreementNotification, $method);
 	}
 
 
