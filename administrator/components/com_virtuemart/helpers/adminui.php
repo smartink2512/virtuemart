@@ -148,8 +148,8 @@ class AdminUIHelper {
 	 */
 	static public function buildTabs($view, $load_template = array(),$cookieName='') {
 		$cookieName = vRequest::getCmd('view','virtuemart').$cookieName;
-		$document = JFactory::getDocument ();
-		$document->addScriptDeclaration ( '
+
+		vmJsApi::addJScript ( 'vmcookie', '
 		var virtuemartcookie="'.$cookieName.'";
 		');
 
@@ -172,8 +172,8 @@ class AdminUIHelper {
 	 */
 	static function imitateTabs($return,$language = '') {
 		if ($return == 'start') {
-			$document = JFactory::getDocument ();
-			$document->addScriptDeclaration ( '
+
+			vmJsApi::addJScript ( 'vmcookietab','
 			var virtuemartcookie="vm-tab";
 			');
 			$html = 	'<div id="admin-ui-tabs">

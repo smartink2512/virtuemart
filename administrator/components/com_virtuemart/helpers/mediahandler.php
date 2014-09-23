@@ -991,9 +991,8 @@ class VmMediaHandler {
 	});
 //]]>
 	";
+		vmJsApi::addJScript('mediahandler',$j);
 
-		$document = JFactory::getDocument ();
-		$document->addScriptDeclaration ( $j);
 		return $html;
 	}
 

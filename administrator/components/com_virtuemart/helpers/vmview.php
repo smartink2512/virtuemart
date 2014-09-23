@@ -228,7 +228,7 @@ class VmView extends JViewLegacy {
 	};
 //]]>
 	" ;
-		$document->addScriptDeclaration ( $j);
+		vmJsApi::addJScript('submit', $j);
 
 		// LANGUAGE setting
 
@@ -335,7 +335,7 @@ class VmView extends JViewLegacy {
 					)
 				});
 			})';
-			$document->addScriptDeclaration ( $j);
+			vmJsApi::addJScript('vmlang', $j);
 		} else {
 			// $params = JComponentHelper::getParams('com_languages');
 			// $lang = $params->get('site', 'en-GB');

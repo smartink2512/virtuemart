@@ -321,10 +321,9 @@ class VirtuemartViewUser extends VmView {
 			$front = JURI::root(true).'/components/com_virtuemart/assets/';
 			$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
 
-			$document = JFactory::getDocument();
-			$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
-			$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
-			$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
+			vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack');
+			vmJsApi::addJScript('fancybox/jquery.easing-1.3.pack');
+			vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack');
 
 			vmJsApi::chosenDropDowns();
 			/*vmJsApi::js ('jquery-ui', FALSE, '', TRUE);

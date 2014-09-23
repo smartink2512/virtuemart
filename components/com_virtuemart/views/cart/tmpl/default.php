@@ -21,8 +21,7 @@
 defined ('_JEXEC') or die('Restricted access');
 
 JHtml::_ ('behavior.formvalidation');
-$document = JFactory::getDocument ();
-$document->addScriptDeclaration ("
+vmJsApi::addJScript('STisBT',"
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		if ( $('#STsameAsBTjs').is(':checked') ) {
@@ -43,7 +42,8 @@ $document->addScriptDeclaration ("
 	});
 //]]>
 ");
-$document->addScriptDeclaration ('
+
+vmJsApi::addJScript('checkoutFormSubmit','
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		jQuery("#checkoutFormSubmit").bind("click dblclick", function(e){

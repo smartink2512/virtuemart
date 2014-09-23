@@ -79,8 +79,7 @@ if(VmConfig::get('ask_question', 0)){
 }
 
 if(!empty($boxFuncAsk) or !empty($boxFuncReco)){
-	$document = JFactory::getDocument();
-	$document->addScriptDeclaration("
+	vmJsApi::addJScript('popups',"
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		".$boxFuncReco."

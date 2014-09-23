@@ -160,8 +160,7 @@ if ($this->showReview) {
 
 //]]>
 				";
-			$document = JFactory::getDocument ();
-			$document->addScriptDeclaration ($reviewJavascript);
+		 	vmJsApi::addJScript('check_reviewform',$reviewJavascript);
 
 			if ($this->showRating) {
 				if ($this->allowRating && $review_editable) {

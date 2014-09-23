@@ -101,7 +101,7 @@ class VirtuemartViewCalc extends VmView {
 			if (!class_exists ('ShopFunctionsF')) {
 				require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 			}
-			
+
 			$countriesList = ShopFunctionsF::renderCountryList($calc->calc_countries,True);
 			$this->assignRef('countriesList', $countriesList);
 

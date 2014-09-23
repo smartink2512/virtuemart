@@ -382,7 +382,7 @@ class vmJsApi{
 
 			$document = JFactory::getDocument ();
 			self::addJScript('box',$box);
-			$document->addScriptDeclaration ($box);
+			//$document->addScriptDeclaration ($box);
 			$document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 			$jspopup = true;
@@ -434,8 +434,7 @@ class vmJsApi{
 		if ($jvalideForm === $name) {
 			return;
 		}
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration( "
+		self::addJScript('vEngine', "
 //<![CDATA[
 			jQuery(document).ready(function() {
 				jQuery('".$name."').validationEngine();
@@ -489,8 +488,7 @@ class vmJsApi{
 //]]>
 		";
 
-		$doc = JFactory::getDocument();
-		$doc->addScriptDeclaration($js);
+		self::addJScript('creditcard',$js);
 
 		$jCreditCard = TRUE;
 		return TRUE;
@@ -581,8 +579,7 @@ class vmJsApi{
 		}
 		$front = 'components/com_virtuemart/assets/';
 
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
+		self::addJScript('datepicker','
 //<![CDATA[
 			jQuery(document).ready( function($) {
 			$(".datepicker").live( "focus", function() {

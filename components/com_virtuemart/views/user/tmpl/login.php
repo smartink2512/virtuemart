@@ -56,8 +56,7 @@ JHtml::_ ( 'behavior.modal' );
                 ' var comlogin = 1;
 //]]>
                 ';
-        $document = JFactory::getDocument();
-        $document->addScriptDeclaration($langScript);
+		vmJsApi::addJScript('login_openid',$langScript);
         JHtml::_('script', 'openid.js');
     }
 

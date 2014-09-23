@@ -26,8 +26,7 @@ JPluginHelper::importPlugin('vmshopper');
 JPluginHelper::importPlugin('vmshipment');
 JPluginHelper::importPlugin('vmpayment');
 
-$document = JFactory::getDocument();
-$document->addScriptDeclaration ( "
+vmJsApi::addJScript( 'orderedit',"
 		jQuery( function($) {
 
 			$('.orderedit').hide();

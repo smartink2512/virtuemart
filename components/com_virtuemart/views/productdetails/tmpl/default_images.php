@@ -60,7 +60,7 @@ if(VmConfig::get('usefancy',1)){
 	}
 	';
 }
-$document->addScriptDeclaration ($imageJS);
+vmJsApi::addJScript('imagepopup',$imageJS);
 
 if (!empty($this->product->images)) {
 	$image = $this->product->images[0];

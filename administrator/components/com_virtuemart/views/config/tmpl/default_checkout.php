@@ -31,8 +31,7 @@ $js = '
 			});
 		});
 	';
-$document = JFactory::getDocument();
-$document->addScriptDeclaration($js);
+vmJsApi::addJScript('hideNotOPC',$js);
 
 /*
  <table width="100%">
