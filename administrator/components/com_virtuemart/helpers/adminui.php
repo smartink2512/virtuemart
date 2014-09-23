@@ -49,17 +49,17 @@ class AdminUIHelper {
 	//$document->addStyleSheet($admin.'css/jqtransform.css');
 
 	//loading default script
-	vmJsApi::addJS('fancybox/jquery.mousewheel-3.0.4.pack');
-	vmJsApi::addJS('fancybox/jquery.easing-1.3.pack');
-	vmJsApi::addJS('fancybox/jquery.fancybox-1.3.4.pack');
-	vmJsApi::addJS($admin.'js/jquery.coookie.js');
+	vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack');
+	vmJsApi::addJScript('fancybox/jquery.easing-1.3.pack');
+	vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::addJScript($admin.'js/jquery.coookie.js');
 	//$document->addScript($front.'js/jquery.jqtransform.js');
 	//$document->addScript($front.'js/chosen.jquery.min.js');
 	VmJsApi::chosenDropDowns();
-	vmJsApi::addJS($admin.'js/vm2admin.js');
+	vmJsApi::addJScript($admin.'js/vm2admin.js');
 
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
-		vmJsApi::addJS ('remindTab', "
+		vmJsApi::addJScript ('remindTab', "
 //<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;

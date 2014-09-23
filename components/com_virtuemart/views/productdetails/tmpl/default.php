@@ -28,7 +28,7 @@ if (empty($this->product)) {
 echo shopFunctionsF::renderVmSubLayout('askrecomjs',array('product'=>$this->product));
 
 vmJsApi::jDynUpdate();
-vmJsApi::addJS('updDynamicListeners',"
+vmJsApi::addJScript('updDynamicListeners',"
 // GALT: Start listening for dynamic content update.
 jQuery(document).ready(function() {
 	// If template is aware of dynamic update and provided a variable let's

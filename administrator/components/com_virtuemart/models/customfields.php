@@ -479,7 +479,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					</div>
 				</fieldset>';
 
-				vmJsApi::addJS('new_ramification',"
+				vmJsApi::addJScript('new_ramification',"
 	jQuery( function($) {
 		$('#new_ramification_bt').click(function() {
 			var Prod = $('.new_ramification');
@@ -822,7 +822,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$jsArray[] = '["'.$product_id.'","'.implode('","',$variants).'"]';
 					}
 					$jsVariants = implode(',',$jsArray);
-					vmJsApi::addJS('cvselection',"
+					vmJsApi::addJScript('cvselection',"
 	jQuery( function($) {
 		$('.cvselection').change(function() {
 				var variants = [".$jsVariants."];
