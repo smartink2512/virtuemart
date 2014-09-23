@@ -35,7 +35,7 @@ $jsVars  = ' jQuery(document).ready(function(){
 
 
 //This is strange we have the whole thing again in controllers/cart.php public function viewJS()
-if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
 
 $viewName = vRequest::getString('view',0);
@@ -46,7 +46,7 @@ if($viewName=='cart'){
 }
 $data = $cart->prepareAjaxData($checkAutomaticPS);
 
-if (!class_exists('CurrencyDisplay')) require(VMPATH_ROOT .'/administrator/components/com_virtuemart/helpers/currencydisplay.php');
+if (!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN . DS. 'helpers' . DS . 'currencydisplay.php');
 $currencyDisplay = CurrencyDisplay::getInstance( );
 
 vmJsApi::cssSite();

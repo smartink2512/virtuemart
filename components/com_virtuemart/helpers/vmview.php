@@ -25,6 +25,27 @@ jimport( 'joomla.application.component.view');
 
 class VmView extends JViewLegacy{
 
+	/**
+	 * Execute and display a template script.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 * @author Joomla
+	 * @see     fetch()
+	 * @since   11.1
+	 */
+	public function display($tpl = null)
+	{
+		$result = $this->loadTemplate($tpl);
+		if ($result instanceof Exception) {
+			return $result;
+		}
+
+		echo $result;
+		echo vmJsApi::writeJS();
+	}
+
 	function prepareContinueLink(){
 
 		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId ();

@@ -451,7 +451,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 			//We need for the tax calculation the shipment Address
 			//We have this usually in our cart.
-			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();
 
 			//Test first for ST
@@ -617,7 +617,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	private function getCartProducts($calculationHelper){
 
-			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart();
 			$count = count($cart->products);
 			if($count===0){
@@ -1280,7 +1280,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		$app = JFactory::getApplication();
 		if($app->isSite()){
-			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();
 			$cart->blockConfirm();
 		}

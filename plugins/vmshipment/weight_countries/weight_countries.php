@@ -398,7 +398,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			return FALSE;
 		}
 		if (!class_exists('VirtueMartCart'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$html = '';
 		if (!class_exists('CurrencyDisplay'))

@@ -184,6 +184,7 @@ static function vmGetCharset() {
 		if ($chosenDropDowns) {
 			vmJsApi::chosenDropDowns();
 			$attrib .= ' class="vm-chzn-select"';
+
 		}
 		return VmHtml::genericlist($options,$name,$attrib,$key,$text,$default,false,$tranlsate);
 	}

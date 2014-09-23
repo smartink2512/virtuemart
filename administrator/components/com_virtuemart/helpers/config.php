@@ -84,6 +84,7 @@ if (!class_exists ('VmModel')) {
 if(!class_exists('vRequest')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vrequest.php');
 if(!class_exists('vmText')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php');
+
 /**
  * Where type can be one of
  * 'warning' - yellow

@@ -19,47 +19,47 @@ class AdminUIHelper {
 	public static $vmAdminAreaStarted = false;
 	public static $backEnd = true;
 
-   /**
+	/**
      * Start the administrator area table
      *
      * The entire administrator area with contained in a table which include the admin ribbon menu
      * in the left column and the content in the right column.  This function sets up the table and
      * displays the admin menu in the left column.
      */
-   static function startAdminArea($vmView,$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
-		if (vRequest::getCmd ( 'format') =='pdf') return;
-		if (vRequest::getCmd ( 'manage',false)) self::$backEnd=false;
+	static function startAdminArea($vmView,$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
 
-    	if(self::$vmAdminAreaStarted) return;
-    	self::$vmAdminAreaStarted = true;
-		$front = JURI::root(true).'/components/com_virtuemart/assets/';
-		$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
-		$document = JFactory::getDocument();
+	if (vRequest::getCmd ( 'format') =='pdf') return;
+	if (vRequest::getCmd ( 'manage',false)) self::$backEnd=false;
 
-		//loading defaut admin CSS
-		$document->addStyleSheet($admin.'css/admin_ui.css');
-		$document->addStyleSheet($admin.'css/admin.styles.css');
-		$document->addStyleSheet($admin.'css/toolbar_images.css');
-		$document->addStyleSheet($admin.'css/menu_images.css');
-		$document->addStyleSheet($front.'css/chosen.css');
-		$document->addStyleSheet($front.'css/vtip.css');
-		$document->addStyleSheet($front.'css/jquery.fancybox-1.3.4.css');
-		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
-		//$document->addStyleSheet($admin.'css/jqtransform.css');
+	if(self::$vmAdminAreaStarted) return;
+	self::$vmAdminAreaStarted = true;
+	$front = JURI::root(true).'/components/com_virtuemart/assets/';
+	$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
+	$document = JFactory::getDocument();
 
-		//loading default script
+	//loading defaut admin CSS
+	$document->addStyleSheet($admin.'css/admin_ui.css');
+	$document->addStyleSheet($admin.'css/admin.styles.css');
+	$document->addStyleSheet($admin.'css/toolbar_images.css');
+	$document->addStyleSheet($admin.'css/menu_images.css');
+	$document->addStyleSheet($front.'css/chosen.css');
+	$document->addStyleSheet($front.'css/vtip.css');
+	$document->addStyleSheet($front.'css/jquery.fancybox-1.3.4.css');
+	$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
+	//$document->addStyleSheet($admin.'css/jqtransform.css');
 
-		$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
-		$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
-		$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
-		$document->addScript($admin.'js/jquery.coookie.js');
-		//$document->addScript($front.'js/jquery.jqtransform.js');
-		//$document->addScript($front.'js/chosen.jquery.min.js');
-		VmJsApi::chosenDropDowns();
-		$document->addScript($admin.'js/vm2admin.js');
+	//loading default script
+	vmJsApi::addJS('fancybox/jquery.mousewheel-3.0.4.pack');
+	vmJsApi::addJS('fancybox/jquery.easing-1.3.pack');
+	vmJsApi::addJS('fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::addJS($admin.'js/jquery.coookie.js');
+	//$document->addScript($front.'js/jquery.jqtransform.js');
+	//$document->addScript($front.'js/chosen.jquery.min.js');
+	VmJsApi::chosenDropDowns();
+	vmJsApi::addJS($admin.'js/vm2admin.js');
 
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
-		$document->addScriptDeclaration ( "
+		vmJsApi::addJS ('remindTab', "
 //<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;

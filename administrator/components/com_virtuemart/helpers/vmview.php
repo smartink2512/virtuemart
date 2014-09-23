@@ -53,18 +53,22 @@ class VmView extends JViewLegacy {
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 		
 		if ($view == 'virtuemart' //Virtuemart view is always allowed since this is the page we redirect to in case the user does not have the rights
-			|| $view == 'about' //About view always displayed
-			|| $this->canDo->get('core.admin')) { //Super administrators always have access
-			
-			parent::display($tpl);
-			return;
-		}
+			or $view == 'about' //About view always displayed
+			or $this->canDo->get('core.admin')
+			or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
 
-		if (!$this->canDo->get('vm.'.$view)) {
+			$result = $this->loadTemplate($tpl);
+			if ($result instanceof Exception) {
+				return $result;
+			}
+
+			echo $result;
+			echo vmJsApi::writeJS();
+			return;
+		} else {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 
-		parent::display($tpl);
 	}
 	
 
