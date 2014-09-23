@@ -318,18 +318,11 @@ class VirtuemartViewUser extends VmView {
 		// If the current user is a vendor, load the store data
 		if ($this->userDetails->user_is_vendor) {
 
-			$front = JURI::root(true).'/components/com_virtuemart/assets/';
-			$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
-
 			vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack');
 			vmJsApi::addJScript('fancybox/jquery.easing-1.3.pack');
 			vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack');
 
 			vmJsApi::chosenDropDowns();
-			/*vmJsApi::js ('jquery-ui', FALSE, '', TRUE);
-			vmJsApi::js ('jquery.ui.autocomplete.html');
-			vmJsApi::js( 'jquery.noConflict');
-			$document->addScript($admin.'js/vm2admin.js');*/
 
 			$currencymodel = VmModel::getModel('currency', 'VirtuemartModel');
 			$currencies = $currencymodel->getCurrencies();

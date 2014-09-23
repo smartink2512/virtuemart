@@ -44,7 +44,6 @@ class vmJsApi{
 		self::$_jsAdd[$name]['defer'] = $defer;
 		self::$_jsAdd[$name]['async'] = $async;
 		self::$_jsAdd[$name]['min'] = $min;
-		vmdebug('addJScript '.$name);
 	}
 
 	public static function writeJS(){
@@ -52,7 +51,7 @@ class vmJsApi{
 		$html = '';
 		//vmdebug('writeJS',self::$_jsAdd);
 		foreach(self::$_jsAdd as $name => $jsToAdd){
-			vmdebug('writeJS',$name,$jsToAdd);
+			//vmdebug('writeJS',$name,$jsToAdd);
 			if(!$jsToAdd['script']){ //strpos($script,'/')===0){
 				if(strpos($name,'/')!==0){
 					$file = vmJsApi::setPath($name,false,'',self::$_jsAdd[$name]['min']);
@@ -86,7 +85,7 @@ class vmJsApi{
 	 * @param   boolean  load minified version
 	 * @return  nothing
 	 */
-	public static function js($namespace,$path=FALSE,$version='', $minified = NULL)
+	public static function js($namespace,$path=FALSE,$version='', $minified = false)
 	{
 
 		static $loaded = array();
@@ -240,7 +239,7 @@ class vmJsApi{
 			self::addJScript('jquery.ui.autocomplete.html');
 
 		}
-		self::addJScript( 'jquery.noconflict',false,false);
+		self::addJScript( 'jquery.noconflict',false,false,false);
 		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
 		if(JVM_VERSION<3){
 			JFactory::getApplication()->set('jquery',TRUE);
@@ -396,12 +395,11 @@ class vmJsApi{
 		if(!$chosenDropDowns){
 			$be = JFactory::getApplication()->isAdmin();
 			if(VmConfig::get ('jchosen', 0) or $be){
-				vmJsApi::js('chosen.jquery.min');
+				vmJsApi::addJScript('chosen.jquery',false,true,false);
 				//vmJsApi::js('dynupdate');
 				vmJsApi::js('vmprices');
 				vmJsApi::css('chosen');
-
-				//$document = JFactory::getDocument();
+				
 				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
 				$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
 				if($be or vRequest::getInt('manage',false)){
