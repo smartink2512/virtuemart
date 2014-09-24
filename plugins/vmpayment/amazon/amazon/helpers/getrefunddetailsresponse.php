@@ -131,12 +131,9 @@ class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 		$contents = $this->tableStart("GetRefundDetailsResponse");
 		if ($this->amazonData->isSetGetRefundDetailsResult()) {
 			$getRefundDetailsResult = $this->amazonData->getGetRefundDetailsResult();
-
-			if ($getRefundDetailsResult->isSetRefundDetails()) {
 				$contents .= $this->getRowFirstCol("GetRefundDetailsResult");
-				$refundDetails = $getRefundDetailsResult->getRefundDetails();
+			$refundDetails = $getRefundDetailsResult->getRefundDetails();
 
-				$refundDetails = $refundDetails->getRefundDetails();
 				if ($refundDetails->isSetAmazonRefundId()) {
 					$contents .= $this->getRow("AmazonRefundId: ", $refundDetails->getAmazonRefundId());
 
@@ -173,23 +170,10 @@ class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 
 				}
 
-				if ($refundDetails->isSetIdList()) {
-					$more = '';
-					$idList = $refundDetails->getIdList();
-					$memberList = $idList->getmember();
-					foreach ($memberList as $member) {
-						$more .= "<br />    member: " . $member;
-					}
-					$contents .= $this->getRow("IdList: ", $more);
-
-				}
 				if ($refundDetails->isSetCreationTimestamp()) {
 					$contents .= $this->getRow("CreationTimestamp: ", $refundDetails->getCreationTimestamp());
 				}
-				if ($refundDetails->isSetExpirationTimestamp()) {
-					$contents .= $this->getRow("ExpirationTimestamp: ", $refundDetails->getExpirationTimestamp());
 
-				}
 				if ($refundDetails->isSetRefundStatus()) {
 					$more = '';
 					$refundStatus = $refundDetails->getRefundStatus();
@@ -214,7 +198,6 @@ class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 
 				}
 
-			}
 		}
 		/*
 				if ($this->amazonData->isSetResponseMetadata()) {

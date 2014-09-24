@@ -242,6 +242,7 @@ class amazonHelperSetOrderReferenceDetailsResponse extends amazonHelper {
 
 		$contents .= "ResponseHeaderMetadata: " . $this->amazonData->getResponseHeaderMetadata() . "<br />";
 		*/
+		$contents .= $this->tableEnd();
 		return $contents;
 	}
 

@@ -42,7 +42,8 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 	 */
 	function onResponseUpdateOrderHistory ($order) {
 		$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-		if ($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_done_by_erp) {
+		if (($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled != 'automatic_synchronous') OR
+			($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == 'automatic_asynchronous')) {
 			$order_history['customer_notified'] = 1;
 		} else {
 			$order_history['customer_notified'] = 0;

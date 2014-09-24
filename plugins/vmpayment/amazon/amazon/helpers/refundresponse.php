@@ -147,8 +147,8 @@ class amazonHelperRefundResponse extends amazonHelper {
 			$contents .=$this->getRow("ResponseMetadata: ",$more );
 		}
 */
-		$contents .= $this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata());
-
+		//$contents .= $this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata());
+		$contents .= $this->tableEnd();
 		return $contents;
 	}
 

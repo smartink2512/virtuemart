@@ -161,20 +161,9 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 					$contents .= $this->getRow("SellerCaptureNote: ", $captureDetails->getSellerCaptureNote());
 
 				}
-				if ($captureDetails->isSetCaptureAmount()) {
-					$captureAmount = $captureDetails->getCaptureAmount();
-					$more = '';
-					if ($captureAmount->isSetAmount()) {
-						$more .= "<br />    Amount: " . $captureAmount->getAmount();
-					}
-					if ($captureAmount->isSetCurrencyCode()) {
-						$more .= "<br />    CurrencyCode: " . $captureAmount->getCurrencyCode();
-					}
-					$contents .= $this->getRow("CaptureAmount: ", $more);
 
-				}
-				if ($captureDetails->isSetCapturedAmount()) {
-					$capturedAmount = $captureDetails->getCapturedAmount();
+				if ($captureDetails->isSetCaptureAmount()) {
+					$capturedAmount = $captureDetails->getCaptureAmount();
 					$more='';
 					if ($capturedAmount->isSetAmount()) {
 						$more .= "<br />    Amount: " . $capturedAmount->getAmount();
