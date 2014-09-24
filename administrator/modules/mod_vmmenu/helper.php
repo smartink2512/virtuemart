@@ -18,7 +18,7 @@
 
 // no direct access
 defined('_JEXEC') or die;
-
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 abstract class ModVMMenuHelper {
 
@@ -46,7 +46,7 @@ abstract class ModVMMenuHelper {
 		$vmComponentItems = $db->loadObjectList();
 		$result = new stdClass();
 		if ($vmComponentItems) {
-			defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+
 			if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 			VmConfig::loadJLang('com_virtuemart.sys');
 			// Parse the list of extensions.

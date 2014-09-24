@@ -34,7 +34,7 @@ $js = '
 		});
 	';
 $document = JFactory::getDocument();
-vmJsApi::addJScript('show_prices',$js,false,true);
+vmJsApi::addJScript('show_prices',$js,true);
 ?>
 <table>
 	<tr>

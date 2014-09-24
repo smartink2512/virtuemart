@@ -78,17 +78,13 @@ class VirtuemartViewCalc extends VmView {
 			$mathOpList = self::renderMathOpList($calc->calc_value_mathop);
 			$this->assignRef('mathOpList',$mathOpList);
 
-
-			/* Get the category tree */
-			$categoryTree= null;
-			if (isset($calc->calc_categories)){
-				$calc_categories = $calc->calc_categories;
-				$categoryTree = ShopFunctions::categoryListTree($calc_categories);
-			}else{
-				 $categoryTree = ShopFunctions::categoryListTree();
+			if(empty($calc->calc_categories)){
+				$calc->calc_categories = array();
+			} else if(!is_array($calc->calc_categories)){
+				$calc->calc_categories = array($calc->calc_categories);
 			}
-			$this->assignRef('categoryTree', $categoryTree);
-
+			$calc_categories = $calc->calc_categories;
+			$this->categoryTree = ShopFunctions::categoryListTree($calc_categories);
 
 			$currencyModel = VmModel::getModel('currency');
 			$_currencies = $currencyModel->getCurrencies();

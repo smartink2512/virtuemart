@@ -52,14 +52,14 @@ class AdminUIHelper {
 	vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack');
 	vmJsApi::addJScript('fancybox/jquery.easing-1.3.pack');
 	vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack');
-	vmJsApi::addJScript($admin.'js/jquery.coookie.js');
+	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/jquery.coookie.js');
 	//$document->addScript($front.'js/jquery.jqtransform.js');
 	//$document->addScript($front.'js/chosen.jquery.min.js');
 	VmJsApi::chosenDropDowns();
 	vmJsApi::addJScript($admin.'js/vm2admin.js');
 
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
-		vmJsApi::addJScript ('remindTab', "
+		vmJsApi::addJScript ('vm.remindTab', "
 //<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;
@@ -149,7 +149,7 @@ class AdminUIHelper {
 	static public function buildTabs($view, $load_template = array(),$cookieName='') {
 		$cookieName = vRequest::getCmd('view','virtuemart').$cookieName;
 
-		vmJsApi::addJScript ( 'vmcookie', '
+		vmJsApi::addJScript ( 'vm.cookie', '
 		var virtuemartcookie="'.$cookieName.'";
 		');
 
@@ -173,7 +173,7 @@ class AdminUIHelper {
 	static function imitateTabs($return,$language = '') {
 		if ($return == 'start') {
 
-			vmJsApi::addJScript ( 'vmcookietab','
+			vmJsApi::addJScript ( 'vm.cookietab','
 			var virtuemartcookie="vm-tab";
 			');
 			$html = 	'<div id="admin-ui-tabs">
