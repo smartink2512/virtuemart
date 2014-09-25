@@ -71,26 +71,12 @@ foreach ($this->cart->products as $pkey => $prow) {
 					$step=1;
 				if($step==0)
 					$step=1;
-				$alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 				?>
-                <script type="text/javascript">
-				function check<?php echo $step?>(obj) {
- 				// use the modulus operator '%' to see if there is a remainder
-				remainder=obj.value % <?php echo $step?>;
-				quantity=obj.value;
- 				if (remainder  != 0) {
- 					alert('<?php echo $alert?>!');
- 					obj.value = quantity-remainder;
- 					return false;
- 				}
- 				return true;
- 				}
-				</script>
 		   <input type="text"
-				   onblur="check<?php echo $step?>(this);"
-				   onclick="check<?php echo $step?>(this);"
-				   onchange="check<?php echo $step?>(this);"
-				   onsubmit="check<?php echo $step?>(this);"
+				   onblur="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
+				   onclick="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
+				   onchange="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
+				   onsubmit="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
 				   title="<?php echo  vmText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity[<?php echo $pkey; ?>]" value="<?php echo $prow->quantity ?>" />
 
 			<button type="submit" class="vmicon vm2-add_quantity_cart" name="updatecart.<?php echo $pkey ?>" title="<?php echo  vmText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" />

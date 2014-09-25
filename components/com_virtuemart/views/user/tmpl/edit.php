@@ -34,20 +34,21 @@ label.invalid {
 	color: #f00;
 }
 </style>
-<script language="javascript">
-function myValidator(f, t)
+
+<?php $js = 'function myValidator(f, t)
 {
 	f.task.value=t;
 	if (document.formvalidator.isValid(f)) {
 		f.submit();
 		return true;
 	} else {
-		var msg = '<?php echo addslashes( vmText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ); ?>';
+		var msg = "'.addslashes( vmText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ).'";
 		alert (msg);
 	}
 	return false;
-}
-</script>
+}';
+vmJsApi::addJScript('vm.validator',$js);
+?>
 <h1><?php echo $this->page_title ?></h1>
 <?php echo shopFunctionsF::getLoginForm(false); ?>
 

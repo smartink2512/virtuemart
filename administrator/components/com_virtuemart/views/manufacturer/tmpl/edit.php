@@ -36,7 +36,8 @@ AdminUIHelper::buildTabs ( $this,  $tabarray ,$this->manufacturer->virtuemart_ma
 	<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->manufacturer->virtuemart_manufacturer_id; ?>" />
 	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
-<script type="text/javascript">
+<?php
+vmJsApi::addJScript('vm.toggle','
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
 	try {
 		if( !disableOnChecked ) {
@@ -60,10 +61,10 @@ function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
 }
 
 function toggleFullURL() {
-	if( jQuery('#manufacturer_full_image_url').val().length>0) document.adminForm.manufacturer_full_image_action[1].checked=false;
+	if( jQuery("#manufacturer_full_image_url").val().length>0) document.adminForm.manufacturer_full_image_action[1].checked=false;
 	else document.adminForm.manufacturer_full_image_action[1].checked=true;
 	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image_url, true );
 	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image, true );
-}
-</script>
-<?php AdminUIHelper::endAdminArea(); ?>
+}');
+
+AdminUIHelper::endAdminArea(); ?>

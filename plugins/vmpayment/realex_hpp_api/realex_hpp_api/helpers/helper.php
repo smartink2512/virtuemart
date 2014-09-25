@@ -971,7 +971,7 @@ class  RealexHelperRealex {
 			$orderModel = VmModel::getModel('orders');
 			$order = $orderModel->getOrder($virtuemart_order_id);
 			$usedCC = $this->getStoredCCByPmt_ref($order['details']['BT']->virtuemart_user_id, $data->paymentmethod);
-			VmConfig::loadJLang('plg_vmuserfield_realex_hpp_api');
+			VmConfig::loadJLangThis('plg_vmuserfield_realex_hpp_api');
 			$display_fields = array(
 				'realex_hpp_api_saved_pmt_type',
 				'realex_hpp_api_saved_pmt_digits',

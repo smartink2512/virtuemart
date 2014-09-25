@@ -23,7 +23,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 //defined('_JEXEC') or define('_JEXEC', 1);
 
 if(defined('JPATH_ROOT')){	//We are in joomla
-	define('VMPATH_ROOT', JPATH_ROOT);
+	defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', JPATH_ROOT);
 	if(version_compare(JVERSION,'3.0.0','ge')) {
 		defined('JVM_VERSION') or define ('JVM_VERSION', 3);
 	}

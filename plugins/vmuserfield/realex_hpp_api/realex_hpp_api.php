@@ -268,7 +268,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		}
 		$view = vRequest::getString('view', '');
-		$this->loadJLang('plg_vmpayment_realex_hpp_api', 'vmpayment');
+		$this->loadJLangThis('plg_vmpayment_realex_hpp_api', 'vmpayment');
 		if (($view == 'user')) {
 			$storedCreditCards = $this->getStoredCreditCards($userId);
 			if (empty ($storedCreditCards)) {

@@ -87,13 +87,18 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-	public function loadJLang($fname,$type=0,$name=0){
+	public function loadJLangThis($fname,$type=0,$name=0){
+		if(empty($type)) $type = $this->_type;
+		if(empty($name)) $name = $this->_name;
+		self::loadJLang($fname,$type,$name);
+	}
+
+	static public function loadJLang($fname,$type,$name){
 
 		$jlang =JFactory::getLanguage();
 		$tag = $jlang->getTag();
 
-		if(empty($type)) $type = $this->_type;
-		if(empty($name)) $name = $this->_name;
+
 		$path = $basePath = VMPATH_ROOT .DS. 'plugins' .DS.$type.DS.$name;
 
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
@@ -257,7 +262,7 @@ abstract class vmPlugin extends JPlugin {
 			}
 		}
 
-		return TRUE;
+		return true;
 	}
 
 	/**
@@ -472,8 +477,9 @@ abstract class vmPlugin extends JPlugin {
 	 * @return bool
 	 */
 	protected function getTablePluginParams ($psType,$name, $id, &$xParams,&$varsToPush) {
-		//vmdebug('getTablePluginParams $this->_psType '.$this->_psType.' sets $psType '.$psType.' $name',$name);
+
 		if (!empty($this->_psType) and !$this->selectedThis ($psType, $name, $id)) {
+			//vmdebug('getTablePluginParams return ',$psType, $this->_psType, $name, $this->_name, $id,$this->_jid);
 			return FALSE;
 		}
 

@@ -77,10 +77,12 @@ class VirtuemartViewCustom extends VmView {
 				}
 			} else {
 				$varsToPush = VirtueMartModelCustom::getVarsToPush($this->custom->field_type);
+
 				if(!empty($varsToPush)){
-					$formString = '<vmconfig><fields name="params"><fieldset name="extraParams">';
+					$formString = '<vmconfig>'.chr(10).'<fields name="params">'.chr(10).'<fieldset name="extraParams">'.chr(10);
 					//vmdebug('$varsToPush',$varsToPush);
 					foreach($varsToPush as $key => $push){
+						//$default = 0;
 						$formString .= '<field
 						name="'.$key.'"
         				id="'.$key.'Field"
@@ -94,16 +96,17 @@ class VirtuemartViewCustom extends VmView {
     											<option value="0">JNO</option>
     											<option value="1">JYES</option>';
 						} else if($push[1]=='string'){
-							$formString .= 'type="text" >';
+							$formString .= 'type="text" >'.chr(10);
 						}
-						$formString .= '</field>';
+						$formString .= chr(10).'</field>'.chr(10);
 					}
-					$formString .= '</fieldset></fields></vmconfig>';
+					$formString .= '</fieldset>'.chr(10).'</fields>'.chr(10).'</vmconfig>';
+					vmdebug('my',$formString);
 					$this->custom->form = JForm::getInstance($this->custom->field_type, $formString, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->custom->params = new stdClass();
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
 					$this->custom->form->bind($this->custom);
-					vmdebug('$this->custom->form',$this->custom->form);
+
 				}
 			}
 

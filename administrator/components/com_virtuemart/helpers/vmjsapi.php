@@ -62,7 +62,7 @@ class vmJsApi{
 					if(strpos($name,'/')!==0){
 						$file = vmJsApi::setPath($name,false,'');
 					} else {
-						$file = $name;
+						$file = JURI::root(true).$name;
 					}
 				}
 

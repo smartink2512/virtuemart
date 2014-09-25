@@ -137,6 +137,23 @@ Virtuemart.product = function(carts) {
 	});
 }
 
+Virtuemart.checkQuantity = function (obj,step,myStr) {
+    // use the modulus operator "%" to see if there is a reminder
+    reminder=obj.value % step;
+    quantity=obj.value;
+    if (reminder  != 0) {
+        //myStr = "'.vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED').'";
+        alert(myStr.replace("%s",step));
+        if(quantity!=reminder && quantity>reminder){
+            obj.value = quantity-reminder;
+        } else {
+            obj.value = step;
+        }
+        return false;
+    }
+    return true;
+}
+
 jQuery.noConflict();
 jQuery(document).ready(function($) {
 	Virtuemart.product(jQuery("form.product"));

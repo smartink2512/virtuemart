@@ -195,10 +195,12 @@ defined('_JEXEC') or die('Restricted access');?>
 </td>
 </tr>
 </table>
-<script type="text/javascript">
-	jQuery('#image').change(function () {
+<?php
+vmJsApi::addJScript('vm.imagechange','
+	jQuery("#image").change(function () {
 		var $newimage = jQuery(this).val();
-		jQuery('#product_availability').val($newimage);
-		jQuery('#imagelib').attr({ src:'<?php echo JURI::root(true) . $this->imagePath ?>' + $newimage, alt:$newimage });
-	});
-</script>
+		jQuery("#product_availability").val($newimage);
+		jQuery("#imagelib").attr({ src:"'.JURI::root(true) . $this->imagePath.'" + $newimage, alt:$newimage });
+	});');
+?>
+

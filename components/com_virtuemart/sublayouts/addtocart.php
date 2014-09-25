@@ -43,7 +43,7 @@ else
 	$step=1;
 if($step==0)
 	$step=1;
-$alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
+
 ?>
 
 	<div class="addtocart-area">
@@ -55,22 +55,8 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 			if (!VmConfig::get('use_as_catalog', 0)  ) { ?>
 
 				<div class="addtocart-bar">
-				<script type="text/javascript">
-					function check(obj) {
-						// use the modulus operator '%' to see if there is a remainder
-						remainder=obj.value % <?php echo $step?>;
-						quantity=obj.value;
-						if (remainder  != 0) {
-							alert('<?php echo $alert?>!');
-							obj.value = quantity-remainder;
-							return false;
-						}
-						return true;
-					}
-				</script>
-
-				<?php // Display the quantity box
-
+				<?php
+				// Display the quantity box
 				$stockhandle = VmConfig::get ('stockhandle', 'none');
 				if (($stockhandle == 'disableit' or $stockhandle == 'disableadd') and ($product->product_in_stock - $product->product_ordered) < 1) { ?>
 					<a href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $product->virtuemart_product_id); ?>" class="notify"><?php echo vmText::_ ('COM_VIRTUEMART_CART_NOTIFY') ?></a><?php
@@ -80,7 +66,11 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 						<?php if ($product->orderable) { ?>
 							<!-- <label for="quantity<?php echo $product->virtuemart_product_id; ?>" class="quantity_box"><?php echo vmText::_ ('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 							<span class="quantity-box">
-							<input type="text" class="quantity-input js-recalculate" name="quantity[]" onblur="check(this);"
+							<input type="text" class="quantity-input js-recalculate" name="quantity[]"
+								   onblur="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
+								   onclick="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
+								   onchange="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
+								   onsubmit="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
 								   value="<?php if (isset($product->step_order_level) && (int)$product->step_order_level > 0) {
 									   echo $product->step_order_level;
 								   } else if(!empty($product->min_order_level)){
