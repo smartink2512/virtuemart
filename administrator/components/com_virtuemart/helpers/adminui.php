@@ -56,7 +56,7 @@ class AdminUIHelper {
 	//$document->addScript($front.'js/jquery.jqtransform.js');
 	//$document->addScript($front.'js/chosen.jquery.min.js');
 	VmJsApi::chosenDropDowns();
-	vmJsApi::addJScript($admin.'js/vm2admin.js');
+	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/vm2admin.js');
 
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
 		vmJsApi::addJScript ('vm.remindTab', "
