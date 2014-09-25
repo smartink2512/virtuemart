@@ -43,7 +43,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 *
 	 * @return  JController  A JController object to support chaining.
 	 */
-	public function display(){
+	public function display($cachable = false, $urlparams = array()){
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();

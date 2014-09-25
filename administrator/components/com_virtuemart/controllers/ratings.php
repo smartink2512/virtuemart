@@ -86,7 +86,7 @@ class VirtuemartControllerRatings extends VmController {
 	/**
 	 * we must overwrite it here, because the task publish can be meant for two different list layouts.
 	 */
-	function publish(){
+	function publish($cidname=0,$table=0,$redirect = 0){
 
 		vRequest::vmCheckToken();
 		$layout = vRequest::getString('layout','default');
@@ -111,7 +111,7 @@ class VirtuemartControllerRatings extends VmController {
 
 	}
 
-	function unpublish(){
+	function unpublish($cidname=0,$table=0,$redirect = 0){
 
 		vRequest::vmCheckToken();
 		$layout = vRequest::getString('layout','default');

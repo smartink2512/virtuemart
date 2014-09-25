@@ -53,7 +53,7 @@ class vmJsApi{
 		//vmdebug('writeJS',self::$_jsAdd);
 		foreach(self::$_jsAdd as $name => $jsToAdd){
 			//vmdebug('writeJS',$name,$jsToAdd);
-			if(self::$_jsAdd[$name]['written']) continue;
+			if($jsToAdd['written']) continue;
 			if(!$jsToAdd['script'] or strpos($jsToAdd['script'],'/')===0 and strpos($jsToAdd['script'],'//<![CDATA[')!==0){ //strpos($script,'/')===0){
 
 				if($jsToAdd['script'] and strpos($jsToAdd['script'],'/')===0){
@@ -73,20 +73,28 @@ class vmJsApi{
 				//vmdebug('writeJS addScript to header ',$file);
 				//$html .= '<script defer async id="'.$name.'_js" type="text/javascript" src="'.$file.'" defer ></script>';
 				$document = JFactory::getDocument();
-				$document->addScript( $file ,"text/javascript",self::$_jsAdd[$name]['defer'],self::$_jsAdd[$name]['async'] );
+				$document->addScript( $file ,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
 			} else {
 
 				$script = trim($jsToAdd['script']);
 				$script = trim($script,chr(13));
 				$script = trim($script,chr(10));
+				$defer='';
+				if($jsToAdd['defer']){
+					$defer = 'defer="defer" ';
+				}
+				$async='';
+				if($jsToAdd['async']){
+					$async = 'async="async" ';
+				}
 				if(strpos($script,'//<![CDATA[')===false){
 					$html .= '<script id="'.$name.'_js" type="text/javascript">//<![CDATA[ '.chr(10).$script.chr(10).' //]]></script>';
 				} else {
-					$html .= '<script id="'.$name.'_js" type="text/javascript"> '.$script.' </script>';
+					$html .= '<script id="'.$name.'_js" '.$defer.$async.'type="text/javascript"> '.$script.' </script>';
 				}
 			}
 			$html .= chr(13);
-			self::$_jsAdd[$name]['written'] = true;
+			$jsToAdd['written'] = true;
 		}
 		return $html;
 	}

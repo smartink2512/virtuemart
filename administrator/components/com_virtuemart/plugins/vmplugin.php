@@ -79,7 +79,7 @@ abstract class vmPlugin extends JPlugin {
 
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 
-		$this->loadJLang($filename);
+		$this->loadJLangThis($filename);
 
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
@@ -729,8 +729,10 @@ abstract class vmPlugin extends JPlugin {
 		if (JFile::exists ($templatePath)) {
 			return $templatePath;
 		}
-		else {
+		else if (JFile::exists ($defaultPath)){
 			return $defaultPath;
+		} else {
+			return false;
 		}
 	}
 
