@@ -186,22 +186,22 @@ class Creditcard {
 
 	}
 
-
-	/*
-	 * validate_credit_card_date
-	 * expiration date should be tested
-	 * @author Valerie Isaksen
+	/**
+	 * @param $creditcard_type
+	 * @param $month
+	 * @param $year
+	 * @return bool
+	 * @author valerie isaksen
 	 */
-
-	static function validate_credit_card_date ($creditcard_type, $month, $year) {
-		$today_ts = time();
-
-		$cc_ts = mktime(0, 0, 0, $month + 1, 1, (int)$year);
-		if ($cc_ts > $today_ts) {
-			return true;
-		} else {
+	static function validate_credit_card_date($creditcard_type, $month, $year) {
+		$expires = DateTime::createFromFormat('mY', $month.$year);
+		$now     = new DateTime('first day of this month');
+		if ($expires < $now) {
 			return false;
+		} else {
+			return true;
 		}
+
 	}
 
 
