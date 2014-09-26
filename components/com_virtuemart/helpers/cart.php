@@ -111,7 +111,7 @@ class VirtueMartCart {
 				$session = JFactory::getSession($options);
 				$cartSession = $session->get('vmcart', 0, 'vm');
 				if (!empty($cartSession)) {
-					$sessionCart = unserialize( $cartSession );
+					$sessionCart = (object)json_decode( $cartSession ,true);
 
 					if(empty($sessionCart->cartProductsData) or ($sessionCart->_guest and $sessionCart->_guest!=JFactory::getUser()->guest)){
 						self::$_cart->loadCart($sessionCart);
@@ -271,10 +271,12 @@ class VirtueMartCart {
 			unset($cartData['_fromCart']);
 
 			if($cartData and !empty($cartData['cartData'])){
-				$cartData['cartData'] = unserialize($cartData['cartData']);
+				$cartData['cartData'] = (object)json_decode($cartData['cartData'],true);
 
 				foreach($cartData['cartData']->cartProductsData as $k => $product){
+
 					foreach($existingSession->cartProductsData as $kses => $productses){
+
 						if($product==$productses){
 							vmdebug('Found the same product');
 							unset($cartData['cartData']->cartProductsData[$k]);
@@ -299,13 +301,13 @@ class VirtueMartCart {
 		if(!$currentUser->guest){
 			$model = new VmModel();
 			$carts = $model->getTable('carts');
-			if(!$cartDataToStore) $cartDataToStore = $this->getCartDataToStore();
+			if(!$cartDataToStore) $cartDataToStore = json_encode($this->getCartDataToStore());
 
 			$cObj = new StdClass();
 			$cObj->virtuemart_user_id = (int) $currentUser->id;
 			$cObj->virtumart_vendor_id = (int) $this->vendorId;
-			$cObj->cartData = serialize($cartDataToStore);
-
+			$cObj->cartData = $cartDataToStore;
+			vmdebug('storeCart ',$cObj->cartData);
 			$carts->bindChecknStore($cObj);
 		}
 	}
@@ -331,10 +333,12 @@ class VirtueMartCart {
 		$session = JFactory::getSession();
 
 		$sessionCart = $this->getCartDataToStore();
+		$sessionCart = json_encode($sessionCart);
 		if($storeDb){
 			$this->storeCart($sessionCart);
 		}
-		$session->set('vmcart', serialize($sessionCart),'vm');
+		//vmdebug('my session data to store',$sessionCart);
+		$session->set('vmcart', $sessionCart,'vm');
 
 		if($forceWrite){
 			session_write_close();
