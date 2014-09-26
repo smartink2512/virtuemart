@@ -970,9 +970,10 @@ class VmTable extends JTable {
 					}
 					else if (empty($virtuemart_vendor_id)) {
 						if(strpos($this->_tbl,'virtuemart_vendors')===FALSE and strpos($this->_tbl,'virtuemart_vmusers')===FALSE){
-							$this->virtuemart_vendor_id = 1;
-							vmdebug('Fallback to '.$this->virtuemart_vendor_id.': We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
-
+							if(empty($this->virtuemart_vendor_id)){
+								$this->virtuemart_vendor_id = 1;
+								vmdebug('Fallback to '.$this->virtuemart_vendor_id.': We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
+							}
 						}
 					}
 				}

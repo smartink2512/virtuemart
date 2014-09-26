@@ -21,7 +21,7 @@
 defined ('_JEXEC') or die('Restricted access');
 
 JHtml::_ ('behavior.formvalidation');
-vmJsApi::addJScript('STisBT',"
+vmJsApi::addJScript('vm.STisBT',"
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		if ( $('#STsameAsBTjs').is(':checked') ) {
@@ -43,7 +43,7 @@ vmJsApi::addJScript('STisBT',"
 //]]>
 ");
 
-vmJsApi::addJScript('checkoutFormSubmit','
+vmJsApi::addJScript('vm.checkoutFormSubmit','
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		jQuery("#checkoutFormSubmit").bind("click dblclick", function(e){
@@ -93,6 +93,7 @@ vmJsApi::addJScript('checkoutFormSubmit','
 		<?php
 		if(VmConfig::get('multixcart')=='byselection'){
 			echo shopFunctions::renderVendorFullVendorList($this->cart->vendorId);
+			?><input type="submit" name="updatecart" title="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" class="button"  style="margin-left: 10px;"/><?php
 		}
 		echo $this->loadTemplate ('address');
 		// This displays the pricelist MUST be done with tables, because it is also used for the emails

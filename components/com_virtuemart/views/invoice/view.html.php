@@ -167,6 +167,10 @@ class VirtuemartViewInvoice extends VmView {
 		$userfields = $userFieldsModel->getUserFieldsFilled( $_userFields ,$orderDetails['details']['BT']);
 		$this->assignRef('userfields', $userfields);
 
+		$attach = VmConfig::get('attach',false);
+		if(!empty($attach) and VmConfig::get('attach_os',VmConfig::get('inv_os'))){
+			$this->mediaToSend = VMPATH_ROOT.DS.'images'.DS.'stories'.DS.'virtuemart'.DS.'vendor'.DS.VmConfig::get('attach');
+		}
 		/*$userFieldsCart = $userFieldsModel->getUserFields(
 			'cart'
 			, array('captcha' => true, 'delimiters' => true) // Ignore these types

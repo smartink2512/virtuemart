@@ -136,6 +136,7 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		, 'osC' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_CANCELLED')
 		);
 		echo VmHTML::row('selectList','COM_VIRTUEMART_CFG_DELDATE_INV','del_date_type', VmConfig::get('del_date_type','m'), $_delivery_date_options);
+		echo VmHTML::row('input','COM_VIRTUEMART_CFG_ATTACH','attach', VmConfig::get('attach',''));
 		?>
 
 	</table>

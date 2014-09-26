@@ -47,6 +47,11 @@ class vmJsApi{
 
 	}
 
+	public static function getJScripts(){
+		return self::$_jsAdd;
+	}
+
+
 	public static function writeJS(){
 
 		$html = '';
@@ -56,14 +61,16 @@ class vmJsApi{
 			if($jsToAdd['written']) continue;
 			if(!$jsToAdd['script'] or strpos($jsToAdd['script'],'/')===0 and strpos($jsToAdd['script'],'//<![CDATA[')!==0){ //strpos($script,'/')===0){
 
-				if($jsToAdd['script'] and strpos($jsToAdd['script'],'/')===0){
-					$file = $jsToAdd['script'];
+				if(!$jsToAdd['script']){
+					$file = $name;
 				} else {
-					if(strpos($name,'/')!==0){
-						$file = vmJsApi::setPath($name,false,'');
-					} else {
-						$file = JURI::root(true).$name;
-					}
+					$file = $jsToAdd['script'];
+				}
+
+				if(strpos($file,'/')!==0){
+					$file = vmJsApi::setPath($file,false,'');
+				} else if(strpos($file,'//')!==0){
+					$file = JURI::root(true).$file;
 				}
 
 				if(empty($file)){
@@ -71,7 +78,6 @@ class vmJsApi{
 					continue;
 				}
 				//vmdebug('writeJS addScript to header ',$file);
-				//$html .= '<script defer async id="'.$name.'_js" type="text/javascript" src="'.$file.'" defer ></script>';
 				$document = JFactory::getDocument();
 				$document->addScript( $file ,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
 			} else {
@@ -353,7 +359,7 @@ class vmJsApi{
 		}
 		$document = JFactory::getDocument();
 		VmJsApi::jSite();
-		self::addJScript('countryState'.$prefix,'
+		self::addJScript('vm.countryState'.$prefix,'
 //<![CDATA[
 		jQuery( function($) {
 			$("#'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
@@ -432,7 +438,7 @@ class vmJsApi{
 					$selector = 'jQuery(".vm-chzn-select")';
 				}
 
-				$script = //'//<![CDATA[
+				$script =
 	'Virtuemart.updateChosenDropdownLayout = function() {
 		var vm2string = {'.$vm2string.'};
 		jQuery(function($) {
@@ -440,7 +446,7 @@ class vmJsApi{
 		});
 	}
 	Virtuemart.updateChosenDropdownLayout();';
-//]]>';
+
 				self::addJScript('updateChosen',$script);
 			}
 			$chosenDropDowns = true;

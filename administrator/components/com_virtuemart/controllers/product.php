@@ -191,7 +191,7 @@ class VirtuemartControllerProduct extends VmController {
 		$virtuemart_shoppergroup_ids = vRequest::getInt('virtuemart_shoppergroup_id');
 
 		$session = JFactory::getSession();
-		$cids = unserialize($session->get('vm_product_ids', array(), 'vm'));
+		$cids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
 
 		$productModel = VmModel::getModel('product');
 		foreach($cids as $cid){
@@ -211,7 +211,7 @@ class VirtuemartControllerProduct extends VmController {
 		$virtuemart_cat_ids = vRequest::getInt('cid', array() );
 
 		$session = JFactory::getSession();
-		$cids = unserialize($session->get('vm_product_ids', array(), 'vm'));
+		$cids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
 
 		$productModel = VmModel::getModel('product');
 		foreach($cids as $cid){
@@ -233,7 +233,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		if(empty($cids)){
 			$session = JFactory::getSession();
-			$cids = unserialize($session->get('vm_product_ids', '', 'vm'));
+			$cids = json_decode($session->get('vm_product_ids', '', 'vm'),true);
 		} else {
 			$session = JFactory::getSession();
 			$session->set('vm_product_ids', serialize($cids),'vm');

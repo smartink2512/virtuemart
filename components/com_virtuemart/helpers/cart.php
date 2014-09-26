@@ -193,7 +193,7 @@ class VirtueMartCart {
 					if(empty(self::$_cart->vendorId)) self::$_cart->vendorId = 1;
 				}
 				if($multixcart=='byselection'){
-					self::$_cart->vendorId = vRequest::get('virtuemart_vendor_id',1);
+					self::$_cart->vendorId = vRequest::getInt('virtuemart_vendor_id',self::$_cart->vendorId);
 				}
 			} else {
 				self::$_cart->vendorId = 1;
@@ -305,9 +305,9 @@ class VirtueMartCart {
 
 			$cObj = new StdClass();
 			$cObj->virtuemart_user_id = (int) $currentUser->id;
-			$cObj->virtumart_vendor_id = (int) $this->vendorId;
+			$cObj->virtuemart_vendor_id = (int) $this->vendorId;
 			$cObj->cartData = $cartDataToStore;
-			vmdebug('storeCart ',$cObj->cartData);
+			vmdebug('storeCart ',$cObj->virtuemart_vendor_id);
 			$carts->bindChecknStore($cObj);
 		}
 	}
