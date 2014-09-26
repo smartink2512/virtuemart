@@ -30,7 +30,11 @@
         <param name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION"
                default="&lt;a href=&quot;https://static.klarna.com/integration_sales/partner/VirtueMart/v1.0/Klarna_documentation.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
   <param type="getklarna" level="level1"/>
-        <param type="klarnacountrylogo" default="SV" level="level1"/>
+
+
+        <param type="spacer"  />
+        <param type="spacer" default="VMPAYMENT_KLARNA_CONF_SETTINGS_SV" level="level1"/>
+
         <param name="klarna_active_swe" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -45,7 +49,9 @@
         <param name="klarna_invoice_tax_id_swe" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC"/>
         <param name="klarna_min_amount_part_swe" type="text" label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC"/>
 
-        <param type="klarnacountrylogo" default="NB" level="level1"/>
+        <param type="spacer"  />
+        <param type="spacer" default="VMPAYMENT_KLARNA_CONF_SETTINGS_NB" level="level1"/>
+
         <param name="klarna_active_nor" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -60,7 +66,9 @@
         <param name="klarna_invoice_tax_id_nor" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC"/>
         <param name="klarna_min_amount_part_nor" type="text" label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC"/>
 
-        <param type="klarnacountrylogo" default="DA" level="level1"/>
+        <param type="spacer"  />
+        <param type="spacer" default="VMPAYMENT_KLARNA_CONF_SETTINGS_DA" level="level1"/>
+
         <param name="klarna_active_dnk" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -75,7 +83,9 @@
         <param name="klarna_invoice_tax_id_dnk" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC"/>
         <param name="klarna_min_amount_part_dnk" type="text" label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC"/>
 
-        <param type="klarnacountrylogo" default="FI" level="level1"/>
+        <param type="spacer"  />
+        <param type="spacer" default="VMPAYMENT_KLARNA_CONF_SETTINGS_FI" level="level1"/>
+        <param type="klarnacountrylogo" default="FI" level="leve1"/>
         <param name="klarna_active_fin" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -90,7 +100,7 @@
         <param name="klarna_invoice_tax_id_fin" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC"/>
         <param name="klarna_min_amount_part_fin" type="text" label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC"/>
 
-        <param type="klarnacountrylogo" default="DE" level="level1"/>
+        <param type="spacer" default="VMPAYMENT_KLARNA_CONF_SETTINGS_DE" level="level1"/>
         <param name="klarna_active_deu" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -105,7 +115,8 @@
         <param name="klarna_invoice_tax_id_deu" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC"/>
         <param name="klarna_min_amount_part_deu" type="text" label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC"/>
 
-        <param type="klarnacountrylogo" default="NL" level="level1"/>
+        <param type="spacer"  />
+        <param type="spacer" default="VMPAYMENT_KLARNA_CONF_SETTINGS_NL" level="level1"/>
         <param name="klarna_active_nld" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
