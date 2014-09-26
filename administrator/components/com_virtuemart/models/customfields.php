@@ -66,7 +66,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 
-	function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
+	public static function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
 
 		$db= JFactory::getDBO ();
 		$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();

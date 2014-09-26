@@ -83,21 +83,24 @@ class vmJsApi{
 			} else {
 
 				$script = trim($jsToAdd['script']);
-				$script = trim($script,chr(13));
-				$script = trim($script,chr(10));
-				$defer='';
-				if($jsToAdd['defer']){
-					$defer = 'defer="defer" ';
+				if(!empty($script)) {
+					$script = trim($script,chr(13));
+					$script = trim($script,chr(10));
+					$defer='';
+					if($jsToAdd['defer']){
+						$defer = 'defer="defer" ';
+					}
+					$async='';
+					if($jsToAdd['async']){
+						$async = 'async="async" ';
+					}
+					if(strpos($script,'//<![CDATA[')===false){
+						$html .= '<script id="'.$name.'_js" type="text/javascript">//<![CDATA[ '.chr(10).$script.chr(10).' //]]></script>';
+					} else {
+						$html .= '<script id="'.$name.'_js" '.$defer.$async.'type="text/javascript"> '.$script.' </script>';
+					}
 				}
-				$async='';
-				if($jsToAdd['async']){
-					$async = 'async="async" ';
-				}
-				if(strpos($script,'//<![CDATA[')===false){
-					$html .= '<script id="'.$name.'_js" type="text/javascript">//<![CDATA[ '.chr(10).$script.chr(10).' //]]></script>';
-				} else {
-					$html .= '<script id="'.$name.'_js" '.$defer.$async.'type="text/javascript"> '.$script.' </script>';
-				}
+
 			}
 			$html .= chr(13);
 			$jsToAdd['written'] = true;
@@ -235,7 +238,7 @@ class vmJsApi{
 			//return true;
 		}
 
-		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
+		if($isSite===-1) $isSite = JFactory::getApplication()->isSite();
 
 		if (!VmConfig::get ('jquery', true) and $isSite) {
 			vmdebug('Common jQuery is disabled');
