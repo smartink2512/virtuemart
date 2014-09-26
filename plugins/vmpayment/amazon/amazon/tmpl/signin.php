@@ -23,7 +23,8 @@ vmJsApi::jPrice();
 static $jsSILoaded = false;
 if (!$jsSILoaded) {
 	$doc = JFactory::getDocument();
-	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" class=\"hasTip\" title=\"::' . addslashes(vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')) . '\"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\"></div></div>';
+
+	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" ><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\"></div></div>';
 
 	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
 	if ($viewData['include_amazon_css']) {
@@ -34,8 +35,10 @@ if (!$jsSILoaded) {
 	$doc->addScriptDeclaration("
 	//<![CDATA[
 jQuery(document).ready( function($) {
+	$( '" . $viewData['sign_in_css'] . "' ).append('<div id=\"amazonSignTip\">" . vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP',true)  . "</div>');
 	amazonPayment.showAmazonButton('" . $viewData['sellerId'] . "', '" . $viewData['redirect_page'] . "', " . $renderAmazonAddressBook . ");
 	$( '" . $viewData['sign_in_css'] . "' ).append('" . $signInButton . "');
+	$( '" . $viewData['sign_in_css'] . "' ).append('<div id=\"amazonSignOr\"><span>" . vmText::_('VMPAYMENT_AMAZON_SIGNIN_OR',true)  . "</span></div>');
 
 });
 //]]>

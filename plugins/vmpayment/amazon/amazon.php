@@ -17,11 +17,14 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if (!class_exists('VmConfig')) {
+	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+}
 
 if (!class_exists('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
+
 /**
  * Class plgVmpaymentAmazon
  * payments.amazon.co.uk
@@ -38,6 +41,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	const AMAZON_EMPTY_USER_FIELD_EMAIL = "dummy@domain.com";
 	const AUTHORIZE_TRANSACTION_TIMEOUT = 60;
 	var $_currentMethod = NULL;
+	private $_amount = 0.0;
+	private $_order_number = NULL;
 	var $languages_region = array(
 		'en' => 'UK',
 		'de' => 'DE',
@@ -67,7 +72,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		//require_once "OffAmazonPayments/.autoloader.php";
 		$this->loadAmazonClass('OffAmazonPaymentsService_Client');
-		if  (!JFactory::getApplication()->isSite()) {
+		if (!JFactory::getApplication()->isSite()) {
 			JFactory::getDocument()->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
 			JFactory::getDocument()->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon-admin.css');
 		}
@@ -128,11 +133,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 			$this->addWidgetUrlScript($client);
 			/** we do not need that. The button or the payment method do not appear atm in the displayListFE trigger
-			if ($selected == $this->_currentMethod->virtuemart_paymentmethod_id) {
-			$checked = 'checked="checked"';
-			} else {
-			$checked = '';
-			}
+			 * if ($selected == $this->_currentMethod->virtuemart_paymentmethod_id) {
+			 * $checked = 'checked="checked"';
+			 * } else {
+			 * $checked = '';
+			 * }
 			 */
 
 			$redirect_page = $this->getSignInRedirectPage();
@@ -140,16 +145,16 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			$onlyDigitalGoods = $this->isOnlyDigitalGoods($cart);
 
 			$signInButton = $this->renderByLayout('signin', array(
-			                                                     'buttonWidgetImageURL'        => $buttonWidgetImageURL,
-			                                                     'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
-			                                                     'sellerId'                    => $this->_currentMethod->sellerId,
-			                                                     'sign_in_css'                 => $this->_currentMethod->sign_in_css,
-			                                                     'include_amazon_css'          => $this->_currentMethod->include_amazon_css,
-			                                                     'renderAmazonAddressBook'     => (!$onlyDigitalGoods),
-			                                                     'redirect_page'               => $redirect_page,
-			                                                     'layout'                      => $cart->layout,
+				'buttonWidgetImageURL'        => $buttonWidgetImageURL,
+				'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+				'sellerId'                    => $this->_currentMethod->sellerId,
+				'sign_in_css'                 => $this->_currentMethod->sign_in_css,
+				'include_amazon_css'          => $this->_currentMethod->include_amazon_css,
+				'renderAmazonAddressBook'     => (!$onlyDigitalGoods),
+				'redirect_page'               => $redirect_page,
+				'layout'                      => $cart->layout,
 
-			                                                ));
+			));
 			return $signInButton;
 		}
 
@@ -168,23 +173,23 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			}
 		}
 		$html = $this->renderByLayout('addressbook_wallet', array(
-		                                                         'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
-		                                                         'sellerId'                    => $this->_currentMethod->sellerId,
-		                                                         'addressbook_designWidth'     => $this->getPixelValue($this->_currentMethod->addressbook_designWidth),
-		                                                         'addressbook_designHeight'    => $this->getPixelValue($this->_currentMethod->addressbook_designHeight),
-		                                                         'wallet_designWidth'          => $this->getPixelValue($this->_currentMethod->wallet_designWidth),
-		                                                         'wallet_designHeight'         => $this->getPixelValue($this->_currentMethod->wallet_designHeight),
-		                                                         'include_amazon_css'          => $this->_currentMethod->include_amazon_css,
-		                                                         'amazonOrderReferenceId'      => $this->_amazonOrderReferenceId,
-		                                                         'renderAddressBook'           => false,
-		                                                         'renderWalletBook'            => true,
-		                                                         'readOnlyWidgets'             => "Edit",
-		                                                         'captureNow'                  => $this->isCaptureImmediate($cart)
-		                                                    ));
+			'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+			'sellerId'                    => $this->_currentMethod->sellerId,
+			'addressbook_designWidth'     => $this->getPixelValue($this->_currentMethod->addressbook_designWidth),
+			'addressbook_designHeight'    => $this->getPixelValue($this->_currentMethod->addressbook_designHeight),
+			'wallet_designWidth'          => $this->getPixelValue($this->_currentMethod->wallet_designWidth),
+			'wallet_designHeight'         => $this->getPixelValue($this->_currentMethod->wallet_designHeight),
+			'include_amazon_css'          => $this->_currentMethod->include_amazon_css,
+			'amazonOrderReferenceId'      => $this->_amazonOrderReferenceId,
+			'renderAddressBook'           => false,
+			'renderWalletBook'            => true,
+			'readOnlyWidgets'             => "Edit",
+			'captureNow'                  => $this->isCaptureImmediate($cart)
+		));
 		$html .= $this->renderByLayout('display_wallet', array(
-		                                                      'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
-		                                                      'order_number'                => $order_number,
-		                                                 ));
+			'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+			'order_number'                => $order_number,
+		));
 
 		return $html;
 	}
@@ -210,20 +215,20 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
 		$onlyDigitalGoods = $this->isOnlyDigitalGoods($cart);
 		$html = $this->renderByLayout('addressbook_wallet', array(
-		                                                         'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
-		                                                         'sellerId'                    => $this->_currentMethod->sellerId,
-		                                                         'include_amazon_css'          => $this->_currentMethod->include_amazon_css,
-		                                                         'addressbook_designWidth'     => $this->getPixelValue($this->_currentMethod->addressbook_designWidth),
-		                                                         'addressbook_designHeight'    => $this->getPixelValue($this->_currentMethod->addressbook_designHeight),
-		                                                         'wallet_designWidth'          => $this->getPixelValue($this->_currentMethod->wallet_designWidth),
-		                                                         'wallet_designHeight'         => $this->getPixelValue($this->_currentMethod->wallet_designHeight),
-		                                                         'amazonOrderReferenceId'      => $this->_amazonOrderReferenceId,
-		                                                         'renderAddressBook'           => !$onlyDigitalGoods,
-		                                                         'renderWalletBook'            => $renderWalletBook,
-		                                                         'readOnlyWidgets'             => $readOnlyWidgets ? 'Read' : "Edit",
-		                                                         'captureNow'                  => $this->isCaptureImmediate($cart)
+			'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+			'sellerId'                    => $this->_currentMethod->sellerId,
+			'include_amazon_css'          => $this->_currentMethod->include_amazon_css,
+			'addressbook_designWidth'     => $this->getPixelValue($this->_currentMethod->addressbook_designWidth),
+			'addressbook_designHeight'    => $this->getPixelValue($this->_currentMethod->addressbook_designHeight),
+			'wallet_designWidth'          => $this->getPixelValue($this->_currentMethod->wallet_designWidth),
+			'wallet_designHeight'         => $this->getPixelValue($this->_currentMethod->wallet_designHeight),
+			'amazonOrderReferenceId'      => $this->_amazonOrderReferenceId,
+			'renderAddressBook'           => !$onlyDigitalGoods,
+			'renderWalletBook'            => $renderWalletBook,
+			'readOnlyWidgets'             => $readOnlyWidgets ? 'Read' : "Edit",
+			'captureNow'                  => $this->isCaptureImmediate($cart)
 
-		                                                    ));
+		));
 		echo $html;
 	}
 
@@ -245,7 +250,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 *
 	 * @author: Valerie Isaksen
 	 *
-	 * @param $cart_prices: cart prices
+	 * @param $cart_prices : cart prices
 	 * @param $payment
 	 * @return true: if the conditions are fulfilled, false otherwise
 	 *
@@ -378,7 +383,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	private function addWidgetUrlScript ($client) {
 		if (!self::$widgetScriptLoaded) {
 			$widgetURL = $client->getMerchantValues()->getWidgetUrl();
-			JHTML::script(  $widgetURL, false);
+			JHTML::script($widgetURL, false);
 			self::$widgetScriptLoaded = true;
 		}
 
@@ -406,15 +411,15 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return bool
 
 	function plgVmOnProductDisplayPayment ($product, &$productDisplay) {
-
-	$vendorId = 1;
-	if ($this->getPluginMethods($vendorId) === 0) {
-	return FALSE;
-	}
-
-	$productDisplay = $this->renderSignInButton('product', false, $product);
-	return TRUE;
-	}
+	 *
+	 * $vendorId = 1;
+	 * if ($this->getPluginMethods($vendorId) === 0) {
+	 * return FALSE;
+	 * }
+	 *
+	 * $productDisplay = $this->renderSignInButton('product', false, $product);
+	 * return TRUE;
+	 * }
 	 */
 
 
@@ -463,7 +468,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	public function plgVmRetrieveIPN () {
 
 
-		$q = "SELECT  * FROM " . $this->_tablename ." WHERE
+		$q = "SELECT  * FROM " . $this->_tablename . " WHERE
 		 ( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse' AND `amazon_response_state`  IN (  'Open', 'Suspended') )
 		  OR
 		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_AuthorizeResponse' AND `amazon_response_state`  IN ('Pending',  'Open') )
@@ -472,7 +477,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
         OR
   		( `amazon_class_response_type` LIKE 'OffAmazonPaymentsService_Model_RefundResponse' AND `amazon_response_state`  IN ('Pending') )
 		AND `created_on`  IN (SELECT MAX( `created_on` )
-                FROM " . $this->_tablename ."  GROUP BY `virtuemart_order_id`
+                FROM " . $this->_tablename . "  GROUP BY `virtuemart_order_id`
                 )
 		ORDER BY `created_on` DESC ";
 
@@ -481,7 +486,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$payments = $db->loadObjectList();
 		$done = array();
 		$this->debugLog("<pre>" . var_export($payments, true) . "</pre>", __FUNCTION__, 'debug');
-$this->loadAmazonServicesClasses();
+		$this->loadAmazonServicesClasses();
 		foreach ($payments as $payment) {
 			if (in_array($payment->order_number, $done)) {
 				continue;
@@ -537,7 +542,6 @@ $this->loadAmazonServicesClasses();
 		}
 
 
-
 	}
 
 	/**
@@ -557,23 +561,21 @@ $this->loadAmazonServicesClasses();
 		// poll because refund state = pending
 		$refundState = $this->getRefundState($payment, $order);
 		if ($refundState == 'Declined' or $refundState == 'Completed') {
-			$this->capturePayment($payments, $order)
-			;
+			$this->capturePayment($payments, $order);
 		}
 	}
 
 
-	private function getRefundState($payment, $order) {
+	private function getRefundState ($payment, $order) {
 
-		$amazonRefundId =$payment->amazon_response_amazonRefundId;
+		$amazonRefundId = $payment->amazon_response_amazonRefundId;
 
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetRefundDetailsRequest');
 		$client = $this->getOffAmazonPaymentsService_Client();
 		try {
-		$getRefundDetailsRequest
-			= new OffAmazonPaymentsService_Model_GetRefundDetailsRequest();
-		$getRefundDetailsRequest->setSellerId($this->_currentMethod->sellerId);
-		$getRefundDetailsRequest->setAmazonRefundId($amazonRefundId);
+			$getRefundDetailsRequest = new OffAmazonPaymentsService_Model_GetRefundDetailsRequest();
+			$getRefundDetailsRequest->setSellerId($this->_currentMethod->sellerId);
+			$getRefundDetailsRequest->setAmazonRefundId($amazonRefundId);
 			$getRefundDetails = $client->getRefundDetails($getRefundDetailsRequest);
 		} catch (Exception $e) {
 			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
@@ -584,7 +586,7 @@ $this->loadAmazonServicesClasses();
 		$storeInternalData = $amazonHelperGetRefundDetailsResponse->getStoreInternalData();
 		$this->storeAmazonInternalData($order, $getRefundDetailsRequest, $getRefundDetails, NULL, NULL, $storeInternalData);
 
-		return  $amazonHelperGetRefundDetailsResponse->getState();
+		return $amazonHelperGetRefundDetailsResponse->getState();
 
 	}
 
@@ -604,11 +606,11 @@ $this->loadAmazonServicesClasses();
 		$order = $orderModel->getOrder($payment->virtuemart_order_id);
 		if ($payment->amazon_response_state == 'Pending' OR ($payment->amazon_response_state == 'Open' AND $this->getNumberOfDays($payments) > 30)) {
 			$newState = $this->getAuthorizationState($payments, $order);
-		 if ($newState == 'Closed' OR $newState == 'Declined') {
-			// check if status has changed
-			// fetch Order
-			 $this->vmConfirmedOrder(NULL, $order, FALSE);
-		}
+			if ($newState == 'Closed' OR $newState == 'Declined') {
+				// check if status has changed
+				// fetch Order
+				$this->vmConfirmedOrder(NULL, $order, FALSE);
+			}
 		}
 	}
 
@@ -630,9 +632,9 @@ $this->loadAmazonServicesClasses();
 		}
 		$captureState = $this->getCaptureState($payments, $order);
 
-		if ($captureState == 'Completed'  OR $captureState == 'Closed' OR $captureState == 'Declined') {
+		if ($captureState == 'Completed' OR $captureState == 'Closed' OR $captureState == 'Declined') {
 			// will update Billing address
-			$this->getAuthorization($client = $this->getOffAmazonPaymentsService_Client(), NULL, $order, false) ;
+			$this->getAuthorization($client = $this->getOffAmazonPaymentsService_Client(), NULL, $order, false);
 		}
 
 	}
@@ -653,16 +655,26 @@ $this->loadAmazonServicesClasses();
 		}
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
-		$amount = vRequest::getFloat('amount');
+		$this->_order_number = $this->getUniqueReferenceId($order['details']['BT']->order_number);
+		$this->_amount = vRequest::getFloat('amount');
+
 		switch ($action) {
 			case 'refundPayment':
 				if ($this->canDoRefund($payments, $order)) {
-					$this->refundPayment($payments, $order, $amount);
+					$this->refundPayment($payments, $order);
 				}
 				break;
 			case 'capturePayment':
-				if ($this->canDoCapture($payments, $order)) {
-					$this->capturePayment($payments, $order, $amount);
+
+				if ($authorizationId = $this->canDoCapture($payments, $order)) {
+					// may be we did a new authorization in case of partial capture
+					$this->capturePayment($payments, $order);
+				}
+				break;
+			case 'newAuthorization':
+
+				if ($this->canDoAuthorization($payments, $order)) {
+					$this->getAuthorization($this->getOffAmazonPaymentsService_Client(), NULL, $order, false);
 				}
 				break;
 			default:
@@ -931,6 +943,9 @@ $this->loadAmazonServicesClasses();
 		}
 
 		$this->storeAmazonInternalData($order, NULL, NULL, NULL, $this->renderPluginName($this->_currentMethod), NULL, $this->_amazonOrderReferenceId, $this->_currentMethod);
+		$this->_amount = $order['details']['BT']->order_total;
+		$this->_order_number = $order['details']['BT']->order_number;
+
 		$html = $this->vmConfirmedOrder($cart, $order);
 		vRequest::setVar('html', $html);
 		vRequest::setVar('display_title', false);
@@ -960,13 +975,11 @@ $this->loadAmazonServicesClasses();
 
 		// at this point, since the authorization and capturing takes additional time to process
 		// let's do that with a trigger
-		if ($this->configCanDoAuthorization()) {
-			if (!($amazonAuthorizationId = $this->getAuthorization($client, $cart, $order))) {
-				// getAuhtorization returns false if the the wallet needs to be displayed again
-				//$cart->setOutOfCheckout();
-				$html = $this->redisplayAddressbookWallet($client, $cart, $order['details']['BT']->order_number);
-				return $html;
-			}
+		if (!($amazonAuthorizationId = $this->getAuthorization($client, $cart, $order))) {
+			// getAuhtorization returns false if the the wallet needs to be displayed again
+			//$cart->setOutOfCheckout();
+			$html = $this->redisplayAddressbookWallet($client, $cart, $order['details']['BT']->order_number);
+			return $html;
 		}
 
 		if (!class_exists('CurrencyDisplay')) {
@@ -974,11 +987,11 @@ $this->loadAmazonServicesClasses();
 		}
 		$success = true;
 		$html = $this->renderByLayout('response', array(
-		                                               "success"            => $success,
-		                                               "amazonOrderId"      => $amazonAuthorizationId,
-		                                               "order"              => $order,
-		                                               'include_amazon_css' => $this->_currentMethod->include_amazon_css,
-		                                          ));
+			"success"            => $success,
+			"amazonOrderId"      => $amazonAuthorizationId,
+			"order"              => $order,
+			'include_amazon_css' => $this->_currentMethod->include_amazon_css,
+		));
 
 
 		$this->leaveAmazonCheckout();
@@ -1004,12 +1017,12 @@ $this->loadAmazonServicesClasses();
 	 * @param null $amazonParams
 	 * @return array
 	 */
-	private function storeAmazonInternalData ($order, $request, $response, $notification = NULL, $payment_name = NULL, $amazonParams = NULL, $amazonOrderReferenceId = NULL, $amount = 0) {
+	private function storeAmazonInternalData ($order, $request, $response, $notification = NULL, $payment_name = NULL, $amazonParams = NULL, $amazonOrderReferenceId = NULL) {
 
 		$db_values['order_number'] = $order['details']['BT']->order_number;
 		$db_values['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 		$db_values['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
-		$db_values['payment_order_total'] = $amount ? $amount : $order['details']['BT']->order_total;
+		$db_values['payment_order_total'] = $this->_amount;
 		$db_values['payment_currency'] = $order['details']['BT']->user_currency_id;
 		$db_values['amazon_request'] = $request ? serialize($request) : "";
 		$db_values['amazon_request_type'] = $request ? get_class($request) : '';
@@ -1244,7 +1257,6 @@ $this->loadAmazonServicesClasses();
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setSellerOrderAttributes(new OffAmazonPaymentsService_Model_SellerOrderAttributes());
 			if ($order) {
 				$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setSellerOrderId($order['details']['BT']->order_number);
-
 			}
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setStoreName($this->getStoreName());
 			//$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getSellerOrderAttributes()->setCustomInformation($order['details']['BT']->customer_note);
@@ -1503,7 +1515,8 @@ $this->loadAmazonServicesClasses();
 			$authorizeRequest = new OffAmazonPaymentsService_Model_AuthorizeRequest();
 			$authorizeRequest->setAmazonOrderReferenceId($this->_amazonOrderReferenceId);
 			$authorizeRequest->setSellerId($this->_currentMethod->sellerId);
-			$authorizeRequest->setAuthorizationReferenceId($order['details']['BT']->order_number);
+
+			$authorizeRequest->setAuthorizationReferenceId($this->_order_number);
 			$authorizeRequest->setSellerAuthorizationNote($this->getSellerAuthorizationNote());
 			$authorizeRequest->setTransactionTimeout($this->getAuthorizationTransactionTimeout());
 			// directly do the capture without the need to call the Capture Request
@@ -1513,7 +1526,8 @@ $this->loadAmazonServicesClasses();
 				$authorizeRequest->setCaptureNow(false);
 			}
 			$authorizeRequest->setAuthorizationAmount(new OffAmazonPaymentsService_Model_Price());
-			$authorizeRequest->getAuthorizationAmount()->setAmount($this->getTotalInPaymentCurrency($client, $order['details']['BT']->order_total, $this->getCurrencyId($client)));
+
+			$authorizeRequest->getAuthorizationAmount()->setAmount($this->getTotalInPaymentCurrency($client, $this->_amount, $this->getCurrencyId($client)));
 			$authorizeRequest->getAuthorizationAmount()->setCurrencyCode($this->getCurrencyCode3($client));
 
 			try {
@@ -1536,7 +1550,7 @@ $this->loadAmazonServicesClasses();
 					$this->redirectToCart(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'), true);
 				}
 
-				//return false;
+				return false;
 			}
 
 			$this->updateAuthorizeBillingAddressInOrder($authorizeResponse, $order);
@@ -1612,6 +1626,10 @@ $this->loadAmazonServicesClasses();
 	}
 
 	function updateAuthorizeBillingAddressInOrder ($authorizeResponse, $order) {
+		if ($authorizeResponse == NULL) {
+			vmError('Amazon : programming error ' . __FUNCTION__);
+			return false;
+		}
 		if (!$authorizeResponse->isSetAuthorizeResult()) {
 			return;
 		}
@@ -1664,7 +1682,7 @@ $this->loadAmazonServicesClasses();
 		static $updateOrderPaymentNumber = 0;
 		// we don't do anything from the front end
 		if (JFactory::getApplication()->isSite()) {
-			return NULL;
+			//return NULL;
 		}
 		//Load the method
 		if (!($this->_currentMethod = $this->getVmPluginMethod($order->virtuemart_paymentmethod_id))) {
@@ -1675,6 +1693,7 @@ $this->loadAmazonServicesClasses();
 		}
 
 		if (!$this->isValidUpdateOrderStatus($order->order_status)) {
+			vmError(vmText::_('VMPAYMENT_AMAZON_UPDATEPAYMENT_NO_ACTION'));
 			return;
 		}
 		if ($updateOrderPaymentNumber > 10) {
@@ -1689,6 +1708,8 @@ $this->loadAmazonServicesClasses();
 		}
 		$orderModel = VmModel::getModel('orders');
 		$orderData = $orderModel->getOrder($order->virtuemart_order_id);
+		$this->_amount = $order['details']['BT']->order_total;
+		$this->_order_number = $this->getUniqueReferenceId($order['details']['BT']->order_number);
 
 		if ($order->order_status == $this->_currentMethod->status_refunded and $this->canDoRefund($payments, $orderData)) {
 			return $this->refundPayment($payments, $orderData);
@@ -1777,6 +1798,7 @@ $this->loadAmazonServicesClasses();
 	 * if authorization object is in Open State, then the funds can be captured
 	 */
 	private function canDoAuthorization ($payments, $order) {
+		$this->_amazonOrderReferenceId= $this->getAmazonOrderReferenceIdFromPayments($payments);
 		$orderReferencestate = $this->getOrderReferenceState();
 
 		if ($orderReferencestate != 'Open') {
@@ -1795,7 +1817,7 @@ $this->loadAmazonServicesClasses();
 	}
 
 
-	private function capturePayment ($payments, $order, $captureAmount = 0) {
+	private function capturePayment ($payments, $order) {
 		$amazonAuthorizationId = $this->getAmazonAuthorizationId($payments);
 
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CaptureRequest');
@@ -1804,11 +1826,10 @@ $this->loadAmazonServicesClasses();
 		$captureRequest = new OffAmazonPaymentsService_Model_CaptureRequest();
 		$captureRequest->setSellerId($this->_currentMethod->sellerId);
 		$captureRequest->setAmazonAuthorizationId($amazonAuthorizationId);
-		$amount = $captureAmount ? $captureAmount : $order['details']['BT']->order_total;
 
-		$captureRequest->setCaptureReferenceId($this->getUniqueReferenceId($order['details']['BT']->order_number)); // random string
+		$captureRequest->setCaptureReferenceId($this->_order_number);
 		$captureRequest->setCaptureAmount(new OffAmazonPaymentsService_Model_Price());
-		$captureRequest->getCaptureAmount()->setAmount($this->getTotalInPaymentCurrency($client, $amount, $order['details']['BT']->order_currency));
+		$captureRequest->getCaptureAmount()->setAmount($this->getTotalInPaymentCurrency($client, $this->_amount, $order['details']['BT']->order_currency));
 		$captureRequest->getCaptureAmount()->setCurrencyCode($this->getCurrencyCode3($client));
 
 		try {
@@ -1841,7 +1862,7 @@ $this->loadAmazonServicesClasses();
 		return $amazonCaptureId;
 	}
 
-	private function refundPayment ($payments, $order, $refundAmount = 0) {
+	private function refundPayment ($payments, $order) {
 
 		$amazonCaptureId = $this->getAmazonCaptureId($payments);
 		if (empty($amazonCaptureId)) {
@@ -1855,8 +1876,7 @@ $this->loadAmazonServicesClasses();
 		$client = $this->getOffAmazonPaymentsService_Client();
 		$refund = new OffAmazonPaymentsService_Model_Price();
 		$refund->setCurrencyCode($this->getCurrencyCode3($client));
-		$amount = $refundAmount ? $refundAmount : $order['details']['BT']->order_total;
-		$refund->setAmount($this->getTotalInPaymentCurrency($client, $amount, $order['details']['BT']->order_currency));
+		$refund->setAmount($this->getTotalInPaymentCurrency($client, $this->_amount, $order['details']['BT']->order_currency));
 
 		$refundRequest = new OffAmazonPaymentsService_Model_RefundRequest();
 		$refundRequest->setSellerId($this->_currentMethod->sellerId);
@@ -1926,9 +1946,14 @@ $this->loadAmazonServicesClasses();
 		return false;
 	}
 
+	/**
+	 * if amount = 0 then it is a full capture
+	 * otherwise it is a partial capture
+	 * in this case if a capture has already been done, a new authorization for that amount is requested
+
+	 */
 	function getAmazonAuthorizationId ($payments) {
-		$this->loadAmazonServicesClasses();
-		$this->loadAmazonNotificationClasses();
+
 		$payments_reverse = array_reverse($payments);
 		foreach ($payments_reverse as $payment) {
 			if (!empty($payment->amazon_response_amazonAuthorizationId)) {
@@ -1938,6 +1963,11 @@ $this->loadAmazonServicesClasses();
 		return NULL;
 	}
 
+
+	/**
+	 * @param $payments
+	 * @return null
+	 */
 	function getAmazonCaptureId ($payments) {
 		$this->loadAmazonServicesClasses();
 		$this->loadAmazonNotificationClasses();
@@ -1951,6 +1981,11 @@ $this->loadAmazonServicesClasses();
 		return NULL;
 	}
 
+	/**
+	 * @param $virtuemart_paymentmethod_id
+	 * @param $paymentCurrencyId
+	 * @return bool
+	 */
 	function plgVmgetPaymentCurrency ($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
 		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
@@ -1968,6 +2003,10 @@ $this->loadAmazonServicesClasses();
 		return TRUE;
 	}
 
+	/**
+	 * @param $html
+	 * @return bool|null
+	 */
 	function plgVmOnPaymentResponseReceived (&$html) {
 
 		$this->loadVmClass('VirtueMartCart', JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -2043,26 +2082,31 @@ $this->loadAmazonServicesClasses();
 
 		$db->setQuery($q);
 		$payments = $db->loadObjectList();
-		$html = $this->showActionOrderBEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, $payments);
+		$html = '<table class="adminlist table-striped"  >' . "\n";
+		$html .= $this->getHtmlHeaderBE();
+		$html .= $this->showActionOrderBEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, $payments);
 		$html .= $this->showOrderBEPayment($virtuemart_order_id, $payments);
-
+		$html .= '</table>' . "\n";
 
 		return $html;
 	}
 
 	private function showActionOrderBEPayment ($virtuemart_order_id, $virtuemart_paymentmethod_id, $payments) {
+		//return;
 		$this->loadVmClass('VirtueMartModelOrders', JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
+
 		$options = array();
 		$options[] = JHTML::_('select.option', 'capturePayment', JText::_('VMPAYMENT_AMAZON_ORDER_BE_CAPTURE'), 'value', 'text');
 
 		$options[] = JHTML::_('select.option', 'refundPayment', JText::_('VMPAYMENT_AMAZON_ORDER_BE_REFUND'), 'value', 'text');
+		$options[] = JHTML::_('select.option', 'newAuthorization', JText::_('VMPAYMENT_AMAZON_ORDER_BE_NEW_AUTHORIZATION'), 'value', 'text');
 		$actionList = JHTML::_('select.genericlist', $options, 'action', '', 'value', 'text', 'capturePayment', 'action', true);
 
 
-		$html = '<table class="adminlist table-striped"  >' . "\n";
-		$html .= $this->getHtmlHeaderBE();
+		//$html = '<table class="adminlist table-striped"  >' . "\n";
+		$html = '';
 		$html .= '<form action="index.php" method="post" name="updateOrderBEPayment" id="updateOrderBEPayment">';
 
 		$html .= '<tr ><td >';
@@ -2075,7 +2119,7 @@ $this->loadAmazonServicesClasses();
 		$html .= '<input type="hidden" name="option" value="com_virtuemart"/>';
 		$html .= '<input type="hidden" name="virtuemart_order_id" value="' . $virtuemart_order_id . '"/>';
 		$html .= '<input type="hidden" name="virtuemart_paymentmethod_id" value="' . $virtuemart_paymentmethod_id . '"/>';
-
+		$html .= '<span class="icon-nofloat vmicon vmicon-16-save"></span>';
 		$html .= '<a class="updateOrderBEPayment" href="#"  >' . Jtext::_('COM_VIRTUEMART_SAVE') . '</a>';
 		$html .= '</form>';
 		$html .= ' </td></tr>';
@@ -2084,7 +2128,17 @@ $this->loadAmazonServicesClasses();
 
 		$doc->addScriptDeclaration("
 		//<![CDATA[
+
 		jQuery(document).ready( function($) {
+		/*
+			jQuery('#action').change(function() {
+				if ($('#action').val()=='authorizationNew') {
+					$('#amount').hide();
+				} else {
+					$('#amount').show();
+				}
+			});
+			*/
 			jQuery('.updateOrderBEPayment').click(function() {
 				document.updateOrderBEPayment.submit();
 				return false;
@@ -2107,8 +2161,6 @@ $this->loadAmazonServicesClasses();
 		$db->setQuery($query);
 		$columns = $db->loadColumn(0);
 
-		//$html = '<table class="adminlist table-striped"  >' . "\n";
-		//$html .= $this->getHtmlHeaderBE();
 		$html = '';
 		$first = TRUE;
 		$lang = JFactory::getLanguage();
@@ -2125,10 +2177,10 @@ $this->loadAmazonServicesClasses();
 			if ($first) {
 				$html .= $this->getHtmlRowBE('AMAZON_PAYMENT_NAME', $payment->payment_name);
 				// keep that test to have it backwards compatible. Old version was deleting that column  when receiving an IPN notification
-				if ($payment->payment_order_total and  $payment->payment_order_total != 0.00) {
+				if ($payment->payment_order_total and $payment->payment_order_total != 0.00) {
 					$html .= $this->getHtmlRowBE('COM_VIRTUEMART_TOTAL', ($payment->payment_order_total * 0.01) . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
 				}
-				if ($payment->email_currency and  $payment->email_currency != 0) {
+				if ($payment->email_currency and $payment->email_currency != 0) {
 					//$html .= $this->getHtmlRowBE($this->_name.'_PAYMENT_EMAIL_CURRENCY', shopFunctions::getCurrencyByID($payment->email_currency, 'currency_code_3'));
 				}
 
@@ -2179,11 +2231,12 @@ $this->loadAmazonServicesClasses();
 					$vmClassName = 'amazonHelper' . $vmClass;
 					$amazon_data = unserialize($amazon_data_serialized);
 					$this->loadHelperClass($vmClassName);
+					$html .= '<tr><td>';
 					if (class_exists($vmClassName)) {
 						$obj = new $vmClassName($amazon_data, $this->_currentMethod);
 						$contents = $obj->getContents();
+
 						if (!empty($contents)) {
-							$html .= '<tr><td>';
 							$html .= '<a href="#" class="amazonDetailsOpener"   rel="' . $payment->id . '">';
 							//$html .= '<div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="amazonDetails_' . $payment->id . '">';
 							//$html .= ' </div>';
@@ -2193,10 +2246,14 @@ $this->loadAmazonServicesClasses();
 							$html .= '<div  style="display:none;" id="amazonDetails_' . $payment->id . '">';
 							$html .= $contents;
 							$html .= ' </div>';
-							$html .= ' </td>';
+
 						}
+
 					}
-					//if ($this->_currentMethod->debug) {
+					$html .= ' </td>';
+					$html .= ' <td>';
+
+					if ($this->_currentMethod->debug) {
 						//$html .= '<tr><td></td><td>' . $amazon_class . '
 						$html .= '<td>' . '
 <a href="#" class="amazonLogOpener" rel="' . $payment->id . '" >
@@ -2208,9 +2265,9 @@ $this->loadAmazonServicesClasses();
 	<span class="icon-nofloat vmicon vmicon-16-xml"></span>&nbsp;';
 						$html .= vmText::_('VMPAYMENT_AMAZON_VIEW_TRANSACTION_LOG');
 						$html .= '  </a>';
-						$html .= ' </td></tr>';
-					//}
 
+					}
+					$html .= ' </td></tr>';
 //}
 
 				}
@@ -2218,7 +2275,7 @@ $this->loadAmazonServicesClasses();
 			}
 		}
 
-		$html .= '</table>' . "\n";
+
 		$doc = JFactory::getDocument();
 		$js = "
 jQuery().ready(function($) {
@@ -2289,7 +2346,7 @@ jQuery().ready(function($) {
 	 *
 	 * @author Valérie isaksen
 	 *
-	 * @param VirtueMartCart $cart: the actual cart
+	 * @param VirtueMartCart $cart : the actual cart
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
 	 *
 	 */
@@ -2545,7 +2602,7 @@ jQuery().ready(function($) {
 	 * It displays the the payment method-specific data.
 	 *
 	 * @param integer $_virtuemart_order_id The order ID
-	 * @param integer $method_id  method used for this order
+	 * @param integer $method_id method used for this order
 	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
@@ -2560,10 +2617,10 @@ jQuery().ready(function($) {
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
-
-	public function plgVmOnUpdateOrderPayment(  $_formData) {
-	return null;
-	}
+	 *
+	 * public function plgVmOnUpdateOrderPayment(  $_formData) {
+	 * return null;
+	 * }
 	 */
 	/**
 	 * Save updated orderline data to the method specific table
@@ -2571,10 +2628,10 @@ jQuery().ready(function($) {
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
-
-	public function plgVmOnUpdateOrderLine(  $_formData) {
-	return null;
-	}
+	 *
+	 * public function plgVmOnUpdateOrderLine(  $_formData) {
+	 * return null;
+	 * }
 	 */
 	/**
 	 * plgVmOnEditOrderLineBE
@@ -2584,10 +2641,10 @@ jQuery().ready(function($) {
 	 * @param integer $_orderId The order ID
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-
-	public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
-	return null;
-	}
+	 *
+	 * public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
+	 * return null;
+	 * }
 	 */
 
 	/**
@@ -2598,10 +2655,10 @@ jQuery().ready(function($) {
 	 * @param integer $_orderId The order ID
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-
-	public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
-	return null;
-	}
+	 *
+	 * public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
+	 * return null;
+	 * }
 	 */
 	public function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
 		return $this->declarePluginParams('payment', $name, $id, $data);
@@ -2745,12 +2802,12 @@ jQuery().ready(function($) {
 			}
 		}
 		$update_dataBT ['address_type'] = 'BT';
-
+		unset($update_dataBT['company']);
 		$cart->saveAddressInCart($update_dataBT, $update_dataBT['address_type'], TRUE);
 
 		if (!$STsameAsBT) {
 			$update_dataST ['address_type'] = 'ST';
-
+			unset($update_dataST['shipto_company']);
 			$cart->saveAddressInCart($update_dataST, $update_dataST['address_type'], TRUE);
 		} else {
 			$cart->STsameAsBT = 1;
@@ -2788,12 +2845,12 @@ jQuery().ready(function($) {
 		$headers = getallheaders();
 		$body = file_get_contents('php://input');
 		// TODO REMOVE THIS TESTING ALONE
-/*
-				 $fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
-				fwrite($fp, var_export($headers, true));
-				fwrite($fp, var_export($body, true));
-				fclose($fp);
-*/
+		/*
+						 $fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
+						fwrite($fp, var_export($headers, true));
+						fwrite($fp, var_export($body, true));
+						fclose($fp);
+		*/
 
 		$this->debugLog($headers, 'AMAZON IPN HEADERS debug', 'debug');
 		$this->debugLog($body, 'AMAZON IPN BODY debug', 'debug');
@@ -2908,6 +2965,16 @@ jQuery().ready(function($) {
 		return $url;
 	}
 
+
+	private function getAmazonOrderReferenceIdFromPayments ($payments) {
+		foreach ($payments as $payment) {
+			if ($payment->amazon_request_type == 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceRequest') {
+				$amazon_request = unserialize($payment->amazon_request);
+				return $amazon_request->AmazonOrderReferenceId;
+
+			}
+		}
+	}
 
 	private function incrementRetryInvalidPaymentMethodInSession () {
 		$session = JFactory::getSession();
@@ -3146,7 +3213,11 @@ jQuery().ready(function($) {
 	 */
 	private function isOnlyDigitalGoods ($cart) {
 		$weight = $this->getOrderWeight($cart, 'GR');
-		if ($weight==0) return true; else return false;
+		if ($weight == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -3183,9 +3254,7 @@ jQuery().ready(function($) {
 	private function isValidAmount ($amount) {
 		$this->_currentMethod->min_amount = (float)str_replace(',', '.', $this->_currentMethod->min_amount);
 		$this->_currentMethod->max_amount = (float)str_replace(',', '.', $this->_currentMethod->max_amount);
-		$amount_cond = ($amount >= $this->_currentMethod->min_amount AND $amount <= $this->_currentMethod->max_amount
-			OR
-			($this->_currentMethod->min_amount <= $amount AND ($this->_currentMethod->max_amount == 0)));
+		$amount_cond = ($amount >= $this->_currentMethod->min_amount AND $amount <= $this->_currentMethod->max_amount OR ($this->_currentMethod->min_amount <= $amount AND ($this->_currentMethod->max_amount == 0)));
 		if (!$amount_cond) {
 			vmdebug('AMAZON checkConditions $amount_cond false');
 			return false;
@@ -3308,6 +3377,7 @@ jQuery().ready(function($) {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_RefundResponse');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CloseOrderReferenceRequest');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetAuthorizationDetailsResult');
+		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetRefundDetailsResult');
 	}
 
 
@@ -3331,27 +3401,27 @@ jQuery().ready(function($) {
 
 	function loadAmazonClass ($className) {
 		if (!class_exists($className)) {
-			$filePath = JPATH_PLUGINS .DS.'vmpayment'.DS.'amazon'.DS.'amazon'.DS.'library' .DS.'PaywithAmazonSDK-php-1.0.7_UK'.DS.'src'.DS. str_replace('_', DS, $className) . '.php';
-				if (file_exists( $filePath)) {
-					require $filePath;
-					return;
-				} else {
-					vmError('Programming error: trying to load:'. $filePath);
-				}
+			$filePath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' . DS . 'PaywithAmazonSDK-php-1.0.7_UK' . DS . 'src' . DS . str_replace('_', DS, $className) . '.php';
+			if (file_exists($filePath)) {
+				require $filePath;
+				return;
+			} else {
+				vmError('Programming error: trying to load:' . $filePath);
+			}
 		}
 	}
 
 	function loadHelperClass ($className) {
 		if (!class_exists('amazonHelper')) {
-			require('amazon'.DS.'helpers'.DS.'helper.php');
+			require('amazon' . DS . 'helpers' . DS . 'helper.php');
 		}
 		if (!class_exists($className)) {
 			$fileName = strtolower(str_replace('amazonHelper', '', $className)) . '.php';
-			$fileNameAbsPath=JPATH_PLUGINS .DS.'vmpayment'.DS.'amazon'.DS.'amazon'.DS.'helpers'.DS. $fileName;
+			$fileNameAbsPath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'helpers' . DS . $fileName;
 			if (file_exists($fileNameAbsPath)) {
 				require($fileNameAbsPath);
-			} else  {
-				vmError('Programming error: trying to load:'. $fileNameAbsPath);
+			} else {
+				vmError('Programming error: ' . __FUNCTION__ . ' trying to load:' . $fileNameAbsPath  );
 			}
 		}
 
@@ -3361,8 +3431,8 @@ jQuery().ready(function($) {
 		if (!class_exists($className)) {
 			if (file_exists($fileName)) {
 				require($fileName);
-			} else  {
-				vmError('Programming error: trying to load:'. $fileName);
+			} else {
+				vmError('Programming error:' . __FUNCTION__ . ' trying to load:' . $fileName  );
 			}
 		}
 	}
