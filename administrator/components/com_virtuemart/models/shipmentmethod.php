@@ -180,6 +180,12 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 		if(isset($data['shipment_jplugin_id'])){
 
+			$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE `extension_id` = "'.$data['shipment_jplugin_id'].'"';
+			$db->setQuery($q);
+			$db->execute();
+
+
+
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
 			//bad trigger, we should just give it data, so that the plugins itself can check the data to be stored
