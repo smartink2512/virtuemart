@@ -67,7 +67,6 @@ class VirtueMartModelManufacturer extends VmModel {
      /**
 	 * Bind the post data to the manufacturer table and save it
      *
-     * @author Roland
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */

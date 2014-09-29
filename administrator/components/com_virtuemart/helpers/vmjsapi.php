@@ -429,7 +429,7 @@ class vmJsApi{
 			$be = JFactory::getApplication()->isAdmin();
 			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::addJScript('chosen.jquery.min',false,false);
-				//vmJsApi::js('dynupdate');
+				vmJsApi::jDynUpdate();
 				vmJsApi::js('vmprices');
 				vmJsApi::css('chosen');
 

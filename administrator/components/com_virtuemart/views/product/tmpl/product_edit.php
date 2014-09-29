@@ -35,6 +35,10 @@ $tabarray['description'] = 'COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION';
 $tabarray['status'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL';
 $tabarray['dimensions'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL';
 $tabarray['images'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL';
+if(!empty($this->product_childs)){
+	$tabarray['childs'] = 'COM_VIRTUEMART_PRODUCT_CHILD_LIST';
+}
+
 $tabarray['custom'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB';
 //$tabarray['emails'] = 'COM_VIRTUEMART_PRODUCT_FORM_EMAILS_TAB';
 // $tabarray['customer'] = 'COM_VIRTUEMART_PRODUCT_FORM_CUSTOMER_TAB';

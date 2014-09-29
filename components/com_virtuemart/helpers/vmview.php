@@ -43,7 +43,8 @@ class VmView extends JViewLegacy{
 		}
 
 		echo $result;
-		echo vmJsApi::writeJS();
+		if(get_class($this)!='VirtueMartViewProductdetails')
+			echo vmJsApi::writeJS();
 	}
 
 	function prepareContinueLink(){

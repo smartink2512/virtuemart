@@ -61,7 +61,7 @@ class VirtueMartModelCategory extends VmModel {
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author RickG, jseros, RolandD, Max Milbers
+     * @author RickG, jseros, Max Milbers
      */
 	public function getCategory($virtuemart_category_id=0,$childs=TRUE){
 
@@ -482,7 +482,7 @@ class VirtueMartModelCategory extends VmModel {
     /**
 	 * Bind the post data to the category table and save it
      *
-     * @author jseros, RolandD, Max Milbers
+     * @author jseros, Max Milbers
      * @return int category id stored
 	 */
     public function store(&$data) {
@@ -625,7 +625,6 @@ class VirtueMartModelCategory extends VmModel {
 	/**
 	* Checks for children of the category $virtuemart_category_id
 	*
-	* @author RolandD
 	* @param int $virtuemart_category_id the category ID to check
 	* @return boolean true when the category has childs, false when not
 	*/
@@ -650,7 +649,6 @@ class VirtueMartModelCategory extends VmModel {
 	/**
 	 * Creates a bulleted of the childen of this category if they exist
 	 *
-	 * @author RolandD
 	 * @todo Add vendor ID
 	 * @param int $virtuemart_category_id the category ID to create the list of
 	 * @return array containing the child categories

@@ -212,8 +212,8 @@ class VirtuemartViewProduct extends VmView {
 
 				if ($product->product_parent_id > 0) {
 
-					$parentRelation= $customfields->getProductParentRelation($product->virtuemart_product_id);
-					$this->assignRef('parentRelation',$parentRelation);
+					//$parentRelation= $customfields->getProductParentRelation($product->virtuemart_product_id);
+					//$this->assignRef('parentRelation',$parentRelation);
 
 					// Set up labels
 					$info_label = vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL');
@@ -339,7 +339,6 @@ class VirtuemartViewProduct extends VmView {
 				$title='PRODUCT';
 				$msg="";
 			}
-			$this->db = JFactory::getDBO();
 
 			$this->SetViewTitle($title, $msg );
 

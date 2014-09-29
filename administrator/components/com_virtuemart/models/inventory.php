@@ -5,7 +5,6 @@
 *
 * @package	VirtueMart
 * @subpackage
-* @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -25,7 +24,6 @@ if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
  * Model for VirtueMart Products
  *
  * @package VirtueMart
- * @author RolandD
  */
 class VirtueMartModelInventory extends VmModel {
 
@@ -69,7 +67,6 @@ class VirtueMartModelInventory extends VmModel {
 
     /**
     * Collect the filters for the query
-    * @author RolandD
 	* @author Max Milbers
     */
     private function getInventoryFilter() {

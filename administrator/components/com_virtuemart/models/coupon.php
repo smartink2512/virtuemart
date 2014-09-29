@@ -55,14 +55,12 @@ class VirtueMartModelCoupon extends VmModel {
 	/**
 	 * Bind the post data to the coupon table and save it
      *
-     * @author RickG, Oscar van Eijk
+     * @author Max Milbers
      * @return mixed False if the save was unsuccessful, the coupon ID otherwise.
 	 */
-    function store(&$data)
-	{
+    function store(&$data) {
 		$table = $this->getTable('coupons');
-		//$data = vRequest::getRequest();
-		$table->bindChecknStore($data);
+
 		// Convert selected dates to MySQL format for storing.
 		if ($data['coupon_start_date']) {
 		    $startDate = JFactory::getDate($data['coupon_start_date']);
@@ -72,7 +70,9 @@ class VirtueMartModelCoupon extends VmModel {
 		    $expireDate = JFactory::getDate($data['coupon_expiry_date']);
 		    $data['coupon_expiry_date'] = $expireDate->toSQL();
 		}
-		parent::store($data);
+		$table->bindChecknStore($data);
+		$data['virtuemart_coupon_id'] = $table->virtuemart_coupon_id;
+		//parent::store($data);
         return $table->virtuemart_coupon_id;
 	}
 

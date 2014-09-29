@@ -140,6 +140,7 @@ class VirtuemartViewUser extends VmView {
 
 
 			$addrtype = vRequest::getCmd('addrtype');
+			$virtuemart_userinfo_id = 0;
 			if ($layoutName == 'edit_shipto' or $task=='addST' or $addrtype=='ST') {
 				$virtuemart_userinfo_id = vRequest::getString('virtuemart_userinfo_id', '0','');
 				$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
@@ -150,6 +151,7 @@ class VirtuemartViewUser extends VmView {
 				}
 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
 				$this->assignRef('shipToFields', $userFieldsST);
+				vmdebug('hm ST $virtuemart_userinfo_id',$virtuemart_userinfo_id);
 			}
 
 			$this->assignRef('shipToId', $virtuemart_userinfo_id);

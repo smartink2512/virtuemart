@@ -37,7 +37,7 @@ class TableCoupons extends VmTable {
 	/** @var string Coupon percentage or total */
 	var $percent_or_total    	= 'percent';
 	/** @var string Coupon type */
-	var $coupon_type		    = 'permanent';
+	var $coupon_type		    = 'gift';
 	/** @var Decimal Coupon value */
 	var $coupon_value 			= '';
 	/** @var datetime Coupon start date */

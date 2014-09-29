@@ -47,8 +47,9 @@ if($this->userDetails->user_is_vendor){
 }
 $tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
 //$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
-if ($this->shipToId != 0 || $this->new) {
+if (!empty($this->shipToFields) || $this->new) {
 	$tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_SHIPTO_LBL';
+	vmdebug('Edit user',$tabarray['shipto']);
 }
 if (($_ordcnt = count($this->orderlist)) > 0) {
 	$tabarray['orderlist'] = 'COM_VIRTUEMART_ORDER_LIST_LBL';

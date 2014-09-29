@@ -213,24 +213,6 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 
-	/**
-	 *
-	 * Enter description here ...
-	 *
-	 * @param unknown_type $product_id
-	 * @return string|Ambigous <string, mixed, multitype:>
-	 */
-	function getProductParentRelation ($product_id) {
-		$db = JFactory::getDBO();
-		$db->setQuery (' SELECT `customfield_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` =' . (int)$product_id);
-		if ($childcustom = $db->loadResult ()) {
-			return '(' . $childcustom . ')';
-		}
-		else {
-			return vmText::_ ('COM_VIRTUEMART_CUSTOM_NO_PARENT_RELATION');
-		}
-	}
-
 	private function sortChildIds ($product_id, $childIds, $sorted=array()){
 
 		//vmdebug('sortChildIds',$product_id, $childIds);
@@ -253,17 +235,15 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$child = $productModel->getProductSingle($line['vm_product_id'],false);
 		//if(!empty($parentId)) $parentId = $parentId.'->';
-		$linkLabel = $line['parent_id'] .'->'. $line['vm_product_id'];
+		$linkLabel = $line['parent_id'] .'->'. $line['vm_product_id'].' ';
 		$html = '<tr class="row'.(($i+1)%2).'">';
 		$html .= '<td>
-	'.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $linkLabel, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->slug)) ;
+	'.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $linkLabel.$child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->slug)) ;
 		$html .= '</td><td>';
 		$html .= 	'<input type="hidden" name="childs['.$child->virtuemart_product_id .'][slug]" id="child'.$child->virtuemart_product_id .'slug" value="'.$child->slug .'" />
 					<input type="hidden" name="childs['.$child->virtuemart_product_id .'][product_parent_id]" id="child'.$child->virtuemart_product_id .'slug" value="'.$child->product_parent_id .'" />';
-		$html .= 	'<input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id .'][product_name]" id="child'.$child->virtuemart_product_id .'product_name" size="32" value="'.htmlspecialchars($child->product_name) .'" /></td>
-<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id .'][mprices][product_price][]" size="10" value="'.$child->allPrices[$child->selectedPrice]['product_price'] .'" /><input type="hidden" name="childs['.$child->virtuemart_product_id .'][mprices][virtuemart_product_price_id][]" value="'.$child->allPrices[$child->selectedPrice]['virtuemart_product_price_id'] .'"  ></td>
-<td>'.$child->product_in_stock .'</td>
-<td>'.$child->product_ordered .'</td>';
+		$html .= 	htmlspecialchars($child->product_name) .'</td>
+<td>'.$child->allPrices[$child->selectedPrice]['product_price'] .'</td>';
 
 		$product_id = $line['vm_product_id'];
 		foreach($field->selectoptions as $k=>$selectoption){
@@ -527,9 +507,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= '<tr>
 <th style="text-align: left !important;">#</th>
 <th style="text-align: left !important;">'.vmText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME').'</th>
-<th style="text-align: left !important;" width="5%">'.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST').'</th>
-<th style="text-align: left !important;">'.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').'</th>
-<th style="text-align: left !important;" width="5%">'.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK').'</th>';
+<th style="text-align: left !important;" width="5%">'.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST').'</th>';
 				foreach($field->selectoptions as $k=>$option){
 					$html .= '<th>'.vmText::_('COM_VIRTUEMART_'.strtoupper($option->voption)).'</th>';
 				}
@@ -788,7 +766,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}
 
-					vmJsApi::chosenDropDowns();
+					//vmJsApi::chosenDropDowns();
 					foreach($customfield->selectoptions as $k => $soption){
 						$options = array();
 						$selected = 0;
@@ -805,7 +783,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$idTag .= 'cvard'.$k;
 						$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);
 
-						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection" data-dynamic-update="1"  ', "value", "text", $selected,$idTag);
+						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection" data-dynamic-update="1" ', "value", "text", $selected,$idTag);
 					}
 
 					//vmdebug('displayProductCustomfieldFE my C', $customfield->options,$dropdowns);
@@ -815,58 +793,66 @@ class VirtueMartModelCustomfields extends VmModel {
 						$Itemid = '&Itemid='.$Itemid;
 					}
 					$url = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=';
+
 					//create array for js
 					$jsArray = array();
 
 					foreach($customfield->options as $product_id=>$variants){
-						$jsArray[] = '["'.$product_id.'","'.implode('","',$variants).'"]';
+						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid);
+						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
 					}
+					//vmdebug('my urls of child variants',$jsArray);
 					$jsVariants = implode(',',$jsArray);
 					vmJsApi::addJScript('cvselection',"
+var cvselection = function($) {
 	jQuery( function($) {
 		$('.cvselection').change(function() {
-				var variants = [".$jsVariants."];
-				var selection = [];
-				$('.cvselection').each(function() {
-					selection[selection.length] = $(this).val();
-					console.log('My selection '+selection[selection.length-1]);
-				});
-				var Itemid = '".$Itemid."';
-				var url = '".$url."';
-				var index ;
-				var i2 ;
-				var hitcount;
-				var runs;
-				for	(runs = 0; runs < selection.length; index++) {
-					for	(index = 0; index < variants.length; index++) {
-						hitcount = 0;
-						for	(i2 = 0; i2 < selection.length; i2++) {
-							//console.log('hmm '+variants[index][i2+1]+' selection '+selection[i2]);
-							if(selection[i2]==variants[index][i2+1]){
-								hitcount++;
-								console.log('Attribute hit selection '+i2+' '+selection[i2]+' '+variants[index][i2+1] );
-								if(hitcount == (selection.length-runs)){
-									console.log('Product found '+variants[index][0]+' '+variants[index][1]+' '+variants[index][2]);
-									console.log('Would redirect to '+url+variants[index][0])
+			var variants = [".$jsVariants."];
+			var selection = [];
+			$('.cvselection').each(function() {
+				selection[selection.length] = $(this).val();
+				console.log('My selection '+selection[selection.length-1]);
+			});
+			var index ;
+			var i2 ;
+			var hitcount;
+			var runs;
+			for	(runs = 0; runs < selection.length; index++) {
+				for	(index = 0; index < variants.length; index++) {
+					hitcount = 0;
+					for	(i2 = 0; i2 < selection.length; i2++) {
+						if(selection[i2]==variants[index][i2+1]){
+							hitcount++;
+							console.log('Attribute hit selection '+i2+' '+selection[i2]+' '+variants[index][i2+1] );
+							if(hitcount == (selection.length-runs)){
+								console.log('redirect to '+variants[index][0])
 
-									window.top.location.href=url+variants[index][0]+Itemid;
-									break;
-									//i2 = 200;
-									//index = 200;
-									//runs = 200;
-								}
-							} else {
+								//console.log('Set on selected option the attr url = '+variants[index][0]);
+								jQuery(this).find(':selected').attr('url',variants[index][0]);
+								jQuery(this).attr('url',variants[index][0]);
+
+								i2 = selection.length+1;
+								index = variants.length+1;
+								runs = variants.length+1;
 								break;
 							}
+						} else {
+							break;
 						}
 					}
-					runs++;
-					console.log('Could not find product for selection ');
 				}
-
-			});
+				if(index>selection.length){
+					break;
+				}
+				runs++;
+				console.log('Could not find product for selection ');
+			}
 		});
-	");
+	})
+};
+cvselection();
+jQuery('body').on('updateVirtueMartProductDetail', cvselection);
+");
 					//$html .= '<script type="text/javascript">'.$script.'</script>';
 
 					//Now we need just the JS to reload the correct product

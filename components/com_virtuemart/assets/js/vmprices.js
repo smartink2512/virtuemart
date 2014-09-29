@@ -10,8 +10,8 @@ Virtuemart.setproducttype = function(form, id) {
 	}
 	datas = datas.replace("&view=cart", "");
 	prices.fadeTo("fast", 0.75);
-   //datas = jQuery.param(datas);
-	//encodeURIComponent(datas);
+    //alert('my setproducttype '+window.vmSiteurl + ' ' + window.vmLang);
+
 	jQuery.getJSON(window.vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&virtuemart_product_id='+id+'&format=json' + window.vmLang, datas,
 		function (datas, textStatus) {
 			prices.fadeTo("fast", 1);
