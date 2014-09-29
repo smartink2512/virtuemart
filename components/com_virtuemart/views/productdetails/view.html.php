@@ -310,6 +310,7 @@ class VirtueMartViewProductdetails extends VmView {
 			$this->assignRef('currency', $currency);
 
 			if(vRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
+			VmConfig::loadJLang('com_virtuemart');
 
 			parent::display($tpl);
 
