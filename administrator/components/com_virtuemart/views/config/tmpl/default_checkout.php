@@ -242,7 +242,7 @@ $document->addScriptDeclaration($js);
 				<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js',0)); ?>
 			</td>
 		</tr>
-
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_ATTACH','attach', VmConfig::get('attach','')); ?>
 	</table>
 </fieldset>
 

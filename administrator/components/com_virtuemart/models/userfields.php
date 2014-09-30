@@ -183,8 +183,9 @@ class VirtueMartModelUserfields extends VmModel {
 			$this->_data = $this->getTable('userfields');
 			if($name !==0){
 				$this->_data->load($id, $name);
+			} else {
+				$this->_data->load($id);
 			}
-			$this->_data->load($id);
 		}
 
 		if(strpos($this->_data->type,'plugin')!==false){
