@@ -3,7 +3,7 @@
 <project name="Build VirtueMart 2" default="VIRTUEMART2_AND_FULLINSTALLER" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.6.10"/>
+    <property name="vm.version" value="2.6.10a"/>
     <property name="joomla.version" value="2.5.24"/>
     <property name="svn.lastrevision" value="8271"/>
     <property name="PHING.VM.CODENAME" value="FlyingBrant"/>
@@ -143,7 +143,6 @@
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
         <exclude name="**/vm_build/**"/>
-        <exclude name="**/amazon/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
@@ -256,7 +255,6 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-        <exclude name="**/amazon/**"/>
         <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
