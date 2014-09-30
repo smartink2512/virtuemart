@@ -224,8 +224,8 @@ class  RealexHelperRealex {
 			'cc_expire_month' => $this->customerData->getVar('cc_expire_month'),
 			'cc_expire_year'  => $this->customerData->getVar('cc_expire_year'),
 		);
-		$serializedMd = serialize($md);
-		$encryptMd = vmCrypt::encrypt($serializedMd);
+		$jsonencodeMd = json_encode($md);
+		$encryptMd = vmCrypt::encrypt($jsonencodeMd);
 		return $encryptMd;
 
 	}
@@ -235,7 +235,7 @@ class  RealexHelperRealex {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmCrypt.php');
 		}
 		$decryptedMd = vmCrypt::decrypt($cryptedMd);
-		$md = unserialize($decryptedMd);
+		$md =  json_decode($decryptedMd, true);
 		return $md;
 	}
 
@@ -561,8 +561,8 @@ class  RealexHelperRealex {
 			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
 		}
 
-		$serializedMd = vRequest::getVar('MD', '');
-		$md = $this->getMd($serializedMd);
+		$jsonencodeMd = vRequest::getVar('MD', '');
+		$md = $this->getMd($jsonencodeMd);
 		$this->customerData->saveCustomerMDData($md);
 
 		$timestamp = $this->getTimestamp();

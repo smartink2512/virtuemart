@@ -186,7 +186,7 @@ if ($viewData['dccinfo']) {
 				<?php
 				echo shopfunctions::listMonths('cc_expire_month', $ccData['cc_expire_month'], "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"", 'm');
 
-				echo shopfunctions::listYears('cc_expire_year', $ccData['cc_expire_year'], null, null, "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"  onchange=\"var month = document.getElementById('cc_expire_month_'" . $viewData['virtuemart_paymentmethod_id'] . "); if(!CreditCardisExpiryDate(month.value,this.value, '" . $viewData['virtuemart_paymentmethod_id'] . "')){this.value='';month.value='';}\" ", "y");
+				echo shopfunctions::listYears('cc_expire_year', $ccData['cc_expire_year'], null, null, "class=\"inputbox vm-chzn-select\" style=\"width: 100px;\"  onchange=\"var month = document.getElementById('cc_expire_month_'" . $viewData['virtuemart_paymentmethod_id'] . "); if(!CreditCardisExpiryDate(month.value,this.value, '" . $viewData['virtuemart_paymentmethod_id'] . "')){this.value='';month.value='';}\" ", "Y");
 				?>
 				<div id="cc_expiredate_errormsg"></div>
 			<?php

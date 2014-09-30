@@ -300,18 +300,21 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 
-	function _setAuthorizeNetIntoSession() {
-
+	function _setAuthorizeNetIntoSession ()
+	{
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
 		$session = JFactory::getSession();
 		$sessionAuthorizeNet = new stdClass();
 		// card information
 		$sessionAuthorizeNet->cc_type = $this->_cc_type;
-		$sessionAuthorizeNet->cc_number = $this->_cc_number;
-		$sessionAuthorizeNet->cc_cvv = $this->_cc_cvv;
+		$sessionAuthorizeNet->cc_number = vmCrypt::encrypt($this->_cc_number);
+		$sessionAuthorizeNet->cc_cvv = vmCrypt::encrypt($this->_cc_cvv);
 		$sessionAuthorizeNet->cc_expire_month = $this->_cc_expire_month;
 		$sessionAuthorizeNet->cc_expire_year = $this->_cc_expire_year;
 		$sessionAuthorizeNet->cc_valid = $this->_cc_valid;
-		$session->set('authorizenet', serialize($sessionAuthorizeNet), 'vm');
+		$session->set('authorizenet', json_encode($sessionAuthorizeNet), 'vm');
 	}
 
 	function _getAuthorizeNetFromSession() {
@@ -320,10 +323,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$authorizenetSession = $session->get('authorizenet', 0, 'vm');
 
 		if (!empty($authorizenetSession)) {
-			$authorizenetData = unserialize($authorizenetSession);
+			$authorizenetData = (object)json_decode($authorizenetSession,true);
 			$this->_cc_type = $authorizenetData->cc_type;
-			$this->_cc_number = $authorizenetData->cc_number;
-			$this->_cc_cvv = $authorizenetData->cc_cvv;
+			$this->_cc_number =  vmCrypt::decrypt($authorizenetData->cc_number);
+			$this->_cc_cvv =  vmCrypt::decrypt($authorizenetData->cc_cvv);
 			$this->_cc_expire_month = $authorizenetData->cc_expire_month;
 			$this->_cc_expire_year = $authorizenetData->cc_expire_year;
 			$this->_cc_valid = $authorizenetData->cc_valid;
@@ -370,6 +373,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
+		}
+
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return FALSE;
 		}
 
 		//$cart->creditcard_id = vRequest::getVar('creditcard', '0');
@@ -506,10 +513,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$usrST = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 		$session = JFactory::getSession();
 		$return_context = $session->getId();
-		$transaction_key = $this->get_passkey();
-		if ($transaction_key === FALSE) {
-			return FALSE;
-		}
 
 		$payment_currency_id = shopFunctions::getCurrencyIDByName(self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY);
 		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $payment_currency_id);
@@ -591,7 +594,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		$modelOrder = VmModel::getModel('orders');
-		$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
+		//$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
 		// error while processing the payment
 		$mainframe = JFactory::getApplication();
 		$mainframe->enqueueMessage($html);
