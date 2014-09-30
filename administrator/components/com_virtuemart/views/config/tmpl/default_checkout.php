@@ -90,40 +90,15 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER','oncheckout_show_register',VmConfig::get('oncheckout_show_register',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED','oncheckout_only_registered',VmConfig::get('oncheckout_only_registered',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES','oncheckout_show_images',VmConfig::get('oncheckout_show_images',0));
-		?>
 
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES_TIP'); ?>">
-					<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES'); ?>
-				</span>
-			</td>
-			<td>
-				<?php echo $this->inv_osList; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER_TIP'); ?>">
-					<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER'); ?>
-				 </span>
-			</td>
-			<td>
-				<?php echo $this->email_os_sList; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR_TIP'); ?>">
-					<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR'); ?>
-				</span>
-			</td>
-			<td>
-				<?php echo $this->email_os_vList; ?>
-			</td>
-		</tr>
-		<?php
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_LANGFIX','vmlang_js',VmConfig::get('vmlang_js',1));
+
+		$attrlist = 'class="inputbox" multiple="multiple" ';
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES',$this->os_Options,'inv_os[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('inv_os',array('C')), 'inv_os',true);
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER',$this->os_Options,'email_os_s[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('email_os_s',array('U','C','S','R','X')), 'email_os_s',true);
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR',$this->os_Options,'email_os_v[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('email_os_v',array('U','C','R','X')), 'email_os_v',true);
+
+
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_LANGFIX','vmlang_js',VmConfig::get('vmlang_js',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER','oncheckout_change_shopper',VmConfig::get('oncheckout_change_shopper',1));
 
 		$_delivery_date_options = array(
@@ -135,8 +110,12 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		, 'osR' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_REFUNDED')
 		, 'osC' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_CANCELLED')
 		);
+
+
 		echo VmHTML::row('selectList','COM_VIRTUEMART_CFG_DELDATE_INV','del_date_type', VmConfig::get('del_date_type','m'), $_delivery_date_options);
 		echo VmHTML::row('input','COM_VIRTUEMART_CFG_ATTACH','attach', VmConfig::get('attach',''));
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_ATTACH_OS',$this->os_Options,'attach_os[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('attach_os',array('U','C','R','X')), 'attach_os',true);
+
 		?>
 
 	</table>

@@ -195,7 +195,11 @@ class VirtueMartCart {
 				if($multixcart=='byselection'){
 					self::$_cart->vendorId = vRequest::getInt('virtuemart_vendor_id',self::$_cart->vendorId);
 				}
-			} else {
+			}
+
+			//We need to check for the amount of products. A cart in Multix mode using the first product
+			// to determine the vendorId is a valid if there is no product in the cart
+			if(count(self::$_cart->cartProductsData) >0 and empty(self::$_cart->vendorId)){
 				self::$_cart->vendorId = 1;
 			}
 			vmdebug('getCart $_cart->vendorId',self::$_cart->vendorId);

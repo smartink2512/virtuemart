@@ -67,14 +67,12 @@ class VirtuemartViewConfig extends VmView {
 		$this->noimagelist = $model->getNoImageList();
 
 		$orderStatusModel= VmModel::getModel('orderstatus');
-		$this->inv_osList = $orderStatusModel->renderOSList(VmConfig::get('inv_os',array('C')),'inv_os',TRUE);
-		$this->email_os_sList = $orderStatusModel->renderOSList(VmConfig::get('email_os_s',array('U','C','S','R','X')),'email_os_s',TRUE);
-		$this->email_os_vList = $orderStatusModel->renderOSList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v',TRUE);
-		$this->cp_rmList = $orderStatusModel->renderOSList(VmConfig::get('cp_rm',array('C')),'cp_rm',TRUE);
-		$this->rr_osList = $orderStatusModel->renderOSList(VmConfig::get('rr_os',array('C')),'rr_os',TRUE);
+		$this->assignRef('orderStatusModel',$orderStatusModel);
+		$this->os_Options = $orderStatusModel->getOrderStatusNames();
+		$emptyOption = JHtml::_ ('select.option', -1, vmText::_ ('COM_VIRTUEMART_NONE'), 'order_status_code', 'order_status_name');
+		array_unshift ($this->os_Options, $emptyOption);
 
 		$this->currConverterList = $model->getCurrencyConverterList();
-		//$moduleList = $model->getModuleList();
 
 		$this->activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 

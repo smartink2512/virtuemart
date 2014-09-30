@@ -529,6 +529,44 @@ class VmTable extends JTable {
 	}
 
 	/**
+	 *
+	 * @param $obj
+	 * @param $src
+	 * @param array $ignore
+	 * @return bool
+	 */
+	static public function bindTo(&$obj, $src, $internals = false, $ignore = array()) {
+
+		if(empty($src)) return false;
+
+		if (is_object($src)) {
+			$src = get_object_vars($src);
+		}
+
+		if(!is_array($src)) return false;
+
+		$isIndexed = array_values($src) === $src;
+		if($isIndexed) return false;
+
+		// If the ignore value is a string, explode it over spaces.
+		if (!empty($ignore) and !is_array($ignore)) {
+			$ignore = explode(' ', $ignore);
+		}
+
+		foreach (get_object_vars($obj) as $k => $v) {
+			if(!$internals and '_' == substr($k, 0, 1)) continue;
+			// Only process fields not in the ignore array.
+			if (!in_array($k, $ignore)) {
+				if (isset($src[$k])) {
+					$obj->$k = $src[$k];
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers
 	 * $TableJoins array of table names to add and left join to find ID

@@ -141,8 +141,8 @@ class VirtuemartViewInvoice extends VmView {
 			}
 		}
 
-		//Todo multix
-		$vendorId=1;
+		$virtuemart_vendor_id = $orderDetails['details']['BT']->virtuemart_vendor_id;
+
 		$emailCurrencyId = $orderDetails['details']['BT']->user_currency_id;
 		$exchangeRate=FALSE;
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
@@ -150,7 +150,7 @@ class VirtuemartViewInvoice extends VmView {
 	    $dispatcher = JDispatcher::getInstance();
 	    $dispatcher->trigger('plgVmgetEmailCurrency',array( $orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$emailCurrencyId));
 		if(!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance($emailCurrencyId,$vendorId);
+		$currency = CurrencyDisplay::getInstance($emailCurrencyId,$virtuemart_vendor_id);
 			if ($emailCurrencyId) {
 				$currency->exchangeRateShopper=$orderDetails['details']['BT']->user_currency_rate;
 			}
@@ -166,21 +166,6 @@ class VirtuemartViewInvoice extends VmView {
 
 		$userfields = $userFieldsModel->getUserFieldsFilled( $_userFields ,$orderDetails['details']['BT']);
 		$this->assignRef('userfields', $userfields);
-
-		$attach = VmConfig::get('attach',false);
-		if(!empty($attach) and VmConfig::get('attach_os',VmConfig::get('inv_os'))){
-			$this->mediaToSend = VMPATH_ROOT.DS.'images'.DS.'stories'.DS.'virtuemart'.DS.'vendor'.DS.VmConfig::get('attach');
-		}
-		/*$userFieldsCart = $userFieldsModel->getUserFields(
-			'cart'
-			, array('captcha' => true, 'delimiters' => true) // Ignore these types
-			, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
-		);
-
-		$this->userFieldsCart = $userFieldsModel->getUserFieldsFilled(
-			$userFieldsCart
-			,$this->cart->cartfields
-		);*/
 
 		//Create ST address fields
 		$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderDetails['details']['BT'];
@@ -242,7 +227,6 @@ class VirtuemartViewInvoice extends VmView {
 
 		}
 
-		$virtuemart_vendor_id=1;
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vendorModel->addImages($vendor);
@@ -297,6 +281,13 @@ class VirtuemartViewInvoice extends VmView {
 		$this->doVendor=$doVendor;
 		$this->frompdf=false;
 		$this->uselayout = 'mail';
+
+		$attach = VmConfig::get('attach',false);
+
+		if($this->recipient == 'shopper' and !empty($attach) and in_array($this->orderDetails['details']['BT']->order_status,VmConfig::get('attach_os',array())) ){
+			$this->mediaToSend = VMPATH_ROOT.DS.'images'.DS.'stories'.DS.'virtuemart'.DS.'vendor'.DS.VmConfig::get('attach');
+		}
+
 		$this->display();
 
 	}
