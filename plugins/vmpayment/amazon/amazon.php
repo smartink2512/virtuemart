@@ -67,10 +67,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 		$amazon_library = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' . DS . 'PaywithAmazonSDK-php-1.0.7_UK' . DS . 'src';
 
+
 		//set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) . "/../../."));
 		set_include_path($amazon_library);
-
-		//require_once "OffAmazonPayments/.autoloader.php";
 		$this->loadAmazonClass('OffAmazonPaymentsService_Client');
 		if (!JFactory::getApplication()->isSite()) {
 			JFactory::getDocument()->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
@@ -1031,12 +1030,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$db_values['amazon_notification'] = $notification ? serialize($notification) : "";
 		$db_values['amazon_class_notification_type'] = $notification ? get_class($notification) : '';
 		$db_values['amazonOrderReferenceId'] = $amazonOrderReferenceId ? $amazonOrderReferenceId : '';
-		//$db_values['payment_params'] = $currentMethod;
+		//$db_values['payment_params'] = $this->_currentMethod;
 		$db_values['payment_name'] = $payment_name;
 		if ($amazonParams) {
 			$amazonParamsArray = (array)($amazonParams);
 			$db_values = array_merge($db_values, $amazonParamsArray);
 		}
+
 		//$preload=true   preload the data here too preserve not updated data
 		return $this->storePSPluginInternalData($db_values, $this->_tablepkey, 0);
 
@@ -1693,7 +1693,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 
 		if (!$this->isValidUpdateOrderStatus($order->order_status)) {
-			vmError(vmText::_('VMPAYMENT_AMAZON_UPDATEPAYMENT_NO_ACTION'));
+			if (!JFactory::getApplication()->isSite()) {
+				vmError(vmText::_('VMPAYMENT_AMAZON_UPDATEPAYMENT_NO_ACTION'));
+			}
 			return;
 		}
 		if ($updateOrderPaymentNumber > 10) {
@@ -2199,6 +2201,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				$this->loadAmazonNotificationClasses();
 
 				if (!empty($payment->amazon_response)) {
+
 					$amazon_data = unserialize($payment->amazon_response);
 					$amazon_classes[get_class($amazon_data)] = $payment->amazon_response;
 					$response_class = get_class($amazon_data);
@@ -2320,15 +2323,7 @@ jQuery().ready(function($) {
 			$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id');
 			$method = $this->getPluginMethod($virtuemart_paymentmethod_id);
 			vmdebug('plgVmOnStoreInstallPaymentPluginTable', $method, $virtuemart_paymentmethod_id);
-			//$this->createRootFile($method->virtuemart_paymentmethod_id);
-			/*
-						$mandatory_fields = array('site_id', 'rang', 'identifiant', 'key');
-						foreach ($mandatory_fields as $mandatory_field) {
-							if (empty($method->$mandatory_field)) {
-								vmError(vmText::sprintf('VMPAYMENT_'.$this->_name.'_CONF_MANDATORY_PARAM', vmText::_('VMPAYMENT_'.$this->_name.'_CONF_' . $mandatory_field)));
-							}
-						}
-			*/
+
 			if (!extension_loaded('curl')) {
 				vmError(vmText::sprintf('VMPAYMENT_AMAZON_CONF_MANDATORY_PHP_EXTENSION', 'curl'));
 			}
@@ -2780,29 +2775,31 @@ jQuery().ready(function($) {
 		$vendorModel->setId($virtuemart_vendor_id);
 		$vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
 		$skips = array('name', 'username', 'agreed');
-		// TODO:  to take only the required fields for the BT and ST
-		// TODO: only set the address if NOT logged in , or address is not already set
-		// TODO if asynchronous authorization: merchant must set fields to NOT REQUIRED
+
+		// TODO if asynchronous authorization: we set some default fields to the vendor fields
 		$update_dataBT = array();
-		$update_dataST = array();
+		//$update_dataST = array();
 		$prefix = 'shipto_';
 		foreach ($vendorFields['fields'] as $field) {
-			if (in_array($field['name'], $skips)) {
+			if (!$field['required']) {
 				continue;
 			}
-			if (!empty($field['value'])) {
-				if (isset($field[$field['name']])) {
-					$update_dataBT[$field['name']] = $field[$field['name']];
-					$update_dataST[$prefix . $field['name']] = $field[$field['name']];
-				} else {
-					$update_dataBT[$field['name']] = $field['value'];
-					$update_dataST[$prefix . $field['name']] = $field['value'];
-				}
-
+			if ($field['name']=='virtuemart_country_id') {
+				$update_dataBT[$field['name']] = $field[$field['name']];
+				$update_dataST[$prefix . $field['name']] = $field[$field['name']];
+			} elseif ($field['name']=='virtuemart_state_id') {
+				$update_dataBT[$field['name']] = $field[$field['name']];
+				$update_dataST[$prefix . $field['name']] = $field['value'];
+			} elseif ($field['name']=='email') {
+				$update_dataBT[$field['name']] = $field['value'];
+				$update_dataST[$prefix . $field['name']] = $field['value'];
+			} else {
+				$update_dataBT[$field['name']] = '-';
+				$update_dataST[$prefix . $field['name']] = '-';
 			}
+
 		}
 		$update_dataBT ['address_type'] = 'BT';
-		unset($update_dataBT['company']);
 		$cart->saveAddressInCart($update_dataBT, $update_dataBT['address_type'], TRUE);
 
 		if (!$STsameAsBT) {
@@ -2969,7 +2966,7 @@ jQuery().ready(function($) {
 	private function getAmazonOrderReferenceIdFromPayments ($payments) {
 		foreach ($payments as $payment) {
 			if ($payment->amazon_request_type == 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceRequest') {
-				$amazon_request = unserialize($payment->amazon_request);
+				$amazon_request =   (object)json_decode($payment->amazon_request, true);
 				return $amazon_request->AmazonOrderReferenceId;
 
 			}
@@ -2979,19 +2976,19 @@ jQuery().ready(function($) {
 	private function incrementRetryInvalidPaymentMethodInSession () {
 		$session = JFactory::getSession();
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
-		$sessionAmazonData = unserialize($sessionAmazon);
+		$sessionAmazonData =    json_decode($sessionAmazon, true);
 		if (isset($sessionAmazonData['RetryInvalidPaymentMethod'])) {
 			$sessionAmazonData['RetryInvalidPaymentMethod']++;
 		} else {
 			$sessionAmazonData['RetryInvalidPaymentMethod'] = 0;
 		}
-		$session->set('amazon', serialize($sessionAmazonData), 'vm');
+		$session->set('amazon', json_encode($sessionAmazonData), 'vm');
 	}
 
 	private function getRetryInvalidPaymentMethodFromSession () {
 		$session = JFactory::getSession();
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
-		$sessionAmazonData = unserialize($sessionAmazon);
+		$sessionAmazonData =   json_decode($sessionAmazon, true);
 		if (isset($sessionAmazonData['RetryInvalidPaymentMethod'])) {
 			return $sessionAmazonData['RetryInvalidPaymentMethod'];
 		} else {
@@ -3008,11 +3005,11 @@ jQuery().ready(function($) {
 		$session = JFactory::getSession();
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
 		if ($sessionAmazon) {
-			$sessionAmazonData = unserialize($sessionAmazon);
+			$sessionAmazonData =    json_decode($sessionAmazon, true);
 		}
 
 		$sessionAmazonData['oldConfig'] = $oldConfig;
-		$session->set('amazon', serialize($sessionAmazonData), 'vm');
+		$session->set('amazon', json_encode($sessionAmazonData), 'vm');
 
 	}
 
@@ -3023,7 +3020,7 @@ jQuery().ready(function($) {
 	private function getVMOPCConfigFromSession () {
 		$session = JFactory::getSession();
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
-		$sessionAmazonData = unserialize($sessionAmazon);
+		$sessionAmazonData =   json_decode($sessionAmazon, true);
 		$oldConfig = $sessionAmazonData['oldConfig'];
 		return $oldConfig;
 
@@ -3037,12 +3034,12 @@ jQuery().ready(function($) {
 	private function saveBTandSTInSession ($cart) {
 		$session = JFactory::getSession();
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
-		$sessionAmazonData = unserialize($sessionAmazon);
+		$sessionAmazonData =    json_decode($sessionAmazon, true);
 		// check if it is already saved or not
 		if (!isset($sessionAmazonData['BT'])) {
 			$sessionAmazonData['BT'] = $cart->BT;
 			$sessionAmazonData['ST'] = $cart->ST;
-			$session->set('amazon', serialize($sessionAmazonData), 'vm');
+			$session->set('amazon', json_encode($sessionAmazonData), 'vm');
 		}
 
 	}
@@ -3054,7 +3051,7 @@ jQuery().ready(function($) {
 		$address['BT'] = NULL;
 		$address['ST'] = NULL;
 		if ($sessionAmazon) {
-			$sessionAmazonData = unserialize($sessionAmazon);
+			$sessionAmazonData =   json_decode($sessionAmazon, true);
 			if (isset($sessionAmazonData['BT']) OR ($sessionAmazonData['ST'])) {
 				$address['BT'] = $sessionAmazonData['BT'];
 				$address['ST'] = $sessionAmazonData['ST'];
@@ -3072,7 +3069,7 @@ jQuery().ready(function($) {
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
 
 		if ($sessionAmazon) {
-			$sessionAmazonData = unserialize($sessionAmazon);
+			$sessionAmazonData =  json_decode($sessionAmazon ,true);
 			if (isset($sessionAmazonData[$this->_currentMethod->virtuemart_paymentmethod_id])) {
 				return $sessionAmazonData[$this->_currentMethod->virtuemart_paymentmethod_id];
 			}
@@ -3101,7 +3098,7 @@ jQuery().ready(function($) {
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
 
 		if ($sessionAmazon) {
-			$sessionAmazonData = unserialize($sessionAmazon);
+			$sessionAmazonData =   json_decode($sessionAmazon ,true);
 			if (isset($sessionAmazonData[$this->_currentMethod->virtuemart_paymentmethod_id])) {
 				return $sessionAmazonData[$this->_currentMethod->virtuemart_paymentmethod_id]['_amazonOrderReferenceId'];
 			}
@@ -3118,12 +3115,17 @@ jQuery().ready(function($) {
 	private function setAmazonOrderReferenceIdInSession ($amazonOrderReferenceId, $isOnlyDigitalGoods) {
 		$session = JFactory::getSession();
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
-		$sessionAmazonData = unserialize($sessionAmazon);
+		if ($sessionAmazon) {
+			$sessionAmazonData =   json_decode($sessionAmazon, true );
+		} else {
+			$sessionAmazonData=array();
+		}
+
 
 		$sessionAmazonData['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
 		$sessionAmazonData[$this->_currentMethod->virtuemart_paymentmethod_id]['_amazonOrderReferenceId'] = $amazonOrderReferenceId;
 		$sessionAmazonData[$this->_currentMethod->virtuemart_paymentmethod_id]['isOnlyDigitalGoods'] = $isOnlyDigitalGoods;
-		$session->set('amazon', serialize($sessionAmazonData), 'vm');
+		$session->set('amazon', json_encode($sessionAmazonData), 'vm');
 
 	}
 
@@ -3212,6 +3214,7 @@ jQuery().ready(function($) {
 	 * @return bool
 	 */
 	private function isOnlyDigitalGoods ($cart) {
+		if (!$this->_currentMethod->digital_goods) return false;
 		$weight = $this->getOrderWeight($cart, 'GR');
 		if ($weight == 0) {
 			return true;
@@ -3226,6 +3229,8 @@ jQuery().ready(function($) {
 	 * @return bool
 	 */
 	private function isSomeDigitalGoods ($cart) {
+		if (!$this->_currentMethod->digital_goods) return false;
+
 		foreach ($cart->products as $product) {
 			if ($product->product_weight == 0) {
 				return true;
@@ -3254,7 +3259,7 @@ jQuery().ready(function($) {
 	private function isValidAmount ($amount) {
 		$this->_currentMethod->min_amount = (float)str_replace(',', '.', $this->_currentMethod->min_amount);
 		$this->_currentMethod->max_amount = (float)str_replace(',', '.', $this->_currentMethod->max_amount);
-		$amount_cond = ($amount >= $this->_currentMethod->min_amount AND $amount <= $this->_currentMethod->max_amount OR ($this->_currentMethod->min_amount <= $amount AND ($this->_currentMethod->max_amount == 0)));
+		$amount_cond = ($amount > 0 AND $amount >= $this->_currentMethod->min_amount AND $amount <= $this->_currentMethod->max_amount OR ($this->_currentMethod->min_amount <= $amount AND ($this->_currentMethod->max_amount == 0)));
 		if (!$amount_cond) {
 			vmdebug('AMAZON checkConditions $amount_cond false');
 			return false;
@@ -3293,7 +3298,7 @@ jQuery().ready(function($) {
 		$sessionAmazon = $session->get('amazon', 0, 'vm');
 
 		if ($sessionAmazon) {
-			$sessionAmazonData = unserialize($sessionAmazon);
+			$sessionAmazonData =  json_decode($sessionAmazon, true);
 
 			return $sessionAmazonData;
 		}

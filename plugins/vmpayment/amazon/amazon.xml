@@ -236,7 +236,10 @@
                description="VMPAYMENT_AMAZON_CONF_LANGUAGES_TIP"/ -->
         <param name="ip_whitelist" type="textarea" label="VMPAYMENT_AMAZON_CONF_IP_WHITELIST"
                description="VMPAYMENT_AMAZON_CONF_IP_WHITELIST_TIP"/>
-
+        <param name="digital_goods" type="radio" default="0" label="VMPAYMENT_AMAZON_CONF_DIGITAL_GOODS">
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+        </param>
         <!-- Template -->
         <!-- ============ -->
         <param type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_SECTION"
