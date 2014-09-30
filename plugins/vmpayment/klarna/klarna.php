@@ -15,6 +15,9 @@ defined ('_JEXEC') or die();
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
+if (!class_exists('VmConfig')) {
+	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+}
 if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
