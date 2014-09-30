@@ -1038,7 +1038,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	private static function _setSofortIdealIntoSession ($data) {
 
 		$session = JFactory::getSession();
-		$session->set('SofortIdeal', serialize($data), 'vm');
+		$session->set('SofortIdeal', json_encode($data), 'vm');
 	}
 
 	private static function _getSofortIdealFromSession () {
@@ -1049,7 +1049,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			//return self::getEmptyPaymentParams ();
 			return NULL;
 		}
-		return unserialize($data);
+		return   json_decode($data);
 	}
 
 	private static function   getSuccessUrl ($order) {

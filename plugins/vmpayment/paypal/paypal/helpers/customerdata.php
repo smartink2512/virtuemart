@@ -49,17 +49,19 @@ class PaypalHelperCustomerData {
 	public function load() {
 
 		//$this->clear();
-
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
 		$session = JFactory::getSession();
 		$sessionData = $session->get('paypal', 0, 'vm');
 
 		if (!empty($sessionData)) {
-			$data = unserialize($sessionData);
+			$data =   (object)json_decode($sessionData, true);
 			$this->_selected_method = $data->selected_method;
 			// card information
 			$this->_cc_type = $data->cc_type;
-			$this->_cc_number = $data->cc_number;
-			$this->_cc_cvv = $data->cc_cvv;
+			$this->_cc_number = vmCrypt::decrypt( $data->cc_number);
+			$this->_cc_cvv = vmCrypt::decrypt($data->cc_cvv);
 			$this->_cc_expire_month = $data->cc_expire_month;
 			$this->_cc_expire_year = $data->cc_expire_year;
 			$this->_cc_valid = $data->cc_valid;
@@ -83,7 +85,9 @@ class PaypalHelperCustomerData {
 	}
 
 	public function loadPost() {
-
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
 		// card information
 		$virtuemart_paymentmethod_id = vRequest::getVar('virtuemart_paymentmethod_id', 0);
 		//if ($virtuemart_paymentmethod_id) {
@@ -140,13 +144,16 @@ class PaypalHelperCustomerData {
 	}
 
 	public function save() {
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
 		$session = JFactory::getSession();
 		$sessionData = new stdClass();
 		$sessionData->selected_method = $this->_selected_method;
 		// card information
 		$sessionData->cc_type = $this->_cc_type;
-		$sessionData->cc_number = $this->_cc_number;
-		$sessionData->cc_cvv = $this->_cc_cvv;
+		$sessionData->cc_number = vmCrypt::encrypt($this->_cc_number);
+		$sessionData->cc_cvv =vmCrypt::encrypt( $this->_cc_cvv);
 		$sessionData->cc_expire_month = $this->_cc_expire_month;
 		$sessionData->cc_expire_year = $this->_cc_expire_year;
 		$sessionData->cc_valid = $this->_cc_valid;
@@ -164,7 +171,7 @@ class PaypalHelperCustomerData {
 //		$sessionData->payment_status = $this->_payment_status;
 //		$sessionData->pending_reason = $this->_pending_reason;
 
-		$session->set('paypal', serialize($sessionData), 'vm');
+		$session->set('paypal', json_encode($sessionData), 'vm');
 	}
 
 	public function reset() {

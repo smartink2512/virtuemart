@@ -46,7 +46,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	function __construct (& $subject, $config) {
 		parent::__construct($subject, $config);
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
+			require(JPATH_SITE . DS.'plugins'.DS.'vmpayment'.DS.'realex_hpp_api'.DS.'realex_hpp_api'.DS.'helpers'.DS.'customerdata.php');
 		}
 		$this->customerData = new RealexHelperCustomerData();
 		$this->_loggable = TRUE;

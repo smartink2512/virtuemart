@@ -52,7 +52,7 @@ class RealexHelperCustomerData {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		if (!empty($sessionData)) {
-			$data = unserialize($sessionData);
+			$data =   (object)json_decode($sessionData, true);
 			$this->_saved_cc_selected = $data->saved_cc_selected;
 			$this->_save_card = $data->save_card;
 			$this->_selected_method = $data->selected_method;
@@ -181,7 +181,7 @@ class RealexHelperCustomerData {
 		$sessionData->cc_cvv_realvault = $this->_cc_cvv_realvault;
 		$sessionData->cc_type = $this->_cc_type;
 		// card information should not be saved  in session
-		$session->set(self::REALEX_SESSION, serialize($sessionData), 'vm');
+		$session->set(self::REALEX_SESSION, json_encode($sessionData), 'vm');
 	}
 
 

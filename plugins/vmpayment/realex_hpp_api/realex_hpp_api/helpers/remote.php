@@ -117,12 +117,12 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		$cc_valid = false;
 	}
 
-	if (!Creditcard::validate_credit_card_cvv($cc_type, $cc_cvv, true, $cc_number)) {
+	if ($this->_method->cvn_checking AND !Creditcard::validate_credit_card_cvv($cc_type, $cc_cvv, true, $cc_number)) {
 		$errormessages[] = 'VMPAYMENT_REALEX_HPP_API_CC_CARD_CVV_INVALID';
 		$cc_valid = false;
 	}
 	if (!Creditcard::validate_credit_card_date($cc_type, $cc_expire_month, $cc_expire_year)) {
-		$errormessages[] = 'VMPAYMENT_REALEX_HPP_API_CC_CARD_DATE_INVALID';
+		$errormessages[] = 'VMPAYMENT_REALEX_HPP_API_CC_CARD_EXPIRATION_DATE_INVALID';
 		$cc_valid = false;
 	}
 	if (empty($cc_name)) {

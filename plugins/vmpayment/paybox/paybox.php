@@ -92,7 +92,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 			//Numéro de TranSaction Paybox
 
 
-			'paybox_fullresponse' => 'text'
+			'paybox_fullresponse' => 'text',
 		);
 		return $SQLfields;
 	}
