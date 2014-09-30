@@ -946,7 +946,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
 
-	public function plgVmOnUpda_setSofortIdealIntoSession_setSofortIdealIntoSession_setSofortIdealIntoSessionteOrderPayment(  $_formData) {
+	public function plgVmOnUpdateOrderPayment(  $_formData) {
 	return null;
 	}
 	 */
