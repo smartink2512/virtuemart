@@ -65,7 +65,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if (method_exists($this, 'setCryptedFields')) {
 			$this->setCryptedFields(array('accessKey', 'secretKey'));
 		}
-		$amazon_library = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' . DS . 'PaywithAmazonSDK-php-1.0.7_UK' . DS . 'src';
+		$amazon_library = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' ;
 
 
 		//set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) . "/../../."));
@@ -446,6 +446,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				}
 				$cart = VirtueMartCart::getCart(false);
 				$this->saveAmazonOrderReferenceId($cart);
+				$this->saveBTandSTInSession($cart);
 				$this->setCartLayout($cart, false);
 				$this->updateCartWithDefaultAmazonAddress($cart, $this->isOnlyDigitalGoods($cart));
 				$this->redirectToCart();
@@ -987,19 +988,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$success = true;
 		$html = $this->renderByLayout('response', array(
 			"success"            => $success,
-			"amazonOrderId"      => $amazonAuthorizationId,
+			"amazonOrderId"      => $this->getAmazonOrderReferenceIdFromSession(),
 			"order"              => $order,
 			'include_amazon_css' => $this->_currentMethod->include_amazon_css,
 		));
 
 
 		$this->leaveAmazonCheckout();
-		//$this->removeAmazonAddressFromCart($cart);
-		//$this->clearAmazonSession();
-		//$cart = VirtueMartCart::getCart();
-		// TODO: Shall we remove the address or take back the old one?
-		$cart->BT = 0;;
-		$cart->ST = 0;;
 		$cart->emptyCart();
 		return $html;
 
@@ -1023,11 +1018,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$db_values['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
 		$db_values['payment_order_total'] = $this->_amount;
 		$db_values['payment_currency'] = $order['details']['BT']->user_currency_id;
-		$db_values['amazon_request'] = $request ? serialize($request) : "";
+		//$db_values['amazon_request'] = $request ? serialize($request) : "";
 		$db_values['amazon_request_type'] = $request ? get_class($request) : '';
-		$db_values['amazon_response'] = $response ? serialize($response) : "";
+		//$db_values['amazon_response'] = $response ? serialize($response) : "";
 		$db_values['amazon_class_response_type'] = $response ? get_class($response) : '';
-		$db_values['amazon_notification'] = $notification ? serialize($notification) : "";
+		//$db_values['amazon_notification'] = $notification ? serialize($notification) : "";
 		$db_values['amazon_class_notification_type'] = $notification ? get_class($notification) : '';
 		$db_values['amazonOrderReferenceId'] = $amazonOrderReferenceId ? $amazonOrderReferenceId : '';
 		//$db_values['payment_params'] = $this->_currentMethod;
@@ -2202,17 +2197,15 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 				if (!empty($payment->amazon_response)) {
 
-					$amazon_data = unserialize($payment->amazon_response);
-					$amazon_classes[get_class($amazon_data)] = $payment->amazon_response;
-					$response_class = get_class($amazon_data);
+					$amazon_classes[$payment->amazon_class_response_type] = $payment->amazon_response;
+					$response_class = $payment->amazon_class_response_type;
 					$pos = strrpos($response_class, '_');
 					$vmClass = substr($response_class, $pos + 1);
 					$html .= $this->getHtmlRowBE(vmText::_('VMPAYMENT_AMAZON_RESPONSE_TYPE'), vmText::_('VMPAYMENT_AMAZON_RESPONSE_TYPE_' . $vmClass));
 				}
 				if (!empty($payment->amazon_notification)) {
-					$amazon_data = unserialize($payment->amazon_notification);
-					$amazon_classes[get_class($amazon_data)] = $payment->amazon_notification;
-					$notification_class = get_class($amazon_data);
+					$amazon_classes[ $payment->amazon_class_notification_type] = $payment->amazon_notification;
+					$notification_class = $payment->amazon_class_notification_type;
 					$pos = strrpos($notification_class, '_');
 					$vmClass = substr($notification_class, $pos + 1);
 					$html .= $this->getHtmlRowBE(vmText::_('VMPAYMENT_AMAZON_NOTIFICATION_TYPE'), vmText::_('VMPAYMENT_AMAZON_NOTIFICATION_TYPE_' . $vmClass));
@@ -2228,17 +2221,26 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 					}
 				}
 
-
-				foreach ($amazon_classes as $amazon_class => $amazon_data_serialized) {
-					$this->loadAmazonClass($amazon_class);
+/*
+				foreach ($amazon_classes as $amazon_class => $amazon_data_serialize) {
 					$vmClassName = 'amazonHelper' . $vmClass;
-					$amazon_data = unserialize($amazon_data_serialized);
+					vmdebug('LOAD',$amazon_class, $vmClassName  );
+
+					$this->loadAmazonClass($amazon_class);
 					$this->loadHelperClass($vmClassName);
+					$amazon_data = unserialize($amazon_data_serialize);
+vmdebug('LOOP',$amazon_data, $amazon_class, $vmClass, $vmClassName,'NOTHING' );
 					$html .= '<tr><td>';
 					if (class_exists($vmClassName)) {
-						$obj = new $vmClassName($amazon_data, $this->_currentMethod);
-						$contents = $obj->getContents();
+						$amazonObject= new $amazon_class();
+						//vmdebug('class + obkect',$amazon_class, $myObject );
 
+						  VmTable::bindTo($amazonObject,$amazon_data, true);
+						vmdebug('AMAZON BINDTO',$amazonObject, $amazon_data );
+
+						$vmObject = new $vmClassName($amazonObject, $this->_currentMethod);
+						$contents = $vmObject->getContents();
+vmdebug('VMOBEJCT',$vmObject, $contents );
 						if (!empty($contents)) {
 							$html .= '<a href="#" class="amazonDetailsOpener"   rel="' . $payment->id . '">';
 							//$html .= '<div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="amazonDetails_' . $payment->id . '">';
@@ -2274,11 +2276,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 //}
 
 				}
-
+*/
 			}
 		}
 
-
+/*
 		$doc = JFactory::getDocument();
 		$js = "
 jQuery().ready(function($) {
@@ -2294,7 +2296,7 @@ jQuery().ready(function($) {
 	});
 });";
 		$doc->addScriptDeclaration($js);
-
+*/
 		return $html;
 	}
 
@@ -2763,8 +2765,7 @@ jQuery().ready(function($) {
 
 		$this->loadVmClass('VirtueMartCart', JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
-		// this should be done only the first time.
-		$this->saveBTandSTInSession($cart);
+
 		$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
 		if (empty($this->_amazonOrderReferenceId)) {
 			//vmError('VMPAYMENT_AMAZON_LOGIN');
@@ -2966,7 +2967,7 @@ jQuery().ready(function($) {
 	private function getAmazonOrderReferenceIdFromPayments ($payments) {
 		foreach ($payments as $payment) {
 			if ($payment->amazon_request_type == 'OffAmazonPaymentsService_Model_ConfirmOrderReferenceRequest') {
-				$amazon_request =   (object)json_decode($payment->amazon_request, true);
+				$amazon_request = unserialize($payment->amazon_request);
 				return $amazon_request->AmazonOrderReferenceId;
 
 			}
@@ -3406,7 +3407,7 @@ jQuery().ready(function($) {
 
 	function loadAmazonClass ($className) {
 		if (!class_exists($className)) {
-			$filePath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' . DS . 'PaywithAmazonSDK-php-1.0.7_UK' . DS . 'src' . DS . str_replace('_', DS, $className) . '.php';
+			$filePath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' . DS . str_replace('_', DS, $className) . '.php';
 			if (file_exists($filePath)) {
 				require $filePath;
 				return;
