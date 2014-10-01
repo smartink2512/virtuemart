@@ -212,8 +212,7 @@
 
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart plg_vmpayment_klarna Update Site">
-            <![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_klarna_update.xml]]></server>
+        <server type="extension" name="VirtueMart plg_vmpayment_klarna Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_klarna_update.xml]]></server>
     </updateservers>
 
 </extension>

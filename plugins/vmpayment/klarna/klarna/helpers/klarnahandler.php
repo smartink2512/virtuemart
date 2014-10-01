@@ -406,12 +406,14 @@ class KlarnaHandler {
 		}
 		$session = JFactory::getSession();
 		$sessionKlarna = $session->get('Klarna', 0, 'vm');
-		$sessionKlarnaData = unserialize($sessionKlarna);
+		$sessionKlarnaData = (object)json_decode($sessionKlarna,true );
+
 		if (!isset($sessionKlarnaData)) {
 			throw new Exception("No klarna Session data set");
 		}
 		$klarnaData = $sessionKlarnaData->KLARNA_DATA;
-
+		// let's put it back as an array
+		$klarnaData=(array)$klarnaData;
 		if (VMKLARNA_SHIPTO_SAME_AS_BILLTO) {
 			$shipTo = $order['details']['BT'];
 		} else {
@@ -715,7 +717,7 @@ class KlarnaHandler {
 		$session = JFactory::getSession();
 		$sessionKlarna = new stdClass();
 		$sessionKlarna->klarna_error = addslashes($message);
-		$session->set('Klarna', serialize($sessionKlarna), 'vm');
+		$session->set('Klarna', json_encode($sessionKlarna), 'vm');
 		if (isset($_SESSION['klarna_paymentmethod'])) {
 			$pid = $_SESSION['klarna_paymentmethod'];
 			unset($_SESSION['klarna_paymentmethod']);
@@ -1048,7 +1050,8 @@ class KlarnaHandler {
 		if (empty($sessionKlarna)) {
 			return FALSE;
 		}
-		$sessionKlarnaData = unserialize($sessionKlarna);
+		$sessionKlarnaData = json_decode($sessionKlarna );
+
 		if (isset($sessionKlarnaData->klarna_error) and isset($sessionKlarnaData->klarna_paymentmethod)) {
 			$klarnaError = $sessionKlarnaData->klarna_error; // it is a message to display
 			$klarnaOption = $sessionKlarnaData->klarna_paymentmethod;
@@ -1067,11 +1070,11 @@ class KlarnaHandler {
 		if (empty($sessionKlarna)) {
 			$sessionKlarnaData = new stdClass();
 		} else {
-			$sessionKlarnaData = unserialize($sessionKlarna);
+			$sessionKlarnaData =(object) json_decode($sessionKlarna, true );
 		}
 		$sessionKlarnaData->klarna_error = $msg;
 		//$sessionKlarnaData->klarna_option = $option;
-		$session->set('Klarna', serialize($sessionKlarnaData), 'vm');
+		$session->set('Klarna', json_encode($sessionKlarnaData), 'vm');
 	}
 
 	/**
@@ -1082,11 +1085,11 @@ class KlarnaHandler {
 		$session = JFactory::getSession();
 		$sessionKlarna = $session->get('Klarna', 0, 'vm');
 		if ($sessionKlarna) {
-			$sessionKlarnaData = unserialize($sessionKlarna);
+			$sessionKlarnaData = json_decode($sessionKlarna );
 			if (isset($sessionKlarnaData->klarna_error)) {
 				unset($sessionKlarnaData->klarna_error);
 				//unset($sessionKlarnaData->klarna_option);
-				$session->set('Klarna', serialize($sessionKlarnaData), 'vm');
+				$session->set('Klarna', json_encode($sessionKlarnaData), 'vm');
 			}
 		}
 	}
