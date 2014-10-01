@@ -48,7 +48,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</th>
 				<?php } ?>
-					  <th><?php echo $this->sort('virtuemart_shoppergroup_id', 'COM_VIRTUEMART_ID')  ?></th>
+					  <th><?php echo JText::_('COM_VIRTUEMART_ID')  ?></th>
 
 		    </tr>
 	    </thead><?php

@@ -41,7 +41,6 @@ class VirtuemartControllerShopperGroup extends VmController
 	 */
 	function __construct() {
 		parent::__construct('virtuemart_shoppergroup_id');
-		$this->registerTask( 'default','makeDefault' );
 	}
 
 	function makeDefault() {

@@ -42,7 +42,7 @@ class VmView extends JView{
 		$this->continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryStr.$ItemidStr, FALSE);
 
 		//$this->continue_link_html = '<a class="continue_link" href="' . $continue_link . '" ><span>' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</span></a>';
-		$this->continue_link_html = '<a href="' . $this->continue_link . '" />' . JText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+		$this->continue_link_html = '<a class="continue continue_link" href="' . $this->continue_link . '" />' . JText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 
 		$this->cart_link = JRoute::_('index.php?option=com_virtuemart&view=cart'.$ItemidStr, FALSE);
 
