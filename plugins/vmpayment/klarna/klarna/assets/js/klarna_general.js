@@ -905,9 +905,9 @@ AddressCollection.prototype.render = function (to, inputName) {
 			//$.post(action,fields);
 			var selectedTable= vmmethod.parents('table');
 			var fields = selectedTable.find('*').serializeArray();
-			fields.push({"name":"task","value":"setpayment"});
-			fields.push({"name":"view","value":"cart"});
-			fields.push({"name":"klarna_paymentmethod","value":vmmethod.next('input').val()});
+			//fields.push({"name":"task","value":"setpayment"});
+			//fields.push({"name":"view","value":"cart"});
+			//fields.push({"name":"klarna_paymentmethod","value":vmmethod.next('input').val()});
 			var form = $('<form></form>');
 			form.attr("method", "post");
 			form.attr("action", action);

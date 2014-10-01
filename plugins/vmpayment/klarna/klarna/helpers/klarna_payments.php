@@ -106,6 +106,9 @@ class klarna_payments {
 	 */
 	private function setPreviouslyFilledIn ($klarna_data) {
 
+		if (is_object($klarna_data)) {
+			$klarna_data=(array)$klarna_data;
+		}
 		if (($this->country == "nl" ) && isset($klarna_data['pno'])) {
 			$pno = $klarna_data['pno'];
 			$this->birth_year = $klarna_data['birth_year'];
@@ -238,9 +241,9 @@ class klarna_payments {
 		$sessionKlarna = $session->get ('Klarna', 0, 'vm');
 
 		if (!empty($sessionKlarna)) {
-			$sessionKlarnaData = unserialize ($sessionKlarna);
+			$sessionKlarnaData = (object)  json_decode($sessionKlarna ,true);
 			if (isset($sessionKlarnaData->KLARNA_DATA)) {
-				$klarnaData = $sessionKlarnaData->KLARNA_DATA;
+				$klarnaData = (array)$sessionKlarnaData->KLARNA_DATA;
 				$this->setPreviouslyFilledIn ($klarnaData);
 			}
 		}

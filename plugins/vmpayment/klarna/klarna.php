@@ -456,7 +456,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$session = JFactory::getSession ();
 		$sessionKlarna = $session->get ('Klarna', 0, 'vm');
 		if ($sessionKlarna) {
-			$sessionKlarnaData = unserialize ($sessionKlarna);
+			$sessionKlarnaData = (object) json_decode ($sessionKlarna ,true);
+			$sessionKlarnaData->KLARNA_DATA=(array)$sessionKlarnaData->KLARNA_DATA;
 			return $sessionKlarnaData;
 		}
 		return NULL;
@@ -786,6 +787,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param $name
 	 * @param $render
 	 */
+	/*
 	function plgVmOnSelfCallFE ($type, $name, &$render) {
 		if ($name != $this->_name || $type != 'vmpayment') {
             return FALSE;
@@ -837,7 +839,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		echo $SelfCall->$action();
 		jexit ();
 	}
-
+*/
 	/**
 	 * @param $type
 	 * @param $name
@@ -1403,7 +1405,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		if ($msg = KlarnaHandler::checkDataFromEditPayment ($klarnaData, $cData['country_code_3'])) {
 			//vmInfo($msg); // meanwhile the red baloon works
-			$session->set ('Klarna', serialize ($sessionKlarna), 'vm');
+			$session->set ('Klarna', json_encode ($sessionKlarna), 'vm');
 			return FALSE;
 		}
 
@@ -1420,7 +1422,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			if (empty($swedish_addresses)) {
 				$msg = vmText::_ ('VMPAYMENT_KLARNA_ERROR_TITLE_2');
 				$msg .= vmText::_ ('VMPAYMENT_KLARNA_NO_GETADDRESS');
-				$session->set ('Klarna', serialize ($sessionKlarna), 'vm');
+				$session->set ('Klarna', json_encode ($sessionKlarna), 'vm');
 				return FALSE;
 			}
 			//This example only works for GA_GIVEN.
@@ -1493,7 +1495,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		//$klarnaData['pclass'] = ($klarnaData_paymentmethod == 'klarna_invoice' ? -1 : intval(vRequest::getVar($kIndex . "paymentPlan")));
 		$klarnaData['pclass'] = ($klarnaData_paymentmethod == 'klarna_invoice' ? -1 : intval (vRequest::getVar ("part_klarna_paymentPlan")));
 
-		$sessionKlarna->KLARNA_DATA = $klarnaData;
+		$sessionKlarna->KLARNA_DATA =(object) $klarnaData;
 
 		// 2 letters small
 		//$settings = KlarnaHandler::getCountryData($method, $cart_country2);
@@ -1530,9 +1532,26 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			return FALSE;
 			//KlarnaHandler::redirectPaymentMethod('error', $msg);
 		}
-		$session->set ('Klarna', serialize ($sessionKlarna), 'vm');
+		$session->set ('Klarna', json_encode ($sessionKlarna), 'vm');
 
 		return TRUE;
+	}
+	/**
+	 * This is for checking the input data of the payment method within the checkout
+	 *
+	 * @author Valerie Cartan Isaksen
+	 */
+	function plgVmOnCheckoutCheckDataPayment(VirtueMartCart $cart) {
+
+		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
+			return NULL; // Another method was selected, do nothing
+		}
+
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return FALSE;
+		}
+		return true;
+
 	}
 
 	/**
@@ -1698,7 +1717,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (empty($sessionKlarna)) {
 			return '';
 		}
-		$sessionKlarnaData = unserialize ($sessionKlarna);
+		$sessionKlarnaData = (object)json_decode ($sessionKlarna,true);
+		$sessionKlarnaData->KLARNA_DATA=(array)$sessionKlarnaData->KLARNA_DATA;
+
 		$address['virtuemart_country_id'] = $virtuemart_country_id;
 		$cData = KlarnaHandler::getcData ($method, $address);
 		$country2 = strtolower (shopFunctions::getCountryByID ($virtuemart_country_id, 'country_2_code'));
