@@ -54,17 +54,33 @@ class VirtuemartControllerProduct extends VmController {
 	 *
 	 * @author Max Milbers
 	 */
-	function save($data = 0){
+	function save(){
 
 		$data = vRequest::getRequest();
 
 		$user = JFactory::getUser();
-		if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 			$data['product_desc'] = vRequest::get('product_desc','');
 			$data['product_s_desc'] = vRequest::get('product_s_desc','');
 			$data['customtitle'] = vRequest::get('customtitle','');
+
+			if(isset($data['field'])){
+				$fields = vRequest::get('field');
+				foreach($data['field'] as $k=>&$field){
+					$field['customfield_value'] = $fields[$k]['customfield_value'];
+				}
+			}
 		} else  {
 			$data['product_desc'] = vRequest::getHtml('product_desc','');
+			$data['product_s_desc'] = vRequest::getHtml('product_s_desc','');
+			$data['customtitle'] = vRequest::getHtml('customtitle','');
+
+			if(isset($data['field'])){
+				$fields = vRequest::getHtml('field');
+				foreach($data['field'] as $k=>&$field){
+					$field['customfield_value'] = $fields[$k]['customfield_value'];
+				}
+			}
 
 			//Why we have this?
 			$multix = Vmconfig::get('multix','none');

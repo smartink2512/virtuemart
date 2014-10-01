@@ -67,22 +67,29 @@ $output = filter_var($testString,FILTER_SANITIZE_SPECIAL_CHARS);
 vmdebug('Filter test FILTER_SANITIZE_SPECIAL_CHARS ',$output);
 */
 
+$_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'));
+
+// check for permission Only vendor and Admin can use VM BE
+if($_controller!='updatesmigration' and !VmConfig::isSuperVendor()){
+	$app = JFactory::getApplication();
+	vmError( 'Access restricted to Vendor and Administrator only (you are admin and should not see this messsage?)','Access restricted to Vendors and Administrator only' );
+	$app->redirect('index.php');
+} else if($_controller=='updatesmigration'){
+	if(!Permissions::getInstance()->check('admin')){
+		$app = JFactory::getApplication();
+		vmError( 'Access restricted to Administrators only (you are admin and should not see this messsage?)','Access restricted to Vendors and Administrator only' );
+		$app->redirect('index.php');
+	}
+}
+
 VmConfig::loadJLang('com_virtuemart');
 
 vmJsApi::jQuery(0);
 vmJsApi::jSite();
 
-// check for permission Only vendor and Admin can use VM2 BE
-// this makes trouble somehow, we need to check if the perm object works not too strict maybe
-
-if(!VmConfig::isSuperVendor()){
-	$app = JFactory::getApplication();
-	vmError( 'Access restricted to Vendor and Administrator only (you are admin and should not see this messsage?)','Access restricted to Vendors and Administrator only' );
-	$app->redirect('index.php');
-}
 
 // Require specific controller if requested
-if($_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'))) {
+if($_controller) {
 	if (file_exists(VMPATH_ADMIN.DS.'controllers'.DS.$_controller.'.php')) {
 		// Only if the file exists, since it might be a Joomla view we're requesting...
 		require (VMPATH_ADMIN.DS.'controllers'.DS.$_controller.'.php');

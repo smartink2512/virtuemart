@@ -163,12 +163,9 @@ class VirtueMartViewAskquestion extends VmView {
 			$fromName = vRequest::getVar ('name', ''); //is sanitized then
 			$fromMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromMail);
 			$fromName = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $fromName);
-		} else {
-			$fromMail = $this->user->email;
-			$fromName = $this->user->name;
+			$this->user->email = $fromMail;
+			$this->user->name = $fromName;
 		}
-
-		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
 		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', 0);
 

@@ -56,7 +56,7 @@ class vmJsApi{
 
 		$html = '';
 		//vmdebug('writeJS',self::$_jsAdd);
-		foreach(self::$_jsAdd as $name => $jsToAdd){
+		foreach(self::$_jsAdd as $name => &$jsToAdd){
 			//vmdebug('writeJS',$name,$jsToAdd);
 			if($jsToAdd['written']) continue;
 			if(!$jsToAdd['script'] or strpos($jsToAdd['script'],'/')===0 and strpos($jsToAdd['script'],'//<![CDATA[')!==0){ //strpos($script,'/')===0){

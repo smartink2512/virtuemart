@@ -54,32 +54,27 @@ if($this->showproducts){
 <div class="browse-view">
 <?php
 
-if (!empty($this->keyword)) {
-	?>
-<h3><?php echo $this->keyword; ?></h3>
-	<?php
-} ?>
-<?php // if (!empty($this->keyword)) {
+if (!empty($this->keyword)) {?>
+	<h3><?php echo $this->keyword; ?></h3>
 
-	//$category_id  = vRequest::getInt ('virtuemart_category_id', 0); ?>
-<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
+	<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 
-	<!--BEGIN Search Box -->
-	<div class="virtuemart_search">
-		<?php echo $this->searchcustom ?>
-		<br/>
-		<?php echo $this->searchCustomValues ?>
-		<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
-		<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
-	</div>
-	<input type="hidden" name="search" value="true"/>
-	<input type="hidden" name="view" value="category"/>
-	<input type="hidden" name="option" value="com_virtuemart"/>
-	<input type="hidden" name="virtuemart_category_id" value="<?php echo $this->categoryId; ?>"/>
+		<!--BEGIN Search Box -->
+		<div class="virtuemart_search">
+			<?php echo $this->searchcustom ?>
+			<br/>
+			<?php echo $this->searchCustomValues ?>
+			<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
+			<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+		</div>
+		<input type="hidden" name="search" value="true"/>
+		<input type="hidden" name="view" value="category"/>
+		<input type="hidden" name="option" value="com_virtuemart"/>
+		<input type="hidden" name="virtuemart_category_id" value="<?php echo $this->categoryId; ?>"/>
 
-</form>
-<!-- End Search Box -->
-	<?php // } ?>
+	</form>
+	<!-- End Search Box -->
+<?php  } ?>
 
 <?php // Show child categories
 

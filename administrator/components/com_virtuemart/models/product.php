@@ -2136,7 +2136,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		//if (empty($product->customfields) and !empty($product->virtuemart_customfield_id)) {
-		if (empty($product->customfields)) {
+		if (empty($product->customfields) and !empty($product->allIds)) {
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
 		}

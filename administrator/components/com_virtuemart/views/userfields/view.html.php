@@ -56,23 +56,19 @@ class VirtuemartViewUserfields extends VmView {
             $this->SetViewTitle('USERFIELD',$this->userField->name );
             $this->assignRef('viewName',$viewName);
 			$userFieldPlugin = '';
+
+			if (!class_exists('ShopFunctions'))
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+			$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$this->userField->virtuemart_userfield_id);
+
 			if ($this->userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
-				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
+				//$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = '';
 				$lists['type'] = JHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $this->userField->type);
 			} else { // Update existing userfield
 				// Ordering dropdown
-				/*$qry = 'SELECT ordering AS value, name AS text'
-					. ' FROM #__virtuemart_userfields'
-					. ' ORDER BY ordering';
-				$ordering = JHtml::_('list.specificordering',  $userField, $userField->virtuemart_userfield_id, $qry);
-				$this->assignRef('ordering', $ordering);*/
-
-				if (!class_exists('ShopFunctions'))
-					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-				$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$this->userField->virtuemart_userfield_id);
 
 				$userFieldValues = $model->getUserfieldValues();
 
@@ -137,7 +133,8 @@ class VirtuemartViewUserfields extends VmView {
 						.'</tr>';
 				}
 			}
-			$this->assignRef('valueCount', --$i);
+			$this->valueCount = --$i;
+			//$this->assignRef('valueCount', --$i);
 
 			$userFieldTable = $model->getTable();
 			$this->existingFields =  '"'.implode('","',$userFieldTable->showFullColumns(0,'Field')).'"';
