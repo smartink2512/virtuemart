@@ -348,9 +348,15 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	function plgVmOnCheckoutCheckDataPayment (VirtueMartCart $cart)
 	{
 
+
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
 		}
+
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return FALSE;
+		}
+
 		$this->_getAuthorizeNetFromSession();
         return $this->_validate_creditcard_data(TRUE);
 

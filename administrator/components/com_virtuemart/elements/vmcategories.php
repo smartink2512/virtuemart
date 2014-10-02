@@ -40,7 +40,6 @@ class VmElementVmCategories extends VmElements {
 	    VmConfig::loadJLang('com_virtuemart', false);
 
 
-
         $categorylist = ShopFunctions::categoryListTree(array($this->value));
 
         $html = '<select class="inputbox "   name="' . $this->name . '" >';
