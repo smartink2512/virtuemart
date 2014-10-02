@@ -1822,7 +1822,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 	}
 
+	private function cancelPayment ($payments, $order) {
 
+	}
 	private function capturePayment ($payments, $order) {
 		$amazonAuthorizationId = $this->getAmazonAuthorizationId($payments);
 

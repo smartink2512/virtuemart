@@ -21,7 +21,6 @@
 
         <param type="spacer" default="" level="level1"/>
 
-        <param type="customjs" default=""/>
         <param class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_BASIC_PARAMS"/>
 
         <param name="paypalproduct" type="list" default="std" label="VMPAYMENT_PAYPAL_PRODUCTS"

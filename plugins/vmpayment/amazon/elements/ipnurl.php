@@ -42,9 +42,9 @@ class JElementIpnURL extends JElement {
 			$virtuemart_paymentmethod_id = $cid;
 		}
 
-		$http = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
+		$http = JURI::root() . 'index.php?option=com_virtuemart&view=plg&task=notify&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
 
-		$https = str_replace('http', 'https', $http);
+		$https = str_replace('http://', 'https://', $http);
 
 		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : 'class="text_area"');
 		if ($node->attributes('editable') == 'true') {
@@ -54,9 +54,12 @@ class JElementIpnURL extends JElement {
 		} else {
 			$string = "<div " . $class . ">";
 			$string .= '<div class="ipn-sandbox">' . $http . ' <br /></div>';
-			$string .= '<div class="ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></div>';
-			$string .= $https;
-			$string .= "</div>";
+			if (strcmp($https,$http) !==0){
+				$string .= '<div class="ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></div>';
+				$string .= $https;
+				$string .= "</div>";
+			}
+
 			return $string;
 		}
 	}

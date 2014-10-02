@@ -4,7 +4,7 @@
  * Realex payment plugin
  *
  * @author Valerie Isaksen
- * @version $Id: getrealex.php 8206 2014-08-14 13:52:35Z alatak $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
  * ${PHING.VM.COPYRIGHT}
@@ -36,6 +36,11 @@ class JElementGetPaypal extends JElement {
 
 	function fetchElement ($name, $value, &$node, $control_name) {
 
+		JHtml::_('behavior.colorpicker');
+
+		$doc = JFactory::getDocument();
+		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
 
 		$url = "https://www.paypal.com/us/webapps/mpp/referral/paypal-payments-standard?partner_id=83EP5DJG9FU6L";
 		$logo = '<img src="https://www.paypalobjects.com/webstatic/en_US/logo/pp_cc_mark_111x69.png" />';

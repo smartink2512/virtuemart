@@ -82,6 +82,10 @@ if(VmConfig::get('shop_is_offline',0)){
 	}
 }
 
+// controller alias
+if ($_controller=='plg') {
+	$_controller='pluginresponse';
+}
 /* Create the controller name */
 $_class = 'VirtuemartController'.ucfirst($_controller);
 

@@ -173,7 +173,17 @@ class VirtueMartControllerPluginresponse extends JController {
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array());
 
     }
+	/**
+	 * Alias for task=pluginNotification
+	 *
+	 * @author Valerie Isaksen
+	 * @return success of update
+	 */
+	function notify() {
 
+		$this->pluginNotification();
+
+	}
 }
 
 //pure php no Tag
