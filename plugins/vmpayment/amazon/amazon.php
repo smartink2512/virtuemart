@@ -1746,6 +1746,15 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return bool
 	 */
 
+	private function canDoCancel ($payments, $order) {
+		// todo
+		return true;
+	}
+	/**
+	 * @param $payments
+	 * @return bool
+	 */
+
 	private function canDoRefund ($payments, $order) {
 		$captureState = $this->getCaptureState($payments, $order);
 		if ($captureState === false) {
