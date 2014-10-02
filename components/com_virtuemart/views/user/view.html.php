@@ -418,6 +418,8 @@ class VirtuemartViewUser extends VmView {
 	$useXHTML = true;
 	$this->assignRef('useSSL', $useSSL);
 	$this->assignRef('useXHTML', $useXHTML);
+
+	$this->user = JFactory::getUser();
 	$userFieldsModel = VmModel::getModel('UserFields');
 	$userFields = $userFieldsModel->getUserFields();
 	$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user);

@@ -621,7 +621,7 @@ abstract class vmPlugin extends JPlugin {
 	 *  Note: We have 2 subfolders for versions > J15 for 3rd parties developers, to avoid 2 installers
 	 * Note: from Version 2.12: it is possible to have the tmpl folder directly in $pluginName folder
 	 *
-	 * @author Patrick Kohl, Valérie Isaksen
+	 * @author Valérie Isaksen, Max Milbers
 	 */
 	private function _getLayoutPath ($pluginName, $group, $layout = 'default') {
 		$layoutPath=$templatePathWithGroup=$defaultPathWithGroup='';

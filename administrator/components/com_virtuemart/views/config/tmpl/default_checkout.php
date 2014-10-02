@@ -243,7 +243,7 @@ $document->addScriptDeclaration($js);
 			</td>
 		</tr>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_ATTACH','attach', VmConfig::get('attach',''));
-		$this->os_Options = $orderStatusModel->getOrderStatusNames();
+		$this->os_Options = $this->orderStatusModel->getOrderStatusNames();
 		$emptyOption = JHtml::_ ('select.option', -1, vmText::_ ('COM_VIRTUEMART_NONE'), 'order_status_code', 'order_status_name');
 		array_unshift ($this->os_Options, $emptyOption);
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_ATTACH_OS',$this->os_Options,'attach_os[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('attach_os',array('U','C','R','X')), 'attach_os',true);

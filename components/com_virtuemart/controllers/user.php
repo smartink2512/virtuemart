@@ -62,6 +62,20 @@ class VirtueMartControllerUser extends JController
 
 	}
 
+	function renderMail(){
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$viewName = JRequest::getCmd('view', $this->default_view);
+		$viewLayout = JRequest::getCmd('layout', 'default');
+
+		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view->assignRef('document', $document);
+
+		$view->renderMailLayout(false,JFactory::getUser()->email);
+
+		return $this;
+	}
+
 	/**
 	 * deprecated
 	 */
