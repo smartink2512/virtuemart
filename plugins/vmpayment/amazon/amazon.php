@@ -59,7 +59,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 		$amazon_library = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' . DS . 'PaywithAmazonSDK-php-1.0.7_UK' . DS . 'src';
 
-		//set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) . "/../../."));
+		set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) . "/../../."));
 		set_include_path($amazon_library);
 
 		//require_once "OffAmazonPayments/.autoloader.php";
