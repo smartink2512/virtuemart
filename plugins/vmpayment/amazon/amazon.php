@@ -1704,16 +1704,16 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return null;
 		}
 		$orderModel = VmModel::getModel('orders');
-		$orderData = $orderModel->getOrder($order->virtuemart_order_id);
-		$this->_amount = $order['details']['BT']->order_total;
-		$this->_order_number = $this->getUniqueReferenceId($order['details']['BT']->order_number);
+		$orderModelData = $orderModel->getOrder($order->virtuemart_order_id);
+		$this->_amount = $orderModelData['details']['BT']->order_total;
+		$this->_order_number = $this->getUniqueReferenceId($orderModelData['details']['BT']->order_number);
 
-		if ($order->order_status == $this->_currentMethod->status_refunded and $this->canDoRefund($payments, $orderData)) {
-			return $this->refundPayment($payments, $orderData);
-		} elseif ($order->order_status == $this->_currentMethod->status_capture and $this->canDoCapture($payments, $orderData)) {
-			return $this->capturePayment($payments, $orderData);
-		} elseif ($order->order_status == $this->_currentMethod->status_cancel and $this->canDoCancel($payments, $orderData)) {
-			return $this->cancelPayment($orderData);
+		if ($order->order_status == $this->_currentMethod->status_refunded and $this->canDoRefund($payments, $orderModelData)) {
+			return $this->refundPayment($payments, $orderModelData);
+		} elseif ($order->order_status == $this->_currentMethod->status_capture and $this->canDoCapture($payments, $orderModelData)) {
+			return $this->capturePayment($payments, $orderModelData);
+		} elseif ($order->order_status == $this->_currentMethod->status_cancel and $this->canDoCancel($payments, $orderModelData)) {
+			return $this->cancelPayment($orderModelData);
 		}
 		$updateOrderPaymentNumber++;
 
