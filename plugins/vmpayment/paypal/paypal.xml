@@ -15,12 +15,9 @@
     <vmconfig>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/paypal/paypal/fields">
-                <field type="vmtitle" class="paypal_title" default="VMPAYMENT_PAYPAL_PAYMENT_TITLE"
-                       description="VMPAYMENT_PAYPAL_REGISTER_DESC"/>
+                <field type="getpaypal" default=""/>
 
-                <field type="paypaljs" default=""/>
                 <field class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_BASIC_PARAMS"/>
-
                 <field name="paypalproduct" type="list" default="std" label="VMPAYMENT_PAYPAL_PRODUCTS"
                        description="VMPAYMENT_PAYPAL_PRODUCTS_DESC">
                     <option value="std">VMPAYMENT_PAYPAL_PRODUCTS_STANDARD</option>

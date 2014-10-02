@@ -5,10 +5,10 @@
  * Controller for the Plugins Response
  *
  * @package	VirtueMart
- * @subpackage paymentResponse
+ * @subpackage pluginResponse
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - ${PHING.VM.YEAR} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -23,10 +23,10 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 /**
- * Controller for the payment response view
+ * Controller for the plugin response view
  *
  * @package VirtueMart
- * @subpackage paymentResponse
+ * @subpackage pluginresponse
  * @author Valérie Isaksen
  *
  */
@@ -38,7 +38,7 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
      * @access public
      */
     public function __construct() {
-	parent::__construct();
+		parent::__construct();
     }
 
     /**
@@ -57,8 +57,6 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
     /**
      * ResponseReceived()
      * From the payment page, the user returns to the shop. The order email is sent, and the cart emptied.
-     *
-     * @author Valerie Isaksen
      *
      */
     function PaymentResponseReceived() {
@@ -85,6 +83,9 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
 	$view->display();
     }
 
+	/**
+	 *
+	 */
     function ShipmentResponseReceived() {
 		// TODO: not ready yet
 
@@ -119,7 +120,6 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
      * From the payment page, the user has cancelled the order. The order previousy created is deleted.
      * The cart is not emptied, so the user can reorder if necessary.
      * then delete the order
-     * @author Valerie Isaksen
      *
      */
     function pluginUserPaymentCancel() {
@@ -154,7 +154,6 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
     /**
      * Attention this is the function which processs the response of the payment plugin
      *
-     * @author Valerie Isaksen
      * @return success of update
      */
     function pluginNotification() {
@@ -175,6 +174,17 @@ class VirtueMartControllerPluginresponse extends JControllerLegacy {
 
     }
 
+
+	/**
+	 * Alias for task=pluginNotification
+	 *
+	 * @return success of update
+	 */
+	function notify () {
+
+		$this->pluginNotification();
+
+	}
 }
 
 //pure php no Tag

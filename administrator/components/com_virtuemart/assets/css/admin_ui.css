@@ -201,4 +201,5 @@ ul.newsfeed li{font-size:120%;line-height:150%;margin:0;padding:0 0 0 25px}
 .virtuemart-admin-area input.ordering {
     max-width: 30px;
 }
-
+a.signin-button-link {margin: 5px  10px 5px 0;background: #F0F0F0;border: 1px solid #BDBDBD;padding:10px}
+a:hover.signin-button-link {text-decoration:none;background: #D7D7D7;}
