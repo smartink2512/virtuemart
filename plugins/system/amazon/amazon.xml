@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="plugin" version="1.5" method="upgrade" group="system">
+<extension version="2.5" type="plugin" group="system">
     <name>AMAZON</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
@@ -9,9 +9,10 @@
     <version>${PHING.VM.RELEASE}</version>
     <description>AMAZON system plugin</description>
     <files>
-    <filename plugin="amazon">amazon.php</filename>
-    <filename>index.html</filename>
-</files>
+        <filename plugin="amazon">amazon.php</filename>
+        <filename plugin="amazon">touch.php</filename>
+        <filename>index.html</filename>
+    </files>
 
     <config>
         <fields name="params" >
@@ -25,4 +26,8 @@
             </fieldset>
         </fields>
     </config>
-</install>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart plg_system_amazon Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_system_amazon_update.xml]]></server>
+    </updateservers>
+</extension>
