@@ -75,7 +75,8 @@ if($_controller!='updatesmigration' and !VmConfig::isSuperVendor()){
 	vmError( 'Access restricted to Vendor and Administrator only (you are admin and should not see this messsage?)','Access restricted to Vendors and Administrator only' );
 	$app->redirect('index.php');
 } else if($_controller=='updatesmigration'){
-	if(!Permissions::getInstance()->check('admin')){
+	$user = JFactory::getUser();
+	if(!$user->authorise('core.admin', 'com_virtuemart')){
 		$app = JFactory::getApplication();
 		vmError( 'Access restricted to Administrators only (you are admin and should not see this messsage?)','Access restricted to Vendors and Administrator only' );
 		$app->redirect('index.php');

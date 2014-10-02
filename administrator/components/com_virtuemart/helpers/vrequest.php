@@ -98,7 +98,11 @@ class vRequest {
 		$tmp = self::get($name, $default);
 		return JComponentHelper::filterText($tmp);
 	}
-	
+
+	public static function getEmail($name, $default = ''){
+		return self::get($name, $default, FILTER_VALIDATE_EMAIL,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
+	}
+
 	/**
 	 * Gets a filtered request value
 	 * - Strips all characters that has a numerical value <32 and >127.

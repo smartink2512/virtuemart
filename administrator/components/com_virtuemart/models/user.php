@@ -294,9 +294,9 @@ class VirtueMartModelUser extends VmModel {
 				$data['email'] = $email;
 			}
 		} else {
-			$data['email'] =  vRequest::getString('email', '');
+			$data['email'] =  vRequest::getEmail('email', '');
 		}
-		$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
+		//$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
 
 		//This is important, when a user changes his email address from the cart,
 		//that means using view user layout edit_address (which is called from the cart)
