@@ -627,28 +627,22 @@ abstract class vmPlugin extends JPlugin {
 		$layoutPath=$templatePathWithGroup=$defaultPathWithGroup='';
 		jimport ('joomla.filesystem.file');
 		// First search in the new system
-		$templatePath = JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication ()->getTemplate () . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
-		$defaultPath = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
+		$templatePath         = JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication ()->getTemplate () . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
+		$defaultPath          = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
+		$defaultPathWithGroup = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
+
 		if (JFile::exists ($templatePath)) {
 			$layoutPath= $templatePath;
 		} elseif (JFile::exists ($defaultPath)) {
 			$layoutPath= $defaultPath;
-		}
-		if (empty($layoutPath)) {
-			$templatePathWithGroup = JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
-			$defaultPathWithGroup = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
-
-			if (JFile::exists($templatePathWithGroup)) {
-				$layoutPath = $templatePathWithGroup;
-			} elseif (JFile::exists($defaultPathWithGroup)) {
-				$layoutPath = $defaultPathWithGroup;
-			}
+		}elseif (JFile::exists ($defaultPathWithGroup)) {
+			$layoutPath = $defaultPathWithGroup;
 		}
 		if (empty($layoutPath)) {
 			$warn='The layout: '. $layout. ' does not exist in:';
 			$warn.='<br />'. $templatePath.'<br />'.$defaultPath;
-			if (!empty($templatePathWithGroup) and (!empty($defaultPathWithGroup))) {
-				$warn.='<br />'. $templatePathWithGroup.'<br />'.$defaultPathWithGroup .'<br />';
+			if (!empty($templatePathWithGroup)) {
+				$warn.='<br />'.$defaultPathWithGroup .'<br />';
 			}
 			vmWarn($warn);
 			return false;
