@@ -16,7 +16,7 @@
         <folder>language</folder>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements"/>
-    <params addpath="/plugins/vmpayment/amazon/amazon/elements"/>
+    <params addpath="/plugins/vmpayment/amazon/elements"/>
     <params>
         <param type="vmcurl"/>
         <param class="level1" type="getamazon"/>

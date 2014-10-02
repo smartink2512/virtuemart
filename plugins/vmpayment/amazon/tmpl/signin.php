@@ -26,9 +26,9 @@ if (!$jsSILoaded) {
 
 	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" ><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\"></div></div>';
 
-	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/assets/js/amazon.js');
 	if ($viewData['include_amazon_css']) {
-		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/assets/css/amazon.css');
 	}
 	$renderAmazonAddressBook = $viewData['renderAmazonAddressBook'] ? 'true' : 'false';
 

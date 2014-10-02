@@ -75,6 +75,8 @@ $document->addScriptDeclaration("
 
 ");
 
+
+
 $document->addStyleDeclaration('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 ?>
@@ -152,7 +154,6 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 					if (!$this->cart->automaticSelectedShipment  and !$this->cart->_dataValidated) {
 						?>
 						<?php echo $this->loadTemplate('shipment'); ?>
-
 					<?php
 
 					}
@@ -192,7 +193,6 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 						if (VmConfig::get('oncheckout_show_legal_info', 1)) {
 							?>
 							<div class="terms-of-service">
-
 								<label for="tosAccepted">
 									<a href="<?php JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1', FALSE) ?>" class="terms-of-service" id="terms-of-service" rel="facebox"
 									   target="_blank"> <span class="vmicon vm2-termsofservice-icon"></span>
@@ -210,11 +210,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 					}
 					?>
 					<div id="amazon_checkout">
-						<div id="amazon_checkout_text">
-							<?php
-							echo Jtext::_('VMPAYMENT_AMAZON_CHECKOUT');
-							?>
-						</div>
+
 						<?php
 						echo $this->checkout_link_html;
 						?>

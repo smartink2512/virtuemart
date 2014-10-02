@@ -65,15 +65,15 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if (method_exists($this, 'setCryptedFields')) {
 			$this->setCryptedFields(array('accessKey', 'secretKey'));
 		}
-		$amazon_library = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' ;
+		$amazon_library = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'library' ;
 
 
 		//set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) . "/../../."));
 		set_include_path($amazon_library);
 		$this->loadAmazonClass('OffAmazonPaymentsService_Client');
 		if (!JFactory::getApplication()->isSite()) {
-			JFactory::getDocument()->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
-			JFactory::getDocument()->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon-admin.css');
+			JFactory::getDocument()->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/assets/js/admin.js');
+			JFactory::getDocument()->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/assets/css/amazon-admin.css');
 		}
 
 	}
@@ -1018,11 +1018,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$db_values['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
 		$db_values['payment_order_total'] = $this->_amount;
 		$db_values['payment_currency'] = $order['details']['BT']->user_currency_id;
-		//$db_values['amazon_request'] = $request ? serialize($request) : "";
+		$db_values['amazon_request'] = $request ? serialize($request) : "";
 		$db_values['amazon_request_type'] = $request ? get_class($request) : '';
-		//$db_values['amazon_response'] = $response ? serialize($response) : "";
+		$db_values['amazon_response'] = $response ? serialize($response) : "";
 		$db_values['amazon_class_response_type'] = $response ? get_class($response) : '';
-		//$db_values['amazon_notification'] = $notification ? serialize($notification) : "";
+		$db_values['amazon_notification'] = $notification ? serialize($notification) : "";
 		$db_values['amazon_class_notification_type'] = $notification ? get_class($notification) : '';
 		$db_values['amazonOrderReferenceId'] = $amazonOrderReferenceId ? $amazonOrderReferenceId : '';
 		//$db_values['payment_params'] = $this->_currentMethod;
@@ -2221,26 +2221,17 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 					}
 				}
 
-/*
-				foreach ($amazon_classes as $amazon_class => $amazon_data_serialize) {
-					$vmClassName = 'amazonHelper' . $vmClass;
-					vmdebug('LOAD',$amazon_class, $vmClassName  );
 
+				foreach ($amazon_classes as $amazon_class => $amazon_data_serialized) {
 					$this->loadAmazonClass($amazon_class);
+					$vmClassName = 'amazonHelper' . $vmClass;
+					$amazon_data = unserialize($amazon_data_serialized);
 					$this->loadHelperClass($vmClassName);
-					$amazon_data = unserialize($amazon_data_serialize);
-vmdebug('LOOP',$amazon_data, $amazon_class, $vmClass, $vmClassName,'NOTHING' );
 					$html .= '<tr><td>';
 					if (class_exists($vmClassName)) {
-						$amazonObject= new $amazon_class();
-						//vmdebug('class + obkect',$amazon_class, $myObject );
+						$obj = new $vmClassName($amazon_data, $this->_currentMethod);
+						$contents = $obj->getContents();
 
-						  VmTable::bindTo($amazonObject,$amazon_data, true);
-						vmdebug('AMAZON BINDTO',$amazonObject, $amazon_data );
-
-						$vmObject = new $vmClassName($amazonObject, $this->_currentMethod);
-						$contents = $vmObject->getContents();
-vmdebug('VMOBEJCT',$vmObject, $contents );
 						if (!empty($contents)) {
 							$html .= '<a href="#" class="amazonDetailsOpener"   rel="' . $payment->id . '">';
 							//$html .= '<div style="background-color: white; z-index: 100; right:0; display: none; border:solid 2px; padding:10px;" class="vm-absolute" id="amazonDetails_' . $payment->id . '">';
@@ -2276,11 +2267,11 @@ vmdebug('VMOBEJCT',$vmObject, $contents );
 //}
 
 				}
-*/
+
 			}
 		}
 
-/*
+
 		$doc = JFactory::getDocument();
 		$js = "
 jQuery().ready(function($) {
@@ -2296,7 +2287,7 @@ jQuery().ready(function($) {
 	});
 });";
 		$doc->addScriptDeclaration($js);
-*/
+
 		return $html;
 	}
 
@@ -2359,7 +2350,7 @@ jQuery().ready(function($) {
 		}
 		$_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
 		if (!$_amazonOrderReferenceId) {
-			$msg = vmText::_('VMPAYMENT_AMAZON_PAYWITHAMAZON_BUTTON');
+			//$msg = vmText::_('VMPAYMENT_AMAZON_PAYWITHAMAZON_BUTTON');
 			return false;
 		}
 		return TRUE; // this method was selected , and the data is valid by default
@@ -2530,6 +2521,7 @@ jQuery().ready(function($) {
 
 		if (!$this->checkConditions($cart, $this->_currentMethod, $cart_prices)) {
 			vmInfo('VMPAYMENT_AMAZON_PAYMENT_NOT_AVAILABLE');
+
 			$this->unsetCartLayoutAndPaymentMethod($cart);
 			return FALSE;
 		}
@@ -2873,13 +2865,13 @@ jQuery().ready(function($) {
 		}
 
 		$notificationClass = 'amazonHelper' . $notificationType;
-		$notificationFile = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'helpers' . DS . strtolower($notificationType . '.php');
+		$notificationFile = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS  . 'helpers' . DS . strtolower($notificationType . '.php');
 		if (!file_exists($notificationFile)) {
 			$this->debugLog("Unknown notification Type: " . $notificationType, __FUNCTION__, 'error');
 			return false;
 		}
 		if (!class_exists($notificationClass)) {
-			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'helpers' . DS . 'helper.php');
+			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS  . 'helpers' . DS . 'helper.php');
 			require($notificationFile);
 		}
 
@@ -3407,7 +3399,7 @@ jQuery().ready(function($) {
 
 	function loadAmazonClass ($className) {
 		if (!class_exists($className)) {
-			$filePath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'library' . DS . str_replace('_', DS, $className) . '.php';
+			$filePath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon'  . DS . 'library' . DS . str_replace('_', DS, $className) . '.php';
 			if (file_exists($filePath)) {
 				require $filePath;
 				return;
@@ -3419,11 +3411,11 @@ jQuery().ready(function($) {
 
 	function loadHelperClass ($className) {
 		if (!class_exists('amazonHelper')) {
-			require('amazon' . DS . 'helpers' . DS . 'helper.php');
+			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'helpers' . DS . 'helper.php');
 		}
 		if (!class_exists($className)) {
 			$fileName = strtolower(str_replace('amazonHelper', '', $className)) . '.php';
-			$fileNameAbsPath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'amazon' . DS . 'helpers' . DS . $fileName;
+			$fileNameAbsPath = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon'  . DS . 'helpers' . DS . $fileName;
 			if (file_exists($fileNameAbsPath)) {
 				require($fileNameAbsPath);
 			} else {
