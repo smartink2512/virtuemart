@@ -186,9 +186,9 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 				if ($product->product_sku) {
 					$post_variables["L_NUMBER" . $i] = $product->product_sku;
 				}
-				$post_variables["L_AMT" . $i] = $this->getProductAmountWithoutTax($this->cart->pricesUnformatted[$key]);
+				$post_variables["L_AMT" . $i] = $this->getProductAmountWithoutTax($this->cart->cartPrices[$key]);
 				$post_variables["L_QTY" . $i] = $product->quantity;
-				$post_variables["L_TAXAMT" . $i] = $this->getProductTaxAmount($this->cart->pricesUnformatted[$key]);; // Item sales tax
+				$post_variables["L_TAXAMT" . $i] = $this->getProductTaxAmount($this->cart->cartPrices[$key]);; // Item sales tax
 				$taxAmount += $post_variables["L_TAXAMT" . $i];
 				$ITEMAMT += $post_variables["L_AMT" . $i] * $post_variables["L_QTY" . $i];
 				$TAXAMT += $post_variables["L_TAXAMT" . $i];
@@ -198,19 +198,19 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		}
 
 		// Handling Coupon (handling must be positive value, add then coupon as a product with negative value
-		if (!empty($this->cart->pricesUnformatted['salesPriceCoupon'])) {
+		if (!empty($this->cart->cartPrices['salesPriceCoupon'])) {
 			$post_variables["L_NAME" . $i] = vmText::_('COM_VIRTUEMART_COUPON_DISCOUNT') . ': ' . $this->cart->couponCode;
-			$post_variables["L_AMT" . $i] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
+			$post_variables["L_AMT" . $i] = vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceCoupon'], $this->_method->payment_currency);
 			$post_variables["L_QTY" . $i] = 1;
 			$ITEMAMT += $post_variables["L_AMT" . $i] * $post_variables["L_QTY" . $i];
 			//$TAXAMT +=$post_variables["L_TAXAMT" . $i];
 		}
 
-		if ($this->cart->pricesUnformatted['paymentValue']) {
-			$paymentValue = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['paymentValue'], $this->_method->payment_currency);
+		if ($this->cart->cartPrices['paymentValue']) {
+			$paymentValue = vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['paymentValue'], $this->_method->payment_currency);
 			$post_variables["L_NAME" . $i] = vmText::_('COM_VIRTUEMART_PAYMENT');
 			$post_variables["L_AMT" . $i] = $paymentValue;
-			$post_variables["L_TAXAMT" . $i] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['paymentTax'], $this->_method->payment_currency); // Item sales tax
+			$post_variables["L_TAXAMT" . $i] = vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['paymentTax'], $this->_method->payment_currency); // Item sales tax
 			$post_variables["L_QTY" . $i] = 1;
 			$ITEMAMT += $post_variables["L_AMT" . $i] * $post_variables["L_QTY" . $i];
 			$TAXAMT += $post_variables["L_TAXAMT" . $i];
@@ -219,7 +219,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		}
 
 // shipment value must include tax
-		$shipmentValue = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceShipment'], $this->_method->payment_currency);
+		$shipmentValue = vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceShipment'], $this->_method->payment_currency);
 		if ($shipmentValue >= 0) {
 			$post_variables["SHIPPINGAMT"] = $shipmentValue; // Total shipping costs for this order.
 		} else {
@@ -233,7 +233,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		$post_variables['CURRENCYCODE'] = $this->currency_code_3;
 		$post_variables['AMT'] = $this->total;
 		$post_variables['TAXAMT'] = $TAXAMT; // Sum of tax for all items in this order.
-		//$post_variables['ITEMAMT'] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['priceWithoutTax'], $this->_method->payment_currency);
+		//$post_variables['ITEMAMT'] = vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['priceWithoutTax'], $this->_method->payment_currency);
 		$post_variables['ITEMAMT'] = $ITEMAMT ;
 
 		$pricesCurrency = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
@@ -263,10 +263,10 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		$post_variables['TOTALBILLINGCYCLES'] = $this->_method->subscription_term;
 
 
-		if ($this->cart->pricesUnformatted['salesPricePayment'] && $this->cart->pricesUnformatted['salesPricePayment'] > 0) {
-			$post_variables['INITAMT'] = $this->cart->pricesUnformatted['salesPricePayment'];
+		if ($this->cart->cartPrices['salesPricePayment'] && $this->cart->cartPrices['salesPricePayment'] > 0) {
+			$post_variables['INITAMT'] = $this->cart->cartPrices['salesPricePayment'];
 			$post_variables['FAILEDINITAMTACTION'] = 'CancelOnFailure';
-			$post_variables['AMT'] = $this->total - $this->cart->pricesUnformatted['salesPricePayment'];
+			$post_variables['AMT'] = $this->total - $this->cart->cartPrices['salesPricePayment'];
 		} else {
 			$post_variables['AMT'] = $this->total;
 		}
@@ -296,8 +296,8 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		$post_variables['DESC'] = $this->order['details']['BT']->order_number . ': ' . $this->getPaymentPlanDesc();
 
 
-		if ($this->cart->pricesUnformatted['salesPricePayment'] && $this->cart->pricesUnformatted['salesPricePayment'] > 0) {
-			$initAmount = $this->cart->pricesUnformatted['salesPricePayment'];
+		if ($this->cart->cartPrices['salesPricePayment'] && $this->cart->cartPrices['salesPricePayment'] > 0) {
+			$initAmount = $this->cart->cartPrices['salesPricePayment'];
 		} else {
 			$initAmount = 0;
 		}
@@ -321,7 +321,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		$post_variables['BILLINGPERIOD'] = $this->getDurationUnit($this->_method->payment_plan_duration);
 		$post_variables['TOTALBILLINGCYCLES'] = $occurenceAmount;
 
-		if ($this->cart->pricesUnformatted['salesPricePayment'] && $this->cart->pricesUnformatted['salesPricePayment'] > 0) {
+		if ($this->cart->cartPrices['salesPricePayment'] && $this->cart->cartPrices['salesPricePayment'] > 0) {
 			$post_variables['INITAMT'] = $initAmount;
 			$post_variables['FAILEDINITAMTACTION'] = 'CancelOnFailure';
 		}

@@ -80,8 +80,8 @@ class PaypalHelperPaypal {
 
 	public function setCart ($cart) {
 		$this->cart = $cart;
-		if (!isset($this->cart->pricesUnformatted)) {
-			$this->cart->getCartPrices();
+		if (!isset($this->cart->cartPrices)) {
+			$this->cart->prepareCartData();
 		}
 	}
 
@@ -128,7 +128,7 @@ class PaypalHelperPaypal {
 	function addRulesBill ($rules) {
 		$handling = 0;
 		foreach ($rules as $rule) {
-			$handling += vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted[$rule['virtuemart_calc_id'] . 'Diff'], $this->_method->payment_currency);
+			$handling += vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff'], $this->_method->payment_currency);
 		}
 		return $handling;
 	}
@@ -141,7 +141,7 @@ class PaypalHelperPaypal {
 		$handling += $this->addRulesBill($this->cart->cartData['DBTaxRulesBill']);
 		$handling += $this->addRulesBill($this->cart->cartData['taxRulesBill']);
 		$handling += $this->addRulesBill($this->cart->cartData['DATaxRulesBill']);
-		$handling += vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPricePayment'], $this->_method->payment_currency);
+		$handling += vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPricePayment'], $this->_method->payment_currency);
 		return $handling;
 	}
 

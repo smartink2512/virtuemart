@@ -287,17 +287,17 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 				if ($product->product_sku) {
 					$post_variables["item_number_" . $i] = $product->product_sku;
 				}
-				$post_variables["amount_" . $i] = $this->getProductAmount($this->cart->pricesUnformatted[$key]);
+				$post_variables["amount_" . $i] = $this->getProductAmount($this->cart->cartPrices[$key]);
 				$post_variables["quantity_" . $i] = $product->quantity;
 				$i++;
 			}
 		}
 
 		$post_variables["handling_cart"] = $this->getHandlingAmount();
-		$post_variables["handling_cart"] += vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceShipment'], $this->_method->payment_currency);
+		$post_variables["handling_cart"] += vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceShipment'], $this->_method->payment_currency);
 		$post_variables['currency_code'] = $this->currency_code_3;
-		if (!empty($this->cart->pricesUnformatted['salesPriceCoupon'])) {
-			$post_variables['discount_amount_cart'] = abs(vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency));
+		if (!empty($this->cart->cartPrices['salesPriceCoupon'])) {
+			$post_variables['discount_amount_cart'] = abs(vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceCoupon'], $this->_method->payment_currency));
 		}
 		$pricesCurrency = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 	}

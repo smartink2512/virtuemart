@@ -182,7 +182,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 				if ($product->product_sku) {
 					$post_variables["L_PAYMENTREQUEST_0_NUMBER" . $i] = $product->product_sku;
 				}
-				$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] = $this->getProductAmount($this->cart->pricesUnformatted[$key]);
+				$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] = $this->getProductAmount($this->cart->cartPrices[$key]);
 				$post_variables["L_PAYMENTREQUEST_0_QTY" . $i] = $product->quantity;
 				$total += $post_variables["L_PAYMENTREQUEST_0_AMT" . $i] * $post_variables["L_PAYMENTREQUEST_0_QTY" . $i];
 				$i++;
@@ -190,16 +190,16 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 
 		// Handling Coupon (handling must be positive value, add then coupon as a product with negative value
-		if (!empty($this->cart->pricesUnformatted['salesPriceCoupon'])) {
+		if (!empty($this->cart->cartPrices['salesPriceCoupon'])) {
 			$post_variables["L_PAYMENTREQUEST_0_NAME" . $i] = vmText::_('COM_VIRTUEMART_COUPON_DISCOUNT') . ': ' . $this->cart->couponCode;
-			$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceCoupon'], $this->_method->payment_currency);
+			$post_variables["L_PAYMENTREQUEST_0_AMT" . $i] = vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceCoupon'], $this->_method->payment_currency);
 			$post_variables["L_PAYMENTREQUEST_0_QTY" . $i] = 1;
 			$total += $post_variables["L_PAYMENTREQUEST_0_AMT" . $i] * $post_variables["L_PAYMENTREQUEST_0_QTY" . $i];
 		}
 
 
 		$post_variables["PAYMENTREQUEST_0_ITEMAMT"] = $total;
-		$salesPriceShipment = vmPSPlugin::getAmountValueInCurrency($this->cart->pricesUnformatted['salesPriceShipment'], $this->_method->payment_currency);
+		$salesPriceShipment = vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceShipment'], $this->_method->payment_currency);
 		if ($salesPriceShipment >= 0) {
 			$post_variables["PAYMENTREQUEST_0_SHIPPINGAMT"] = $salesPriceShipment;
 		} else {
@@ -286,8 +286,12 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
-
-		$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+if ($this->_method->virtuemart_paymentmethod_id==0) {
+	$msg='Programming error,Paypal expresscheckout: virtuemart_paymentmethod_id is 0';
+	vmError($msg,$msg);
+}
+		// THIS IS A DIFFERENT URL FROM VM2
+		$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&SetExpressCheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id;
 
 		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
@@ -316,6 +320,10 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$post_variables['PAYMENTREQUEST_0_PAYMENTACTION'] = $this->getPaymentAction();
 			// done in addPrices
 			// Total of order, including shipping, handling, tax, and any other billing adjustments such as a credit due.
+			if ($this->total == 0) {
+				$msg='Programming error,Paypal expresscheckout: total sent is 0';
+				vmError($msg,$msg);
+			}
 			$post_variables['PAYMENTREQUEST_0_AMT'] = $this->total;
 			$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 		}
@@ -444,10 +452,10 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['BILLINGPERIOD'] = $this->getDurationUnit($this->_method->subscription_duration);
 		$post_variables['TOTALBILLINGCYCLES'] = $this->_method->subscription_term;
 
-		if ($this->cart->pricesUnformatted['salesPricePayment']) {
-			$post_variables['INITAMT'] = $this->cart->pricesUnformatted['salesPricePayment'];
+		if ($this->cart->cartPrices['salesPricePayment']) {
+			$post_variables['INITAMT'] = $this->cart->cartPrices['salesPricePayment'];
 			$post_variables['FAILEDINITAMTACTION'] = 'CancelOnFailure';
-			$post_variables['AMT'] = $this->total - $this->cart->pricesUnformatted['salesPricePayment'];
+			$post_variables['AMT'] = $this->total - $this->cart->cartPrices['salesPricePayment'];
 		} else {
 			$post_variables['AMT'] = $this->total;
 		}
@@ -476,8 +484,8 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['PROFILEREFERENCE'] = $this->order['details']['BT']->order_number;
 		$post_variables['DESC'] = $this->order['details']['BT']->order_number . ': ' . $this->getPaymentPlanDesc();
 
-		if ($this->cart->pricesUnformatted['salesPricePayment'] && $this->cart->pricesUnformatted['salesPricePayment'] > 0) {
-			$initAmount = $this->cart->pricesUnformatted['salesPricePayment'];
+		if ($this->cart->cartPrices['salesPricePayment'] && $this->cart->cartPrices['salesPricePayment'] > 0) {
+			$initAmount = $this->cart->cartPrices['salesPricePayment'];
 		} else {
 			$initAmount = 0;
 		}
@@ -501,7 +509,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['BILLINGPERIOD'] = $this->getDurationUnit($this->_method->payment_plan_duration);
 		$post_variables['TOTALBILLINGCYCLES'] = $occurences_count;
 
-		if ($this->cart->pricesUnformatted['salesPricePayment'] && $this->cart->pricesUnformatted['salesPricePayment'] > 0) {
+		if ($this->cart->cartPrices['salesPricePayment'] && $this->cart->cartPrices['salesPricePayment'] > 0) {
 			$post_variables['INITAMT'] = $initAmount;
 			$post_variables['FAILEDINITAMTACTION'] = 'CancelOnFailure';
 		}
@@ -843,7 +851,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$extraInfo = '';
 
 		//Are we coming back from Express Checkout?
-		$expressCheckout = vRequest::getVar('expresscheckout', '');
+		$expressCheckout = vRequest::getVar('SetExpressCheckout', '');
 		if ($expressCheckout == 'cancel') {
 			$this->customerData->clear();
 			if (!class_exists('VirtueMartCart')) {

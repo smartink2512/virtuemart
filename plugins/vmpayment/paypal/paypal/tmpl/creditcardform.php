@@ -26,8 +26,7 @@ JHTML::script('vmcreditcard.js', 'components/com_virtuemart/assets/js/', false);
 VmConfig::loadJLang('com_virtuemart', true);
 vmJsApi::jCreditCard();
 
-$doc = JFactory::getDocument();
-$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/js/site.js');
+vmJsApi::addJScript('/plugins/vmpayment/paypal/paypal/assets/js/site.js');
 
 ?>
 <div id="paymentMethodOptions_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" class="paymentMethodOptions" >
