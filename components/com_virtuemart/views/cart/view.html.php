@@ -38,7 +38,7 @@ class VirtueMartViewCart extends VmView {
 
 		$this->prepareContinueLink();
 		if (VmConfig::get('use_as_catalog',0)) {
-			vmInfo('This is a catalogue, you cannot acccess the cart');
+			vmInfo('This is a catalogue, you cannot access the cart');
 			$app->redirect($this->continue_link);
 		}
 

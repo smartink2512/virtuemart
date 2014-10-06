@@ -46,7 +46,9 @@ vmJsApi::addJScript('vm.STisBT',"
 vmJsApi::addJScript('vm.checkoutFormSubmit','
 //<![CDATA[
 	jQuery(document).ready(function($) {
+		jQuery(this).vm2front("stopVmLoading");
 		jQuery("#checkoutFormSubmit").bind("click dblclick", function(e){
+			jQuery(this).vm2front("startVmLoading");
 			e.preventDefault();
 			jQuery(this).attr("disabled", "true");
 			jQuery(this).removeClass( "vm-button-correct" );
