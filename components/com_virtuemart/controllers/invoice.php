@@ -110,9 +110,6 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 					die('Zero byte file! Aborting download');
 				}
 
-				//$contents = file_get_contents ($fileName);
-				//echo $contents;
-
 				//	set_magic_quotes_runtime(0);
 				$fp = fopen ("$fileLocation", "rb");
 				fseek ($fp, $range);

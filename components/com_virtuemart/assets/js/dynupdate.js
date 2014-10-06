@@ -72,10 +72,10 @@ jQuery(function($) {
                     el.change(function(event) {
                         event.preventDefault();
                         var url = jQuery(el).attr('url');
-                        console.log('updateDynamicUpdateListeners found URL attri '+url,el);
-                        if(url=="undefined"){
+                        console.log('updateDynamicUpdateListeners found URL attri ',url,el);
+                        if (typeof attr === typeof undefined || attr === false) {
+                            url = el.val();
                             console.log('updateDynamicUpdateListeners URL attrib empty '+url);
-                            var url = el.val();
                         }
                         if(url!=null){
                             console.log('updateDynamicUpdateListeners onchange set URL '+url);

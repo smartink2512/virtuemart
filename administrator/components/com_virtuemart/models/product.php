@@ -1820,17 +1820,20 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!empty($data['childs'])) {
 			foreach ($data['childs'] as $productId => $child) {
-				if($child['virtuemart_product_id']!=$data['virtuemart_product_id']){
+				if($productId!=$data['virtuemart_product_id']){
+
 					if(empty($child['product_parent_id'])) $child['product_parent_id'] = $data['virtuemart_product_id'];
 					$child['virtuemart_product_id'] = $productId;
+
+					if(!empty($child['product_parent_id']) and $child['product_parent_id'] == $child['virtuemart_product_id']){
+						$child['product_parent_id'] = 0;
+					}
+					vmdebug('Store product my ',$child,$this->_id,$productId,$data['virtuemart_product_id']);
+					$child['isChild'] = $this->_id;
+					$this->store ($child);
 				}
 
-				if(!empty($child['product_parent_id']) and $child['product_parent_id'] == $child['virtuemart_product_id']){
-					$child['product_parent_id'] = 0;
-				}
 
-				$child['isChild'] = TRUE;
-				$this->store ($child);
 			}
 		}
 

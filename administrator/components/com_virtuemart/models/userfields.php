@@ -323,7 +323,7 @@ class VirtueMartModelUserfields extends VmModel {
 			JPluginHelper::importPlugin('vmuserfield');
 					$dispatcher = JDispatcher::getInstance();
 					$plgName = substr($data['type'],6);
-					$dispatcher->trigger('plgVmOnStoreInstallPluginTable',array( 'userfield' , $data  ) );
+					$dispatcher->trigger('plgVmOnStoreInstallPluginTable',array( 'userfield', $data, $field  ) );
 		}
 		if ($reorderRequired) {
 			$field->reorder();

@@ -271,12 +271,17 @@ class VirtuemartViewProduct extends VmView {
 					if($product->canonCatId) $canonLink = '&virtuemart_category_id='.$product->canonCatId;
 
 					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
+					if(JFactory::getApplication()->isSite()){
+						$bar = JToolBar::getInstance('toolbar');
+						$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE_TO_PRODUCT', juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID);
+					}
 				} else {
 					$text = $product->product_name.$sku;
 				}
 				$this->SetViewTitle('PRODUCT',$text);
 
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
+
 				break;
 
 			case 'massxref_cats':

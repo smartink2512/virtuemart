@@ -60,7 +60,7 @@ AdminUIHelper::startAdminArea ($this);
 			$i = 0;
 			$k = 0;
 			$keyword = vRequest::getCmd ('keyword');
-
+;
 			foreach ($this->orderslist as $key => $order) {
 				$checked = JHtml::_ ('grid.id', $i, $order->virtuemart_order_id);
 				?>

@@ -2,7 +2,7 @@
 /**
  *
  * Order detail view
- *
+ * //index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&order_number=xx&order_pass=p_yy
  * @package    VirtueMart
  * @subpackage Orders
  * @author Max Milbers, Valerie Isaksen
@@ -15,9 +15,7 @@
  * other free or open source software licenses.
  * @version $Id: details.php 5412 2012-02-09 19:27:55Z alatak $
  */
-//index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&order_number=xx&order_pass=p_yy
-//
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
 JHtml::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
 if ($this->_layout == "invoice") {
@@ -81,11 +79,10 @@ if ($this->print) {
 <div class='spaceStyle'>
     <?php
     if ($this->print) {
-	echo $this->loadTemplate('items');
+		echo $this->loadTemplate('items');
     } else {
-	// NOT in print mode, full HTML view for a browser:
         $tabarray = array('items'=>'COM_VIRTUEMART_ORDER_ITEM', 'history'=>'COM_VIRTUEMART_ORDER_HISTORY');
-	shopFunctionsF::buildTabs( $this, $tabarray);
+		shopFunctionsF::buildTabs( $this, $tabarray);
     }
     ?>
 </div>

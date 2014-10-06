@@ -103,8 +103,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 	<tbody>
 	<?php
 	$total = $this->pagination->total;
-	$manager = vRequest::get('manage','');
-	if(!empty($manager)) $manager = '&manage=1';
+
 	if ($totalList = count($this->productlist) ) {
 		$i = 0;
 		$k = 0;
@@ -115,7 +114,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 			$published = $this->gridPublished( $product, $i );
 
 			$is_featured = $this->toggle($product->product_special, $i,'toggle.product_special');
-			$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.$manager;
+			$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id;
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->

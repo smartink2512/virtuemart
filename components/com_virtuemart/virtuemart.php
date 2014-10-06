@@ -49,7 +49,12 @@ if(VmConfig::get('shop_is_offline',0)){
 // 	$task = vRequest::getCmd('task',vRequest::getCmd('layout',$_controller) );		$this makes trouble!
 	$task = vRequest::getCmd('task','') ;
 	//vmdebug('Our request ',$_REQUEST);
-	if($manage = vRequest::getCmd('manage',false) or ( ($_controller == 'product' or $_controller == 'category') and ($task == 'save' || $task == 'edit' or $task == 'apply' ) ) or ($_controller == 'translate' && $task='paste') ){
+	$session = JFactory::getSession();
+	$manage = vRequest::getCmd('manage',$session->get('manage', false,'vm'));
+
+	$feViews = array('askquestion','cart','invoice','pdf','pluginresponse','productdetails','recommend','vendor');
+	if($manage and !in_array($_controller,$feViews)){
+	//if($manage or ( ($_controller == 'product' or $_controller == 'category') and ($task == 'save' || $task == 'edit' or $task == 'apply' ) ) or ($_controller == 'translate' && $task='paste') ){
 	//if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
 		$app = JFactory::getApplication();
 
@@ -65,6 +70,9 @@ if(VmConfig::get('shop_is_offline',0)){
 			$basePath = VMPATH_ADMIN;
 			$trigger = 'onVmAdminController';
 			vmdebug('$vendorIdUser use FE managing '.$vendorIdUser);
+
+
+			$session->set('manage', 1,'vm');
 			vRequest::setVar('manage','1');
 
 			vmJsApi::jQuery(false);

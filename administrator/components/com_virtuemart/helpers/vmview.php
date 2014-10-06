@@ -122,7 +122,14 @@ class VmView extends JViewLegacy {
 			JToolBarHelper::deleteList();
 		}
 		self::showHelp ( $showHelp);
-		self::showACLPref($view);
+
+
+		if(JFactory::getApplication()->isSite()){
+			$bar = JToolBar::getInstance('toolbar');
+			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
+		} else {
+			self::showACLPref($view);
+		}
 	}
 
 	/*

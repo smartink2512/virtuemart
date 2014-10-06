@@ -1324,6 +1324,36 @@ class VirtueMartCart {
 	}
 
 	/**
+	 * Returns ST address considering the set options, with fallback
+	 * @author Max Milbers
+	 */
+	public function getST($name=0,$FBBT=true){
+
+		$addr = $this->ST;
+
+		if($this->STsameAsBT == 0){
+			if($FBBT){
+				if($name!==0){
+					if(!isset($this->ST[$name])){
+						$addr = $this->BT;
+					}
+				} else if($this->ST == 0){
+					$addr = $this->BT;
+				}
+			}
+		} else {
+			$addr = $this->BT;
+		}
+
+		if($name!==0){
+			return isset($addr[$name]) ? $addr[$name] : '';
+		} else {
+			return $addr!==0 ? $addr : array();
+		}
+
+	}
+
+	/**
 	 * @author Valérie Isaksen, Max Milbers
 	 * @param $type
 	 * @return bool
