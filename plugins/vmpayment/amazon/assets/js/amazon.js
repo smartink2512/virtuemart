@@ -57,6 +57,7 @@ var amazonPayment = {
         showAmazonWallet: function () {
             window.onError = null;
             console.log("amazonShowWallet: " + amazonPayment.amazonOrderReferenceId);
+            amazonPayment.startLoading();
             new OffAmazonPayments.Widgets.Wallet({
                 sellerId: amazonPayment.sellerId,
                 amazonOrderReferenceId: amazonPayment.amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
@@ -116,16 +117,12 @@ var amazonPayment = {
         },
 
         startLoading: function () {
-            var amazonLoading = vmSiteurl + '/components/com_virtuemart/assets/images/facebox/loading.gif';
-            document.id('amazonLoading').position('center');
-            document.id('amazonLoading').setStyle('z-index', '200');
-            document.id('amazonCartDiv').setStyle('opacity', 0.75);
-            document.id('amazonLoading').set('html', '<img src="' + amazonLoading + '">');
+            //document.getElementsByTagName('body')[0].className += " vmLoading";
+           // document.body.innerHTML += "<div class=\"vmLoadingDiv\"></div>";
         },
 
         stopLoading: function () {
-            document.id('amazonLoading').set('html', '');
-            document.id('amazonCartDiv').setStyle('opacity', 1);
+            //document.getElementsByTagName('body')[0].className = document.getElementsByTagName('body')[0].className.replace("vmLoading","");
         },
 
         onAmazonAddressSelect: function () {

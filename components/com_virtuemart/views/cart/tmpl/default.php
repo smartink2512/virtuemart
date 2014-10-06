@@ -84,7 +84,9 @@ $document->addScriptDeclaration ("
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
+	jQuery(this).vm2front('stopVmLoading');
 	jQuery('#checkoutFormSubmit').bind('click dblclick', function(e){
+	jQuery(this).vm2front('startVmLoading');
 	e.preventDefault();
     jQuery(this).attr('disabled', 'true');
     jQuery(this).removeClass( 'vm-button-correct' );
@@ -217,5 +219,4 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		<input type='hidden' name='view' value='cart'/>
 	</form>
 </div>
-
 <?php vmTime('Cart view Finished task ','Start'); ?>

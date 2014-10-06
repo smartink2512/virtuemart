@@ -95,7 +95,16 @@
 					}
 				}
 			});
-		}
+		},
+        startVmLoading: function() {
+            $("body").addClass("vmLoading");
+            $("body").append("<div class=\"vmLoadingDiv\"></div>");
+        },
+        stopVmLoading: function() {
+           if( $("body").hasClass("vmLoading") ){
+               $("body").removeClass("vmLoading");
+           }
+        }
 	};
 
 	$.fn.vm2front = function( method ) {

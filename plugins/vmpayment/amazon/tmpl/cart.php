@@ -18,6 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+vmJsApi::jSite();
 if (VmConfig::get('usefancy', 1)) {
 	vmJsApi::js('fancybox/jquery.fancybox-1.3.4.pack');
 	vmJsApi::css('jquery.fancybox-1.3.4');
@@ -56,11 +57,13 @@ $document = JFactory::getDocument();
 $document->addScriptDeclaration($box);
 
 
-$document->addScriptDeclaration("
+$document->addScriptDeclaration ("
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
+	jQuery(this).vm2front('stopVmLoading');
 	jQuery('#checkoutFormSubmit').bind('click dblclick', function(e){
+	jQuery(this).vm2front('startVmLoading');
 	e.preventDefault();
     jQuery(this).attr('disabled', 'true');
     jQuery(this).removeClass( 'vm-button-correct' );

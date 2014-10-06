@@ -1643,7 +1643,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$cart = VirtueMartCart::getCart();
 		$realexInterface->setCart($cart, false);
 
-		$response3DSVerifyEnrolled = $realexInterface->request3DSVerifyEnrolled();
+		$response3DSVerifyEnrolled = $realexInterface->request3DSVerifyEnrolled($realvaultData);
 		$eci = $realexInterface->manageResponse3DSVerifyEnrolled($response3DSVerifyEnrolled);
 
 		if (!$eci) {
