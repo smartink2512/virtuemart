@@ -96,6 +96,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			// to_klarna, from_klarna
 			'klarna_status'               => 'varchar(20)',
 			// pre-purchase, purchase, pre-delivery, delivery, post-delivery
+			'format'                        => 'varchar(5)',
 			'data'                        => 'mediumtext',
 			// what was sent
 		);
@@ -494,7 +495,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	 */
 
 	function storeCartInTable ($cart, $cartId = 0, $dbValues = array()) {
-
+		$this->debugLog(var_export($cart,true), 'storeCartInTable CART IS', 'debug');
 		if (empty($dbValues)) {
 			$dbValues['order_number'] = '';
 			$dbValues['payment_name'] = '';
@@ -502,6 +503,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$dbValues['action'] = 'storeCart';
 			$dbValues['klarna_status'] = 'pre-purchase';
 		}
+		$this->debugLog($cartId, 'CARD ID storeCartInTable', 'debug');
 
 		if (empty($cartId)) {
 			$session = JFactory::getSession();
@@ -515,24 +517,17 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$dbValues['data'] = serialize($cart);
 			$preload = true;
 		}
-
+		$dbValues['format'] = 'ser';
 		$dbValues ['id'] = $cartIdInTable;
 		$this->debugLog($dbValues, 'storePSPluginInternalData storeCartInTable', 'debug');
 
 		//$values = $this->storePSPluginInternalData($dbValues, $this->_tablepkey, $preload);
 		$values = $this->storePluginInternalData($dbValues, $this->_tablepkey, 0, $preload);
-		/*
-		//$storedcart=unserialize($dbValues['data']);
-		 $storedcart= ($dbValues['data']);
-		if ($storedcart  !== $cart) {
-			$this->debugLog($cart, 'storeCartInTable cart', 'error');
-			$this->debugLog($dbValues, 'storeCartInTable dbValues', 'error');
-		}
-*/
 
 		if (empty($cartId)) {
 			$session->set('cartId', $values ['id'], 'vm');
 		}
+		$this->debugLog($cartId, 'CARD ID Save in session', 'debug');
 		return $values ['id'];
 
 	}
@@ -550,12 +545,14 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$db->setQuery($q);
 		$result = $db->loadObject();
 
-		if ($serialized) {
+	if ($serialized) {
 			$data = $result->data;
 		} else {
 			$data = unserialize($result->data);
 			//return  ($result->data);
 		}
+
+		$this->debugLog(var_export($data,true), ' getCartFromTable', 'debug');
 
 		return $data;
 
@@ -724,7 +721,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$this->debugLog('No cart with this  Id=' . $cartId, 'plgVmOnPaymentNotification', 'error');
 			return NULL; // No cart with this  Id
 		}
-		$this->debugLog('OK', 'plgVmOnPaymentNotification getCartFromTable', 'debug');
+		$this->debugLog($cartDataFromTable, 'plgVmOnPaymentNotification getCartFromTable', 'debug');
 
 		require_once 'klarnacheckout/library/Checkout.php';
 		Klarna_Checkout_Order::$contentType = "application/vnd.klarna.checkout.aggregated-order-v2+json";
@@ -760,7 +757,8 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			'payment_name'                => $this->renderPluginName($this->method, 'create_order'),
 			'action'                      => 'update',
 			'klarna_status'               => $update['status'],
-			'data'                        => serialize($update)
+			'format'                      => 'json',
+			'data'                        => json_encode($update)
 
 		);
 		$this->debugLog($dbValues, 'plgVmOnPaymentNotification update', 'debug');
@@ -774,7 +772,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	/**
 	 * Create the VM order with the saved cart, and the users infos from klarna
 	 * @param $klarna_order return data from Klarna
-	 * @param $cartData cart unserialized saved in the table
+	 * @param $cartData cart json_decoded saved in the table
 	 * @param $method
 	 * @param $cartId pkey of the cart saved in the table
 	 *
@@ -830,7 +828,8 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			'action'                      => 'createOrder',
 			'klarna_status'               => $klarna_order['status'],
 			//'data'                        => ($klarna_data),
-			'data'                        => serialize($klarna_data),
+			'format'                        => 'json',
+			'data'                        => json_encode($klarna_data),
 
 		);
 		$this->debugLog($dbValues, 'storePSPluginInternalData createVmOrder', 'debug');
@@ -843,6 +842,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			'virtuemart_paymentmethod_id' => $this->method->virtuemart_paymentmethod_id,
 			'payment_name'                => 'Klarna Checkout',
 			'action'                      => 'storeCart',
+			'format'                        => 'json',
 			'klarna_status'               => 'pre-purchase',
 		);
 		$this->storeCartInTable($cartData, $cartId, $dbValues);
@@ -1013,11 +1013,11 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		$html = $this->getHtmlRowBE(vmText::_('VMPAYMENT_KLARNACHECKOUT_STATUS'), $payment->klarna_status);
-		$activate_data = unserialize($payment->data);
-		$html .= $this->getHtmlRowBE(vmText::_('VMPAYMENT_KLARNACHECKOUT_INVOICE_NUMBER'), $activate_data['InvoiceNumber']);
-		if (!empty($activate_data['InvoicePdf'])) {
-			// get order password
-			$orderModel = VmModel::getModel();
+		$activate_data =  $this-> getStoredData($payment);
+
+		$html .= $this->getHtmlRowBE(vmText::_('VMPAYMENT_KLARNACHECKOUT_INVOICE_NUMBER'), $activate_data->InvoiceNumber);
+		if (!empty($activate_data->InvoicePdf)) {
+
 			$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($payment->order_number);
 			$invoicePdfLink=$this->getInvoicePdfLink($virtuemart_order_id);
 			$value = '<a target="_blank" href="' . $invoicePdfLink . '">' . vmText::_('VMPAYMENT_KLARNACHECKOUT_VIEW_INVOICE') . '</a>';
@@ -1065,14 +1065,14 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$html = "<tr>\n<td class='key' >" . vmText::_('id') . "</td>\n <td align='left'>" . 'ERROR NO DATA' . "</td>\n</tr>\n";
 
 		} else {
-			$klarna_order = unserialize($payment->data);
+			$klarna_order = $this-> getStoredData($payment);
 			//$klarna_order =  ($payment->data);
 			$push_params = $this->getKlarnaDisplayParams();
 			$html = '';
 			$lang = JFactory::getLanguage();
 			foreach ($push_params as $key => $value) {
 				if (in_array($value, $show_fields)) {
-					$display_value = isset($klarna_order[$key]) ? $klarna_order[$key] : "???";
+					$display_value = isset($klarna_order->$key) ? $klarna_order->$key : "???";
 					$text_key = strtoupper('VMPAYMENT_KLARNACHECKOUT_' . $key);
 					if ($lang->hasKey($text_key)) {
 						$text = vmText::_('VMPAYMENT_KLARNACHECKOUT_' . $key);
@@ -1084,7 +1084,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 					} else {
 						$html .= "<tr>\n<td class='key' ><strong>" . $text . "</strong></td>\n <td align='left'></td>\n</tr>\n";
 
-						foreach ($klarna_order[$key] as $order_key => $order_value) {
+						foreach ($klarna_order->$key as $order_key => $order_value) {
 							$text_key = strtoupper('VMPAYMENT_KLARNACHECKOUT_' . $order_key);
 
 							if ($lang->hasKey($text_key)) {
@@ -1093,10 +1093,10 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 								$text = $order_key;
 							}
 							if (!is_array($order_value)) {
-								$display_order_value = isset($klarna_order[$key][$order_key]) ? $klarna_order[$key][$order_key] : "????";
+								$display_order_value = isset($klarna_order->$key->$order_key) ? $klarna_order->$key->$order_key : "????";
 								$html .= "<tr>\n<td class='key' >" . $text . "</td>\n <td align='left'>" . $display_order_value . "</td>\n</tr>\n";
 							} else {
-								$html .= "<tr>\n<td class='key' >" . $text . "</td>\n <td align='left'><pre>" . var_export($klarna_order[$key][$order_key], true) . "</pre></td>\n</tr>\n";
+								$html .= "<tr>\n<td class='key' >" . $text . "</td>\n <td align='left'><pre>" . var_export($klarna_order->$key->$order_key, true) . "</pre></td>\n</tr>\n";
 							}
 						}
 					}
@@ -1109,6 +1109,15 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 	}
 
+
+	function getStoredData($payment) {
+		if ($payment->format='json') {
+			$data = (object)json_decode($payment->data, true);
+		} else {
+			$data =   unserialize($payment->data);
+		}
+		return $data;
+	}
 	/**
 	 * Can be usefull for debugging
 	 * @param $payment
@@ -1324,9 +1333,10 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		}
 
 		if (!($payments = $this->getDatasByOrderId($order->virtuemart_order_id))) {
-			vmError(vmText::sprintf('VMPAYMENT_KLARNA_ERROR_NO_DATA', $order->virtuemart_order_id), vmText::sprintf('VMPAYMENT_KLARNACHECKOUT_ERROR_OCCURRED', $this->method->payment_name));
-			$this->debugLog('No klarna data for this order:' . $order->virtuemart_order_id, 'plgVmOnUpdateOrderPayment', 'error');
-			$this->debugLog($payments, 'plgVmOnUpdateOrderPayment', 'debug');
+			//vmError(vmText::sprintf('VMPAYMENT_KLARNA_ERROR_NO_DATA', $order->virtuemart_order_id), vmText::sprintf('VMPAYMENT_KLARNACHECKOUT_ERROR_OCCURRED', $this->method->payment_name));
+			//$this->debugLog('NO klarna data for this order:' . $order->virtuemart_order_id, 'plgVmOnUpdateOrderPayment', 'error');
+			//$this->debugLog(debug_print_backtrace(), 'plgVmOnUpdateOrderPayment', 'error');
+			//$this->debugLog($payments, 'plgVmOnUpdateOrderPayment', 'debug');
 
 			return NULL;
 		}
@@ -1426,7 +1436,8 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				$dbValues['klarna_status'] = 'activate';
 				$data["InvoiceNumber"] = $invoice_number;
 				$data["InvoicePdf"] = $invoiceURL;
-				$dbValues['data'] = serialize($data);
+				$dbValues['format'] = 'json';
+				$dbValues['data'] = json_encode($data);
 				$this->debugLog($dbValues, 'storePSPluginInternalData activate', 'debug');
 
 				$values = $this->storePSPluginInternalData($dbValues, $this->_tablepkey);
@@ -1508,9 +1519,9 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	function getReservationNumber ($payments) {
 		foreach ($payments as $payment) {
 			if ($payment->klarna_status == "checkout_complete") {
-				$klarna_order = unserialize($payment->data);
+				$klarna_order = $this->getStoredData($payment);
 				//$klarna_order =  ($payment->data);
-				return $klarna_order['reservation'];
+				return $klarna_order->reservation;
 			}
 		}
 		vmError('VMPAYMENT_KLARNACHECKOUT_ERROR_NO_RNO', 'VMPAYMENT_KLARNACHECKOUT_ERROR_NO_RNO');
@@ -1692,10 +1703,10 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		}
 		foreach ($payments as $payment) {
 			if ($payment->klarna_status == 'activate') {
-				$data = unserialize($payment->data);
+				$data =$this->getStoredData($payment);
 				$path = VmConfig::get('forSale_path', 0);
 				$path .= 'invoices' . DS;
-				$fileName =  $data["InvoicePdf"];
+				$fileName =  $data->InvoicePdf;
 				break;
 			}
 		}

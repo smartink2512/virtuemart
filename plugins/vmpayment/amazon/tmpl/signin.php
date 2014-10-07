@@ -64,7 +64,7 @@ $doc->addScriptDeclaration("
 	jQuery('#checkoutFormSubmit').attr('disabled', 'true');
 	jQuery('#checkoutFormSubmit').removeClass( 'vm-button-correct' );
 	jQuery('#checkoutFormSubmit').addClass( 'vm-button' );
-	jQuery('#checkoutFormSubmit').text( '".JText::_('VMPAYMENT_AMAZON_CLICK_PAY_AMAZON', true)."' );
+	jQuery('#checkoutFormSubmit').text( '".vmText::_('VMPAYMENT_AMAZON_CLICK_PAY_AMAZON', true)."' );
 	});
 
 //]]>

@@ -51,6 +51,7 @@ defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
+defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
 
 JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 

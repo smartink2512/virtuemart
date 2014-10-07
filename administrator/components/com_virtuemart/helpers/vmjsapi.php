@@ -38,7 +38,7 @@ class vmJsApi{
 	 * @return  nothing
 	 */
 
-	public static function js($namespace,$path=FALSE,$version='', $minified = NULL)
+	public static function js($namespace,$path=FALSE,$version='', $minified = NULL, $ver = VM_REV)
 	{
 
 		static $loaded = array();
@@ -55,7 +55,9 @@ class vmJsApi{
 		}
 		$file = vmJsApi::setPath($namespace,$path,$version, $minified , 'js');
 		$document = JFactory::getDocument();
-		$document->addScript( $file );
+		$ver = '?vmver='.$ver;
+
+		$document->addScript( $file.$ver );
 		$loaded[$namespace] = TRUE;
 	}
 
@@ -83,7 +85,7 @@ class vmJsApi{
 		$file = vmJsApi::setPath( $namespace,$path,  $version='', $minified , 'css');
 
 		$document = JFactory::getDocument();
-		$document->addStyleSheet($file);
+		$document->addStyleSheet($file.'?vmver='.VM_REV);
 		$loaded[$namespace] = TRUE;
 
 	}

@@ -258,7 +258,7 @@
             <option value="Tan">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_TAN</option>
         </param>
 
-
+<!--
         <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_ADDRESSBOOK"
                description=""/>
         <param name="addressbook_designWidth" type="text" default="400"
@@ -270,11 +270,12 @@
 
         <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_WALLET"
                description=""/>
+
         <param name="wallet_designWidth" type="text" default="400" label="VMPAYMENT_AMAZON_CONF_WALLET_DESIGNWIDTH"
                description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
         <param name="wallet_designHeight" type="text" default="260" label="VMPAYMENT_AMAZON_CONF_WALLET_DESIGNHEIGHT"
                description="VMPAYMENT_AMAZON_CONF_DESIGNHEIGHT_TIP"/>
-
+-->
         <param class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_VM_TEMPLATE"
                description=""/>
 

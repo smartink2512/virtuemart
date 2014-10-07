@@ -953,7 +953,7 @@ class VirtueMartCart {
 			if(empty($this->tosAccepted) and !empty($agreed->required) and $validUserDataBT!==-1){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				$this->tosAccepted = false;
-				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
 		}
