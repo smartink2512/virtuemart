@@ -20,11 +20,6 @@ JFormHelper::loadFieldClass('list');
 jimport('joomla.form.formfield');
 class JFormFieldVmCountry extends JFormFieldList {
 
-	/**
-	 * Element name
-	 * @access    protected
-	 * @var        string
-	 */
 	var $type = 'vmcountry';
 
 	function getOptions() {

@@ -46,9 +46,9 @@ class JFormFieldGetPaybox extends JFormField {
 //]]>
 ';
 
-		$doc = JFactory::getDocument();
-		$doc->addScriptDeclaration($js);
-
+		vmJsApi::addJScript("vm.getPaybox",$js);
+		vmJsApi::addJScript(  '/plugins/vmpayment/paybox/paybox/assets/js/admin.js');
+		vmJsApi::css(  '/plugins/vmpayment/paybox/paybox/assets/css/admin.css');
 		$cid = vRequest::getvar('cid', NULL, 'array');
 		if (is_Array($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];

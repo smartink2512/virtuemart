@@ -1479,7 +1479,7 @@ class KlarnaHandler {
 //  Since 12/09/12: merchants can sell goods with Klarna Invoice up to thousands of euros.
 		// convert price in euro
 		//$euro_currency_id = ShopFunctions::getCurrencyByName( 'EUR');
-		$price = KlarnaHandler::convertPrice($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, 'EUR', $cart->pricesCurrency);
+		$price = KlarnaHandler::convertPrice($cart->cartPrices['billTotal'], $cart->pricesCurrency, 'EUR', $cart->pricesCurrency);
 		return self::checkNLpriceCondition($price);
 	}
 
@@ -1487,7 +1487,7 @@ class KlarnaHandler {
 //  Since 12/09/12: merchants can sell goods with Klarna Invoice up to thousands of euros.
 		// convert price in euro
 		//$euro_currency_id = ShopFunctions::getCurrencyByName( 'EUR');
-		$amount = KlarnaHandler::convertPrice($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, 'EUR', $cart->pricesCurrency);
+		$amount = KlarnaHandler::convertPrice($cart->cartPrices['billTotal'], $cart->pricesCurrency, 'EUR', $cart->pricesCurrency);
 
 		if ($amount <= $cData['min_amount'] AND !empty($cData['min_amount'])) {
 			return FALSE;

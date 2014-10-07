@@ -140,8 +140,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$htmla = '';
 		$html = array();
 		foreach ($this->methods as $this->_currentMethod) {
-			if ($this->checkConditions($cart, $this->_currentMethod, $cart->pricesUnformatted)) {
-				$methodSalesPrice = $this->setCartPrices($cart, $cart->pricesUnformatted, $this->_currentMethod);
+			if ($this->checkConditions($cart, $this->_currentMethod, $cart->cartPrices)) {
+				$methodSalesPrice = $this->setCartPrices($cart, $cart->cartPrices, $this->_currentMethod);
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 				$html = $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);
 				if ($selected == $this->_currentMethod->virtuemart_paymentmethod_id) {

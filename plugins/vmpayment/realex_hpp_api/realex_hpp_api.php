@@ -29,10 +29,10 @@ if (!class_exists('vmPSPlugin')) {
 }
 
 if (!class_exists('RealexHelperRealex')) {
-	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/helper.php');
+	require(VMPATH_ROOT . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/helper.php');
 }
 if (!class_exists('RealexHelperCustomerData')) {
-	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
+	require(VMPATH_ROOT . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
 }
 
 if (!class_exists('vmPSPlugin')) {
@@ -1056,7 +1056,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		$htmla = array();
 		foreach ($this->methods as $this->_currentMethod) {
-			if ($this->checkConditions($cart, $this->_currentMethod, $cart->pricesUnformatted)) {
+			if ($this->checkConditions($cart, $this->_currentMethod, $cart->cartPrices)) {
 
 				$html = '';
 				$cart_prices = array();
@@ -1639,7 +1639,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$cart = VirtueMartCart::getCart();
 		$realexInterface->setCart($cart, false);
 
-		$response3DSVerifyEnrolled = $realexInterface->request3DSVerifyEnrolled();
+		$response3DSVerifyEnrolled = $realexInterface->request3DSVerifyEnrolled($realvaultData);
 		$eci = $realexInterface->manageResponse3DSVerifyEnrolled($response3DSVerifyEnrolled);
 
 		if (!$eci) {
@@ -1760,12 +1760,27 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 			}
 		} else {
+			$msgToShopper='';
 			if ($realexInterface->isResponseDeclined($xml_response3DSVerifysig)) {
 				$order_history['comments'] = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_DECLINED', $realexInterface->order['details']['BT']->order_number);
+				$msgToShopper=$xml_response3DSVerifysig->message;
 			} elseif ($realexInterface->isResponseWrongPhrase($xml_response3DSVerifysig)) {
 				$order_history['comments'] = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CANCELLED', $realexInterface->order['details']['BT']->order_number);
+				$msgToShopper=$xml_response3DSVerifysig->message;
 			} elseif ($realexInterface->isResponseAlreadyProcessed($xml_response3DSVerifysig)) {
 				$order_history['comments'] = $xml_response3DSVerifysig->message;
+				$msgToShopper=$xml_response3DSVerifysig->message;
+			} elseif ($xml_response and $realexInterface->isResponseInvalidPaymentDetails($xml_response)) {
+
+				$order_history['comments'] =$xml_response->message;
+				if ($realvault) {
+					$accountURL=JRoute::_('index.php?option=com_virtuemart&view=user&layout=edit');
+					$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS_REALVAULT',$xml_response->message, $accountURL);
+				} else {
+					$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS',$xml_response->message);
+				}
+
+
 			} else {
 				$order_history['comments'] = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CANCELLED', $realexInterface->order['details']['BT']->order_number);
 			}
@@ -1793,7 +1808,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		*/
 		//$html = $realexInterface->getResponseHTML($payments);
 		if ($redirectToCart) {
-			$this->redirectToCart();
+			$this->redirectToCart($msgToShopper);
 		} else {
 			$this->customerData->clear();
 			$cart = VirtueMartCart::getCart();

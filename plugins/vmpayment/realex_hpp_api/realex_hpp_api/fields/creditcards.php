@@ -20,13 +20,18 @@ defined('_JEXEC') or die('Restricted access');
  * http://virtuemart.net
  */
 
-if (!class_exists('VmConfig')) {
-	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
-}
+
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 if (!class_exists('ShopFunctions')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 }
+if (!class_exists('vmPSPlugin')) {
+	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+}
 
+if (!class_exists('RealexHelperRealex')) {
+	require(VMPATH_ROOT . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/helper.php');
+}
 /**
  * @copyright    Copyright (C) 2009 Open Source Matters. All rights reserved.
  * @license    GNU/GPL

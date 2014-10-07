@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $css =".totalInPaymentCurrency {display:none;}\n";
 
-JFactory::getDocument()->addStyleDeclaration($css);
+vmJsApi::css($css);
 /*
 $js = '
 	jQuery(document).ready(function( $ ) {
@@ -37,9 +37,8 @@ if ($viewData ['hide_BTST']) {
 	});
 	';
 }
-$document = JFactory::getDocument();
 
-$document->addScriptDeclaration ( $js);
+vmJsApi::addJScript('vm.hide_BTST', $js);
 
 ?>
 <?php if ($viewData ['message'] )  { ?>

@@ -167,8 +167,8 @@ class klarna_payments {
 			$display_fee = 0;
 
 			$billTotalInCountryCurrency = 0;
-			if (isset($cart->pricesUnformatted['billTotal'])) {
-				$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $vendor_currency, $country_currency_code, $cart->pricesCurrency);
+			if (isset($cart->cartPrices['billTotal'])) {
+				$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->cartPrices['billTotal'], $vendor_currency, $country_currency_code, $cart->cartPrices);
 			}
 			if ($billTotalInCountryCurrency <= 0) {
 				return NULL;
@@ -305,8 +305,8 @@ class klarna_payments {
 		$display_fee = 0;
 
 		$billTotalInCountryCurrency = 0;
-		if (isset($cart->pricesUnformatted['billTotal'])) {
-			$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cData['vendor_currency'], $cData['virtuemart_currency_id'],  $cart->pricesCurrency);
+		if (isset($cart->cartPrices['billTotal'])) {
+			$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->cartPrices['billTotal'], $cData['vendor_currency'], $cData['virtuemart_currency_id'],  $cart->pricesCurrency);
 		}
 		if ($billTotalInCountryCurrency <= 0) {
 			return NULL;
@@ -315,7 +315,7 @@ class klarna_payments {
 		$kCheckout = new KlarnaAPI($this->country, $this->lang, 'part', $billTotalInCountryCurrency, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);
 
 		KlarnaHandler::getCheapestPclass ($kCheckout, $cheapest, $minimum);
-vmdebug('getCheapestMonthlyCost',$cart->pricesUnformatted['billTotal'], $billTotalInCountryCurrency , $cheapest,$minimum);
+vmdebug('getCheapestMonthlyCost',$cart->cartPrices['billTotal'], $billTotalInCountryCurrency , $cheapest,$minimum);
 
 		if ($billTotalInCountryCurrency < $minimum) {
 			return NULL;

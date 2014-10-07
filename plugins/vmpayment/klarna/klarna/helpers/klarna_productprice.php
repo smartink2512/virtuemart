@@ -129,7 +129,7 @@ class klarna_productPrice {
 			$fromCurrency = $currency->getCurrencyForDisplay ();
 
 			//$paymentCurrency = CurrencyDisplay::getInstance($this->cart->paymentCurrency);
-			//$totalInPaymentCurrency = $paymentCurrency->priceDisplay( $this->cart->pricesUnformatted['billTotal'],$this->cart->paymentCurrency) ;
+			//$totalInPaymentCurrency = $paymentCurrency->priceDisplay( $this->cart->cartPrices['billTotal'],$this->cart->paymentCurrency) ;
 			//$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 			$i = 0;
 			foreach ($kCheckout->aPClasses as $pclass) {

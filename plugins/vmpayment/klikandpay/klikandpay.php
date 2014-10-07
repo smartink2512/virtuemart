@@ -534,7 +534,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		}
 		$cart = VirtueMartCart::getCart();
 		$interface->setCart($cart);
-		$interface->setTotal($cart->pricesUnformatted['billTotal']);
+		$interface->setTotal($cart->cartPrices['billTotal']);
 		$extraInfo = $interface->getExtraPluginNameInfo();
 
 		return $extraInfo;
@@ -751,7 +751,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 
 		$interface = $this->_loadKlikandpayInterface($this);
 		$interface->setCart($cart);
-		$interface->setTotal($cart->pricesUnformatted['billTotal']);
+		$interface->setTotal($cart->cartPrices['billTotal']);
 		return $interface->onCheckoutCheckDataPayment($cart);
 	}
 

@@ -19,7 +19,7 @@
         <fields name="params">
 
             <fieldset name="Realex" addfieldpath="/plugins/vmpayment/realex_hpp_api/realex_hpp_api/fields">
-                <field type="getrealex" default=""/>
+                <field type="getrealex" />
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_ACCOUNT_PARAMS"/>
                 <field name="integration" type="list" default="redirect" label="VMPAYMENT_REALEX_HPP_API_INTEGRATION"
                        description="VMPAYMENT_REALEX_HPP_API_INTEGRATION_TIP">

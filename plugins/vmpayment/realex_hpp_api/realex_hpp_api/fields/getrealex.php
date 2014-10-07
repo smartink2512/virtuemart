@@ -19,9 +19,7 @@
  */
 defined('JPATH_BASE') or die();
 
-/**
- * Renders a label element
- */
+
 jimport('joomla.form.formfield');
 class JFormFieldGetRealex extends JFormField {
 	/**
@@ -33,14 +31,15 @@ class JFormFieldGetRealex extends JFormField {
 	public $type = 'getrealex';
 
 	protected function getInput() {
-		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/admin.css');
+		vmJsApi::addJScript( '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/admin.js');
+		vmJsApi::css(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/admin.css');
 
 		$url = "http://www.realexpayments.com/partner-referral?id=virtuemart";
 		$logo = '<img src="http://www.realexpayments.com/images/logo_realex_large.png" width="150"/>';
-		$html = '<a target="_blank" href="' . $url . '" id="getrealex_link" ">' . $logo . '</a><br />';
-		$html .= '<a target="_blank" href="' . $url . '" id="getrealex_link" ">' . vmText::_('VMPAYMENT_REALEX_HPP_API_REGISTER') . '</a>';
+		$html = '<p><a target="_blank" href="' . $url . '"  >' . $logo . '</a></p>';
+		$html .= '<p><a target="_blank" href="' . $url . '" class="signin-button-link">' . vmText::_('VMPAYMENT_REALEX_HPP_API_REGISTER') . '</a>';
+		$html .= ' <a target="_blank" href="http://docs.virtuemart.net/manual/shop-menu/payment-methods/realex-hpp-and-api.html" class="signin-button-link">' . vmText::_('VMPAYMENT_REALEX_HPP_API_DOCUMENTATION') . '</a></p>';
+
 
 		return $html;
 	}

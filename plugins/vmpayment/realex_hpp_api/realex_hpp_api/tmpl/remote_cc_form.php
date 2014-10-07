@@ -28,9 +28,28 @@ vmJsApi::jCreditCard();
 vmJsApi::jQuery();
 vmJsApi::chosenDropDowns();
 $doc = JFactory::getDocument();
-$doc->addScript(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/site.js');
+vmJsApi::addJScript( '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/site.js');
 $doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/realex.css');
+$doc->addScriptDeclaration ("
 
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	jQuery(this).vm2front('stopVmLoading');
+	jQuery('#checkoutRealexFormSubmitButton').bind('click dblclick', function(e){
+	jQuery(this).vm2front('startVmLoading');
+	e.preventDefault();
+    jQuery(this).attr('disabled', 'true');
+    jQuery(this).removeClass( 'vm-button-correct' );
+    jQuery(this).addClass( 'vm-button' );
+    jQuery('#checkoutRealexFormSubmit').submit();
+
+});
+
+	});
+
+//]]>
+
+");
 $attribute = '';
 if ($viewData['dccinfo']) {
 	$attribute = ' readonly ';
@@ -309,7 +328,7 @@ if ($viewData['dccinfo']) {
 <div class="dcc_card_payment_button details-button">
 		<span class="addtocart-button">
 		<input type="submit" class="dcc_offer_btn addtocart-button"
-		       value="<?php echo $viewData['card_payment_button'] ?>"/>
+		       value="<?php echo $viewData['card_payment_button'] ?>" id="checkoutRealexFormSubmitButton"/>
 		<input type="hidden" name="option" value="com_virtuemart"/>
 		<input type="hidden" name="view" value="pluginresponse"/>
 		<input type="hidden" name="task" value="pluginnotification"/>

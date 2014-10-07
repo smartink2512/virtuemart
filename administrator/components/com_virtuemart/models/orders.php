@@ -630,7 +630,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	}
 
-	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
+	// IMPORTANT: The $inputOrder can contain extra data by plugins
+	//also strange $useTriggers is always activated? No, this function is also called by plugins, and it should have $useTriggers=false
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
 // 		vmdebug('updateStatusForOneOrder', $inputOrder);
@@ -865,7 +866,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$_orderData->order_status = 'P';
 		$_orderData->order_currency = $this->getVendorCurrencyId($_orderData->virtuemart_vendor_id);
-
+		if (!class_exists('CurrencyDisplay')) {
+			require(VMPATH_ADMIN . '/helpers/currencydisplay.php');
+		}
 		if (isset($_cart->pricesCurrency)) {
 			$_orderData->user_currency_id = $_cart->paymentCurrency ;//$this->getCurrencyIsoCode($_cart->pricesCurrency);
 			$currency = CurrencyDisplay::getInstance($_orderData->user_currency_id);

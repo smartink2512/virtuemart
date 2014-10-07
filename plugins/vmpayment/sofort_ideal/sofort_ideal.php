@@ -119,8 +119,8 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$currency = CurrencyDisplay::getInstance();
 		foreach ($this->methods as $method) {
 
-			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
-				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
+			if ($this->checkConditions($cart, $method, $cart->cartPrices)) {
+				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->cartPrices);
 				//$method->payment_name = $method->payment_name
 				if (!class_exists('SofortLib')) {
 					require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');

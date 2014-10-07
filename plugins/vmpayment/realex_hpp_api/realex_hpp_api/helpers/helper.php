@@ -68,6 +68,8 @@ class  RealexHelperRealex {
 	const RESPONSE_CODE_INVALID_ORDER_ID = '501'; // This order ID has already been used - please use another one
 	const RESPONSE_CODE_PAYER_REF_NOTEXIST = '501'; // This Payer Ref payerref does not exist
 	const RESPONSE_CODE_INVALID_PAYER_REF_USED = '501'; // This Payer Ref payerref has already been used - please use another one
+	const RESPONSE_CODE_INVALID_PAYMENT_DETAILS = '509';
+
 	const PAYER_SETUP_SUCCESS = "00";
 	const PMT_SETUP_SUCCESS = "00";
 
@@ -156,7 +158,7 @@ class  RealexHelperRealex {
 
 	public function setCart ($cart, $doGetCartPrices = true) {
 		$this->cart = $cart;
-		if ($doGetCartPrices AND !isset($this->cart->pricesUnformatted)) {
+		if ($doGetCartPrices AND !isset($this->cart->cartPrices)) {
 			$this->cart->getCartPrices();
 		}
 	}
@@ -971,7 +973,7 @@ class  RealexHelperRealex {
 			$orderModel = VmModel::getModel('orders');
 			$order = $orderModel->getOrder($virtuemart_order_id);
 			$usedCC = $this->getStoredCCByPmt_ref($order['details']['BT']->virtuemart_user_id, $data->paymentmethod);
-			VmConfig::loadJLangThis('plg_vmuserfield_realex_hpp_api');
+			$this->loadJLangThis('plg_vmuserfield_realex_hpp_api');
 			$display_fields = array(
 				'realex_hpp_api_saved_pmt_type',
 				'realex_hpp_api_saved_pmt_digits',
@@ -2221,6 +2223,12 @@ class  RealexHelperRealex {
 		return $success;
 	}
 
+	function  isResponseInvalidPaymentDetails ($xml_response) {
+		$result = (string)$xml_response->result;
+		$success = ($result == self::RESPONSE_CODE_INVALID_PAYMENT_DETAILS);
+		return $success;
+	}
+
 	/**
 	 * get HASH for Realex
 	 * @param      $secret
@@ -2299,8 +2307,16 @@ class  RealexHelperRealex {
 			if (isset($xml_requestToLog->card)) {
 				$card_number = $xml_requestToLog->card->number;
 				$cc_length = strlen($card_number);
-				$xml_requestToLog->card->number = str_repeat("*", $cc_length);
+				//$xml_requestToLog->card->number = str_repeat("*", $cc_length);
+				$xml_requestToLog->card->number = $this->obscureValue($xml_requestToLog->card->number);
+				if (isset($xml_requestToLog->card->cvn->number)) {
+					$xml_requestToLog->card->cvn->number = $this->obscureValue($xml_requestToLog->card->cvn->number);
+				}
 			}
+			if (isset($xml_requestToLog->paymentdata->cvn->number)) {
+				$xml_requestToLog->paymentdata->cvn->number = $this->obscureValue($xml_requestToLog->paymentdata->cvn->number);
+			}
+
 			$xml_requestToLog = $this->obscureSha1hash($xml_requestToLog);
 
 

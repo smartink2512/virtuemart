@@ -17,11 +17,10 @@
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/klarnacheckout/klarnacheckout/fields">
                 <field type="klarnalogo" level="level1"/>
                 <field type="vmcurl"/>
-                <field type="klarnacheckoutjs"/>
+                <field type="getklarnacheckout"/>
 
                 <field type="spacer" default="VMPAYMENT_KLARNACHECKOUT_WARNING" level="level1"/>
-                <field name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION"
-                       default="&lt;a href=&quot;http://cdn.klarna.com/1.0/shared/content/integration/guide/virtuemart.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>
+
                 <field type="spacer" default="" level="level1"/>
                 <field type="vmtitle" default="VMPAYMENT_KLARNACHECKOUT_PAYMENT_PARAMS" level="level1"/>
                 <field name="purchase_country" type="vmcountry" default=""

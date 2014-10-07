@@ -655,7 +655,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$user = JFactory::getUser();
 		$cart = VirtueMartCart::getCart(false);
 		$items = $cart->products;
-		$prices = $cart->pricesUnformatted;
+		$prices = $cart->cartPrices;
 
 		$params = array();
 		if ($items) {

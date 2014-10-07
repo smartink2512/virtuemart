@@ -24,7 +24,6 @@
         <fields name="params">
 
             <fieldset name="basic" addfieldpath="/plugins/vmpayment/paybox/paybox/fields">
-                <field type="payboxjs" default=""/>
                 <field type="getpaybox" level="level1 "/>
                 <field class="level1 " type="vmtitle" default="VMPAYMENT_PAYBOX_CONF_ACCOUNT_PARAMS"/>
 

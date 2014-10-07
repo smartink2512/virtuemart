@@ -115,7 +115,7 @@ class KlikandpayHelperKlikandpaySubscribe extends KlikandpayHelperKlikandpay {
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart();
-		if (!isset($cart->pricesUnformatted)) {
+		if (!isset($cart->cartPrices)) {
 			$cart->getCartPrices();
 		}
 		$extraInfo['subscribe'] = $this->getSubscribeProducts($cart, false);

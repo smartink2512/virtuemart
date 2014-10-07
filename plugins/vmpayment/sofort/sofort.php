@@ -718,9 +718,9 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart');
 		$currency = CurrencyDisplay::getInstance();
 		foreach ($this->methods as $method) {
-			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
-				$pricesUnformatted = $cart->pricesUnformatted;
-				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $pricesUnformatted);
+			if ($this->checkConditions($cart, $method, $cart->cartPrices)) {
+				$cartPrices = $cart->cartPrices;
+				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cartPrices);
 
 				$logo = $this->displayLogos($method->payment_logos);
 				$logo_link = $this->getLogoLink();

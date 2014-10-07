@@ -686,7 +686,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if ($message == NULL) {
 			$message = vmText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
 		}
-		JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
+		JFactory::getMailer()->sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
 
 		$query = 'SELECT name, email, sendEmail FROM #__users WHERE sendEmail=1';
 
@@ -700,7 +700,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		foreach ($rows as $row) {
 			if ($row->sendEmail) {
 				$message = html_entity_decode($message, ENT_QUOTES);
-				JUtility::sendMail($vendorEmail, $vendorName, $row->email, $subject, $message);
+				JFactory::getMailer()->sendMail($vendorEmail, $vendorName, $row->email, $subject, $message);
 			}
 		}
 	}

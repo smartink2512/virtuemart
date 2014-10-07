@@ -440,7 +440,7 @@ function logInfo ($text, $type = 'message') {
 				fwrite ($fp,  $head);
 			}
 
-			fwrite ($fp, "\n" . JFactory::getDate()->format ('%Y-%m-%d %H:%M:%S'));
+			fwrite ($fp, "\n" . JFactory::getDate()->format ('Y-m-d H:i:s'));
 			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
 			fclose ($fp);
 		} else {
