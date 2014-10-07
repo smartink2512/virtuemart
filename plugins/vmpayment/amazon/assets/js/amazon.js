@@ -118,7 +118,7 @@ var amazonPayment = {
 
         startLoading: function () {
             //document.getElementsByTagName('body')[0].className += " vmLoading";
-           // document.body.innerHTML += "<div class=\"vmLoadingDiv\"></div>";
+            //document.body.innerHTML += "<div class=\"vmLoadingDiv\"></div>";
         },
 
         stopLoading: function () {
