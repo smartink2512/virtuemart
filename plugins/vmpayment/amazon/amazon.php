@@ -3264,7 +3264,7 @@ jQuery().ready(function($) {
 		$this->_currentMethod->min_amount = (float)str_replace(',', '.', $this->_currentMethod->min_amount);
 		$this->_currentMethod->max_amount = (float)str_replace(',', '.', $this->_currentMethod->max_amount);
 		$amount_cond = ($amount > 0 AND $amount >= $this->_currentMethod->min_amount AND $amount <= $this->_currentMethod->max_amount OR ($this->_currentMethod->min_amount <= $amount AND ($this->_currentMethod->max_amount == 0)));
-		if (!$amount_cond) {
+		if ($amount==0 or !$amount_cond) {
 			vmdebug('AMAZON checkConditions $amount_cond false');
 			return false;
 		}
