@@ -20,7 +20,7 @@ if (!empty($viewData['payment_logo_link'] )) {
 	JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
 	if(VmConfig::get('usefancy',1)){
-		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+		vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack');
 		vmJsApi::css('jquery.fancybox-1.3.4');
 		$box = "$.fancybox({
 				href: '" .$viewData['payment_logo_link']  . "',
@@ -28,7 +28,7 @@ if (!empty($viewData['payment_logo_link'] )) {
 				height: '550'
 			});";
 	} else {
-		vmJsApi::js( 'facebox' );
+		vmJsApi::addJScript( 'facebox' );
 		vmJsApi::css( 'facebox' );
 		$box = "$.facebox({
 				iframe: '" .$viewData['payment_logo_link']  . "',

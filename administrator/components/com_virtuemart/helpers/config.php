@@ -71,6 +71,7 @@ defined('VM_VERSION') or define ('VM_VERSION', 3);
 defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 
 require(VMPATH_ADMIN.DS.'version.php');
+defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
 
 if(!class_exists('JTable')){
 	require(VMPATH_LIBS.DS.'joomla'.DS.'database'.DS.'table.php');

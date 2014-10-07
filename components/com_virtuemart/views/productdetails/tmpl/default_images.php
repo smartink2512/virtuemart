@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 if(VmConfig::get('usefancy',1)){
-	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack', false);
 	vmJsApi::css('jquery.fancybox-1.3.4');
 	$document = JFactory::getDocument ();
 	$imageJS = '
@@ -46,7 +46,7 @@ if(VmConfig::get('usefancy',1)){
 	}
 	';
 } else {
-	vmJsApi::js( 'facebox' );
+	vmJsApi::addJScript( 'facebox',false );
 	vmJsApi::css( 'facebox' );
 	$document = JFactory::getDocument ();
 	$imageJS = '

@@ -695,7 +695,7 @@ class shopFunctionsF {
 	 */
 	static function buildTabs ($view, $load_template = array()) {
 
-		vmJsApi::js( 'vmtabs' );
+		vmJsApi::addJScript( 'vmtabs' );
 		$html = '<div id="ui-tabs">';
 		$i = 1;
 		foreach( $load_template as $tab_content => $tab_title ) {

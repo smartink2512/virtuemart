@@ -32,7 +32,7 @@ $askquestion_url = JRoute::_('index.php?option=com_virtuemart&view=productdetail
 $boxFuncReco = '';
 $boxFuncAsk = '';
 if(VmConfig::get('usefancy',1)){
-	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
 	vmJsApi::css('jquery.fancybox-1.3.4');
 	if(VmConfig::get('show_emailfriend',0)){
 		$boxReco = "jQuery.fancybox({
@@ -50,7 +50,7 @@ if(VmConfig::get('usefancy',1)){
 	}
 
 } else {
-	vmJsApi::js( 'facebox' );
+	vmJsApi::addJScript( 'facebox', false );
 	vmJsApi::css( 'facebox' );
 	if(VmConfig::get('show_emailfriend',0)){
 		$boxReco = "jQuery.facebox({

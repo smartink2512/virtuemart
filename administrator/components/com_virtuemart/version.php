@@ -35,7 +35,7 @@ if( !class_exists( 'vmVersion' ) ) {
 		/** @var string Timezone */
 		static $RELTZ = '${PHING.VM.RELTZ}';
 		/** @var string Revision */
-		static $REVISION = 'Revision: ${PHING.VM.REVISION}';
+		static $REVISION = '${PHING.VM.REVISION}';
 		/** @var string Copyright Text */
 		static $COPYRIGHT = 'Copyright (C) 2005-2014 VirtueMart Development Team  - All rights reserved.';
 		/** @var string URL */
@@ -48,7 +48,7 @@ if( !class_exists( 'vmVersion' ) ) {
 
 			self::$shortversion = vmVersion::$PRODUCT . " " . vmVersion::$RELEASE . " " . vmVersion::$DEV_STATUS. " ";
 
-			self::$myVersion = self::$shortversion .' '.vmVersion::$REVISION. " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
+			self::$myVersion = self::$shortversion .' Revision: '.vmVersion::$REVISION. " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
 				. vmVersion::$RELTIME . " " . vmVersion::$RELTZ;
 		}
 	}
