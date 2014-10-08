@@ -64,9 +64,8 @@ $verticalseparator = " vertical-separator";
         $caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id , FALSE);
 
           // Show Category ?>
-	    <div class="category vm-col<?php echo ' vm-col-' . $categories_per_row . $show_vertical_separator ?>">
-
-	    <div class="spacer">
+    <div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
+      <div class="spacer">
         <h2>
           <a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
           <?php echo $category->category_name ?>

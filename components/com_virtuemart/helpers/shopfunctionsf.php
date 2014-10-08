@@ -87,9 +87,9 @@ class shopFunctionsF {
 	static public function getAddToCartButton ($orderable) {
 
 		if($orderable) {
-			$html = '<button type="submit" name="addtocart" class="addtocart-button"  >'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'</button>';
+			$html = '<input type="submit" name="addtocart" class="addtocart-button" value="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
 		} else {
-			$html = '<button name="addtocart" class="addtocart-button-disabled"  >'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT').'</button>';
+			$html = '<input name="addtocart" class="addtocart-button-disabled" value="'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" title="'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" />';
 		}
 		return $html;
 	}
