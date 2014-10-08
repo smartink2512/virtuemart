@@ -603,7 +603,7 @@ class  RealexHelperRealex {
 				<number>' . $this->getCCnumber() . '</number>
 				<expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
 				<chname>' . $this->sanitize($this->customerData->getVar('cc_name')) . '</chname>
-				<type>' . $this->customerData->getVar('cc_type') . '</type>
+				<type>' . $this->getCCtype($this->customerData->getVar('cc_type')) . '</type>
 				<issueno></issueno>
 				<cvn>
 				<number>' . $this->customerData->getVar('cc_cvv') . '</number>
@@ -768,7 +768,7 @@ class  RealexHelperRealex {
 		                    <number>' . $this->getCCnumber() . '</number>
 		                    <expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
 	                        <chname>' . $this->sanitize($this->customerData->getVar('cc_name')) . '</chname>
-	                        <type>' . $this->customerData->getVar('cc_type') . '</type>
+	                        <type>' . $this->getCCtype($this->customerData->getVar('cc_type')) . '</type>
 						 </card>';
 
 		return $xml_request;
@@ -875,6 +875,11 @@ class  RealexHelperRealex {
 		if (!$this->validateResponseHash($response)) {
 			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
 		}
+		$xml_response = simplexml_load_string($response);
+		if ($this->isResponseInvalidPaymentDetails($xml_response)) {
+			$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS',$xml_response->message);
+			$this->plugin->redirectToCart($msgToShopper);
+		}
 		$this->plugin->_storeRealexInternalData($response, $this->_method->virtuemart_paymentmethod_id, $this->order['details']['BT']->virtuemart_order_id, $this->order['details']['BT']->order_number, $this->request_type);
 		/*
 				$xml_response = simplexml_load_string($response);
@@ -894,6 +899,13 @@ class  RealexHelperRealex {
 	 * @param $response
 	 */
 	function manageResponseRequestReceiptIn ($response) {
+		$xml_response = simplexml_load_string($response);
+		if ($this->isResponseInvalidPaymentDetails($xml_response)) {
+			$accountURL=JRoute::_('index.php?option=com_virtuemart&view=user&layout=edit');
+			$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS_REALVAULT',$xml_response->message, $accountURL);
+			$this->plugin->redirectToCart($msgToShopper);
+		}
+
 		$this->manageResponseRequest($response);
 	}
 
@@ -2013,7 +2025,7 @@ class  RealexHelperRealex {
 		<number>' . $cc_number . '</number>
 		<expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
 		<chname>' . $cc_name . '</chname>
-		<type>' . $this->customerData->getVar('cc_type') . '</type>
+		<type>' . $this->getCCtype($this->customerData->getVar('cc_type')). '</type>
 		<issueno />
 		</card>
 		';
@@ -2177,6 +2189,15 @@ class  RealexHelperRealex {
 			}
 		}
 		return NULL;
+	}
+
+
+	function getCCtype($cctype ) {
+		if ($cctype=='MAESTRO') {
+			return 'MC';
+		} else {
+			return $cctype;
+		}
 	}
 
 	function getLastTransactionData ($payments, $request_type = array(

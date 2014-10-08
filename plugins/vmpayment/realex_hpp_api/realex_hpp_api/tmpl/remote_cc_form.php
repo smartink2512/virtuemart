@@ -27,12 +27,10 @@ VmConfig::loadJLang('com_virtuemart', true);
 vmJsApi::jCreditCard();
 vmJsApi::jQuery();
 vmJsApi::chosenDropDowns();
-$doc = JFactory::getDocument();
 vmJsApi::addJScript( '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/site.js');
-$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/realex.css');
-$doc->addScriptDeclaration ("
+vmJsApi::css ( '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/realex.css');
+vmJsApi::addJScript ('vmRealexSumit',"
 
-//<![CDATA[
 	jQuery(document).ready(function($) {
 	jQuery(this).vm2front('stopVmLoading');
 	jQuery('#checkoutRealexFormSubmitButton').bind('click dblclick', function(e){
@@ -46,8 +44,6 @@ $doc->addScriptDeclaration ("
 });
 
 	});
-
-//]]>
 
 ");
 $attribute = '';

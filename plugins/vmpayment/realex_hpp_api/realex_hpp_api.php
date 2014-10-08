@@ -449,7 +449,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		}
 		$html .= '</table>' . "\n";
 
-		$doc = JFactory::getDocument();
+
 		$js = "
 	jQuery().ready(function($) {
 		$('.RealexLogOpener').click(function() {
@@ -458,7 +458,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			return false;
 		});
 	});";
-		$doc->addScriptDeclaration($js);
+		vmJsApi::addJScrip("RealexLogOpener",$js);
 		return $html;
 
 	}
@@ -493,10 +493,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$html .= '</form>';
 		$html .= ' </td></tr>';
 
-		$doc = JFactory::getDocument();
-
-		$doc->addScriptDeclaration("
-		//<![CDATA[
+		vmJsApi::addJScript('vmRealex.updateOrderBEPayment',"
 		jQuery(document).ready( function($) {
 			jQuery('.updateOrderBEPayment').click(function() {
 				document.updateOrderBEPayment.submit();
@@ -504,7 +501,6 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 	});
 });
-//]]>
 ");
 
 		//$html .= '</table>'  ;
@@ -1770,16 +1766,16 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			} elseif ($realexInterface->isResponseAlreadyProcessed($xml_response3DSVerifysig)) {
 				$order_history['comments'] = $xml_response3DSVerifysig->message;
 				$msgToShopper=$xml_response3DSVerifysig->message;
-			} elseif ($xml_response and $realexInterface->isResponseInvalidPaymentDetails($xml_response)) {
+				/* } elseif ($xml_response and $realexInterface->isResponseInvalidPaymentDetails($xml_response)) {
 
-				$order_history['comments'] =$xml_response->message;
-				if ($realvault) {
-					$accountURL=JRoute::_('index.php?option=com_virtuemart&view=user&layout=edit');
-					$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS_REALVAULT',$xml_response->message, $accountURL);
-				} else {
-					$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS',$xml_response->message);
-				}
-
+					$order_history['comments'] =$xml_response->message;
+					if ($realvault) {
+						$accountURL=JRoute::_('index.php?option=com_virtuemart&view=user&layout=edit');
+						$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS_REALVAULT',$xml_response->message, $accountURL);
+					} else {
+						$msgToShopper=vmText::sprintf('VMPAYMENT_REALEX_HPP_API_INVALID_PAYMENT_DETAILS',$xml_response->message);
+					}
+	*/
 
 			} else {
 				$order_history['comments'] = vmText::sprintf('VMPAYMENT_REALEX_HPP_API_PAYMENT_STATUS_CANCELLED', $realexInterface->order['details']['BT']->order_number);
