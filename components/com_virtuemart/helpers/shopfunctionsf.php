@@ -278,10 +278,31 @@ class shopFunctionsF {
 
 	}
 
+	/**
+	 * @return mixed|string
+	 */
 	public static function loadVmTemplateStyle(){
 		$vmtemplate = VmConfig::get( 'vmtemplate', 0 );
+
+		$db = JFactory::getDbo();
+
+		if(empty($vmtemplate) or $vmtemplate=='default'){
+			$q = 'SELECT id, home, template, s.params
+  FROM #__template_styles as s
+  LEFT JOIN #__extensions as e
+  ON e.element=s.template
+  AND e.type="template"
+  AND e.client_id=s.client_id
+  WHERE s.client_id = 0
+  AND e.enabled = 1';
+
+			$db->setQuery( $q );
+			$vmtemplate = $db->loadResult();
+
+		}
+
 		if(!empty($vmtemplate) and is_numeric($vmtemplate)) {
-			$db = JFactory::getDbo();
+
 			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
 			$db->setQuery($query);
 			$res = $db->loadAssoc();
@@ -295,8 +316,9 @@ class shopFunctionsF {
 			}
 		} else {
 			if(JVM_VERSION > 1) {
-				//$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
-				$app =& JFactory::getApplication();
+				$app =& JFactory::getApplication(0);
+				//vmdebug('loadVmTemplateStyle my $template',$app);
+				//This does not work correctly for mails, because we dont get the site application in the BE
 				$template = $app->getTemplate();
 			} else {
 				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
@@ -311,7 +333,7 @@ class shopFunctionsF {
 			}
 
 		}
-
+		vmdebug('loadVmTemplateStyle my $template',$template);
 		return $template;
 	}
 
