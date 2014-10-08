@@ -239,19 +239,19 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$errorMsg = 0;//vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 
 			$products = $cart->add($virtuemart_product_ids, $errorMsg );
-			if ($products and is_array($products) and isset($products[0]) ) {
 
-				$view->assignRef('product',$products[0]);
-				$view->setLayout('padded');
-				$this->json->stat = '1';
-			} else {
+
+			$view->setLayout('padded');
+			$this->json->stat = '1';
+			
+			if(!$products or count($products) == 0){
 				$view->setLayout('perror');
 				$this->json->stat = '2';
-				$tmp = false;
-				$view->assignRef('product',$tmp);
+
 			}
 			$view->assignRef('products',$products);
 			$view->assignRef('errorMsg',$errorMsg);
+
 			ob_start();
 			$view->display ();
 			$this->json->msg = ob_get_clean();

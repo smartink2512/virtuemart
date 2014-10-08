@@ -80,6 +80,8 @@ class VirtueMartViewProductdetails extends VmView {
 			if (!empty($quantityArray[0])) {
 				$quantity = $quantityArray[0];
 			}
+			$ratingModel = VmModel::getModel('ratings');
+			$product_model->withRating = $this->showRating = $ratingModel->showRating($virtuemart_product_id);
 			$product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
 			if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
@@ -203,7 +205,7 @@ class VirtueMartViewProductdetails extends VmView {
 			} else {
 				$document->setTitle(strip_tags(($category->category_name ? ($category->category_name . ' : ') : '') . $product->product_name));
 			}
-			$ratingModel = VmModel::getModel('ratings');
+
 			$allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
 			$this->assignRef('allowReview', $allowReview);
 
@@ -219,15 +221,13 @@ class VirtueMartViewProductdetails extends VmView {
 				$this->assignRef('rating_reviews', $rating_reviews);
 			}
 
-			$showRating = $ratingModel->showRating($product->virtuemart_product_id);
-			$this->assignRef('showRating', $showRating);
-
-			if ($showRating) {
+			if ($this->showRating) {
 				$vote = $ratingModel->getVoteByProduct($product->virtuemart_product_id);
 				$this->assignRef('vote', $vote);
 
-				$rating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
-				$this->assignRef('rating', $rating);
+				//$rating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
+				//$this->assignRef('rating', $rating);
+				//vmdebug('Should show rating vote and rating',$vote,$rating);
 			}
 
 			$allowRating = $ratingModel->allowRating($product->virtuemart_product_id);

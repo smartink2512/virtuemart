@@ -79,7 +79,7 @@ class VirtueMartModelUser extends VmModel {
 			} else {
 				if($cid != $user->id){
 					$user = JFactory::getUser();
-					if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+					if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or $user->authorise('vm.user','com_virtuemart')){
 						$userId = $cid;
 						// 						vmdebug('Admin watches user, setId '.$cid);
 					} else {

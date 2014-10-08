@@ -841,7 +841,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   `virtuemart_customfield_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'field id',
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_custom_id` int(11) NOT NULL DEFAULT '1' COMMENT 'custom group id',
-  `customfield_value` varchar(3000) COMMENT 'field value',
+  `customfield_value` varchar(2500) COMMENT 'field value',
   `customfield_price` decimal(15,6) COMMENT 'price',
   `disabler` INT(1) UNSIGNED NOT NULL DEFAULT '0',
   `override` INT(1) UNSIGNED NOT NULL DEFAULT '0',

@@ -24,17 +24,28 @@ echo '<a class="continue_link" href="' . $this->continue_link . '" >' . vmText::
 echo '<a class="showcart floatright" href="' . $this->cart_link . '">' . vmText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
 if($this->products){
 	foreach($this->products as $product){
-		echo '<h4>'.vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$product->product_name,$product->quantity).'</h4>';
+		if($product->quantity>0){
+			echo '<h4>'.vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$product->product_name,$product->quantity).'</h4>';
+		} else {
+			if(!empty($product->errorMsg)){
+				echo '<div>'.$product->errorMsg.'</div>';
+			}
+		}
+
 	}
 }
 
-if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';
+//if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';
 
 if(VmConfig::get('popup_rel',1)){
 	//VmConfig::$echoDebug=true;
-	if($this->products and !empty($this->products[0])){
+	if ($this->products and is_array($this->products) and count($this->products)>0 ) {
+
+		$product = reset($this->products);
+		//vmdebug('What the hekc',$product->allIds);
+	//if($this->products and !empty($this->products[0])){
 		$customFieldsModel = VmModel::getModel('customfields');
-		$this->product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($this->products[0]->allIds,'R');
+		$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,'R');
 
 
 		/*$fields = array();
@@ -45,14 +56,14 @@ if(VmConfig::get('popup_rel',1)){
 			}
 		}/*/
 
-		$customFieldsModel->displayProductCustomfieldFE($this->products[0],$this->products[0]->customfields);
-		if(!empty($this->products[0]->customfields)){
+		$customFieldsModel->displayProductCustomfieldFE($product,$product->customfields);
+		if(!empty($product->customfields)){
 			?>
 			<div class="product-related-products">
 			<h4><?php echo vmText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h4>
 			<?php
 		}
-		foreach($this->products[0]->customfields as $rFields){
+		foreach($product->customfields as $rFields){
 
 				if(!empty($rFields->display)){
 				?><div class="product-field product-field-type-<?php echo $rFields->field_type ?>">

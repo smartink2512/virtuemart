@@ -786,17 +786,16 @@ class VirtueMartModelCustomfields extends VmModel {
 						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection" data-dynamic-update="1" ', "value", "text", $selected,$idTag);
 					}
 
-					//vmdebug('displayProductCustomfieldFE my C', $customfield->options,$dropdowns);
-					//'http://vm3j2.stuprecht/en/?option=com_virtuemart&view=productdetails&virtuemart_product_id='+variants[index][0]+'&virtuemart_category_id=10&Itemid=127'
+
 					$Itemid = vRequest::getInt('Itemid',''); // '&Itemid=127';
 					if(!empty($Itemid)){
 						$Itemid = '&Itemid='.$Itemid;
 					}
-					$url = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=';
 
 					//create array for js
 					$jsArray = array();
 
+					$url = '';
 					foreach($customfield->options as $product_id=>$variants){
 						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid);
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
@@ -1188,9 +1187,9 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						elseif (($productCustom->field_type == "S")) {
 
 							if($productCustom->is_list){
-								$value = $params;
+								$value = vmText::_($params);
 							} else {
-								$value = $productCustom->customfield_value;
+								$value = vmText::_($productCustom->customfield_value);
 							}
 							//$value = $productCustom->custom_title.' '.vmText::_($productCustom->customfield_value);
 							//vmdebug('displayProductCustomfieldSelected $variantmods',$productCustom->is_input,$params);
@@ -1198,9 +1197,16 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						}
 						else {
 							// 						$html .= $productCustom->custom_title.' '.$productCustom->custom_value;
-							$value = $productCustom->customfield_value;
+							$value = vmText::_($productCustom->customfield_value);
 						}
-						$html .= ShopFunctionsF::translateTwoLangKeys ($productCustom->custom_title, $value);
+						$trTitle = vmText::_($productCustom->custom_title);
+						if($productCustom->custom_title!=$trTitle){
+							$html .= vmText::sprintf($productCustom->custom_title,$value);
+						} else {
+							$html .= $trTitle.$value;
+						}
+
+						//$html .= ShopFunctionsF::translateTwoLangKeys ($productCustom->custom_title, $value);
 					}
 					$html .= '</span><br />';
 				}

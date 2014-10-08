@@ -1049,9 +1049,10 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 
-		if(!isset($product->selectedPrice)){
+		if(!isset($product->selectedPrice) or empty($product->allPrices)){
 			$product->selectedPrice = 0;
 			$product->allPrices[$product->selectedPrice] = $this->fillVoidPrice();
+			vmdebug('hm $product->allPrices ',$product->selectedPrice,$product->allPrices);
 		}
 
 	}

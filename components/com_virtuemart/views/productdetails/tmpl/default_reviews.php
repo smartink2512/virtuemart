@@ -34,10 +34,6 @@ if ($this->allowRating || $this->showReview) {
 				</span>';
 	} ?>
 
-
-
-
-
 	<div class="customer-reviews">
 		<form method="post" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE); ?>" name="reviewForm" id="reviewform">
 	<?php
@@ -105,78 +101,68 @@ if ($this->showReview) {
 		?>
 		<div class="write-reviews">
 
-			<?php // Show Review Length While Your Are Writing
+		<?php // Show Review Length While Your Are Writing
+		$reviewJavascript = "
+function check_reviewform() {
+
+var form = document.getElementById('reviewform');
+var ausgewaehlt = false;
+
+	if (form.comment.value.length < ".VmConfig::get( 'reviews_minimum_comment_length', 100 ).") {
+		alert('".addslashes( vmText::sprintf( 'COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get( 'reviews_minimum_comment_length', 100 ) ) )."');
+		return false;
+	}
+	else if (form.comment.value.length > ".VmConfig::get( 'reviews_maximum_comment_length', 2000 ).") {
+		alert('".addslashes( vmText::sprintf( 'COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS', VmConfig::get( 'reviews_maximum_comment_length', 2000 ) ) )."');
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+function refresh_counter() {
+	var form = document.getElementById('reviewform');
+	form.counter.value= form.comment.value.length;
+}
+";
+		vmJsApi::addJScript( 'check_reviewform', $reviewJavascript );
+
+	}
+
+	//if ($this->showRating) {
+		if ($this->allowRating) {
+			?>
+			<h4><?php echo vmText::_ ('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo vmText::_ ('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
+			<span class="step"><?php echo vmText::_ ('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
+			<div class="rating">
+				<label for="vote"><?php echo $stars[$maxrating]; ?></label>
+				<input type="hidden" id="vote" value="<?php echo $maxrating ?>" name="vote">
+			</div>
+
+			<?php
 			$reviewJavascript = "
-//<![CDATA[
-			function check_reviewform() {
-				var form = document.getElementById('reviewform');
+jQuery(function($) {
+	var steps = ".$maxrating.";
+	var parentPos= $('.rating .ratingbox').position();
+	var boxWidth = $('.rating .ratingbox').width();// nbr of total pixels
+	var starSize = (boxWidth/steps);
+	var ratingboxPos= $('.rating .ratingbox').offset();
 
-				var ausgewaehlt = false;
-
-				// for (var i=0; i<form.vote.length; i++) {
-					// if (form.vote[i].checked) {
-						// ausgewaehlt = true;
-					// }
-				// }
-					// if (!ausgewaehlt)  {
-						// alert('" . vmText::_ ('COM_VIRTUEMART_REVIEW_ERR_RATE', FALSE) . "');
-						// return false;
-					// }
-					//else
-					if (form.comment.value.length < " . VmConfig::get ('reviews_minimum_comment_length', 100) . ") {
-						alert('" . addslashes (vmText::sprintf ('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get ('reviews_minimum_comment_length', 100))) . "');
-						return false;
-					}
-					else if (form.comment.value.length > " . VmConfig::get ('reviews_maximum_comment_length', 2000) . ") {
-						alert('" . addslashes (vmText::sprintf ('COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS', VmConfig::get ('reviews_maximum_comment_length', 2000))) . "');
-						return false;
-					}
-					else {
-						return true;
-					}
-				}
-
-				function refresh_counter() {
-					var form = document.getElementById('reviewform');
-					form.counter.value= form.comment.value.length;
-				}
-				jQuery(function($) {
-					var steps = " . $maxrating . ";
-					var parentPos= $('.write-reviews .ratingbox').position();
-					var boxWidth = $('.write-reviews .ratingbox').width();// nbr of total pixels
-					var starSize = (boxWidth/steps);
-					var ratingboxPos= $('.write-reviews .ratingbox').offset();
-
-					$('.write-reviews .ratingbox').mousemove( function(e){
-						var span = $(this).children();
-						var dif = e.pageX-ratingboxPos.left; // nbr of pixels
-						difRatio = Math.floor(dif/boxWidth* steps )+1; //step
-						span.width(difRatio*starSize);
-						$('#vote').val(difRatio);
-						//console.log('note = ', difRatio);
-					});
-				});
-
-
-//]]>
-				";
-		 	vmJsApi::addJScript('check_reviewform',$reviewJavascript);
-
-			if ($this->showRating) {
-				if ($this->allowRating && $review_editable) {
-					?>
-					<h4><?php echo vmText::_ ('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo vmText::_ ('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
-					<span class="step"><?php echo vmText::_ ('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
-					<div class="rating">
-						<label for="vote"><?php echo $stars[$maxrating]; ?></label>
-						<input type="hidden" id="vote" value="<?php echo $maxrating ?>" name="vote">
-					</div>
-
-					<?php
-
-				}
-			}
-			if ($review_editable) {
+	jQuery('.rating .ratingbox').mousemove( function(e){
+		var span = jQuery(this).children();
+		var dif = e.pageX-ratingboxPos.left; // nbr of pixels
+		difRatio = Math.floor(dif/boxWidth* steps )+1; //step
+		span.width(difRatio*starSize);
+		$('#vote').val(difRatio);
+		//console.log('note = ',parentPos, boxWidth, ratingboxPos);
+	});
+});
+";
+			vmJsApi::addJScript( 'rating_stars', $reviewJavascript );
+		}
+	//}
+			if ($this->allowReview ) {
 				?>
 				<span class="step"><?php echo vmText::sprintf ('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get ('reviews_minimum_comment_length', 100), VmConfig::get ('reviews_maximum_comment_length', 2000)); ?></span>
 				<br/>
@@ -187,19 +173,26 @@ if ($this->showReview) {
 				<span><?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_COUNT') ?>
 					<input type="text" value="0" size="4" name="counter" maxlength="4" readonly="readonly"/>
 				</span>
-				<br/><br/>
-				<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>"/>
 				<?php
-			} else {
+			} else if (!$review_editable){
 				echo '<strong>' . vmText::_ ('COM_VIRTUEMART_DEAR') . $this->user->name . ',</strong><br />';
 				echo vmText::_ ('COM_VIRTUEMART_REVIEW_ALREADYDONE');
 			}
-			?></div><?php
-	}
+
+
 }
 
 if ($this->allowRating || $this->showReview) {
+	if ($this->allowReview) {
 	?>
+	<br/><br/>
+	<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>"/>
+	<?php } else if ($this->allowRating) { ?>
+		<input class="highlight-button" type="submit"  name="submit_review" title="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>"/>
+		<?php
+	}
+
+	?>	</div>
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>"/>
 	<input type="hidden" name="option" value="com_virtuemart"/>
 	<input type="hidden" name="virtuemart_category_id" value="<?php echo vRequest::getInt ('virtuemart_category_id'); ?>"/>

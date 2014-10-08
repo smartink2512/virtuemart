@@ -669,14 +669,14 @@ class calculationHelper {
 			}
 
       		$this->productCurrency = isset($this->_cart->products[$cprdkey]->product_currency)? $this->_cart->products[$cprdkey]->product_currency:0;
-			VmConfig::$echoDebug=true;
+			//VmConfig::$echoDebug=true;
 			$variantmod = $customfieldModel->calculateModificators($this->_cart->products[$cprdkey]);
-			//vmdebug('get cart prices '.$cprdkey,$variantmod);
+			//vmdebug('get cart prices ',$this->_cart->products[$cprdkey]->allPrices);
 			//$product->allPrices = $pricesPerId[$cprdkey] = $this->getProductPrices($product, $variantmod, $product->quantity, true, false);
 
 			$productPrice = $this->getProductPrices($this->_cart->products[$cprdkey],$variantmod, $this->_cart->products[$cprdkey]->quantity);
 
-			$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice] = $productPrice;
+			$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice] = array_merge($productPrice,$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]);
 			$this->_cart->cartPrices[$cprdkey] = $productPrice; //$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice];
 
 			$this->_amountCart += $this->_cart->products[$cprdkey]->quantity;
