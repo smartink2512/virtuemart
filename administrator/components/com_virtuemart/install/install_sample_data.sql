@@ -47,7 +47,7 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`, `virtuemart_category_i
 	(10, 9, 7, 1);
 
 INSERT IGNORE INTO `#__virtuemart_coupons` (`virtuemart_coupon_id`, `coupon_code`, `percent_or_total`, `coupon_type`, `coupon_value`, `coupon_start_date`, `coupon_expiry_date`, `coupon_value_valid`, `coupon_used`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 'Sample Coupon', 'total', 'permanent', 0.01000, '0000-00-00 00:00:00', '2014-02-14 16:12:02', 0.00000, '0', 1, '2014-02-13 16:12:45', 635, '2014-02-13 16:12:45', 635, '0000-00-00 00:00:00', 0);
+	(1, 'Sample Coupon', 'total', 'permanent', 0.01000, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0.00000, '0', 1, '2014-02-13 16:12:45', 635, '2014-02-13 16:12:45', 635, '0000-00-00 00:00:00', 0);
 
 INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`, `custom_jplugin_id`, `custom_element`, `admin_only`, `custom_title`, `show_title`, `custom_tip`, `custom_value`, `is_input`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `layout_pos`, `custom_params`, `shared`, `published`, `created_on`, `created_by`, `ordering`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 0, 1, 0, '', 0, 'COM_VIRTUEMART_RELATED_PRODUCTS', 1, 'COM_VIRTUEMART_RELATED_PRODUCTS_TIP', '', 0, 'COM_VIRTUEMART_RELATED_PRODUCTS_DESC', 'R', 0, 0, 0, 'related_products', NULL, 0, 1, '2011-05-25 21:52:43', 62, 0, '2011-05-25 21:52:43', 62, '0000-00-00 00:00:00', 0),

@@ -295,7 +295,11 @@ class VirtueMartCart {
 						$existingSession->$key = $cartData['cartData']->$key;
 					}
 				}
+				if(count($existingSession->_triesValidateCoupon)>6){
 
+					$existingSession->_triesValidateCoupon = array_slice($existingSession->_triesValidateCoupon,0,6);
+					vmdebug('Coupon were blocked, release 1');
+				}
 			}
 		}
 	}
