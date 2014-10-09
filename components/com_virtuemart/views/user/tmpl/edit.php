@@ -65,14 +65,17 @@ vmJsApi::addJScript('vm.validator',$js);
 <?php // Loading Templates in Tabs
 if($this->userDetails->virtuemart_user_id!=0) {
     $tabarray = array();
-    if($this->userDetails->user_is_vendor){
-	    if(!empty($this->add_product_link)) {
-			echo $this->manage_link;
-		    echo $this->add_product_link;
-	    }
-	    $tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
-    }
+
     $tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
+
+	if($this->userDetails->user_is_vendor){
+		if(!empty($this->add_product_link)) {
+			echo $this->manage_link;
+			echo $this->add_product_link;
+		}
+		$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
+	}
+
     //$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
     if (!empty($this->shipto)) {
 	    $tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL';

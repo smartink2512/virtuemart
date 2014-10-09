@@ -220,6 +220,9 @@ function virtuemartBuildRoute(&$query) {
 						$segments[] = $helper->lang('editaddressBT') ;
 					}
 				}
+				else if($query['task']=='addST'){
+					$segments[] = $helper->lang('addST') ;
+				}
 				else {
 					$segments[] =  $helper->lang($query['task']);
 				}
@@ -228,9 +231,10 @@ function virtuemartBuildRoute(&$query) {
 								elseif ($query['addrtype'] == 'BT') $segments[] = $helper->lang('editaddresscheckoutST') ;
 								elseif ($query['addrtype'] == 'ST') $segments[] = $helper->lang('editaddresscheckoutST') ;
 								else $segments[] = $query['task'] ;*/
-
+				vmdebug('$segments',$segments);
 				unset ($query['task'] , $query['addrtype']);
 			}
+
 			break;
 		case 'vendor';
 			/* VM208 */

@@ -115,6 +115,9 @@ class VirtuemartViewUser extends VmView {
 			$userFields = $this->cart->$fieldtype;
 
 		} else {
+			if($task=='addST'){
+				$this->address_type='ST';
+			}
 			if(!$new and empty($virtuemart_userinfo_id)){
 				$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
 				vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
@@ -124,6 +127,7 @@ class VirtuemartViewUser extends VmView {
 				$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
 				vmdebug('$userFields by getBTuserinfo_id',$userFields);
 			}
+
 			$userFields = $userFields[$virtuemart_userinfo_id];
 		}
 
@@ -147,7 +151,7 @@ class VirtuemartViewUser extends VmView {
 		}
 
 
-		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, '');
+		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, 'addST');
 
 		$this->assignRef('lists', $this->_lists);
 

@@ -58,7 +58,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			$view->display();
 		} else {
 			//PDF needs more RAM than usual
-			VmConfig::ensureMemoryLimit(64);
+			VmConfig::ensureMemoryLimit(96);
 
 			//PDF needs xhtml links
 			$this->useXHTML = true;

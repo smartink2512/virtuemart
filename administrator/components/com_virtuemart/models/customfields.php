@@ -988,7 +988,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							$values = explode (';', $customfield->custom_value);
 
 							foreach ($values as $key => $val) {
-								$options[] = array('value' => $val, 'text' => $val);
+								$options[] = array('value' => $val, 'text' => vmText::_($val));
 							}
 
 							$currentValue = $customfield->customfield_value;
@@ -1014,19 +1014,15 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 								//$customfield->options[$customfield->virtuemart_customfield_id] = $customfield;
 							}
 
-							/*
-							$options = $this->getCustomEmbeddedProductCustomFields($product->allIds,$customfield->virtuemart_custom_id);
-							//vmdebug('getProductCustomsFieldCart options',$options,$product->allIds);
-							$customfield->options = array();
-							foreach ($options as $option) {
-								$customfield->options[$option->virtuemart_customfield_id] = $option;
-							}
-*/
 							$default = reset($customfields[$selectList[$customfield->virtuemart_custom_id]]->options);
 							foreach ($customfields[$selectList[$customfield->virtuemart_custom_id]]->options as &$productCustom) {
 								$price = self::_getCustomPrice($productCustom->customfield_price, $currency, $calculator);
-								$productCustom->text = $productCustom->customfield_value . ' ' . $price;
-								//$productCustom->formname = '['.$productCustom->virtuemart_customfield_id.'][selected]';
+								$trValue = vmText::_($productCustom->customfield_value);
+								if($productCustom->customfield_value!=$trValue and strpos($trValue,'%1')!==false){
+									$productCustom->text = vmText::sprintf($productCustom->customfield_value,$price);
+								} else {
+									$productCustom->text = $trValue.' '.$price;
+								}
 							}
 
 							vmJsApi::chosenDropDowns();
@@ -1200,10 +1196,10 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							$value = vmText::_($productCustom->customfield_value);
 						}
 						$trTitle = vmText::_($productCustom->custom_title);
-						if($productCustom->custom_title!=$trTitle){
+						if($productCustom->custom_title!=$trTitle and strpos($trTitle,'%1')!==false){
 							$html .= vmText::sprintf($productCustom->custom_title,$value);
 						} else {
-							$html .= $trTitle.$value;
+							$html .= $trTitle.' '.$value;
 						}
 
 						//$html .= ShopFunctionsF::translateTwoLangKeys ($productCustom->custom_title, $value);

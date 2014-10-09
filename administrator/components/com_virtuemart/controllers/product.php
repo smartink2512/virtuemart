@@ -54,9 +54,9 @@ class VirtuemartControllerProduct extends VmController {
 	 *
 	 * @author Max Milbers
 	 */
-	function save(){
+	function save($data = 0){
 
-		$data = vRequest::getRequest();
+		if($data===0)$data = vRequest::getRequest();
 
 		$user = JFactory::getUser();
 		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){

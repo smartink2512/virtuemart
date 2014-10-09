@@ -133,7 +133,7 @@ class VirtuemartViewCalc extends VmView {
 
 				$data->calcCountriesList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'countries','country_name','country','calc_countries','virtuemart_calc_id');
 
-				$data->calcStatesList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'states','states_name','states','calc_states','virtuemart_calc_id');
+				$data->calcStatesList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'states','state_name','states','calc_states','virtuemart_calc_id');
 
 				$data->calcManufacturersList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'manufacturers','manufacturer_name','manufacturer','calc_manufacturers','virtuemart_calc_id');
 			}

@@ -21,7 +21,7 @@ if($app->isSite()){
 	if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 	$cart = VirtuemartCart::getCart();
 	$cart->prepareVendor();
-	if(is_array($cart->BT) and isset($cart->BT['tos'])){
+	if(is_array($cart->BT) and !empty($cart->BT['tos'])){
 		$tos = $cart->BT['tos'];
 	} else {
 		$tos = 0;

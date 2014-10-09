@@ -42,6 +42,12 @@ class VirtuemartViewInvoice extends VmView {
 
 		$document = JFactory::getDocument();
 		VmConfig::loadJLang('com_virtuemart_shoppers', true);
+		/* It would be so nice to be able to load the override of the FE additionally from here
+		 * joomlaWantsThisFolder\language\overrides\en-GB.override.ini
+		 * $jlang =JFactory::getLanguage();
+		$tag = $jlang->getTag();
+		$jlang->load('override', 'language/overrides',$tag,true);*/
+
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
@@ -98,8 +104,12 @@ class VirtuemartViewInvoice extends VmView {
 
 		if($orderDetails==0){
 			$orderDetails = $orderModel ->getMyOrderDetails();
-			if(!$orderDetails or empty($orderDetails['details'])){
+			if(!$orderDetails ){
 				echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+				vmdebug('COM_VIRTUEMART_CART_ORDER_NOTFOUND and $orderDetails ',$orderDetails);
+				return;
+			} else if(empty($orderDetails['details'])){
+				echo vmText::_('COM_VIRTUEMART_CART_ORDER_DETAILS_NOTFOUND');
 				return;
 			}
 		}

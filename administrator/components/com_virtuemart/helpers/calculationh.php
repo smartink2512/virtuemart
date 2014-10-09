@@ -222,18 +222,18 @@ class calculationHelper {
 		}
 
 		$stBased = VmConfig::get('taxSTbased',TRUE);
-		if ($stBased and !empty($this->_cart->ST['virtuemart_country_id'])) {
-			$this->_deliveryCountry = (int)$this->_cart->ST['virtuemart_country_id'];
+		if ($stBased) {
+			$this->_deliveryCountry = (int)$this->_cart->getST('virtuemart_country_id');
 		} else if (!empty($this->_cart->BT['virtuemart_country_id'])) {
 			$this->_deliveryCountry = (int)$this->_cart->BT['virtuemart_country_id'];
 		}
 
-		if ($stBased and !empty($this->_cart->ST['virtuemart_state_id'])) {
-			$this->_deliveryState = (int)$this->_cart->ST['virtuemart_state_id'];
+		if ($stBased) {
+			$this->_deliveryState = (int)$this->_cart->getST('virtuemart_state_id');
 		} else if (!empty($cart->BT['virtuemart_state_id'])) {
 			$this->_deliveryState = (int)$this->_cart->BT['virtuemart_state_id'];
 		}
-		//vmdebug('setCountryState state '.$this->_deliveryState,$this->_cart->BT);
+		//vmdebug('setCountryState state '.$this->_deliveryState,$this->_cart->BT['virtuemart_state_id']);
 	}
 
 	/** function to start the calculation, here it is for the product
@@ -644,6 +644,8 @@ class calculationHelper {
 		$this->_cart->cartData['payment'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cart->cartData['paymentName'] = '';
 		$cartpaymentTax = 0;
+		//Initiate an array to hold category IDs represented by items in the cart
+		$this->prodcats = array();
 
 		$this->setCountryState();
 
@@ -682,7 +684,8 @@ class calculationHelper {
 			$this->_amountCart += $this->_cart->products[$cprdkey]->quantity;
 			VmConfig::$echoDebug=false;
 
-
+			//Load the product categories array - since each product can have multiple, merge the arrays together
+			$this->prodcats = array_merge($this->prodcats,$this->_cats);
 
 			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cart->cartPrices['basePrice'] += self::roundInternal($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['basePrice'],'basePrice') * $this->_cart->products[$cprdkey]->quantity;
 			//				$this->_cart->cartPrices['basePriceVariant'] = $this->_cart->cartPrices['basePriceVariant'] + $pricesPerId[$product->virtuemart_product_id]['basePriceVariant']*$product->quantity;
@@ -1293,7 +1296,12 @@ class calculationHelper {
 				$hitsShopper = $this->testRulePartEffecting($shoppergrps, $this->_shopperGroupId);
 			}
 
-			if ($hitsDeliveryArea && $hitsShopper) {
+			$hitsCats = true;
+			if(!empty($rule['calc_categories'])) {
+				$hitsCats = $this->testRulePartEffecting($rule['calc_categories'], $this->prodcats);
+			}
+
+			if ($hitsDeliveryArea && $hitsShopper && $hitsCats) {
 				if ($this->_debug)
 					echo '<br/ >Add Checkout rule ' . $rule["virtuemart_calc_id"] . '<br/ >';
 				$testedRules[$rule['virtuemart_calc_id']] = $rule;

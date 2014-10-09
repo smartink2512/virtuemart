@@ -54,8 +54,7 @@ class VirtueMartModelOrders extends VmModel {
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_pass`="'.$db->escape($orderPass).'" AND `order_number`="'.$db->escape($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
-
-// 		vmdebug('getOrderIdByOrderPass '.$orderId);
+		if(empty($orderId)) vmdebug('getOrderIdByOrderPass no Order found $orderNumber = '.$orderNumber.' $orderPass = '.$orderPass);
 		return $orderId;
 
 	}
@@ -128,13 +127,14 @@ class VirtueMartModelOrders extends VmModel {
 
 		$orderDetails = false;
         // If the user is not logged in, we will check the order number and order pass
-        if(empty($orderID) and empty($cuid)){
+        if(empty($orderID) or empty($cuid)){
             // If the user is not logged in, we will check the order number and order pass
             if ($orderPass = vRequest::getString('order_pass',$orderPass)){
                 $orderNumber = vRequest::getString('order_number',$orderNumber);
                 $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
                 if(empty($orderId)){
                     echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderPass,$orderNumber);
                     return false;
                 }
                 $orderDetails = $this->getOrder($orderId);
