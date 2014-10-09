@@ -666,15 +666,15 @@ class VmTable extends JTable {
 					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
 				}
 				if(isset($this->modified_on)){
-					$timestamp = strtotime($this->modified_on);
-					$date = $timestamp;
+					$date = JFactory::getDate($this->modified_on);
+					$date = $date->toUnix();
 				} else {
 					$date = 0;
 				}
 
 				foreach($this->_cryptedFields as $field){
 					if(isset($this->$field)){
-						$this->$field = vmCrypt::decrypt($this->$field,$date);
+						$this->$field = vmCrypt::decrypt($this->$field, $date);
 					}
 
 				}
