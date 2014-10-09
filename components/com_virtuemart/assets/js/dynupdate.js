@@ -73,7 +73,7 @@ jQuery(function($) {
                         event.preventDefault();
                         var url = jQuery(el).attr('url');
                         console.log('updateDynamicUpdateListeners found URL attri ',url,el);
-                        if (typeof attr === typeof undefined || attr === false) {
+                        if (typeof url === typeof undefined || url === false) {
                             url = el.val();
                             console.log('updateDynamicUpdateListeners URL attrib empty '+url);
                         }

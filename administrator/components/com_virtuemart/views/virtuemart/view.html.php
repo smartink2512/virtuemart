@@ -76,6 +76,11 @@ class VirtuemartViewVirtuemart extends VmView {
 		$virtuemartFeed = ShopFunctions::getVirtueMartRssFeed();
 		$this->assignRef('virtuemartFeed', $virtuemartFeed);
 
+		if(JFactory::getApplication()->isSite()){
+			$bar = JToolBar::getInstance('toolbar');
+			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
+		}
+
 		parent::display($tpl);
 	}
 }

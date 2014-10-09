@@ -67,6 +67,7 @@ if($this->userDetails->virtuemart_user_id!=0) {
     $tabarray = array();
     if($this->userDetails->user_is_vendor){
 	    if(!empty($this->add_product_link)) {
+			echo $this->manage_link;
 		    echo $this->add_product_link;
 	    }
 	    $tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';

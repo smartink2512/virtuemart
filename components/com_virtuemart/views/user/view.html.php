@@ -51,172 +51,174 @@ class VirtuemartViewUser extends VmView {
      */
     function display($tpl = null) {
 
-	$this->useSSL = VmConfig::get('useSSL', 0);
-	$this->useXHTML = false;
+		$this->useSSL = VmConfig::get('useSSL', 0);
+		$this->useXHTML = false;
 
-	VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
-	$mainframe = JFactory::getApplication();
-	$pathway = $mainframe->getPathway();
-	$layoutName = $this->getLayout();
-	if ($layoutName == 'login') {
-		parent::display($tpl);
-		return;
-	}
-
-	if (empty($layoutName) or $layoutName == 'default') {
-	    $layoutName = vRequest::getCmd('layout', 'edit');
-		if ($layoutName == 'default'){
-			$layoutName = 'edit';
+		$mainframe = JFactory::getApplication();
+		$pathway = $mainframe->getPathway();
+		$layoutName = $this->getLayout();
+		if ($layoutName == 'login') {
+			parent::display($tpl);
+			return;
 		}
-		$this->setLayout($layoutName);
-	}
 
-	if (!class_exists('ShopFunctions'))
-	    require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-
-	$this->_model = VmModel::getModel('user');
-
-	//$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
-	$editor = JFactory::getEditor();
-
-	$virtuemart_user_id = vRequest::getInt('virtuemart_user_id',false);
-	if($virtuemart_user_id and is_array($virtuemart_user_id)) $virtuemart_user_id = $virtuemart_user_id[0];
-	$this->_model->setId($virtuemart_user_id);
-	$this->userDetails = $this->_model->getUser();
-
-	$this->address_type = vRequest::getCmd('addrtype', 'BT');
-
-	$new = false;
-	if (vRequest::getInt('new', '0') == 1) {
-	    $new = true;
-	}
-
-	if ($new) {
-	    $virtuemart_userinfo_id = 0;
-	} else {
-	    $virtuemart_userinfo_id = vRequest::getString('virtuemart_userinfo_id', 0);
-	}
-
-	$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
-
-	$userFields = null;
-
-	if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
-	$this->cart = VirtueMartCart::getCart();
-	$task = vRequest::getCmd('task', '');
-
-	if (($this->cart->_fromCart or $this->cart->getInCheckOut()) && empty($virtuemart_userinfo_id)) {
-
-		//New Address is filled here with the data of the cart (we are in the cart)
-		$fieldtype = $this->address_type . 'address';
-
-		$this->cart->prepareAddressFieldsInCart();
-		$userFields = $this->cart->$fieldtype;
-
-	} else {
-		if(!$new and empty($virtuemart_userinfo_id)){
-			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
-			vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
+		if (empty($layoutName) or $layoutName == 'default') {
+			$layoutName = vRequest::getCmd('layout', 'edit');
+			if ($layoutName == 'default'){
+				$layoutName = 'edit';
+			}
+			$this->setLayout($layoutName);
 		}
-		$userFields = $this->_model->getUserInfoInUserFields($layoutName, $this->address_type, $virtuemart_userinfo_id,false);
-		if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
-			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
-			vmdebug('$userFields by getBTuserinfo_id',$userFields);
+
+		if (!class_exists('ShopFunctions'))
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+
+		$this->_model = VmModel::getModel('user');
+
+		//$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
+		$editor = JFactory::getEditor();
+
+		$virtuemart_user_id = vRequest::getInt('virtuemart_user_id',false);
+		if($virtuemart_user_id and is_array($virtuemart_user_id)) $virtuemart_user_id = $virtuemart_user_id[0];
+		$this->_model->setId($virtuemart_user_id);
+		$this->userDetails = $this->_model->getUser();
+
+		$this->address_type = vRequest::getCmd('addrtype', 'BT');
+
+		$new = false;
+		if (vRequest::getInt('new', '0') == 1) {
+			$new = true;
 		}
-		$userFields = $userFields[$virtuemart_userinfo_id];
-	}
 
-	$this->assignRef('userFields', $userFields);
-
-	if ($layoutName == 'edit') {
-
-	    if ($this->_model->getId() == 0 && $this->_cuid == 0) {
-		$button_lbl = vmText::_('COM_VIRTUEMART_REGISTER');
-	    } else {
-		$button_lbl = vmText::_('COM_VIRTUEMART_SAVE');
-	    }
-
-	    $this->assignRef('button_lbl', $button_lbl);
-	    $this->lUser();
-	    $this->shopper($userFields);
-
-	    $this->payment();
-	    $this->lOrderlist();
-	    $this->lVendor();
-	}
-
-
-	$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, '');
-
-	$this->assignRef('lists', $this->_lists);
-
-	$this->assignRef('editor', $editor);
-
-	if ($layoutName == 'mailregisteruser') {
-	    $vendorModel = VmModel::getModel('vendor');
-	    //			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
-	    $vendor = $vendorModel->getVendor();
-	    $this->assignRef('vendor', $vendor);
-
-	}
-	if ($layoutName == 'editaddress') {
-	    $layoutName = 'edit_address';
-	    $this->setLayout($layoutName);
-	}
-
-	if (!$this->userDetails->JUser->get('id')) {
-	    $corefield_title = vmText::_('COM_VIRTUEMART_USER_CART_INFO_CREATE_ACCOUNT');
-	} else {
-	    $corefield_title = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
-	}
-	if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
-	    $pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
-	} else {
-	    //$pathway->addItem(vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'), JRoute::_('index.php?option=com_virtuemart&view=user&&layout=edit'));
-	}
-	$pathway_text = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
-	if (!$this->userDetails->JUser->get('id')) {
-	    if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
-		if ($this->address_type == 'BT') {
-		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+		if ($new) {
+			$virtuemart_userinfo_id = 0;
 		} else {
-		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+			$virtuemart_userinfo_id = vRequest::getString('virtuemart_userinfo_id', 0);
 		}
-	    } else {
-		if ($this->address_type == 'BT') {
-		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
-		    $title = vmText::_('COM_VIRTUEMART_REGISTER');
-		} else {
-		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
-		}
-	    }
-	} else {
 
-	    if ($this->address_type == 'BT') {
-			$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL');
-	    } else {
-			$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
-	    }
-	}
+		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
+
+		$userFields = null;
+
+		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
+		$this->cart = VirtueMartCart::getCart();
+		$task = vRequest::getCmd('task', '');
+
+		if (($this->cart->_fromCart or $this->cart->getInCheckOut()) && empty($virtuemart_userinfo_id)) {
+
+			//New Address is filled here with the data of the cart (we are in the cart)
+			$fieldtype = $this->address_type . 'address';
+
+			$this->cart->prepareAddressFieldsInCart();
+			$userFields = $this->cart->$fieldtype;
+
+		} else {
+			if(!$new and empty($virtuemart_userinfo_id)){
+				$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
+				vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
+			}
+			$userFields = $this->_model->getUserInfoInUserFields($layoutName, $this->address_type, $virtuemart_userinfo_id,false);
+			if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
+				$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
+				vmdebug('$userFields by getBTuserinfo_id',$userFields);
+			}
+			$userFields = $userFields[$virtuemart_userinfo_id];
+		}
+
+		$this->assignRef('userFields', $userFields);
+
+		if ($layoutName == 'edit') {
+
+			if ($this->_model->getId() == 0 && $this->_cuid == 0) {
+			$button_lbl = vmText::_('COM_VIRTUEMART_REGISTER');
+			} else {
+			$button_lbl = vmText::_('COM_VIRTUEMART_SAVE');
+			}
+
+			$this->assignRef('button_lbl', $button_lbl);
+			$this->lUser();
+			$this->shopper($userFields);
+
+			$this->payment();
+			$this->lOrderlist();
+			$this->lVendor();
+		}
+
+
+		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, '');
+
+		$this->assignRef('lists', $this->_lists);
+
+		$this->assignRef('editor', $editor);
+
+		if ($layoutName == 'mailregisteruser') {
+			$vendorModel = VmModel::getModel('vendor');
+			//			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
+			$vendor = $vendorModel->getVendor();
+			$this->assignRef('vendor', $vendor);
+
+		}
+		if ($layoutName == 'editaddress') {
+			$layoutName = 'edit_address';
+			$this->setLayout($layoutName);
+		}
+
+		if (!$this->userDetails->JUser->get('id')) {
+			$corefield_title = vmText::_('COM_VIRTUEMART_USER_CART_INFO_CREATE_ACCOUNT');
+		} else {
+			$corefield_title = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
+		}
+		if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
+			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
+		} else {
+			//$pathway->addItem(vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'), JRoute::_('index.php?option=com_virtuemart&view=user&&layout=edit'));
+		}
+		$pathway_text = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
+		if (!$this->userDetails->JUser->get('id')) {
+			if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
+			if ($this->address_type == 'BT') {
+				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+			} else {
+				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+			}
+			} else {
+			if ($this->address_type == 'BT') {
+				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+				$title = vmText::_('COM_VIRTUEMART_REGISTER');
+			} else {
+				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+			}
+			}
+		} else {
+
+			if ($this->address_type == 'BT') {
+				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL');
+			} else {
+				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+			}
+		}
 
 		$this->add_product_link="";
+		$this->manage_link="";
+		if(VmConfig::isSuperVendor() ){
+			$manage_link = JRoute::_( 'index.php?option=com_virtuemart&tmpl=component&manage=1' );
+			$this->manage_link = $this->linkIcon($manage_link, 'JACTION_MANAGE', 'new', false, false, true, true);
+			$add_product_link = JRoute::_( 'index.php?option=com_virtuemart&tmpl=component&view=product&view=product&task=edit&virtuemart_product_id=0&manage=1' );
+			$this->add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
+		}
 
-	if(VmConfig::isSuperVendor() ){
-	    $add_product_link = JRoute::_( 'index.php?option=com_virtuemart&tmpl=component&view=product&view=product&task=edit&virtuemart_product_id=0&manage=1' );
-	    $this->add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
-	}
+		$document = JFactory::getDocument();
+		$document->setTitle($pathway_text);
+		$pathway->additem($pathway_text);
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
+		$this->assignRef('page_title', $pathway_text);
+		$this->assignRef('corefield_title', $corefield_title);
+		$this->assignRef('vmfield_title', $vmfield_title);
+		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
-	$document = JFactory::getDocument();
-	$document->setTitle($pathway_text);
-	$pathway->additem($pathway_text);
-	$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
-	$this->assignRef('page_title', $pathway_text);
-	$this->assignRef('corefield_title', $corefield_title);
-	$this->assignRef('vmfield_title', $vmfield_title);
-	shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
-
-	parent::display($tpl);
+		parent::display($tpl);
     }
 
     function payment() {

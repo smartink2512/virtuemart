@@ -76,7 +76,7 @@ class TableProduct_prices extends VmTableData {
 
 	function check(){
 
-		if(!empty($this->product_price)){
+		if(isset($this->product_price)){
 			$this->product_price = str_replace(array(',',' '),array('.',''),$this->product_price);
 		}
 

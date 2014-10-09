@@ -1052,7 +1052,6 @@ class VirtueMartModelProduct extends VmModel {
 		if(!isset($product->selectedPrice) or empty($product->allPrices)){
 			$product->selectedPrice = 0;
 			$product->allPrices[$product->selectedPrice] = $this->fillVoidPrice();
-			vmdebug('hm $product->allPrices ',$product->selectedPrice,$product->allPrices);
 		}
 
 	}
@@ -1726,8 +1725,9 @@ class VirtueMartModelProduct extends VmModel {
 
 		// Get old IDS
 		$old_price_ids = $this->loadProductPrices($this->_id,0,false);
-		//vmdebug('$old_price_ids ',$old_price_ids);
+
 		if (isset($data['mprices']['product_price']) and count($data['mprices']['product_price']) > 0){
+
 			foreach($data['mprices']['product_price'] as $k => $product_price){
 
 				$pricesToStore = array();
@@ -1766,7 +1766,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,false);
 
-				if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='' and $pricesToStore['product_price']!='0') || (isset($childPrices) and count($childPrices)>1)) {
+				if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='' and $pricesToStore['product_price']!=='0') || (isset($childPrices) and count($childPrices)>1)) {
 
 					if ($isChild) {
 						//$childPrices = $this->loadProductPrices($pricesToStore['virtuemart_product_price_id'],0,0,false);

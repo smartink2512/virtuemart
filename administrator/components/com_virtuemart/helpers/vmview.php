@@ -361,6 +361,10 @@ class VmView extends JViewLegacy {
 			$this->assignRef('lang',$lang);
 		}
 
+		if(JFactory::getApplication()->isSite()){
+			$bar = JToolBar::getInstance('toolbar');
+			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
+		}
 	}
 
 	function SetViewTitle($name ='', $msg ='',$icon ='') {

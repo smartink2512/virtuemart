@@ -439,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `file_is_product_image` tinyint(1) NOT NULL DEFAULT '0',
   `file_is_downloadable` tinyint(1) NOT NULL DEFAULT '0',
   `file_is_forSale` tinyint(1) NOT NULL DEFAULT '0',
-  `file_params` varchar(17000) NOT NULL,
+  `file_params` varchar(17000) NOT NULL DEFAULT '',
   `file_lang` varchar(500) NOT NULL DEFAULT '',
   `shared` tinyint(1) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',

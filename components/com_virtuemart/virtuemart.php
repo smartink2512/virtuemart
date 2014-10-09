@@ -51,6 +51,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	//vmdebug('Our request ',$_REQUEST);
 	$session = JFactory::getSession();
 	$manage = vRequest::getCmd('manage',$session->get('manage', false,'vm'));
+	if(!$manage) $session->set('manage', 0,'vm');
 
 	$feViews = array('askquestion','cart','invoice','pdf','pluginresponse','productdetails','recommend','vendor');
 	if($manage and !in_array($_controller,$feViews)){
