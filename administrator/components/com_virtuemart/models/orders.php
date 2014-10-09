@@ -149,7 +149,7 @@ class VirtueMartModelOrders extends VmModel {
             $orderDetails = $this->getOrder($virtuemart_order_id);
 
             if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-            if(!Permissions::getInstance()->check("storeadmin")) {
+            if(!Permissions::getInstance()->check("admin,storeadmin")) {
                 if(!isset($orderDetails['details']['BT']->virtuemart_user_id)){
                     $orderDetails['details']['BT']->virtuemart_user_id = 0;
                 }

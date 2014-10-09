@@ -72,7 +72,7 @@ class VirtuemartViewOrders extends VmView {
 			$_userFields = $userFieldsModel->getUserFields(
 					 'account'
 					, array('captcha' => true, 'delimiters' => true) // Ignore these types
-					, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+					, array('delimiter_userinfo','user_is_vendor' ,'username', 'name', 'password', 'password2', 'agreed', 'address_type') // Skips
 			);
 
 			$userfields = $userFieldsModel->getUserFieldsFilled(
