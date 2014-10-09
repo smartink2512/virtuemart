@@ -711,8 +711,8 @@ class VmTable extends JTable {
 				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			}
 			if(isset($this->modified_on)){
-				$timestamp = strtotime($this->modified_on);
-				$date = $timestamp;
+				$date = JFactory::getDate($this->modified_on);
+				$date = $date->toUnix();
 			} else {
 				$date = 0;
 			}
