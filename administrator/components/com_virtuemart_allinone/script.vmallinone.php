@@ -74,8 +74,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('VM Payment - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmpayment');
 			$this->installPlugin ('VM Userfield - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmuserfield');
 
-			$this->installPlugin ('VM Payment - Pay with Amazon', 'plugin', 'amazon', 'vmpayment');
-			$this->installPlugin ('System - Pay with Amazon', 'plugin', 'amazon', 'system');
+			//$this->installPlugin ('VM Payment - Pay with Amazon', 'plugin', 'amazon', 'vmpayment');
+			//$this->installPlugin ('System - Pay with Amazon', 'plugin', 'amazon', 'system');
 
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
