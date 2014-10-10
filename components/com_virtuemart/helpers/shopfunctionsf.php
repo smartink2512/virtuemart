@@ -514,8 +514,9 @@ class shopFunctionsF {
 		}
 
 		if(is_dir( VMPATH_THEMES.DS.$template )) {
-			$app = JFactory::getApplication( );
-			$app->setTemplate($template,$registry);
+			$app = JFactory::getApplication();
+			if($app->isSite()) $app->setTemplate($template,$registry);
+
 		} else {
 			vmError( 'The chosen template couldnt be found on the filesystem: '.VMPATH_THEMES.DS.$template );
 		}
@@ -858,4 +859,5 @@ class shopFunctionsF {
 			return TRUE;
 		}
 	}
+
 }

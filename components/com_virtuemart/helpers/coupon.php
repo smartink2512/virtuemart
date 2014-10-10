@@ -133,7 +133,7 @@ abstract class CouponHelper
 
 		if ($_force !== true) {
 			$_data = self::getCouponDetails($_code);
-			if ($_data->coupon_type != 'gift') {
+			if (!empty($_data) and $_data->coupon_type != 'gift') {
 				return true;
 			}
 		}

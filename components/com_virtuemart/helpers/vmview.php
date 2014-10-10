@@ -44,7 +44,6 @@ class VmView extends JViewLegacy{
 
 		echo $result;
 		if(get_class($this)!='VirtueMartViewProductdetails'){
-			vmdebug('Write JS in vmView');
 			echo vmJsApi::writeJS();
 		}
 

@@ -101,12 +101,8 @@ class VirtuemartViewConfig extends VmView {
 
 		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$this->vmtemplate = shopFunctionsF::loadVmTemplateStyle();
-		if(is_array($this->vmtemplate)) $this->vmtemplate = $this->vmtemplate['template'];
-		if(is_Dir(VMPATH_ROOT.DS.'templates'.DS.$this->vmtemplate.DS.'images'.DS.'availability'.DS)){
-			$this->imagePath = '/templates/'.$this->vmtemplate.'/images/availability/';
-		} else {
-			$this->imagePath = '/components/com_virtuemart/assets/images/availability/';
-		}
+		$this->imagePath = shopFunctions::getAvailabilityIconUrl($this->vmtemplate);
+
 
 		shopFunctions::checkSafePath();
 		$this -> checkVmUserVendor();

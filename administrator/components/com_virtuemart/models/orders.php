@@ -127,7 +127,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		$orderDetails = false;
         // If the user is not logged in, we will check the order number and order pass
-        if(empty($orderID) or empty($cuid)){
+        if(empty($orderID) and empty($cuid)){
             // If the user is not logged in, we will check the order number and order pass
             if ($orderPass = vRequest::getString('order_pass',$orderPass)){
                 $orderNumber = vRequest::getString('order_number',$orderNumber);
