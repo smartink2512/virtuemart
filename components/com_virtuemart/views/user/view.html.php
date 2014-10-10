@@ -422,7 +422,11 @@ class VirtuemartViewUser extends VmView {
 	$this->user = JFactory::getUser();
 	$userFieldsModel = VmModel::getModel('UserFields');
 	$userFields = $userFieldsModel->getUserFields();
-	$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user);
+	$usermodel = VmModel::getModel('user');
+	$vmuser = $usermodel->getUser();
+	$vmuser = current($vmuser->userInfo);
+	$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $vmuser);
+	//$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user);
 
 
     if (VmConfig::get('order_mail_html')) {
