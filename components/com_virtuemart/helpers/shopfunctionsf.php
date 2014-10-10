@@ -294,7 +294,8 @@ class shopFunctionsF {
   AND e.type="template"
   AND e.client_id=s.client_id
   WHERE s.client_id = 0
-  AND e.enabled = 1';
+  AND e.enabled = 1
+  AND s.home = 1';
 
 			$db->setQuery( $q );
 			$vmtemplate = $db->loadResult();
@@ -314,7 +315,7 @@ class shopFunctionsF {
 				$err = 'The selected vmtemplate is not existing';
 				vmError( 'renderMail get Template failed: '.$err );
 			}
-		} else {
+		} else if(empty($vmtemplate)){
 			if(JVM_VERSION > 1) {
 				$app =& JFactory::getApplication(0);
 				//vmdebug('loadVmTemplateStyle my $template',$app);
