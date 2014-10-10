@@ -356,9 +356,13 @@ class shopFunctionsF {
 		$view->addTemplatePath( VMPATH_SITE.'/views/'.$viewName.'/tmpl' );
 
 		$template = self::loadVmTemplateStyle();
-
-		if($template) {
-			$view->addTemplatePath( VMPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
+		self::setTemplate($template);
+		if($template){
+			if(is_array($template) and isset($template['template'])){
+				$view->addTemplatePath( VMPATH_ROOT.DS.'templates'.DS.$template['template'].DS.'html'.DS.'com_virtuemart'.DS.$viewName );
+			} else {
+				$view->addTemplatePath( VMPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
+			}
 		}
 
 		foreach( $vars as $key => $val ) {
@@ -409,60 +413,191 @@ class shopFunctionsF {
 
 	}
 
+	public static function getTemplateById($id){
+		static $res = array();
+
+		if(!isset($res[$id])){
+			$q = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$id.'" ';
+			$db = JFactory::getDbo();
+			$db->setQuery($q);
+			$res[$id] = $db->loadAssoc();
+			if(!$res[$id]){
+				vmError( 'getTemplateById get Template failed for id: '.$id );
+			}
+		}
+		if($res[$id]) return $res[$id];
+	}
+
+	public static function getDefaultTemplate(){
+		static $res = false;
+		if(!$res){
+			$q = 'SELECT template, s.params
+				FROM #__template_styles as s
+				LEFT JOIN #__extensions as e
+				ON e.element=s.template
+				AND e.type="template"
+				AND e.client_id=s.client_id
+				WHERE s.client_id = 0
+				AND e.enabled = 1
+				AND s.home = 1';
+			$db = JFactory::getDbo();
+			$db->setQuery( $q );
+			$res = $db->loadAssoc();
+			if(!$res){
+				vmError( 'getDefaultTemplate failed ' );
+			}
+		}
+		return $res;
+	}
+
 	public static function loadVmTemplateStyle(){
 		$vmtemplate = VmConfig::get( 'vmtemplate', 0 );
+		$res = false;
 
-		$db = JFactory::getDbo();
 
 		if(empty($vmtemplate) or $vmtemplate=='default'){
-			$q = 'SELECT id, home, template, s.params
-  FROM #__template_styles as s
-  LEFT JOIN #__extensions as e
-  ON e.element=s.template
-  AND e.type="template"
-  AND e.client_id=s.client_id
-  WHERE s.client_id = 0
-  AND e.enabled = 1';
-
-			$db->setQuery( $q );
-			$vmtemplate = $db->loadResult();
-
-		}
-
-		if(!empty($vmtemplate) and is_numeric($vmtemplate)) {
-
-			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
-			$db->setQuery($query);
-			$res = $db->loadAssoc();
-			if($res){
-				$registry = new JRegistry;
-				$registry->loadString($res['params']);
-				$template = $res['template'];
-			} else {
-				$err = 'The selected vmtemplate is not existing';
+			$res = self::getDefaultTemplate();
+			if(!$res){
+				$err = 'Not able to load default template';
 				vmError( 'renderMail get Template failed: '.$err );
 			}
+		} else if(!empty($vmtemplate) and is_numeric($vmtemplate)) {
+
+			$res = self::getTemplateById($vmtemplate);
+		}
+
+		if($res) return $res;
+
+		$app =& JFactory::getApplication();
+		//This does not work correctly for mails, because we dont get the site application in the BE, but an FB
+		$template = $app->getTemplate();
+
+		if(!$template){
+			$err = 'Could not load default template style';
+			vmError( 'renderMail get Template failed: '.$err );
 		} else {
-			if(JVM_VERSION > 1) {
-				$app =& JFactory::getApplication(0);
-				//vmdebug('loadVmTemplateStyle my $template',$app);
-				//This does not work correctly for mails, because we dont get the site application in the BE
-				$template = $app->getTemplate();
+			vmdebug('loadVmTemplateStyle $app->getTemplate',$template);
+			return $template;
+		}
+
+	}
+
+	/**
+	 * Final setting of template
+	 * Accepts a string, an id or an array with at least the keys template and params
+	 * @author Max Milbers
+	 */
+	static function setTemplate ($template = 0) {
+
+		$res = false;
+
+		if(is_array($template)){
+			$res = $template;
+		} else {
+			if($template === 0 or $template == 'default'){
+				$res = self::loadVmTemplateStyle();
 			} else {
-				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
-				$db = JFactory::getDbo();
+				if(is_numeric($template)){
+					$res = self::getTemplateById($template);
+				} else {
+					vmAdminInfo('Your template settings are old, please check your template settings in the vm config and in your categories');
+					vmdebug('Your template settings are old, please check your template settings in the vm config and in your categories');
+				}
+			}
+		}
+
+		$registry = null;
+		if($res){
+			$registry = new JRegistry;
+			$registry->loadString($res['params']);
+			$template = $res['template'];
+		}
+
+		if(is_dir( VMPATH_THEMES.DS.$template )) {
+			$app = JFactory::getApplication( );
+			$app->setTemplate($template,$registry);
+		} else {
+			vmError( 'The chosen template couldnt be found on the filesystem: '.VMPATH_THEMES.DS.$template );
+		}
+
+		return $template;
+	}
+
+	/**
+	 * This function sets the right template on the view
+	 * @author Max Milbers
+	 */
+	static function setVmTemplate ($view, $catTpl = 0, $prodTpl = 0, $catLayout = 0, $prodLayout = 0) {
+
+		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
+		$template = VmConfig::get( 'vmtemplate', 0 );
+		$db = JFactory::getDBO();
+		//Set specific category template
+		if(!empty($catTpl) && empty($prodTpl)) {
+			if(is_Int( $catTpl )) {
+				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catTpl.'" ';
 				$db->setQuery( $q );
-				$template = $db->loadResult();
+				$temp = $db->loadResult();
+				if(!empty($temp)) $template = $temp;
+			} else {
+				$template = $catTpl;
+			}
+		}
+
+		//Set specific product template
+		if(!empty($prodTpl)) {
+			if(is_Int( $prodTpl )) {
+				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodTpl.'" ';
+				$db->setQuery( $q );
+				$temp = $db->loadResult();
+				if(!empty($temp)) $template = $temp;
+			} else {
+				$template = $prodTpl;
+			}
+		}
+
+		shopFunctionsF::setTemplate( $template );
+
+		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
+		if(vRequest::getCmd( 'view' ) == 'virtuemart') {
+			$layout = VmConfig::get( 'vmlayout', 'default' );
+			$view->setLayout( strtolower( $layout ) );
+		} else {
+
+			if(empty($catLayout) and empty($prodLayout)) {
+				$catLayout = VmConfig::get( 'productlayout', 'default' );
 			}
 
-			if(!$template){
-				$err = 'Could not load default template style';
-				vmError( 'renderMail get Template failed: '.$err );
+			//Set specific category layout
+			if(!empty($catLayout) && empty($prodLayout)) {
+				if(is_Int( $catLayout )) {
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catLayout.'" ';
+					$db->setQuery( $q );
+					$temp = $db->loadResult();
+					if(!empty($temp)) $layout = $temp;
+				} else {
+					$layout = $catLayout;
+				}
+			}
+
+			//Set specific product layout
+			if(!empty($prodLayout)) {
+				if(is_Int( $prodLayout )) {
+					$q = 'SELECT `layout` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodLayout.'" ';
+					$db->setQuery( $q );
+					$temp = $db->loadResult();
+					if(!empty($temp)) $layout = $temp;
+				} else {
+					$layout = $prodLayout;
+				}
 			}
 
 		}
-		vmdebug('loadVmTemplateStyle my $template',$template);
-		return $template;
+
+		if(!empty($layout)) {
+			$view->setLayout( strtolower( $layout ) );
+		}
+
 	}
 	/**
 	 * With this function you can use a view to sent it by email.
@@ -541,83 +676,7 @@ class shopFunctionsF {
 	}
 
 
-	/**
-	 * This function sets the right template on the view
-	 * @author Max Milbers
-	 */
-	static function setVmTemplate ($view, $catTpl = 0, $prodTpl = 0, $catLayout = 0, $prodLayout = 0) {
 
-		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
-		$template = VmConfig::get( 'vmtemplate', 0 );
-		$db = JFactory::getDBO();
-		//Set specific category template
-		if(!empty($catTpl) && empty($prodTpl)) {
-			if(is_Int( $catTpl )) {
-				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catTpl.'" ';
-				$db->setQuery( $q );
-				$temp = $db->loadResult();
-				if(!empty($temp)) $template = $temp;
-			} else {
-				$template = $catTpl;
-			}
-		}
-
-		//Set specific product template
-		if(!empty($prodTpl)) {
-			if(is_Int( $prodTpl )) {
-				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodTpl.'" ';
-				$db->setQuery( $q );
-				$temp = $db->loadResult();
-				if(!empty($temp)) $template = $temp;
-			} else {
-				$template = $prodTpl;
-			}
-		}
-
-		shopFunctionsF::setTemplate( $template );
-
-		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
-		if(vRequest::getCmd( 'view' ) == 'virtuemart') {
-			$layout = VmConfig::get( 'vmlayout', 'default' );
-			$view->setLayout( strtolower( $layout ) );
-		} else {
-
-			if(empty($catLayout) and empty($prodLayout)) {
-				$catLayout = VmConfig::get( 'productlayout', 'default' );
-			}
-
-			//Set specific category layout
-			if(!empty($catLayout) && empty($prodLayout)) {
-				if(is_Int( $catLayout )) {
-					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catLayout.'" ';
-					$db->setQuery( $q );
-					$temp = $db->loadResult();
-					if(!empty($temp)) $layout = $temp;
-				} else {
-					$layout = $catLayout;
-				}
-			}
-
-			//Set specific product layout
-			if(!empty($prodLayout)) {
-				if(is_Int( $prodLayout )) {
-					$q = 'SELECT `layout` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodLayout.'" ';
-					$db->setQuery( $q );
-					$temp = $db->loadResult();
-					if(!empty($temp)) $layout = $temp;
-				} else {
-					$layout = $prodLayout;
-				}
-			}
-
-		}
-
-		if(!empty($layout)) {
-			$view->setLayout( strtolower( $layout ) );
-		}
-
-
-	}
 
 	function sendRatingEmailToVendor ($data) {
 		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
@@ -638,41 +697,6 @@ class shopFunctionsF {
 
 	}
 
-	/**
-	 * Final setting of template
-	 *
-	 * @author Max Milbers
-	 */
-	static function setTemplate ($template) {
-
-		if(!empty($template) && $template != 'default') {
-
-			$app = JFactory::getApplication( 'site' );
-
-			$registry = null;
-			if(is_numeric($template)){
-				$db = JFactory::getDbo();
-				$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$template.'" ';
-				$db->setQuery($query);
-				$res = $db->loadAssoc();
-				if($res){
-					$registry = new JRegistry;
-					$registry->loadString($res['params']);
-					$template = $res['template'];
-				}
-			} else {
-				vmAdminInfo('Your template settings are old, please check your template settings in the vm config and in your categories');
-				vmdebug('Your template settings are old, please check your template settings in the vm config and in your categories');
-			}
-			if(is_dir( JPATH_THEMES.DS.$template )) {
-				$app->setTemplate($template,$registry);
-			} else {
-				vmError( 'The chosen template couldnt find on the filesystem: '.$template );
-			}
-		}
-
-		return $template;
-	}
 
 	/**
 	 *

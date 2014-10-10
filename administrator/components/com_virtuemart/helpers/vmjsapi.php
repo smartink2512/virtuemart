@@ -179,7 +179,7 @@ class vmJsApi{
 		$file 	 = $namespace.$version.$min.'.'.$ext ;
 		$template = JFactory::getApplication()->getTemplate() ;
 		if ($path === FALSE) {
-			$uri = JPATH_THEMES .'/'. $template.'/'.$ext ;
+			$uri = VMPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
 		}
 

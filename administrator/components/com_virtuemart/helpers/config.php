@@ -24,6 +24,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 if(defined('JPATH_ROOT')){	//We are in joomla
 	defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', JPATH_ROOT);
+	defined ('VMPATH_THEMES') or define ('VMPATH_THEMES',VMPATH_ROOT.DS.'templates');
 	if(version_compare(JVERSION,'3.0.0','ge')) {
 		defined('JVM_VERSION') or define ('JVM_VERSION', 3);
 	}

@@ -228,8 +228,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		}
 
-		$template = VmConfig::get('vmtemplate',0);
-		shopFunctionsF::setTemplate($template);
+		shopFunctionsF::setTemplate();
 
 		parent::display($tpl);
 

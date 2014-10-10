@@ -361,10 +361,13 @@ class VirtuemartViewUser extends VmView {
 	$useXHTML = true;
 	$this->assignRef('useSSL', $useSSL);
 	$this->assignRef('useXHTML', $useXHTML);
+
 	$userFieldsModel = VmModel::getModel('UserFields');
 	$userFields = $userFieldsModel->getUserFields();
-	$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user);
-
+	$usermodel = VmModel::getModel('user');
+	$vmuser = $usermodel->getUser();
+	$vmuser = current($vmuser->userInfo);
+	$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $vmuser);
 
     if (VmConfig::get('order_mail_html')) {
 	    $mailFormat = 'html';
