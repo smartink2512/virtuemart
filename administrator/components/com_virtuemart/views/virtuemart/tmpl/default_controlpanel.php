@@ -24,6 +24,7 @@ $addDateInfo = false;
 
 $i = 0;
 $reports=array_reverse($this->report);
+$reports_date=array();
 foreach($reports as $report) {
 	$reports_date[$report['intervals']]=$report;
 }
