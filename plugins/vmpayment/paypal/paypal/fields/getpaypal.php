@@ -34,9 +34,8 @@ class JFormFieldGetPaypal extends JFormField {
 
 		JHtml::_('behavior.colorpicker');
 
-		$doc = JFactory::getDocument();
 		vmJsApi::addJScript( '/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
+		vmJsApi::css('paypal', 'plugins/vmpayment/paypal/paypal/assets/css/');
 
 		$url = "https://www.paypal.com/us/webapps/mpp/referral/paypal-payments-standard?partner_id=83EP5DJG9FU6L";
 		$logo = '<img src="https://www.paypalobjects.com/webstatic/en_US/logo/pp_cc_mark_111x69.png" />';

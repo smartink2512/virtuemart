@@ -25,6 +25,7 @@ defined('JPATH_BASE') or die();
  * Renders a label element
  */
 jimport('joomla.form.formfield');
+
 class JFormFieldReferringurl extends JFormField {
 	/**
 	 * Element name
@@ -36,15 +37,11 @@ class JFormFieldReferringurl extends JFormField {
 
 	protected function getInput() {
 
-		$this->value = JURI::root() . 'plugins/vmpayment/realex/jump.php';
+		$this->value = JURI::root() . 'plugins/vmpayment/realex_hpp_api/jump.php';
 
-		$class = !empty($this->class)? 'class="' . $this->class . '"' : 'class="text_area"';
-		if ($this->editable == 'true') {
-			$size = ($this->size) ? 'size="' . $this->size . '"' : '';
+		$class = !empty($this->class) ? 'class="' . $this->class . '"' : 'class="text_area"';
+		$size = ($this->size) ? 'size="' . $this->size . '"' : '';
 
-			return '<input type="text" name="' . $this->name . '" id="' . $this->name . '" value="' . $this->value . '" ' . $class . ' ' . $size . ' />';
-		} else {
-			return '<label for="' . $this->name . '"' . $class . '>' . $this->value . '</label>';
-		}
+		return '<input type="text" name="' . $this->name . '" id="' . $this->name . '" value="' . $this->value . '" ' . $class . ' ' . $size . ' />';
 	}
 }

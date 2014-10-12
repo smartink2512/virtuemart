@@ -22,10 +22,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 if (!class_exists('ShopFunctions')) {
-	require(VMPATH_ADMIN . '/helpers/shopfunctions.php');
+	require(VMPATH_ADMIN . DS.'helpers'.DS.'shopfunctions.php');
 }
 if (!class_exists('PaypalHelperPaypal')) {
-	require(JPATH_ROOT . '/plugins/vmpayment/paypal/paypal/helpers/paypal.php');
+	require(VMPATH_ROOT .   DS  .'plugins'. DS  .'vmpayment'. DS  .'paypal'. DS  .'paypal'. DS  .'helpers'. DS  .'paypal.php');
 }
 
 JFormHelper::loadFieldClass('list');

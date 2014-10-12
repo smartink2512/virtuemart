@@ -123,10 +123,10 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->cartPrices);
 				//$method->payment_name = $method->payment_name
 				if (!class_exists('SofortLib')) {
-					require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
+					require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 				}
 				if (!class_exists('SofortLib_iDealClassic')) {
-					require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib_ideal_classic.php');
+					require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib_ideal_classic.php');
 				}
 
 				$selected_bank = self::_getSelectedBank($method->virtuemart_paymentmethod_id);
@@ -274,10 +274,10 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 
 		if (!class_exists('SofortLib')) {
-			require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
+			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 		}
 		if (!class_exists('SofortLib_iDealClassic')) {
-			require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib_ideal_classic.php');
+			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib_ideal_classic.php');
 		}
 
 

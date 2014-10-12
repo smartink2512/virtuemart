@@ -173,7 +173,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		vmdebug('SOFORT sendTransactionRequest ... after storePSPluginInternalData', $security);
 
 		if (!class_exists('SofortLib')) {
-			require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
+			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 		}
 		$sofort = new SofortLib_Multipay($method->configuration_key);
 		$sofort->setVersion(self::RELEASE);
@@ -389,7 +389,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			return FALSE;
 		}
 		if (!class_exists('SofortLib')) {
-			require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
+			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 
 		}
 
@@ -940,7 +940,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 	static function getSecurityKey () {
 		if (!class_exists('SofortLib_SofortueberweisungClassic')) {
-			require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib_sofortueberweisung_classic.php');
+			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib_sofortueberweisung_classic.php');
 		}
 		return SofortLib_SofortueberweisungClassic::generatePassword();
 	}

@@ -28,7 +28,8 @@ vmJsApi::jCreditCard();
 vmJsApi::jQuery();
 vmJsApi::chosenDropDowns();
 vmJsApi::addJScript( '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/js/site.js');
-vmJsApi::css ( '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/realex.css');
+vmJsApi::css( 'realex','plugins/vmpayment/realex_hpp_api/realex_hpp_api/assets/css/');
+
 vmJsApi::addJScript ('vmRealexSumit',"
 
 	jQuery(document).ready(function($) {

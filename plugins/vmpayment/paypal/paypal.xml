@@ -42,12 +42,12 @@
 
                 <field class="api live required" name="api_login_id" type="text" size="80" default=""
                        label="VMPAYMENT_PAYPAL_USERNAME"/>
-                <field class="api live required" name="api_password" type="text" size="80" default=""
+                <field class="api live required" name="api_password" type="password" size="80" default=""
                        label="VMPAYMENT_PAYPAL_PASSWORD"/>
 
 
                 <!-- certificate required in production mode -->
-                <field class="api live signature" name="api_signature" type="text" size="80" default=""
+                <field class="api live signature" name="api_signature" type="password" size="80" default=""
                        label="VMPAYMENT_PAYPAL_SIGNATURE"/>
                 <field class="authentication live certificate" name="api_certificate" type="getcertificate"
                        directory="paypal" stripext="0" exclude="^_" default=""
@@ -56,7 +56,7 @@
 
                 <field class="api sandbox required" name="sandbox_api_login_id" type="text" size="80" default=""
                        label="VMPAYMENT_PAYPAL_SANDBOX_USERNAME"/>
-                <field class="api sandbox required" name="sandbox_api_password" type="text" size="80" default=""
+                <field class="api sandbox required" name="sandbox_api_password" type="password" size="80" default=""
                        label="VMPAYMENT_PAYPAL_SANDBOX_PASSWORD"/>
                 <!-- sandbox : 2 choices -->
 
@@ -66,7 +66,7 @@
                     <option value="certificate">VMPAYMENT_PAYPAL_AUTHENTICATION_CERTIFICATE</option>
                 </field>
 
-                <field class="authentication sandbox signature required" name="sandbox_api_signature" type="text"
+                <field class="authentication sandbox signature required" name="sandbox_api_signature" type="password"
                        size="80" default=""
                        label="VMPAYMENT_PAYPAL_SANDBOX_SIGNATURE"/>
                 <field class="authentication sandbox certificate" name="sandbox_api_certificate" type="getcertificate"
@@ -98,7 +98,7 @@
 
                 <!-- PayPal settings -->
                 <field type="vmtitle" default="VMPAYMENT_PAYPAL_SETTINGS" description="VMPAYMENT_PAYPAL_SETTINGS_DESC"/>
-                <!--param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
+                <!--param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_TIP">
                 <option value="0">COM_VIRTUEMART_NO</option>
                 <option value="1">COM_VIRTUEMART_YES</option>
                 </field-->
@@ -236,23 +236,23 @@
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field-->
                 <field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U"
-                       label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN"/>
+                       label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_TIP"/>
                 <field name="status_success" type="vmorderstate" scope="com_virtuemart" default="C"
-                       label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN"/>
+                       label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_TIP"/>
                 <field name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"
-                       label="VMPAYMENT_PAYPAL_STATUS_CANCEL" description="VMPAYMENT_PAYPAL_STATUS_CANCEL_EXPLAIN"/>
+                       label="VMPAYMENT_PAYPAL_STATUS_CANCEL" description="VMPAYMENT_PAYPAL_STATUS_CANCEL_TIP"/>
                 <field class="Authorization" name="status_capture" type="vmorderstate" scope="com_virtuemart"
                        default="S"
-                       label="VMPAYMENT_PAYPAL_STATUS_CAPTURE" description="VMPAYMENT_PAYPAL_STATUS_CAPTURE_EXPLAIN"/>
+                       label="VMPAYMENT_PAYPAL_STATUS_CAPTURE" description="VMPAYMENT_PAYPAL_STATUS_CAPTURE_TIP"/>
                 <!--param name="status_expired" type="vmorderstate" scope="com_virtuemart" default="X"
-                       label="VMPAYMENT_PAYPAL_STATUS_EXPIRED" description="VMPAYMENT_PAYPAL_STATUS_EXPIRED_EXPLAIN"/ -->
+                       label="VMPAYMENT_PAYPAL_STATUS_EXPIRED" description="VMPAYMENT_PAYPAL_STATUS_EXPIRED_TIP"/ -->
                 <!--param name="status_fraud" type="vmorderstate" scope="com_virtuemart" default="U"
-                       label="VMPAYMENT_PAYPAL_STATUS_FRAUD" description="VMPAYMENT_PAYPAL_STATUS_FRAUD_EXPLAIN"/ -->
+                       label="VMPAYMENT_PAYPAL_STATUS_FRAUD" description="VMPAYMENT_PAYPAL_STATUS_FRAUD_TIP"/ -->
                 <field name="status_refunded" type="vmorderstate" scope="com_virtuemart" default="R"
-                       label="VMPAYMENT_PAYPAL_STATUS_REFUND" description="VMPAYMENT_PAYPAL_STATUS_REFUND_EXPLAIN"/>
+                       label="VMPAYMENT_PAYPAL_STATUS_REFUND" description="VMPAYMENT_PAYPAL_STATUS_REFUND_TIP"/>
                 <field name="status_partial_refunded" type="vmorderstate" scope="com_virtuemart" default="R"
                        label="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND"
-                       description="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND_EXPLAIN"/>
+                       description="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND_TIP"/>
 
 
                 <field class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_OPTIONAL_PARAMS"/>
@@ -280,9 +280,9 @@
                 <field name="countries" type="vmcountries" scope="com_virtuemart" default=""
                        label="VMPAYMENT_PAYPAL_COUNTRIES" description="VMPAYMENT_PAYPAL_COUNTRIES_DESC"/>
                 <field name="min_amount" type="text" label="VMPAYMENT_PAYPAL_MIN_AMOUNT"
-                       description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN"/>
+                       description="VMPAYMENT_PAYPAL_MIN_AMOUNT_TIP"/>
                 <field name="max_amount" type="text" label="VMPAYMENT_PAYPAL_MAX_AMOUNT"
-                       description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN"/>
+                       description="VMPAYMENT_PAYPAL_MAX_AMOUNT_TIP"/>
                 <field name="publishup" type="calendar" default="" label="VMPAYMENT_PAYPAL_PUBLISH_UP"
                        description="VMPAYMENT_PAYPAL_PUBLISH_UP_DESC"/>
                 <field name="publishdown" type="calendar" default="" label="VMPAYMENT_PAYPAL_PUBLISH_DOWN"
@@ -309,11 +309,11 @@
                 <field class="warning_transaction_cost" type="vmtitle" default=""
                        description="VMPAYMENT_PAYPAL_DISCOUNTS_WARNING"/>
                 <field name="cost_per_transaction" type="text" label="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION"
-                       description="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION_EXPLAIN"/>
+                       description="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION_TIP"/>
                 <field name="cost_percent_total" type="text" label="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL"
-                       description="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL_EXPLAIN"/>
+                       description="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL_TIP"/>
                 <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_PAYPAL_TAX"
-                       description="VMPAYMENT_PAYPAL_TAX_EXPLAIN"/>
+                       description="VMPAYMENT_PAYPAL_TAX_TIP"/>
 
                 <!-- LAYOUT -->
                 <!-- ============ -->

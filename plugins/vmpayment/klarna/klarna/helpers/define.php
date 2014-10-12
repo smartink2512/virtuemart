@@ -18,7 +18,7 @@ defined('JPATH_BASE') or die();
  */
 
     if (!defined('JPATH_VMKLARNAPLUGIN'))
-	define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
+	define('JPATH_VMKLARNAPLUGIN', VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
     if (!defined('VMKLARNAPLUGINWEBROOT'))
 	define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna');
     if (!defined('VMKLARNAPLUGINWEBASSETS'))

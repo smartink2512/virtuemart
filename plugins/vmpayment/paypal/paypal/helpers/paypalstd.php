@@ -28,17 +28,17 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 	var $merchant_email = '';
 
-	function __construct($method,$paypalPlugin) {
-		parent::__construct($method,$paypalPlugin);
+	function __construct($method, $paypalPlugin) {
+		parent::__construct($method, $paypalPlugin);
 		//Set the credentials
-		if ($this->_method->sandbox  ) {
+		if ($this->_method->sandbox) {
 			$this->merchant_email = $this->_method->sandbox_merchant_email;
 		} else {
 			$this->merchant_email = $this->_method->paypal_merchant_email;
 		}
 		if (empty($this->merchant_email)) {
 			$sandbox = "";
-			if ($this->_method->sandbox  ) {
+			if ($this->_method->sandbox) {
 				$sandbox = 'SANDBOX_';
 			}
 			$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'MERCHANT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
@@ -53,10 +53,8 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 	public function preparePost() {
 
-
 		$post_variables = $this->initPostVariables($this->_method->payment_type);
 		$paymentCurrency = CurrencyDisplay::getInstance($this->_method->payment_currency);
-
 
 		switch ($this->_method->payment_type) {
 			case '_xclick':
@@ -169,35 +167,42 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		}
 
 		$url = $this->_getPayPalUrl();
-		// add spin image
-		$html = '<html><head><title>Redirection</title></head><body>';
+		vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
+	jQuery(document).ready(function($) {
+	    $(window).load(function(){
+			if(jQuery("#vmPaymentForm")) {
+				jQuery("#vmPaymentForm").submit();
+			}
+		});
+	});
+');
+
+		$html = '';
+		//$html = '<html><head><title>Redirection</title></head><body>';
 		$html .= '<div style="margin: auto; text-align: center;">';
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
 		} else {
-			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" accept-charset="UTF-8">';
+			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" id="vmPaymentForm" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
 		foreach ($post_variables as $name => $value) {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
-		if ($this->_method->debug ) {
+		if ($this->_method->debug) {
 
-				$html .= '<div style="background-color:red;color:white;padding:10px;">
+			$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to PayPal" />
 						</div>';
 			$this->debugLog($post_variables, 'PayPal request:', 'debug');
 
 		} else {
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-				$html .= '		document.vm_paypal_form.submit();';
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
 
-			$html .= '	</script>';
 		}
 		$html .= '</form></div>';
-		$html .= '</body></html>';
+		//$html .= '</body></html>';
 
 		return $html;
 	}
@@ -234,11 +239,11 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['night_phone_b'] = $address->phone_1;
 
 
-		$post_variables['return'] =  JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid' ). '&lang='.vRequest::getCmd('lang','')  ;
+		$post_variables['return'] = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		//Keep this line, needed when testing
 		//$post_variables['return'] 		= JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-		$post_variables['notify_url'] = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang='.vRequest::getCmd('lang','') ;
-		$post_variables['cancel_return'] =JURI::root(). 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang='.vRequest::getCmd('lang','')  ;
+		$post_variables['notify_url'] = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang=' . vRequest::getCmd('lang', '');
+		$post_variables['cancel_return'] = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 
 		//$post_variables['undefined_quantity'] = "0";
 		//$post_variables['test_ipn'] = $this->_method->debug;
@@ -251,7 +256,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['no_shipping'] = $this->_method->no_shipping;
 		$post_variables['no_note'] = "1";
 
-		if (empty($this->_method->headerimg) OR $this->_method->headerimg == -1 ) {
+		if (empty($this->_method->headerimg) OR $this->_method->headerimg == -1) {
 			$post_variables['image_url'] = $this->getLogoImage();
 		} else {
 			$post_variables['cpp_header_image'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->headerimg;
@@ -326,18 +331,18 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 		return $showOrderBEFields;
 	}
+
 	function onShowOrderBEPaymentByFields($payment) {
 		$prefix = "paypal_response_";
-		$html="";
-		$showOrderBEFields=$this->getOrderBEFields();
+		$html = "";
+		$showOrderBEFields = $this->getOrderBEFields();
 		foreach ($showOrderBEFields as $key => $showOrderBEField) {
-			$field=$prefix.$showOrderBEField;
+			$field = $prefix . $showOrderBEField;
 			// only displays if there is a value or the value is different from 0.00 and the value
 			if ($payment->$field) {
-				$html .= $this->paypalPlugin->getHtmlRowBE($prefix.$key, $payment->$field);
+				$html .= $this->paypalPlugin->getHtmlRowBE($prefix . $key, $payment->$field);
 			}
 		}
-
 
 
 		return $html;

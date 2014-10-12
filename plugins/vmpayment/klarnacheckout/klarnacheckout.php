@@ -22,7 +22,7 @@ if (!class_exists('vmPSPlugin')) {
 }
 
 if (!defined('JPATH_VMKLARNACHEKOUTCHEKOUTPLUGIN')) {
-	define('JPATH_VMKLARNACHEKOUTCHEKOUTPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout');
+	define('JPATH_VMKLARNACHEKOUTCHEKOUTPLUGIN', VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout');
 }
 if (!defined('VMKLARNACHEKOUTPLUGINWEBROOT')) {
 	define('VMKLARNACHEKOUTPLUGINWEBROOT', 'plugins/vmpayment/klarnacheckout');
@@ -34,10 +34,10 @@ if (!defined('VMKLARNACHEKOUTPLUGINWEBASSETS')) {
 	define('VMKLARNACHEKOUTPLUGINWEBASSETS', JURI::root() . VMKLARNACHEKOUTPLUGINWEBROOT . '/klarnacheckout/assets');
 }
 if (!class_exists('Klarna')) {
-	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
+	require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 }
 if (!class_exists('Klarna')) {
-	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
+	require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 }
 class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	const RELEASE = 'VM ${PHING.VM.RELEASE}';
@@ -1595,7 +1595,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	static function includeKlarnaFiles() {
 
 
-		require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+		require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
 
 		if (!class_exists('KlarnaHandler')) {
 			require(JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');

@@ -500,7 +500,7 @@ jQuery().ready(function($) {
 	 * @return string
 	 */
 	 function getKeyFileName () {
-		$path=JPATH_SITE . DS. 'plugins'.DS.'vmpayment'.DS.$this->plugin_name.DS.$this->plugin_name.DS.'key' .DS;
+		$path=VMPATH_ROOT . DS. 'plugins'.DS.'vmpayment'.DS.$this->plugin_name.DS.$this->plugin_name.DS.'key' .DS;
 		return $path .'pubkey.pem';
 	}
 

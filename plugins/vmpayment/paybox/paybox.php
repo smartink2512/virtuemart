@@ -640,16 +640,16 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	/*********************/
 	private function _loadPayboxInterface() {
 		if (!class_exists('PayboxHelperPaybox')) {
-			require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'paybox.php');
+			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'paybox.php');
 		}
 		if ($this->_currentMethod->integration == 'recurring') {
 			if (!class_exists('PayboxHelperPayboxRecurring')) {
-				require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'recurring.php');
+				require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'recurring.php');
 			}
 			$payboxInterface = new PayboxHelperPayboxRecurring($this->_currentMethod, $this, $this->_name);
 		} elseif ($this->_currentMethod->integration == 'subscribe') {
 			if (!class_exists('PayboxHelperPayboxSubscribe')) {
-				require(JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'subscribe.php');
+				require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . $this->_name . DS . $this->_name . DS . 'helpers' . DS . 'subscribe.php');
 			}
 			$payboxInterface = new PayboxHelperPayboxSubscribe($this->_currentMethod, $this, $this->_name);
 		} else {

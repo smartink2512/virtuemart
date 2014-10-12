@@ -18,8 +18,8 @@
  * http://virtuemart.net
  */
 defined('_JEXEC') or die();
-$doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/paybox/paybox/assets/css/paybox.css');
+vmJsApi::css(  'paybox','plugins/vmpayment/paybox/paybox/assets/css/');
+
 ?>
 
 <div class="paybox response">

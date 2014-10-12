@@ -286,14 +286,15 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
-if ($this->_method->virtuemart_paymentmethod_id==0) {
-	$msg='Programming error,Paypal expresscheckout: virtuemart_paymentmethod_id is 0';
-	vmError($msg,$msg);
-}
+		if ($this->_method->virtuemart_paymentmethod_id==0) {
+			$msg='Programming error,Paypal expresscheckout: virtuemart_paymentmethod_id is 0';
+			vmError($msg,$msg);
+			return;
+		}
 		// THIS IS A DIFFERENT URL FROM VM2
-		$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&SetExpressCheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id;
+		$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&SetExpressCheckout=done&pm=' . $this->_method->virtuemart_paymentmethod_id;
 
-		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element.'&action=SetExpressCheckout&SetExpressCheckout=cancel&pm=' . $this->_method->virtuemart_paymentmethod_id.'&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
 		$post_variables['NOSHIPPING'] = $this->_method->no_shipping;
@@ -323,6 +324,7 @@ if ($this->_method->virtuemart_paymentmethod_id==0) {
 			if ($this->total == 0) {
 				$msg='Programming error,Paypal expresscheckout: total sent is 0';
 				vmError($msg,$msg);
+				return;
 			}
 			$post_variables['PAYMENTREQUEST_0_AMT'] = $this->total;
 			$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
@@ -852,15 +854,7 @@ if ($this->_method->virtuemart_paymentmethod_id==0) {
 
 		//Are we coming back from Express Checkout?
 		$expressCheckout = vRequest::getVar('SetExpressCheckout', '');
-		if ($expressCheckout == 'cancel') {
-			$this->customerData->clear();
-			if (!class_exists('VirtueMartCart')) {
-				require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
-			}
-			$cart = VirtueMartCart::getCart();
-			$cart->virtuemart_paymentmethod_id = 0;
-			$cart->setCartIntoSession();
-		}
+
 		if (!$this->customerData->getVar('token')) {
 			$this->getToken();
 		} elseif ($expressCheckout == 'done') {

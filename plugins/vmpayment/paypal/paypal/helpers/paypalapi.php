@@ -410,11 +410,12 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 			if ($paypal_data->PAYMENTSTATUS == 'Pending' && $paypal_data->PENDINGREASON == 'authorization') {
 				$post_variables = $this->initPostVariables('DoVoid');
 			} else {
+				vmInfo('VMPAYMENT_PAYPAL_CANNOT_REFUND');
 				return false;
 			}
 		}
 
-		$post_variables['AuthorizationID'] = $paypal_data->TRANSACTIONID;
+		$post_variables['TRANSACTIONID'] = $paypal_data->TRANSACTIONID;
 
 		$this->sendRequest($post_variables);
 		return $this->handleResponse();

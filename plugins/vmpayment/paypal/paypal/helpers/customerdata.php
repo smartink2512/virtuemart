@@ -50,7 +50,7 @@ class PaypalHelperCustomerData {
 
 		//$this->clear();
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		$session = JFactory::getSession();
 		$sessionData = $session->get('paypal', 0, 'vm');
@@ -86,7 +86,7 @@ class PaypalHelperCustomerData {
 
 	public function loadPost() {
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		// card information
 		$virtuemart_paymentmethod_id = vRequest::getVar('virtuemart_paymentmethod_id', 0);
@@ -145,7 +145,7 @@ class PaypalHelperCustomerData {
 
 	public function save() {
 		if (!class_exists('vmCrypt')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		$session = JFactory::getSession();
 		$sessionData = new stdClass();
