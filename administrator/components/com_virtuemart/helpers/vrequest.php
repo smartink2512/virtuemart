@@ -137,7 +137,7 @@ class vRequest {
 	 * @param int $flags
 	 * @return mixed|null
 	 */
-	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_STRIP_LOW){
+	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_ENCODE_LOW){
 		//vmSetStartTime();
 		if(!empty($name)){
 

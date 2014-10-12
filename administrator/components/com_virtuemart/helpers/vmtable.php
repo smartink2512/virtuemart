@@ -247,7 +247,7 @@ class VmTable extends JTable {
 	 * @param $xParams
 	 * @param $varsToPushParam
 	 */
-	static function bindParameterable(&$obj, $xParams, $varsToPushParam) {
+	static function bindParameterable(&$obj, $xParams, $varsToPushParam,$decodeHtmlEntitiesParams = false) {
 
 		if(empty($varsToPushParam)) return;
 
@@ -274,7 +274,12 @@ class VmTable extends JTable {
 						$item = implode('=', $item);
 						$item = json_decode($item);
 						if ($item != null){
-							$obj->$key = html_entity_decode($item);
+							if($decodeHtmlEntitiesParams){
+								$obj->$key = html_entity_decode($item);
+							} else {
+								$obj->$key = $item;
+							}
+
 						} else {
 							//vmdebug('bindParameterable $item ==null '.$key,$varsToPushParam[$key]);
 						}
@@ -314,7 +319,12 @@ class VmTable extends JTable {
 						$item = implode('=', $item);
 						$item = json_decode($item);
 						if ($item != null){
-							$obj[$key] = html_entity_decode($item);
+							if($decodeHtmlEntitiesParams){
+								$obj[$key] = html_entity_decode($item);
+							} else {
+								$obj[$key] = $item;
+							}
+							//$obj[$key] = html_entity_decode($item);
 						}
 					}
 				}

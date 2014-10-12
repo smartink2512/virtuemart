@@ -301,7 +301,7 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 
 			if(VmConfig::$echoDebug){
 				VmConfig::$maxMessageCount++;
-				echo $debugdescr;
+				echo $debugdescr."\n";
 			} else if(VmConfig::$logDebug){
 				logInfo($debugdescr,'vmdebug');
 			}else {
