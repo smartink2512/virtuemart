@@ -17,38 +17,63 @@
 */
  
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
+$rows = count( $this->report );
+$intervalTitle='day';
+$addDateInfo = false;
 
+$i = 0;
+$reports=array_reverse($this->report);
+foreach($reports as $report) {
+	$reports_date[$report['intervals']]=$report;
+}
+
+$begin = new DateTime($this->from_period );
+$end = new DateTime( $this->until_period );
+$document = JFactory::getDocument();
+$document->addScript( "https://www.google.com/jsapi","text/javascript" );
+$js="
+  google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['".vmText::_('COM_VIRTUEMART_DAY')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_ORDERS')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_REVENUE_NETTO')."'],";
+
+$interval = DateInterval::createFromDateString('1 day');
+$period = new DatePeriod($begin, $interval, $end);
+foreach ( $period as $dt ) {
+	$day=$dt->format('Y-m-d');
+	if (array_key_exists($day, $reports_date)) {
+		$r = $reports_date[$day];
+	} else {
+		$r=array('intervals'=>$day, 'count_order_id'=>0, 'product_quantity'=>0, 'order_subtotal_netto'=>0);
+	}
+	$js .= " ['" . $r['intervals'] . "', " . $r['count_order_id'] . "," . $r['product_quantity'] .  "," . $r['order_subtotal_netto'] . "],";
+}
+
+$js = substr($js,0,-1);
+$js .= "  ]);";
+$js .="
+        var options = {
+          title: '". vmText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) )."',
+            series: {0: {targetAxisIndex:0},
+                   1:{targetAxisIndex:0},
+                   2:{targetAxisIndex:1},
+                  },
+                  colors: [\"#00A1DF\", \"#A4CA37\",\"#E66A0A\"],
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('vm_stats_chart'));
+
+        chart.draw(data, options);
+      }
+";
+vmJsApi::addJScript('vm.stats_chart',$js);
 ?>
 
 <div id="cpanel">
 
-    <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.product')) { ?>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=product'), 'vm_shop_products_48', vmText::_('COM_VIRTUEMART_PRODUCT_S')); ?></div>
-    <?php } ?>
-    <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.category')) { ?>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=category'), 'vm_shop_categories_48', vmText::_('COM_VIRTUEMART_CATEGORY_S')); ?></div>
-    <?php } ?>
-    <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.orders')) { ?>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=orders'), 'vm_shop_orders_48', vmText::_('COM_VIRTUEMART_ORDER_S')); ?></div>
-    <?php } ?>
-
-    <?php  if ($this->canDo->get('core.admin') || $this->canDo->get('vm.paymentmethod')) { ?>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod'), 'vm_shop_payment_48', vmText::_('COM_VIRTUEMART_PAYMENTMETHOD_S')); ?></div>
-    <?php }  ?>
-    <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.user')) { ?>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_users_48', vmText::_('COM_VIRTUEMART_USER_S')); ?></div>
-    <?php } ?>
-	<div class="clear"></div>
-    <?php if ($this->canDo->get('core.admin')) { ?>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=config'), 'vm_shop_configuration_48', vmText::_('COM_VIRTUEMART_CONFIG')); ?></div>
-    <?php } ?>
-    <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.user.editshop')) { ?>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user&task=editshop'), 'vm_shop_mart_48', vmText::_('COM_VIRTUEMART_STORE')); ?></div>
-    <?php } ?>
-	<div class="icon"><?php VmImage::displayImageButton('http://virtuemart.net/community/translations', 'vm_country_48', vmText::_('COM_VIRTUEMART_TRANSLATIONS'), 'vmicon48','target="_blank"'); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton('http://docs.virtuemart.net', 'vm_shop_help_48', vmText::_('COM_VIRTUEMART_DOCUMENTATION'), 'vmicon48','target="_blank"'); ?></div>
-
+	<div id="vm_stats_chart" style="width: 100%; height: 500px;"></div>
 	<div class="clear"></div>
 		<?php
 		$totalItems=5;

@@ -81,6 +81,16 @@ class VirtuemartViewVirtuemart extends VmView {
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}
 
+		//
+		$reportModel		= VmModel::getModel('report');
+
+		vRequest::setvar('task','');
+		$myCurrencyDisplay = CurrencyDisplay::getInstance();
+		$revenueBasic = $reportModel->getRevenue();
+		$this->assignRef('report', $revenueBasic);
+		$this->assignRef('from_period', $reportModel->from_period);
+		$this->assignRef('until_period', $reportModel->until_period);
+
 		parent::display($tpl);
 	}
 }
