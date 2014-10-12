@@ -67,8 +67,8 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$this->loadJLangThis('plg_vmpayment_klarna');
 		if  (!JFactory::getApplication()->isSite()) {
 			vmJsApi::addJScript('/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/admin.js');
-			vmJsApi::css( '/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css/klarnacheckout.css');
-	}
+			vmJsApi::css('klarnacheckout', 'plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css/');
+		}
 	}
 
 	/**

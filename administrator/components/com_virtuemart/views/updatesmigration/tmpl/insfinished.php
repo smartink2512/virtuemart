@@ -90,7 +90,7 @@ if($option=='com_virtuemart'){
 					if(!$productsExists){
 						?>
 						<div class="icon">
-							<a
+							<a class="btn btn-primary"
 								href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&'.JSession::getFormToken().'=1') ?>">
 								<span class="vmicon48 vm_install_48"></span> <br />
 								<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
@@ -100,7 +100,7 @@ if($option=='com_virtuemart'){
 					<?php } ?>
 
 					<div class="icon">
-						<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&'.JSession::getFormToken().'=1' ) ?>">
+						<a class="btn btn-primary" href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&'.JSession::getFormToken().'=1' ) ?>">
 							<span class="vmicon48 vm_frontpage_48"></span>
 							<br /><?php echo vmText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 						</a>
@@ -109,8 +109,9 @@ if($option=='com_virtuemart'){
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td><span class="btn btn-primary">
 				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
+				</span>
 			</td>
 		</tr>
 	</table>

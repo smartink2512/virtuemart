@@ -73,7 +73,7 @@ vmJsApi::addJScript('vm.stats_chart',$js);
 
 <div id="cpanel">
 
-	<div id="vm_stats_chart" style="width: 100%; height: 500px;"></div>
+	<div id="vm_stats_chart" style="width: 100%; height: 300px;"></div>
 	<div class="clear"></div>
 		<?php
 		$totalItems=5;
