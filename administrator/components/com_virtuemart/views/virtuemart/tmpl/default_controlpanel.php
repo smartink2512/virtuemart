@@ -31,7 +31,7 @@ foreach($reports as $report) {
 $begin = new DateTime($this->from_period );
 $end = new DateTime( $this->until_period );
 $document = JFactory::getDocument();
-$document->addScript( "https://www.google.com/jsapi","text/javascript" );
+vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false,'' );
 $js="
   google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});
       google.setOnLoadCallback(drawChart);

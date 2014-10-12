@@ -62,6 +62,22 @@ class VirtuemartControllerUserfields extends VmController {
 		$view->display(null);
 	}
 
+	function save($data = 0) {
+
+		if($data===0) $data = vRequest::getPost();
+
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+			$data['description'] = vRequest::get('description','');
+		} else {
+			$data['description'] = vRequest::getHtml('description','');
+		}
+		// onSaveCustom plugin;
+		parent::save($data);
+	}
+
+
+
 }
 
 //No Closing tag

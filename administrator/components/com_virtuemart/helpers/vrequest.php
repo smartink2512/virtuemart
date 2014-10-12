@@ -31,6 +31,11 @@
 
 class vRequest {
 
+	public function __construct(){
+
+
+	}
+
 	public static function getUword($field, $default='', $custom=''){
 		$source = self::getVar($field,$default);
 		return self::filterUword($source,$custom);
@@ -79,7 +84,7 @@ class vRequest {
 	 * @return mixed|null
 	 */
 	public static function getVar($name, $default = null){
-		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW );
+		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_ENCODE_LOW );
 	}
 
 	/**
@@ -91,7 +96,7 @@ class vRequest {
 	 * @return mixed|null
 	 */
 	public static function getString($name, $default = ''){
-		return self::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_STRIP_LOW);
+		return self::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
 	}
 
 	public static function getHtml($name, $default = ''){
@@ -162,15 +167,15 @@ class vRequest {
 	 * @return mixed cleaned $_REQUEST
 	 */
 	public static function getRequest( ){
-		return  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
+		return  filter_var_array($_REQUEST, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
 	}
 	
 	public static function getPost( ){
-		return  filter_var_array($_POST, FILTER_SANITIZE_STRING);
+		return  filter_var_array($_POST, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
 	}
 	
 	public static function getGet( ){
-		return  filter_var_array($_GET, FILTER_SANITIZE_STRING);
+		return  filter_var_array($_GET, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
 	}
 	
 	public static function getFiles($name){

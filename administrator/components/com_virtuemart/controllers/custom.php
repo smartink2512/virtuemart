@@ -55,7 +55,9 @@ class VirtuemartControllerCustom extends VmController {
 	}
 
 	function save($data = 0) {
-		$data = vRequest::getRequest();
+
+		if($data===0)$data = vRequest::getPost();
+
 		// onSaveCustom plugin;
 		parent::save($data);
 	}

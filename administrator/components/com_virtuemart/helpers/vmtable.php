@@ -274,7 +274,7 @@ class VmTable extends JTable {
 						$item = implode('=', $item);
 						$item = json_decode($item);
 						if ($item != null){
-							$obj->$key = $item;
+							$obj->$key = html_entity_decode($item);
 						} else {
 							//vmdebug('bindParameterable $item ==null '.$key,$varsToPushParam[$key]);
 						}
@@ -314,7 +314,7 @@ class VmTable extends JTable {
 						$item = implode('=', $item);
 						$item = json_decode($item);
 						if ($item != null){
-							$obj[$key] = $item;
+							$obj[$key] = html_entity_decode($item);
 						}
 					}
 				}
