@@ -748,25 +748,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 	}
 
 	private function _storePaypalInternalData( $paypal_data, $virtuemart_order_id, $virtuemart_paymentmethod_id, $order_number) {
-		$paypalInterface = $this->_loadPayPalInterface();
-		// get all know columns of the table
-		$db = JFactory::getDBO();
-		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
-		$db->setQuery($query);
-		$columns = $db->loadColumn(0);
 
-		$post_msg = '';
-		/*
-        foreach ($paypal_data as $key => $value) {
-            $post_msg .= $key . "=" . $value . "<br />";
-            $table_key = 'paypal_response_' . $key;
-            $table_key=strtolower($table_key);
-            if (in_array($table_key, $columns)   ) {
-                $response_fields[$table_key] = $value;
-            }
-        }
-		*/
-		//$response_fields = $paypalInterface->storePaypalInternalData($paypal_data);
 		if (array_key_exists('PAYMENTINFO_0_PAYMENTSTATUS', $paypal_data)) {
 			$response_fields['paypal_response_payment_status'] = $paypal_data['PAYMENTINFO_0_PAYMENTSTATUS'];
 		} else if (array_key_exists('PAYMENTSTATUS', $paypal_data)) {

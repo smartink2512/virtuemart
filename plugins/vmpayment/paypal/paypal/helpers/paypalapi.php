@@ -414,7 +414,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 			}
 		}
 
-		$post_variables['AuthorizationID'] = $paypal_data->TRANSACTIONID;
+		$post_variables['TRANSACTIONID'] = $paypal_data->TRANSACTIONID;
 
 		$this->sendRequest($post_variables);
 		return $this->handleResponse();

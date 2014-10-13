@@ -17,18 +17,15 @@
 defined('_JEXEC') or die('Restricted access');
 $js = '
 		jQuery(document).ready(function( $ ) {
-				if ( $("#oncheckout_opc").is(\':checked\') ) {
+			if ( $("#oncheckout_opc").is(\':checked\') ) {
 					$(".not_opc_param").hide();
-				} else {
-					$(".not_opc_param").show();
-				}
-			 $("#oncheckout_opc").click(function() {
-				if ( $(".not_opc_param").is(\':checked\') ) {
-					$(".not_opc_param").hide();
-				} else {
-					$(".not_opc_param").show();
-				}
+			} else {
+				$(".not_opc_param").show();
+			}
+			$("#oncheckout_opc").change(function() {
+				$(".not_opc_param").toggle();
 			});
+
 		});
 	';
 $document = JFactory::getDocument();

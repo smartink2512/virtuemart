@@ -1713,7 +1713,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		} elseif ($order->order_status == $this->_currentMethod->status_capture and $this->canDoCapture($payments, $orderModelData)) {
 			return $this->capturePayment($payments, $orderModelData);
 		} elseif ($order->order_status == $this->_currentMethod->status_cancel and $this->canDoCancel($payments, $orderModelData)) {
-			return $this->cancelPayment($orderModelData);
+			return $this->cancelPayment($payments,$orderModelData);
 		}
 		$updateOrderPaymentNumber++;
 

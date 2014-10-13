@@ -126,7 +126,7 @@ class  RealexHelperRealex {
 	public function setTotalInPaymentCurrency ($total) {
 
 		if (!class_exists('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . '/helpers/currencydisplay.php');
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		$this->total = vmPSPlugin::getAmountValueInCurrency($total, $this->_method->payment_currency) * 100;
 

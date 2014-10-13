@@ -63,7 +63,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			}
 			$this->dontMove = $dontMove;
 
-			$this->updateShipperToShipment ();
+			echo "<h3>Installing VirtueMart Plugins and Modules</h3>";
 			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
 			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
 			$this->installPlugin ('VM Payment - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
@@ -221,11 +221,13 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$this->checkAddFieldToTable('#__virtuemart_shipment_weight_countries',$key,$value);
 				}*/
 
-				echo "<H3>Installing VirtueMart Plugins and modules Success.</h3>";
-				echo "<H3>Keep the AIO component for automatic updates of ALL VirtueMart Plugins and modules</h3>";
+				echo "<h3>Installation Successfull.</h3>";
+				echo "<p>The AIO component (com_virtuemart_aio) is used to install or update all the plugins and modules essential to VirtueMart in one go.</p>";
+				echo "<p>Do not uninstall it.</p>";
+
 
 			} else {
-				echo "<H3>Updated VirtueMart Plugin tables</h3>";
+				echo "<h3>Updated VirtueMart Plugin tables</h3>";
 			}
 			$this->updateOrderingExtensions();
 
@@ -312,9 +314,23 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$db->setQuery ($q);
 					$count = $db->loadResult ();
 
-					//We write only in the table, when it is not installed already
-					if ($count == 0) {
-						// 				$table->load($count);
+
+					if ($count == 2) {
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
+						$db->setQuery ($q);
+						$duplicatedPlugin = $db->loadResult ();
+						$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
+						$db->setQuery ($q);
+						$db->query ();
+					}
+					if ($count>0) {
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '`';
+						$db->setQuery ($q);
+						$data[$idfield] = $db->loadResult ();
+						$data['state'] =0; // must be set manually when updating
+					}
+					//We write ALWAYS in the table,like this the version number is updated
+
 						if (version_compare (JVERSION, '1.6.0', 'ge')) {
 							$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
 						}
@@ -340,15 +356,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 							$app = JFactory::getApplication ();
 							$app->enqueueMessage (get_class ($this) . '::store ' . $error);
 						}
-						// remove duplicated
-					} elseif ($count == 2) {
-						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
-						$db->setQuery ($q);
-						$duplicatedPlugin = $db->loadResult ();
-						$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
-						$db->setQuery ($q);
-						$db->query ();
-					}
+
 				}
 
 			}
@@ -378,7 +386,9 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				}
 
 			}
-			$this->updateJoomlaUpdateServer( $type, $element, $dst ,$group );
+			$this->updateJoomlaUpdateServer( $type, $element, $dst , $group  );
+			$installTask= $count==0 ? 'installed':'updated';
+			echo "<div>Plugin ". $name. " <em>". $installTask ."</em></div>";
 
 		}
 
@@ -403,7 +413,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$dispatcher = JDispatcher::getInstance ();
 				$config = array('type' => $group, 'name' => $group, 'params' => '');
 				$plugin = new $pluginClassname($dispatcher, $config);
-				;
+
 				// 				$updateString = $plugin->getVmPluginCreateTableSQL();
 				//if(function_exists($plugin->getTableSQLFields)){
 				$_psType = substr ($group, 2);
@@ -763,33 +773,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			return FALSE;
 		}
 
-		private function updateShipperToShipment () {
 
-			if (empty($this->db)) {
-				$this->db = JFactory::getDBO ();
-			}
-			if (version_compare (JVERSION, '1.6.0', 'ge')) {
-				// Joomla! 1.6 code here
-				$table = JTable::getInstance ('extension');
-				$tableName = '#__extensions';
-				$idfield = 'extension_id';
-			} else {
-
-				// Joomla! 1.5 code here
-				$table = JTable::getInstance ('plugin');
-				$tableName = '#__plugins';
-				$idfield = 'id';
-			}
-
-			$q = 'SELECT ' . $idfield . ' FROM ' . $tableName . ' WHERE `folder` = "vmshipper" ';
-			$this->db->setQuery ($q);
-			$result = $this->db->loadResult ();
-			if ($result) {
-				$q = 'UPDATE `' . $tableName . '` SET `folder`="vmshipment" WHERE `extension_id`= ' . $result;
-				$this->db->setQuery ($q);
-				$this->db->query ();
-			}
-		}
 
 		/**
 		 * copy all $src to $dst folder and remove it

@@ -29,10 +29,10 @@ if (!class_exists('vmPSPlugin')) {
 }
 
 if (!class_exists('RealexHelperRealex')) {
-	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/helper.php');
+	require(JPATH_SITE . DS . 'plugins'.DS.'vmpayment'.DS.'realex_hpp_api'.DS.'realex_hpp_api'.DS.'helpers'.DS.'helper.php');
 }
 if (!class_exists('RealexHelperCustomerData')) {
-	require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
+	require(JPATH_SITE .DS.'plugins'.DS.'vmpayment'.DS.'realex_hpp_api'.DS.'realex_hpp_api'.DS.'helpers'.DS.'customerdata.php');
 }
 
 if (!class_exists('vmPSPlugin')) {
@@ -1177,7 +1177,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		$display_logos = "";
 		if (!class_exists('RealexHelperCustomerData')) {
-			require(JPATH_SITE . '/plugins/vmpayment/realex_hpp_api/realex_hpp_api/helpers/customerdata.php');
+			require(JPATH_SITE . DS  .'plugins'. DS  .'vmpayment'. DS  .'realex_hpp_api'. DS  .'realex_hpp_api'. DS  .'helpers'. DS  .'customerdata.php');
 		}
 		$this->_currentMethod = $method;
 		$realexInterface = $this->_loadRealexInterface();
@@ -1841,7 +1841,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
 		$html .= '<form action="' . JURI::root(false) . '" method="post" name="vm_realex_form" accept-charset="UTF-8">';
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
-
+		$html .= '<input type="hidden" name="option" value="com_virtuemart" />';
 		$html .= '<input type="hidden" name="view" value="pluginresponse" />';
 		 if ($success) {
 			$html .= '<input type="hidden" name="task" value="pluginresponsereceived" />';
