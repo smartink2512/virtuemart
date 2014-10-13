@@ -64,6 +64,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->dontMove = $dontMove;
 
 			echo "<h3>Installing VirtueMart Plugins and Modules</h3>";
+			$this->updateShipperToShipment ();
 			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
 			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
 			$this->installPlugin ('VM Payment - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
@@ -773,7 +774,33 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			return FALSE;
 		}
 
+		private function updateShipperToShipment () {
 
+			if (empty($this->db)) {
+				$this->db = JFactory::getDBO ();
+			}
+			if (version_compare (JVERSION, '1.6.0', 'ge')) {
+				// Joomla! 1.6 code here
+				$table = JTable::getInstance ('extension');
+				$tableName = '#__extensions';
+				$idfield = 'extension_id';
+			} else {
+
+				// Joomla! 1.5 code here
+				$table = JTable::getInstance ('plugin');
+				$tableName = '#__plugins';
+				$idfield = 'id';
+			}
+
+			$q = 'SELECT ' . $idfield . ' FROM ' . $tableName . ' WHERE `folder` = "vmshipper" ';
+			$this->db->setQuery ($q);
+			$result = $this->db->loadResult ();
+			if ($result) {
+				$q = 'UPDATE `' . $tableName . '` SET `folder`="vmshipment" WHERE `extension_id`= ' . $result;
+				$this->db->setQuery ($q);
+				$this->db->query ();
+			}
+		}
 
 		/**
 		 * copy all $src to $dst folder and remove it
