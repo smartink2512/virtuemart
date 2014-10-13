@@ -237,7 +237,7 @@ class VirtuemartViewOrders extends VmView {
 	function prepareVendor(){
 
 		$vendorModel = VmModel::getModel('vendor');
-		$vendor = & $vendorModel->getVendor();
+		$vendor = $vendorModel->getVendor();
 		$this->assignRef('vendor', $vendor);
 		$vendorModel->addImages($this->vendor,1);
 
