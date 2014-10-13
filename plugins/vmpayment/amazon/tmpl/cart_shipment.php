@@ -37,7 +37,7 @@ $buttonclass = 'default';
 ?>
 <?php
 if ($this->found_shipment_method) {
-	echo "<h3>" . JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT') . "</h3>";
+	echo "<h3>" . vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT') . "</h3>";
 	?>
 
 

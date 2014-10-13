@@ -143,7 +143,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		$this->getPluginCustomData($group, $product->virtuemart_product_id);
 
 		// Here the plugin values
-		//$html =JTEXT::_($group->custom_title) ;
+		//$html =vmTEXT::_($group->custom_title) ;
 
 		$group->display .=  $this->renderByLayout('default',array($this->params,&$group ) );
 

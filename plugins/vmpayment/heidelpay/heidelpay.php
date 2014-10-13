@@ -79,11 +79,11 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$_html = '<table class="adminlist table">' . "\n";
 		$_html .= '	<thead>' . "\n";
 		$_html .= '		<tr>' . "\n";
-		$_html .= '			<th colspan="2" width="100%">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') . '</th>' . "\n";
+		$_html .= '			<th colspan="2" width="100%">' . vmText::_ ('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') . '</th>' . "\n";
 		$_html .= '		</tr>' . "\n";
 		$_html .= '	</thead>' . "\n";
 		$_html .= '	<tr>' . "\n";
-		$_html .= '		<td>' . JText::_ ('VMPAYMENT_HEIDELPAY_PAYMENT_RESULT') . '</td>' . "\n";
+		$_html .= '		<td>' . vmText::_ ('VMPAYMENT_HEIDELPAY_PAYMENT_RESULT') . '</td>' . "\n";
 		if ($paymentData->processing_result == "ACK" AND $paymentData->payment_code == 80) {
 			$_html .= '<td style="color: #FC0 ; font-weight:bold ">WAITING</td>';
 		} elseif ($paymentData->processing_result == "ACK") {
@@ -94,7 +94,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		}
 		$_html .= '	</tr>' . "\n";
 		$_html .= '	<tr>' . "\n";
-		$_html .= '		<td>' . JText::_ ('VMPAYMENT_HEIDELPAY_PAYMENT_METHOD') . '</td>' . "\n";
+		$_html .= '		<td>' . vmText::_ ('VMPAYMENT_HEIDELPAY_PAYMENT_METHOD') . '</td>' . "\n";
 		$_html .= '		<td>' . $paymentData->payment_methode . '.' . $paymentData->payment_type . ' (' . $paymentData->payment_name . ')</td>' . "\n";
 		$_html .= '	</tr>' . "\n";
 		$_html .= '	<tr>' . "\n";
@@ -106,7 +106,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$_html .= '		<td>' . $paymentData->short_id . '</td>' . "\n";
 		$_html .= '	</tr>' . "\n";
 		$_html .= '	<tr>' . "\n";
-		$_html .= '		<td>' . JText::_ ('VMPAYMENT_HEIDELPAY_COMMENT') . '</td>' . "\n";
+		$_html .= '		<td>' . vmText::_ ('VMPAYMENT_HEIDELPAY_COMMENT') . '</td>' . "\n";
 		$_html .= '		<td>' . $paymentData->comment . '</td>' . "\n";
 		$_html .= '	</tr>' . "\n";
 		$_html .= '</table>' . "\n";
@@ -237,8 +237,8 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			}
 
 			if($bsError){			
-				$msg = JText::_('VMPAYMENT_HEIDELPAY_TECHNICAL_ERROR')."<br />".
-					JText::_('VMPAYMENT_HEIDELPAY_BILLSAFE_ERROR')."<br />";
+				$msg = vmText::_('VMPAYMENT_HEIDELPAY_TECHNICAL_ERROR')."<br />".
+					vmText::_('VMPAYMENT_HEIDELPAY_BILLSAFE_ERROR')."<br />";
 				$app = JFactory::getApplication();				
 				$app->redirect('index.php?option=com_virtuemart&view=cart', $msg);
 			}
@@ -266,7 +266,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$params['SHOP.TYPE'] = 'VirtueMart '.VmConfig::getInstalledVersion();
 		$params['SHOPMODULE.VERSION'] = $this->version;
 
-		$params['CRITERION.PAYMENT_NAME'] = JText::_ ('VMPAYMENT_HEIDELPAY_' . $method->HEIDELPAY_PAYMENT_TYPE);
+		$params['CRITERION.PAYMENT_NAME'] = vmText::_ ('VMPAYMENT_HEIDELPAY_' . $method->HEIDELPAY_PAYMENT_TYPE);
 		$params['CRITERION.PAYMENT_NAME'] = strip_tags($params['CRITERION.PAYMENT_NAME']);
 		/*
 		* Create hash to secure the response
@@ -321,9 +321,9 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			                                                      'response'                       => $response['FRONTEND_REDIRECT_URL']
 			                                                 ));
 		} else {
-			$html = JText::_ ('VMPAYMENT_HEIDELPAY_TECHNICAL_ERROR') .
+			$html = vmText::_ ('VMPAYMENT_HEIDELPAY_TECHNICAL_ERROR') .
 				" <br /> - " . addslashes ($response['PROCESSING_RETURN']) . "<br />" .
-				JText::_ ('VMPAYMENT_HEIDELPAY_CONTACT_SHOPOWNER');
+				vmText::_ ('VMPAYMENT_HEIDELPAY_CONTACT_SHOPOWNER');
 		}
 		/*
 		* Show debug information
@@ -385,7 +385,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			vmError (" - " . $paymentData->comment," - " . $paymentData->comment);
 		} else {
 			vmInfo ('VMPAYMENT_HEIDELPAY_PAYMENT_SUCESS');
-			$html  = "<h3>".JText::sprintf ('VMPAYMENT_HEIDELPAY_ORDER_NR') . ': ' . $order_number . " </h3>" ;
+			$html  = "<h3>".vmText::sprintf ('VMPAYMENT_HEIDELPAY_ORDER_NR') . ': ' . $order_number . " </h3>" ;
 			$tmpkom	= preg_replace("/\(-/", '<a href="', $paymentData->comment);
 			$tmpkom	= preg_replace('/-\)/', '" target="_blank">Barcode runterladen</a>', $tmpkom );
 			$html .= $tmpkom;
@@ -405,7 +405,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			if ($orderitems['history'][$nb_history - 1]->order_status_code != $order['order_status']) {
 				if ($method->HEIDELPAY_CONFIRM_EMAIL == 1 or ($method->HEIDELPAY_CONFIRM_EMAIL == 2 and $paymentData->processing_result == "ACK")) {
 					$order['customer_notified'] = 1;
-					$order['comments'] = JText::sprintf ('VMPAYMENT_HEIDELPAY_EMAIL_SENT') . "<br />";
+					$order['comments'] = vmText::sprintf ('VMPAYMENT_HEIDELPAY_EMAIL_SENT') . "<br />";
 				}
 				$order['comments'] .= $paymentData->comment;
 				/*

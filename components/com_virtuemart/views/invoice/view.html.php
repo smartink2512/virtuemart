@@ -294,7 +294,8 @@ class VirtuemartViewInvoice extends VmView {
 
 		$attach = VmConfig::get('attach',false);
 
-		if($this->recipient == 'shopper' and !empty($attach) and in_array($this->orderDetails['details']['BT']->order_status,VmConfig::get('attach_os',array())) ){
+		if(empty($this->recipient)) $this->recipient = $recipient;
+		if(!empty($attach) and $this->recipient == 'shopper' and in_array($this->orderDetails['details']['BT']->order_status,VmConfig::get('attach_os',array())) ){
 			$this->mediaToSend = VMPATH_ROOT.DS.'images'.DS.'stories'.DS.'virtuemart'.DS.'vendor'.DS.VmConfig::get('attach');
 		}
 

@@ -447,7 +447,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$idTag = 'selectoptions'.++$k;
 				$html .= '<fieldset style="background-color:#F9F9F9;">
-					<legend>'. JText::_('COM_VIRTUEMART_CUSTOM_RAMB_NEW').'</legend>
+					<legend>'. vmText::_('COM_VIRTUEMART_CUSTOM_RAMB_NEW').'</legend>
 					<div id="new_ramification">';
 				//$html .= JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][selectoptions]['.$k.'][voption]', '', 'value', 'text', 'product_name',$idTag) ;
 				//$html .= '<input type="text" value="" name="field[' . $row . '][selectoptions]['.$k.'][slabel]" />';
@@ -455,7 +455,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= JHtml::_ ('select.genericlist', $optAttr, 'voption', '', 'value', 'text', 'product_name','voption') ;
 				$html .= '<input type="text" value="" id="vlabel" />';
 
-				$html .= '<span id="new_ramification_bt"><span class="icon-nofloat vmicon vmicon-16-new"></span>'. JText::_('COM_VIRTUEMART_ADD').'</span>
+				$html .= '<span id="new_ramification_bt"><span class="icon-nofloat vmicon vmicon-16-new"></span>'. vmText::_('COM_VIRTUEMART_ADD').'</span>
 					</div>
 				</fieldset>';
 

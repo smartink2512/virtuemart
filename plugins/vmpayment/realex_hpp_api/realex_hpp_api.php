@@ -364,7 +364,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return NULL;
 		}
-		JFactory::getApplication()->enqueueMessage(JText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
+		JFactory::getApplication()->enqueueMessage(vmText::_('VMPAYMENT_REALEX_HPP_API_ERROR_TRY_AGAIN'));
 	}
 
 	/**
@@ -469,9 +469,9 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		$options = array();
 		if ($this->isDelayedSettlement()) {
-			$options[] = JHTML::_('select.option', 'settlePayment', JText::_('VMPAYMENT_REALEX_HPP_API_ORDER_BE_CAPTURE'), 'value', 'text');
+			$options[] = JHTML::_('select.option', 'settlePayment', vmText::_('VMPAYMENT_REALEX_HPP_API_ORDER_BE_CAPTURE'), 'value', 'text');
 		}
-		$options[] = JHTML::_('select.option', 'rebatePayment', JText::_('VMPAYMENT_REALEX_HPP_API_ORDER_BE_REBATE'), 'value', 'text');
+		$options[] = JHTML::_('select.option', 'rebatePayment', vmText::_('VMPAYMENT_REALEX_HPP_API_ORDER_BE_REBATE'), 'value', 'text');
 		$actionList = JHTML::_('select.genericlist', $options, 'action', '', 'value', 'text', 'capturePayment', 'action', true);
 
 
@@ -490,7 +490,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$html .= '<input type="hidden" name="virtuemart_order_id" value="' . $virtuemart_order_id . '"/>';
 		$html .= '<input type="hidden" name="virtuemart_paymentmethod_id" value="' . $virtuemart_paymentmethod_id . '"/>';
 
-		$html .= '<a class="updateOrderBEPayment btn btn-small" href="#"   >' . Jtext::_('COM_VIRTUEMART_SAVE') . '</a>';
+		$html .= '<a class="updateOrderBEPayment btn btn-small" href="#"   >' . vmText::_('COM_VIRTUEMART_SAVE') . '</a>';
 		$html .= '</form>';
 		$html .= ' </td></tr>';
 
@@ -880,7 +880,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$extension_id = $db->loadResult();
 		if (empty($extension_id)) {
 			$app = JFactory::getApplication();
-			$app->enqueueMessage(JText::_('VMPAYMENT_REALEX_HPP_API_NO_PLUGIN_INSTALLED'));
+			$app->enqueueMessage(vmText::_('VMPAYMENT_REALEX_HPP_API_NO_PLUGIN_INSTALLED'));
 			return;
 		}
 		// publish the plugin
@@ -894,7 +894,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$virtuemart_userfield_id = $db->loadResult();
 		if (empty($virtuemart_userfield_id)) {
 			//$app = JFactory::getApplication();
-			//$app -> enqueueMessage(JText::_('VMUSERFIELD_REALEX_NO_PLUGIN_ALREADY_INSTALLED'));
+			//$app -> enqueueMessage(vmText::_('VMUSERFIELD_REALEX_NO_PLUGIN_ALREADY_INSTALLED'));
 
 			$userFieldsModel = VmModel::getModel('UserFields');
 
@@ -914,9 +914,9 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			$ret = $userFieldsModel->store($data);
 
 			if (!$ret) {
-				vmError(JText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_FAILED') . " " . $data['name'] . " " . $ret);
+				vmError(vmText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_FAILED') . " " . $data['name'] . " " . $ret);
 			} else {
-				vmInfo(JText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_OK') . " " . $data['name']);
+				vmInfo(vmText::_('VMPAYMENT_REALEX_HPP_API_CREATE_USERFIELD_OK') . " " . $data['name']);
 			}
 		}
 
@@ -967,8 +967,8 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
 		if (!$db->query()) {
-			JError::raiseWarning(1, $payerRefTableName . '::createPayerRefTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr(TRUE));
-			echo $payerRefTableName . '::createPayerRefTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr(TRUE);
+			JError::raiseWarning(1, $payerRefTableName . '::createPayerRefTable: ' . vmText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr(TRUE));
+			echo $payerRefTableName . '::createPayerRefTable: ' . vmText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr(TRUE);
 		}
 
 	}

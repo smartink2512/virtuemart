@@ -85,7 +85,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 					<dt class="info">info</dt>
 					<dd class="info message">
 						<ul>
-							<li><?php echo JText::_('VMPAYMENT_AMAZON_UPDATECART_SHIPMENT_NOT_FOUND'); ?></li>
+							<li><?php echo vmText::_('VMPAYMENT_AMAZON_UPDATECART_SHIPMENT_NOT_FOUND'); ?></li>
 						</ul>
 					</dd>
 				</dl>
@@ -102,7 +102,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 	<div class="cart-view" id="cart-view">
 		<div id="amazonHeader">
 			<div class="width50 floatleft">
-				<h1><?php echo JText::_('VMPAYMENT_AMAZON_PAY_WITH_AMAZON'); ?></h1>
+				<h1><?php echo vmText::_('VMPAYMENT_AMAZON_PAY_WITH_AMAZON'); ?></h1>
 
 				<div class="payments_signin_button"></div>
 			</div>
@@ -168,7 +168,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 
 				<?php // Leave A Comment Field ?>
 				<div class="customer-comment marginbottom15">
-					<span class="comment"><?php echo JText::_('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
+					<span class="comment"><?php echo vmText::_('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
 					<textarea class="customer-comment" name="customer_comment" cols="60" rows="1"><?php echo $this->cart->customer_comment; ?></textarea>
 				</div>
 				<?php // Leave A Comment Field END ?>
@@ -196,11 +196,11 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 								<label for="tosAccepted">
 									<a href="<?php JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1', FALSE) ?>" class="terms-of-service" id="terms-of-service" rel="facebox"
 									   target="_blank"> <span class="vmicon vm2-termsofservice-icon"></span>
-										<?php echo JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
+										<?php echo vmText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
 									</a> </label>
 
 								<div id="full-tos">
-									<h2><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></h2>
+									<h2><?php echo vmText::_('COM_VIRTUEMART_CART_TOS'); ?></h2>
 									<?php echo $this->cart->vendor->vendor_terms_of_service; ?>
 								</div>
 
@@ -212,7 +212,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 					<div id="amazon_checkout">
 						<div id="amazon_checkout_text">
 							<?php
-							echo Jtext::_('VMPAYMENT_AMAZON_CHECKOUT');
+							echo vmText::_('VMPAYMENT_AMAZON_CHECKOUT');
 							?>
 						</div>
 						<?php

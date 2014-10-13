@@ -42,13 +42,13 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		//vmdebug('plgVmOnProductEdit',$field);
 		$html ='
 			<fieldset>
-				<legend>'. JText::_('VMCUSTOM_TEXTINPUT') .'</legend>
+				<legend>'. vmText::_('VMCUSTOM_TEXTINPUT') .'</legend>
 				<table class="admintable">
 					'.VmHTML::row('input','VMCUSTOM_TEXTINPUT_SIZE','customfield_params['.$row.'][custom_size]',$field->custom_size);
 		$options = array(0=>'VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT',1=>'VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER');
 		$html .= VmHTML::row('select','VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER_OR_INPUT','customfield_params['.$row.'][custom_price_by_letter]',$options,$field->custom_price_by_letter,'','value','text',false);
 
-		//$html .= ($field->custom_price_by_letter==1)?JText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER'):JText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT');
+		//$html .= ($field->custom_price_by_letter==1)?vmText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER'):vmText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT');
 		$html .='</td>
 		</tr>
 				</table>
@@ -80,7 +80,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 			if(!empty($item['comment']) ){
 				if($product->productCustom->virtuemart_customfield_id==$k){
-					$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$item['comment'].'</span>';
+					$html .='<span>'.vmText::_($product->productCustom->custom_title).' '.$item['comment'].'</span>';
 				}
 			}
 		}
@@ -102,7 +102,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		foreach( $product->customProductData[$productCustom->virtuemart_custom_id] as $k =>$item ) {
 			if($productCustom->virtuemart_customfield_id == $k) {
 				if(isset($item['comment'])){
-					$html .='<span>'.JText::_($productCustom->custom_title).' '.$item['comment'].'</span>';
+					$html .='<span>'.vmText::_($productCustom->custom_title).' '.$item['comment'].'</span>';
 				}
 			}
 		}

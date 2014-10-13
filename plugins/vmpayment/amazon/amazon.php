@@ -2050,9 +2050,9 @@ $this->loadAmazonServicesClasses();
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		$options = array();
-		$options[] = JHTML::_('select.option', 'capturePayment', JText::_('VMPAYMENT_AMAZON_ORDER_BE_CAPTURE'), 'value', 'text');
+		$options[] = JHTML::_('select.option', 'capturePayment', vmText::_('VMPAYMENT_AMAZON_ORDER_BE_CAPTURE'), 'value', 'text');
 
-		$options[] = JHTML::_('select.option', 'refundPayment', JText::_('VMPAYMENT_AMAZON_ORDER_BE_REFUND'), 'value', 'text');
+		$options[] = JHTML::_('select.option', 'refundPayment', vmText::_('VMPAYMENT_AMAZON_ORDER_BE_REFUND'), 'value', 'text');
 		$actionList = JHTML::_('select.genericlist', $options, 'action', '', 'value', 'text', 'capturePayment', 'action', true);
 
 
@@ -2071,7 +2071,7 @@ $this->loadAmazonServicesClasses();
 		$html .= '<input type="hidden" name="virtuemart_order_id" value="' . $virtuemart_order_id . '"/>';
 		$html .= '<input type="hidden" name="virtuemart_paymentmethod_id" value="' . $virtuemart_paymentmethod_id . '"/>';
 
-		$html .= '<a class="updateOrderBEPayment" href="#"  >' . Jtext::_('COM_VIRTUEMART_SAVE') . '</a>';
+		$html .= '<a class="updateOrderBEPayment" href="#"  >' . vmText::_('COM_VIRTUEMART_SAVE') . '</a>';
 		$html .= '</form>';
 		$html .= ' </td></tr>';
 
@@ -2361,7 +2361,7 @@ jQuery().ready(function($) {
 		$costDisplay = "";
 		if ($pluginSalesPrice) {
 			$costDisplay = $currency->priceDisplay($pluginSalesPrice);
-			$costDisplay = '<span class="' . $this->_type . '_cost"> (' . JText::_('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') . $costDisplay . ")</span>";
+			$costDisplay = '<span class="' . $this->_type . '_cost"> (' . vmText::_('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') . $costDisplay . ")</span>";
 		}
 		//$html = '<input type="radio" name="virtuemart_paymentmethod_id" id="' . $this->_psType . '_id_' . $plugin->virtuemart_paymentmethod_id . '"   value="' . $plugin->virtuemart_paymentmethod_id . '" ' . $checked . ">\n". '<label for="' . $this->_psType . '_id_' . $plugin->virtuemart_paymentmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->payment_name . $costDisplay . "</span></label>\n";
 

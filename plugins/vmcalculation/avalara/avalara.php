@@ -136,7 +136,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
             $label = 'VMCALCULATION_AVALARA_VADDRESS';
             $lang =JFactory::getLanguage();
-            $label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
+            $label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.vmText::_($label.'_TIP').'">'.vmText::_($label).'</span>' : JText::_($label) ;
          $html .= '
 			<td>
 				'.shopfunctions::renderStateList($calc->avatax_virtuemart_state_id,'avatax_',TRUE).'

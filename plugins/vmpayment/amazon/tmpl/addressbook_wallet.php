@@ -76,7 +76,7 @@ $('#leaveAmazonCheckout').click(function(){
 		$doc->addScriptDeclaration("
 		//<![CDATA[
 jQuery(document).ready( function($) {
-	amazonPayment.displayCaptureNowWarning('" . JText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
+	amazonPayment.displayCaptureNowWarning('" . vmText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
 });
 //]]>
 "); // addScriptDeclaration

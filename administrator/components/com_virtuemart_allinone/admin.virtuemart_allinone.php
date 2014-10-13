@@ -71,9 +71,9 @@ VmConfig::loadJLang('com_virtuemart');
 
 		?>
 <?php $link=JROUTE::_('index.php?option=com_virtuemart_allinone&task=updateDatabase&'.JSession::getFormToken().'=1' ); ?>
-	    <button onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES') ); ?>', '<?php echo $link; ?>');">
+	    <button onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES') ); ?>', '<?php echo $link; ?>');">
 
-            <?php echo JText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES'); ?>
+            <?php echo vmText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES'); ?>
 		</button>
 	</td>
     </tr>
