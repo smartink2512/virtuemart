@@ -27,7 +27,7 @@ if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 * @package VirtueMart
 * @author Valérie Isaksen
 */
-class VirtueMartViewPluginresponse extends VmView {
+class VirtueMartViewVmplg extends VmView {
 
 
 
