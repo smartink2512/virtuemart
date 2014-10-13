@@ -28,7 +28,6 @@ if(!class_exists('VmModel')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php')
  * Model for VirtueMart Orders
  * WHY $this->db is never used in the model ?
  * @package VirtueMart
- * @author RolandD
  */
 class VirtueMartModelOrders extends VmModel {
 
@@ -348,7 +347,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	/**
 	 * List of tables to include for the product query
-	 * @author RolandD
 	 */
 	private function getOrdersListQuery()
 	{
@@ -1561,7 +1559,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/**
 	 * Notifies the customer that the Order Status has been changed
 	 *
-	 * @author RolandD, Christopher Roussel, Valérie Isaksen, Max Milbers
+	 * @author Christopher Roussel, Valérie Isaksen, Max Milbers
 	 *
 	 */
 	public function notifyCustomer($virtuemart_order_id, $newOrderData = 0 ) {

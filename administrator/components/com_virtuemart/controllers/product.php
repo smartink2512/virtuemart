@@ -65,10 +65,7 @@ class VirtuemartControllerProduct extends VmController {
 			$data['customtitle'] = vRequest::get('customtitle','');
 
 			if(isset($data['field'])){
-				$fields = vRequest::get('field');
-				foreach($data['field'] as $k=>&$field){
-					$field['customfield_value'] = $fields[$k]['customfield_value'];
-				}
+				$data['field'] = vRequest::get('field');
 			}
 		} else  {
 			$data['product_desc'] = vRequest::getHtml('product_desc','');
@@ -76,10 +73,7 @@ class VirtuemartControllerProduct extends VmController {
 			$data['customtitle'] = vRequest::getHtml('customtitle','');
 
 			if(isset($data['field'])){
-				$fields = vRequest::getHtml('field');
-				foreach($data['field'] as $k=>&$field){
-					$field['customfield_value'] = $fields[$k]['customfield_value'];
-				}
+				$data['field'] = vRequest::getHtml('field');
 			}
 
 			//Why we have this?

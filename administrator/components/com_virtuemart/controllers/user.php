@@ -99,7 +99,7 @@ class VirtuemartControllerUser extends VmController {
 		} else {
 			$model = VmModel::getModel('user');
 
-			$data = vRequest::getRequest();
+			if($data===0) $data = vRequest::getRequest();
 
 			// Store multiple selectlist entries as a ; separated string
 			if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {

@@ -157,7 +157,7 @@ class VmController extends JControllerLegacy{
 
 		vRequest::vmCheckToken();
 
-		if($data===0)$data = vRequest::getRequest();
+		if($data===0) $data = vRequest::getRequest();
 
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);

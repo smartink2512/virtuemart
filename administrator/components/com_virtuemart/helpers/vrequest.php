@@ -29,12 +29,10 @@
  *  http://virtuemart.net
  */
 
+defined('FILTER_FLAG_NO_ENCODE') or define ('FILTER_FLAG_NO_ENCODE',!FILTER_FLAG_ENCODE_LOW);
+
 class vRequest {
 
-	public function __construct(){
-
-
-	}
 
 	public static function getUword($field, $default='', $custom=''){
 		$source = self::getVar($field,$default);
@@ -76,31 +74,43 @@ class vRequest {
 	}
 
 	/**
-	 * - Strips all characters that has a numerical value <32.
+	 * - Strips all characters <32 and over 127
 	 * - Strips all html.
-	 *
-	 * @param $name
-	 * @param null $default
-	 * @return mixed|null
+	 */
+	public static function getCmd($name, $default = ''){
+		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
+	}
+
+	/**
+	 * - Strips all characters <32
+	 * - Strips all html.
+	 */
+	public static function getWord($name, $default = ''){
+		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW);
+	}
+
+	/**
+	 * - Encodes all characters that has a numerical value <32.
+	 * - Strips all html.
 	 */
 	public static function getVar($name, $default = null){
 		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_ENCODE_LOW );
 	}
 
 	/**
-	 * - Strips all characters that has a numerical value <32.
+	 * - Encodes all characters that has a numerical value <32.
 	 * - encodes html
-	 *
-	 * @param $name
-	 * @param string $default
-	 * @return mixed|null
 	 */
 	public static function getString($name, $default = ''){
 		return self::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
 	}
 
+	/**
+	 * - Encodes all characters that has a numerical value <32.
+	 * - keeps "secure" html
+	 */
 	public static function getHtml($name, $default = ''){
-		$tmp = self::get($name, $default);
+		$tmp = self::get($name, $default,FILTER_UNSAFE_RAW,FILTER_FLAG_ENCODE_LOW);
 		return JComponentHelper::filterText($tmp);
 	}
 
@@ -108,23 +118,6 @@ class vRequest {
 		return self::get($name, $default, FILTER_VALIDATE_EMAIL,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 	}
 
-	/**
-	 * Gets a filtered request value
-	 * - Strips all characters that has a numerical value <32 and >127.
-	 * - strips html
-	 * @author Max Milbers
-	 * @param $name
-	 * @param string $default
-	 * @return mixed|null
-	 */
-
-	public static function getCmd($name, $default = ''){
-		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
-	}
-
-	public static function getWord($name, $default = ''){
-		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
-	}
 
 	/**
 	 * Main filter function, called by the others with set Parameters
@@ -137,7 +130,7 @@ class vRequest {
 	 * @param int $flags
 	 * @return mixed|null
 	 */
-	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_ENCODE_LOW){
+	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_NO_ENCODE){
 		//vmSetStartTime();
 		if(!empty($name)){
 
@@ -166,20 +159,20 @@ class vRequest {
 	 * @param array $filter
 	 * @return mixed cleaned $_REQUEST
 	 */
-	public static function getRequest( ){
-		return  filter_var_array($_REQUEST, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
+	public static function getRequest( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
+		return  filter_var_array($_REQUEST, $filter, $flags);
 	}
 	
-	public static function getPost( ){
-		return  filter_var_array($_POST, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
+	public static function getPost( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
+		return  filter_var_array($_POST, $filter, $flags);
 	}
 	
-	public static function getGet( ){
-		return  filter_var_array($_GET, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
+	public static function getGet( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
+		return  filter_var_array($_GET, $filter, $flags);
 	}
 	
-	public static function getFiles($name){
-		return  filter_var_array($_FILES[$name], FILTER_SANITIZE_STRING);
+	public static function getFiles( $name, $filter = FILTER_SANITIZE_STRING, $flags = FILTER_FLAG_STRIP_LOW){
+		return  filter_var_array($_FILES[$name], $filter, $flags);
 	}
 
 	public static function setVar($name, $value = null){

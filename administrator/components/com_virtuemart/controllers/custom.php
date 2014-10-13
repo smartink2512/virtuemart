@@ -57,7 +57,12 @@ class VirtuemartControllerCustom extends VmController {
 	function save($data = 0) {
 
 		if($data===0)$data = vRequest::getPost();
-
+		$data['custom_desc'] = vRequest::getHtml('custom_desc');
+		$data['custom_value'] = vRequest::getHtml('custom_value');
+		$data['layout_pos'] = vRequest::getCmd('layout_pos');
+		if(isset($data['params'])){
+			$data['params'] = vRequest::getHtml('params','');
+		}
 		// onSaveCustom plugin;
 		parent::save($data);
 	}

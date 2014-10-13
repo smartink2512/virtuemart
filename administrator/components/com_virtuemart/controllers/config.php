@@ -38,7 +38,6 @@ class VirtuemartControllerConfig extends VmController {
 	 * Method to display the view
 	 *
 	 * @access	public
-	 * @author
 	 */
 	function __construct() {
 		VmConfig::loadJLang('com_virtuemart_config');
@@ -49,8 +48,6 @@ class VirtuemartControllerConfig extends VmController {
 
 	/**
 	 * Handle the save task
-	 *
-	 * @author RickG
 	 */
 	function save($data = 0){
 

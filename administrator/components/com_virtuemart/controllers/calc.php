@@ -53,7 +53,9 @@ class VirtuemartControllerCalc extends VmController {
 
 		$data['calc_name'] = vRequest::getHtml('calc_name','');
 		$data['calc_descr'] = vRequest::getHtml('calc_descr','');
-
+		if(isset($data['params'])){
+			$data['params'] = vRequest::getHtml('params','');
+		}
 		parent::save($data);
 	}
 

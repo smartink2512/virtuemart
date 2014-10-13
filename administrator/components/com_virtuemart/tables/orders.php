@@ -26,7 +26,6 @@ if(!class_exists('VmTableData'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtabledat
  * The class is is used to manage the orders in the shop.
  *
  * @package	VirtueMart
- * @author RolandD
  * @author Max Milbers
  */
 class TableOrders extends VmTableData {
@@ -132,12 +131,17 @@ class TableOrders extends VmTableData {
 	 *
 	 * @var integer Order id
 	 * @return boolean True on success
-	 * @author Oscar van Eijk
+	 * @auhtor Max Milbers
 	 * @author Kohl Patrick
 	 */
 	function delete( $id=null , $where = 0 ){
 
-		$this->_db->setQuery('DELETE from `#__virtuemart_order_userinfos` WHERE `virtuemart_order_id` = ' . $id);
+		$k = $this->_tbl_key;
+		if ($id===null) {
+			$id = $this->$k;
+		}
+
+		$this->_db->setQuery('DELETE from `#__virtuemart_order_userinfos` WHERE `virtuemart_order_id` = ' . (int)$id);
 		if ($this->_db->execute() === false) {
 			vmError($this->_db->getError());
 			return false;
@@ -157,7 +161,7 @@ class TableOrders extends VmTableData {
 		$shipmentName = $this->_db->loadResult();
 
 		if(empty($shipmentName)){
-			vmError('Seems the used shipmentmethod got deleted');
+			vmWarn('Seems the used shipmentmethod got deleted');
 			//Can we securely prevent this just using
 		//	'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
 		//	WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );

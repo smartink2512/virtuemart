@@ -309,7 +309,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 		} else {
-			$data['name'] = vRequest::getString('name', '');
+			$data['name'] = vRequest::getWord('name', '');
 
 		}
 		$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
@@ -319,16 +319,24 @@ class VirtueMartModelUser extends VmModel {
 			if(!empty($username)){
 				$data['username'] = $username;
 			} else {
-				$data['username'] = vRequest::getString('username', '');
+				$data['username'] = vRequest::getWord('username', '');
 			}
 		}
 
 		if(empty ($data['password'])){
-			$data['password'] = vRequest::getString('password', '');
+			$data['password'] = vRequest::getCmd('password', '');
+			if($data['password']!=vRequest::get('password')){
+				vmError('Password contained invalid character combination.');
+				return false;
+			}
 		}
 
 		if(empty ($data['password2'])){
-			$data['password2'] = vRequest::getString('password2', '');
+			$data['password2'] = vRequest::getCmd('password2');
+			if($data['password2']!=vRequest::get('password2')){
+				vmError('Password2 contained invalid character combination.');
+				return false;
+			}
 		}
 
 		if(!$new && !empty($data['password']) && empty($data['password2'])){
