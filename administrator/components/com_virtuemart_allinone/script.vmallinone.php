@@ -57,6 +57,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 		public function vmInstall ($dontMove=0) {
 
+
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
 
@@ -73,7 +74,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			}
 			$this->dontMove = $dontMove;
 
-			$this->updateShipperToShipment ();
+			echo "<h3>Installing VirtueMart Plugins and Modules</h3>";
 			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
 			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
 			$this->installPlugin ('VM Payment - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
@@ -96,7 +97,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('VM Custom - Product specification', 'plugin', 'specification', 'vmcustom', 1);
 			//$this->installPlugin ('VM Custom - Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
 			$this->installPlugin ('VM Calculation - Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
-			//$this->installPlugin ('VM Userfield - Realex', 'plugin', 'realex', 'vmuserfield' );
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
@@ -220,11 +220,12 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$this->checkAddFieldToTable('#__virtuemart_shipment_weight_countries',$key,$value);
 				}*/
 
-				echo "<H3>Installing VirtueMart Plugins and modules Success.</h3>";
-				echo "<H3>Keep the AIO component for automatic updates of ALL VirtueMart Plugins and modules</h3>";
+				echo "<h3>Installation Successfull.</h3>";
+				echo "<p>The AIO component (com_virtuemart_aio) is used to install or update all the plugins and modules essential to VirtueMart in one go.</p>";
+				echo "<p>Do not uninstall it.</p>";
 
 			} else {
-				echo "<H3>Updated VirtueMart Plugin tables</h3>";
+				echo "<h3>Updated VirtueMart Plugin tables</h3>";
 			}
 			$this->updateOrderingExtensions();
 
@@ -316,6 +317,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 			$db->setQuery ($q);
 			$moneybookers = $db->loadObjectList()  ;
 			if ($moneybookers) {
+				echo "<h3>Updating MoneyBookers plugin to Skrill</h3>";
 				foreach ($moneybookers as $moneybooker) {
 					$payment_params=$moneybooker->payment_params;
 					$mb_element=str_replace('moneybookers_', '',$moneybooker->element);
@@ -327,7 +329,10 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 					$db->query();
 					$app->enqueueMessage ("Updated payment method: ".$moneybooker->payment_element.". Uses skrill now");
 					}
+
 			}
+
+
 			$q="DELETE FROM  `#__extensions` WHERE  `#__extensions`.`folder` =  'vmpayment'
 				AND `#__extensions`.`element` LIKE  'moneybookers%'";
 			$db->setQuery($q);
@@ -434,42 +439,46 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 					$db->setQuery ($q);
 					$count = $db->loadResult ();
 
-					//We write only in the table, when it is not installed already
-					if ($count == 0) {
-						// 				$table->load($count);
-						if (version_compare (JVERSION, '1.6.0', 'ge')) {
-							$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
-						}
-
-						if (!$table->bind ($data)) {
-							$app = JFactory::getApplication ();
-							$app->enqueueMessage ('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-						}
-
-						if (!$table->check ($data)) {
-							$app = JFactory::getApplication ();
-							$app->enqueueMessage ('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-
-						}
-
-						if (!$table->store ($data)) {
-							$app = JFactory::getApplication ();
-							$app->enqueueMessage ('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-						}
-
-						$errors = $table->getErrors ();
-						foreach ($errors as $error) {
-							$app = JFactory::getApplication ();
-							$app->enqueueMessage (get_class ($this) . '::store ' . $error);
-						}
-						// remove duplicated
-					} elseif ($count == 2) {
-						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
+					if ($count == 2) {
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
 						$db->setQuery ($q);
 						$duplicatedPlugin = $db->loadResult ();
 						$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
 						$db->setQuery ($q);
 						$db->query ();
+					}
+					if ($count>0) {
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '`';
+						$db->setQuery ($q);
+						$data[$idfield] = $db->loadResult ();
+						$data['state'] =0; // must be set manually when updating
+					}
+					//We write ALWAYS in the table,like this the version number is updated
+
+					if (version_compare (JVERSION, '1.6.0', 'ge')) {
+						$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
+					}
+
+					if (!$table->bind ($data)) {
+						$app = JFactory::getApplication ();
+						$app->enqueueMessage ('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+					}
+
+					if (!$table->check ($data)) {
+						$app = JFactory::getApplication ();
+						$app->enqueueMessage ('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+
+					}
+
+					if (!$table->store ($data)) {
+						$app = JFactory::getApplication ();
+						$app->enqueueMessage ('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+					}
+
+					$errors = $table->getErrors ();
+					foreach ($errors as $error) {
+						$app = JFactory::getApplication ();
+						$app->enqueueMessage (get_class ($this) . '::store ' . $error);
 					}
 				}
 
@@ -499,7 +508,8 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 				}
 			}
 			$this->updateJoomlaUpdateServer( $type, $element, $dst , $group  );
-
+			$installTask= $count==0 ? 'installed':'updated';
+			echo "<div>Plugin ". $name. " <em>". $installTask ."</em></div>";
 
 		}
 
@@ -743,7 +753,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 		 * @param $type= 'plugin'
 		 * @param $element= 'textinput'
 		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
-		 * @author Valerie Isaksen
+		 *
 		 */
 		function updateJoomlaUpdateServer( $type, $element, $dst, $group=''  ){
 
@@ -895,33 +905,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 			return FALSE;
 		}
 
-		private function updateShipperToShipment () {
 
-			if (empty($this->db)) {
-				$this->db = JFactory::getDBO ();
-			}
-			if (version_compare (JVERSION, '1.6.0', 'ge')) {
-				// Joomla! 1.6 code here
-				$table = JTable::getInstance ('extension');
-				$tableName = '#__extensions';
-				$idfield = 'extension_id';
-			} else {
-
-				// Joomla! 1.5 code here
-				$table = JTable::getInstance ('plugin');
-				$tableName = '#__plugins';
-				$idfield = 'id';
-			}
-
-			$q = 'SELECT ' . $idfield . ' FROM ' . $tableName . ' WHERE `folder` = "vmshipper" ';
-			$this->db->setQuery ($q);
-			$result = $this->db->loadResult ();
-			if ($result) {
-				$q = 'UPDATE `' . $tableName . '` SET `folder`="vmshipment" WHERE `extension_id`= ' . $result;
-				$this->db->setQuery ($q);
-				$this->db->query ();
-			}
-		}
 
 		/**
 		 * copy all $src to $dst folder and remove it

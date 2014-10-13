@@ -54,7 +54,7 @@ class  KlikandpayHelperKlikandpay {
 	 */
 	public function setTotal($total) {
 		if (!class_exists('CurrencyDisplay')) {
-			require(VMPATH_ADMIN . '/helpers/currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		$this->total = vmPSPlugin::getAmountValueInCurrency($total, $this->_method->payment_currency);
 

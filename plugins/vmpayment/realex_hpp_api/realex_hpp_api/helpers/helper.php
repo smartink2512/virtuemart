@@ -126,7 +126,7 @@ class  RealexHelperRealex {
 	public function setTotalInPaymentCurrency ($total) {
 
 		if (!class_exists('CurrencyDisplay')) {
-			require(VMPATH_ADMIN . '/helpers/currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		$this->total = vmPSPlugin::getAmountValueInCurrency($total, $this->_method->payment_currency) * 100;
 
@@ -215,7 +215,7 @@ class  RealexHelperRealex {
 
 	function setMd () {
 		if (!class_exists('vmCrypt')) {
-			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmCrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 
 		$md = array(
@@ -234,7 +234,7 @@ class  RealexHelperRealex {
 
 	function getMd ($cryptedMd) {
 		if (!class_exists('vmCrypt')) {
-			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmCrypt.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmcrypt.php');
 		}
 		$decryptedMd = vmCrypt::decrypt($cryptedMd);
 		$md =  json_decode($decryptedMd, true);

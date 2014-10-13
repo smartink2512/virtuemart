@@ -24,12 +24,7 @@ defined('JPATH_BASE') or die();
 jimport('joomla.form.formfield');
 
 class JFormFieldIpnURL extends JFormField {
-	/**
-	 * Element name
-	 *
-	 * @access    protected
-	 * @var        string
-	 */
+
 	var $type = 'ipnurl';
 
 	protected function getInput() {
@@ -40,16 +35,17 @@ class JFormFieldIpnURL extends JFormField {
 			$virtuemart_paymentmethod_id = $cid;
 		}
 
-		$http = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
+		$http = JURI::root() . 'index.php?option=com_virtuemart&view=plg&task=notify&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
+		$https = str_replace('http://', 'https://', $http);
 
-		$https = str_replace('http', 'https', $http);
 
-
-			$string = "<div " . $this->class . ">";
-			$string .= '<div class="ipn-sandbox">' . $http . ' <br /></div>';
+		$string = "<div " . $this->class . ">";
+		$string .= '<div class="ipn-sandbox">' . $http . ' <br /></div>';
+		if (strcmp($https,$http) !==0){
 			$string .= '<div class="ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></div>';
 			$string .= $https;
 			$string .= "</div>";
+		}
 			return $string;
 	}
 }

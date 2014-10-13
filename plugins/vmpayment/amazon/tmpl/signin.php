@@ -22,16 +22,15 @@ JHtml::_('behavior.tooltip');
 vmJsApi::jPrice();
 static $jsSILoaded = false;
 if (!$jsSILoaded) {
-	$doc = JFactory::getDocument();
 	$signInButton = '<div id=\"amazonSignInButton\"><div id=\"payWithAmazonDiv\" class=\"hasTip\" title=\"::' . addslashes(vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP')) . '\"><img src=\"' . $viewData['buttonWidgetImageURL'] . '\" style=\"cursor: pointer;\"/></div><div id=\"amazonSignInErrorMsg\" class=\"error\"></div></div>';
 
-	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	vmJsApi::addJScript(  '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
 	if ($viewData['include_amazon_css']) {
-		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+		vmJsApi::css(  'amazon','plugins/vmpayment/amazon/amazon/assets/css/');
 	}
 	$renderAmazonAddressBook = $viewData['renderAmazonAddressBook'] ? 'true' : 'false';
 
-	$doc->addScriptDeclaration("
+	vmJsApi::addJScript('vm.showAmazonButton',"
 	//<![CDATA[
 jQuery(document).ready( function($) {
 	amazonPayment.showAmazonButton('" . $viewData['sellerId'] . "', '" . $viewData['redirect_page'] . "', " . $renderAmazonAddressBook . ");
@@ -42,7 +41,7 @@ jQuery(document).ready( function($) {
 ");
 	if ($viewData['layout'] == 'cart') {
 
-		$doc->addScriptDeclaration("
+		vmJsApi::addJScript('vm.leaveAmazonCheckout',"
 	//<![CDATA[
 jQuery(document).ready( function($) {
 $('#leaveAmazonCheckout').click(function(){
@@ -54,7 +53,7 @@ $('#leaveAmazonCheckout').click(function(){
 
 
 if (vRequest::getWord('view') == 'cart') {
-$doc->addScriptDeclaration("
+	vmJsApi::addJScript('vm.amazonSubmit',"
 
 //<![CDATA[
 	jQuery(document).ready(function($) {

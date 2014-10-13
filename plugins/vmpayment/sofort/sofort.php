@@ -542,8 +542,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 */
 	function _getPaymentResponseHtml ($method, $order, $payments) {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
-		if (!class_exists('CurrencyDisplay')
-		) {
+		if (!class_exists('CurrencyDisplay')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 

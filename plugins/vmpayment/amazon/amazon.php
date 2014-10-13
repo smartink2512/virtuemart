@@ -65,7 +65,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		//require_once "OffAmazonPayments/.autoloader.php";
 		$this->loadAmazonClass('OffAmazonPaymentsService_Client');
 		if  (!JFactory::getApplication()->isSite()) {
-			JFactory::getDocument()->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
+			vmJsApi::addJScript( '/plugins/vmpayment/amazon/amazon/assets/js/admin.js');
 			JFactory::getDocument()->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon-admin.css');
 		}
 
@@ -225,7 +225,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	private function checkConditionSignIn ($cart) {
 		$cart_prices = array();
-		$cart_prices['salesPrice'] = $cart->pricesUnformatted['billTotal'];
+		$cart_prices['salesPrice'] = $cart->cartPrices['billTotal'];
 		// atm, we only display the SignIn button via the trigger plgVmOnCheckoutAdvertise
 		//if ($this->doSignInDisplay($sign_in_display) && $this->checkConditions($cart, $this->_currentMethod, $cart_prices) && $this->checkProductConditions($product, $this->_currentMethod)) {
 		if ($this->checkConditions($cart, $this->_currentMethod, $cart_prices)) {
@@ -1234,7 +1234,7 @@ $this->loadAmazonServicesClasses();
 			$setOrderReferenceDetailsRequest->setOrderReferenceAttributes(new OffAmazonPaymentsService_Model_OrderReferenceAttributes());
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setOrderTotal(new OffAmazonPaymentsService_Model_OrderTotal());
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getOrderTotal()->setCurrencyCode($this->getCurrencyCode3($client));
-			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getOrderTotal()->setAmount($this->getTotalInPaymentCurrency($client, $cart->pricesUnformatted['billTotal'], $cart->pricesCurrency));
+			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->getOrderTotal()->setAmount($this->getTotalInPaymentCurrency($client, $cart->cartPrices['billTotal'], $cart->pricesCurrency));
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setSellerNote($this->getSellerNote());
 			$setOrderReferenceDetailsRequest->getOrderReferenceAttributes()->setSellerOrderAttributes(new OffAmazonPaymentsService_Model_SellerOrderAttributes());
 			if ($order) {
@@ -1295,7 +1295,7 @@ $this->loadAmazonServicesClasses();
 	 */
 	private function getTotalInPaymentCurrency ($client, $total, $backToPricesCurrency) {
 		if (!class_exists('CurrencyDisplay')) {
-			require(VMPATH_ADMIN . '/helpers/currencydisplay.php');
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		$virtuemart_currency_id = $this->getCurrencyId($client);
 		$totalInPaymentCurrency = vmPSPlugin::getAmountValueInCurrency($total, $virtuemart_currency_id);

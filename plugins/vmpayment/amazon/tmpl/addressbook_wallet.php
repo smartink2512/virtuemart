@@ -29,9 +29,9 @@ if ($isMobile) {
 	$doc->setMetaData('viewport', "width=device-width, initial-scale=1, maximum-scale=1");
 }
 if (!$jsAWLoaded) {
-	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	vmJsApi::addJScript(  '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
 	if ($viewData['include_amazon_css']) {
-		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+		vmJsApi::css( 'amazon','plugins/vmpayment/amazon/amazon/assets/css/');
 	}
 
 
