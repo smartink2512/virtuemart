@@ -35,7 +35,7 @@ class JFormFieldIpnURL extends JFormField {
 			$virtuemart_paymentmethod_id = $cid;
 		}
 
-		$http = JURI::root() . 'index.php?option=com_virtuemart&view=plg&task=notify&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
+		$http = JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=notify&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
 		$https = str_replace('http://', 'https://', $http);
 
 
