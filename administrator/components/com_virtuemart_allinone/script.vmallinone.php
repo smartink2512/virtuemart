@@ -60,7 +60,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
-
+			VmConfig::loadJLang('com_virtuemart');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcustom');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
@@ -73,8 +73,14 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$this->path = JPATH_ROOT;
 			}
 			$this->dontMove = $dontMove;
-
-			echo "<h3>Installing VirtueMart Plugins and Modules</h3>";
+			echo '<a
+					href="http://virtuemart.net"
+					target="_blank"> <img
+						border="0"
+						align="left" style="margin-right: 20px"
+						src="components/com_virtuemart/assets/images/vm_menulogo.png"
+						alt="Cart" /> </a>';
+			echo '<h3 style="clear: both;">Installing VirtueMart Plugins and Modules</h3>';
 			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
 			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
 			$this->installPlugin ('VM Payment - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
@@ -224,6 +230,33 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				echo "<p>The AIO component (com_virtuemart_aio) is used to install or update all the plugins and modules essential to VirtueMart in one go.</p>";
 				echo "<p>Do not uninstall it.</p>";
 
+		//We do this dirty here, is just the finish page for installation, we must know if we are allowed to add sample data
+		$db = JFactory::getDbo();
+		$q = 'SELECT count(*) FROM `#__virtuemart_products` WHERE `virtuemart_product_id`!="0" ';
+		$db->setQuery($q);
+		$productsExists = $db->loadResult();
+		if(!$productsExists){
+			?>
+
+					<p><strong>
+						<?php
+						echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA_OPTION').' '.vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA');
+						?>
+					</strong>
+					<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA_TIP'); ?>
+					</p>
+					<div id="cpanel">
+						<?php
+						?>
+						<div class="icon">
+							<a class="btn btn-primary"
+							   href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&'.JSession::getFormToken().'=1') ?>">
+								<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
+							</a>
+						</div>
+					</div>
+
+		<?php }
 			} else {
 				echo "<h3>Updated VirtueMart Plugin tables</h3>";
 			}

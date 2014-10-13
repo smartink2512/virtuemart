@@ -91,6 +91,7 @@ if($option=='com_virtuemart'){
 			</td>
 		</tr>
 		<?php
+		/*
 		//We do this dirty here, is just the finish page for installation, we must know if we are allowed to add sample data
 		$db = JFactory::getDbo();
 		$q = 'SELECT count(*) FROM `#__virtuemart_products` WHERE `virtuemart_product_id`!="0" ';
@@ -120,7 +121,9 @@ if($option=='com_virtuemart'){
 				</div>
 			</td>
 		</tr>
-	<?php } ?>
+	<?php }
+		*/
+		?>
 		<tr>
 			<td><span class="btn button">
 				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
