@@ -83,7 +83,7 @@ if(VmConfig::get('shop_is_offline',0)){
 }
 
 // controller alias
-if ($_controller=='plg') {
+if ($_controller=='vmplg') {
 	$_controller='pluginresponse';
 }
 /* Create the controller name */
