@@ -534,7 +534,7 @@ class vmJsApi{
 		$cssFile = 'vmsite-' . $direction ;
 
 		//mJsApi::css ( $cssFile ) ;
-
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		if($template){

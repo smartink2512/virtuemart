@@ -1522,7 +1522,8 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 				//$this->_storeRealexInternalData($response, $this->_currentMethod->virtuemart_paymentmethod_id, $realexInterface->order['details']['BT']->virtuemart_order_id, $realexInterface->order['details']['BT']->order_number, $realexInterface->request_type);
 				$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
 				$result = (string)$xml_response3DSVerifyEnrolled->result;
-				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS) {
+				//   503 - no entry for MERCHANT in RealMPI merchant_details table
+				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS  OR $result == 503) {
 					$realexInterface->redirect3DSRequest($response3DSVerifyEnrolled);
 					return;
 				} else {

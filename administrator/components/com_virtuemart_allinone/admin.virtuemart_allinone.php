@@ -30,6 +30,7 @@ if (!class_exists( 'VmConfig' )) {
 		return false;
 	}
 }
+if(!class_exists('vmText')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmtext.php');
 
 $task = vRequest::getCmd('task');
 if($task=='updateDatabase'){
@@ -62,38 +63,40 @@ function confirmation(message, destnUrl) {
 	$db->setQuery ($q);
 	$plugins = $db->loadObjectList();
 ?>
-<table>
-<tr>
-<td align="center">
-<?php
-VmConfig::loadConfig();
-VmConfig::loadJLang('com_virtuemart');
+	<table>
+		<tr>
+			<td align="center" colspan="4">
+				<?php
+				VmConfig::loadConfig();
+				VmConfig::loadJLang('com_virtuemart');
 
-		?>
-<?php $link=JROUTE::_('index.php?option=com_virtuemart_allinone&task=updateDatabase&'.JSession::getFormToken().'=1' ); ?>
-	    <button onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES') ); ?>', '<?php echo $link; ?>');">
+				?>
+				<?php $link = JROUTE::_('index.php?option=com_virtuemart_allinone&task=updateDatabase&' . JSession::getFormToken() . '=1'); ?>
+				<button
+					onclick="javascript:confirmation('<?php echo addslashes(vmText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES')); ?>', '<?php echo $link; ?>');">
 
-            <?php echo vmText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES'); ?>
-		</button>
-	</td>
-    </tr>
-	<tr>
-		<td><table><tr><td colspan="4">Installed plugins</td></tr>
+					<?php echo vmText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES'); ?>
+				</button>
+			</td>
+		</tr>
+		<?php if ($plugins) { ?>
+			<tr>
+				<th colspan="4"><?php echo JText::_('COM_VIRTUEMART_INSTALLED_PLUGINS'); ?></th>
+			</tr>
 			<?php
 			foreach ($plugins as $plugin) {
 				?>
-				<tr><td><?php echo $plugin->folder ?></td>
+				<tr>
+					<td><?php echo $plugin->folder ?></td>
 					<td><?php echo $plugin->name ?></td>
 					<td><?php echo $plugin->element ?></td>
-					<td><?php echo $plugin->enabled ?></td>
+					<td><?php echo $plugin->enabled ? JText::_('COM_VIRTUEMART_PUBLISHED') : Jtext::_('COM_VIRTUEMART_UNPUBLISHED') ?></td>
 				</tr>
-<?php
+			<?php
 			}
 			?>
-</table>
-		</td>
-	</tr>
-</table>
+		<?php } ?>
+	</table>
 
 <?php
 

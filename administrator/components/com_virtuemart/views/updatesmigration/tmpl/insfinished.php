@@ -78,7 +78,7 @@ if($option=='com_virtuemart'){
 		</tr>
 		<tr>
 			<td>
-				<strong>
+				<strong style="color: #C00">
 					<?php
 					if($update){
 						echo vmText::_('COM_VIRTUEMART_UPDATE_AIO');
@@ -91,7 +91,7 @@ if($option=='com_virtuemart'){
 			</td>
 		</tr>
 		<?php
-
+/*
 		//We do this dirty here, is just the finish page for installation, we must know if we are allowed to add sample data
 		$db = JFactory::getDbo();
 		$q = 'SELECT count(*) FROM `#__virtuemart_products` WHERE `virtuemart_product_id`!="0" ';
@@ -122,7 +122,7 @@ if($option=='com_virtuemart'){
 			</td>
 		</tr>
 	<?php }
-
+*/
 		?>
 		<tr>
 			<td><span class="btn button">
