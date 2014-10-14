@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0">
     <name>mod_virtuemart_search</name>
-    <creationDate>January 09 2013</creationDate>
+    <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
