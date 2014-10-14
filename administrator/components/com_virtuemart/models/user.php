@@ -429,7 +429,6 @@ class VirtueMartModelUser extends VmModel {
 			$data['language'] = $user->get('language');
 			$data['editor'] = $user->get('editor');
 		}
-		vmdebug('my user, why logged in? ',$user);
 
 		$newId = $user->get('id');
 		$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
@@ -915,9 +914,9 @@ class VirtueMartModelUser extends VmModel {
 		} else {
 			$preFix = '';
 		}
-/*
- * JUser  or $this->_id is the logged user
- */
+		/*
+		 * JUser  or $this->_id is the logged user
+		 */
 
 		if(!empty($this->_data->JUser)){
 			$JUser = $this->_data->JUser;
@@ -1078,35 +1077,6 @@ class VirtueMartModelUser extends VmModel {
 		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)
 		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 
-		//get all super administrator
-		//if(!defined('JVM_VERSION') or JVM_VERSION < 3){
-			$query = 'SELECT name, email, sendEmail' .
-				' FROM #__users' .
-				' WHERE sendEmail = 1';
-		/*} else {
-			$query = 'SELECT `name`, `email`, `sendEmail` ' .
-				' FROM #__users as us '.
-				' INNER JOIN #__user_usergroup_map as um ON us.id = um.user_id ' .
-				' INNER JOIN #__usergroups as ug ON um.group_id = ug.id ' .
-				' WHERE ug.id = "8" ';
-		}*/
-
-		$db = JFactory::getDBO();
-		$db->setQuery( $query );
-		$rows = $db->loadObjectList();
-
-		$vars['doVendor']=false;
-		// get superadministrators id
-		foreach ( $rows as $row )
-		{
-			if ($row->sendEmail)
-			{
-				//$message2 = sprintf ( vmText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
-				//$message2 = html_entity_decode($message2, ENT_QUOTES);
-				//JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
-				//shopFunctionsF::renderMail('user', $row->email, $vars);
-			}
-		}
 
 
 	}
