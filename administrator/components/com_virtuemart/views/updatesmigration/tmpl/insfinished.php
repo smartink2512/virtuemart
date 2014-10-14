@@ -78,7 +78,7 @@ if($option=='com_virtuemart'){
 		</tr>
 		<tr>
 			<td>
-				<strong>
+				<strong style="color: #C00">
 					<?php
 					if($update){
 						echo vmText::_('COM_VIRTUEMART_UPDATE_AIO');
