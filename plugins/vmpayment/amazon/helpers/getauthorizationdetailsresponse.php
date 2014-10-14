@@ -23,7 +23,10 @@ class amazonHelperGetAuthorizationDetailsResponse extends amazonHelper {
 		parent::__construct($getAuthorizationDetailsResponse, $method);
 	}
 
-
+	/**
+	 * if asynchronous mode, ?
+	 * @param $order
+	 */
 	public function onResponseUpdateOrderHistory ($order) {
 		/*
 				$order_history = array();

@@ -95,13 +95,20 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_PENDING');
 				$order_history['customer_notified'] = 0;
 			} elseif ($amazonState == 'Closed') {
-				$order_history['order_status'] = $this->_currentMethod->status_cancel;
-				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
-				$order_history['customer_notified'] = 0;
+				if ($reasonCode=='MaxCapturesProcessed' and $this->isCaptureNow()) {
+					$order_history['order_status'] = $this->_currentMethod->status_capture;
+					$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_COMPLETED');
+					$order_history['customer_notified'] = 0;
+				} else {
+					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_CLOSED', $reasonCode);
+					$order_history['customer_notified'] = 0;
+				}
+
 			}
 
 			$orderModel = VmModel::getModel('orders');
-			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 		}
 
 		return $amazonState;
@@ -152,6 +159,9 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 	 * @return bool|string
 	 */
 	public function onNotificationNextOperation ($order, $payments, $amazonState) {
+		if ($amazonState=='Closed' and $this->isCaptureNow()) {
+			return 'onNotificationGetAuthorizationDetails';
+		}
 		return false;
 
 	}

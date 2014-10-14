@@ -48,6 +48,7 @@ abstract class ModVMMenuHelper {
 			// Parse the list of extensions.
 			foreach ($vmComponentItems as &$vmComponentItem) {
 				$vmComponentItem->link = trim($vmComponentItem->link);
+				$vmComponentItem->link =JFilterOutput::ampReplace($vmComponentItem->link);
 				if ($vmComponentItem->parent_id == 1) {
 					if ($authCheck == false || ($authCheck && $user->authorise('core.manage', $vmComponentItem->element))) {
 						$result = $vmComponentItem;

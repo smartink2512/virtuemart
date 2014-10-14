@@ -25,6 +25,6 @@ div#amazonSignOr span{ display:inline-block;
     top:10px;
     background:#fff;
     padding:0 12px;}
-#vmCartModule #amazonSignTip {
+#vmCartModule .amazonSignTip {
     display: none;
 }

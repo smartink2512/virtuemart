@@ -90,7 +90,7 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 		}
 		$order_history['amazonState'] = $amazonState;
 		$modelOrder = VmModel::getModel('orders');
-		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 
 
 		return $amazonState;
@@ -300,7 +300,7 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 					}
 				}
 		*/
-		$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
+		//$contents .= $this->getRowFirstCol("ResponseHeaderMetadata " . $this->amazonData->getResponseHeaderMetadata());
 
 		$contents .= $this->tableEnd();
 

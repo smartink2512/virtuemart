@@ -505,7 +505,7 @@ class  RealexHelperRealex {
 			}
 		} else {
 			if ($threedSecureAuthentication === true) {
-				$eci_value = self::ECI_LIABILITY_SHIFT_MASTERCARD;
+				$eci_value = self::ECI_AUTHENTICATED_MASTERCARD;
 
 			} else {
 				if ($allowLiabilityShift === true) {

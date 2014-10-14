@@ -35,10 +35,10 @@ if (!$jsSILoaded) {
 	$doc->addScriptDeclaration("
 	//<![CDATA[
 jQuery(document).ready( function($) {
-	$( '" . $viewData['sign_in_css'] . "' ).append('<div id=\"amazonSignTip\">" . vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP',true)  . "</div>');
+	$( '" . $viewData['sign_in_css'] . "' ).append('<div class=\"amazonSignTip\">" . vmText::_('VMPAYMENT_AMAZON_SIGNIN_TIP',true)  . "</div>');
 	amazonPayment.showAmazonButton('" . $viewData['sellerId'] . "', '" . $viewData['redirect_page'] . "', " . $renderAmazonAddressBook . ");
 	$( '" . $viewData['sign_in_css'] . "' ).append('" . $signInButton . "');
-	$( '" . $viewData['sign_in_css'] . "' ).append('<div id=\"amazonSignOr\"><span>" . vmText::_('VMPAYMENT_AMAZON_SIGNIN_OR',true)  . "</span></div>');
+	$( '" . $viewData['sign_in_css'] . "' ).append('<div class=\"amazonSignTip\" id=\"amazonSignOr\"><span>" . vmText::_('VMPAYMENT_AMAZON_SIGNIN_OR',true)  . "</span></div>');
 
 });
 //]]>

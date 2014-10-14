@@ -51,7 +51,7 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 
 		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_ORDERCONFIRMED');
 		$modelOrder = VmModel::getModel('orders');
-		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 	}
 
 

@@ -62,9 +62,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		//$this->setEncryptedFields(array('params'));
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
-		if (method_exists($this, 'setCryptedFields')) {
-			$this->setCryptedFields(array('accessKey', 'secretKey'));
-		}
+		$this->setCryptedFields(array('accessKey', 'secretKey'));
 		$amazon_library = JPATH_SITE . DS . 'plugins' . DS . 'vmpayment' . DS . 'amazon' . DS . 'library' ;
 
 
@@ -1176,21 +1174,21 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$client = $this->getOffAmazonPaymentsService_Client();
 		try {
 
-			$authDetailsRequest = new OffAmazonPaymentsService_Model_GetAuthorizationDetailsRequest();
-			$authDetailsRequest->setSellerId($this->_currentMethod->sellerId);
-			$authDetailsRequest->setAmazonAuthorizationId($amazonAuthorizationId);
-			$getAuthorizationDetails = $client->getAuthorizationDetails($authDetailsRequest);
+			$getAuthorizationDetailsRequest = new OffAmazonPaymentsService_Model_GetAuthorizationDetailsRequest();
+			$getAuthorizationDetailsRequest->setSellerId($this->_currentMethod->sellerId);
+			$getAuthorizationDetailsRequest->setAmazonAuthorizationId($amazonAuthorizationId);
+			$getAuthorizationDetailsResponse = $client->getAuthorizationDetails($getAuthorizationDetailsRequest);
 
 		} catch (Exception $e) {
 			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
 			return;
 		}
 		$this->loadHelperClass('amazonHelperGetAuthorizationDetailsResponse');
-		$amazonHelperGetAuthorizationDetailsResponse = new amazonHelperGetAuthorizationDetailsResponse($getAuthorizationDetails, $this->_currentMethod);
+		$amazonHelperGetAuthorizationDetailsResponse = new amazonHelperGetAuthorizationDetailsResponse($getAuthorizationDetailsResponse, $this->_currentMethod);
 		$storeInternalData = $amazonHelperGetAuthorizationDetailsResponse->getStoreInternalData();
-		$this->storeAmazonInternalData($order, $authDetailsRequest, $getAuthorizationDetails, NULL, NULL, $storeInternalData);
+		$this->storeAmazonInternalData($order, $getAuthorizationDetailsRequest, $getAuthorizationDetailsResponse, NULL, NULL, $storeInternalData);
 
-		return $getAuthorizationDetails;
+		return $getAuthorizationDetailsResponse;
 	}
 
 
@@ -1547,8 +1545,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 				return false;
 			}
+			if ($authorizationDetails =$this->getAuthorizeDetailsFromAuthorizeResponse($authorizeResponse)) {
+				$this->updateAuthorizeBillingAddressInOrder($authorizationDetails, $order);
+			}
 
-			$this->updateAuthorizeBillingAddressInOrder($authorizeResponse, $order);
 
 			$amazonHelperAuthorizeResponse = new amazonHelperAuthorizeResponse($authorizeResponse, $this->_currentMethod);
 			$amazonState = $amazonHelperAuthorizeResponse->onResponseUpdateOrderHistory($order);
@@ -1620,7 +1620,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		echo $html;
 	}
 
-	function updateAuthorizeBillingAddressInOrder ($authorizeResponse, $order) {
+	function getAuthorizeDetailsFromAuthorizeResponse ($authorizeResponse) {
 		if ($authorizeResponse == NULL) {
 			vmError('Amazon : programming error ' . __FUNCTION__);
 			return false;
@@ -1633,9 +1633,16 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return;
 		}
 		$authorizationDetails = $authorizeResult->getAuthorizationDetails();
+
+		return $authorizationDetails;
+
+	}
+
+	function updateAuthorizeBillingAddressInOrder ($authorizationDetails, $order) {
 		if (!$authorizationDetails->isSetAuthorizationBillingAddress()) {
 			return;
 		}
+
 		$authorizationBillingAddress = $authorizationDetails->getAuthorizationBillingAddress();
 		$BT = $this->getUserInfoFromAmazon($authorizationBillingAddress);
 
@@ -1651,8 +1658,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 
 	}
-
-
 	/**
 	 * @return int
 	 */
@@ -2845,13 +2850,7 @@ jQuery().ready(function($) {
 		// Fetch all HTTP request headers
 		$headers = getallheaders();
 		$body = file_get_contents('php://input');
-		// TODO REMOVE THIS TESTING ALONE
-		/*
-						 $fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
-						fwrite($fp, var_export($headers, true));
-						fwrite($fp, var_export($body, true));
-						fclose($fp);
-		*/
+
 
 		$this->debugLog($headers, 'AMAZON IPN HEADERS debug', 'debug');
 		$this->debugLog($body, 'AMAZON IPN BODY debug', 'debug');
@@ -2919,13 +2918,40 @@ jQuery().ready(function($) {
 		if ($nextOperation == false) {
 			return;
 		}
-		$this->$nextOperation($order);
+		if (!function_exists($nextOperation)) {
+			//$this->debugLog('Trying to call ' . $nextOperation .  ' but the function does not exists: Programming error', $notificationClass, 'error');
+
+		}
+		$this->$nextOperation($payments, $order);
 	}
 
 
-	private function onNotificationGetAuthorization ($order) {
+	private function onNotificationGetAuthorization ($payments, $order) {
 		$this->getAuthorization($this->getOffAmazonPaymentsService_Client(), NULL, $order, false);
 	}
+
+	private function onNotificationGetAuthorizationDetails ($payments, $order) {
+		$amazonAuthorizationId = $this->getAmazonAuthorizationId($payments);
+		if (!$amazonAuthorizationId) {
+			return false;
+		}
+		$authorizationDetailsResponse = $this->getAuthorizationDetails($amazonAuthorizationId, $order);
+
+		if (!$authorizationDetailsResponse->isSetGetAuthorizationDetailsResult()) {
+			return;
+		}
+		$getAuthorizationDetailsResult = $authorizationDetailsResponse->getGetAuthorizationDetailsResult();
+
+		if (!$getAuthorizationDetailsResult->isSetAuthorizationDetails()) {
+			return;
+		}
+		$getAuthorizationDetails = $getAuthorizationDetailsResult->getAuthorizationDetails();
+
+		$this->updateAuthorizeBillingAddressInOrder($getAuthorizationDetails, $order);
+
+		return;
+	}
+
 
 	private function isValidNotificationType ($notificationType) {
 		$validNotificationType = array(

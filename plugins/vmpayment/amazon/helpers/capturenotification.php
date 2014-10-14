@@ -76,7 +76,7 @@ class amazonHelperCaptureNotification extends amazonHelper {
 
 			$order_history['amazonState'] = $amazonState;
 			$orderModel = VmModel::getModel('orders');
-			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 		}
 	}
 
