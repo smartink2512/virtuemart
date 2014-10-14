@@ -609,7 +609,9 @@ class VmTable extends JTable {
 			$hashVarsToPush = serialize($this->_varsToPushParam);
 		}
 		$hash = md5($oid. $select . $k . $mainTable . $andWhere . $hashVarsToPush);
-		$this->reset();
+		//Very important
+		//$this->reset();	//Is bad, because they cache is wrong in joomla
+		$this->showFullColumns();
 
 		if (isset (self::$_cache['l'][$hash])) {
 			//vmdebug('Return cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
