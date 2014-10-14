@@ -630,7 +630,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	// IMPORTANT: The $inputOrder can contain extra data by plugins
 	//also strange $useTriggers is always activated? No, this function is also called by plugins, and it should have $useTriggers=false
-	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
+	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=false){
 
 // 		vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */

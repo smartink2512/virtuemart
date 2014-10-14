@@ -52,9 +52,11 @@ class VirtuemartViewOrders extends VmView {
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 			VmConfig::loadJLang('com_virtuemart_orders', true);
 
+			//For getOrderStatusName
+			if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+
 			// Load addl models
 			$userFieldsModel = VmModel::getModel('userfields');
-
 
 			// Get the data
 			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id');

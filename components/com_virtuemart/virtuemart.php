@@ -38,9 +38,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	$basePath = VMPATH_SITE;
 } else {
 
-	//$cache->setCaching (0);
-
-	/* Front-end helpers */
+	// Front-end helpers
 	if(!class_exists('VmImage')) require(VMPATH_ADMIN.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
@@ -55,8 +53,7 @@ if(VmConfig::get('shop_is_offline',0)){
 
 	$feViews = array('askquestion','cart','invoice','pdf','pluginresponse','productdetails','recommend','vendor');
 	if($manage and !in_array($_controller,$feViews)){
-	//if($manage or ( ($_controller == 'product' or $_controller == 'category') and ($task == 'save' || $task == 'edit' or $task == 'apply' ) ) or ($_controller == 'translate' && $task='paste') ){
-	//if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
+
 		$app = JFactory::getApplication();
 
 		$user = JFactory::getUser();
@@ -82,8 +79,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			$app = JFactory::getApplication();
 			$router = $app->getRouter();
 			$router->setMode(0);
-			//vmdebug('my conf',$router->getMode());
-			//JFactory::getConfig()->set('sef',0);
+
 		} else {
 			$app->redirect('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}
@@ -119,7 +115,6 @@ else {
 if (class_exists($_class)) {
     $controller = new $_class();
 
-    /* Perform the Request task */
     $controller->execute($task);
 
     //vmTime($_class.' Finished task '.$task,'Start');

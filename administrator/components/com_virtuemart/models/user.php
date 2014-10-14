@@ -359,11 +359,6 @@ class VirtueMartModelUser extends VmModel {
 
 		// Bind Joomla userdata
 		if (!$user->bind($whiteDataToBind)) {
-
-			foreach($user->getErrors() as $error) {
-				// 				vmError('user bind '.$error);
-				vmError('user bind '.$error,vmText::sprintf('COM_VIRTUEMART_USER_STORE_ERROR',$error));
-			}
 			vmdebug('Couldnt bind data to joomla user');
 			//array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);
 		}
@@ -427,8 +422,16 @@ class VirtueMartModelUser extends VmModel {
 		if (!$user->save()) {
 			vmError(vmText::_( $user->getError()) , vmText::_( $user->getError()));
 			return false;
+		} else {
+			$data['name'] = $whiteDataToBind['name'];
+			$data['username'] = $whiteDataToBind['username'];
+			$data['email'] = $whiteDataToBind['email'];
+			$data['language'] = $whiteDataToBind['language'];
+			$data['editor'] = $whiteDataToBind['editor'];
+			//$data['password'] = $whiteDataToBind['password'];
+			//$data['password2'] = $whiteDataToBind['password2'];
 		}
-		//vmdebug('my user, why logged in? ',$user);
+		vmdebug('my user, why logged in? ',$user);
 
 		$newId = $user->get('id');
 		$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
