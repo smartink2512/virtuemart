@@ -395,7 +395,6 @@ class VirtueMartModelUser extends VmModel {
 				$doUserActivation=true;
 			}
 
-			vmdebug('user',$useractivation , $doUserActivation);
 			if ($doUserActivation )
 			{
 				jimport('joomla.user.helper');
@@ -439,7 +438,10 @@ class VirtueMartModelUser extends VmModel {
 			vmError('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA');
 			// 			vmError(vmText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
 		} else {
+			
+
 			if ($new) {
+				$user->userInfo = $data;
 				$this->sendRegistrationEmail($user,$user->password_clear, $doUserActivation);
 				if ($doUserActivation ) {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
