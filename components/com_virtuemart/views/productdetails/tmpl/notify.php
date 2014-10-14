@@ -39,6 +39,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 	<input type="hidden" name="virtuemart_category_id" value="<?php echo vRequest::getInt('virtuemart_category_id'); ?>" />
 	<input type="hidden" name="virtuemart_user_id" value="<?php echo $this->user->id; ?>" />
 	<input type="hidden" name="task" value="notifycustomer" />
+	<input type="hidden" name="controller" value="productdetails" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
 <br />

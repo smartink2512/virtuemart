@@ -364,7 +364,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	 */
 	public function notifycustomer () {
 
-		$data = vRequest::get ('post');
+		$data = vRequest::getPost();
 
 		$model = VmModel::getModel ('waitinglist');
 		if (!$model->adduser ($data)) {

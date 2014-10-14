@@ -403,7 +403,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
-		$mb_data = vRequest::get ('post');
+		$mb_data = vRequest::getPost();
 
 
 		// the payment itself should send the parameter needed.
@@ -473,7 +473,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
-		$mb_data = vRequest::get ('post');
+		$mb_data = vRequest::getPost();
 
 		if (!isset($mb_data['transaction_id'])) {
 			return;

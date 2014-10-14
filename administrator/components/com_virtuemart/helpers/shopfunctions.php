@@ -43,10 +43,12 @@ class ShopFunctions {
 		$ttip = '';
 		$link = '';
 
-		if ($view != 'user') {
+		if ($view != 'user' and $view != 'shoppergroup') {
 			$cid = 'cid';
-		} else {
+		} else if ($view == 'user'){
 			$cid = 'virtuemart_user_id';
+		} else {
+			$cid = 'virtuemart_shoppergroup_id';
 		}
 
 		$model = new VmModel();

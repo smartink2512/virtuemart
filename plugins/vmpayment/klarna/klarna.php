@@ -1367,7 +1367,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		$session = JFactory::getSession ();
 		$sessionKlarna = new stdClass();
-		//$post = vRequest::get('post');
 		$errors = array();
 		$klarnaData_paymentmethod = vRequest::getVar ('klarna_paymentmethod', '');
 		if ($klarnaData_paymentmethod == 'klarna_invoice') {

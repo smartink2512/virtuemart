@@ -432,7 +432,7 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 	 */
 	function plgVmOnPaymentNotification () {
 		// platform params and payment data
-		$data = vRequest::get ('post');
+		$data = vRequest::getPost();
 
 		$this->logInfo ('plgVmOnPaymentNotification START ', 'error');
 		if (!array_key_exists ('vads_order_id', $data) || !isset($data['vads_order_id'])) {

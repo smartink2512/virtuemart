@@ -162,7 +162,7 @@ class VirtuemartControllerRatings extends VmController {
 		vRequest::vmCheckToken();
 
 		if (empty($data)){
-			$data = vRequest::get ('post');
+			$data = vRequest::getPost();
 		}
 
 		$model = VmModel::getModel($this->_cname);
