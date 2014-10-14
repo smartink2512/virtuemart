@@ -894,6 +894,10 @@ class VmModel extends JObject {
 
 	}
 
+	public function emptyCache(){
+		$this->_cache = array();
+	}
+
 	/**
 	 *
 	 * @author Max Milbers
@@ -923,18 +927,13 @@ class VmModel extends JObject {
 
 		$table = $this->getTable($this->_maintablename);
 
-		$table->bindChecknStore($data);
-
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			vmError( get_class( $this ).'::store '.$error);
-		}
-
-		if(is_object($data)){
+		if($table->bindChecknStore($data)){
 			$_idName = $this->_idName;
-			return $data->$_idName;
+			$this->_id = $table->$_idName;
+			$this->_cache[$this->_id] = $table;
+			return $this->_id;
 		} else {
-			return $data[$this->_idName];
+			return false;
 		}
 
 	}

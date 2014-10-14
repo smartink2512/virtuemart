@@ -95,6 +95,35 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * Return the order status name for a given code
+	 *
+	 * @author Oscar van Eijk
+	 * @access public
+	 *
+	 * @param char $_code Order status code
+	 * @return string The name of the order status
+	 */
+	static public function getOrderStatusName ($_code) {
+
+		static $orderNames = array();
+		$db = JFactory::getDBO ();
+		$_code = $db->escape ($_code);
+		if(!isset($orderNames[$_code])){
+			$_q = 'SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = "' . $_code . '"';
+			$db->setQuery ($_q);
+			$orderNames[$_code] = $db->loadObject ();
+			if (empty($orderNames[$_code]->order_status_name)) {
+				vmError ('getOrderStatusName: couldnt find order_status_name for ' . $_code);
+				return 'current order status broken';
+			} else {
+				$orderNames[$_code] = vmText::_($orderNames[$_code]->order_status_name);
+			}
+		}
+
+		return $orderNames[$_code];
+	}
+
+	/**
 	 * Render a simple country list
 	 *
 	 * @author jseros, Max Milbers, Valérie Isaksen
@@ -209,6 +238,86 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * This generates the list when the user have different ST addresses saved
+	 *
+	 * @author Oscar van Eijk
+	 */
+	static function generateStAddressList ($view, $userModel, $task) {
+
+		// Shipment address(es)
+		$_addressList = $userModel->getUserAddressList ($userModel->getId (), 'ST');
+		if (count ($_addressList) == 1 && empty($_addressList[0]->address_type_name)) {
+			return vmText::_ ('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
+		} else {
+			$_shipTo = array();
+			$useXHTTML = empty($view->useXHTML) ? false : $view->useXHTML;
+			$useSSL = empty($view->useSSL) ? FALSE : $view->useSSL;
+
+			for ($_i = 0; $_i < count ($_addressList); $_i++) {
+				if (empty($_addressList[$_i]->virtuemart_user_id)) {
+					$_addressList[$_i]->virtuemart_user_id = JFactory::getUser ()->id;
+				}
+				if (empty($_addressList[$_i]->virtuemart_userinfo_id)) {
+					$_addressList[$_i]->virtuemart_userinfo_id = 0;
+				}
+				if (empty($_addressList[$_i]->address_type_name)) {
+					$_addressList[$_i]->address_type_name = 0;
+				}
+
+				$_shipTo[] = '<li>' . '<a href="index.php'
+					. '?option=com_virtuemart'
+					. '&view=user'
+					. '&task=' . $task
+					. '&addrtype=ST'
+					. '&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id
+					. '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id
+					. '">' . $_addressList[$_i]->address_type_name . '</a> ' ;
+
+				$_shipTo[] = '&nbsp;&nbsp;<a href="'.JRoute::_ ('index.php?option=com_virtuemart&view=user&task=removeAddressST&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id . '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id, $useXHTTML, $useSSL ). '" class="icon_delete">'.vmText::_('COM_VIRTUEMART_USER_DELETE_ST').'</a></li>';
+
+			}
+
+
+			$addLink = '<a href="' . JRoute::_ ('index.php?option=com_virtuemart&view=user&task=' . $task . '&new=1&addrtype=ST&virtuemart_user_id[]=' . $userModel->getId (), $useXHTTML, $useSSL) . '"><span class="vmicon vmicon-16-editadd"></span> ';
+			$addLink .= vmText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL') . ' </a>';
+
+			return $addLink . '<ul>' . join ('', $_shipTo) . '</ul>';
+		}
+	}
+
+
+	/**
+	 * used mostly in the email, to display the vendor address
+	 * Attention, this function will be removed from any view.html.php
+	 *
+	 * @static
+	 * @param        $vendorId
+	 * @param string $lineSeparator
+	 * @param array  $skips
+	 * @return string
+	 */
+	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />", $skips = array('name','username','email','agreed')) {
+
+		$vendorModel = VmModel::getModel('vendor');
+		$vendorFields = $vendorModel->getVendorAddressFields($vendorId);
+
+		$vendorAddress = '';
+		foreach ($vendorFields['fields'] as $field) {
+			if(in_array($field['name'],$skips)) continue;
+			if (!empty($field['value'])) {
+				$vendorAddress .= $field['value'];
+				if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
+					$vendorAddress .= $lineSeparator;
+				} else {
+					$vendorAddress .= ' ';
+				}
+			}
+		}
+		return $vendorAddress;
+	}
+
+
+	/**
 	 *
 	 * @author Max Milbers
 	 */
@@ -305,9 +414,10 @@ class shopFunctionsF {
 	 */
 	static public function renderVmSubLayout($name,$viewData=0){
 
-		$app = JFactory::getApplication ();
+		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
+		$template = $vmStyle['template'];
 		// get the template and default paths for the layout if the site template has a layout override, use it
-		$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
+		$templatePath = JPATH_SITE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
 
 		$layout = false;
 		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
@@ -413,48 +523,55 @@ class shopFunctionsF {
 
 	}
 
-	public static function getTemplateById($id){
-		static $res = array();
+	static $_templates = array();
 
-		if(!isset($res[$id])){
+	public static function getTemplateById($id){
+
+		if(!isset(self::$_templates[$id])){
 			$q = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$id.'" ';
 			$db = JFactory::getDbo();
 			$db->setQuery($q);
-			$res[$id] = $db->loadAssoc();
-			if(!$res[$id]){
+			self::$_templates[$id] = $db->loadAssoc();
+			if(!self::$_templates[$id]){
 				vmError( 'getTemplateById get Template failed for id: '.$id );
 			}
 		}
-		if($res[$id]) return $res[$id];
+		return self::$_templates[$id];
+		//if($res[$id]) return $res[$id];
 	}
 
 	public static function getDefaultTemplate(){
-		static $res = false;
+
+		static $res = null;
+		if($res!==null) return $res;
+
+		$q = 'SELECT id, template, s.params
+			FROM #__template_styles as s
+			LEFT JOIN #__extensions as e
+			ON e.element=s.template
+			AND e.type="template"
+			AND e.client_id=s.client_id
+			WHERE s.client_id = 0
+			AND e.enabled = 1
+			AND s.home = 1';
+		$db = JFactory::getDbo();
+		$db->setQuery( $q );
+		$res = $db->loadAssoc();
 		if(!$res){
-			$q = 'SELECT template, s.params
-				FROM #__template_styles as s
-				LEFT JOIN #__extensions as e
-				ON e.element=s.template
-				AND e.type="template"
-				AND e.client_id=s.client_id
-				WHERE s.client_id = 0
-				AND e.enabled = 1
-				AND s.home = 1';
-			$db = JFactory::getDbo();
-			$db->setQuery( $q );
-			$res = $db->loadAssoc();
-			if(!$res){
-				vmError( 'getDefaultTemplate failed ' );
-			}
+			vmError( 'getDefaultTemplate failed ' );
+		} else {
+			self::$_templates[$res['id']] = $res;
 		}
+
 		return $res;
 	}
 
 	public static function loadVmTemplateStyle(){
+
+		static $res = null;
+		if($res!==null) return $res;
+
 		$vmtemplate = VmConfig::get( 'vmtemplate', 0 );
-		$res = false;
-
-
 		if(empty($vmtemplate) or $vmtemplate=='default'){
 			$res = self::getDefaultTemplate();
 			if(!$res){
@@ -470,14 +587,14 @@ class shopFunctionsF {
 
 		$app =& JFactory::getApplication();
 		//This does not work correctly for mails, because we dont get the site application in the BE, but an FB
-		$template = $app->getTemplate();
+		$res = $app->getTemplate();
 
-		if(!$template){
+		if(!$res){
 			$err = 'Could not load default template style';
 			vmError( 'renderMail get Template failed: '.$err );
 		} else {
-			vmdebug('loadVmTemplateStyle $app->getTemplate',$template);
-			return $template;
+			vmdebug('loadVmTemplateStyle $app->getTemplate',$res);
+			return $res;
 		}
 
 	}
@@ -494,7 +611,7 @@ class shopFunctionsF {
 		if(is_array($template)){
 			$res = $template;
 		} else {
-			if($template === 0 or $template == 'default'){
+			if(empty($template) or $template == 'default'){
 				$res = self::loadVmTemplateStyle();
 			} else {
 				if(is_numeric($template)){
@@ -680,7 +797,7 @@ class shopFunctionsF {
 
 
 	function sendRatingEmailToVendor ($data) {
-		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
+
 		$vars = array();
 		$productModel = VmModel::getModel ('product');
 		$product = $productModel->getProduct ($data['virtuemart_product_id']);
@@ -692,7 +809,7 @@ class shopFunctionsF {
 		$vendorModel->addImages ($vendor);
 		$vars['vendor'] = $vendor;
 		$vars['vendorEmail'] = $vendorModel->getVendorEmail ($product->virtuemart_vendor_id);
-		$vars['vendorAddress'] = shopFunctions::renderVendorAddress ($product->virtuemart_vendor_id);
+		$vars['vendorAddress'] = shopFunctionsF::renderVendorAddress ($product->virtuemart_vendor_id);
 
 	    shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', TRUE);
 

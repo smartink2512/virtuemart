@@ -119,11 +119,8 @@ class vmJsApi{
 	 * @param   boolean  load minified version
 	 * @return  nothing
 	 */
-	public static function js($namespace,$path=FALSE,$version='', $minified = false)
-	{
-
-		self::addJScript($namespace,false);
-
+	public static function js($namespace,$path=FALSE,$version='', $minified = false) {
+		self::addJScript($namespace,false,false);
 	}
 
 	/**
@@ -177,7 +174,10 @@ class vmJsApi{
 		$version = $version ? '.'.$version : '';
 		$min	 = $minified ? '.min' : '';
 		$file 	 = $namespace.$version.$min.'.'.$ext ;
-		$template = JFactory::getApplication()->getTemplate() ;
+		//$template = JFactory::getApplication()->getTemplate() ;
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
+		$template = $vmStyle['template'];
 		if ($path === FALSE) {
 			$uri = VMPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
@@ -535,7 +535,8 @@ class vmJsApi{
 
 		//mJsApi::css ( $cssFile ) ;
 
-		$template = JFactory::getApplication()->getTemplate() ;
+		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
+		$template = $vmStyle['template'];
 		if($template){
 			//Fallback for old templates
 			$path= 'templates'. DS . $template . DS . 'css' .DS. $cssFile.'.css' ;

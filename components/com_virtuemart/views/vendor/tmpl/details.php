@@ -33,8 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="vendor-description">
 <?php echo $this->vendor->vendor_store_desc.'<br>';
-	if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
-	echo shopFunctions::renderVendorAddress($this->vendor->virtuemart_vendor_id);
+	echo shopFunctionsF::renderVendorAddress($this->vendor->virtuemart_vendor_id);
 
 	?></div>
 

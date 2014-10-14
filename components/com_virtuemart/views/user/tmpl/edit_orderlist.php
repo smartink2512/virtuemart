@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JHtml::_('date', $row->modified_on); ?>
 				</td>
 				<td align="left">
-					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
+					<?php echo ShopFunctionsF::getOrderStatusName($row->order_status); ?>
 				</td>
 				<td align="left">
 					<?php echo $this->currency->priceDisplay($row->order_total); ?>

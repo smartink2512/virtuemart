@@ -24,7 +24,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 if(!class_exists('VmModel')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
-if(!class_exists('shopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
+
 if(!class_exists('VmImage')) require(VMPATH_ADMIN.DS.'helpers'.DS.'image.php');
 
 class VmPdf {
@@ -126,7 +126,7 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 				($this->vendor->vendor_letter_header_image?$this->vendor->vendor_letter_header_imagesize:0),
 				'', $this->vendor->vendor_letter_header_html,
 				array(0,0,0),$vlfooterlcolor );
-			$this->vendorAddress = shopFunctions::renderVendorAddress($this->vendor->virtuemart_vendor_id, "<br/>");
+			$this->vendorAddress = shopFunctionsF::renderVendorAddress($this->vendor->virtuemart_vendor_id, "<br/>");
 			// Trim the final <br/> from the address, which is inserted by renderVendorAddress automatically!
 			if (substr($this->vendorAddress, -5, 5) == '<br/>') {
 				$this->vendorAddress = substr($this->vendorAddress, 0, -5);

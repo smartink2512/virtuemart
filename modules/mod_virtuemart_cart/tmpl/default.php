@@ -57,7 +57,7 @@ if ($show_product_list) {
 <div style="clear:both;"></div>
 	<div class="payments_signin_button" ></div>
 <noscript>
-<?php echo JText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
+<?php echo vmText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
 </noscript>
 </div>
 

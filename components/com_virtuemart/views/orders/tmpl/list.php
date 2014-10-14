@@ -64,7 +64,7 @@ if (count($this->orderlist) == 0) {
 					<?php //echo vmJsApi::date($row->modified_on,'LC3',true); ?>
 				</td -->
 				<td align="left">
-					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
+					<?php echo shopFunctionsF::getOrderStatusName($row->order_status); ?>
 				</td>
 				<td align="left">
 					<?php echo $this->currency->priceDisplay($row->order_total, $row->currency); ?>

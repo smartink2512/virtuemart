@@ -24,10 +24,10 @@ VmConfig::loadJLang ('mod_virtuemart_search', true);
 $button = $params->get ('button', 0);
 $imagebutton = $params->get ('imagebutton', 0);
 $button_pos = $params->get ('button_pos', 'left');
-$button_text = $params->get ('button_text', JText::_ ('MOD_VIRTUEMART_SEARCH_GO'));
+$button_text = $params->get ('button_text', vmText::_ ('MOD_VIRTUEMART_SEARCH_GO'));
 $width = intval ($params->get ('width', 20));
 $maxlength = $width > 20 ? $width : 20;
-$text = $params->get ('text', JText::_ ('MOD_VIRTUEMART_SEARCH_TEXT_TXT'));
+$text = $params->get ('text', vmText::_ ('MOD_VIRTUEMART_SEARCH_TEXT_TXT'));
 $set_Itemid = intval ($params->get ('set_itemid', 0));
 $moduleclass_sfx = $params->get ('moduleclass_sfx', '');
 

@@ -52,12 +52,12 @@ class mod_virtuemart_product {
 		if (!VmConfig::get ('use_as_catalog', 0)) {
 			$stockhandle = VmConfig::get ('stockhandle', 'none');
 			if (($stockhandle == 'disableit' or $stockhandle == 'disableadd') and ($product->product_in_stock - $product->product_ordered) < 1) {
-				$button_lbl = JText::_ ('COM_VIRTUEMART_CART_NOTIFY');
+				$button_lbl = vmText::_ ('COM_VIRTUEMART_CART_NOTIFY');
 				$button_cls = 'notify-button';
 				$button_name = 'notifycustomer';
 				?>
 				<div style="display:inline-block;">
-			<a href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $product->virtuemart_product_id); ?>" class="notify"><?php echo JText::_ ('COM_VIRTUEMART_CART_NOTIFY') ?></a>
+			<a href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $product->virtuemart_product_id); ?>" class="notify"><?php echo vmText::_ ('COM_VIRTUEMART_CART_NOTIFY') ?></a>
 				</div>
 			<?php
 			} else {
@@ -90,7 +90,7 @@ class mod_virtuemart_product {
 						<?php
 						// Display the quantity box
 						?>
-						<!-- <label for="quantity<?php echo $product->virtuemart_product_id;?>" class="quantity_box"><?php echo JText::_ ('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
+						<!-- <label for="quantity<?php echo $product->virtuemart_product_id;?>" class="quantity_box"><?php echo vmText::_ ('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 			<span class="quantity-box">
 			<input type="text" class="quantity-input" name="quantity[]" value="1"/>
 			</span>
@@ -102,7 +102,7 @@ class mod_virtuemart_product {
 
 						<?php
 						// Add the button
-						$button_lbl = JText::_ ('COM_VIRTUEMART_CART_ADD_TO');
+						$button_lbl = vmText::_ ('COM_VIRTUEMART_CART_ADD_TO');
 						$button_cls = ''; //$button_cls = 'addtocart_button';
 
 

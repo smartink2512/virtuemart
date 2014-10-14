@@ -217,7 +217,6 @@ class VirtuemartViewOrders extends VmView {
 
 		$this->assignRef('orderstatuses', $orderstatuses);
 
-		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
 		$document = JFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');

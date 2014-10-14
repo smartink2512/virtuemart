@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo vmJsApi::date($row->modified_on,'LC2',true); ?>
 				</td>
 				<td align="left">
-					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
+					<?php echo shopFunctionsF::getOrderStatusName($row->order_status); ?>
 				</td>
 				<td align="left">
 					<?php echo $this->currency->priceDisplay($row->order_total); ?>

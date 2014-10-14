@@ -181,10 +181,6 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			}
 		}
 
-		if (!class_exists ('shopFunctionsF')) {
-			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-		}
-		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
 		$vars = array();
 

@@ -168,7 +168,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$currency = CurrencyDisplay::getInstance ();
 		$tax = ShopFunctions::getTaxByID ($shipinfo->tax_id);
 		$taxDisplay = is_array ($tax) ? $tax['calc_value'] . ' ' . $tax['calc_value_mathop'] : $shipinfo->tax_id;
-		$taxDisplay = ($taxDisplay == -1) ? JText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
+		$taxDisplay = ($taxDisplay == -1) ? vmText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
 
 		$html = '<table class="adminlist table">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();

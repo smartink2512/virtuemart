@@ -72,8 +72,7 @@ class VirtuemartViewUser extends VmView {
 			$this->setLayout($layoutName);
 		}
 
-		if (!class_exists('ShopFunctions'))
-			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+
 
 		$this->_model = VmModel::getModel('user');
 
@@ -151,7 +150,7 @@ class VirtuemartViewUser extends VmView {
 		}
 
 
-		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, 'addST');
+		$this->_lists['shipTo'] = ShopFunctionsF::generateStAddressList($this,$this->_model, 'addST');
 
 		$this->assignRef('lists', $this->_lists);
 
@@ -269,8 +268,9 @@ class VirtuemartViewUser extends VmView {
 		foreach($_shoppergroup as $group){
 			$shoppergrps[] = $group['virtuemart_shoppergroup_id'];
 		}
-	   $this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($shoppergrps);
-	   $this->_lists['vendors'] = ShopFunctions::renderVendorList($this->userDetails->virtuemart_vendor_id);
+		if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+	   	$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($shoppergrps);
+	  	$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->userDetails->virtuemart_vendor_id);
 	} else {
 		$this->_lists['shoppergroups'] = '';
 		foreach($_shoppergroup as $group){

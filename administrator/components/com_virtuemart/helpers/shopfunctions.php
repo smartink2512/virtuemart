@@ -57,7 +57,6 @@ class ShopFunctions {
 			$q = 'SELECT `' . $table->getPKey() . '` FROM `#__virtuemart_' . $db->escape ($tableXref) . '` WHERE ' . $db->escape ($tableSecondaryKey) . ' = "' . (int)$idList . '"';
 			$db->setQuery ($q);
 			$idList = $db->loadColumn ();
-			//vmdebug('renderGuiList',$q,$list);
 		}
 
 		$i = 0;
@@ -195,17 +194,15 @@ class ShopFunctions {
 		$manufacturerModel = VmModel::getModel ('manufacturer');
 		$manufacturers = $manufacturerModel->getManufacturers (FALSE, TRUE);
 		$attrs = array('style'=>"width: 210px");
-		//$attrs = 'style="width:210px"';
 
 		if ($multiple) {
-			//$attrs .= 'multiple="multiple"';
 			$attrs['multiple'] = 'multiple';
 			if($name=='virtuemart_manufacturer_id')	$name.= '[]';
 		} else {
 			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
 			array_unshift ($manufacturers, $emptyOption);
 		}
-		//vmdebug('renderManufacturerList',$name,$manufacturers);
+
 		$listHTML = JHtml::_ ('select.genericlist', $manufacturers, $name, $attrs, 'virtuemart_manufacturer_id', 'mf_name', $manufacturerId);
 		return $listHTML;
 	}
@@ -272,7 +269,7 @@ class ShopFunctions {
 	}
 
 	static function renderOrderingList($table,$fieldname,$selected,$orderingField = 'ordering'){
-		//'order_status_name','orderstates',$orderStatus->virtuemart_orderstate_id
+
 // Ordering dropdown
 		$qry = 'SELECT ordering AS value, '.$fieldname.' AS text'
 			. ' FROM #__virtuemart_'.$table
@@ -357,6 +354,7 @@ class ShopFunctions {
 
 	/**
 	 * typo problem with the function name. We must keep the other one for compatibility purposes
+	 * @deprecated
 	 * @param $value
 	 * @param $from
 	 * @param $to
@@ -534,83 +532,25 @@ class ShopFunctions {
 
 	/**
 	 * This generates the list when the user have different ST addresses saved
-	 *
+	 * @deprecated use shopFunctionsF::generateStAddressList instead
 	 * @author Oscar van Eijk
 	 */
 	static function generateStAddressList ($view, $userModel, $task) {
-
-		// Shipment address(es)
-		$_addressList = $userModel->getUserAddressList ($userModel->getId (), 'ST');
-		if (count ($_addressList) == 1 && empty($_addressList[0]->address_type_name)) {
-			return vmText::_ ('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
-		} else {
-			$_shipTo = array();
-			$useXHTTML = empty($view->useXHTML) ? false : $view->useXHTML;
-			$useSSL = empty($view->useSSL) ? FALSE : $view->useSSL;
-
-			for ($_i = 0; $_i < count ($_addressList); $_i++) {
-				if (empty($_addressList[$_i]->virtuemart_user_id)) {
-					$_addressList[$_i]->virtuemart_user_id = JFactory::getUser ()->id;
-				}
-				if (empty($_addressList[$_i]->virtuemart_userinfo_id)) {
-					$_addressList[$_i]->virtuemart_userinfo_id = 0;
-				}
-				if (empty($_addressList[$_i]->address_type_name)) {
-					$_addressList[$_i]->address_type_name = 0;
-				}
-
-				$_shipTo[] = '<li>' . '<a href="index.php'
-					. '?option=com_virtuemart'
-					. '&view=user'
-					. '&task=' . $task
-					. '&addrtype=ST'
-					. '&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id
-					. '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id
-					. '">' . $_addressList[$_i]->address_type_name . '</a> ' ;
-
-				$_shipTo[] = '&nbsp;&nbsp;<a href="'.JRoute::_ ('index.php?option=com_virtuemart&view=user&task=removeAddressST&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id . '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id, $useXHTTML, $useSSL ). '" class="icon_delete">'.vmText::_('COM_VIRTUEMART_USER_DELETE_ST').'</a></li>';
-
-			}
-
-
-			$addLink = '<a href="' . JRoute::_ ('index.php?option=com_virtuemart&view=user&task=' . $task . '&new=1&addrtype=ST&virtuemart_user_id[]=' . $userModel->getId (), $useXHTTML, $useSSL) . '"><span class="vmicon vmicon-16-editadd"></span> ';
-			$addLink .= vmText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL') . ' </a>';
-
-			return $addLink . '<ul>' . join ('', $_shipTo) . '</ul>';
-		}
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		return shopFunctionsF::generateStAddressList($view, $userModel, $task);
 	}
 
 	/**
-	 * used mostly in the email, to display the vendor address
-	 * Attention, this function will be removed from any view.html.php
-	 *
-	 * @static
-	 * @param        $vendorId
+	 * @deprecated use shopFunctionsF::renderVendorAddress instead
+	 * @param $vendorId
 	 * @param string $lineSeparator
-	 * @param array  $skips
+	 * @param array $skips
 	 * @return string
 	 */
 	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />", $skips = array('name','username','email','agreed')) {
-
-		$vendorModel = VmModel::getModel('vendor');
-		$vendorFields = $vendorModel->getVendorAddressFields($vendorId);
-
-		$vendorAddress = '';
-		foreach ($vendorFields['fields'] as $field) {
-			if(in_array($field['name'],$skips)) continue;
-			if (!empty($field['value'])) {
-				$vendorAddress .= $field['value'];
-				if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
-					$vendorAddress .= $lineSeparator;
-				} else {
-					$vendorAddress .= ' ';
-				}
-			}
-		}
-		return $vendorAddress;
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		return shopFunctionsF::renderVendorAddress($vendorId, $lineSeparator, $skips);
 	}
-
-
 
 	public static $counter = 0;
 	public static $categoryTree = 0;
@@ -1000,32 +940,19 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the order status name for a given code
-	 *
-	 * @author Oscar van Eijk
-	 * @access public
-	 *
+	 * proxy function going to be
+	 * @deprecated use shopFunctionsF::getOrderStatusName instead
 	 * @param char $_code Order status code
 	 * @return string The name of the order status
 	 */
 	static public function getOrderStatusName ($_code) {
-
-		$db = JFactory::getDBO ();
-
-		$_q = 'SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = "' . $db->escape ($_code) . '"';
-		$db->setQuery ($_q);
-		$_r = $db->loadObject ();
-		if (empty($_r->order_status_name)) {
-			vmError ('getOrderStatusName: couldnt find order_status_name for ' . $_code);
-			return 'current order status broken';
-		} else {
-			return vmText::_($_r->order_status_name);
-		}
-
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		return shopFunctionsF::getOrderStatusName($_code);
 	}
 
-	/*
+	/**
 	 * @author Valerie
+	 * @deprecated use shopFunctionsF::InvoiceNumberReserved instead
 	 */
 	static function InvoiceNumberReserved ($invoice_number) {
 		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
@@ -1212,7 +1139,6 @@ class ShopFunctions {
 
 	static $tested = False;
 	static function checkSafePath($safePath=0){
-
 
 		if($safePath==0) {
 			$safePath = VmConfig::get('forSale_path',0);

@@ -129,7 +129,7 @@ class VirtuemartViewInvoice extends VmView {
 		if(empty($this->invoiceNumber) and !$order_print){
 		    $invoiceNumberDate=array();
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
-                if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
+                if (shopFunctionsF::InvoiceNumberReserved( $invoiceNumberDate[0])) {
 	                if  ($this->uselayout!='mail') {
 		                $document->setTitle( vmText::_('COM_VIRTUEMART_PAYMENT_INVOICE') );
                         return ;
@@ -258,8 +258,7 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('headFooter', $this->showHeaderFooter);
 
 		//Attention, this function will be removed, it wont be deleted, but it is obsoloete in any view.html.php
-		if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
-	    $vendorAddress= shopFunctions::renderVendorAddress($virtuemart_vendor_id, $lineSeparator);
+	    $vendorAddress= shopFunctionsF::renderVendorAddress($virtuemart_vendor_id, $lineSeparator);
 		$this->assignRef('vendorAddress', $vendorAddress);
 
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
@@ -316,7 +315,7 @@ class VirtuemartViewInvoice extends VmView {
 			$imgrepl = "<div class=\"vendor-image\">".$img->displayIt($img->file_url,'','',false, '', false, false)."</div>";
 		}
 		$txt = str_replace('{vm:vendorimage}', $imgrepl, $txt);
-		$vendorAddress = shopFunctions::renderVendorAddress($vendor->virtuemart_vendor_id, "<br/>");
+		$vendorAddress = shopFunctionsF::renderVendorAddress($vendor->virtuemart_vendor_id, "<br/>");
 		// Trim the final <br/> from the address, which is inserted by renderVendorAddress automatically!
 		if (substr($vendorAddress, -5, 5) == '<br/>') {
 			$vendorAddress = substr($vendorAddress, 0, -5);

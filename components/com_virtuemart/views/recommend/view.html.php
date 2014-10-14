@@ -181,7 +181,7 @@ class virtuemartViewrecommend extends VmView {
 
 		$vendorModel->addImages ($this->vendor);
 		$this->vendor->vendorFields = $vendorModel->getVendorAddressFields();
-		$vars['vendorAddress']= shopFunctions::renderVendorAddress($this->product->virtuemart_vendor_id, ' - ');
+		$vars['vendorAddress']= shopFunctionsF::renderVendorAddress($this->product->virtuemart_vendor_id, ' - ');
 
 		$this->vendor->vendor_name =$user->name;
 
