@@ -423,13 +423,11 @@ class VirtueMartModelUser extends VmModel {
 			vmError(vmText::_( $user->getError()) , vmText::_( $user->getError()));
 			return false;
 		} else {
-			$data['name'] = $whiteDataToBind['name'];
-			$data['username'] = $whiteDataToBind['username'];
-			$data['email'] = $whiteDataToBind['email'];
-			$data['language'] = $whiteDataToBind['language'];
-			$data['editor'] = $whiteDataToBind['editor'];
-			//$data['password'] = $whiteDataToBind['password'];
-			//$data['password2'] = $whiteDataToBind['password2'];
+			$data['name'] = $user->get('name');
+			$data['username'] = $user->get('username');
+			$data['email'] = $user->get('email');
+			$data['language'] = $user->get('language');
+			$data['editor'] = $user->get('editor');
 		}
 		vmdebug('my user, why logged in? ',$user);
 
