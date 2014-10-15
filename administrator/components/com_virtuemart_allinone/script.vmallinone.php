@@ -435,10 +435,10 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 				$src = $this->path . DS . 'plugins' . DS . $group . DS . $element;
 
 				if ($createJPluginTable) {
-					if (version_compare (JVERSION, '1.7.0', 'ge')) {
+					if (version_compare(JVERSION, '1.7.0', 'ge')) {
 
 						// Joomla! 1.7 code here
-						$table = JTable::getInstance ('extension');
+						$table = JTable::getInstance('extension');
 						$data['enabled'] = $published;
 						$data['access'] = 1;
 						$tableName = '#__extensions';
@@ -446,7 +446,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 					} else {
 
 						// Joomla! 1.5 code here
-						$table = JTable::getInstance ('plugin');
+						$table = JTable::getInstance('plugin');
 						$data['published'] = $published;
 						$data['access'] = 0;
 						$tableName = '#__plugins';
@@ -460,51 +460,57 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 
 					$data['client_id'] = 0;
 
-					$db = JFactory::getDBO ();
+					$db = JFactory::getDBO();
 					$q = 'SELECT COUNT(*) FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ';
-					$db->setQuery ($q);
-					$count = $db->loadResult ();
+					$db->setQuery($q);
+					$count = $db->loadResult();
 
 					if ($count == 2) {
-						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
-						$db->setQuery ($q);
-						$duplicatedPlugin = $db->loadResult ();
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
+						$db->setQuery($q);
+						$duplicatedPlugin = $db->loadResult();
 						$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
-						$db->setQuery ($q);
-						$db->query ();
+						$db->setQuery($q);
+						$db->query();
 					}
-					if ($count>0) {
-						$q = 'SELECT * FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '`';
-						$db->setQuery ($q);
-						$data = $db->loadResultArray ();
-						var_export($data);
-					}
+
 					//We write ALWAYS in the table,like this the version number is updated
 
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$data['manifest_cache'] = json_encode (JInstaller::parseXMLInstallFile ($src . DS . $element . '.xml'));
+					if (version_compare(JVERSION, '1.6.0', 'ge')) {
+						$data['manifest_cache'] = json_encode(JInstaller::parseXMLInstallFile($src . DS . $element . '.xml'));
 					}
+					if ($count == 1) {
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ORDER BY  `' . $idfield . '`';
+						$db->setQuery($q);
+						$ext_id = $db->loadResult();
+						$q = 'UPDATE `#__extensions`  SET `manifest_cache` ="' . $db->escape($data['manifest_cache']) . '" WHERE extension_id=' . $ext_id . ';';
+						$db->setQuery($q);
+						if (!$db->query()) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage(get_class($this) . '::  ' . $db->getErrorMsg());
+						}
+					} else {
+						if (!$table->bind($data)) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						}
 
-					if (!$table->bind ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-					}
+						if (!$table->check($data)) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
 
-					if (!$table->check ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						}
 
-					}
+						if (!$table->store($data)) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						}
 
-					if (!$table->store ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-					}
-
-					$errors = $table->getErrors ();
-					foreach ($errors as $error) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage (get_class ($this) . '::store ' . $error);
+						$errors = $table->getErrors();
+						foreach ($errors as $error) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage(get_class($this) . '::store ' . $error);
+						}
 					}
 				}
 
