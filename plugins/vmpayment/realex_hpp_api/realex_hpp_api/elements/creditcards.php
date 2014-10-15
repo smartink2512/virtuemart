@@ -31,7 +31,9 @@ if (!class_exists('VmConfig')) {
 if (!class_exists('ShopFunctions')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 }
-
+if (!class_exists('RealexHelperRealex')) {
+	require(JPATH_SITE . DS . 'plugins'.DS.'vmpayment'.DS.'realex_hpp_api'.DS.'realex_hpp_api'.DS.'helpers'.DS.'helper.php');
+}
 /**
  * @copyright    Copyright (C) 2009 Open Source Matters. All rights reserved.
  * @license    GNU/GPL
