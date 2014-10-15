@@ -171,6 +171,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 	jQuery(document).ready(function($) {
 	    $(window).load(function(){
 			if(jQuery("#vmPaymentForm")) {
+				jQuery("#vmPaymentForm").vm2front("startVmLoading");
 				jQuery("#vmPaymentForm").submit();
 			}
 		});
@@ -178,8 +179,6 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 ');
 
 		$html = '';
-		//$html = '<html><head><title>Redirection</title></head><body>';
-		$html .= '<div style="margin: auto; text-align: center;">';
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
 		} else {
@@ -198,11 +197,10 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			$this->debugLog($post_variables, 'PayPal request:', 'debug');
 
 		} else {
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
+			$html .= vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') ;
 
 		}
-		$html .= '</form></div>';
-		//$html .= '</body></html>';
+		$html .= '</form>';
 
 		return $html;
 	}

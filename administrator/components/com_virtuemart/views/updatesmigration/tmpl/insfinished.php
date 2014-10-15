@@ -91,53 +91,26 @@ if($option=='com_virtuemart'){
 			</td>
 		</tr>
 		<?php
-/*
-		//We do this dirty here, is just the finish page for installation, we must know if we are allowed to add sample data
-		$db = JFactory::getDbo();
-		$q = 'SELECT count(*) FROM `#__virtuemart_products` WHERE `virtuemart_product_id`!="0" ';
-		$db->setQuery($q);
-		$productsExists = $db->loadResult();
-		if(!$productsExists){
+		if (JVM_VERSION < 3) {
+			$class="button";
+		} else {
+			$class="btn";
+		}
 		?>
 		<tr>
-			<td>
-				<strong>
-					<?php
-						echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA_OPTION').' '.vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA');
-					?>
-				</strong>
-				<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA_TIP'); ?>
-
-				<div id="cpanel">
-					<?php
-						?>
-						<div class="icon">
-							<a class="btn btn-primary"
-							   href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&'.JSession::getFormToken().'=1') ?>">
-								<span class="vmicon48 vm_install_48"></span> <br />
-								<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
-							</a>
-						</div>
-				</div>
-			</td>
-		</tr>
-	<?php }
-*/
-		?>
-		<tr>
-			<td><span class="btn button">
+			<td><span class="<?php echo $class ?>">
 				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
 				</span>
 			</td>
 		</tr>
 		<tr>
-			<td><span class="btn button">
+			<td><span class="<?php echo $class ?>">
 				<a href="http://docs.virtuemart.net"><?php echo vmText::_('COM_VIRTUEMART_DOCUMENTATION'); ?></a>
 				</span>
 			</td>
 		</tr>
 		<tr>
-			<td><span class="btn button">
+			<td><span class="<?php echo $class ?>">
 				<a href="http://extensions.virtuemart.net"><?php echo  vmText::_('COM_VIRTUEMART_EXTENSIONS_MORE'); ?></a>
 				</span>
 			</td>

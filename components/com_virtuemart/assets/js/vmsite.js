@@ -104,7 +104,23 @@ if (typeof Virtuemart === "undefined")
             if( $("body").hasClass("vmLoading") ){
                 $("body").removeClass("vmLoading");
             }
+        },
+
+
+        setVmMethod: function(checkoutForm, selector, loadingId) {
+
+            var virtuemart_method_id ;
+            virtuemart_method_id =$(checkoutForm).find('input[name='+selector+']:checked').val();
+            methods.startVmLoadingId(loadingId);
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=updatecartJS&'+selector+'=' + virtuemart_method_id + vmLang;
+            jQuery.getJSON(url,
+                function (datas, textStatus) {
+                    $( "#cart-view" ).html(datas.msg);
+                }
+            );
+
         }
+
 	};
 
 	$.fn.vm2front = function( method ) {

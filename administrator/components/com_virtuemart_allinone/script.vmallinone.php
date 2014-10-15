@@ -102,9 +102,14 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				</p>
 				<div id="cpanel">
 					<?php
+					if (JVM_VERSION < 3) {
+						$class="button";
+					} else {
+						$class="btn btn-primary";
+					}
 					?>
 					<div class="icon">
-						<a class="btn btn-primary"
+						<a class="<?php echo $class ?>"
 						   href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&' . JSession::getFormToken() . '=1') ?>">
 							<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 						</a>
@@ -114,7 +119,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			<?php
 			}
 
-			echo "<table><tr><th>Installing Plugins</th><td></td></tr>";
+			echo "<table><tr><th>Plugins</th><td></td></tr>";
 
 
 			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
@@ -155,7 +160,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			$task = vRequest::getCmd ('task');
 			if ($task != 'updateDatabase') {
-				echo "<tr><th>Installing Modules</th><td></td></tr>";
+				echo "<tr><th>Modules</th><td></td></tr>";
 				// modules auto move
 				$src = $this->path . DS . "modulesBE";
 				$dst = JPATH_ROOT . DS."administrator". DS . "modules";
@@ -239,7 +244,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$src = $this->path . DS . "libraries";
 				$dst = JPATH_ROOT . DS . "libraries";
 				$this->recurse_copy ($src, $dst);
-				echo "<tr><th>pdf moved to the joomla libraries folder</th><td></td></tr>";
+				echo "<tr><th>Pdf moved to the joomla libraries folder</th><td></td></tr>";
 
 				echo "</table>";
 
@@ -469,10 +474,10 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 						$db->query ();
 					}
 					if ($count>0) {
-						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '`';
+						$q = 'SELECT * FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group. '" ORDER BY  `' . $idfield . '`';
 						$db->setQuery ($q);
-						$data[$idfield] = $db->loadResult ();
-						$data['state'] =0; // must be set manually when updating
+						$data = $db->loadResultArray ();
+						var_export($data);
 					}
 					//We write ALWAYS in the table,like this the version number is updated
 
