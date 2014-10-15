@@ -1837,10 +1837,22 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	 * @param $virtuemart_paymentmethod_id
 	 */
 	private function returnToVm ($realex_data, $success, $virtuemart_paymentmethod_id) {
+		JFactory::getDocument()->addScriptDeclaration ('
 
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	    $(window).load(function(){
+			if(jQuery("#vmPaymentForm")) {
+				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE', true).'" );
+				jQuery("#vmPaymentForm").submit();
+			}
+		});
+	});
+//]]>
+');
+$html='';
 		// add spin image
-		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
-		$html .= '<form action="' . JURI::root(false) . '" method="post" name="vm_realex_form" accept-charset="UTF-8">';
+		$html .= '<form action="' . JURI::root(false) . '" method="post" name="vm_realex_form" id="vmPaymentForm" accept-charset="UTF-8">';
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 		$html .= '<input type="hidden" name="option" value="com_virtuemart" />';
 		$html .= '<input type="hidden" name="view" value="pluginresponse" />';
@@ -1855,12 +1867,8 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$html .= '<input type="hidden" name="Itemid" value="' . vRequest::getInt('Itemid') . '" />';
 		$html .= '<input type="hidden" name="lang" value="' . vRequest::getCmd('lang', '') . '" />';
 
-		$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-		$html .= '		document.vm_realex_form.submit();';
-		$html .= '	</script>';
-		$html .= '</form></div>';
-		$html .= '</body></html>';
+		$html .= '</form>';
+
 		echo $html;
 
 

@@ -835,12 +835,24 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function getConfirmedHtml ($post_variables, $interface, $subscribe_id = NULL) {
 		$server = $interface->getKlikandpayServerUrl($subscribe_id);
 		$this->debugLog(var_export($post_variables, true), 'getConfirmedHtml', 'debug', false);
-		// add spin image
-		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
+		JFactory::getDocument()->addScriptDeclaration ('
+
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	    $(window).load(function(){
+			if(jQuery("#vmPaymentForm")) {
+				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_KLICKANDPAY_REDIRECT_MESSAGE', true).'" );
+				jQuery("#vmPaymentForm").submit();
+			}
+		});
+	});
+//]]>
+');
+$html='';
 		if ($this->_currentMethod->debug) {
 			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" target="klikandpay">';
 		} else {
-			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" >';
+			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" id="vmPaymentForm">';
 		}
 
 		foreach ($post_variables as $name => $value) {
@@ -854,15 +866,8 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 						</div>';
 			$this->debugLog($post_variables, 'sendPostRequest:', 'debug');
 
-		} else {
-
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_KLIKANDPAY_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-			$html .= '		document.vm_klikandpay_form.submit();';
-			$html .= '	</script>';
 		}
-		$html .= '</form></div>';
-		$html .= '</body></html>';
+		$html .= '</form>';
 
 		return $html;
 	}

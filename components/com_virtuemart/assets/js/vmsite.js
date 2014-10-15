@@ -96,9 +96,12 @@
 				}
 			});
 		},
-        startVmLoading: function() {
+        startVmLoading: function(msg) {
+            if (msg===undefined) {
+                msg='';
+            }
             $("body").addClass("vmLoading");
-            $("body").append("<div class=\"vmLoadingDiv\"></div>");
+            $("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
         },
         stopVmLoading: function() {
            if( $("body").hasClass("vmLoading") ){

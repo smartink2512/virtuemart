@@ -169,12 +169,26 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		}
 
 		$url = $this->_getPayPalUrl();
-		// add spin image
-		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
+		JFactory::getDocument()->addScriptDeclaration ('
+
+//<![CDATA[
+	jQuery(document).ready(function($) {
+	    $(window).load(function(){
+			if(jQuery("#vmPaymentForm")) {
+				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE', true).'" );
+				jQuery("#vmPaymentForm").submit();
+			}
+		});
+	});
+//]]>
+');
+
+
+		$html='';
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
 		} else {
-			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" accept-charset="UTF-8">';
+			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" id="vmPaymentForm" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
@@ -188,15 +202,8 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 						</div>';
 			$this->debugLog($post_variables, 'PayPal request:', 'debug');
 
-		} else {
-
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-				$html .= '		document.vm_paypal_form.submit();';
-				$html .= '	</script>';
 		}
-		$html .= '</form></div>';
-		$html .= '</body></html>';
+		$html .= '</form>';
 
 		return $html;
 	}
