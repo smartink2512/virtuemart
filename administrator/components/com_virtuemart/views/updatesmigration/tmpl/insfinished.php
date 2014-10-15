@@ -125,21 +125,21 @@ if($option=='com_virtuemart'){
 		*/
 		?>
 		<tr>
-			<td><span class="btn button">
+			<td>
 				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
-				</span>
+
 			</td>
 		</tr>
 		<tr>
-			<td><span class="btn button">
+			<td>
 				<a href="http://docs.virtuemart.net"><?php echo vmText::_('COM_VIRTUEMART_DOCUMENTATION'); ?></a>
-				</span>
+
 			</td>
 		</tr>
 		<tr>
-			<td><span class="btn button">
+			<td>
 				<a href="http://extensions.virtuemart.net"><?php echo  vmText::_('COM_VIRTUEMART_EXTENSIONS_MORE'); ?></a>
-				</span>
+
 			</td>
 		</tr>
 	</table>

@@ -65,7 +65,7 @@ $plugins = $db->loadObjectList();
 ?>
 	<table>
 		<tr>
-			<td align="center">
+			<td align="center" colspan="4">
 				<?php
 				VmConfig::loadConfig();
 				VmConfig::loadJLang('com_virtuemart');
@@ -79,23 +79,22 @@ $plugins = $db->loadObjectList();
 			</td>
 		</tr>
 		<?php if ($plugins) { ?>
-		<tr>
-			<td><table><tr><td colspan="4"><?php echo JText::_('COM_VIRTUEMART_INSTALLED_PLUGINS'); ?></td></tr>
-					<?php
-					foreach ($plugins as $plugin) {
-						?>
-						<tr><td><?php echo $plugin->folder ?></td>
-							<td><?php echo $plugin->name ?></td>
-							<td><?php echo $plugin->element ?></td>
-							<td><?php echo $plugin->enabled?Jtext::_('COM_VIRTUEMART_PUBLISHED'): Jtext::_('COM_VIRTUEMART_UNPUBLISHED')?></td>
-						</tr>
-					<?php
-					}
-					?>
-				</table>
-			</td>
-		</tr>
-	<?php } ?>
+			<tr>
+				<th colspan="4"><?php echo JText::_('COM_VIRTUEMART_INSTALLED_PLUGINS'); ?></th>
+			</tr>
+			<?php
+			foreach ($plugins as $plugin) {
+				?>
+				<tr>
+					<td><?php echo $plugin->folder ?></td>
+					<td><?php echo $plugin->name ?></td>
+					<td><?php echo $plugin->element ?></td>
+					<td><?php echo $plugin->enabled ? JText::_('COM_VIRTUEMART_PUBLISHED') : Jtext::_('COM_VIRTUEMART_UNPUBLISHED') ?></td>
+				</tr>
+			<?php
+			}
+			?>
+		<?php } ?>
 
 		</table>
 

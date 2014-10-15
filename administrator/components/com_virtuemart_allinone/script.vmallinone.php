@@ -77,7 +77,10 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 					align="center"
 					src="components/com_virtuemart/assets/images/vm_menulogo.png"
 					alt="' . JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') . '" /></a> ';
-			//echo '<h3 style="clear: both;">Installing VirtueMart Plugins and Modules</h3>';
+			echo '<h3 style="clear: both;">Installing VirtueMart Plugins and Modules</h3>';
+			echo "<p>The AIO component (com_virtuemart_aio) is used to install or update all the plugins and modules essential to VirtueMart in one go.</p>";
+			echo "<p>Do not uninstall it.</p>";
+
 			//We do this dirty here, is just the finish page for installation, we must know if we are allowed to add sample data
 			$db = JFactory::getDbo();
 			$q = 'SELECT count(*) FROM `#__virtuemart_products` WHERE `virtuemart_product_id`!="0" ';
@@ -263,8 +266,6 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 				}*/
 
 				echo "<h3>Installation Successful.</h3>";
-				echo "<p>The AIO component (com_virtuemart_aio) is used to install or update all the plugins and modules essential to VirtueMart in one go.</p>";
-				echo "<p>Do not uninstall it.</p>";
 
 
 
