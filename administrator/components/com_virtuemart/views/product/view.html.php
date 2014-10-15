@@ -117,8 +117,8 @@ class VirtuemartViewProduct extends VmView {
 				// Load Images
 				$model->addImages($product);
 
-				if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-				$vmtemplate = shopFunctionsF::loadVmTemplateStyle();
+				if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+				$vmtemplate = VmTemplate::loadVmTemplateStyle();
 				$this->imagePath = shopFunctions::getAvailabilityIconUrl($vmtemplate);
 
 
