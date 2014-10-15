@@ -391,7 +391,13 @@ jQuery().ready(function($) {
 		$pbxServer = $this->getPayboxServerUrl();
 
 		// add spin image
-		JFactory::getDocument()->addScriptDeclaration ('
+
+
+		$html='';
+		if ($this->_method->debug) {
+			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" target="paybox">';
+		} else {
+			JFactory::getDocument()->addScriptDeclaration ('
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
@@ -405,11 +411,6 @@ jQuery().ready(function($) {
 //]]>
 ');
 
-
-		$html='';
-		if ($this->_method->debug) {
-			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" target="paybox">';
-		} else {
 			$html .= '<form action="' . $pbxServer . '" method="post" id="vmPaymentForm" name="vm_paybox_form" >';
 		}
 

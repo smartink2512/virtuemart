@@ -169,7 +169,12 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		}
 
 		$url = $this->_getPayPalUrl();
-		JFactory::getDocument()->addScriptDeclaration ('
+
+		$html='';
+		if ($this->_method->debug) {
+			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
+		} else {
+			JFactory::getDocument()->addScriptDeclaration ('
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
@@ -183,11 +188,6 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 //]]>
 ');
 
-
-		$html='';
-		if ($this->_method->debug) {
-			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
-		} else {
 			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" id="vmPaymentForm" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';

@@ -835,7 +835,12 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function getConfirmedHtml ($post_variables, $interface, $subscribe_id = NULL) {
 		$server = $interface->getKlikandpayServerUrl($subscribe_id);
 		$this->debugLog(var_export($post_variables, true), 'getConfirmedHtml', 'debug', false);
-		JFactory::getDocument()->addScriptDeclaration ('
+
+$html='';
+		if ($this->_currentMethod->debug) {
+			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" target="klikandpay">';
+		} else {
+			JFactory::getDocument()->addScriptDeclaration ('
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
@@ -848,10 +853,6 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	});
 //]]>
 ');
-$html='';
-		if ($this->_currentMethod->debug) {
-			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" target="klikandpay">';
-		} else {
 			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" id="vmPaymentForm">';
 		}
 

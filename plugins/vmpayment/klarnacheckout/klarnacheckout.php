@@ -95,7 +95,6 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			'action'                      => 'varchar(20)',
 			// to_klarna, from_klarna
 			'klarna_status'               => 'varchar(20)',
-			'klarna_id'                              => 'varchar(64)',
 			// pre-purchase, purchase, pre-delivery, delivery, post-delivery
 			'format'                        => 'varchar(5)',
 			'data'                        => 'mediumtext',
@@ -326,7 +325,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$session = JFactory::getSession();
 			require_once 'klarnacheckout/library/Checkout.php';
 
-			$klarna_id = $this->storeCartInTable($cart);
+			$cartIdInTable = $this->storeCartInTable($cart);
 			if ($this->method->server == 'beta') {
 				Klarna_Checkout_Order::$baseUri = 'https://checkout.testdrive.klarna.com/checkout/orders';
 			} else {
@@ -380,9 +379,9 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				$create['merchant']['id'] = $this->merchantid;
 				$create['merchant']['terms_uri'] = $this->getTermsURI($cart->vendorId);
 				$create['merchant']['checkout_uri'] = JURI::root(). 'index.php?option=com_virtuemart&view=cart';
-				$create['merchant']['confirmation_uri'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&t&pm=' . $virtuemart_paymentmethod_id . '&cartId=' .  $klarnaOrder['id'] . '&klarna_order={checkout.order.uri}';
+				$create['merchant']['confirmation_uri'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&t&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}';
 				// You can not receive push notification on non publicly available uri
-				$create['merchant']['push_uri'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $virtuemart_paymentmethod_id . '&cartId=' .  $klarnaOrder['id'] . '&klarna_order={checkout.order.uri}';
+				$create['merchant']['push_uri'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}';
 				if (!empty( $cart->BT['email'])) {
 					$create['shipping_address']['email'] = $cart->BT['email'];
 					$hide_BTST=false;
@@ -519,15 +518,14 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$preload = true;
 		}
 		$dbValues['format'] = 'ser';
-		$dbValues ['klarna_id'] = $cartIdInTable;
-
+		$dbValues ['id'] = $cartIdInTable;
 		$this->debugLog($dbValues, 'storePSPluginInternalData storeCartInTable', 'debug');
 
 		//$values = $this->storePSPluginInternalData($dbValues, $this->_tablepkey, $preload);
 		$values = $this->storePluginInternalData($dbValues, $this->_tablepkey, 0, $preload);
 
 		if (empty($cartId)) {
-			$session->set('cartId', $values ['klarna_id'], 'vm');
+			$session->set('cartId', $values ['id'], 'vm');
 		}
 		$this->debugLog($cartId, 'CARD ID Save in session', 'debug');
 		return $values ['id'];
@@ -542,7 +540,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	function getCartFromTable ($cartId, $serialized = false) {
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `' . $this->_tablename . '` ' . 'WHERE `klarna_id` = ' . $cartId . ' AND `action` = "storeCart"';
+		$q = 'SELECT * FROM `' . $this->_tablename . '` ' . 'WHERE `id` = ' . $cartId . ' AND `action` = "storeCart"';
 
 		$db->setQuery($q);
 		$result = $db->loadObject();

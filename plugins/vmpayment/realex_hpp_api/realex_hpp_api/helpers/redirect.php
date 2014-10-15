@@ -63,7 +63,13 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 		$jump_url = $this->getJumpUrl();
 
-		JFactory::getDocument()->addScriptDeclaration ('
+
+		// add spin image
+		$html = '';
+		if ($this->_method->debug) {
+			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" target="realex">';
+		} else {
+			JFactory::getDocument()->addScriptDeclaration ('
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
@@ -76,12 +82,6 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	});
 //]]>
 ');
-
-		// add spin image
-		$html = '';
-		if ($this->_method->debug) {
-			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" target="realex">';
-		} else {
 			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" id="vmPaymentForm" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
