@@ -51,6 +51,7 @@ class VmTable extends JTable {
 	protected $_updateNulls = false;
 
 	private static $_cache = array();
+	private $_lhash = false;
 
 	/**
 	 * @param string $table
@@ -605,15 +606,15 @@ class VmTable extends JTable {
 		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
 		$hashVarsToPush = '';
-		if (!empty($this->_xParams)) {
+		if (!empty($this->_varsToPushParam)) {
 			$hashVarsToPush = serialize($this->_varsToPushParam);
 		}
-		$hash = md5($oid. $select . $k . $mainTable . $andWhere . $hashVarsToPush);
+		$this->_lhash = md5($oid. $select . $k . $mainTable . $andWhere . $hashVarsToPush);
 
-		if (isset (self::$_cache['l'][$hash])) {
+		if (isset (self::$_cache['l'][$this->_lhash])) {
 			//vmdebug('Return cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
-			$this->bind(self::$_cache['l'][$hash]);
-			if (!empty($this->_xParams)) {
+			$this->bind(self::$_cache['l'][$this->_lhash]);
+			if (!empty($this->_xParams) and !empty($this->_varsToPushParam)) {
 				self::bindParameterable($this, $this->_xParams, $this->_varsToPushParam);
 			}
 			return $this;
@@ -649,6 +650,8 @@ class VmTable extends JTable {
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = $defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
+			} else {
+				self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
 			}
 		}
 
@@ -688,7 +691,7 @@ class VmTable extends JTable {
 			$this->_ltmp = false;
 		}
 
-		self::$_cache['l'][$hash] = $this->loadFieldValues(false);
+		self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
 		return $this;
 	}
 
@@ -838,7 +841,7 @@ class VmTable extends JTable {
 			if($unicodeslugs)$this->$slugName = rawurlencode($this->$slugName);
 
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
-			//vmdebug('my Final slugName '.$slugName,$this->slugName);
+			//vmdebug('my Final slugName '.$slugName,$this->$slugName);
 			if (!$valid) {
 				return false;
 			}
@@ -980,7 +983,7 @@ class VmTable extends JTable {
 		if ($this->_translatable) {
 			if (!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
 			$db = JFactory::getDBO();
-
+			$dataTable = clone($this);
 			$langTable = new VmTableData($this->_tbl_lang, $tblKey, $db);
 			$langTable->setPrimaryKey($tblKey);
 			$langData = array();
@@ -996,18 +999,18 @@ class VmTable extends JTable {
 					} else {
 					//	$langData[$name] = '';
 					}
-					unset($this->$name);
+					unset($dataTable->$name);
 
 					if (!empty($this->_unique_name[$name])) {
 						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
-						unset($this->_unique_name[$name]);
+						unset($dataTable->_unique_name[$name]);
 						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
-						unset($this->_obkeys[$name]);
+						unset($dataTable->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
 						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
-						unset($this->_obkeys[$name]);
+						unset($dataTable->_obkeys[$name]);
 					}
 
 				}
@@ -1020,18 +1023,18 @@ class VmTable extends JTable {
 					} else {
 					//	$langData[$name] = '';
 					}
-					unset($this->$name);
+					unset($dataTable->$name);
 
 					if (!empty($this->_unique_name[$name])) {
 						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
-						unset($this->_unique_name[$name]);
+						unset($dataTable->_unique_name[$name]);
 						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
-						unset($this->_obkeys[$name]);
+						unset($dataTable->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
 						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
-						unset($this->_obkeys[$name]);
+						unset($dataTable->_obkeys[$name]);
 					}
 
 				}
@@ -1042,10 +1045,10 @@ class VmTable extends JTable {
 			$langTable->_obkeys = $langObKeys;
 
 			$langTable->_slugAutoName = $this->_slugAutoName;
-			unset($this->_slugAutoName);
+			unset($dataTable->_slugAutoName);
 
 			$langTable->_slugName = 'slug';
-			unset($this->_slugName);
+			unset($dataTable->_slugName);
 
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
@@ -1070,8 +1073,8 @@ class VmTable extends JTable {
 
 			if ($ok) {
 
-				$this->bindChecknStoreNoLang($data, $preload);
-
+				$dataTable->bindChecknStoreNoLang($data, $preload);
+				$this->bind($dataTable);
 				$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 				//vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
 				if ($ok and $preload) {
@@ -1103,6 +1106,11 @@ class VmTable extends JTable {
 						$ok = false;
 						// $msg .= ' store';
 						vmdebug('Problem in store with langtable ' . get_class($langTable) . ' with ' . $tblKey . ' = ' . $this->$tblKey . ' ' . $langTable->_db->getErrorMsg());
+					} else {
+						$this->bind($langTable);
+						if($this->_lhash){
+							self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
+						}
 					}
 				}
 			}
