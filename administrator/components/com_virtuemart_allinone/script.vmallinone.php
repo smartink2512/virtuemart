@@ -367,38 +367,44 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 						$db->setQuery($q);
 						$db->query();
 					}
-					if ($count > 0) {
-						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ORDER BY  `' . $idfield . '`';
-						$db->setQuery($q);
-						$data[$idfield] = $db->loadResult();
-						$data['state'] = 0; // MANDATORY! must be set manually when updating
-					}
-					//We write ALWAYS in the table,like this the version number is updated
 
 					if (version_compare(JVERSION, '1.6.0', 'ge')) {
-						$data['manifest_cache'] = json_encode(JApplicationHelper::parseXMLInstallFile($src . DS . $element . '.xml'));
+						$data['manifest_cache'] = json_encode(JInstaller::parseXMLInstallFile($src . DS . $element . '.xml'));
 					}
+					if ($count == 1) {
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ORDER BY  `' . $idfield . '`';
+						$db->setQuery($q);
+						$ext_id = $db->loadResult();
+						$q = 'UPDATE `#__extensions`  SET `manifest_cache` ="' . $db->escape($data['manifest_cache']) . '" WHERE extension_id=' . $ext_id . ';';
+						$db->setQuery($q);
+						if (!$db->query()) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage(get_class($this) . '::  ' . $db->getErrorMsg());
+						}
+					} else {
+						//We write ALWAYS in the table,like this the version number is updated
 
-					if (!$table->bind($data)) {
-						$app = JFactory::getApplication();
-						$app->enqueueMessage('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-					}
+						if (!$table->bind($data)) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						}
 
-					if (!$table->check($data)) {
-						$app = JFactory::getApplication();
-						$app->enqueueMessage('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						if (!$table->check($data)) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
 
-					}
+						}
 
-					if (!$table->store($data)) {
-						$app = JFactory::getApplication();
-						$app->enqueueMessage('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-					}
+						if (!$table->store($data)) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						}
 
-					$errors = $table->getErrors();
-					foreach ($errors as $error) {
-						$app = JFactory::getApplication();
-						$app->enqueueMessage(get_class($this) . '::store ' . $error);
+						$errors = $table->getErrors();
+						foreach ($errors as $error) {
+							$app = JFactory::getApplication();
+							$app->enqueueMessage(get_class($this) . '::store ' . $error);
+						}
 					}
 
 				}
