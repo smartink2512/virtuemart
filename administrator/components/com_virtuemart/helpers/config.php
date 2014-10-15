@@ -42,6 +42,14 @@ else {
 	}
 }
 
+defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', JPATH_ROOT);
+defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', JPATH_VM_LIBRARIES);
+defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
+defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
+defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN.DS.'plugins');
+defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT.DS.'plugins' );
+defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT.DS.'modules' );
+
 defined('VM_VERSION') or define ('VM_VERSION', 2);
 
 //This number is for obstruction, similar to the prefix jos_ of joomla it should be avoided
