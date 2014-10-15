@@ -69,11 +69,11 @@ class VirtuemartViewVirtuemart extends VmView {
 		$recentCustomers = $model->getRecentCustomers();
 		$this->recentCustomers=$recentCustomers;
 
-		if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.'/helpers/shopfunctions.php');
+		if (!class_exists('vmRSS')) require(VMPATH_ADMIN.'/helpers/vmrss.php');
 
-		$this->extensionsFeed = ShopFunctions::getExtensionsRssFeed();
+		$this->extensionsFeed = vmRSS::getExtensionsRssFeed();
 
-		$virtuemartFeed = ShopFunctions::getVirtueMartRssFeed();
+		$virtuemartFeed = vmRSS::getVirtueMartRssFeed();
 		$this->virtuemartFeed=$virtuemartFeed;
 
 		if(JFactory::getApplication()->isSite()){

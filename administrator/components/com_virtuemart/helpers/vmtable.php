@@ -376,9 +376,10 @@ class VmTable extends JTable {
 	public function showFullColumns($typeKey=0,$typeValue=0,$properties=true){
 
 		$hash = 'SFL'.$this->_tbl.$typeKey.$typeValue;
-		if (!isset(self::$_cache[$hash])) {
+		if (!isset(self::$_cache[$hash])) {//vmSetStartTime('showFullColumns');
 			$this->_db->setQuery('SHOW FULL COLUMNS  FROM `'.$this->_tbl.'` ') ;
 			self::$_cache[$hash] = $this->_db->loadAssocList();
+			//vmTime('showFullColumns','showFullColumns');
 		}
 
 		if ($properties and count(self::$_cache[$hash]) > 0) {
@@ -577,6 +578,7 @@ class VmTable extends JTable {
 	 */
 	function load($oid = null, $overWriteLoadName = 0, $andWhere = 0, $tableJoins = array(), $joinKey = 0) {
 
+		//vmSetStartTime('vmtableload');
 		if( $overWriteLoadName!==0 ){
 			$k = $overWriteLoadName;
 		} else {
@@ -647,18 +649,17 @@ class VmTable extends JTable {
 		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
 		$hashVarsToPush = '';
-		if (!empty($this->_xParams)) {
+		if (!empty($this->_varsToPushParam)) {
 			$hashVarsToPush = serialize($this->_varsToPushParam);
 		}
 		$hash = md5($oid. $select . $k . $mainTable . $andWhere . $hashVarsToPush);
 
-		//Very important
-		//$this->reset();	//Is bad, because they cache is wrong in joomla
-		$this->showFullColumns();
-
 		if (isset (self::$_cache['l'][$hash])) {
-			//vmdebug('Resturn cached '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
 			$this->bind(self::$_cache['l'][$hash]);
+			//vmTime('loaded by cache '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid,'vmtableload');
+			if (!empty($this->_xParams) and !empty($this->_varsToPushParam)) {
+				self::bindParameterable($this, $this->_xParams, $this->_varsToPushParam);
+			}
 			return $this;
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
@@ -707,6 +708,8 @@ class VmTable extends JTable {
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = VmConfig::$defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
+			} else {
+				self::$_cache['l'][$hash] = $this->loadFieldValues(false);
 			}
 		}
 
@@ -736,6 +739,7 @@ class VmTable extends JTable {
 		}
 
 		self::$_cache['l'][$hash] = $this->loadFieldValues(false);
+		//vmTime('loaded','vmtableload');
 		return $this;
 	}
 

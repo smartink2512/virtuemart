@@ -93,15 +93,15 @@ vmJsApi::addJScript('hideNotOPC',$js);
 
 
 		$attrlist = 'class="inputbox" multiple="multiple" ';
-		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES',$this->os_Options,'inv_os[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('inv_os',array('C')), 'inv_os',true);
-		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER',$this->os_Options,'email_os_s[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('email_os_s',array('U','C','S','R','X')), 'email_os_s',true);
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES',$this->osWoP_Options,'inv_os[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('inv_os',array('C')), 'inv_os',true);
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER',$this->osWoP_Options,'email_os_s[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('email_os_s',array('U','C','S','R','X')), 'email_os_s',true);
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR',$this->os_Options,'email_os_v[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('email_os_v',array('U','C','R','X')), 'email_os_v',true);
 
 
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_LANGFIX','vmlang_js',VmConfig::get('vmlang_js',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER','oncheckout_change_shopper',VmConfig::get('oncheckout_change_shopper',1));
 
-		$_delivery_date_options = array(
+		/*$_delivery_date_options = array(
 			'm' => vmText::_('COM_VIRTUEMART_DELDATE_INV')
 		, 'osP' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_PENDING')
 		, 'osU' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED_BY_SHOPPER')
@@ -109,12 +109,13 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		, 'osS' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_SHIPPED')
 		, 'osR' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_REFUNDED')
 		, 'osC' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_CANCELLED')
-		);
+		);*/
 
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_DELDATE_INV',$this->osDel_Options,'del_date_type','class="inputbox"', 'order_status_code', 'order_status_name', VmConfig::get('del_date_type',array('m')), 'del_date_type',true);
 
-		echo VmHTML::row('selectList','COM_VIRTUEMART_CFG_DELDATE_INV','del_date_type', VmConfig::get('del_date_type','m'), $_delivery_date_options);
+		//echo VmHTML::row('selectList','COM_VIRTUEMART_CFG_DELDATE_INV','del_date_type', VmConfig::get('del_date_type','m'), $_delivery_date_options);
 		echo VmHTML::row('input','COM_VIRTUEMART_CFG_ATTACH','attach', VmConfig::get('attach',''));
-		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_ATTACH_OS',$this->os_Options,'attach_os[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('attach_os',array('U','C','R','X')), 'attach_os',true);
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_ATTACH_OS',$this->osWoP_Options,'attach_os[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('attach_os',array('U','C','R','X')), 'attach_os',true);
 
 		?>
 
