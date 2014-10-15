@@ -108,8 +108,8 @@ class VirtuemartViewConfig extends VmView {
 
 		$this->aclGroups = $usermodel->getAclGroupIndentedTree();
 
-		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		$this->vmtemplate = shopFunctionsF::loadVmTemplateStyle();
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$this->vmtemplate = VmTemplate::loadVmTemplateStyle();
 		$this->imagePath = shopFunctions::getAvailabilityIconUrl($this->vmtemplate);
 
 

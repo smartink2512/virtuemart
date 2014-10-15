@@ -191,6 +191,7 @@ class virtuemartViewrecommend extends VmView {
 
 		$this->subject = vmText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$this->name, $this->product->product_name);
 
+		$this->isMail = true;
 		parent::display();
 	}
 

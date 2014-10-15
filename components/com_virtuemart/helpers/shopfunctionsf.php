@@ -95,6 +95,18 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * Just an idea, still WIP
+	 * @param $type
+	 * @return mixed
+	 */
+	static function renderFormField($type){
+		//Get custom field
+		JFormHelper::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+		$types = JFormHelper::loadFieldType($type, false);
+		return $types->getOptions();
+	}
+
+	/**
 	 * Return the order status name for a given code
 	 *
 	 * @author Oscar van Eijk
@@ -405,6 +417,7 @@ class shopFunctionsF {
 
 		return $rowsHeight;
 	}
+	
 	/**
 	 * Renders sublayouts
 	 *
@@ -414,7 +427,7 @@ class shopFunctionsF {
 	 */
 	static public function renderVmSubLayout($name,$viewData=0){
 
-		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
+		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		// get the template and default paths for the layout if the site template has a layout override, use it
 		$templatePath = JPATH_SITE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
@@ -465,8 +478,9 @@ class shopFunctionsF {
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		$view->addTemplatePath( VMPATH_SITE.'/views/'.$viewName.'/tmpl' );
 
-		$template = self::loadVmTemplateStyle();
-		self::setTemplate($template);
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$template = VmTemplate::loadVmTemplateStyle();
+		VmTemplate::setTemplate($template);
 		if($template){
 			if(is_array($template) and isset($template['template'])){
 				$view->addTemplatePath( VMPATH_ROOT.DS.'templates'.DS.$template['template'].DS.'html'.DS.'com_virtuemart'.DS.$viewName );
@@ -523,200 +537,33 @@ class shopFunctionsF {
 
 	}
 
-	static $_templates = array();
 
-	public static function getTemplateById($id){
-
-		if(!isset(self::$_templates[$id])){
-			$q = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$id.'" ';
-			$db = JFactory::getDbo();
-			$db->setQuery($q);
-			self::$_templates[$id] = $db->loadAssoc();
-			if(!self::$_templates[$id]){
-				vmError( 'getTemplateById get Template failed for id: '.$id );
-			}
-		}
-		return self::$_templates[$id];
-		//if($res[$id]) return $res[$id];
-	}
-
-	public static function getDefaultTemplate(){
-
-		static $res = null;
-		if($res!==null) return $res;
-
-		$q = 'SELECT id, template, s.params
-			FROM #__template_styles as s
-			LEFT JOIN #__extensions as e
-			ON e.element=s.template
-			AND e.type="template"
-			AND e.client_id=s.client_id
-			WHERE s.client_id = 0
-			AND e.enabled = 1
-			AND s.home = 1';
-		$db = JFactory::getDbo();
-		$db->setQuery( $q );
-		$res = $db->loadAssoc();
-		if(!$res){
-			vmError( 'getDefaultTemplate failed ' );
-		} else {
-			self::$_templates[$res['id']] = $res;
-		}
-
-		return $res;
-	}
-
+	/**
+	 * @deprecated use the class vmTemplate instead
+	 * @return string
+	 */
 	public static function loadVmTemplateStyle(){
 
 		static $res = null;
 		if($res!==null) return $res;
-
-		$vmtemplate = VmConfig::get( 'vmtemplate', 0 );
-		if(empty($vmtemplate) or $vmtemplate=='default'){
-			$res = self::getDefaultTemplate();
-			if(!$res){
-				$err = 'Not able to load default template';
-				vmError( 'renderMail get Template failed: '.$err );
-			}
-		} else if(!empty($vmtemplate) and is_numeric($vmtemplate)) {
-
-			$res = self::getTemplateById($vmtemplate);
-		}
-
-		if($res) return $res;
-
-		$app =& JFactory::getApplication();
-		//This does not work correctly for mails, because we dont get the site application in the BE, but an FB
-		$res = $app->getTemplate();
-
-		if(!$res){
-			$err = 'Could not load default template style';
-			vmError( 'renderMail get Template failed: '.$err );
-		} else {
-			vmdebug('loadVmTemplateStyle $app->getTemplate',$res);
-			return $res;
-		}
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$res = VmTemplate::loadVmTemplateStyle();
 
 	}
 
-	/**
-	 * Final setting of template
-	 * Accepts a string, an id or an array with at least the keys template and params
-	 * @author Max Milbers
-	 */
-	static function setTemplate ($template = 0) {
 
-		$res = false;
-
-		if(is_array($template)){
-			$res = $template;
-		} else {
-			if(empty($template) or $template == 'default'){
-				$res = self::loadVmTemplateStyle();
-			} else {
-				if(is_numeric($template)){
-					$res = self::getTemplateById($template);
-				} else {
-					vmAdminInfo('Your template settings are old, please check your template settings in the vm config and in your categories');
-					vmdebug('Your template settings are old, please check your template settings in the vm config and in your categories');
-				}
-			}
-		}
-
-		$registry = null;
-		if($res){
-			$registry = new JRegistry;
-			$registry->loadString($res['params']);
-			$template = $res['template'];
-		}
-
-		if(is_dir( VMPATH_THEMES.DS.$template )) {
-			$app = JFactory::getApplication();
-			if($app->isSite()) $app->setTemplate($template,$registry);
-
-		} else {
-			vmError( 'The chosen template couldnt be found on the filesystem: '.VMPATH_THEMES.DS.$template );
-		}
-
-		return $template;
-	}
 
 	/**
 	 * This function sets the right template on the view
 	 * @author Max Milbers
+	 * @deprecated use class VmTemplates instead
 	 */
 	static function setVmTemplate ($view, $catTpl = 0, $prodTpl = 0, $catLayout = 0, $prodLayout = 0) {
 
-		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
-		$template = VmConfig::get( 'vmtemplate', 0 );
-		$db = JFactory::getDBO();
-		//Set specific category template
-		if(!empty($catTpl) && empty($prodTpl)) {
-			if(is_Int( $catTpl )) {
-				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catTpl.'" ';
-				$db->setQuery( $q );
-				$temp = $db->loadResult();
-				if(!empty($temp)) $template = $temp;
-			} else {
-				$template = $catTpl;
-			}
-		}
-
-		//Set specific product template
-		if(!empty($prodTpl)) {
-			if(is_Int( $prodTpl )) {
-				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodTpl.'" ';
-				$db->setQuery( $q );
-				$temp = $db->loadResult();
-				if(!empty($temp)) $template = $temp;
-			} else {
-				$template = $prodTpl;
-			}
-		}
-
-		shopFunctionsF::setTemplate( $template );
-
-		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
-		if(vRequest::getCmd( 'view' ) == 'virtuemart') {
-			$layout = VmConfig::get( 'vmlayout', 'default' );
-			$view->setLayout( strtolower( $layout ) );
-		} else {
-
-			if(empty($catLayout) and empty($prodLayout)) {
-				$catLayout = VmConfig::get( 'productlayout', 'default' );
-			}
-
-			//Set specific category layout
-			if(!empty($catLayout) && empty($prodLayout)) {
-				if(is_Int( $catLayout )) {
-					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catLayout.'" ';
-					$db->setQuery( $q );
-					$temp = $db->loadResult();
-					if(!empty($temp)) $layout = $temp;
-				} else {
-					$layout = $catLayout;
-				}
-			}
-
-			//Set specific product layout
-			if(!empty($prodLayout)) {
-				if(is_Int( $prodLayout )) {
-					$q = 'SELECT `layout` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodLayout.'" ';
-					$db->setQuery( $q );
-					$temp = $db->loadResult();
-					if(!empty($temp)) $layout = $temp;
-				} else {
-					$layout = $prodLayout;
-				}
-			}
-
-		}
-
-		if(!empty($layout)) {
-			$view->setLayout( strtolower( $layout ) );
-		}
-
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		return VmTemplate::setVmTemplate($view, $catTpl, $prodTpl, $catLayout, $prodLayout);
 	}
+
 	/**
 	 * With this function you can use a view to sent it by email.
 	 * Just use a task in a controller
@@ -732,7 +579,7 @@ class shopFunctionsF {
 
 		VmConfig::loadJLang('com_virtuemart',true);
 
-		if(!empty($view->orderDetails['details']['BT']->order_language)) {
+		if(!empty($view->orderDetails) and !empty($view->orderDetails['details']['BT']->order_language)) {
 			//$jlang->load( 'com_virtuemart', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
 			//$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
 			//$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );

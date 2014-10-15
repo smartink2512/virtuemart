@@ -219,6 +219,7 @@ class VirtuemartViewUser extends VmView {
 		$this->assignRef('page_title', $pathway_text);
 		$this->assignRef('corefield_title', $corefield_title);
 		$this->assignRef('vmfield_title', $vmfield_title);
+
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
 		parent::display($tpl);
@@ -394,6 +395,8 @@ class VirtuemartViewUser extends VmView {
 	$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 	$this->layoutName = $tpl;
 	$this->setLayout($tpl);
+	$this->isMail = true;
+
 	parent::display();
     }
 

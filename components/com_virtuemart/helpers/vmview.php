@@ -25,6 +25,7 @@ jimport( 'joomla.application.component.view');
 
 class VmView extends JViewLegacy{
 
+	var $isMail = false;
 	/**
 	 * Execute and display a template script.
 	 *
@@ -43,7 +44,7 @@ class VmView extends JViewLegacy{
 		}
 
 		echo $result;
-		if(get_class($this)!='VirtueMartViewProductdetails'){
+		if(!$this->isMail and get_class($this)!='VirtueMartViewProductdetails'){
 			echo vmJsApi::writeJS();
 		}
 

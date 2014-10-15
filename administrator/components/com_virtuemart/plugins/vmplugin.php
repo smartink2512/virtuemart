@@ -723,8 +723,8 @@ abstract class vmPlugin extends JPlugin {
 		$layoutPath=$templatePathWithGroup=$defaultPathWithGroup='';
 		jimport ('joomla.filesystem.file');
 		// First search in the new system
-		if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		$templatePath         = VMPATH_ROOT . DS . 'templates' . DS . $template . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
 		$defaultPath          = VMPATH_ROOT . DS . 'plugins' . DS . $group . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';

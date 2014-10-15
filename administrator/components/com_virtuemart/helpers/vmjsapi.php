@@ -20,7 +20,6 @@
 /**
  *
  * Class to provide js API of vm
- * @author Patrick Kohl
  * @author Max Milbers
  */
 class vmJsApi{
@@ -165,8 +164,9 @@ class vmJsApi{
 
 	}
 
-	/*
+	/**
 	 * Set file path(look in template if relative path)
+	 * @author Patrick
 	 */
 	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js', $absolute_path=false)
 	{
@@ -175,8 +175,8 @@ class vmJsApi{
 		$min	 = $minified ? '.min' : '';
 		$file 	 = $namespace.$version.$min.'.'.$ext ;
 		//$template = JFactory::getApplication()->getTemplate() ;
-		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		if ($path === FALSE) {
 			$uri = VMPATH_THEMES .'/'. $template.'/'.$ext ;
@@ -208,9 +208,7 @@ class vmJsApi{
 		return $path.'/'.$file ;
 	}
 	/**
-	 * ADD some javascript if needed
-	 * Prevent duplicate load of script
-	 * @ Author KOHL Patrick
+	 * Adds jQuery if needed
 	 */
 	static function jQuery($isSite=-1) {
 
@@ -515,26 +513,22 @@ class vmJsApi{
 	/**
 	 * ADD some CSS if needed
 	 * Prevent duplicate load of CSS stylesheet
-	 * @ Author KOHL Patrick
+	 * @author Max Milbers
 	 */
-
 	static function cssSite() {
 
-		if (!VmConfig::get ('css', TRUE)) {
-			return FALSE;
-		}
+		if (!VmConfig::get ('css', TRUE)) return FALSE;
+
 		static $cssSite;
-		if ($cssSite) {
-			return;
-		}
+		if ($cssSite) return;
+
 		// Get the Page direction for right to left support
 		$document = JFactory::getDocument ();
 		$direction = $document->getDirection ();
 		$cssFile = 'vmsite-' . $direction ;
 
-		//mJsApi::css ( $cssFile ) ;
-		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		$vmStyle = shopFunctionsF::loadVmTemplateStyle();
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		if($template){
 			//Fallback for old templates
@@ -543,7 +537,6 @@ class vmJsApi{
 				// If exist exit
 				vmJsApi::css ( $cssFile ) ;
 			} else {
-
 				$cssFile = 'vm-' . $direction .'-common';
 				vmJsApi::css ( $cssFile ) ;
 
@@ -553,7 +546,6 @@ class vmJsApi{
 				$cssFile = 'vm-' . $direction .'-reviews';
 				vmJsApi::css ( $cssFile ) ;
 			}
-
 			$cssSite = TRUE;
 		}
 

@@ -132,6 +132,7 @@ class VirtuemartViewVendor extends VmView {
 			$tpl = 'mail_raw_question';
 		}
 		$this->setLayout($tpl);
+		$this->isMail = true;
 		parent::display( );
 	}
 

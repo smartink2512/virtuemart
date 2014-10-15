@@ -235,17 +235,10 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		$view = $this->getView($viewName, $format);
 
 		$view->addTemplatePath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
-		$vmtemplate = VmConfig::get('vmtemplate',0);
-		if(!empty($vmtemplate) and $vmtemplate=='default'){
 
-			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
-
-			$db = JFactory::getDbo();
-			$db->setQuery($q);
-			$templateName = $db->loadResult();
-		} else {
-			$templateName = shopFunctionsF::setTemplate($vmtemplate);
-		}
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$template = VmTemplate::loadVmTemplateStyle();
+		$templateName = VmTemplate::setTemplate($template);
 
 		if(!empty($templateName)){
 			$TemplateOverrideFolder = JPATH_SITE.DS."templates".DS.$templateName.DS."html".DS."com_virtuemart".DS."invoice";

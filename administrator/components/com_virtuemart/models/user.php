@@ -339,6 +339,8 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
+		$data['secretkey'] = vRequest::get('secretkey', '');
+
 		if(!$new && !empty($data['password']) && empty($data['password2'])){
 			unset($data['password']);
 			unset($data['password2']);

@@ -327,6 +327,7 @@ class VirtueMartViewProductdetails extends VmView {
 		$this->subject = !empty($this->subject) ? $this->subject : vmText::_('COM_VIRTUEMART_CART_NOTIFY_MAIL_SUBJECT');
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
+		$this->isMail = true;
 		parent::display();
 	}
 

@@ -252,12 +252,32 @@ $i=0;
 
 </fieldset>
 </tr>
-		</td>
-	</tr>
-	<tr>
-	<td colspan="2" >
 
-</tr>
+<?php
+if ($this->product->virtuemart_product_id) {
+	$link=JRoute::_('index.php?option=com_virtuemart&view=product&task=createChild&virtuemart_product_id='.$this->product->virtuemart_product_id.'&'.JSession::getFormToken().'=1' );
+	$add_child_button="";
+} else {
+$link="";
+$add_child_button=" not-active";
+}
+
+echo '<div class="button2-left '.$add_child_button.' btn-wrapper">
+	<div class="blank">';
+		if ($link) {
+			echo  '<a href="'. $link .'" class="btn btn-small">';
+			} else {
+			echo  '<span class="hasTip" title="'.vmText::_ ('COM_VIRTUEMART_PRODUCT_ADD_CHILD_TIP').'">';
+				}
+echo  vmText::_('COM_VIRTUEMART_PRODUCT_ADD_CHILD');
+if ($link) {
+	echo  '</a>';
+} else{
+	echo  '</span>';
+}
+?>
+	</div>
+</div><div class="clear"></div>
 <tr>
 	<td width="100%" valign="top" colspan="2">
 		<fieldset>

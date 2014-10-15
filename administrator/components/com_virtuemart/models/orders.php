@@ -616,7 +616,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
 				$this->useDefaultEmailOrderStatus = false;
-				if($this->updateStatusForOneOrder($virtuemart_order_id,$order)){
+				if($this->updateStatusForOneOrder($virtuemart_order_id,$order,true)){
 					$updated ++;
 				} else {
 					$error++;
@@ -628,9 +628,18 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	}
 
-	// IMPORTANT: The $inputOrder can contain extra data by plugins
-	//also strange $useTriggers is always activated? No, this function is also called by plugins, and it should have $useTriggers=false
-	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=false){
+	/**
+	 * Attention, if you use this function within your trigger take care of the last parameter,
+	 * you should define it, this parameter maybe set to false in future releases
+	 *
+	 * IMPORTANT: The $inputOrder can contain extra data by plugins
+	 *
+	 * @param $virtuemart_order_id
+	 * @param $inputOrder
+	 * @param bool $useTriggers
+	 * @return bool
+	 */
+	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
 // 		vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */

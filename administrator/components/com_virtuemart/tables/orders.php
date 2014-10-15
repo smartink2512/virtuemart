@@ -149,25 +149,22 @@ class TableOrders extends VmTableData {
 		/*vm_order_payment NOT EXIST  have to find the table name*/
 		$this->_db->setQuery( 'SELECT `payment_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
 			WHERE `#__virtuemart_paymentmethods`.`virtuemart_paymentmethod_id` = `#__virtuemart_orders`.`virtuemart_paymentmethod_id` AND `virtuemart_order_id` = ' . $id );
-		$paymentTable = '#__virtuemart_payment_plg_'. $this->_db->loadResult();
-
-		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `virtuemart_order_id` = ' . $id);
-		if ($this->_db->execute() === false) {
-			vmError($this->_db->getError());
-			return false;
-		}		/*vm_order_shipment NOT EXIST  have to find the table name*/
+		$payment_element = $this->_db->loadResult();
+		if(!empty($payment_element)){
+			$paymentTable = '#__virtuemart_payment_plg_'.$payment_element ;
+			$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `virtuemart_order_id` = ' . $id);
+			if ($this->_db->execute() === false) {
+				vmError($this->_db->getError());
+				return false;
+			}
+		}
+				/*vm_order_shipment NOT EXIST  have to find the table name*/
 		$this->_db->setQuery( 'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
 			WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );
 		$shipmentName = $this->_db->loadResult();
 
-		if(empty($shipmentName)){
-			vmWarn('Seems the used shipmentmethod got deleted');
-			//Can we securely prevent this just using
-		//	'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
-		//	WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );
-		} else {
+		if(!empty($shipmentName)){
 			$shipmentTable = '#__virtuemart_shipment_plg_'. $shipmentName;
-
 			$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
 			if ($this->_db->execute() === false) {
 				vmError('TableOrders delete Order shipmentTable = '.$shipmentTable.' `virtuemart_order_id` = '.$id.' dbErrorMsg '.$this->_db->getError());

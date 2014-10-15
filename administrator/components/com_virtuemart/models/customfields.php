@@ -480,7 +480,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				//$html .= '<script type="text/javascript">'.$script.'</script>';
 
 				if ($product_id) {
-					$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createChild&virtuemart_product_id='.$product_id.'&'.JSession::getFormToken().'=1' );
+					$link=JRoute::_('index.php?option=com_virtuemart&view=product&task=createChild&virtuemart_product_id='.$product_id.'&'.JSession::getFormToken().'=1' );
 					$add_child_button="";
 				} else {
 					$link="";
