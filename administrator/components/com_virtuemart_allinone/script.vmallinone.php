@@ -477,7 +477,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 					//We write ALWAYS in the table,like this the version number is updated
 
 					if (version_compare(JVERSION, '1.6.0', 'ge')) {
-						$data['manifest_cache'] = json_encode(JInstaller::parseXMLInstallFile($src . DS . $element . '.xml'));
+						$data['manifest_cache'] = json_encode(JApplicationHelper::parseXMLInstallFile($src . DS . $element . '.xml'));
 					}
 					if ($count == 1) {
 						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ORDER BY  `' . $idfield . '`';
