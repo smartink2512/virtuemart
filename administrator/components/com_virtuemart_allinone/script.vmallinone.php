@@ -698,7 +698,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 
 				//				$manifestCache = str_replace('"', '\'', $data["manifest_cache"]);
 				$action = '';
-				$manifest_cache = json_encode(JInstaller::parseXMLInstallFile($src .  DS . $module .DS . $module . '.xml'));
+				$manifest_cache = json_encode(JInstaller::parseXMLInstallFile($src .  DS . $module  . '.xml'));
 				if (empty($ext_id)) {
 					$q = 'INSERT INTO `#__extensions` 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `ordering`) VALUES
 																	( "' . $module . '" , "module", "' . $module . '", "", "' . $client_id . '", "1","' . $access . '", "0", "' . $db->escape($manifest_cache) . '", "' . $db->escape($params) . '","' . $ordering . '");';
