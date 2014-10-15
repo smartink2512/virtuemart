@@ -509,6 +509,8 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 		public function installModule ($title, $module, $ordering, $params, $src, $client_id = 0, $position = 'position-4', $access = 1, $alreadyInstalled = true) {
 			$table = JTable::getInstance('module');
 			$db = $table->getDBO();
+			$src .= DS . $module;
+
 			if (!$alreadyInstalled) {
 				$params = '';
 
@@ -516,7 +518,6 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 				$db->setQuery($q);
 				$id = $db->loadResult();
 
-				$src .= DS . $module;
 				if (!empty($id)) {
 					return;
 				}
@@ -588,7 +589,7 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 
 				//				$manifestCache = str_replace('"', '\'', $data["manifest_cache"]);
 				$action = '';
-					$manifest_cache = json_encode(JApplicationHelper::parseXMLInstallFile($src .  DS . $module  . '.xml'));
+				$manifest_cache = json_encode(JApplicationHelper::parseXMLInstallFile($src .  DS . $module  . '.xml'));
 				if (empty($ext_id)) {
 					$q = 'INSERT INTO `#__extensions` 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `ordering`) VALUES
 																	( "' . $module . '" , "module", "' . $module . '", "", "' . $client_id . '", "1","' . $access . '", "0", "' . $db->getEscaped($manifest_cache) . '", "' . $db->getEscaped($params) . '","' . $ordering . '");';
