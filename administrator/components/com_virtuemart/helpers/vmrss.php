@@ -28,7 +28,7 @@ class vmRSS{
 		$cached = $cache->getCaching();
 		$cache->setLifeTime($cache_time);
 		$cache->setCaching (1);
-		$feeds = $cache->call (array('ShopFunctions', 'getRssFeed'), $rssUrl, $max);
+		$feeds = $cache->call (array('vmRSS', 'getRssFeed'), $rssUrl, $max);
 		$cache->setCaching ($cached);
 		return $feeds;
 	}

@@ -417,7 +417,7 @@ class shopFunctionsF {
 
 		return $rowsHeight;
 	}
-	
+
 	/**
 	 * Renders sublayouts
 	 *
@@ -426,7 +426,7 @@ class shopFunctionsF {
 	 * @return string
 	 */
 	static public function renderVmSubLayout($name,$viewData=0){
-
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		// get the template and default paths for the layout if the site template has a layout override, use it

@@ -129,6 +129,7 @@ function vmInfo($publicdescr,$value=NULL){
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 			$msg = 'Max messages reached';
 			$type = 'warning';
+			VmConfig::$maxMessageCount++;
 		} else {
 			return false;
 		}
@@ -176,6 +177,7 @@ function vmAdminInfo($publicdescr,$value=NULL){
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 				$app->enqueueMessage ('Max messages reached', 'info');
+				VmConfig::$maxMessageCount++;
 			}else {
 				return false;
 			}
@@ -209,6 +211,7 @@ function vmWarn($publicdescr,$value=NULL){
 	else {
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 			$msg = 'Max messages reached';
+			VmConfig::$maxMessageCount++;
 		} else {
 			return false;
 		}
@@ -253,6 +256,7 @@ function vmError($descr,$publicdescr=''){
 	else {
 		if (VmConfig::$maxMessageCount == (VmConfig::$maxMessage+5)) {
 			$msg = 'Max messages reached';
+			VmConfig::$maxMessageCount++;
 		} else {
 			return false;
 		}
@@ -314,6 +318,7 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 				$app->enqueueMessage ('Max messages reached', 'info');
+				VmConfig::$maxMessageCount++;
 			}
 		}
 

@@ -657,10 +657,13 @@ class VmTable extends JTable {
 		//$this->showFullColumns();
 		if (isset (self::$_cache['l'][$this->_lhash])) {
 			$this->bind(self::$_cache['l'][$this->_lhash]);
-			vmTime('loaded by cache '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid,'vmtableload');
 			if (!empty($this->_xParams) and !empty($this->_varsToPushParam)) {
 				self::bindParameterable($this, $this->_xParams, $this->_varsToPushParam);
 			}
+			if($this->_cryptedFields){
+				$this->encryptFields($this);
+			}
+			vmTime('loaded by cache '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid,'vmtableload');
 			return $this;
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
@@ -714,40 +717,44 @@ class VmTable extends JTable {
 			}
 		}
 
-		if($this->_cryptedFields){
-
-			if(!class_exists('vmCrypt')){
-				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-			}
-			if(isset($this->modified_on)){
-				$date = JFactory::getDate($this->modified_on);
-				$date = $date->toUnix();
-			} else {
-				$date = 0;
-			}
-
-			foreach($this->_cryptedFields as $field){
-				if(isset($this->$field)){
-					$this->$field = vmCrypt::decrypt($this->$field,$date);
-				}
-
-			}
-		}
-
 		if($this->_ltmp){
 			$this->_langTag = $this->_ltmp;
 			$this->_ltmp = false;
 		}
 
 		self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
+		if($this->_cryptedFields){
+			$this->encryptFields();
+		}
 		//vmTime('loaded','vmtableload');
 		return $this;
 	}
 
+	function encryptFields(){
+		if(!class_exists('vmCrypt')){
+			require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+		}
+		if(isset($this->modified_on)){
+			$date = JFactory::getDate($this->modified_on);
+			$date = $date->toUnix();
+		} else {
+			$date = 0;
+		}
+
+		foreach($this->_cryptedFields as $field){
+			if(isset($this->$field)){
+				$this->$field = vmCrypt::decrypt($this->$field, $date);
+			}
+
+		}
+	}
 
 	/**
-	 * Technic to inject params as table attributes
+	 * Records in this table do not need to exist, so we might need to create a record even
+	 * if the primary key is set. Therefore we need to overload the store() function.
+	 * Technic to inject params as table attributes and to encrypt data
 	 * @author Max Milbers
+	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
 	function store($updateNulls = false) {
 
@@ -769,17 +776,48 @@ class VmTable extends JTable {
 
 		$this->storeParams();
 
-		if($ok = parent::store($updateNulls)){
-			//reset Params
-			if(isset($this->_tmpParams) and is_array($this->_tmpParams)){
-				foreach($this->_tmpParams as $k => $v){
-					$this->$k = $v;
-				}
+		$tblKey = $this->_tbl_key;
+		$pKey = $this->_pkey;
+
+		if($tblKey == $pKey){
+			$res = false;
+			if(!empty($this->$tblKey)){
+				$_qry = 'SELECT `'.$this->_tbl_key.'` '
+					. 'FROM `'.$this->_tbl.'` '
+					. 'WHERE `'.$this->_tbl_key.'` = "' . $this->$tblKey.'" ';
+				$this->_db->setQuery($_qry);
+				$res = $this->_db->loadResult();
+			}
+			if($res){
+				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+			} else {
+				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+			}
+		} else {
+			if(!empty($this->$pKey)){
+				$_qry = 'SELECT `'.$this->_tbl_key.'` '
+					. 'FROM `'.$this->_tbl.'` '
+					. 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
+				$this->_db->setQuery($_qry);
+				//Yes, overwriting $this->$tblKey is correct !
+				$this->$tblKey = $this->_db->loadResult();
+			}
+			if ( !empty($this->$tblKey) ) {
+				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+			} else {
+				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+			}
+		}
+
+		//reset Params
+		if(isset($this->_tmpParams) and is_array($this->_tmpParams)){
+			foreach($this->_tmpParams as $k => $v){
+				$this->$k = $v;
 			}
 		}
 
 		$this->_tmpParams = false;
-		return $ok;
+		return $returnCode;
 	}
 
 
@@ -1170,9 +1208,7 @@ class VmTable extends JTable {
 						vmdebug('Problem in store with langtable ' . get_class($langTable) . ' with ' . $tblKey . ' = ' . $this->$tblKey . ' ' . $langTable->_db->getErrorMsg());
 					} else {
 						$this->bind($langTable);
-						if($this->_lhash){
-							self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
-						}
+
 					}
 				}
 			}
@@ -1182,6 +1218,12 @@ class VmTable extends JTable {
 
 			if (!$this->bindChecknStoreNoLang($data, $preload)) {
 				$ok = false;
+			}
+		}
+
+		if($ok){
+			if($this->_lhash){
+				self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
 			}
 		}
 
