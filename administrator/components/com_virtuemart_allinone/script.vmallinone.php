@@ -588,7 +588,7 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 
 				//				$manifestCache = str_replace('"', '\'', $data["manifest_cache"]);
 				$action = '';
-					$manifest_cache = json_encode(JApplicationHelper::parseXMLInstallFile($src .  DS . $module .DS . $module . '.xml'));
+					$manifest_cache = json_encode(JApplicationHelper::parseXMLInstallFile($src .  DS . $module  . '.xml'));
 				if (empty($ext_id)) {
 					$q = 'INSERT INTO `#__extensions` 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `ordering`) VALUES
 																	( "' . $module . '" , "module", "' . $module . '", "", "' . $client_id . '", "1","' . $access . '", "0", "' . $db->getEscaped($manifest_cache) . '", "' . $db->getEscaped($params) . '","' . $ordering . '");';
