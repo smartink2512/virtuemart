@@ -173,7 +173,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 //<![CDATA[
 	jQuery(document).ready(function($) {
-	    $(window).load(function(){
+	    jQuery(window).load(function(){
 			if(jQuery("#vmPaymentForm")) {
 				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE', true).'" );
 				jQuery("#vmPaymentForm").submit();
