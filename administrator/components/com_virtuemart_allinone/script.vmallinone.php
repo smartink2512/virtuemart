@@ -619,6 +619,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 		public function installModule ($title, $module, $ordering, $params, $src, $client_id = 0, $position = 'position-4', $access = 1, $alreadyInstalled = true) {
 			$table = JTable::getInstance('module');
 			$db = $table->getDBO();
+			$src .= DS . $module;
 			if (!$alreadyInstalled) {
 				$params = '';
 
@@ -626,7 +627,6 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 				$db->setQuery($q);
 				$id = $db->loadResult();
 
-				$src .= DS . $module;
 				if (!empty($id)) {
 					return;
 				}
