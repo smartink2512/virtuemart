@@ -1837,40 +1837,31 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	 * @param $virtuemart_paymentmethod_id
 	 */
 	private function returnToVm ($realex_data, $success, $virtuemart_paymentmethod_id) {
-		JFactory::getDocument()->addScriptDeclaration ('
 
-//<![CDATA[
-	jQuery(document).ready(function($) {
-	    jQuery(window).load(function(){
-			if(jQuery("#vmPaymentForm")) {
-				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE', true).'" );
-				jQuery("#vmPaymentForm").submit();
-			}
-		});
-	});
-//]]>
-');
-$html='';
+		$html='';
 		// add spin image
-		$html .= '<form action="' . JURI::root(false) . '" method="post" name="vm_realex_form" id="vmPaymentForm" accept-charset="UTF-8">';
+		$html .= '<form action="' . JURI::root(false) . '" method="post" id="vmPaymentForm" name="vm_realex_form" accept-charset="UTF-8">';
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
+
 		$html .= '<input type="hidden" name="option" value="com_virtuemart" />';
 		$html .= '<input type="hidden" name="view" value="pluginresponse" />';
-		 if ($success) {
+		if ($success) {
 			$html .= '<input type="hidden" name="task" value="pluginresponsereceived" />';
-		 } else {
+		} else {
 			$html .= '<input type="hidden" name="task" value="pluginUserPaymentCancel" />';
-		 }
+		}
 
 		$html .= '<input type="hidden" name="on" value="' . $realex_data['ORDER_ID'] . '" />';
 		$html .= '<input type="hidden" name="pm" value="' . $virtuemart_paymentmethod_id . '" />';
 		$html .= '<input type="hidden" name="Itemid" value="' . vRequest::getInt('Itemid') . '" />';
 		$html .= '<input type="hidden" name="lang" value="' . vRequest::getCmd('lang', '') . '" />';
 
+		$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE') . '" />
+					<script type="text/javascript">';
+		$html .= '		document.vm_realex_form.submit();';
+		$html .= '	</script>';
 		$html .= '</form>';
-
 		echo $html;
-
 
 	}
 
