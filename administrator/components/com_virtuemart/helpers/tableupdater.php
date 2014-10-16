@@ -693,21 +693,6 @@ class GenericTableUpdater extends VmModel{
 		return trim($oldColumn);
 	}
 
-	private function reCreateColumnByTableAttributesol($fullColumn){
-
-
-		$oldColumn = $fullColumn->Type;
-
-		if($this->notnull($fullColumn->Null)){
-
-			$oldColumn .= $this->notnull($fullColumn->Null).$this->getdefault($fullColumn->Default);
-		}
-		$oldColumn .= $this->primarykey($fullColumn->Key).$this->formatComment($fullColumn->Comment);
-
-		return $oldColumn;
-	}
-	// 	$oldColumn=$fullColumns[$key]->Type.  .$this->primarykey($fullColumns[$key]->Key).$this->formatComment($fullColumns[$key]->Comment);
-
 	private function formatComment($comment){
 		if(!empty($comment)){
 			return ' COMMENT \''.$comment.'\'';
@@ -771,18 +756,6 @@ class GenericTableUpdater extends VmModel{
 		return $val;
 	}
 
-	private function _getMaxItems($name){
-
-		$maxItems = 50;
-		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
-		$maxItems = (int)$freeRam * 100;
-		if($maxItems<=0){
-			$maxItems = 50;
-			vmWarn('Your system is low on RAM! Limit set: '.$this->maxMemoryLimit.' used '.memory_get_usage(true)/(1024 * 1024).' MB and php.ini '.ini_get('memory_limit'));
-		}
-		vmdebug('Migrating '.$name.', free ram left '.$freeRam.' so limit chunk to '.$maxItems);
-		return $maxItems;
-	}
 
 	function loadCountListContinue($q,$startLimit,$maxItems,$msg){
 

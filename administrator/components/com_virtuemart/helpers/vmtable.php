@@ -579,7 +579,7 @@ class VmTable extends JTable {
 	 */
 	function load($oid = null, $overWriteLoadName = 0, $andWhere = 0, $tableJoins = array(), $joinKey = 0) {
 
-		vmSetStartTime('vmtableload');
+		//vmSetStartTime('vmtableload');
 		if( $overWriteLoadName!==0 ){
 			$k = $overWriteLoadName;
 		} else {
@@ -663,7 +663,7 @@ class VmTable extends JTable {
 			if($this->_cryptedFields){
 				$this->encryptFields($this);
 			}
-			vmTime('loaded by cache '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid,'vmtableload');
+			//vmTime('loaded by cache '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid,'vmtableload');
 			return $this;
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
@@ -776,15 +776,12 @@ class VmTable extends JTable {
 
 		$this->storeParams();
 
-
-		if (!empty($this->asset_id))
-		{
+		if (!empty($this->asset_id)) {
 			$currentAssetId = $this->asset_id;
 		}
 
 		// The asset id field is managed privately by this class.
-		if ($this->_trackAssets)
-		{
+		if ($this->_trackAssets) {
 			unset($this->asset_id);
 		}
 
@@ -796,6 +793,7 @@ class VmTable extends JTable {
 			$this->_db->setQuery($_qry);
 			$this->$tblKey = $this->_db->loadResult();
 		}
+
 		if(!empty($this->$tblKey)){
 			$ok = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 		} else {
@@ -808,7 +806,6 @@ class VmTable extends JTable {
 				$this->$k = $v;
 			}
 		}
-
 		$this->_tmpParams = false;
 
 		// If the store failed return false.
@@ -826,7 +823,6 @@ class VmTable extends JTable {
 		if ($this->_locked) {
 			$this->_unlock();
 		}
-
 
 		$parentId = $this->_getAssetParentId();
 		$name = $this->_getAssetName();

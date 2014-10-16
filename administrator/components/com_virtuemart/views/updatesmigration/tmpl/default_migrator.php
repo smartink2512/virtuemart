@@ -36,7 +36,7 @@ $session = JFactory::getSession();
 		$max_execution_time = ini_get('max_execution_time');
 		echo 'max_execution_time '.$max_execution_time;
 		echo '<br />';
-		@ini_set( 'max_execution_time', $max_execution_time+1 );
+		@ini_set( 'max_execution_time', (int)$max_execution_time+1 );
 		$new_max_execution_time = ini_get('max_execution_time');
 		if($max_execution_time===$new_max_execution_time){
 			echo 'Server settings do not allow changes of your max_execution_time in the php.ini file, you may get problems migrating a big shop';

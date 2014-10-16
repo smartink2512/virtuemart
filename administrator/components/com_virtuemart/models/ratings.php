@@ -85,7 +85,7 @@ class VirtueMartModelRatings extends VmModel {
     public function getRating($cids) {
 
 	    if (empty($cids)) {
-		    return;
+		    return false;
 	    }
 
 		/* First copy the product in the product table */

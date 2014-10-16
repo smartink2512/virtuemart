@@ -252,27 +252,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $pluginInfo->$idName;
 	}
 
-	/**
-	 *
-	 * @author Valerie Isaksen
-	 * @author Max Milbers
-	 * @param int $virtuemart_order_id
-	 * @return string pluginName from the plugin table
-	 */
-	private function getOrderPluginNamebyOrderId ($virtuemart_order_id) {
-
-		$db = JFactory::getDBO ();
-		$q = 'SELECT * FROM `' . $this->_tablename . '` '
-			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-		$db->setQuery ($q);
-		if (!($pluginInfo = $db->loadObject ())) {
-			vmWarn (500, $q . " getOrderPluginNamebyOrderId " . $db->getErrorMsg ());
-			return NULL;
-		}
-		$idName = $this->_idName;
-
-		return $pluginInfo->$idName;
-	}
 
 	/**
 	 * check if it is the correct element
@@ -1243,26 +1222,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $encoded_session;
 	}
 
-	/**
-	 * get_passkey
-	 * Retrieve the payment method-specific encryption key
-	 *
-	 * @author Oscar van Eijk
-	 * @author Valerie Isaksen
-	 * @return mixed
-	 * @deprecated
-	 */
-	function get_passkey () {
-
-		return TRUE;
-		$_db = JFactory::getDBO ();
-		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
-			. 'FROM #__virtuemart_paymentmethods '
-			. "WHERE virtuemart_paymentmethod_id='" . (int)$this->_virtuemart_paymentmethod_id . "'";
-		$_db->setQuery ($_q);
-		$_r = $_db->loadAssoc (); // TODO Error check
-		return $_r['passkey'];
-	}
 
 	/**
 	 *  @param integer $virtuemart_order_id the id of the order

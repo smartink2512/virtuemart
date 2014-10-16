@@ -614,86 +614,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
-		private function addToRequired($table,$fieldname,$fieldvalue,$insert){
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-
-			$query = 'SELECT * FROM `'.$table.'` WHERE '.$fieldname.' = "'.$fieldvalue.'" ';
-			$this->db->setQuery($query);
-			$result = $this->db->loadResult();
-			if(empty($result) || !$result ){
-				$this->db->setQuery($insert);
-				if(!$this->db->execute()){
-					$app = JFactory::getApplication();
-					$app->enqueueMessage('Install addToRequired '.$this->db->getErrorMsg() );
-				}
-			}
-		}
-
-		private function deleteReCreatePrimaryKey($tablename,$fieldname){
-
-			//Does not work, the keys must be regenerated
-// 			$query = 'ALTER TABLE `#__virtuemart_userinfos`  CHANGE COLUMN `virtuemart_userinfo_id` `virtuemart_userinfo_id` INT(1) NOT NULL AUTO_INCREMENT FIRST';
-// 			$this->_db->setQuery($query);
-// 			if(!$this->_db->query()){
-
-// 			} else {
-// 				$query = 'ALTER TABLE `#__virtuemart_userinfos` AUTO_INCREMENT = 1';
-// 				$this->_db->setQuery($query);
-// 			}
-
-
-			$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';
-			$this->_db->setQuery($query);
-			$fullColumns = $this->_db->loadObjectList();
-
-			$force = false;
-			if($force or $fullColumns[0]->Field==$fieldname and strpos($fullColumns[0]->Type,'char')!==false){
-				vmdebug('Old key found, recreate');
-
-				// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then they key again.
-				// But seems the only method to drop and recreate primary, which has already data in it
-				//First drop it
-				$fields = array($fieldname => '');
-				if($this->alterTable($tablename,$fields,'DROP')){
-
-					//Now make the field, nothing must be entered
-					$added = $this->checkAddFieldToTable($tablename,$fieldname,"INT(1) UNSIGNED NOT NULL FIRST");
-
-					if($added){
-						//Yes it should be primary, ohh it gets sorted, great
-						$q = 'ALTER TABLE `'.$tablename.'` ADD KEY (`'.$fieldname.'`)';
-						$this->_db->setQuery($q);
-						if(!$this->_db->execute()){
-							$app = JFactory::getApplication();
-							$app->enqueueMessage('Error: deleteReCreatePrimaryKey add KEY '.$this->_db->getErrorMsg() );
-						}
-
-						//ahh, now we can make it auto_increment
-						$fields = array($fieldname => '`'.$fieldname.'` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT FIRST');
-						$this->alterTable($tablename,$fields);
-
-						//Great, now it actually takes the attribute being a primary
-						$q = 'ALTER TABLE `'.$tablename.'` ADD PRIMARY KEY (`'.$fieldname.'`)';
-						$this->_db->setQuery($q);
-						if(!$this->_db->execute()){
-							$app = JFactory::getApplication();
-							$app->enqueueMessage('Error: deleteReCreatePrimaryKey final add Primary '.$this->_db->getErrorMsg() );
-						} else {
-							$q = 'ALTER TABLE `'.$tablename.'`  DROP INDEX `'.$fieldname.'`';
-							$this->_db->setQuery($q);
-							if(!$this->_db->execute()){
-								$app->enqueueMessage('Error: deleteReCreatePrimaryKey final add Primary '.$this->_db->getErrorMsg() );
-							}
-						}
- 					}
-				}
-
- 			}
-
-		}
-
 
 		/**
 		* Checks if both types of default shoppergroups are set
@@ -727,34 +647,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->_db->execute();
 			}
 
-		}
-
-		private function changeShoppergroupDataSetAnonShopperToOne(){
-
-			$q = 'SELECT * FROM `#__virtuemart_shoppergroups` WHERE virtuemart_shoppergroup_id = "1" ';
-			$this->_db->setQuery($q);
-			$sgroup = $this->_db->loadAssoc();
-
-			if($sgroup['default']!=2){
-				if(!class_exists('TableShoppergroups')) require($this->path.DS.'tables'.DS.'shoppergroups.php');
-				$db = JFactory::getDBO();
-				$table = new TableShoppergroups($db);
-				$stdgroup = null;
-				$stdgroup = array('virtuemart_shoppergroup_id' => 1,
-									'virtuemart_vendor_id'	=> 1,
-									'shopper_group_name'		=> '-anonymous-',
-									'shopper_group_desc'		=> 'Shopper group for anonymous shoppers',
-									'default'					=> 2,
-									'published'					=> 1,
-									'shared'						=> 1
-				);
-				$table -> bindChecknStore($stdgroup);
-
-				$sgroup['virtuemart_shoppergroup_id'] = 0;
-				$table = new TableShoppergroups($this->_db);
-				$table -> bindChecknStore($sgroup);
-				vmdebug('changeShoppergroupDataSetAnonShopperToOne $table',$table);
-			}
 		}
 
 

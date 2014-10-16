@@ -97,16 +97,13 @@ abstract class vmCustomPlugin extends vmPlugin {
 		}
 		if (!empty($field->customfield_params) && is_string ($field->customfield_params)) {
 			$custom_params = json_decode ($field->customfield_params, TRUE);
-		}
-		else {
-			return;
-		}
-		//$field->custom_param = $custom_param;
-		foreach ($custom_params as $k => $v) {
-			if (!empty($v)) {
-				$field->$k = $v;
+			foreach ($custom_params as $k => $v) {
+				if (!empty($v)) {
+					$field->$k = $v;
+				}
 			}
 		}
+
 	}
 
 	/*

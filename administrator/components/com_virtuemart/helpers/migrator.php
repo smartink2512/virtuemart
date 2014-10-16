@@ -1516,7 +1516,7 @@ class Migrator extends VmModel{
 		$limitStartToStore = ', orders_start = "'.($doneStart+$i).'" ';
 		$this->storeMigrationProgress('orders',$alreadyKnownIds,$limitStartToStore);
 		vmInfo('Migration: '.$i.' orders processed '.($doneStart+$i).' done.');
-        return true;;
+        return true;
 	}
 
 	function portOrderStatus(){

@@ -42,6 +42,7 @@ class VmTableData extends VmTable {
 		$pKey = $this->_pkey;
 
 		if($tblKey == $pKey){
+			vmdebug('VmTableData '.get_class($this). ' need not to be a vmtabledata $tblKey == $pKey');
 			$res = false;
 			if(!empty($this->$tblKey)){
 				$_qry = 'SELECT `'.$this->_tbl_key.'` '

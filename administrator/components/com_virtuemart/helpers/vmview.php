@@ -64,7 +64,8 @@ class VmView extends JViewLegacy {
 
 			echo $result;
 			echo vmJsApi::writeJS();
-			return;
+			//vmdebug('my included files ',get_included_files());
+			return true;
 		} else {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
