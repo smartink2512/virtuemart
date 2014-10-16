@@ -76,21 +76,24 @@ if($option=='com_virtuemart'){
 
 			</td>
 		</tr>
-		<tr>
-			<td>
-				<strong style="color: #C00">
-					<?php
-					if($update){
-						echo vmText::_('COM_VIRTUEMART_UPDATE_AIO');
-					} else {
-						echo vmText::_('COM_VIRTUEMART_INSTALL_AIO');
-					}
-					?>
-				</strong>
-				<?php echo vmText::_('COM_VIRTUEMART_INSTALL_AIO_TIP'); ?>
-			</td>
-		</tr>
+		<?php  if (vRequest::get('view','')=='install') { ?>
+			<tr>
+				<td>
+					<strong style="color: #C00">
+						<?php
+						if ($update) {
+							echo vmText::_('COM_VIRTUEMART_UPDATE_AIO');
+						} else {
+							echo vmText::_('COM_VIRTUEMART_INSTALL_AIO');
+						}
+						?>
+					</strong>
+					<?php echo vmText::_('COM_VIRTUEMART_INSTALL_AIO_TIP'); ?>
+				</td>
+			</tr>
 		<?php
+		}
+
 		/*
 				//We do this dirty here, is just the finish page for installation, we must know if we are allowed to add sample data
 				$db = JFactory::getDbo();
