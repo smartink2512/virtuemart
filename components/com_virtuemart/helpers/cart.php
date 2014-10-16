@@ -1607,8 +1607,9 @@ class VirtueMartCart {
 
 		// Check for the minimum and maximum quantities
 		$min = $product->min_order_level;
-		if ($min != 0 && $quantity < $min) {
-			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
+		if ($min != 0 && $quantity < $min){
+			$quantity = $min;
+			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min, $product->product_name);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
@@ -1616,7 +1617,8 @@ class VirtueMartCart {
 
 		$max = $product->max_order_level;
 		if ($max != 0 && $quantity > $max) {
-			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
+			$quantity = $max;
+			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max, $product->product_name);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
@@ -1624,6 +1626,7 @@ class VirtueMartCart {
 
 		$step = $product->step_order_level;
 		if ($step != 0 && ($quantity%$step)!= 0) {
+			$quantity = $quantity + ($quantity%$step);
 			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_STEP_ORDER', $step);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);

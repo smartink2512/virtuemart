@@ -3,25 +3,36 @@ if (typeof Virtuemart === "undefined")
 
 Virtuemart.setproducttype = function(form, id) {
 	form.view = null;
-	var $ = jQuery, datas = form.serialize();
+	var datas = form.serialize();
 	var prices = form.parent(".productdetails").find(".product-price");
 	if (0 == prices.length) {
 		prices = jQuery("#productPrice" + id);
 	}
 	datas = datas.replace("&view=cart", "");
-	prices.fadeTo("fast", 0.75);
-    //alert('my setproducttype '+window.vmSiteurl + ' ' + window.vmLang);
+    //datas = decodeURIComponent(datas);
+    //var decoded = jQuery('<textarea/>').html(datas).val();
 
-	jQuery.getJSON(window.vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&virtuemart_product_id='+id+'&format=json' + window.vmLang, datas,
-		function (datas, textStatus) {
-			prices.fadeTo("fast", 1);
-			// refresh price
-			for (var key in datas) {
-				var value = datas[key];
-				if (value!=0) prices.find("span.Price"+key).show().html(value);
-				else prices.find(".Price"+key).html(0).hide();
-			}
-		});
+	prices.fadeTo("fast", 0.75);
+    jQuery.ajax({
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        url: window.vmSiteurl + "index.php?&option=com_virtuemart&view=productdetails&task=recalculate&format=json&nosef=1" + window.vmLang,
+        data: datas
+    }).done(
+        function (data, textStatus) {
+            prices.fadeTo("fast", 1);
+            console.log('my datas '+data);
+            // refresh price
+            for (var key in data) {
+                var value = data[key];
+                //console.log('my datas',key,value);
+                if (value!=0) prices.find("span.Price"+key).show().html(value);
+                else prices.find(".Price"+key).html(0).hide();
+            }
+        }
+    );
+
 	return false; // prevent reload
 }
 

@@ -32,7 +32,7 @@ class VmTableData extends VmTable {
 	 * @author Max Milbers
 	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
-/*	public function store($updateNulls = false) {
+	public function store($updateNulls = false) {
 
 		$this->setLoggableFieldsForStore();
 
@@ -89,7 +89,7 @@ class VmTableData extends VmTable {
 			return true;
 		}
 
-	}*/
+	}
 
 
 }

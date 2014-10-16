@@ -712,8 +712,6 @@ class VmTable extends JTable {
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = VmConfig::$defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
-			} else {
-				self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
 			}
 		}
 
@@ -732,7 +730,7 @@ class VmTable extends JTable {
 
 	function encryptFields(){
 		if(!class_exists('vmCrypt')){
-			require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 		}
 		if(isset($this->modified_on)){
 			$date = JFactory::getDate($this->modified_on);
@@ -776,7 +774,9 @@ class VmTable extends JTable {
 
 		$this->storeParams();
 
-		$tblKey = $this->_tbl_key;
+		$returnCode = parent::store($updateNulls);
+
+		/*$tblKey = $this->_tbl_key;
 		$pKey = $this->_pkey;
 
 		if($tblKey == $pKey){
@@ -807,7 +807,7 @@ class VmTable extends JTable {
 			} else {
 				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 			}
-		}
+		}//*/
 
 		//reset Params
 		if(isset($this->_tmpParams) and is_array($this->_tmpParams)){
