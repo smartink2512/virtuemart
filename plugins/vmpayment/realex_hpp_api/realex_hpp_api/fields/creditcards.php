@@ -30,7 +30,7 @@ if (!class_exists('vmPSPlugin')) {
 }
 
 if (!class_exists('RealexHelperRealex')) {
-	require(VMPATH_ROOT . 'plugins'. DS .'vmpayment'. DS .'realex_hpp_api'. DS .'realex_hpp_api'. DS .'helpers'. DS .'helper.php');
+	require(VMPATH_ROOT . DS.'plugins'. DS .'vmpayment'. DS .'realex_hpp_api'. DS .'realex_hpp_api'. DS .'helpers'. DS .'helper.php');
 }
 /**
  * @copyright    Copyright (C) 2009 Open Source Matters. All rights reserved.

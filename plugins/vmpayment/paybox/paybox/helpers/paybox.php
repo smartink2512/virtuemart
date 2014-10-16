@@ -68,7 +68,7 @@ class  PayboxHelperPaybox {
 		$email_currency = $this->plugin->getEmailCurrency($this->_method);
 
 		// If the file is not there anylonger, just create it
-		$this->plugin->createRootFile($this->_method->virtuemart_paymentmethod_id);
+		//$this->plugin->createRootFile($this->_method->virtuemart_paymentmethod_id);
 
 		if (!$this->getPayboxServerUrl()) {
 			$this->redirectToCart();
@@ -391,11 +391,21 @@ jQuery().ready(function($) {
 		$pbxServer = $this->getPayboxServerUrl();
 
 		// add spin image
-		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
+		$html='';
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" target="paybox">';
 		} else {
-			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" >';
+			vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
+	jQuery(document).ready(function($) {
+	    $(window).load(function(){
+			if(jQuery("#vmPaymentForm")) {
+				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_PAYBOX_REDIRECT_MESSAGE', true).'" );
+				jQuery("#vmPaymentForm").submit();
+			}
+		});
+	});
+');
+			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" id="vmPaymentForm">';
 		}
 
 		foreach ($post_variables as $name => $value) {
@@ -410,16 +420,8 @@ jQuery().ready(function($) {
 						</div>';
 			$this->plugin->debugLog($post_variables, 'sendPostRequest:', 'debug');
 
-		} else {
-
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_'.$this->plugin_name.'_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-			$html .= '		document.vm_paybox_form.submit();';
-
-			$html .= '	</script>';
 		}
-		$html .= '</form></div>';
-		$html .= '</body></html>';
+		$html .= '</form>';
 
 		return $html;
 	}
@@ -605,26 +607,13 @@ jQuery().ready(function($) {
 
 	function getPayboxReturnUrls () {
 		$urlLength = true;
-		$test = false;
-		if ($test) {
 
-			$payboxURLs['url_effectue'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ok&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . vRequest::getInt('Itemid');
-			$url_cancelled = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=ko&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . vRequest::getInt('Itemid');
-			$payboxURLs['url_annule'] = $url_cancelled;
-			$payboxURLs['url_refuse'] = $url_cancelled;
-			$payboxURLs['url_erreur'] = $url_cancelled;
-			$payboxURLs['url_notification'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
-			$payboxURLs['url_attente'] = JURI::root() . $this->getPayboxFileName($this->_method->virtuemart_paymentmethod_id) . '?pbx=no&lang=' . vRequest::getCmd('lang', '');
-
-
-		} else {
 			$url_cancelled = JURI::root() . 'index.php?option=com_virtuemart&view=cart&lang=' . vRequest::getCmd('lang', '') . '&Itemid=' . vRequest::getInt('Itemid');
 			$payboxURLs['url_annule'] = $url_cancelled;
 			$payboxURLs['url_refuse'] = $url_cancelled;
 			$payboxURLs['url_erreur'] = $url_cancelled;
 			$payboxURLs['url_notification'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $this->_method->virtuemart_paymentmethod_id;
 			$payboxURLs['url_effectue'] = $this->getUrlOk();
-		}
 
 
 		foreach ($payboxURLs as $payboxURL) {
@@ -664,7 +653,7 @@ jQuery().ready(function($) {
 	}
 
 	/**
-	 *        $url_ok = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid');
+	 *        $url_ok = JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid');
 	 * @return array
 	 */
 

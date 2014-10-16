@@ -1033,9 +1033,9 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	 * plgVmDisplayListFEPayment
 	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
 	 *
-	 * @param object  $cart Cart object
+	 * @param VirtueMartCart  $cart Cart object
 	 * @param integer $selected ID of the method selected
-	 * @return boolean True on succes, false on failures, null when this plugin was not selected.
+	 * @return boolean True on success, false on failures, null when this plugin was not selected.
 	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
 	 *
 	 */
@@ -1830,10 +1830,21 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	 * @param $virtuemart_paymentmethod_id
 	 */
 	private function returnToVm ($realex_data, $success, $virtuemart_paymentmethod_id) {
-
+		/*
+		vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
+	jQuery(document).ready(function($) {
+	    $(window).load(function(){
+			if(jQuery("#vmPaymentForm")) {
+				jQuery("#vmPaymentForm").vm2front("startVmLoading",'.vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE', true).' );
+				jQuery("#vmPaymentForm").submit();
+			}
+		});
+	});
+');
+		*/
+		$html='';
 		// add spin image
-		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
-		$html .= '<form action="' . JURI::root(false) . '" method="post" name="vm_realex_form" accept-charset="UTF-8">';
+		$html .= '<form action="' . JURI::root(false) . '" method="post" id="vmPaymentForm" name="vm_realex_form" accept-charset="UTF-8">';
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
 		$html .= '<input type="hidden" name="option" value="com_virtuemart" />';
@@ -1853,8 +1864,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 					<script type="text/javascript">';
 		$html .= '		document.vm_realex_form.submit();';
 		$html .= '	</script>';
-		$html .= '</form></div>';
-		$html .= '</body></html>';
+		$html .= '</form>';
 		echo $html;
 
 

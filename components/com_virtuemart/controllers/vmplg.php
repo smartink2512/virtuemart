@@ -72,7 +72,7 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
 
 // 	vRequest::setVar('paymentResponse', vmText::_('COM_VIRTUEMART_CART_THANKYOU'));
 // 	vRequest::setVar('paymentResponseHtml', $html);
-	$view = $this->getView('pluginresponse', 'html');
+	$view = $this->getView('vmplg', 'html');
 	$layoutName = vRequest::getVar('layout', 'default');
 	$view->setLayout($layoutName);
 
@@ -102,7 +102,7 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
 /*
 // 	vRequest::setVar('paymentResponse', vmText::_('COM_VIRTUEMART_CART_THANKYOU'));
 // 	vRequest::setVar('paymentResponseHtml', $html);
-	    $view = $this->getView('pluginresponse', 'html');
+	    $view = $this->getView('vmplg', 'html');
 	    $layoutName = vRequest::getVar('layout', 'default');
 	    $view->setLayout($layoutName);
 

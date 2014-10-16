@@ -43,9 +43,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		//$this->setEncryptedFields(array('params'));
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
-		if (method_exists($this, 'setCryptedFields')) {
 			$this->setCryptedFields(array('key'));
-		}
 
 	}
 
@@ -105,7 +103,6 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return FALSE;
 		}
-
 		$payboxInterface = $this->_loadPayboxInterface($this);
 		$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
 		$payboxInterface->confirmedOrder($cart, $order);
