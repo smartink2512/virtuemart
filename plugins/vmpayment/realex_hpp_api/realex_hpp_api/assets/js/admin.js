@@ -40,6 +40,7 @@ jQuery().ready(function ($) {
         var integration = $('#paramsintegration').val();
         $('.redirect-realvault').parents('tr').hide();
         $('.redirect-norealvault').parents('tr').hide();
+        $('.realvault-param').parents('tr').hide();
 
         $('.realvault').parents('tr').hide();
         $('.norealvault').parents('tr').hide();
@@ -48,17 +49,20 @@ jQuery().ready(function ($) {
             if (realvault == 1) {
                 $('.redirect-realvault').parents('tr').show();
                 $('.realvault').parents('tr').show();
+                $('.realvault-param').parents('tr').show();
             } else {
-                $('.redirect-norealvault').parents('tr').show();
-            }
-        } else {
-            if (realvault == 0) {
                 $('#paramsthreedsecure option').eq(0).attr('selected', 'selected');
                 // depends on the chosen version
                 $('#paramsthreedsecure').trigger("chosen:updated"); //newer
                 $("#paramsthreedsecure").trigger("liszt:updated"); // our
+                $('.redirect-norealvault').parents('tr').show();
+            }
+        } else {
+            if (realvault == 1) {
+                $('.realvault-param').parents('tr').show();
             }
             $('.realvault').parents('tr').show();
+
         }
 
     }

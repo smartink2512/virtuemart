@@ -70,12 +70,12 @@
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
-        <param class="realvault" name="offer_save_card" type="list" default="0" label="VMPAYMENT_REALEX_HPP_API_OFFER_SAVE_CARD"
+        <param class="realvault-param" name="offer_save_card" type="list" default="0" label="VMPAYMENT_REALEX_HPP_API_OFFER_SAVE_CARD"
                description="VMPAYMENT_REALEX_HPP_API_OFFER_SAVE_CARD_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
-        <param class="realvault" name="cvn_checking" type="list" default="0" label="VMPAYMENT_REALEX_HPP_API_CVN_CHECKING"
+        <param class="realvault-param" name="cvn_checking" type="list" default="0" label="VMPAYMENT_REALEX_HPP_API_CVN_CHECKING"
                description="VMPAYMENT_REALEX_HPP_API_CVN_CHECKING_TIP">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
