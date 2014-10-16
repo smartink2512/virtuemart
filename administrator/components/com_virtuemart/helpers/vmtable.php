@@ -788,6 +788,7 @@ class VmTable extends JTable {
 			unset($this->asset_id);
 		}
 
+		$tblKey = $this->_tbl_key;
 		if(!empty($this->$tblKey)){
 			$_qry = 'SELECT `'.$tblKey.'` '
 				. 'FROM `'.$this->_tbl.'` '
@@ -795,11 +796,20 @@ class VmTable extends JTable {
 			$this->_db->setQuery($_qry);
 			$this->$tblKey = $this->_db->loadResult();
 		}
-		if($this->$tblKey){
+		if(!empty($this->$tblKey)){
 			$ok = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 		} else {
 			$ok = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
+
+		//reset Params
+		if(isset($this->_tmpParams) and is_array($this->_tmpParams)){
+			foreach($this->_tmpParams as $k => $v){
+				$this->$k = $v;
+			}
+		}
+
+		$this->_tmpParams = false;
 
 		// If the store failed return false.
 		if (!$ok) {
@@ -872,14 +882,6 @@ class VmTable extends JTable {
 			}
 		}
 
-		//reset Params
-		if(isset($this->_tmpParams) and is_array($this->_tmpParams)){
-			foreach($this->_tmpParams as $k => $v){
-				$this->$k = $v;
-			}
-		}
-
-		$this->_tmpParams = false;
 		return $ok;
 	}
 
