@@ -1530,7 +1530,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 				$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
 				$result = (string)$xml_response3DSVerifyEnrolled->result;
 				//   503 - no entry for MERCHANT in RealMPI merchant_details table
-				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS  OR $result == 503) {
+				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS  OR $result == '503') {
 					$realexInterface->redirect3DSRequest($response3DSVerifyEnrolled);
 					return;
 				} else {
@@ -1646,8 +1646,9 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		$response3DSVerifyEnrolled = $realexInterface->request3DSVerifyEnrolled($realvaultData);
 		$eci = $realexInterface->manageResponse3DSVerifyEnrolled($response3DSVerifyEnrolled);
-
-		if (!$eci) {
+		$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
+		$result = (string)$xml_response3DSVerifyEnrolled->result;
+		if (!$eci or  $result == '503' ) {
 			$realexInterface->redirect3dsRequest($response3DSVerifyEnrolled);
 			return;
 		}
