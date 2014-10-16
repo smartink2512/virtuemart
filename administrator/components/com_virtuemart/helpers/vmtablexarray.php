@@ -70,7 +70,7 @@ class VmTableXarray extends VmTable {
 		$order	= vRequest::getInt( 'order' ); //I found now two times "order" instead of ordering.
 
 		//This sql is broken
-		$query = 'SELECT `id` FROM `' . $this->_tbl . '` WHERE $this->_pkey = '.(int)$cid[0].' AND `virtuemart_category_id` = '.(int)$skeyId ;
+		$query = 'SELECT `id` FROM `' . $this->_tbl . '` WHERE '.$this->_pkey.' = '.(int)$cid[0].' AND `virtuemart_category_id` = '.(int)$skeyId ;
 		$db->setQuery( $query );
 		$id = $db->loadResult();
 		$keys = array_keys($order);

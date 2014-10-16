@@ -748,10 +748,12 @@ class VmTable extends JTable {
 	}
 
 	/**
+	 * Derived from JTable
 	 * Records in this table do not need to exist, so we might need to create a record even
 	 * if the primary key is set. Therefore we need to overload the store() function.
 	 * Technic to inject params as table attributes and to encrypt data
 	 * @author Max Milbers
+	 * @copyright	for derived parts, (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
 	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
 	function store($updateNulls = false) {
@@ -774,40 +776,101 @@ class VmTable extends JTable {
 
 		$this->storeParams();
 
-		$returnCode = parent::store($updateNulls);
 
-		/*$tblKey = $this->_tbl_key;
-		$pKey = $this->_pkey;
+		if (!empty($this->asset_id))
+		{
+			$currentAssetId = $this->asset_id;
+		}
 
-		if($tblKey == $pKey){
-			$res = false;
-			if(!empty($this->$tblKey)){
-				$_qry = 'SELECT `'.$this->_tbl_key.'` '
-					. 'FROM `'.$this->_tbl.'` '
-					. 'WHERE `'.$this->_tbl_key.'` = "' . $this->$tblKey.'" ';
-				$this->_db->setQuery($_qry);
-				$res = $this->_db->loadResult();
-			}
-			if($res){
-				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
-			} else {
-				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-			}
+		// The asset id field is managed privately by this class.
+		if ($this->_trackAssets)
+		{
+			unset($this->asset_id);
+		}
+
+		if(!empty($this->$tblKey)){
+			$_qry = 'SELECT `'.$tblKey.'` '
+				. 'FROM `'.$this->_tbl.'` '
+				. 'WHERE `'.$tblKey.'` = "' . $this->$tblKey.'" ';
+			$this->_db->setQuery($_qry);
+			$this->$tblKey = $this->_db->loadResult();
+		}
+		if($this->$tblKey){
+			$ok = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 		} else {
-			if(!empty($this->$pKey)){
-				$_qry = 'SELECT `'.$this->_tbl_key.'` '
-					. 'FROM `'.$this->_tbl.'` '
-					. 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
-				$this->_db->setQuery($_qry);
-				//Yes, overwriting $this->$tblKey is correct !
-				$this->$tblKey = $this->_db->loadResult();
+			$ok = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+		}
+
+		// If the store failed return false.
+		if (!$ok) {
+			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+			$this->setError($e);
+			return false;
+		}
+
+		// If the table is not set to track assets return true.
+		if (!$this->_trackAssets) {
+			return true;
+		}
+
+		if ($this->_locked) {
+			$this->_unlock();
+		}
+
+
+		$parentId = $this->_getAssetParentId();
+		$name = $this->_getAssetName();
+		$title = $this->_getAssetTitle();
+
+		$asset = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->getDbo()));
+		$asset->loadByName($name);
+
+		// Re-inject the asset id.
+		$this->asset_id = $asset->id;
+
+		// Check for an error.
+		if ($error = $asset->getError()){
+			$this->setError($error);
+			return false;
+		}
+
+		// Specify how a new or moved node asset is inserted into the tree.
+		if (empty($this->asset_id) || $asset->parent_id != $parentId) {
+			$asset->setLocation($parentId, 'last-child');
+		}
+
+		// Prepare the asset to be stored.
+		$asset->parent_id = $parentId;
+		$asset->name = $name;
+		$asset->title = $title;
+
+		if ($this->_rules instanceof JAccessRules) {
+			$asset->rules = (string) $this->_rules;
+		}
+
+		if (!$asset->check() || !$asset->store($updateNulls)) {
+			$this->setError($asset->getError());
+			return false;
+		}
+
+		// Create an asset_id or heal one that is corrupted.
+		if (empty($this->asset_id) || ($currentAssetId != $this->asset_id && !empty($this->asset_id))) {
+			// Update the asset_id field in this table.
+			$this->asset_id = (int) $asset->id;
+
+			$query = $this->_db->getQuery(true);
+			$query->update($this->_db->quoteName($this->_tbl));
+			$query->set('asset_id = ' . (int) $this->asset_id);
+			$query->where($this->_db->quoteName($tblKey) . ' = ' . (int) $this->$tblKey);
+			$this->_db->setQuery($query);
+
+			if (!$this->_db->execute())
+			{
+				$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID', $this->_db->getErrorMsg()));
+				$this->setError($e);
+				return false;
 			}
-			if ( !empty($this->$tblKey) ) {
-				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
-			} else {
-				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-			}
-		}//*/
+		}
 
 		//reset Params
 		if(isset($this->_tmpParams) and is_array($this->_tmpParams)){
@@ -817,7 +880,7 @@ class VmTable extends JTable {
 		}
 
 		$this->_tmpParams = false;
-		return $returnCode;
+		return $ok;
 	}
 
 
