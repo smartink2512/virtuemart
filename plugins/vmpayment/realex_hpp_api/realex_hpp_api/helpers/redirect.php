@@ -60,27 +60,16 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 	function sendPostRequest () {
 		$post_variables = $this->getPostVariables();
-		vmdebug( "REALEX sendPostRequest",$this->_method->shared_secret);
 
 		$jump_url = $this->getJumpUrl();
 
 
-
+		// add spin image
 		$html = '';
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" target="realex">';
 		} else {
-			vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
-	jQuery(document).ready(function($) {
-	    $(window).load(function(){
-			if(jQuery("#vmPaymentForm")) {
-				jQuery("#vmPaymentForm").vm2front("startVmLoading",'.vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE', true).' );
-				jQuery("#vmPaymentForm").submit();
-			}
-		});
-	});
-');
-			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" id="vmPaymentForm" accept-charset="UTF-8">';
+			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
@@ -95,9 +84,14 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 						</div>';
 			$this->debugLog($post_variables, 'sendPostRequest:', 'debug');
 
+		} else {
+
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE') . '" />
+					<script type="text/javascript">';
+			$html .= '		document.vm_realex_form.submit();';
+			$html .= '	</script>';
 		}
 		$html .= '</form>';
-
 		return $html;
 	}
 
