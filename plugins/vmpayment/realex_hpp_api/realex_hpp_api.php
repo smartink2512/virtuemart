@@ -1639,13 +1639,14 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		$response3DSVerifyEnrolled = $realexInterface->request3DSVerifyEnrolled($realvaultData);
 		$eci = $realexInterface->manageResponse3DSVerifyEnrolled($response3DSVerifyEnrolled);
-
-		if (!$eci) {
+		$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
+		$result = (string)$xml_response3DSVerifyEnrolled->result;
+		if (!$eci  and   $result != '503') {
 			$realexInterface->redirect3dsRequest($response3DSVerifyEnrolled);
 			return;
 		}
-
-		if ($eci !== false) {
+		$saved_cc_selected=NULL;
+		if ($eci !== false or  $result == '503') {
 			$realexInterface->handleCardStorage($saved_cc_selected);
 			$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
 			$response = $realexInterface->requestAuth(NULL, $xml_response3DSVerifyEnrolled);
