@@ -76,25 +76,30 @@ if($option=='com_virtuemart'){
 
 			</td>
 		</tr>
-		<tr>
-			<td>
-				<strong style="color: #C00">
-					<?php
-					if($update){
-						echo vmText::_('COM_VIRTUEMART_UPDATE_AIO');
-					} else {
-						echo vmText::_('COM_VIRTUEMART_INSTALL_AIO');
-					}
-					?>
-				</strong>
-				<?php echo vmText::_('COM_VIRTUEMART_INSTALL_AIO_TIP'); ?>
-			</td>
-		</tr>
+		<?php  if (vRequest::get('view','')=='install') { ?>
+			<tr>
+				<td>
+					<strong style="color: #C00">
+						<?php
+						if ($update) {
+							echo vmText::_('COM_VIRTUEMART_UPDATE_AIO');
+						} else {
+							echo vmText::_('COM_VIRTUEMART_INSTALL_AIO');
+						}
+						?>
+					</strong>
+					<?php echo vmText::_('COM_VIRTUEMART_INSTALL_AIO_TIP'); ?>
+				</td>
+			</tr>
 		<?php
-		if (JVM_VERSION < 3) {
-			$class="button";
-		} else {
-			$class="btn";
+		}
+		$class="";
+		if (vRequest::get('view','')=='install') {
+			if (JVM_VERSION < 3) {
+				$class = "button";
+			} else {
+				$class = "btn";
+			}
 		}
 		?>
 		<tr>
