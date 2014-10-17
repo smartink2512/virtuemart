@@ -52,8 +52,10 @@ class VmPdf {
 
 		ob_start();
 		$view->display();
-		$html = ob_get_contents();
+		$html = '<head><meta content="text/xhtml; charset=utf-8" http-equiv="content-type"></head>'.ob_get_contents();
 		ob_end_clean();
+
+		//echo $html;
 
 		$pdf->AddPage();
 		$pdf->PrintContents($html);
@@ -61,6 +63,7 @@ class VmPdf {
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
 		$pdf->Output($path, $dest);
+
 		return $path;
 	}
 }

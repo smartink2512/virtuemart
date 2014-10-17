@@ -234,7 +234,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					foreach($custom as $id=>$field){
 						$item->customfields[] = $customfieldModel-> getCustomEmbeddedProductCustomField($id);
 						$ids[] = $id;
-						vmdebug('getOrder',$id,$field);
 					}
 				}
 			}

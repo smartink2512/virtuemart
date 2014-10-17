@@ -956,7 +956,6 @@ class VirtueMartModelUser extends VmModel {
 				$data->address_type = 'BT';
 
 			}
- 			vmdebug('getUserInfoInUserFields !$uid',$data->name );
 		} else {
 			vmdebug('getUserInfoInUserFields case empty $uid');
 			//New Address is filled here with the data of the cart (we are in the userview)

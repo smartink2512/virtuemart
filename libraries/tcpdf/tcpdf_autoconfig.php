@@ -3,7 +3,7 @@
 // File name   : tcpdf_autoconfig.php
 // Version     : 1.0.000
 // Begin       : 2013-05-16
-// Last Update : 2014-01-25
+// Last Update : 2014-09-02
 // Authors     : Nicola Asuni - Tecnick.com LTD - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -91,14 +91,13 @@ if (!defined('K_PATH_URL')) {
 }
 
 if (!defined('K_PATH_IMAGES')) {
-	/*$tcpdf_images_dirs = array(K_PATH_MAIN.'examples/images/', K_PATH_MAIN.'images/', '/usr/share/doc/php-tcpdf/examples/images/', '/usr/share/doc/tcpdf/examples/images/', '/usr/share/doc/php/tcpdf/examples/images/', '/var/www/tcpdf/images/', '/var/www/html/tcpdf/images/', '/usr/local/apache2/htdocs/tcpdf/images/', K_PATH_MAIN);
+	$tcpdf_images_dirs = array(K_PATH_MAIN.'examples/images/', K_PATH_MAIN.'images/', '/usr/share/doc/php-tcpdf/examples/images/', '/usr/share/doc/tcpdf/examples/images/', '/usr/share/doc/php/tcpdf/examples/images/', '/var/www/tcpdf/images/', '/var/www/html/tcpdf/images/', '/usr/local/apache2/htdocs/tcpdf/images/', K_PATH_MAIN);
 	foreach ($tcpdf_images_dirs as $tcpdf_images_path) {
 		if (@file_exists($tcpdf_images_path)) {
 			break;
 		}
 	}
-	define ('K_PATH_IMAGES', $tcpdf_images_path); */
-	define ('K_PATH_IMAGES', JPATH_ROOT);
+	define ('K_PATH_IMAGES', $tcpdf_images_path);
 }
 
 if (!defined('PDF_HEADER_LOGO')) {
@@ -231,6 +230,10 @@ if (!defined('K_TCPDF_CALLS_IN_HTML')) {
 
 if (!defined('K_TCPDF_THROW_EXCEPTION_ERROR')) {
 	define('K_TCPDF_THROW_EXCEPTION_ERROR', false);
+}
+
+if (!defined('K_TIMEZONE')) {
+	define('K_TIMEZONE', @date_default_timezone_get());
 }
 
 //============================================================+
