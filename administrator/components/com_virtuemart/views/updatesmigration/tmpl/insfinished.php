@@ -35,16 +35,7 @@ if($option=='com_virtuemart'){
 	AdminUIHelper::startAdminArea($this);
 }
 ?>
-<link
-	rel="stylesheet"
-	href="components/com_virtuemart/assets/css/install.css"
-	type="text/css" />
-<link
-	rel="stylesheet"
-	href="components/com_virtuemart/assets/css/toolbar_images.css"
-	type="text/css" />
 
-<div align="center">
 	<table
 		width="100%"
 		border="0">
@@ -121,7 +112,7 @@ if($option=='com_virtuemart'){
 			</td>
 		</tr>
 	</table>
-</div>
+
 <?php
 if($option=='com_virtuemart'){
 	AdminUIHelper::endAdminArea();
