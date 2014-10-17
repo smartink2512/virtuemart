@@ -352,13 +352,16 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$model->restoreSystemTablesCompletly();
 
 			$sid = $model->setStoreOwner();
-			//$model->setUserToPermissionGroup($sid);
 
-			if($sample)$model->installSampleData($sid);
+			$sampletxt = '';
+			if($sample){
+				$model->installSampleData($sid);
+				$sampletxt = ' and sampledata installed';
+			}
 
 			$msg = '';
 			if(empty($errors)){
-				$msg = 'System succesfull restored and sampledata installed, user id of the mainvendor is ' . $sid;
+				$msg = 'System succesfull restored'.$sampletxt.', user id of the mainvendor is ' . $sid;
 			} else {
 				foreach($errors as $error){
 					$msg .= ( $error) . '<br />';

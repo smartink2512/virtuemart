@@ -10,7 +10,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * @subpackage classes
  *
  * @author Max Milbers
- * @copyright Copyright (C) 2004-2008 Soeren Eberhardt-Biermann - All rights reserved.
+ * @copyright Copyright (C) 2004-2008 Soeren Eberhardt-Biermann, 2011-2014 The Virtuemart Team and Author - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -36,8 +36,9 @@ class CurrencyDisplay {
 	private $_numeric_code = 0;
 	var $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
 	var $exchangeRateShopper = 1.0;
-	var $_vendorCurrency_code_3 = null;
-
+	var $_vendorCurrency = 0;
+	var $_vendorCurrency_code_3 = 0;
+	var $_vendorCurrency_numeric = 0;
 
 	private function __construct ($vendorId = 0){
 
@@ -46,19 +47,12 @@ class CurrencyDisplay {
 
 		$vendorM = VmModel::getModel('vendor');
 		$vendorCurrency = $vendorM->getVendorCurrency($vendorId);
-		$this->_db = JFactory::getDBO();
+		if($vendorCurrency){
+			$this->_vendorCurrency = $vendorCurrency->vendor_currency;
+			$this->_vendorCurrency_code_3 = $vendorCurrency->currency_code_3;
+			$this->_vendorCurrency_numeric = $vendorCurrency->currency_numeric_code;
+		}
 
-		/*$q = 'SELECT `vendor_currency`,`currency_code_3`,`currency_numeric_code` FROM `#__virtuemart_vendors` AS v
-		LEFT JOIN `#__virtuemart_currencies` AS c ON virtuemart_currency_id = vendor_currency
-		WHERE v.`virtuemart_vendor_id`="'.(int)$vendorId.'"';
-
-		$this->_db->setQuery($q);
-		$row = $this->_db->loadRow();/*/
-		$this->_vendorCurrency = $vendorCurrency->vendor_currency;
-		$this->_vendorCurrency_code_3 = $vendorCurrency->currency_code_3;
-		$this->_vendorCurrency_numeric = $vendorCurrency->currency_numeric_code;
-
-		//vmdebug('$row ',$row);
 		$converterFile  = VmConfig::get('currency_converter_module','convertECB.php');
 
 		if (file_exists( VMPATH_ADMIN.DS.'plugins'.DS.'currency_converter'.DS.$converterFile ) and !is_dir(VMPATH_ADMIN.DS.'plugins'.DS.'currency_converter'.DS.$converterFile)) {
@@ -136,9 +130,6 @@ class CurrencyDisplay {
 						vmWarn(vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 					}
 				}
-
-				//				self::$_instance->setCurrencyDisplayToStyleStr($currencyId);
-				//would be nice to automatically unpublish the product/currency or so
 			}
 		}
 		self::$_instance->setPriceArray();
@@ -239,7 +230,6 @@ class CurrencyDisplay {
 	 *
 	 * @param integer $currencyId
 	 * return integer $currencyId: displayed Currency
-	 *
 	 */
 	public function getCurrencyForDisplay( $currencyId=0 ){
 
@@ -256,7 +246,7 @@ class CurrencyDisplay {
 	/**
 	 * This function is for the gui only!
 	 * Use this only in a view, plugin or modul, never in a model
-	 * TODO for vm2.2 remove quantity option
+	 * TODO for vm3 remove quantity option
 	 * @param float $price
 	 * @param integer $currencyId
 	 * return string formatted price
@@ -378,26 +368,24 @@ class CurrencyDisplay {
 
 
 		if(empty($currency)){
-			// 			vmdebug('empty  $currency ',$price);
 			return $price;
 		}
 
 		// If both currency codes match, do nothing
 		if( (is_Object($currency) and $currency->_currency_id == $this->_vendorCurrency)  or (!is_Object($currency) and $currency == $this->_vendorCurrency)) {
-			// 			vmdebug('  $currency == $this->_vendorCurrency ',$price);
 			return $price;
 		}
 
 		if(is_Object($currency)){
 			$exchangeRate = (float)$currency->exchangeRateShopper;
-			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 		}
 		else {
 			static $currency_exchange_rate = array();
 			if(!isset($currency_exchange_rate[$currency])){
+				$db = JFactory::getDBO();
 				$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
-				$this->_db->setQuery($q);
-				$currency_exchange_rate[$currency] = (float)$this->_db->loadResult();
+				$db->setQuery($q);
+				$currency_exchange_rate[$currency] = (float)$db->loadResult();
 			}
 
 			if(!empty($currency_exchange_rate[$currency])){
@@ -418,7 +406,7 @@ class CurrencyDisplay {
 		} else {
 			$currencyCode = self::ensureUsingCurrencyCode($currency);
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
-			$globalCurrencyConverter=vRequest::getVar('globalCurrencyConverter');
+
 			if($shop){
 				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
 				//vmdebug('convertCurrencyTo Use dynamic rate in shop '.$oldprice .' => '.$price);
@@ -426,7 +414,6 @@ class CurrencyDisplay {
 				//vmdebug('convertCurrencyTo Use dynamic rate to shopper currency '.$price);
 				$price = $this ->_currencyConverter->convert( $price , $vendorCurrencyCode, $currencyCode);
 			}
-			// 			vmdebug('convertCurrencyTo my currency ',$this->exchangeRateShopper);
 		}
 
 		return $price;
@@ -468,7 +455,6 @@ class CurrencyDisplay {
 	}
 
 
-
 	/**
 	 *
 	 * @author Horvath, Sandor [HU] http://de.php.net/manual/de/function.number-format.php
@@ -479,15 +465,7 @@ class CurrencyDisplay {
 	 * @param string $decimal_point
 	 */
 	function formatNumber($number, $decimals = 2, $decimal_point = '.', $thousand_separator = '&nbsp;' ){
-
-		//    	$tmp1 = round((float) $number, $decimals);
-
 		return number_format($number,$decimals,$decimal_point,$thousand_separator);
-		//		while (($tmp2 = preg_replace('/(\d+)(\d\d\d)/', '\1 \2', $tmp1)) != $tmp1){
-		//			$tmp1 = $tmp2;
-		//		}
-		//
-		//		return strtr($tmp1, array(' ' => $thousand_separator, '.' => $decimal_point));
 	}
 
 	/**
@@ -503,58 +481,6 @@ class CurrencyDisplay {
 	public function getId() {
 		return($this->_currency_id);
 	}
-
-	/**
-	 * Return the number of decimal places
-	 *
-	 * @author RickG
-	 * @return int Number of decimal places
-	 */
-	public function getNbrDecimals() {
-		return($this->_nbDecimal);
-	}
-
-	/**
-	 * Return the decimal symbol
-	 *
-	 * @author RickG
-	 * @return string Decimal place symbol
-	 */
-	public function getDecimalSymbol() {
-		return($this->_decimal);
-	}
-
-	/**
-	 * Return the decimal symbol
-	 *
-	 * @author RickG
-	 * @return string Decimal place symbol
-	 */
-	public function getThousandsSeperator() {
-		return($this->_thousands);
-	}
-
-	/**
-	 * Return the positive format
-	 *
-	 * @author RickG
-	 * @return string Positive number format
-	 */
-	public function getPositiveFormat() {
-		return($this->_positivePos);
-	}
-
-	/**
-	 * Return the negative format
-	 *
-	 * @author RickG
-	 * @return string Negative number format
-	 */
-	public function getNegativeFormat() {
-		return($this->_negativePos);
-	}
-
-
 
 }
 // pure php no closing tag
