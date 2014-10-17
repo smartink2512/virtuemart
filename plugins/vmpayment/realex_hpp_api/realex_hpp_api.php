@@ -42,7 +42,6 @@ if (!class_exists('vmPSPlugin')) {
 class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 	private $customerData;
-	private  $_currentMethod='';
 	function __construct (& $subject, $config) {
 		parent::__construct($subject, $config);
 		if (!class_exists('RealexHelperCustomerData')) {
