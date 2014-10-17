@@ -653,7 +653,7 @@ class  RealexHelperRealex {
 	 * @return bool|mixed
 	 */
 	function manageResponse3DSVerifyEnrolled ($response3D) {
-		$this->manageResponseRequest($response3D);
+		 $this->manageResponseRequest($response3D);
 	}
 
 	function manageResponse3DSVerifysig ($response3DSVerifysig) {
