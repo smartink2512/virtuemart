@@ -2269,6 +2269,9 @@ class  RealexHelperRealex {
 			$this->displayError($xml_response->message);
 			return false;
 		}
+		if ($xml_response->result != '00') {
+			return true;
+		}
 		$hash = $this->getSha1Hash($this->_method->shared_secret, $xml_response->attributes()->timestamp, $this->_method->merchant_id, (string)$xml_response->orderid, (string)$xml_response->result, (string)$xml_response->message, (string)$xml_response->pasref, (string)$xml_response->authcode);
 
 		if ($hash != $xml_response->sha1hash) {
