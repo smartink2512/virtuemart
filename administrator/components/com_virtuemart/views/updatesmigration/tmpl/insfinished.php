@@ -67,10 +67,16 @@ if($option=='com_virtuemart'){
 
 			</td>
 		</tr>
-		<?php  if (vRequest::get('view','')=='install') { ?>
+		<?php  if (vRequest::get('view','')=='install') {
+			if (JVM_VERSION < 3) {
+			$tag="strong";$style='style="color: #C00"';
+			} else {
+				$tag="span";
+				$style = 'class="label label-warning"';
+			} ?>
 			<tr>
 				<td>
-					<strong style="color: #C00">
+					<<?php echo $tag.' '.$style ?>>
 						<?php
 						if ($update) {
 							echo vmText::_('COM_VIRTUEMART_UPDATE_AIO');
@@ -78,7 +84,7 @@ if($option=='com_virtuemart'){
 							echo vmText::_('COM_VIRTUEMART_INSTALL_AIO');
 						}
 						?>
-					</strong>
+					</<?php echo $tag ?>>
 					<?php echo vmText::_('COM_VIRTUEMART_INSTALL_AIO_TIP'); ?>
 				</td>
 			</tr>
