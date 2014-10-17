@@ -287,7 +287,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			vmdebug('Vendor is manager and should only see its own orders');
 			$virtuemart_vendor_id = VmConfig::isSuperVendor();
 			//if(!empty($virtuemart_vendor_id)){
-				$where[]= ' o.virtuemart_vendor_id = '.$virtuemart_vendor_id.' ';
+				$where[]= ' (o.virtuemart_vendor_id = '.$virtuemart_vendor_id.' OR u.virtuemart_user_id = ' . (int)$uid.') ';
+			$uid = 0;
 			/*} else {
 				//We map here as fallback to vendor 1.
 				$where[]= ' o.virtuemart_vendor_id = 1 ';

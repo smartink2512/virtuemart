@@ -59,7 +59,8 @@ class virtuemartViewrecommend extends VmView {
 		$this->product = $productModel->getProduct ($virtuemart_product_id);
 		$layout = $this->getLayout();
 		if($layout != 'form' and $layout != 'mail_confirmed'){
-			return $this->renderMailLayout('','');
+			$this->renderMailLayout('','');
+			return true;
 		}
 
 		$show_prices  = VmConfig::get('show_prices',1);

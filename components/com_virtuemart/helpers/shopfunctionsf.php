@@ -27,7 +27,7 @@ class shopFunctionsF {
 	 *
 	 */
 
-	static public function getLoginForm ($cart = FALSE, $order = FALSE, $url = 0) {
+	static public function getLoginForm ($cart = FALSE, $order = FALSE, $url = '') {
 
 		$body = '';
 		$show = TRUE;
@@ -344,9 +344,9 @@ class shopFunctionsF {
 		array_unshift( $products_ids, $productId );
 		$products_ids = array_unique( $products_ids );
 
-		$recent_products_rows = VmConfig::get('recent_products_rows', 1);
-		$products_per_row = VmConfig::get('homepage_products_per_row',3);
-		$maxSize = $products_per_row * $recent_products_rows;
+		$recent_products_rows = (int)VmConfig::get('recent_products_rows', 1);
+		$products_per_row = (int)VmConfig::get('homepage_products_per_row',3);
+		$maxSize = (int)$products_per_row * $recent_products_rows;
 		if(count( $products_ids )>$maxSize) {
 			array_splice( $products_ids, $maxSize );
 		}

@@ -62,7 +62,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->searchcustom = '';
 		$this->searchCustomValues = '';
 		//if (!empty($keyword)) {
-			$this->searchcustom = $this->getSearchCustom();
+			$this->getSearchCustom();
 			$search = $keyword;
 		/*} else {
 			$keyword ='';
@@ -402,8 +402,6 @@ class VirtuemartViewCategory extends VmView {
 			$this->searchCustomList = '';
 		}
 
-		//$this->assignRef('searchcustom', $this->searchCustomList);
-		//$this->assignRef('searchcustomvalues', $this->searchCustomValues);
 	}
 }
 
