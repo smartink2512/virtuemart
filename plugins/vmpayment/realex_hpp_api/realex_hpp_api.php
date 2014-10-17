@@ -360,8 +360,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$this->customerData->clear();
 		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
-		vRequest::setVar('display_title', false);
-		vRequest::setVar('html', $html);
+
 
 		return TRUE;
 	}
@@ -1532,12 +1531,12 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			$response3DSVerifyEnrolled = $realexInterface->request3DSVerifyEnrolled($realvaultData);
 			$realexInterface->manageResponse3DSVerifyEnrolled($response3DSVerifyEnrolled);
 			$eci = $realexInterface->getEciFrom3DSVerifyEnrolled($response3DSVerifyEnrolled);
-			if ($eci === false) {
+			$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
+			$result = (string)$xml_response3DSVerifyEnrolled->result;
+			//   503 - no entry for MERCHANT in RealMPI merchant_details table
+			if ($eci === false and $result != 503) {
 				//$this->_storeRealexInternalData($response, $this->_currentMethod->virtuemart_paymentmethod_id, $realexInterface->order['details']['BT']->virtuemart_order_id, $realexInterface->order['details']['BT']->order_number, $realexInterface->request_type);
-				$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
-				$result = (string)$xml_response3DSVerifyEnrolled->result;
-				//   503 - no entry for MERCHANT in RealMPI merchant_details table
-				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS  OR $result == '503') {
+				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS) {
 					$realexInterface->redirect3DSRequest($response3DSVerifyEnrolled);
 					return;
 				} else {
