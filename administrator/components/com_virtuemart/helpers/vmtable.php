@@ -617,6 +617,9 @@ class VmTable extends JTable {
 			if (!empty($this->_xParams) and !empty($this->_varsToPushParam)) {
 				self::bindParameterable($this, $this->_xParams, $this->_varsToPushParam);
 			}
+			if($this->_cryptedFields){
+				$this->encryptFields($this);
+			}
 			return $this;
 		} else {
 			//vmdebug('loading '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid);
@@ -626,8 +629,6 @@ class VmTable extends JTable {
 		$db->setQuery($query);
 
 		$result = $db->loadAssoc();
-
-
 
 		if ($result) {
 			$this->bind($result);
@@ -650,39 +651,6 @@ class VmTable extends JTable {
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = $defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
-			} else {
-				self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
-			}
-		}
-
-		if($this->_cryptedFields){
-			if(!class_exists('vmCrypt')){
-				require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
-			}
-			if(isset($this->modified_on)){
-				$timestamp = strtotime($this->modified_on);
-				$date = $timestamp;
-			} else {
-				$date = 0;
-			}
-
-			if($this->_cryptedFields){
-				if(!class_exists('vmCrypt')){
-					require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
-				}
-				if(isset($this->modified_on)){
-					$date = JFactory::getDate($this->modified_on);
-					$date = $date->toUnix();
-				} else {
-					$date = 0;
-				}
-
-				foreach($this->_cryptedFields as $field){
-					if(isset($this->$field)){
-						$this->$field = vmCrypt::decrypt($this->$field, $date);
-					}
-
-				}
 			}
 		}
 
@@ -692,9 +660,30 @@ class VmTable extends JTable {
 		}
 
 		self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
+		if($this->_cryptedFields){
+			$this->encryptFields();
+		}
 		return $this;
 	}
 
+	function encryptFields(){
+		if(!class_exists('vmCrypt')){
+			require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcrypt.php');
+		}
+		if(isset($this->modified_on)){
+			$date = JFactory::getDate($this->modified_on);
+			$date = $date->toUnix();
+		} else {
+			$date = 0;
+		}
+
+		foreach($this->_cryptedFields as $field){
+			if(isset($this->$field)){
+				$this->$field = vmCrypt::decrypt($this->$field, $date);
+			}
+
+		}
+	}
 
 	/**
 	 * Technic to inject params as table attributes
