@@ -277,9 +277,9 @@ class  RealexHelperRealex {
 		exit;
 	}
 
-	function displayRemoteDCCForm ($xml_response_dcc) {
-		$html = $this->displayRemoteCCForm($xml_response_dcc);
-		echo $html;
+	function getRemoteDCCFormParams ($xml_response_dcc) {
+		$params = $this->getRemoteCCFormParams($xml_response_dcc);
+		return $params;
 
 	}
 
@@ -1058,9 +1058,8 @@ class  RealexHelperRealex {
 	 * @param $order
 	 * @return null|string
 	 */
-	function getResponseHTML ($payments) {
+	function getResponseParams ($payments) {
 
-		$payment_name = $this->plugin->renderPluginName($this->_method, 'order');
 		$dcc_info = "";
 		$payer_info = "";
 		$auth_info = "";
@@ -1151,18 +1150,16 @@ class  RealexHelperRealex {
 		}
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
-
-		$html = $this->plugin->renderByLayout('response', array(
-		                                                       "success"      => $success,
-		                                                       "payment_name" => $payment_name,
-		                                                       "dcc_info"     => $dcc_info,
-		                                                       "auth_info"    => $auth_info,
-		                                                       "payer_info"   => $payer_info,
-		                                                       "pasref"       => $pasref,
-		                                                       "order_number" => $this->order['details']['BT']->order_number,
-		                                                       "order_pass"   => $this->order['details']['BT']->order_pass,
-		                                                  ));
-		return $html;
+		$params=  array(
+			"success"      => $success,
+			"dcc_info"     => $dcc_info,
+			"auth_info"    => $auth_info,
+			"payer_info"   => $payer_info,
+			"pasref"       => $pasref,
+			"order_number" => $this->order['details']['BT']->order_number,
+			"order_pass"   => $this->order['details']['BT']->order_pass,
+		);
+		return $params;
 
 
 	}
@@ -1539,14 +1536,14 @@ class  RealexHelperRealex {
 		return $storedCCByPmt_ref;
 	}
 
-	function displayRemoteCCForm ($xml_response_dcc = NULL, $error = FALSE) {
+	function getRemoteCCFormParams ($xml_response_dcc = NULL, $error = FALSE) {
 		$realvault = false;
 		$useSSL = $this->useSSL();
 		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $this->cart->useXHTML, $useSSL);
 		$card_payment_button = $this->getPaymentButton();
 		if (!empty($xml_response_dcc)) {
 			$notificationTask = "handleRemoteDccForm";
-		} elseif ($this->isCC3DSVerifyEnrolled() and $this->_method->threedsecure AND !$error) {
+		} elseif ($this->_method->threedsecure AND $this->isCC3DSVerifyEnrolled()  AND !$error) {
 			$notificationTask = "handleVerify3D";
 		} else {
 			$notificationTask = "handleRemoteCCForm";
@@ -1609,30 +1606,23 @@ class  RealexHelperRealex {
 			$ccData['save_card'] = $this->customerData->getVar('save_card');
 		}
 
-		$token = $this->plugin->createToken();
-		$this->plugin->saveTokenInSession ($token);
-		$html = $this->plugin->renderByLayout('remote_cc_form', array(
-		                                                             "order_amount"                => $order_amount,
-		                                                             "payment_name"                => $payment_name,
-		                                                             "submit_url"                  => $submit_url,
-		                                                             "card_payment_button"         => $card_payment_button,
-		                                                             "notificationTask"            => $notificationTask,
-		                                                             'creditcardsDropDown'         => $ccDropdown,
-		                                                             "dccinfo"                     => $dccinfo,
-		                                                             "ccData"                      => $ccData,
-		                                                             'creditcards'                 => $this->_method->creditcards,
-		                                                             'offer_save_card'             => $offer_save_card,
-		                                                             'order_number'                => $this->order['details']['BT']->order_number,
-		                                                             'token'                       => $token,
-		                                                             'virtuemart_paymentmethod_id' => $this->_method->virtuemart_paymentmethod_id,
-		                                                             'integration'                 => $this->_method->integration,
-		                                                             'cvv_info'                    => $cvv_info,
-		                                                             'cvn_checking'                => $this->_method->cvn_checking,
-		                                                             'cvv_images'                  => $cvv_images,
-		                                                        ));
-		vRequest::setVar('html', $html);
-		vRequest::setVar('display_title', false);
-		return $html;
+		return array(
+			"order_amount"                => $order_amount,
+			"payment_name"                => $payment_name,
+			"submit_url"                  => $submit_url,
+			"card_payment_button"         => $card_payment_button,
+			"notificationTask"            => $notificationTask,
+			'creditcardsDropDown'         => $ccDropdown,
+			"dccinfo"                     => $dccinfo,
+			"ccData"                      => $ccData,
+			'creditcards'                 => $this->_method->creditcards,
+			'offer_save_card'             => $offer_save_card,
+			'order_number'                => $this->order['details']['BT']->order_number,
+			'virtuemart_paymentmethod_id' => $this->_method->virtuemart_paymentmethod_id,
+			'integration'                 => $this->_method->integration,
+			'cvv_info'                    => $cvv_info,
+			'cvn_checking'                => $this->_method->cvn_checking,
+			'cvv_images'                  => $cvv_images);
 	}
 
 	/**
@@ -2275,8 +2265,9 @@ class  RealexHelperRealex {
 	 */
 	protected function validateResponseHash ($response) {
 		$xml_response = simplexml_load_string($response);
-		if ($xml_response->result != '00') {
-			return true;
+		if ($xml_response->result == '505') {
+			$this->displayError($xml_response->message);
+			return false;
 		}
 		$hash = $this->getSha1Hash($this->_method->shared_secret, $xml_response->attributes()->timestamp, $this->_method->merchant_id, (string)$xml_response->orderid, (string)$xml_response->result, (string)$xml_response->message, (string)$xml_response->pasref, (string)$xml_response->authcode);
 

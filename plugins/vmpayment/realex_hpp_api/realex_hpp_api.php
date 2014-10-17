@@ -164,7 +164,10 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			} else {
 
 				if (!JFactory::getUser()->guest AND $this->_currentMethod->realvault) {
-					$realexInterface->displayRemoteCCForm();
+					$remoteCCFormParams =$realexInterface->getRemoteCCFormParams();
+					$html = $this->renderByLayout('remote_cc_form', $remoteCCFormParams);
+					vRequest::setVar('html', $html);
+					vRequest::setVar('display_title', false);
 					return;
 				}
 				$response = $realexInterface->requestReceiptIn($selectedCCParams);
@@ -191,7 +194,10 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 				$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
 
 				$payments = $this->getDatasByOrderId($realexInterface->order['details']['BT']->virtuemart_order_id);
-				$html = $realexInterface->getResponseHTML($payments);
+				$params = $realexInterface->getResponseParams($payments);
+				$params['payment_name'] = $this->renderPluginName($this->_currentMethod, 'order');
+
+				$html = $this->renderByLayout('response',$params);
 				vRequest::setVar('html', $html);
 				$this->customerData->clear();
 
@@ -203,7 +209,10 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 			}
 		} else {
-			$realexInterface->displayRemoteCCForm();
+			$remoteCCFormParams =$realexInterface->getRemoteCCFormParams();
+			$html = $this->renderByLayout('remote_cc_form', $remoteCCFormParams);
+			vRequest::setVar('html', $html);
+			vRequest::setVar('display_title', false);
 		}
 
 
@@ -344,7 +353,10 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$realexInterface->loadCustomerData();
 		$realexInterface->setOrder($order);
 
-		$html = $realexInterface->getResponseHTML($payments);
+		$params = $realexInterface->getResponseParams($payments);
+		$params['payment_name'] = $this->renderPluginName($this->_currentMethod, 'order');
+
+		$html = $this->renderByLayout('response',$params);
 		$this->customerData->clear();
 		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
@@ -1499,7 +1511,9 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			*/
 			$success = $realexInterface->isResponseSuccess($xml_response);
 			if ($success) {
-				$realexInterface->displayRemoteDCCForm($xml_response);
+				$remoteDCCFormParams =$realexInterface->getRemoteDCCFormParams($xml_response);
+				$html = $this->renderByLayout('remote_cc_form', $remoteDCCFormParams);
+				echo $html;
 				return;
 			} else {
 				//vmError($xml_response->message);
@@ -1523,7 +1537,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 				$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
 				$result = (string)$xml_response3DSVerifyEnrolled->result;
 				//   503 - no entry for MERCHANT in RealMPI merchant_details table
-				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS  OR $result == 503) {
+				if ($result == $realexInterface::RESPONSE_CODE_SUCCESS  OR $result == '503') {
 					$realexInterface->redirect3DSRequest($response3DSVerifyEnrolled);
 					return;
 				} else {
@@ -1587,7 +1601,8 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			if ($saved_cc_selected > 0) {
 				$realvaultData = $realexInterface->getStoredCCsData($saved_cc_selected);
 				if (!$cvv_realvault = $realexInterface->validateCvv()) {
-					$html = $realexInterface->displayRemoteCCForm(NULL, true);
+					$remoteCCFormParams =$realexInterface->getRemoteCCFormParams(NULL, true);
+					$html = $this->renderByLayout('remote_cc_form', $remoteCCFormParams);
 					echo $html;
 					return false;
 				}
@@ -1606,7 +1621,8 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 					return false;
 				} else {
 					if (!$realexInterface->validateRemoteCCForm()) {
-						$html = $realexInterface->displayRemoteCCForm();
+						$remoteCCFormParams =$realexInterface->getRemoteCCFormParams();
+						$html = $this->renderByLayout('remote_cc_form', $remoteCCFormParams);
 						echo $html;
 						return false;
 					} else {
@@ -1616,7 +1632,8 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 			}
 		} else {
 			if (!$realexInterface->validateRemoteCCForm()) {
-				$html = $realexInterface->displayRemoteCCForm();
+				$remoteCCFormParams =$realexInterface->getRemoteCCFormParams();
+				$html = $this->renderByLayout('remote_cc_form', $remoteCCFormParams);
 				echo $html;
 				return false;
 			} else {
