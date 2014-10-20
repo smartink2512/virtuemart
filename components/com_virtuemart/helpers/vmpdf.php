@@ -28,6 +28,9 @@ if(!class_exists('VmModel')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php')
 if(!class_exists('VmImage')) require(VMPATH_ADMIN.DS.'helpers'.DS.'image.php');
 
 class VmPdf {
+
+
+
 	/** Function to create a nice vendor-styled PDF for the output of the given view.
 	    The $path and $dest arguments are directly passed on to TCPDF::Output. 
 	    To create a PDF directly from a given HTML (i.e. not through a view), one
@@ -49,13 +52,15 @@ class VmPdf {
 		if (isset($meta['keywords'])) $pdf->SetKeywords($meta['keywords']);
 		// Make the formatter available, just in case some specialized view wants/needs it
 		$view->pdf_formatter = $pdf;
+		$view->isPdf = true;
+		$view->print = false;
 
 		ob_start();
 		$view->display();
-		$html = '<head><meta content="text/xhtml; charset=utf-8" http-equiv="content-type"></head>'.ob_get_contents();
+		$html = ob_get_contents();
 		ob_end_clean();
 
-		//echo $html;
+		echo $html;
 
 		$pdf->AddPage();
 		$pdf->PrintContents($html);

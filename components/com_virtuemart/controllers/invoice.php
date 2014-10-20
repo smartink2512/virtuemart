@@ -62,8 +62,6 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 
 			//PDF needs xhtml links
 			$this->useXHTML = true;
-			$viewName='invoice';
-			$format="html";
 
 			// Create the invoice PDF file on disk and send that back
 			$orderDetails = $this->getOrderDetails();

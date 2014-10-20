@@ -482,5 +482,55 @@ class CurrencyDisplay {
 		return($this->_currency_id);
 	}
 
+	/**
+	 * Return the number of decimal places
+	 *
+	 * @author RickG
+	 * @return int Number of decimal places
+	 */
+	public function getNbrDecimals() {
+		return($this->_nbDecimal);
+	}
+
+	/**
+	 * Return the decimal symbol
+	 *
+	 * @author RickG
+	 * @return string Decimal place symbol
+	 */
+	public function getDecimalSymbol() {
+		return($this->_decimal);
+	}
+
+	/**
+	 * Return the decimal symbol
+	 *
+	 * @author RickG
+	 * @return string Decimal place symbol
+	 */
+	public function getThousandsSeperator() {
+		return($this->_thousands);
+	}
+
+	/**
+	 * Return the positive format
+	 *
+	 * @author RickG
+	 * @return string Positive number format
+	 */
+	public function getPositiveFormat() {
+		return($this->_positivePos);
+	}
+
+	/**
+	 * Return the negative format
+	 *
+	 * @author RickG
+	 * @return string Negative number format
+	 */
+	public function getNegativeFormat() {
+		return($this->_negativePos);
+	}
+
 }
 // pure php no closing tag
