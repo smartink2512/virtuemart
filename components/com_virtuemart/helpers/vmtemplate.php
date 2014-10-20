@@ -21,7 +21,7 @@ defined('_JEXEC') or die('');
 class VmTemplate {
 
 	static $_templates = array();
-
+	static $_home = false;
 
 
 	public static function loadVmTemplateStyle() {
@@ -40,32 +40,22 @@ class VmTemplate {
 			$res = self::getTemplateById( $vmtemplate );
 		}
 
-		if($res) return $res;
-
-		$app =& JFactory::getApplication();
-		//This does not work correctly for mails, because we dont get the site application in the BE, but an FB
-		$res = $app->getTemplate();
-
 		if(!$res) {
-			$err = 'Could not load default template style';
-			vmError( 'renderMail get Template failed: '.$err );
+			vmError( 'loadVmTemplateStyle failed: Could not load default template style');
 		} else {
-			vmdebug( 'loadVmTemplateStyle $app->getTemplate', $res );
-			return array('template'=>$res);
+			return $res;
 		}
 	}
 
 	public static function getDefaultTemplate(){
 
-		static $res = null;
-		if($res!==null) return $res;
+		if(self::$_home) return self::$_home;
 		$app = JFactory::getApplication();
 
 		if($app->isSite()){
-			$res = $app->getTemplate();
-			return $res;
+			$template = $app->getTemplate(true);
+			$template = (array) $template;
 		} else {
-			vmSetStartTime('getdefaulttemplate');
 			$q = 'SELECT id, home, template, s.params
 			FROM #__template_styles as s
 			LEFT JOIN #__extensions as e
@@ -76,18 +66,17 @@ class VmTemplate {
 			AND e.enabled = 1 AND s.home = 1';
 			$db = JFactory::getDbo();
 			$db->setQuery( $q );
-			//$res = $db->loadAssocList();
-			$res = $db->loadAssoc();
-			if(!$res){
-				vmError( 'getDefaultTemplate failed ' );
-				return false;
-			} else {
-				vmTime('load default j template ','getdefaulttemplate');
-				self::$_templates[$res['id']] = $res;
-				return self::$_templates[$res['id']];
-			}
+			$template = $db->loadAssoc();
 		}
 
+		if(!$template){
+			vmError( 'getDefaultTemplate failed ' );
+			return false;
+		} else {
+			self::$_home = $template;
+			self::$_templates[$template['id']] = $template;
+			return self::$_templates[$template['id']];
+		}
 	}
 	
 	public static function getTemplateById($id){
@@ -137,7 +126,7 @@ class VmTemplate {
 			}
 		}
 
-		if( (!empty($template) and $template!='default') or JFactory::getApplication()->isAdmin){
+		if( (!empty($template) and $template!='default') or JFactory::getApplication()->isAdmin()){
 			self::setTemplate( $template );
 		}
 

@@ -280,11 +280,9 @@ class VirtueMartCart {
 				$cartData['cartData'] = (object)json_decode($cartData['cartData'],true);
 
 				foreach($cartData['cartData']->cartProductsData as $k => $product){
-
 					foreach($existingSession->cartProductsData as $kses => $productses){
-
 						if($product==$productses){
-							vmdebug('Found the same product');
+							//vmdebug('Found the same product');
 							unset($cartData['cartData']->cartProductsData[$k]);
 						}
 					}
@@ -297,8 +295,8 @@ class VirtueMartCart {
 						$existingSession->$key = $cartData['cartData']->$key;
 					}
 				}
-				if(count($existingSession->_triesValidateCoupon)>6){
 
+				if(count($existingSession->_triesValidateCoupon)>6){
 					$existingSession->_triesValidateCoupon = array_slice($existingSession->_triesValidateCoupon,0,6);
 					vmdebug('Coupon were blocked, release 1');
 				}
