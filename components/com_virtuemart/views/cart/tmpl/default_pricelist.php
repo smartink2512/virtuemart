@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset class="vm-fieldset-pricelist">
 <table
 	class="cart-summary"
 	cellspacing="0"

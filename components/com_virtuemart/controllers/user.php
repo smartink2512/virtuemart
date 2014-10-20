@@ -179,9 +179,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 			if($currentUser->guest==1 and (isset($_POST['register']) or !$cartObj )){
 				if($this->checkCaptcha('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT') == FALSE) {
 					$msg = vmText::_('PLG_RECAPTCHA_ERROR_INCORRECT_CAPTCHA_SOL');
-					if($cartObj->_fromCart) {
+					if($cartObj and $cartObj->_fromCart) {
 						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $msg );
-					} else if($cartObj->getInCheckOut()) {
+					} else if($cartObj and $cartObj->getInCheckOut()) {
 						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $msg );
 					} else {
 						$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=edit&addrtype=BT'), $msg );

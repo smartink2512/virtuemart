@@ -80,13 +80,13 @@ if (!empty($this->keyword)) {?>
 
 	?>
 <div class="orderby-displaynumber">
-	<div class="floatleft">
+	<div class="floatleft vm-order-list">
 		<?php echo $this->orderByList['orderby']; ?>
 		<?php echo $this->orderByList['manufacturer']; ?>
 	</div>
-	<div class="vm-pagination">
+	<div class="vm-pagination vm-pagination-top">
 		<?php echo $this->vmPagination->getPagesLinks (); ?>
-		<span><?php echo $this->vmPagination->getPagesCounter (); ?></span>
+		<span class="vm-page-counter"><?php echo $this->vmPagination->getPagesCounter (); ?></span>
 	</div>
 	<div class="floatright display-number"><?php echo $this->vmPagination->getResultsCounter ();?><br/><?php echo $this->vmPagination->getLimitBox ($this->category->limit_list_step); ?></div>
 
@@ -104,7 +104,7 @@ if (!empty($this->keyword)) {?>
 
 	?>
 
-<div class="vm-pagination"><?php echo $this->vmPagination->getPagesLinks (); ?><span class="vm-page-counter"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
+<div class="vm-pagination vm-pagination-bottom"><?php echo $this->vmPagination->getPagesLinks (); ?><span class="vm-page-counter"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
 
 	<?php
 } elseif (!empty($this->keyword)) {

@@ -9,7 +9,7 @@ if(!empty($this->userFieldsCart['fields'])) {
 	// Output: Userfields
 	foreach($this->userFieldsCart['fields'] as $field) {
 	?>
-	<fieldset>
+	<fieldset class="vm-fieldset-<?php echo str_replace('_','-',$field['name']) ?>">
 		<div  class="cart <?php echo str_replace('_','-',$field['name']) ?>" >
 		<span class="cart <?php echo str_replace('_','-',$field['name']) ?>" ><?php echo $field['title'] ?></span>
 

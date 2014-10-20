@@ -59,26 +59,58 @@ class VmTemplate {
 
 		static $res = null;
 		if($res!==null) return $res;
-
-		$q = 'SELECT id, template, s.params
+vmSetStartTime('getdefaulttemplate');
+		$q = 'SELECT id, home, template, s.params
 			FROM #__template_styles as s
 			LEFT JOIN #__extensions as e
 			ON e.element=s.template
 			AND e.type="template"
 			AND e.client_id=s.client_id
 			WHERE s.client_id = 0
-			AND e.enabled = 1
-			AND s.home = 1';
+			AND e.enabled = 1 AND s.home = 1';
 		$db = JFactory::getDbo();
 		$db->setQuery( $q );
+		//$res = $db->loadAssocList();
 		$res = $db->loadAssoc();
+		self::$_templates[$res['id']] = $res;
+
+		//vmdebug('my res',$res);
+		$id = false;
 		if(!$res){
 			vmError( 'getDefaultTemplate failed ' );
+			return false;
 		} else {
-			self::$_templates[$res['id']] = $res;
-		}
+			vmTime('load default j template ','getdefaulttemplate');
+			return self::$_templates[$res['id']];
 
-		return $res;
+/*			if(count($res)>0){
+				$id = 0;
+			}
+
+			$jlang =JFactory::getLanguage();
+			$tag = $jlang->getTag();
+
+			foreach($res as $template) {
+				/*$registry = new JRegistry;
+				$registry->loadString($template['params']);
+				$template['params'] = $registry;*/
+/*				self::$_templates[$template['id']] = $template;
+				if ($template['home'] == 1) {
+					$id = $template['id'];
+				}
+				if ($template['home'] == $tag) {
+					$id = $template['id'];
+					break;
+				}
+			}
+		}
+		if($id!==false) {
+			vmTime('load default j template id='.$id,'getdefaulttemplate');
+			return self::$_templates[$id];
+		} else {
+			return false;
+*/		}
+
 	}
 	
 	public static function getTemplateById($id){
@@ -128,7 +160,9 @@ class VmTemplate {
 			}
 		}
 
-		self::setTemplate( $template );
+		if(!empty($template) or JFactory::getApplication()->isAdmin){
+			self::setTemplate( $template );
+		}
 
 		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
 		if(vRequest::getCmd( 'view' ) == 'virtuemart') {

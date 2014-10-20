@@ -333,7 +333,7 @@ class CurrencyDisplay {
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){
 			if(!empty($price) or $name == 'billTotal' or $name == 'billTaxAmount'){
-				$vis = " vm-display vm-price-value";
+				$vis = " vm-display vm-price";
 				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1],$name );
 			} else {
 				$priceFormatted = '';
@@ -349,9 +349,9 @@ class CurrencyDisplay {
 			if($this->_priceConfig[$name][2]) $descr = vmText::_($description);
 			// 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
 			if(!$switchSequel){
-				return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="Price'.$name.'">'.$priceFormatted.'</span></div>';
+				return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="vm-price-value">'.$priceFormatted.'</span></div>';
 			} else {
-				return '<div class="Price'.$name.$vis.'"  ><span class="Price'.$name.'" >'.$priceFormatted.'</span>'.$descr.'</div>';
+				return '<div class="Price'.$name.$vis.'"  ><span class="vm-price-value">'.$priceFormatted.'</span>'.$descr.'</div>';
 			}
 		}
 

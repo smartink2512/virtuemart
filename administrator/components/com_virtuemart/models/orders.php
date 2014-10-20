@@ -283,15 +283,17 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		}
 		else if( $user->authorise('core.manage','com_virtuemart') or $user->authorise('vm.orders','com_virtuemart')){
-			vmdebug('Vendor is manager and should only see its own orders');
+
 			$virtuemart_vendor_id = VmConfig::isSuperVendor();
-			//if(!empty($virtuemart_vendor_id)){
+			vmdebug('Vendor is manager and should only see its own orders venodorId '.$virtuemart_vendor_id);
+			if(!empty($virtuemart_vendor_id)){
 				$where[]= ' (o.virtuemart_vendor_id = '.$virtuemart_vendor_id.' OR u.virtuemart_user_id = ' . (int)$uid.') ';
-			$uid = 0;
-			/*} else {
+				$uid = 0;
+			} else {
 				//We map here as fallback to vendor 1.
-				$where[]= ' o.virtuemart_vendor_id = 1 ';
-			}*/
+				$where[]= ' u.virtuemart_user_id = ' . (int)$uid;
+
+			}
 		} else {
 			//A normal user is only allowed to see its own orders, we map $uid to the user id
 			$uid = (int)$user->id;
