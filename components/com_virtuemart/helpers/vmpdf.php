@@ -60,8 +60,6 @@ class VmPdf {
 		$html = ob_get_contents();
 		ob_end_clean();
 
-		echo $html;
-
 		$pdf->AddPage();
 		$pdf->PrintContents($html);
 
@@ -77,6 +75,8 @@ class VmPdf {
 if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 	vmError('VmPDF helper: For the PDF invoice and other PDF business letters, you must install the tcpdf library at '.VMPATH_LIBS.DS.'tcpdf');
 } else {
+	defined('K_PATH_IMAGES') or define ('K_PATH_IMAGES', VMPATH_ROOT);
+
 	if(!class_exists('TCPDF'))require(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php');
 	// Extend the TCPDF class to create custom Header and Footer as configured in the Backend
 	class VmVendorPDF extends TCPDF {
@@ -248,7 +248,7 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 
 	public function Header() {
 		if ($this->vendor->vendor_letter_header != 1) return;
-		if ($this->header_xobjid < 0) {
+		if ($this->header_xobjid === false) {
 			// start a new XObject Template
 			$this->header_xobjid = $this->startTemplate($this->w, $this->tMargin);
 			$headerfont = $this->getHeaderFont();

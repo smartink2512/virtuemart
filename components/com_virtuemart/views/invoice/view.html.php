@@ -82,12 +82,10 @@ class VirtuemartViewInvoice extends VmView {
 
 		$tmpl = vRequest::getCmd('tmpl');
 
-
 		$this->print = false;
 		if($tmpl and !$this->isPdf){
 			$this->print = true;
 		}
-
 
 		$this->format = vRequest::getCmd('format','html');
 		if($layout == 'invoice'){
@@ -99,9 +97,7 @@ class VirtuemartViewInvoice extends VmView {
 			$order_print=true;
 		}
 
-
 		$orderModel = VmModel::getModel('orders');
-
 		$orderDetails = $this->orderDetails;
 
 		if($orderDetails==0){

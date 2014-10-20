@@ -59,8 +59,14 @@ class VmTemplate {
 
 		static $res = null;
 		if($res!==null) return $res;
-vmSetStartTime('getdefaulttemplate');
-		$q = 'SELECT id, home, template, s.params
+		$app = JFactory::getApplication();
+
+		if($app->isSite()){
+			$res = $app->getTemplate();
+			return $res;
+		} else {
+			vmSetStartTime('getdefaulttemplate');
+			$q = 'SELECT id, home, template, s.params
 			FROM #__template_styles as s
 			LEFT JOIN #__extensions as e
 			ON e.element=s.template
@@ -68,55 +74,26 @@ vmSetStartTime('getdefaulttemplate');
 			AND e.client_id=s.client_id
 			WHERE s.client_id = 0
 			AND e.enabled = 1 AND s.home = 1';
-		$db = JFactory::getDbo();
-		$db->setQuery( $q );
-		//$res = $db->loadAssocList();
-		$res = $db->loadAssoc();
-		self::$_templates[$res['id']] = $res;
-
-		//vmdebug('my res',$res);
-		$id = false;
-		if(!$res){
-			vmError( 'getDefaultTemplate failed ' );
-			return false;
-		} else {
-			vmTime('load default j template ','getdefaulttemplate');
-			return self::$_templates[$res['id']];
-
-/*			if(count($res)>0){
-				$id = 0;
-			}
-
-			$jlang =JFactory::getLanguage();
-			$tag = $jlang->getTag();
-
-			foreach($res as $template) {
-				/*$registry = new JRegistry;
-				$registry->loadString($template['params']);
-				$template['params'] = $registry;*/
-/*				self::$_templates[$template['id']] = $template;
-				if ($template['home'] == 1) {
-					$id = $template['id'];
-				}
-				if ($template['home'] == $tag) {
-					$id = $template['id'];
-					break;
-				}
+			$db = JFactory::getDbo();
+			$db->setQuery( $q );
+			//$res = $db->loadAssocList();
+			$res = $db->loadAssoc();
+			if(!$res){
+				vmError( 'getDefaultTemplate failed ' );
+				return false;
+			} else {
+				vmTime('load default j template ','getdefaulttemplate');
+				self::$_templates[$res['id']] = $res;
+				return self::$_templates[$res['id']];
 			}
 		}
-		if($id!==false) {
-			vmTime('load default j template id='.$id,'getdefaulttemplate');
-			return self::$_templates[$id];
-		} else {
-			return false;
-*/		}
 
 	}
 	
 	public static function getTemplateById($id){
 
 		if(!isset(self::$_templates[$id])){
-			$q = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$id.'" ';
+			$q = 'SELECT id, home,`template`,`params` FROM `#__template_styles` WHERE `id`="'.$id.'" ';
 			$db = JFactory::getDbo();
 			$db->setQuery($q);
 			self::$_templates[$id] = $db->loadAssoc();
@@ -160,7 +137,7 @@ vmSetStartTime('getdefaulttemplate');
 			}
 		}
 
-		if(!empty($template) or JFactory::getApplication()->isAdmin){
+		if( (!empty($template) and $template!='default') or JFactory::getApplication()->isAdmin){
 			self::setTemplate( $template );
 		}
 
