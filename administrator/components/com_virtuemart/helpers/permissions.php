@@ -145,7 +145,7 @@ class Permissions extends JObject{
 			//We must prevent that Administrators or Managers are 'just' shoppers
 			//TODO rewrite it working correctly with jooomla ACL
 			if(JVM_VERSION === 2 ){
-				if($user->authorise('core.admin')){
+				if($user->authorise('core.admin') or $user->authorise('core.admin','com_virtuemart')){
 					$perm  = 'admin';
 				}
 			} else {
@@ -158,9 +158,9 @@ class Permissions extends JObject{
 
 				if(JVM_VERSION === 2 ){
 					if($user->groups){
-						if($user->authorise('core.admin')){
+						if($user->authorise('core.admin') or $user->authorise('core.admin','com_virtuemart')){
 							$perm  = 'admin';
-						} else if($user->authorise('core.manage')){
+						} else if($user->authorise('core.manage','com_virtuemart')){
 							$perm  = 'storeadmin';
 						} else {
 							$perm  = 'shopper';
@@ -212,12 +212,12 @@ class Permissions extends JObject{
 
 		foreach($perms as $perm){
 			if($perm=='admin'){
-				if($user->authorise('core.admin')){
+				if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart')){
 					return true;
 				}
 			}
 			if($perm=='storeadmin'){
-				if($user->authorise('core.manage')){
+				if($user->authorise('core.admin', 'com_virtuemart')){
 					return true;
 				}
 			}

@@ -266,16 +266,16 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				$this->tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 				if($this->tcpdf6){
 					require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
-					$imgtype = TCPDF_IMAGES::getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
+					$imgtype = TCPDF_IMAGES::getImageFileType(JPATH_ROOT.DS.$headerdata['logo']);
 				} else {
-					$imgtype = $this->getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
+					$imgtype = $this->getImageFileType(JPATH_ROOT.DS.$headerdata['logo']);
 				}
 				if (($imgtype == 'eps') OR ($imgtype == 'ai')) {
-					$this->ImageEps(K_PATH_IMAGES.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->ImageEps(JPATH_ROOT.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} elseif ($imgtype == 'svg') {
-					$this->ImageSVG(K_PATH_IMAGES.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->ImageSVG(JPATH_ROOT.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} else {
-					$this->Image(K_PATH_IMAGES.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->Image(JPATH_ROOT.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
 				}
 				$imgy = $this->getImageRBY();
 				$header_x +=  ($headerdata['logo_width'] * 1.1);
