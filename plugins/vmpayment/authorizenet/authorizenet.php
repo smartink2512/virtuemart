@@ -508,6 +508,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
 			return FALSE;
 		}
+
 		$this->setInConfirmOrder($cart);
 		$usrBT = $order['details']['BT'];
 		$usrST = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
@@ -543,6 +544,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$dbValues['cost_percent_total'] = $this->_currentMethod->cost_percent_total;
 		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['payment_currency'] = $payment_currency_id;
+		$this->debugLog("before store", "plgVmConfirmedOrder", 'debug');
 
 		$this->storePSPluginInternalData($dbValues);
 
