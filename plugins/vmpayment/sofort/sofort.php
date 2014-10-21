@@ -34,23 +34,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$this->_tablepkey = 'id'; //virtuemart_sofort_id';
 		$this->_tableId = 'id'; //'virtuemart_sofort_id';
 
-		$varsToPush = array('payment_logos' => array('', 'char'),
-		                    'configuration_key' => array('', 'char'),
-		                    'buyer_protection' => array('', 'int'),
-		                    'payment_currency' => array('', 'int'),
-		                    'email_currency' => array('', 'int'),
-		                    'countries' => array('', 'char'),
-		                    'min_amount' => array('', 'float'),
-		                    'max_amount' => array('', 'float'),
-		                    'cost_per_transaction' => array('', 'char'),
-		                    'cost_percent_total' => array('', 'char'),
-		                    'tax_id' => array('', 'int'),
-		                    'status_pending' => array('', 'char'),
-		                    'status_received' => array('', 'char'),
-		                    'status_loss' => array('', 'char'),
-		                    'status_refunded' => array('', 'char'),
-		                    'debug' => array('', 'int'),
-		);
+		$varsToPush = $this->getVarsToPush();
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
@@ -197,8 +181,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			$errors = $sofort->getErrors();
 			vmdebug('SOFORT sendTransactionRequest ... SofortLib_Multipay ... getErrors()', $errors);
 			$this->displayErrors($errors);
-			// TODO redirect to cancel URL
-			//return $cancel_url;
+			$this->redirectToCart();
 			return;
 		}
 		$url = $sofort->getPaymentUrl();
@@ -211,6 +194,15 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			$mainframe->redirect($url);
 		}
 
+	}
+
+	function redirectToCart ($msg = NULL) {
+
+		if (!$msg) {
+			$msg = vmText::_('VMPAYMENT_SOFORT_ERROR_TRY_AGAIN');
+		}
+		$app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vRequest::getInt('Itemid').'&lang='.vRequest::getCmd('lang',''), false), $msg);
 	}
 
 	/**
