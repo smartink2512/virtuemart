@@ -85,7 +85,6 @@
 
         <param type="spacer"  />
         <param type="spacer" default="VMPAYMENT_KLARNA_CONF_SETTINGS_FI" level="level1"/>
-        <param type="klarnacountrylogo" default="FI" level="leve1"/>
         <param name="klarna_active_fin" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
@@ -170,7 +169,7 @@
 
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart plg_vmpayment_klarna Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_klarna_update.xml]]></server>
+        <server type="extension" name="VirtueMart plg_vmpayment_klarna Update Site"><![CDATA[http://virtuemart.net/releases/vm2/plg_vmpayment_klarna_update.xml]]></server>
     </updateservers>
 
 </extension>
