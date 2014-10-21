@@ -727,7 +727,7 @@ if (typeof klarna == "undefined") {
 
             if (Type == 'invoice') {
 
-                jQuery('input[name=' + klarna.invoice_ITId + ']').change(function () {
+                jQuery('input[name='+Type+"_"+klarna.invoice_ITId+']').change(function () {
                     var val = jQuery(this).val();
 
                     if (val == "private") {
