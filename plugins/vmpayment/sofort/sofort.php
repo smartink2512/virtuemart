@@ -179,8 +179,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			$errors = $sofort->getErrors();
 			vmdebug('SOFORT sendTransactionRequest ... SofortLib_Multipay ... getErrors()', $errors);
 			$this->displayErrors($errors);
-			// TODO redirect to cancel URL
-			//return $cancel_url;
+			$this->redirectToCart();
 			return;
 		}
 		$url = $sofort->getPaymentUrl();
@@ -194,7 +193,14 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 
 	}
+	function redirectToCart ($msg = NULL) {
 
+		if (!$msg) {
+			$msg = vmText::_('VMPAYMENT_SOFORT_ERROR_TRY_AGAIN');
+		}
+		$app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vRequest::getInt('Itemid').'&lang='.vRequest::getCmd('lang',''), false), $msg);
+	}
 	/**
 	 * @param $virtuemart_paymentmethod_id
 	 * @param $paymentCurrencyId
