@@ -65,12 +65,12 @@ button, .button {padding: 4px 6px;border: 1px solid #666;background-color: #f5ff
 .vm2-modallink{height:16px;margin-left: 3px;vertical-align:top;width:16px;display:inline-block; background: url("../images/icon_external_link.gif") no-repeat scroll left top transparent;}
 .vm2-warning{background-position:0 -1383px;width:50px;height:40px;}
 
-input.highlight-button{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position:0 -160px;color:#fff;border:1px solid #00a000;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;font-size:12px;cursor:pointer;text-align:center;letter-spacing:1px;display:inline-block;text-decoration:none;padding:4px 8px 2px;}
+input.highlight-button{background:#0077b3 ; color:#fff;border:1px solid #00669a;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;font-size:12px;cursor:pointer;text-align:center;letter-spacing:1px;display:inline-block;text-decoration:none;padding:4px 8px 2px;}
 input.highlight-button:visited{color:#fff;}
 
 button.default{display:inline-block;cursor:pointer;padding:5px 8px 4px;}
 button.default:hover{color:#777;}
-a.highlight,a.highlight:visited{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #00a000 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;display:inline-block;text-decoration:none;background-position:0 -160px;color:#fff;padding:3px 8px 1px;}
+a.highlight,a.highlight:visited{background:#0077b3 ;border:solid #00669a 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;display:inline-block;text-decoration:none;background-position:0 -160px;color:#fff;padding:3px 8px 1px;}
 textarea.virtuemart{background:#fff;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;text-align:left;padding:5px 5px 4px;}
 
 .vm-button-correct,.vm-button-correct:hover,.vm-button-correct:visited{font-size:1.2em;font-weight:700;display:inline-block;text-decoration:none;color:#777;}
