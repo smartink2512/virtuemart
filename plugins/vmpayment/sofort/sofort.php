@@ -106,7 +106,6 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if (!$this->selectedThisElement($method->payment_element)) {
 			return FALSE;
 		}
-		$this->setInConfirmOrder($cart);
 
 		$this->sendTransactionRequest($method,$cart, $order);
 
