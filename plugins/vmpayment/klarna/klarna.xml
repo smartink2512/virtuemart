@@ -17,18 +17,14 @@
         <folder>language</folder>
     </files>
     <vmconfig>
-        <fields name="fields">
+        <fields name="params">
 
-            <fieldset name="klarna" addfieldpath="/plugins/vmpayment/klarna/klarna/fields">
+            <fieldset name="basic" addfieldpath="/plugins/vmpayment/klarna/klarna/fields">
 
                 <field type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_TITLE" level="level1"/>
                 <field type="klarnalogo" level="level1"/>
                 <field type="vmcurl"/>
                 <field type="vmtitle" class="none" description="VMPAYMENT_KLARNA_PHP_WARNING"/>
-
-                <field name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION"
-                       default="&lt;a href=&quot;https://static.klarna.com/integration_sales/partner/VirtueMart/v1.0/Klarna_documentation.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>
-
                 <field type="getklarna" level="level1"/>
 
                 <field type="klarnacountrylogo" default="SV" level="level1"/>

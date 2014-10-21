@@ -67,10 +67,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
-		$jlang = JFactory::getLanguage ();
-		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', TRUE);
-		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault (), TRUE);
-		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, NULL, TRUE);
 	}
 
 	/**
