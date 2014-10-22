@@ -309,7 +309,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * 'applicationVersion'
 	 */
 	private function  getOffAmazonPaymentsService_Client () {
-
+                $config['serviceURL']='';
+            	$config['widgetURL']='';
+                $config['caBundleFile']='';
+                $config['clientId']='';
 		$config['merchantId'] = $this->_currentMethod->sellerId;
 		$config['accessKey'] = $this->_currentMethod->accessKey;
 		$config['secretKey'] = $this->_currentMethod->secretKey;
@@ -767,6 +770,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 */
 
 	public function plgVmOnCheckoutCheckDataPayment (VirtueMartCart $cart) {
+static $checkoutCheckDataPaymentDone = false;
 
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 			/*
@@ -790,6 +794,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			//vmError($message, $message);
 			return false;
 		}
+		if ( $checkoutCheckDataPaymentDone) return true;
 		$client = $this->getOffAmazonPaymentsService_Client();
 
 		// incase the Address was not displayed
@@ -834,7 +839,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if ($this->isSetConstraints($cart, $orderReferenceDetails)) {
 			return false;
 		}
-
+		 $checkoutCheckDataPaymentDone=true;
 		return true;
 	}
 
@@ -944,7 +949,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->_amount = $order['details']['BT']->order_total;
 		$this->_order_number = $order['details']['BT']->order_number;
 
-		$html = $this->vmConfirmedOrder($cart, $order);
+		$html = $this->vmConfirmedOrder($cart, $order,false);
 		vRequest::setVar('html', $html);
 		vRequest::setVar('display_title', false);
 
@@ -1055,7 +1060,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			$BTFromAmazon = $this->getUserInfoFromAmazon($buyer, '', false, true);
 			$BTFromAmazon['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 			$BTFromAmazon['address_type'] = 'BT';
-			$this->debugLog("<pre>" . var_export($BTFromAmazon, true) . "</pre>", __FUNCTION__, 'debug');
+			$this->debugLog("<pre>" . var_export($BTFromAmazon, true) . "</pre>", __FUNCTION__.' BT', 'debug');
 			$order_userinfosTable->emptyCache();
 			$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='BT'");
 			if (!$order_userinfosTable->bindChecknStore($BTFromAmazon, true)) {
@@ -1081,7 +1086,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 					vmError($order_userinfosTable->getError());
 					return false;
 				}
-
+				$this->debugLog("<pre>" . var_export($ST, true) . "</pre>", __FUNCTION__.' ST' , 'debug');
 			}
 		}
 
@@ -1228,7 +1233,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return bool
 	 */
 	private function setOrderReferenceDetails ($client, $cart, $order = NULL) {
-		$this->loadAmazonClass('OffAmazonPaymentsService_Model_OrderReferenceAttributes');
+
+ 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_OrderReferenceAttributes');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_OrderTotal');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_SellerOrderAttributes');
 
@@ -1392,7 +1398,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * @return null|string
 	 */
 	private function getSandboxSimulationString ($reason) {
-		if ($this->_currentMethod->environment != 'sandbox') {
+		if ($this->_currentMethod->environment != 'sandbox' or empty($reason)) {
 			return NULL;
 		}
 
@@ -1784,8 +1790,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$amazonHelperAuthorizationDetailsResponse = new amazonHelperGetAuthorizationDetailsResponse($authorizationDetailsResponse, $this->_currentMethod);
 		$authorizationState = $amazonHelperAuthorizationDetailsResponse->getState();
 
-		$storeInternalData = $amazonHelperAuthorizationDetailsResponse->getStoreInternalData();
-		$this->storeAmazonInternalData($order, NULL, $authorizationDetailsResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
+		//$storeInternalData = $amazonHelperAuthorizationDetailsResponse->getStoreInternalData();
+		//$this->storeAmazonInternalData($order, NULL, $authorizationDetailsResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData);
 
 
 		return $authorizationState;
@@ -2308,15 +2314,6 @@ jQuery().ready(function($) {
 	}
 
 
-	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
-
-		if (preg_match('/%$/', $method->cost_percent_total)) {
-			$cost_percent_total = substr($method->cost_percent_total, 0, -1);
-		} else {
-			$cost_percent_total = $method->cost_percent_total;
-		}
-		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
-	}
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
@@ -2419,7 +2416,7 @@ jQuery().ready(function($) {
 			$checked = '';
 		}
 
-
+		$html='';
 		if (!class_exists('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
@@ -2521,7 +2518,7 @@ jQuery().ready(function($) {
 
 	public function plgVmonSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
-		if (!($method = $this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id))) {
+		if (!( $this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
 
@@ -2550,7 +2547,7 @@ jQuery().ready(function($) {
 
 		$cart_prices_name = $this->renderPluginName($this->_currentMethod);
 
-		$this->setCartPrices($cart, $cart_prices, $method);
+		$this->setCartPrices($cart, $cart_prices, $this->_currentMethod );
 
 		return TRUE;
 	}
@@ -2915,7 +2912,7 @@ jQuery().ready(function($) {
 		$this->storeAmazonInternalData($order, NULL, NULL, $notification, NULL, $notificationResponse->getStoreInternalData());
 
 		$nextOperation = $notificationResponse->onNotificationNextOperation($order, $payments, $amazonState);
-		if ($nextOperation == false) {
+		if ($nextOperation === false) {
 			return;
 		}
 		if (!function_exists($nextOperation)) {
@@ -3082,7 +3079,7 @@ jQuery().ready(function($) {
 		$address['ST'] = NULL;
 		if ($sessionAmazon) {
 			$sessionAmazonData =   json_decode($sessionAmazon, true);
-			if (isset($sessionAmazonData['BT']) OR ($sessionAmazonData['ST'])) {
+			if (isset($sessionAmazonData['BT']) OR isset($sessionAmazonData['ST'])) {
 				$address['BT'] = $sessionAmazonData['BT'];
 				$address['ST'] = $sessionAmazonData['ST'];
 			}

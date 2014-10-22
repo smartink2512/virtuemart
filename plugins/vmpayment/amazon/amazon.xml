@@ -206,10 +206,10 @@
             <option value="">COM_VIRTUEMART_NO</option>
             <!--option value="PaymentMethodNotAllowed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PAYMENTMETHODNOTALLOWED</option-->
             <option value="AmazonClosed">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONCLOSED</option>
-            <option value="InvalidPaymentMethod">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_INVALIDPAYMENTMETHOD</option>
+            <!--option value="InvalidPaymentMethod">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_INVALIDPAYMENTMETHOD</option-->
             <option value="AmazonRejected">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_AMAZONREJECTED</option>
-            <option value="TransactionTimedOut">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_TRANSACTIONTIMEOUT</option>
-            <option value="ExpiredUnused">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_EXPIREDUNUSED</option>
+            <!--option value="TransactionTimedOut">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_TRANSACTIONTIMEOUT</option-->
+            <!--option value="ExpiredUnused">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_EXPIREDUNUSED</option-->
             <option value="Pending">VMPAYMENT_AMAZON_CONF_SANDBOX_SIMULATION_PENDING</option>
         </param>
         <param class="sandbox_error_simulation" name="sandbox_error_simulation_refund" type="list"
@@ -299,7 +299,9 @@
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
-        <param	name="payment_logos" type="hidden" />
+        <param	name="payment_logos" type="hidden" default=""/>
+        <param	name="cost_percent_total" type="hidden" default=""/>
+        <param	name="cost_per_transaction" type="hidden" default=""/>
     </params>
 
     <updateservers>

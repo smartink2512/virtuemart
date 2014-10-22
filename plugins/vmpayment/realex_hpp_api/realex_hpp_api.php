@@ -1319,12 +1319,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	private function handleRedirect () {
 
 		$realex_data = vRequest::getPost();
-	/*
-		$bb=	'{"RESULT":"101","AUTHCODE":"","MESSAGE":"[ test system ] DECLINED","PASREF":"14104463569597170","AVSPOSTCODERESULT":"U","AVSADDRESSRESULT":"U","CVNRESULT":"N","ACCOUNT":"localhost3dsecure","MERCHANT_ID":"virtuemart","ORDER_ID":"c68e0422","TIMESTAMP":"20140911163739","AMOUNT":"3156","MERCHANT_RESPONSE_URL":"http:\/\/88.186.104.215\/VM2\/VM2024\/index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&notificationTask=handleRedirect&tmpl=component","COMMENT1":"Payment of \u00a331.56 for order c68e0422 on VirtueMart 2 Sample store","DCC_ENABLE":"0","CARD_STORAGE_ENABLE":"0","ECI":"6","CAVV":"CAACAQknmZMAERAmNCeZAAAAAAA=","XID":"G3AfuoNORKmeM3ETVfnGLI2hN6k=","SHA1HASH":"521d4d116438cc57d1359aa7220dd946935cb5f1","charset":"utf-8","LANG":"en","BATCHID":"-1"}';
 
-		$realex_dataxxx=json_decode($bb);
-		$realex_data=(array)$realex_dataxxx;
-	*/
 				$this->debugLog('plgVmOnPaymentNotification :' . var_export($realex_data, true), 'debug');
 		if (!isset($realex_data['ORDER_ID'])) {
 			return false;

@@ -1043,7 +1043,7 @@ class KlarnaHandler {
 	 * @param $klarnaOption
 	 * @return bool
 	 */
-	function getKlarnaError (&$klarnaError, &$klarnaOption) {
+	static function getKlarnaError (&$klarnaError, &$klarnaOption) {
 
 		$session = JFactory::getSession();
 		$sessionKlarna = $session->get('Klarna', 0, 'vm');
@@ -1404,7 +1404,8 @@ class KlarnaHandler {
 		} else {
 			$shipTo = (($cart->ST == 0 or empty($cart->ST)) ? $cart->BT : $cart->ST);
 		}
-		return self::getKlarnaFieldsFromVmShopperFields($shipTo, $cart->BT['email']);
+
+		return self::getKlarnaFieldsFromVmShopperFields($shipTo, @$cart->BT['email']);
 
 	}
 
@@ -1415,9 +1416,8 @@ class KlarnaHandler {
 	 * @return array
 	 */
 	static function getKlarnaFieldsFromVmShopperFields ($from, $from_email) {
-
-		$klarnaFields = array();
-		switch ($from['title']) {
+ 		$klarnaFields = array();
+		switch (@$from['title']) {
 			case vmText::_('COM_VIRTUEMART_SHOPPER_TITLE_MR'):
 				$klarnaFields['gender'] = KlarnaFlags::MALE;
 				break;
@@ -1429,8 +1429,8 @@ class KlarnaHandler {
 				$klarnaFields['gender'] = NULL;
 				break;
 		}
-		$country_code_3 = ShopFunctions::getCountryByID($from['virtuemart_country_id'], 'country_3_code');
-		$klarnaFields['email'] = $from_email;
+		$country_code_3 = ShopFunctions::getCountryByID(@$from['virtuemart_country_id'], 'country_3_code');
+		$klarnaFields['email'] = @$from_email;
 		$klarnaFields['country'] = @ShopFunctions::getCountryByID(@$from['virtuemart_country_id'], 'country_3_code');
 		$klarnaFields['socialNumber'] = @$from['socialNumber'];
 		$klarnaFields['houseNr'] = @$from['house_no'];
@@ -1442,7 +1442,7 @@ class KlarnaHandler {
 			$klarnaFields['last_name'] = @$from['last_name'];
 		}
 
-		$klarnaFields['reference'] = $from['first_name'] . ' ' . $from['last_name'];
+		$klarnaFields['reference'] = @$from['first_name'] . ' ' . @$from['last_name'];
 		$klarnaFields['company_name'] = @$from['company_name'];
 		$klarnaFields['phone'] = @$from['phone_1'];
 		$klarnaFields['street'] = @$from['address_1'];
@@ -1483,7 +1483,7 @@ class KlarnaHandler {
 		return self::checkNLpriceCondition($price);
 	}
 
-	function checkPartpriceCondition ($cData, $cart) {
+	static function checkPartpriceCondition ($cData, $cart) {
 //  Since 12/09/12: merchants can sell goods with Klarna Invoice up to thousands of euros.
 		// convert price in euro
 		//$euro_currency_id = ShopFunctions::getCurrencyByName( 'EUR');

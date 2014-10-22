@@ -159,11 +159,11 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 	 * @return bool|string
 	 */
 	public function onNotificationNextOperation ($order, $payments, $amazonState) {
-		if ($amazonState=='Closed' and $this->isCaptureNow()) {
+		$state=array('Pending', 'Open', 'Declined', 'Closed');
+		if (in_array($amazonState, $state)) {
 			return 'onNotificationGetAuthorizationDetails';
 		}
 		return false;
-
 	}
 
 	public function getReferenceId () {

@@ -1,9 +1,9 @@
 <?php
 /**
 *
-* @version $Id: virtuemart.php 
+* @version $Id$
 * @package VirtueMart
-* @subpackage core
+* @subpackage Shipment
 * @author Max Milbers
 * @copyright Copyright (C) 2014 by the VirtueMart Team 
 * All rights reserved.
@@ -21,7 +21,7 @@
 $currency = $viewData['currency'];
 if(!empty($viewData['method']->countries) and is_array($viewData['method']->countries) and count($viewData['method']->countries)>0){
 	$countryM = VmModel::getModel('country');
-	echo 'We ship to ';
+	echo Jtext::_('VMSHIPMENT_WEIGHT_COUNTRIES_SHIP_TO');
 	foreach($viewData['method']->countries as $virtuemart_country_id){
 		$country = $countryM->getData($virtuemart_country_id);
 		echo $country->country_name;
@@ -29,6 +29,5 @@ if(!empty($viewData['method']->countries) and is_array($viewData['method']->coun
 	}
 }
 echo '</br>';
-echo 'With shipment '.$viewData['method']->shipment_name.' for '.$currency->priceDisplay($viewData['product']->prices['shipmentPrice']);
-
+echo vmtext::sprintf('VMSHIPMENT_WEIGHT_COUNTRIES_WITH_SHIPMENT', $viewData['method']->shipment_name, $currency->priceDisplay($viewData['product']->prices['shipmentPrice']));
 ?>
