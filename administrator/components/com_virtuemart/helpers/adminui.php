@@ -104,10 +104,7 @@ class AdminUIHelper {
 				?>
 				<div class="menu-notice">
 				<?php
-
-				if(JVM_VERSION<3){
 					echo "VirtueMart ".VmConfig::getInstalledVersion();
-				}
 				?>
 				</div>
 

@@ -130,7 +130,7 @@ table.adminlist .right{text-align: right;}
 #admin-ui-menu {border-bottom:1px solid #94B1CF;}
 #admin-ui-menu h3.menu-title {background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888;cursor:pointer;border-top: 1px solid #94B1CF;margin: 0px;padding: 6px 20px;color: #fff;font-size: 13px;font-weight: normal;color: #333;}
 .menu-vmlogo {background: url("../images/vm_logo.png") no-repeat scroll center bottom #707174;color: #333333;cursor: pointer;font-size: 13px;font-weight: normal;height: 30px;margin: 0;padding: 0;}
-.menu-notice { margin: 35px;padding: 5px;text-align: center;}
+.menu-notice { margin: 35px;padding: 5px;text-align: center;background-color: #fff;}
 .menu-notice a:link ,.menu-notice a span {color :#000 ;}
 #admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover { background:url("../images/admin_ui/tabs-ul-background.png") repeat-x scroll center bottom #7C7D7F; color :#efefef ; }
 
