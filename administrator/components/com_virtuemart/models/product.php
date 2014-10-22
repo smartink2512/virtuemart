@@ -2248,7 +2248,7 @@ LEFT JOIN `vm3j2_virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l using (`vi
 			$query .= ' ORDER BY l.`mf_name`';
 			$this->_db->setQuery ($query);
 			$manufacturers = $this->_db->loadObjectList ();
-			vmdebug('my manufacturers',$this->_db->getQuery());
+
 			$manufacturerLink = '';
 			if (count ($manufacturers) > 0) {
 				$manufacturerLink = '<div class="orderlist">';

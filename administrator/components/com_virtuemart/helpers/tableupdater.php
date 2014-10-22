@@ -436,64 +436,46 @@ class GenericTableUpdater extends VmModel{
 		foreach($keys as $i=>$line){
 			$demandedFieldNames[] = $i;
 		}
-		// 		vmdebug('                $demandedFieldNames ' ,$demandedFieldNames);
 
 		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
 		$this->_db->setQuery($query);
-		if(!$eKeys = $this->_db->loadObjectList() ){
-			$this->_app->enqueueMessage('alterKey show index for table '.$tablename.':' );
-		} else {
-			$eKeyNames= $this->_db->loadColumn(2);
-		}
-
- 		//vmdebug('my $eKeys',$eKeys);
-
-		$dropped = 0;
-		$existing = array();
-		foreach($eKeyNames as $i => $name){
-
-			$query = '';
-
-			//doubled keys are listed twice, but gets both deleted with one command, so we must check if the key is still there
-			$this->_db->setQuery("SHOW INDEXES  FROM `".$tablename."` "); //SHOW {INDEX | INDEXES | KEYS}
-			$eKeyNamesNOW= $this->_db->loadColumn(2);
-
-			$oldcolum = $this->reCreateKeyByTableAttributes($eKeys[$i]);
-
-
-			if(!in_array($oldcolum,$keys)){
-				$isPrim = false;
-				if(!$reCreatePrimary){
-					if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false){
-						$isPrim = true;
-					}
-				}
-
-				if(!in_array($name,$eKeyNamesNOW) or $isPrim){
+		$eKeys = $this->_db->loadObjectList();
+		//vmdebug('my eKeys',$eKeys);
+		$ok=true;
+		//foreach($this->_db->loadColumn(2) as $i => $name) {
+		foreach($eKeys as $i => $eKey) {
+			//vmdebug('my eKey',$eKey);
+			if(strpos( $eKey->Key_name, 'PRIMARY' ) !== false) {
+				if(!$reCreatePrimary) {
 					continue;
-				} else {
-					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
 				}
-
-				if(!empty($query)){
-					$this->_db->setQuery($query);
-					if(!$this->_db->execute()){
-						$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
-					} else {
-						$dropped++;
-						//vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
-					}
-				}
-			} else {
-
-				$existing[] = $name;
-
 			}
+			if(empty($eKey->Key_name)) continue;
 
-			$isPrim = false;
+			$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
+			$this->_db->setQuery($query);
+			$eKeyNamesNOW = $this->_db->loadColumn(2);
+			//vmdebug('my array and key',$eKey->Key_name,$eKeyNamesNOW);
+			if(!in_array($eKey->Key_name,$eKeyNamesNOW)) continue;
 
+			$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$eKey->Key_name.'` ';
+
+			$this->_db->setQuery($query);
+
+			$ok =$this->_db->execute();
+			if(!$ok){
+				$this->_app->enqueueMessage('alterTable DROP INDEX '.$tablename.'.'.$eKey->Key_name.' :'.$this->_db->getErrorMsg() );
+			} else {
+				//$dropped++;
+				vmdebug('alterKey: Dropped KEY `'.$eKey->Key_name.'` in table `'.$tablename.'`');
+			}
+			//vmdebug( 'my $eKeys[$i]->Key_Column ', $eKeys[$i] );
+
+
+			//$this->_db->execute();
 		}
 
+/*
 		foreach($keys as $name =>$value){
 
 			if(!$reCreatePrimary){
@@ -501,13 +483,6 @@ class GenericTableUpdater extends VmModel{
 					continue;
 				}
 			}
-
-			if(in_array($name,$existing)){
-				continue;
-			}
-			$query = '';
-			$action = '';
-
 
 			$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
 			$action = 'ADD';
@@ -521,7 +496,7 @@ class GenericTableUpdater extends VmModel{
  					//vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
 				}
 			}
-		}
+		} //*/
 
 	}
 

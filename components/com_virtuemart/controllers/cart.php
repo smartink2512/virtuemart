@@ -376,7 +376,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	/**
 	 * Change the shopper
 	 *
-	 * @author Maik K�nnemann
+	 * @author Maik Künnemann
 	 *
 	 */
 	public function changeShopper() {
