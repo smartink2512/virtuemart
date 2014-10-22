@@ -75,7 +75,6 @@ class VmPdf {
 if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 	vmError('VmPDF helper: For the PDF invoice and other PDF business letters, you must install the tcpdf library at '.VMPATH_LIBS.DS.'tcpdf');
 } else {
-	defined('K_PATH_IMAGES') or define ('K_PATH_IMAGES', VMPATH_ROOT);
 
 	if(!class_exists('TCPDF'))require(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php');
 	// Extend the TCPDF class to create custom Header and Footer as configured in the Backend
@@ -247,7 +246,9 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 		}
 
 	public function Header() {
+
 		if ($this->vendor->vendor_letter_header != 1) return;
+
 		if ($this->header_xobjid === false) {
 			// start a new XObject Template
 			$this->header_xobjid = $this->startTemplate($this->w, $this->tMargin);
@@ -268,6 +269,7 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 			$header_x = (($this->getRTL())?($this->original_rMargin):($this->original_lMargin));
 			$cw = $this->w - $this->original_lMargin - $this->original_rMargin;
 			if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
+
 				if (!class_exists ('JFile')) {
 					require(VMPATH_LIBS . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
@@ -277,17 +279,17 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 						require(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 					}
 
-					$imgtype = TCPDF_IMAGES::getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
+					$imgtype = TCPDF_IMAGES::getImageFileType(VMPATH_ROOT.DS.$headerdata['logo']);
 				} else {
-					$imgtype = $this->getImageFileType(K_PATH_IMAGES.DS.$headerdata['logo']);
+					$imgtype = $this->getImageFileType(VMPATH_ROOT.DS.$headerdata['logo']);
 				}
 
 				if (($imgtype == 'eps') OR ($imgtype == 'ai')) {
-					$this->ImageEps(K_PATH_IMAGES.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->ImageEps(VMPATH_ROOT.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} elseif ($imgtype == 'svg') {
-					$this->ImageSVG(K_PATH_IMAGES.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->ImageSVG(VMPATH_ROOT.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
 				} else {
-					$this->Image(K_PATH_IMAGES.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
+					$this->Image(VMPATH_ROOT.DS.$headerdata['logo'], '', '', $headerdata['logo_width']);
 				}
 				$imgy = $this->getImageRBY();
 				$header_x +=  ($headerdata['logo_width'] * 1.1);

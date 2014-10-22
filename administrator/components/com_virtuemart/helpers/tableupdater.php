@@ -199,6 +199,7 @@ class GenericTableUpdater extends VmModel{
 
 
 			if($slug){
+				$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`)';
 				$lines[1]['slug'] = 'UNIQUE KEY `slug` (`slug`)';
 				//a slug must anyway be unique and so one index for both is faster
 				//testing revealed that it is slower
@@ -218,7 +219,7 @@ class GenericTableUpdater extends VmModel{
 			$i++;
 
 		}
-
+		$this->reCreaPri = 1;
 		$ret = $this->updateMyVmTables($langTables);
 		// 		vmTime('done creation of lang tables');
 		return $ret;

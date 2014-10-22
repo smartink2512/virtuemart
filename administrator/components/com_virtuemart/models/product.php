@@ -1927,23 +1927,6 @@ class VirtueMartModelProduct extends VmModel {
 		$prodTable = $this->getTable ('products');
 		$prodTable->bindChecknStore ($data);
 
-		$langs = (array)VmConfig::get ('active_languages');
-		if (count ($langs) > 1) {
-			foreach ($langs as $lang) {
-				$lang = str_replace ('-', '_', strtolower ($lang));
-				$db->setQuery ('SELECT `product_name` FROM `#__virtuemart_products_' . $lang . '` WHERE `virtuemart_product_id` = "' . $prodTable->virtuemart_product_id . '" ');
-				$res = $db->loadResult ();
-				if (!$res) {
-					$db->setQuery ('INSERT INTO `#__virtuemart_products_' . $lang . '` (`virtuemart_product_id`,`slug`) VALUES ("' . $prodTable->virtuemart_product_id . '","' . $prodTable->slug . '");');
-					$db->query ();
-					$err = $db->getErrorMsg ();
-					if (!empty($err)) {
-						vmError ('Database error: createChild ' . $err);
-					}
-				}
-			}
-
-		}
 		return $data['virtuemart_product_id'];
 	}
 
@@ -1956,10 +1939,8 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function createClone ($id) {
 
-		//	if (is_array($cids)) $cids = array($cids);
 		$product = $this->getProduct ($id, FALSE, FALSE, FALSE);
 		$product->field = $this->productCustomsfieldsClone ($id);
-// 		vmdebug('$product->field',$product->field);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->mprices = $this->productPricesClone ($id);
 
@@ -1970,8 +1951,29 @@ class VirtueMartModelProduct extends VmModel {
 			$product->created_by = 0;
 		}
 		$product->slug = $product->slug . '-' . $id;
-		$product->save_customfields = 1;
-		$this->store ($product);
+
+		$newId = $this->store ($product);
+
+		$langs = VmConfig::get('active_languages', array());
+		if (!$langs or count($langs)<2) return $this->_id;
+
+		$langTable = $this->getTable('products');
+
+		foreach($langs as $lang){
+			if($lang==VmConfig::$vmlangTag) continue;
+			$langTable->emptyCache();
+			$langTable->setLanguage($lang);
+			//Disables the language fallback
+			$langTable->_ltmp = true;
+			$langTable->load($id);
+			if($langTable->_loaded){
+				if(!empty($langTable->virtuemart_product_id)){
+					$langTable->virtuemart_product_id = $newId;
+					$langTable->bindChecknStore($langTable);
+				}
+			}
+		}
+
 		return $this->_id;
 	}
 	
@@ -2225,12 +2227,20 @@ class VirtueMartModelProduct extends VmModel {
 			if ($virtuemart_manufacturer_id != '') {
 				$manufacturerTxt = '&virtuemart_manufacturer_id=' . $virtuemart_manufacturer_id;
 			}
-
+			if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+				$query = 'SELECT DISTINCT IFNULL(l.`mf_name`,ld.mf_name) as mf_name,IFNULL(l.`virtuemart_manufacturer_id`,ld.`virtuemart_manufacturer_id`) as virtuemart_manufacturer_id
+FROM `vm3j2_virtuemart_manufacturers_'.VmConfig::$defaultLang.'` as ld
+LEFT JOIN `vm3j2_virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l using (`virtuemart_manufacturer_id`)';
+			} else {
+				$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_' . VmConfig::$vmlang . '` as l';
+			}
 			// if ($mf_virtuemart_product_ids) {
-			$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_' . VmConfig::$vmlang . '` as l';
-			$query .= ' JOIN `#__virtuemart_product_manufacturers` AS pm using (`virtuemart_manufacturer_id`)';
-			$query .= ' LEFT JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
-			$query .= ' LEFT JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+
+			$query .= ' INNER JOIN `#__virtuemart_product_manufacturers` AS pm using (`virtuemart_manufacturer_id`)';
+			$query .= ' INNER JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+			if ($virtuemart_category_id) {
+				$query .= ' INNER JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+			}
 			$query .= ' WHERE p.`published` =1';
 			if ($virtuemart_category_id) {
 				$query .= ' AND c.`virtuemart_category_id` =' . (int)$virtuemart_category_id;
@@ -2238,7 +2248,7 @@ class VirtueMartModelProduct extends VmModel {
 			$query .= ' ORDER BY l.`mf_name`';
 			$this->_db->setQuery ($query);
 			$manufacturers = $this->_db->loadObjectList ();
-			// 		vmdebug('my manufacturers',$this->_db->getQuery());
+			vmdebug('my manufacturers',$this->_db->getQuery());
 			$manufacturerLink = '';
 			if (count ($manufacturers) > 0) {
 				$manufacturerLink = '<div class="orderlist">';

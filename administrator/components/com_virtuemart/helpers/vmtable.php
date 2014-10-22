@@ -46,7 +46,8 @@ class VmTable extends JTable {
 	protected $_translatableFields = array();
 	public $_cryptedFields = false;
 	protected $_langTag = null;
-	protected $_ltmp = false;
+	public $_ltmp = false;
+	public $_loaded = false;
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
 
@@ -106,6 +107,19 @@ class VmTable extends JTable {
 
 	}
 
+/*	public function setProperties($properties) {
+		if (is_array($properties) || is_object($properties)) {
+			foreach ((array) $properties as $k => $v) {
+				if ('_' != substr($k, 0, 1)) {
+					$this->$k = $v;
+				}
+			}
+			return true;
+		}
+
+		return false;
+	}*/
+
 	public function setPrimaryKey($key, $keyForm = 0) {
 
 		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
@@ -154,6 +168,11 @@ class VmTable extends JTable {
 		VmConfig::loadConfig();
 
 		$this->_langTag = VmConfig::$vmlang;
+		$this->_tbl_lang = $this->_tbl . '_' . $this->_langTag;
+	}
+
+	public function setLanguage($tag){
+		$this->_langTag = strtolower(strtr($tag,'-','_'));
 		$this->_tbl_lang = $this->_tbl . '_' . $this->_langTag;
 	}
 
@@ -675,6 +694,7 @@ class VmTable extends JTable {
 		$result = $db->loadAssoc();
 
 		if ($result) {
+			$this->_loaded = true;
 			$this->bind($result);
 			if (!empty($this->_xParams)) {
 				//Maybe better to use for $this an &
@@ -694,7 +714,7 @@ class VmTable extends JTable {
 								$key = trim($temp[1]);
 								//vmdebug('my $result ',$result[$key]);
 								if (isset($result[$key])) $this->$key = $result[$key]; else $this->$key = false;
-								vmdebug('$tableJoins $tableJoins',$key,(int)$this->$key);
+
 							} else {
 								if (isset($result[$sel])) $this->$sel = $result[$sel];
 							}
@@ -708,10 +728,12 @@ class VmTable extends JTable {
 			}
 		} else {
 
-			if(VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
+			if(!$this->_ltmp and VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = VmConfig::$defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
+			} else {
+				$this->_loaded = false;
 			}
 		}
 
@@ -764,12 +786,10 @@ class VmTable extends JTable {
 			if(!class_exists('vmCrypt')){
 				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			}
-			vmdebug('my crytped fields in store '.get_class($this),$this->_cryptedFields);
+
 			foreach($this->_cryptedFields as $field){
 				if(isset($this->$field)){
 					$this->$field = vmCrypt::encrypt($this->$field);
-				} else {
-					vmdebug('Store vmtable empty property for '.$field);
 				}
 			}
 		}
@@ -960,7 +980,8 @@ class VmTable extends JTable {
 			$slugName = $this->_slugName;
 
 			if (in_array($slugAutoName, $this->_translatableFields)) {
-				$checkTable = $this->_tbl . '_' . VmConfig::$vmlang;
+				$checkTable = $this->_tbl_lang;
+				vmTrace('Language table in normal check?');
 			} else {
 				$checkTable = $this->_tbl;
 			}
@@ -1146,6 +1167,7 @@ class VmTable extends JTable {
 			$db = JFactory::getDBO();
 			$dataTable = clone($this);
 			$langTable = new VmTableData($this->_tbl_lang, $tblKey, $db);
+			$langTable->setLanguage($this->_langTag);
 			$langTable->setPrimaryKey($tblKey);
 			$langData = array();
 			$langObKeys = array();
@@ -1211,6 +1233,7 @@ class VmTable extends JTable {
 			$langTable->_slugName = 'slug';
 			unset($dataTable->_slugName);
 
+			//$langTable->bindTo($this,$langData);
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
 			//We must check the langtable BEFORE we store the normal table, cause the langtable is often defining if there are enough data to store it (for exmple the name)

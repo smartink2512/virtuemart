@@ -27,6 +27,7 @@ class VmView extends JViewLegacy{
 
 	var $isMail = false;
 	var $isPdf = false;
+
 	/**
 	 * Execute and display a template script.
 	 *
@@ -49,6 +50,58 @@ class VmView extends JViewLegacy{
 			echo vmJsApi::writeJS();
 		}
 
+	}
+
+	/**
+	 * Renders sublayouts
+	 *
+	 * @author Max Milbers
+	 * @param $name
+	 * @param int $viewData viewdata for the rendered sublayout, do not remove
+	 * @return string
+	 */
+	public function renderVmSubLayout($name=0,$viewData=0){
+
+		if ($name === 0) {
+			$name = $this->_name;
+		}
+
+		$lPath = self::getVmSubLayoutPath ($name);
+
+		if($lPath){
+			if($viewData!==0 and is_array($viewData)){
+				foreach($viewData as $k => $v){
+					if ('_' != substr($k, 0, 1) and !isset($this->$k)) {
+						$this->$k = $v;
+					}
+				}
+			}
+			ob_start ();
+			include ($lPath);
+			return ob_get_clean();
+		} else {
+			vmdebug('renderVmSubLayout layout not found '.$name);
+		}
+
+	}
+
+	static public function getVmSubLayoutPath($name){
+		$lPath = false;
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$vmStyle = VmTemplate::loadVmTemplateStyle();
+		$template = $vmStyle['template'];
+		// get the template and default paths for the layout if the site template has a layout override, use it
+		$templatePath = JPATH_SITE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
+
+		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if (JFile::exists ($templatePath)) {
+			$lPath =  $templatePath;
+		} else {
+			if (JFile::exists (VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php')) {
+				$lPath = VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php';
+			}
+		}
+		return $lPath;
 	}
 
 	function prepareContinueLink(){

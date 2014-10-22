@@ -43,7 +43,6 @@ class vmFile {
 			$str = $lang->transliterate($str);
 		}
 
-		vmdebug('makeSafe',$str);
 		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 
 		vmdebug('makeSafe',$str);

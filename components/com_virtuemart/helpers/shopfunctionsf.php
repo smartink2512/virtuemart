@@ -426,31 +426,20 @@ class shopFunctionsF {
 	 * @return string
 	 */
 	static public function renderVmSubLayout($name,$viewData=0){
-		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
-		$vmStyle = VmTemplate::loadVmTemplateStyle();
-		$template = $vmStyle['template'];
-		// get the template and default paths for the layout if the site template has a layout override, use it
-		$templatePath = JPATH_SITE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
 
-		$layout = false;
-		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		if (JFile::exists ($templatePath)) {
-			$layout =  $templatePath;
-		} else {
-			if (JFile::exists (VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php')) {
-				$layout = VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php';
-			}
-		}
+		$lPath = VmView::getVmSubLayoutPath ($name);
 
-		if($layout){
+		if($lPath){
 			ob_start ();
-			include ($layout);
-			return ob_get_clean ();
+			include ($lPath);
+			return ob_get_clean();
 		} else {
 			vmdebug('renderVmSubLayout layout not found '.$name);
 		}
 
 	}
+
+
 
 	/**
 	 * Prepares a view for rendering email, then renders and sends
