@@ -5,7 +5,7 @@
  *
  * @package	VirtueMart
  * @subpackage
- * @author Kohl Patrick, Maik Künnemann
+ * @author Kohl Patrick, Maik Kï¿½nnemann
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
