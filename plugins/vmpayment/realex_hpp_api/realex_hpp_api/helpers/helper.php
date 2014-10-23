@@ -597,8 +597,6 @@ class  RealexHelperRealex {
 
 		$timestamp = $this->getTimestamp();
 		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_AUTH);
-		// 4 indicates the CVN was not requested by the merchant.
-		$presind = $this->_method->cvn_checking ? 1:4;
 		$xml_request .= '<card>
 				<number>' . $this->getCCnumber() . '</number>
 				<expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
@@ -607,7 +605,7 @@ class  RealexHelperRealex {
 				<issueno></issueno>
 				<cvn>
 				<number>' . $this->customerData->getVar('cc_cvv') . '</number>
-				<presind>' . $presind . '</presind>
+				<presind>1</presind>
 				</cvn>
 				</card>
 				';
