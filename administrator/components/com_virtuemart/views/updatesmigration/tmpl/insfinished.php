@@ -59,8 +59,8 @@ if($option=='com_virtuemart'){
 					src="components/com_virtuemart/assets/images/vm_menulogo.png"
 					alt="Cart" /> </a> <br /> <br />
 				<h2>
-
-				<?php echo vmText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
+				 Welcome to VirtueMart<br />
+The complete e-Commerce shopping cart solution for Joomla</h2>
 			</td>
 		<tr>
 			<td>
