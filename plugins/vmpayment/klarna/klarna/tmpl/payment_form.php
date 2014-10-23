@@ -85,24 +85,18 @@ if ($sType=='part') {
 		klarna.methodReady('<?php echo $sType ?>');
 	});
 </script>
-<div class="klarna_baloon" id="klarna_baloon" style="display: none">
-	<div class="klarna_baloon_top"></div>
-	<div class="klarna_baloon_middle" id="klarna_baloon_content">
-		<div></div>
-	</div>
-	<div class="klarna_baloon_bottom"></div>
-</div>
-<div class="klarna_red_baloon" id="klarna_red_baloon" style="display: none">
+
+<div class="klarna_red_baloon" id="klarna_red_baloon_<?php echo $sType ?>" style="display: none">
     <div class="klarna_red_baloon_top"></div>
-    <div class="klarna_red_baloon_middle" id="klarna_red_baloon_content">
+    <div class="klarna_red_baloon_middle" id="klarna_red_baloon_content_<?php echo $sType ?>">
         <div><?php echo @$viewData['payment_params']['red_baloon_content']; ?></div>
     </div>
     <div class="klarna_red_baloon_bottom"></div>
 </div>
-<div class="klarna_blue_baloon" id="klarna_blue_baloon"
+<div class="klarna_blue_baloon" id="klarna_blue_baloon_<?php echo $sType ?>"
      style="display: none">
 	<div class="klarna_blue_baloon_top"></div>
-	<div class="klarna_blue_baloon_middle" id="klarna_blue_baloon_content">
+	<div class="klarna_blue_baloon_middle" id="klarna_blue_baloon_content_<?php echo $sType ?>">
 		<div></div>
 	</div>
 	<div class="klarna_blue_baloon_bottom"></div>
