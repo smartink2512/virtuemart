@@ -723,12 +723,11 @@ class VmTable extends JTable {
 
 						if (isset($result[$tableId])) $this->$tableId = $result[$tableId];
 					}
-
 				}
 			}
 		} else {
 
-			if(!$this->_ltmp and VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
+			if($this->_translatable and !$this->_ltmp and VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = VmConfig::$defaultLang;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;

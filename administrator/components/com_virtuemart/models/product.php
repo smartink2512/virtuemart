@@ -864,10 +864,12 @@ class VirtueMartModelProduct extends VmModel {
 		if(empty($child->categories)) $child->categories = array();
 
 		if($this->withRating){
-			$ratings = $this->getTable('ratings');
-			$ratings->load($virtuemart_product_id,'virtuemart_product_id');
-			if($ratings->published){
-				$child->rating = $ratings->rating;
+			if(!isset($child->rating)){
+				$ratings = $this->getTable('ratings');
+				$ratings->load($virtuemart_product_id,'virtuemart_product_id');
+				if($ratings->published){
+					$child->rating = $ratings->rating;
+				}
 			}
 		}
 
@@ -992,9 +994,7 @@ class VirtueMartModelProduct extends VmModel {
 				$i++;
 
 				if(!isset($product->allPrices['salesPrice']) and $product_parent_id!=0){
-					$db = JFactory::getDbo();
-					$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . $product_parent_id);
-					$product_parent_id = $db->loadResult ();
+					$product_parent_id = $this->getProductParentId($product_parent_id);
 				}
 			}
 		}
@@ -2626,15 +2626,18 @@ function lowStockWarningEmail($virtuemart_product_id) {
 	}
 
 
-	function getProductParent ($product_parent_id) {
+	function getProductParentId ($product_parent_id) {
 
 		if (empty($product_parent_id)) {
-			return array();
+			return 0;
 		}
-		$product_parent_id = (int)$product_parent_id;
-		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT * FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` WHERE `virtuemart_product_id` =' . $product_parent_id);
-		return $db->loadObject ();
+		static $parentCache = array();
+		if(!isset($parentCache[$product_parent_id])){
+			$db = JFactory::getDbo();
+			$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . (int)$product_parent_id);
+			$parentCache[$product_parent_id] = $db->loadResult ();
+		}
+		return $parentCache[$product_parent_id];
 	}
 
 

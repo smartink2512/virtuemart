@@ -207,9 +207,6 @@ class VirtuemartViewProduct extends VmView {
 
 				if ($product->product_parent_id > 0) {
 
-					//$parentRelation= $customfields->getProductParentRelation($product->virtuemart_product_id);
-					//$this->assignRef('parentRelation',$parentRelation);
-
 					// Set up labels
 					$info_label = vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL');
 					$status_label = vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_STATUS_LBL');

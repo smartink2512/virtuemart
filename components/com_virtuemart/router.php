@@ -976,6 +976,7 @@ class vmrouterHelper {
 	public function getManufacturerName($virtuemart_manufacturer_id ){
 
 		static $manNamesCache = array();
+		if(empty($virtuemart_manufacturer_id)) return false;
 		if(!isset($manNamesCache[$virtuemart_manufacturer_id])){
 			$db = JFactory::getDBO();
 			$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;

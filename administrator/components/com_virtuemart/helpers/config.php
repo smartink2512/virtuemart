@@ -535,10 +535,14 @@ class VmConfig {
 
 	}
 
-	static function showDebug(){
+	static function showDebug($override=false){
 
-		if(self::$_debug===NULL){
-			$debug = VmConfig::get('debug_enable','none');
+		if(self::$_debug===NULL or $override!=false){
+			if($override) {
+				$debug = $override;
+			} else {
+				$debug = VmConfig::get('debug_enable','none');
+			}
 			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){

@@ -629,7 +629,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			/* related category*/
 			case 'Z':
-				if (!$product_id) {
+				if (!$product_id or empty($field->customfield_value)) {
 					return '';
 				} // special case it's category ID !
 
@@ -1046,11 +1046,15 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 					$customfield->display =  $this->displayCustomMedia ($customfield->customfield_value);
 					break;
 				case 'Z':
+					if(empty($customfield->customfield_value)) break;
 					$html = '';
 					$q = 'SELECT * FROM `#__virtuemart_categories_' . VmConfig::$vmlang . '` as l JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`) WHERE `published`=1 AND l.`virtuemart_category_id`= "' . (int)$customfield->customfield_value . '" ';
 					$db = JFactory::getDBO();
 					$db->setQuery ($q);
 					if ($category = $db->loadObject ()) {
+
+						if(empty($category->virtuemart_category_id)) break;
+
 						$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "' . $category->virtuemart_category_id . '" ';
 						$db->setQuery ($q);
 						$thumb = '';

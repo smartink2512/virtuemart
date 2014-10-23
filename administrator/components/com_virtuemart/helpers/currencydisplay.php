@@ -333,7 +333,7 @@ class CurrencyDisplay {
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){
 			if(!empty($price) or $name == 'billTotal' or $name == 'billTaxAmount'){
-				$vis = " vm-display vm-price";
+				$vis = " vm-display vm-price-value";
 				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1],$name );
 			} else {
 				$priceFormatted = '';
@@ -349,9 +349,9 @@ class CurrencyDisplay {
 			if($this->_priceConfig[$name][2]) $descr = vmText::_($description);
 			// 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
 			if(!$switchSequel){
-				return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="vm-price-value">'.$priceFormatted.'</span></div>';
+				return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="Price'.$name.'">'.$priceFormatted.'</span></div>';
 			} else {
-				return '<div class="Price'.$name.$vis.'"  ><span class="vm-price-value">'.$priceFormatted.'</span>'.$descr.'</div>';
+				return '<div class="Price'.$name.$vis.'"  ><span class="Price'.$name.'" >'.$priceFormatted.'</span>'.$descr.'</div>';
 			}
 		}
 
@@ -480,56 +480,6 @@ class CurrencyDisplay {
 	 */
 	public function getId() {
 		return($this->_currency_id);
-	}
-
-	/**
-	 * Return the number of decimal places
-	 *
-	 * @author RickG
-	 * @return int Number of decimal places
-	 */
-	public function getNbrDecimals() {
-		return($this->_nbDecimal);
-	}
-
-	/**
-	 * Return the decimal symbol
-	 *
-	 * @author RickG
-	 * @return string Decimal place symbol
-	 */
-	public function getDecimalSymbol() {
-		return($this->_decimal);
-	}
-
-	/**
-	 * Return the decimal symbol
-	 *
-	 * @author RickG
-	 * @return string Decimal place symbol
-	 */
-	public function getThousandsSeperator() {
-		return($this->_thousands);
-	}
-
-	/**
-	 * Return the positive format
-	 *
-	 * @author RickG
-	 * @return string Positive number format
-	 */
-	public function getPositiveFormat() {
-		return($this->_positivePos);
-	}
-
-	/**
-	 * Return the negative format
-	 *
-	 * @author RickG
-	 * @return string Negative number format
-	 */
-	public function getNegativeFormat() {
-		return($this->_negativePos);
 	}
 
 }

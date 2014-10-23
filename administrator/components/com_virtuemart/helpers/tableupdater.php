@@ -440,11 +440,11 @@ class GenericTableUpdater extends VmModel{
 		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
 		$this->_db->setQuery($query);
 		$eKeys = $this->_db->loadObjectList();
-		//vmdebug('my eKeys',$eKeys);
+
 		$ok=true;
-		//foreach($this->_db->loadColumn(2) as $i => $name) {
+
 		foreach($eKeys as $i => $eKey) {
-			//vmdebug('my eKey',$eKey);
+
 			if(strpos( $eKey->Key_name, 'PRIMARY' ) !== false) {
 				if(!$reCreatePrimary) {
 					continue;
@@ -452,10 +452,10 @@ class GenericTableUpdater extends VmModel{
 			}
 			if(empty($eKey->Key_name)) continue;
 
-			$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
+			$query = "SHOW INDEXES  FROM `".$tablename."` ";
 			$this->_db->setQuery($query);
 			$eKeyNamesNOW = $this->_db->loadColumn(2);
-			//vmdebug('my array and key',$eKey->Key_name,$eKeyNamesNOW);
+
 			if(!in_array($eKey->Key_name,$eKeyNamesNOW)) continue;
 
 			$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$eKey->Key_name.'` ';
@@ -469,13 +469,8 @@ class GenericTableUpdater extends VmModel{
 				//$dropped++;
 				vmdebug('alterKey: Dropped KEY `'.$eKey->Key_name.'` in table `'.$tablename.'`');
 			}
-			//vmdebug( 'my $eKeys[$i]->Key_Column ', $eKeys[$i] );
-
-
-			//$this->_db->execute();
 		}
 
-/*
 		foreach($keys as $name =>$value){
 
 			if(!$reCreatePrimary){

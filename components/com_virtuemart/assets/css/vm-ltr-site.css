@@ -10,7 +10,7 @@
 .additional-images img{margin-right:8px;width:50px;height:auto;}
 .product-price{margin:0 0 6px;}
 .vm-price {text-align: right;line-height: 1.2em;}
-.vm-price-desc {min-width: 1em;}
+.vm-price-desc {min-width: 1em;margin:0.0em 1.0em 0.2em 0;}
 .vm-price span {display: inline-block; min-width: 4em; padding: 0 0.2em;}
 .vm3pr-1 .product-price {height: 1.25em;} .vm3pr-2 .product-price {height: 2.5em;}.vm3pr-3 .product-price {height: 3.75em;}.vm3pr-4 .product-price {height: 5.0em;}.vm3pr-5 .product-price {height: 6.25em;}.vm3pr-6 .product-price {height: 6.25em;}
 .vm3pr-0 .addtocart-area {height: 0.0em;} .vm3pr-1 .addtocart-area {height: 3.2em;}.vm3pr-2 .addtocart-area {height: 6.4em;}.vm3pr-3 .addtocart-area  {height: 9.6em;}.vm3pr-4 .addtocart-area  {height: 12.8em;}.vm3pr-5 .addtocart-area  {height: 16.0em;}

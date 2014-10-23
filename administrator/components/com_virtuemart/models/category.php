@@ -630,19 +630,22 @@ class VirtueMartModelCategory extends VmModel {
 	*/
 	public function hasChildren($virtuemart_category_id) {
 // 		vmSetStartTime('hasChildren');
-		$db = JFactory::getDBO();
-		$q = "SELECT `category_child_id`
+		static $hasChildrenCache=array();
+		if(!isset($hasChildrenCache[$virtuemart_category_id])){
+			$db = JFactory::getDBO();
+			$q = "SELECT `category_child_id`
 			FROM `#__virtuemart_category_categories`
 			WHERE `category_parent_id` = ".(int)$virtuemart_category_id;
-		$db->setQuery($q);
-		$db->execute();
-		if ($db->getAffectedRows() > 0){
+			$db->setQuery($q);
+			$db->execute();
+			if ($db->getAffectedRows() > 0){
 // 			vmTime('hasChildren YES','hasChildren');
-			return true;
-		} else {
-// 			vmTime('hasChildren NO','hasChildren');
-			return false;
+				$hasChildrenCache[$virtuemart_category_id] = true;
+			} else {
+				$hasChildrenCache[$virtuemart_category_id] = false;
+			}
 		}
+		return $hasChildrenCache[$virtuemart_category_id];
 
 	}
 
