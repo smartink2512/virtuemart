@@ -90,7 +90,7 @@ AdminUIHelper::startAdminArea($this);
 				<td align="left">
 					<?php
 					if(empty($row->shopper_group_name)) $row->shopper_group_name = $this->defaultShopperGroup;
-					echo $row->shopper_group_name;
+					echo vmText::_($row->shopper_group_name);
 					?>
 				</td>
 				<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
