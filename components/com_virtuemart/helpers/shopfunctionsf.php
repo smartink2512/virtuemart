@@ -286,22 +286,6 @@ class shopFunctionsF {
 
 		$db = JFactory::getDbo();
 
-		if(empty($vmtemplate) or $vmtemplate=='default'){
-			$q = 'SELECT id, home, template, s.params
-  FROM #__template_styles as s
-  LEFT JOIN #__extensions as e
-  ON e.element=s.template
-  AND e.type="template"
-  AND e.client_id=s.client_id
-  WHERE s.client_id = 0
-  AND e.enabled = 1
-  AND s.home = 1';
-
-			$db->setQuery( $q );
-			$vmtemplate = $db->loadResult();
-
-		}
-
 		if(!empty($vmtemplate) and is_numeric($vmtemplate)) {
 
 			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$vmtemplate.'" ';
@@ -315,24 +299,40 @@ class shopFunctionsF {
 				$err = 'The selected vmtemplate is not existing';
 				vmError( 'renderMail get Template failed: '.$err );
 			}
-		} else if(empty($vmtemplate)){
+		} else if(empty($vmtemplate) or $vmtemplate=='default'){
 			if(JVM_VERSION > 1) {
-				$app =& JFactory::getApplication(0);
-				//vmdebug('loadVmTemplateStyle my $template',$app);
-				//This does not work correctly for mails, because we dont get the site application in the BE
-				$template = $app->getTemplate();
+				$app = JFactory::getApplication();
+				if($app->isAdmin()){
+					$q = 'SELECT id, home, template, s.params
+  FROM #__template_styles as s
+  LEFT JOIN #__extensions as e
+  ON e.element=s.template
+  AND e.type="template"
+  AND e.client_id=s.client_id
+  WHERE s.client_id = 0
+  AND e.enabled = 1
+  AND s.home = 1';
+
+					$db->setQuery( $q );
+					$template = $db->loadAssoc();
+					$template = $template['template'];
+				} else {
+					//This does not work correctly for mails, because we dont get the site application in the BE
+					$template = $app->getTemplate();
+				}
 			} else {
 				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
 				$db = JFactory::getDbo();
 				$db->setQuery( $q );
 				$template = $db->loadResult();
 			}
+		} else {
+			$template = $vmtemplate;
+		}
 
-			if(!$template){
-				$err = 'Could not load default template style';
-				vmError( 'renderMail get Template failed: '.$err );
-			}
-
+		if(!$template){
+			$err = 'Could not load default template style';
+			vmError( 'renderMail get Template failed: '.$err );
 		}
 		vmdebug('loadVmTemplateStyle my $template',$template);
 		return $template;
