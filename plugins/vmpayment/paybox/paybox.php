@@ -104,7 +104,6 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 			return FALSE;
 		}
 		vmdebug( "VM2 PAYBOX plgVmConfirmedOrder",$this->_currentMethod->key);
-		echo( "VM2 PAYBOX plgVmConfirmedOrder".$this->_currentMethod->key);
 
 		$payboxInterface = $this->_loadPayboxInterface($this);
 		$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
