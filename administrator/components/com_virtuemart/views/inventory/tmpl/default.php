@@ -74,7 +74,7 @@ AdminUIHelper::startAdminArea($this);
 				<?php
 				$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
 				?>
-				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?></td>
+				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($product->product_name))); ?></td>
 				<td><?php echo $product->product_sku; ?></td>
 				<td <?php echo $stockstatut; ?>><?php echo $product->product_in_stock; ?></td>
 				<td <?php echo $stockstatut; ?> width="5%"><?php echo $product->product_ordered; ?></td>

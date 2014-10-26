@@ -73,7 +73,7 @@ $productfileslist = $this->files;
 				<?php
 				$link = ""; //"index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
 				?>
-				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
+				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), empty($productfile->product_name)? '': htmlentities($productfile->product_name)); ?></td>
 				<!-- File name -->
 				<?php
 				$link = 'index.php?option='.$option.'&view=media&task=edit&virtuemart_media_id[]='.$productfile->virtuemart_media_id;

@@ -333,8 +333,9 @@ class GenericTableUpdater extends VmModel{
 			} else {
 
 				$this->createTable($tablename,$table);
-				$this->optimizeTable($tablename);
+
 			}
+			$this->optimizeTable($tablename);
 			// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
 			// 			$this->_db->query();
 			$i++;

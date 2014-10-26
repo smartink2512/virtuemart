@@ -61,7 +61,7 @@ $i = 0;
 			$parentRel = '';
 			if ($this->product->product_parent_id) {
 				$parentRel = vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_PARENT',JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
-						htmlspecialchars($this->product_parent->product_name), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlspecialchars($this->product_parent->product_name))).' =&gt; ');
+						$this->product_parent->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($this->product_parent->product_name))).' =&gt; ');
 			}
 			echo vmText::sprintf('COM_VIRTUEMART_PRODUCT_INFORMATION',$parentRel);
 			echo ' id: '.$this->product->virtuemart_product_id ?>
@@ -104,11 +104,11 @@ $i = 0;
 						$i = 1 - $i; ?>
 						<tr class="row<?php echo $i ?>">
 							<td>
-								<?php echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name,'target' => '_blank')) ?>
+								<?php echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($child->product_name),'target' => '_blank')) ?>
 								<!--input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][slug]" id="child<?php echo $child->virtuemart_product_id ?>slug" value="<?php echo $child->slug ?>" /-->
 							</td>
-							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo htmlspecialchars($child->product_name) ?>" /></td>
-							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_gtin]" id="child<?php echo $child->virtuemart_product_id ?>product_gtin" size="32" maxlength="64"value="<?php echo htmlspecialchars($child->product_gtin) ?>" /></td>
+							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo $child->product_name ?>" /></td>
+							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_gtin]" id="child<?php echo $child->virtuemart_product_id ?>product_gtin" size="32" maxlength="64"value="<?php echo $child->product_gtin ?>" /></td>
 
 							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->allPrices[$child->selectedPrice]['product_price'] ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->allPrices[$child->selectedPrice]['virtuemart_product_price_id'] ?>"  ></td>
 							<td><?php echo $child->product_in_stock ?></td>

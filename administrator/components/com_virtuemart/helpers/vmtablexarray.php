@@ -115,22 +115,23 @@ class VmTableXarray extends VmTable {
 		} else {
 			$orderby = '';
 		}
+		$hash = md5((int)$oid. $this->_skey . $this->_tbl . $this->_pkey . $orderby);
 
-		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.(int)$oid.'" '.$orderby;
-		$db->setQuery($q);
-
-		$result = $db->loadColumn();
-// 		vmdebug('my q ',$q,$result);
-		$error = $db->getErrorMsg();
-		if(!empty($error)){
-			vmError(get_class( $this ).':: load'.$error  );
-			return false;
-		} else {
-			if(empty($result)) return array();
-			if(!is_array($result)) $result = array($result);
-
-			return $result;
+		if (!isset (self::$_cache['ar'][$hash])) {
+			$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.(int)$oid.'" '.$orderby;
+			$db->setQuery($q);
+			$result = $db->loadColumn();
+			if(!$result){
+				//vmError(get_class( $this ).':: load'  );
+				self::$_cache['ar'][$hash] = false;
+			} else {
+				if(empty($result)) $result = array();
+				if(!is_array($result)) $result = array($result);
+				self::$_cache['ar'][$hash] = $result;
+			}
 		}
+
+		return self::$_cache['ar'][$hash];
 
     }
 

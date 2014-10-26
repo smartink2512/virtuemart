@@ -343,9 +343,9 @@ class VirtueMartModelCustom extends VmModel {
 		$table->custom_jplugin_id = $data['custom_jplugin_id'];
 		$table->_xParams = 'custom_params';
 
-		if(isset($data['custom_title'])){
+		/*if(isset($data['custom_title'])){
 			$data['custom_title'] = htmlentities($data['custom_title'], ENT_QUOTES, "UTF-8");
-		}
+		}*/
 		if(!empty($data['is_input'])){
 			if(empty($data['layout_pos'])) $data['layout_pos'] = 'addtocart';
 		}

@@ -93,7 +93,7 @@ $customs = $this->customs->items;
                             $lang = JFactory::getLanguage();
                             $text = $lang->hasKey($custom->custom_parent_title) ? vmText::_($custom->custom_parent_title) : $custom->custom_parent_title;
 
-                                echo JHtml::_('link', JRoute::_($link,FALSE),$text, array('title' => vmText::_('COM_VIRTUEMART_FILTER_BY').' '.$text)); ?></td>
+                                echo JHtml::_('link', JRoute::_($link,FALSE),$text, array('title' => vmText::_('COM_VIRTUEMART_FILTER_BY').' '.htmlentities($text))); ?></td>
 
 				<!-- Product name -->
 				<?php
@@ -101,7 +101,7 @@ $customs = $this->customs->items;
 				if ($custom->is_cart_attribute) $cartIcon=  'default';
 							 else  $cartIcon= 'default-off';
 				?>
-				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), vmText::_($custom->custom_title), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
+				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), vmText::_($custom->custom_title), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($custom->custom_title))); ?></td>
 				<td><?php echo vmText::_($custom->custom_desc); ?></td>
 				<td><?php echo vmText::_($custom->field_type_display); ?></td>
 				<td><span class="vmicon vmicon-16-<?php echo $cartIcon ?>"></span></td>

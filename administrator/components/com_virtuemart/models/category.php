@@ -159,9 +159,9 @@ class VirtueMartModelCategory extends VmModel {
 			if($useCache){
 				$cache = JFactory::getCache('com_virtuemart_cats','callback');
 				$cache->setCaching(true);
-				$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListObject' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir);
+				$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListObject' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
 			} else {
-				$_childCategoryList[$key] = VirtueMartModelCategory::getChildCategoryListObject($vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir);
+				$_childCategoryList[$key] = VirtueMartModelCategory::getChildCategoryListObject($vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
 			}
 
 		}
@@ -187,20 +187,21 @@ class VirtueMartModelCategory extends VmModel {
 			$lang = VmConfig::$vmlang;
 		}
 
-		//vmdebug('get list of products',$defaultLang,VmConfig::$vmlang);
-		if(VmConfig::$defaultLang!=$lang and Vmconfig::$langCount>1){
+		vmdebug('get list of products',VmConfig::$defaultLang,$lang);
+		if(VmConfig::$defaultLang!=$lang and VmConfig::$langCount>1){
 			$query = 'SELECT c.*, IFNULL(l.category_name,ld.category_name) as category_name,
 			 					IFNULL(l.category_description,ld.category_description) as category_description,
 			 					IFNULL(l.metadesc,ld.metadesc) as metadesc,
 			 					IFNULL(l.metakey,ld.metakey) as metakey,
 			 					IFNULL(l.customtitle,ld.customtitle) as customtitle,
 			 					IFNULL(l.slug,ld.slug) as slug
-			 FROM `#__virtuemart_categories` as c
+					FROM `#__virtuemart_categories` as c
 					INNER JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_category_id`)
 					LEFT JOIN `#__virtuemart_categories_'.$lang.'` as l using (`virtuemart_category_id`)';
 		} else {
-			$query = 'SELECT L.* FROM `#__virtuemart_categories_'.$lang.'` as L
-					JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
+			$query = 'SELECT L.*
+					FROM `#__virtuemart_categories_'.$lang.'` as L
+					INNER JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
 		}
 
 		$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on c.`virtuemart_category_id` = cx.`category_child_id` ';

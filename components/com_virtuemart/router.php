@@ -870,8 +870,8 @@ class vmrouterHelper {
 
 		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
 			$q = 'SELECT IFNULL(l.`virtuemart_category_id`,ld.`virtuemart_category_id`) as `virtuemart_category_id` ';
-			$q .= ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` AS `l` ';
-			$q .= ' RIGHT JOIN `#__virtuemart_categories_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_category_id`) ';
+			$q .= ' FROM `#__virtuemart_categories_'.VmConfig::$defaultLang.'` AS `ld` ';
+			$q .= ' LEFT JOIN `#__virtuemart_categories_' .VmConfig::$vmlang . '` as l using (`virtuemart_category_id`) ';
 			$q .= ' WHERE IFNULL(l.`slug`,ld.`slug`) = "'.$db->escape($slug).'" ';
 		} else {
 			$q = "SELECT `virtuemart_category_id`
@@ -918,29 +918,35 @@ class vmrouterHelper {
 	/* Get parent Product first found category ID */
 	public function getParentProductcategory($id){
 
-		$virtuemart_category_id = 0;
-		$db			= JFactory::getDBO();
-		$query = 'SELECT `product_parent_id` FROM `#__virtuemart_products`  ' .
-			' WHERE `virtuemart_product_id` = ' . (int) $id;
-		$db->setQuery($query);
-		/* If product is child then get parent category ID*/
-		if ($parent_id = $db->loadResult()) {
-			$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories`  ' .
-				' WHERE `virtuemart_product_id` = ' . $parent_id;
-			$db->setQuery($query);
+		static $parProdCat= array();
 
-			//When the child and parent id is the same, this creates a deadlock
-			//add $counter, dont allow more then 10 levels
-			if (!$virtuemart_category_id = $db->loadResult()){
-				$this->counter++;
-				if($this->counter<10){
-					$this->getParentProductcategory($parent_id) ;
+		if(!isset($parProdCat[$id])){
+			VmModel::getModel('product');
+			$parent_id = VirtueMartModelProduct::getProductParentId($id);
+
+			//If product is child then get parent category ID
+			if ($parent_id and $parent_id!=$id) {
+				$db = JFactory::getDbo();
+				$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories`  ' .
+					' WHERE `virtuemart_product_id` = ' . $parent_id;
+				$db->setQuery($query);
+
+				//When the child and parent id is the same, this creates a deadlock
+				//add $counter, dont allow more then 10 levels
+				if (!$parProdCat[$id] = $db->loadResult()){
+					$this->counter++;
+					if($this->counter<10){
+						$this->getParentProductcategory($parent_id) ;
+					}
 				}
+			} else {
+				$parProdCat[$id] = false;
 			}
 
+			$this->counter = 0;
 		}
-		$this->counter = 0;
-		return $virtuemart_category_id ;
+
+		return $parProdCat[$id] ;
 	}
 
 

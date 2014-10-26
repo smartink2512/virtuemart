@@ -126,7 +126,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 				if(empty($product->product_name)){
 					$product->product_name = 'Language Missing id '.$product->virtuemart_product_id;
 				}
-				echo JHtml::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?>
+				echo JHtml::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '. htmlentities($product->product_name))); ?>
 					<!-- </span>  -->
 				</td>
 
@@ -160,7 +160,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 						//echo JHtml::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name) );
 						$img = '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')';
 					}
-					echo JHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
+					echo JHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.htmlentities($product->product_name)));
 					?>
 					</td>
 				<!-- Product SKU -->

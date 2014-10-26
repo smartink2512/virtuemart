@@ -67,7 +67,7 @@ $i = 0;
 		<td width="21%" valign="top">
 			<div id="customer-mail-content">
 				<div><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SUBJECT') ?></div>
-				<input type="text" class="mail-subject" id="mail-subject" size="100"   value="<?php echo vmText::sprintf ('COM_VIRTUEMART_PRODUCT_EMAIL_SHOPPERS_SUBJECT',$this->product->product_name) ?>">
+				<input type="text" class="mail-subject" id="mail-subject" size="100"   value="<?php echo vmText::sprintf ('COM_VIRTUEMART_PRODUCT_EMAIL_SHOPPERS_SUBJECT',htmlentities($this->product->product_name)) ?>">
 
 				<div><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_CONTENT') ?></div>
 				<textarea style="width: 100%;" class="inputbox"   id="mail-body" cols="35" rows="10"></textarea>
@@ -84,7 +84,7 @@ $i = 0;
 				</span><br/>
 				<?php echo $this->lists['OrderStatus'];?>
 				<br/> <br/>
-				<div style="font-weight:bold;"><?php echo vmText::sprintf ('COM_VIRTUEMART_PRODUCT_SHOPPERS_LIST', htmlspecialchars ($this->product->product_name)); ?></div>
+				<div style="font-weight:bold;"><?php echo vmText::sprintf ('COM_VIRTUEMART_PRODUCT_SHOPPERS_LIST', ($this->product->product_name)); ?></div>
 				<table class="adminlist table" cellspacing="0" cellpadding="0">
 					<thead>
 					<tr>

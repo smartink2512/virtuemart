@@ -199,7 +199,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 					WHERE `product_parent_id` != "0" GROUP BY `product_parent_id` ';
 			$db->setQuery($q);
 			$childs = $db->loadColumn();
-			vmdebug('my children with customfields ',$childs);
+
 			$toDelete = array();
 			foreach($childs as $child_id){
 

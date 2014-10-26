@@ -88,6 +88,8 @@ class VirtueMartModelManufacturer extends VmModel {
 		foreach($errors as $error){
 			vmError($error);
 		}
+		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+		$cache->clean();
 		return $table->virtuemart_manufacturer_id;
 	}
 
@@ -149,7 +151,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$ordering = $this->_getOrdering();
 		//if ( $search && $search != 'true' or strpos($ordering,'mf_')!==FALSE or $ordering == 'm.virtuemart_manufacturer_id' ) {
 			$select .= ',`#__virtuemart_manufacturers_'.VmConfig::$vmlang.'`.*, mc.`mf_category_name` ';
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` USING (`virtuemart_manufacturer_id`) ';
+			$joinedTables .= ' INNER JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` USING (`virtuemart_manufacturer_id`) ';
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `m`.`virtuemart_manufacturercategories_id` ';
 		//}
 
@@ -172,5 +174,31 @@ class VirtueMartModelManufacturer extends VmModel {
 		return $_manufacturers[$hash];
 	}
 
+	static function getManufacturersOfProductsInCategory($virtuemart_category_id,$vmlang,$mlang = false){
+
+		if($mlang){
+			$query = 'SELECT DISTINCT IFNULL(l.`mf_name`,ld.mf_name) as mf_name,IFNULL(l.`virtuemart_manufacturer_id`,ld.`virtuemart_manufacturer_id`) as virtuemart_manufacturer_id
+FROM `#__virtuemart_manufacturers_'.VmConfig::$defaultLang.'` as ld
+LEFT JOIN `#__virtuemart_manufacturers_'.$vmlang.'` as l using (`virtuemart_manufacturer_id`)';
+			vmdebug('getManufacturersOfProductsInCategory use language fallback');
+		} else {
+			$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_' . $vmlang . '` as l';
+		}
+		// if ($mf_virtuemart_product_ids) {
+
+		$query .= ' INNER JOIN `#__virtuemart_product_manufacturers` AS pm using (`virtuemart_manufacturer_id`)';
+		$query .= ' INNER JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+		if ($virtuemart_category_id) {
+			$query .= ' INNER JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+		}
+		$query .= ' WHERE p.`published` =1';
+		if ($virtuemart_category_id) {
+			$query .= ' AND c.`virtuemart_category_id` =' . (int)$virtuemart_category_id;
+		}
+		$query .= ' ORDER BY `mf_name`';
+		$db = JFactory::getDBO();
+		$db->setQuery ($query);
+		return $db->loadObjectList ();
+	}
 }
 // pure php no closing tag

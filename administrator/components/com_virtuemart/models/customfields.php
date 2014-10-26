@@ -242,7 +242,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$html .= '</td><td>';
 		//$html .= 	//'<input type="hidden" name="childs['.$child->virtuemart_product_id .'][slug]" id="child'.$child->virtuemart_product_id .'slug" value="'.$child->slug .'" />
 					//'<input type="hidden" name="childs['.$child->virtuemart_product_id .'][product_parent_id]" id="child'.$child->virtuemart_product_id .'slug" value="'.$child->product_parent_id .'" />';
-		$html .= 	htmlspecialchars($child->product_name) .'</td>
+		$html .= 	$child->product_name .'</td>
 <td>'.$child->allPrices[$child->selectedPrice]['product_price'] .'</td>';
 
 		$product_id = $line['vm_product_id'];
@@ -263,7 +263,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				} else {
 					$value = trim($myoption[$k]);
 				}
-				vmdebug('my value',$value);
+
 			} else {
 				$name = 'childs['.$product_id .']['.$selectoption->voption.']';
 				$value = trim($child->{$selectoption->voption});
@@ -756,7 +756,6 @@ class VirtueMartModelCustomfields extends VmModel {
 								if($k==0 or !$productSelection){
 									$dropdowns[$k][] = $variant;
 								} else if($k>0 and $productSelection[$k-1] == $variants[$k-1]){
-									vmdebug('my ',$variant,$productSelection[$k-1]);
 									$dropdowns[$k][] = $variant;
 								} else {
 									$ignore[] = $product_id;
@@ -1070,9 +1069,8 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						break;
 					}
 					$pModel = VmModel::getModel('product');
-					//vmdebug('in customfield R my field',$customfield);
 
-					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,$customfield->wPrice,TRUE,1);
+					$related = $pModel->getProduct((int)$customfield->customfield_value,TRUE,$customfield->wPrice,TRUE,1);
 
 					if(!$related) break;
 

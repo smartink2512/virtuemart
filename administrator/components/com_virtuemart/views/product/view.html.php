@@ -474,7 +474,7 @@ class VirtuemartViewProduct extends VmView {
         $db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
 		if ($result = $db->loadResult()){
 			$result = vmText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
-			echo JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
+			echo JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',htmlentities($product_name)) ));
 		}
 	}
 
@@ -483,7 +483,7 @@ class VirtuemartViewProduct extends VmView {
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
 		if ($parent = $db->loadObject()){
-			$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
+			$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', htmlentities($parent->product_name));
 			echo JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
 		}
 	}

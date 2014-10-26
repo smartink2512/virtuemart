@@ -51,7 +51,7 @@ class VmTable extends JTable {
 	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
 
-	private static $_cache = array();
+	protected static $_cache = array();
 	private $_lhash = 0;
 
 	/**
@@ -730,7 +730,9 @@ class VmTable extends JTable {
 			if($this->_translatable and !$this->_ltmp and VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
 				$this->_ltmp = $this->_langTag;
 				$this->_langTag = VmConfig::$defaultLang;
+				$this->_tempHash = $this->_lhash;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
+
 			} else {
 				$this->_loaded = false;
 			}
@@ -739,9 +741,13 @@ class VmTable extends JTable {
 		if($this->_ltmp){
 			$this->_langTag = $this->_ltmp;
 			$this->_ltmp = false;
+			self::$_cache['l'][$this->_lhash] = self::$_cache['l'][$this->_tempHash] = $this->loadFieldValues(false);
+		}
+		else {
+			self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
 		}
 
-		self::$_cache['l'][$this->_lhash] = $this->loadFieldValues(false);
+
 		if($this->_cryptedFields){
 			$this->encryptFields();
 		}
@@ -910,6 +916,27 @@ class VmTable extends JTable {
 			foreach ($this->_varsToPushParam as $key => $v) {
 
 				if (isset($this->$key)) {
+					/*if($v[1]=='string'){
+						$filter = FILTER_SANITIZE_STRING;
+						$flags = FILTER_FLAG_ENCODE_LOW;
+						if(is_object($this->$key)) $this->$key = (array)$this->$key;
+						if(is_array($this->$key)){
+							$this->$key = filter_var_array($this->$key, $filter, $flags );
+						}
+						else {
+							$this->$key = filter_var($this->$key, $filter, $flags);
+						}
+					} else if($v[1]=='int') {
+						$filter = FILTER_SANITIZE_STRING;
+						$flags = FILTER_FLAG_ENCODE_LOW;
+						if(is_object($this->$key)) $this->$key = (array)$this->$key;
+						if(is_array($this->$key)){
+							$this->$key = filter_var_array($this->$key, $filter, $flags );
+						}
+						else {
+							$this->$key = filter_var($this->$key, $filter, $flags);
+						}
+					}*/
 					$this->$paramFieldName .= $key . '=' . json_encode($this->$key) . '|';
 					$this->_tmpParams[$key] = $this->$key;
 				} else {

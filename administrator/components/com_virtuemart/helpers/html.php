@@ -96,10 +96,10 @@ static function vmGetCharset() {
 			}
 		$lang =JFactory::getLanguage();
 		if($lang->hasKey($label.'_TIP')){
-			$label = '<span class="hasTip" title="'.vmText::_($label.'_TIP').'">'.vmText::_($label).'</span>' ;
+			$label = '<span class="hasTip" title="'.htmlentities(vmText::_($label.'_TIP')).'">'.vmText::_($label).'</span>' ;
 		} //Fallback
 		else if($lang->hasKey($label.'_EXPLAIN')){
-			$label = '<span class="hasTip" title="'.vmText::_($label.'_EXPLAIN').'">'.vmText::_($label).'</span>' ;
+			$label = '<span class="hasTip" title="'.htmlentities(vmText::_($label.'_EXPLAIN')).'">'.vmText::_($label).'</span>' ;
 		} else {
 			$label = vmText::_($label);
 		}
@@ -565,16 +565,16 @@ static function vmGetCharset() {
 	public static function booleanlist (  $name, $value,$class='class="inputbox"'){
 		return '<fieldset class="radio">'.JHtml::_( 'select.booleanlist',  $name , $class , $value).'</fieldset>' ;
 	}
-		/**
+
+	/**
 	 * Creating rows with input fields
 	 *
-	 * @author Patrick Kohl
 	 * @param string $text
 	 * @param string $name
 	 * @param string $value
 	 */
 	public static function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255',$more=''){
-		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.htmlspecialchars($value).'" />'.$more;
+		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.($value).'" />'.$more;
 	}
 
 	/**

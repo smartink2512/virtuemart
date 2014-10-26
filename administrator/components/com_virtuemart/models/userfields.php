@@ -267,7 +267,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmOnBeforeUserfieldSave',array( $plgName , &$data, &$field ) );
 		}
-		vmdebug('my table ',$field,$data);
+
 		if (!$field->bind($data)) {
 			// Bind data
 			vmError($field->getError());

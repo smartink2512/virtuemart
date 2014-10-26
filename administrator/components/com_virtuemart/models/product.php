@@ -771,7 +771,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!$child->published && $onlyPublished) {
 			//vmdebug('getProduct child is not published, returning zero');
-			$_products[$productKey] = FALSE;
+			self::$_products[$productKey] = FALSE;
 			return FALSE;
 		}
 
@@ -878,7 +878,7 @@ class VirtueMartModelProduct extends VmModel {
 		$app = JFactory::getApplication ();
 		if ($app->isSite () and $stockhandle == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 			vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
-			$_products[$productKey] = false;
+			self::$_products[$productKey] = false;
 		} else {
 			$product_available_date = substr($child->product_available_date,0,10);
 			$current_date = date("Y-m-d");
@@ -895,13 +895,13 @@ class VirtueMartModelProduct extends VmModel {
 			else if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
 				$child->availability = vmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHtml::_('date', $child->product_available_date, vmText::_('DATE_FORMAT_LC4'));
 			}
-			$_products[$productKey] = $child;
+			self::$_products[$productKey] = $child;
 		}
 
-		if(!$_products[$productKey]){
+		if(!self::$_products[$productKey]){
 			return false;
 		} else {
-			return clone($_products[$productKey]);
+			return clone(self::$_products[$productKey]);
 		}
 
 	}
@@ -1057,6 +1057,7 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	var $withRating = false;
+	static $_productsSingle = array();
 
 	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1, $withParent=false,$virtuemart_shoppergroup_ids=0) {
 
@@ -1084,10 +1085,10 @@ class VirtueMartModelProduct extends VmModel {
 		$front = $front?TRUE:0;
 		$productKey = $virtuemart_product_id.':'.$virtuemart_shoppergroup_idsString.':'.$quantity.':'.$front;
 		//$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields.$this->withRating.$virtuemart_shoppergroup_idsString);
-		static $_productsSingle = array();
-		if (array_key_exists ($productKey, $_productsSingle)) {
+
+		if (array_key_exists ($productKey, self::$_productsSingle)) {
 			//vmdebug('getProductSingle, take from cache '.$productKey);
-			return clone($_productsSingle[$productKey]);
+			return clone(self::$_productsSingle[$productKey]);
 		}
 
 		if (!empty($this->_id)) {
@@ -1101,7 +1102,8 @@ class VirtueMartModelProduct extends VmModel {
 			$product->virtuemart_media_id = $xrefTable->load ((int)$this->_id);
 
 			// Load the shoppers the product is available to for Custom Shopper Visibility
-			$product->shoppergroups = $this->getProductShoppergroups ($this->_id);
+			$product->shoppergroups = $this->getTable('product_shoppergroups')->load($this->_id);
+			//$product->shoppergroups = $this->getProductShoppergroups ($this->_id);
 
 			$usermodel = VmModel::getModel ('user');
 			$currentVMuser = $usermodel->getCurrentUser ();
@@ -1220,13 +1222,13 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			//$product->setDboNull();
-			$_productsSingle[$productKey] = $product;
+			self::$_productsSingle[$productKey] = $product;
 		}
 		else {
-			$_productsSingle[$productKey] = $this->fillVoidProduct ($front);
+			self::$_productsSingle[$productKey] = $this->fillVoidProduct ($front);
 		}
 
-		return clone($_productsSingle[$productKey]);
+		return clone(self::$_productsSingle[$productKey]);
 	}
 
 	/**
@@ -1293,18 +1295,23 @@ class VirtueMartModelProduct extends VmModel {
 	/**
 	 * Load  the product category
 	 *
-	 * @author Kohl Patrick,Max Milbers
+	 * @author Max Milbers
 	 * @return array list of categories product is in
 	 */
-	public function getProductCategories ($virtuemart_product_id = 0, $front = FALSE) {
+	public function getProductCategories ($virtuemart_product_id) {
 
-		$categories = array();
-		if ($virtuemart_product_id > 0) {
+		static $prodCats = array();
+
+		if(empty($virtuemart_product_id)) return false;
+
+		if(!isset($prodCats[$virtuemart_product_id])){
+			$categories = array();
 			$db = JFactory::getDbo();
 
 			$q = 'SELECT * FROM `#__virtuemart_product_categories`  WHERE `virtuemart_product_id` = ' . (int)$virtuemart_product_id;
 			$db->setQuery ($q);
 			$categoryIds = $db->loadAssocList();
+
 			$catTable = $this->getTable('categories');
 
 			foreach($categoryIds as $categoryId){
@@ -1313,29 +1320,12 @@ class VirtueMartModelProduct extends VmModel {
 				$tmp['ordering'] = $categoryId['ordering'];
 				$categories[] = $tmp;
 			}
+			$prodCats[$virtuemart_product_id] = $categories;
 		}
 
-		return $categories;
+		return $prodCats[$virtuemart_product_id];
 	}
 
-	/**
-	 * Load  the product shoppergroups
-	 *
-	 * @author Kohl Patrick,Max Milbers, Cleanshooter
-	 * @return array list of updateProductShoppergroupsTable that can view the product
-	 */
-	private function getProductShoppergroups ($virtuemart_product_id = 0) {
-
-		$shoppergroups = array();
-		if ($virtuemart_product_id > 0) {
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_product_shoppergroups` WHERE `virtuemart_product_id` = "' . (int)$virtuemart_product_id . '"';
-			$db = JFactory::getDbo();
-			$db->setQuery ($q);
-			$shoppergroups = $db->loadColumn ();
-		}
-
-		return $shoppergroups;
-	}
 
 	/**
 	 * Get the products in a given category
@@ -1872,6 +1862,9 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 
+		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+		$cache->clean();
+		
 		return $product_data->virtuemart_product_id;
 	}
 
@@ -2222,34 +2215,26 @@ class VirtueMartModelProduct extends VmModel {
 		$manufacturerLink = '';
 		if (VmConfig::get ('show_manufacturers')) {
 
+			$manuM = VmModel::getModel('manufacturer');
+			vmSetStartTime('mcaching');
+			$mlang=(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1);
+			if(true){
+				$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+				$cache->setCaching(true);
+				$manufacturers = $cache->call( array( 'VirtueMartModelManufacturer', 'getManufacturersOfProductsInCategory' ),$virtuemart_category_id,VmConfig::$vmlang,$mlang);
+				vmTime('Manufacturers by Cache','mcaching');
+			} else {
+				$manufacturers = $manuM ->getManufacturersOfProductsInCategory($virtuemart_category_id,VmConfig::$vmlang,$mlang);
+				vmTime('Manufacturers by function','mcaching');
+			}
+
 			// manufacturer link list
+			$manufacturerLink = '';
 			$virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', '');
 			if ($virtuemart_manufacturer_id != '') {
 				$manufacturerTxt = '&virtuemart_manufacturer_id=' . $virtuemart_manufacturer_id;
 			}
-			if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-				$query = 'SELECT DISTINCT IFNULL(l.`mf_name`,ld.mf_name) as mf_name,IFNULL(l.`virtuemart_manufacturer_id`,ld.`virtuemart_manufacturer_id`) as virtuemart_manufacturer_id
-FROM `vm3j2_virtuemart_manufacturers_'.VmConfig::$defaultLang.'` as ld
-LEFT JOIN `vm3j2_virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l using (`virtuemart_manufacturer_id`)';
-			} else {
-				$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_' . VmConfig::$vmlang . '` as l';
-			}
-			// if ($mf_virtuemart_product_ids) {
 
-			$query .= ' INNER JOIN `#__virtuemart_product_manufacturers` AS pm using (`virtuemart_manufacturer_id`)';
-			$query .= ' INNER JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
-			if ($virtuemart_category_id) {
-				$query .= ' INNER JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
-			}
-			$query .= ' WHERE p.`published` =1';
-			if ($virtuemart_category_id) {
-				$query .= ' AND c.`virtuemart_category_id` =' . (int)$virtuemart_category_id;
-			}
-			$query .= ' ORDER BY l.`mf_name`';
-			$this->_db->setQuery ($query);
-			$manufacturers = $this->_db->loadObjectList ();
-
-			$manufacturerLink = '';
 			if (count ($manufacturers) > 0) {
 				$manufacturerLink = '<div class="orderlist">';
 				if ($virtuemart_manufacturer_id > 0) {
@@ -2626,7 +2611,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 	}
 
 
-	function getProductParentId ($product_parent_id) {
+	static function getProductParentId ($product_parent_id) {
 
 		if (empty($product_parent_id)) {
 			return 0;

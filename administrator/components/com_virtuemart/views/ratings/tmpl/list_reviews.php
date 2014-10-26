@@ -74,7 +74,7 @@ $option = vRequest::getCmd('option');
 				<td><?php echo JHtml::_('link', $link, $review->customer.' ('.vmJsApi::date($review->created_on,'LC2',true).')', array("title" => vmText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<!-- Product name TODO Add paren_id in LINK ? not existing here -->
 				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id ?>
-				<td><?php echo JHtml::_('link', JRoute::_($link), $review->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
+				<td><?php echo JHtml::_('link', JRoute::_($link), $review->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($review->product_name))); ?></td>
 				<!-- Stars rating -->
 				<td align="center">
 					

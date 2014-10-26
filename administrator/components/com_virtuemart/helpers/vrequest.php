@@ -91,18 +91,18 @@ class vRequest {
 
 	/**
 	 * - Encodes all characters that has a numerical value <32.
-	 * - Strips all html.
+	 * - encodes <> and similar, so html and scripts do not work
 	 */
 	public static function getVar($name, $default = null){
-		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_ENCODE_LOW );
+		return self::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW );
 	}
 
 	/**
 	 * - Encodes all characters that has a numerical value <32.
-	 * - encodes html
+	 * - strips html
 	 */
 	public static function getString($name, $default = ''){
-		return self::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
+		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_ENCODE_LOW);
 	}
 
 	/**
@@ -137,18 +137,23 @@ class vRequest {
 			if(!isset($_REQUEST[$name])) return $default;
 
 			//if(strpos($name,'[]'!==FALSE)){
-			if(is_array($_REQUEST[$name])){
-				return filter_var_array($_REQUEST[$name], $filter );
-			}
-			else {
-				return filter_var($_REQUEST[$name], $filter, $flags);
-			}
+			return self::filter($_REQUEST[$name],$filter,$flags);
 
 		} else {
 			vmTrace('empty name in vRequest::get');
 			return $default;
 		}
 
+	}
+
+	public static function filter($var,$filter,$flags){
+		if(is_array($var)){
+
+			return filter_var_array($var, $filter, $flags );
+		}
+		else {
+			return filter_var($var, $filter, $flags);
+		}
 	}
 
 	/**
