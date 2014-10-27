@@ -18,6 +18,9 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+
+if($this->manager('report')){
 $rows = count( $this->report );
 $intervalTitle='day';
 $addDateInfo = false;
@@ -70,11 +73,16 @@ $js .="
       }
 ";
 vmJsApi::addJScript('vm.stats_chart',$js);
-?>
 
+}
+
+?>
 <div id="cpanel">
 
-	<div id="vm_stats_chart" style="width: 100%; height: 300px;"></div>
+	<?php if($this->manager('report')){
+		?><div id="vm_stats_chart" style="width: 100%; height: 300px;"></div><?php
+	} ?>
+
 	<div class="clear"></div>
 		<?php
 		$totalItems=5;

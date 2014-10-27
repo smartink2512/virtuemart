@@ -37,7 +37,9 @@ class VmView extends JViewLegacy {
 	// }
 	var $lists = array();
 	var $showVendors = null;
+	protected $_manager = array();
 	protected $canDo;
+
 	function __construct($config = array()) {
 		parent::__construct($config);
 		// What Access Permissions does this user have? What can (s)he do?
@@ -113,7 +115,7 @@ class VmView extends JViewLegacy {
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 		}
-		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
+		if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create')) {
 			JToolBarHelper::editList();
 		}
 		if ($this->canDo->get('core.admin') || $showNew && $this->canDo->get('vm.'.$view.'.create')) {
@@ -131,6 +133,37 @@ class VmView extends JViewLegacy {
 		} else {
 			self::showACLPref($view);
 		}
+
+		$wait = '';
+		if(JFactory::getApplication()->isSite()){
+		//	$wait = 'alert(\''. vmText::_('COM_VIRTUEMART_PROCESSING') .'\');';
+		}
+		// javascript for cookies setting in case of press "APPLY"
+		$j = "
+//<![CDATA[
+	Joomla.submitbutton=function(a){
+
+		var options = { path: '/', expires: 2}
+		if (a == 'apply') {
+			var idx = jQuery('#tabs li.current').index();
+			jQuery.cookie('vmapply', idx, options);
+		} else {
+			jQuery.cookie('vmapply', '0', options);
+		}
+		jQuery( '#media-dialog' ).remove();
+		form = document.getElementById('adminForm');
+		form.task.value = a;
+		form.submit();
+		//alert('Submit task '+a)
+		//jQuery.delay(1000);
+		".$wait."
+
+		//Joomla.submitform(a,form);
+		return false;
+	};
+//]]>
+	" ;
+		vmJsApi::addJScript('submit', $j);
 	}
 
 	/*
@@ -198,7 +231,7 @@ class VmView extends JViewLegacy {
 		//else {
             // 		vRequest::setVar('hidemainmenu', true);
 			JToolBarHelper::divider();
-			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
+			if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create') ) {
 				JToolBarHelper::save();
 				JToolBarHelper::apply();
 			}
@@ -207,11 +240,10 @@ class VmView extends JViewLegacy {
 			self::showACLPref($view);
 	//	}
 		$wait = '';
-		if(JFactory::getApplication()->isSite()){
+		/*if(JFactory::getApplication()->isSite()){
 			$wait = 'alert(\''. vmText::_('COM_VIRTUEMART_PROCESSING') .'\');';
-		}
+		}*/
 		// javascript for cookies setting in case of press "APPLY"
-		$document = JFactory::getDocument();
 		$j = "
 //<![CDATA[
 	Joomla.submitbutton=function(a){
@@ -227,7 +259,7 @@ class VmView extends JViewLegacy {
 		form = document.getElementById('adminForm');
 		form.task.value = a;
 		form.submit();
-
+		alert('Submit task '+a)
 		//jQuery.delay(1000);
 		".$wait."
 
@@ -420,43 +452,6 @@ class VmView extends JViewLegacy {
 		'. JHtml::_( 'form.token' );
 	}
 
-/*	static function getToolbar($vmView) {
-
-		// add required stylesheets from admin template
-		$document    = JFactory::getDocument();
-		$document->addStyleSheet('administrator/templates/system/css/system.css');
-		//now we add the necessary stylesheets from the administrator template
-		//in this case i make reference to the bluestork default administrator template in joomla 1.6
-		$document->addCustomTag(
-			'<link href="administrator/templates/bluestork/css/template.css" rel="stylesheet" type="text/css" />'."\n\n".
-			'<!--[if IE 7]>'."\n".
-			'<link href="administrator/templates/bluestork/css/ie7.css" rel="stylesheet" type="text/css" />'."\n".
-			'<![endif]-->'."\n".
-			'<!--[if gte IE 8]>'."\n\n".
-			'<link href="administrator/templates/bluestork/css/ie8.css" rel="stylesheet" type="text/css" />'."\n".
-			'<![endif]-->'."\n"
-			);
-
-		$html = '<div class="toolbar-list" id="toolbar">';
-		$html .= '<ul>';
-		$html .= '<li id="toolbar-save" class="button">';
-		$html .= '<a class="toolbar" onclick="Virtuemart.submitbutton(event,\'save\')" >
-<span class="icon-32-save"> </span>
-		'.vmText::_('COM_VIRTUEMART_SAVE').'
-</a>';
-		$html .= '</li>';
-		$html .= '<li id="toolbar-cancel" class="button">';
-		$html .= '<a class="toolbar" onclick="Virtuemart.submitbutton(event,\'cancel\')" >
-<span class="icon-32-cancel"> </span>
-		'.vmText::_('COM_VIRTUEMART_CANCEL').'
-</a>';
-		$html .= '</li>';
-		$html .= '</ul>';
-		$html .= '<div class="clr"></div>';
-		$html .= '</div>';
-		return $html;
-
-	}*/
 
 	/**
 	 * Additional grid function for custom toggles
@@ -554,9 +549,9 @@ class VmView extends JViewLegacy {
 	 * @return bool|null
 	 */
 	public function showVendors(){
-		$user=JFactory::getUser();
 
 		if($this->showVendors===null){
+			$user=JFactory::getUser();
 			if(VmConfig::get('multix','none')!='none' and $user->authorise('core.admin','com_virtuemart')){
 				$this->showVendors = true;
 			} else {
@@ -564,6 +559,22 @@ class VmView extends JViewLegacy {
 			}
 		}
 		return $this->showVendors;
+	}
+
+	public function manager($view=0) {
+
+		if(empty($view)) $view = $this->_name;
+
+		if(!isset($this->_manager[$view])){
+			$user=JFactory::getUser();
+			if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') or
+				( $user->authorise('vm.manage', 'com_virtuemart') and $user->authorise('vm.'.$view, 'com_virtuemart') )){
+				$this->_manager[$view] = true;
+			} else {
+				$this->_manager[$view] = false;
+			}
+		}
+		return $this->_manager[$view];
 	}
 
 }

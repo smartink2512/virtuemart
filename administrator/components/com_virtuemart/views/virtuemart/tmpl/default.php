@@ -24,10 +24,12 @@ AdminUIHelper::startAdminArea ($this);
 
 JToolBarHelper::title(vmText::_('COM_VIRTUEMART')." ".vmText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'head vm_store_48');
 
+$tabs =  array('controlpanel' => 'COM_VIRTUEMART_CONTROL_PANEL' );
+if($this->manager('report')){
+	$tabs['statisticspage'] = 'COM_VIRTUEMART_STATISTIC_STATISTICS';
+}
 
 // Loading Templates in Tabs
-AdminUIHelper::buildTabs ( $this, array (	'controlpanel' 	=> 	'COM_VIRTUEMART_CONTROL_PANEL',
-									'statisticspage'=> 	'COM_VIRTUEMART_STATISTIC_STATISTICS'
-									 ) );
+AdminUIHelper::buildTabs ( $this,$tabs );
 
 AdminUIHelper::endAdminArea ();

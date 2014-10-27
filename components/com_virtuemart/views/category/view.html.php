@@ -111,7 +111,7 @@ class VirtuemartViewCategory extends VmView {
 
 		if(!empty($category)){
 
-
+			$vendorId = $category->virtuemart_vendor_id;
 			if($this->showproducts){
 			//if(empty($category->category_layout) or $category->category_layout != 'categories') {
 				// Load the products in the given category

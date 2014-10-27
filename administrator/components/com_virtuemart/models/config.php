@@ -455,6 +455,8 @@ class VirtueMartModelConfig extends VmModel {
 		$cache->clean();
 		$cache = JFactory::getCache('com_virtuemart_rss','callback');
 		$cache->clean();
+		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+		$cache->clean();
 		$cache = JFactory::getCache('convertECB','callback');
 		$cache->clean();
 		$cache = JFactory::getCache('_virtuemart');

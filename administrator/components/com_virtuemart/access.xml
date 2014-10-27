@@ -3,9 +3,12 @@
 	<section name="component">
 		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
 		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+        <action name="vm.manage" title="COM_VIRTUEMART_MANAGE" description="COM_VIRTUEMART_MANAGE_DESC" />
+        <action name="vm.raw" title="COM_VIRTUEMART_ALRAW" description="COM_VIRTUEMART_ALRAW_DESC" />
+        <action name="vm.html" title="COM_VIRTUEMART_ALHTML" description="COM_VIRTUEMART_ALHTML_DESC" />
 	</section>
 	<section name="product">
-        <action name="vm.product" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+        <action name="vm.product" title="JACTION_MANAGE" description="COM_VIRTUEMART_MANAGE_VIEW_DESC" />
         <action name="vm.product.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
         <action name="vm.product.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
         <action name="vm.product.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
@@ -18,14 +21,14 @@
         <action name="vm.ratings" title="COM_VIRTUEMART_REVIEW_RATE_S" description="" />
 	</section>
 	<section name="category">
-        <action name="vm.category" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+        <action name="vm.category" title="JACTION_MANAGE" description="COM_VIRTUEMART_MANAGE_VIEW_DESC" />
         <action name="vm.category.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
         <action name="vm.category.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
         <action name="vm.category.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="vm.category.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 	</section>
     <section name="manufacturer">
-        <action name="vm.manufacturer" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+        <action name="vm.manufacturer" title="JACTION_MANAGE" description="COM_VIRTUEMART_MANAGE_VIEW_DESC" />
         <action name="vm.manufacturer.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
         <action name="vm.manufacturer.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
         <action name="vm.manufacturer.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
@@ -39,7 +42,9 @@
         <action name="vm.paymentmethod" title="COM_VIRTUEMART_PAYMENTMETHOD_S" description="" />
     </section>
 	<section name="orders">
-        <action name="vm.orders" title="COM_VIRTUEMART_ORDER_S" description="" />
+        <action name="vm.orders" title="JACTION_MANAGE" description="COM_VIRTUEMART_MANAGEVIEW_DESC" />
+        <action name="vm.orders.edit" title="JACTION_EDIT" description="" />
+        <action name="vm.orders.status" title="COM_VIRTUEMART_CHANGE_OS" description="COM_VIRTUEMART_CHANGE_OS_DESC" />
         <action name="vm.report" title="COM_VIRTUEMART_REPORT" description="" />
         <action name="vm.user" title="COM_VIRTUEMART_USER_S" description="" />
         <action name="vm.user.edit" title="COM_VIRTUEMART_USERS_EDIT" description="" />

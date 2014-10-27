@@ -292,7 +292,7 @@ class VirtueMartModelCategory extends VmModel {
 
 	public function getCategories($onlyPublished = true, $parentId = false, $childId = false, $keyword = "") {
 
-		$vendorId = 1;
+
 
 		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
@@ -314,8 +314,9 @@ class VirtueMartModelCategory extends VmModel {
 			$where[] = ' cx.`category_child_id` = '. (int)$childId;
 		}
 
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart')){
+		$vendorId = Vmconfig::isSuperVendor();
+		if($vendorId!=1){
+
 			$where[] = ' (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';
 		}
 

@@ -100,7 +100,7 @@ class AdminUIHelper {
 
 			<div class="menu-wrapper">
 				<a href="index.php?option=com_virtuemart&view=virtuemart" ><div class="menu-vmlogo"></div></a>
-				<?php AdminUIHelper::showAdminMenu();
+				<?php AdminUIHelper::showAdminMenu($vmView);
 				?>
 				<div class="menu-notice">
 				<?php
@@ -228,7 +228,7 @@ class AdminUIHelper {
 	 * Display the administrative ribbon menu.
 	 * @todo The link should be done better
 	 */
-	static function showAdminMenu() {
+	static function showAdminMenu($vmView) {
 		if(!isset(VmConfig::$installed)){
 			VmConfig::$installed = false;
 		}
@@ -267,7 +267,11 @@ class AdminUIHelper {
 						// $url .= $link['extra'] ? $link['extra'] : '';
 					}
 
-					if ($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
+					if (/*$user->authorise('core.admin', 'com_virtuemart') or
+						$user->authorise('core.manage', 'com_virtuemart') or
+						($user->authorise('vm.manage', 'com_virtuemart') and $user->authorise('vm.'.$link ['view'], 'com_virtuemart'))*/
+						$vmView->manager($link ['view'])
+						|| $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
 						$html .= '
 						<li>
 							<a href="'.$url.'" '.$target.'><span class="'.$link ['icon_class'].'"></span>'. vmText::_ ( $link ['name'] ).'</a>

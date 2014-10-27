@@ -1143,7 +1143,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// Load the categories the product is in
-			$product->categoryItem = $this->getProductCategories ($this->_id, FALSE); //We need also the unpublished categories, else the calculation rules do not work
+			$product->categoryItem = $this->getProductCategories ($this->_id); //We need also the unpublished categories, else the calculation rules do not work
 
 			$product->canonCatId = false;
 			if(!empty($product->categoryItem)){
