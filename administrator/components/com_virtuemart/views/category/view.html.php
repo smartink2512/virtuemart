@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
 /**
  * HTML View class for maintaining the list of categories
@@ -30,7 +30,7 @@ if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
  * @subpackage Category
  * @author RickG, jseros
  */
-class VirtuemartViewCategory extends VmView {
+class VirtuemartViewCategory extends VmViewAdmin {
 
 	function display($tpl = null) {
 

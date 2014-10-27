@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
 /**
  * Description
@@ -29,7 +29,7 @@ if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
  * @author
  */
 
-class VirtuemartViewCalc extends VmView {
+class VirtuemartViewCalc extends VmViewAdmin {
 
 	function display($tpl = null) {
 

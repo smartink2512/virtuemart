@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
 /**
  * Description
@@ -32,7 +32,7 @@ if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 if (!class_exists('VirtueMartModelCurrency'))
 require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 
-class VirtuemartViewPaymentMethod extends VmView {
+class VirtuemartViewPaymentMethod extends VmViewAdmin {
 
 	function display($tpl = null) {
 

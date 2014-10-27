@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
 /**
  * Json View class for the VirtueMart Component
@@ -28,7 +28,7 @@ if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
  * @package		VirtueMart
  * @author  Patrick Kohl
  */
-class VirtuemartViewMedia extends VmView {
+class VirtuemartViewMedia extends VmViewAdmin {
 
 	/* json object */
 	private $json = null;

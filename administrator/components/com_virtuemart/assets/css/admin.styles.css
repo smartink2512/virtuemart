@@ -86,6 +86,8 @@ a.fg-button,.always-left{float:left!important}
 .stock-out{background-color:#f9a7aa!important;color:black}
 .stock-low{background-color:#F7B77B!important;color:black}
 .stock-normal{background-color:#F0F9D0!important;color:black}
+
+.adminlist {table-layout:fixed;}
 table.adminlist td.order{width:100px!important}
 ol.logline {margin: 15px 0;padding: 0 0 0 20px;background: #F7F7F7; border: 1px solid #CCC;}
 ol.logline li {margin: 0 0 0 20px;padding: 5px 10px 5px 10px;list-style: decimal-leading-zero;word-wrap: break-word;border-left: 1px solid #CCC;background: #FFF;}

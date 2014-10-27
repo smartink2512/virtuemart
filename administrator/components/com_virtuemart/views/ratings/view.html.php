@@ -20,13 +20,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
 /**
  * HTML View class for ratings (and customer reviews)
  *
  */
-class VirtuemartViewRatings extends VmView {
+class VirtuemartViewRatings extends VmViewAdmin {
 	public $max_rating;
 
 	function display($tpl = null) {

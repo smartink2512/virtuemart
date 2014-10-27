@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
 /**
  * HTML View class for maintaining the Installation. Updating of the files and imports of the database should be done here
@@ -29,7 +29,7 @@ if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
  * @subpackage UpdatesMigration
  * @author Max Milbers
  */
-class VirtuemartViewUpdatesMigration extends VmView {
+class VirtuemartViewUpdatesMigration extends VmViewAdmin {
 
 	function display($tpl = null) {
 

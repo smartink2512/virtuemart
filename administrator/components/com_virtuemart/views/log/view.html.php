@@ -20,8 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-if (!class_exists('VmView')) {
-	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmview.php');
+if (!class_exists('VmViewAdmin')) {
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmviewadmin.php');
 }
 
 /**
@@ -31,7 +31,7 @@ if (!class_exists('VmView')) {
  * @subpackage Log
  * @author Valérie isaksen
  */
-class VirtuemartViewLog extends VmView {
+class VirtuemartViewLog extends VmViewAdmin {
 
 	function display ($tpl = null) {
 

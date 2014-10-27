@@ -27,9 +27,9 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author
  */
-if(!class_exists('VmView'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
+if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
-class VirtuemartViewOrders extends VmView {
+class VirtuemartViewOrders extends VmViewAdmin {
 
 	function display($tpl = null) {
 

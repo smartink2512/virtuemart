@@ -26,7 +26,7 @@ if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfu
 if (!class_exists('AdminUIHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'adminui.php');
 if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
-class VmView extends JViewLegacy {
+class VmViewAdmin extends JViewLegacy {
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
 	 *
