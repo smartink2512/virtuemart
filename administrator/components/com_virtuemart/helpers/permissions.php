@@ -217,7 +217,7 @@ class Permissions extends JObject{
 				}
 			}
 			if($perm=='storeadmin'){
-				if($user->authorise('core.admin', 'com_virtuemart')){
+				if($user->authorise('core.manage', 'com_virtuemart')){
 					return true;
 				}
 			}
