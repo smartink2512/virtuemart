@@ -46,10 +46,10 @@ $option = vRequest::getCmd('option');
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
-		<th><?php echo $this->sort('created_on', 'COM_VIRTUEMART_DATE') ; ?></th>
-		<th><?php echo $this->sort('product_name') ; ?></th>
-		<th><?php echo $this->sort('rating', 'COM_VIRTUEMART_RATE_NOM') ; ?></th>
+		<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
+		<th width="40%"><?php echo $this->sort('created_on', 'COM_VIRTUEMART_DATE') ; ?></th>
+		<th width="40%"><?php echo $this->sort('product_name') ; ?></th>
+		<th width="10%"><?php echo $this->sort('rating', 'COM_VIRTUEMART_RATE_NOM') ; ?></th>
 		<th width="20"><?php echo $this->sort('published') ?></th>
 	</tr>
 	</thead>
@@ -66,7 +66,7 @@ $option = vRequest::getCmd('option');
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
-				<td><?php echo $checked; ?></td>
+				<td class="admin-checkbox"><?php echo $checked; ?></td>
 				<!-- Username + time -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=listreviews&virtuemart_product_id='.$review->virtuemart_product_id; ?>
 				<td><?php echo JHtml::_('link', $link,vmJsApi::date($review->created_on,'LC2',true) , array("title" => vmText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>

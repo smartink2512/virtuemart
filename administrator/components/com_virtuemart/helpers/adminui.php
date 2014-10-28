@@ -110,9 +110,8 @@ class AdminUIHelper {
 
 			</div>
 		<?php // } ?>
-			<div id="admin-content-wrapper">
-			<div class="toggler vmicon-show"></div>
-				<div id="admin-content" class="admin-content">
+		<div class="toggler vmicon-show"></div>
+			<div id="admin-content" class="admin-content">
 		<?php
 	}
 
@@ -128,11 +127,11 @@ class AdminUIHelper {
 //		include(VMPATH_ADMIN.'debug.php');
 		}
 		?>
-					<div class="clear"></div>
+
 				</div>
-			</div>
-			<div class="clear"></div>
+
 		</div>
+		<div class="clear"></div>
 	<?php
 	    }
 

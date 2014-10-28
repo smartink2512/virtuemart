@@ -42,25 +42,25 @@ AdminUIHelper::startAdminArea($this);
 	    <table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	    <thead>
 		<tr>
-		    <th width="10">
+		    <th class="admin-checkbox">
 			<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 		    </th>
-		    <th>
+		    <th width="25%">
 				<?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_NAME') ; ?>
 		    </th>
-		    <th>
+		    <th width="20%">
 				<?php echo $this->sort('mf_email', 'COM_VIRTUEMART_MANUFACTURER_EMAIL') ; ?>
 		    </th>
-		    <th>
+		    <th width="30%">
 				<?php echo $this->sort('mf_desc', 'COM_VIRTUEMART_MANUFACTURER_DESCRIPTION'); ?>
 		    </th>
-		    <th>
+		    <th width="15%">
 				<?php echo $this->sort('mf_category_name', 'COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>
 		    </th>
-		    <th>
+		    <th width="15%">
 				<?php echo $this->sort('mf_url', 'COM_VIRTUEMART_MANUFACTURER_URL'); ?>
 		    </th>
-		    <th width="20">
+		    <th width="20px">
 				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		    </th>
 		      <th><?php echo $this->sort('m.virtuemart_manufacturer_id', 'COM_VIRTUEMART_ID')  ?></th>
@@ -76,7 +76,7 @@ AdminUIHelper::startAdminArea($this);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id=' . $row->virtuemart_manufacturer_id);
 		?>
 	    <tr class="row<?php echo $k ; ?>">
-		<td width="10">
+		<td class="admin-checkbox">
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">

@@ -28,7 +28,7 @@ AdminUIHelper::startAdminArea($this);
 		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th width="10">
+			<th class="admin-checkbox">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th>
@@ -59,7 +59,7 @@ AdminUIHelper::startAdminArea($this);
 
 			?>
 			<tr class="row<?php echo $k ; ?>">
-				<td width="10">
+				<td class="admin-checkbox">
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">

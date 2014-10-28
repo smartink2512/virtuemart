@@ -44,7 +44,7 @@ $productfileslist = $this->files;
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
+		<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>
 		<th><?php echo $this->sort('file_title', 'COM_VIRTUEMART_FILES_LIST_FILETITLE') ?></th>
 		<th><?php echo $this->sort('file_type', 'COM_VIRTUEMART_FILES_LIST_ROLE') ?></th>
@@ -68,7 +68,7 @@ $productfileslist = $this->files;
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
-				<td><?php echo $checked;   ?></td>
+				<td class="admin-checkbox"><?php echo $checked;   ?></td>
 				<!-- Product name -->
 				<?php
 				$link = ""; //"index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;

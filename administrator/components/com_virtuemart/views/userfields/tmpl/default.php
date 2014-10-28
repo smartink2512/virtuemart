@@ -45,7 +45,7 @@ AdminUIHelper::startAdminArea($this);
 		<table class="adminlist jgrid table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th width="10">
+			<th class="admin-checkbox">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 
@@ -108,7 +108,7 @@ AdminUIHelper::startAdminArea($this);
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
 		?>
 			<tr class="row<?php echo $k ; ?>">
-				<td width="10" <?php echo $checked_out; ?>>
+				<td class="admin-checkbox" <?php echo $checked_out; ?>>
 					<?php echo $checked; ?>
 				</td>
 

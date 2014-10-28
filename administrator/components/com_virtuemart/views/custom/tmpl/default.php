@@ -46,25 +46,25 @@ $customs = $this->customs->items;
 
 ?>
 
-
-
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
-		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_GROUP'); ?></th>
-		<th><?php echo vmText::_('COM_VIRTUEMART_TITLE'); ?></th>
-		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_FIELD_DESCRIPTION'); ?></th>
+		<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
+		<th width="10%"><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_GROUP'); ?></th>
+		<th width="30%"><?php echo vmText::_('COM_VIRTUEMART_TITLE'); ?></th>
+		<th width="35%"><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_FIELD_DESCRIPTION'); ?></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE'); ?></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE'); ?></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY'); ?></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
-		<th>
-		<?php echo $this->sort('ordering') ?>
-		<?php echo JHtml::_('grid.order',  $customs ); ?>
-		</th>
+		<?php if(!empty($this->custom_parent_id)){
+			echo '<th>'.$this->sort('ordering');
+			echo JHtml::_('grid.order',  $customs ).'</th>';
+		}
+		?>
+
 		<th><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
-		  <th><?php echo $this->sort('virtuemart_custom_id', 'COM_VIRTUEMART_ID')  ?></th>
+		  <th min-width="8px"><?php echo $this->sort('virtuemart_custom_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -84,7 +84,7 @@ $customs = $this->customs->items;
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
-				<td><?php echo $checked; ?></td>
+				<td class="admin-checkbox"><?php echo $checked; ?></td>
 				<?php
 				$link = "index.php?view=custom&keyword=".urlencode($keyword)."&custom_parent_id=".$custom->custom_parent_id."&option=".$option;
 				?>
@@ -110,18 +110,20 @@ $customs = $this->customs->items;
 					<span class="vmicon <?php echo ( $custom->admin_only  ? 'vmicon-16-checkin' : 'vmicon-16-bug' );?>"></span></a></td>
 				<td><a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle.is_hidden')" title="<?php echo ($custom->is_hidden ) ? vmText::_('COM_VIRTUEMART_YES') : vmText::_('COM_VIRTUEMART_NO');?>">
 					<span class="vmicon <?php echo ( $custom->is_hidden  ? 'vmicon-16-checkin' : 'vmicon-16-bug' );?>"></span></a></td>
-				<td align="center" class="order">
+
 					<?php
-					if(!empty($custom->custom_parent_id)){
+					if(!empty($this->custom_parent_id)){
 					?>
+						<td align="center" class="order">
 						<span><?php echo $this->pagination->vmOrderUpIcon($i, $custom->ordering, 'orderUp', vmText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
 						<span><?php echo $this->pagination->vmOrderDownIcon( $i, $custom->ordering, $n, true, 'orderDown', vmText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 						<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $custom->ordering; ?>" style="text-align: center" />
+						</td>
 					<?php
 					}
 					?>
 
-				</td>
+
 				<td><?php echo $published; ?></td>
 				<td><?php echo $custom->virtuemart_custom_id; ?></td>
 			</tr>

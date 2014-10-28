@@ -28,16 +28,16 @@ AdminUIHelper::startAdminArea($this);
 	  <table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		  <tr>
-			<th width="10">
+			<th class="admin-checkbox">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
-			<th>
+			<th width="40%">
 				<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
 			</th>
-			<th>
+			<th width="60%">
 				<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
 			</th>
-			<th width="20">
+			<th width="40">
 				<?php echo vmText::_('COM_VIRTUEMART_DEFAULT'); ?>
 			</th>
 			<th width="30px" >
@@ -72,7 +72,7 @@ AdminUIHelper::startAdminArea($this);
 			?>
 
 		  <tr class="row<?php echo $k ; ?>">
-			<td width="10">
+			<td class="admin-checkbox">
 				<?php echo $checked; ?>
 			</td>
 			<td align="left">

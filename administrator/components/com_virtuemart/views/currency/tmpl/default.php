@@ -35,7 +35,7 @@ AdminUIHelper::startAdminArea($this);
 	    <table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	    <thead>
 		<tr>
-		    <th width="10">
+		    <th class="admin-checkbox">
 			<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 		    </th>
 		    <th >
@@ -81,7 +81,7 @@ AdminUIHelper::startAdminArea($this);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=currency&task=edit&cid[]=' . $row->virtuemart_currency_id);
 		?>
 	    <tr class="row<?php echo $k ; ?>">
-		<td align="center">
+		<td class="admin-checkbox">
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">

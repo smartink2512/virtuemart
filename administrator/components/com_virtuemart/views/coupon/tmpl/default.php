@@ -28,25 +28,25 @@ AdminUIHelper::startAdminArea($this);
 	    <table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	    <thead>
 		<tr>
-		    <th width="10">
+		    <th class="admin-checkbox">
 			<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 		    </th>
-		    <th>
+		    <th width="25%">
 			<?php echo vmText::_('COM_VIRTUEMART_COUPON_CODE'); ?>
 		    </th>
-		    <th>
+		    <th width="16%">
 			<?php echo vmText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
 		    </th>
-		    <th>
+		    <th width="16%">
 			<?php echo vmText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
 		    </th>
-		    <th>
+		    <th width="16%">
 			<?php echo vmText::_('COM_VIRTUEMART_VALUE'); ?>
 		    </th>
-		    <th>
+		    <th min-width="130px" width="18%">
 			<?php echo vmText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
 		    </th>
-			<th>
+			<th min-width="100px" width="18%">
 				<?php echo vmText::_('COM_VIRTUEMART_COUPON_USED'); ?>
 			</th>
 		     <th><?php echo $this->sort('virtuemart_coupon_id', 'COM_VIRTUEMART_ID')  ?></th>
@@ -61,7 +61,7 @@ AdminUIHelper::startAdminArea($this);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=coupon&task=edit&cid[]=' . $row->virtuemart_coupon_id);
 		?>
 	    <tr class="row<?php echo $k; ?>">
-		<td width="10">
+		<td class="admin-checkbox">
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">

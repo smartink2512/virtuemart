@@ -39,16 +39,16 @@ AdminUIHelper::startAdminArea ($this);
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)"/></th>
-			<th><?php echo $this->sort ('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
-			<th><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
-			<th><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
+			<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)"/></th>
+			<th width="10%"><?php echo $this->sort ('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
+			<th width="10%"><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
+			<th width="10%"><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
 			<th><?php echo $this->sort ('payment_method', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')  ?></th>
-			<th><?php echo vmText::_ ('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
+			<th width="110px"><?php echo vmText::_ ('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
 			<th><?php echo $this->sort ('created_on', 'COM_VIRTUEMART_ORDER_CDATE')  ?></th>
 			<th><?php echo $this->sort ('modified_on', 'COM_VIRTUEMART_ORDER_LIST_MDATE')  ?></th>
 			<th><?php echo $this->sort ('order_status', 'COM_VIRTUEMART_STATUS')  ?></th>
-			<th><?php echo vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?></th>
+			<th width="140px"><?php echo vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?></th>
 			<th><?php echo $this->sort ('order_total', 'COM_VIRTUEMART_TOTAL')  ?></th>
 			<th><?php echo $this->sort ('virtuemart_order_id', 'COM_VIRTUEMART_ORDER_LIST_ID')  ?></th>
 
@@ -66,7 +66,7 @@ AdminUIHelper::startAdminArea ($this);
 				?>
 			<tr class="row<?php echo $k; ?>">
 				<!-- Checkbox -->
-				<td><?php echo $checked; ?></td>
+				<td class="admin-checkbox"><?php echo $checked; ?></td>
 				<!-- Order id -->
 				<?php
 				$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order->virtuemart_order_id;
@@ -134,7 +134,7 @@ AdminUIHelper::startAdminArea ($this);
 				<!-- Update -->
 				<td><?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][customer_notified]', 0) . vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
 					<br/>
-					&nbsp;&nbsp;&nbsp;<?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][customer_send_comment]', 1) . vmText::_ ('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
+					<?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][customer_send_comment]', 1) . vmText::_ ('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 					<br/>
 					<?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][update_lines]', 1) . vmText::_ ('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
 				</td>

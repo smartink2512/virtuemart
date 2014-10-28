@@ -6,17 +6,16 @@
     -webkit-border-bottom-left-radius: 6px;
     -webkit-border-bottom-right-radius: 6px;
     overflow: visible;
-
+    min-height: 540px;
     background: url(../images/admin_ui/container_bg_blue.png) repeat-y  scroll 0 0 ;}
 
 * html .virtuemart-admin-area { /*IE6 only*/ overflow: visible;height: 1px;}
-.virtuemart-admin-area .menu-wrapper {width:190px ;float: left;}
-.virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;padding: 0;overflow: auto; background: left repeat-y #fff;border-left: solid #b4b4b4 1px;height:540px;}
-.virtuemart-admin-area #admin-content-wrapper .admin-content {height:auto;min-height: 540px;padding: 0 0 0 5px;}
+.virtuemart-admin-area .menu-wrapper {width: 190px;float: left;}
+.virtuemart-admin-area .admin-content {margin: 0;padding-left: 189px;border-left: solid #b4b4b4 1px;}
 .virtuemart-admin-area .btn.btn-small {
     margin-bottom: 5px;
 }
-#header {     background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;padding:3px;padding-left: 10px;padding-right: 10px;}
+#header {background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;padding-left: 10px;}
 
 .ratingbox{position:relative;display:block;width:120px;height:24px;background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x scroll 0 bottom transparent}
 .ratingbox span{background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x;display:block;width:1%;height:24px;position:absolute}
@@ -30,8 +29,7 @@
 /* Overwriting Joomla Admin Template */
 
 /* Toolbar */
-#element-box, #toolbar-box, #submenu-box {padding: 0 !important;
-}
+#element-box, #toolbar-box, #submenu-box {padding: 0 !important;}
 #element-box .t, #element-box .b {display: none;}
 #content-box #element-box .m, #content-box .m {border: none;padding: 0px;background: none;}
 #content-box #toolbar-box {border-top: solid #b4b4b4 1px;border-left: solid #b4b4b4 1px;border-right: solid #b4b4b4 1px;margin: 0px;padding:0;-moz-border-radius: 6px 6px 0 0;
@@ -76,7 +74,7 @@ input.readonly{  border: 0 none;}
 .vmdebug pre{ padding-left: 32px;}
 
 .adminform th{text-align: right!important;}
-
+.admin-checkbox{width:25px !important;align:center;text-align:center;padding: 4px !important;}
 
 dl#system-message dd .vmdebug  { font-size:10px; }
 /* Fieldset */
@@ -125,12 +123,19 @@ textarea {width: 100%;}
 
 /* Table */
 table.adminlist .right{text-align: right;}
+table.adminlist td.vm-order span {
+    background-repeat: no-repeat;
+    float: left;
+    height: 13px;
+    text-align: center;
+    width: 20px;
+}
 
 /* Admin Menu */
 #admin-ui-menu {border-bottom:1px solid #94B1CF;}
 #admin-ui-menu h3.menu-title {background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888;cursor:pointer;border-top: 1px solid #94B1CF;margin: 0px;padding: 6px 20px;color: #fff;font-size: 13px;font-weight: normal;color: #333;}
 .menu-vmlogo {background: url("../images/vm_logo.png") no-repeat scroll center bottom #707174;color: #333333;cursor: pointer;font-size: 13px;font-weight: normal;height: 30px;margin: 0;padding: 0;}
-.menu-notice { margin: 35px;padding: 5px;text-align: center;background-color: #fff;}
+.menu-notice {background-color: #fff;margin: 8px 30px;padding: 2px;text-align: center;}
 .menu-notice a:link ,.menu-notice a span {color :#000 ;}
 #admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover { background:url("../images/admin_ui/tabs-ul-background.png") repeat-x scroll center bottom #7C7D7F; color :#efefef ; }
 

@@ -318,6 +318,15 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			$document->setName ('recalculate');
 		}
 
+		// Also return all messages (in HTML format!):
+		// Since we are in a JSON document, we have to temporarily switch the type to HTML
+		// to make sure the html renderer is actually used
+		$previoustype = $document->getType();
+		$document->setType('html');
+		$msgrenderer = $document->loadRenderer('message');
+		$priceFormated['messages'] = $msgrenderer->render('Message');
+		$document->setType($previoustype);
+
 		JResponse::setHeader ('Cache-Control', 'no-cache, must-revalidate');
 		JResponse::setHeader ('Expires', 'Mon, 6 Jul 2000 10:00:00 GMT');
 		// Set the MIME type for JSON output.

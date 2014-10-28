@@ -50,17 +50,17 @@ AdminUIHelper::startAdminArea($this);
 		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th width="10">
+			<th class="admin-checkbox">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 
-			<th><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>
-			<th><?php echo $this->sort('ju.name', 'COM_VIRTUEMART_USER_DISPLAYED_NAME')  ?></th>
-			<th><?php echo vmText::_('COM_VIRTUEMART_EMAIL'); ?></th>
+			<th width="25%"><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>
+			<th width="25%"><?php echo $this->sort('ju.name', 'COM_VIRTUEMART_USER_DISPLAYED_NAME')  ?></th>
+			<th width="25%"><?php echo vmText::_('COM_VIRTUEMART_EMAIL'); ?></th>
 <?php	/*	<th><?php echo vmText::_('COM_VIRTUEMART_USER_GROUP'); ?></th> 	*/ ?>
-			<th><?php echo $this->sort('shopper_group_name', 'COM_VIRTUEMART_SHOPPERGROUP')  ?></th>
+			<th width="25%"><?php echo $this->sort('shopper_group_name', 'COM_VIRTUEMART_SHOPPERGROUP')  ?></th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
-			<th width="80"><?php echo vmText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?></th>
+			<th width="80px"><?php echo vmText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?></th>
 			<?php } ?>
 			<th><?php echo  vmText::_('COM_VIRTUEMART_ID') ?></th>
 		</tr>
@@ -74,7 +74,7 @@ AdminUIHelper::startAdminArea($this);
 			$is_vendor = $this->toggle($row->is_vendor, $i, 'toggle.user_is_vendor');
 		?>
 			<tr class="row<?php echo $k ; ?>">
-				<td>
+				<td class="admin-checkbox">
 					<?php echo $checked; ?>
 				</td>
 

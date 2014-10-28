@@ -71,18 +71,18 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th width="20px"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
+		<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
 
-		<th><?php echo $this->sort('product_name',$col_product_name) ?> </th>
+		<th width="30%"><?php echo $this->sort('product_name',$col_product_name) ?> </th>
 		<?php if (!$product_parent_id ) { ?>
-                <th><?php echo $this->sort('product_parent_id','COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
+                <th width="20%"><?php echo $this->sort('product_parent_id','COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
                 <?php } ?>
                 <th width="80px" ><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_PARENT_LIST_CHILDREN'); ?></th>
                 <th width="80px"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
 		<th><?php echo $this->sort('product_sku') ?></th>
-		<th width="80px" ><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE') ; ?></th>
+		<th width="90px" ><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE') ; ?></th>
 <?php /*		<th><?php echo JHtml::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th> */ ?>
-<th><?php echo vmText::_( 'COM_VIRTUEMART_CATEGORY'); ?></th>
+<th width="9%"><?php echo vmText::_( 'COM_VIRTUEMART_CATEGORY'); ?></th>
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
 		$num_rows = 0;
@@ -92,13 +92,12 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 				<?php echo JHtml::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
-		<th><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
+		<th width="7%"><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
 		<th width="40px" ><?php echo vmText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
 		<th width="40px" ><?php echo $this->sort('product_special', 'COM_VIRTUEMART_PRODUCT_FORM_SPECIAL'); ?> </th>
 		<th width="40px" ><?php echo $this->sort('published') ; ?></th>
 	    <th><?php echo $this->sort('p.virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
-
 	</thead>
 	<tbody>
 	<?php
@@ -118,7 +117,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
-				<td align="right" ><?php echo $checked; ?></td>
+				<td class="admin-checkbox"><?php echo $checked; ?></td>
 
 				<td align ="left>">
 					<!--<span style="float:left; clear:left"> -->

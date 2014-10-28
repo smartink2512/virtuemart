@@ -41,16 +41,15 @@ AdminUIHelper::startAdminArea($this);
 		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-
-			<th>
+			<th class="admin-checkbox">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
-			<th><?php echo $this->sort('calc_name', 'COM_VIRTUEMART_NAME') ; ?></th>
+			<th width="20%"><?php echo $this->sort('calc_name', 'COM_VIRTUEMART_NAME') ; ?></th>
 			<?php if($this->showVendors){ ?>
-			<th width="20">
+			<th width="10px">
 				<?php echo vmText::_('COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }  ?>
-			<th><?php echo $this->sort('calc_descr' , 'COM_VIRTUEMART_DESCRIPTION'); ?></th>
+			<th width="25%"><?php echo $this->sort('calc_descr' , 'COM_VIRTUEMART_DESCRIPTION'); ?></th>
 			<th><?php echo $this->sort('ordering') ; ?></th>
 			<th><?php echo $this->sort('calc_kind') ; ?></th>
 			<th><?php echo vmText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?></th>
@@ -94,7 +93,7 @@ AdminUIHelper::startAdminArea($this);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 
-				<td>
+				<td class="admin-checkbox">
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">

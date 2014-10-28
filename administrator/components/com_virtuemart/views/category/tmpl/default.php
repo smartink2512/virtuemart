@@ -48,28 +48,28 @@ AdminUIHelper::startAdminArea($this);
 		<thead>
 		<tr>
 
-			<th width="20px">
+			<th class="admin-checkbox">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
-			<th align="left" width="12%">
+			<th align="left" width="20%">
 				<?php echo $this->sort('category_name') ?>
 			</th>
-			<th align="left">
+			<th align="left" width="65%">
 				<?php echo $this->sort('category_description', 'COM_VIRTUEMART_DESCRIPTION') ; ?>
 			</th>
-			<th align="left" width="11%">
+			<th style="min-width:80px;width:8%;align:center;">
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_S'); ?>
 			</th>
 
-			<th align="left" width="13%">
+			<th style="min-width:80px;width:8%;align:center;">
 				<?php echo $this->sort( 'c.ordering' , 'COM_VIRTUEMART_ORDERING') ?>
 				<?php echo JHtml::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
-			<th align="center" width="20px">
+			<th align="center" >
 				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
 			</th>
 			<?php if($this->showVendors()){ ?>
-					<th width="20px">
+					<th>
 					<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_SHARED') ?>
 					</th>
 			<?php } ?>
@@ -119,7 +119,7 @@ AdminUIHelper::startAdminArea($this);
 		?>
 			<tr class="<?php echo "row".$k;?>">
 
-				<td><?php echo $checked;?></td>
+				<td class="admin-checkbox"><?php echo $checked;?></td>
 				<td align="left">
 					<span class="categoryLevel"><?php echo $categoryLevel;?></span>
 					<a href="<?php echo $editlink;?>"><?php echo $this->escape($cat->category_name);?></a>
@@ -134,7 +134,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo vmText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
-				<td align="center" class="order">
+				<td align="center" class="vm-order">
 					<span><?php 
 
 					$cond2 = false;
