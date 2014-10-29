@@ -104,7 +104,7 @@ vmJsApi::addJScript( 'orderedit',"
 		");
 
 ?>
-
+<div style="text-align: left;">
 <form name='adminForm' id="adminForm">
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="option" value="com_virtuemart" />
@@ -113,10 +113,9 @@ vmJsApi::addJScript( 'orderedit',"
 		<?php echo JHtml::_( 'form.token' ); ?>
 
 
-<table class="adminlist table" width="100%">
-	<thead>
+<table class="adminlist table table-striped" width="100%">
 	<tr>
-		<th>
+		<td width="100%">
 		<?php echo $this->displayDefaultViewSearch ('COM_VIRTUEMART_ORDER_PRINT_NAME'); ?>
 			<span class="btn btn-small " >
 		<a class="updateOrder" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span>
@@ -131,9 +130,8 @@ vmJsApi::addJScript( 'orderedit',"
 		<a class="createOrder" href="#"><span class="icon-nofloat vmicon vmicon-16-new"></span>
 		<?php echo vmText::_('COM_VIRTUEMART_ORDER_CREATE'); ?></a>
 		-->
-		</th>
+		</td>
 	</tr>
-	</thead>
 </table>
 </form>
 
@@ -745,7 +743,7 @@ vmJsApi::addJScript( 'orderedit',"
 
 </table>
 
-
+</div>
 
 <?php
 AdminUIHelper::imitateTabs('end');

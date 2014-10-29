@@ -143,7 +143,7 @@ class vmJsApi{
 			return;
 		}
 
-		$file = vmJsApi::setPath( $namespace,$path,  $version='', $minified , 'css');
+		$file = vmJsApi::setPath( $namespace, $path, $version='', $minified, 'css');
 
 		$document = JFactory::getDocument();
 		$document->addStyleSheet($file.'?vmver='.VM_REV);
@@ -204,7 +204,6 @@ class vmJsApi{
 				$path = JURI::root(TRUE) .'/'.$path;
 			}
 		}
-
 		return $path.'/'.$file ;
 	}
 	/**
@@ -609,10 +608,9 @@ class vmJsApi{
 		});
 //]]>
 		');
-		//vmJsApi::js ('jquery.ui.core',FALSE,'',TRUE);
-		//vmJsApi::js ('jquery.ui.datepicker',FALSE,'',TRUE);
 
-		vmJsApi::css ('jquery.ui.all',$front.'css/ui' ) ;
+
+		vmJsApi::css('ui/jquery.ui.all');
 		$lg = JFactory::getLanguage();
 		$lang = $lg->getTag();
 

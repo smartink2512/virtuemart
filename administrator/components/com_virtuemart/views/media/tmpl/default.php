@@ -41,16 +41,17 @@ $option = vRequest::getCmd('option');
 $productfileslist = $this->files;
 //$roles = $this->productfilesroles;
 ?>
+<div style="text-align: left;">
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
-		<th><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>
-		<th><?php echo $this->sort('file_title', 'COM_VIRTUEMART_FILES_LIST_FILETITLE') ?></th>
-		<th><?php echo $this->sort('file_type', 'COM_VIRTUEMART_FILES_LIST_ROLE') ?></th>
-		<th><?php echo vmText::_('COM_VIRTUEMART_VIEW'); ?></th>
-		<th><?php echo vmText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
-		<th><?php echo vmText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
+		<?php /*<th><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>*/ ?>
+		<th width="30%"><?php echo $this->sort('file_title', 'COM_VIRTUEMART_FILES_LIST_FILETITLE') ?></th>
+		<th style="min-width:100px;width:5%;"><?php echo $this->sort('file_type', 'COM_VIRTUEMART_FILES_LIST_ROLE') ?></th>
+		<th width="50%"><?php echo vmText::_('COM_VIRTUEMART_VIEW'); ?></th>
+		<th style="min-width:120px;width:15%;"><?php echo vmText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
+		<th style="min-width:30px;width:1%;max-width:40px;"><?php echo vmText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
 		<th><?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?></th>
 	  <th><?php echo $this->sort('virtuemart_media_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
@@ -72,10 +73,10 @@ $productfileslist = $this->files;
 				<!-- Product name -->
 				<?php
 				$link = ""; //"index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
-				?>
+			/*	?>
 				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), empty($productfile->product_name)? '': htmlentities($productfile->product_name)); ?></td>
 				<!-- File name -->
-				<?php
+				<?php */
 				$link = 'index.php?option='.$option.'&view=media&task=edit&virtuemart_media_id[]='.$productfile->virtuemart_media_id;
 				?>
 				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), $productfile->file_title, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
@@ -98,7 +99,7 @@ $productfileslist = $this->files;
 				<!-- File title -->
 				<td><?php echo $productfile->file_name; ?></td>
 				<!-- File extension -->
-				<td><span class="vmicon vmicon-16-ext_<?php echo $productfile->file_extension; ?>"></span><?php echo $productfile->file_extension; ?></td>
+				<td style="overflow:hidden;"><span class="vmicon vmicon-16-ext_<?php echo $productfile->file_extension; ?>"></span><?php echo $productfile->file_extension; ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
 				<td><?php echo $productfile->virtuemart_media_id; ?></td>
@@ -124,4 +125,5 @@ $productfileslist = $this->files;
 <?php } ?>
 	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
+</div>
 <?php AdminUIHelper::endAdminArea(); ?>

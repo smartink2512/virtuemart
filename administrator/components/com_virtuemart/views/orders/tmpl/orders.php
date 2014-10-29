@@ -19,6 +19,7 @@
 defined ('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea ($this);
 
+$styleDateCol = 'style="width:5%;min-width:110px"';
 ?>
 
 
@@ -36,20 +37,21 @@ AdminUIHelper::startAdminArea ($this);
 		</div>
 		<div id="resultscounter"><?php echo $this->pagination->getResultsCounter (); ?></div>
 	</div>
+<div style="text-align: left;">
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
 			<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)"/></th>
-			<th width="10%"><?php echo $this->sort ('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
-			<th width="10%"><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
-			<th width="10%"><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
-			<th><?php echo $this->sort ('payment_method', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')  ?></th>
-			<th width="110px"><?php echo vmText::_ ('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
-			<th><?php echo $this->sort ('created_on', 'COM_VIRTUEMART_ORDER_CDATE')  ?></th>
-			<th><?php echo $this->sort ('modified_on', 'COM_VIRTUEMART_ORDER_LIST_MDATE')  ?></th>
+			<th width="8%"><?php echo $this->sort ('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
+			<th width="26%"><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
+			<th width="18%"><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
+			<th width="18%"><?php echo $this->sort ('payment_method', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')  ?></th>
+			<th style="min-width:110px;width:5%;"><?php echo vmText::_ ('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
+			<th class="admin-dates"><?php echo $this->sort ('created_on', 'COM_VIRTUEMART_ORDER_CDATE')  ?></th>
+			<th class="admin-dates"><?php echo $this->sort ('modified_on', 'COM_VIRTUEMART_ORDER_LIST_MDATE')  ?></th>
 			<th><?php echo $this->sort ('order_status', 'COM_VIRTUEMART_STATUS')  ?></th>
-			<th width="140px"><?php echo vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?></th>
-			<th><?php echo $this->sort ('order_total', 'COM_VIRTUEMART_TOTAL')  ?></th>
+			<th style="min-width:130px;width:5%;"><?php echo vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?></th>
+			<th width="10%"><?php echo $this->sort ('order_total', 'COM_VIRTUEMART_TOTAL')  ?></th>
 			<th><?php echo $this->sort ('virtuemart_order_id', 'COM_VIRTUEMART_ORDER_LIST_ID')  ?></th>
 
 		</tr>
@@ -158,6 +160,7 @@ AdminUIHelper::startAdminArea ($this);
 		</tr>
 		</tfoot>
 	</table>
+</div>
 	<!-- Hidden Fields -->
 	<?php echo $this->addStandardHiddenToForm (); ?>
 </form>

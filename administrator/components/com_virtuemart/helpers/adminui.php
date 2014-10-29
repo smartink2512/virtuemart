@@ -33,19 +33,20 @@ class AdminUIHelper {
 
 	if(self::$vmAdminAreaStarted) return;
 	self::$vmAdminAreaStarted = true;
-	$front = JURI::root(true).'/components/com_virtuemart/assets/';
-	$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
-	$document = JFactory::getDocument();
+
+	$admin = 'administrator/components/com_virtuemart/assets/css';
 
 	//loading defaut admin CSS
-	$document->addStyleSheet($admin.'css/admin_ui.css');
-	$document->addStyleSheet($admin.'css/admin.styles.css');
-	$document->addStyleSheet($admin.'css/toolbar_images.css');
-	$document->addStyleSheet($admin.'css/menu_images.css');
-	$document->addStyleSheet($front.'css/chosen.css');
-	$document->addStyleSheet($front.'css/vtip.css');
-	$document->addStyleSheet($front.'css/jquery.fancybox-1.3.4.css');
-	$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
+	vmJsApi::css('admin_ui',$admin);
+	vmJsApi::css('admin.styles',$admin);
+	vmJsApi::css('toolbar_images',$admin);
+	vmJsApi::css('menu_images',$admin);
+	vmJsApi::css('chosen');
+	vmJsApi::css('vtip');
+	vmJsApi::css('jquery.fancybox-1.3.4');
+	vmJsApi::css('ui/jquery.ui.all');
+
+
 	//$document->addStyleSheet($admin.'css/jqtransform.css');
 
 	//loading default script
@@ -81,37 +82,36 @@ class AdminUIHelper {
 				jQuery(this).parent().find('.ui-autocomplete-input').val(none);
 				
 			});
-
 		});
 //]]>
 		");
 		?>
+		<!--[if lt IE 9]>
+		<script src="//ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+		<![endif]-->
 		<?php if (!self::$backEnd ){
 		   //JToolBarHelper
 		   $bar = JToolbar::getInstance('toolbar');
 		   echo '<div class="toolbar-box" style="height: 84px;position: relative;">'.$bar->render().'</div>';
 		   //echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar($vmView).'</div>';
 	   } ?>
-		<div class="virtuemart-admin-area">
-		<?php
-		// Include ALU System
-		//if (self::$backEnd) {
-		?>
 
-			<div class="menu-wrapper">
+		<div class="virtuemart-admin-area">
+			<div class="toggler vmicon-show"></div>
+			<div class="menu-wrapper" id="menu-wrapper">
 				<a href="index.php?option=com_virtuemart&view=virtuemart" ><div class="menu-vmlogo"></div></a>
 				<?php AdminUIHelper::showAdminMenu($vmView);
 				?>
-				<div class="menu-notice">
+
 				<?php
 					echo "VirtueMart ".VmConfig::getInstalledVersion();
 				?>
 				</div>
 
-			</div>
-		<?php // } ?>
-		<div class="toggler vmicon-show"></div>
+
+
 			<div id="admin-content" class="admin-content">
+
 		<?php
 	}
 
@@ -297,6 +297,7 @@ class AdminUIHelper {
 
 		}
 		?>
+		<div class="menu-notice"></div>
 		</div>
 	<?php
 	}

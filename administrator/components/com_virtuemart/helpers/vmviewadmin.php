@@ -37,7 +37,7 @@ class VmViewAdmin extends JViewLegacy {
 	// }
 	var $lists = array();
 	var $showVendors = null;
-	protected $_manager = array();
+	static protected $_manager = array();
 	protected $canDo;
 
 	function __construct($config = array()) {
@@ -134,15 +134,16 @@ class VmViewAdmin extends JViewLegacy {
 			self::showACLPref($view);
 		}
 
-		$wait = '';
-		if(JFactory::getApplication()->isSite()){
-		//	$wait = 'alert(\''. vmText::_('COM_VIRTUEMART_PROCESSING') .'\');';
-		}
+		$this->addJsJoomlaSubmitButton();
 		// javascript for cookies setting in case of press "APPLY"
-		$j = "
+	}
+
+	function addJsJoomlaSubmitButton(){
+		static $done=false;
+		if(!$done){
+			$j = "
 //<![CDATA[
 	Joomla.submitbutton=function(a){
-
 		var options = { path: '/', expires: 2}
 		if (a == 'apply') {
 			var idx = jQuery('#tabs li.current').index();
@@ -154,18 +155,15 @@ class VmViewAdmin extends JViewLegacy {
 		form = document.getElementById('adminForm');
 		form.task.value = a;
 		form.submit();
-		//alert('Submit task '+a)
-		//jQuery.delay(1000);
-		".$wait."
 
-		//Joomla.submitform(a,form);
 		return false;
 	};
 //]]>
 	" ;
-		vmJsApi::addJScript('submit', $j);
+			vmJsApi::addJScript('submit', $j);
+			$done=true;
+		}
 	}
-
 	/*
 	 * set pagination and filters
 	* return Array() $list( filter_order and dir )
@@ -239,36 +237,10 @@ class VmViewAdmin extends JViewLegacy {
 			self::showHelp();
 			self::showACLPref($view);
 	//	}
-		$wait = '';
-		/*if(JFactory::getApplication()->isSite()){
-			$wait = 'alert(\''. vmText::_('COM_VIRTUEMART_PROCESSING') .'\');';
-		}*/
+		$this->addJsJoomlaSubmitButton();
 		// javascript for cookies setting in case of press "APPLY"
-		$j = "
-//<![CDATA[
-	Joomla.submitbutton=function(a){
 
-		var options = { path: '/', expires: 2}
-		if (a == 'apply') {
-			var idx = jQuery('#tabs li.current').index();
-			jQuery.cookie('vmapply', idx, options);
-		} else {
-			jQuery.cookie('vmapply', '0', options);
-		}
-		jQuery( '#media-dialog' ).remove();
-		form = document.getElementById('adminForm');
-		form.task.value = a;
-		form.submit();
-		alert('Submit task '+a)
-		//jQuery.delay(1000);
-		".$wait."
 
-		//Joomla.submitform(a,form);
-		return false;
-	};
-//]]>
-	" ;
-		vmJsApi::addJScript('submit', $j);
 
 		// LANGUAGE setting
 
@@ -565,16 +537,16 @@ class VmViewAdmin extends JViewLegacy {
 
 		if(empty($view)) $view = $this->_name;
 
-		if(!isset($this->_manager[$view])){
+		if(!isset(self::$_manager[$view])){
 			$user=JFactory::getUser();
 			if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') or
 				( $user->authorise('vm.manage', 'com_virtuemart') and $user->authorise('vm.'.$view, 'com_virtuemart') )){
-				$this->_manager[$view] = true;
+				self::$_manager[$view] = true;
 			} else {
-				$this->_manager[$view] = false;
+				self::$_manager[$view] = false;
 			}
 		}
-		return $this->_manager[$view];
+		return self::$_manager[$view];
 	}
 
 }
