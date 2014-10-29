@@ -540,8 +540,10 @@ class VmConfig {
 		if(self::$_debug===NULL or $override!=false){
 			if($override) {
 				$debug = $override;
+				$dev = $override;
 			} else {
 				$debug = VmConfig::get('debug_enable','none');
+				$dev = VmConfig::get('vmdev',0);
 			}
 			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
@@ -562,21 +564,53 @@ class VmConfig {
 					self::$_debug = FALSE;
 				}
 			}
-		}
 
-		if(self::$_debug){
-			ini_set('display_errors', '1');
-		} else {
-			$jconfig = JFactory::getConfig(); 
-			if ($jconfig->get('error_reporting') == 'none') {
-				ini_set('display_errors', '0'); 
-				if(version_compare(phpversion(),'5.4.0','<' )){
-					error_reporting( E_ALL & ~E_STRICT );
+			if($dev === 'admin' ){
+				if(VmConfig::$echoAdmin){
+					$dev = TRUE;
 				} else {
+					$dev = FALSE;
+				}
+			}
+			// 2 show debug to anyone
+			else {
+				if ($dev === 'all') {
+					$dev = TRUE;
+				}
+				// else dont show debug
+				else {
+					$dev = FALSE;
+				}
+			}
+
+			if($dev){
+				ini_set('display_errors', '-1');
+				if(version_compare(phpversion(),'5.4.0','<' )){
+					vmdebug('PHP 5.3');
 					error_reporting( E_ALL ^ E_STRICT );
+				} else {
+					vmdebug('PHP 5.4');
+					error_reporting( E_ALL );
+				}
+				vmdebug('Show All Errors');
+
+			} else {
+				$jconfig = JFactory::getConfig();
+				$errep = $jconfig->get('error_reporting');
+				if ( $errep == 'none' or $errep == 'default') {
+					ini_set('display_errors', '1');
+					error_reporting(E_ERROR | E_WARNING | E_PARSE);
+					vmdebug('Show only Errors, warnings, parse errors');
+					/*if(version_compare(phpversion(),'5.4.0','<' )){
+						error_reporting( E_ALL & ~E_STRICT );
+					} else {
+						error_reporting( E_ALL ^ E_STRICT );
+					}*/
 				}
 			}
 		}
+
+
 
 		return self::$_debug;
 	}

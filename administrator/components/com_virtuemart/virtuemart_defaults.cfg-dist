@@ -25,6 +25,7 @@ useSSL=0
 useVendorEmail=0
 dangeroustools=0
 debug_enable=none
+dev=none
 google_jquery=0
 multix=none
 usefancy=1

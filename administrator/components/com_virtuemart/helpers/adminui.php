@@ -102,16 +102,11 @@ class AdminUIHelper {
 				<a href="index.php?option=com_virtuemart&view=virtuemart" ><div class="menu-vmlogo"></div></a>
 				<?php AdminUIHelper::showAdminMenu($vmView);
 				?>
-
 				<?php
 					echo "VirtueMart ".VmConfig::getInstalledVersion();
 				?>
 				</div>
-
-
-
 			<div id="admin-content" class="admin-content">
-
 		<?php
 	}
 
@@ -129,7 +124,6 @@ class AdminUIHelper {
 		?>
 
 				</div>
-
 		</div>
 		<div class="clear"></div>
 	<?php
