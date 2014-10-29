@@ -1180,7 +1180,8 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						}
 						elseif (($productCustom->field_type == "M")) {
 							// 						$html .= $productCustom->custom_title.' '.self::displayCustomMedia($productCustom->custom_value);
-							$value = self::displayCustomMedia ($productCustom->customfield_value);
+							$customFieldModel = VmModel::getModel('customfields');
+							$value = $customFieldModel->displayCustomMedia ($productCustom->customfield_value);
 						}
 						elseif (($productCustom->field_type == "S")) {
 
