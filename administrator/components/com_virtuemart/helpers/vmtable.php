@@ -755,6 +755,10 @@ class VmTable extends JTable {
 		return $this;
 	}
 
+	function getLoaded (){
+		return $this->_loaded;
+	}
+
 	function encryptFields(){
 		if(!class_exists('vmCrypt')){
 			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');

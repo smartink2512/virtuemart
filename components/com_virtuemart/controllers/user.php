@@ -130,7 +130,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$currentUser = JFactory::getUser();
 		$msg = '';
 
-		$data = vRequest::getPost();
+		$data = vRequest::getPost(FILTER_SANITIZE_STRING);
 		$cart = false;
 		if($cartObj){
 			if($cartObj->_fromCart or $cartObj->getInCheckOut()){

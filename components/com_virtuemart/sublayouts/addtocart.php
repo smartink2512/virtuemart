@@ -97,7 +97,7 @@ if($step==0)
 			<input type="hidden" name="option" value="com_virtuemart"/>
 			<input type="hidden" name="view" value="cart"/>
 			<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $product->virtuemart_product_id ?>"/>
-			<input type="hidden" class="pname" value="<?php echo htmlentities($product->product_name, ENT_QUOTES, 'utf-8') ?>"/>
+			<input type="hidden" class="pname" value="<?php echo $product->product_name ?>"/>
 			<?php
 			$itemId=vRequest::getInt('Itemid',false);
 			if($itemId){

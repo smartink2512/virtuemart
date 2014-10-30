@@ -27,7 +27,7 @@ echo sprintf("%'-64.64s",'');
  echo "\n";
   foreach ($this->userfields['fields'] as $field) {
 		if(!empty($field['value'])){
-			echo $field['title'].': '.$this->escape($field['value'])."\n";
+			echo $field['title'].': '.$field['value']."\n";
 		}
 	}
  echo "\n";
@@ -38,7 +38,7 @@ echo sprintf("%'-64.64s",'');
 
 	 foreach ($this->shipmentfields['fields'] as $field) {
 		if(!empty($field['value'])){
-			echo $field['title'].': '.$this->escape($field['value'])."\n";
+			echo $field['title'].': '.$field['value']."\n";
 		}
 	}
 

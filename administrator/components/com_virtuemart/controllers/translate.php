@@ -19,8 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the controller framework
-jimport('joomla.application.component.controller');
 
 if(!class_exists('VmController'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
 
@@ -75,6 +73,7 @@ class VirtuemartControllerTranslate extends VmController {
 		// if ($language->getDefault() == $lang ) $dblang ='';
 
 		$dblang= strtr($lang,'-','_');
+		VmConfig::$vmlang = $dblang;
 		$id = vRequest::getInt('id',0);
 
 		$viewKey = vRequest::getCmd('editView');
@@ -95,7 +94,15 @@ class VirtuemartControllerTranslate extends VmController {
 
 		$q='select * FROM `'.$tableName.'` where `virtuemart_'.$viewKey.'_id` ='.$id;
 		$db->setQuery($q);
-		if ($json['fields'] = $db->loadAssoc()) {
+
+		$m = VmModel::getModel('coupon');
+		$table = $m->getTable($tables[$viewKey]);
+
+		$table->load($id);
+		$json['fields'] = $table->loadFieldValues();
+
+		//if ($json['fields'] = $db->loadAssoc()) {
+		if ($table->getLoaded()) {
 			$json['structure'] = 'filled' ;
 			$json['msg'] = vmText::_('COM_VIRTUEMART_SELECTED_LANG').':'.$lang;
 

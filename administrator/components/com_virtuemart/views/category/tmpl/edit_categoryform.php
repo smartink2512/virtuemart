@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 $mainframe = JFactory::getApplication();
-echo $this->langList ?>
+?>
 <table class="adminform">
 	<tr>
 		<td valign="top" colspan="2">

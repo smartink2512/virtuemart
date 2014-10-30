@@ -352,7 +352,7 @@ class VirtueMartModelCustom extends VmModel {
 
 		//We are in the custom and so the table contains the field_type, else not!!
 		self::setParameterableByFieldType($table,$table->field_type);
-		vmdebug('Store custom ',$data);
+
 		$table->bindChecknStore($data);
 
 		$errors = $table->getErrors();

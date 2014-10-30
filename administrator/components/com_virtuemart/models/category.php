@@ -244,12 +244,17 @@ class VirtueMartModelCategory extends VmModel {
 		$limitStart = $limits[0];
 		$limit = $limits[1];
 
-// 		vmRam('What take the cats?');
 		$this->_noLimit = true;
 		if($keyword!=''){
 			$sortedCats = self::getCategories($onlyPublished, false, false, $keyword);
-		} else {
 
+			if(!empty($sortedCats)){
+				$siblingCount = count($sortedCats);
+				foreach ($sortedCats as $key => &$category) {
+					$category->siblingCount = $siblingCount;
+				}
+			}
+		} else {
 			$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$sortedCats);
 		}
 
@@ -337,7 +342,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$ordering = $this->_getOrdering();
 
-		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
+		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'GROUP BY virtuemart_category_id',$ordering );
 		return $this->_category_tree;
 
 	}

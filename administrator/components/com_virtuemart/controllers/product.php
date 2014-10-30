@@ -308,11 +308,7 @@ class VirtuemartControllerProduct extends VmController {
 	 * @author Kohl Patrick
 	 */
 	public function getData() {
-
-		/* Create the view object. */
 		$view = $this->getView('product', 'json');
-
-		/* Now display the view. */
 		$view->display(NULL);
 	}
 

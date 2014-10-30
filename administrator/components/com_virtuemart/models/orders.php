@@ -1826,11 +1826,17 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_userFieldsModel = VmModel::getModel('userfields');
 
 		//bill to
-		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
+		$_userFieldsCart = $_userFieldsModel->getUserFields('account'
 			, array('delimiters'=>true, 'captcha'=>true)
 			, array('username', 'password', 'password2', 'user_is_vendor')
 			);
 
+		$_userFieldsBT = $_userFieldsModel->getUserFields('cart'
+			, array('delimiters'=>true, 'captcha'=>true)
+			, array('username', 'password', 'password2', 'user_is_vendor')
+		);
+
+		$_userFieldsBT = array_merge((array)$_userFieldsBT,(array)$_userFieldsCart);
 
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;

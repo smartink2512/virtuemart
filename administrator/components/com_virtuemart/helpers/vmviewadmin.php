@@ -164,18 +164,15 @@ class VmViewAdmin extends JViewLegacy {
 			$done=true;
 		}
 	}
-	/*
+
+	/**
 	 * set pagination and filters
-	* return Array() $list( filter_order and dir )
-	*/
+	 * return Array() $list( filter_order and dir )
+	 */
 
 	function addStandardDefaultViewLists($model, $default_order = 0, $default_dir = 'DESC',$name = 'search') {
 
-		//This function must be used after the listing
-// 		$pagination = $model->getPagination();
-// 		$this->assignRef('pagination', $pagination);
-
-		/* set list filters */
+		// set list filters
 		$option = vRequest::getCmd('option');
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
@@ -184,8 +181,7 @@ class VmViewAdmin extends JViewLegacy {
 
 		$lists['filter_order'] = $this->getValidFilterOrder($app,$model,$view,$default_order);
 
-// 		if($default_dir===0){
-			$toTest = $app->getUserStateFromRequest( 'com_virtuemart.'.$view.'.filter_order_Dir', 'filter_order_Dir', $default_dir, 'cmd' );
+		$toTest = $app->getUserStateFromRequest( 'com_virtuemart.'.$view.'.filter_order_Dir', 'filter_order_Dir', $default_dir, 'cmd' );
 
 		$lists['filter_order_Dir'] = $model->checkFilterDir($toTest);
 
@@ -198,10 +194,8 @@ class VmViewAdmin extends JViewLegacy {
 		if($default_order===0){
 			$default_order = $model->getDefaultOrdering();
 		}
-
 		$toTest = $app->getUserStateFromRequest( 'com_virtuemart.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
 
-// 		vmdebug('getValidFilterOrder '.$toTest.' '.$default_order, $model->_validOrderingFieldName);
 		return $model->checkFilterOrder($toTest);
 	}
 
@@ -221,36 +215,30 @@ class VmViewAdmin extends JViewLegacy {
 	}
 
 	function addStandardEditViewCommands($id = 0,$object = null) {
+
         $view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
-        //if (vRequest::getCmd('tmpl') =='component' ) {
-            if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
-       	//}
-		//else {
-            // 		vRequest::setVar('hidemainmenu', true);
-			JToolBarHelper::divider();
-			if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create') ) {
-				JToolBarHelper::save();
-				JToolBarHelper::apply();
-			}
-			JToolBarHelper::cancel();
-			self::showHelp();
-			self::showACLPref($view);
-	//	}
+		if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
+
+		JToolBarHelper::divider();
+		if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create') ) {
+			JToolBarHelper::save();
+			JToolBarHelper::apply();
+		}
+		JToolBarHelper::cancel();
+		self::showHelp();
+		self::showACLPref($view);
+
 		$this->addJsJoomlaSubmitButton();
-		// javascript for cookies setting in case of press "APPLY"
-
-
 
 		// LANGUAGE setting
-
         $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
 
 		$params = JComponentHelper::getParams('com_languages');
-		//$config =JFactory::getConfig();$config->getValue('language');
-		$selectedLangue = $params->get('site', 'en-GB');
 
+		$selectedLangue = $params->get('site', 'en-GB');
 		$lang = strtolower(strtr($selectedLangue,'-','_'));
+
 		// Get all the published languages defined in Language manager > Content
 		$allLanguages	= JLanguageHelper::getLanguages();
 		foreach ($allLanguages as $jlang) {
@@ -261,7 +249,7 @@ class VmViewAdmin extends JViewLegacy {
 		if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
 
 			if ($editView =='user') $editView ='vendor';
-			//$params = JComponentHelper::getParams('com_languages');
+
 			jimport('joomla.language.helper');
             $lang = vRequest::getVar('vmlang', $lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
@@ -292,7 +280,7 @@ class VmViewAdmin extends JViewLegacy {
 			}
 			JFactory::getDocument()->addStyleDeclaration($flagCss);
 
-			$langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
+			$langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 
@@ -308,7 +296,13 @@ class VmViewAdmin extends JViewLegacy {
 				$("select#vmlang").chosen().change(function() {
 					langCode = $(this).find("option:selected").val();
 					flagClass = "flag-"+langCode;
-					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
+					jQuery.ajax({
+						type: "GET",
+						cache: false,
+        				dataType: "json",
+        				url: "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1",
+    				}).done(
+					//$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
 						function(data) {
 							var items = [];
 
@@ -325,13 +319,18 @@ class VmViewAdmin extends JViewLegacy {
 
 			if($editView =='product' && !empty($childproducts)) {
 				foreach($childproducts as $child) {
-					$j .= '
-									$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1" ,
+					$j .= 'jQuery.ajax({
+        						type: "GET",
+								cache: false,
+        						dataType: "json",
+        						url: "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1",
+    					}).done(
+								//	$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1" ,
 										function(data) {
 											cible = jQuery("#child'. $child->virtuemart_product_id .'product_name");
 											cible.parent().removeClass(oldflag)
 											cible.parent().addClass(flagClass);
-											cible.val(data.fields["product_name"]);
+											cible.val(data.fields.product_name);
 											jQuery("#child'. $child->virtuemart_product_id .'slug").val(data.fields["slug"]);
 
 											oldflag = flagClass ;
@@ -349,8 +348,6 @@ class VmViewAdmin extends JViewLegacy {
 			})';
 			vmJsApi::addJScript('vmlang', $j);
 		} else {
-			// $params = JComponentHelper::getParams('com_languages');
-			// $lang = $params->get('site', 'en-GB');
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
 			$defautName = $selectedLangue;

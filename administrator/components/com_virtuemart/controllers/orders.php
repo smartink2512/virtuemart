@@ -164,14 +164,27 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function editOrderStatus() {
 
-		/* Create the view object */
 		$view = $this->getView('orders', 'html');
 
-		/* Default model */
-		$model = VmModel::getModel('orders');
-		$model->updateOrderStatus();
-		/* Now display the view. */
+		if($this->getPermOrderStatus()){
+			$model = VmModel::getModel('orders');
+			$model->updateOrderStatus();
+		} else {
+			vmInfo('Restricted');
+		}
+
 		$view->display();
+	}
+
+	function getPermOrderStatus(){
+
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') or
+			( $user->authorise('vm.manage', 'com_virtuemart') and $user->authorise('vm.orders.status', 'com_virtuemart') )){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -181,11 +194,17 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updatestatus() {
 
-		$mainframe = Jfactory::getApplication();
+		$app = Jfactory::getApplication();
 		$lastTask = vRequest::getCmd('last_task');
 
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
+
+		if(!$this->getPermOrderStatus()){
+			vmInfo('Restricted');
+			$view->display();
+			return true;
+		}
 
 		/* Update the statuses */
 		$model = VmModel::getModel('orders');
@@ -209,10 +228,10 @@ class VirtuemartControllerOrders extends VmController {
 		if ($result['error'] > 0)
 		$msg .= vmText::sprintf('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY', $result['error'] , $result['total']);
 		if ('updatestatus'== $lastTask ) {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
+			$app->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
 		}
 		else {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
+			$app->redirect('index.php?option=com_virtuemart&view=orders', $msg);
 		}
 	}
 
@@ -251,12 +270,10 @@ class VirtuemartControllerOrders extends VmController {
 	 * @author Max Milbers
 	 */
 	public function getProducts() {
-		/* Create the view object */
-		$view = $this->getView('orders', 'json');
 
+		$view = $this->getView('orders', 'json');
 		$view->setLayout('orders_editorderitem');
 
-		/* Now display the view. */
 		$view->display();
 	}
 

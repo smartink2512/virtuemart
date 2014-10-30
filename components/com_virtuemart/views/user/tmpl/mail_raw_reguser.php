@@ -38,7 +38,7 @@ echo $activationLink . $li;
 
 foreach ($this->userFields['fields'] as $userField) {
     if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT') {
-	echo $userField['title'] . ': ' . $this->escape($userField['value']) . $li;
+	echo $userField['title'] . ': ' . $userField['value'] . $li;
 	if ($userField['name'] != 'title' and $userField['name'] != 'first_name' and $userField['name'] != 'middle_name' and $userField['name'] != 'zip') {
 	    echo $li;
 	}

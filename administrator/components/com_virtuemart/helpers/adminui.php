@@ -99,7 +99,13 @@ class AdminUIHelper {
 		<div class="virtuemart-admin-area">
 			<div class="toggler vmicon-show"></div>
 			<div class="menu-wrapper" id="menu-wrapper">
-				<a href="index.php?option=com_virtuemart&view=virtuemart" ><div class="menu-vmlogo"></div></a>
+				<?php if(!empty($vmView->langList)){ ?>
+					<div class="vm-lang-list-container">
+						<?php echo $vmView->langList; ?>
+					</div>
+				<?php } else { ?>
+					<a href="index.php?option=com_virtuemart&view=virtuemart" ><div class="menu-vmlogo"></div></a>
+				<?php } ?>
 				<?php AdminUIHelper::showAdminMenu($vmView);
 				?>
 				<?php

@@ -23,9 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 // set row counter
 $i=0;
 ?>
-<div class="vm-lang-list-container">
-	<?php echo $this->langList; ?>
-</div>
+
 
 <fieldset>
 	<legend><?php

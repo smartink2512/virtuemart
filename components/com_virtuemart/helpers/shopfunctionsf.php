@@ -569,11 +569,8 @@ class shopFunctionsF {
 		VmConfig::ensureMemoryLimit(96);
 
 		VmConfig::loadJLang('com_virtuemart',true);
-
+vmdebug('sendVmMail',$view->orderDetails);
 		if(!empty($view->orderDetails) and !empty($view->orderDetails['details']['BT']->order_language)) {
-			//$jlang->load( 'com_virtuemart', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
-			//$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
-			//$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
 			VmConfig::loadJLang('com_virtuemart',true,$view->orderDetails['details']['BT']->order_language);
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$view->orderDetails['details']['BT']->order_language);
 			VmConfig::loadJLang('com_virtuemart_orders',TRUE,$view->orderDetails['details']['BT']->order_language);

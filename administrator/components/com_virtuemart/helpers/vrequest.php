@@ -149,7 +149,7 @@ class vRequest {
 	public static function filter($var,$filter,$flags){
 		if(is_array($var)){
 
-			return filter_var_array($var, $filter, $flags );
+			return filter_var_array($var, $filter );
 		}
 		else {
 			return filter_var($var, $filter, $flags);

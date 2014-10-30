@@ -52,11 +52,7 @@ class VirtuemartControllerState extends VmController {
 	 * Retrieve full statelist
 	 */
 	function getList() {
-
-		/* Create the view object. */
 		$view = $this->getView('state', 'json');
-
-		/* Now display the view. */
 		$view->display(null);
 	}
 }

@@ -68,7 +68,7 @@ $li = '<br />';
 
 				    foreach ($this->userFields['fields'] as $userField) {
 					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT') {
-					    echo $userField['title'] . ': ' . $this->escape($userField['value']) . $li;
+					    echo $userField['title'] . ': ' . $userField['value'] . $li;
 					}
 				    }
 				    ?>
