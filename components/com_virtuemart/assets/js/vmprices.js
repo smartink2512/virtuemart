@@ -28,7 +28,7 @@ Virtuemart.setproducttype = function(form, id) {
             // refresh price
             for (var key in data) {
                 var value = data[key];
-                console.log('my datas',key,value);
+                // console.log('my datas',key,value);
                 if ( key=='messages' ) {
                     // Extract the messages from the returned string, add the vmprices-message class (so the next ajax call
                     // can remove them again) and then move the messages to the original message container.

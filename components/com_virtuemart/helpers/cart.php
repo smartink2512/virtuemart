@@ -553,7 +553,10 @@ class VirtueMartCart {
 					}
 					//	$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
 				} else {
-					$customProductDataTmp[$customfield->virtuemart_custom_id] = (int)$customfield->virtuemart_customfield_id;
+					if(!is_array($customProductDataTmp[$customfield->virtuemart_custom_id])){
+						$customProductDataTmp[$customfield->virtuemart_custom_id] = array();
+					}
+					$customProductDataTmp[$customfield->virtuemart_custom_id][(int)$customfield->virtuemart_customfield_id] = false;
 				}
 
 			}

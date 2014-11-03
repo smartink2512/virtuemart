@@ -202,7 +202,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		if (!empty($selected['comment'])) {
 			if ($customfield->custom_price_by_letter ==1) {
-				$charcount = strlen ($selected['comment']);
+				$charcount = strlen (html_entity_decode ($selected['comment']));
 			} else {
 				$charcount = 1.0;
 			}

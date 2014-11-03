@@ -251,16 +251,13 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'idx_custom_value' => ' INDEX `idx_published` (`published`)'
 			));
 
-			$this->alterTable('#__virtuemart_medias',
-				 array(
-					'file_url' => '`file_url` varchar(900) NOT NULL DEFAULT ""',
-					'file_params' => '`file_params` varchar(17500)',
-					'file_url_thumb' => '`file_url_thumb` varchar(900) NOT NULL DEFAULT ""',
-   				)
- 			);
 
 			$this->alterTable('#__virtuemart_userfields',array(
 				'params' => '`userfield_params` varchar(17500) NOT NULL DEFAULT "" COMMENT \'userfield params\'',
+			));
+
+			$this->alterTable('#__virtuemart_orders',array(
+				'customer_note' => '`oc_note` varchar(20000) NOT NULL DEFAULT "" COMMENT \'old customer notes\'',
 			));
 
 			//todo Maik, please take a look, this should not be anylonger necessary

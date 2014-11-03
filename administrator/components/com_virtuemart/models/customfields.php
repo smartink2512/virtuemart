@@ -1127,7 +1127,11 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 			//We just add the customfields to be shown in the cart to the variantmods
 			if(is_object($prodcustom)){
 				if($prodcustom->is_cart_attribute and !$prodcustom->is_input){
-					$variantmods[$prodcustom->virtuemart_custom_id] = $prodcustom->virtuemart_customfield_id;
+					if(!is_array($variantmods[$prodcustom->virtuemart_custom_id])){
+						$variantmods[$prodcustom->virtuemart_custom_id] = array();
+					}
+					$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = false;
+
 				} else if(!empty($variantmods) and !empty($variantmods[$prodcustom->virtuemart_custom_id])){
 
 				}

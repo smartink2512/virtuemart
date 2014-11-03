@@ -178,7 +178,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		// Get the order details
 		$q = "SELECT  o.*,u.*,
-				s.order_status_name, o.customer_note as oc_note
+				s.order_status_name
 			FROM #__virtuemart_orders o
 			LEFT JOIN #__virtuemart_orderstates s
 			ON s.order_status_code = o.order_status

@@ -532,7 +532,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.00000',
   `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED,
   `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
-  `customer_note` varchar(20000),
   `delivery_date` varchar(200),
   `order_language` char(7),
   `ip_address` char(15) NOT NULL DEFAULT '',

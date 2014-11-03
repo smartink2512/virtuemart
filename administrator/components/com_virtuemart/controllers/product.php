@@ -67,6 +67,11 @@ class VirtuemartControllerProduct extends VmController {
 			if(isset($data['field'])){
 				$data['field'] = vRequest::get('field');
 			}
+			if(isset($data['childs'])){
+				foreach($data['childs'] as $k=>$v){
+					$data['childs'][$k]['product_name'] = vRequest::get('field[childs]['.$k.'][product_name]','');
+				}
+			}
 		} else  {
 			$data['product_desc'] = vRequest::getHtml('product_desc','');
 			$data['product_s_desc'] = vRequest::getHtml('product_s_desc','');
