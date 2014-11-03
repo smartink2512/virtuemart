@@ -1085,8 +1085,12 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 
 					//juri::root() For whatever reason, we used this here, maybe it was for the mails
 					$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id), $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+					if($customfield->wPrice){
+						$currency = calculationHelper::getInstance()->_currencyDisplay;
+						$customfield->display .= $currency->createPriceDiv ('salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $related->prices);
+					}
 					if($customfield->wDescr){
-						$customfield->display .= $related->product_s_desc;
+						$customfield->display .= '<p class="product_s_desc">'.$related->product_s_desc.'</p>';
 					}
 
 					break;

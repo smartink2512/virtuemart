@@ -569,8 +569,8 @@ class shopFunctionsF {
 		VmConfig::ensureMemoryLimit(96);
 
 		VmConfig::loadJLang('com_virtuemart',true);
-vmdebug('sendVmMail',$view->orderDetails);
-		if(!empty($view->orderDetails) and !empty($view->orderDetails['details']['BT']->order_language)) {
+
+		if($noVendorMail and !empty($view->orderDetails) and !empty($view->orderDetails['details']['BT']->order_language)) {
 			VmConfig::loadJLang('com_virtuemart',true,$view->orderDetails['details']['BT']->order_language);
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$view->orderDetails['details']['BT']->order_language);
 			VmConfig::loadJLang('com_virtuemart_orders',TRUE,$view->orderDetails['details']['BT']->order_language);

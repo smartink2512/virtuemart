@@ -1176,8 +1176,22 @@ class VmMediaHandler {
 	//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 
 $html .='</td>';
-		$html .= '<td rowspan = "8" min-width = "'.(VmConfig::get('img_width',90)+10).'px">';
-		$thumbArgs = 'id="vm_thumb_image" style="overflow: auto;"';
+		$imgWidth = VmConfig::get('img_width','');
+		if(!empty($imgWidth)){
+			$imgWidth = 'width:'.VmConfig::get('img_width',90).'px;';
+		} else {
+			$imgWidth = 'width:200px;';
+		}
+
+		$imgHeight = VmConfig::get('img_height','');
+		if(!empty($imgHeight)){
+			$imgHeight = 'height:'.VmConfig::get('img_height',90).'px;';
+		} else {
+			$imgHeight = '';
+		}
+
+		$html .= '<td rowspan = "8" min-width = "'.(VmConfig::get('img_width',90)+10).'px" overflow="hidden">';
+		$thumbArgs = 'class="vm_thumb_image" style="overflow: auto;'.$imgWidth.$imgHeight.'"';
 		$html .= $this->displayMediaThumb($thumbArgs); //JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		// $html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		$html .= '</td>';
