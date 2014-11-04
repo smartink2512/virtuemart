@@ -137,15 +137,13 @@ class vRequest {
 			if($source===0){
 				$source = $_REQUEST;
 			} else if('GET'){
-				$app = JFactory::getApplication();
-				if(JVM_VERSION<3 or $app->isAdmin()){
-					$source = $_GET;
-				} else {
+				$source = $_GET;
+				if(JVM_VERSION>2){
 					$router = JFactory::getApplication()->getRouter();
-					vmdebug('get',$router);
-					$source = $router->getVars();
+					if($router->getMode()){
+						$source = $router->getVars();
+					}
 				}
-
 			} else if('POST'){
 				$source = $_POST;
 			}
@@ -162,8 +160,8 @@ class vRequest {
 
 	}
 
-	public static function filter($var,$filter,$flags){
-		if(is_array($var)){
+	public static function filter($var,$filter,$flags,$array=false){
+		if($array or is_array($var)){
 			foreach($var as &$v){
 				$v = filter_var($v, $filter, $flags);
 			}
@@ -191,12 +189,15 @@ class vRequest {
 	}
 	
 	public static function getGet( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
-		if(JVM_VERSION<3){
-			return self::filter($_GET, $filter, $flags,true);
-		} else {
+		$source = $_GET;
+		if(JVM_VERSION>2){
 			$router = JFactory::getApplication()->getRouter();
-			return self::filter($router->getVars(), $filter,$flags,true);
+			if($router->getMode()){
+				$source = $router->getVars();
+			}
 		}
+
+		return self::filter($source, $filter, $flags,true);
 	}
 	
 	public static function getFiles( $name, $filter = FILTER_SANITIZE_STRING, $flags = FILTER_FLAG_STRIP_LOW){
