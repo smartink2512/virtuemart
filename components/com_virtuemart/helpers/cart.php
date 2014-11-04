@@ -553,8 +553,10 @@ class VirtueMartCart {
 					}
 					//	$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
 				} else {
-					if(!is_array($customProductDataTmp[$customfield->virtuemart_custom_id])){
+					if(!isset($customProductDataTmp[$customfield->virtuemart_custom_id])){
 						$customProductDataTmp[$customfield->virtuemart_custom_id] = array();
+					} else if(!is_array($customProductDataTmp[$customfield->virtuemart_custom_id])){
+						$customProductDataTmp[$customfield->virtuemart_custom_id] = array($customProductDataTmp[$customfield->virtuemart_custom_id]);
 					}
 					$customProductDataTmp[$customfield->virtuemart_custom_id][(int)$customfield->virtuemart_customfield_id] = false;
 				}
@@ -566,7 +568,7 @@ class VirtueMartCart {
 			$unsetA = array();
 			$found = false;
 
-			//VmConfig::$echoDebug=true;
+
 			//Now lets check if there is already a product stored with the same id, if yes, increase quantity and recalculate
 			foreach($this->cartProductsData as $k => &$cartProductData){
 				$cartProductData = (array)$cartProductData;

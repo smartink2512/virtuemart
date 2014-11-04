@@ -140,8 +140,9 @@ class vRequest {
 				$source = $_GET;
 				if(JVM_VERSION>2){
 					$router = JFactory::getApplication()->getRouter();
-					if($router->getMode()){
-						$source = $router->getVars();
+					$vars = $router->getVars();
+					if($router->getMode() and !empty($vars)){
+						$source = array_merge($_GET,$vars);
 					}
 				}
 			} else if('POST'){
@@ -162,10 +163,7 @@ class vRequest {
 
 	public static function filter($var,$filter,$flags,$array=false){
 		if($array or is_array($var)){
-			foreach($var as &$v){
-				$v = filter_var($v, $filter, $flags);
-			}
-			return $var;
+			return filter_var_array($var, $filter);
 		}
 		else {
 			return filter_var($var, $filter, $flags);
@@ -192,8 +190,9 @@ class vRequest {
 		$source = $_GET;
 		if(JVM_VERSION>2){
 			$router = JFactory::getApplication()->getRouter();
-			if($router->getMode()){
-				$source = $router->getVars();
+			$vars = $router->getVars();
+			if($router->getMode() and !empty($vars)){
+				$source = array_merge($_GET,$vars);
 			}
 		}
 
