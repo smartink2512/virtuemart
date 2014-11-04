@@ -65,8 +65,8 @@ class vRequest {
 		return $tmp;
 	}
 
-	public static function getInt($name, $default = 0){
-		return self::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
+	public static function getInt($name, $default = 0, $source = 0){
+		return self::get($name, $default, FILTER_SANITIZE_NUMBER_INT,FILTER_FLAG_NO_ENCODE,$source);
 	}
 
 	public static function getFloat($name,$default=0.0){
@@ -130,14 +130,28 @@ class vRequest {
 	 * @param int $flags
 	 * @return mixed|null
 	 */
-	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_NO_ENCODE){
+	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_NO_ENCODE,$source = 0){
 		//vmSetStartTime();
 		if(!empty($name)){
 
-			if(!isset($_REQUEST[$name])) return $default;
+			if($source===0){
+				$source = $_REQUEST;
+			} else if('GET'){
+				$app = JFactory::getApplication();
+				if(JVM_VERSION<3 or $app->isAdmin()){
+					$source = $_GET;
+				} else {
+					$source = JFactory::getApplication()->getRouter()->getVars();
+				}
+
+			} else if('POST'){
+				$source = $_POST;
+			}
+
+			if(!isset($source[$name])) return $default;
 
 			//if(strpos($name,'[]'!==FALSE)){
-			return self::filter($_REQUEST[$name],$filter,$flags);
+			return self::filter($source[$name],$filter,$flags);
 
 		} else {
 			vmTrace('empty name in vRequest::get');
@@ -173,7 +187,12 @@ class vRequest {
 	}
 	
 	public static function getGet( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
-		return  filter_var_array($_GET, $filter, $flags);
+		if(JVM_VERSION<3){
+			return  filter_var_array($_GET, $filter, $flags);
+		} else {
+			$router = JFactory::getApplication()->getRouter();
+			return filter_var_array($router->getVars(), $filter,$flags);
+		}
 	}
 	
 	public static function getFiles( $name, $filter = FILTER_SANITIZE_STRING, $flags = FILTER_FLAG_STRIP_LOW){

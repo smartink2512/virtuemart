@@ -744,7 +744,7 @@ class VmModel extends JObject {
 		$this->setState('com_virtuemart.'.$view.'.limit',$limit);
 		$this->_limit = $limit;
 
-		$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  vRequest::getInt('limitstart',0), 'int');
+		$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  vRequest::getInt('limitstart',0,'GET'), 'int');
 
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
 		//This functions assures that the steps of limitstart fit with the limit
@@ -1157,12 +1157,7 @@ class VmPagination extends JPagination {
 			$html = JHtml::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
 		} else {
 
-			if(JVM_VERSION<3){
-				$getArray = vRequest::getGet();
-			} else {
-				$router = JFactory::getApplication()->getRouter();
-				$getArray = filter_var_array($router->getVars(), FILTER_SANITIZE_STRING);
-			}
+			$getArray = vRequest::getGet();
 
 			$link ='';
 			unset ($getArray['limit']);

@@ -635,12 +635,12 @@ class VirtueMartModelProduct extends VmModel {
 
 			if ((!empty($lastCatId) and $lastCatId != $cateid) or (!empty($manid) and $lastManId != $manid)) {
 				//We are in a new category or another manufacturer, so we start at page 1
-				$limitStart = vRequest::getInt ('limitstart', 0);
+				$limitStart = vRequest::getInt ('limitstart', 0,'GET');
 			}
 			else {
 				//We were already in the category/manufacturer, so we take the value stored in the session
 				$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid .'m'.$manid. '.limitstart';
-				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', vRequest::getInt ('limitstart', 0), 'int');
+				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', vRequest::getInt ('limitstart', 0,'GET'), 'int');
 			}
 
 			if(empty($limit) and !empty($category->limit_list_initial)){
@@ -671,7 +671,7 @@ class VirtueMartModelProduct extends VmModel {
 			//vmdebug('Calculated $limit  ',$limit,$suglimit);
 		}
 		else {
-			$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', vRequest::getInt ('limitstart', 0), 'int');
+			$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', vRequest::getInt ('limitstart', 0,'GET'), 'int');
 		}
 
 		if(empty($limit)){
@@ -2171,12 +2171,12 @@ class VirtueMartModelProduct extends VmModel {
 	 **/
 	function getOrderByList ($virtuemart_category_id = FALSE) {
 
-		if(JVM_VERSION<3){
+		//if(JVM_VERSION<3){
 			$getArray = vRequest::getGet();
-		} else {
+		/*} else {
 			$router = JFactory::getApplication()->getRouter();
 			$getArray = filter_var_array($router->getVars(), FILTER_SANITIZE_STRING);
-		}
+		}*/
 
 		$fieldLink = '';
 

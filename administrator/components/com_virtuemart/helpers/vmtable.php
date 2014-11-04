@@ -1021,7 +1021,8 @@ class VmTable extends JTable {
 				if (!empty($this->$slugAutoName)) {
 					$this->$slugName = $this->$slugAutoName;
 				} else {
-					vmError('VmTable ' . $checkTable . ' Check not passed. Neither slug nor obligatory value at ' . $slugAutoName . ' for auto slug creation is given');
+					$pkey = $this->_pkey;
+					vmError('VmTable ' . $checkTable . ' Check not passed. Neither slug nor obligatory value at ' . $slugAutoName . ' for auto slug creation is given '.$this->$pkey);
 					return false;
 				}
 

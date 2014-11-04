@@ -18,7 +18,7 @@ jimport('joomla.filesystem.file');
  * @subpackage  Cache
  * @since       11.1
  */
-class JCacheStorageFile extends JCacheStorage
+class JCacheStorageVmfile extends JCacheStorage
 {
 	/**
 	 * @var    string
