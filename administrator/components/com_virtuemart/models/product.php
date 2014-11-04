@@ -395,6 +395,7 @@ class VirtueMartModelProduct extends VmModel {
 				$joinCatLang = true;
 				break;
 			case 'mf_name':
+			case '`l`.mf_name':
 				$orderBy = ' ORDER BY `mf_name` ';
 				$joinMf = TRUE;
 				$joinMfLang = true;
@@ -1530,7 +1531,7 @@ class VirtueMartModelProduct extends VmModel {
 					$orderByName = '`'.$sp[0].'`.'.$orderByName;
 
 				} else {
-					$orderByName = '`l`.'.$orderByName;
+					//$orderByName = '`l`.'.$orderByName;
 				}
 			} else {
 				$orderByName = '`l`.product_name';

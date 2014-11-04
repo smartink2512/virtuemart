@@ -40,39 +40,53 @@ $Product_group = 	$params->get( 'product_group', 'featured'); // Display a foote
 $mainframe = Jfactory::getApplication();
 $virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id',0) );
 
+$cache = $params->get( 'vmcache', true );
+$cachetime = $params->get( 'vmcachetime', 300 );
+//vmdebug('$params for mod products',$params);
+if($cache){
+	vmdebug('Use cache for mod products');
+	$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id;
+	$cache	= JFactory::getCache('mod_virtuemart_product', 'output');
+	$cache->setCaching(1);
+	$cache->setLifeTime($cachetime);
 
-$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id;
+	if ($output = $cache->get($key)) {
+		echo $output;
+		vmdebug('Use cached mod products');
 
-$cache	= JFactory::getCache('mod_virtuemart_product', 'output');
-if (!($output = $cache->get($key))) {
-	ob_start();
-	// Try to load the data from cache.
-
-
-	/* Load  VM fonction */
-	if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
-
-	$vendorId = vRequest::getInt('vendorid', 1);
-
-	if ($filter_category ) $filter_category = TRUE;
-
-	$productModel = VmModel::getModel('Product');
-
-	$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id);
-	$productModel->addImages($products);
-
-	$totalProd = 		count( $products);
-	if(empty($products)) return false;
-	$currency = CurrencyDisplay::getInstance( );
-
-	if ($show_addtocart) {
-		vmJsApi::jPrice();
-		vmJsApi::cssSite();
+		return true;
 	}
-	/* Load tmpl default */
+}
+
+
+/* Load  VM fonction */
+if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
+
+$vendorId = vRequest::getInt('vendorid', 1);
+
+if ($filter_category ) $filter_category = TRUE;
+
+$productModel = VmModel::getModel('Product');
+
+$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id);
+$productModel->addImages($products);
+
+$totalProd = 		count( $products);
+if(empty($products)) return false;
+$currency = CurrencyDisplay::getInstance( );
+
+if ($show_addtocart) {
+	vmJsApi::jPrice();
+	vmJsApi::cssSite();
+}
+ob_start();
+
+/* Load tmpl default */
 require(JModuleHelper::getLayoutPath('mod_virtuemart_product',$layout));
-	$output = ob_get_clean();
+$output = ob_get_clean();
+if($cache){
 	$cache->store($output, $key);
 }
+
 echo $output;
 ?>

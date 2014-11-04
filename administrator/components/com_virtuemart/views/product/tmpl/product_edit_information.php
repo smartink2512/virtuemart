@@ -282,8 +282,7 @@ if ($link) {
 			<legend>
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_PRINT_INTNOTES'); ?>
 			</legend>
-			<textarea style="width: 100%;" class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6">
-					<?php echo $this->product->intnotes; ?></textarea>
+			<textarea style="width: 100%;" class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6"><?php echo $this->product->intnotes; ?></textarea>
 		</fieldset>
 	</td>
 </tr>
