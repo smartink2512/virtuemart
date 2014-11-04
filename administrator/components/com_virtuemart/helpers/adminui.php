@@ -62,15 +62,12 @@ class AdminUIHelper {
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;
 		 jQuery( function($) {
-
 			$('dl#system-message').hide().slideDown(400);
 			$('.virtuemart-admin-area .toggler').vm2admin('toggle');
 			$('#admin-ui-menu').vm2admin('accordeon');
 			if ( $('#admin-ui-tabs').length  ) {
-
 				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text}); 
 			}
-
 			$('#content-box [title]').vm2admin('tips',tip_image);
 			$('.modal').fancybox();
 			$('.reset-value').click( function(e){
@@ -79,7 +76,6 @@ class AdminUIHelper {
 				jQuery(this).parent().find('.ui-autocomplete-input').val(none);
 				
 			});
-
 		});
 //]]>
 		");

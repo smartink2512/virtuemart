@@ -23,6 +23,7 @@ currency_converter_module=convertECB.php
 order_mail_html=1
 useSSL=0
 useVendorEmail=0
+dev=0
 dangeroustools=0
 debug_enable=none
 google_jquery=0
