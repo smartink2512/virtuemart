@@ -1820,7 +1820,7 @@ class VirtueMartModelProduct extends VmModel {
 					if(!empty($child['product_parent_id']) and $child['product_parent_id'] == $child['virtuemart_product_id']){
 						$child['product_parent_id'] = 0;
 					}
-					vmdebug('Store product my ',$child,$this->_id,$productId,$data['virtuemart_product_id']);
+
 					$child['isChild'] = $this->_id;
 					$this->store ($child);
 				}
@@ -1860,7 +1860,6 @@ class VirtueMartModelProduct extends VmModel {
 			foreach ($errors as $error) {
 				vmError ($error);
 			}
-
 		}
 
 		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
@@ -1945,30 +1944,33 @@ class VirtueMartModelProduct extends VmModel {
 			$product->created_by = 0;
 		}
 		$product->slug = $product->slug . '-' . $id;
-
+		$product->originId = $id;
 		$newId = $this->store ($product);
+		$product->virtuemart_product_id = $newId;
+		JPluginHelper::importPlugin ('vmcustom');
+		$dispatcher = JDispatcher::getInstance ();
+		$result=$dispatcher->trigger ('plgVmCloneProduct', array($product));
 
 		$langs = VmConfig::get('active_languages', array());
-		if (!$langs or count($langs)<2) return $this->_id;
-
-		$langTable = $this->getTable('products');
-
-		foreach($langs as $lang){
-			if($lang==VmConfig::$vmlangTag) continue;
-			$langTable->emptyCache();
-			$langTable->setLanguage($lang);
-			//Disables the language fallback
-			$langTable->_ltmp = true;
-			$langTable->load($id);
-			if($langTable->_loaded){
-				if(!empty($langTable->virtuemart_product_id)){
-					$langTable->virtuemart_product_id = $newId;
-					$langTable->bindChecknStore($langTable);
+		if ($langs and count($langs)>1){
+			$langTable = $this->getTable('products');
+			foreach($langs as $lang){
+				if($lang==VmConfig::$vmlangTag) continue;
+				$langTable->emptyCache();
+				$langTable->setLanguage($lang);
+				//Disables the language fallback
+				$langTable->_ltmp = true;
+				$langTable->load($id);
+				if($langTable->_loaded){
+					if(!empty($langTable->virtuemart_product_id)){
+						$langTable->virtuemart_product_id = $newId;
+						$langTable->bindChecknStore($langTable);
+					}
 				}
 			}
 		}
 
-		return $this->_id;
+		return $product->virtuemart_product_id;
 	}
 	
 	private function productPricesClone ($virtuemart_product_id) {

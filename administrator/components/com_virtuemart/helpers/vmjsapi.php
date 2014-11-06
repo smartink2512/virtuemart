@@ -230,15 +230,11 @@ class vmJsApi{
 			return FALSE;
 		}
 
-		if(VmConfig::get('google_jquery',true)){
-			if(JVM_VERSION<3){
-
+		if(JVM_VERSION<3){
+			if(VmConfig::get('google_jquery',true)){
 				self::addJScript('jquery.min','//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',false,false,'');
 				self::addJScript( 'jquery-migrate.min',false,false,false,'');
-			}
-
-		} else {
-			if(JVM_VERSION<3) {
+			} else {
 				self::addJScript( 'jquery.min',false,false,false,'');
 				self::addJScript( 'jquery-migrate.min',false,false,false,'');
 			}
@@ -266,8 +262,7 @@ class vmJsApi{
 	}
 
 	// Virtuemart product and price script
-	static function jPrice()
-	{
+	static function jPrice() {
 
 		if (!VmConfig::get ('jprice', TRUE) and JFactory::getApplication ()->isSite ()) {
 			return FALSE;
@@ -312,17 +307,13 @@ class vmJsApi{
 			}
 		}
 
-		//$jsVars .= '//]]> ';
 		self::addJScript('jsVars',$jsVars);
-		//$document = JFactory::getDocument();
-		//$document->addScriptDeclaration ($jsVars);
 		vmJsApi::addJScript( 'vmprices');
 
 		$jPrice = TRUE;
 		return TRUE;
 	}
 
-	// Virtuemart Site Js script
 	static function jSite() {
 		if (!VmConfig::get ('jsite', TRUE) and JFactory::getApplication ()->isSite ()) {
 			return FALSE;
@@ -330,7 +321,6 @@ class vmJsApi{
 		self::addJScript('vmsite',false,false);
 	}
 
-	// Virtuemart Site Js script
 	static function jDynUpdate() {
 		if (!VmConfig::get ('jdynupdate', TRUE) and JFactory::getApplication ()->isSite ()) {
 			return FALSE;
@@ -340,11 +330,9 @@ class vmJsApi{
 
 	static function JcountryStateList($stateIds, $prefix='') {
 		static $JcountryStateList = array();
-		// If exist exit
 		if (isset($JcountryStateList[$prefix]) or !VmConfig::get ('jsite', TRUE)) {
 			return;
 		}
-		$document = JFactory::getDocument();
 		VmJsApi::jSite();
 		self::addJScript('vm.countryState'.$prefix,'
 //<![CDATA[

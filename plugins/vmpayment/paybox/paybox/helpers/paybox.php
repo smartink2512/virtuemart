@@ -396,14 +396,12 @@ jQuery().ready(function($) {
 			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" target="paybox">';
 		} else {
 			vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
-	jQuery(document).ready(function($) {
-	    $(window).load(function(){
-			if(jQuery("#vmPaymentForm")) {
+jQuery(window).load(function(){
+            if(jQuery("#vmPaymentForm")) {
 				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_PAYBOX_REDIRECT_MESSAGE', true).'" );
 				jQuery("#vmPaymentForm").submit();
 			}
-		});
-	});
+    });
 ');
 			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" id="vmPaymentForm">';
 		}
@@ -420,7 +418,10 @@ jQuery().ready(function($) {
 						</div>';
 			$this->plugin->debugLog($post_variables, 'sendPostRequest:', 'debug');
 
-		}
+		}else {
+            $html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYBOX_REDIRECT_MESSAGE') . '" />';
+
+        }
 		$html .= '</form>';
 
 		return $html;

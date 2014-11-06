@@ -1,9 +1,11 @@
 <?php
 /**
+ * Additional check for file and replacement of file_exists to is_file by Max Milbers
  * @package     Joomla.Platform
  * @subpackage  Cache
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ *
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -60,7 +62,7 @@ class JCacheStorageVmfile extends JCacheStorage
 
 		if ($checkTime == false || ($checkTime == true && $this->_checkExpire($id, $group) === true))
 		{
-			if (file_exists($path))
+			if (is_file ($path))
 			{
 				$data = file_get_contents($path);
 				if ($data)
@@ -269,7 +271,7 @@ class JCacheStorageVmfile extends JCacheStorage
 		$looptime = $locktime * 10;
 		$path = $this->_getFilePath($id, $group);
 
-		if(file_exists($path)){
+		if(is_file ($path)){
 			$_fileopen = @fopen($path, "r+b");
 		} else {
 			$_fileopen = false;
@@ -351,7 +353,7 @@ class JCacheStorageVmfile extends JCacheStorage
 		$path = $this->_getFilePath($id, $group);
 
 		// check prune period
-		if (file_exists($path))
+		if (is_file ($path))
 		{
 			$time = @filemtime($path);
 			if (($time + $this->_lifetime) < $this->_now || empty($time))

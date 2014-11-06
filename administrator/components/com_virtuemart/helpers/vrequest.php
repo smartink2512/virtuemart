@@ -136,7 +136,7 @@ class vRequest {
 
 			if($source===0){
 				$source = $_REQUEST;
-			} else if('GET'){
+			} else if($source=='GET'){
 				$source = $_GET;
 				if(JVM_VERSION>2){
 					$router = JFactory::getApplication()->getRouter();
@@ -145,11 +145,14 @@ class vRequest {
 						$source = array_merge($_GET,$vars);
 					}
 				}
-			} else if('POST'){
+			} else if($source=='POST'){
 				$source = $_POST;
 			}
 
-			if(!isset($source[$name])) return $default;
+			if(!isset($source[$name])){
+
+				return $default;
+			}
 
 			//if(strpos($name,'[]'!==FALSE)){
 			return self::filter($source[$name],$filter,$flags);

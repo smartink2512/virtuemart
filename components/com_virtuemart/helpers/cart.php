@@ -892,7 +892,7 @@ class VirtueMartCart {
 		$app = JFactory::getApplication();
 		if($this->_redirect and !$this->_redirected and !$this->_redirect_disabled){
 			$this->_redirected = true;
-			$this->setCartIntoSession();
+			$this->setCartIntoSession(true);
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 			return true;
 		} else {
@@ -922,11 +922,13 @@ class VirtueMartCart {
 
 		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
 		if (count($this->cartProductsData) ===0 and $this->_redirect) {
+			$this->_inCheckOut = false;
 			return $this->redirecter('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		}
 
 		// Check if a minimun purchase value is set
 		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
+			$this->_inCheckOut = false;
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName , $redirectMsg);
 		}
 
@@ -998,7 +1000,7 @@ class VirtueMartCart {
 
 			if (!empty($redirectMsg)) {
 				$this->couponCode = '';
-				//$this->getCartPrices(); //Todo check if we need to enable this also in vm2.1
+				$this->_inCheckOut = false;
 				$this->setCartIntoSession();
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName , $redirectMsg);
 			}
