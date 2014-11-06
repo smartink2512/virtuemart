@@ -36,6 +36,8 @@ span.quantity-controls input.quantity-minus{background:url(../images/vmgeneral/q
 
 .addtocart-bar{margin:0;padding:0;position:absolute; bottom: 4.2em; left: 0; right: 0; text-align: center;}
 .productdetails-view .addtocart-bar{margin:1.5em 0 0;padding:0 0 0 0px;position:relative; bottom: 0.0em;text-align: left;}
+.vmgroup .addtocart-bar{bottom: 0.0em;position:relative;margin:2.0em 0 0 0;}
+.vmgroup .addtocart-area{margin:0.5em 0 1em 0;}
 span.addtocart-button{display: inline-block;vertical-align:middle;margin:0 0 0 2px;}
 span.cart-images img {
     float: left;

@@ -394,6 +394,8 @@ class shopFunctionsF {
 			}
 			$rowHeights[$row]['customfields'][] = $customs;
 			$rowHeights[$row]['product_s_desc'][] = empty($product->product_s_desc)? 0:1;
+			$rowHeights[$row]['avail'][] = empty($product->product_availability)? 0:1;
+
 			$nb ++;
 			//vmdebug('my $nb',$nb,$BrowseTotalProducts);
 			if ($col == $products_per_row || $nb>$BrowseTotalProducts) {
@@ -414,7 +416,7 @@ class shopFunctionsF {
 			}
 
 		}
-
+		//vmdebug('my product $rowsHeight',$rowsHeight);
 		return $rowsHeight;
 	}
 
