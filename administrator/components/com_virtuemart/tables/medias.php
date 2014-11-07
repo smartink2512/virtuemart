@@ -97,14 +97,12 @@ class TableMedias extends VmTable {
 
 		if (!empty($this->file_url)) {
 			if (function_exists ('mb_strlen')) {
-				if (mb_strlen ($this->file_url) > 254) {
-					vmError (JText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', mb_strlen ($this->file_url)));
-				}
+				$length = mb_strlen ($this->file_url);
+			} else {
+				$length = strlen ($this->file_url);
 			}
-			else {
-				if (strlen ($this->file_url) > 254) {
-					vmError (JText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', strlen ($this->file_url)));
-				}
+			if($length>254){
+				vmError (JText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', $length));
 			}
 
 			if (strpos ($this->file_url, '..') !== FALSE) {
