@@ -5,10 +5,9 @@
 *
 * @package	VirtueMart
 * @subpackage Vendor
-* @author RickG
-* @author Yagendoo Media Team
+* @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2009 - 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,73 +16,41 @@
 * @version $Id$
 */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTableData'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtabledata.php');
+if(!class_exists('VmTableData')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtabledata.php');
 
-/**
- * Vendor table class
- * The class is is used to manage the vendors in the shop.
- *
- * @package		VirtueMart
- * @author RickG
- * @author Max Milbers
- */
 class TableVendors extends VmTableData {
 
-    /** @var int Primary key */
+    // @var int Primary key
     var $virtuemart_vendor_id			= 0;
-    /** @var varchar Vendor name*/
     var $vendor_name  	         	= '';
-    /** @var varchar Vendor phone number */
     var $vendor_phone         		= '';
-    /** @var varchar Vendor store name */
     var $vendor_store_name		= '';
-    /** @var text Vendor store description */
     var $vendor_store_desc   		= '';
-
-    /** @var varchar Currency */
     var $vendor_currency	  		= 0;
-    /** @var varchar Path to vendor images */
-//     var $vendor_image_path   		= '';
-    /** @var text Vendor terms of service */
     var $vendor_terms_of_service	= '';
-    /** @var varchar Vendor url */
     var $vendor_url					= '';
-    /** @var text Currencies accepted by this vendor */
     var $vendor_accepted_currencies = array();
-
     var $vendor_params = '';
-	/** @var string Meta description */
 	var $metadesc	= '';
-    /** @var string Meta keys */
 	var $metakey	= '';
- 	/** @var string Meta robot */
 	var $metarobot	= '';
-	/** @var string Meta author */
 	var $metaauthor	= '';
 	var $customtitle ='';
     var $vendor_legal_info = '';
-    /** @var text Vendor letter CSS */
     var $vendor_letter_css = '';
-    /** @var text Vendor letter header */
-    var $vendor_letter_header_html = '';
-    /** @var text Vendor letter footer */
-    var $vendor_letter_footer_html = '';
 
+    var $vendor_letter_header_html = '';
+    var $vendor_letter_footer_html = '';
 
 	var $vendor_invoice_free1 = '';
 	var $vendor_invoice_free2 = '';
 
 	var $vendor_mail_free1 = '';
 	var $vendor_mail_free2 = '';
-
 	var $vendor_mail_css = '';
 
-    /** @author RickG, Max Milbers
-     * @param JDataBase $db
-     */
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
 		$this->setPrimaryKey('virtuemart_vendor_id');

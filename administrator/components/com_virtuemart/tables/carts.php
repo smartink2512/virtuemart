@@ -7,7 +7,7 @@
 * @subpackage User
 * @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -21,13 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 if(!class_exists('VmTableData'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtabledata.php');
 
-/**
- * user_shoppergroup_xref table class
- * The class is used to link users to shoppergroups.
- *
- * @package	VirtueMart
- * @author Max Milbers
- */
 
  class TableCarts extends VmTableData {
 
@@ -38,9 +31,6 @@ if(!class_exists('VmTableData'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtabledat
 	var $cartData 	= 0;
 
 
-	/**
-	 * @param $db Class constructor; connect to the database
-	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_carts', 'virtuemart_cart_id', $db);

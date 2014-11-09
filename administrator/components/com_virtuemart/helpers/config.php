@@ -921,7 +921,6 @@ class VmConfig {
 			if (!$siteLang) {
 				jimport('joomla.language.helper');
 				$siteLang = JFactory::getLanguage()->getTag();
-				vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 			}
 		} else {
 			if(!$siteLang){

@@ -5,9 +5,9 @@
 *
 * @package	VirtueMart
 * @subpackage Product
-* @author RolandD
+* @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2009 - 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,19 +16,11 @@
 * @version $Id$
 */
 
-if(!class_exists('VmTable'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtable.php');
-
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * Product table class
- * The class is is used to manage the products in the shop.
- *
- * @package	VirtueMart
- * @author RolandD
- * @author Max Milbers
- */
+if(!class_exists('VmTable'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtable.php');
+
+
 class TableProducts extends VmTable {
 
 	/** @var int Primary key */
@@ -101,14 +93,9 @@ class TableProducts extends VmTable {
 	/** @var string Name of the details page to use for showing product details in the front end */
 	var $layout = '';
        /** @var int published or unpublished */
-	var $published 		        = 1;
+	var $published = 1;
 
 
-
-	/**
-	 * @author Max Milbers
-	 * @param JDataBase $db
-	 */
 	function __construct($db) {
 		parent::__construct('#__virtuemart_products', 'virtuemart_product_id', $db);
 

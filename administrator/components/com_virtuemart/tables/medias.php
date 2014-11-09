@@ -7,7 +7,7 @@
  * @subpackage Media
  * @author Max Milbers
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -25,7 +25,7 @@ if (!class_exists ('VmTable')) {
 
 /**
  * Media table class
- * The class is is used to manage the countries in the shop.
+ * The class is is used to manage the media in the shop.
  *
  * @author Max Milbers
  * @package        VirtueMart
@@ -47,13 +47,11 @@ class TableMedias extends VmTable {
 	var $file_mimetype = '';
 	/** @var string File typ, this determines where a media is stored */
 	var $file_type = '';
-	/** @var string File URL */
+
 	var $file_url = '';
 	var $file_url_thumb = '';
 
-	/** @var int File published or not */
 	var $published = 0;
-	/** @var int File is an image or other */
 	var $file_is_downloadable = 0;
 	var $file_is_forSale = 0;
 	var $file_is_product_image = 0;
@@ -80,11 +78,6 @@ class TableMedias extends VmTable {
 	}
 
 
-	/**
-	 *
-	 * @author Max Milbers
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
 	function check () {
 
 		$ok = TRUE;
@@ -97,14 +90,12 @@ class TableMedias extends VmTable {
 
 		if (!empty($this->file_url)) {
 			if (function_exists ('mb_strlen')) {
-				if (mb_strlen ($this->file_url) > 254) {
-					vmError (vmText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', mb_strlen ($this->file_url)));
-				}
+				$length = mb_strlen ($this->file_url);
+			} else {
+				$length = strlen ($this->file_url);
 			}
-			else {
-				if (strlen ($this->file_url) > 254) {
-					vmError (vmText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', strlen ($this->file_url)));
-				}
+			if($length>254){
+				vmError (JText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', $length));
 			}
 
 			if (strpos ($this->file_url, '..') !== FALSE) {
