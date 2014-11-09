@@ -7,10 +7,11 @@ if (!defined ('_JEXEC')) {
  *
  * Report Model
  *
+ * @author Max Milbers, Wicksj
  * @version $Id$
  * @package VirtueMart
  * @subpackage Report
- * @copyright Copyright (C) VirtueMart Team - All rights reserved.
+ * @copyright Copyright (C) 2011 - 2014VirtueMart Team - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -25,21 +26,11 @@ if (!class_exists ('VmModel')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
 }
 
-/**
- * Report Model
- * TODO nothing is displayed
- *
- * @package    VirtueMart
- * @subpackage Report
- * @author Wicksj
- */
-
 class VirtuemartModelReport extends VmModel {
 
 	var $from_period = '';
 	var $until_period = '';
 	private $date_presets = NULL;
-	//private $tzoffset = NULL;
 	private $period = NULL;
 
 	function __construct () {
@@ -122,7 +113,91 @@ class VirtuemartModelReport extends VmModel {
 
 	}
 
-	function getRevenueSortListOrderQuery ($sold = FALSE, $items = FALSE) {
+	/**
+	 * Retrieve a list of report items from the database.
+	 *
+	 * @param string $noLimit True if no record count limit is used, false otherwise
+	 * @return object List of order objects
+	 */
+	function getRevenue ($cache = 0) {
+
+		$vendorId = VmConfig::isSuperVendor();
+		$orderstates = vRequest::getVar ('order_status_code', array('C','S'));
+		$intervals = vRequest::getCmd ('intervals', 'day');
+		$filterorders = vRequest::getvar ('filter_order', 'intervals');
+		$orderdir = (vRequest::getCmd ('filter_order_Dir', NULL) == 'desc') ? 'desc' : '';
+		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', FALSE);
+
+		if($cache){
+			$cache = JFactory::getCache ('com_virtuemart_revenue');
+			$cache->setCaching (1);
+			$cache->setLifeTime($cache*60);
+			return $cache->call (array('VirtuemartModelReport', 'getRevenueCached'),$vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$this->from_period,$this->until_period);
+		} else {
+			return $this->getRevenueSortListOrderQuery ($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id);
+		}
+
+	}
+
+	static public function getRevenueCached ($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$from_period,$until_period) {
+		$reportM = VmModel::getModel('report');
+		$report = $reportM->getRevenueSortListOrderQuery($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id);
+
+		$rows = count( $report );
+		$intervalTitle='day';
+		$addDateInfo = false;
+
+		$i = 0;
+		$reports=array_reverse($report);
+		$reports_date=array();
+		foreach($reports as $_report) {
+			$reports_date[$_report['intervals']]=$_report;
+		}
+
+		$begin = new DateTime($reportM->from_period );
+		$end = new DateTime( $reportM->until_period );
+
+
+		$js="
+  google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['".vmText::_('COM_VIRTUEMART_DAY')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_ORDERS')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_REVENUE_NETTO')."'],";
+
+		$interval = DateInterval::createFromDateString('1 day');
+		$period = new DatePeriod($begin, $interval, $end);
+		foreach ( $period as $dt ) {
+			$day=$dt->format('Y-m-d');
+			if (array_key_exists($day, $reports_date)) {
+				$r = $reports_date[$day];
+			} else {
+				$r=array('intervals'=>$day, 'count_order_id'=>0, 'product_quantity'=>0, 'order_subtotal_netto'=>0);
+			}
+			$js .= " ['" . $r['intervals'] . "', " . $r['count_order_id'] . "," . $r['product_quantity'] .  "," . $r['order_subtotal_netto'] . "],";
+		}
+
+		$js = substr($js,0,-1);
+		$js .= "  ]);";
+		$js .="
+        var options = {
+          title: '". vmText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $reportM->from_period, 'LC',true) , vmJsApi::date( $reportM->until_period, 'LC',true) )."',
+            series: {0: {targetAxisIndex:0},
+                   1:{targetAxisIndex:0},
+                   2:{targetAxisIndex:1},
+                  },
+                  colors: [\"#00A1DF\", \"#A4CA37\",\"#E66A0A\"],
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('vm_stats_chart'));
+
+        chart.draw(data, options);
+      }
+";
+		return array('report'=>$report,'js'=>$js);
+	}
+
+	function getRevenueSortListOrderQuery ($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id) {
 
 		$selectFields = array();
 		$mainTable = '';
@@ -131,8 +206,6 @@ class VirtuemartModelReport extends VmModel {
 		$where = array();
 
 		// group always by intervals (day,week, ... or ID) and set grouping and defaut ordering
-
-		$intervals = vRequest::getCmd ('intervals', 'day');
 		switch ($intervals) {
 
 			case 'day':
@@ -156,7 +229,7 @@ class VirtuemartModelReport extends VmModel {
 // 			$orderBy = $this->_getOrdering('o.`created_on`');
 // 		}
 		$selectFields['intervals'] = $this->intervals . ' AS intervals, CAST( o.`created_on` AS DATE ) AS created_on';
-		vmdebug('getRevenueSortListOrderQuery '.$intervals);
+
 		if($intervals=='product_s'){
 
 			$selectFields[] = '`order_item_name`';
@@ -165,7 +238,6 @@ class VirtuemartModelReport extends VmModel {
 		} else {
 			$groupBy = 'GROUP BY intervals ';
 		}
-
 
 		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
 		//with tax => brutto
@@ -179,8 +251,8 @@ class VirtuemartModelReport extends VmModel {
 		$this->dates = ' DATE( o.created_on ) BETWEEN "' . $this->from_period . '" AND "' . $this->until_period . '" ';
 
 		$statusList = array();
-		// Filter by statut
-		if ($orderstates = vRequest::getVar ('order_status_code', array('C','S'))) {
+		// Filter by status
+		if ($orderstates) {
 			$query = 'SELECT `order_status_code`
 				FROM `#__virtuemart_orderstates`
 				WHERE published=1 ';
@@ -198,8 +270,6 @@ class VirtuemartModelReport extends VmModel {
 		}
 		//getRevenue
 		// select wich table to order sum ordered
-		$filterorders = vRequest::getvar ('filter_order', 'intervals');
-		$orderdir = (vRequest::getCmd ('filter_order_Dir', NULL) == 'desc') ? 'desc' : '';
 
 		switch ($filterorders) {
 
@@ -246,21 +316,18 @@ class VirtuemartModelReport extends VmModel {
 					$joinedTables .= $table;
 				}
 			}
-
 		}
 		else {
 			vmError ('No select fields given in getRevenueSortListOrderQuery', 'No select fields given');
 			return FALSE;
 		}
 
-		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', FALSE);
+
 		if ($virtuemart_product_id) {
 			$where[] = 'i.virtuemart_product_id = "' . $virtuemart_product_id . '" ';
 		}
 
 		if (VmConfig::get ('multix', 'none') != 'none') {
-
-			$vendorId = vRequest::getInt ('virtuemart_vendor_id', 0);
 			if ($vendorId != 0) {
 				$where[] = 'i.virtuemart_vendor_id = "' . $vendorId . '" ';
 			}
@@ -275,23 +342,12 @@ class VirtuemartModelReport extends VmModel {
 // 		$this->whereItem;
 		/* WHERE differences with orders and items from orders are only date periods and ordering */
 		$whereString = $this->whereItem . $this->dates;
-
+		vmdebug('getRevenueSortListOrderQuery '.$select,$whereString);
 		return $this->exeSortSearchListQuery (1, $select, $joinedTables, $whereString, $groupBy, $orderBy);
 
 	}
 
-	/**
-	 * Retrieve a list of report items from the database.
-	 *
-	 * @author Wicksj
-	 * @param string $noLimit True if no record count limit is used, false otherwise
-	 * @return object List of order objects
 
-	 */
-	function getRevenue ($noLimit = FALSE) {
-
-		return $this->getRevenueSortListOrderQuery ();
-	}
 
 
 	/**
@@ -411,4 +467,5 @@ class VirtuemartModelReport extends VmModel {
 		$db->setQuery($q);
 		$db->execute();
 	}
+
 }

@@ -238,10 +238,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				}
 			}
 
-			foreach($product->customfields as $customfield){
-				//vmdebug('my customfield',$customfield);
-				if(!in_array($customfield->virtuemart_customfield_id,$ids) and $customfield->field_type=='E' and ($customfield->is_input or $customfield->is_cart_attribute)){
-					$item->customfields[] = $customfield;
+			if(!empty($product->customfields)){
+				foreach($product->customfields as $customfield){
+					//vmdebug('my customfield',$customfield);
+					if(!in_array($customfield->virtuemart_customfield_id,$ids) and $customfield->field_type=='E' and ($customfield->is_input or $customfield->is_cart_attribute)){
+						$item->customfields[] = $customfield;
+					}
 				}
 			}
 		}

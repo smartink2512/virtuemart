@@ -103,7 +103,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			return true;
 		} else {
 			//$cart->_inCheckOut = false;
-			$redirect = (isset($request['checkout']) or $task=='checkout' or $cart->getInCheckOut());
+			$redirect = (isset($request['checkout']) or $task=='checkout');
 			$cart->_inConfirm = false;
 			$cart->checkoutData($redirect);
 		}
@@ -122,7 +122,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		if(vRequest::get('cancel',0)){
 			$cart->_inConfirm = false;
 		}
-
+		if($cart->getInCheckOut()){
+			vRequest::setVar('checkout',true);
+		}
 		$cart->saveCartFieldsInCart();
 
 		$cart->updateProductCart();

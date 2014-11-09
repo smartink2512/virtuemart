@@ -67,9 +67,9 @@ class PayboxHelperPayboxSubscribe extends PayboxHelperPaybox {
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart();
-		if (!isset($cart->cartPrices)) {
+		//if (!isset($cart->cartPrices)) {
 			$cart->getCartPrices();
-		}
+		//}
 		$pbxTotalVendorCurrency = $this->getPbxAmount($cart->cartPrices['salesPrice']);
 		$subscribe = $this->getSubscribeProducts($cart, $pbxTotalVendorCurrency);
 		$extraInfo = false;

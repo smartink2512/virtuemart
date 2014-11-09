@@ -46,7 +46,13 @@ class VirtueMartControllerVendor extends JControllerLegacy
 		$vars = array();
 		$min = VmConfig::get('asks_minimum_comment_length', 50)+1;
 		$max = VmConfig::get('asks_maximum_comment_length', 2000)-1 ;
-		$commentSize = mb_strlen( vRequest::getString('comment') );
+		$commentSize = vRequest::getString ('comment');
+		if (function_exists('mb_strlen')) {
+			$commentSize =  mb_strlen($commentSize);
+		} else {
+			$commentSize =  strlen($commentSize);
+		}
+
 		$validMail = filter_var(vRequest::getVar('email'), FILTER_VALIDATE_EMAIL);
 
 		$virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id',1);

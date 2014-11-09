@@ -21,58 +21,8 @@ defined('_JEXEC') or die('Restricted access');
 
 
 if($this->manager('report')){
-$rows = count( $this->report );
-$intervalTitle='day';
-$addDateInfo = false;
 
-$i = 0;
-$reports=array_reverse($this->report);
-$reports_date=array();
-foreach($reports as $report) {
-	$reports_date[$report['intervals']]=$report;
-}
 
-$begin = new DateTime($this->from_period );
-$end = new DateTime( $this->until_period );
-$document = JFactory::getDocument();
-vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false,'' );
-$js="
-  google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['".vmText::_('COM_VIRTUEMART_DAY')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_ORDERS')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS')."', '".vmText::_('COM_VIRTUEMART_REPORT_BASIC_REVENUE_NETTO')."'],";
-
-$interval = DateInterval::createFromDateString('1 day');
-$period = new DatePeriod($begin, $interval, $end);
-foreach ( $period as $dt ) {
-	$day=$dt->format('Y-m-d');
-	if (array_key_exists($day, $reports_date)) {
-		$r = $reports_date[$day];
-	} else {
-		$r=array('intervals'=>$day, 'count_order_id'=>0, 'product_quantity'=>0, 'order_subtotal_netto'=>0);
-	}
-	$js .= " ['" . $r['intervals'] . "', " . $r['count_order_id'] . "," . $r['product_quantity'] .  "," . $r['order_subtotal_netto'] . "],";
-}
-
-$js = substr($js,0,-1);
-$js .= "  ]);";
-$js .="
-        var options = {
-          title: '". vmText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) )."',
-            series: {0: {targetAxisIndex:0},
-                   1:{targetAxisIndex:0},
-                   2:{targetAxisIndex:1},
-                  },
-                  colors: [\"#00A1DF\", \"#A4CA37\",\"#E66A0A\"],
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('vm_stats_chart'));
-
-        chart.draw(data, options);
-      }
-";
-vmJsApi::addJScript('vm.stats_chart',$js);
 
 }
 

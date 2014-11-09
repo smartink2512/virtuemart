@@ -305,7 +305,7 @@ class VmViewAdmin extends JViewLegacy {
 					//$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
 						function(data) {
 							var items = [];
-
+							jQuery("#vmlangTag").val(langCode);
 							if (data.fields !== "error" ) {
 								if (data.structure == "empty") alert(data.msg);
 								$.each(data.fields , function(key, val) {

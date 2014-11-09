@@ -204,7 +204,7 @@ class VirtueMartCart {
 			if(count(self::$_cart->cartProductsData) >0 and empty(self::$_cart->vendorId)){
 				self::$_cart->vendorId = 1;
 			}
-			vmdebug('getCart $_cart->vendorId',self::$_cart->vendorId);
+			//vmdebug('Cart belongs to vendor with id = '.self::$_cart->vendorId);
 		}
 
 		return self::$_cart;
@@ -278,27 +278,28 @@ class VirtueMartCart {
 
 			if($cartData and !empty($cartData['cartData'])){
 				$cartData['cartData'] = (object)json_decode($cartData['cartData'],true);
-
-				foreach($cartData['cartData']->cartProductsData as $k => $product){
-					foreach($existingSession->cartProductsData as $kses => $productses){
-						if($product==$productses){
-							//vmdebug('Found the same product');
-							unset($cartData['cartData']->cartProductsData[$k]);
+				if(!empty($cartData['cartData']) or !is_array($cartData['cartData'])){
+					foreach($cartData['cartData']->cartProductsData as $k => $product){
+						foreach($existingSession->cartProductsData as $kses => $productses){
+							if($product==$productses){
+								//vmdebug('Found the same product');
+								unset($cartData['cartData']->cartProductsData[$k]);
+							}
 						}
 					}
-				}
 
-				foreach($cartData['cartData'] as $key=>$value){
-					if(is_array($value)){
-						$existingSession->$key = array_merge( $value,(array)$existingSession->$key);
-					} else if(empty($existingSession->$key)){
-						$existingSession->$key = $cartData['cartData']->$key;
+					foreach($cartData['cartData'] as $key=>$value){
+						if(is_array($value)){
+							$existingSession->$key = array_merge( $value,(array)$existingSession->$key);
+						} else if(empty($existingSession->$key)){
+							$existingSession->$key = $cartData['cartData']->$key;
+						}
 					}
-				}
 
-				if(count($existingSession->_triesValidateCoupon)>6){
-					$existingSession->_triesValidateCoupon = array_slice($existingSession->_triesValidateCoupon,0,6);
-					vmdebug('Coupon were blocked, release 1');
+					if(count($existingSession->_triesValidateCoupon)>6){
+						$existingSession->_triesValidateCoupon = array_slice($existingSession->_triesValidateCoupon,0,6);
+						vmdebug('Coupon were blocked, release 1');
+					}
 				}
 			}
 		}
@@ -1085,8 +1086,8 @@ class VirtueMartCart {
 
 		$this->prepareVendor();
 		if ($this->vendor->vendor_min_pov > 0) {
-			$prices = $this->getCartPrices();
-			if ($prices['salesPrice'] < $this->vendor->vendor_min_pov) {
+			$this->getCartPrices();
+			if ($this->cartPrices['salesPrice'] < $this->vendor->vendor_min_pov) {
 				if (!class_exists('CurrencyDisplay'))
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();
@@ -1381,7 +1382,7 @@ class VirtueMartCart {
 
 		$vm_method_name = 'virtuemart_'.$type.'method_id';
 		if (count($this->products) == 0 or  VmConfig::get('automatic_'.$type,'1')!='1') {
-			vmdebug('CheckAutomaticSelectedShipment cart has shipmentmethod id ! ',$this->$vm_method_name);
+			//vmdebug('CheckAutomaticSelectedPlug cart has '.$type.'method id ! ',$this->$vm_method_name);
 			return false;
 		}
 
@@ -1464,6 +1465,7 @@ class VirtueMartCart {
 				$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
 			}
 		}
+		return $this->cartPrices;
 	}
 
 	function prepareVendor(){

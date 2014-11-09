@@ -55,7 +55,7 @@ span.addtocart-button input.addtocart-button-disabled{width:auto;background:#f2f
 .category-view .row .category .spacer h2 a{font-size:0.8em;display:block;text-align:center;}
 .category-view .row .category .spacer h2 a img{margin-top:0.1em;max-width:100%;height:auto;}
 .featured-view h4,.latest-view h4,.topten-view h4,.recent-view h4,.related-products-view h4{font-size:14px;margin:0 0 8px;padding:0;}
-.browse-view h1{font-size:0.2em;margin:0 0 8px;padding:0;}
+/*.browse-view h1{font-size:0.2em;margin:0 0 8px;padding:0;}*/
 .orderby-displaynumber{border-bottom:solid #E9E8E8 1px;border-top:solid #E9E8E8 1px;margin:10px 0;padding:10px 0;}
 .orderlistcontainer{font-size:12px;display:inline-block;text-decoration:none;margin:0 0 0 0.5em;}
 .orderlistcontainer div.activeOrder{background:#FFF top right no-repeat url(../images/vmgeneral/arrow_down.png);cursor:pointer;border:solid #CAC9C9 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;padding:2px 24px 1px 12px;}
@@ -191,6 +191,7 @@ td.orders-key{font-weight: bold; text-align: left; }
 /* Manufacturer View Default */
 .manufacturer-view-default .row .manufacturer .spacer {padding: 0.4em;}
 .product-field-display a img{display: block;}
+
 .product-related-products, .product-related-categories{border-top:solid #ccc 1px;padding-bottom: 10px;}
 .product-fields .product-field-type-P{clear: both; border-bottom: 1px solid #EEEEEE; margin-top: 18px;}
 .product-field-type-P .product-fields-title{ font-size: 120%;}
@@ -208,7 +209,11 @@ a:hover .vm-img-desc{background: #095197}
 /* Custom Field Images */
 .product-fields .product-field,.product-related-categories .product-field {width:100%;float:left;display:inline-block;margin-bottom: 0.4em;}
 .product-fields .product-field label.other-customfield {width:25%;float:left;position:relative;top:20px;left:-18px;margin-bottom:27px;text-align:center;}  /* For 4 images across use width:17% */
-.product-fields .product-field input[type=radio] {position:relative;left:33px;}
+.product-fields .product-field-type-M {display:block}
+.product-fields .product-field-type-M input[type=radio] {display:block;margin: 10px;}
+.product-fields .product-field-type-M label {display:inline-block}
+.product-fields .product-field-type-M img {display:block;vertical-align: text-top;float:right;}
+.product-field-display {vertical-align: middle;}
 .product-fields .product-field .vm-img-desc {font-size:9px;}
 
 /* some more styles */
