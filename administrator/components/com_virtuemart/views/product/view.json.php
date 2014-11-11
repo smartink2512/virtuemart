@@ -196,6 +196,10 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="'.$fieldType.'" ';
 		$this->db->setQuery($query);
 		$custom = $this->db->loadObject();
+		if(!$custom) {
+			vmdebug('setRelatedHtml could not find $custom for field type '.$fieldType);
+			return false;
+		}
 		$custom->virtuemart_product_id = $product_id;
 		foreach ($this->json as &$related) {
 

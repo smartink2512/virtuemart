@@ -117,10 +117,10 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			}
 			if (VmConfig::get ('oncheckout_show_register', 1) && $this->userDetails->JUser->id == 0 && $this->address_type == 'BT' and $rview == 'cart') {
 				?>
-				<button name="register" class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return callValidatorForRegister(userForm);"
+				<button name="register" class="<?php echo $buttonclass ?>" type="button" onclick="javascript:return callValidatorForRegister(userForm);"
 				        title="<?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?>"><?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
 				<?php if (!VmConfig::get ('oncheckout_only_registered', 0)) { ?>
-					<button name="save" class="<?php echo $buttonclass ?>" title="<?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="submit"
+					<button name="save" class="<?php echo $buttonclass ?>" title="<?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="button"
 					        onclick="javascript:return myValidator(userForm, false);"><?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
 					<?php } ?>
 				<button class="default" type="reset"
@@ -129,7 +129,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			}
 			else {
 				?>
-				<button class="<?php echo $buttonclass ?>" type="submit"
+				<button class="<?php echo $buttonclass ?>" type="button"
 				        onclick="javascript:return myValidator(userForm);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
 				<button class="default" type="reset"
 				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview.'&task=cancel'); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>

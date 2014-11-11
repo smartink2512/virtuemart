@@ -278,12 +278,15 @@ class VirtueMartCart {
 
 			if($cartData and !empty($cartData['cartData'])){
 				$cartData['cartData'] = (object)json_decode($cartData['cartData'],true);
-				if(!empty($cartData['cartData']) or !is_array($cartData['cartData'])){
-					foreach($cartData['cartData']->cartProductsData as $k => $product){
-						foreach($existingSession->cartProductsData as $kses => $productses){
-							if($product==$productses){
-								//vmdebug('Found the same product');
-								unset($cartData['cartData']->cartProductsData[$k]);
+
+				if(!empty($cartData['cartData'])){
+					if(!empty($cartData['cartData']->cartProductsData) and is_array($cartData['cartData']->cartProductsData)){
+						foreach($cartData['cartData']->cartProductsData as $k => $product){
+							foreach($existingSession->cartProductsData as $kses => $productses){
+								if($product==$productses){
+									//vmdebug('Found the same product');
+									unset($cartData['cartData']->cartProductsData[$k]);
+								}
 							}
 						}
 					}

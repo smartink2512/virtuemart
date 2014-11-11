@@ -1525,13 +1525,14 @@ class VirtueMartModelProduct extends VmModel {
 
 			$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
 
+			$tableLangKeys = array('product_name','product_s_desc','product_desc');
 			if(isset($product->$orderByName)){
 				$orderByValue = $product->$orderByName;
 				if(isset($sp[0])){
 					$orderByName = '`'.$sp[0].'`.'.$orderByName;
 
-				} else {
-					//$orderByName = '`l`.'.$orderByName;
+				} else if(in_array($orderByName,$tableLangKeys)){
+					$orderByName = '`l`.'.$orderByName;
 				}
 			} else {
 				$orderByName = '`l`.product_name';

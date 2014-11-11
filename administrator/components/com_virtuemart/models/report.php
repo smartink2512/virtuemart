@@ -129,17 +129,17 @@ class VirtuemartModelReport extends VmModel {
 		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', FALSE);
 
 		if($cache){
-			$cache = JFactory::getCache ('com_virtuemart_revenue');
-			$cache->setCaching (1);
-			$cache->setLifeTime($cache*60);
-			return $cache->call (array('VirtuemartModelReport', 'getRevenueCached'),$vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$this->from_period,$this->until_period);
+			$c = JFactory::getCache ('com_virtuemart_revenue');
+			$c->setCaching (1);
+			$c->setLifeTime($cache*60);
+			return $c->call (array('VirtuemartModelReport', 'getRevenueDiag'),$vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$this->from_period,$this->until_period);
 		} else {
 			return $this->getRevenueSortListOrderQuery ($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id);
 		}
 
 	}
 
-	static public function getRevenueCached ($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$from_period,$until_period) {
+	static public function getRevenueDiag ($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$from_period,$until_period) {
 		$reportM = VmModel::getModel('report');
 		$report = $reportM->getRevenueSortListOrderQuery($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id);
 
