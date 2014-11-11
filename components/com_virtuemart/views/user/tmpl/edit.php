@@ -37,8 +37,7 @@ label.invalid {
 }
 </style>
 <script language="javascript">
-function myValidator(f, t)
-{
+function myValidator(f, t) {
 	f.task.value=t;
 	if (document.formvalidator.isValid(f)) {
 		f.submit();
@@ -59,7 +58,7 @@ function myValidator(f, t)
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveUser');" ><?php echo $this->button_lbl ?></button>
+	<button class="button" type="button" onclick="javascript:return myValidator(userForm, 'saveUser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
 <button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=user', FALSE); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
     <?php } ?>
@@ -87,40 +86,7 @@ if($this->userDetails->virtuemart_user_id!=0) {
     echo $this->loadTemplate ( 'shopper' );
  }
 
-/*
- * TODO this Stuff should be converted in a payment module. But the idea to show already saved payment information to the user is a good one
- * So maybe we should place here a method (joomla plugin hook) which loads all published plugins, which already used by the user and display
- * them.
- */
-//	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );
-//	echo $this->loadTemplate('payment');
-//	echo $this->pane->endPanel();
 
-//	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipto' );
-//	echo $this->loadTemplate('shipto');
-//	echo $this->pane->endPanel();
-//	if ($this->shipto !== 0) {
-//		// Note:
-//		// Of the order of the tabs change here, change the startOffset value for
-//		// JPane::getInstance() as well in view.html.php!
-//		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'), 'edit_shipto' );
-//		echo $this->loadTemplate('shipto');
-//		echo $this->pane->endPanel();
-//	}
-
-// 	if (($_ordcnt = count($this->orderlist)) > 0) {
-// 		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
-// 		echo $this->loadTemplate('orderlist');
-// 		echo $this->pane->endPanel();
-// 	}
-
-// 	if (!empty($this->userDetails->user_is_vendor)) {
-// 		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR_MOD'), 'edit_vendor' );
-// 		echo $this->loadTemplate('vendor');
-// 		echo $this->pane->endPanel();
-// 	}
-
-// 	echo $this->pane->endPane();
 
 // captcha addition
 if(VmConfig::get ('reg_captcha')){
