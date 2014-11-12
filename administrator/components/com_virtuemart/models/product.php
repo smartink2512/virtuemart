@@ -759,7 +759,11 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$checkedProductKey= $this->checkIfCached($virtuemart_product_id, $front, $withCalc, $onlyPublished, $quantity,$virtuemart_shoppergroup_ids);
 		if($checkedProductKey[0]){
-			return clone(self::$_products[$checkedProductKey[1]]);
+			if(self::$_products[$checkedProductKey[1]]===false){
+				return false;
+			} else {
+				return clone(self::$_products[$checkedProductKey[1]]);
+			}
 		}
 		$productKey = $checkedProductKey[1];
 
@@ -772,7 +776,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!$child->published && $onlyPublished) {
 			//vmdebug('getProduct child is not published, returning zero');
-			self::$_products[$productKey] = FALSE;
+			self::$_products[$productKey] = false;
 			return FALSE;
 		}
 

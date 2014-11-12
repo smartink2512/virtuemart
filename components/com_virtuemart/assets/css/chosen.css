@@ -8,6 +8,11 @@
   *display: inline;
 }
 
+.required {
+    border:1px solid red;
+    border-radius: 4px;
+}
+
 .product-field-display .chzn-container {
     /* font-size: 13px; */
     position: relative;

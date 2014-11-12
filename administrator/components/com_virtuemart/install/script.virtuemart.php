@@ -235,6 +235,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this -> joomlaSessionDBToMediumText();
 
+			$this->updateToVm3 = $this->isUpdateToVm3();
+
 
 			$this->alterTable('#__virtuemart_product_prices',
 				array(
@@ -260,14 +262,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'customer_note' => '`oc_note` varchar(20000) NOT NULL DEFAULT "" COMMENT \'old customer notes\'',
 			));
 
-			//todo Maik, please take a look, this should not be anylonger necessary
-			/*$this->alterTable('#__virtuemart_order_items',
-				array(
-					'product_discountedPriceWithoutTax' => '',
-				),
-				'DROP'
-			);*/
-
 			if(!class_exists('GenericTableUpdater')) require($this->path . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 
@@ -282,7 +276,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->updateAdminMenuEntries();
 
-			$this->migrateCustoms();
+			if($this->updateToVm3)$this->migrateCustoms();
 
 			//copy sampel media
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
@@ -298,6 +292,24 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
+		}
+
+		private function isUpdateToVm3(){
+
+			if(empty($this->_db)) {
+				$this->_db = JFactory::getDBO();
+			}
+
+			$tablename = '#__virtuemart_product_customfields';
+			$this->_db->setQuery('SHOW FULL COLUMNS  FROM `'.$tablename.'` ');
+			$fullColumns = $this->_db->loadObjectList();
+			$columns = $this->_db->loadColumn(0);
+			if(in_array('custom_value',$columns) or in_array('custom_price',$columns)){
+				return true;
+			} else {
+				return false;
+			}
+
 		}
 
 		private function fixOrdersVendorId(){
@@ -476,6 +488,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S',`is_cart_attribute`=1,`is_input`=1,`is_list`='0' WHERE `field_type`='V'";
+			$db->setQuery($q);
+			$db->execute();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `is_input`=1 WHERE `field_type`='M' AND `is_cart_attribute`=1";
 			$db->setQuery($q);
 			$db->execute();
 			$err = $db->getErrorMsg();

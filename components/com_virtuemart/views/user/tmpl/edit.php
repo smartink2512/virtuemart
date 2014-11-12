@@ -35,20 +35,8 @@ label.invalid {
 }
 </style>
 
-<?php $js = 'function myValidator(f, t)
-{
-	f.task.value=t;
-	if (document.formvalidator.isValid(f)) {
-		f.submit();
-		return true;
-	} else {
-		var msg = "'.addslashes( vmText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ).'";
-		alert (msg);
-	}
-	return false;
-}';
-vmJsApi::addJScript('vm.validator',$js);
-?>
+<?php $this->vmValidator(); ?>
+
 <h1><?php echo $this->page_title ?></h1>
 <?php echo shopFunctionsF::getLoginForm(false); ?>
 
@@ -58,7 +46,7 @@ vmJsApi::addJScript('vm.validator',$js);
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">
-	<button class="button" type="button" onclick="javascript:return myValidator(userForm, 'saveUser');" ><?php echo $this->button_lbl ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, true);" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
 <button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=cancel', FALSE); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
     <?php } ?>

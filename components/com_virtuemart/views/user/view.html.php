@@ -349,7 +349,60 @@ class VirtuemartViewUser extends VmView {
 		}
     }
 
-    /*
+	public function vmValidator (){
+
+		$regfields = array('username', 'name');
+		if($this->userDetails->JUser->guest){
+			$regfields[] = 'password';
+			$regfields[] = 'password2';
+		}
+		$jsRegfields = implode("','",$regfields);
+		$js = "function myValidator(f, r) {
+
+		var regfields = ['".$jsRegfields."'];
+
+		var requ = '';
+		if(r == true){
+			requ = 'required';
+		}
+
+		for	(i = 0; i < regfields.length; i++) {
+			var elem = jQuery('#'+regfields[i]+'_field');
+			elem.attr('class', requ);
+		}
+
+		if (document.formvalidator.isValid(f)) {
+				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
+					jQuery('#recaptcha_wrapper').show();
+				} else {
+					return true;	//to prevent that the form is sent again by older IEs
+				}
+			} else {
+				//dirty Hack for country dropdown
+				var cField = jQuery('#virtuemart_country_id');
+				if(typeof cField!==undefined){
+					if(cField.attr('required')=='required'){
+						cField = jQuery('#virtuemart_country_id_chzn');
+						cField.attr('class', 'chzn-container chzn-container-single required');
+						sField = jQuery('#virtuemart_state_id_chzn');
+						if(typeof cField!==undefined){
+							sField.attr('class', 'chzn-container chzn-container-single chzn-container-single-nosearch required');
+						}
+					}
+				}
+
+				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
+					jQuery('#recaptcha_wrapper').show();
+				}
+				var msg = '" .addslashes (vmText::_ ('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS'))."';
+			alert(msg + ' ');
+		}
+		return false;
+	}";
+		vmJsApi::addJScript('vm.validator',$js);
+	}
+
+    /**
      * renderMailLayout
      *
      * @author Max Milbers
