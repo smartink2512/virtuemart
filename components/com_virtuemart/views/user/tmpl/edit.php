@@ -76,7 +76,7 @@ function callValidatorForRegister(f,t) {
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">
-	<button class="button" type="input" onclick="javascript:return callValidatorForRegister(userForm, 'saveUser');" ><?php echo $this->button_lbl ?></button>
+	<button class="button" type="submit" onclick="javascript:return callValidatorForRegister(userForm, 'saveUser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
 <button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=user', FALSE); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
     <?php } ?>
