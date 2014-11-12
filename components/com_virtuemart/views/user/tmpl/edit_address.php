@@ -42,8 +42,9 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			if (jQuery('#recaptcha_wrapper').is(':hidden') && ((t == 'registercartuser') || (t == 'registercheckoutuser'))) {
 				jQuery('#recaptcha_wrapper').show();
 			} else {
+//We must return here false, to prevent that the form is sent again. We cannot just return true without using f.submit, because then the task is not set
 				f.submit();
-				return true;
+				return false;
 			}
 		} else {
 			if (jQuery('#recaptcha_wrapper').is(':hidden') && ((t == 'registercartuser') || (t == 'registercheckoutuser'))) {
@@ -56,7 +57,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 	}
 
 	function callValidatorForRegister(f) {
-		f.preventDefault();
+
 		var elem = jQuery('#username_field');
 		elem.attr('class', "required");
 
@@ -116,10 +117,10 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			if (VmConfig::get ('oncheckout_show_register', 1) && $this->userId == 0 && $this->address_type == 'BT' and $rview == 'cart') {
 				?>
 
-				<button class="<?php echo $buttonclass ?>" type="button" onclick="javascript:return callValidatorForRegister(userForm);"
+				<button class="<?php echo $buttonclass ?>" type="input" onclick="javascript:return callValidatorForRegister(userForm);"
 				        title="<?php echo JText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?>"><?php echo JText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
 				<?php if (!VmConfig::get ('oncheckout_only_registered', 0)) { ?>
-					<button class="<?php echo $buttonclass ?>" title="<?php echo JText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="button"
+					<button class="<?php echo $buttonclass ?>" title="<?php echo JText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="input"
 					        onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');"><?php echo JText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
 					<?php } ?>
 				<button class="default" type="reset"
