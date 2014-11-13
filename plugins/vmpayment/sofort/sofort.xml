@@ -25,7 +25,6 @@
         <param type="vmjpluginwarning"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_TITLE" level="level1"/>
         <param type="getsofort" level="level1"/>
-        <param type="manual" level="level1"/>
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_SETTINGS" level="level1"/>

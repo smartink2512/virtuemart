@@ -59,18 +59,23 @@ class JElementGetSofort extends JElement {
 		});
 ';
 
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration($js);
 
 		$html .= '<iframe src="' . $getSofortLInk . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="500px" width="850px"></iframe>';
 		$html .= '</div>';
 // Get Sofort
 
 		// MOre information
-		$getSofortLInk="https://www.sofort.com/payment/users/register/688";
-		$html .= '<div><a target="_blank" href="'.$getSofortLInk.'" id="getsogort_link" ">' . vmText::_ ('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
-		$html .= '</div>';
-
+		$getSofortLInk = "https://www.sofort.com/payment/users/register/688";
+		$html .= '<p style="margin-top: 20px;"><a target="_blank" href="' . $getSofortLInk . '" id="getsogort_link" class="signin-button-link">' . vmText::_('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
+		if ($lang == 'de') {
+			$manualLink = "https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4947";
+		} else {
+			$manualLink = "https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4947";
+		}
+		$html .= '<a target="_blank" href="' . $manualLink . '" id="getsogort_link" class="signin-button-link">' . vmText::_('VMPAYMENT_SOFORT_DOCUMENTATION') . '</a>';
+		$html .= '</p>';
 		return $html;
 	}
 

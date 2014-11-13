@@ -67,8 +67,6 @@ class  PayboxHelperPaybox {
 		$pbxOrderTotalInPaymentCurrency = $this->getPbxAmount($totalInPaymentCurrency['value']);
 		$email_currency = $this->plugin->getEmailCurrency($this->_method);
 
-		// If the file is not there anylonger, just create it
-		$this->plugin->createRootFile($this->_method->virtuemart_paymentmethod_id);
 
 		if (!$this->getPayboxServerUrl()) {
 			$this->redirectToCart();

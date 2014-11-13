@@ -139,6 +139,7 @@ if (!defined('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin('VM Payment - Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 
 			$this->installPlugin('VM Payment - Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
+			$this->installPlugin('VM Payment - KlikAndPay', 'plugin', 'klikandpay', 'vmpayment');
 
 			$this->installPlugin('VM Shipment - By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
 
