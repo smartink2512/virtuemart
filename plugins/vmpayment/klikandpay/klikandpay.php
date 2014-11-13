@@ -20,13 +20,13 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * https://www.klikandpay.com/marchands/index.cgi
  * Account set up >Set up > URL transaction accepted
- * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&po=
+ * http://mywebsite.com/index.php?option=com_virtuemart&view=vmplg&task=pluginresponsereceived&po=
  *
  * Account set up >Set up > URL refused/cancelled transaction
- * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&po=
+ * http://mywebsite.com/index.php?option=com_virtuemart&view=vmplg&task=pluginUserPaymentCancel&po=
  *
  *  * Account set up > Dynamic Set up > Dynamic return URL
- * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&po=
+ * http://mywebsite.com/index.php?option=com_virtuemart&view=vmplg&task=notify&tmpl=component&po=
 
  */
 if (!class_exists('vmPSPlugin')) {

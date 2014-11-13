@@ -346,7 +346,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			$write = $except = NULL;
 			$msg = $rbuff = '';
 			if (stream_select ($read, $write, $except, 10)) {
-				$rbuff = fread ($fps, 1024);
+				$rbuff = fread ($fps, 2048);
 				$msg .= $rbuff;
 			}
 			$response = $this->_parse_response ($msg);
@@ -403,6 +403,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
+		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 		$mb_data = vRequest::getPost();
 
 
@@ -425,9 +426,17 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
 		}
+		VmConfig::loadJLang('com_virtuemart');
+		$orderModel = VmModel::getModel('orders');
+		$order = $orderModel->getOrder($virtuemart_order_id);
+
 		vmdebug ('SKRILL plgVmOnPaymentResponseReceived', $mb_data);
 		$payment_name = $this->renderPluginName ($method);
 		$html = $this->_getPaymentResponseHtml ($paymentTable, $payment_name);
+		$link=	JRoute::_("index.php?option=com_virtuemart&view=orders&layout=details&order_number=".$order['details']['BT']->order_number."&order_pass=".$order['details']['BT']->order_pass, false) ;
+
+		$html .='<br />
+		<a class="vm-button-correct" href="'.$link.'">'.vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER').'</a>';
 
 		$cart = VirtueMartCart::getCart ();
 		$cart->emptyCart ();

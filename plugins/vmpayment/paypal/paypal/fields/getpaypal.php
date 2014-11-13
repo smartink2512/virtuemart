@@ -38,7 +38,7 @@ class JFormFieldGetPaypal extends JFormField {
 		vmJsApi::css('paypal', 'plugins/vmpayment/paypal/paypal/assets/css/');
 
 		$url = "https://www.paypal.com/us/webapps/mpp/referral/paypal-payments-standard?partner_id=83EP5DJG9FU6L";
-		$logo = '<img src="https://www.paypalobjects.com/webstatic/en_US/logo/pp_cc_mark_111x69.png" />';
+		$logo = '<img src="https://www.paypalobjects.com/en_US/i/logo/PayPal_mark_60x38.gif" />';
 		$html = '<p><a target="_blank" href="' . $url . '"  >' . $logo . '</a></p>';
 		$html .= '<p><a target="_blank" href="' . $url . '" class="signin-button-link">' . vmText::_('VMPAYMENT_PAYPAL_REGISTER') . '</a>';
 		$html .= ' <a target="_blank" href="http://docs.virtuemart.net/manual/shop-menu/payment-methods/paypal.html" class="signin-button-link">' . vmText::_('VMPAYMENT_PAYPAL_DOCUMENTATION') . '</a></p>';

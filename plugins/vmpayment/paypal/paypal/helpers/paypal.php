@@ -654,6 +654,7 @@ class PaypalHelperPaypal {
 
 	/**
 	 * Get IP address in enviroment with reverse proxy (squid, ngnix, varnish,....)
+	 * http://forum.virtuemart.net/index.php?topic=124934.msg427325#msg427325
 	 * @return mixed
 	 */
 	function getRemoteIPAddress() {

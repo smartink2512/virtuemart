@@ -234,8 +234,7 @@
     </vmconfig>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart plg_vmpayment_realex_hpp_api Update Site">
-            <![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_realex_hpp_api_update.xml]]></server>
+        <server type="extension" name="VirtueMart plg_vmpayment_realex_hpp_api Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_vmpayment_realex_hpp_api_update.xml]]></server>
     </updateservers>
 
 </extension>

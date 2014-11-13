@@ -24,7 +24,8 @@
                 <field type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_TITLE" level="level1"/>
                 <field type="klarnalogo" level="level1"/>
                 <field type="vmcurl"/>
-                <field type="vmtitle" class="none" description="VMPAYMENT_KLARNA_PHP_WARNING"/>
+                <field type="vmtitle"  description="VMPAYMENT_KLARNA_PHP_WARNING"/>
+
                 <field type="getklarna" level="level1"/>
 
                 <field type="klarnacountrylogo" default="SV" level="level1"/>
