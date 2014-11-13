@@ -319,7 +319,7 @@ class VirtueMartModelCategory extends VmModel {
 			$where[] = ' cx.`category_child_id` = '. (int)$childId;
 		}
 
-		$vendorId = Vmconfig::isSuperVendor();
+		$vendorId = VmConfig::isSuperVendor();
 		if($vendorId!=1){
 
 			$where[] = ' (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';

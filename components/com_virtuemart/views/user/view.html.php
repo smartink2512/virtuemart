@@ -383,10 +383,12 @@ class VirtuemartViewUser extends VmView {
 				if(typeof cField!==undefined){
 					if(cField.attr('required')=='required'){
 						cField = jQuery('#virtuemart_country_id_chzn');
-						cField.attr('class', 'chzn-container chzn-container-single required');
+						var there = cField.attr('class');
+						cField.attr('class', there + ' required');
 						sField = jQuery('#virtuemart_state_id_chzn');
-						if(typeof cField!==undefined){
-							sField.attr('class', 'chzn-container chzn-container-single chzn-container-single-nosearch required');
+						if(typeof sField!==undefined){
+							there = sField.attr('class');
+							sField.attr('class', there + ' required');
 						}
 					}
 				}

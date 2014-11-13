@@ -8,7 +8,7 @@
   *display: inline;
 }
 
-.required {
+.chzn-container.required a{
     border:1px solid red;
     border-radius: 4px;
 }

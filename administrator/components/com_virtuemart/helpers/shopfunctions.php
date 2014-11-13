@@ -565,7 +565,7 @@ class ShopFunctions {
 			$cached = $cache->getCaching();
 			$cache->setCaching (1);
 			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields);
-			$cache->setCaching ($cached);
+			//$cache->setCaching ($cached);
 			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
 // 			vmTime('end loop categoryListTree '.self::$counter);
 		}
