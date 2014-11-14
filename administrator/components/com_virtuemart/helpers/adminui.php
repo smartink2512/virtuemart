@@ -104,17 +104,19 @@ class AdminUIHelper {
 						<?php echo $vmView->langList; ?>
 					</div>
 				<?php } else { ?>
-					<a href="index.php?option=com_virtuemart&view=virtuemart" ><div class="menu-vmlogo"></div></a>
+					<a href="index.php?option=com_virtuemart&view=virtuemart" ><img src="/administrator/components/com_virtuemart/assets/images/vm_logo.png""></a>
 				<?php } ?>
 				<?php AdminUIHelper::showAdminMenu($vmView);
 				?>
-				<?php
+
+				<div class="vm-installed-version">
+					<?php
 					echo "VirtueMart ".VmConfig::getInstalledVersion();
 				?>
 				</div>
+				</div>
 			<div id="admin-content" class="admin-content">
-		<?php
-	}
+		<?php	}
 
 	/**
 	 * Close out the adminstrator area table.

@@ -11,14 +11,12 @@
     min-height: 540px;
     }
 
-.virtuemart-admin-area .menu-wrapper {width: 190px;background: url(../images/admin_ui/container_bg_blue.png) repeat-y  scroll 0 0;
-                                        overflow:hidden;}
+.virtuemart-admin-area .menu-wrapper {width: 190px;  overflow:hidden;}
 .virtuemart-admin-area .admin-content {margin: 0;border-left: solid #b4b4b4 1px;-webkit-flex-basis: 99%; flex-basis: 99%;}
 .virtuemart-admin-area .btn.btn-small {
     margin-bottom: 5px;
 }
-#header {background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;padding-left: 10px;}
-
+#header {  background: #ededed;  border-bottom: 1px solid #D3D3D3;  margin-bottom: 10px;}
 .ratingbox{position:relative;display:block;width:120px;height:24px;background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x scroll 0 bottom transparent}
 .ratingbox span{background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x;display:block;width:1%;height:24px;position:absolute}
 .stars-orange{background-position:0 0 !important;}
@@ -61,7 +59,7 @@ div#limit_chzn {margin: 0 0 0 6px;}
 /* message in RED */
 dl#system-message dd.error,l#system-message dd ul .vmdebug { background: #ffffff url(../images/admin_ui/save_bg.png) top repeat !important;}
 /* message in RED */
-dl#system-message dd.notice { background: #eee url(../images/admin_ui/header_bg.png) top repeat-x !important;}
+dl#system-message dd.notice { background: #ededed !important;}
 /* message icons */
 #system-message dd.message ul {background: url("../images/icon_32/information.png") no-repeat scroll 8px center transparent !important;}
 #system-message dd.notice ul {background: url("../images/icon_32/notice.png") no-repeat scroll 8px center transparent !important;}
@@ -139,14 +137,14 @@ table.adminlist td.vm-order span {
 
 /* Admin Menu */
 #admin-ui-menu {border-bottom:1px solid #94B1CF;}
-#admin-ui-menu h3.menu-title {background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888;cursor:pointer;border-top: 1px solid #94B1CF;margin: 0px;padding: 6px 20px;color: #fff;font-size: 13px;font-weight: normal;color: #333;}
-.menu-vmlogo {background: url("../images/vm_logo.png") no-repeat scroll center bottom #707174;color: #333333;cursor: pointer;font-size: 13px;font-weight: normal;height: 30px;margin: 0;padding: 0;}
+#admin-ui-menu h3.menu-title {background: #00A1DF;cursor:pointer;border-top: 1px solid rgba(255, 255, 255, 0.15);margin: 0px;padding: 6px 20px;color: #efefef;font-size: 12px;font-weight: normal;color: #333;text-transform: uppercase;}
+.menu-vmlogo {color: #333333;cursor: pointer;font-size: 12px;font-weight: normal;margin: 0;padding: 0;}
 .menu-notice {background-color: #fff;margin: 8px 30px;padding: 2px;text-align: center;}
 .menu-notice a:link ,.menu-notice a span {color :#000 ;}
-#admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover { background:url("../images/admin_ui/tabs-ul-background.png") repeat-x scroll center bottom #7C7D7F; color :#efefef ; }
-
+#admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover {   color :#FFFFFF ; }
+.vm-installed-version {margin-top: 15px;  text-align: center; color:#999 }
 #admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;overflow: hidden !important;}
-#admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 4px 0px 10px;background:none repeat scroll 0 0 #F7F7F7;border-bottom: 1px solid #888888;}
+#admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 4px 0px 10px;}
 #admin-ui-menu .menu-list ul li {list-style: none;}
 #admin-ui-menu .menu-list ul li a {color: #000000;display: block;font-size: 12px;margin: 12px 0;text-decoration: none;    opacity : 0.8;
     -moz-opacity : 0.8;

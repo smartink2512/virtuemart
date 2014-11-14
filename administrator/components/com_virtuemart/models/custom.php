@@ -411,7 +411,8 @@ class VirtueMartModelCustom extends VmModel {
 		if($type=='A'){
 			$varsToPush = array(
 				'withParent'        => array(0, 'int'),
-				'parentOrderable'   => array(0, 'int')
+				'parentOrderable'   => array(0, 'int'),
+				'wPrice'		=> array(0, 'int')
 			);
 		} else if($type=='C'){
 			$varsToPush = array(

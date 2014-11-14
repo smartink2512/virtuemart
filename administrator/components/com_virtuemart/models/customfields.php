@@ -877,8 +877,8 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 
 					$selected = vRequest::getInt ('virtuemart_product_id',0);
 					$selectedFound = false;
-					$customfield->withPrices = false;
-					if (empty($calculator) and $customfield->withPrices) {
+
+					if (empty($calculator) and $customfield->wPrice) {
 						if (!class_exists ('calculationHelper'))
 							require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 						$calculator = calculationHelper::getInstance ();
@@ -898,7 +898,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							}
 							$parentStock += $available;
 							$priceStr = '';
-							if($customfield->withPrices){
+							if($customfield->wPrice){
 								//$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
 								$productPrices = $calculator->getProductPrices ($productChild);
 								$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
