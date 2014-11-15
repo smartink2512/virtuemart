@@ -562,9 +562,11 @@ class ShopFunctions {
 		if (empty(self::$categoryTree)) {
 // 			vmTime('Start with categoryListTree');
 			$cache = JFactory::getCache ('com_virtuemart_cats');
-			$cached = $cache->getCaching();
+			//$cached = $cache->getCaching();
 			$cache->setCaching (1);
-			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields);
+			$app = JFactory::getApplication ();
+			$vendorId = VmConfig::isSuperVendor();
+			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
 			//$cache->setCaching ($cached);
 			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
 // 			vmTime('end loop categoryListTree '.self::$counter);
@@ -585,7 +587,7 @@ class ShopFunctions {
 	 * @param int 		$level 		Internally used for recursion
 	 * @return string 	$category_tree HTML: Category tree list
 	 */
-	static public function categoryListTreeLoop ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array()) {
+	static public function categoryListTreeLoop ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array(), $isSite, $vendorId, $vmlang) {
 
 		self::$counter++;
 
@@ -598,9 +600,9 @@ class ShopFunctions {
 		$level++;
 
 		$categoryModel->_noLimit = TRUE;
-		$app = JFactory::getApplication ();
-		$records = $categoryModel->getCategories ($app->isSite (), $cid);
-// 		vmTime('getCategories','getCategories');
+
+		$records = $categoryModel->getCategories ($isSite, $cid,false,'',$vendorId);
+
 		$selected = "";
 		if (!empty($records)) {
 			foreach ($records as $key => $category) {
@@ -630,7 +632,7 @@ class ShopFunctions {
 				}
 
 				if ($categoryModel->hasChildren ($childId)) {
-					self::categoryListTreeLoop ($selectedCategories, $childId, $level, $disabledFields);
+					self::categoryListTreeLoop ($selectedCategories, $childId, $level, $disabledFields,$isSite, $vendorId, $vmlang);
 				}
 
 			}

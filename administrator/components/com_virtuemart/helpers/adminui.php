@@ -103,9 +103,9 @@ class AdminUIHelper {
 					<div class="vm-lang-list-container">
 						<?php echo $vmView->langList; ?>
 					</div>
-				<?php } else { ?>
-					<a href="index.php?option=com_virtuemart&view=virtuemart" ><img src="/administrator/components/com_virtuemart/assets/images/vm_logo.png""></a>
-				<?php } ?>
+				<?php } else {
+					echo '<a href="index.php?option=com_virtuemart&view=virtuemart" ><img src="'.JURI::root(true).'/administrator/components/com_virtuemart/assets/images/vm_logo.png"></a>';
+				} ?>
 				<?php AdminUIHelper::showAdminMenu($vmView);
 				?>
 

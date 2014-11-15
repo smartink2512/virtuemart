@@ -253,7 +253,7 @@ class VmViewAdmin extends JViewLegacy {
 			jimport('joomla.language.helper');
             $lang = vRequest::getVar('vmlang', $lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
-			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
+			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('VMPATH_ROOT'), true);
 			$activeVmLangs = (vmconfig::get('active_languages') );
 			$flagCss="";
 			foreach ($languages as $k => &$joomlaLang) {
@@ -280,8 +280,8 @@ class VmViewAdmin extends JViewLegacy {
 			}
 			JFactory::getDocument()->addStyleDeclaration($flagCss);
 
-			$langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
-			$this->assignRef('langList',$langList);
+			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
+
 			$this->assignRef('lang',$lang);
 
 			if ($editView =='product') {
@@ -358,8 +358,8 @@ class VmViewAdmin extends JViewLegacy {
 			} else {
 				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));
 			}
-			$langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
-			$this->assignRef('langList',$langList);
+			$this->langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
+
 			$this->assignRef('lang',$lang);
 		}
 

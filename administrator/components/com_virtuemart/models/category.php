@@ -295,7 +295,7 @@ class VirtueMartModelCategory extends VmModel {
 	}
 
 
-	public function getCategories($onlyPublished = true, $parentId = false, $childId = false, $keyword = "") {
+	public function getCategories($onlyPublished = true, $parentId = false, $childId = false, $keyword = "", $vendorId = false) {
 
 
 
@@ -319,7 +319,10 @@ class VirtueMartModelCategory extends VmModel {
 			$where[] = ' cx.`category_child_id` = '. (int)$childId;
 		}
 
-		$vendorId = VmConfig::isSuperVendor();
+		if($vendorId===false){
+			$vendorId = VmConfig::isSuperVendor();
+		}
+
 		if($vendorId!=1){
 
 			$where[] = ' (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';

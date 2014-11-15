@@ -809,7 +809,7 @@ var cvselection = function($) {
 			var selection = [];
 			$('.cvselection').each(function() {
 				selection[selection.length] = $(this).val();
-				console.log('My selection '+selection[selection.length-1]);
+				//console.log('My selection '+selection[selection.length-1]);
 			});
 			var index ;
 			var i2 ;
@@ -843,7 +843,7 @@ var cvselection = function($) {
 					break;
 				}
 				runs++;
-				console.log('Could not find product for selection ');
+				//console.log('Could not find product for selection ');
 			}
 		});
 	})
@@ -1106,15 +1106,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						}
 					}
 
-					//juri::root() For whatever reason, we used this here, maybe it was for the mails
-					$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id), $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
-					if($customfield->wPrice){
-						$currency = calculationHelper::getInstance()->_currencyDisplay;
-						$customfield->display .= $currency->createPriceDiv ('salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $related->prices);
-					}
-					if($customfield->wDescr){
-						$customfield->display .= '<p class="product_s_desc">'.$related->product_s_desc.'</p>';
-					}
+					$customfield->display = shopFunctionsF::renderVmSubLayout('related',array('customfield'=>$customfield,'related'=>$related, 'thumb'=>$thumb));
 
 					break;
 			}

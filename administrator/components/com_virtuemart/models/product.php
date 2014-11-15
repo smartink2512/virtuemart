@@ -1185,7 +1185,9 @@ class VirtueMartModelProduct extends VmModel {
 						$product->virtuemart_category_id = $virtuemart_category_id;
 					} else if(!empty($product->canonCatLink)) {
 						$product->virtuemart_category_id = $product->canonCatLink;
-					} else if (!$front and !empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
+					//} else if (!$front and !empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
+						//why the restriction why we should use it for BE only?
+					} else if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
 						$product->virtuemart_category_id = $product->categories[0];
 						//vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
 					}
