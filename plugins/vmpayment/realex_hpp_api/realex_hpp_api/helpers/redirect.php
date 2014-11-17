@@ -69,18 +69,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" target="realex">';
 		} else {
-			JFactory::getDocument()->addScriptDeclaration ('
-
-//<![CDATA[
-jQuery(window).load(function(){
-            if(jQuery("#vmPaymentForm")) {
-				jQuery("#vmPaymentForm").vm2front("startVmLoading","'.vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE', true).'" );
-				jQuery("#vmPaymentForm").submit();
-			}
-    });
-//]]>
-');
-			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" id="vmPaymentForm" accept-charset="UTF-8">';
+			$html .= '<form action="' . $jump_url . '" method="post" name="vm_realex_form" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
@@ -89,13 +78,19 @@ jQuery(window).load(function(){
 		}
 
 		if ($this->_method->debug) {
+
 			$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to Realex" />
 						</div>';
 			$this->debugLog($post_variables, 'sendPostRequest:', 'debug');
-		}else {
-            $html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE') . '" />';
-        }
+
+		} else {
+
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE') . '" />
+					<script type="text/javascript">';
+			$html .= '		document.vm_realex_form.submit();';
+			$html .= '	</script>';
+		}
 		$html .= '</form>';
 
 		return $html;

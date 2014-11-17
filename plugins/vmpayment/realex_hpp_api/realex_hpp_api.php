@@ -1847,18 +1847,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	 * @param $virtuemart_paymentmethod_id
 	 */
 	private function returnToVm ($realex_data, $success, $virtuemart_paymentmethod_id) {
-		/*
-		vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
-	jQuery(document).ready(function($) {
-	    $(window).load(function(){
-			if(jQuery("#vmPaymentForm")) {
-				jQuery("#vmPaymentForm").vm2front("startVmLoading",'.vmText::_('VMPAYMENT_REALEX_HPP_API_REDIRECT_MESSAGE', true).' );
-				jQuery("#vmPaymentForm").submit();
-			}
-		});
-	});
-');
-		*/
+
 		$html='';
 		// add spin image
 		$html .= '<form action="' . JURI::root(false) . '" method="post" id="vmPaymentForm" name="vm_realex_form" accept-charset="UTF-8">';
