@@ -1108,7 +1108,6 @@ class VirtueMartModelProduct extends VmModel {
 
 			// Load the shoppers the product is available to for Custom Shopper Visibility
 			$product->shoppergroups = $this->getTable('product_shoppergroups')->load($this->_id);
-			//$product->shoppergroups = $this->getProductShoppergroups ($this->_id);
 
 			$usermodel = VmModel::getModel ('user');
 			$currentVMuser = $usermodel->getCurrentUser ();
@@ -1124,7 +1123,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
 				if (empty($commonShpgrps)) {
-					vmdebug('getProductSingle creating void product, shoppergroups does not fit ',$product->shoppergroups);
+					//vmdebug('getProductSingle creating void product, shoppergroups does not fit ',$product->shoppergroups);
 					return $this->fillVoidProduct ($front);
 				}
 			}
@@ -1152,11 +1151,10 @@ class VirtueMartModelProduct extends VmModel {
 
 			$product->canonCatId = false;
 			if(!empty($product->categoryItem)){
-				//$tmp = array();
+				$tmp = array();
 				foreach($product->categoryItem as $category){
 					if($category['published'] and !$product->canonCatId){
 						$product->canonCatId = $category['virtuemart_category_id'];
-
 					}
 					$tmp[] = $category['virtuemart_category_id'];
 				}
@@ -1216,11 +1214,10 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 			} else {
-				$product->category_name = null;
-				$product->virtuemart_category_id = null;
-				$product->ordering = null;
+				$product->category_name = '';
+				$product->virtuemart_category_id = '';
+				$product->ordering = '';
 				$product->id = $this->_autoOrder++;
-				//vmdebug('$product->virtuemart_category_id is empty ',$product->virtuemart_product_id);
 			}
 
 			// Check the stock level
@@ -1228,7 +1225,6 @@ class VirtueMartModelProduct extends VmModel {
 				$product->product_in_stock = 0;
 			}
 
-			//$product->setDboNull();
 			self::$_productsSingle[$productKey] = $product;
 		}
 		else {

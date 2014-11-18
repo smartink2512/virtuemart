@@ -375,20 +375,39 @@ class VirtuemartViewUser extends VmView {
 				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
 					jQuery('#recaptcha_wrapper').show();
 				} else {
-					return true;	//to prevent that the form is sent again by older IEs
+					return true;	//sents the form, we dont use js.submit()
 				}
 			} else {
 				//dirty Hack for country dropdown
 				var cField = jQuery('#virtuemart_country_id');
-				if(typeof cField!==undefined){
-					if(cField.attr('required')=='required'){
-						cField = jQuery('#virtuemart_country_id_chzn');
-						var there = cField.attr('class');
-						cField.attr('class', there + ' required');
-						sField = jQuery('#virtuemart_state_id_chzn');
-						if(typeof sField!==undefined){
-							there = sField.attr('class');
-							sField.attr('class', there + ' required');
+				if(typeof cField!=='undefined'){
+					if(cField.attr('required')=='required' && cField.attr('aria-required')=='true'){
+						chznField = jQuery('#virtuemart_country_id_chzn');
+						var there = chznField.attr('class');
+						var ind = there.indexOf('required');
+						var results = 0;
+						if(cField.attr('aria-invalid')=='true' && ind==-1){
+							chznField.attr('class', there + ' required');
+							results = 2;
+						} else if(ind!=-1){
+							var res = there.slice(0,ind);
+							chznField.attr('class', res);
+						}
+						chznField = jQuery('#virtuemart_state_id_chzn');
+						if(typeof chznField!=='undefined'){
+							if(results===0){
+								results = chznField.find('.chzn-results li').length;
+							}
+
+							there = chznField.attr('class');
+							ind = there.indexOf('required');
+							var sel = jQuery('#virtuemart_state_id').val();
+							if(sel==0 && ind==-1 && results>1){
+								chznField.attr('class', there + ' required');
+							} else if(ind!=-1 && (results<2 || sel!=0)){
+								var res = there.slice(0,ind);
+								chznField.attr('class', res);
+							}
 						}
 					}
 				}

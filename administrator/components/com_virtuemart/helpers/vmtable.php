@@ -1959,7 +1959,7 @@ class VmTable extends JTable {
 
 				// NOT NULL not allowed for deleted columns
 				//$t_type = str_ireplace(' NOT ', '', $_type);
-				$_sql .= "CHANGE $_col $_col2 $_type ";
+				$_sql .= "CHANGE `'.$_col.'` `'.$_col2.'` $_type ";
 				//was: $_sql .= "DROP $_col ";
 				break;
 			case 'MOD': // Modify

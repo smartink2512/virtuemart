@@ -29,12 +29,9 @@ if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.D
 class VmViewAdmin extends JViewLegacy {
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
-	 *
 	 * @author Max Milbers
 	 */
-	// public function __construct() {
-		// parent::construct();
-	// }
+
 	var $lists = array();
 	var $showVendors = null;
 	static protected $_manager = array();
@@ -302,10 +299,19 @@ class VmViewAdmin extends JViewLegacy {
         				dataType: "json",
         				url: "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1",
     				}).done(
-					//$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
 						function(data) {
 							var items = [];
-							jQuery("#vmlangTag").val(langCode);
+
+							var theForm = document.forms["adminForm"];
+							if(typeof theForm.vmlang==="undefined"){
+							 	var input = document.createElement("input");
+								input.type = "hidden";
+								input.name = "vmlang";
+								input.value = langCode;
+								theForm.appendChild(input);
+							} else {
+								theForm.vmlang.value = langCode;
+							}
 							if (data.fields !== "error" ) {
 								if (data.structure == "empty") alert(data.msg);
 								$.each(data.fields , function(key, val) {

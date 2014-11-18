@@ -52,10 +52,7 @@ AdminUIHelper::buildTabs ( $this,  $tabarray, $this->product->virtuemart_product
 
 
 <!-- Hidden Fields -->
-	<?php if(!$vmlang = vRequest::getCmd('vmlang',false)){
-		$vmlang = VmConfig::$vmlangTag;
-	} ?>
-	<input type="hidden" name="vmlang" id="vmlangTag" value="<?php echo $vmlang ?>" />
+
 	<?php echo $this->addStandardHiddenToForm(); ?>
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 <input type="hidden" name="product_parent_id" value="<?php echo vRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />

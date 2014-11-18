@@ -33,19 +33,15 @@ function virtuemartBuildRoute(&$query) {
 					unset($query[$key]);
 				}
 			}
-
 		}
 		return $segments;
 	}
 
 	if ($helper->edit) return $segments;
 
-	/* Full route , heavy work*/
-	// $lang = $helper->lang ;
 	$view = '';
 
 	$jmenu = $helper->menu ;
-	//vmdebug('virtuemartBuildRoute $query',$query);
 	//vmdebug('virtuemartBuildRoute $jmenu',$helper->query,$helper->activeMenu,$helper->menuVmitems);
 	if(isset($query['langswitch'])) unset($query['langswitch']);
 
@@ -58,9 +54,6 @@ function virtuemartBuildRoute(&$query) {
 		case 'virtuemart';
 			$query['Itemid'] = $jmenu['virtuemart'] ;
 			break;
-		/* Shop category or virtuemart view
-		 All ideas are wellcome to improve this
-		 because is the biggest and more used */
 		case 'category';
 			$start = null;
 			$limitstart = null;
@@ -69,7 +62,6 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($query['virtuemart_manufacturer_id'])  ) {
 				$segments[] = $helper->lang('manufacturer').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
 				unset($query['virtuemart_manufacturer_id']);
-
 			}
 			if ( isset($query['search'])  ) {
 				$segments[] = $helper->lang('search') ;
@@ -81,7 +73,6 @@ function virtuemartBuildRoute(&$query) {
 			}
 			if ( isset($query['virtuemart_category_id']) ) {
 				$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
-				//vmdebug('my categoryRoute '.$query['virtuemart_category_id'],$categoryRoute);
 				if ($categoryRoute->route) {
 					$segments[] = $categoryRoute->route;
 				}
@@ -110,7 +101,7 @@ function virtuemartBuildRoute(&$query) {
 				} else {
 					$dir = 'dirAsc';
 				}
-				$segments[] = $dir;//$helper->lang('dir'.$dir) ;
+				$segments[] = $dir;
 				unset($query['dir']);
 			}
 
@@ -136,9 +127,8 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = $helper->lang('results') .','. ($start+1).'-'.($start+$limit);
 			} else if ($limit !== null && $limit != vmrouterHelper::$limit ) $segments[] = $helper->lang('results') .',1-'.$limit ;//limit change
 
-			//return $segments;
 			break;
-		/* Shop product details view  */
+		//Shop product details view
 		case 'productdetails';
 
 			$virtuemart_product_id = false;
@@ -168,7 +158,6 @@ function virtuemartBuildRoute(&$query) {
 				if($virtuemart_product_id)
 					$segments[] = $helper->getProductName($virtuemart_product_id);
 			}
-			//if (!count($query))	return $segments;
 			break;
 		case 'manufacturer';
 
@@ -226,12 +215,6 @@ function virtuemartBuildRoute(&$query) {
 				else {
 					$segments[] =  $helper->lang($query['task']);
 				}
-				/*	if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
-								elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartST') ;
-								elseif ($query['addrtype'] == 'BT') $segments[] = $helper->lang('editaddresscheckoutST') ;
-								elseif ($query['addrtype'] == 'ST') $segments[] = $helper->lang('editaddresscheckoutST') ;
-								else $segments[] = $query['task'] ;*/
-				vmdebug('$segments',$segments);
 				unset ($query['task'] , $query['addrtype']);
 			}
 
@@ -256,7 +239,6 @@ function virtuemartBuildRoute(&$query) {
 				$query['Itemid'] = $jmenu['virtuemart'];
 			}
 			if (isset($query['virtuemart_vendor_id'])) {
-				//$segments[] = $helper->lang('vendor').'/'.$helper->getVendorName($query['virtuemart_vendor_id']) ;
 				$segments[] =  $helper->getVendorName($query['virtuemart_vendor_id']) ;
 				unset ($query['virtuemart_vendor_id'] );
 			}
@@ -272,11 +254,6 @@ function virtuemartBuildRoute(&$query) {
 				}
 			}
 			$segments[] = $helper->lang('cart') ;
-			/*if ( isset($jmenu['cart']) ) $query['Itemid'] = $jmenu['cart'];
-			else {
-				$segments[] = $helper->lang('cart') ;
-				$query['Itemid'] = $jmenu['virtuemart'];
-			}*/
 
 			break;
 		case 'orders';
@@ -292,8 +269,6 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = 'id/'.$query['virtuemart_order_id'];
 				unset ($query['virtuemart_order_id'],$query['layout']);
 			}
-
-			//else unset ($query['layout']);
 			break;
 
 		// sef only view
@@ -333,21 +308,14 @@ function virtuemartParseRoute($segments) {
 	if (empty($segments)) {
 		return $vars;
 	}
-	//$lang = $helper->lang ;
-	// revert '-' (Joomla change - to :) //
+
 	foreach  ($segments as &$value) {
 		$value = str_replace(':', '-', $value);
 	}
-	/*$vars['view'] = 'category';
-	if(isset($helper->activeMenu->virtuemart_category_id)){
-		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
-	}*/
 
-	// $splitted = explode(',',$segments[0],2);
 	$splitted = explode(',',end($segments),2);
 
 	if ( $helper->compareKey($splitted[0] ,'results')){
-		// array_shift($segments);
 		array_pop($segments);
 		$results = explode('-',$splitted[1],2);
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
@@ -368,12 +336,10 @@ function virtuemartParseRoute($segments) {
 	if (empty($segments)) {
 		$vars['view'] = 'category';
 		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
-		//$vars['Itemid'] = $helper->activeMenu->id;
 		return $vars;
 	}
 
 	//Translation of the ordering direction is not really useful and costs just energy
-	//if (  $helper->compareKey(end($segments),'dirDesc') ){
 	if ( end($segments) == 'dirDesc' ){
 		$vars['dir'] ='DESC' ;
 		array_pop($segments);
@@ -383,7 +349,6 @@ function virtuemartParseRoute($segments) {
 			return $vars;
 		}
 	} else
-		//if (  $helper->compareKey(end($segments),'dirAsc') ){
 	if ( end($segments) == 'dirAsc' ){
 		$vars['dir'] ='ASC' ;
 		array_pop($segments);
@@ -394,7 +359,6 @@ function virtuemartParseRoute($segments) {
 		}
 	}
 
-	// $orderby = explode(',',$segments[0],2);
 	$orderby = explode(',',end($segments),2);
 	if ( count($orderby) == 2 and $helper->compareKey($orderby[0] , 'by') ) {
 		$vars['orderby'] = $helper->getOrderingKey($orderby[1]) ;
@@ -408,7 +372,6 @@ function virtuemartParseRoute($segments) {
 		}
 	}
 
-	//Maybe I should just disable that to get FE editing working?
 	if ( $segments[0] == 'product') {
 		$vars['view'] = 'product';
 		$vars['task'] = $segments[1];
@@ -430,7 +393,6 @@ function virtuemartParseRoute($segments) {
 
 		array_shift($segments);
 		// OSP 2012-02-29 removed search malforms SEF path and search is performed
-		// $vars['search'] = 'true';
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
@@ -494,7 +456,6 @@ function virtuemartParseRoute($segments) {
 		$vars['view'] = 'orders';
 		if ( $helper->compareKey($view,'orders')){
 			array_shift($segments);
-
 		}
 		if (empty($segments)) {
 			$vars['layout'] = 'list';
@@ -551,15 +512,13 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 	else if ( $helper->compareKey($view,'vendor') || $helper->activeMenu->view == 'vendor') {
-		/* vm208 */
 		$vars['view'] = 'vendor';
 
 		if ( $helper->compareKey($view,'vendor') ) {
 			array_shift($segments);
 			if (empty($segments)) return $vars;
 		}
-		//$vars['virtuemart_vendor_id'] = array_shift($segments);//// already done
-		//array_shift($segments);
+
 		$vars['virtuemart_vendor_id'] =  $helper->getVendorId($segments[0]);
 		array_shift($segments);
 		if(!empty($segments)) {
@@ -613,10 +572,7 @@ function virtuemartParseRoute($segments) {
 			$vars['tmpl'] = 'component';
 			array_shift($segments);
 		}
-		// if (isset($helper->activeMenu->virtuemart_manufacturer_id))
-		// $vars['virtuemart_manufacturer_id'] = $helper->activeMenu->virtuemart_manufacturer_id ;
 
-		//vmdebug('my parsed URL vars',$vars);
 		return $vars;
 	}
 
@@ -626,8 +582,6 @@ function virtuemartParseRoute($segments) {
 	 * eg. suffix as "-suffix", a category with "name-suffix" get always a false return
 	 * Trick : YOu can simply use "-p","-x","-" or ".htm" for better seo result if it's never in the product/category name !
 	 */
-	/*	if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
-			vmdebug('$segments productdetail',$segments,end($segments ));*/
 	$last_elem = end($segments);
 	$slast_elem = prev($segments);
 	if ( (substr($last_elem, -(int)$helper->seo_sufix_size ) == $helper->seo_sufix)
@@ -683,8 +637,6 @@ function virtuemartParseRoute($segments) {
 		}
 	}
 
-	//vmdebug('Router vars',$vars);
-
 	return $vars;
 }
 
@@ -708,13 +660,9 @@ class vmrouterHelper {
 	public $seo_translate = false ;
 	private $orderings = null ;
 	public static $limit = null ;
-	/*
-	  * $router_disabled type boolean
-	  * true  = don't Use the router
-	  */
+
 	public $router_disabled = false ;
 
-	/* instance of class */
 	private static $_instance = false;
 
 	private static $_catRoute = array ();
@@ -743,7 +691,6 @@ class vmrouterHelper {
 			$this->edit = ('edit' == vRequest::getCmd('task') or vRequest::getInt('manage')=='1');
 			// if language switcher we must know the $query
 			$this->query = $query;
-			//vmdebug('Router construct my query j2',$this->query,$query);
 		}
 
 	}
@@ -754,7 +701,6 @@ class vmrouterHelper {
 		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 		VmConfig::loadConfig();
-
 		if (!self::$_instance){
 			self::$_instance= new vmrouterHelper ($query);
 
@@ -857,11 +803,9 @@ class vmrouterHelper {
 		} else {
 			return strtolower(implode ('/', $strings ) );
 		}
-
-
 	}
 
-	/* return id of categories
+	/** return id of categories
 	 * $names are segments
 	 * $virtuemart_category_ids is joomla menu virtuemart_category_id
 	 */
@@ -1019,7 +963,6 @@ class vmrouterHelper {
 		$db->setQuery($query);
 
 		return $db->loadResult();
-
 	}
 
 	/* Set $this->menu with the Item ID from Joomla Menus */
@@ -1027,9 +970,6 @@ class vmrouterHelper {
 
 		$home 	= false ;
 		$component	= JComponentHelper::getComponent('com_virtuemart');
-
-		//else $items = $menus->getItems('component_id', $component->id);
-		//get all vm menus
 
 		$db			= JFactory::getDBO();
 		$fallback = '';
@@ -1059,7 +999,6 @@ class vmrouterHelper {
 					$splitpos = strpos($tosplit, '=');
 					$link[ (substr($tosplit, 0, $splitpos) ) ] = substr($tosplit, $splitpos+1);
 				}
-				//vmDebug('menu view link',$link);
 
 				//This is fix to prevent entries in the errorlog.
 				if(!empty($link['view'])){
@@ -1096,20 +1035,12 @@ class vmrouterHelper {
 				$this->menu['virtuemart'] = $this->menu['virtuemart_category_id'][0] ;
 			}else $this->menu['virtuemart'] = $homeid;
 		}
-		// if ( !isset( $this->menu['manufacturer']) ) {
-		// $this->menu['manufacturer'] = $this->menu['virtuemart'] ;
-		// }
-		// if ( !isset( $this->menu['vendor']) ) {
-		// $this->menu['manufacturer'] = $this->menu['virtuemart'] ;
-		// }
-
 	}
 
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */
 	private function setActiveMenu(){
 		if ($this->activeMenu === null ) {
-			//$menu = JSite::getMenu();
-			//$menu = JFactory::getApplication()->getMenu();
+
 			$app		= JFactory::getApplication();
 			$menu		= $app->getMenu('site');
 			if ($Itemid = vRequest::getInt('Itemid',false) ) {
@@ -1195,8 +1126,7 @@ class vmrouterHelper {
 	 */
 	public function compareKey($string, $key) {
 		if ($this->seo_translate ) {
-			if (vmText::_('COM_VIRTUEMART_SEF_'.$key) == $string )
-			{
+			if (vmText::_('COM_VIRTUEMART_SEF_'.$key) == $string ) {
 				return true;
 			}
 

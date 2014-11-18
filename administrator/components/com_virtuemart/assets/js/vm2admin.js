@@ -318,7 +318,7 @@
                             jQuery("#adminForm [name=file_url]").val(datas.file_url);
                             jQuery("#adminForm [name=file_url_thumb]").val(datas.file_url_thumb);
                             jQuery("[name=active_media_id]").val(datas.virtuemart_media_id);
-                            if (datas.file_url_thumb !== "undefined") {
+                            if (typeof datas.file_url_thumb !== "undefined") {
                                 jQuery("#vm_thumb_image").attr("src", datas.file_root + datas.file_url_thumb);
                             }
                             else {

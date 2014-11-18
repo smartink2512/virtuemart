@@ -161,33 +161,32 @@ class VirtueMartModelUserfields extends VmModel {
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
-	function getUserfield($id = 0,$name = 0) {
+	function getUserfield($id = 0,$name = '') {
 
-		if(!empty($id)) $this->_id = (int)$id;
+		if($id === 0) $id = $this->_id;
 
-		if (empty($this->_cache[$this->_id])) {
-			$this->_cache[$this->_id] = $this->getTable('userfields');
-			if($name !==0){
-				$this->_cache[$this->_id]->load($this->_id, $name);
+		$hash = $id.$name;
+		if (empty($this->_cache[$hash])) {
+			$this->_cache[$hash] = $this->getTable('userfields');
+			if($name !==''){
+				$this->_cache[$hash]->load($id, $name);
 			} else {
-				$this->_cache[$this->_id]->load($this->_id);
+				$this->_cache[$hash]->load($id);
 			}
-			//vmdebug('getUserfield',$this->_id,$name,$this->_cache[$this->_id]);
-			if(strpos($this->_cache[$this->_id]->type,'plugin')!==false){
+			//vmdebug('getUserfield',$id,$name,$this->_cache[$id]);
+			if(strpos($this->_cache[$hash]->type,'plugin')!==false){
 				JPluginHelper::importPlugin('vmuserfield');
 				$dispatcher = JDispatcher::getInstance();
-				$plgName = substr($this->_cache[$this->_id]->type,6);
+				$plgName = substr($this->_cache[$hash]->type,6);
 				$type = 'userfield';
-				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfieldVM3',array($type,&$this->_cache[$this->_id]));
-				// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_cache);
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfieldVM3',array($type,&$this->_cache[$hash]));
+				// vmdebug('pluginGet',$type,$plgName,$id,$this->_cache);
 			}
-			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
-				VmTable::bindParameterable($this->_cache[$this->_id],'userfield_params',$this->_cache[$this->_id]->_varsToPushParam);
+			if(!empty($this->_cache[$hash]->_varsToPushParam)){
+				VmTable::bindParameterable($this->_cache[$hash],'userfield_params',$this->_cache[$hash]->_varsToPushParam);
 			}
 		}
-
-
-		return $this->_cache[$this->_id];
+		return $this->_cache[$hash];
 	}
 
 
@@ -222,6 +221,8 @@ class VirtueMartModelUserfields extends VmModel {
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
 	function store(&$data){
+
+		if(!is_array($data)) $data = (array)$data;
 
 		$field      = $this->getTable('userfields');
 		$userinfo   = $this->getTable('userinfos');
