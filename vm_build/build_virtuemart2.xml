@@ -5,7 +5,6 @@
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.6.12.2"/>
     <property name="joomla.version" value="2.5.27"/>
-    <property name="svn.lastrevision" value="8559"/>
     <property name="PHING.VM.CODENAME" value="FlyingBrant"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm2"/>
 
@@ -143,7 +142,6 @@
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
         <exclude name="**/vm_build/**"/>
-        <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
         <exclude name="**/vm_update/**"/>
@@ -255,7 +253,6 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-        <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
     </fileset>

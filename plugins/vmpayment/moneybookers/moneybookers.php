@@ -345,7 +345,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			$write = $except = NULL;
 			$msg = $rbuff = '';
 			if (stream_select ($read, $write, $except, 10)) {
-				$rbuff = fread ($fps, 1024);
+				$rbuff = fread ($fps, 2048);
 				$msg .= $rbuff;
 			}
 			$response = $this->_parse_response ($msg);

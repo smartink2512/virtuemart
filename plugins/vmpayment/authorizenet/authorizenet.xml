@@ -12,9 +12,7 @@
 	<filename plugin="authorizenet">authorizenet.php</filename>
       <folder>language</folder></files>
     <params addpath="/administrator/components/com_virtuemart/elements" />
-    <params addpath="/plugins/vmpayment/authorizenet/elements" />
     <params addpath="/plugins/vmpayment/authorizenet/authorizenet/elements" />
-
     <params>
 	<param type="spacer" default="VMPAYMENT_AUTHORIZENET_AIM" level="level1" />
 	<param type="vmjpluginwarning" />

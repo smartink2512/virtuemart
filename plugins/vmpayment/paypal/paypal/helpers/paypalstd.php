@@ -174,7 +174,23 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
 		} else {
-			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" accept-charset="UTF-8">';
+			if (vmconfig::get('css')) {
+				$msg = vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE', true);
+			} else {
+				$msg='';
+			}
+			JFactory::getDocument()->addScriptDeclaration ('
+//<![CDATA[
+  jQuery(document).ready(function($){
+	   jQuery("body").addClass("vmLoading");
+	   var msg="'.$msg.'";
+	   jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
+	    jQuery("#vmPaymentForm").submit();
+})
+//]]>
+');
+
+			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" id="vmPaymentForm" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
@@ -182,18 +198,13 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
 		if ($this->_method->debug ) {
-
 			$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to PayPal" />
 						</div>';
 			$this->debugLog($post_variables, 'PayPal request:', 'debug');
-
 		} else {
 
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-			$html .= '		document.vm_paypal_form.submit();';
-			$html .= '	</script>';
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
 		}
 		$html .= '</form>';
 

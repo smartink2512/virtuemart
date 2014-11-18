@@ -471,7 +471,7 @@ return;
 
 
 		} else if ($this->_currentMethod->paypalproduct == 'api') {
-					$this->setInConfirmOrder($cart);
+			$this->setInConfirmOrder($cart);
 
 			$success = $paypalInterface->ManageCheckout();
 			$response = $paypalInterface->getResponse();
