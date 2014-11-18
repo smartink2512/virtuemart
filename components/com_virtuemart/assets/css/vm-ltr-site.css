@@ -263,7 +263,7 @@ div[class*="-view"] .row{margin: 0;}
     width:      100%;
     background: rgba( 255, 255, 255, .8 )
     url('../images/vm-preloader.gif')
-    50% 50%
+    50% 45%
     no-repeat;
 }
 
@@ -277,4 +277,8 @@ div[class*="-view"] .row{margin: 0;}
    modal element will be visible */
 .vmLoading .vmLoadingDiv {
     display: block;
+}
+.vmLoadingDiv .vmLoadingDivMsg {
+    position: relative;
+    top: 50%;
 }

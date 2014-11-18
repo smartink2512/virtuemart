@@ -330,7 +330,7 @@ div.vote, span.vote {display:block;margin-bottom:4px;min-height: 32px;float:righ
     width:      100%;
     background: rgba( 255, 255, 255, .8 )
     url('../images/vm-preloader.gif')
-    50% 50%
+    50% 45%
     no-repeat;
 }
 
@@ -344,4 +344,8 @@ div.vote, span.vote {display:block;margin-bottom:4px;min-height: 32px;float:righ
    modal element will be visible */
 .vmLoading .vmLoadingDiv {
     display: block;
+}
+.vmLoadingDiv .vmLoadingDivMsg {
+    position: relative;
+    top: 50%;
 }

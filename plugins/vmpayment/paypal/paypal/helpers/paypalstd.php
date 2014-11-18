@@ -167,20 +167,33 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		}
 
 		$url = $this->_getPayPalUrl();
-		// add spin image
-		$html = '';
+		if (vmconfig::get('css')) {
+			$msg = vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE', true);
+		} else {
+			$msg='';
+		}
 
+		vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
+  			jQuery(document).ready(function($){
+   				jQuery("body").addClass("vmLoading");
+  				var msg="'.$msg.'";
+   				jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
+    			jQuery("#vmPaymentForm").submit();
+			})
+		');
+
+		$html = '';
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
 		} else {
-			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" accept-charset="UTF-8">';
+			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" id="vmPaymentForm" accept-charset="UTF-8">';
 		}
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
 		foreach ($post_variables as $name => $value) {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
-		if ($this->_method->debug ) {
+		if ($this->_method->debug) {
 
 			$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to PayPal" />
@@ -188,15 +201,13 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			$this->debugLog($post_variables, 'PayPal request:', 'debug');
 
 		} else {
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
 
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-			$html .= '		document.vm_paypal_form.submit();';
-			$html .= '	</script>';
 		}
 		$html .= '</form>';
 
-		return $html;	}
+		return $html;
+	}
 
 	// todo check the paypal langauge: can it be sent. Atm sent in the country lanaguge
 

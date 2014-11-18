@@ -391,11 +391,26 @@ jQuery().ready(function($) {
 		$pbxServer = $this->getPayboxServerUrl();
 
 		// add spin image
-		$html = '';
+		$html='';
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" target="paybox">';
 		} else {
-			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" >';
+			if (vmconfig::get('css')) {
+				$msg = vmText::_('VMPAYMENT_PAYBOX_REDIRECT_MESSAGE', true);
+			} else {
+				$msg='';
+			}
+
+			vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
+  			jQuery(document).ready(function($){
+   				jQuery("body").addClass("vmLoading");
+  				var msg="'.$msg.'";
+   				jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
+    			jQuery("#vmPaymentForm").submit();
+			})
+		');
+
+			$html .= '<form action="' . $pbxServer . '" method="post" name="vm_paybox_form" id="vmPaymentForm">';
 		}
 
 		foreach ($post_variables as $name => $value) {
@@ -410,19 +425,14 @@ jQuery().ready(function($) {
 						</div>';
 			$this->plugin->debugLog($post_variables, 'sendPostRequest:', 'debug');
 
-		} else {
+		}else {
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYBOX_REDIRECT_MESSAGE') . '" />';
 
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_'.$this->plugin_name.'_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-			$html .= '		document.vm_paybox_form.submit();';
-
-			$html .= '	</script>';
 		}
 		$html .= '</form>';
 
 		return $html;
 	}
-
 
 	private function getContext () {
 
