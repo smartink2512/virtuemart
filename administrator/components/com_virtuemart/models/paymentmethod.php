@@ -7,7 +7,7 @@
 * @subpackage  Payment
 * @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -23,11 +23,6 @@ if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 class VirtueMartModelPaymentmethod extends VmModel{
 
-	/**
-	 * constructs a VmModel
-	 * setMainTable defines the maintable of the model
-	 * @author Max Milbers
-	 */
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('paymentmethods');
@@ -70,7 +65,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				JPluginHelper::importPlugin('vmpayment');
 				$dispatcher = JDispatcher::getInstance();
 				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsPaymentVM3', array(&$this->_cache[$this->_id]));
-				//$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_cache[$this->_id]->payment_element,$this->_cache[$this->_id]->payment_jplugin_id,&$this->_cache));
 			}
 
 			if(!empty($this->_cache[$this->_id]->_varsToPushParam)){
@@ -128,8 +122,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$joinedTables = ' JOIN `#__virtuemart_paymentmethods`   USING (`virtuemart_paymentmethod_id`) ';
 		$datas =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
 
-			//$this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_paymentmethods`',$whereString,'',$this->_getOrdering('ordering'));
-
 		if(isset($datas)){
 
 			if(!class_exists('shopfunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
@@ -170,7 +162,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	   		$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
 	  	}
 
-
 		$table = $this->getTable('paymentmethods');
 
 		if(isset($data['payment_jplugin_id'])){
@@ -183,7 +174,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE `extension_id` = "'.$data['payment_jplugin_id'].'"';
 			$db->setQuery($q);
 			$db->execute();
-
 
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();

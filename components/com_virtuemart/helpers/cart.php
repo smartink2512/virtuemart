@@ -319,7 +319,7 @@ class VirtueMartCart {
 			$cObj->virtuemart_user_id = (int) $currentUser->id;
 			$cObj->virtuemart_vendor_id = (int) $this->vendorId;
 			$cObj->cartData = $cartDataToStore;
-			vmdebug('storeCart ',$cObj->virtuemart_vendor_id);
+
 			$carts->bindChecknStore($cObj);
 		}
 	}

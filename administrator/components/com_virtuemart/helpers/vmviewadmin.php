@@ -63,7 +63,6 @@ class VmViewAdmin extends JViewLegacy {
 
 			echo $result;
 			echo vmJsApi::writeJS();
-			//vmdebug('my included files ',get_included_files());
 			return true;
 		} else {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
@@ -122,8 +121,6 @@ class VmViewAdmin extends JViewLegacy {
 			JToolBarHelper::deleteList();
 		}
 		self::showHelp ( $showHelp);
-
-
 		if(JFactory::getApplication()->isSite()){
 			$bar = JToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
@@ -197,7 +194,7 @@ class VmViewAdmin extends JViewLegacy {
 	}
 
 
-	/*
+	/**
 	 * Add simple search to form
 	* @param $searchLabel text to display before searchbox
 	* @param $name 		 lists and id name
@@ -228,9 +225,7 @@ class VmViewAdmin extends JViewLegacy {
 
 		$this->addJsJoomlaSubmitButton();
 
-		// LANGUAGE setting
         $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
-
 		$params = JComponentHelper::getParams('com_languages');
 
 		$selectedLangue = $params->get('site', 'en-GB');

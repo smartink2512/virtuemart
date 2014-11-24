@@ -2,7 +2,7 @@
 /**
 *
 * Description
-*
+* @author Max Milbers
 * @package	VirtueMart
 * @subpackage
 * @link http://www.virtuemart.net
@@ -22,7 +22,6 @@ if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model for VirtueMart Products
- *
  * @package VirtueMart
  */
 class VirtueMartModelInventory extends VmModel {
@@ -30,7 +29,6 @@ class VirtueMartModelInventory extends VmModel {
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
-	 * @author Max Milbers
 	 */
 	function __construct() {
 		parent::__construct('virtuemart_product_id');
@@ -70,12 +68,11 @@ class VirtueMartModelInventory extends VmModel {
 	* @author Max Milbers
     */
     private function getInventoryFilter() {
-    	/* Check some filters */
+    	// Check some filters
      	$filters = array();
      	if ($search = vRequest::getVar('filter_inventory', false)){
 			$db = JFactory::getDBO();
      		$search = '"%' . $db->escape( $search, true ) . '%"' ;
-			//$search = $db->Quote($search, false);
      		$filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$search;
      	}
      	if (vRequest::getInt('stockfilter', 0) == 1){

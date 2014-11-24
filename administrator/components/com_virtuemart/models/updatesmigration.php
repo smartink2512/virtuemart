@@ -141,12 +141,14 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	$fields['zip'] =  '98101';
 	$fields['virtuemart_state_id'] =  '48';
 	$fields['virtuemart_country_id'] =  '223';
-// 	$fields['virtuemart_shoppergroup_id'] = '';
+
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
 	$fields['virtuemart_vendor_id'] = '1';
 	$fields['vendor_name'] =  'Sample Company';
-	$fields['vendor_phone'] =  '555-555-1212';
+		//quickndirty hack for vendor_phone
+		vRequest::setVar('phone_1',$fields['phone_1']);
+	//$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "VirtueMart 3 Sample store";
 	$fields['vendor_store_desc'] =  '<p>We have the best clothing for up-to-date people. Check it out!</p> <p>We were established in 1869 in a time when getting good clothes was expensive, but the quality was good. Now that only a select few of those authentic clothes survive, we have dedicated this store to bringing the experience alive for collectors and master carrier everywhere.</p> <p>You can easily find products selecting the category you would like to browse above.</p>';
 	$fields['virtuemart_media_id'] =  1;

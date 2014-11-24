@@ -81,9 +81,6 @@ class VirtueMartModelCustom extends VmModel {
     		$this->_cache[$this->_id] = $this->getTable('customs');
 			$this->_cache[$this->_id]->load($this->_id);
 
-		    //$customfields = VmModel::getModel('Customfields');
-		    //$this->_cache[$this->_id]->field_types = $customfields->getField_types() ;
-
 		    $this->_cache[$this->_id]->_varsToPushParam = self::getVarsToPush($this->_cache[$this->_id]->field_type);
 
 			$this->_cache[$this->_id]->customfield_params = '';
@@ -137,8 +134,6 @@ class VirtueMartModelCustom extends VmModel {
 		}
 	    $datas = new stdClass();
 		$datas->items = $this->exeSortSearchListQuery(0, $query, '',$whereString,$this->_getOrdering());
-
-		//$customfields = VmModel::getModel('Customfields');
 
 		if (!class_exists('VmHTML')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 		$field_types = self::getCustomTypes() ;
@@ -239,15 +234,9 @@ class VirtueMartModelCustom extends VmModel {
 	 * @return unknown|multitype:
 	 */
 	function getParentList ($excludedId = 0) {
-
 		$db = JFactory::getDBO();
 		$db->setQuery (' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="G" and virtuemart_custom_id!=' . $excludedId);
-		if ($results = $db->loadObjectList ()) {
-			return $results;
-		}
-		else {
-			return array();
-		}
+		return $db->loadObjectList ();
 	}
 
 
@@ -343,9 +332,6 @@ class VirtueMartModelCustom extends VmModel {
 		$table->custom_jplugin_id = $data['custom_jplugin_id'];
 		$table->_xParams = 'custom_params';
 
-		/*if(isset($data['custom_title'])){
-			$data['custom_title'] = htmlentities($data['custom_title'], ENT_QUOTES, "UTF-8");
-		}*/
 		if(!empty($data['is_input'])){
 			if(empty($data['layout_pos'])) $data['layout_pos'] = 'addtocart';
 		}
@@ -445,7 +431,6 @@ class VirtueMartModelCustom extends VmModel {
 	public function remove($ids) {
 
 		$table = $this->getTable($this->_maintablename);
-
 		$customfields = $this->getTable ('product_customfields');
 
 		foreach($ids as $id) {
@@ -458,10 +443,8 @@ class VirtueMartModelCustom extends VmModel {
 					vmError ('Custom delete Productcustomfield delete ' . $customfields->getError ());
 					$ok = FALSE;
 				}
-
 			}
 		}
-
 		return true;
 	}
 

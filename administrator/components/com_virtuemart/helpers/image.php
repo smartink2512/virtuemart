@@ -89,6 +89,7 @@ class VmImage extends VmMediaHandler {
 		$file_url_thumb = $this->file_url_folder.'resized/'.$this->file_name_thumb.'.'.$this->file_extension;
 		return $file_url_thumb;
 	}
+
 	/**
 	 * a small function that ensures that we always build the thumbnail name with the same method
 	 */

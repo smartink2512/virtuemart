@@ -80,7 +80,6 @@ class VirtuemartControllerCalc extends VmController {
 			return false;
 		}
 
-		//getting the model
 		$model = VmModel::getModel('calc');
 
 		if ($model->orderCalc($id, -1)) {

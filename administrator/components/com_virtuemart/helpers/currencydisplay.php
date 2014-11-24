@@ -93,8 +93,6 @@ class CurrencyDisplay {
 	 */
 	static public function getInstance($currencyId=0,$vendorId=0){
 
-		// 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
-
 		if(empty(self::$_instance)  || (!empty($currencyId) and $currencyId!=self::$_instance->_currency_id) ){
 
 			self::$_instance = new CurrencyDisplay($vendorId);
@@ -315,7 +313,6 @@ class CurrencyDisplay {
 	 */
 	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0,$forceNoLabel=false){
 
-		// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
 		if(empty($product_price) and $name != 'billTotal' and $name != 'billTaxAmount') return '';
 
 		//The fallback, when this price is not configured
@@ -409,9 +406,7 @@ class CurrencyDisplay {
 
 			if($shop){
 				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
-				//vmdebug('convertCurrencyTo Use dynamic rate in shop '.$oldprice .' => '.$price);
 			} else {
-				//vmdebug('convertCurrencyTo Use dynamic rate to shopper currency '.$price);
 				$price = $this ->_currencyConverter->convert( $price , $vendorCurrencyCode, $currencyCode);
 			}
 		}

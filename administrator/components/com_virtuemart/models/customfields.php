@@ -985,14 +985,6 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 
 					if($customfield->is_list){
 
-						/*if($type=='B'){
-							if ($customfield->customfield_value == 0){
-								$customfield->customfield_value =  'JNO';
-							} else {
-								$customfield->customfield_value =  'JYES';
-							}
-						}*/
-						//vmdebug('case S $customfield->is_list',$customfield->customfield_value);
 						if(!empty($customfield->is_input)){
 
 							$options = array();
@@ -1008,17 +1000,14 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							}
 
 							$currentValue = $customfield->customfield_value;
-							//vmJsApi::chosenDropDowns();
-							$customfield->display = JHtml::_ ($selectType, $options, $customProductDataName.'[' . $customfield->virtuemart_customfield_id . ']', $class, 'value', 'text', $currentValue,$idTag);
 
-							//$customfield->display =  '<input type="text" readonly value="' . vmText::_ ($customfield->customfield_value) . '" name="'.$customProductDataName.'" /> ' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
+							$customfield->display = JHtml::_ ($selectType, $options, $customProductDataName.'[' . $customfield->virtuemart_customfield_id . ']', $class, 'value', 'text', $currentValue,$idTag);
 						} else {
 							if($type == 'M'){
 								$customfield->display =  $this->displayCustomMedia ($customfield->customfield_value);
 							} else {
 								$customfield->display =  vmText::_ ($customfield->customfield_value);
 							}
-
 						}
 					} else {
 
@@ -1055,7 +1044,6 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							$customfields[$selectList[$customfield->virtuemart_custom_id]]->display = JHtml::_ ($selectType, $customfields[$selectList[$customfield->virtuemart_custom_id]]->options,
 								$customfields[$selectList[$customfield->virtuemart_custom_id]]->customProductDataName,
 								$class, 'virtuemart_customfield_id', 'text', $default->customfield_value,$idTag);	//*/
-							//vmdebug('In String customfield list and input ',$customfields[$selectList[$customfield->virtuemart_custom_id]]->options);
 						} else {
 							if($type == 'M'){
 								$customfield->display = $this->displayCustomMedia ($customfield->customfield_value);
@@ -1092,7 +1080,6 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						break;
 					}
 					$pModel = VmModel::getModel('product');
-
 					$related = $pModel->getProduct((int)$customfield->customfield_value,TRUE,$customfield->wPrice,TRUE,1);
 
 					if(!$related) break;
@@ -1180,12 +1167,10 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 						JPluginHelper::importPlugin ('vmcustom');
 						$dispatcher = JDispatcher::getInstance ();
-						//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$product->virtuemart_product_id,$productCustom->virtuemart_customfield_id,$productCustom->custom_element);
 						$dispatcher->trigger ($trigger.'VM3', array(&$product, &$productCustom, &$html));
 
 					}
 					else {
-						//vmdebug('customFieldDisplay $productCustom by self::getProductCustomField $variant: '.$variant.' $selected: '.$selected,$productCustom);
 						$value = '';
 						if (($productCustom->field_type == "G")) {
 
@@ -1236,7 +1221,6 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 	 * render custom fields display cart module FE
 	 */
 	static public function CustomsFieldCartModDisplay ($product) {
-
 		return self::displayProductCustomfieldSelected ($product, '<div class="vm-customfield-mod">', 'plgVmOnViewCartModule');
 	}
 
@@ -1244,7 +1228,6 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 	 * render custom fields display cart FE
 	 */
 	static public function CustomsFieldCartDisplay ($product) {
-
 		return self::displayProductCustomfieldSelected ($product, '<div class="vm-customfield-cart">', 'plgVmOnViewCart');
 	}
 
@@ -1252,7 +1235,6 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 	 * render custom fields display order BE/FE
 	 */
 	static public function CustomsFieldOrderDisplay ($item, $view = 'FE', $absUrl = FALSE) {
-
 		if (!empty($item->product_attribute)) {
 			$item->customProductData = json_decode ($item->product_attribute, TRUE);
 		}

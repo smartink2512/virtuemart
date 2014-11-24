@@ -6,6 +6,7 @@
  * @package	VirtueMart
  * @subpackage Currency
  * @author RickG
+ * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -26,7 +27,6 @@ if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
  *
  * @package	VirtueMart
  * @subpackage Currency
- * @author RickG
  */
 class VirtueMartModelCurrency extends VmModel {
 
@@ -73,7 +73,6 @@ class VirtueMartModelCurrency extends VmModel {
 		if($search){
 			$db = JFactory::getDBO();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
-			//$search = $db->Quote($search, false);
 			$where[] = '`currency_name` LIKE '.$search.' OR `currency_code_2` LIKE '.$search.' OR `currency_code_3` LIKE '.$search;
 		}
 

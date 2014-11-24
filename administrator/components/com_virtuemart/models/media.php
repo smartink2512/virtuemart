@@ -85,9 +85,6 @@ class VirtueMartModelMedia extends VmModel {
 		if(!empty($virtuemart_media_ids)){
 			if(!is_array($virtuemart_media_ids)) $virtuemart_media_ids = explode(',',$virtuemart_media_ids);
 
-			//Lets delete empty ids
-			//$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
-
 			$data = $this->getTable('medias');
 			foreach($virtuemart_media_ids as $k => $virtuemart_media_id){
 				if($limit!==0 and $k==$limit and !empty($medias)) break; // never break if $limit = 0
@@ -330,11 +327,9 @@ class VirtueMartModelMedia extends VmModel {
 				if(!is_array($oldIds)) $oldIds = array($oldIds);
 
 				if(!empty($data['mediaordering']) && $data['media_action']=='upload'){
-// 					array_push($data['mediaordering'],count($data['mediaordering'])+1);
 					$data['mediaordering'][$virtuemart_media_id] = count($data['mediaordering']);
 				}
 				$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
-// 				vmdebug('merged old and new',$virtuemart_media_ids);
 				$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
 			} else {
 				$data['virtuemart_media_id'] = $virtuemart_media_id;
@@ -348,11 +343,8 @@ class VirtueMartModelMedia extends VmModel {
 			foreach($data['mediaordering'] as $k=>$v){
 				$sortedMediaIds[] = $k;
 			}
-// 			vmdebug('merging old and new',$oldIds,$virtuemart_media_id);
 			$data['virtuemart_media_id'] = $sortedMediaIds;
 		}
-
-// 		vmdebug('my data in media to store',$data['virtuemart_media_id'],$data['mediaordering']);
 
 		//set the relations
 		$table = $this->getTable($type.'_medias');
@@ -376,7 +368,6 @@ class VirtueMartModelMedia extends VmModel {
 	public function store(&$data) {
 
 		VmConfig::loadJLang('com_virtuemart_media');
-		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
 		if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
@@ -390,7 +381,6 @@ class VirtueMartModelMedia extends VmModel {
 		if (isset($data['media_published'])){
 			$tmpPublished = $data['published'];
 			$data['published'] = $data['media_published'];
-			//vmdebug('$data["published"]',$data['published']);
 		}
 
 		$table->bindChecknStore($data);
@@ -401,7 +391,6 @@ class VirtueMartModelMedia extends VmModel {
 		if($tmpPublished){
 			$data['published'] = $tmpPublished;
 		}
-// 		vmdebug('store media $table->virtuemart_media_id '.$table->virtuemart_media_id);
 		return $table->virtuemart_media_id;
 	}
 
@@ -420,11 +409,8 @@ class VirtueMartModelMedia extends VmModel {
 				if(isset($object->images[0]->file_url_thumb)){
 					$object->file_url_thumb = $object->images[0]->file_url_thumb;
 					$object->file_url = $object->images[0]->file_url;
-
 				}
-
 			}
-
 		}
 	}
 

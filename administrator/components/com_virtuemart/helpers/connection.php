@@ -123,7 +123,7 @@ class VmConnector {
 		// No PEER certificate validation...as we don't have
 		// a certificate file for it to authenticate the host www.ups.com against!
 		curl_setopt($CR, CURLOPT_SSL_VERIFYPEER, 0);
-		//curl_setopt($CR, CURLOPT_SSLCERT , "/usr/locale/xxxx/clientcertificate.pem");
+
 	    }
 	    $result = curl_exec( $CR );
 	    $error = curl_error( $CR );
@@ -179,11 +179,9 @@ class VmConnector {
 			return false;
 	    }
 	    else {
-	    	//Would be interesting to set this only for debug
-//			JError::raiseNotice(1, 'Connection opened to '.$urlParts['host']);
+	    	vmdebug( 'Connection opened to '.$urlParts['host']);
 	    }
 	    if( $postData ) {
-//		$vmLogger->debug('Now posting the variables.' );
 			//send the server request
 			if( !empty( $proxyURL )) {
 			    fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");

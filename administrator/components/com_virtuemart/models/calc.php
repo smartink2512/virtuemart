@@ -155,7 +155,7 @@ class VirtueMartModelCalc extends VmModel {
 		// Convert selected dates to MySQL format for storing.
 		$startDate = JFactory::getDate($data['publish_up']);
 		$data['publish_up'] = $startDate->toSQL();
-//		if ($data['publish_down'] == '' or $data['publish_down']==0){
+
 		if (empty($data['publish_down']) || trim($data['publish_down']) == vmText::_('COM_VIRTUEMART_NEVER')){
 			$data['publish_down']	= $db->getNullDate();
 		} else {
@@ -240,7 +240,6 @@ class VirtueMartModelCalc extends VmModel {
 		$q .= 'AND ( publish_up = "' . $db->escape($nullDate) . '" OR publish_up <= "' . $db->escape($now) . '" )
 				AND ( publish_down = "' . $db->escape($nullDate) . '" OR publish_down >= "' . $db->escape($now) . '" ) ';
 
-
 		$db->setQuery($q);
 		$data = $db->loadObjectList();
 
@@ -272,7 +271,7 @@ class VirtueMartModelCalc extends VmModel {
 
 		foreach($cids as $id) {
 			$id = (int)$id;
-			vmdebug('remove '.$id);
+
 			if (!$table->delete($id)) {
 				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				$ok = false;
@@ -304,7 +303,6 @@ class VirtueMartModelCalc extends VmModel {
 				$ok = false;
 			}
 
-// 			if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmDeleteCalculationRow', array( $id));
@@ -315,7 +313,6 @@ class VirtueMartModelCalc extends VmModel {
 	}
 
 	static function getTaxes() {
-
 		return self::getRule(array('TAX','VatTax','TaxBill'));
 	}
 
@@ -324,12 +321,10 @@ class VirtueMartModelCalc extends VmModel {
 	}
 
 	static function getDBDiscounts() {
-
 		return self::getRule(array('DBTax','DBTaxBill'));
 	}
 
 	static function getDADiscounts() {
-
 		return self::getRule(array('DATax','DATaxBill'));
 	}
 }

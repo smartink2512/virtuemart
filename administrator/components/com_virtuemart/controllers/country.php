@@ -5,7 +5,6 @@
 *
 * @package	VirtueMart
 * @subpackage Country
-* @author RickG
 * @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
@@ -31,14 +30,13 @@ if(!class_exists('VmController'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontrol
  *
  * @package    VirtueMart
  * @subpackage Country
- * @author RickG
  */
 class VirtuemartControllerCountry extends VmController {
 
-	function __construct() {
+	/*function __construct() {
 		parent::__construct();
 
-	}
+	}*/
 
 }
 

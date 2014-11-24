@@ -5,6 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Country
+* @author Max Milbers
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -26,7 +27,6 @@ if(!class_exists('VmModel')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php')
  *
  * @package	VirtueMart
  * @subpackage Country
- * @author RickG
  */
 class VirtueMartModelCountry extends VmModel {
 
@@ -89,14 +89,12 @@ class VirtueMartModelCountry extends VmModel {
 
 		$where = array();
 		$this->_noLimit = $noLimit;
-// 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
-		/* add filters */
+
 		if ($onlyPublished) $where[] = '`published` = 1';
 
 		if($filterCountry){
 			$db = JFactory::getDBO();
 			$filterCountry = '"%' . $db->escape( $filterCountry, true ) . '%"' ;
-			//$keyword = $db->Quote($filterCountry, false);
 			$where[] = '`country_name` LIKE '.$filterCountry.' OR `country_2_code` LIKE '.$filterCountry.' OR `country_3_code` LIKE '.$filterCountry;
 		}
 
@@ -104,12 +102,8 @@ class VirtueMartModelCountry extends VmModel {
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
 		$ordering = $this->_getOrdering();
-
 		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$ordering);
-
-
     }
-
 
 }
 

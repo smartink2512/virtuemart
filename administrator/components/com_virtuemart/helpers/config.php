@@ -119,10 +119,7 @@ function vmInfo($publicdescr,$value=NULL){
 				$msg = call_user_func_array('sprintf', $args);
 			}
 		}	else {
-			// 		$app ->enqueueMessage('Info: '.vmText::_($publicdescr));
-			//$publicdescr = $lang->_($publicdescr);
 			$msg = vmText::_($publicdescr);
-			// 		debug_print_backtrace();
 		}
 	}
 	else {
@@ -168,10 +165,8 @@ function vmAdminInfo($publicdescr,$value=NULL){
 				}
 			}	else {
 				VmConfig::$maxMessageCount++;
-				// 		$app ->enqueueMessage('Info: '.vmText::_($publicdescr));
 				$publicdescr = $lang->_($publicdescr);
 				$app ->enqueueMessage('Info: '.vmText::_($publicdescr),'info');
-				// 		debug_print_backtrace();
 			}
 		}
 		else {
@@ -202,10 +197,7 @@ function vmWarn($publicdescr,$value=NULL){
 
 			}
 		}	else {
-			// 		$app ->enqueueMessage('Info: '.vmText::_($publicdescr));
 			$msg = $lang->_($publicdescr);
-			//$app ->enqueueMessage('Info: '.$publicdescr,'warning');
-			// 		debug_print_backtrace();
 		}
 	}
 	else {
@@ -283,17 +275,12 @@ function vmError($descr,$publicdescr=''){
 function vmdebug($debugdescr,$debugvalues=NULL){
 
 	if(VMConfig::showDebug()  ){
-
-
 		$app = JFactory::getApplication();
 
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 			if($debugvalues!==NULL){
-				// 			$debugdescr .=' <pre>'.print_r($debugvalues,1).'<br />'.print_r(get_class_methods($debugvalues),1).'</pre>';
-
 				$args = func_get_args();
 				if (count($args) > 1) {
-					// 				foreach($args as $debugvalue){
 					for($i=1;$i<count($args);$i++){
 						if(isset($args[$i])){
 							$debugdescr .=' Var'.$i.': <pre>'.print_r($args[$i],1).'<br />'.print_r(get_class_methods($args[$i]),1).'</pre>';
@@ -329,8 +316,6 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 function vmTrace($notice,$force=FALSE){
 
 	if($force || (VMConfig::showDebug() ) ){
-		//$app = JFactory::getApplication();
-		//
 		ob_start();
 		echo '<pre>';
 		debug_print_backtrace();
@@ -360,9 +345,7 @@ function vmRamPeak($notice,$value=NULL){
 
 
 function vmSetStartTime($name='current'){
-
 	VmConfig::$_starttime[$name] = microtime(TRUE);
-
 }
 
 function vmTime($descr,$name='current'){
@@ -387,10 +370,9 @@ function vmTime($descr,$name='current'){
 			$tmp = 'vmTime: ' . $descr . ': ' . (microtime (TRUE) - $starttime[$name]);
 			vmdebug ($tmp);
 		}
-		}
-
-
 	}
+
+}
 
 /**
  * logInfo
@@ -601,16 +583,9 @@ class VmConfig {
 					ini_set('display_errors', '1');
 					error_reporting(E_ERROR | E_WARNING | E_PARSE);
 					vmdebug('Show only Errors, warnings, parse errors');
-					/*if(version_compare(phpversion(),'5.4.0','<' )){
-						error_reporting( E_ALL & ~E_STRICT );
-					} else {
-						error_reporting( E_ALL ^ E_STRICT );
-					}*/
 				}
 			}
 		}
-
-
 
 		return self::$_debug;
 	}
@@ -780,7 +755,6 @@ class VmConfig {
 		vmSetStartTime('loadConfig');
 		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
-				//vmTime('time to load config','loadConfig');
 				return self::$_jpConfig;
 			}
 		}
@@ -1006,7 +980,6 @@ class VmConfig {
 		foreach($config as $item){
 			$item = explode('=',$item);
 			if(!empty($item[1])){
-				// if($item[0]!=='offline_message' && $item[0]!=='dateformat' ){
 				if($item[0]!=='offline_message' ){
 					try {
 						$value = @unserialize($item[1] );
@@ -1048,7 +1021,6 @@ class VmConfig {
 
 			//Texts get broken, when serialized, therefore we do a simple encoding,
 			//btw we need serialize for storing arrays   note by Max Milbers
-//			if($paramkey!=='offline_message' && $paramkey!=='dateformat'){
 			if($paramkey!=='offline_message'){
 				$raw .= $paramkey.'='.serialize($value).'|';
 			} else {
@@ -1066,10 +1038,7 @@ class VmConfig {
 	 * @param boolean $includeDevStatus True to include the development status
 	 * @return String of the currently installed version
 	 */
-	static function getInstalledVersion($includeDevStatus=FALSE)
-	{
-		// Get the installed version from the wmVersion class.
-
+	static function getInstalledVersion($includeDevStatus=FALSE) {
 		return vmVersion::$RELEASE;
 	}
 
@@ -1114,9 +1083,7 @@ class VmConfig {
 			}
 
 		}
-		//vmdebug('isSuperVendor',self::$_virtuemart_vendor_id);
 		return self::$_virtuemart_vendor_id;
-
 	}
 
 }

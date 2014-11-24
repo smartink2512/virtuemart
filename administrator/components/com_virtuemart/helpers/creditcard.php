@@ -68,18 +68,8 @@ class Creditcard {
 			return false;
 		}
 		$number = self::_strtonum($cardnum);
-		/*
-		  if(!$this->detectType($this->number))
-		  {
-		  $this->errno = CC_ETYPE;
-		  $d['error'] = $this->errno;
-		  return false;
-		  } */
 
 		if (empty($number) || !self::mod10($number)) {
-			//JError::raiseWarning('', vmText::_('COM_VIRTUEMART_CC_ENUMBER'));
-//			$this->errno = CC_ENUMBER;
-//			$d['error'] = $this->errno;
 			return false;
 		}
 
@@ -201,8 +191,6 @@ class Creditcard {
 		}
 
 	}
-
-
 
 }
 

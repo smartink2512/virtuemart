@@ -25,14 +25,11 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package	VirtueMart
  * @subpackage Config
- * @author Max Milbers
- * @author RickG
  */
 class VirtueMartModelConfig extends VmModel {
 
 	function __construct() {
 		parent::__construct();
-		//$this->setMainTable('configs');
 		$this->_cidName = 'id';
 
 	}
@@ -349,15 +346,6 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
-		//If empty it is not sent by the form, other forms do it by using a table to store,
-		//the config is like a big xparams and so we check some values for this form manually
-		/*$toSetEmpty = array('active_languages','inv_os','email_os_v','email_os_s');
-		foreach($toSetEmpty as $item){
-			if(!isset($data[$item])) {
-				$config->set($item,array());
-			}
-		}*/
-
 		$checkCSVInput = array('pagseq','pagseq_1','pagseq_2','pagseq_3','pagseq_4','pagseq_5');
 		foreach($checkCSVInput as $csValueKey){
 			$csValue = $config->get($csValueKey);
@@ -447,14 +435,6 @@ class VirtueMartModelConfig extends VmModel {
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
 
-		/* This conditions is not enough, if the language changes we need to recall the cache.
-		$newbrowse_cat_orderby_field = $config->get('browse_cat_orderby_field');
-		$newcat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
-		if($browse_cat_orderby_field!=$newbrowse_cat_orderby_field or $newcat_brws_orderby_dir!=$cat_brws_orderby_dir){
-			$cache = JFactory::getCache('com_virtuemart_cats','callback');
-			$cache->clean();
-		}*/
-
 		$cache = JFactory::getCache('com_virtuemart_cats','callback');
 		$cache->clean();
 		$cache = JFactory::getCache('com_virtuemart_rss','callback');
@@ -490,17 +470,15 @@ class VirtueMartModelConfig extends VmModel {
 	}
 
 	static public function checkVirtuemartInstalled(){
-		//return false;
+
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
 		$db->setQuery($query);
 		$vmTables = $db->loadColumn();
 		$err = $db->getError();
 		if(!empty($err) or !$vmTables or count($vmTables)<50){	//52 tables for a normal installation
-			//vmdebug('checkVirtuemartInstalled, return false ');
 			return false;
 		} else {
-			//vmdebug('checkVirtuemartInstalled, return true found tables '.count($vmTables));
 			return true;
 		}
 
@@ -552,10 +530,8 @@ class VirtueMartModelConfig extends VmModel {
 				vmWarn('The data file with the default configuration could not be found. You must configure the shop manually.');
 				return FALSE;
 			}
-
 		} else {
 			vmInfo('Taking config from file');
-			//vmTrace('read config file',TRUE);
 		}
 
 		$_section = '[CONFIG]';
@@ -592,38 +568,16 @@ class VirtueMartModelConfig extends VmModel {
 						$pair[1] = substr($pair[1],6);
 						$pair[1] = explode('|',$pair[1]);
 					}
-					// if($pair[0]!=='offline_message' && $pair[0]!=='dateformat'){
 					if($pair[0]!=='offline_message'){
 						$_line = $pair[0].'='.serialize($pair[1]);
 					} else {
 						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
 					}
-
-					/*if(($freshInstall or $returnDangerousTools) && $pair[0] == 'dangeroustools' ){
-
-						if($returnDangerousTools){
-							if ($pair[1] == "0") {
-								return FALSE;
-							}
-							else {
-								return TRUE;
-							}
-						}
-						if($freshInstall){
-							//vmdebug('$freshInstall');
-							$pair[1]="1";
-							$_line = $pair[0].'='.serialize($pair[1]);
-						}
-						vmdebug('dangeroustools '.$pair[1]);
-					}/*/
-
 				} else {
 					$_line = $pair[0].'=';
 				}
 				$_configData[] = $_line;
-
 			}
-
 		}
 
 		fclose ($_data);
@@ -667,7 +621,6 @@ class VirtueMartModelConfig extends VmModel {
 			vmError(get_class( $this ).'::remove '.$id.' '.$table->getError(),'Cannot delete config');
 			return false;
 		}
-
 		return true;
 	}
 
@@ -677,13 +630,11 @@ class VirtueMartModelConfig extends VmModel {
 	 * @author Max Milbers
 	 */
 	function deleteConfig(){
-
 		if($this->remove(1)){
 			return VmConfig::loadConfig(true,true);
 		} else {
 			return false;
 		}
-
 	}
 
 }

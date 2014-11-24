@@ -120,7 +120,6 @@ class ShopFunctions {
 				$db->setQuery ($q);
 				$vendor = $db->loadResult ();
 				$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
-				//			$html .='<input type="hidden" value="'.$vendorId.'" name="virtuemart_vendor_id">';
 				return $html;
 			} else {
 
@@ -314,7 +313,7 @@ class ShopFunctions {
 
 		$weigth_unit = self::getWeightUnit ();
 		if (isset($weigth_unit[$name])) {
-					return $weigth_unit[$name];
+			return $weigth_unit[$name];
 		} else {
 			return '';
 		}
@@ -560,16 +559,13 @@ class ShopFunctions {
 	static public function categoryListTree ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array()) {
 
 		if (empty(self::$categoryTree)) {
-// 			vmTime('Start with categoryListTree');
+
 			$cache = JFactory::getCache ('com_virtuemart_cats');
-			//$cached = $cache->getCaching();
 			$cache->setCaching (1);
 			$app = JFactory::getApplication ();
 			$vendorId = VmConfig::isSuperVendor();
 			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
-			//$cache->setCaching ($cached);
-			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
-// 			vmTime('end loop categoryListTree '.self::$counter);
+
 		}
 
 		return self::$categoryTree;
@@ -595,7 +591,6 @@ class ShopFunctions {
 
 		$virtuemart_vendor_id = 1;
 
-// 		vmSetStartTime('getCategories');
 		$categoryModel = VmModel::getModel ('category');
 		$level++;
 
@@ -1042,8 +1037,6 @@ class ShopFunctions {
 
 	static function displayLinkButton($title, $link, $bgrndImage,$width,$height,$linesHeight,$additionalStyles=''){
 
-		//$lineHeight = ((int)$height)/$lines;
-		//vmdebug('displayLinkButton '.$height.' '.$lineHeight);
 		$html = '<div style="line-height:'.$linesHeight.';background-image:url('.$bgrndImage.');width:'.$width.';height:'.$height.';'.$additionalStyles.'">'
 				.'<a  title="'.$title.'" href="'.$link.'" target="_blank" >'.$title .'</a></div>';
 
@@ -1065,7 +1058,6 @@ class ShopFunctions {
 		if(empty($safePath)){
 			$warn = 'COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET';
 		} else {
-			//jimport('joomla.filesystem.folder');
 			if(!class_exists('JFolder')) require_once(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
