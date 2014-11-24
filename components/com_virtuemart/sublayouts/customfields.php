@@ -45,10 +45,10 @@ if (!empty($product->customfieldsSorted[$position])) {
 						} ?></span>
 				<?php }
 				if (!empty($field->display)){
-					?><span class="product-field-display"><?php echo $field->display ?></span><?php
+					?><div class="product-field-display"><?php echo $field->display ?></div><?php
 				}
 				if (!empty($field->custom_desc)){
-					?><span class="product-field-desc"><?php echo vmText::_($field->custom_desc) ?></span> <?php
+					?><div class="product-field-desc"><?php echo vmText::_($field->custom_desc) ?></div> <?php
 				}
 				?>
 			</div>

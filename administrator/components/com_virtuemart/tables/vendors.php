@@ -25,7 +25,6 @@ class TableVendors extends VmTableData {
     // @var int Primary key
     var $virtuemart_vendor_id			= 0;
     var $vendor_name  	         	= '';
-    var $vendor_phone         		= '';
     var $vendor_store_name		= '';
     var $vendor_store_desc   		= '';
     var $vendor_currency	  		= 0;
@@ -126,7 +125,6 @@ class TableVendors extends VmTableData {
 		);
 
 		$this->setParameterable('vendor_params',$varsToPushParam);
-
 		$this->setTableShortCut('v');
 
     }

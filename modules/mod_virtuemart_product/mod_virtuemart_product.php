@@ -40,6 +40,10 @@ $Product_group = 	$params->get( 'product_group', 'featured'); // Display a foote
 $mainframe = Jfactory::getApplication();
 $virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id',0) );
 
+if ($show_addtocart) {
+	vmJsApi::jPrice();
+	vmJsApi::cssSite();
+}
 $cache = $params->get( 'vmcache', true );
 $cachetime = $params->get( 'vmcachetime', 300 );
 //vmdebug('$params for mod products',$params);
@@ -75,10 +79,6 @@ $totalProd = 		count( $products);
 if(empty($products)) return false;
 $currency = CurrencyDisplay::getInstance( );
 
-if ($show_addtocart) {
-	vmJsApi::jPrice();
-	vmJsApi::cssSite();
-}
 ob_start();
 
 /* Load tmpl default */

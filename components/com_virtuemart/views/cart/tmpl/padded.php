@@ -67,7 +67,7 @@ if(VmConfig::get('popup_rel',1)){
 
 				if(!empty($rFields->display)){
 				?><div class="product-field product-field-type-<?php echo $rFields->field_type ?>">
-				<span class="product-field-display"><?php echo $rFields->display ?></span>
+				<div class="product-field-display"><?php echo $rFields->display ?></div>
 				</div>
 			<?php }
 		} ?>
