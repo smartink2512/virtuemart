@@ -963,9 +963,9 @@ static $checkoutCheckDataPaymentDone = false;
 	 */
 	private function vmConfirmedOrder ($cart, $order, $orderReferenceModifiable = true) {
 		$client = $this->getOffAmazonPaymentsService_Client();
-		if ($orderReferenceModifiable) {
+		//if ($orderReferenceModifiable) {
 			$this->setOrderReferenceDetails($client, $cart, $order);
-		}
+		//}
 		//confirmOrderReference
 		if (!$this->confirmOrderReference($client, $order)) {
 			return FALSE;
@@ -2849,9 +2849,35 @@ jQuery().ready(function($) {
 		$body = file_get_contents('php://input');
 
 
+		$headers=		array (
+			'x-amz-sns-message-type' => 'Notification',
+			'x-amz-sns-message-id' => 'eb6557f7-0d7f-5f95-b980-1b10ccd0e695',
+			'x-amz-sns-topic-arn' => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH',
+			'x-amz-sns-subscription-arn' => 'arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:0970c6a5-7f77-40ba-8df2-a4c043e8783b',
+			'Content-Length' => '2276',
+			'Content-Type' => 'text/plain; charset=UTF-8',
+			'Host' => 'joomla-virtuemart.org',
+			'Connection' => 'Keep-Alive',
+			'User-Agent' => 'Amazon Simple Notification Service Agent',
+			'Accept-Encoding' => 'gzip,deflate',
+		);
+		$body='{
+  "Type" : "Notification",
+  "MessageId" : "eb6557f7-0d7f-5f95-b980-1b10ccd0e695",
+  "TopicArn" : "arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH",
+  "Message" : "{\\"NotificationReferenceId\\":\\"3674c137-4075-4116-98a8-344ef027be62\\",\\"MarketplaceID\\":\\"136291\\",\\"NotificationType\\":\\"OrderReferenceNotification\\",\\"SellerId\\":\\"AA3KB5JD2CWIH\\",\\"ReleaseEnvironment\\":\\"Sandbox\\",\\"Version\\":\\"2013-01-01\\",\\"NotificationData\\":\\"<?xml version=\\\\\\"1.0\\\\\\" encoding=\\\\\\"UTF-8\\\\\\"?><OrderReferenceNotification xmlns=\\\\\\"https://mws.amazonservices.com/ipn/OffAmazonPayments/2013-01-01\\\\\\">\\\\n    <OrderReference>\\\\n        <AmazonOrderReferenceId>S02-8358837-2663421<\\\\/AmazonOrderReferenceId>\\\\n        <OrderTotal>\\\\n            <Amount>44.92<\\\\/Amount>\\\\n            <CurrencyCode>GBP<\\\\/CurrencyCode>\\\\n        <\\\\/OrderTotal>\\\\n        <SellerOrderAttributes>\\\\n            <SellerId>AA3KB5JD2CWIH<\\\\/SellerId>\\\\n            <OrderItemCategories/>\\\\n        <\\\\/SellerOrderAttributes>\\\\n        <OrderReferenceStatus>\\\\n            <State>Suspended<\\\\/State>\\\\n            <LastUpdateTimestamp>2014-11-20T10:16:14.587Z<\\\\/LastUpdateTimestamp>\\\\n            <ReasonCode>InvalidPaymentMethod<\\\\/ReasonCode>\\\\n        <\\\\/OrderReferenceStatus>\\\\n        <CreationTimestamp>2014-11-20T10:14:49.018Z<\\\\/CreationTimestamp>\\\\n        <ExpirationTimestamp>2015-05-19T10:14:49.018Z<\\\\/ExpirationTimestamp>\\\\n    <\\\\/OrderReference>\\\\n<\\\\/OrderReferenceNotification>\\",\\"Timestamp\\":\\"2014-11-20T10:16:15Z\\"}",
+  "Timestamp" : "2014-11-20T10:16:15.359Z",
+  "SignatureVersion" : "1",
+  "Signature" : "on9b214vhWyZIHS9/rDRsabdBuTWb4X+3Mig2UcYvCb4/D7tHzCpSfn0wh2dvQ+vWG9ETsGLzG3r/WtxKc4vXjnX0b45ySlYmljLH2VcOXV8ZYt8QWrhx6XRxEOwdJ35/77lzhMKSf+dTlodt3oWm2j9Xb4d2HUi99bgAXvyVEEvrml87ZAtgdKWhHkoY8phdvwPegAWyi7gW/5w2nosZhCveh8UNj+FsanidsBsf/NHiEZE9q5f6wGd4sX7vbvdy1EoNUWabIjbV6I2snIHnqqxMtr5/dOsu+C8xDHip3z9EW2qeAzfj7VJ41NldhsXlxVaRY0xK28cEcqals5MWQ==",
+  "SigningCertURL" : "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-d6d679a1d18e95c2f9ffcf11f4f9e198.pem",
+  "UnsubscribeURL" : "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:291180941288:A3M3RRFO9XDT2GAA3KB5JD2CWIH:0970c6a5-7f77-40ba-8df2-a4c043e8783b"
+}';
 		$this->debugLog($headers, 'AMAZON IPN HEADERS debug', 'debug');
 		$this->debugLog($body, 'AMAZON IPN BODY debug', 'debug');
-
+		$fp = fopen("/Applications/MAMP/htdocs/VM2/VM2024/AMAZON-ipnhandler.php", 'a+');
+                              //  fwrite($fp, var_export($headers, true));
+                               // fwrite($fp, var_export($body, true));
+                                fclose($fp);
 		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Client');
 		$this->loadVmClass('VirtueMartModelOrders', JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 
@@ -2890,7 +2916,19 @@ jQuery().ready(function($) {
 
 
 		if (!($order_number = $notificationResponse->getReferenceId())) {
-			$this->debugLog('no ReferenceId IPN received', $notificationClass, 'error');
+/*
+			// it is not really an error, orderReferenceNotification do not send a ReferenceId
+			if ($amazonReferenceId=$notificationResponse->getAmazonReferenceId()) {
+				$payments=$this->getDatasByAmazonReferenceId($amazonReferenceId);
+				if (!$payments) {
+					$this->debugLog('no ReferenceId IPN received', $notificationClass, 'error');
+				}
+				$orderModel = VmModel::getModel('orders');
+				$order = $orderModel->getOrder($payments[0]->virtuemart_order_id);
+				$this->storeAmazonInternalData($order, NULL, NULL, $notification, NULL, $notificationResponse->getStoreInternalData());
+			}
+*/
+			$this->debugLog('no ReferenceId IPN received', $notificationClass, 'debug');
 			return true;
 		}
 
@@ -2953,7 +2991,7 @@ jQuery().ready(function($) {
 	private function isValidNotificationType ($notificationType) {
 		$validNotificationType = array(
 			"OrderReferenceNotification",
-			"BillingAgreementNotification",
+			//"BillingAgreementNotification",
 			"AuthorizationNotification",
 			"CaptureNotification",
 			"RefundNotification",

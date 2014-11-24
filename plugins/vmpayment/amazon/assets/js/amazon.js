@@ -57,7 +57,10 @@ var amazonPayment = {
         showAmazonWallet: function () {
             window.onError = null;
             console.log("amazonShowWallet: " + amazonPayment.amazonOrderReferenceId);
-            amazonPayment.startLoading();
+            var checkoutFormSubmit = document.getElementById("checkoutFormSubmit");
+            checkoutFormSubmit.className = 'vm-button-correct';
+            checkoutFormSubmit.className = 'vm-button';
+            checkoutFormSubmit.setAttribute('disabled', 'true');
             new OffAmazonPayments.Widgets.Wallet({
                 sellerId: amazonPayment.sellerId,
                 amazonOrderReferenceId: amazonPayment.amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
@@ -67,6 +70,8 @@ var amazonPayment = {
                 },
                 onPaymentSelect: function (orderReference) {
                     haveWallet = true;
+                    checkoutFormSubmit.className = 'vm-button-correct';
+                    checkoutFormSubmit.removeAttribute('disabled');
                 },
                 onError: function (error) {
                     amazonPayment.onErrorAmazon('amazonShowWallet', error);
