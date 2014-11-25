@@ -40,12 +40,6 @@ class RealexHelperCustomerData {
 
 	public function load () {
 
-		//$this->_clear();
-		/* TODO
-		$store = 'none';
-		$options['expire']= 60* 60;
-		$session = JFactory::getSession($store,$options);
-		*/
 		$session = JFactory::getSession();
 		$sessionData = $session->get(self::REALEX_SESSION, 0, 'vm');
 		if (!class_exists('vmCrypt')) {
