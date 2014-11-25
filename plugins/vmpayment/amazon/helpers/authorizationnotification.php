@@ -77,7 +77,7 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 				if ($reasonCode == 'InvalidPaymentMethod') {
 					$order_history['customer_notified'] = 0;
 					if ($this->_currentMethod->soft_decline == 'soft_decline_enabled') {
-						$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD_SOFT_DECLINED', $reasonCode);
+						$order_history['comments'] =$this->getSoftDeclinedComment();
 						$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
 						$order_history['customer_notified'] = 1;
 					} else {
@@ -86,11 +86,12 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 					}
 				} elseif ($reasonCode == 'AmazonRejected') {
 					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
 				} elseif ($reasonCode == 'TransactionTimedOut') {
 // TODO  retry the authorization again
 					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
 				}
-				$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
 
 			} elseif ($amazonState == 'Pending') {
 				$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
@@ -116,7 +117,26 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		return $amazonState;
 	}
 
+private function getSoftDeclinedComment() {
 
+	if (!class_exists('VirtueMartModelVendor')) {
+		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+	}
+	$virtuemart_vendor_id = 1;
+	$vendorModel = VmModel::getModel('vendor');
+	$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+	$vendorModel->setId($virtuemart_vendor_id);
+	$vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
+	$vendorEmail= $vendorFields['fields']['email']['value'];
+	if (isset($vendorFields['fields']['phone_1']['value'])) {
+		$vendorPhone= $vendorFields['fields']['phone_1']['value'];
+	} else {
+		$vendorPhone="";
+	}
+
+return vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD_SOFT_DECLINED', $vendor->vendor_store_name,$vendorEmail,$vendorPhone);
+
+}
 	private function isSynchronousMode () {
 		if (($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == "automatic_synchronous") or ($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled == "automatic_synchronous")
 		) {
@@ -151,8 +171,8 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 	}
 
 	/**
-	 * move to Pending =>GetAuthorizationDetails, closeAuhtorization
-	 * move to Open => GetAuthorizationDetails, capture, closeAuhtorization
+	 * move to Pending =>GetAuthorizationDetails, closeAuthorization
+	 * move to Open => GetAuthorizationDetails, capture, closeAuthorization
 	 * move to Declined => GetAuthorizationDetails
 	 * move to Closed => GetAuthorizationDetails
 	 * @param $order

@@ -122,16 +122,16 @@ class amazonHelperOrderReferenceNotification extends amazonHelper {
 		$sellerOrderAttributes = $orderReference->getSellerOrderAttributes();
 		return $sellerOrderAttributes->getSellerOrderId();
 	}
+
 	function getAmazonReferenceId () {
 		if (!$this->amazonData->isSetOrderReference()) {
 			return NULL;
 		}
 		$orderReference = $this->amazonData->getOrderReference();
-		if (!$orderReference->isSetSellerOrderAttributes()) {
+		if (!$orderReference->isSetAmazonOrderReferenceId()) {
 			return NULL;
 		}
-		$sellerOrderAttributes = $orderReference->getSellerOrderAttributes();
-		return $sellerOrderAttributes->getSellerOrderId();
+		return $orderReference->getAmazonOrderReferenceId();
 	}
 
 	function getContents () {

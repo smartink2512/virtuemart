@@ -61,13 +61,13 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 		if ($amazonState == 'Pending') {
 			return $amazonState;
 		}
+		$order_history['customer_notified'] = $this->getCustomerNotified();
 
 		// SYNCHRONOUS MODE: amazon returns in real time the final process status
 		if ($amazonState == 'Open') {
 			// it should always be the case if the CaptureNow == false
 			$order_history['order_status'] = $this->_currentMethod->status_authorization;
 			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
-			$order_history['customer_notified'] = 1;
 		} elseif ($amazonState == 'Closed') {
 			// it should always be the case if the CaptureNow == true
 			if (!($authorizationDetails->isSetCaptureNow() and $authorizationDetails->getCaptureNow())) {
@@ -86,7 +86,6 @@ class amazonHelperAuthorizeResponse extends amazonHelper {
 				$order_history['comments'] .= " " . $authorizationStatus->getReasonDescription();
 			}
 			$order_history['customer_notified'] = 0;
-
 		}
 		$order_history['amazonState'] = $amazonState;
 		$modelOrder = VmModel::getModel('orders');
