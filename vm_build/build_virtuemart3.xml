@@ -144,7 +144,6 @@
         <exclude name="**/vm_update/**"/>
         <exclude name="**/vm_build/**"/>
         <exclude name="**/amazon/**"/>
-        <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
         <exclude name="**/vm_update/**"/>
@@ -257,7 +256,6 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name="**/amazon/**"/>
-        <exclude name="**/klikandpay/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
     </fileset>
