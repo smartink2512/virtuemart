@@ -685,9 +685,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_order_userinfo_id`),
-  KEY `i_virtuemart_order_id` (`virtuemart_order_id`),
-  KEY `i_virtuemart_user_id` (`virtuemart_user_id`),
-  KEY `idx_address_type` (`address_type`)
+  KEY `virtuemart_order_id` (`virtuemart_order_id`),
+  KEY `virtuemart_user_id` (`virtuemart_user_id`,`address_type`),
+  KEY `address_type` (`address_type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Stores the BillTo and ShipTo Information at order time' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1246,8 +1246,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_userinfo_id`),
-  KEY `idx_userinfo_virtuemart_user_id` (`virtuemart_userinfo_id`,`virtuemart_user_id`),
-  KEY `address_type` (`address_type`)
+  KEY `i_virtuemart_user_id` (`virtuemart_userinfo_id`,`virtuemart_user_id`),
+  KEY `virtuemart_user_id` (`virtuemart_user_id`,`address_type`),
+  KEY `address_type` (`address_type`),
+  KEY `address_type_name` (`address_type_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Customer Information, BT = BillTo and ST = ShipTo';
 
 -- --------------------------------------------------------

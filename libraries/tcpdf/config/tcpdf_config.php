@@ -40,61 +40,31 @@
 
 if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 
-	// DOCUMENT_ROOT fix for IIS Webserver
-	if ((!isset($_SERVER['DOCUMENT_ROOT'])) OR (empty($_SERVER['DOCUMENT_ROOT']))) {
-		if(isset($_SERVER['SCRIPT_FILENAME'])) {
-			$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr($_SERVER['SCRIPT_FILENAME'], 0, 0-strlen($_SERVER['PHP_SELF'])));
-		} elseif(isset($_SERVER['PATH_TRANSLATED'])) {
-			$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr(str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']), 0, 0-strlen($_SERVER['PHP_SELF'])));
-		} else {
-			// define here your DOCUMENT_ROOT path if the previous fails (e.g. '/var/www')
-			$_SERVER['DOCUMENT_ROOT'] = '/';
-		}
-	}
-
-	// be sure that the end slash is present
-	$_SERVER['DOCUMENT_ROOT'] = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'].'/');
-
-	// Automatic calculation for the following K_PATH_MAIN constant
-	$k_path_main = str_replace( '\\', '/', realpath(substr(dirname(__FILE__), 0, 0-strlen('config'))));
-	if (substr($k_path_main, -1) != '/') {
-		$k_path_main .= '/';
-	}
-
 	/**
 	 * Installation path (/var/www/tcpdf/).
 	 * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
 	 */
-	define ('K_PATH_MAIN', $k_path_main);
-
-	// Automatic calculation for the following K_PATH_URL constant
-	$k_path_url = $k_path_main; // default value for console mode
-	if (isset($_SERVER['HTTP_HOST']) AND (!empty($_SERVER['HTTP_HOST']))) {
-		if(isset($_SERVER['HTTPS']) AND (!empty($_SERVER['HTTPS'])) AND strtolower($_SERVER['HTTPS'])!='off') {
-			$k_path_url = 'https://';
-		} else {
-			$k_path_url = 'http://';
-		}
-		$k_path_url .= $_SERVER['HTTP_HOST'];
-		$k_path_url .= str_replace( '\\', '/', substr(K_PATH_MAIN, (strlen($_SERVER['DOCUMENT_ROOT']) - 1)));
-	}
+	//define ('K_PATH_MAIN', $k_path_main);
+	defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+	if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+	define("K_PATH_MAIN", JPATH_VM_LIBRARIES.DS.'tcpdf'.DS);
 
 	/**
 	 * URL path to tcpdf installation folder (http://localhost/tcpdf/).
 	 * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
 	 */
-	define ('K_PATH_URL', $k_path_url);
-
+	define ('K_PATH_URL', JURI::root().'libraries/tcpdf/');
+//echo 'K_PATH_URL'. K_PATH_URL;
 	/**
 	 * path for PDF fonts
 	 * use K_PATH_MAIN.'fonts/old/' for old non-UTF8 fonts
 	 */
-	define ('K_PATH_FONTS', K_PATH_MAIN.'fonts/');
+	define ('K_PATH_FONTS', K_PATH_MAIN.'fonts'.DS);
 
 	/**
 	 * cache directory for temporary files (full path)
 	 */
-	define ('K_PATH_CACHE', K_PATH_MAIN.'cache/');
+	define ('K_PATH_CACHE', K_PATH_MAIN.'cache'.DS);
 
 	/**
 	 * cache directory for temporary files (url path)
@@ -105,7 +75,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	 *images directory
 	 */
 	//define ('K_PATH_IMAGES', K_PATH_MAIN.'images/');
-	define ('K_PATH_IMAGES', JPATH_ROOT);
+	define ('K_PATH_IMAGES', JPATH_ROOT.DS);
 	/**
 	 * blank image
 	 */

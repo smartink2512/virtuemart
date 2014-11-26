@@ -43,9 +43,9 @@ class vmVersion {
 	/** @var string Timezone */
 	static $RELTZ = '${PHING.VM.RELTZ}';
 	/** @var string Revision */
-	static $REVISION = 'Revision: ${PHING.VM.REVISION}';
+	static $REVISION = '${PHING.VM.REVISION}';
 	/** @var string Copyright Text */
-	static $COPYRIGHT = 'Copyright (C) 2005-2012 VirtueMart Development Team  - All rights reserved.';
+	static $COPYRIGHT = 'Copyright (C) 2005-2014 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */
 	static $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL2 License.';
 }

@@ -91,48 +91,6 @@ class JDocumentPDF extends JDocument
 	//	define('K_TCPDF_EXTERNAL_CONFIG', true);
 
 		/*
-		 * Path options
-		 */
-
-/*		// Installation path
-		define("K_PATH_MAIN", JPATH_VM_LIBRARIES.DS."tcpdf");
-
-		// URL path
-		define("K_PATH_URL", JPATH_BASE);
-
-		// Fonts path
-		define("K_PATH_FONTS", K_PATH_MAIN.DS.'fonts'.DS);
-		//define("K_PATH_FONTS", JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'fonts'.DS)
-
-		// Cache directory path
-		define("K_PATH_CACHE", K_PATH_MAIN.DS."cache");
-
-		// Cache URL path
-		define("K_PATH_URL_CACHE", K_PATH_URL.DS."cache");
-
-		// Images path
-		define("K_PATH_IMAGES", K_PATH_MAIN.DS."images");
-
-		// Blank image path
-		define("K_BLANK_IMAGE", K_PATH_IMAGES.DS."_blank.png");
-
-		/*
-		 * Format options
-		 */
-
-/*		// Cell height ratio
-		define("K_CELL_HEIGHT_RATIO", 1.0);
-
-		// Magnification scale for titles
-		define("K_TITLE_MAGNIFICATION", 1.0);
-
-		// Reduction scale for small font
-		define("K_SMALL_RATIO", 1/3);
-
-		// Magnication scale for head
-		define("HEAD_MAGNIFICATION", 1.1);
-
-		/*
 		 * Create the pdf document
 		 */
 		// Default settings are a portrait layout with an A4 configuration using millimeters as units
