@@ -44,6 +44,7 @@ function updateHeidelpay($orderID, $connect) {
 	$comment="";
 	if ( preg_match('/^[A-Za-z0-9 -]+$/', $orderID , $str)) {
 		$link = mysql_connect($connect->host, $connect->user , $connect->password);
+		mysql_set_charset('utf8',$link);
 		mysql_select_db($connect->db);	
 		$result = mysql_query("SELECT virtuemart_order_id FROM ".$connect->dbprefix."virtuemart_orders"." WHERE  order_number = '".mysql_real_escape_string($orderID)."';");
 		$row = mysql_fetch_object($result);

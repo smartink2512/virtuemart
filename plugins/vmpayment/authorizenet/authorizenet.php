@@ -318,7 +318,9 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _getAuthorizeNetFromSession() {
-
+		if (!class_exists('vmCrypt')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcrypt.php');
+		}
 		$session = JFactory::getSession();
 		$authorizenetSession = $session->get('authorizenet', 0, 'vm');
 
@@ -343,6 +345,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
 		}
+
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return FALSE;
+		}
 		$this->_getAuthorizeNetFromSession();
 		return $this->_validate_creditcard_data(TRUE);
 
@@ -352,8 +358,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * Create the table for this plugin if it does not yet exist.
 	 * This functions checks if the called plugin is active one.
 	 * When yes it is calling the standard method to create the tables
-	 *
-	 * @author Valérie Isaksen
 	 *
 	 */
 	function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
@@ -481,12 +485,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	/**
 	 * Reimplementation of vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
-	 *
-	 * @author Valerie Isaken
-
-	function plgVmOnConfirmedOrderStoreDataPayment(  $virtuemart_order_id, VirtueMartCart $cart, $prices) {
-	return null;
-	}
 	 */
 
 	/**
@@ -804,8 +802,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			'x_company' => isset($usrBT->company) ? $this->_getField($usrBT->company, 50) : '',
 			'x_address' => isset($usrBT->address_1) ? $this->_getField($usrBT->address_1, 60) : '',
 			'x_city' => isset($usrBT->city) ? $this->_getField($usrBT->city, 40) : '',
-			'x_zip' => isset($usrBT->zip) ? $this->_getField($usrBT->zip, 40) : '',
-			'x_state' => isset($usrBT->virtuemart_state_id) ? $this->_getField(ShopFunctions::getStateByID($usrBT->virtuemart_state_id), 20) : '',
+			'x_zip' => isset($usrBT->zip) ? $this->_getField($usrBT->zip, 20) : '',
+			'x_state' => isset($usrBT->virtuemart_state_id) ? $this->_getField(ShopFunctions::getStateByID($usrBT->virtuemart_state_id), 40) : '',
 			'x_country' => isset($usrBT->virtuemart_country_id) ? $this->_getField(ShopFunctions::getCountryByID($usrBT->virtuemart_country_id), 60) : '',
 			'x_phone' => isset($usrBT->phone_1) ? $this->_getField($usrBT->phone_1, 25) : '',
 			'x_fax' => isset($usrBT->fax) ? $this->_getField($usrBT->fax, 25) : '',
@@ -822,8 +820,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			'x_ship_to_company' => isset($usrST->company) ? $this->_getField($usrST->company, 50) : '',
 			'x_ship_to_address' => isset($usrST->first_name) ? $this->_getField($usrST->address_1, 60) : '',
 			'x_ship_to_city' => isset($usrST->city) ? $this->_getField($usrST->city, 40) : '',
-			'x_ship_to_zip' => isset($usrST->zip) ? $this->_getField($usrST->zip, 40) : '',
-			'x_ship_to_state' => isset($usrST->virtuemart_state_id) ? $this->_getField(ShopFunctions::getStateByID($usrST->virtuemart_state_id), 20) : '',
+			'x_ship_to_zip' => isset($usrST->zip) ? $this->_getField($usrST->zip, 20) : '',
+			'x_ship_to_state' => isset($usrST->virtuemart_state_id) ? $this->_getField(ShopFunctions::getStateByID($usrST->virtuemart_state_id), 40) : '',
 			'x_ship_to_country' => isset($usrST->virtuemart_country_id) ? $this->_getField(ShopFunctions::getCountryByID($usrST->virtuemart_country_id), 60) : '',
 		);
 	}
@@ -888,7 +886,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	/**
 	 * Proceeds the simple payment
-	 *
+	 * http://developer.authorize.net/guides/AIM/wwhelp/wwhimpl/js/html/wwhelp.htm#href=4_TransResponse.6.4.html
 	 * @param string $resp
 	 * @param array $submitted_values
 	 * @return object Message object
@@ -971,37 +969,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 				$authorizeNetResponse['balance_on_card'] = $response_array[54];
 			}
 
-			/*
-					 * check the amount is the same as the amount sent
-					 */
-			/* SUBCODE?? */
-			$this->approved = ($authorizeNetResponse['response_code'] == self::APPROVED);
-			$this->declined = ($authorizeNetResponse['response_code'] == self::DECLINED);
-			$this->error = ($authorizeNetResponse['response_code'] == self::ERROR);
-			$this->held = ($authorizeNetResponse['response_code'] == self::HELD);
 
-			// Set custom fields: not used yet: could put the return context
-			/*
-					  if ($count = count($custom_fields)) {
-					  $custom_fields_response = array_slice($response_array, -$count, $count);
-					  $i = 0;
-					  foreach ($custom_fields as $key => $value) {
-					  $this->$key = $custom_fields_response[$i];
-					  $i++;
-					  }
-					  }
-					 */
-
-			$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($authorizeNetResponse['invoice_number']);
-			if (!$virtuemart_order_id) {
-				$this->approved = FALSE;
-				$this->error = TRUE;
-				$this->debugLog(vmText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), 'getOrderIdByOrderNumber', 'error');
-				$html = vmText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
-				$this->debugLog($html, '_handleResponse PAYMENT DECLINED', 'message');
-
-				return $html;
-			}
 			if ($this->error or $this->declined) {
 				// Prepare data that should be stored in the database
 				$dbValues['authorizenet_response_response_code'] = $authorizeNetResponse['response_code'];
@@ -1013,6 +981,20 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 				$this->debugLog($html, '_handleResponse PAYMENT DECLINED', 'message');
 				return $html;
 			}
+
+
+
+			$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($authorizeNetResponse['invoice_number']);
+			if (!$virtuemart_order_id) {
+				$this->approved = FALSE;
+				$this->error = TRUE;
+				$this->debugLog(vmText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), 'getOrderIdByOrderNumber', 'error');
+				$html = vmText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
+				$this->debugLog($html, '_handleResponse PAYMENT DECLINED', 'message');
+
+				return $html;
+			}
+
 		} else {
 			$this->approved = FALSE;
 			$this->error = TRUE;
@@ -1051,11 +1033,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	/**
-	 * displays the CVV images of for CVV tooltip plugin
-	 *
-	 * @author Valerie Isaksen
-	 * @param array $logo_list
-	 * @return html with logos
+	 * @param $method
+	 * @return html|mixed|string
 	 */
 	public function _displayCVVImages($method) {
 

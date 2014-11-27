@@ -759,7 +759,7 @@ jQuery().ready(function($) {
 		foreach ($returnFields as $returnField) {
 			$returnFieldsString .= $returnField . ":" . $returnField . ';';
 		}
-		return substr($returnFieldsString, 0, -1);;
+		return substr($returnFieldsString, 0, -1);
 
 	}
 
