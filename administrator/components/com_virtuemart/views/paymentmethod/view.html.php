@@ -80,7 +80,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 
 				$payment->form = JForm::getInstance($payment->payment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 				$payment->params = new stdClass();
-				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'paymentForm');
+				$varsToPush = vmPlugin::getVarsToPushFromForm($payment->form);
 				VmTable::bindParameterableToSubField($payment,$varsToPush);
 				$payment->form->bind($payment);
 
