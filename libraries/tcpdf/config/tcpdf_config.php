@@ -45,25 +45,28 @@
  * Installation path (/var/www/tcpdf/).
  * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_MAIN', '');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
+define("K_PATH_MAIN", JPATH_VM_LIBRARIES.DS.'tcpdf'.DS);
 
 /**
  * URL path to tcpdf installation folder (http://localhost/tcpdf/).
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_URL', '');
+define ('K_PATH_URL', JURI::root().'libraries/tcpdf/');
 
 /**
  * Path for PDF fonts.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_FONTS', K_PATH_MAIN.'fonts/');
+define ('K_PATH_FONTS', K_PATH_MAIN.'fonts'.DS);
 
 /**
  * Default images directory.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_IMAGES', '');
+define ('K_PATH_IMAGES', VMPATH_ROOT.DS);
 
 /**
  * Deafult image logo used be the default Header() method.

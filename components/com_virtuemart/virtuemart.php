@@ -108,7 +108,11 @@ else {
 	// try plugins
 	JPluginHelper::importPlugin('vmextended');
 	$dispatcher = JDispatcher::getInstance();
-	$dispatcher->trigger($trigger, array($_controller));
+	$rets = $dispatcher->trigger($trigger, array($_controller));
+
+	foreach($rets as $ret){
+		if($ret) return true;
+	}
 }
 
 

@@ -75,6 +75,11 @@ class VirtuemartViewCategory extends VmView {
 		$menus	= $app->getMenu();
 		$menu = $menus->getActive();
 
+		if(!empty($menu->id)){
+			ShopFunctionsF::setLastVisitedItemId($menu->id);
+		} else if($itemId = vRequest::getInt('Itemid',false)){
+			ShopFunctionsF::setLastVisitedItemId($itemId);
+		}
 
 		$virtuemart_manufacturer_id = vRequest::getInt('virtuemart_manufacturer_id', -1 );
 		if($virtuemart_manufacturer_id ===-1 and !empty($menu->query['virtuemart_manufacturer_id'])){

@@ -137,7 +137,7 @@ class VirtuemartModelReport extends VmModel {
 		if($cache){
 			$c = JFactory::getCache ('com_virtuemart_revenue');
 			$c->setCaching (1);
-			$c->setLifeTime($cache*60);
+			$c->setLifeTime($cache);
 			return $c->call (array('VirtuemartModelReport', 'getRevenueDiag'),$vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$this->from_period,$this->until_period);
 		} else {
 			return $this->getRevenueSortListOrderQuery ($vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id);

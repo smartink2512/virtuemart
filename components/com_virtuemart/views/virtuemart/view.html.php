@@ -48,6 +48,12 @@ class VirtueMartViewVirtueMart extends VmView {
 		$menus = $app->getMenu();
 		$menu = $menus->getActive();
 
+		if(!empty($menu->id)){
+			ShopFunctionsF::setLastVisitedItemId($menu->id);
+		} else if($itemId = vRequest::getInt('Itemid',false)){
+			ShopFunctionsF::setLastVisitedItemId($itemId);
+		}
+
 		$this->assignRef('vendor',$vendor);
 
 		$document = JFactory::getDocument();

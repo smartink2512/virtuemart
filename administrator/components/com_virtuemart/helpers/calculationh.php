@@ -837,7 +837,7 @@ class calculationHelper {
 		if ($this->_cart->cartPrices['payment_calc_id']) {
 			if(!is_array($this->_cart->cartPrices['payment_calc_id'])) $this->_cart->cartPrices['payment_calc_id'] = array($this->_cart->cartPrices['payment_calc_id']);
 			foreach($this->_cart->cartPrices['payment_calc_id'] as $calcID) {
-				if(isset($this->_cart->cartPrices['shipmentTaxPerID'][$calcID])){
+				if(isset($this->_cart->cartPrices['paymentTaxPerID'][$calcID])){
 					$this->_cart->cartData['VatTax'][$calcID]['paymentTax'] = $this->_cart->cartPrices['paymentTaxPerID'][$calcID];
 				}
 			}

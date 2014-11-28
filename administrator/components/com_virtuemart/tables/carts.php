@@ -22,12 +22,14 @@ defined('_JEXEC') or die('Restricted access');
 if(!class_exists('VmTableData'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtabledata.php');
 
 
- class TableCarts extends VmTableData {
+class TableCarts extends VmTableData {
 
 	/** @var int Vendor ID */
 	var $virtuemart_cart_id		= 0;
 	var $virtuemart_user_id 	= 0;
 	var $virtuemart_vendor_id	= 1;
+ 	var $cart_name				= '';
+	var $cart_note			= '';
 	var $cartData 	= 0;
 
 

@@ -261,7 +261,7 @@ class VmViewAdmin extends JViewLegacy {
 						$img=$languagesByCode[$key]->image;
 					}
 					$image_flag=JPATH_SITE."/media/mod_languages/images/".$img.".gif";
-					$image_flag_url= JURI::root()."/media/mod_languages/images/".$img.".gif";
+					$image_flag_url= JURI::root()."media/mod_languages/images/".$img.".gif";
 
 					if (!file_exists ($image_flag)) {
 						vmerror(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
@@ -312,8 +312,14 @@ class VmViewAdmin extends JViewLegacy {
 								$.each(data.fields , function(key, val) {
 									cible = jQuery("#"+key);
 									if (oldflag !== "") cible.parent().removeClass(oldflag)
-									if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
-									else if (data.structure !== "empty") cible.val(val);
+									var tmce_ver=window.tinyMCE.majorVersion;
+									if (tmce_ver>="4") {
+										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execCommand("mceSetContent", false,val);
+										else if (data.structure !== "empty") cible.val(val);
+									} else {
+										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
+										else if (data.structure !== "empty") cible.val(val);
+									}
 									});
 
 							} else alert(data.msg);';
@@ -329,20 +335,17 @@ class VmViewAdmin extends JViewLegacy {
 								//	$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1" ,
 										function(data) {
 											cible = jQuery("#child'. $child->virtuemart_product_id .'product_name");
-											cible.parent().removeClass(oldflag)
+											if (oldflag !== "") cible.parent().removeClass(oldflag)
 											cible.parent().addClass(flagClass);
 											cible.val(data.fields.product_name);
 											jQuery("#child'. $child->virtuemart_product_id .'slug").val(data.fields["slug"]);
-
-											oldflag = flagClass ;
 										}
 									)
 								';
 				}
 			}
-			else $j .= 'oldflag = flagClass ;';
 
-			$j .= '
+			$j .= 'oldflag = flagClass ;
 						}
 					)
 				});

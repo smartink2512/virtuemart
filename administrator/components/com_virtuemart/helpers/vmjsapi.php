@@ -42,7 +42,7 @@ class vmJsApi{
 		self::$_jsAdd[$name]['script'] = trim($script);
 		self::$_jsAdd[$name]['defer'] = $defer;
 		self::$_jsAdd[$name]['async'] = $async;
-		self::$_jsAdd[$name]['written'] = false;
+		if(!isset(self::$_jsAdd[$name]['written']))self::$_jsAdd[$name]['written'] = false;
 		self::$_jsAdd[$name]['ver'] = $ver;
 	}
 
@@ -50,6 +50,9 @@ class vmJsApi{
 		return self::$_jsAdd;
 	}
 
+	public static function removeJScript($name){
+		unset(self::$_jsAdd[$name]);
+	}
 
 	public static function writeJS(){
 

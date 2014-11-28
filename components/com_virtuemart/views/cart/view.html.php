@@ -55,13 +55,11 @@ class VirtueMartViewCart extends VmView {
 		if (!class_exists('VirtueMartCart'))
 		require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$this->cart = VirtueMartCart::getCart();
-		//$this->assignRef('cart', $cart);
 
 		$this->cart->prepareVendor();
 
 		//Why is this here, when we have view.raw.php
 		if ($format == 'raw') {
-			//$this->prepareCartViewData();
 			vRequest::setVar('layout', 'mini_cart');
 			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
@@ -90,13 +88,10 @@ class VirtueMartViewCart extends VmView {
 
 			$pathway->addItem( vmText::_( 'COM_VIRTUEMART_CART_THANKYOU' ) );
 			$document->setTitle( vmText::_( 'COM_VIRTUEMART_CART_THANKYOU' ) );
-			//} else if ($layoutName == 'default') {
 		} else {
 			VmConfig::loadJLang('com_virtuemart_shoppers', true);
 
 			$this->renderCompleteAddressList();
-
-
 
 			if (!class_exists ('VirtueMartModelUserfields')) {
 				require(VMPATH_ADMIN . DS . 'models' . DS . 'userfields.php');
@@ -114,8 +109,6 @@ class VirtueMartViewCart extends VmView {
 				$userFieldsCart
 				,$this->cart->cartfields
 			);
-
-
 
 			if (!class_exists ('CurrencyDisplay'))
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -144,8 +137,6 @@ class VirtueMartViewCart extends VmView {
 					$text = vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 					$this->checkout_task = 'confirm';
 				}
-
-
 			} else {
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
 				$document->setTitle(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'));
@@ -153,7 +144,6 @@ class VirtueMartViewCart extends VmView {
 				$this->checkout_task = 'checkout';
 			}
 			$this->checkout_link_html = '<button type="submit"  id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" ><span>' . $text . '</span> </button>';
-
 
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -189,7 +179,6 @@ class VirtueMartViewCart extends VmView {
 			$this->assignRef('order_language',$order_language);
 		}
 
-		//dump ($this->cart,'cart');
 		$useSSL = VmConfig::get('useSSL', 0);
 		$useXHTML = false;
 		$this->assignRef('useSSL', $useSSL);
@@ -209,36 +198,14 @@ class VirtueMartViewCart extends VmView {
 		parent::display($tpl);
 	}
 
-
-	/*
- * Prepare the datas for cart/mail views
-* set product, price, user, adress and vendor as Object
-* @author Patrick Kohl
-* @author Valerie Isaksen
-*/
-/*	function prepareCartViewData(){
-
-		// Get the products for the cart
-		//$this->cart->prepareCartData();
-
-		//$this->cart->prepareAddressFieldsInCart();
-
-		$vendorModel = VmModel::getModel('vendor');
-		$this->cart->vendor = $vendorModel->getVendor(1);
-		$vendorModel->addImages($this->cart->vendor,1);
-
-	}*/
-
-
-
 	private function lSelectCoupon() {
 
 		$this->couponCode = (!empty($this->cart->couponCode) ? $this->cart->couponCode : '');
 		$this->coupon_text = $this->cart->couponCode ? vmText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE') : vmText::_('COM_VIRTUEMART_COUPON_CODE_ENTER');
 	}
 
-	/*
-	 * lSelectShipment
+	/**
+	* lSelectShipment
 	* find al shipment rates available for this cart
 	*
 	* @author Valerie Isaksen
@@ -280,7 +247,6 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
 		$this->assignRef('found_shipment_method', $found_shipment_method);
-
 
 		return;
 	}
@@ -339,11 +305,8 @@ class VirtueMartViewCart extends VmView {
 		}
 
 		$paymentCurrency = CurrencyDisplay::getInstance($this->cart->paymentCurrency);
-
 		$totalInPaymentCurrency = $paymentCurrency->priceDisplay( $this->cart->cartPrices['billTotal'],$this->cart->paymentCurrency) ;
-
 		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
-// 		$this->assignRef('currencyDisplay',$currencyDisplay);
 
 		return $totalInPaymentCurrency;
 	}
@@ -363,7 +326,7 @@ class VirtueMartViewCart extends VmView {
 	private function lOrderDone() {
 		$display_title = vRequest::getBool('display_title',true);
 		$this->assignRef('display_title', $display_title);
-		// // Do not change this. It contains the payment form
+		//Do not change this. It contains the payment form
 		$this->html = vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 		//Show Thank you page or error due payment plugins like paypal express
 	}
@@ -418,14 +381,18 @@ class VirtueMartViewCart extends VmView {
 		return true;
 	}
 
-/**
+	/**
 	 * Todo, works only for small stores, we need a new solution there with a bit filtering
 	 * For example by time, if already shopper, and a simple search
 	 * @return object list of users
 	 */
 	function getUserList() {
 		$db = JFactory::getDbo();
-		$q = 'SELECT `id`,`name`,`username` FROM `#__users` ORDER BY `name` LIMIT 0,10000';
+		$search = vRequest::getUword('usersearch','');
+		if(!empty($search)){
+			$search = 'WHERE `name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%';
+		}
+		$q = 'SELECT `id`,`name`,`username` FROM `#__users` '.$search.'ORDER BY `name` LIMIT 0,10000';
 		$db->setQuery($q);
 		$result = $db->loadObjectList();
 		foreach($result as $user) {
@@ -481,8 +448,6 @@ class VirtueMartViewCart extends VmView {
 			$this->cart->lists['shipTo'] = false;
 			$this->cart->lists['billTo'] = false;
 		}
-
-
 	}
 
 }

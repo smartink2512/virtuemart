@@ -195,6 +195,8 @@ class VirtueMartViewProductdetails extends VmView {
 			if ($format == 'html') {
 				// Set Canonic link
 				$document->addHeadLink($product->canonical, 'canonical', 'rel', '');
+			} else if($format == 'pdf'){
+				defined('K_PATH_IMAGES') or define ('K_PATH_IMAGES', VMPATH_ROOT);
 			}
 
 			$pathway->addItem(strip_tags($product->product_name));

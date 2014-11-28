@@ -45,7 +45,7 @@ class convertECB {
 		// save configured lifetime
 		@$lifetime=$cache->lifetime;
 
-		$cache->setLifeTime(86400/4); // check 4 time per day
+		$cache->setLifeTime(360); // check 4 time per day
 
 		// save cache conf
 		$conf = JFactory::getConfig();

@@ -42,8 +42,6 @@ class VirtuemartControllerPlugin extends JControllerLegacy {
 			return FALSE;
 		}
 
-// 		if(!$name = vRequest::getCmd('name', null) ) return $name;
-
 		$name = vRequest::getCmd ('name', 'none');
 
 		$nameBlackList = array('plgVmValidateCouponCode', 'plgVmRemoveCoupon', 'none');
@@ -69,8 +67,7 @@ class VirtuemartControllerPlugin extends JControllerLegacy {
 			if ($format == 'json') {
 				$document->setMimeEncoding ('application/json');
 				// Change the suggested filename.
-
-				JResponse::setHeader ('Content-Disposition', 'attachment;filename="' . $type . '".json"');
+				JResponse::setHeader ('Content-Disposition', 'attachment;filename="' . $type . '.json"');
 				echo json_encode ($render);
 			}
 			else {
