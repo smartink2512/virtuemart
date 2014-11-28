@@ -509,7 +509,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 		$this->setInConfirmOrder($cart);
 		$usrBT = $order['details']['BT'];
-		$usrST = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
+		$usrST = ((isset($order['details']['ST'])) ? $order['details']['ST'] : '');
 		$session = JFactory::getSession();
 		$return_context = $session->getId();
 
@@ -522,7 +522,9 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$formdata = array_merge($this->_setHeader(), $formdata);
 		$formdata = array_merge($this->_setResponseConfiguration(), $formdata);
 		$formdata = array_merge($this->_setBillingInformation($usrBT), $formdata);
-		$formdata = array_merge($this->_setShippingInformation($usrST), $formdata);
+		if (!empty($usrST)) {
+			$formdata = array_merge($this->_setShippingInformation($usrST), $formdata);
+		}
 		$formdata = array_merge($this->_setTransactionData($order['details']['BT'], $totalInPaymentCurrency['value']), $formdata);
 		$formdata = array_merge($this->_setMerchantData(), $formdata);
 		// prepare the array to post

@@ -19,7 +19,7 @@ if (!class_exists ('vmPSPlugin')) {
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	public static $_this = FALSE;
-	protected $version = '14.07.14';
+	protected $version = '14.11.27';
 
 	function __construct (& $subject, $config) {
 		//if (self::$_this)
@@ -377,8 +377,6 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 		}
 		vmdebug ('HEIDELPAY paymentdata', $paymentData);
-		$cart = VirtueMartCart::getCart ();
-		$cart->emptyCart ();
 
 		if ($paymentData->processing_result == "NOK") {
 			vmError ('VMPAYMENT_HEIDELPAY_PAYMENT_FAILED','VMPAYMENT_HEIDELPAY_PAYMENT_FAILED');
@@ -389,6 +387,9 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			$tmpkom	= preg_replace("/\(-/", '<a href="', $paymentData->comment);
 			$tmpkom	= preg_replace('/-\)/', '" target="_blank">Barcode runterladen</a>', $tmpkom );
 			$html .= $tmpkom;
+			//delete basket only on success
+			$cart = VirtueMartCart::getCart ();
+			$cart->emptyCart ();
 		}
 		// if payment is in test mode
 		if ($paymentData->transaction_mode != "LIVE") {
