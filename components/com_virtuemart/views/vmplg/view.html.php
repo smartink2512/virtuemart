@@ -7,7 +7,7 @@
 * @subpackage
 * @author Valérie Isaksen
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -22,30 +22,17 @@ defined('_JEXEC') or die('Restricted access');
 // Load the view framework
 if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 
-/**
-* View for the shopping cart
-* @package VirtueMart
-* @author Valérie Isaksen
-*/
+
 class VirtueMartViewVmplg extends VmView {
-
-
 
 	public function display($tpl = null) {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
-//       $paymentResponse = vRequest::getVar('paymentResponse', '');
-
-      //Why do you we allow raw here?
-//       $paymentResponseHtml = vRequest::getVar('paymentResponseHtml','','default','STRING',JREQUEST_ALLOWRAW);
 		$layoutName = $this->getLayout();
-
-
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 		parent::display($tpl);
 	}
-
 
 }
 

@@ -23,10 +23,6 @@ defined( '_JEXEC' ) or die('Restricted access');
 
 class shopFunctionsF {
 
-	/**
-	 *
-	 */
-
 	static public function getLoginForm ($cart = FALSE, $order = FALSE, $url = '') {
 
 		$body = '';
@@ -201,8 +197,6 @@ class shopFunctionsF {
 			$attrs[$_a[0]] = $_a[1];
 		}
 
-		//Todo remove inline style
-		//$attrs['style'] = 'width:270px;';
 		return JHtml::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
 	}
 
@@ -232,10 +226,6 @@ class shopFunctionsF {
 		} else {
 			$attrs['name'] = $_prefix . 'virtuemart_state_id';
 		}
-
-		/*if ($required != 0) {
-			$attrs['class'] .= ' required ';
-		}*/
 
 		if (is_array ($attribs)) {
 			$attrs = array_merge ($attrs, $attribs);
@@ -397,7 +387,7 @@ class shopFunctionsF {
 			$rowHeights[$row]['avail'][] = empty($product->product_availability)? 0:1;
 
 			$nb ++;
-			//vmdebug('my $nb',$nb,$BrowseTotalProducts);
+
 			if ($col == $products_per_row || $nb>$BrowseTotalProducts) {
 
 				foreach($rowHeights[$row] as $group => $cols){
@@ -416,7 +406,7 @@ class shopFunctionsF {
 			}
 
 		}
-		//vmdebug('my product $rowsHeight',$rowsHeight);
+
 		return $rowsHeight;
 	}
 
@@ -457,10 +447,9 @@ class shopFunctionsF {
 	static public function renderMail ($viewName, $recipient, $vars = array(), $controllerName = NULL, $noVendorMail = FALSE,$useDefault=true) {
 
 		if(!class_exists( 'VirtueMartControllerVirtuemart' )) require(VMPATH_SITE.DS.'controllers'.DS.'virtuemart.php');
-// 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
-		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
+		// refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		$controller->addViewPath( VMPATH_SITE.DS.'views' );
 
 		$view = $controller->getView( $viewName, 'html' );
@@ -468,7 +457,7 @@ class shopFunctionsF {
 		$controllerClassName = 'VirtueMartController'.ucfirst( $controllerName );
 		if(!class_exists( $controllerClassName )) require(VMPATH_SITE.DS.'controllers'.DS.$controllerName.'.php');
 
-		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
+		//refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		$view->addTemplatePath( VMPATH_SITE.'/views/'.$viewName.'/tmpl' );
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
@@ -505,7 +494,6 @@ class shopFunctionsF {
 					$user = -1;
 				}
 			}
-
 		} else {
 			$user = self::sendVmMail( $view, $recipient, $noVendorMail );
 		}
@@ -530,7 +518,6 @@ class shopFunctionsF {
 
 	}
 
-
 	/**
 	 * @deprecated use the class vmTemplate instead
 	 * @return string
@@ -543,7 +530,6 @@ class shopFunctionsF {
 		$res = VmTemplate::loadVmTemplateStyle();
 
 	}
-
 
 
 	/**
@@ -593,7 +579,6 @@ class shopFunctionsF {
 		$mailer->setSubject(  html_entity_decode( $subject) );
 		$mailer->isHTML( VmConfig::get( 'order_mail_html', TRUE ) );
 		$mailer->setBody( $body );
-
 
 		if(!$noVendorMail) {
 			$replyTo[0] = $view->vendorEmail;

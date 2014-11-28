@@ -1,15 +1,13 @@
 <?php
 
 /**
- *
  * Controller for the cart
  *
  * @package	VirtueMart
  * @subpackage Cart
- * @author RolandD
  * @author Max Milbers
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -28,8 +26,6 @@ jimport('joomla.application.component.controller');
  *
  * @package VirtueMart
  * @subpackage Cart
- * @author RolandD
- * @author Max Milbers
  */
 class VirtueMartControllerCart extends JControllerLegacy {
 
@@ -37,7 +33,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 * Construct the cart
 	 *
 	 * @access public
-	 * @author Max Milbers
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -59,7 +54,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 * Override of display
 	 *
 	 * @return  JController  A JController object to support chaining.
-	 *
 	 * @since   11.1
 	 */
 	public function display($cachable = false, $urlparams = false){
@@ -71,8 +65,13 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if ($virtuemart_category_id) {
 				$categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
 			}
+			$ItemId = shopFunctionsF::getLastVisitedItemId();
+			$ItemIdLink = '';
+			if ($ItemId) {
+				$ItemIdLink = '&Itemid=' . $ItemId;
+			}
 			vmInfo('This is a catalogue, you cannot acccess the cart');
-			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
+			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . $ItemIdLink, FALSE);
 			$app = JFactory::getApplication();
 			$app ->redirect($continue_link);
 		}
@@ -135,13 +134,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if($msg) vmInfo($msg);
 		}
 
-
 		$cart->selected_shipto = vRequest::getVar('shipto', -1);
 		if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
 			$cart->STsameAsBT = 1;
 			$cart->selected_shipto = 0;
 		} else {
-			$cart->STsameAsBT = 0;//vRequest::getInt('STsameAsBT', $this->STsameAsBT);
+			$cart->STsameAsBT = 0;
 		}
 
 		$cart->setShipmentMethod(false,!$html);
@@ -161,7 +159,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 
 	public function updatecartJS(){
-
 		$this->updatecart(false);
 	}
 
@@ -181,11 +178,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function setpayment(){
 		$this->updatecart();
 	}
+
 	/**
 	 * Add the product to the cart
-	 *
-	 * @author RolandD
-	 * @author Max Milbers
 	 * @access public
 	 */
 	public function add() {
@@ -217,8 +212,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 	/**
 	 * Add the product to the cart, with JS
-	 *
-	 * @author Max Milbers
 	 * @access public
 	 */
 	public function addJS() {
@@ -238,7 +231,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id');
 
 			$view = $this->getView ('cart', 'json');
-			$errorMsg = 0;//vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
+			$errorMsg = 0;
 
 			$products = $cart->add($virtuemart_product_ids, $errorMsg );
 
@@ -269,7 +262,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	/**
 	 * Add the product to the cart, with JS
 	 *
-	 * @author Max Milbers
 	 * @access public
 	 */
 	public function viewJS() {
@@ -286,8 +278,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 	/**
 	 * For selecting couponcode to use, opens a new layout
-	 *
-	 * @author Max Milbers
 	 */
 	public function edit_coupon() {
 
@@ -314,14 +304,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if (!empty($coupon_code)) {
 				$app = JFactory::getApplication();
 				$msg = $cart->setCouponCode($coupon_code);
-
-				//$cart->setDataValidation(); //Not needed already done in the getCart function
-				/*if ($cart->getInCheckOut()) {
-					$app = JFactory::getApplication();
-					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE),$msg);
-				} else {*/
-					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE),$msg);
-				//}
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE),$msg);
 			}
 		}
 	}
@@ -329,8 +312,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 	/**
 	 * For selecting shipment, opens a new layout
-	 *
-	 * @author Max Milbers
 	 */
 	public function edit_shipment() {
 
@@ -344,8 +325,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 	/**
 	 * To select a payment method
-	 *
-	 * @author Max Milbers
 	 */
 	public function editpayment() {
 
@@ -358,8 +337,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 	/**
 	 * Delete a product from the cart
-	 *
-	 * @author RolandD
 	 * @access public
 	 */
 	public function delete() {
@@ -372,14 +349,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
 
 		$this->display();
-		//$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 	}
 
 	/**
 	 * Change the shopper
 	 *
 	 * @author Maik Künnemann
-	 *
 	 */
 	public function changeShopper() {
 		JSession::checkToken () or jexit ('Invalid Token');
@@ -409,7 +384,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$data[$k] = $v;
 		}
 		$cart->BT['email'] = $newUser->email;
-		//unset($cart->ST);
+
 		$cart->ST = 0;
 		$cart->STsameAsBT = 1;
 		$cart->saveAddressInCart($data, 'BT');
@@ -427,8 +402,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$cart->setOutOfCheckout();
 		}
 		$this->display();
-		//$mainframe = JFactory::getApplication();
-		//$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), 'Cancelled');
 	}
 
 }

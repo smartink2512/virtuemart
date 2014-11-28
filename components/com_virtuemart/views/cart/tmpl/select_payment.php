@@ -39,9 +39,7 @@ if ($this->layoutName!='default') {
 		$buttonclass = 'vm-button-correct';
 	}
 
-
 	echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
-
 ?>
 
 <div class="buttonBar-right">

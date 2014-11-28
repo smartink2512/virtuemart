@@ -49,7 +49,6 @@ class VirtueMartViewAskquestion extends VmView {
 			$user = JFactory::getUser();
 			if($user->guest){
 				$this->login = shopFunctionsF::getLoginForm(false);
-				//$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
 			}
 		}
 
@@ -89,12 +88,12 @@ class VirtueMartViewAskquestion extends VmView {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 		}
 		$product = $product_model->getProduct ($virtuemart_product_id);
+
 		// Set Canonic link
 		$format = vRequest::getCmd('format', 'html');
 		if ($format == 'html') {
 			$document->addHeadLink ($product->canonical, 'canonical', 'rel', '');
 		}
-
 
 		// Set the titles
 		$document->setTitle (vmText::sprintf ('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE', $product->product_name . ' - ' . vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
@@ -108,7 +107,7 @@ class VirtueMartViewAskquestion extends VmView {
 
 		$product_model->addImages ($product, 1);
 
-		/* Get the category ID */
+		// Get the category ID
 		$virtuemart_category_id = vRequest::getInt ('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
 			if (array_key_exists ('0', $product->categories)) {
@@ -124,7 +123,6 @@ class VirtueMartViewAskquestion extends VmView {
 			$pathway->addItem ($category->category_name, JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id, FALSE));
 		}
 
-		//$pathway->addItem(vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem ($product->product_name, JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id, FALSE));
 
 		// for askquestion
@@ -178,17 +176,16 @@ class VirtueMartViewAskquestion extends VmView {
 		$this->subject = vmText::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
 
 		$vendorModel = VmModel::getModel ('vendor');
-		//if(empty($this->vendor)){
-			$this->vendor = $vendorModel->getVendor ($this->product->virtuemart_vendor_id);
-			$this->vendor->vendor_store_name = $fromName;
-		//}
+
+		$this->vendor = $vendorModel->getVendor ($this->product->virtuemart_vendor_id);
+		$this->vendor->vendor_store_name = $fromName;
+
 		$vendorModel->addImages ($this->vendor);
 
 		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);;
 
 		// in this particular case, overwrite the value for fix the recipient name
 		$this->vendor->vendor_name = $this->user->get('name');
-
 
 		if (VmConfig::get ('order_mail_html')) {
 			$tpl = 'mail_html_question';
@@ -201,7 +198,6 @@ class VirtueMartViewAskquestion extends VmView {
 	}
 
 	public function showLastCategory ($tpl) {
-
 		$this->prepareContinueLink();
 		parent::display ($tpl);
 	}

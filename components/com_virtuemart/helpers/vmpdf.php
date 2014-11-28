@@ -9,7 +9,7 @@ defined('_JEXEC') or die('');
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2011 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -297,7 +297,7 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 			} else {
 				$imgy = $this->y;
 			}
-// 			$cell_height = round(($this->cell_height_ratio * $headerfont[2]) / $this->k, 2);
+
 			// set starting margin for text data cell
 			$this->SetTextColorArray($this->header_text_color);
 			// header string

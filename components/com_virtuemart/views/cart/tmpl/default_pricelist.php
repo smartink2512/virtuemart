@@ -24,14 +24,11 @@
 	<th align="right" width="70px"><?php echo vmText::_ ('COM_VIRTUEMART_CART_TOTAL') ?></th>
 </tr>
 
-
-
 <?php
 $i = 1;
 
-foreach ($this->cart->products as $pkey => $prow) {
+foreach ($this->cart->products as $pkey => $prow) { ?>
 
-	?>
 <tr valign="top" class="sectiontableentry<?php echo $i ?>">
 	<td align="left">
 		<?php if ($prow->virtuemart_media_id) { ?>
@@ -60,7 +57,6 @@ foreach ($this->cart->products as $pkey => $prow) {
 		} else {
 			echo $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $prow->prices, FALSE, FALSE);
 		}
-		// 					echo $prow->salesPrice ;
 		?>
 	</td>
 	<td align="right"><?php
@@ -139,7 +135,6 @@ if (VmConfig::get ('coupons_enable')) {
 	echo $this->cart->cartData['couponCode'];
 	echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')') : '';
 	?>
-
 				</td>
 
 					 <?php if (VmConfig::get ('show_tax')) { ?>
@@ -155,8 +150,6 @@ if (VmConfig::get ('coupons_enable')) {
 	?>
 </tr>
 	<?php } ?>
-
-
 <?php
 foreach ($this->cart->cartData['DBTaxRulesBill'] as $rule) {
 	?>
@@ -227,7 +220,6 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		<td colspan="4" align="left">
 			<?php
 				echo $this->cart->cartData['shipmentName'].'<br/>';
-
 
 		if (!empty($this->layoutName) and $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {

@@ -42,7 +42,6 @@ class VirtueMartViewCart extends VmView {
 		require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 
-		//$cart->prepareCartData();
 		$this->assignRef('cart', $cart);
 
     	$this->prepareContinueLink();

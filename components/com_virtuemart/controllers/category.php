@@ -5,9 +5,9 @@
 *
 * @package	VirtueMart
 * @subpackage
-* @author RolandD
+* @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -26,29 +26,15 @@ jimport('joomla.application.component.controller');
 * Class Description
 *
 * @package VirtueMart
-* @author RolandD
 */
 class VirtueMartControllerCategory extends JControllerLegacy {
 
-    /**
-    * Method Description
-    *
-    * @access public
-    * @author RolandD
-    */
     public function __construct() {
      	 parent::__construct();
 
      	 $this->registerTask('browse','category');
    	}
 
-	/**
-	* Function Description
-	*
-	* @author RolandD
-	* @author George
-	* @access public
-	*/
 	public function display($cachable = false, $urlparams = false)  {
 
 		if (vRequest::getvar('search')) {

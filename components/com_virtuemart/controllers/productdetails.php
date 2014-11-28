@@ -5,9 +5,9 @@
  *
  * @package    VirtueMart
  * @subpackage
- * @author RolandD
+ * @author Max Milbers
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -231,7 +231,6 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	public function review () {
 		$msg="";
 
-
 		$model = VmModel::getModel ('ratings');
 		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',0);
 
@@ -268,12 +267,8 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	 *
 	 * @author Max Milbers
 	 * @author Patrick Kohl
-	 *
 	 */
 	public function recalculate () {
-
-		//$post = vRequest::get('request');
-
 
 		$virtuemart_product_idArray = vRequest::getInt ('virtuemart_product_id', array()); //is sanitized then
 		if(is_array($virtuemart_product_idArray) and !empty($virtuemart_product_idArray[0])){
@@ -346,7 +341,6 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	public function getJsonChild () {
 
 		$view = $this->getView ('productdetails', 'json');
-
 		$view->display (NULL);
 	}
 

@@ -7,7 +7,7 @@
 * @subpackage State
 * @author jseros, RickG, Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -24,14 +24,8 @@ jimport('joomla.application.component.controller');
 
 if(!class_exists('VirtueMartModelState')) require( VMPATH_ADMIN.DS.'models'.DS.'state.php' );
 
-class VirtueMartControllerState extends JControllerLegacy
-{
-    /**
-	 * Method to display the view
-	 *
-	 * @access	public
-	 * @author RickG, Max Milbers
-	 */
+class VirtueMartControllerState extends JControllerLegacy {
+
 	public function __construct() {
 		parent::__construct();
 

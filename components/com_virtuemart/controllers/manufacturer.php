@@ -5,9 +5,9 @@
 *
 * @package	VirtueMart
 * @subpackage User
-* @author Oscar van Eijk
+* @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -28,28 +28,8 @@ jimport('joomla.application.component.controller');
  * @package		VirtueMart
  */
 
-class VirtueMartControllerManufacturer extends JControllerLegacy
-{
+class VirtueMartControllerManufacturer extends JControllerLegacy {
 
-	/**
-	 * Override of display to prevent caching
-	 *
-	 * @return  JController  A JController object to support chaining.
-	 */
-	/*public function display(){
-
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$viewName = vRequest::getCmd('view', $this->default_view);
-		$viewLayout = vRequest::getCmd('layout', 'default');
-
-		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
-		$view->assignRef('document', $document);
-
-		$view->display();
-
-		return $this;
-	}*/
 }
 
 // No closing tag

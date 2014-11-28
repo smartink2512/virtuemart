@@ -167,14 +167,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 		}
 
 		if($data['address_type'] == 'ST' and !$currentUser->guest){
-		//if($cart and (!isset($_POST['register']) or $currentUser->guest)){
-		//if($data['address_type'] == 'ST' or (!isset($_POST['register']) and $currentUser->guest)){
 			$ret = $userModel->storeAddress($data);
 			if($cartObj and !empty($ret)){
 				$cartObj->selected_shipto = $ret;
 				$cartObj->setCartIntoSession();
 			}
-			//vmdebug('saveData storeAddress only');
 		} else {
 
 			if($currentUser->guest==1 and ($register or !$cartObj )){
@@ -195,7 +192,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 				$ret = $userModel->store($data);
 			}
 
-			//if(isset($_POST['register']) or (!$cart and $currentUser->guest==1) ){
 			if($currentUser->guest==1 and ($register or !$cartObj )){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
@@ -227,7 +223,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 	{
 		if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
-		vmdebug('cancel executed' );
 		if($cart->_fromCart){
 			$cart->setOutOfCheckout();
 			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE)  );

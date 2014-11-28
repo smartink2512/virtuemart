@@ -9,7 +9,7 @@ defined('_JEXEC') or die('');
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2011 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -28,16 +28,6 @@ class VmView extends JViewLegacy{
 	var $isMail = false;
 	var $isPdf = false;
 
-	/**
-	 * Execute and display a template script.
-	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
-	 * @author Joomla
-	 * @see     fetch()
-	 * @since   11.1
-	 */
 	public function display($tpl = null)
 	{
 		$result = $this->loadTemplate($tpl);
