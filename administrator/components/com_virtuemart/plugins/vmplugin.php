@@ -734,13 +734,13 @@ abstract class vmPlugin extends JPlugin {
 			$layoutPath= $templatePath;
 		} elseif (JFile::exists ($defaultPath)) {
 			$layoutPath= $defaultPath;
-		}elseif (JFile::exists ($defaultPathWithGroup)) {
+		} elseif (JFile::exists ($defaultPathWithGroup)) {
 			$layoutPath = $defaultPathWithGroup;
 		}
 		if (empty($layoutPath)) {
 			$warn='The layout: '. $layout. ' does not exist in:';
 			$warn.='<br />'. $templatePath.'<br />'.$defaultPath;
-			if (!empty($templatePathWithGroup)) {
+			if (!empty($defaultPathWithGroup)) {
 				$warn.='<br />'.$defaultPathWithGroup .'<br />';
 			}
 			vmWarn($warn);
