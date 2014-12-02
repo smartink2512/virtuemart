@@ -43,7 +43,7 @@ var $type = 'getKlikandpay';
 	protected function getLang() {
 
 
-		$language =& JFactory::getLanguage();
+		$language = JFactory::getLanguage();
 		$tag = strtolower(substr($language->get('tag'), 0, 2));
 		return $tag;
 	}
