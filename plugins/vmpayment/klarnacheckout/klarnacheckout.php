@@ -65,10 +65,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 		plgVmPaymentKlarnaCheckout::includeKlarnaFiles();
 		$this->loadJLangThis('plg_vmpayment_klarna');
-		if  (!JFactory::getApplication()->isSite()) {
-			vmJsApi::addJScript('/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/admin.js');
-			vmJsApi::css('klarnacheckout', 'plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css/');
-		}
+
 	}
 
 	/**
@@ -377,7 +374,6 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 					}
 				}
 
-
 				$create['cart']['items'] = $this->getCartItems($cart);
 				try {
 					$klarnaOrder = new Klarna_Checkout_Order($connector);
@@ -512,6 +508,23 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 	}
 
+	/** get  the cart saved in the cart table
+	 *  used by the push notification to retrieve the cart and save the order
+	 * @param $cart
+	 */
+
+	function getDataPaymentFromTable($cartId) {
+
+		$db = JFactory::getDBO();
+		$q = 'SELECT * FROM `' . $this->_tablename . '` ' . 'WHERE `id` = ' . $cartId . ' AND `action` = "storeCart"';
+
+		$db->setQuery($q);
+		$result = $db->loadObject();
+
+		return $result;
+
+
+	}
 
 	/** get  the cart saved in the cart table
 	 *  used by the push notification to retrieve the cart and save the order
@@ -530,7 +543,6 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$data = $result->data;
 		} else {
 			$data = (object)json_decode( $result->data ,true);
-			//return  ($result->data);
 		}
 
 		return $data;
@@ -577,6 +589,10 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
+		}
+
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return FALSE;
 		}
 
 		return true;
@@ -753,16 +769,21 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
-		$cartData->_confirmDone = true;
-		$cartData->_dataValidated = true;
-
-
 		if (!class_exists('VirtueMartCart')) {
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
-		$cart = VirtueMartCart::getCart(false, array(), serialize($cartData));
+		$cartData->_confirmDone = true;
+		$cartData->_dataValidated = true;
+		$this->debugLog($cartData, 'getCart $cartData', 'debug');
+
+		$cart = VirtueMartCart::getCart(false, array(), $cartData);
+		$this->debugLog($cart, 'getCart', 'debug');
+
 		$this->updateBTSTAddressInCart($cart, $klarna_order);
+
+
+
 
 		$orderId = $cart->confirmedOrder();
 		$this->debugLog($orderId, 'createVmOrder', 'debug');
@@ -1194,6 +1215,10 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
+		}
+
+		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+			return FALSE;
 		}
 
 

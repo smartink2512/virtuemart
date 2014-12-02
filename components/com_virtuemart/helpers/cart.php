@@ -116,8 +116,7 @@ class VirtueMartCart {
 					}
 				}
 			} else {
-				$cartSession=$cartData;
-				$sessionCart = unserialize( $cartSession );
+				$cartSession=$sessionCart=$cartData;
 			}
 
 			$userModel = VmModel::getModel('user');

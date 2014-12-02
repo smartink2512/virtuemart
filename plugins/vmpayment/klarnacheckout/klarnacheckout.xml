@@ -84,7 +84,11 @@
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-
+                <field name="log" type="hidden" default="1" label="VMPAYMENT_KLARNACHECKOUT_DEBUG"
+                       description="VMPAYMENT_KLARNACHECKOUT_DEBUG_DESC">
+                    <option value="0">COM_VIRTUEMART_NO</option>
+                    <option value="1">COM_VIRTUEMART_YES</option>
+                </field>
                 <field name="cost_percent_total" type="hidden"/>
                 <field name="cost_per_transaction" type="hidden"/>
             </fieldset>
