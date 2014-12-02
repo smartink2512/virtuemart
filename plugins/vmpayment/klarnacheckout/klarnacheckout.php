@@ -781,10 +781,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$this->debugLog($cart, 'getCart', 'debug');
 
 		$this->updateBTSTAddressInCart($cart, $klarna_order);
-
-
-
-
+		$cart->prepareCartData();
 		$orderId = $cart->confirmedOrder();
 		$this->debugLog($orderId, 'createVmOrder', 'debug');
 
