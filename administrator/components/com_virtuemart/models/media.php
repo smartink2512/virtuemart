@@ -350,10 +350,6 @@ class VirtueMartModelMedia extends VmModel {
 		$table = $this->getTable($type.'_medias');
 		// Bind the form fields to the country table
 		$table->bindChecknStore($data);
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		return $table->virtuemart_media_id;
 
@@ -384,10 +380,7 @@ class VirtueMartModelMedia extends VmModel {
 		}
 
 		$table->bindChecknStore($data);
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			vmError('store medias '.$error);
-		}
+
 		if($tmpPublished){
 			$data['published'] = $tmpPublished;
 		}

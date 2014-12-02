@@ -147,6 +147,41 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 	/**
+	 * This function gets the parameters of a plugin from the given JForm $form.
+	 * This is used for the configuration GUI in the BE.
+	 * Attention: the xml Params must be always a subset of the varsToPushParams declared in the constructor
+	 * @param $form
+	 * @return array
+	 */
+	static public function getVarsToPushFromForm ($form){
+		$data = array();
+
+		$fieldSets = $form->getFieldsets();
+		foreach ($fieldSets as $name => $fieldSet) {
+			foreach ($form->getFieldset($name) as $field) {
+
+				$fieldname = (string)$field->fieldname;
+				$private = false;
+
+				if(strlen($fieldname)>1){
+					if(substr($fieldname,0,2)=='__'){
+						$private = true;
+					}
+				}
+
+				if(!$private){
+					$type='char';
+					$data[$fieldname] = array('',  $type);
+				}
+
+			}
+		}
+
+		return $data;
+	}
+
+
+	/**
 	 * This function gets the parameters of a plugin by an xml file.
 	 * This is used for the configuration GUI in the BE.
 	 * Attention: the xml Params must be always a subset of the varsToPushParams declared in the constructor
@@ -155,66 +190,8 @@ abstract class vmPlugin extends JPlugin {
 	 * @return array
 	 */
 	static public function getVarsToPushByXML ($xmlFile,$name){
-		$data = array();
-
-		if (is_file ( $xmlFile )) {
-
-			//$xml = JFactory::getXML ('simple');
-			//$result = $xml->loadFile ($xmlFile);
-			$xml =  JFactory::getXML($xmlFile);
-			if ($xml) {
-				if (isset( $xml->document->params) ){
-
-					$params = $xml->document->params;
-					foreach ($params as $param) {
-						if ($param->_name = "params") {
-							if ($children = $param->_children) {
-								foreach ($children as $child) {
-									if (!empty($child->_attributes['name'])) {
-										$fieldname = (string)$child->_attributes['name'];
-										$private = false;
-										if(strlen($fieldname)>1){
-											if(substr($fieldname,0,2)=='__'){
-												$private = true;
-											}
-										}
-
-										if(!$private){
-											$data[$fieldname] = array('', 'char');
-										}
-									}
-								}
-							}
-						}
-					}
-				} else {
-
-					$form = JForm::getInstance($name, $xmlFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
-					$fieldSets = $form->getFieldsets();
-					foreach ($fieldSets as $name => $fieldSet) {
-						foreach ($form->getFieldset($name) as $field) {
-
-							$fieldname = (string)$field->fieldname;
-							$private = false;
-
-							if(strlen($fieldname)>1){
-								if(substr($fieldname,0,2)=='__'){
-									$private = true;
-								}
-							}
-
-							if(!$private){
-								$type='char';
-								$data[$fieldname] = array('',  $type);
-							}
-
-						}
-					}
-				}
-			}
-		}
-
-		return $data;
+		$form = JForm::getInstance($name, $xmlFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+		return vmPlugin::getVarsToPushFromForm($form);
 	}
 
 	/**
@@ -601,13 +578,7 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		$this->_vmpItable->bindChecknStore ($values, $preload);
-		//vmdebug('storePluginInternalData',$values,$this->_vmpItable);
-		$errors = $this->_vmpItable->getErrors ();
-		if (!empty($errors)) {
-			foreach ($errors as $error) {
-				vmError ($error);
-			}
-		}
+
 		return $values;
 	}
 

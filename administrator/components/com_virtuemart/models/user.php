@@ -552,11 +552,9 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 
-		$usertable -> bindChecknStore($data);
-		$errors = $usertable->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-			vmError('storing user adress data'.$error);
+		$res = $usertable -> bindChecknStore($data);
+		if(!$res){
+			vmError('storing user adress data');
 			$noError = false;
 		}
 
@@ -574,11 +572,9 @@ class VirtueMartModelUser extends VmModel {
 			if(!empty($data['virtuemart_shoppergroup_id'])){
 				$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
 				$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
-				$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
-				$errors = $user_shoppergroups_table->getErrors();
-				foreach($errors as $error){
-					$this->setError($error);
-					vmError('Set shoppergroup '.$error);
+				$res = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+				if(!$res){
+					vmError('Set shoppergroup error');
 					$noError = false;
 				}
 			}

@@ -114,10 +114,10 @@ class VmViewAdmin extends JViewLegacy {
 		if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create')) {
 			JToolBarHelper::editList();
 		}
-		if ($this->canDo->get('core.admin') || $showNew && $this->canDo->get('vm.'.$view.'.create')) {
+		if ($showNew and ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.create'))) {
 			JToolBarHelper::addNew();
 		}
-		if ($this->canDo->get('core.admin') || $showDelete && $this->canDo->get('vm.'.$view.'.delete')) {
+		if ($showDelete and ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.delete'))) {
 			JToolBarHelper::deleteList();
 		}
 		self::showHelp ( $showHelp);

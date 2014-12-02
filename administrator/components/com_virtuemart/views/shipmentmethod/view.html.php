@@ -59,9 +59,9 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 			if (file_exists($formFile)){
 				$shipment->form = JForm::getInstance($shipment->shipment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 				$shipment->params = new stdClass();
-				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'shipmentForm');
+				$varsToPush = vmPlugin::getVarsToPushFromForm($shipment->form);
 				VmTable::bindParameterableToSubField($shipment,$varsToPush);
-				$shipment->form->bind($shipment);
+				$shipment->form->bind($shipment->getProperties());
 
 			} else {
 				$shipment->form = null;

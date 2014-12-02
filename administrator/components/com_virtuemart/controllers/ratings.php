@@ -31,7 +31,6 @@ if (!class_exists ('VmController')){
  * Review Controller
  *
  * @package    VirtueMart
- * @author Max Milbers
  */
 class VirtuemartControllerRatings extends VmController {
 
@@ -47,17 +46,18 @@ class VirtuemartControllerRatings extends VmController {
 
 	}
 
+	function edit(){
+		$this->listreviews();
+	}
+
 	/**
 	 * Generic edit task
-	 *
-	 * @author Max Milbers
 	 */
 	function edit_review(){
 
 		vRequest::setVar('controller', $this->_cname);
 		vRequest::setVar('view', $this->_cname);
 		vRequest::setVar('layout', 'edit_review');
-// 		vRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
 			$document = JFactory::getDocument();
@@ -65,13 +65,11 @@ class VirtuemartControllerRatings extends VmController {
 			$view = $this->getView($this->_cname, $viewType);
 		}
 
-
 		parent::display();
 	}
 
 	/**
 	 * lits the reviews
-	 * @author Max Milbers
 	 */
 	public function listreviews(){
 
@@ -168,12 +166,9 @@ class VirtuemartControllerRatings extends VmController {
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->saveRating($data);
 
-		$errors = $model->getErrors();
-		if (empty($errors)) {
+		$msg = 'failed';
+		if (!empty($id)) {
 			$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', $this->mainLangKey);
-		}
-		foreach($errors as $error){
-			$msg = ($error).'<br />';
 		}
 
 		$redir = $this->redirectPath;

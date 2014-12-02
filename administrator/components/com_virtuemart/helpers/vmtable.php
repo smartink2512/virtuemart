@@ -24,21 +24,29 @@ defined('_JEXEC') or die();
  *
  * checked_out = locked_by,checked_time = locked_on
  *
- * Enter description here ...
  * @author Milbo
  *
  */
-class VmTable extends JTable {
+class VmTable {
 
+	protected static $_cache = array();
+	private $_lhash = 0;
+
+	protected $_tbl = '';
+	protected $_tbl_lang = null;
+	protected $_tbl_key ='';
 	protected $_pkey = '';
 	protected $_pkeyForm = '';
 	protected $_obkeys = array();
 	protected $_unique = false;
 	protected $_unique_name = array();
 	protected $_orderingKey = 'ordering';
-
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
+	protected $_db = false;
+	protected $_rules;
+	protected $_trackAssets = false;
+	protected $_locked = false;
 	protected $_loggable = false;
 	public $_xParams = 0;
 	public $_varsToPushParam = array();
@@ -48,11 +56,7 @@ class VmTable extends JTable {
 	protected $_langTag = null;
 	public $_ltmp = false;
 	public $_loaded = false;
-	protected $_tbl_lang = null;
 	protected $_updateNulls = false;
-
-	protected static $_cache = array();
-	private $_lhash = 0;
 
 	/**
 	 * @param string $table
@@ -107,18 +111,190 @@ class VmTable extends JTable {
 
 	}
 
-/*	public function setProperties($properties) {
-		if (is_array($properties) || is_object($properties)) {
-			foreach ((array) $properties as $k => $v) {
-				if ('_' != substr($k, 0, 1)) {
-					$this->$k = $v;
+	/**
+	 * Returns an associative array of object properties.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   boolean  $public  If true, returns only the public properties.
+	 *
+	 * @return  array
+	 * @since   11.1
+	 * @see     get()
+	 */
+	public function getProperties($public = true) {
+
+		$vars = get_object_vars($this);
+		if ($public) {
+			foreach ($vars as $key => $value) {
+				if ('_' == substr($key, 0, 1)) {
+					unset($vars[$key]);
 				}
+			}
+		}
+
+		return $vars;
+	}
+
+	/**
+	 * Static method to get an instance of a JTable class if it can be found in
+	 * the table include paths.  To add include paths for searching for JTable
+	 * classes @see JTable::addIncludePath().
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   string  $type    The type (name) of the JTable class to get an instance of.
+	 * @param   string  $prefix  An optional prefix for the table class name.
+	 * @param   array   $config  An optional array of configuration values for the JTable object.
+	 *
+	 * @return  mixed    A JTable object if found or boolean false if one could not be found.
+	 *
+	 * @link	http://docs.joomla.org/JTable/getInstance
+	 * @since   11.1
+	 */
+	public static function getInstance($type, $prefix = 'JTable', $config = array())
+	{
+		// Sanitize and prepare the table class name.
+		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
+		$tableClass = $prefix . ucfirst($type);
+
+		// Only try to load the class if it doesn't already exist.
+		if (!class_exists($tableClass))
+		{
+			// Search for the class file in the JTable include paths.
+			jimport('joomla.filesystem.path');
+
+			$paths = JTable::addIncludePath();
+			$pathIndex = 0;
+			while (!class_exists($tableClass) && $pathIndex < count($paths))
+			{
+				if ($tryThis = JPath::find($paths[$pathIndex++], strtolower($type) . '.php'))
+				{
+					// Import the class file.
+					include_once $tryThis;
+				}
+			}
+			if (!class_exists($tableClass))
+			{
+				// If we were unable to find the class file in the JTable include paths, raise a warning and return false.
+				JError::raiseWarning(0, JText::sprintf('JLIB_DATABASE_ERROR_NOT_SUPPORTED_FILE_NOT_FOUND', $type));
+				return false;
+			}
+		}
+
+		// If a database object was passed in the configuration array use it, otherwise get the global one from JFactory.
+		$db = isset($config['dbo']) ? $config['dbo'] : JFactory::getDbo();
+
+		// Instantiate a new table class and return it.
+		return new $tableClass($db);
+	}
+
+	/**
+	 * Add a filesystem path where JTable should search for table class files.
+	 * You may either pass a string or an array of paths.
+	 *
+	 * @param   mixed  $path  A filesystem path or array of filesystem paths to add.
+	 *
+	 * @return  array  An array of filesystem paths to find JTable classes in.
+	 *
+	 * @link    http://docs.joomla.org/JTable/addIncludePath
+	 * @since   11.1
+	 */
+	public static function addIncludePath($path = null)
+	{
+		// Declare the internal paths as a static variable.
+		static $_paths;
+
+		// If the internal paths have not been initialised, do so with the base table path.
+		if (!isset($_paths))
+		{
+			$_paths = array(dirname(__FILE__) . '/table');
+		}
+
+		// Convert the passed path(s) to add to an array.
+		settype($path, 'array');
+
+		// If we have new paths to add, do so.
+		if (!empty($path) && !in_array($path, $_paths))
+		{
+			// Check and add each individual new path.
+			foreach ($path as $dir)
+			{
+				// Sanitize path.
+				$dir = trim($dir);
+
+				// Add to the front of the list so that custom paths are searched first.
+				array_unshift($_paths, $dir);
+			}
+		}
+
+		return $_paths;
+	}
+
+
+	/**
+	 * Set the object properties based on a named array/hash.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   mixed  $properties  Either an associative array or another object.
+	 *
+	 * @return  boolean
+	 * @since   11.1
+	 * @see     set()
+	 */
+	public function setProperties($properties)
+	{
+		if (is_array($properties) || is_object($properties))
+		{
+			foreach ((array) $properties as $k => $v)
+			{
+				// Use the set function which might be overridden.
+				$this->set($k, $v);
 			}
 			return true;
 		}
 
 		return false;
-	}*/
+	}
+
+	public function get($prop, $def = null) {
+		if (isset($this->$prop)) {
+			return $this->$prop;
+		}
+		return $def;
+	}
+
+	public function set($prop, $value = null) {
+		$prev = isset($this->$prop) ? $this->$prop : null;
+		$this->$prop = $value;
+		return $prev;
+	}
+
+
+	public function getKeyName() {
+		return $this->_tbl_key;
+	}
+
+	public function getDbo() {
+		//static $db = false;
+		if(!$this->_db){
+			$this->_db = JFactory::getDbo();
+		}
+		return $this->_db;
+	}
+
+	/**
+	 * @return string|void
+	 */
+	public function getError(){
+		vmTrace( get_class($this).' asks for error');
+		vmdebug( get_class($this).' asks for error');
+		return ;
+	}
+
+	public function getErrors(){
+		vmTrace( get_class($this).' asks for errors');
+		vmdebug( get_class($this).' asks for errors');
+		return ;
+	}
 
 	public function setPrimaryKey($key, $keyForm = 0) {
 
@@ -197,7 +373,6 @@ class VmTable extends JTable {
 
 	function setSlug($slugAutoName, $key = 'slug') {
 
-		// 		$this->_useSlug = true;
 		$this->_slugAutoName = $slugAutoName;
 		$this->_slugName = $key;
 		$this->$key = '';
@@ -211,6 +386,39 @@ class VmTable extends JTable {
 
 		$this->_tablePreFix = $prefix . '.';
 	}
+
+	/**
+	 * Method to set rules for the record.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   mixed  $input  A JAccessRules object, JSON string, or array.
+	 * @return  void
+	 * @since   11.1
+	 */
+	public function setRules($input)
+	{
+		if ($input instanceof JAccessRules)
+		{
+			$this->_rules = $input;
+		}
+		else
+		{
+			$this->_rules = new JAccessRules($input);
+		}
+	}
+
+	/**
+	 * Method to get the rules for the record.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @return  JAccessRules object
+	 * @since   11.1
+	 */
+	public function getRules()
+	{
+		return $this->_rules;
+	}
+
 
 	public function emptyCache(){
 		self::$_cache = array();
@@ -241,6 +449,59 @@ class VmTable extends JTable {
 		}
 		//vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
 	}
+
+	/**
+	 * Method to bind an associative array or object to the JTable instance.This
+	 * method only binds properties that are publicly accessible and optionally
+	 * takes an array of properties to ignore when binding.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link    http://docs.joomla.org/JTable/bind
+	 * @since   11.1
+	 */
+	public function bind($src, $ignore = array())
+	{
+		// If the source value is not an array or object return false.
+		if (!is_object($src) && !is_array($src))
+		{
+			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			vmError($e);
+			return false;
+		}
+
+		// If the source value is an object, get its accessible properties.
+		if (is_object($src))
+		{
+			$src = get_object_vars($src);
+		}
+
+		// If the ignore value is a string, explode it over spaces.
+		if (!is_array($ignore))
+		{
+			$ignore = explode(' ', $ignore);
+		}
+
+		// Bind the source value, excluding the ignored fields.
+		foreach ($this->getProperties() as $k => $v)
+		{
+			// Only process fields not in the ignore array.
+			if (!in_array($k, $ignore))
+			{
+				if (isset($src[$k]))
+				{
+					$this->$k = $src[$k];
+				}
+			}
+		}
+
+		return true;
+	}
+
 
 	/**
 	 * Maps the parameters to a subfield. usefull for the JForm
@@ -486,6 +747,65 @@ class VmTable extends JTable {
 		vmdebug('VmTable developer notice, table ' . get_class($this) . ' means that there is no data to store. When you experience that something does not get stored as expected, please write in the forum.virtuemart.net',$properties);
 		return false;
 	}
+
+	/**
+	 * Method to provide a shortcut to binding, checking and storing a JTable
+	 * instance to the database table.  The method will check a row in once the
+	 * data has been stored and if an ordering filter is present will attempt to
+	 * reorder the table rows based on the filter.  The ordering filter is an instance
+	 * property name.  The rows that will be reordered are those whose value matches
+	 * the JTable instance for the property specified.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   mixed   $src             An associative array or object to bind to the JTable instance.
+	 * @param   string  $orderingFilter  Filter for the order updating
+	 * @param   mixed   $ignore          An optional array or space separated list of properties
+	 * to ignore while binding.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link	http://docs.joomla.org/JTable/save
+	 * @since   11.1
+	 */
+	public function save($src, $orderingFilter = '', $ignore = '')
+	{
+		// Attempt to bind the source to the instance.
+		if (!$this->bind($src, $ignore))
+		{
+			return false;
+		}
+
+		// Run any sanity checks on the instance and verify that it is ready for storage.
+		if (!$this->check())
+		{
+			return false;
+		}
+
+		// Attempt to store the properties to the database table.
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		// Attempt to check the row in, just in case it was checked out.
+		if (!$this->checkin())
+		{
+			return false;
+		}
+
+		// If an ordering filter is set, attempt reorder the rows in the table based on the filter and value.
+		if ($orderingFilter)
+		{
+			$filterValue = $this->$orderingFilter;
+			$this->reorder($orderingFilter ? $this->_db->quoteName($orderingFilter) . ' = ' . $this->_db->Quote($filterValue) : '');
+		}
+
+		// Set the error to empty and return true.
+		vmError('');
+
+		return true;
+	}
+
 
 	/**
 	 * Function setting the loggable data hack procted
@@ -840,7 +1160,7 @@ class VmTable extends JTable {
 		// If the store failed return false.
 		if (!$ok) {
 			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $this->_db->getErrorMsg()));
-			$this->setError($e);
+			vmError($e);
 			return false;
 		}
 
@@ -865,7 +1185,7 @@ class VmTable extends JTable {
 
 		// Check for an error.
 		if ($error = $asset->getError()){
-			$this->setError($error);
+			vmError($error);
 			return false;
 		}
 
@@ -884,7 +1204,7 @@ class VmTable extends JTable {
 		}
 
 		if (!$asset->check() || !$asset->store($updateNulls)) {
-			$this->setError($asset->getError());
+			vmError($asset->getError());
 			return false;
 		}
 
@@ -902,7 +1222,7 @@ class VmTable extends JTable {
 			if (!$this->_db->execute())
 			{
 				$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID', $this->_db->getErrorMsg()));
-				$this->setError($e);
+				vmError($e);
 				return false;
 			}
 		}
@@ -1890,7 +2210,7 @@ class VmTable extends JTable {
 				$this->_db->setQuery($query);
 
 				if (!$this->_db->execute()) {
-					$this->setError($this->_db->getErrorMsg());
+					vmError($this->_db->getErrorMsg());
 					vmError('checkAndDelete ' . $this->_db->getErrorMsg());
 					$ok = 0;
 				}
@@ -1979,6 +2299,96 @@ class VmTable extends JTable {
 		}
 		vmdebug('_modifyColumn executed successfully ' . $_sql);
 		return true;
+	}
+
+	/**
+	 * Method to lock the database table for writing.
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
+	 * @throws  JDatabaseException
+	 */
+	protected function _lock()
+	{
+		$this->_db->lockTable($this->_tbl);
+		$this->_locked = true;
+
+		return true;
+	}
+
+	/**
+	 * Method to unlock the database table for writing.
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
+	 */
+	protected function _unlock()
+	{
+		$this->_db->unlockTables();
+		$this->_locked = false;
+
+		return true;
+	}
+
+	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form table_name.id
+	 * where id is the value of the primary key of the table.
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		return $this->_tbl . '.' . (int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.  In
+	 * tracking the assets a title is kept for each asset so that there is some
+	 * context available in a unified access manager.  Usually this would just
+	 * return $this->title or $this->name or whatever is being used for the
+	 * primary name of the row. If this method is not overridden, the asset name is used.
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @return  string  The string to use as the title in the asset table.
+	 *
+	 * @link    http://docs.joomla.org/JTable/getAssetTitle
+	 * @since   11.1
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->_getAssetName();
+	}
+
+	/**
+	 * Method to get the parent asset under which to register this one.
+	 * By default, all assets are registered to the ROOT node with ID,
+	 * which will default to 1 if none exists.
+	 * The extended class can define a table and id to lookup.  If the
+	 * asset does not exist it will be created.
+	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   integer  $id     Id to look up
+	 *
+	 * @return  integer
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		// For simple cases, parent to the asset root.
+		$assets = self::getInstance('Asset', 'JTable', array('dbo' => $this->getDbo()));
+		$rootId = $assets->getRootId();
+		if (!empty($rootId))
+		{
+			return $rootId;
+		}
+
+		return 1;
 	}
 
 }

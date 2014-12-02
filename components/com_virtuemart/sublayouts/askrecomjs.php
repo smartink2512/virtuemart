@@ -25,66 +25,40 @@ $product = $viewData['product'];
 // addon for joomla modal Box
 JHtml::_('behavior.modal');
 
-$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id . '&tmpl=component';
-$askquestion_url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id . '&tmpl=component', FALSE);
-
-
-$boxFuncReco = '';
-$boxFuncAsk = '';
 if(VmConfig::get('usefancy',1)){
+	
 	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
 	vmJsApi::css('jquery.fancybox-1.3.4');
-	if(VmConfig::get('show_emailfriend',0)){
-		$boxReco = "jQuery.fancybox({
-				href: '" . $MailLink . "',
-				type: 'iframe',
-				height: '550'
-			});";
-	}
-	if(VmConfig::get('ask_question', 0)){
-		$boxAsk = "jQuery.fancybox({
-				href: '" . $askquestion_url . "',
-				type: 'iframe',
-				height: '550'
-			});";
-	}
-
+	$Modal ="
+			$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
+              event.preventDefault();
+		      $.fancybox({
+		        href: $(this).attr('href'),
+		        type: 'iframe',
+		        height: 550
+		        });
+		      });
+			";
+	
 } else {
+	
 	vmJsApi::addJScript( 'facebox', false );
 	vmJsApi::css( 'facebox' );
-	if(VmConfig::get('show_emailfriend',0)){
-		$boxReco = "jQuery.facebox({
-				iframe: '" . $MailLink . "',
-				rev: 'iframe|550|550'
-			});";
-	}
-	if(VmConfig::get('ask_question', 0)){
-		$boxAsk = "jQuery.facebox({
-				iframe: '" . $askquestion_url . "',
-				rev: 'iframe|550|550'
-			});";
-	}
-}
-if(VmConfig::get('show_emailfriend',0) ){
-	$boxFuncReco = "jQuery('a.recommened-to-friend').click( function(){
-					".$boxReco."
-			return false ;
-		});";
-}
-if(VmConfig::get('ask_question', 0)){
-	$boxFuncAsk = "jQuery('a.ask-a-question').click( function(){
-					".$boxAsk."
-			return false ;
-		});";
+    $Modal ="
+    		$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
+		      event.preventDefault();
+		      $.facebox({
+		        iframe: $(this).attr('href'),
+		        rev: 'iframe|550|550'
+		        });
+		      });
+    		"; 
 }
 
-if(!empty($boxFuncAsk) or !empty($boxFuncReco)){
-	vmJsApi::addJScript('popups',"
+vmJsApi::addJScript('popups',"
 //<![CDATA[
 	jQuery(document).ready(function($) {
-		".$boxFuncReco."
-		".$boxFuncAsk."
+		".$Modal."
 	});
 //]]>
 ");
-}

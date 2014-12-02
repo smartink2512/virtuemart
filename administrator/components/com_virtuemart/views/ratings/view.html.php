@@ -55,6 +55,15 @@ class VirtuemartViewRatings extends VmViewAdmin {
 		/* Get the task */
 		$task = vRequest::getCmd('task');
 		switch ($task) {
+			case 'edit':
+				/* Get the data
+				$rating = $model->getRating($cids);
+				$this->addStandardEditViewCommands();
+
+				// Assign the data
+				$this->assignRef('rating', $rating);
+
+				break;*/
 			case 'listreviews':
 				/* Get the data */
 				$this->addStandardDefaultViewLists($model);
@@ -77,24 +86,14 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 				$this->addStandardDefaultViewCommands(false,true);
 				break;
-
-			case 'edit':
-				/* Get the data */
-				$rating = $model->getRating($cids);
-				$this->addStandardEditViewCommands();
-
-				/* Assign the data */
-				$this->assignRef('rating', $rating);
-
-				break;
 			case 'edit_review':
 
 				JToolBarHelper::divider();
 
-				/* Get the data */
-				$rating = $model->getReview($cids);
-				if(!empty($rating)){
-					$this->SetViewTitle('REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
+				// Get the data
+				$this->rating = $model->getReview($cids);
+				if(!empty($this->rating)){
+					$this->SetViewTitle('REVIEW_RATE',$this->rating->product_name." (". $this->rating->customer.")" );
 
 					JToolBarHelper::custom('saveReview', 'save', 'save',  vmText::_('COM_VIRTUEMART_SAVE'), false);
 					JToolBarHelper::custom('applyReview', 'apply', 'apply',  vmText::_('COM_VIRTUEMART_APPLY'), false);
@@ -105,7 +104,7 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 				JToolBarHelper::custom('cancelEditReview', 'cancel', 'cancel',  vmText::_('COM_VIRTUEMART_CANCEL'), false);
 
-				/* Assign the data */
+				// Assign the data
 				$this->assignRef('rating', $rating);
 
 				break;

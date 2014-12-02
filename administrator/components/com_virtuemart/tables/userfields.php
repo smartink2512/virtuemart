@@ -162,7 +162,6 @@ class TableUserfields extends VmTable {
 				$this->_db->setQuery( $query );
 
 				if (!$this->_db->execute()){
-					$this->setError($this->_db->getErrorMsg());
 					vmError('checkAndDelete '.$this->_db->getErrorMsg());
 					$ok = 0;
 				}

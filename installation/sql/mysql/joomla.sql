@@ -4,9 +4,9 @@
 
 CREATE TABLE IF NOT EXISTS `#__assets` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
-  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set parent.',
-  `lft` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
-  `rgt` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
+  `parent_id` int(1) NOT NULL DEFAULT '0' COMMENT 'Nested set parent.',
+  `lft` int(1) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
+  `rgt` int(1) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
   `level` int(10) unsigned NOT NULL COMMENT 'The cached level in the nested tree.',
   `name` varchar(50) NOT NULL COMMENT 'The unique name for the asset.\n',
   `title` varchar(100) NOT NULL COMMENT 'The descriptive title for the asset.',
@@ -164,11 +164,11 @@ CREATE TABLE  `#__banner_tracks` (
 #
 
 CREATE TABLE `#__categories` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(1) NOT NULL auto_increment,
   `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
   `parent_id` int(10) unsigned NOT NULL default '0',
-  `lft` int(11) NOT NULL default '0',
-  `rgt` int(11) NOT NULL default '0',
+  `lft` int(1) NOT NULL default '0',
+  `rgt` int(1) NOT NULL default '0',
   `level` int(10) unsigned NOT NULL default '0',
   `path` varchar(255) NOT NULL default '',
   `extension` varchar(50) NOT NULL default '',
@@ -177,7 +177,7 @@ CREATE TABLE `#__categories` (
   `note` varchar(255) NOT NULL default '',
   `description` mediumtext NOT NULL,
   `published` tinyint(1) NOT NULL default '0',
-  `checked_out` int(11) unsigned NOT NULL default '0',
+  `checked_out` int(1) unsigned NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `access` integer unsigned NOT NULL default '0',
   `params` TEXT NOT NULL,
@@ -381,8 +381,8 @@ CREATE TABLE `#__extensions` (
   `system_data` text NOT NULL,
   `checked_out` int(10) unsigned NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  `ordering` int(11) default '0',
-  `state` int(11) default '0',
+  `ordering` int(1) default '0',
+  `state` int(1) default '0',
   PRIMARY KEY (`extension_id`),
   INDEX `element_clientid`(`element`, `client_id`),
   INDEX `element_folder_clientid`(`element`, `folder`, `client_id`),
@@ -600,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_links` (
   `end_date` datetime NOT NULL default '0000-00-00 00:00:00',
   `list_price` double unsigned NOT NULL default '0',
   `sale_price` double unsigned NOT NULL default '0',
-  `type_id` int(11) NOT NULL,
+  `type_id` int(1) NOT NULL,
   `object` mediumblob NOT NULL,
   PRIMARY KEY  (`link_id`),
   KEY `idx_type` (`type_id`),
@@ -1101,7 +1101,7 @@ CREATE TABLE IF NOT EXISTS `#__finder_types` (
 #
 
 CREATE TABLE `#__languages` (
-  `lang_id` int(11) unsigned NOT NULL auto_increment,
+  `lang_id` int(1) unsigned NOT NULL auto_increment,
   `lang_code` char(7) NOT NULL,
   `title` varchar(50) NOT NULL,
   `title_native` varchar(50) NOT NULL,
@@ -1111,9 +1111,9 @@ CREATE TABLE `#__languages` (
   `metakey` text NOT NULL,
   `metadesc` text NOT NULL,
   `sitename` varchar(1024) NOT NULL default '',
-  `published` int(11) NOT NULL default '0',
+  `published` int(1) NOT NULL default '0',
   `access` integer unsigned NOT NULL DEFAULT '0',
-  `ordering` int(11) NOT NULL default '0',
+  `ordering` int(1) NOT NULL default '0',
   PRIMARY KEY  (`lang_id`),
   UNIQUE `idx_sef` (`sef`),
   UNIQUE `idx_image` (`image`),
@@ -1130,7 +1130,7 @@ VALUES
 #
 
 CREATE TABLE `#__menu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(1) NOT NULL AUTO_INCREMENT,
   `menutype` varchar(24) NOT NULL COMMENT 'The type of menu this item belongs to. FK to #__menu_types.menutype',
   `title` varchar(255) NOT NULL COMMENT 'The display title of the menu item.',
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'The SEF alias of the menu item.',
@@ -1142,7 +1142,7 @@ CREATE TABLE `#__menu` (
   `parent_id` int(10) unsigned NOT NULL DEFAULT '1' COMMENT 'The parent menu item in the menu tree.',
   `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The relative level in the tree.',
   `component_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__extensions.id',
-  `ordering` int(11) NOT NULL DEFAULT '0' COMMENT 'The relative ordering of the menu item in the tree.',
+  `ordering` int(1) NOT NULL DEFAULT '0' COMMENT 'The relative ordering of the menu item in the tree.',
   `checked_out` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__users.id',
   `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'The time the menu item was checked out.',
   `browserNav` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'The click behaviour of the link.',
@@ -1150,8 +1150,8 @@ CREATE TABLE `#__menu` (
   `img` varchar(255) NOT NULL COMMENT 'The image of the menu item.',
   `template_style_id` int(10) unsigned NOT NULL DEFAULT '0',
   `params` TEXT NOT NULL COMMENT 'JSON encoded data for the menu item.',
-  `lft` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
-  `rgt` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
+  `lft` int(1) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
+  `rgt` int(1) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
   `home` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Indicates if this menu item is the home or default page.',
   `language` char(7) NOT NULL DEFAULT '',
   `client_id` tinyint(4) NOT NULL DEFAULT '0',
@@ -1168,7 +1168,7 @@ CREATE TABLE `#__menu` (
 DELETE FROM `#__menu`;
 
 CREATE TABLE IF NOT EXISTS `#__menu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(1) NOT NULL AUTO_INCREMENT,
   `menutype` varchar(24) NOT NULL COMMENT 'The type of menu this item belongs to. FK to #__menu_types.menutype',
   `title` varchar(255) NOT NULL COMMENT 'The display title of the menu item.',
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'The SEF alias of the menu item.',
@@ -1180,7 +1180,7 @@ CREATE TABLE IF NOT EXISTS `#__menu` (
   `parent_id` int(10) unsigned NOT NULL DEFAULT '1' COMMENT 'The parent menu item in the menu tree.',
   `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The relative level in the tree.',
   `component_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__extensions.id',
-  `ordering` int(11) NOT NULL DEFAULT '0' COMMENT 'The relative ordering of the menu item in the tree.',
+  `ordering` int(1) NOT NULL DEFAULT '0' COMMENT 'The relative ordering of the menu item in the tree.',
   `checked_out` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__users.id',
   `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'The time the menu item was checked out.',
   `browserNav` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'The click behaviour of the link.',
@@ -1188,8 +1188,8 @@ CREATE TABLE IF NOT EXISTS `#__menu` (
   `img` varchar(255) NOT NULL COMMENT 'The image of the menu item.',
   `template_style_id` int(10) unsigned NOT NULL DEFAULT '0',
   `params` text NOT NULL COMMENT 'JSON encoded data for the menu item.',
-  `lft` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
-  `rgt` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
+  `lft` int(1) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
+  `rgt` int(1) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
   `home` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Indicates if this menu item is the home or default page.',
   `language` char(7) NOT NULL DEFAULT '',
   `client_id` tinyint(4) NOT NULL DEFAULT '0',
@@ -1306,11 +1306,11 @@ CREATE TABLE `#__messages_cfg` (
 #
 
 CREATE TABLE `#__modules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(1) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL DEFAULT '',
   `note` varchar(255) NOT NULL default '',
   `content` text NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
+  `ordering` int(1) NOT NULL DEFAULT '0',
   `position` varchar(50) NOT NULL DEFAULT '',
   `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1490,7 +1490,7 @@ CREATE TABLE `#__redirect_links` (
 #
 
 CREATE TABLE `#__schemas` (
-  `extension_id` int(11) NOT NULL,
+  `extension_id` int(1) NOT NULL,
   `version_id` varchar(20) NOT NULL,
   PRIMARY KEY (`extension_id`, `version_id`)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1506,7 +1506,7 @@ CREATE TABLE `#__session` (
   `guest` tinyint(4) unsigned default '1',
   `time` varchar(14) default '',
   `data` text default NULL,
-  `userid` int(11) default '0',
+  `userid` int(1) default '0',
   `username` varchar(150) default '',
   `usertype` varchar(50) default '',
   PRIMARY KEY  (`session_id`),
@@ -1520,10 +1520,10 @@ CREATE TABLE `#__session` (
 
 # Update Sites
 CREATE TABLE  `#__updates` (
-  `update_id` int(11) NOT NULL auto_increment,
-  `update_site_id` int(11) default '0',
-  `extension_id` int(11) default '0',
-  `categoryid` int(11) default '0',
+  `update_id` int(1) NOT NULL auto_increment,
+  `update_site_id` int(1) default '0',
+  `extension_id` int(1) default '0',
+  `categoryid` int(1) default '0',
   `name` varchar(100) default '',
   `description` text NOT NULL,
   `element` varchar(100) default '',
@@ -1538,11 +1538,11 @@ CREATE TABLE  `#__updates` (
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available Updates';
 
 CREATE TABLE  `#__update_sites` (
-  `update_site_id` int(11) NOT NULL auto_increment,
+  `update_site_id` int(1) NOT NULL auto_increment,
   `name` varchar(100) default '',
   `type` varchar(20) default '',
   `location` text NOT NULL,
-  `enabled` int(11) default '0',
+  `enabled` int(1) default '0',
   `last_check_timestamp` bigint(20) DEFAULT '0',
   PRIMARY KEY  (`update_site_id`)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Update Sites';
@@ -1565,11 +1565,11 @@ INSERT INTO `#__update_sites_extensions` VALUES
 
 
 CREATE TABLE  `#__update_categories` (
-  `categoryid` int(11) NOT NULL auto_increment,
+  `categoryid` int(1) NOT NULL auto_increment,
   `name` varchar(20) default '',
   `description` text NOT NULL,
-  `parent` int(11) default '0',
-  `updatesite` int(11) default '0',
+  `parent` int(1) default '0',
+  `updatesite` int(1) default '0',
   PRIMARY KEY  (`categoryid`)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Update Categories';
 
@@ -1660,7 +1660,7 @@ CREATE TABLE `#__users` (
   `activation` varchar(100) NOT NULL default '',
   `params` text NOT NULL,
   `lastResetTime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Date of last password reset',
-  `resetCount` int(11) NOT NULL DEFAULT '0' COMMENT 'Count of password resets since lastResetTime',
+  `resetCount` int(1) NOT NULL DEFAULT '0' COMMENT 'Count of password resets since lastResetTime',
   PRIMARY KEY  (`id`),
   KEY `usertype` (`usertype`),
   KEY `idx_name` (`name`),
@@ -1695,10 +1695,10 @@ CREATE TABLE IF NOT EXISTS `#__user_notes` (
 # -------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__user_profiles` (
-  `user_id` int(11) NOT NULL,
+  `user_id` int(1) NOT NULL,
   `profile_key` varchar(100) NOT NULL,
   `profile_value` varchar(255) NOT NULL,
-  `ordering` int(11) NOT NULL default '0',
+  `ordering` int(1) NOT NULL default '0',
   UNIQUE KEY `idx_user_id_profile_key` (`user_id`,`profile_key`)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Simple user profile storage table';
 
@@ -1756,7 +1756,7 @@ CREATE TABLE `#__weblinks` (
 CREATE TABLE IF NOT EXISTS `#__viewlevels` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `title` varchar(100) NOT NULL DEFAULT '',
-  `ordering` int(11) NOT NULL DEFAULT '0',
+  `ordering` int(1) NOT NULL DEFAULT '0',
   `rules` varchar(5120) NOT NULL COMMENT 'JSON encoded access control.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_assetgroup_title_lookup` (`title`)

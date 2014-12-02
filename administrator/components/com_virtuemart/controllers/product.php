@@ -103,15 +103,13 @@ class VirtuemartControllerProduct extends VmController {
 		$data = vRequest::getRequest();
 		$id = $model->store($data);
 
-		$errors = $model->getErrors();
-		if(empty($errors)) {
+		$msg = 'failed';
+		if(!empty($id)) {
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
 			$type = 'message';
 		}
 		else $type = 'error';
-		foreach($errors as $error){
-			$msg = ($error).'<br />';
-		}
+
 		$json['msg'] = $msg;
 		if ($id) {
 			$json['product_id'] = $id;

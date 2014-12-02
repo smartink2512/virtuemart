@@ -207,22 +207,6 @@ class VirtueMartModelCustom extends VmModel {
 
 		$result = $db->loadObjectList ();
 
-		$errMsg = $db->getErrorMsg ();
-		$errs = $db->getErrors ();
-
-		if (!empty($errMsg)) {
-			$app = JFactory::getApplication ();
-			$errNum = $db->getErrorNum ();
-			$app->enqueueMessage ('SQL-Error: ' . $errNum . ' ' . $errMsg);
-		}
-
-		if ($errs) {
-			$app = JFactory::getApplication ();
-			foreach ($errs as $err) {
-				$app->enqueueMessage ($err);
-			}
-		}
-
 		return $result;
 	}
 
@@ -285,10 +269,7 @@ class VirtueMartModelCustom extends VmModel {
 
 			$tableCustomfields = $this->getTable($table.'_customfields');
 			$tableCustomfields->bindChecknStore($fields);
-    		$errors = $tableCustomfields->getErrors();
-			foreach($errors as $error){
-				vmError($error);
-			}
+
 		}
 
 	}
@@ -340,12 +321,6 @@ class VirtueMartModelCustom extends VmModel {
 		self::setParameterableByFieldType($table,$table->field_type);
 
 		$table->bindChecknStore($data);
-
-		$errors = $table->getErrors();
-
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();

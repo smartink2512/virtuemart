@@ -284,10 +284,9 @@ class VirtueMartModelRatings extends VmModel {
 
 				if(isset($data['vote'])){
 					$votesTable = $this->getTable('rating_votes');
-					$votesTable->bindChecknStore($data,TRUE);
-					$errors = $votesTable->getErrors();
-					foreach($errors as $error){
-						vmError(get_class( $this ).'::Error store votes '.$error);
+					$res = $votesTable->bindChecknStore($data,TRUE);
+					if(!$res){
+						vmError(get_class( $this ).'::Error store votes ');
 					}
 				}
 
@@ -315,10 +314,9 @@ class VirtueMartModelRatings extends VmModel {
 				$data['virtuemart_rating_id'] = empty($rating->virtuemart_rating_id)? 0: $rating->virtuemart_rating_id;
 				vmdebug('saveRating $data',$data);
 				$rating = $this->getTable('ratings');
-				$rating->bindChecknStore($data,TRUE);
-				$errors = $rating->getErrors();
-				foreach($errors as $error){
-					vmError(get_class( $this ).'::Error store rating '.$error);
+				$res = $rating->bindChecknStore($data,TRUE);
+				if(!$res){
+					vmError(get_class( $this ).'::Error store rating ');
 				}
 			}
 
@@ -374,10 +372,9 @@ class VirtueMartModelRatings extends VmModel {
 				$data['virtuemart_rating_review_id'] = empty($review->virtuemart_rating_review_id)? 0: $review->virtuemart_rating_review_id;
 
 				$reviewTable = $this->getTable('rating_reviews');
-				$reviewTable->bindChecknStore($data,TRUE);
-				$errors = $reviewTable->getErrors();
-				foreach($errors as $error){
-					vmError(get_class( $this ).'::Error store review '.$error);
+				$res = $reviewTable->bindChecknStore($data,TRUE);
+				if(!$res){
+					vmError(get_class( $this ).'::Error store review ');
 				}
 			}
 			return $data['virtuemart_rating_review_id'];

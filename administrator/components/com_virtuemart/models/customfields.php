@@ -1409,10 +1409,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 				VirtueMartModelCustom::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
 
 				$tableCustomfields->bindChecknStore($fields);
-				$errors = $tableCustomfields->getErrors();
-				foreach($errors as $error){
-					vmError($error);
-				}
+
 				$key = array_search($fields['virtuemart_customfield_id'], $old_customfield_ids );
 				if ($key !== false ) unset( $old_customfield_ids[ $key ] );
 

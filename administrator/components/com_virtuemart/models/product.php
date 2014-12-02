@@ -1658,14 +1658,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		$stored = $product_data->bindChecknStore ($data, false);
 
-		$errors = $product_data->getErrors ();
-		if(!$stored or count($errors)>0){
-			foreach ($errors as $error) {
-				vmError ('Product store '.$error);
-			}
-			if(!$stored){
-				vmError('You are not an administrator or the correct vendor, storing of product cancelled');
-			}
+		if(!$stored ){
+			vmError('You are not an administrator or the correct vendor, storing of product cancelled');
 			return FALSE;
 		}
 
@@ -1820,10 +1814,7 @@ class VirtueMartModelProduct extends VmModel {
 			$mediaModel = VmModel::getModel ('Media');
 
 			$mediaModel->storeMedia ($data, 'product');
-			$errors = $mediaModel->getErrors ();
-			foreach ($errors as $error) {
-				vmError ($error);
-			}
+
 		}
 
 		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
@@ -1843,10 +1834,7 @@ class VirtueMartModelProduct extends VmModel {
 			$product_table_Parent->load($data['virtuemart_product_id']);
 		}
 		$product_table_Parent->bindChecknStore ($data);
-		$errors = $product_table_Parent->getErrors ();
-		foreach ($errors as $error) {
-			vmError ($error);
-		}
+
 		return $data;
 
 	}

@@ -182,17 +182,10 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		}
 
 		$table->bindChecknStore($data);
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
+
 
 		$xrefTable = $this->getTable('paymentmethod_shoppergroups');
 		$xrefTable->bindChecknStore($data);
-		$errors = $xrefTable->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');

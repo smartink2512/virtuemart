@@ -478,14 +478,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				}	
 			}
 		}
-			
-		// Update the order item history
-		//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			vmError( get_class( $this ).'::store '.$error);
-		}
-
 
 		//OSP update cartRules/shipment/payment
 		//it would seem strange this is via item edit
@@ -949,10 +941,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);
-		$errors = $orderTable->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		$db = JFactory::getDBO();
 
@@ -1928,17 +1916,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);
-		$errors = $orderTable->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		$db = JFactory::getDBO();
 		$_orderID = $db->insertid();
 
 		$_usr  = JFactory::getUser();
 		if (!$this->_writeUserInfo($_orderID, $_usr, array())) {
-			vmError($error);
+			vmError('Problem writing user info to order');
 		}
 
 		$orderModel = VmModel::getModel('orders');

@@ -84,8 +84,6 @@ class VirtuemartControllerCalc extends VmController {
 
 		if ($model->orderCalc($id, -1)) {
 			$msg = vmText::_('COM_VIRTUEMART_ITEM_MOVED_UP');
-		} else {
-			$msg = $model->getError();
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg );

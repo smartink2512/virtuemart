@@ -864,7 +864,7 @@ class VmConfig {
 				$confTable = JTable::getInstance('configs', 'Table', array());
 
 				if (!$confTable->bindChecknStore($confData)) {
-					vmError($confTable->getError());
+					vmError('storeConfig was not able to store config');
 				}
 			} else {
 				self::$_virtuemart_vendor_id = 1;

@@ -198,11 +198,9 @@ class VirtueMartModelVendor extends VmModel {
 		}
 		if(empty($data['vendor_name'])) $data['vendor_name'] = $data['vendor_store_name'];
 
-		$table->bindChecknStore ($data);
-		$errors = $table->getErrors ();
-		foreach ($errors as $error) {
-			$this->setError ($error);
-			vmError ('store vendor', $error);
+		$res = $table->bindChecknStore ($data);
+		if(!$res) {
+			vmError ('Error storing vendor');
 		}
 
 		//set vendormodel id to the lastinserted one
@@ -222,21 +220,10 @@ class VirtueMartModelVendor extends VmModel {
 
 			$usertable->virtuemart_vendor_id = $this->_id;
 			$usertable->store();
-
-			$errors = $usertable->getErrors ();
-			foreach ($errors as $error) {
-				$this->setError ($error);
-				vmError ('Store vendor ' . $error);
-			}
-
 		}
 		// Process the images
 		$mediaModel = VmModel::getModel ('Media');
 		$mediaModel->storeMedia ($data, 'vendor');
-		$errors = $mediaModel->getErrors ();
-		foreach ($errors as $error) {
-			vmError ($error);
-		}
 
 		$plg_datas = $dispatcher->trigger ('plgVmAfterVendorStore', $data);
 		foreach ($plg_datas as $plg_data) {

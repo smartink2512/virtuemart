@@ -72,8 +72,6 @@ class VirtueMartModelCategory extends VmModel {
    			$xrefTable = $this->getTable('category_medias');
    			$this->_cache[$this->_id][$childs]->virtuemart_media_id = $xrefTable->load((int)$this->_id);
 
-   			if($xrefTable->getError()) vmError($xrefTable->getError());
-
    			if(empty($this->_cache[$this->_id][$childs]->category_template)){
    				$this->_cache[$this->_id][$childs]->category_template = VmConfig::get('categorytemplate');
    			}
@@ -97,12 +95,6 @@ class VirtueMartModelCategory extends VmModel {
 
    			}
 
-   			if($errs = $this->getErrors()){
-   				$app = JFactory::getApplication();
-   				foreach($errs as $err){
-   					$app->enqueueMessage($err);
-   				}
-   			}
   		}
 
   		return $this->_cache[$this->_id][$childs];
@@ -500,10 +492,6 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		$table->bindChecknStore($data);
-    	$errors = $table->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		if(!empty($data['virtuemart_category_id'])){
 			$xdata['category_child_id'] = (int)$data['virtuemart_category_id'];
@@ -513,19 +501,12 @@ class VirtueMartModelCategory extends VmModel {
     		$table = $this->getTable('category_categories');
 
 			$table->bindChecknStore($xdata);
-	    	$errors = $table->getErrors();
-			foreach($errors as $error){
-				vmError($error);
-			}
+
 		}
 
 		// Process the images
 		$mediaModel = VmModel::getModel('Media');
 		$file_id = $mediaModel->storeMedia($data,'category');
-      	$errors = $mediaModel->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		$cache = JFactory::getCache('com_virtuemart_cats','callback');
 		$cache->clean();

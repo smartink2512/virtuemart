@@ -76,18 +76,11 @@ class VirtueMartModelManufacturer extends VmModel {
 		$table = $this->getTable('manufacturers');
 
 		$table->bindChecknStore($data);
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
 
 		// Process the images
 		$mediaModel = VmModel::getModel('Media');
 		$mediaModel->storeMedia($data,'manufacturer');
-		$errors = $mediaModel->getErrors();
-		foreach($errors as $error){
-			vmError($error);
-		}
+
 		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
 		return $table->virtuemart_manufacturer_id;

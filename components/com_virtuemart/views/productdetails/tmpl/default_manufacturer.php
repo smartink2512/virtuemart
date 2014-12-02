@@ -29,6 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 	echo JHtml::_('link', $link, $text);
     } else {
 	?>
-        <span class="bold"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="manuModal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $link ?>"><?php echo $text ?></a>
+        <span class="bold"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="manuModal" href="<?php echo $link ?>"><?php echo $text ?></a>
     <?php } ?>
 </div>

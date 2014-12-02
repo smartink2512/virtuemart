@@ -1067,8 +1067,6 @@ class VmMediaHandler {
 		$db->setQuery($q);
 
 		if ($virtuemart_media_ids = $db->loadColumn()) {
-			$errMsg = $db->getErrorMsg();
-			$errs = $db->getErrors();
 
 			$model = VmModel::getModel('Media');
 
@@ -1076,19 +1074,6 @@ class VmMediaHandler {
 			$list['total'] = $db->loadResult();
 
 			$list['images'] = $model->createMediaByIds($virtuemart_media_ids, $type);
-
-			if(!empty($errMsg)){
-				$app = JFactory::getApplication();
-				$errNum = $db->getErrorNum();
-				$app->enqueueMessage('SQL-Error: '.$errNum.' '.$errMsg);
-			}
-
-			if($errs){
-				$app = JFactory::getApplication();
-				foreach($errs as $err){
-					$app->enqueueMessage($err);
-				}
-			}
 
 			return $list;
 		}

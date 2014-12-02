@@ -262,49 +262,6 @@ echo $this->loadTemplate('reviews');
 	Virtuemart.containerSelector = '.productdetails-view';
 	//Virtuemart.container = jQuery('.main');
 	//Virtuemart.containerSelector = '.main';
-	//});
-
-	// Open print and manufacturer link to Modal window
-	  <?php if(VmConfig::get('usefancy',1)) : 
-	  $manulink = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $this->product->virtuemart_manufacturer_id[0] . '&tmpl=component', FALSE);
-	  ?>
-	  jQuery('a.printModal').click(function(e){
-		  jQuery.fancybox({
-					href: '<?php echo $link.'&print=1'; ?>',
-	                type: 'iframe',
-	                height: '500'
-				  });
-                  e.preventDefault();
-	  });
-
-	  jQuery('a.manuModal').click(function(e){
-		   jQuery.fancybox({
-					href: '<?php echo $manulink ?>',
-	                type: 'iframe'
-				  });
-	              e.preventDefault();
-	  });
-	  
-	  <?php else : 
-	  $manulink = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $this->product->virtuemart_manufacturer_id[0] . '&tmpl=component', FALSE);
-	  ?>
-
-	  jQuery('a.printModal').click(function(e){
-		  jQuery.facebox({
-					iframe: '<?php echo $link.'&print=1'; ?>',
-					rev: 'iframe|550|550'
-				  });
-		          e.preventDefault();
-	  });
-
-	  jQuery('a.manuModal').click(function(e){
-			jQuery.facebox({
-					iframe: '<?php echo $manulink; ?>',
-					rev: 'iframe|550|550'
-					});
-			        e.preventDefault();
-      });
-      
-	  <?php endif; ?>	  	
+	//});	  	
 </script>
 

@@ -162,15 +162,12 @@ class VmController extends JControllerLegacy{
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);
 
-		$errors = $model->getErrors();
-		if(empty($errors)) {
+		$msg = 'failed';
+		if(!empty($id)) {
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
 			$type = 'message';
 		}
 		else $type = 'error';
-		foreach($errors as $error){
-			$msg = ($error).'<br />';
-		}
 
 		$redir = $this->redirectPath;
 
@@ -206,16 +203,14 @@ class VmController extends JControllerLegacy{
 		} else {
 			$model = VmModel::getModel($this->_cname);
 			$ret = $model->remove($ids);
-			$errors = $model->getErrors();
+
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
-			if(!empty($errors) or $ret==false) {
+			if($ret==false) {
 				$msg = vmText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
 						$type = 'error';
 			}
 			else $type = 'remove';
-			foreach($errors as $error){
-				$msg .= '<br />'.($error);
-			}
+
 		}
 
 		$this->setRedirect($this->redirectPath, $msg,$type);

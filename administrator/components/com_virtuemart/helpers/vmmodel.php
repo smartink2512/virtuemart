@@ -935,7 +935,7 @@ class VmModel extends JObject {
 		$table = $this->getTable($this->_maintablename);
 		foreach($ids as $id) {
 			if (!$table->delete((int)$id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$id);
 				return false;
 			}
 		}
@@ -972,7 +972,7 @@ class VmModel extends JObject {
 			$table->load( (int)$id );
 
 			if (!$table->toggle($field, $val)) {
-				vmError(get_class( $this ).'::toggle '.$table->getError() .' '.$id);
+				vmError(get_class( $this ).'::toggle  '.$id);
 				$ok = false;
 			}
 		}

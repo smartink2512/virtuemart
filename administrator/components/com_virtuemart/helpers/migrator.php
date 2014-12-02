@@ -526,13 +526,13 @@ class Migrator extends VmModel{
 				$userfields->type = $field->type;
 				$type = $userfields->formatFieldType($field);
 				if (!$userinfo->_modifyColumn ('ADD', $field->name, $type)) {
-					vmError($userinfo->getError());
+					//vmError($userinfo->getError());
 					return false;
 				}
 
 				// Alter the order_userinfo table
 				if (!$orderinfo->_modifyColumn ('ADD',$field->name, $type)) {
-					vmError($orderinfo->getError());
+					//vmError($orderinfo->getError());
 					return false;
 				}
 				$migratedfields .= '['.$field->name.'] ';
@@ -620,12 +620,12 @@ class Migrator extends VmModel{
 
 					$userinfo = $this->getTable('userinfos');
 					if (!$userinfo->bindChecknStore($userfielddata)) {
-						vmError('Migration storeAddress BT '.$userinfo->getError());
+						vmError('Migration storeAddress BT ');
 					}
 
 					if(!empty($user['user_is_vendor']) && $user['user_is_vendor'] === 1){
 						if (!$userModel->storeVendorData($user)){
-							vmError('Migrator portUsers '.$userModel->getError());
+							vmError('Migrator portUsers ');
 						}
 					}
 
@@ -685,7 +685,7 @@ class Migrator extends VmModel{
 
 				$userinfo = $this->getTable('userinfos');
 				if (!$userinfo->bindChecknStore($userfielddata)) {
-					vmError('Migration storeAddress ST '.$userinfo->getError());
+					vmError('Migration storeAddress ST ');
 				}
 				$i++;
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){

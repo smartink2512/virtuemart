@@ -436,25 +436,6 @@ class VirtueMartCart {
 	}
 
 	/**
-	 * Set the last error that occurred.
-	 * This is used on error to pass back to the cart when addJS() is invoked.
-	 * @param string $txt Error message
-	 * @author Oscar van Eijk
-	 */
-	private function setError($txt) {
-		$this->_lastError = $txt;
-	}
-
-	/**
-	 * Retrieve the last error message
-	 * @return string The last error message that occurred
-	 * @author Oscar van Eijk
-	 */
-	public function getError() {
-		return ($this->_lastError);
-	}
-
-	/**
 	 * For one page checkouts, disable with this the redirects
 	 * @param bool $bool
 	 */
@@ -959,10 +940,15 @@ class VirtueMartCart {
 				$userModel = VmModel::getModel('user');
 				$stData = $userModel->getUserAddressList($currentUser->id, 'ST', $this->selected_shipto);
 
-				$stData = get_object_vars($stData[0]);
-				if($this->validateUserData('ST', $stData)>0){
-					$this->ST = $stData;
+				if(isset($stData[0]) and is_object($stData[0])){
+					$stData = get_object_vars($stData[0]);
+					if($this->validateUserData('ST', $stData)>0){
+						$this->ST = $stData;
+					}
+				} else {
+					$this->selected_shipto = 0;
 				}
+
 			}
 			//Only when there is an ST data, test if all necessary fields are filled
 			$validUserDataST = self::validateUserData('ST');
@@ -1555,14 +1541,12 @@ class VirtueMartCart {
 		// Check for a valid quantity
 		if (!is_numeric( $quantity)) {
 			$errorMsg = vmText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
-			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
 		}
 		// Check for negative quantity
 		if ($quantity < 1) {
 			$errorMsg = vmText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
-			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
 		}
@@ -1578,11 +1562,11 @@ class VirtueMartCart {
 				if($productsleft>0 and ($stockhandle=='disableadd' or $stockhandle=='disableit_children') ){
 					$quantity = $productsleft;
 					$product->errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$product->product_name,$quantity);
-					$this->setError($product->errorMsg);
+					vmError($product->errorMsg);
 				} else {
 					$quantity = 0;
 					$product->errorMsg = vmText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
-					$this->setError($product->errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
+					vmError($product->errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
 					// todo better key string
 					vmInfo($product->errorMsg. ' '.$product->product_name);
 					return false;
@@ -1595,7 +1579,6 @@ class VirtueMartCart {
 		if ($min != 0 && $quantity < $min){
 			$quantity = $min;
 			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min, $product->product_name);
-			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
 		}
@@ -1604,7 +1587,6 @@ class VirtueMartCart {
 		if ($max != 0 && $quantity > $max) {
 			$quantity = $max;
 			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max, $product->product_name);
-			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
 		}
@@ -1613,7 +1595,6 @@ class VirtueMartCart {
 		if ($step != 0 && ($quantity%$step)!= 0) {
 			$quantity = $quantity + ($quantity%$step);
 			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_STEP_ORDER', $step);
-			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
 		}

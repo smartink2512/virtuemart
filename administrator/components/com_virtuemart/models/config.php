@@ -125,7 +125,7 @@ class VirtueMartModelConfig extends VmModel {
 		if(function_exists('glob')){
 			$specfiles = glob($dir.DS."*_specs.xml");
 			if(empty($specfiles) and is_dir($dir)){
-				vmWarn('No fonts _specs.xml files found in '.$dir);
+				//vmWarn('No fonts _specs.xml files found in '.$dir);
 				return $result;
 			}
 			foreach ($specfiles as $file) {

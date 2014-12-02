@@ -15,6 +15,7 @@ $products_per_row = $viewData['products_per_row'];
 $currency = $viewData['currency'];
 $showRating = $viewData['showRating'];
 $verticalseparator = " vertical-separator";
+echo shopFunctionsF::renderVmSubLayout('askrecomjs');
 
 $ItemidStr = '';
 $Itemid = shopFunctionsF::getLastVisitedItemId();

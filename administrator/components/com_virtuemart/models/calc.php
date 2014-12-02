@@ -195,9 +195,6 @@ class VirtueMartModelCalc extends VmModel {
 
 		$xrefTable = $this->getTable('calc_manufacturers');
     	$xrefTable->bindChecknStore($data);
-    	if($xrefTable->getError()){
-			vmError('Calculation store '.$xrefTable->getError());
-		}
 
 		if (!class_exists('vmCalculationPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
@@ -205,20 +202,6 @@ class VirtueMartModelCalc extends VmModel {
 		//$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array(&$data));
 		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable',array('calculation',$data,$table));
 
-    	$errMsg = $db->getErrorMsg();
-		$errs = $db->getErrors();
-
-		if(!empty($errMsg)){
-
-			$errNum = $db->getErrorNum();
-			vmError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$db->getQuery());
-		}
-
-		if(!empty($errs)){
-			foreach($errs as $err){
-				if(!empty($err)) vmError('Calculation store '.$err);
-			}
-		}
 
 		return $table->virtuemart_calc_id;
 	}
