@@ -15,31 +15,31 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  * other free or open source software licenses.
  * @version $Id: $
  */
-class JElementSubscribe extends JElement {
+JFormHelper::loadFieldClass('list');
+jimport('joomla.form.formfield');
 
-	/**
-	 * Element name
-	 *
-	 * @access    protected
-	 * @var        string
-	 */
-	var $_name = "Subscribe";
+class JFormFieldSubscribe extends JFormFieldList
+{
 
-	function fetchElement($name, $value, &$node, $control_name) {
+	var $type = "Subscribe";
+
+	function getOptions()
+	{
 
 		$query = "
           SELECT virtuemart_custom_id, custom_title
           FROM #__virtuemart_customs
-
-";
+		";
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
 		$customFieldList = $db->loadObjectList();
 
-		$attribs = ' ';
-		$attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
-		return JHTML::_('select.genericlist', $customFieldList, $control_name . '[' . $name . ']', $attribs, 'virtuemart_custom_id', 'custom_title', $value, $control_name . $name);
+		foreach ($customFieldList as $v) {
+			$options[] = JHtml::_('select.option', $v->value, $v->text);
+		}
+
+		return $options;
 	}
 
 }

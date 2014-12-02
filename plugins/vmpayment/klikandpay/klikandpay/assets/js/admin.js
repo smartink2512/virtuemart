@@ -1,6 +1,6 @@
 /**
  *
- * Realex payment plugin
+ * KlikAndPay payment plugin
  *
  * @author Valérie Isaksen
  * @version $Id$
@@ -24,54 +24,54 @@ jQuery().ready(function ($) {
     /************/
 
     handleRecurringDate = function () {
-        var recurring_number = $('#paramsrecurring_number').val();
-        var integration = $('#paramsintegration').val();
+        var recurring_number = $('#params_recurring_number').val();
+        var integration = $('#params_integration').val();
 
-        $('.recurring_date').parents('tr').hide();
+        $('.recurring_date').parents('.control-group').hide();
 
         if (integration == 'recurring') {
             if (recurring_number == '2') {
-                $('.recurring_date').parents('tr').show();
+                $('.recurring_date').parents('.control-group').show();
             }
         }
     }
 
     handleIntegration = function () {
-        var integration = $('#paramsintegration').val();
+        var integration = $('#params_integration').val();
 
-        $('.integration ').parents('tr').hide();
+        $('.integration ').parents('.control-group').hide();
 
         if (integration == 'recurring') {
-            $('.recurring').parents('tr').show();
+            $('.recurring').parents('.control-group').show();
         } else if (integration == 'subscribe') {
-            $('.subscribe').parents('tr').show();
+            $('.subscribe').parents('.control-group').show();
         }
     }
 
     handleSubscribeNumber = function () {
-        var subscribe_number = $('#paramssubscribe_number').val();
-        var integration = $('#paramsintegration').val();
+        var subscribe_number = $('#params_subscribe_number').val();
+        var integration = $('#params_integration').val();
 
-        $('.subscribe_number_1 ').parents('tr').hide();
-        $('.subscribe_number_2 ').parents('tr').hide();
-        $('.subscribe_number_3 ').parents('tr').hide();
+        $('.subscribe_number_1 ').parents('.control-group').hide();
+        $('.subscribe_number_2 ').parents('.control-group').hide();
+        $('.subscribe_number_3 ').parents('.control-group').hide();
         if (integration == 'subscribe') {
-            $('.subscribe_number_1').parents('tr').show();
+            $('.subscribe_number_1').parents('.control-group').show();
             if (subscribe_number == '2') {
-                $('.subscribe_number_2').parents('tr').show();
+                $('.subscribe_number_2').parents('.control-group').show();
             } else if (subscribe_number == '3') {
-                $('.subscribe_number_2').parents('tr').show();
-                $('.subscribe_number_3').parents('tr').show();
+                $('.subscribe_number_2').parents('.control-group').show();
+                $('.subscribe_number_3').parents('.control-group').show();
             }
         }
     }
     handleShopMode = function () {
-        var shop_mode = $('#paramsshop_mode').val();
+        var shop_mode = $('#params_shop_mode').val();
 
-        $('.shop_mode ').parents('tr').hide();
+        $('.shop_mode ').parents('.control-group').hide();
 
         if (shop_mode == 'test') {
-            $('.shop_mode').parents('tr').show();
+            $('.shop_mode').parents('.control-group').show();
         }
     }
 
@@ -80,22 +80,22 @@ jQuery().ready(function ($) {
     /**********/
 
 
-    $('#paramsrecurring_number').change(function () {
+    $('#params_recurring_number').change(function () {
         //handleRecurringDate();
 
     });
-    $('#paramsshop_mode').change(function () {
+    $('#params_shop_mode').change(function () {
         handleShopMode();
 
     });
-    $('#paramsintegration').change(function () {
+    $('#params_integration').change(function () {
         handleIntegration();
         handleRecurringDate();
         handleSubscribeNumber();
 
 
     });
-    $('#paramssubscribe_number').change(function () {
+    $('#params_subscribe_number').change(function () {
         handleSubscribeNumber();
     });
     /*****************/

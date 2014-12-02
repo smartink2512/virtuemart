@@ -834,34 +834,43 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 	function getConfirmedHtml($post_variables, $interface, $subscribe_id = NULL) {
 		$server = $interface->getKlikandpayServerUrl($subscribe_id);
 		$this->debugLog(var_export($post_variables, true), 'getConfirmedHtml', 'debug', false);
-		// add spin image
-		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
-		if ($this->_currentMethod->debug) {
-			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" target="klikandpay">';
+		if (vmconfig::get('css')) {
+			$msg = vmText::_('VMPAYMENT_KLIKANDPAY_REDIRECT_MESSAGE', true);
 		} else {
-			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" >';
+			$msg='';
 		}
+		vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
+  			jQuery(document).ready(function($){
+   				jQuery("body").addClass("vmLoading");
+  				var msg="'.$msg.'";
+   				jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
+    			jQuery("#vmPaymentForm").submit();
+			})
+		');
+
+		$html = '';
+		if ($this->_method->debug) {
+			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" target="paypal">';
+		} else {
+			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" id="vmPaymentForm" accept-charset="UTF-8">';
+		}
+		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
 		foreach ($post_variables as $name => $value) {
-			$html .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
+			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
+		if ($this->_method->debug) {
 
-		if ($this->_currentMethod->debug) {
-			$this->debugLog($this->_currentMethod->virtuemart_paymentmethod_id, 'sendPostRequest: payment method', 'debug');
 			$html .= '<div style="background-color:red;color:white;padding:10px;">
-						<input type="submit"  value="The method is in debug mode. Click here to be redirected to Klikandpay" />
+						<input type="submit"  value="The method is in debug mode. Click here to be redirected to PayPal" />
 						</div>';
-			$this->debugLog($post_variables, 'sendPostRequest:', 'debug');
+			$this->debugLog($post_variables, 'getConfirmedHtml:', 'debug');
 
 		} else {
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
 
-			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_KLIKANDPAY_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">';
-			$html .= '		document.vm_klikandpay_form.submit();';
-			$html .= '	</script>';
 		}
-		$html .= '</form></div>';
-		$html .= '</body></html>';
+		$html .= '</form>';
 
 		return $html;
 	}

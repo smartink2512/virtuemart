@@ -18,12 +18,11 @@
 
     <vmconfig>
         <fields name="params">
-            <fieldset name="basic" addfieldpath="/plugins/vmpayment/sofort/sofort/fields">
+            <fieldset name="basic" addfieldpath="/plugins/vmpayment/sofort/sofort/fields" />
+            <fieldset name="basic" addfieldpath="/plugins/vmpayment/sofort_ideal/sofort_ideal/fields">
                 <field type="spacer" default="VMPAYMENT_SOFORT_IDEAL_PAYMENT_TITLE" level="level1"/>
                 <field type="getsofort" level="level1"/>
-                <field type="sofortidealmanual" level="level1"/>
 
-                <field type="spacer" default="" level="level1"/>
                 <field type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_SETTINGS" level="level1"/>
                 <field name="payment_logos" type="vmfiles" label="VMPAYMENT_SOFORT_LOGOS"
                        description="VMPAYMENT_SOFORT_LOGOS_DESC"

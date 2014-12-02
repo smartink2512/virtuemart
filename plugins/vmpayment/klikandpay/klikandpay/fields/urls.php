@@ -17,17 +17,17 @@ defined("_JEXEC") or die("Direct Access to " . basename(__FILE__) . "is not allo
  */
 /**
  * Account set up >Set up > URL transaction accepted
- * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&po=
+ * http://mywebsite.com/index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived&amp;po=
  *
  * Account set up >Set up > URL refused/cancelled transaction
- * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&po=
+ * http://mywebsite.com/index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginUserPaymentCancel&amp;po=
  *
  *  * Account set up > Dynamic Set up > Dynamic return URL
- * http://mywebsite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&po=
+ * http://mywebsite.com/index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component&amp;po=
  */
 
-
-class JElementUrls extends JElement {
+jimport('joomla.form.formfield');
+class JFormFieldUrls extends JFormField {
 
 	/**
 	 * Element name
@@ -35,19 +35,19 @@ class JElementUrls extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = "urls";
+	var $type = "urls";
 
-	function fetchElement($name, $value, &$node, $control_name) {
+	function getInput() {
 
-		$dynamic_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&po=';
-		$accepted_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&po=';
-		$refused_url = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&po=';
+		$dynamic_url = JURI::root() . 'index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component&amp;po=';
+		$accepted_url = JURI::root() . 'index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived&amp;po=';
+		$refused_url = JURI::root() . 'index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginUserPaymentCancel&amp;po=';
 		$msg = "";
-		$msg .= '<div style="margin-top: 10px ;">';
+		$msg .= '<div>';
 		$msg .= "<strong>" . vmText::_('VMPAYMENT_KLIKANDPAY_CONF_DYNAMIC_RETURN_URL') . "</strong>";
 		$msg .= "<br />";
 		$msg .= vmText::_('VMPAYMENT_KLIKANDPAY_CONF_DYNAMIC_RETURN_URL_TIP');
-		$msg .= "</div>";
+		$msg .= "<br />";
 		$msg .= '<input class="required" readonly size="180" value="' . $dynamic_url . '" />';
 		$msg .= "</div>";
 
@@ -55,7 +55,7 @@ class JElementUrls extends JElement {
 		$msg .= "<strong>" . vmText::_('VMPAYMENT_KLIKANDPAY_CONF_URL_TRANSACTION_ACCEPTED') . "</strong>";
 		$msg .= "<br />";
 		$msg .= vmText::_('VMPAYMENT_KLIKANDPAY_CONF_URL_TRANSACTION_ACCEPTED_TIP');
-		$msg .= "</div>";
+		$msg .= "<br />";
 		$msg .= '<input class="required" readonly size="180" value="' . $accepted_url . '" />';
 		$msg .= "</div>";
 
@@ -63,8 +63,9 @@ class JElementUrls extends JElement {
 		$msg .= "<strong>" . vmText::_('VMPAYMENT_KLIKANDPAY_CONF_URL_TRANSACTION_REFUSED') . "</strong>";
 		$msg .= "<br />";
 		$msg .= vmText::_('VMPAYMENT_KLIKANDPAY_CONF_URL_TRANSACTION_REFUSED_TIP');
+		$msg .= "<br />";
+		//$msg .=   $refused_url  ;
 		$msg .= '<input class="required" readonly size="180" value="' . $refused_url . '" />';
-
 		$msg .= "</div>";
 		return $msg;
 
