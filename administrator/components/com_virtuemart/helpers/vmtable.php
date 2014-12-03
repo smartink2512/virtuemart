@@ -27,7 +27,21 @@ defined('_JEXEC') or die();
  * @author Milbo
  *
  */
-class VmTable {
+if(JVM_VERSION<3){
+	interface JObservableInterface{
+
+	}
+	interface JTableInterface{
+
+	}
+}
+
+
+class VmTable implements JObservableInterface, JTableInterface {
+
+
+
+
 
 	protected static $_cache = array();
 	private $_lhash = 0;

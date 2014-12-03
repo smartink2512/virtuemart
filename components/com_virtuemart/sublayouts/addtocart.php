@@ -47,7 +47,7 @@ if($step==0)
 ?>
 
 	<div class="addtocart-area">
-		<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ (vmURI::getCleanUrl(),false); ?>">
+		<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart',false); ?>">
 			<?php
 
 			if(!empty($rowHeights['customfields'])) echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$product,'position'=>'addtocart'));

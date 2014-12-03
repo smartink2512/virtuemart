@@ -1071,7 +1071,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						if ($media_id = $db->loadResult ()) {
 							$thumb = $this->displayCustomMedia ($media_id,'category');
 						}
-						$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name));
+						$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name,'target'=>'_blank'));
 					}
 					break;
 				case 'R':

@@ -316,10 +316,7 @@ class VirtueMartCart {
 			if(!empty($this->virtuemart_cart_id)) $cObj->virtuemart_cart_id = (int) $this->virtuemart_cart_id;
 			$cObj->virtuemart_user_id = (int) $currentUser->id;
 			$cObj->virtuemart_vendor_id = (int) $this->vendorId;
-			if(empty($this->cart_name)) $this->cart_name = 'Autosave';
-			$cObj->cart_name = $this->cart_name;
 			$cObj->cartData = $cartDataToStore;
-
 			$carts->bindChecknStore($cObj);
 		}
 	}

@@ -28,8 +28,6 @@ class TableCarts extends VmTableData {
 	var $virtuemart_cart_id		= 0;
 	var $virtuemart_user_id 	= 0;
 	var $virtuemart_vendor_id	= 1;
- 	var $cart_name				= '';
-	var $cart_note			= '';
 	var $cartData 	= 0;
 
 

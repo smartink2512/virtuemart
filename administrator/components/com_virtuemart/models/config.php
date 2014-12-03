@@ -8,7 +8,7 @@
  * @author Max Milbers
  * @author RickG
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -125,20 +125,28 @@ class VirtueMartModelConfig extends VmModel {
 		if(function_exists('glob')){
 			$specfiles = glob($dir.DS."*_specs.xml");
 			if(empty($specfiles) and is_dir($dir)){
-				//vmWarn('No fonts _specs.xml files found in '.$dir);
-				return $result;
+				vmWarn('No fonts _specs.xml files found in '.$dir);
 			}
-			foreach ($specfiles as $file) {
-				$fontxml = @simpleXML_load_file($file);
-				if ($fontxml) {
-					if (file_exists($dir . DS . $fontxml->filename . '.php')) {
-						$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
-					} else {
-						vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
-					}
-				} else {
-					vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
+		} else {
+			$specfiles = array();
+			$manual = array('courier_specs.xml','freemono_specs.xml','helvetica_specs.xml');
+			foreach($manual as $file){
+				if(file_exists($dir.DS.$file)){
+					$specfiles[] = $dir.DS.$file;
 				}
+			}
+		}
+
+		foreach ($specfiles as $file) {
+			$fontxml = @simpleXML_load_file($file);
+			if ($fontxml) {
+				if (file_exists($dir . DS . $fontxml->filename . '.php')) {
+					$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+				} else {
+					vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
+				}
+			} else {
+				vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
 			}
 		}
 
