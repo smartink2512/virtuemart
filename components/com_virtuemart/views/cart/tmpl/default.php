@@ -86,9 +86,15 @@ vmJsApi::addJScript('vm.checkoutFormSubmit','
 
 	// This displays the form to change the current shopper
 	$adminID = JFactory::getSession()->get('vmAdminID');
-	if ((JFactory::getUser()->authorise('core.admin', 'com_virtuemart') || JFactory::getUser($adminID)->authorise('core.admin', 'com_virtuemart')) && (VmConfig::get ('oncheckout_change_shopper', 0))) { 
-		echo $this->loadTemplate ('shopperform');
+	if (VmConfig::get ('oncheckout_change_shopper', 0)){
+		$current = JFactory::getUser();
+		$admin = JFactory::getUser($adminID);
+		if($current->authorise('core.admin', 'com_virtuemart') or $admin->authorise('core.admin', 'com_virtuemart')
+			or $current->authorise('vm.user', 'com_virtuemart') or $admin->authorise('vm.user', 'com_virtuemart')){
+			echo $this->loadTemplate ('shopperform');
+		}
 	}
+
 
 	$taskRoute = '';
 	?><form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">

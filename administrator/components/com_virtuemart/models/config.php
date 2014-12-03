@@ -124,9 +124,9 @@ class VirtueMartModelConfig extends VmModel {
 		$result = array();
 		if(function_exists('glob')){
 			$specfiles = glob($dir.DS."*_specs.xml");
-			if(empty($specfiles) and is_dir($dir)){
+			/*if(empty($specfiles) and is_dir($dir)){
 				vmWarn('No fonts _specs.xml files found in '.$dir);
-			}
+			}*/
 		} else {
 			$specfiles = array();
 			$manual = array('courier_specs.xml','freemono_specs.xml','helvetica_specs.xml');
@@ -137,18 +137,28 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
-		foreach ($specfiles as $file) {
-			$fontxml = @simpleXML_load_file($file);
-			if ($fontxml) {
-				if (file_exists($dir . DS . $fontxml->filename . '.php')) {
-					$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
-				} else {
-					vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
+		if(empty($specfiles)){
+			$manual = array('courier','freemono','helvetica');
+			foreach($manual as $file){
+				if (file_exists($dir . DS . $file . '.php')) {
+					$result[] = JHtml::_('select.option',$file, vmText::_($file.' (standard)'));
 				}
-			} else {
-				vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
+			}
+		} else {
+			foreach ($specfiles as $file) {
+				$fontxml = @simpleXML_load_file($file);
+				if ($fontxml) {
+					if (file_exists($dir . DS . $fontxml->filename . '.php')) {
+						$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+					} else {
+						vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
+					}
+				} else {
+					vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
+				}
 			}
 		}
+
 
 		return $result;
 	}

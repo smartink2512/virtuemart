@@ -95,15 +95,13 @@ class VmTable implements JObservableInterface, JTableInterface {
 			}
 
 			$this->_tbl_keys = $key;
-
+			$this->_tbl_key = $key;	//For BC
 			if (count($key) == 1) {
 				$this->_autoincrement = true;
 			} else {
 				$this->_autoincrement = false;
 			}
 
-			// Set the singular table key for backwards compatibility.
-			$this->_tbl_key = $this->getKeyName();
 		}
 
 		// If we are tracking assets, make sure an access field exists and initially set the default.
@@ -283,8 +281,18 @@ class VmTable implements JObservableInterface, JTableInterface {
 	}
 
 
-	public function getKeyName() {
-		return $this->_tbl_key;
+	public function getKeyName($multiple = false) {
+
+		if (count($this->_tbl_keys)) {
+			if ($multiple) {
+				return $this->_tbl_keys;
+			} else {
+				return $this->_tbl_keys[0];
+			}
+		} else {
+			return $this->_tbl_key;
+		}
+
 	}
 
 	public function getDbo() {
@@ -2405,4 +2413,24 @@ class VmTable implements JObservableInterface, JTableInterface {
 		return 1;
 	}
 
+	public function reset() {
+		$this->showFullColumns();
+	}
+
+	/**
+	 * Implement JObservableInterface:
+	 * Adds an observer to this instance.
+	 * This method will be called fron the constructor of classes implementing JObserverInterface
+	 * which is instanciated by the constructor of $this with JObserverMapper::attachAllObservers($this)
+	 * @copyright   Copyright (C) 2014 Open Source Matters, Inc. All rights reserved.
+	 * @param   JObserverInterface|JTableObserver  $observer  The observer object
+	 *
+	 * @return  void
+	 *
+	 * @since   3.1.2
+	 */
+	public function attachObserver(JObserverInterface $observer)
+	{
+		$this->_observers->attachObserver($observer);
+	}
 }
