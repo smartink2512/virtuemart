@@ -79,7 +79,7 @@ class VirtuemartViewCustom extends JViewLegacy {
 						$this->custom->params->$k = $field[0];
 					}
 				}
-				$this->custom->form->bind($this->custom);
+				$this->custom->form->bind($this->custom->getProperties());
 				$form = $this->custom->form;
 				include(VMPATH_ADMIN.DS.'fields'.DS.'formrenderer.php');
 				echo '<input type="hidden" value="'.$this->jCustom->element.'" name="custom_value">';

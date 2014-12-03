@@ -312,7 +312,10 @@ class VmViewAdmin extends JViewLegacy {
 								$.each(data.fields , function(key, val) {
 									cible = jQuery("#"+key);
 									if (oldflag !== "") cible.parent().removeClass(oldflag)
-									var tmce_ver=window.tinyMCE.majorVersion;
+									var tmce_ver = 0;
+									if(typeof window.tinyMCE!=="undefined"){
+										var tmce_ver=window.tinyMCE.majorVersion;
+									}
 									if (tmce_ver>="4") {
 										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execCommand("mceSetContent", false,val);
 										else if (data.structure !== "empty") cible.val(val);

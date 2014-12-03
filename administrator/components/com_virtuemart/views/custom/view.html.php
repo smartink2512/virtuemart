@@ -72,7 +72,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 					$this->custom->params = new stdClass();
 					$varsToPush = vmPlugin::getVarsToPushFromForm($this->custom->form);
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
-					$this->custom->form->bind($this->custom);
+					$this->custom->form->bind($this->custom->getProperties());
 
 				}
 			} else {

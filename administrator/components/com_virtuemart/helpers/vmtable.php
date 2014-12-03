@@ -39,16 +39,13 @@ if(JVM_VERSION<3){
 
 class VmTable implements JObservableInterface, JTableInterface {
 
-
-
-
-
 	protected static $_cache = array();
 	private $_lhash = 0;
 
 	protected $_tbl = '';
 	protected $_tbl_lang = null;
 	protected $_tbl_key ='';
+	protected $_tbl_keys = '';
 	protected $_pkey = '';
 	protected $_pkeyForm = '';
 	protected $_obkeys = array();
@@ -86,6 +83,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 
 		if(JVM_VERSION<3){
 			$this->_tbl_key = $key;
+			$this->_tbl_keys = array($key);
 		} else {
 			// Set the key to be an array.
 			if (is_string($key)){
@@ -95,13 +93,13 @@ class VmTable implements JObservableInterface, JTableInterface {
 			}
 
 			$this->_tbl_keys = $key;
-			$this->_tbl_key = $key;	//For BC
+			$this->_tbl_key = $key[0];
+
 			if (count($key) == 1) {
 				$this->_autoincrement = true;
 			} else {
 				$this->_autoincrement = false;
 			}
-
 		}
 
 		// If we are tracking assets, make sure an access field exists and initially set the default.
