@@ -17,6 +17,12 @@ $currency = $viewData['currency'];
 $showRating = $viewData['showRating'];
 $verticalseparator = " vertical-separator";
 
+$ItemidStr = '';
+$Itemid = shopFunctionsF::getLastVisitedItemId();
+if(!empty($Itemid)){
+	$ItemidStr = '&Itemid='.$Itemid;
+}
+
 foreach ($viewData['products'] as $type => $products ) {
 
 	// Category and Columns Counter
@@ -123,7 +129,7 @@ foreach ($viewData['products'] as $type => $products ) {
 	<div class="product vm-product-horizon vm-col<?php echo ' vm-col-' . $products_per_row . $show_vertical_separator ?>">
       <div class="vm-product-media-rating">
         <div class="vm-product-media-container">
-					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link; ?>">
+					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link.$ItemidStr; ?>">
 					<?php
 						echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);
 					?>
@@ -141,7 +147,7 @@ foreach ($viewData['products'] as $type => $products ) {
           <?php //echo shopFunctionsF::renderVmField('stockhandle',array('product'=>$product));
           ?>
         <div class="clear"></div>
-        <h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
+        <h2><?php echo JHtml::link ($product->link.$ItemidStr, $product->product_name); ?></h2>
       </div>
 		<?php vmdebug('my number of rows for the prices rows heights',$rowsHeight[$row]); ?>
       <div class="vm-product-details-container">

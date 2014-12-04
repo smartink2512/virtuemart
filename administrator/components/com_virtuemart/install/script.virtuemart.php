@@ -503,10 +503,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			);
 
 			if(!empty($field->virtuemart_userfield_id)) {
-				$data['virtuemart_userfield_id'] = $field->virtuemart_userfield_id;
+				if($field->published){
+					$field->cart = 1;
+					$id = $model->store((array)$field);
+				}
+			} else {
+				$id = $model->store($data);
 			}
 
-			$id = $model->store($data);
 			if($id)	vmInfo('Created shopperfield customer_note');
 
 
@@ -525,12 +529,16 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			);
 
 			if(!empty($field->virtuemart_userfield_id)) {
-				$data['virtuemart_userfield_id'] = $field->virtuemart_userfield_id;
+				if($field->published){
+					$field->cart = 1;
+					$field->required = 1;
+					$id = $model->store((array)$field);
+				}
+			} else {
+				$id = $model->store($data);
 			}
 
-			$id = $model->store($data);
 			if($id)	vmInfo('Created shopperfield tos for cart and account');
-
 
 			$field = $model->getUserfield('agreed','name');
 			if($field){

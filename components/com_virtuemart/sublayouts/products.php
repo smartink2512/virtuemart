@@ -67,7 +67,7 @@ foreach ($viewData['products'] as $type => $products ) {
 		<div class="spacer">
 			<div class="vm-product-media-container">
 
-					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link; ?>">
+					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link.$ItemidStr; ?>">
 						<?php
 						echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);
 						?>
@@ -86,7 +86,7 @@ foreach ($viewData['products'] as $type => $products ) {
 
 
 				<div class="vm-product-descr-container-<?php echo $rowsHeight[$row]['product_s_desc'] ?>">
-					<h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
+					<h2><?php echo JHtml::link ($product->link.$ItemidStr, $product->product_name); ?></h2>
 					<?php if(!empty($rowsHeight[$row]['product_s_desc'])){
 					?>
 					<p class="product_s_desc">
