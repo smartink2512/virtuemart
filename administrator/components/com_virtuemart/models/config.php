@@ -443,9 +443,7 @@ class VirtueMartModelConfig extends VmModel {
 		$confData['config'] = $config->toString();
 
 		$confTable = $this->getTable('configs');
-		if (!$confTable->bindChecknStore($confData)) {
-			vmError($confTable->getError());
-		}
+		$confTable->bindChecknStore($confData);
 
 		VmConfig::loadConfig(true);
 
@@ -636,7 +634,7 @@ class VirtueMartModelConfig extends VmModel {
 		$table = $this->getTable('configs');
 		$id = 1;
 		if (!$table->delete($id)) {
-			vmError(get_class( $this ).'::remove '.$id.' '.$table->getError(),'Cannot delete config');
+			vmError(get_class( $this ).'::remove '.$id.' failed','Cannot delete config');
 			return false;
 		}
 		return true;

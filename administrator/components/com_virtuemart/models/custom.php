@@ -239,7 +239,7 @@ class VirtueMartModelCustom extends VmModel {
 		$row->custom_title = $row->custom_title.' Copy';
 
 		if (!$clone = $row->store()) {
-			JError::raiseError(500, 'createClone '. $row->getError() );
+			vmError('createClone failed for '. $id );
 		}
 		return $clone;
 	}
@@ -410,12 +410,12 @@ class VirtueMartModelCustom extends VmModel {
 
 		foreach($ids as $id) {
 			if (!$table->delete((int)$id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$id.' failed ');
 				return false;
 			} else {
 				//Delete this customfield also in all product_customfield tables
 				if (!$customfields->delete ($id, 'virtuemart_custom_id')) {
-					vmError ('Custom delete Productcustomfield delete ' . $customfields->getError ());
+					vmError ('Custom delete Productcustomfield delete failed');
 					$ok = FALSE;
 				}
 			}

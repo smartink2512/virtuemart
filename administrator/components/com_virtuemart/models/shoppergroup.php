@@ -229,7 +229,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			}
 
 			if (!$table->delete($id)) {
-				vmError(get_class( $this ).'::remove '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$id);
 				return false;
 		    }
 		}

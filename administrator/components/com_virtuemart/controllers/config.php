@@ -60,13 +60,11 @@ class VirtuemartControllerConfig extends VmController {
 			$data['offline_message'] = str_replace('|','',$data['offline_message']);
 		}
 
+		$msg = '';
 		if ($model->store($data)) {
 			$msg = vmText::_('COM_VIRTUEMART_CONFIG_SAVED');
 			// Load the newly saved values into the session.
 			VmConfig::loadConfig();
-		}
-		else {
-			$msg = $model->getError();
 		}
 
 		$redir = 'index.php?option=com_virtuemart';

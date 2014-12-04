@@ -372,7 +372,6 @@ class VirtueMartModelCategory extends VmModel {
 		$parent = $db->loadObject();
 
 		if (!$row->move( $movement, $parent->category_parent_id)) {
-			vmError($row->getError());
 			return false;
 		}
 
@@ -409,7 +408,6 @@ class VirtueMartModelCategory extends VmModel {
 			if ($row->ordering != $order[$i]) {
 				$row->ordering = $order[$i];
 				if (!$row->toggle('ordering',$row->ordering)) {
-					vmError($row->getError());
 					return false;
 				}
 			}
@@ -530,7 +528,6 @@ class VirtueMartModelCategory extends VmModel {
 		foreach($cids as &$cid) {
 
 			if (!$table->delete($cid)) {
-			    vmError($table->getError());
 			    return false;
 			}
 

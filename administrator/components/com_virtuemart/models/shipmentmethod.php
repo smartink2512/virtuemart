@@ -223,9 +223,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		$shipment = $this->getShipment();
 		$shipment->virtuemart_shipmentmethod_id = 0;
 		$shipment->shipment_name = $shipment->shipment_name.' Copy';
-		if (!$clone = $this->store($shipment)) {
-			JError::raiseError(500, 'createClone '. $shipment->getError() );
-		}
+		$clone = $this->store($shipment);
 		return $clone;
 	}
 }

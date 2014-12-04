@@ -269,7 +269,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			if(!$model->removeAllVMTables()){
 				$this->setDangerousToolsOff();
-				$this->setRedirect('index.php?option=com_virtuemart', $model->getError());
+				$this->setRedirect('index.php?option=com_virtuemart');
 			}
 		}else {
 			$msg = $this->_getMsgDangerousTools();
@@ -293,7 +293,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			if(!$model->removeAllVMData()){
 				$this->setDangerousToolsOff();
-				$this->setRedirect('index.php?option=com_virtuemart', $model->getError());
+				$this->setRedirect('index.php?option=com_virtuemart');
 			}
 		}else {
 			$msg = $this->_getMsgDangerousTools();
@@ -406,7 +406,14 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			//Now lets set some joomla variables
 			//Caching should be enabled, set to files and for 15 minutes
-			if (!class_exists( 'ConfigModelApplication' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_config'.DS.'models'.DS.'application.php');
+			if(JVM_VERSION>2){
+				if (!class_exists( 'ConfigModelCms' )) require(VMPATH_ROOT.DS.'components'.DS.'com_config'.DS.'model'.DS.'cms.php');
+				if (!class_exists( 'ConfigModelForm' )) require(VMPATH_ROOT.DS.'components'.DS.'com_config'.DS.'model'.DS.'application.php');
+				if (!class_exists( 'ConfigModelApplication' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_config'.DS.'model'.DS.'application.php');
+			} else {
+				if (!class_exists( 'ConfigModelApplication' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_config'.DS.'models'.DS.'application.php');
+			}
+
 			$jConfModel = new ConfigModelApplication();
 			$jConfig = $jConfModel->getData();
 
@@ -423,7 +430,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			if ($return === false) {
 				// Save the data in the session.
 				$app->setUserState('com_config.config.global.data', $jConfig);
-				vmError(vmText::sprintf('JERROR_SAVE_FAILED', $model->getError()));
+				vmError(vmText::sprintf('JERROR_SAVE_FAILED', 'installComplete'));
 				//return false;
 			} else {
 				// Set the success message.

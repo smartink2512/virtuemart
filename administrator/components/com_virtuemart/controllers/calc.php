@@ -112,11 +112,9 @@ class VirtuemartControllerCalc extends VmController {
 
 		//getting the model
 		$model = VmModel::getModel('calc');
-
+		$msg = '';
 		if ($model->orderCalc($id, 1)) {
 			$msg = vmText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN');
-		} else {
-			$msg = $model->getError();
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg );
@@ -137,10 +135,9 @@ class VirtuemartControllerCalc extends VmController {
 
 		$order	= vRequest::getInt('order');
 
+		$msg = '';
 		if ($model->setOrder($cid,$order)) {
 			$msg = vmText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');
-		} else {
-			$msg = $model->getError();
 		}
 		$this->setRedirect('index.php?option=com_virtuemart&view=calc', $msg );
 	}

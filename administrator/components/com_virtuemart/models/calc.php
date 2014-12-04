@@ -62,33 +62,18 @@ class VirtueMartModelCalc extends VmModel {
 
 			$xrefTable = $this->getTable('calc_categories');
 			$this->_cache[$this->_id]->calc_categories = $xrefTable->load($this->_id);
-			if ( $xrefTable->getError() ) {
-				vmError(get_class( $this ).' calc_categories '.$xrefTable->getError());
-			}
 
 			$xrefTable = $this->getTable('calc_shoppergroups');
 			$this->_cache[$this->_id]->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id);
-			if ( $xrefTable->getError() ) {
-				vmError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
-			}
 
 			$xrefTable = $this->getTable('calc_countries');
 			$this->_cache[$this->_id]->calc_countries = $xrefTable->load($this->_id);
-			if ( $xrefTable->getError() ) {
-				vmError(get_class( $this ).' calc_countries '.$xrefTable->getError());
-			}
 
 			$xrefTable = $this->getTable('calc_states');
 			$this->_cache[$this->_id]->virtuemart_state_ids = $xrefTable->load($this->_id);
-			if ( $xrefTable->getError() ) {
-				vmError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
-			}
 
 			$xrefTable = $this->getTable('calc_manufacturers');
 			$this->_cache[$this->_id]->virtuemart_manufacturers = $xrefTable->load($this->_id);
-			if ( $xrefTable->getError() ) {
-				vmError(get_class( $this ).' calc_manufacturers '.$xrefTable->getError());
-			}
 
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
@@ -163,35 +148,21 @@ class VirtueMartModelCalc extends VmModel {
 			$data['publish_down']	= $expireDate->toSQL();
 		}
 
-		$table->bindChecknStore($data);
-		if($table->getError()){
-			vmError('Calculation store '.$table->getError());
+		if(!$table->bindChecknStore($data)){
 			return false;
 		}
 
     	$xrefTable = $this->getTable('calc_categories');
     	$xrefTable->bindChecknStore($data);
-    	if($xrefTable->getError()){
-			vmError('Calculation store '.$xrefTable->getError());
-		}
 
 		$xrefTable = $this->getTable('calc_shoppergroups');
     	$xrefTable->bindChecknStore($data);
-    	if($xrefTable->getError()){
-			vmError('Calculation store '.$xrefTable->getError());
-		}
 
 		$xrefTable = $this->getTable('calc_countries');
     	$xrefTable->bindChecknStore($data);
-    	if($xrefTable->getError()){
-			vmError('Calculation store '.$xrefTable->getError());
-		}
 
 		$xrefTable = $this->getTable('calc_states');
     	$xrefTable->bindChecknStore($data);
-    	if($xrefTable->getError()){
-			vmError('Calculation store '.$xrefTable->getError());
-		}
 
 		$xrefTable = $this->getTable('calc_manufacturers');
     	$xrefTable->bindChecknStore($data);
@@ -201,7 +172,6 @@ class VirtueMartModelCalc extends VmModel {
 		$dispatcher = JDispatcher::getInstance();
 		//$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array(&$data));
 		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable',array('calculation',$data,$table));
-
 
 		return $table->virtuemart_calc_id;
 	}
@@ -256,33 +226,33 @@ class VirtueMartModelCalc extends VmModel {
 			$id = (int)$id;
 
 			if (!$table->delete($id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				vmError(get_class( $this ).'::remove error'.$id);
 				$ok = false;
 			}
 
 			if (!$cat->delete($id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$cat->getError());
+				vmError(get_class( $this ).'::remove error'.$id);
 				$ok = false;
 			}
 
 			if (!$sgrp->delete($id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$sgrp->getError());
+				vmError(get_class( $this ).'::remove error'.$id);
 				$ok = false;
 			}
 
 			if (!$countries->delete($id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$countries->getError());
+				vmError(get_class( $this ).'::remove error'.$id);
 				$ok = false;
 			}
 
 			if (!$states->delete($id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$states->getError());
+				vmError(get_class( $this ).'::remove error '.$id);
 				$ok = false;
 			}
 
 			// Mod. <mediaDESIGN> St.Kraft 2013-02-24
 			if (!$manufacturers->delete($id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$manufacturers->getError());
+				vmError(get_class( $this ).'::remove error '.$id);
 				$ok = false;
 			}
 

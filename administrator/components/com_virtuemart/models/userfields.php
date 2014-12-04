@@ -312,8 +312,6 @@ class VirtueMartModelUserfields extends VmModel {
 		$_id = $field->store();
 
 		if ($_id === false) {
-			// Write data to the DB
-			vmError($field->getError());
 			return false;
 		}
 

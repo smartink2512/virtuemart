@@ -421,7 +421,7 @@ class VirtueMartModelUser extends VmModel {
 
 		// Save the JUser object
 		if (!$user->save()) {
-			vmError(vmText::_( $user->getError()) , vmText::_( $user->getError()));
+			vmdebug('Storing Juser object failed',$user);
 			return false;
 		} else {
 			$data['name'] = $user->get('name');
@@ -607,7 +607,6 @@ class VirtueMartModelUser extends VmModel {
 			$vendorModel->setId($data['virtuemart_vendor_id']);
 
 			if (!$vendorModel->store($data)) {
-				vmError('storeVendorData '.$vendorModel->getError());
 				vmdebug('Error storing vendor',$vendorModel);
 				return false;
 			}
@@ -675,9 +674,7 @@ class VirtueMartModelUser extends VmModel {
 
 			$userInfoData = self::_prepareUserFields($data, 'BT',$userinfo);
 			//vmdebug('model user storeAddress',$data);
-			if (!$userinfo->bindChecknStore($userInfoData)) {
-				vmError('storeAddress '.$userinfo->getError());
-			}
+			$userinfo->bindChecknStore($userInfoData);
 		}
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
@@ -728,9 +725,7 @@ class VirtueMartModelUser extends VmModel {
 			$dataST['address_type'] = 'ST';
 			$userfielddata = self::_prepareUserFields($dataST, 'ST',$userinfo);
 
-			if (!$userinfo->bindChecknStore($userfielddata)) {
-				vmError($userinfo->getError());
-			}
+			$userinfo->bindChecknStore($userfielddata);
 
 			$app = JFactory::getApplication();
 			if($app->isSite()){
@@ -1118,16 +1113,15 @@ class VirtueMartModelUser extends VmModel {
 				}
 
 				if (!$userInfo->delete($userId)) {
-					vmError($userInfo->getError());
 					return false;
 				}
+
 				if (!$vm_shoppergroup_xref->delete($userId)) {
-					vmError($vm_shoppergroup_xref->getError()); // Signal but continue
 					$_status = false;
 					continue;
 				}
+
 				if (!$vmusers->delete($userId)) {
-					vmError($vmusers->getError()); // Signal but continue
 					$_status = false;
 					continue;
 				}

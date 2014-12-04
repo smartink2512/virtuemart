@@ -402,17 +402,17 @@ class VirtueMartModelRatings extends VmModel {
     		$prod_id = $rating->virtuemart_product_id;
 
     		if (!$rating->delete($id)) {
-    			vmError(get_class( $this ).'::Error deleting ratings '.$rating->getError());
+    			vmError(get_class( $this ).'::Error deleting ratings ');
     			$ok = FALSE;
     		}
 
     		if (!$review->delete($prod_id,'virtuemart_product_id')) {
-    			vmError(get_class( $this ).'::Error deleting review '.$review->getError());
+    			vmError(get_class( $this ).'::Error deleting review ');
     			$ok = FALSE;
     		}
 
     		if (!$votes->delete($prod_id,'virtuemart_product_id')) {
-    			vmError(get_class( $this ).'::Error deleting votes '.$votes->getError());
+    			vmError(get_class( $this ).'::Error deleting votes ');
     			$ok = FALSE;
     		}
     	}

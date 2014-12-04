@@ -1992,17 +1992,14 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			if (!$table->delete ($id)) {
-				vmError ('Product delete ' . $table->getError ());
 				$ok = FALSE;
 			}
 
 			if (!$cats->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete categories ' . $cats->getError ());
 				$ok = FALSE;
 			}
 
 			if (!$customfields->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete customs ' . $customfields->getError ());
 				$ok = FALSE;
 			}
 
@@ -2018,41 +2015,35 @@ class VirtueMartModelProduct extends VmModel {
 				$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` IN ('. $listInString .') ';
 				$db->setQuery($query);
 				if(!$db->execute()){
-					vmError( $db->getErrorMsg() );
+					vmError( $db->getError() );
 				}
 			}
 
 			if (!$manufacturers->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete manufacturer ' . $manufacturers->getError ());
 				$ok = FALSE;
 			}
 
 			if (!$medias->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete medias ' . $medias->getError ());
 				$ok = FALSE;
 			}
 
 			if (!$prices->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete prices ' . $prices->getError ());
 				$ok = FALSE;
 			}
 
 			if (!$shop->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete shoppergroups ' . $shop->getError ());
 				$ok = FALSE;
 			}
 
 			if (!$rating->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete rating ' . $rating->getError ());
 				$ok = FALSE;
 			}
 
 			if (!$review->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete reviews ' . $review->getError ());
 				$ok = FALSE;
 			}
+
 			if (!$votes->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete votes ' . $votes->getError ());
 				$ok = FALSE;
 			}
 

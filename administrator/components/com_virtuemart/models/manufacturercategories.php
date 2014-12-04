@@ -54,12 +54,11 @@ class VirtuemartModelManufacturercategories extends VmModel {
     	foreach($categoryIds as $categoryId) {
        		if($table->checkManufacturer($categoryId)) {
 	    		if (!$table->delete($categoryId)) {
-	            		vmError($table->getError());
 	            		return false;
 	       		}
        		}
        		else {
-				vmError(get_class( $this ).'::remove '.$categoryId.' '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$categoryId.' failed');
        			return false;
        		}
     	}

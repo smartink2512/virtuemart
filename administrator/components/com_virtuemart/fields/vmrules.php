@@ -70,7 +70,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 		$db->setQuery($query);
 		$assetId = (int)$db->loadResult();
 		if ($error = $db->getErrorMsg()) {
-			JError::raiseNotice(500, $error);
+			vmError($error);
 		}
 
 		// Full width format.
@@ -280,7 +280,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 		$db->setQuery($query);
 		$assetId = (int)$db->loadResult();
 		if ($error = $db->getErrorMsg()) {
-			JError::raiseNotice(500, $error);
+			vmError($error);
 		}
 
 		// Full width format.

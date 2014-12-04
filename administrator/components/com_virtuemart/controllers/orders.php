@@ -328,9 +328,7 @@ class VirtuemartControllerOrders extends VmController {
 		$model = VmModel::getModel();
 		$msg = '';
 		$data = vRequest::getRequest();
-		if (!$model->saveOrderLineItem($data)) {
-			$msg = $model->getError();
-		}
+		$model->saveOrderLineItem($data);
 		$model->deleteInvoice($orderId);
 		$editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 		$this->setRedirect($editLink, $msg);
@@ -347,9 +345,8 @@ class VirtuemartControllerOrders extends VmController {
 		// TODO $orderLineItem as int ???
 		$orderLineItem = vRequest::getVar('orderLineId', '');
 
-		if (!$model->removeOrderLineItem($orderLineItem)) {
-			$msg = $model->getError();
-		}
+		$model->removeOrderLineItem($orderLineItem);
+
 		$model->deleteInvoice($orderId);
 		$editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 		$this->setRedirect($editLink, $msg);

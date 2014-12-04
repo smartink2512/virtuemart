@@ -1028,7 +1028,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$order_userinfosTable = $this->getTable('order_userinfos');
 		if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
-			vmError($order_userinfosTable->getError());
 			return false;
 		}
 
@@ -1058,7 +1057,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$order_userinfosTable = $this->getTable('order_userinfos');
 			if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
-				vmError($order_userinfosTable->getError());
 				return false;
 			}
 		}
@@ -1194,13 +1192,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderItems->product_discountedPriceWithoutTax = $product->allPrices[$product->selectedPrice]['discountedPriceWithoutTax'];
 			$_orderItems->order_status = 'P';
 			if (!$_orderItems->check()) {
-				vmError($this->getError());
 				return false;
 			}
 
 			// Save the record to the database
 			if (!$_orderItems->store()) {
-				vmError($this->getError());
 				return false;
 			}
 			$product->virtuemart_order_item_id = $_orderItems->virtuemart_order_item_id;
@@ -1254,15 +1250,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$orderCalcRules->virtuemart_order_id = $order_id;
 
 					if (!$orderCalcRules->check()) {
-						vmError('_createOrderCalcRules check product rule '.$this->getError());
-						vmdebug('_createOrderCalcRules check product rule '.$this->getError());
+						vmdebug('_createOrderCalcRules check product rule ',$this);
 						return false;
 					}
 
 					// Save the record to the database
 					if (!$orderCalcRules->store()) {
-						vmError('_createOrderCalcRules store product rule '.$this->getError());
-						vmdebug('_createOrderCalcRules store product rule '.$this->getError());
+						vmdebug('_createOrderCalcRules store product rule ',$this);
 						return false;
 					}
 				}
@@ -1289,13 +1283,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			     $orderCalcRules->virtuemart_order_id=$order_id;
 			     $orderCalcRules->calc_params=$rule['calc_params'];
 			     if (!$orderCalcRules->check()) {
-				    vmError('_createOrderCalcRules store bill rule '.$this->getError());
 				    return false;
 			    }
 
 			    // Save the record to the database
 			    if (!$orderCalcRules->store()) {
-				    vmError('_createOrderCalcRules store bill rule '.$this->getError());
 				    return false;
 			    }
 		    }
@@ -1319,13 +1311,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$orderCalcRules->virtuemart_vendor_id = $calc->virtuemart_vendor_id;
 			$orderCalcRules->virtuemart_order_id = $order_id;
 			if (!$orderCalcRules->check()) {
-				vmError('_createOrderCalcRules store payment rule '.$this->getError());
 				return false;
 			}
 
 			// Save the record to the database
 			if (!$orderCalcRules->store()) {
-				vmError('_createOrderCalcRules store payment rule '.$this->getError());
 				return false;
 			}
 
@@ -1350,13 +1340,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$orderCalcRules->virtuemart_vendor_id = $calc->virtuemart_vendor_id;
 			$orderCalcRules->virtuemart_order_id = $order_id;
 			if (!$orderCalcRules->check()) {
-				vmError('_createOrderCalcRules store shipment rule '.$this->getError());
 				return false;
 			}
 
 			// Save the record to the database
 			if (!$orderCalcRules->store()) {
-				vmError('_createOrderCalcRules store shipment rule '.$this->getError());
 				return false;
 			}
 		}
@@ -1680,7 +1668,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$item = $this->getTable('order_items');
 		if (!$item->load($orderLineId)) {
-			vmError($item->getError());
 			return false;
 		}
 		//TODO Why should the stock change, when the order is deleted? Paypal? Valerie?
@@ -1688,7 +1675,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			return true;
 		}
 		else {
-			vmError($item->getError());
 			return false;
 		}
 	}
@@ -1722,7 +1708,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$this->renameInvoice($id );
 
 			if (!$table->delete((int)$id)) {
-				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				return false;
 			}
 		}
@@ -1744,7 +1729,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$orderTable->load($virtuemart_order_id);
 
 		if (!$orderTable->bindChecknStore($_orderData, true)){
-			vmError($orderTable->getError());
 			return false;
 		}
 
@@ -1781,7 +1765,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$order_userinfosTable = $this->getTable('order_userinfos');
 			$order_userinfosTable->load($virtuemart_order_id, 'virtuemart_order_id'," AND address_type='BT'");
 		if (!$order_userinfosTable->bindChecknStore($_userInfoData, true)){
-			vmError($order_userinfosTable->getError());
 			return false;
 		}
 
@@ -1806,7 +1789,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$order_userinfosTable = $this->getTable('order_userinfos');
 			$order_userinfosTable->load($virtuemart_order_id, 'virtuemart_order_id'," AND address_type='ST'");
 		if (!$order_userinfosTable->bindChecknStore($_userInfoData, true)){
-			vmError($order_userinfosTable->getError());
 			return false;
 		}
 

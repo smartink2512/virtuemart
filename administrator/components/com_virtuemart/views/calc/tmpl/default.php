@@ -36,7 +36,6 @@ AdminUIHelper::startAdminArea($this);
 		</div>
 		<div id="resultscounter" ><?php echo $this->pagination->getResultsCounter();?></div>
 	</div>
-	<br />
 	<div id="editcell">
 		<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>
@@ -51,7 +50,7 @@ AdminUIHelper::startAdminArea($this);
 			</th><?php }  ?>
 			<th width="25%"><?php echo $this->sort('calc_descr' , 'COM_VIRTUEMART_DESCRIPTION'); ?></th>
 			<th><?php echo $this->sort('ordering') ; ?></th>
-			<th><?php echo $this->sort('calc_kind') ; ?></th>
+			<th style="min-width:120px;width:5%;" ><?php echo $this->sort('calc_kind') ; ?></th>
 			<th><?php echo vmText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?></th>
 			<th><?php echo $this->sort('calc_value' , 'COM_VIRTUEMART_VALUE'); ?></th>
 			<th><?php echo $this->sort('calc_currency' , 'COM_VIRTUEMART_CURRENCY'); ?></th>
@@ -110,10 +109,10 @@ AdminUIHelper::startAdminArea($this);
 				<td>
 					<?php echo $row->ordering; ?>
 				</td>
-				<td>
+				<td align="center" >
 					<?php echo $row->calc_kind; ?>
 				</td>
-				<td>
+				<td align="center" >
 					<?php echo $row->calc_value_mathop; ?>
 				</td>
 				<td>
