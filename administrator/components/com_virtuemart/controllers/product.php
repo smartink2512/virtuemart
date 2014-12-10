@@ -211,6 +211,8 @@ class VirtuemartControllerProduct extends VmController {
 		} else {
 			$session = JFactory::getSession();
 			$session->set('vm_product_ids', json_encode($cids),'vm');
+			$session->set('reset_pag', true,'vm');
+
 		}
 
 		if(!empty($cids)){
