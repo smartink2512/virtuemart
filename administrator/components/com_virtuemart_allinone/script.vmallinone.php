@@ -121,6 +121,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			echo "<table><tr><th>Plugins</th><td></td></tr>";
 
+			if(!class_exists('VirtueMartModelUpdatesMigration')) require($this->path . DS . 'models' . DS . 'updatesmigration.php');
 
 			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
 			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
@@ -170,7 +171,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				//echo "Checking VirtueMart modules...";
 					$defaultParams = '{"show_vmmenu":"1"}';
 					$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, $dst,1,'menu',3,$alreadyInstalled);
-					$this->updateJoomlaUpdateServer( 'module', 'mod_vmmenu', $dst   );
+					$umimodel = VmModel::getModel('updatesmigration');
+					$umimodel->updateJoomlaUpdateServer( 'module', 'mod_vmmenu', $dst   );
 
 
 				// modules auto move
@@ -238,7 +240,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					'mod_virtuemart_category'
 				);
 				foreach ($modules as $module) {
-					$this->updateJoomlaUpdateServer( 'module', $module, $dst   );
+					$umimodel = VmModel::getModel('updatesmigration');
+					$umimodel->updateJoomlaUpdateServer( 'module', $module, $dst   );
 				}
 
 				// libraries auto move
@@ -534,7 +537,8 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 			if ($success) {
 				$this->updatePluginTable ($name, $type, $element, $group, $dst);
 			}
-			$this->updateJoomlaUpdateServer( $type, $element, $dst , $group  );
+			$umimodel = VmModel::getModel('updatesmigration');
+			$umimodel->updateJoomlaUpdateServer( $type, $element, $dst , $group  );
 			$installTask= $count==0 ? 'installed':'updated';
 			echo '<tr><td>' . $name . '</td><td> '.$installTask.'</td></tr>';
 
@@ -723,105 +727,6 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 			return $count;
 		}
 
-		/**
-		 * @param $type= 'plugin'
-		 * @param $element= 'textinput'
-		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
-		 *
-		 */
-		function updateJoomlaUpdateServer( $type, $element, $dst, $group=''  ){
-
-			$db = JFactory::getDBO();
-			$extensionXmlFileName=$this->getExtensionXmlFileName($type, $element, $dst );
-			$xml=simplexml_load_file($extensionXmlFileName);
-
-			// get extension id
-			$query="SELECT `extension_id` FROM `#__extensions` WHERE `type`=".$db->quote($type)." AND `element`=".$db->quote($element);
-			if ($group) {
-				$query.=" AND `folder`=".$db->quote($group);
-			}
-
-			$db->setQuery($query);
-			$extension_id=$db->loadResult();
-			if(!$extension_id) {
-				vmdebug('updateJoomlaUpdateServer no extension id ',$query);
-				return;
-			}
-			// Is the extension already in the update table ?
-			$query="SELECT * FROM `#__update_sites_extensions` WHERE `extension_id`=".$extension_id;
-			$db->setQuery($query);
-			$update_sites_extensions=$db->loadObject();
-			//VmConfig::$echoDebug=true;
-
-
-			// Update the version number for all
-			if(isset($xml->version)) {
-				$query="UPDATE `#__updates` SET `version`=".$db->quote((string)$xml->version)."
-					         WHERE `extension_id`=".$extension_id;
-				$db->setQuery($query);
-				$db->query();
-			}
-
-
-			if(isset($xml->updateservers->server)) {
-				if (!$update_sites_extensions) {
-
-					$query="INSERT INTO `#__update_sites` SET `name`=".$db->quote((string)$xml->updateservers->server['name']).",
-				        `type`=".$db->quote((string)$xml->updateservers->server['type']).",
-				        `location`=".$db->quote((string)$xml->updateservers->server).", enabled=1 ";
-					$db->setQuery($query);
-					$db->query();
-
-					$update_site_id=$db->insertId();
-
-					$query="INSERT INTO `#__update_sites_extensions` SET `update_site_id`=".$update_site_id." , `extension_id`=".$extension_id;
-					$db->setQuery($query);
-					$db->query();
-				} else {
-					if(empty($update_sites_extensions->update_site_id)){
-						vmWarn('Update site id not found for '.$element);
-						vmdebug('Update site id not found for '.$element,$update_sites_extensions);
-						return false;
-					}
-					$query="SELECT * FROM `#__update_sites` WHERE `update_site_id`=".$update_sites_extensions->update_site_id;
-					$db->setQuery($query);
-					$update_sites= $db->loadAssocList();
-					vmdebug('updateJoomlaUpdateServer',$update_sites);
-					if(empty($update_sites)){
-						vmdebug('No update sites found, they should be inserted');
-						return false;
-					}
-					//Todo this is written with an array, but actually it is only tested to run with one server
-					foreach($update_sites as $upSite){
-						if (strcmp($upSite['location'], (string)$xml->updateservers->server) != 0) {
-							// the extension was already there: we just update the server if different
-							$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server['name'])."
-					         WHERE update_site_id=".$update_sites_extensions->update_site_id;
-							$db->setQuery($query);
-							$db->query();
-						}
-					}
-
-				}
-
-			} else {
-				echo ('<br />UPDATE SERVER NOT FOUND IN XML FILE:'.$extensionXmlFileName);
-			}
-		}
-
-		/**
-		 * @param $type= 'plugin'
-		 * @param $element= 'textinput'
-		 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
-		 */
-		function getExtensionXmlFileName($type, $element, $dst ){
-			if ($type=='plugin') {
-				$extensionXmlFileName=  $dst. DS . $element.  '.xml';
-			} else if ($type=='module'){
-				$extensionXmlFileName = $dst. DS . $element.DS . $element. '.xml';
-			}
-			return $extensionXmlFileName;
-		}
 
 		/**
 		 * @author Max Milbers
