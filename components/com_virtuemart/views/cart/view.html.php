@@ -315,6 +315,7 @@ class VirtueMartViewCart extends VmView {
 	 */
 	private function getCheckoutAdvertise() {
 		$checkoutAdvertise=array();
+		JPluginHelper::importPlugin('vmextended');
 		JPluginHelper::importPlugin('vmcoupon');
 		JPluginHelper::importPlugin('vmshipment');
 		JPluginHelper::importPlugin('vmpayment');
@@ -450,6 +451,27 @@ class VirtueMartViewCart extends VmView {
 		}
 	}
 
+	static public function addCheckRequiredJs(){
+		$j='jQuery(document).ready(function(){
+    jQuery(".required").change(function(){
+    	var count = 0;
+    	var hit = 0;
+    	jQuery.each(jQuery(".required"), function (key, value){
+    		count++;
+    		if(jQuery(this).attr("checked")){
+        		hit++;
+       		}
+    	});
+        if(count==hit){
+        	console.log("Now fire");
+        	var form = jQuery("#checkoutFormSubmit");
+        	//document.checkoutForm.task = "checkout";
+			document.checkoutForm.submit()
+        }
+    });
+});';
+		vmJsApi::addJScript('autocheck',$j);
+	}
 }
 
 //no closing tag

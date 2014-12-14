@@ -6,7 +6,7 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2011 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -21,8 +21,9 @@ defined('_JEXEC') or die();
 
 define('USE_SQL_CALC_FOUND_ROWS' , true);
 
+if(!class_exists('vObject')) require(VMPATH_ADMIN .DS. 'helpers' .DS. 'vobject.php');
 
-class VmModel extends JObject {
+class VmModel extends vObject{
 
 	/**
 	 * Indicates if the internal state has been set
@@ -178,6 +179,8 @@ class VmModel extends JObject {
 
 	static private $_vmmodels = array();
 
+
+
 	/**
 	 * Method to get the model name
 	 *
@@ -219,7 +222,7 @@ class VmModel extends JObject {
 	 */
 	public static function addTablePath($path)
 	{
-		JTable::addIncludePath($path);
+		VmTable::addIncludePath($path);
 	}
 
 	/**
@@ -344,16 +347,16 @@ class VmModel extends JObject {
 
 		if (!empty($path))
 		{
-			jimport('joomla.filesystem.path');
+			//jimport('joomla.filesystem.path');
 
 			if (!in_array($path, $paths[$prefix]))
 			{
-				array_unshift($paths[$prefix], JPath::clean($path));
+				array_unshift($paths[$prefix], vRequest::filterPath($path));
 			}
 
 			if (!in_array($path, $paths['']))
 			{
-				array_unshift($paths[''], JPath::clean($path));
+				array_unshift($paths[''], vRequest::filterPath($path));
 			}
 		}
 
@@ -419,7 +422,7 @@ class VmModel extends JObject {
 			$config['dbo'] = JFactory::getDbo();
 		}
 
-		return JTable::getInstance($name, $prefix, $config);
+		return VmTable::getInstance($name, $prefix, $config);
 	}
 
 	/**
@@ -443,7 +446,6 @@ class VmModel extends JObject {
 
 		if (!class_exists($modelClass))
 		{
-			jimport('joomla.filesystem.path');
 			$path = JPath::find(self::addIncludePath(null, $prefix), self::_createFileName('model', array('name' => $type)));
 			if (!$path)
 			{
@@ -708,6 +710,7 @@ class VmModel extends JObject {
 	 */
 	public function getPagination($perRow = 5) {
 
+		if(!class_exists('VmPagination')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmpagination.php');
 		if(empty($this->_limit) ){
 			$this->setPaginationLimits();
 		}
@@ -1067,172 +1070,5 @@ class VmModel extends JObject {
 
 }
 
-jimport('joomla.html.pagination');
 
-class VmPagination extends JPagination {
 
-	private $_perRow = 5;
-
-	function __construct($total, $limitstart, $limit, $perRow=5){
-		if($perRow!==0){
-			$this->_perRow = $perRow;
-		}
-		parent::__construct($total, $limitstart, $limit);
-	}
-
-	/** Creates a dropdown box for selecting how many records to show per page.
-	 * Modification of Joomla Core libraries/html/pagination.php getLimitBox function
-	 * The function uses as sequence a generic function or a sequence configured in the vmconfig
-	 *
-	 * use in a view.html.php $vmModel->setPerRow($perRow); to activate it
-	 *
-	 * @author Joe Motacek (Cleanshooter)
-	 * @author Max Milbers
-	 * @return  string   The HTML for the limit # input box.
-	 * @since   11.1
-	 */
-
-	function setSequence($sequence){
-		$this->_sequence = $sequence;
-	}
-
-	function getLimitBox($sequence=0)
-	{
-		$app = JFactory::getApplication();
-
-		// Initialize variables
-		$limits = array ();
-		$selected = $this->limit;
-
-		// Build the select list
-		if ($app->isAdmin()) {
-
-			if(empty($sequence)){
-				$sequence = VmConfig::get('pagseq',0);
-			}
-
-			if(!empty($sequence)){
-				$sequenceArray = explode(',', $sequence);
-				if(count($sequenceArray>1)){
-					foreach($sequenceArray as $items){
-						$limits[$items]=JHtml::_('select.option', $items);
-					}
-				}
-			}
-
-			if(empty($limits)){
-				$limits[15] = JHtml::_('select.option', 15);
-				$limits[30] = JHtml::_('select.option', 30);
-				$limits[50] = JHtml::_('select.option', 50);
-				$limits[100] = JHtml::_('select.option', 100);
-				$limits[200] = JHtml::_('select.option', 200);
-				$limits[400] = JHtml::_('select.option', 400);
-			}
-
-			if(!array_key_exists($this->limit,$limits)){
-				$limits[$this->limit] = JHtml::_('select.option', $this->limit);
-				ksort($limits);
-			}
-
-			$namespace = 'Joomla.';
-			$html = JHtml::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
-		} else {
-
-			$getArray = vRequest::getGet();
-
-			$link ='';
-			unset ($getArray['limit']);
-
-			foreach ($getArray as $key => $value ){
-				if (is_array($value)){
-					foreach ($value as $k => $v ){
-						$link .= '&'.$key.'['.$k.']'.'='.$v;
-					}
-				} else {
-					$link .= '&'.$key.'='.$value;
-				}
-			}
-
-			$link = 'index.php?'. ltrim ($link,'&');
-
-			if(empty($sequence)){
-				$sequence = VmConfig::get('pagseq_'.$this->_perRow);
-			}
-			if(!empty($sequence)){
-				$sequenceArray = explode(',', $sequence);
-				if(count($sequenceArray>1)){
-					foreach($sequenceArray as $items){
-						$limits[$items]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
-					}
-				}
-			}
-
-			if(empty($limits) or !is_array($limits)){
-				if($this->_perRow===1) $this->_perRow = 5;
-				$limits[$this->_perRow * 5] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 5, false) ,$this->_perRow * 5);
-				$limits[$this->_perRow * 10] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
-				$limits[$this->_perRow * 20] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
-				$limits[$this->_perRow * 50] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 50, false) , $this->_perRow * 50 );
-			}
-			if(!array_key_exists($this->limit,$limits)){
-				$limits[$this->limit] = JHtml::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
-				ksort($limits);
-			}
-			$selected= JRoute::_( $link.'&limit='. $selected,false) ;
-			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';
-
-			$html = JHtml::_('select.genericlist',  $limits, '', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);
-		}
-		return $html;
-	}
-
-	/**
-	 * Return the icon to move an item UP.
-	 *
-	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
-	 * @license     GNU General Public License version 2 or later; see LICENSE
-	 * @param   integer  $i          The row index.
-	 * @param   boolean  $condition  True to show the icon.
-	 * @param   string   $task       The task to fire.
-	 * @param   string   $alt        The image alternative text string.
-	 * @param   boolean  $enabled    An optional setting for access control on the action.
-	 * @param   string   $checkbox   An optional prefix for checkboxes.
-	 *
-	 * @return  string   Either the icon to move an item up or a space.
-	 *
-	 * @since   11.1
-	 */
-
-	public function vmOrderUpIcon($i, $ordering=true, $task = 'orderup', $alt = 'JLIB_HTML_MOVE_UP', $enabled = true, $checkbox = 'cb') {
-
-		if (($ordering > 1)){
-			return JHtml::_('jgrid.orderUp', $i, $task, '', $alt, $enabled, $checkbox);
-		} else {
-			return '&#160;';
-		}
-	}
-
-	/**
-	 * Return the icon to move an item DOWN.
-	 *
-	 * @param   integer  $i          The row index.
-	 * @param   integer  $n          The number of items in the list.
-	 * @param   boolean  $condition  True to show the icon.
-	 * @param   string   $task       The task to fire.
-	 * @param   string   $alt        The image alternative text string.
-	 * @param   boolean  $enabled    An optional setting for access control on the action.
-	 * @param   string   $checkbox   An optional prefix for checkboxes.
-	 *
-	 * @return  string   Either the icon to move an item down or a space.
-	 *
-	 * @since   11.1
-	 */
-	public function vmOrderDownIcon($i, $ordering, $n, $condition = true, $task = 'orderdown', $alt = 'JLIB_HTML_MOVE_DOWN', $enabled = true, $checkbox = 'cb') {
-
-		if (  $ordering < $n ){
-			return JHtml::_('jgrid.orderDown', $i, $task, '', $alt, $enabled, $checkbox);
-		} else {
-			return '&#160;';
-		}
-	}
-}

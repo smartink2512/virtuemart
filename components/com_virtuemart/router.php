@@ -3,10 +3,11 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
 /**
  *
  * @package VirtueMart
- * @Author Kohl Patrick
+ * @author Kohl Patrick
+ * @author Max Milbers
  * @subpackage router
  * @version $Id$
- * ${PHING.VM.COPYRIGHT}
+ * @copyright Copyright (C) 2009-14 by the VirtueMart Team and authors
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -76,9 +77,9 @@ function virtuemartBuildRoute(&$query) {
 				if ($categoryRoute->route) {
 					$segments[] = $categoryRoute->route;
 				}
-				if (isset($jmenu['virtuemart_category_id'][ $query['virtuemart_category_id'] ] ) )
+				if(isset($query['virtuemart_category_id']) and isset($jmenu['virtuemart_category_id'][$query['virtuemart_category_id']])) {
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$query['virtuemart_category_id']];
-				else {
+				} else {
 					//http://forum.virtuemart.net/index.php?topic=121642.0
 					if (!empty($categoryRoute->itemId)) {
 						$query['Itemid'] = $categoryRoute->itemId;

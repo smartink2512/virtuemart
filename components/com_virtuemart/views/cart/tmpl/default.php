@@ -61,6 +61,8 @@ vmJsApi::addJScript('vm.checkoutFormSubmit','
 	});
 //]]>
 ');
+
+$this->addCheckRequiredJs();
  ?>
 
 <div class="cart-view">

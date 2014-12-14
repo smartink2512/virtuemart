@@ -304,6 +304,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if (!empty($coupon_code)) {
 				$app = JFactory::getApplication();
 				$msg = $cart->setCouponCode($coupon_code);
+				$cart->setOutOfCheckout();
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE),$msg);
 			}
 		}

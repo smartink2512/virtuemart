@@ -28,8 +28,6 @@ class GenericTableUpdater extends VmModel{
 
 	public function __construct(){
 
-// 		JTable::addIncludePath(VMPATH_ADMIN . DS . 'tables');
-
 		$this->_app = JFactory::getApplication();
 		$this->_db = JFactory::getDBO();
 		// 		$this->_oldToNew = new stdClass();
@@ -283,6 +281,7 @@ class GenericTableUpdater extends VmModel{
 				$fieldLines[$keyName] = $line;
 			}
 		}
+		fclose($data);
 		return $tables;
 	}
 

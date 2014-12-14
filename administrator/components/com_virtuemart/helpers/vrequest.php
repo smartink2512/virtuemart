@@ -54,6 +54,44 @@ class vRequest {
 		}
 	}
 
+	/**
+	 * This function does not allow unicode
+	 * @param      $string
+	 * @param bool $forceNoUni
+	 * @return mixed|string
+	 */
+	static function filterPath($str) {
+
+		if (empty($str)) {
+			vmError('filterPath empty string check your paths ');
+			vmTrace('Critical error, empty string in filterPath');
+			return VMPATH_ROOT;
+		}
+		$str = trim(JString::strtolower($str));
+
+		// Delete all '?'
+		$str = str_replace('?', '', $str);
+
+		// Replace double byte whitespaces by single byte (East Asian languages)
+		$str = preg_replace('/\xE3\x80\x80/', ' ', $str);
+
+		$unicodeslugs = VmConfig::get('transliterateSlugs',false);
+		if($unicodeslugs){
+			$lang = JFactory::getLanguage();
+			$str = $lang->transliterate($str);
+		}
+
+		//In case this is a path, remove all strange slashes
+		$str = str_replace('/', DS, $str);
+		while(strpos($str,DS.DS)){
+			$str = str_replace(DS.DS, DS, $str);
+		}
+
+		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+
+		vmdebug('makeSafe',$str);
+		return $str;
+	}
 
 	public static function getBool($name, $default = 0){
 		$tmp = self::get($name, $default, FILTER_SANITIZE_NUMBER_INT);

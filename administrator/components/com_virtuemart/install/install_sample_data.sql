@@ -89,8 +89,8 @@ INSERT IGNORE INTO `#__virtuemart_manufacturers_XLANG` (`virtuemart_manufacturer
 
 INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`, `virtuemart_manufacturer_id`, `virtuemart_media_id`, `ordering`) VALUES
 	(1, 1, 9, 1),
-	(2, 2, 9, 1),
-	(3, 3, 9, 1);
+	(2, 2, 9, 2),
+	(3, 3, 21, 3);
 
 INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `file_params`, `file_lang`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 'vendor.gif', '', '', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/vendor.gif', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
@@ -111,7 +111,8 @@ INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_ve
 	(17, 1, 'wide_dress_2.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/wide_dress_2.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
 	(18, 1, 'jacket_classic.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/jacket_classic.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
 	(19, 1, 'poncho.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/poncho.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(20, 1, 'dress.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/dress.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0);
+	(20, 1, 'dress.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/dress.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0,
+	(21, 1, 'producer.jpg', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/producer.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0);
 
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_gtin`, `product_mpn`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `product_ordered`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `product_sales`, `product_unit`, `product_packaging`, `product_params`, `hits`, `intnotes`, `metarobot`, `metaauthor`, `layout`, `published`, `pordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 0, 'DP1', NULL, NULL, 50.0000, 'KG', 45.0000, 5.0000, 5.0000, 'M', '', 78, 0, 5, '', '', 0, 0, 'KG', NULL, 'min_order_level=""|max_order_level=""|step_order_level=""|product_box=""|', NULL, '', '', '', '0', 1, 0, '', 635, '', 635, '', 0),

@@ -640,4 +640,5 @@ class vmJsApi{
 		}
 		return $formatedDate;
 	}
+
 }

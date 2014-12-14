@@ -2,11 +2,13 @@
 
 /**
  * virtuemart table class, with some additional behaviours.
+ * derived from JTable Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  *
  * @version $Id$
  * @package    VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
+ * @copyright Copyright (C) 2014 Open Source Matters, Inc. All rights reserved.
  * @copyright Copyright (c) 2011 -2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
@@ -35,9 +37,9 @@ if(JVM_VERSION<3){
 
 	}
 }
+if(!class_exists('vObject')) require(VMPATH_ADMIN .DS. 'helpers' .DS. 'vobject.php');
 
-
-class VmTable implements JObservableInterface, JTableInterface {
+class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 	protected static $_cache = array();
 	private $_lhash = 0;
@@ -160,7 +162,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 	 * @link	http://docs.joomla.org/JTable/getInstance
 	 * @since   11.1
 	 */
-	public static function getInstance($type, $prefix = 'JTable', $config = array())
+	public static function getInstance($type, $prefix = 'VmTable', $config = array())
 	{
 		// Sanitize and prepare the table class name.
 		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
@@ -172,7 +174,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 			// Search for the class file in the JTable include paths.
 			jimport('joomla.filesystem.path');
 
-			$paths = JTable::addIncludePath();
+			$paths = VmTable::addIncludePath();
 			$pathIndex = 0;
 			while (!class_exists($tableClass) && $pathIndex < count($paths))
 			{
@@ -184,8 +186,9 @@ class VmTable implements JObservableInterface, JTableInterface {
 			}
 			if (!class_exists($tableClass))
 			{
+				vmdebug('Did nto find file in ',$paths,$tryThis);
 				// If we were unable to find the class file in the JTable include paths, raise a warning and return false.
-				JError::raiseWarning(0, JText::sprintf('JLIB_DATABASE_ERROR_NOT_SUPPORTED_FILE_NOT_FOUND', $type));
+				//JError::raiseWarning(0, JText::sprintf('JLIB_DATABASE_ERROR_NOT_SUPPORTED_FILE_NOT_FOUND', $type));
 				return false;
 			}
 		}
@@ -216,7 +219,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 		// If the internal paths have not been initialised, do so with the base table path.
 		if (!isset($_paths))
 		{
-			$_paths = array(dirname(__FILE__) . '/table');
+			$_paths = array(VMPATH_ADMIN .DS. 'tables');
 		}
 
 		// Convert the passed path(s) to add to an array.
@@ -237,45 +240,6 @@ class VmTable implements JObservableInterface, JTableInterface {
 		}
 
 		return $_paths;
-	}
-
-
-	/**
-	 * Set the object properties based on a named array/hash.
-	 *
-	 * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
-	 * @param   mixed  $properties  Either an associative array or another object.
-	 *
-	 * @return  boolean
-	 * @since   11.1
-	 * @see     set()
-	 */
-	public function setProperties($properties)
-	{
-		if (is_array($properties) || is_object($properties))
-		{
-			foreach ((array) $properties as $k => $v)
-			{
-				// Use the set function which might be overridden.
-				$this->set($k, $v);
-			}
-			return true;
-		}
-
-		return false;
-	}
-
-	public function get($prop, $def = null) {
-		if (isset($this->$prop)) {
-			return $this->$prop;
-		}
-		return $def;
-	}
-
-	public function set($prop, $value = null) {
-		$prev = isset($this->$prop) ? $this->$prop : null;
-		$this->$prop = $value;
-		return $prev;
 	}
 
 
@@ -2112,7 +2076,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 	 */
 	function isCheckedOut($with = 0, $against = null) {
 
-		if (isset($this) && is_a($this, 'JTable') && is_null($against)) {
+		if (isset($this) && is_a($this, 'VmTable') && is_null($against)) {
 			$against = $this->get('locked_by');
 		}
 
@@ -2121,7 +2085,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 			return false;
 		}
 
-		$session = JTable::getInstance('session');
+		$session = VmTable::getInstance('session');
 		return $session->exists($against);
 	}
 
@@ -2255,6 +2219,9 @@ class VmTable implements JObservableInterface, JTableInterface {
 	 */
 	function _modifyColumn($_act, $_col, $_type = '', $_col2 = '') {
 
+		$user = JFactory::getUser();
+		if(!$user->authorise('core.admin','com_virtuemart')) return false;
+
 		$_sql = 'ALTER TABLE `' . $this->_tbl . '` ';
 
 
@@ -2299,7 +2266,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 
 				// NOT NULL not allowed for deleted columns
 				//$t_type = str_ireplace(' NOT ', '', $_type);
-				$_sql .= "CHANGE `'.$_col.'` `'.$_col2.'` $_type ";
+			$_sql .= "CHANGE $_col $_col2 $_type ";
 				//was: $_sql .= "DROP $_col ";
 				break;
 			case 'MOD': // Modify
@@ -2401,7 +2368,7 @@ class VmTable implements JObservableInterface, JTableInterface {
 	protected function _getAssetParentId($table = null, $id = null)
 	{
 		// For simple cases, parent to the asset root.
-		$assets = self::getInstance('Asset', 'JTable', array('dbo' => $this->getDbo()));
+		$assets = self::getInstance('Asset', 'VmTable', array('dbo' => $this->getDbo()));
 		$rootId = $assets->getRootId();
 		if (!empty($rootId))
 		{

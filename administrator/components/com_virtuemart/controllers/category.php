@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmController'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
+if(!class_exists('VmController')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
 
 /**
  * Category Controller
@@ -30,9 +30,6 @@ if(!class_exists('VmController'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontrol
  */
 class VirtuemartControllerCategory extends VmController {
 
-	public function __construct() {
-		parent::__construct();
-	}
 
 	/**
 	 * We want to allow html so we need to overwrite some request data

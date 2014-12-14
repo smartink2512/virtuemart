@@ -189,7 +189,6 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$this->activeShoppergroups = shopfunctions::renderGuiList($cid,'shoppergroups','shopper_group_name','category','vmuser_shoppergroups','virtuemart_user_id');
 				if(!empty($this->activeShoppergroups) ){
-					//vmdebug('$this->activeShoppergroups',$this->activeShoppergroups);
 					$shoppergroupModel = VmModel::getModel('shoppergroup');
 					$this->activeShoppergroups = vmText::_($shoppergroupModel->getDefault(0)->shopper_group_name);
 				}
@@ -227,22 +226,6 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 
 				$this->assignRef('product', $product);
-				/*$product_empty_price = array(
-					'virtuemart_product_price_id' => 0
-				, 'virtuemart_product_id'         => $virtuemart_product_id
-				, 'virtuemart_shoppergroup_id'    => NULL
-				, 'product_price'                 => NULL
-				, 'override'                      => NULL
-				, 'product_override_price'        => NULL
-				, 'product_tax_id'                => NULL
-				, 'product_discount_id'           => NULL
-				, 'product_currency'              => $vendor->vendor_currency
-				, 'product_price_publish_up'      => NULL
-				, 'product_price_publish_down'    => NULL
-				, 'price_quantity_start'          => NULL
-				, 'price_quantity_end'            => NULL
-				);
-				$this->assignRef ('product_empty_price', $product_empty_price);*/
 
 				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */
@@ -289,13 +272,18 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				//$this->addStandardDefaultViewCommands();
 				$this->addStandardDefaultViewLists($catmodel,'category_name');
 
-				$categories = $catmodel->getCategoryTree(0,0,false,$this->lists['search']);
-				$this->assignRef('categories', $categories);
+				$session = JFactory::getSession();
+				$reset = $session->get('reset_pag', false, 'vm');
+				$limit = '';
+				if($reset){
+					$limit = 0;
+					$session->set('reset_pag', false,'vm');
+				}
+				$this->categories = $catmodel->getCategoryTree(0,0,false,$this->lists['search'],$limit);
 
 				$catpagination = $catmodel->getPagination();
 				$this->assignRef('catpagination', $catpagination);
 
-				//$this->addStandardDefaultViewCommands();
 				$this->setLayout('massxref');
 
 				JToolBarHelper::custom('massxref_cats_exe', 'new', 'new', vmText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT_EXE'), false);

@@ -215,13 +215,15 @@ class VirtueMartModelCategory extends VmModel {
 	}
 
 
-	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = ''){
+	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = '', $limitStart = '',$limit = ''){
 
 		$sortedCats = array();
 
-		$limits = $this->setPaginationLimits();
-		$limitStart = $limits[0];
-		$limit = $limits[1];
+		if($limitStart === '' or $limit === ''){
+			$limits = $this->setPaginationLimits();
+			if($limitStart === '') $limitStart = $limits[0];
+			if($limit === '') $limit = $limits[1];
+		}
 
 		$this->_noLimit = true;
 		if($keyword!=''){
@@ -245,10 +247,11 @@ class VirtueMartModelCategory extends VmModel {
 
 		$this->getPagination();
 
-		if(empty($limit)){
+		if(empty($limit)){ vmdebug('my $sortedCats ',$sortedCats);
 			return $sortedCats;
 		} else {
 			$sortedCats = array_slice($sortedCats, $limitStart,$limit);
+			vmdebug('my $sortedCats sliced by  '.$limitStart.' '.$limit,$sortedCats);
 			return $sortedCats;
 		}
 

@@ -5,7 +5,7 @@
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="3.0.2"/>
     <property name="joomla.version" value="2.5.27" />
-    <property name="svn.lastrevision" value="8613" />
+    <property name="svn.lastrevision" value="8616" />
     <property name="PHING.VM.CODENAME" value="DreamIn"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
@@ -147,22 +147,41 @@
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
         <exclude name="**/vm_update/**"/>
+        <exclude name="**/ar-AA/**"/>
+        <exclude name="**/bg-BG/**"/>
+        <exclude name="**/bs-BA/**"/>
+        <exclude name="**/ca-ES/**"/>
+        <exclude name="**/cs-CZ/**"/>
         <exclude name="**/da-DK/**"/>
         <exclude name="**/de-DE/**"/>
+        <exclude name="**/en-US/**"/>
         <exclude name="**/es-ES/**"/>
         <exclude name="**/el-GR/**"/>
+        <exclude name="**/et-EE/**"/>
+        <exclude name="**/fa-IR/**"/>
+        <exclude name="**/fi-FI/**"/>
         <exclude name="**/fr-FR/**"/>
+        <exclude name="**/hu-HU/**"/>
+        <exclude name="**/id-ID/**"/>
         <exclude name="**/it-IT/**"/>
+        <exclude name="**/lt-LT/**"/>
         <exclude name="**/nb-NO/**"/>
         <exclude name="**/no-NO/**"/>
         <exclude name="**/nl-NL/**"/>
         <exclude name="**/pl-PL/**"/>
         <exclude name="**/pt-BR/**"/>
+        <exclude name="**/pt-PT/**"/>
+        <exclude name="**/ro-RO/**"/>
         <exclude name="**/ru-RU/**"/>
+        <exclude name="**/sk-SK/**"/>
+        <exclude name="**/sl-SI/**"/>
+        <exclude name="**/sr-YU/**"/>
         <exclude name="**/sv-SE/**"/>
         <exclude name="**/tr-TR/**"/>
         <exclude name="**/uk-UA/**"/>
         <exclude name="**/th-TH/**"/>
+        <exclude name="**/zh-CN/**"/>
+        <exclude name="**/zh-TW/**"/>
     </fileset>
     <!-- ============================================  -->
     <!--  FILESET ALL FUL INSTALLER FILES -->
@@ -214,7 +233,7 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-         <exclude name="install.xml"/>
+        <exclude name="install.xml"/>
         <exclude name="**/da-DK/**"/>
         <exclude name="**/de-DE/**"/>
         <exclude name="**/es-ES/**"/>

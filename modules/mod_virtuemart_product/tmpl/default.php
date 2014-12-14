@@ -47,7 +47,7 @@ if ($products_per_row > 1) {
 						}
 					}
 					if ($show_addtocart) {
-						echo mod_virtuemart_product::addtocart ($product);
+						echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product));
 					}
 					?>
 				</div>
@@ -91,7 +91,7 @@ if ($products_per_row > 1) {
 					echo '</div>';
 				}
 				if ($show_addtocart) {
-					echo mod_virtuemart_product::addtocart ($product);
+					echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product));
 				}
 				?>
 			</li>

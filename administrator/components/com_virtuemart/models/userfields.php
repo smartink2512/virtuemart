@@ -306,9 +306,6 @@ class VirtueMartModelUserfields extends VmModel {
 			$field->ordering = $field->getNextOrder();
 		}
 
-
-		//return false;
-
 		$_id = $field->store();
 
 		if ($_id === false) {

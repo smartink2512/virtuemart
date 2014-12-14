@@ -64,7 +64,7 @@ if($cache){
 
 
 /* Load  VM fonction */
-if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
+//if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
 
 $vendorId = vRequest::getInt('vendorid', 1);
 

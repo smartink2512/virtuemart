@@ -96,12 +96,12 @@ class VirtueMartCart {
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public static function getCart($setCart=true, $options = array(), $cartData=NULL) {
+	public static function getCart($forceNew=false, $options = array(), $cartData=NULL) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')) require(VMPATH_LIBS . DS . 'joomla' . DS . 'database' . DS . 'table.php');
 
-		if(empty(self::$_cart)){
+		if(empty(self::$_cart) or $forceNew){
 
 			self::$_cart = new VirtueMartCart;
 
@@ -318,17 +318,27 @@ class VirtueMartCart {
 			$cObj->virtuemart_vendor_id = (int) $this->vendorId;
 			$cObj->cartData = $cartDataToStore;
 			$carts->bindChecknStore($cObj);
+
+			if(!empty($cObj->virtuemart_cart_id)){
+				$this->virtuemart_cart_id = $cObj->virtuemart_cart_id;
+			}
 		}
 	}
 
 	public function deleteCart(){
 
-		$currentUser = JFactory::getUser();
-		if(!$currentUser->guest){
-			$model = new VmModel();
-			$carts = $model->getTable('carts');
+		$model = new VmModel();
+		$carts = $model->getTable('carts');
+
+		if(!empty($this->virtuemart_cart_id)){
 			$carts->delete($this->virtuemart_cart_id,'virtuemart_cart_id');
+		} else {
+			$currentUser = JFactory::getUser();
+			if(!empty($currentUser->id)) {
+				$carts->delete($currentUser->id);
+			}
 		}
+
 	}
 
 	/**
@@ -341,11 +351,11 @@ class VirtueMartCart {
 
 		$session = JFactory::getSession();
 
+		if($storeDb){
+			$this->storeCart();
+		}
 		$sessionCart = $this->getCartDataToStore();
 		$sessionCart = json_encode($sessionCart);
-		if($storeDb){
-			$this->storeCart($sessionCart);
-		}
 		//vmdebug('my session data to store',$sessionCart);
 		$session->set('vmcart', $sessionCart,'vm');
 
@@ -692,13 +702,8 @@ class VirtueMartCart {
 		foreach($quantities as $key=>$quantity){
 			if (isset($this->cartProductsData[$key]) and !empty($quantity) and !isset($_POST['delete_'.$key])) {
 				if($quantity!=$this->cartProductsData[$key]['quantity']){
-					$productModel = VmModel::getModel('product');
-
-					$product = $productModel -> getProduct($this->cartProductsData[$key]['virtuemart_product_id'], $quantity);
-					if ($this->checkForQuantities($product, $quantity)) {
-						$this->cartProductsData[$key]['quantity'] = $quantity;
-						$updated = true;
-					}
+					$this->cartProductsData[$key]['quantity'] = $quantity;
+					$updated = true;
 				}
 
 			} else {
@@ -911,21 +916,6 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
 		}
 
-		$validUserDataCart = self::validateUserData('cartfields',$this->cartfields,$this->_redirect);
-
-		if($validUserDataCart!==true){
-			if($this->_redirect){
-				$this->_inCheckOut = false;
-				$redirectMsg = null;
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName , $redirectMsg);
-			}
-			$this->_blockConfirm = true;
-		} else {
-			//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
-			//the advantage, that plugins can easily deal with it.
-			$this->BT = array_merge((array)$this->BT,(array)$this->cartfields);
-		}
-
 		$currentUser = JFactory::getUser();
 		if($this->STsameAsBT!=0){
 			if($this->_confirmDone){
@@ -1027,6 +1017,21 @@ class VirtueMartCart {
 					}
 				}
 			}
+		}
+
+		$validUserDataCart = self::validateUserData('cartfields',$this->cartfields,$this->_redirect);
+
+		if($validUserDataCart!==true){
+			if($this->_redirect){
+				$this->_inCheckOut = false;
+				$redirectMsg = null;
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName , $redirectMsg);
+			}
+			$this->_blockConfirm = true;
+		} else {
+			//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
+			//the advantage, that plugins can easily deal with it.
+			//$this->BT = array_merge((array)$this->BT,(array)$this->cartfields);
 		}
 
 		//Show cart and checkout data overview
@@ -1218,7 +1223,7 @@ class VirtueMartCart {
 				vmdebug('Store $this->cartfields[$name] '.$name.' '.$tmp);
 			}
 		}
-
+		$this->BT = array_merge((array)$this->BT,(array)$this->cartfields);
 		$this->setCartIntoSession();
 	}
 

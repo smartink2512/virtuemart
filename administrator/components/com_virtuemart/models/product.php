@@ -705,7 +705,7 @@ class VirtueMartModelProduct extends VmModel {
 	public function checkIfCached($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1,$virtuemart_shoppergroup_ids = 0){
 
 		if($virtuemart_shoppergroup_ids !=0 and is_array($virtuemart_shoppergroup_ids)){
-			$virtuemart_shoppergroup_idsString = implode('',$virtuemart_shoppergroup_ids);
+			$virtuemart_shoppergroup_idsString = implode('.',$virtuemart_shoppergroup_ids);
 		} else {
 			$virtuemart_shoppergroup_idsString = $virtuemart_shoppergroup_ids;
 		}
@@ -935,7 +935,7 @@ class VirtueMartModelProduct extends VmModel {
 		$q .= ' ORDER BY `product_price` DESC';
 
 		static $loadedProductPrices = array();
-		$hash = $productId.','.implode($virtuemart_shoppergroup_ids,'.').','.(int)$front; //md5($q);
+		$hash = $productId.','.implode('.',$virtuemart_shoppergroup_ids).','.(int)$front; //md5($q);
 
 		if(!isset($loadedProductPrices[$hash])){
 			$db->setQuery($q);
@@ -1058,7 +1058,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$virtuemart_shoppergroup_idsString = 0;
 		if(!empty($virtuemart_shoppergroup_ids) and is_array($virtuemart_shoppergroup_ids)){
-			$virtuemart_shoppergroup_idsString = implode('',$virtuemart_shoppergroup_ids);
+			$virtuemart_shoppergroup_idsString = implode('.',$virtuemart_shoppergroup_ids);
 		} else if(!empty($virtuemart_shoppergroup_ids)){
 			$virtuemart_shoppergroup_idsString = $virtuemart_shoppergroup_ids;
 		}

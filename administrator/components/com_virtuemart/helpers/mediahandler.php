@@ -29,24 +29,7 @@ class vmFile {
 	 */
 	static function makeSafe($str,$forceNoUni=false) {
 
-		$str = trim(JString::strtolower($str));
-
-		// Delete all '?'
-		$str = str_replace('?', '', $str);
-
-		// Replace double byte whitespaces by single byte (East Asian languages)
-		$str = preg_replace('/\xE3\x80\x80/', ' ', $str);
-
-		$unicodeslugs = VmConfig::get('transliterateSlugs',false);
-		if($unicodeslugs){
-			$lang = JFactory::getLanguage();
-			$str = $lang->transliterate($str);
-		}
-
-		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-
-		vmdebug('makeSafe',$str);
-		return $str;
+		return vRequest::filterPath($str);
 	}
 }
 

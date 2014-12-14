@@ -74,10 +74,10 @@ defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 require(VMPATH_ADMIN.DS.'version.php');
 defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
 
-if(!class_exists('JTable')){
-	require(VMPATH_LIBS.DS.'joomla'.DS.'database'.DS.'table.php');
+if(!class_exists('VmTable')){
+	require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtable.php');
 }
-JTable::addIncludePath(VMPATH_ADMIN.DS.'tables');
+VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables');
 
 if (!class_exists ('VmModel')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
@@ -380,49 +380,56 @@ function vmTime($descr,$name='current'){
  */
 function logInfo ($text, $type = 'message') {
 
-	if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+	static $file = null;
+	vmSetStartTime('logInfo');
+	$head = false;
 
-	$config = JFactory::getConfig();
-	$log_path = $config->get('log_path', VMPATH_ROOT . "/log" );
-	$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+	if($file===null){
+		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
-	if (!is_dir($log_path)) {
-		jimport('joomla.filesystem.folder');
-		if (!JFolder::create($log_path)) {
+		$config = JFactory::getConfig();
+		$log_path = $config->get('log_path', VMPATH_ROOT . "/log" );
+		$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+
+		if (!is_dir($log_path)) {
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($log_path)) {
+				if (VmConfig::$echoAdmin){
+					$msg = 'Could not create path ' . $log_path . ' to store log information. Check your folder ' . $log_path . ' permissions.';
+					$app = JFactory::getApplication();
+					$app->enqueueMessage($msg, 'error');
+				}
+				return;
+			}
+		}
+		if (!is_writable($log_path)) {
 			if (VmConfig::$echoAdmin){
-				$msg = 'Could not create path ' . $log_path . ' to store log information. Check your folder ' . $log_path . ' permissions.';
+				$msg = 'Path ' . $log_path . ' to store log information is not writable. Check your folder ' . $log_path . ' permissions.';
 				$app = JFactory::getApplication();
 				$app->enqueueMessage($msg, 'error');
 			}
 			return;
 		}
-	}
-	if (!is_writable($log_path)) {
-		if (VmConfig::$echoAdmin){
-			$msg = 'Path ' . $log_path . ' to store log information is not writable. Check your folder ' . $log_path . ' permissions.';
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($msg, 'error');
-		}
-		return;
-	}
-	$head = false;
-	if (!JFile::exists($file)) {
-		// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
-		// from Joomla log file
-		$head = "#\n";
-		$head .= '#<?php die("Forbidden."); ?>'."\n";
 
+		if (!JFile::exists($file)) {
+			// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
+			// from Joomla log file
+			$head = "#\n";
+			$head .= '#<?php die("Forbidden."); ?>'."\n";
+
+		}
 	}
+
 
 	// Initialise variables.
-	if(!class_exists('JClientHelper')) require(VMPATH_LIBS.DS.'joomla'.DS.'client'.DS.'helper.php');
+	/*if(!class_exists('JClientHelper')) require(VMPATH_LIBS.DS.'joomla'.DS.'client'.DS.'helper.php');
 	$FTPOptions = JClientHelper::getCredentials('ftp');
-
-	if ($FTPOptions['enabled'] == 0){
-		static $fp;
+	if (!empty($FTPOptions['enabled'] == 0)){
+		//For logging we do not support FTP. For loggin without file permissions using FTP, we need to load the file,..
+		//append the text and replace the file. This cannot be fast per FTP and therefore we disable it.
+	} else {*/
 
 		$fp = fopen ($file, 'a');
-
 		if ($fp) {
 			if ($head) {
 				fwrite ($fp,  $head);
@@ -438,11 +445,8 @@ function logInfo ($text, $type = 'message') {
 				$app->enqueueMessage($msg, 'error');
 			}
 		}
-	} else {
-		//For logging we do not support FTP. For loggin without file permissions using FTP, we need to load the file,..
-		//append the text and replace the file. This cannot be fast per FTP and therefore we disable it.
-	}
-
+	//}
+	vmTime('time','logInfo');
 	return;
 
 }
@@ -861,7 +865,7 @@ class VmConfig {
 				$confData['virtuemart_config_id'] = 1;
 
 				$confData['config'] = VmConfig::$_jpConfig->toString();
-				$confTable = JTable::getInstance('configs', 'Table', array());
+				$confTable = VmTable::getInstance('configs', 'Table', array());
 
 				if (!$confTable->bindChecknStore($confData)) {
 					vmError('storeConfig was not able to store config');
