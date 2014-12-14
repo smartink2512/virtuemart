@@ -53,7 +53,7 @@ abstract class vmShopperPlugin extends VmPlugin
 	abstract public function plgVmOnUpdateOrderBEShopper($_orderID);
 
 
-	public function plgVmOnUserStore($data){
+	public function plgVmOnUserStore(&$data){
 		return $data;
 	}
 

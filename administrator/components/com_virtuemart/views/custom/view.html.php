@@ -105,7 +105,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 					$this->custom->form = JForm::getInstance($this->custom->field_type, $formString, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->custom->params = new stdClass();
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
-					$this->custom->form->bind($this->custom);
+					$this->custom->form->bind($this->custom->getProperties());
 
 				}
 			}

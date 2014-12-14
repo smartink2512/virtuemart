@@ -71,6 +71,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	public function onStoreInstallPluginTable ($jplugin_id, $name = FALSE) {
 
 		if ($res = $this->selectedThisByJPluginId ($jplugin_id)) {
+			vmdebug('onStoreInstallPluginTable, going to execute onStoreInstallPluginTable');
 			parent::onStoreInstallPluginTable ($this->_psType);
 		}
 		return $res;
