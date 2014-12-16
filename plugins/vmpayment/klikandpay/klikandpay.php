@@ -676,7 +676,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 			return NULL; // Another method was selected, do nothing
 		}
 		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
-			return FALSE;
+			return NULL;
 		}
 
 		$interface = $this->_loadKlikandpayInterface($this);

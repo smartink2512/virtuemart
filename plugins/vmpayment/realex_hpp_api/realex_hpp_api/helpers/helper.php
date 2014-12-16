@@ -1699,7 +1699,7 @@ class  RealexHelperRealex {
 	}
 
 
-	function doRealVault () {
+	function doRealVault (&$selectedCCParams) {
 
 		if (!JFactory::getUser()->guest AND $this->_method->realvault AND $this->_method->integration == 'remote') {
 			if (!($this->_method->offer_save_card) OR

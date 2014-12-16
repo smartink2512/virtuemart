@@ -993,25 +993,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 	 *
 	 */
 	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart) {
-		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
-			return NULL; // Another method was selected, do nothing
-		}
-		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
-			return FALSE;
-		}
-		/*
-		$realexInterface = $this->_loadRealexInterface($this->_currentMethod);
-		$realexInterface->loadCustomerData();
-		if ($this->customerData->getVar('selected_method') == $cart->virtuemart_paymentmethod_id) {
-
-			if (!$realexInterface->validateSelectCheckPayment()) {
-				return false;
-			}
-		}
-*/
-		return true;
-
-
+		return $this->onSelectCheck($cart);
 	}
 
 	/**
@@ -1026,15 +1008,6 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
 			return NULL;
 		}
-		/*
-		$realexInterface = $this->_loadRealexInterface($this->_currentMethod);
-		$realexInterface->loadCustomerData();
-
-		if (!$realexInterface->validateCheckoutCheckDataPayment()) {
-			vmInfo('VMPAYMENT_REALEX_HPP_API_PLEASE_SELECT_OPTION');
-			return false;
-		}
-*/
 
 		return true;
 	}
