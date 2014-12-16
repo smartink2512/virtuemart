@@ -75,7 +75,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 			$payment = $model->getPayment();
 
 			// Get the payment XML.
-			$formFile	= JPath::clean( VMPATH_ROOT .DS. 'plugins'. DS. 'vmpayment' .DS. $payment->payment_element .DS. $payment->payment_element . '.xml');
+			$formFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins'. DS. 'vmpayment' .DS. $payment->payment_element .DS. $payment->payment_element . '.xml');
 			if (file_exists($formFile)){
 
 				$payment->form = JForm::getInstance($payment->payment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');

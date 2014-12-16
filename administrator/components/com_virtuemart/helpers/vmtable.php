@@ -29,6 +29,7 @@ defined('_JEXEC') or die();
  * @author Milbo
  *
  */
+
 if(JVM_VERSION<3){
 	interface JObservableInterface{
 
@@ -323,9 +324,6 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		$this->_translatableFields = $langFields;
 		$this->_translatableFields['slug'] = 'slug';
 		$this->_translatable = true;
-
-		if (!class_exists('VmConfig')) require(JPATH_COMPONENT_ADMINISTRATOR .'helpers/config.php');
-		VmConfig::loadConfig();
 
 		$this->_langTag = VmConfig::$vmlang;
 		$this->_tbl_lang = $this->_tbl . '_' . $this->_langTag;

@@ -19,8 +19,9 @@ if($maxtime < 140){
 }
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-defined('VMPATH_ADMIN') or define('VMPATH_ADMIN', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
 defined('VMPATH_ROOT') or define('VMPATH_ROOT', JPATH_ROOT);
+defined('VMPATH_ADMIN') or define('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
+
 
 
 // hack to prevent defining these twice in 1.6 installation

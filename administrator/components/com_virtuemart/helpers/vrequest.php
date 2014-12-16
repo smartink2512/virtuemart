@@ -55,7 +55,8 @@ class vRequest {
 	}
 
 	/**
-	 * This function does not allow unicode
+	 * This function does not allow unicode, replacement for JPath::clean
+	 * and makesafe
 	 * @param      $string
 	 * @param bool $forceNoUni
 	 * @return mixed|string
@@ -89,7 +90,7 @@ class vRequest {
 
 		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 
-		vmdebug('makeSafe',$str);
+		//vmdebug('makeSafe',$str);
 		return $str;
 	}
 

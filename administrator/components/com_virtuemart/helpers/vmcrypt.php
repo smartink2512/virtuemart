@@ -1,5 +1,5 @@
 <?php
-defined('JPATH_BASE') or die();
+defined('VMPATH_ROOT') or die();
 /**
  * virtuemart encrypt class, with some additional behaviours.
  *

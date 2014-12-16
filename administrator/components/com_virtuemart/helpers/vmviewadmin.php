@@ -260,7 +260,7 @@ class VmViewAdmin extends JViewLegacy {
 					} else {
 						$img=$languagesByCode[$key]->image;
 					}
-					$image_flag=JPATH_SITE."/media/mod_languages/images/".$img.".gif";
+					$image_flag= VMPATH_ROOT."/media/mod_languages/images/".$img.".gif";
 					$image_flag_url= JURI::root()."media/mod_languages/images/".$img.".gif";
 
 					if (!file_exists ($image_flag)) {
@@ -492,7 +492,7 @@ class VmViewAdmin extends JViewLegacy {
 				}
 				$task ="_".$task;
 			}
-			if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
+			if (!class_exists( 'VmConfig' )) require(VMPATH_ADMIN .'/helpers/config.php');
 			VmConfig::loadConfig();
 			VmConfig::loadJLang('com_virtuemart_help');
  		    $lang = JFactory::getLanguage();

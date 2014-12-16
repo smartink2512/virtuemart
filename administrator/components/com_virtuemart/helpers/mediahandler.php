@@ -1176,13 +1176,16 @@ $html .='</td>';
 					<td><fieldset class="checkboxes">'.JHtml::_('select.radiolist', $this->getOptions($this->_mLocation), 'media_attributes'.$identify, '', 'value', 'text', $mediaattribtemp).'</fieldset></td></tr>';
 		}
 
+
 		// select language for image
-		if (count(vmconfig::get('active_languages'))>1) {
-			$selectedLangue = explode(",", $this->file_lang);
-			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
+		$selectedLang = VmConfig::get('active_languages');
+		if (count($selectedLang)>1) {
+			$configM = VmModel::getModel('config');
+			//$selectedLangue = explode(",", $this->file_lang);
+			$languages = $configM->getActiveLanguages($selectedLang);
 			$html .= '<tr>
 					<td class="labelcell"><span class="hasTip" title="' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE_TIP') . '">' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE') . '</span></td>
-					<td><fieldset class="inputbox">'.JHtml::_('select.genericlist',  $languages, 'vmlangimg[]', 'size="10" multiple="multiple"', 'value', 'text', $selectedLangue ).'</fieldset></td>
+					<td><fieldset class="inputbox">'.$languages.'</fieldset></td>
 					</tr>';
 		}
 

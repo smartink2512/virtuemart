@@ -18,8 +18,8 @@ defined ('_JEXEC') or die('Restricted access');
  */
 
 if (!class_exists( 'VmConfig' )) {
-	if(file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php')){
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+	if(file_exists(VMPATH_ADMIN.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php')){
+		require(VMPATH_ADMIN.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 	} else {
 		echo 'Install VirtueMart first'; return;
 	}
@@ -83,7 +83,7 @@ abstract class vmPlugin extends JPlugin {
 
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
-		$this->_xmlFile	= JPath::clean( VMPATH_ROOT .DS. 'plugins' .DS. $this->_type .DS.  $this->_name . DS. $this->_name . '.xml');
+		$this->_xmlFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins' .DS. $this->_type .DS.  $this->_name . DS. $this->_name . '.xml');
 
 	}
 

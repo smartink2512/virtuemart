@@ -239,13 +239,8 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		if($allowReview || $allowRating){
 			$return = $model->saveRating ();
 			if ($return !== FALSE) {
-				$errors = $model->getErrors ();
-				if (empty($errors)) {
-					$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', vmText::_ ('COM_VIRTUEMART_REVIEW'));
-				}
-				foreach ($errors as $error) {
-					$msg = ($error) . '<br />';
-				}
+				$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', vmText::_ ('COM_VIRTUEMART_REVIEW'));
+
 				if (!class_exists ('ShopFunctionsF')) {
 					require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 				}

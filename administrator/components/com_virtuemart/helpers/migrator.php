@@ -401,11 +401,7 @@ class Migrator extends VmModel{
 			$this->mediaModel->setId(0);
 			$data['file_type'] = $type;
 			$success = $this->mediaModel->store($data, $type);
-			$errors = $this->mediaModel->getErrors();
-			foreach($errors as $error){
-				$this->_app->enqueueMessage('Migrator ' . $error);
-			}
-			$this->mediaModel->resetErrors();
+
 			if($success) $i++;
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				vmError('Attention script time too short, no time left to store the media, please rise script execution time');
@@ -458,13 +454,6 @@ class Migrator extends VmModel{
 				$table = $this->getTable('shoppergroups');
 
 				$table->bindChecknStore($sGroups);
-				$errors = $table->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						vmError('Migrator portShoppergroups '.$error);
-					}
-					break;
-				}
 
 				// 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
 				$alreadyKnownIds[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
@@ -612,6 +601,7 @@ class Migrator extends VmModel{
 					if(!$saveUserData=$userModel->saveUserData($user,false)){
 						vmdebug('Error migration saveUserData ');
 						// 					vmError(vmText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA'));
+						$continue = false;
 					}
 
 					$userfielddata = $userModel->_prepareUserFields($user, 'BT');
@@ -624,20 +614,12 @@ class Migrator extends VmModel{
 					if(!empty($user['user_is_vendor']) && $user['user_is_vendor'] === 1){
 						if (!$userModel->storeVendorData($user)){
 							vmError('Migrator portUsers ');
+							$continue = false;
 						}
 					}
 
 				$i++;
 
-				$errors = $userModel->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						vmError('Migrator portUsers '.$error);
-					}
-					$userModel->resetErrors();
-					$continue = false;
-					//break;
-				}
 
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					$goForST = false;
@@ -797,14 +779,6 @@ class Migrator extends VmModel{
 
 				$catModel->setId(0);
 				$category_id = $catModel->store($category);
-				$errors = $catModel->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						vmError('Migrator portCategories '.$error);
-						$ok = false;
-					}
-					break;
-				}
 
 				$alreadyKnownIds[$oldcategory['category_id']] = $category_id;
 				unset($category['virtuemart_category_id']);
@@ -823,9 +797,6 @@ class Migrator extends VmModel{
 		$msg = 'Looks everything worked correct, migrated ' . $i . ' categories ';
 		else {
 			$msg = 'Seems there was an error porting ' . $i . ' categories ';
-			foreach($this->getErrors() as $error){
-				$msg .= '<br />' . $error;
-			}
 		}
 		$this->_app->enqueueMessage($msg);
 
@@ -866,16 +837,7 @@ class Migrator extends VmModel{
 				if ($ok == true) {
 					$table = $this->getTable('category_categories');
 
-					$table->bindChecknStore($category);
-					$errors = $table->getErrors();
-					if(!empty($errors)){
-						foreach($errors as $error){
-							vmError('Migrator portCategories ref '.$error);
-							$ok = false;
-						}
-						break;
-					}
-
+					$ok = $table->bindChecknStore($category);
 
 					$i++;
 				}
@@ -890,9 +852,6 @@ class Migrator extends VmModel{
 			$msg = 'Looks everything worked correct, migrated ' . $i . ' categories xref ';
 			else {
 				$msg = 'Seems there was an error porting ' . $j . ' of '. $i.' categories xref ';
-				foreach($this->getErrors() as $error){
-					$msg .= '<br />' . $error;
-				}
 			}
 			$this->_app->enqueueMessage($msg);
 
@@ -932,15 +891,7 @@ class Migrator extends VmModel{
 				$mfcategory['published'] = 1;
 				$table = $this->getTable('manufacturercategories');
 
-				$table->bindChecknStore($mfcategory);
-				$errors = $table->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						vmError('Migrator portManufacturerCategories '.$error);
-						$ok = false;
-					}
-					break;
-				}
+				$ok= $table->bindChecknStore($mfcategory);
 
 				$alreadyKnownIds[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
 				$i++;
@@ -958,7 +909,6 @@ class Migrator extends VmModel{
 		$msg = 'Looks everything worked correct, migrated ' .$i . ' manufacturer categories ';
 		else {
 			$msg = 'Seems there was an error porting ' . $i . ' manufacturer categories ';
-			$msg .= $this->getErrors();
 		}
 
 		$this->_app->enqueueMessage($msg);
@@ -998,14 +948,8 @@ class Migrator extends VmModel{
 				require(VMPATH_ADMIN . DS . 'tables' . DS . 'manufacturers.php');
 				$table = $this->getTable('manufacturers');
 
-				$table->bindChecknStore($manu);
-				$errors = $table->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-
-						vmError('Migrator portManufacturers '.$error);
-						$ok = false;
-					}
+				$ok = $table->bindChecknStore($manu);
+				if(!$ok){
 					break;
 				}
 				$alreadyKnownIds[$oldmanu['manufacturer_id']] = $manu['virtuemart_manufacturer_id'];
@@ -1027,7 +971,6 @@ class Migrator extends VmModel{
 		$msg = 'Looks everything worked correct, migrated ' .$i . ' manufacturers ';
 		else {
 			$msg = 'Seems there was an error porting ' . $i . ' manufacturers ';
-			$msg .= $this->getErrors();
 		}
 		$this->_app->enqueueMessage($msg);
 
@@ -1227,18 +1170,10 @@ class Migrator extends VmModel{
 						$alreadyKnownIds[$product['product_id']] = $product['virtuemart_product_id'];
 					} else {
 						vmdebug('$product["virtuemart_product_id"] or $product["product_id"] is EMPTY?',$product);
-					}
-
-					$errors = $productModel->getErrors();
-					if(!empty($errors)){
-						foreach($errors as $error){
-							vmError('Migration: '.$i.' ' . $error);
-						}
-						vmdebug('Product add error',$product);
-						$productModel->resetErrors();
 						$continue = false;
 						break;
 					}
+
 					$j++;
 				}
 
@@ -1278,9 +1213,7 @@ class Migrator extends VmModel{
 										AND `file_type`="' . $this->_db->escape($type) . '"';
 			$this->_db->setQuery($q);
 			$virtuemart_media_id = $this->_db->loadResult();
-			if($this->_db->getErrors()){
-				vmError('Error in _getMediaIdByName',$this->_db->getErrorMsg());
-			}
+
 			if(!empty($virtuemart_media_id)){
 				$this->mediaIdFilename[$type][$filename] = $virtuemart_media_id;
 				return $virtuemart_media_id;
@@ -1409,15 +1342,12 @@ class Migrator extends VmModel{
 					$orderData->modified_on = $this->_changeToStamp($order['mdate']); //we could remove this to set modified_on today
 
 					$orderTable = $this->getTable('orders');
-					$orderTable->bindChecknStore($orderData);
-					$errors = $orderTable->getErrors();
-					if(!empty($errors)){
-						foreach($errors as $error){
-							$this->_app->enqueueMessage('Migration orders: ' . $error);
-						}
-						$continue = false;
+					$continue = $orderTable->bindChecknStore($orderData);
+
+					if(empty($continue)){
 						break;
 					}
+
 					$i++;
 					$newId = $alreadyKnownIds[$order['order_id']] = $orderTable->virtuemart_order_id;
 
@@ -1441,12 +1371,8 @@ class Migrator extends VmModel{
 						$item['product_discountedPriceWithoutTax'] = $item['product_final_price']   -  $item['product_tax'];
 						$item['product_subtotal_with_tax'] = $item['product_final_price']   *  $item['product_quantity'];
 						$orderItemsTable = $this->getTable('order_items');
-						$orderItemsTable->bindChecknStore($item);
-						$errors = $orderItemsTable->getErrors();
-						if(!empty($errors)){
-							foreach($errors as $error){
-								$this->_app->enqueueMessage('Migration orderitems: ' . $error);
-							}
+						$continue= $orderItemsTable->bindChecknStore($item);
+						if(empty($continue)){
 							$continue = false;
 							break;
 						}
@@ -1463,14 +1389,6 @@ class Migrator extends VmModel{
 
 						$orderHistoriesTable = $this->getTable('order_histories');
 						$orderHistoriesTable->bindChecknStore($item);
-						$errors = $orderHistoriesTable->getErrors();
-						if(!empty($errors)){
-							foreach($errors as $error){
-								$this->_app->enqueueMessage('Migration orderhistories: ' . $error);
-							}
-							$continue = false;
-							break;
-						}
 					}
 
 					$q = 'SELECT * FROM `#__vm_order_user_info` WHERE `order_id` = "'.$order['order_id'].'" ';
@@ -1486,14 +1404,6 @@ class Migrator extends VmModel{
 							$item['email'] = $item['user_email'];
 							$orderUserinfoTable = $this->getTable('order_userinfos');
 							$orderUserinfoTable->bindChecknStore($item);
-							$errors = $orderUserinfoTable->getErrors();
-							if(!empty($errors)){
-								foreach($errors as $error){
-									$this->_app->enqueueMessage('Migration orderuserinfo: ' . $error);
-								}
-								$continue = false;
-								break;
-							}
 						}
 					}
 					//$this->_app->enqueueMessage('Migration: '.$i.' order processed new id '.$newId);
@@ -1536,14 +1446,7 @@ class Migrator extends VmModel{
 				$status['published'] = 1;
 
 				$newId = $orderstatusModel->store($status);
-				$errors = $orderstatusModel->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						$this->_app->enqueueMessage('Migration: ' . $error);
-					}
-					$orderstatusModel->resetErrors();
-					//break;
-				}
+
 				$oldtonewOrderstates[$status['order_status_id']] = $newId;
 				$i++;
 			} else {

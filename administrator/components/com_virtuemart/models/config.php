@@ -259,7 +259,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$activeLangs = array() ;
 		$language =JFactory::getLanguage();
-		$jLangs = $language->getKnownLanguages(JPATH_BASE);
+		$jLangs = $language->getKnownLanguages(VMPATH_ROOT);
 
 		foreach ($jLangs as $jLang) {
 			$jlangTag = strtolower(strtr($jLang['tag'],'-','_'));
