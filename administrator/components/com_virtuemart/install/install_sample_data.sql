@@ -111,7 +111,7 @@ INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_ve
 	(17, 1, 'wide_dress_2.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/wide_dress_2.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
 	(18, 1, 'jacket_classic.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/jacket_classic.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
 	(19, 1, 'poncho.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/poncho.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(20, 1, 'dress.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/dress.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0,
+	(20, 1, 'dress.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/dress.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
 	(21, 1, 'producer.jpg', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/producer.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0);
 
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_gtin`, `product_mpn`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `product_ordered`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `product_sales`, `product_unit`, `product_packaging`, `product_params`, `hits`, `intnotes`, `metarobot`, `metaauthor`, `layout`, `published`, `pordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES

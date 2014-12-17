@@ -171,6 +171,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddDefaultShoppergroups();
 
+			$model->updateJoomlaUpdateServer('component','com_virtuemart',$this->path.DS.'virtuemart.xml');
+
 			$this->displayFinished(false);
 
 			//include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -231,7 +233,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			if(!class_exists('VmModel')) require $this->path.DS.'helpers'.DS.'vmmodel.php';
 			if(!class_exists('VirtueMartModelUpdatesMigration')) require($this->path . DS . 'models' . DS . 'updatesmigration.php');
-			$model = new VirtueMartModelUpdatesMigration(); //JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			$model = VmModel::getModel('updatesmigration');
+			//$model = new VirtueMartModelUpdatesMigration(); //JModel::getInstance('updatesmigration', 'VirtueMartModel');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 
 			$this -> joomlaSessionDBToMediumText();
@@ -289,6 +292,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->recurse_copy($src,$dst);
 			}
 
+			$model->updateJoomlaUpdateServer('component','com_virtuemart', $this->path.DS.'virtuemart.xml');
 			//fix joomla BE menu
 			//$model = VmModel::getModel('updatesmigration');
 			//$model->checkFixJoomlaBEMenuEntries();
@@ -764,7 +768,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->path = VMPATH_ADMIN;
 			}
 			//$this->loadVm();
-			include($this->path.DS.'install'.DS.'uninstall.virtuemart.html.php');
+			//include($this->path.DS.'install'.DS.'uninstall.virtuemart.html.php');
 
 			return true;
 		}

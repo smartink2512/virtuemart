@@ -60,6 +60,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
+
 			VmConfig::loadJLang('com_virtuemart');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcustom');
@@ -121,7 +122,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			echo "<table><tr><th>Plugins</th><td></td></tr>";
 
-			if(!class_exists('VirtueMartModelUpdatesMigration')) require($this->path . DS . 'models' . DS . 'updatesmigration.php');
+			if(!class_exists('VirtueMartModelUpdatesMigration')) require(VMPATH_ADMIN . DS . 'models' . DS . 'updatesmigration.php');
 
 			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
 			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
@@ -171,7 +172,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				//echo "Checking VirtueMart modules...";
 					$defaultParams = '{"show_vmmenu":"1"}';
 					$this->installModule ('VM - Administrator Module', 'mod_vmmenu', 5, $defaultParams, $dst,1,'menu',3,$alreadyInstalled);
-					$umimodel = VmModel::getModel('updatesmigration');
+					$umimodel = VmModel::getModel('updatesmigration');//$model = new VirtueMartModelUpdatesMigration();
 					$umimodel->updateJoomlaUpdateServer( 'module', 'mod_vmmenu', $dst   );
 
 

@@ -385,7 +385,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			if(!class_exists('com_virtuemartInstallerScript')) require(VMPATH_ADMIN . DS . 'install' . DS . 'script.virtuemart.php');
 			$updater = new com_virtuemartInstallerScript();
-			$updater->install(true,false);
+			$updater->install(true);
 
 			$model = $this->getModel('updatesMigration');
 			$sid = $model->setStoreOwner();

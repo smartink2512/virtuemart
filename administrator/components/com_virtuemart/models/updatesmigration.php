@@ -470,6 +470,108 @@ class VirtueMartModelUpdatesMigration extends VmModel {
     }
 
 	/**
+	 * @param $type= 'plugin'
+	 * @param $element= 'textinput'
+	 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
+	 *
+	 */
+	static function updateJoomlaUpdateServer( $type, $element, $dst, $group=''  ){
+
+		$db = JFactory::getDBO();
+		$extensionXmlFileName = self::getExtensionXmlFileName($type, $element, $dst );
+		$xml=simplexml_load_file($extensionXmlFileName);
+
+		// get extension id
+		$query="SELECT `extension_id` FROM `#__extensions` WHERE `type`=".$db->quote($type)." AND `element`=".$db->quote($element);
+		if ($group) {
+			$query.=" AND `folder`=".$db->quote($group);
+		}
+
+		$db->setQuery($query);
+		$extension_id=$db->loadResult();
+		if(!$extension_id) {
+			vmdebug('updateJoomlaUpdateServer no extension id ',$query);
+			return;
+		}
+		// Is the extension already in the update table ?
+		$query="SELECT * FROM `#__update_sites_extensions` WHERE `extension_id`=".$extension_id;
+		$db->setQuery($query);
+		$update_sites_extensions=$db->loadObject();
+		//VmConfig::$echoDebug=true;
+
+
+		// Update the version number for all
+		if(isset($xml->version)) {
+			$query="UPDATE `#__updates` SET `version`=".$db->quote((string)$xml->version)."
+					         WHERE `extension_id`=".$extension_id;
+			$db->setQuery($query);
+			$db->query();
+		}
+
+
+		if(isset($xml->updateservers->server)) {
+			if (!$update_sites_extensions) {
+
+				$query="INSERT INTO `#__update_sites` SET `name`=".$db->quote((string)$xml->updateservers->server['name']).",
+				        `type`=".$db->quote((string)$xml->updateservers->server['type']).",
+				        `location`=".$db->quote((string)$xml->updateservers->server).", enabled=1 ";
+				$db->setQuery($query);
+				$db->query();
+
+				$update_site_id=$db->insertId();
+
+				$query="INSERT INTO `#__update_sites_extensions` SET `update_site_id`=".$update_site_id." , `extension_id`=".$extension_id;
+				$db->setQuery($query);
+				$db->query();
+			} else {
+				if(empty($update_sites_extensions->update_site_id)){
+					vmWarn('Update site id not found for '.$element);
+					vmdebug('Update site id not found for '.$element,$update_sites_extensions);
+					return false;
+				}
+				$query="SELECT * FROM `#__update_sites` WHERE `update_site_id`=".$update_sites_extensions->update_site_id;
+				$db->setQuery($query);
+				$update_sites= $db->loadAssocList();
+				vmdebug('updateJoomlaUpdateServer',$update_sites);
+				if(empty($update_sites)){
+					vmdebug('No update sites found, they should be inserted');
+					return false;
+				}
+				//Todo this is written with an array, but actually it is only tested to run with one server
+				foreach($update_sites as $upSite){
+					if (strcmp($upSite['location'], (string)$xml->updateservers->server) != 0) {
+						// the extension was already there: we just update the server if different
+						$query="UPDATE `#__update_sites` SET `location`=".$db->quote((string)$xml->updateservers->server['name'])."
+					         WHERE update_site_id=".$update_sites_extensions->update_site_id;
+						$db->setQuery($query);
+						$db->query();
+					}
+				}
+
+			}
+
+		} else {
+			echo ('<br />UPDATE SERVER NOT FOUND IN XML FILE:'.$extensionXmlFileName);
+		}
+	}
+
+	/**
+	 * @param $type= 'plugin'
+	 * @param $element= 'textinput'
+	 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
+	 */
+	static function getExtensionXmlFileName($type, $element, $dst ){
+		if ($type=='plugin') {
+			$extensionXmlFileName=  $dst. DS . $element.  '.xml';
+		} else if ($type=='module'){
+			$extensionXmlFileName = $dst. DS . $element.DS . $element. '.xml';
+		} else {
+			$extensionXmlFileName = $dst;//;. DS . $element.DS . $element. '.xml';
+		}
+		return $extensionXmlFileName;
+	}
+
+	/**
 	 * This function deletes all stored thumbs and deletes the entries for all thumbs, usually this is need for shops
 	 * older than vm2.0.22. The new pattern is now not storing the url as long it is not overwritten.
 	 * Of course the function deletes all overwrites, but you can now relativly easy change the thumbsize in your shop

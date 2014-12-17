@@ -32,6 +32,9 @@ $option = vRequest::getCmd('option');
 			 <td align="left" width="100%">
 				<?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_NAME','searchMedia') .' '. $this->lists['search_type'].' '. $this->lists['search_role']; ?>
 			 </td>
+			  <td>
+				  <?php echo VmHtml::checkbox('missing','missing'); ?>
+			  </td>
 		  </tr>
 		</table>
 		</div>
@@ -61,8 +64,16 @@ $productfileslist = $this->files;
 	if (count($productfileslist) > 0) {
 		$i = 0;
 		$k = 0;
+		$onlyMissing = vRequest::getCmd('missing',false);
 		foreach ($productfileslist as $key => $productfile) {
 
+			$rel_path = str_replace('/',DS,$productfile->file_url_folder);
+			$fullSizeFilenamePath = VMPATH_ROOT.DS.$rel_path.$productfile->file_name.'.'.$productfile->file_extension;
+			if($onlyMissing){
+				if(file_exists($fullSizeFilenamePath)){
+					continue;
+				}
+			}
 			$checked = JHtml::_('grid.id', $i , $productfile->virtuemart_media_id,null,'virtuemart_media_id');
 			if (!is_null($productfile->virtuemart_media_id)) 	$published = $this->gridPublished( $productfile, $i );
 			else $published = '';
@@ -92,7 +103,17 @@ $productfileslist = $this->files;
 				<!-- Preview -->
 				<td>
 				<?php
-					echo $productfile->displayMediaThumb();
+
+
+					if(file_exists($fullSizeFilenamePath)){
+						echo $productfile->displayMediaThumb();
+					} else {
+						$file_url = $productfile->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
+						$file_alt = vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$productfile->file_description;
+						vmdebug('check path $file_url',$file_url);
+						echo $productfile->displayIt($file_url, $file_alt,'',false);
+					}
+
 
 				?>
 				</td>

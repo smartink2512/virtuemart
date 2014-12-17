@@ -41,6 +41,8 @@ class shopFunctionsF {
 			$view->assignRef( 'order', $order );
 			$view->assignRef( 'from_cart', $cart );
 			$view->assignRef( 'url', $url );
+			$view->writeJs = false;
+
 			ob_start();
 			$view->display();
 			$body = ob_get_contents();

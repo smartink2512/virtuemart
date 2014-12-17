@@ -27,6 +27,7 @@ class VmView extends JViewLegacy{
 
 	var $isMail = false;
 	var $isPdf = false;
+	var $writeJs = true;
 
 	public function display($tpl = null)
 	{
@@ -36,7 +37,7 @@ class VmView extends JViewLegacy{
 		}
 
 		echo $result;
-		if(!$this->isMail and !$this->isPdf and get_class($this)!='VirtueMartViewProductdetails'){
+		if($this->writeJs and !$this->isMail and !$this->isPdf and get_class($this)!='VirtueMartViewProductdetails'){
 			echo vmJsApi::writeJS();
 		}
 

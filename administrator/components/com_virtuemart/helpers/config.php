@@ -22,9 +22,14 @@ defined('_JEXEC') or die('Restricted access');
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 //defined('_JEXEC') or define('_JEXEC', 1);
 
+$app = JFactory::getApplication();
+$admin = '';
+if(!$app->isSite()){
+	$admin = DS.'administrator';//echo('in administrator');
+}
+
 if(defined('JPATH_ROOT')){	//We are in joomla
 	defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', JPATH_ROOT);
-	defined ('VMPATH_THEMES') or define ('VMPATH_THEMES',VMPATH_ROOT.DS.'templates');
 	if(version_compare(JVERSION,'3.0.0','ge')) {
 		defined('JVM_VERSION') or define ('JVM_VERSION', 3);
 	}
@@ -47,21 +52,23 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 	defined ('JVM_VERSION') or define ('JVM_VERSION', 0);
 	defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', dirname( __FILE__ ));
 	$vmPathLibraries = '';
-
 }
+
 defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', $vmPathLibraries);
 defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
+defined ('VMPATH_BASE') or define ('VMPATH_BASE',VMPATH_ROOT.$admin);
 defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN.DS.'plugins');
 defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT.DS.'plugins' );
 defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT.DS.'modules' );
+defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.DS.'templates' );
 
 //legacy
 defined ('JPATH_VM_SITE') or define('JPATH_VM_SITE', VMPATH_SITE );
 defined ('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', VMPATH_ADMIN);
 // define( 'VMPATH_ADMIN', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
 define( 'JPATH_VM_PLUGINS', VMPATH_PLUGINLIBS );
-define( 'JPATH_VM_MODULES', VMPATH_ROOT.DS.'modules' );
+define( 'JPATH_VM_MODULES', VMPATH_MODULES );
 
 
 defined('VM_VERSION') or define ('VM_VERSION', 3);

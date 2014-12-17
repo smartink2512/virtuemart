@@ -173,7 +173,7 @@ class vmJsApi{
 	 */
 	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js', $absolute_path=false)
 	{
-
+		$app = JFactory::getApplication();
 		$version = $version ? '.'.$version : '';
 		$min	 = $minified ? '.min' : '';
 		$file 	 = $namespace.$version.$min.'.'.$ext ;
@@ -182,6 +182,11 @@ class vmJsApi{
 		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		if ($path === FALSE) {
+			//if($app->isSite()){
+				$uri = VMPATH_THEMES .'/'. $template.'/'.$ext ;
+			/*} else {
+				$uri = VMPATH_ROOT.DS.'administrator'.DS.'templates' .'/'. $template.'/'.$ext ;
+			}*/
 			$uri = VMPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
 		}
@@ -193,7 +198,12 @@ class vmJsApi{
 				$path = str_replace('templates/'. $template.'/',$assets_path, $path);
 			}
 			if ($absolute_path) {
-				$path = JPATH_BASE .'/'.$path;
+				if(!$app->isSite()){
+					$path = VMPATH_ROOT .'/administrator/'.$path;
+				} else {
+					$path = VMPATH_ROOT .'/'.$path;
+				}
+				$path = VMPATH_BASE .'/'.$path;
 			} else {
 				$path = JURI::root(TRUE) .'/'.$path;
 			}
@@ -202,7 +212,12 @@ class vmJsApi{
 		elseif (strpos($path, '//') === FALSE)
 		{
 			if ($absolute_path) {
-				$path = JPATH_BASE .'/'.$path;
+				if(!$app->isSite()){
+					$path = VMPATH_ROOT .'/administrator/'.$path;
+				} else {
+					$path = VMPATH_ROOT .'/'.$path;
+				}
+				$path = VMPATH_BASE .'/'.$path;
 			} else {
 				$path = JURI::root(TRUE) .'/'.$path;
 			}

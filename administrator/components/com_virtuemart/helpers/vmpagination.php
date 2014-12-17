@@ -405,7 +405,7 @@ class VmPagination extends vObject {
 		$itemOverride = false;
 		$listOverride = false;
 
-		$chromePath = JPATH_THEMES . '/' . $app->getTemplate() . '/html/pagination.php';
+		$chromePath = VMPATH_THEMES . '/' . $app->getTemplate() . '/html/pagination.php';
 		if (file_exists($chromePath))
 		{
 			include_once $chromePath;
@@ -519,7 +519,7 @@ class VmPagination extends vObject {
 		$list['pagescounter'] = $this->getPagesCounter();
 		$list['pageslinks'] = $this->getPagesLinks();
 
-		$chromePath = JPATH_THEMES . '/' . $app->getTemplate() . '/html/pagination.php';
+		$chromePath = VMPATH_THEMES . '/' . $app->getTemplate() . '/html/pagination.php';
 		if (file_exists($chromePath))
 		{
 			include_once $chromePath;
