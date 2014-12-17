@@ -94,7 +94,21 @@ if ($this->headFooter) {
 
 if ($this->vendor->vendor_letter_add_tos) {?>
 <div class="invoice_tos" <?php if ($this->vendor->vendor_letter_add_tos_newpage) { ?> style="page-break-before: always"<?php } ?>>
-    <?php echo $this->vendor->vendor_terms_of_service; ?>
+<?php
+	if(!class_exists( 'VirtuemartViewVendor' )) require(VMPATH_SITE.DS.'views'.DS.'vendor'.DS.'view.html.php');
+	/* The vendor view loads the vendor model via VmModel::getModel(), so we need to set the 'view' request variable
+	   Also, the vendor view's display method extracts the vendor id from the request variables! */
+	$oldtitle = JFactory::getDocument()->getTitle();
+	$oldview = vRequest::setVar('view', 'vendor');
+	$oldvendorid = vRequest::setVar('virtuemart_vendor_id', $this->vendor->virtuemart_vendor_id);
+	$view = new VirtuemartViewVendor();
+	$view->setLayout( 'tos' );
+	$view->writeJs = false;
+	$view->display();
+	vRequest::setVar('view', $oldview);
+	vRequest::setVar('virtuemart_vendor_id', $oldvendorid);
+	JFactory::getDocument()->setTitle($oldtitle);
+?>
 </div>
 <?php }
 
