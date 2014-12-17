@@ -54,6 +54,8 @@ class VmPdf {
 		$view->pdf_formatter = $pdf;
 		$view->isPdf = true;
 		$view->print = false;
+		$view->writeJs = false;
+
 
 		ob_start();
 		$view->display();
