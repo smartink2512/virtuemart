@@ -198,11 +198,6 @@ class vmJsApi{
 				$path = str_replace('templates/'. $template.'/',$assets_path, $path);
 			}
 			if ($absolute_path) {
-				if(!$app->isSite()){
-					$path = VMPATH_ROOT .'/administrator/'.$path;
-				} else {
-					$path = VMPATH_ROOT .'/'.$path;
-				}
 				$path = VMPATH_BASE .'/'.$path;
 			} else {
 				$path = JURI::root(TRUE) .'/'.$path;
@@ -212,11 +207,7 @@ class vmJsApi{
 		elseif (strpos($path, '//') === FALSE)
 		{
 			if ($absolute_path) {
-				if(!$app->isSite()){
-					$path = VMPATH_ROOT .'/administrator/'.$path;
-				} else {
-					$path = VMPATH_ROOT .'/'.$path;
-				}
+
 				$path = VMPATH_BASE .'/'.$path;
 			} else {
 				$path = JURI::root(TRUE) .'/'.$path;

@@ -232,7 +232,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 
 		$this->addViewPath( VMPATH_SITE.DS.'views' );
 		$view = $this->getView($viewName, $format);
-
+		$this->writeJs = false;
 		$view->addTemplatePath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');

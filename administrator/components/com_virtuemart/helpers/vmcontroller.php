@@ -224,7 +224,7 @@ class VmController extends JControllerLegacy{
 	 */
 	public function cancel(){
 		$msg = vmText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
-		$this->setRedirect($this->redirectPath, $msg,'cancel');
+		$this->setRedirect($this->redirectPath, $msg, 'message');
 	}
 
 	/**

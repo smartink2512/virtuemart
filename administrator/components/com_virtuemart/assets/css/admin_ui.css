@@ -11,7 +11,7 @@
     min-height: 540px;
     }
 
-.virtuemart-admin-area .menu-wrapper {width: 190px;overflow:hidden;}
+.virtuemart-admin-area .menu-wrapper {min-width: 190px;overflow:hidden;}
 .virtuemart-admin-area .admin-content {margin: 0;border-left: solid #b4b4b4 1px;-webkit-flex-basis: 99%; flex-basis: 99%;}
 .virtuemart-admin-area .btn.btn-small {
     margin-bottom: 5px;

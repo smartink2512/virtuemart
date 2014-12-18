@@ -992,6 +992,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			if(!empty($taxrules) ){
 				$denominator = 0.0;
 				foreach($taxrules as &$rule){
+					//Quickn dirty
+					if(!isset($rule['calc_kind'])) $rule = (array)VmModel::getModel('calc')->getCalc($rule['virtuemart_calc_id']);
+
 					if(!isset($rule['subTotal'])) $rule['subTotal'] = 0;
 					if(!isset($rule['taxAmount'])) $rule['taxAmount'] = 0;
 					$denominator += ($rule['subTotal']-$rule['taxAmount']);
