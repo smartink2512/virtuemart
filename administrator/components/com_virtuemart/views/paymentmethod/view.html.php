@@ -78,8 +78,8 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 			$formFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins'. DS. 'vmpayment' .DS. $payment->payment_element .DS. $payment->payment_element . '.xml');
 			if (file_exists($formFile)){
 
-				$payment->form = JForm::getInstance($payment->payment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 				$payment->params = new stdClass();
+				$payment->form = vmPlugin::loadConfigForm($formFile, $payment->payment_element);
 				$varsToPush = vmPlugin::getVarsToPushFromForm($payment->form);
 				VmTable::bindParameterableToSubField($payment,$varsToPush);
 				$payment->form->bind($payment->getProperties());

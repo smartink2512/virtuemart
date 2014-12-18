@@ -71,8 +71,8 @@ class VirtuemartViewCustom extends JViewLegacy {
 				vmPlugin::loadJLang($filename,'vmcustom',$this->jCustom->element);
 
 				$this->custom = VmModel::getModel('custom')->getCustom();
-				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
-				$this->custom->form = JForm::getInstance($this->jCustom->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+				$this->custom->form = vmPlugin::loadConfigForm($formFile, $this->jCustom->element);
+				$varsToPush = vmPlugin::getVarsToPushFromForm($this->custom->form);
 				$this->custom->params = new stdClass();
 
 				foreach($varsToPush as $k => $field){

@@ -57,7 +57,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 			// Get the payment XML.
 			$formFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins' .DS. 'vmshipment' .DS. $shipment->shipment_element .DS. $shipment->shipment_element . '.xml');
 			if (file_exists($formFile)){
-				$shipment->form = JForm::getInstance($shipment->shipment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+				$shipment->form = vmPlugin::loadConfigForm($formFile, $shipment->shipment_element);
 				$shipment->params = new stdClass();
 				$varsToPush = vmPlugin::getVarsToPushFromForm($shipment->form);
 				VmTable::bindParameterableToSubField($shipment,$varsToPush);

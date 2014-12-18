@@ -68,8 +68,8 @@ class VirtuemartViewCustom extends VmViewAdmin {
 				$formFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins'.DS. 'vmcustom' .DS. $this->custom->custom_element . DS . $this->custom->custom_element . '.xml');
 				if (file_exists($formFile)){
 
-					$this->custom->form = JForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->custom->params = new stdClass();
+					$this->custom->form = vmPlugin::loadConfigForm($formFile, $this->custom->custom_element);
 					$varsToPush = vmPlugin::getVarsToPushFromForm($this->custom->form);
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
 					$this->custom->form->bind($this->custom->getProperties());
@@ -103,7 +103,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 					}
 					$formString .= '</fieldset>'.chr(10).'</fields>'.chr(10).'</vmconfig>';
 
-					$this->custom->form = JForm::getInstance($this->custom->field_type, $formString, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+					$this->custom->form = vmPlugin::loadConfigForm($formString, $this->custom->field_type);
 					$this->custom->params = new stdClass();
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
 					$this->custom->form->bind($this->custom->getProperties());

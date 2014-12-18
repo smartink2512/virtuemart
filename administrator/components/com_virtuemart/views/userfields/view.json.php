@@ -56,7 +56,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 					if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 					if (!class_exists ('VmTable')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtable.php');
 
-					$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+					$this->userField->form = vmPlugin::loadConfigForm($formFile, $this->userField->element);
 					$this->userField->params = new stdClass();
 					$varsToPush = vmPlugin::getVarsToPushFromForm($this->userField->form);
 					/*
@@ -64,7 +64,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 					VmTable::bindParameterable($this->userField->params,'userfield_params',$varsToPush);*/
 					if(empty($this->userField->userfield_params)) $this->userField->userfield_params = '';
 					VmTable::bindParameterableToSubField($this->userField,$varsToPush);
-					$this->userField->form->bind($this->userField);
+					$this->userField->form->bind($this->userField->getProperties());
 				} else {
 					$this->userField->form = false;
 					vmdebug('renderUserfieldPlugin could not find xml for '.$this->userField->type.' at '.$path);

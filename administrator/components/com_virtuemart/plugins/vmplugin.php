@@ -153,7 +153,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @param $form
 	 * @return array
 	 */
-	static public function getVarsToPushFromForm ($form){
+	static public function getVarsToPushFromForm ($form) {
 		$data = array();
 
 		$fieldSets = $form->getFieldsets();
@@ -182,15 +182,29 @@ abstract class vmPlugin extends JPlugin {
 
 
 	/**
+	* This function centralizes loading xml config files for plugins.
+	 * This is used for the configuration GUI in the BE.
+	 * @param $xmlFile  filename of xml file or string containing XML
+	 * @param $name     internal name, under which the xml form is cached by JForm
+	 * @return array
+	 */
+	static public function loadConfigForm ($xmlFile, $name) {
+		// Append -vmconfig to the form's internal name to work around caching issues,
+		// since JForm stores the results for the $name, irrespective of the filter (last argument!)
+		$form = JForm::getInstance($name.'-vmconfig', $xmlFile, array(), false, '//vmconfig | //config[not(//vmconfig)]');
+		return $form;
+	}
+
+	/**
 	 * This function gets the parameters of a plugin by an xml file.
 	 * This is used for the configuration GUI in the BE.
 	 * Attention: the xml Params must be always a subset of the varsToPushParams declared in the constructor
-	 * @param $xmlFile
+	 * @param $xmlFile  filename of xml file or string containing XML
 	 * @param $name
 	 * @return array
 	 */
-	static public function getVarsToPushByXML ($xmlFile,$name){
-		$form = JForm::getInstance($name, $xmlFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+	static public function getVarsToPushByXML ($xmlFile, $name) {
+		$form = vmPlugin::loadConfigForm($xmlFile, $name);
 		return vmPlugin::getVarsToPushFromForm($form);
 	}
 
