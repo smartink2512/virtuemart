@@ -134,7 +134,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			if(!class_exists('VmModel')) require $this->path.DS.'helpers'.DS.'vmmodel.php';
 
-			$model = VmModel::getInstance('updatesmigration', 'VirtueMartModel');
+			if(!class_exists('VirtueMartModelUpdatesMigration')) require($this->path . DS . 'models' . DS . 'updatesmigration.php');
+			$model = VmModel::getModel('updatesmigration');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql');

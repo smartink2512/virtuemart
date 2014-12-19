@@ -399,7 +399,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$currency = CurrencyDisplay::getInstance();
 
 		foreach ($this->methods as $this->_currentMethod) {
+
 			if($this->_currentMethod->show_on_pdetails){
+
 				$prices=array('salesPrice'=>0.0);
 				if(isset($cart->cartPrices)){
 					$prices['salesPrice'] = $cart->cartPrices['salesPrice'];

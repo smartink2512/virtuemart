@@ -119,7 +119,7 @@ Virtuemart.cartEffect = function(form) {
 Virtuemart.product = function(carts) {
 	carts.each(function(){
 		var cart = jQuery(this),
-		step=cart.find('input[name="quantity"]'),
+		step=cart.find('input[name="quantity[]"]'),
 		addtocart = cart.find('input.addtocart-button'),
 		plus   = cart.find('.quantity-plus'),
 		minus  = cart.find('.quantity-minus'),

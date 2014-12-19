@@ -68,7 +68,7 @@ class vRequest {
 			vmTrace('Critical error, empty string in filterPath');
 			return VMPATH_ROOT;
 		}
-		$str = trim(JString::strtolower($str));
+		$str = trim($str);
 
 		// Delete all '?'
 		$str = str_replace('?', '', $str);

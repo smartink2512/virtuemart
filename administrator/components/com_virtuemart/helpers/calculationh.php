@@ -1059,7 +1059,7 @@ class calculationHelper {
 				$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
 				$this->_db->setQuery($q);
 				$rule['calc_categories'] = $this->_db->loadColumn();
-				vmdebug('loaded cat rules '.$rule['virtuemart_calc_id']);
+				//vmdebug('loaded cat rules '.$rule['virtuemart_calc_id']);
 			}
 
 //vmdebug('my rule ',$this->allrules[$this->productVendorId][$entrypoint][$i]);
@@ -1072,7 +1072,7 @@ class calculationHelper {
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
 				$this->_db->setQuery($q);
 				$rule['virtuemart_shoppergroup_ids'] = $this->_db->loadColumn();
-				vmdebug('loaded cat rules '.$rule['virtuemart_calc_id']);
+				//vmdebug('loaded shoppergrp rules '.$rule['virtuemart_calc_id']);
 			}
 
 			$hitsShopper = true;
@@ -1084,14 +1084,14 @@ class calculationHelper {
 				$q = 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
 				$this->_db->setQuery($q);
 				$rule['calc_countries'] = $this->_db->loadColumn();
-				vmdebug('loaded country rules '.$rule['virtuemart_calc_id']);
+				//vmdebug('loaded country rules '.$rule['virtuemart_calc_id']);
 			}
 
 			if(!isset($rule['virtuemart_state_ids'])){
 				$q = 'SELECT `virtuemart_state_id` FROM #__virtuemart_calc_states WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
 				$this->_db->setQuery($q);
 				$rule['virtuemart_state_ids'] = $this->_db->loadColumn();
-				vmdebug('loaded state rules '.$rule['virtuemart_calc_id']);
+				//vmdebug('loaded state rules '.$rule['virtuemart_calc_id']);
 			}
 
 			$hitsDeliveryArea = true;
@@ -1113,7 +1113,7 @@ class calculationHelper {
 				$q = 'SELECT `virtuemart_manufacturer_id` FROM #__virtuemart_calc_manufacturers WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
 				$this->_db->setQuery($q);
 				$rule['virtuemart_manufacturers'] = $this->_db->loadColumn();
-				vmdebug('loaded manus rules '.$rule['virtuemart_calc_id']);
+				//vmdebug('loaded manus rules '.$rule['virtuemart_calc_id']);
 			}
 
 			$hitsManufacturer = true;

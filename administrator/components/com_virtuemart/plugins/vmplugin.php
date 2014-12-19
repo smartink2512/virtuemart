@@ -202,7 +202,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @param        string the name of the plugin for example textinput, paypal
 	 * @param        int/array $jid the registered plugin id(s) of the joomla table
 	 */
-	protected function selectedThis ($psType, $name = 0, $jid = 0) {
+	protected function selectedThis ($psType, $name = 0, $jid = null) {
 
 		if ($psType !== 0) {
 			if ($psType != $this->_psType) {
@@ -218,10 +218,11 @@ abstract class vmPlugin extends JPlugin {
 			}
 		}
 
-		if ($jid === 0) {
+		if ($jid === null) {
+			return true;
+		} else if($jid === 0){
 			return FALSE;
-		}
-		else {
+		} else {
 			if ($this->_jid === 0) {
 				$this->getJoomlaPluginId ();
 			}
@@ -500,10 +501,11 @@ abstract class vmPlugin extends JPlugin {
 			$element = $this->_psType.'_element';
 			$jplugin_id = $this->_psType.'_jplugin_id';
 			//vmdebug('declarePluginParams ',$this->_psType,$data->$element,$data->$jplugin_id);
-			if(!isset($data->$element) or !isset($data->$jplugin_id)) return FALSE;
-			if(!$this->selectedThis($psType,$data->$element,$data->$jplugin_id)){
+			if(!isset($data->$element) or !$this->selectedThis($psType,$data->$element)){
+				vmdebug('declarePluginParams return FALSE',$psType,$data->$element,$data->$jplugin_id);
 				return FALSE;
 			}
+
 		}
 
 		if (!class_exists ('VmTable')) {
