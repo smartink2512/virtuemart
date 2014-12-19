@@ -43,7 +43,9 @@ $virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_curre
 if ($show_addtocart) {
 	vmJsApi::jPrice();
 	vmJsApi::cssSite();
+	echo vmJsApi::writeJS();
 }
+
 $cache = $params->get( 'vmcache', true );
 $cachetime = $params->get( 'vmcachetime', 300 );
 //vmdebug('$params for mod products',$params);
