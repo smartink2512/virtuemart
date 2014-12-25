@@ -168,17 +168,17 @@ function vmAdminInfo($publicdescr,$value=NULL){
 				if (count($args) > 0) {
 					$args[0] = $lang->_($args[0]);
 					VmConfig::$maxMessageCount++;
-					$app ->enqueueMessage(call_user_func_array('sprintf', $args),'info');
+					$app ->enqueueMessage(call_user_func_array('sprintf', $args),'notice');
 				}
 			}	else {
 				VmConfig::$maxMessageCount++;
 				$publicdescr = $lang->_($publicdescr);
-				$app ->enqueueMessage('Info: '.vmText::_($publicdescr),'info');
+				$app ->enqueueMessage('Info: '.vmText::_($publicdescr),'notice');
 			}
 		}
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
-				$app->enqueueMessage ('Max messages reached', 'info');
+				$app->enqueueMessage ('Max messages reached', 'notice');
 				VmConfig::$maxMessageCount++;
 			}else {
 				return false;
@@ -311,7 +311,7 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 		}
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
-				$app->enqueueMessage ('Max messages reached', 'info');
+				$app->enqueueMessage ('Max messages reached', 'notice');
 				VmConfig::$maxMessageCount++;
 			}
 		}

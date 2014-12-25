@@ -158,7 +158,7 @@ class VirtuemartControllerProduct extends VmController {
 		}
 		$target = vRequest::getCmd('target',false);
 
-		$msgtype = 'info';
+		$msgtype = 'notice';
 		foreach($cids as $cid){
 			if ($id=$model->createChild($cid)){
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');

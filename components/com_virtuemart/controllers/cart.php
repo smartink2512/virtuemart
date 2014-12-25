@@ -434,7 +434,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->saveAddressInCart($data, 'BT');
 
 		$mainframe = JFactory::getApplication();
-		$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
+		$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'notice');
 		if(empty($userID)){
 			$red = JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT');
 		} else {
