@@ -250,7 +250,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			$this->userField->params = new stdClass();
 			$varsToPush = vmPlugin::getVarsToPushFromForm($this->userField->form);
 			VmTable::bindParameterableToSubField($this->userField,$varsToPush);
-			$this->userField->form->bind($this->userField);
+			$this->userField->form->bind($this->userField->getProperties());
 
 		} else {
 			$this->userField->form = false;

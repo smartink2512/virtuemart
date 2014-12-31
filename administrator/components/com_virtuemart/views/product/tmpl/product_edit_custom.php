@@ -82,7 +82,8 @@ defined('_JEXEC') or die('Restricted access');
 						}
 
 						if(!empty($titel)){
-							$text = '<span style="white-space: nowrap;" > d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler,$checkValue).' o:'.VmHtml::checkbox('field['.$i.'][override]</span>',$customfield->override,$checkValue);
+							$text = '<span style="white-space: nowrap;" class="hasTip" title="'.htmlentities(vmText::_('COM_VIRTUEMART_CUSTOMFLD_DIS_DER_TIP')).'">d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler,$checkValue).'</span>
+							<span style="white-space: nowrap;" class="hasTip" title="'.htmlentities(vmText::_('COM_VIRTUEMART_DIS_DER_CUSTOMFLD_OVERR_DER_TIP')).'">o:'.VmHtml::checkbox('field['.$i.'][override]',$customfield->override,$checkValue).'</span>';
 						}
 						$tables['fields'] .= '<tr class="removable">
 							<td><span >'.$titel.$text.'<br />'.vmText::_($customfield->custom_title).'</span></td>

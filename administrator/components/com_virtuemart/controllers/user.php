@@ -61,6 +61,21 @@ class VirtuemartControllerUser extends VmController {
 		$this->edit();
 	}
 
+	function removeAddressST(){
+
+		$virtuemart_userinfo_id = vRequest::getInt('virtuemart_userinfo_id');
+		$virtuemart_user_id = vRequest::getInt('virtuemart_user_id');
+
+		//Lets do it dirty for now
+		$userModel = VmModel::getModel('user');
+		vmdebug('removeAddressST',$virtuemart_user_id,$virtuemart_userinfo_id);
+		$userModel->setId($virtuemart_user_id[0]);
+		$userModel->removeAddress($virtuemart_userinfo_id);
+
+		$layout = vRequest::getCmd('layout','edit');
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]='.$virtuemart_user_id[0] );
+	}
+
 	function editshop(){
 
 		$user = JFactory::getUser();

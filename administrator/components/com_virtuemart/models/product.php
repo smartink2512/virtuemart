@@ -266,7 +266,7 @@ class VirtueMartModelProduct extends VmModel {
 				else if ($searchField == 'product_price') {
 					$joinPrice = TRUE;
 				}
-				else if ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == '`l`.slug' ){
+				else if ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == 'slug' ){
 					$langFields[] = $searchField;
 					//if (strpos ($searchField, '`') !== FALSE){
 						$searchField = '`l`.'.$searchField;

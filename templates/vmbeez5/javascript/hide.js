@@ -100,6 +100,7 @@ window.addEvent('domready', function() {
 				if ((listelement) ||
 						((one[1] == 'open') && (nocookieset == null))) {
 					el.setStyle('display', 'block');
+
 					var eltern = el.getParent();
 					var elternh = eltern.getElement('h3');
 					var elternbild = eltern.getElement('img');
@@ -108,6 +109,7 @@ window.addEvent('domready', function() {
 						src : bildzu
 					});
 					elternbild.focus();
+					el.setStyle('overflow', '');
 				} else {
 					el.setStyle('display', 'none');
 					el.setProperty('aria-expanded', 'false');
@@ -116,7 +118,9 @@ window.addEvent('domready', function() {
 				unique = el.id;
 				var cookieset = readIt(unique);
 				if (cookieset == 'block') {
+					console.log('domready open by cookie');
 					el.setStyle('display', 'block');
+
 					el.setProperty('aria-expanded', 'true');
 					el.slide('show');//.slide('hide').slide('in');
 					el.getParent().setProperty('class', 'slide');
@@ -127,6 +131,8 @@ window.addEvent('domready', function() {
 					alt : altopen,
 					src : bildzu
 					});
+					el.setStyle('overflow', '');
+					el.getParent().setStyle('overflow', '');
 				}
 
 			}
@@ -154,9 +160,12 @@ function auf(key) {
 	var el = document.id(key);
 
 	if (el.style.display == 'none') {
-		el.setStyle('display', 'block');
-		el.setProperty('aria-expanded', 'true');
 
+        el.getParent().setStyle('overflow', 'hidden');
+		el.setStyle('display', 'block');
+
+		el.setProperty('aria-expanded', 'true');
+        console.log('Using auf',key);
 		if (key != 'right') {
 			el.slide('hide').slide('in');
 			el.getParent().setProperty('class', 'slide');
@@ -180,10 +189,10 @@ function auf(key) {
 			document.id('bild').innerHTML = rightclose;
 			grafik.focus();
 		}
+        setTimeout(function(){el.getParent().setStyle('overflow', '');},700);
 	} else {
 		el.setStyle('display', 'none');
 		el.setProperty('aria-expanded', 'false');
-
 		el.removeClass('open');
 
 		if (key != 'right') {

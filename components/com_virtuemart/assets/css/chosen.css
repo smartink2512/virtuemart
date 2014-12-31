@@ -1,6 +1,7 @@
 /* @group Base */
 .chzn-container {
   /* font-size: 13px; */
+  overflow:visible;
   position: relative;
   display: inline-block;
   zoom: 1;
@@ -414,7 +415,7 @@
 .chzn-select-all { background: #f8f8f8; border-top: 1px solid #ededed; color: #346f9b; cursor:pointer; display: block; font-size: 12px; font-weight: bold; padding: 5px 6px; text-align: center; text-decoration: none; }
 /* @end */
 
-/* overwrite the element.style only necessary for the beez standard template, you may remove it */
+/* overwrite the element.style only necessary for the beez standard template, you may remove it
 div.moduletable_js div.slide, div.moduletable_js div.module_content{
     overflow:visible !important;
 }

@@ -554,21 +554,22 @@ class ShopFunctions {
 	}
 
 	public static $counter = 0;
-	public static $categoryTree = 0;
+	public static $categoryTree = array();
 
 	static public function categoryListTree ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array()) {
 
-		if (empty(self::$categoryTree)) {
+		$hash = crc32(implode('.',$selectedCategories).':'.$cid.':'.$level.implode('.',$disabledFields));
+		if (empty(self::$categoryTree[$hash])) {
 
 			$cache = JFactory::getCache ('com_virtuemart_cats');
 			$cache->setCaching (1);
 			$app = JFactory::getApplication ();
 			$vendorId = VmConfig::isSuperVendor();
-			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
+			self::$categoryTree[$hash] = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
 
 		}
 
-		return self::$categoryTree;
+		return self::$categoryTree[$hash];
 	}
 
 

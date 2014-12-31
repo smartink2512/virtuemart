@@ -85,7 +85,7 @@ class VirtuemartViewCustom extends JViewLegacy {
 				echo '<input type="hidden" value="'.$this->jCustom->element.'" name="custom_value">';
 			} else {
 				$this->custom->form = null;
-				VmConfig::$echoDebug = 1;
+				//VmConfig::$echoDebug = 1;
 				vmdebug ('File does not exist '.$formFile);
 			}
 		}
