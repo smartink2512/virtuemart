@@ -719,7 +719,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *    </table>
 	 * </pre>
 	 */
-	public function getUserFieldsFilled($_selection, $_userData = null, $_prefix = ''){
+	public function getUserFieldsFilled($_selection, &$_userData = null, $_prefix = ''){
 
 
 		//if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
@@ -737,7 +737,12 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
-		$_userData=(array)($_userData);
+		if(empty($_userData)){
+			$_userData = array();
+		} else {
+			$_userData=(array)($_userData);
+		}
+
 		if (is_array($_selection)) {
 
 			foreach ($_selection as $_fld) {
@@ -754,7 +759,10 @@ class VirtueMartModelUserfields extends VmModel {
 				,'formcode' => ''
 				,'description' => vmText::_($_fld->description)
 				);
-
+				//Set the default on the data
+				if(isset($_userData) and empty($_userData[$_fld->name]) and isset($_fld->default) and $_fld->default!='' ){
+					$_userData[$_fld->name] = $_fld->default;
+				}
 				$readonly = '';
 				if(!$admin){
 					if($_fld->readonly ){

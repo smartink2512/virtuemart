@@ -391,8 +391,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		}
 		if (!class_exists('VirtueMartCart'))
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
-		$cart = VirtueMartCart::getCart();
-		$cart->prepareCartData();
+
 		$html = '';
 		if (!class_exists('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -401,7 +400,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		foreach ($this->methods as $this->_currentMethod) {
 
 			if($this->_currentMethod->show_on_pdetails){
-
+				if(!isset($cart)){
+					$cart = VirtueMartCart::getCart();
+					$cart->prepareCartData();
+				}
 				$prices=array('salesPrice'=>0.0);
 				if(isset($cart->cartPrices)){
 					$prices['salesPrice'] = $cart->cartPrices['salesPrice'];

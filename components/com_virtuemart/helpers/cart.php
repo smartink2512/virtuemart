@@ -236,7 +236,6 @@ class VirtueMartCart {
 
 		$types = array('BT','ST');
 		foreach($types as $type){
-			$data = $this->$type;
 			if($type=='ST'){
 				$preFix = 'shipto_';
 			} else {
@@ -247,7 +246,7 @@ class VirtueMartCart {
 			$userFields = $userFieldsModel->getUserFieldsFor('cart',$type);
 			$this->$addresstype = $userFieldsModel->getUserFieldsFilled(
 				$userFields
-				,$data
+				,$this->$type
 				,$preFix
 			);
 		}

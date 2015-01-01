@@ -502,7 +502,7 @@ abstract class vmPlugin extends JPlugin {
 			$jplugin_id = $this->_psType.'_jplugin_id';
 			//vmdebug('declarePluginParams ',$this->_psType,$data->$element,$data->$jplugin_id);
 			if(!isset($data->$element) or !$this->selectedThis($psType,$data->$element)){
-				vmdebug('declarePluginParams return FALSE',$psType,$data->$element,$data->$jplugin_id);
+				//vmdebug('declarePluginParams return FALSE',$psType,$data->$element,$data->$jplugin_id,$this);
 				return FALSE;
 			}
 

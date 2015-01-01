@@ -86,6 +86,7 @@ class calculationHelper {
 		$this->setShopperGroupIds();
 
 		$this->setVendorId($this->productVendorId);
+		$this->setCountryState();
 
 		$this->rules['Marge'] = array();
 		$this->rules['Tax'] 	= array();
@@ -100,6 +101,7 @@ class calculationHelper {
 	static public function getInstance() {
 		if (!is_object(self::$_instance)) {
 			self::$_instance = new calculationHelper();
+
 		} else {
 			//We store in UTC and use here of course also UTC
 			$jnow = JFactory::getDate();
@@ -200,7 +202,7 @@ class calculationHelper {
 		}
 	}
 
-	protected function setCountryState($cart=0) {
+	protected function setCountryState() {
 
 		if ($this->_app->isAdmin())
 			return;
@@ -208,6 +210,11 @@ class calculationHelper {
 		if(empty($this->_cart)){
 			if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 			$this->_cart = VirtueMartCart::getCart();
+
+		}
+
+		if($this->_cart->BT===0){
+			$this->_cart->prepareAddressFieldsInCart();
 		}
 
 		$stBased = VmConfig::get('taxSTbased',TRUE);
@@ -219,9 +226,10 @@ class calculationHelper {
 
 		if ($stBased) {
 			$this->_deliveryState = (int)$this->_cart->getST('virtuemart_state_id');
-		} else if (!empty($cart->BT['virtuemart_state_id'])) {
+		} else if (!empty($this->_cart->BT['virtuemart_state_id'])) {
 			$this->_deliveryState = (int)$this->_cart->BT['virtuemart_state_id'];
 		}
+
 	}
 
 	/** function to start the calculation, here it is for the product
@@ -244,7 +252,6 @@ class calculationHelper {
 	 *
 	 */
 	public function getProductPrices($product, $variant=0.0, $amount=0) {
-
 
 		$costPrice = 0;
 
@@ -289,7 +296,7 @@ class calculationHelper {
 			$this->_amount = $amount;
 		}
 
-		$this->setCountryState();
+
 
 		//For Profit, margin, and so on
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
@@ -605,8 +612,6 @@ class calculationHelper {
 		$this->_cart->cartData['paymentName'] = '';
 		$cartpaymentTax = 0;
 
-		$this->setCountryState();
-
 		$this->_amountCart = 0;
 
 		$customfieldModel = VmModel::getModel('customfields');
@@ -626,9 +631,11 @@ class calculationHelper {
 
 			$variantmod = $customfieldModel->calculateModificators($this->_cart->products[$cprdkey]);
 			$productPrice = $this->getProductPrices($this->_cart->products[$cprdkey],$variantmod, $this->_cart->products[$cprdkey]->quantity);
-
-			$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice] = array_merge($productPrice,$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]);
+			//vmTrace('getProductPrices $productPrice '.$variantmod.' '.$productPrice['basePriceVariant'].' '.$productPrice['salesPrice']);
+			//vmdebug('getCheckoutPrices ',$productPrice['salesPrice']);
+			$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice] = array_merge($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice],$productPrice);
 			$this->_cart->cartPrices[$cprdkey] = $productPrice; //$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice];
+			//vmdebug('getCheckoutPrices ',$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['salesPrice']);
 
 			$this->_amountCart += $this->_cart->products[$cprdkey]->quantity;
 
