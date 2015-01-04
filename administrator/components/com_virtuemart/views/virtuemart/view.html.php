@@ -104,12 +104,9 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 						type: "GET",
 						cache: false,
 						dataType: "json",
-						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&layout=feed&tmpl=component",
+						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&task=feed&layout=feed&tmpl=component",
 						data: datas,
 						dataType: "html",
-						/*success: function(xml){
-							console.log("my data",xml);
-						}*/
 					})
 					 .done(function( data ) {
 						jQuery("#feed").html(data);

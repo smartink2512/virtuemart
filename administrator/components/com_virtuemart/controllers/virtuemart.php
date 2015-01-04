@@ -45,4 +45,18 @@ class VirtuemartControllerVirtuemart extends VmController {
 		$config->setDangerousToolsOff();
 		$this->display();
 	}
+
+	public function feed(){
+
+		if (!class_exists('vmRSS')) require(VMPATH_ADMIN.'/helpers/vmrss.php');
+
+		$this->extensionsFeed = vmRSS::getExtensionsRssFeed();
+		$this->virtuemartFeed = vmRSS::getVirtueMartRssFeed();
+		ob_clean();
+		ob_start ();
+			include(VMPATH_ADMIN.DS.'views'.DS.'virtuemart'.DS.'tmpl'.DS.'feed.php');
+		echo ob_get_clean();
+		jexit();
+	}
+
 }

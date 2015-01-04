@@ -34,12 +34,18 @@ class JFormFieldManufacturer extends JFormField
 
 	function getInput() {
 
-		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+		//$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+		//$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+
 		$model = VmModel::getModel('Manufacturer');
 		$manufacturers = $model->getManufacturers(true, true, false);
 		$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
-		array_unshift ($manufacturers, $emptyOption);
+		if(!empty($manufacturers) and is_array($manufacturers)){
+			array_unshift ($manufacturers, $emptyOption);
+		} else {
+			$manufacturers = array($emptyOption);
+		}
+
 		return JHtml::_('select.genericlist', $manufacturers, $this->name, 'class="inputbox"  size="1"', 'virtuemart_manufacturer_id', 'mf_name', $this->value, $this->id);
 	}
 
