@@ -500,8 +500,8 @@ abstract class vmPlugin extends JPlugin {
 		if(!empty($this->_psType)){
 			$element = $this->_psType.'_element';
 			$jplugin_id = $this->_psType.'_jplugin_id';
-			//vmdebug('declarePluginParams ',$this->_psType,$data->$element,$data->$jplugin_id);
-			if(!isset($data->$element) or !$this->selectedThis($psType,$data->$element)){
+
+			if(!isset($data->$element) or !$this->selectedThis($psType,$data->$element,$data->$jplugin_id)){
 				//vmdebug('declarePluginParams return FALSE',$psType,$data->$element,$data->$jplugin_id,$this);
 				return FALSE;
 			}
@@ -531,7 +531,6 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		return TRUE;
-
 	}
 
 	/**

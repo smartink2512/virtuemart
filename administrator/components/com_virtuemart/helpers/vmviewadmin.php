@@ -36,6 +36,7 @@ class VmViewAdmin extends JViewLegacy {
 	var $showVendors = null;
 	static protected $_manager = array();
 	protected $canDo;
+	var $writeJs = true;
 
 	function __construct($config = array()) {
 		parent::__construct($config);
@@ -62,7 +63,7 @@ class VmViewAdmin extends JViewLegacy {
 			}
 
 			echo $result;
-			echo vmJsApi::writeJS();
+			if($this->writeJs) echo vmJsApi::writeJS();
 			return true;
 		} else {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');

@@ -179,7 +179,7 @@ class VirtueMartModelUserfields extends VmModel {
 				$dispatcher = JDispatcher::getInstance();
 				$plgName = substr($this->_cache[$hash]->type,6);
 				$type = 'userfield';
-				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfieldVM3',array($type,&$this->_cache[$hash]));
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfieldVM3',array(&$this->_cache[$hash]));
 				// vmdebug('pluginGet',$type,$plgName,$id,$this->_cache);
 			}
 			if(!empty($this->_cache[$hash]->_varsToPushParam)){
@@ -719,8 +719,15 @@ class VirtueMartModelUserfields extends VmModel {
 	 *    </table>
 	 * </pre>
 	 */
-	public function getUserFieldsFilled($_selection, &$_userData = null, $_prefix = ''){
+	public function getUserFieldsFilled($_selection, &$_userDataIn = null, $_prefix = ''){
 
+		//We copy the input data to prevent that objects become arrays
+		if(empty($_userDataIn)){
+			$_userData = array();
+		} else {
+			$_userData = $_userDataIn;
+			$_userData=(array)($_userData);
+		}
 
 		//if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
@@ -737,15 +744,18 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
-		if(empty($_userData)){
-			$_userData = array();
-		} else {
-			$_userData=(array)($_userData);
-		}
 
 		if (is_array($_selection)) {
 
 			foreach ($_selection as $_fld) {
+
+				if(!empty($_userDataIn) and isset($_fld->default) and $_fld->default!=''){
+					if(is_array($_userDataIn)){
+						$_userDataIn[$_fld->name] = $_fld->default;
+					} else {
+						$_userDataIn->{$_fld->name} = $_fld->default;
+					}
+				}
 
 				$_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name
@@ -759,10 +769,12 @@ class VirtueMartModelUserfields extends VmModel {
 				,'formcode' => ''
 				,'description' => vmText::_($_fld->description)
 				);
+
+
 				//Set the default on the data
-				if(isset($_userData) and empty($_userData[$_fld->name]) and isset($_fld->default) and $_fld->default!='' ){
+				/*if(isset($_userData) and empty($_userData[$_fld->name]) and isset($_fld->default) and $_fld->default!='' ){
 					$_userData[$_fld->name] = $_fld->default;
-				}
+				}*/
 				$readonly = '';
 				if(!$admin){
 					if($_fld->readonly ){

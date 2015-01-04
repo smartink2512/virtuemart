@@ -635,13 +635,13 @@ class calculationHelper {
 			//vmdebug('getCheckoutPrices ',$productPrice['salesPrice']);
 			$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice] = array_merge($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice],$productPrice);
 			$this->_cart->cartPrices[$cprdkey] = $productPrice; //$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice];
-			//vmdebug('getCheckoutPrices ',$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['salesPrice']);
 
 			$this->_amountCart += $this->_cart->products[$cprdkey]->quantity;
 
 			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cart->cartPrices['basePrice'] += self::roundInternal($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['basePrice'],'basePrice') * $this->_cart->products[$cprdkey]->quantity;
 			if($this->_currencyDisplay->_priceConfig['basePriceWithTax']) $this->_cart->cartPrices['basePriceWithTax'] += self::roundInternal($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['basePriceWithTax']) * $this->_cart->products[$cprdkey]->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountedPriceWithoutTax']) $this->_cart->cartPrices['discountedPriceWithoutTax'] += self::roundInternal($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['discountedPriceWithoutTax'],'discountedPriceWithoutTax') * $this->_cart->products[$cprdkey]->quantity;
+
 			if($this->_currencyDisplay->_priceConfig['salesPrice']){
 				$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['subtotal_with_tax'] = self::roundInternal($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['salesPrice'],'salesPrice') * $this->_cart->products[$cprdkey]->quantity;
 				$this->_cart->cartPrices['salesPrice'] += $this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['subtotal_with_tax'];
@@ -661,6 +661,7 @@ class calculationHelper {
 				$this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['subtotal'] = self::roundInternal($this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['priceWithoutTax'],'priceWithoutTax') * $this->_cart->products[$cprdkey]->quantity;
 				$this->_cart->cartPrices['priceWithoutTax'] += $this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice]['subtotal'];
 			}
+			$this->_cart->products[$cprdkey]->prices = $this->_cart->products[$cprdkey]->allPrices[$this->_cart->products[$cprdkey]->selectedPrice];
 		}
 
 		$this->_product = null;

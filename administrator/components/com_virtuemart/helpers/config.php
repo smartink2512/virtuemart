@@ -388,7 +388,7 @@ function vmTime($descr,$name='current'){
 function logInfo ($text, $type = 'message') {
 
 	static $file = null;
-	vmSetStartTime('logInfo');
+	//vmSetStartTime('logInfo');
 	$head = false;
 
 	if($file===null){
@@ -453,7 +453,7 @@ function logInfo ($text, $type = 'message') {
 			}
 		}
 	//}
-	vmTime('time','logInfo');
+	//vmTime('time','logInfo');
 	return;
 
 }
@@ -576,29 +576,37 @@ class VmConfig {
 				}
 			}
 
-			if($dev){
-				ini_set('display_errors', '-1');
-				if(version_compare(phpversion(),'5.4.0','<' )){
-					vmdebug('PHP 5.3');
-					error_reporting( E_ALL ^ E_STRICT );
-				} else {
-					vmdebug('PHP 5.4');
-					error_reporting( E_ALL );
-				}
-				vmdebug('Show All Errors');
+			self::setErrorReporting($dev);
 
-			} else {
-				$jconfig = JFactory::getConfig();
-				$errep = $jconfig->get('error_reporting');
-				if ( $errep == 'none' or $errep == 'default') {
-					ini_set('display_errors', '1');
-					error_reporting(E_ERROR | E_WARNING | E_PARSE);
-					vmdebug('Show only Errors, warnings, parse errors');
-				}
-			}
 		}
 
 		return self::$_debug;
+	}
+
+	static function setErrorReporting($dev,$force = false){
+
+		$ret = array();
+		if($dev){
+			ini_set('display_errors', '-1');
+			if(version_compare(phpversion(),'5.4.0','<' )){
+				vmdebug('PHP 5.3');
+				$ret[0] = error_reporting( E_ALL ^ E_STRICT );
+			} else {
+				vmdebug('PHP 5.4');
+				$ret[1] = error_reporting( E_ALL );
+			}
+			vmdebug('Show All Errors');
+
+		} else {
+			$jconfig = JFactory::getConfig();
+			$errep = $jconfig->get('error_reporting');
+			if ( $errep == 'none' or $errep == 'default' or $force) {
+				$ret[0] = ini_set('display_errors', '1');
+				$ret[1] = error_reporting(E_ERROR | E_WARNING | E_PARSE);
+				vmdebug('Show only Errors, warnings, parse errors');
+			}
+		}
+		return $ret;
 	}
 
 /**

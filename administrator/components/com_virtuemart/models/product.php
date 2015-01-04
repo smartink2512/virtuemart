@@ -841,7 +841,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($withCalc) {
 
 			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
-			$child->prices = &$child->allPrices[$child->selectedPrice];
+			$child->prices = $child->allPrices[$child->selectedPrice];
 		}
 
 		if (empty($child->product_template)) {
@@ -1328,7 +1328,8 @@ class VirtueMartModelProduct extends VmModel {
 			$user = JFactory::getUser();
 			if (!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))) {
 				$onlyPublished = TRUE;
-				if ($show_prices = VmConfig::get ('show_prices', 1) == '0') {
+				$show_prices = VmConfig::get ('show_prices', 1);
+				if (empty($show_prices)) {
 					$withCalc = FALSE;
 				}
 			}

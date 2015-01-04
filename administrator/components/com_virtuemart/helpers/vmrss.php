@@ -67,6 +67,7 @@ class vmRSS{
 	static public function getRssFeed($rssURL, $max) {
 
 		if (JVM_VERSION < 3){
+			$erRep = VmConfig::setErrorReporting(false,true);
 			jimport('simplepie.simplepie');
 			$rssFeed = new SimplePie($rssURL);
 
@@ -81,6 +82,9 @@ class vmRSS{
 				$feed->description = $item->get_description();
 				$feeds[] = $feed;
 			}
+
+			if($erRep[0]) ini_set('display_errors', $erRep[0]);
+			if($erRep[1]) error_reporting($erRep[1]);
 			return $feeds;
 
 		} else {
