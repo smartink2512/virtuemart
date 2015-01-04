@@ -15,15 +15,15 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 class vmRSS{
 
 	/**
-	 * Get feed
+	 * Get cached feed
 	 * @author valerie isaksen
 	 * @param $rssUrl
 	 * @param $max
+	 * @param $cache_time in minutes
 	 * @return mixed
 	 */
-	static public function getCPsRssFeed($rssUrl,$max) {
+	static public function getCPsRssFeed($rssUrl,$max, $cache_time=2880) {  // 2880 = 2days
 
-		$cache_time=2880; // 2days
 		$cache = JFactory::getCache ('com_virtuemart_rss');
 
 		$cache->setLifeTime($cache_time);
@@ -54,7 +54,7 @@ class vmRSS{
 	public static $vmFeeds = 0;
 	static public function getVirtueMartRssFeed() {
  		if (empty(self::$vmFeeds)) {
-			self::$vmFeeds =  self::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5);
+			self::$vmFeeds =  self::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5, 240);
 		}
 		return self::$vmFeeds;
 	}

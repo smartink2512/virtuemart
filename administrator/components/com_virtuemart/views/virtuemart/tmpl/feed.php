@@ -2,38 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $totalItems=5;
-if ( $this->virtuemartFeed) {
-	?>
-	<h2 class="cpanel"><?php echo vmText::_('COM_VIRTUEMART_FEED_LATEST_NEWS')?></h2>
-	<ul class="newsfeed">
-		<?php
-		foreach ($this->virtuemartFeed as $item) {
-			if (!empty($item->link)) {
-				$description=strip_tags($item->description);
-				$description=substr($description, 0,200)."...";
-				?>
-				<li class="newsfeed-item">
-					<a href="<?php echo $item->link; ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $item->title; ?></a>
-				</li>
-			<?php
-			}
-		}
-			?>
-		<li class="newsfeed-item" style="font-size: 100%;font-style: italic;">
-			<button class="btn btn-small">
-			<a href="http://virtuemart.net/news/list-all-news" target="_blank" title="<?php echo vmText::_('COM_VIRTUEMART_ALL_NEWS'); ?>"><?php echo vmText::_('COM_VIRTUEMART_ALL_NEWS'); ?></a>
-			</button>
-		</li>
 
-
-	</ul>
-	<a class="cpanel" style="display: block;" href="http://extensions.joomla.org/extensions/e-commerce/shopping-cart/129" target="_blank" title=" <?php echo vmText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?>"> <?php echo vmText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?></a>
-
-<?php
-}
-?>
-
-<?php
 if ( $this->extensionsFeed ) {
 	$j=0;
 	foreach ($this->extensionsFeed as $item){
@@ -79,8 +48,6 @@ if ( $this->extensionsFeed ) {
 		<?php
 		}
 		$j++;
-	} ?>
-
-<?php
+	}
 }
 ?>

@@ -45,8 +45,8 @@ if($_controller!='updatesmigration' and !VmConfig::isSuperVendor()){
 
 VmConfig::loadJLang('com_virtuemart');
 
-vmJsApi::jQuery(0);
-vmJsApi::jSite();
+
+
 
 
 // Require specific controller if requested
@@ -66,6 +66,11 @@ if($_controller) {
 		}
 	}
 }
+
+
+vmJsApi::jQuery(0);
+//vmJsApi::jSite();	//as far as I know that was only necessary for the country/state dropdown combination
+
 
 // Create the controller
 $_class = 'VirtueMartController'.ucfirst($_controller);

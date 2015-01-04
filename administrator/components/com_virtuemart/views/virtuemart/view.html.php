@@ -38,83 +38,88 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 		$layout = $this->getLayout();
-		if($layout=='feed'){
-			if (!class_exists('vmRSS')) require(VMPATH_ADMIN.'/helpers/vmrss.php');
 
-			$this->extensionsFeed = vmRSS::getExtensionsRssFeed();
-			$this->virtuemartFeed = vmRSS::getVirtueMartRssFeed();
-			$this->writeJs = false;
-		} else {
-			$model = VmModel::getModel('virtuemart');
+		$model = VmModel::getModel('virtuemart');
 
-			$nbrCustomers = $model->getTotalCustomers();
-			$this->nbrCustomers=$nbrCustomers;
+		$nbrCustomers = $model->getTotalCustomers();
+		$this->nbrCustomers=$nbrCustomers;
 
-			$nbrActiveProducts = $model->getTotalActiveProducts();
-			$this->nbrActiveProducts= $nbrActiveProducts;
-			$nbrInActiveProducts = $model->getTotalInActiveProducts();
-			$this->nbrInActiveProducts= $nbrInActiveProducts;
-			$nbrFeaturedProducts = $model->getTotalFeaturedProducts();
-			$this->nbrFeaturedProducts= $nbrFeaturedProducts;
+		$nbrActiveProducts = $model->getTotalActiveProducts();
+		$this->nbrActiveProducts= $nbrActiveProducts;
+		$nbrInActiveProducts = $model->getTotalInActiveProducts();
+		$this->nbrInActiveProducts= $nbrInActiveProducts;
+		$nbrFeaturedProducts = $model->getTotalFeaturedProducts();
+		$this->nbrFeaturedProducts= $nbrFeaturedProducts;
 
-			$ordersByStatus = $model->getTotalOrdersByStatus();
-			$this->ordersByStatus= $ordersByStatus;
+		$ordersByStatus = $model->getTotalOrdersByStatus();
+		$this->ordersByStatus= $ordersByStatus;
 
-			$recentOrders = $model->getRecentOrders();
-			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
+		$recentOrders = $model->getRecentOrders();
+		if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 
-			/* Apply currency This must be done per order since it's vendor specific */
-			$_currencies = array(); // Save the currency data during this loop for performance reasons
-			foreach ($recentOrders as $virtuemart_order_id => $order) {
+		/* Apply currency This must be done per order since it's vendor specific */
+		$_currencies = array(); // Save the currency data during this loop for performance reasons
+		foreach ($recentOrders as $virtuemart_order_id => $order) {
 
-				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
-				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
-					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
-				}
-				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
+			//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
+			if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
+				$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
 			}
-			$this->recentOrders= $recentOrders;
-			$recentCustomers = $model->getRecentCustomers();
-			$this->recentCustomers=$recentCustomers;
+			$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
+		}
+		$this->recentOrders= $recentOrders;
+		$recentCustomers = $model->getRecentCustomers();
+		$this->recentCustomers=$recentCustomers;
 
 
 
-			if(JFactory::getApplication()->isSite()){
-				$bar = JToolBar::getInstance('toolbar');
-				$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
-			}
+		if(JFactory::getApplication()->isSite()){
+			$bar = JToolBar::getInstance('toolbar');
+			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
+		}
 
-			if($this->manager('report')){
-				vmSetStartTime('report');
-				$reportModel		= VmModel::getModel('report');
-				vRequest::setvar('task','');
-				$myCurrencyDisplay = CurrencyDisplay::getInstance();
-				$revenueBasic = $reportModel->getRevenue(60,true);
-				$this->report = $revenueBasic['report'];
+		if($this->manager('report')){
+			vmSetStartTime('report');
+			$reportModel		= VmModel::getModel('report');
+			vRequest::setvar('task','');
+			$myCurrencyDisplay = CurrencyDisplay::getInstance();
+			$revenueBasic = $reportModel->getRevenue(60,true);
+			$this->report = $revenueBasic['report'];
 
-				vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false,'' );
-				vmJsApi::addJScript('vm.stats_chart',$revenueBasic['js'],false);
-				vmTime('Created report','report');
-			}
+			vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false,'' );
+			vmJsApi::addJScript('vm.stats_chart',$revenueBasic['js'],false);
+			vmTime('Created report','report');
+		}
 
-			$j = 'jQuery("#feed").ready(function(){
-					var datas = "";
-					vmSiteurl = "'. JURI::root( ) .'administrator/"
-				 jQuery.ajax({
+		$j = 'jQuery("#feed").ready(function(){
+				var datas = "";
+				vmSiteurl = "'. JURI::root( ) .'administrator/"
+				jQuery.ajax({
 						type: "GET",
 						cache: false,
 						dataType: "json",
-						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&task=feed&layout=feed&tmpl=component",
+						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&task=feed&tmpl=component",
 						data: datas,
-						dataType: "html",
+						dataType: "html"
 					})
-					 .done(function( data ) {
-						jQuery("#feed").html(data);
-						});
+					.done(function( data ) {
+						jQuery("#feed").append(data);
+					});
+				jQuery.ajax({
+						type: "GET",
+						cache: false,
+						dataType: "json",
+						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&task=newsfeed&tmpl=component",
+						data: datas,
+						dataType: "html"
+					})
+					.done(function( data ) {
+						var pre = jQuery("#newsfeed").html();
+						jQuery("#newsfeed").html(data + pre);
+					});
 				})';
-			vmJsApi::addJScript('getFeed',$j);
+			vmJsApi::addJScript('getFeed',$j, false, true);
 
-		}
 
 		parent::display($tpl);
 	}
