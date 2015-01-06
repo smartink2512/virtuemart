@@ -992,7 +992,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 
 							foreach ($values as $key => $val) {
 								if($type == 'M'){
-									$options[] = array('value' => $val, 'text' => $this->displayCustomMedia ($val));
+									$options[] = array('value' => $val, 'text' => $this->displayCustomMedia ($val,'product',$customfield->width,$customfield->height));
 								} else {
 									$options[] = array('value' => $val, 'text' => vmText::_($val));
 								}
@@ -1004,7 +1004,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							$customfield->display = JHtml::_ ($selectType, $options, $customProductDataName.'[' . $customfield->virtuemart_customfield_id . ']', $class, 'value', 'text', $currentValue,$idTag);
 						} else {
 							if($type == 'M'){
-								$customfield->display =  $this->displayCustomMedia ($customfield->customfield_value);
+								$customfield->display =  $this->displayCustomMedia ($customfield->customfield_value,'product',$customfield->width,$customfield->height);
 							} else {
 								$customfield->display =  vmText::_ ($customfield->customfield_value);
 							}
@@ -1029,7 +1029,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 							foreach ($customfields[$selectList[$customfield->virtuemart_custom_id]]->options as &$productCustom) {
 								$price = self::_getCustomPrice($productCustom->customfield_price, $currency, $calculator);
 								if($type == 'M'){
-									$productCustom->text = $this->displayCustomMedia ($productCustom->customfield_value).' '.$price;
+									$productCustom->text = $this->displayCustomMedia ($productCustom->customfield_value,'product',$customfield->width,$customfield->height).' '.$price;
 								} else {
 									$trValue = vmText::_($productCustom->customfield_value);
 									if($productCustom->customfield_value!=$trValue and strpos($trValue,'%1')!==false){
@@ -1046,7 +1046,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 								$class, 'virtuemart_customfield_id', 'text', $default->customfield_value,$idTag);	//*/
 						} else {
 							if($type == 'M'){
-								$customfield->display = $this->displayCustomMedia ($customfield->customfield_value);
+								$customfield->display = $this->displayCustomMedia ($customfield->customfield_value,'product',$customfield->width,$customfield->height);
 							} else {
 								$customfield->display =  vmText::_ ($customfield->customfield_value);
 							}
@@ -1069,7 +1069,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						$db->setQuery ($q);
 						$thumb = '';
 						if ($media_id = $db->loadResult ()) {
-							$thumb = $this->displayCustomMedia ($media_id,'category');
+							$thumb = $this->displayCustomMedia ($media_id,'category',$customfield->width,$customfield->height);
 						}
 						$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name,'target'=>'_blank'));
 					}
@@ -1087,9 +1087,9 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 					$thumb = '';
 					if($customfield->wImage){
 						if (!empty($related->virtuemart_media_id[0])) {
-							$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
+							$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0],'product',$customfield->width,$customfield->height).' ';
 						} else {
-							$thumb = $this->displayCustomMedia (0).' ';
+							$thumb = $this->displayCustomMedia (0,'product',$productCustom->width,$productCustom->height).' ';
 						}
 					}
 
@@ -1181,7 +1181,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 						}
 						elseif (($productCustom->field_type == "M")) {
 							$customFieldModel = VmModel::getModel('customfields');
-							$value = $customFieldModel->displayCustomMedia ($productCustom->customfield_value);
+							$value = $customFieldModel->displayCustomMedia ($productCustom->customfield_value,'product',$productCustom->width,$productCustom->height);
 						}
 						elseif (($productCustom->field_type == "S")) {
 							if($productCustom->is_list){
@@ -1241,7 +1241,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 		return self::displayProductCustomfieldSelected ($item, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
 	}
 
-	function displayCustomMedia ($media_id, $table = 'product', $absUrl = FALSE) {
+	function displayCustomMedia ($media_id, $table = 'product', $width = false, $height = false, $absUrl = FALSE) {
 
 		if (!class_exists ('TableMedias'))
 			require(VMPATH_ADMIN . DS . 'tables' . DS . 'medias.php');
@@ -1257,7 +1257,10 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'mediahandler.php');
 		$media = VmMediaHandler::createMedia ($data, $table);
 
-		return $media->displayMediaThumb ('', FALSE, '', TRUE, TRUE, $absUrl);
+		if(!$width) $width = VmConfig::get('img_width',90);
+		if(!$height) $height = VmConfig::get('img_height',90);
+
+		return $media->displayMediaThumb ('', FALSE, '', TRUE, TRUE, $absUrl, $width, $height);
 	}
 
 	static function _getCustomPrice($customPrice, $currency, $calculator) {

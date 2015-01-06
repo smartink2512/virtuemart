@@ -34,7 +34,8 @@ class VirtuemartViewCustom extends JViewLegacy {
 	private $json = null;
 
 	function display($tpl = null) {
-			$db = JFactory::getDBO();
+
+		$db = JFactory::getDBO();
 		if ( $virtuemart_media_id = vRequest::getInt('virtuemart_media_id') ) {
 			//$db = JFactory::getDBO();
 			$query='SELECT `file_url`,`file_title` FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;

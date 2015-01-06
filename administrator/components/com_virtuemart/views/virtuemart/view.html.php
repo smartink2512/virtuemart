@@ -87,7 +87,7 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 			$this->report = $revenueBasic['report'];
 
 			vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false,'' );
-			vmJsApi::addJScript('vm.stats_chart',$revenueBasic['js'],false);
+			vmJsApi::addJScript('vm.stats_chart',$revenueBasic['js'],false,true);
 			vmTime('Created report','report');
 		}
 
@@ -96,6 +96,7 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 				vmSiteurl = "'. JURI::root( ) .'administrator/"
 				jQuery.ajax({
 						type: "GET",
+						async: true,
 						cache: false,
 						dataType: "json",
 						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&task=feed&tmpl=component",
@@ -104,18 +105,6 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 					})
 					.done(function( data ) {
 						jQuery("#feed").append(data);
-					});
-				jQuery.ajax({
-						type: "GET",
-						cache: false,
-						dataType: "json",
-						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&task=newsfeed&tmpl=component",
-						data: datas,
-						dataType: "html"
-					})
-					.done(function( data ) {
-						var pre = jQuery("#newsfeed").html();
-						jQuery("#newsfeed").html(data + pre);
 					});
 				})';
 			vmJsApi::addJScript('getFeed',$j, false, true);

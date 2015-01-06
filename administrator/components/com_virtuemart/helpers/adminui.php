@@ -41,26 +41,26 @@ class AdminUIHelper {
 	vmJsApi::css('admin.styles',$admin);
 	vmJsApi::css('toolbar_images',$admin);
 	vmJsApi::css('menu_images',$admin);
-	vmJsApi::css('chosen');
 	vmJsApi::css('vtip');
 
 	$view = vRequest::getCmd('view','virtuemart');
 		$modalJs='';
 	if($view!='virtuemart'){
+		vmJsApi::css('chosen');
 		vmJsApi::css('jquery.fancybox-1.3.4');
 		vmJsApi::css('ui/jquery.ui.all');
 		$modalJs="$('.modal').fancybox();";
 	}
 
 	if($view!='virtuemart') {
-		vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack');
+		vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack',false,false,true);
 		vmJsApi::addJScript('fancybox/jquery.easing-1.3.pack');
-		vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack');
+		vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack',false,false,true);
 		VmJsApi::chosenDropDowns();
 	}
 
-	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/jquery.coookie.js',false,false,true);
-	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/vm2admin.js',false,false,true);
+	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/jquery.coookie.js');
+	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/vm2admin.js');
 	//vmJsApi::addJScript ('vm.accordeon',"",true);
 
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
@@ -89,7 +89,7 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 			});
 		});
 //]]>
-		",false,true);
+		");
 		?>
 		<!--[if lt IE 9]>
 		<script src="//ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>

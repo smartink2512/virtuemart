@@ -381,16 +381,25 @@ class VirtueMartModelCustom extends VmModel {
 				'clabels'   => array(0, 'int'),
 				'options'	=> array(0, 'int')
 			);
+		} else if($type=='M'){
+			$varsToPush = array(
+				'width'		=> array(VmConfig::get('img_width',90), 'string'),
+				'height'	=> array(VmConfig::get('img_width',90), 'string')
+			);
 		} else if($type=='R'){
 			$varsToPush = array(
 				'wPrice'	=> array(0, 'int'),
 				'wImage'	=> array(0, 'int'),
-				'wDescr'	=> array(0, 'int')
+				'wDescr'	=> array(0, 'int'),
+				'width'		=> array(VmConfig::get('img_width',90), 'string'),
+				'height'	=> array(VmConfig::get('img_width',90), 'string')
 			);
 		} else if($type=='Z'){
 			$varsToPush = array(
 				'wImage'	=> array(0, 'int'),
-				'wDescr'	=> array(0, 'int')
+				'wDescr'	=> array(0, 'int'),
+				'width'		=> array(VmConfig::get('img_width',90), 'string'),
+				'height'	=> array(VmConfig::get('img_width',90), 'string')
 			);
 		}
 		return $varsToPush;

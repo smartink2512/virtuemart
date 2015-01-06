@@ -664,6 +664,17 @@ class PaypalHelperPaypal {
 	 * @return mixed
 	 */
 	function getRemoteIPAddress() {
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {  //check ip from share internet
+			$IP=$_SERVER['HTTP_CLIENT_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {  //to check ip is pass from proxy
+			$IP=$_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$IP=$_SERVER['REMOTE_ADDR'];
+		}
+		return $IP;
+	}
+
+/*	function getRemoteIPAddress() {
 		$ip_keys = array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR');
 		foreach ($ip_keys as $key) {
 			if (array_key_exists($key, $_SERVER) === true) {
@@ -685,13 +696,13 @@ class PaypalHelperPaypal {
 	 * Ensures an ip address is both a valid IP and does not fall within
 	 * a private network range.
 	 */
-	function validate_ip($ip) {
+/*	function validate_ip($ip) {
 		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
 			return false;
 		}
 		return true;
 	}
-
+*/
 	protected function validateIpnContent ($paypal_data) {
 		$test_ipn = (array_key_exists('test_ipn', $paypal_data)) ? $paypal_data['test_ipn'] : 0;
 		if ($test_ipn == 1) {

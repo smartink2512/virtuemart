@@ -33,6 +33,7 @@ class VirtueMartCart {
 
 	var $products = array();
 	var $_productAdded = false;
+	var $_calculated = false;
 	var $_inCheckOut = false;
 	var $_inConfirm = false;
 	var $_fromCart = false;
@@ -1405,7 +1406,7 @@ class VirtueMartCart {
 
 	public function getCartPrices($force=false) {
 
-		if(empty($this->cartPrices) or count($this->cartPrices<8) or $force){
+		if(empty($this->cartPrices) or !$this->_calculated or $force){
 			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 
@@ -1421,6 +1422,7 @@ class VirtueMartCart {
 			foreach($this->products as $k => $product){
 				$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
 			}
+			$this->_calculated = true;
 		}
 		return $this->cartPrices;
 	}
@@ -1436,7 +1438,7 @@ class VirtueMartCart {
 		}
 	}
 
-	function prepareCartData($checkAutomaticSelected=true){
+	function prepareCartData($force=true){
 
 		$this->totalProduct = 0;
 		if(count($this->products) != count($this->cartProductsData) or $this->_productAdded){
@@ -1505,7 +1507,7 @@ class VirtueMartCart {
 
 		}
 
-		$this->getCartPrices();
+		$this->getCartPrices($force);
 
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
@@ -1592,7 +1594,7 @@ class VirtueMartCart {
 	// Render the code for Ajax Cart
 	function prepareAjaxData($checkAutomaticSelected=true){
 
-		$this->prepareCartData();
+		$this->prepareCartData(false);
 		$data = new stdClass();
 		$data->products = array();
 		$data->totalProduct = 0;

@@ -44,7 +44,7 @@ if($viewName=='cart'){
 } else {
 	$checkAutomaticPS = false;
 }
-$data = $cart->prepareAjaxData($checkAutomaticPS);
+$data = $cart->prepareAjaxData();
 
 if (!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN . DS. 'helpers' . DS . 'currencydisplay.php');
 $currencyDisplay = CurrencyDisplay::getInstance( );

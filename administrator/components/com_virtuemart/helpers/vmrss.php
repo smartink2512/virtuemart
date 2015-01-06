@@ -28,7 +28,7 @@ class vmRSS{
 
 		$cache->setLifeTime($cache_time);
 		$cache->setCaching (1);
-		$feeds = $cache->call (array('vmRSS', 'getRssFeed'), $rssUrl, $max);
+		$feeds = $cache->call (array('vmRSS', 'getRssFeed'), $rssUrl, $max, $cache_time);
 
 		return $feeds;
 	}
@@ -38,10 +38,15 @@ class vmRSS{
 	 * Returns the RSS feed from Extensions.virtuemart.net
 	 * @return mixed
 	 */
-	public static $extFeeds = 0;
-	static public function getExtensionsRssFeed() {
+	public static $extFeeds = false;
+	static public function getExtensionsRssFeed($items =15, $cache_time = 2880) {
 		if (empty(self::$extFeeds)) {
-			self::$extFeeds =  self::getCPsRssFeed("http://extensions.virtuemart.net/?format=feed&type=rss", 15);
+			try {
+				self::$extFeeds = self::getCPsRssFeed( "http://extensions.virtuemart.net/?format=feed&type=rss", $items,$cache_time );
+				//self::$extFeeds =  self::getRssFeed("http://extensions.virtuemart.net/?format=feed&type=rss", 15);
+			} catch (Exception $e) {
+				echo 'Where not able to parse extension feed';
+			}
 		}
 		return self::$extFeeds;
 	}
@@ -51,10 +56,14 @@ class vmRSS{
 	 * Returns the RSS feed from virtuemart.net
 	 * @return mixed
 	 */
-	public static $vmFeeds = 0;
+	public static $vmFeeds = false;
 	static public function getVirtueMartRssFeed() {
  		if (empty(self::$vmFeeds)) {
-			self::$vmFeeds =  self::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5, 240);
+			try {
+				self::$vmFeeds =  self::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5, 240);
+			} catch (Exception $e) {
+				echo 'Where not able to parse news feed';
+			}
 		}
 		return self::$vmFeeds;
 	}
@@ -64,7 +73,7 @@ class vmRSS{
 	 * @param $max
 	 * @return array|bool
 	 */
-	static public function getRssFeed($rssURL, $max) {
+	static public function getRssFeed($rssURL, $max, $cache_time) {
 
 		if (JVM_VERSION < 3){
 			$erRep = VmConfig::setErrorReporting(false,true);
@@ -90,7 +99,7 @@ class vmRSS{
 		} else {
 			jimport('joomla.feed.factory');
 			$feed = new JFeedFactory;
-			$rssFeed = $feed->getFeed($rssURL);
+			$rssFeed = $feed->getFeed($rssURL,$cache_time);
 
 			if (empty($rssFeed) or !is_object($rssFeed)) return false;
 
