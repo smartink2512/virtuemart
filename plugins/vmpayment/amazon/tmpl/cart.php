@@ -145,7 +145,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 			}
 
 			?>
-			<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML); ?>">
+			<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 
 				<div id="amazonShipmentsDiv"><?php
 					//if (!$this->readonly_cart) {

@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');?>
 			echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_CURRENCY_MODULE',$this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', VmConfig::get('currency_converter_module', 'convertECB.php'));
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN','enable_content_plugin',VmConfig::get('enable_content_plugin',0));
 
-			//echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SSL','useSSL',VmConfig::get('useSSL',0));
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SSL','useSSL',VmConfig::get('useSSL',0));
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_REGISTRATION_CAPTCHA','reg_captcha',VmConfig::get('reg_captcha',0));
 		?>
 	</table>

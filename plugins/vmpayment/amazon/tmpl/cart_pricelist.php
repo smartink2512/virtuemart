@@ -44,7 +44,7 @@
 				<div class="clear"></div>
 			</div>
 
-			<a class="details output-billto-edit" id="output-billto-edit" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT', $this->useXHTML) ?>" rel="nofollow">
+			<a class="details output-billto-edit" id="output-billto-edit" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT', $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
 				<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
 			</a>
 
@@ -94,7 +94,7 @@
 			<?php if (!isset($this->cart->lists['current_id'])) {
 				$this->cart->lists['current_id'] = 0;
 			} ?>
-			<a class="details output-shipto-add" id="output-shipto-add" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&virtuemart_user_id[]=' . $this->cart->lists['current_id'], $this->useXHTML) ?>" rel="nofollow">
+			<a class="details output-shipto-add" id="output-shipto-add" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&virtuemart_user_id[]=' . $this->cart->lists['current_id'], $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
 				<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 			</a>
 		</div>
@@ -255,7 +255,7 @@ if (VmConfig::get('coupons_enable')) {
 			<?php
 			if (!$this->readonly_cart) {
 				//if (!empty($this->layoutName) && $this->layoutName == 'default'  ) {
-					// echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML), vmText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
+					// echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), vmText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
 					echo $this->loadTemplate('coupon');
 				//}
 			}

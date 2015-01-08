@@ -1172,7 +1172,7 @@ class calculationHelper {
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q = 'SELECT * FROM #__virtuemart_calcs ';
-		$q .= 'RIGHT JOIN #__virtuemart_calc_shoppergroups using(virtuemart_calc_id) ';
+		$q .= 'INNER JOIN #__virtuemart_calc_shoppergroups using(virtuemart_calc_id) ';
 		$q .= 'WHERE
                 `calc_kind`="' . $entrypoint . '"
                 AND `published`="1"

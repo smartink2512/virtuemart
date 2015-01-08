@@ -167,8 +167,8 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef ('currency', $currency);
 
 		} else { // 'list' -. default
-			$useXHTML = false;
-			$this->assignRef('useXHTML', $useXHTML);
+			$this->useSSL = VmConfig::get('useSSL',0);
+			$this->useXHTML = false;
 			if ($_currentUser->get('id') == 0) {
 				// getOrdersList() returns all orders when no userID is set (admin function),
 				// so explicetly define an empty array when not logged in.
