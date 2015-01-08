@@ -43,7 +43,7 @@ label.invalid {
 <?php if($this->userDetails->virtuemart_user_id==0) {
 	echo '<h2>'.vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG').'</h2>';
 }?>
-<form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
+<form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, true);" ><?php echo $this->button_lbl ?></button>

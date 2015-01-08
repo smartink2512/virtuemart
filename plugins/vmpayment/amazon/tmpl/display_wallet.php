@@ -49,7 +49,7 @@ $document->addScriptDeclaration("
 <h3><?php echo vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD') ?></h3>
 <p><?php echo vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD_CLICK_DECLINE') ?></p>
 	<div id="amazonWalletWidgetDiv" ></div>
-<form method="post" id="updateOrderId" name="updateOrderForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart' , $this->useXHTML, $this->useSSL); ?>">
+<form method="post" id="updateOrderId" name="updateOrderForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart' , $this->useXHTML); ?>">
 
 				<button name="updateOrderButton" id="updateOrderId" class="vm-button-correct"><span><?php echo vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE') ?></span></button>
 				<input type='hidden' name='type' value='vmpayment'/>

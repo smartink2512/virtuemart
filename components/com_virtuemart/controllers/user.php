@@ -33,7 +33,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 	public function __construct()
 	{
 		parent::__construct();
-		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = false;
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	}
@@ -246,7 +245,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$userModel->removeAddress($virtuemart_userinfo_id);
 
 		$layout = vRequest::getCmd('layout','edit');
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]='.$virtuemart_user_id[0], $this->useXHTML,$this->useSSL) );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]='.$virtuemart_user_id[0], $this->useXHTML) );
 	}
 
 	/**

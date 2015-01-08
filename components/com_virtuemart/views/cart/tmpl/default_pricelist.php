@@ -227,7 +227,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 				echo $this->loadTemplate('shipment');
 				$this->setLayout($previouslayout);
 			} else {
-				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
+				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment', $this->useXHTML), $this->select_shipment_text, 'class=""');
 			}
 		} else {
 			echo vmText::_ ('COM_VIRTUEMART_CART_SHIPPING');
@@ -264,7 +264,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 				echo $this->loadTemplate('payment');
 				$this->setLayout($previouslayout);
 			} else {
-				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
+				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment', $this->useXHTML), $this->select_payment_text, 'class=""');
 			}
 		} else {
 		echo vmText::_ ('COM_VIRTUEMART_CART_PAYMENT');

@@ -81,10 +81,8 @@ class VirtueMartCart {
 
 	private static $_cart = null;
 
-	var $useSSL = 1;
-
 	public function __construct() {
-		$this->useSSL = VmConfig::get('useSSL',0);
+
 		$this->useXHTML = false;
 		$this->cartProductsData = array();
 		$this->layout = VmConfig::get('cartlayout','default');
@@ -805,7 +803,7 @@ class VirtueMartCart {
 				} else if ($_retVal === false ) {
 					if ($redirect) {
 						$mainframe = JFactory::getApplication();
-						$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
+						$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML), $_retVal);
 						break;
 					} else {
 						return;
@@ -837,7 +835,7 @@ class VirtueMartCart {
 				} else if ($_retVal === false ) {
 					if ($redirect) {
 						$app = JFactory::getApplication();
-						$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
+						$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML), $msg);
 						break;
 					} else {
 						return;
@@ -872,7 +870,7 @@ class VirtueMartCart {
 		if($this->_redirect and !$this->_redirected and !$this->_redirect_disabled){
 			$this->_redirected = true;
 			$this->setCartIntoSession(true);
-			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
+			$app->redirect(JRoute::_($relUrl,$this->useXHTML), $redirectMsg);
 			return true;
 		} else {
 			$this->_redirected = false;
@@ -1089,11 +1087,12 @@ class VirtueMartCart {
 	 */
 	private function validateUserData($type='BT', $obj = null,$redirect = false) {
 
-		if($obj==null){
-			$obj = $this->{$type};
-		}
 		$usersModel = VmModel::getModel('user');
-		return $usersModel->validateUserData($obj,$type,$redirect);
+		if($obj==null){
+			return $usersModel->validateUserData($this->{$type},$type,$redirect);
+		} else {
+			return $usersModel->validateUserData($obj,$type,$redirect);
+		}
 	}
 
 	/**
@@ -1215,7 +1214,13 @@ class VirtueMartCart {
 				}
 
 				if(!empty($tmp)){
-					$tmp = htmlspecialchars ($tmp,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8',false);
+					if (version_compare(phpversion(), '5.4.0', '<')) {
+						// php version isn't high enough
+						$tmp = htmlspecialchars ($tmp,ENT_QUOTES,'UTF-8',false);	//ENT_SUBSTITUTE only for php5.4 and higher
+					} else {
+						$tmp = htmlspecialchars ($tmp,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8',false);
+					}
+
 					$tmp = (string)preg_replace('#on[a-z](.+?)\)#si','',$tmp);//replace start of script onclick() onload()...
 				}
 
@@ -1649,7 +1654,7 @@ class VirtueMartCart {
 			$linkName = vmText::_('COM_VIRTUEMART_CART_SHOW');
 		}
 
-		$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,true,VmConfig::get('useSSL',0)).'" rel="nofollow" >'.$linkName.'</a>';
+		$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,true).'" rel="nofollow" >'.$linkName.'</a>';
 		$data->billTotal = vmText::sprintf('COM_VIRTUEMART_CART_TOTALP',$data->billTotal);
 
 		return $data ;

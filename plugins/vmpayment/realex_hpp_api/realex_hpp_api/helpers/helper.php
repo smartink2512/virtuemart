@@ -1536,8 +1536,7 @@ class  RealexHelperRealex {
 
 	function getRemoteCCFormParams ($xml_response_dcc = NULL, $error = FALSE) {
 		$realvault = false;
-		$useSSL = $this->useSSL();
-		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $this->cart->useXHTML, $useSSL);
+		$submit_url = JRoute::_('index.php?option=com_virtuemart&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', ''), $this->cart->useXHTML);
 		$card_payment_button = $this->getPaymentButton();
 		if (!empty($xml_response_dcc)) {
 			$notificationTask = "handleRemoteDccForm";
@@ -2369,12 +2368,6 @@ class  RealexHelperRealex {
 		return $response;
 	}
 
-	function useSSL () {
-		if ($this->_method->shop_mode == 'sandbox') {
-			return false;
-		}
-			return true;
-	}
 
 	/**
 	 * @param $message

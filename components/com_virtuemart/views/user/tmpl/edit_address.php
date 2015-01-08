@@ -39,14 +39,14 @@ $task = '';
 if ($this->cart->getInCheckOut()){
 	//$task = '&task=checkout';
 }
-$url = JRoute::_ ('index.php?option=com_virtuemart&view='.$rview.$task, $this->useXHTML, $this->useSSL);
+$url = JRoute::_ ('index.php?option=com_virtuemart&view='.$rview.$task, $this->useXHTML);
 
 echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 $this->vmValidator();
 ?>
 
-<form method="post" id="userForm" name="userForm" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" >
+<form method="post" id="userForm" name="userForm" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML) ?>" >
 <fieldset>
 	<h2><?php
 		if ($this->address_type == 'BT') {

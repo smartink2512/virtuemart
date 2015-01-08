@@ -392,7 +392,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			//$url .= '&session=' . $this->_amazonOrderReferenceId;
 		}
 		$cart = VirtueMartCart::getCart();
-		return JRoute::_($url, $cart->useXHTML, $cart->useSSL);
+		return JRoute::_($url, $cart->useXHTML);
 
 	}
 

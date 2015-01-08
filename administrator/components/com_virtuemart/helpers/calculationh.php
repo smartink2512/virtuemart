@@ -1184,13 +1184,6 @@ class calculationHelper {
 		foreach ($rules as $rule) {
 
 			$rule = (array)$this->_calcModel->getCalc($rule['virtuemart_calc_id']);
-			/*$q = 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
-			$this->_db->setQuery($q);
-			$countries = $this->_db->loadColumn();
-
-			$q = 'SELECT `virtuemart_state_id` FROM #__virtuemart_calc_states WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
-			$this->_db->setQuery($q);
-			$states = $this->_db->loadColumn();*/
 
 			$hitsDeliveryArea = true;
 			//vmdebug('gatherEffectingRulesForBill $hitsDeliveryArea $countries and states  ',$countries,$states,$q);
@@ -1202,14 +1195,6 @@ class calculationHelper {
 			}
 
 
-			/*$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
-			$this->_db->setQuery($q);
-			$rule['calc_categories'] = $this->_db->loadColumn();
-
-
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
-			$this->_db->setQuery($q);
-			$shoppergrps = $this->_db->loadColumn();*/
 			vmdebug('$this->_shopperGroupId',$this->_shopperGroupId,$rule['virtuemart_shoppergroup_ids']);
 			$hitsShopper = true;
 			if (!empty($rule['virtuemart_shoppergroup_ids'])) {
