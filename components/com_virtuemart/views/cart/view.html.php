@@ -193,6 +193,23 @@ class VirtueMartViewCart extends VmView {
 		if ($this->cart->layoutPath) {
 			$this->addTemplatePath($this->cart->layoutPath);
 		}
+
+		$current = JFactory::getUser();
+		$this->allowChangeShopper = false;
+		if(VmConfig::get ('oncheckout_change_shopper')){
+			if($current->authorise('core.admin', 'com_virtuemart') or $current->authorise('vm.user', 'com_virtuemart')){
+				$this->allowChangeShopper = true;
+			} else {
+				$adminID = JFactory::getSession()->get('vmAdminID',false);
+				if($adminID){
+					$adminIdUser = JFactory::getUser($adminID);
+					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
+						$this->allowChangeShopper = true;
+					}
+				}
+			}
+		}
+
 		parent::display($tpl);
 	}
 

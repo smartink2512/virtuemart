@@ -120,7 +120,8 @@ Virtuemart.product = function(carts) {
 	carts.each(function(){
 		var cart = jQuery(this),
 		step=cart.find('input[name="quantity[]"]'),
-		addtocart = cart.find('input.addtocart-button'),
+		//addtocart = cart.find('input.addtocart-button'),
+        addtocart = cart.find('input[name*="addtocart"]'),
 		plus   = cart.find('.quantity-plus'),
 		minus  = cart.find('.quantity-minus'),
 		select = cart.find('select:not(.no-vm-bind)'),

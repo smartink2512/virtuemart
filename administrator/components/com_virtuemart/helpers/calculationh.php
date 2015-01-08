@@ -1171,12 +1171,21 @@ class calculationHelper {
 
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
-		$q = 'SELECT * FROM #__virtuemart_calcs WHERE
+		$q = 'SELECT * FROM #__virtuemart_calcs ';
+		$q .= 'RIGHT JOIN #__virtuemart_calc_shoppergroups using(virtuemart_calc_id) ';
+		$q .= 'WHERE
                 `calc_kind`="' . $entrypoint . '"
                 AND `published`="1"
                 AND (`virtuemart_vendor_id`="' . $cartVendorId . '" OR `shared`="1" )
 				AND ( publish_up = "' . $this->_db->escape($this->_nullDate) . '" OR publish_up <= "' . $this->_db->escape($this->_now) . '" )
-				AND ( publish_down = "' . $this->_db->escape($this->_nullDate) . '" OR publish_down >= "' . $this->_db->escape($this->_now) . '" ) ';
+				AND ( publish_down = "' . $this->_db->escape($this->_nullDate) . '" OR publish_down >= "' . $this->_db->escape($this->_now) . '" )';
+		$q .= ' AND (';
+		foreach($this->_shopperGroupId as $gr){
+			$q .= ' virtuemart_shoppergroup_id = '.(int)$gr;
+		}
+		$q .=' OR ISNULL(virtuemart_shoppergroup_id)) ';
+
+		//vmdebug('gatherEffectingRulesForBill '.$q);
 		//			$shoppergrps .  $countries . $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();

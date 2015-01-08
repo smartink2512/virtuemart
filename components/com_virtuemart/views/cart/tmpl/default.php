@@ -87,14 +87,8 @@ $this->addCheckRequiredJs();
 	<?php echo shopFunctionsF::getLoginForm ($this->cart, FALSE);
 
 	// This displays the form to change the current shopper
-	$adminID = JFactory::getSession()->get('vmAdminID');
-	if (VmConfig::get ('oncheckout_change_shopper', 0)){
-		$current = JFactory::getUser();
-		$admin = JFactory::getUser($adminID);
-		if($current->authorise('core.admin', 'com_virtuemart') or $admin->authorise('core.admin', 'com_virtuemart')
-			or $current->authorise('vm.user', 'com_virtuemart') or $admin->authorise('vm.user', 'com_virtuemart')){
-			echo $this->loadTemplate ('shopperform');
-		}
+	if ($this->allowChangeShopper){
+		echo $this->loadTemplate ('shopperform');
 	}
 
 

@@ -1670,7 +1670,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		// Get old IDS
-		$old_price_ids = $this->loadProductPrices($this->_id,0,false);
+		$old_price_ids = $this->loadProductPrices($this->_id,array(0),false);
 
 		if (isset($data['mprices']['product_price']) and count($data['mprices']['product_price']) > 0){
 
@@ -1710,7 +1710,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				}
 
-				if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,false);
+				if ($isChild) $childPrices = $this->loadProductPrices($this->_id,array(0),false);
 
 				if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='' and $pricesToStore['product_price']!=='0') || (isset($childPrices) and count($childPrices)>1)) {
 

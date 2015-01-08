@@ -361,12 +361,28 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		JSession::checkToken () or jexit ('Invalid Token');
 
 		//get data of current and new user
-		$usermodel = VmModel::getModel('user');
-		$user = $usermodel->getCurrentUser();
-		//check for permissions
-		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
+
+		//$user = $usermodel->getCurrentUser();
+
+		$current = JFactory::getUser();
+		$admin = false;
+		if(VmConfig::get ('oncheckout_change_shopper')){
+			if($current->authorise('core.admin', 'com_virtuemart') or $current->authorise('vm.user', 'com_virtuemart')){
+				$admin = true;
+			} else {
+				$adminID = JFactory::getSession()->get('vmAdminID',false);
+				if($adminID){
+					$adminIdUser = JFactory::getUser($adminID);
+					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
+						$admin = true;
+					}
+				}
+			}
+		}
+
+		if(!$admin){
 			$mainframe = JFactory::getApplication();
-			$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $user->name .' ('.$user->username.')'), 'error');
+			$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
 		}
 
@@ -375,11 +391,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		//update session
 		$session = JFactory::getSession();
 		$adminID = $session->get('vmAdminID');
-		if(!isset($adminID)) $session->set('vmAdminID', $user->virtuemart_user_id);
+		if(!isset($adminID)) $session->set('vmAdminID', $current->id);
 		$session->set('user', $newUser);
 
 		//update cart data
 		$cart = VirtueMartCart::getCart();
+		$usermodel = VmModel::getModel('user');
 		$data = $usermodel->getUserAddressList(vRequest::getCmd('userID'), 'BT');
 		foreach($data[0] as $k => $v) {
 			$data[$k] = $v;
