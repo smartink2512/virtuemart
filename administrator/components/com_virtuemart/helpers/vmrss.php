@@ -75,7 +75,7 @@ class vmRSS{
 	 */
 	static public function getRssFeed($rssURL, $max, $cache_time) {
 
-		if (JVM_VERSION < 3){
+		//if (JVM_VERSION < 3){
 			$erRep = VmConfig::setErrorReporting(false,true);
 			jimport('simplepie.simplepie');
 			$rssFeed = new SimplePie($rssURL);
@@ -96,7 +96,7 @@ class vmRSS{
 			if($erRep[1]) error_reporting($erRep[1]);
 			return $feeds;
 
-		} else {
+		/*} else {
 			jimport('joomla.feed.factory');
 			$feed = new JFeedFactory;
 			$rssFeed = $feed->getFeed($rssURL,$cache_time);
@@ -116,7 +116,7 @@ class vmRSS{
 				$feeds[] = $feed;
 			}
 			return $feeds;
-		}
+		}*/
 
 	}
 }

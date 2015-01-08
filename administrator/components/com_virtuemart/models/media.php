@@ -216,7 +216,7 @@ class VirtueMartModelMedia extends VmModel {
 			$selectFields[] = ' `virtuemart_media_id` ';
 
 			$user = JFactory::getUser();
-			if($user->authorise('core.admin','com_virtuemart')){
+			if(!$user->authorise('core.admin','com_virtuemart') and !$user->authorise('core.manager','com_virtuemart')){
 				$whereItems[] = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
 			}
 

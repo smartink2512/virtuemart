@@ -89,7 +89,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		foreach ($products as $product) {
 			$title = $this->escape ($product->product_name);
-			//$title = html_entity_decode ($title, ENT_XHTML, 'UTF-8');
+			$title = html_entity_decode ($title, ENT_XHTML, 'UTF-8');
 			$description = "";
 			if ($feed_show_images == 1) {
 				$effect = " ";

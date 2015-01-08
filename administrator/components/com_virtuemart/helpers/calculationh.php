@@ -1534,7 +1534,7 @@ class calculationHelper {
 		}
 		if (!is_array($data))
 			$data = array($data);
-		vmdebug('testRulePartEffecting',$rule, $data);
+
 		$intersect = array_intersect($rule, $data);
 		if ($intersect) {
 			return true;
