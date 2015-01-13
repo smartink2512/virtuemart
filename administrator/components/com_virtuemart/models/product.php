@@ -1733,10 +1733,12 @@ class VirtueMartModelProduct extends VmModel {
 
 					if($pricesToStore){
 						$toUnset = array();
-						foreach($old_price_ids as $key => $oldprice){
-							if(array_search($pricesToStore['virtuemart_product_price_id'], $oldprice )){
-								$pricesToStore = array_merge($oldprice,$pricesToStore);
-								$toUnset[] = $key;
+						if (!empty($old_price_ids) and count($old_price_ids) ) {
+							foreach($old_price_ids as $key => $oldprice){
+								if(array_search($pricesToStore['virtuemart_product_price_id'], $oldprice )){
+									$pricesToStore = array_merge($oldprice,$pricesToStore);
+									$toUnset[] = $key;
+								}
 							}
 						}
 						$this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
@@ -1748,7 +1750,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 		}
-		if ( count($old_price_ids) ) {
+		if (!empty($old_price_ids) and count($old_price_ids) ) {
 			$oldPriceIdsSql = array();
 			foreach($old_price_ids as $oldPride){
 				$oldPriceIdsSql[] = $oldPride['virtuemart_product_price_id'];

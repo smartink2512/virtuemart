@@ -85,8 +85,8 @@ class calculationHelper {
 
 		$this->setShopperGroupIds();
 
-		$this->setVendorId($this->productVendorId);
 		$this->setCountryState();
+		$this->setVendorId($this->productVendorId);
 
 		$this->rules['Marge'] = array();
 		$this->rules['Tax'] 	= array();
@@ -130,13 +130,50 @@ class calculationHelper {
 			$this->allrules[$this->productVendorId]['VatTax'] 	= array();
 			$this->allrules[$this->productVendorId]['DBTax'] = array();
 			$this->allrules[$this->productVendorId]['DATax'] = array();
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE
+			/*$qOld = 'SELECT * FROM #__virtuemart_calcs WHERE
 		                    `calc_kind` IN (' . implode(",",$epoints). ' )
 		                     AND `published`="1"
 		                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
 		                     AND ( ( publish_up = "' . $this->_nullDate . '" OR publish_up <= "' . $this->_now . '" )
 		                        AND ( publish_down = "' . $this->_nullDate . '" OR publish_down >= "' . $this->_now . '" )
 										OR `for_override` = "1" )';
+			//*/
+			$q = 'SELECT * FROM #__virtuemart_calcs ';
+			$shopperGrpJoin = '';
+			if(!empty($this->_shopperGroupId) and count($this->_shopperGroupId)>0){
+				$q .= ' LEFT JOIN #__virtuemart_calc_shoppergroups using(virtuemart_calc_id)';
+				$shopperGrpJoin = "\n AND (";
+				foreach($this->_shopperGroupId as $gr){
+					$shopperGrpJoin .= ' virtuemart_shoppergroup_id = '.(int)$gr. ' OR';
+				}
+				$shopperGrpJoin .=' ISNULL(virtuemart_shoppergroup_id)) ';
+			}
+
+			$countryGrpJoin = '';
+			if(!empty($this->_deliveryCountry)){
+				$q .= ' LEFT JOIN #__virtuemart_calc_countries using(virtuemart_calc_id) ';
+				$countryGrpJoin = "\n AND (";
+				$countryGrpJoin .= ' virtuemart_country_id = '.(int)$this->_deliveryCountry;
+				$countryGrpJoin .=' OR ISNULL(virtuemart_country_id)) ';
+			}
+
+			$stateGrpJoin = '';
+			if(!empty($this->_deliveryState)){
+				$q .= ' LEFT JOIN #__virtuemart_calc_states using(virtuemart_calc_id) ';
+				$stateGrpJoin = "\n AND (";
+				$stateGrpJoin .= ' virtuemart_state_id = '.(int)$this->_deliveryState;
+				$stateGrpJoin .=' OR ISNULL(virtuemart_state_id)) ';
+			}
+
+			$q .= 'WHERE `calc_kind` IN (' . implode(",",$epoints). ' )
+                AND `published`="1"
+                AND (`virtuemart_vendor_id`="' . $id . '" OR `shared`="1" )
+				AND ( publish_up = "' . $this->_db->escape($this->_nullDate) . '" OR publish_up <= "' . $this->_db->escape($this->_now) . '" )
+				AND ( publish_down = "' . $this->_db->escape($this->_nullDate) . '" OR publish_down >= "' . $this->_db->escape($this->_now) . '" )';
+
+			$q .= $shopperGrpJoin . $countryGrpJoin . $stateGrpJoin;
+			//vmdebug('my rules',$this->_shopperGroupId,$this->_deliveryCountry,$this->_deliveryState,$q);
+
 			$this->_db->setQuery($q);
 			$allrules = $this->_db->loadAssocList();
 
@@ -1172,21 +1209,39 @@ class calculationHelper {
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q = 'SELECT * FROM #__virtuemart_calcs ';
-		$q .= 'INNER JOIN #__virtuemart_calc_shoppergroups using(virtuemart_calc_id) ';
+		$shopperGrpJoin = '';
+		if(!empty($this->_shopperGroupId) and count($this->_shopperGroupId)>0){
+			$q .= ' LEFT JOIN #__virtuemart_calc_shoppergroups using(virtuemart_calc_id)';
+			$shopperGrpJoin = "\n AND (";
+			foreach($this->_shopperGroupId as $gr){
+				$shopperGrpJoin .= ' virtuemart_shoppergroup_id = '.(int)$gr.' OR';
+			}
+			$shopperGrpJoin .=' ISNULL(virtuemart_shoppergroup_id)) ';
+		}
+
+		$countryGrpJoin = '';
+		if(!empty($this->_deliveryCountry)){
+			$q .= ' LEFT JOIN #__virtuemart_calc_countries using(virtuemart_calc_id) ';
+			$countryGrpJoin = "\n AND (";
+			$countryGrpJoin .= ' virtuemart_country_id = '.(int)$this->_deliveryCountry;
+			$countryGrpJoin .=' OR ISNULL(virtuemart_country_id)) ';
+		}
+
+		$stateGrpJoin = '';
+		if(!empty($this->_deliveryState)){
+			$q .= ' LEFT JOIN #__virtuemart_calc_states using(virtuemart_calc_id) ';
+			$stateGrpJoin = "\n AND (";
+			$stateGrpJoin .= ' virtuemart_state_id = '.(int)$this->_deliveryState;
+			$stateGrpJoin .=' OR ISNULL(virtuemart_state_id)) ';
+		}
 		$q .= 'WHERE
                 `calc_kind`="' . $entrypoint . '"
                 AND `published`="1"
                 AND (`virtuemart_vendor_id`="' . $cartVendorId . '" OR `shared`="1" )
 				AND ( publish_up = "' . $this->_db->escape($this->_nullDate) . '" OR publish_up <= "' . $this->_db->escape($this->_now) . '" )
 				AND ( publish_down = "' . $this->_db->escape($this->_nullDate) . '" OR publish_down >= "' . $this->_db->escape($this->_now) . '" )';
-		$q .= ' AND (';
-		foreach($this->_shopperGroupId as $gr){
-			$q .= ' virtuemart_shoppergroup_id = '.(int)$gr;
-		}
-		$q .=' OR ISNULL(virtuemart_shoppergroup_id)) ';
+		$q .= $shopperGrpJoin.$countryGrpJoin.$stateGrpJoin;
 
-		//vmdebug('gatherEffectingRulesForBill '.$q);
-		//			$shoppergrps .  $countries . $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
 

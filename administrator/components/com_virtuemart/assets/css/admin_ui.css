@@ -95,6 +95,9 @@ margin-bottom: 10px;
 .virtuemart-admin-area fieldset #custom_fields .key {width:96%;}
 .virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;margin:0 5px 0 0;}
 /*.virtuemart-admin-area div.tabs {margin-bottom: 240px;}*/
+#custom_fields { width: 100%; }
+Modify message
+
 textarea {width: 100%;}
 /*.datepicker{width: 60px;} seems unused*/
 .translator {

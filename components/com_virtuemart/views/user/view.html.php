@@ -432,46 +432,44 @@ class VirtuemartViewUser extends VmView {
 
     public function renderMailLayout($doVendor, $recipient) {
 
-	$useSSL = VmConfig::get('useSSL', 0);
-	$useXHTML = true;
-	$this->assignRef('useSSL', $useSSL);
-	$this->assignRef('useXHTML', $useXHTML);
+		$this->useSSL = VmConfig::get('useSSL', 0);
+		$this->useXHTML = true;
 
-	$userFieldsModel = VmModel::getModel('UserFields');
-	$userFields = $userFieldsModel->getUserFields();
-	$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user->userInfo);
+		$userFieldsModel = VmModel::getModel('UserFields');
+		$userFields = $userFieldsModel->getUserFields();
+		$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user->userInfo);
 
 
-    if (VmConfig::get('order_mail_html')) {
-	    $mailFormat = 'html';
-	    $lineSeparator="<br />";
-    } else {
-	    $mailFormat = 'raw';
-	    $lineSeparator="\n";
-    }
+		if (VmConfig::get('order_mail_html')) {
+			$mailFormat = 'html';
+			$lineSeparator="<br />";
+		} else {
+			$mailFormat = 'raw';
+			$lineSeparator="\n";
+		}
 
-    $virtuemart_vendor_id=1;
-    $vendorModel = VmModel::getModel('vendor');
-    $vendor = $vendorModel->getVendor($virtuemart_vendor_id);
-    $vendorModel->addImages($vendor);
-	$vendor->vendorFields = $vendorModel->getVendorAddressFields();
-    $this->assignRef('vendor', $vendor);
+		$virtuemart_vendor_id=1;
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+		$vendorModel->addImages($vendor);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
+		$this->assignRef('vendor', $vendor);
 
-	if (!$doVendor) {
-	    $this->subject = vmText::sprintf('COM_VIRTUEMART_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
-	    $tpl = 'mail_' . $mailFormat . '_reguser';
-	} else {
-	    $this->subject = vmText::sprintf('COM_VIRTUEMART_VENDOR_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
-	    $tpl = 'mail_' . $mailFormat . '_regvendor';
-	}
+		if (!$doVendor) {
+			$this->subject = vmText::sprintf('COM_VIRTUEMART_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
+			$tpl = 'mail_' . $mailFormat . '_reguser';
+		} else {
+			$this->subject = vmText::sprintf('COM_VIRTUEMART_VENDOR_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
+			$tpl = 'mail_' . $mailFormat . '_regvendor';
+		}
 
-	$this->assignRef('recipient', $recipient);
-	$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
-	$this->layoutName = $tpl;
-	$this->setLayout($tpl);
-	$this->isMail = true;
+		$this->assignRef('recipient', $recipient);
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
+		$this->layoutName = $tpl;
+		$this->setLayout($tpl);
+		$this->isMail = true;
 
-	parent::display();
+		parent::display();
     }
 
 }

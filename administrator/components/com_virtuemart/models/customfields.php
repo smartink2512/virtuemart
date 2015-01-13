@@ -246,6 +246,7 @@ class VirtueMartModelCustomfields extends VmModel {
 <td>'.$child->allPrices[$child->selectedPrice]['product_price'] .'</td>';
 
 		$product_id = $line['vm_product_id'];
+		if(empty($field->selectoptions)) $field->selectoptions = array();
 		foreach($field->selectoptions as $k=>$selectoption){
 			//vmdebug('my $field->options',$field->options);
 			//if(!isset($field->options)) continue;
@@ -380,6 +381,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				//vmdebug('my sorted ids ',$sorted);
 				//return;
 				$k = 0;
+				if(empty($field->selectoptions)) $field->selectoptions = array();
 				foreach($field->selectoptions as $k=>&$soption){
 					$options = array();
 					$options[] = array('value' => '0' ,'text' =>vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));

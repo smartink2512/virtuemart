@@ -233,18 +233,16 @@ echo $this->loadTemplate('images');
 	?>
 
 <?php // onContentAfterDisplay event
-echo $this->product->event->afterDisplayContent; ?>
+echo $this->product->event->afterDisplayContent;
 
-<?php
 echo $this->loadTemplate('reviews');
+
+// Show child categories
+if (VmConfig::get('showCategory', 1)) {
+	echo $this->loadTemplate('showcategory');
+}
+echo vmJsApi::writeJS();
 ?>
-<?php // Show child categories
-    if (VmConfig::get('showCategory', 1)) {
-		echo $this->loadTemplate('showcategory');
-    }?>
-	<?php
-	echo vmJsApi::writeJS();
-	?>
 
 </div>
 <script>

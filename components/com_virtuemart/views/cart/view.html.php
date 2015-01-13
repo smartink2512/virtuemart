@@ -179,10 +179,9 @@ class VirtueMartViewCart extends VmView {
 			$this->assignRef('order_language',$order_language);
 		}
 
-		$useSSL = VmConfig::get('useSSL', 0);
-		$useXHTML = false;
-		$this->assignRef('useSSL', $useSSL);
-		$this->assignRef('useXHTML', $useXHTML);
+		$this->useSSL = VmConfig::get('useSSL', 0);
+		$this->useXHTML = false;
+
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 

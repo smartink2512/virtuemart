@@ -120,8 +120,7 @@ Virtuemart.product = function(carts) {
 	carts.each(function(){
 		var cart = jQuery(this),
 		step=cart.find('input[name="quantity[]"]'),
-		//addtocart = cart.find('input.addtocart-button'),
-        addtocart = cart.find('input[name*="addtocart"]'),
+
 		plus   = cart.find('.quantity-plus'),
 		minus  = cart.find('.quantity-minus'),
 		select = cart.find('select:not(.no-vm-bind)'),
@@ -129,15 +128,12 @@ Virtuemart.product = function(carts) {
 		virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 		quantity = cart.find('.quantity-input');
 
+        //console.log("addtocart add to cart ",addtocart);
 		var Ste = parseInt(step.val());
 		//Fallback for layouts lower than 2.0.18b
 		if(isNaN(Ste)){
 			Ste = 1;
 		}
-		addtocart.click(function(e) {
-			Virtuemart.sendtocart(cart);
-			return false;
-		});
 		plus.click(function() {
 			var Qtt = parseInt(quantity.val());
 			if (!isNaN(Qtt)) {
@@ -162,6 +158,20 @@ Virtuemart.product = function(carts) {
 		quantity.keyup(function() {
 			Virtuemart.setproducttype(cart,virtuemart_product_id);
 		});
+        this.action ="#";
+        //this.preventDefault();
+        //addtocart = cart.find('input.addtocart-button'),
+        addtocart = cart.find('input[name="addtocart"]');
+        console.log("Execute bind to addtocart",addtocart);
+        addtocart.click(function(e) {
+            e.preventDefault();
+            if (jQuery(e.originalEvent.explicitOriginalTarget).prop("type") == "submit") {
+                Virtuemart.sendtocart(cart);
+                return false;
+            }
+
+        });
+
 	});
 }
 
@@ -183,7 +193,7 @@ Virtuemart.checkQuantity = function (obj,step,myStr) {
 }
 
 jQuery.noConflict();
-jQuery(document).ready(function($) {
+/*jQuery(document).ready(function($) {
 	Virtuemart.product(jQuery("form.product"));
 
 	/*$("form.js-recalculate").each(function(){
@@ -193,4 +203,4 @@ jQuery(document).ready(function($) {
 
 		}
 	});*/
-});
+//});

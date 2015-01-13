@@ -31,11 +31,16 @@ defined('_JEXEC') or die();
  */
 
 if(JVM_VERSION<3){
-	interface JObservableInterface{
+	if(!interface_exists('JObservableInterface')){
+		interface JObservableInterface{
 
+		}
 	}
-	interface JTableInterface{
 
+	if(!interface_exists('JTableInterface')){
+		interface JTableInterface{
+
+		}
 	}
 }
 if(!class_exists('vObject')) require(VMPATH_ADMIN .DS. 'helpers' .DS. 'vobject.php');
@@ -1421,7 +1426,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			} else {
 				$loggedVendorId = VmConfig::isSuperVendor();
 				$user = JFactory::getUser();
-				$admin = $user->authorise('core.admin','com_virtuemart');
+				$admin = $user->authorise('core.admin','com_virtuemart') || $user->authorise('core.manage','com_virtuemart') || $user->authorise('vm.user.edit','com_virtuemart');
 
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);

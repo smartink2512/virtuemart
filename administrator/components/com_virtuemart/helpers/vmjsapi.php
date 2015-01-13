@@ -99,9 +99,9 @@ class vmJsApi{
 						$async = 'async="async" ';
 					}
 					if(strpos($script,'//<![CDATA[')===false){
-						$html .= '<script id="'.$name.'_js" type="text/javascript">//<![CDATA[ '.chr(10).$script.chr(10).' //]]></script>';
+						$html .= '<script id="'.$name.'_js" '.$defer.$async.' type="text/javascript">//<![CDATA[ '.chr(10).$script.chr(10).' //]]></script>';
 					} else {
-						$html .= '<script id="'.$name.'_js" '.$defer.$async.'type="text/javascript"> '.$script.' </script>';
+						$html .= '<script id="'.$name.'_js" '.$defer.$async.' type="text/javascript"> '.$script.' </script>';
 					}
 				}
 
@@ -317,8 +317,20 @@ class vmJsApi{
 		}
 
 		self::addJScript('jsVars',$jsVars);
-		vmJsApi::addJScript( 'vmprices');
+		vmJsApi::addJScript( 'vmprices',false,false);
 
+		$onReady = 'jQuery(document).ready(function($) {
+	Virtuemart.product(jQuery("form.product"));
+
+	/*$("form.js-recalculate").each(function(){
+		if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
+			var id= $(this).find(\'input[name="virtuemart_product_id[]"]\').val();
+			Virtuemart.setproducttype($(this),id);
+
+		}
+	});*/
+});';
+		//vmJsApi::addJScript('ready.vmprices',$onReady);
 		$jPrice = TRUE;
 		return TRUE;
 	}
