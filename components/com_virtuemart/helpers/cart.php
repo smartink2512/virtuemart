@@ -437,7 +437,7 @@ class VirtueMartCart {
 		$this->_redirect = false;
 		$this->setCartIntoSession(false,true);
 	}
-	
+
 	public function blockConfirm(){
 		$this->_blockConfirm = true;
 	}
@@ -519,6 +519,16 @@ class VirtueMartCart {
 
 			foreach($product->customfields as $customfield){
 
+				if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+				JPluginHelper::importPlugin('vmcustom');
+				$dispatcher = JDispatcher::getInstance();
+				$addToCartReturnValues = $dispatcher->trigger('plgVmOnAddToCartFilter',array(&$product, &$customfield, &$customProductData));
+				foreach ($addToCartReturnValues as $returnValue) {
+					if ( $returnValue === false ) {
+						continue 3;
+					}
+				}
+
 				if($customfield->is_input==1){
 					if(isset($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
 
@@ -555,6 +565,8 @@ class VirtueMartCart {
 			}
 
 			$productData['customProductData'] = $customProductDataTmp;
+
+
 
 			$unsetA = array();
 			$found = false;
@@ -620,7 +632,7 @@ class VirtueMartCart {
 
 			}
 
-			if($product){ 
+			if($product){
 				$products[] = $product;
 			}
 
@@ -995,7 +1007,7 @@ class VirtueMartCart {
 				}
 			}
 		}
-		
+
 		//Test Payment and show payment plugin
 		if($this->cartPrices['salesPrice']>0.0){
 			if (empty($this->virtuemart_paymentmethod_id)) {
@@ -1367,7 +1379,7 @@ class VirtueMartCart {
 				if ($returnValue) $method_id = $returnValue;
 			}
 		}
-		
+
 		$vm_autoSelected_name = 'automaticSelected'.ucfirst($type);
 		if ($nb==1 && $method_id) {
 			$this->$vm_method_name = $method_id;
