@@ -17,8 +17,15 @@
 		/ <?php echo vmText::_ ('COM_VIRTUEMART_CART_ACTION') ?></th>
 
 
-	<?php if (VmConfig::get ('show_tax')) { ?>
-	<th align="right" width="60px"><?php  echo "<span  class='priceColor2'>" . vmText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . '</span>' ?></th>
+	<?php if (VmConfig::get ('show_tax')) {
+		$tax = vmText::sprintf ('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT');
+		if(!empty($this->cart->cartData['VatTax'])){
+			reset($this->cart->cartData['VatTax']);
+			$taxd = current($this->cart->cartData['VatTax']);
+			$tax = $taxd['calc_name'] .' '. rtrim(trim($taxd['calc_value'],'0'),'.').'%';
+		}
+		?>
+	<th align="right" width="60px"><?php  echo "<span  class='priceColor2'>" . $tax . '</span>' ?></th>
 	<?php } ?>
 	<th align="right" width="60px"><?php echo "<span  class='priceColor2'>" . vmText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') . '</span>' ?></th>
 	<th align="right" width="70px"><?php echo vmText::_ ('COM_VIRTUEMART_CART_TOTAL') ?></th>

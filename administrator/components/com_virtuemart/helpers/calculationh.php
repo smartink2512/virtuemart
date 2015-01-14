@@ -172,11 +172,11 @@ class calculationHelper {
 				AND ( publish_down = "' . $this->_db->escape($this->_nullDate) . '" OR publish_down >= "' . $this->_db->escape($this->_now) . '" )';
 
 			$q .= $shopperGrpJoin . $countryGrpJoin . $stateGrpJoin;
-			//vmdebug('my rules',$this->_shopperGroupId,$this->_deliveryCountry,$this->_deliveryState,$q);
+
 
 			$this->_db->setQuery($q);
 			$allrules = $this->_db->loadAssocList();
-
+			//vmdebug('my rules',$this->_shopperGroupId,$this->_deliveryCountry,$this->_deliveryState,$q,$allrules);
 			//By Maik, key of array is directly virtuemart_calc_id
 			foreach ($allrules as $rule){
 				//$rul = $this->_calcModel->getCalc($rule['virtuemart_calc_id']);

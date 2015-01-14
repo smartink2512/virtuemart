@@ -1222,6 +1222,12 @@ class VirtueMartModelUser extends VmModel {
 			$joinedTables .= ' LEFT JOIN #__virtuemart_userinfos AS ui ON ui.virtuemart_user_id = vmu.virtuemart_user_id';
 		}
 
+		/*
+		$superVendor = VmConfig::isSuperVendor();
+		if($superVendor>1){
+			$joinedTables .= ' LEFT JOIN #__virtuemart_vendor_users AS vu using (virtuemart_user_id)';
+			$where .= ' AND vu.virtuemart_vendor_id = '.$superVendor.' ';
+		}*/
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$where,' GROUP BY ju.id',$this->_getOrdering());
 
 	}
