@@ -330,7 +330,7 @@ class vmJsApi{
 		}
 	});*/
 });';
-		//vmJsApi::addJScript('ready.vmprices',$onReady);
+		vmJsApi::addJScript('ready.vmprices',$onReady);
 		$jPrice = TRUE;
 		return TRUE;
 	}

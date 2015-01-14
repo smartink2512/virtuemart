@@ -409,7 +409,7 @@ class VirtueMartViewCart extends VmView {
 		if(!empty($search)){
 			$search = 'WHERE `name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%';
 		}
-		$q = 'SELECT `id`,`name`,`username` FROM `#__users` '.$search.'ORDER BY `name` LIMIT 0,10000';
+		$q = 'SELECT `id`,`name`,`username` FROM `#__users` '.$search.' ORDER BY `name` LIMIT 0,10000';
 		$db->setQuery($q);
 		$result = $db->loadObjectList();
 		foreach($result as $user) {

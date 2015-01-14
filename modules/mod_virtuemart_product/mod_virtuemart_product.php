@@ -79,6 +79,9 @@ $productModel->addImages($products);
 
 $totalProd = 		count( $products);
 if(empty($products)) return false;
+
+if (!class_exists('CurrencyDisplay'))
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 $currency = CurrencyDisplay::getInstance( );
 
 ob_start();
