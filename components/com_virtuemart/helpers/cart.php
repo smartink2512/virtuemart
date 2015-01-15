@@ -517,6 +517,9 @@ class VirtueMartCart {
 			$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 			$customProductDataTmp=array();
 
+			// Some customfields may prevent the product being added to the cart
+			$allowProductAddition = true;
+
 			foreach($product->customfields as $customfield){
 
 				if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -525,11 +528,11 @@ class VirtueMartCart {
 				$addToCartReturnValues = $dispatcher->trigger('plgVmOnAddToCartFilter',array(&$product, &$customfield, &$customProductData));
 				foreach ($addToCartReturnValues as $returnValue) {
 					if ( $returnValue === false ) {
-						continue 3;
+						$allowProductAddition = false;
 					}
 				}
 
-				if($customfield->is_input==1){
+				if($allowProductAddition && $customfield->is_input==1){
 					if(isset($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
 
 						if(is_array($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
@@ -562,6 +565,10 @@ class VirtueMartCart {
 					$customProductDataTmp[$customfield->virtuemart_custom_id][(int)$customfield->virtuemart_customfield_id] = false;
 				}
 
+			}
+
+			if (!$allowProductAddition) {
+				continue;
 			}
 
 			$productData['customProductData'] = $customProductDataTmp;
