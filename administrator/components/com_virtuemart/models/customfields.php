@@ -635,7 +635,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					return '';
 				} // special case it's category ID !
 
-				$q = 'SELECT * FROM `#__virtuemart_categories_' . VmConfig::$vmlang . '` JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `virtuemart_category_id`= "' . (int)$field->customfield_value . '" ';
+				$q = 'SELECT * FROM `#__virtuemart_categories_' . VmConfig::$vmlang . '` INNER JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `virtuemart_category_id`= "' . (int)$field->customfield_value . '" ';
 				$db = JFactory::getDBO();
 				$db->setQuery ($q);
 				//echo $db->_sql;
@@ -1060,7 +1060,7 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 				case 'Z':
 					if(empty($customfield->customfield_value)) break;
 					$html = '';
-					$q = 'SELECT * FROM `#__virtuemart_categories_' . VmConfig::$vmlang . '` as l JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`) WHERE `published`=1 AND l.`virtuemart_category_id`= "' . (int)$customfield->customfield_value . '" ';
+					$q = 'SELECT * FROM `#__virtuemart_categories_' . VmConfig::$vmlang . '` as l INNER JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`) WHERE `published`=1 AND l.`virtuemart_category_id`= "' . (int)$customfield->customfield_value . '" ';
 					$db = JFactory::getDBO();
 					$db->setQuery ($q);
 					if ($category = $db->loadObject ()) {

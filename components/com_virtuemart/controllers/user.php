@@ -143,6 +143,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 					vmdebug('Storing user ST prefix '.$prefix);
 				}
 				$cart->saveAddressInCart($data, $data['address_type'],true,$prefix);
+				if(!empty($cart->vendorId) and $cart->vendorId!=1){
+					$data['vendorId'] = $cart->vendorId;
+				}
 			}
 		}
 

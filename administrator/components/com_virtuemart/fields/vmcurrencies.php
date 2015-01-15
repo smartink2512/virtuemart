@@ -45,7 +45,7 @@ class JFormFieldVmCurrencies extends JFormFieldList {
 			$currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
 			$this->value = $currency->virtuemart_currency_id;
 		}
-		// why not logged vendor ?
+		// why not logged vendor? shared is missing
 		$db = JFactory::getDBO();
 		$query = 'SELECT `virtuemart_currency_id` AS value, `currency_name` AS text
 			FROM `#__virtuemart_currencies`

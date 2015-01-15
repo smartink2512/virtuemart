@@ -1142,8 +1142,6 @@ class VirtueMartCart {
 				return;
 			}
 
-			$orderModel->notifyCustomer($this->virtuemart_order_id, $orderDetails);
-
 			$dispatcher = JDispatcher::getInstance();
 
 			JPluginHelper::importPlugin('vmcalculation');
@@ -1152,6 +1150,8 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmpayment');
 
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $orderDetails));
+
+			$orderModel->notifyCustomer($this->virtuemart_order_id, $orderDetails);
 
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,

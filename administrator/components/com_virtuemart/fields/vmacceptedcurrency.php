@@ -38,6 +38,7 @@ class JFormFieldVmAcceptedCurrency extends JFormFieldList {
 
 	protected function getOptions() {
 
+		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart', false);
 
 		$cModel = VmModel::getModel('currency');

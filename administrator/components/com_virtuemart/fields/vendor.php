@@ -29,21 +29,18 @@ jimport('joomla.form.formfield');
  *
  *
  */
-class JFormFieldVendor extends JFormField
-{
+class JFormFieldVendor extends JFormField {
+
 	var $type = 'vendor';
+	
+	function getInput() {
+		VmConfig::loadConfig();
+		VmConfig::loadJLang('com_virtuemart');
+		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+		$model = VmModel::getModel('vendor');
 
-
-     function getInput() {
-
-		 VmConfig::loadJLang('com_virtuemart');
-         $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-        $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-        $model = VmModel::getModel('vendor');
-
-	$vendors = $model->getVendors(true, true, false);
-        return JHtml::_('select.genericlist', $vendors, $this->name, 'class="inputbox"  size="1"', 'virtuemart_vendor_id', 'vendor_name', $this->value, $this->id);
-    }
-
-
+		$vendors = $model->getVendors(true, true, false);
+		return JHtml::_('select.genericlist', $vendors, $this->name, 'class="inputbox"  size="1"', 'virtuemart_vendor_id', 'vendor_name', $this->value, $this->id);
+	}
 }

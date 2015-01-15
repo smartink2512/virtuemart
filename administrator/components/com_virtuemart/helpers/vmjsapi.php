@@ -373,7 +373,7 @@ class vmJsApi{
 		static $jspopup;
 		if (!$jspopup) {
 			if(VmConfig::get('usefancy',1)){
-				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack');
+				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false);
 				vmJsApi::css('jquery.fancybox-1.3.4');
 				$box = "
 //<![CDATA[
@@ -389,7 +389,7 @@ class vmJsApi{
 //]]>
 ";
 			} else {
-				vmJsApi::addJScript ('facebox');
+				vmJsApi::addJScript ('facebox',false,false);
 				vmJsApi::css ('facebox');
 				$box = "
 //<![CDATA[

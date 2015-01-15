@@ -1107,47 +1107,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
   KEY `published` (`published`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='States that are assigned to a country' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `#__virtuemart_vmusers`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
-  `virtuemart_user_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
-  `customer_number` char(32),
-  `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED,
-  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
-  `agreed` tinyint(1) NOT NULL DEFAULT '0',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(1) NOT NULL DEFAULT '0',
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(1) NOT NULL DEFAULT '0',
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`virtuemart_user_id`),
-  KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  UNIQUE KEY `virtuemart_user_id` (`virtuemart_user_id`,`virtuemart_vendor_id`),
-  KEY `user_is_vendor` (`user_is_vendor`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds the unique user data' ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__virtuemart_vmuser_shoppergroups`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_vmuser_shoppergroups` (
-  `id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_shoppergroup_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `virtuemart_user_id` (`virtuemart_user_id`,`virtuemart_shoppergroup_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='xref table for users to shopper group' ;
-
-
 
 -- --------------------------------------------------------
 --
@@ -1298,6 +1257,56 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendor_medias` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`,`virtuemart_media_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vendor_users` (
+  `id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
+  `ordering` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`,`virtuemart_user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_vmusers`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
+  `virtuemart_user_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
+  `customer_number` char(32),
+  `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED,
+  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
+  `agreed` tinyint(1) NOT NULL DEFAULT '0',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(1) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(1) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`virtuemart_user_id`),
+  KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
+  UNIQUE KEY `virtuemart_user_id` (`virtuemart_user_id`,`virtuemart_vendor_id`),
+  KEY `user_is_vendor` (`user_is_vendor`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds the unique user data' ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_vmuser_shoppergroups`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vmuser_shoppergroups` (
+  `id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_shoppergroup_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `virtuemart_user_id` (`virtuemart_user_id`,`virtuemart_shoppergroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='xref table for users to shopper group' ;
 
 
 -- --------------------------------------------------------
