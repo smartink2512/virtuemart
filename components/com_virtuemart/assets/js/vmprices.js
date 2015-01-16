@@ -165,7 +165,8 @@ Virtuemart.product = function(carts) {
         console.log("Execute bind to addtocart",addtocart);
         addtocart.click(function(e) {
             e.preventDefault();
-            if (jQuery(e.originalEvent.explicitOriginalTarget).prop("type") == "submit") {
+            var target = e.target || e.srcElement; //cross browser support
+            if (jQuery(e.originalEvent.target).prop("type") == "submit") {
                 Virtuemart.sendtocart(cart);
                 return false;
             }
