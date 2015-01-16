@@ -1138,6 +1138,7 @@ $html .='</td>';
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_TITLE','file_title');
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_DESCRIPTION','file_description');
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_META','file_meta');
+		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_CLASS','file_class');
 
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL','file_url',$readonly);
 

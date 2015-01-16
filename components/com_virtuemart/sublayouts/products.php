@@ -69,7 +69,7 @@ foreach ($viewData['products'] as $type => $products ) {
 
 					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link.$ItemidStr; ?>">
 						<?php
-						echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);
+						echo $product->images[0]->displayMediaThumb('class="browseProductImage '. $product->images[0]->file_class .'"', false);
 						?>
 					</a>
 

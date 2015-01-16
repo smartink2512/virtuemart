@@ -144,6 +144,7 @@ class VirtueMartModelMedia extends VmModel {
 			$data->file_title = '';
 			$data->file_description = '';
 			$data->file_meta = '';
+			$data->file_class = '';
 			$data->file_mimetype = '';
 			$data->file_type = '';
 			$data->file_url = '';

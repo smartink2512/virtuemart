@@ -71,7 +71,8 @@ $verticalseparator = " vertical-separator";
           <?php echo $category->category_name ?>
           <br />
           <?php // if ($category->ids) {
-            echo $category->images[0]->displayMediaThumb("",false);
+            $imageClass = !empty($category->images[0]->file_class) ? 'class="'. $category->images[0]->file_class .'"' : '';
+            echo $category->images[0]->displayMediaThumb($imageClass,false);
           //} ?>
           </a>
         </h2>

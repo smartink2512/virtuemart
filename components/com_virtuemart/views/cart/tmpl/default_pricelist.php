@@ -42,7 +42,8 @@ foreach ($this->cart->products as $pkey => $prow) { ?>
 		<span class="cart-images">
 						 <?php
 			if (!empty($prow->images[0])) {
-				echo $prow->images[0]->displayMediaThumb ('', FALSE);
+				$imageClass = !empty($prow->images[0]->file_class) ? 'class="'. $prow->images[0]->file_class .'"' : '';
+				echo $prow->images[0]->displayMediaThumb ($imageClass, FALSE);
 			}
 			?>
 						</span>

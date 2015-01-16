@@ -42,6 +42,8 @@ class TableMedias extends VmTable {
 	var $file_description = '';
 	/** @var string File Meta or alt  */
 	var $file_meta = '';
+	/** @var string File Class  */
+	var $file_class = '';
 
 	/** @var string File mime type */
 	var $file_mimetype = '';

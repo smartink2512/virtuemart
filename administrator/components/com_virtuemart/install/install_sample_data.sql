@@ -92,27 +92,27 @@ INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`, `virtuemart_manufa
 	(2, 2, 9, 2),
 	(3, 3, 21, 3);
 
-INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `file_params`, `file_lang`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, 'vendor.gif', '', '', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/vendor.gif', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(2, 1, 'student_hat_16.jpg', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/student_hat_16.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(3, 1, 'hat_category8.jpg', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hat_category8.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(5, 1, 'cap6.jpg', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/cap6.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(6, 1, 'jacket_classic7.jpg', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/jacket_classic7.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(7, 1, 'black_dress_2.jpg', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/black_dress_2.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(8, 1, 'cart_logo.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cart_logo.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(9, 1, 'manufacturer.jpg', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturer.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(10, 1, 'classic_hat.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/classic_hat.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(11, 1, 'cowboy_hat.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cowboy_hat.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(12, 1, 'derbyhat.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/derbyhat.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(13, 1, 'santa_cap.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/santa_cap.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(14, 1, 'baseballcap.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/baseballcap.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(15, 1, 'marinecap.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/marinecap.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(16, 1, 'jumper.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/jumper.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(17, 1, 'wide_dress_2.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/wide_dress_2.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(18, 1, 'jacket_classic.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/jacket_classic.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(19, 1, 'poncho.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/poncho.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(20, 1, 'dress.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/dress.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
-	(21, 1, 'producer.jpg', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/producer.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0);
+INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_class`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `file_params`, `file_lang`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+	(1, 1, 'vendor.gif', '', '', '', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/vendor.gif', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(2, 1, 'student_hat_16.jpg', '', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/student_hat_16.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(3, 1, 'hat_category8.jpg', '', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hat_category8.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(5, 1, 'cap6.jpg', '', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/cap6.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(6, 1, 'jacket_classic7.jpg', '', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/jacket_classic7.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(7, 1, 'black_dress_2.jpg', '', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/black_dress_2.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(8, 1, 'cart_logo.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cart_logo.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(9, 1, 'manufacturer.jpg', '', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturer.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(10, 1, 'classic_hat.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/classic_hat.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(11, 1, 'cowboy_hat.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cowboy_hat.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(12, 1, 'derbyhat.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/derbyhat.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(13, 1, 'santa_cap.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/santa_cap.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(14, 1, 'baseballcap.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/baseballcap.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(15, 1, 'marinecap.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/marinecap.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(16, 1, 'jumper.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/jumper.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(17, 1, 'wide_dress_2.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/wide_dress_2.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(18, 1, 'jacket_classic.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/jacket_classic.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(19, 1, 'poncho.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/poncho.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(20, 1, 'dress.jpg', '', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/dress.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0),
+	(21, 1, 'producer.jpg', '', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/producer.jpg', '', 0, 0, 0, '', '', 0, 1, '', 635, '', 635, '', 0);
 
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_gtin`, `product_mpn`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `product_ordered`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `product_sales`, `product_unit`, `product_packaging`, `product_params`, `hits`, `intnotes`, `metarobot`, `metaauthor`, `layout`, `published`, `pordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 0, 'DP1', NULL, NULL, 50.0000, 'KG', 45.0000, 5.0000, 5.0000, 'M', '', 78, 0, 5, '', '', 0, 0, 'KG', NULL, 'min_order_level=""|max_order_level=""|step_order_level=""|product_box=""|', NULL, '', '', '', '0', 1, 0, '', 635, '', 635, '', 0),

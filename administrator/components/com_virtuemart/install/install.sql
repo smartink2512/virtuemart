@@ -432,6 +432,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `file_title` char(126) NOT NULL DEFAULT '',
   `file_description` char(254) NOT NULL DEFAULT '',
   `file_meta` char(254) NOT NULL DEFAULT '',
+  `file_class` char(64) NOT NULL DEFAULT '',
   `file_mimetype` char(64) NOT NULL DEFAULT '',
   `file_type` char(32) NOT NULL DEFAULT '',
   `file_url` varchar(900) NOT NULL DEFAULT '',
