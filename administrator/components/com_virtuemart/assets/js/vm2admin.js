@@ -301,7 +301,7 @@
                             jQuery("#vm_display_image").attr("alt", datas.file_title);
                             jQuery("#file_title").html(datas.file_title);
 							var lang = datas.file_lang.split(',');
-							jQuery("#vmlangimg").val(lang).trigger("liszt:updated");
+							jQuery("#active_languages").val(lang).trigger("liszt:updated");
                             if (datas.published == 1) jQuery("#adminForm [name=media_published]").attr('checked', true);
                             else jQuery("#adminForm [name=media_published]").attr('checked', false);
                             if (datas.file_is_downloadable == 0) {

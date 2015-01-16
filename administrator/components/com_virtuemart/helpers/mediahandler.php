@@ -752,9 +752,9 @@ class VmMediaHandler {
 			}
 		}
 
-		if(!empty($data['vmlangimg'])) {
-			$vmlangimg = implode(",", $data['vmlangimg']);
-			$this->file_lang = $vmlangimg;
+		if(!empty($data['active_languages'])) {
+			$active_languages = implode(",", $data['active_languages']);
+			$this->file_lang = $active_languages;
 		}
 
 
@@ -1178,11 +1178,11 @@ $html .='</td>';
 
 
 		// select language for image
-		$selectedLang = VmConfig::get('active_languages');
-		if (count($selectedLang)>1) {
+		$active_languages = VmConfig::get('active_languages');
+		if (count($active_languages)>1) {
+			$selectedImageLangue = explode(",", $this->file_lang);
 			$configM = VmModel::getModel('config');
-			//$selectedLangue = explode(",", $this->file_lang);
-			$languages = $configM->getActiveLanguages($selectedLang);
+			$languages = $configM->getActiveLanguages($selectedImageLangue);
 			$html .= '<tr>
 					<td class="labelcell"><span class="hasTip" title="' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE_TIP') . '">' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE') . '</span></td>
 					<td><fieldset class="inputbox">'.$languages.'</fieldset></td>
