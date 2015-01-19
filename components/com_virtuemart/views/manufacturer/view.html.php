@@ -50,7 +50,7 @@ class VirtuemartViewManufacturer extends VmView {
 			$manufacturer = $model->getManufacturer();
 			$model->addImages($manufacturer,1);
 
-			$manufacturerImage = $manufacturer->images[0]->displayMediaThumb('class="manufacturer-image '. $manufacturer->images[0]->file_class .'"',false);
+			$manufacturerImage = $manufacturer->images[0]->displayMediaThumb('class="manufacturer-image"',false);
 			if (VmConfig::get('enable_content_plugin', 0)) {
 				if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 				shopFunctionsF::triggerContentPlugin($manufacturer, 'manufacturer','mf_desc');

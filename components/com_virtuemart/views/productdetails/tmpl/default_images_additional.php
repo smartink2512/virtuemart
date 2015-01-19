@@ -24,15 +24,14 @@ defined('_JEXEC') or die('Restricted access');
 	$start_image = VmConfig::get('add_img_main', 1) ? 0 : 1;
 	for ($i = $start_image; $i < count($this->product->images); $i++) {
 		$image = $this->product->images[$i];
-		$imageClass = !empty($image->file_class) ? 'class="'. $image->file_class .'"' : '';
 		?>
 		<div class="floatleft">
 			<?php
 			if(VmConfig::get('add_img_main', 1)) {
-				echo $image->displayMediaThumb('class="product-image '. $image->file_class .'" style="cursor: pointer"',false,"");
+				echo $image->displayMediaThumb('class="product-image" style="cursor: pointer"',false,"");
 				echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
 			} else {
-				echo $image->displayMediaThumb($imageClass,true,"rel='vm-additional-images'");
+				echo $image->displayMediaThumb("",true,"rel='vm-additional-images'");
 			}
 			?>
 		</div>

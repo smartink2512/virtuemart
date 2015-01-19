@@ -69,6 +69,11 @@ class VmImage extends VmMediaHandler {
 			}
 			$postText = false;
 			if($description) $postText = $this->file_description;
+
+			if(!empty($this->file_class)){
+				$imageArgs = $this->filterImageArgs($imageArgs);
+			}
+
 			return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect,$postText);
 		} else {
 			//Media which should be sold, show them only as thumb (works as preview)

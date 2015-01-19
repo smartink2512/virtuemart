@@ -1282,6 +1282,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			     $orderCalcRules->calc_mathop=$rule['calc_value_mathop'];
 			     $orderCalcRules->virtuemart_order_id=$order_id;
 			     $orderCalcRules->calc_params=$rule['calc_params'];
+				 $orderCalcRules->virtuemart_vendor_id = $rule['virtuemart_vendor_id'];
 			     if (!$orderCalcRules->check()) {
 				    return false;
 			    }
@@ -1583,6 +1584,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			vmInfo( vmText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 		}
 
+		//quicknDirty to prevent that an email is sent twice
+		$app = JFactory::getApplication();
+		if($app->isSite()){
+			if (!class_exists('VirtueMartCart'))
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
+			$cart = VirtueMartCart::getCart();
+			$cart->customer_notified = true;
+		}
 		return true;
 	}
 

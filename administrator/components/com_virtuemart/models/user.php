@@ -588,6 +588,11 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
+		if(!empty($data['vendorId']) and $data['vendorId']>1){
+			$vUserD = array('virtuemart_user_id' => $data['virtuemart_user_id'],'virtuemart_vendor_id' => $data['vendorId']);
+			$vUser = $this->getTable('vendor_users');
+			$vUser->bindChecknStore($vUserD);
+		}
 
 		return $noError;
 	}
@@ -1222,12 +1227,14 @@ class VirtueMartModelUser extends VmModel {
 			$joinedTables .= ' LEFT JOIN #__virtuemart_userinfos AS ui ON ui.virtuemart_user_id = vmu.virtuemart_user_id';
 		}
 
-		/*
-		$superVendor = VmConfig::isSuperVendor();
-		if($superVendor>1){
-			$joinedTables .= ' LEFT JOIN #__virtuemart_vendor_users AS vu using (virtuemart_user_id)';
-			$where .= ' AND vu.virtuemart_vendor_id = '.$superVendor.' ';
-		}*/
+		if(VmConfig::get('multixcart',0)=='byvendor'){
+			$superVendor = VmConfig::isSuperVendor();
+			if($superVendor>1){
+				$joinedTables .= ' LEFT JOIN #__virtuemart_vendor_users AS vu using (virtuemart_user_id)';
+				$where .= ' AND vu.virtuemart_vendor_id = '.$superVendor.' ';
+			}
+		}
+
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$where,' GROUP BY ju.id',$this->_getOrdering());
 
 	}

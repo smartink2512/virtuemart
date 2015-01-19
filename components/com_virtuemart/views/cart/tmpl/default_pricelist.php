@@ -18,7 +18,7 @@
 
 
 	<?php if (VmConfig::get ('show_tax')) {
-		$tax = vmText::sprintf ('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT');
+		$tax = vmText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT');
 		if(!empty($this->cart->cartData['VatTax'])){
 			reset($this->cart->cartData['VatTax']);
 			$taxd = current($this->cart->cartData['VatTax']);
@@ -42,8 +42,7 @@ foreach ($this->cart->products as $pkey => $prow) { ?>
 		<span class="cart-images">
 						 <?php
 			if (!empty($prow->images[0])) {
-				$imageClass = !empty($prow->images[0]->file_class) ? 'class="'. $prow->images[0]->file_class .'"' : '';
-				echo $prow->images[0]->displayMediaThumb ($imageClass, FALSE);
+				echo $prow->images[0]->displayMediaThumb ('', FALSE);
 			}
 			?>
 						</span>

@@ -25,10 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 	<h1><?php echo $this->vendor->vendor_store_name;
 	if (!empty($this->vendor->images[0])) { ?>
 		<div class="vendor-image">
-			<?php
-			$imageClass = !empty($this->vendor->images[0]->file_class) ? 'class="'. $this->vendor->images[0]->file_class .'"' : '';
-			echo $this->vendor->images[0]->displayMediaThumb($imageClass,false);
-			?>
+		<?php echo $this->vendor->images[0]->displayMediaThumb('',false); ?>
 		</div>
 	<?php
 	}

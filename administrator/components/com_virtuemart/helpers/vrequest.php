@@ -82,15 +82,15 @@ class vRequest {
 			$str = $lang->transliterate($str);
 		}
 
-		//In case this is a path, remove all strange slashes
+		//This is a path, so remove all strange slashes
 		$str = str_replace('/', DS, $str);
-		while(strpos($str,DS.DS)){
-			$str = str_replace(DS.DS, DS, $str);
-		}
 
+		//Clean from possible injection
+		while(strpos($str,'..')!==false){
+			$str  = str_replace('..', '', $str);
+		};
+		$str  = preg_replace('#[/\\\\]+#', DS, $str);
 		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-
-		//vmdebug('makeSafe',$str);
 		return $str;
 	}
 

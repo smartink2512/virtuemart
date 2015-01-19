@@ -45,7 +45,7 @@ class VirtuemartViewLog extends VmViewAdmin {
 		VmConfig::loadJLang('com_virtuemart_log');
 
 		if ($layoutName == 'edit') {
-			$logFile = vRequest::getString('logfile', '');
+			$logFile = basename(vRequest::filterPath(vRequest::getString('logfile', '')));
 			$this->SetViewTitle('LOG', $logFile);
 			$fileContent = file_get_contents($log_path . DS . $logFile);
 			$fileContentByLine = explode("\n", $fileContent);

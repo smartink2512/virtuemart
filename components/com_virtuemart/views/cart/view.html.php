@@ -404,17 +404,49 @@ class VirtueMartViewCart extends VmView {
 	 * @return object list of users
 	 */
 	function getUserList() {
-		$db = JFactory::getDbo();
-		$search = vRequest::getUword('usersearch','');
-		if(!empty($search)){
-			$search = 'WHERE `name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%';
+
+		$adminID = JFactory::getSession()->get('vmAdminID',false);
+		$superVendor = VmConfig::isSuperVendor($adminID);
+
+		if($superVendor>1){
+
+			$db = JFactory::getDbo();
+			$search = vRequest::getUword('usersearch','');
+			if(!empty($search)){
+				$search = 'WHERE (`name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%)';
+			}
+			$q = 'SELECT ju.`id`,`name`,`username` FROM `#__users` as ju';
+
+			$q .= ' LEFT JOIN #__virtuemart_vmusers AS vmu ON vmu.virtuemart_user_id = ju.id';
+			$q .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON vu.virtuemart_user_id = ju.id';
+			if(!empty($search)){
+				$search .= ' AND (vu.virtuemart_vendor_id = '.$superVendor.' ';
+			} else {
+				$search = ' WHERE (vu.virtuemart_vendor_id = '.$superVendor.' ';
+			}
+
+			$search .=  ' OR ISNULL(vu.virtuemart_vendor_id))';
+			$search .=  ' AND ( vmu.virtuemart_vendor_id = 0 OR ISNULL(vmu.virtuemart_vendor_id))';
+
+			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
+			$db->setQuery($q);
+			$result = $db->loadObjectList();
+
+			if($adminID){
+				$user = JFactory::getUser($adminID);
+				$toAdd = new stdClass();
+				$toAdd->id = $user->id;
+				$toAdd->name = $user->name;
+				$toAdd->username = $user->username;
+				$toAdd->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+				array_unshift($result,$toAdd);
+			}
+
+			foreach($result as $k => $user) {
+				$result[$k]->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+			}
 		}
-		$q = 'SELECT `id`,`name`,`username` FROM `#__users` '.$search.' ORDER BY `name` LIMIT 0,10000';
-		$db->setQuery($q);
-		$result = $db->loadObjectList();
-		foreach($result as $user) {
-			$user->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
-		}
+
 		return $result;
 	}
 

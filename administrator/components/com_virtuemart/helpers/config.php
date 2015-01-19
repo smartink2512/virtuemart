@@ -1076,10 +1076,15 @@ class VmConfig {
 	 * @author Mattheo Vicini
 	 * @author Max Milbers
 	 */
-	static public function isSuperVendor(){
+	static public function isSuperVendor($adminId = 0){
 
-		if(self::$_virtuemart_vendor_id===null){
-			$user = JFactory::getUser();
+
+		if(!isset(self::$_virtuemart_vendor_id[$adminId])){
+			if(empty($adminId)){
+				$user = JFactory::getUser();
+			} else {
+				$user = JFactory::getUser($adminId);
+			}
 
 			if(!empty( $user->id)){
 				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
@@ -1090,19 +1095,19 @@ class VmConfig {
 				$virtuemart_vendor_id = $db->loadResult();
 
 				if ($virtuemart_vendor_id) {
-					self::$_virtuemart_vendor_id = $virtuemart_vendor_id;
+					self::$_virtuemart_vendor_id[$adminId] = $virtuemart_vendor_id;
 				} else {
 					if($user->authorise('core.admin', 'com_virtuemart') or (self::get('multix','none')=='none' and $user->authorise('core.manage', 'com_virtuemart') ) ){
-						self::$_virtuemart_vendor_id = 1;
+						self::$_virtuemart_vendor_id[$adminId] = 1;
 					}
 				}
 			} else {
-				self::$_virtuemart_vendor_id = 0;
+				self::$_virtuemart_vendor_id[$adminId] = 0;
 				vmdebug('Not a vendor');
 			}
 
 		}
-		return self::$_virtuemart_vendor_id;
+		return self::$_virtuemart_vendor_id[$adminId];
 	}
 
 }

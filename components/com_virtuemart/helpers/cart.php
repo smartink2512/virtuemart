@@ -76,6 +76,7 @@ class VirtueMartCart {
 	var $layout ;
 	var $layoutPath='';
 	var $virtuemart_cart_id = 0;
+	var $customer_notified = false;
 	/* @deprecated */
 	var $pricesUnformatted = array();
 
@@ -518,21 +519,16 @@ class VirtueMartCart {
 			$customProductDataTmp=array();
 
 			// Some customfields may prevent the product being added to the cart
-			$allowProductAddition = true;
+			$customFiltered = false;
 
 			foreach($product->customfields as $customfield){
 
 				if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 				JPluginHelper::importPlugin('vmcustom');
 				$dispatcher = JDispatcher::getInstance();
-				$addToCartReturnValues = $dispatcher->trigger('plgVmOnAddToCartFilter',array(&$product, &$customfield, &$customProductData));
-				foreach ($addToCartReturnValues as $returnValue) {
-					if ( $returnValue === false ) {
-						$allowProductAddition = false;
-					}
-				}
+				$addToCartReturnValues = $dispatcher->trigger('plgVmOnAddToCartFilter',array(&$product, &$customfield, &$customProductData, &$customFiltered));
 
-				if($allowProductAddition && $customfield->is_input==1){
+				if(!$customFiltered && $customfield->is_input==1){
 					if(isset($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
 
 						if(is_array($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
@@ -567,12 +563,7 @@ class VirtueMartCart {
 
 			}
 
-			if (!$allowProductAddition) {
-				continue;
-			}
-
 			$productData['customProductData'] = $customProductDataTmp;
-
 
 
 			$unsetA = array();
@@ -1158,7 +1149,9 @@ class VirtueMartCart {
 
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $orderDetails));
 
-			$orderModel->notifyCustomer($this->virtuemart_order_id, $orderDetails);
+			if(!$this->customer_notified and $this->_confirmDone ) {
+				$orderModel->notifyCustomer($this->virtuemart_order_id, $orderDetails);
+			}
 
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,

@@ -30,23 +30,12 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		$doc = JFactory::getDocument ();
 
-/*		$test = array('test1','test2','test3','test4','test5');
-		foreach($test as $t){
-			$item = new JFeedItem();
-			$item->title = $t;
-
-			$doc->addItem ($item);
-		}
-		return false;*/
-
 		$show_prices = VmConfig::get ('show_prices', 1);
 		if ($show_prices == '1') {
 			if (!class_exists ('calculationHelper')) {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 			}
 		}
-
-
 
 		if (!class_exists('VmImage'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
@@ -60,7 +49,7 @@ class VirtueMartViewVirtueMart extends VmView {
 		$featured = array();
 		$latest = array();
 		$topten = array();
-		VmConfig::$logDebug = true;
+
 		if (VmConfig::get ('feed_featured_published', 1)) {
 			$featured_nb = VmConfig::get('feed_featured_nb',3);
 			$featured = $productModel->getProductListing ('featured', $featured_nb);
@@ -89,7 +78,6 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		foreach ($products as $product) {
 			$title = $this->escape ($product->product_name);
-			$title = html_entity_decode ($title, ENT_XHTML, 'UTF-8');
 			$description = "";
 			if ($feed_show_images == 1) {
 				$effect = " ";

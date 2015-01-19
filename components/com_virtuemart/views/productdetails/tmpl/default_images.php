@@ -64,10 +64,9 @@ vmJsApi::addJScript('imagepopup',$imageJS);
 
 if (!empty($this->product->images)) {
 	$image = $this->product->images[0];
-	$imageClass = !empty($image->file_class) ? 'class="'. $image->file_class .'"' : '';
 	?>
 	<div class="main-image">
-		<?php echo $image->displayMediaFull($imageClass,true,"rel='vm-additional-images'"); ?>
+		<?php echo $image->displayMediaFull("",true,"rel='vm-additional-images'"); ?>
 		<div class="clear"></div>
 	</div>
 	<?php

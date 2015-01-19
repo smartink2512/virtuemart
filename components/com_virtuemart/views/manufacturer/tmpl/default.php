@@ -63,8 +63,7 @@ if (!empty($this->manufacturers)) { ?>
 		// Manufacturer Elements
 		$manufacturerURL = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id, FALSE);
 		$manufacturerIncludedProductsURL = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id, FALSE);
-		$manufacturerImageClass = !empty($manufacturer->images[0]->file_class) ? 'class="'. $manufacturer->images[0]->file_class .'"' : '';
-		$manufacturerImage = $manufacturer->images[0]->displayMediaThumb($manufacturerImageClass,false);
+		$manufacturerImage = $manufacturer->images[0]->displayMediaThumb("",false);
 
 		// Show Category ?>
 		<div class="manufacturer floatleft<?php echo $manufacturerCellWidth . $showVerticalSeparator ?>">

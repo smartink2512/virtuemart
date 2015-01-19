@@ -413,6 +413,20 @@ class VmMediaHandler {
 		return $supportedTypes;
 	}
 
+	function filterImageArgs($imageArgs){
+		if(!empty($imageArgs)){
+			if(!is_array($imageArgs)){
+				$imageArgs = str_replace(array('class','"','='),'',$imageArgs);
+				$imageArgs = array('class' => $imageArgs.' '.$this->file_class);
+			} else {
+				$imageArgs['class'] .= ' '.$imageArgs;
+			}
+		} else {
+			$imageArgs = array('class' => $imageArgs.' '.$this->file_class);
+		}
+		return $imageArgs;
+	}
+
 	/**
 	 * Just for overwriting purpose for childs. Take a look on VmImage to see an example
 	 *
@@ -434,6 +448,11 @@ class VmMediaHandler {
 	 * @param boolean $withDesc display the image media description
 	 */
 	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true,$withDescr = false,$absUrl = false, $width=0,$height=0){
+
+		if(!empty($this->file_class)){
+			$imageArgs = $this->filterImageArgs($imageArgs);
+		}
+
 
 		if(empty($this->file_name)){
 
@@ -1110,7 +1129,7 @@ $html .='</td>';
 		if(!empty($imgWidth)){
 			$imgWidth = 'width:'.VmConfig::get('img_width',90).'px;';
 		} else {
-			$imgWidth = 'width:200px;';
+			$imgWidth = 'max-width:200px;width:auto;';
 		}
 
 		$imgHeight = VmConfig::get('img_height','');
@@ -1121,7 +1140,7 @@ $html .='</td>';
 		}
 
 		$html .= '<td rowspan = "8" min-width = "'.(VmConfig::get('img_width',90)+10).'px" overflow="hidden">';
-		$thumbArgs = 'class="vm_thumb_image" style="overflow: auto;'.$imgWidth.$imgHeight.'"';
+		$thumbArgs = array('class'=>'vm_thumb_image','style'=>'overflow: auto;'.$imgWidth.$imgHeight);
 		$html .= $this->displayMediaThumb($thumbArgs); //JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		// $html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		$html .= '</td>';

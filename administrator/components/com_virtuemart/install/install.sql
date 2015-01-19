@@ -1264,7 +1264,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendor_users` (
   `id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `ordering` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`,`virtuemart_user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
