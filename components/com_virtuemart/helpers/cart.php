@@ -575,6 +575,7 @@ class VirtueMartCart {
 				$cartProductData = (array)$cartProductData;
 				if(empty($cartProductData['virtuemart_product_id'])){
 					$unsetA[] = $k;
+					$errorMsg = true;
 				} else {
 					if($cartProductData['virtuemart_product_id'] == $productData['virtuemart_product_id']){
 
@@ -624,8 +625,10 @@ class VirtueMartCart {
 						$productData['quantity'] = $product->quantity;
 						$this->cartProductsData[] = $productData;
 					} else {
-
+						$errorMsg = true;
 					}
+				} else {
+					$errorMsg = true;
 				}
 
 			}

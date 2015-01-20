@@ -426,7 +426,7 @@ class VirtueMartViewCart extends VmView {
 			}
 
 			$search .=  ' OR ISNULL(vu.virtuemart_vendor_id))';
-			$search .=  ' AND ( vmu.virtuemart_vendor_id = 0 OR ISNULL(vmu.virtuemart_vendor_id))';
+			$search .=  ' AND ( vmu.user_is_vendor = 0 OR ISNULL(vmu.virtuemart_vendor_id))';
 
 			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
 			$db->setQuery($q);
