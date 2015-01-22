@@ -351,76 +351,7 @@ class VirtuemartViewUser extends VmView {
 
 	public function vmValidator (){
 
-		$regfields = array('username', 'name');
-		if($this->userDetails->JUser->guest){
-			$regfields[] = 'password';
-			$regfields[] = 'password2';
-		}
-		$jsRegfields = implode("','",$regfields);
-		$js = "function myValidator(f, r) {
-
-		var regfields = ['".$jsRegfields."'];
-
-		var requ = '';
-		if(r == true){
-			requ = 'required';
-		}
-
-		for	(i = 0; i < regfields.length; i++) {
-			var elem = jQuery('#'+regfields[i]+'_field');
-			elem.attr('class', requ);
-		}
-
-		if (document.formvalidator.isValid(f)) {
-				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
-					jQuery('#recaptcha_wrapper').show();
-				} else {
-					return true;	//sents the form, we dont use js.submit()
-				}
-			} else {
-				//dirty Hack for country dropdown
-				var cField = jQuery('#virtuemart_country_id');
-				if(typeof cField!=='undefined'){
-					if(cField.attr('required')=='required' && cField.attr('aria-required')=='true'){
-						chznField = jQuery('#virtuemart_country_id_chzn');
-						var there = chznField.attr('class');
-						var ind = there.indexOf('required');
-						var results = 0;
-						if(cField.attr('aria-invalid')=='true' && ind==-1){
-							chznField.attr('class', there + ' required');
-							results = 2;
-						} else if(ind!=-1){
-							var res = there.slice(0,ind);
-							chznField.attr('class', res);
-						}
-						chznField = jQuery('#virtuemart_state_id_chzn');
-						if(typeof chznField!=='undefined'){
-							if(results===0){
-								results = chznField.find('.chzn-results li').length;
-							}
-
-							there = chznField.attr('class');
-							ind = there.indexOf('required');
-							var sel = jQuery('#virtuemart_state_id').val();
-							if(sel==0 && ind==-1 && results>1){
-								chznField.attr('class', there + ' required');
-							} else if(ind!=-1 && (results<2 || sel!=0)){
-								var res = there.slice(0,ind);
-								chznField.attr('class', res);
-							}
-						}
-					}
-				}
-
-				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
-					jQuery('#recaptcha_wrapper').show();
-				}
-				var msg = '" .addslashes (vmText::_ ('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS'))."';
-			alert(msg + ' ');
-		}
-		return false;
-	}";
-		vmJsApi::addJScript('vm.validator',$js);
+		vmJsApi::vmValidator($this->userDetails->JUser->guest);
 	}
 
     /**

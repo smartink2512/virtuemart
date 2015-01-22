@@ -53,9 +53,9 @@ class AdminUIHelper {
 	}
 
 	if($view!='virtuemart') {
-		vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack',false,false,true);
-		vmJsApi::addJScript('fancybox/jquery.easing-1.3.pack');
-		vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack',false,false,true);
+		vmJsApi::addJScript('fancybox/jquery.mousewheel-3.0.4.pack',false,false);
+		vmJsApi::addJScript('fancybox/jquery.easing-1.3.pack',false,false);
+		vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack',false,false);
 		VmJsApi::chosenDropDowns();
 	}
 

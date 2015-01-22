@@ -135,6 +135,9 @@ Virtuemart.product = function(carts) {
 			Ste = 1;
 		}
 		plus.click(function() {
+            var rParent = jQuery(this).parent().parent();
+            quantity = rParent.find('input[name="quantity[]"]');
+            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val()
 			var Qtt = parseInt(quantity.val());
 			if (!isNaN(Qtt)) {
 				quantity.val(Qtt + Ste);
@@ -143,6 +146,9 @@ Virtuemart.product = function(carts) {
 			
 		});
 		minus.click(function() {
+            var rParent = jQuery(this).parent().parent();
+            quantity = rParent.find('input[name="quantity[]"]');
+            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val()
 			var Qtt = parseInt(quantity.val());
 			if (!isNaN(Qtt) && Qtt>Ste) {
 				quantity.val(Qtt - Ste);

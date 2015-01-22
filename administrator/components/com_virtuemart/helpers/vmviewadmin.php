@@ -133,11 +133,17 @@ class VmViewAdmin extends JViewLegacy {
 		// javascript for cookies setting in case of press "APPLY"
 	}
 
-	function addJsJoomlaSubmitButton(){
+	function addJsJoomlaSubmitButton($validate=false){
 		static $done=false;
+		if(!$validate){
+			$form = 'form.task.value = a;
+		form.submit();
+		return false;';
+		} else {
+			$form = 'return myValidator(form);';
+		}
 		if(!$done){
 			$j = "
-//<![CDATA[
 	Joomla.submitbutton=function(a){
 		var options = { path: '/', expires: 2}
 		if (a == 'apply') {
@@ -148,13 +154,8 @@ class VmViewAdmin extends JViewLegacy {
 		}
 		jQuery( '#media-dialog' ).remove();
 		form = document.getElementById('adminForm');
-		form.task.value = a;
-		form.submit();
-
-		return false;
-	};
-//]]>
-	" ;
+		".$form."
+	};" ;
 			vmJsApi::addJScript('submit', $j);
 			$done=true;
 		}
@@ -224,7 +225,8 @@ class VmViewAdmin extends JViewLegacy {
 		self::showHelp();
 		self::showACLPref($view);
 
-		$this->addJsJoomlaSubmitButton();
+		if($view == 'user') $validate = true; else $validate = false;
+		$this->addJsJoomlaSubmitButton($validate);
 
         $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
 		$params = JComponentHelper::getParams('com_languages');

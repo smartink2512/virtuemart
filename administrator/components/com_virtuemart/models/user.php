@@ -422,6 +422,8 @@ class VirtueMartModelUser extends VmModel {
 		// Save the JUser object
 		if (!$user->save()) {
 			vmdebug('Storing Juser object failed',$user);
+			vmError(vmText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED',$user->getError()));
+			//JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()
 			return false;
 		} else {
 			$data['name'] = $user->get('name');
