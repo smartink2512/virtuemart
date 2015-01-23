@@ -102,6 +102,7 @@ foreach ($viewData['products'] as $type => $products ) {
 			<?php //echo $rowsHeight[$row]['price'] ?>
 			<div class="vm3pr-<?php echo $rowsHeight[$row]['price'] ?>"> <?php
 				echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$product,'currency'=>$currency)); ?>
+				<div class="clear"></div>
 			</div>
 			<?php //echo $rowsHeight[$row]['customs'] ?>
 			<div class="vm3pr-<?php echo $rowsHeight[$row]['customfields'] ?>"> <?php

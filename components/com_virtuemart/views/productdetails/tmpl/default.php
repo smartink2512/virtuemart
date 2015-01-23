@@ -161,6 +161,7 @@ echo $this->loadTemplate('images');
 		//In case you are not happy using everywhere the same price display fromat, just create your own layout
 		//in override /html/fields and use as first parameter the name of your file
 		echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$this->product,'currency'=>$this->currency));
+		?> <div class="clear"></div><?php
 		echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$this->product));
 
 		echo shopFunctionsF::renderVmSubLayout('stockhandle',array('product'=>$this->product));

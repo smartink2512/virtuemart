@@ -1174,25 +1174,30 @@ jQuery('body').on('updateVirtueMartProductDetail', cvselection);
 					}
 					else {
 						$value = '';
-						if (($productCustom->field_type == "G")) {
+						if (($productCustom->field_type == 'G')) {
 
 							$db = JFactory::getDBO ();
 							$db->setQuery ('SELECT  `product_name` FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` WHERE virtuemart_product_id=' . (int)$productCustom->customfield_value);
 							$child = $db->loadObject ();
 							$value = $child->product_name;
 						}
-						elseif (($productCustom->field_type == "M")) {
+						elseif (($productCustom->field_type == 'M')) {
 							$customFieldModel = VmModel::getModel('customfields');
 							$value = $customFieldModel->displayCustomMedia ($productCustom->customfield_value,'product',$productCustom->width,$productCustom->height);
 						}
-						elseif (($productCustom->field_type == "S")) {
+						elseif (($productCustom->field_type == 'S')) {
 							if($productCustom->is_list){
 								$value = vmText::_($params);
 							} else {
 								$value = vmText::_($productCustom->customfield_value);
 							}
 						}
+						elseif (($productCustom->field_type == 'A')) {
+							$value = vmText::_($product->{$productCustom->customfield_value});
+							//vmdebug('Customfield A',$productCustom,$productCustom->customfield_value);
+						}
 						else {
+
 							$value = vmText::_($productCustom->customfield_value);
 						}
 						$trTitle = vmText::_($productCustom->custom_title);

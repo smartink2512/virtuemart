@@ -70,10 +70,10 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if ($ItemId) {
 				$ItemIdLink = '&Itemid=' . $ItemId;
 			}
-			vmInfo('This is a catalogue, you cannot acccess the cart');
+
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . $ItemIdLink, FALSE);
 			$app = JFactory::getApplication();
-			$app ->redirect($continue_link);
+			$app ->redirect($continue_link,'This is a catalogue, you cannot acccess the cart');
 		}
 
 		$document = JFactory::getDocument();
