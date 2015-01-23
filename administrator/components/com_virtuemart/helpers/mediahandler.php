@@ -433,7 +433,7 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 */
 	function displayMediaFull(){
-		return $this->displayMediaThumb('id="vm_display_image"',false,'',true,true);
+		return $this->displayMediaThumb(array('id'=>'vm_display_image'),false,'',true,true);
 	}
 
 	/**
@@ -1099,7 +1099,7 @@ class VmMediaHandler {
 		$html = '<fieldset class="checkboxes">' ;
 		$html .= '<legend>'.vmText::_('COM_VIRTUEMART_IMAGE_INFORMATION').'</legend>';
 		$html .= '<div class="vm__img_autocrop">';
-		$imageArgs = 'id="vm_display_image" ';
+		$imageArgs = array('id'=>'vm_display_image');
 		$html .=  $this->displayMediaFull($imageArgs,false,'',false).'</div>';
 
 		//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
