@@ -601,10 +601,8 @@ class VmConfig {
 			$jconfig = JFactory::getConfig();
 			$errep = $jconfig->get('error_reporting');
 			if ( $errep == 'default' or $force) {
-				$ret[0] = ini_get('display_errors');
-				//$ret[0] = ini_set('display_errors', '1');
+				$ret[0] = ini_set('display_errors', 0);
 				$ret[1] = error_reporting(E_ERROR | E_WARNING | E_PARSE);
-				vmdebug('Show only Errors, warnings, parse errors');
 			}
 		}
 		return $ret;

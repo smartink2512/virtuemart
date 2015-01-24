@@ -419,7 +419,8 @@ class VmMediaHandler {
 				$imageArgs = str_replace(array('class','"','='),'',$imageArgs);
 				$imageArgs = array('class' => $imageArgs.' '.$this->file_class);
 			} else {
-				$imageArgs['class'] .= ' '.$imageArgs;
+				if(!isset($imageArgs['class'])) $imageArgs['class'] = '';
+				$imageArgs['class'] .= ' '.$this->file_class;
 			}
 		} else {
 			$imageArgs = array('class' => $imageArgs.' '.$this->file_class);
