@@ -313,9 +313,15 @@ class VirtueMartModelProduct extends VmModel {
 		if ($virtuemart_category_id > 0) {
 			$joinCategory = TRUE;
 			$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
-		} else if ($isSite and !VmConfig::get('show_uncat_child_products',TRUE)) {
-			$joinCategory = TRUE;
-			$where[] = ' `pc`.`virtuemart_category_id` > 0 ';
+		} else if ($isSite) {
+			if (!VmConfig::get('show_uncat_parent_products',TRUE)) {
+				$joinCategory = TRUE;
+				$where[] = ' ((p.`product_parent_id` = "0" AND `pc`.`virtuemart_category_id` > "0") OR p.`product_parent_id` > "0") ';
+			}
+			if (!VmConfig::get('show_uncat_child_products',TRUE)) {
+				$joinCategory = TRUE;
+				$where[] = ' ((p.`product_parent_id` > "0" AND `pc`.`virtuemart_category_id` > "0") OR p.`product_parent_id` = "0") ';
+			}
 		}
 
 		if ($this->product_parent_id) {

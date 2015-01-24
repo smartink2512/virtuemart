@@ -39,6 +39,7 @@ show_printicon=1
 show_out_of_stock_products=1
 ask_captcha=1
 coupons_enable=1
+show_uncat_products=0
 show_uncat_child_products=0
 coupons_default_expire=1,M
 weight_unit_default=KG
