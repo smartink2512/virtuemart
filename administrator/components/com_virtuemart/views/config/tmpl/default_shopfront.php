@@ -34,12 +34,7 @@ defined('_JEXEC') or die('Restricted access');?>
 
 	echo VmHTML::row('input','COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH','asks_minimum_comment_length',VmConfig::get('asks_minimum_comment_length',50),'class="inputbox"','',4,4);
 	echo VmHTML::row('input','COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH','asks_maximum_comment_length',VmConfig::get('asks_maximum_comment_length',2000),'class="inputbox"','',5,5);
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW','product_navigation',VmConfig::get('product_navigation',1));
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_DISPLAY_STOCK','display_stock',VmConfig::get('display_stock',1));
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_SHOW_PRODUCT_CUSTOMS','show_pcustoms',VmConfig::get('show_pcustoms',1));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_COUPONS_ENABLE','coupons_enable',VmConfig::get('coupons_enable',0));
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_UNCAT_PARENT_PRODUCTS_SHOW','show_uncat_parent_products',VmConfig::get('show_uncat_parent_products',0));
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_UNCAT_CHILD_PRODUCTS_SHOW','show_uncat_child_products',VmConfig::get('show_uncat_child_products',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_VM_ERROR_HANDLING_ENABLE','handle_404',VmConfig::get('handle_404',1));
 ?>
 <tr>
@@ -96,16 +91,25 @@ defined('_JEXEC') or die('Restricted access');?>
 		<?php echo ShopFunctions::renderLWHUnitList('lwh_unit_default', VmConfig::get('lwh_unit_default')); ?>
 	</td>
 </tr>
-	<?php
+</table>
+</fieldset>
+<fieldset>
+<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LISTING'); ?></legend>
+<table class="admintable">
+<?php
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW','product_navigation',VmConfig::get('product_navigation',1));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_DISPLAY_STOCK','display_stock',VmConfig::get('display_stock',1));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_SHOW_PRODUCT_CUSTOMS','show_pcustoms',VmConfig::get('show_pcustoms',1));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_UNCAT_PARENT_PRODUCTS_SHOW','show_uncat_parent_products',VmConfig::get('show_uncat_parent_products',0));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_UNCAT_CHILD_PRODUCTS_SHOW','show_uncat_child_products',VmConfig::get('show_uncat_child_products',0));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_SHOW_PRODUCTS_UNPUBLISHED_CATEGORIES','show_unpub_cat_products',VmConfig::get('show_unpub_cat_products',1));
 	echo VmHTML::row('input','COM_VIRTUEMART_LATEST_PRODUCTS_DAYS','latest_products_days',VmConfig::get('latest_products_days',7),'class="inputbox"','',4,4);
 	$latest_products_orderBy = array(
 		'modified_on' => vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_MODIFIED'),
 		'created_on' => vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_CREATED')
 	);
-
 	echo VmHTML::row('selectList','COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY','latest_products_orderBy',VmConfig::get('latest_products_orderBy', 'created_on'),$latest_products_orderBy);
-	?>
-
+?>
 </table>
 </fieldset>
 </td>
