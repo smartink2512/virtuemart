@@ -42,6 +42,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<input type="hidden" name="limitstart" value="0" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="view" value="category" />
+		<input type="hidden" name="virtuemart_category_id" value="<?php echo $category_id; ?>"/>
 <?php if(!empty($set_Itemid)){
 	echo '<input type="hidden" name="Itemid" value="'.$set_Itemid.'" />';
 } ?>
