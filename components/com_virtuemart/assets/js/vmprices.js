@@ -168,7 +168,7 @@ Virtuemart.product = function(carts) {
         //this.preventDefault();
         //addtocart = cart.find('input.addtocart-button'),
         addtocart = cart.find('input[name="addtocart"]');
-        console.log("Execute bind to addtocart",addtocart);
+       // console.log("Execute bind to addtocart",addtocart);
         addtocart.click(function(e) {
             e.preventDefault();
             var target = e.target || e.srcElement; //cross browser support

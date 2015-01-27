@@ -2501,7 +2501,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			return array();
 		}
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` =' . (int)$product_id.' ORDER BY pordering ASC');
+		$db->setQuery (' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` =' . (int)$product_id.' ORDER BY pordering, created_on ASC');
 
 		return $db->loadColumn ();
 

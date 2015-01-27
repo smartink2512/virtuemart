@@ -141,12 +141,21 @@ class VirtuemartControllerProduct extends VmController {
 		if(!is_array($cids) and $cids > 0){
 			$cids = array($cids);
 		}
+		$target = vRequest::getCmd('target',false);
 
 		$msgtype = 'info';
 		foreach($cids as $cid){
 			if ($id=$model->createChild($cid)){
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
-				$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
+
+
+				if($target=='parent'){
+					vmdebug('toParent');
+					$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$cids[0];
+				} else {
+					$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$id;
+				}
+
 			} else {
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
 				$msgtype = 'error';

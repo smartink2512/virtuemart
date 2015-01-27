@@ -1,8 +1,8 @@
-.vmicon{ background: no-repeat top left; width: 16px;height: 16px; float: right;margin-right: 4px;
-    opacity : 0.8;
+.vmicon{background: no-repeat top left; width: 16px; height: 16px; float: right; margin-right: 4px;
+	opacity : 0.8;
     -moz-opacity : 0.8;
     -ms-filter: "alpha(opacity=90)"; /* IE 8 */
-    filter : alpha(opacity=90); /* IE < 8 */  }
+    filter : alpha(opacity=90); /* IE < 8 */}
 .vmicon:hover{opacity :1;}
 .vmextimg img{width:48px!important; float:none!important; margin:0 auto !important;padding:5px 0  !important;}
 /* to use inline with no float*/
@@ -109,7 +109,12 @@
 .vmicon-16-user{ background: url(../images/icone16.png) -132px -82px; }
 .vmicon-16-xml{ background: url(../images/icone16.png) -132px -148px; }
 /*menu wrapper toggler */
-.virtuemart-admin-area .toggler {	position: absolute; outline: 0;}
+.virtuemart-admin-area .toggler {outline: 0 none; padding: 0; position: absolute; width: 20px; height: 40px; top: 20px; background: url('../images/show.png') no-repeat; cursor: pointer; margin: 0; z-index: 100;}
+.virtuemart-admin-area.menu-collapsed .toggler { top: 0;}
+.vmicon-wrapper, #admin-ui-menu .menu-title-wrapper > span.vmicon-wrapper { height: 16px; display: inline-block; padding: 7px; left: 0; top: 4px; position: absolute;}
+.menu-collapsed .vmicon-wrapper, .menu-collapsed #admin-ui-menu .menu-title-wrapper > span.vmicon-wrapper { top: 0px;}
+#admin-ui-menu .menu-title-wrapper > span.vmicon-wrapper {top: 0;}
+#menu-wrapper .vmicon {display: block; float: none; margin: 0;}
 .vmicon-show{ background: url(../images/show.png) no-repeat;width: 20px; height: 50px;margin-top:20px;}
 .vmicon-hide{background: url(../images/hide.png) no-repeat;width: 20px; height: 50px; }
 

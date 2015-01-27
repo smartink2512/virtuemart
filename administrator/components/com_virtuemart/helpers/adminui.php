@@ -100,16 +100,16 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 		   echo '<div class="toolbar-box" style="height: 84px;position: relative;">'.$bar->render().'</div>';
 		   //echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar($vmView).'</div>';
 	   } ?>
-
-		<div class="virtuemart-admin-area">
-			<div class="toggler vmicon-show"></div>
-			<div class="menu-wrapper" id="menu-wrapper">
+    <?php $hideMenu = JFactory::getApplication()->input->cookie->getString('vmmenu', 'show') === 'hide' ? 1: 0;?>
+    <div class="virtuemart-admin-area<?php echo $hideMenu ? ' menu-collapsed' : '' ?>">
+			<div class="toggler vmicon-show<?php echo $hideMenu ? ' menu-collapsed' : '' ?>"></div>
+			<div class="menu-wrapper<?php echo $hideMenu ? ' menu-collapsed' : '' ?>" id="menu-wrapper">
 				<?php if(!empty($vmView->langList)){ ?>
 					<div class="vm-lang-list-container">
 						<?php echo $vmView->langList; ?>
 					</div>
 				<?php } else {
-					echo '<a href="index.php?option=com_virtuemart&view=virtuemart" ><img src="'.JURI::root(true).'/administrator/components/com_virtuemart/assets/images/vm_logo.png"></a>';
+					echo '<a href="index.php?option=com_virtuemart&view=virtuemart" ><img src="'.JURI::root(true).'/administrator/components/com_virtuemart/assets/images/vm_menulogo.png"></a>';
 				} ?>
 				<?php AdminUIHelper::showAdminMenu($vmView);
 				?>
@@ -280,7 +280,10 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 						|| $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
 						$html .= '
 						<li>
-							<a href="'.$url.'" '.$target.'><span class="'.$link ['icon_class'].'"></span>'. vmText::_ ( $link ['name'] ).'</a>
+							<a href="'.$url.'" '.$target.'>
+								<span class="vmicon-wrapper"><span class="'.$link ['icon_class'].'"></span></span>
+								<span class="menu-subtitle">'. vmText::_ ( $link ['name'] ).'</span>
+							</a>
 						</li>';
 					}
 				}
@@ -288,7 +291,10 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 			if(!empty($html)){
 				?>
 				<h3 class="menu-title">
-					<?php echo vmText::_ ( $item ['title'] )?>
+					<span class="menu-title-wrapper">
+						<span class="vmicon-wrapper"><span class="<?php echo vmText::_ ( $item['items'][0]['icon_class'] )?>"></span></span>
+						<span class="menu-title-content"><?php echo vmText::_ ( $item ['title'] )?></span>
+					</span>
 				</h3>
 
 				<div class="menu-list">

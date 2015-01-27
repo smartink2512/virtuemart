@@ -417,25 +417,15 @@
         },
         toggle:function () {
             var options = { path:'/', expires:2};
-            if ($.cookie('vmmenu')) {
-                var status = $.cookie('vmmenu');
-                if (status == 'hide') {
-                    this.removeClass('vmicon-show').addClass('vmicon-hide');
-                    $('.menu-wrapper').toggle('slide');
-                }
-            }
 
             this.click(function () {
                 $this = $(this);
-                if ($this.hasClass('vmicon-show')) {
-                    $this.removeClass('vmicon-show').addClass('vmicon-hide');
-                    $('.menu-wrapper').toggle('slide');
-                    $.cookie('vmmenu', 'hide', options);
-                } else {
-                    $this.removeClass('vmicon-hide').addClass('vmicon-show');
-                    $('.menu-wrapper').toggle('slide');
+                if ($this.parent().hasClass('menu-collapsed')) {
                     $.cookie('vmmenu', 'show', options);
+                } else {
+                    $.cookie('vmmenu', 'hide', options);
                 }
+				$('.menu-wrapper').toggleClass('menu-collapsed').parent().toggleClass('menu-collapsed').children('.toggler').addClass('menu-collapsed');
             });
         },
 

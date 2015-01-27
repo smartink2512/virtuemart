@@ -204,7 +204,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 		$html .= VmHTML::row ('booleanlist', 'COM_VIRTUEMART_CUSTOM_IS_CART_INPUT', 'is_input', $datas->is_input);
 		$html .= VmHTML::row ('input', 'COM_VIRTUEMART_DESCRIPTION', 'custom_desc', $datas->custom_desc);
 		// change input by type
-		$html .= VmHTML::row ('textarea', 'COM_VIRTUEMART_DEFAULT', 'custom_value', $datas->custom_value);
+		$html .= VmHTML::row ('textarea', 'COM_VIRTUEMART_CUSTOM_DEFAULT', 'custom_value', $datas->custom_value);
 		$html .= VmHTML::row ('input', 'COM_VIRTUEMART_CUSTOM_TIP', 'custom_tip', $datas->custom_tip);
 		$html .= VmHTML::row ('input', 'COM_VIRTUEMART_CUSTOM_LAYOUT_POS', 'layout_pos', $datas->layout_pos);
 		//$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_GROUP','custom_parent_id',$this->getCustomsList(),  $datas->custom_parent_id,'');

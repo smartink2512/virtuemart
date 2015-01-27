@@ -1,21 +1,10 @@
 /* VirtueMart Admin Area */
 
-.virtuemart-admin-area {border: hidden #b4b4b4 1px;
-    -moz-border-radius-bottomleft: 6px;
-    -moz-border-radius-bottomright: 6px;
-    -webkit-border-bottom-left-radius: 6px;
-    -webkit-border-bottom-right-radius: 6px;
-    display: -webkit-flex;
-    display: flex;
-    overflow: visible;
-    min-height: 540px;
-    }
-
-.virtuemart-admin-area .menu-wrapper {min-width: 190px;overflow:hidden;}
-.virtuemart-admin-area .admin-content {margin: 0;border-left: solid #b4b4b4 1px;-webkit-flex-basis: 99%; flex-basis: 99%;}
-.virtuemart-admin-area .btn.btn-small {
-    margin-bottom: 5px;
-}
+.virtuemart-admin-area { position: relative; border: hidden #b4b4b4 1px; -moz-border-radius-bottomleft: 6px; -moz-border-radius-bottomright: 6px; -webkit-border-bottom-left-radius: 6px; -webkit-border-bottom-right-radius: 6px; display: -webkit-flex; display: flex; overflow: visible; min-height: 540px; }
+.virtuemart-admin-area .menu-wrapper {min-width: 200px; width: 220px; border-right: solid #b4b4b4 1px;}
+.virtuemart-admin-area.menu-collapsed .menu-wrapper {position: relative; width: 31px; min-width: 31px; z-index: 10;}
+.virtuemart-admin-area .admin-content {margin: 0;-webkit-flex-basis: 99%; flex-basis: 99%;}
+.virtuemart-admin-area .btn.btn-small { margin-bottom: 5px;}
 #header {  background: #ededed;  border-bottom: 1px solid #D3D3D3;}
 .ratingbox{position:relative;display:block;width:120px;height:24px;background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x scroll 0 bottom transparent}
 .ratingbox span{background:url(../../../../../components/com_virtuemart/assets/images/color-stars.png) repeat-x;display:block;width:1%;height:24px;position:absolute}
@@ -96,7 +85,7 @@ margin-bottom: 10px;
 .virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;margin:0 5px 0 0;}
 /*.virtuemart-admin-area div.tabs {margin-bottom: 240px;}*/
 #custom_fields { width: 100%; }
-Modify message
+/* Modify message */
 
 textarea {width: 100%;}
 /*.datepicker{width: 60px;} seems unused*/
@@ -140,16 +129,18 @@ table.adminlist td.vm-order span {
 
 /* Admin Menu */
 #admin-ui-menu {border-bottom:1px solid #94B1CF;}
-#admin-ui-menu h3.menu-title {background: #00A1DF;cursor:pointer;border-top: 1px solid rgba(255, 255, 255, 0.15);margin: 0px;padding: 6px 20px;color: #efefef;font-size: 12px;font-weight: normal;color: #333;text-transform: uppercase;}
+#admin-ui-menu h3.menu-title {position: relative; height: 30px; background: #00A1DF;cursor:pointer;border-top: 1px solid #17508C;margin: 0px;color: #efefef;font-size: 12px;font-weight: normal;color: #333;text-transform: uppercase;}
+.menu-title-wrapper { display: block; height: 30px; line-height: 30px;}
+.menu-collapsed #admin-ui-menu h3.menu-title, .menu-collapsed #admin-ui-menu .menu-list ul li a {white-space: nowrap;}
 .menu-vmlogo {color: #333333;cursor: pointer;font-size: 12px;font-weight: normal;margin: 0;padding: 0;}
 .menu-notice {background-color: #fff;margin: 8px 30px;padding: 2px;text-align: center;}
 .menu-notice a:link ,.menu-notice a span {color :#000 ;}
-#admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover {   color :#FFFFFF ; }
+#admin-ui-menu h3.current,.menu-collapsed #admin-ui-menu h3.menu-title, #admin-ui-menu h3.menu-title:hover {   color :#FFFFFF ; }
 .vm-installed-version {margin-top: 15px;  text-align: center; color:#999 }
-#admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;overflow: hidden !important;}
-#admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 4px 0px 10px;}
+#admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;}
+#admin-ui-menu .menu-list ul {margin: 0px;padding: 0;}
 #admin-ui-menu .menu-list ul li {list-style: none;}
-#admin-ui-menu .menu-list ul li a {color: #000000;display: block;font-size: 12px;margin: 12px 0;text-decoration: none;    opacity : 0.8;
+#admin-ui-menu .menu-list ul li a { color: #000000;display: block;font-size: 12px; line-height: 14px; margin: 0;text-decoration: none; opacity : 0.8; background: #efefef; color: #000000;display: block;font-size: 12px;margin: 0;text-decoration: none; opacity : 0.8; border: 1px solid transparent; border-bottom-color: #ccc; border-right-width: 0;
     -moz-opacity : 0.8;
     -ms-filter: "alpha(opacity=90)"; /* IE 8 */
     filter : alpha(opacity=90); /* IE < 8 */  }
@@ -215,3 +206,29 @@ ul.newsfeed li{font-size:120%;line-height:150%;margin:0;padding:0 0 0 25px}
 }
 a.signin-button-link {margin: 5px  10px 5px 0;background: #F0F0F0;border: 1px solid #BDBDBD;padding:10px}
 a:hover.signin-button-link {text-decoration:none;background: #D7D7D7;}
+
+.virtuemart-admin-area #menu-wrapper > a { display: block; height: 40px;}
+.virtuemart-admin-area #menu-wrapper.menu-collapsed > a {opacity: 0; visibility: hidden;}
+.virtuemart-admin-area #menu-wrapper > a img { padding: 0; height: 100%; margin-left: 30px}
+.menu-title-wrapper .menu-title-content {padding: 4px 10px 4px 34px;}
+.menu-collapsed .menu-title-wrapper .menu-title-content { padding: 7px 10px; margin-left: 31px; background: #00A1DF; border: 0; opacity: 0;}
+#element-box .menu-collapsed .menu-title-wrapper .menu-title-content { padding: 8px 10px;}
+.menu-collapsed .menu-title-wrapper:hover .menu-title-content { opacity: 1; border: 1px solid #17508C;}
+.virtuemart-admin-area .menu-wrapper, .virtuemart-admin-area .toggler, .virtuemart-admin-area #menu-wrapper.menu-collapsed > a,
+.menu-collapsed #admin-ui-menu h3.menu-title, .menu-collapsed #admin-ui-menu .menu-list ul li a,
+.menu-title-wrapper .menu-title-content, .menu-collapsed .menu-subtitle {-webkit-transition: all 400ms; -moz-transition: all 400ms; -ms-transition: all 400ms; -o-transition: all 400ms;}
+
+#admin-ui-menu .menu-list ul, #admin-ui-menu .menu-list ul li, #admin-ui-menu .menu-list ul li a {vertical-align: middle;width: 100%;}
+#admin-ui-menu .menu-list ul { display: table; position: static;}
+#admin-ui-menu .menu-list ul li { display: table-row; position: static; padding: 4px 0;}
+#admin-ui-menu .menu-list ul li a { display: table-cell; height: 30px; padding: 0 6px 0 34px; padding: 4px 10px 4px 34px; position: relative;}
+.menu-collapsed #admin-ui-menu h3.menu-title, .menu-collapsed #admin-ui-menu .menu-list ul li a { white-space: nowrap; padding-top: 0; padding-bottom: 0; overflow: hidden;}
+.menu-collapsed #admin-ui-menu h3.menu-title:hover, .menu-collapsed #admin-ui-menu .menu-list ul li a:hover {overflow: visible;}
+.menu-collapsed #admin-ui-menu .menu-list ul li a { padding: 0; width: 30px; height: 30px;}
+.menu-collapsed .menu-subtitle { display: block; background: #efefef; border: 0; height: 31px; line-height: 30px; padding: 0 10px; position: absolute; left: 30px; top: -2px; opacity: 0;}
+.menu-collapsed a:hover .menu-subtitle{ opacity: 1; border: 1px solid #ccc;}
+.menu-collapsed #admin-ui-menu h3.menu-title:hover, .menu-collapsed #admin-ui-menu .menu-list ul li a:hover { width: auto;}
+.menu-collapsed .vm-installed-version { opacity: 0;}
+
+.vm-lang-list-container{ z-index:20;}
+.vm-lang-list-container img{float:right;}

@@ -44,9 +44,12 @@ AdminUIHelper::startAdminArea($this);
 		    <th>
 			<?php echo vmText::_('COM_VIRTUEMART_STATE_3_CODE'); ?>
 		    </th>
-		    <th width="20">
+		    <th width="20px">
 			<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		    </th>
+			<th width="20px">
+				<?php echo $this->sort('virtuemart_state_id', 'COM_VIRTUEMART_ID')  ?>
+			</th>
 		</tr>
 	    </thead>
 	    <?php
@@ -78,6 +81,9 @@ AdminUIHelper::startAdminArea($this);
 		</td>
 		<td>
 			<?php echo $published; ?>
+		</td>
+		<td align="left">
+			<?php echo $row->virtuemart_state_id; ?>
 		</td>
 	    </tr>
 		<?php
