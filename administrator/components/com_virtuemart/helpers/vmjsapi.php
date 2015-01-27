@@ -99,7 +99,7 @@ class vmJsApi{
 						$async = 'async="async" ';
 					}
 					if(strpos($script,'//<![CDATA[')===false){
-						$html .= '<script id="'.$name.'_js" '.$defer.$async.' type="text/javascript">//<![CDATA[ '.chr(10).$script.chr(10).' //]]></script>';
+						$html .= '<script id="'.$name.'_js" '.$defer.$async.' type="text/javascript">//<![CDATA[ '.chr(10).$script.' //]]>'.chr(10).'</script>';
 					} else {
 						$html .= '<script id="'.$name.'_js" '.$defer.$async.' type="text/javascript"> '.$script.' </script>';
 					}
