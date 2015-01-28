@@ -59,7 +59,7 @@ class VirtuemartControllerProduct extends VmController {
 		if($data===0)$data = vRequest::getRequest();
 
 		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or $user->authorise('vm.raw','com_virtuemart')){
 			$data['product_desc'] = vRequest::get('product_desc','');
 			$data['product_s_desc'] = vRequest::get('product_s_desc','');
 			$data['customtitle'] = vRequest::get('customtitle','');
@@ -73,13 +73,24 @@ class VirtuemartControllerProduct extends VmController {
 				}
 			}
 		} else  {
-			$data['product_desc'] = vRequest::getHtml('product_desc','');
-			$data['product_s_desc'] = vRequest::getHtml('product_s_desc','');
-			$data['customtitle'] = vRequest::getHtml('customtitle','');
+			if($user->authorise('vm.html','com_virtuemart')){
+				$data['product_desc'] = vRequest::getHtml('product_desc','');
+				$data['product_s_desc'] = vRequest::getHtml('product_s_desc','');
+				$data['customtitle'] = vRequest::getHtml('customtitle','');
 
-			if(isset($data['field'])){
-				$data['field'] = vRequest::getHtml('field');
+				if(isset($data['field'])){
+					$data['field'] = vRequest::getHtml('field');
+				}
+			} else {
+				$data['product_desc'] = vRequest::getString('product_desc','');
+				$data['product_s_desc'] = vRequest::getString('product_s_desc','');
+				$data['customtitle'] = vRequest::getString('customtitle','');
+
+				if(isset($data['field'])){
+					$data['field'] = vRequest::getString('field');
+				}
 			}
+
 
 			//Why we have this?
 			$multix = Vmconfig::get('multix','none');

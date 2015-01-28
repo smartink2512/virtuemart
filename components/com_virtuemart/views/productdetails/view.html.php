@@ -187,6 +187,8 @@ class VirtueMartViewProductdetails extends VmView {
 				$category_model->addImages($category->children, 1);
 			}
 
+			$pathway->addItem(strip_tags(html_entity_decode($product->product_name,ENT_QUOTES)));
+
 			if (!empty($tpl)) {
 				$format = $tpl;
 			} else {
@@ -199,7 +201,6 @@ class VirtueMartViewProductdetails extends VmView {
 				defined('K_PATH_IMAGES') or define ('K_PATH_IMAGES', VMPATH_ROOT);
 			}
 
-			$pathway->addItem(strip_tags($product->product_name));
 			// Set the titles
 			// $document->setTitle should be after the additem pathway
 			if ($product->customtitle) {
@@ -261,9 +262,9 @@ class VirtueMartViewProductdetails extends VmView {
 			$this->assignRef('more_reviews', $uristring);
 
 			if ($product->metadesc) {
-				$document->setDescription($product->metadesc);
+				$document->setDescription( strip_tags(html_entity_decode($product->metadesc,ENT_QUOTES)) );
 			} else {
-				$document->setDescription( $product->product_name . " " . $category->category_name . " " . $product->product_s_desc );
+				$document->setDescription( strip_tags(html_entity_decode($product->product_name,ENT_QUOTES)) . " " . $category->category_name . " " . strip_tags(html_entity_decode($product->product_s_desc,ENT_QUOTES)) );
 			}
 
 			if ($product->metakey) {

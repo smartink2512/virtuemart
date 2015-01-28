@@ -756,6 +756,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 
 					$ignore = array();
+
 					foreach($customfield->options as $product_id=>$variants){
 						if(in_array($product_id,$ignore)) continue;
 						foreach($variants as $k => $variant){
@@ -768,13 +769,12 @@ class VirtueMartModelCustomfields extends VmModel {
 									$dropdowns[$k][] = $variant;
 								} else {
 									$ignore[] = $product_id;
+									break;
 								}
-
 							}
 						}
 					}
 
-					//vmJsApi::chosenDropDowns();
 					foreach($customfield->selectoptions as $k => $soption){
 						$options = array();
 						$selected = 0;
@@ -794,7 +794,6 @@ class VirtueMartModelCustomfields extends VmModel {
 						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'class="vm-chzn-select cvselection" data-dynamic-update="1" ', "value", "text", $selected,$idTagK);
 					}
 
-
 					$Itemid = vRequest::getInt('Itemid',''); // '&Itemid=127';
 					if(!empty($Itemid)){
 						$Itemid = '&Itemid='.$Itemid;
@@ -808,7 +807,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid);
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
 					}
-					//vmdebug('my urls of child variants',$jsArray);
+
 					$jsVariants = implode(',',$jsArray);
 
 					$cvSelection = "
@@ -818,22 +817,19 @@ var cvFind = function(event) {
 			jQuery('.cvselection').each(function() {
 				selection[selection.length] = jQuery(this).val();
 			});
-			console.log('.cvselection change',selection,this);
 
-			var index ;
-			var i2 ;
-			var hitcount;
-			var runs;
-			for	(runs = 0; runs < selection.length; index++) {
+			var index, i2, hitcount, runs;
+			//to ensure that an url is set, set the url of first product
+			event.data.el.attr('url',event.data.variants[0][0]);
+			for	(runs = 0; runs <= selection.length; index++) {
 				for	(index = 0; index < event.data.variants.length; index++) {
 					hitcount = 0;
-					for	(i2 = 0; i2 < selection.length; i2++) {
+					for	(i2 = 0; i2 <= selection.length; i2++) {
 						if(selection[i2]==event.data.variants[index][i2+1]){
 							hitcount++;
 							if(hitcount == (selection.length-runs)){
-								console.log('redirect to '+event.data.variants[index][0])
 								event.data.el.attr('url',event.data.variants[index][0]);
-								return true;
+								return false;
 							}
 						} else {
 							break;
@@ -849,18 +845,14 @@ var cvFind = function(event) {
 var cvFunc = function($) {
 	var variants = [".$jsVariants."];
 	jQuery('.cvselection').each( function() {
-		console.log('Set on each .cvselection ',this);
-		jQuery(this).unbind('change');
+		//console.log('Set on each .cvselection ',this);
+		jQuery(this).unbind('change',cvFind);
 		jQuery(this).bind('change',{el:jQuery(this),variants:variants}, cvFind);
 	});
 };
 cvFunc();
 ";
-vmJsApi::addJScript('cvselection',$cvSelection,false,false);
-
-
-
-					//$html .= '<script type="text/javascript">'.$script.'</script>';
+					vmJsApi::addJScript('cvselection',$cvSelection,false,false);
 
 					//Now we need just the JS to reload the correct product
 					$customfield->display = $html;

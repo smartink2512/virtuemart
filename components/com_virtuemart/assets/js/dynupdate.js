@@ -78,7 +78,7 @@ jQuery(function($) {
                             //console.log('updateDynamicUpdateListeners URL attrib empty '+url);
                         }
                         if(url!=null){
-                            console.log('updateDynamicUpdateListeners onchange set URL '+url);
+                            //console.log('updateDynamicUpdateListeners onchange set URL '+url);
                             setBrowserNewState(url);
                             Virtuemart.updateContent(url);
                         }
@@ -99,7 +99,6 @@ jQuery(function($) {
             url: url
         }
         everPushedHistory = true;
-        console.log('setBrowserNewState '+url);
         history.pushState(stateObj, "", url);
     }
 
@@ -118,7 +117,6 @@ jQuery(function($) {
         } else {
             url = event.state.url;
         }
-        console.log('browserStateChangeEvent '+url);
         Virtuemart.updateContent(url);
     }
     window.onpopstate = browserStateChangeEvent;

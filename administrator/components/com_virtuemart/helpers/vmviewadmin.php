@@ -136,11 +136,15 @@ class VmViewAdmin extends JViewLegacy {
 	function addJsJoomlaSubmitButton($validate=false){
 		static $done=false;
 		if(!$validate){
-			$form = 'form.task.value = a;
+			$form = '
 		form.submit();
 		return false;';
 		} else {
-			$form = 'return myValidator(form);';
+			$form = 'if(myValidator(form,false)){
+
+			form.submit();
+			return false;
+			}';
 		}
 		if(!$done){
 			$j = "
@@ -154,6 +158,7 @@ class VmViewAdmin extends JViewLegacy {
 		}
 		jQuery( '#media-dialog' ).remove();
 		form = document.getElementById('adminForm');
+		form.task.value = a;
 		".$form."
 	};" ;
 			vmJsApi::addJScript('submit', $j);
