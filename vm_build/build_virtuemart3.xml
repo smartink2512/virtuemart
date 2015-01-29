@@ -6,7 +6,7 @@
     <property name="vm.version" value="3.0.4"/>
     <property name="joomla.version" value="2.5.27" />
     <property name="svn.lastrevision" value="8672" />
-    <property name="PHING.VM.CODENAME" value="DreamIn"/>
+    <property name="PHING.VM.CODENAME" value="Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
     <target name="title">

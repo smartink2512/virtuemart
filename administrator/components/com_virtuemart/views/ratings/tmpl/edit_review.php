@@ -47,6 +47,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 			$rating_options[] = JHtml::_('select.option',$i,$stars);
 
 		}
+		vmdebug('my $this->rating ',$this->rating);
 		echo JHtml::_('select.radiolist', $rating_options, 'vote', 'id="vote" class="inputbox"', 'value', 'text', $this->rating->vote);
 		?>
 		</fieldset></td>

@@ -409,8 +409,9 @@ class VirtueMartViewCart extends VmView {
 		$adminID = JFactory::getSession()->get('vmAdminID',false);
 		$superVendor = VmConfig::isSuperVendor($adminID);
 
-		if($superVendor>1){
-
+		$result = false;
+		if($this->allowChangeShopper ){
+			if(!$superVendor) $superVendor = 1;
 			$db = JFactory::getDbo();
 			$search = vRequest::getUword('usersearch','');
 			if(!empty($search)){
