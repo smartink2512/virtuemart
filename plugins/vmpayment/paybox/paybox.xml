@@ -41,7 +41,7 @@
                        description="VMPAYMENT_PAYBOX_CONF_RANG_TIP"/>
                 <field name="identifiant" class="required" type="text" size="15" default="3262411"
                        label="VMPAYMENT_PAYBOX_CONF_IDENTIFIANT" description="VMPAYMENT_PAYBOX_CONF_IDENTIFIANT_TIP"/>
-                <field name="key" class="vmwarn required" type="password" size="200"
+                <field name="key" class="vmwarn required" type="password" size="200" maxlength="200"
                        default="0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
                        label="VMPAYMENT_PAYBOX_CONF_KEY"
                        description="VMPAYMENT_PAYBOX_CONF_KEY_TIP"/>

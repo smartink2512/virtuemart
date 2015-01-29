@@ -43,7 +43,7 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 		//$this->setEncryptedFields(array('params'));
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
-			$this->setCryptedFields(array('key'));
+		$this->setCryptedFields(array('key'));
 
 	}
 
