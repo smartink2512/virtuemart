@@ -193,8 +193,9 @@ class AdminUIHelper {
 			$filter [] = 'vmmod.module_id=' . ( int ) $moduleId;
 		}
 
-		$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`';
-		$query .= 'FROM `#__virtuemart_modules` AS jmmod
+		$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`,
+						`jmmod`.`ordering` AS `module_ordering`, `item`.`ordering` AS `item_ordering`
+						FROM `#__virtuemart_modules` AS jmmod
 						LEFT JOIN `#__virtuemart_adminmenuentries` AS item ON `jmmod`.`module_id`=`item`.`module_id`
 						WHERE  ' . implode ( ' AND ', $filter ) . '
 						ORDER BY `jmmod`.`ordering`, `item`.`ordering` ';
@@ -202,6 +203,31 @@ class AdminUIHelper {
 		$db->setQuery ( $query );
 		$result = $db->loadAssocList ();
 
+		// Ask all vmextended plugins whether they want to add a view:
+		// The onVmAdminMenuItems($moduleId) trigger is supposed to return an array of admin menu entries, each of which has the following structure:
+		// array('module_id'=>1, 'module_name'=>'product', 'module_perms'=>'storeadmin,admin',
+		//       'id'=>..., 'name'=>'COM_VIRTUEMART_PRODUCT_S', 'link'=>'', 'depends'=>'', 'icon_class'=>'vmicon vmicon-16-camera',
+		//       'view'=>'YOURVIEW', 'task'=>'', 'module_ordering'=>1, 'item_ordering'=>3)
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$vmextended_menuitems = $dispatcher->trigger('onVmAdminMenuItems', array($moduleId));
+		// Insert the returned menu items into the DB results (need to sort by module+item ID)
+		// $vmextended_menuitems is an array of the arrays returned by each plugin
+		foreach ($vmextended_menuitems as $pluginitems) {
+			$result = array_merge($result, $pluginitems);
+		}
+		// Now order the admin menu entries by module_ordering and item_ordering:
+		$cmp_func = function($i1, $i2) {
+			if ($i1['module_ordering'] != $i2['module_ordering']) {
+				return $i1['module_ordering']-$i2['module_ordering'];
+			} else {
+				// two items within the same module, use item_ordering:
+				return $i1['item_ordering']-$i2['item_ordering'];
+			}
+		};
+		usort($result, $cmp_func);
+
+		//		echo '<pre>'.print_r($query,1).'</pre>';
 		for($i = 0, $n = count ( $result ); $i < $n; $i ++) {
 			$row = $result [$i];
 			$menuArr [$row['module_id']] ['title'] = 'COM_VIRTUEMART_' . strtoupper ( $row['module_name'] ) . '_MOD';
