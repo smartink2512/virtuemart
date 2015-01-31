@@ -89,7 +89,7 @@ class plgVmpaymentSkrill extends vmPSPlugin {
 		}
 
 		$md5data = $mb_data['merchant_id'] . $mb_data['transaction_id'] .
-			strtoupper (md5 ($method->secret_word)) . $mb_data['mb_amount'] . $mb_data['mb_currency'] .
+			strtoupper (md5 (trim($method->secret_word))) . $mb_data['mb_amount'] . $mb_data['mb_currency'] .
 			$mb_data['status'];
 
 		$calcmd5 = md5 ($md5data);

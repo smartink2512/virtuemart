@@ -44,15 +44,15 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		parent::__construct($method,$paypalPlugin);
 		//Set the credentials
 		if ($this->_method->sandbox  ) {
-			$this->api_login_id = $this->_method->sandbox_api_login_id;
-			$this->api_signature = $this->_method->sandbox_api_signature;
-			$this->api_password = $this->_method->sandbox_api_password;
-			$this->payflow_partner = $this->_method->sandbox_payflow_partner;
-			$this->payflow_vendor = $this->_method->sandbox_payflow_vendor;
+			$this->api_login_id = trim($this->_method->sandbox_api_login_id);
+			$this->api_signature = trim($this->_method->sandbox_api_signature);
+			$this->api_password = trim($this->_method->sandbox_api_password);
+			$this->payflow_partner = trim($this->_method->sandbox_payflow_partner);
+			$this->payflow_vendor = trim($this->_method->sandbox_payflow_vendor);
 		} else {
-			$this->api_login_id = $this->_method->api_login_id;
-			$this->api_signature = $this->_method->api_signature;
-			$this->api_password = $this->_method->api_password;
+			$this->api_login_id = trim($this->_method->api_login_id);
+			$this->api_signature = trim($this->_method->api_signature);
+			$this->api_password = trim($this->_method->api_password);
 		}
 
 		if (empty($this->api_login_id) || empty($this->api_signature) || empty($this->api_password)) {

@@ -37,6 +37,11 @@ class  PayboxHelperPaybox {
 
 	function __construct ($method, $plugin, $plugin_name) {
 		$this->_method = $method;
+		$this->_method->site_id = trim($this->_method->site_id) ;
+		$this->_method->rang = trim($this->_method->rang) ;
+		$this->_method->identifiant = trim($this->_method->identifiant) ;
+		$this->_method->key = trim($this->_method->key) ;
+
 		$this->plugin = $plugin;
 		$this->plugin_name=$plugin_name;
 	}

@@ -157,7 +157,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if (!class_exists('SofortLib')) {
 			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 		}
-		$sofort = new SofortLib_Multipay($this->_currentMethod->configuration_key);
+		$sofort = new SofortLib_Multipay(trim($this->_currentMethod->configuration_key));
 		$sofort->setVersion(self::RELEASE);
 		$sofort->setAmount($totalInPaymentCurrency['value'], $currency_code_3);
 		$sofort->setReason($order['details']['BT']->order_number);
@@ -388,7 +388,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		$this->debugLog( $transactionId, 'plgVmOnPaymentNotification Transaction ID ','debug');
 
-		$sofortLib_TransactionData = new SofortLib_TransactionData($this->_currentMethod->configuration_key);
+		$sofortLib_TransactionData = new SofortLib_TransactionData(trim($this->_currentMethod->configuration_key));
 		$sofortLib_TransactionData->setTransaction($transactionId)->sendRequest();
 
 		// check that secret , and order are identical

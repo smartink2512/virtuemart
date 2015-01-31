@@ -720,12 +720,12 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	function _getLoginId() {
 
-		return $this->_currentMethod->sandbox ? $this->_currentMethod->sandbox_login_id : $this->_currentMethod->login_id;
+		return trim($this->_currentMethod->sandbox ? $this->_currentMethod->sandbox_login_id : $this->_currentMethod->login_id);
 	}
 
 	function _getTransactionKey() {
 
-		return $this->_currentMethod->sandbox ? $this->_currentMethod->sandbox_transaction_key : $this->_currentMethod->transaction_key;
+		return trim($this->_currentMethod->sandbox ? $this->_currentMethod->sandbox_transaction_key : $this->_currentMethod->transaction_key);
 	}
 
 	/**

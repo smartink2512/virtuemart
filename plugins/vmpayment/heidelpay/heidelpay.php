@@ -292,10 +292,10 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		}
 
 		$params['FRONTEND.CSS_PATH'] = JROUTE::_ (JURI::root(), $xhtml=true, $ssl=0) . 'plugins/vmpayment/heidelpay/heidelpay/' . $cssFile;
-		$requestUrl = $method->HEIDELPAY_PAYMENT_URL;
-		$params['SECURITY.SENDER'] = $method->HEIDELPAY_SECURITY_SENDER;
-		$params['USER.LOGIN'] = $method->HEIDELPAY_USER_LOGIN;
-		$params['USER.PWD'] = $method->HEIDELPAY_USER_PW;
+		$requestUrl = trim($method->HEIDELPAY_PAYMENT_URL);
+		$params['SECURITY.SENDER'] = trim($method->HEIDELPAY_SECURITY_SENDER);
+		$params['USER.LOGIN'] = trim($method->HEIDELPAY_USER_LOGIN);
+		$params['USER.PWD'] = trim($method->HEIDELPAY_USER_PW);
 
 		if(substr ($method->HEIDELPAY_PAYMENT_TYPE, 0, 2) == 'DD') {
 			$sepaform = array();

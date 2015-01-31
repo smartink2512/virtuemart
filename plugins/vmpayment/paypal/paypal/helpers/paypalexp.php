@@ -42,20 +42,20 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		if ($this->_method->sandbox) {
 			$this->api_login_id = $this->_method->sandbox_api_login_id;
 			if ($this->_method->authentication == 'signature') {
-				$this->api_signature = $this->_method->sandbox_api_signature;
+				$this->api_signature = trim($this->_method->sandbox_api_signature);
 				$this->api_certificate = '';
 			} else {
 				$this->api_signature = '';
-				$this->api_certificate = $this->_method->sandbox_api_certificate;
+				$this->api_certificate = trim($this->_method->sandbox_api_certificate);
 			}
-			$this->api_password = $this->_method->sandbox_api_password;
-			$this->merchant_email = $this->_method->sandbox_merchant_email;
+			$this->api_password = trim($this->_method->sandbox_api_password);
+			$this->merchant_email = trim($this->_method->sandbox_merchant_email);
 		} else {
-			$this->api_login_id = $this->_method->api_login_id;
-			$this->api_signature = $this->_method->api_signature;
-			$this->api_certificate = $this->_method->api_certificate;
-			$this->api_password = $this->_method->api_password;
-			$this->merchant_email = $this->_method->paypal_merchant_email;
+			$this->api_login_id = trim($this->_method->api_login_id);
+			$this->api_signature = trim($this->_method->api_signature);
+			$this->api_certificate = trim($this->_method->api_certificate);
+			$this->api_password = trim($this->_method->api_password);
+			$this->merchant_email = trim($this->_method->paypal_merchant_email);
 		}
 		if ((!$this->ExpCredentialsValid() OR !$this->isAacceleratedOnboardingValid())) {
 			$text = vmText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
@@ -229,6 +229,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	function getLocaleCode () {
 		$jlang = JFactory::getLanguage();
 		$tag = $jlang->getTag();
+		$tag=str_replace('-','_',$tag);
 		$languageSpecific = array(
 			'da_DK', //', // – Danish (for Denmark only)
 			'he_IL', //', // – Hebrew (all)

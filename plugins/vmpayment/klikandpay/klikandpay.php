@@ -145,7 +145,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 			"TEL" => !empty($order['details']['BT']->phone_1) ? $order['details']['BT']->phone_1 : $order['details']['BT']->phone_2,
 			"EMAIL" => $order['details']['BT']->email,
 			"L" => $interface->getLanguage(),
-			"ID" => $this->_currentMethod->account,
+			"ID" => trim($this->_currentMethod->account),
 			"MONTANT" => $interface->getTotal(),
 			"DETAILS" => $interface->getOrderDetails($order),
 			"RETOUR" => $retourParams,
