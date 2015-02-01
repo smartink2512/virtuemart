@@ -998,7 +998,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$userFieldsCart = $_userFieldsModel->getUserFields(
 			'cart'
 			, array('captcha' => true, 'delimiters' => true) // Ignore these types
-			, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+			, array('user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
 		);
 		$_userFieldsBT = array_merge($_userFieldsBT,$userFieldsCart);
 

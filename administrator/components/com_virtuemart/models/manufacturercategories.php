@@ -108,9 +108,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		$db->setQuery($query);
 
 		$categoryFilter[] = JHtml::_('select.option',  '0', '- '. vmText::_('COM_VIRTUEMART_SELECT_MANUFACTURER_CATEGORY') .' -' );
-
 		$categoryFilter = array_merge($categoryFilter, (array)$db->loadObjectList());
-
 
 		return $categoryFilter;
 

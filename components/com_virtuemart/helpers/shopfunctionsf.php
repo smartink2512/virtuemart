@@ -587,8 +587,14 @@ class shopFunctionsF {
 			$replyTo[1] = $view->vendor->vendor_name;
 			$mailer->addReplyTo( $replyTo );
 		} else {
-			$replyTo[0] = $view->orderDetails['details']['BT']->email;
-			$replyTo[1] = $view->orderDetails['details']['BT']->first_name.' '.$view->orderDetails['details']['BT']->last_name;
+			if(isset($view->orderDetails['details']) and isset($view->orderDetails['details']['BT'])){
+				$replyTo[0] = $view->orderDetails['details']['BT']->email;
+				$replyTo[1] = $view->orderDetails['details']['BT']->first_name.' '.$view->orderDetails['details']['BT']->last_name;
+			} else {
+				$replyTo[0] = $view->user->email;
+				$replyTo[1] = $view->user->name;
+			}
+
 			$mailer->addReplyTo( $replyTo );
 		}
 		if(isset($view->mediaToSend)) {

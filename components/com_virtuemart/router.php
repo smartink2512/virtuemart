@@ -382,7 +382,9 @@ function virtuemartParseRoute($segments) {
 
 	if ( $segments[0] == 'checkout' or $segments[0] == 'cart' or $helper->compareKey($segments[0] ,'cart')) {
 		$vars['view'] = 'cart';
-		$vars['task'] = array_pop($segments);
+		if(count($segments) > 1){ // prevent putting value of view variable into task variable by Viktor Jelinek
+			$vars['task'] = array_pop($segments);
+		}
 		return $vars;
 	}
 
