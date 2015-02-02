@@ -791,7 +791,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		$this->_updateOrderHist($orderID);
 		if (!$this->_writeUserInfo($orderID, $usr, $cart)) {
-			vmError('Couldn\'t create order history','Couldn\'t create order history');
+			vmError('Couldn\'t create order userinfo','Couldn\'t create order userinfo');
 			return false;
 		}
 
@@ -1031,7 +1031,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			return false;
 		}
 
-		if ($_cart->ST) {
+		if ($_cart->ST and empty($_cart->STsameAsBT)) {
 			$_userInfoData = array();
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipment'
 			, array('delimiters'=>true, 'captcha'=>true)

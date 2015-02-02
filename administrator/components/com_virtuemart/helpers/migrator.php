@@ -551,7 +551,7 @@ class Migrator extends VmModel{
 			$jUserArray = array('id','username','name','password','usertype','block','sendEmail','registerDate',
 			                    'lastvisitDate','activation','params' );
 		} else {
-			$jUserArray = array('id','username','name','password','usertype','block','sendEmail','registerDate',
+			$jUserArray = array('id','username','name','password','block','sendEmail','registerDate',
 			                    'lastvisitDate','activation','params','lastResetTime','resetCount');
 		}
 

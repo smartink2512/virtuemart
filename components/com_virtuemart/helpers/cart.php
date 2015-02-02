@@ -930,7 +930,7 @@ class VirtueMartCart {
 		}
 
 		$currentUser = JFactory::getUser();
-		if($this->STsameAsBT!=0){
+		if(!empty($this->STsameAsBT)){
 			if($this->_confirmDone){
 				$this->ST = $this->BT;
 			} else {

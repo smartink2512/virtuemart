@@ -72,7 +72,7 @@ defined('_JEXEC') or die('Restricted access');
 			if($this->cart->user->virtuemart_user_id==0){
 
 				echo vmText::_ ('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
-				echo VmHtml::checkbox ('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
+				echo VmHtml::checkbox ('STsameAsBT', $this->cart->STsameAsBT,1,0,'id="STsameAsBTjs"') . '<br />';
 			} else if(!empty($this->cart->lists['shipTo'])){
 				echo $this->cart->lists['shipTo'];
 			}

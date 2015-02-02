@@ -65,7 +65,7 @@
 						require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 					}
 					echo vmText::_('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
-					echo VmHtml::checkbox('STsameAsBTjs', $this->cart->STsameAsBT) . '<br />';
+					echo VmHtml::checkbox ('STsameAsBT', $this->cart->STsameAsBT,1,0,'id="STsameAsBTjs"') . '<br />';
 					?>
 					<div id="output-shipto-display">
 						<?php

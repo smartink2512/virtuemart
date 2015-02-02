@@ -22,8 +22,8 @@ defined ('_JEXEC') or die('Restricted access');
 
 JHtml::_ ('behavior.formvalidation');
 vmJsApi::addJScript('vm.STisBT',"
-//<![CDATA[
 	jQuery(document).ready(function($) {
+
 		if ( $('#STsameAsBTjs').is(':checked') ) {
 			$('#output-shipto-display').hide();
 		} else {
@@ -37,14 +37,13 @@ vmJsApi::addJScript('vm.STisBT',"
 				$('#STsameAsBT').val('0') ;
 				$('#output-shipto-display').show();
 			}
-			location.reload();
+			var form = jQuery('#checkoutFormSubmit');
+			document.checkoutForm.submit();
 		});
 	});
-//]]>
 ");
 
 vmJsApi::addJScript('vm.checkoutFormSubmit','
-//<![CDATA[
 	jQuery(document).ready(function($) {
 		jQuery(this).vm2front("stopVmLoading");
 		jQuery("#checkoutFormSubmit").bind("click dblclick", function(e){
@@ -59,7 +58,6 @@ vmJsApi::addJScript('vm.checkoutFormSubmit','
 			$("#checkoutForm").submit();
 		});
 	});
-//]]>
 ');
 
 $this->addCheckRequiredJs();

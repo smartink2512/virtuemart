@@ -134,12 +134,16 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if($msg) vmInfo($msg);
 		}
 
-		$cart->selected_shipto = vRequest::getVar('shipto', -1);
-		if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
-			$cart->STsameAsBT = 1;
-			$cart->selected_shipto = 0;
-		} else {
-			$cart->STsameAsBT = 0;
+		$cart->STsameAsBT = vRequest::getVar('STsameAsBT', vRequest::getVar('STsameAsBTjs',true));
+		$user = JFactory::getUser();
+		if(!$user->guest){
+			$cart->selected_shipto = vRequest::getVar('shipto', -1);
+			if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
+				$cart->STsameAsBT = 1;
+				$cart->selected_shipto = 0;
+			} else {
+				$cart->STsameAsBT = 0;
+			}
 		}
 
 		$cart->setShipmentMethod(true,!$html);

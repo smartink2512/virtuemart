@@ -119,7 +119,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 			} else {
 				$active ="";
 			}
-			$html[] = '<div id="permission-'.$section.'-'.$per++.'" class="tab-pane '.$active.'">';
+			$html[] = '<div id="permission-'.$section.'-'.$perlevel.'" class="tab-pane '.$active.'">';
 			$html[] = '<table class="group-rules table table-striped">';
 			$html[] = '<thead>';
 			$html[] = '<tr>';

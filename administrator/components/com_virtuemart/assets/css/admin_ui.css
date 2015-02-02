@@ -129,7 +129,7 @@ table.adminlist td.vm-order span {
 
 /* Admin Menu */
 #admin-ui-menu {border-bottom:1px solid #94B1CF;}
-#admin-ui-menu h3.menu-title {position: relative; height: 30px; background: #00A1DF;cursor:pointer;border-top: 1px solid #17508C;margin: 0px;color: #efefef;font-size: 12px;font-weight: normal;color: #333;text-transform: uppercase;}
+#admin-ui-menu h3.menu-title {position: relative; height: 30px; background: #00A1DF;cursor:pointer;border-top: 1px solid rgba(255, 255, 255, 0.15);;margin: 0px;color: #efefef;font-size: 12px;font-weight: normal;color: #333;text-transform: uppercase;}
 .menu-title-wrapper { display: block; height: 30px; line-height: 30px;}
 .menu-collapsed #admin-ui-menu h3.menu-title, .menu-collapsed #admin-ui-menu .menu-list ul li a {white-space: nowrap;}
 .menu-vmlogo {color: #333333;cursor: pointer;font-size: 12px;font-weight: normal;margin: 0;padding: 0;}
@@ -140,7 +140,7 @@ table.adminlist td.vm-order span {
 #admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;}
 #admin-ui-menu .menu-list ul {margin: 0px;padding: 0;}
 #admin-ui-menu .menu-list ul li {list-style: none;}
-#admin-ui-menu .menu-list ul li a { color: #000000;display: block;font-size: 12px; line-height: 14px; margin: 0;text-decoration: none; opacity : 0.8; background: #efefef; color: #000000;display: block;font-size: 12px;margin: 0;text-decoration: none; opacity : 0.8; border: 1px solid transparent; border-bottom-color: #ccc; border-right-width: 0;
+#admin-ui-menu .menu-list ul li a { color: #000000;display: block;font-size: 12px; line-height: 14px; margin: 0;text-decoration: none; opacity : 0.8; background: #fafafa; color: #000000;display: block;font-size: 12px;margin: 0;text-decoration: none; opacity : 0.8; border: 1px solid transparent; border-bottom-color: #fbfbfb; border-right-width: 0;
     -moz-opacity : 0.8;
     -ms-filter: "alpha(opacity=90)"; /* IE 8 */
     filter : alpha(opacity=90); /* IE < 8 */  }

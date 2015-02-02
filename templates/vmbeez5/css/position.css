@@ -55,7 +55,7 @@ body
 #contentarea2
 {
 	position:relative;
-    overflow:hidden;
+    /* overflow:hidden; */
     padding:0px 20px ;
     margin:0;
 
