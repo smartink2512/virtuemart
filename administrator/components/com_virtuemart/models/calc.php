@@ -148,6 +148,15 @@ class VirtueMartModelCalc extends VmModel {
 			$data['publish_down']	= $expireDate->toSQL();
 		}
 
+		//Missing in calculation plugins,... plgVmGetTablePluginParams or declare
+		//if ($type == 'E') {
+		/*	JPluginHelper::importPlugin ('vmcalculation');
+			$dispatcher = JDispatcher::getInstance ();
+			//We call here vmplugin->getTablePluginParams which sets the xParam and the varsToPush of the Plugin
+			vmdebug('setParameterableByFieldType before trigger plgVmGetTablePluginParams ',$xParams,$varsToPush);
+			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
+		//}*/
+
 		if(!$table->bindChecknStore($data)){
 			return false;
 		}

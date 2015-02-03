@@ -68,10 +68,28 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 
-	function  plgVmOnStoreInstallPluginTable($jplugin_name) {
+	function plgVmOnStoreInstallPluginTable($jplugin_name,$name,$table=0) {
+		//vmdebug('plgVmOnStoreInstallPluginTable',$jplugin_name,$name);
+		if(!defined('VM_VERSION') or VM_VERSION < 3){
+			return $this->onStoreInstallPluginTable($jplugin_name,$name);
+		} else {
+			$this->onStoreInstallPluginTable ($jplugin_name);
+			$this->plgVmStorePluginInternalDataCalc($name);
+		}
 
 	}
 
+	function getTableSQLFields() {
+		$SQLfields = array(
+			'id' => ' mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT',
+			'virtuemart_calc_id' => 'mediumint(1) UNSIGNED NOT NULL DEFAULT \'0\'',
+			'activated' => 'tinyint(1) NOT NULL DEFAULT \'0\'',
+			'company_code' => ' char(255)',
+			'account' => ' char(255)',
+			'license' => ' char(255)'
+		);
+		return $SQLfields;
+	}
 
 	/**
 	 * Gets the sql for creation of the table
@@ -105,7 +123,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	function plgVmOnDisplayEdit(&$calc,&$html){
 
 		$html .= '<fieldset>
-	<legend>'.JText::_('VMCALCULATION_AVALARA').'</legend>
+	<legend>'.vmText::_('VMCALCULATION_AVALARA').'</legend>
 	<table class="admintable">';
 
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ACTIVATED','activated',$calc->activated);
@@ -119,7 +137,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_PREVCHECKOUT_AD_INVALID','prevCheckoutAddInv',$calc->prevCheckoutAddInv);
 		$label = 'VMCALCULATION_AVALARA_VADDRESS';
 		$lang =JFactory::getLanguage();
-		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
+		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.vmText::_($label.'_TIP').'">'.vmText::_($label).'</span>' : vmText::_($label) ;
         	$html .= '
             <tr>
                 <td class="key">
@@ -150,7 +168,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if ($calc->activated) {
 			$html .= $this->ping($calc);
 		}
-		$html .= JText::_('VMCALCULATION_AVALARA_MANUAL').'</fieldset>';
+		$html .= vmText::_('VMCALCULATION_AVALARA_MANUAL').'</fieldset>';
 		return TRUE;
 	}
 
@@ -363,9 +381,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					if($calculationHelper->inCart){
 
 						$prices =  $calculationHelper->getCartPrices();
+
 						if(isset($prices['shipmentValue']) and isset(self::$_taxResult['shipmentTax'] )) {
-							self::$_taxResult['salesPriceShipment'] = ($prices['shipmentValue'] + self::$_taxResult['shipmentTax'] );
-							//self::$_taxResult['paymentTax'] = 0.0;
+							$prices['shipmentTax'] = self::$_taxResult['shipmentTax'];
+							self::$_taxResult['salesPriceShipment'] = $prices['shipmentValue'] + self::$_taxResult['shipmentTax'] ;
 						}
 
 						/*if(isset($prices['paymentValue']) and isset(self::$_taxResult['paymentTax'] )) {
@@ -642,7 +661,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$product['price'] = $price;
 
 				if(!empty($prices[$k]['discountAmount'])){
-					$product['discount'] = $prices[$k]['discountAmount'];
+					$product['discount'] = abs($prices[$k]['discountAmount']);
 				} else {
 					//avadebug('no discount for '.$k,$prices[$k]);
 					$product['discount'] = FALSE;
@@ -681,7 +700,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$products[] = $payment;
 			}*/
 
-			$products['discountAmount'] = $prices['discountAmount'];
+			$products['discountAmount'] = abs($prices['discountAmount']);
 
 
 		return $products;
