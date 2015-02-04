@@ -1090,7 +1090,7 @@ cvFunc();
 						if (!empty($related->virtuemart_media_id[0])) {
 							$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0],'product',$customfield->width,$customfield->height).' ';
 						} else {
-							$thumb = $this->displayCustomMedia (0,'product',$productCustom->width,$productCustom->height).' ';
+							$thumb = $this->displayCustomMedia (0,'product',$customfield->width,$customfield->height).' ';
 						}
 					}
 

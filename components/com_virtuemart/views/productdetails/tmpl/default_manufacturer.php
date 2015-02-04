@@ -16,15 +16,13 @@ defined('_JEXEC') or die('Restricted access');
 <div class="manufacturer">
 	<?php
 	$i = 1;
-	$manModel = VmModel::getModel('manufacturer');
+
 	$mans = array();
 	// Gebe die Hersteller aus
-	foreach($this->product->virtuemart_manufacturer_id as $manufacturer_id) {
-
-		$manufacturers_details = $manModel->getManufacturer($manufacturer_id);
+	foreach($this->product->manufacturers as $manufacturers_details) {
 
 		//Link to products
-		$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $manufacturer_id, FALSE);
+		$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $manufacturers_details->virtuemart_manufacturer_id, FALSE);
 		$name = $manufacturers_details->mf_name;
 
 		// Avoid JavaScript on PDF Output

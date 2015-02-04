@@ -140,7 +140,7 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 
 			$product_model->addImages($product);
-			$this->assignRef('product', $product);
+
 
 			if (isset($product->min_order_level) && (int) $product->min_order_level > 0) {
 				$min_order_level = $product->min_order_level;
@@ -158,6 +158,19 @@ class VirtueMartViewProductdetails extends VmView {
 			// Load the neighbours
 			if (VmConfig::get('product_navigation', 1)) {
 				$product->neighbours = $product_model->getNeighborProducts($product);
+			}
+
+			$this->assignRef('product', $product);
+
+			if (VmConfig::get('show_manufacturers', 1) && !empty($this->product->virtuemart_manufacturer_id)) {
+				$manModel = VmModel::getModel('manufacturer');
+				$mans = array();
+				// Gebe die Hersteller aus
+				foreach($this->product->virtuemart_manufacturer_id as $manufacturer_id) {
+
+					$mans[] = $manModel->getManufacturer( $manufacturer_id );
+				}
+				$this->product->manufacturers = $mans;
 			}
 
 			// Load the category
