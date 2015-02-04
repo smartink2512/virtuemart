@@ -1161,7 +1161,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$handler = $conf->get ('session_handler', 'none');
 
 		$config['session_name'] = 'site';
-		$name = Japplication::getHash ($config['session_name']);
+		$name = vRequest::getHash ($config['session_name']);
 		$options['name'] = $name;
 		$sessionStorage = JSessionStorage::getInstance ($handler, $options);
 

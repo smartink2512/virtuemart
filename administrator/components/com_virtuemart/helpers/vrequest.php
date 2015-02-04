@@ -308,9 +308,12 @@ class vRequest {
 		$user = JFactory::getUser();
 		$session = JFactory::getSession();
 		if(empty($user->id)) $user->id = 0;
-		$hash = JApplication::getHash($user->id . $session->getToken($fNew));
+		$hash = self::getHash($user->id . $session->getToken($fNew));
 
 		return $hash;
 	}
 
+	public static function getHash($seed) {
+		return md5(VmConfig::getSecret() . $seed);
+	}
 }

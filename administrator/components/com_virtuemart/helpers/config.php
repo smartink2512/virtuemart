@@ -473,6 +473,7 @@ class VmConfig {
 	// instance of class
 	private static $_jpConfig = NULL;
 	private static $_debug = NULL;
+	private static $_secret = NULL;
 	public static $_starttime = array();
 	public static $loaded = FALSE;
 
@@ -513,6 +514,10 @@ class VmConfig {
 
 	static function setStartTime($name,$value){
 		self::$_starttime[$name] = $value;
+	}
+
+	static function getSecret(){
+		return self::$_secret;
 	}
 
 	static function echoAdmin(){
@@ -842,6 +847,8 @@ class VmConfig {
 		} else {
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
 		}
+
+		self::$_secret = JFactory::getConfig()->get('secret');
 
 		self::$_jpConfig->_params['sctime'] = microtime(TRUE);
 		self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();

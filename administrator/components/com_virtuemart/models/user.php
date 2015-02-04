@@ -400,7 +400,7 @@ class VirtueMartModelUser extends VmModel {
 			if ($doUserActivation )
 			{
 				jimport('joomla.user.helper');
-				$user->set('activation', JApplication::getHash( JUserHelper::genRandomPassword()) );
+				$user->set('activation', vRequest::getHash( JUserHelper::genRandomPassword()) );
 				$user->set('block', '1');
 				//$user->set('lastvisitDate', '0000-00-00 00:00:00');
 			}

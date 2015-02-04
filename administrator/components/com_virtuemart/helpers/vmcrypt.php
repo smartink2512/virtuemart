@@ -150,24 +150,12 @@ class vmCrypt {
 			$usedKey = date("ymd");
 			$filename = $keyPath . DS . $usedKey . '.ini';
 			if (!JFile::exists ($filename)) {
-				if(JVM_VERSION<3){
-					$token = JUtility::getHash(JUserHelper::genRandomPassword());
-				} else {
-					$token = JApplication::getHash(JUserHelper::genRandomPassword());
-				}
+
+				$token = vRequest::getHash(JUserHelper::genRandomPassword());
 
 				$salt = JUserHelper::getSalt('crypt-md5');
 				$hashedToken = md5($token . $salt)  ;
 				$key = base64_encode($hashedToken);
-				//$options = array('costs'=>VmConfig::get('cryptCost',8));
-
-				/*if(!function_exists('password_hash')){
-					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'password_compat.php');
-				}
-
-				if(function_exists('password_hash')){
-					$key = password_hash($key, PASSWORD_BCRYPT, $options);
-				}*/
 
 				$date = JFactory::getDate();
 				$today = $date->toUnix();

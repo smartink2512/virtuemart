@@ -59,7 +59,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `published` (`published`),
   KEY `calc_kind` (`calc_kind`),
-  KEY `shared` (`shared`)
+  KEY `shared` (`shared`),
+  KEY `publish_up` (`publish_up`),
+  KEY `publish_down` (`publish_down`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -802,7 +804,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   KEY `product_parent_id` (`product_parent_id`),
   KEY `product_special` (`product_special`),
   KEY `published` (`published`),
-  KEY `pordering` (`pordering`)
+  KEY `pordering` (`pordering`),
+  KEY `created_on` (`created_on`),
+  KEY `modified_on` (`modified_on`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All products are stored here.' AUTO_INCREMENT=1 ;
 
 
@@ -956,6 +960,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_reviews` (
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_rating_review_id`),
   UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`),
+  KEY `created_on` (`created_on`),
   KEY `published` (`published`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

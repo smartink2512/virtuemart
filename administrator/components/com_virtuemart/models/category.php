@@ -323,6 +323,12 @@ class VirtueMartModelCategory extends VmModel {
 			$whereString = 'WHERE 1 ';
 		}
 
+		//$selOrdering = $this->_selectedOrdering;
+		if(trim($this->_selectedOrdering) == 'c.ordering'){
+			$this->_selectedOrdering = 'c.ordering, l.`category_name`';
+		}
+		$ordering = ' ORDER BY '.$this->_selectedOrdering.' '.$this->_selectedOrderingDir ;
+
 		$ordering = $this->_getOrdering();
 
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'GROUP BY virtuemart_category_id',$ordering );

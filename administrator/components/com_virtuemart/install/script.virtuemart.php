@@ -90,16 +90,24 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//We want disable the redirect in the installation process
 			if(version_compare(JVERSION,'1.6.0','ge') and version_compare(JVERSION,'3.0.0','le')) {
 
-				$q = 'DELETE FROM `#__menu` WHERE `menutype` = "main" AND
-						(`link`="index.php?option=com_virtuemart" OR `alias`="virtuemart" )';
 				$this->_db = JFactory::getDbo();
+				/*$q = 'SELECT extension_id FROM #__extensions WHERE `type` = "component" AND `element` = "com_virtuemart" ';
+				$this->_db ->setQuery($q);
+				$extensionId = $this->_db->loadResult();
+				if($extensionId){
+					$q = 'DELETE FROM `#__menu` WHERE `component_id` = "'.$extensionId.'" AND `client_id`="1" ';
+				} else {*/
+					$q = 'DELETE FROM `#__menu` WHERE `menutype` = "main" AND `type` = "component" AND `client_id`="1"
+						AND `link`="%option=com_virtuemart%" )';
+				//}
+
 				$this->_db -> setQuery($q);
 				$this->_db -> execute();
-				$error = $this->_db->getErrorMsg();
+				/*$error = $this->_db->getErrorMsg();
 				if(!empty($error)){
 					$app = JFactory::getApplication();
 					$app ->enqueueMessage('Error deleting old vm admin menu (BE) '.$error);
-				}
+				}*/
 			}
 
 		}

@@ -18,7 +18,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-vmJsApi::addJScript( 'orderedit', "
+vmJsApi::addJScript( 'orderstatus', "
 
 		function cancelOrderStatFormEdit(e) {
 			jQuery('#orderStatForm').each(function(){
