@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension method="upgrade" type="component" version="2.5">
     <name>VirtueMart_allinone</name>
-     <creationDate>${PHING.VM.RELDATE}</creationDate>
+     <creationDate>February 05 2015</creationDate>
     <copyright>Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
    <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <version>${PHING.VM.RELEASE}</version>
+    <version>3.0.4.2</version>
         <!-- Custom un/installer for 1.6 -->
    <scriptfile>script.vmallinone.php</scriptfile>
 	<!-- Custom installer for 1.5 -->
@@ -27,6 +27,6 @@
     </administration>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart3 AIO Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/virtuemart_aio_update.xml]]></server>
+        <server type="extension" name="VirtueMart3 AIO Update Site"><![CDATA[http://virtuemart.net/releases/vm3/virtuemart_aio_update.xml]]></server>
     </updateservers>
 </extension>

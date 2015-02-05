@@ -117,9 +117,12 @@ class VirtuemartViewProduct extends VmViewAdmin {
 							$this->row++;
 						}
 					}
-				} elseif ($field->field_type =='E') {
+				} else { //if ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
-					$this->model->bindCustomEmbeddedFieldParams($field,'E');
+					if ($field->field_type =='E') {
+						$this->model->bindCustomEmbeddedFieldParams($field,'E');
+					}
+
 					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) {
 					     $cartIcone=  'default';
@@ -127,39 +130,22 @@ class VirtuemartViewProduct extends VmViewAdmin {
 					     $cartIcone= 'default-off';
 					 }
 					$field->virtuemart_product_id=$product_id;
-					 $html[] = '
+					$html[] = '
 					<tr class="removable">
-						<td><span class="hasTip" title="'.vmText::_($field->custom_tip).'">'.$field->custom_title.'</td>
-						<td>'.$display.'
-						'.$this->model->setEditCustomHidden($field, $this->row).'
-						<p>'.vmText::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</p></td>
-						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.vmText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
-						<td><span class="vmicon vmicon-16-move"></span>
-						<span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" />
-						</td>
+						<td>
+							<b>'.vmText::_($fieldTypes[$field->field_type]).'</b> '.vmText::_($field->custom_title).'</span><br/>
 
+								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
+								<span class="vmicon vmicon-16-move"></span>
+								<span class="vmicon vmicon-16-remove"></span>
+
+						'.$this->model->setEditCustomHidden($field, $this->row).'
+					 	</td>
+							<td>'.$display.'</td>
+						 </tr>
 					</tr>';
 					$this->row++;
 
-				} else {
-					$this->json['table'] = 'fields';
-					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
-					 if ($field->is_cart_attribute) $cartIcone=  'default';
-					 else  $cartIcone= 'default-off';
-					if(isset($fieldTypes[$field->field_type])){
-						$type =vmText::_($fieldTypes[$field->field_type]);
-					} else {
-						$type = 'deprecated';
-					}
-					 $html[] = '<tr class="removable">
-						<td><span class="hasTip" title="'.vmText::_($field->custom_tip).'">'.$field->custom_title.'</td>
-						 <td>'.$display.'</td>
-						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.vmText::_($fieldTypes[$field->field_type]).'
-							'.$type.$this->model->setEditCustomHidden($field, $this->row).'
-						</td>
-						 <td><span class="vmicon vmicon-16-move"></span><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
-						</tr>';
-					$this->row++;
 				}
 			}
 

@@ -1257,18 +1257,18 @@ class VirtueMartModelProduct extends VmModel {
 		$prices = array();
 		$prices['product_price'] = '';
 		$prices['virtuemart_product_price_id'] = 0;
-		$prices['product_currency'] = NULL;
-		$prices['price_quantity_start'] = NULL;
-		$prices['price_quantity_end'] = NULL;
-		$prices['product_price_publish_up'] = NULL;
-		$prices['product_price_publish_down'] = NULL;
-		$prices['product_tax_id'] = NULL;
-		$prices['product_discount_id'] = NULL;
-		$prices['product_override_price'] = NULL;
-		$prices['override'] = NULL;
+		$prices['product_currency'] = null;
+		$prices['price_quantity_start'] = null;
+		$prices['price_quantity_end'] = null;
+		$prices['product_price_publish_up'] = null;
+		$prices['product_price_publish_down'] = null;
+		$prices['product_tax_id'] = 0;
+		$prices['product_discount_id'] = null;
+		$prices['product_override_price'] = null;
+		$prices['override'] = null;
 		$prices['categories'] = array();
 		$prices['shoppergroups'] = array();
-		$prices['virtuemart_shoppergroup_id'] = NULL;
+		$prices['virtuemart_shoppergroup_id'] = null;
 
 		return $prices;
 	}
@@ -1661,6 +1661,7 @@ class VirtueMartModelProduct extends VmModel {
 		//We prevent with this line, that someone is storing a product as its own parent
 		if(!empty($product_data->product_parent_id) and $product_data->product_parent_id == $data['virtuemart_product_id']){
 			$product_data->product_parent_id = 0;
+			unset($data['product_parent_id']);
 		}
 
 		$stored = $product_data->bindChecknStore ($data, false);

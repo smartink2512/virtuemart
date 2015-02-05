@@ -303,7 +303,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			//The extension entry does not exist, lets insert one.
 			/*if(!$jId){
 				$q = 'INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`)
-VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 0, \'{"legacy":true,"name":"VIRTUEMART","type":"component","creationDate":"${PHING.VM.RELDATE}","author":"The VirtueMart Development Team","copyright":"Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.","authorEmail":"max|at|virtuemart.net","authorUrl":"http:\\/\\/www.virtuemart.net","version":"${PHING.VM.RELEASE}","description":"","group":""}\'); ';
+VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 0, \'{"legacy":true,"name":"VIRTUEMART","type":"component","creationDate":"February 05 2015","author":"The VirtueMart Development Team","copyright":"Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.","authorEmail":"max|at|virtuemart.net","authorUrl":"http:\\/\\/www.virtuemart.net","version":"3.0.4.2","description":"","group":""}\'); ';
 				$db->setQuery($q);
 				if($db->execute($q)){
 					$jId = $db->insertid();

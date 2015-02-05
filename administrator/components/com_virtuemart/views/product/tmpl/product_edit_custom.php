@@ -64,21 +64,31 @@ defined('_JEXEC') or die('Restricted access');
 						$checkValue = $customfield->virtuemart_customfield_id;
 						$titel = '';
 						$text = '';
+						if(isset($this->fieldTypes[$customfield->field_type])){
+							$type = $this->fieldTypes[$customfield->field_type];
+						} else {
+							$type = 'deprecated';
+						}
+						$colspan = '';
+
+						if($customfield->field_type == 'C'){
+							$colspan = 'colspan="2" ';
+						}
 						if($customfield->override!=0 or $customfield->disabler!=0){
 
 							if(!empty($customfield->disabler)) $checkValue = $customfield->disabler;
 							if(!empty($customfield->override)) $checkValue = $customfield->override;
-							$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue);
+							$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue).'</br>';
 							if($customfield->disabler!=0){
-								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_DISABLED',$checkValue);
+								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_DISABLED',$checkValue).'</br>';
 							}
 
 							if($customfield->override!=0){
-								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue);
+								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue).'</br>';
 							}
 
 						} else if($customfield->virtuemart_product_id==$this->product->product_parent_id){
-							$titel = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED').'<br/>';
+							$titel = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED').'</br>';
 						}
 
 						if(!empty($titel)){
@@ -86,16 +96,16 @@ defined('_JEXEC') or die('Restricted access');
 							<span style="white-space: nowrap;" class="hasTip" title="'.htmlentities(vmText::_('COM_VIRTUEMART_DIS_DER_CUSTOMFLD_OVERR_DER_TIP')).'">o:'.VmHtml::checkbox('field['.$i.'][override]',$customfield->override,$checkValue).'</span>';
 						}
 						$tables['fields'] .= '<tr class="removable">
-							<td><span >'.$titel.$text.'<br />'.vmText::_($customfield->custom_title).'</span></td>
-							<td>'.$customfield->display.'</td>
-							<td>
-								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.vmText::_($this->fieldTypes[$customfield->field_type]).
-								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
-							.'</td>
-							<td><span class="vmicon vmicon-16-move"></span>
-								<span class="vmicon vmicon-16-remove"></span>'.
-								//<input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" />
-							'</td>
+							<td >
+							<b>'.vmText::_($type).'</b> '.vmText::_($customfield->custom_title).'</span><br/>
+								'.$titel.' '.$text.'
+								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
+								<span class="vmicon vmicon-16-move"></span>
+								<span class="vmicon vmicon-16-remove"></span>
+
+						'.VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
+						.'</td>
+							<td '.$colspan.'>'.$customfield->display.'</td>
 						 </tr>';
 						}
 
@@ -134,11 +144,9 @@ defined('_JEXEC') or die('Restricted access');
 				<table id="custom_fields" class="adminlist" cellspacing="0" cellpadding="2">
 					<thead>
 					<tr class="row1">
-						<th><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>
+						<th style="min-width:140px;width:5%;"><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>
 						<th><?php echo vmText::_('COM_VIRTUEMART_VALUE');?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_TYPE');?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_MOVE'); ?></th>
+						<th width="100px"><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
 
 					</tr>
 					</thead>

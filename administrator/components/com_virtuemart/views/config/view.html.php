@@ -114,6 +114,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 
 
 		shopFunctions::checkSafePath();
+		$this -> checkTCPDFinstalled();
 		$this -> checkVmUserVendor();
 
 		parent::display($tpl);
@@ -139,6 +140,13 @@ class VirtuemartViewConfig extends VmViewAdmin {
 					vmWarn('The user with virtuemart_user_id = '.$entry['virtuemart_user_id'].' is set as vendor, but has no referencing vendorId.');
 				}
 			}
+		}
+	}
+
+	private function checkTCPDFinstalled(){
+
+		if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
+			vmWarn('COM_VIRTUEMART_TCPDF_NINSTALLED');
 		}
 	}
 

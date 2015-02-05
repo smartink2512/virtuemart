@@ -99,16 +99,27 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 
-				$product_childIds = $model->getProductChildIds($virtuemart_product_id);
-
-				$product_childs = array();
-				$childs = 0;
-				$maxChilds = 50;
-				foreach($product_childIds as $id){
-					if($childs++>$maxChilds) break;
-					$product_childs[] = $model->getProductSingle($id,false);
+				//Do we need the children? If there is a C customfield, we dont want them
+				$isCustomVariant = false;
+				foreach($product->customfields as $custom){
+					if($custom->field_type == 'C' and $custom->virtuemart_product_id = $virtuemart_product_id){
+						$isCustomVariant = true;
+						break;
+					}
 				}
-				$this->product_childs = $product_childs;
+				if(!$isCustomVariant){
+					$product_childIds = $model->getProductChildIds($virtuemart_product_id);
+
+					$product_childs = array();
+					$childs = 0;
+					$maxChilds = 50;
+					foreach($product_childIds as $id){
+						if($childs++>$maxChilds) break;
+						$product_childs[] = $model->getProductSingle($id,false);
+					}
+					$this->product_childs = $product_childs;
+				}
+
 
 				if(!class_exists('VirtueMartModelConfig')) require(VMPATH_ADMIN .'/models/config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');

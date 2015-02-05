@@ -727,10 +727,7 @@ class VirtueMartCart {
 		}
 
 		$this->setCartIntoSession(true);
-		if ($updated)
-		return true;
-		else
-		return false;
+		return $updated;
 	}
 
 

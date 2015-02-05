@@ -247,11 +247,11 @@ class VirtueMartModelCategory extends VmModel {
 
 		$this->getPagination();
 
-		if(empty($limit)){ vmdebug('my $sortedCats ',$sortedCats);
+		if(empty($limit)){
 			return $sortedCats;
 		} else {
 			$sortedCats = array_slice($sortedCats, $limitStart,$limit);
-			vmdebug('my $sortedCats sliced by  '.$limitStart.' '.$limit,$sortedCats);
+			//vmdebug('my $sortedCats sliced by  '.$limitStart.' '.$limit,$sortedCats);
 			return $sortedCats;
 		}
 

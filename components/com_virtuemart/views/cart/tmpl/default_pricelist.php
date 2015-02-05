@@ -222,10 +222,11 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	(!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and
 		!empty($this->cart->virtuemart_shipmentmethod_id) )
 ) { ?>
-<tr class="sectiontableentry1" valign="top">
+<tr class="sectiontableentry1" style="vertical-align:top;">
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
-		<td colspan="4" align="left">
+		<td colspan="4" style="align:left;vertical-align:top;">
 			<?php
+				echo '<h3>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_SHIPMENT').'</h3>';
 				echo $this->cart->cartData['shipmentName'].'<br/>';
 
 		if (!empty($this->layoutName) and $this->layoutName == 'default') {
@@ -241,7 +242,8 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		}
 	} else {
 	?>
-	<td colspan="4" align="left">
+	<td colspan="4" style="align:left;vertical-align:top;">
+		<?php echo '<h4>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_SHIPMENT').'</h4>'; ?>
 		<?php echo $this->cart->cartData['shipmentName']; ?>
 	</td>
 	<?php } ?>
@@ -250,7 +252,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('shipmentTax', '', $this->cart->cartPrices['shipmentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
 	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?></td>
-	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?> </td>
+	<td style="align:right;vertical-align:middle;"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?> </td>
 </tr>
 <?php } ?>
 <?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 and
@@ -259,10 +261,11 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		( (!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) ) and !empty($this->cart->virtuemart_paymentmethod_id))
 	)
 ) { ?>
-<tr class="sectiontableentry1"  valign="top">
+<tr class="sectiontableentry1" style="vertical-align:top;">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
-		<td colspan="4" align="left">
+		<td colspan="4" style="align:left;vertical-align:top;">
 			<?php
+				echo '<h3>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_PAYMENT').'</h3>';
 				echo $this->cart->cartData['paymentName'].'<br/>';
 
 		if (!empty($this->layoutName) && $this->layoutName == 'default') {
@@ -279,13 +282,15 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 
 	</td>
 	<?php } else { ?>
-	<td colspan="4" align="left"><?php echo $this->cart->cartData['paymentName']; ?> </td>
+		<td colspan="4" style="align:left;vertical-align:top;" >
+			<?php echo '<h4>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_PAYMENT').'</h4>'; ?>
+			<?php echo $this->cart->cartData['paymentName']; ?> </td>
 	<?php } ?>
 	<?php if (VmConfig::get ('show_tax')) { ?>
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('paymentTax', '', $this->cart->cartPrices['paymentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
 	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?></td>
-	<td align="right"><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?> </td>
+	<td style="align:right;vertical-align:middle;" ><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?> </td>
 </tr>
 <?php  } ?>
 <tr>

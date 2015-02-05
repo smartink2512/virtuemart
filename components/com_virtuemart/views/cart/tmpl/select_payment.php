@@ -39,7 +39,13 @@ if ($this->layoutName!='default') {
 		$buttonclass = 'vm-button-correct';
 	}
 
-	echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
+	if($this->cart->virtuemart_paymentmethod_id){
+		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECTED_PAYMENT_SELECT')."</h".$headerLevel.">";
+	} else {
+		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
+	}
+
+
 ?>
 
 <div class="buttonBar-right">

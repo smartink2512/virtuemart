@@ -85,6 +85,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 					$this->SetViewTitle('STORE',vmText::_('COM_VIRTUEMART_NEW_VENDOR') , 'shop_mart');
 				}
 				$vendorid = $userDetails->virtuemart_vendor_id;
+				if($vendorid==1)$this -> checkTCPDFinstalled();
 			} else {
 				$vendorid = 0 ;
 				$this->SetViewTitle('USER',$userDetails->JUser->get('name'));
@@ -244,6 +245,14 @@ class VirtuemartViewUser extends VmViewAdmin {
 		$vendorModel->addImages($vendor);
 		$this->assignRef('subject', ($doVendor) ? vmText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_VENDOR_SUBJECT', $this->user->get('email')) : vmText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT',$vendor->vendor_store_name));
 		parent::display();
+	}
+
+	private function checkTCPDFinstalled(){
+
+		if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
+			VmConfig::loadJLang('com_virtuemart_config');
+			vmWarn('COM_VIRTUEMART_TCPDF_NINSTALLED');
+		}
 	}
 
 }

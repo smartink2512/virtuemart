@@ -39,7 +39,12 @@ defined('_JEXEC') or die('Restricted access');
 		$buttonclass = 'vm-button-correct';
 	}
 
-	echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
+	if($this->cart->virtuemart_shipmentmethod_id){
+		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECTED_SHIPMENT_SELECT')."</h".$headerLevel.">";
+	} else {
+		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
+	}
+
 
 	?>
 

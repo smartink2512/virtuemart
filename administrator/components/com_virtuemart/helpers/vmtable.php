@@ -1527,11 +1527,10 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			if (is_object($data)) {
 
 				foreach ($this->_translatableFields as $name) {
+					$langTable->$name = $this->$name;
 					if (isset($data->$name)) {
 						//We directly store language stuff "escaped"
 						$langData[$name] = htmlentities($data->$name, ENT_QUOTES, "UTF-8");
-					} else {
-					//	$langData[$name] = '';
 					}
 					unset($dataTable->$name);
 
@@ -1548,14 +1547,12 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 					}
 
 				}
-				// 				$langTable->$tblKey = $data->$tblKey;
+
 			} else {
 				foreach ($this->_translatableFields as $name) {
+					$langTable->$name = $this->$name;
 					if (isset($data[$name])) {
-						//$langData[$name] = $data[$name];
 						$langData[$name] = htmlentities($data[$name], ENT_QUOTES, "UTF-8");
-					} else {
-					//	$langData[$name] = '';
 					}
 					unset($dataTable->$name);
 
@@ -1572,7 +1569,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 					}
 
 				}
-				// 				$langTable->$tblKey = $data[$tblKey];
+
 			}
 
 			$langTable->_unique_name = $langUniqueKeys;
@@ -1584,7 +1581,6 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			$langTable->_slugName = 'slug';
 			unset($dataTable->_slugName);
 
-			//$langTable->bindTo($this,$langData);
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
 			//We must check the langtable BEFORE we store the normal table, cause the langtable is often defining if there are enough data to store it (for exmple the name)

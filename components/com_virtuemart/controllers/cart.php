@@ -126,7 +126,10 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 		$cart->saveCartFieldsInCart();
 
-		$cart->updateProductCart();
+		if($cart->updateProductCart()){
+			vmInfo('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY');
+		}
+
 		$coupon_code = trim(vRequest::getString('coupon_code', ''));
 		if(!empty($coupon_code)){
 			$cart->prepareCartData();
