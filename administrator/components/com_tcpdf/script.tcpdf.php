@@ -28,7 +28,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 	define('_VM_AIO_SCRIPT_INCLUDED', TRUE);
 
-	class com_virtuemart_allinoneInstallerScript {
+	class com_tcpdfInstallerScript {
 
 		public function preflight () {
 			//$this->vmInstall();
@@ -39,12 +39,12 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		}
 
 		public function discover_install () {
-			//$this->vmInstall();
+			$this->tcpdfInstall ();
 		}
 
 		public function postflight () {
 
-			//$this->tcpdfInstall ();
+			$this->tcpdfInstall ();
 		}
 
 		public function tcpdfInstall () {
@@ -53,11 +53,12 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
 
+			$this->path = JInstaller::getInstance ()->getPath ('extension_administrator');
+
 			// libraries auto move
 			$src = $this->path . DS . "libraries";
 			$dst = JPATH_ROOT . DS . "libraries";
 			$this->recurse_copy ($src, $dst);
-			echo "<tr><th></th><td></td></tr>";
 
 			echo '<a
 					href="http://virtuemart.net"
@@ -84,9 +85,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		 */
 		private function recurse_copy ($src, $dst) {
 
-			if($this->dontMove) return true;
 			$dir = opendir ($src);
-			$this->createIndexFolder ($dst);
 
 			if (is_resource ($dir)) {
 				while (FALSE !== ($file = readdir ($dir))) {
