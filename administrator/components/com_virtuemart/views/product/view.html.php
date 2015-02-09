@@ -80,7 +80,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				if(!empty($product->product_parent_id)) $product->allIds[] = $product->product_parent_id;
 
 				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds);
-				//vmdebug('my customfields',$product->customfields);
+
 
 				// Get the category tree
 				if (isset($product->categories)) $this->category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -102,7 +102,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				//Do we need the children? If there is a C customfield, we dont want them
 				$isCustomVariant = false;
 				foreach($product->customfields as $custom){
-					if($custom->field_type == 'C' and $custom->virtuemart_product_id = $virtuemart_product_id){
+					if($custom->field_type == 'C' and $custom->virtuemart_product_id == $virtuemart_product_id){
 						$isCustomVariant = true;
 						break;
 					}

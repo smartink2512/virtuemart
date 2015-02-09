@@ -36,13 +36,7 @@ if(!VmConfig::get('use_as_catalog', 0)){
 
 }
 $position = 'addtocart';
-//if (!empty($product->customfieldsSorted[$position]) or !empty($addtoCartButton)) {
-if (isset($product->step_order_level))
-	$step=$product->step_order_level;
-else
-	$step=1;
-if($step==0)
-	$step=1;
+
 
 ?>
 

@@ -26,10 +26,26 @@ if(isset($viewData['rowHeights'])){
 	$rowHeights['customfields'] = TRUE;
 }
 
+$init = 1;
 if(isset($viewData['init'])){
 	$init = $viewData['init'];
-} else {
-	$init = '1';
+}
+
+if(!empty($product->min_order_level) and $init<$product->min_order_level){
+	$init = $product->min_order_level;
+}
+
+$step=1;
+if (!empty($product->step_order_level)){
+	$step=$product->step_order_level;
+	if(empty($product->min_order_level)){
+		$init = $step;
+	}
+}
+
+$maxOrder= '';
+if (!empty($product->max_order_level)){
+	$maxOrder = ' max="'.$product->max_order_level.'" ';
 }
 
 $addtoCartButton = '';
@@ -43,12 +59,7 @@ if(!VmConfig::get('use_as_catalog', 0)){
 }
 $position = 'addtocart';
 //if (!empty($product->customfieldsSorted[$position]) or !empty($addtoCartButton)) {
-if (isset($product->step_order_level))
-	$step=$product->step_order_level;
-else
-	$step=1;
-if($step==0)
-	$step=1;
+
 
 if (!VmConfig::get('use_as_catalog', 0)  ) { ?>
 
@@ -69,13 +80,7 @@ if (!VmConfig::get('use_as_catalog', 0)  ) { ?>
 					   onclick="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
 					   onchange="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
 					   onsubmit="Virtuemart.checkQuantity(this,<?php echo $step?>,'<?php echo vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED')?>');"
-					   value="<?php if (isset($product->step_order_level) && (int)$product->step_order_level > 0) {
-						   echo $product->step_order_level;
-					   } else if(!empty($product->min_order_level)){
-						   echo $product->min_order_level;
-					   }else {
-						   echo $init;
-					   } ?>"/>
+					   value="<?php echo $init; ?>" init="<?php echo $init; ?>" step="<?php echo $step; ?>" <?php echo $maxOrder; ?> />
 			</span>
 				<span class="quantity-controls js-recalculate">
 				<input type="button" class="quantity-controls quantity-plus"/>

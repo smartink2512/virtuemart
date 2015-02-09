@@ -119,8 +119,8 @@ Virtuemart.cartEffect = function(form) {
 Virtuemart.product = function(carts) {
 	carts.each(function(){
 		var cart = jQuery(this),
-		step=cart.find('input[name="quantity[]"]'),
 
+		quantityInput=cart.find('input[name="quantity[]"]'),
 		plus   = cart.find('.quantity-plus'),
 		minus  = cart.find('.quantity-minus'),
 		select = cart.find('select:not(.no-vm-bind)'),
@@ -128,8 +128,10 @@ Virtuemart.product = function(carts) {
 		virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 		quantity = cart.find('.quantity-input');
 
-        //console.log("addtocart add to cart ",addtocart);
-		var Ste = parseInt(step.val());
+        console.log("quantityInput ",quantityInput);
+		var Ste = parseInt(quantityInput.attr("step"));
+
+
 		//Fallback for layouts lower than 2.0.18b
 		if(isNaN(Ste)){
 			Ste = 1;
@@ -137,10 +139,15 @@ Virtuemart.product = function(carts) {
 		plus.click(function() {
             var rParent = jQuery(this).parent().parent();
             quantity = rParent.find('input[name="quantity[]"]');
-            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val()
+            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
 			var Qtt = parseInt(quantity.val());
+            var maxQtt = parseInt(quantity.attr("max"));
+            Ste = parseInt(quantityInput.attr("step"));
 			if (!isNaN(Qtt)) {
 				quantity.val(Qtt + Ste);
+                if(!isNaN(maxQtt) && quantity.val()>maxQtt){
+                    quantity.val(maxQtt);
+                }
 				Virtuemart.setproducttype(cart,virtuemart_product_id);
 			}
 			
@@ -148,10 +155,16 @@ Virtuemart.product = function(carts) {
 		minus.click(function() {
             var rParent = jQuery(this).parent().parent();
             quantity = rParent.find('input[name="quantity[]"]');
-            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val()
-			var Qtt = parseInt(quantity.val());
+            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
+            var Qtt = parseInt(quantity.val());
+            var minQtt = parseInt(quantity.attr("init"));
+            Ste = parseInt(quantityInput.attr("step"));
+
 			if (!isNaN(Qtt) && Qtt>Ste) {
 				quantity.val(Qtt - Ste);
+                if(!isNaN(minQtt) && quantity.val()<minQtt){
+                    quantity.val(minQtt);
+                }
 			} else quantity.val(Ste);
 			Virtuemart.setproducttype(cart,virtuemart_product_id);
 		});

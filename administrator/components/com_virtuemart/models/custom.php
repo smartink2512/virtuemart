@@ -377,9 +377,10 @@ class VirtueMartModelCustom extends VmModel {
 			);
 		} else if($type=='C'){
 			$varsToPush = array(
+				'usecanonical' 		=> array(0, 'int'),
 				'selectoptions'		=> array(0, 'int'),
-				'clabels'   => array(0, 'int'),
-				'options'	=> array(0, 'int')
+				'clabels'   => 		array(0, 'int'),
+				'options'	=> 		array(0, 'int')
 			);
 		} else if($type=='M'){
 			$varsToPush = array(

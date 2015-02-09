@@ -335,7 +335,12 @@ class VirtueMartModelCustomfields extends VmModel {
 				//vmdebug('displayProductCustomfieldBE $field',$field);
 				//if(!isset($field->withParent)) $field->withParent = 0;
 				//if(!isset($field->parentOrderable)) $field->parentOrderable = 0;
-				//vmdebug('displayProductCustomfieldBE',$field);
+				//vmdebug('displayProductCustomfieldBE',$field,$product);
+
+				if(!empty($product->product_parent_id) and $product->product_parent_id==$field->virtuemart_product_id){
+					return 'controlled by parent';
+				}
+
 				$html = '';
 				if (!class_exists('VmHTML')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 				//$html = vmText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'');
@@ -460,7 +465,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 					$html .='</div>';
 					if($k==0){
-						$html .= '<div style="float:right;max-width:50%;width:40%;min-width:400px" >'.vmText::_('COM_VIRTUEMART_CUSTOM_CV_DESC').'</div>';
+						$html .= '<div style="float:right;max-width:60%;width:45%;min-width:30%" >'.vmText::_('COM_VIRTUEMART_CUSTOM_CV_DESC').'</div>';
 						$html .= '<div class="clear"></div>';
 					}
 				}
@@ -473,7 +478,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				//$html .= '<input type="text" value="" name="field[' . $row . '][selectoptions]['.$k.'][slabel]" />';
 
 				$html .= JHtml::_ ('select.genericlist', $optAttr, 'voption', '', 'value', 'text', 'product_name','voption') ;
-				$html .= '<input type="text" value="" id="vlabel" />';
+				$html .= '<input type="text" value="" id="vlabel" name="vlabel" />';
 
 				$html .= '<span id="new_ramification_bt"><span class="icon-nofloat vmicon vmicon-16-new"></span>'. vmText::_('COM_VIRTUEMART_ADD').'</span>
 					</div>
@@ -489,11 +494,12 @@ class VirtueMartModelCustomfields extends VmModel {
 				console.log ('my label '+label);
 			form = document.getElementById('adminForm');
 			var newdiv = document.createElement('div');
-			newdiv.innerHTML = '<input type=\"text\" value=\"'+voption+'\" name=\"field[" . $row . "][selectoptions][".$k."][voption]\" /><input type=\"text\" value=\"'+label+'\" name=\"field[" . $row . "][selectoptions][".$k."][label]\" />';
+			newdiv.innerHTML = '<input type=\"text\" value=\"'+voption+'\" name=\"field[" . $row . "][selectoptions][".$k."][voption]\" /><input type=\"text\" value=\"'+label+'\" name=\"field[" . $row . "][selectoptions][".$k."][clabel]\" />';
 			form.appendChild(newdiv);
 
 			form.task.value = 'apply';
 			form.submit();
+			return false;
 		});
 	});
 	");
@@ -559,7 +565,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				if(!isset($field->parentOrderable)) $field->parentOrderable = 0;
 				//vmdebug('displayProductCustomfieldBE',$field);
 				if (!class_exists('VmHTML')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
-				$html = vmText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'').'<br />';
+				$html = '</td><td>' . vmText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'').'<br />';
 				$html .= vmText::_('COM_VIRTUEMART_CUSTOM_PO').VmHTML::checkbox('field[' . $row . '][parentOrderable]',$field->parentOrderable,1,0,'');
 
 				$options = array();
@@ -571,7 +577,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$options[] = array('value' => 'product_height', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_HEIGHT'));
 				$options[] = array('value' => 'product_weight', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WEIGHT'));
 
-				$html .= JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) . '</td><td>' . $priceInput;
+				$html .= JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) ;
 				return $html;
 				// 					return 'Automatic Childvariant creation (later you can choose here attributes to show, now product name) </td><td>';
 				break;
@@ -588,9 +594,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 
 					$currentValue = $field->customfield_value;
-					return JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', NULL, 'value', 'text', $currentValue) . '</td><td>' . $priceInput;
+					return $priceInput . '</td><td>'.JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', NULL, 'value', 'text', $currentValue) ;
 				} else{
-					return '<input type="text" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" /></td><td>' . $priceInput;
+					return $priceInput . '</td><td><input type="text" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
 					break;
 				}
 
@@ -607,11 +613,11 @@ class VirtueMartModelCustomfields extends VmModel {
 				$db = JFactory::getDBO();
 				$db->setQuery ($q);
 				$options = $db->loadObjectList ();
-				return JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) . '</td><td>' . $priceInput;
+				return $priceInput . '</td><td>' . JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value);
 				break;
 
 			case 'D':
-				return vmJsApi::jDate ($field->customfield_value, 'field[' . $row . '][customfield_value]', 'field_' . $row . '_customvalue') .'</td><td>'. $priceInput;
+				return $priceInput . '</td><td>' . vmJsApi::jDate ($field->customfield_value, 'field[' . $row . '][customfield_value]', 'field_' . $row . '_customvalue') ;
 				break;
 
 			//'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
@@ -622,15 +628,15 @@ class VirtueMartModelCustomfields extends VmModel {
 					$editor =& JFactory::getEditor();
 					return $editor->display('field['.$row.'][customfield_value]',$field->customfield_value, '550', '400', '60', '20', false).'</td><td>';
 				}
-				return '<textarea class="mceInsertContentNew" name="field[' . $row . '][customfield_value]" id="field-' . $row . '-customfield_value">' . $field->customfield_value . '</textarea>
+				return $priceInput . '</td><td><textarea class="mceInsertContentNew" name="field[' . $row . '][customfield_value]" id="field-' . $row . '-customfield_value">' . $field->customfield_value . '</textarea>
 						<script type="text/javascript">// Creates a new editor instance
 							tinymce.execCommand("mceAddControl",true,"field-' . $row . '-customfield_value")
-						</script></td><td>' . $priceInput;
+						</script>';
 				//return '<input type="text" value="'.$field->customfield_value.'" name="field['.$row.'][customfield_value]" /></td><td>'.$priceInput;
 				break;
 			//'Y'=>'COM_VIRTUEMART_CUSTOM_TEXTAREA'
 			case 'Y':
-				return '<textarea id="field[' . $row . '][customfield_value]" name="field[' . $row . '][customfield_value]" class="inputbox" cols=80 rows=6 >' . $field->customfield_value . '</textarea></td><td>' . $priceInput;
+				return $priceInput . '</td><td><textarea id="field[' . $row . '][customfield_value]" name="field[' . $row . '][customfield_value]" class="inputbox" cols=80 rows=6 >' . $field->customfield_value . '</textarea>';
 				//return '<input type="text" value="'.$field->customfield_value.'" name="field['.$row.'][customfield_value]" /></td><td>'.$priceInput;
 				break;
 			/*Extended by plugin*/
@@ -646,7 +652,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$retValue = '';
 				$dispatcher->trigger ('plgVmOnProductEdit', array($field, $product_id, &$row, &$retValue));
 
-				return $html . $retValue  . '</td><td>'. $priceInput;
+				return $html . $priceInput   . '</td><td>'. $retValue;
 				break;
 
 			/* related category*/

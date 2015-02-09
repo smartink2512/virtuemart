@@ -25,7 +25,7 @@ $iManufacturer = 1;
 
 // Calculating Manufacturers Per Row
 $manufacturerPerRow = VmConfig::get ('manufacturer_per_row', 3);
-if ($manufacturerPerRow != 1) {
+if ($manufacturerPerRow > 1) {
 	$manufacturerCellWidth = ' width'.floor ( 100 / $manufacturerPerRow );
 } else {
 	$manufacturerCellWidth = '';

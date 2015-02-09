@@ -82,6 +82,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 					$formString = '<vmconfig>'.chr(10).'<fields name="params">'.chr(10).'<fieldset name="extraParams">'.chr(10);
 					//vmdebug('$varsToPush',$varsToPush);
 					foreach($varsToPush as $key => $push){
+						if ('_' == substr($key, 0, 1)) continue;
 						//$default = 0;
 						$formString .= '<field
 						name="'.$key.'"

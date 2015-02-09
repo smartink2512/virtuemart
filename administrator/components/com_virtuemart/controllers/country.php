@@ -30,11 +30,6 @@ if(!class_exists('VmController'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontrol
  */
 class VirtuemartControllerCountry extends VmController {
 
-	/*function __construct() {
-		parent::__construct();
-
-	}*/
-
 }
 
 //pure php no tag

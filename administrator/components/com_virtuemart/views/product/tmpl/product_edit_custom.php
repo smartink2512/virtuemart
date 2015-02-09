@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 				$i=0;
 
 				foreach ($this->product->customfields as $k=>$customfield) {
-					//vmdebug('$customfield->field_type '.$customfield->field_type);
+
 					//vmdebug('displayProductCustomfieldBE',$customfield);
 
 					$customfield->display = $customfieldsModel->displayProductCustomfieldBE ($customfield, $this->product, $i);
@@ -71,9 +71,6 @@ defined('_JEXEC') or die('Restricted access');
 						}
 						$colspan = '';
 
-						if($customfield->field_type == 'C'){
-							$colspan = 'colspan="2" ';
-						}
 						if($customfield->override!=0 or $customfield->disabler!=0){
 
 							if(!empty($customfield->disabler)) $checkValue = $customfield->disabler;
@@ -142,14 +139,17 @@ defined('_JEXEC') or die('Restricted access');
 				<div><?php echo  '<div class="inline">'.$this->customsList; ?></div>
 
 				<table id="custom_fields" class="adminlist" cellspacing="0" cellpadding="2">
+
 					<thead>
 					<tr class="row1">
 						<th style="min-width:140px;width:5%;"><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>
+						<?php if($customfield->field_type != 'C'){ ?>
+							<th width="100px"><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
+						<?php } ?>
 						<th><?php echo vmText::_('COM_VIRTUEMART_VALUE');?></th>
-						<th width="100px"><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
-
 					</tr>
 					</thead>
+
 					<tbody id="custom_field">
 						<?php
 						if ($tables['fields']) echo $tables['fields'] ;
@@ -172,28 +172,26 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 $jsonLink = JURI::root(false).'administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
-?>
-<script type="text/javascript">
-	nextCustom = <?php echo $i ?>;
+
+$jsCsort = "
+	nextCustom =".$i.";
 
 	jQuery(document).ready(function(){
-		jQuery('#custom_field').sortable({handle: ".vmicon-16-move"});
+		jQuery('#custom_field').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
 		// Need to declare the update routine outside the sortable() function so
 		// that it can be called when adding new customfields
 		jQuery('#custom_field').bind('sortupdate', function(event, ui) {
 			jQuery(this).find('.ordering').each(function(index,element) {
 				jQuery(element).val(index);
-				//console.log(index+' ');
-
 			});
 		});
-		jQuery('#custom_categories').sortable({handle: ".vmicon-16-move"});
+		jQuery('#custom_categories').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
 		jQuery('#custom_categories').bind('sortupdate', function(event, ui) {
 			jQuery(this).find('.ordering').each(function(index,element) {
 				jQuery(element).val(index);
 			});
 		});
-		jQuery('#custom_products').sortable({handle: ".vmicon-16-move"});
+		jQuery('#custom_products').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
 		jQuery('#custom_products').bind('sortupdate', function(event, ui) {
 			jQuery(this).find('.ordering').each(function(index,element) {
 				jQuery(element).val(index);
@@ -202,10 +200,10 @@ $jsonLink = JURI::root(false).'administrator/index.php?option=com_virtuemart&vie
 	});
 	jQuery('select#customlist').chosen().change(function() {
 		selected = jQuery(this).find( 'option:selected').val() ;
-		jQuery.getJSON('<?php echo $jsonLink ?>&type=fields&id='+selected+'&row='+nextCustom,
+		jQuery.getJSON('".$jsonLink."&type=fields&id='+selected+'&row='+nextCustom,
 		function(data) {
 			jQuery.each(data.value, function(index, value){
-				jQuery("#custom_field").append(value);
+				jQuery('#custom_field').append(value);
 				jQuery('#custom_field').trigger('sortupdate');
 			});
 		});
@@ -214,73 +212,42 @@ $jsonLink = JURI::root(false).'administrator/index.php?option=com_virtuemart&vie
 
 		jQuery('input#relatedproductsSearch').autocomplete({
 
-		source: '<?php echo $jsonLink ?>&type=relatedproducts&row='+nextCustom,
+		source: '".$jsonLink."&type=relatedproducts&row='+nextCustom,
 		select: function(event, ui){
-			jQuery("#custom_products").append(ui.item.label);
+			jQuery('#custom_products').append(ui.item.label);
 			jQuery('#custom_products').trigger('sortupdate');
 			nextCustom++;
-			jQuery(this).autocomplete( "option" , 'source' , '<?php echo $jsonLink ?>&type=relatedproducts&row='+nextCustom )
-			jQuery('input#relatedproductsSearch').autocomplete( "option" , 'source' , '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
+			jQuery(this).autocomplete( 'option' , 'source' , '".$jsonLink."&type=relatedproducts&row='+nextCustom )
+			jQuery('input#relatedproductsSearch').autocomplete( 'option' , 'source' , '".JURI::root(false)."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
 		},
 		minLength:1,
 		html: true
 	});
 	jQuery('input#relatedcategoriesSearch').autocomplete({
 
-		source: '<?php echo $jsonLink ?>&type=relatedcategories&row='+nextCustom,
+		source: '".$jsonLink."&type=relatedcategories&row='+nextCustom,
 		select: function(event, ui){
-			jQuery("#custom_categories").append(ui.item.label);
+			jQuery('#custom_categories').append(ui.item.label);
 			jQuery('#custom_categories').trigger('sortupdate');
 			nextCustom++;
-			jQuery(this).autocomplete( "option" , 'source' , '<?php echo $jsonLink ?>&type=relatedcategories&row='+nextCustom )
-			jQuery('input#relatedcategoriesSearch').autocomplete( "option" , 'source' , '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+			jQuery(this).autocomplete( 'option' , 'source' , '".$jsonLink."&type=relatedcategories&row='+nextCustom )
+			jQuery('input#relatedcategoriesSearch').autocomplete( 'option' , 'source' , '".JURI::root(false)."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 		},
 		minLength:1,
 		html: true
 	});
-	// jQuery('#customfieldsTable').delegate('td','click', function() {
-		// jQuery('#customfieldsParent').remove();
-		// jQuery(this).undelegate('td','click');
-	// });
-	// jQuery.each(jQuery('#customfieldsTable').filter(":input").data('events'), function(i, event) {
-		// jQuery.each(event, function(i, handler){
-		// console.log(handler);
-	  // });
-	// });
 
 
-eventNames = "click.remove keydown.remove change.remove focus.remove"; // all events you wish to bind to
+eventNames = 'click.remove keydown.remove change.remove focus.remove'; // all events you wish to bind to
 
-function removeParent() {jQuery('#customfieldsParent').remove();console.log($(this));//jQuery('#customfieldsTable input').unbind(eventNames, removeParent)
- }
+function removeParent() {jQuery('#customfieldsParent').remove(); }
 
-// jQuery('#customfieldsTable input').bind(eventNames, removeParent);
-
-  // jQuery('#customfieldsTable').delegate('*',eventNames,function(event) {
-    // var $thisCell, $tgt = jQuery(event.target);
-	// console.log (event);
-	// });
-		jQuery('#customfieldsTable').find('input').each(function(i){
-			current = jQuery(this);
-        // var dEvents = curent.data('events');
-        // if (!dEvents) {return;}
-
-		current.click(function(){
-				jQuery('#customfieldsParent').remove();
-			});
-		//console.log (curent);
-        // jQuery.each(dEvents, function(name, handler){
-            // if((new RegExp('^(' + (events === '*' ? '.+' : events.replace(',','|').replace(/^on/i,'')) + ')$' ,'i')).test(name)) {
-               // jQuery.each(handler, function(i,handler){
-                   // outputFunction(elem, '\n' + i + ': [' + name + '] : ' + handler );
-
-
-               // });
-           // }
-        // });
-    });
-
-
-	//onsole.log(jQuery('#customfieldsTable').data('events'));
-
-</script>
+jQuery('#customfieldsTable').find('input').each(function(i){
+	current = jQuery(this);
+	current.click(function(){
+			jQuery('#customfieldsParent').remove();
+		});
+});
+    
+";
+vmJsApi::addJScript('cSort',$jsCsort);

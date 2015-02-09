@@ -120,8 +120,12 @@ class VirtueMartViewProductdetails extends VmView {
 				return;
 			}
 
+			$isCustomVariant = false;
 			if (!empty($product->customfields)) {
 				foreach ($product->customfields as $k => $custom) {
+					if($custom->field_type == 'C' and $custom->virtuemart_product_id != $virtuemart_product_id){
+						$isCustomVariant = $custom;
+					}
 					if (!empty($custom->layout_pos)) {
 						$product->customfieldsSorted[$custom->layout_pos][] = $custom;
 						unset($product->customfields[$k]);
@@ -209,7 +213,13 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 			if ($format == 'html') {
 				// Set Canonic link
-				$document->addHeadLink($product->canonical, 'canonical', 'rel', '');
+				if($isCustomVariant !==false and !empty($isCustomVariant->usecanonical) and !empty($product->product_parent_id)){
+					$parent = $product_model ->getProduct($product->product_parent_id);
+					$document->addHeadLink($parent->canonical, 'canonical', 'rel', '');
+				} else {
+					$document->addHeadLink($product->canonical, 'canonical', 'rel', '');
+				}
+
 			} else if($format == 'pdf'){
 				defined('K_PATH_IMAGES') or define ('K_PATH_IMAGES', VMPATH_ROOT);
 			}
