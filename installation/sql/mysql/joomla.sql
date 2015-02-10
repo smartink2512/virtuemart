@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `#__assets` (
   UNIQUE KEY `idx_asset_name` (`name`),
   KEY `idx_lft_rgt` (`lft`,`rgt`),
   KEY `idx_parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #
 # Dumping data for table `#__assets`

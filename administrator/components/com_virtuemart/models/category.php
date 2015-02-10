@@ -279,6 +279,8 @@ class VirtueMartModelCategory extends VmModel {
 
 	public function getCategories($onlyPublished = true, $parentId = false, $childId = false, $keyword = "", $vendorId = false) {
 
+		static $cats = array();
+
 		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
 		$joinedTables = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` l
@@ -327,12 +329,16 @@ class VirtueMartModelCategory extends VmModel {
 		if(trim($this->_selectedOrdering) == 'c.ordering'){
 			$this->_selectedOrdering = 'c.ordering, l.`category_name`';
 		}
-		$ordering = ' ORDER BY '.$this->_selectedOrdering.' '.$this->_selectedOrderingDir ;
+		//$ordering = ' ORDER BY '.$this->_selectedOrdering.' '.$this->_selectedOrderingDir ;
 
 		$ordering = $this->_getOrdering();
 
-		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'GROUP BY virtuemart_category_id',$ordering );
-		return $this->_category_tree;
+		$hash = md5($keyword.'.'.(int)$parentId.VmConfig::$vmlang.(int)$childId.$this->_selectedOrderingDir.(int)$vendorId.$this->_selectedOrdering);
+		if(!isset($cats[$hash])){
+			$cats[$hash] = $this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'GROUP BY virtuemart_category_id',$ordering );
+		}
+
+		return $cats[$hash];
 
 	}
 

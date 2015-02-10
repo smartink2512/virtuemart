@@ -1260,7 +1260,7 @@ class calculationHelper {
 			}
 
 
-			vmdebug('$this->_shopperGroupId',$this->_shopperGroupId,$rule['virtuemart_shoppergroup_ids']);
+			//vmdebug('$this->_shopperGroupId',$this->_shopperGroupId,$rule['virtuemart_shoppergroup_ids']);
 			$hitsShopper = true;
 			if (!empty($rule['virtuemart_shoppergroup_ids'])) {
 				$hitsShopper = $this->testRulePartEffecting($rule['virtuemart_shoppergroup_ids'], $this->_shopperGroupId);

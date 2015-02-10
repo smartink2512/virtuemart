@@ -242,25 +242,35 @@ echo $this->loadTemplate('reviews');
 if (VmConfig::get('showCategory', 1)) {
 	echo $this->loadTemplate('showcategory');
 }
-echo vmJsApi::writeJS();
-?>
 
-</div>
-<script>
-	// GALT
-	/*
+$j = 'jQuery(document).ready(function($) {
+	Virtuemart.product(jQuery("form.product"));
+
+	$("form.js-recalculate").each(function(){
+		if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
+			var id= $(this).find(\'input[name="virtuemart_product_id[]"]\').val();
+			Virtuemart.setproducttype($(this),id);
+
+		}
+	});
+});';
+//vmJsApi::addJScript('recalcReady',$j);
+
+/** GALT
 	 * Notice for Template Developers!
 	 * Templates must set a Virtuemart.container variable as it takes part in
 	 * dynamic content update.
 	 * This variable points to a topmost element that holds other content.
 	 */
-	// If this <script> block goes right after the element itself there is no
-	// need in ready() handler, which is much better.
-	//jQuery(document).ready(function() {
-	Virtuemart.container = jQuery('.productdetails-view');
-	Virtuemart.containerSelector = '.productdetails-view';
-	//Virtuemart.container = jQuery('.main');
-	//Virtuemart.containerSelector = '.main';
-	//});	  	
-</script>
+$j = "Virtuemart.container = jQuery('.productdetails-view');
+Virtuemart.containerSelector = '.productdetails-view';";
+
+vmJsApi::addJScript('ajaxContent',$j);
+
+echo vmJsApi::writeJS();
+?> </div> <?php
+?>
+
+
+
 

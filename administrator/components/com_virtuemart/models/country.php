@@ -68,12 +68,17 @@ class VirtueMartModelCountry extends VmModel {
 			return false;
 		}
 
-		$query = 'SELECT *';
-		$query .= ' FROM `#__virtuemart_countries`';
-		$query .= ' WHERE `' . $countryCodeFieldname . '` = "' . $code . '"';
-		$db->setQuery($query);
+		static $countries = array();
 
-		return $db->loadObject();
+		if(!isset($countries[$code])){
+			$query = 'SELECT *';
+			$query .= ' FROM `#__virtuemart_countries`';
+			$query .= ' WHERE `' . $countryCodeFieldname . '` = "' . $code . '"';
+			$db->setQuery($query);
+			$countries[$code] = $db->loadObject();
+		}
+
+		return $countries[$code];
     }
 
     /**
@@ -87,6 +92,7 @@ class VirtueMartModelCountry extends VmModel {
      */
     function getCountries($onlyPublished=true, $noLimit=false, $filterCountry = false) {
 
+		static $countries = array();
 		$where = array();
 		$this->_noLimit = $noLimit;
 
@@ -94,15 +100,19 @@ class VirtueMartModelCountry extends VmModel {
 
 		if($filterCountry){
 			$db = JFactory::getDBO();
-			$filterCountry = '"%' . $db->escape( $filterCountry, true ) . '%"' ;
-			$where[] = '`country_name` LIKE '.$filterCountry.' OR `country_2_code` LIKE '.$filterCountry.' OR `country_3_code` LIKE '.$filterCountry;
+			$filterCountryS = '"%' . $db->escape( $filterCountry, true ) . '%"' ;
+			$where[] = '`country_name` LIKE '.$filterCountryS.' OR `country_2_code` LIKE '.$filterCountryS.' OR `country_3_code` LIKE '.$filterCountryS;
 		}
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
 		$ordering = $this->_getOrdering();
-		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$ordering);
+		$hash = $filterCountry.$this->_selectedOrderingDir.(int)$onlyPublished.$this->_selectedOrdering.(int)$noLimit;
+		if(!isset($countries[$hash])){
+			$countries[$hash] = $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$ordering);
+		}
+		return $countries[$hash];
     }
 
 }

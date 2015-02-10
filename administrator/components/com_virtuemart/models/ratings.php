@@ -126,17 +126,21 @@ class VirtueMartModelRatings extends VmModel {
 	    if (empty($virtuemart_product_id)) {
 		    return NULL;
 	    }
-
-	    $select = '`u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer, `pr`.`published`';
-	    $tables = ' FROM `#__virtuemart_rating_reviews` AS `pr`
+		static $reviews = array();
+		$hash = VmConfig::$vmlang.$virtuemart_product_id.$this->_selectedOrderingDir.$this->_selectedOrdering;
+		if(!isset($reviews[$hash])){
+			$select = '`u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer, `pr`.`published`';
+			$tables = ' FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
 		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`';
-	    $whereString = ' WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
+			$whereString = ' WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
 
-	    $result = $this->exeSortSearchListQuery(0,$select,$tables,$whereString,'',$this->_getOrdering());
+			$reviews[$hash] = $this->exeSortSearchListQuery(0,$select,$tables,$whereString,'',$this->_getOrdering());
+		}
 
-     	return $result;
+
+     	return $reviews[$hash];
     }
 
 	/**
@@ -190,10 +194,15 @@ class VirtueMartModelRatings extends VmModel {
 			$user = JFactory::getUser();
 			$userId = $user->id;
     	}
-		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
-		$db = JFactory::getDBO();
-		$db->setQuery($q);
-		return $db->loadObject();
+		if(!empty($userId)){
+			$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
+			$db = JFactory::getDBO();
+			$db->setQuery($q);
+			return $db->loadObject();
+		} else {
+			return false;
+		}
+
     }
 
     /**

@@ -128,7 +128,7 @@ Virtuemart.product = function(carts) {
 		virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 		quantity = cart.find('.quantity-input');
 
-        console.log("quantityInput ",quantityInput);
+        //console.log("quantityInput ",quantityInput);
 		var Ste = parseInt(quantityInput.attr("step"));
 
 
@@ -199,6 +199,7 @@ Virtuemart.checkQuantity = function (obj,step,myStr) {
     // use the modulus operator "%" to see if there is a reminder
     reminder=obj.value % step;
     quantity=obj.value;
+
     if (reminder  != 0) {
         //myStr = "'.vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED').'";
         alert(myStr.replace("%s",step));

@@ -219,6 +219,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
   PRIMARY KEY (`virtuemart_country_id`),
   KEY `country_3_code` (`country_3_code`),
   KEY `country_2_code` (`country_2_code`),
+  KEY `country_name` (`country_name`),
   KEY `ordering` (`ordering`),
   KEY `published` (`published`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Country records' AUTO_INCREMENT=1 ;
@@ -961,6 +962,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_reviews` (
   PRIMARY KEY (`virtuemart_rating_review_id`),
   UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`),
   KEY `created_on` (`created_on`),
+  KEY `created_by` (`created_by`),
   KEY `published` (`published`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -1002,7 +1004,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_rating_vote_id`),
-  UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`)
+  UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`),
+  KEY `created_by` (`created_by`),
+  KEY `created_on` (`created_on`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Stores all ratings for a product';
 
 
@@ -1247,7 +1251,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_vendor_id`),
-  KEY `vendor_name` (`vendor_name`)
+  KEY `vendor_name` (`vendor_name`),
+  KEY `vendor_currency` (`vendor_currency`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Vendors manage their products in your store' AUTO_INCREMENT=1 ;
 
 
