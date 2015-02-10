@@ -159,13 +159,13 @@ Virtuemart.product = function(carts) {
             var Qtt = parseInt(quantity.val());
             var minQtt = parseInt(quantity.attr("init"));
             Ste = parseInt(quantityInput.attr("step"));
-
+            console.log("Hmm was geht hier minQtt = "+minQtt+" Ste="+Ste);
 			if (!isNaN(Qtt) && Qtt>Ste) {
 				quantity.val(Qtt - Ste);
                 if(!isNaN(minQtt) && quantity.val()<minQtt){
                     quantity.val(minQtt);
                 }
-			} else quantity.val(Ste);
+			} else quantity.val(minQtt);
 			Virtuemart.setproducttype(cart,virtuemart_product_id);
 		});
 		select.change(function() {
