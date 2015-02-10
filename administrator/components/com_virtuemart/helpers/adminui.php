@@ -65,31 +65,25 @@ class AdminUIHelper {
 
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
 		vmJsApi::addJScript ('vm.remindTab', "
-//<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;
-		 jQuery( function($) {
+		jQuery( function($) {
 
 			jQuery('dl#system-message').hide().slideDown(400);
 			jQuery('.virtuemart-admin-area .toggler').vm2admin('toggle');
-jQuery('#admin-ui-menu').vm2admin('accordeon');
+			jQuery('#admin-ui-menu').vm2admin('accordeon');
 			if ( $('#admin-ui-tabs').length  ) {
 				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie);
-				//$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text});
 			}
-
 			$('#content-box [title]').vm2admin('tips',tip_image);
-
 			".$modalJs."
 			$('.reset-value').click( function(e){
 				e.preventDefault();
 				none = '';
 				jQuery(this).parent().find('.ui-autocomplete-input').val(none);
-				
 			});
-		});
-//]]>
-		");
+		});	");
+
 		?>
 		<!--[if lt IE 9]>
 		<script src="//ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
@@ -97,31 +91,28 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 		<?php if (!self::$backEnd ){
 		   //JToolBarHelper
 		   $bar = JToolbar::getInstance('toolbar');
-		   echo '<div class="toolbar-box" style="height: 84px;position: relative;">'.$bar->render().'</div>';
-		   //echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar($vmView).'</div>';
-	   } ?>
-    <?php $hideMenu = JFactory::getApplication()->input->cookie->getString('vmmenu', 'show') === 'hide' ? 1: 0;?>
-    <div class="virtuemart-admin-area<?php echo $hideMenu ? ' menu-collapsed' : '' ?>">
-			<div class="toggler vmicon-show<?php echo $hideMenu ? ' menu-collapsed' : '' ?>"></div>
-			<div class="menu-wrapper<?php echo $hideMenu ? ' menu-collapsed' : '' ?>" id="menu-wrapper">
+			?><div class="toolbar-box" style="height: 84px;position: relative;"><?php echo $bar->render()?></div>
+		<?php } ?>
+    <?php $hideMenu = JFactory::getApplication()->input->cookie->getString('vmmenu', 'show') === 'hide' ? ' menu-collapsed': ''; ?>
+    <div class="virtuemart-admin-area<?php echo $hideMenu ?>">
+		<div class="toggler vmicon-show<?php echo $hideMenu ?>"></div>
+			<div class="menu-wrapper<?php echo $hideMenu ?>" id="menu-wrapper">
 				<?php if(!empty($vmView->langList)){ ?>
 					<div class="vm-lang-list-container">
 						<?php echo $vmView->langList; ?>
 					</div>
 				<?php } else {
-					echo '<a href="index.php?option=com_virtuemart&view=virtuemart" ><img src="'.JURI::root(true).'/administrator/components/com_virtuemart/assets/images/vm_menulogo.png"></a>';
-				} ?>
-				<?php AdminUIHelper::showAdminMenu($vmView);
+					?><a href="index.php?option=com_virtuemart&view=virtuemart" ><img src="<?php echo JURI::root(true).'/administrator/components/com_virtuemart/assets/images/vm_menulogo.png'?>"></a>';
+				<?php }
+				AdminUIHelper::showAdminMenu($vmView);
 				?>
-
 				<div class="vm-installed-version">
-					<?php
-					echo "VirtueMart ".VmConfig::getInstalledVersion();
-				?>
+					VirtueMart <?php echo VmConfig::getInstalledVersion(); ?>
 				</div>
-				</div>
-			<div id="admin-content" class="admin-content">
-		<?php	}
+			</div>
+		<div id="admin-content" class="admin-content">
+		<?php
+	}
 
 	/**
 	 * Close out the adminstrator area table.
@@ -130,12 +121,7 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 	static function endAdminArea() {
 		if (!self::$backEnd) return;
 		self::$vmAdminAreaStarted = false;
-		if (VmConfig::get('debug') == '1') {
-		//TODO maybe add debuggin again here
-//		include(VMPATH_ADMIN.'debug.php');
-		}
 		?>
-
 				</div>
 		</div>
 		<div class="clear"></div>
@@ -167,6 +153,7 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 		echo $html;
 	}
 
+
 	/**
 	 * Admin UI Tabs Imitation
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
@@ -180,7 +167,6 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 			var virtuemartcookie="vm-tab";
 			');
 			$html = 	'<div id="admin-ui-tabs">
-
 							<div class="tabs" title="'.vmText::_($language).'">';
 			echo $html;
 		}
@@ -203,24 +189,44 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 		$filter [] = "jmmod.published='1'";
 		$filter [] = "item.published='1'";
 
-		$user = JFactory::getUser();
-
-		/*if(!$user->authorise('core.admin', 'com_virtuemart') and !$user->authorise('core.manage', 'com_virtuemart') ){
-			$filter [] = "jmmod.is_admin='0'";
-		}*/
-
 		if (! empty ( $moduleId )) {
 			$filter [] = 'vmmod.module_id=' . ( int ) $moduleId;
 		}
 
-		$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`
-						FROM `#__virtuemart_modules` AS jmmod
+		$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`';
+		//$query .= ',`jmmod`.`ordering` AS `module_ordering`, `item`.`ordering` AS `item_ordering`';
+		$query .= 'FROM `#__virtuemart_modules` AS jmmod
 						LEFT JOIN `#__virtuemart_adminmenuentries` AS item ON `jmmod`.`module_id`=`item`.`module_id`
 						WHERE  ' . implode ( ' AND ', $filter ) . '
 						ORDER BY `jmmod`.`ordering`, `item`.`ordering` ';
 
 		$db->setQuery ( $query );
 		$result = $db->loadAssocList ();
+		/*
+		// Ask all vmextended plugins whether they want to add a view:
+		// The onVmAdminMenuItems($moduleId) trigger is supposed to return an array of admin menu entries, each of which has the following structure:
+		// array('module_id'=>1, 'module_name'=>'product', 'module_perms'=>'storeadmin,admin',
+		//       'id'=>..., 'name'=>'COM_VIRTUEMART_PRODUCT_S', 'link'=>'', 'depends'=>'', 'icon_class'=>'vmicon vmicon-16-camera',
+		//       'view'=>'YOURVIEW', 'task'=>'', 'module_ordering'=>1, 'item_ordering'=>3)
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$vmextended_menuitems = $dispatcher->trigger('onVmAdminMenuItems', array($moduleId));
+		// Insert the returned menu items into the DB results (need to sort by module+item ID)
+		// $vmextended_menuitems is an array of the arrays returned by each plugin
+		foreach ($vmextended_menuitems as $pluginitems) {
+			$result = array_merge($result, $pluginitems);
+		}
+		// Now order the admin menu entries by module_ordering and item_ordering:
+		$cmp_func = function($i1, $i2) {
+			if ($i1['module_ordering'] != $i2['module_ordering']) {
+				return $i1['module_ordering']-$i2['module_ordering'];
+			} else {
+				// two items within the same module, use item_ordering:
+				return $i1['item_ordering']-$i2['item_ordering'];
+			}
+		};
+		usort($result, $cmp_func);
+*/
 		//		echo '<pre>'.print_r($query,1).'</pre>';
 		for($i = 0, $n = count ( $result ); $i < $n; $i ++) {
 			$row = $result [$i];
@@ -239,19 +245,13 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 			VmConfig::$installed = false;
 		}
 		if(!VmConfig::$installed) return false;
-		$document = JFactory::getDocument ();
-		$moduleId = vRequest::getInt ( 'module_id', 0 );
-		$user = JFactory::getUser();
 
+		$moduleId = vRequest::getInt ( 'module_id', 0 );
 		$menuItems = AdminUIHelper::_getAdminMenu ( $moduleId );
 		$app = JFactory::getApplication();
 		$isSite = $app->isSite();
 		?>
-
 		<div id="admin-ui-menu" class="admin-ui-menu">
-
-
-
 		<?php
 		$modCount = 1;
 		foreach ( $menuItems as $item ) {
@@ -273,10 +273,7 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 						// $url .= $link['extra'] ? $link['extra'] : '';
 					}
 
-					if (/*$user->authorise('core.admin', 'com_virtuemart') or
-						$user->authorise('core.manage', 'com_virtuemart') or
-						($user->authorise('vm.manage', 'com_virtuemart') and $user->authorise('vm.'.$link ['view'], 'com_virtuemart'))*/
-						$vmView->manager($link ['view'])
+					if ( $vmView->manager($link ['view'])
 						|| $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
 						$html .= '
 						<li>
@@ -302,12 +299,8 @@ jQuery('#admin-ui-menu').vm2admin('accordeon');
 						<?php echo $html ?>
 					</ul>
 				</div>
-
-				<?php
-				$modCount ++;
+				<?php $modCount ++;
 			}
-
-
 		}
 		?>
 		<div class="menu-notice"></div>
