@@ -68,18 +68,22 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	public static function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
 
-		$db= JFactory::getDBO ();
-		$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
-		if($virtuemart_customfield_id){
-			$q .= ' WHERE `virtuemart_customfield_id` ="' . (int)$virtuemart_customfield_id . '"';
-		}
-		$db->setQuery ($q);
-		$field = $db->loadObject ();
-		if($field){
-			VirtueMartModelCustomfields::bindCustomEmbeddedFieldParams($field,$field->field_type);
+		static $_customFieldById = array();
+
+		if(!isset($_customFieldById[$virtuemart_customfield_id])){
+			$db= JFactory::getDBO ();
+			$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
+			if($virtuemart_customfield_id){
+				$q .= ' WHERE `virtuemart_customfield_id` ="' . (int)$virtuemart_customfield_id . '"';
+			}
+			$db->setQuery ($q);
+			$_customFieldById[$virtuemart_customfield_id] = $db->loadObject ();
+			if($_customFieldById[$virtuemart_customfield_id]){
+				VirtueMartModelCustomfields::bindCustomEmbeddedFieldParams($_customFieldById[$virtuemart_customfield_id],$_customFieldById[$virtuemart_customfield_id]->field_type);
+			}
 		}
 
-		return $field;
+		return $_customFieldById[$virtuemart_customfield_id];
 	}
 
 	function getCustomEmbeddedProductCustomFields($productIds,$virtuemart_custom_id=0,$cartattribute=-1,$forcefront=FALSE){
@@ -258,7 +262,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			//vmdebug('my $field->options',$field->options);
 			//if(!isset($field->options)) continue;
 
-			$idTag = $product_id.'so'.$k;
+			$class ='';
 			if($selectoption->voption=='clabels'){
 				$name = 'field[' . $row . '][options]['.$product_id.']['.$k.']';
 				$myoption = false;
@@ -271,19 +275,21 @@ class VirtueMartModelCustomfields extends VmModel {
 				} else {
 					$value = trim($myoption[$k]);
 				}
-
+				$idTag = 'cvarl.'.$product_id.'s'.$k;
 			} else {
 				$name = 'childs['.$product_id .']['.$selectoption->voption.']';
 				$value = trim($child->{$selectoption->voption});
-
+				$idTag = 'cvard.'.$product_id.'s'.$k;
+				$class = array('class'=>'cvard');
 			}
 
 			if(count($selectoption->comboptions)>0){
-				$html .= '<td>'.JHtml::_ ('select.genericlist', $selectoption->comboptions,$name , '', 'value', 'text',
-						$value ,$idTag) .'</td>';
+				$html .= '<td>'.JHtml::_ ('select.genericlist', $selectoption->comboptions,$name , $class, 'value', 'text',
+						$value ,$idTag);
 				if($selectoption->voption!='clabels'){
 					$html .= '<input type="hidden" name="field[' . $row . '][options]['.$product_id.']['.$k.']" value="'.$value .'" />';
 				}
+				$html .= '</td>';
 			}
 		}
 		$html .= '</tr>';
@@ -487,7 +493,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				vmJsApi::addJScript('new_ramification',"
 	jQuery( function($) {
 		$('#new_ramification_bt').click(function() {
-			var Prod = $('.new_ramification');
+			var Prod = $('.new_ramification');//obsolete?
 
 			var voption = jQuery('#voption').val();
 			var label = jQuery('#vlabel').val();
@@ -503,7 +509,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		});
 	});
 	");
-				//$html .= '<script type="text/javascript">'.$script.'</script>';
+
 
 				if ($product_id) {
 					$link=JRoute::_('index.php?option=com_virtuemart&view=product&task=createChild&virtuemart_product_id='.$product_id.'&'.JSession::getFormToken().'=1&target=parent' );
@@ -529,7 +535,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= '</div>
 					</div><div class="clear"></div>';
 				//vmdebug('my $field->selectoptions',$field->selectoptions,$field->options);
-				$html .= '<table>';
+				$html .= '<table id="syncro">';
 				$html .= '<tr>
 <th style="text-align: left !important;width:130px;">#</th>
 <th style="text-align: left !important;width:90px;">'.vmText::_('COM_VIRTUEMART_PRODUCT_SKU').'</th>
@@ -776,18 +782,29 @@ class VirtueMartModelCustomfields extends VmModel {
 					$ignore = array();
 
 					foreach($customfield->options as $product_id=>$variants){
-						if(in_array($product_id,$ignore)) continue;
-						foreach($variants as $k => $variant){
-							if(!isset($dropdowns[$k]) or !is_array($dropdowns[$k])) $dropdowns[$k] = array();
 
+
+						foreach($variants as $k => $variant){
+							//if(in_array($variant,$ignore)){ vmdebug('Product to ignore, continue',$product_id,$k,$variant);continue;}
+
+							if(!isset($dropdowns[$k]) or !is_array($dropdowns[$k])) $dropdowns[$k] = array();
 							if(!in_array($variant,$dropdowns[$k])  ){
 								if($k==0 or !$productSelection){
 									$dropdowns[$k][] = $variant;
 								} else if($k>0 and $productSelection[$k-1] == $variants[$k-1]){
-									$dropdowns[$k][] = $variant;
+									$break=false;
+									for($h=1;$h<=$k;$h++){
+										if($productSelection[$h-1] != $variants[$h-1]){
+											//$ignore[] = $variant;
+											$break=true;
+										}
+									}
+									if(!$break){
+										$dropdowns[$k][] = $variant;
+									}
+
 								} else {
-									$ignore[] = $product_id;
-									break;
+								//	break;
 								}
 							}
 						}
@@ -846,10 +863,11 @@ var cvFind = function(event) {
 				selection[selection.length] = jQuery(this).val();
 			});
 
-			var index, i2, hitcount, runs;
+			var index=0, i2=0, hitcount=0, runs=0;
 			//to ensure that an url is set, set the url of first product
 			event.data.el.attr('url',event.data.variants[0][0]);
-			for	(runs = 0; runs <= selection.length; index++) {
+
+			for	(runs = 0; runs < selection.length; index++) {
 				for	(index = 0; index < event.data.variants.length; index++) {
 					hitcount = 0;
 					for	(i2 = 0; i2 <= selection.length; i2++) {

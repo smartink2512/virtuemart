@@ -210,7 +210,14 @@ $jsCsort = "
 		nextCustom++;
 	});
 
-		jQuery('input#relatedproductsSearch').autocomplete({
+	jQuery.each(jQuery('.cvard'), function(i,val){
+		jQuery(val).chosen().change(function() {
+			quantity = jQuery(this).parent().find('input[type=\"hidden\"]');
+			quantity.val(jQuery(this).val());
+		});
+	});
+
+	jQuery('input#relatedproductsSearch').autocomplete({
 
 		source: '".$jsonLink."&type=relatedproducts&row='+nextCustom,
 		select: function(event, ui){
