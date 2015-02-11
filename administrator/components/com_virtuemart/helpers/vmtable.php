@@ -1530,7 +1530,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 					$langTable->$name = $this->$name;
 					if (isset($data->$name)) {
 						//We directly store language stuff "escaped"
-						$langData[$name] = htmlentities($data->$name, ENT_QUOTES, "UTF-8");
+						$tmp = html_entity_decode($data->$name, ENT_QUOTES, "UTF-8");
+						$langData[$name] = htmlentities($tmp, ENT_QUOTES, "UTF-8");
 					}
 					unset($dataTable->$name);
 
@@ -1552,7 +1553,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 				foreach ($this->_translatableFields as $name) {
 					$langTable->$name = $this->$name;
 					if (isset($data[$name])) {
-						$langData[$name] = htmlentities($data[$name], ENT_QUOTES, "UTF-8");
+						$tmp = html_entity_decode($data[$name], ENT_QUOTES, "UTF-8");
+						$langData[$name] = htmlentities($tmp, ENT_QUOTES, "UTF-8");
 					}
 					unset($dataTable->$name);
 
