@@ -119,8 +119,11 @@ class VirtuemartViewProduct extends VmViewAdmin {
 					}
 				} else { //if ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
+					$colspan ='';
 					if ($field->field_type =='E') {
 						$this->model->bindCustomEmbeddedFieldParams($field,'E');
+					} else if($field->field_type == 'C'){
+						$colspan = 'colspan="2" ';
 					}
 
 					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
@@ -141,7 +144,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 						'.$this->model->setEditCustomHidden($field, $this->row).'
 					 	</td>
-							<td>'.$display.'</td>
+							<td '.$colspan.'>'.$display.'</td>
 						 </tr>
 					</tr>';
 					$this->row++;

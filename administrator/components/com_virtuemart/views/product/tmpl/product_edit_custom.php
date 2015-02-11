@@ -71,6 +71,9 @@ defined('_JEXEC') or die('Restricted access');
 						}
 						$colspan = '';
 
+						if($customfield->field_type == 'C'){
+							$colspan = 'colspan="2" ';
+						}
 						if($customfield->override!=0 or $customfield->disabler!=0){
 
 							if(!empty($customfield->disabler)) $checkValue = $customfield->disabler;
@@ -143,9 +146,7 @@ defined('_JEXEC') or die('Restricted access');
 					<thead>
 					<tr class="row1">
 						<th style="min-width:140px;width:5%;"><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>
-						<?php if($customfield->field_type != 'C'){ ?>
-							<th width="100px"><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
-						<?php } ?>
+						<th width="100px"><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
 						<th><?php echo vmText::_('COM_VIRTUEMART_VALUE');?></th>
 					</tr>
 					</thead>
@@ -218,7 +219,6 @@ $jsCsort = "
 	});
 
 	jQuery('input#relatedproductsSearch').autocomplete({
-
 		source: '".$jsonLink."&type=relatedproducts&row='+nextCustom,
 		select: function(event, ui){
 			jQuery('#custom_products').append(ui.item.label);
