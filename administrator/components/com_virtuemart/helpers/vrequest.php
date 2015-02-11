@@ -148,8 +148,8 @@ class vRequest {
 	 * - Encodes all characters that has a numerical value <32.
 	 * - keeps "secure" html
 	 */
-	public static function getHtml($name, $default = ''){
-		$tmp = self::get($name, $default,FILTER_UNSAFE_RAW,FILTER_FLAG_ENCODE_LOW);
+	public static function getHtml($name, $default = '', $input = false){
+		$tmp = self::get($name, $default,FILTER_UNSAFE_RAW,FILTER_FLAG_ENCODE_LOW,$input);
 		return JComponentHelper::filterText($tmp);
 	}
 
@@ -189,7 +189,6 @@ class vRequest {
 			}
 
 			if(!isset($source[$name])){
-
 				return $default;
 			}
 
@@ -237,7 +236,6 @@ class vRequest {
 				$source = array_merge($_GET,$vars);
 			}
 		}
-
 		return self::filter($source, $filter, $flags,true);
 	}
 	

@@ -849,9 +849,9 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 		public function createIndexFolder ($path) {
 
 			if (JFolder::create ($path)) {
-				if (!JFile::exists ($path . DS . 'index.html')) {
+				/*if (!JFile::exists ($path . DS . 'index.html')) {
 					JFile::copy (JPATH_ROOT . DS . 'components' . DS . 'index.html', $path . DS . 'index.html');
-				}
+				}*/
 				return TRUE;
 			}
 			return FALSE;

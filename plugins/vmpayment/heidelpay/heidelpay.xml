@@ -13,7 +13,6 @@
         <![CDATA[<h2>Virtuemart Plugin von:</h2><p><a href="http://www.Heidelpay.de" target="_blank"><img src="http://www.heidelpay.de/gfx/logo.gif" style="margin-right:20px;"/></a></p> ]]></description>
     <files>
         <filename plugin="heidelpay">heidelpay.php</filename>
-        <filename>index.html</filename>
         <folder>heidelpay</folder>
     </files>
     <vmconfig>

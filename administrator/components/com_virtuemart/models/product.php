@@ -2122,15 +2122,16 @@ class VirtueMartModelProduct extends VmModel {
 			if (is_array ($value)) {
 				foreach ($value as $k => $v) {
 					if(empty($v)) continue;
-					$fieldLink .= '&' . $key . '[' . $k . ']' . '=' . $v;
+					$fieldLink .= '&' . urlencode($key) . '[' . urlencode($k) . ']' . '=' . urlencode($v);
 				}
 			}
 			else {
 				if($key=='dir' or $key=='orderby') continue;
 				if(empty($value)) continue;
-				$fieldLink .= '&' . $key . '=' . $value;
+				$fieldLink .= '&' . urlencode($key) . '=' . urlencode($value);
 			}
 		}
+
 		$fieldLink = 'index.php?'. ltrim ($fieldLink,'&');
 
 		$orderDirLink = '';

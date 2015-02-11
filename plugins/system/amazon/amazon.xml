@@ -10,7 +10,6 @@
     <description>AMAZON payment SYSTEM plugin</description>
     <files>
     <filename plugin="amazon">amazon.php</filename>
-    <filename>index.html</filename>
 </files>
 
     <config>

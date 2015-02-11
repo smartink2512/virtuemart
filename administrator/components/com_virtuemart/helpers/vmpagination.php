@@ -167,17 +167,18 @@ class VmPagination extends vObject {
 			$link = '';
 			unset ($getArray['limit']);
 
-			foreach( $getArray as $key => $value ) {
-				if(is_array( $value )) {
-					foreach( $value as $k => $v ) {
-						$link .= '&'.$key.'['.$k.']'.'='.$v;
+			foreach ($getArray as $key => $value) {
+				if (is_array ($value)) {
+					foreach ($value as $k => $v) {
+						$link .= '&' . urlencode($key) . '[' . urlencode($k) . ']' . '=' . urlencode($v);
 					}
-				} else {
-					$link .= '&'.$key.'='.$value;
+				}
+				else {
+					$link .= '&' . urlencode($key) . '=' . urlencode($value);
 				}
 			}
 
-			$link = 'index.php?'.ltrim( $link, '&' );
+			$link = 'index.php?'. ltrim( $link, '&' );
 
 			if(empty($sequence)) {
 				$sequence = VmConfig::get( 'pagseq_'.$this->_perRow );

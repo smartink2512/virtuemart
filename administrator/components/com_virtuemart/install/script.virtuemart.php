@@ -178,6 +178,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$model->updateJoomlaUpdateServer('component','com_virtuemart',$this->path.DS.'virtuemart.xml');
 
+			$this->deleteSwfUploader();
+
 			$this->displayFinished(false);
 
 			//include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -301,10 +303,18 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//fix joomla BE menu
 			//$model = VmModel::getModel('updatesmigration');
 			//$model->checkFixJoomlaBEMenuEntries();
-
+			$this->deleteSwfUploader();
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
+		}
+
+		private function deleteSwfUploader(){
+			if(JVM_VERSION>0){
+				if(JFolder::exists(VMPATH_ROOT. DS. 'media' .DS. 'system'. DS. 'swf')){
+					JFolder::delete(VMPATH_ROOT. DS. 'media' .DS. 'system'. DS. 'swf');
+				}
+			}
 		}
 
 		private function isUpdateToVm3(){

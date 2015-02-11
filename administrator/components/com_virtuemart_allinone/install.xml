@@ -17,7 +17,6 @@
     <administration>
         <menu>VirtueMart AIO</menu>
         <files folder="admin">
-            <filename>index.html</filename>
             <filename>admin.virtuemart_allinone.php</filename>
             <folder>libraries</folder>
             <folder>plugins</folder>
