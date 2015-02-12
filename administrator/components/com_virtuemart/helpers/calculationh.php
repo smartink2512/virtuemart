@@ -38,6 +38,7 @@ class calculationHelper {
 
 	var $productPrices;
 
+	/* @deprecated */
 	public $_amount;
 	public $_amountCart = 0.0;
 
@@ -311,7 +312,7 @@ class calculationHelper {
 
 			$this->_cats = isset($product->categories)? $product->categories: array();
 			$this->_product = $product;
-			$this->_product->amount = $amount;
+			$this->_product->amount = $amount;	//temporary quantity
 			$this->productPrices = array();
 			if(!isset($this->_product->quantity)) $this->_product->quantity = 1;
 
@@ -330,11 +331,10 @@ class calculationHelper {
 			$this->vendorCurrency = $vendorCurrencies[$this->productVendorId];
 		}
 
+		//temporary quantity
 		if (!empty($amount)) {
 			$this->_amount = $amount;
 		}
-
-
 
 		//For Profit, margin, and so on
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
@@ -466,13 +466,13 @@ class calculationHelper {
 						$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'] = 0.0;
 						$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'] = 0.0;
 					}
-					$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'] += $this->productPrices['taxAmount'] * $this->_product->quantity;
-					$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal']  += $this->productPrices['salesPrice'] * $this->_product->quantity;
+					$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'] += $this->productPrices['taxAmount'] * $this->_product->amount;
+					$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal']  += $this->productPrices['salesPrice'] * $this->_product->amount;
 
 				} else {
 					$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']] = $rule;
-					if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'] = $this->productPrices['taxAmount'] * $this->_product->quantity;
-					if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'] = $this->productPrices['salesPrice'] * $this->_product->quantity;
+					if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'] = $this->productPrices['taxAmount'] * $this->_product->amount;
+					if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'] = $this->productPrices['salesPrice'] * $this->_product->amount;
 				}
 			}
 		}
@@ -528,10 +528,6 @@ class calculationHelper {
 				$vendorCurrencies[$this->productVendorId] = $this->_db->loadResult();
 			}
 			$this->vendorCurrency = $vendorCurrencies[$this->productVendorId];
-		}
-
-		if (!empty($amount)) {
-			$this->_amount = $amount;
 		}
 
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);

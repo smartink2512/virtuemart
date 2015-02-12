@@ -1,5 +1,5 @@
 INSERT IGNORE INTO `#__virtuemart_calcs` (`virtuemart_calc_id`, `virtuemart_vendor_id`, `calc_jplugin_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `for_override`, `calc_params`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-  (1, 1, 0, 'Tax 20%', '', 'VatTax', '+%', 20.0000, 47, 0, 0, '', '', 0, '', 0, 0, 1, '', 635, '', 635, '', 0),
+  (1, 1, 0, 'Tax', '', 'VatTax', '+%', 20.0000, 47, 0, 0, '', '', 0, '', 0, 0, 1, '', 635, '', 635, '', 0),
 	(2, 1, 0, 'Discount 5% per bill', '', 'DATaxBill', '-%', 5.0000, 47, 0, 0, '', '', 0, '', 0, 0, 1, '', 635, '', 635, '', 0);
 
 INSERT IGNORE INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `limit_list_step`, `limit_list_initial`, `hits`, `metarobot`, `metaauthor`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES

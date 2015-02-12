@@ -45,10 +45,10 @@ class JFormFieldVmAcceptedCurrency extends JFormFieldList {
 		$values = $cModel->getVendorAcceptedCurrrenciesList();
 
 		$options[] = JHtml::_('select.option', 0, vmText::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
+		$options[] = JHtml::_('select.option', -1, vmText::_('COM_VIRTUEMART_SELECTED_MODULE_CURRENCY'));
 		foreach ($values as $v) {
 			$options[] = JHtml::_('select.option', $v->virtuemart_currency_id, $v->currency_txt);
 		}
-
 		return $options;
 	}
 

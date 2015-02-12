@@ -854,7 +854,18 @@ abstract class vmPSPlugin extends vmPlugin {
 			$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
 			$db->setQuery ($q);
 			$method->payment_currency = $db->loadResult ();
+		} elseif (isset($method->payment_currency) and $method->payment_currency== -1) {
+			$vendorId = 1;
+			$db = JFactory::getDBO();
+// the select list should include the vendor currency which is the currency in which the product prices are displayed by default.
+			$q  = 'SELECT CONCAT(`vendor_accepted_currencies`, ",",`vendor_currency`) AS all_currencies, `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`='.$vendorId;
+			$db->setQuery($q);
+			$vendor_currency = $db->loadAssoc();
+			$mainframe = Jfactory::getApplication();
+			$method->payment_currency = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', $vendor_currency['vendor_currency']) );
 		}
+
+
 	}
 
 	function getEmailCurrency (&$method) {
