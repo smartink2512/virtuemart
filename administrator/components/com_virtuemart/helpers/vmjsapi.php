@@ -734,4 +734,23 @@ class vmJsApi{
 		return $formatedDate;
 	}
 
+	static function keepAlive(){
+
+		static $done = false;
+		if($done) return;
+		$done = true;
+
+		$config = JFactory::getConfig();
+		$lifetime = ($config->get('lifetime') );
+		$refTime = ($lifetime <= 1) ? 1 : $lifetime - 1;
+		// Refresh time is 1 minute less than the liftime assined in the configuration.php file.
+
+		// the longest refresh period is 30 min to prevent integer overflow.
+		if ($refTime > 30 || $refTime <= 0) {
+			$refTime = 30;
+		}
+
+		vmJsApi::addJScript('keepAliveTime','var sessTime = '.$refTime.';',false,true);
+		vmJsApi::addJScript('keepalive');
+	}
 }

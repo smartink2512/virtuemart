@@ -18,8 +18,6 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.modal');
-
 
 echo "<h3>" . $this->paymentResponse . "</h3>";
 if ($this->paymentResponseHtml) {

@@ -22,8 +22,6 @@ static $ask_recommened_loaded = false;
 if($ask_recommened_loaded) return '';
 
 $product = $viewData['product'];
-// addon for joomla modal Box
-JHtml::_('behavior.modal');
 
 if(VmConfig::get('usefancy',1)){
 	

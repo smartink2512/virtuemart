@@ -36,12 +36,6 @@ $user = JFactory::getUser();
 
 if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
-JHtml::_ ( 'behavior.modal' );
-
-
-//$uri = JFactory::getURI();
-//$url = $uri->toString(array('path', 'query', 'fragment'));
-
 
 	//Extra login stuff, systems like openId and plugins HERE
     if (JPluginHelper::isEnabled('authentication', 'openid')) {

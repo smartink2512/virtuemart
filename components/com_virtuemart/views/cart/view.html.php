@@ -212,6 +212,7 @@ class VirtueMartViewCart extends VmView {
 			}
 		}
 
+		//vmJsApi::keepAlive();
 		parent::display($tpl);
 	}
 

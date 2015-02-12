@@ -24,7 +24,7 @@ $intervalTitle = vRequest::getVar('intervals','day');
 if ( ($intervalTitle =='week') or ($intervalTitle =='month') ) $addDateInfo = true ;
 else $addDateInfo = false;
 
-JHtml::_('behavior.framework', true);
+//JHtml::_('behavior.framework', true);
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">

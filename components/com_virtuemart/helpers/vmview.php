@@ -29,8 +29,8 @@ class VmView extends JViewLegacy{
 	var $isPdf = false;
 	var $writeJs = true;
 
-	public function display($tpl = null)
-	{
+	public function display($tpl = null) {
+
 		$result = $this->loadTemplate($tpl);
 		if ($result instanceof Exception) {
 			return $result;

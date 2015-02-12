@@ -16,9 +16,7 @@ defined ('_JEXEC') or die();
  * http://virtuemart.net
  */
 if (!empty($viewData['payment_logo_link'] )) {
-// addon for joomla modal Box
-	JHTML::_('behavior.modal');
-// JHTML::_('behavior.tooltip');
+
 	if(VmConfig::get('usefancy',1)){
 		vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack');
 		vmJsApi::css('jquery.fancybox-1.3.4');
