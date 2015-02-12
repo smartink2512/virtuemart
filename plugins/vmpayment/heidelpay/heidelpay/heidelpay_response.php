@@ -36,16 +36,19 @@ if ( $_SERVER['SERVER_PORT'] == "443" ) {
 $PATH = preg_replace('@plugins\/vmpayment\/heidelpay\/heidelpay\/heidelpay_response\.php@','', $_SERVER['SCRIPT_NAME']);
 $URL = $_SERVER['HTTP_HOST'] . $PATH ; 
 
+if(ctype_alnum($_GET['on'])){ $on = $_GET['on']; }else{ $on = ''; }
+$pm			= (int) $_GET['pm'];
+$Itemid	= (int) $_GET['Itemid'];
 
-$redirectURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on='.$_GET['on'].'&pm='.$_GET['pm'].'&Itemid='.$_GET['Itemid'];
-$cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on='.$_GET['on'].'&pm='.$_GET['pm'].'&Itemid='.$_GET['Itemid'];
+$redirectURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on='.$on.'&pm='.$pm.'&Itemid='.$Itemid;
+$cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on='.$on.'&pm='.$pm.'&Itemid='.$Itemid;
+
 
 function updateHeidelpay($orderID, $connect) {
 	$comment="";
 	if ( preg_match('/^[A-Za-z0-9 -]+$/', $orderID , $str)) {
 		$link = mysql_connect($connect->host, $connect->user , $connect->password);
-		mysql_set_charset('utf8',$link);
-		mysql_select_db($connect->db);	
+		mysql_select_db($connect->db);
 		$result = mysql_query("SELECT virtuemart_order_id FROM ".$connect->dbprefix."virtuemart_orders"." WHERE  order_number = '".mysql_real_escape_string($orderID)."';");
 		$row = mysql_fetch_object($result);
 		$paymentCode = explode('.' , $_POST['PAYMENT_CODE']);

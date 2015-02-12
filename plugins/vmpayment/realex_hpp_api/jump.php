@@ -17,51 +17,24 @@
  *
  * http://virtuemart.net
  */
-?>
-<?php
 
-// url sent in get
-$url = $_POST['gateway_url'];
-unset($_POST['gateway_url']);
-?>
 
-<html>
-<head>
-	<title>Transferring...</title>
-	<meta http-equiv="Content-Type"
-	      content="text/html; charset=iso-8859-1">
-</head>
+$_GET["option"] = "com_virtuemart";
+$_GET["element"] = "realex_hpp_api";
 
-<body bgcolor="#FFFFFF" text="#000000">
+$_REQUEST["option"] = "com_virtuemart";
+$_REQUEST["element"] = "realex_hpp_api";
 
-<form
-	name="form1"
-	action="<?php echo $url; ?>"
-	method="POST">
+$_GET["view"] = "pluginresponse";
+$_GET["task"] = "pluginnotification";
+$_GET["format"] = "raw";
+$_GET["notificationTask"] = "jumpRedirect";
 
-	<?php
-	// get the posted vars
-	$field_array = array_keys($_POST);
-
-	//loop posted fields
-	for ($i = 0; $i < count($field_array); $i++) {
-		$actual_var = $field_array[$i];
-		$actual_val = stripslashes($_POST[$actual_var]);
-
-		//hidden form field
-		echo("<input type=\"hidden\" name=\"");
-		echo($actual_var . "\" value=\"");
-		echo(trim($actual_val) . "\" />\n");
-	}
-
-	?>
-</form>
-
-<script language="javascript">
-	var f = document.forms;
-	f = f[0];
-	f.submit();
-</script>
-
-</body>
-</html>
+$_REQUEST["view"] = "pluginresponse";
+$_REQUEST["task"] = "pluginnotification";
+$_REQUEST["format"] = "raw";
+$_REQUEST["notificationTask"] = "jumpRedirect";
+$vmpayment_realex_path = dirname(__FILE__);
+if( file_exists($vmpayment_realex_path."/../../../index.php")) {
+	include($vmpayment_realex_path."/../../../index.php");
+}

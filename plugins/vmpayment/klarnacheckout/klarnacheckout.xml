@@ -79,12 +79,12 @@
                 <field name="max_amount" type="text" label="VMPAYMENT_KLARNACHECKOUT_MAX_AMOUNT"
                        description="VMPAYMENT_KLARNACHECKOUT_MAX_AMOUNT_DESC"/>
 
-                <field name="debug" type="hidden" default="0" label="VMPAYMENT_KLARNACHECKOUT_DEBUG"
+                <field name="debug" type="radio" default="0" label="VMPAYMENT_KLARNACHECKOUT_DEBUG"
                        description="VMPAYMENT_KLARNACHECKOUT_DEBUG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-                <field name="log" type="hidden" default="1" label="VMPAYMENT_KLARNACHECKOUT_DEBUG"
+                <field name="log" type="radio" default="1" label="VMPAYMENT_KLARNACHECKOUT_DEBUG"
                        description="VMPAYMENT_KLARNACHECKOUT_DEBUG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
