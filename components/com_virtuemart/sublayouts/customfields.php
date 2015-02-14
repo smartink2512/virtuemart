@@ -41,7 +41,7 @@ if (!empty($product->customfieldsSorted[$position])) {
 				<?php if (!$customTitle and $field->custom_title != $custom_title and $field->show_title) { ?>
 					<span class="product-fields-title-wrapper"><span class="product-fields-title"><strong><?php echo vmText::_ ($field->custom_title) ?></strong></span>
 						<?php if ($field->custom_tip) {
-							echo JHtml::tooltip ($field->custom_tip, vmText::_ ($field->custom_title), 'tooltip.png');
+							echo JHtml::tooltip (vmText::_($field->custom_tip), vmText::_ ($field->custom_title), 'tooltip.png');
 						} ?></span>
 				<?php }
 				if (!empty($field->display)){

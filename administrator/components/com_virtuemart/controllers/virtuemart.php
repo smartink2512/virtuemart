@@ -67,4 +67,8 @@ class VirtuemartControllerVirtuemart extends VmController {
 		jexit();
 	}
 
+	public function keepalive(){
+		jExit();
+	}
+
 }

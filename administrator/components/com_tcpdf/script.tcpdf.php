@@ -85,31 +85,37 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		 */
 		private function recurse_copy ($src, $dst) {
 
+			static $failed = false;
 			$dir = opendir ($src);
 
 			if (is_resource ($dir)) {
 				while (FALSE !== ($file = readdir ($dir))) {
 					if (($file != '.') && ($file != '..')) {
 						if (is_dir ($src . DS . $file)) {
+							if(!JFolder::create($dst . DS . $file)){
+								$app = JFactory::getApplication ();
+								$app->enqueueMessage ('Couldnt create folder ' . $dst . DS . $file);
+							}
 							$this->recurse_copy ($src . DS . $file, $dst . DS . $file);
 						} else {
 							if (JFile::exists ($dst . DS . $file)) {
 								if (!JFile::delete ($dst . DS . $file)) {
 									$app = JFactory::getApplication ();
 									$app->enqueueMessage ('Couldnt delete ' . $dst . DS . $file);
-									return false;
+									//return false;
 								}
 							}
 							if (!JFile::move ($src . DS . $file, $dst . DS . $file)) {
 								$app = JFactory::getApplication ();
 								$app->enqueueMessage ('Couldnt move ' . $src . DS . $file . ' to ' . $dst . DS . $file);
-								return false;
+								$failed = true;
+								//return false;
 							}
 						}
 					}
 				}
 				closedir ($dir);
-				if (is_dir ($src)) {
+				if (is_dir ($src) and !$failed) {
 					JFolder::delete ($src);
 				}
 			} else {

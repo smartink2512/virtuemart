@@ -268,6 +268,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
 
+
 				break;
 
 			case 'massxref_cats':

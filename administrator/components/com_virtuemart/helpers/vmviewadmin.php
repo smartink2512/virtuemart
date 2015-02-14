@@ -69,6 +69,7 @@ class VmViewAdmin extends JViewLegacy {
 			}
 
 			echo $result;
+
 			if($this->writeJs) echo vmJsApi::writeJS();
 			return true;
 		} else {
@@ -184,15 +185,13 @@ class VmViewAdmin extends JViewLegacy {
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
 		$app = JFactory::getApplication();
-		$lists[$name] = $app->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
+		$this->lists[$name] = $app->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
 
-		$lists['filter_order'] = $this->getValidFilterOrder($app,$model,$view,$default_order);
+		$this->lists['filter_order'] = $this->getValidFilterOrder($app,$model,$view,$default_order);
 
 		$toTest = $app->getUserStateFromRequest( 'com_virtuemart.'.$view.'.filter_order_Dir', 'filter_order_Dir', $default_dir, 'cmd' );
 
-		$lists['filter_order_Dir'] = $model->checkFilterDir($toTest);
-
-		$this->assignRef('lists', $lists);
+		$this->lists['filter_order_Dir'] = $model->checkFilterDir($toTest);
 
 	}
 
@@ -382,6 +381,8 @@ class VmViewAdmin extends JViewLegacy {
 			$this->langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
 
 			$this->assignRef('lang',$lang);
+
+			vmJsApi::keepAlive();
 		}
 
 		if(JFactory::getApplication()->isSite()){

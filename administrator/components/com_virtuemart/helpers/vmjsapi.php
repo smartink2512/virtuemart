@@ -25,9 +25,18 @@
 class vmJsApi{
 
 	private static $_jsAdd = array();
+	private static $_be = null;
 
 	private function __construct() {
 
+	}
+
+	private static function isAdmin(){
+
+		if(!isset(self::$_be)){
+			self::$_be = JFactory::getApplication()->isAdmin();
+		}
+		return self::$_be;
 	}
 
 	/**
@@ -173,7 +182,7 @@ class vmJsApi{
 	 */
 	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js', $absolute_path=false)
 	{
-		$app = JFactory::getApplication();
+
 		$version = $version ? '.'.$version : '';
 		$min	 = $minified ? '.min' : '';
 		$file 	 = $namespace.$version.$min.'.'.$ext ;
@@ -232,7 +241,7 @@ class vmJsApi{
 			//return true;
 		}
 
-		if($isSite===-1) $isSite = JFactory::getApplication()->isSite();
+		if($isSite===-1) $isSite = !self::isAdmin();
 
 		if (!VmConfig::get ('jquery', true) and $isSite) {
 			vmdebug('Common jQuery is disabled');
@@ -273,7 +282,7 @@ class vmJsApi{
 	// Virtuemart product and price script
 	static function jPrice() {
 
-		if (!VmConfig::get ('jprice', TRUE) and JFactory::getApplication ()->isSite ()) {
+		if (!VmConfig::get ('jprice', TRUE) and !self::isAdmin()) {
 			return FALSE;
 		}
 		static $jPrice;
@@ -336,14 +345,14 @@ class vmJsApi{
 	}
 
 	static function jSite() {
-		if (!VmConfig::get ('jsite', TRUE) and JFactory::getApplication ()->isSite ()) {
+		if (!VmConfig::get ('jsite', TRUE) and !self::isAdmin()) {
 			return FALSE;
 		}
 		self::addJScript('vmsite',false,false);
 	}
 
 	static function jDynUpdate() {
-		if (!VmConfig::get ('jdynupdate', TRUE) and JFactory::getApplication ()->isSite ()) {
+		if (!VmConfig::get ('jdynupdate', TRUE) and !self::isAdmin()) {
 			return FALSE;
 		}
 		self::addJScript('dynupdate',false,false);
@@ -419,7 +428,7 @@ class vmJsApi{
 		static $chosenDropDowns = false;
 
 		if(!$chosenDropDowns){
-			$be = JFactory::getApplication()->isAdmin();
+			$be = self::isAdmin();
 			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::addJScript('chosen.jquery.min',false,false);
 				vmJsApi::jDynUpdate();
@@ -741,16 +750,18 @@ class vmJsApi{
 		$done = true;
 
 		$config = JFactory::getConfig();
-		$lifetime = ($config->get('lifetime') );
-		$refTime = ($lifetime <= 1) ? 1 : $lifetime - 1;
-		// Refresh time is 1 minute less than the liftime assined in the configuration.php file.
+		$refTime = ($config->get('lifetime') );
 
 		// the longest refresh period is 30 min to prevent integer overflow.
 		if ($refTime > 30 || $refTime <= 0) {
 			$refTime = 30;
 		}
 
-		vmJsApi::addJScript('keepAliveTime','var sessTime = '.$refTime.';',false,true);
+		$admin = '';
+		if(self::isAdmin()){
+			$admin = 'administrator/';
+		}
+		vmJsApi::addJScript('keepAliveTime','var sessTime = '.$refTime.';vmBaseUrl = "'. JURI::root( ) .$admin.'";',false,true);
 		vmJsApi::addJScript('keepalive');
 	}
 }

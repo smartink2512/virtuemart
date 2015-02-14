@@ -279,7 +279,7 @@ class ShopFunctions {
 		$db->setQuery($qry);
 		$orderStatusList = $db -> loadAssocList();
 		foreach($orderStatusList as &$text){
-			$text = $text['value'].' '.vmText::_($text['text']);
+			$text['text'] = $text['value'].' '.vmText::_($text['text']);
 		}
 		return JHtml::_('select.genericlist',$orderStatusList,'ordering','','value','text',$selected);
 	}

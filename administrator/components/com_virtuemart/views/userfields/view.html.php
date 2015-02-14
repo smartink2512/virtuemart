@@ -59,7 +59,8 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 
 			if (!class_exists('ShopFunctions'))
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-			$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$this->userField->virtuemart_userfield_id);
+
+			$this->ordering = ShopFunctions::renderOrderingList('userfields','name',$this->userField->ordering);
 
 			if ($this->userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
@@ -152,6 +153,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			//$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
 			$this->assignRef('editor', $editor);
+			vmJsApi::keepAlive();
 		} else {
 			JToolBarHelper::title( vmText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
 			JToolBarHelper::addNew();

@@ -39,7 +39,7 @@ class calculationHelper {
 	var $productPrices;
 
 	/* @deprecated */
-	public $_amount;
+	public $_amount = 1;
 	public $_amountCart = 0.0;
 
 	public $productVendorId;
@@ -294,6 +294,12 @@ class calculationHelper {
 
 		$costPrice = 0;
 
+		//temporary quantity
+		if (empty($amount)) {
+			$amount = 1;
+		}
+		$this->_amount = $amount;
+
 		//We already have the productobject, no need for extra sql
 		if (is_object($product)) {
 
@@ -331,10 +337,7 @@ class calculationHelper {
 			$this->vendorCurrency = $vendorCurrencies[$this->productVendorId];
 		}
 
-		//temporary quantity
-		if (!empty($amount)) {
-			$this->_amount = $amount;
-		}
+
 
 		//For Profit, margin, and so on
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);

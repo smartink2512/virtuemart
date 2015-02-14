@@ -805,6 +805,10 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 				while (FALSE !== ($file = readdir ($dir))) {
 					if (($file != '.') && ($file != '..')) {
 						if (is_dir ($src . DS . $file)) {
+							if(!JFolder::create($dst . DS . $file)){
+								$app = JFactory::getApplication ();
+								$app->enqueueMessage ('Couldnt create folder ' . $dst . DS . $file);
+							}
 							$this->recurse_copy ($src . DS . $file, $dst . DS . $file);
 						} else {
 							if (JFile::exists ($dst . DS . $file)) {

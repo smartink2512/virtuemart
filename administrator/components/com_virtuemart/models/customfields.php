@@ -1019,16 +1019,16 @@ cvFunc();
 				case 'S':
 				case 'M':
 
-				if($type== 'M'){
-					$selectType = 'select.radiolist';
-					$class = '';
-				} else {
-					$selectType = 'select.genericlist';
-					if(!empty($customfield->is_input)){
-						vmJsApi::chosenDropDowns();
-						$class = 'class="vm-chzn-select"';
+					if($type== 'M'){
+						$selectType = 'select.radiolist';
+						$class = '';
+					} else {
+						$selectType = 'select.genericlist';
+						if(!empty($customfield->is_input)){
+							vmJsApi::chosenDropDowns();
+							$class = 'class="vm-chzn-select"';
+						}
 					}
-				}
 
 					if($customfield->is_list){
 

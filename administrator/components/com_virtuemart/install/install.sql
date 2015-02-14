@@ -1129,7 +1129,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `userfield_jplugin_id` int(1) NOT NULL DEFAULT '0',
   `name` char(255) NOT NULL DEFAULT '',
   `title` char(255) NOT NULL DEFAULT '',
-  `description` varchar(4096),
+  `description` varchar(2048),
   `type` char(70) NOT NULL DEFAULT '',
   `maxlength` int(1),
   `size` int(1),

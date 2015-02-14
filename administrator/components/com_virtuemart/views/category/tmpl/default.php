@@ -122,7 +122,7 @@ AdminUIHelper::startAdminArea($this);
 				<td class="admin-checkbox"><?php echo $checked;?></td>
 				<td align="left">
 					<span class="categoryLevel"><?php echo $categoryLevel;?></span>
-					<a href="<?php echo $editlink;?>"><?php echo $this->escape($cat->category_name);?></a>
+					<a href="<?php echo $editlink;?>"><?php echo $cat->category_name; ?></a>
 				</td>
 				<td align="left">
 

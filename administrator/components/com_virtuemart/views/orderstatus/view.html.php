@@ -6,8 +6,9 @@
  * @package	VirtueMart
  * @subpackage OrderStatus
  * @author Oscar van Eijk
+ * @author Max Milbers
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -27,72 +28,56 @@ if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmi
  *
  * @package	VirtueMart
  * @subpackage OrderStatus
- * @author Oscar van Eijk
  */
 class VirtuemartViewOrderstatus extends VmViewAdmin {
 
 	function display($tpl = null) {
 
 		// Load the helper(s)
-
-
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 
-
-
 		$layoutName = vRequest::getCmd('layout', 'default');
 
-// 'A' : sotck Available
+		// 'A' : sotck Available
 		// 'O' : stock Out
 		// 'R' : stock reserved
-			$stockHandelList = array(
+		$this->stockHandelList = array(
 				'A' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_AVAILABLE',
 				'R' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_RESERVED',
 				'O' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_OUT'
 			);
 
-		if ($layoutName == 'edit') {
-			$orderStatus = $model->getData();
-			$this->SetViewTitle('',vmText::_($orderStatus->order_status_name) );
-			if ($orderStatus->virtuemart_orderstate_id < 1) {
+		$this->lists = array();
+		$this->lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
 
-				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
+		if ($layoutName == 'edit') {
+			$this->orderStatus = $model->getData();
+			$this->SetViewTitle('',vmText::_($this->orderStatus->order_status_name) );
+			if ($this->orderStatus->virtuemart_orderstate_id < 1) {
+				$this->ordering = vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE');
 			} else {
 
 				if (!class_exists('ShopFunctions'))
 					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-				$this->ordering = ShopFunctions::renderOrderingList('orderstates','order_status_name',$orderStatus->virtuemart_orderstate_id);
-
+				$this->ordering = ShopFunctions::renderOrderingList('orderstates','order_status_name',$this->orderStatus->ordering);
 			}
-			$lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
 
-			$this->assignRef('stockHandelList', $stockHandelList);
 			// Vendor selection
 			$vendor_model = VmModel::getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
-			$lists['vendors'] = JHtml::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $orderStatus->virtuemart_vendor_id);
-
-
-			$this->assignRef('orderStatus', $orderStatus);
-			$this->assignRef('lists', $lists);
+			$this->lists['vendors'] = JHtml::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $this->orderStatus->virtuemart_vendor_id);
 
 			$this->addStandardEditViewCommands();
 		} else {
 			$this->SetViewTitle('');
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
-			$this->lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
 
-			$orderStatusList = $model->getOrderStatusList();
-			$this->assignRef('orderStatusList', $orderStatusList);
-
-			$this->assignRef('stockHandelList', $stockHandelList);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->orderStatusList = $model->getOrderStatusList();
+			$this->pagination = $model->getPagination();
 		}
 
 		parent::display($tpl);

@@ -839,6 +839,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					while(false !== ( $file = readdir($dir)) ) {
 						if (( $file != '.' ) && ( $file != '..' )) {
 							if ( is_dir($src .DS. $file) ) {
+								if(!JFolder::create($dst . DS . $file)){
+									$app = JFactory::getApplication ();
+									$app->enqueueMessage ('Couldnt create folder ' . $dst . DS . $file);
+								}
 								$this->recurse_copy($src .DS. $file,$dst .DS. $file);
 							}
 							else {

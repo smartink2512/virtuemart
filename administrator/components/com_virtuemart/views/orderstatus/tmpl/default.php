@@ -55,14 +55,14 @@ AdminUIHelper::startAdminArea($this);
 		</thead>
 		<?php
 		$k = 0;
-                $vmCoreStatusCode= $this->lists['vmCoreStatusCode'];
+
 		for ($i = 0, $n = count($this->orderStatusList); $i < $n; $i++) {
 			$row = $this->orderStatusList[$i];
 			$published = $this->gridPublished( $row, $i );
 
 			$checked = JHtml::_('grid.id', $i, $row->virtuemart_orderstate_id);
 
-                        $coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));
+			$coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));
 			$image = 'admin/checked_out.png';
 			$image = JHtml::_('image', $image, vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'),'',true);
 			$checked = ($coreStatus) ?

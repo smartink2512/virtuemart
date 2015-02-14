@@ -272,11 +272,14 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			$virtuemart_product_id = $virtuemart_product_idArray;
 		}
 
+		$quantity = 0;
 		$quantityArray = vRequest::getInt ('quantity', array()); //is sanitized then
-		if(is_array($quantityArray) and !empty($quantityArray[0])){
-			$quantity = $quantityArray[0];
+		if(is_array($quantityArray)){
+			if(!empty($quantityArray[0])){
+				$quantity = $quantityArray[0];
+			}
 		} else {
-			$quantity = $quantityArray;
+			$quantity = (int)$quantityArray;
 		}
 
 		if (empty($quantity)) {
