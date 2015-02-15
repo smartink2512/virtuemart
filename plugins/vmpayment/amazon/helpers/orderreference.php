@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * @package    VirtueMart
  * @subpackage vmpayment
- * @version $Id: orderreference.php 8229 2014-08-23 16:56:12Z alatak $
+ * @version $Id: orderreference.php 8316 2014-09-22 15:24:16Z alatak $
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
@@ -17,11 +17,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperOrderReference extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $orderReference,$method) {
-		parent::__construct($orderReference,$method);
+	public function __construct (OffAmazonPaymentsService_Model_AuthorizeResponse $orderReference, $method) {
+		parent::__construct($orderReference, $method);
 	}
 
 	public function getStoreInternalData () {

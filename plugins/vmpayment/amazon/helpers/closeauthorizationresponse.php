@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * @package    VirtueMart
  * @subpackage vmpayment
- * @version $Id: billingagreementnotification.php 8316 2014-09-22 15:24:16Z alatak $
+ * @version $Id$
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
@@ -17,9 +17,28 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-class billingAgreementNotification extends amazonHelperNotification {
-	public function __construct (OffAmazonPaymentsNotifications_Model_billingAgreement $billingAgreementNotification, $method) {
-		parent::__construct($billingAgreementNotification, $method);
+class amazonHelperCloseAuthorizationResponse extends amazonHelper {
+
+	public function __construct (OffAmazonPaymentsService_Model_CloseAuthorizationResponse $closeAuthorizationResponse, $method) {
+		parent::__construct($closeAuthorizationResponse, $method);
+	}
+
+
+
+	public function getStoreInternalData () {
+		return NULL;
+	}
+
+
+
+	function getContents () {
+
+		$contents = $this->tableStart("CloseAuthorizationResponse");
+		$contents .= $this->getRow("Dump: ", var_export($this->amazonData, true));
+
+		$contents .= $this->tableEnd();
+
+		return $contents;
 	}
 
 

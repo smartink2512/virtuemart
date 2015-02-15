@@ -94,4 +94,5 @@ if($cache){
 }
 
 echo $output;
+echo vmJsApi::writeJS();
 ?>

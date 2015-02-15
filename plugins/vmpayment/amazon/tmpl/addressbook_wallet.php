@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 /**
  * @author Valérie Isaksen
- * @version $Id: addressbook_wallet.php 8272 2014-09-04 19:57:55Z alatak $
+ * @version $Id: addressbook_wallet.php 8364 2014-10-02 10:37:39Z alatak $
  * @package VirtueMart
  * @subpackage vmpayment
  * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.
@@ -29,13 +29,13 @@ if ($isMobile) {
 	$doc->setMetaData('viewport', "width=device-width, initial-scale=1, maximum-scale=1");
 }
 if (!$jsAWLoaded) {
-	vmJsApi::addJScript(  '/plugins/vmpayment/amazon/amazon/assets/js/amazon.js');
+	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/assets/js/amazon.js');
 	if ($viewData['include_amazon_css']) {
-		vmJsApi::css( 'amazon','plugins/vmpayment/amazon/amazon/assets/css/');
+		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/assets/css/amazon.css');
 	}
 
 
-//vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+//vmJsApi::js('plugins/vmpayment/amazon/assets/js/site', '');
 	$doc->addScriptDeclaration("
 		//<![CDATA[
 jQuery(document).ready( function($) {
@@ -76,7 +76,7 @@ $('#leaveAmazonCheckout').click(function(){
 		$doc->addScriptDeclaration("
 		//<![CDATA[
 jQuery(document).ready( function($) {
-	amazonPayment.displayCaptureNowWarning('" . vmText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
+	amazonPayment.displayCaptureNowWarning('" . JText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
 });
 //]]>
 "); // addScriptDeclaration

@@ -18,49 +18,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-if (VmConfig::get('usefancy', 1)) {
-	vmJsApi::addJScript('fancybox/jquery.fancybox-1.3.4.pack');
-	vmJsApi::css('jquery.fancybox-1.3.4');
-	$box = "
-//<![CDATA[
-	jQuery(document).ready(function($) {
-		$('div#full-tos').hide();
-		var con = $('div#full-tos').html();
-		$('a#terms-of-service').click(function(event) {
-			event.preventDefault();
-			$.fancybox ({ div: '#full-tos', content: con });
-		});
-	});
 
-//]]>
-";
-} else {
-	vmJsApi::addJScript('facebox');
-	vmJsApi::css('facebox');
-	$box = "
-//<![CDATA[
-	jQuery(document).ready(function($) {
-		$('div#full-tos').hide();
-		$('a#terms-of-service').click(function(event) {
-			event.preventDefault();
-			$.facebox( { div: '#full-tos' }, 'my-groovy-style');
-		});
-	});
-
-//]]>
-";
-}
 
 JHtml::_('behavior.formvalidation');
-$document = JFactory::getDocument();
-$document->addScriptDeclaration($box);
 
-
-$document->addScriptDeclaration("
-
-//<![CDATA[
+$js = "
 	jQuery(document).ready(function($) {
+	jQuery(this).vm2front('stopVmLoading');
 	jQuery('#checkoutFormSubmit').bind('click dblclick', function(e){
+	jQuery(this).vm2front('startVmLoading');
 	e.preventDefault();
     jQuery(this).attr('disabled', 'true');
     jQuery(this).removeClass( 'vm-button-correct' );
@@ -68,15 +34,11 @@ $document->addScriptDeclaration("
     jQuery('#checkoutForm').submit();
 
 });
-
 	});
+";
+vmJsApi::addJScript('vm.checkoutFormSubmit', $js);
 
-//]]>
-
-");
-
-$document->addStyleDeclaration('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
-
+$this->addCheckRequiredJs();
 ?>
 	<div id="amazonShipmentNotFoundDiv">
 		<?php if (!$this->found_shipment_method) { ?>
@@ -85,7 +47,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 					<dt class="info">info</dt>
 					<dd class="info message">
 						<ul>
-							<li><?php echo vmText::_('VMPAYMENT_AMAZON_UPDATECART_SHIPMENT_NOT_FOUND'); ?></li>
+							<li><?php echo JText::_('VMPAYMENT_AMAZON_UPDATECART_SHIPMENT_NOT_FOUND'); ?></li>
 						</ul>
 					</dd>
 				</dl>
@@ -103,8 +65,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 		<div id="amazonHeader">
 			<div class="width50 floatleft">
 				<h1><?php echo vmText::_('VMPAYMENT_AMAZON_PAY_WITH_AMAZON'); ?></h1>
-
-				<div class="payments_signin_button"></div>
+				<div class="payments-signin-button"></div>
 			</div>
 			<div class="width50 floatleft right">
 				<?php // Continue Shopping Button
@@ -145,14 +106,14 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 			}
 
 			?>
-			<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
+			<form method="post" id="checkoutForm" name="checkoutForm"
+			      action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 
 				<div id="amazonShipmentsDiv"><?php
 					//if (!$this->readonly_cart) {
 					if (!$this->cart->automaticSelectedShipment  and !$this->cart->_dataValidated) {
 						?>
 						<?php echo $this->loadTemplate('shipment'); ?>
-
 					<?php
 
 					}
@@ -162,68 +123,37 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 				//}
 				// This displays the pricelist MUST be done with tables, because it is also used for the emails
 				echo $this->loadTemplate('pricelist');
-				// added in 2.0.8
-				?>
 
-
-				<?php // Leave A Comment Field ?>
-				<div class="customer-comment marginbottom15">
-					<span class="comment"><?php echo vmText::_('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
-					<textarea class="customer-comment" name="customer_comment" cols="60" rows="1"><?php echo $this->cart->customer_comment; ?></textarea>
-				</div>
-				<?php // Leave A Comment Field END ?>
-
-
-
-				<?php // Continue and Checkout Button ?>
-				<div class="checkout-button-top">
-
-					<?php // Terms Of Service Checkbox
-					if (!class_exists('VirtueMartModelUserfields')) {
-						require(VMPATH_ADMIN . DS . 'models' . DS . 'userfields.php');
-					}
-					$userFieldsModel = VmModel::getModel('userfields');
-					if ($userFieldsModel->getIfRequired('agreed')) {
-						if (!class_exists('VmHtml')) {
-							require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
-						}
-						echo VmHtml::checkbox('tosAccepted', $this->cart->tosAccepted, 1, 0, 'class="terms-of-service"');
-
-						if (VmConfig::get('oncheckout_show_legal_info', 1)) {
-							?>
-							<div class="terms-of-service">
-
-								<label for="tosAccepted">
-									<a href="<?php JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1', FALSE) ?>" class="terms-of-service" id="terms-of-service" rel="facebox"
-									   target="_blank"> <span class="vmicon vm2-termsofservice-icon"></span>
-										<?php echo vmText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
-									</a> </label>
-
-								<div id="full-tos">
-									<h2><?php echo vmText::_('COM_VIRTUEMART_CART_TOS'); ?></h2>
-									<?php echo $this->cart->vendor->vendor_terms_of_service; ?>
-								</div>
-
-							</div>
-						<?php
-						}
-					}
+				if (!empty($this->checkoutAdvertise)) {
 					?>
-					<div id="amazon_checkout">
-						<div id="amazon_checkout_text">
-							<?php
-							echo vmText::_('VMPAYMENT_AMAZON_CHECKOUT');
-							?>
+					<div id="checkout-advertise-box"> <?php
+					foreach ($this->checkoutAdvertise as $checkoutAdvertise) {
+						?>
+						<div class="checkout-advertise">
+							<?php echo $checkoutAdvertise; ?>
 						</div>
+					<?php
+					}
+					?></div><?php
+				}
+
+				echo $this->loadTemplate('cartfields');
+
+				?>
+					<div id="amazon_checkout">
+
 						<?php
 						echo $this->checkout_link_html;
 						?>
 					</div>
-				</div>
-				<?php // Continue and Checkout Button END ?>
-				<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
+
+				<?php // Continue and Checkout Button END
+				if ($this->checkout_task == 'confirm' ) $task=$this->checkout_task;
+				else  $task='updatecart';
+
+				?>
+				<input type='hidden' name='task' value='<?php echo $task ?>'/>
 				<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
-				<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 				<input type='hidden' name='virtuemart_paymentmethod_id' value='<?php echo $this->cart->virtuemart_paymentmethod_id; ?>'/>
 				<input type='hidden' name='doRedirect' value='false'/>
 				<input type='hidden' name='option' value='com_virtuemart'/>

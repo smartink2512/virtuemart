@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * @package    VirtueMart
  * @subpackage vmpayment
- * @version $Id: confirmorderreferenceresponse.php 8230 2014-08-24 09:27:54Z alatak $
+ * @version $Id: confirmorderreferenceresponse.php 8585 2014-11-25 11:11:13Z alatak $
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
@@ -17,11 +17,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 
-	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse,$method) {
-		parent::__construct($confirmOrderReferenceResponse,$method);
+	public function __construct (OffAmazonPaymentsService_Model_ConfirmOrderReferenceResponse $confirmOrderReferenceResponse, $method) {
+		parent::__construct($confirmOrderReferenceResponse, $method);
 	}
 
 	function getStoreInternalData () {
@@ -43,28 +42,25 @@ class amazonHelperConfirmOrderReferenceResponse extends amazonHelper {
 	 */
 	function onResponseUpdateOrderHistory ($order) {
 		$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-		 if ($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_done_by_erp ) {
-			 $order_history['customer_notified'] = 1;
-		 } else {
-			 $order_history['customer_notified'] = 0;
-		 }
+
+			$order_history['customer_notified'] = $this->getCustomerNotified();
 
 		$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_ORDERCONFIRMED');
 		$modelOrder = VmModel::getModel('orders');
-		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 	}
 
 
 	function getContents () {
-		$contents=$this->tableStart("ConfirmOrderReferenceResponse");
-		$contents .=$this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata() );
+		$contents = $this->tableStart("ConfirmOrderReferenceResponse");
+		$contents .= $this->getRow("ResponseHeaderMetadata: ", $this->amazonData->getResponseHeaderMetadata());
 		if ($this->amazonData->isSetResponseMetadata()) {
-			$more='';
+			$more = '';
 			$responseMetadata = $this->amazonData->getResponseMetadata();
 			if ($responseMetadata->isSetRequestId()) {
 				$more .= "<br />RequestId: " . $responseMetadata->getRequestId();
 			}
-			$contents .=$this->getRow("ResponseMetadata: ", $more );
+			$contents .= $this->getRow("ResponseMetadata: ", $more);
 		}
 
 		$contents .= $this->tableEnd();

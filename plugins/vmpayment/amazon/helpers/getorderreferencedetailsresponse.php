@@ -1,6 +1,6 @@
 <?php
 
-defined('_JEXEC')or die('Direct Access to' . basename(__FILE__) . 'isnotallowed.');
+defined('_JEXEC') or die('Direct Access to' . basename(__FILE__) . 'isnotallowed.');
 
 /**
  *
@@ -17,7 +17,6 @@ defined('_JEXEC')or die('Direct Access to' . basename(__FILE__) . 'isnotallowed.
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperGetOrderReferenceDetailsResponse extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsService_Model_GetOrderReferenceDetailsResponse $getOrderReferenceDetailsResponse, $method) {

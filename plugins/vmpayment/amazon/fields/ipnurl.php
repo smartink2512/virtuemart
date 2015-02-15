@@ -38,14 +38,13 @@ class JFormFieldIpnURL extends JFormField {
 		$http = JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=notify&nt=ipn&tmpl=component&pm=' . $virtuemart_paymentmethod_id;
 		$https = str_replace('http://', 'https://', $http);
 
-
-		$string = "<div " . $this->class . ">";
+		$string = '<div class="' . $this->class . '">';
 		$string .= '<div class="ipn-sandbox">' . $http . ' <br /></div>';
 		if (strcmp($https,$http) !==0){
 			$string .= '<div class="ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></div>';
 			$string .= $https;
-			$string .= "</div>";
 		}
+		$string .= "</div>";
 			return $string;
 	}
 }

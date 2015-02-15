@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperOrderReferenceNotification extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsNotifications_Model_OrderReferenceNotification $orderNotification, $method) {
@@ -65,7 +64,7 @@ class amazonHelperOrderReferenceNotification extends amazonHelper {
 
 		$order_history['amazonState'] = $amazonState;
 		$orderModel = VmModel::getModel('orders');
-		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 	}
 
 	/**
@@ -124,6 +123,16 @@ class amazonHelperOrderReferenceNotification extends amazonHelper {
 		return $sellerOrderAttributes->getSellerOrderId();
 	}
 
+	function getAmazonReferenceId () {
+		if (!$this->amazonData->isSetOrderReference()) {
+			return NULL;
+		}
+		$orderReference = $this->amazonData->getOrderReference();
+		if (!$orderReference->isSetAmazonOrderReferenceId()) {
+			return NULL;
+		}
+		return $orderReference->getAmazonOrderReferenceId();
+	}
 
 	function getContents () {
 		$contents = $this->tableStart("OrderReference Notification");

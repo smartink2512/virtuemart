@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * @package    VirtueMart
  * @subpackage vmpayment Amazon
- * @version $Id: helper.php 8257 2014-08-30 15:06:37Z alatak $
+ * @version $Id: helper.php 8585 2014-11-25 11:11:13Z alatak $
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 abstract class amazonHelper {
 	var $amazonData = null;
 	var $plugin = null;
@@ -47,7 +46,7 @@ abstract class amazonHelper {
 
 	function getVmReferenceId ($referenceId) {
 		$pos = strrpos($referenceId, '-');
-		if ($pos===false) {
+		if ($pos === false) {
 			return $referenceId;
 		} else {
 			return substr($referenceId, 0, $pos);
@@ -55,7 +54,18 @@ abstract class amazonHelper {
 
 	}
 
-	public function onNotificationNextOperation($order, $payments, $amazonState){
+
+	function getCustomerNotified() {
+
+		if (($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled != 'automatic_synchronous') OR
+			($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == 'automatic_asynchronous')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function onNotificationNextOperation ($order, $payments, $amazonState) {
 		return false;
 	}
 

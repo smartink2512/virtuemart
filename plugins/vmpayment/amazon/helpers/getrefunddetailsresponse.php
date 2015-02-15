@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsService_Model_GetRefundDetailsResponse $getRefundDetailsResponse, $method) {
@@ -26,64 +25,64 @@ class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 
 
 	public function onResponseUpdateOrderHistory ($order) {
-/*
-		$order_history = array();
-		$amazonState = "";
-		$reasonCode = "";
-		$authorizeResponse = $this->amazonData;
-		// if am
+		/*
+				$order_history = array();
+				$amazonState = "";
+				$reasonCode = "";
+				$authorizeResponse = $this->amazonData;
+				// if am
 
-		$authorizeResult = $authorizeResponse->getAuthorizeResult();
-		$refundDetails = $authorizeResult->getRefundDetails();
-		if ($refundDetails->isSetRefundStatus()) {
-			$refundStatus = $refundDetails->getRefundStatus();
-			if (!$refundStatus->isSetState()) {
-				return false;
-			}
-			$amazonState = $refundStatus->getState();
+				$authorizeResult = $authorizeResponse->getAuthorizeResult();
+				$refundDetails = $authorizeResult->getRefundDetails();
+				if ($refundDetails->isSetRefundStatus()) {
+					$refundStatus = $refundDetails->getRefundStatus();
+					if (!$refundStatus->isSetState()) {
+						return false;
+					}
+					$amazonState = $refundStatus->getState();
 
-			if ($refundStatus->isSetReasonCode()) {
-				$reasonCode = $refundStatus->getReasonCode();
-			}
-		}
-		// In asynchronous mode, RefundResponse is always Pending. Order status is not updated
-		if ($amazonState == 'Pending') {
-			return $amazonState;
-		}
+					if ($refundStatus->isSetReasonCode()) {
+						$reasonCode = $refundStatus->getReasonCode();
+					}
+				}
+				// In asynchronous mode, RefundResponse is always Pending. Order status is not updated
+				if ($amazonState == 'Pending') {
+					return $amazonState;
+				}
 
-		// SYNCHRONOUS MODE: amazon returns in real time the final process status
-		if ($amazonState == 'Open') {
-			// it should always be the case if the CaptureNow == false
-			$order_history['order_status'] = $this->_currentMethod->status_refund;
-			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
-			$order_history['customer_notified'] = 1;
-		} elseif ($amazonState == 'Closed') {
-			// it should always be the case if the CaptureNow == true
-			if (!($refundDetails->isSetCaptureNow() and $refundDetails->getCaptureNow())) {
-				$this->debugLog('SYNCHRONOUS , capture Now, and Amazon State is NOT CLOSED' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
+				// SYNCHRONOUS MODE: amazon returns in real time the final process status
+				if ($amazonState == 'Open') {
+					// it should always be the case if the CaptureNow == false
+					$order_history['order_status'] = $this->_currentMethod->status_refund;
+					$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
+					$order_history['customer_notified'] = 1;
+				} elseif ($amazonState == 'Closed') {
+					// it should always be the case if the CaptureNow == true
+					if (!($refundDetails->isSetCaptureNow() and $refundDetails->getCaptureNow())) {
+						$this->debugLog('SYNCHRONOUS , capture Now, and Amazon State is NOT CLOSED' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
+						return $amazonState;
+					}
+					$order_history['order_status'] = $this->_currentMethod->status_capture;
+					$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURED');
+					$order_history['customer_notified'] = 1;
+
+				} elseif ($amazonState == 'Declined') {
+					// handling Declined Refunds
+					$order_history['order_status'] = $this->_currentMethod->status_cancel;
+					$order_history['comments'] = $reasonCode;
+					if ($refundStatus->isSetReasonDescription()) {
+						$order_history['comments'] .= " " . $refundStatus->getReasonDescription();
+					}
+					$order_history['customer_notified'] = 0;
+
+				}
+				$order_history['amazonState'] = $amazonState;
+				$modelOrder = VmModel::getModel('orders');
+				$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+
+
 				return $amazonState;
-			}
-			$order_history['order_status'] = $this->_currentMethod->status_capture;
-			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURED');
-			$order_history['customer_notified'] = 1;
-
-		} elseif ($amazonState == 'Declined') {
-			// handling Declined Refunds
-			$order_history['order_status'] = $this->_currentMethod->status_cancel;
-			$order_history['comments'] = $reasonCode;
-			if ($refundStatus->isSetReasonDescription()) {
-				$order_history['comments'] .= " " . $refundStatus->getReasonDescription();
-			}
-			$order_history['customer_notified'] = 0;
-
-		}
-		$order_history['amazonState'] = $amazonState;
-		$modelOrder = VmModel::getModel('orders');
-		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
-
-
-		return $amazonState;
-*/
+		*/
 	}
 
 
@@ -93,25 +92,25 @@ class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 			$getRefundDetailsResult = $this->amazonData->getGetRefundDetailsResult();
 			if ($getRefundDetailsResult->isSetRefundDetails()) {
 				$refundDetails = $getRefundDetailsResult->getRefundDetails();
-			if ($refundDetails->isSetRefundStatus()) {
-				$refundStatus = $refundDetails->getRefundStatus();
-				if ($refundStatus->isSetState()) {
-					$amazonInternalData->amazon_response_state = $refundStatus->getState();
+				if ($refundDetails->isSetRefundStatus()) {
+					$refundStatus = $refundDetails->getRefundStatus();
+					if ($refundStatus->isSetState()) {
+						$amazonInternalData->amazon_response_state = $refundStatus->getState();
+					}
+					if ($refundStatus->isSetReasonCode()) {
+						$amazonInternalData->amazon_response_reasonCode = $refundStatus->getReasonCode();
+					}
+					if ($refundStatus->isSetReasonDescription()) {
+						$amazonInternalData->amazon_response_reasonDescription = $refundStatus->getReasonDescription();
+					}
+					if ($refundDetails->isSetAmazonRefundId()) {
+						$amazonInternalData->amazon_response_amazonRefundId = $refundDetails->getAmazonRefundId();
+					}
 				}
-				if ($refundStatus->isSetReasonCode()) {
-					$amazonInternalData->amazon_response_reasonCode = $refundStatus->getReasonCode();
-				}
-				if ($refundStatus->isSetReasonDescription()) {
-					$amazonInternalData->amazon_response_reasonDescription = $refundStatus->getReasonDescription();
-				}
-				if ($refundDetails->isSetAmazonRefundId()) {
-					$amazonInternalData->amazon_response_amazonRefundId = $refundDetails->getAmazonRefundId();
-				}
-			}
 
+			}
+			return $amazonInternalData;
 		}
-		return $amazonInternalData;
-	}
 	}
 
 
@@ -129,70 +128,54 @@ class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 
 	function getContents () {
 
-		$contents=$this->tableStart("GetRefundDetailsResponse");
+		$contents = $this->tableStart("GetRefundDetailsResponse");
 		if ($this->amazonData->isSetGetRefundDetailsResult()) {
 			$getRefundDetailsResult = $this->amazonData->getGetRefundDetailsResult();
+				$contents .= $this->getRowFirstCol("GetRefundDetailsResult");
+			$refundDetails = $getRefundDetailsResult->getRefundDetails();
 
-			if ($getRefundDetailsResult->isSetRefundDetails()) {
-				$contents .=$this->getRowFirstCol("GetRefundDetailsResult");
-				$refundDetails = $getRefundDetailsResult->getRefundDetails();
-
-				$refundDetails = $refundDetails->getRefundDetails();
 				if ($refundDetails->isSetAmazonRefundId()) {
-					$contents .=$this->getRow("AmazonRefundId: ",$refundDetails->getAmazonRefundId() );
+					$contents .= $this->getRow("AmazonRefundId: ", $refundDetails->getAmazonRefundId());
 
 				}
 				if ($refundDetails->isSetRefundReferenceId()) {
-					$contents .=$this->getRow("RefundReferenceId: ", $refundDetails->getRefundReferenceId() );
+					$contents .= $this->getRow("RefundReferenceId: ", $refundDetails->getRefundReferenceId());
 				}
 
 				if ($refundDetails->isSetSellerRefundNote()) {
-					$contents .=$this->getRow("SellerRefundNote: ",  $refundDetails->getSellerRefundNote());
+					$contents .= $this->getRow("SellerRefundNote: ", $refundDetails->getSellerRefundNote());
 				}
 				if ($refundDetails->isSetRefundAmount()) {
 					$refundAmount = $refundDetails->getRefundAmount();
-					$more='';
+					$more = '';
 					if ($refundAmount->isSetAmount()) {
 						$more .= "<br />    Amount: " . $refundAmount->getAmount();
 					}
 					if ($refundAmount->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $refundAmount->getCurrencyCode();
 					}
-					$contents .=$this->getRow("RefundAmount: ",  $more);
+					$contents .= $this->getRow("RefundAmount: ", $more);
 
 				}
 				if ($refundDetails->isSetFeeRefunded()) {
 					$feeRefunded = $refundDetails->getFeeRefunded();
-					$more='';
+					$more = '';
 					if ($feeRefunded->isSetAmount()) {
 						$more .= "<br />    Amount: " . $feeRefunded->getAmount();
 					}
 					if ($feeRefunded->isSetCurrencyCode()) {
 						$more .= "<br />    CurrencyCode: " . $feeRefunded->getCurrencyCode();
 					}
-					$contents .=$this->getRow("FeeRefunded: ",  $more);
+					$contents .= $this->getRow("FeeRefunded: ", $more);
 
 				}
 
-				if ($refundDetails->isSetIdList()) {
-					$more='';
-					$idList = $refundDetails->getIdList();
-					$memberList = $idList->getmember();
-					foreach ($memberList as $member) {
-						$more .= "<br />    member: " . $member;
-					}
-					$contents .=$this->getRow("IdList: ",  $more);
-
-				}
 				if ($refundDetails->isSetCreationTimestamp()) {
-					$contents .=$this->getRow("CreationTimestamp: ",  $refundDetails->getCreationTimestamp());
+					$contents .= $this->getRow("CreationTimestamp: ", $refundDetails->getCreationTimestamp());
 				}
-				if ($refundDetails->isSetExpirationTimestamp()) {
-					$contents .=$this->getRow("ExpirationTimestamp: ",  $refundDetails->getExpirationTimestamp());
 
-				}
 				if ($refundDetails->isSetRefundStatus()) {
-					$more='';
+					$more = '';
 					$refundStatus = $refundDetails->getRefundStatus();
 					if ($refundStatus->isSetState()) {
 						$more .= "<br />    State: " . $refundStatus->getState();
@@ -206,16 +189,15 @@ class amazonHelperGetRefundDetailsResponse extends amazonHelper {
 					if ($refundStatus->isSetReasonDescription()) {
 						$more .= "<br />    ReasonDescription: " . $refundStatus->getReasonDescription();
 					}
-					$contents .=$this->getRow("RefundStatus: ",  $more);
+					$contents .= $this->getRow("RefundStatus: ", $more);
 
 				}
 
 				if ($refundDetails->isSetSoftDescriptor()) {
-					$contents .=$this->getRow("SoftDescriptor: ",  $refundDetails->getSoftDescriptor());
+					$contents .= $this->getRow("SoftDescriptor: ", $refundDetails->getSoftDescriptor());
 
 				}
 
-			}
 		}
 		/*
 				if ($this->amazonData->isSetResponseMetadata()) {

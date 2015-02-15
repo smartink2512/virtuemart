@@ -20,30 +20,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($viewData['include_amazon_css']) {
-	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/amazon/assets/css/amazon.css');
+	$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/assets/css/amazon.css');
 }
 JHtml::_('behavior.formvalidation');
 $document = JFactory::getDocument();
-/*
-$document->addScriptDeclaration("
 
-//<![CDATA[
-	jQuery(document).ready(function($) {
-	jQuery('#updateOrderId').bind('click dblclick', function(e){
-	e.preventDefault();
-    jQuery(this).attr('disabled', 'true');
-    jQuery(this).removeClass( 'vm-button-correct' );
-    jQuery(this).addClass( 'vm-button' );
-    jQuery('#checkoutForm').submit();
-
-});
-
-	});
-
-//]]>
-
-");
-*/
 
 ?>
 <h3><?php echo vmText::_('VMPAYMENT_AMAZON_INVALIDPAYMENTMETHOD') ?></h3>

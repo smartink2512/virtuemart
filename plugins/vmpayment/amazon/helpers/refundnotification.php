@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  *
  * @package    VirtueMart
  * @subpackage vmpayment
- * @version $Id: refundnotification.php 8259 2014-08-31 13:43:36Z alatak $
+ * @version $Id: refundnotification.php 8431 2014-10-14 14:11:46Z alatak $
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * other free or open source software licenses.
  *
  */
-
 class amazonHelperRefundNotification extends amazonHelper {
 
 	public function __construct (OffAmazonPaymentsNotifications_Model_RefundNotification $refundNotification, $method) {
@@ -64,7 +63,7 @@ class amazonHelperRefundNotification extends amazonHelper {
 		}
 
 		$orderModel = VmModel::getModel('orders');
-		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
+		$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 		return $amazonState;
 	}
 
@@ -72,7 +71,6 @@ class amazonHelperRefundNotification extends amazonHelper {
 	 * move to Pending => GetRefundDetails
 	 * move to Declined => GetRefundDetails
 	 * move to Completed => GetRefundDetails
-
 	 * @param $order
 	 * @param $payments
 	 * @param $amazonState
@@ -131,21 +129,21 @@ class amazonHelperRefundNotification extends amazonHelper {
 	}
 
 	function getContents () {
-		$contents=$this->tableStart("Refund Notification");
+		$contents = $this->tableStart("Refund Notification");
 		if ($this->amazonData->isSetRefundDetails()) {
-			$contents .=$this->getRowFirstCol("RefundDetails");
+			$contents .= $this->getRowFirstCol("RefundDetails");
 			$refundDetails = $this->amazonData->getRefundDetails();
 			if ($refundDetails->isSetAmazonRefundId()) {
-				$contents .=$this->getRow("AmazonRefundId: ",$refundDetails->getAmazonRefundId() );
+				$contents .= $this->getRow("AmazonRefundId: ", $refundDetails->getAmazonRefundId());
 			}
 			if ($refundDetails->isSetRefundReferenceId()) {
-				$contents .=$this->getRow("RefundReferenceId: ",$refundDetails->getRefundReferenceId() );
+				$contents .= $this->getRow("RefundReferenceId: ", $refundDetails->getRefundReferenceId());
 			}
 			if ($refundDetails->isSetRefundType()) {
-				$contents .=$this->getRow("RefundType: ",$refundDetails->getRefundType() );
+				$contents .= $this->getRow("RefundType: ", $refundDetails->getRefundType());
 			}
 			if ($refundDetails->isSetRefundAmount()) {
-				$more='';
+				$more = '';
 				$refundAmount = $refundDetails->getRefundAmount();
 				if ($refundAmount->isSetAmount()) {
 					$more .= "<br />      Amount " . $refundAmount->getAmount();
@@ -153,10 +151,11 @@ class amazonHelperRefundNotification extends amazonHelper {
 				if ($refundAmount->isSetCurrencyCode()) {
 					$more .= "<br />      CurrencyCode: " . $refundAmount->getCurrencyCode();
 				}
-				$contents .=$this->getRow("RefundAmount: ",$more );
+				$contents .= $this->getRow("RefundAmount: ", $more);
 
 			}
-			if ($refundDetails->isSetFeeRefunded()) { $more='';
+			if ($refundDetails->isSetFeeRefunded()) {
+				$more = '';
 				$feeRefunded = $refundDetails->getFeeRefunded();
 				if ($feeRefunded->isSetAmount()) {
 					$more .= "<br />      Amount " . $feeRefunded->getAmount();
@@ -164,15 +163,15 @@ class amazonHelperRefundNotification extends amazonHelper {
 				if ($feeRefunded->isSetCurrencyCode()) {
 					$more .= "<br />      CurrencyCode " . $feeRefunded->getCurrencyCode();
 				}
-				$contents .=$this->getRow("FeeRefunded: ",$more );
+				$contents .= $this->getRow("FeeRefunded: ", $more);
 
 			}
 			if ($refundDetails->isSetCreationTimestamp()) {
-				$contents .=$this->getRow("CreationTimestamp: ",$refundDetails->getCreationTimestamp() );
+				$contents .= $this->getRow("CreationTimestamp: ", $refundDetails->getCreationTimestamp());
 
 			}
 			if ($refundDetails->isSetRefundStatus()) {
-				$more='';
+				$more = '';
 				$refundStatus = $refundDetails->getRefundStatus();
 				if ($refundStatus->isSetState()) {
 					$more .= "<br />      State " . $refundStatus->getState();
@@ -186,11 +185,11 @@ class amazonHelperRefundNotification extends amazonHelper {
 				if ($refundStatus->isSetReasonDescription()) {
 					$more .= "<br />      ReasonDescription " . $refundStatus->getReasonDescription();
 				}
-				$contents .=$this->getRow("RefundStatus: ",$more );
+				$contents .= $this->getRow("RefundStatus: ", $more);
 
 			}
 			if ($refundDetails->isSetSoftDescriptor()) {
-				$contents .=$this->getRow("SoftDescriptor: ",$refundDetails->getSoftDescriptor() );
+				$contents .= $this->getRow("SoftDescriptor: ", $refundDetails->getSoftDescriptor());
 
 			}
 		}
