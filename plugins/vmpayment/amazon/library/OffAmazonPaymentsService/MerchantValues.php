@@ -16,8 +16,8 @@
  */
 
 
-require_once 'OffAmazonPaymentsService.config.inc.php';
-require_once 'RegionSpecificProperties.php';
+require_once 'OffAmazonPaymentsService/OffAmazonPaymentsService.config.inc.php';
+require_once 'OffAmazonPaymentsService/RegionSpecificProperties.php';
 
 define('MERCHANT_ID', isset($merchantId) ? $merchantId : null);
 define('ACCESS_KEY', isset($accessKey) ? $accessKey : null);

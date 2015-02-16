@@ -116,6 +116,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			'amazon_class_notification_type'        => 'text',
 			'amazon_notification'                   => 'text',
 		);
+		return $SQLfields;
 	}
 
 
