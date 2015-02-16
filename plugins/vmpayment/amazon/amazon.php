@@ -2467,8 +2467,8 @@ function getVmClass ($amazonClass) {
 			$data['BT']['address_type'] = 'BT';
 			$cart->saveAddressInCart($data['BT'], $data['BT']['address_type'], TRUE);
 		}
-		if (isset($data['BT'])) {
-			$data['BS']['address_type'] = 'ST';
+		if (isset($data['ST'])) {
+			$data['ST']['address_type'] = 'ST';
 			$cart->saveAddressInCart($data['ST'], $data['BT']['address_type'], TRUE);
 		}
 		return;
@@ -2530,7 +2530,9 @@ function getVmClass ($amazonClass) {
 		}
 		$amazonOrderReferenceIdWeight = $this->getAmazonOrderReferenceIdWeightFromSession();
 		if ($amazonOrderReferenceIdWeight) {
-			$this->_amazonOrderReferenceId = $amazonOrderReferenceIdWeight['_amazonOrderReferenceId'];
+			if (isset($amazonOrderReferenceIdWeight['_amazonOrderReferenceId'])) {
+				$this->_amazonOrderReferenceId = $amazonOrderReferenceIdWeight['_amazonOrderReferenceId'];
+			}
 			$referenceIdIsOnlyDigitalGoods = false;
 			if (isset($amazonOrderReferenceIdWeight['isOnlyDigitalGoods'])) {
 				$referenceIdIsOnlyDigitalGoods = $amazonOrderReferenceIdWeight['isOnlyDigitalGoods'];
@@ -2848,8 +2850,8 @@ function getVmClass ($amazonClass) {
 		$prefix = 'shipto_';
 		$update_data = $this->getUserInfoFromAmazon($physicalDestination, $prefix);
 		$update_data ['address_type'] = 'ST';
-		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE);
-		$cart->STsameAsBT = 0;
+		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE, $prefix);
+		$cart->STsameAsBT = false;
 		$cart->setCartIntoSession();
 
 		$return['error'] = 'addressUpdated';
@@ -2923,9 +2925,9 @@ function getVmClass ($amazonClass) {
 		if (!$STsameAsBT) {
 			$update_dataST ['address_type'] = 'ST';
 			unset($update_dataST['shipto_company']);
-			$cart->saveAddressInCart($update_dataST, $update_dataST['address_type'], TRUE);
+			$cart->saveAddressInCart($update_dataST, $update_dataST['address_type'], TRUE,$prefix);
 		} else {
-			$cart->STsameAsBT = 1;
+			$cart->STsameAsBT = true;
 			$cart->setCartIntoSession();
 		}
 
