@@ -194,7 +194,7 @@ class ShopFunctions {
 
 		$manufacturerModel = VmModel::getModel ('manufacturer');
 		$manufacturers = $manufacturerModel->getManufacturers (FALSE, TRUE);
-		$attrs = array('style'=>"width: 210px");
+		//$attrs = array('style'=>"width: 210px");
 
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';

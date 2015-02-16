@@ -685,7 +685,7 @@ class vmJsApi{
 		self::addJScript('datepicker','
 //<![CDATA[
 			jQuery(document).ready( function($) {
-			$(".datepicker").live( "focus", function() {
+			$(document).on( "focus",".datepicker", function() {
 				$( this ).datepicker({
 					changeMonth: true,
 					changeYear: true,
@@ -743,7 +743,7 @@ class vmJsApi{
 		return $formatedDate;
 	}
 
-	static function keepAlive(){
+	static function keepAlive($maxlps=4){
 
 		static $done = false;
 		if($done) return;
@@ -757,11 +757,9 @@ class vmJsApi{
 			$refTime = 30;
 		}
 
-		$admin = '';
-		if(self::isAdmin()){
-			$admin = 'administrator/';
-		}
-		vmJsApi::addJScript('keepAliveTime','var sessTime = '.$refTime.';vmBaseUrl = "'. JURI::root( ) .$admin.'";',false,true);
-		vmJsApi::addJScript('keepalive');
+		$url = 'index.php?option=com_virtuemart&view=virtuemart&task=keepalive';
+		//$refTime = 0.5;
+		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'"',false,true);
+		vmJsApi::addJScript('vmkeepalive');
 	}
 }

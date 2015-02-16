@@ -37,10 +37,24 @@ class VmView extends JViewLegacy{
 		}
 
 		echo $result;
-		if($this->writeJs and !$this->isMail and !$this->isPdf and get_class($this)!='VirtueMartViewProductdetails'){
-			echo vmJsApi::writeJS();
+		if($this->writeJs and !$this->isMail and !$this->isPdf){
+			self::withKeepAlive();
+			if(get_class($this)!='VirtueMartViewProductdetails'){
+				echo vmJsApi::writeJS();
+			}
 		}
+	}
 
+	public function withKeepAlive(){
+
+		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
+		$cart = VirtueMartCart::getCart();
+		if(!empty($cart->cartProductsData)){
+			$user = JFactory::getUser();
+			$max = $user->guest? 4:2;
+			vmJsApi::keepAlive($max);
+			vmdebug('load keepAlive my loops',$max);
+		}
 	}
 
 	/**

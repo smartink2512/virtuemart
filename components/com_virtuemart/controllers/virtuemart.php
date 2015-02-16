@@ -60,5 +60,9 @@ class VirtueMartControllerVirtuemart extends JControllerLegacy
 
 		return $this;
 	}
+
+	public function keepalive(){
+		jExit();
+	}
 }
  //pure php no closing tag

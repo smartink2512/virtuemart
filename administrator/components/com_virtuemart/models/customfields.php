@@ -235,14 +235,14 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 
-	private function renderProductChildLine($i,$line,$field,$productModel,$row){
+	private function renderProductChildLine($i,$line,$field,$productModel,$row,$showSku){
 
 		$child = $productModel->getProductSingle($line['vm_product_id'],false);
 		//if(!empty($parentId)) $parentId = $parentId.'->';
 		$linkLabel = $line['parent_id'] .'->'. $line['vm_product_id'].' ';
 		$html = '<tr class="row'.(($i+1)%2).'">';
 		$html .= '<td>'.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $linkLabel.$child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->slug)).'</td>';
-		$html .= '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_sku]" id="child'.$child->virtuemart_product_id.'product_sku" size="20" maxlength="64" value="'.$child->product_sku .'" /></td>';
+		if($showSku) $html .= '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_sku]" id="child'.$child->virtuemart_product_id.'product_sku" size="20" maxlength="64" value="'.$child->product_sku .'" /></td>';
 		$html .= '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_gtin]" id="child'.$child->virtuemart_product_id.'product_gtin" size="13" maxlength="13" value="'.$child->product_gtin .'" /></td>';
 		/*$html .= 	'<input type="hidden" name="childs['.$child->virtuemart_product_id .'][product_name]" id="child'.$child->virtuemart_product_id .'product_name" value="'.$child->product_name .'" />
 					<input type="hidden" name="childs['.$child->virtuemart_product_id .'][slug]" id="child'.$child->virtuemart_product_id .'slug" value="'.$child->slug .'" />
@@ -393,9 +393,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 				array_unshift($sorted,  array('parent_id' => $product_id, 'vm_product_id' => $product_id));
 
-				//VmConfig::$echoDebug = true;
-				//vmdebug('my sorted ids ',$sorted);
-				//return;
+				$showSku = true;
+
 				$k = 0;
 				if(empty($field->selectoptions)) $field->selectoptions = array();
 				foreach($field->selectoptions as $k=>&$soption){
@@ -423,6 +422,10 @@ class VirtueMartModelCustomfields extends VmModel {
 									$added[] = $voption;
 								}
 							}
+						}
+
+						if($soption->voption=='product_sku'){
+							$showSku = false;
 						}
 					}
 
@@ -537,9 +540,11 @@ class VirtueMartModelCustomfields extends VmModel {
 				//vmdebug('my $field->selectoptions',$field->selectoptions,$field->options);
 				$html .= '<table id="syncro">';
 				$html .= '<tr>
-<th style="text-align: left !important;width:130px;">#</th>
-<th style="text-align: left !important;width:90px;">'.vmText::_('COM_VIRTUEMART_PRODUCT_SKU').'</th>
-<th style="text-align: left !important;width:80px;">'. vmText::_('COM_VIRTUEMART_PRODUCT_GTIN').'</th>
+<th style="text-align: left !important;width:130px;">#</th>';
+				if($showSku){
+					$html .= '<th style="text-align: left !important;width:90px;">'.vmText::_('COM_VIRTUEMART_PRODUCT_SKU').'</th>';
+				}
+				$html .= '<th style="text-align: left !important;width:80px;">'. vmText::_('COM_VIRTUEMART_PRODUCT_GTIN').'</th>
 <th style="text-align: left !important;" width="5%">'.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST').'</th>
 <th style="text-align: left !important;width:30px;">'.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').'</th>
 <th style="text-align: left !important;width:30px;">'.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK').'</th>';
@@ -555,7 +560,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					foreach($sorted as $i=>$line){
 
-						$html .= self::renderProductChildLine($i,$line,$field,$productModel,$row);
+						$html .= self::renderProductChildLine($i,$line,$field,$productModel,$row,$showSku);
 					}
 				}
 

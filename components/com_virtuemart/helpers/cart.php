@@ -1097,7 +1097,7 @@ class VirtueMartCart {
 	 * @param Object If given, an object with data address data that must be formatted to an array
 	 * @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
 	 */
-	private function validateUserData($type='BT', $obj = null,$redirect = false) {
+	public function validateUserData($type='BT', $obj = null,$redirect = false) {
 
 		$usersModel = VmModel::getModel('user');
 		if($obj==null){
