@@ -61,7 +61,7 @@ $i=0;
 				<span  class="hastip" title="<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_SKU_TIP') ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_SKU') ?></span>
 			</td>
 			<td>
-				<input type="text" class="inputbox" name="product_sku" id="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
+				<input type="text" class="inputbox" name="product_sku" id="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="255" />
 			</td>
 			<td width="130px">
 				<span class="hastip" title="<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_GTIN_TIP') ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_GTIN') ?></span>
