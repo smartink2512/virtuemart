@@ -116,7 +116,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			'amazon_class_notification_type'        => 'text',
 			'amazon_notification'                   => 'text',
 		);
-		return $SQLfields;
 	}
 
 
@@ -2155,7 +2154,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		$db->setQuery($q);
 		$payments = $db->loadObjectList();
-		$html = '<table class="adminlist table-striped"  >' . "\n";
+		$html = '<table class="adminlist table"  >' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$html .= $this->showActionOrderBEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, $payments);
 		$html .= $this->showOrderBEPayment($virtuemart_order_id, $payments);
@@ -2248,7 +2247,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				$this->loadAmazonClass($payment->amazon_class_notification_type);
 			}
 
-			$html .= '<tr class="row1"><td>' . vmText::_('VMPAYMENT_AMAZON_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			$html .= '<tr class="row1"><td><strong>' . vmText::_('VMPAYMENT_AMAZON_DATE') . '</strong></td><td align="left"><strong>' . $payment->created_on . '</strong></td></tr>';
 			// Now only the first entry has this data when creating the order
 			if ($first) {
 				$html .= $this->getHtmlRowBE('AMAZON_PAYMENT_NAME', $payment->payment_name);
@@ -2264,6 +2263,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			} else {
 
 
+				$amazon_classes = array();
+				/*
+				if (!empty($payment->amazon_request)) {
+					$amazon_data = unserialize($payment->amazon_request);
+					$amazon_classes[get_class($amazon_data)] = $payment->amazon_request;
+				}
+				*/
 				$amazon_classes = array();
 				/*
 				if (!empty($payment->amazon_request)) {
@@ -2297,8 +2303,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 					$html .= $this->getResponseData($payment);
 					$html .= $this->getTransactionLogContent($payment->amazon_class_notification_type, $payment->amazon_notification, $payment);
 				}
-
-
 
 			}
 		}
@@ -2374,7 +2378,7 @@ jQuery().ready(function($) {
 			}
 		}
 
-				$html .= ' </td>';
+		$html .= ' </td>';
 		$html .= ' <td>';
 
 		if ($this->_currentMethod->debug) {
@@ -2399,7 +2403,7 @@ jQuery().ready(function($) {
 
 	}
 
-function getVmClass ($amazonClass) {
+	function getVmClass ($amazonClass) {
 		$pos = strrpos($amazonClass, '_');
 		$vmClass = substr($amazonClass, $pos + 1);
 		return $vmClass;
