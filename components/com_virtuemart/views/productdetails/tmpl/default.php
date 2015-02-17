@@ -27,15 +27,7 @@ if (empty($this->product)) {
 
 echo shopFunctionsF::renderVmSubLayout('askrecomjs',array('product'=>$this->product));
 
-vmJsApi::jDynUpdate();
-vmJsApi::addJScript('updDynamicListeners',"
-jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
-	// If template is aware of dynamic update and provided a variable let's
-	// set-up the event listeners.
-	if (Virtuemart.container)
-		Virtuemart.updateDynamicUpdateListeners();
 
-}); ");
 
 if(vRequest::getInt('print',false)){ ?>
 <body onload="javascript:print();">

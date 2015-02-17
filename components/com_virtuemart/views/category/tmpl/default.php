@@ -20,6 +20,7 @@
 
 defined ('_JEXEC') or die('Restricted access');
 
+?> <div class="category-view"> <?php
 $js = "
 jQuery(document).ready(function () {
 	jQuery('.orderlistcontainer').hover(
@@ -28,7 +29,6 @@ jQuery(document).ready(function () {
 	)
 });
 ";
-
 vmJsApi::addJScript('vm.hover',$js);
 
 if (empty($this->keyword) and !empty($this->category)) {
@@ -115,5 +115,12 @@ if (!empty($this->keyword)) {
 </div>
 
 <?php } ?>
+</div>
 
+<?php
+$j = "Virtuemart.container = jQuery('.category-view');
+Virtuemart.containerSelector = '.category-view';";
+
+vmJsApi::addJScript('ajaxContent',$j);
+?>
 <!-- end browse-view -->

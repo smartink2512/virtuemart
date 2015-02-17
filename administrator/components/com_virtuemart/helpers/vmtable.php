@@ -1233,34 +1233,13 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 	function storeParams() {
 
-		if (!empty($this->_xParams)) {
+		if (!empty($this->_xParams) and !empty($this->_varsToPushParam)) {
 			$paramFieldName = $this->_xParams;
 			$this->$paramFieldName = '';
 			$this->_tmpParams = array();
 			foreach ($this->_varsToPushParam as $key => $v) {
 
 				if (isset($this->$key)) {
-					/*if($v[1]=='string'){
-						$filter = FILTER_SANITIZE_STRING;
-						$flags = FILTER_FLAG_ENCODE_LOW;
-						if(is_object($this->$key)) $this->$key = (array)$this->$key;
-						if(is_array($this->$key)){
-							$this->$key = filter_var_array($this->$key, $filter, $flags );
-						}
-						else {
-							$this->$key = filter_var($this->$key, $filter, $flags);
-						}
-					} else if($v[1]=='int') {
-						$filter = FILTER_SANITIZE_STRING;
-						$flags = FILTER_FLAG_ENCODE_LOW;
-						if(is_object($this->$key)) $this->$key = (array)$this->$key;
-						if(is_array($this->$key)){
-							$this->$key = filter_var_array($this->$key, $filter, $flags );
-						}
-						else {
-							$this->$key = filter_var($this->$key, $filter, $flags);
-						}
-					}*/
 					$this->$paramFieldName .= $key . '=' . json_encode($this->$key) . '|';
 					$this->_tmpParams[$key] = $this->$key;
 				} else {

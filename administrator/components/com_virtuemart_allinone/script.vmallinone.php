@@ -79,7 +79,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					target="_blank"> <img
 						border="0"
 						align="left" style="margin-right: 20px"
-						src="components/com_virtuemart/assets/images/vm_menulogo.png"
+						src="'.JURI::root().'components/com_virtuemart/assets/images/vm_menulogo.png"
 						alt="Cart" /> </a>';
 			echo '<h3 style="clear: both;">Installing VirtueMart Plugins and Modules</h3>';
 			echo "<p>The AIO component (com_virtuemart_aio) is used to install or update all the plugins and modules essential to VirtueMart in one go.</p>";

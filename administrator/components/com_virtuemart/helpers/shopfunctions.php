@@ -269,12 +269,12 @@ class ShopFunctions {
 		return array_merge ($defaulttemplate, $jtemplates);
 	}
 
-	static function renderOrderingList($table,$fieldname,$selected,$orderingField = 'ordering'){
+	static function renderOrderingList($table,$fieldname,$selected,$where='',$orderingField = 'ordering'){
 
 // Ordering dropdown
 		$qry = 'SELECT ordering AS value, '.$fieldname.' AS text'
-			. ' FROM #__virtuemart_'.$table
-			. ' ORDER BY ordering';
+			. ' FROM #__virtuemart_'.$table.' '.$where
+			. ' ORDER BY '.$orderingField;
 		$db = JFactory::getDbo();
 		$db->setQuery($qry);
 		$orderStatusList = $db -> loadAssocList();

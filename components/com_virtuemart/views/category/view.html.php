@@ -318,7 +318,7 @@ class VirtuemartViewCategory extends VmView {
 		}
 
 		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0])) $title .=' '.$this->products[0]->mf_name ;
-		$document->setTitle( $title );
+		$document->setTitle( vmText::_($title) );
 		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
 		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0]) and isset($category->category_name)) $category->category_name = $this->products[0]->mf_name ;
 

@@ -39,10 +39,6 @@ class VirtueMartViewProductdetails extends VmView {
 		 */
 		function display($tpl = null) {
 
-			//TODO get plugins running
-//		$dispatcher	= JDispatcher::getInstance();
-//		$limitstart	= vRequest::getVar('limitstart', 0, '', 'int');
-
 			$show_prices = VmConfig::get('show_prices', 1);
 			if ($show_prices == '1') {
 				if (!class_exists('calculationHelper'))
@@ -53,9 +49,16 @@ class VirtueMartViewProductdetails extends VmView {
 
 			$document = JFactory::getDocument();
 
-			// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
+			//This must be loaded before the customfields are rendered (they may need to overwrite the handlers)
+			vmJsApi::jDynUpdate();
+			vmJsApi::addJScript('updDynamicListeners',"
+jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
+	// If template is aware of dynamic update and provided a variable let's
+	// set-up the event listeners.
+	if (Virtuemart.container)
+		Virtuemart.updateDynamicUpdateListeners();
 
-
+}); ");
 			$mainframe = JFactory::getApplication();
 			$pathway = $mainframe->getPathway();
 			$task = vRequest::getCmd('task');
@@ -89,7 +92,6 @@ class VirtueMartViewProductdetails extends VmView {
 
 			$customfieldsModel = VmModel::getModel ('Customfields');
 
-			//$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
 			if ($product->customfields){
 
 				if (!class_exists ('vmCustomPlugin')) {

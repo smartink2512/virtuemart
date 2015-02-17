@@ -45,16 +45,16 @@ class VirtuemartViewCustom extends VmViewAdmin {
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 			$this->addStandardEditViewCommands();
-			$customPlugin = '';
+			$this->customPlugin = '';
 
 			$this->custom = $model->getCustom();
 			$this->fieldTypes = VirtueMartModelCustom::getCustomTypes();
 
-			$customfields = VmModel::getModel('customfields');
+			$this->customfields = VmModel::getModel('customfields');
  			//vmdebug('VirtuemartViewCustom',$this->custom);
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
-			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($this->custom->virtuemart_custom_id,&$customPlugin));
+			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($this->custom->virtuemart_custom_id,&$this->customPlugin));
 
 			$this->SetViewTitle('PRODUCT_CUSTOM_FIELD', $this->custom->custom_title);
 
@@ -111,10 +111,15 @@ class VirtuemartViewCustom extends VmViewAdmin {
 				}
 			}
 
-			$this->pluginList = self::renderInstalledCustomPlugins($selected);
-			$this->assignRef('customPlugin',	$customPlugin);
+			if(!empty($this->custom->custom_parent_id)){
+				$list = ShopFunctions::renderOrderingList('customs','custom_title',$this->custom->ordering,'WHERE custom_parent_id ="'.(int)$this->custom->custom_parent_id.'" ');
+				$this->ordering = VmHTML::row('raw','COM_VIRTUEMART_ORDERING',$list);
+			} else {
+				$this->ordering='';
+				$this->addHidden('ordering',$this->custom->ordering);
+			}
 
-			$this->assignRef('customfields',	$customfields);
+			$this->pluginList = self::renderInstalledCustomPlugins($selected);
 
         }
         else {
@@ -212,6 +217,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 		$html .= VmHTML::row ('booleanlist', 'COM_VIRTUEMART_CUSTOM_ADMIN_ONLY', 'admin_only', $datas->admin_only);
 		$html .= VmHTML::row ('booleanlist', 'COM_VIRTUEMART_CUSTOM_IS_LIST', 'is_list', $datas->is_list);
 		$html .= VmHTML::row ('booleanlist', 'COM_VIRTUEMART_CUSTOM_IS_HIDDEN', 'is_hidden', $datas->is_hidden);
+		$html .= $this->ordering;
 
 		// $html .= '</table>';  removed
 		$html .= VmHTML::inputHidden ($this->_hidden);
