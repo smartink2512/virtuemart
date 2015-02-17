@@ -40,25 +40,11 @@ class VirtueMartViewProductdetails extends VmView {
 		function display($tpl = null) {
 
 			$show_prices = VmConfig::get('show_prices', 1);
-			if ($show_prices == '1') {
-				if (!class_exists('calculationHelper'))
-					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
-				vmJsApi::jPrice();
-			}
+
 			$this->assignRef('show_prices', $show_prices);
 
 			$document = JFactory::getDocument();
 
-			//This must be loaded before the customfields are rendered (they may need to overwrite the handlers)
-			vmJsApi::jDynUpdate();
-			vmJsApi::addJScript('updDynamicListeners',"
-jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
-	// If template is aware of dynamic update and provided a variable let's
-	// set-up the event listeners.
-	if (Virtuemart.container)
-		Virtuemart.updateDynamicUpdateListeners();
-
-}); ");
 			$mainframe = JFactory::getApplication();
 			$pathway = $mainframe->getPathway();
 			$task = vRequest::getCmd('task');
@@ -342,6 +328,21 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 
 			vmJsApi::chosenDropDowns();
 
+//This must be loaded after the customfields are rendered (they may need to overwrite the handlers)
+			vmJsApi::jDynUpdate();
+			vmJsApi::addJScript('updDynamicListeners',"
+jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
+	// If template is aware of dynamic update and provided a variable let's
+	// set-up the event listeners.
+	if (Virtuemart.container)
+		Virtuemart.updateDynamicUpdateListeners();
+
+}); ");
+			if ($show_prices == '1') {
+				if (!class_exists('calculationHelper'))
+					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
+				vmJsApi::jPrice();
+			}
 			parent::display($tpl);
 
     }

@@ -60,7 +60,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		if(!VmConfig::get('shop_is_offline',0)){
 
-			vmJsApi::jPrice();
+
 			//if($vendorIdUser){
 				//$user = JFactory::getUser();
 				if( $vendorIdUser ){
@@ -198,6 +198,7 @@ class VirtueMartViewVirtueMart extends VmView {
 				$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 				$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
 			}
+			vmJsApi::jPrice();
 		} else {
 			$this->setLayout('off_line');
 		}

@@ -50,40 +50,40 @@ jQuery(function($) {
         //jQuery('body').trigger('ready');
     }
 
-    Virtuemart.updateDynamicUpdateListeners = function() {
-        var elements = jQuery('*[data-dynamic-update=1]');
-        elements.each(function(i, el) {
+    Virtuemart.updL = function (event) {
+        event.preventDefault();
+        var url = jQuery(this).attr('href');
+        Virtuemart.setBrowserNewState(url);
+        Virtuemart.updateContent(url);
+    }
 
+    Virtuemart.upd = function(event) {
+        event.preventDefault();
+        var url = jQuery(this).attr('url');
+        if (typeof url === typeof undefined || url === false) {
+            url = jQuery(this).val();
+        }
+        if(url!=null){
+            Virtuemart.setBrowserNewState(url);
+            Virtuemart.updateContent(url);
+        }
+    };
+
+    Virtuemart.updateDynamicUpdateListeners = function() {
+        jQuery('*[data-dynamic-update=1]').each(function(i, el) {
             var nodeName = el.nodeName;
-            el = $(el);
+            el = jQuery(el);
+            console.log('updateDynamicUpdateListeners '+nodeName, el);
             switch (nodeName) {
                 case 'A':
 					el[0].onclick = null;
-                    el.click(function(event) {
-                        event.preventDefault();
-                        var url = el.attr('href');
-                        setBrowserNewState(url);
-                        Virtuemart.updateContent(url);
-                    });
-                   // console.log('updateDynamicUpdateListeners click ');//+i, el);
+                    el.off('click',Virtuemart.updL);
+                    el.on('click',Virtuemart.updL);
                     break;
                 default:
 					el[0].onchange = null;
-                    el.change(function(event) {
-                        event.preventDefault();
-                        var url = jQuery(el).attr('url');
-                        //console.log('updateDynamicUpdateListeners found URL attri ',url,el);
-                        if (typeof url === typeof undefined || url === false) {
-                            url = el.val();
-                            //console.log('updateDynamicUpdateListeners URL attrib empty '+url);
-                        }
-                        if(url!=null){
-                            //console.log('updateDynamicUpdateListeners onchange set URL '+url);
-                            setBrowserNewState(url);
-                            Virtuemart.updateContent(url);
-                        }
-
-                    });
+                    el.off('change',Virtuemart.upd);
+                    el.on('change',Virtuemart.upd);
                    // console.log('updateDynamicUpdateListeners change '+i, el);
             }
         });
@@ -92,7 +92,7 @@ jQuery(function($) {
 
     var everPushedHistory = false;
     var everFiredPopstate = false;
-    function setBrowserNewState(url) {
+    Virtuemart.setBrowserNewState = function (url) {
         if (typeof window.onpopstate == "undefined")
             return;
         var stateObj = {
@@ -102,7 +102,7 @@ jQuery(function($) {
         history.pushState(stateObj, "", url);
     }
 
-    var browserStateChangeEvent = function(event) {
+    Virtuemart.browserStateChangeEvent = function(event) {
         //console.log(event);
         // Fix. Chrome and Safari fires onpopstate event onload.
         // Also fix browsing through history when mixed with Ajax updates and
@@ -119,6 +119,6 @@ jQuery(function($) {
         }
         Virtuemart.updateContent(url);
     }
-    window.onpopstate = browserStateChangeEvent;
+    window.onpopstate = Virtuemart.browserStateChangeEvent;
 
 });

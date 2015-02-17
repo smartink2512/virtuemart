@@ -42,9 +42,6 @@ class VirtuemartViewCategory extends VmView {
 
 		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
-		// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
-		vmJsApi::jPrice();
-
 		$document = JFactory::getDocument();
 
 		$app = JFactory::getApplication();
@@ -183,6 +180,8 @@ class VirtuemartViewCategory extends VmView {
 						}
 					}
 
+					// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
+					vmJsApi::jPrice();
 				}
 
 				// Add feed links
