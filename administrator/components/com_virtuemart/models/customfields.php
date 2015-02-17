@@ -841,7 +841,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 						$idTagK = $idTag.'cvard'.$k;
 						$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);
-						$attribs = array('class'=>'vm-chzn-select cvselection','data-dynamic-update'=>'1');
+						$attribs = array('class'=>'vm-chzn-select cvselection no-vm-bind','data-dynamic-update'=>'1');
 						if('productdetails' != vRequest::getCmd('view')){
 							$attribs['reload'] = '1';
 						}
@@ -948,7 +948,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$url = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.
 						$virtuemart_category_id .'&virtuemart_product_id='. $selected;
-					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="vm-chzn-select" data-dynamic-update="1" ', "value", "text",
+					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="vm-chzn-select no-vm-bind" data-dynamic-update="1" ', "value", "text",
 						JRoute::_ ($url,false),$idTag);
 
 					vmJsApi::chosenDropDowns();
