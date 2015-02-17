@@ -58,6 +58,7 @@ var amazonPayment = {
             window.onError = null;
             console.log("amazonShowWallet: " + amazonPayment.amazonOrderReferenceId);
             var checkoutFormSubmit = document.getElementById("checkoutFormSubmit");
+            if (checkoutFormSubmit === null) return;
             checkoutFormSubmit.className = 'vm-button-correct';
             checkoutFormSubmit.className = 'vm-button';
             checkoutFormSubmit.setAttribute('disabled', 'true');
@@ -93,16 +94,18 @@ var amazonPayment = {
                         function (datas, textStatus) {
                             var errormsg = '';
                             var checkoutFormSubmit = document.getElementById("checkoutFormSubmit");
-                            checkoutFormSubmit.className = 'vm-button-correct';
-                            checkoutFormSubmit.removeAttribute('disabled');
-                            amazonPayment.updateCart();
-                            amazonPayment.showAmazonWallet();
+
                             if (typeof datas.error_msg != 'undefined' && datas.error_msg != '') {
                                 errormsg = datas.error_msg;
                                 checkoutFormSubmit.className = 'vm-button';
                                 checkoutFormSubmit.setAttribute('disabled', 'true');
                                 document.id('amazonShipmentsDiv').style.display = 'none';
                                 amazonPayment.stopLoading();
+                            } else {
+                                checkoutFormSubmit.className = 'vm-button-correct';
+                                checkoutFormSubmit.removeAttribute('disabled');
+                                amazonPayment.updateCart();
+                                amazonPayment.showAmazonWallet();
                             }
                             document.id('amazonErrorDiv').set('html', errormsg);
                         }
@@ -116,7 +119,7 @@ var amazonPayment = {
                 },
                 onError: function (error) {
                     amazonPayment.onErrorAmazon('amazonShowAddress', error, amazonPayment.virtuemart_paymentmethod_id);
-                }
+                },
             }).bind("amazonAddressBookWidgetDiv");
 
         },
@@ -211,7 +214,9 @@ var amazonPayment = {
          * @param warning
          */
         displayCaptureNowWarning: function(warning) {
-            document.id('amazonChargeNowWarning').set('html',warning);
+            if(document.getElementById("amazonChargeNowWarning") !== null) {
+                document.id('amazonChargeNowWarning').set('html',warning);
+            }
         },
 
         leaveAmazonCheckout: function() {
