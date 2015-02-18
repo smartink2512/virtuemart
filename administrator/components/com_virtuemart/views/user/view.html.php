@@ -215,8 +215,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 			$userList = $model->getUserList();
 			$this->assignRef('userList', $userList);
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->pagination = $model->getPagination();
 
 			$shoppergroupmodel = VmModel::getModel('shopperGroup');
 			$this->defaultShopperGroup = $shoppergroupmodel->getDefault(0)->shopper_group_name;

@@ -94,7 +94,6 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility
 				if (!isset($product->shoppergroups)) $product->shoppergroups = 0;
 				$this->shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups);
-				//$this->assignRef('shoppergroupList', $shoppergroupList);
 
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
@@ -345,8 +344,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$productlist = $model->getProductListing(false,false,false,false,true);
 			//vmdebug('my product listing',$productlist);
 			//The pagination must now always set AFTER the model load the listing
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->pagination = $model->getPagination();
 
 			/* Get the category tree */
 			$categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');

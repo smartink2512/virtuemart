@@ -35,8 +35,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
-		$vendorId=VmConfig::isSuperVendor();
-		$this->assignRef('vendorId', $vendorId);
+		$this->vendorId=VmConfig::isSuperVendor();
 
 		// TODO add icon for media view
 		$this->SetViewTitle();
@@ -45,14 +44,8 @@ class VirtuemartViewMedia extends VmViewAdmin {
 
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
-
-			$media = $model->getFile();
-			$this->assignRef('media',	$media);
-
-			$isNew = ($media->virtuemart_media_id < 1);
-
+			$this->media = $model->getFile();
 			$this->addStandardEditViewCommands();
-
         }
         else {
 			$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
@@ -81,11 +74,9 @@ class VirtuemartViewMedia extends VmViewAdmin {
 				);
 			$this->lists['search_role'] = VmHTML::selectList('search_role', vRequest::getVar('search_role'),$options,1,'','onchange="this.form.submit();"');
 
-			$files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
-			$this->assignRef('files',	$files);
+			$this->files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->pagination = $model->getPagination();
 
 		}
 

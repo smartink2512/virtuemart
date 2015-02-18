@@ -79,7 +79,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					target="_blank"> <img
 						border="0"
 						align="left" style="margin-right: 20px"
-						src="'.JURI::root().'components/com_virtuemart/assets/images/vm_menulogo.png"
+						src="components/com_virtuemart/assets/images/vm_menulogo.png"
 						alt="Cart" /> </a>';
 			echo '<h3 style="clear: both;">Installing VirtueMart Plugins and Modules</h3>';
 			echo "<p>The AIO component (com_virtuemart_aio) is used to install or update all the plugins and modules essential to VirtueMart in one go.</p>";
@@ -92,6 +92,10 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$db->setQuery($q);
 			$productsExists = $db->loadResult();
 			if (!$productsExists) {
+				$file = 'components/com_virtuemart/assets/css/toolbar_images.css';
+				$document = JFactory::getDocument();
+				$document->addStyleSheet($file.'?vmver='.VM_REV);
+
 				?>
 
 				<p><strong>
@@ -114,6 +118,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 						   href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&' . JSession::getFormToken() . '=1') ?>">
 							<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 						</a>
+						<span class="vmicon48"></span>
 					</div>
 				</div>
 				<div style="clear: both;"></div>
@@ -253,7 +258,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$src = $this->path . DS . "libraries";
 				$dst = JPATH_ROOT . DS . "libraries";
 				$this->recurse_copy ($src, $dst);
-				echo "<tr><th>Pdf moved to the joomla libraries folder</th><td></td></tr>";
+				echo "<tr><th>libraries moved to the joomla libraries folder</th><td></td></tr>";
 
 				echo "</table>";
 

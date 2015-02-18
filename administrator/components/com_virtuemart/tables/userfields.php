@@ -142,11 +142,10 @@ class TableUserfields extends VmTable {
 		 {
 		    
 			$umodel = VmModel::getModel('userfields'); 
-			$arr = $umodel->getCoreFields(); 
-			
+			$arr = $umodel->getCoreFields();
 			if (in_array($this->name, $arr))
 			 {
-			  vmError('Cannot delete core field!'); 
+			  vmError('Cannot delete core field! Use unpublish');
 			  return false; 
 			 }
 		 }

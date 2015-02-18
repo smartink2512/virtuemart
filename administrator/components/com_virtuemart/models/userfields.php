@@ -212,7 +212,7 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	static function getCoreFields(){
-		return array( 'name','username', 'email', 'password', 'password2');// , 'agreed');
+		return array( 'name','username', 'email', 'password', 'password2','first_name','middle_name','last_name');// , 'agreed');
 	}
 
 	/**
@@ -232,6 +232,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$coreFields = $this->getCoreFields();
 		if(in_array($data['name'],$coreFields)){
+			$field->load($data['virtuemart_userfield_id']);
 			//vmError('Cant store/update core field. They belong to joomla');
 			//return false;
 		} else {
@@ -689,7 +690,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *                      $_usrFieldList
 	 *                     ,$_usrDetails
 	 *   );
-	 *   $this->assignRef('userfields', $userfields);
+	 *   $this-userfields= $userfields;
 	 *   // In the template, use code below to display the data. For an extended example using
 	 *   // delimiters, JavaScripts and StyleSheets, see the edit_shopper.php in the user view
 	 *   <table class="admintable" width="100%">
@@ -1153,21 +1154,6 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	/**
-	 * Get the column name of a given fieldID
-	 * @param $_id integer Field ID
-	 * @return string Fieldname
-	 */
-	function getNameByID($_id)
-	{
-		$_sql = 'SELECT `name`
-				FROM `#__virtuemart_userfields`
-				WHERE virtuemart_userfield_id = "'.$_id.'" ';
-
-		$_v = $this->_getList($_sql);
-		return ($_v[0]->name);
-	}
-
-	/**
 	 * Delete all record ids selected
 	 *
 	 * @return boolean True is the remove was successful, false otherwise.
@@ -1180,35 +1166,45 @@ class VirtueMartModelUserfields extends VmModel {
 		$orderinfo  = $this->getTable('order_userinfos');
 
 		$ok = true;
+		$core = $this->getCoreFields();
 		foreach($fieldIds as $fieldId) {
-			$_fieldName = $this->getNameByID($fieldId);
 			$field->load($fieldId);
+			$_fieldName = $field->name;
+			if (!in_array($_fieldName, $core)){
+				if ($field->type != 'delimiter') {
+					// Get the fieldtype for the database
+					$_fieldType = $field->formatFieldType();
 
-			if ($field->type != 'delimiter') {
-				// Get the fieldtype for the database
-				$_fieldType = $field->formatFieldType();
+					// Alter the user_info table
+					if ($userinfo->_modifyColumn ('DROP', $_fieldName,$_fieldType) === false) {
+						vmdebug('remove $userinfo->_modifyColumn failed',$userinfo);
+						vmError('remove $userinfo->_modifyColumn failed id = '.$fieldId.' '.$_fieldName);
+						$ok = false;
+					}
 
-				// Alter the user_info table
-				if ($userinfo->_modifyColumn ('DROP', $_fieldName,$_fieldType) === false) {
-					vmError($userinfo->getError());
-					$ok = false;
+					// Alter the order_userinfo table
+					if ($orderinfo->_modifyColumn ('DROP', $_fieldName,$_fieldType) === false) {
+						vmdebug('remove $userinfo->_modifyColumn failed',$userinfo);
+						vmError('remove $orderinfo->_modifyColumn failed id = '.$fieldId.' '.$_fieldName);
+						$ok = false;
+					}
 				}
 
-				// Alter the order_userinfo table
-				if ($orderinfo->_modifyColumn ('DROP', $_fieldName,$_fieldType) === false) {
-					vmError($orderinfo->getError());
+				if (!$field->delete($fieldId)) {
+					vmdebug('remove userfields failed',$field);
+					vmError('remove userfields failed id = '.$fieldId.' '.$_fieldName);
 					$ok = false;
 				}
+				if (!$value->delete($fieldId)) {
+					vmdebug('remove userfield_values failed',$value);
+					vmError('remove userfield_values failed id = '.$fieldId.' '.$_fieldName);
+					$ok = false;
+				}
+			} else {
+				vmError('Cannot delete core field <i>'.$_fieldName.'</i>! Use unpublish');
 			}
 
-			if (!$field->delete($fieldId)) {
-				vmError($field->getError());
-				$ok = false;
-			}
-			if (!$value->delete($fieldId)) {
-				vmError($field->getError());
-				$ok = false;
-			}
+
 		}
 
 		return $ok;

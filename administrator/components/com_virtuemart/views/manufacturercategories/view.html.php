@@ -58,8 +58,7 @@ class VirtuemartViewManufacturercategories extends VmViewAdmin {
 			$manufacturerCategories = $model->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->pagination = $model->getPagination();
 
 		}
 		parent::display($tpl);

@@ -90,12 +90,6 @@ class VirtuemartViewReport extends VmViewAdmin {
 		$this->assignRef('report', $revenueBasic);
 		$this->assignRef('totalReport', $totalReport);
 
-		//$itemsSold = $model->getItemsSold($revenueBasic);
-		//$this->assignRef('itemsSold', $itemsSold);
-		// I tihnk is to use in a different layout such as product solds
-		// PATRICK K.
-		// $productList = $model->getOrderItems();
-		// $this->assignRef('productList', $productList);
 
 		$orderstatusM =VmModel::getModel('orderstatus');
 		$this->lists['select_date'] = $model->renderDateSelectList();
@@ -105,8 +99,7 @@ class VirtuemartViewReport extends VmViewAdmin {
 		$this->assignRef('from_period', $model->from_period);
 		$this->assignRef('until_period', $model->until_period);
 
-		$pagination = $model->getPagination();
-		$this->assignRef('pagination', $pagination);
+		$this->pagination = $model->getPagination();
 
 		parent::display($tpl);
 	}

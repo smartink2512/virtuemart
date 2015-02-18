@@ -33,26 +33,17 @@ class VirtuemartViewState extends VmViewAdmin {
 
 	function display($tpl = null) {
 
-		// Load the helper(s)
-
-
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$this->SetViewTitle();
-
-
 		$model = VmModel::getModel();
 
-//		$stateId = vRequest::getVar('virtuemart_state_id');
-//		$model->setId($stateId);
-		$state = $model->getSingleState();
+		$this->state = $model->getSingleState();
 
-		$countryId = vRequest::getInt('virtuemart_country_id', 0);
-		if(empty($countryId)) $countryId = $state->virtuemart_country_id;
-		$this->assignRef('virtuemart_country_id',	$countryId);
+		$this->virtuemart_country_id = vRequest::getInt('virtuemart_country_id', $this->state->virtuemart_country_id);
 
-        $isNew = (count($state) < 1);
+        $isNew = (count($this->state) < 1);
 
 		if(empty($countryId) && $isNew){
 			vmWarn('Country id is 0');
@@ -60,20 +51,14 @@ class VirtuemartViewState extends VmViewAdmin {
 		}
 
 		$country = VmModel::getModel('country');
-		$country->setId($countryId);
-		$this->assignRef('country_name', $country->getData()->country_name);
-
+		$country->setId($this->virtuemart_country_id);
+		$this->country_name = $country->getData()->country_name;
 
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
-
-			$this->assignRef('state', $state);
-
 			$zoneModel = VmModel::getModel('Worldzones');
-			$wzsList = $zoneModel->getWorldZonesSelectList();
-			$this->assignRef('worldZones', $wzsList);
-
+			$this->worldZones = $zoneModel->getWorldZonesSelectList();
 			$this->addStandardEditViewCommands();
 
 		} else {
@@ -81,11 +66,8 @@ class VirtuemartViewState extends VmViewAdmin {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$states = $model->getStates($countryId);
-			$this->assignRef('states',	$states);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->states = $model->getStates($this->virtuemart_country_id);
+			$this->pagination = $model->getPagination();
 
 		}
 

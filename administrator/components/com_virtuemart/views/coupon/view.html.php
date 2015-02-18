@@ -104,8 +104,7 @@ class VirtuemartViewCoupon extends VmViewAdmin {
 			$coupons = $model->getCoupons();
 			$this->assignRef('coupons',	$coupons);
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->pagination = $model->getPagination();
 
 		}
 

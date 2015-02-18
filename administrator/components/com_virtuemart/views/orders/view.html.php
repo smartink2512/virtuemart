@@ -242,8 +242,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->pagination = $model->getPagination();
 
 		}
 		if(JFactory::getApplication()->isSite()) {

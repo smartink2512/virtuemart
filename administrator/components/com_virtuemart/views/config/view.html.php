@@ -66,9 +66,9 @@ class VirtuemartViewConfig extends VmViewAdmin {
 
 		$this->noimagelist = $model->getNoImageList();
 
-		$orderStatusModel= VmModel::getModel('orderstatus');
-		$this->assignRef('orderStatusModel',$orderStatusModel);
-		$this->os_Options = $this->osWoP_Options = $this->osDel_Options = $orderStatusModel->getOrderStatusNames();
+		$this->orderStatusModel= VmModel::getModel('orderstatus');
+
+		$this->os_Options = $this->osWoP_Options = $this->osDel_Options = $this->orderStatusModel->getOrderStatusNames();
 		$emptyOption = JHtml::_ ('select.option', -1, vmText::_ ('COM_VIRTUEMART_NONE'), 'order_status_code', 'order_status_name');
 
 		unset($this->osWoP_Options['P']);

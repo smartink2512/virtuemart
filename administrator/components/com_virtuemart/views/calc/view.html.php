@@ -39,13 +39,9 @@ class VirtuemartViewCalc extends VmViewAdmin {
 		$model = VmModel::getModel('calc');
 
 		//@todo should be depended by loggedVendor
-		$vendorId=1;
-		$this->assignRef('vendorId', $vendorId);
-
-		$db = JFactory::getDBO();
+		$this->vendorId=1;
 
 		$this->SetViewTitle();
-
 
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -59,7 +55,7 @@ class VirtuemartViewCalc extends VmViewAdmin {
 
 				$db = JFactory::getDBO();
 				//get default currency of the vendor, if not set get default of the shop
-				$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "'.$vendorId.'"';
+				$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "'.$this->vendorId.'"';
 				$db->setQuery($q);
 				$currency= $db->loadResult();
 				if(empty($currency)){
@@ -72,11 +68,8 @@ class VirtuemartViewCalc extends VmViewAdmin {
 				}
 
 			}
-			$entryPointsList = self::renderEntryPointsList($calc->calc_kind);
-			$this->assignRef('entryPointsList',$entryPointsList);
-
-			$mathOpList = self::renderMathOpList($calc->calc_value_mathop);
-			$this->assignRef('mathOpList',$mathOpList);
+			$this->entryPointsList = self::renderEntryPointsList($calc->calc_kind);
+			$this->mathOpList = self::renderMathOpList($calc->calc_value_mathop);
 
 			if(empty($calc->calc_categories)){
 				$calc->calc_categories = array();
@@ -87,29 +80,20 @@ class VirtuemartViewCalc extends VmViewAdmin {
 			$this->categoryTree = ShopFunctions::categoryListTree($calc_categories);
 
 			$currencyModel = VmModel::getModel('currency');
-			$_currencies = $currencyModel->getCurrencies();
-			$this->assignRef('currencies', $_currencies);
+			$this->currencies = $currencyModel->getCurrencies();
 
-			/* Get the shoppergroup tree */
-			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->virtuemart_shoppergroup_ids,True);
-			$this->assignRef('shopperGroupList', $shopperGroupList);
+			$this->shopperGroupList= ShopFunctions::renderShopperGroupList($calc->virtuemart_shoppergroup_ids,True);
 
 			if (!class_exists ('ShopFunctionsF')) {
 				require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 			}
 
-			$countriesList = ShopFunctionsF::renderCountryList($calc->calc_countries,True);
-			$this->assignRef('countriesList', $countriesList);
-
-			$statesList = ShopFunctionsF::renderStateList($calc->virtuemart_state_ids,'', True);
-			$this->assignRef('statesList', $statesList);
-
-			$manufacturerList= ShopFunctions::renderManufacturerList($calc->virtuemart_manufacturers,true);
-			$this->assignRef('manufacturerList', $manufacturerList);
+			$this->countriesList = ShopFunctionsF::renderCountryList($calc->calc_countries,True);
+			$this->statesList = ShopFunctionsF::renderStateList($calc->virtuemart_state_ids,'', True);
+			$this->manufacturerList= ShopFunctions::renderManufacturerList($calc->virtuemart_manufacturers,true);
 
 			if($this->showVendors()){
-				$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,false);
-				$this->assignRef('vendorList', $vendorList);
+				$this->vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,false);
 			}
 
 			$this->addStandardEditViewCommands();
@@ -124,9 +108,9 @@ class VirtuemartViewCalc extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model);
 
 			$search = vRequest::getCmd('search', false);
-			$calcs = $model->getCalcs(false, false, $search);
+			$this->calcs = $model->getCalcs(false, false, $search);
 			VmConfig::loadJLang('com_virtuemart_shoppers',true);
-			foreach ($calcs as &$data){
+			foreach ($this->calcs as &$data){
 				$data->calcCategoriesList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'categories','category_name','category','calc_categories','virtuemart_calc_id');
 
 				$data->calcShoppersList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'shoppergroups','shopper_group_name','shoppergroup','calc_shoppergroups','virtuemart_calc_id');
@@ -138,10 +122,7 @@ class VirtuemartViewCalc extends VmViewAdmin {
 				$data->calcManufacturersList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'manufacturers','mf_name','manufacturer','calc_manufacturers','virtuemart_calc_id');
 			}
 
-			$this->assignRef('calcs',	$calcs);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->pagination = $model->getPagination();
 
 		}
 

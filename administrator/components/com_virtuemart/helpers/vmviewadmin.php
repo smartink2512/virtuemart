@@ -242,7 +242,7 @@ class VmViewAdmin extends JViewLegacy {
 		$params = JComponentHelper::getParams('com_languages');
 
 		$selectedLangue = $params->get('site', 'en-GB');
-		$lang = strtolower(strtr($selectedLangue,'-','_'));
+		$this->lang = strtolower(strtr($selectedLangue,'-','_'));
 
 		// Get all the published languages defined in Language manager > Content
 		$allLanguages	= JLanguageHelper::getLanguages();
@@ -256,7 +256,7 @@ class VmViewAdmin extends JViewLegacy {
 			if ($editView =='user') $editView ='vendor';
 
 			jimport('joomla.language.helper');
-            $lang = vRequest::getVar('vmlang', $lang);
+            $this->lang = vRequest::getVar('vmlang', $lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('VMPATH_ROOT'), true);
 			$activeVmLangs = (vmconfig::get('active_languages') );
@@ -287,7 +287,6 @@ class VmViewAdmin extends JViewLegacy {
 
 			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
 
-			$this->assignRef('lang',$lang);
 
 			if ($editView =='product') {
 				$productModel = VmModel::getModel('product');
@@ -379,8 +378,6 @@ class VmViewAdmin extends JViewLegacy {
 				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));
 			}
 			$this->langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
-
-			$this->assignRef('lang',$lang);
 
 			vmJsApi::keepAlive();
 		}

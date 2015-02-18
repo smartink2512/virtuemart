@@ -29,28 +29,10 @@ AdminUIHelper::startAdminArea($this);
 <?php /*	<legend><?php echo vmText::_('COM_VIRTUEMART_STATE_DETAILS'); ?></legend> */?>
 	<legend><?php echo JHtml::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. vmText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="state_name">
-					<?php echo vmText::_('COM_VIRTUEMART_STATE_NAME'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="state_name" id="state_name" size="50" value="<?php echo $this->state->state_name; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-				</label>
-			</td>
-			<td><fieldset class="radio">
-
-				<?php echo JHtml::_('select.booleanlist',  'published', 'class="inputbox"', $this->state->published); ?>
-
-			</fieldset></td>
-		</tr>
+		<?php
+		echo VmHTML::row('input', 'COM_VIRTUEMART_STATE_NAME', 'state_name', $this->state->state_name,'size="50"');
+		echo VmHTML::row('booleanlist', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->state->published);
+		?>
 		<tr>
 		<td width="110" class="key">
 				<label for="virtuemart_worldzone_id">
@@ -61,27 +43,10 @@ AdminUIHelper::startAdminArea($this);
 				<?php echo JHtml::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->state->virtuemart_worldzone_id); ?>
 			</td>
 		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="state_3_code">
-					<?php echo vmText::_('COM_VIRTUEMART_STATE_3_CODE'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="state_3_code" id="state_3_code" size="10" value="<?php echo $this->state->state_3_code; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="state_2_code">
-					<?php echo vmText::_('COM_VIRTUEMART_STATE_2_CODE'); ?>
-				</label>
-			</td>
-			<td>
-				<?php /* echo JHtml::_('Select.radiolist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id);*/ ?>
-				<input class="inputbox" type="text" name="state_2_code" id="state_2_code" size="10" value="<?php echo $this->state->state_2_code; ?>" />
-			</td>
-		</tr>
+		<?php
+		echo VmHTML::row('input', 'COM_VIRTUEMART_STATE_3_CODE', 'state_3_code', $this->state->state_3_code,'size="10"');
+		echo VmHTML::row('input', 'COM_VIRTUEMART_STATE_2_CODE', 'state_2_code', $this->state->state_2_code,'size="10"');
+		?>
 	</table>
 	</fieldset>
 </div>

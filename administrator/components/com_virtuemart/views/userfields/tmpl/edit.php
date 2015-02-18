@@ -116,7 +116,6 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				?> class="validate[required,funcCall[checkName]] inputbox <?php echo $readonly ?> " />
 			</td>
 		</tr>
-
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -124,10 +123,10 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				</label>
 			</td>
 			<td>
-                            <?php
-                            $lang = JFactory::getLanguage();
-                            $text = $lang->hasKey($this->userField->title) ? vmText::_($this->userField->title) : $this->userField->title;
-                            ?>
+				<?php
+				$lang = JFactory::getLanguage();
+				$text = $lang->hasKey($this->userField->title) ? vmText::_($this->userField->title) : $this->userField->title;
+				?>
 				<input class="inputbox" type="text" name="title" id="title" size="50" value="<?php echo $this->userField->title; ?>" />(<?php echo $text ?>)
 			</td>
 		</tr>

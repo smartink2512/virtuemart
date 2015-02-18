@@ -59,9 +59,6 @@ class VirtuemartViewRatings extends VmViewAdmin {
 				$rating = $model->getRating($cids);
 				$this->addStandardEditViewCommands();
 
-				// Assign the data
-				$this->assignRef('rating', $rating);
-
 				break;*/
 			case 'listreviews':
 				/* Get the data */

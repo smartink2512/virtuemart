@@ -49,7 +49,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 		$lists['coreFields'] = $model->getCoreFields();
 
 		if ($layoutName == 'edit') {
-			$editor = JFactory::getEditor();
+			$this->editor = JFactory::getEditor();
 
 			$this->userField = $model->getUserfield();
 			//vmdebug('user plugin $this->userField',$this->userField);
@@ -64,7 +64,6 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 
 			if ($this->userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
-				//$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = '';
 				$lists['type'] = JHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $this->userField->type);
@@ -135,11 +134,9 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 				}
 			}
 			$this->valueCount = --$i;
-			//$this->assignRef('valueCount', --$i);
 
 			$userFieldTable = $model->getTable();
 			$this->existingFields =  '"'.implode('","',$userFieldTable->showFullColumns(0,'Field')).'"';
-			//vmdebug('My existinFields showFullColumns',$this->existingFields);
 
 			// Toggles
 			$lists['required']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_REQUIRED','required',$this->userField->required,$notoggle);
@@ -150,9 +147,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$this->userField->readonly,$notoggle);
 
 			$this->assignRef('lists', $lists);
-			//$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
-			$this->assignRef('editor', $editor);
 			vmJsApi::keepAlive();
 		} else {
 			JToolBarHelper::title( vmText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
@@ -180,11 +175,8 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 
 			$this->addStandardDefaultViewLists($model,'ordering','ASC');
 
-			$userfieldsList = $model->getUserfieldsList();
-			$this->assignRef('userfieldsList', $userfieldsList);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->userfieldsList = $model->getUserfieldsList();
+			$this->pagination = $model->getPagination();
 
 			// search filter
 			$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string');

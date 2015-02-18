@@ -38,23 +38,15 @@ class VirtuemartViewCountry extends VmViewAdmin {
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
-
 		$model = VmModel::getModel('country');
 		$zoneModel = VmModel::getModel('worldzones');
-
 		$this->SetViewTitle();
-
 
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
-			$country = $model->getData();
-
-		    $this->assignRef('country',	$country);
-			$wzsList = $zoneModel->getWorldZonesSelectList();
-		    $this->assignRef('worldZones', $wzsList	);
-
+			$this->country = $model->getData();
+			$this->wzsList = $zoneModel->getWorldZonesSelectList();
 			$this->addStandardEditViewCommands();
-
 		}
 		else {
 
@@ -64,11 +56,8 @@ class VirtuemartViewCountry extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model,0,'ASC');
 
 			$filter_country = vRequest::getCmd('filter_country', false);
-			$countries = $model->getCountries(false, false, $filter_country);
-			$this->assignRef('countries',	$countries);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->countries = $model->getCountries(false, false, $filter_country);
+			$this->pagination = $model->getPagination();
 
 		}
 

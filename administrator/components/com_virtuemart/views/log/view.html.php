@@ -48,19 +48,16 @@ class VirtuemartViewLog extends VmViewAdmin {
 			$logFile = basename(vRequest::filterPath(vRequest::getString('logfile', '')));
 			$this->SetViewTitle('LOG', $logFile);
 			$fileContent = file_get_contents($log_path . DS . $logFile);
-			$fileContentByLine = explode("\n", $fileContent);
-
-			$this->assignRef('fileContentByLine', $fileContentByLine);
+			$this->fileContentByLine = explode("\n", $fileContent);
 			JToolBarHelper::cancel();
 
 		} else {
 			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
-			$logFiles = JFolder::files($log_path, $filter = '.', true, false, array('index.html'));
+			$this->logFiles = JFolder::files($log_path, $filter = '.', true, false, array('index.html'));
 
 			$this->SetViewTitle('LOG');
-			$this->assignRef('logFiles', $logFiles);
-			$this->assignRef('path', $log_path);
+			$this->path = $log_path;
 		}
 
 		parent::display($tpl);

@@ -50,27 +50,23 @@ class VirtuemartViewManufacturer extends VmViewAdmin {
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
-			$manufacturer = $model->getManufacturer();
+			$this->manufacturer = $model->getManufacturer();
 
-			$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
+			$isNew = ($this->manufacturer->virtuemart_manufacturer_id < 1);
 
-			$model->addImages($manufacturer);
-			$this->assignRef('manufacturer',	$manufacturer);
+			$model->addImages($this->manufacturer);
 
 			/* Process the images */
 			$mediaModel = VmModel::getModel('media');
-			$mediaModel -> setId($manufacturer->virtuemart_media_id);
+			$mediaModel -> setId($this->manufacturer->virtuemart_media_id);
 			$image = $mediaModel->getFile('manufacturer','image');
 
-			$manufacturerCategories = $categoryModel->getManufacturerCategories(false,true);
-			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
+			$this->manufacturerCategories = $categoryModel->getManufacturerCategories(false,true);
 
-			$this->addStandardEditViewCommands($manufacturer->virtuemart_manufacturer_id);
+			$this->addStandardEditViewCommands($this->manufacturer->virtuemart_manufacturer_id);
 
 			if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
-			$virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-			$this->assignRef('virtuemart_vendor_id', $virtuemart_vendor_id);
-
+			$this->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 
 		}
 		else {
@@ -82,11 +78,8 @@ class VirtuemartViewManufacturer extends VmViewAdmin {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,'mf_name');
 
-			$manufacturers = $model->getManufacturers();
-			$this->assignRef('manufacturers',	$manufacturers);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->manufacturers = $model->getManufacturers();
+			$this->pagination = $model->getPagination();
 
 			$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( 'com_virtuemart.virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 			$this->lists['virtuemart_manufacturercategories_id'] =  JHtml::_('select.genericlist',   $categoryFilter, 'virtuemart_manufacturercategories_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $virtuemart_manufacturercategories_id );

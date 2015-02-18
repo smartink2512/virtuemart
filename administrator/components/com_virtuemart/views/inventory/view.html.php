@@ -47,15 +47,14 @@ class VirtuemartViewInventory extends VmViewAdmin {
 		// Create filter
 		$this->addStandardDefaultViewLists($model);
 
-		$inventorylist = $model->getProductListing();
+		$this->inventorylist = $model->getProductListing();
 
-		$pagination = $model->getPagination();
-		$this->assignRef('pagination', $pagination);
+		$this->pagination = $model->getPagination();
 
 		// Apply currency
 		$currencydisplay = CurrencyDisplay::getInstance();
 
-		foreach ($inventorylist as $virtuemart_product_id => $product) {
+		foreach ($this->inventorylist as $virtuemart_product_id => $product) {
 
 			//TODO oculd be interesting to show the price for each product, and all stored ones $product->product_in_stock
 			$price = isset($product->allPrices[$product->selectedPrice]['product_price'])? $product->allPrices[$product->selectedPrice]['product_price']:0;
@@ -65,8 +64,6 @@ class VirtuemartViewInventory extends VmViewAdmin {
 
 			$product->weigth_unit_display= ShopFunctions::renderWeightUnit($product->product_weight_uom);
 		}
-		$this->assignRef('inventorylist', $inventorylist);
-
 
 		$options = array();
 		$options[] = JHtml::_('select.option', '', vmText::_('COM_VIRTUEMART_DISPLAY_STOCK').':');
@@ -74,7 +71,6 @@ class VirtuemartViewInventory extends VmViewAdmin {
 		$options[] = JHtml::_('select.option', 'stockout', vmText::_('COM_VIRTUEMART_STOCK_LEVEL_OUT'));
 		$this->lists['stockfilter'] = JHtml::_('select.genericlist', $options, 'search_type', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', vRequest::getVar('search_type'));
 		$this->lists['filter_product'] = vRequest::getVar('filter_product');
-		// $this->assignRef('lists', $lists);
 
 		/* Toolbar */
 		$this->SetViewTitle('PRODUCT_INVENTORY');

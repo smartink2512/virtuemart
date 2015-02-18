@@ -56,25 +56,18 @@ class VirtuemartViewCurrency extends VmViewAdmin {
 			}
 
 			$model->setId($cid);
-			$currency = $model->getCurrency();
-			$this->SetViewTitle('',$currency->currency_name);
-			$this->assignRef('currency',	$currency);
-
+			$this->currency = $model->getCurrency();
+			$this->SetViewTitle('',$this->currency->currency_name);
 			$this->addStandardEditViewCommands();
 
 		} else {
 
 			$this->SetViewTitle();
 			$this->addStandardDefaultViewCommands();
-
 			$this->addStandardDefaultViewLists($model,0,'ASC');
 
-			$currencies = $model->getCurrenciesList(vRequest::getCmd('search', false));
-			$this->assignRef('currencies',	$currencies);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
-
+			$this->currencies = $model->getCurrenciesList(vRequest::getCmd('search', false));
+			$this->pagination = $model->getPagination();
 
 		}
 

@@ -24,13 +24,10 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_PRODUCT_MEDIA');
 echo'<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 echo '<fieldset>';
 
-
-
 $this->media->addHidden('view','media');
 $this->media->addHidden('task','');
 $this->media->addHidden(JSession::getFormToken(),1);
 $this->media->addHidden('file_type',$this->media->file_type);
-
 
 $virtuemart_product_id = vRequest::getInt('virtuemart_product_id', '');
 if(!empty($virtuemart_product_id)) $this->media->addHidden('virtuemart_product_id',$virtuemart_product_id);

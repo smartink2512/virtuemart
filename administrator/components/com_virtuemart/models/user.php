@@ -104,14 +104,17 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	private function setUserId($id){
 
-		$app = JFactory::getApplication();
-		// 		if($app->isAdmin()){
 		if($this->_id!=$id){
 			$this->_id = (int)$id;
 			$this->_data = null;
 			$this->customer_number = 0;
 		}
-		// 		}
+	}
+
+	public function setRegister(){
+		$this->_id = 0;
+		$this->_data = null;
+		$this->customer_number = 0;
 	}
 
 	public function getCurrentUser(){
