@@ -148,7 +148,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userFieldValues', $userFieldValues);
-			vmJsApi::keepAlive();
+
 		} else {
 			JToolBarHelper::title( vmText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
 			JToolBarHelper::addNew();

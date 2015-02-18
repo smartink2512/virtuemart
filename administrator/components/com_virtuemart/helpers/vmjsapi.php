@@ -743,7 +743,7 @@ class vmJsApi{
 		return $formatedDate;
 	}
 
-	static function keepAlive($maxlps=4){
+	static function keepAlive($minlps = 2, $maxlps=5){
 
 		static $done = false;
 		if($done) return;
@@ -759,7 +759,7 @@ class vmJsApi{
 
 		$url = 'index.php?option=com_virtuemart&view=virtuemart&task=keepalive';
 		//$refTime = 0.5;
-		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'"',false,true);
+		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'";var minlps = "'.$minlps.'"',false,true);
 		vmJsApi::addJScript('vmkeepalive');
 	}
 }

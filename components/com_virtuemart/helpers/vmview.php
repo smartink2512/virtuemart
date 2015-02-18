@@ -52,7 +52,7 @@ class VmView extends JViewLegacy{
 		if(!empty($cart->cartProductsData)){
 			$user = JFactory::getUser();
 			$max = $user->guest? 4:2;
-			vmJsApi::keepAlive($max);
+			vmJsApi::keepAlive(1,$max);
 			vmdebug('load keepAlive my loops',$max);
 		}
 	}

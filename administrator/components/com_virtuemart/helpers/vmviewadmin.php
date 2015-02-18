@@ -70,7 +70,10 @@ class VmViewAdmin extends JViewLegacy {
 
 			echo $result;
 
-			if($this->writeJs) echo vmJsApi::writeJS();
+			if($this->writeJs){
+				vmJsApi::keepAlive();
+				echo vmJsApi::writeJS();
+			}
 			return true;
 		} else {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
@@ -378,8 +381,6 @@ class VmViewAdmin extends JViewLegacy {
 				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));
 			}
 			$this->langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
-
-			vmJsApi::keepAlive();
 		}
 
 		if(JFactory::getApplication()->isSite()){
