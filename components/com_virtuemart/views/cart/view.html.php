@@ -433,6 +433,10 @@ class VirtueMartViewCart extends VmView {
 			$db->setQuery($q);
 			$result = $db->loadObjectList();
 
+			foreach($result as $k => $user) {
+				$result[$k]->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+			}
+
 			if($adminID){
 				$user = JFactory::getUser($adminID);
 				$toAdd = new stdClass();
@@ -443,9 +447,13 @@ class VirtueMartViewCart extends VmView {
 				array_unshift($result,$toAdd);
 			}
 
-			foreach($result as $k => $user) {
-				$result[$k]->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
-			}
+			$toAdd = new stdClass();
+			$toAdd->id = 0;
+			$toAdd->name = '';
+			$toAdd->username = '';
+			$toAdd->displayedName = '-'.vmText::_('COM_VIRTUEMART_REGISTER').'-';
+			array_unshift($result,$toAdd);
+
 		}
 
 		return $result;

@@ -126,12 +126,16 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 * @return String it gives back the messages.
 	 */
 	private function saveData($cartObj) {
-		$mainframe = JFactory::getApplication();
-		$currentUser = JFactory::getUser();
-		$msg = '';
 
+		$mainframe = JFactory::getApplication();
+
+		$msg = '';
 		$data = vRequest::getPost(FILTER_SANITIZE_STRING);
 		$register = isset($_REQUEST['register']);
+
+		$userModel = VmModel::getModel('user');
+		$currentUser = JFactory::getUser();
+
 
 		if($cartObj){
 			if($cartObj->_fromCart or $cartObj->getInCheckOut()){
@@ -153,7 +157,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 			$data['address_type'] = vRequest::getCmd('addrtype','BT');
 		}
 
-		$userModel = VmModel::getModel('user');
 
 		if(isset($data['vendor_accepted_currencies'])){
 			// Store multiple selectlist entries as a ; separated string
