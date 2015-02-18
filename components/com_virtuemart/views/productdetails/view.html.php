@@ -220,51 +220,31 @@ class VirtueMartViewProductdetails extends VmView {
 				$document->setTitle(strip_tags(($category->category_name ? ($category->category_name . ' : ') : '') . $product->product_name));
 			}
 
-			$allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
-			$this->assignRef('allowReview', $allowReview);
+			$this->allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
+			$this->showReview = $ratingModel->showReview($product->virtuemart_product_id);
 
-			$showReview = $ratingModel->showReview($product->virtuemart_product_id);
-			$this->assignRef('showReview', $showReview);
-
-			if ($showReview) {
-
-				$review = $ratingModel->getReviewByProduct($product->virtuemart_product_id);
-				$this->assignRef('review', $review);
-
-				$rating_reviews = $ratingModel->getReviews($product->virtuemart_product_id);
-				$this->assignRef('rating_reviews', $rating_reviews);
+			if ($this->showReview) {
+				$this->review = $ratingModel->getReviewByProduct($product->virtuemart_product_id);
+				$this->rating_reviews = $ratingModel->getReviews($product->virtuemart_product_id);
 			}
 
 			if ($this->showRating) {
-				$vote = $ratingModel->getVoteByProduct($product->virtuemart_product_id);
-				$this->assignRef('vote', $vote);
-
-				//$rating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
-				//$this->assignRef('rating', $rating);
-				//vmdebug('Should show rating vote and rating',$vote,$rating);
+				$this->vote = $ratingModel->getVoteByProduct($product->virtuemart_product_id);
 			}
 
-			$allowRating = $ratingModel->allowRating($product->virtuemart_product_id);
-			$this->assignRef('allowRating', $allowRating);
+			$this->allowRating = $ratingModel->allowRating($product->virtuemart_product_id);
 
-			// Check for editing access
-			// @todo build edit page
-
-			$user = JFactory::getUser();
 			$superVendor = VmConfig::isSuperVendor();
 
 			if($superVendor == 1 or $superVendor==$product->virtuemart_vendor_id or ($superVendor)){
 				$edit_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&manage=1&view=product&task=edit&virtuemart_product_id=' . $product->virtuemart_product_id;
-				$edit_link = $this->linkIcon($edit_link, 'COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT', 'edit', false, false);
+				$this->edit_link = $this->linkIcon($edit_link, 'COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT', 'edit', false, false);
 			} else {
-				$edit_link = "";
+				$this->edit_link = "";
 			}
-			$this->assignRef('edit_link', $edit_link);
-
 
 			// Load the user details
-			$user = JFactory::getUser();
-			$this->assignRef('user',$user);
+			$this->user = JFactory::getUser();
 
 			// More reviews link
 			$uri = JURI::getInstance();

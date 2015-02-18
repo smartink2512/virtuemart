@@ -367,11 +367,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 */
 	public function changeShopper() {
 		JSession::checkToken () or jexit ('Invalid Token');
-
-		//get data of current and new user
-
-		//$user = $usermodel->getCurrentUser();
-
 		$current = JFactory::getUser();
 		$admin = false;
 		if(VmConfig::get ('oncheckout_change_shopper')){

@@ -114,8 +114,7 @@ class VirtueMartViewCart extends VmView {
 			if (!class_exists ('CurrencyDisplay'))
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 
-			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
-			$this->assignRef('currencyDisplay',$currencyDisplay);
+			$this->currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$this->assignRef('customfieldsModel',$customfieldsModel);
@@ -324,7 +323,7 @@ class VirtueMartViewCart extends VmView {
 
 		$paymentCurrency = CurrencyDisplay::getInstance($this->cart->paymentCurrency);
 		$totalInPaymentCurrency = $paymentCurrency->priceDisplay( $this->cart->cartPrices['billTotal'],$this->cart->paymentCurrency) ;
-		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+		$this->currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 
 		return $totalInPaymentCurrency;
 	}
@@ -343,8 +342,7 @@ class VirtueMartViewCart extends VmView {
 }
 
 	private function lOrderDone() {
-		$display_title = vRequest::getBool('display_title',true);
-		$this->assignRef('display_title', $display_title);
+		$this->display_title = vRequest::getBool('display_title',true);
 		//Do not change this. It contains the payment form
 		$this->html = vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 		//Show Thank you page or error due payment plugins like paypal express

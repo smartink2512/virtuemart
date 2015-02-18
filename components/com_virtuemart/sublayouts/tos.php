@@ -14,20 +14,19 @@
 defined('_JEXEC') or die('Restricted access');
 $_prefix = $viewData['prefix'];
 $field = $viewData['field'];
-//$userData = $viewData['userData'];
+$tos = $field['value'];
+
 $app = JFactory::getApplication();
 if($app->isSite()){
 	vmJsApi::popup('#full-tos','#terms-of-service');
 	if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 	$cart = VirtuemartCart::getCart();
 	$cart->prepareVendor();
-	if(is_array($cart->BT) and !empty($cart->BT['tos'])){
-		$tos = $cart->BT['tos'];
-	} else {
-		$tos = 0;
+	if(empty($tos) and !VmConfig::get ('agree_to_tos_onorder', true)){
+		if(is_array($cart->BT) and !empty($cart->BT['tos'])){
+			$tos = $cart->BT['tos'];
+		}
 	}
-} else {
-	$tos = $field['value'];
 }
 
 if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');

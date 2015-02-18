@@ -81,7 +81,19 @@ class VirtuemartViewUser extends VmView {
 
 		$virtuemart_user_id = vRequest::getInt('virtuemart_user_id',false);
 		if($virtuemart_user_id and is_array($virtuemart_user_id)) $virtuemart_user_id = $virtuemart_user_id[0];
+
 		$this->_model->setId($virtuemart_user_id);
+
+		if(empty($virtuemart_user_id) and VmConfig::get ('oncheckout_change_shopper')){
+			$currentUser = JFactory::getUser();
+			if($currentUser->authorise('core.admin', 'com_virtuemart') or $currentUser->authorise('vm.user', 'com_virtuemart')){
+				//if($register){
+					$this->_model->setRegister();
+					//$currentUser = new JUser(0);
+				//}
+			}
+		}
+
 		$this->userDetails = $this->_model->getUser();
 
 		$this->address_type = vRequest::getCmd('addrtype', 'BT');

@@ -100,8 +100,6 @@ class VirtuemartViewVendor extends VmView {
 			$linkcontact = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id, FALSE).'">'.vmText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
 			$linktos = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $virtuemart_vendor_id, FALSE).'">'.vmText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
 
-
-			//$this->assignRef('lineSeparator', $lineSeparator);
 			$this->assignRef('linkdetails', $linkdetails);
 			$this->assignRef('linkcontact', $linkcontact);
 			$this->assignRef('linktos', $linktos);

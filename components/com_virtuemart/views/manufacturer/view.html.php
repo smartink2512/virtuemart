@@ -60,7 +60,6 @@ class VirtuemartViewManufacturer extends VmView {
 //added so that the canonical points to page with visible products thx to P2Peter
 			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id, FALSE) , 'canonical', 'rel', '' );
 			$this->assignRef('manufacturerImage', $manufacturerImage);
-// 			$this->assignRef('manufacturerProductsURL', $manufacturerProductsURL);
 			$this->assignRef('manufacturer',	$manufacturer);
 			$pathway->addItem(strip_tags($manufacturer->mf_name));
 

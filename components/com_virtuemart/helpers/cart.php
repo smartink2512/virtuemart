@@ -1237,25 +1237,27 @@ class VirtueMartCart {
 				$name = $fld->name;
 
 				if($fld->type=='checkbox'){
-					$tmp = vRequest::getInt($name,false);
+					$tmp = vRequest::getInt($name,null);
 
 				} else {
-					$tmp = vRequest::getString($name,false);
+					$tmp = vRequest::getString($name,null);
 				}
+				if(isset($tmp)){
+					if(!empty($tmp)){
+						if (version_compare(phpversion(), '5.4.0', '<')) {
+							// php version isn't high enough
+							$tmp = htmlspecialchars ($tmp,ENT_QUOTES,'UTF-8',false);	//ENT_SUBSTITUTE only for php5.4 and higher
+						} else {
+							$tmp = htmlspecialchars ($tmp,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8',false);
+						}
 
-				if(!empty($tmp)){
-					if (version_compare(phpversion(), '5.4.0', '<')) {
-						// php version isn't high enough
-						$tmp = htmlspecialchars ($tmp,ENT_QUOTES,'UTF-8',false);	//ENT_SUBSTITUTE only for php5.4 and higher
-					} else {
-						$tmp = htmlspecialchars ($tmp,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8',false);
+						$tmp = (string)preg_replace('#on[a-z](.+?)\)#si','',$tmp);//replace start of script onclick() onload()...
 					}
 
-					$tmp = (string)preg_replace('#on[a-z](.+?)\)#si','',$tmp);//replace start of script onclick() onload()...
+					$this->cartfields[$name] = $tmp;
+					vmdebug('Store $this->cartfields[$name] '.$name.' '.$tmp);
 				}
 
-				$this->cartfields[$name] = $tmp;
-				vmdebug('Store $this->cartfields[$name] '.$name.' '.$tmp);
 			}
 		}
 		$this->BT = array_merge((array)$this->BT,(array)$this->cartfields);

@@ -70,14 +70,12 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
 	$paymentResponse = vmText::_('COM_VIRTUEMART_CART_THANKYOU');
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array( 'html' => &$html,&$paymentResponse));
 
-// 	vRequest::setVar('paymentResponse', vmText::_('COM_VIRTUEMART_CART_THANKYOU'));
-// 	vRequest::setVar('paymentResponseHtml', $html);
 	$view = $this->getView('vmplg', 'html');
 	$layoutName = vRequest::getVar('layout', 'default');
 	$view->setLayout($layoutName);
 
 	$view->assignRef('paymentResponse', $paymentResponse);
-   $view->assignRef('paymentResponseHtml', $html);
+	$view->assignRef('paymentResponseHtml', $html);
 
 	// Display it all
 	$view->display();
@@ -99,19 +97,6 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
 	    $html = "";
 	    $shipmentResponse = vmText::_('COM_VIRTUEMART_CART_THANKYOU');
 	    $dispatcher->trigger('plgVmOnShipmentResponseReceived', array( 'html' => &$html,&$shipmentResponse));
-/*
-// 	vRequest::setVar('paymentResponse', vmText::_('COM_VIRTUEMART_CART_THANKYOU'));
-// 	vRequest::setVar('paymentResponseHtml', $html);
-	    $view = $this->getView('vmplg', 'html');
-	    $layoutName = vRequest::getVar('layout', 'default');
-	    $view->setLayout($layoutName);
-
-	    $view->assignRef('shipmentResponse', $shipmentResponse);
-	    $view->assignRef('shipmentResponseHtml', $html);
-
-	    // Display it all
-	    $view->display();
-	    */
 
     }
 

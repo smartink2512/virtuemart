@@ -36,12 +36,12 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		$vendorIdUser = VmConfig::isSuperVendor();
 		$vendorModel->setId($vendorId);
-		$vendor = $vendorModel->getVendor();
+		$this->vendor = $vendorModel->getVendor();
 
 		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if (VmConfig::get ('enable_content_plugin', 0)) {
-			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
-			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
+			shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_store_desc');
+			shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_terms_of_service');
 		}
 
 		$app = JFactory::getApplication();
@@ -53,8 +53,6 @@ class VirtueMartViewVirtueMart extends VmView {
 		} else if($itemId = vRequest::getInt('Itemid',false)){
 			ShopFunctionsF::setLastVisitedItemId($itemId);
 		}
-
-		$this->assignRef('vendor',$vendor);
 
 		$document = JFactory::getDocument();
 
@@ -86,8 +84,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			$this->assignRef('categories',	$categoryChildren);
 
 			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
-			$currency = CurrencyDisplay::getInstance( );
-			$this->assignRef('currency', $currency);
+			$this->currency = CurrencyDisplay::getInstance( );
 			
 			$products_per_row = VmConfig::get('homepage_products_per_row',3);
 			
@@ -126,8 +123,6 @@ class VirtueMartViewVirtueMart extends VmView {
 
 			if ($this->products) {
 
-				$currency = CurrencyDisplay::getInstance( );
-				$this->assignRef('currency', $currency);
 				$display_stock = VmConfig::get('display_stock',1);
 				$showCustoms = VmConfig::get('show_pcustoms',1);
 				if($display_stock or $showCustoms){
@@ -180,8 +175,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			}
 
 			$user = JFactory::getUser();
-			$showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
-			$this->assignRef('showBasePrice', $showBasePrice);
+			$this->showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
 
 			$layout = VmConfig::get('vmlayout','default');
 			$this->setLayout($layout);
@@ -203,35 +197,34 @@ class VirtueMartViewVirtueMart extends VmView {
 			$this->setLayout('off_line');
 		}
 
-
 		$error = vRequest::getInt('error',0);
 
 		//Todo this may not work everytime as expected, because the error must be set in the redirect links.
 		if(!empty($error)){
-			$document->setTitle(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').vmText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
+			$document->setTitle(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name));
 		} else {
 
-			if(empty($vendor->customtitle)){
+			if(empty($this->vendor->customtitle)){
 
 				if ($menu){
 					$menuTitle = $menu->params->get('page_title');
 					if(empty($menuTitle)) {
-						$menuTitle = vmText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
+						$menuTitle = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
 					}
 					$document->setTitle($menuTitle);
 				} else {
-					$title = vmText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
+					$title = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
 					$document->setTitle($title);
 				}
 			} else {
-				$document->setTitle($vendor->customtitle);
+				$document->setTitle($this->vendor->customtitle);
 			}
 
 
-			if(!empty($vendor->metadesc)) $document->setMetaData('description',$vendor->metadesc);
-			if(!empty($vendor->metakey)) $document->setMetaData('keywords',$vendor->metakey);
-			if(!empty($vendor->metarobot)) $document->setMetaData('robots',$vendor->metarobot);
-			if(!empty($vendor->metaauthor)) $document->setMetaData('author',$vendor->metaauthor);
+			if(!empty($this->vendor->metadesc)) $document->setMetaData('description',$this->vendor->metadesc);
+			if(!empty($this->vendor->metakey)) $document->setMetaData('keywords',$this->vendor->metakey);
+			if(!empty($this->vendor->metarobot)) $document->setMetaData('robots',$this->vendor->metarobot);
+			if(!empty($this->vendor->metaauthor)) $document->setMetaData('author',$this->vendor->metaauthor);
 
 		}
 
