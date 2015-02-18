@@ -258,6 +258,14 @@ class VirtueMartViewCart extends VmView {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $redirectMsg);
 			}
 		}
+		if(empty($selectedShipment)){
+			if($s_id = VmConfig::get('set_automatic_shipment',false)){
+				$j = 'radiobtn = document.getElementById("shipment_id_'.$s_id.'");
+				if(radiobtn!==null){ radiobtn.checked = true;}';
+				vmJsApi::addJScript('autoShipment',$j);
+			}
+		}
+
 		$shipment_not_found_text = vmText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
@@ -304,6 +312,14 @@ class VirtueMartViewCart extends VmView {
 			} else {
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $redirectMsg);
+			}
+		}
+
+		if(empty($selectedPayment)){
+			if($p_id = VmConfig::get('set_automatic_payment',false)){
+				$j = 'radiobtn = document.getElementById("payment_id_'.$p_id.'");
+				if(radiobtn!==null){ radiobtn.checked = true;}';
+				vmJsApi::addJScript('autoPayment',$j);
 			}
 		}
 

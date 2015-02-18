@@ -50,10 +50,7 @@ class VmView extends JViewLegacy{
 		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		if(!empty($cart->cartProductsData)){
-			$user = JFactory::getUser();
-			$max = $user->guest? 4:2;
-			vmJsApi::keepAlive(1,$max);
-			vmdebug('load keepAlive my loops',$max);
+			vmJsApi::keepAlive(1,4);
 		}
 	}
 

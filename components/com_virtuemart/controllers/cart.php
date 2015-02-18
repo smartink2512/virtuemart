@@ -389,7 +389,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
 		}
 
-		$newUser = JFactory::getUser(vRequest::getCmd('userID'));
+		$userID = vRequest::getCmd('userID');
+		$newUser = JFactory::getUser($userID);
 
 		//update session
 		$session = JFactory::getSession();
@@ -412,7 +413,13 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$mainframe = JFactory::getApplication();
 		$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+		if(empty($userID)){
+			$red = JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT');
+		} else {
+			$red = JRoute::_('index.php?option=com_virtuemart&view=cart');
+		}
+
+		$mainframe->redirect($red);
 	}
 
 
