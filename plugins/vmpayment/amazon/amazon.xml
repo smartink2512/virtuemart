@@ -277,7 +277,7 @@
                 <field name="sign_in_widget_color" type="radio" default="Orange"
                        label="VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR">
                     <option value="Orange">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_ORANGE</option>
-                    <option value="Tan">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_TAN</option>
+                    <option value="tan">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_COLOR_TAN</option>
                 </field>
 
 

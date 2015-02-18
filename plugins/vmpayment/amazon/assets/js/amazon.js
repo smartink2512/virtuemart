@@ -58,7 +58,12 @@ var amazonPayment = {
             window.onError = null;
             console.log("amazonShowWallet: " + amazonPayment.amazonOrderReferenceId);
             var checkoutFormSubmit = document.getElementById("checkoutFormSubmit");
-            if (checkoutFormSubmit === null) return;
+            if (checkoutFormSubmit === null) {
+                 checkoutFormSubmit = document.getElementById("updateOrderId");
+            }
+            console.log("found : checkoutFormSubmit" );
+
+            if (checkoutFormSubmit === null ) return;
             checkoutFormSubmit.className = 'vm-button-correct';
             checkoutFormSubmit.className = 'vm-button';
             checkoutFormSubmit.setAttribute('disabled', 'true');

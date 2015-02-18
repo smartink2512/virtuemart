@@ -29,57 +29,53 @@ if ($isMobile) {
 	$doc->setMetaData('viewport', "width=device-width, initial-scale=1, maximum-scale=1");
 }
 if (!$jsAWLoaded) {
-	$doc->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/assets/js/amazon.js');
+	vmJsApi::addJScript(  '/plugins/vmpayment/amazon/assets/js/amazon.js');
 	if ($viewData['include_amazon_css']) {
-		$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/assets/css/amazon.css');
+		vmJsApi::css('amazon', 'plugins/vmpayment/amazon/assets/css/');
 	}
 
 
-//vmJsApi::js('plugins/vmpayment/amazon/assets/js/site', '');
-	$doc->addScriptDeclaration("
-		//<![CDATA[
+//vmJsApi::js('plugins/vmpayment/amazon/amazon/assets/js/site', '');
+	$js = "
 jQuery(document).ready( function($) {
 	amazonPayment.initPayment('" . $viewData['sellerId'] . "','" . $viewData['amazonOrderReferenceId'] . "', '" . $viewData['addressbook_designWidth'] . "', '" . $viewData['addressbook_designHeight'] . "', '" . $isMobile . "', '" . $viewData['virtuemart_paymentmethod_id'] . "', '" . $viewData['readOnlyWidgets'] . "');
 });
-//]]>
-"); // addScriptDeclaration
+";
+	vmJsApi::addJScript('vm.initAmazonPayment', $js);
 	if ($viewData['renderAddressBook']) {
-		$doc->addScriptDeclaration("
-		//<![CDATA[
+		$js = "
 jQuery(document).ready( function($) {
 	amazonPayment.showAmazonAddress();
 });
-//]]>
-"); // addScriptDeclaration
+";
+		vmJsApi::addJScript('vm.showAmazonAddress', $js);
 	}
 	if ($viewData['renderWalletBook']) {
-		$doc->addScriptDeclaration("
-		//<![CDATA[
+		$js = "
 jQuery(document).ready( function($) {
 	amazonPayment.showAmazonWallet();
 });
-//]]>
-"); // addScriptDeclaration
+";
+		vmJsApi::addJScript('vm.showAmazonWallet', $js);
 	}
 
-	$doc->addScriptDeclaration("
-	//<![CDATA[
+	$js = "
 jQuery(document).ready( function($) {
 $('#leaveAmazonCheckout').click(function(){
 	amazonPayment.leaveAmazonCheckout();
 	});
 });
-//]]>
-");
-
+";
+	vmJsApi::addJScript('vm.leaveAmazonCheckout', $js);
 	if ($viewData['captureNow']) {
-		$doc->addScriptDeclaration("
-		//<![CDATA[
+		$js = "
 jQuery(document).ready( function($) {
-	amazonPayment.displayCaptureNowWarning('" . JText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
+	amazonPayment.displayCaptureNowWarning('" . vmText::_('VMPAYMENT_AMAZON_CHARGE_NOW') . "');
 });
-//]]>
-"); // addScriptDeclaration
+";
+
+		vmJsApi::addJScript('vm.displayAmazonCaptureNowWarning', $js);
+
 	}
 
 
