@@ -1449,7 +1449,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 					//vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
 					//vmWarn('Stop try to hack this store, you got logged');
-					vmdebug('Hacking attempt stopped, logged vendor ' . $loggedVendorId . ' but data belongs to ' . $virtuemart_vendor_id);
+					vmdebug('Blocked storing, logged vendor ' . $loggedVendorId . ' but data belongs to ' . $virtuemart_vendor_id);
 					return false;
 				} else if (!$admin) {
 					if ($virtuemart_vendor_id) {

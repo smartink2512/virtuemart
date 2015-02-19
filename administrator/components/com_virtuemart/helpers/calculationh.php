@@ -147,7 +147,7 @@ class calculationHelper {
 				foreach($this->_shopperGroupId as $gr){
 					$shopperGrpJoin .= ' virtuemart_shoppergroup_id = '.(int)$gr. ' OR';
 				}
-				$shopperGrpJoin .=' ISNULL(virtuemart_shoppergroup_id)) ';
+				$shopperGrpJoin .=' (virtuemart_shoppergroup_id) IS NULL) ';
 			}
 
 			$countryGrpJoin = '';
@@ -155,7 +155,7 @@ class calculationHelper {
 				$q .= ' LEFT JOIN #__virtuemart_calc_countries using(virtuemart_calc_id) ';
 				$countryGrpJoin = "\n AND (";
 				$countryGrpJoin .= ' virtuemart_country_id = '.(int)$this->_deliveryCountry;
-				$countryGrpJoin .=' OR ISNULL(virtuemart_country_id)) ';
+				$countryGrpJoin .=' OR (virtuemart_country_id) IS NULL) ';
 			}
 
 			$stateGrpJoin = '';
@@ -163,7 +163,7 @@ class calculationHelper {
 				$q .= ' LEFT JOIN #__virtuemart_calc_states using(virtuemart_calc_id) ';
 				$stateGrpJoin = "\n AND (";
 				$stateGrpJoin .= ' virtuemart_state_id = '.(int)$this->_deliveryState;
-				$stateGrpJoin .=' OR ISNULL(virtuemart_state_id)) ';
+				$stateGrpJoin .=' OR (virtuemart_state_id) IS NULL) ';
 			}
 
 			$q .= 'WHERE `calc_kind` IN (' . implode(",",$epoints). ' )
@@ -174,7 +174,7 @@ class calculationHelper {
 
 			$q .= $shopperGrpJoin . $countryGrpJoin . $stateGrpJoin;
 
-
+vmdebug('my ',$q);
 			$this->_db->setQuery($q);
 
 			$allrules = $this->_db->loadAssocList();
@@ -1216,7 +1216,7 @@ class calculationHelper {
 			foreach($this->_shopperGroupId as $gr){
 				$shopperGrpJoin .= ' virtuemart_shoppergroup_id = '.(int)$gr.' OR';
 			}
-			$shopperGrpJoin .=' ISNULL(virtuemart_shoppergroup_id)) ';
+			$shopperGrpJoin .=' (virtuemart_shoppergroup_id) IS NULL) ';
 		}
 
 		$countryGrpJoin = '';
@@ -1224,7 +1224,7 @@ class calculationHelper {
 			$q .= ' LEFT JOIN #__virtuemart_calc_countries using(virtuemart_calc_id) ';
 			$countryGrpJoin = "\n AND (";
 			$countryGrpJoin .= ' virtuemart_country_id = '.(int)$this->_deliveryCountry;
-			$countryGrpJoin .=' OR ISNULL(virtuemart_country_id)) ';
+			$countryGrpJoin .=' OR (virtuemart_country_id) IS NULL) ';
 		}
 
 		$stateGrpJoin = '';
@@ -1232,7 +1232,7 @@ class calculationHelper {
 			$q .= ' LEFT JOIN #__virtuemart_calc_states using(virtuemart_calc_id) ';
 			$stateGrpJoin = "\n AND (";
 			$stateGrpJoin .= ' virtuemart_state_id = '.(int)$this->_deliveryState;
-			$stateGrpJoin .=' OR ISNULL(virtuemart_state_id)) ';
+			$stateGrpJoin .=' OR (virtuemart_state_id) IS NULL) ';
 		}
 		$q .= 'WHERE
                 `calc_kind`="' . $entrypoint . '"

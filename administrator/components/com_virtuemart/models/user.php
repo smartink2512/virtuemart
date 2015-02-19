@@ -83,7 +83,7 @@ class VirtueMartModelUser extends VmModel {
 						$userId = $cid;
 						// 						vmdebug('Admin watches user, setId '.$cid);
 					} else {
-						vmError('Hacking attempt setId '.$cid.' '.$user->id);
+						vmError('Blocked attempt setId '.$cid.' '.$user->id);
 						$userId = $user->id;
 					}
 				}else {
@@ -936,7 +936,7 @@ class VirtueMartModelUser extends VmModel {
 				$user = JFactory::getUser();
 				if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
 					if($data->virtuemart_user_id!=$this->_id){
-						vmError('Hacking attempt loading userinfo, you got logged');
+						vmError('Blocked attempt loading userinfo, you got logged');
 						echo 'Hacking attempt loading userinfo, you got logged';
 						return false;
 					}

@@ -248,7 +248,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(1) NOT NULL DEFAULT '0',
    PRIMARY KEY (`virtuemart_coupon_id`),
-   KEY `coupon_code` (`coupon_code`)
+   KEY `coupon_code` (`coupon_code`),
+   KEY `coupon_type` (`coupon_type`),
+   KEY `published` (`published`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store coupon codes' AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_carts` (
@@ -295,6 +297,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_currency_id`),
   KEY `ordering` (`ordering`),
+  KEY `currency_name` (`currency_name`),
   KEY `published` (`published`),
   KEY `shared` (`shared`),
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
@@ -456,6 +459,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   PRIMARY KEY (`virtuemart_media_id`),
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `published` (`published`),
+  KEY `file_type` (`file_type`),
   KEY `shared` (`shared`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
 
@@ -931,9 +935,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_product_price_id`),
   KEY `virtuemart_product_id` (`virtuemart_product_id`),
+  KEY `product_price` (`virtuemart_product_id`),
   KEY `virtuemart_shoppergroup_id` (`virtuemart_shoppergroup_id`),
   KEY `product_price_publish_up` (`product_price_publish_up`),
-  KEY `product_price_publish_down` (`product_price_publish_down`)
+  KEY `product_price_publish_down` (`product_price_publish_down`),
+  KEY `price_quantity_start` (`price_quantity_start`),
+  KEY `price_quantity_end` (`price_quantity_end`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds price records for a product' AUTO_INCREMENT=1 ;
 
 
@@ -1300,7 +1307,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_user_id`),
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  UNIQUE KEY `virtuemart_user_id` (`virtuemart_user_id`,`virtuemart_vendor_id`),
+  UNIQUE KEY `u_virtuemart_user_id` (`virtuemart_user_id`,`virtuemart_vendor_id`),
   KEY `user_is_vendor` (`user_is_vendor`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds the unique user data' ;
 
