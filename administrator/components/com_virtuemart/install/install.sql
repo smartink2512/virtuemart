@@ -916,17 +916,17 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_manufacturers` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `virtuemart_product_price_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_product_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_shoppergroup_id` smallint(1) UNSIGNED,
+  `virtuemart_shoppergroup_id` smallint(1) UNSIGNED  NOT NULL DEFAULT '0',
   `product_price` decimal(15,6),
   `override` tinyint(1),
   `product_override_price` decimal(15,5),
   `product_tax_id` int(1),
   `product_discount_id` int(1),
   `product_currency` smallint(1),
-  `product_price_publish_up` datetime,
-  `product_price_publish_down` datetime,
-  `price_quantity_start` int(1) unsigned,
-  `price_quantity_end` int(1) unsigned,
+  `product_price_publish_up` datetime NOT NULL default '0000-00-00 00:00:00',
+  `product_price_publish_down` datetime NOT NULL default '0000-00-00 00:00:00',
+  `price_quantity_start` int(1) unsigned NOT NULL default '0',
+  `price_quantity_end` int(1) unsigned NOT NULL default '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(1) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1051,7 +1051,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethod_shoppergroups` (
   `id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
+  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`,`virtuemart_shoppergroup_id`)
