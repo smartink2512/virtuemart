@@ -9,11 +9,9 @@
 	<th align="left"><?php echo vmText::_ ('COM_VIRTUEMART_CART_NAME') ?></th>
 	<th align="left"><?php echo vmText::_ ('COM_VIRTUEMART_CART_SKU') ?></th>
 	<th
-		align="center"
-		width="60px"><?php echo vmText::_ ('COM_VIRTUEMART_CART_PRICE') ?></th>
+		style="min-width:70px;width:5%;align:right;text-align:center"><?php echo vmText::_ ('COM_VIRTUEMART_CART_PRICE') ?></th>
 	<th
-		align="right"
-		width="140px"><?php echo vmText::_ ('COM_VIRTUEMART_CART_QUANTITY') ?>
+		style="min-width:120px;width:10%;align:right;text-align:center"><?php echo vmText::_ ('COM_VIRTUEMART_CART_QUANTITY') ?>
 		/ <?php echo vmText::_ ('COM_VIRTUEMART_CART_ACTION') ?></th>
 
 
@@ -25,10 +23,10 @@
 			$tax = $taxd['calc_name'] .' '. rtrim(trim($taxd['calc_value'],'0'),'.').'%';
 		}
 		?>
-	<th align="right" width="60px"><?php  echo "<span  class='priceColor2'>" . $tax . '</span>' ?></th>
+	<th style="min-width:76px;width:5%;align:right;text-align:center" ><?php echo "<span  class='priceColor2'>" . $tax . '</span>' ?></th>
 	<?php } ?>
-	<th align="right" width="60px"><?php echo "<span  class='priceColor2'>" . vmText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') . '</span>' ?></th>
-	<th align="right" width="70px"><?php echo vmText::_ ('COM_VIRTUEMART_CART_TOTAL') ?></th>
+	<th style="min-width:76px;width:5%;align:right;text-align:center" ><?php echo "<span  class='priceColor2'>" . vmText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') . '</span>' ?></th>
+	<th style="min-width:80px;width:5%;align:right;text-align:center" ><?php echo vmText::_ ('COM_VIRTUEMART_CART_TOTAL') ?></th>
 </tr>
 
 <?php
@@ -54,7 +52,7 @@ foreach ($this->cart->products as $pkey => $prow) { ?>
 
 	</td>
 	<td align="left"><?php  echo $prow->product_sku ?></td>
-	<td align="center">
+	<td align="right">
 		<?php
 		if (VmConfig::get ('checkout_show_origprice', 1) && $prow->prices['discountedPriceWithoutTax'] != $prow->prices['priceWithoutTax']) {
 			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $prow->prices, TRUE, FALSE) . '</span><br />';
@@ -290,8 +288,8 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<?php if (VmConfig::get ('show_tax')) { ?>
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('paymentTax', '', $this->cart->cartPrices['paymentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
-	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?></td>
-	<td style="align:right;vertical-align:middle;" ><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?> </td>
+	<td align="right" ><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?></td>
+	<td align="right" ><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?> </td>
 </tr>
 <?php  } ?>
 <tr>

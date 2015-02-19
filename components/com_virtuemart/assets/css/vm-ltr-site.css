@@ -12,7 +12,7 @@
 
 .vm-price {text-align: right;line-height: 1.2em;}
 .vm-price span {display: inline-block; min-width: 4em; padding: 0 0.2em;}
-span.vm-price-desc {text-align: left;min-width: 1em;margin:0.0em 1.0em 0.2em 0;}
+span.vm-price-desc {text-align: left;min-width: 1em;margin:0.0em 0.8em 0.2em 0;}
 
 .vm3pr-1 .product-price {height: 1.25em;} .vm3pr-2 .product-price {height: 2.5em;}.vm3pr-3 .product-price {height: 3.75em;}.vm3pr-4 .product-price {height: 5.0em;}.vm3pr-5 .product-price {height: 6.25em;}.vm3pr-6 .product-price {height: 6.25em;}
 .vm3pr-0 .addtocart-area {height: 0.0em;} .vm3pr-1 .addtocart-area {height: 3.2em;}.vm3pr-2 .addtocart-area {height: 6.4em;}.vm3pr-3 .addtocart-area  {height: 9.6em;}.vm3pr-4 .addtocart-area  {height: 12.8em;}.vm3pr-5 .addtocart-area  {height: 16.0em;}
@@ -111,12 +111,13 @@ span.tos{display:inline-block;margin-right:15px;}
 #full-tos {display: none;}
 .output-billto span.titles,.output-shipto span.titles{width:150px;float:left;}
 .output-billto span.values-first_name,.output-billto span.values-middle_name,.output-billto span.values-zip,.output-shipto span.values-first_name,.output-shipto span.values-middle_name,.output-shipto span.values-zip{float:left;margin-right:3px;}
-table.cart-summary tr th{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border-bottom:solid #E9E8E8 1px;padding:6px 0 3px;}
+table.cart-summary tr th{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border-bottom:solid #E9E8E8 1px;padding:6px 2px 3px;}
+.cart-summary tr td {padding:5px 3px 2px;}
 .customer-comment{text-align:center;border-top:solid #E9E8E8 1px;margin:10px 0 0;padding:10px 0 0;}
 textarea.customer-comment{background:#fff;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;margin-bottom:2px;text-align:left;padding:5px 5px 4px;}
 .cart.customer-note{margin:10px 0 0 0;}
 textarea#customer_note_field {margin: 10px 0 10px 0px;width:98%;}
-.cart-summary tr td {padding-top:5px;}
+
 div.terms-of-service{ margin:10px 0 0;padding:10px 0 15px; display : inline;}
 .terms-of-service h5{background:#7C1E21;color:rgba(255, 255, 255, 0.9);font-size:14px;text-align:center;border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px;font-weight:400;margin:0;padding:15px;}
 .terms-of-service h5 a,.terms-of-service h5 a:visited{color:#fff;text-transform:uppercase;}
