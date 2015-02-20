@@ -24,4 +24,8 @@
             </fieldset>
         </fields>
     </config>
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" name="VirtueMart plg_system_amazon Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/plg_system_amazon_update.xml]]></server>
+    </updateservers>
 </extension>
