@@ -2,16 +2,14 @@
 <extension method="upgrade" type="component" version="2.5">
     <name>VirtueMart_allinone</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
-    <copyright>Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2004-2015 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-   <author>The VirtueMart Development Team</author>
+    <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version status="${PHING.VM.DEV_STATUS}">${PHING.VM.RELEASE}</version>
-        <!-- Custom un/installer for 1.6 -->
-   <scriptfile>script.vmallinone.php</scriptfile>
-	<!-- Custom installer for 1.5 -->
+
+    <scriptfile>script.vmallinone.php</scriptfile>
 	<installfile>script.vmallinone.php</installfile>
-	<!-- Custom uninstaller for 1.5 -->
 	<uninstallfile>script.vmallinone.php</uninstallfile>
 	
     <administration>

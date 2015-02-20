@@ -259,7 +259,7 @@ class VmViewAdmin extends JViewLegacy {
 			if ($editView =='user') $editView ='vendor';
 
 			jimport('joomla.language.helper');
-            $this->lang = vRequest::getVar('vmlang', $lang);
+            $this->lang = vRequest::getVar('vmlang', $this->lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('VMPATH_ROOT'), true);
 			$activeVmLangs = (vmconfig::get('active_languages') );
