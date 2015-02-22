@@ -696,7 +696,7 @@ class PaypalHelperPaypal {
 	 * Ensures an ip address is both a valid IP and does not fall within
 	 * a private network range.
 	 */
-/*	function validate_ip($ip) {
+/*	function validateIp($ip) {
 		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
 			return false;
 		}

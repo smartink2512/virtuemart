@@ -20,7 +20,7 @@
 defined('_JEXEC') or die();
 
 $response = $viewData['response'];
-$currency = $viewData["currency"];
+//$currency = $viewData["currency"];
 ?>
 <br />
 <style>

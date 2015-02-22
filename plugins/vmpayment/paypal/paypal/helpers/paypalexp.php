@@ -293,9 +293,13 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			return;
 		}
 		// THIS IS A DIFFERENT URL FROM VM2
-		$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&SetExpressCheckout=done&pm=' . $this->_method->virtuemart_paymentmethod_id;
+	//	$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&SetExpressCheckout=done&pm=' . $this->_method->virtuemart_paymentmethod_id;
 
-		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element.'&action=SetExpressCheckout&SetExpressCheckout=cancel&pm=' . $this->_method->virtuemart_paymentmethod_id.'&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+		$post_variables['RETURNURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&pm=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+
+		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
+
+
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
 		$post_variables['NOSHIPPING'] = $this->_method->no_shipping;
@@ -724,7 +728,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 				$lastName = str_replace($firstName . ' ', '', $this->response['SHIPTONAME']);
 			}
 		}
-		if ($this->cart->BT == 0 or empty($this->cart->BT)) {
+		if ($this->cart->BT == 0 or empty($this->cart->BT) or (isset($this->cart->BT[0]) and $this->cart->BT[0]==0)) {
 			$addressBT['email'] = $this->response['EMAIL'];
 			$addressBT['first_name'] = $firstName;
 			$addressBT['last_name'] = $lastName;
@@ -747,7 +751,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$addressST['shipto_virtuemart_country_id'] = ShopFunctions::getCountryIDByName($this->response['SHIPTOCOUNTRYCODE']);
 		$this->cart->STsameAsBT = 0;
 		$this->cart->setCartIntoSession();
-		$this->cart->saveAddressInCart($addressST, 'ST', true);
+		$this->cart->saveAddressInCart($addressST, 'ST', true,'shipto_');
 
 
 	}
@@ -854,7 +858,17 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$extraInfo = '';
 
 		//Are we coming back from Express Checkout?
-		$expressCheckout = vRequest::getVar('SetExpressCheckout', '');
+		$expressCheckout = vRequest::getVar('expresscheckout', '');
+		if ($expressCheckout == 'cancel') {
+			$this->customerData->clear();
+			if (!class_exists('VirtueMartCart')) {
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			}
+			$cart = VirtueMartCart::getCart();
+			$cart->virtuemart_paymentmethod_id = 0;
+			$cart->setCartIntoSession();
+			return NULL;
+		}
 
 		if (!$this->customerData->getVar('token')) {
 			$this->getToken();
@@ -911,7 +925,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$lang_iso = 'en_US';
 		}
 		// SetExpressCheckout
-		$button['link'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id;
+		$button['link'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&pm=' . $this->_method->virtuemart_paymentmethod_id;
 		$button['img'] = JURI::root() . 'plugins/vmpayment/' . $this->_method->payment_element . '/' . $this->_method->payment_element . '/assets/images/PP_Buttons_CheckOut_119x24_v3.png';
 
 
