@@ -831,7 +831,6 @@ class VirtueMartModelUser extends VmModel {
 
 		//if( ($required>2 and ($i+1)<$required) or ($required<=2 and !$return) or $showInfo){
 		if($showInfo or ($required>2 and $i<($required-1)) or ($required<3 and !$return) ){
-		//if(!$return or $showInfo){
 			foreach($missingFields as $fieldname){
 				vmInfo($fieldname);
 			}

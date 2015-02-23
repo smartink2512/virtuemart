@@ -97,7 +97,7 @@ class VirtuemartViewUser extends VmView {
 			$virtuemart_userinfo_id = vRequest::getString('virtuemart_userinfo_id', 0);
 		}
 
-		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
+
 
 		$userFields = null;
 
@@ -130,6 +130,8 @@ class VirtuemartViewUser extends VmView {
 			$userFields = $userFields[$virtuemart_userinfo_id];
 		}
 
+		$this->virtuemart_userinfo_id = $virtuemart_userinfo_id;
+
 		$this->assignRef('userFields', $userFields);
 
 		if ($layoutName == 'edit') {
@@ -150,7 +152,11 @@ class VirtuemartViewUser extends VmView {
 		}
 
 
-		$this->_lists['shipTo'] = ShopFunctionsF::generateStAddressList($this,$this->_model, 'addST');
+		$stTask = 'addST';
+		if ($task == 'editaddresscart'){
+			$stTask = 'editaddresscart';
+		}
+		$this->_lists['shipTo'] = ShopFunctionsF::generateStAddressList($this,$this->_model, $stTask);
 
 		$this->assignRef('lists', $this->_lists);
 

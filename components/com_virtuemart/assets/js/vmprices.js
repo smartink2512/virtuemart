@@ -1,6 +1,7 @@
 if (typeof Virtuemart === "undefined")
 	var Virtuemart = {};
 
+
 Virtuemart.setproducttype = function(form, id) {
 	form.view = null;
 	var datas = form.serialize();
@@ -52,6 +53,10 @@ Virtuemart.productUpdate = function() {
 	// This Way Third Party Developer Can Include Their Own
 	// Add To Cart Module And Listen To The Event: "updateVirtueMartCartModule"
 	jQuery('body').trigger('updateVirtueMartCartModule');
+}
+
+Virtuemart.eventsetproducttype = function (event){
+    Virtuemart.setproducttype(event.data.cart,event.data.virtuemart_product_id);
 }
 
 Virtuemart.sendtocart = function (form){
@@ -116,6 +121,48 @@ Virtuemart.cartEffect = function(form) {
 
 }
 
+Virtuemart.incrQuantity = (function(event) {
+    var rParent = jQuery(this).parent().parent();
+    quantity = rParent.find('input[name="quantity[]"]');
+    virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
+    var Qtt = parseInt(quantity.val());
+    var maxQtt = parseInt(quantity.attr("max"));
+    Ste = parseInt(quantity.attr("step"));
+    if (!isNaN(Qtt)) {
+        quantity.val(Qtt + Ste);
+        if(!isNaN(maxQtt) && quantity.val()>maxQtt){
+            quantity.val(maxQtt);
+        }
+        Virtuemart.setproducttype(event.data.cart,virtuemart_product_id);
+    }
+});
+
+Virtuemart.decrQuantity = (function(event) {
+    var rParent = jQuery(this).parent().parent();
+    quantity = rParent.find('input[name="quantity[]"]');
+    virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
+    var Qtt = parseInt(quantity.val());
+    var minQtt = parseInt(quantity.attr("init"));
+    Ste = parseInt(quantity.attr("step"));
+    console.log("Hmm was geht hier minQtt = "+minQtt+" Ste="+Ste);
+    if (!isNaN(Qtt) && Qtt>Ste) {
+        quantity.val(Qtt - Ste);
+        if(!isNaN(minQtt) && quantity.val()<minQtt){
+            quantity.val(minQtt);
+        }
+    } else quantity.val(minQtt);
+    Virtuemart.setproducttype(event.data.cart,virtuemart_product_id);
+});
+
+Virtuemart.addtocart = function (e){
+    e.preventDefault();
+    var target = e.target || e.srcElement; //cross browser support
+    if (jQuery(e.originalEvent.target).prop("type") == "submit") {
+        Virtuemart.sendtocart(e.data.cart);
+        return false;
+    }
+};
+
 Virtuemart.product = function(carts) {
 	carts.each(function(){
 		var cart = jQuery(this),
@@ -128,69 +175,35 @@ Virtuemart.product = function(carts) {
 		virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 		quantity = cart.find('.quantity-input');
 
-        //console.log("quantityInput ",quantityInput);
 		var Ste = parseInt(quantityInput.attr("step"));
-
 
 		//Fallback for layouts lower than 2.0.18b
 		if(isNaN(Ste)){
 			Ste = 1;
 		}
-		plus.click(function() {
-            var rParent = jQuery(this).parent().parent();
-            quantity = rParent.find('input[name="quantity[]"]');
-            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
-			var Qtt = parseInt(quantity.val());
-            var maxQtt = parseInt(quantity.attr("max"));
-            Ste = parseInt(quantityInput.attr("step"));
-			if (!isNaN(Qtt)) {
-				quantity.val(Qtt + Ste);
-                if(!isNaN(maxQtt) && quantity.val()>maxQtt){
-                    quantity.val(maxQtt);
-                }
-				Virtuemart.setproducttype(cart,virtuemart_product_id);
-			}
-			
-		});
-		minus.click(function() {
-            var rParent = jQuery(this).parent().parent();
-            quantity = rParent.find('input[name="quantity[]"]');
-            virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
-            var Qtt = parseInt(quantity.val());
-            var minQtt = parseInt(quantity.attr("init"));
-            Ste = parseInt(quantityInput.attr("step"));
-            console.log("Hmm was geht hier minQtt = "+minQtt+" Ste="+Ste);
-			if (!isNaN(Qtt) && Qtt>Ste) {
-				quantity.val(Qtt - Ste);
-                if(!isNaN(minQtt) && quantity.val()<minQtt){
-                    quantity.val(minQtt);
-                }
-			} else quantity.val(minQtt);
-			Virtuemart.setproducttype(cart,virtuemart_product_id);
-		});
-		select.change(function() {
-			Virtuemart.setproducttype(cart,virtuemart_product_id);
-		});
-		radio.change(function() {
-			Virtuemart.setproducttype(cart,virtuemart_product_id);
-		});
-		quantity.keyup(function() {
-			Virtuemart.setproducttype(cart,virtuemart_product_id);
-		});
+
+        jQuery(plus).off('click', Virtuemart.incrQuantity);
+        jQuery(plus).on('click', {cart:cart}, Virtuemart.incrQuantity);
+
+        jQuery(minus).off('click', Virtuemart.decrQuantity);
+        jQuery(minus).on('click', {cart:cart},Virtuemart.decrQuantity);
+
+        jQuery(select).off('change', Virtuemart.eventsetproducttype);
+        jQuery(select).on('change', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
+
+        jQuery(radio).off('change', Virtuemart.eventsetproducttype);
+        jQuery(radio).on('change', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
+
+        jQuery(quantity).off('keyup', Virtuemart.eventsetproducttype);
+        jQuery(quantity).on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
+
         this.action ="#";
         //this.preventDefault();
         //addtocart = cart.find('input.addtocart-button'),
         addtocart = cart.find('input[name="addtocart"]');
        // console.log("Execute bind to addtocart",addtocart);
-        addtocart.click(function(e) {
-            e.preventDefault();
-            var target = e.target || e.srcElement; //cross browser support
-            if (jQuery(e.originalEvent.target).prop("type") == "submit") {
-                Virtuemart.sendtocart(cart);
-                return false;
-            }
-
-        });
+        jQuery(addtocart).off('click',Virtuemart.addtocart);
+        jQuery(addtocart).on('click',{cart:cart},Virtuemart.addtocart);
 
 	});
 }

@@ -5,9 +5,9 @@
  *
  * @package	VirtueMart
  * @subpackage Orders
- * @author Oscar van Eijk
+ * @author Oscar van Eijk, Max Milbers
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2015 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -68,11 +68,8 @@ class VirtuemartViewOrders extends VmView {
 		$orderModel = VmModel::getModel('orders');
 
 		if ($layoutName == 'details') {
-			$order_list_link = FALSE;
 
-			$order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=list', FALSE);
-
-			$this->assignRef('order_list_link', $order_list_link);
+			$this->order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=list', FALSE);
 
 			$orderDetails = $orderModel ->getMyOrderDetails();
 
@@ -167,10 +164,10 @@ class VirtuemartViewOrders extends VmView {
 			if ($_currentUser->get('id') == 0) {
 				// getOrdersList() returns all orders when no userID is set (admin function),
 				// so explicetly define an empty array when not logged in.
-				$this->orderList = array();
+				$this->orderlist = array();
 			} else {
-				$this->orderList = $orderModel->getOrdersList($_currentUser->get('id'), TRUE);
-				foreach ($this->orderList as $order) {
+				$this->orderlist = $orderModel->getOrdersList($_currentUser->get('id'), TRUE);
+				foreach ($this->orderlist as $order) {
 					$vendorId = 1;
 					$emailCurrencyId = $order->user_currency_id;
 					$exchangeRate = FALSE;

@@ -266,8 +266,19 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	public function getOrdersList($uid = 0, $noLimit = false)
 	{
 // 		vmdebug('getOrdersList');
+		$tUserInfos = $this->getTable('userinfos');
 		$this->_noLimit = $noLimit;
-		$select = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
+
+		$concat = array();
+		if(property_exists($tUserInfos,'first_name'))  $concat[]= 'u.first_name';
+		if(property_exists($tUserInfos,'middle_name'))  $concat[]= 'u.middle_name';
+		if(property_exists($tUserInfos,'middle_name'))  $concat[]= 'u.last_name';
+		if(!empty($concat)){
+			$concatStr = "CONCAT_WS(' ',".implode(',',$concat).")";
+		} else {
+			$concatStr = 'o.order_number';
+		}
+		$select = " o.*, ".$concatStr." AS order_name "
 		.',u.email as order_email,pm.payment_name AS payment_method ';
 		$from = $this->getOrdersListQuery();
 

@@ -30,7 +30,7 @@ class VirtueMartModelCategory extends VmModel {
 	private $_category_tree;
 	public $_cleanCache = true ;
 
-	static $_validOrderingFields = array('category_name','category_description','c.ordering','c.category_shared','c.published');
+	static $_validOrderingFields = array('category_name','category_description','c.ordering','c.category_shared','c.published','c.ordering, category_name');
 
 	/**
 	 * constructs a VmModel
@@ -123,6 +123,10 @@ class VirtueMartModelCategory extends VmModel {
 
 		if(!in_array($selectedOrdering, self::$_validOrderingFields)){
 			$selectedOrdering = 'category_name';
+		}
+
+		if(trim($this->_selectedOrdering) == 'c.ordering'){
+			$this->_selectedOrdering = 'c.ordering, category_name';
 		}
 
 		if($orderDir===null){
@@ -281,7 +285,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		static $cats = array();
 
-		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
+		$select = ' c.`virtuemart_category_id`, category_description, category_name, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
 		$joinedTables = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` l
 				  JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`)
@@ -314,8 +318,8 @@ class VirtueMartModelCategory extends VmModel {
 			$db = JFactory::getDBO();
 			$keyword = '"%' . $db->escape( $keyword, true ) . '%"' ;
 			//$keyword = $db->Quote($keyword, false);
-			$where[] = ' ( l.`category_name` LIKE '.$keyword.'
-							   OR l.`category_description` LIKE '.$keyword.') ';
+			$where[] = ' ( category_name LIKE '.$keyword.'
+							   OR category_description LIKE '.$keyword.') ';
 		}
 
 		$whereString = '';
@@ -325,12 +329,9 @@ class VirtueMartModelCategory extends VmModel {
 			$whereString = 'WHERE 1 ';
 		}
 
-		//$selOrdering = $this->_selectedOrdering;
 		if(trim($this->_selectedOrdering) == 'c.ordering'){
-			$this->_selectedOrdering = 'c.ordering, l.`category_name`';
+			$this->_selectedOrdering = 'c.ordering, category_name';
 		}
-		//$ordering = ' ORDER BY '.$this->_selectedOrdering.' '.$this->_selectedOrderingDir ;
-
 		$ordering = $this->_getOrdering();
 
 		$hash = md5($keyword.'.'.(int)$parentId.VmConfig::$vmlang.(int)$childId.$this->_selectedOrderingDir.(int)$vendorId.$this->_selectedOrdering);

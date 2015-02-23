@@ -131,7 +131,9 @@ WHERE published="1"';
 		$db->setQuery($q);
 
 		$options = $db->loadAssocList();
-		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NONE'),'virtuemart_'.$ps.'method_id',$ps.'_name');
+		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NOPREF'),'virtuemart_'.$ps.'method_id',$ps.'_name');
+		array_unshift($options,$emptyOption);
+		$emptyOption = JHtml::_('select.option', '-1', vmText::_('COM_VIRTUEMART_NONE'),'virtuemart_'.$ps.'method_id',$ps.'_name');
 		array_unshift($options,$emptyOption);
 		return $options;
 	}

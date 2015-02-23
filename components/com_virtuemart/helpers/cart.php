@@ -1377,7 +1377,7 @@ class VirtueMartCart {
 	function checkAutomaticSelectedPlug($type){
 
 		$vm_method_name = 'virtuemart_'.$type.'method_id';
-		if (count($this->products) == 0) {
+		if (count($this->products) == 0  or  VmConfig::get('set_automatic_'.$type,'0')=='-1') {
 			return false;
 		}
 

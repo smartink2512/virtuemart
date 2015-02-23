@@ -104,7 +104,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 */
 	function plgVmConfirmedOrder (VirtueMartCart $cart, $order) {
 
-	
 		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_shipmentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -117,8 +116,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$values['shipment_name'] = $this->renderPluginName ($method);
 		$values['order_weight'] = $this->getOrderWeight ($cart, $method->weight_unit);
 		$values['shipment_weight_unit'] = $method->weight_unit;
-		$values['shipment_cost'] = $method->shipment_cost;
-		$values['shipment_package_fee'] = $method->package_fee;
+
+		$costs = $this->getCosts($cart,$method,$cart->cartPrices);
+		if(empty($costs)){
+			$values['shipment_cost'] = 0;
+			$values['shipment_package_fee'] = 0;
+		} else {
+			$values['shipment_cost'] = $method->shipment_cost;
+			$values['shipment_package_fee'] = $method->package_fee;
+		}
+
 		$values['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($values);
 

@@ -212,7 +212,7 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	static function getCoreFields(){
-		return array( 'name','username', 'email', 'password', 'password2','first_name','middle_name','last_name');// , 'agreed');
+		return array( 'name','username', 'email', 'password', 'password2');// , 'agreed');
 	}
 
 	/**

@@ -174,7 +174,6 @@ class calculationHelper {
 
 			$q .= $shopperGrpJoin . $countryGrpJoin . $stateGrpJoin;
 
-vmdebug('my ',$q);
 			$this->_db->setQuery($q);
 
 			$allrules = $this->_db->loadAssocList();

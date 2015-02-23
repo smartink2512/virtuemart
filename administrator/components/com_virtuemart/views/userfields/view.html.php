@@ -86,7 +86,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
-			$notoggle = (in_array($this->userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
+			$notoggle = ''; // (in_array($this->userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
 
 			// Vendor selection
 			if(Vmconfig::get('multix','none')!=='none'){
