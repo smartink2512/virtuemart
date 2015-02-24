@@ -1187,17 +1187,20 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$vm_namespace = '__vm';
 		$cart_name = 'vmcart';
-		if (array_key_exists ($vm_namespace, $sessionStorageDecoded)) { // vm session is there
+		if (isset ($sessionStorageDecoded[$vm_namespace] )) { // vm session is there
 			$vm_sessionStorage = $sessionStorageDecoded[$vm_namespace];
-			if (array_key_exists ($cart_name, $vm_sessionStorage)) { // vm cart session is there
-				$sessionStorageCart = unserialize ($vm_sessionStorage[$cart_name]);
+			if (isset ($vm_sessionStorage[$cart_name])) { // vm cart session is there
+				//$sessionStorageCart = unserialize ($vm_sessionStorage[$cart_name]);
+				if(!empty($vm_sessionStorage[$cart_name]) && !is_int($vm_sessionStorage[$cart_name])){
+					$sessionStorageCart = VmConfig::parseJsonUnSerialize($vm_sessionStorage[$cart_name]);
+				}
 				// only empty the cart if the order number is still there. If not there, it means that the cart has already been emptied.
 				if ($sessionStorageCart->order_number == $order_number) {
 					if (!class_exists ('VirtueMartCart')) {
 						require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 					}
 					VirtueMartCart::emptyCartValues ($sessionStorageCart);
-					$sessionStorageDecoded[$vm_namespace][$cart_name] = serialize ($sessionStorageCart);
+					$sessionStorageDecoded[$vm_namespace][$cart_name] = json_encode ($sessionStorageCart);
 					$sessionStorageEncoded = self::session_encode ($sessionStorageDecoded);
 					$sessionStorage->write ($session_id, $sessionStorageEncoded);
 				}
@@ -1220,7 +1223,12 @@ abstract class vmPSPlugin extends vmPlugin {
 			$num = $pos - $offset;
 			$varname = substr ($session_data, $offset, $num);
 			$offset += $num + 1;
-			$data = unserialize (substr ($session_data, $offset));
+
+			$value = substr ($session_data, $offset);
+
+			if(!empty($value) && !is_int($value)){
+				$data = VmConfig::parseJsonUnSerialize($value);
+			}
 			$decoded_session[$varname] = $data;
 			$offset += strlen (serialize ($data));
 		}
@@ -1232,7 +1240,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$encoded_session = "";
 		foreach ($session_data_array as $key => $session_data) {
-			$encoded_session .= $key . "|" . serialize ($session_data);
+			$encoded_session .= $key . "|" . json_encode ($session_data);
 		}
 		return $encoded_session;
 	}

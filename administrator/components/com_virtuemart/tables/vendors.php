@@ -26,6 +26,7 @@ class TableVendors extends VmTableData {
     var $virtuemart_vendor_id			= 0;
     var $vendor_name  	         	= '';
     var $vendor_store_name		= '';
+	var $vendor_phone		= '';
     var $vendor_store_desc   		= '';
     var $vendor_currency	  		= 0;
     var $vendor_terms_of_service	= '';

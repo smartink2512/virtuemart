@@ -1005,23 +1005,9 @@ class VmConfig {
 		foreach($config as $item){
 			$item = explode('=',$item);
 			if(!empty($item[1])){
-				if($item[0]!=='offline_message' ){
-					try {
-						$value = @unserialize($item[1] );
-
-						if($value===FALSE){
-							$app ->enqueueMessage('Exception in loadConfig for unserialize '.$item[0]. ' '.$item[1]);
-							//$uri = JFactory::getURI();
-							$configlink = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
-							$app ->enqueueMessage('To avoid this message, enter your virtuemart <a href="'.$configlink.'">config</a> and just save it one time');
-						} else {
-							$pair[$item[0]] = $value;
-						}
-					}catch (Exception $e) {
-						vmdebug('Exception in loadConfig for unserialize '. $e->getMessage(),$item);
-					}
-				} else {
-					$pair[$item[0]] = unserialize(base64_decode($item[1]) );
+				$value = self::parseJsonUnSerialize($item[1],$item[0]);
+				if($value!==null){
+					$pair[$item[0]] = $value;
 				}
 
 			} else {
@@ -1035,6 +1021,41 @@ class VmConfig {
 	}
 
 
+	public static function parseJsonUnSerialize($in,$b64Str = false){
+
+		$value = json_decode($in ,true);
+		$ser = false;
+		switch(json_last_error()) {
+			case JSON_ERROR_DEPTH:
+				echo ' - Maximum stack depth exceeded';
+				return null;
+			case JSON_ERROR_CTRL_CHAR:
+				echo ' - Unexpected control character found';
+				$ser = true;
+				break;
+			case JSON_ERROR_SYNTAX:
+				//echo ' - Syntax error, malformed JSON';
+				$ser = true;
+				break;
+			case JSON_ERROR_NONE:
+				return $value;
+		}
+
+		if($ser){
+			try {
+				if($b64Str and $b64Str==='offline_message' ){
+					$value = @unserialize(base64_decode($in) );
+				} else {
+					$value = @unserialize( $in );
+				}
+				vmdebug('Error in Json_encode use unserialize ',$in,$value);
+				return $value;
+			}catch (Exception $e) {
+				vmdebug('Exception in loadConfig for unserialize '. $e->getMessage(),$in);
+			}
+		}
+	}
+
 	/**
 	 * Writes the params as string and escape them before
 	 * @author Max Milbers
@@ -1046,11 +1067,11 @@ class VmConfig {
 
 			//Texts get broken, when serialized, therefore we do a simple encoding,
 			//btw we need serialize for storing arrays   note by Max Milbers
-			if($paramkey!=='offline_message'){
-				$raw .= $paramkey.'='.serialize($value).'|';
-			} else {
+			//if($paramkey!=='offline_message'){
+				$raw .= $paramkey.'='.json_encode($value).'|';
+			/*} else {
 				$raw .= $paramkey.'='.base64_encode(serialize($value)).'|';
-			}
+			}*/
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
 		return self::$_jpConfig->_raw;

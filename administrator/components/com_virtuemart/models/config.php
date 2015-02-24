@@ -584,11 +584,8 @@ class VirtueMartModelConfig extends VmModel {
 						$pair[1] = substr($pair[1],6);
 						$pair[1] = explode('|',$pair[1]);
 					}
-					if($pair[0]!=='offline_message'){
-						$_line = $pair[0].'='.serialize($pair[1]);
-					} else {
-						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
-					}
+					$_line = $pair[0].'='.json_encode($pair[1]);
+
 				} else {
 					$_line = $pair[0].'=';
 				}
