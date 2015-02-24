@@ -368,7 +368,7 @@ class VirtueMartModelUser extends VmModel {
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
 
 			$cUser = JFactory::getUser();
-			if(!($cUser->authorise('core.admin','com_virtuemart') or $cUser->authorise('core.manage','com_virtuemart')) and $usersConfig->get('allowUserRegistration') == '0') {
+			if(!($cUser->authorise('core.admin','com_virtuemart') or $cUser->authorise('core.manage','com_virtuemart') or $cUser->authorise('vm.user', 'com_virtuemart')) and $usersConfig->get('allowUserRegistration') == '0') {
 				VmConfig::loadJLang('com_virtuemart');
 				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;
@@ -1170,7 +1170,7 @@ class VirtueMartModelUser extends VmModel {
 		$search = vRequest::getString('search', false);
 		$tableToUse = vRequest::getString('searchTable','juser');
 
-		$where = '';
+		$where = array();
 		if ($search) {
 			$where = ' WHERE ';
 			$db = JFactory::getDbo();
@@ -1195,9 +1195,9 @@ class VirtueMartModelUser extends VmModel {
 			$search = str_replace(' ','%',$db->escape( $search, true ));
 			foreach($searchArray as $field){
 
-					$where.= ' '.$field.' LIKE "%'.$search.'%" OR ';
+					$whereOr[] = ' '.$field.' LIKE "%'.$search.'%" ';
 			}
-			$where = substr($where,0,-3);
+			//$where = substr($where,0,-3);
 		}
 
 		$select = ' ju.id AS id
@@ -1225,14 +1225,24 @@ class VirtueMartModelUser extends VmModel {
 			$joinedTables .= ' LEFT JOIN #__virtuemart_userinfos AS ui ON ui.virtuemart_user_id = vmu.virtuemart_user_id';
 		}
 
+		$whereAnd = array();
 		if(VmConfig::get('multixcart',0)=='byvendor'){
 			$superVendor = VmConfig::isSuperVendor();
 			if($superVendor>1){
-				$joinedTables .= ' LEFT JOIN #__virtuemart_vendor_users AS vu using (virtuemart_user_id)';
-				$where .= ' AND vu.virtuemart_vendor_id = '.$superVendor.' ';
+				$joinedTables .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON ju.id = vmu.virtuemart_user_id';
+				$whereAnd[] = ' vu.virtuemart_vendor_id = '.$superVendor.' ';
 			}
 		}
 
+		$where = '';
+		$whereStr =  ' WHERE ';
+		if(!empty($whereOr)){
+			$where = $whereStr.implode(' OR ',$whereOr);
+			$whereStr = 'AND';
+		}
+		if(!empty($whereAnd)){
+			$where .= $whereStr.' ('.implode(' OR ',$whereAnd).')';
+		}
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$where,' GROUP BY ju.id',$this->_getOrdering());
 
 	}

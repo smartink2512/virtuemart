@@ -929,7 +929,7 @@ class VirtueMartCart {
 		$currentUser = JFactory::getUser();
 		if(!empty($this->STsameAsBT)){
 			if($this->_confirmDone){
-				$this->ST = $this->BT;
+				$this->ST = $this->BT;	//This for BC
 			} else {
 			}
 		} else {
@@ -1155,13 +1155,13 @@ class VirtueMartCart {
 					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 				}
 
-				foreach($orderDetails['items'] as $product){
+				/*foreach($orderDetails['items'] as $product){
 					//We set a cookie for guests to allow that they can rate/review a product without logging in.
 					$app = JFactory::getApplication();
 					$key = 'productBought'.$product->virtuemart_product_id;
 					$v = vmCrypt::encrypt($key);
 					$app->input->cookie->set($key,$v,time() + $lifetime,'/');
-				}
+				}*/
 
 				if(!$this->customer_notified ) {
 					$orderModel->notifyCustomer($this->virtuemart_order_id, $orderDetails);

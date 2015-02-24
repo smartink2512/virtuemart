@@ -62,6 +62,9 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id');
 			$order = $orderModel->getOrder($virtuemart_order_id);
 
+			if(empty($order['details'])){
+				JFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=orders',vmText::_('COM_VIRTUEMART_ORDER_NOTFOUND'));;
+			}
 
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
 			$orderbt = $order['details']['BT'];

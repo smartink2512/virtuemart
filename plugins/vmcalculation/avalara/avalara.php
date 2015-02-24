@@ -197,7 +197,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'calcs.php');
 		}
 		if(!empty($data['avatax_virtuemart_country_id'])){
-			$data['avatax_virtuemart_country_id'] = serialize($data['avatax_virtuemart_country_id']);
+			$data['avatax_virtuemart_country_id'] = json_encode($data['avatax_virtuemart_country_id']);
 		}
 
 		$db = JFactory::getDBO ();
@@ -219,7 +219,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		VmTable::bindParameterable ($calcData, $this->_xParams, $this->_varsToPushParam);
 		if(!is_array($calcData->avatax_virtuemart_country_id)){
 			//Suppress Warning
-			$calcData->avatax_virtuemart_country_id = @unserialize($calcData->avatax_virtuemart_country_id);
+			$calcData->avatax_virtuemart_country_id = json_decode($calcData->avatax_virtuemart_country_id,true);
 
 		}
 		return TRUE;
@@ -526,7 +526,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 				if(!is_array($calc['avatax_virtuemart_country_id'])){
 					//Suppress Warning
-					$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
+					$calc['avatax_virtuemart_country_id'] = json_decode($calc['avatax_virtuemart_country_id'],true);
 				}
 				if(!in_array($vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id'])){
 					avadebug('fillValidateAvalaraAddress not validated, country not set',$vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id']);
@@ -758,7 +758,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
 		} else {
 
-			$hash = serialize(self::$vmadd). serialize($request->getLines()). serialize($request->getDiscount());
+			$hash = json_encode(self::$vmadd). json_encode($request->getLines()). json_encode($request->getDiscount());
 			$hash = md5($hash);
 
 			$request->setDocType(DocumentType::$SalesOrder);
@@ -1044,7 +1044,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if(!$calc) return false;
 
 		if(!is_array($calc['avatax_virtuemart_country_id'])){
-			$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
+			$calc['avatax_virtuemart_country_id'] = json_decode($calc['avatax_virtuemart_country_id'],true);
 		}
 
 		if($calc['activated']==0){

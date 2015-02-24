@@ -97,9 +97,9 @@ class Migrator extends VmModel{
 			$result = array();
 		} else {
 			// 			vmdebug('getMigrationProgress '.$group,$result);
-			$uresult = unserialize(trim($result));
+			$uresult = json_decode(trim($result),true);
 			if(!$uresult){
-				vmdebug('getMigrationProgress unserialize failed '.$group,$result);
+				vmdebug('getMigrationProgress json_decode failed '.$group,$result);
 				// 				vmWarn('getMigrationProgress '.$group.' array is created new and therefore empty $q '.$q.' '.print_r($uresult,1).' <pre>'.print_r($result,1).'</pre>');
 				$result = array();
 			} else {
@@ -113,7 +113,7 @@ class Migrator extends VmModel{
 
 	function storeMigrationProgress($group,$array, $limit = ''){
 
-		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.serialize($array).'" '.$limit.' WHERE `id` = "1"';
+		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.json_encode($array).'" '.$limit.' WHERE `id` = "1"';
 
 		$this->_db->setQuery($q);
 		if(!$this->_db->execute()){

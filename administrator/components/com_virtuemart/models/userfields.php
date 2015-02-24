@@ -530,7 +530,7 @@ class VirtueMartModelUserfields extends VmModel {
 	public function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2'))
 	{
 	    // stAn, we can't really create cache per sql as we want to create named array as well
-		$cache_hash = md5($_sec.serialize($_switches).serialize($_skip).$this->_selectedOrdering.$this->_selectedOrderingDir);
+		$cache_hash = md5($_sec.json_encode($_switches).json_encode($_skip).$this->_selectedOrdering.$this->_selectedOrderingDir);
 		if (isset(self::$_cache_ordered[$cache_hash])) return self::$_cache_ordered[$cache_hash];
 
 		$_q = 'SELECT * FROM `#__virtuemart_userfields` WHERE 1 = 1 ';

@@ -244,6 +244,7 @@ class VmMediaHandler {
 
 			if(!empty($name) && $name !=='/'){
 				$this->file_name = JFile::stripExt($name);
+				//$this->file_extension = strtolower(JFile::getExt($name));
 				$this->file_extension = strtolower(JFile::getExt($name));
 
 				//Ensure using right directory

@@ -195,6 +195,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 			}
 
 			if($currentUser->guest!=1 or !$cartObj or ($currentUser->guest==1 and $register) ){
+
+				if($currentUser->guest==1 and $register) $userModel->setId(0);
+
 				$ret = $userModel->store($data);
 
 				if(($currentUser->guest==1 and $register) and VmConfig::get ('oncheckout_change_shopper')){
