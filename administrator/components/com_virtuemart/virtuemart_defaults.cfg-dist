@@ -26,6 +26,7 @@ useVendorEmail=0
 dangeroustools=0
 debug_enable=none
 dev=none
+vmdev=none
 google_jquery=0
 multix=none
 usefancy=1

@@ -1023,7 +1023,7 @@ class VmConfig {
 
 	public static function parseJsonUnSerialize($in,$b64Str = false){
 
-		$value = json_decode($in ,true);
+		$value = json_decode($in ,$b64Str);
 		$ser = false;
 		switch(json_last_error()) {
 			case JSON_ERROR_DEPTH:
