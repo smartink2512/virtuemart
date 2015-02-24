@@ -1190,21 +1190,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (isset ($sessionStorageDecoded[$vm_namespace] )) { // vm session is there
 			$vm_sessionStorage = $sessionStorageDecoded[$vm_namespace];
 			if (isset ($vm_sessionStorage[$cart_name])) { // vm cart session is there
-				//$sessionStorageCart = unserialize ($vm_sessionStorage[$cart_name]);
-				if(!empty($vm_sessionStorage[$cart_name]) && !is_int($vm_sessionStorage[$cart_name])){
-					$sessionStorageCart = json_decode($vm_sessionStorage[$cart_name]);
-				}
-				// only empty the cart if the order number is still there. If not there, it means that the cart has already been emptied.
-				if ($sessionStorageCart->order_number == $order_number) {
-					if (!class_exists ('VirtueMartCart')) {
-						require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
-					}
-					$cart = VirtueMartCart::getCart(false, array(), $sessionStorageCart);
-					VirtueMartCart::emptyCartValues ($cart);
-					$sessionStorageDecoded[$vm_namespace][$cart_name] = json_encode ($sessionStorageCart);
+				unset($sessionStorageDecoded[$vm_namespace][$cart_name]);
+					//$sessionStorageDecoded[$vm_namespace][$cart_name] = json_encode ($cart);
 					$sessionStorageEncoded = self::session_encode ($sessionStorageDecoded);
 					$sessionStorage->write ($session_id, $sessionStorageEncoded);
-				}
+				//}
 			}
 		}
 	}
@@ -1228,10 +1218,10 @@ abstract class vmPSPlugin extends vmPlugin {
 			$value = substr ($session_data, $offset);
 
 			if(!empty($value) && !is_int($value)){
-				$data = json_decode($value); //VmConfig::parseJsonUnSerialize($value);
+				$data = unserialize($value); //VmConfig::parseJsonUnSerialize($value);
 			}
 			$decoded_session[$varname] = $data;
-			$offset += strlen (json_encode($data));
+			$offset += strlen (serialize($data));
 		}
 		return $decoded_session;
 	}
@@ -1241,7 +1231,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$encoded_session = "";
 		foreach ($session_data_array as $key => $session_data) {
-			$encoded_session .= $key . "|" . json_encode ($session_data);
+			$encoded_session .= $key . "|" . serialize ($session_data);
 		}
 		return $encoded_session;
 	}
