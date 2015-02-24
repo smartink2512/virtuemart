@@ -1199,7 +1199,8 @@ abstract class vmPSPlugin extends vmPlugin {
 					if (!class_exists ('VirtueMartCart')) {
 						require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 					}
-					VirtueMartCart::emptyCartValues ($sessionStorageCart);
+					$cart = VirtueMartCart::getCart(false, array(), $sessionStorageCart);
+					VirtueMartCart::emptyCartValues ($cart);
 					$sessionStorageDecoded[$vm_namespace][$cart_name] = json_encode ($sessionStorageCart);
 					$sessionStorageEncoded = self::session_encode ($sessionStorageDecoded);
 					$sessionStorage->write ($session_id, $sessionStorageEncoded);

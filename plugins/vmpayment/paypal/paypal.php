@@ -704,6 +704,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return FALSE;
 		}
 
+
 		$order_number = $paypal_data['invoice'];
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']))) {
 			return FALSE;
@@ -731,7 +732,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return false;
 		} else {
 			$this->_storePaypalInternalData( $paypal_data, $virtuemart_order_id, $payments[0]->virtuemart_paymentmethod_id, $order_number);
-			$paypalInterface->debugLog('order_number:' . $order_number . ' new_status:' . $order_history['order_status'], 'plgVmOnPaymentNotification', 'debug');
+			$paypalInterface->debugLog('plgVmOnPaymentNotification order_number:' . $order_number . ' new_status:' . $order_history['order_status'], 'plgVmOnPaymentNotification', 'debug');
 
 			$orderModel->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
 			//// remove vmcart
