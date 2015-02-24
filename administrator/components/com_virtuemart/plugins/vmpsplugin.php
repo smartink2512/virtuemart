@@ -1192,7 +1192,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			if (isset ($vm_sessionStorage[$cart_name])) { // vm cart session is there
 				//$sessionStorageCart = unserialize ($vm_sessionStorage[$cart_name]);
 				if(!empty($vm_sessionStorage[$cart_name]) && !is_int($vm_sessionStorage[$cart_name])){
-					$sessionStorageCart = VmConfig::parseJsonUnSerialize($vm_sessionStorage[$cart_name]);
+					$sessionStorageCart = json_decode($vm_sessionStorage[$cart_name]);
 				}
 				// only empty the cart if the order number is still there. If not there, it means that the cart has already been emptied.
 				if ($sessionStorageCart->order_number == $order_number) {
