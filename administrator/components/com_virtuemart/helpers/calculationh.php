@@ -952,12 +952,18 @@ class calculationHelper {
 		if (!($_data = CouponHelper::getCouponDetails($_code))) {
 			return; // TODO give some error here
 		}
+		vmdebug('my  coupon data',$_data);
 		$_value_is_total = ($_data->percent_or_total == 'total');
+
 		$this->_cart->cartData['couponCode'] = $_code;
-		$this->_cart->cartData['couponDescr'] = ($_value_is_total ? '' : (round($_data->coupon_value) . '%')
-		);
-		$this->_cart->cartPrices['salesPriceCoupon'] = ($_value_is_total ? $_data->coupon_value * -1 : ($this->_cart->cartPrices['salesPrice'] * ($_data->coupon_value / 100)) * -1
-		);
+
+		if($_value_is_total){
+			$this->_cart->cartData['couponDescr'] = $this->_currencyDisplay->getFormattedCurrency($_data->coupon_value);
+		} else {
+			$this->_cart->cartData['couponDescr'] = round($_data->coupon_value * 100) . ' %';
+		}
+
+		$this->_cart->cartPrices['salesPriceCoupon'] = ($_value_is_total ? $_data->coupon_value * -1 : ($this->_cart->cartPrices['salesPrice'] * ($_data->coupon_value / 100)) * -1);
 
 		$this->_cart->cartPrices['couponTax'] = 0;
 		$this->_cart->cartPrices['couponValue'] = $this->_cart->cartPrices['salesPriceCoupon'] - $this->_cart->cartPrices['couponTax'];
