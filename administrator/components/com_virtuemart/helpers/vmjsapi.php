@@ -657,7 +657,15 @@ class vmJsApi{
 		if (empty($id)) {
 			$id = $name;
 		}
+		static $idUnique = array();
 		static $jDate;
+
+		if(!isset($idUnique[$id])){
+			$idUnique[$id] = 0;
+		}  else {
+			$counter = $idUnique[$id]++;
+			$id = $id.'-'.$counter;
+		}
 
 		$dateFormat = vmText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
 		$search  = array('m', 'd', 'Y');

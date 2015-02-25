@@ -409,7 +409,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					if($soption->voption!='clabels'){
 
 						foreach($sorted as $vmProductId){
-							if(empty($vmProductId)) continue;
+							if(empty($vmProductId) or $vmProductId['vm_product_id']==$product_id){
+								continue;
+							}
 							$product = $productModel->getProductSingle($vmProductId['vm_product_id'],false);
 							$voption = trim($product->{$soption->voption});
 
@@ -819,7 +821,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$tags = array();
 					foreach($customfield->selectoptions as $k => $soption){
 						$options = array();
-						$selected = 0;
+						$selected = false;
 						foreach($dropdowns[$k] as $i=> $elem){
 
 							$elem = trim((string)$elem);
@@ -832,12 +834,19 @@ class VirtueMartModelCustomfields extends VmModel {
 								}
 								//vmdebug('($dropdowns[$k] in DIMENSION value = '.$elem.' r='.$rd.' '.$text);
 							}
+
+							if($elem=='0'){
+								$text = vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION');
+							}
 							$options[] = array('value'=>$elem,'text'=>$text);
 
 							if($productSelection and $productSelection[$k] == $elem){
 								$selected = $elem;
 							}
+						}
 
+						if(empty($selected)){
+							$product->orderable=false;
 						}
 						$idTagK = $idTag.'cvard'.$k;
 						$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);
@@ -845,6 +854,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						if('productdetails' != vRequest::getCmd('view')){
 							$attribs['reload'] = '1';
 						}
+
 						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, $attribs , "value", "text", $selected,$idTagK);
 						$tags[] = $idTagK;
 					}

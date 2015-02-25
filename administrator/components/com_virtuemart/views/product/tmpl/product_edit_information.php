@@ -8,7 +8,7 @@
  * @author Max Milbers
  * @todo Price update calculations
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2015 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -302,13 +302,6 @@ if ($link) {
             onRowRemove:function () {
             },
             onRowClone:function () {
-                //var myLastRow = jQuery('input [name="mprices[virtuemart_product_price_id][]"]',jQuery('#mainPriceTable tr:last') );
-                //var myLastRow = jQuery('#mainPriceTable tr:last' );
-	            /*jQuery.each(myLastRow,function(key, element1) {
-                           jQuery.each(element1,function(key, element) {
-                                alert('key: ' + key + '\n' + 'value: ' + element);
-                           })
-                });*/
             },
             onRowAdd:function () {
             },

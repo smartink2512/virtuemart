@@ -239,6 +239,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		} else {
 			echo vmText::_ ('COM_VIRTUEMART_CART_SHIPPING');
 		}
+		echo '</td>';
 	} else {
 	?>
 	<td colspan="4" style="align:left;vertical-align:top;">
@@ -251,7 +252,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('shipmentTax', '', $this->cart->cartPrices['shipmentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
 	<td align="right"><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?></td>
-	<td style="align:right;vertical-align:middle;"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?> </td>
+	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?> </td>
 </tr>
 <?php } ?>
 <?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 and
@@ -279,7 +280,6 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		echo vmText::_ ('COM_VIRTUEMART_CART_PAYMENT');
 	} ?> </td>
 
-	</td>
 	<?php } else { ?>
 		<td colspan="4" style="align:left;vertical-align:top;" >
 			<?php echo '<h4>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_PAYMENT').'</h4>'; ?>
@@ -288,7 +288,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<?php if (VmConfig::get ('show_tax')) { ?>
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('paymentTax', '', $this->cart->cartPrices['paymentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
-	<td align="right" ><?php if($this->cart->cartPrices['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?></td>
+	<td align="right" ><?php if($this->cart->cartPrices['salesPricePayment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?></td>
 	<td align="right" ><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->cartPrices['salesPricePayment'], FALSE); ?> </td>
 </tr>
 <?php  } ?>
