@@ -1191,12 +1191,14 @@ abstract class vmPSPlugin extends vmPlugin {
 				}
 			}
 		}
+
+
+		// The session store MUST be registered.
+		$sessionStorage->register ();
 		if ($delete) {
 			$sessionStorage->write ($session_id, NULL);
 			return;
 		}
-		// The session store MUST be registered.
-		$sessionStorage->register ();
 		// reads directly the session from the storage
 		$sessionStored = $sessionStorage->read ($session_id);
 		if (empty($sessionStored)) {
@@ -1238,7 +1240,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$value = substr ($session_data, $offset);
 
 			if(!empty($value) && !is_int($value)){
-				$data = json_decode($value,1); //VmConfig::parseJsonUnSerialize($value);
+				$data = unserialize($value); //VmConfig::parseJsonUnSerialize($value);
 			}
 			$decoded_session[$varname] = $data;
 			$offset += strlen (serialize($data));
@@ -1251,7 +1253,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$encoded_session = "";
 		foreach ($session_data_array as $key => $session_data) {
-			$encoded_session .= $key . "|" . json_encode ($session_data);
+			$encoded_session .= $key . "|" . serialize ($session_data);
 		}
 		return $encoded_session;
 	}
