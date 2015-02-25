@@ -1179,13 +1179,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		// we remove the session for unsecure unserialized PHP version
 		$phpVersion = phpversion();
 		if(version_compare ( $phpVersion , '5.4.0') >= 0){
-			if(version_compare ( $phpVersion , '5.4.34') == -1){
+			if(version_compare ( $phpVersion , '5.4.38') == -1){
 				$delete = true;
 			} else if(version_compare ( $phpVersion , '5.5.0') >= 0) {
-				if(version_compare( $phpVersion, '5.5.18' ) == -1) {
+				if(version_compare( $phpVersion, '5.5.22' ) == -1) {
 					$delete = true;
 				} else if(version_compare( $phpVersion, '5.6.0' )>=0) {
-					if(version_compare( $phpVersion, '5.6.5' ) == -1) {
+					if(version_compare( $phpVersion, '5.6.6' ) == -1) {
 						$delete = true;
 					}
 				}
