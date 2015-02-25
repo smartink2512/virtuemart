@@ -704,7 +704,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return FALSE;
 		}
 
-
 		$order_number = $paypal_data['invoice'];
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']))) {
 			return FALSE;
@@ -737,6 +736,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$orderModel->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
 			//// remove vmcart
 			if (isset($paypal_data['custom'])) {
+				$paypalInterface->debugLog('plgVmOnPaymentNotification empty cart '.$paypal_data['custom'], 'plgVmOnPaymentNotification', 'debug');
+
 				$this->emptyCart($paypal_data['custom'], $order_number);
 			}
 		}
@@ -1240,10 +1241,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->cartPrices)) {
 
 				$html = '';
-				$cart_prices = array();
-				$cart_prices['withTax'] = '';
-				$cart_prices['salesPrice'] = '';
-				$methodSalesPrice = $this->setCartPrices($cart, $cart_prices, $this->_currentMethod);
+				$cartPrices=$cart->cartPrices;
+				$methodSalesPrice = $this->setCartPrices($cart, $cartPrices, $this->_currentMethod);
 
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);
