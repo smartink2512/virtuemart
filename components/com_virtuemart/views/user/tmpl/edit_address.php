@@ -22,9 +22,6 @@ defined ('_JEXEC') or die('Restricted access');
 JHtml::_ ('behavior.formvalidation');
 JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/assets/css/');
 
-?>
-<h1><?php echo $this->page_title ?></h1>
-<?php
 if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 $this->cart = VirtueMartCart::getCart();
 $url = 0;
@@ -34,6 +31,53 @@ if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
 else {
 	$rview = 'user';
 }
+
+function renderControlButtons($view,$rview){
+	?>
+<div class="control-buttons">
+	<?php
+
+
+	if ($view->cart->getInCheckOut() || $view->address_type == 'ST') {
+		$buttonclass = 'default';
+	}
+	else {
+		$buttonclass = 'button vm-button-correct';
+	}
+
+
+	if (VmConfig::get ('oncheckout_show_register', 1) && $view->userDetails->JUser->id == 0 && !VmConfig::get ('oncheckout_only_registered', 0) && $view->address_type == 'BT' and $rview == 'cart') {
+		echo '<div id="reg_text">'.vmText::sprintf ('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST')).'</div>';			}
+	else {
+		//echo vmText::_('COM_VIRTUEMART_REGISTER_ACCOUNT');
+	}
+	if (VmConfig::get ('oncheckout_show_register', 1) && $view->userDetails->JUser->id == 0 && $view->address_type == 'BT' and $rview == 'cart') {
+		?>
+		<button name="register" class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return myValidator(userForm,true);"
+				title="<?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?>"><?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
+		<?php if (!VmConfig::get ('oncheckout_only_registered', 0)) { ?>
+			<button name="save" class="<?php echo $buttonclass ?>" title="<?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="submit"
+					onclick="javascript:return myValidator(userForm, false);"><?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
+		<?php } ?>
+		<button class="default" type="reset"
+				onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview.'&task=cancel'); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
+	<?php
+	}
+	else {
+		?>
+		<button class="<?php echo $buttonclass ?>" type="submit"
+				onclick="javascript:return myValidator(userForm,true);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
+		<button class="default" type="reset"
+				onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview.'&task=cancel'); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
+	<?php } ?>
+</div>
+<?php
+}
+
+?>
+<h1><?php echo $this->page_title ?></h1>
+<?php
+
 
 $task = '';
 if ($this->cart->getInCheckOut()){
@@ -59,43 +103,7 @@ $this->vmValidator();
 	</h2>
 
 	<!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_ ('index.php'); ?>" class="form-validate">-->
-	<div class="control-buttons">
-		<?php
-
-
-		if ($this->cart->getInCheckOut() || $this->address_type == 'ST') {
-			$buttonclass = 'default';
-		}
-		else {
-			$buttonclass = 'button vm-button-correct';
-		}
-
-
-		if (VmConfig::get ('oncheckout_show_register', 1) && $this->userDetails->JUser->id == 0 && !VmConfig::get ('oncheckout_only_registered', 0) && $this->address_type == 'BT' and $rview == 'cart') {
-			echo '<div id="reg_text">'.vmText::sprintf ('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST')).'</div>';			}
-		else {
-			//echo vmText::_('COM_VIRTUEMART_REGISTER_ACCOUNT');
-		}
-		if (VmConfig::get ('oncheckout_show_register', 1) && $this->userDetails->JUser->id == 0 && $this->address_type == 'BT' and $rview == 'cart') {
-			?>
-			<button name="register" class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return myValidator(userForm,true);"
-					title="<?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?>"><?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
-			<?php if (!VmConfig::get ('oncheckout_only_registered', 0)) { ?>
-				<button name="save" class="<?php echo $buttonclass ?>" title="<?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="submit"
-						onclick="javascript:return myValidator(userForm, false);"><?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
-				<?php } ?>
-			<button class="default" type="reset"
-					onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview.'&task=cancel'); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
-			<?php
-		}
-		else {
-			?>
-			<button class="<?php echo $buttonclass ?>" type="submit"
-					onclick="javascript:return myValidator(userForm,true);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
-			<button class="default" type="reset"
-					onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview.'&task=cancel'); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
-			<?php } ?>
-	</div>
+	<?php renderControlButtons($this,$rview); ?>
 
 <?php // captcha addition
 	if(VmConfig::get ('reg_captcha')){
@@ -125,7 +133,7 @@ $this->vmValidator();
 	}
 
 	echo $this->loadTemplate ('userfields');
-
+	renderControlButtons($this,$rview);
 	if ($this->userDetails->JUser->get ('id')) {
 		echo $this->loadTemplate ('addshipto');
 	} ?>

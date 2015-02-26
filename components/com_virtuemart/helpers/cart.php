@@ -357,7 +357,6 @@ class VirtueMartCart {
 		}
 		$sessionCart = $this->getCartDataToStore();
 		$sessionCart = json_encode($sessionCart);
-		//vmdebug('my session data to store',$sessionCart);
 		$session->set('vmcart', $sessionCart,'vm');
 
 		if($forceWrite){

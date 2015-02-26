@@ -144,7 +144,7 @@ Virtuemart.decrQuantity = (function(event) {
     var Qtt = parseInt(quantity.val());
     var minQtt = parseInt(quantity.attr("init"));
     Ste = parseInt(quantity.attr("step"));
-    console.log("Hmm was geht hier minQtt = "+minQtt+" Ste="+Ste);
+
     if (!isNaN(Qtt) && Qtt>Ste) {
         quantity.val(Qtt - Ste);
         if(!isNaN(minQtt) && quantity.val()<minQtt){

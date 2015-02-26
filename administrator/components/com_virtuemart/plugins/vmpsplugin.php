@@ -1240,7 +1240,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$value = substr ($session_data, $offset);
 
 			if(!empty($value) && !is_int($value)){
-				$data = unserialize($value); //VmConfig::parseJsonUnSerialize($value);
+				$data = unserialize($value);
 			}
 			$decoded_session[$varname] = $data;
 			$offset += strlen (serialize($data));

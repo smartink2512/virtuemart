@@ -534,7 +534,6 @@ class VirtueMartViewCart extends VmView {
        		}
     	});
         if(count==hit){
-        	console.log("Now fire");
         	var form = jQuery("#checkoutFormSubmit");
         	//document.checkoutForm.task = "checkout";
 			document.checkoutForm.submit();

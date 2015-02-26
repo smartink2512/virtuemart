@@ -505,7 +505,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			var voption = jQuery('#voption').val();
 			var label = jQuery('#vlabel').val();
-				console.log ('my label '+label);
+				//console.log ('my label '+label);
 			form = document.getElementById('adminForm');
 			var newdiv = document.createElement('div');
 			newdiv.innerHTML = '<input type=\"text\" value=\"'+voption+'\" name=\"field[" . $row . "][selectoptions][".$k."][voption]\" /><input type=\"text\" value=\"'+label+'\" name=\"field[" . $row . "][selectoptions][".$k."][clabel]\" />';

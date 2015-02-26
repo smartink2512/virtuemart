@@ -20,8 +20,6 @@ if (typeof Virtuemart === "undefined")
 			});
 
 			var index=0, i2=0, hitcount=0, runs=0;
-			console.log('cvFind on each .cvselection ',event.data);
-
 			//to ensure that an url is set, set the url of first product
 			jQuery(this).attr('url',event.data.variants[0][0]);
 			for	(runs = 0; runs < selection.length; index++) {
@@ -45,7 +43,7 @@ if (typeof Virtuemart === "undefined")
 					}
 				}
 				runs++;
-				console.log('Could not find product for selection '+runs);
+				//console.log('Could not find product for selection '+runs);
 			}
 			return false;
 		};

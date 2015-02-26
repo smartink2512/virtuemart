@@ -18,7 +18,7 @@ jQuery(function($) {
         if(Virtuemart.isUpdatingContent) return false;
         Virtuemart.isUpdatingContent = true;
         url += url.indexOf('&') == -1 ? '?tmpl=component' : '&tmpl=component';
-        console.log("UpdateContent URI "+url);
+        //console.log("UpdateContent URI "+url);
         $.ajax({
             url: url,
             dataType: 'html',
@@ -73,7 +73,7 @@ jQuery(function($) {
         jQuery('*[data-dynamic-update=1]').each(function(i, el) {
             var nodeName = el.nodeName;
             el = jQuery(el);
-            console.log('updateDynamicUpdateListeners '+nodeName, el);
+            //console.log('updateDynamicUpdateListeners '+nodeName, el);
             switch (nodeName) {
                 case 'A':
 					el[0].onclick = null;
