@@ -958,7 +958,7 @@ class calculationHelper {
 		$this->_cart->cartData['couponCode'] = $_code;
 
 		if($_value_is_total){
-			$this->_cart->cartData['couponDescr'] = $this->_currencyDisplay->getFormattedCurrency($_data->coupon_value);
+			$this->_cart->cartData['couponDescr'] = $this->_currencyDisplay->priceDisplay($_data->coupon_value);
 		} else {
 			$this->_cart->cartData['couponDescr'] = round($_data->coupon_value * 100) . ' %';
 		}
