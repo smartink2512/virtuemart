@@ -8,7 +8,7 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2010 - 2014 VirtueMart Team and the authors. All rights reserved.
+ * @copyright Copyright (c) 2010 - 2015 VirtueMart Team and the authors. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or

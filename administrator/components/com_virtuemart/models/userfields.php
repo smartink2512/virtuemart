@@ -752,10 +752,10 @@ class VirtueMartModelUserfields extends VmModel {
 
 				if(!empty($_userDataIn) and isset($_fld->default) and $_fld->default!=''){
 					if(is_array($_userDataIn)){
-						//if(!isset($_userDataIn[$_fld->name]))
+						if(!isset($_userDataIn[$_fld->name]))
 							$_userDataIn[$_fld->name] = $_fld->default;
 					} else {
-						//if(!isset($_userDataIn->{$_fld->name}))
+						if(!isset($_userDataIn->{$_fld->name}))
 							$_userDataIn->{$_fld->name} = $_fld->default;
 					}
 				}
