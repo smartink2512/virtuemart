@@ -130,27 +130,45 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			vmInfo('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY');
 		}
 
+		$cart->STsameAsBT = vRequest::getInt('STsameAsBT', vRequest::getInt('STsameAsBTjs',0));
+
+		$cart->selected_shipto = vRequest::getVar('shipto', -1);
+		$currentUser = JFactory::getUser();
+		if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
+			$cart->STsameAsBT = 1;
+			$cart->selected_shipto = 0;
+		} else {
+			if ($cart->selected_shipto > 0 ) {
+				$userModel = VmModel::getModel('user');
+				$stData = $userModel->getUserAddressList($currentUser->id, 'ST', $cart->selected_shipto);
+
+				if(isset($stData[0]) and is_object($stData[0])){
+					$stData = get_object_vars($stData[0]);
+					//if($cart->validateUserData('ST', $stData)>0){
+						$cart->ST = $stData;
+					//}
+				} else {
+					$cart->selected_shipto = 0;
+					$cart->ST = $cart->BT;
+				}
+			}
+		}
+
+		if(!empty($cart->STsameAsBT) or empty($cart->selected_shipto)){	//Guest
+			$cart->ST = $cart->BT;
+		}
+
+		$cart->prepareCartData();
+
 		$coupon_code = trim(vRequest::getString('coupon_code', ''));
 		if(!empty($coupon_code)){
-			$cart->prepareCartData();
+
 			$msg = $cart->setCouponCode($coupon_code);
 			if($msg) vmInfo($msg);
 		}
 
-		$cart->STsameAsBT = vRequest::getVar('STsameAsBT', vRequest::getVar('STsameAsBTjs',true));
-		$user = JFactory::getUser();
-		if(!$user->guest){
-			$cart->selected_shipto = vRequest::getVar('shipto', -1);
-			if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
-				$cart->STsameAsBT = 1;
-				$cart->selected_shipto = 0;
-			} else {
-				$cart->STsameAsBT = 0;
-			}
-		}
-
-		$cart->setShipmentMethod(true,!$html);
-		$cart->setPaymentMethod(true,!$html);
+		$cart->setShipmentMethod(true, !$html);
+		$cart->setPaymentMethod(true, !$html);
 		if ($html) {
 			$this->display();
 		} else {

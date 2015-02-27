@@ -793,9 +793,9 @@ class VirtueMartCart {
 	 * @param integer $shipment_id Shipment ID taken from the form data
 	 * @author Max Milbers
 	 */
-	public function setShipmentMethod($force=false, $redirect=true) {
+	public function setShipmentMethod($force=false, $redirect=true, $virtuemart_shipmentmethod_id = null) {
 
-		$virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $this->virtuemart_shipmentmethod_id);
+		if(!isset($virtuemart_shipmentmethod_id)) $virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $this->virtuemart_shipmentmethod_id);
 		if($this->virtuemart_shipmentmethod_id != $virtuemart_shipmentmethod_id or $force){
 			$this->_dataValidated = false;
 			//Now set the shipment ID into the cart
@@ -825,9 +825,9 @@ class VirtueMartCart {
 		}
 	}
 
-	public function setPaymentMethod($force=false, $redirect=true) {
+	public function setPaymentMethod($force=false, $redirect=true, $virtuemart_paymentmethod_id = null) {
 
-		$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id);
+		if(!isset($virtuemart_paymentmethod_id)) $virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id);
 		if($this->virtuemart_paymentmethod_id != $virtuemart_paymentmethod_id or $force){
 			$this->_dataValidated = false;
 			$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
@@ -927,9 +927,7 @@ class VirtueMartCart {
 
 		$currentUser = JFactory::getUser();
 		if(!empty($this->STsameAsBT) or empty($this->selected_shipto)){	//Guest
-			//if($this->_confirmDone or !$currentUser->guest){
 			$this->ST = $this->BT;
-
 		} else {
 			if ($this->selected_shipto >0 ) {
 				$userModel = VmModel::getModel('user');
@@ -1254,7 +1252,7 @@ class VirtueMartCart {
 					}
 
 					$this->cartfields[$name] = $tmp;
-					vmdebug('Store $this->cartfields[$name] '.$name.' '.$tmp);
+					//vmdebug('Store $this->cartfields[$name] '.$name.' '.$tmp);
 				}
 
 			}
@@ -1321,7 +1319,7 @@ class VirtueMartCart {
 					}
 					$address[$name] = $data[$prefix.$name];
 				} else {
-					vmdebug('Data not found for type '.$type.' and name '.$prefix.$name.' ');
+					//vmdebug('Data not found for type '.$type.' and name '.$prefix.$name.' ');
 				}
 			}
 		}

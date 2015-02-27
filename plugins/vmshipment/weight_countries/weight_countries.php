@@ -216,7 +216,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 		if($cart->STsameAsBT == 0){
 			$type = ($cart->ST == 0 ) ? 'BT' : 'ST';
-		}else{
+		} else {
 			$type = 'BT';
 		}
 

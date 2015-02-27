@@ -2,27 +2,27 @@
 var vmKeepAlive = function($) {
     jQuery(function(){
         var lastUpd = 0,kAlive = 0,minlps = 1,stopped = true;
-        var sessMSec = 60 * 1000 * sessMin;
+        var sessMSec = 60 * 1000 * parseFloat(sessMin);
         //console.log('keepAlive each '+sessMin+' minutes and maxlps '+maxlps);
         var tKeepAlive = function($) {
             if(stopped){
                 kAlive = 1;
-                //console.log('Start keep alive, kAlive '+kAlive);
+                //console.log('Start keep alive, kAlive '+kAlive+' '+parseFloat(sessMin) * 0.01 * 60);
                 var loop = setInterval(function(){
                     newTime = new Date().getTime();
-                    if(kAlive >= minlps && newTime - lastUpd > sessMSec * (parseFloat(maxlps) + 0.90) ){
+                    if(kAlive >= minlps && newTime - lastUpd > sessMSec * (parseFloat(maxlps) + 0.99) ){
                         //console.log('Stop keep alive '+kAlive);
                         stopped = true;
                         clearInterval(loop);
                     }else{
+                        //console.log('keep alive '+kAlive+' newTime '+((newTime-lastUpd)/60000)+' < '+(sessMin*(parseFloat(maxlps) + 0.99)));
                         kAlive++;
-                        //console.log('keep alive '+kAlive+' newTime '+((newTime-lastUpd)/60000)+' < '+(sessMin*(parseFloat(maxlps) + 0.95)));
                         jQuery.ajax({
                             url: vmAliveUrl,
                             cache: false
                         });
                     }
-                }, sessMSec * 0.90); //mins * 60 * 1000
+                }, sessMSec * 0.99); //mins * 60 * 1000
                 stopped = false;
             }
         };
