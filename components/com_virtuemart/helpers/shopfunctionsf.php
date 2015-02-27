@@ -356,6 +356,41 @@ class shopFunctionsF {
 		return $session->get( 'vmlastvisitedproductids', array(), 'vm' );
 	}
 
+	static public function sortLoadProductCustomsStockInd(&$products,$pModel){
+
+		$customfieldsModel = VmModel::getModel ('Customfields');
+		if (!class_exists ('vmCustomPlugin')) {
+			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+		}
+		foreach($products as $i => $productItem){
+
+			if (!empty($productItem->customfields)) {
+				$product = clone($productItem);
+				$customfields = array();
+				foreach($productItem->customfields as $cu){
+					$customfields[] = clone ($cu);
+				}
+
+				$customfieldsSorted = array();
+				$customfieldsModel -> displayProductCustomfieldFE ($product, $customfields);
+				$product->stock = $pModel->getStockIndicator($product);
+				foreach ($customfields as $k => $custom) {
+					if (!empty($custom->layout_pos)  ) {
+						$customfieldsSorted[$custom->layout_pos][] = $custom;
+						unset($customfields[$k]);
+					}
+				}
+				$customfieldsSorted['normal'] = $customfields;
+				$product->customfieldsSorted = $customfieldsSorted;
+				unset($product->customfields);
+				$products[$i] = $product;
+			} else {
+				$productItem->stock = $pModel->getStockIndicator($productItem);
+				$products[$i] = $productItem;
+			}
+		}
+	}
+
 	static public function calculateProductRowsHeights($products,$currency,$products_per_row){
 
 		$col = 1;

@@ -926,11 +926,10 @@ class VirtueMartCart {
 		}
 
 		$currentUser = JFactory::getUser();
-		if(!empty($this->STsameAsBT)){
-			if($this->_confirmDone){
-				$this->ST = $this->BT;	//This for BC
-			} else {
-			}
+		if(!empty($this->STsameAsBT) or empty($this->selected_shipto)){	//Guest
+			//if($this->_confirmDone or !$currentUser->guest){
+			$this->ST = $this->BT;
+
 		} else {
 			if ($this->selected_shipto >0 ) {
 				$userModel = VmModel::getModel('user');
@@ -943,9 +942,10 @@ class VirtueMartCart {
 					}
 				} else {
 					$this->selected_shipto = 0;
+					$this->ST = $this->BT;
 				}
-
 			}
+
 			//Only when there is an ST data, test if all necessary fields are filled
 			$validUserDataST = self::validateUserData('ST');
 			if ($validUserDataST!==true) {

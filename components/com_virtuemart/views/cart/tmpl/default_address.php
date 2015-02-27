@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 				echo $this->cart->lists['shipTo'];
 			}
 
-			if(!empty($this->cart->ST) and  !empty($this->cart->STaddress['fields'])){ ?>
+			if(empty($this->cart->STsameAsBT) and !empty($this->cart->ST) and !empty($this->cart->STaddress['fields'])){ ?>
 				<div id="output-shipto-display">
 					<?php
 					foreach ($this->cart->STaddress['fields'] as $item) {

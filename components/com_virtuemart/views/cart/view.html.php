@@ -524,6 +524,11 @@ class VirtueMartViewCart extends VmView {
 
 	static public function addCheckRequiredJs(){
 		$j='jQuery(document).ready(function(){
+
+    jQuery(".output-shipto").find(":radio").change(function(){
+        var form = jQuery("#checkoutFormSubmit");
+		document.checkoutForm.submit();
+    });
     jQuery(".required").change(function(){
     	var count = 0;
     	var hit = 0;
