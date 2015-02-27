@@ -130,14 +130,16 @@ class VirtueMartViewVirtueMart extends VmView {
 					if(!$showCustoms){
 						foreach($this->products as $pType => $productSeries){
 							foreach($productSeries as $i => $productItem){
-								$productItem->stock = $productModel->getStockIndicator($productItem);
+								$this->products[$pType][$i] = $productModel->getStockIndicator($productItem);
 							}
 						}
 					} else {
 						if (!class_exists ('vmCustomPlugin')) {
 							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 						}
-						shopFunctionsF::sortLoadProductCustomsStockInd($this->products,$productModel);
+						foreach($this->products as $pType => $productSeries) {
+							shopFunctionsF::sortLoadProductCustomsStockInd($this->products[$pType],$productModel);
+						}
 					}
 				}
 			}
