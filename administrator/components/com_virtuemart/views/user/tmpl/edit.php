@@ -64,28 +64,4 @@ AdminUIHelper::buildTabs ( $this, $tabarray,'vm-user');
 </form>
 
 <?php vmJsApi::vmValidator($this->userDetails->JUser->guest);
-/*
-<script language="javascript">
-function myValidator(f) {
-	jQuery().event.preventDefault();
-	if (f.task.value=='cancel') {
-		return true;
-	}
-	if (document.formvalidator.isValid(f)) {
-		//f.submit();
-		console.log('myValidator is valid');
-		//return true;
-	} else {
-		var msg = '<div><dl id="system-message" style="display: block;"><dt class="message">Message</dt><dd class="message message"><ul><li>';
-		 msg += "<?php echo vmText::sprintf("COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_OTHER_TAB",vmText::_("COM_VIRTUEMART_SHOPPER_FORM_LBL") ) ?>";
-		 msg += '</li></ul></dd></dl><div>';
-		jQuery('#element-box').before(msg);
-	}
-	//Funny, works for chrome etc, but throws error on FF, but the error stops the script, so the effect is the same
-	console.log('myValidator is not valid');
-    jQuery().event.preventDefault();
-    return false;
-}
-</script>*/
-?>
 <?php AdminUIHelper::endAdminArea(); ?>

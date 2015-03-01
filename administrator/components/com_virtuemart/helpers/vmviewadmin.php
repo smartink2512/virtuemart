@@ -144,21 +144,23 @@ class VmViewAdmin extends JViewLegacy {
 	}
 
 	function addJsJoomlaSubmitButton($validate=false){
-		static $done=false;
-		if(!$validate){
-			$form = '
-		form.submit();
-		return false;';
-		} else {
-			$form = 'if(myValidator(form,false)){
 
-			form.submit();
-			return false;
+		static $done=array(false,false);
+		if(!$done[$validate]){
+			if($validate){
+				vmJsApi::vmValidator(true);
+				$form = 'if(myValidator(form,false)){
+				form.submit();
 			}';
+			} else {
+				$form = 'Joomla.submitform(a,form)';
+			}
+
 		}
-		if(!$done){
-			$j = "
+
+		$j = "
 	Joomla.submitbutton=function(a){
+
 		var options = { path: '/', expires: 2}
 		if (a == 'apply') {
 			var idx = jQuery('#tabs li.current').index();
@@ -169,11 +171,37 @@ class VmViewAdmin extends JViewLegacy {
 		jQuery( '#media-dialog' ).remove();
 		form = document.getElementById('adminForm');
 		form.task.value = a;
+		//form = jQuery('#adminForm');
+		//form.find(name='task').val(a);
+
 		".$form."
-	};" ;
-			vmJsApi::addJScript('submit', $j);
-			$done=true;
-		}
+		console.log('my form',form);
+		//alert('Send form');
+
+		return false;
+	};
+
+		links = jQuery('a[onclick].toolbar');
+
+		links.each(function(){
+			// Cache event
+			var existing_event = this.onclick;
+
+			// Remove the event from the link
+			//this.onclick = null;
+			console.log('Disabled toolbar');
+			// Add a check in for the class disabled
+			jQuery(this).click(function(e){
+				console.log('click');
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				//existing_event;
+			});
+
+		});";
+
+		vmJsApi::addJScript('submit', $j,false, true);
+		$done[$validate]=true;
 	}
 
 	/**
@@ -238,7 +266,7 @@ class VmViewAdmin extends JViewLegacy {
 		self::showHelp();
 		self::showACLPref($view);
 
-		if($view == 'user') $validate = true; else $validate = false;
+		if($view == 'user' or $view == 'product') $validate = true; else $validate = false;
 		$this->addJsJoomlaSubmitButton($validate);
 
         $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );

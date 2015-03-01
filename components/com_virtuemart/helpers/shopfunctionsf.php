@@ -612,7 +612,7 @@ class shopFunctionsF {
 		$subject = (isset($view->subject)) ? $view->subject : vmText::_( 'COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT' );
 		$mailer = JFactory::getMailer();
 		$mailer->addRecipient( $recipient );
-		$mailer->setSubject(  html_entity_decode( $subject) );
+		$mailer->setSubject(  html_entity_decode( $subject , ENT_COMPAT, 'UTF-8') );
 		$mailer->isHTML( VmConfig::get( 'order_mail_html', TRUE ) );
 		$mailer->setBody( $body );
 

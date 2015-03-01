@@ -499,6 +499,9 @@ class vmJsApi{
 
 	static public function vmValidator ($guest){
 
+		// Implement Joomla's form validation
+		JHtml::_ ('behavior.formvalidation');
+
 		$regfields = array('username', 'name');
 		if($guest){
 			$regfields[] = 'password';

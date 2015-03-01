@@ -215,9 +215,9 @@ class VirtueMartViewProductdetails extends VmView {
 			// Set the titles
 			// $document->setTitle should be after the additem pathway
 			if ($product->customtitle) {
-				$document->setTitle(strip_tags($product->customtitle));
+				$document->setTitle(strip_tags(html_entity_decode($product->customtitle,ENT_QUOTES)));
 			} else {
-				$document->setTitle(strip_tags(($category->category_name ? ($category->category_name . ' : ') : '') . $product->product_name));
+				$document->setTitle(strip_tags(html_entity_decode(($category->category_name ? ($category->category_name . ' : ') : '') . $product->product_name,ENT_QUOTES)));
 			}
 
 			$this->allowReview = $ratingModel->allowReview($product->virtuemart_product_id);

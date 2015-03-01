@@ -41,7 +41,7 @@ $i=0;
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?>
 			</td>
 			<td>
-				<input type="text" class="inputbox"  name="product_name" id="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
+				<input class="required" type="text" class="inputbox"  name="product_name" id="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
 			</td>
 			<td colspan="2">
 				<label><?php echo VmHTML::checkbox('published', $this->product->published); ?><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED') ?></label>
