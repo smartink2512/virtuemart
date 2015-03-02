@@ -38,7 +38,8 @@ if($this->print){
 		echo $this->loadTemplate('items');
 		?>
 		</div>
-		<?php	echo $this->vendor->vendor_letter_footer_html; ?>
+		<?php if(!class_exists('VirtuemartViewInvoice')) require_once(VMPATH_SITE .DS. 'views'.DS.'invoice'.DS.'view.html.php');
+		echo VirtuemartViewInvoice::replaceVendorFields($this->vendor->vendor_letter_footer_html, $this->vendor); ?>
 		</body>
 		<?php
 } else {

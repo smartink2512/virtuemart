@@ -37,7 +37,7 @@ if ($this->headFooter) {
     ?>
 <style><?php echo $this->vendor->vendor_letter_css; ?></style>
 <div class="vendor-details-view">
-<?php echo ($this->format=="html")?$this->replaceVendorFields($this->vendor->vendor_letter_header_html, $this->vendor):$this->vendor->vendor_letter_header_html; ?>
+<?php echo $this->replaceVendorFields($this->vendor->vendor_letter_header_html, $this->vendor); ?> muh
 </div>
 
 <div class="vendor-description">
@@ -89,7 +89,7 @@ if ($this->print) {
 <br clear="all"/><br/>
     <?php    
 if ($this->headFooter) {
-    echo ($this->format=="html")?$this->replaceVendorFields($this->vendor->vendor_letter_footer_html, $this->vendor):$this->vendor->vendor_letter_footer_html;
+    echo $this->replaceVendorFields($this->vendor->vendor_letter_footer_html, $this->vendor);
 }
 
 if ($this->vendor->vendor_letter_add_tos) {?>
