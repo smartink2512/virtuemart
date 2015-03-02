@@ -356,7 +356,6 @@ class VirtuemartViewUser extends VmView {
     }
 
 	public function vmValidator (){
-
 		vmJsApi::vmValidator($this->userDetails->JUser->guest);
 	}
 

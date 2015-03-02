@@ -35,7 +35,7 @@ label.invalid {
 }
 </style>
 
-<?php $this->vmValidator(); ?>
+<?php vmJsApi::vmValidator(); ?>
 
 <h1><?php echo $this->page_title ?></h1>
 <?php echo shopFunctionsF::getLoginForm(false); ?>

@@ -63,5 +63,5 @@ AdminUIHelper::buildTabs ( $this, $tabarray,'vm-user');
 <?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
-<?php vmJsApi::vmValidator($this->userDetails->JUser->guest);
+<?php vmJsApi::vmValidator($this->userDetails->JUser->guest); ?>
 <?php AdminUIHelper::endAdminArea(); ?>

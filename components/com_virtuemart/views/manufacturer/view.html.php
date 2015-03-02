@@ -57,7 +57,14 @@ class VirtuemartViewManufacturer extends VmView {
 			}
 
 			$document->setTitle(vmText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS').' '.strip_tags($manufacturer->mf_name));
-//added so that the canonical points to page with visible products thx to P2Peter
+			//added so that the canonical points to page with visible products thx to P2Peter
+			// remove joomla canonical before adding it
+			foreach ( $document->_links as $k => $array ) {
+				if ( $array['relation'] == 'canonical' ) {
+					unset($document->_links[$k]);
+					break;
+				}
+			}
 			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id, FALSE) , 'canonical', 'rel', '' );
 			$this->assignRef('manufacturerImage', $manufacturerImage);
 			$this->assignRef('manufacturer',	$manufacturer);

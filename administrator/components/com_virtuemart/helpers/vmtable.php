@@ -1331,8 +1331,9 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
 			//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
 			//vmdebug('my slugName '.$slugName,$this->$slugName);
-			$this->$slugName = str_replace('-', ' ', $this->$slugName);
 
+			$this->$slugName = str_replace('-', ' ', $this->$slugName);
+			$this->$slugName = html_entity_decode($this->$slugName,ENT_QUOTES);
 			//$config =& JFactory::getConfig();
 			//$transliterate = $config->get('unicodeslugs');
 			$unicodeslugs = VmConfig::get('transliterateSlugs',false);
@@ -1389,7 +1390,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		}
 
 
-		if (isset($this->virtuemart_vendor_id) ) {
+		if (property_exists($this,'virtuemart_vendor_id') ) {
 
 			if(empty($this->virtuemart_vendor_id) and $this->_pkey=='virtuemart_vendor_id'){
 				$this->virtuemart_vendor_id = $this->_pvalue;
@@ -1413,13 +1414,14 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
 					if (!isset(self::$_cache[md5($q)])) {
 						$this->_db->setQuery($q);
-						$virtuemart_vendor_id = $this->_db->loadResult();
+						self::$_cache[md5($q)] = $virtuemart_vendor_id = $this->_db->loadResult();
 					} else $virtuemart_vendor_id = self::$_cache[md5($q)];
 				} else {
 					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
 					if (!isset(self::$_cache[md5($q)])) {
 						$this->_db->setQuery($q);
 						$vmuser = $this->_db->loadRow();
+						self::$_cache[md5($q)] = $vmuser;
 					} else $vmuser = self::$_cache[md5($q)];
 
 					if ($vmuser and count($vmuser) === 2) {
@@ -1469,8 +1471,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 					}
 					else if (empty($virtuemart_vendor_id) and empty($this->virtuemart_vendor_id)) {
 						if(strpos($this->_tbl,'virtuemart_vendors')===FALSE and strpos($this->_tbl,'virtuemart_vmusers')===FALSE){
-							$this->virtuemart_vendor_id = 1;
-							vmdebug('Fallback to '.$this->virtuemart_vendor_id.': We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
+							$this->virtuemart_vendor_id = $loggedVendorId;
+							vmdebug('Fallback to '.$this->virtuemart_vendor_id.' for $loggedVendorId '.$loggedVendorId.': We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
 						}
 					}
 				}

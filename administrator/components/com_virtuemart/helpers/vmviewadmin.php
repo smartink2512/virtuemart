@@ -148,7 +148,7 @@ class VmViewAdmin extends JViewLegacy {
 		static $done=array(false,false);
 		if(!$done[$validate]){
 			if($validate){
-				vmJsApi::vmValidator(true);
+				vmJsApi::vmValidator();
 				$form = 'if(myValidator(form,false)){
 				form.submit();
 			}';

@@ -200,6 +200,13 @@ class VirtueMartViewProductdetails extends VmView {
 				$format = vRequest::getCmd('format', 'html');
 			}
 			if ($format == 'html') {
+				// remove joomla canonical before adding it
+				foreach ( $document->_links as $k => $array ) {
+					if ( $array['relation'] == 'canonical' ) {
+						unset($document->_links[$k]);
+						break;
+					}
+				}
 				// Set Canonic link
 				if($isCustomVariant !==false and !empty($isCustomVariant->usecanonical) and !empty($product->product_parent_id)){
 					$parent = $product_model ->getProduct($product->product_parent_id);

@@ -21,7 +21,7 @@ defined('_JEXEC') or die('');
 class VmTemplate {
 
 	static $_templates = array();
-	static $_home = false;
+	static $_home = array(false,false);
 
 
 	public static function loadVmTemplateStyle() {
@@ -47,12 +47,16 @@ class VmTemplate {
 		}
 	}
 
-	public static function getDefaultTemplate(){
+	/**
+	 * @param int $client_id FE is 0, BE is 1
+	 * @return bool
+	 */
+	public static function getDefaultTemplate($client_id = 0){
 
-		if(self::$_home) return self::$_home;
+		if(self::$_home[$client_id]) return self::$_home[$client_id];
 		$app = JFactory::getApplication();
 
-		if($app->isSite()){
+		if(!$client_id and $app->isSite()){
 			$template = $app->getTemplate(true);
 			$template = (array) $template;
 		} else {
@@ -62,7 +66,7 @@ class VmTemplate {
 			ON e.element=s.template
 			AND e.type="template"
 			AND e.client_id=s.client_id
-			WHERE s.client_id = 0
+			WHERE s.client_id = '.$client_id.'
 			AND e.enabled = 1 AND s.home = 1';
 			$db = JFactory::getDbo();
 			$db->setQuery( $q );
@@ -73,7 +77,7 @@ class VmTemplate {
 			vmError( 'getDefaultTemplate failed ' );
 			return false;
 		} else {
-			self::$_home = $template;
+			self::$_home[$client_id] = $template;
 			self::$_templates[$template['id']] = $template;
 			return self::$_templates[$template['id']];
 		}

@@ -327,6 +327,14 @@ class VirtuemartViewCategory extends VmView {
 		}
 		if ($format == 'html') {
 
+			// remove joomla canonical before adding it
+			foreach ( $document->_links as $k => $array ) {
+				if ( $array['relation'] == 'canonical' ) {
+					unset($document->_links[$k]);
+					break;
+				}
+			}
+
 			$link = 'index.php?option=com_virtuemart&view=category';
 			if($categoryId!==-1){
 				$link .= '&virtuemart_category_id='.$categoryId;

@@ -423,8 +423,8 @@ class VirtueMartViewCart extends VmView {
 		$superVendor = VmConfig::isSuperVendor($adminID);
 
 		$result = false;
-		if($this->allowChangeShopper ){
-			if(!$superVendor) $superVendor = 1;
+		if($this->allowChangeShopper and $superVendor){
+			//if(!$superVendor) $superVendor = 1;
 			$db = JFactory::getDbo();
 			$search = vRequest::getUword('usersearch','');
 			if(!empty($search)){
@@ -440,13 +440,17 @@ class VirtueMartViewCart extends VmView {
 				$search = ' WHERE (vu.virtuemart_vendor_id = '.$superVendor.' ';
 			}
 
-			$search .=  ' OR (vu.virtuemart_vendor_id) IS NULL)';
+			if($superVendor==1){
+				$search .=  ' OR (vu.virtuemart_vendor_id) IS NULL)';
+			} else {
+				$search .=  ' )';
+			}
 			$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
 
 			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
 			$db->setQuery($q);
 			$result = $db->loadObjectList();
-
+//vmdebug('user list',$q);
 			foreach($result as $k => $user) {
 				$result[$k]->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
 			}
