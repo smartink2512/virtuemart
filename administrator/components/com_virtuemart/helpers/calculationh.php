@@ -960,7 +960,7 @@ class calculationHelper {
 		if($_value_is_total){
 			$this->_cart->cartData['couponDescr'] = $this->_currencyDisplay->priceDisplay($_data->coupon_value);
 		} else {
-			$this->_cart->cartData['couponDescr'] = round($_data->coupon_value * 100) . ' %';
+			$this->_cart->cartData['couponDescr'] = rtrim(rtrim($_data->coupon_value,'0'),'.') . ' %';
 		}
 
 		$this->_cart->cartPrices['salesPriceCoupon'] = ($_value_is_total ? $_data->coupon_value * -1 : ($this->_cart->cartPrices['salesPrice'] * ($_data->coupon_value / 100)) * -1);
