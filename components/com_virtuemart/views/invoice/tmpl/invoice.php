@@ -37,7 +37,7 @@ if ($this->headFooter) {
     ?>
 <style><?php echo $this->vendor->vendor_letter_css; ?></style>
 <div class="vendor-details-view">
-<?php echo $this->replaceVendorFields($this->vendor->vendor_letter_header_html, $this->vendor); ?> muh
+<?php echo $this->replaceVendorFields($this->vendor->vendor_letter_header_html, $this->vendor); ?>
 </div>
 
 <div class="vendor-description">

@@ -58,9 +58,12 @@ class VmViewAdmin extends JViewLegacy {
 			or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
 
 			if(JFactory::getApplication()->isSite()){
-				if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
-				$template = VmTemplate::getDefaultTemplate();
-				$this->addTemplatePath (VMPATH_ROOT . DS. 'templates' . DS . $template['template'] . DS. 'html' . DS . 'com_virtuemart' .DS . $this->_name);
+				$unoverridable = array('category','manufacturer','user');	//This views have the same name and must not be overridable
+				if(!in_array($view,$unoverridable)){
+					if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+					$template = VmTemplate::getDefaultTemplate();
+					$this->addTemplatePath (VMPATH_ROOT . DS. 'templates' . DS . $template['template'] . DS. 'html' . DS . 'com_virtuemart' .DS . $this->_name);
+				}
 			}
 
 			$result = $this->loadTemplate($tpl);

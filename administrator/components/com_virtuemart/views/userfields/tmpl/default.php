@@ -101,7 +101,7 @@ AdminUIHelper::startAdminArea($this);
 			$required = $this->toggle($row->required, $i, 'toggle.required','tick.png','publish_x.png',$coreField );
 //			$published = JHtml::_('grid.published', $row, $i);
 			$published = $this->toggle($row->published, $i, 'toggle.published','tick.png','publish_x.png', $coreField);
-			$registration = $this->toggle($row->cart, $i, 'toggle.registration','tick.png','publish_x.png', $coreField);
+			$registration = $this->toggle($row->cart, $i, 'toggle.cart','tick.png','publish_x.png', $coreField);
 			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment','tick.png','publish_x.png', $coreField);
 			$account = $this->toggle($row->account, $i, 'toggle.account','tick.png','publish_x.png', $coreField);
 			$ordering = ($this->lists['filter_order'] == 'ordering');

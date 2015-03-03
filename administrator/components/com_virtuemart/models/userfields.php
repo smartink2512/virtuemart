@@ -51,7 +51,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$this->setMainTable('userfields');
 
 		$this->setToggleName('required');
-		$this->setToggleName('registration');
+		$this->setToggleName('cart');
 		$this->setToggleName('shipment');
 		$this->setToggleName('account');
 		// Instantiate the Helper class
