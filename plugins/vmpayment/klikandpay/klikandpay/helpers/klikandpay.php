@@ -149,7 +149,7 @@ class  KlikandpayHelperKlikandpay {
 	 * @param $order
 	 * @return mixed
 	 */
-	function updateOrderHistory($klikandpay_data, $order, $payments) {
+	function getOrderHistory($klikandpay_data, $order, $payments) {
 		$amountInCurrency = vmPSPlugin::getAmountInCurrency($klikandpay_data['MONTANTXKP'], $klikandpay_data['DEVISEXKP']);
 		$order_history['comments'] = vmText::sprintf('VMPAYMENT_KLIKANDPAY_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order['details']['BT']->order_number);
 		$order_history['customer_notified'] = true;
