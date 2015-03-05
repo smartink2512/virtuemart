@@ -932,13 +932,11 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * update the plugin cart_prices
-	 *
-	 * @author Valérie Isaksen
-	 *
-	 * @param $cart_prices: $cart_prices['salesPricePayment'] and $cart_prices['paymentTax'] updated. Displayed in the cart.
-	 * @param $value :   fee
-	 * @param $tax_id :  tax id
+	 * @param VirtueMartCart $cart
+	 * @param $cart_prices
+	 * @param $method
+	 * @param bool $progressive
+	 * @return mixed
 	 */
 
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method, $progressive = true) {
@@ -1175,30 +1173,10 @@ abstract class vmPSPlugin extends vmPlugin {
 		$name = vRequest::getHash ($config['session_name']);
 		$options['name'] = $name;
 		$sessionStorage = JSessionStorage::getInstance ($handler, $options);
-		$delete=false;
-		// we remove the session for unsecure unserialized PHP version
-		$phpVersion = phpversion();
-		if(version_compare ( $phpVersion , '5.4.0') >= 0){
-			if(version_compare ( $phpVersion , '5.4.38') == -1){
-				$delete = true;
-			} else if(version_compare ( $phpVersion , '5.5.0') >= 0) {
-				if(version_compare( $phpVersion, '5.5.22' ) == -1) {
-					$delete = true;
-				} else if(version_compare( $phpVersion, '5.6.0' )>=0) {
-					if(version_compare( $phpVersion, '5.6.6' ) == -1) {
-						$delete = true;
-					}
-				}
-			}
-		}
-
 
 		// The session store MUST be registered.
 		$sessionStorage->register ();
-		if ($delete) {
-			$sessionStorage->write ($session_id, NULL);
-			return;
-		}
+
 		// reads directly the session from the storage
 		$sessionStored = $sessionStorage->read ($session_id);
 		if (empty($sessionStored)) {
