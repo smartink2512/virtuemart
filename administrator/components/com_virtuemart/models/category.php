@@ -125,8 +125,8 @@ class VirtueMartModelCategory extends VmModel {
 			$selectedOrdering = 'category_name';
 		}
 
-		if(trim($this->_selectedOrdering) == 'c.ordering'){
-			$this->_selectedOrdering = 'c.ordering, category_name';
+		if(trim($selectedOrdering) == 'c.ordering'){
+			$selectedOrdering = 'c.ordering, category_name';
 		}
 
 		if($orderDir===null){

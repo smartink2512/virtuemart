@@ -114,11 +114,14 @@ class VirtueMartViewVirtueMart extends VmView {
 			
 			$recent_products_rows = VmConfig::get('recent_products_rows');
 			$recent_products_count = $products_per_row * $recent_products_rows;
-			$recent_products = $productModel->getProductListing('recent');
+
 			
-			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1) and !empty($recent_products)) {
-				$this->products['recent']= $productModel->getProductListing('recent', $recent_products_count);
-				$productModel->addImages($this->products['recent'],1);
+			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1) ) {
+				$recent_products = $productModel->getProductListing('recent');
+				if(!empty($recent_products)){
+					$this->products['recent']= $productModel->getProductListing('recent', $recent_products_count);
+					$productModel->addImages($this->products['recent'],1);
+				}
 			}
 
 			if ($this->products) {
@@ -130,7 +133,7 @@ class VirtueMartViewVirtueMart extends VmView {
 					if(!$showCustoms){
 						foreach($this->products as $pType => $productSeries){
 							foreach($productSeries as $i => $productItem){
-								$this->products[$pType][$i] = $productModel->getStockIndicator($productItem);
+								$this->products[$pType][$i]->stock = $productModel->getStockIndicator($productItem);
 							}
 						}
 					} else {

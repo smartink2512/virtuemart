@@ -926,7 +926,7 @@ class VirtueMartCart {
 		}
 
 		$currentUser = JFactory::getUser();
-		if(!empty($this->STsameAsBT) or empty($this->selected_shipto)){	//Guest
+		if(!empty($this->STsameAsBT) or (!$currentUser->guest and empty($this->selected_shipto))){	//Guest
 			$this->ST = $this->BT;
 		} else {
 			if ($this->selected_shipto >0 ) {

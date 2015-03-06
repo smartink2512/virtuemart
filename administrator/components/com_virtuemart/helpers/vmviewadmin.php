@@ -152,11 +152,13 @@ class VmViewAdmin extends JViewLegacy {
 		if(!$done[$validate]){
 			if($validate){
 				vmJsApi::vmValidator();
-				$form = 'if(myValidator(form,false)){
+				$form = "if( (a=='apply' || a=='save') && myValidator(form,false)){
 				form.submit();
-			}';
+			} else if(a!='apply' && a!='save'){
+				form.submit();
+			}";
 			} else {
-				$form = 'Joomla.submitform(a,form)';
+				$form = "form.submit();";
 			}
 
 		}
@@ -174,35 +176,20 @@ class VmViewAdmin extends JViewLegacy {
 		jQuery( '#media-dialog' ).remove();
 		form = document.getElementById('adminForm');
 		form.task.value = a;
-		//form = jQuery('#adminForm');
-		//form.find(name='task').val(a);
-
 		".$form."
-		console.log('my form',form);
-		//alert('Send form');
-
 		return false;
 	};
 
 		links = jQuery('a[onclick].toolbar');
 
 		links.each(function(){
-			// Cache event
-			var existing_event = this.onclick;
-
-			// Remove the event from the link
-			//this.onclick = null;
-			console.log('Disabled toolbar');
-			// Add a check in for the class disabled
+			var onClick = new String(this.onclick);
 			jQuery(this).click(function(e){
-				console.log('click');
+				console.log('click ');
 				e.stopImmediatePropagation();
 				e.preventDefault();
-				//existing_event;
 			});
-
 		});";
-
 		vmJsApi::addJScript('submit', $j,false, true);
 		$done[$validate]=true;
 	}

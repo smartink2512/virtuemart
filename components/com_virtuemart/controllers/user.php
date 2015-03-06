@@ -72,6 +72,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = true;
 		$cart->setCartIntoSession();
+
 		// Display it all
 		$view->display();
 
@@ -136,6 +137,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$userModel = VmModel::getModel('user');
 		$currentUser = JFactory::getUser();
 
+		if(empty($data['address_type'])){
+			$data['address_type'] = vRequest::getCmd('addrtype','BT');
+		}
 
 		if($cartObj){
 			if($cartObj->_fromCart or $cartObj->getInCheckOut()){
@@ -152,11 +156,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 				}
 			}
 		}
-
-		if(empty($data['address_type'])){
-			$data['address_type'] = vRequest::getCmd('addrtype','BT');
-		}
-
 
 		if(isset($data['vendor_accepted_currencies'])){
 			// Store multiple selectlist entries as a ; separated string

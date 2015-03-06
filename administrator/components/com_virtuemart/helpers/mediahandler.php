@@ -555,9 +555,24 @@ class VmMediaHandler {
 
 		if ($withDesc) $desc='<span class="vm-img-desc">'.$withDesc.'</span>';
 		else $desc='';
-		// 			vmdebug('displayIt $file_alt'.$file_alt,$imageArgs);
+		$root='';
+		if($absUrl){
+			$root = JURI::root(false);
+		} else {
+			$root = JURI::root(true).'/';
+		}
+
+		$args = '';
+		if(is_array($imageArgs)){
+			foreach($imageArgs as $k=>$v){
+				$args .= ' '.$k.'="'.$v.'" ';
+			}
+		} else {
+			$args = $imageArgs;
+		}
+
 		if($lightbox){
-			$image = JHtml::image($file_url, $file_alt, $imageArgs);
+			$image = '<img src="' . $root.$file_url . '" alt="' . $file_alt . '" ' . $args . ' />';//JHtml::image($file_url, $file_alt, $imageArgs);
 			if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
 			if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) and substr( $this->file_url, 0, 4) != "http") $href = JURI::root() .$this->file_url ;
 			else $href = $file_url ;
@@ -570,9 +585,8 @@ class VmMediaHandler {
 
 			return $lightboxImage;
 		} else {
-			$root='';
-			if($absUrl) $root = JURI::root();
-			return JHtml::image($root.$file_url, $file_alt, $imageArgs).$desc;
+
+			return '<img src="' . $root.$file_url . '" alt="' . $file_alt . '" ' . $args . ' />'.$desc;
 		}
 	}
 
@@ -1004,8 +1018,8 @@ class VmMediaHandler {
 			$image->msg =  'OK';
 			return  '<div  class="vm_thumb_image"><input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]">
 			<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
-		<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >
-		'.JHtml::image($image->file_url_thumb, $image->file_title, '').'
+		<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'" href="'.JURI::root(true).'/'.$image->file_url.'" >
+		<img src="' . JURI::root(true).'/'.$image->file_url_thumb . '" alt="' . $image->file_title . '"  />
 		</a><div class="vmicon vmicon-16-remove" title="'.vmText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.vmText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
 		} else {
 			$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;

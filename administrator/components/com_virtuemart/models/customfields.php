@@ -32,7 +32,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	/** @var array For roundable values */
 	static $dimensions = array('product_length','product_width','product_height','product_weight');
-
+	static $useAbsUrls = false;
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -620,12 +620,38 @@ class VirtueMartModelCustomfields extends VmModel {
 			/* image */
 			case 'M':
 
-				$q = 'SELECT `virtuemart_media_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
+				if($field->is_list){
+
+					$html = $priceInput . '</td><td>is list ';
+
+					$values = explode (';', $field->custom_value);
+					foreach($values as $val){
+						$html .= $this->displayCustomMedia ($val,'product');
+					}
+					return $html;
+				} else {
+					if(empty($field->custom_value)){
+						$q = 'SELECT `virtuemart_media_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
 					AND (`virtuemart_vendor_id`= "' . $virtuemart_vendor_id . '" OR `shared` = "1")';
-				$db = JFactory::getDBO();
-				$db->setQuery ($q);
-				$options = $db->loadObjectList ();
-				return $priceInput . '</td><td>' . JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value);
+						$db = JFactory::getDBO();
+						$db->setQuery ($q);
+						$options = $db->loadObjectList ();
+					} else {
+						$values = explode (';', $field->custom_value);
+						$mM = VmModel::getModel('media');
+
+						foreach ($values as $key => $val) {
+							$mM->setId($val);
+							$file = $mM->getFile();
+
+							$tmp = array('value' => $val, 'text' => $file->file_name);
+							$options[] = (object)$tmp;
+						}
+					}
+
+					return $priceInput . '</td><td>' . JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value);
+				}
+
 				break;
 
 			case 'D':
@@ -1018,15 +1044,16 @@ class VirtueMartModelCustomfields extends VmModel {
 						if(!empty($customfield->is_input)){
 
 							$options = array();
+
 							$values = explode (';', $customfield->custom_value);
 
 							foreach ($values as $key => $val) {
 								if($type == 'M'){
-									$options[] = array('value' => $val, 'text' => $this->displayCustomMedia ($val,'product',$customfield->width,$customfield->height));
+									$tmp = array('value' => $val, 'text' => $this->displayCustomMedia ($val,'product',$customfield->width,$customfield->height));
+									$options[] = (object)$tmp;
 								} else {
 									$options[] = array('value' => $val, 'text' => vmText::_($val));
 								}
-
 							}
 
 							$currentValue = $customfield->customfield_value;
@@ -1210,7 +1237,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 						elseif (($productCustom->field_type == 'M')) {
 							$customFieldModel = VmModel::getModel('customfields');
-							$value = $customFieldModel->displayCustomMedia ($productCustom->customfield_value,'product',$productCustom->width,$productCustom->height);
+							$value = $customFieldModel->displayCustomMedia ($productCustom->customfield_value,'product',$productCustom->width,$productCustom->height,self::$useAbsUrls);
 						}
 						elseif (($productCustom->field_type == 'S')) {
 							if($productCustom->is_list and $productCustom->is_input){
@@ -1295,7 +1322,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		return self::displayProductCustomfieldSelected ($item, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
 	}
 
-	function displayCustomMedia ($media_id, $table = 'product', $width = false, $height = false, $absUrl = FALSE) {
+	function displayCustomMedia ($media_id, $table = 'product', $width = false, $height = false, $absUrl = false) {
 
 		if (!class_exists ('TableMedias'))
 			require(VMPATH_ADMIN . DS . 'tables' . DS . 'medias.php');

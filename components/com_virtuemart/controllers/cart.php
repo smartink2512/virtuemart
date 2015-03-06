@@ -134,7 +134,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart->selected_shipto = vRequest::getVar('shipto', -1);
 		$currentUser = JFactory::getUser();
-		if(empty($cart->selected_shipto) or $cart->selected_shipto<1){
+		if(empty($cart->selected_shipto) or (!$currentUser->guest and $cart->selected_shipto<1)){
 			$cart->STsameAsBT = 1;
 			$cart->selected_shipto = 0;
 		} else {
@@ -154,7 +154,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			}
 		}
 
-		if(!empty($cart->STsameAsBT) or empty($cart->selected_shipto)){	//Guest
+		if(!empty($cart->STsameAsBT) or(!$currentUser->guest and  empty($cart->selected_shipto))){	//Guest
 			$cart->ST = $cart->BT;
 		}
 

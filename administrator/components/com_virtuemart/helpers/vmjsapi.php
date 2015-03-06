@@ -433,7 +433,7 @@ class vmJsApi{
 			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::addJScript('chosen.jquery.min',false,false);
 				vmJsApi::jDynUpdate();
-				vmJsApi::addJScript('vmprices');
+				if(!$be)vmJsApi::addJScript('vmprices');
 				vmJsApi::css('chosen');
 
 				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
@@ -711,7 +711,7 @@ class vmJsApi{
 					altFormat: "yy-mm-dd"
 				});
 			});
-			$(".js-date-reset").click(function() {
+			jQuery(document).on( "click",".js-date-reset", function() {
 				$(this).prev("input").val("'.vmText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
 			});
 		});

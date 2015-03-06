@@ -43,7 +43,7 @@ class VirtueMartModelMedia extends VmModel {
 
 	/**
 	 * Gets a single media by virtuemart_media_id
-	 * .
+	 * @Todo must be adjusted to new pattern, using first param as id to get
 	 * @param string $type
 	 * @param string $mime mime type of file, use for exampel image
 	 * @return mediaobject
