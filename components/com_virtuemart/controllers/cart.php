@@ -166,9 +166,9 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$msg = $cart->setCouponCode($coupon_code);
 			if($msg) vmInfo($msg);
 		}
-
-		$cart->setShipmentMethod(true, !$html);
-		$cart->setPaymentMethod(true, !$html);
+		$force = VmConfig::get('oncheckout_opc',true);
+		$cart->setShipmentMethod($force, !$html);
+		$cart->setPaymentMethod($force, !$html);
 		if ($html) {
 			$this->display();
 		} else {
