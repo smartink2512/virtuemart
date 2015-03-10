@@ -48,7 +48,7 @@ class VmMediaHandler {
 
 		$this->theme_url = VmConfig::get('vm_themeurl',0);
 		if(empty($this->theme_url)){
-			$this->theme_url = JURI::root().'components/com_virtuemart/';
+			$this->theme_url = 'components/com_virtuemart/';
 		}
 	}
 

@@ -1768,7 +1768,7 @@ class VirtueMartModelProduct extends VmModel {
 						$toUnset = array();
 						if (!empty($old_price_ids) and count($old_price_ids) ) {
 							foreach($old_price_ids as $key => $oldprice){
-								if(array_search($pricesToStore['virtuemart_product_price_id'], $oldprice )){
+								if($pricesToStore['virtuemart_product_price_id'] == $oldprice['virtuemart_product_price_id'] ){
 									$pricesToStore = array_merge($oldprice,$pricesToStore);
 									$toUnset[] = $key;
 								}

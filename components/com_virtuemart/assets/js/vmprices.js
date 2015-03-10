@@ -125,11 +125,12 @@ Virtuemart.incrQuantity = (function(event) {
     var rParent = jQuery(this).parent().parent();
     quantity = rParent.find('input[name="quantity[]"]');
     virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
-    var Qtt = parseInt(quantity.val());
-    var maxQtt = parseInt(quantity.attr("max"));
     Ste = parseInt(quantity.attr("step"));
+    if (isNaN(Ste)) Ste = 1;
+    Qtt = parseInt(quantity.val());
     if (!isNaN(Qtt)) {
         quantity.val(Qtt + Ste);
+        maxQtt = parseInt(quantity.attr("max"));
         if(!isNaN(maxQtt) && quantity.val()>maxQtt){
             quantity.val(maxQtt);
         }
@@ -141,12 +142,12 @@ Virtuemart.decrQuantity = (function(event) {
     var rParent = jQuery(this).parent().parent();
     quantity = rParent.find('input[name="quantity[]"]');
     virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
-    var Qtt = parseInt(quantity.val());
-    var minQtt = parseInt(quantity.attr("init"));
     Ste = parseInt(quantity.attr("step"));
-
+    if (isNaN(Ste)) Ste = 1;
+    Qtt = parseInt(quantity.val());
     if (!isNaN(Qtt) && Qtt>Ste) {
         quantity.val(Qtt - Ste);
+        minQtt = parseInt(quantity.attr("init"));
         if(!isNaN(minQtt) && quantity.val()<minQtt){
             quantity.val(minQtt);
         }

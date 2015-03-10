@@ -175,11 +175,19 @@ class VirtuemartViewUser extends VmViewAdmin {
 
 			if (!empty($userDetails->user_is_vendor)) {
 
-				$vendorModel = VmModel::getModel('vendor');
-				$vendorModel->setId($userDetails->virtuemart_vendor_id);
 
 
-				$vendorModel->addImages($userDetails->vendor);
+				$vendorM = VmModel::getModel('vendor');
+				//if(empty($userDetails->vendor->vendor_currency)){
+					$vendorCurrency = $vendorM->getVendorCurrency(1);
+					if($vendorCurrency) {
+						$userDetails->vendor->vendor_currency = $vendorCurrency->vendor_currency;
+						vmdebug('No vendor currency given, fallback to main vendor',$userDetails->vendor->vendor_currency);
+					}
+				//}
+				$vendorM->setId($userDetails->virtuemart_vendor_id);
+
+				$vendorM->addImages($userDetails->vendor);
 				$this->assignRef('vendor', $userDetails->vendor);
 
 				$currencyModel = VmModel::getModel('currency');

@@ -475,7 +475,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	 * @param $src = path . DS . 'plugins' . DS . $group . DS . $element;
 	 *
 	 */
-	static function updateJoomlaUpdateServer( $type, $element, $dst, $group=''  ){
+	public function updateJoomlaUpdateServer( $type, $element, $dst, $group=''  ){
 
 		$db = JFactory::getDBO();
 		$extensionXmlFileName = self::getExtensionXmlFileName($type, $element, $dst );

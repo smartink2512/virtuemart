@@ -663,12 +663,25 @@ class PaypalHelperPaypal {
 	 * http://blackbe.lt/advanced-method-to-obtain-the-client-ip-in-php/
 	 * @return mixed
 	 */
+	/*function getRemoteIPAddress() {
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {  //check ip from share internet
+			$IP=$_SERVER['HTTP_CLIENT_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {  //to check ip is pass from proxy
+			$IP=$_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$IP=$_SERVER['REMOTE_ADDR'];
+		}
+		return $IP;
+	}*/
 
-
- 	function getRemoteIPAddress() {
-	    $ip_keys = array('REMOTE_ADDR', 'X_FORWARDED_FOR');
-
-	    foreach ($ip_keys as $key) {
+	function getRemoteIPAddress() {
+		$ip_keys = array('REMOTE_ADDR', 'X_FORWARDED_FOR');
+		$extra = VmConfig::get('revproxvar','');
+		if(!empty($extra)){
+			$extra = explode(',',$extra);
+			$ip_keys = array_merge($ip_keys,$extra);
+		}
+		foreach ($ip_keys as $key) {
 			if (array_key_exists($key, $_SERVER) === true) {
 				foreach (explode(',', $_SERVER[$key]) as $ip) {
 					// trim for safety measures

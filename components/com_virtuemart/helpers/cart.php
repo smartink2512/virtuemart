@@ -1314,7 +1314,7 @@ class VirtueMartCart {
 						//lets use instead
 						$value = JComponentHelper::filterText($value);
 						$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
-						$value = trim(str_replace('"', ' ', $value),"'") ;
+						$value =  str_replace(array('"',"\t","\n","\r","\0","\x0B"),' ',trim($value));
 						$data[$prefix.$name] = (string)preg_replace('#^\'#si','',$value);
 					}
 					$address[$name] = $data[$prefix.$name];
