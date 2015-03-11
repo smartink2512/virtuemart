@@ -130,32 +130,36 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			vmInfo('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY');
 		}
 
-		$cart->STsameAsBT = vRequest::getInt('STsameAsBT', vRequest::getInt('STsameAsBTjs',$cart->STsameAsBT));
-		$cart->selected_shipto = vRequest::getVar('shipto', $cart->selected_shipto);
+		$STsameAsBT = vRequest::getInt('STsameAsBT', vRequest::getInt('STsameAsBTjs',false));
+		if($STsameAsBT){
+			$cart->STsameAsBT = $STsameAsBT;
+		}
 
 		$currentUser = JFactory::getUser();
-		if(empty($cart->selected_shipto) or (!$currentUser->guest and $cart->selected_shipto<1)){
-			$cart->STsameAsBT = 1;
-			$cart->selected_shipto = 0;
-		} else {
-			if ($cart->selected_shipto > 0 ) {
+		if(!$currentUser->guest){
+			$cart->selected_shipto = vRequest::getVar('shipto', $cart->selected_shipto);
+			if(!empty($cart->selected_shipto)){
 				$userModel = VmModel::getModel('user');
 				$stData = $userModel->getUserAddressList($currentUser->id, 'ST', $cart->selected_shipto);
 
 				if(isset($stData[0]) and is_object($stData[0])){
 					$stData = get_object_vars($stData[0]);
-					//if($cart->validateUserData('ST', $stData)>0){
-						$cart->ST = $stData;
-					//}
+					$cart->ST = $stData;
+					$cart->STsameAsBT = 0;
 				} else {
 					$cart->selected_shipto = 0;
-					$cart->ST = $cart->BT;
 				}
 			}
-		}
-
-		if(!empty($cart->STsameAsBT) or(!$currentUser->guest and  empty($cart->selected_shipto))){	//Guest
-			$cart->ST = $cart->BT;
+			if(empty($cart->selected_shipto)){
+				$cart->STsameAsBT = 1;
+				$cart->selected_shipto = 0;
+				//$cart->ST = $cart->BT;
+			}
+		} else {
+			$cart->selected_shipto = 0;
+			if(!empty($cart->STsameAsBT)){
+				//$cart->ST = $cart->BT;
+			}
 		}
 
 		$cart->prepareCartData();

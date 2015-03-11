@@ -51,7 +51,7 @@ class VirtuemartViewCategory extends VmView {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 		// set search and keyword
-		if ($keyword = vRequest::uword('keyword', false, ' ,-,+,.,_')) {
+		if ($keyword = vRequest::getString('keyword', false)){//uword('keyword', false, ' ,-,+,.,_')) {
 			$pathway->addItem($keyword);
 			//$title .=' ('.$keyword.')';
 		}
@@ -283,7 +283,7 @@ class VirtuemartViewCategory extends VmView {
 			$title .=' '.vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
 		if(!empty($keyword)){
-			$title .=' ('.$keyword.')';
+			$title .=' ('.strip_tags(htmlspecialchars_decode($keyword)).')';
 		}
 
 		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0])) $title .=' '.$this->products[0]->mf_name ;

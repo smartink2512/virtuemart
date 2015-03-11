@@ -31,7 +31,7 @@ abstract class CouponHelper
 	 */
 	static public function ValidateCouponCode($_code, $_billTotal){
 
-		if(empty($_code) or $_code == vmText::_('COM_VIRTUEMART_COUPON_CODE_ENTER')) {
+		if(empty($_code) or $_code == vmText::_('COM_VIRTUEMART_COUPON_CODE_ENTER') or $_code == vmText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE')) {
 			return '';
 		}
 		$couponData = 0;

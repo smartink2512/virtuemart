@@ -1351,10 +1351,12 @@ class VirtueMartCart {
 						$addr = $this->BT;
 					}
 				} else if($this->ST == 0){
+					vmdebug('getST ST=0, use BT');
 					$addr = $this->BT;
 				}
 			}
 		} else {
+			vmdebug('getST STsameAsBT is set, use BT');
 			$addr = $this->BT;
 		}
 

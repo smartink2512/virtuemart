@@ -74,6 +74,7 @@ Virtuemart.cartEffect = function(form) {
 	var dat = form.serialize();
 
 	if(usefancy){
+
         jQuery.fancybox.showActivity();
 	}
 
@@ -156,9 +157,18 @@ Virtuemart.decrQuantity = (function(event) {
 });
 
 Virtuemart.addtocart = function (e){
+
+
+    var targ;
+    if (!e) e = window.event;
     e.preventDefault();
-    var target = e.target || e.srcElement; //cross browser support
-    if (jQuery(e.originalEvent.target).prop("type") == "submit") {
+
+    if (e.target) targ = e.target;
+    else if (e.srcElement) targ = e.srcElement;
+    if (targ.nodeType == 3) // defeat Safari bug
+        targ = targ.parentNode;
+
+    if (jQuery(targ).prop("type") == "submit") {
         Virtuemart.sendtocart(e.data.cart);
         return false;
     }

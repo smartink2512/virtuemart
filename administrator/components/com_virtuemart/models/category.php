@@ -30,7 +30,7 @@ class VirtueMartModelCategory extends VmModel {
 	private $_category_tree;
 	public $_cleanCache = true ;
 
-	static $_validOrderingFields = array('category_name','category_description','c.ordering','c.category_shared','c.published','c.ordering, category_name');
+	static $_validOrderingFields = array('category_name','c.ordering,category_name','category_description','c.category_shared','c.published');
 
 	/**
 	 * constructs a VmModel
@@ -121,13 +121,14 @@ class VirtueMartModelCategory extends VmModel {
 			}
 		}
 
+		if(trim($selectedOrdering) == 'c.ordering'){
+			$selectedOrdering = 'c.ordering,category_name';
+		}
 		if(!in_array($selectedOrdering, self::$_validOrderingFields)){
 			$selectedOrdering = 'category_name';
 		}
 
-		if(trim($selectedOrdering) == 'c.ordering'){
-			$selectedOrdering = 'c.ordering, category_name';
-		}
+
 
 		if($orderDir===null){
 			if($useCache){

@@ -675,7 +675,7 @@ class PaypalHelperPaypal {
 	}*/
 
 	function getRemoteIPAddress() {
-		$ip_keys = array('REMOTE_ADDR', 'X_FORWARDED_FOR');
+		$ip_keys = array('REMOTE_ADDR', 'X_FORWARDED_FOR', 'X-Forwarded-Proto');
 		$extra = VmConfig::get('revproxvar','');
 		if(!empty($extra)){
 			$extra = explode(',',$extra);

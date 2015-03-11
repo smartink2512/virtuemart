@@ -98,12 +98,13 @@ class VirtuemartViewUser extends VmView {
 		}
 
 
-
 		$userFields = null;
 
 		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$this->cart = VirtueMartCart::getCart();
 		$task = vRequest::getCmd('task', '');
+
+
 
 		if (($this->cart->_fromCart or $this->cart->getInCheckOut()) && empty($virtuemart_userinfo_id)) {
 
@@ -208,6 +209,8 @@ class VirtuemartViewUser extends VmView {
 				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 			}
 		}
+
+		vmJsApi::vmValidator($this->userDetails->JUser->guest);
 
 		$this->add_product_link="";
 		$this->manage_link="";
