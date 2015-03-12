@@ -777,7 +777,13 @@ class vmrouterHelper {
 		$strings = array();
 		$db = JFactory::getDBO();
 		$catModel = VmModel::getModel('category');
-		$parent_ids = array_reverse($catModel->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
+
+		if($parent_ids = $catModel->getCategoryRecurse($virtuemart_category_id,$catMenuId)){
+			$parent_ids = array_reverse($parent_ids) ;
+		} else {
+			$parent_ids = array();
+		}
+
 		//vmdebug('Router getCategoryNames getCategoryRecurse finished '.$virtuemart_category_id,$parent_ids);
 		foreach ($parent_ids as $id ) {
 			if(!isset($categoryNamesCache[$id])){

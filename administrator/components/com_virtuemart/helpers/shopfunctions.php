@@ -1196,6 +1196,45 @@ class ShopFunctions {
 			return '/'.VmConfig::get('assets_general_path').'images/availability/';
 		}
 	}
+
+	/**
+	 * get the Client IP, even if a reverse proxy or similar is used
+	 * @author Valerie Isaksen, Max Milbers
+	 * @return bool|string
+	 */
+	static function getClientIP() {
+		$ip_keys = array('REMOTE_ADDR', 'X_FORWARDED_FOR', 'X-Forwarded-Proto');
+		$extra = VmConfig::get('revproxvar','');
+		if(!empty($extra)){
+			$extra = explode(',',$extra);
+			$ip_keys = array_merge($ip_keys,$extra);
+		}
+		foreach ($ip_keys as $key) {
+			if (array_key_exists($key, $_SERVER) === true) {
+				foreach (explode(',', $_SERVER[$key]) as $ip) {
+					// trim for safety measures
+					$ip = trim($ip);
+					// attempt to validate IP
+					if (self::validateIp($ip)) {
+						return $ip;
+					}
+				}
+			}
+		}
+
+		return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : false;
+	}
+
+	/**
+	 * Ensures an ip address is both a valid IP and does not fall within
+	 * a private network range.
+	 */
+	static function validateIp($ip) {
+		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+			return false;
+		}
+		return true;
+	}
 }
 
 //pure php no tag

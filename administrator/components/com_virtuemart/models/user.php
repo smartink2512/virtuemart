@@ -1246,6 +1246,67 @@ class VirtueMartModelUser extends VmModel {
 
 	}
 
+	public function getSwitchUserList($superVendor=null,$adminID=false) {
+
+		if(!isset($superVendor)) $superVendor = VmConfig::isSuperVendor();
+
+		$result = false;
+		if($superVendor){
+			$db = JFactory::getDbo();
+			$search = vRequest::getUword('usersearch','');
+			if(!empty($search)){
+				$search = 'WHERE (`name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%)';
+			}
+			$q = 'SELECT ju.`id`,`name`,`username` FROM `#__users` as ju';
+
+			$q .= ' LEFT JOIN #__virtuemart_vmusers AS vmu ON vmu.virtuemart_user_id = ju.id';
+			$q .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON vu.virtuemart_user_id = ju.id';
+			if(!empty($search)){
+				$search .= ' AND (vu.virtuemart_vendor_id = '.$superVendor.' ';
+			} else {
+				$search = ' WHERE (vu.virtuemart_vendor_id = '.$superVendor.' ';
+			}
+
+			if($superVendor==1){
+				$search .=  ' OR (vu.virtuemart_vendor_id) IS NULL)';
+			} else {
+				$search .=  ' )';
+			}
+			$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
+
+			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
+			$db->setQuery($q);
+			$result = $db->loadObjectList();
+
+			if($result){
+				foreach($result as $k => $user) {
+					$result[$k]->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+				}
+			} else {
+				$result = array();
+			}
+
+			if($adminID){
+				$user = JFactory::getUser($adminID);
+				$toAdd = new stdClass();
+				$toAdd->id = $user->id;
+				$toAdd->name = $user->name;
+				$toAdd->username = $user->username;
+				$toAdd->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+				array_unshift($result,$toAdd);
+			}
+
+			$toAdd = new stdClass();
+			$toAdd->id = 0;
+			$toAdd->name = '';
+			$toAdd->username = '';
+			$toAdd->displayedName = '-'.vmText::_('COM_VIRTUEMART_REGISTER').'-';
+			array_unshift($result,$toAdd);
+
+		}
+
+		return $result;
+	}
 
 	/**
 	 * If a filter was set, get the SQL WHERE clase

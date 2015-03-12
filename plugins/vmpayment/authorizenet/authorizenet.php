@@ -6,7 +6,7 @@
  * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
+ * @copyright Copyright (C) 2004-2008 soeren, 2012-2015 The VirtueMart team and authors - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -686,10 +686,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	function _validate_creditcard_data($enqueueMessage = TRUE) {
 
+		if(empty($this->_cc_number) and empty($this->_cc_cvv)){
+			return false;
+		}
 		$html = '';
-		$this->_cc_valid = TRUE;
+		$this->_cc_valid = true;//!empty($this->_cc_number) and !empty($this->_cc_cvv) and !empty($this->_cc_expire_month) and !empty($this->_cc_expire_year);
 
-		if (!Creditcard::validate_credit_card_number($this->_cc_type, $this->_cc_number)) {
+		if (!empty($this->_cc_number) and !Creditcard::validate_credit_card_number($this->_cc_type, $this->_cc_number)) {
 			$this->_errormessage[] = 'VMPAYMENT_AUTHORIZENET_CARD_NUMBER_INVALID';
 			$this->_cc_valid = FALSE;
 		}

@@ -59,14 +59,9 @@ if($cache){
 	if ($output = $cache->get($key)) {
 		echo $output;
 		vmdebug('Use cached mod products');
-
 		return true;
 	}
 }
-
-
-/* Load  VM fonction */
-//if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
 
 $vendorId = vRequest::getInt('vendorid', 1);
 
@@ -91,10 +86,11 @@ ob_start();
 /* Load tmpl default */
 require(JModuleHelper::getLayoutPath('mod_virtuemart_product',$layout));
 $output = ob_get_clean();
+echo $output;
+
 if($cache){
 	$cache->store($output, $key);
 }
 
-echo $output;
 echo vmJsApi::writeJS();
 ?>

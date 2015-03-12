@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 		$name = $manufacturers_details->mf_name;
 
 		// Avoid JavaScript on PDF Output
-		if (strtolower(vRequest::getCmd('output')) == "pdf") {
+		if (!$this->writeJs) {
 			$mans[] = JHtml::_('link', $link, $name);
 		} else {
 			$mans[] = '<a class="manuModal" rel="{handler: \'iframe\', size: {x: 700, y: 850}}" href="'.$link .'">'.$name.'</a>';

@@ -32,10 +32,10 @@ defined('_JEXEC') or die('Restricted access');
 					require(VMPATH_ADMIN . DS . 'models' . DS . 'user.php');
 				}
 
-				$userList = $this->getUserList();
+
 				$currentUser = $this->cart->user->virtuemart_user_id;
 
-				echo JHtml::_('Select.genericlist', $userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser);
+				echo JHtml::_('Select.genericlist', $this->userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser);
 
 				$adminID = JFactory::getSession()->get('vmAdminID');
 				$instance = JFactory::getUser();

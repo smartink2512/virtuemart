@@ -136,9 +136,9 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function updateRequests () {
 
-		$this->keyword = vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
-		if ($this->keyword == "") {
-			$this->keyword = vRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
+		$this->keyword = vRequest::getString('keyword','');	//vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
+		if ($this->keyword === '') {
+			$this->keyword = vRequest::getString('filter_product','');//vRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
 			vRequest::setVar('filter_product',$this->keyword);
 		} else {
 			vRequest::setVar('keyword',$this->keyword);
@@ -253,7 +253,10 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
-			$keyword =  '"%' .str_replace(array(' ','-'),'%',$db->escape( $this->keyword, true )). '%"';
+
+			$keyword = htmlspecialchars(html_entity_decode($this->keyword, ENT_QUOTES, "UTF-8"), ENT_QUOTES, "UTF-8");
+
+			$keyword =  '"%' .str_replace(array(' ','-'),'%', $keyword). '%"';
 			//$keyword = '"%' . $db->escape ($this->keyword, TRUE) . '%"';
 
 			foreach ($this->valid_search_fields as $searchField) {
@@ -1664,15 +1667,17 @@ class VirtueMartModelProduct extends VmModel {
 		if(!empty($data['virtuemart_product_id'])){
 			$product_data -> load($data['virtuemart_product_id']);
 		}
+
 		//Set the decimals like product packaging
 		foreach($this->decimals as $decimal){
 			if (array_key_exists ($decimal, $data)) {
 				if(!empty($data[$decimal])){
 					$data[$decimal] = str_replace(',','.',$data[$decimal]);
+					//vmdebug('Store product '.$data['virtuemart_product_id'].', set $decimal '.$decimal.' = '.$data[$decimal]);
 				} else {
 					$data[$decimal] = null;
 					$product_data->$decimal = null;
-					vmdebug('Store product, set $decimal '.$decimal.' = null');
+					//vmdebug('Store product '.$data['virtuemart_product_id'].', set $decimal '.$decimal.' = null');
 				}
 			}
 		}
@@ -1712,7 +1717,6 @@ class VirtueMartModelProduct extends VmModel {
 				$pricesToStore = array();
 				$pricesToStore['virtuemart_product_id'] = $this->_id;
 				$pricesToStore['virtuemart_product_price_id'] = (int)$data['mprices']['virtuemart_product_price_id'][$k];
-
 
 				if (!$isChild){
 					//$pricesToStore['basePrice'] = $data['mprices']['basePrice'][$k];

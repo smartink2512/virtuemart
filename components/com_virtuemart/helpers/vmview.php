@@ -31,13 +31,16 @@ class VmView extends JViewLegacy{
 
 	public function display($tpl = null) {
 
+		if($this->isMail or $this->isPdf){
+			$this->writeJs = false;
+		}
 		$result = $this->loadTemplate($tpl);
 		if ($result instanceof Exception) {
 			return $result;
 		}
 
 		echo $result;
-		if($this->writeJs and !$this->isMail and !$this->isPdf){
+		if($this->writeJs){
 			self::withKeepAlive();
 			if(get_class($this)!='VirtueMartViewProductdetails'){
 				echo vmJsApi::writeJS();

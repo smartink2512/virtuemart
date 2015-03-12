@@ -118,7 +118,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 		shopFunctions::checkSafePath();
 		$this -> checkTCPDFinstalled();
 		$this -> checkVmUserVendor();
-
+		//$this -> checkClientIP();
 		parent::display($tpl);
 	}
 
@@ -168,5 +168,9 @@ WHERE published="1"';
 		}
 	}
 
+	private function checkClientIP(){
+		$revproxvar = VmConfig::get('revproxvar','');
+		if(!empty($revproxvar)) vmdebug('My server variable ',$_SERVER);
+	}
 }
 // pure php no closing tag

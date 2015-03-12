@@ -190,7 +190,7 @@ class VirtueMartViewCart extends VmView {
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
-		if($this->cart->_inConfirm) vmInfo('COM_VIRTUEMART_IN_CONFIRM');
+		if ($this->cart->_inConfirm) vmInfo('COM_VIRTUEMART_IN_CONFIRM');
 		if ($this->cart->layoutPath) {
 			$this->addTemplatePath($this->cart->layoutPath);
 		}
@@ -210,6 +210,10 @@ class VirtueMartViewCart extends VmView {
 				}
 			}
 		}
+		if($this->allowChangeShopper){
+			$this->userList = $this->getUserList();
+		}
+
 		parent::display($tpl);
 	}
 
@@ -419,59 +423,16 @@ class VirtueMartViewCart extends VmView {
 	 */
 	function getUserList() {
 
-		$adminID = JFactory::getSession()->get('vmAdminID',false);
-		$superVendor = VmConfig::isSuperVendor($adminID);
-
 		$result = false;
-		if($this->allowChangeShopper and $superVendor){
-			//if(!$superVendor) $superVendor = 1;
-			$db = JFactory::getDbo();
-			$search = vRequest::getUword('usersearch','');
-			if(!empty($search)){
-				$search = 'WHERE (`name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%)';
+		if($this->allowChangeShopper){
+
+			$adminID = JFactory::getSession()->get('vmAdminID',false);
+			$superVendor = VmConfig::isSuperVendor($adminID);
+
+			if($superVendor){
+				$uModel = VmModel::getModel('user');
+				$result = $uModel->getSwitchUserList($superVendor,$adminID);
 			}
-			$q = 'SELECT ju.`id`,`name`,`username` FROM `#__users` as ju';
-
-			$q .= ' LEFT JOIN #__virtuemart_vmusers AS vmu ON vmu.virtuemart_user_id = ju.id';
-			$q .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON vu.virtuemart_user_id = ju.id';
-			if(!empty($search)){
-				$search .= ' AND (vu.virtuemart_vendor_id = '.$superVendor.' ';
-			} else {
-				$search = ' WHERE (vu.virtuemart_vendor_id = '.$superVendor.' ';
-			}
-
-			if($superVendor==1){
-				$search .=  ' OR (vu.virtuemart_vendor_id) IS NULL)';
-			} else {
-				$search .=  ' )';
-			}
-			$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
-
-			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
-			$db->setQuery($q);
-			$result = $db->loadObjectList();
-//vmdebug('user list',$q);
-			foreach($result as $k => $user) {
-				$result[$k]->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
-			}
-
-			if($adminID){
-				$user = JFactory::getUser($adminID);
-				$toAdd = new stdClass();
-				$toAdd->id = $user->id;
-				$toAdd->name = $user->name;
-				$toAdd->username = $user->username;
-				$toAdd->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
-				array_unshift($result,$toAdd);
-			}
-
-			$toAdd = new stdClass();
-			$toAdd->id = 0;
-			$toAdd->name = '';
-			$toAdd->username = '';
-			$toAdd->displayedName = '-'.vmText::_('COM_VIRTUEMART_REGISTER').'-';
-			array_unshift($result,$toAdd);
-
 		}
 
 		return $result;
@@ -531,6 +492,7 @@ class VirtueMartViewCart extends VmView {
 
     jQuery(".output-shipto").find(":radio").change(function(){
         var form = jQuery("#checkoutFormSubmit");
+        jQuery(this).vm2front("startVmLoading");
 		document.checkoutForm.submit();
     });
     jQuery(".required").change(function(){
@@ -543,6 +505,7 @@ class VirtueMartViewCart extends VmView {
        		}
     	});
         if(count==hit){
+        	jQuery(this).vm2front("startVmLoading");
         	var form = jQuery("#checkoutFormSubmit");
         	//document.checkoutForm.task = "checkout";
 			document.checkoutForm.submit();
