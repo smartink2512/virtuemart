@@ -14,7 +14,7 @@ jQuery(function($) {
     // Add to cart and other scripts may check this variable and return while
     // the content is being updated.
     Virtuemart.isUpdatingContent = false;
-    Virtuemart.updateContent = function(url) {
+    Virtuemart.updateContent = function(url, callback) {
         if(Virtuemart.isUpdatingContent) return false;
         Virtuemart.isUpdatingContent = true;
         url += url.indexOf('&') == -1 ? '?tmpl=component' : '&tmpl=component';
@@ -35,6 +35,9 @@ jQuery(function($) {
 					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
 				}
 				Virtuemart.isUpdatingContent = false;
+				if (callback && typeof(callback) === "function") {
+					callback();
+				}
             }
         });
         Virtuemart.isUpdatingContent = false;
