@@ -146,6 +146,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			//discount
 			'cost_per_transaction' => array('', 'float'),
 			'cost_percent_total' => array('', 'char'),
+			'cost_method' => array('', 'int'),
 			'tax_id' => array(0, 'int'),
 
 			//Layout
@@ -736,9 +737,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$orderModel->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
 			//// remove vmcart
 			if (isset($paypal_data['custom'])) {
-				$paypalInterface->debugLog('plgVmOnPaymentNotification empty cart '.$paypal_data['custom'], 'plgVmOnPaymentNotification', 'debug');
-
 				$this->emptyCart($paypal_data['custom'], $order_number);
+				$paypalInterface->debugLog('plgVmOnPaymentNotification empty cart ', 'plgVmOnPaymentNotification', 'debug');
 			}
 		}
 	}
@@ -810,9 +810,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($paypal_data) {
 			$response_fields['paypal_fullresponse'] = json_encode($paypal_data);
 		}
-	$response_fields['order_number'] = $order_number;
+		$response_fields['order_number'] = $order_number;
+		if (isset($paypal_data['invoice'])) {
+			$response_fields['paypal_response_invoice'] = $paypal_data['invoice'];
+		}
 
-		$response_fields['paypal_response_invoice'] = $paypal_data['invoice'];
 		$response_fields['virtuemart_order_id'] = $virtuemart_order_id;
 		$response_fields['virtuemart_paymentmethod_id'] = $virtuemart_paymentmethod_id;
 		if (array_key_exists('custom', $paypal_data)) {
@@ -1242,7 +1244,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 				$html = '';
 				$cartPrices=$cart->cartPrices;
-				$methodSalesPrice = $this->setCartPrices($cart, $cartPrices, $this->_currentMethod);
+				if (isset($this->_currentMethod->cost_method)) {
+					$cost_method=$this->_currentMethod->cost_method;
+				} else {
+					$cost_method=true;
+				}
+				$methodSalesPrice = $this->setCartPrices($cart, $cartPrices, $this->_currentMethod, $cost_method);
 
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);

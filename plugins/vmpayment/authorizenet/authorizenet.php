@@ -133,15 +133,15 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		}
 		$html = array();
 		$method_name = $this->_psType . '_name';
-
-		JHTML::script('vmcreditcard.js', 'components/com_virtuemart/assets/js/', FALSE);
+		vmJsApi::addJScript(  'components/com_virtuemart/assets/js/vmcreditcard');
 		VmConfig::loadJLang('com_virtuemart', true);
 		vmJsApi::jCreditCard();
 		$htmla = '';
 		$html = array();
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->cartPrices)) {
-				$methodSalesPrice = $this->setCartPrices($cart, $cart->cartPrices, $this->_currentMethod);
+				$cartPrices=$cart->cartPrices;
+				$methodSalesPrice = $this->setCartPrices($cart, $cartPrices, $this->_currentMethod);
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 				$html = $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);
 				if ($selected == $this->_currentMethod->virtuemart_paymentmethod_id) {
@@ -685,7 +685,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		 */
 
 	function _validate_creditcard_data($enqueueMessage = TRUE) {
-
+		static $force=true;
 		if(empty($this->_cc_number) and empty($this->_cc_cvv)){
 			return false;
 		}
@@ -713,9 +713,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			}
 			//$html.= "</ul>";
 		}
-		if (!$this->_cc_valid && $enqueueMessage) {
+		if (!$this->_cc_valid && $enqueueMessage && $force) {
 			$app = JFactory::getApplication();
 			$app->enqueueMessage($html);
+			$force=false;
 		}
 
 		return $this->_cc_valid;
@@ -798,7 +799,9 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _setBillingInformation($usrBT) {
-
+		if (!class_exists('ShopFunctions'))
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+		$clientIp= ShopFunctions::getClientIP();
 		// Customer Name and Billing Address
 		return array(
 			'x_email' => isset($usrBT->email) ? $this->_getField($usrBT->email, 100) : '', //get email
@@ -812,7 +815,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			'x_country' => isset($usrBT->virtuemart_country_id) ? $this->_getField(ShopFunctions::getCountryByID($usrBT->virtuemart_country_id), 60) : '',
 			'x_phone' => isset($usrBT->phone_1) ? $this->_getField($usrBT->phone_1, 25) : '',
 			'x_fax' => isset($usrBT->fax) ? $this->_getField($usrBT->fax, 25) : '',
-			'x_customer_ip' => $_SERVER["REMOTE_ADDR"],
+			'x_customer_ip' => $clientIp,
 		);
 	}
 
@@ -1030,7 +1033,9 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$html .= $this->getHtmlRow('AUTHORIZENET_ORDER_NUMBER', $authorizeNetResponse['invoice_number']);
 		$html .= $this->getHtmlRow('AUTHORIZENET_AMOUNT', $authorizeNetResponse['amount'] . ' ' . self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY);
 		//$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_AUTHORIZATION_CODE', $authorizeNetResponse['authorization_code']);
-		$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_TRANSACTION_ID', $authorizeNetResponse['transaction_id']);
+		if ($authorizeNetResponse['transaction_id']) {
+			$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_TRANSACTION_ID', $authorizeNetResponse['transaction_id']);
+		}
 		$html .= '</table>' . "\n";
 		$this->debugLog(vmText::_('VMPAYMENT_AUTHORIZENET_ORDER_NUMBER') . " " . $authorizeNetResponse['invoice_number'] . ' payment approved', '_handleResponse', 'debug');
 

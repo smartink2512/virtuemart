@@ -798,16 +798,22 @@ jQuery().ready(function($) {
 	}
 
 	private function checkIps () {
-		// TODO REMOVE MY IP
+		if (!class_exists('ShopFunctions'))
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 		$paybox_ips = array('194.2.122.158', '195.25.7.166', '195.101.99.76');
-		if (!in_array($_SERVER['REMOTE_ADDR'], $paybox_ips)) {
-			$text = "Received not authorized IP: <br />Server IP=" . $_SERVER['REMOTE_ADDR'];
-			$text .= " <br />authorized IPs: =" . var_export($paybox_ips, true);
-			$this->plugin->debugLog('checkIps :' . $text, 'error');
+		$clientIp= ShopFunctions::getClientIP();
+		if (!in_array($clientIp, $paybox_ips)) {
+
+			$text = "Error with REMOTE IP ADDRESS = " . $clientIp . ".
+                        The remote address of the script posting to this notify script does not match a valid Paybox IP address\n
+            These are the valid Paybox IP Addresses: " . implode(",", $paybox_ips) ;
+			$this->debugLog($text, 'checkIps', 'error', false);
 			return false;
 		}
-		return true;
+
+		return false;
 	}
+
 
 	function getLangue () {
 

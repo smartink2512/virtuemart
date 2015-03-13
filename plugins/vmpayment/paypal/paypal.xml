@@ -314,7 +314,11 @@
                        description="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL_TIP"/>
                 <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_PAYPAL_TAX"
                        description="VMPAYMENT_PAYPAL_TAX_TIP"/>
-
+                <field name="cost_method" type="list" default="1" label="VMPAYMENT_PAYPAL_COST_METHOD"
+                       description="VMPAYMENT_PAYPAL_COST_METHOD_TIP">
+                    <option value="1">VMPAYMENT_PAYPAL_COST_METHOD_PROGRESSIVE</option>
+                    <option value="0">VMPAYMENT_PAYPAL_COST_METHOD_FIXED</option>
+                </field>
                 <!-- LAYOUT -->
                 <!-- ============ -->
                 <field type="vmtitle" default="VMPAYMENT_PAYPAL_LAYOUT_SECTION"
