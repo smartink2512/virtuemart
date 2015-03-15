@@ -45,6 +45,9 @@ abstract class ModVMMenuHelper {
 
 		$vmComponentItems = $db->loadObjectList();
 		$result = new stdClass();
+		if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+		VmConfig::loadConfig();
+
 		if ($vmComponentItems) {
 
 			if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
@@ -85,11 +88,13 @@ abstract class ModVMMenuHelper {
 				}
 			}
 
-			return $result;
-		} else {
-			return NULL;
+			$props = get_object_vars($result);
+			if(!empty($props)){
+				return $result;
+			}
 		}
 
+		return false;
 
 	}
 

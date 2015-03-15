@@ -19,7 +19,6 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-
 $show_vmmenu 	= $params->get('show_vmmenu', 1);
 $vmMenu="";
 $user = JFactory::getUser();
@@ -27,9 +26,6 @@ $lang = JFactory::getLanguage();
 if ($show_vmmenu) {
 	$hideMainmenu=false;
 }
-
-// Get the authorised components and sub-menus.
-$vmComponentItems = ModVMMenuHelper::getVMComponent(true);
 
 // Check if there are any components, otherwise, don't render the menu
 if ($vmComponentItems) {

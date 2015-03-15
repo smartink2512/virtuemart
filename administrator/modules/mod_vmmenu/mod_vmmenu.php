@@ -36,6 +36,9 @@ if (!class_exists('ModVMMenuHelper')) {
 	require dirname(__FILE__).'/helper.php';
 }
 
+// Get the authorised components and sub-menus.
+$vmComponentItems = ModVMMenuHelper::getVMComponent(true);
+
 // Initialise variables.
 $lang		= JFactory::getLanguage();
 $user		= JFactory::getUser();
