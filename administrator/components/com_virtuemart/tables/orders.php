@@ -118,6 +118,7 @@ class TableOrders extends VmTableData {
 
 		$adminID = JFactory::getSession()->get('vmAdminID');
 		if(isset($adminID)) {
+			$adminID = vmCrypt::decrypt($adminID);
 			$this->created_by = $adminID;
 		}
 

@@ -202,6 +202,7 @@ class VirtueMartViewCart extends VmView {
 				$this->allowChangeShopper = true;
 			} else {
 				$adminID = JFactory::getSession()->get('vmAdminID',false);
+				$adminID = vmCrypt::decrypt($adminID);
 				if($adminID){
 					$adminIdUser = JFactory::getUser($adminID);
 					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
@@ -425,13 +426,14 @@ class VirtueMartViewCart extends VmView {
 
 		$result = false;
 		if($this->allowChangeShopper){
-
 			$adminID = JFactory::getSession()->get('vmAdminID',false);
-			$superVendor = VmConfig::isSuperVendor($adminID);
-
-			if($superVendor){
-				$uModel = VmModel::getModel('user');
-				$result = $uModel->getSwitchUserList($superVendor,$adminID);
+			if($adminID){
+				$adminID = vmCrypt::decrypt($adminID);
+				$superVendor = VmConfig::isSuperVendor($adminID);
+				if($superVendor){
+					$uModel = VmModel::getModel('user');
+					$result = $uModel->getSwitchUserList($superVendor,$adminID);
+				}
 			}
 		}
 

@@ -391,19 +391,22 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		JSession::checkToken () or jexit ('Invalid Token');
 		$current = JFactory::getUser();
 		$admin = false;
-		if(VmConfig::get ('oncheckout_change_shopper')){
+		//if(VmConfig::get ('oncheckout_change_shopper')){
 			if($current->authorise('core.admin', 'com_virtuemart') or $current->authorise('vm.user', 'com_virtuemart')){
 				$admin = true;
 			} else {
 				$adminID = JFactory::getSession()->get('vmAdminID',false);
 				if($adminID){
+					if(!class_exists('vmCrypt'))
+						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+					$adminID = vmCrypt::decrypt($adminID);
 					$adminIdUser = JFactory::getUser($adminID);
 					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
 						$admin = true;
 					}
 				}
 			}
-		}
+		//}
 
 		if(!$admin){
 			$mainframe = JFactory::getApplication();
@@ -417,7 +420,11 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		//update session
 		$session = JFactory::getSession();
 		$adminID = $session->get('vmAdminID');
-		if(!isset($adminID)) $session->set('vmAdminID', $current->id);
+		if(!isset($adminID)) {
+			if(!class_exists('vmCrypt'))
+				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+			$session->set('vmAdminID', vmCrypt::encrypt($current->id));
+		}
 		$session->set('user', $newUser);
 
 		//update cart data
@@ -434,13 +441,18 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->saveAddressInCart($data, 'BT');
 
 		$mainframe = JFactory::getApplication();
-		$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
+
+		$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')');
+		$redirect = vRequest::getString('redirect',false);
 		if(empty($userID)){
 			$red = JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT');
+			$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY','');
+		} else if($redirect){
+			$red = $redirect;
 		} else {
 			$red = JRoute::_('index.php?option=com_virtuemart&view=cart');
 		}
-
+		$mainframe->enqueueMessage($msg, 'info');
 		$mainframe->redirect($red);
 	}
 

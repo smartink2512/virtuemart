@@ -199,9 +199,10 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 				$ret = $userModel->store($data);
 
-				if(($currentUser->guest==1 and $register) and VmConfig::get ('oncheckout_change_shopper')){
+				if(($currentUser->guest==1 and $register) ){ //and VmConfig::get ('oncheckout_change_shopper')){
 					$adminID = JFactory::getSession()->get('vmAdminID',false);
 					if($adminID){
+						$adminID = vmCrypt::decrypt($adminID);
 						$adminIdUser = JFactory::getUser($adminID);
 						if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
 							//update session

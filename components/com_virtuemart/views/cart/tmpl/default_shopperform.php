@@ -38,6 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 				echo JHtml::_('Select.genericlist', $this->userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser);
 
 				$adminID = JFactory::getSession()->get('vmAdminID');
+				$adminID = vmCrypt::decrypt($adminID);
 				$instance = JFactory::getUser();
 				?>
 			</td>

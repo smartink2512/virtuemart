@@ -818,9 +818,11 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			$admin = false;
 			if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('vm.user', 'com_virtuemart')){
 				$admin = true;
-			} else if(VmConfig::get ('oncheckout_change_shopper')){
+			} else {	//if(VmConfig::get ('oncheckout_change_shopper')){
+
 				$adminID = JFactory::getSession()->get('vmAdminID',false);
 				if($adminID){
+					$adminID = vmCrypt::decrypt($adminID);
 					$adminIdUser = JFactory::getUser($adminID);
 					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
 						$admin = true;
