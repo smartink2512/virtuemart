@@ -108,6 +108,9 @@ class VmTableXarray extends VmTable {
     		return false;
     	}
 
+		$pkey = $this->_pkey;
+		$this->$pkey = $oid;
+
     	if(empty($db)) $db = JFactory::getDBO();
 
 		if($this->_orderable){
@@ -130,6 +133,9 @@ class VmTableXarray extends VmTable {
 				self::$_cache['ar'][$hash] = $result;
 			}
 		}
+
+		$skey = $this->_skey;
+		$this->$skey = self::$_cache['ar'][$hash];
 
 		return self::$_cache['ar'][$hash];
 

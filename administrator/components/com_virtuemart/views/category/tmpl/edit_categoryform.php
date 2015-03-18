@@ -43,7 +43,7 @@ $mainframe = JFactory::getApplication();
 					</td>
 				</tr>
 				-->
-					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_NAME','category_name',$this->category->category_name); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_NAME','category_name',$this->category->category_name,'class="required"'); ?>
 					<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->category->published); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_SLUG','slug',$this->category->slug); ?>
 					<?php echo VmHTML::row('editor','COM_VIRTUEMART_DESCRIPTION','category_description',$this->category->category_description); ?>

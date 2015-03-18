@@ -72,15 +72,15 @@ if (empty ( $this->product )) {
 
 					<table class="askform">
 						<tr>
-							<td><label><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : </label></td>
+							<td><label for="name"><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : </label></td>
 							<td><input type="text" class="validate[required,minSize[3],maxSize[64]]" value="<?php echo $this->user->name ? $this->user->name : $askQuestionData['name'] ?>" name="name" id="name" size="30"  validation="required name"/></td>
 						</tr>
 						<tr>
-							<td><label><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : </label></td>
+							<td><label for="email"><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : </label></td>
 							<td><input type="text" class="validate[required,custom[email]]" value="<?php echo $this->user->email ? $this->user->email : $askQuestionData['email'] ?>" name="email" id="email" size="30"  validation="required email"/></td>
 						</tr>
 						<tr>
-							<td colspan="2"><label><?php echo vmText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max); ?></label><td>
+							<td colspan="2"><label for="comment"><?php echo vmText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max); ?></label></td>
 						</tr>
 						<tr>
 							<td colspan="2"><textarea title="<?php echo vmText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max) ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="8"><?php echo $askQuestionData['comment'] ?></textarea></td>
@@ -88,10 +88,6 @@ if (empty ( $this->product )) {
 					</table>
 
 					<div class="submit">
-						<div class="width50 floatright right paddingtop">
-							<?php echo vmText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
-							<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
-						</div>
 						<?php // captcha addition
 						if(VmConfig::get ('ask_captcha')){
 							JHTML::_('behavior.framework');
@@ -103,7 +99,16 @@ if (empty ( $this->product )) {
 						}
 						// end of captcha addition 
 						?>
-						<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo vmText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo vmText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
+            <div>
+              <div class="floatleft width50">
+                <input class="highlight-button" type="submit" name="submit_ask" title="<?php echo vmText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo vmText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
+              </div>
+              <div class="floatleft width50 text-right">
+                <label for="counter"><?php echo vmText::_('COM_VIRTUEMART_ASK_COUNT')  ?></label>
+  							<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
+              </div>
+              <div class="clear"></div>
+            </div>
 					</div>
 
 					<input type="hidden" name="virtuemart_product_id" value="<?php echo vRequest::getInt('virtuemart_product_id',0); ?>" />

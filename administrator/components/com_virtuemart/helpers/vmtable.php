@@ -822,6 +822,9 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 				$adminID = JFactory::getSession()->get('vmAdminID',false);
 				if($adminID){
+					if(!class_exists('vmCrypt'))
+						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+
 					$adminID = vmCrypt::decrypt($adminID);
 					$adminIdUser = JFactory::getUser($adminID);
 					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){

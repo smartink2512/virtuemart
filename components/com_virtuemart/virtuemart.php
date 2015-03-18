@@ -82,6 +82,8 @@ if(VmConfig::get('shop_is_offline',0)){
 
 		} else {
 			$session->set('manage', 0,'vm');
+			vRequest::setVar('manage',0);
+			$basePath = VMPATH_SITE;
 			$app->redirect('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}
 		vRequest::setVar('tmpl','component') ;

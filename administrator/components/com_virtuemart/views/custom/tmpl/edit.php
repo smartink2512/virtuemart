@@ -53,7 +53,7 @@ AdminUIHelper::startAdminArea($this);
 
 					?>
 					<h2 style="text-align: center;"><?php echo vmText::_($this->custom->custom_title) ?></h2>
-					<div style="text-align: center;"><?php echo  VmText::_('COM_VIRTUEMART_CUSTOM_CLASS_NAME').": ".$this->custom->custom_element ?></div>
+					<div style="text-align: center;"><?php echo VmText::_('COM_VIRTUEMART_CUSTOM_CLASS_NAME').": ".$this->custom->custom_element ?></div>
 					<?php
 					if ($this->custom->form) {
 						$form = $this->custom->form;

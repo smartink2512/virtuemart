@@ -59,7 +59,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @param name of the view
 	 * @return object List of flypage objects
 	 */
-	static function getLayoutList($view) {
+	static function getLayoutList($view,$ignore=0) {
 
 		$dirs = array();
 		$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
@@ -75,10 +75,10 @@ class VirtueMartModelConfig extends VmModel {
 				$dirs[] = VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
 			}
 		}
-		return self::getLayouts($dirs);
+		return self::getLayouts($dirs,0,$ignore);
 	}
 
-	static function getLayouts($dirs,$type=0){
+	static function getLayouts($dirs,$type=0,$ignore=0){
 
 		$result = array();
 		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
@@ -90,8 +90,8 @@ class VirtueMartModelConfig extends VmModel {
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
 					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_Dir($file)){
-
-						if( (!empty($type) and strpos($file,$type)===0) or (empty($type) and strpos($file,'_')==0) ){
+						vmdebug('getLayouts',$file,$ignore);
+						if( (is_array($ignore) and !in_array($file,$ignore)) and ( (!empty($type) and strpos($file,$type)===0) or (empty($type) and strpos($file,'_')==0)) ){
 							//Handling directly for extension is much cleaner
 							$path_info = pathinfo($file);
 							if(empty($path_info['extension'])){

@@ -317,6 +317,7 @@ class VirtueMartModelCustom extends VmModel {
 			if(empty($data['layout_pos'])) $data['layout_pos'] = 'addtocart';
 		}
 
+
 		//We are in the custom and so the table contains the field_type, else not!!
 		self::setParameterableByFieldType($table,$table->field_type);
 
@@ -356,7 +357,7 @@ class VirtueMartModelCustom extends VmModel {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
 			//We call here vmplugin->getTablePluginParams which sets the xParam and the varsToPush of the Plugin
-			vmdebug('setParameterableByFieldType before trigger plgVmGetTablePluginParams ',$xParams,$varsToPush);
+			vmdebug('setParameterableByFieldType before trigger plgVmGetTablePluginParams ',$custom_element, $custom_jplugin_id, $xParams,$varsToPush);
 			$retValue = $dispatcher->trigger ('plgVmGetTablePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
 		}
 		$xParams = $table->_xParams;

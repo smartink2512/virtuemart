@@ -1507,7 +1507,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			}
 		} else {
-			vmdebug('storeProductCustomfields nothing to store',$datas['field']);
+			vmdebug('storeProductCustomfields nothing to store');
 		}
 		vmdebug('Delete $old_customfield_ids',$old_customfield_ids);
 		if ( count($old_customfield_ids) ) {

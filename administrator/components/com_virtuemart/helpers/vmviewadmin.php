@@ -51,11 +51,12 @@ class VmViewAdmin extends JViewLegacy {
 	public function display($tpl = null)
 	{
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
-		
+
 		if ($view == 'virtuemart' //Virtuemart view is always allowed since this is the page we redirect to in case the user does not have the rights
 			or $view == 'about' //About view always displayed
-			or $this->canDo->get('core.admin')
-			or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
+			or $this->manager($view) ) {
+			//or $this->canDo->get('core.admin')
+			//or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
 
 			if(JFactory::getApplication()->isSite()){
 				$unoverridable = array('category','manufacturer','user');	//This views have the same name and must not be overridable
@@ -256,8 +257,8 @@ class VmViewAdmin extends JViewLegacy {
 		self::showHelp();
 		self::showACLPref($view);
 
-		if($view == 'user' or $view == 'product') $validate = true; else $validate = false;
-		$this->addJsJoomlaSubmitButton($validate);
+		//if($view == 'user' or $view == 'product' or $view == 'custom' or $view == 'category') $validate = true; else $validate = false;
+		$this->addJsJoomlaSubmitButton(true);
 
         $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
 		$params = JComponentHelper::getParams('com_languages');
@@ -574,8 +575,8 @@ class VmViewAdmin extends JViewLegacy {
 
 		if(!isset(self::$_manager[$view])){
 			$user=JFactory::getUser();
-			if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') or
-				( $user->authorise('vm.manage', 'com_virtuemart') and $user->authorise('vm.'.$view, 'com_virtuemart') )){
+			if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or
+			( ($user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.manage', 'com_virtuemart')) and $user->authorise('vm.'.$view, 'com_virtuemart') ) ){
 				self::$_manager[$view] = true;
 			} else {
 				self::$_manager[$view] = false;

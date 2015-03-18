@@ -348,6 +348,7 @@ abstract class vmPlugin extends JPlugin {
 	public function onStoreInstallPluginTable ($psType,$name=FALSE) {
 
 		if(!empty($name) and $name!=$this->_name){
+			vmdebug('onStoreInstallPluginTable return false, given $name '.$name.' plg name '.$this->_name);
 			return false;
 		}
 
@@ -364,7 +365,7 @@ abstract class vmPlugin extends JPlugin {
 			$query = 'SHOW TABLES LIKE "%' . str_replace('#__', $db->getPrefix(), $this->_tablename) . '"';
 			$db->setQuery($query);
 			$result = $db->loadResult();
-
+			vmdebug('onStoreInstallPluginTable result of table already exists? ',$result);
 			if ($result) {
 				$update[$this->_tablename] = array($tablesFields, array(), array());
 				vmdebug(get_class($this) . ':: VirtueMart2 update ' . $this->_tablename);
@@ -387,6 +388,7 @@ abstract class vmPlugin extends JPlugin {
 				}
 			}
 		}
+		vmdebug('onStoreInstallPluginTable return false, given $psType '.$psType.' plg name '.$this->_psType);
 		return false;
 	}
 

@@ -361,10 +361,19 @@ class Migrator extends VmModel{
 									$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
 								}
 							}else {
-								if($filetype == 'dir' && $file != 'resized' && $file != 'invoices'){
-									$subfoldersInDir[] = $dir.$file.DS;
-									// 									vmdebug('my sub folder ',$dir.$file);
+								if($type!='forSale'){
+									if($filetype == 'dir' && $file != 'resized'){
+										$subfoldersInDir[] = $dir.$file.DS;
+										vmdebug($type.' my sub folder ',$dir.$file);
+									}
+								} else {
+									vmInfo('Did not synchronise media for sale in '.$dir.$file);
+									/*if($filetype == 'dir'){
+										$subfoldersInDir[] = $dir.$file.DS;
+										vmdebug($type.' my sub folder ',$dir.$file);
+									}*/
 								}
+
 							}
 						}
 

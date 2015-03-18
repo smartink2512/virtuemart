@@ -106,7 +106,11 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 */
 	function plgVmOnStoreInstallPluginTable ($type, $data) {
 
-		return $this->onStoreInstallPluginTable($type, $data->name);
+		if($type==$this->_type and !empty($data->name)){
+			return $this->onStoreInstallPluginTable($type, $data->name);
+		} else {
+			return false;
+		}
 
 	}
 

@@ -116,8 +116,10 @@ class TableOrders extends VmTableData {
 			$this->order_pass = 'p_'.substr( md5((string)time().$this->order_number ), 0, 5);
 		}
 
-		$adminID = JFactory::getSession()->get('vmAdminID');
-		if(isset($adminID)) {
+		$adminID = JFactory::getSession()->get('vmAdminID',false);
+		if($adminID) {
+			if(!class_exists('vmCrypt'))
+				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			$adminID = vmCrypt::decrypt($adminID);
 			$this->created_by = $adminID;
 		}

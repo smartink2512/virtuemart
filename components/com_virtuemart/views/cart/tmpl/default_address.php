@@ -52,7 +52,13 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="clear"></div>
 		</div>
 
-		<a class="details" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT', $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
+		<?php
+		if($this->pointAddress){
+			$this->pointAddress = 'required invalid';
+		}
+
+		?>
+		<a class="details <?php echo $this->pointAddress ?>" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT', $this->useXHTML, $this->useSSL) ?>" rel="nofollow">
 			<?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
 		</a>
 

@@ -197,7 +197,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 		else {
 			$html .= VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_FIELD_TYPE', 'field_type', $this->getOptions ($this->fieldTypes), $datas->field_type, VmHTML::validate ('R'));
 		}
-		$html .= VmHTML::row ('input', 'COM_VIRTUEMART_TITLE', 'custom_title', $datas->custom_title);
+		$html .= VmHTML::row ('input', 'COM_VIRTUEMART_TITLE', 'custom_title', $datas->custom_title,'class="required"');
 		$html .= VmHTML::row ('booleanlist', 'COM_VIRTUEMART_SHOW_TITLE', 'show_title', $datas->show_title);
 		$html .= VmHTML::row ('booleanlist', 'COM_VIRTUEMART_PUBLISHED', 'published', $datas->published);
 		$html .= VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_GROUP', 'custom_parent_id', $model->getParentList ($datas->virtuemart_custom_id), $datas->custom_parent_id, '');

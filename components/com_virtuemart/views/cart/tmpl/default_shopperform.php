@@ -32,20 +32,14 @@ defined('_JEXEC') or die('Restricted access');
 					require(VMPATH_ADMIN . DS . 'models' . DS . 'user.php');
 				}
 
-
 				$currentUser = $this->cart->user->virtuemart_user_id;
-
-				echo JHtml::_('Select.genericlist', $this->userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser);
-
-				$adminID = JFactory::getSession()->get('vmAdminID');
-				$adminID = vmCrypt::decrypt($adminID);
-				$instance = JFactory::getUser();
+				echo JHtml::_('Select.genericlist', $this->userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser,'userIDcart');
 				?>
 			</td>
 			<td style="border:0px;">
 				<input type="submit" name="changeShopper" title="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" class="button"  style="margin-left: 10px;"/>
-				<?php if(isset($adminID) && $instance->id != $adminID) { ?>
-					<span style="margin-left: 20px;"><b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.JFactory::getUser($adminID)->name; ?></b></span>
+				<?php if($this->adminID && $currentUser != $this->adminID) { ?>
+					<span style="margin-left: 20px;"><b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.JFactory::getUser($this->adminID)->name; ?></b></span>
 				<?php } ?>
 				<?php echo JHtml::_( 'form.token' ); ?>
 				<input type="hidden" name="view" value="cart"/>

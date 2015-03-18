@@ -22,17 +22,12 @@ VmConfig::loadConfig();
 if (!class_exists( 'VmController' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
 if (!class_exists( 'VmModel' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
-
 vmRam('Start');
 vmSetStartTime('Start');
 
-
 $_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'));
 
-
 VmConfig::loadJLang('com_virtuemart');
-
-
 
 // Require specific controller if requested
 if($_controller) {
@@ -52,10 +47,7 @@ if($_controller) {
 	}
 }
 
-
 vmJsApi::jQuery(0);
-//vmJsApi::jSite();	//as far as I know that was only necessary for the country/state dropdown combination
-
 
 // Create the controller
 $_class = 'VirtueMartController'.ucfirst($_controller);

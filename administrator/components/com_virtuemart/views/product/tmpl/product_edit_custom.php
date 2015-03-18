@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 					} else {
 
 						$checkValue = $customfield->virtuemart_customfield_id;
-						$titel = '';
+						$title = '';
 						$text = '';
 						if(isset($this->fieldTypes[$customfield->field_type])){
 							$type = $this->fieldTypes[$customfield->field_type];
@@ -78,27 +78,27 @@ defined('_JEXEC') or die('Restricted access');
 
 							if(!empty($customfield->disabler)) $checkValue = $customfield->disabler;
 							if(!empty($customfield->override)) $checkValue = $customfield->override;
-							$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue).'</br>';
+							$title = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue).'</br>';
 							if($customfield->disabler!=0){
-								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_DISABLED',$checkValue).'</br>';
+								$title = vmText::sprintf('COM_VIRTUEMART_CUSTOM_DISABLED',$checkValue).'</br>';
 							}
 
 							if($customfield->override!=0){
-								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue).'</br>';
+								$title = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue).'</br>';
 							}
 
 						} else if($customfield->virtuemart_product_id==$this->product->product_parent_id){
-							$titel = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED').'</br>';
+							$title = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED').'</br>';
 						}
 
-						if(!empty($titel)){
+						if(!empty($title)){
 							$text = '<span style="white-space: nowrap;" class="hasTip" title="'.htmlentities(vmText::_('COM_VIRTUEMART_CUSTOMFLD_DIS_DER_TIP')).'">d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler,$checkValue).'</span>
 							<span style="white-space: nowrap;" class="hasTip" title="'.htmlentities(vmText::_('COM_VIRTUEMART_DIS_DER_CUSTOMFLD_OVERR_DER_TIP')).'">o:'.VmHtml::checkbox('field['.$i.'][override]',$customfield->override,$checkValue).'</span>';
 						}
 						$tables['fields'] .= '<tr class="removable">
 							<td >
 							<b>'.vmText::_($type).'</b> '.vmText::_($customfield->custom_title).'</span><br/>
-								'.$titel.' '.$text.'
+								'.$title.' '.$text.'
 								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 								<span class="vmicon vmicon-16-move"></span>
 								<span class="vmicon vmicon-16-remove"></span>

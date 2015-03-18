@@ -32,6 +32,9 @@ if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
  */
 class VirtueMartViewCart extends VmView {
 
+	var $pointAddress = false;
+
+
 	public function display($tpl = null) {
 
 
@@ -145,12 +148,16 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->checkout_link_html = '<button type="submit"  id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" ><span>' . $text . '</span> </button>';
 
+
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 				JPluginHelper::importPlugin('vmshipment');
 				JPluginHelper::importPlugin('vmpayment');
-				$this->lSelectShipment();
-				$this->lSelectPayment();
+				vmdebug('cart view oncheckout_opc ');
+				if(!$this->lSelectShipment() or !$this->lSelectPayment()){
+					vmInfo('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
+					$this->pointAddress = true;
+				}
 			} else {
 				$this->checkPaymentMethodsConfigured();
 				$this->checkShipmentMethodsConfigured();
@@ -185,7 +192,7 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 
-		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
+		VmTemplate::setVmTemplate($this, 0, 0, $layoutName);
 
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
@@ -197,14 +204,17 @@ class VirtueMartViewCart extends VmView {
 
 		$current = JFactory::getUser();
 		$this->allowChangeShopper = false;
+		$this->adminID = false;
 		if(VmConfig::get ('oncheckout_change_shopper')){
 			if($current->authorise('core.admin', 'com_virtuemart') or $current->authorise('vm.user', 'com_virtuemart')){
 				$this->allowChangeShopper = true;
 			} else {
-				$adminID = JFactory::getSession()->get('vmAdminID',false);
-				$adminID = vmCrypt::decrypt($adminID);
-				if($adminID){
-					$adminIdUser = JFactory::getUser($adminID);
+				$this->adminID = JFactory::getSession()->get('vmAdminID',false);
+				if($this->adminID){
+					if(!class_exists('vmCrypt'))
+						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+					$this->adminID = vmCrypt::decrypt($this->adminID);
+					$adminIdUser = JFactory::getUser($this->adminID);
 					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
 						$this->allowChangeShopper = true;
 					}
@@ -254,14 +264,20 @@ class VirtueMartViewCart extends VmView {
 		// if no shipment rate defined
 		$found_shipment_method =count($shipments_shipment_rates);
 
-		if ($found_shipment_method== 0 AND empty($this->cart->BT))  {
-			$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
-			if (VmConfig::get('oncheckout_opc', 1)) {
-				vmInfo($redirectMsg);
-			} else {
-				$mainframe = JFactory::getApplication();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $redirectMsg);
+		$ok = true;
+		if ($found_shipment_method == 0)  {
+			$validUserDataBT = $this->cart->validateUserData();
+
+			if ($validUserDataBT===-1) {
+				if (VmConfig::get('oncheckout_opc', 1)) {
+					vmdebug('lSelectShipment $found_shipment_method === 0 show error');
+					$ok = false;
+				} else {
+					$mainframe = JFactory::getApplication();
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST'));
+				}
 			}
+
 		}
 		if(empty($selectedShipment)){
 			if($s_id = VmConfig::get('set_automatic_shipment',false)){
@@ -276,7 +292,7 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
 		$this->assignRef('found_shipment_method', $found_shipment_method);
 
-		return;
+		return $ok;
 	}
 
 	/*
@@ -310,13 +326,17 @@ class VirtueMartViewCart extends VmView {
 			$link=''; // todo
 			$this->payment_not_found_text = vmText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'" rel="nofollow">'.$link.'</a>');
 		}
-		if ($this->found_payment_method == 0 AND empty($this->cart->BT))  {
-			$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
-			if (VmConfig::get('oncheckout_opc', 1)) {
-				vmInfo($redirectMsg);
-			} else {
-				$mainframe = JFactory::getApplication();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), $redirectMsg);
+
+		$ok = true;
+		if ($this->found_payment_method == 0 )  {
+			$validUserDataBT = $this->cart->validateUserData();
+			if ($validUserDataBT===-1) {
+				if (VmConfig::get('oncheckout_opc', 1)) {
+					$ok = false;
+				} else {
+					$mainframe = JFactory::getApplication();
+					$mainframe->redirect( JRoute::_( 'index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' ), vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST') );
+				}
 			}
 		}
 
@@ -327,7 +347,7 @@ class VirtueMartViewCart extends VmView {
 				vmJsApi::addJScript('autoPayment',$j);
 			}
 		}
-
+		return $ok;
 	}
 
 	private function getTotalInPaymentCurrency() {
@@ -425,18 +445,22 @@ class VirtueMartViewCart extends VmView {
 	function getUserList() {
 
 		$result = false;
+
 		if($this->allowChangeShopper){
-			$adminID = JFactory::getSession()->get('vmAdminID',false);
-			if($adminID){
-				$adminID = vmCrypt::decrypt($adminID);
-				$superVendor = VmConfig::isSuperVendor($adminID);
-				if($superVendor){
-					$uModel = VmModel::getModel('user');
-					$result = $uModel->getSwitchUserList($superVendor,$adminID);
-				}
+			$this->adminID = JFactory::getSession()->get('vmAdminID',false);
+			if($this->adminID) {
+				if(!class_exists('vmCrypt'))
+					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+				$this->adminID = vmCrypt::decrypt( $this->adminID );
+			}
+			$superVendor = VmConfig::isSuperVendor($this->adminID);
+			if($superVendor){
+				$uModel = VmModel::getModel('user');
+				$result = $uModel->getSwitchUserList($superVendor,$this->adminID);
 			}
 		}
-
+		//vmdebug('my user list ',$result);
+		if(!$result) $this->allowChangeShopper = false;
 		return $result;
 	}
 

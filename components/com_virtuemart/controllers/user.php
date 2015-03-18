@@ -195,22 +195,32 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 			if($currentUser->guest!=1 or !$cartObj or ($currentUser->guest==1 and $register) ){
 
-				if($currentUser->guest==1 and $register) $userModel->setId(0);
-
-				$ret = $userModel->store($data);
-
-				if(($currentUser->guest==1 and $register) ){ //and VmConfig::get ('oncheckout_change_shopper')){
+				$switch = false;
+				if($currentUser->guest==1 and $register){
+					$userModel->setId(0);
 					$adminID = JFactory::getSession()->get('vmAdminID',false);
 					if($adminID){
+						if(!class_exists('vmCrypt'))
+							require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 						$adminID = vmCrypt::decrypt($adminID);
 						$adminIdUser = JFactory::getUser($adminID);
 						if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
-							//update session
-							$current = JFactory::getUser($ret['newId']);
-							$session = JFactory::getSession();
-							$session->set('user', $current);
+							$superUser = VmConfig::isSuperVendor($adminID);
+							if($superUser>1){
+								$data['vendorId'] = $superUser;
+							}
+							$switch = true;
 						}
 					}
+				}
+
+				$ret = $userModel->store($data);
+
+				if($switch){ //and VmConfig::get ('oncheckout_change_shopper')){
+					//update session
+					$current = JFactory::getUser($ret['newId']);
+					$session = JFactory::getSession();
+					$session->set('user', $current);
 				}
 			}
 

@@ -578,7 +578,6 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-
 		if($trigger){
 			$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',array($data));
 			foreach($plg_datas as $plg_data){
@@ -587,9 +586,15 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if(!empty($data['vendorId']) and $data['vendorId']>1){
-			$vUserD = array('virtuemart_user_id' => $data['virtuemart_user_id'],'virtuemart_vendor_id' => $data['vendorId']);
+			//$vUserD = array('virtuemart_user_id' => $data['virtuemart_user_id'],'virtuemart_vendor_id' => $data['vendorId']);
 			$vUser = $this->getTable('vendor_users');
-			$vUser->bindChecknStore($vUserD);
+			$vUser->load((int)$data['vendorId']);
+			if(!in_array((int)$data['virtuemart_user_id'],$vUser->virtuemart_user_id)){
+				$arr = array_merge($vUser->virtuemart_user_id,(array)$data['virtuemart_user_id']);
+				$vUser->bind(array('virtuemart_vendor_id'=>(int)$data['vendorId'],'virtuemart_user_id'=>$arr));
+			}
+			$vUser->store();
+
 		}
 
 		return $noError;
@@ -601,7 +606,7 @@ class VirtueMartModelUser extends VmModel {
 
 			$vendorModel = VmModel::getModel('vendor');
 
-			//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
+			//TODO Attention this is set now to virtuemart_vendor_id=1 in single vendor mode, because using a vendor with different id then 1 is not completly supported and can lead to bugs
 			//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
 			if(Vmconfig::get('multix','none')=='none' ){
 				$data['virtuemart_vendor_id'] = 1;
@@ -805,7 +810,6 @@ class VirtueMartModelUser extends VmModel {
 					if($lang->hasKey('COM_VIRTUEMART_MISSING_'.$field->name)){
 						$missingFields[] = vmText::_('COM_VIRTUEMART_MISSING_'.$field->name);
 					} else {
-						//vmdebug('my field titel',$field->title);
 						$missingFields[] = vmText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$field->title );
 					}
 
@@ -1255,24 +1259,18 @@ class VirtueMartModelUser extends VmModel {
 			$db = JFactory::getDbo();
 			$search = vRequest::getUword('usersearch','');
 			if(!empty($search)){
-				$search = 'WHERE (`name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%)';
+				$search = ' WHERE (`name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%)';
+			} else if($superVendor!=1) {
+				$search = ' WHERE vu.virtuemart_vendor_id = '.$superVendor.' ';
 			}
+
 			$q = 'SELECT ju.`id`,`name`,`username` FROM `#__users` as ju';
 
-			$q .= ' LEFT JOIN #__virtuemart_vmusers AS vmu ON vmu.virtuemart_user_id = ju.id';
-			$q .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON vu.virtuemart_user_id = ju.id';
-			if(!empty($search)){
-				$search .= ' AND (vu.virtuemart_vendor_id = '.$superVendor.' ';
-			} else {
-				$search = ' WHERE (vu.virtuemart_vendor_id = '.$superVendor.' ';
+			if($superVendor!=1) {
+				$q .= ' LEFT JOIN #__virtuemart_vmusers AS vmu ON vmu.virtuemart_user_id = ju.id';
+				$q .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON vu.virtuemart_user_id = ju.id';
+				$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
 			}
-
-			if($superVendor==1){
-				$search .=  ' OR (vu.virtuemart_vendor_id) IS NULL)';
-			} else {
-				$search .=  ' )';
-			}
-			$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
 
 			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
 			$db->setQuery($q);

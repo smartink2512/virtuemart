@@ -150,7 +150,15 @@ class vRequest {
 	 */
 	public static function getHtml($name, $default = '', $input = 0){
 		$tmp = self::get($name, $default,FILTER_UNSAFE_RAW,FILTER_FLAG_ENCODE_LOW,$input);
-		return JComponentHelper::filterText($tmp);
+		if(is_array($tmp)){
+			foreach($tmp as $k =>$v){
+				$tmp[$k] = JComponentHelper::filterText($v);
+			}
+			return $tmp;
+		} else {
+			return JComponentHelper::filterText($tmp);
+		}
+
 	}
 
 	public static function getEmail($name, $default = ''){

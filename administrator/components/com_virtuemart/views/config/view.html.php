@@ -58,6 +58,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 
 		$this->vmLayoutList = $model->getLayoutList('virtuemart');
 
+		$this->cartLayoutList = $model->getLayoutList('cart',array('padded.php','perror.php'));
 		$this->categoryLayoutList = $model->getLayoutList('category');
 
 		$this->productLayoutList = $model->getLayoutList('productdetails');

@@ -794,6 +794,7 @@ class VmConfig {
 		$install = vRequest::getInt('install',false);
 		$redirected = vRequest::getInt('redirected',false);
 		$link='';
+		$msg = '';
 
 		if(empty($configTable) ){
 			self::$installed = false;
@@ -808,9 +809,16 @@ class VmConfig {
 			$db->setQuery($q);
 			$knownLangs = $db->loadColumn();
 			//vmdebug('Selected language '.$selectedLang.' $knownLangs ',$knownLangs);
-			if($app->isAdmin() and !in_array($selectedLang,$knownLangs)){
-				$link = 'index.php?option=com_installer&view=languages';
-				$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
+
+			if($app->isAdmin() and !$redirected and !in_array($selectedLang,$knownLangs)){
+				//$option = vRequest::getVar('option');
+				//VmConfig::$_debug=true;
+				//vmdebug('my option',$option,$_REQUEST);
+				//if($option!='com_languages'){
+					$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
+					//$link = 'index.php?option=com_installer&view=languages&redirected=1';
+					//$app->redirect($link,$msg);
+				//}
 				$app->enqueueMessage($msg);
 			}
 
@@ -818,11 +826,11 @@ class VmConfig {
 			if(!self::$installed){
 				if(!$redirected and !$install){
 					$link = 'index.php?option=com_virtuemart&view=updatesmigration&redirected=1';
-					$msg = '';
+
 					if($app->isSite()){
 						$link = JURI::root(true).'/administrator/'.$link;
 					} else {
-						$msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
+						if(empty($msg)) $msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
 					}
 				}
 			}
@@ -867,7 +875,8 @@ class VmConfig {
 			if($user->authorise('core.admin','com_virtuemart') and ($install or $redirected)){
 				VmConfig::$_jpConfig->set('dangeroustools',1);
 			}
-			if(!empty($link)) $app->redirect($link,$msg);
+			if(!empty($msg)) $app->enqueueMessage($msg);
+			if(!empty($link)) $app->redirect($link);
 		}
 
 		return self::$_jpConfig;
@@ -1107,6 +1116,8 @@ class VmConfig {
 
 
 		if(!isset(self::$_virtuemart_vendor_id[$adminId])){
+
+			self::$_virtuemart_vendor_id[$adminId] = 0;
 			if(empty($adminId)){
 				$user = JFactory::getUser();
 			} else {
@@ -1128,11 +1139,8 @@ class VmConfig {
 						self::$_virtuemart_vendor_id[$adminId] = 1;
 					}
 				}
-			} else {
-				self::$_virtuemart_vendor_id[$adminId] = 0;
-				vmdebug('Not a vendor');
 			}
-
+			if(empty(self::$_virtuemart_vendor_id[$adminId]))vmdebug('Not a vendor');
 		}
 		return self::$_virtuemart_vendor_id[$adminId];
 	}
