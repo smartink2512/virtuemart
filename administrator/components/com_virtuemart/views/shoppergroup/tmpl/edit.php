@@ -47,7 +47,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	    <legend><?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DETAILS'); ?></legend>
 	    <table class="admintable">
 
-		<?php echo VmHTML::row('input', 'COM_VIRTUEMART_SHOPPERGROUP_NAME', 'shopper_group_name', $this->shoppergroup->shopper_group_name); ?>
+		<?php echo VmHTML::row('input', 'COM_VIRTUEMART_SHOPPERGROUP_NAME', 'shopper_group_name', $this->shoppergroup->shopper_group_name,'class="required"'); ?>
 		<?php echo VmHTML::row('booleanlist', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->shoppergroup->published); ?>
 		<?php /*
 		  <tr>

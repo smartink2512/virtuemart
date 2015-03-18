@@ -35,7 +35,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 		$prefix="COM_VIRTUEMART_COUNTRY_";
 		$country_string = $lang->hasKey($prefix.$this->country->country_3_code) ? ' (' . vmText::_($prefix.$this->country->country_3_code) . ')' : ' ';
         ?>
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_REFERENCE_NAME','country_name',$this->country->country_name, 'class="inputbox"', '', 50, 50, $country_string); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_REFERENCE_NAME','country_name',$this->country->country_name,'class="required"', '', 50, 50, $country_string); ?>
 
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->country->published); ?>
 <?php /* TODO not implemented		<tr>

@@ -260,12 +260,18 @@ class GenericTableUpdater extends VmModel{
 			} else if(strpos($line,'ENGINE')!==false){
 				$tableDefStarted = false;
 
+				if(strpos(strtolower($line),'myisam')!==false){
+					$engine = 'MyISAM';
+				} else {
+					$engine = 'InnoDB';
+				}
+
 				$start = strpos($line,"COMMENT='");
 				$temp = substr($line,$start+9);
 				$end = strpos($temp,"'");
 				$comment = substr($temp,0,$end);
 
-				$tables[$tablename] = array($fieldLines, $tableKeys,$comment);
+				$tables[$tablename] = array($fieldLines, $tableKeys,$comment,$engine);
 			} else if($tableDefStarted){
 
 				$start = strpos($line,"`");
@@ -298,7 +304,7 @@ class GenericTableUpdater extends VmModel{
 			$tables = $this->getTablesBySql($file);
 		}
 
-// 		vmdebug('updateMyVmTables $tables',$tables); return false;
+ 		//vmdebug('updateMyVmTables $tables',$tables); return false;
 		// 	vmdebug('Parsed tables',$tables); //return;
 		$this->_db->setQuery('SHOW TABLES LIKE "%'.$like.'%"');
 		if (!$existingtables = $this->_db->loadColumn()) {
@@ -322,12 +328,11 @@ class GenericTableUpdater extends VmModel{
 					$this->alterKey($tablename,$table[1],true);
 					$this->alterColumns($tablename,$table[0],false);
 				} else {
-					$this->alterColumns($tablename,$table[0],false);
+					$this->alterColumns($tablename,$table[0],false,$table[3]);
 					if($this->reCreaKey!=0){
 						$this->alterKey($tablename,$table[1],false);
 					}
 				}
-				$this->optimizeTable($tablename);
 				// 				unset($todelete[$tablename]);
 			} else {
 
@@ -522,7 +527,7 @@ class GenericTableUpdater extends VmModel{
 	 * @param unknown_type $fields
 	 * @param unknown_type $command
 	 */
-	public function alterColumns($tablename,$fields,$reCreatePrimary){
+	public function alterColumns($tablename,$fields,$reCreatePrimary,$engine='MyISAM'){
 
 
 		$after =' FIRST';
@@ -638,6 +643,10 @@ class GenericTableUpdater extends VmModel{
 			}
 			$after = ' AFTER `'.$fieldname.'`';
 		}
+
+		$q = 'ALTER '.$tablename.' ENGINE='.$engine;
+		$this->_db->setQuery($q);
+		$this->_db->execute();
 
 		if($dropped != 0 or $altered !=0 or $added!=0){
 			$this->_app->enqueueMessage('Table updated: Tablename '.$tablename.' dropped: '.$dropped.' altered: '.$altered.' added: '.$added);

@@ -30,7 +30,7 @@ AdminUIHelper::startAdminArea($this);
 	<legend><?php echo JHtml::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. vmText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
 	<table class="admintable">
 		<?php
-		echo VmHTML::row('input', 'COM_VIRTUEMART_STATE_NAME', 'state_name', $this->state->state_name,'size="50"');
+		echo VmHTML::row('input', 'COM_VIRTUEMART_STATE_NAME', 'state_name', $this->state->state_name,'class="required" size="50"');
 		echo VmHTML::row('booleanlist', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->state->published);
 		?>
 		<tr>

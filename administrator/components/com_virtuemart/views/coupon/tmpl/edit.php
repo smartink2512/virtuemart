@@ -28,8 +28,8 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 	<fieldset>
 	    <legend><?php echo vmText::_('COM_VIRTUEMART_COUPON_DETAILS'); ?></legend>
 	    <table class="admintable">
-			<?php echo VmHTML::row('input','COM_VIRTUEMART_COUPON','coupon_code',$this->coupon->coupon_code,'class="inputbox"','',20,32); ?>
-					<?php echo VmHTML::row('input','COM_VIRTUEMART_VALUE','coupon_value',$this->coupon->coupon_value,'class="inputbox"','',10,32); ?>
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_COUPON','coupon_code',$this->coupon->coupon_code,'class="required"','',20,32); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_VALUE','coupon_value',$this->coupon->coupon_value,'class="required"','',10,32); ?>
 
 			<?php
 				$radioOptions = array();

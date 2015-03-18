@@ -445,13 +445,28 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 * @author Max Milbers
 	 */
 	function updateDatabase(){
-
 		vRequest::vmCheckToken();
-
 		if(!class_exists('com_virtuemartInstallerScript')) require(VMPATH_ADMIN . DS . 'install' . DS . 'script.virtuemart.php');
 		$updater = new com_virtuemartInstallerScript();
 		$updater->update(false);
 		$this->setRedirect($this->redirectPath, 'Database updated');
+	}
+
+	/**
+	 * This is executing the update table commands to adjust joomla tables to the latest layout
+	 * @author Max Milbers
+	 */
+	function updateDatabaseJoomla(){
+		vRequest::vmCheckToken();
+		$p = VMPATH_ADMIN.DS.'install'.DS.'updatejtabletovmstyle.sql';
+		$msg = 'File updatejtabletovmstyle.sql not found';
+		if($p){
+			if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
+			$updater = new GenericTableUpdater();
+			$updater->updateMyVmTables();
+			$msg = 'Joomla Database updated';
+		}
+		$this->setRedirect($this->redirectPath, $msg);
 	}
 
 	/**

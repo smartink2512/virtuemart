@@ -163,11 +163,11 @@ if(!VmConfig::get('dangeroustools', false)){
 				</a></div>
 		</td>
 		<td align="center">
-			<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=updateEncoding&'.JSession::getFormToken().'=1' ); ?>
-			<div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_UPDATE_OLD_CUSTOMFORMAT') ); ?>', '<?php echo $link; ?>');">
+			<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=updateDatabaseJoomla&'.JSession::getFormToken().'=1' ); ?>
+			<div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('Update Joomla Database') ); ?>', '<?php echo $link; ?>');">
 					<span class="vmicon48"></span>
 					<br />
-					<?php echo vmText::_('COM_VIRTUEMART_UPDATE_OLD_CUSTOMFORMAT'); ?>
+					<?php echo vmText::_('Update Joomla Database for pros, use only if you know what you do'); ?>
 				</a></div>
 		</td>
 	</tr>
