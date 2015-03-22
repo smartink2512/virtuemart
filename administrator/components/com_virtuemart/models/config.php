@@ -90,8 +90,7 @@ class VirtueMartModelConfig extends VmModel {
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
 					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_Dir($file)){
-						vmdebug('getLayouts',$file,$ignore);
-						if( (is_array($ignore) and !in_array($file,$ignore)) and ( (!empty($type) and strpos($file,$type)===0) or (empty($type) and strpos($file,'_')==0)) ){
+						if( (empty($ignore) or (is_array($ignore) and !in_array($file,$ignore)) ) and ( (!empty($type) and strpos($file,$type)===0) or (empty($type) and strpos($file,'_')==0)) ){
 							//Handling directly for extension is much cleaner
 							$path_info = pathinfo($file);
 							if(empty($path_info['extension'])){

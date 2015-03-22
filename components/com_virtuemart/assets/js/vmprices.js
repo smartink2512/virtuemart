@@ -5,7 +5,7 @@ if (typeof Virtuemart === "undefined")
 Virtuemart.setproducttype = function(form, id) {
 	form.view = null;
 	var datas = form.serialize();
-	var prices = form.parent(".productdetails").find(".product-price");
+	var prices = form.parents(".productdetails").find(".product-price");
 	if (0 == prices.length) {
 		prices = jQuery("#productPrice" + id);
 	}
@@ -209,10 +209,9 @@ Virtuemart.product = function(carts) {
         jQuery(quantity).on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
 
         this.action ="#";
-        //this.preventDefault();
-        //addtocart = cart.find('input.addtocart-button'),
-        addtocart = cart.find('input[name="addtocart"]');
-       // console.log("Execute bind to addtocart",addtocart);
+        //addtocart = cart.find('input[name="addtocart"]');
+        addtocart = cart.find('button[name="addtocart"], input[name="addtocart"], a[name="addtocart"]');
+
         jQuery(addtocart).off('click',Virtuemart.addtocart);
         jQuery(addtocart).on('click',{cart:cart},Virtuemart.addtocart);
 

@@ -1882,14 +1882,28 @@ class VirtueMartModelProduct extends VmModel {
 
 		// created_on , modified_on
 		$db = JFactory::getDBO ();
-		$vendorId = 1;
-		$childs = count ($this->getProductChildIds ($id));
+
 		$db->setQuery ('SELECT `product_name`,`slug`,`virtuemart_vendor_id` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
 		$parent = $db->loadObject ();
 		$prodTable = $this->getTable ('products');
 
-		//$newslug = $parent->slug . $id . rand (1, 9);
-		if(empty($parent->slug)) $parent->slug = $parent->product_name;
+		$childs = $this->getProductChildIds ($id);
+		if($childs){
+			$lastCId = end($childs);
+			reset($childs);
+			if(!empty($lastCId)){
+				$db->setQuery ('SELECT `product_name`,`slug`,`virtuemart_vendor_id` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$lastCId);
+				$lastChild = $db->loadObject ();
+				if(!empty($lastChild->slug)){
+					$prodTable->slug = $lastChild->slug;
+				}
+			}
+		} else if(empty($parent->slug)){
+			$prodTable->slug = $parent->product_name;
+		} else {
+			$prodTable->slug = $parent->slug;
+		}
+
 		$prodTable->checkCreateUnique('#__virtuemart_products_' . VmConfig::$vmlang,'slug');
 		//$newslug = $prodTable->checkCreateUnique('products_' . VmConfig::$vmlang,$parent->slug);
 		$data = array('product_name' => $parent->product_name, 'slug' => $prodTable->slug, 'virtuemart_vendor_id' => (int)$prodTable->virtuemart_vendor_id, 'product_parent_id' => (int)$id);
