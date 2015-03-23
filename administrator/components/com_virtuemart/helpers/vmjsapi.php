@@ -432,8 +432,10 @@ class vmJsApi{
 			$be = self::isAdmin();
 			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::addJScript('chosen.jquery.min',false,false);
-				vmJsApi::jDynUpdate();
-				if(!$be)vmJsApi::addJScript('vmprices');
+				if(!$be) {
+					vmJsApi::jDynUpdate();
+					vmJsApi::addJScript('vmprices');
+				}
 				vmJsApi::css('chosen');
 
 				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
@@ -445,7 +447,9 @@ class vmJsApi{
 				}
 
 				$script =
-	'Virtuemart.updateChosenDropdownLayout = function() {
+	'if (typeof Virtuemart === "undefined")
+	var Virtuemart = {};
+	Virtuemart.updateChosenDropdownLayout = function() {
 		var vm2string = {'.$vm2string.'};
 		jQuery(function($) {
 			'.$selector.'.chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text,disable_search_threshold: 5});
@@ -482,16 +486,11 @@ class vmJsApi{
 
 		$lg = JFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);
-		/*$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
-		if (!in_array ($lang, $existingLang)) {
-			$lang = "en";
-		}*/
 		$vlePath = vmJsApi::setPath('languages/jquery.validationEngine-'.$lang, FALSE , '' ,$minified = NULL ,   'js', true);
-		if(file_exists($vlePath) and !is_dir($vlePath)){
-			vmJsApi::addJScript( 'languages/jquery.validationEngine-'.$lang );
-		} else {
-			vmJsApi::addJScript( 'languages/jquery.validationEngine-en' );
+		if(!file_exists($vlePath) or is_dir($vlePath)){
+			$lang = 'en';
 		}
+		vmJsApi::addJScript( 'languages/jquery.validationEngine-'.$lang );
 
 		vmJsApi::css ( 'validationEngine.template' );
 		vmJsApi::css ( 'validationEngine.jquery' );
@@ -696,7 +695,6 @@ class vmJsApi{
 		if ($jDate) {
 			return $display;
 		}
-		$front = 'components/com_virtuemart/assets/';
 
 		self::addJScript('datepicker','
 //<![CDATA[
@@ -723,14 +721,12 @@ class vmJsApi{
 		$lg = JFactory::getLanguage();
 		$lang = $lg->getTag();
 
-		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
-		if (!in_array ($lang, $existingLang)) {
-			$lang = substr ($lang, 0, 2);
+		$vlePath = vmJsApi::setPath('i18n/jquery.ui.datepicker-'.$lang, FALSE , '' ,$minified = NULL ,   'js', true);
+		if(!file_exists($vlePath) or is_dir($vlePath)){
+			$lang = 'en-GB';
 		}
-		elseif (!in_array ($lang, $existingLang)) {
-			$lang = "en-GB";
-		}
-		//vmJsApi::js ('jquery.ui.datepicker-'.$lang, $front.'js/i18n' ) ;
+		vmJsApi::addJScript( 'i18n/jquery.ui.datepicker-'.$lang );
+
 		$jDate = TRUE;
 		return $display;
 	}
