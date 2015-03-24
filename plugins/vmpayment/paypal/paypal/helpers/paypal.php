@@ -297,7 +297,10 @@ class PaypalHelperPaypal {
 	}
 
 	protected function truncate ($string, $length) {
-		return substr($string, 0, $length);
+		if (!class_exists('shopFunctionsF')) {
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		}
+		return ShopFunctionsF::vmSubstr($string, 0, $length);
 	}
 
 	protected function _getFormattedDate ($month, $year) {

@@ -133,7 +133,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		}
 		$html = array();
 		$method_name = $this->_psType . '_name';
-		vmJsApi::addJScript(  'components/com_virtuemart/assets/js/vmcreditcard');
+
 		VmConfig::loadJLang('com_virtuemart', true);
 		vmJsApi::jCreditCard();
 		$htmla = '';
@@ -794,8 +794,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _getfield($string, $length) {
-
-		return substr($string, 0, $length);
+		if (!class_exists('shopFunctionsF')) {
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		}
+		return ShopFunctionsF::vmSubstr($string, 0, $length);
 	}
 
 	function _setBillingInformation($usrBT) {

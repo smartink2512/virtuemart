@@ -40,7 +40,7 @@ defined('_JEXEC') or die('');
 
 <body style="background: #F2F2F2;word-wrap: break-word;">
 <div width="100%">
-	<table style="margin: auto; width: 600px; border: solid #dad8d8 1px" cellpadding="0" cellspacing="0"  ><tr><td>
+	<table style="margin: auto; width: 600px; border: solid #dad8d8 1px" cellpadding="0" cellspacing="0"  >
 		<tr>
 			<td valign="top" align="center" style="padding: 15px 25px;">
 

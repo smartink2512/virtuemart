@@ -337,6 +337,7 @@ class GenericTableUpdater extends VmModel{
 					$this->alterKey($tablename,$table[1],true);
 					$this->alterColumns($tablename,$table[0],false);
 				} else {
+					if(!isset($table[3])) $table[3] = 'MyISAM';
 					$this->alterColumns($tablename,$table[0],false,$table[3]);
 					if($this->reCreaKey!=0){
 						$this->alterKey($tablename,$table[1],false);

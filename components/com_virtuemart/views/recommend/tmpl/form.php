@@ -18,7 +18,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
-
 $min = VmConfig::get('asks_minimum_comment_length', 50);
 $max = VmConfig::get('asks_maximum_comment_length', 2000);
 vmJsApi::JvalideForm();
@@ -49,7 +48,6 @@ if (empty ( $this->product )) {
 	}
 	if(empty($this->login) or VmConfig::get('recommend_unauth',false)){
 		?>
-
 		<div class="ask-a-question-view">
 			<h1><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_RECOMMEND')  ?></h1>
 
@@ -68,7 +66,7 @@ if (empty ( $this->product )) {
 
 				<div class="width30 floatleft center">
 					<?php // Product Image
-					echo $this->product->images[0]->displayMediaThumb('class="modal product-image"',false); ?>
+					echo $this->product->images[0]->displayMediaThumb('class="product-image"',false); ?>
 				</div>
 
 			<div class="clear"></div>
@@ -80,15 +78,15 @@ if (empty ( $this->product )) {
 
 					<table class="askform">
 						<tr>
-							<td><label><?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_NAME')  ?> : </label></td>
+							<td><label for="name"><?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_NAME')  ?> : </label></td>
 							<td><input type="text" value="<?php echo $this->user->name ? $this->user->name : $askQuestionData['name'] ?>" name="name" id="name" size="30" class="validate[required,minSize[3],maxSize[64]]"/></td>
 						</tr>
 						<tr>
-							<td><label><?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_EMAIL')  ?> : </label></td>
+							<td><label for="email"><?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_EMAIL')  ?> : </label></td>
 							<td><input type="text" value="<?php echo $mailRecommendData['email'] ?>" name="email" id="email" size="30" class="validate[required,custom[email]]"/></td>
 						</tr>
 						<tr>
-							<td colspan="2"><label><?php echo vmText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max); ?></label><td>
+							<td colspan="2"><label for="comment"><?php echo vmText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max); ?></label></td>
 						</tr>
 						<tr>
 							<td colspan="2"><textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="8"><?php echo $askQuestionData['comment'] ? $askQuestionData['comment'] : vmText::sprintf('COM_VIRTUEMART_RECOMMEND_COMMENT', $this->vendor->vendor_store_name) ?></textarea></td>
@@ -96,10 +94,6 @@ if (empty ( $this->product )) {
 					</table>
 
 					<div class="submit">
-						<div class="width50 floatright right paddingtop">
-							<?php echo vmText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
-							<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
-						</div>
 						<?php // captcha addition
 						if(VmConfig::get ('ask_captcha')){
 							JHTML::_('behavior.framework');
@@ -107,12 +101,20 @@ if (empty ( $this->product )) {
 							$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 							?>
 							<div id="dynamic_recaptcha_1"></div>
-						<?php 
+						<?php
 						}
-						// end of captcha addition 
+						// end of captcha addition
 						?>
-						<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" value="<?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" />
-					</div>
+            <div>
+  						<div class="floatleft width50 ">
+                <input class="highlight-button" type="submit" name="submit_ask" title="<?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" value="<?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" />
+              </div>
+              <div class="floatleft width50 text-right">
+                <label for="counter"><?php echo vmText::_('COM_VIRTUEMART_ASK_COUNT')  ?></label>
+  							<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
+  						</div>
+            </div>
+          </div>
 
 					<input type="hidden" name="virtuemart_product_id" value="<?php echo vRequest::getInt('virtuemart_product_id',0); ?>" />
 					<input type="hidden" name="tmpl" value="component" />

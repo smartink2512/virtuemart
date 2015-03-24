@@ -1307,15 +1307,13 @@ class VirtueMartCart {
 
 				if(isset($data[$prefix.$name])){
 					if(!empty($data[$prefix.$name])){
-
-						$value = vmFilter::hl( $data[$prefix.$name],array('deny_attribute'=>'*'));
-						//to strong
-						/* $value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags  */
-						//lets use instead
-						$value = JComponentHelper::filterText($value);
-						$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
-						$value =  str_replace(array('"',"\t","\n","\r","\0","\x0B"),' ',trim($value));
-						$data[$prefix.$name] = (string)preg_replace('#^\'#si','',$value);
+						if(is_array($data[$prefix.$name])){
+							foreach($data[$prefix.$name] as $k=>$v){
+								$data[$prefix.$name][$k] = self::filterCartInput($v);
+							}
+						} else {
+							$data[$prefix.$name] = self::filterCartInput($data[$prefix.$name]);
+						}
 					}
 					$address[$name] = $data[$prefix.$name];
 				} else {
@@ -1334,6 +1332,17 @@ class VirtueMartCart {
 			$this->setCartIntoSession(true);
 		}
 
+	}
+
+	private function filterCartInput($v){
+		$v = vmFilter::hl( $v,array('deny_attribute'=>'*'));
+		//to strong
+		/* $value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags  */
+		//lets use instead
+		$v = JComponentHelper::filterText($v);
+		$v = (string)preg_replace('#on[a-z](.+?)\)#si','',$v);//replace start of script onclick() onload()...
+		$v =  str_replace(array('"',"\t","\n","\r","\0","\x0B"),' ',trim($v));
+		return (string)preg_replace('#^\'#si','',$v);
 	}
 
 	/**

@@ -713,6 +713,14 @@ class shopFunctionsF {
 		}
 	}
 
+	static public function vmSubstr($str,$s,$e = null){
+		if(function_exists( 'mb_strlen' )) {
+			return mb_substr( $str, $s, $e );
+		} else {
+			return substr( $str, $s, $e );
+		}
+	}
+
 	/**
 	 * Admin UI Tabs
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design

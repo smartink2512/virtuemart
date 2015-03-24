@@ -504,7 +504,18 @@ class vmJsApi{
 		}
 
 		// Implement Joomla's form validation
-		JHtml::_ ('behavior.formvalidation');
+		JHtml::_ ('behavior.formvalidation');	//j2
+		//JHtml::_('behavior.formvalidator');	//j3
+
+		/*vmJsApi::addJScript('/media/system/js/core.js',false,false);
+		vmJsApi::addJScript('html5fallback',false,false);
+		self::jQuery();
+		// Add validate.js language strings
+		JText::script('JLIB_FORM_FIELD_INVALID');
+
+		JHtml::_('script', 'system/punycode.js', false, true);
+		JHtml::_('script', 'system/validate.js', false, true);*/
+
 
 		$regfields = array('username', 'name');
 		if($guest){
@@ -662,7 +673,8 @@ class vmJsApi{
 			$date = 0;
 		}
 		if (empty($id)) {
-			$id = $name;
+			$id = str_replace(array('[]','[',']'),'.',$name);
+			$id = str_replace('..','.',$id);
 		}
 		static $idUnique = array();
 		static $jDate;
