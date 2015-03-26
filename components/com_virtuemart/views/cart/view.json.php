@@ -45,7 +45,8 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('cart', $cart);
 
     	$this->prepareContinueLink();
-		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		VmTemplate::setVmTemplate($this, 0, 0, $layoutName);
 
 		parent::display($tpl);
 	}

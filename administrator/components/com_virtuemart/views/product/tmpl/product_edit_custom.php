@@ -99,11 +99,12 @@ defined('_JEXEC') or die('Restricted access');
 							<td >
 							<b>'.vmText::_($type).'</b> '.vmText::_($customfield->custom_title).'</span><br/>
 								'.$title.' '.$text.'
-								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-								<span class="vmicon vmicon-16-move"></span>
-								<span class="vmicon vmicon-16-remove"></span>
-
-						'.VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
+								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>';
+						if($customfield->virtuemart_product_id==$this->product->product_parent_id){
+							$tables['fields'] .= '<span class="vmicon vmicon-16-move"></span>
+							<span class="vmicon vmicon-16-remove"></span>';
+						}
+						$tables['fields'] .= VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 						.'</td>
 							<td '.$colspan.'>'.$customfield->display.'</td>
 						 </tr>';

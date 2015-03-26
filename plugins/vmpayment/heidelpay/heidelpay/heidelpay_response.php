@@ -10,6 +10,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 
+ 
 include('../../../../configuration.php');
 $config = new JConfig();
 
@@ -44,11 +45,11 @@ $redirectURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginrespo
 $cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on='.$on.'&pm='.$pm.'&Itemid='.$Itemid;
 
 
-function updateHeidelpay($orderID, $connect) {
+function updateHeidelpay($orderID, $connect, $on, $pm) {
 	$comment="";
 	if ( preg_match('/^[A-Za-z0-9 -]+$/', $orderID , $str)) {
 		$link = mysql_connect($connect->host, $connect->user , $connect->password);
-		mysql_select_db($connect->db);
+		mysql_select_db($connect->db);	
 		$result = mysql_query("SELECT virtuemart_order_id FROM ".$connect->dbprefix."virtuemart_orders"." WHERE  order_number = '".mysql_real_escape_string($orderID)."';");
 		$row = mysql_fetch_object($result);
 		$paymentCode = explode('.' , $_POST['PAYMENT_CODE']);
@@ -156,20 +157,20 @@ function updateHeidelpay($orderID, $connect) {
 		
 		if (!empty($row->virtuemart_order_id)) {
 			$sql = "INSERT ".$connect->dbprefix."virtuemart_payment_plg_heidelpay SET " .
-					"virtuemart_order_id			= \"".mysql_real_escape_string($row->virtuemart_order_id). "\"," .
-					"order_number					= \"".mysql_real_escape_string($_GET['on']). "\"," .
-					"virtuemart_paymentmethod_id	= \"".mysql_real_escape_string($_GET['pm']). "\"," .
-					"unique_id 						= \"".mysql_real_escape_string($_POST['IDENTIFICATION_UNIQUEID']). "\"," .
+					"virtuemart_order_id	= \"".mysql_real_escape_string($row->virtuemart_order_id). "\"," .
+					"order_number			= \"".mysql_real_escape_string($on). "\"," .
+					"virtuemart_paymentmethod_id = \"".mysql_real_escape_string($pm). "\"," .
+					"unique_id					= \"".mysql_real_escape_string($_POST['IDENTIFICATION_UNIQUEID']). "\"," .
 					"short_id						= \"".mysql_real_escape_string($_POST['IDENTIFICATION_SHORTID']). "\"," .
-					"payment_code					= \"".mysql_real_escape_string($_POST['PROCESSING_REASON_CODE']). "\"," .
-					"comment						= \"".mysql_real_escape_string($comment). "\"," .
-					"payment_methode				= \"".mysql_real_escape_string($paymentCode[0]). "\"," .
-					"payment_type					= \"".mysql_real_escape_string($paymentCode[1]). "\"," .
-					"transaction_mode				= \"".mysql_real_escape_string($_POST['TRANSACTION_MODE']). "\"," .
-					"payment_name					= \"".mysql_real_escape_string($_POST['CRITERION_PAYMENT_NAME']). "\"," .
-					"processing_result				= \"".mysql_real_escape_string($_POST['PROCESSING_RESULT']). "\"," .
-					"secret_hash					= \"".mysql_real_escape_string($_POST['CRITERION_SECRET']). "\"," .
-					"response_ip					= \"".mysql_real_escape_string($_SERVER['REMOTE_ADDR']). "\";" ;
+					"payment_code			= \"".mysql_real_escape_string($_POST['PROCESSING_REASON_CODE']). "\"," .
+					"comment					= \"".mysql_real_escape_string($comment). "\"," .
+					"payment_methode	= \"".mysql_real_escape_string($paymentCode[0]). "\"," .
+					"payment_type			= \"".mysql_real_escape_string($paymentCode[1]). "\"," .
+					"transaction_mode		= \"".mysql_real_escape_string($_POST['TRANSACTION_MODE']). "\"," .
+					"payment_name			= \"".mysql_real_escape_string($_POST['CRITERION_PAYMENT_NAME']). "\"," .
+					"processing_result		= \"".mysql_real_escape_string($_POST['PROCESSING_RESULT']). "\"," .
+					"secret_hash				= \"".mysql_real_escape_string($_POST['CRITERION_SECRET']). "\"," .
+					"response_ip				= \"".mysql_real_escape_string($_SERVER['REMOTE_ADDR']). "\";" ;
 			$dbEerror = mysql_query($sql);
 		}
 	}
@@ -179,12 +180,12 @@ $returnvalue=$_POST['PROCESSING_RESULT'];
 if (!empty($returnvalue)){
 	if (strstr($returnvalue,"ACK")) {
 		print $redirectURL;
-		updateHeidelpay($_POST['IDENTIFICATION_TRANSACTIONID'], $config);
+		updateHeidelpay($_POST['IDENTIFICATION_TRANSACTIONID'], $config, $on, $pm);
 	} else if ($_POST['FRONTEND_REQUEST_CANCELLED'] == 'true'){
 		print $cancelURL ;
 	} else {
-		updateHeidelpay($_POST['IDENTIFICATION_TRANSACTIONID'], $config);
-		print $redirectURL;
+		updateHeidelpay($_POST['IDENTIFICATION_TRANSACTIONID'], $config, $on, $pm);
+		print $cancelURL;
 	}
 } else {
 	echo 'FAIL';

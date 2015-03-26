@@ -11,14 +11,15 @@
 if (typeof Virtuemart === "undefined")
 	var Virtuemart = {};
 jQuery(function($) {
+
     // Add to cart and other scripts may check this variable and return while
     // the content is being updated.
     Virtuemart.isUpdatingContent = false;
     Virtuemart.updateContent = function(url, callback) {
+
         if(Virtuemart.isUpdatingContent) return false;
         Virtuemart.isUpdatingContent = true;
         url += url.indexOf('&') == -1 ? '?tmpl=component' : '&tmpl=component';
-        //console.log("UpdateContent URI "+url);
         $.ajax({
             url: url,
             dataType: 'html',
@@ -102,7 +103,14 @@ jQuery(function($) {
             url: url
         }
         everPushedHistory = true;
-        history.pushState(stateObj, "", url);
+        try {
+            history.pushState(stateObj, "", url);
+        }
+        catch(err) {
+            // Fallback for IE
+            window.location.href = url;
+            return false;
+        }
     }
 
     Virtuemart.browserStateChangeEvent = function(event) {

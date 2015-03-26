@@ -186,7 +186,7 @@ class VmViewAdmin extends JViewLegacy {
 		links.each(function(){
 			var onClick = new String(this.onclick);
 			jQuery(this).click(function(e){
-				console.log('click ');
+				//console.log('click ');
 				e.stopImmediatePropagation();
 				e.preventDefault();
 			});
@@ -257,8 +257,8 @@ class VmViewAdmin extends JViewLegacy {
 		self::showHelp();
 		self::showACLPref($view);
 
-		//if($view == 'user' or $view == 'product' or $view == 'custom' or $view == 'category') $validate = true; else $validate = false;
-		$this->addJsJoomlaSubmitButton(true);
+		if($view != 'shipmentmethod' and $view != 'paymentmethod' and $view != 'media') $validate = true; else $validate = false;
+		$this->addJsJoomlaSubmitButton($validate);
 
         $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
 		$params = JComponentHelper::getParams('com_languages');

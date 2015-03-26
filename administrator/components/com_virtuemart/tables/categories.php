@@ -215,6 +215,7 @@ class TableCategories extends VmTable {
 			return false;
 		}
 
+		$order2 = '';
 		$query = 'SELECT c.'.$this->_tbl_key.', c.ordering'
 		. ' FROM '. $this->_tbl . ' c'
 		. ' LEFT JOIN #__virtuemart_category_categories cx'

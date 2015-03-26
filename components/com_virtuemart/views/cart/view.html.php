@@ -192,6 +192,7 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		VmTemplate::setVmTemplate($this, 0, 0, $layoutName);
 
 		//We never want that the cart is indexed

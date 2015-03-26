@@ -19,7 +19,7 @@ if (!class_exists ('vmPSPlugin')) {
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	public static $_this = FALSE;
-	protected $version = '14.11.27';
+	protected $version = '15.03.18';
 
 	function __construct (& $subject, $config) {
 		//if (self::$_this)
@@ -217,7 +217,6 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			$params['PAYMENT.CODE']  = "PP.PA";
 			$params['ACCOUNT.BRAND'] = "BARPAY";
 		}
-
 		/*
 		 * Special case for BillSAFE
 		*/
@@ -292,10 +291,10 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		}
 
 		$params['FRONTEND.CSS_PATH'] = JROUTE::_ (JURI::root(), $xhtml=true, $ssl=0) . 'plugins/vmpayment/heidelpay/heidelpay/' . $cssFile;
-		$requestUrl = trim($method->HEIDELPAY_PAYMENT_URL);
-		$params['SECURITY.SENDER'] = trim($method->HEIDELPAY_SECURITY_SENDER);
-		$params['USER.LOGIN'] = trim($method->HEIDELPAY_USER_LOGIN);
-		$params['USER.PWD'] = trim($method->HEIDELPAY_USER_PW);
+		$requestUrl = $method->HEIDELPAY_PAYMENT_URL;
+		$params['SECURITY.SENDER'] = $method->HEIDELPAY_SECURITY_SENDER;
+		$params['USER.LOGIN'] = $method->HEIDELPAY_USER_LOGIN;
+		$params['USER.PWD'] = $method->HEIDELPAY_USER_PW;
 
 		if(substr ($method->HEIDELPAY_PAYMENT_TYPE, 0, 2) == 'DD') {
 			$sepaform = array();
@@ -377,6 +376,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 		}
 		vmdebug ('HEIDELPAY paymentdata', $paymentData);
+	
 
 		if ($paymentData->processing_result == "NOK") {
 			vmError ('VMPAYMENT_HEIDELPAY_PAYMENT_FAILED','VMPAYMENT_HEIDELPAY_PAYMENT_FAILED');
@@ -397,7 +397,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		}
 		$orgSecret = $this->createSecretHash ($order_number, $method->HEIDELPAY_SECRET);
 		$order['comments']="";
-		if ($virtuemart_order_id) {
+		if ($virtuemart_order_id && $paymentData->created_on == '0000-00-00 00:00:00') {
 			$order['customer_notified'] = 0;
 			$order['order_status'] = $this->getStatus ($method, $paymentData->processing_result);
 			$modelOrder = VmModel::getModel ('orders');
@@ -419,14 +419,73 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 				}
 				$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
 			}
+			$dbu = JFactory::getDBO ();
+			$_u = "UPDATE `" . $this->_tablename . "` "."SET `created_on` = NOW() WHERE `virtuemart_order_id` = " . (int)$virtuemart_order_id;
+			$dbu->setQuery ($_u);
+			$result = $dbu->execute();
 		}
 		return TRUE;
 	}
-
+	
 	function plgVmOnUserPaymentCancel () {
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
+		
+		
+		$virtuemart_paymentmethod_id = JRequest::getInt ('pm', 0);
+		$order_number = JRequest::getString ('on', 0);
+
+		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement ($method->payment_element)) {
+			return NULL;
+		}
+
+		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($order_number))) {
+			return NULL;
+		}
+		$db = JFactory::getDBO ();
+		$_q = 'SELECT * FROM `' . $this->_tablename . '` '
+			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+		$db->setQuery ($_q);
+		if (!($paymentData = $db->loadObject ())) {
+			// JError::raiseWarning(500, $db->getErrorMsg());
+		}
+		vmdebug ('HEIDELPAY paymentdata', $paymentData);
+	
+
+		if ($paymentData->processing_result == "NOK") {
+			vmError ('VMPAYMENT_HEIDELPAY_PAYMENT_FAILED','VMPAYMENT_HEIDELPAY_PAYMENT_FAILED');
+			vmError (" - " . $paymentData->comment," - " . $paymentData->comment);
+			$order['comments']="";
+			if ($virtuemart_order_id) {
+			$order['customer_notified'] = 0;
+			$order['order_status'] = $this->getStatus ($method, $paymentData->processing_result);
+			$modelOrder = VmModel::getModel ('orders');
+			$orderitems = $modelOrder->getOrder ($virtuemart_order_id);
+			$nb_history = count ($orderitems['history']);
+			if ($orderitems['history'][$nb_history - 1]->order_status_code != $order['order_status']) {
+				if ($method->HEIDELPAY_CONFIRM_EMAIL == 1 or ($method->HEIDELPAY_CONFIRM_EMAIL == 2 and $paymentData->processing_result == "ACK")) {
+					$order['customer_notified'] = 1;
+					$order['comments'] = vmText::sprintf ('VMPAYMENT_HEIDELPAY_EMAIL_SENT') . "<br />";
+				}
+				$order['comments'] .= $paymentData->comment;
+				$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
+			}
+		}
+			
+		}
+		
+		
+		
+		
+		
+		
+			
+		
+		
 		$order_number = JRequest::getVar ('on');
 		if (!$order_number) {
 			return FALSE;

@@ -118,7 +118,7 @@ window.addEvent('domready', function() {
 				unique = el.id;
 				var cookieset = readIt(unique);
 				if (cookieset == 'block') {
-					console.log('domready open by cookie');
+					//console.log('domready open by cookie');
 					el.setStyle('display', 'block');
 
 					el.setProperty('aria-expanded', 'true');
@@ -165,7 +165,7 @@ function auf(key) {
 		el.setStyle('display', 'block');
 
 		el.setProperty('aria-expanded', 'true');
-        console.log('Using auf',key);
+        //console.log('Using auf',key);
 		if (key != 'right') {
 			el.slide('hide').slide('in');
 			el.getParent().setProperty('class', 'slide');

@@ -426,6 +426,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$userID = vRequest::getCmd('userID');
 		$newUser = JFactory::getUser($userID);
+
 		if($manager and !empty($userID) and $userID!=$current->id){
 			if($newUser->authorise('core.admin', 'com_virtuemart') or $newUser->authorise('vm.user', 'com_virtuemart')){
 				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');

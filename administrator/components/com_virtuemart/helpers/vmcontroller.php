@@ -197,9 +197,10 @@ class VmController extends JControllerLegacy{
 
 		$ids = vRequest::getVar($this->_cidName, vRequest::getInt('cid', array() ));
 
+		$type = 'notice';
 		if(count($ids) < 1) {
 			$msg = vmText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
-			$type = 'notice';
+
 		} else {
 			$model = VmModel::getModel($this->_cname);
 			$ret = $model->remove($ids);
@@ -209,12 +210,9 @@ class VmController extends JControllerLegacy{
 				$msg = vmText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
 						$type = 'error';
 			}
-			else $type = 'remove';
-
 		}
 
 		$this->setRedirect($this->redirectPath, $msg,$type);
-
 	}
 
 	/**

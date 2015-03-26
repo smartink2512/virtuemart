@@ -1774,18 +1774,12 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
 
-		$cid = vRequest::getInt($this->_pkeyForm);
+		$cid = vRequest::getInt($this->_pkeyForm,vRequest::getInt($this->_cidName,false));
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {
-			// either we fix custom fields or fix it here:
-			/*$cid = vRequest::getVar($this->_pkeyForm);
-			if (!empty($cid) && (is_array($cid))) {
-				$cid = reset($cid);
-			} else {*/
 				vmError(get_class($this) . ' is missing cid information !');
 				return false;
-			//}
 		}		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
 		$q = "SELECT `" . $this->_orderingKey . '` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . "` = '" . (int)$cid . "' limit 0,1";
 
@@ -1864,7 +1858,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
-				JError::raiseError(500, get_class($this) . ':: move isset row $row->$k' . $err);
+				vmError( get_class($this) . ':: move isset row $row->$k' . $err);
 			}
 
 			// update the currently selected to have the same ordering as the next or previous
@@ -1875,7 +1869,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			//echo $query.'<br />'; die();
 			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
-				JError::raiseError(500, get_class($this) . ':: move isset row $row->$k' . $err);
+				vmError( get_class($this) . ':: move isset row $row->$k' . $err);
 			}
 
 			// stAn, what for is this?
@@ -1892,7 +1886,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
-				JError::raiseError(500, get_class($this) . ':: move update $this->$k' . $err);
+				vmError( get_class($this) . ':: move update $this->$k' . $err);
 			}
 		}
 		return true;

@@ -796,7 +796,7 @@ class VirtueMartCart {
 	public function setShipmentMethod($force=false, $redirect=true, $virtuemart_shipmentmethod_id = null) {
 
 		if(!isset($virtuemart_shipmentmethod_id)) $virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $this->virtuemart_shipmentmethod_id);
-		if($this->virtuemart_shipmentmethod_id != $virtuemart_shipmentmethod_id or $force){
+		if($this->virtuemart_shipmentmethod_id != $virtuemart_shipmentmethod_id or (!empty($virtuemart_shipmentmethod_id) and $force)){
 			$this->_dataValidated = false;
 			//Now set the shipment ID into the cart
 			$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
@@ -828,7 +828,7 @@ class VirtueMartCart {
 	public function setPaymentMethod($force=false, $redirect=true, $virtuemart_paymentmethod_id = null) {
 
 		if(!isset($virtuemart_paymentmethod_id)) $virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id);
-		if($this->virtuemart_paymentmethod_id != $virtuemart_paymentmethod_id or $force){
+		if($this->virtuemart_paymentmethod_id != $virtuemart_paymentmethod_id or (!empty($virtuemart_paymentmethod_id) and $force)){
 			$this->_dataValidated = false;
 			$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');

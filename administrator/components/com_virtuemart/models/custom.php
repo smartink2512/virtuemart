@@ -151,7 +151,6 @@ class VirtueMartModelCustom extends VmModel {
 			}
 
 		}
-		$datas->customsSelect= $this->displayCustomSelection();
 
 		return $datas;
     }

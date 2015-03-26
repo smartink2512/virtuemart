@@ -259,8 +259,6 @@ if ($this->virtuemart_category_id ) { ?>
 
 			});
 		});
-
-		//jQuery('input.ordering').css({'color': '#666666', 'background-color': 'transparent','border': 'none' }).attr('readonly', true);
 	</script>
 
 <?php }
