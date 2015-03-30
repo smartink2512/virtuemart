@@ -118,7 +118,7 @@ class virtuemartViewrecommend extends VmView {
 		if($category_model){
 			$category = $category_model->getCategory($virtuemart_category_id);
 			$this->assignRef('category', $category);
-			$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id, FALSE));
+			$pathway->addItem(vmText::_($category->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id, FALSE));
 		}
 
 		//$pathway->addItem(vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));

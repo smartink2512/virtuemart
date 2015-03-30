@@ -208,7 +208,7 @@ class VirtuemartViewCategory extends VmView {
 			// Add the category name to the pathway
 			if ($category->parents) {
 				foreach ($category->parents as $c){
-					$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id, FALSE));
+					$pathway->addItem(strip_tags(vmText::_($c->category_name)),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id, FALSE));
 				}
 			}
 
@@ -279,6 +279,8 @@ class VirtuemartViewCategory extends VmView {
 			$title = $this->setTitleByJMenu($app);
 		}
 
+		$title = vmText::_($title);
+
 	  	if(vRequest::getInt('error')){
 			$title .=' '.vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
@@ -287,7 +289,7 @@ class VirtuemartViewCategory extends VmView {
 		}
 
 		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0])) $title .=' '.$this->products[0]->mf_name ;
-		$document->setTitle( vmText::_($title) );
+		$document->setTitle( $title );
 		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
 		if ($virtuemart_manufacturer_id>0 and !empty($this->products[0]) and isset($category->category_name)) $category->category_name = $this->products[0]->mf_name ;
 

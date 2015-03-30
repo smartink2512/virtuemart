@@ -1164,6 +1164,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_userfield_id`),
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
+  UNIQUE KEY `name` (`name`),
   KEY `ordering` (`ordering`),
   KEY `shared` (`shared`),
   KEY `published` (`published`),

@@ -158,7 +158,6 @@ class vRequest {
 		} else {
 			return JComponentHelper::filterText($tmp);
 		}
-
 	}
 
 	public static function getEmail($name, $default = ''){
@@ -197,11 +196,9 @@ class vRequest {
 			}
 
 			if(!isset($source[$name])){
-				//vmdebug('get !isset($source[$name] '.$name,$source);
 				return $default;
 			}
 
-			//if(strpos($name,'[]'!==FALSE)){
 			return self::filter($source[$name],$filter,$flags);
 
 		} else {
@@ -263,11 +260,14 @@ class vRequest {
 		}
 	}
 
+	public static function vmSpecialChars($c){
+		return htmlspecialchars($c,ENT_COMPAT,'UTF-8',false);
+	}
+
 	/**
 	 * Checks for a form token in the request.
 	 *
 	 * @return  boolean  True if token valid
-	 *
 	 */
 	public static function vmCheckToken($redirectMsg=0){
 

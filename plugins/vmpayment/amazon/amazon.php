@@ -71,6 +71,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		set_include_path($amazon_library);
 		$this->loadAmazonClass('OffAmazonPaymentsService_Client');
 		if (!JFactory::getApplication()->isSite()) {
+			vmJsApi::jQuery();
 			JFactory::getDocument()->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/assets/js/admin.js');
 			JFactory::getDocument()->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/assets/css/amazon-admin.css');
 		}

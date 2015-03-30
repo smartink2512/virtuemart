@@ -95,7 +95,7 @@ if (!empty($this->keyword)) {
 	<div class="clear"></div>
 </div> <!-- end of orderby-displaynumber -->
 
-<h1><?php echo $this->category->category_name; ?></h1>
+<h1><?php echo vmText::_($this->category->category_name); ?></h1>
 
 	<?php
 	if (!empty($this->products)) {

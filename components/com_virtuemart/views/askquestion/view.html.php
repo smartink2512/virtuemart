@@ -120,7 +120,7 @@ class VirtueMartViewAskquestion extends VmView {
 		if ($category_model) {
 			$category = $category_model->getCategory ($virtuemart_category_id);
 			$this->assignRef ('category', $category);
-			$pathway->addItem ($category->category_name, JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id, FALSE));
+			$pathway->addItem (vmText::_($category->category_name), JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id, FALSE));
 		}
 
 		$pathway->addItem ($product->product_name, JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id, FALSE));

@@ -50,10 +50,9 @@ class VirtueMartViewCart extends VmView {
 		$document = JFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
-		$layoutName = $this->getLayout();
+		$this->layoutName = $this->getLayout();
+		if (!$this->layoutName) $this->layoutName = vRequest::getCmd('layout', 'default');
 
-		if (!$layoutName) $layoutName = vRequest::getCmd('layout', 'default');
-		$this->assignRef('layoutName', $layoutName);
 		$format = vRequest::getCmd('format');
 
 		if (!class_exists('VirtueMartCart'))
@@ -69,7 +68,7 @@ class VirtueMartViewCart extends VmView {
 			$this->prepareContinueLink();
 		}
 
-		if ($layoutName == 'select_shipment') {
+		if ($this->layoutName == 'select_shipment') {
 
 			$this->cart->prepareCartData();
 			$this->lSelectShipment();
@@ -77,7 +76,7 @@ class VirtueMartViewCart extends VmView {
 			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_SELECTSHIPMENT'));
 			$document->setTitle(vmText::_('COM_VIRTUEMART_CART_SELECTSHIPMENT'));
-		} else if ($layoutName == 'select_payment') {
+		} else if ($this->layoutName == 'select_payment') {
 
 			$this->cart->prepareCartData();
 
@@ -86,7 +85,7 @@ class VirtueMartViewCart extends VmView {
 			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
 			$document->setTitle(vmText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
-		} else if ($layoutName == 'order_done') {
+		} else if ($this->layoutName == 'order_done') {
 			VmConfig::loadJLang( 'com_virtuemart_shoppers', true );
 			$this->lOrderDone();
 
@@ -179,12 +178,23 @@ class VirtueMartViewCart extends VmView {
 
 			$this->cart->prepareAddressFieldsInCart();
 
-			$layoutName = $this->cart->layout;
+			$this->layoutName = $this->cart->layout;
+			if(empty($this->layoutName)) $this->layoutName = 'default';
+
+			if ($this->cart->layoutPath) {
+				$this->addTemplatePath($this->cart->layoutPath);
+			}
+
+			if(!empty($this->layoutName) and $this->layoutName!='default'){
+				$this->setLayout( strtolower( $this->layoutName ) );
+			}
 			//set order language
 			$lang = JFactory::getLanguage();
 			$order_language = $lang->getTag();
 			$this->assignRef('order_language',$order_language);
 		}
+
+		
 
 		$this->useSSL = VmConfig::get('useSSL', 0);
 		$this->useXHTML = false;
@@ -192,16 +202,11 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 
-		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
-		VmTemplate::setVmTemplate($this, 0, 0, $layoutName);
 
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		if ($this->cart->_inConfirm) vmInfo('COM_VIRTUEMART_IN_CONFIRM');
-		if ($this->cart->layoutPath) {
-			$this->addTemplatePath($this->cart->layoutPath);
-		}
 
 		$current = JFactory::getUser();
 		$this->allowChangeShopper = false;
@@ -460,7 +465,7 @@ class VirtueMartViewCart extends VmView {
 				$result = $uModel->getSwitchUserList($superVendor,$this->adminID);
 			}
 		}
-		//vmdebug('my user list ',$result);
+		vmdebug('my user list ',$result);
 		if(!$result) $this->allowChangeShopper = false;
 		return $result;
 	}

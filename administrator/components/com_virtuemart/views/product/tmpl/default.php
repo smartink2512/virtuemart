@@ -194,7 +194,7 @@ if(empty($imgWidth)) $imgWidth = 80;
 				?></td>
 
 				<!-- Reviews -->
-				<?php $link = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
+				<?php $link = vRequest::vmSpecialChars('index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id); ?>
 				<td align="center" ><?php echo JHtml::_('link', $link, $product->reviews); ?></td>
 				<td align="center" >
 					<?php

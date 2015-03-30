@@ -1290,7 +1290,7 @@ class VirtueMartModelUser extends VmModel {
 				$toAdd->id = $user->id;
 				$toAdd->name = $user->name;
 				$toAdd->username = $user->username;
-				$toAdd->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+				$toAdd->displayedName = vmText::sprintf('COM_VIRTUEMART_RETURN_TO',$user->name,$user->username);
 				array_unshift($result,$toAdd);
 			}
 
@@ -1300,7 +1300,6 @@ class VirtueMartModelUser extends VmModel {
 			$toAdd->username = '';
 			$toAdd->displayedName = '-'.vmText::_('COM_VIRTUEMART_REGISTER').'-';
 			array_unshift($result,$toAdd);
-
 		}
 
 		return $result;

@@ -153,6 +153,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$hkey = (int)$customfield->virtuemart_product_id.$hashCwAttribute;
 			$_customFieldByProductId[$hkey][] = $customfield;
 		}
+
 		$productCustoms = array_merge($productCustomsCached,$productCustoms);
 		if($productCustoms){
 

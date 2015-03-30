@@ -181,7 +181,7 @@ class VirtueMartViewProductdetails extends VmView {
 				if ($category->parents) {
 					foreach ($category->parents as $c) {
 						if(is_object($c) and isset($c->category_name)){
-							$pathway->addItem(strip_tags($c->category_name), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id, FALSE));
+							$pathway->addItem(strip_tags(vmText::_($c->category_name)), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id, FALSE));
 						} else {
 							vmdebug('Error, parent category has no name, breadcrumb maybe broken, category',$c);
 						}
@@ -224,7 +224,7 @@ class VirtueMartViewProductdetails extends VmView {
 			if ($product->customtitle) {
 				$document->setTitle(strip_tags(html_entity_decode($product->customtitle,ENT_QUOTES)));
 			} else {
-				$document->setTitle(strip_tags(html_entity_decode(($category->category_name ? ($category->category_name . ' : ') : '') . $product->product_name,ENT_QUOTES)));
+				$document->setTitle(strip_tags(html_entity_decode(($category->category_name ? (vmText::_($category->category_name) . ' : ') : '') . $product->product_name,ENT_QUOTES)));
 			}
 
 			$this->allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
@@ -317,14 +317,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 //This must be loaded after the customfields are rendered (they may need to overwrite the handlers)
 			vmJsApi::jDynUpdate();
-			vmJsApi::addJScript('updDynamicListeners',"
-jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
-	// If template is aware of dynamic update and provided a variable let's
-	// set-up the event listeners.
-	if (Virtuemart.container)
-		Virtuemart.updateDynamicUpdateListeners();
 
-}); ");
 			if ($show_prices == '1') {
 				if (!class_exists('calculationHelper'))
 					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');

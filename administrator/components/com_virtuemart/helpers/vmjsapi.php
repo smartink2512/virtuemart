@@ -66,9 +66,7 @@ class vmJsApi{
 	public static function writeJS(){
 
 		$html = '';
-		//vmdebug('writeJS',self::$_jsAdd);
 		foreach(self::$_jsAdd as $name => &$jsToAdd){
-			//vmdebug('writeJS',$name,$jsToAdd);
 			if($jsToAdd['written']) continue;
 			if(!$jsToAdd['script'] or strpos($jsToAdd['script'],'/')===0 and strpos($jsToAdd['script'],'//<![CDATA[')!==0){ //strpos($script,'/')===0){
 
@@ -88,7 +86,6 @@ class vmJsApi{
 					vmdebug('writeJS javascript with empty file',$name,$jsToAdd);
 					continue;
 				}
-				//vmdebug('writeJS addScript to header ',$file);
 				$ver = '';
 				if(!empty($jsToAdd['ver'])) $ver = '?vmver='.$jsToAdd['ver'];
 				$document = JFactory::getDocument();
@@ -99,18 +96,10 @@ class vmJsApi{
 				if(!empty($script)) {
 					$script = trim($script,chr(13));
 					$script = trim($script,chr(10));
-					$defer='';
-					if($jsToAdd['defer']){
-						$defer = 'defer="defer" ';
-					}
-					$async='';
-					if($jsToAdd['async']){
-						$async = 'async="async" ';
-					}
 					if(strpos($script,'//<![CDATA[')===false){
-						$html .= '<script id="'.$name.'_js" '.$defer.$async.' type="text/javascript">//<![CDATA[ '.chr(10).$script.' //]]>'.chr(10).'</script>';
+						$html .= '<script id="'.$name.'_js" type="text/javascript">//<![CDATA[ '.chr(10).$script.' //]]>'.chr(10).'</script>';
 					} else {
-						$html .= '<script id="'.$name.'_js" '.$defer.$async.' type="text/javascript"> '.$script.' </script>';
+						$html .= '<script id="'.$name.'_js" type="text/javascript"> '.$script.' </script>';
 					}
 				}
 
@@ -357,6 +346,14 @@ class vmJsApi{
 			return FALSE;
 		}
 		self::addJScript('dynupdate',false,false);
+		self::addJScript('updDynamicListeners',"
+jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
+	// If template is aware of dynamic update and provided a variable let's
+	// set-up the event listeners.
+	if (Virtuemart.container)
+		Virtuemart.updateDynamicUpdateListeners();
+
+}); ");
 	}
 
 	static function JcountryStateList($stateIds, $prefix='') {

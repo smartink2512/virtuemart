@@ -89,6 +89,10 @@ class VirtueMartCart {
 		$this->useXHTML = false;
 		$this->cartProductsData = array();
 		$this->layout = VmConfig::get('cartlayout','default');
+
+		if(empty($this->layout)){
+			$this->layout = 'default';
+		}
 	}
 
 	/**
@@ -188,9 +192,12 @@ class VirtueMartCart {
 
 			$multixcart = VmConfig::get('multixcart',0);
 			if(!empty($multixcart)){
-				if($multixcart=='byvendor' and empty(self::$_cart->vendorId) or self::$_cart->vendorId==1){
+				if($multixcart=='byvendor' or self::$_cart->vendorId==1){
 					$vendor = VmModel::getModel('vendor');
-					self::$_cart->vendorId = $vendor->getLoggedVendor();
+					$vId = $vendor->getLoggedVendor();
+					if(!empty($vId) and $vId!=1){
+						self::$_cart->vendorId = $vId;
+					}
 					if(empty(self::$_cart->vendorId)) self::$_cart->vendorId = 1;
 				}
 				if($multixcart=='byselection'){
@@ -859,18 +866,13 @@ class VirtueMartCart {
 	}
 
 	function confirmDone() {
-
 		$this->checkoutData(false);
 		if ($this->_dataValidated) {
 			$this->_confirmDone = true;
 			$this->confirmedOrder();
 		} else {
-			$layoutName = vRequest::getCmd('layout', '');
-			if(!empty($layoutName)){
-				$layoutName = '&layout='.$layoutName;
-			}
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
+			$app = JFactory::getApplication();
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$this->getLayoutUrlString(), FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
 
@@ -891,6 +893,15 @@ class VirtueMartCart {
 		}
 	}
 
+	public function getLayoutUrlString(){
+		$layoutName = vRequest::getCmd('layout', 'default');
+		if(!empty($layoutName) and $layoutName!='default'){
+			return '&layout='.$layoutName;
+		} else {
+			return '';
+		}
+	}
+
 	public function checkoutData($redirect = true) {
 
 		if($this->_redirected){
@@ -899,10 +910,7 @@ class VirtueMartCart {
 			$this->_redirect = $redirect;
 		}
 
-		$layoutName = vRequest::getCmd('layout', '');
-		if(!empty($layoutName)){
-			$layoutName = '&layout='.$layoutName;
-		}
+		$layoutName = $this->getLayoutUrlString();
 
 		$this->_inCheckOut = true;
 		//This prevents that people checkout twice
@@ -958,6 +966,7 @@ class VirtueMartCart {
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , $redirectMsg);
 			}
 		}
+
 		// Test Coupon
 		if (!empty($this->couponCode)) {
 			if (!class_exists('CouponHelper')) {
@@ -1057,8 +1066,8 @@ class VirtueMartCart {
 			$this->_dataValidated = true;
 			$this->setCartIntoSession(true);
 			if ($this->_redirect) {
-				$mainframe = JFactory::getApplication();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+				$app = JFactory::getApplication();
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 			} else {
 				return true;
 			}

@@ -59,7 +59,7 @@ if(vRequest::getInt('print',false)){ ?>
 	<?php // Back To Category Button
 	if ($this->product->virtuemart_category_id) {
 		$catURL =  JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$this->product->virtuemart_category_id, FALSE);
-		$categoryName = $this->product->category_name ;
+		$categoryName = vmText::_($this->product->category_name) ;
 	} else {
 		$catURL =  JRoute::_('index.php?option=com_virtuemart');
 		$categoryName = vmText::_('COM_VIRTUEMART_SHOP_HOME') ;

@@ -95,12 +95,13 @@ defined('_JEXEC') or die('Restricted access');
 							$text = '<span style="white-space: nowrap;" class="hasTip" title="'.htmlentities(vmText::_('COM_VIRTUEMART_CUSTOMFLD_DIS_DER_TIP')).'">d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler,$checkValue).'</span>
 							<span style="white-space: nowrap;" class="hasTip" title="'.htmlentities(vmText::_('COM_VIRTUEMART_DIS_DER_CUSTOMFLD_OVERR_DER_TIP')).'">o:'.VmHtml::checkbox('field['.$i.'][override]',$customfield->override,$checkValue).'</span>';
 						}
+
 						$tables['fields'] .= '<tr class="removable">
 							<td >
 							<b>'.vmText::_($type).'</b> '.vmText::_($customfield->custom_title).'</span><br/>
 								'.$title.' '.$text.'
 								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>';
-						if($customfield->virtuemart_product_id==$this->product->product_parent_id){
+						if($customfield->virtuemart_product_id==$this->product->virtuemart_product_id or $customfield->override!=0){
 							$tables['fields'] .= '<span class="vmicon vmicon-16-move"></span>
 							<span class="vmicon vmicon-16-remove"></span>';
 						}
