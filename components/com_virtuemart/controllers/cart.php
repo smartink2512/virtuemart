@@ -411,7 +411,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$red = JRoute::_('index.php?option=com_virtuemart&view=cart');
 		}
 
-		//vmdebug('changeShopper',$current);
 		$app = JFactory::getApplication();
 		if($current->authorise('core.admin', 'com_virtuemart')){
 			$admin = true;
@@ -432,6 +431,13 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 				$app->redirect($red);
 			}
+		}
+
+		$searchShopper = vRequest::getString('searchShopper');
+
+		if(!empty($searchShopper)){
+			$this->display();
+			return false;
 		}
 
 		//update session
@@ -457,8 +463,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->STsameAsBT = 1;
 		$cart->saveAddressInCart($data, 'BT');
 
-		$mainframe = JFactory::getApplication();
-
 		$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')');
 
 		if(empty($userID)){
@@ -466,8 +470,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY','');
 		}
 
-		$mainframe->enqueueMessage($msg, 'info');
-		$mainframe->redirect($red);
+		$app->enqueueMessage($msg, 'info');
+		$app->redirect($red);
 	}
 
 

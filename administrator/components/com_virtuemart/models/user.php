@@ -589,7 +589,9 @@ class VirtueMartModelUser extends VmModel {
 			//$vUserD = array('virtuemart_user_id' => $data['virtuemart_user_id'],'virtuemart_vendor_id' => $data['vendorId']);
 			$vUser = $this->getTable('vendor_users');
 			$vUser->load((int)$data['vendorId']);
-			if(!in_array((int)$data['virtuemart_user_id'],$vUser->virtuemart_user_id)){
+			if(!$vUser->virtuemart_user_id){
+				$vUser->bind(array('virtuemart_vendor_id'=>(int)$data['vendorId'],'virtuemart_user_id'=>$data['virtuemart_user_id']));
+			} else if(!in_array((int)$data['virtuemart_user_id'],$vUser->virtuemart_user_id)){
 				$arr = array_merge($vUser->virtuemart_user_id,(array)$data['virtuemart_user_id']);
 				$vUser->bind(array('virtuemart_vendor_id'=>(int)$data['vendorId'],'virtuemart_user_id'=>$arr));
 			}
@@ -1258,23 +1260,29 @@ class VirtueMartModelUser extends VmModel {
 		if($superVendor){
 			$db = JFactory::getDbo();
 			$search = vRequest::getUword('usersearch','');
+			vmdebug('getSwitchUserList',$search);
 			if(!empty($search)){
-				$search = ' WHERE (`name` LIKE %'.$search.'% OR `username` LIKE %'.$search.'%)';
+				$search = ' WHERE (`name` LIKE "%'.$search.'%" OR `username` LIKE "%'.$search.'%" OR `customer_number` LIKE "%'.$search.'%")';
 			} else if($superVendor!=1) {
 				$search = ' WHERE vu.virtuemart_vendor_id = '.$superVendor.' ';
 			}
 
 			$q = 'SELECT ju.`id`,`name`,`username` FROM `#__users` as ju';
 
-			if($superVendor!=1) {
+			if($superVendor!=1 or !empty($search)) {
 				$q .= ' LEFT JOIN #__virtuemart_vmusers AS vmu ON vmu.virtuemart_user_id = ju.id';
-				$q .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON vu.virtuemart_user_id = ju.id';
-				$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
+				if($superVendor!=1){
+					$q .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON vu.virtuemart_user_id = ju.id';
+					$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
+				}
 			}
+			$current = JFactory::getUser();
+			$q .= ' AND ju.id!= "'.$current->id.'" ';
 
 			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
 			$db->setQuery($q);
 			$result = $db->loadObjectList();
+			vmdebug('getSwitchUserList',$q,$result);
 
 			if($result){
 				foreach($result as $k => $user) {
@@ -1285,13 +1293,16 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			if($adminID){
+
 				$user = JFactory::getUser($adminID);
-				$toAdd = new stdClass();
-				$toAdd->id = $user->id;
-				$toAdd->name = $user->name;
-				$toAdd->username = $user->username;
-				$toAdd->displayedName = vmText::sprintf('COM_VIRTUEMART_RETURN_TO',$user->name,$user->username);
-				array_unshift($result,$toAdd);
+				if($current->id!=$user->id){
+					$toAdd = new stdClass();
+					$toAdd->id = $user->id;
+					$toAdd->name = $user->name;
+					$toAdd->username = $user->username;
+					$toAdd->displayedName = vmText::sprintf('COM_VIRTUEMART_RETURN_TO',$user->name,$user->username);
+					array_unshift($result,$toAdd);
+				}
 			}
 
 			$toAdd = new stdClass();

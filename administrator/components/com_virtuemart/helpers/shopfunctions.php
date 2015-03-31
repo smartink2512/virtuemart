@@ -1067,17 +1067,21 @@ class ShopFunctions {
 			} else{
 				if(!is_writable( $safePath )){
 					VmConfig::loadJLang('com_virtuemart_config');
-					if(!$warned)
+					if(!$warned){
+						vmdebug('checkSafePath $safePath not writeable '.$safePath);
 						VmError(vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath)
-							,vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE','',''));
-					$warned = true;
+						,vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE','',''));
+						$warned = true;
+					}
 				} else {
 					if(!is_writable(self::getInvoicePath($safePath) )){
 						VmConfig::loadJLang('com_virtuemart_config');
-						if(!$warned)
+						if(!$warned){
+							vmdebug('checkSafePath $safePath/invoice not writeable '.addslashes($safePath));
 							VmError(vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath)
-								,vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE','',''));
-						$warned = true;
+							,vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE','',''));
+							$warned = true;
+						}
 					}
 				}
 			}

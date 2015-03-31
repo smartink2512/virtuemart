@@ -151,9 +151,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 					vmdebug('Storing user ST prefix '.$prefix);
 				}
 				$cart->saveAddressInCart($data, $data['address_type'],true,$prefix);
-				if(!empty($cart->vendorId) and $cart->vendorId!=1){
-					$data['vendorId'] = $cart->vendorId;
-				}
 			}
 		}
 
@@ -214,6 +211,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 					}
 				}
 
+				if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
+				$cart = VirtueMartCart::getCart();
+				if(!empty($cart->vendorId) and $cart->vendorId!=1){
+					$data['vendorId'] = $cart->vendorId;
+				}
 				$ret = $userModel->store($data);
 
 				if($switch){ //and VmConfig::get ('oncheckout_change_shopper')){

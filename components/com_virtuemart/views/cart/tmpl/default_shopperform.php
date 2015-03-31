@@ -27,6 +27,10 @@ defined('_JEXEC') or die('Restricted access');
 	<table cellspacing="0" cellpadding="0" border="0">
 		<tr style="border:0px;">
 			<td  style="border:0px;">
+				<input type="text" name="usersearch" size="20" maxlength="50">
+				<input type="submit" name="searchShopper" title="<?php echo vmText::_('COM_VIRTUEMART_SEARCH'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SEARCH'); ?>" class="button"  style="margin-left: 10px;"/>
+			</td>
+			<td  style="border:0px;">
 				<?php 
 				if (!class_exists ('VirtueMartModelUser')) {
 					require(VMPATH_ADMIN . DS . 'models' . DS . 'user.php');

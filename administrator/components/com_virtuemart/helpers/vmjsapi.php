@@ -519,7 +519,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			$regfields[] = 'password';
 			$regfields[] = 'password2';
 		}
-		VmConfig::loadJLang('com_virtuemart',true);
+
 		$jsRegfields = implode("','",$regfields);
 		$js = "function myValidator(f, r) {
 
@@ -579,7 +579,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
 					jQuery('#recaptcha_wrapper').show();
 				}
-				var msg = '" .addslashes (vmText::_ ('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS'))."';
+				var msg = '" .addslashes (vmText::_ ('COM_VIRTUEMART_MISSING_REQUIRED_JS'))."';
 			alert(msg + ' ');
 		}
 		return false;
