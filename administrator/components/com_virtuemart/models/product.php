@@ -2158,13 +2158,13 @@ class VirtueMartModelProduct extends VmModel {
 		foreach ($getArray as $key => $value) {
 			if (is_array ($value)) {
 				foreach ($value as $k => $v) {
-					if(empty($v)) continue;
+					if( $v == '') continue;
 					$fieldLink .= '&' . urlencode($key) . '[' . urlencode($k) . ']' . '=' . urlencode($v);
 				}
 			}
 			else {
 				if($key=='dir' or $key=='orderby') continue;
-				if(empty($value)) continue;
+				if($value == '') continue;
 				$fieldLink .= '&' . urlencode($key) . '=' . urlencode($value);
 			}
 		}

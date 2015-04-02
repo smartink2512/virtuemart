@@ -203,7 +203,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 					    if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 					    $currObj = VirtueMartModelVendor::getVendorCurrency($order->virtuemart_vendor_id);
 				        $currency = $currObj->virtuemart_currency_id;
-				   }
+					}
 				    //This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
 				    if (!array_key_exists('curr'.$currency, $_currencies)) {
 

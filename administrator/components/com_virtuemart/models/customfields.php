@@ -884,7 +884,11 @@ class VirtueMartModelCustomfields extends VmModel {
 							$product->orderable=false;
 						}
 						$idTagK = $idTag.'cvard'.$k;
-						$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);
+						if($customfield->showlabels){
+							$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);;
+							$html .= '<span class="vm-cmv-label" >'.$soption->slabel.'</span>';
+						}
+
 						$attribs = array('class'=>'vm-chzn-select cvselection no-vm-bind','data-dynamic-update'=>'1');
 						if('productdetails' != vRequest::getCmd('view')){
 							$attribs['reload'] = '1';
