@@ -150,7 +150,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		vRequest::setVar('phone_1',$fields['phone_1']);
 	//$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "VirtueMart 3 Sample store";
-	$fields['vendor_store_desc'] =  '<p>We have the best clothing for up-to-date people. Check it out!</p> <p>We were established in 1869 in a time when getting good clothes was expensive, but the quality was good. Now that only a select few of those authentic clothes survive, we have dedicated this store to bringing the experience alive for collectors and master carrier everywhere.</p> <p>You can easily find products selecting the category you would like to browse above.</p>';
+	$fields['vendor_store_desc'] =  '<p>Welcome to VirtueMart the ecommerce managment system. The sample data give you a good insight of the possibilities with VirtueMart. The product description is directly the manual to configure the demonstrated features. \n </p><p>You see here the store description used to describe your store. Check it out!</p> <p>We were established in 1869 in a time when getting good clothes was expensive, but the quality was good. Now that only a select few of those authentic clothes survive, we have dedicated this store to bringing the experience alive for collectors and master carrier everywhere.</p>';
 	$fields['virtuemart_media_id'] =  1;
 	$fields['vendor_currency'] = '47';
 	$fields['vendor_accepted_currencies'] = '52,26,47,144';

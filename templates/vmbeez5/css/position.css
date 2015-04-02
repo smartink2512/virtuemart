@@ -199,7 +199,8 @@ h1#logo
 #logo img
 {
         display: block;
-        }
+        width: 100%;
+}
 
 #logo span
 {
@@ -409,3 +410,13 @@ h1#logo
 }
 
 img { border: 0 none; }
+
+/* adjust to display width */
+
+.leftbigger {width: 23%;}
+
+@media all and (max-width: 980px) {
+  #wrapper2 {position: relative;width: 100%;}
+  .leftbigger {width: 21%;}
+}
+

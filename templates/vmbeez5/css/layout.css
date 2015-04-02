@@ -409,7 +409,7 @@ ul.menu li.active ul li.active ul li a:link,
         font-size:1.4em;
         line-height:1.19em;
         font-weight:normal;
-        margin:0 -5px 10px -5px
+        margin:0 0px 10px -5px
 
 }
 
@@ -2253,4 +2253,11 @@ div.feed {
 	float: right;
 	margin-left: 10px;
 	margin-bottom: 10px;
+}
+
+@media all and (max-width: 400px) {
+  #header ul {text-align: center;}
+}
+@media all and (max-width: 400px) {
+  #header ul {text-align: center;}
 }

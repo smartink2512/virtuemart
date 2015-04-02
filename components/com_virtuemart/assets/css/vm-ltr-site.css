@@ -231,24 +231,6 @@ div.product_horizon div.product {float:left;border:1px solid #ddd;margin:0.3%;mi
 /* Reset Bootstrap row class margin for VM views */
 div[class*="-view"] .row{margin: 0;}
 
-@media (max-width: 768px){
-	.row div[class*="width"]{
-	  width:100%;
-	  float: none;
-	  margin-bottom: 15px;
-	}
-	.vm-product-container > div {
-	  width: 100% !important;
-	  float:none !important;
-	  margin-bottom: 15px;
-	}
-    .productdetails-view .spacer-buy-area {
-      padding: 0;
-    }
-    .productdetails-view .addtocart-area, .productdetails-view .manufacturer, .productdetails-view .addtocart-bar{
-      text-align: center;
-    }
-}
 /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
    with position:fixed. Width, height, top and left speak
@@ -283,3 +265,45 @@ div[class*="-view"] .row{margin: 0;}
     position: relative;
     top: 50%;
 }
+/* adjust to screen size */
+
+div[class*="-view"] .row{display: flex; flex-wrap: wrap;justify-content: flex-start;}
+
+@media all and (min-width: 1081px) {
+  div.vm-col {width: 32%;}
+}
+
+@media all and (max-width: 1080px) {
+  div.vm-col {width: 32%;}
+}
+
+@media all and (max-width: 980px) {
+  div#nav {display: none;}
+  div#contentarea {padding: 0;}
+}
+
+@media all and (max-width: 800px) {
+  div#line {display: none;}
+  div#nav {display: none;}
+  div.vendor-store-desc {display: none;}
+  div[class*="vm-col-"] {width: 49%;}
+  .vm-col-3 {width: 49%;}
+  h1#logo {margin-left: 0;}
+}
+
+@media (max-width: 480px){
+	#header ul {text-align: center;}
+  .row div[class*="width"]{width:49%;float: left;margin-bottom: 15px;}
+  div.product {float:left; margin: auto;width: 49%;}
+  div[class*="vm-col-"] {width: 100%;}
+	.vm-product-container > div {width: 100%;float:none;margin-bottom: 15px;}
+  .productdetails-view .spacer-buy-area {padding: 0;}
+  .productdetails-view .addtocart-area, .productdetails-view .manufacturer, 
+  .productdetails-view .addtocart-bar{text-align: center;}
+}
+
+@media all and (max-width: 400px) {
+  .row div[class*="width"]{width:100%;float: none;margin-bottom: 15px;}
+  #header ul {right: 0px;left: 0px;}
+}
+

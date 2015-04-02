@@ -87,6 +87,11 @@ class AdminUIHelper {
 		?>
 		<!--[if lt IE 9]>
 		<script src="//ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+		<style type="text/css">
+			.virtuemart-admin-area { display: block; }
+			.virtuemart-admin-area #menu-wrapper { float: left; }
+			.virtuemart-admin-area #admin-content { margin-left: 221px; }
+		</script>
 		<![endif]-->
 		<?php if (!self::$backEnd ){
 		   //JToolBarHelper
