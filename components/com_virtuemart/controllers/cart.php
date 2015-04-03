@@ -162,17 +162,19 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			}
 		}
 
+		$force = VmConfig::get('oncheckout_opc',true);
+		$cart->setShipmentMethod($force, !$html);
+		$cart->setPaymentMethod($force, !$html);
+
 		$cart->prepareCartData();
 
 		$coupon_code = trim(vRequest::getString('coupon_code', ''));
 		if(!empty($coupon_code)){
-
 			$msg = $cart->setCouponCode($coupon_code);
 			if($msg) vmInfo($msg);
 		}
-		$force = VmConfig::get('oncheckout_opc',true);
-		$cart->setShipmentMethod($force, !$html);
-		$cart->setPaymentMethod($force, !$html);
+
+
 		if ($html) {
 			$this->display();
 		} else {

@@ -152,7 +152,7 @@ class VirtueMartViewCart extends VmView {
 				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 				JPluginHelper::importPlugin('vmshipment');
 				JPluginHelper::importPlugin('vmpayment');
-				vmdebug('cart view oncheckout_opc ');
+				//vmdebug('cart view oncheckout_opc ');
 				if(!$this->lSelectShipment() or !$this->lSelectPayment()){
 					vmInfo('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
 					$this->pointAddress = true;

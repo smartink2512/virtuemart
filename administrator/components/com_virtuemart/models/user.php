@@ -368,7 +368,7 @@ class VirtueMartModelUser extends VmModel {
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
 
 			$cUser = JFactory::getUser();
-			if(!($cUser->authorise('core.admin','com_virtuemart') or $cUser->authorise('core.manage','com_virtuemart') or $cUser->authorise('vm.user', 'com_virtuemart')) and $usersConfig->get('allowUserRegistration') == '0') {
+			if($usersConfig->get('allowUserRegistration') == '0' and !($cUser->authorise('core.admin','com_virtuemart') or $cUser->authorise('core.manage','com_virtuemart') or $cUser->authorise('vm.user', 'com_virtuemart')) ) {
 				VmConfig::loadJLang('com_virtuemart');
 				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;

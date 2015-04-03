@@ -198,7 +198,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
 		if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
-			return 0;
+			return 0.0;
 		} else {
 			return $method->shipment_cost + $method->package_fee;
 		}

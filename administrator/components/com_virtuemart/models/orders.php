@@ -1946,32 +1946,31 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/** Rename Invoice  (when an order is deleted)
 	 *
 	 * @author Valérie Isaksen
+	 * @author Max Milbers
 	 * @param $order_id Id of the order
 	 * @return boolean true if deleted successful, false if there was a problem
 	 */
 	function renameInvoice($order_id ) {
-		$db = JFactory::getDBO();
 
-		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$order_id.'" ';
-
-		$db->setQuery($q);
-		$data = $db->loadAssoc();
-		if(!$data or   empty($data['invoice_number']) ){
-			return true;
+		$table = $this->getTable('invoices');
+		$table->load($order_id,'virtuemart_order_id');
+		if(empty($table->invoice_number)){
+			return false;
 		}
 
 		// rename invoice pdf file
-		$invoice_prefix='vminvoice_'.VmConfig::$vmlang.'_';
 		$path = shopFunctions::getInvoicePath(VmConfig::get('forSale_path',0));
-		$invoice_name_src = $path.DS.$invoice_prefix.$data['invoice_number'].'.pdf';
+		$name = shopFunctions::getInvoiceName($table->invoice_number);
+		$invoice_name_src = $path.DS.$name.'.pdf';
 
 		if(!file_exists($invoice_name_src)){
 			// may be it was already deleted when changing order items
 			$data['invoice_number'] = "";
+			//$data['invoice_number'] = $data['invoice_number'].' not found.';
 		} else {
 			$date = date("Ymd");
-			$data['invoice_number'] = $data['invoice_number'].'_'.$date;
-			$invoice_name_dst = $path.DS.$data['invoice_number'].'.pdf';
+			$data['invoice_number'] = $table->invoice_number.'_'.$date;
+			$invoice_name_dst = $path.DS.$table->invoice_number.'.pdf';
 
 			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if (!JFile::move($invoice_name_src, $invoice_name_dst)) {
@@ -1993,39 +1992,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @return boolean true if deleted successful, false if there was a problem
 	 */
 	function deleteInvoice($order_id ) {
-		$db = JFactory::getDBO();
 
-		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$order_id.'" ';
-
-		$db->setQuery($q);
-		$data = $db->loadAssoc();
-		if(!$data or   empty($data['invoice_number']) ){
-			return true;
-		}
-
-		// rename invoice pdf file
-		$invoice_prefix='vminvoice_';
-		$path = shopFunctions::getInvoicePath(VmConfig::get('forSale_path',0));
-		$invoice_name_src = $path.DS.$invoice_prefix.$data['invoice_number'].'.pdf';
-
-		if(!file_exists($invoice_name_src)){
-			// may be it was already deleted when changing order items
-			$data['invoice_number'] = $data['invoice_number'].' not found.';
-		} else {
-			$date = date("Ymd");
-			$data['invoice_number'] = $data['invoice_number'].'_'.$date;
-			$invoice_name_dst = $path.DS.$data['invoice_number'].'.pdf';
-
-			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			if (!JFile::move($invoice_name_src, $invoice_name_dst)) {
-				vmError ('Could not rename Invoice '.$invoice_name_src.'to '. $invoice_name_dst );
-			}
-		}
-
-		$table = $this->getTable('invoices');
-		$table->bindChecknStore($data);
-
-		return true;
+		return $this->renameInvoice($order_id);
 	}
 
 }

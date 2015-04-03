@@ -55,7 +55,9 @@ if($this->print){
 	$button = 'system/printButton.png';
 	$details_link .= JHtml::_('image',$button, vmText::_('COM_VIRTUEMART_PRINT'), NULL, true);
 	$details_link  .=  '</a>';
-	echo $details_link; ?>
+	echo $details_link;
+	$this->orderdetails['details']['BT']->invoiceNumber = VmModel::getModel('orders')->getInvoiceNumber($this->orderdetails['details']['BT']->virtuemart_order_id);
+	echo shopFunctionsF::getInvoiceDownloadButton($this->orderdetails['details']['BT']) ?>
 </h1>
 <?php if($this->order_list_link){ ?>
 	<div class='spaceStyle'>

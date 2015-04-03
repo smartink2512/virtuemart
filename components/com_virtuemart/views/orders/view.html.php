@@ -167,7 +167,7 @@ class VirtuemartViewOrders extends VmView {
 				$this->orderlist = array();
 			} else {
 				$this->orderlist = $orderModel->getOrdersList($_currentUser->get('id'), TRUE);
-				foreach ($this->orderlist as $order) {
+				foreach ($this->orderlist as $k =>$order) {
 					$vendorId = 1;
 					$emailCurrencyId = $order->user_currency_id;
 					$exchangeRate = FALSE;
@@ -186,6 +186,8 @@ class VirtuemartViewOrders extends VmView {
 						$currency->exchangeRateShopper = $order->user_currency_rate;
 					}
 					$order->currency = $currency;
+					$order->invoiceNumber = $orderModel->getInvoiceNumber($order->virtuemart_order_id);
+					$this->orderlist[$k] = $order;
 				}
 			}
 		}

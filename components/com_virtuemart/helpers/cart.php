@@ -816,6 +816,7 @@ class VirtueMartCart {
 			$dataValid = true;
 			foreach ($_retValues as $_retVal) {
 				if ($_retVal === true ) {
+					$this->setCartIntoSession();
 					// Plugin completed successfull; nothing else to do
 					break;
 				} else if ($_retVal === false ) {
@@ -848,6 +849,7 @@ class VirtueMartCart {
 			$dataValid = true;
 			foreach ($_retValues as $_retVal) {
 				if ($_retVal === true ) {
+					$this->setCartIntoSession();
 					// Plugin completed succesfull; nothing else to do
 					break;
 				} else if ($_retVal === false ) {
@@ -1374,7 +1376,7 @@ class VirtueMartCart {
 				}
 			}
 		} else {
-			vmdebug('getST STsameAsBT is set, use BT');
+			//vmdebug('getST STsameAsBT is set, use BT');
 			$addr = $this->BT;
 		}
 

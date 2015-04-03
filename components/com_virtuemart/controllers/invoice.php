@@ -221,7 +221,8 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			return 0;
 		}
 		
-		$path .= preg_replace('/[^A-Za-z0-9_\-\.]/', '_', 'vm'.$layout.'_'.$invoiceNumber.'.pdf');
+		//$path .= preg_replace('/[^A-Za-z0-9_\-\.]/', '_', 'vm'.$layout.'_'.$invoiceNumber.'.pdf');
+		$path .= shopFunctionsF::getInvoiceName($invoiceNumber).'.pdf';
 
 		if(file_exists($path) and !$force){
 			return $path;
