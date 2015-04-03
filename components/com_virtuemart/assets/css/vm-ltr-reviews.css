@@ -31,9 +31,13 @@
 .vm2-stars_4{background-position:0 -988px;width:64px;height:13px;}
 .vm2-stars_5{background-position:0 -1051px;width:64px;height:13px;}
 
+.vm-product-rating-container {
+    text-align: left;
+}
+
 .ratingbox {
 	position:relative;
-	display:block;
+	display:inline-block;
 	width:120px;
 	height:24px;
 	background:url("../images/color-stars.png") repeat-x scroll 0 bottom transparent;
@@ -44,11 +48,14 @@
 	display:block;
 	width:1%;
 	height:24px;
-	position:absolute;
+	position:static;
+}
+.ratingbox span {
+    display: inline-block;
 }
 
 .browse-view .ratingbox{
-    margin: 0 auto;
+    margin: 0 auto 15px;
 }
 
 .spacer-buy-area .ratingbox {

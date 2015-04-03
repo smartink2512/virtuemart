@@ -29,7 +29,7 @@ td.priceCol{white-space:nowrap;}
 
 /* general style - needs to be at the beginning so it can be overwritten by specific style later */
 .additional-images,.featured-view .product-price,.latest-view .product-price,.topten-view .product-price,.recent-view .product-price,.output-billto,.output-shipto{margin:10px 0;}
-.ask-a-question,.manufacturer,.manufacturer-details-view .email-weblink,.manufacturer-details-view .description{margin:10px 0 0;}
+.ask-a-question,.manufacturer,.manufacturer-details-view .email-weblink,.manufacturer-details-view .description{margin:0 0 10px;}
 .customer-reviews,.ask-a-question-view .form-field{margin:25px 0 0;}
 /*span.title{font-weight:700;display:block;border-bottom:solid #CAC9C9 1px;font-size:14px;margin:0 0 6px;}*/
 span.variant-name,span.custom-variant-name{width:100px;float:left;display:block;margin-bottom:5px;}
