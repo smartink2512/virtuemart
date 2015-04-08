@@ -1277,7 +1277,12 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 			$current = JFactory::getUser();
-			$q .= ' AND ju.id!= "'.$current->id.'" ';
+			if(!empty($search)){
+				$search .= ' AND ju.id!= "'.$current->id.'" ';
+			} else {
+				$q .= ' WHERE ju.id!= "'.$current->id.'" ';
+			}
+
 
 			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
 			$db->setQuery($q);

@@ -389,6 +389,11 @@ class VirtueMartModelConfig extends VmModel {
 				$safePath = $safePath.DS;
 				vmInfo('Corrected safe path, added missing '.DS);
 			}
+			$p =  VMPATH_ROOT.DS;
+			if(strtolower($safePath) == strtolower($p)){
+				$safePath = '';
+				vmError('Do not use as safepath your virtuemart root folder');
+			}
 			$config->set('forSale_path',$safePath);
 		} else {
 			VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
@@ -616,7 +621,8 @@ class VirtueMartModelConfig extends VmModel {
 			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
 			$lang = vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
 			VmInfo($lang);
-		} else {
+		}
+		else {
 			if(self::checkConfigTableExists()){
 				$data['dangeroustools'] = 0;
 				$data['virtuemart_config_id'] = 1;
