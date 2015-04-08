@@ -212,7 +212,7 @@ a:hover .vm-img-desc{background: #095197}
 .product-fields .product-field-type-M input[type=radio] {display:block;margin: 10px;}
 .product-fields .product-field-type-M label {display:inline-block}
 .product-fields .product-field-type-M img {display:block;vertical-align: text-top;float:right;}
-.product-field-display {display: flex;flex-wrap: wrap;justify-content: space-around;vertical-align: middle;}
+.product-field-display {vertical-align: middle;}
 .product-fields .product-field .vm-img-desc {font-size:9px;}
 
 /* some more styles */
