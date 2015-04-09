@@ -30,7 +30,7 @@ class JFormFieldVMFiles extends JFormFieldFileList {
 		return parent::getInput();
 	}
 	protected function getOptions(){
-
+		$this->multiple=true;
 		return parent::getOptions();
 	}
 
