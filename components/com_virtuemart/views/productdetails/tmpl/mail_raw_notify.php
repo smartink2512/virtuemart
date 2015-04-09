@@ -17,7 +17,7 @@ defined('_JEXEC') or die('');
  * @version $Id$
  */
 
-echo $this->vendorAddress;
+echo str_replace( "<br />", "\n",$this->vendorAddress);
 echo "\n";
 echo "\n";
 echo vmText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user->name);

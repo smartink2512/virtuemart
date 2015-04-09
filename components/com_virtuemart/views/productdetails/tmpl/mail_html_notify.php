@@ -51,7 +51,7 @@ defined('_JEXEC') or die('');
 	</tr>
 	<tr>
 		<td colspan="2">
-			<strong><?php echo vmText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user); ?></strong><br/>
+			<strong><?php echo vmText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->vendor->vendor_store_name); ?></strong><br/>
 		</td>
 	</tr>
 </table>

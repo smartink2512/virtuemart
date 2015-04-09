@@ -229,7 +229,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			$this->allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
 			$this->showReview = $ratingModel->showReview($product->virtuemart_product_id);
-
+			$this->rating_reviews='';
 			if ($this->showReview) {
 				$this->review = $ratingModel->getReviewByProduct($product->virtuemart_product_id);
 				$this->rating_reviews = $ratingModel->getReviews($product->virtuemart_product_id);
@@ -337,6 +337,9 @@ class VirtueMartViewProductdetails extends VmView {
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		$this->isMail = true;
+		$this->user=new stdClass();
+		$this->user->name=$this->vendor->vendor_store_name;
+		$this->user->email=$this->vendorEmail;
 		parent::display();
 	}
 
