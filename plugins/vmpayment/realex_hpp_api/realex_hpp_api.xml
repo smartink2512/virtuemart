@@ -202,7 +202,7 @@
 
                 <field class="level1" type="vmtitle" default="VMPAYMENT_REALEX_HPP_API_TEMPLATE_SECTION"
                        description=""/>
-                <field name="payment_logos" type="vmfiles" label="VMPAYMENT_REALEX_HPP_API_LOGOS"
+                <field name="payment_logos" type="vmfiles" multiple="true" label="VMPAYMENT_REALEX_HPP_API_LOGOS"
                        description="VMPAYMENT_REALEX_HPP_API_LOGOS_DESC"
                        directory="/images/stories/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1"

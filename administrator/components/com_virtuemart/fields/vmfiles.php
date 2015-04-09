@@ -26,11 +26,9 @@ class JFormFieldVMFiles extends JFormFieldFileList {
 	var $type  = 'Files';
 
 	protected function getInput() {
-		$this->multiple=true;
 		return parent::getInput();
 	}
 	protected function getOptions(){
-		$this->multiple=true;
 		return parent::getOptions();
 	}
 

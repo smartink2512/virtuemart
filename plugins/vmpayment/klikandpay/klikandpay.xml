@@ -231,7 +231,7 @@
 
                 <field type="vmtitle" default="VMPAYMENT_KLIKANDPAY_CONF_TEMPLATE_SECTION"
                        description=""/>
-                <field name="payment_logos" type="vmfiles" label="VMPAYMENT_KLIKANDPAY_CONF_LOGOS"
+                <field name="payment_logos" type="vmfiles" multiple="true" label="VMPAYMENT_KLIKANDPAY_CONF_LOGOS"
                        description="VMPAYMENT_KLIKANDPAY_CONF_LOGOS_TIP"
                        directory="/images/stories/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1"

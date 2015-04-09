@@ -27,7 +27,7 @@
 
          <field type="spacer" default="" level="level1"/>
          <field type="vmtitle" default="VMPAYMENT_SOFORT_PAYMENT_SETTINGS" level="level1"/>
-         <field name="payment_logos" type="vmfiles" label="VMPAYMENT_SOFORT_LOGOS"
+         <field name="payment_logos" type="vmfiles" multiple="true" label="VMPAYMENT_SOFORT_LOGOS"
                description="VMPAYMENT_SOFORT_LOGOS_DESC"
                directory="/images/stories/virtuemart/payment"
                default="default" hide_default="1" hide_none="1"
