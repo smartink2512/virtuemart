@@ -758,7 +758,6 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function displayProductCustomfieldFE (&$product, &$customfields) {
 
-		static $idUnique = array();
 		if (!class_exists ('calculationHelper')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
@@ -796,14 +795,9 @@ class VirtueMartModelCustomfields extends VmModel {
 			$type = $customfield->field_type;
 
 			$idTag = (int)$product->virtuemart_product_id.'-'.$customfield->virtuemart_customfield_id;
-
-			if(!isset($idUnique[$idTag])){
-				$idUnique[$idTag] = 0;
-			}  else {
-				$counter = $idUnique[$idTag]++;
-				$idTag = $idTag.'-'.$counter;
-			}
 			$idTag = $idTag . 'customProductData';
+			$idTag = VmHtml::ensureUniqueId($idTag);
+
 			if (!class_exists ('CurrencyDisplay'))
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance ();
@@ -1463,8 +1457,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		$db = JFactory::getDBO();
 		$db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
 		$old_customfield_ids = $db->loadColumn();
-
-		//vmdebug('storeProductCustomfields',$datas['field']);
 		if (array_key_exists('field', $datas)) {
 
 			foreach($datas['field'] as $key => $fields){
@@ -1493,7 +1485,54 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 				}
 
-				$fields['virtuemart_'.$table.'_id'] =$id;
+				if($fields['field_type']=='C'){
+					$cM = VmModel::getModel('custom');
+					$c = $cM->getCustom($fields['virtuemart_custom_id'],'');
+
+					if(!empty($c->sCustomId)){
+
+						$sCustId = $c->sCustomId;
+						$labels = array();
+						foreach($fields['selectoptions'] as $k => $option){
+							if($option['voption'] == 'clabels' and !empty($option['clabel'])){
+								$labels[$k] = $option['clabel'];
+							}
+						}
+
+						//for testing
+						foreach($fields['options'] as $prodId => $lvalue){
+							if($prodId == $id) continue;
+							$db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ="'.$prodId.'" AND `virtuemart_custom_id`="'.$sCustId.'" '  );
+							$strIds = $db->loadColumn();
+							$i=0;
+							foreach($lvalue as $k=>$value) {
+
+								if(!empty($labels[$k])) {
+									$ts = array();
+									$ts['field_type'] = 'S';
+									$ts['virtuemart_product_id'] = $prodId;
+									$ts['virtuemart_custom_id'] = $sCustId;
+									if(isset($strIds[$i])){
+										$ts['virtuemart_customfield_id'] = $strIds[$i];
+										unset( $strIds[$i++] );
+									}
+									$ts['customfield_value'] = $value;
+
+									$tableCustomfields = $this->getTable($table.'_customfields');
+									$tableCustomfields->bindChecknStore($ts);
+								}
+							}
+
+							if(count($strIds)>0){
+								// delete old unused Customfields
+								$db->setQuery( 'DELETE FROM `#__virtuemart_'.$table.'_customfields` WHERE `virtuemart_customfield_id` in ("'.implode('","', $strIds ).'") ');
+								$db->execute();
+							}
+						}
+					}
+				}
+
+				$fields['virtuemart_'.$table.'_id'] = $id;
 				$tableCustomfields = $this->getTable($table.'_customfields');
 				$tableCustomfields->setPrimaryKey('virtuemart_product_id');
 				if (!empty($datas['customfield_params'][$key]) and !isset($datas['clone']) ) {

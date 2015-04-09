@@ -33,6 +33,21 @@ class VmHtml{
 			'option.key.toHtml' => true, 'option.label' => null, 'option.label.toHtml' => true, 'option.text' => 'text',
 			'option.text.toHtml' => true));
 
+	static protected $_usedId = array();
+
+	static function ensureUniqueId($id){
+
+		if(isset(self::$_usedId[$id])){
+			$c = 1;
+			while(isset(self::$_usedId[$id.$c])){
+				$c++;
+			}
+			$id = $id.$c;
+		}
+		self::$_usedId[$id] = 1;
+		return $id;
+	}
+
 	/**
 	 * Converts all special chars to html entities
 	 *

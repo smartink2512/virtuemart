@@ -79,8 +79,9 @@ class VirtuemartViewCustom extends VmViewAdmin {
 				$varsToPush = VirtueMartModelCustom::getVarsToPush($this->custom->field_type);
 
 				if(!empty($varsToPush)){
+					JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 					$formString = '<vmconfig>'.chr(10).'<fields name="params">'.chr(10).'<fieldset name="extraParams">'.chr(10);
-					//vmdebug('$varsToPush',$varsToPush);
+
 					foreach($varsToPush as $key => $push){
 						if ('_' == substr($key, 0, 1)) continue;
 						//$default = 0;
@@ -92,7 +93,9 @@ class VirtuemartViewCustom extends VmViewAdmin {
         				default="'.$push[0].'"
 						';
 
-						if($push[1]=='int'){
+						if(isset($push[2])){
+							$formString .= 'type="'.$push[2].'" >';
+						} else if($push[1]=='int'){
 							$formString .= 'type="radio" >
     											<option value="0">JNO</option>
     											<option value="1">JYES</option>';
@@ -102,7 +105,6 @@ class VirtuemartViewCustom extends VmViewAdmin {
 						$formString .= chr(10).'</field>'.chr(10);
 					}
 					$formString .= '</fieldset>'.chr(10).'</fields>'.chr(10).'</vmconfig>';
-
 					$this->custom->form = JForm::getInstance($this->custom->field_type, $formString, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->custom->params = new stdClass();
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);

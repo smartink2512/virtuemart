@@ -111,7 +111,7 @@ textarea {width: 100%;}
 
 /*#admin-content {overflow: visible;}
 #admin-ui-tabs {overflow: visible !important;}*/
-#admin-ui-tabs .tabs {padding: 10px 1px 10px; overflow: visible;}
+#admin-ui-tabs .tabs {padding: 10px 1px 20px; overflow: visible;}
 
 /*#admin-ui-tabs .tabs table {overflow: auto !important;}*/
 /* do not change the line below !!! */

@@ -580,7 +580,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished update published '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S',`is_cart_attribute`=1,`is_input`=1,`is_list`='0' WHERE `field_type`='V'";
 			$db->setQuery($q);
 			$db->execute();
@@ -589,7 +588,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `is_input`=1 WHERE `field_type`='M' AND `is_cart_attribute`=1";
 			$db->setQuery($q);
 			$db->execute();
@@ -598,7 +596,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S' WHERE `field_type`='I'";
 			$db->setQuery($q);
 			$db->execute();
@@ -607,7 +604,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S', `custom_value`='JYES;JNO',`is_list`='1' WHERE `field_type`='B'";
 			$db->setQuery($q);
 			$db->execute();
@@ -616,7 +612,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='addtocart' WHERE `is_input`='1'";
 			$db->setQuery($q);
 			$db->execute();
@@ -625,7 +620,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='ontop',`is_cart_attribute`=1 WHERE `field_type`='A'";
 			$db->setQuery($q);
 			$db->execute();
@@ -634,7 +628,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='related_products' WHERE `field_type`='R'";
 			$db->setQuery($q);
 			$db->execute();
@@ -643,7 +636,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='related_categories' WHERE `field_type`='Z'";
 			$db->setQuery($q);
 			$db->execute();
@@ -652,7 +644,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 
-			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='G' WHERE `field_type`='P'";
 			$db->setQuery($q);
 			$db->execute();
@@ -661,6 +652,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 		}
+
 		/**
 		 * @author Max Milbers
 		 * @param unknown_type $tablename
