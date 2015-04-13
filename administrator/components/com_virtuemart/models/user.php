@@ -50,12 +50,11 @@ class VirtueMartModelUser extends VmModel {
 
 		parent::__construct('virtuemart_user_id');
 
-		$this->setMainTable('vmusers');
 		$this->setToggleName('user_is_vendor');
-		$this->addvalidOrderingFieldName(array('ju.username','ju.name','sg.virtuemart_shoppergroup_id','shopper_group_name','shopper_group_desc') );
+		$this->addvalidOrderingFieldName(array('ju.username','ju.name','ju.email','sg.virtuemart_shoppergroup_id','shopper_group_name','shopper_group_desc','vmu.virtuemart_user_id') );
+		$this->setMainTable('vmusers');
+		$this->removevalidOrderingFieldName('virtuemart_user_id');
 		array_unshift($this->_validOrderingFieldName,'ju.id');
-		// 		$user = JFactory::getUser();
-		// 		$this->_id = $user->id;
 	}
 
 	/**
@@ -1260,7 +1259,6 @@ class VirtueMartModelUser extends VmModel {
 		if($superVendor){
 			$db = JFactory::getDbo();
 			$search = vRequest::getUword('usersearch','');
-			vmdebug('getSwitchUserList',$search);
 			if(!empty($search)){
 				$search = ' WHERE (`name` LIKE "%'.$search.'%" OR `username` LIKE "%'.$search.'%" OR `customer_number` LIKE "%'.$search.'%")';
 			} else if($superVendor!=1) {
@@ -1287,7 +1285,6 @@ class VirtueMartModelUser extends VmModel {
 			$q .= $search.' ORDER BY `name` LIMIT 0,10000';
 			$db->setQuery($q);
 			$result = $db->loadObjectList();
-			vmdebug('getSwitchUserList',$q,$result);
 
 			if($result){
 				foreach($result as $k => $user) {

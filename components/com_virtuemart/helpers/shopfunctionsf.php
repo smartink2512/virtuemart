@@ -837,12 +837,17 @@ class shopFunctionsF {
 		return   'invoices' ;
 	}
 
-	static function getInvoiceName($invoice_number){
-		$prefix = vmText::_('COM_VIRTUEMART_INV_FPREFIX');
-		if($prefix == 'COM_VIRTUEMART_INV_FPREFIX'){
-			$prefix = 'vminvoice_';
+	/**
+	 * Get the file name for the invoice or deliverynote.
+	 * The layout argument currently is either 'invoice' or 'deliverynote'
+	 * @return The full filename of the invoice/deliverynote without file extension, sanitized not to contain problematic characters like /
+	 */
+	static function getInvoiceName($invoice_number, $layout='invoice'){
+		$prefix = vmText::_('COM_VIRTUEMART_FILEPREFIX_'.strtoupper($layout));
+		if($prefix == 'COM_VIRTUEMART_FILEPREFIX_'.strtoupper($layout)){
+			$prefix = 'vm'.$layout.'_';
 		}
-		return $prefix.$invoice_number;
+		return $prefix.preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $invoice_number);
 	}
 
 	static public function getInvoiceDownloadButton($orderInfo, $descr = 'COM_VIRTUEMART_PRINT', $icon = 'system/pdf_button.png'){

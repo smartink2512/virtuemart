@@ -168,11 +168,9 @@ vmJsApi::addJScript( 'orderedit',"
 			<tr>
 				<td class="key"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></strong></td>
 				<td><?php
-						$username=$this->orderbt->company ? $this->orderbt->company." ":"";
-						$username.=$this->orderbt->first_name." ".$this->orderbt->last_name." ";
 					if ($this->orderbt->virtuemart_user_id) {
 						$userlink = JROUTE::_ ('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $this->orderbt->virtuemart_user_id);
-						echo JHtml::_ ('link', JRoute::_ ($userlink), $username, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $username));
+						echo JHtml::_ ('link', JRoute::_ ($userlink), $this->orderbt->order_name, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $this->orderbt->order_name));
 					} else {
 						echo $this->orderbt->first_name.' '.$this->orderbt->last_name;
 					}
@@ -191,7 +189,7 @@ vmJsApi::addJScript( 'orderedit',"
 			</tr>
 			<?php } ?>
 			<?php
-			if ($this->orderbt->invoiceNumber and !shopFunctions::InvoiceNumberReserved($this->orderbt->invoiceNumber) ) {
+			if ($this->orderbt->invoiceNumber and !shopFunctionsF::InvoiceNumberReserved($this->orderbt->invoiceNumber) ) {
 				$invoice_url = juri::root().'index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&virtuemart_order_id=' . $this->orderbt->virtuemart_order_id . '&order_number=' .$this->orderbt->order_number. '&order_pass=' .$this->orderbt->order_pass;
 				$invoice_link = "<a title=\"".vmText::_('COM_VIRTUEMART_INVOICE_PRINT')."\"  href=\"javascript:void window.open('$invoice_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 				$invoice_link .=   $this->orderbt->invoiceNumber . '</a>';?>

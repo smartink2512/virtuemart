@@ -56,13 +56,13 @@ AdminUIHelper::startAdminArea($this);
 
 			<th width="25%"><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>
 			<th width="25%"><?php echo $this->sort('ju.name', 'COM_VIRTUEMART_USER_DISPLAYED_NAME')  ?></th>
-			<th width="25%"><?php echo vmText::_('COM_VIRTUEMART_EMAIL'); ?></th>
+			<th width="25%"><?php echo $this->sort('ju.email', 'COM_VIRTUEMART_EMAIL'); ?></th>
 <?php	/*	<th><?php echo vmText::_('COM_VIRTUEMART_USER_GROUP'); ?></th> 	*/ ?>
 			<th width="25%"><?php echo $this->sort('shopper_group_name', 'COM_VIRTUEMART_SHOPPERGROUP')  ?></th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
 			<th width="80px"><?php echo vmText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?></th>
 			<?php } ?>
-			<th><?php echo  vmText::_('COM_VIRTUEMART_ID') ?></th>
+			<th><?php echo $this->sort('ju.id', 'COM_VIRTUEMART_ID') ?></th>
 		</tr>
 		</thead>
 		<?php

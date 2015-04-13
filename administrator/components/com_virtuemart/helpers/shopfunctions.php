@@ -1112,7 +1112,10 @@ class ShopFunctions {
 	 * @param $safePath the safepath from the config
 	 * @return the path where the invoice are stored
 	 */
-	static function getInvoicePath($safePath) {
+	static function getInvoicePath($safePath=null) {
+		if(!isset($safePath)){
+			$safePath = self::checkSafePath();
+		}
 		return  $safePath.self::getInvoiceFolderName() ;
 	}
 

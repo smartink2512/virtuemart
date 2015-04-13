@@ -245,10 +245,6 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 					require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 				}
 				$data = vRequest::getPost();
-				if($allowReview){
-
-				}
-
 				shopFunctionsF::sendRatingEmailToVendor($data);
 			}
 		}

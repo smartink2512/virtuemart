@@ -466,7 +466,6 @@ class VirtueMartViewCart extends VmView {
 				$result = $uModel->getSwitchUserList($superVendor,$this->adminID);
 			}
 		}
-		vmdebug('my user list ',$result);
 		if(!$result) $this->allowChangeShopper = false;
 		return $result;
 	}

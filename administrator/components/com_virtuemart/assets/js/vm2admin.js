@@ -384,7 +384,9 @@
             tip = this;
             tip.unbind().hover(
                 function (e) {
-                    tip.t = this.title;
+                    //a kind of sanitizing the input
+                    tip.t = jQuery('<div/>').text(this.title).html();
+                    //tip.t = this.title;
                     this.title = '';
                     tip.top = (e.pageY + yOffset);
                     tip.left = (e.pageX + xOffset);

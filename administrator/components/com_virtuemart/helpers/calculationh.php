@@ -625,7 +625,7 @@ class calculationHelper {
 	public function getCheckoutPrices(&$cart) {
 
 		//vmdebug('in function getCheckoutPrices in function getCheckoutPrices');
-		$this->_cart =&$cart;
+		$this->_cart = &$cart;
 		$this->inCart = TRUE;
 		//$pricesPerId = array();
 

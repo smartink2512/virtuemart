@@ -670,9 +670,9 @@ class VirtueMartModelCustomfields extends VmModel {
 			//'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
 			case 'X':
         // Not sure why this block is needed to get it to work when editing the customfield (the subsequent block works fine when creating it, ie. in JS)
-				$document=& JFactory::getDocument();
+				$document = JFactory::getDocument();
 				if (get_class($document) == 'JDocumentHTML') {
-					$editor =& JFactory::getEditor();
+					$editor = JFactory::getEditor();
 					return $editor->display('field['.$row.'][customfield_value]',$field->customfield_value, '550', '400', '60', '20', false).'</td><td>';
 				}
 				return $priceInput . '</td><td><textarea class="mceInsertContentNew" name="field[' . $row . '][customfield_value]" id="field-' . $row . '-customfield_value">' . $field->customfield_value . '</textarea>
@@ -1046,7 +1046,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}
 
-					if($customfield->is_list){
+					if($customfield->is_list and !$customfield->admin_only){
 
 						if(!empty($customfield->is_input)){
 
@@ -1224,15 +1224,18 @@ class VirtueMartModelCustomfields extends VmModel {
 				//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
 				//and now {"32":[{"invala":"100"}]}
 				if (!empty($productCustom)) {
-					$html .= ' <span class="product-field-type-' . $productCustom->field_type . '">';
+					$otag = ' <span class="product-field-type-' . $productCustom->field_type . '">';
 					if ($productCustom->field_type == "E") {
 
+						$tmp = '';
 						if (!class_exists ('vmCustomPlugin'))
 							require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 						JPluginHelper::importPlugin ('vmcustom');
 						$dispatcher = JDispatcher::getInstance ();
-						$dispatcher->trigger ($trigger.'VM3', array(&$product, &$productCustom, &$html));
-
+						$dispatcher->trigger ($trigger.'VM3', array(&$product, &$productCustom, &$tmp));
+						if(!empty($tmp)){
+							$html .= $otag.$tmp;
+						}
 					}
 					else {
 						$value = '';
@@ -1275,20 +1278,27 @@ class VirtueMartModelCustomfields extends VmModel {
 								$value .= '</span><br>';
 							}
 							$value = trim($value);
-							$html .= $value.'</span><br />';
+							if(!empty($value)){
+								$html .= $otag.$value.'</span><br />';
+							}
+
 							continue;
 						}
 						else {
 							$value = vmText::_($productCustom->customfield_value);
 						}
 						$trTitle = vmText::_($productCustom->custom_title);
+						$tmp = '';
 						if($productCustom->custom_title!=$trTitle and strpos($trTitle,'%1')!==false){
-							$html .= vmText::sprintf($productCustom->custom_title,$value);
+							$tmp .= vmText::sprintf($productCustom->custom_title,$value);
 						} else {
-							$html .= $trTitle.' '.$value;
+							$tmp .= $trTitle.' '.$value;
 						}
 					}
-					$html .= '</span><br />';
+					if(!empty($tmp)){
+						$html .= $otag.$value.'</span><br />';
+					}
+
 				}
 				else {
 					foreach ((array)$customfield_id as $key => $value) {

@@ -187,7 +187,19 @@ class VirtueMartModelOrders extends VmModel {
 			WHERE o.virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['details'] = $db->loadObjectList('address_type');
-		//vmdebug('getOrder',$order['details'],$q);
+		if($order['details']){
+			$concat = array();
+			if(isset($order['details']['BT']->company))  $concat[]= $order['details']['BT']->company;
+			if(isset($order['details']['BT']->first_name))  $concat[]= $order['details']['BT']->first_name;
+			if(isset($order['details']['BT']->middle_name))  $concat[]= $order['details']['BT']->middle_name;
+			if(isset($order['details']['BT']->last_name))  $concat[]= $order['details']['BT']->last_name;
+			$order['details']['BT']->order_name = '';
+			foreach($concat as $c){
+				$order['details']['BT']->order_name .= $c;
+			}
+			$order['details']['BT']->order_name = htmlspecialchars(strip_tags(htmlspecialchars_decode($order['details']['BT']->order_name)));
+		}
+
 		// Get the order history
 		$q = "SELECT *
 			FROM #__virtuemart_order_histories
@@ -270,9 +282,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$this->_noLimit = $noLimit;
 
 		$concat = array();
+		if(property_exists($tUserInfos,'company'))  $concat[]= 'u.company';
 		if(property_exists($tUserInfos,'first_name'))  $concat[]= 'u.first_name';
 		if(property_exists($tUserInfos,'middle_name'))  $concat[]= 'u.middle_name';
-		if(property_exists($tUserInfos,'middle_name'))  $concat[]= 'u.last_name';
+		if(property_exists($tUserInfos,'last_name'))  $concat[]= 'u.last_name';
 		if(!empty($concat)){
 			$concatStr = "CONCAT_WS(' ',".implode(',',$concat).")";
 		} else {
@@ -356,6 +369,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$this->_data = $this->exeSortSearchListQuery(0,$select,$from,$whereString,'',$ordering);
 
+		if($this->_data){
+			foreach($this->_data as $k=>$d){
+				$this->_data[$k]->order_name = htmlspecialchars(strip_tags(htmlspecialchars_decode($d->order_name)));
+			}
+		}
 
 		return $this->_data ;
 	}
@@ -1957,10 +1975,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if(empty($table->invoice_number)){
 			return false;
 		}
+		if (!class_exists ('shopFunctionsF'))
+			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 
 		// rename invoice pdf file
 		$path = shopFunctions::getInvoicePath(VmConfig::get('forSale_path',0));
-		$name = shopFunctions::getInvoiceName($table->invoice_number);
+		$name = shopFunctionsF::getInvoiceName($table->invoice_number);
 		$invoice_name_src = $path.DS.$name.'.pdf';
 
 		if(!file_exists($invoice_name_src)){
