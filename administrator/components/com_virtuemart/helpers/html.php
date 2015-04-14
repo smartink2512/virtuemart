@@ -601,7 +601,7 @@ static function vmGetCharset() {
 	 * @param string $value
 	 */
 	public static function textarea($name,$value,$class='class="inputbox"',$cols='100',$rows="4"){
-		return '<textarea '.$class.' id="'.$name.'" name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea >';
+		return '<textarea '.$class.' id="'.$name.'" name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'">'.$value.'</textarea >';
 	}
 	/**
 	 * render editor code
