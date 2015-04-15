@@ -145,10 +145,12 @@ Virtuemart.decrQuantity = (function(event) {
     virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
     Ste = parseInt(quantity.attr("step"));
     if (isNaN(Ste)) Ste = 1;
+    minQtt = parseInt(quantity.attr("init"));
+    if (isNaN(minQtt)) minQtt = 1;
     Qtt = parseInt(quantity.val());
+
     if (!isNaN(Qtt) && Qtt>Ste) {
         quantity.val(Qtt - Ste);
-        minQtt = parseInt(quantity.attr("init"));
         if(!isNaN(minQtt) && quantity.val()<minQtt){
             quantity.val(minQtt);
         }
@@ -168,7 +170,7 @@ Virtuemart.addtocart = function (e){
     if (targ.nodeType == 3) // defeat Safari bug
         targ = targ.parentNode;
 
-    if (jQuery(targ).prop("type") == "submit") {
+    if (jQuery(targ).prop("type") == "submit" ||  jQuery(targ).prop("type") == "image" ) {
         Virtuemart.sendtocart(e.data.cart);
         return false;
     }

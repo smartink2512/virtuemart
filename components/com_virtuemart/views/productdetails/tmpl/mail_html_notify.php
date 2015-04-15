@@ -55,7 +55,6 @@ defined('_JEXEC') or die('');
 		</td>
 	</tr>
 </table>
-
 	<table style="margin: auto;" cellpadding="0" cellspacing="0"  >
 		<tr>
 			<td>

@@ -302,7 +302,7 @@
                 <field class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_VM_TEMPLATE"
                        description=""/>
 
-                <field name="sign_in_css" type="text" size="50" default=".payments_signin_button"
+                <field name="sign_in_css" type="text" size="50" default=".payments-signin-button"
                        label="VMPAYMENT_AMAZON_CONF_SIGN_IN_CSS"
                        description="VMPAYMENT_AMAZON_CONF_SIGN_IN_CSS_TIP"/>
 

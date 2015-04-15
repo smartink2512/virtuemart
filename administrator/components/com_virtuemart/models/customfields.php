@@ -629,7 +629,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			/* image */
 			case 'M':
 
-				if($field->is_list){
+				if($field->is_list and $field->is_input){
 
 					$html = $priceInput . '</td><td>is list ';
 
@@ -1046,7 +1046,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}
 
-					if($customfield->is_list and !$customfield->admin_only){
+					if($customfield->is_list and $customfield->is_list!=2){
 
 						if(!empty($customfield->is_input)){
 

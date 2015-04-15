@@ -124,8 +124,9 @@ class VirtueMartModelCategory extends VmModel {
 		if(trim($selectedOrdering) == 'c.ordering'){
 			$selectedOrdering = 'c.ordering,category_name';
 		}
+
 		if(!in_array($selectedOrdering, self::$_validOrderingFields)){
-			$selectedOrdering = 'category_name';
+			$selectedOrdering = 'c.ordering,category_name';
 		}
 
 

@@ -410,9 +410,6 @@ class VirtueMartViewCart extends VmView {
 			}
 
 			vmInfo('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED', $text);
-
-			$tmp = 0;
-			$this->assignRef('found_payment_method', $tmp);
 			$this->cart->virtuemart_paymentmethod_id = 0;
 			return false;
 		}

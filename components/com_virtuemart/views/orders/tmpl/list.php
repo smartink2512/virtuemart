@@ -21,6 +21,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
+<div class="vm-wrap">
+	<div class="vm-orders-list">
 <h1><?php echo vmText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></h1>
 <?php
 if (count($this->orderlist) == 0) {
@@ -76,5 +78,7 @@ if (count($this->orderlist) == 0) {
 		}
 	?>
 	</table>
+</div>	
+	</div>
 </div>
 <?php } ?>

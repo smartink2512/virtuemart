@@ -45,8 +45,18 @@ class VirtueMartViewProductdetails extends VmView {
 
 			$document = JFactory::getDocument();
 
-			$mainframe = JFactory::getApplication();
-			$pathway = $mainframe->getPathway();
+			$app = JFactory::getApplication();
+
+			$menus	= $app->getMenu();
+			$menu = $menus->getActive();
+
+			if(!empty($menu->id)){
+				ShopFunctionsF::setLastVisitedItemId($menu->id);
+			} else if($itemId = vRequest::getInt('Itemid',false)){
+				ShopFunctionsF::setLastVisitedItemId($itemId);
+			}
+
+			$pathway = $app->getPathway();
 			$task = vRequest::getCmd('task');
 
 			if (!class_exists('VmImage'))
@@ -89,7 +99,7 @@ class VirtueMartViewProductdetails extends VmView {
 			if (empty($product->slug)) {
 
 				//Todo this should be redesigned to fit better for SEO
-				$mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
+				$app->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
 
 				$categoryLink = '';
 				if (!$last_category_id) {
@@ -100,7 +110,7 @@ class VirtueMartViewProductdetails extends VmView {
 				}
 
 				if (VmConfig::get('handle_404',1)) {
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404', FALSE));
+					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404', FALSE));
 				} else {
 					JError::raise(E_ERROR,'404','Not found');
 				}
@@ -273,10 +283,10 @@ class VirtueMartViewProductdetails extends VmView {
 				$document->setMetaData('robots', $product->metarobot);
 			}
 
-			if ($mainframe->getCfg('MetaTitle') == '1') {
+			if ($app->getCfg('MetaTitle') == '1') {
 				$document->setMetaData('title', $product->product_name);  //Maybe better product_name
 			}
-			if ($mainframe->getCfg('MetaAuthor') == '1') {
+			if ($app->getCfg('MetaAuthor') == '1') {
 				$document->setMetaData('author', $product->metaauthor);
 			}
 
@@ -323,8 +333,8 @@ class VirtueMartViewProductdetails extends VmView {
 					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 				vmJsApi::jPrice();
 			}
-			parent::display($tpl);
 
+			parent::display($tpl);
     }
 
 	function renderMailLayout ($doVendor, $recipient) {
@@ -342,7 +352,6 @@ class VirtueMartViewProductdetails extends VmView {
 		$this->user->email=$this->vendorEmail;
 		parent::display();
 	}
-
     public function showLastCategory($tpl) {
 		$this->prepareContinueLink();
 		parent::display ($tpl);

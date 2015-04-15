@@ -120,11 +120,9 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      */
     function installSampleData($userId = null) {
 
-
 	if ($userId == null) {
 	    $userId = $this->determineStoreOwner();
 	}
-
 
 	$fields['username'] =  $this->_user->username;
 	$fields['virtuemart_user_id'] =  $userId;

@@ -247,13 +247,13 @@ function virtuemartBuildRoute(&$query) {
 
 			break;
 		case 'cart';
-			if(!isset($query['Itemid'])){
+			//if(!isset($query['Itemid'])){
 				if ( isset($jmenu['cart']) ) {
 					$query['Itemid'] = $jmenu['cart'];
 				} else if ( isset($jmenu['virtuemart']) ) {
 					$query['Itemid'] = $jmenu['virtuemart'];
 				}
-			}
+			//}
 			$segments[] = $helper->lang('cart') ;
 
 			break;
@@ -790,12 +790,18 @@ class vmrouterHelper {
 				//if($catModel->checkIfCached($id,1) ){	//test is never true, therefore costs just energy
 				if(true){
 					$cat = $catModel->getCategory($id,0);
-					$categoryNamesCache[$id] = $cat->slug;
-					$strings[] = $cat->slug;
+					if($cat->published){
+						$categoryNamesCache[$id] = $cat->slug;
+						$strings[] = $cat->slug;
+					} else {
+						$categoryNamesCache[$id] = '404';
+						$strings[] = '404';
+					}
+
 				} else {
 					$q = 'SELECT `slug` as name
 				FROM  `#__virtuemart_categories_'.VmConfig::$vmlang.'`
-				WHERE  `virtuemart_category_id`='.(int)$id;
+				WHERE  `virtuemart_category_id`='.(int)$id.' AND `published`="1"';
 
 					$db->setQuery($q);
 					$cslug = $db->loadResult();
