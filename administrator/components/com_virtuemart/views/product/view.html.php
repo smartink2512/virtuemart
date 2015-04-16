@@ -210,7 +210,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$customsList = $customModel->getCustomsList ();
 				$attribs='style= "width: 300px;"';
-				$customlist = JHtml::_('select.genericlist', $customsList,'customlist', $attribs);
+				$customlist = JHtml::_('select.genericlist', $customsList,'customlist', $attribs,'value','text',null,false,true);
 
 				$this->assignRef('customsList', $customlist);
 
@@ -340,18 +340,29 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 			$this->addStandardDefaultViewLists($model,'created_on');
 
-			/* Get the list of products */
+			if($cI = vRequest::getInt('virtuemart_category_id',false)){
+				$app = JFactory::getApplication();
+				//$old_state = $app->getUserState('virtuemart_category_id');
+				$old_state = $app->getUserState('virtuemart_category_id');
+				if(empty($old_state) or $old_state!=$cI){
+					vRequest::setVar('com_virtuemart.product.filter_order','pc.ordering');
+					$model->filter_order = 'pc.ordering';
+					$old_state = $app->setUserState('virtuemart_category_id',$cI);
+				}
+			}
+
+			//Get the list of products
 			$productlist = $model->getProductListing(false,false,false,false,true);
-			//vmdebug('my product listing',$productlist);
+
 			//The pagination must now always set AFTER the model load the listing
 			$this->pagination = $model->getPagination();
 
-			/* Get the category tree */
+			//Get the category tree
 			$categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
 			$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 			$this->assignRef('category_tree', $category_tree);
 
-			/* Load the product price */
+			//Load the product price
 			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 
 			$vendor_model = VmModel::getModel('vendor');

@@ -1,7 +1,10 @@
 
-INSERT IGNORE INTO `#__virtuemart_calcs` (`virtuemart_calc_id`, `virtuemart_vendor_id`, `calc_jplugin_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `for_override`, `calc_params`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, 0, 'Tax', '', 'VatTax', '+%', 20.0000, 47, 0, 0, '', '', 0, '', 0, 0, 1, '', 635, '', 635, '', 0),
-	(2, 1, 0, 'Discount 5% per bill', '', 'DATaxBill', '-%', 5.0000, 47, 0, 0, '', '', 0, '', 0, 0, 1, '', 635, '', 635, '', 0);
+INSERT IGNORE INTO `#__virtuemart_calcs` (`virtuemart_calc_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `published`) VALUES
+	(1, 'Tax', '', 'VatTax', '+%', 20.0000, 47, 0, 1),
+	(2, 'Discount 5% for ladies', 'The discount is based on net price with VAT, the tax amount is recalculated based on the new net price', 'DATax', '-%', 5.0000, 47, 0, 1);
+
+INSERT IGNORE INTO `#__virtuemart_calc_categories` (`virtuemart_calc_id`, `virtuemart_category_id`) VALUES
+	(2, 9);
 
 INSERT IGNORE INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`, `ordering`, `shared`, `published`) VALUES
 	(2, 1, 2, 1, 1),
@@ -33,15 +36,15 @@ INSERT IGNORE INTO `#__virtuemart_category_categories` (`id`, `category_parent_i
 	(9, 7, 9, 7),
 	(12, 0, 12, 2);
 
-INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`, `virtuemart_category_id`, `virtuemart_media_id`, `ordering`) VALUES
-	(22, 12, 10, 1),
-	(23, 3, 10, 1),
-	(21, 2, 10, 1),
-	(24, 7, 11, 1),
-	(25, 4, 12, 1),
-	(26, 8, 11, 1),
-	(20, 11, 10, 1),
-	(27, 9, 13, 1);
+INSERT IGNORE INTO `#__virtuemart_category_medias` (`virtuemart_category_id`, `virtuemart_media_id`, `ordering`) VALUES
+	(12, 10, 1),
+	(3, 10, 1),
+	(2, 10, 1),
+	(7, 11, 1),
+	(4, 12, 1),
+	(8, 11, 1),
+	(11, 10, 1),
+	(9, 13, 1);
 
 INSERT IGNORE INTO `#__virtuemart_coupons` (`virtuemart_coupon_id`, `coupon_code`, `percent_or_total`, `coupon_type`, `coupon_value`, `coupon_start_date`, `coupon_expiry_date`, `coupon_value_valid`, `coupon_used`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 'Sample Coupon', 'total', 'permanent', 0.01000, '', '', 0.00000, '0', 1, '', 635, '', 635, '', 0);
@@ -53,18 +56,18 @@ INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_pare
  (10, 0, 0, 'S', 0, 0, 0, '','String','Also with tooltip','Property', 'Display characteristic product attributes in a standarized format','', 1, 1),
  (11, 9, 1, 'S', 1, 0, 0, '','String, attribute','Use values seperated by ; to directly select the value in the backend','Property', '','', 1, 1),
  (12, 0, 0, 'S', 1, 0, 1, '','String, list','Use values seperated by ; to directly select the value in the backend','Property', 'Cotton;Wool;Flax;Nylon;Polyester','', 1, 1),
- (13, 0, 0, 'S', 1, 1, 0, 'addtocart','String, is input','Select a variant','Select a variant', 'Combine Customfields of the same type to create flexible selections (dropdowns, radio lists)','', 1, 1),
- (14, 0, 0, 'S', 1, 1, 2, 'addtocart','String, admin list','Also with tooltip','Property', 'Cotton;Wool;Flax;Nylon;Polyester','', 1, 1),
+ (13, 0, 0, 'S', 1, 1, 0, 'addtocart','String, is input','Select a variant','', 'Combine Customfields of the same type to create flexible selections (dropdowns, radio lists)','', 1, 1),
+ (14, 0, 0, 'S', 1, 1, 2, 'addtocart','String, admin list','Select a variant','', 'Cotton;Wool;Flax;Nylon;Polyester','', 1, 1),
  (15, 9, 0, 'M', 1, 0, 1, '','Media, list','Also with tooltip','extra Image', '20;21;22;23;24','', 1, 1),
- (16, 9, 3, 'X', 0, 0, 0, 'addtocart','Editor','Show extra conditions','Testimonial', 'Use the texteditor to display extra text at predefined positions','', 1, 1),
+ (16, 9, 3, 'X', 0, 0, 0, '','Editor','Show extra conditions','Testimonial', 'Use the texteditor to display extra text at predefined positions','', 1, 1),
  (17, 0, 0, 'D', 1, 0, 0, 'addtocart','Date','Show date','Next delivery', '','', 1, 1),
  (18, 0, 0, 'T', 0, 0, 0, 'addtocart','Time','Show time','Workshop at ', '','', 1, 1),
- (20, 0, 0, 'A', 0, 0, 0, '','Generic Child Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
- (21, 0, 0, 'C', 0, 0, 0, '','Multi Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','usecanonical="0"|showlabels="1"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1);
+ (20, 0, 0, 'A', 0, 0, 0, 'ontop','Generic Child Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
+ (21, 0, 0, 'C', 0, 0, 0, 'addtocart','Multi Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','usecanonical="0"|showlabels="1"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1);
 
 INSERT IGNORE INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `published`) VALUES
   (1, 1);
-	
+
 INSERT IGNORE INTO `#__virtuemart_manufacturercategories_XLANG` (`virtuemart_manufacturercategories_id`, `mf_category_name`, `mf_category_desc`, `slug`) VALUES
 	(1, 'default', 'This is the default manufacturer category ', 'default');
 
@@ -79,9 +82,9 @@ INSERT IGNORE INTO `#__virtuemart_manufacturers_XLANG` (`virtuemart_manufacturer
 	(3, 'Producer', 'info@producer.com', '<p>An example for another manufacturer.</p>', 'http://virtuemart.net', 'producer');
 
 INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`, `virtuemart_manufacturer_id`, `virtuemart_media_id`, `ordering`) VALUES
-	(6, 3, 4, 1),
-	(5, 1, 3, 1),
-	(4, 2, 4, 1);
+	(6, 3, 5, 1),
+	(5, 1, 6, 1),
+	(4, 2, 5, 1);
 
 INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `file_is_product_image`, `file_type`, `file_mimetype`, `file_title`, `file_description`, `file_meta`, `file_url`, `file_url_thumb`, `file_params`, `published`) VALUES
  (01, 0, 'vendor', 'image/gif','ShopLogo','Used in the invoice','virtuemart shop','images/stories/virtuemart/vendor/vendor.gif', 'images/stories/virtuemart/vendor/resized/vendor_0x90.gif', '', 1),
@@ -105,20 +108,38 @@ INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `file_is_produ
  (28, 1, 'product', 'image/png', 'Skirt 2','VirtueMart Sample','virtuemart sample','images/stories/virtuemart/product/skirt2.png', '', '', 1),
  (29, 1, 'product', 'image/png', 'T-Shirt EightBall','VirtueMart Sample','virtuemart sample','images/stories/virtuemart/product/tshirt8.png', '', '', 1);
 
+#Common associations for patterns
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_weight`, `product_length`, `product_width`, `product_height`, `product_in_stock`, `product_params`, `published`) VALUES
   (13, 0, 'root', 0.1, 0.1000, 0.1000, 0.1000, 10, 'min_order_level=""|max_order_level=""|step_order_level=""|product_box="1"|', 1);
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
   (13, 'Root Pattern', 'root', 'Root','<p>This product is used as a pattern for other products. It is a parent product and has multiple child products. <br />You can set several settings (content, customfields) for parent product. Childs of this parent will basically have the same settings as the parent automatically inherit except you overwrite the settings.<br /><br /></p>\r\n<p>In this case product price is set in pattern.</p><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>\r\n<p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\r\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   <br /><br /></p>');
 
+INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id`, `virtuemart_manufacturer_id`) VALUES
+  (13, 1),
+  (163, 2),
+  (170, 3),
+  (200, 2),
+  (204, 3),
+  (300, 3);
+
+INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `product_price`, `product_currency`) VALUES
+	(13, 12.000000, 47),
+	(170, 42.000000, 47),
+	(172, 42.000000, 47);
+
+INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
+	(13, 20, 1);
+
+
 #Product attributes
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight_uom`, `product_weight`, `product_lwh_uom`, `product_length`, `product_width`, `product_height`, `product_unit`, `product_packaging`, `product_in_stock`, `product_sales`, `published`, `pordering`) VALUES
-	(163, 13, '', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0),
-	(164, 163, '', 0, 'G', 500.0000, 'CM', 45.0000, 5.0000, 5.0000, '100G', 1.0000, 0, 0, 1, 0),
-	(165, 163, 'DP2', 0, 'KG', 1.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 0, 0, 1, 0),
-	(166, 163, 'DP3', 0, 'G', 10.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 50, 0, 1, 0),
-	(167, 163, 'CFD', 0, 'G', 10.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 10, 0, 1, 0),
-	(168, 163, 'MPRS', 0, 'G', 10.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 10, 0, 1, 0),
-	(169, 163, 'MP002', 0, 'G', 10.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 0, 0, 1, 0);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight`, `published`, `pordering`) VALUES
+	(163, 13, '', 0, NULL, 1, 0),
+	(164, 163, '', 0, 5.0000, 1, 0),
+	(165, 163, 'DP2', 0, 1.0000, 1, 0),
+	(166, 163, 'DP3', 0, 10.0000, 1, 0),
+	(167, 163, 'CFD', 0, 10.0000, 1, 0),
+	(168, 163, 'MPRS', 0, 10.0000, 1, 0),
+	(169, 163, 'MP002', 0, 10.0000, 1, 0);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
 	(163, 'PATTERN Product attributes', 'pattern-product-attributes', '', ''),
@@ -137,6 +158,15 @@ INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`
 	(167, 15, 0, 0, '10', NULL, 1, 'width="0"|height="0"|'),
 	(167, 16, 0, 0, '1', NULL, 0, 'width="0"|height="0"|');
 
+INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `virtuemart_shoppergroup_id`, `product_price`, `product_currency`, `price_quantity_start`, `price_quantity_end`) VALUES
+  (163, 0, 11.000000, 47, NULL, NULL),
+  (168, 0, 100.000000, 47, 0, 5),
+  (168, 0, 80.000000, 47, 6, 10),
+  (168, 0, 70.000000, 47, 11, 0),
+  (169, 0, 100.000000, 47, 0, 0),
+  (169, 2, 80.000000, 47, 0, 0),
+  (169, 4, 50.000000, 47, 0, 0);
+
 INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, `virtuemart_category_id`, `ordering`) VALUES
 	(164, 12, 0),
 	(165, 12, 1),
@@ -146,15 +176,15 @@ INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, 
 	(169, 12, 5);
 
 #Showcase patterns
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight_uom`, `product_weight`, `product_lwh_uom`, `product_length`, `product_width`, `product_height`, `product_unit`, `product_packaging`, `product_in_stock`, `product_sales`, `published`, `pordering`) VALUES
-  (200, 13, '005', 0, 'KG', 0.1000, 'M', 0.1000, 0.1000, 0.1000, '100G', 0.0100, 100, 0, 1, 0),
-	(201, 200, '006', 0, 'KG', 0.1000, 'M', 0.1000, 0.1000, 0.1000, '100G', 0.1000, 100, 0, 1, 0),
-	(202, 200, '007', 0, 'KG', NULL, 'M', NULL, NULL, NULL, '100G', NULL, 0, 0, 1, 0),
-	(203, 200, '008', 0, 'KG', 4.0000, 'M', 1.0000, 2.0000, 1.0000, '100G', 0.2000, 0, 0, 1, 0),
-	(204, 13, '009', 0, 'KG', 0.4000, 'M', 0.1000, 0.1000, 0.1000, 'KG', 0.1000, 100, 0, 1, 0),
-	(205, 204, '010', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0),
-	(206, 204, '011', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0),
-	(207, 204, '012', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight`, `published`, `pordering`) VALUES
+	(200, 13, '005', 0, 0.1000, 1, 0),
+	(201, 200, '006', 0, 0.1000, 1, 0),
+	(202, 200, '007', 0, NULL, 1, 0),
+	(203, 200, '008', 0, 4.0000, 1, 0),
+	(204, 13, '009', 0, 0.4000, 1, 0),
+	(205, 204, '010', 0, NULL, 1, 0),
+	(206, 204, '011', 0, NULL, 1, 0),
+	(207, 204, '012', 0, NULL, 1, 0);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
 	(200, 'Basic PATTERN', 'basic-pattern', 'Showcase for pattern usage.', '<p>This product is used as a pattern for other products. It is a parent product and has multiple child products. <br />You can set several settings (content, customfields) for parent product. Childs of this parent will basically have the same settings as the parent automatically inherit except you overwrite the settings.<br /><br /></p>\r\n<p>In this case product price is set in pattern.</p>'),
@@ -176,23 +206,33 @@ INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, 
 	(206, 2, 6),
 	(207, 2, 7);
 
-INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
-	(204, 10, 0, 0, 'Customfield string 1: Child content', NULL, 0, ''),
-	(204, 10, 0, 0, 'Customfield string 2: Child content', NULL, 1, ''),
-	(204, 16, 0, 0, '<p>Advanced PATTERN content <br />&gt;&gt; This customfields are assigned in parent product.</p>', NULL, 2, ''),
-	(207, 16, 0, 506, '<p>Advanced PATTERN content <br />&gt;&gt; This customfields are assigned in parent product.<br /><br />Enable overrides in plugin customfields and set your new content.<br />You can add customfields additional to inherited.</p>', NULL, 2, ''),
-	(207, 10, 0, 505, 'Override for string 2', NULL, 1, ''),
-	(207, 10, 504, 0, 'Override for string 1', NULL, 0, ''),
-	(207, 15, 0, 0, '1', NULL, 3, 'width="0"|height="0"|');
+INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
+	(200, 204, 10, 0, 0, 'Customfield string 1: Child content', NULL, 0, ''),
+	(201, 204, 10, 0, 0, 'Customfield string 2: Child content', NULL, 1, ''),
+	(202, 204, 16, 0, 0, '<p>Advanced PATTERN content <br />&gt;&gt; This customfields are assigned in parent product.</p>', NULL, 2, ''),
+	(203, 207, 16, 0, 202, '<p>Advanced PATTERN content <br />&gt;&gt; This customfields are assigned in parent product.<br /><br />Enable overrides in plugin customfields and set your new content.<br />You can add customfields additional to inherited.</p>', NULL, 2, ''),
+	(204, 207, 10, 0, 201, 'Override for string 2', NULL, 1, ''),
+	(205, 207, 10, 200, 0, 'Disables string 1 of parent', NULL, 0, ''),
+	(206, 207, 15, 0, 0, '1', NULL, 3, 'width="0"|height="0"|');
+
+INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
+	(203, 21, 1),
+	(207, 22, 1);
+
+INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `virtuemart_shoppergroup_id`, `product_price`, `product_currency`, `price_quantity_start`, `price_quantity_end`) VALUES
+  (200, 0, 33.000000, 47, NULL, NULL),
+	(204, 0, 25.000000, 47, NULL, NULL),
+	(207, 0, 80.000000, 47, 6, 10),
+	(207, 0, 50.000000, 47, 11, 0);
 
 #Product variants
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight_uom`, `product_weight`, `product_lwh_uom`, `product_length`, `product_width`, `product_height`, `product_unit`, `product_packaging`, `product_in_stock`, `product_sales`, `published`, `pordering`) VALUES
-	(170, 13, '', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0),
-	(171, 170, 'CSIV', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0),
-	(172, 170, 'GCCV', 0, 'G', 10.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 100, 0, 1, 0),
-	(173, 172, 'GCV-A', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 1),
-	(174, 172, 'GCV-B', 0, 'G', 10.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 0, 0, 1, 2),
-	(175, 172, 'GCV-C', 0, 'G', 10.0000, 'CM', 10.0000, 10.0000, 10.0000, 'KG', NULL, 0, 0, 1, 3);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight`, `published`, `pordering`) VALUES
+	(170, 13, '', 0, NULL, 1, 0),
+	(171, 170, 'CSIV', 0, NULL, 1, 0),
+	(172, 170, 'GCCV', 0, NULL, 1, 0),
+	(173, 172, 'GCV-A', 0, NULL, 1, 1),
+	(174, 172, 'GCV-B', 0, NULL, 1, 2),
+	(175, 172, 'GCV-C', 0, NULL, 1, 3);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
   (170, 'PATTERN Product variants', 'pattern-product-variants', '', ''),
@@ -205,56 +245,37 @@ INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `pro
 INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, `virtuemart_category_id`, `ordering`) VALUES
 	(170, 11, 0),
 	(171, 11, 1),
-	(172, 11, 2),
-	(173, 11, 3),
-	(174, 11, 4),
-	(175, 11, 5);
+	(172, 11, 2);
 
 INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
 	(171, 69, 0, 0, '6', 1.000000, 3, 'width="0"|height="0"|'),
 	(171, 69, 0, 0, '7', 3.000000, 5, 'width="0"|height="0"|'),
 	(171, 69, 0, 0, '8', 2.000000, 4, 'width="0"|height="0"|'),
-	(171, 14, 0, 0, 'Wool', NULL, 2, ''),
-	(171, 13, 0, 0, 'Expert', 5.000000, 1, ''),
+	(171, 14, 0, 0, 'Cotton', NULL, 1, ''),
+	(171, 14, 0, 0, 'Wool', 4.000000, 2, ''),
+	(171, 14, 0, 0, 'Flax', 7.000000, 3, ''),
 	(171, 13, 0, 0, 'Advanced', NULL, 0, ''),
+	(171, 13, 0, 0, 'Expert', 5.000000, 3, ''),
 	(172, 20, 0, 0, 'product_sku', NULL, 0, 'withParent="0"|parentOrderable="0"|wPrice=0|');
 
-INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id`, `virtuemart_manufacturer_id`) VALUES
-  (13, 1),
-  (163, 2),
-  (170, 3),
-  (200, 2),
-  (204, 3),
-  (300, 3);
-
-INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `product_price`, `product_currency`) VALUES
-	(13, 12.000000, 47),
-	(163, 11.000000, 47),
-	(170, 42.000000, 47),
-	(172, 42.000000, 47),
-	(200, 33.000000, 47),
-	(204, 25.000000, 47);
-
-INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
-	(13, 20, 1);
 
 #Examples Clothing
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight_uom`, `product_weight`, `product_lwh_uom`, `product_length`, `product_width`, `product_height`, `product_unit`, `product_packaging`, `product_in_stock`, `product_sales`, `published`, `pordering`) VALUES
-  (153, 13, '', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0),
-	(154, 13, 'PR-DST', 1, 'G', 200.0000, 'CM', 40.0000, 40.0000, 40.0000, 'KG', NULL, 50, 0, 1, 0),
-	(155, 13, 'MA-SS', 1, 'G', 200.0000, 'CM', 40.0000, 40.0000, 40.0000, 'KG', NULL, 50, 0, 1, 0),
-  (156, 153, 'MA-ZP', 0, 'G', 200.0000, 'CM', 40.0000, 40.0000, 3.0000, 'KG', NULL, 20, 0, 1, 0),
-	(157, 153, 'MA-H2J', 0, 'G', 300.0000, 'CM', 45.0000, 45.0000, 10.0000, 'KG', NULL, 5, 0, 1, 0),
-	(158, 153, 'DESKR', 0, 'G', 200.0000, 'CM', 35.0000, 35.0000, 5.0000, 'KG', NULL, 100, 0, 1, 0),
-  (159, 13, '', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 0),
-	(160, 159, 'XSF', 1, 'G', 150.0000, 'CM', 30.0000, 30.0000, 30.0000, 'KG', NULL, 30, 0, 1, 0),
-	(161, 159, 'PRCB', 1, 'G', 100.0000, 'CM', 20.0000, 20.0000, 20.0000, 'KG', NULL, 20, 0, 1, 0),
-	(162, 159, 'TPCM', 1, 'G', 150.0000, 'CM', 35.0000, 30.0000, 15.0000, 'KG', NULL, 0, 0, 1, 0),
-	(195, 154, 'DS-Small', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 1),
-	(196, 154, 'DS-Large', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 2),
-	(197, 155, 'TS-Small', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 1),
-	(198, 155, 'TS-Medium', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 2),
-	(199, 155, 'TS-Large', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 'KG', NULL, 0, 0, 1, 3);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight_uom`, `product_weight`, `product_lwh_uom`, `product_length`, `product_width`, `product_height`, `product_in_stock`, `product_sales`, `published`, `pordering`) VALUES
+  (153, 13, '', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 0, 0, 1, 0),
+	(154, 13, 'PR-DST', 1, 'G', 200.0000, 'CM', 40.0000, 40.0000, 40.0000, 50, 0, 1, 0),
+	(155, 13, 'MA-SS', 1, 'G', 200.0000, 'CM', 40.0000, 40.0000, 40.0000, 50, 0, 1, 0),
+  (156, 153, 'MA-ZP', 0, 'G', 200.0000, 'CM', 40.0000, 40.0000, 3.0000, 20, 0, 1, 0),
+	(157, 153, 'MA-H2J', 0, 'G', 300.0000, 'CM', 45.0000, 45.0000, 10.0000, 5, 0, 1, 0),
+	(158, 153, 'DESKR', 0, 'G', 200.0000, 'CM', 35.0000, 35.0000, 5.0000, 100, 0, 1, 0),
+  (159, 13, '', 0, 'KG', NULL, 'M', NULL, NULL, NULL, 0, 0, 1, 0),
+	(160, 159, 'XSF', 1, 'G', 150.0000, 'CM', 30.0000, 30.0000, 30.0000, 30, 0, 1, 0),
+	(161, 159, 'PRCB', 1, 'G', 100.0000, 'CM', 20.0000, 20.0000, 20.0000, 20, 0, 1, 0),
+	(162, 159, 'TPCM', 1, 'G', 150.0000, 'CM', 35.0000, 30.0000, 15.0000, 0, 0, 1, 0),
+	(195, 154, 'DS-Small', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 0, 0, 1, 1),
+	(196, 154, 'DS-Large', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 0, 0, 1, 2),
+	(197, 155, 'TS-Small', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 0, 0, 1, 1),
+	(198, 155, 'TS-Medium', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 0, 0, 1, 2),
+	(199, 155, 'TS-Large', 0, 'G', NULL, 'CM', NULL, NULL, NULL, 0, 0, 1, 3);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
   (153, 'PATTERN Wear', 'pattern-wear', '', ''),
@@ -297,38 +318,39 @@ INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, 
 	(156, 8, 0),
 	(162, 4, 0);
 
-INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
-	(153, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 0, ''),
-	(153, 13, 0, 0, 'Basic', NULL, 1, ''),
-	(153, 13, 0, 0, 'Handmade', 100.000000, 2, ''),
-	(153, 14, 0, 0, 'Cotton', NULL, 3, ''),
-	(153, 16, 0, 0, '<p>Wear pattern data field using customfield editor.</p>', NULL, 4, ''),
-	(154, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 0, ''),
-	(154, 10, 0, 0, 'Machine-washable', NULL, 3, ''),
-	(154, 14, 0, 0, 'Wool', NULL, 2, ''),
-	(154, 20, 0, 0, 'product_sku', NULL, 1, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
-	(155, 20, 0, 0, 'product_sku', NULL, 0, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
-	(155, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 1, ''),
-	(155, 12, 0, 0, 'Flax', NULL, 2, ''),
-	(155, 10, 0, 0, 'Machine-washable', NULL, 3, ''),
-	(156, 13, 0, 481, 'Handmade', 49.166667, 2, ''),
-	(156, 14, 0, 482, 'Wool', NULL, 3, ''),
-	(156, 16, 0, 483, '<p>Wear pattern data field using customfield editor override for Zipper.</p>', NULL, 4, ''),
-	(157, 13, 0, 481, 'Handmade', 207.500000, 2, ''),
-	(157, 14, 0, 482, 'Nylon', NULL, 3, ''),
-	(157, 16, 0, 483, '<p>Wear pattern data field using customfield editor, override for H2O jacket</p>', NULL, 4, ''),
-	(158, 13, 0, 481, 'Handmade', 140.833330, 2, ''),
-	(158, 14, 0, 482, 'Flax', NULL, 3, ''),
-	(158, 16, 0, 483, '<p>Wear pattern data field using customfield editor, Skirt "Knock-Rock."</p>', NULL, 4, ''),
-	(159, 10, 0, 0, '', NULL, 1, ''),
-	(159, 16, 0, 0, '<p>Example text for customfield editor position default.</p>', NULL, 2, ''),
-	(159, 11, 0, 0, '', NULL, 0, ''),
-	(160, 11, 0, 472, 'Color: yellow, Logo: monochrome', NULL, 0, ''),
-	(160, 10, 0, 470, 'Stiched VM logo', NULL, 1, ''),
-	(161, 11, 0, 472, 'Color: red, Logo: monochrome', NULL, 0, ''),
-	(161, 10, 0, 470, 'Stiched VM logo', NULL, 1, ''),
-	(162, 11, 0, 472, 'Color: brown, Logo: monochrome', NULL, 0, ''),
-	(162, 10, 0, 470, 'Stiched VM logo', NULL, 1, '');
+INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
+	(400, 153, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 0, ''),
+	(401, 153, 13, 0, 0, 'Basic', NULL, 1, ''),
+	(402, 153, 13, 0, 0, 'Handmade', 100.000000, 2, ''),
+	(403, 153, 14, 0, 0, 'Cotton', NULL, 1, ''),
+	(404, 153, 16, 0, 0, '<p>Wear pattern data field using customfield editor.</p>', NULL, 4, ''),
+	(405, 154, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 0, ''),
+	(406, 154, 10, 0, 0, 'Machine-washable', NULL, 3, ''),
+	(407, 154, 14, 0, 0, 'Wool', NULL, 2, ''),
+	(408, 154, 20, 0, 0, 'product_sku', NULL, 1, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
+	(409, 155, 20, 0, 0, 'product_sku', NULL, 0, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
+	(410, 155, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 1, ''),
+	(411, 155, 12, 0, 0, 'Flax', NULL, 2, ''),
+	(412, 155, 10, 0, 0, 'Machine-washable', NULL, 3, ''),
+	(413, 156, 13, 0, 402, 'Handmade', 49.166667, 2, ''),
+	(414, 156, 14, 0, 0, 'Wool', 12.99, 3, ''),
+	(415, 156, 16, 0, 404, '<p>Wear pattern data field using customfield editor override for Zipper.</p>', NULL, 4, ''),
+	(416, 157, 13, 0, 402, 'Handmade', 207.500000, 2, ''),
+	(417, 157, 14, 0, 0, 'Nylon', NULL, 3, ''),
+	(418, 157, 16, 0, 404, '<p>Wear pattern data field using customfield editor, override for H2O jacket</p>', NULL, 4, ''),
+	(419, 158, 13, 0, 402, 'Handmade', 140.833330, 2, ''),
+	(420, 158, 14, 0, 0, 'Flax', 35.83333, 3, ''),
+	(421, 158, 16, 0, 404, '<p>Wear pattern data field using customfield editor, Skirt "Knock-Rock."</p>', NULL, 4, ''),
+	(422, 159, 10, 0, 0, '', NULL, 1, ''),
+	(423, 159, 16, 0, 0, '<p>Example text for customfield editor position default.</p>', NULL, 2, ''),
+	(424, 159, 11, 0, 0, '', NULL, 0, ''),
+	(425, 160, 11, 0, 424, 'Color: yellow, Logo: monochrome', NULL, 0, ''),
+	(426, 160, 10, 0, 422, 'Stiched VM logo', NULL, 1, ''),
+	(427, 161, 11, 0, 424, 'Color: red, Logo: monochrome', NULL, 0, ''),
+	(428, 161, 10, 0, 422, 'Stiched VM logo', NULL, 1, ''),
+	(429, 162, 11, 0, 424, 'Color: brown, Logo: monochrome', NULL, 0, ''),
+	(430, 162, 10, 0, 422, 'Stiched VM logo', NULL, 1, '');
+
 
 INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `product_price`, `product_currency`) VALUES
 	(161, 15.833330, 47),
@@ -338,33 +360,118 @@ INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `pro
 	(156, 49.166670, 47),
 	(154, 40.833330, 47);
 
-INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `virtuemart_shoppergroup_id`, `product_price`, `override`, `product_override_price`, `product_currency`,  `price_quantity_start`, `price_quantity_end`) VALUES
-	(155, 0, 24.166670, 1, 19.00000, 47, 0, 0),
-	(207, 0, 50.000000, 0, 0.00000, 47, 11, 0),
-	(207, 0, 80.000000, 0, 0.00000, 47, 6, 10);
+INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `virtuemart_shoppergroup_id`, `product_price`, `override`, `product_override_price`, `product_currency`, `price_quantity_start`, `price_quantity_end`) VALUES
+	(155, 0, 24.166670, 1, 19.00000, 47, 0, 0);
 
-INSERT IGNORE INTO `vm3j2_virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
-	(154, 9, 1),
-	(155, 14, 1),
-	(156, 10, 1),
-	(157, 11, 1),
+INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
+	(154, 24, 1),
+	(155, 29, 1),
+	(156, 25, 1),
+	(157, 26, 1),
 	(158, 13, 1),
-	(160, 8, 1),
-	(161, 6, 1),
-	(162, 7, 1),
-	(164, 11, 2),
-	(164, 12, 3),
-	(164, 13, 4),
-	(164, 14, 5),
-	(164, 10, 6),
-	(164, 9, 7),
-	(164, 6, 8),
-	(164, 7, 9),
-	(164, 8, 10),
-	(200, 9, 1),
-	(200, 11, 2),
-	(200, 14, 3);
+	(160, 22, 1),
+	(161, 21, 1),
+	(162, 23, 1),
+	(164, 20, 2),
+	(164, 21, 3),
+	(164, 22, 4),
+	(164, 23, 5),
+	(164, 24, 6),
+	(164, 25, 7),
+	(164, 26, 8),
+	(164, 27, 9),
+	(164, 28, 10),
+	(164, 29, 11);
 
+#Multivariant
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `published`, `product_lwh_uom`,`product_width`) VALUES
+  (300, 170, 'MV Parent', 1, 1, 'CM', 56.0);
+
+INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
+  (300, 'Multi Variant', 'multi-variant', 'Depended Multivariants', 'The new Multi variant feature lets manage you 100s of product variants in the parent. The product content is replaced by the selected product');
+
+INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, `virtuemart_category_id`, `ordering`) VALUES
+  (300,11,16);
+
+INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `product_price`, `product_currency`) VALUES
+  (300, 10, 47),
+  (301, 8, 47),
+  (302, 8.2, 47),
+  (303, 8.5, 47),
+  (304, 8.7, 47),
+  (305, 9.9, 47),
+  (306, 10, 47),
+  (307, 10.3, 47),
+  (308, 10.5, 47),
+  (309, 10.8, 47),
+  (310, 12, 47),
+  (311, 12.4, 47),
+  (312, 12.7, 47),
+  (313, 12.9, 47),
+  (314, 13.5, 47),
+  (315, 14.5, 47);
+
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `published`, `product_width`, `product_length`, `pordering`) VALUES
+	(301, 300, 'MV 2', 1, 46.0, 68.5, 0),
+	(302, 300, 'MV 3', 1, 46.0, 68.5, 1),
+	(303, 300, 'MV 4', 1, 46.0, 71.0, 2),
+	(304, 300, 'MV 5', 1, 46.0, 71.0, 3),
+	(305, 300, 'MV 6', 1, 51.0, 68.5, 10),
+	(306, 300, 'MV 7', 1, 51.0, 71.0, 11),
+	(307, 300, 'MV 8', 1, 51.0, 71.0, 12),
+	(308, 300, 'MV 9', 1, 51.0, 73.5, 13),
+	(309, 300, 'MV 10', 1, 51.0, 73.5, 14),
+	(310, 300, 'MV 11', 1, 56.0, 73.5, 20),
+	(311, 300, 'MV 12', 1, 56.0, 73.5, 21),
+	(312, 300, 'MV 13', 1, 56.0, 76, 22),
+	(313, 300, 'MV 14', 1, 56.0, 76, 23),
+  (314, 300, 'MV 15', 1, 61.0, 76.0, 24),
+	(315, 300, 'MV 16', 1, 61.0, 76.0, 25);
+
+INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`) VALUES
+  (301, 'Multi Variant Child', 'multi-variant-2'),
+  (302, 'Multi Variant Child', 'multi-variant-3'),
+  (303, 'Multi Variant Child', 'multi-variant-4'),
+  (304, 'Multi Variant Child', 'multi-variant-5'),
+  (305, 'Multi Variant Child', 'multi-variant-6'),
+  (306, 'Multi Variant Child', 'multi-variant-7'),
+  (307, 'Multi Variant Child', 'multi-variant-8'),
+  (308, 'Multi Variant Child', 'multi-variant-9'),
+  (309, 'Multi Variant Child', 'multi-variant-10'),
+  (310, 'Multi Variant Child', 'multi-variant-11'),
+  (311, 'Multi Variant Child', 'multi-variant-12'),
+  (312, 'Multi Variant Child', 'multi-variant-13'),
+  (313, 'Multi Variant Child', 'multi-variant-14'),
+  (314, 'Multi Variant Child', 'multi-variant-15'),
+  (315, 'Multi Variant Child', 'multi-variant-16');
+
+INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
+	(300, 300, 21, 0, 0, NULL, NULL, 0, 'usecanonical=0|showlabels=0|sCustomId=0|selectoptions=[{"voption":"product_width","clabel":"1","values":"46.0000\\r\\n51.0000\\r\\n56.0000\\r\\n61.0000"},{"voption":"product_length","clabel":"1","values":"68.5000\\r\\n71.0000\\r\\n73.5000\\r\\n76.0000"},{"voption":"clabels","clabel":"Weave","values":"Advanced\\r\\nPremium"}]|clabels=0|options={"300":["","","0"],"301":["46.0000","68.5000","Advanced"],"302":["46.0000","68.5000","Premium"],"303":["46.0000","71.0000","Advanced"],"304":["46.0000","71.0000","Premium"],"305":["51.0000","68.5000","Advanced"],"306":["51.0000","71.0000","Advanced"],"307":["51.0000","71.0000","Premium"],"308":["51.0000","73.5000","Advanced"],"309":["51.0000","73.5000","Premium"],"310":["56.0000","73.5000","Advanced"],"311":["56.0000","73.5000","Premium"],"312":["56.0000","76.0000","Advanced"],"313":["56.0000","76.0000","Premium"],"314":["61.0000","76.0000","Advanced"],"315":["61.0000","76.0000","Premium"]}|'),
+	(301, 301, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(302, 302, 11, 0, 0, 'Premium', NULL, 0, ''),
+	(303, 303, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(304, 304, 11, 0, 0, 'Premium', NULL, 0, ''),
+	(305, 305, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(306, 306, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(307, 307, 11, 0, 0, 'Premium', NULL, 0, ''),
+	(308, 308, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(309, 309, 11, 0, 0, 'Premium', NULL, 0, ''),
+	(310, 310, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(311, 311, 11, 0, 0, 'Premium', NULL, 0, ''),
+	(312, 312, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(313, 313, 11, 0, 0, 'Premium', NULL, 0, ''),
+	(314, 314, 11, 0, 0, 'Advanced', NULL, 0, ''),
+	(315, 315, 11, 0, 0, 'Premium', NULL, 0, '');
+
+INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
+	(300, 11, 1),
+	(302, 29, 1),
+	(304, 29, 1),
+	(307, 29, 1),
+	(309, 29, 1),
+	(311, 29, 1),
+	(313, 29, 1),
+	(315, 29, 1);
 
 #Pagination
 INSERT IGNORE INTO `#__virtuemart_products` ( `virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_weight`, `product_length`, `product_width`, `product_height`, `product_in_stock`, `product_sales`, `published`) VALUES
@@ -378,7 +485,7 @@ INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `pro
   (1200, 'FAC #0 20', 'fac-0-20');
 
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`,  `product_parent_id`, `product_weight`, `product_in_stock`, `product_sales`, `product_special`, `published`) VALUES
-	(1001, 1000, 1.1, 20, 50, 1, 1),
+	(1001, 1000, 1.1, 20, 50, 0, 1),
 	(1002, 1000, 1.2, 30, 40, 0, 1),
 	(1003, 1000, 1.2, 25, 70, 0, 1),
 	(1004, 1000, 1.1, 20, 50, 0, 1),
@@ -411,7 +518,7 @@ INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`,  `product_
   (1107, 1100, 2.6, 20, 53, 0, 1),
   (1108, 1100, 2.7, 25, 54, 0, 1),
   (1109, 1100, 2.8, 20, 55, 0, 1),
-  (1110, 1100, 2.9, 30, 56, 1, 1);
+  (1110, 1100, 2.9, 30, 56, 0, 1);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`) VALUES
   (1101, 'GHD #1 02', 'ghd-1-02'),
@@ -435,7 +542,7 @@ INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`,  `product_
 	(1207, 1200, NULL, 20, 53, 0, 1),
 	(1208, 1200, 3.9, 25, 54, 0, 1),
 	(1209, 1200, 3.8, 20, 55, 0, 1),
-	(1210, 1200, 3.7, 30, 56, 1, 1);
+	(1210, 1200, 3.7, 30, 56, 0, 1);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`) VALUES
   (1201, 'FAC #1 19', 'fac-1-19'),
@@ -499,120 +606,47 @@ INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, 
   (1209, 3, 29),
   (1210, 3, 12);
 
-#Multivariant
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `published`, `product_lwh_uom`,`product_width`) VALUES
-  (300, 170, 'MV Parent', 1, 1, 'CM', 56.0);
+INSERT IGNORE INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_product_id`, `rates`, `ratingcount`, `rating`, `published`) VALUES
+  (1, 4, 4, 1, 4.0, 1),
+	(3, 6, 4, 1, 4.0, 1),
+	(4, 7, 4, 1, 4.0, 1),
+	(5, 11, 5, 1, 5.0, 1),
+	(19, 67, 5, 1, 5.0, 1),
+	(20, 64, 4, 1, 4.0, 1),
+	(21, 65, 5, 1, 5.0, 1),
+	(22, 66, 5, 1, 5.0, 1),
+	(23, 71, 5, 1, 5.0, 1),
+	(25, 73, 4, 1, 4.0, 1);
 
-INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, `virtuemart_category_id`, `ordering`) VALUES
-  (300,11,16);
+INSERT IGNORE INTO `#__virtuemart_rating_votes` (`virtuemart_rating_vote_id`, `virtuemart_product_id`, `vote`, `lastip`) VALUES
+	(1, 4, 4, '::1'),
+	(2, 5, 5, '::1'),
+	(3, 6, 4, '::1'),
+	(4, 7, 4, '::1'),
+	(5, 11, 5, '::1'),
+	(6, 15, 5, '::1'),
+	(7, 22, 3, '::1'),
+	(8, 23, 5, '::1'),
+	(9, 24, 4, '::1'),
+	(10, 25, 4, '::1'),
+	(11, 26, 5, '::1'),
+	(12, 21, 5, '::1'),
+	(13, 20, 3, '::1'),
+	(14, 19, 5, '::1'),
+	(15, 63, 5, '::1'),
+	(16, 60, 5, '::1'),
+	(17, 61, 4, '::1'),
+	(18, 62, 4, '::1'),
+	(19, 67, 5, '::1'),
+	(20, 64, 4, '::1'),
+	(21, 65, 5, '::1'),
+	(22, 66, 5, '::1'),
+	(23, 71, 5, '::1'),
+	(24, 72, 3, '::1'),
+	(25, 73, 4, '::1'),
+	(26, 70, 5, '::1'),
+	(27, 69, 4, '::1');
 
-INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `product_price`, `product_currency`) VALUES
-  (300, 10, 47),
-  (301, 8, 47),
-  (302, 8, 47),
-  (303, 8.5, 47),
-  (304, 8.5, 47),
-  (305, 9.9, 47),
-  (306, 10, 47),
-  (307, 10, 47),
-  (308, 10.5, 47),
-  (309, 10.5, 47),
-  (310, 12, 47),
-  (311, 12, 47),
-  (312, 12.3, 47),
-  (313, 12.3, 47),
-  (314, 12.5, 47),
-  (315, 12.5, 47);
-
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `published`, `product_width`, `product_length`, `pordering`) VALUES
-	(301, 300, 'MV 2', 1, 46.0, 68.5, 0),
-	(302, 300, 'MV 3', 1, 46.0, 68.5, 1),
-	(303, 300, 'MV 4', 1, 46.0, 71.0, 2),
-	(304, 300, 'MV 5', 1, 46.0, 71.0, 3),
-	(305, 300, 'MV 6', 1, 51.0, 68.5, 10),
-	(306, 300, 'MV 7', 1, 51.0, 71.0, 11),
-	(307, 300, 'MV 8', 1, 51.0, 71.0, 12),
-	(308, 300, 'MV 9', 1, 51.0, 73.5, 13),
-	(309, 300, 'MV 10', 1, 51.0, 73.5, 14),
-	(310, 300, 'MV 11', 1, 56.0, 73.5, 20),
-	(311, 300, 'MV 12', 1, 56.0, 73.5, 21),
-	(312, 300, 'MV 13', 1, 56.0, 76, 22),
-	(313, 300, 'MV 14', 1, 56.0, 76, 23),
-  (314, 300, 'MV 15', 1, 61.0, 76.0, 24),
-	(315, 300, 'MV 16', 1, 61.0, 76.0, 25);
-
-INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`) VALUES
-  (300, 'Multi Variant', 'multi-variant'),
-  (301, 'Multi Variant Child', 'multi-variant-2'),
-  (302, 'Multi Variant Child', 'multi-variant-3'),
-  (303, 'Multi Variant Child', 'multi-variant-4'),
-  (304, 'Multi Variant Child', 'multi-variant-5'),
-  (305, 'Multi Variant Child', 'multi-variant-6'),
-  (306, 'Multi Variant Child', 'multi-variant-7'),
-  (307, 'Multi Variant Child', 'multi-variant-8'),
-  (308, 'Multi Variant Child', 'multi-variant-9'),
-  (309, 'Multi Variant Child', 'multi-variant-10'),
-  (310, 'Multi Variant Child', 'multi-variant-11'),
-  (311, 'Multi Variant Child', 'multi-variant-12'),
-  (312, 'Multi Variant Child', 'multi-variant-13'),
-  (313, 'Multi Variant Child', 'multi-variant-14'),
-  (314, 'Multi Variant Child', 'multi-variant-15'),
-  (315, 'Multi Variant Child', 'multi-variant-16');
-
-INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
-	(300, 21, 0, 0, NULL, NULL, 0, 'usecanonical=0|showlabels=0|sCustomId=0|selectoptions=[{"voption":"product_width","clabel":"","values":""},{"voption":"product_length","clabel":"","values":""}]|clabels=0|options={"300":["","Multi Variant"],"301":["68.5000","Multi Variant Child"],"302":["68.5000","Multi Variant Child"],"303":["71.0000","Multi Variant Child"],"304":["71.0000","Multi Variant Child"],"305":["68.5000","Multi Variant Child"],"306":["71.0000","Multi Variant Child"],"307":["71.0000","Multi Variant Child"],"308":["73.5000","Multi Variant Child"],"309":["73.5000","Multi Variant Child"],"310":["73.5000","Multi Variant Child"],"311":["73.5000","Multi Variant Child"],"312":["76.0000","Multi Variant Child"],"313":["76.0000","Multi Variant Child"],"314":["76.0000","Multi Variant Child"],"315":["76.0000","Multi Variant Child"]}|');
-
-INSERT IGNORE INTO `vm3j2_virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
-	(301, 9, 1),
-	(302, 9, 1),
-	(303, 9, 1),
-	(304, 9, 1),
-	(305, 9, 1),
-	(306, 9, 1),
-	(300, 14, 1);
-
-
-INSERT IGNORE INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_product_id`, `rates`, `ratingcount`, `rating`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`) VALUES
-  (1, 4, 4, 1, 4.0, 1, '', 635, '', 635),
-	(3, 6, 4, 1, 4.0, 1, '', 635, '', 635),
-	(4, 7, 4, 1, 4.0, 1, '', 635, '', 635),
-	(5, 11, 5, 1, 5.0, 1, '', 635, '', 635),
-	(19, 67, 5, 1, 5.0, 1, '', 635, '', 635),
-	(20, 64, 4, 1, 4.0, 1, '', 635, '', 635),
-	(21, 65, 5, 1, 5.0, 1, '', 635, '', 635),
-	(22, 66, 5, 1, 5.0, 1, '', 635, '', 635),
-	(23, 71, 5, 1, 5.0, 1, '', 635, '', 635),
-	(25, 73, 4, 1, 4.0, 1, '', 635, '', 635);
-
-INSERT IGNORE INTO `#__virtuemart_rating_votes` (`virtuemart_rating_vote_id`, `virtuemart_product_id`, `vote`, `lastip`, `created_on`, `created_by`, `modified_on`, `modified_by`) VALUES
-	(1, 4, 4, '::1', '', 635, '', 635),
-	(2, 5, 5, '::1', '', 635, '', 635),
-	(3, 6, 4, '::1', '', 635, '', 635),
-	(4, 7, 4, '::1', '', 635, '', 635),
-	(5, 11, 5, '::1', '', 635, '', 635),
-	(6, 15, 5, '::1', '', 635, '', 635),
-	(7, 22, 3, '::1', '', 635, '', 635),
-	(8, 23, 5, '::1', '', 635, '', 635),
-	(9, 24, 4, '::1', '', 635, '', 635),
-	(10, 25, 4, '::1', '', 635, '', 635),
-	(11, 26, 5, '::1', '', 635, '', 635),
-	(12, 21, 5, '::1', '', 635, '', 635),
-	(13, 20, 3, '::1', '', 635, '', 635),
-	(14, 19, 5, '::1', '', 635, '', 635),
-	(15, 63, 5, '::1', '', 635, '', 635),
-	(16, 60, 5, '::1', '', 635, '', 635),
-	(17, 61, 4, '::1', '', 635, '', 635),
-	(18, 62, 4, '::1', '', 635, '', 635),
-	(19, 67, 5, '::1', '', 635, '', 635),
-	(20, 64, 4, '::1', '', 635, '', 635),
-	(21, 65, 5, '::1', '', 635, '', 635),
-	(22, 66, 5, '::1', '', 635, '', 635),
-	(23, 71, 5, '::1', '', 635, '', 635),
-	(24, 72, 3, '::1', '', 635, '', 635),
-	(25, 73, 4, '::1', '', 635, '', 635),
-	(26, 70, 5, '::1', '', 635, '', 635),
-	(27, 69, 4, '::1', '', 635, '', 635);
-
-INSERT INTO `#__virtuemart_shoppergroups` (`shopper_group_name`, `shopper_group_desc`, `default`, `shared`, `published`) VALUES
-('Gold Level', 'Gold Level Shoppers.', 0,1,1),
-('Wholesale', 'Shoppers that can buy at wholesale.', 0,1,1);
+INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`, `published`) VALUES
+( 3,'Wholesale', 'Shoppers that can buy at wholesale.', 0,1,1),
+( 4,'Gold Level', 'Gold Level Shoppers.', 0,1,1);

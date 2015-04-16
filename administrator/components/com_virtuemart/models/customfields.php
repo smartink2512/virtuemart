@@ -862,6 +862,8 @@ class VirtueMartModelCustomfields extends VmModel {
 									$text = number_format(round((float)$elem,(int)$rd),$rd);
 								}
 								//vmdebug('($dropdowns[$k] in DIMENSION value = '.$elem.' r='.$rd.' '.$text);
+							} else if  ($soption->voption === 'clabels' and $soption->clabel!='') {
+								$text = vmText::_($elem);
 							}
 
 							if($elem=='0'){
@@ -879,8 +881,15 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 						$idTagK = $idTag.'cvard'.$k;
 						if($customfield->showlabels){
-							$soption->slabel = empty($soption->clabel)? vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption)): vmText::_($soption->clabel);;
-							$html .= '<span class="vm-cmv-label" >'.$soption->slabel.'</span>';
+							if(empty($soption->clabel)){
+								$soption->slabel = vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption));
+							} else if(!empty($soption->clabel) and !in_array($soption->voption,self::$dimensions) ){
+								$soption->slabel = vmText::_($soption->clabel);
+							}
+							if(isset($soption->slabel)){
+								$html .= '<span class="vm-cmv-label" >'.$soption->slabel.'</span>';
+							}
+
 						}
 
 						$attribs = array('class'=>'vm-chzn-select cvselection no-vm-bind','data-dynamic-update'=>'1');

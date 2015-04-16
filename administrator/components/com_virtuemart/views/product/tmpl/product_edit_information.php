@@ -211,6 +211,9 @@ $i=0;
 			if (!isset($this->product->product_tax_id)) {
 				$this->product->product_tax_id = 0;
 			}
+			if (!isset($this->product->allPrices[$k]['product_tax_id'])) {
+				$this->product->allPrices[$k]['product_tax_id'] = 0;
+			}
 			$this->lists['taxrates'] = ShopFunctions::renderTaxList ($this->product->allPrices[$k]['product_tax_id'], 'mprices[product_tax_id][' . $this->priceCounter . ']');
 			if (!isset($this->product->allPrices[$k]['product_discount_id'])) {
 				$this->product->allPrices[$k]['product_discount_id'] = 0;
