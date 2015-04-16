@@ -55,7 +55,7 @@ if ($show_product_list) {
 	<?php if ($data->totalProduct) echo  $data->cart_show; ?>
 </div>
 <div style="clear:both;"></div>
-	<div class="payments_signin_button" ></div>
+	<div class="payments-signin-button" ></div>
 <noscript>
 <?php echo vmText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
 </noscript>

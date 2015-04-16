@@ -67,7 +67,7 @@ $this->addCheckRequiredJs();
 	<div class="vm-cart-header-container">
 		<div class="width50 floatleft vm-cart-header">
 			<h1><?php echo vmText::_ ('COM_VIRTUEMART_CART_TITLE'); ?></h1>
-			<div class="payments_signin_button" ></div>
+			<div class="payments-signin-button" ></div>
 		</div>
 		<?php if (VmConfig::get ('oncheckout_show_steps', 1) && $this->checkout_task === 'confirm') {
 		echo '<div class="checkoutStep" id="checkoutStep4">' . vmText::_ ('COM_VIRTUEMART_USER_FORM_CART_STEP4') . '</div>';
