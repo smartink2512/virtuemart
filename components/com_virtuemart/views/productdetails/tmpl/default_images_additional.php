@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="floatleft">
 			<?php
 			if(VmConfig::get('add_img_main', 1)) {
-				echo $image->displayMediaThumb('class="product-image" style="cursor: pointer"',false,"",$image->file_description);
+				echo $image->displayMediaThumb('class="product-image" style="cursor: pointer"',false,$image->file_description);
 				echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
 			} else {
 				echo $image->displayMediaThumb("",true,"rel='vm-additional-images'",true,$image->file_description);

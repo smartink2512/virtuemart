@@ -881,7 +881,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 						$idTagK = $idTag.'cvard'.$k;
 						if($customfield->showlabels){
-							if(empty($soption->clabel)){
+							if( in_array($soption->voption,self::$dimensions) ){
 								$soption->slabel = vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption));
 							} else if(!empty($soption->clabel) and !in_array($soption->voption,self::$dimensions) ){
 								$soption->slabel = vmText::_($soption->clabel);
@@ -1303,10 +1303,11 @@ class VirtueMartModelCustomfields extends VmModel {
 						} else {
 							$tmp .= $trTitle.' '.$value;
 						}
+						if(!empty($tmp)){
+							$html .= $otag.$tmp.'</span><br />';
+						}
 					}
-					if(!empty($tmp)){
-						$html .= $otag.$value.'</span><br />';
-					}
+
 
 				}
 				else {

@@ -97,9 +97,9 @@ class Migrator extends VmModel{
 			$result = array();
 		} else {
 			// 			vmdebug('getMigrationProgress '.$group,$result);
-			$uresult = json_decode(trim($result),true);
+			$uresult = unserialize(trim($result));
 			if(!$uresult){
-				vmdebug('getMigrationProgress json_decode failed '.$group,$result);
+				vmdebug('getMigrationProgress unserialize failed '.$group,$result);
 				// 				vmWarn('getMigrationProgress '.$group.' array is created new and therefore empty $q '.$q.' '.print_r($uresult,1).' <pre>'.print_r($result,1).'</pre>');
 				$result = array();
 			} else {
@@ -113,7 +113,7 @@ class Migrator extends VmModel{
 
 	function storeMigrationProgress($group,$array, $limit = ''){
 
-		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.json_encode($array).'" '.$limit.' WHERE `id` = "1"';
+		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.serialize($array).'" '.$limit.' WHERE `id` = "1"';
 
 		$this->_db->setQuery($q);
 		if(!$this->_db->execute()){
@@ -361,19 +361,10 @@ class Migrator extends VmModel{
 									$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
 								}
 							}else {
-								if($type!='forSale'){
-									if($filetype == 'dir' && $file != 'resized'){
-										$subfoldersInDir[] = $dir.$file.DS;
-										vmdebug($type.' my sub folder ',$dir.$file);
-									}
-								} else {
-									vmInfo('Did not synchronise media for sale in '.$dir.$file);
-									/*if($filetype == 'dir'){
-										$subfoldersInDir[] = $dir.$file.DS;
-										vmdebug($type.' my sub folder ',$dir.$file);
-									}*/
+								if($filetype == 'dir' && $file != 'resized' && $file != 'invoices'){
+									$subfoldersInDir[] = $dir.$file.DS;
+									// 									vmdebug('my sub folder ',$dir.$file);
 								}
-
 							}
 						}
 

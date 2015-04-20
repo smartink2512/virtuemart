@@ -414,7 +414,20 @@ class shopFunctionsF {
 			$rowHeights[$row]['price'][] = $priceRows;
 			$position = 'addtocart';
 			if(!empty($product->customfieldsSorted[$position])){
+
+				//Hack for Multi variants
+				$mvRows = 0;$i=0;
+				foreach($product->customfieldsSorted[$position] as $custom){
+					if($custom->field_type=='C'){
+						//vmdebug('my custom',$custom);
+						$mvRows += count($custom->selectoptions);
+						$i++;
+					}
+				}
 				$customs = count($product->customfieldsSorted[$position]);
+				if(!empty($mvRows)){
+					$customs = $customs - $i +$mvRows;
+				}
 			} else {
 				$customs = 0;
 			}

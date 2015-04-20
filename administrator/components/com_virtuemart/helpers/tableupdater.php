@@ -351,7 +351,7 @@ class GenericTableUpdater extends VmModel{
 				$this->_db->setQuery($q);
 				$this->_db->execute();*/
 			} else {
-				vmdebug('Table not existing?',$tablename,$existingtables);
+				//vmdebug('Table not existing?',$tablename,$existingtables);
 				$this->createTable($tablename,$table);
 
 			}

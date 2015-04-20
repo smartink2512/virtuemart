@@ -1989,8 +1989,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			//$data['invoice_number'] = $data['invoice_number'].' not found.';
 		} else {
 			$date = date("Ymd");
+			// We change the invoice number in the invoice table only. The order's invoice number is not modified!
 			$data['invoice_number'] = $table->invoice_number.'_'.$date;
-			$invoice_name_dst = $path.DS.$table->invoice_number.'.pdf';
+			// We the sanitized file name as the invoice number might contain strange characters like 2015/01.
+			$invoice_name_dst = $path.DS.$name.'_deprecated'.$date.'.pdf';
 
 			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if (!JFile::move($invoice_name_src, $invoice_name_dst)) {

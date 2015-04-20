@@ -17,7 +17,7 @@
 .product-field-display .chzn-container {
     /* font-size: 13px; */
     position: relative;
-    display: inline-block;
+    display: block;
     max-width: 18em !important;
     zoom: 1;
     *display: inline;
