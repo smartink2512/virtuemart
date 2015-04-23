@@ -1234,17 +1234,14 @@ class VirtueMartModelCustomfields extends VmModel {
 				//and now {"32":[{"invala":"100"}]}
 				if (!empty($productCustom)) {
 					$otag = ' <span class="product-field-type-' . $productCustom->field_type . '">';
+					$tmp = '';
 					if ($productCustom->field_type == "E") {
 
-						$tmp = '';
 						if (!class_exists ('vmCustomPlugin'))
 							require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 						JPluginHelper::importPlugin ('vmcustom');
 						$dispatcher = JDispatcher::getInstance ();
 						$dispatcher->trigger ($trigger.'VM3', array(&$product, &$productCustom, &$tmp));
-						if(!empty($tmp)){
-							$html .= $otag.$tmp;
-						}
 					}
 					else {
 						$value = '';
@@ -1303,9 +1300,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						} else {
 							$tmp .= $trTitle.' '.$value;
 						}
-						if(!empty($tmp)){
-							$html .= $otag.$tmp.'</span><br />';
-						}
+					}
+					if(!empty($tmp)){
+						$html .= $otag.$tmp.'</span><br />';
 					}
 
 

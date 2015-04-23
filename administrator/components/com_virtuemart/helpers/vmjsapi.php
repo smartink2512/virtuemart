@@ -675,7 +675,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		}
 
 		static $jDate;
-
+		if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 		$id = VmHtml::ensureUniqueId($id);
 		$dateFormat = vmText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
 		$search  = array('m', 'd', 'Y');
@@ -773,7 +773,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		}
 
 		$url = 'index.php?option=com_virtuemart&view=virtuemart&task=keepalive';
-		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'";var minlps = "'.$minlps.'"',false,true);
+		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'";var minlps = "'.$minlps.'";',false,true);
 		vmJsApi::addJScript('vmkeepalive',false, true, true);
 	}
 }

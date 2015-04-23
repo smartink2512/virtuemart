@@ -34,7 +34,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->currency->published); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE','currency_exchange_rate',$this->currency->currency_exchange_rate,'class="inputbox"','',6); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_2','currency_code_2',$this->currency->currency_code_2,'class="required"','',2,2); ?>
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_3','currency_code_3',$this->currency->currency_code_3,'class="required"','',3,3); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_3','currency_code_3',$this->currency->currency_code_3,'class="inputbox"','',3,3); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NUMERIC_CODE','currency_numeric_code',$this->currency->currency_numeric_code,'class="inputbox"','',3,3); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_SYMBOL','currency_symbol',$this->currency->currency_symbol,'class="inputbox"','',20,20); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_DECIMALS','currency_decimal_place',$this->currency->currency_decimal_place,'class="inputbox"','',20,20); ?>

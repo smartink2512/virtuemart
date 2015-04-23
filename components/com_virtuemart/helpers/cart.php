@@ -1422,7 +1422,7 @@ class VirtueMartCart {
 			$this->$vm_method_name = $method_id;
 			$this->$vm_autoSelected_name=true;
 			$this->setCartIntoSession();
-			vmdebug('FOUND automatic SELECTED '.$type.' !!',$this->$vm_method_name);
+			//vmdebug('FOUND automatic SELECTED '.$type.' !!',$this->$vm_method_name);
 			return true;
 		} else {
 			$this->$vm_autoSelected_name=false;

@@ -21,6 +21,9 @@ if (!class_exists ('VmConfig')) {
 	}
 }
 
+if(!method_exists('vRequest','vmSpecialChars')) jExit('Install the virtuemart Core first ');
+
+
 $max_execution_time = ini_get ('max_execution_time');
 if ((int)$max_execution_time < 120) {
 	@ini_set ('max_execution_time', '120');
