@@ -4,9 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /* ID for jQuery dropdown */
 $ID = str_replace('.', '_', substr(microtime(true), -8, 8));
-$js="
-//<![CDATA[
-jQuery(document).ready(function() {
+$js="jQuery(document).ready(function() {
 		jQuery('#VMmenu".$ID." li.VmClose ul').hide();
 		jQuery('#VMmenu".$ID." li .VmArrowdown').click(
 		function() {
@@ -18,50 +16,44 @@ jQuery(document).ready(function() {
 			}
 		});
 	});
-//]]>
 " ;
-
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration($js);?>
+vmJsApi::addJScript('catMenuOpenClose',$js);
+?>
 
 <ul class="VMmenu<?php echo $class_sfx ?>" id="<?php echo "VMmenu".$ID ?>" >
-<?php foreach ($categories as $category) {
-		 $active_menu = 'class="VmClose"';
-		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category->virtuemart_category_id);
-		$cattext = $category->category_name;
-		//if ($active_category_id == $category->virtuemart_category_id) $active_menu = 'class="active"';
-		if (in_array( $category->virtuemart_category_id, $parentCategories)) $active_menu = 'class="VmOpen"';
 
-		?>
+<?php
+function renderCats($cats,$parentCategories,$class_sfx,$first = true){
 
-<li <?php echo $active_menu ?>>
-	<div>
-		<?php echo JHTML::link($caturl, $cattext);
-		if ($category->childs) {
-			?>
-			<span class="VmArrowdown"> </span>
-			<?php
+	if (!$first and isset($cats) and is_array($cats) and count($cats)>0){
+		echo '<ul class="menu'.$class_sfx.'">';
+	} else if (!$first) {
+		return;
+	}
+	foreach ($cats as $cat) {
+		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$cat->virtuemart_category_id);
+		$cattext = vmText::_($cat->category_name);
+
+		$active_menu = 'class="VmClose"';
+		if (in_array( $cat->virtuemart_category_id, $parentCategories)) $active_menu = 'class="VmOpen"';
+		echo '<li '.$active_menu.' >';
+
+		echo '<div>';
+		echo JHTML::link($caturl, $cattext);
+		if (isset($cat->childs) and is_array($cat->childs) and count($cat->childs)>0) {
+			echo '<span class="VmArrowdown"> </span>';echo '</div>';
+			renderCats($cat->childs,$parentCategories,$class_sfx,false);
+		} else {
+			echo '</div>';
 		}
-		?>
-	</div>
-<?php if ($category->childs) { ?>
-<ul class="menu<?php echo $class_sfx; ?>">
-<?php
-		foreach ($category->childs as $child) {
 
-		$active_child_menu = 'class="VmClose"';
-		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$child->virtuemart_category_id);
-		$cattext = vmText::_($child->category_name);
-		if ($child->virtuemart_category_id == $active_category_id) $active_child_menu = 'class="VmOpen"';
-		?>
-		<li <?php echo $active_child_menu ?>>
-<li>
-	<div ><?php echo JHTML::link($caturl, $cattext); ?></div>
-</li>
-<?php		} ?>
-</ul>
-<?php 	} ?>
-</li>
-<?php
-	} ?>
-</ul>
+		echo '</li>';
+	}
+	echo '</ul>';
+}
+renderCats($categories,$parentCategories,$class_sfx,true);
+
+echo '</ul>';
+
+?>
+

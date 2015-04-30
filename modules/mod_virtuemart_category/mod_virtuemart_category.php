@@ -6,7 +6,7 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2011-2014 The Virtuemart Team
+* @copyright (C) 2011-2015 The Virtuemart Team
 *
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -44,11 +44,23 @@ $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
 
 if(empty($categories)) return false;
 
-foreach ($categories as $category) {
-   	$category->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
-	// No image used here
-	//$categoryModel->addImages($category->childs);
+$level = $params->get('level','2');
+
+if($level>1){
+	foreach ($categories as $i => $category) {
+		$categories[$i]->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
+		// No image used here
+		//$categoryModel->addImages($category->childs);
+		//Yehyeh, very cheap done.
+		if($level>2){
+			foreach ($categories[$i]->childs as $j => $cat) {
+				$categories[$i]->childs[$j]->childs = $categoryModel->getChildCategoryList( $vendorId, $cat->virtuemart_category_id );
+			}
+		}
+	}
 }
+//vmdebug('my categories',$categories);
+
 
 $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
 
