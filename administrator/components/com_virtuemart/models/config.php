@@ -288,6 +288,8 @@ class VirtueMartModelConfig extends VmModel {
 				if($key = array_search('pc.ordering',$searchFieldsArray)){
 					unset($searchFieldsArray[$key]);
 				}
+			} else if ($type=='browse_orderby_fields'){
+				array_unshift($searchFieldsArray,'pc.ordering,product_name');
 			}
 		} else {
 			$searchFieldsArray = array('category_name','category_description','cx.ordering','c.published');

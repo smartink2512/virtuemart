@@ -47,11 +47,12 @@ class vmJsApi{
 	 * @param bool $defer	http://peter.sh/experiments/asynchronous-and-deferred-javascript-execution-explained/
 	 * @param bool $async
 	 */
-	public static function addJScript($name, $script = false, $defer = true, $async = false, $ver = VM_REV){
+	public static function addJScript($name, $script = false, $defer = true, $async = false, $inline = false, $ver = VM_REV){
 		self::$_jsAdd[$name]['script'] = trim($script);
 		self::$_jsAdd[$name]['defer'] = $defer;
 		self::$_jsAdd[$name]['async'] = $async;
 		if(!isset(self::$_jsAdd[$name]['written']))self::$_jsAdd[$name]['written'] = false;
+		self::$_jsAdd[$name]['inline'] = $inline;
 		self::$_jsAdd[$name]['ver'] = $ver;
 	}
 
@@ -67,6 +68,7 @@ class vmJsApi{
 
 		$html = '';
 		foreach(self::$_jsAdd as $name => &$jsToAdd){
+
 			if($jsToAdd['written']) continue;
 			if(!$jsToAdd['script'] or strpos($jsToAdd['script'],'/')===0 and strpos($jsToAdd['script'],'//<![CDATA[')!==0){ //strpos($script,'/')===0){
 
@@ -88,8 +90,14 @@ class vmJsApi{
 				}
 				$ver = '';
 				if(!empty($jsToAdd['ver'])) $ver = '?vmver='.$jsToAdd['ver'];
-				$document = JFactory::getDocument();
-				$document->addScript( $file .$ver,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
+
+				if($jsToAdd['inline']){
+					$html .= '<script type="text/javascript" src="'.$file .$ver.'"></script>';
+				} else {
+					$document = JFactory::getDocument();
+					$document->addScript( $file .$ver,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
+				}
+
 			} else {
 
 				$script = trim($jsToAdd['script']);
@@ -240,7 +248,7 @@ class vmJsApi{
 
 		if(JVM_VERSION<3){
 			if(VmConfig::get('google_jquery',true)){
-				self::addJScript('jquery.min','//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',false,false,'');
+				self::addJScript('jquery.min','//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',false,false, false, '');
 				self::addJScript( 'jquery-migrate.min',false,false,false,'');
 			} else {
 				self::addJScript( 'jquery.min',false,false,false,'');
@@ -262,7 +270,7 @@ class vmJsApi{
 	static function jQueryUi(){
 
 		if(VmConfig::get('google_jquery', false)){
-			self::addJScript('jquery-ui.min', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js', false, false,'');
+			self::addJScript('jquery-ui.min', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js', false, false, false, '');
 		} else {
 			self::addJScript('jquery-ui.min', false, false, false,'');
 		}

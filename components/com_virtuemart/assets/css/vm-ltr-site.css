@@ -15,7 +15,7 @@
 span.vm-price-desc {text-align: left;min-width: 1em;margin:0.0em 0.8em 0.2em 0;}
 
 .vm3pr-1 .product-price {height: 1.25em;} .vm3pr-2 .product-price {height: 2.5em;}.vm3pr-3 .product-price {height: 3.75em;}.vm3pr-4 .product-price {height: 5.0em;}.vm3pr-5 .product-price {height: 4.4em;}.vm3pr-6 .product-price {height: 4.8em;}
-.vm3pr-0 .addtocart-area {height: 0.0em;} .vm3pr-1 .addtocart-area {height: 4.8em;}.vm3pr-2 .addtocart-area {height: 6.4em;}.vm3pr-3 .addtocart-area  {height: 9.6em;}.vm3pr-4 .addtocart-area  {height: 12.8em;}.vm3pr-5 .addtocart-area  {height: 16.0em;}
+.vm3pr-0 .addtocart-area {height: 0.0em;} .vm3pr-1 .addtocart-area {height: 4.8em;} .vm3pr-2 .addtocart-area {height: 7.1em;} .vm3pr-3 .addtocart-area  {height: 10.1em;} .vm3pr-4 .addtocart-area {height: 13.2em;} .vm3pr-5 .addtocart-area {height: 16.2em;}
 .vm-cart-price{float:left;font-weight:bold;}
 
 .price-crossed div.PricebasePriceWithTax .PricebasePriceWithTax{text-decoration: line-through;}
@@ -34,7 +34,7 @@ span.quantity-controls input.quantity-controls{height:15px;border:none;width:15p
 span.quantity-controls input.quantity-plus{background:url(../images/vmgeneral/quantity-controls.png) no-repeat;margin: 1px 0;}
 span.quantity-controls input.quantity-minus{background:url(../images/vmgeneral/quantity-controls.png) repeat-x;background-position:15px 0;margin: 1px 0;}
 
-.addtocart-bar{margin:0;padding:0;position:absolute; bottom: 4.2em; left: 0; right: 0; text-align: center;}
+.addtocart-bar{margin:0;padding:0;position:absolute; bottom: 4.0em; left: 0; right: 0; text-align: center;}
 .productdetails-view .addtocart-bar{margin:1.5em 0 0;padding:0 0 0 0px;position:relative; bottom: 0.0em;text-align: left;}
 .vmgroup .addtocart-bar{bottom: 0.0em;position:relative;margin:2.0em 0 0 0;}
 .vmgroup .addtocart-area{margin:0.5em 0 1em 0;}

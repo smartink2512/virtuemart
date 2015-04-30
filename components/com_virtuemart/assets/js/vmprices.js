@@ -164,7 +164,9 @@ Virtuemart.addtocart = function (e){
     var targ;
     if (!e) e = window.event;
     e.preventDefault();
-
+    if(e.hasOwnProperty('stopSendtocart') && e.stopSendtocart == true){
+        return false;
+    }
     if (e.target) targ = e.target;
     else if (e.srcElement) targ = e.srcElement;
     if (targ.nodeType == 3) // defeat Safari bug

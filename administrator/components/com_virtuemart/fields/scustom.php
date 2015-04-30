@@ -26,7 +26,11 @@ class JFormFieldScustom extends JFormField {
 		$q .= ' AND `published`=1';
 		$db = JFactory::getDBO();
 		$db->setQuery ($q);
-		return $db->loadObjectList ();
+		$l = $db->loadObjectList ();
+		$eOpt = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NONE'));
+		array_unshift($l,$eOpt);
+
+		return $l;
 
 	}
 
