@@ -735,33 +735,49 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$task= vRequest::getCmd('task',0);
 			$view= vRequest::getCmd('view',0);
 
-			/*if($task=='edit'){
-				$update_lines = vRequest::getInt('update_lines');
-			} else /*/
-			if ($task=='updatestatus' and $view=='orders') {
-				$lines = vRequest::getVar('orders');
-				$update_lines = $lines[$virtuemart_order_id]['update_lines'];
-			} else {
-				$update_lines = 1;
-			}
+			$item_ids = vRequest::getVar('item_id',false);
+			if($item_ids){
 
-			if($update_lines==1){
-				vmdebug('$update_lines '.$update_lines);
-				$q = 'SELECT virtuemart_order_item_id
+				foreach ($item_ids as $item_id => $order_item_data) {
+					$order_item_data['current_order_status'] = $order_item_data['order_status'];
+					if (!isset($order_item_data['comments'])) $order_item_data['comments'] = '';
+					$order_item_data->virtuemart_order_id = $virtuemart_order_id;
+					$order_item_data = (object)$order_item_data;
+
+					//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
+					$this->updateSingleItem($item_id, $order_item_data,true);
+				}
+			} else {
+				/*if($task=='edit'){
+					$update_lines = vRequest::getInt('update_lines');
+				} else /*/
+				if ($task=='updatestatus' and $view=='orders') {
+					$lines = vRequest::getVar('orders');
+					$update_lines = $lines[$virtuemart_order_id]['update_lines'];
+				} else {
+					$update_lines = 1;
+				}
+
+				if($update_lines==1){
+					vmdebug('$update_lines '.$update_lines);
+					$q = 'SELECT virtuemart_order_item_id
 												FROM #__virtuemart_order_items
 												WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
-				$db = JFactory::getDBO();
-				$db->setQuery($q);
-				$order_items = $db->loadObjectList();
-				if ($order_items) {
+					$db = JFactory::getDBO();
+					$db->setQuery($q);
+					$order_items = $db->loadObjectList();
+					if ($order_items) {
 // 				vmdebug('updateStatusForOneOrder',$data);
-					foreach ($order_items as $order_item) {
+						foreach ($order_items as $order_item) {
 
-						//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
-						$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
+							//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
+							$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
+						}
 					}
 				}
 			}
+
+
 
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $inputOrder['customer_notified'], $inputOrder['comments']);

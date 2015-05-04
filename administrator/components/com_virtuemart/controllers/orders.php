@@ -283,19 +283,13 @@ class VirtuemartControllerOrders extends VmController {
 
 		$mainframe = Jfactory::getApplication();
 		$model = VmModel::getModel();
+
+
 		$_items = vRequest::getVar('item_id',  0, '', 'array');
 
-		$_orderID = vRequest::getInt('virtuemart_order_id', '');
+		$_orderID = vRequest::getInt('virtuemart_order_id', false);
+		$model->updateStatusForOneOrder($_orderID,$_items,true);
 
-		foreach ($_items as $key=>$value) {
-
-			if (!isset($value['comments'])) $value['comments'] = '';
-
-			$data = (object)$value;
-			$data->virtuemart_order_id = $_orderID;
-			// 			$model->updateSingleItem((int)$key, $value['order_status'],$value['comments'],$_orderID);
-			$model->updateSingleItem((int)$key, $data, true);
-		}
 		$model->deleteInvoice($_orderID);
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
