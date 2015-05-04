@@ -260,9 +260,7 @@ Virtuemart.containerSelector = '.productdetails-view';";
 vmJsApi::addJScript('ajaxContent',$j);
 
 echo vmJsApi::writeJS();
-?> </div> <?php
-?>
-
+?> </div>
 
 
 

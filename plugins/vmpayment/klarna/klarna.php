@@ -1526,7 +1526,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			return FALSE;
 			//KlarnaHandler::redirectPaymentMethod('error', $msg);
 		}
-		$session->set ('Klarna', serialize ($sessionKlarna), 'vm');
+		$session->set ('Klarna', json_encode ($sessionKlarna), 'vm');
 
 		return TRUE;
 	}

@@ -245,12 +245,11 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			$varsToPush = vmPlugin::getVarsToPushFromForm($this->userField->form);
 			VmTable::bindParameterableToSubField($this->userField,$varsToPush);
 			$this->userField->form->bind($this->userField->getProperties());
-
 		} else {
 			$this->userField->form = false;
 			vmdebug('renderUserfieldPlugin could not find xml for '.$this->userField->type.' at '.$path);
 		}
-		//vmdebug('renderUserfieldPlugin ',$this->userField->form);
+
 		if ($this->userField->form) {
 			$form = $this->userField->form;
 			ob_start();
