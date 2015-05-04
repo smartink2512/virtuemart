@@ -1112,14 +1112,20 @@ class VmConfig {
 	 * @author Mattheo Vicini
 	 * @author Max Milbers
 	 */
-	static public function isSuperVendor($adminId = 0){
+	static public function isSuperVendor($adminId = null){
 
 
 		if(!isset(self::$_virtuemart_vendor_id[$adminId])){
 
 			self::$_virtuemart_vendor_id[$adminId] = 0;
 			if(empty($adminId)){
-				$user = JFactory::getUser();
+				$adminId = JFactory::getSession()->get('vmAdminID',null);
+				if($adminId) {
+					if(!class_exists('vmCrypt'))
+						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+					$adminId = vmCrypt::decrypt( $adminId );
+				}
+				$user = JFactory::getUser($adminId);
 			} else {
 				$user = JFactory::getUser($adminId);
 			}

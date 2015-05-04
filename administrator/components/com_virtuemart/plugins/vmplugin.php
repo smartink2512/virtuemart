@@ -211,11 +211,13 @@ abstract class vmPlugin extends JPlugin {
 			}
 		}
 
-		if ($name !== 0) {
+		if ($name !== 0 and empty($jid)) {
 			if ($name != $this->_name) {
 				//vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
 				return FALSE;
 			}
+		} else {
+			vmdebug('selectedThis name !==0 but not empty $jid');
 		}
 
 		if ($jid === null) {
@@ -502,7 +504,7 @@ abstract class vmPlugin extends JPlugin {
 		if(!empty($this->_psType)){
 			$element = $this->_psType.'_element';
 			$jplugin_id = $this->_psType.'_jplugin_id';
-			if(!isset($data->$element)) $data->$element = '';
+			if(!isset($data->$element)) $data->$element = 0;
 			if(!isset($data->$jplugin_id)) $data->$jplugin_id = 0;
 
 			if(!$this->selectedThis($psType,$data->$element,$data->$jplugin_id)){
@@ -532,7 +534,7 @@ abstract class vmPlugin extends JPlugin {
 		if($this->_cryptedFields){
 			$data->setCryptedFields($this->_cryptedFields);
 		}
-
+		//vmdebug('my params ',$data->_varsToPushParam);
 		return TRUE;
 	}
 

@@ -574,7 +574,18 @@ class VmViewAdmin extends JViewLegacy {
 		if(empty($view)) $view = $this->_name;
 
 		if(!isset(self::$_manager[$view])){
-			$user=JFactory::getUser();
+			if(JFactory::getApplication()->isSite()){
+				$adminId = JFactory::getSession()->get('vmAdminID',null);
+				if($adminId) {
+					if(!class_exists('vmCrypt'))
+						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+					$adminId = vmCrypt::decrypt( $adminId );
+				}
+				$user = JFactory::getUser($adminId);
+			} else {
+				$user = JFactory::getUser();
+			}
+
 			if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or
 			( ($user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.manage', 'com_virtuemart')) and $user->authorise('vm.'.$view, 'com_virtuemart') ) ){
 				self::$_manager[$view] = true;
