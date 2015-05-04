@@ -65,14 +65,15 @@ class VirtueMartModelProduct extends VmModel {
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
 			$this->_validOrderingFieldName = array();
-			$browseOrderByFields = VmConfig::get ('browse_orderby_fields',array('product_sku','category_name','mf_name','product_name'));
+			$browseOrderByFields = VmConfig::get ('browse_orderby_fields',array('pc.ordering,product_name','product_sku','category_name','mf_name'));
+			$this->addvalidOrderingFieldName (array('pc.ordering,product_name'));
 		}
 		else {
 			if (!class_exists ('shopFunctions')) {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 			}
 			$browseOrderByFields = ShopFunctions::getValidProductFilterArray ();
-			$this->addvalidOrderingFieldName (array('product_price','product_sales'));
+			$this->addvalidOrderingFieldName (array('pc.ordering,product_name','product_price','product_sales'));
 			//$this->addvalidOrderingFieldName (array('product_price'));
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
@@ -80,8 +81,9 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->removevalidOrderingFieldName ('virtuemart_product_id');
 
+		//array_unshift ($this->_validOrderingFieldName, 'pc.ordering,product_name');
 		array_unshift ($this->_validOrderingFieldName, 'p.virtuemart_product_id');
-		$this->_selectedOrdering = VmConfig::get ('browse_orderby_field', '`p`.virtuemart_product_id');
+		$this->_selectedOrdering = VmConfig::get ('browse_orderby_field', 'pc.ordering,product_name');
 
 		$this->setToggleName('product_special');
 
@@ -232,6 +234,7 @@ class VirtueMartModelProduct extends VmModel {
 		$groupBy = ' group by p.`virtuemart_product_id` ';
 
 		//administrative variables to organize the joining of tables
+		$joinLang = false;
 		$joinCategory = FALSE;
 		$joinCatLang = false;
 		$joinMf = FALSE;
@@ -419,6 +422,11 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY `pc`.`ordering` ';
 				$joinCategory = TRUE;
 				break;
+			case 'pc.ordering,product_name':
+				$orderBy = ' ORDER BY `pc`.`ordering`,`product_name` ';
+				$joinCategory = TRUE;
+				$joinLang = true;
+				break;
 			case 'product_price':
 				$orderBy = ' ORDER BY `product_price` ';
 				$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
@@ -492,7 +500,7 @@ class VirtueMartModelProduct extends VmModel {
 
 
 		$joinedTables = array();
-		$joinLang = false;
+
 		//This option switches between showing products without the selected language or only products with language.
 		if($app->isSite() and !VmConfig::get('prodOnlyWLang',false)){
 			//Maybe we have to join the language to order by product name, description, etc,...
@@ -606,7 +614,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$joinedTables = " \n".implode(" \n",$joinedTables);
 
-		//vmdebug('exeSortSearchLIstquery orderby '.$orderBy);
+		vmdebug('exeSortSearchLIstquery orderby '.$orderBy);
 		//vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
 		//vmTime('sortSearchQuery','sortSearchQuery');
@@ -1132,18 +1140,20 @@ class VirtueMartModelProduct extends VmModel {
 			$product->categoryItem = $this->getProductCategories ($this->_id); //We need also the unpublished categories, else the calculation rules do not work
 
 			$product->canonCatId = false;
+			$public_cats = array();
 			if(!empty($product->categoryItem)){
 				$tmp = array();
 				foreach($product->categoryItem as $category){
 					if($category['published'] and !$product->canonCatId){
 						$product->canonCatId = $category['virtuemart_category_id'];
+						$public_cats[] = $category['virtuemart_category_id'];
 					}
 					$tmp[] = $category['virtuemart_category_id'];
 				}
 				$product->categories = $tmp;
 			}
 
-			$product->virtuemart_category_id = 0;
+			$product->virtuemart_category_id = $product->canonCatId;
 
 			if (!empty($product->categories) and is_array ($product->categories)){
 				if ($front) {
@@ -1168,13 +1178,16 @@ class VirtueMartModelProduct extends VmModel {
 						} else if ( $this->categoryId === -1){
 							$this->categoryId = ShopFunctionsF::getLastVisitedCategoryId();
 						}
-						//$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
+												//$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
 						if ($this->categoryId!==0 and in_array ($this->categoryId, $product->categories)) {
 							$product->virtuemart_category_id = $this->categoryId;
 						}
+						if ($this->categoryId!==0 and $this->categoryId!=$product->canonCatId){
+							if(in_array($this->categoryId,$public_cats)){
+								$product->virtuemart_category_id = $this->categoryId;
+							}
+						}
 					}
-
-
 
 				}
 
@@ -1505,15 +1518,33 @@ class VirtueMartModelProduct extends VmModel {
 
 			$pos= strpos($queryArray[3],'ORDER BY');
 			$sp = array();
+
+			$orderByName = '`l`.product_name';
+			$orderByValue = $product->product_name;
 			if($pos){
 				$orderByName = trim(substr ($queryArray[3],($pos+8)) );
-				$orderByName = str_replace('`','',$orderByName);
-				if(strpos($orderByName,'.')){
-					$sp = explode('.',$orderByName);
-					$orderByName = $sp[1];
-				}
-			}
+				if($orderByName!='`pc`.`ordering`,`product_name`'){
+					$orderByName = str_replace('`','',$orderByName);
+					if(strpos($orderByName,'.')){
+						$sp = explode('.',$orderByName);
+						$orderByName = $sp[count($sp)-1];
+					}
 
+					$tableLangKeys = array('product_name','product_s_desc','product_desc');
+					if(isset($product->$orderByName)){
+						$orderByValue = $product->$orderByName;
+						if(isset($sp[0])){
+							$orderByName = '`'.$sp[0].'`.'.$orderByName;
+						} else if(in_array($orderByName,$tableLangKeys)){
+							$orderByName = '`l`.'.$orderByName;
+						}
+					}
+					$whereorderByName = $orderByName;
+				} else {
+					$whereorderByName = '`l`.`product_name`';
+				}
+
+			}
 
 			$selectLang = ' `l`.`product_name`';
 
@@ -1526,26 +1557,11 @@ class VirtueMartModelProduct extends VmModel {
 
 			$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
 
-			$tableLangKeys = array('product_name','product_s_desc','product_desc');
-			if(isset($product->$orderByName)){
-				$orderByValue = $product->$orderByName;
-				if(isset($sp[0])){
-					$orderByName = '`'.$sp[0].'`.'.$orderByName;
-
-				} else if(in_array($orderByName,$tableLangKeys)){
-					$orderByName = '`l`.'.$orderByName;
-				}
-			} else {
-				$orderByName = '`l`.product_name';
-
-				$orderByValue = $product->product_name;
-			}
-
 			$alreadyFound = '';
 			foreach ($neighbors as &$neighbor) {
 
 				if(!empty($alreadyFound)) $alreadyFound = 'AND p.`virtuemart_product_id`!="'.$alreadyFound.'"';
-				$qm = $alreadyFound.' AND '.$orderByName.' '.$op.' "'.$orderByValue.'"  ORDER BY '.$orderByName.' '.$direction.' LIMIT 1';
+				$qm = $alreadyFound.' AND '.$whereorderByName.' '.$op.' "'.$orderByValue.'"  ORDER BY '.$orderByName.' '.$direction.' LIMIT 1';
 				$db->setQuery ($q.$qm);
 				//vmdebug('getneighbors '.$q.$qm);
 				if ($result = $db->loadAssocList ()) {
