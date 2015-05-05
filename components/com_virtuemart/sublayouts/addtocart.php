@@ -54,7 +54,8 @@ $position = 'addtocart';
 			<input type="hidden" name="option" value="com_virtuemart"/>
 			<input type="hidden" name="view" value="cart"/>
 			<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $product->virtuemart_product_id ?>"/>
-			<input type="hidden" class="pname" value="<?php echo $product->product_name ?>"/>
+			<input type="hidden" name="pname" value="<?php echo $product->product_name ?>"/>
+			<input type="hidden" name="pid" value="<?php echo $product->virtuemart_product_id ?>"/>
 			<?php
 			$itemId=vRequest::getInt('Itemid',false);
 			if($itemId){

@@ -89,7 +89,6 @@ Virtuemart.cartEffect = function(form) {
 	function(datas, textStatus) {
 
 		if(datas.stat ==1){
-
 			var txt = datas.msg;
 		} else if(datas.stat ==2){
 			var txt = datas.msg +"<H4>"+form.find(".pname").val()+"</H4>";

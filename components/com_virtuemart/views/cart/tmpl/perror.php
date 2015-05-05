@@ -26,5 +26,9 @@ foreach ($messageQueue as $message) {
 	echo '<div>'.$message['message'].'</div>';
 }
 
+if($this->product_name) {
+	echo '<br><h4>'.$this->product_name.'</h4>';
+}
+
 ?>
 <br style="clear:both">

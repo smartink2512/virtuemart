@@ -270,12 +270,19 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 			$view->setLayout('padded');
 			$this->json->stat = '1';
-			
-			if(!$products or count($products) == 0){
-				$view->setLayout('perror');
-				$this->json->stat = '2';
 
+			if(!$products or count($products) == 0){
+				$product_name = vRequest::get('pname');
+				$virtuemart_product_id = vRequest::getInt('pid');
+				if($product_name && $virtuemart_product_id) {
+					$view->assignRef('product_name',$product_name);
+					$view->assignRef('virtuemart_product_id',$virtuemart_product_id);
+				} else {
+					$this->json->stat = '2';
+				}
+				$view->setLayout('perror');
 			}
+
 			$view->assignRef('products',$products);
 			$view->assignRef('errorMsg',$errorMsg);
 
@@ -463,6 +470,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart->ST = 0;
 		$cart->STsameAsBT = 1;
+		$cart->selected_shipto = 0;
+		$cart->virtuemart_shipmentmethod_id = 0;
 		$cart->saveAddressInCart($data, 'BT');
 
 		$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')');
