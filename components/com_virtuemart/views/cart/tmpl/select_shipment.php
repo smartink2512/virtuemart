@@ -40,9 +40,9 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	if($this->cart->virtuemart_shipmentmethod_id){
-		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECTED_SHIPMENT_SELECT')."</h".$headerLevel.">";
+		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECTED_SHIPMENT_SELECT').'</h'.$headerLevel.'>';
 	} else {
-		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
+		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT').'</h'.$headerLevel.'>';
 	}
 
 
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div class="buttonBar-right">
 
-	        <button  name="updatecart" class="<?php echo $buttonclass ?>" type="submit" ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
+	        <button  name="updatecart" class="<?php echo $buttonclass ?>" type="submit" ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
 		<?php   if ($this->layoutName!='default') { ?>
 		<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 		<?php  } ?>
@@ -59,18 +59,18 @@ defined('_JEXEC') or die('Restricted access');
 <?php
     if ($this->found_shipment_method ) {
 
-	   echo "<fieldset>\n";
+	   echo '<fieldset class="vm-payment-shipment-select vm-shipment-select">';
 	// if only one Shipment , should be checked by default
 	    foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
 			if (is_array($shipment_shipment_rates)) {
 			    foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
-					echo $shipment_shipment_rate."<br />\n";
+					echo '<div class="vm-shipment-plugin-single">'.$shipment_shipment_rate.'</div>';
 			    }
 			}
 	    }
-	    echo "</fieldset>\n";
+	    echo '</fieldset>';
     } else {
-	 echo "<h".$headerLevel.">".$this->shipment_not_found_text."</h".$headerLevel.">";
+	 echo '<h'.$headerLevel.'>'.$this->shipment_not_found_text.'</h'.$headerLevel.'>';
     }
 
 

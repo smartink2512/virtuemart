@@ -113,7 +113,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		return $this;
 	}
 
-	public function updatecart($html=true){
+	public function updatecart($html=true,$force = null){
 
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = true;
@@ -162,7 +162,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			}
 		}
 
-		$force = VmConfig::get('oncheckout_opc',true);
+		if(!isset($force))$force = VmConfig::get('oncheckout_opc',true);
 		$cart->setShipmentMethod($force, !$html);
 		$cart->setPaymentMethod($force, !$html);
 
@@ -203,11 +203,11 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	}
 
 	public function setshipment(){
-		$this->updatecart();
+		$this->updatecart(true,true);
 	}
 
 	public function setpayment(){
-		$this->updatecart();
+		$this->updatecart(true,true);
 	}
 
 	/**
@@ -275,8 +275,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				$product_name = vRequest::get('pname');
 				$virtuemart_product_id = vRequest::getInt('pid');
 				if($product_name && $virtuemart_product_id) {
-					$view->assignRef('product_name',$product_name);
-					$view->assignRef('virtuemart_product_id',$virtuemart_product_id);
+					$view->product_name = $product_name;
+					$view->virtuemart_product_id = $virtuemart_product_id;
 				} else {
 					$this->json->stat = '2';
 				}

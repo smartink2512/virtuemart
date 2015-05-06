@@ -582,6 +582,7 @@ class VmViewAdmin extends JViewLegacy {
 					$adminId = vmCrypt::decrypt( $adminId );
 				}
 				$user = JFactory::getUser($adminId);
+				$vendorIdUser = VmConfig::isSuperVendor($user->id);
 			} else {
 				$user = JFactory::getUser();
 			}

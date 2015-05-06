@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
   KEY `country_name` (`country_name`),
   KEY `ordering` (`ordering`),
   KEY `published` (`published`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Country records' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Country records' ;
 
 -- --------------------------------------------------------
 
@@ -251,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
    KEY `coupon_code` (`coupon_code`),
    KEY `coupon_type` (`coupon_type`),
    KEY `published` (`published`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store coupon codes' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store coupon codes' ;
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_carts` (
   `virtuemart_cart_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_carts` (
   PRIMARY KEY (`virtuemart_cart_id`),
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `virtuemart_user_id` (`virtuemart_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store the cart' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store the cart';
 
 -- --------------------------------------------------------
 --

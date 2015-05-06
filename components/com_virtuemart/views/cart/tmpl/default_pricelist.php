@@ -129,33 +129,36 @@ foreach ($this->cart->products as $pkey => $prow) { ?>
 <?php
 if (VmConfig::get ('coupons_enable')) {
 	?>
+	<?php if (VmConfig::get ('show_tax')) {
+		$colspan = 3;
+	} else {
+		$colspan = 2;
+	} ?>
 <tr class="sectiontableentry2">
-<td colspan="4" align="left">
-	<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
-	echo $this->loadTemplate ('coupon');
-}
-	?>
+	<td colspan="4" align="left">
+		<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
+		echo $this->loadTemplate ('coupon');
+		} ?>
 
-	<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
-	<?php
-	echo $this->cart->cartData['couponCode'];
-	echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')') : '';
-	?>
-				</td>
+		<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
+		<?php
+		echo $this->cart->cartData['couponCode'];
+		echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')') : '';
+		?>
+	</td>
 
-					 <?php if (VmConfig::get ('show_tax')) { ?>
-		<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('couponTax', '', $this->cart->cartPrices['couponTax'], FALSE); ?> </td>
+		<?php if (VmConfig::get ('show_tax')) { ?>
+	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('couponTax', '', $this->cart->cartPrices['couponTax'], FALSE); ?> </td>
 		<?php } ?>
 	<td align="right"> </td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceCoupon', '', $this->cart->cartPrices['salesPriceCoupon'], FALSE); ?> </td>
 	<?php } else { ?>
-	<td colspan="6" align="left">&nbsp;</td>
-	<?php
-}
 
-	?>
+	&nbsp;</td>
+	<td colspan="<?php echo $colspan ?>" align="left">&nbsp;</td>
+	<?php }	?>
 </tr>
-	<?php } ?>
+<?php } ?>
 <?php
 foreach ($this->cart->cartData['DBTaxRulesBill'] as $rule) {
 	?>

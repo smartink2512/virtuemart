@@ -39,4 +39,4 @@ if (!empty($this->products) ) {
 	echo $this->renderVmSubLayout($this->productsLayout,array('products'=>$this->products,'currency'=>$this->currency,'products_per_row'=>$products_per_row,'showRating'=>$this->showRating)); //$this->loadTemplate('products');
 }
 
-?> <?php vmTime('vm view Finished task ','Start'); ?>
+?>

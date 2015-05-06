@@ -806,8 +806,13 @@ class calculationHelper {
 		$toTax = $this->_cart->cartPrices['salesPrice'] + $cartdiscountBeforeTax;
 
 		//Avalara wants to calculate the tax of the shipment. Only disadvantage to set shipping here is that the discounts per bill respectivly the tax per bill
-		// is not considered.
-		$this->calculateShipmentPrice();
+		// is not considered. Todo create a generic system, for example a param for billing rules, excluding/including shipment/payment
+		$shipmentCalculated=false;
+		if(!empty($this->_cart->cartData['taxRulesBill']['calc_value_mathop']) and $this->_cart->cartData['taxRulesBill']['calc_value_mathop'] == 'avalara'){
+			$this->calculateShipmentPrice();
+			$shipmentCalculated=true;
+		}
+
 
 		// next step is handling a coupon, if given
 		$this->_cart->cartData['vmVat'] = TRUE;
@@ -838,6 +843,10 @@ class calculationHelper {
 		$toDisc = $toTax + $cartTax;
 		$cartdiscountAfterTax = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['DATaxRulesBill'], $toDisc));
 		$this->_cart->cartPrices['withTax'] = $toDisc + $cartdiscountAfterTax;
+
+		if(!$shipmentCalculated){
+			$this->calculateShipmentPrice();
+		}
 
 		$this->calculatePaymentPrice();
 

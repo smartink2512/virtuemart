@@ -92,6 +92,28 @@ class shopFunctionsF {
 		return $html;
 	}
 
+	static public function isFEmanager ($task = null) {
+
+		$adminId = JFactory::getSession()->get('vmAdminID',null);
+		if($adminId) {
+			if(!class_exists('vmCrypt'))
+				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+			$adminId = vmCrypt::decrypt( $adminId );
+		}
+		$user = JFactory::getUser($adminId);
+		if	( $user->authorise('vm.manage', 'com_virtuemart') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') ) {
+			if(isset($task)){
+				if($user->authorise($task, 'com_virtuemart')){
+					return $user->id;
+				}
+			} else {
+				return $user->id;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * Just an idea, still WIP
 	 * @param $type

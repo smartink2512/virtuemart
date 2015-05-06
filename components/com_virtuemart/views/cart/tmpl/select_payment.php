@@ -40,18 +40,15 @@ if ($this->layoutName!='default') {
 	}
 
 	if($this->cart->virtuemart_paymentmethod_id){
-		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECTED_PAYMENT_SELECT')."</h".$headerLevel.">";
+		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECTED_PAYMENT_SELECT').'</h'.$headerLevel.'>';
 	} else {
-		echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
-	}
-
-
-?>
+		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT').'</h'.$headerLevel.'>';
+	} ?>
 
 <div class="buttonBar-right">
 
 <button name="updatecart" class="<?php echo $buttonclass ?>" type="submit"><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
-     &nbsp;
+
    <?php   if ($this->layoutName!='default') { ?>
 <button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 	<?php  } ?>
@@ -61,18 +58,18 @@ if ($this->layoutName!='default') {
      if ($this->found_payment_method ) {
 
 
-    echo "<fieldset>";
+    echo '<fieldset class="vm-payment-shipment-select vm-payment-select">';
 		foreach ($this->paymentplugins_payments as $paymentplugin_payments) {
 		    if (is_array($paymentplugin_payments)) {
 			foreach ($paymentplugin_payments as $paymentplugin_payment) {
-			    echo $paymentplugin_payment.'<br />';
+			    echo '<div class="vm-payment-plugin-single">'.$paymentplugin_payment.'</div>';
 			}
 		    }
 		}
-    echo "</fieldset>";
+    echo '</fieldset>';
 
     } else {
-	 echo "<h1>".$this->payment_not_found_text."</h1>";
+	 echo '<h1>'.$this->payment_not_found_text.'</h1>';
     }
 
 if ($this->layoutName!='default') {

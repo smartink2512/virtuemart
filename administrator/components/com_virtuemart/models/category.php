@@ -263,10 +263,10 @@ class VirtueMartModelCategory extends VmModel {
 
 	}
 
-	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
+	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats,$deep=0){
 		$level++;
 
-		if($childs = $this->hasChildren($virtuemart_category_id)){
+		if(($deep===0 or $level <= $deep) and $childs = $this->hasChildren($virtuemart_category_id)){
 
 			$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
 			if(!empty($childCats)){
@@ -276,7 +276,7 @@ class VirtueMartModelCategory extends VmModel {
 					$category->level = $level;
 					$category->siblingCount = $siblingCount;
 					$sortedCats[] = $category;
-					$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
+					$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats,$deep);
 				}
 			}
 		}
