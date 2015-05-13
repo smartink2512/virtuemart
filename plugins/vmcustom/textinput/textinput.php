@@ -201,7 +201,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		if ($customfield->custom_element !==$this->_name) return ;
 
-		//$product->product_name = 'Ice Saw';
+		//$product->product_name .= 'Ice Saw';
 		//vmdebug('plgVmPrepareCartProduct we can modify the product here');
 
 		if (!empty($selected['comment'])) {

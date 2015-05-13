@@ -28,6 +28,10 @@ defined('_JEXEC') or die('Restricted access');
 if (count($this->orderlist) == 0) {
 	//echo vmText::_('COM_VIRTUEMART_ACC_NO_ORDER');
 	 echo shopFunctionsF::getLoginForm(false,true);
+	?>
+		</div>
+	</div>
+	<?
 } else {
  ?>
 <div id="editcell">

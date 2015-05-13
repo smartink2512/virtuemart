@@ -52,9 +52,13 @@ if(VmConfig::get('shop_is_offline',0)){
 	if(!$manage) $session->set('manage', 0,'vm');
 
 	$feViews = array('askquestion','cart','invoice','pdf','pluginresponse','productdetails','recommend','vendor','vmplg');
-	if($manage and !in_array($_controller,$feViews)){
+	if($manage and $task!='feed' and !in_array($_controller,$feViews)){
 
 		if	( shopFunctionsF::isFEmanager() ) {
+			$session->set('manage', 1,'vm');
+			vRequest::setVar('manage','1');
+			vRequest::setVar('tmpl','component') ;
+
 			VmConfig::loadJLang('com_virtuemart');
 			$jlang = JFactory::getLanguage();
 			$tag = $jlang->getTag();
@@ -62,17 +66,11 @@ if(VmConfig::get('shop_is_offline',0)){
 			VmConfig::loadJLang('com_virtuemart');
 			$basePath = VMPATH_ADMIN;
 			$trigger = 'onVmAdminController';
-			//$vendorIdUser = VmConfig::isSuperVendor($user->id);
-			//vmdebug('$vendorIdUser use FE managing '.$vendorIdUser);
 
-
-			$session->set('manage', 1,'vm');
-			vRequest::setVar('manage','1');
 
 			vmJsApi::jQuery(false);
 			vmJsApi::loadBECSS();
 
-			$app = JFactory::getApplication();
 			$router = $app->getRouter();
 			$router->setMode(0);
 
@@ -82,7 +80,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			$basePath = VMPATH_SITE;
 			$app->redirect('index.php?option=com_virtuemart', vmText::_('mCOM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}
-		vRequest::setVar('tmpl','component') ;
+
 	} elseif($_controller) {
 			if($_controller!='productdetails'){
 				$session->set('manage', 0,'vm');

@@ -56,11 +56,13 @@ if($this->userDetails->virtuemart_user_id!=0) {
 
     $tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
 
+	if(!empty($this->add_product_link)) {
+		echo $this->manage_link;
+		echo $this->add_product_link;
+	}
+
 	if($this->userDetails->user_is_vendor){
-		if(!empty($this->add_product_link)) {
-			echo $this->manage_link;
-			echo $this->add_product_link;
-		}
+
 		$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
 	}
 

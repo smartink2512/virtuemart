@@ -184,11 +184,9 @@ class VirtueMartModelShopperGroup extends VmModel {
 					$key=array_search($id, $ids);
 					if($key!==FALSE){
 						unset($ids[$key]);
-						vmdebug('Anonymous case, remove session shoppergroup by plugin '.$id);
 					}
 				}
 			}
-			//$session->set('vm_shoppergroups_remove',0,'vm');
 		}
 
 	}

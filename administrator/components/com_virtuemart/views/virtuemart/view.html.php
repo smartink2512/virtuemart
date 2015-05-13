@@ -37,49 +37,49 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
-		$layout = $this->getLayout();
-
-		$model = VmModel::getModel('virtuemart');
-
-		$nbrCustomers = $model->getTotalCustomers();
-		$this->nbrCustomers=$nbrCustomers;
-
-		$nbrActiveProducts = $model->getTotalActiveProducts();
-		$this->nbrActiveProducts= $nbrActiveProducts;
-		$nbrInActiveProducts = $model->getTotalInActiveProducts();
-		$this->nbrInActiveProducts= $nbrInActiveProducts;
-		$nbrFeaturedProducts = $model->getTotalFeaturedProducts();
-		$this->nbrFeaturedProducts= $nbrFeaturedProducts;
-
-		$ordersByStatus = $model->getTotalOrdersByStatus();
-		$this->ordersByStatus= $ordersByStatus;
-
-		$recentOrders = $model->getRecentOrders();
-		if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
-
-		/* Apply currency This must be done per order since it's vendor specific */
-		$_currencies = array(); // Save the currency data during this loop for performance reasons
-		foreach ($recentOrders as $virtuemart_order_id => $order) {
-
-			//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
-			if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
-				$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
-			}
-			$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
-		}
-		$this->recentOrders= $recentOrders;
-		$recentCustomers = $model->getRecentCustomers();
-		$this->recentCustomers=$recentCustomers;
-
-
 
 		if(JFactory::getApplication()->isSite()){
 			$bar = JToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}
 
+		$layout = $this->getLayout();
+
 		if($this->manager('report')){
 			vmSetStartTime('report');
+
+			$model = VmModel::getModel('virtuemart');
+
+			$nbrCustomers = $model->getTotalCustomers();
+			$this->nbrCustomers=$nbrCustomers;
+
+			$nbrActiveProducts = $model->getTotalActiveProducts();
+			$this->nbrActiveProducts= $nbrActiveProducts;
+			$nbrInActiveProducts = $model->getTotalInActiveProducts();
+			$this->nbrInActiveProducts= $nbrInActiveProducts;
+			$nbrFeaturedProducts = $model->getTotalFeaturedProducts();
+			$this->nbrFeaturedProducts= $nbrFeaturedProducts;
+
+			$ordersByStatus = $model->getTotalOrdersByStatus();
+			$this->ordersByStatus= $ordersByStatus;
+
+			$recentOrders = $model->getRecentOrders();
+			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
+
+			/* Apply currency This must be done per order since it's vendor specific */
+			$_currencies = array(); // Save the currency data during this loop for performance reasons
+			foreach ($recentOrders as $virtuemart_order_id => $order) {
+
+				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
+				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
+					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
+				}
+				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
+			}
+			$this->recentOrders= $recentOrders;
+			$recentCustomers = $model->getRecentCustomers();
+			$this->recentCustomers=$recentCustomers;
+
 			$reportModel		= VmModel::getModel('report');
 			vRequest::setvar('task','');
 			$myCurrencyDisplay = CurrencyDisplay::getInstance();
@@ -91,15 +91,16 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 			vmTime('Created report','report');
 		}
 
-		$j = 'jQuery("#feed").ready(function(){
+		//if($layout=='default'){
+			$j = 'jQuery("#feed").ready(function(){
 				var datas = "";
-				vmSiteurl = "'. JURI::root( ) .'administrator/"
+				vmSiteurl = "'. JURI::root( ) .'"
 				jQuery.ajax({
 						type: "GET",
 						async: true,
 						cache: false,
 						dataType: "json",
-						url: vmSiteurl + "index.php?&option=com_virtuemart&view=virtuemart&task=feed&tmpl=component",
+						url: vmSiteurl + "index.php?option=com_virtuemart&view=virtuemart&task=feed&tmpl=component",
 						data: datas,
 						dataType: "html"
 					})
@@ -108,7 +109,9 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 					});
 				})';
 			vmJsApi::addJScript('getFeed',$j, false, true);
+		//}
 
+		self::showACLPref($this);
 
 		parent::display($tpl);
 	}

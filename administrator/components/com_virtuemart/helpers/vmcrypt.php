@@ -143,7 +143,7 @@ class vmCrypt {
 				$usedKey = end($existingKeys);
 				$key = $usedKey['key'];
 			}
-			vmTime('my time','check');
+			//vmTime('my time','check');
 			return $key;
 		} else {
 
@@ -167,11 +167,11 @@ class vmCrypt {
 						date = "'.date("Y-m-d H:i:s").'"
 						; */ ?>';
 				$result = JFile::write($filename, $content);
-				vmTime('my time','check');
+				//vmTime('my time','check');
 				return $key;
 			}
 		}
-		vmTime('my time','check');
+		//vmTime('my time','check');
 		//return pack('H*',$key);
 	}
 

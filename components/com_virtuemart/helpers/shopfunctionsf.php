@@ -92,26 +92,30 @@ class shopFunctionsF {
 		return $html;
 	}
 
-	static public function isFEmanager ($task = null) {
+	static public function isFEmanager ($task = FALSE) {
 
-		$adminId = JFactory::getSession()->get('vmAdminID',null);
-		if($adminId) {
-			if(!class_exists('vmCrypt'))
-				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-			$adminId = vmCrypt::decrypt( $adminId );
-		}
-		$user = JFactory::getUser($adminId);
-		if	( $user->authorise('vm.manage', 'com_virtuemart') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') ) {
-			if(isset($task)){
-				if($user->authorise($task, 'com_virtuemart')){
-					return $user->id;
+		static $c = array();
+		if(!isset($c[$task])){
+			$c[$task] = false;
+			$adminId = JFactory::getSession()->get('vmAdminID',null);
+			if($adminId) {
+				if(!class_exists('vmCrypt'))
+					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+				$adminId = vmCrypt::decrypt( $adminId );
+			}
+			$user = JFactory::getUser($adminId);
+			if	( $user->authorise('vm.manage', 'com_virtuemart') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') ) {
+				if(!empty($task)){
+					if($user->authorise($task, 'com_virtuemart')){
+						$c[$task] = $user->id;
+					}
+				} else {
+					$c[$task] =  $user->id;
 				}
-			} else {
-				return $user->id;
 			}
 		}
-
-		return false;
+		vmdebug('isFEmanager return '.$c[$task],$c);
+		return $c[$task];
 	}
 
 	/**

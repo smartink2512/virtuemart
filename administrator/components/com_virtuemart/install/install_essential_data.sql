@@ -67,8 +67,8 @@ INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_stat
 (null, 'C', 'COM_VIRTUEMART_ORDER_STATUS_CONFIRMED', '', 'R', 3, 1),
 (null, 'X', 'COM_VIRTUEMART_ORDER_STATUS_CANCELLED', '', 'A',4, 1),
 (null, 'R', 'COM_VIRTUEMART_ORDER_STATUS_REFUNDED', '', 'A',5, 1),
-(null, 'S', 'COM_VIRTUEMART_ORDER_STATUS_SHIPPED', '', 'O',6, 1);
-
+(null, 'S', 'COM_VIRTUEMART_ORDER_STATUS_SHIPPED', '', 'O',6, 1),
+(null, 'D', 'COM_VIRTUEMART_ORDER_STATUS_DENIED', '', 'A',7, 1);
 
 --
 -- Dumping data for table `#__virtuemart_userfields`

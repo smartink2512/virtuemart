@@ -90,7 +90,18 @@ class VmViewAdmin extends JViewLegacy {
 	* Get the ACL actions
 	*/
 	public static function getActions() {
-		$user	= JFactory::getUser();
+
+		$app = JFactory::getApplication();
+		$adminId = null;
+		if($app->isSite()){
+			$adminId = JFactory::getSession()->get('vmAdminID',null);
+			if($adminId) {
+				if(!class_exists('vmCrypt'))
+					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+				$adminId = vmCrypt::decrypt( $adminId );
+			}
+		}
+		$user	= JFactory::getUser($adminId);
 		$result	= new JObject;
 
 		//Get the core actions

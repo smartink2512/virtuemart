@@ -1010,7 +1010,6 @@ class VmConfig {
 	function setParams($params){
 
 		$config = explode('|', $params);
-		$app = JFactory::getApplication();
 		foreach($config as $item){
 			$item = explode('=',$item);
 			if(!empty($item[1])){
@@ -1026,7 +1025,6 @@ class VmConfig {
 		}
 
 		self::$_jpConfig->_params = $pair;
-
 	}
 
 
@@ -1076,11 +1074,7 @@ class VmConfig {
 
 			//Texts get broken, when serialized, therefore we do a simple encoding,
 			//btw we need serialize for storing arrays   note by Max Milbers
-			//if($paramkey!=='offline_message'){
-				$raw .= $paramkey.'='.json_encode($value).'|';
-			/*} else {
-				$raw .= $paramkey.'='.base64_encode(serialize($value)).'|';
-			}*/
+			$raw .= $paramkey.'='.json_encode($value).'|';
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
 		return self::$_jpConfig->_raw;
@@ -1114,22 +1108,25 @@ class VmConfig {
 	 */
 	static public function isSuperVendor($adminId = null){
 
-
-		if(!isset(self::$_virtuemart_vendor_id[$adminId])){
-
-			self::$_virtuemart_vendor_id[$adminId] = 0;
+		static $user = null;
+		
+		if(!isset($user)){
 			if(empty($adminId)){
 				$adminId = JFactory::getSession()->get('vmAdminID',null);
-				if($adminId) {
-					if(!class_exists('vmCrypt'))
-						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+			if($adminId) {
+				if(!class_exists('vmCrypt'))
+					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 					$adminId = vmCrypt::decrypt( $adminId );
 				}
 				$user = JFactory::getUser($adminId);
 			} else {
 				$user = JFactory::getUser($adminId);
 			}
+		}
 
+		if(!isset(self::$_virtuemart_vendor_id[$adminId])){
+
+			self::$_virtuemart_vendor_id[$adminId] = 0;
 			if(!empty( $user->id)){
 				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
 				WHERE `au`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
@@ -1146,7 +1143,7 @@ class VmConfig {
 					}
 				}
 			}
-			if(empty(self::$_virtuemart_vendor_id[$adminId]))vmdebug('Not a vendor');
+			if(empty(self::$_virtuemart_vendor_id[$adminId])) vmdebug('isSuperVendor Not a vendor');
 		}
 		return self::$_virtuemart_vendor_id[$adminId];
 	}

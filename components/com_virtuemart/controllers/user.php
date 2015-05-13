@@ -195,20 +195,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 				$switch = false;
 				if($currentUser->guest==1 and $register){
 					$userModel->setId(0);
-					$adminID = JFactory::getSession()->get('vmAdminID',false);
-					if($adminID){
-						if(!class_exists('vmCrypt'))
-							require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-						$adminID = vmCrypt::decrypt($adminID);
-						$adminIdUser = JFactory::getUser($adminID);
-						if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
-							$superUser = VmConfig::isSuperVendor($adminID);
-							if($superUser>1){
-								$data['vendorId'] = $superUser;
-							}
-							$switch = true;
-						}
+					$superUser = VmConfig::isSuperVendor();
+					if($superUser>1){
+						$data['vendorId'] = $superUser;
 					}
+					$switch = true;
 				}
 
 				if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');

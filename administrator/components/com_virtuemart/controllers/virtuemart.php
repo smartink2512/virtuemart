@@ -46,26 +46,6 @@ class VirtuemartControllerVirtuemart extends VmController {
 		$this->display();
 	}
 
-	public function feed(){
-
-		if(!class_exists( 'vmRSS' )) require(VMPATH_ADMIN.'/helpers/vmrss.php');
-
-
-		$this->virtuemartFeed = vmRSS::getVirtueMartRssFeed();
-		$this->extensionsFeed = vmRSS::getExtensionsRssFeed();
-
-
-		$document = JFactory::getDocument();
-		$headData = $document->getHeadData();
-		$headData['scripts'] = array();
-		$document->setHeadData($headData);
-
-		ob_clean();
-		ob_start();
-		include(VMPATH_ADMIN.DS.'views'.DS.'virtuemart'.DS.'tmpl'.DS.'feed.php');
-		echo ob_get_clean();
-		jexit();
-	}
 
 	public function keepalive(){
 		//echo 'alive';
