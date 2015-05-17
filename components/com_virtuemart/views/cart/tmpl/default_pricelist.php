@@ -217,9 +217,24 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	} else {
 		$i = 0;
 	}
-} ?>
+}
 
-<?php if ( 	VmConfig::get('oncheckout_opc',true) or
+//Show VAT tax seperated
+if(!empty($this->cart->cartData)){
+	if(!empty($this->cart->cartData['VatTax'])){
+		foreach($this->cart->cartData['VatTax'] as $vatTax){
+			if(!empty($vatTax['taxAmount'])){
+				echo '<tr class="sectiontableentry'.$i.'">';
+				echo '<td colspan="4" align="right">'.$vatTax['calc_name'].'</td>';
+				echo '<td align="right"><span class="priceColor2">' . $this->currencyDisplay->createPriceDiv ('taxAmount', '', $vatTax['taxAmount'], FALSE) . '</span></td>';
+				echo '<td></td><td></td>';
+				echo '</tr>';
+			}
+		}
+	}
+}
+
+if ( 	VmConfig::get('oncheckout_opc',true) or
 	!VmConfig::get('oncheckout_show_steps',false) or
 	(!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and
 		!empty($this->cart->virtuemart_shipmentmethod_id) )

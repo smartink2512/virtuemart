@@ -176,7 +176,7 @@ class VirtueMartModelMedia extends VmModel {
 		$this->_noLimit = $noLimit;
 
 		if(empty($db)) $db = JFactory::getDBO();
-		$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
+
 		$query = '';
 
 		$selectFields = array();
@@ -218,7 +218,8 @@ class VirtueMartModelMedia extends VmModel {
 
 			$user = JFactory::getUser();
 			if(!$user->authorise('core.admin','com_virtuemart') and !$user->authorise('core.manager','com_virtuemart')){
-				$whereItems[] = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
+				$vendorId = VmConfig::isSuperVendor();
+				$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
 			}
 
 		}

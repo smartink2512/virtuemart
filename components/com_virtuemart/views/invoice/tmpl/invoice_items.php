@@ -138,7 +138,29 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 
 
 	<?php
+		$sumRules = array();
 		foreach($this->orderDetails['calc_rules'] as $rule){
+			$quantity = 1;
+			//Todo bad construction, storing must be enhanced
+			if($rule->virtuemart_order_item_id){
+				foreach($this->orderDetails['items'] as $it){
+					if($it->virtuemart_order_item_id == $rule->virtuemart_order_item_id){
+						$quantity = $it->product_quantity;
+						break;
+					}
+				}
+			}
+			if(!isset($sumRules[$rule->virtuemart_calc_id])){
+				$sumRules[$rule->virtuemart_calc_id] = new stdClass();
+				$sumRules[$rule->virtuemart_calc_id]->calc_amount = $rule->calc_amount;
+				$sumRules[$rule->virtuemart_calc_id]->calc_rule_name = $rule->calc_rule_name * $quantity;
+				$sumRules[$rule->virtuemart_calc_id]->calc_kind = $rule->calc_kind;
+			} else {
+				$sumRules[$rule->virtuemart_calc_id]->calc_amount += $rule->calc_amount * $quantity;
+			}
+		}
+		//vmdebug('hmm',$this->orderDetails);
+		foreach($sumRules as $rule){
 
 			if ($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'DATaxRulesBill') { ?>
 				<tr >
@@ -146,8 +168,8 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 					<?php if ( VmConfig::get('show_tax')) { ?>
 						<td align="right"> </td>
 					<?php } ?>
-					<td align="right"> <?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
-					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?> </td>
+					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
+					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
 				</tr>
 			<?php
 			} elseif ($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax' ) { ?>

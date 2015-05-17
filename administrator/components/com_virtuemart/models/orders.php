@@ -411,20 +411,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		}
 
-// 		$table->order_status = $orderdata->orderstatus;
-
-/*
-// 		JPluginHelper::importPlugin('vmcustom');
-// 		$_dispatcher = JDispatcher::getInstance();
-// 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
-*/
 		$dataT = get_object_vars($table);
-
-//		$doUpdate = vRequest::getString('update_values');
 
 		$orderdatacopy = $orderdata;
 		$data = array_merge($dataT,(array)$orderdatacopy);
-// 		$data['order_status'] = $orderdata->orderstatus;
+
 		if (!class_exists('CurrencyDisplay')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
@@ -484,6 +475,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 			//$data['product_subtotal_discount'] = (round($orderdata->product_final_price, $rounding) - round($data['product_basePriceWithTax'], $rounding)) * $orderdata->product_quantity;
 			$data['product_subtotal_with_tax'] = round($data['product_final_price'], $rounding) * $orderdata->product_quantity;
+		}
+		if(!empty($table->virtuemart_vendor_id)){
+			$data['virtuemart_vendor_id'] = $table->virtuemart_vendor_id;
 		}
 
 		$table->bindChecknStore($data);

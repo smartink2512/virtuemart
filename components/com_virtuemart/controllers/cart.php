@@ -29,11 +29,7 @@ jimport('joomla.application.component.controller');
  */
 class VirtueMartControllerCart extends JControllerLegacy {
 
-	/**
-	 * Construct the cart
-	 *
-	 * @access public
-	 */
+
 	public function __construct() {
 		parent::__construct();
 		if (VmConfig::get('use_as_catalog', 0)) {
@@ -50,12 +46,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 	}
 
-	/**
-	 * Override of display
-	 *
-	 * @return  JController  A JController object to support chaining.
-	 * @since   11.1
-	 */
 	public function display($cachable = false, $urlparams = false){
 
 		if(VmConfig::get('use_as_catalog', 0)){
@@ -89,7 +79,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart->order_language = vRequest::getString('order_language', $cart->order_language);
 
-		$cart->prepareCartData();
+		$cart->prepareCartData(false);
 		$request = vRequest::getRequest();
 		$task = vRequest::getCmd('task');
 		if(($task == 'confirm' or isset($request['confirm'])) and !$cart->getInCheckOut()){

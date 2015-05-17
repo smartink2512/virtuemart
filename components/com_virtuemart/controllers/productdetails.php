@@ -40,10 +40,14 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 	function display($cachable = false, $urlparams = false) {
 
 		$format = vRequest::getCmd ('format', 'html');
+		$tmpl = vRequest::getCmd('tmpl',false);
+
+		$viewName = 'Productdetails';
 		if ($format == 'pdf') {
 			$viewName = 'Pdf';
-		} else {
-			$viewName = 'Productdetails';
+		} else	//We override the format here, because we need actually the same data.
+			if ($format == 'raw' and $tmpl == 'component') {
+			$format = 'html';
 		}
 
 		$view = $this->getView ($viewName, $format);

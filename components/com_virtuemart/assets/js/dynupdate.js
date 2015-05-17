@@ -19,7 +19,8 @@ jQuery(function($) {
 
         if(Virtuemart.isUpdatingContent) return false;
         Virtuemart.isUpdatingContent = true;
-        url += url.indexOf('&') == -1 ? '?tmpl=component' : '&tmpl=component';
+        urlSuf='tmpl=component&format=raw';
+        url += url.indexOf('&') == -1 ? '?'+urlSuf : '&'+urlSuf;
         $.ajax({
             url: url,
             dataType: 'html',
