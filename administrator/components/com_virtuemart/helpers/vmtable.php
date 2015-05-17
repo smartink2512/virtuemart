@@ -1361,7 +1361,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			if($unicodeslugs)$this->$slugName = rawurlencode($this->$slugName);
 
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
-			vmdebug('my Final slugName '.$slugName,$this->$slugName);
+			//vmdebug('my Final slugName '.$slugName,$this->$slugName);
 			if (!$valid) {
 				return false;
 			}
@@ -1404,6 +1404,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			$multix = Vmconfig::get('multix', 'none');
 			//Lets check if the user is admin or the mainvendor
 			$virtuemart_vendor_id = false;
+			//Todo removed Quickn Dirty, use check in derived class
 			if ($multix == 'none' and get_class($this) !== 'TableVmusers') {
 
 				$this->virtuemart_vendor_id = 1;
@@ -1415,6 +1416,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);
+				//Todo removed Quickn Dirty, use check in derived class
 				if (strpos($this->_tbl,'virtuemart_vmusers')===FALSE) {
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
 					if (!isset(self::$_cache[md5($q)])) {
@@ -1442,7 +1444,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 							return true;
 						} else {
 							if (!$admin) {
-								$this->virtuemart_vendor_id = $loggedVendorId;
+								$rVendorId = VmConfig::isSuperVendor($user->id);
+								$this->virtuemart_vendor_id = $rVendorId;
 								return true;
 							}
 						}
@@ -1453,11 +1456,15 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 				}
 
 				if (!$admin and !empty($virtuemart_vendor_id) and !empty($loggedVendorId) and $loggedVendorId != $virtuemart_vendor_id) {
+					//Todo removed Quickn Dirty, use check in derived class
+					//This is the case when a vendor buys products of vendor1
+					if (strpos($this->_tbl,'virtuemart_order_items')===FALSE) {
+						vmdebug('Blocked storing, logged vendor ' . $loggedVendorId . ' but data belongs to ' . $virtuemart_vendor_id,$this->_tbl);
+						return false;
+					} else {
+						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
+					}
 
-					//vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
-					//vmWarn('Stop try to hack this store, you got logged');
-					vmdebug('Blocked storing, logged vendor ' . $loggedVendorId . ' but data belongs to ' . $virtuemart_vendor_id);
-					return false;
 				} else if (!$admin) {
 					if ($virtuemart_vendor_id) {
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;

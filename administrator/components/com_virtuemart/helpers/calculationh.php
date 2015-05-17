@@ -905,7 +905,7 @@ class calculationHelper {
 			}
 		}
 
-		foreach($this->_cart->cartData['VatTax'] as $k=>&$vattax){
+		foreach($this->_cart->cartData['VatTax'] as $k=>$vattax){
 			$vattax['result'] = isset($vattax['taxAmount']) ? $vattax['taxAmount'] : 0;
 			if (isset($vattax['discountTaxAmount'])) $vattax['result'] += $vattax['discountTaxAmount'];
 			if (isset($vattax['shipmentTax'])) $vattax['result'] += $vattax['shipmentTax'];
@@ -913,6 +913,7 @@ class calculationHelper {
 			if (!isset($vattax['virtuemart_calc_id'])) $vattax['virtuemart_calc_id'] = $this->getCalcRuleData($k)->virtuemart_calc_id;
 			if (!isset($vattax['calc_name'])) $vattax['calc_name'] = $this->getCalcRuleData($k)->calc_name;
 			if (!isset($vattax['calc_value'])) $vattax['calc_value'] = $this->getCalcRuleData($k)->calc_value;
+			$this->_cart->cartData['VatTax'][$k] = $vattax;
 		}
 		foreach ($this->_cart->cartData['taxRulesBill'] as $k=>&$rule) {
 			$this->_cart->cartData['VatTax'][$k]['result'] = isset($this->_cart->cartData['VatTax'][$k]['result']) ? $this->_cart->cartData['VatTax'][$k]['result'] : 0;

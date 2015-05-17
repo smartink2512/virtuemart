@@ -226,6 +226,10 @@ class GenericTableUpdater extends VmModel{
 
 	public function getTablesBySql($file){
 
+		if(!file_exists($file)){
+			vmError('Could not execute sql, could not find file '.$file);
+			return false;
+		}
 		$data = fopen($file, 'r');
 
 		$tables = array();
@@ -284,12 +288,19 @@ class GenericTableUpdater extends VmModel{
 				$end = strpos($temp,"`");
 				$keyName = substr($temp,0,$end);
 
-				$line = trim(substr($line,$end+2));
-				if(strrpos($line,',')==strlen($line)-1){
-					$line = substr($line,0,-1);
-				}
+				if(empty($keyName)){
+					$m = 'getTablesBySql empty $keyName line: '.$line .' file: '. $file;
+					//vmError($m,$m);
+					//$tableDefStarted = false;
+				} else {
 
-				$fieldLines[$keyName] = $line;
+					$line = trim(substr($line,$end+2));
+					if(strrpos($line,',')==strlen($line)-1){
+						$line = substr($line,0,-1);
+					}
+
+					$fieldLines[$keyName] = $line;
+				}
 			}
 		}
 		fclose($data);
@@ -576,7 +587,7 @@ class GenericTableUpdater extends VmModel{
 
 						$this->_db->setQuery($query);
 						if(!$this->_db->execute()){
-							$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+							vmError('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
 						}
 					}
 				}
@@ -646,15 +657,15 @@ class GenericTableUpdater extends VmModel{
 				$query = 'ALTER TABLE `'.$tablename.'` ADD '.$fieldname.' '.$alterCommand.' '.$after;
 				$action = 'ADD';
 				$added++;
-// 				vmdebug('$fieldname '.$fieldname);
+ 				vmdebug('$fieldname '.$fieldname);
 			}
 			if (!empty($query)) {
 				$this->_db->setQuery($query);
-				$err = $this->_db->getErrorMsg();
-				if(!$this->_db->execute() or !empty($err) ){
-					vmError('alterTable '.$action.' '.$tablename.'.'.$fieldname.' : '.$err );
+				$msg = 'alterTable '.$action.' '.$tablename.'.'.$fieldname.' : ';
+				if(!$this->_db->execute() ){
+					vmError( $msg, $msg.$query );
 				} else {
-					vmInfo('alterTable '.$action.' '.$tablename.'.'.$fieldname.' : '. $query);
+					vmInfo( $msg );
 				}
 			}
 			$after = ' AFTER `'.$fieldname.'`';

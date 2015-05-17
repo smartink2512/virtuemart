@@ -1388,69 +1388,67 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function calculateModificators(&$product) {
 
-		$modificatorSum = 0.0;
+		if (!isset($product->modificatorSum)){
+			$product->modificatorSum = 0.0;
+			if(!empty($product->customfields)) {
+				foreach( $product->customfields as $k => $productCustom ) {
+					$selected = -1;
 
-		//VmConfig::$echoDebug=true;
-		if (!empty($product->customfields)){
+					if(isset($product->cart_item_id)) {
+						if(!class_exists( 'VirtueMartCart' ))
+							require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
+						$cart = VirtueMartCart::getCart();
 
-			foreach($product->customfields as $k=>$productCustom){
-				$selected = -1;
+						//vmdebug('my $productCustom->customfield_price '.$productCustom->virtuemart_customfield_id,$cart->cartProductsData,$cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]);
+						if(isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])) {
+							$selected = $cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id];
 
-				if(isset($product->cart_item_id)){
-					if (!class_exists('VirtueMartCart'))
-						require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
-					$cart = VirtueMartCart::getCart();
+						} else if(isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id])) {
+							if($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id] == $productCustom->virtuemart_customfield_id) {
+								$selected = $productCustom->virtuemart_customfield_id;    //= 1;
 
-					//vmdebug('my $productCustom->customfield_price '.$productCustom->virtuemart_customfield_id,$cart->cartProductsData,$cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]);
-					if(isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])){
-						$selected = $cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id];
-
-					} else if( isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id])){
-						if($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]== $productCustom->virtuemart_customfield_id){
-							$selected = $productCustom->virtuemart_customfield_id;	//= 1;
-
+							}
 						}
-					}
-					//vmdebug('my $productCustom->customfield_price',$selected,$productCustom->virtuemart_custom_id,$productCustom->virtuemart_customfield_id,$cart->cartProductsData[$product->cart_item_id]['customProductData']);
-				} else {
+						//vmdebug('my $productCustom->customfield_price',$selected,$productCustom->virtuemart_custom_id,$productCustom->virtuemart_customfield_id,$cart->cartProductsData[$product->cart_item_id]['customProductData']);
+					} else {
 
-					$pluginFields = vRequest::getVar ('customProductData', NULL);
+						$pluginFields = vRequest::getVar( 'customProductData', NULL );
 
-					if ($pluginFields == NULL and isset($product->customPlugin)) {
-						$pluginFields = json_decode ($product->customPlugin, TRUE);
-					}
-
-					if(isset($pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])){
-						$selected = $pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id];
-					} else if (isset($pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id])){
-						if($pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id]== $productCustom->virtuemart_customfield_id){
-							$selected = 1;
+						if($pluginFields == NULL and isset($product->customPlugin)) {
+							$pluginFields = json_decode( $product->customPlugin, TRUE );
 						}
 
+						if(isset($pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])) {
+							$selected = $pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id];
+						} else if(isset($pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id])) {
+							if($pluginFields[$product->virtuemart_product_id][$productCustom->virtuemart_custom_id] == $productCustom->virtuemart_customfield_id) {
+								$selected = 1;
+							}
+						}
 					}
-				}
 
-				if($selected === -1) {
-					continue;
-				}
+					if($selected === -1) {
+						continue;
+					}
 
-				if (!empty($productCustom) and $productCustom->field_type =='E') {
+					if(!empty($productCustom) and $productCustom->field_type == 'E') {
 
-					if(!class_exists('vmCustomPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmPrepareCartProduct',array(&$product, &$product->customfields[$k],$selected,&$modificatorSum));
-				} else {
-					if ($productCustom->customfield_price) {
-						//vmdebug('calculateModificators $productCustom->customfield_price ',$productCustom->customfield_price);
-						//TODO adding % and more We should use here $this->interpreteMathOp
-						$modificatorSum = $modificatorSum + $productCustom->customfield_price;
+						if(!class_exists( 'vmCustomPlugin' )) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
+						JPluginHelper::importPlugin( 'vmcustom' );
+						$dispatcher = JDispatcher::getInstance();
+						$dispatcher->trigger( 'plgVmPrepareCartProduct', array(&$product, &$product->customfields[$k], $selected, &$product->modificatorSum) );
+					} else {
+						if($productCustom->customfield_price) {
+							//vmdebug('calculateModificators $productCustom->customfield_price ',$productCustom->customfield_price);
+							//TODO adding % and more We should use here $this->interpreteMathOp
+							$product->modificatorSum += $productCustom->customfield_price;
+						}
 					}
 				}
 			}
 		}
 
-		return $modificatorSum;
+		return $product->modificatorSum;
 	}
 
 

@@ -329,8 +329,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 		// Check that sql files exists before reading. Otherwise raise error for rollback
 		if ( !file_exists($sqlfile) ) {
-		    vmError('No SQL file provided!');
-		    return false;
+			vmError('execSQLFile, SQL file not found!');
+			return false;
 		}
 
 		if(!class_exists('VmConfig')){

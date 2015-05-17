@@ -122,6 +122,14 @@ class VirtuemartViewInvoice extends VmView {
 			VmConfig::loadJLang('com_virtuemart_orders',true, $orderDetails['details']['BT']->order_language);
 		}
 
+		//QuicknDirty, caching of the result VirtueMartModelCustomfields::calculateModificators must be deleted,
+		if(!empty($orderDetails['items']) and is_array($orderDetails['items'])){
+			$nbPr = count($orderDetails['items']);
+			for($k = 0; $k<$nbPr ;$k++){
+				$orderDetails['items'][$k]->modificatorSum = null;
+			}
+		}
+
 		$this->assignRef('orderDetails', $orderDetails);
         // if it is order print, invoice number should not be created, either it is there, either it has not been created
 		if(empty($this->invoiceNumber) and !$order_print){

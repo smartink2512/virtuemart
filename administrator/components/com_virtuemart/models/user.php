@@ -511,8 +511,6 @@ class VirtueMartModelUser extends VmModel {
 		if(!$user->authorise('core.admin','com_virtuemart')){
 			unset($data['virtuemart_vendor_id']);
 			unset($data['user_is_vendor']);
-			$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
-			$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
 		} else {
 			if(!isset($data['user_is_vendor']) and !empty($alreadyStoredUserData->user_is_vendor)){
 				$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
