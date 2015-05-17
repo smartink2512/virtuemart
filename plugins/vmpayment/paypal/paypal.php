@@ -105,6 +105,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'status_expired' => array('', 'char'),
 			'status_capture' => array('', 'char'),
 			'status_refunded' => array('', 'char'),
+			'status_denied' => array('', 'char'),
 			'status_partial_refunded' => array('', 'char'),
 			'expected_maxamount' => array('', 'int'),
 

@@ -38,6 +38,9 @@
     <section name="shop">
         <action name="vm.user.editshop" title="COM_VIRTUEMART_STORE" description="" />
         <action name="vm.media" title="COM_VIRTUEMART_MEDIA_S" description="" />
+        <action name="vm.media.create" title="JACTION_CREATE" description="" />
+        <action name="vm.media.delete" title="JACTION_DELETE" description="" />
+        <action name="vm.media.edit" title="JACTION_EDIT" description="" />
         <action name="vm.shipmentmethod" title="COM_VIRTUEMART_SHIPMENTMETHOD_S" description="" />
         <action name="vm.paymentmethod" title="COM_VIRTUEMART_PAYMENTMETHOD_S" description="" />
     </section>

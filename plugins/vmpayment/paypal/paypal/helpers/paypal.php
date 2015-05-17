@@ -490,7 +490,8 @@ class PaypalHelperPaypal {
 					$order_history['comments'] = vmText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PARTIAL_REFUNDED', $this->order['details']['BT']->order_number);
 					$order_history['order_status'] = isset($this->_method->status_partial_refunded) ? $this->_method->status_partial_refunded : 'R';
 				}
-
+			} elseif (strcmp($paypal_data['payment_status'], 'Denied') == 0) {
+				$order_history['order_status'] = $this->_method->status_denied;
 			} elseif (isset ($paypal_data['payment_status'])) {
 				// voided
 				$order_history['order_status'] = $this->_method->status_canceled;

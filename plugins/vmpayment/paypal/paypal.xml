@@ -253,7 +253,8 @@
                 <field name="status_partial_refunded" type="vmorderstate" scope="com_virtuemart" default="R"
                        label="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND"
                        description="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND_TIP"/>
-
+                <field name="status_denied" type="vmorderstate" scope="com_virtuemart" default="D"
+                       label="VMPAYMENT_PAYPAL_STATUS_DENIED" description="VMPAYMENT_PAYPAL_STATUS_DENIED_TIP"/>
 
                 <field class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_OPTIONAL_PARAMS"/>
 
