@@ -125,6 +125,9 @@ class VirtueMartModelOrders extends VmModel {
         $cuid = $_currentUser->get('id');
 
 		$orderDetails = false;
+		if($orderID==0){
+			$orderID = vRequest::getInt('virtuemart_order_id') ;
+		}
         // If the user is not logged in, we will check the order number and order pass
         if(empty($orderID) and empty($cuid)){
             // If the user is not logged in, we will check the order number and order pass
@@ -235,7 +238,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				//Format now {"9":7,"20":{"126":{"comment":"test1"},"127":{"comment":"t2"},"128":{"comment":"topic 3"},"129":{"comment":"4 44 4 4 44 "}}}
 				//$old = '{"46":" <span class=\"costumTitle\">Cap Size<\/span><span class=\"costumValue\" >S<\/span>","109":{"textinput":{"comment":"test"}}}';
 				//$myCustomsOld = @json_decode($old,true);
-				//vmdebug('$myCustomsOld',$myCustomsOld);
+
 				$myCustoms = @json_decode($item->product_attribute,true);
 				$myCustoms = (array) $myCustoms;
 
@@ -252,7 +255,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			if(!empty($product->customfields)){
 				foreach($product->customfields as $customfield){
-					//vmdebug('my customfield',$customfield);
 					if(!in_array($customfield->virtuemart_customfield_id,$ids) and $customfield->field_type=='E' and ($customfield->is_input or $customfield->is_cart_attribute)){
 						$item->customfields[] = $customfield;
 					}
@@ -266,7 +268,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			WHERE  virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['calc_rules'] = $db->loadObjectList();
-// 		vmdebug('getOrder my order',$order);
 		return $order;
 	}
 

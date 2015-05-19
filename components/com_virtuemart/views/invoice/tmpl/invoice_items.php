@@ -152,8 +152,8 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 			}
 			if(!isset($sumRules[$rule->virtuemart_calc_id])){
 				$sumRules[$rule->virtuemart_calc_id] = new stdClass();
-				$sumRules[$rule->virtuemart_calc_id]->calc_amount = $rule->calc_amount;
-				$sumRules[$rule->virtuemart_calc_id]->calc_rule_name = $rule->calc_rule_name * $quantity;
+				$sumRules[$rule->virtuemart_calc_id]->calc_amount = $rule->calc_amount * $quantity;
+				$sumRules[$rule->virtuemart_calc_id]->calc_rule_name = $rule->calc_rule_name;
 				$sumRules[$rule->virtuemart_calc_id]->calc_kind = $rule->calc_kind;
 			} else {
 				$sumRules[$rule->virtuemart_calc_id]->calc_amount += $rule->calc_amount * $quantity;

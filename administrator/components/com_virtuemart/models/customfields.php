@@ -1006,7 +1006,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					vmJsApi::chosenDropDowns();
 
 					if($customfield->parentOrderable==0){
-						if($product->product_parent_id==0){
+						if($product->virtuemart_product_id==$customfield->virtuemart_product_id){
 							$product->orderable = FALSE;
 						} else {
 							$product->product_in_stock = $parentStock;

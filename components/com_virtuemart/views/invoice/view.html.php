@@ -123,17 +123,20 @@ class VirtuemartViewInvoice extends VmView {
 		}
 
 		//QuicknDirty, caching of the result VirtueMartModelCustomfields::calculateModificators must be deleted,
-		if(!empty($orderDetails['items']) and is_array($orderDetails['items'])){
+		/*if(!empty($orderDetails['items']) and is_array($orderDetails['items'])){
+
 			$nbPr = count($orderDetails['items']);
+
 			for($k = 0; $k<$nbPr ;$k++){
 				$orderDetails['items'][$k]->modificatorSum = null;
 			}
-		}
+			vmdebug('$nbPr',$nbPr);
+		}*/
 
 		$this->assignRef('orderDetails', $orderDetails);
         // if it is order print, invoice number should not be created, either it is there, either it has not been created
 		if(empty($this->invoiceNumber) and !$order_print){
-		    $invoiceNumberDate=array();
+		    $invoiceNumberDate = array();
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
                 if (shopFunctionsF::InvoiceNumberReserved( $invoiceNumberDate[0])) {
 	                if  ($this->uselayout!='mail') {
