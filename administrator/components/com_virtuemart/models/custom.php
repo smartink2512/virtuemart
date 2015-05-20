@@ -287,23 +287,48 @@ class VirtueMartModelCustom extends VmModel {
 			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
 
+		$table = $this->getTable('customs');
+
 		if(isset($data['custom_jplugin_id'])){
 
 			$tb = '#__extensions';
 			$ext_id = 'extension_id';
 
-			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
 			$db = JFactory::getDBO();
-			$db->setQuery($q);
-			$data['custom_element'] = $db->loadResult();
 
+			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
+			$db->setQuery($q);
+			$cElement = $db->loadResult();
+			if(empty($cElement)){
+
+				if(!empty($data['virtuemart_custom_id'])){
+					$table->load($data['virtuemart_custom_id']);
+					$cElement = $table->custom_element;
+				} else if(!empty($data['custom_element'])){
+					$cElement = $data['custom_element'];
+				}
+
+				$q = 'SELECT `'.$ext_id.'` FROM `' . $tb . '` WHERE `element` = "'.$cElement.'"';
+				$db->setQuery($q);
+				if($jid=$db->loadResult()){
+					$q = 'UPDATE `#__virtuemart_customs` SET `custom_jplugin_id`="'.$jid.'" WHERE `custom_jplugin_id` = "'.$data['custom_jplugin_id'].'"';
+					$db->setQuery($q);
+					$db->execute();
+					$data['custom_jplugin_id'] = $jid;
+					vmInfo('Old Plugin id was not available, updated entries with id find for the same element');
+				} else {
+					vmWarn('could not load custom_element for plugin, testing if current custom_jplugin_id is still available '.$q);
+				}
+			}
+
+			if(!empty($cElement)){
+				$data['custom_element'] = $cElement;
+			}
 			$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE `extension_id` = "'.$data['custom_jplugin_id'].'"';
 			$db->setQuery($q);
 			$db->execute();
-
 		}
 
-		$table = $this->getTable('customs');
 		$table->field_type = $data['field_type'];
 		$table->custom_element = $data['custom_element'];
 		$table->custom_jplugin_id = $data['custom_jplugin_id'];
@@ -312,7 +337,6 @@ class VirtueMartModelCustom extends VmModel {
 		if(!empty($data['is_input'])){
 			if(empty($data['layout_pos'])) $data['layout_pos'] = 'addtocart';
 		}
-
 
 		//We are in the custom and so the table contains the field_type, else not!!
 		self::setParameterableByFieldType($table,$table->field_type);

@@ -1212,11 +1212,11 @@ class ShopFunctions {
 	 * @return bool|string
 	 */
 	static function getClientIP() {
-		$ip_keys = array('REMOTE_ADDR', 'X_FORWARDED_FOR', 'X-Forwarded-Proto');
+		$ip_keys = array('X_FORWARDED_FOR', 'X-Forwarded-Proto','REMOTE_ADDR');
 		$extra = VmConfig::get('revproxvar','');
 		if(!empty($extra)){
 			$extra = explode(',',$extra);
-			$ip_keys = array_merge($ip_keys,$extra);
+			$ip_keys = array_merge($extra, $ip_keys);
 		}
 		foreach ($ip_keys as $key) {
 			if (array_key_exists($key, $_SERVER) === true) {
@@ -1231,7 +1231,7 @@ class ShopFunctions {
 			}
 		}
 
-		return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : false;
+		return false;
 	}
 
 	/**

@@ -1519,6 +1519,7 @@ class VirtueMartCart {
 					}
 
 					//Very important! must be cloned, else all products with same id get the same productCustomData due the product cache
+					$productTemp->modificatorSum = null;
 					$product = clone($productTemp);
 
 					$productdata['virtuemart_product_id'] = (int)$productdata['virtuemart_product_id'];

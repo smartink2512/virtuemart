@@ -76,10 +76,9 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 		$model = VmModel::getModel('paymentmethod');
 		$msgtype = '';
-		//$cids = vRequest::getInt('virtuemart_product_id',0);
-		$cids = vRequest::getVar($this->_cidName, vRequest::getVar('virtuemart_payment_id'));
-		//jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
+
+		$cids = vRequest::getInt($this->_cidName, vRequest::getInt('virtuemart_payment_id'));
+		if(!is_array($cids)) $cids = array($cids);
 
 		foreach($cids as $cid){
 			if ($model->createClone($cid)) $msg = vmText::_('COM_VIRTUEMART_PAYMENT_CLONED_SUCCESSFULLY');

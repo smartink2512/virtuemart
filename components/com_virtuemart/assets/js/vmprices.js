@@ -190,26 +190,36 @@ Virtuemart.product = function(carts) {
 		quantity = cart.find('.quantity-input');
 
 		var Ste = parseInt(quantityInput.attr("step"));
-
 		//Fallback for layouts lower than 2.0.18b
-		if(isNaN(Ste)){
-			Ste = 1;
-		}
+		if(isNaN(Ste)) { Ste = 1; }
 
-        jQuery(plus).off('click', Virtuemart.incrQuantity);
-        jQuery(plus).on('click', {cart:cart}, Virtuemart.incrQuantity);
+        var quantityErrorAlert = function() {
+            var me = jQuery(this);
+            Virtuemart.checkQuantity(this, me.attr("step"), me.attr("data-errStr"));
+        };
 
-        jQuery(minus).off('click', Virtuemart.decrQuantity);
-        jQuery(minus).on('click', {cart:cart},Virtuemart.decrQuantity);
+        plus
+            .off('click', Virtuemart.incrQuantity)
+            .on('click', {cart:cart}, Virtuemart.incrQuantity);
 
-        jQuery(select).off('change', Virtuemart.eventsetproducttype);
-        jQuery(select).on('change', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
+        minus
+            .off('click', Virtuemart.decrQuantity)
+            .on('click', {cart:cart},Virtuemart.decrQuantity);
 
-        jQuery(radio).off('change', Virtuemart.eventsetproducttype);
-        jQuery(radio).on('change', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
+        select
+            .off('change', Virtuemart.eventsetproducttype)
+            .on('change', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
 
-        jQuery(quantity).off('keyup', Virtuemart.eventsetproducttype);
-        jQuery(quantity).on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
+        radio
+            .off('change', Virtuemart.eventsetproducttype)
+            .on('change', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
+
+        quantity
+            .off('keyup', Virtuemart.eventsetproducttype)
+            .on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype)
+            .off('blur click change submit', quantityErrorAlert)
+            .on('blur click change submit', quantityErrorAlert);
+
 
         this.action ="#";
         //addtocart = cart.find('input[name="addtocart"]');
@@ -222,15 +232,15 @@ Virtuemart.product = function(carts) {
 }
 
 Virtuemart.checkQuantity = function (obj,step,myStr) {
-    // use the modulus operator "%" to see if there is a reminder
-    reminder=obj.value % step;
-    quantity=obj.value;
+    // use the modulus operator "%" to see if there is a remainder
+    var remainder=obj.value % step,
+        quantity=obj.value;
 
-    if (reminder  != 0) {
+    if (remainder  != 0) {
         //myStr = "'.vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED').'";
         alert(myStr.replace("%s",step));
-        if(quantity!=reminder && quantity>reminder){
-            obj.value = quantity-reminder;
+        if(quantity!=remainder && quantity>remainder){
+            obj.value = quantity-remainder;
         } else {
             obj.value = step;
         }

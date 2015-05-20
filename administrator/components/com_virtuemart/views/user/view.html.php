@@ -21,7 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
-jimport('joomla.version');
 
 /**
  * HTML View class for maintaining the list of users

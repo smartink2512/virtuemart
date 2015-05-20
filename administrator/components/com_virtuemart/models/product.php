@@ -2611,7 +2611,6 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 	function sentProductEmailToShoppers () {
 
-		jimport ('joomla.utilities.arrayhelper');
 		if (!class_exists ('ShopFunctions')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 		}

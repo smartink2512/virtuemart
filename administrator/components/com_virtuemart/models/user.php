@@ -24,9 +24,6 @@ defined('_JEXEC') or die('Restricted access');
 // Hardcoded groupID of the Super Admin
 define ('__SUPER_ADMIN_GID', 25);
 
-// Load the model framework
-jimport('joomla.version');
-
 if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 

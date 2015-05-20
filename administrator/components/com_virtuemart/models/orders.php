@@ -125,11 +125,10 @@ class VirtueMartModelOrders extends VmModel {
         $cuid = $_currentUser->get('id');
 
 		$orderDetails = false;
-		if($orderID==0){
-			$orderID = vRequest::getInt('virtuemart_order_id') ;
-		}
+
+
         // If the user is not logged in, we will check the order number and order pass
-        if(empty($orderID) and empty($cuid)){
+        if(empty($cuid)){
             // If the user is not logged in, we will check the order number and order pass
             if ($orderPass = vRequest::getString('order_pass',$orderPass)){
                 $orderNumber = vRequest::getString('order_number',$orderNumber);
@@ -155,13 +154,11 @@ class VirtueMartModelOrders extends VmModel {
                 if(!isset($orderDetails['details']['BT']->virtuemart_user_id)){
                     $orderDetails['details']['BT']->virtuemart_user_id = 0;
                 }
-                //if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
-                vmdebug('getMyOrderDetails',$cuid,$orderDetails['details']['BT']->virtuemart_user_id);
+
                 if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
                     echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
                     return false;
                 }
-                //}
             }
 
         }
@@ -1580,7 +1577,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$vars['url'] = 'url';
 		if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 
-		$virtuemart_vendor_id=1;
+		$virtuemart_vendor_id = $order['details']['BT']->virtuemart_vendor_id;
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vars['vendor'] = $vendor;
