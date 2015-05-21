@@ -1,9 +1,19 @@
 INSERT IGNORE INTO `#__virtuemart_calcs` (`virtuemart_calc_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `published`) VALUES
-	(1, 'Tax', '', 'VatTax', '+%', 20.0000, 47, 0, 1),
-	(2, 'Discount 5% for ladies', 'The discount is based on net price with VAT, the tax amount is recalculated based on the new net price', 'DATax', '-%', 5.0000, 47, 0, 1);
+	(1, 'Tax 20%', 'common vat, if your shop needs only one VAT, just use it without any category set', 'VatTax', '+%', 20.0000, 47, 0, 1),
+	(2, 'Discount 5% for ladies', 'The discount is based on net price with VAT, the tax amount is recalculated based on the new net price', 'DATax', '-%', 5.0000, 47, 0, 1),
+	(3, 'Tax 10%', 'as example for the category product variants', 'VatTax', '+%', 10.0000, 47, 0, 1),
+	(4, 'Tax 7%', 'as example for the category product attributes', 'VatTax', '+%', 7.0000, 47, 0, 1);
 
 INSERT IGNORE INTO `#__virtuemart_calc_categories` (`virtuemart_calc_id`, `virtuemart_category_id`) VALUES
-	(2, 9);
+  (1, 2),
+  (1, 3),
+  (1, 4),
+  (1, 7),
+  (1, 8),
+  (1, 9),
+	(2, 9),
+	(3, 11),
+	(4, 12);
 
 INSERT IGNORE INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`, `ordering`, `shared`, `published`) VALUES
 	(2, 1, 2, 1, 1),
@@ -111,7 +121,7 @@ INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `file_is_produ
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_weight`, `product_length`, `product_width`, `product_height`, `product_in_stock`, `product_params`, `published`) VALUES
   (13, 0, 'root', 0.1, 0.1000, 0.1000, 0.1000, 10, 'min_order_level=""|max_order_level=""|step_order_level=""|product_box="1"|', 0);
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
-  (13, 'Root Pattern', 'root', 'Root','<p>This product is used as a pattern for other products. It is a parent product and has multiple child products. <br />You can set several settings (content, customfields) for parent product. Childs of this parent will basically have the same settings as the parent automatically inherit except you overwrite the settings.<br /><br /></p>\r\n<p>In this case product price is set in pattern.</p><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>\r\n<p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\r\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   <br /><br /></p>');
+  (13, 'Root Pattern', 'root', '','<p>This product is derived from a pattern for other products. It is a parent product and has multiple child products. <br />You can set several settings (content, customfields) for parent product. Childs of this parent will basically have the same settings as the parent automatically inherit except you overwrite the settings.<br /><br /></p>\r\n<p>In this case product price is set in pattern.</p><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>\r\n<p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\r\n<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   <br /><br /></p>');
 
 INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id`, `virtuemart_manufacturer_id`) VALUES
   (13, 1),
@@ -122,13 +132,10 @@ INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id
   (300, 3);
 
 INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `product_price`, `product_currency`) VALUES
-	(13, 12.000000, 47),
-	(170, 42.000000, 47),
-	(172, 42.000000, 47);
+	(13, 10.000000, 47);
 
 INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
 	(13, 20, 1);
-
 
 #Product attributes
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight`, `published`, `pordering`) VALUES
@@ -146,7 +153,7 @@ INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `pro
 	(165, 'Free product', 'free-product', 'It\'s a free Product!', '<p>This product shows how a free product is set up. The shopper can purchase without beeing charged. In all cases the shopper needs to checkout.</p>\r\n<p>It can be used e.g. if you want to offer catalogues or sample products.</p>'),
 	(166, 'String &#38; list, editor', 'string,-list,-editor', 'Default product with customfield string & editor. ', '<p>Please note: this example for string is no cart attribute, if you want to display the string detail in cart please enable Cart attribut in custom prototype.</p>'),
 	(167, 'Images &#38; list', 'images-list', 'Showcase image customfield.', '<p>Use customfield to display an image or image list on desired layout position. <br /><br />Customfield image allows to display any of your media images, while image list provides a preset based on list in customfied prototype.<br />See for details be &gt; Custom Fields &gt; Image list</p>'),
-	(168, 'Multiple price ranges', 'multiple-price-ranges', 'Price ranges for product quantity.', '<p>Price ranges for product quantity. Test out the price changes following the values below<br /><br />100€ 1-5 pcs</p>\r\n<p>80€ 6-10 pcs</p>\r\n<p>50€ 11- pcs</p>'),
+	(168, 'Multiple price ranges', 'multiple-price-ranges', 'Price ranges for product quantity.', '<p>Price ranges for product quantity. Test out the price changes following the values below<br /><br />100€ 1-5 pcs</p>\r\n<p>80€ 6-10 pcs</p>\r\n<p>70€ 11- pcs</p>'),
 	(169, 'Multiple prices', 'images-1', 'Mutliple prices per shoppergroups.', '<p>Your shoppergroup changes your price. Login to preview.<br /><br />100€ Guest</p>\r\n<p>80€ Registered</p>\r\n<p>50€ Gold Member</p>');
 
 INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
@@ -158,7 +165,7 @@ INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`
 	(167, 16, 0, 0, '1', NULL, 0, 'width="0"|height="0"|');
 
 INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `virtuemart_shoppergroup_id`, `product_price`, `product_currency`, `price_quantity_start`, `price_quantity_end`) VALUES
-  (163, 0, 11.000000, 47, NULL, NULL),
+  (163, 0, 10.000000, 47, NULL, NULL),
   (165, 0, 0.00001, 47, NULL, NULL),
   (168, 0, 100.000000, 47, 0, 5),
   (168, 0, 80.000000, 47, 6, 10),
@@ -383,7 +390,7 @@ INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `pro
 	(154, 40.833330, 47);
 
 INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `virtuemart_shoppergroup_id`, `product_price`, `override`, `product_override_price`, `product_currency`, `price_quantity_start`, `price_quantity_end`) VALUES
-	(155, 0, 24.166670, 1, 19.00000, 47, 0, 0);
+	(155, 0, 24.166670, 0, 19.00000, 47, 0, 0);
 
 INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
 	(154, 24, 1),

@@ -219,21 +219,6 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	}
 }
 
-//Show VAT tax seperated
-if(!empty($this->cart->cartData)){
-	if(!empty($this->cart->cartData['VatTax'])){
-		foreach($this->cart->cartData['VatTax'] as $vatTax){
-			if(!empty($vatTax['taxAmount'])){
-				echo '<tr class="sectiontableentry'.$i.'">';
-				echo '<td colspan="4" align="right">'.$vatTax['calc_name'].'</td>';
-				echo '<td align="right"><span class="priceColor2">' . $this->currencyDisplay->createPriceDiv ('taxAmount', '', $vatTax['taxAmount'], FALSE) . '</span></td>';
-				echo '<td></td><td></td>';
-				echo '</tr>';
-			}
-		}
-	}
-}
-
 if ( 	VmConfig::get('oncheckout_opc',true) or
 	!VmConfig::get('oncheckout_show_steps',false) or
 	(!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and
@@ -339,6 +324,41 @@ if ($this->totalInPaymentCurrency) {
 	<td align="right"><strong><?php echo $this->totalInPaymentCurrency;   ?></strong></td>
 </tr>
 	<?php
+}
+
+//Show VAT tax seperated
+if(!empty($this->cart->cartData)){
+	if(!empty($this->cart->cartData['VatTax'])){
+		$c = count($this->cart->cartData['VatTax']);
+		if (!VmConfig::get ('show_tax') or $c>1) {
+			if($c>0){
+				?><tr class="sectiontableentry2">
+				<td colspan="5" align="right"><?php echo vmText::_ ('COM_VIRTUEMART_TOTAL_INCL_TAX') ?></td>
+
+				<?php if (VmConfig::get ('show_tax')) { ?>
+					<td ></td>
+				<?php } ?>
+				<td></td>
+				</tr><?php
+			}
+			foreach( $this->cart->cartData['VatTax'] as $vatTax ) {
+				if(!empty($vatTax['taxAmount'])) {
+					$amount = $vatTax['taxAmount'];
+					if(!empty($vatTax['shipmentTax'])) {
+						$amount += $vatTax['shipmentTax'];
+					}
+					if(!empty($vatTax['paymentTax'])) {
+						$amount += $vatTax['paymentTax'];
+					}
+					echo '<tr class="sectiontableentry'.$i.'">';
+					echo '<td colspan="4" align="right">'.$vatTax['calc_name'].'</td>';
+					echo '<td align="right"><span class="priceColor2">'.$this->currencyDisplay->createPriceDiv( 'taxAmount', '', $amount, FALSE ).'</span></td>';
+					echo '<td></td><td></td>';
+					echo '</tr>';
+				}
+			}
+		}
+	}
 }
 ?>
 

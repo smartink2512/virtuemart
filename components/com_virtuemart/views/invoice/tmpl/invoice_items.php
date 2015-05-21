@@ -136,54 +136,6 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 	</tr>
 <?php  } ?>
 
-
-	<?php
-		$sumRules = array();
-		foreach($this->orderDetails['calc_rules'] as $rule){
-			$quantity = 1;
-			//Todo bad construction, storing must be enhanced
-			if($rule->virtuemart_order_item_id){
-				foreach($this->orderDetails['items'] as $it){
-					if($it->virtuemart_order_item_id == $rule->virtuemart_order_item_id){
-						$quantity = $it->product_quantity;
-						break;
-					}
-				}
-			}
-			if(!isset($sumRules[$rule->virtuemart_calc_id])){
-				$sumRules[$rule->virtuemart_calc_id] = new stdClass();
-				$sumRules[$rule->virtuemart_calc_id]->calc_amount = $rule->calc_amount * $quantity;
-				$sumRules[$rule->virtuemart_calc_id]->calc_rule_name = $rule->calc_rule_name;
-				$sumRules[$rule->virtuemart_calc_id]->calc_kind = $rule->calc_kind;
-			} else {
-				$sumRules[$rule->virtuemart_calc_id]->calc_amount += $rule->calc_amount * $quantity;
-			}
-		}
-		//vmdebug('hmm',$this->orderDetails);
-		foreach($sumRules as $rule){
-
-			if ($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'DATaxRulesBill') { ?>
-				<tr >
-					<td colspan="6" align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
-					<?php if ( VmConfig::get('show_tax')) { ?>
-						<td align="right"> </td>
-					<?php } ?>
-					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
-					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
-				</tr>
-			<?php
-			} elseif ($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax' ) { ?>
-				<tr >
-					<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
-					<?php if ( VmConfig::get('show_tax')) { ?>
-						<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
-					<?php } ?>
-					<td align="right"></td>
-					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
-				</tr>
-			<?php
-			}
-		} ?>
 	<tr>
 		<td align="right" class="pricePad" colspan="6"><?php echo $this->orderDetails['shipmentName'] ?></td>
 
@@ -213,6 +165,52 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right"><span class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billDiscountAmount, $this->currency); ?></span></td>
 		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total, $this->currency); ?></strong></td>
 	</tr>
+	<?php
+	$sumRules = array();
+	$handled = array();
+	foreach($this->orderDetails['calc_rules'] as $rule){
 
+		if(isset($sumRules[$rule->virtuemart_calc_id]) or $rule->calc_kind=='payment' or $rule->calc_kind=='shipment'){
+			continue;
+		}
+		$handled[$rule->virtuemart_calc_id] = true;
+		$sumRules[$rule->virtuemart_calc_id] = new stdClass();
+		$sumRules[$rule->virtuemart_calc_id]->calc_result = $rule->calc_result;
+		$sumRules[$rule->virtuemart_calc_id]->calc_rule_name = $rule->calc_rule_name;
+		$sumRules[$rule->virtuemart_calc_id]->calc_kind = $rule->calc_kind;
+	}
+
+	if(count($sumRules)>0){
+		?><tr >
+			<td colspan="7"  align="right" class="pricePad"><?php echo vmText::_('COM_VIRTUEMART_TOTAL_INCL_TAX') ?> </td>
+			<td></td>
+			<td></td>
+		</tr><?php
+	}
+
+	foreach($sumRules as $rule){
+
+		if ($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'DATaxRulesBill') { ?>
+			<tr >
+				<td colspan="6" align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
+				<?php if ( VmConfig::get('show_tax')) { ?>
+					<td align="right"> </td>
+				<?php } ?>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_result, $this->currency); ?></td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_result, $this->currency); ?></td>
+			</tr>
+		<?php
+		} elseif ($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax' ) { ?>
+			<tr >
+				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
+				<?php if ( VmConfig::get('show_tax')) { ?>
+					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_result, $this->currency); ?></td>
+				<?php } ?>
+				<td align="right"></td>
+				<td align="right"></td>
+			</tr>
+		<?php
+		}
+	} ?>
 <?php } ?>
 </table>
