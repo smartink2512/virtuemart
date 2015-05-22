@@ -509,8 +509,9 @@ class VirtueMartCart {
 			}
 
 			//Now we check if the delivered customProductData is correct and add missing
-			$product = $productModel->getProduct($virtuemart_product_id, true, false,true,$productData['quantity']);
-
+			$productTemp = $productModel->getProduct($virtuemart_product_id, true, false,true,$productData['quantity']);
+			$productTemp->modificatorSum = null;
+			$product = clone($productTemp);
 
 			if(VmConfig::get('multixcart',0)=='byproduct'){
 				if(empty($this->vendorId)) $this->vendorId = $product->virtuemart_vendor_id;

@@ -2127,13 +2127,13 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function getPrice ($product, $quantity) {
 
-		$db = JFactory::getDBO ();
 		if (!is_object ($product)) {
 			$product = $this->getProduct ($product, TRUE, FALSE, TRUE,$quantity);
 		}
 
 		if (empty($product->customfields) and !empty($product->allIds)) {
 			$customfieldsModel = VmModel::getModel ('Customfields');
+			$product->modificatorSum = null;
 			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
 		}
 

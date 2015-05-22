@@ -308,7 +308,7 @@ class VirtueMartModelCustom extends VmModel {
 					$cElement = $data['custom_element'];
 				}
 
-				$q = 'SELECT `'.$ext_id.'` FROM `' . $tb . '` WHERE `element` = "'.$cElement.'"';
+				$q = 'SELECT `'.$ext_id.'` FROM `' . $tb . '` WHERE `element` = "'.$cElement.'" and published="1"';
 				$db->setQuery($q);
 				if($jid=$db->loadResult()){
 					$q = 'UPDATE `#__virtuemart_customs` SET `custom_jplugin_id`="'.$jid.'" WHERE `custom_jplugin_id` = "'.$data['custom_jplugin_id'].'"';
