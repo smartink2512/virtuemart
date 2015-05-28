@@ -1142,7 +1142,7 @@ class VirtueMartCart {
 				}
 			}
 
-			$orderDetails = $orderModel ->getMyOrderDetails($this->virtuemart_order_id);
+			$orderDetails = $orderModel->getMyOrderDetails($this->virtuemart_order_id,$this->order_number,$this->order_pass);
 
 			if(!$orderDetails or empty($orderDetails['details'])){
 				echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');

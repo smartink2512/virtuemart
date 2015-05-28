@@ -82,7 +82,7 @@ Virtuemart.cartEffect = function(form) {
         type: "POST",
         cache: false,
         dataType: "json",
-        url: window.vmSiteurl + "index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json"+vmLang,
+        url: window.vmSiteurl + "index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json"+window.vmLang+window.Itemid,
         data: dat
     }).done(
 

@@ -280,29 +280,36 @@ class vmJsApi{
 	// Virtuemart product and price script
 	static function jPrice() {
 
-		if (!VmConfig::get ('jprice', TRUE) and !self::isAdmin()) {
+		if(!VmConfig::get( 'jprice', TRUE ) and !self::isAdmin()) {
 			return FALSE;
 		}
 		static $jPrice;
 		// If exist exit
-		if ($jPrice) {
+		if($jPrice) {
 			return;
 		}
 		vmJsApi::jQuery();
 
-		VmConfig::loadJLang('com_virtuemart',true);
+		VmConfig::loadJLang( 'com_virtuemart', true );
 
 		vmJsApi::jSite();
 
-		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
+		$closeimage = JURI::root( TRUE ).'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
 
 		$jsVars = "";
-		$jsVars .= "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
-		if (VmConfig::get ('vmlang_js', 1))  {
-			$jsVars .= "vmLang = '&lang=" . substr (VmConfig::$vmlang, 0, 2) . "' ;\n";
+		$jsVars .= "vmSiteurl = '".JURI::root()."' ;\n";
+		if(VmConfig::get( 'vmlang_js', 1 )) {
+			$jsVars .= "vmLang = '&lang=".substr( VmConfig::$vmLangSelected, 0, 2 )."' ;\n";
+		} else {
+			$jsVars .= 'vmLang = "";'."\n";
 		}
-		else {
-			$jsVars .= 'vmLang = "";' . "\n";		}
+
+		$Get = vRequest::getGet();
+		if(!empty($Get['Itemid'])){
+			$jsVars .= "Itemid = '&Itemid=".$Get['Itemid']."';\n";
+		} else {
+			$jsVars .= 'Itemid = "";'."\n";
+		}
 
 		if(VmConfig::get('addtocart_popup',1)){
 			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";

@@ -989,6 +989,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		// the order number is saved into the session to make sure that the correct cart is emptied with the payment notification
 		$_cart->order_number = $orderTable->order_number;
+		$_cart->order_pass = $_orderData->order_pass;
 		$_cart->virtuemart_order_id = $orderTable->virtuemart_order_id;
 		$_cart->setCartIntoSession ();
 

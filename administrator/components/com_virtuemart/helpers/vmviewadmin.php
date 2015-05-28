@@ -526,25 +526,24 @@ class VmViewAdmin extends JViewLegacy {
 
 	function showhelp(){
 		/* http://docs.joomla.org/Help_system/Adding_a_help_button_to_the_toolbar */
-
-			$task=vRequest::getCmd('task', '');
-			$view=vRequest::getCmd('view', '');
-			if ($task) {
-				if ($task=="add") {
-					$task="edit";
-				}
-				$task ="_".$task;
+		$task=vRequest::getCmd('task', '');
+		$view=vRequest::getCmd('view', '');
+		if ($task) {
+			if ($task=="add") {
+				$task="edit";
 			}
-			if (!class_exists( 'VmConfig' )) require(VMPATH_ADMIN .'/helpers/config.php');
-			VmConfig::loadConfig();
-			VmConfig::loadJLang('com_virtuemart_help');
- 		    $lang = JFactory::getLanguage();
- 	        $key=  'COM_VIRTUEMART_HELP_'.$view.$task;
-	         if ($lang->hasKey($key)) {
-					$help_url  = vmText::_($key)."?tmpl=component";
- 		            $bar = JToolBar::getInstance('toolbar');
-					$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
-	        }
+			$task ="_".$task;
+		}
+		if (!class_exists( 'VmConfig' )) require(VMPATH_ADMIN .'/helpers/config.php');
+		VmConfig::loadConfig();
+		VmConfig::loadJLang('com_virtuemart_help');
+		$lang = JFactory::getLanguage();
+		$key=  'COM_VIRTUEMART_HELP_'.$view.$task;
+		 if ($lang->hasKey($key)) {
+				$help_url  = vmText::_($key)."?tmpl=component";
+				$bar = JToolBar::getInstance('toolbar');
+				$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
+		}
 
 	}
 
@@ -556,7 +555,7 @@ class VmViewAdmin extends JViewLegacy {
 			if(JVM_VERSION<3){
 				$bar->appendButton('Popup', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component', 875, 550, 0, 0, '');
 			} else {
-				$bar->appendButton('Link', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component');
+				$bar->appendButton('Link', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart');
 			}
 
 		}

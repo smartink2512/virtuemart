@@ -142,9 +142,15 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
 
-
 		$vendorModel = VmModel::getModel ('vendor');
 		$VendorEmail = $vendorModel->getVendorEmail ($vars['product']->virtuemart_vendor_id);
+
+		JPluginHelper::importPlugin ('system');
+		JPluginHelper::importPlugin ('vmextended');
+		JPluginHelper::importPlugin ('userfield');
+		$dispatcher = JDispatcher::getInstance ();
+		$dispatcher->trigger ('plgVmOnAskQuestion', array(&$VendorEmail, &$vars, &$view));
+
 		$vars['vendor'] = array('vendor_store_name' => $fromName);
 
 		if (shopFunctionsF::renderMail ('askquestion', $VendorEmail, $vars, 'productdetails',true)) {

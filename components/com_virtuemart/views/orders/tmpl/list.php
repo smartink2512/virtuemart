@@ -31,7 +31,7 @@ if (count($this->orderlist) == 0) {
 	?>
 		</div>
 	</div>
-	<?
+	<?php
 } else {
  ?>
 <div id="editcell">

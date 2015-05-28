@@ -486,7 +486,8 @@ class VmConfig {
 	const LOGFILEEXT = '.log.php';
 
 	public static $_virtuemart_vendor_id = null;
-	public static $vmlang = false;
+	public static $vmlang = false;	//actually selected
+	public static $vmLangSelected = false;	//desired by user
 	public static $defaultLang = false;
 	public static $vmlangTag = '';
 	public static $langs = array();
@@ -935,7 +936,7 @@ class VmConfig {
 				$siteLang = $defaultLang;
 			}
 		}
-
+		self::$vmLangSelected = $siteLang;
 		if(!in_array($siteLang, $langs)) {
 			if(count($langs)===0){
 				$siteLang = $defaultLang;
