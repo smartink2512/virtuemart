@@ -9,43 +9,43 @@
  */
 
 if (typeof Virtuemart === "undefined")
-	var Virtuemart = {};
-//jQuery(function($) {
-    Virtuemart.cvFind = function(event) {
-			event.preventDefault();
-			var selection = [];
-			var container = jQuery(this).parent()
-			jQuery(container).find('.cvselection').each(function() {
-				selection[selection.length] = jQuery(this).val();
-			});
+	Virtuemart = {};
 
-			var index=0, i2=0, hitcount=0, runs=0;
-			//to ensure that an url is set, set the url of first product
-			jQuery(this).attr('url',event.data.variants[0][0]);
-			for	(runs = 0; runs < selection.length; index++) {
-				for	(index = 0; index < event.data.variants.length; index++) {
-					hitcount = 0;
-					for	(i2 = 0; i2 <= selection.length; i2++) {
-						if(selection[i2]==event.data.variants[index][i2+1]){
-							hitcount++;
-							if(hitcount == (selection.length-runs)){
-								url = event.data.variants[index][0];
-								jQuery(this).attr('url',url);
-								jQuery(this).val(url);
-								if(jQuery(this).attr('reload')){
-									window.top.location.href = url;
-								}
-								return url;
+Virtuemart.cvFind = function(event) {
+		event.preventDefault();
+		var selection = [];
+		var container = jQuery(this).parent()
+		jQuery(container).find('.cvselection').each(function() {
+			selection[selection.length] = jQuery(this).val();
+		});
+
+		var index=0, i2=0, hitcount=0, runs=0;
+		//to ensure that an url is set, set the url of first product
+		jQuery(this).attr('url',event.data.variants[0][0]);
+		for	(runs = 0; runs < selection.length; index++) {
+			for	(index = 0; index < event.data.variants.length; index++) {
+				hitcount = 0;
+				for	(i2 = 0; i2 <= selection.length; i2++) {
+					if(selection[i2]==event.data.variants[index][i2+1]){
+						hitcount++;
+						if(hitcount == (selection.length-runs)){
+							var url = event.data.variants[index][0];
+							jQuery(this).attr('url',url);
+							jQuery(this).val(url);
+							if(jQuery(this).attr('reload')){
+								window.top.location.href = url;
 							}
-						} else {
-							break;
+							return url;
 						}
+					} else {
+						break;
 					}
 				}
-				runs++;
-				//console.log('Could not find product for selection '+runs);
 			}
-			return false;
-		};
-//});
+			runs++;
+			//console.log('Could not find product for selection '+runs);
+		}
+		return false;
+	};
+
 

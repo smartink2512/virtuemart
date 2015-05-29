@@ -9,7 +9,7 @@ var vmKeepAlive = function($) {
                 kAlive = 1;
                 //console.log('Start keep alive, kAlive '+kAlive+' '+parseFloat(sessMin) * 0.01 * 60);
                 var loop = setInterval(function(){
-                    newTime = new Date().getTime();
+                    var newTime = new Date().getTime();
                     if(kAlive >= minlps && newTime - lastUpd > sessMSec * (parseFloat(maxlps) + 0.99) ){
                         //console.log('Stop keep alive '+kAlive);
                         stopped = true;

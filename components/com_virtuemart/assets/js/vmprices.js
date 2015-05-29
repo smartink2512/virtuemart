@@ -1,5 +1,5 @@
 if (typeof Virtuemart === "undefined")
-	var Virtuemart = {};
+	Virtuemart = {};
 
 
 Virtuemart.setproducttype = function(form, id) {
@@ -140,13 +140,13 @@ Virtuemart.incrQuantity = (function(event) {
 
 Virtuemart.decrQuantity = (function(event) {
     var rParent = jQuery(this).parent().parent();
-    quantity = rParent.find('input[name="quantity[]"]');
-    virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
-    Ste = parseInt(quantity.attr("step"));
+    var quantity = rParent.find('input[name="quantity[]"]');
+    var virtuemart_product_id = rParent.find('input[name="virtuemart_product_id[]"]').val();
+    var Ste = parseInt(quantity.attr("step"));
     if (isNaN(Ste)) Ste = 1;
-    minQtt = parseInt(quantity.attr("init"));
+    var minQtt = parseInt(quantity.attr("init"));
     if (isNaN(minQtt)) minQtt = 1;
-    Qtt = parseInt(quantity.val());
+    var Qtt = parseInt(quantity.val());
 
     if (!isNaN(Qtt) && Qtt>Ste) {
         quantity.val(Qtt - Ste);
