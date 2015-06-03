@@ -41,7 +41,7 @@ $i=0;
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?>
 			</td>
 			<td>
-				<input class="required" type="text" class="inputbox"  name="product_name" id="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
+				<input class="required inputbox" type="text" name="product_name" id="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
 			</td>
 			<td colspan="2">
 				<label><?php echo VmHTML::checkbox('published', $this->product->published); ?><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED') ?></label>
@@ -252,7 +252,7 @@ $i=0;
     </div>
 
 </fieldset>
-</tr>
+
 
 <?php
 if ($this->product->virtuemart_product_id) {
@@ -279,16 +279,13 @@ if ($link) {
 ?>
 	</div>
 </div><div class="clear"></div>
-<tr>
-	<td width="100%" valign="top" colspan="2">
+
 		<fieldset>
 			<legend>
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_PRINT_INTNOTES'); ?>
 			</legend>
 			<textarea style="width: 100%;" class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6"><?php echo $this->product->intnotes; ?></textarea>
 		</fieldset>
-	</td>
-</tr>
 
 
 

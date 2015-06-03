@@ -67,7 +67,7 @@ vmJsApi::addJScript( 'orderedit',"
 			var row = jQuery('#itemTable').find('tbody tr:first').html();
 			var needle = 'item_id['+i+']';
 			//var needle = new RegExp('item_id['+i+']','igm');
-			while (row.contains(needle)){
+			while (row.indexOf(needle) !== -1){
 				row = row.replace(needle,'item_id[0]');
 			}
 

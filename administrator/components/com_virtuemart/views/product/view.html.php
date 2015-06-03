@@ -111,7 +111,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 					$product_childs = array();
 					$childs = 0;
-					$maxChilds = 50;
+					$maxChilds = VmConfig::get('maxChilds',80);
 					foreach($product_childIds as $id){
 						if($childs++>$maxChilds) break;
 						$product_childs[] = $model->getProductSingle($id,false);

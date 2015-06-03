@@ -31,6 +31,9 @@ if (!class_exists( 'VmConfig' )) {
 	}
 }
 
+$user		= JFactory::getUser();
+if ($user->guest) return;
+
 // Include the module helper classes.
 if (!class_exists('ModVMMenuHelper')) {
 	require dirname(__FILE__).'/helper.php';
@@ -41,7 +44,7 @@ $vmComponentItems = ModVMMenuHelper::getVMComponent(true);
 
 // Initialise variables.
 $lang		= JFactory::getLanguage();
-$user		= JFactory::getUser();
+
 $hideMainmenu	= vRequest::getInt('hidemainmenu')  ;
 
 // Render the module layout

@@ -53,7 +53,7 @@ class VirtuemartViewVendor extends VmView {
 
 		$model = VmModel::getModel();
 
-		$virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id');
+		$virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id',1);
 
 // 		if ($layoutName=='default') {
 		if (empty($virtuemart_vendor_id)) {

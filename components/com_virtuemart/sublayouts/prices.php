@@ -40,7 +40,7 @@ $currency = $viewData['currency'];
 
 	//}
 	echo $currency->createPriceDiv ('variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $product->prices);
-	if (round($product->prices['basePriceWithTax'],$currency->_priceConfig['salesPrice'][1]) != $product->prices['salesPrice']) {
+	if (round($product->prices['basePriceWithTax'],$currency->_priceConfig['salesPrice'][1]) != round($product->prices['salesPrice'],$currency->_priceConfig['salesPrice'][1])) {
 		echo '<span class="price-crossed" >' . $currency->createPriceDiv ('basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $product->prices) . "</span>";
 	}
 	if (round($product->prices['salesPriceWithDiscount'],$currency->_priceConfig['salesPrice'][1]) != $product->prices['salesPrice']) {

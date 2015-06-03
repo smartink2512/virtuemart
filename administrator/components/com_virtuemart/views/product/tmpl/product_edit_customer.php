@@ -42,8 +42,8 @@ $i = 0;
 					<label for="notification_template">
 						<span class="hasTip" title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_USE_NOTIFY_TEMPLATE_TIP'); ?>">
 						<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_USE_NOTIFY_TEMPLATE'); ?></span>
+					</label>
 				</div>
-				</label>
 				<div><input type="text" name="notify_number" value="" size="4"/><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_NUMBER'); ?></div>
 			</div>
 			<br/>
@@ -54,11 +54,10 @@ $i = 0;
 						<span class="vmicon vmicon-16-email"></span>
 						<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SEND'); ?>
 					</div>
-
 				</div>
 				<div id="customers-list-msg"></div>
 				<br/>
-
+			</div>
 
 		</td>
 	</tr>

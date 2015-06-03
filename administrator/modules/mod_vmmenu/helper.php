@@ -29,10 +29,7 @@ abstract class ModVMMenuHelper {
 		$user		= JFactory::getUser();
 
 		$db = JFactory::getDBO();
-		/*$q = 'SELECT m.id, m.title, m.alias, m.link, m.parent_id, m.img, e.element FROM `#__menu` as m
-				LEFT JOIN #__extensions AS e ON m.component_id = e.extension_id
-		         WHERE e.enabled = 1 AND e.element = \'com_virtuemart\' AND m.client_id=1
-		         ORDER BY m.lft';*/
+
 		$q = 'SELECT m.id, m.title, m.alias, m.link, m.parent_id, m.img, e.element FROM `#__menu` as m
 				LEFT JOIN #__extensions AS e ON m.component_id = e.extension_id
 		         WHERE m.client_id = 1 AND e.enabled = 1 AND m.id > 1 AND e.element = \'com_virtuemart\'
