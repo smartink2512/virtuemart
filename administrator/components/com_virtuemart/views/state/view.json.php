@@ -47,7 +47,7 @@ class VirtuemartViewState extends JViewLegacy {
 			$states[$country_id] = $db->loadAssocList();
 		}
 		
-		echo json_encode($states);
+		echo vmJsApi::safe_json_encode($states);
 	}
 }
 // pure php no closing tag

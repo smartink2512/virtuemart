@@ -161,7 +161,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 				$vars = get_object_vars($json);
 
 				foreach($vars as $key=>$value){
-					$store .= $key . '=' . json_encode($value) . '|';
+					$store .= $key . '=' . vmJsApi::safe_json_encode($value) . '|';
 				}
 
 				if(!empty($store)){

@@ -116,7 +116,7 @@ class VirtuemartControllerTranslate extends VmController {
 			$json['fields'] = $fields;
 			$json['msg'] = vmText::sprintf('COM_VIRTUEMART_LANG_IS_EMPTY',$lang ,vmText::_('COM_VIRTUEMART_'.strtoupper( $viewKey)) ) ;
 		}
-		echo json_encode($json);
+		echo vmJsApi::safe_json_encode($json);
 		jExit();
 
 	}

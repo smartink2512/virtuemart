@@ -134,7 +134,7 @@ class VirtuemartControllerProduct extends VmController {
 			$json['ok'] = 0 ;
 
 		}
-		echo json_encode($json);
+		echo vmJsApi::safe_json_encode($json);
 		jExit();
 
 	}
@@ -345,7 +345,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		if(empty($waitinglist)) $waitinglist = array();
 		
-		echo json_encode($waitinglist);
+		echo vmJsApi::safe_json_encode($waitinglist);
 		exit;
 
 	}

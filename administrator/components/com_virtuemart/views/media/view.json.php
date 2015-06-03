@@ -48,7 +48,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 			if (isset($this->json->file_url)) {
 				$this->json->file_root = JURI::root(true).'/';
 				$this->json->msg =  'OK';
-				echo @json_encode($this->json);
+				echo vmJsApi::safe_json_encode($this->json);
 			} else {
 				$this->json->msg =  '<b>'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
 				echo @json_encode($this->json);
@@ -60,7 +60,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 
 			$type = vRequest::getCmd('mediatype',0);
 			$list = VmMediaHandler::displayImages($type,$start );
-			echo @json_encode($list);
+			echo vmJsApi::safe_json_encode($list);
 		}
 
 		jExit();

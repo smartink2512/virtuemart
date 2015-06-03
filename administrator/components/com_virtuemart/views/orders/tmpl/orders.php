@@ -196,7 +196,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 
 				<?php $orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
 					if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
-					$jsOrderStatusShopperEmail = json_encode($orderstatusForShopperEmail);
+					$jsOrderStatusShopperEmail = vmJsApi::safe_json_encode($orderstatusForShopperEmail);
 				?>
 				var orderstatus = <?php echo $jsOrderStatusShopperEmail ?>;
 				var selected = jQuery(this).val();

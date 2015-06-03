@@ -1245,10 +1245,10 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			foreach ($this->_varsToPushParam as $key => $v) {
 
 				if (isset($this->$key)) {
-					$this->$paramFieldName .= $key . '=' . json_encode($this->$key) . '|';
+					$this->$paramFieldName .= $key . '=' . vmJsApi::safe_json_encode($this->$key) . '|';
 					$this->_tmpParams[$key] = $this->$key;
 				} else {
-					$this->$paramFieldName .= $key . '=' . json_encode($v[0]) . '|';
+					$this->$paramFieldName .= $key . '=' . vmJsApi::safe_json_encode($v[0]) . '|';
 					$this->_tmpParams[$key] = $v[0];
 				}
 

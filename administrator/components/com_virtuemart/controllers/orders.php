@@ -102,7 +102,7 @@ class VirtuemartControllerOrders extends VmController {
 							}
 						}
 					}
-					$nJsField = json_encode($nJsField);
+					$nJsField = vmJsApi::safe_json_encode($nJsField);
 					vmdebug('updateCustomsOrderItems json $field encoded',$field,$nJsField);
 				} else {
 					vmdebug('updateCustomsOrderItems $field',$field);

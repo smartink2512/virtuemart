@@ -67,7 +67,7 @@ class VirtuemartControllerPlugin extends VmController
 				// Change the suggested filename.
 
 				JResponse::setHeader('Content-Disposition','attachment;filename="'.$type.'".json"');
-				echo json_encode($render);
+				echo vmJsApi::safe_json_encode($render);
 			}
 			else echo $render;
 		}

@@ -1208,7 +1208,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		foreach ($cart->products  as $priceKey=>$product) {
 
-			$_orderItems->product_attribute = json_encode($product->customProductData);
+			$_orderItems->product_attribute = vmJsApi::safe_json_encode($product->customProductData);
 
 			$_orderItems->virtuemart_order_item_id = null;
 			$_orderItems->virtuemart_order_id = $virtuemart_order_id;
