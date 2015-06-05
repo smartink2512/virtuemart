@@ -410,8 +410,7 @@ jQuery().ready(function($) {
 	 */
 	function isPayboxResponseValid (  $paybox_data, $checkIps = false, $useQuery = false) {
 		if ($checkIps) {
-			if (($msg = $this->checkIps()) !== true) {
-				$this->plugin->debugLog($msg, 'checkIps', 'error', false);
+			if (! $this->checkIps() ) {
 				return FALSE;
 			}
 		}
@@ -807,11 +806,13 @@ jQuery().ready(function($) {
 			$text = "Error with REMOTE IP ADDRESS = " . $clientIp . ".
                         The remote address of the script posting to this notify script does not match a valid Paybox IP address\n
             These are the valid Paybox IP Addresses: " . implode(",", $paybox_ips) ;
-			$this->debugLog($text, 'checkIps', 'error', false);
+
+			$this->plugin->debugLog('FUNCTION checkIps' . $text, 'error');
+
 			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 
