@@ -398,7 +398,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$childIds = array();
 				$sorted = array();
-				//vmSetStartTime();
+
 				$productModel->getAllProductChildIds($product_id,$childIds);
 				if(isset($childIds[$product_id])){
 					$sorted = self::sortChildIds($product_id,$childIds[$product_id]);
@@ -815,14 +815,26 @@ class VirtueMartModelCustomfields extends VmModel {
 					} else {
 						$productSelection = false;
 					}
+					$stockhandle = VmConfig::get('stockhandle', 'none');
 
-					$ignore = array();
+					$q = 'SELECT `virtuemart_product_id` FROM #__virtuemart_products WHERE product_parent_id = "'.$customfield->virtuemart_product_id.'" and ( published = "0" ';
+					if($stockhandle == 'disableit_children'){
+						$q .= ' OR (`product_in_stock` - `product_ordered`) <= "0"';
+					}
+					$q .= ');';
+					$db = JFactory::getDbo();
+					$db->setQuery($q);
+					$ignore = $db->loadColumn();
+					//vmdebug('my q '.$q,$ignore);
 
 					foreach($customfield->options as $product_id=>$variants){
 
+						if($ignore and in_array($product_id,$ignore)){
+							//vmdebug('$customfield->options Product to ignore, continue ',$product_id);
+							continue;
+						}
 
 						foreach($variants as $k => $variant){
-							//if(in_array($variant,$ignore)){ vmdebug('Product to ignore, continue',$product_id,$k,$variant);continue;}
 
 							if(!isset($dropdowns[$k]) or !is_array($dropdowns[$k])) $dropdowns[$k] = array();
 							if(!in_array($variant,$dropdowns[$k])  ){
@@ -848,7 +860,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 
 					$tags = array();
+
 					foreach($customfield->selectoptions as $k => $soption){
+
 						$options = array();
 						$selected = false;
 						foreach($dropdowns[$k] as $i=> $elem){
@@ -911,6 +925,9 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$url = '';
 					foreach($customfield->options as $product_id=>$variants){
+
+						if($ignore and in_array($product_id,$ignore)){continue;}
+
 						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid);
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
 					}

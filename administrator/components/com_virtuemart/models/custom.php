@@ -289,7 +289,7 @@ class VirtueMartModelCustom extends VmModel {
 
 		$table = $this->getTable('customs');
 
-		if(isset($data['custom_jplugin_id'])){
+		if(!empty($data['custom_jplugin_id'])){
 
 			$tb = '#__extensions';
 			$ext_id = 'extension_id';
@@ -308,14 +308,25 @@ class VirtueMartModelCustom extends VmModel {
 					$cElement = $data['custom_element'];
 				}
 
-				$q = 'SELECT `'.$ext_id.'` FROM `' . $tb . '` WHERE `element` = "'.$cElement.'" and published="1"';
+				$q = 'SELECT * FROM `' . $tb . '` WHERE `element` = "'.$cElement.'" ';
 				$db->setQuery($q);
-				if($jid=$db->loadResult()){
-					$q = 'UPDATE `#__virtuemart_customs` SET `custom_jplugin_id`="'.$jid.'" WHERE `custom_jplugin_id` = "'.$data['custom_jplugin_id'].'"';
-					$db->setQuery($q);
-					$db->execute();
-					$data['custom_jplugin_id'] = $jid;
-					vmInfo('Old Plugin id was not available, updated entries with id find for the same element');
+				if($jids=$db->loadAssocList()){
+
+					$newJid = 0;
+					foreach($jids as $jid){
+						$newJid = $jid[$ext_id];
+						if($jid['enabled'] == 1 and $jid['state'] == 0){
+							break;
+						}
+					}
+					vmdebug('Available entries ',$newJid,$jids);
+					if(!empty($newJid)){
+						$q = 'UPDATE `#__virtuemart_customs` SET `custom_jplugin_id`="'.$jid.'" WHERE `custom_jplugin_id` = "'.$data['custom_jplugin_id'].'"';
+						$db->setQuery($q);
+						$db->execute();
+						$data['custom_jplugin_id'] = $newJid;
+						vmInfo('Old Plugin id was not available, updated entries with '.$ext_id.' = '.$newJid.' found for the same element');
+					}
 				} else {
 					vmWarn('could not load custom_element for plugin, testing if current custom_jplugin_id is still available '.$q);
 				}
@@ -324,7 +335,7 @@ class VirtueMartModelCustom extends VmModel {
 			if(!empty($cElement)){
 				$data['custom_element'] = $cElement;
 			}
-			$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE `extension_id` = "'.$data['custom_jplugin_id'].'"';
+			$q = 'UPDATE `#__extensions` SET `enabled`= 1, `state` = 0 WHERE `extension_id` = "'.$data['custom_jplugin_id'].'"';
 			$db->setQuery($q);
 			$db->execute();
 		}

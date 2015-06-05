@@ -138,14 +138,14 @@ INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `vir
 	(13, 20, 1);
 
 #Product attributes
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight`, `published`, `pordering`) VALUES
-	(163, 13, '', 0, NULL, 1, 0),
-	(164, 163, '', 0, 5.0000, 1, 0),
-	(165, 163, 'DP2', 0, 1.0000, 1, 0),
-	(166, 163, 'DP3', 0, 10.0000, 1, 0),
-	(167, 163, 'CFD', 0, 10.0000, 1, 0),
-	(168, 163, 'MPRS', 0, 10.0000, 1, 0),
-	(169, 163, 'MP002', 0, 10.0000, 1, 0);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_in_stock`, `product_weight`, `published`, `pordering`) VALUES
+	(163, 13, '', 0, 20, NULL, 1, 0),
+	(164, 163, '', 0, 20, 5.0000, 1, 0),
+	(165, 163, 'DP2', 0, 20, 1.0000, 1, 0),
+	(166, 163, 'DP3', 0, 20, 10.0000, 1, 0),
+	(167, 163, 'CFD', 0, 20, 10.0000, 1, 0),
+	(168, 163, 'MPRS', 0, 20, 10.0000, 1, 0),
+	(169, 163, 'MP002', 0, 20, 10.0000, 1, 0);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
 	(163, 'PATTERN Product attributes', 'pattern-product-attributes', '', ''),
@@ -191,15 +191,15 @@ INSERT IGNORE INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_
   (165, 169, 5, 1, 5.0, 1);
 
 #Showcase patterns
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight`, `published`, `pordering`) VALUES
-	(200, 13, '005', 0, 0.1000, 1, 0),
-	(201, 200, '006', 0, 0.1000, 1, 0),
-	(202, 200, '007', 0, NULL, 1, 0),
-	(203, 200, '008', 0, 4.0000, 1, 0),
-	(204, 13, '009', 0, 0.4000, 1, 0),
-	(205, 204, '010', 0, NULL, 1, 0),
-	(206, 204, '011', 0, NULL, 1, 0),
-	(207, 204, '012', 0, NULL, 1, 0);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_in_stock`, `product_weight`, `published`, `pordering`) VALUES
+	(200, 13, '005', 0, 10, 0.1000, 1, 0),
+	(201, 200, '006', 0, 10, 0.1000, 1, 0),
+	(202, 200, '007', 0, 10, NULL, 1, 0),
+	(203, 200, '008', 0, 10, 4.0000, 1, 0),
+	(204, 13, '009', 0, 10, 0.4000, 1, 0),
+	(205, 204, '010', 0, 10, NULL, 1, 0),
+	(206, 204, '011', 0, 10, NULL, 1, 0),
+	(207, 204, '012', 0, 10, NULL, 1, 0);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
 	(200, 'Basic PATTERN', 'basic-pattern', 'Showcase for pattern usage.', '<p>This product is used as a pattern for other products. It is a parent product and has multiple child products. <br />You can set several settings (content, customfields) for parent product. Childs of this parent will basically have the same settings as the parent automatically inherit except you overwrite the settings.<br /><br /></p>\r\n<p>In this case product price is set in pattern.</p>'),
@@ -251,13 +251,13 @@ INSERT IGNORE INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_
   (207, 207, 5, 1, 4.9, 1);
 
 #Product variants
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_weight`, `published`, `pordering`) VALUES
-	(170, 13, '', 0, NULL, 1, 0),
-	(171, 170, 'CSIV', 0, NULL, 1, 0),
-	(172, 170, 'GCCV', 0, NULL, 1, 0),
-	(173, 172, 'GCV-A', 0, NULL, 1, 1),
-	(174, 172, 'GCV-B', 0, NULL, 1, 2),
-	(175, 172, 'GCV-C', 0, NULL, 1, 3);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_in_stock`, `product_weight`, `published`, `pordering`) VALUES
+	(170, 13, '', 0, 10, NULL, 1, 0),
+	(171, 170, 'CSIV', 0, 11, NULL, 1, 0),
+	(172, 170, 'GCCV', 0, 12, NULL, 1, 0),
+	(173, 172, 'GCV-A', 0, 13, NULL, 1, 1),
+	(174, 172, 'GCV-B', 0, 14, NULL, 1, 2),
+	(175, 172, 'GCV-C', 0, 15, NULL, 1, 3);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
   (170, 'PATTERN Product variants', 'pattern-product-variants', '', ''),
@@ -423,8 +423,8 @@ INSERT IGNORE INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_
   (157, 162, 5, 1, 4.7, 1);
 
 #Multivariant
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `published`, `product_lwh_uom`,`product_width`) VALUES
-  (300, 170, 'MV Parent', 1, 1, 'CM', 56.0);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_special`, `product_in_stock`, `published`, `product_lwh_uom`,`product_width`) VALUES
+  (300, 170, 'MV Parent', 1, 10, 1, 'CM', 56.0);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
   (300, 'Multi Variant', 'multi-variant', 'Depended Multivariants', 'The new Multi variant feature lets manage you 100s of product variants in the parent. The product content is replaced by the selected product');
@@ -450,22 +450,22 @@ INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `pro
   (314, 13.5, 47),
   (315, 14.5, 47);
 
-INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `published`, `product_width`, `product_length`, `pordering`) VALUES
-	(301, 300, 'MV 2', 1, 46.0, 68.5, 0),
-	(302, 300, 'MV 3', 1, 46.0, 68.5, 1),
-	(303, 300, 'MV 4', 1, 46.0, 71.0, 2),
-	(304, 300, 'MV 5', 1, 46.0, 71.0, 3),
-	(305, 300, 'MV 6', 1, 51.0, 68.5, 10),
-	(306, 300, 'MV 7', 1, 51.0, 71.0, 11),
-	(307, 300, 'MV 8', 1, 51.0, 71.0, 12),
-	(308, 300, 'MV 9', 1, 51.0, 73.5, 13),
-	(309, 300, 'MV 10', 1, 51.0, 73.5, 14),
-	(310, 300, 'MV 11', 1, 56.0, 73.5, 20),
-	(311, 300, 'MV 12', 1, 56.0, 73.5, 21),
-	(312, 300, 'MV 13', 1, 56.0, 76, 22),
-	(313, 300, 'MV 14', 1, 56.0, 76, 23),
-  (314, 300, 'MV 15', 1, 61.0, 76.0, 24),
-	(315, 300, 'MV 16', 1, 61.0, 76.0, 25);
+INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_parent_id`, `product_sku`, `product_in_stock`, `published`, `product_width`, `product_length`, `pordering`) VALUES
+	(301, 300, 'MV 2', 8, 1, 46.0, 68.5, 0),
+	(302, 300, 'MV 3', 5, 1, 46.0, 68.5, 1),
+	(303, 300, 'MV 4', 10, 1, 46.0, 71.0, 2),
+	(304, 300, 'MV 5', 20, 1, 46.0, 71.0, 3),
+	(305, 300, 'MV 6', 30, 1, 51.0, 68.5, 10),
+	(306, 300, 'MV 7', 35, 1, 51.0, 71.0, 11),
+	(307, 300, 'MV 8', 25, 1, 51.0, 71.0, 12),
+	(308, 300, 'MV 9', 40, 1, 51.0, 73.5, 13),
+	(309, 300, 'MV 10', 30, 1, 51.0, 73.5, 14),
+	(310, 300, 'MV 11', 20, 1, 56.0, 73.5, 20),
+	(311, 300, 'MV 12', 15, 1, 56.0, 73.5, 21),
+	(312, 300, 'MV 13', 27, 1, 56.0, 76, 22),
+	(313, 300, 'MV 14', 24, 1, 56.0, 76, 23),
+  (314, 300, 'MV 15', 33, 1, 61.0, 76.0, 24),
+	(315, 300, 'MV 16', 31, 1, 61.0, 76.0, 25);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`) VALUES
   (301, 'Multi Variant Child', 'multi-variant-2'),
