@@ -87,7 +87,7 @@ class VirtueMartViewCart extends VmView {
 			$document->setTitle(vmText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
 		} else if ($this->layoutName == 'order_done') {
 			VmConfig::loadJLang( 'com_virtuemart_shoppers', true );
-			$this->lOrderDone();
+			//$this->lOrderDone();
 
 			$pathway->addItem( vmText::_( 'COM_VIRTUEMART_CART_THANKYOU' ) );
 			$document->setTitle( vmText::_( 'COM_VIRTUEMART_CART_THANKYOU' ) );
@@ -387,13 +387,13 @@ class VirtueMartViewCart extends VmView {
 		return $checkoutAdvertise;
 }
 
-	private function lOrderDone() {
+	/*private function lOrderDone() {
 		$this->display_title = vRequest::getBool('display_title',true);
 		$this->display_loginform = vRequest::getBool('display_loginform',true);
 		//Do not change this. It contains the payment form
 		$this->html = vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 		//Show Thank you page or error due payment plugins like paypal express
-	}
+	}*/
 
 	private function checkPaymentMethodsConfigured() {
 

@@ -18,12 +18,14 @@ defined('_JEXEC') or die('');
 * other free or open source software licenses.
 */
 
-
-if ($this->display_title) {
+if (vRequest::getBool('display_title',true)) {
 	echo "<h3>".vmText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU')."</h3>";
 }
+
+$this->html = vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
 echo $this->html;
-if ($this->display_loginform) {
+
+if (vRequest::getBool('display_loginform',true)) {
 	$cuser = JFactory::getUser();
 	if (!$cuser->guest) echo shopFunctionsF::getLoginForm();
 }
