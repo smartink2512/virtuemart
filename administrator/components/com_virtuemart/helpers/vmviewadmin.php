@@ -133,11 +133,13 @@ class VmViewAdmin extends JViewLegacy {
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
 		JToolBarHelper::divider();
-		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit.state')) {
+		if (!$this->canDo->get('core.admin') and $this->canDo->get('vm.'.$view.'.edit.state')) {
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 		}
 		if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create')) {
+			JToolBarHelper::publishList();
+			JToolBarHelper::unpublishList();
 			JToolBarHelper::editList();
 		}
 		if ($showNew and ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.create'))) {

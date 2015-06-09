@@ -1270,7 +1270,7 @@ class calculationHelper {
 				$hitsDeliveryArea = $this->testRulePartEffecting($rule['calc_countries'], $this->_deliveryCountry);
 			} else if (!empty($rule['virtuemart_state_ids']) ) {
 				$hitsDeliveryArea = $this->testRulePartEffecting($rule['virtuemart_state_ids'], $this->_deliveryState);
-				vmdebug('gatherEffectingRulesForBill $hitsDeliveryArea '.(int)$hitsDeliveryArea.' '.$this->_deliveryState,$rule['virtuemart_state_id']);
+				vmdebug('gatherEffectingRulesForBill $hitsDeliveryArea '.(int)$hitsDeliveryArea.' '.$this->_deliveryState,$rule['virtuemart_state_ids']);
 			}
 
 

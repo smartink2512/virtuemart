@@ -541,6 +541,11 @@ class VirtueMartViewCart extends VmView {
 			document.checkoutForm.submit();
         }
     });
+    jQuery("#checkoutForm").change(function(){
+
+		jQuery("#checkoutFormSubmit").attr("name","checkout");
+		jQuery("#checkoutFormSubmit").html("<span>'.vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE').'</span>");
+    });
 });';
 		vmJsApi::addJScript('autocheck',$j);
 	}

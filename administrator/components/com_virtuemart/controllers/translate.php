@@ -89,17 +89,20 @@ class VirtuemartControllerTranslate extends VmController {
 		}
 		$tableName = '#__virtuemart_'.$tables[$viewKey].'_'.$dblang;
 
-
-		$db =JFactory::getDBO();
-
-		$q='select * FROM `'.$tableName.'` where `virtuemart_'.$viewKey.'_id` ='.$id;
-		$db->setQuery($q);
-
 		$m = VmModel::getModel('coupon');
 		$table = $m->getTable($tables[$viewKey]);
 
+		//Todo create method to load lang fields only
 		$table->load($id);
-		$json['fields'] = $table->loadFieldValues();
+		$vs = $table->loadFieldValues();
+		$lf = $table->getTranslatableFields();
+
+		$json['fields'] = array();
+		foreach($lf as $v){
+			if(isset($vs[$v])){
+				$json['fields'][$v] = $vs[$v];
+			}
+		}
 
 		//if ($json['fields'] = $db->loadAssoc()) {
 		if ($table->getLoaded()) {
@@ -107,6 +110,8 @@ class VirtuemartControllerTranslate extends VmController {
 			$json['msg'] = vmText::_('COM_VIRTUEMART_SELECTED_LANG').':'.$lang;
 
 		} else {
+			$db =JFactory::getDBO();
+
 			$json['structure'] = 'empty' ;
 			$db->setQuery('SHOW COLUMNS FROM '.$tableName);
 			$tableDescribe = $db->loadAssocList();

@@ -1458,7 +1458,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 				if (!$admin and !empty($virtuemart_vendor_id) and !empty($loggedVendorId) and $loggedVendorId != $virtuemart_vendor_id) {
 					//Todo removed Quickn Dirty, use check in derived class
 					//This is the case when a vendor buys products of vendor1
-					if (strpos($this->_tbl,'virtuemart_order_items')===FALSE) {
+					if (strpos($this->_tbl,'virtuemart_order_items')===FALSE and strpos($this->_tbl,'virtuemart_carts')===FALSE) {
 						vmdebug('Blocked storing, logged vendor ' . $loggedVendorId . ' but data belongs to ' . $virtuemart_vendor_id,$this->_tbl);
 						return false;
 					} else {

@@ -805,7 +805,7 @@ class VirtueMartCart {
 
 		if(!isset($virtuemart_shipmentmethod_id)) $virtuemart_shipmentmethod_id = vRequest::getInt('virtuemart_shipmentmethod_id', $this->virtuemart_shipmentmethod_id);
 		if($this->virtuemart_shipmentmethod_id != $virtuemart_shipmentmethod_id or (!empty($virtuemart_shipmentmethod_id) and $force)){
-			$this->_dataValidated = false;
+			//$this->_dataValidated = false;
 			//Now set the shipment ID into the cart
 			$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -838,7 +838,7 @@ class VirtueMartCart {
 
 		if(!isset($virtuemart_paymentmethod_id)) $virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id);
 		if($this->virtuemart_paymentmethod_id != $virtuemart_paymentmethod_id or (!empty($virtuemart_paymentmethod_id) and $force)){
-			$this->_dataValidated = false;
+			//$this->_dataValidated = false;
 			$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
@@ -869,11 +869,22 @@ class VirtueMartCart {
 	}
 
 	function confirmDone() {
+
+		//Check if data has changed meanwhile
+		$cHash = $this->getCartHash();
+		if($cHash != $this->_dataValidated){
+			$this->_dataValidated = false;
+			$app = JFactory::getApplication();
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$this->getLayoutUrlString(), FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_CHANGED'));
+		}
+
+		//Final check
 		$this->checkoutData(false);
-		if ($this->_dataValidated) {
+		if ($this->_dataValidated == $cHash) {
 			$this->_confirmDone = true;
 			$this->confirmedOrder();
 		} else {
+			$this->_dataValidated = false;
 			$app = JFactory::getApplication();
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$this->getLayoutUrlString(), FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
@@ -1066,7 +1077,8 @@ class VirtueMartCart {
 			$this->setCartIntoSession(true);
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart'.$layoutName,'');
 		} else {
-			$this->_dataValidated = true;
+			$this->_dataValidated = $this->getCartHash();
+
 			$this->setCartIntoSession(true);
 			if ($this->_redirect) {
 				$app = JFactory::getApplication();
@@ -1187,6 +1199,10 @@ class VirtueMartCart {
 		}
 	}
 
+	public function getCartHash(){
+
+		return md5(serialize($this->cartProductsData).serialize($this->cartPrices).serialize($this->cartData));
+	}
 	/**
 	 * emptyCart: Used for payment handling.
 	 *

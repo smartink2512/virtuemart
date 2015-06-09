@@ -948,13 +948,14 @@ class VmConfig {
 
 		if(count($langs)>1){
 			$lfbs = self::get('vm_lfbs');
+			vmdebug('my lfbs '.$lfbs);
 			if(!empty($lfbs)){
 				$fbsAssoc = false;
 				$pairs = explode(';',$lfbs);
 				if($pairs and count($pairs)>0){
 					$fbsAssoc = array();
 					foreach($pairs as $pair){
-						$kv = explode('=',$pair);
+						$kv = explode('~',$pair);
 						if($kv and count($kv)===2){
 							$fbsAssoc[$kv[0]] = $kv[1];
 						}
@@ -969,7 +970,7 @@ class VmConfig {
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr($defaultLang,'-','_'));
-		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang);
+		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang.' fb '.self::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );
 

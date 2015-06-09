@@ -85,9 +85,6 @@ AdminUIHelper::startAdminArea($this);
 			$checked = JHtml::_('grid.id', $i, $row->virtuemart_calc_id);
 			$published = $this->toggle($row->published, $i, 'toggle.published');
 
-			if($this->showVendors){
-				$shared = $this->toggle($row->shared, $i, 'toggle.shared');
-			}
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=calc&task=edit&cid[]=' . $row->virtuemart_calc_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
@@ -124,9 +121,9 @@ AdminUIHelper::startAdminArea($this);
 				<td>
 					<?php echo $row->calcCategoriesList; ?>
 				</td>
-        <td>
-        	<?php echo $row->calcManufacturersList; /* Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt */ ?>
-        </td>
+				<td>
+					<?php echo $row->calcManufacturersList; /* Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt */ ?>
+				</td>
 				<td>
 					<?php echo $row->calcShoppersList; ?>
 				</td>
@@ -167,9 +164,9 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 
 				<?php
-				if((Vmconfig::get('multix','none')!='none')) {
+				if($this->showVendors){
 				?><td align="center">
-					   <?php echo $shared; ?>
+					   <?php echo $this->toggle($row->shared, $i, 'toggle.shared'); ?>
 			        </td>
 				<?php
 				}

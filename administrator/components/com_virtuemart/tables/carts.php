@@ -27,7 +27,7 @@ class TableCarts extends VmTableData {
 	/** @var int Vendor ID */
 	var $virtuemart_cart_id		= 0;
 	var $virtuemart_user_id 	= 0;
-	var $virtuemart_vendor_id	= 1;
+	var $virtuemart_vendor_id	= 0;
 	var $cartData 	= 0;
 
 
@@ -41,5 +41,6 @@ class TableCarts extends VmTableData {
 
 		$this->setTableShortCut('cart');
 	}
+
 
 }
