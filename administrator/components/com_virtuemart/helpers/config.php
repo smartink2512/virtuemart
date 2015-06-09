@@ -931,6 +931,7 @@ class VmConfig {
 				jimport('joomla.language.helper');
 				$siteLang = JFactory::getLanguage()->getTag();
 			}
+
 		} else {
 			if(!$siteLang){
 				$siteLang = $defaultLang;
@@ -944,6 +945,27 @@ class VmConfig {
 				$siteLang = $langs[0];
 			}
 		}
+
+		if(count($langs)>1){
+			$lfbs = self::get('vm_lfbs');
+			if(!empty($lfbs)){
+				$fbsAssoc = false;
+				$pairs = explode(';',$lfbs);
+				if($pairs and count($pairs)>0){
+					$fbsAssoc = array();
+					foreach($pairs as $pair){
+						$kv = explode('=',$pair);
+						if($kv and count($kv)===2){
+							$fbsAssoc[$kv[0]] = $kv[1];
+						}
+					}
+					if(isset($fbsAssoc[$siteLang])){
+						$defaultLang = $fbsAssoc[$siteLang];
+					}
+				}
+			}
+		}
+
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr($defaultLang,'-','_'));

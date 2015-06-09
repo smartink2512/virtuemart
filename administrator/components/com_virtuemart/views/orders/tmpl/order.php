@@ -64,7 +64,7 @@ vmJsApi::addJScript( 'orderedit',"
 
 		function addNewLine(e,i) {
 
-			var row = jQuery('#itemTable').find('tbody tr:first').html();
+			var row = jQuery('#itemTable').find('#lItemRow').html();
 			var needle = 'item_id['+i+']';
 			//var needle = new RegExp('item_id['+i+']','igm');
 			while (row.indexOf(needle) !== -1){
@@ -72,7 +72,7 @@ vmJsApi::addJScript( 'orderedit',"
 			}
 
 			//alert(needle);
-			jQuery('#itemTable').find('tbody').prepend('<tr>'+row+'</tr>');
+			jQuery('#itemTable').find('#lItemRow').after('<tr>'+row+'</tr>');
 			e.preventDefault();
 		};
 
@@ -425,7 +425,11 @@ vmJsApi::addJScript( 'orderedit',"
 		<?php $i=1;
 		foreach ($this->orderdetails['items'] as $item) { ?>
 			<!-- Display the order item -->
-			<tr valign="top" ><?php /*id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">*/ ?>
+			<?php
+			$lId = '';
+			$lId = count($this->orderdetails['items'])==$i? 'id="lItemRow"':'';
+			?>
+			<tr valign="top" <?php echo $lId?>><?php /*id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">*/ ?>
 				<!--<td>
 					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
 					<a class="vmicon vmicon-16-bug" title="<?php echo vmText::_('remove'); ?>" onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');"></a>

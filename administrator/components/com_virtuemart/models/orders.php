@@ -399,9 +399,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	{
 		//vmdebug('updateSingleItem',$virtuemart_order_item_id,$orderdata);
 		$table = $this->getTable('order_items');
-		$table->load($virtuemart_order_item_id);
-		$oldOrderStatus = $table->order_status;
+		if(!empty($virtuemart_order_item_id)){
+			$table->load($virtuemart_order_item_id);
+			$oldOrderStatus = $table->order_status;
+		}
 
+		//vmdebug('my order table ',$virtuemart_order_item_id,$table->virtuemart_order_id);
 		if(empty($oldOrderStatus)){
 			$oldOrderStatus = $orderdata->current_order_status;
 			if($orderUpdate and empty($oldOrderStatus)){
@@ -509,7 +512,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		{
 			$db = JFactory::getDBO();
 			$ordid = $table->virtuemart_order_id;
-
+			///vmdebug('my order table ',$table);
 			//cartRules
 			$calc_rules = vRequest::getVar('calc_rules','', '', 'array');
 			$calc_rules_amount = 0;
@@ -545,7 +548,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$sql = "UPDATE `#__virtuemart_orders` SET `order_shipment`=$os,`order_shipment_tax`=$ost WHERE  `virtuemart_order_id`=$ordid";
 				$db->setQuery($sql);
 				if ($db->execute() === false) {
-					vmError($db->getError());
+					vmError('updateSingleItem '.$db->getError().' and '.$sql);
 				}
 			}
 
@@ -557,7 +560,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$sql = "UPDATE `#__virtuemart_orders` SET `order_payment`=$op,`order_payment_tax`=$opt WHERE  `virtuemart_order_id`=$ordid";
 				$db->setQuery($sql);
 				if ($db->execute() === false) {
-					vmError($db->getError());
+					vmError('updateSingleItem '.$db->getError().' and '.$sql);
 				}
 			}
 
@@ -659,6 +662,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
+		if(empty($inputOrder['virtuemart_order_id'])){
+			unset($inputOrder['virtuemart_order_id']);
+		}
 		$data->bind($inputOrder);
 
 		$cp_rm = VmConfig::get('cp_rm',array('C'));
@@ -733,10 +739,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				foreach ($item_ids as $item_id => $order_item_data) {
 					$order_item_data['current_order_status'] = $order_item_data['order_status'];
 					if (!isset($order_item_data['comments'])) $order_item_data['comments'] = '';
-					$order_item_data->virtuemart_order_id = $virtuemart_order_id;
 					$order_item_data = (object)$order_item_data;
+					$order_item_data->virtuemart_order_id = $virtuemart_order_id;
 
 					//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
+					if(empty($item_id)){
+						$inputOrder['comments'] .= ' '.vmText::sprintf('COM_VIRTUEMART_ORDER_PRODUCT_ADDED',$order_item_data->order_item_name);
+					}
 					$this->updateSingleItem($item_id, $order_item_data,true);
 				}
 			} else {
@@ -770,7 +779,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 
-
+			$inputOrder['comments'] = trim($inputOrder['comments']);
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $inputOrder['customer_notified'], $inputOrder['comments']);
 

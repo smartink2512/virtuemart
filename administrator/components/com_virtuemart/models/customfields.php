@@ -1357,6 +1357,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * render custom fields display order BE/FE
 	 */
 	static public function CustomsFieldOrderDisplay ($item, $view = 'FE', $absUrl = FALSE) {
+		if(empty($item->virtuemart_product_id)) return false;
 		if (!empty($item->product_attribute)) {
 			$item->customProductData = json_decode ($item->product_attribute, TRUE);
 		}

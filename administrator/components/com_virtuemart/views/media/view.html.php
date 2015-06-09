@@ -56,7 +56,11 @@ class VirtuemartViewMedia extends VmViewAdmin {
 			}
         	$cat_id = vRequest::getInt('virtuemart_category_id',0);
 
-			JToolBarHelper::custom('synchronizeMedia', 'new', 'new', vmText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
+			$super = VmConfig::isSuperVendor();
+			if($super==1){
+				JToolBarHelper::custom('synchronizeMedia', 'new', 'new', vmText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
+			}
+
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,null,null,'searchMedia');
 			$options = array( '' => vmText::_('COM_VIRTUEMART_LIST_ALL_TYPES'),

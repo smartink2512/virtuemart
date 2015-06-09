@@ -614,11 +614,11 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$joinedTables = " \n".implode(" \n",$joinedTables);
 
-		vmdebug('exeSortSearchLIstquery orderby '.$orderBy);
+
 		//vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
 		//vmTime('sortSearchQuery','sortSearchQuery');
-
+		vmdebug('exeSortSearchLIstquery orderby ',$product_ids);
 		return $product_ids;
 
 	}
@@ -770,12 +770,13 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1,$virtuemart_shoppergroup_ids = 0) {
 
+		vmSetStartTime('getProduct');
 		if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
 		}
 		else {
 			if (empty($this->_id)) {
-				vmError('Can not return product with empty id');
+				vmdebug('Can not return product with empty id');
 				return FALSE;
 			}
 			else {
@@ -787,6 +788,7 @@ class VirtueMartModelProduct extends VmModel {
 			if(self::$_products[$checkedProductKey[1]]===false){
 				return false;
 			} else {
+				vmTime('getProduct return cached clone','getProduct');
 				return clone(self::$_products[$checkedProductKey[1]]);
 			}
 		}
@@ -801,6 +803,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!$child->published && $onlyPublished) {
 			self::$_products[$productKey] = false;
+			vmTime('getProduct return false, not published','getProduct');
 			return FALSE;
 		}
 
@@ -927,6 +930,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(!self::$_products[$productKey]){
 			return false;
 		} else {
+			vmTime('getProduct did the work, return','getProduct');
 			return clone(self::$_products[$productKey]);
 		}
 

@@ -916,10 +916,7 @@ class VmMediaHandler {
 		$this->_db->setQuery('SELECT FOUND_ROWS()');
 		$imagetotal = $this->_db->loadResult();
 		//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
-		$j = '
-//<![CDATA[
-'; 
-		$j .= "
+		$j = "
 		jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
 		$j .="
@@ -968,7 +965,6 @@ class VmMediaHandler {
 
 
 	});
-//]]>
 	";
 		vmJsApi::addJScript('mediahandler',$j);
 
@@ -1069,7 +1065,7 @@ class VmMediaHandler {
 
 		$db = JFactory::getDBO();
 		$list = array();
-		$vendorId=1;//TODO control the vendor
+		$vendorId = VmConfig::isSuperVendor();
 		$q='SELECT SQL_CALC_FOUND_ROWS `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `published`=1
 	AND (`virtuemart_vendor_id`= "'.(int)$vendorId.'" OR `shared` = "1")';
 		if(!empty($type)){
@@ -1224,6 +1220,12 @@ $html .='</td>';
 					<td><fieldset class="inputbox">'.$languages.'</fieldset></td>
 					</tr>';
 		}
+
+		if(VmConfig::get('multix','none')!='none'){
+			$vendorList = ShopFunctions::renderVendorList(VmConfig::isSuperVendor(),false);
+			$html .=  VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $vendorList );
+		}
+
 
 		$html .= '</table>';
 		$html .='<br /></fieldset>';

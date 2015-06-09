@@ -322,7 +322,7 @@ class VirtueMartModelMedia extends VmModel {
 
 			$virtuemart_media_id = $this->store($data);
 
-			//added by Mike,   Mike why did you add this? This function storeMedia is extremely nasty
+			//added by Mike
 			$this->setId($virtuemart_media_id);
 
 			if(!empty($oldIds)){
