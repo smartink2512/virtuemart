@@ -2588,7 +2588,7 @@ jQuery().ready(function($) {
 			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 		}
 		VmConfig::loadConfig();
-		vmConfig::set('oncheckout_opc', $this->getVMOPCConfigFromSession());
+		VmConfig::set('oncheckout_opc', $this->getVMOPCConfigFromSession());
 		$cart = VirtueMartCart::getCart();
 		$cart->layout = VmConfig::get('cartlayout', 'default');
 		$cart->layoutPath = '';
@@ -2614,9 +2614,9 @@ jQuery().ready(function($) {
 			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 		}
 		VmConfig::loadConfig();
-		$olgConfig = vmConfig::get('oncheckout_opc', true);
+		$olgConfig = VmConfig::get('oncheckout_opc', true);
 		$this->saveVMOPCConfigInSession($olgConfig);
-		vmConfig::set('oncheckout_opc', true);
+		VmConfig::set('oncheckout_opc', true);
 		$cart->layoutPath = vmPlugin::getTemplatePath($this->_name, 'payment', 'cart');
 		$cart->layout = 'cart';
 		if ($intoSession) {
