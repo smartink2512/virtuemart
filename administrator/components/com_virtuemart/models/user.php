@@ -1270,10 +1270,11 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 			$current = JFactory::getUser();
+			$hiddenUserID = $adminID ? $adminID : $current->id;
 			if(!empty($search)){
-				$search .= ' AND ju.id!= "'.$current->id.'" ';
+				$search .= ' AND ju.id!= "'.$hiddenUserID.'" ';
 			} else {
-				$q .= ' WHERE ju.id!= "'.$current->id.'" ';
+				$q .= ' WHERE ju.id!= "'.$hiddenUserID.'" ';
 			}
 
 

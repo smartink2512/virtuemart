@@ -24,13 +24,14 @@ defined('_JEXEC') or die('Restricted access');
 <h3><?php echo vmText::_ ('COM_VIRTUEMART_CART_CHANGE_SHOPPER'); ?></h3>
 
 <form action="<?php echo JRoute::_ ('index.php'); ?>" method="post" class="inline">
-	<table cellspacing="0" cellpadding="0" border="0">
+	<table cellspacing="0" cellpadding="0" border="0" style="border:0px !important;">
 		<tr style="border:0px;">
 			<td  style="border:0px;">
 				<input type="text" name="usersearch" size="20" maxlength="50">
 				<input type="submit" name="searchShopper" title="<?php echo vmText::_('COM_VIRTUEMART_SEARCH'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SEARCH'); ?>" class="button"  style="margin-left: 10px;"/>
 			</td>
-			<td  style="border:0px;">
+			<td style="border:0px; width: 5%;"></td>
+			<td style="border:0px;">
 				<?php 
 				if (!class_exists ('VirtueMartModelUser')) {
 					require(VMPATH_ADMIN . DS . 'models' . DS . 'user.php');
@@ -42,12 +43,17 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td style="border:0px;">
 				<input type="submit" name="changeShopper" title="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" class="button"  style="margin-left: 10px;"/>
-				<?php if($this->adminID && $currentUser != $this->adminID) { ?>
-					<span style="margin-left: 20px;"><b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.JFactory::getUser($this->adminID)->name; ?></b></span>
-				<?php } ?>
-				<?php echo JHtml::_( 'form.token' ); ?>
 				<input type="hidden" name="view" value="cart"/>
 				<input type="hidden" name="task" value="changeShopper"/>
+			</td>
+		</tr>
+		<tr style="border:0px;">
+			<td colspan="2" style="border:0px;"></td>
+			<td colspan="2" style="border:0px;">
+				<?php if($this->adminID && $currentUser != $this->adminID) { ?>
+					<b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.JFactory::getUser($this->adminID)->name; ?></b>
+				<?php } ?>
+				<?php echo JHtml::_( 'form.token' ); ?>
 			</td>
 		</tr>
 	</table>
