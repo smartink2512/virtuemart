@@ -79,7 +79,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			$session->set('manage', 0,'vm');
 			vRequest::setVar('manage',0);
 			$basePath = VMPATH_SITE;
-			$app->redirect('index.php?option=com_virtuemart', vmText::_('mCOM_VIRTUEMART_RESTRICTED_ACCESS') );
+			$app->redirect('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}
 
 	} elseif($_controller) {
