@@ -257,7 +257,7 @@ class VirtueMartModelProduct extends VmModel {
 		if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
 
-			$keyword = htmlspecialchars(html_entity_decode($this->keyword, ENT_QUOTES, "UTF-8"), ENT_QUOTES, "UTF-8");
+			$keyword = vRequest::filter(html_entity_decode($this->keyword, ENT_QUOTES, "UTF-8"),FILTER_SANITIZE_STRING,FILTER_FLAG_ENCODE_LOW);
 
 			$keyword =  '"%' .str_replace(array(' ','-'),'%', $keyword). '%"';
 			//$keyword = '"%' . $db->escape ($this->keyword, TRUE) . '%"';

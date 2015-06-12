@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension method="upgrade" type="component" version="2.5">
     <name>VIRTUEMART</name>
-    <creationDate>${PHING.VM.RELDATE}</creationDate>
+    <creationDate>June 10 2015</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorEmail>max|at|virtuemart.net</authorEmail>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2015 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version status="${PHING.VM.DEV_STATUS}">${PHING.VM.RELEASE}</version>
+    <version status="MINOR">3.0.9.4</version>
     <description></description>
 
     <scriptfile>install/script.virtuemart.php</scriptfile>
@@ -62,12 +62,9 @@
             <folder>tables</folder>
             <folder>views</folder>
         </files>
-        <languages folder="administrator/language">
-            <language tag="en-GB">en-GB/en-GB.com_virtuemart.sys.ini</language>
-        </languages>
     </administration>
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <server type="extension" name="VirtueMart3 Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/virtuemart_update.xml]]></server>
+        <server type="extension" name="VirtueMart3 Update Site"><![CDATA[http://virtuemart.net/releases/vm3/virtuemart_update.xml]]></server>
     </updateservers>
 </extension>

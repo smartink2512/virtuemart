@@ -787,8 +787,6 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			$this->reorder($orderingFilter ? $this->_db->quoteName($orderingFilter) . ' = ' . $this->_db->Quote($filterValue) : '');
 		}
 
-		// Set the error to empty and return true.
-		vmError('');
 
 		return true;
 	}

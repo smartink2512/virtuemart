@@ -1201,7 +1201,18 @@ class VirtueMartCart {
 
 	public function getCartHash(){
 
-		return md5(serialize($this->cartProductsData).serialize($this->cartPrices).serialize($this->cartData));
+		return md5(serialize($this->cartProductsData) .
+		serialize($this->BT).
+		($this->STsameAsBT) ? '': serialize($this->ST) .
+		$this->STsameAsBT .
+		$this->order_language.
+		$this->selected_shipto.
+		serialize($this->cartPrices).
+		$this->virtuemart_shipmentmethod_id .
+		(!empty($this->cartData['shipmentName']) ? $this->cartData['shipmentName'] : '') .
+		$this->virtuemart_paymentmethod_id .
+		(!empty($this->cartData['paymentName']) ? $this->cartData['paymentName'] : '') .
+		$this->customer_number );
 	}
 	/**
 	 * emptyCart: Used for payment handling.

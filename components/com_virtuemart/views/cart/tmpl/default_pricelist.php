@@ -351,7 +351,7 @@ if(!empty($this->cart->cartData)){
 						$amount += $vatTax['paymentTax'];
 					}
 					echo '<tr class="sectiontableentry'.$i.'">';
-					echo '<td colspan="4" align="right">'.$vatTax['calc_name'].'</td>';
+					echo '<td colspan="4" align="right">'.$vatTax['calc_name'].' '.$vatTax['calc_value'].'%</td>';
 					echo '<td align="right"><span class="priceColor2">'.$this->currencyDisplay->createPriceDiv( 'taxAmount', '', $amount, FALSE ).'</span></td>';
 					echo '<td></td><td></td>';
 					echo '</tr>';

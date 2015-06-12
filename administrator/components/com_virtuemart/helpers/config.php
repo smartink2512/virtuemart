@@ -679,7 +679,7 @@ class VmConfig {
 	 */
 	static public function loadJLang($name,$site=false,$tag=0){
 
-		$jlang =JFactory::getLanguage();
+		$jlang = JFactory::getLanguage();
 		if(empty($tag))$tag = $jlang->getTag();
 
 		$path = $basePath = VMPATH_ADMIN;
@@ -715,7 +715,7 @@ class VmConfig {
 
 	/**
 	 * @static
-	 * @author Valerie Isaksen
+	 * @author Max Milbers, Valerie Isaksen
 	 * @param $name
 	 */
 	static public function loadModJLang($name){
@@ -724,20 +724,20 @@ class VmConfig {
 		$tag = $jlang->getTag();
 
 		$path = $basePath = JPATH_VM_MODULES.DS.$name;
-
+		vmdebug('loadModJLang',$name, $path);
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
-			if(!file_exists($testpath)){
+			if(!file_exists($basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini')){
 				$path = JPATH_ADMINISTRATOR;
 			}
+			vmdebug('loadModJLang',$name, $path);
 			$jlang->load($name, $path, 'en-GB');
+			$path = $basePath = JPATH_VM_MODULES.DS.$name;
 		}
 
-		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
-		if(!file_exists($testpath)){
+		if(!file_exists($basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini')){
 			$path = JPATH_ADMINISTRATOR;
 		}
-
+		vmdebug('loadModJLang',$name, $path);
 		$jlang->load($name, $path,$tag,true);
 
 		return $jlang;
