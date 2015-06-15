@@ -42,7 +42,7 @@ if (empty ( $this->product )) {
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else {
 	$session = JFactory::getSession();
-	$mailRecommendData = $session->get('mailrecommend', 0, 'vm');
+	$sessData = $session->get('mailrecommend', 0, 'vm');
 	if(!empty($this->login)){
 		echo $this->login;
 	}
@@ -79,17 +79,17 @@ if (empty ( $this->product )) {
 					<table class="askform">
 						<tr>
 							<td><label for="name"><?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_NAME')  ?> : </label></td>
-							<td><input type="text" value="<?php echo $this->user->name ? $this->user->name : $askQuestionData['name'] ?>" name="name" id="name" size="30" class="validate[required,minSize[3],maxSize[64]]"/></td>
+							<td><input type="text" value="<?php echo $this->user->name ? $this->user->name : $sessData['name'] ?>" name="name" id="name" size="30" class="validate[required,minSize[3],maxSize[64]]"/></td>
 						</tr>
 						<tr>
 							<td><label for="email"><?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_EMAIL')  ?> : </label></td>
-							<td><input type="text" value="<?php echo $mailRecommendData['email'] ?>" name="email" id="email" size="30" class="validate[required,custom[email]]"/></td>
+							<td><input type="text" value="<?php echo $sessData['email'] ?>" name="email" id="email" size="30" class="validate[required,custom[email]]"/></td>
 						</tr>
 						<tr>
 							<td colspan="2"><label for="comment"><?php echo vmText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max); ?></label></td>
 						</tr>
 						<tr>
-							<td colspan="2"><textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="8"><?php echo $askQuestionData['comment'] ? $askQuestionData['comment'] : vmText::sprintf('COM_VIRTUEMART_RECOMMEND_COMMENT', $this->vendor->vendor_store_name) ?></textarea></td>
+							<td colspan="2"><textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="8"><?php echo $sessData['comment'] ? $sessData['comment'] : vmText::sprintf('COM_VIRTUEMART_RECOMMEND_COMMENT', $this->vendor->vendor_store_name) ?></textarea></td>
 						</tr>
 					</table>
 

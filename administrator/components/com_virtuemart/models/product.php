@@ -115,7 +115,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function initialiseRequests () {
 
-		$this->keyword = "0";
+		$this->keyword = "";
 		$this->valid_search_fields = $this->valid_BE_search_fields;
 		$this->product_parent_id = FALSE;
 		$this->virtuemart_manufacturer_id = FALSE;
@@ -139,6 +139,7 @@ class VirtueMartModelProduct extends VmModel {
 	function updateRequests () {
 
 		$this->keyword = vRequest::getString('keyword','');	//vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
+
 		if ($this->keyword === '') {
 			$this->keyword = vRequest::getString('filter_product','');//vRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
 			vRequest::setVar('filter_product',$this->keyword);
@@ -150,6 +151,7 @@ class VirtueMartModelProduct extends VmModel {
 		$option = 'com_virtuemart';
 		$view = 'product';
 
+		$valid_search_fields = VmConfig::get ('browse_search_fields');
 		if ($app->isSite ()) {
 			$filter_order = vRequest::getString ('orderby', "0");
 
@@ -162,14 +164,15 @@ class VirtueMartModelProduct extends VmModel {
 
 			}
 			$filter_order_Dir = strtoupper (vRequest::getCmd ('dir', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
-			$valid_search_fields = VmConfig::get ('browse_search_fields');
+
 		}
 		else {
 			$filter_order = strtolower ($app->getUserStateFromRequest ('com_virtuemart.' . $view . '.filter_order', 'filter_order', $this->_selectedOrdering, 'cmd'));
 
 			$filter_order = $this->checkFilterOrder ($filter_order);
 			$filter_order_Dir = strtoupper ($app->getUserStateFromRequest ($option . '.' . $view . '.filter_order_Dir', 'filter_order_Dir', '', 'word'));
-			$valid_search_fields = $this->valid_BE_search_fields;
+
+			$valid_search_fields = array_unique(array_merge($this->valid_BE_search_fields, $valid_search_fields));
 		}
 		$filter_order_Dir = $this->checkFilterDir ($filter_order_Dir);
 
@@ -255,7 +258,6 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
-
 
 			$keyword = vRequest::filter(html_entity_decode($this->keyword, ENT_QUOTES, "UTF-8"),FILTER_SANITIZE_STRING,FILTER_FLAG_ENCODE_LOW);
 

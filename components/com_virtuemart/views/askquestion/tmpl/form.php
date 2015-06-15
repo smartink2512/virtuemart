@@ -36,7 +36,7 @@ if (empty ( $this->product )) {
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else {
 	$session = JFactory::getSession();
-	$askQuestionData = $session->get('askquestion', 0, 'vm');
+	$sessData = $session->get('askquestion', 0, 'vm');
 	if(!empty($this->login)){
 		echo $this->login;
 	}
@@ -73,17 +73,17 @@ if (empty ( $this->product )) {
 					<table class="askform">
 						<tr>
 							<td><label for="name"><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : </label></td>
-							<td><input type="text" class="validate[required,minSize[3],maxSize[64]]" value="<?php echo $this->user->name ? $this->user->name : $askQuestionData['name'] ?>" name="name" id="name" size="30"  validation="required name"/></td>
+							<td><input type="text" class="validate[required,minSize[3],maxSize[64]]" value="<?php echo $this->user->name ? $this->user->name : $sessData['name'] ?>" name="name" id="name" size="30"  validation="required name"/></td>
 						</tr>
 						<tr>
 							<td><label for="email"><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : </label></td>
-							<td><input type="text" class="validate[required,custom[email]]" value="<?php echo $this->user->email ? $this->user->email : $askQuestionData['email'] ?>" name="email" id="email" size="30"  validation="required email"/></td>
+							<td><input type="text" class="validate[required,custom[email]]" value="<?php echo $this->user->email ? $this->user->email : $sessData['email'] ?>" name="email" id="email" size="30"  validation="required email"/></td>
 						</tr>
 						<tr>
 							<td colspan="2"><label for="comment"><?php echo vmText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max); ?></label></td>
 						</tr>
 						<tr>
-							<td colspan="2"><textarea title="<?php echo vmText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max) ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="8"><?php echo $askQuestionData['comment'] ?></textarea></td>
+							<td colspan="2"><textarea title="<?php echo vmText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max) ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="8"><?php echo $sessData['comment'] ?></textarea></td>
 						</tr>
 					</table>
 

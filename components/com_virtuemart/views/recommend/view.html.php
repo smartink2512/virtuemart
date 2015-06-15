@@ -130,8 +130,7 @@ class virtuemartViewrecommend extends VmView {
 		/* Check for editing access */
 		/** @todo build edit page */
 		/* Load the user details */
-
-		$this->assignRef('user', JFactory::getUser());
+		$this->user = JFactory::getUser();
 
 		if ($this->product->metadesc) {
 			$document->setDescription( $this->product->metadesc );
