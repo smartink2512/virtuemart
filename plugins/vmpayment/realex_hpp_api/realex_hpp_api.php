@@ -897,7 +897,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		// publish the plugin
 		$q="UPDATE  `#__extensions` SET  `enabled` =  '1' WHERE  `extension_id` =".$extension_id;
 		$db->setQuery($q);
-		$db->query();
+		$db->execute();
 
 // is this plugin already
 		$q = 'SELECT `virtuemart_userfield_id` FROM `#__virtuemart_userfields` WHERE `userfield_jplugin_id` = ' . $extension_id;
@@ -977,7 +977,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
-		if (!$db->query()) {
+		if (!$db->execute()) {
 			JError::raiseWarning(1, $payerRefTableName . '::createPayerRefTable: ' . vmText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr(TRUE));
 			echo $payerRefTableName . '::createPayerRefTable: ' . vmText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr(TRUE);
 		}
