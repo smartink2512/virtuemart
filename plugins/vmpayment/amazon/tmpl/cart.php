@@ -41,7 +41,7 @@ vmJsApi::addJScript('vm.checkoutFormSubmit', $js);
 $this->addCheckRequiredJs();
 ?>
 	<div id="amazonShipmentNotFoundDiv">
-		<?php if (!$this->found_shipment_method) { ?>
+		<?php if (isset($this->found_shipment_method) and !$this->found_shipment_method) { ?>
 			<div id="system-message-container">
 				<dl id="system-message">
 					<dt class="info">info</dt>

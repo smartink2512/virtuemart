@@ -2496,22 +2496,21 @@ jQuery().ready(function($) {
 	}
 
 
+
 	/**
-	 * plgVmDisplayListFEPayment
-	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
-	 *
-	 * @param object  $cart Cart object
-	 * @param integer $selected ID of the method selected
-	 * @return boolean True on succes, false on failures, null when this plugin was not selected.
-	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
-	 *
-	 * @author Valerie Isaksen
+	 * Used when the vmOPC is set to OFF
+	 * @param $cart
+	 * @param $payment_advertise
+	 * @return null
 	 */
-	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+	function plgVmOnCheckoutAdvertise($cart, &$payment_advertise)
+	{
 
-		return $this->displayListFE($cart, $selected, $htmlIn);
+		$payment_advertise=NULL;
+		$html=NULL;
+		$this->displayListFE($cart, $cart->virtuemart_paymentmethod_id, $html);
+
 	}
-
 	/**
 	 * @param $plugin
 	 * @param $selectedPlugin
