@@ -705,7 +705,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			foreach ($logo_list as $logo) {
 				if(!empty($logo)){
 					$alt_text = substr ($logo, 0, strpos ($logo, '.'));
-					$img .= '<span class="vmCartPaymentLogo" ><img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" /></span> ';
+					$img .= '<span class="vmCart' . ucfirst($this->_psType) . 'Logo" ><img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" /></span> ';
 				}
 			}
 		}

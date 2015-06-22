@@ -1394,7 +1394,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 		}
 		else {
-			$price = ($customPrice === '') ? '' :  vmText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
+			$price = ($customPrice === '') ? '' :  vmText::sprintf('COM_VIRTUEMART_CART_PRICE_FREE',$currency->getSymbol());
 		}
 		return $price;
 	}

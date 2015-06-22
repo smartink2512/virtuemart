@@ -70,7 +70,7 @@ if(vRequest::getInt('print',false)){ ?>
 	</div>
 
     <?php // Product Title   ?>
-    <h1><?php echo $this->product->product_name ?></h1>
+    <h1 itemprop="name"><?php echo $this->product->product_name ?></h1>
     <?php // Product Title END   ?>
 
     <?php // afterDisplayTitle Event
@@ -219,7 +219,7 @@ echo $this->loadTemplate('images');
     <?php 
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'onbot'));
 
-    echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_products','class'=> 'product-related-products','customTitle' => true ));
+  echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_products','class'=> 'product-related-products','customTitle' => true ));
 
 	echo shopFunctionsF::renderVmSubLayout('customfields',array('product'=>$this->product,'position'=>'related_categories','class'=> 'product-related-categories'));
 
@@ -260,7 +260,13 @@ Virtuemart.containerSelector = '.productdetails-view';";
 vmJsApi::addJScript('ajaxContent',$j);
 
 echo vmJsApi::writeJS();
-?> </div>
+
+if ($this->product->prices['salesPrice'] > 0) {
+  echo shopFunctionsF::renderVmSubLayout('snippets',array('product'=>$this->product, 'currency'=>$this->currency, 'showRating'=>$this->showRating));
+}
+
+?>
+</div>
 
 
 

@@ -185,6 +185,7 @@ class shopFunctionsF {
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart_countries');
+		vmJsApi::jQuery();
 		vmJsApi::chosenDropDowns();
 
 		$sorted_countries = array();

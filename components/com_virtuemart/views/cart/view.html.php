@@ -125,7 +125,7 @@ class VirtueMartViewCart extends VmView {
 
 			$totalInPaymentCurrency = $this->getTotalInPaymentCurrency();
 
-			$checkoutAdvertise =$this->getCheckoutAdvertise();
+			$this->checkoutAdvertise = $this->cart->getCheckoutAdvertise();
 
 			if ($this->cart->getDataValidated()) {
 				if($this->cart->_inConfirm){
@@ -200,8 +200,6 @@ class VirtueMartViewCart extends VmView {
 		$this->useXHTML = false;
 
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
-		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
-
 
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
@@ -372,6 +370,7 @@ class VirtueMartViewCart extends VmView {
 
 		return $totalInPaymentCurrency;
 	}
+
 	/*
 	 * Trigger to place Coupon, payment, shipment advertisement on the cart
 	 */
@@ -385,7 +384,7 @@ class VirtueMartViewCart extends VmView {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckoutAdvertise', array( $this->cart, &$checkoutAdvertise));
 		return $checkoutAdvertise;
-}
+	}
 
 	/*private function lOrderDone() {
 		$this->display_title = vRequest::getBool('display_title',true);
