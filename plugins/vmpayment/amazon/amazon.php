@@ -2506,7 +2506,6 @@ jQuery().ready(function($) {
 	function plgVmOnCheckoutAdvertise($cart, &$payment_advertise)
 	{
 
-		$payment_advertise=NULL;
 		$html=NULL;
 		$this->displayListFE($cart, $cart->virtuemart_paymentmethod_id, $html);
 
