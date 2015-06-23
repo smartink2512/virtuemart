@@ -906,7 +906,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 						}
 
-						$attribs = array('class'=>'vm-chzn-select cvselection no-vm-bind','data-dynamic-update'=>'1');
+						$attribs = array('class'=>'vm-chzn-select cvselection no-vm-bind','data-dynamic-update'=>'1','style'=>'min-width:70px;');
 						if('productdetails' != vRequest::getCmd('view')){
 							$attribs['reload'] = '1';
 						}

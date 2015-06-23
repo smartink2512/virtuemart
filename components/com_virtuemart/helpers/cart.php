@@ -1608,19 +1608,19 @@ class VirtueMartCart {
 	 * Trigger to place Coupon, payment, shipment advertisement on the cart
 	 */
 	public function getCheckoutAdvertise() {
-		static $cartAdv = false;
-		if(!$cartAdv){
-			$cartAdv=array();
+		$this->cartAdv = false;
+		if(!$this->cartAdv){
+			$this->cartAdv=array();
 			JPluginHelper::importPlugin('vmextended');
 			JPluginHelper::importPlugin('vmcoupon');
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmpayment');
 			JPluginHelper::importPlugin('vmuserfield');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckoutAdvertise', array( $this->cart, &$cartAdv));
+			$returnValues = $dispatcher->trigger('plgVmOnCheckoutAdvertise', array( $this, &$this->cartAdv));
 		}
 
-		return $cartAdv;
+		return $this->cartAdv;
 	}
 
 	/** Checks if the quantity is correct
