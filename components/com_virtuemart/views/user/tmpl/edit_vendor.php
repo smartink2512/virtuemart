@@ -29,7 +29,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<table class="admintable">
 						<tr>
 							<td class="key">
+                <label for="vendor_store_name">
 								<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_STORE_NAME'); ?>:
+                </label>
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_store_name" id="vendor_store_name" size="50" value="<?php echo $this->vendor->vendor_store_name; ?>" />
@@ -37,7 +39,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
+                <label for="vendor_name">
 								<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_COMPANY_NAME'); ?>:
+                </label>
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->vendor->vendor_name; ?>" />
@@ -45,7 +49,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
+                <label for="vendor_url">
 								<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_URL'); ?>:
+                </label>
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_url" id="vendor_url" size="50" value="<?php echo $this->vendor->vendor_url; ?>" />
@@ -53,7 +59,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
+                <label for="vendor_min_pov">
 								<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_MPOV'); ?>:
+                </label>
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->vendor->vendor_min_pov; ?>" />
@@ -72,7 +80,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<table class="admintable">
 						<tr>
 							<td class="key">
+                <label for="vendor_currency">
 								<?php echo vmText::_('COM_VIRTUEMART_CURRENCY'); ?>:
+                </label>
 							</td>
 							<td>
 								<?php echo JHtml::_('Select.genericlist', $this->currencies, 'vendor_currency', 'class="vm-chzn-select"', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
@@ -80,7 +90,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
+                <label for="vendor_accepted_currencies[]">
 								<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_ACCEPTED_CURRENCIES'); ?>:
+                </label>
 							</td>
 							<td>
 								<?php echo JHtml::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple="multiple" class="vm-chzn-select"', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
@@ -91,29 +103,26 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 		</tr>
 		<tr>
-		<td colspan="2">
-		<fieldset>
-			<legend>
-				<?php echo vmText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
-			</legend>
-			<?php
-				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->virtuemart_media_id,'vendor');
-			?>
-
-
-		</fieldset>
-
-		</td>
+  		<td colspan="2">
+  		<fieldset>
+  			<legend>
+  				<?php echo vmText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
+  			</legend>
+  			<?php
+  				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->virtuemart_media_id,'vendor');
+  			?>
+  		</fieldset>
+  		</td>
 		</tr>
 		<tr>
-		<td colspan="2">
-				<fieldset>
-					<legend>
-						<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_DESCRIPTION');?>
-					</legend>
-					<?php echo $this->editor->display('vendor_store_desc', $this->vendor->vendor_store_desc, '100%', 450, 70, 15)?>
-				</fieldset>
-			</td>
+  		<td colspan="2">
+    		<fieldset>
+    			<legend>
+    				<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_DESCRIPTION');?>
+    			</legend>
+    			<?php echo $this->editor->display('vendor_store_desc', $this->vendor->vendor_store_desc, '100%', 450, 70, 15)?>
+    		</fieldset>
+      </td>
 		</tr>
 		<tr>
 			<td colspan="2">

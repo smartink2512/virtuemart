@@ -38,6 +38,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<th>
 			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
 		</th>
+	</tr>
 	</thead>
 	<?php
 		$k = 0;

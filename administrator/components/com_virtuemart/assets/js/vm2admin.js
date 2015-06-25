@@ -382,7 +382,7 @@
             var xOffset = -20; // x distance from mouse
             var yOffset = 10; // y distance from mouse
             tip = this;
-            tip.unbind().hover(
+            tip.bind().hover(
                 function (e) {
                     //a kind of sanitizing the input
                     tip.t = jQuery('<div/>').text(this.title).html();

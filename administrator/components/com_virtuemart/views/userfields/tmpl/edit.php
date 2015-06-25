@@ -113,7 +113,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				?>" <?php
 					echo ($this->userField->sys ? 'readonly="readonly"' : '');
 					$readonly=$this->userField->sys ? 'readonly' : ''
-				?> class="validate[required,funcCall[checkName]] inputbox <?php echo $readonly ?> " />
+				?> class="required <?php echo $readonly ?> " />
 			</td>
 		</tr>
 		<tr>

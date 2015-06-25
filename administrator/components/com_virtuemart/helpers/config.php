@@ -489,6 +489,7 @@ class VmConfig {
 	public static $vmlang = false;	//actually selected
 	public static $vmLangSelected = false;	//desired by user
 	public static $defaultLang = false;
+	public static $jDefLang = false;
 	public static $vmlangTag = '';
 	public static $langs = array();
 	public static $langCount = 0;
@@ -925,18 +926,19 @@ class VmConfig {
 
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
+		self::$jDefLang = strtolower(strtr($defaultLang,'-','_'));
 
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
 				jimport('joomla.language.helper');
 				$siteLang = JFactory::getLanguage()->getTag();
 			}
-
 		} else {
 			if(!$siteLang){
 				$siteLang = $defaultLang;
 			}
 		}
+
 		self::$vmLangSelected = $siteLang;
 		if(!in_array($siteLang, $langs)) {
 			if(count($langs)===0){
@@ -950,7 +952,6 @@ class VmConfig {
 			$lfbs = self::get('vm_lfbs');
 			vmdebug('my lfbs '.$lfbs);
 			if(!empty($lfbs)){
-				$fbsAssoc = false;
 				$pairs = explode(';',$lfbs);
 				if($pairs and count($pairs)>0){
 					$fbsAssoc = array();
@@ -963,6 +964,7 @@ class VmConfig {
 					if(isset($fbsAssoc[$siteLang])){
 						$defaultLang = $fbsAssoc[$siteLang];
 					}
+					self::set('fbsAssoc',$fbsAssoc);
 				}
 			}
 		}
@@ -970,7 +972,7 @@ class VmConfig {
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr($defaultLang,'-','_'));
-		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang.' fb '.self::$defaultLang);
+		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );
 

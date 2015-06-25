@@ -53,6 +53,7 @@ if (count($this->orderlist) == 0) {
 		<th>
 			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
 		</th>
+	</tr>
 	</thead>
 	<?php
 		$k = 0;
@@ -82,7 +83,7 @@ if (count($this->orderlist) == 0) {
 		}
 	?>
 	</table>
-</div>	
+</div>
 	</div>
 </div>
 <?php } ?>

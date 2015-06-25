@@ -37,6 +37,7 @@ $jsVars  = ' jQuery(document).ready(function(){
 //This is strange we have the whole thing again in controllers/cart.php public function viewJS()
 if(!class_exists('VirtueMartCart')) require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
+$cart->prepareCartData(false);
 
 $viewName = vRequest::getString('view',0);
 if($viewName=='cart'){

@@ -44,12 +44,12 @@ class AdminUIHelper {
 	vmJsApi::css('vtip');
 
 	$view = vRequest::getCmd('view','virtuemart');
-		$modalJs='';
+	$modalJs='';
 	if($view!='virtuemart'){
 		vmJsApi::css('chosen');
 		vmJsApi::css('jquery.fancybox-1.3.4');
 		vmJsApi::css('ui/jquery.ui.all');
-		$modalJs="$('.modal').fancybox();";
+		$modalJs="jQuery('.modal').fancybox();";
 	}
 
 	if($view!='virtuemart') {
@@ -61,10 +61,9 @@ class AdminUIHelper {
 
 	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/jquery.coookie.js');
 	vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/vm2admin.js');
-	//vmJsApi::addJScript ('vm.accordeon',"",true);
 
-		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
-		vmJsApi::addJScript ('vm.remindTab', "
+	$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
+	vmJsApi::addJScript ('vm.remindTab', "
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;
 		jQuery( function($) {
@@ -72,12 +71,12 @@ class AdminUIHelper {
 			jQuery('dl#system-message').hide().slideDown(400);
 			jQuery('.virtuemart-admin-area .toggler').vm2admin('toggle');
 			jQuery('#admin-ui-menu').vm2admin('accordeon');
-			if ( $('#admin-ui-tabs').length  ) {
-				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie);
+			if ( jQuery('#admin-ui-tabs').length  ) {
+				jQuery('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie);
 			}
-			$('#content-box [title]').vm2admin('tips',tip_image);
+			jQuery('#content-box [title]').vm2admin('tips',tip_image);
 			".$modalJs."
-			$('.reset-value').click( function(e){
+			jQuery('.reset-value').click( function(e){
 				e.preventDefault();
 				none = '';
 				jQuery(this).parent().find('.ui-autocomplete-input').val(none);

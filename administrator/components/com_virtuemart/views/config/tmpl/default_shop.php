@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');?>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_EXPLAIN'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_TIP'); ?>">
 						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE'); ?>
 					</span>
 			</td>
