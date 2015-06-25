@@ -277,16 +277,27 @@ class VirtueMartModelProduct extends VmModel {
 				else if ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == 'slug' ){
 					$langFields[] = $searchField;
 					//if (strpos ($searchField, '`') !== FALSE){
-						$searchField = '`l`.'.$searchField;
+						//$searchField = '`l`.'.$searchField;
+					$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
+					if($app->isSite() and !VmConfig::get('prodOnlyWLang',false)){
+						$filter_search[] =  '`ld`.'.$searchField . ' LIKE ' . $keywords_plural;
+						if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+
+							$filter_search[] =  '`ljd`.'.$searchField . ' LIKE ' . $keywords_plural;
+						}
+					}
+					$searchField = '`l`.'.$searchField;
 					//}
 				}
 
 				if (strpos ($searchField, '`') !== FALSE){
-					$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
-					$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
+					//$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
+					//$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
 				} else {
 					$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
 					$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
+
+
 					//$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
 				}
 			}
@@ -527,17 +538,32 @@ class VirtueMartModelProduct extends VmModel {
 			if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
 
 				$this->useLback = true;
+				$this->useJLback = false;
 				$method = 'LEFT';
 				if($isSite){
 					$method = 'INNER';
 				}
+
+
+				if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+					$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd using (`virtuemart_product_id`)';
+				}
+				$method = 'LEFT';
+				$this->useJLback = true;
+
+
 				$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`)';
 				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+
 				$langFields = array_unique($langFields);
 
 				if(count($langFields)>0){
 					foreach($langFields as $langField){
-						$selectLang .= ', IFNULL(l.'.$langField.',ld.'.$langField.') as '.$langField.'';
+						$expr2 = 'ld.'.$langField;
+						if($this->useJLback){
+							$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+						}
+						$selectLang .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 					}
 				}
 			} else {
@@ -1019,6 +1045,13 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 		}
+		$pbC = VmConfig::get('pricesbyCurrency',false);
+		if($front and $pbC){
+			$app = JFactory::getApplication();
+			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+			$cur = (int)$app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$calculator->vendorCurrency );
+		}
 
 		$product->selectedPrice = null;
 		if(!empty($product->allPrices) and is_array($product->allPrices)){
@@ -1053,6 +1086,11 @@ class VirtueMartModelProduct extends VmModel {
 					$product->selectedPrice = $k;
 				}
 
+				if($front and $pbC){
+					if($cur and $cur==$price['product_currency']){
+						$product->selectedPrice = $k;
+					}
+				}
 			}
 
 			if(!isset($product->selectedPrice)){

@@ -1050,9 +1050,18 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			}
 		} else {
 
-			if($this->_translatable and !$this->_ltmp and VmConfig::$defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
-				$this->_ltmp = $this->_langTag;
-				$this->_langTag = VmConfig::$defaultLang;
+			if($this->_translatable and Vmconfig::$langCount>1 and $this->_ltmp!=VmConfig::$jDefLang ){
+
+				if(!$this->_ltmp){
+					vmdebug('First try with '.$this->_ltmp.' now with '. VmConfig::$defaultLang);
+					$this->_ltmp = $this->_langTag;
+					$this->_langTag = VmConfig::$defaultLang;
+				} else {
+					vmdebug('FallbackToFallback '.$this->_ltmp.' now with '. VmConfig::$jDefLang);
+					$this->_ltmp = $this->_langTag;
+					$this->_langTag = VmConfig::$jDefLang;
+				}
+
 				$this->_tempHash = $this->_lhash;
 				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
 
