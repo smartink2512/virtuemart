@@ -44,7 +44,7 @@ if($viewName=='cart'){
 	$checkAutomaticPS = true;
 } else {
 	$checkAutomaticPS = false;
-	$this->checkoutAdvertise = $this->cart->getCheckoutAdvertise();
+	$checkoutAdvertise = $cart->getCheckoutAdvertise();
 }
 $data = $cart->prepareAjaxData();
 

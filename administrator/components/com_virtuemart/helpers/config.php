@@ -725,12 +725,10 @@ class VmConfig {
 		$tag = $jlang->getTag();
 
 		$path = $basePath = JPATH_VM_MODULES.DS.$name;
-		vmdebug('loadModJLang',$name, $path);
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
 			if(!file_exists($basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini')){
 				$path = JPATH_ADMINISTRATOR;
 			}
-			vmdebug('loadModJLang',$name, $path);
 			$jlang->load($name, $path, 'en-GB');
 			$path = $basePath = JPATH_VM_MODULES.DS.$name;
 		}
@@ -738,7 +736,6 @@ class VmConfig {
 		if(!file_exists($basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini')){
 			$path = JPATH_ADMINISTRATOR;
 		}
-		vmdebug('loadModJLang',$name, $path);
 		$jlang->load($name, $path,$tag,true);
 
 		return $jlang;

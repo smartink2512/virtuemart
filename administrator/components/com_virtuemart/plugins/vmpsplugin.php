@@ -468,6 +468,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$user = $usermodel->getUser ();
 		$user->shopper_groups = (array)$user->shopper_groups;
 
+		if(empty($vendorId)) $vendorId = 1;
 		$db = JFactory::getDBO ();
 
 		$select = 'SELECT l.*, v.*, ';

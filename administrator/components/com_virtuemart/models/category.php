@@ -180,18 +180,36 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		if(VmConfig::$defaultLang!=$lang and VmConfig::$langCount>1){
-			$query = 'SELECT c.*, IFNULL(l.category_name,ld.category_name) as category_name,
-			 					IFNULL(l.category_description,ld.category_description) as category_description,
-			 					IFNULL(l.metadesc,ld.metadesc) as metadesc,
-			 					IFNULL(l.metakey,ld.metakey) as metakey,
-			 					IFNULL(l.customtitle,ld.customtitle) as customtitle,
-			 					IFNULL(l.slug,ld.slug) as slug
-					FROM `#__virtuemart_categories` as c
-					INNER JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_category_id`)
-					LEFT JOIN `#__virtuemart_categories_'.$lang.'` as l using (`virtuemart_category_id`)';
+
+			$langFields = array('category_name','category_description','metadesc','metakey','customtitle','slug');
+
+			$joins = array();
+			$useJLback = false;
+			$method = 'INNER';
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$joins[] = ' '.$method.' JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd using (`virtuemart_category_id`)';
+				$method = 'LEFT';
+				$useJLback = true;
+			}
+			$select = 'SELECT c.*';
+			foreach($langFields as $langField){
+				$expr2 = 'ld.'.$langField;
+				if($useJLback){
+					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+				}
+				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+			}
+			$from = ' FROM `#__virtuemart_categories` as c';
+
+
+			$joins[] = ' '.$method.' JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_category_id`)';
+			$joins[] = ' LEFT JOIN `#__virtuemart_categories_'.$lang.'` as l using (`virtuemart_category_id`)';
+			$query = $select.$from.implode(' ',$joins);
+
+
 		} else {
-			$query = 'SELECT L.*
-					FROM `#__virtuemart_categories_'.$lang.'` as L
+			$query = 'SELECT l.*
+					FROM `#__virtuemart_categories_'.$lang.'` as l
 					INNER JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
 		}
 
@@ -209,7 +227,7 @@ class VirtueMartModelCategory extends VmModel {
 		$db = JFactory::getDBO();
 		$db->setQuery( $query);
 		$childList = $db->loadObjectList();
-		//vmdebug('getChildCategoryListObject in model category ',$childList,$query);
+		//vmdebug('getChildCategoryListObject in model category ',$query,$childList);
 		if(!empty($childList)){
 			if(!class_exists('TableCategory_medias'))require(VMPATH_ADMIN.DS.'tables'.DS.'category_medias.php');
 			foreach($childList as $child){

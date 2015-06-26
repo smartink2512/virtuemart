@@ -103,6 +103,49 @@ vmJsApi::addJScript( 'orderedit',"
 
 		");
 
+$j = "
+jQuery('.show_element').click(function() {
+  jQuery('.element-hidden').toggle();
+  jQuery('select').trigger('chosen:updated');
+  return false;
+});
+jQuery('.updateOrderItemStatus').click(function() {
+	document.orderItemForm.task.value = 'updateOrderItemStatus';
+	document.orderItemForm.submit();
+	return false;
+});
+jQuery('.updateOrder').click(function() {
+	document.orderForm.submit();
+	return false;
+});
+jQuery('.createOrder').click(function() {
+	document.orderForm.task.value = 'CreateOrderHead';
+	document.orderForm.submit();
+	return false;
+});
+jQuery('.newOrderItem').click(function() {
+	document.orderItemForm.task.value = 'newOrderItem';
+	document.orderItemForm.submit();
+	return false;
+});
+jQuery('.orderStatFormSubmit').click(function() {
+	//document.orderStatForm.task.value = 'updateOrderItemStatus';
+	document.orderStatForm.submit();
+
+	return false;
+});
+
+function confirmation(destnUrl) {
+	var answer = confirm('".addslashes( vmText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_JS') )."');
+if (answer) {
+	window.location = destnUrl;
+	}
+}
+
+var editingItem = 0;
+";
+vmJsApi::addJScript('ordergui',$j);
+
 ?>
 <div style="text-align: left;">
 <form name='adminForm' id="adminForm">
@@ -749,54 +792,20 @@ vmJsApi::addJScript( 'orderedit',"
 
 <?php
 AdminUIHelper::imitateTabs('end');
-AdminUIHelper::endAdminArea(); ?>
+AdminUIHelper::endAdminArea();
+
+
+?>
+
 
 <script type="text/javascript">
 
-jQuery('.show_element').click(function() {
-  jQuery('.element-hidden').toggle();
-  return false;
-});
+
 // jQuery('select#order_items_status').change(function() {
 	////selectItemStatusCode
 	// var statusCode = this.value;
 	// jQuery('.selectItemStatusCode').val(statusCode);
 	// return false
 // });
-jQuery('.updateOrderItemStatus').click(function() {
-	document.orderItemForm.task.value = 'updateOrderItemStatus';
-	document.orderItemForm.submit();
-	return false;
-});
-jQuery('.updateOrder').click(function() {
-	document.orderForm.submit();
-	return false;
-});
-jQuery('.createOrder').click(function() {
-	document.orderForm.task.value = 'CreateOrderHead';
-	document.orderForm.submit();
-	return false;
-});
-jQuery('.newOrderItem').click(function() {
-	document.orderItemForm.task.value = 'newOrderItem';
-	document.orderItemForm.submit();
-	return false;
-});
-function confirmation(destnUrl) {
-	var answer = confirm("<?php echo addslashes( vmText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_JS') ); ?>");
-	if (answer) {
-		window.location = destnUrl;
-	}
-}
-/* JS for editstatus */
-
-jQuery('.orderStatFormSubmit').click(function() {
-	//document.orderStatForm.task.value = 'updateOrderItemStatus';
-	document.orderStatForm.submit();
-
-	return false;
-});
-
-var editingItem = 0;
 
 </script>

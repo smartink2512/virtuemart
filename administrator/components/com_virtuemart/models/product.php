@@ -547,10 +547,9 @@ class VirtueMartModelProduct extends VmModel {
 
 				if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
 					$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd using (`virtuemart_product_id`)';
+					$method = 'LEFT';
+					$this->useJLback = true;
 				}
-				$method = 'LEFT';
-				$this->useJLback = true;
-
 
 				$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`)';
 				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
@@ -561,7 +560,7 @@ class VirtueMartModelProduct extends VmModel {
 					foreach($langFields as $langField){
 						$expr2 = 'ld.'.$langField;
 						if($this->useJLback){
-							$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+							$expr2 = 'IFNULL(ld.'.$langField.', ljd.'.$langField.')';
 						}
 						$selectLang .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 					}
@@ -643,10 +642,10 @@ class VirtueMartModelProduct extends VmModel {
 		$joinedTables = " \n".implode(" \n",$joinedTables);
 
 
-		//vmSetStartTime('sortSearchQuery');
+		vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
-		//vmTime('sortSearchQuery','sortSearchQuery');
-		vmdebug('exeSortSearchLIstquery orderby ',$product_ids);
+		vmTime('sortSearchQuery products','sortSearchQuery');
+		//vmdebug('exeSortSearchLIstquery orderby ',$product_ids);
 		return $product_ids;
 
 	}
@@ -798,7 +797,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1,$virtuemart_shoppergroup_ids = 0) {
 
-		vmSetStartTime('getProduct');
+		//vmSetStartTime('getProduct');
 		if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
 		}
@@ -816,7 +815,7 @@ class VirtueMartModelProduct extends VmModel {
 			if(self::$_products[$checkedProductKey[1]]===false){
 				return false;
 			} else {
-				vmTime('getProduct return cached clone','getProduct');
+				//vmTime('getProduct return cached clone','getProduct');
 				return clone(self::$_products[$checkedProductKey[1]]);
 			}
 		}
@@ -958,7 +957,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(!self::$_products[$productKey]){
 			return false;
 		} else {
-			vmTime('getProduct did the work, return','getProduct');
+			vmTime('getProduct loaded ','getProduct');
 			return clone(self::$_products[$productKey]);
 		}
 
