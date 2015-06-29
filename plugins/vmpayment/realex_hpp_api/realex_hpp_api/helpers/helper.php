@@ -1393,7 +1393,7 @@ class  RealexHelperRealex {
 
 			$db = JFactory::getDBO();
 			$db->setQuery($q);
-			$db->query();
+			$db->execute();
 			$err = $db->getErrorMsg();
 			if (!empty($err)) {
 				vmError('Database error: Realex saveNewPayerRef ' . $err);

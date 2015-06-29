@@ -25,7 +25,8 @@ class PlgSystemAmazon extends JPlugin {
 	}
 
 	function onAfterRender () {
-		$fileName = 'touch.php';
+		defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+		$fileName = JPATH_ROOT.DS.'plugins'.DS.'system'.DS.'amazon'.DS.'touch.php';
 		$tstamp = @filemtime($fileName);
 		if ($tstamp !== false) {
 			$now = time();

@@ -23,7 +23,6 @@ var amazonPayment = {
 
         showAmazonButton: function (sellerId, redirect_page, useAmazonAddressBook) {
 //    window.onError = null;  // some of the amazon scripts can load in error handlers to report back errors to amazon.  helps them, but keeps you in the dark.
-            console.log("amazonShowButton called: useAmazonAddressBook=" + useAmazonAddressBook);
 
             new OffAmazonPayments.Widgets.Button({
                 sellerId: sellerId,
@@ -31,11 +30,9 @@ var amazonPayment = {
                 onSignIn: function (orderReference) {
                     var amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
                     window.location = redirect_page + '&session=' + amazonOrderReferenceId;
-                    console.log('onSignIn() ' + amazonOrderReferenceId);
 
                 },
                 onError: function (error) {
-                    console.log('Amazon onSignIn()' + error);
                     alert('AMAZON onSignIn(): ' + error.getErrorCode() + ": " + error.getErrorMessage());
                 }
             }).bind('payWithAmazonDiv');
@@ -56,12 +53,10 @@ var amazonPayment = {
 
         showAmazonWallet: function () {
             window.onError = null;
-            console.log("amazonShowWallet: " + amazonPayment.amazonOrderReferenceId);
             var checkoutFormSubmit = document.getElementById("checkoutFormSubmit");
             if (checkoutFormSubmit === null) {
                  checkoutFormSubmit = document.getElementById("updateOrderId");
             }
-            console.log("found : checkoutFormSubmit" );
 
             if (checkoutFormSubmit === null ) return;
             checkoutFormSubmit.className = 'vm-button-correct';
@@ -87,7 +82,6 @@ var amazonPayment = {
         },
 
         showAmazonAddress: function () {
-            console.log("amazonShowAddress: " + amazonPayment.amazonOrderReferenceId);
             new OffAmazonPayments.Widgets.AddressBook({
                 sellerId: amazonPayment.sellerId,
                 amazonOrderReferenceId: amazonPayment.amazonOrderReferenceId,  // amazonOrderReferenceId obtained from Button widget
@@ -139,18 +133,16 @@ var amazonPayment = {
         },
 
         onAmazonAddressSelect: function () {
-            console.log('onAddressSelect');
             amazonPayment.updateCartWithAmazonAddress();
         },
 
 
 
         updateCart: function () {
-            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=checkoutJS&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang;
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=updatecartJS&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = "";
-                    console.log('updateCart:' + datas.msg.length);
                     if (datas.msg) {
                         datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
                         datas.msg = datas.msg.replace('amazonShipmentNotFoundDiv', 'amazonShipmentNotFoundDivHide');
@@ -168,11 +160,9 @@ var amazonPayment = {
         },
 
         onErrorAmazon: function (from, error) {
-            console.log('onErrorAmazon:' + from +' '+ error.getErrorCode());
             var sessionExpired = "BuyerSessionExpired";
             if (error.getErrorCode() == sessionExpired) {
                 var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=resetAmazonReferenceId&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id;
-                console.log('resetAmazonReferenceId');
                 jQuery.getJSON(url, function (data) {
                     var reloadurl = 'index.php?option=com_virtuemart&view=cart';
                     window.location.href = reloadurl;
@@ -195,11 +185,11 @@ var amazonPayment = {
                     break;
                 }
             }
+            // VM3 is updateJS
             var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=updatecartJS&virtuemart_shipmentmethod_id=' + virtuemart_shipmentmethod_id + vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = '';
-                    console.log('updateCart:' + datas.msg.length);
                     if (datas.msg) {
                         datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
                         for (var i = 0; i < datas.msg.length; i++) {
@@ -226,7 +216,6 @@ var amazonPayment = {
 
         leaveAmazonCheckout: function() {
             var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=amazon&action=leaveAmazonCheckout&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang ;
-            console.log('leaveAmazonCheckout');
             jQuery.getJSON(url, function(data) {
                 var reloadurl = vmSiteurl +'index.php?option=com_virtuemart&view=cart' + vmLang;
                 window.location.href = reloadurl;
