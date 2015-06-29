@@ -17,7 +17,7 @@ defined ('_JEXEC') or die();
  */
 
 ?>
-<span class="vmpayment">
+<span class="vmpayment klarnacheckout">
 	<?php
 	if (!empty($viewData['logo'])) {
 		?>

@@ -19,25 +19,35 @@ defined('_JEXEC') or die('Restricted access');
  */
 
 $css =".totalInPaymentCurrency {display:none;}\n";
+if ($viewData ['payment_form_position']=='right' ) {
+	vmJsApi::css('klarnacheckout', 'plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css');
+}
+?>
 
-vmJsApi::css($css);
-/*
+<?php
+
 $js = '
+
 	jQuery(document).ready(function( $ ) {
-		      $("#checkoutForm").hide();
-	});
+ $("#checkoutFormSubmit").hide();
+ $(".vm-fieldset-tos").hide();
+ });
+
+
 	';
-*/
+
 if ($viewData ['hide_BTST']) {
 	$js .= '
 	jQuery(document).ready(function( $ ) {
 		      $(".billto-shipto").hide();
+
 		      $("#com-form-login").hide();
 
 	});
 	';
-}
 
+
+}
 vmJsApi::addJScript('vm.hide_BTST', $js);
 
 ?>

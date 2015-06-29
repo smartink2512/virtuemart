@@ -16,7 +16,13 @@
  */
 
 ?>
-
+<?php
+if ( $viewData['payment_tooltip']) {
+	?>
+	<script async src="https://cdn.klarna.com/1.0/code/client/all.js"></script>
+<?php
+}
+?>
 <input type="radio" name="virtuemart_paymentmethod_id"
        id="payment_id_<?php echo $viewData['plugin']->virtuemart_paymentmethod_id; ?>"
        value="<?php echo $viewData['plugin']->virtuemart_paymentmethod_id; ?>" <?php echo $viewData ['checked']; ?>>
@@ -24,7 +30,19 @@
 
     <span class="vmpayment">
         <?php if (!empty($viewData['payment_logo'] )) { ?>
-	        <span class="vmCartPaymentLogo"><?php echo $viewData ['payment_logo']; ?> </span>
+
+	        <span class="vmCartPaymentLogo">
+		        <div class="klarna-widget klarna-badge-tooltip"
+		             data-eid="709"
+		             data-locale="sv_se"
+		             data-badge-name="long-blue"
+		             data-badge-width="385">
+		        </div>
+
+
+
+		        <?php //echo $viewData ['payment_logo']; ?> </span>
+
         <?php } ?>
 	    <span class="vmpayment_name"><?php echo $viewData['plugin']->payment_name; ?></span>
 	    <?php if (!empty($viewData['plugin']->payment_desc )) { ?>

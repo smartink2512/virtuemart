@@ -1,15 +1,27 @@
-#checkoutForm {
-    display: none;
+.vm-fieldset-pricelist {
+    margin-right: 2%;
+    width: 65%;
+    float: left;
 }
 
-.show_payment_logo {
-    margin: 10px 0 5px 0;
-    font-weight: bold;
-    padding: 5px;
-    float: none;
+div#checkout-advertise-box {
+    float: left;
+    width: 33%;
+}
+
+.vm-fieldset-customer-note {
     clear: both;
-    background-color: #FFFFFF !important;
-    background: url(https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100) no-repeat;
-    height: 40px;
-    padding-left: 100px !important;
+}
+
+
+.vmCartPaymentLogo > img {
+    width: 100%;
+}
+
+@media (max-width: 800px){
+    .vm-fieldset-pricelist, div#checkout-advertise-box{
+        float: none;
+        width: 100%;
+        margin-right: 0;
+    }
 }
