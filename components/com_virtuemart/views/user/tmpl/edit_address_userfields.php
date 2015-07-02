@@ -68,7 +68,7 @@ foreach($this->userFields['fields'] as $field) {
 		$descr = empty($field['description'])? $field['title']:$field['description'];
 		// Output: Userfields
 		?>
-				<tr title="<?php echo $descr ?>">
+				<tr title="<?php echo strip_tags($descr) ?>">
 					<td class="key"  >
 						<label class="<?php echo $field['name'] ?>" for="<?php echo $field['name'] ?>_field">
 							<?php echo $field['title'] . ($field['required'] ? ' *' : '') ?>
