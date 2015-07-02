@@ -1274,12 +1274,16 @@ class VirtueMartCart {
 
 				if($fld->type=='checkbox'){
 					$tmp = vRequest::getInt($name,null);
-
+					if(empty($tmp)) $tmp = 0;
 				} else {
 					$tmp = vRequest::getString($name,null);
 				}
+
 				if(isset($tmp)){
 					if(!empty($tmp)){
+						if(is_array($tmp)){
+							$tmp = implode("|*|",$tmp);
+						}
 						if (version_compare(phpversion(), '5.4.0', '<')) {
 							// php version isn't high enough
 							$tmp = htmlspecialchars ($tmp,ENT_QUOTES,'UTF-8',false);	//ENT_SUBSTITUTE only for php5.4 and higher
