@@ -22,8 +22,10 @@ $css =".totalInPaymentCurrency {display:none;}\n";
 if ($viewData ['payment_form_position']=='right' ) {
 	vmJsApi::css('klarnacheckout', 'plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css');
 }
+
 ?>
 
+<script  src="https://cdn.klarna.com/1.0/code/client/all.js"></script>
 <?php
 
 $js = '
@@ -48,15 +50,26 @@ if ($viewData ['hide_BTST']) {
 
 
 }
-vmJsApi::addJScript('vm.hide_BTST', $js);
+vmJsApi::addJScript('vm.kco_hide_BTST', $js);
 
+?>
+<?php if ($viewData['klarna_create_account']) { ?>
+<div class="" id="klarna-create-account-box">
+	<label for="klarna-create-account"><?php echo $viewData ['klarna_create_account']; ?></label>
+	<input type="checkbox" id="klarna-create-account" name="klarna-create-account" class="inputbox" value="yes">
+</div>
+<?php
+}
 ?>
 <?php if ($viewData ['message'] )  { ?>
 	<h1><?php echo $viewData ['message']; ?>  </h1>
 <?php } ?>
 <?php if ($viewData ['snippet'] )  { ?>
 <div><?php echo $viewData ['snippet']; ?>  </div>
-<?php } ?>
+<?php }
+
+
+?>
 
 
 

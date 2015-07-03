@@ -25,3 +25,6 @@ div#checkout-advertise-box {
         margin-right: 0;
     }
 }
+#klarna-create-account-box label {
+    display: inline-block;
+}
