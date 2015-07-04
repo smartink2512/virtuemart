@@ -77,7 +77,10 @@ function virtuemartBuildRoute(&$query) {
 				if ($categoryRoute->route) {
 					$segments[] = $categoryRoute->route;
 				}
-				if(isset($query['virtuemart_category_id']) and isset($jmenu['virtuemart_category_id'][$query['virtuemart_category_id']])) {
+				$menuCatItemId = $helper->getMenuCatItemId($query['virtuemart_category_id']);
+				if(!empty($menuCatItemId)) {
+					$query['Itemid'] = $menuCatItemId;
+				} else if(isset($query['virtuemart_category_id']) and isset($jmenu['virtuemart_category_id'][$query['virtuemart_category_id']])) {
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$query['virtuemart_category_id']];
 				} else {
 					//http://forum.virtuemart.net/index.php?topic=121642.0
@@ -739,7 +742,11 @@ class vmrouterHelper {
 			$ismenu = false ;
 			$catModel = VmModel::getModel('category');
 			// control if category is joomla menu
-			if (isset($this->menu['virtuemart_category_id'])) {
+			$menuCatItemId = $this->getMenuCatItemId($query['virtuemart_category_id']);
+			if(!empty($menuCatItemId)) {
+				$ismenu = true;
+				$category->itemId = $menuCatItemId;
+			} else if (isset($this->menu['virtuemart_category_id'])) {
 				if (isset( $this->menu['virtuemart_category_id'][$virtuemart_category_id])) {
 					$ismenu = true;
 					$category->itemId = $this->menu['virtuemart_category_id'][$virtuemart_category_id] ;
@@ -1071,6 +1078,44 @@ class vmrouterHelper {
 			$this->activeMenu->Component	= (empty($menuItem->component)) ? null : $menuItem->component;
 		}
 
+	}
+
+	/*
+	 * Get itemId from Joomla category menu with complete url
+	 * @author Maik Künnemann
+	 */
+	public function getMenuCatItemId($virtuemart_category_id) {
+
+		$itemID = '';
+		$virtuemart_manufacturer_id = $this->query['virtuemart_manufacturer_id'] != '' ? $this->query['virtuemart_manufacturer_id'] : vRequest::get('virtuemart_manufacturer_id',0);
+		$categorylayout = $this->query['categorylayout'] != '' ? $this->query['categorylayout'] : vRequest::get('categorylayout',0);
+		$showcategory = $this->query['showcategory'] != '' ? $this->query['showcategory'] : vRequest::get('showcategory',1);
+		$showproducts = $this->query['showproducts'] != '' ? $this->query['showproducts'] : vRequest::get('showproducts',1);
+		$productsublayout = $this->query['productsublayout'] != '' ? $this->query['productsublayout'] : vRequest::get('productsublayout',0);
+		$jLangTag = $this->Jlang->getTag();
+
+		$link = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
+			'&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id.
+			'&categorylayout='.$categorylayout.
+			'&showcategory='.$showcategory.
+			'&showproducts='.$showproducts.
+			'&productsublayout='.$productsublayout;
+
+		$db = JFactory::getDbo();
+		$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and `language` = "'. $jLangTag .'"';
+		$db->setQuery( $q );
+		$items = $db->loadObjectList();
+		if(empty($items)) {
+			$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and `language` = "*"';
+			$db->setQuery( $q );
+			$items = $db->loadObjectList();
+		}
+
+		if(!empty($items[0]->id)) {
+			$itemID = $items[0]->id;
+		}
+
+		return $itemID;
 	}
 
 	/*
