@@ -25,7 +25,8 @@ var klarnaCheckoutPayment = {
         var email = klarnaData.email;
         var given_name = klarnaData.given_name;
         var family_name = klarnaData.family_name;
-        var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&nosef=1&name=klarnacheckout&loadJS=0&action=updateCartWithKlarnacheckoutAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + '&zip=' + zip + '&email=' + email + vmLang;
+        if (zip==='') return;
+        var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&nosef=1&name=klarnacheckout&loadJS=1&action=updateCartWithKlarnacheckoutAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + '&zip=' + zip + '&email=' + email + vmLang;
 
         jQuery.ajax({
             type: "POST",
@@ -49,7 +50,7 @@ var klarnaCheckoutPayment = {
     updateShipment: function () {
         console.log('updateShipment:');
 
-        var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&loadJS=0&view=cart&task=updatecartJS' + vmLang;
+        var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&loadJS=1&view=cart&task=updatecartJS' + vmLang;
         jQuery.ajax({
             type: "POST",
             cache: false,
@@ -62,10 +63,11 @@ var klarnaCheckoutPayment = {
                 console.log('updateShipment:back');
                 if (datas.msg) {
                     console.log('updateShipment:' + datas.msg.length);
-                   //console.log('updateShipment:back and data'+ datas.msg);
-                    //jQuery("#cart-view").replaceWith(datas.msg);
+                    var parentId =jQuery("#cart-view").closest('div').prop('id');
+                   console.log('updateShipment:back  parent is'+ parentId);
+                   jQuery("#"+ parentId ).html(datas.msg);
                 }
-            });
+    });
     }
 }
 

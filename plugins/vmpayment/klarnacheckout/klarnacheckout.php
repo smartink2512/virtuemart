@@ -462,7 +462,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 // DESKTOP: Width of containing block shall be at least 750px
 // MOBILE: Width of containing block shall be 100% of browser window (No
 // padding or margin)
-		if (vRequest::getInt('loadJS', 1)==1) {
+		//if (vRequest::getInt('loadJS', 1)==1) {
 			vmJsApi::addJScript('/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/klarnacheckout.js');
 			vmJsApi::jPrice();
 			$updateCartScript = '
@@ -477,9 +477,22 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				});
 			});
 ';
+			$updateCartScript = '
+
+			window._klarnaCheckout(function(api) {
+				api.on({
+				"change": function(data) {
+					console.log(data);
+					klarnaCheckoutPayment.updateCart(data,"' . $virtuemart_paymentmethod_id . '");
+				}
+		});
+	});';
+
+
+
 
 			vmJsApi::addJScript('vm.kco_updatecart', $updateCartScript);
-		}
+	//	}
 		$createAccount='';
 if(JFactory::getUser()->guest) {
 	$createAccount=vmText::sprintf('VMPAYMENT_KLARNACHECKOUT_CREATE_ACCOUNT','vendor store name');
@@ -490,7 +503,7 @@ if(JFactory::getUser()->guest) {
 			'message' => $message,
 			'payment_form_position' => isset($this->_currentMethod->payment_form_position) ? $this->_currentMethod->payment_form_position : 'bottom',
 			'hide_BTST' => $hide_BTST,
-			'klarna_create_account' =>$createAccount,
+			'klarna_create_account' =>'' // let's do that later if needed $createAccount,
 		));
 
 
@@ -798,16 +811,29 @@ function restorePreviousVmShipmentConfig() {
 		$vendorModel = VmModel::getModel('vendor');
 		$vendorModel->setId($virtuemart_vendor_id);
 		$vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
-		foreach ($vendorFields['fields'] as $field) {
+
+		foreach ($cart->BTaddress['fields'] as  $field) {
 			if (!$field['required']) {
 				continue;
 			}
 			if ($field['name'] == 'virtuemart_country_id') {
+				// Can only ship to the payment form country
 				$update_dataBT[$field['name']] = $this->_currentMethod->purchase_country;
+			} elseif ($field['type'] == 'emailaddress') {
+				// as a temp value , we put the vendor email
+				$vendorFields=$vendorFields['fields'];
+				$vendorEmailField=$vendorFields[$field['name']];
+				$vendorEmail=$vendorEmailField['value'];
+				$update_dataBT[$field['name']] =$vendorEmail;
+			} elseif ( $field['type']=='text' and empty($field['value'])) {
+				// fields that are text, required, and no default value ie mainly address field, set a default value
+				$update_dataBT[$field['name']] = "-";
 			} else {
+				// any other fields which is not text, but are required will use the default value
 				$update_dataBT[$field['name']] = $field['value'];
 			}
 		}
+
 
 
 		$update_dataBT ['address_type'] = 'BT';

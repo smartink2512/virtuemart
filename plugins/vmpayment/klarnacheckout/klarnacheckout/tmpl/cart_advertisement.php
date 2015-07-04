@@ -35,6 +35,12 @@ $js = '
  $(".vm-fieldset-tos").hide();
  });
 
+jQuery(document).ready(function( $ ) {
+jQuery( "*:contains(\''. vmText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'). '\')" ).filter(function(){
+	jQuery("#kco-shipment-method").text("'. vmText::_('VMPAYMENT_KLARNACHECKOUT_SHIPMENT_METHODS_LATER'). '");
+	})
+});
+
 
 	';
 
@@ -62,7 +68,7 @@ vmJsApi::addJScript('vm.kco_hide_BTST', $js);
 }
 ?>
 <?php if ($viewData ['message'] )  { ?>
-	<h1><?php echo $viewData ['message']; ?>  </h1>
+	<div id="kco-shipment-method"><?php echo $viewData ['message']; ?>  </div>
 <?php } ?>
 <?php if ($viewData ['snippet'] )  { ?>
 <div><?php echo $viewData ['snippet']; ?>  </div>
