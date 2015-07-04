@@ -742,7 +742,7 @@ class vmrouterHelper {
 			$ismenu = false ;
 			$catModel = VmModel::getModel('category');
 			// control if category is joomla menu
-			$menuCatItemId = $this->getMenuCatItemId($query['virtuemart_category_id']);
+			$menuCatItemId = $this->getMenuCatItemId($virtuemart_category_id);
 			if(!empty($menuCatItemId)) {
 				$ismenu = true;
 				$category->itemId = $menuCatItemId;
@@ -1102,11 +1102,11 @@ class vmrouterHelper {
 			'&productsublayout='.$productsublayout;
 
 		$db = JFactory::getDbo();
-		$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and `language` = "'. $jLangTag .'"';
+		$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and published = "1" and `language` = "'. $jLangTag .'"';
 		$db->setQuery( $q );
 		$items = $db->loadObjectList();
 		if(empty($items)) {
-			$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and `language` = "*"';
+			$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and published = "1" and `language` = "*"';
 			$db->setQuery( $q );
 			$items = $db->loadObjectList();
 		}
