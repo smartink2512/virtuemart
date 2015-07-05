@@ -28,7 +28,8 @@ jQuery(document).ready(function() {
 });
 
 ";
-
+	vmJsApi::jPrice();
+	vmJsApi::addJScript('/components/com_virtuemart/assets/js/virtuemartOPC.js');
     vmJsApi::addJScript('vm.setShipment', $js);
 }
 	if (VmConfig::get('oncheckout_show_steps', 1)) {
@@ -49,7 +50,7 @@ jQuery(document).ready(function() {
 		$headerLevel = 3;
 		$buttonclass = 'vm-button-correct';
 	}
-    if(!VmConfig::get('oncheckout_opc_js',true) ) {
+    if(!VmConfig::get('oncheckout_opc_js',false) ) {
 
 	if($this->cart->virtuemart_shipmentmethod_id){
 

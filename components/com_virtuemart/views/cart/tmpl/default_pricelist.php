@@ -219,7 +219,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	}
 }
 
-if ( 	VmConfig::get('oncheckout_opc',true) or
+if ( 	VmConfig::get('oncheckout_opc_js',false) or
 	!VmConfig::get('oncheckout_show_steps',false) or
 	(!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and
 		!empty($this->cart->virtuemart_shipmentmethod_id) )
@@ -228,9 +228,10 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
 		<td colspan="4" style="align:left;vertical-align:top;">
 			<?php
-				echo '<h3>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_SHIPMENT').'</h3>';
+        if(!VmConfig::get('oncheckout_opc_js', false)) {
+	        echo '<h3>' . vmText::_('COM_VIRTUEMART_CART_SELECTED_SHIPMENT') . '</h3>';
 				echo $this->cart->cartData['shipmentName'].'<br/>';
-
+        }
 		if (!empty($this->layoutName) and $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {
 				$previouslayout = $this->setLayout('select');
@@ -246,7 +247,11 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 	} else {
 	?>
 	<td colspan="4" style="align:left;vertical-align:top;">
+		<?php if(!VmConfig::get('oncheckout_opc_js',false)) { ?>
 		<?php echo '<h4>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_SHIPMENT').'</h4>'; ?>
+		<?php } else {
+			echo '<h4>'.vmText::_ ('COM_VIRTUEMART_CART_SHIPPING').'</h4>';
+		} ?>
 		<?php echo $this->cart->cartData['shipmentName']; ?>
 	</td>
 	<?php } ?>
@@ -259,7 +264,8 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 </tr>
 <?php } ?>
 <?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 and
-	( 	VmConfig::get('oncheckout_opc',true) or
+	( 	VmConfig::get('oncheckout_opc_js',false) or
+		VmConfig::get('oncheckout_opc',true) or
 		!VmConfig::get('oncheckout_show_steps',false) or
 		( (!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) ) and !empty($this->cart->virtuemart_paymentmethod_id))
 	)
@@ -268,9 +274,10 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
 		<td colspan="4" style="align:left;vertical-align:top;">
 			<?php
-				echo '<h3>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_PAYMENT').'</h3>';
-				echo $this->cart->cartData['paymentName'].'<br/>';
-
+            if(!VmConfig::get('oncheckout_opc_js',false)) {
+	            echo '<h3>' . vmText::_('COM_VIRTUEMART_CART_SELECTED_PAYMENT') . '</h3>';
+	            echo $this->cart->cartData['paymentName'] . '<br/>';
+            }
 		if (!empty($this->layoutName) && $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {
 				$previouslayout = $this->setLayout('select');
@@ -285,7 +292,11 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 
 	<?php } else { ?>
 		<td colspan="4" style="align:left;vertical-align:top;" >
+			<?php if(!VmConfig::get('oncheckout_opc_js',false)) { ?>
 			<?php echo '<h4>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_PAYMENT').'</h4>'; ?>
+			<?php } else {
+				echo  '<h4>'.vmText::_ ('COM_VIRTUEMART_CART_PAYMENT').'</h4>';
+			} ?>
 			<?php echo $this->cart->cartData['paymentName']; ?> </td>
 	<?php } ?>
 	<?php if (VmConfig::get ('show_tax')) { ?>
