@@ -19,6 +19,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
+vmJsApi::addJScript('/components/com_virtuemart/assets/js/virtuemartOPC.js');
 
 JHtml::_ ('behavior.formvalidation');
 vmJsApi::addJScript('vm.STisBT',"
@@ -63,7 +64,7 @@ vmJsApi::addJScript('vm.checkoutFormSubmit','
 $this->addCheckRequiredJs();
  ?>
 
-<div class="cart-view">
+<div class="cart-view" id="cart-view">
 	<div class="vm-cart-header-container">
 		<div class="width50 floatleft vm-cart-header">
 			<h1><?php echo vmText::_ ('COM_VIRTUEMART_CART_TITLE'); ?></h1>

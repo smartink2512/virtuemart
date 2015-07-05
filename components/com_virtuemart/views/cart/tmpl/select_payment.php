@@ -20,6 +20,17 @@
 defined('_JEXEC') or die('Restricted access');
 $addClass="";
 
+if(VmConfig::get('oncheckout_opc',false) and VmConfig::get('oncheckout_opc_js',false)) {
+	$js = "
+jQuery(document).ready(function() {
+ jQuery(\"input[name=virtuemart_paymentmethod_id]\").live('change', function() {
+        virtuemartOPC.setPayment(jQuery(this).val());
+    });
+});
+
+";
+	vmJsApi::addJScript('vm.setPayment', $js);
+}
 
 if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep3">' . vmText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';
@@ -38,13 +49,20 @@ if ($this->layoutName!='default') {
 		$headerLevel = 3;
 		$buttonclass = 'vm-button-correct';
 	}
+if(!VmConfig::get('oncheckout_opc_js',false)){
 
 	if($this->cart->virtuemart_paymentmethod_id){
 		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECTED_PAYMENT_SELECT').'</h'.$headerLevel.'>';
 	} else {
 		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT').'</h'.$headerLevel.'>';
-	} ?>
-
+	}
+} else {
+    echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_PAYMENT').'</h'.$headerLevel.'>';
+}
+    ?>
+<?php
+if (!VmConfig::get('oncheckout_opc_js',false) ) {
+    ?>
 <div class="buttonBar-right">
 
 <button name="updatecart" class="<?php echo $buttonclass ?>" type="submit"><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
@@ -55,6 +73,7 @@ if ($this->layoutName!='default') {
     </div>
 
 <?php
+}
      if ($this->found_payment_method ) {
 
 

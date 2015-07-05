@@ -470,7 +470,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if(empty($vendorId)) $vendorId = 1;
 		$db = JFactory::getDBO ();
-
+		if(empty($vendorId)) $vendorId = 1;
 		$select = 'SELECT l.*, v.*, ';
 
 		$extPlgTable = '#__extensions';
@@ -509,7 +509,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				VmTable::bindParameterable ($method, $this->_xParams, $this->_varsToPushParam);
 			}
 		}
-
+		//vmdebug('getPluginMethods',count ($this->methods), $this->_name);
 		return count ($this->methods);
 	}
 

@@ -737,6 +737,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
+		$this->debugLog($action, 'plgVmOnSelfCallFE', 'debug');
 
 		if (!class_exists('VirtueMartCart')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');

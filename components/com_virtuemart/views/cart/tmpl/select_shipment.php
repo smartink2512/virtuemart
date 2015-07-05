@@ -18,8 +18,19 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+vmJsApi::jPrice();
+if(VmConfig::get('oncheckout_opc',false) and VmConfig::get('oncheckout_opc_js',false)) {
+    $js = "
+jQuery(document).ready(function() {
+ jQuery(\"input[name=virtuemart_shipmentmethod_id]\").live('change', function() {
+        virtuemartOPC.setShipment(jQuery(this).val());
+    });
+});
 
+";
 
+    vmJsApi::addJScript('vm.setShipment', $js);
+}
 	if (VmConfig::get('oncheckout_show_steps', 1)) {
 		echo '<div class="checkoutStep" id="checkoutStep2">' . vmText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2') . '</div>';
 	}
@@ -38,16 +49,23 @@ defined('_JEXEC') or die('Restricted access');
 		$headerLevel = 3;
 		$buttonclass = 'vm-button-correct';
 	}
+    if(!VmConfig::get('oncheckout_opc_js',true) ) {
 
 	if($this->cart->virtuemart_shipmentmethod_id){
+
 		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECTED_SHIPMENT_SELECT').'</h'.$headerLevel.'>';
 	} else {
 		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT').'</h'.$headerLevel.'>';
 	}
+    }else {
+        echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SHIPMENT').'</h'.$headerLevel.'>';
 
+    }
 
 	?>
-
+    <?php
+    if (!VmConfig::get('oncheckout_opc_js',false) ) {
+    ?>
 	<div class="buttonBar-right">
 
 	        <button  name="updatecart" class="<?php echo $buttonclass ?>" type="submit" ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
@@ -57,6 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 <?php
+    }
     if ($this->found_shipment_method ) {
 
 	   echo '<fieldset class="vm-payment-shipment-select vm-shipment-select">';
@@ -64,7 +83,8 @@ defined('_JEXEC') or die('Restricted access');
 	    foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
 			if (is_array($shipment_shipment_rates)) {
 			    foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
-					echo '<div class="vm-shipment-plugin-single">'.$shipment_shipment_rate.'</div>';
+					//$shipment_shipment_rate = str_replace('input', 'input onClick="setShipment();"', $shipment_shipment_rate);
+					echo "<div>" . $shipment_shipment_rate . "</div>\n";
 			    }
 			}
 	    }
