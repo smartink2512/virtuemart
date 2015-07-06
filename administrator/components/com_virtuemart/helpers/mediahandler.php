@@ -605,6 +605,11 @@ class VmMediaHandler {
 		}
 		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		$media = vRequest::getFiles('upload');
+		if(empty($media)){
+			vmError('Recieved no data for upload','Recieved no data for upload');
+			vmdebug('no data in uploadFile ',$_FILES);
+			return false;
+		}
 
 		$app = JFactory::getApplication();
 		switch ($media['error']) {
@@ -1221,7 +1226,13 @@ $html .='</td>';
 		}
 
 		if(VmConfig::get('multix','none')!='none'){
-			$vendorList = ShopFunctions::renderVendorList(VmConfig::isSuperVendor(), 'media[virtuemart_vendor_id]');
+			if(empty($this->virtuemart_vendor_id)){
+				$vendorId = VmConfig::isSuperVendor();
+			} else {
+				$vendorId = $this->virtuemart_vendor_id;
+			}
+
+			$vendorList = ShopFunctions::renderVendorList($vendorId, 'media[virtuemart_vendor_id]');
 			$html .=  VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $vendorList );
 		}
 

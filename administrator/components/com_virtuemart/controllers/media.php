@@ -56,17 +56,18 @@ class VirtuemartControllerMedia extends VmController {
 		$fileModel = VmModel::getModel('media');
 
 		//Now we try to determine to which this media should be long to
-		$data = vRequest::getRequest();
+		$data = array_merge(vRequest::getRequest(),vRequest::get('media'));
 
 		//$data['file_title'] = vRequest::getVar('file_title','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['file_description'] = vRequest::getHtml('file_description','');
+		$data['file_description'] = vRequest::getHtml('media[file_description]','');
 
-		$data['media_attributes'] = vRequest::getCmd('media_attributes');
-		$data['file_type'] = vRequest::getCmd('file_type');
+		/*$data['media_action'] = vRequest::getCmd('media[media_action]');
+		$data['media_attributes'] = vRequest::getCmd('media[media_attributes]');
+		$data['file_type'] = vRequest::getCmd('media[file_type]');*/
 		if(empty($data['file_type'])){
 			$data['file_type'] = $data['media_attributes'];
 		}
-
+vmdebug('my media in controller save media',$data);
 		$msg = '';
 		if ($id = $fileModel->store($data)) {
 			$msg = vmText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');

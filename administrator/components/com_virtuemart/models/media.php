@@ -307,13 +307,12 @@ class VirtueMartModelMedia extends VmModel {
 
 		vRequest::vmCheckToken('Invalid Token, while trying to save media '.$type);
 
+		$data = $dataI;
 		if(isset($dataI['media'])){
-			$data = $dataI['media'];
-			$data['virtuemart_product_id'] = $dataI['virtuemart_product_id'];
-			$data['virtuemart_media_id'] = $dataI['virtuemart_media_id'];
-			$data['ordering'] = $dataI['ordering'];
+			$data = array_merge($data,$dataI['media']);
 		}
 
+vmdebug('storeMedia',$data);
 		if(empty($data['media_action'])){
 			$data['media_action'] = 'none';
 		}
