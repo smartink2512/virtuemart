@@ -78,8 +78,19 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 
 		$cart->order_language = vRequest::getString('order_language', $cart->order_language);
-
+		if(!isset($force))$force = VmConfig::get('oncheckout_opc',true);
 		$cart->prepareCartData(false);
+		$html=true;
+		if ($cart->virtuemart_shipmentmethod_id==0 and ($s_id = VmConfig::get('set_automatic_shipment',false))){
+			vRequest::setVar('virtuemart_shipmentmethod_id', $s_id);
+			$cart->setShipmentMethod($force, !$html);
+		}
+		if ($cart->virtuemart_paymentmethod_id==0 and ($s_id = VmConfig::get('set_automatic_payment',false)) and $cart->products){
+			vRequest::setVar('virtuemart_paymentmethod_id', $s_id);
+			$cart->setPaymentMethod($force, !$html);
+		}
+
+
 		$request = vRequest::getRequest();
 		$task = vRequest::getCmd('task');
 		if(($task == 'confirm' or isset($request['confirm'])) and !$cart->getInCheckOut()){
@@ -153,6 +164,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 
 		if(!isset($force))$force = VmConfig::get('oncheckout_opc',true);
+
 		$cart->setShipmentMethod($force, !$html);
 		$cart->setPaymentMethod($force, !$html);
 
