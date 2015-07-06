@@ -35,7 +35,7 @@ class AdminUIHelper {
 	self::$vmAdminAreaStarted = true;
 
 	$admin = 'administrator/components/com_virtuemart/assets/css';
-
+	$modalJs='';
 	//loading defaut admin CSS
 	vmJsApi::css('admin_ui',$admin);
 	vmJsApi::css('admin.styles',$admin);
@@ -44,7 +44,7 @@ class AdminUIHelper {
 	vmJsApi::css('vtip');
 
 	$view = vRequest::getCmd('view','virtuemart');
-	$modalJs='';
+
 	if($view!='virtuemart'){
 		vmJsApi::css('chosen');
 		vmJsApi::css('jquery.fancybox-1.3.4');

@@ -894,7 +894,7 @@ class VmMediaHandler {
 	 */
 	private function addHiddenByType(){
 
-		$this->addHidden('active_media_id',$this->virtuemart_media_id);
+		$this->addHidden('media[active_media_id]',$this->virtuemart_media_id);
 		$this->addHidden('option','com_virtuemart');
 		//		$this->addHidden('file_mimetype',$this->file_mimetype);
 
@@ -1104,7 +1104,6 @@ class VmMediaHandler {
 	public function displayFileHandler(){
 
 		VmConfig::loadJLang('com_virtuemart_media');
-		$identify = ''; // ':'.$this->virtuemart_media_id;
 
 		$this->addHiddenByType();
 
@@ -1133,7 +1132,7 @@ class VmMediaHandler {
 </td>
 <td>';
 	if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
-	$html .= VmHtml::checkbox('media_published',$checked,1,0,'class="inputbox"','media_published'.$identify) ;
+	$html .= VmHtml::checkbox('media[media_published]',$checked,1,0,'class="inputbox"','media[media_published]') ;
 	//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 
 $html .='</td>';
@@ -1188,7 +1187,7 @@ $html .='</td>';
 
 		$html .= '<tr>
 				<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
-				<td><fieldset class="checkboxes">'.JHtml::_('select.radiolist', $this->getOptions($this->_mRoles), 'media_roles'.$identify, '', 'value', 'text', $this->media_role).'</fieldset></td></tr>';
+				<td><fieldset class="checkboxes">'.JHtml::_('select.radiolist', $this->getOptions($this->_mRoles), 'media[media_roles]', '', 'value', 'text', $this->media_role).'</fieldset></td></tr>';
 
 		// 			$html .= '<tr><td class="labelcell">'.VmHTML::checkbox('file_is_forSale', $this->file_is_forSale);
 		// 			$html .= VmHTML::checkbox('file_is_downloadable', $this->file_is_downloadable);
@@ -1205,7 +1204,7 @@ $html .='</td>';
 			}
 			$html .= '<tr>
 					<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
-					<td><fieldset class="checkboxes">'.JHtml::_('select.radiolist', $this->getOptions($this->_mLocation), 'media_attributes'.$identify, '', 'value', 'text', $mediaattribtemp).'</fieldset></td></tr>';
+					<td><fieldset class="checkboxes">'.JHtml::_('select.radiolist', $this->getOptions($this->_mLocation), 'media[media_attributes]', '', 'value', 'text', $mediaattribtemp).'</fieldset></td></tr>';
 		}
 
 
@@ -1214,7 +1213,7 @@ $html .='</td>';
 		if (count($active_languages)>1) {
 			$selectedImageLangue = explode(",", $this->file_lang);
 			$configM = VmModel::getModel('config');
-			$languages = $configM->getActiveLanguages($selectedImageLangue);
+			$languages = $configM->getActiveLanguages($selectedImageLangue,'media[active_languages][]');
 			$html .= '<tr>
 					<td class="labelcell"><span class="hasTip" title="' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE_TIP') . '">' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE') . '</span></td>
 					<td><fieldset class="inputbox">'.$languages.'</fieldset></td>
@@ -1222,7 +1221,7 @@ $html .='</td>';
 		}
 
 		if(VmConfig::get('multix','none')!='none'){
-			$vendorList = ShopFunctions::renderVendorList(VmConfig::isSuperVendor(),false);
+			$vendorList = ShopFunctions::renderVendorList(VmConfig::isSuperVendor(), 'media[virtuemart_vendor_id]');
 			$html .=  VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $vendorList );
 		}
 
@@ -1234,7 +1233,7 @@ $html .='</td>';
 
 		$html .= '<fieldset class="checkboxes">' ;
 		$html .= '<legend>'.vmText::_('COM_VIRTUEMART_FILE_UPLOAD').'</legend>';
-		$html .= vmText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHtml::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br /><br style="clear:both" />';
+		$html .= vmText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHtml::_('select.radiolist', $this->getOptions($this->_actions), 'media[media_action]', '', 'value', 'text', 0).'<br /><br style="clear:both" />';
 
 
 		$html .= vmText::_('COM_VIRTUEMART_FILE_UPLOAD').' <input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
@@ -1274,7 +1273,7 @@ $html .='</td>';
 	private function displayRow($descr, $name,$readonly=''){
 		$html = '<tr>
 	<td class="labelcell">'.vmText::_($descr).'</td>
-	<td> <input type="text" '.$readonly.'class="inputbox" name="'.$name.'" size="70" value="'.$this->$name.'" /></td>
+	<td> <input type="text" '.$readonly.' class="inputbox" name="media['.$name.']" size="70" value="'.$this->$name.'" /></td>
 </tr>';
 		return $html;
 	}

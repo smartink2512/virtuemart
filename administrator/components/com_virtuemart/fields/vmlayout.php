@@ -17,6 +17,7 @@
 defined('JPATH_BASE') or die;
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+VmConfig::loadConfig();
 if (!class_exists('ShopFunctions'))
     require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('VirtueMartModelConfig'))
@@ -44,8 +45,15 @@ class JFormFieldVmLayout extends JFormField
 	function getInput() {
 
 		VmConfig::loadJLang('com_virtuemart');
-		$view = substr($this->fieldname,0,-6);;
-		$vmLayoutList =VirtueMartModelConfig::getLayoutList($view);
+
+		$this->view = (string) $this->element['view'];
+		if(empty($this->view)){
+			$view = substr($this->fieldname,0,-6);;
+		} else {
+			$view = $this->view;
+		}
+
+		$vmLayoutList = VirtueMartModelConfig::getLayoutList($view);
 		$html = JHtml::_('Select.genericlist',$vmLayoutList, $this->name, 'size=1 width=200', 'value', 'text', array($this->value));
 
         return $html;

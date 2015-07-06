@@ -62,7 +62,14 @@ class VirtueMartModelConfig extends VmModel {
 	static function getLayoutList($view,$ignore=0) {
 
 		$dirs = array();
-		$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
+		$com = strpos($view,'mod_');
+
+		if($com===0){
+			$dirs[] = VMPATH_ROOT.DS.'modules'.DS.$view.DS.'tmpl';
+		} else {
+			$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
+
+		}
 
 		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 
@@ -71,10 +78,16 @@ class VirtueMartModelConfig extends VmModel {
 
 		$tplnames = $db->loadResult();
 		if($tplnames){
-			if(is_dir(VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view)){
-				$dirs[] = VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
+			if($com===0){
+				$opath = VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.$view;
+			} else {
+				$opath = VMPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
+			}
+			if(is_dir($opath)){
+				$dirs[] = $opath;
 			}
 		}
+
 		return self::getLayouts($dirs,0,$ignore);
 	}
 
@@ -254,7 +267,7 @@ class VirtueMartModelConfig extends VmModel {
 	/*
 	 * Get the joomla list of languages
 	 */
-	function getActiveLanguages($active_languages) {
+	function getActiveLanguages($active_languages, $name = 'active_languages[]') {
 
 		$activeLangs = array() ;
 		$language =JFactory::getLanguage();
@@ -265,7 +278,7 @@ class VirtueMartModelConfig extends VmModel {
 			$activeLangs[] = JHtml::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
-		return JHtml::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
+		return JHtml::_('select.genericlist', $activeLangs, $name, 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
 
@@ -457,22 +470,17 @@ class VirtueMartModelConfig extends VmModel {
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
 
-		$cache = JFactory::getCache('com_virtuemart_cats','callback');
-		$cache->clean();
-		$cache = JFactory::getCache('com_virtuemart_rss','callback');
-		$cache->clean();
-		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
-		$cache->clean();
-		$cache = JFactory::getCache('convertECB','callback');
-		$cache->clean();
-		$cache = JFactory::getCache('_virtuemart');
-		$cache->clean();
-		$cache = JFactory::getCache('com_plugins');
-		$cache->clean();
-		$cache = JFactory::getCache('_system');
-		$cache->clean();
-		$cache = JFactory::getCache('page');
-		$cache->clean();
+		$cache = JFactory::getCache();
+		$cache->clean('com_virtuemart_cats');
+		$cache->clean('mod_virtuemart_product');
+		$cache->clean('mod_virtuemart_category');
+		$cache->clean('com_virtuemart_rss');
+		$cache->clean('com_virtuemart_cat_manus');
+		$cache->clean('convertECB');
+		$cache->clean('_virtuemart');
+		$cache->clean('com_plugins');
+		$cache->clean('_system');
+		$cache->clean('page');
 
 		return true;
 	}

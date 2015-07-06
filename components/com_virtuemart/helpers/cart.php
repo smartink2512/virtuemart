@@ -1273,8 +1273,7 @@ class VirtueMartCart {
 				$name = $fld->name;
 
 				if($fld->type=='checkbox'){
-					$tmp = vRequest::getInt($name,null);
-					if(empty($tmp)) $tmp = 0;
+					$tmp = vRequest::getInt($name,0);
 				} else {
 					$tmp = vRequest::getString($name,null);
 				}

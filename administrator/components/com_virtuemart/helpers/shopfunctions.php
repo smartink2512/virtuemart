@@ -96,7 +96,7 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderVendorList ($vendorId, $multiple = FALSE) {
+	static public function renderVendorList ($vendorId, $name = 'virtuemart_vendor_id') {
 
 		$db = JFactory::getDBO ();
 
@@ -119,17 +119,17 @@ class ShopFunctions {
 				$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
 				$db->setQuery ($q);
 				$vendor = $db->loadResult ();
-				$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
+				$html = '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
 				return $html;
 			} else {
 
-				return self::renderVendorFullVendorList($vendorId);
+				return self::renderVendorFullVendorList($vendorId,false,$name);
 			}
 		}
 
 	}
 
-	static public function renderVendorFullVendorList($vendorId,$multiple=false){
+	static public function renderVendorFullVendorList($vendorId, $multiple = false, $name = 'virtuemart_vendor_id'){
 
 		$db = JFactory::getDBO ();
 
@@ -138,17 +138,18 @@ class ShopFunctions {
 		$vendors = $db->loadAssocList ();
 
 		$attrs = array();
-		$name = 'vendor_name';
-		$idA = $id = 'virtuemart_vendor_id';
+		$optname = 'vendor_name';
+		$id = 'virtuemart_vendor_id';
+		$idA = $name;
 		$attrs['class'] = 'vm-chzn-select';
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
 		} else {
-			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $optname);
 			array_unshift ($vendors, $emptyOption);
 		}
-		$listHTML = JHtml::_ ('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId);
+		$listHTML = JHtml::_ ('select.genericlist', $vendors, $idA, $attrs, $id, $optname, $vendorId);
 		return $listHTML;
 	}
 

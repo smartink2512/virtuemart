@@ -91,7 +91,8 @@ textarea.virtuemart{background:#fff;border:solid #ccc 1px;border-radius:4px;-web
 p.product_s_desc{padding:0;height: 3.4em;margin: 0 0;}
 span.stock-level{font-size:10px;color:#7d7b7b;}
 .horizontal-separator{height:1px;background:#e9e8e8;margin:10px 0;}
-.invalid{background-color:#ffd;color:#000;border-color:red;}
+.invalid {border-color: #f00;background-color: #ffd;color: #000;}
+label.invalid {background-color: #fff;color: #f00;}
 .page-results{margin-top:25px;text-align:right;}
 .control-buttons button.default{margin-left:8px;}
 table.user-details .vm-chzn-select{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;margin-bottom:2px;padding:5px 5px 4px; width:210px}

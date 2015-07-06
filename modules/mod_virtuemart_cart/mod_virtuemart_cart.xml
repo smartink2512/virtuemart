@@ -13,24 +13,7 @@
         <filename>tmpl/default.php</filename>
         <folder>language</folder>
     </files>
-    <params>
-        <param name="moduleclass_sfx" type="text" default=""
-			label="Module Class Suffix"
-			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-        <param name="show_price" type="list" default="1"
-			label="MOD_VIRTUEMART_CART_SHOW_PRICE"
-			description="MOD_VIRTUEMART_CART_SHOW_PRICE_DESC">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </param>
-        <br/>
-        <param name="show_product_list" type="list" default="1"
-			label="MOD_VIRTUEMART_CART_SHOW_LIST"
-			description="MOD_VIRTUEMART_CART_SHOW_LIST_DESC">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </param>
-    </params>
+
     <config>
         <fields name="params">
             <fieldset name="basic">
@@ -52,6 +35,7 @@
             </fieldset>
         </fields>
     </config>
+
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->
         <server type="extension" name="VirtueMart3 mod_virtuemart_cart Update Site"><![CDATA[http://virtuemart.net/releases/${PHING.VM.UPDATEFOLDER}/mod_virtuemart_cart_update.xml]]></server>

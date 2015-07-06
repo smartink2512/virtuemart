@@ -13,7 +13,15 @@ fieldset {border:none;}
 .vmquote{font-size:smaller;}
 .vm-notice{color: #CC0000;}
 span.bold,div.bold{font-weight:700;}
-
+.text-left{
+  text-align: left;
+}
+.text-right{
+  text-align: right;
+}
+.text-center{
+  text-align: center;
+}
 /* hide inline style as class */
 .floatright,span.floatright{float:right;}
 .floatleft,span.floatleft{float:left;}
@@ -22,7 +30,7 @@ span.bold,div.bold{font-weight:700;}
 .line-through{text-decoration:line-through}
 .inline{display: inline;}
 td.pricePad{padding-right: 10px;}
-td.priceCol{white-space:nowrap;}
+.priceCol{white-space:nowrap;}
 .priceColor2{color:gray;}
 
 /* hide inline style as class END */

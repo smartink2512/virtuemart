@@ -311,7 +311,7 @@ class CurrencyDisplay {
 	 * @param array the prices of the product
 	 * return a div for prices which is visible according to config and have all ids and class set
 	 */
-	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0,$forceNoLabel=false){
+	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0,$forceNoLabel=false, $force = false){
 
 		if(empty($product_price) and $name != 'billTotal' and $name != 'billTaxAmount') return '';
 
@@ -328,7 +328,7 @@ class CurrencyDisplay {
 		}
 
 		//This could be easily extended by product specific settings
-		if(!empty($this->_priceConfig[$name][0])){
+		if(!empty($this->_priceConfig[$name][0]) or $force){
 			if(!empty($price) or $name == 'billTotal' or $name == 'billTaxAmount'){
 				$vis = " vm-display vm-price-value";
 				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1],$name );
@@ -345,10 +345,10 @@ class CurrencyDisplay {
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = vmText::_($description);
 			// 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
-			if(!$switchSequel){
-				return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="Price'.$name.'">'.$priceFormatted.'</span></div>';
-			} else {
+			if($switchSequel){
 				return '<div class="Price'.$name.$vis.'"  ><span class="Price'.$name.'" >'.$priceFormatted.'</span>'.$descr.'</div>';
+			} else {
+				return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="Price'.$name.'">'.$priceFormatted.'</span></div>';
 			}
 		}
 

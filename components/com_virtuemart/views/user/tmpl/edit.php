@@ -23,17 +23,6 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation');
 JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
-<style type="text/css">
-.invalid {
-	border-color: #f00;
-	background-color: #ffd;
-	color: #000;
-}
-label.invalid {
-	background-color: #fff;
-	color: #f00;
-}
-</style>
 
 <?php vmJsApi::vmValidator(); ?>
 

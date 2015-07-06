@@ -146,17 +146,20 @@ function virtuemartBuildRoute(&$query) {
 					$virtuemart_product_id = $query['virtuemart_product_id'];
 					unset($query['virtuemart_product_id']);
 				}
-				if(empty( $query['virtuemart_category_id'])){
-					$query['virtuemart_category_id'] = $helper->getParentProductcategory($virtuemart_product_id);
+				if($helper->full){
+					if(empty( $query['virtuemart_category_id'])){
+						$query['virtuemart_category_id'] = $helper->getParentProductcategory($virtuemart_product_id);
+					}
+					if(!empty( $query['virtuemart_category_id'])){
+						$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
+						if ($categoryRoute->route) $segments[] = $categoryRoute->route;
+						if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
+						else $query['Itemid'] = $jmenu['virtuemart'];
+					} else {
+						$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0];
+					}
 				}
-				if(!empty( $query['virtuemart_category_id'])){
-					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
-					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
-					if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
-					else $query['Itemid'] = $jmenu['virtuemart'];
-				} else {
-					$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0];
-				}
+
 				unset($query['virtuemart_category_id']);
 
 				if($virtuemart_product_id)
@@ -693,6 +696,7 @@ class vmrouterHelper {
 			$this->use_id = VmConfig::get('seo_use_id', false);
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
 			$this->seo_sufix_size = strlen($this->seo_sufix) ;
+			$this->full = VmConfig::get('seo_full',true);
 
 			$this->edit = ('edit' == vRequest::getCmd('task') or vRequest::getInt('manage')=='1');
 			// if language switcher we must know the $query

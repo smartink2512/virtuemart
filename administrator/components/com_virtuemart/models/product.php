@@ -263,7 +263,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$keyword =  '"%' .str_replace(array(' ','-'),'%', $keyword). '%"';
 			//$keyword = '"%' . $db->escape ($this->keyword, TRUE) . '%"';
-
+			vmdebug('Current search field',$this->valid_search_fields);
 			foreach ($this->valid_search_fields as $searchField) {
 				if ($searchField == 'category_name' || $searchField == 'category_description') {
 					$joinCatLang = true;
@@ -279,7 +279,7 @@ class VirtueMartModelProduct extends VmModel {
 					//if (strpos ($searchField, '`') !== FALSE){
 						//$searchField = '`l`.'.$searchField;
 					$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
-					if($app->isSite() and !VmConfig::get('prodOnlyWLang',false)){
+					if($app->isSite() and VmConfig::$defaultLang!=VmConfig::$vmlang and !VmConfig::get('prodOnlyWLang',false)){
 						$filter_search[] =  '`ld`.'.$searchField . ' LIKE ' . $keywords_plural;
 						if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
 
@@ -291,8 +291,8 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 				if (strpos ($searchField, '`') !== FALSE){
-					//$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
-					//$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
+					$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
+					$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
 				} else {
 					$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
 					$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
@@ -1187,8 +1187,8 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($product->categoryItem)){
 				$tmp = array();
 				foreach($product->categoryItem as $category){
-					if($category['published'] and !$product->canonCatId){
-						$product->canonCatId = $category['virtuemart_category_id'];
+					if($category['published']){
+						if(!$product->canonCatId) $product->canonCatId = $category['virtuemart_category_id'];
 						$public_cats[] = $category['virtuemart_category_id'];
 					}
 					$tmp[] = $category['virtuemart_category_id'];
@@ -1196,7 +1196,7 @@ class VirtueMartModelProduct extends VmModel {
 				$product->categories = $tmp;
 			}
 
-			$product->virtuemart_category_id = $product->canonCatId;
+
 
 			if (!empty($product->categories) and is_array ($product->categories)){
 				if ($front) {
@@ -1233,13 +1233,13 @@ class VirtueMartModelProduct extends VmModel {
 					}
 
 				}
-
+				//vmdebug('$product->virtuemart_category_id',$product->virtuemart_category_id);
 				if(empty($product->virtuemart_category_id)){
 					$virtuemart_category_id = vRequest::getInt ('virtuemart_category_id', 0);
 					if ($virtuemart_category_id!==0 and in_array ($virtuemart_category_id, $product->categories)) {
 						$product->virtuemart_category_id = $virtuemart_category_id;
-					} else if(!empty($product->canonCatLink)) {
-						$product->virtuemart_category_id = $product->canonCatLink;
+					} else if(!empty($product->canonCatId)) {
+						$product->virtuemart_category_id = $product->canonCatId;
 					//} else if (!$front and !empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
 						//why the restriction why we should use it for BE only?
 					} else if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
@@ -1249,6 +1249,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
+			if(empty($product->virtuemart_category_id)) $product->virtuemart_category_id = $product->canonCatId;
 
 			if(!empty($product->virtuemart_category_id)){
 
