@@ -19,7 +19,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
-vmJsApi::addJScript('/components/com_virtuemart/assets/js/virtuemartOPC.js');
 
 JHtml::_ ('behavior.formvalidation');
 vmJsApi::addJScript('vm.STisBT',"
@@ -62,17 +61,17 @@ vmJsApi::addJScript('vm.checkoutFormSubmit','
 ');
 
 $this->addCheckRequiredJs();
- ?>
+?>
 
-<div class="cart-view" id="cart-view">
+<div class="cart-view">
 	<div class="vm-cart-header-container">
 		<div class="width50 floatleft vm-cart-header">
 			<h1><?php echo vmText::_ ('COM_VIRTUEMART_CART_TITLE'); ?></h1>
 			<div class="payments-signin-button" ></div>
 		</div>
 		<?php if (VmConfig::get ('oncheckout_show_steps', 1) && $this->checkout_task === 'confirm') {
-		echo '<div class="checkoutStep" id="checkoutStep4">' . vmText::_ ('COM_VIRTUEMART_USER_FORM_CART_STEP4') . '</div>';
-	} ?>
+			echo '<div class="checkoutStep" id="checkoutStep4">' . vmText::_ ('COM_VIRTUEMART_USER_FORM_CART_STEP4') . '</div>';
+		} ?>
 		<div class="width50 floatleft right vm-continue-shopping">
 			<?php // Continue Shopping Button
 			if (!empty($this->continue_link_html)) {
@@ -109,7 +108,7 @@ $this->addCheckRequiredJs();
 				<div class="checkout-advertise">
 					<?php echo $checkoutAdvertise; ?>
 				</div>
-				<?php
+			<?php
 			}
 			?></div><?php
 		}
@@ -118,7 +117,7 @@ $this->addCheckRequiredJs();
 
 		?> <div class="checkout-button-top"> <?php
 			echo $this->checkout_link_html;
-		?></div>
+			?></div>
 
 		<?php // Continue and Checkout Button END ?>
 		<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
