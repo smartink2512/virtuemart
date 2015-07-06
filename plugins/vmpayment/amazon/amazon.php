@@ -479,7 +479,13 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 * IPNs requires SSL. All merchant cannot have SSL. A system plugin simulate a cron job
 	 */
 	public function plgVmRetrieveIPN () {
-
+		// check if table exists
+		$query = 'SHOW TABLES LIKE "' . $this->_tablename . '"';
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		if(!$db->loadResult()){
+			return false;
+		}
 
 		$q = "SELECT  * FROM " . $this->_tablename . " WHERE
 		(
@@ -494,7 +500,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		AND `id`  in (SELECT MAX( id ) FROM " . $this->_tablename . "  GROUP BY virtuemart_order_id )
 		ORDER BY `created_on` DESC ";
 
-		$db = JFactory::getDBO();
+
 		$db->setQuery($q);
 		$payments = $db->loadObjectList();
 		$done = array();
