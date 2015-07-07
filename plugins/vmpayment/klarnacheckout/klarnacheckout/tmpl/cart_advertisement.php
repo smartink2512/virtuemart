@@ -30,33 +30,21 @@ if ($viewData ['payment_form_position']=='right' ) {
 
 $js = '
 
-	jQuery(document).ready(function( $ ) {
- $("#checkoutFormSubmit").hide();
- $(".vm-fieldset-tos").hide();
- });
 
 jQuery(document).ready(function( $ ) {
 jQuery( "*:contains(\''. vmText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'). '\')" ).filter(function(){
-	jQuery("#kco-shipment-method").text("'. vmText::_('VMPAYMENT_KLARNACHECKOUT_SHIPMENT_METHODS_LATER'). '");
+var zip=jQuery(".output-billto .vm2-zip").value;
+if (zip==="") {jQuery("#kco-shipment-method").text("'. vmText::_('VMPAYMENT_KLARNACHECKOUT_SHIPMENT_METHODS_LATER'). '");
+} else {
+jQuery("#kco-shipment-method").text("SHOULD NOT BE ABLE TO CHECKOUT AT KLARNA");
+}
+
 	})
 });
 
-
 	';
 
-if ($viewData ['hide_BTST']) {
-	$js .= '
-	jQuery(document).ready(function( $ ) {
-		      $(".billto-shipto").hide();
-
-		      $("#com-form-login").hide();
-
-	});
-	';
-
-
-}
-vmJsApi::addJScript('vm.kco_hide_BTST', $js);
+//vmJsApi::addJScript('vm.noshipments', $js);
 
 ?>
 <?php if ($viewData['klarna_create_account']) { ?>
@@ -67,9 +55,7 @@ vmJsApi::addJScript('vm.kco_hide_BTST', $js);
 <?php
 }
 ?>
-<?php if ($viewData ['message'] )  { ?>
 	<div id="kco-shipment-method"><?php echo $viewData ['message']; ?>  </div>
-<?php } ?>
 <?php if ($viewData ['snippet'] )  { ?>
 <div><?php echo $viewData ['snippet']; ?>  </div>
 <?php }
