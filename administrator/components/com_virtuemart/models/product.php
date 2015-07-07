@@ -957,7 +957,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(!self::$_products[$productKey]){
 			return false;
 		} else {
-			vmTime('getProduct loaded ','getProduct');
+			//vmTime('getProduct loaded ','getProduct');
 			return clone(self::$_products[$productKey]);
 		}
 

@@ -265,8 +265,11 @@ abstract class vmPlugin extends JPlugin {
 
 			$q = 'SELECT vm.* FROM `' . $this->_configTable . '` AS vm,
 						#__extensions AS j WHERE vm.`' . $this->_idName . '` = "' . $id . '"
-						AND vm.' . $this->_psType . '_jplugin_id = j.extension_id
-						AND j.element = "' . $this->_name . '"';
+						AND vm.' . $this->_psType . '_jplugin_id = j.extension_id ';
+						if (JFactory::getApplication()->isSite() ) {
+							$q .= 'AND vm.published = 1 ';
+						}
+			$q .= 'AND j.element = "' . $this->_name . '"';
 
 			$db->setQuery ($q);
 			if (!$res = $db->loadObject ()) {

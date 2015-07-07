@@ -856,20 +856,14 @@ class vmrouterHelper {
 
 		if(!isset($productNamesCache[$id])){
 			//if($pModel->checkIfCached($id, true, false)){  vmdebug('Router getProductName found cached'); //takes more sql
-			if(true){
+
 				$pr = $pModel->getProduct($id, true, false);
 				if(!$pr or empty($pr->slug)){
 					$productNamesCache[$id] = false;
 				} else {
 					$productNamesCache[$id] = $pr->slug;
 				}
-			} else {
-				$db = JFactory::getDBO();
-				$query = 'SELECT `slug` FROM `#__virtuemart_products_'.VmConfig::$vmlang.'`  ' .
-					' WHERE `virtuemart_product_id` = ' . (int) $id;
-				$db->setQuery($query);
-				$productNamesCache[$id] = $db->loadResult();
-			}
+
 		}
 
 		return $productNamesCache[$id].$this->seo_sufix;
@@ -923,16 +917,26 @@ class vmrouterHelper {
 		$q = '';
 		static $prodIds = array();
 		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-			$q = 'SELECT IFNULL(l.`virtuemart_product_id`,ld.`virtuemart_product_id`) as `virtuemart_product_id` ';
+			$select2 = 'ld.`virtuemart_product_id`';
+			$where2 = 'ld.`slug`';
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$select2 = 'IFNULL(ld.`virtuemart_product_id`,ljd.`virtuemart_product_id`)';
+				$where2 = 'IFNULL(ld.`slug`,ljd.`slug`)';
+			}
+
+			$q = 'SELECT IFNULL(l.`virtuemart_product_id`,'.$select2.') as `virtuemart_product_id` ';
 			$q .= ' FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ';
 			$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`) ';
-			$q .= ' WHERE IFNULL(l.`slug`,ld.`slug`) = "'.$db->escape($productName).'" ';
-			$hash = md5(VmConfig::$defaultLang.$productName.VmConfig::$defaultLang);
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd using (`virtuemart_product_id`) ';
+			}
+			$q .= ' WHERE IFNULL(l.`slug`,'.$where2.') = "'.$db->escape($productName).'" ';
+			$hash = md5(VmConfig::$defaultLang.$productName.VmConfig::$vmlang);
 		} else {
 			$q = 'SELECT p.`virtuemart_product_id` ';
 			$q .= ' FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p` ';
 			$q .= ' WHERE `slug` = "'.$db->escape($productName).'" ';
-			$hash = md5($productName.VmConfig::$defaultLang);
+			$hash = md5($productName.VmConfig::$vmlang);
 		}
 
 		if(!isset($prodIds[$hash])){
