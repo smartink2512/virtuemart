@@ -22,7 +22,7 @@ vmJsApi::addJScript("/modules/mod_virtuemart_cart/assets/js/update_cart.js",fals
 $js = '
 jQuery(document).ready(function(){
     jQuery("body").live("updateVirtueMartCartModule", function(e) {
-        jQuery("#vmCartModule").updateVirtueMartCartModule();
+        jQuery(".vmCartModule").updateVirtueMartCartModule();
     });
 });
 ';
