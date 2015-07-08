@@ -466,7 +466,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 			}
 		}
 		if (!$cc_valid && $enqueueMessage) {
-			$app = & JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->enqueueMessage($html, 'error');
 		}
 		$displayInfoMsg = "";
