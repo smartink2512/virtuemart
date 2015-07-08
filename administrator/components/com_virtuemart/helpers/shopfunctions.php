@@ -138,7 +138,7 @@ class ShopFunctions {
 		$vendors = $db->loadAssocList ();
 
 		$attrs = array();
-
+		if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 		$id = VmHtml::ensureUniqueId('vendor_name'.$vendorId);
 		$idA = $name;
 		$attrs['class'] = 'vm-chzn-select';
@@ -167,6 +167,7 @@ class ShopFunctions {
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
+
 		$attrs = '';
 
 		$attrs['class'] = 'vm-chzn-select';

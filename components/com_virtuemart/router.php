@@ -1096,10 +1096,10 @@ class vmrouterHelper {
 
 		$itemID = '';
 
-		$virtuemart_manufacturer_id = empty($this->query['virtuemart_manufacturer_id']) ? vRequest::getInt('virtuemart_manufacturer_id',0) : $this->query['virtuemart_manufacturer_id'];
+		$virtuemart_manufacturer_id = isset($this->query['virtuemart_manufacturer_id']) ? $this->query['virtuemart_manufacturer_id'] : vRequest::getInt('virtuemart_manufacturer_id',0);
 		$categorylayout = isset($this->query['categorylayout']) ? $this->query['categorylayout'] : vRequest::getCmd('categorylayout',0);
-		$showcategory = isset($this->query['showcategory']) ? $this->query['showcategory'] : vRequest::getCmd('showcategory',0);
-		$showproducts = isset($this->query['showproducts']) ? $this->query['showproducts'] : vRequest::getCmd('showproducts',0);
+		$showcategory = isset($this->query['showcategory']) ? $this->query['showcategory'] : vRequest::getInt('showcategory',1);
+		$showproducts = isset($this->query['showproducts']) ? $this->query['showproducts'] : vRequest::getInt('showproducts',1);
 		$productsublayout = isset($this->query['productsublayout']) ? $this->query['productsublayout'] : vRequest::getCmd('productsublayout',0);
 
 		$jLangTag = $this->Jlang->getTag();
