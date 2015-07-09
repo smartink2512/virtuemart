@@ -62,11 +62,13 @@ class VirtueMartViewCart extends VmView {
 		$this->cart->prepareVendor();
 
 		//Why is this here, when we have view.raw.php
+		/* Valerie: is this used ?
 		if ($format == 'raw') {
 			vRequest::setVar('layout', 'mini_cart');
 			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
 		}
+		*/
 
 		if ($this->layoutName == 'select_shipment') {
 
@@ -145,7 +147,7 @@ class VirtueMartViewCart extends VmView {
 				$text = vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE');
 				$this->checkout_task = 'checkout';
 			}
-			$this->checkout_link_html = '<button type="submit"  id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" ><span>' . $text . '</span> </button>';
+			$this->checkout_link_html = '<button type="submit" id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" ><span>' . $text . '</span> </button>';
 
 
 			if (VmConfig::get('oncheckout_opc', 1)) {
@@ -232,6 +234,11 @@ class VirtueMartViewCart extends VmView {
 		if($this->allowChangeShopper){
 			$this->userList = $this->getUserList();
 		}
+
+		if(VmConfig::get('oncheckout_ajax')){
+			vmJsApi::jDynUpdate();
+		}
+
 
 		parent::display($tpl);
 	}
@@ -355,6 +362,7 @@ class VirtueMartViewCart extends VmView {
 				vmJsApi::addJScript('autoPayment',$j);
 			}
 		}
+
 		return $ok;
 	}
 

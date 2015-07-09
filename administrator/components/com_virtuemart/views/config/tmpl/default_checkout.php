@@ -45,6 +45,7 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP','addtocart_popup',VmConfig::get('addtocart_popup',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_POPUP_REL','popup_rel',VmConfig::get('popup_rel',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CHECKOUT_OPC','oncheckout_opc',VmConfig::get('oncheckout_opc',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CHECKOUT_OPC_AJAX','oncheckout_ajax',VmConfig::get('oncheckout_opc_ajax',1));
 		?>
 
 		<tr class="not_opc_param">

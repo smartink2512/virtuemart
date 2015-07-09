@@ -260,7 +260,7 @@ function virtuemartBuildRoute(&$query) {
 					$query['Itemid'] = $jmenu['virtuemart'];
 				}
 			//}
-			$segments[] = $helper->lang('cart') ;
+			//$segments[] = $helper->lang('cart') ;
 
 			break;
 		case 'orders';

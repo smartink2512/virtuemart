@@ -56,22 +56,27 @@ AdminUIHelper::startAdminArea($this);
 		</thead>
 		<?php
 		$k = 0;
+		$set_automatic_shipment = VmConfig::get('set_automatic_shipment',false);
 		for ($i=0, $n=count( $this->shipments ); $i < $n; $i++) {
 			$row = $this->shipments[$i];
-			$published = $this->gridPublished( $row, $i );
+			$published = $this->gridPublished($row, $i);
 			//$row->published = 1;
 			$checked = JHtml::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
-			if($this->showVendors){
+			if ($this->showVendors) {
 				$shared = $this->toggle($row->shared, $i, 'toggle.shared');
 			}
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipmentmethod&task=edit&cid[]=' . $row->virtuemart_shipmentmethod_id);
-			?>
-			<tr class="row<?php echo $k ; ?>">
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipmentmethod&task=edit&cid[]='.$row->virtuemart_shipmentmethod_id);
+	?>
+			<tr class="row<?php echo $k; ?>">
 				<td class="admin-checkbox">
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
 					<?php echo JHtml::_('link', $editlink, vmText::_($row->shipment_name)); ?>
+					<?php if ($set_automatic_shipment == $row->virtuemart_shipmentmethod_id) {
+						?><i class="icon-featured"></i><?php
+					}
+					?>
 				</td>
                                 <td align="left">
 					<?php echo $row->shipment_desc; ?>

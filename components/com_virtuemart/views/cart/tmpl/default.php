@@ -63,7 +63,7 @@ vmJsApi::addJScript('vm.checkoutFormSubmit','
 $this->addCheckRequiredJs();
 ?>
 
-<div class="cart-view">
+<div id="cart-view" class="cart-view">
 	<div class="vm-cart-header-container">
 		<div class="width50 floatleft vm-cart-header">
 			<h1><?php echo vmText::_ ('COM_VIRTUEMART_CART_TITLE'); ?></h1>
@@ -127,3 +127,16 @@ $this->addCheckRequiredJs();
 	</form>
 </div>
 
+<?php
+
+
+if(VmConfig::get('oncheckout_ajax',false)) {
+
+		$j = "Virtuemart.container = jQuery('.cart-view');
+	Virtuemart.containerSelector = '.cart-view';";
+
+		vmJsApi::addJScript('ajaxContent', $j);
+
+		echo vmJsApi::writeJS();
+}
+?>

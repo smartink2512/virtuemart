@@ -68,6 +68,11 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
+		$tmpl = vRequest::getCmd('tmpl',false);
+		if ($viewType == 'raw' and $tmpl == 'component') {
+			$viewType = 'html';
+		}
+
 		$viewName = vRequest::getCmd('view', $this->default_view);
 		$viewLayout = vRequest::getCmd('layout', 'default');
 
@@ -90,7 +95,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$cart->setPaymentMethod($force, !$html);
 		}
 
-
 		$request = vRequest::getRequest();
 		$task = vRequest::getCmd('task');
 		if(($task == 'confirm' or isset($request['confirm'])) and !$cart->getInCheckOut()){
@@ -109,6 +113,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 
 		$cart->_fromCart = false;
+
 		$view->display();
 
 		return $this;

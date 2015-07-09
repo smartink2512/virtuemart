@@ -750,8 +750,12 @@ abstract class vmPSPlugin extends vmPlugin {
 			$costDisplay = $currency->priceDisplay ($pluginSalesPrice);
 			$costDisplay = '<span class="' . $this->_type . '_cost"> (' . vmText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') . $costDisplay . ")</span>";
 		}
-
-		$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
+		$dynUpdate='';
+		if( VmConfig::get('oncheckout_ajax',false)) {
+			$url = JRoute::_('index.php?option=com_virtuemart&view=cart&task=updatecart&'. $this->_idName. '='.$plugin->$pluginmethod_id );
+			$dynUpdate=' data-dynamic-update="1" url='.$url.' ';
+		}
+		$html = '<input type="radio"'.$dynUpdate.' name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
 			. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay . "</span></label>\n";
 
 		return $html;

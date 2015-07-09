@@ -20,7 +20,11 @@ jQuery(function($) {
         if(Virtuemart.isUpdatingContent) return false;
         Virtuemart.isUpdatingContent = true;
         urlSuf='tmpl=component&format=raw';
-        url += url.indexOf('&') == -1 ? '?'+urlSuf : '&'+urlSuf;
+        var glue = '&';
+        if(url.indexOf('&') == -1 && url.indexOf('?') == -1){
+			glue = '?';
+        }
+        url += glue+urlSuf;
         $.ajax({
             url: url,
             dataType: 'html',
@@ -78,7 +82,7 @@ jQuery(function($) {
         jQuery('*[data-dynamic-update=1]').each(function(i, el) {
             var nodeName = el.nodeName;
             el = jQuery(el);
-            //console.log('updateDynamicUpdateListeners '+nodeName, el);
+            console.log('updateDynamicUpdateListeners '+nodeName, el);
             switch (nodeName) {
                 case 'A':
 					el[0].onclick = null;
