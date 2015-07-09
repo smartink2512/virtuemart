@@ -236,6 +236,7 @@ class VirtueMartViewCart extends VmView {
 		}
 
 		if(VmConfig::get('oncheckout_ajax')){
+
 			vmJsApi::jDynUpdate();
 		}
 
@@ -536,6 +537,11 @@ class VirtueMartViewCart extends VmView {
         jQuery(this).vm2front("startVmLoading");
 		document.checkoutForm.submit();
     });
+    jQuery("#checkoutForm").change(function(){
+
+		jQuery("#checkoutFormSubmit").attr("name","checkout");
+		jQuery("#checkoutFormSubmit").html("<span>'.vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE').'</span>");
+    });
     jQuery(".required").change(function(){
     	var count = 0;
     	var hit = 0;
@@ -546,17 +552,17 @@ class VirtueMartViewCart extends VmView {
        		}
     	});
         if(count==hit){
-        	jQuery(this).vm2front("startVmLoading");
+        	//jQuery(this).vm2front("startVmLoading");
+
         	var form = jQuery("#checkoutFormSubmit");
-        	//document.checkoutForm.task = "checkout";
-			document.checkoutForm.submit();
+        	form.attr("task","checkout");
+
+			Virtuemart.updForm();
+			form.submit();
+        	//jQuery(this).vm2front("stopVmLoading");
         }
     });
-    jQuery("#checkoutForm").change(function(){
 
-		jQuery("#checkoutFormSubmit").attr("name","checkout");
-		jQuery("#checkoutFormSubmit").html("<span>'.vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE').'</span>");
-    });
 });';
 		vmJsApi::addJScript('autocheck',$j);
 	}

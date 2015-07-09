@@ -78,12 +78,75 @@ jQuery(function($) {
         }
     };
 
+	Virtuemart.updForm = function(event) {
+
+		jQuery(this).vm2front("startVmLoading");
+		cartform = jQuery("#checkoutForm");
+		carturl = cartform.attr('action');
+		if (typeof carturl === typeof undefined || carturl === false) {
+			carturl = jQuery(this).attr('url');
+			console.log('my form no action url, try attr url ',cartform);
+			if (typeof carturl === typeof undefined || carturl === false) {
+				carturl = 'index.php?option=com_virtuemart&view=cart'; console.log('my form no action url, try attr url ',carturl);
+			}
+		}
+		urlSuf='tmpl=component';
+		carturlcmp = carturl;
+		if(carturlcmp.indexOf(urlSuf) == -1){
+			var glue = '&';
+			if(carturlcmp.indexOf('&') == -1 && carturlcmp.indexOf('?') == -1){
+				glue = '?';
+			}
+			carturlcmp += glue+urlSuf;
+		}
+		console.log('Virtuemart.updForm url',carturl);
+		cartform.submit(function() {
+
+			console.log('my form submit url',carturlcmp);
+			if(Virtuemart.isUpdatingContent) return false;
+			Virtuemart.isUpdatingContent = true;
+
+			jQuery.ajax({
+				type: "POST",
+				url: carturlcmp,
+				dataType: "html",
+				data: cartform.serialize(), // serializes the form's elements.
+				success: function(datas) {
+					console.log('my form event callback',event);
+					var el = jQuery(datas).find(Virtuemart.containerSelector);
+					if (! el.length) el = jQuery(datas).filter(Virtuemart.containerSelector);
+					if (el.length) {
+						Virtuemart.container.html(el.html());
+						Virtuemart.updateCartListener();
+						Virtuemart.updateDynamicUpdateListeners();
+						//Virtuemart.updateCartListener();
+
+						if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners();
+						if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
+					}
+					Virtuemart.setBrowserNewState(carturl);
+					Virtuemart.isUpdatingContent = false;
+				}
+			});
+			jQuery(this).vm2front("stopVmLoading");
+			Virtuemart.isUpdatingContent = false;
+			return false; // avoid to execute the actual submit of the form.
+		});
+
+		Virtuemart.isUpdatingContent = false;
+	};
+
     Virtuemart.updateDynamicUpdateListeners = function() {
         jQuery('*[data-dynamic-update=1]').each(function(i, el) {
             var nodeName = el.nodeName;
             el = jQuery(el);
             console.log('updateDynamicUpdateListeners '+nodeName, el);
             switch (nodeName) {
+				case 'BUTTON':
+					el[0].onclick = null;
+					el.off('click',Virtuemart.updForm);
+					el.on('click',Virtuemart.updForm);
+					break;//*/
                 case 'A':
 					el[0].onclick = null;
                     el.off('click',Virtuemart.updL);
@@ -96,7 +159,7 @@ jQuery(function($) {
                    // console.log('updateDynamicUpdateListeners change '+i, el);
             }
         });
-
+		//jQuery('[name="updatecart"]').remove();
     }
 
     var everPushedHistory = false;
