@@ -286,7 +286,7 @@ class VirtuemartViewUser extends VmView {
 	} else {
 		$this->_lists['shoppergroups'] = '';
 		foreach($_shoppergroup as $group){
-			$this->_lists['shoppergroups'] .= $group['shopper_group_name'].', ';
+			$this->_lists['shoppergroups'] .= vmText::_($group['shopper_group_name']).', ';
 		}
 		$this->_lists['shoppergroups'] = substr($this->_lists['shoppergroups'],0,-2);
 

@@ -238,6 +238,11 @@ class VirtueMartViewCart extends VmView {
 		if(VmConfig::get('oncheckout_ajax')){
 
 			vmJsApi::jDynUpdate();
+			vmJsApi::addJScript('updDynamicListeners',"
+jQuery(document).ready(function() {
+	if (Virtuemart.container)
+		Virtuemart.updDynFormListeners();
+}); ");
 		}
 
 

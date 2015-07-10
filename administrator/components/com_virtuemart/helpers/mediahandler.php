@@ -1231,7 +1231,8 @@ $html .='</td>';
 			} else {
 				$vendorId = $this->virtuemart_vendor_id;
 			}
-
+			if (!class_exists('ShopFunctions'))
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 			$vendorList = ShopFunctions::renderVendorList($vendorId, 'media[virtuemart_vendor_id]');
 			$html .=  VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $vendorList );
 		}

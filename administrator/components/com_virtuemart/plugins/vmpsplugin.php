@@ -752,8 +752,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		$dynUpdate='';
 		if( VmConfig::get('oncheckout_ajax',false)) {
-			$url = JRoute::_('index.php?option=com_virtuemart&view=cart&task=updatecart&'. $this->_idName. '='.$plugin->$pluginmethod_id );
-			$dynUpdate=' data-dynamic-update="1" url='.$url.' ';
+			//$url = JRoute::_('index.php?option=com_virtuemart&view=cart&task=updatecart&'. $this->_idName. '='.$plugin->$pluginmethod_id );
+			$dynUpdate=' data-dynamic-update="1" ';
 		}
 		$html = '<input type="radio"'.$dynUpdate.' name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
 			. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay . "</span></label>\n";
