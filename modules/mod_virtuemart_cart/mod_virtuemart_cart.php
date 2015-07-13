@@ -21,7 +21,7 @@ vmJsApi::jQuery();
 vmJsApi::addJScript("/modules/mod_virtuemart_cart/assets/js/update_cart.js",false,false);
 $js = '
 jQuery(document).ready(function(){
-    jQuery("body").live("updateVirtueMartCartModule", function(e) {
+    jQuery("body").off().on("updateVirtueMartCartModule", function(e) {
         jQuery(".vmCartModule").updateVirtueMartCartModule();
     });
 });

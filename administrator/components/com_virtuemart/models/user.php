@@ -826,7 +826,7 @@ class VirtueMartModelUser extends VmModel {
 		} else if($i==$required){
 			$return = -1;
 		}
-		//vmdebug('my i '.$i.' my data size '.$required,$return,$showInfo);
+		//vmdebug('my i '.$i.' my data size $showInfo: '.(int)$showInfo.' required: '.(int)$required,$return);
 
 		//if( ($required>2 and ($i+1)<$required) or ($required<=2 and !$return) or $showInfo){
 		if($showInfo or ($required>2 and $i<($required-1)) or ($required<3 and !$return) ){

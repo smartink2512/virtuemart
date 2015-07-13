@@ -130,7 +130,12 @@ INNER JOIN #__virtuemart_'.$ps.'methods_'.VmConfig::$vmlang.' USING (virtuemart_
 WHERE published="1"';
 		$db->setQuery($q);
 
-		$options = $db->loadAssocList();
+		try {
+			$options = $db->loadAssocList();
+		} catch (Exceptoin $e){
+			$options = array();
+		}
+
 		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NOPREF'),'virtuemart_'.$ps.'method_id',$ps.'_name');
 		array_unshift($options,$emptyOption);
 		$emptyOption = JHtml::_('select.option', '-1', vmText::_('COM_VIRTUEMART_NONE'),'virtuemart_'.$ps.'method_id',$ps.'_name');

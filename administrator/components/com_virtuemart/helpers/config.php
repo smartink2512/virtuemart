@@ -110,12 +110,14 @@ if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php')
  * @param string $value
  */
 
+
 function vmInfo($publicdescr,$value=NULL){
 
 	$app = JFactory::getApplication();
 
 	$msg = '';
-	$type = 'notice';//'info';
+	$type = VmConfig::$mType;//'info';
+
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
 		if($value!==NULL){
@@ -493,6 +495,7 @@ class VmConfig {
 	public static $vmlangTag = '';
 	public static $langs = array();
 	public static $langCount = 0;
+	public static $mType = 'info';
 	var $_params = array();
 	var $_raw = array();
 	public static $installed = false;
@@ -508,6 +511,12 @@ class VmConfig {
 		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
 		//But 15 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
 		ini_set('serialize_precision',16);
+
+		if(JVM_VERSION<3){
+			self::$mType = 'info';
+		} else {
+			self::$mType = 'notice';
+		}
 	}
 
 	static function getStartTime(){

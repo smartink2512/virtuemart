@@ -45,6 +45,7 @@ class VirtueMartModelCustom extends VmModel {
 	static function getCustomTypes () {
 
 		return array('S' => 'COM_VIRTUEMART_CUSTOM_STRING',
+			'P' => 'COM_VIRTUEMART_CUSTOM_PROPERTY',
 			'B' => 'COM_VIRTUEMART_CUSTOM_BOOLEAN',
 			'D' => 'COM_VIRTUEMART_DATE',
 			'T' => 'COM_VIRTUEMART_TIME',
@@ -405,6 +406,10 @@ class VirtueMartModelCustom extends VmModel {
 				'withParent'        => array(0, 'int'),
 				'parentOrderable'   => array(0, 'int'),
 				'wPrice'		=> array(0, 'int')
+			);
+		} else if($type=='P'){
+			$varsToPush = array(
+			'round' 	=> array('', 'int')
 			);
 		} else if($type=='C'){
 			$varsToPush = array(

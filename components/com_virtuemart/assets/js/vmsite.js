@@ -100,6 +100,7 @@ if (typeof Virtuemart === "undefined")
                 msg='';
             }
 			jQuery("body").addClass("vmLoading");
+			//jQuery("body").fadeIn( 400 );
 			jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
         },
         stopVmLoading: function() {

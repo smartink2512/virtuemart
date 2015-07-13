@@ -122,10 +122,9 @@ class VirtuemartModelReport extends VmModel {
 	function getRevenue ($cache = 0) {
 
 		$user = JFactory::getUser();
+		$vendorId = VmConfig::isSuperVendor();
 		if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manager', 'com_virtuemart')){
 			$vendorId = vRequest::getInt('virtuemart_vendor_id');
-		} else {
-			$vendorId = VmConfig::isSuperVendor();
 		}
 
 		$orderstates = vRequest::getVar ('order_status_code', array('C','S'));

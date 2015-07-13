@@ -147,7 +147,11 @@ class VirtueMartViewCart extends VmView {
 				$text = vmText::_('COM_VIRTUEMART_CHECKOUT_TITLE');
 				$this->checkout_task = 'checkout';
 			}
-			$this->checkout_link_html = '<button type="submit" id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" ><span>' . $text . '</span> </button>';
+			$dynUpdate = '';
+			if( VmConfig::get('oncheckout_ajax',false)) {
+				$dynUpdate=' data-dynamic-update="1" ';
+			}
+			$this->checkout_link_html = '<button type="submit" id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" '.$dynUpdate.' ><span>' . $text . '</span> </button>';
 
 
 			if (VmConfig::get('oncheckout_opc', 1)) {
@@ -238,11 +242,7 @@ class VirtueMartViewCart extends VmView {
 		if(VmConfig::get('oncheckout_ajax')){
 
 			vmJsApi::jDynUpdate();
-			vmJsApi::addJScript('updDynamicListeners',"
-jQuery(document).ready(function() {
-	if (Virtuemart.container)
-		Virtuemart.updDynFormListeners();
-}); ");
+
 		}
 
 

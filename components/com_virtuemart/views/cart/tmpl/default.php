@@ -90,9 +90,39 @@ JHtml::_ ('behavior.formvalidation');
 
 <?php
 
-$j = "Virtuemart.container = jQuery('#main');
-	Virtuemart.containerSelector = '#main';";
-vmJsApi::addJScript('ajaxContent', $j);
+vmJsApi::addJScript('updDynamicListeners',"
+Virtuemart.container = jQuery('#cart-view');
+Virtuemart.containerSelector = '#cart-view';
+jQuery(document).ready(function() {
+	if (Virtuemart.container)
+		Virtuemart.updDynFormListeners();
+}); ");
+
+vmJsApi::addJScript('vm.checkoutFormSubmit',"
+Virtuemart.bCheckoutButton = function(e) {
+	e.preventDefault();
+	jQuery(this).vm2front('startVmLoading');
+	jQuery(this).attr('disabled', 'true');
+	jQuery(this).removeClass( 'vm-button-correct' );
+	jQuery(this).addClass( 'vm-button' );
+	jQuery(this).fadeIn( 400 );
+	var name = jQuery(this).attr('name');
+	var div = '<input name=\"'+name+'\" value=\"1\" type=\"hidden\">';
+
+	jQuery('#checkoutForm').append(div);
+	//Virtuemart.updForm();
+	jQuery('#checkoutForm').submit();
+}
+jQuery(document).ready(function($) {
+	jQuery(this).vm2front('stopVmLoading');
+	var el = jQuery('#checkoutFormSubmit');
+	el.unbind('click dblclick');
+	//el.off('click',Virtuemart.updForm);
+	//el.off('click dblclick',Virtuemart.bCheckoutButton);
+	el.on('click dblclick',Virtuemart.bCheckoutButton);
+	//el.on('click',Virtuemart.updForm);
+});
+	");
 
 vmJsApi::addJScript('vm.STisBT',"
 	jQuery(document).ready(function($) {
@@ -118,22 +148,7 @@ vmJsApi::addJScript('vm.STisBT',"
 
 $this->addCheckRequiredJs();
 
-vmJsApi::addJScript('vm.checkoutFormSubmit','
-	jQuery(document).ready(function($) {
-		jQuery(this).vm2front("stopVmLoading");
-		jQuery("#checkoutFormSubmit").bind("click dblclick", function(e){
-			jQuery(this).vm2front("startVmLoading");
-			e.preventDefault();
-			jQuery(this).attr("disabled", "true");
-			jQuery(this).removeClass( "vm-button-correct" );
-			jQuery(this).addClass( "vm-button" );
-			jQuery(this).fadeIn( 400 );
-			var name = jQuery(this).attr("name");
-			$("#checkoutForm").append("<input name=\""+name+"\" value=\"1\" type=\"hidden\">");
-			$("#checkoutForm").submit();
-		});
-	});
-');
+
 
 echo vmJsApi::writeJS();
 

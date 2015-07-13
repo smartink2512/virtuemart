@@ -417,6 +417,7 @@ class vmJsApi{
 		if (!VmConfig::get ('jdynupdate', TRUE) and !self::isAdmin()) {
 			return FALSE;
 		}
+
 		self::addJScript('dynupdate',false,false);
 		self::addJScript('updDynamicListeners',"
 jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
@@ -502,7 +503,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::addJScript('chosen.jquery.min',false,false);
 				if(!$be) {
-					vmJsApi::jDynUpdate();
+					//vmJsApi::jDynUpdate();
 					vmJsApi::addJScript('vmprices');
 				}
 				vmJsApi::css('chosen');

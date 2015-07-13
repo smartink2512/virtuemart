@@ -114,7 +114,7 @@ jQuery(function($) {
 					if (! el.length) el = jQuery(datas).filter(Virtuemart.containerSelector);
 					if (el.length) {
 						Virtuemart.container.html(el.html());
-						Virtuemart.updateCartListener();
+						//Virtuemart.updateCartListener();
 						//Virtuemart.updDynFormListeners();
 						//Virtuemart.updateCartListener();
 
@@ -161,7 +161,7 @@ jQuery(function($) {
 				default:
 					el[0].onchange = null;
 					el.off('click',Virtuemart.updFormS);
-					el.on('click',Virtuemart.updFormS);	//*/
+					el.on('click',Virtuemart.updFormS);
 					break;
 			}
 

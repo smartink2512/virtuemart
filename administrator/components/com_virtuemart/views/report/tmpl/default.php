@@ -43,7 +43,7 @@ else $addDateInfo = false;
                    echo vmText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . vmJsApi::jDate($this->until_period, 'until_period');
                         if(VmConfig::get('multix','none')!='none'){
                         	$vendorId = vRequest::getInt('virtuemart_vendor_id',1);
-                        	echo ShopFunctions::renderVendorList($vendorId,false);
+                        	echo ShopFunctions::renderVendorList($vendorId);
                         } ?>
                         <button class="btn btn-small" onclick="this.form.period.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?>
                         </button>

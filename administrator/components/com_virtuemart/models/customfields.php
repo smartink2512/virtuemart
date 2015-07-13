@@ -622,6 +622,20 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 
 				break;
+			// Property
+			case 'P':
+				$options = array();
+				$options[] = array('value' => 'product_name' ,'text' =>vmText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME'));
+				$options[] = array('value' => 'product_sku', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_SKU'));
+				$options[] = array('value' => 'slug', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_ALIAS'));
+				$options[] = array('value' => 'product_length', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_LENGTH'));
+				$options[] = array('value' => 'product_width', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WIDTH'));
+				$options[] = array('value' => 'product_height', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_HEIGHT'));
+				$options[] = array('value' => 'product_weight', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WEIGHT'));
+
+				return '</td><td>'.JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) .
+						'<input type="text" value="' . $field->round . '" name="field[' . $row . '][round]" />';
+
 			/* parent hint, this is a GROUP and should be G not P*/
 			case 'G':
 				return $field->customfield_value . '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" /></td><td>';
@@ -673,7 +687,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$document = JFactory::getDocument();
 				if (get_class($document) == 'JDocumentHTML') {
 					$editor = JFactory::getEditor();
-					return $editor->display('field['.$row.'][customfield_value]',$field->customfield_value, '550', '400', '60', '20', false).'</td><td>';
+					return '</td><td>'.$editor->display('field['.$row.'][customfield_value]',$field->customfield_value, '550', '400', '60', '20', false);
 				}
 				return $priceInput . '</td><td><textarea class="mceInsertContentNew" name="field[' . $row . '][customfield_value]" id="field-' . $row . '-customfield_value">' . $field->customfield_value . '</textarea>
 						<script type="text/javascript">// Creates a new editor instance
@@ -1145,6 +1159,37 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					break;
 
+					// Property
+				case 'P':
+					//$customfield->display = vmText::_ ('COM_VIRTUEMART_'.strtoupper($customfield->customfield_value));
+					$attr = $customfield->customfield_value;
+					$lkey = 'COM_VIRTUEMART_'.strtoupper($customfield->customfield_value).'_FE';
+					$trValue = vmText::_ ($lkey);
+					$options[] = array('value' => 'product_length', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_LENGTH'));
+					$options[] = array('value' => 'product_width', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WIDTH'));
+					$options[] = array('value' => 'product_height', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_HEIGHT'));
+					$options[] = array('value' => 'product_weight', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WEIGHT'));
+
+					$dim = '';
+
+					if($attr == 'product_length' or $attr == 'product_width' or $attr == 'product_height'){
+						$dim = $product->product_lwh_uom;
+					} else if($attr == 'product_weight') {
+						$dim = $product->product_weight_uom;
+					}
+					$val= $product->$attr;
+					if($customfield->round!=''){
+						$val = round($val,$customfield->round);
+					}
+					if($lkey!=$trValue and strpos($trValue,'%1')!==false) {
+						$customfield->display = vmText::sprintf( $customfield->customfield_value, $val , $dim );
+					} else if($lkey!=$trValue) {
+						$customfield->display = $trValue.' '.$val;
+					} else {
+						$customfield->display = vmText::_ ('COM_VIRTUEMART_'.strtoupper($customfield->customfield_value)).' '.$val.$dim;
+					}
+
+					break;
 				case 'Z':
 					if(empty($customfield->customfield_value)) break;
 					$html = '';
