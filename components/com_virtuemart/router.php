@@ -140,6 +140,7 @@ function virtuemartBuildRoute(&$query) {
 				$query['Itemid'] = $jmenu['virtuemart_product_id'][$query['virtuemart_product_id']];
 				unset($query['virtuemart_product_id']);
 				unset($query['virtuemart_category_id']);
+				unset($query['virtuemart_manufacturer_id']);
 			} else {
 				if(isset($query['virtuemart_product_id'])) {
 					if ($helper->use_id) $segments[] = $query['virtuemart_product_id'];
@@ -161,6 +162,7 @@ function virtuemartBuildRoute(&$query) {
 				}
 
 				unset($query['virtuemart_category_id']);
+				unset($query['virtuemart_manufacturer_id']);
 
 				if($virtuemart_product_id)
 					$segments[] = $helper->getProductName($virtuemart_product_id);
@@ -738,7 +740,8 @@ class vmrouterHelper {
 
 	/* Get Joomla menu item and the route for category */
 	public function getCategoryRouteNocache($virtuemart_category_id){
-		if (! array_key_exists ($virtuemart_category_id . VmConfig::$vmlang, self::$_catRoute)){
+		$virtuemart_manufacturer_id = isset($this->query['virtuemart_manufacturer_id']) ? $this->query['virtuemart_manufacturer_id'] : vRequest::getInt('virtuemart_manufacturer_id',0);
+		if (! array_key_exists ($virtuemart_category_id . 'mf' . $virtuemart_manufacturer_id . VmConfig::$vmlang, self::$_catRoute)){
 			$category = new stdClass();
 			$category->route = '';
 			$category->itemId = 0;
@@ -775,10 +778,10 @@ class vmrouterHelper {
 				$category->route .= $this->CategoryName[$virtuemart_category_id] ;
 				if ($menuCatid == 0  && $this->menu['virtuemart']) $category->itemId = $this->menu['virtuemart'] ;
 			}
-			self::$_catRoute[$virtuemart_category_id . VmConfig::$vmlang] = $category;
+			self::$_catRoute[$virtuemart_category_id . 'mf' . $virtuemart_manufacturer_id . VmConfig::$vmlang] = $category;
 		}
 
-		return self::$_catRoute[$virtuemart_category_id . VmConfig::$vmlang] ;
+		return self::$_catRoute[$virtuemart_category_id . 'mf' . $virtuemart_manufacturer_id . VmConfig::$vmlang] ;
 	}
 
 	/*get url safe names of category and parents categories  */
@@ -1090,7 +1093,7 @@ class vmrouterHelper {
 
 	/*
 	 * Get itemId from Joomla category menu with complete url
-	 * @author Maik K�nnemann
+	 * @author Maik Künnemann
 	 */
 	public function getMenuCatItemId($virtuemart_category_id) {
 
@@ -1104,21 +1107,29 @@ class vmrouterHelper {
 
 		$jLangTag = $this->Jlang->getTag();
 
-		$link = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
+		$links = array();
+		$links[] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
 			'&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id.
 			'&categorylayout='.$categorylayout.
 			'&showcategory='.$showcategory.
 			'&showproducts='.$showproducts.
 			'&productsublayout='.$productsublayout;
+		$links[] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
+			'&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id.'%';
+		$links[] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
+			'&virtuemart_manufacturer_id=0%';
 
 		$db = JFactory::getDbo();
-		$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and published = "1" and `language` = "'. $jLangTag .'"';
-		$db->setQuery( $q );
-		$items = $db->loadObjectList();
-		if(empty($items)) {
-			$q = 'SELECT * FROM `#__menu` WHERE `link` = "'. $link .'" and published = "1" and `language` = "*"';
+		foreach($links as $link) {
+			$q = 'SELECT * FROM `#__menu` WHERE `link` LIKE "'. $link .'" and published = "1" and `language` = "'. $jLangTag .'"';
 			$db->setQuery( $q );
 			$items = $db->loadObjectList();
+			if(empty($items)) {
+				$q = 'SELECT * FROM `#__menu` WHERE `link` LIKE "'. $link .'" and published = "1" and `language` = "*"';
+				$db->setQuery( $q );
+				$items = $db->loadObjectList();
+			}
+			if(!empty($items)) break;
 		}
 
 		if(!empty($items[0]->id)) {
