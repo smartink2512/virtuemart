@@ -382,46 +382,32 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					}
 					$tax = $this->getAvaTax( $rule,$products);
 					if($calculationHelper->inCart){
-
+						$tax = 0.0;
 						$prices =  $calculationHelper->getCartPrices();
 
-						$toSet = self::$_taxResult;// array();
+						$toSet = self::$_taxResult;
 						$toSet['salesPrice'] = 0.0;
 						foreach(self::$_taxResult as $k => $line){
 							if(is_integer($k)){
-								//$calculationHelper->_cart->cartPrices[$k]['taxAmount'] = $line['taxAmount'];
-								//$calculationHelper->_cart->cartPrices[$k]['subtotal_with_tax'] += $line['taxAmount'];
 								$toSet[$k]['salesPrice'] = $prices[$k]['salesPrice'] + $line['taxAmount'];
 								$toSet[$k]['subtotal_with_tax'] = $prices[$k]['subtotal_with_tax'] + $line['taxAmountQuantity'];
-								//vmdebug('my prices',$prices);
-								$toSet['salesPrice'] += $toSet[$k]['subtotal_with_tax'];//$prices[$k]['salesPrice'] + $line['taxAmountQuantity'];
+								$toSet['salesPrice'] += $toSet[$k]['subtotal_with_tax'];
 							}
 						}
-						$toSet['billTaxAmount'] = self::$_taxResult['totalTax'];
+						$toSet['taxAmount'] = self::$_taxResult['totalTax'];
 
 						if(isset($prices['shipmentValue']) and isset(self::$_taxResult['shipmentTax'] )) {
 							$toSet['shipmentTax'] = self::$_taxResult['shipmentTax'];
-							$toSet['billTaxAmount'] += $toSet['shipmentTax'];
 							$toSet['salesPriceShipment'] = $prices['shipmentValue'] + self::$_taxResult['shipmentTax'] ;
 						}
-						//vmdebug('salesPriceShipment',$prices['shipmentValue'],self::$_taxResult['shipmentTax']);
 
 						if(isset($prices['paymentValue']) ) { //and isset(self::$_taxResult['paymentTax'] )) {
 							$toSet['paymentTax'] = 0.0;
 							$toSet['salesPricePayment'] = $prices['paymentValue'];// + self::$_taxResult['paymentTax'] );
 						}
 
-						/*if(isset(self::$_taxResult['totalTax'] )) {
-							$toSet['salesPrice'] = $prices['salesPrice'] + self::$_taxResult['totalTax'];
-						}*/
-
-						//$cart_prices[$this->_psType . 'Value'] = 0.0;
-						//$cart_prices[$this->_psType . 'Tax'] = 0.0;
-
-						//vmdebug('avatax plgVmInterpreteMathOp ',$calculationHelper->_cart->products[0]->prices);
 						vmdebug('avatax plgVmInterpreteMathOp result',self::$_taxResult,$toSet);
 						$calculationHelper->setCartPricesMerge($toSet);
-						//$done = true;
 					}
 				} else if($rule->prevCheckoutAddInv){
 					if($calculationHelper->inCart){
