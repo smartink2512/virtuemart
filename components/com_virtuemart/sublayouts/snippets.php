@@ -4,9 +4,12 @@ defined('_JEXEC') or die('Restricted access');
 $product = $viewData['product'];
 $currency = $viewData['currency'];
 $view = vRequest::getCmd('view');
-$ratingModel = VmModel::getModel('Ratings');
-$productrating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
-$productratingcount = $productrating->ratingcount;
+if($viewData['showRating']){
+	$ratingModel = VmModel::getModel('Ratings');
+	$productrating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
+	$productratingcount = isset($productrating->ratingcount) ? $productrating->ratingcount:'';
+}
+
 ?>
 
 <script type="application/ld+json">

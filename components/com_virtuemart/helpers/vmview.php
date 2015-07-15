@@ -125,8 +125,8 @@ class VmView extends JViewLegacy{
 		}
 
 		$lang = '';
-		if(!empty(VmConfig::$vmlangTag)){
-			$lang = '&lang='.VmConfig::$vmlangTag;
+		if(VmConfig::$langCount>1 and !empty(VmConfig::$vmlangSef)){
+			$lang = '&lang='.VmConfig::$vmlangSef;
 		}
 
 		$this->continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryStr.$lang.$ItemidStr, FALSE);

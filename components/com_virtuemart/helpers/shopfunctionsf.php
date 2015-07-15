@@ -82,14 +82,13 @@ class shopFunctionsF {
 		return $session->set( 'vmlastvisitedmanuid', (int)$manuId, 'vm' );
 	}
 
+	/**
+	 * @param $orderable
+	 * @return string
+	 * @deprecated
+	 */
 	static public function getAddToCartButton ($orderable) {
-
-		if($orderable) {
-			$html = '<input type="submit" name="addtocart" class="addtocart-button" value="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
-		} else {
-			$html = '<span name="addtocart" class="addtocart-button-disabled" title="'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" >'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'</span>';
-		}
-		return $html;
+		return self::renderVmSubLayout('addtocartbtn',array('orderable'=>$orderable));
 	}
 
 	static public function isFEmanager ($task = FALSE) {

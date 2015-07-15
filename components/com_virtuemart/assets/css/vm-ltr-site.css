@@ -28,7 +28,7 @@ input.custom-attribute{width:140px;}
 
 .addtocart-area{margin: 0 0 4.2em;}
 span.quantity-box{display: inline-block; vertical-align:middle;}
-input.quantity-input{height:2.2em!important;width:2.2em!important;text-align:center;font-weight:700;padding:0.1em;margin-bottom:0!important;}
+input.quantity-input{height:1.8em!important;width:1.8em!important;text-align:center;font-weight:700;padding:0.1em;margin-bottom:0!important;}
 span.quantity-controls{width:15px;display: inline-block;vertical-align:middle;margin:0 0 0 1px;}
 span.quantity-controls input.quantity-controls{height:15px;border:none;width:15px;cursor:pointer;}
 span.quantity-controls input.quantity-plus{background:url(../images/vmgeneral/quantity-controls.png) no-repeat;margin: 1px 0;}
@@ -214,6 +214,15 @@ a:hover .vm-img-desc{background: #095197}
 .product-fields .product-field-type-M img {display:block;vertical-align: text-top;float:right;}
 .product-field-display {vertical-align: middle;}
 .product-fields .product-field .vm-img-desc {font-size:9px;}
+
+.vm-cart-item-name { align:left;overflow:hidden; }
+.vm-cart-item-sku { align:left }
+.vm-cart-item-basicprice{ min-width:64px;width:5%;align:right;text-align:center }
+.vm-cart-item-quantity{ min-width:100px;width:10%;align:right;text-align:center }
+.vm-cart-item-tax{ min-width:64px;width:5%;align:right;text-align:center }
+.vm-cart-item-discount{ min-width:64px;width:5%;align:right;text-align:center }
+.vm-cart-item-total{ min-width:64px;width:5%;align:right;text-align:center }
+
 
 /* some more styles */
 .buttonBar-right{text-align: right; float:right;}
