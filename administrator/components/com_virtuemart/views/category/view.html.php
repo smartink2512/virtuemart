@@ -85,7 +85,7 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id), 0, 0, (array) $category->virtuemart_category_id);
 
 			if(Vmconfig::get('multix','none')!=='none'){
-				$vendorList= ShopFunctions::renderVendorList($category->virtuemart_vendor_id,false);
+				$vendorList= ShopFunctions::renderVendorList($category->virtuemart_vendor_id);
 				$this->assignRef('vendorList', $vendorList);
 			}
 

@@ -127,10 +127,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions ($cart, $method, $cart->cartPrices)) {
 
-				//$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
-				/* Because of OPC: the price must not be overwritten directly in the cart */
-				$prices= $cart->cartPrices;
-				$methodSalesPrice = $this->setCartPrices ($cart,$prices ,$method);
+				$methodSalesPrice = $this->getMethodPrice ($cart,$method, $cart->cartPrices );
+				//vmdebug('$cart->cartPrices',$cart->cartPrices);
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 			}
@@ -915,7 +913,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (preg_match ('/%$/', $method->cost_percent_total)) {
 			$method->cost_percent_total = substr ($method->cost_percent_total, 0, -1);
 		} else {
-			$method->cost_percent_total = $method->cost_percent_total;
+			if(empty($method->cost_percent_total)){
+				$method->cost_percent_total = 0;
+			}
 		}
 		$cartPrice = !empty($cart->cartPrices['withTax'])? $cart->cartPrices['withTax']:$cart->cartPrices['salesPrice'];
 		return ($method->cost_per_transaction + ($cartPrice * $method->cost_percent_total * 0.01));
@@ -936,6 +936,15 @@ abstract class vmPSPlugin extends vmPlugin {
 		if ($amount <= 0) $amount=0;
 		return $amount;
 
+	}
+
+	function getMethodPrice($cart, $method, $cart_prices){
+		if (!class_exists ('calculationHelper')) {
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
+		}
+		$calculator = calculationHelper::getInstance ();
+		$value = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
+		return $value;
 	}
 
 	/**

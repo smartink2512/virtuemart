@@ -1,4 +1,6 @@
 <?php
+if (!defined('_JEXEC'))
+die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * ATConfig.class.php
  */
@@ -63,7 +65,7 @@ new ATConfig('Default', array(
     'account'   => '<your account number here>',
     'license'   => '<your license key here>',
     'adapter'   => 'avatax4php,14.2.0.0',
-    'client'    => 'AvalaraPHPInterface,1.0',
+    'client'    => 'VirtueMart3.0.10',
 	'name'    => '13.7.0.0',
     'trace'     => true) // change to false for production
 );

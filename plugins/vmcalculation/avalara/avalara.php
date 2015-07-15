@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -335,7 +335,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		$mathop = $rule->calc_value_mathop;
 		$tax = 0.0;
-
+		if($calculationHelper->inCart){
+			static $done = false;
+			if($done) return $price;
+		}
 		if ($mathop=='avalara') {
 			$requestedProductId = vRequest::getVar ('virtuemart_product_id',0);
 			if(is_array($requestedProductId) and count($requestedProductId) > 0) {
@@ -382,17 +385,43 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 						$prices =  $calculationHelper->getCartPrices();
 
+						$toSet = self::$_taxResult;// array();
+						$toSet['salesPrice'] = 0.0;
+						foreach(self::$_taxResult as $k => $line){
+							if(is_integer($k)){
+								//$calculationHelper->_cart->cartPrices[$k]['taxAmount'] = $line['taxAmount'];
+								//$calculationHelper->_cart->cartPrices[$k]['subtotal_with_tax'] += $line['taxAmount'];
+								$toSet[$k]['salesPrice'] = $prices[$k]['salesPrice'] + $line['taxAmount'];
+								$toSet[$k]['subtotal_with_tax'] = $prices[$k]['subtotal_with_tax'] + $line['taxAmountQuantity'];
+								//vmdebug('my prices',$prices);
+								$toSet['salesPrice'] += $toSet[$k]['subtotal_with_tax'];//$prices[$k]['salesPrice'] + $line['taxAmountQuantity'];
+							}
+						}
+						$toSet['billTaxAmount'] = self::$_taxResult['totalTax'];
+
 						if(isset($prices['shipmentValue']) and isset(self::$_taxResult['shipmentTax'] )) {
-							$prices['shipmentTax'] = self::$_taxResult['shipmentTax'];
-							self::$_taxResult['salesPriceShipment'] = $prices['shipmentValue'] + self::$_taxResult['shipmentTax'] ;
+							$toSet['shipmentTax'] = self::$_taxResult['shipmentTax'];
+							$toSet['billTaxAmount'] += $toSet['shipmentTax'];
+							$toSet['salesPriceShipment'] = $prices['shipmentValue'] + self::$_taxResult['shipmentTax'] ;
+						}
+						//vmdebug('salesPriceShipment',$prices['shipmentValue'],self::$_taxResult['shipmentTax']);
+
+						if(isset($prices['paymentValue']) ) { //and isset(self::$_taxResult['paymentTax'] )) {
+							$toSet['paymentTax'] = 0.0;
+							$toSet['salesPricePayment'] = $prices['paymentValue'];// + self::$_taxResult['paymentTax'] );
 						}
 
-						/*if(isset($prices['paymentValue']) and isset(self::$_taxResult['paymentTax'] )) {
-							self::$_taxResult['paymentTax'] = 0.0;
-							self::$_taxResult['salesPricePayment'] = ($prices['paymentValue'] + self::$_taxResult['paymentTax'] );
+						/*if(isset(self::$_taxResult['totalTax'] )) {
+							$toSet['salesPrice'] = $prices['salesPrice'] + self::$_taxResult['totalTax'];
 						}*/
 
-						$calculationHelper->setCartPricesMerge(self::$_taxResult);
+						//$cart_prices[$this->_psType . 'Value'] = 0.0;
+						//$cart_prices[$this->_psType . 'Tax'] = 0.0;
+
+						//vmdebug('avatax plgVmInterpreteMathOp ',$calculationHelper->_cart->products[0]->prices);
+						vmdebug('avatax plgVmInterpreteMathOp result',self::$_taxResult,$toSet);
+						$calculationHelper->setCartPricesMerge($toSet);
+						//$done = true;
 					}
 				} else if($rule->prevCheckoutAddInv){
 					if($calculationHelper->inCart){

@@ -93,7 +93,7 @@ class VirtuemartViewCalc extends VmViewAdmin {
 			$this->manufacturerList= ShopFunctions::renderManufacturerList($calc->virtuemart_manufacturers,true);
 
 			if($this->showVendors()){
-				$this->vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,false);
+				$this->vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id);
 			}
 
 			$this->addStandardEditViewCommands();

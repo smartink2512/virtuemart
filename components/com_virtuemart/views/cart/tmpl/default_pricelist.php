@@ -28,7 +28,9 @@
 <?php
 $i = 1;
 
-foreach ($this->cart->products as $pkey => $prow) { ?>
+foreach ($this->cart->products as $pkey => $prow) {
+	$prow->prices = array_merge($prow->prices,$this->cart->cartPrices[$pkey]);
+?>
 
 <tr valign="top" class="sectiontableentry<?php echo $i ?>">
 	<input type="hidden" name="cartpos[]" value="<?php echo $pkey ?>">
@@ -85,9 +87,9 @@ foreach ($this->cart->products as $pkey => $prow) { ?>
 	<?php if (VmConfig::get ('show_tax')) { ?>
 	<td class="vm-cart-item-tax" ><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('taxAmount', '', $prow->prices, FALSE, FALSE, $prow->quantity, false, true) . "</span>" ?></td>
 	<?php } ?>
-	<td class="vm-cart-item-discount" ><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('discountAmount', '', $prow->prices, FALSE, FALSE, $prow->quantity) . "</span>" ?></td>
+	<td class="vm-cart-item-discount" ><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('discountAmount', '', $prow->prices, FALSE, FALSE, $prow->quantity, false, true) . "</span>" ?></td>
 	<td class="vm-cart-item-total">
-		<?php
+		<?php //vmdebug('hm',$prow->prices,$this->cart->cartPrices[$pkey]);
 		if (VmConfig::get ('checkout_show_origprice', 1) && !empty($prow->prices['basePriceWithTax']) && $prow->prices['basePriceWithTax'] != $prow->prices['salesPrice']) {
 			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceWithTax', '', $prow->prices, TRUE, FALSE, $prow->quantity) . '</span><br />';
 		}
@@ -178,6 +180,7 @@ foreach ($this->cart->cartData['DBTaxRulesBill'] as $rule) {
 <?php
 
 foreach ($this->cart->cartData['taxRulesBill'] as $rule) {
+	if($rule['calc_value_mathop']=='avalara') continue;
 	?>
 <tr class="sectiontableentry<?php echo $i ?>">
 	<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>

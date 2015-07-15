@@ -74,8 +74,6 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER',$this->osWoP_Options,'email_os_s[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('email_os_s',array('U','C','S','R','X')), 'email_os_s',true);
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR',$this->os_Options,'email_os_v[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('email_os_v',array('U','C','R','X')), 'email_os_v',true);
 
-
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_LANGFIX','vmlang_js',VmConfig::get('vmlang_js',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER','oncheckout_change_shopper',VmConfig::get('oncheckout_change_shopper',1));
 
 		/*$_delivery_date_options = array(

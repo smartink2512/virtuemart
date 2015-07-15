@@ -433,6 +433,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	public function getUserFieldsFor($layoutName, $type){
 
+		static $c = array();
  		//vmdebug('getUserFieldsFor '.$layoutName.' '. $type .' ' . $userId);
 		$register = false;
 
@@ -445,6 +446,12 @@ class VirtueMartModelUserfields extends VmModel {
 			} else {
 				$register = true;
 			}
+		}
+		$h = $layoutName.$type.(int)$register;
+		//return cached
+		if(isset($c[$h])){
+			//vmTrace('getUserFieldsFor');
+			return $c[$h];
 		}
 
 		$skips = array();
@@ -506,6 +513,7 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
+		$c[$h] = $userFields;
 		return $userFields;
 	}
 	/**

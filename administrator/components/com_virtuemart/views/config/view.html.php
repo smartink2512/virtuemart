@@ -132,10 +132,10 @@ WHERE published="1"';
 
 		try {
 			$options = $db->loadAssocList();
-		} catch (Exceptoin $e){
-			$options = array();
+		} catch (Exception $e){
+			return array();
 		}
-
+		if(empty($options)) $options = array();
 		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NOPREF'),'virtuemart_'.$ps.'method_id',$ps.'_name');
 		array_unshift($options,$emptyOption);
 		$emptyOption = JHtml::_('select.option', '-1', vmText::_('COM_VIRTUEMART_NONE'),'virtuemart_'.$ps.'method_id',$ps.'_name');

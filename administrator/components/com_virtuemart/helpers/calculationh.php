@@ -198,12 +198,9 @@ class calculationHelper {
 	public function setCartPricesMerge($cartPrices){
 
 		foreach($cartPrices as $k=>$item){
-			if($k===0) {
-				vmdebug('setCartPricesMerge k === 0 ? item ',$item);
-				continue;
-			}
 			if(isset($this->_cart->cartPrices[$k]) and is_array($this->_cart->cartPrices[$k])){
 				$this->_cart->cartPrices[$k] = array_merge($this->_cart->cartPrices[$k],$item);
+
 			} else {
 				$this->_cart->cartPrices[$k] = $item;
 			}

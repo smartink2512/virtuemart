@@ -10,6 +10,7 @@
  * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
+if(!class_exists('Enum')) require (VMAVALARA_CLASS_PATH.DS.'Enum.class.php');
 
 class TextCase extends Enum
 {

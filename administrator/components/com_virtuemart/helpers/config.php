@@ -493,6 +493,7 @@ class VmConfig {
 	public static $defaultLang = false;
 	public static $jDefLang = false;
 	public static $vmlangTag = '';
+	public static $vmlangSef = '';
 	public static $langs = array();
 	public static $langCount = 0;
 	public static $mType = 'info';
@@ -957,6 +958,7 @@ class VmConfig {
 				$siteLang = $langs[0];
 			}
 		}
+		self::$vmlangTag = $siteLang;
 
 		if(count($langs)>1){
 			$lfbs = self::get('vm_lfbs');
@@ -977,12 +979,18 @@ class VmConfig {
 					self::set('fbsAssoc',$fbsAssoc);
 				}
 			}
+
+			// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
+			if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
+				$languages = JLanguageHelper::getLanguages('lang_code');
+				$ltag = JFactory::getLanguage()->getTag();
+				self::$vmlangSef = $languages[$ltag]->sef;
+			}
 		}
 
-		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr($defaultLang,'-','_'));
-		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
+		vmdebug('$siteLang: '.$siteLang.' self::$vmlangSef: '.self::$vmlangSef.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );
 

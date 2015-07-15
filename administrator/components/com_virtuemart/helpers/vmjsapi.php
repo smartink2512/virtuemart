@@ -340,26 +340,7 @@ class vmJsApi{
 		$jsVars = "";
 		$jsVars .= "vmSiteurl = '".JURI::root()."' ;\n";
 
-		$jTag = '';
-		if(VmConfig::get( 'vmlang_js', 1 )) {
-			if (count(VmConfig::$langCount)>1) {
-				// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
-				if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
-					$sefs 		= JLanguageHelper::getLanguages('sef');
-					foreach ($sefs as $k=>$v) {
-						if ($v->lang_code == self::$vmlangTag){
-							if (isset($v->sef)) {
-								$jTag = $v->sef;
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		$jsVars .= 'vmLang = "'.$jTag.'";'."\n";
-
+		$jsVars .= 'vmLang = "'.VmConfig::$vmlangSef.'";'."\n";
 
 		$Get = vRequest::getGet();
 		if(!empty($Get['Itemid'])){

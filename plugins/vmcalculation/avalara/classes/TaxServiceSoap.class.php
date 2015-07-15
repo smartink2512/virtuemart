@@ -22,6 +22,7 @@
  * @package   Tax
  */
 
+if(!class_exists('AvalaraSoapClient')) require (VMAVALARA_CLASS_PATH.DS.'AvalaraSoapClient.class.php');
 
 class TaxServiceSoap extends AvalaraSoapClient
 {
@@ -60,7 +61,7 @@ class TaxServiceSoap extends AvalaraSoapClient
 public function __construct($configurationName = 'Default')
     {
         $config = new ATConfig($configurationName);
-        
+        if(!class_exists('DynamicSoapClient')) require (VMAVALARA_CLASS_PATH.DS.'DynamicSoapClient.class.php');
         $this->client = new DynamicSoapClient   (
             $config->taxWSDL,
             array

@@ -8,10 +8,10 @@
  * is treated after a tax calculation. Specified when constructing a {@link GetTaxRequest}.
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
-
+if(!class_exists('Enum')) require (VMAVALARA_CLASS_PATH.DS.'Enum.class.php');
 
 class DocumentType extends Enum
 {
