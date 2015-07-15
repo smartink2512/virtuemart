@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * DocumentType.class.php
  */
@@ -10,10 +8,10 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * is treated after a tax calculation. Specified when constructing a {@link GetTaxRequest}.
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
-if(!class_exists('Enum')) require (VMAVALARA_CLASS_PATH.DS.'Enum.class.php');
+
 
 class DocumentType extends Enum
 {
@@ -59,6 +57,20 @@ class DocumentType extends Enum
 	 * @var DocumentType
 	 */
     public static $ReturnInvoice	= 'ReturnInvoice';
+
+     /**
+	 * Inventory Transfer Order
+	 *
+	 * @var DocumentType
+	 */
+    public static $InventoryTransferOrder	= 'InventoryTransferOrder';
+
+     /**
+	 * Inventory Transfer Invoice
+	 *
+	 * @var DocumentType
+	 */
+    public static $InventoryTransferInvoice	= 'InventoryTransferInvoice';
     
     /**
 	 * This will return all types of documents.
@@ -76,14 +88,13 @@ class DocumentType extends Enum
 			DocumentType::$PurchaseInvoice,
 			DocumentType::$ReturnOrder,
 			DocumentType::$ReturnInvoice,	
-			DocumentType::$Any	
+			DocumentType::$InventoryTransferOrder,	
+			DocumentType::$InventoryTransferInvoice,
+			DocumentType::$Any
 		);
 	}
 	// Unfortunate boiler plate due to polymorphism issues on static functions
     public static function Validate($value) { self::__Validate($value,self::Values(),__CLASS__); }
-	
-   
-	
 	
 }
 

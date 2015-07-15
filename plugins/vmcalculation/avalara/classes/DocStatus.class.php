@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * DocStatus.class.php
  */
@@ -10,7 +8,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * and indicates the state of the document in tax history.
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 

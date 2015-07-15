@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * GetTaxRequest.class.php
  */
@@ -11,7 +9,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see GetTaxResult
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
  
@@ -49,7 +47,9 @@ class GetTaxRequest
     private $ServiceMode;		//type: ServiceMode
     private $PaymentDate;		//date
     private $ExchangeRate;		//decimal
+    private $BusinessIdentificationNo;     //string
     private $ExchangeRateEffDate;	//date
+	private $PosLaneCode;		//string
     
     
     
@@ -254,17 +254,17 @@ class GetTaxRequest
      * </p>
      * <p>
      * The standard values for the CustomerUsageType (A-L).<br/>
-        A ï¿½ Federal Government<br/>
-        B ï¿½ State/Local Govt.<br/>
-        C ï¿½ Tribal Government<br/>
-        D ï¿½ Foreign Diplomat<br/>
-        E ï¿½ Charitable Organization<br/>
-        F ï¿½ Religious/Education<br/>
-        G ï¿½ Resale<br/>
-        H ï¿½ Agricultural Production<br/>
-        I ï¿½ Industrial Prod/Mfg.<br/>
-        J ï¿½ Direct Pay Permit<br/>
-        K ï¿½ Direct Mail<br/>
+        A – Federal Government<br/>
+        B – State/Local Govt.<br/>
+        C – Tribal Government<br/>
+        D – Foreign Diplomat<br/>
+        E – Charitable Organization<br/>
+        F – Religious/Education<br/>
+        G – Resale<br/>
+        H – Agricultural Production<br/>
+        I – Industrial Prod/Mfg.<br/>
+        J – Direct Pay Permit<br/>
+        K – Direct Mail<br/>
         L - Other<br/>
      * </p>
      * @param customerUsageType
@@ -398,6 +398,25 @@ class GetTaxRequest
 	public function setExchangeRateEffDate($value){ $this->ExchangeRateEffDate = $value; return $this; }	//date
 	
 	/**
+     * Sets the value for BusinessIdentificationNo
+     *
+     * @param string $value
+
+     */
+    public function setBusinessIdentificationNo($value){ $this->BusinessIdentificationNo = $value; return $this; }	//string
+	   
+	/**
+	 *Sets POS Lane Code.
+	 *
+	 * @param string $value
+
+	 */
+	public function setPosLaneCode($value)
+	{
+		$this->PosLaneCode = $value;// return $this;
+	}		//string
+    
+	/**
 	 *TaxOverride for the document. 
 	 *
 	 * @param TaxOverride $value
@@ -470,6 +489,8 @@ class GetTaxRequest
 	public function getServiceMode()  { return $this->ServiceMode; }		//type: ServiceMode
 	public function getPaymentDate()  { return $this->PaymentDate; }		//date	
 	public function getExchangeRateEffDate(){ return $this->ExchangeRateEffDate; }	//date
+    public function getBusinessIdentificationNo() {return $this->BusinessIdentificationNo; }   //string
+	public function getPosLaneCode() {return $this->PosLaneCode; }   //string
 	public function getTaxOverride(){ return $this->TaxOverride;}
 	
 	public function getReferenceCode()

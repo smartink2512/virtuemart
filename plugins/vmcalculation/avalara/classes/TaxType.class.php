@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * TaxType.class.php
  */
@@ -9,7 +7,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * The Type of the tax.
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -18,6 +16,12 @@ class TaxType// extends Enum
 	public static $Sales	= 'Sales';
 	public static $Use		= 'Use';
 	public static $ConsumerUse	= 'ConsumerUse';
+    public static $Output	= 'Output';
+    public static $Input	= 'Input';
+    public static $Nonrecoverable	= 'Nonrecoverable';
+    public static $Fee	= 'Fee';
+    public static $Rental	= 'Rental';
+	public static $Excise ='Excise';
 	/*
     public static function Values()
 	{

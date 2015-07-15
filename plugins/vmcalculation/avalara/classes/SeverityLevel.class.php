@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * SeverityLevel.class.php
  */
@@ -11,12 +9,10 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * Defines the constants used to specify SeverityLevel in {@link Message}
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
-
-if(!class_exists('Enum')) require (VMAVALARA_CLASS_PATH.DS.'Enum.class.php');
-
+ 
 class SeverityLevel extends Enum
 {
     public static $Success = 'Success';
@@ -31,7 +27,7 @@ class SeverityLevel extends Enum
 			SeverityLevel::$Success,
 			SeverityLevel::$Warning,
 			SeverityLevel::$Error,
-			SeverityLevel::$Tax
+			SeverityLevel::$Exception
 		);
 	}
 	

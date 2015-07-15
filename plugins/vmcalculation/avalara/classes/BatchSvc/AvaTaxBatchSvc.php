@@ -1,5 +1,4 @@
 <?php
-
 /**
  * AvaTaxBatchSvc.class.php
  */
@@ -8,7 +7,7 @@
  * Defines class loading search path.
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base 
  */
  

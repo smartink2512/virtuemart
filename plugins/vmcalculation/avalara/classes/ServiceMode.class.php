@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * ServiceMode.class.php
  */
@@ -14,7 +12,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * The default is Automatic which calculates locally unless remote is necessary for non-local addresses
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax 
  */
 

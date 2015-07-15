@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * DynamicSoapClient.class.php
  */
@@ -16,31 +14,24 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see TaxServiceSoap
  *  
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
  
 class DynamicSoapClient extends SoapClient
 {
     private $config;
-	var $TextCase = 'Upper';
     public function __construct($wsdl,$options,&$config)
     {
         parent::__construct($wsdl,$options);
-        $this->config = $config;
+        $this->config = $config; 
     }
 
 	public function __call($n,$args)
 	{
-		if(!class_exists('CancelTaxResult')) require (VMAVALARA_CLASS_PATH.DS.'CancelTaxResult.class.php');
-
-		$result = null;
         $profileHeader = new SoapHeader('http://avatax.avalara.com/services','Profile',new SoapVar($this->profileXML(),XSD_ANYXML));
         $securityHeader = new SoapHeader('http://avatax.avalara.com/services','Security',new SoapVar($this->securityXML(),XSD_ANYXML));
-
-		if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
-
-        $result = $this->__soapCall($n,$args,NULL,array($securityHeader,$profileHeader));
+        	$result = $this->__soapCall($n,$args,NULL,array($securityHeader,$profileHeader));
         return $result;
 	}
     

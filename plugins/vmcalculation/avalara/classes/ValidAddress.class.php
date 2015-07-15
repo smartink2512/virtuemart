@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * ValidAddress.class.php
  */
@@ -36,7 +34,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see Address
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
 
@@ -103,11 +101,8 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
  
 	public function equals(&$other)
 	{
-		if(!is_object($other)){
-			return FALSE;
-		}
 		return $this === $other || (
-		strcmp($this->AddressCode , $other->getAddressCode()) == 0 &&
+		strcmp($this->AddressCode , $other->AddressCode) == 0 &&
 		strcmp($this->Line1 , $other->Line1) == 0 &&
 		strcmp($this->Line2 , $other->Line2) == 0 &&
 		strcmp($this->Line3 , $other->Line3) == 0 &&
@@ -115,6 +110,8 @@ class ValidAddress //extends Address - or it should - SoapClient has issues mapp
 		strcmp($this->Region , $other->Region) == 0 &&
 		strcmp($this->PostalCode , $other->PostalCode) == 0 &&
 		strcmp($this->Country , $other->Country) == 0 &&
+		strcmp($this->Latitude , $other->Latitude) == 0 &&
+		strcmp($this->Longitude , $other->Longitude) == 0 &&
 		$this->TaxRegionId === $other->TaxRegionId
 		);
 	}

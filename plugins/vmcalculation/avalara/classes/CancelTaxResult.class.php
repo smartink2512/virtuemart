@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * CancelTaxResult.class.php
  */
@@ -10,7 +8,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see CancelTaxRequest
  *  
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  * 
  */
@@ -33,12 +31,17 @@ class CancelTaxResult // extends BaseResult
  * @var array of Message.
  */
     private $Messages = array();
+	
+	private $DocId;
 
 /**
  * Accessor
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
+	
+	public function getDocId() { return $this->DocId; }
+	
 /**
  * Accessor
  * @return string

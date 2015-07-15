@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * AddressServiceSoap.class.php
  */
@@ -18,11 +16,10 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * </pre>
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  * 
  */
-if(!class_exists('AvalaraSoapClient')) require (VMAVALARA_CLASS_PATH.DS.'AvalaraSoapClient.class.php');
 
 class AddressServiceSoap extends AvalaraSoapClient
 {
@@ -57,18 +54,10 @@ class AddressServiceSoap extends AvalaraSoapClient
      * @see TaxServiceSoap
      */
 
-    public function __construct($configurationName = 'Default',$config=0)
+    public function __construct($configurationName = 'Default')
     {
-	    if(empty($config)){
-		    vmdebug('AddressServiceSoap '.$configurationName);
-		    $config = new ATConfig($configurationName);
-	    }
-
-
-	    if(!class_exists('DynamicSoapClient')) require (VMAVALARA_CLASS_PATH.DS.'DynamicSoapClient.class.php');
-
-
-	    $this->client = new DynamicSoapClient   (
+        $config = new ATConfig($configurationName);
+        $this->client = new DynamicSoapClient   (
             $config->addressWSDL,
             array
             (
@@ -78,7 +67,6 @@ class AddressServiceSoap extends AvalaraSoapClient
             ), 
             $config
         );
-	    //$this->client->__getTypes();
     }
 
     /**
@@ -123,26 +111,24 @@ class AddressServiceSoap extends AvalaraSoapClient
     }
     
     /**
-     * Validates an address and returns a collection of possible
+     * Validates an address and returns a normalized address or error.
      * {@link ValidAddress} objects in a {@link ValidateResult} object.
-     * 
+     *
      * Takes an {@link Address}, an optional {@link TextCase}
      * property that determines the casing applied to a validated
-     * address.  It defaults to TextCase::$Default.
+     * address. It defaults to TextCase::$Default.
      * <b>Example:</b><br>
      * <pre>
-     *  $port = new AddressServiceSoap();
+     * $port = new AddressServiceSoap();
      *
-     *  $address = new Address();
-     *  $address->setLine1("900 Winslow Way");
-     *  $address->setLine2("Suite 130");
-     *  $address->setCity("Bainbridge Is");
-     *  $address->setRegion("WA");
-     *  $address->setPostalCode("98110-2450");
+     * $address = new Address();
+     * $address->setLine1("900 Winslow Way");
+     * $address->setLine2("Suite 130");
+     * $address->setCity("Bainbridge Is");
+     * $address->setRegion("WA");
+     * $address->setPostalCode("98110-2450");
      *
-     *  $result = $port->validate(new ValidateRequest($address,TextCase::$Upper));
-     *  $addresses = $result->validAddresses();
-     *  print('Number of addresses returned is: '.sizeof($addresses)); 
+     * $result = $port->validate(new ValidateRequest($address,TextCase::$Upper));
      * </pre>
      *
      * @param ValidateRequest
@@ -150,12 +136,9 @@ class AddressServiceSoap extends AvalaraSoapClient
      *
      * @throws SoapFault
      */
-
-	
 	 public function validate($validateRequest)
     {
-	    return $this->client->Validate( array('ValidateRequest' => $validateRequest) )->ValidateResult;
-        //return $result->ValidateResult();
+        return $this->client->Validate(array('ValidateRequest' => $validateRequest))->ValidateResult;
     }     
 
 

@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * ATConfig.class.php
  */
@@ -11,7 +9,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * {@link AddressServiceSoap} and {@link TaxServiceSoap} read this file during initialization.
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
 
@@ -57,16 +55,16 @@ new ATConfig('Default', array(
     'addressService' => '/Address/AddressSvc.asmx',
     'taxService' => '/Tax/TaxSvc.asmx',
 	'batchService'=> '/Batch/BatchSvc.asmx',
-	'avacertService'=> '/AvaCert/AvaCertSvc.asmx',
+	'avacert2Service'=> '/AvaCert2/AvaCert2Svc.asmx',
     'addressWSDL' => 'file://'.$__wsdldir.'/Address.wsdl',
     'taxWSDL'  => 'file://'.$__wsdldir.'/Tax.wsdl',
 	'batchWSDL'  => 'file://'.$__wsdldir.'/BatchSvc.wsdl',
-	'avacertWSDL'  => 'file://'.$__wsdldir.'/AvaCertSvc.wsdl',
+	'avacert2WSDL'  => 'file://'.$__wsdldir.'/AvaCert2Svc.wsdl',
     'account'   => '<your account number here>',
     'license'   => '<your license key here>',
-    'adapter'   => 'avatax4php,5.10.0.0',
-    'client'    => 'VirtueMart3.0.10',
-	'name'    => 'PHPAdapter',
+    'adapter'   => 'avatax4php,14.2.0.0',
+    'client'    => 'AvalaraPHPInterface,1.0',
+	'name'    => '13.7.0.0',
     'trace'     => true) // change to false for production
 );
 

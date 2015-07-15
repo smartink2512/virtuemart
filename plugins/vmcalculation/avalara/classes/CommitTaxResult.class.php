@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * CommitTaxResult.class.php
  */
@@ -10,7 +8,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see CommitTaxRequest
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -24,6 +22,8 @@ class CommitTaxResult //extends BaseResult
  * @var string
  */
     private $TransactionId;
+	
+	private $DocId;
 /**
  * @var string must be one of the values defined in {@link SeverityLevel}.
  */
@@ -38,6 +38,8 @@ class CommitTaxResult //extends BaseResult
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
+	
+	public function getDocId() { return $this->DocId;}
 /**
  * Accessor
  * @return string

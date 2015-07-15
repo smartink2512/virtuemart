@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * TextCase.class.php
  */
@@ -9,11 +7,9 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * The casing to apply to the valid address(es) returned in the validation result.
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
-
-if(!class_exists('Enum')) require (VMAVALARA_CLASS_PATH.DS.'Enum.class.php');
 
 class TextCase extends Enum
 {

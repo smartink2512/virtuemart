@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * BoundaryLevel.class.php
  */
@@ -12,7 +10,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see TaxLine
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
 */
 

@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * PostTaxResult.class.php
  */
@@ -11,7 +9,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see PostTaxRequest
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax
  */
 
@@ -25,6 +23,8 @@ class PostTaxResult //extends BaseResult
  * @var string
  */
     private $TransactionId;
+	
+	private $DocId;
 /**
  * @var string must be one of the values defined in {@link SeverityLevel}.
  */
@@ -39,6 +39,8 @@ class PostTaxResult //extends BaseResult
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
+	
+	public function getDocId() { return $this->DocId; }
 /**
  * Accessor
  * @return string

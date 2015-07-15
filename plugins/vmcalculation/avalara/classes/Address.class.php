@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * Address.class.php
  */
@@ -21,14 +19,15 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  *  $address->setCity("Bainbridge Is");
  *  $address->setRegion("WA");
  *  $address->setPostalCode("98110-2450");
- *
+ *  $address->setLongitude("-122.510359");
+ *  $address->setLatitude("47.624972");
  *  $result = $port->validate($address,TextCase::$Upper);
  *  $addresses = $result->ValidAddresses;
  *  print("Number of addresses returned is ". sizseof($addresses));
  *
  * </pre>
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
  
@@ -44,7 +43,9 @@ class Address
 	private $PostalCode;
     private $Country = 'USA';
     private $TaxRegionId = 0;
-
+    private $Latitude;
+    private $Longitude;
+     
     /**
      * Construct a new Address.
      *
@@ -61,9 +62,11 @@ class Address
      * @param string $postalCode
      * @param string $country
      * @param integer $taxRegionId
+     * @param String $latitude
+     * @param String $longitude
      */
 
-    public function __construct($line1=null,$line2=null,$line3=null,$city=null,$region=null,$postalCode=null,$country='USA',$taxRegionId=0)
+    public function __construct($line1=null,$line2=null,$line3=null,$city=null,$region=null,$postalCode=null,$country='USA',$taxRegionId=0 ,$latitude=null ,$longitude=null )
     {
 		$this->Line1 = $line1;
         $this->Line2 = $line2;
@@ -73,6 +76,8 @@ class Address
         $this->PostalCode = $postalCode;
         $this->Country = $country;
         $this->TaxRegionId = $taxRegionId;
+        $this->Latitude = $latitude;
+        $this->Longitude = $longitude; 
     }
 
 	/**
@@ -140,6 +145,23 @@ class Address
 	 */
     public function setTaxRegionId($value) { $this->TaxRegionId = $value;  }
 
+ 	
+ 	/**
+     * Set Latitude Value
+     *
+     * @param string $value
+     */
+    public function setLatitude($value) { $this->Latitude = $value; }
+    
+    
+ 	/**
+     * Set Longitude Value
+     *
+     * @param string $value
+     */
+    public function setLongitude($value) { $this->Longitude = $value; }
+    
+    
  	/**
  	 * Programmatically determined value used internally by the adapter.
  	 *
@@ -202,6 +224,22 @@ class Address
      * @return string $value
      */
     public function getTaxRegionId() { return $this->TaxRegionId; }
+    
+    
+    /**
+     * Latitude Value
+     *
+     * @return string $value
+     */
+    public function getLatitude() { return $this->Latitude; }
+    
+    
+    /**
+     * Longitude Value
+     *
+     * @return string $value
+     */
+    public function getLongitude() { return $this->Longitude; }
 
 
 	/**
@@ -221,6 +259,8 @@ class Address
 		strcmp($this->Region , $other->Region) == 0 &&
 		strcmp($this->PostalCode , $other->PostalCode) == 0 &&
 		strcmp($this->Country , $other->Country) == 0 &&
+		strcmp($this->Latitude , $other->Latitude) == 0 &&
+		strcmp($this->Longitude , $other->Longitude) == 0 &&
 		$this->TaxRegionId === $other->TaxRegionId
 		);
 	}

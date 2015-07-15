@@ -1,7 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
-
 /**
  * IsAuthorized.class.php
  */
@@ -10,7 +7,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * 
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Batch
  */
 class IsAuthorized {

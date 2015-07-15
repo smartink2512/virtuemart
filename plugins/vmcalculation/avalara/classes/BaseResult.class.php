@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /** 
  * BaseResult.class.php
  */
@@ -9,7 +7,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * The base class for result objects that return a ResultCode and Messages collection -- There is no reason for clients to create these.
  *
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
  
@@ -25,6 +23,8 @@ class BaseResult
  * @return string
  */
     public function getTransactionId() { return $this->TransactionId; }
+	
+	public function getDocId() { return $this->DocId; }
 /**
  * Indicates whether operation was successfully completed or not.
  * @return string

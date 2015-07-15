@@ -1,11 +1,33 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * AvaTax.php
  *
  * @package Base
  */
+ 
+/**
+ * Defines class loading search path.
+ */
+ 
+function __autoload($class_name) 
+{ 	
+	
+	$path=dirname(__FILE__).'/classes/'.$class_name . '.class.php';
+	
+	if(!file_exists($path))
+	{
+		$path=dirname(__FILE__).'/classes/BatchSvc/'.$class_name . '.class.php';
+	}
+	
+	if(!file_exists($path))
+	{
+		$path=dirname(__FILE__).'/classes/AvaCert2Svc/'.$class_name . '.class.php';		
+	}
+	
+	require_once $path;
+    
+     
+}
 
 function EnsureIsArray( $obj ) 
 {
@@ -19,6 +41,8 @@ function EnsureIsArray( $obj )
     }
     return $item;
 }
+
+
 
 /**
 * Takes xml as a string and returns it nicely indented
@@ -74,5 +98,8 @@ function getCurrentDate()
 	$dateTime=new DateTime();
 	return $dateTime->format("Y-m-d");
 } 
+
+
+
 
 ?>

@@ -1,6 +1,4 @@
 <?php
-if (!defined('_JEXEC'))
-die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * GetTaxResult.class.php
  */
@@ -11,7 +9,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @see GetTaxRequest
  * 
  * @author    Avalara
- * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Tax 
  */
 
@@ -19,6 +17,7 @@ class GetTaxResult // extends BaseResult
 {
   	  
 	private $DocCode;	//string  
+	private $DocId;		//string
  	private $AdjustmentDescription;      //string  
 	private $DocDate;			//date 
 	private $TaxDate;			//date  	
@@ -42,7 +41,16 @@ class GetTaxResult // extends BaseResult
 	private $TaxSummary;		//ArrayOfTaxDetail	
 	
 	
-    
+    /**
+     * Gets the internal reference code used by the client application. This is used for operations such as Post and GetTaxHistory.       
+     * <p>
+     * See {@link GetTaxRequest#getDocId} on <b>GetTaxRequest</b> for more information about this member.
+     * </p>
+     *
+     * @return string
+     */
+	public function getDocId() {return $this->DocId; }
+	
 	 /**
      * Gets the internal reference code used by the client application. This is used for operations such as Post and GetTaxHistory.       
      * <p>
