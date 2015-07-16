@@ -1044,6 +1044,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 		}
+
 		$pbC = VmConfig::get('pricesbyCurrency',false);
 		if($front and $pbC){
 			$app = JFactory::getApplication();
@@ -1088,6 +1089,7 @@ class VirtueMartModelProduct extends VmModel {
 				if($front and $pbC){
 					if($cur and $cur==$price['product_currency']){
 						$product->selectedPrice = $k;
+						break;
 					}
 				}
 			}

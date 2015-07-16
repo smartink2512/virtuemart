@@ -6,6 +6,7 @@
   font-size: 13px;
   zoom: 1;
   *display: inline;
+  max-width: 100%;
 }
 .chzn-container .chzn-drop {
   position: absolute;

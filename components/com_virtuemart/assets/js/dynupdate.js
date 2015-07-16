@@ -152,7 +152,7 @@ jQuery(function($) {
 		jQuery('#checkoutForm').find('*[data-dynamic-update=1]').each(function(i, el) {
 			var nodeName = el.nodeName;
 			el = jQuery(el);
-			console.log('updDynFormListeners ' + nodeName, el);
+			//console.log('updDynFormListeners ' + nodeName, el);
 			switch (nodeName) {
 				case 'BUTTON':
 					el[0].onchange = null;

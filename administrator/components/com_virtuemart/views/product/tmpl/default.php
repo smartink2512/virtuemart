@@ -66,9 +66,15 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 <div style="text-align: left;">
 <?php
 // $this->productlist
+$mediaLimit = (int)VmConfig::get('mediaLimit',20);
+$totalList = count($this->productlist);
+if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
+	$imgWidth = VmConfig::get('img_width');
+	if(empty($imgWidth)) $imgWidth = 80;
+} else {
+	$imgWidth = 30;
+}
 
-$imgWidth = VmConfig::get('img_width');
-if(empty($imgWidth)) $imgWidth = 80;
 ?>
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	<thead>
@@ -105,7 +111,7 @@ if(empty($imgWidth)) $imgWidth = 80;
 	<?php
 	$total = $this->pagination->total;
 
-	if ($totalList = count($this->productlist) ) {
+	if ($totalList ) {
 		$i = 0;
 		$k = 0;
 		$keyword = vRequest::getCmd('keyword');
@@ -151,7 +157,7 @@ if(empty($imgWidth)) $imgWidth = 80;
 				<td align="center">
 					<?php
 					// We show the images only when less than 21 products are displayeed -->
-					$mediaLimit = (int)VmConfig::get('mediaLimit',20);
+
 					if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 						// Product list should be ordered
 						$this->model->addImages($product,1);
