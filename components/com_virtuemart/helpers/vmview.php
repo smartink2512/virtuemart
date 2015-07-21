@@ -129,10 +129,10 @@ class VmView extends JViewLegacy{
 			$lang = '&lang='.VmConfig::$vmlangSef;
 		}
 
-		$this->continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryStr.$lang.$ItemidStr, FALSE);
+		$this->continue_link = JURI::root() .'/index.php?option=com_virtuemart&view=category' . $categoryStr.$lang.$ItemidStr;
 		$this->continue_link_html = '<a class="continue_link" href="' . $this->continue_link . '">' . vmText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 
-		$this->cart_link = JRoute::_('index.php?option=com_virtuemart&view=cart'.$lang, FALSE);
+		$this->cart_link = JURI::root().'index.php?option=com_virtuemart&view=cart'.$lang;
 
 		return;
 	}

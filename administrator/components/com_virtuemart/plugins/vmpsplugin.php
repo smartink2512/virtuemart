@@ -127,8 +127,10 @@ abstract class vmPSPlugin extends vmPlugin {
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions ($cart, $method, $cart->cartPrices)) {
 
-				$methodSalesPrice = $this->getMethodPrice ($cart,$method, $cart->cartPrices );
-				//vmdebug('$cart->cartPrices',$cart->cartPrices);
+				// the price must not be overwritten directly in the cart
+				$prices = $cart->cartPrices;
+				$methodSalesPrice = $this->setCartPrices ($cart, $prices ,$method);
+
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 			}
@@ -938,15 +940,6 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	}
 
-	function getMethodPrice($cart, $method, $cart_prices){
-		if (!class_exists ('calculationHelper')) {
-			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
-		}
-		$calculator = calculationHelper::getInstance ();
-		$value = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
-		return $value;
-	}
-
 	/**
 	 * @param VirtueMartCart $cart
 	 * @param $cart_prices
@@ -957,10 +950,20 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method, $progressive = true) {
 
+		static $c = array();
+		$idN = 'virtuemart_'.$this->_psType.'method_id';
+
+		$_psType = ucfirst ($this->_psType);
+
+		if(isset($c[$this->_psType][$method->$idN])){
+			$cart_prices = array_merge($cart_prices,$c[$this->_psType][$method->$idN]);
+			return $cart_prices['salesPrice' . $_psType];
+		}
+
 		if (!class_exists ('calculationHelper')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
-		$_psType = ucfirst ($this->_psType);
+
 		$calculator = calculationHelper::getInstance ();
 
 		$cart_prices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
@@ -1044,7 +1047,6 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		}
 
-
 		if(empty($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
 		if(empty($method->cost_percent_total)) $method->cost_percent_total = 0.0;
 
@@ -1068,6 +1070,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
+		$c[$this->_psType][$method->$idN] = $cart_prices;
 		//if($_psType='Shipment')vmTrace('setCartPrices '.$cart_prices['salesPrice' . $_psType]);
 		return $cart_prices['salesPrice' . $_psType];
 

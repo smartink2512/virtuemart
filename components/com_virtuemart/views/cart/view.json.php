@@ -31,18 +31,13 @@ class VirtueMartViewCart extends VmView {
 
 	public function display($tpl = null) {
 
-		$document = JFactory::getDocument();
-
 		$layoutName = $this->getLayout();
 		if (!$layoutName) $layoutName = vRequest::getCmd('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
-		$format = vRequest::getCmd('format');
 
 		if (!class_exists('VirtueMartCart'))
 		require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
-		$cart = VirtueMartCart::getCart();
-
-		$this->assignRef('cart', $cart);
+		$this->cart = VirtueMartCart::getCart();
 
     	$this->prepareContinueLink();
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');

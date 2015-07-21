@@ -422,8 +422,7 @@ class VirtueMartViewCart extends VmView {
 			$text = '';
 			$user = JFactory::getUser();
 			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
-				$uri = JFactory::getURI();
-				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
+				$link = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
 				$text = vmText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');
 			}
 

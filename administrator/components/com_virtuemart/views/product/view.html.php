@@ -67,7 +67,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				//$user = JFactory::getUser();
 				$superVendor =  VmConfig::isSuperVendor();
 				if( $superVendor !=1 and $superVendor!=$product->virtuemart_vendor_id){
-					JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart&view=virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+					vmdebug('Product view.html.php '.$superVendor,$product->virtuemart_vendor_id);
+					JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart&view=virtuemart', vmText::_('COM_VIRTUEMART_ALERTNOTAUTHOR'), 'error');
 				}
 				if(!empty($product->product_parent_id)){
 					$product_parent= $model->getProductSingle($product->product_parent_id,false);
