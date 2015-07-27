@@ -936,7 +936,7 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Creates an drop-down list with years of the selected range or of the next 7 years
+	 * Creates an drop-down list with years of the selected range or of the next 11 years
 	 *
 	 * @param string $list_name The name of the select element
 	 * @param string $selected_item The pre-selected value
