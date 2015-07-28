@@ -127,8 +127,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if (!$this->checkConditionSignIn($cart)) {
 			return NULL;
 		}
-		$cart->setOutOfCheckout();
+		//$cart->setOutOfCheckout();
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
 		$buttonWidgetImageURL = $this->getButtonWidgetImageURL();
 		if (!empty($buttonWidgetImageURL)) {
 
@@ -208,6 +209,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->setCartLayout($cart);
 
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		$this->addWidgetUrlScript($client);
 		if (empty($this->_amazonOrderReferenceId)) {
 			$this->_amazonOrderReferenceId = $this->getAmazonOrderReferenceIdFromSession();
@@ -592,6 +595,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetRefundDetailsRequest');
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		try {
 			$getRefundDetailsRequest = new OffAmazonPaymentsService_Model_GetRefundDetailsRequest();
 			$getRefundDetailsRequest->setSellerId($this->_currentMethod->sellerId);
@@ -680,7 +685,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		if ($captureState == 'Completed' OR $captureState == 'Closed' OR $captureState == 'Declined') {
 			// will update Billing address
-			$this->getAuthorization($client = $this->getOffAmazonPaymentsService_Client(), NULL, $order, false);
+			$client = $this->getOffAmazonPaymentsService_Client();
+			if ($client==NULL) return;
+
+			$this->getAuthorization($client, NULL, $order, false);
 		}
 
 	}
@@ -720,7 +728,10 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			case 'newAuthorization':
 
 				if ($this->canDoAuthorization($payments, $order)) {
-					$this->getAuthorization($this->getOffAmazonPaymentsService_Client(), NULL, $order, false);
+					$client=$this->getOffAmazonPaymentsService_Client();
+					if ($client==NULL) return;
+
+					$this->getAuthorization($client, NULL, $order, false);
 				}
 				break;
 			default:
@@ -845,6 +856,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return true;
 		}
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
 
 		// incase the Address was not displayed
 		if ($this->isOnlyDigitalGoods($cart)) {
@@ -1013,6 +1025,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 */
 	private function vmConfirmedOrder ($cart, $order, $orderReferenceModifiable = true ) {
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
 
 		// if $cart=NULL may be coming from plgVmRetrieveIPN
 		if ($cart) {
@@ -1146,7 +1159,15 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				$ST['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 				$ST['address_type'] = 'ST';
 				$order_userinfosTable->emptyCache();
-				$mm=$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='ST'");
+				// check if ST is there
+				$query="SELECT `#__virtuemart_order_userinfos`.*  FROM `#__virtuemart_order_userinfos`  WHERE `#__virtuemart_order_userinfos`.`virtuemart_order_id` = ".$order['details']['BT']->virtuemart_order_id."  AND address_type='ST'";
+				$db = JFactory::getDBO();
+				$db->setQuery($query);
+				if(!$db->loadResult()) {
+					$order_userinfosTable=$orderModel->getTable('order_userinfos');
+				}
+
+				$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='ST'");
 				if (!$order_userinfosTable->bindChecknStore($ST, true)) {
 					vmError($order_userinfosTable->getError());
 					return false;
@@ -1225,6 +1246,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_GetOrderReferenceDetailsRequest');
 
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		try {
 			$getOrderReferenceDetailsRequest = new OffAmazonPaymentsService_Model_GetOrderReferenceDetailsRequest();
 			$getOrderReferenceDetailsRequest->setSellerId($this->_currentMethod->sellerId);
@@ -1242,6 +1265,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	function getAuthorizationDetails ($amazonAuthorizationId, $order) {
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		try {
 
 			$getAuthorizationDetailsRequest = new OffAmazonPaymentsService_Model_GetAuthorizationDetailsRequest();
@@ -1264,6 +1289,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	private function getCaptureDetails ($amazonCaptureId, $order) {
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		try {
 			$getCaptureDetailsRequest = new OffAmazonPaymentsService_Model_GetCaptureDetailsRequest();
 			$getCaptureDetailsRequest->setSellerId($this->_currentMethod->sellerId);
@@ -1925,6 +1952,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CaptureRequest');
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_Price');
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		$captureRequest = new OffAmazonPaymentsService_Model_CaptureRequest();
 		$captureRequest->setSellerId($this->_currentMethod->sellerId);
 		$captureRequest->setAmazonAuthorizationId($amazonAuthorizationId);
@@ -1977,6 +2006,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_Price');
 
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		$refund = new OffAmazonPaymentsService_Model_Price();
 		$refund->setCurrencyCode($this->getCurrencyCode3($client));
 		$refund->setAmount($this->getTotalInPaymentCurrency($client, $this->_amount, $order['details']['BT']->order_currency));
@@ -2015,6 +2046,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	function getOrderReferenceState () {
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return false;
 
 		$getOrderReferenceDetailsResponse = $this->getOrderReferenceDetails($client);
 		if ($getOrderReferenceDetailsResponse) {
@@ -2098,10 +2130,11 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return FALSE;
 		}
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		$method->payment_currency = $this->getCurrencyId($client);
 
 		$paymentCurrencyId = $method->payment_currency;
-		$client = $this->getOffAmazonPaymentsService_Client();
 
 		return TRUE;
 	}
@@ -2471,11 +2504,9 @@ jQuery().ready(function($) {
 	 */
 	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
-
 			return NULL;
 		}
 		if (!($this->_currentMethod = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
-
 			$this->clearAmazonSession();
 			return NULL;
 		}
@@ -2950,13 +2981,13 @@ jQuery().ready(function($) {
 
 		if (!$STsameAsBT) {
 			$update_dataST ['address_type'] = 'ST';
+			$cart->STsameAsBT = false;
 			unset($update_dataST['shipto_company']);
 			$cart->saveAddressInCart($update_dataST, $update_dataST['address_type'], TRUE,$prefix);
 		} else {
 			$cart->STsameAsBT = true;
-			$cart->setCartIntoSession();
 		}
-
+		$cart->setCartIntoSession();
 		return true;
 	}
 
@@ -3076,7 +3107,10 @@ jQuery().ready(function($) {
 
 
 	private function onNotificationGetAuthorization ($payments, $order) {
-		$this->getAuthorization($this->getOffAmazonPaymentsService_Client(), NULL, $order, false);
+		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
+		$this->getAuthorization($client, NULL, $order, false);
 	}
 
 	private function onNotificationGetAuthorizationDetails ($payments, $order) {
@@ -3136,6 +3170,8 @@ jQuery().ready(function($) {
 	function closeAuthorization ($amazonAuthorizationId, $order, $closeReason='VMPAYMENT_AMAZON_CLOSE_REASON_ORDER_COMPLETE') {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CloseAuthorizationRequest');
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+
 		try {
 			$closeAuthorizationRequest = new OffAmazonPaymentsService_Model_CloseAuthorizationRequest();
 			$closeAuthorizationRequest->setSellerId($this->_currentMethod->sellerId);
@@ -3438,6 +3474,8 @@ jQuery().ready(function($) {
 			return FALSE;
 		}
 		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return NULL;
+
 		try {
 			$getOrderReferenceDetailsRequest = new OffAmazonPaymentsService_Model_GetOrderReferenceDetailsRequest();
 			$getOrderReferenceDetailsRequest->setSellerId($this->_currentMethod->sellerId);
