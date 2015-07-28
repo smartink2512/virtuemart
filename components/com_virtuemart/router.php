@@ -255,15 +255,15 @@ function virtuemartBuildRoute(&$query) {
 
 			break;
 		case 'cart';
-			//if(!isset($query['Itemid'])){
-				if ( isset($jmenu['cart']) ) {
-					$query['Itemid'] = $jmenu['cart'];
-				} else if ( isset($jmenu['virtuemart']) ) {
-					$query['Itemid'] = $jmenu['virtuemart'];
-				}
-			//}
-			//$segments[] = $helper->lang('cart') ;
-
+			if (isset($jmenu['cart'])) {
+				$query['Itemid'] = $jmenu['cart'];
+			} else if ( isset($jmenu['virtuemart']) ) {
+				$query['Itemid'] = $jmenu['virtuemart'];
+				$segments[] = $helper->lang('cart') ;
+			} else {
+				// the worst
+				$segments[] = $helper->lang('cart') ;
+			}
 			break;
 		case 'orders';
 			if ( isset($jmenu['orders']) ) $query['Itemid'] = $jmenu['orders'];

@@ -18,6 +18,7 @@ defined('_JEXEC') or die('');
 * other free or open source software licenses.
 */
 echo '<div class="vm-wrap vm-order-done">';
+
 if (vRequest::getBool('display_title',true)) {
 	echo '<h3>'.vmText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU').'</h3>';
 }

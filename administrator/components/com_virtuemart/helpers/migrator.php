@@ -1234,7 +1234,7 @@ class Migrator extends VmModel{
 		require(VMPATH_ADMIN . DS . 'models' . DS . 'orderstatus.php');
 
 		if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-		$this->_db->setQuery('select `order_status_code` FROM `#__virtuemart_orderstates` `');
+		$this->_db->setQuery('select `order_status_code` FROM `#__virtuemart_orderstates` ');
 		$vm2Fields = $this->_db->loadColumn ();
 		$this->_db->setQuery('select * FROM `#__vm_order_status`');
 		$oldfields = $this->_db->loadObjectList();

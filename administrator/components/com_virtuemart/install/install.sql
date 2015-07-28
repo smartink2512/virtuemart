@@ -527,7 +527,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_discountAmount` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_subtotal` decimal(15,5),
   `order_tax` decimal(10,5),
-  `order_shipment` decimal(10,2),
+  `order_shipment` decimal(10,5),
   `order_shipment_tax` decimal(10,5),
   `order_payment` decimal(10,2),
   `order_payment_tax` decimal(10,5),

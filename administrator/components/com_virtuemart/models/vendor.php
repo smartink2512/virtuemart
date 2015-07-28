@@ -325,8 +325,8 @@ class VirtueMartModelVendor extends VmModel {
 			case 'user':
 				if ($ownerOnly) {
 					$q = 'SELECT `virtuemart_vendor_id`
-						FROM `#__virtuemart_vmusers` `au`
-						LEFT JOIN `#__virtuemart_userinfos` `u`
+						FROM `#__virtuemart_vmusers` as `au`
+						LEFT JOIN `#__virtuemart_userinfos` as `u`
 						ON (au.virtuemart_user_id = u.virtuemart_user_id)
 						WHERE `u`.`virtuemart_user_id`=' . $value;
 				} else {
