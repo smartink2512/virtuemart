@@ -97,6 +97,7 @@
                        description="VMPAYMENT_KLARNACHECKOUT_PAYMENT_FORM_POSITION">
                     <option value="bottom">VMPAYMENT_KLARNACHECKOUT_PAYMENT_FORM_POSITION_BOTTOM</option>
                     <option value="right">VMPAYMENT_KLARNACHECKOUT_PAYMENT_FORM_POSITION_RIGHT</option>
+                    <option value="specific">VMPAYMENT_KLARNACHECKOUT_PAYMENT_FORM_SPECIFIC</option>
                 </field>
 
                 <field class="input-colorpicker" type="color" name="button_color" size="30"
@@ -153,8 +154,8 @@
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-                <field name="log" type="radio" default="1" label="VMPAYMENT_KLARNACHECKOUT_DEBUG"
-                       description="VMPAYMENT_KLARNACHECKOUT_DEBUG_DESC">
+                <field name="log" type="radio" default="1" label="VMPAYMENT_KLARNACHECKOUT_LOG"
+                       description="VMPAYMENT_KLARNACHECKOUT_LOG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>

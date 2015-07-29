@@ -22,8 +22,12 @@ if ( $viewData['payment_tooltip']) {
 	<script async src="https://cdn.klarna.com/1.0/code/client/all.js"></script>
 <?php
 }
+$dynUpdate='';
+if( VmConfig::get('oncheckout_ajax',false)) {
+	$dynUpdate=' data-dynamic-update="1" ';
+}
 ?>
-<input type="radio" name="virtuemart_paymentmethod_id"
+<input type="radio" <?php echo $dynUpdate; ?> name="virtuemart_paymentmethod_id"
        id="payment_id_<?php echo $viewData['plugin']->virtuemart_paymentmethod_id; ?>"
        value="<?php echo $viewData['plugin']->virtuemart_paymentmethod_id; ?>" <?php echo $viewData ['checked']; ?>>
 <label for="payment_id_<?php echo $viewData['plugin']->virtuemart_paymentmethod_id; ?>">

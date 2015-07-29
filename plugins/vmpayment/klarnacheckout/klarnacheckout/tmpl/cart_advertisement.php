@@ -19,13 +19,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 
 $css =".totalInPaymentCurrency {display:none;}\n";
-if ($viewData ['payment_form_position']=='right' ) {
+if ($viewData ['payment_form_position']=='right' or $viewData ['payment_form_position'] =='specific') {
 	vmJsApi::css('klarnacheckout', 'plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css');
 }
 
 ?>
 
-<script  src="https://cdn.klarna.com/1.0/code/client/all.js"></script>
 <?php
 
 $js = '
@@ -45,6 +44,14 @@ jQuery("#kco-shipment-method").text("SHOULD NOT BE ABLE TO CHECKOUT AT KLARNA");
 	';
 
 //vmJsApi::addJScript('vm.noshipments', $js);
+$js="
+		function setShipment() {
+		    klarnaCheckoutPayment.updateShipment();
+		}
+";
+
+//vmJsApi::addJScript('vm.setShipment', $js);
+
 
 ?>
 <?php if ($viewData['klarna_create_account']) { ?>
@@ -57,7 +64,7 @@ jQuery("#kco-shipment-method").text("SHOULD NOT BE ABLE TO CHECKOUT AT KLARNA");
 ?>
 	<div id="kco-shipment-method"><?php echo $viewData ['message']; ?>  </div>
 <?php if ($viewData ['snippet'] )  { ?>
-<div><?php echo $viewData ['snippet']; ?>  </div>
+<div id="kco-payment-method"><?php echo $viewData ['snippet']; ?>  </div>
 <?php }
 
 

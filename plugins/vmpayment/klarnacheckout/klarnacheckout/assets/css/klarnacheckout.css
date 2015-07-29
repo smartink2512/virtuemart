@@ -1,12 +1,20 @@
+
+
+#cart-view {
+    margin-right: 2%;
+    width: 60%;
+    float: left;
+}
+/*
 .cart-view {
     margin-right: 2%;
     width: 65%;
     float: left;
 }
-
-div#checkout-advertise-box {
-    float: left;
-    width: 33%;
+*/
+div#kco-payment-method {
+    float: right;
+    width: 32%;
 }
 
 .vm-fieldset-customer-note {
@@ -25,10 +33,9 @@ div#checkout-advertise-box {
         margin-right: 0;
     }
 }
-#klarna-create-account-box label {
-    display: inline-block;
-}
+
 #kco-shipment-method {
     font-size: 110%;
     font-weight: bold;
 }
+
