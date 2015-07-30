@@ -46,8 +46,12 @@ if($this->cart->virtuemart_paymentmethod_id){
 } ?>
 
 	<div class="buttonBar-right">
-
-		<button name="updatecart" class="<?php echo $buttonclass ?>" type="submit" data-dynamic-update="1" ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
+		<?php
+		$dynUpdate = '';
+		if( VmConfig::get('oncheckout_ajax',false)) {
+			$dynUpdate=' data-dynamic-update="1" ';
+		} ?>
+		<button name="updatecart" class="<?php echo $buttonclass ?>" type="submit" <?php echo $dynUpdate ?> ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
 
 		<?php   if ($this->layoutName!='default') { ?>
 			<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>

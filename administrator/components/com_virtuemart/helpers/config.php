@@ -1248,7 +1248,7 @@ class vmAccess {
 			self::$_cu[$uid] = self::getBgManager($uid);
 		}
 		$user = self::$_cu[$uid];
-		
+
 		if(!empty($task) and !is_array($task)){
 			$task = array($task);
 		}

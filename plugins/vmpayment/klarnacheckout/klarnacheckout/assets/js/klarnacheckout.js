@@ -42,17 +42,29 @@ var klarnaCheckoutPayment = {
         console.log('updateCart:' + zip);
 
         if (zip === '') return;
-        var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&nosef=1&name=klarnacheckout&loadJS=1&action=updateCartWithKlarnacheckoutAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + '&zip=' + zip + '&email=' + email + vmLang;
+        var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&nosef=1&name=klarnacheckout&loadJS=1&action=updateCartWithKlarnacheckoutAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + '&zip='+zip + '&email='+email + '&lang='+vmLang;
 
         jQuery.ajax({
             type: "POST",
             cache: false,
-            dataType: "json",
+            dataType: "html",
             url: url
 
         }).success(
             function (datas) {
-                if (datas.msg) {
+				console.log('updateCart: success');
+
+				window._klarnaCheckout(function (api) {
+					console.log(' updateSnippet suspend');
+					api.suspend();
+				});
+				Virtuemart.updFormS();
+
+				window._klarnaCheckout(function (api) {
+					console.log('updateSnippet resume');
+					api.resume();
+				});
+               /* if (datas.msg) {
                     console.log('updateCart:' + datas.msg.length);
                 }
                 console.log('updateCart:');
@@ -67,7 +79,7 @@ var klarnaCheckoutPayment = {
                         console.log('updateCart resume');
                         api.resume();
                     });
-                }
+                }*/
             });
     },
 
@@ -109,9 +121,5 @@ var klarnaCheckoutPayment = {
         // TODO does not contains , and shipment is not selected: please select
     }
 }
-
-
-
-
 
 

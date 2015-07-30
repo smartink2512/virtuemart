@@ -219,7 +219,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 	}
 
 	function getCartItems($cart) {
-		vmdebug('getProductItems', $cart->pricesUnformatted);
+		//vmdebug('getProductItems', $cart->pricesUnformatted);
 		//self::includeKlarnaFiles();
 		$i = 0;
 		if (!class_exists('CurrencyDisplay'))
@@ -488,9 +488,8 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		}
 
-
-		//$payment_advertise[]=$this->displaySnippet($klarna_checkout_order['gui']['snippet'], $message);
-		echo $this->displaySnippet($klarna_checkout_order['gui']['snippet'], $message);
+		$payment_advertise[]=$this->displaySnippet($klarna_checkout_order['gui']['snippet'], $message);
+		//echo $this->displaySnippet($klarna_checkout_order['gui']['snippet'], $message);
 
 	}
 
@@ -503,14 +502,14 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 // MOBILE: Width of containing block shall be 100% of browser window (No
 // padding or margin)
 		//if (vRequest::getInt('loadJS', 1)==1) {
-		vmJsApi::addJScript('/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/klarnacheckout.js');
+		vmJsApi::addJScript('/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/klarnacheckout.js',false,true,false,true);
 		vmJsApi::jPrice();
 		$updateCartScript = '
 			jQuery(document).ready(function($) {
 				window._klarnaCheckout(function(api) {
 					api.on({
 						"change": function(data) {
-						console.log(data);
+							console.log("window._klarnaCheckout calls klarnaCheckoutPayment.updateCart ");
 							klarnaCheckoutPayment.updateCart(data,"' . $this->_currentMethod->virtuemart_paymentmethod_id . '");
 						}
 					});
@@ -525,7 +524,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 ';
 
 		vmJsApi::addJScript('vm.kco_updatecart', $updateCartScript);
-		vmJsApi::addJScript('vm.kco_updatesnippet', $updateSnippetScript);
+		//vmJsApi::addJScript('vm.kco_updatesnippet', $updateSnippetScript);
 		//	}
 		$createAccount = '';
 		if (JFactory::getUser()->guest) {
@@ -549,7 +548,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 ";
 		//$payment_advertise[]=$html;
 		//echo $html;
-		vmJsApi::addJScript('vm.kco_initpayment', $js);
+		//vmJsApi::addJScript('vm.kco_initpayment', $js);
 
 return $html;
 	}
@@ -1063,7 +1062,15 @@ return $html;
 		switch ($action) {
 
 			case 'updateCartWithKlarnacheckoutAddress':
+
 				$updated = $this->updateCartWithKlarnacheckoutAddress();
+				if($updated){
+
+				}
+				//JFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=cart&tmpl=component');
+				//$cart->BT['zip'] = vRequest::getCmd('zip',false);
+
+				/*$updated = $this->updateCartWithKlarnacheckoutAddress();
 				$json = array();
 				$json['getShipment'] = $updated;
 
@@ -1077,7 +1084,7 @@ return $html;
 
 				echo json_encode($json);
 				jExit();
-				//JFactory::getApplication()->close();
+				//JFactory::getApplication()->close();*/
 				break;
 
 			default:
@@ -1092,22 +1099,24 @@ return $html;
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$cart = VirtueMartCart::getCart();
-		$BT = $cart->BT;
+
 		$updated = false;
 		$zip = vRequest::getWord('zip', '');
 		$email = vRequest::getWord('email', '');
 
 		if ($zip) {
-			$BT['zip'] = $zip;
+			$cart->BT['zip'] = $zip;
 			$updated = true;
 		}
 		if ($email) {
-			$BT['email'] = $email;
+			$cart->BT['email'] = $email;
 			$updated = true;
 		}
+
 		if (!$updated) return $updated;
 
-		$cart->saveAddressInCart($BT, 'BT', true);
+		$cart->setCartIntoSession();
+
 		return $updated;
 	}
 
