@@ -49,8 +49,8 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	function save($data = 0){
 
 		$data = vRequest::getPost();
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+
+		if(vmAccess::manager()){
 			$data['shipment_name'] = vRequest::get('shipment_name','');
 			$data['shipment_desc'] = vRequest::get('shipment_desc','');
 			if(isset($data['params'])){

@@ -45,7 +45,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 
 		$task = vRequest::getCmd('task', 'edit');
 		if($task == 'editshop'){
-			$isSuperOrVendor = VmConfig::isSuperVendor();
+			$isSuperOrVendor = vmAccess::isSuperVendor();
 			if(empty($isSuperOrVendor)){
 				JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 			} else {

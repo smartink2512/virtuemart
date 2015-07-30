@@ -67,8 +67,7 @@ class VirtueMartCustomFieldRenderer {
 
 			$type = $customfield->field_type;
 
-			$idTag = (int)$product->virtuemart_product_id.'-'.$customfield->virtuemart_customfield_id;
-			$idTag = $idTag . 'customProductData';
+			$idTag = 'customProductData_'.(int)$product->virtuemart_product_id.'_'.$customfield->virtuemart_customfield_id;
 			$idTag = VmHtml::ensureUniqueId($idTag);
 
 

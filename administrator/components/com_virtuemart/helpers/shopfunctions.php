@@ -107,10 +107,14 @@ class ShopFunctions {
 			$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
 			$db->setQuery ($q);
 			$vendor = $db->loadResult ();
-			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
+			return '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
 		} else {
-
-			if (!JFactory::getUser()->authorise('core.admin', 'com_virtuemart')) {
+			$user = JFactory::getUser();
+			$view = vRequest::getCmd('view',false);
+			/*if(!$view or !($user->authorise('core.admin', 'com_virtuemart') or
+			(($user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.manage', 'com_virtuemart')) and $user->authorise('vm.'.$view, 'com_virtuemart') ) ) ){*/
+			if(!vmAccess::manager(array($view,'managevendors'))){
+			//if (!JFactory::getUser()->authorise('core.admin', 'com_virtuemart')) {
 				if (empty($vendorId)) {
 					$vendorId = 1;
 					//Dont delete this message, we need it later for multivendor
@@ -119,8 +123,7 @@ class ShopFunctions {
 				$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
 				$db->setQuery ($q);
 				$vendor = $db->loadResult ();
-				$html = '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
-				return $html;
+				return '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
 			} else {
 
 				return self::renderVendorFullVendorList($vendorId,false,$name);
@@ -566,7 +569,7 @@ class ShopFunctions {
 			$cache = JFactory::getCache ('com_virtuemart_cats');
 			$cache->setCaching (1);
 			$app = JFactory::getApplication ();
-			$vendorId = VmConfig::isSuperVendor();
+			$vendorId = vmAccess::isSuperVendor();
 			self::$categoryTree[$hash] = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
 
 		}

@@ -164,7 +164,7 @@ class VirtuemartViewCategory extends VmView {
 				}
 
 				$user = JFactory::getUser();
-				$this->showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
+				$this->showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
 
 			}
 

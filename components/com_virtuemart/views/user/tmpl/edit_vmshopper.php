@@ -48,8 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			 <?php
-			 $user = JFactory::getUser();
-			 if($user->authorise('core.admin','com_virtuemart')) { ?>
+			 if(vmAccess::manager()) { ?>
 				<input type="text" class="inputbox" name="customer_number" id="customer_number" size="40" value="<?php echo  $this->lists['custnumber'];
 					?>" />
 			<?php } else {

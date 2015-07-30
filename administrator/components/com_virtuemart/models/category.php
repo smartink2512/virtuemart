@@ -331,7 +331,7 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		if($vendorId===false){
-			$vendorId = VmConfig::isSuperVendor();
+			$vendorId = vmAccess::isSuperVendor();
 		}
 
 		if($vendorId!=1){

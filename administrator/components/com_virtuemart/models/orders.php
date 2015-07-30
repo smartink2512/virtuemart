@@ -294,11 +294,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$from = $this->getOrdersListQuery();
 
 		$where = array();
-		$user = JFactory::getUser();
-		$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',false);
 
-		if($user->authorise('core.admin','com_virtuemart')){
+
+		$virtuemart_vendor_id = vmAccess::isSuperVendor();
+		if(vmAccess::manager('managevendors')){
 			vmdebug('Vendor is core.admin and should see all');
+			$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',$virtuemart_vendor_id);
 			if($virtuemart_vendor_id){
 				$where[]= ' o.virtuemart_vendor_id = "'.$virtuemart_vendor_id.'" ';
 			}
@@ -306,9 +307,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$where[]= ' u.virtuemart_user_id = ' . (int)$uid.' ';
 			}
 		}
-		else if( $user->authorise('core.manage','com_virtuemart') or $user->authorise('vm.orders','com_virtuemart')){
-
-			$virtuemart_vendor_id = VmConfig::isSuperVendor();
+		else if( vmAccess::manager('orders') or $virtuemart_vendor_id){
+			
 			vmdebug('Vendor is manager and should only see its own orders venodorId '.$virtuemart_vendor_id);
 			if(!empty($virtuemart_vendor_id)){
 				$where[]= ' (o.virtuemart_vendor_id = '.$virtuemart_vendor_id.' OR u.virtuemart_user_id = ' . (int)$uid.') ';
@@ -320,6 +320,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		} else {
 			//A normal user is only allowed to see its own orders, we map $uid to the user id
+			$user = JFactory::getUser();
 			$uid = (int)$user->id;
 			$where = array();
 		}

@@ -190,10 +190,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->searchplugin = vRequest::getInt ('custom_parent_id', 0);
 
-		$this->virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id',0);
-		if(vRequest::getInt('manage')==1){
-			$this->virtuemart_vendor_id = VmConfig::isSuperVendor();
-		}
+		$this->virtuemart_vendor_id = vmAccess::isSuperVendor();
 	}
 
 	/**
@@ -253,7 +250,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		//$isSite = $app->isSite ();
 		$isSite = true;
-		if($app->isAdmin() or (vRequest::get('manage',false) and VmConfig::isSuperVendor()) ){
+		if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::isSuperVendor()) ){
 			$isSite = false;
 		}
 
@@ -499,7 +496,7 @@ class VirtueMartModelProduct extends VmModel {
 // 			$joinLang = false;
 		}
 
-		/*if ($onlyPublished and !empty($this->virtuemart_vendor_id) and vRequest::get('manage',false) and VmConfig::isSuperVendor()) {
+		/*if ($onlyPublished and !empty($this->virtuemart_vendor_id) and vRequest::get('manage',false) and vmAccess::isSuperVendor()) {
 			$where[] = ' p.`virtuemart_vendor_id` = "'.$this->virtuemart_vendor_id.'" ';
 		} else {*/
 			if(!empty($onlyPublished) and $isSite){
@@ -632,7 +629,7 @@ class VirtueMartModelProduct extends VmModel {
 		else {
 			$whereString = '';
 		}
-		//vmdebug ( $joinedTables.' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
+		//vmdebug ( ' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
 
 		$this->orderByString = $orderBy;
 
@@ -1329,7 +1326,7 @@ class VirtueMartModelProduct extends VmModel {
 			$product->box = '';
 			$product->addToCartButton = false;
 		}
-		$product->virtuemart_vendor_id = VmConfig::isSuperVendor();
+		$product->virtuemart_vendor_id = vmAccess::isSuperVendor();
 		return $product;
 	}
 
@@ -1420,8 +1417,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($app->isSite ()) {
 			$front = TRUE;
 
-			$user = JFactory::getUser();
-			if (!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))) {
+			if (!vmAccess::manager()) {
 				$onlyPublished = TRUE;
 				$show_prices = VmConfig::get ('show_prices', 1);
 				if (empty($show_prices)) {
@@ -1714,7 +1710,7 @@ class VirtueMartModelProduct extends VmModel {
 		$isChild = FALSE;
 		if(!empty($data['isChild'])) $isChild = $data['isChild'];
 
-		$superVendor = VmConfig::isSuperVendor();
+		$superVendor = vmAccess::isSuperVendor();
 		if(empty($superVendor)){
 			vmError('You are not a vendor or administrator, storing of product cancelled');
 			return FALSE;
@@ -1991,8 +1987,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product->mprices = $this->productPricesClone ($id);
 
 		//Lets check if the user is admin or the mainvendor
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		if(vmAccess::manager()){
 			$product->created_on = "0000-00-00 00:00:00";
 			$product->created_by = 0;
 		}

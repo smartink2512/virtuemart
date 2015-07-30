@@ -34,7 +34,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		$vendorModel = VmModel::getModel('vendor');
 
-		$vendorIdUser = VmConfig::isSuperVendor();
+		$vendorIdUser = vmAccess::isSuperVendor();
 		$vendorModel->setId($vendorId);
 		$this->vendor = $vendorModel->getVendor();
 
@@ -144,8 +144,7 @@ class VirtueMartViewVirtueMart extends VmView {
 				}
 			}
 
-			$user = JFactory::getUser();
-			$this->showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
+			$this->showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
 
 			$layout = VmConfig::get('vmlayout','default');
 			$this->setLayout($layout);

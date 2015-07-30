@@ -681,8 +681,8 @@ class VmMediaHandler {
 		$app = JFactory::getApplication();
 
 		$msg_path = '';
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+
+		if(vmAccess::manager()){
 			$msg_path = $file_path;
 		}
 
@@ -1069,7 +1069,7 @@ class VmMediaHandler {
 
 		$db = JFactory::getDBO();
 		$list = array();
-		$vendorId = VmConfig::isSuperVendor();
+		$vendorId = vmAccess::isSuperVendor();
 		$q='SELECT SQL_CALC_FOUND_ROWS `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `published`=1
 	AND (`virtuemart_vendor_id`= "'.(int)$vendorId.'" OR `shared` = "1")';
 		if(!empty($type)){
@@ -1162,8 +1162,7 @@ $html .='</td>';
 
 		$html .= '</tr>';
 
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		if(vmAccess::manager()){
 			$readonly='readonly';
 		} else {
 			$readonly ='';
@@ -1226,7 +1225,7 @@ $html .='</td>';
 
 		if(VmConfig::get('multix','none')!='none'){
 			if(empty($this->virtuemart_vendor_id)){
-				$vendorId = VmConfig::isSuperVendor();
+				$vendorId = vmAccess::isSuperVendor();
 			} else {
 				$vendorId = $this->virtuemart_vendor_id;
 			}

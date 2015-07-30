@@ -35,7 +35,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
-		$this->vendorId=VmConfig::isSuperVendor();
+		$this->vendorId=vmAccess::isSuperVendor();
 
 		// TODO add icon for media view
 		$this->SetViewTitle();
@@ -56,7 +56,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 			}
         	$cat_id = vRequest::getInt('virtuemart_category_id',0);
 
-			$super = VmConfig::isSuperVendor();
+			$super = vmAccess::isSuperVendor();
 			if($super==1){
 				JToolBarHelper::custom('synchronizeMedia', 'new', 'new', vmText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
 			}

@@ -743,11 +743,11 @@ class VirtueMartModelUserfields extends VmModel {
 		,'links' => array()
 		);
 
-		$admin = false;
-		$user = JFactory::getUser();
+		$admin = vmAccess::manager();
+		/*$user = JFactory::getUser();
 		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 			$admin  = true;
-		}
+		}*/
 
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
 

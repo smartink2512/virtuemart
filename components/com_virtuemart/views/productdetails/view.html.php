@@ -251,7 +251,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			$this->allowRating = $ratingModel->allowRating($product->virtuemart_product_id);
 
-			$superVendor = VmConfig::isSuperVendor();
+			$superVendor = vmAccess::isSuperVendor();
 
 			if($superVendor == 1 or $superVendor==$product->virtuemart_vendor_id or ($superVendor)){
 				$edit_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&manage=1&view=product&task=edit&virtuemart_product_id=' . $product->virtuemart_product_id;
@@ -292,7 +292,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 
 			$user = JFactory::getUser();
-			$showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
+			$showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
 			$this->assignRef('showBasePrice', $showBasePrice);
 
 			$productDisplayShipments = array();

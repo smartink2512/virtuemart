@@ -487,7 +487,6 @@ class VmConfig {
 	public static $echoAdmin = FALSE;
 	const LOGFILEEXT = '.log.php';
 
-	public static $_virtuemart_vendor_id = null;
 	public static $vmlang = false;	//actually selected
 	public static $vmLangSelected = false;	//desired by user
 	public static $defaultLang = false;
@@ -533,16 +532,15 @@ class VmConfig {
 	}
 
 	static function echoAdmin(){
-
 		if(self::$echoAdmin===FALSE){
 			$user = JFactory::getUser();
 			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+			//if(vmAccess::manager()){
 				self::$echoAdmin = true;
 			} else {
 				self::$echoAdmin = false;
 			}
 		}
-
 	}
 
 	static function showDebug($override=false){
@@ -555,6 +553,7 @@ class VmConfig {
 				$debug = VmConfig::get('debug_enable','none');
 				$dev = VmConfig::get('vmdev',0);
 			}
+
 			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
@@ -1143,6 +1142,53 @@ class VmConfig {
 		return (strpos(JVERSION,'1.5') === 0);
 	}
 
+}
+
+class vmAccess {
+
+	static protected $_virtuemart_vendor_id = array();
+	static protected $_manager = array();
+	static protected $_cu = array();
+	static protected $_cuId = null;
+	static protected $_site = null;
+
+	static public function getBgManagerId(){
+
+		if(!isset(self::$_cuId)){
+			$cuId = JFactory::getSession()->get('vmAdminID',null);
+			//echo $cuId;
+			if($cuId) {
+				if(!class_exists('vmCrypt'))
+					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+				$cuId = vmCrypt::decrypt( $cuId );
+				if(empty($cuId)){
+					$cuId = null;
+				}
+			}
+			self::$_cuId = $cuId;
+		}
+
+		return self::$_cuId;
+	}
+
+	static public function getBgManager($uid = 0){
+
+		if(!isset(self::$_cu[$uid])){
+			if($uid === 0){
+				if(self::$_site){
+					$ui = self::getBgManagerId();
+				} else{
+					$ui = null;
+				}
+			} else {
+				$ui = $uid;
+			}
+			self::$_cu[$uid] = JFactory::getUser($ui);
+		}
+
+		return self::$_cu[$uid];
+	}
+
 	/**
 	 * Checks if user is admin or has vendorId=1,
 	 * if superadmin, but not a vendor it gives back vendorId=1 (single vendor, but multiuser administrated)
@@ -1150,29 +1196,23 @@ class VmConfig {
 	 * @author Mattheo Vicini
 	 * @author Max Milbers
 	 */
-	static public function isSuperVendor($adminId = null){
+	static public function isSuperVendor($uid = 0){
 
-		static $user = null;
-		
-		if(!isset($user)){
-			if(empty($adminId)){
-				$adminId = JFactory::getSession()->get('vmAdminID',null);
-			if($adminId) {
-				if(!class_exists('vmCrypt'))
-					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-					$adminId = vmCrypt::decrypt( $adminId );
-				}
-				$user = JFactory::getUser($adminId);
-			} else {
-				$user = JFactory::getUser($adminId);
-			}
+		if(self::$_site === null) {
+			$app = JFactory::getApplication();
+			self::$_site = $app->isSite();
 		}
 
-		if(!isset(self::$_virtuemart_vendor_id[$adminId])){
+		if(!isset(self::$_cu[$uid])){
+			self::$_cu[$uid] = self::getBgManager($uid);
+		}
+		$user = self::$_cu[$uid];
 
-			self::$_virtuemart_vendor_id[$adminId] = 0;
+		if(!isset(self::$_virtuemart_vendor_id[$uid])){
+
+			self::$_virtuemart_vendor_id[$uid] = 0;
 			if(!empty( $user->id)){
-				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
+				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` as `au`
 				WHERE `au`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
 
 				$db= JFactory::getDbo();
@@ -1180,20 +1220,71 @@ class VmConfig {
 				$virtuemart_vendor_id = $db->loadResult();
 
 				if ($virtuemart_vendor_id) {
-					self::$_virtuemart_vendor_id[$adminId] = $virtuemart_vendor_id;
+					self::$_virtuemart_vendor_id[$uid] = $virtuemart_vendor_id;
+					vmdebug('Active vendor '.$virtuemart_vendor_id );
 				} else {
-					if($user->authorise('core.admin', 'com_virtuemart') or (self::get('multix','none')=='none' and $user->authorise('core.manage', 'com_virtuemart') ) ){
-						self::$_virtuemart_vendor_id[$adminId] = 1;
+					if(self::manager() or self::manager('managevendors')){
+						vmdebug('Active Mainvendor');
+						self::$_virtuemart_vendor_id[$uid] = 1;
+					} else {
+						self::$_virtuemart_vendor_id[$uid] = 0;
 					}
 				}
 			}
-			if(empty(self::$_virtuemart_vendor_id[$adminId])) vmdebug('isSuperVendor Not a vendor');
+			if(self::$_virtuemart_vendor_id[$uid] == -1) vmdebug('isSuperVendor Not a vendor');
 		}
-		return self::$_virtuemart_vendor_id[$adminId];
+		return self::$_virtuemart_vendor_id[$uid];
+	}
+
+
+	static public function manager($task=0, $uid = 0) {
+
+		if(self::$_site === null) {
+			$app = JFactory::getApplication();
+			self::$_site = $app->isSite();
+		}
+
+		if(!isset(self::$_cu[$uid])){
+			self::$_cu[$uid] = self::getBgManager($uid);
+		}
+		$user = self::$_cu[$uid];
+		
+		if(!empty($task) and !is_array($task)){
+			$task = array($task);
+		}
+
+		$h = serialize($task).$uid;
+
+		if(!isset(self::$_manager[$h])) {
+
+			if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart')) {
+				self::$_manager[$h] = true;
+			} else {
+				self::$_manager[$h] = false;
+				if(self::$_site){
+					$a = $user->authorise('vm.manage', 'com_virtuemart');
+				} else {
+					$a = $user->authorise('core.manage', 'com_virtuemart');
+				}
+
+				if($a){
+					if(empty($task)){
+						self::$_manager[$h] = true;
+					} else {
+						foreach($task as $t){
+							if($user->authorise('vm.'.$t, 'com_virtuemart')){
+								self::$_manager[$h] = true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return self::$_manager[$h];
 	}
 
 }
-
 
 class vmURI{
 

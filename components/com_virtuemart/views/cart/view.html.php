@@ -33,7 +33,10 @@ if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 class VirtueMartViewCart extends VmView {
 
 	var $pointAddress = false;
-
+	/* @deprecated */
+	var $display_title = true;
+	/* @deprecated */
+	var $display_loginform = true;
 
 	public function display($tpl = null) {
 
@@ -89,7 +92,7 @@ class VirtueMartViewCart extends VmView {
 			$document->setTitle(vmText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
 		} else if ($this->layoutName == 'order_done') {
 			VmConfig::loadJLang( 'com_virtuemart_shoppers', true );
-			//$this->lOrderDone();
+			$this->lOrderDone();
 
 			$pathway->addItem( vmText::_( 'COM_VIRTUEMART_CART_THANKYOU' ) );
 			$document->setTitle( vmText::_( 'COM_VIRTUEMART_CART_THANKYOU' ) );
@@ -220,20 +223,7 @@ class VirtueMartViewCart extends VmView {
 		$this->allowChangeShopper = false;
 		$this->adminID = false;
 		if(VmConfig::get ('oncheckout_change_shopper')){
-			if($current->authorise('core.admin', 'com_virtuemart') or $current->authorise('vm.user', 'com_virtuemart')){
-				$this->allowChangeShopper = true;
-			} else {
-				$this->adminID = JFactory::getSession()->get('vmAdminID',false);
-				if($this->adminID){
-					if(!class_exists('vmCrypt'))
-						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-					$this->adminID = vmCrypt::decrypt($this->adminID);
-					$adminIdUser = JFactory::getUser($this->adminID);
-					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
-						$this->allowChangeShopper = true;
-					}
-				}
-			}
+			$this->allowChangeShopper = vmAccess::manager('user');
 		}
 		if($this->allowChangeShopper){
 			$this->userList = $this->getUserList();
@@ -404,13 +394,15 @@ class VirtueMartViewCart extends VmView {
 		return $checkoutAdvertise;
 	}
 
-	/*private function lOrderDone() {
-		$this->display_title = vRequest::getBool('display_title',true);
-		$this->display_loginform = vRequest::getBool('display_loginform',true);
+	private function lOrderDone() {
+
+		$this->display_title = !isset($this->display_title) ? vRequest::getBool('display_title', true) : $this->display_title;
+		$this->display_loginform = !isset($this->display_loginform) ? vRequest::getBool('display_loginform', true) : $this->display_loginform;
+
 		//Do not change this. It contains the payment form
-		$this->html = vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
+		$this->html = !isset($this->html) ? vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED')) : $this->html;
 		//Show Thank you page or error due payment plugins like paypal express
-	}*/
+	}
 
 	private function checkPaymentMethodsConfigured() {
 
@@ -420,8 +412,7 @@ class VirtueMartViewCart extends VmView {
 		if (empty($payments)) {
 
 			$text = '';
-			$user = JFactory::getUser();
-			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
+			if(vmAccess::manager() or vmAccess::isSuperVendor()) {
 				$link = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
 				$text = vmText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');
 			}
@@ -442,7 +433,7 @@ class VirtueMartViewCart extends VmView {
 
 			$text = '';
 			$user = JFactory::getUser();
-			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
+			if(vmAccess::manager() or vmAccess::isSuperVendor()) {
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=shipmentmethod';
 				$text = vmText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');
@@ -468,13 +459,8 @@ class VirtueMartViewCart extends VmView {
 		$result = false;
 
 		if($this->allowChangeShopper){
-			$this->adminID = JFactory::getSession()->get('vmAdminID',false);
-			if($this->adminID) {
-				if(!class_exists('vmCrypt'))
-					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-				$this->adminID = vmCrypt::decrypt( $this->adminID );
-			}
-			$superVendor = VmConfig::isSuperVendor($this->adminID);
+			$this->adminID = vmAccess::getBgManagerId();
+			$superVendor = vmAccess::isSuperVendor($this->adminID);
 			if($superVendor){
 				$uModel = VmModel::getModel('user');
 				$result = $uModel->getSwitchUserList($superVendor,$this->adminID);

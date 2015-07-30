@@ -63,8 +63,7 @@ class VirtuemartControllerUserfields extends VmController {
 
 		if($data===0) $data = vRequest::getPost();
 
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		if(vmAccess::manager()){
 			$data['description'] = vRequest::get('description','');
 			if(isset($data['params'])){
 				$data['params'] = vRequest::get('params','');

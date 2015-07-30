@@ -75,7 +75,7 @@ class VirtueMartModelUser extends VmModel {
 			} else {
 				if($cid != $user->id){
 					$user = JFactory::getUser();
-					if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or $user->authorise('vm.user','com_virtuemart')){
+					if(vmAccess::manager('user')){
 						$userId = $cid;
 						// 						vmdebug('Admin watches user, setId '.$cid);
 					} else {
@@ -364,7 +364,7 @@ class VirtueMartModelUser extends VmModel {
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
 
 			$cUser = JFactory::getUser();
-			if($usersConfig->get('allowUserRegistration') == '0' and !($cUser->authorise('core.admin','com_virtuemart') or $cUser->authorise('core.manage','com_virtuemart') or $cUser->authorise('vm.user', 'com_virtuemart')) ) {
+			if($usersConfig->get('allowUserRegistration') == '0' and !(vmAccess::manager() or $cUser->authorise('vm.user', 'com_virtuemart')) ) {
 				VmConfig::loadJLang('com_virtuemart');
 				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;
@@ -438,7 +438,11 @@ class VirtueMartModelUser extends VmModel {
 
 			if ($new) {
 				$user->userInfo = $data;
-				$this->sendRegistrationEmail($user,$user->password_clear, $doUserActivation);
+				$password='';
+				if ($usersConfig->get('sendpassword', 1)) {
+					$password=$user->password_clear;
+				}
+				$this->sendRegistrationEmail($user,$password, $doUserActivation);
 				if ($doUserActivation ) {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
 				} else {
@@ -501,9 +505,8 @@ class VirtueMartModelUser extends VmModel {
 		$noError = true;
 
 		$usertable = $this->getTable('vmusers');
-
 		$alreadyStoredUserData = $usertable->load($this->_id);
-		$app = JFactory::getApplication();
+
 		$user = JFactory::getUser();
 		if(!$user->authorise('core.admin','com_virtuemart')){
 			unset($data['virtuemart_vendor_id']);
@@ -526,12 +529,10 @@ class VirtueMartModelUser extends VmModel {
 			$data['customer_number_bycore'] = 1;
 			//}
 		} else {
-			$user = JFactory::getUser();
-			if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
+			if(!vmAccess::manager()){
 				$data['customer_number'] = $alreadyStoredUserData->customer_number;
 			}
 		}
-
 
 		if($trigger){
 			JPluginHelper::importPlugin('vmshopper');
@@ -543,14 +544,13 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-
 		$res = $usertable -> bindChecknStore($data);
 		if(!$res){
 			vmError('storing user adress data');
 			$noError = false;
 		}
 
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		if(vmAccess::manager()){
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 			if(empty($this->_defaultShopperGroup)){
 				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault(0);
@@ -634,7 +634,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$userinfo = $this->getTable('userinfos');
 
-		$manager = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'));
+		$manager = vmAccess::manager();
 		if($data['address_type'] == 'BT'){
 
 			if(isset($data['virtuemart_userinfo_id']) and $data['virtuemart_userinfo_id']!=0){
@@ -859,7 +859,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		$user = JFactory::getUser();
-		$manager = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'));
+		$manager = vmAccess::manager();
 
 		// Format the data
 		foreach ($prepareUserFields as $fld) {
@@ -932,7 +932,7 @@ class VirtueMartModelUser extends VmModel {
 			if($data->virtuemart_user_id!==0 and !$isVendor){
 
 				$user = JFactory::getUser();
-				if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
+				if(!vmAccess::manager()){
 					if($data->virtuemart_user_id!=$this->_id){
 						vmError('Blocked attempt loading userinfo, you got logged');
 						echo 'Hacking attempt loading userinfo, you got logged';
@@ -1060,7 +1060,6 @@ class VirtueMartModelUser extends VmModel {
 		$vars = array('user' => $user);
 
 		// Send registration confirmation mail
-
 		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
 		$vars['password'] = $password;
 
@@ -1086,7 +1085,8 @@ class VirtueMartModelUser extends VmModel {
 	function remove($userIds)
 	{
 		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		$su = $user->authorise('core.admin','com_virtuemart');
+		if(vmAccess::manager('user')){
 
 			$userInfo = $this->getTable('userinfos');
 			$vm_shoppergroup_xref = $this->getTable('vmuser_shoppergroups');
@@ -1099,15 +1099,6 @@ class VirtueMartModelUser extends VmModel {
 				if ($this->getSuperAdminCount() <= 1) {
 					// Prevent deletion of the only Super Admin
 					//$_u = JUser::getInstance($userId);
-					if ($_JUser->get('gid') == __SUPER_ADMIN_GID) {
-						vmError(vmText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
-						$_status = false;
-						continue;
-					}
-				}
-
-				$user = JFactory::getUser();
-				if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 					if ($_JUser->get('gid') == __SUPER_ADMIN_GID) {
 						vmError(vmText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
 						$_status = false;
@@ -1226,7 +1217,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$whereAnd = array();
 		if(VmConfig::get('multixcart',0)=='byvendor'){
-			$superVendor = VmConfig::isSuperVendor();
+			$superVendor = vmAccess::isSuperVendor();
 			if($superVendor>1){
 				$joinedTables .= ' LEFT JOIN #__virtuemart_vendor_users AS vu ON ju.id = vmu.virtuemart_user_id';
 				$whereAnd[] = ' vu.virtuemart_vendor_id = '.$superVendor.' ';
@@ -1248,7 +1239,7 @@ class VirtueMartModelUser extends VmModel {
 
 	public function getSwitchUserList($superVendor=null,$adminID=false) {
 
-		if(!isset($superVendor)) $superVendor = VmConfig::isSuperVendor();
+		if(!isset($superVendor)) $superVendor = vmAccess::isSuperVendor();
 
 		$result = false;
 		if($superVendor){

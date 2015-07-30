@@ -65,7 +65,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
 				//$user = JFactory::getUser();
-				$superVendor =  VmConfig::isSuperVendor();
+				$superVendor =  vmAccess::isSuperVendor();
 				if( $superVendor !=1 and $superVendor!=$product->virtuemart_vendor_id){
 					vmdebug('Product view.html.php '.$superVendor,$product->virtuemart_vendor_id);
 					JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart&view=virtuemart', vmText::_('COM_VIRTUEMART_ALERTNOTAUTHOR'), 'error');
@@ -142,7 +142,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				// Load the currencies
 				$currency_model = VmModel::getModel('currency');
 
-				$vendor_model->setId(VmConfig::isSuperVendor());
+				$vendor_model->setId(vmAccess::isSuperVendor());
 				$this->vendor = $vendor_model->getVendor();
 
 				$currency = $currency_model->getCurrency($this->vendor->vendor_currency);

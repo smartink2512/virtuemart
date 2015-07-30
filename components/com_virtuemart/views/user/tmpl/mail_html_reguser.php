@@ -71,12 +71,13 @@ $li = '<br />';
 				    <?php
 				    echo vmText::_('COM_VIRTUEMART_YOUR_LOGINAME')   . $this->user->username . $li;
 				    echo vmText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME')   . $this->user->name . $li;
-				    echo vmText::_('COM_VIRTUEMART_YOUR_PASSWORD')  . $this->user->password_clear . $li. $li;
-				    echo vmText::_('COM_VIRTUEMART_YOUR_ADDRESS')  . $li;
+				    if ($this->password) {
+					    echo vmText::_('COM_VIRTUEMART_YOUR_PASSWORD')  . $this->password . $li;
+				    }
+				    echo $li.vmText::_('COM_VIRTUEMART_YOUR_ADDRESS')  . $li;
 
 				    foreach ($this->userFields['fields'] as $userField) {
-					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT' && $userField['type'] != 'hidden') {
-					    echo $userField['title'] . ': ' . $userField['value'] . $li;
+					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT' && $userField['type'] != 'hidden') {					    echo $userField['title'] . ': ' . $userField['value'] . $li;
 
 					}
 				    }

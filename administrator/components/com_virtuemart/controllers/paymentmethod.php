@@ -45,8 +45,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 	function save($data = 0){
 		$data = vRequest::getPost();
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		if(vmAccess::manager()){
 			$data['payment_name'] = vRequest::get('payment_name','');
 			$data['payment_desc'] = vRequest::get('payment_desc','');
 			if(isset($data['params'])){

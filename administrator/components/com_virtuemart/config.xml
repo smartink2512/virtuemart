@@ -9,6 +9,12 @@
     <fieldset name="permissions_product" label="COM_VIRTUEMART_PRODUCT_S" description="">
         <field name="product_rules" type="vmrules" label="" class="inputbox" validate="rules" filter="rules" component="com_virtuemart" section="product" />
 	</fieldset>
+    <fieldset name="permissions_customs" label="COM_VIRTUEMART_CUSTOM" description="">
+        <field name="custom_rules" type="vmrules" label="" class="inputbox" validate="rules" filter="rules" component="com_virtuemart" section="customs" />
+    </fieldset>
+    <fieldset name="permissions_calculationrules" label="COM_VIRTUEMART_CALC" description="">
+        <field name="calculation_rules" type="vmrules" label="" class="inputbox" validate="rules" filter="rules" component="com_virtuemart" section="calculation" />
+    </fieldset>
     <fieldset name="permissions_manufacturer" label="COM_VIRTUEMART_MANUFACTURER_S" description="">
         <field name="manufacturer_rules" type="vmrules" label="" class="inputbox" validate="rules" filter="rules" component="com_virtuemart" section="manufacturer" />
 	</fieldset>

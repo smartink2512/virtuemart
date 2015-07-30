@@ -354,8 +354,8 @@ class VirtueMartModelRatings extends VmModel {
 						$model = new VmModel();
 						$product = $model->getTable('products');
 						$product->load($data['virtuemart_product_id']);
-						$vendorId = VmConfig::isSuperVendor();
-						if(!$user->authorise('core.admin','com_virtuemart') and !$user->authorise('core.manage','com_virtuemart') or $vendorId!=$product->virtuemart_vendor_id){
+						$vendorId = vmAccess::isSuperVendor();
+						if(!vmAccess::manager() or $vendorId!=$product->virtuemart_vendor_id){
 							$data['published'] = 0;
 						}
 					}

@@ -192,9 +192,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			}
 			if (!class_exists($tableClass))
 			{
-				vmdebug('Did nto find file in ',$paths,$tryThis);
-				// If we were unable to find the class file in the JTable include paths, raise a warning and return false.
-				//JError::raiseWarning(0, JText::sprintf('JLIB_DATABASE_ERROR_NOT_SUPPORTED_FILE_NOT_FOUND', $type));
+				vmdebug('Did not find file in ',$paths,$tryThis);
 				return false;
 			}
 		}
@@ -813,23 +811,18 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			$pkey = $this->_pkey;
 			//Lets check if the user is admin or the mainvendor
 
-			$admin = false;
-			if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('vm.user', 'com_virtuemart')){
+			$admin = vmAccess::manager();
+			/*if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('vm.user', 'com_virtuemart')){
 				$admin = true;
-			} else {	//if(VmConfig::get ('oncheckout_change_shopper')){
-
-				$adminID = JFactory::getSession()->get('vmAdminID',false);
-				if($adminID){
-					if(!class_exists('vmCrypt'))
-						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-
-					$adminID = vmCrypt::decrypt($adminID);
-					$adminIdUser = JFactory::getUser($adminID);
-					if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
-						$admin = true;
-					}
-				}
-			}
+			} else {
+				//if(VmConfig::get ('oncheckout_change_shopper')){
+				/*$adminID = vmAccess::getBgManagerId();
+				$adminIdUser = JFactory::getUser($adminID);
+				if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
+					$admin = true;
+				}*
+				$admin = vmAccess::manager();
+			}*/
 
 
 			if($admin){
@@ -1427,12 +1420,13 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 				$this->virtuemart_vendor_id = 1;
 				return true;
 			} else {
-				$loggedVendorId = VmConfig::isSuperVendor();
+				$loggedVendorId = vmAccess::isSuperVendor();
 				$user = JFactory::getUser();
-				$admin = $user->authorise('core.admin','com_virtuemart') || $user->authorise('core.manage','com_virtuemart') || $user->authorise('vm.user.edit','com_virtuemart');
 
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);
+
+				$admin = vmAccess::manager('managevendors');
 				//Todo removed Quickn Dirty, use check in derived class
 				if (strpos($this->_tbl,'virtuemart_vmusers')===FALSE) {
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
@@ -1461,7 +1455,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 							return true;
 						} else {
 							if (!$admin) {
-								$rVendorId = VmConfig::isSuperVendor($user->id);
+								$rVendorId = vmAccess::isSuperVendor($user->id);
 								$this->virtuemart_vendor_id = $rVendorId;
 								return true;
 							}

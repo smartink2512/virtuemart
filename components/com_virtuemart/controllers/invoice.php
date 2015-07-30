@@ -150,14 +150,13 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			$cuid = $_currentUser->get('id');
 
 			// If the user is logged in, we will check if the order belongs to him
-				$virtuemart_order_id = vRequest::getInt('virtuemart_order_id',0) ;
+			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id',0) ;
 			if (!$virtuemart_order_id) {
 				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(vRequest::getString('order_number'));
 			}
 			$orderDetails = $orderModel->getOrder($virtuemart_order_id);
 
-			$user = JFactory::getUser();
-			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') ) {
+			if(!vmAccess::manager('orders') ) {
 				if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
 					if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
 						echo 'view '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');

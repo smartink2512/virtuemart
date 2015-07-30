@@ -272,9 +272,8 @@ class VirtuemartViewUser extends VmView {
 	    require(VMPATH_ADMIN . DS . 'models' . DS . 'shoppergroup.php');
 
 	$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById($this->_model->getId());
-	$user = JFactory::getUser();
 
-	if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')) {
+	if(vmAccess::manager()) {
 
 		$shoppergrps = array();
 		foreach($_shoppergroup as $group){

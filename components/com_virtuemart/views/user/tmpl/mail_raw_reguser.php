@@ -30,8 +30,10 @@ echo vmText::_('COM_VIRTUEMART_SHOPPER_REGISTRATION_DATA') . $li;
 
 echo vmText::_('COM_VIRTUEMART_YOUR_LOGINAME') . ' : ' . $this->user->username . $li;
 echo vmText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME') . ' : ' . $this->user->name . $li;
-echo vmText::_('COM_VIRTUEMART_YOUR_PASSWORD') . ' : ' . $this->user->password_clear . $li;
-echo vmText::_('COM_VIRTUEMART_YOUR_ADDRESS') . ' : ' . $li;
+if ($this->password) {
+	echo vmText::_('COM_VIRTUEMART_YOUR_PASSWORD') . ' : ' . $this->password . $li;
+}
+echo $li.vmText::_('COM_VIRTUEMART_YOUR_ADDRESS') . ' : ' . $li;
 
 echo $li;
 echo $activationLink . $li;

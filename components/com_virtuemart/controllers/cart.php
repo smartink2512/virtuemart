@@ -399,15 +399,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	}
 
 	public function getManager(){
-		$adminID = JFactory::getSession()->get('vmAdminID',false);
-		if($adminID) {
-			if(!class_exists( 'vmCrypt' ))
-				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-			$adminID = vmCrypt::decrypt( $adminID );
-			return JFactory::getUser( $adminID );
-		} else {
-			return JFactory::getUser();
-		}
+		$id = vmAccess::getBgManagerId();
+		return JFactory::getUser( $id );
 	}
 
 	/**
@@ -417,8 +410,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 */
 	public function changeShopper() {
 		JSession::checkToken () or jexit ('Invalid Token');
-		$current = $this->getManager();
-		$manager = false;
+		$app = JFactory::getApplication();
 
 		$redirect = vRequest::getString('redirect',false);
 		if($redirect){
@@ -427,23 +419,19 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$red = JRoute::_('index.php?option=com_virtuemart&view=cart');
 		}
 
-		$app = JFactory::getApplication();
-		if($current->authorise('core.admin', 'com_virtuemart')){
-			$admin = true;
-		} else if($current->authorise('vm.user', 'com_virtuemart')){
-			$manager = true;
-		} else {
-
+		//$id = vmAccess::getBgManagerId();
+		$current = JFactory::getUser( );;
+		$manager = vmAccess::manager('user');
+		if(!$manager){
 			$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 			$app->redirect($red);
 			return false;
 		}
 
 		$userID = vRequest::getCmd('userID');
-		$newUser = JFactory::getUser($userID);
-
 		if($manager and !empty($userID) and $userID!=$current->id){
-			if($newUser->authorise('core.admin', 'com_virtuemart') or $newUser->authorise('vm.user', 'com_virtuemart')){
+			if(vmAccess::manager('user',$userID)){
+			//if($newUser->authorise('core.admin', 'com_virtuemart') or $newUser->authorise('vm.user', 'com_virtuemart')){
 				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 				$app->redirect($red);
 			}
@@ -464,6 +452,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			$session->set('vmAdminID', vmCrypt::encrypt($current->id));
 		}
+		$newUser = JFactory::getUser($userID);
 		$session->set('user', $newUser);
 
 		//update cart data

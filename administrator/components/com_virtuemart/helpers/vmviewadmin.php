@@ -34,7 +34,6 @@ class VmViewAdmin extends JViewLegacy {
 
 	var $lists = array();
 	var $showVendors = null;
-	static protected $_manager = array();
 	protected $canDo;
 	var $writeJs = true;
 
@@ -94,12 +93,7 @@ class VmViewAdmin extends JViewLegacy {
 		$app = JFactory::getApplication();
 		$adminId = null;
 		if($app->isSite()){
-			$adminId = JFactory::getSession()->get('vmAdminID',null);
-			if($adminId) {
-				if(!class_exists('vmCrypt'))
-					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-				$adminId = vmCrypt::decrypt( $adminId );
-			}
+			$adminId = vmAccess::getBgManagerId();
 		}
 		$user	= JFactory::getUser($adminId);
 		$result	= new JObject;
@@ -582,31 +576,8 @@ class VmViewAdmin extends JViewLegacy {
 	}
 
 	public function manager($view=0) {
-
 		if(empty($view)) $view = $this->_name;
-
-		if(!isset(self::$_manager[$view])){
-			if(JFactory::getApplication()->isSite()){
-				$adminId = JFactory::getSession()->get('vmAdminID',null);
-				if($adminId) {
-					if(!class_exists('vmCrypt'))
-						require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-					$adminId = vmCrypt::decrypt( $adminId );
-				}
-				$user = JFactory::getUser($adminId);
-				$vendorIdUser = VmConfig::isSuperVendor($user->id);
-			} else {
-				$user = JFactory::getUser();
-			}
-
-			if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or
-			( ($user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.manage', 'com_virtuemart')) and $user->authorise('vm.'.$view, 'com_virtuemart') ) ){
-				self::$_manager[$view] = true;
-			} else {
-				self::$_manager[$view] = false;
-			}
-		}
-		return self::$_manager[$view];
+		return vmAccess::manager($view);
 	}
 
 }

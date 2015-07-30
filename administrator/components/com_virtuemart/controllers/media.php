@@ -85,8 +85,7 @@ vmdebug('my media in controller save media',$data);
 
 	function synchronizeMedia(){
 
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+		if(vmAccess::manager()){
 
 			$configPaths = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 			foreach($configPaths as $path){
@@ -102,7 +101,6 @@ vmdebug('my media in controller save media',$data);
 			$msg = 'Forget IT';
 			$this->setRedirect('index.php?option=com_virtuemart', $msg);
 		}
-
 
 	}
 

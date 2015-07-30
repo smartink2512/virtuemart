@@ -195,7 +195,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 				$switch = false;
 				if($currentUser->guest==1 and $register){
 					$userModel->setId(0);
-					$superUser = VmConfig::isSuperVendor();
+					$superUser = vmAccess::isSuperVendor();
 					if($superUser>1){
 						$data['vendorId'] = $superUser;
 					}

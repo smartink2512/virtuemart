@@ -34,6 +34,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 	 */
 	protected function getInput() {
 
+		VmConfig::loadConfig();
 		JHtml::_('behavior.tooltip');
 		if(JVM_VERSION<3){
 			return $this->vmRulesJ25();
@@ -283,6 +284,10 @@ class JFormFieldVmRules extends JFormFieldRules {
 			vmError($error);
 		}
 
+		//VmConfig::$echoDebug = true;
+		//vmdebug('my query ',$query,$assetId);
+
+		//die;
 		// Full width format.
 		// Get the rules for just this asset (non-recursive).
 
@@ -300,6 +305,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 		$html[] = '<div id="permissions-sliders" class="pane-sliders">';
 		$html[] = '<p class="rule-desc">' . vmText::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
 		$html[] = '<ul id="rules">';
+
 
 		// Start a row for each user group.
 		foreach ($groups as $group) {

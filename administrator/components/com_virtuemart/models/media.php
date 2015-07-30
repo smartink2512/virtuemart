@@ -218,7 +218,7 @@ class VirtueMartModelMedia extends VmModel {
 
 			$user = JFactory::getUser();
 			if(!$user->authorise('core.admin','com_virtuemart') and !$user->authorise('core.manager','com_virtuemart')){
-				$vendorId = VmConfig::isSuperVendor();
+				$vendorId = vmAccess::isSuperVendor();
 				$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
 			}
 

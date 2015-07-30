@@ -175,9 +175,7 @@ class VirtuemartControllerOrders extends VmController {
 
 	function getPermOrderStatus(){
 
-		$user = JFactory::getUser();
-		if($user->authorise('core.admin') or $user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') or
-			( $user->authorise('vm.manage', 'com_virtuemart') and $user->authorise('vm.orders.status', 'com_virtuemart') )){
+		if(vmAccess::manager('orders.status')){
 			return true;
 		} else {
 			return false;

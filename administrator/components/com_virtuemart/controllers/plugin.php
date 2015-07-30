@@ -37,8 +37,7 @@ class VirtuemartControllerPlugin extends VmController
 	function Plugin()
 	{
 
-		$user = JFactory::getUser();
-		if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
+		if(!vmAccess::manager()){
 			return false;
 		}
 

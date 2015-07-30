@@ -326,7 +326,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		} else {
 
 			$product_id = $product;
-			$virtuemart_vendor_id = VmConfig::isSuperVendor();
+			$virtuemart_vendor_id = vmAccess::isSuperVendor();
 			vmdebug('displayProductCustomfieldBE product was not object, use for productId '.$product_id.' and $virtuemart_vendor_id = '.$virtuemart_vendor_id);
 		}
 		//vmdebug('displayProductCustomfieldBE',$product_id,$field,$virtuemart_vendor_id,$product);
@@ -779,6 +779,9 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if($l){
 			$l = false;
+
+			if (!class_exists ('VmView'))
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'vmview.php');
 			$lPath = VmView::getVmSubLayoutPath ('customfield');
 
 			if($lPath){
