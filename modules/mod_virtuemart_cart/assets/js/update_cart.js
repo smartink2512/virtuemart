@@ -17,7 +17,7 @@
                         $this.find(".vm_cart_products").html("");
                         jQuery.each(datas.products, function (key, val) {
                             //jQuery("#hiddencontainer .vmcontainer").clone().appendTo(".vmcontainer .vm_cart_products");
-                            jQuery("#hiddencontainer .vmcontainer").clone().appendTo(".vmCartModule .vm_cart_products");
+                            jQuery("#hiddencontainer .vmcontainer").clone().appendTo($this.find(".vm_cart_products"));
                             jQuery.each(val, function (key, val) {
                                 if (jQuery("#hiddencontainer .vmcontainer ." + key)) $this.find(".vm_cart_products ." + key + ":last").html(val);
                             });
