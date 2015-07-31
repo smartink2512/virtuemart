@@ -53,33 +53,7 @@ var klarnaCheckoutPayment = {
         }).success(
             function (datas) {
 				console.log('updateCart: success');
-
-				window._klarnaCheckout(function (api) {
-					console.log(' updateSnippet suspend');
-					api.suspend();
-				});
 				Virtuemart.updFormS();
-
-				window._klarnaCheckout(function (api) {
-					console.log('updateSnippet resume');
-					api.resume();
-				});
-               /* if (datas.msg) {
-                    console.log('updateCart:' + datas.msg.length);
-                }
-                console.log('updateCart:');
-                if (datas.getShipment) {
-                    window._klarnaCheckout(function (api) {
-                        console.log('updateCart suspend');
-                        api.suspend();
-                    });
-                    Virtuemart.updFormS();
-
-                    window._klarnaCheckout(function (api) {
-                        console.log('updateCart resume');
-                        api.resume();
-                    });
-                }*/
             });
     },
 

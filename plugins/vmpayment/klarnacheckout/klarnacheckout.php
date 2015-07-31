@@ -488,13 +488,20 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		}
 
-		$payment_advertise[]=$this->displaySnippet($klarna_checkout_order['gui']['snippet'], $message);
-		//echo $this->displaySnippet($klarna_checkout_order['gui']['snippet'], $message);
+		$html=$this->displaySnippet($klarna_checkout_order['gui']['snippet'], $message);
+		if( VmConfig::get('oncheckout_ajax',false)) {
+			echo $html;
+		} else {
+			$payment_advertise[]=$html;
+		}
 
 	}
 
-
-
+	/**
+	 * @param $snippet
+	 * @param $message
+	 * @return string
+	 */
 	function displaySnippet	($snippet, $message){
 
 
@@ -524,7 +531,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 ';
 
 		vmJsApi::addJScript('vm.kco_updatecart', $updateCartScript);
-		//vmJsApi::addJScript('vm.kco_updatesnippet', $updateSnippetScript);
+		vmJsApi::addJScript('vm.kco_updatesnippet', $updateSnippetScript);
 		//	}
 		$createAccount = '';
 		if (JFactory::getUser()->guest) {
@@ -546,8 +553,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			klarnaCheckoutPayment.initPayment(" . (int)$hide_BTST . ", '" . vmText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC', true) . "', '" . vmText::_('VMPAYMENT_KLARNACHECKOUT_SHIPMENT_METHODS_LATER', true) . "');
 		});
 ";
-		//$payment_advertise[]=$html;
-		//echo $html;
+
 		//vmJsApi::addJScript('vm.kco_initpayment', $js);
 
 return $html;
