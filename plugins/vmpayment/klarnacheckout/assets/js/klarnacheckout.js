@@ -72,6 +72,14 @@ var klarnaCheckoutPayment = {
                     });
     },
 
+    leaveKarnaCheckout: function(virtuemart_paymentmethod_id) {
+        var url =  vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarnacheckout&action=leaveKlarnaCheckout&virtuemart_paymentmethod_id='+virtuemart_paymentmethod_id +  '&lang='+vmLang;
+        jQuery.getJSON(url, function(data) {
+            var reloadurl = vmSiteurl +'index.php?option=com_virtuemart&view=cart' +  '&lang='+vmLang;
+            window.location.href = reloadurl;
+        });
+
+    },
 
 
     checkShipmentAvailable: function () {

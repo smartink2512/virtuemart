@@ -14,7 +14,7 @@
     </files>
     <vmconfig>
         <fields name="params">
-            <fieldset name="basic" addfieldpath="/plugins/vmpayment/klarnacheckout/klarnacheckout/fields">
+            <fieldset name="basic" addfieldpath="/plugins/vmpayment/klarnacheckout/fields">
                 <field type="klarnalogo" level="level1"/>
                 <field type="vmcurl"/>
                 <field type="getklarnacheckout"/>

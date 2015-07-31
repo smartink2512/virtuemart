@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $css =".totalInPaymentCurrency {display:none;}\n";
 if ($viewData ['payment_form_position']=='right' or $viewData ['payment_form_position'] =='specific') {
-	vmJsApi::css('klarnacheckout', 'plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css');
+	vmJsApi::css('klarnacheckout', 'plugins/vmpayment/klarnacheckout/assets/css');
 }
 
 ?>

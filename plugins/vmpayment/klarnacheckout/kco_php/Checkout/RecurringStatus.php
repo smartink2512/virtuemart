@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * File containing the Klarna_Checkout_RecurringOrder class
+ * File containing the Klarna_Checkout_RecurringStatus class
  *
  * PHP version 5.3
  *
@@ -36,15 +36,15 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache license v2.0
  * @link      http://developers.klarna.com/
  */
-class Klarna_Checkout_RecurringOrder extends Klarna_Checkout_Resource
-    implements Klarna_Checkout_ResourceCreateableInterface
+class Klarna_Checkout_RecurringStatus extends Klarna_Checkout_Resource implements
+    Klarna_Checkout_ResourceFetchableInterface
 {
     /**
      * Path that is used to create resources
      *
      * @var string
      */
-    protected $relativePath = '/checkout/recurring/%s/orders';
+    protected $relativePath = '/checkout/recurring/%s';
 
     /**
      * Content Type to use
@@ -52,18 +52,10 @@ class Klarna_Checkout_RecurringOrder extends Klarna_Checkout_Resource
      * @var string
      */
     protected $contentType
-        = "application/vnd.klarna.checkout.recurring-order-v1+json";
+        = "application/vnd.klarna.checkout.recurring-status-v1+json";
 
     /**
-     * Accept header to use
-     *
-     * @var string
-     */
-    protected $accept
-        = 'application/vnd.klarna.checkout.recurring-order-accepted-v1+json';
-
-    /**
-     * Create a new recurring order object
+     * Create a new recurring status object
      *
      * @param Klarna_Checkout_ConnectorInterface $connector      connector to use
      * @param string                             $recurringToken recurring token
@@ -72,26 +64,26 @@ class Klarna_Checkout_RecurringOrder extends Klarna_Checkout_Resource
         Klarna_Checkout_ConnectorInterface $connector,
         $recurringToken
     ) {
-        $uri = $connector->getDomain()
-            . sprintf($this->relativePath, $recurringToken);
-        parent::__construct($connector, $uri);
+        parent::__construct($connector);
+
+        $uri = $this->connector->getDomain() . sprintf(
+            $this->relativePath,
+            $recurringToken
+        );
+
+        $this->setLocation($uri);
     }
 
-
     /**
-     * Create a new order
-     *
-     * @param array $data data to initialise order resource with
+     * Fetch order data
      *
      * @return void
      */
-    public function create(array $data)
+    public function fetch()
     {
         $options = array(
-            'url' => $this->location,
-            'data' => $data
+            'url' => $this->location
         );
-
-        $this->connector->apply('POST', $this, $options);
+        $this->connector->apply('GET', $this, $options);
     }
 }
