@@ -32,8 +32,8 @@ class JFormFieldGetKlarnacheckout extends JFormField {
 	var $type = 'getKlarnacheckout';
 
 	function getInput() {
-		vmJsApi::addJScript( '/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/admin.js');
-		vmJsApi::css('admin', 'plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css');
+		vmJsApi::addJScript( '/plugins/vmpayment/klarnacheckout/assets/js/admin.js');
+		vmJsApi::css('admin', 'plugins/vmpayment/klarnacheckout/assets/css');
 		JHtml::_('behavior.colorpicker');
 
 		$jlang = JFactory::getLanguage ();
