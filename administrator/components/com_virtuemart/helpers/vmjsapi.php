@@ -134,6 +134,8 @@ class vmJsApi{
 
 				if($jsToAdd['inline']){
 					$html .= '<script type="text/javascript" src="'.$file .$ver.'"></script>';
+					/*$content = file_get_contents(VMPATH_ROOT.$file);
+					$html .= '<script type="text/javascript" >'.$content.'</script>';*/
 				} else {
 					$document = JFactory::getDocument();
 					$document->addScript( $file .$ver,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
@@ -223,18 +225,14 @@ class vmJsApi{
 	{
 
 		$version = $version ? '.'.$version : '';
-		$min	 = $minified ? '.min' : '';
-		$file 	 = $namespace.$version.$min.'.'.$ext ;
+		$filemin = $namespace.$version.'.min.'.$ext ;
+		$file 	 = $namespace.$version.'.'.$ext ;
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
 		if ($path === FALSE) {
-			//if($app->isSite()){
-				$uri = VMPATH_THEMES .'/'. $template.'/'.$ext ;
-			/*} else {
-				$uri = VMPATH_ROOT.DS.'administrator'.DS.'templates' .'/'. $template.'/'.$ext ;
-			}*/
+
 			$uri = VMPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
 		}
@@ -261,6 +259,9 @@ class vmJsApi{
 				$path = JURI::root(TRUE) .'/'.$path;
 			}
 		}
+
+		if (VmConfig::get('minified', false) and strpos($path, '//') === FALSE and file_exists($path.'/'. $filemin)) $file=$filemin;
+
 		return $path.'/'.$file ;
 	}
 	/**

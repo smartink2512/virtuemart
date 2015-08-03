@@ -91,8 +91,9 @@ JHtml::_ ('behavior.formvalidation');
 <?php
 
 vmJsApi::addJScript('updDynamicListeners',"
-Virtuemart.container = jQuery('#cart-view');
-Virtuemart.containerSelector = '#cart-view';
+if (typeof Virtuemart.containerSelector === 'undefined') Virtuemart.containerSelector = '#cart-view';
+if (typeof Virtuemart.container === 'undefined') Virtuemart.container = jQuery(Virtuemart.containerSelector);
+
 jQuery(document).ready(function() {
 	if (Virtuemart.container)
 		Virtuemart.updDynFormListeners();
@@ -117,10 +118,7 @@ jQuery(document).ready(function($) {
 	jQuery(this).vm2front('stopVmLoading');
 	var el = jQuery('#checkoutFormSubmit');
 	el.unbind('click dblclick');
-	//el.off('click',Virtuemart.updForm);
-	//el.off('click dblclick',Virtuemart.bCheckoutButton);
 	el.on('click dblclick',Virtuemart.bCheckoutButton);
-	//el.on('click',Virtuemart.updForm);
 });
 	");
 

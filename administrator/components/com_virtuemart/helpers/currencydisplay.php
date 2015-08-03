@@ -23,7 +23,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 class CurrencyDisplay {
 
-	static $_instance;
+	static $_instance = array();
 	private $_currencyConverter;
 
 	private $_currency_id   = '0';		// string ID related with the currency (ex : language)
@@ -93,45 +93,45 @@ class CurrencyDisplay {
 	 */
 	static public function getInstance($currencyId=0,$vendorId=0){
 
-		if(empty(self::$_instance)  || (!empty($currencyId) and $currencyId!=self::$_instance->_currency_id) ){
-
-			self::$_instance = new CurrencyDisplay($vendorId);
+		$h = $currencyId.'.'.$vendorId;
+		if (!isset(self::$_instance[$h])) {
+			self::$_instance[$h] = new CurrencyDisplay($vendorId);
 
 			if(empty($currencyId)){
 
-				if(self::$_instance->_app->isSite()){
-					self::$_instance->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id', 0));
+				if(self::$_instance[$h]->_app->isSite()){
+					self::$_instance[$h]->_currency_id = self::$_instance[$h]->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id', 0));
 				}
-				if(empty(self::$_instance->_currency_id)){
-					self::$_instance->_currency_id = self::$_instance->_vendorCurrency;
+				if(empty(self::$_instance[$h]->_currency_id)){
+					self::$_instance[$h]->_currency_id = self::$_instance[$h]->_vendorCurrency;
 				}
 
 			} else {
-				self::$_instance->_currency_id = $currencyId;
+				self::$_instance[$h]->_currency_id = $currencyId;
 			}
 
 			$vendorM = VmModel::getModel('currency');
-			$style = $vendorM->getData((int)self::$_instance->_currency_id);
+			$style = $vendorM->getData((int)self::$_instance[$h]->_currency_id);
 
 			if(!empty($style)){
-				self::$_instance->setCurrencyDisplayToStyleStr($style);
+				self::$_instance[$h]->setCurrencyDisplayToStyleStr($style);
 			} else {
 				VmConfig::loadJLang('com_virtuemart');
 
-				if(empty(self::$_instance->_currency_id)){
+				if(empty(self::$_instance[$h]->_currency_id)){
 					$link = JURI::root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
 					vmWarn(vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				} else{
 					if(vRequest::getCmd('view')!='currency'){
-						$link = JURI::root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.self::$_instance->_currency_id;
+						$link = JURI::root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.self::$_instance[$h]->_currency_id;
 						vmWarn(vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 					}
 				}
 			}
 		}
-		self::$_instance->setPriceArray();
+		self::$_instance[$h]->setPriceArray();
 
-		return self::$_instance;
+		return self::$_instance[$h];
 	}
 
 	/**
