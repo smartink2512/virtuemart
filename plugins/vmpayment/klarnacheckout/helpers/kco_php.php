@@ -60,7 +60,7 @@ class KlarnaCheckoutHelperKCO_php extends KlarnaCheckoutHelperKlarnaCheckout {
 		foreach ($cart->products as $pkey => $product) {
 
 			$items[$i]['reference'] = !empty($product->sku) ? $product->sku : $product->virtuemart_product_id;
-			$items[$i]['name'] = substr($product->product_name, 0, 127);
+			$items[$i]['name'] = substr(strip_tags($product->product_name), 0, 127);
 			$items[$i]['quantity'] = (int)$product->quantity;
 			$price = !empty($product->prices['basePriceWithTax']) ? $product->prices['basePriceWithTax'] : $product->prices['basePriceVariant'];
 

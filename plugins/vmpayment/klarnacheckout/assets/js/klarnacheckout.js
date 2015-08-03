@@ -3,7 +3,7 @@
  * KlarnaCheckout payment plugin
  *
  * @author Valérie Isaksen
- * @version $Id$
+ * @version $Id:$
  * @package VirtueMart
  * @subpackage payment
  * ${PHING.VM.COPYRIGHT}
@@ -53,7 +53,18 @@ var klarnaCheckoutPayment = {
         }).success(
             function (datas) {
 				console.log('updateCart: success');
+
+				window._klarnaCheckout(function (api) {
+					console.log(' updateSnippet suspend');
+					//api.suspend();
+				});
 				Virtuemart.updFormS();
+
+				window._klarnaCheckout(function (api) {
+					console.log('updateSnippet resume');
+					//api.resume();
+            });
+
             });
     },
 

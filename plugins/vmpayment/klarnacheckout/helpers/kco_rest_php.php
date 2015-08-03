@@ -23,13 +23,21 @@ defined('_JEXEC') or die('Restricted access');
 
 class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckout {
 	var $_currentMethod;
-
 	function __construct($method) {
 		$this->_currentMethod = $method;
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'Resource.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'Checkout'.DS.'Order.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'OrderManagement'.DS.'Capture.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'OrderManagement'.DS.'Capture.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'Transport'.DS.'ConnectorInterface.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'Transport'.DS.'Connector.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'Transport'.DS.'ResponseValidator.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'Transport'.DS.'UserAgentInterface.php');
+		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'Klarna'.DS.'Rest'.DS.'Transport'.DS.'UserAgent.php');
+
 	}
 
 	function getSnippet($klarna_checkout_order) {
-
 		return $klarna_checkout_order['html_snippet'];
 	}
 

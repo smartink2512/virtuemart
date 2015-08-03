@@ -24,13 +24,13 @@ if ( $viewData['payment_tooltip']) {
 }
 $dynUpdate='';
 if( VmConfig::get('oncheckout_ajax',false)) {
-	//$dynUpdate=' data-dynamic-update="1" ';
+	$dynUpdate=' data-dynamic-update="1" ';
 	$submitForm = '
 	jQuery("#payment_id_'.$viewData['plugin']->virtuemart_paymentmethod_id.'").click(function() {
         jQuery("#checkoutForm").submit();
 	});
 ';
-	vmJsApi::addJScript('vm.kco_submitForm', $submitForm);
+	//vmJsApi::addJScript('vm.kco_submitForm', $submitForm);
 }
 ?>
 <input type="radio" <?php echo $dynUpdate; ?> name="virtuemart_paymentmethod_id"
