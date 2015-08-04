@@ -56,7 +56,14 @@ class  KlarnaCheckoutHelperKlarnaCheckout {
 
 	}
 
+	function getTermsURI($vendorId) {
+		if (empty($this->_currentMethod->terms_uri)) {
+			return JURI::root() . 'index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendorId . '&lang=' . vRequest::getCmd('lang', '');
+		} else {
+			return $this->_currentMethod->terms_uri;
+		}
 
+	}
 	function acknowledge($klarna_checkout_order) {
 	}
 }

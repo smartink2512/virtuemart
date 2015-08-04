@@ -50,7 +50,21 @@ class KlarnaCheckoutHelperKCO_php extends KlarnaCheckoutHelperKlarnaCheckout {
 
 	}
 
-	function getCartItems($cart) {
+
+	function getMerchantData(&$klarnaOrderData, $cart) {
+		$klarnaOrderData['merchant']['id'] = $this->_currentMethod->merchantid;
+		$klarnaOrderData['merchant']['terms_uri'] = $this->getTermsURI($cart->vendorId);
+		$klarnaOrderData['merchant']['checkout_uri'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart' . '&Itemid=' . JRequest::getInt('Itemid');
+		$klarnaOrderData['merchant']['confirmation_uri'] = JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginresponsereceived&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid') . '&klarna_order={checkout.order.id}';
+		// You can not receive push notification on non publicly available uri
+		$klarnaOrderData['merchant']['push_uri'] = JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginnotification&tmpl=component&nt=kco-push-uri&pm=' . $this->_currentMethod->virtuemart_paymentmethod_id . '&klarna_order={checkout.order.id}';
+		// attention if used must be https
+		//$create['merchant']['validation_uri'] = JURI::root() .  'index.php?option=com_virtuemart&view=vmplg&task=pluginnotification&tmpl=component&nt=kco-validation&pm=' . $virtuemart_paymentmethod_id . '&klarna_order={checkout.order.uri}';
+
+	}
+
+	function getCartItems($cart, &$klarnaOrderData) {
+
 		//vmdebug('getProductItems', $cart->pricesUnformatted);
 		//self::includeKlarnaFiles();
 		$i = 0;
@@ -117,8 +131,18 @@ class KlarnaCheckoutHelperKCO_php extends KlarnaCheckoutHelperKlarnaCheckout {
 			//$this->debugLog($items[$i], 'getCartItems', 'debug');
 		}
 		$currency = CurrencyDisplay::getInstance($cart->paymentCurrency);
-
-		return $items;
+		$klarnaOrderData['cart']['items'] = $items;
+		return;
 
 	}
+
+	function getCheckoutOrderId($klarna_checkout_order) {
+		return $klarna_checkout_order['id'];
+	}
+
+	function checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_uri) {
+		return new Klarna_Checkout_Order($klarna_checkout_connector, $klarna_checkout_uri);
+	}
+
+
 }

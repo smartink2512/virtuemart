@@ -26,7 +26,11 @@
                 <field name="purchase_country" type="vmcountry" default=""
                        label="VMPAYMENT_KLARNACHECKOUT_PURCHASE_COUNTRY"
                        description="VMPAYMENT_KLARNACHECKOUT_PURCHASE_COUNTRY_DESC"/>
-
+                <field name="zone" type="list" default="0" label="VMPAYMENT_KLARNACHECKOUT_ZONE"
+                       description="VMPAYMENT_KLARNACHECKOUT_ZONE_DESC">
+                    <option value="EU">VMPAYMENT_KLARNACHECKOUT_ZONE_EU</option>
+                    <option value="NA">VMPAYMENT_KLARNACHECKOUT_ZONE_NA</option>
+                </field>
                 <field name="merchantid" type="text" default="" label="VMPAYMENT_KLARNACHECKOUT_MERCHANT_ID"
                        description="VMPAYMENT_KLARNACHECKOUT_MERCHANT_ID_DESC"/>
                 <field name="sharedsecret" type="text" default="" label="VMPAYMENT_KLARNACHECKOUT_SHARED_SECRET"
@@ -36,6 +40,7 @@
                     <option value="beta">VMPAYMENT_KLARNACHECKOUT_SERVER_BETA</option>
                     <option value="live">VMPAYMENT_KLARNACHECKOUT_SERVER_LIVE</option>
                 </field>
+
                 <field name="locale" type="getlanguage" default=""
                                 label="VMPAYMENT_KLARNACHECKOUT_LOCALE" description="VMPAYMENT_KLARNACHECKOUT_LOCALE_DESC"/>
                 <field name="payment_currency" type="vmacceptedcurrency" default=""

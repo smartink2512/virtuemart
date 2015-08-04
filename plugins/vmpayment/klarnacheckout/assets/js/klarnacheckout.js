@@ -41,8 +41,8 @@ var klarnaCheckoutPayment = {
         var family_name = klarnaData.family_name;
         console.log('updateCart:' + zip);
 
-        if (zip === '') return;
-        var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&nosef=1&name=klarnacheckout&loadJS=1&action=updateCartWithKlarnacheckoutAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + '&zip='+zip + '&email='+email + '&lang='+vmLang;
+        //if (zip === '') return;
+        var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&nosef=1&name=klarnacheckout&loadJS=1&action=updateCartWithKlarnacheckoutAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + '&zip='+zip + '&email='+email + '&family_name='+family_name+ '&given_name='+given_name + '&lang='+vmLang;
 
         jQuery.ajax({
             type: "POST",
