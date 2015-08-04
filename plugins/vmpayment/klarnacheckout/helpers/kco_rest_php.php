@@ -195,5 +195,28 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 
 	}
 
+function isKlarnaOrderStatusSuccess($klarna_checkout_order) {
+	return ($klarna_checkout_order['status'] == 'checkout_complete');
+}
+
+	function getStoreInternalData($klarna_checkout_order,$dbValues){
+		$dbValues['payment_order_total'] = $klarna_checkout_order['original_order_amount'] ;
+		$dbValues['payment_currency'] = ShopFunctions::getCurrencyIDByName($klarna_checkout_order['purchase_currency']);;
+
+		$dbValues['klarna_id'] = $klarna_checkout_order['order_id'];
+		$dbValues['klarna_status'] = $klarna_checkout_order['status'];
+		//$dbValues['klarna_reservation'] = $klarna_checkout_order['reservation'];
+		$dbValues['klarna_reference'] = $klarna_checkout_order['klarna_reference'];
+		$dbValues['klarna_started_at'] = $klarna_checkout_order['started_at'];
+		$dbValues['klarna_completed_at'] = $klarna_checkout_order['completed_at'];
+		$dbValues['klarna_expires_at'] = $klarna_checkout_order['expires_at'];
+		$dbValues['format'] = 'json';
+		$dbValues['data'] = json_encode($klarna_checkout_order);
+	}
+
+}
+
+
+class MyHttpAgent {
 
 }

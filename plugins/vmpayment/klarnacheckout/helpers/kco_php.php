@@ -6,13 +6,8 @@
  * @author Valérie Isaksen
  * @version $Id:$
  * @package VirtueMart
- * @subpackage payment
  * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
  * http://virtuemart.net
@@ -140,8 +135,22 @@ class KlarnaCheckoutHelperKCO_php extends KlarnaCheckoutHelperKlarnaCheckout {
 		return $klarna_checkout_order['id'];
 	}
 
-	function checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_uri) {
-		return new Klarna_Checkout_Order($klarna_checkout_connector, $klarna_checkout_uri);
+	function isKlarnaOrderStatusSuccess($klarna_checkout_order) {
+		return ($klarna_checkout_order['status'] == 'checkout_complete');
+	}
+
+	function getStoreInternalData($klarna_checkout_order, $dbValues) {
+		$dbValues['payment_order_total'] = $klarna_checkout_order['cart']['total_price_including_tax'] / 100;
+		$dbValues['payment_currency'] = ShopFunctions::getCurrencyIDByName($klarna_checkout_order['purchase_currency']);;
+
+		$dbValues['klarna_id'] = $klarna_checkout_order['id'];
+		$dbValues['klarna_status'] = $klarna_checkout_order['status'];
+		$dbValues['klarna_reservation'] = $klarna_checkout_order['reservation'];
+		$dbValues['klarna_reference'] = $klarna_checkout_order['reference'];
+		$dbValues['klarna_started_at'] = $klarna_checkout_order['started_at'];
+		$dbValues['klarna_completed_at'] = $klarna_checkout_order['completed_at'];
+		$dbValues['klarna_expires_at'] = $klarna_checkout_order['expires_at'];
+		$dbValues['format'] = 'none';
 	}
 
 

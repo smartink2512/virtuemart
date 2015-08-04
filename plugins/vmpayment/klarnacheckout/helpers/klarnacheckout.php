@@ -66,4 +66,7 @@ class  KlarnaCheckoutHelperKlarnaCheckout {
 	}
 	function acknowledge($klarna_checkout_order) {
 	}
+	function checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_uri) {
+		return NULL;
+	}
 }

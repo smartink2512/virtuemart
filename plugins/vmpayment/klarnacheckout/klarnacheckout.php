@@ -227,7 +227,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$this->clearKlarnaParams($cart);
 			return;
 		}
-		/*
+
 		$virtuemart_paymentmethod_id = 0;
 		foreach ($this->methods as $method) {
 			if ($cart->virtuemart_paymentmethod_id == $method->virtuemart_paymentmethod_id) {
@@ -236,7 +236,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			}
 		}
 		if ($virtuemart_paymentmethod_id == 0) return;
-*/
+
 
 		if (!($this->_currentMethod = $this->getVmPluginMethod($klarnaPaymentMethodActive))) {
 			return NULL; // Another method was selected, do nothing
@@ -665,15 +665,13 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$klarnaCheckoutInterface = $this->_loadKlarnaCheckoutInterface();
 		$klarna_checkout_connector = $klarnaCheckoutInterface->getKlarnaConnector();
 
-		$klarna_checkout_ordermanagement = $klarnaCheckoutInterface->checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_id);
-		$klarnaCheckoutInterface->acknowledge($klarna_checkout_ordermanagement);
 
 		$klarna_checkout_order = $klarnaCheckoutInterface->checkoutOrder($klarna_checkout_connector, $klarna_checkout_id);
 		$klarna_checkout_order->fetch();
 
 		$this->debugLog($klarna_checkout_order['status'], 'plgVmOnPaymentResponseReceived ' . ' klarna status', 'debug');
 
-		if ($klarna_checkout_order['status'] == 'checkout_incomplete') {
+		if (!$klarnaCheckoutInterface->isKlarnaOrderStatusSuccess($klarna_checkout_order)) {
 			JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', false), vmText::_('VMPAYMENT_KLARNACHECKOUT_INCOMPLETE'));
 		}
 		// update the cart with klarna infos
@@ -688,6 +686,9 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$cart->_confirmDone = true;
 
 		$cart->confirmedOrder();
+
+		$klarna_checkout_ordermanagement = $klarnaCheckoutInterface->checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_id);
+		$klarnaCheckoutInterface->acknowledge($klarna_checkout_ordermanagement);
 
 		$this->debugLog($cart->order_number, 'plgVmOnPaymentResponseReceived ' . ' confirmDone FINAL', 'debug');
 
@@ -710,17 +711,9 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$dbValues['order_number'] = $cart->order_number;
 		$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 		$dbValues['payment_name'] = "hhum";//TODO $this->renderPluginName($this->_currentMethod, $order);
-		$dbValues['payment_order_total'] = $klarna_checkout_order['cart']['total_price_including_tax'] / 100;
-		$dbValues['payment_currency'] = ShopFunctions::getCurrencyIDByName($klarna_checkout_order['purchase_currency']);;
+		$klarnaCheckoutInterface->getStoreInternalData($klarna_checkout_order,$dbValues);
 		$dbValues['email_currency'] = $this->getEmailCurrency($this->_currentMethod);
-		$dbValues['klarna_id'] = $klarna_checkout_order['id'];
-		$dbValues['klarna_status'] = $klarna_checkout_order['status'];
-		$dbValues['klarna_reservation'] = $klarna_checkout_order['reservation'];
-		$dbValues['klarna_reference'] = $klarna_checkout_order['reference'];
-		$dbValues['klarna_started_at'] = $klarna_checkout_order['started_at'];
-		$dbValues['klarna_completed_at'] = $klarna_checkout_order['completed_at'];
-		$dbValues['klarna_expires_at'] = $klarna_checkout_order['expires_at'];
-		$dbValues['format'] = 'none';
+
 
 		$this->debugLog(var_export($dbValues, true), 'plgVmConfirmedOrder storePSPluginInternalData', 'debug');
 		$this->storePSPluginInternalData($dbValues);
@@ -834,17 +827,11 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			return NULL;
 		}
 
-
-		sleep(2);
-
-
 		$this->initKlarnaParams();
 		$klarnaCheckoutInterface = $this->_loadKlarnaCheckoutInterface();
 		$klarna_checkout_connector = $klarnaCheckoutInterface->getKlarnaConnector();
 
 		$klarna_checkout_order = $klarnaCheckoutInterface->checkoutOrder($klarna_checkout_connector, $klarna_checkout_id);
-
-
 		$klarna_checkout_order->fetch();
 		$this->debugLog('fetch order', 'plgVmOnPaymentNotification', 'debug');
 
@@ -981,6 +968,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$prefix . 'first_name' => $klarna_address['given_name'],
 			$prefix . 'last_name' => $klarna_address['family_name'],
 			$prefix . 'address_1' => $klarna_address['street_address'],
+			$prefix . 'address_2' => isset($klarna_address['street_address2'])?$klarna_address['street_address2']:'',
 			$prefix . 'zip' => $klarna_address['postal_code'],
 			$prefix . 'city' => $klarna_address['city'],
 			$prefix . 'virtuemart_country_id' => shopFunctions::getCountryIDByName($klarna_address['country']),
