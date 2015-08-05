@@ -1,7 +1,6 @@
 if (typeof Virtuemart === "undefined")
 	Virtuemart = {};
 
-
 Virtuemart.setproducttype = function(form, id) {
 	form.view = null;
 	var datas = form.serialize();

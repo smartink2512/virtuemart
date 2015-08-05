@@ -227,7 +227,7 @@ class vmJsApi{
 		$version = $version ? '.'.$version : '';
 		$filemin = $namespace.$version.'.min.'.$ext ;
 		$file 	 = $namespace.$version.'.'.$ext ;
-
+		$file_exit_path='';
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$vmStyle = VmTemplate::loadVmTemplateStyle();
 		$template = $vmStyle['template'];
@@ -243,6 +243,7 @@ class vmJsApi{
 				$assets_path = VmConfig::get('assets_general_path','components/com_virtuemart/assets/') ;
 				$path = str_replace('templates/'. $template.'/',$assets_path, $path);
 			}
+			$file_exit_path = VMPATH_BASE .'/'.$path;
 			if ($absolute_path) {
 				$path = VMPATH_BASE .'/'.$path;
 			} else {
@@ -253,14 +254,13 @@ class vmJsApi{
 		elseif (strpos($path, '//') === FALSE)
 		{
 			if ($absolute_path) {
-
 				$path = VMPATH_BASE .'/'.$path;
 			} else {
 				$path = JURI::root(TRUE) .'/'.$path;
 			}
 		}
 
-		if (VmConfig::get('minified', false) and strpos($path, '//') === FALSE and file_exists($path.'/'. $filemin)) $file=$filemin;
+		if (VmConfig::get('minified', false) and strpos($path, '//') === FALSE and file_exists($file_exit_path.'/'. $filemin)) $file=$filemin;
 
 		return $path.'/'.$file ;
 	}

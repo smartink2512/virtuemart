@@ -374,6 +374,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 			$this->catTable = $model->getTable ('categories');
 
+			$this->lists['vendors'] = Shopfunctions::renderVendorList(vmAccess::getVendorId());
+
 			foreach ($productlist as $virtuemart_product_id => $product) {
 				$product->mediaitems = count($product->virtuemart_media_id);
 				$product->reviews = $productreviews->countReviewsForProduct($product->virtuemart_product_id);

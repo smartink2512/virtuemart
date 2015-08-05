@@ -51,9 +51,11 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 					echo $this->lists['search_type'];
 					echo $this->lists['search_order'];
 					echo vmJsApi::jDate(vRequest::getVar('search_date', $nowstring), 'search_date');
+					echo $this->lists['vendors'];
 				?>
 				<button  class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 				<button  class="btn btn-small" onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
+
 			</td>
 
 		</tr>

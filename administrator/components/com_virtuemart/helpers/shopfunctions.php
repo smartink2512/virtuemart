@@ -109,7 +109,7 @@ class ShopFunctions {
 			$vendor = $db->loadResult ();
 			return '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
 		} else {
-			$user = JFactory::getUser();
+			//$user = JFactory::getUser();
 			$view = vRequest::getCmd('view',false);
 			/*if(!$view or !($user->authorise('core.admin', 'com_virtuemart') or
 			(($user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.manage', 'com_virtuemart')) and $user->authorise('vm.'.$view, 'com_virtuemart') ) ) ){*/

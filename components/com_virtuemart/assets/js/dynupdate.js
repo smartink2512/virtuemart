@@ -164,7 +164,6 @@ jQuery(function($) {
 					el.on('click',Virtuemart.updFormS);
 					break;
 			}
-
 		});
 	}
 
@@ -183,10 +182,8 @@ jQuery(function($) {
 					el[0].onchange = null;
                     el.off('change',Virtuemart.upd);
                     el.on('change',Virtuemart.upd);
-                   // console.log('updateDynamicUpdateListeners change '+i, el);
             }
         });
-		//jQuery('[name="updatecart"]').remove();
     }
 
     var everPushedHistory = false;
@@ -209,7 +206,6 @@ jQuery(function($) {
     }
 
     Virtuemart.browserStateChangeEvent = function(event) {
-        //console.log(event);
         // Fix. Chrome and Safari fires onpopstate event onload.
         // Also fix browsing through history when mixed with Ajax updates and
         // full updates.

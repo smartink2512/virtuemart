@@ -190,7 +190,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->searchplugin = vRequest::getInt ('custom_parent_id', 0);
 
-		$this->virtuemart_vendor_id = vmAccess::isSuperVendor();
+		//$this->virtuemart_vendor_id = vmAccess::isSuperVendor();
+		$this->virtuemart_vendor_id = vmAccess::getVendorId();
 	}
 
 	/**

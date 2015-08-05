@@ -125,7 +125,7 @@
                         });
                     }
 
-                    $(table).find(options.addRowTemplateId).each(function () {
+                    jQuery(table).find(options.addRowTemplateId).each(function () {
                         $(this).removeAttr("id");
                         var tmpl = $(this);
                         tmpl.remove();

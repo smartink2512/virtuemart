@@ -829,7 +829,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			//We just add the customfields to be shown in the cart to the variantmods
 			if(is_object($prodcustom)){
 				if($prodcustom->is_cart_attribute and !$prodcustom->is_input){
-					if(!is_array($variantmods[$prodcustom->virtuemart_custom_id])){
+					if(!isset($variantmods[$prodcustom->virtuemart_custom_id])){
 						$variantmods[$prodcustom->virtuemart_custom_id] = array();
 					}
 					$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = false;

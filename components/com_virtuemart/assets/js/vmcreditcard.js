@@ -64,8 +64,7 @@ function CreditCardisExpiryDate(month, year,paymentmethod_id) {
         document.getElementById("cc_expiredate_errormsg_"+ paymentmethod_id).style.display="block";
         document.getElementById("cc_expiredate_errormsg_"+ paymentmethod_id).innerHTML =error_msg;
         return false;
-    }
-    else
+    } else
         return true;
 }
 

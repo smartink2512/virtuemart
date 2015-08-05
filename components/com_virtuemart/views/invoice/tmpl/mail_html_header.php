@@ -25,7 +25,7 @@ defined ('_JEXEC') or die('Restricted access');
 	<?php if ($this->vendor->vendor_letter_header>0) { ?>
 	<tr>
 		<?php if ($this->vendor->vendor_letter_header_image>0) { ?>
-			<td class="vmdoc-header-image"><img src="<?php  echo JURI::root () . $this->vendor->images[0]->file_url ?>" style="width: <?php echo $this->vendor->vendor_letter_header_imagesize; ?>mm;" /></td>
+			<td class="vmdoc-header-image"><img src="<?php echo JURI::root () . $this->vendor->images[0]->file_url ?>" style="width: <?php echo $this->vendor->vendor_letter_header_imagesize; ?>mm;" /></td>
 			<td colspan=1 class="vmdoc-header-vendor">
 		<?php } else { // no image ?>
 			<td colspan=2 width="100%" class="vmdoc-header-vendor">

@@ -35,6 +35,7 @@
 			}
 			return this;
 		 },
+
 		/**
 		* Attachs jQuery.validationEngine to form.submit and field.blur events
 		* Takes an optional params: a list of options

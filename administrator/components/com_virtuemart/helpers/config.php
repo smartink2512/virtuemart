@@ -1142,6 +1142,9 @@ class VmConfig {
 		return (strpos(JVERSION,'1.5') === 0);
 	}
 
+	static public function isSuperVendor($uid = 0){
+		return vmAccess::isSuperVendor($uid);
+	}
 }
 
 class vmAccess {
@@ -1284,6 +1287,36 @@ class vmAccess {
 		return self::$_manager[$h];
 	}
 
+	public static function getVendorId($task=0, $uid = 0, $name = 'virtuemart_vendor_id'){
+
+		if(self::$_site === null) {
+			$app = JFactory::getApplication();
+			self::$_site = $app->isSite();
+		}
+
+		if(self::$_site){
+			$feM = vRequest::getString('manage');
+			if(!$feM){
+				//normal shopper in FE and NOT in the FE managing mode
+				vmdebug('getVendorId normal shopper');
+				return vRequest::getInt($name,self::isSuperVendor($uid));
+			}
+		}
+
+		if($task === 0){
+			$task = 'managevendors';
+		} else if(is_array($task)) {
+			$task[] = 'managevendors';
+		} else {
+			$task = array($task,'managevendors');
+		}
+		if(self::manager($task, $uid)){
+			vmdebug('getVendorId manager');
+			return vRequest::getInt($name,self::isSuperVendor($uid));
+		} else {
+			return self::isSuperVendor($uid);
+		}
+	}
 }
 
 class vmURI{
