@@ -1299,7 +1299,7 @@ class vmAccess {
 			if(!$feM){
 				//normal shopper in FE and NOT in the FE managing mode
 				vmdebug('getVendorId normal shopper');
-				return vRequest::getInt($name,self::isSuperVendor($uid));
+				return vRequest::getInt($name,false);
 			}
 		}
 

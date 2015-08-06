@@ -307,7 +307,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$where[]= ' u.virtuemart_user_id = ' . (int)$uid.' ';
 			}
 		}
-		else if( vmAccess::manager('orders') or $virtuemart_vendor_id){
+		else if( vmAccess::manager('orders')){
 			
 			vmdebug('Vendor is manager and should only see its own orders venodorId '.$virtuemart_vendor_id);
 			if(!empty($virtuemart_vendor_id)){

@@ -110,6 +110,15 @@ jQuery(function($) {
 				dataType: "html",
 				data: cartform.serialize(), // serializes the form's elements.
 				success: function(datas) {
+
+					if (typeof window._klarnaCheckout !== "undefined"){
+						window._klarnaCheckout(function (api) {
+							console.log(' updateSnippet suspend');
+							api.suspend();
+						});
+					}
+
+
 					var el = jQuery(datas).find(Virtuemart.containerSelector);
 					if (! el.length) el = jQuery(datas).filter(Virtuemart.containerSelector);
 					if (el.length) {
@@ -124,6 +133,12 @@ jQuery(function($) {
 					Virtuemart.setBrowserNewState(carturl);
 					Virtuemart.isUpdatingContent = false;
 					jQuery(this).vm2front("stopVmLoading");
+					if (typeof window._klarnaCheckout !== "undefined"){
+						window._klarnaCheckout(function (api) {
+							console.log(' updateSnippet suspend');
+							api.resume();
+						});
+					}
 				},
 				error: function(datas) {
 					alert('Error updating cart');
@@ -171,7 +186,7 @@ jQuery(function($) {
         jQuery('*[data-dynamic-update=1]').each(function(i, el) {
             var nodeName = el.nodeName;
             el = jQuery(el);
-            console.log('updateDynamicUpdateListeners '+nodeName, el);
+            //console.log('updateDynamicUpdateListeners '+nodeName, el);
             switch (nodeName) {
                 case 'A':
 					el[0].onclick = null;

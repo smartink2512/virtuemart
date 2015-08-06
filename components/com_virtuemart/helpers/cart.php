@@ -62,6 +62,7 @@ class VirtueMartCart {
 	var $order_number=null; // added to solve emptying cart for payment notification
 	var $virtuemart_order_id = false;
 	var $customer_number=null;
+	var $cartAdv = false;
 
 	var $pricesCurrency = null;
 	var $paymentCurrency = null;
@@ -1611,7 +1612,7 @@ class VirtueMartCart {
 	 * Trigger to place Coupon, payment, shipment advertisement on the cart
 	 */
 	public function getCheckoutAdvertise() {
-		$this->cartAdv = false;
+
 		if(!$this->cartAdv){
 			$this->cartAdv=array();
 			JPluginHelper::importPlugin('vmextended');
@@ -1622,7 +1623,6 @@ class VirtueMartCart {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckoutAdvertise', array( $this, &$this->cartAdv));
 		}
-
 		return $this->cartAdv;
 	}
 

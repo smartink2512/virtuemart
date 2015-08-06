@@ -42,7 +42,10 @@ JHtml::_ ('behavior.formvalidation');
 		<div class="clear"></div>
 	</div>
 
-	<?php echo shopFunctionsF::getLoginForm ($this->cart, FALSE);
+	<?php
+	$uri = vmURI::getCleanUrl();
+	$uri = str_replace('&tmpl=component','',$uri);
+	echo shopFunctionsF::getLoginForm ($this->cart, FALSE,$uri);
 
 	// This displays the form to change the current shopper
 	if ($this->allowChangeShopper){

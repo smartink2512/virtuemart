@@ -379,20 +379,6 @@ class VirtueMartViewCart extends VmView {
 		return $totalInPaymentCurrency;
 	}
 
-	/*
-	 * Trigger to place Coupon, payment, shipment advertisement on the cart
-	 */
-	private function getCheckoutAdvertise() {
-		$checkoutAdvertise=array();
-		JPluginHelper::importPlugin('vmextended');
-		JPluginHelper::importPlugin('vmcoupon');
-		JPluginHelper::importPlugin('vmshipment');
-		JPluginHelper::importPlugin('vmpayment');
-		JPluginHelper::importPlugin('vmuserfield');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnCheckoutAdvertise', array( $this->cart, &$checkoutAdvertise));
-		return $checkoutAdvertise;
-	}
 
 	private function lOrderDone() {
 

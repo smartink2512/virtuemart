@@ -73,6 +73,9 @@ class VirtuemartControllerPlugin extends JControllerLegacy {
 			else {
 				echo $render;
 			}
+		} else {
+			jExit();
 		}
+
 	}
 }

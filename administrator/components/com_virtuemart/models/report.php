@@ -121,12 +121,11 @@ class VirtuemartModelReport extends VmModel {
 	 */
 	function getRevenue ($cache = 0) {
 
-		$vendorId = vmAccess::isSuperVendor();
-
 		if(!vmAccess::manager('report')){
 			return false;
 		}
 
+		$vendorId = vmAccess::isSuperVendor();
 		if(vmAccess::manager('managevendors')){
 			$vendorId = vRequest::getInt('virtuemart_vendor_id',$vendorId);
 		}

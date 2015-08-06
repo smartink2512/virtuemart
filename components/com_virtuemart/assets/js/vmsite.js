@@ -19,18 +19,25 @@ if (typeof Virtuemart === "undefined")
 			var dest = options.dest;
 			var ids = options.ids;
 			var prefix = options.prefiks;
-            methods.update(this,dest,ids,prefix);
-			jQuery(this).change( function() { methods.update(this,dest,ids,prefix)});
+            methods.update(this,dest,ids,options.prefiks);
+			jQuery(this).change( function() { methods.update(this,dest,ids,options.prefiks)});
 		},
 		update: function(org,dest,ids,prefix) {
 			var opt = jQuery(org),
 				optValues = opt.val() || [],
 				byAjax = [] ;
 			if (!jQuery.isArray(optValues)) optValues = jQuery.makeArray(optValues);
-			if ( typeof  oldValues !== "undefined") {
+			if ( typeof  oldValues === "undefined") {
+				oldValues = [];
+			}
+			if ( typeof  oldValues[prefix] !== "undefined") {
+
 				//remove if not in optValues
-				jQuery.each(oldValues, function(key, oldValue) {
-					if ( (jQuery.inArray( oldValue, optValues )) < 0 ) jQuery("#"+prefix+"group"+oldValue).remove();
+				jQuery.each(oldValues[prefix], function(key, oldValue) {
+				var sel = "#"+prefix+"group"+oldValue;
+					console.log('remove old values',sel, oldValue);
+					//if ( (jQuery.inArray( oldValue, optValues )) < 0 )
+					jQuery(sel).remove();
 				});
 			}
 			//push in 'byAjax' values and do it in ajax
@@ -74,7 +81,7 @@ if (typeof Virtuemart === "undefined")
 				methods.addToList(opt,optValues,dest,prefix)
 				jQuery(dest).trigger("liszt:updated");
 			}
-			oldValues = optValues ;
+			oldValues[prefix] = optValues ;
 			
 		},
 		addToList: function(opt,values,dest,prefix) {
@@ -83,14 +90,13 @@ if (typeof Virtuemart === "undefined")
 				if ( ! groupExist ) {
 					var datas = opt.data( 'd'+dataValue );
 					if (datas.length >0) {
-					var label = opt.find("option[value='"+dataValue+"']").text();
-					var group ='<optgroup id="'+prefix+'group'+dataValue+'" label="'+label+'">';
-					jQuery.each( datas  , function( key, value) {
-						if (value) group +='<option value="'+ value.virtuemart_state_id +'">'+ value.state_name +'</option>';
-					});
-					group += '</optgroup>';
-					jQuery(dest).append(group);
-					
+						var label = opt.find("option[value='"+dataValue+"']").text();
+						var group ='<optgroup id="'+prefix+'group'+dataValue+'" label="'+label+'">';
+						jQuery.each( datas  , function( key, value) {
+							if (value) group +='<option value="'+ value.virtuemart_state_id +'">'+ value.state_name +'</option>';
+						});
+						group += '</optgroup>';
+						jQuery(dest).append(group);
 					}
 				}
 			});

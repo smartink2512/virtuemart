@@ -127,7 +127,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->_uncategorizedChildren = null;
 
-		$this->virtuemart_vendor_id = 1;
+		$this->virtuemart_vendor_id = 0;
 	}
 
 	/**
@@ -251,7 +251,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		//$isSite = $app->isSite ();
 		$isSite = true;
-		if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::isSuperVendor()) ){
+		if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::getVendorId()) ){
 			$isSite = false;
 		}
 
@@ -1711,8 +1711,9 @@ class VirtueMartModelProduct extends VmModel {
 		$isChild = FALSE;
 		if(!empty($data['isChild'])) $isChild = $data['isChild'];
 
-		$superVendor = vmAccess::isSuperVendor();
-		if(empty($superVendor)){
+
+		$superVendor = vmAccess::getVendorId();
+		if(empty($superVendor) or !vmAccess::manager('product.edit')){
 			vmError('You are not a vendor or administrator, storing of product cancelled');
 			return FALSE;
 		}
