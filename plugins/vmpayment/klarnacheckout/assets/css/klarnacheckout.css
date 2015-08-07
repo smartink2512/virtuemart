@@ -35,7 +35,20 @@ div#kco-payment-method {
 }
 
 #kco-shipment-method {
-    font-size: 110%;
+    font-size: 150%;
     font-weight: bold;
+    color: #E82727;
+    margin: 20px 0;
 }
+
+
+
+.disableSnippet {
+    overflow: hidden;
+    opacity: 0.2;
+}
+
+
+
+
 

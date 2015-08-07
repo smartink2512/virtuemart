@@ -73,6 +73,9 @@
                 <field name="status_changeReservation" type="hidden" default="X"
                        label="VMPAYMENT_KLARNACHECKOUT_CHANGE_RESERVATION"
                        description="VMPAYMENT_KLARNACHECKOUT_CHANGE_RESERVATION_DESC"/>
+                <field name="status_Refund" type="vmorderstate" default="R"
+                       label="VMPAYMENT_KLARNACHECKOUT_REFUND"
+                       description="VMPAYMENT_KLARNACHECKOUT_REFUND_DESC"/>
                 <field type="spacer" default="" level="level1"/>
 
                 <field type="vmtitle" default="VMPAYMENT_KLARNACHECKOUT_TEMPLATING" level="level1"/>

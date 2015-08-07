@@ -39,20 +39,29 @@ class  KlarnaCheckoutHelperKlarnaCheckout {
 	}
 
 
-	function getTaxShipment($shipment_calc_id) {
+	function getTaxShipment($cart) {
 		// TO DO add shipmentTaxRate in the cart
 		// assuming there is only one rule +%
+		//-1 = no rules
 
+		if (count($cart->cartPrices['shipment_calc_id']) > 1) {
+			$this->KlarnacheckoutError('There is more then one rule for the shipment tax id.Please check your shipment tax configuration');
+			//$this->debugLog(var_export($cart->cartPrices['shipment_calc_id'], true), 'getTaxShipment', 'debug');
+			return;
+		}
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipment_calc_id[0] . '" ';
+		$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $cart->cartPrices['shipment_calc_id'][0] . '" ';
+
 		$db->setQuery($q);
 		$taxrule = $db->loadObject();
 		if ($taxrule->calc_value_mathop != "+%") {
 			$this->KlarnacheckoutError('KlarnaCheckout getTaxShipment: expecting math operation to be +% but is ' . $taxrule->calc_value_mathop);
-			$this->debugLog(var_export($taxrule, true), 'getTaxShipment', 'debug');
-			$this->debugLog($q, 'getTaxShipment query', 'debug');
+			//$this->debugLog(var_export($taxrule, true), 'getTaxShipment', 'debug');
+			//$this->debugLog($q, 'getTaxShipment query', 'debug');
+			return;
 		}
 		return $taxrule->calc_value * 100;
+
 
 	}
 
@@ -64,9 +73,18 @@ class  KlarnaCheckoutHelperKlarnaCheckout {
 		}
 
 	}
+
 	function acknowledge($klarna_checkout_order) {
 	}
+
 	function checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_uri) {
 		return NULL;
+	}
+
+	function KlarnacheckoutError($admin_msg, $public_msg = '') {
+		if ($this->_currentMethod->debug) {
+			$public_msg = $admin_msg;
+		}
+		vmError($admin_msg, $public_msg);
 	}
 }

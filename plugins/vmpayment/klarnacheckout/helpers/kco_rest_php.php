@@ -23,6 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckout {
 	var $_currentMethod;
+
 	function __construct($method) {
 		$this->_currentMethod = $method;
 		/*
@@ -47,15 +48,15 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 	function getKlarnaUrl() {
 
 		if ($this->_currentMethod->server == 'beta') {
-			if ($this->_currentMethod->zone=='EU') {
+			if ($this->_currentMethod->zone == 'EU') {
 				return \Klarna\Rest\Transport\ConnectorInterface::EU_TEST_BASE_URL;
-			}  else {
+			} else {
 				return \Klarna\Rest\Transport\ConnectorInterface::NA_TEST_BASE_URL;
 			}
 		} else {
-			if ($this->_currentMethod->zone=='EU') {
+			if ($this->_currentMethod->zone == 'EU') {
 				return \Klarna\Rest\Transport\ConnectorInterface::EU_BASE_URL;
-			}  else {
+			} else {
 				return \Klarna\Rest\Transport\ConnectorInterface::NA_BASE_URL;
 			}
 		}
@@ -73,8 +74,6 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 	function checkoutOrder($klarna_checkout_connector, $klarna_checkout_id) {
 		return new Klarna\Rest\Checkout\Order($klarna_checkout_connector, $klarna_checkout_id);
 	}
-
-
 
 
 	function getMerchantData(&$klarnaOrderData, $cart) {
@@ -101,9 +100,9 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 			$items[$i]['reference'] = !empty($product->sku) ? $product->sku : $product->virtuemart_product_id; //Article number, SKU or similar.
 			$items[$i]['name'] = substr(strip_tags($product->product_name), 0, 127);
 			$items[$i]['quantity'] = (int)$product->quantity;
-			if (!empty($product->product_unit) ) {
+			if (!empty($product->product_unit)) {
 				// quantity_unit: Max 10 characters. Unit used to describe the quantity, e.g. kg, pcs.
-				$items[$i]['quantity_unit'] =  $product->product_unit ;
+				$items[$i]['quantity_unit'] = $product->product_unit;
 			}
 
 			$price = !empty($product->prices['basePriceWithTax']) ? $product->prices['basePriceWithTax'] : $product->prices['basePriceVariant'];
@@ -125,16 +124,18 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 			$items[$i]['total_discount_amount'] = 0;
 
 			//total_tax_amount Must be within ±1 of total_amount - total_amount * 10000 / (10000 + tax_rate). Negative when type is discount.
-			$totalTaxInPaymentCurrency = vmPSPlugin::getAmountInCurrency($product->prices['taxAmount']*$product->quantity, $this->_currentMethod->payment_currency);
+			$totalTaxInPaymentCurrency = vmPSPlugin::getAmountInCurrency($product->prices['taxAmount'] * $product->quantity, $this->_currentMethod->payment_currency);
 			$items[$i]['total_tax_amount'] = round($totalTaxInPaymentCurrency['value'] * 100, 0);
 
 			// total_amount: Includes tax and discount. Must match (quantity * unit_price) - total_discount_amount within ±quantity.
-			$totalAmountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($product->prices['salesPrice']*$product->quantity, $this->_currentMethod->payment_currency);
+			$totalAmountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($product->prices['salesPrice'] * $product->quantity, $this->_currentMethod->payment_currency);
 			$items[$i]['total_amount'] = round($totalAmountInPaymentCurrency['value'] * 100, 0);
-
+			$i++;
 
 		}
+		$i--;
 		if ($cart->cartPrices['salesPriceCoupon']) {
+			$i++;
 			$items[$i]['type'] = 'physical';
 			$items[$i]['reference'] = 'COUPON';
 			$items[$i]['name'] = 'Coupon discount';// TODO GET coupon NAME
@@ -147,27 +148,34 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 			$i++;
 		}
 		if ($cart->cartPrices['salesPriceShipment']) {
+			$i++;
+			$items[$i]['type'] = 'shipping_fee';
 			$items[$i]['reference'] = 'SHIPPING';
-			$items[$i]['name'] = 'Shipping Fee'; // TODO GET SHIPMENT NAME
+
+			$items[$i]['name'] = substr(strip_tags($cart->cartData['shipmentName']), 0, 127);
 			$items[$i]['quantity'] = 1;
 			$shipmentInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->cartPrices['salesPriceShipment'], $this->_currentMethod->payment_currency);
 			$items[$i]['unit_price'] = round($shipmentInPaymentCurrency['value'] * 100, 0);
-			$items[$i]['tax_rate'] = $this->getTaxShipment($cart->cartPrices['shipment_calc_id']);
+			$items[$i]['tax_rate'] = $this->getTaxShipment($cart);
+
+			$shipmentTaxInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->cartPrices['shipmentTax'], $this->_currentMethod->payment_currency);
+			$items[$i]['total_tax_amount'] = round($shipmentTaxInPaymentCurrency['value'] * 100, 0);
+			$items[$i]['total_amount'] = $items[$i]['unit_price'];
+
 			//$this->debugLog($cart->cartPrices['salesPriceShipment'], 'getCartItems Shipment', 'debug');
 			//$this->debugLog($items[$i], 'getCartItems', 'debug');
 		}
 
-
 		$klarnaOrderData['order_lines'] = $items;
 
-		$orderAmountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->cartPrices['salesPrice'], $this->_currentMethod->payment_currency);
-		$klarnaOrderData['order_amount'] =  round($orderAmountInPaymentCurrency['value'] * 100, 0);
+		$orderAmountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->cartPrices['billTotal'], $this->_currentMethod->payment_currency);
+		$klarnaOrderData['order_amount'] = round($orderAmountInPaymentCurrency['value'] * 100, 0);
 
-		$orderTaxAmountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->cartPrices['taxAmount'], $this->_currentMethod->payment_currency);
+		$orderTaxAmountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->cartPrices['billTaxAmount'], $this->_currentMethod->payment_currency);
 		$klarnaOrderData['order_tax_amount'] = round($orderTaxAmountInPaymentCurrency['value'] * 100, 0);
 
 		$currency = CurrencyDisplay::getInstance($cart->paymentCurrency);
-		return ;
+		return;
 
 	}
 
@@ -184,6 +192,7 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 	function checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_id) {
 		return new Klarna\Rest\OrderManagement\Order($klarna_checkout_connector, $klarna_checkout_id);
 	}
+
 	/**
 	 * You must now send a request to Klarna saying that you've acknowledged the order.
 	 *
@@ -191,32 +200,152 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 	 * @param $klarna_checkout_order
 	 */
 	function acknowledge($klarna_checkout_ordermanagement) {
-		$klarna_checkout_ordermanagement->acknowledge();
+		try {
+			$klarna_checkout_ordermanagement->acknowledge();
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+		$data = json_decode(json_encode($klarna_checkout_ordermanagement));
+		return true;
 
 	}
 
-function isKlarnaOrderStatusSuccess($klarna_checkout_order) {
-	return ($klarna_checkout_order['status'] == 'checkout_complete');
-}
+	function isKlarnaOrderStatusSuccess($klarna_checkout_order) {
+		return ($klarna_checkout_order['status'] == 'checkout_complete');
+	}
 
-	function getStoreInternalData($klarna_checkout_order,$dbValues){
-		$dbValues['payment_order_total'] = $klarna_checkout_order['original_order_amount'] ;
-		$dbValues['payment_currency'] = ShopFunctions::getCurrencyIDByName($klarna_checkout_order['purchase_currency']);;
+	function getStoreInternalData($klarna_data, &$dbValues, $action = NULL, $message) {
+		$dbValues['data'] = json_encode($klarna_data);
+		$dbValues['payment_order_total'] = $klarna_data['order_amount'];
+		$dbValues['payment_currency'] = ShopFunctions::getCurrencyIDByName($klarna_data['purchase_currency']);;
+		$dbValues['action'] = $action;
 
-		$dbValues['klarna_id'] = $klarna_checkout_order['order_id'];
-		$dbValues['klarna_status'] = $klarna_checkout_order['status'];
+		$dbValues['klarna_id'] = $klarna_data['order_id'];
+		$dbValues['klarna_status'] = $klarna_data['status'];
+		$dbValues['klarna_fraud_status'] = $klarna_data['fraud_status'];
 		//$dbValues['klarna_reservation'] = $klarna_checkout_order['reservation'];
-		$dbValues['klarna_reference'] = $klarna_checkout_order['klarna_reference'];
-		$dbValues['klarna_started_at'] = $klarna_checkout_order['started_at'];
-		$dbValues['klarna_completed_at'] = $klarna_checkout_order['completed_at'];
-		$dbValues['klarna_expires_at'] = $klarna_checkout_order['expires_at'];
+		$dbValues['klarna_reference'] = isset($klarna_data['klarna_reference']) ? $klarna_data['klarna_reference'] : '';
+		$dbValues['klarna_started_at'] = isset($klarna_data['started_at']) ? $klarna_data['started_at'] : '';
+		$dbValues['klarna_completed_at'] = isset($klarna_data['completed_at']) ? $klarna_data['completed_at'] : '';
+		$dbValues['klarna_expires_at'] = isset($klarna_data['expires_at']) ? $klarna_data['expires_at'] : '';
 		$dbValues['format'] = 'json';
-		$dbValues['data'] = json_encode($klarna_checkout_order);
+
+		$data = json_decode($dbValues['data']);
 	}
 
-}
+	function onShowOrderBE_checkoutOrder($payment) {
 
 
-class MyHttpAgent {
+	}
+
+	/**
+	 * Order management
+
+	 */
+	public function getUpdateOrderPaymentAction(&$order, $old_order_status, $payments) {
+
+		$new_order_status = $order['details']['BT']->order_status;
+		$lastPayment = $payments[(count($payments)) - 1];
+		$klarna_status = $lastPayment->klarna_status;
+		$actions = array('activate', 'cancelReservation', 'changeReservation', 'creditInvoice', 'Refund');
+		$klarnaCheckoutData=NULL;
+		foreach ($actions as $action) {
+			$status = 'status_' . $action;
+			if ($this->_currentMethod->$status == $new_order_status ) {
+				return $action;
+				break;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Use case
+	 * A consumer makes a purchase, you send the goods to the consumer without any changes made to the order.
+	 *
+	 * API calls
+	 * Capture the full amount
+	 * Add new shipping information to a capture
+	 * Release remaining authorization for an order
+	 * @param $order
+	 * @param $method
+	 * @param $payments
+	 * @return bool
+	 */
+	function activate($order, $payments) {
+
+		$klarna_checkout_connector = $this->getKlarnaConnector();
+		$klarna_checkout_id = $this->getKlarnaCheckoutId($payments);
+		$klarna_checkout_ordermanagement = $this->checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_id);
+		$klarna_checkout_ordermanagement->fetch();
+		$captureData = array(
+			"captured_amount" => $klarna_checkout_ordermanagement['order_amount'],
+			"description" => "Shipped part of the order",
+			"order_lines" => $klarna_checkout_ordermanagement['order_lines'],
+			"shipping_info" => NULL
+		);
+		try {
+			$klarna_checkout_ordermanagement->createCapture($captureData);
+
+		} catch (Exception $e) {
+			vmError($e->getMessage());
+			return NULL;
+		}
+
+		return $klarna_checkout_ordermanagement;
+	}
+
+	/**
+	 * Cancel an authorized order
+	 * Cancel an authorized order. For a cancellation to be successful, there must be no captures on the order.
+	 * The authorized amount will be released and no further updates to the order will be allowed.
+	 */
+	function cancelReservation($order, $payments) {
+		$klarna_checkout_connector = $this->getKlarnaConnector();
+		$klarna_checkout_id = $this->getKlarnaCheckoutId($payments);
+		$klarna_checkout_ordermanagement = $this->checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_id);
+		try {
+			$klarna_checkout_ordermanagement->cancel();
+		} catch (Exception $e) {
+			vmError($e->getMessage());
+			return NULL;
+		}
+	}
+
+	/**
+	 * Refund an amount of a captured order
+	 * Refund an amount of a captured order. The refunded amount will be credited to the customer.
+	 *
+	 * The refunded amount must not be higher than 'captured_amount'.
+	 * The refunded amount can optionally be accompanied by a descriptive text and order lines.
+	 */
+	function refund($order, $payments) {
+		$klarna_checkout_connector = $this->getKlarnaConnector();
+		$klarna_checkout_id = $this->getKlarnaCheckoutId($payments);
+		$klarna_checkout_ordermanagement = $this->checkoutOrderManagement($klarna_checkout_connector, $klarna_checkout_id);
+		$klarna_checkout_ordermanagement->fetch();
+		$refundData = array(
+			"captured_amount" => $klarna_checkout_ordermanagement['order_amount'],
+			"description" => "Shipped part of the order",
+			"order_lines" => $klarna_checkout_ordermanagement['order_lines'],
+			"shipping_info" => NULL
+		);
+		try {
+			$klarna_checkout_ordermanagement->refund($refundData);
+
+		} catch (Exception $e) {
+			vmError($e->getMessage());
+			return NULL;
+		}
+
+		return $klarna_checkout_ordermanagement;
+	}
+
+
+	function    getKlarnaCheckoutId($payments) {
+		return $payments[0]->klarna_id;
+	}
+
 
 }

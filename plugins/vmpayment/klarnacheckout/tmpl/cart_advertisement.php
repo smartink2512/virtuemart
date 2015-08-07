@@ -26,49 +26,20 @@ if ($viewData ['payment_form_position']=='right' or $viewData ['payment_form_pos
 ?>
 
 <?php
-
-$js = '
-
-
-jQuery(document).ready(function( $ ) {
-jQuery( "*:contains(\''. vmText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'). '\')" ).filter(function(){
-var zip=jQuery(".output-billto .vm2-zip").value;
-if (zip==="") {jQuery("#kco-shipment-method").text("'. vmText::_('VMPAYMENT_KLARNACHECKOUT_SHIPMENT_METHODS_LATER'). '");
-} else {
-jQuery("#kco-shipment-method").text("SHOULD NOT BE ABLE TO CHECKOUT AT KLARNA");
-}
-
-	})
-});
-
-	';
-
-//vmJsApi::addJScript('vm.noshipments', $js);
-$js="
-		function setShipment() {
-		    klarnaCheckoutPayment.updateShipment();
-		}
-";
-
-//vmJsApi::addJScript('vm.setShipment', $js);
-
-
-?>
-<?php if ($viewData['klarna_create_account']) { ?>
-<div class="" id="klarna-create-account-box">
-	<label for="klarna-create-account"><?php echo $viewData ['klarna_create_account']; ?></label>
-	<input type="checkbox" id="klarna-create-account" name="klarna-create-account" class="inputbox" value="yes">
-</div>
-<?php
+$class='';
+if ($viewData ['message'] ) {
+	$class='disableSnippet';
 }
 ?>
+
+<div id="kco-payment-method" >
 	<div id="kco-shipment-method"><?php echo $viewData ['message']; ?>  </div>
 <?php if ($viewData ['snippet'] )  { ?>
-<div id="kco-payment-method"><?php echo $viewData ['snippet']; ?>  </div>
+<div class="<?php echo $class ?>"><?php echo $viewData ['snippet']; ?>  </div>
 <?php }
 
 
 ?>
 
-
+</div>
 

@@ -20,31 +20,27 @@
 
 
 var klarnaCheckoutPayment = {
-    initPayment: function (hideBTST, noShipmentString, shipmentMethodsLaterString) {
+    initPayment: function (hideBTST) {
 
-        klarnaCheckoutPayment.noShipmentString = noShipmentString;
-        klarnaCheckoutPayment.shipmentMethodsLaterString = shipmentMethodsLaterString;
         if (hideBTST == 1) {
             jQuery(".billto-shipto").hide();
-            //jQuery("#com-form-login").hide();
         }
         jQuery("#checkoutFormSubmit").hide();
         jQuery(".vm-fieldset-tos").hide();
-        klarnaCheckoutPayment.checkShipmentAvailable();
     },
 
 
     updateCart: function (klarnaData, virtuemart_paymentmethod_id) {
-        var zip = klarnaData.postal_code;
-        var email = klarnaData.email;
-        var given_name = klarnaData.given_name;
-        var family_name = klarnaData.family_name;
-        console.log('updateCart:' + zip);
+        var zip = encodeURIComponent(klarnaData.postal_code);
+        var email = encodeURIComponent(klarnaData.email);
+        var given_name = encodeURIComponent(klarnaData.given_name);
+        var family_name = encodeURIComponent(klarnaData.family_name);
+        console.log('updateCart:' + zip + ' '+ email);
 
         //if (zip === '') return;
         var url = vmSiteurl + 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&nosef=1&name=klarnacheckout&loadJS=1&action=updateCartWithKlarnacheckoutAddress&virtuemart_paymentmethod_id=' + virtuemart_paymentmethod_id + '&zip='+zip + '&email='+email + '&family_name='+family_name+ '&given_name='+given_name + '&lang='+vmLang;
 
-        jQuery.ajax({
+jQuery.ajax({
             type: "POST",
             cache: false,
             dataType: "html",
@@ -56,16 +52,15 @@ var klarnaCheckoutPayment = {
 
 				window._klarnaCheckout(function (api) {
 					console.log(' updateSnippet suspend');
-					//api.suspend();
+					api.suspend();
 				});
 				Virtuemart.updFormS();
-
+                //document.id('kco-shipment-method').set('html', 'SELECT A SHIPMENT FIRST');
 				window._klarnaCheckout(function (api) {
 					console.log('updateSnippet resume');
-					//api.resume();
+					api.resume();
             });
-
-            });
+        });
     },
 
 
@@ -93,26 +88,6 @@ var klarnaCheckoutPayment = {
     },
 
 
-    checkShipmentAvailable: function () {
-        return;
-        var zip = jQuery(".vm2-zip").text();
-        console.log('checkShipmentAvailable zip='+zip);
-        var foundShipment=true;
-        var noShipmentString=jQuery('*:contains(" + klarnaCheckoutPayment.noShipmentString + ")');
-        if (noShipmentString.length > 0) {
-            if (zip ===  undefined || zip === '-' || zip === '') {
-                console.log('checkShipmentAvailable no zip msg');
-                jQuery("#kco-shipment-method").text(klarnaCheckoutPayment.shipmentMethodsLaterString );
-            }
-            foundShipment=false;
-            console.log('checkShipmentAvailable foundShipment='+foundShipment);
-        }
-
-        if (foundShipment) {
-            //jQuery("#kco-shipment-method").text("shipment methods,and zip what shall we write");
-        }
-        // TODO does not contains , and shipment is not selected: please select
-    }
 }
 
 
