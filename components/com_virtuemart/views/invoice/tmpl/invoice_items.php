@@ -202,7 +202,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 		<?php
 		} elseif ($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax' ) { ?>
 			<tr >
-				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name.' '.$rule->calc_value.'%' ?> </td>
+				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name.' '.$rule->calc_result.'%' ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
 					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_result, $this->currency); ?></td>
 				<?php } ?>

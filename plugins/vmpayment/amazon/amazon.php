@@ -2212,12 +2212,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
-		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
-		$q .= ' `virtuemart_order_id` = ' . $virtuemart_order_id;
 
-		$db->setQuery($q);
-		$payments = $db->loadObjectList();
+		$payments= $this->getDatasByOrderId($virtuemart_order_id);
 		$html = '<table class="adminlist table"  >' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$html .= $this->showActionOrderBEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, $payments);
@@ -3018,10 +3014,8 @@ jQuery().ready(function($) {
 		// Fetch all HTTP request headers
 		$headers = getallheaders();
 		$body = file_get_contents('php://input');
-		$this->debugLog($headers, 'AMAZON IPN HEADERS debug', 'debug');
-		$this->debugLog($body, 'AMAZON IPN BODY debug', 'debug');
-
-
+		$this->debugLog(var_export($headers, true), 'AMAZON IPN HEADERS debug', 'debug');
+		$this->debugLog(var_export($body, true), 'AMAZON IPN BODY debug', 'debug');
 
 		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Client');
 		$this->loadVmClass('VirtueMartModelOrders', JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
@@ -3147,6 +3141,9 @@ jQuery().ready(function($) {
 			}
 
 		}
+		$this->loadHelperClass('amazonHelperGetAuthorizationDetailsResponse');
+		$amazonHelperGetAuthorizationDetailsResponse = new amazonHelperGetAuthorizationDetailsResponse($authorizationDetailsResponse, $this->_currentMethod);
+		$amazonHelperGetAuthorizationDetailsResponse->onResponseUpdateOrderHistory($order);
 
 
 		return;

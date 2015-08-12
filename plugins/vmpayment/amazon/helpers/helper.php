@@ -11,10 +11,6 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
  *
  */
 abstract class amazonHelper {
@@ -57,8 +53,7 @@ abstract class amazonHelper {
 
 	function getCustomerNotified() {
 
-		if (($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled != 'automatic_synchronous') OR
-			($this->_currentMethod->erp_mode == "erp_mode_disabled" AND $this->_currentMethod->authorization_mode_erp_disabled == 'automatic_asynchronous')) {
+		if (($this->_currentMethod->erp_mode == "erp_mode_enabled" AND $this->_currentMethod->authorization_mode_erp_enabled != 'automatic_synchronous') ) {
 			return true;
 		} else {
 			return false;
