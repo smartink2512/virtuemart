@@ -24,6 +24,24 @@ AdminUIHelper::startAdminArea($this);
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+	<div id="header">
+		<div id="filterbox">
+			<table>
+				<tr>
+					<td align="left" width="100%">
+						<?php echo vmText::_('COM_VIRTUEMART_FILTER'); ?>:
+						<input type="text" name="filter_ratings" value="<?php echo vRequest::getVar('filter_ratings', ''); ?>" />
+						<button class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+						<button class="btn btn-small" onclick="document.adminForm.filter_ratings.value='';"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
+						<?php if(VmConfig::get('multix','none')!='none'){
+							echo Shopfunctions::renderVendorList(vmAccess::getVendorId());
+						} ?>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="resultscounter" ><?php echo $this->pagination->getResultsCounter();?></div>
+	</div>
     <div id="editcell">
 	    <table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 	    <thead>

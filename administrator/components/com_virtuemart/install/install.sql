@@ -232,6 +232,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
   `virtuemart_coupon_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_vendor_id` INT(1) UNSIGNED NOT NULL,
   `coupon_code` char(32) NOT NULL DEFAULT '',
   `percent_or_total` enum('percent','total') NOT NULL DEFAULT 'percent',
   `coupon_type` enum('gift','permanent') NOT NULL DEFAULT 'gift',
@@ -248,6 +249,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(1) NOT NULL DEFAULT '0',
    PRIMARY KEY (`virtuemart_coupon_id`),
+   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
    KEY `coupon_code` (`coupon_code`),
    KEY `coupon_type` (`coupon_type`),
    KEY `published` (`published`)

@@ -14,14 +14,14 @@ if (typeof Virtuemart === "undefined")
 Virtuemart.cvFind = function(event) {
 	event.preventDefault();
 	var selection = [];
-	var container = jQuery(this).parent()
+	var container = jQuery(this).parent();
 	jQuery(container).find('.cvselection').each(function() {
 		selection[selection.length] = jQuery(this).val();
 	});
 
 	var index=0, i2=0, hitcount=0, runs=0;
 	//to ensure that an url is set, set the url of first product
-	jQuery(this).attr('url',event.data.variants[0][0]);
+	jQuery(this).prop('url',event.data.variants[0][0]);
 	for	(runs = 0; runs < selection.length; index++) {
 		for	(index = 0; index < event.data.variants.length; index++) {
 			hitcount = 0;

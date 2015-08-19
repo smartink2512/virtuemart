@@ -83,7 +83,12 @@ class VirtueMartModelCoupon extends VmModel {
 	 * @return object List of coupon objects
 	 */
 	function getCoupons() {
+
+		$virtuemart_vendor_id = vmAccess::getVendorId();
 		$whereString = '';
+		if(!empty($virtuemart_vendor_id)){
+			$whereString = 'WHERE virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
+		}
 		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_coupons`',$whereString,'',$this->_getOrdering());
 	}
 

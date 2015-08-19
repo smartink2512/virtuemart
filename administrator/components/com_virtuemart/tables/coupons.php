@@ -32,6 +32,7 @@ class TableCoupons extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_coupon_id			 	= 0;
+	var $virtuemart_vendor_id	= 0;
 	/** @var varchar Coupon name */
 	var $coupon_code         	= '';
 	/** @var string Coupon percentage or total */

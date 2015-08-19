@@ -69,10 +69,19 @@ class VirtueMartModelRatings extends VmModel {
      */
     public function getRatings() {
 
-     	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p`
+     	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l`
      			USING (`virtuemart_product_id`) ';
-     	$whereString = '';
-     	$this->_data = $this->exeSortSearchListQuery(0,' r.*,p.`product_name` ',$tables,$whereString,'',$this->_getOrdering());
+
+		$whereString = '';
+		if(VmConfig::get('multix','none')!='none'){
+			$tables .= ' LEFT JOIN  `#__virtuemart_products` as p USING (`virtuemart_product_id`)';
+			$virtuemart_vendor_id = vmAccess::getVendorId();
+			if(!empty($virtuemart_vendor_id)){
+				$whereString = ' WHERE virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
+			}
+		}
+
+     	$this->_data = $this->exeSortSearchListQuery(0,' r.*,l.`product_name` ',$tables,$whereString,'',$this->_getOrdering());
 
      	return $this->_data;
     }
@@ -121,7 +130,7 @@ class VirtueMartModelRatings extends VmModel {
 	 * @param $virtuemart_product_id
 	 * @return null
 	 */
-	function getReviews($virtuemart_product_id){
+	function getReviews($virtuemart_product_id, $virtuemart_vendor_id = 0){
 
 	    if (empty($virtuemart_product_id)) {
 		    return NULL;
@@ -129,12 +138,16 @@ class VirtueMartModelRatings extends VmModel {
 		static $reviews = array();
 		$hash = VmConfig::$vmlang.$virtuemart_product_id.$this->_selectedOrderingDir.$this->_selectedOrdering;
 		if(!isset($reviews[$hash])){
+			$vendorId = '';
+			if(!empty($virtuemart_vendor_id)){
+				$vendorId = ' AND `p`.virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
+			}
 			$select = '`u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer, `pr`.`published`';
 			$tables = ' FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
 		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`';
-			$whereString = ' WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
+			$whereString = ' WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'" '.$vendorId;
 
 			$reviews[$hash] = $this->exeSortSearchListQuery(0,$select,$tables,$whereString,'',$this->_getOrdering());
 		}

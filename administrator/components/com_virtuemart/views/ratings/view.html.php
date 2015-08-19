@@ -69,7 +69,7 @@ class VirtuemartViewRatings extends VmViewAdmin {
 				} else {
 					$virtuemart_product_id = (int)$virtuemart_product_id;
 				}
-				$this->reviewslist = $model->getReviews($virtuemart_product_id);
+				$this->reviewslist = $model->getReviews($virtuemart_product_id, vmAccess::getVendorId());
 
 				$lists = array();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
