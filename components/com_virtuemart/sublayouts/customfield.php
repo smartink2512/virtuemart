@@ -70,7 +70,9 @@ class VirtueMartCustomFieldRenderer {
 			$idTag = 'customProductData_'.(int)$product->virtuemart_product_id.'_'.$customfield->virtuemart_customfield_id;
 			$idTag = VmHtml::ensureUniqueId($idTag);
 
-
+			$emptyOption = new stdClass();
+			$emptyOption->text = vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT');
+			$emptyOption->value = 0;
 			switch ($type) {
 
 				case 'C':
@@ -232,7 +234,9 @@ class VirtueMartCustomFieldRenderer {
 					$options = array();
 
 					if(!$customfield->withParent or ($customfield->withParent and $customfield->parentOrderable)){
-						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
+						$options[0] = $emptyOption;
+						$options[0]->value = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE);
+						//$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
 					}
 
 					$selected = vRequest::getInt ('virtuemart_product_id',0);
@@ -361,12 +365,15 @@ class VirtueMartCustomFieldRenderer {
 							$options = array();
 
 							if($customfield->addEmpty){
-								$options[0] = array('value' => 0, 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
+								$options[0] = $emptyOption;
 							}
 
 							$values = explode (';', $customfield->custom_value);
 
 							foreach ($values as $key => $val) {
+								if($val == 0 and $customfield->addEmpty){
+									continue;
+								}
 								if($type == 'M'){
 									$tmp = array('value' => $val, 'text' => VirtueMartModelCustomfields::displayCustomMedia ($val,'product',$customfield->width,$customfield->height));
 									$options[] = (object)$tmp;
@@ -390,15 +397,25 @@ class VirtueMartCustomFieldRenderer {
 						if(!empty($customfield->is_input)){
 
 							if(!isset($selectList[$customfield->virtuemart_custom_id])) {
+								$selectList[$customfield->virtuemart_custom_id] = $k;
+								if($customfield->addEmpty){
+									if(empty($customfields[$selectList[$customfield->virtuemart_custom_id]]->options)){
+										$customfields[$selectList[$customfield->virtuemart_custom_id]]->options[0] = $emptyOption;
+										$customfields[$selectList[$customfield->virtuemart_custom_id]]->options[0]->virtuemart_customfield_id = $emptyOption->value;
+										//$customfields[$selectList[$customfield->virtuemart_custom_id]]->options['nix'] = array('virtuemart_customfield_id' => 'none', 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
+									}
+								}
+
 								$tmpField = clone($customfield);
 								$tmpField->options = null;
 								$customfield->options[$customfield->virtuemart_customfield_id] = $tmpField;
-								$selectList[$customfield->virtuemart_custom_id] = $k;
+
 								$customfield->customProductDataName = $customProductDataName;
+
 							} else {
 								$customfields[$selectList[$customfield->virtuemart_custom_id]]->options[$customfield->virtuemart_customfield_id] = $customfield;
 								unset($customfields[$k]);
-								//$customfield->options[$customfield->virtuemart_customfield_id] = $customfield;
+
 							}
 
 							$default = reset($customfields[$selectList[$customfield->virtuemart_custom_id]]->options);
@@ -560,7 +577,7 @@ class VirtueMartCustomFieldRenderer {
 			foreach($customfield_ids as $customfield_id=>$params){
 
 				if(empty($productCustoms) or !isset($productCustoms[$customfield_id])){
-					vmdebug('displayProductCustomfieldSelected continue',$productCustoms);
+					vmdebug('displayProductCustomfieldSelected continue');
 					continue;
 				}
 				$productCustom = $productCustoms[$customfield_id];
@@ -594,7 +611,7 @@ class VirtueMartCustomFieldRenderer {
 						elseif (($productCustom->field_type == 'S')) {
 
 							if(!empty($productCustom->addEmpty) and $params == 0){
-								//continue;
+								continue;
 							}
 							if($productCustom->is_list and $productCustom->is_input){
 								$value = vmText::_($params);

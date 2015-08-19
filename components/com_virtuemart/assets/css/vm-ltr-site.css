@@ -70,52 +70,79 @@ span.vm-price-desc {
 
 /* Row heights */
 .vm3pr-1 .product-price {
-  height: 16px;
+  min-height: 16px;
 }
 
 .vm3pr-2 .product-price {
-  height: 32px;
+  min-height: 32px;
 }
 
 .vm3pr-3 .product-price {
-  height: 48px;
+  min-height: 48px;
 }
 
 .vm3pr-4 .product-price {
-  height: 64px;
+  min-height: 64px;
 }
 
 .vm3pr-5 .product-price {
-  height: 80px;
+  min-height: 80px;
 }
 
 .vm3pr-6 .product-price {
-  height: 96px;
+  min-height: 96px;
 }
 
 .vm3pr-0 .addtocart-area {
-  height: 0;
+  min-height: 36px;
 }
 
 .vm3pr-1 .addtocart-area {
-  height: 66px;
+  min-height: 66px;
 }
 
 .vm3pr-2 .addtocart-area {
-  height: 114px;
+  min-height: 114px;
 }
 
 .vm3pr-3 .addtocart-area {
-  height: 162px;
+  min-height: 162px;
 }
 
 .vm3pr-4 .addtocart-area {
-  height: 210px;
+  min-height: 210px;
 }
 
 .vm3pr-5 .addtocart-area {
-  height: 258px;
+  min-height: 258px;
 }
+
+/* row heights custom fields */
+
+.vm3pr-0 .vm-customfields-wrap {
+	min-height: 0px;
+}
+
+.vm3pr-1 .vm-customfields-wrap {
+	min-height: 65px;
+}
+
+.vm3pr-2 .vm-customfields-wrap {
+	min-height: 112px;
+}
+
+.vm3pr-3 .vm-customfields-wrap {
+	min-height: 159px;
+}
+
+.vm3pr-4 .vm-customfields-wrap {
+	min-height: 206px;
+}
+
+.vm3pr-5 .vm-customfields-wrap {
+	min-height: 253px;
+}
+
 
 .vm-cart-price{
   float: left;
@@ -154,7 +181,11 @@ input.custom-attribute{
 }
 
 .addtocart-area{
-  margin: 0 0 67px;
+  margin: 0;
+}
+
+.addtocart-area form {
+	margin: 0;
 }
 
 span.quantity-box{
@@ -202,12 +233,9 @@ span.quantity-controls input.quantity-minus{
 }
 
 .addtocart-bar{
-  margin: 0;
+  margin: 0 0 4px;
   padding: 0;
-  position: absolute;
-  bottom: 60px;
-  left: 0;
-  right: 0;
+  position: static;
   text-align: center;
   line-height: 14px;
 }
@@ -256,18 +284,8 @@ span.addtocart-button input.addtocart-button, span.addtocart-button input.notify
   margin-bottom: 0;
 }
 
-span.addtocart-button input.addtocart-button-disabled {
-  width: 100%;
-  max-width: 100%;
-  background: #f2f2f2;
-  color: #333;
-  border: solid #333 1px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  height: 46px;
-  text-align: center;
-  letter-spacing: 1px;
+.addtocart-button-disabled {
+    line-height: 18px;
 }
 
 div.vm-details-button {
@@ -283,8 +301,9 @@ div.vm-details-button a {
   line-height: 18px;
 }
 
-span.addtocart-button input.addtocart-button-disabled{
+span.addtocart-button input.addtocart-button-disabled {
   width: auto;
+  max-width: 100%;
   background: #f2f2f2 top repeat-x;
   border: solid #333 1px;
   border-radius: 4px;
@@ -295,6 +314,7 @@ span.addtocart-button input.addtocart-button-disabled{
   padding: 4px 5px;
   color: #333;
   margin: 10px 0 0 0;
+  letter-spacing: 1px;
 }
 
 .browse-view span.addtocart-button-disabled, .featured-view span.addtocart-button-disabled, .latest-view span.addtocart-button-disabled, .topten-view span.addtocart-button-disabled, .recent-view span.addtocart-button-disabled, .related-products-view span.addtocart-button-disabled, .browse-view span.addtocart-button-disabled, .addtocart-button-disabled {
@@ -1279,6 +1299,58 @@ div[class*="-view"] .row{
   position: relative;
   top: 50%;
 }
+
+/* additional for vm-products-horizon */
+.vm-products-horizon.vm-col {
+    width: 100%;
+}
+
+.vm-products-horizon .vm-product-media-container {
+    float: left;
+    max-width: 180px;
+}
+
+.vm-products-horizon .vm-product-rating-container {
+	float: left;
+	padding: 4px 8px;
+}
+
+.vm-products-horizon .vm-product-descr-container-0, .vm-products-horizon .vm-product-descr-container-1, .vm-products-horizon .vm-product-descr-container-2 {
+    float: left;
+}
+
+.vm-products-horizon .vm-product-descr-container-0 > h2, .vm-products-horizon .vm-product-descr-container-1 h2, .vm-products-horizon .vm-product-descr-container-2 h2 {
+    display: inline-block;
+    float: none;
+}
+
+.vm-products-horizon .vmicon {
+    float: none;
+}
+
+.vm-products-horizon .ratingbox {
+    display: block;
+}
+
+.vm-products-horizon .vm-details-button {
+    display: none;
+}
+
+.vm-products-horizon .vm-customfields-wrap {
+    float: left;
+}
+
+.vm-products-horizon .product-price {
+    float: right;
+}
+
+.vm-products-horizon .addtocart-bar {
+    float: right;
+    position: static;
+}
+
+
+
 /* adjust to screen size */
 
 div[class*="-view"] .row{
@@ -1302,18 +1374,6 @@ div[class*="-view"] .row{
 
 .product-field-type-C .chzn-container {
   margin-bottom: 10px;
-}
-
-@media all and (min-width: 1081px) {
-  div.vm-col {
-    width: 32%;
-  }
-}
-
-@media all and (max-width: 1080px) {
-  div.vm-col {
-    width: 32%;
-  }
 }
 
 @media all and (max-width: 980px) {

@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			 <?php
-			 if(vmAccess::manager()) { ?>
+			 if(vmAccess::manager('user.edit')) { ?>
 				<input type="text" class="inputbox" name="customer_number" id="customer_number" size="40" value="<?php echo  $this->lists['custnumber'];
 					?>" />
 			<?php } else {

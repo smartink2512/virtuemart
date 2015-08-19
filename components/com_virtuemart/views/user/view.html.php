@@ -267,52 +267,50 @@ class VirtuemartViewUser extends VmView {
 
     function shopper($userFields) {
 
-	// Shopper info
-	if (!class_exists('VirtueMartModelShopperGroup'))
-	    require(VMPATH_ADMIN . DS . 'models' . DS . 'shoppergroup.php');
+		// Shopper info
+		if (!class_exists('VirtueMartModelShopperGroup'))
+			require(VMPATH_ADMIN . DS . 'models' . DS . 'shoppergroup.php');
 
-	$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById($this->_model->getId());
+		$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById($this->_model->getId());
 
-	if(vmAccess::manager()) {
-
-		$shoppergrps = array();
-		foreach($_shoppergroup as $group){
-			$shoppergrps[] = $group['virtuemart_shoppergroup_id'];
-		}
-		if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-	   	$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($shoppergrps);
-	  	$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->userDetails->virtuemart_vendor_id);
-	} else {
 		$this->_lists['shoppergroups'] = '';
-		foreach($_shoppergroup as $group){
-			$this->_lists['shoppergroups'] .= vmText::_($group['shopper_group_name']).', ';
+		if(vmAccess::manager('user.edit')) {
+			$shoppergrps = array();
+			foreach($_shoppergroup as $group){
+				$shoppergrps[] = $group['virtuemart_shoppergroup_id'];
+			}
+			if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($shoppergrps);
+		} else {
+			foreach($_shoppergroup as $group){
+				$this->_lists['shoppergroups'] .= vmText::_($group['shopper_group_name']).', ';
+			}
+			$this->_lists['shoppergroups'] = substr($this->_lists['shoppergroups'],0,-2);
 		}
-		$this->_lists['shoppergroups'] = substr($this->_lists['shoppergroups'],0,-2);
 
-	    if (!empty($this->userDetails->virtuemart_vendor_id)) {
-		$this->_lists['vendors'] = $this->userDetails->virtuemart_vendor_id;
-	    }
+		if (!empty($this->userDetails->virtuemart_vendor_id)) {
+			if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->userDetails->virtuemart_vendor_id);
+		} else {
+			$this->_lists['vendors'] = vmText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');
+		}
 
-	    if (empty($this->_lists['vendors'])) {
-		$this->_lists['vendors'] = vmText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR'); // . $_setVendor;
-	    }
-	}
+		//todo here is something broken we use $userDetailsList->perms and $this->userDetailsList->perms and perms seems not longer to exist
+		//todo we should list here the joomla ACL groups
 
-	//todo here is something broken we use $userDetailsList->perms and $this->userDetailsList->perms and perms seems not longer to exist
-	//todo we should list here the joomla ACL groups
+		// Load the required scripts
+		if (count($userFields['scripts']) > 0) {
+			foreach ($userFields['scripts'] as $_script => $_path) {
+			JHtml::script($_script, $_path);
+			}
+		}
 
-	// Load the required scripts
-	if (count($userFields['scripts']) > 0) {
-	    foreach ($userFields['scripts'] as $_script => $_path) {
-		JHtml::script($_script, $_path);
-	    }
-	}
-	// Load the required styresheets
-	if (count($userFields['links']) > 0) {
-	    foreach ($userFields['links'] as $_link => $_path) {
-		JHtml::stylesheet($_link, $_path);
-	    }
-	}
+		// Load the required styresheets
+		if (count($userFields['links']) > 0) {
+			foreach ($userFields['links'] as $_link => $_path) {
+			JHtml::stylesheet($_link, $_path);
+			}
+		}
     }
 
     function lUser() {
