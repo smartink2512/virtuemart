@@ -151,11 +151,12 @@ class vmCrypt {
 			$filename = $keyPath . DS . $usedKey . '.ini';
 			if (!JFile::exists ($filename)) {
 
-				$token = vRequest::getHash(JUserHelper::genRandomPassword());
+				/*$token = vRequest::getHash(JUserHelper::genRandomPassword());
 
 				$salt = JUserHelper::getSalt('crypt-md5');
 				$hashedToken = md5($token . $salt)  ;
-				$key = base64_encode($hashedToken);
+				$key = base64_encode($hashedToken);*/
+				$key = base64_encode(self::getToken());
 
 				$date = JFactory::getDate();
 				$today = $date->toUnix();
@@ -207,6 +208,64 @@ class vmCrypt {
 		$link = $uri->root () . 'administrator/index.php?option=com_virtuemart&view=config';
 		VmError (vmText::sprintf ('COM_VIRTUEMART_CANNOT_STORE_CONFIG', $folderName, '<a href="' . $link . '">' . $link . '</a>', vmText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
 		return FALSE;
+	}
+
+	/**
+	 * Creates a token for inputs by human, some chars are removed to reduce mistyping,
+	 * All chars are upper case, 0 and O are omitted
+	 *
+	 * @author Max Milbers
+	 * @param $length
+	 * @return string
+	 */
+	static function getHumanToken($length) {
+		return self::getToken( $length, "123456789ABCDEFGHIJKLMNPQRSTUVWXYZ" );
+	}
+
+	/**
+	 * Creates a token
+	 *
+	 * @author Max Milbers
+	 * @param $length
+	 * @param $pool pool to chose from
+	 * @return string
+	 */
+	static function getToken($length=22, $pool = false)
+	{
+		$token = "";
+		if(!$pool){
+			$pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			$pool.= "abcdefghijklmnopqrstuvwxyz";
+			$pool.= "0123456789";
+		}
+
+		$max = strlen($pool) - 1;
+		for ($i=0; $i < $length; $i++) {
+			$token .= $pool[self::crypto_rand_secure(0, $max)];
+		}
+		return $token;
+	}
+
+	/**
+	 * http://stackoverflow.com/questions/1846202/php-how-to-generate-a-random-unique-alphanumeric-string or
+	 * http://us1.php.net/manual/en/function.openssl-random-pseudo-bytes.php#104322
+	 * @param $min
+	 * @param $max
+	 * @return mixed
+	 */
+	static function crypto_rand_secure($min, $max)
+	{
+		$range = $max - $min;
+		if ($range < 1) return $min; // not so random...
+		$log = ceil(log($range, 2));
+		$bytes = (int) ($log / 8) + 1; // length in bytes
+		$bits = (int) $log + 1; // length in bits
+		$filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+		do {
+			$rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+			$rnd = $rnd & $filter; // discard irrelevant bits
+		} while ($rnd >= $range);
+		return $min + $rnd;
 	}
 
 
