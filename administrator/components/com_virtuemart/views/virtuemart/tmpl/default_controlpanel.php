@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="cpanel">
 
-	<?php if($this->manager('report')){
+	<?php if($this->manager('report') and $this->report){
 		?><div id="vm_stats_chart" style="width: 100%; height: 300px;"></div><?php
 	} ?>
 	<div class="clear"></div>
