@@ -544,7 +544,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id. '` '
-			. 'ORDER BY `id`';
+			. 'ORDER BY `id` ASC';
 
 		$db->setQuery ($q);
 		$methodData = $db->loadObjectList ();
