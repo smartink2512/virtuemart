@@ -274,6 +274,11 @@ class VirtueMartModelCustom extends VmModel {
 
 	public function store(&$data){
 
+		if(!vmAccess::manager('custom.edit')){
+			vmWarn('Insufficient permission to edit custom');
+			return false;
+		}
+
 		if(!empty($data['params'])){
 			foreach($data['params'] as $k=>$v){
 				$data[$k] = $v;
@@ -342,6 +347,10 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 		$table->field_type = $data['field_type'];
+		if($table->field_type == 'C'){
+			//vmInfo();
+			//$data['is_cart_attribute'] = 1;
+		}
 		$table->custom_element = $data['custom_element'];
 		$table->custom_jplugin_id = $data['custom_jplugin_id'];
 		$table->_xParams = 'custom_params';
@@ -352,6 +361,10 @@ class VirtueMartModelCustom extends VmModel {
 
 		//We are in the custom and so the table contains the field_type, else not!!
 		self::setParameterableByFieldType($table,$table->field_type);
+		if(empty($data['virtuemart_custom_id']) and !vmAccess::manager('custom.create')){
+			vmWarn('Insufficient permission to create custom');
+			return false;
+		}
 		$table->bindChecknStore($data);
 
 		JPluginHelper::importPlugin('vmcustom');
@@ -459,6 +472,11 @@ class VirtueMartModelCustom extends VmModel {
 	 * @return boolean True is the delete was successful, false otherwise.
 	 */
 	public function remove($ids) {
+
+		if(!vmAccess::manager('custom.delete')){
+			vmWarn('Insufficient permissions to delete custom');
+			return false;
+		}
 
 		$table = $this->getTable($this->_maintablename);
 		$customfields = $this->getTable ('product_customfields');

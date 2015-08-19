@@ -676,13 +676,18 @@ class VmMediaHandler {
 	 */
 	function deleteFile($url){
 
+		if(!vmAccess::manager('media.delete')){
+			vmWarn('Insufficient permissions to delete the media');
+			return false;
+		}
+
 		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		$file_path = VMPATH_ROOT.DS.str_replace('/',DS,$url);
 		$app = JFactory::getApplication();
 
 		$msg_path = '';
 
-		if(vmAccess::manager()){
+		if(vmAccess::manager('core')){
 			$msg_path = $file_path;
 		}
 
@@ -1162,10 +1167,10 @@ $html .='</td>';
 
 		$html .= '</tr>';
 
-		if(vmAccess::manager()){
-			$readonly='readonly';
+		if(vmAccess::manager('media')){
+			$readonly = 'readonly';
 		} else {
-			$readonly ='';
+			$readonly = '';
 		}
 
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_TITLE','file_title');

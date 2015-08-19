@@ -148,8 +148,15 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 * @author Max Milbers
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	public function store(&$data)
-	{
+	public function store(&$data) {
+
+		if(!vmAccess::manager('shipmentmethod.edit')){
+			vmWarn('Insufficient permissions to store shipmentmethod');
+			return false;
+		} else if( empty($data['virtuemart_shipment_id']) and !vmAccess::manager('shipmentmethod.create')){
+			vmWarn('Insufficient permission to create shipmentmethod');
+			return false;
+		}
 
 		if ($data) {
 			$data = (array)$data;
@@ -218,13 +225,25 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 	public function createClone ($id) {
 
-		//	if (is_array($cids)) $cids = array($cids);
+		if(!vmAccess::manager('shipmentmethod.create')){
+			vmWarn('Insufficient permissions to store shipmentmethod');
+			return false;
+		}
+
 		$this->setId ($id);
 		$shipment = $this->getShipment();
 		$shipment->virtuemart_shipmentmethod_id = 0;
 		$shipment->shipment_name = $shipment->shipment_name.' Copy';
 		$clone = $this->store($shipment);
 		return $clone;
+	}
+
+	function remove($ids){
+		if(!vmAccess::manager('shipmentmethod.delete')){
+			vmWarn('Insufficient permissions to remove shipmentmethod');
+			return false;
+		}
+		return parent::remove($ids);
 	}
 }
 

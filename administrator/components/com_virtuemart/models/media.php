@@ -328,22 +328,26 @@ vmdebug('storeMedia',$data);
 
 			$virtuemart_media_id = $this->store($data);
 
-			//added by Mike
-			$this->setId($virtuemart_media_id);
+			if($virtuemart_media_id){
+				//added by Mike
+				$this->setId($virtuemart_media_id);
 
-			if(!empty($oldIds)){
-				if(!is_array($oldIds)) $oldIds = array($oldIds);
+				if(!empty($oldIds)){
+					if(!is_array($oldIds)) $oldIds = array($oldIds);
 
-				if(!empty($data['mediaordering']) && $data['media_action']=='upload'){
-					$data['mediaordering'][$virtuemart_media_id] = count($data['mediaordering']);
+					if(!empty($data['mediaordering']) && $data['media_action']=='upload'){
+						$data['mediaordering'][$virtuemart_media_id] = count($data['mediaordering']);
+					}
+					$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
+					$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
+				} else {
+					$data['virtuemart_media_id'] = $virtuemart_media_id;
 				}
-				$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
-				$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
-			} else {
-				$data['virtuemart_media_id'] = $virtuemart_media_id;
 			}
 
 		}
+
+		if(empty($data['virtuemart_media_id'])) return false;
 
 		if(!empty($data['mediaordering'])){
 			asort($data['mediaordering']);
@@ -371,12 +375,20 @@ vmdebug('storeMedia',$data);
 	 */
 	public function store(&$data) {
 
+		$data['virtuemart_media_id'] = $this->getId();
+		if(!vmAccess::manager('media.edit')){
+			vmWarn('Insufficient permission to store category');
+			return false;
+		} else if( empty($data['virtuemart_media_id']) and !vmAccess::manager('media.create')){
+			vmWarn('Insufficient permission to create category');
+			return false;
+		}
+
 		VmConfig::loadJLang('com_virtuemart_media');
 		if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
 
-		$data['virtuemart_media_id'] = $this->getId();
 		$table->bind($data);
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$data['file_type']); //this does not store the media, it process the actions and prepares data
 
@@ -413,6 +425,15 @@ vmdebug('storeMedia',$data);
 				}
 			}
 		}
+	}
+
+	function remove($ids){
+
+		if(!vmAccess::manager('media.delete')){
+			vmWarn('Insufficient permissions to delete media');
+			return false;
+		}
+		return parent::remove($ids);
 	}
 
 }

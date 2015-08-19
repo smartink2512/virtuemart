@@ -116,6 +116,22 @@ class VirtueMartModelOrderstatus extends VmModel {
 		return $this->_renderStatusList[$hash] ;
 	}
 
+	function store(&$data){
+		if(!vmAccess::manager('orderstatus')){
+			vmWarn('Insufficient permissions to store orderstatus');
+			return false;
+		}
+		return parent::store($data);
+	}
+
+	function remove($ids){
+		if(!vmAccess::manager('orderstatus')){
+			vmWarn('Insufficient permissions to remove orderstatus');
+			return false;
+		}
+		return parent::remove($ids);
+	}
+
 }
 
 //No Closing tag

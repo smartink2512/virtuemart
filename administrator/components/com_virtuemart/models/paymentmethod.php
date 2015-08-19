@@ -147,6 +147,14 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 */
     public function store(&$data){
 
+		if(!vmAccess::manager('paymentmethod.edit')){
+			vmWarn('Insufficient permissions to store paymentmethod');
+			return false;
+		} else if( empty($data['virtuemart_payment_id']) and !vmAccess::manager('paymentmethod.create')){
+			vmWarn('Insufficient permission to create paymentmethod');
+			return false;
+		}
+
 		if ($data) {
 			$data = (array)$data;
 		}
@@ -226,6 +234,11 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 	public function createClone ($id) {
 
+		if(!vmAccess::manager('paymentmethod.create')){
+			vmWarn('Insufficient permissions to store paymentmethod');
+			return false;
+		}
+
 		$this->setId ($id);
 		$payment = $this->getPayment();
 		$payment->virtuemart_paymentmethod_id = 0;
@@ -234,6 +247,14 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			JError::raiseError(500, 'createClone '. $payment->getError() );
 		}
 		return $clone;
+	}
+
+	function remove($ids){
+		if(!vmAccess::manager('paymentmethod.delete')){
+			vmWarn('Insufficient permissions to remove shipmentmethod');
+			return false;
+		}
+		return parent::remove($ids);
 	}
 
 }

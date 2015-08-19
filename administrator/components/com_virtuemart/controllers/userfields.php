@@ -63,7 +63,7 @@ class VirtuemartControllerUserfields extends VmController {
 
 		if($data===0) $data = vRequest::getPost();
 
-		if(vmAccess::manager()){
+		if(vmAccess::manager('raw')){
 			$data['description'] = vRequest::get('description','');
 			if(isset($data['params'])){
 				$data['params'] = vRequest::get('params','');

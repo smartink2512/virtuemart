@@ -51,7 +51,9 @@ class JFormFieldVmRules extends JFormFieldRules {
 		$assetField = $this->element['asset_field'] ? (string)$this->element['asset_field'] : 'asset_id';
 
 		// Get the actions for the asset.
-		$actions = JAccess::getActions($component, $section);
+		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml',
+		"/access/section[@name='" . $section . "']/");
+		//$actions = JAccess::getActions($component, $section);
 
 		// Iterate over the children and add to the actions.
 		foreach ($this->element->children() as $el) {
@@ -261,7 +263,9 @@ class JFormFieldVmRules extends JFormFieldRules {
 		$assetField = $this->element['asset_field'] ? (string)$this->element['asset_field'] : 'asset_id';
 
 		// Get the actions for the asset.
-		$actions = JAccess::getActions($component, $section);
+		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml',
+		"/access/section[@name='" . $section . "']/");
+		//$actions = JAccess::getActions($component, $section);
 
 		// Iterate over the children and add to the actions.
 		foreach ($this->element->children() as $el) {

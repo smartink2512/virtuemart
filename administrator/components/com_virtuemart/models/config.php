@@ -345,6 +345,12 @@ class VirtueMartModelConfig extends VmModel {
 	function store(&$data) {
 
 		vRequest::vmCheckToken();
+
+		if(!vmAccess::manager('config')){
+			vmWarn('Insufficient permissions to delete product');
+			return false;
+		}
+
 		//We create a fresh config
 		$config = VmConfig::loadConfig(false,true);
 

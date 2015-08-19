@@ -327,7 +327,8 @@ function vmTrace($notice,$force=FALSE){
 	if($force || (VMConfig::showDebug() ) ){
 		ob_start();
 		echo '<pre>';
-		debug_print_backtrace();
+		debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,10);
+
 		echo '</pre>';
 		$body = ob_get_contents();
 		ob_end_clean();
@@ -535,7 +536,6 @@ class VmConfig {
 		if(self::$echoAdmin===FALSE){
 			$user = JFactory::getUser();
 			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
-			//if(vmAccess::manager()){
 				self::$echoAdmin = true;
 			} else {
 				self::$echoAdmin = false;
@@ -1277,6 +1277,8 @@ class vmAccess {
 						foreach($task as $t){
 							if($user->authorise('vm.'.$t, 'com_virtuemart')){
 								self::$_manager[$h] = true;
+							} else {
+								self::$_manager[$h] = false;
 							}
 						}
 					}

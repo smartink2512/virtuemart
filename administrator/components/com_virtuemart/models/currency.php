@@ -143,5 +143,21 @@ class VirtueMartModelCurrency extends VmModel {
 		return $db->loadObjectList();
 	}
 
+	function store(&$data){
+		if(!vmAccess::manager('currency')){
+			vmWarn('Insufficient permissions to store currency');
+			return false;
+		}
+		return parent::store($data);
+	}
+
+	function remove($ids){
+		if(!vmAccess::manager('currency')){
+			vmWarn('Insufficient permissions to remove currency');
+			return false;
+		}
+		return parent::remove($ids);
+	}
+
 }
 // pure php no closing tag

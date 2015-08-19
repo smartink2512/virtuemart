@@ -191,7 +191,20 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	}
 
+	function store(&$data){
+		if(!vmAccess::manager('shoppergroup.edit')){
+			vmWarn('Insufficient permissions to store shoppergroup');
+			return false;
+		}
+		return parent::store($data);
+	}
+
 	function remove($ids){
+
+		if(!vmAccess::manager('shoppergroup.edit')){
+			vmWarn('Insufficient permissions to delete shoppergroup');
+			return false;
+		}
 
 		$table = $this->getTable($this->_maintablename);
 

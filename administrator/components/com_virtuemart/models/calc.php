@@ -134,6 +134,14 @@ class VirtueMartModelCalc extends VmModel {
 
 		vRequest::vmCheckToken();
 
+		if(!vmAccess::manager('calc.edit')){
+			vmWarn('Insufficient permission to store calculation rule');
+			return false;
+		} else if( empty($data['virtuemart_calc_id']) and !vmAccess::manager('calc.create')){
+			vmWarn('Insufficient permission to create calculation rule');
+			return false;
+		}
+
 		$table = $this->getTable('calcs');
 
 		$db = JFactory::getDBO();
@@ -221,6 +229,11 @@ class VirtueMartModelCalc extends VmModel {
 	public function remove($cids) {
 
 		vRequest::vmCheckToken();
+
+		if(!vmAccess::manager('calc.delete')){
+			vmWarn('Insufficient permission to delete calculation rule');
+			return false;
+		}
 
 		$table = $this->getTable($this->_maintablename);
 		$cat = $this->getTable('calc_categories');

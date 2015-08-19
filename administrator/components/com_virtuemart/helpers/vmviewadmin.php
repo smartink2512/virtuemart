@@ -26,6 +26,7 @@ if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfu
 if (!class_exists('AdminUIHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'adminui.php');
 if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
+
 class VmViewAdmin extends JViewLegacy {
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
@@ -39,8 +40,6 @@ class VmViewAdmin extends JViewLegacy {
 
 	function __construct($config = array()) {
 		parent::__construct($config);
-		// What Access Permissions does this user have? What can (s)he do?
-		$this->canDo = self::getActions();
 	}
 	
 	/*
@@ -83,39 +82,6 @@ class VmViewAdmin extends JViewLegacy {
 		}
 
 	}
-	
-
-	/*
-	* Get the ACL actions
-	*/
-	public static function getActions() {
-
-		$app = JFactory::getApplication();
-		$adminId = null;
-		if($app->isSite()){
-			$adminId = vmAccess::getBgManagerId();
-		}
-		$user	= JFactory::getUser($adminId);
-		$result	= new JObject;
-
-		//Get the core actions
-		$core_actions = JAccess::getActions('com_virtuemart','component');
-		foreach ($core_actions as $action) {
-			$result->set($action->name, $user->authorise($action->name, 'com_virtuemart'));
-		}
-
-		//Get the actions for each section
-		$sections=array('product','category','manufacturer','orders','shop','other');
-		foreach ($sections as $section) {
-			$section_actions = JAccess::getActions('com_virtuemart',$section);
-			foreach ($section_actions as $action) {
-				$result->set($action->name, $user->authorise($action->name, 'com_virtuemart'));
-			}
-		}
-		
-		return $result;
-	}
-
 
 	/*
 	 * set all commands and options for BE default.php views
@@ -127,27 +93,27 @@ class VmViewAdmin extends JViewLegacy {
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
 		JToolBarHelper::divider();
-		if (!$this->canDo->get('core.admin') and $this->canDo->get('vm.'.$view.'.edit.state')) {
+		if(vmAccess::manager($view.'.edit.state')){
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 		}
-		if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create')) {
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
+		if(vmAccess::manager($view.'.edit')){
 			JToolBarHelper::editList();
 		}
-		if ($showNew and ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.create'))) {
+		if(vmAccess::manager($view.'.create')){
 			JToolBarHelper::addNew();
 		}
-		if ($showDelete and ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.delete'))) {
+		if(vmAccess::manager($view.'.delete')){
+			JToolBarHelper::spacer('10');
 			JToolBarHelper::deleteList();
 		}
+		JToolBarHelper::divider();
+		JToolBarHelper::spacer('2');
+		self::showACLPref($view);
 		self::showHelp ( $showHelp);
 		if(JFactory::getApplication()->isSite()){
 			$bar = JToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
-		} else {
-			self::showACLPref($view);
 		}
 
 		$this->addJsJoomlaSubmitButton();
@@ -256,7 +222,7 @@ class VmViewAdmin extends JViewLegacy {
 		if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
 		JToolBarHelper::divider();
-		if ($this->canDo->get('core.admin') or $this->canDo->get('vm.'.$view.'.edit') or $this->canDo->get('vm.'.$view.'.create') ) {
+		if (vmAccess::manager($view.'.edit')) {
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
 		}
@@ -545,7 +511,7 @@ class VmViewAdmin extends JViewLegacy {
 
 	function showACLPref(){
 		
-		if ($this->canDo->get('core.admin')) {
+		if (vmAccess::manager('core')) {
 			JToolBarHelper::divider();
 			$bar = JToolBar::getInstance('toolbar');
 			if(JVM_VERSION<3){

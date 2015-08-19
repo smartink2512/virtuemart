@@ -72,6 +72,13 @@ class VirtueMartModelManufacturer extends VmModel {
 	 */
 	public function store(&$data) {
 
+		if(!vmAccess::manager('manufacturer.edit')){
+			vmWarn('Insufficient permission to store category');
+			return false;
+		} else if( empty($data['virtuemart_manufacturer_id']) and !vmAccess::manager('manufacturer.create')){
+			vmWarn('Insufficient permission to create category');
+			return false;
+		}
 		// Setup some place holders
 		$table = $this->getTable('manufacturers');
 
@@ -84,6 +91,15 @@ class VirtueMartModelManufacturer extends VmModel {
 		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
 		return $table->virtuemart_manufacturer_id;
+	}
+
+	function remove($ids){
+
+		if(!vmAccess::manager('manufacturer.delete')){
+			vmWarn('Insufficient permissions to delete manufacturer');
+			return false;
+		}
+		return parent::remove($ids);
 	}
 
     /**
@@ -112,11 +128,12 @@ class VirtueMartModelManufacturer extends VmModel {
 	public function getManufacturers($onlyPublished=false, $noLimit=false, $getMedia=false) {
 
 		$this->_noLimit = $noLimit;
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$option	= 'com_virtuemart';
 
-		$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
-		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
+		$view = vRequest::getCmd('view','');
+		$virtuemart_manufacturercategories_id	= $app->getUserStateFromRequest( $option.'.'.$view.'.virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
+		$search = $app->getUserStateFromRequest( $option.'.'.$view.'.search', 'search', '', 'string' );
 
 		static $_manufacturers = array();
 

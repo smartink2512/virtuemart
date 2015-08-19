@@ -98,36 +98,21 @@ class ShopFunctions {
 	 */
 	static public function renderVendorList ($vendorId, $name = 'virtuemart_vendor_id') {
 
-		$db = JFactory::getDBO ();
+		//if (Vmconfig::get ('multix', 'none') == 'none') $vendorId = 1;
 
-		if (Vmconfig::get ('multix', 'none') == 'none') {
-
-			$vendorId = 1;
-
-			$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
-			$db->setQuery ($q);
-			$vendor = $db->loadResult ();
-			return '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
-		} else {
-			//$user = JFactory::getUser();
-			$view = vRequest::getCmd('view',false);
-			/*if(!$view or !($user->authorise('core.admin', 'com_virtuemart') or
-			(($user->authorise('core.manage', 'com_virtuemart') or $user->authorise('vm.manage', 'com_virtuemart')) and $user->authorise('vm.'.$view, 'com_virtuemart') ) ) ){*/
-			if(!vmAccess::manager(array($view,'managevendors'))){
-			//if (!JFactory::getUser()->authorise('core.admin', 'com_virtuemart')) {
-				if (empty($vendorId)) {
-					$vendorId = 1;
-					//Dont delete this message, we need it later for multivendor
-					//vmWarn('renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
-				}
+		$view = vRequest::getCmd('view',false);
+		if(!vmAccess::manager(array($view,'managevendors'))) {
+			if (empty($vendorId)) {
+				$vendor = vmText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');
+			} else {
+				$db = JFactory::getDBO ();
 				$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
 				$db->setQuery ($q);
 				$vendor = $db->loadResult ();
-				return '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
-			} else {
-
-				return self::renderVendorFullVendorList($vendorId,false,$name);
 			}
+			return '<span type="text" size="14" class="inputbox" readonly="">' . $vendor . '</span>';
+		} else {
+			return self::renderVendorFullVendorList($vendorId,false,$name);
 		}
 
 	}

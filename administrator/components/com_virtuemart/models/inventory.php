@@ -42,6 +42,11 @@ class VirtueMartModelInventory extends VmModel {
      */
     public function getInventory() {
 
+		if(!vmAccess::manager('inventory')){
+			vmWarn('Insufficient permissions to remove shipmentmethod');
+			return false;
+		}
+
 		$select = ' `#__virtuemart_products`.`virtuemart_product_id`,
      				`#__virtuemart_products`.`product_parent_id`,
      				`product_name`,

@@ -513,6 +513,14 @@ class VirtueMartModelCategory extends VmModel {
 
 		vRequest::vmCheckToken();
 
+		if(!vmAccess::manager('category.edit')){
+			vmWarn('Insufficient permission to store category');
+			return false;
+		} else if( empty($data['virtuemart_category_id']) and !vmAccess::manager('category.create')){
+			vmWarn('Insufficient permission to create category');
+			return false;
+		}
+
 		$table = $this->getTable('categories');
 
 		if ( !array_key_exists ('category_template' , $data ) ){
@@ -566,6 +574,11 @@ class VirtueMartModelCategory extends VmModel {
     public function remove($cids) {
 
 		vRequest::vmCheckToken();
+
+		if(!vmAccess::manager('category.delete')){
+			vmWarn('Insufficient permissions to delete category');
+			return false;
+		}
 
 		$table = $this->getTable('categories');
 

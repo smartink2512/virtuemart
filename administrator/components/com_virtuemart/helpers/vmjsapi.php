@@ -205,15 +205,13 @@ class vmJsApi{
 
 	public static function loadBECSS (){
 
-		$document = JFactory::getDocument();
-
-		$file = '/administrator/templates/system/css/system.css';
-		$document->addStyleSheet($file);
+		$url = 'administrator/templates/system/css';
+		self::css('system',$url);
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$template = VmTemplate::getDefaultTemplate(1);
-		$file = '/administrator/templates/'.$template['template'].'/css/template.css';
-		$document->addStyleSheet($file);
+		$url = 'administrator/templates/'.$template['template'].'/css';
+		self::css('template',$url);
 
 	}
 
@@ -340,8 +338,8 @@ class vmJsApi{
 
 		$jsVars = "";
 		$jsVars .= "vmSiteurl = '".JURI::root()."' ;\n";
-
-		$jsVars .= 'vmLang = "'.VmConfig::$vmlangSef.'";'."\n";
+		$jsVars .= 'vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
+		$jsVars .= 'vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
 
 		$Get = vRequest::getGet();
 		if(!empty($Get['Itemid'])){
@@ -504,7 +502,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 	Virtuemart.updateChosenDropdownLayout = function() {
 		var vm2string = {'.$vm2string.'};
 		'.$selector.'.each( function () {
-			var swidth = jQuery(this).css("width");
+			var swidth = jQuery(this).css("width")+10;
 			jQuery(this).chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text,disable_search_threshold: 5, width: swidth});
 		});
 	}

@@ -234,19 +234,13 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Oscar van Eijk
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	public function store(&$data,$checkToken = TRUE){
+	public function store(&$data){
 
 		$message = '';
 		$user = '';
 		$newId = 0;
 
-		if($checkToken){
-			vRequest::vmCheckToken('Invalid Token, while trying to save user');
-		} else {
-			vmError('You try to store a user without a valid token id');
-			return false;
-		}
-
+		vRequest::vmCheckToken('Invalid Token, while trying to save user');
 
 		if(empty($data)){
 			vmError('Developer notice, no data to store for user');
@@ -255,11 +249,16 @@ class VirtueMartModelUser extends VmModel {
 
 		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 		//The constructor sets automatically the right id.
-		$new = ($this->_id < 1);
-		if(empty($this->_id)){
-			//$user = JFactory::getUser();
+		$new = false;
+		if(empty($this->_id) or $this->_id < 1){
+			$new = true;
 			$user = new JUser();	//thealmega http://forum.virtuemart.net/index.php?topic=99755.msg393758#msg393758
 		} else {
+			$cUser = JFactory::getUser();
+			if(!vmAccess::manager('user.edit') and $cUser->id!=$this->_id){
+				vmWarn('Insufficient permission');
+				return false;
+			}
 			$user = JFactory::getUser($this->_id);
 		}
 
@@ -272,7 +271,7 @@ class VirtueMartModelUser extends VmModel {
 		$valid = true ;
 		$dispatcher->trigger('plgVmOnBeforeUserfieldDataSave',array(&$valid,$this->_id,&$data,$user ));
 		// $valid must be false if plugin detect an error
-		if( $valid == false ) {
+		if( !$valid ) {
 			return false;
 		}
 
@@ -332,9 +331,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-		$data['secretkey'] = vRequest::get('secretkey', '');
-
-		if(!$new && !empty($data['password']) && empty($data['password2'])){
+		if(!$new and empty($data['password2'])){
 			unset($data['password']);
 			unset($data['password2']);
 		}
@@ -390,8 +387,7 @@ class VirtueMartModelUser extends VmModel {
 				$doUserActivation=true;
 			}
 
-			if ($doUserActivation )
-			{
+			if ($doUserActivation ) {
 				jimport('joomla.user.helper');
 				$user->set('activation', vRequest::getHash( JUserHelper::genRandomPassword()) );
 				$user->set('block', '1');

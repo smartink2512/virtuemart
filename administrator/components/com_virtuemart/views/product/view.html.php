@@ -427,11 +427,11 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$this->lists['search_order'] = VmHTML::selectList('search_order', vRequest::getVar('search_order'),$options);
 
 			// Toolbar
-			if ($this->canDo->get('core.admin') or $this->canDo->get('vm.product.edit')) {
+			if (vmAccess::manager('product.edit')) {
 				JToolBarHelper::custom('massxref_cats', 'new', 'new', vmText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT'), true);
 				JToolBarHelper::custom('massxref_sgrps', 'new', 'new', vmText::_('COM_VIRTUEMART_PRODUCT_XREF_SGRPS'), true);
 			}
-			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.product.create')) {
+			if (vmAccess::manager('product.create')) {
 				JToolBarHelper::custom('createchild', 'new', 'new', vmText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'copy', 'copy', vmText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 			}

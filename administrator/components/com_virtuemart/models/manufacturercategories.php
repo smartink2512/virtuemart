@@ -47,8 +47,12 @@ class VirtuemartModelManufacturercategories extends VmModel {
      *
      * @return boolean True is the remove was successful, false otherwise.
      */
-	function remove($categoryIds)
-	{
+	function remove($categoryIds) {
+		if(!vmAccess::manager('manufacturercategories')){
+			vmWarn('Insufficient permissions to delete manufacturer category');
+			return false;
+		}
+
     	$table = $this->getTable('manufacturercategories');
 
     	foreach($categoryIds as $categoryId) {
@@ -65,6 +69,13 @@ class VirtuemartModelManufacturercategories extends VmModel {
     	return true;
 	}
 
+	function store(&$data){
+		if(!vmAccess::manager('manufacturercategories')){
+			vmWarn('Insufficient permissions to store manufacturer category');
+			return false;
+		}
+		return parent::store($data);
+	}
 
 	/**
 	 * Retireve a list of countries from the database.

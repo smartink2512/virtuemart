@@ -115,6 +115,22 @@ class VirtueMartModelCountry extends VmModel {
 		return $countries[$hash];
     }
 
+	function store(&$data){
+		if(!vmAccess::manager('country')){
+			vmWarn('Insufficient permissions to store country');
+			return false;
+		}
+		return parent::store($data);
+	}
+
+	function remove($ids){
+		if(!vmAccess::manager('country')){
+			vmWarn('Insufficient permissions to remove country');
+			return false;
+		}
+		return parent::remove($ids);
+	}
+
 }
 
 //no closing tag pure php

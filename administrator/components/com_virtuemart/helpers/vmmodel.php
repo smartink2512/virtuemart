@@ -959,6 +959,11 @@ class VmModel extends vObject{
 	 */
 
 	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {
+
+		$view = vRequest::getCmd('view',false);
+		if($view and !vmAccess::manager($view.'.edit.state')){
+			return false;
+		}
 		$ok = true;
 
 		if (!in_array($field, $this->_togglesName)) {

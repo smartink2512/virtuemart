@@ -1705,27 +1705,38 @@ class VirtueMartModelProduct extends VmModel {
 
 		vRequest::vmCheckToken();
 
-		if ($product) {
-			$data = (array)$product;
-		}
-		$isChild = FALSE;
-		if(!empty($data['isChild'])) $isChild = $data['isChild'];
-
-
 		$superVendor = vmAccess::getVendorId();
 		if(empty($superVendor) or !vmAccess::manager('product.edit')){
 			vmError('You are not a vendor or administrator, storing of product cancelled');
 			return FALSE;
 		}
 
+		if ($product) {
+			$data = (array)$product;
+		}
+		$isChild = FALSE;
+		if(!empty($data['isChild'])) $isChild = $data['isChild'];
+
 		if (isset($data['intnotes'])) {
 			$data['intnotes'] = trim ($data['intnotes']);
 		}
+
 		// Setup some place holders
 		$product_data = $this->getTable ('products');
 
 		if(!empty($data['virtuemart_product_id'])){
 			$product_data -> load($data['virtuemart_product_id']);
+		}
+		if( (empty($data['virtuemart_product_id']) or empty($product_data->virtuemart_product_id)) and !vmAccess::manager('product.create')){
+			vmWarn('Insufficient permission to create product');
+			return false;
+		}
+		if(!vmAccess::manager('product.edit.state')){
+			if( (empty($data['virtuemart_product_id']) or empty($product_data->virtuemart_product_id))){
+				$data['published'] = 0;
+			} else {
+				$data['published'] = $product_data->published;
+			}
 		}
 
 		//Set the decimals like product packaging
@@ -1940,6 +1951,11 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function createChild ($id) {
 
+		if(!vmAccess::manager('product.create')){
+			vmWarn('Insufficient permission to create product');
+			return false;
+		}
+
 		// created_on , modified_on
 		$db = JFactory::getDBO ();
 
@@ -1983,12 +1999,17 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function createClone ($id) {
 
+		if(!vmAccess::manager('product.create')){
+			vmWarn('Insufficient permission to create product');
+			return false;
+		}
 		$product = $this->getProduct ($id, FALSE, FALSE, FALSE);
 		$product->field = $this->productCustomsfieldsClone ($id);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->mprices = $this->productPricesClone ($id);
 
 		//Lets check if the user is admin or the mainvendor
+		//Todo, what was the idea behind this? created_on should be always set to new?
 		if(vmAccess::manager()){
 			$product->created_on = "0000-00-00 00:00:00";
 			$product->created_by = 0;
@@ -2072,6 +2093,11 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Max Milberes
 	 */
 	public function remove ($ids) {
+
+		if(!vmAccess::manager('product.delete')){
+			vmWarn('Insufficient permissions to delete product');
+			return false;
+		}
 
 		$table = $this->getTable ($this->_maintablename);
 

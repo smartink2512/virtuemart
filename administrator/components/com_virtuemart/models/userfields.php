@@ -219,6 +219,11 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function store(&$data){
 
+		if(!vmAccess::manager('userfields')){
+			vmWarn('Insufficient permissions to store userfield');
+			return false;
+		}
+
 		if(!is_array($data)) $data = (array)$data;
 
 		$field      = $this->getTable('userfields');
@@ -1169,6 +1174,11 @@ class VirtueMartModelUserfields extends VmModel {
 	 * @return boolean True is the remove was successful, false otherwise.
 	 */
 	function remove($fieldIds){
+
+		if(!vmAccess::manager('userfields')){
+			vmWarn('Insufficient permissions to remove userfields');
+			return false;
+		}
 
 		$field      = $this->getTable('userfields');
 		$value      = $this->getTable('userfield_values');

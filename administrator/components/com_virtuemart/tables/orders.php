@@ -108,12 +108,13 @@ class TableOrders extends VmTableData {
 	function check(){
 
 		if(empty($this->order_number)){
-			if(!class_exists('VirtueMartModelOrders')) require(VMPATH_ADMIN.DS.'models'.DS.'orders.php');
-			$this->order_number = VirtueMartModelOrders::generateOrderNumber((string)time());
+			if(!class_exists('VirtueMartModelOrders')) VmModel::getModel('orders');
+			$this->order_number = VirtueMartModelOrders::genStdOrderNumber($this->virtuemart_vendor_id);
 		}
 
 		if(empty($this->order_pass)){
-			$this->order_pass = 'p_'.substr( md5((string)time().$this->order_number ), 0, 5);
+			if(!class_exists('VirtueMartModelOrders')) VmModel::getModel('orders');
+			$this->order_pass = VirtueMartModelOrders::genStdOrderPass();
 		}
 
 		if($adminID = vmAccess::getBgManagerId()){

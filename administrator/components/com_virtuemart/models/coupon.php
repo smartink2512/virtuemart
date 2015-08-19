@@ -52,6 +52,13 @@ class VirtueMartModelCoupon extends VmModel {
      * @return mixed False if the save was unsuccessful, the coupon ID otherwise.
 	 */
     function store(&$data) {
+		if(!vmAccess::manager('coupon.edit')){
+			vmWarn('Insufficient permission to store coupons');
+			return false;
+		} else if( empty($data['virtuemart_coupon_id']) and !vmAccess::manager('coupon.create')){
+			vmWarn('Insufficient permission to create coupons');
+			return false;
+		}
 		$table = $this->getTable('coupons');
 
 		// Convert selected dates to MySQL format for storing.
@@ -78,6 +85,14 @@ class VirtueMartModelCoupon extends VmModel {
 	function getCoupons() {
 		$whereString = '';
 		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_coupons`',$whereString,'',$this->_getOrdering());
+	}
+
+	function remove($ids){
+		if(!vmAccess::manager('coupon.delete')){
+			vmWarn('Insufficient permissions to remove state');
+			return false;
+		}
+		return parent::remove($ids);
 	}
 }
 

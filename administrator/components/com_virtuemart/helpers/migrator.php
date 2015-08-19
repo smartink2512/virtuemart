@@ -1277,6 +1277,9 @@ class Migrator extends VmModel{
 		$reWriteOrderNumber = vRequest::getInt('reWriteOrderNumber',0);
 		$userOrderId = vRequest::getInt('userOrderId',0);
 
+		if(!class_exists('VirtueMartModelOrders'))
+			VmModel::getModel('orders');
+
 		while($continue){
 
 			$q = 'SELECT `o`.*, `op`.*, `o`.`order_number` as `vm1_order_number`, `o2`.`order_number` as `nr2`,`o`.order_id FROM `#__vm_orders` as `o`
@@ -1307,7 +1310,7 @@ class Migrator extends VmModel{
 						}
 					}
 
-					$orderData->order_pass = 'p' . substr(md5((string)time() . $order['order_number']), 0, 5);
+					$orderData->order_pass = VirtueMartModelOrders::genStdOrderPass();
 					//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 					//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 					//the saved order should be an snapshot with plain data written in it.

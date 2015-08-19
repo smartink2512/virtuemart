@@ -124,5 +124,20 @@ class VirtueMartModelState extends VmModel {
 		}
 	}
 
+	function store(&$data){
+		if(!vmAccess::manager('country')){
+			vmWarn('Insufficient permissions to store state');
+			return false;
+		}
+		return parent::store($data);
+	}
+
+	function remove($ids){
+		if(!vmAccess::manager('country')){
+			vmWarn('Insufficient permissions to remove state');
+			return false;
+		}
+		return parent::remove($ids);
+	}
 }
 // pure php no closing tag

@@ -811,19 +811,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			$pkey = $this->_pkey;
 			//Lets check if the user is admin or the mainvendor
 
-			$admin = vmAccess::manager();
-			/*if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('vm.user', 'com_virtuemart')){
-				$admin = true;
-			} else {
-				//if(VmConfig::get ('oncheckout_change_shopper')){
-				/*$adminID = vmAccess::getBgManagerId();
-				$adminIdUser = JFactory::getUser($adminID);
-				if($adminIdUser->authorise('core.admin', 'com_virtuemart') or $adminIdUser->authorise('vm.user', 'com_virtuemart')){
-					$admin = true;
-				}*
-				$admin = vmAccess::manager();
-			}*/
-
+			$admin = vmAccess::manager('core');
 
 			if($admin){
 //				vmdebug('setLoggableFieldsForStore ', $this->created_on);
@@ -845,7 +833,6 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 					//If nothing is there, dont update it
 					unset($this->created_by);
 				}
-
 
 			} else {
 
