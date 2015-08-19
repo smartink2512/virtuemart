@@ -14,9 +14,11 @@
 	<?php if (VmConfig::get ('show_tax')) {
 		$tax = vmText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT');
 		if(!empty($this->cart->cartData['VatTax'])){
-			reset($this->cart->cartData['VatTax']);
-			$taxd = current($this->cart->cartData['VatTax']);
-			$tax = $taxd['calc_name'] .' '. rtrim(trim($taxd['calc_value'],'0'),'.').'%';
+			if(count($this->cart->cartData['VatTax']) < 2) {
+				reset($this->cart->cartData['VatTax']);
+				$taxd = current($this->cart->cartData['VatTax']);
+				$tax = $taxd['calc_name'] .' '. rtrim(trim($taxd['calc_value'],'0'),'.').'%';
+			}
 		}
 		?>
 	<th class="vm-cart-item-tax" ><?php echo "<span  class='priceColor2'>" . $tax . '</span>' ?></th>
@@ -341,17 +343,10 @@ if(!empty($this->cart->cartData)){
 				</tr><?php
 			}
 			foreach( $this->cart->cartData['VatTax'] as $vatTax ) {
-				if(!empty($vatTax['taxAmount'])) {
-					$amount = $vatTax['taxAmount'];
-					if(!empty($vatTax['shipmentTax'])) {
-						$amount += $vatTax['shipmentTax'];
-					}
-					if(!empty($vatTax['paymentTax'])) {
-						$amount += $vatTax['paymentTax'];
-					}
+				if(!empty($vatTax['result'])) {
 					echo '<tr class="sectiontableentry'.$i.'">';
-					echo '<td colspan="4" align="right">'.$vatTax['calc_name'].' '.$vatTax['calc_value'].'%</td>';
-					echo '<td align="right"><span class="priceColor2">'.$this->currencyDisplay->createPriceDiv( 'taxAmount', '', $amount, FALSE, false, 1.0,false,true ).'</span></td>';
+					echo '<td colspan="4" align="right">'.$vatTax['calc_name'].' '.rtrim(trim($vatTax['calc_value'],'0'),'.').'%</td>';
+					echo '<td align="right"><span class="priceColor2">'.$this->currencyDisplay->createPriceDiv( 'taxAmount', '', $vatTax['result'], FALSE, false, 1.0,false,true ).'</span></td>';
 					echo '<td></td><td></td>';
 					echo '</tr>';
 				}
