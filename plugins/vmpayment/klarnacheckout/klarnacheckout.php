@@ -731,9 +731,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		if ($klarna_checkout_ordermanagement) {
 			$klarnaCheckoutInterface->acknowledge($klarna_checkout_ordermanagement);
 			$klarna_checkout_ordermanagement->fetch();
-			$klarna_checkout_ordermanagement->updateMerchantReferences([
-				"merchant_reference1" => $cart->order_number
-			]);
+			$klarna_checkout_ordermanagement->updateMerchantReferences(array("merchant_reference1" => $cart->order_numbe));
 			$klarnaCheckoutInterface->getStoreInternalData($klarna_checkout_ordermanagement,$dbValues);
 			$this->debugLog(var_export($dbValues, true), 'plgVmOnPaymentNotification storePSPluginInternalData', 'debug');
 			$this->storePSPluginInternalData($dbValues);
@@ -927,6 +925,12 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 
 		$virtuemart_paymentmethod_id = vRequest::getInt('pm', '');
+		if (empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id) or empty($klarna_checkout_id)) {
+			return NULL;
+		}
+		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
 		$notificationTask = vRequest::getString('nt', '');
 		$validNotificationTasks = array('kco-validation', 'kco-push-uri');
 		if (!in_array($notificationTask, $validNotificationTasks)) {
@@ -934,12 +938,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		}
 		$klarna_checkout_id = vRequest::getString('klarna_order', '');
 
-		if (empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id) or empty($klarna_checkout_id)) {
-			return NULL;
-		}
-		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
-			return NULL; // Another method was selected, do nothing
-		}
+
 		// this is stupid: we need to wait for the order to be created
 sleep(2);
 
@@ -1607,12 +1606,12 @@ jQuery().ready(function($) {
 
 		$klarnaCheckoutInterface = $this->_loadKlarnaCheckoutInterface();
 
-		$action = $klarnaCheckoutInterface->getUpdateOrderPaymentAction($order, $old_order_status, $payments);
+		$action = $klarnaCheckoutInterface->getUpdateOrderPaymentAction($orderModelData, $old_order_status, $payments);
 		if (!$action) return;
 
 		$klarnaCheckoutData = $klarnaCheckoutInterface->$action($order, $payments);
 		if ($klarnaCheckoutData) {
-			$dbValues['order_number'] = $order['details']['BT']->order_number;
+			$dbValues['order_number'] = $orderModelData['details']['BT']->order_number;
 			$dbValues['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
 			$dbValues['klarna_id'] = $payments[0]->klarna_id;
 			$dbValues['payment_name'] = $this->renderPluginName($this->_currentMethod);

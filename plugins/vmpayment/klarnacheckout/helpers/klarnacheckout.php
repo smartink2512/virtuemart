@@ -49,6 +49,9 @@ class  KlarnaCheckoutHelperKlarnaCheckout {
 			//$this->debugLog(var_export($cart->cartPrices['shipment_calc_id'], true), 'getTaxShipment', 'debug');
 			return;
 		}
+		if (!isset($cart->cartPrices['shipment_calc_id'][0])) {
+			return 0;
+		}
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $cart->cartPrices['shipment_calc_id'][0] . '" ';
 
@@ -61,6 +64,7 @@ class  KlarnaCheckoutHelperKlarnaCheckout {
 			return;
 		}
 		return $taxrule->calc_value * 100;
+
 
 
 	}
