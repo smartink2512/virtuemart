@@ -428,14 +428,16 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			return false;
 		}
 
-		$userID = vRequest::getCmd('userID');
-		if($manager and !empty($userID) and $userID!=$current->id){
-			if(vmAccess::manager('user',$userID)){
+		/*$userID = vRequest::getCmd('userID');
+		if($manager and !empty($userID) and $userID!=$current->id ){
+			if($userID == $id){
+
+			} else if(vmAccess::manager('user',$userID)){
 			//if($newUser->authorise('core.admin', 'com_virtuemart') or $newUser->authorise('vm.user', 'com_virtuemart')){
 				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 				$app->redirect($red);
 			}
-		}
+		}*/
 
 		$searchShopper = vRequest::getString('searchShopper');
 

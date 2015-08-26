@@ -72,7 +72,7 @@ INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_pare
  (17, 0, 0, 'D', 1, 0, 0, 'addtocart','Date','Show date','Next delivery', '','', 1, 1),
  (18, 0, 0, 'T', 0, 0, 0, 'addtocart','Time','Show time','Workshop at ', '','', 1, 1),
  (20, 0, 0, 'A', 0, 0, 0, 'ontop','Generic Child Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
- (21, 0, 0, 'C', 0, 0, 0, 'addtocart','Multi Variant','Also with tooltip','', 'Use admin lists for faster product editing','usecanonical="1"|showlabels="0"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1);
+ (21, 0, 0, 'C', 1, 0, 0, 'addtocart','Multi Variant','Also with tooltip','', 'Use admin lists for faster product editing','usecanonical="1"|showlabels="0"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1);
 
 INSERT IGNORE INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `published`) VALUES
   (1, 1);
@@ -485,22 +485,22 @@ INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `pro
   (315, 'Multi Variant Child', 'multi-variant-16');
 
 INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
-	(300, 300, 21, 0, 0, NULL, NULL, 0, 'usecanonical=0|showlabels=0|sCustomId=0|selectoptions=[{"voption":"product_width","clabel":"1","values":"46.0000\\r\\n51.0000\\r\\n56.0000\\r\\n61.0000"},{"voption":"product_length","clabel":"1","values":"68.5000\\r\\n71.0000\\r\\n73.5000\\r\\n76.0000"},{"voption":"clabels","clabel":"Weave","values":"Advanced\\r\\nPremium"}]|clabels=0|options={"300":["","","0"],"301":["46.0000","68.5000","Advanced"],"302":["46.0000","68.5000","Premium"],"303":["46.0000","71.0000","Advanced"],"304":["46.0000","71.0000","Premium"],"305":["51.0000","68.5000","Advanced"],"306":["51.0000","71.0000","Advanced"],"307":["51.0000","71.0000","Premium"],"308":["51.0000","73.5000","Advanced"],"309":["51.0000","73.5000","Premium"],"310":["56.0000","73.5000","Advanced"],"311":["56.0000","73.5000","Premium"],"312":["56.0000","76.0000","Advanced"],"313":["56.0000","76.0000","Premium"],"314":["61.0000","76.0000","Advanced"],"315":["61.0000","76.0000","Premium"]}|'),
-	(301, 301, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(302, 302, 11, 0, 0, 'Premium', NULL, 0, ''),
-	(303, 303, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(304, 304, 11, 0, 0, 'Premium', NULL, 0, ''),
-	(305, 305, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(306, 306, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(307, 307, 11, 0, 0, 'Premium', NULL, 0, ''),
-	(308, 308, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(309, 309, 11, 0, 0, 'Premium', NULL, 0, ''),
-	(310, 310, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(311, 311, 11, 0, 0, 'Premium', NULL, 0, ''),
-	(312, 312, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(313, 313, 11, 0, 0, 'Premium', NULL, 0, ''),
-	(314, 314, 11, 0, 0, 'Advanced', NULL, 0, ''),
-	(315, 315, 11, 0, 0, 'Premium', NULL, 0, '');
+	(300, 300, 21, 0, 0, NULL, NULL, 0, 'usecanonical=0|showlabels=0|sCustomId=10|selectoptions=[{"voption":"product_width","clabel":"1","values":"46.0000\\r\\n51.0000\\r\\n56.0000\\r\\n61.0000"},{"voption":"product_length","clabel":"1","values":"68.5000\\r\\n71.0000\\r\\n73.5000\\r\\n76.0000"},{"voption":"clabels","clabel":"Weave","values":"Advanced\\r\\nPremium"}]|clabels=0|options={"300":["","","0"],"301":["46.0000","68.5000","Advanced"],"302":["46.0000","68.5000","Premium"],"303":["46.0000","71.0000","Advanced"],"304":["46.0000","71.0000","Premium"],"305":["51.0000","68.5000","Advanced"],"306":["51.0000","71.0000","Advanced"],"307":["51.0000","71.0000","Premium"],"308":["51.0000","73.5000","Advanced"],"309":["51.0000","73.5000","Premium"],"310":["56.0000","73.5000","Advanced"],"311":["56.0000","73.5000","Premium"],"312":["56.0000","76.0000","Advanced"],"313":["56.0000","76.0000","Premium"],"314":["61.0000","76.0000","Advanced"],"315":["61.0000","76.0000","Premium"]}|'),
+	(301, 301, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(302, 302, 10, 0, 0, 'Premium', NULL, 0, ''),
+	(303, 303, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(304, 304, 10, 0, 0, 'Premium', NULL, 0, ''),
+	(305, 305, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(306, 306, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(307, 307, 10, 0, 0, 'Premium', NULL, 0, ''),
+	(308, 308, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(309, 309, 10, 0, 0, 'Premium', NULL, 0, ''),
+	(310, 310, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(311, 311, 10, 0, 0, 'Premium', NULL, 0, ''),
+	(312, 312, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(313, 313, 10, 0, 0, 'Premium', NULL, 0, ''),
+	(314, 314, 10, 0, 0, 'Advanced', NULL, 0, ''),
+	(315, 315, 10, 0, 0, 'Premium', NULL, 0, '');
 
 INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
 	(300, 11, 1),

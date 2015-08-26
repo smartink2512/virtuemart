@@ -77,7 +77,6 @@ class VirtueMartModelUser extends VmModel {
 					$user = JFactory::getUser();
 					if(vmAccess::manager('user')){
 						$userId = $cid;
-						// 						vmdebug('Admin watches user, setId '.$cid);
 					} else {
 						vmError('Blocked attempt setId '.$cid.' '.$user->id);
 						$userId = $user->id;

@@ -70,27 +70,27 @@ span.vm-price-desc {
 
 /* Row heights */
 .vm3pr-1 .product-price {
-  min-height: 16px;
+  min-height: 28px;
 }
 
 .vm3pr-2 .product-price {
-  min-height: 32px;
+  min-height: 42px;
 }
 
 .vm3pr-3 .product-price {
-  min-height: 48px;
+  min-height: 56px;
 }
 
 .vm3pr-4 .product-price {
-  min-height: 64px;
+  min-height: 70px;
 }
 
 .vm3pr-5 .product-price {
-  min-height: 80px;
+  min-height: 84px;
 }
 
 .vm3pr-6 .product-price {
-  min-height: 96px;
+  min-height: 98px;
 }
 
 .vm3pr-0 .addtocart-area {
@@ -1240,18 +1240,18 @@ div.product_horizon div.product {
 }
 
 .vm-product-descr-container h2 {
-  height: 51px;
+  min-height: 51px;
   margin-bottom: 0px;
 }
 
 .vm-product-descr-container-0 {
-  height: 50px;
-  margin-bottom: 0px;
+  min-height: 50px;
+  margin-bottom: 6px;
 }
 
 .vm-product-descr-container-1 {
-  height: 90px;
-  margin-bottom: 0px;
+  min-height: 90px;
+  margin-bottom: 6px;
 }
 
 .vm-product-descr-container-1 > h2, .vm-product-descr-container-0 > h2 {

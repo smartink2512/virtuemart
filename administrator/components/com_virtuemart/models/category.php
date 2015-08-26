@@ -768,8 +768,8 @@ class VirtueMartModelCategory extends VmModel {
 	}
 
 
-	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {
-		$result = parent::toggle($field,$val, $cidname, $tablename );
+	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0, $view = false  ) {
+		$result = parent::toggle($field,$val, $cidname, $tablename, $view );
 		$cache = JFactory::getCache('com_virtuemart_cats','callback');
 		$cache->clean();
 		return $result;

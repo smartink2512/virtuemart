@@ -71,16 +71,16 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_categories` (
-  `id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_calc_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_category_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_manufacturers` (
-  `id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_calc_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_manufacturer_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_manufacturers` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_shoppergroups` (
-  `id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_calc_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_shoppergroups` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_countries` (
-  `id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_calc_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_country_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_countries` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
-  `id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_calc_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_state_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
-  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_category_id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Belongs to vendor',
   `category_template` char(128),
   `category_layout` char(64),
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_category_categories` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_category_medias` (
   `id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_category_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_media_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -540,8 +540,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_status` char(1),
   `user_currency_id` smallint(1),
   `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.00000',
-  `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED,
-  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
+  `virtuemart_paymentmethod_id` int(1) UNSIGNED,
+  `virtuemart_shipmentmethod_id` int(1) UNSIGNED,
   `delivery_date` varchar(200),
   `order_language` char(7),
   `ip_address` char(15) NOT NULL DEFAULT '',
@@ -727,7 +727,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
-  `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_paymentmethod_id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) NOT NULL DEFAULT '1',
   `payment_jplugin_id` int(1) NOT NULL DEFAULT '0',
   `payment_element` char(50) NOT NULL DEFAULT '',
@@ -756,7 +756,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_shoppergroups` (
   `id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_paymentmethod_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_paymentmethod_id` (`virtuemart_paymentmethod_id`,`virtuemart_shoppergroup_id`)
@@ -799,7 +799,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `metaauthor` varchar(400),
   `layout` char(16),
   `published` tinyint(1),
-  `pordering` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `pordering` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(1) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -826,7 +826,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
   `id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_product_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_category_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_category_id`),
@@ -1025,7 +1025,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
-  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_shipmentmethod_id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) NOT NULL DEFAULT '1',
   `shipment_jplugin_id` int(1) NOT NULL DEFAULT '0',
   `shipment_element` char(50) NOT NULL DEFAULT '',
@@ -1053,7 +1053,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethod_shoppergroups` (
   `id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_shipmentmethod_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`,`virtuemart_shoppergroup_id`)
@@ -1299,8 +1299,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
   `customer_number` char(32),
-  `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED,
-  `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
+  `virtuemart_paymentmethod_id` int(1) UNSIGNED,
+  `virtuemart_shipmentmethod_id` int(1) UNSIGNED,
   `agreed` tinyint(1) NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(1) NOT NULL DEFAULT '0',

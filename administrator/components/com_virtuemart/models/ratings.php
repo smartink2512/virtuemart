@@ -139,16 +139,21 @@ class VirtueMartModelRatings extends VmModel {
 		$hash = VmConfig::$vmlang.$virtuemart_product_id.$this->_selectedOrderingDir.$this->_selectedOrdering;
 		if(!isset($reviews[$hash])){
 			$vendorId = '';
-			if(!empty($virtuemart_vendor_id)){
-				$vendorId = ' AND `p`.virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
-			}
-			$select = '`u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer, `pr`.`published`';
+
+			$select = '`u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, `u`.`name` AS customer, `pr`.`published`';
 			$tables = ' FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
-		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
+		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ON `l`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` ';
+			if(!empty($virtuemart_vendor_id)){
+				$tables .= 'LEFT JOIN `#__virtuemart_products` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` ';
+			}
+			$tables .= '
 		LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`';
-			$whereString = ' WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'" '.$vendorId;
 
+			$whereString = ' WHERE  `l`.`virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
+			if(!empty($virtuemart_vendor_id)){
+				$whereString .= ' AND `p`.virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
+			}
 			$reviews[$hash] = $this->exeSortSearchListQuery(0,$select,$tables,$whereString,'',$this->_getOrdering());
 		}
 
@@ -413,6 +418,10 @@ class VirtueMartModelRatings extends VmModel {
     */
     public function remove($ids) {
 
+		if(!vmAccess::manager('ratings.delete')){
+			vmWarn('Insufficient permissions to delete category');
+			return false;
+		}
     	$rating = $this->getTable($this->_maintablename);
     	$review = $this->getTable('rating_reviews');
     	$votes = $this->getTable('rating_votes');

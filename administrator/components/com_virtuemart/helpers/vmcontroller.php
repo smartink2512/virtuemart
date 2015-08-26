@@ -236,7 +236,7 @@ class VmController extends JControllerLegacy{
 		vRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
-		if (!$model->toggle($field,$val,$this->_cidName)) {
+		if (!$model->toggle($field, $val, $this->_cidName, 0, $this->_cname)) {
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
 		} else{
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_SUCCESS',$this->mainLangKey);
@@ -258,7 +258,7 @@ class VmController extends JControllerLegacy{
 
 		if($cidname === 0) $cidname = $this->_cidName;
 
-		if (!$model->toggle('published', 1, $cidname, $table)) {
+		if (!$model->toggle('published', 1, $cidname, $table, $this->_cname)) {
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
@@ -283,7 +283,7 @@ class VmController extends JControllerLegacy{
 
 		if($cidname === 0) $cidname = $this->_cidName;
 
-		if (!$model->toggle('published', 0, $cidname, $table)) {
+		if (!$model->toggle('published', 0, $cidname, $table, $this->_cname)) {
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);

@@ -12,15 +12,9 @@ $name = 'customProductData['.$product->virtuemart_product_id.']['.$params->virtu
 		   name="<?php echo $name?>"
 		><br />
 <?php
-	// preventing 2 x load javascript
-	static $textinputjs;
-	if ($textinputjs) return true;
-	$textinputjs = true ;
-	//javascript to update price
 
-	$script = '
-/* <![CDATA[ */
-var test = function($) {
+	//javascript to update price
+	$j = 'var test = function($) {
 	jQuery(".vmcustom-textinput").keyup(function() {
 			formProduct = jQuery(this).parents("form.product");
 			virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
@@ -28,10 +22,7 @@ var test = function($) {
 		});
 };
 jQuery("body").on("updateVirtueMartProductDetail", test);
-jQuery(document).ready(test);
-/* ]]> */
-	';
-	//$document = JFactory::getDocument();
-	//$document->addScriptDeclaration($script);
-//We need the echo now, else the ajax cannot add the JS to the head, because the JS is added to the header of the ajax
-	echo '<script>'.$script.'</script>';
+jQuery(document).ready(test);';
+	vmJsApi::addJScript('textinput',$j);
+
+?>

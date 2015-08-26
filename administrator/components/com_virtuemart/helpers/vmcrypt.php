@@ -226,11 +226,11 @@ class vmCrypt {
 	 * Creates a token
 	 *
 	 * @author Max Milbers
-	 * @param $length
+	 * @param $length Only keys of sizes 16, 24 or 32 are supported
 	 * @param $pool pool to chose from
 	 * @return string
 	 */
-	static function getToken($length=22, $pool = false)
+	static function getToken($length=24, $pool = false)
 	{
 		$token = "";
 		if(!$pool){
@@ -240,32 +240,49 @@ class vmCrypt {
 		}
 
 		$max = strlen($pool) - 1;
-		for ($i=0; $i < $length; $i++) {
-			$token .= $pool[self::crypto_rand_secure(0, $max)];
+		if (function_exists('openssl_random_pseudo_bytes') and (version_compare(PHP_VERSION, '5.3.4') >= 0)) {
+			for ($i=0; $i < $length; $i++) {
+				$token .= $pool[self::crypto_rand_secure(0, $max)];
+			}
+		} else {
+			for ($i=0; $i < $length; $i++) {
+				$token .= $pool[mt_rand(0, $max)];
+			}
 		}
+
 		return $token;
 	}
 
 	/**
 	 * http://stackoverflow.com/questions/1846202/php-how-to-generate-a-random-unique-alphanumeric-string or
 	 * http://us1.php.net/manual/en/function.openssl-random-pseudo-bytes.php#104322
+	 * @author Max Milbers
 	 * @param $min
 	 * @param $max
 	 * @return mixed
 	 */
 	static function crypto_rand_secure($min, $max)
 	{
-		$range = $max - $min;
-		if ($range < 1) return $min; // not so random...
-		$log = ceil(log($range, 2));
-		$bytes = (int) ($log / 8) + 1; // length in bytes
-		$bits = (int) $log + 1; // length in bits
-		$filter = (int) (1 << $bits) - 1; // set all lower bits to 1
-		do {
-			$rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-			$rnd = $rnd & $filter; // discard irrelevant bits
-		} while ($rnd >= $range);
-		return $min + $rnd;
+		if (function_exists('openssl_random_pseudo_bytes') and (version_compare(PHP_VERSION, '5.3.4') >= 0)) {
+			$range = $max - $min + 1;	//This is important, else we do not use the whole set.
+			//if ($range < 1) return $min; // not so random...
+			$log = ceil(log($range, 2));
+			$bytes = (int) ($log / 8) + 1; // length in bytes
+			$bits = (int) $log + 1; // length in bits
+			$filter = (int) (1 << $bits) - 1; // set all lower bits to 1
+			do {
+					$rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+					$rnd = $rnd & $filter; // discard irrelevant bits
+			} while ($rnd >= $range);
+
+			return $min + $rnd;
+		} else {
+			//return mt_rand(0,$max);
+			//$h = vRequest::getHash($seed);
+			//echo '<br> '.$h;
+			//return vRequest::getHash(mt_rand(0,255));
+		}
+
 	}
 
 

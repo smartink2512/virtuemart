@@ -749,10 +749,6 @@ class VirtueMartModelUserfields extends VmModel {
 		);
 
 		$admin = vmAccess::manager();
-		/*$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
-			$admin  = true;
-		}*/
 
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
 
@@ -773,7 +769,7 @@ class VirtueMartModelUserfields extends VmModel {
 				$_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name
 				,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
-				? $_fld->default
+				? vmText::_($_fld->default)
 				: $_userData[$_fld->name])
 				,'title' => vmText::_($_fld->title)
 				,'type' => $_fld->type

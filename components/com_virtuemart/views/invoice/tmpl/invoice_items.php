@@ -178,6 +178,13 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 		$sumRules[$rule->virtuemart_calc_id]->calc_result = $rule->calc_result;
 		$sumRules[$rule->virtuemart_calc_id]->calc_rule_name = $rule->calc_rule_name;
 		$sumRules[$rule->virtuemart_calc_id]->calc_kind = $rule->calc_kind;
+		$sumRules[$rule->virtuemart_calc_id]->calc_value = $rule->calc_value + 0; //removes useless zero digits
+		if(strpos($rule->calc_rule_name,$sumRules[$rule->virtuemart_calc_id]->calc_value)!==false){
+			$sumRules[$rule->virtuemart_calc_id]->label = $rule->calc_rule_name;
+		} else {
+			$sumRules[$rule->virtuemart_calc_id]->label = $rule->calc_rule_name.' '.$sumRules[$rule->virtuemart_calc_id]->calc_value.'%';
+		}
+
 	}
 
 	if(count($sumRules)>0){
@@ -202,8 +209,8 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 		<?php
 		} elseif ($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax' ) { ?>
 			<tr >
-				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name.' '.$rule->calc_result.'%' ?> </td>
-				<?php if ( VmConfig::get('show_tax')) { ?>
+				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->label ?> </td>
+				<?php if ( VmConfig::get('show_tax')) {  ?>
 					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_result, $this->currency); ?></td>
 				<?php } ?>
 				<td align="right"></td>

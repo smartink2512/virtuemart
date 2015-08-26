@@ -165,7 +165,7 @@ class VmModel extends vObject{
 			// Get the id or array of ids.
 			$idArray = vRequest::getVar($this->_cidName,  0);
 			if($idArray){
-				if(is_array($idArray) and !empty($idArray[0])){
+				if(is_array($idArray) and isset($idArray[0])){
 					$this->setId((int)$idArray[0]);
 				} else{
 					$this->setId((int)$idArray);
@@ -840,7 +840,7 @@ class VmModel extends vObject{
 		if($err=$db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
- 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q '.$db->getQuery() );
+ 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q '.$db->getQuery() );
 
 		if($this->_withCount){
 
@@ -958,9 +958,8 @@ class VmModel extends vObject{
 	 * @param string $postName the name of id Post  (Primary Key in table Class constructor)
 	 */
 
-	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {
+	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0, $view = false  ) {
 
-		$view = vRequest::getCmd('view',false);
 		if($view and !vmAccess::manager($view.'.edit.state')){
 			return false;
 		}

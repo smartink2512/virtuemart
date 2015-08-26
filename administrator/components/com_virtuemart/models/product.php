@@ -369,7 +369,17 @@ class VirtueMartModelProduct extends VmModel {
 
 		if ($this->virtuemart_manufacturer_id) {
 			$joinMf = TRUE;
-			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = ' . $this->virtuemart_manufacturer_id;
+			if(is_array($this->virtuemart_manufacturer_id)){
+				$mans = array();
+				foreach ($this->virtuemart_manufacturer_id as $key => $v) {
+					$mans[] = '`#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id`= "' . (int)$v . '" ';
+				}
+				$where[] = " ( " . implode (' OR ', $mans) . " ) ";
+			} else {
+				$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = ' . $this->virtuemart_manufacturer_id;
+				//$virtuemart_manufacturer_id = $this->virtuemart_manufacturer_id;
+			}
+
 		}
 
 		// Time filter
@@ -1705,8 +1715,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		vRequest::vmCheckToken();
 
-		$superVendor = vmAccess::getVendorId();
-		if(empty($superVendor) or !vmAccess::manager('product.edit')){
+		if(!vmAccess::manager('product.edit')){
 			vmError('You are not a vendor or administrator, storing of product cancelled');
 			return FALSE;
 		}

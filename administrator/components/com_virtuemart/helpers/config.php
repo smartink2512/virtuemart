@@ -1226,7 +1226,7 @@ class vmAccess {
 					self::$_virtuemart_vendor_id[$uid] = $virtuemart_vendor_id;
 					vmdebug('Active vendor '.$virtuemart_vendor_id );
 				} else {
-					if(self::manager() or self::manager('managevendors')){
+					if(self::manager('core') or self::manager('managevendors')){
 						vmdebug('Active Mainvendor');
 						self::$_virtuemart_vendor_id[$uid] = 1;
 					} else {
@@ -1277,9 +1277,11 @@ class vmAccess {
 						foreach($task as $t){
 							if($user->authorise('vm.'.$t, 'com_virtuemart')){
 								self::$_manager[$h] = true;
-							} else {
-								self::$_manager[$h] = false;
 							}
+							/*else {
+								self::$_manager[$h] = false;
+								break;
+							}*/
 						}
 					}
 				}

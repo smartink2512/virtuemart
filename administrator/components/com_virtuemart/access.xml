@@ -24,6 +24,9 @@
 		<action name="vm.product.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
         <action name="vm.inventory" title="COM_VIRTUEMART_PRODUCT_INVENTORY" description="" />
         <action name="vm.ratings" title="COM_VIRTUEMART_REVIEW_RATE_S" description="" />
+        <action name="vm.ratings.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
+        <action name="vm.ratings.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
+        <action name="vm.ratings.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 	</section>
     <section name="customs">
         <action name="vm.custom" title="JACTION_MANAGE" description="COM_VIRTUEMART_MANAGE_VIEW_DESC" />

@@ -610,9 +610,6 @@ class VirtueMartCustomFieldRenderer {
 						}
 						elseif (($productCustom->field_type == 'S')) {
 
-							if(!empty($productCustom->addEmpty) and $params == 0){
-								continue;
-							}
 							if($productCustom->is_list and $productCustom->is_input){
 								$value = vmText::_($params);
 							} else {
