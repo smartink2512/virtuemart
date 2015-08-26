@@ -364,25 +364,27 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			}
 			$this->setKlarnaParamsInSession($klarnaCheckoutInterface->getCheckoutOrderId($klarna_checkout_order), $klarnaPaymentMethodActive, $cart->BT);
 		}
+		if (vRequest::getInt('SnippetDisplayed',0) == 0) {
+			$this->displayJSSnippet($hide_BTST);
 
-		$this->displayJSSnippet($hide_BTST);
+			$snippet = $klarnaCheckoutInterface->getSnippet($klarna_checkout_order);
+			if ($snippet == NULL) {
+				$admin_msg = "No snippet returned";
+				$this->KlarnacheckoutError($admin_msg, vmText::sprintf('VMPAYMENT_KLARNACHECKOUT_ERROR_OCCURRED', $this->_currentMethod->payment_name));
 
-		$snippet = $klarnaCheckoutInterface->getSnippet($klarna_checkout_order);
-		if ($snippet == NULL) {
-			$admin_msg = "No snippet returned";
-			$this->KlarnacheckoutError($admin_msg, vmText::sprintf('VMPAYMENT_KLARNACHECKOUT_ERROR_OCCURRED', $this->_currentMethod->payment_name));
+			}
 
+
+			$html= $this->renderByLayout('cart_advertisement', array(
+				'snippet' => $snippet,
+				'message' => $message,
+				'payment_form_position' => isset($this->_currentMethod->payment_form_position) ? $this->_currentMethod->payment_form_position : 'bottom',
+				'klarna_create_account' => '' // let's do that later if needed $createAccount,
+			));
+			//$payment_advertise[]=$html;
+			echo $html;
 		}
 
-
-		$html= $this->renderByLayout('cart_advertisement', array(
-			'snippet' => $snippet,
-			'message' => $message,
-			'payment_form_position' => isset($this->_currentMethod->payment_form_position) ? $this->_currentMethod->payment_form_position : 'bottom',
-			'klarna_create_account' => '' // let's do that later if needed $createAccount,
-		));
-		//$payment_advertise[]=$html;
-		echo $html;
 	}
 
 

@@ -43,3 +43,4 @@ if ($viewData ['message'] ) {
 
 </div>
 
+<input type="hidden" name="SnippetDisplayed" value="1">

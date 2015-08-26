@@ -39,21 +39,21 @@ class  KlarnaCheckoutHelperKlarnaCheckout {
 	}
 
 
-	function getTaxShipment($cart) {
+	function getTaxShipment($shipment_calc_id) {
 		// TO DO add shipmentTaxRate in the cart
 		// assuming there is only one rule +%
 		//-1 = no rules
 
-		if (count($cart->cartPrices['shipment_calc_id']) > 1) {
+		if (count($shipment_calc_id) > 1) {
 			$this->KlarnacheckoutError('There is more then one rule for the shipment tax id.Please check your shipment tax configuration');
 			//$this->debugLog(var_export($cart->cartPrices['shipment_calc_id'], true), 'getTaxShipment', 'debug');
 			return;
 		}
-		if (!isset($cart->cartPrices['shipment_calc_id'][0])) {
+		if (!isset($shipment_calc_id[0])) {
 			return 0;
 		}
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $cart->cartPrices['shipment_calc_id'][0] . '" ';
+		$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipment_calc_id[0] . '" ';
 
 		$db->setQuery($q);
 		$taxrule = $db->loadObject();
