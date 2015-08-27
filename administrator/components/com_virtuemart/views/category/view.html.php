@@ -64,6 +64,8 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			if ( $category->virtuemart_category_id > 1 ) {
 				$relationInfo = $model->getRelationInfo( $category->virtuemart_category_id );
 				$this->assignRef('relationInfo', $relationInfo);
+			} else {
+				$category->virtuemart_vendor_id = vmAccess::getVendorId();
 			}
 
 			$parent = $model->getParentCategory( $category->virtuemart_category_id );

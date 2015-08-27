@@ -239,7 +239,7 @@ class vmCrypt {
 			$pool.= "0123456789";
 		}
 
-		$max = strlen($pool) - 1;
+		$max = strlen($pool);
 		if (function_exists('openssl_random_pseudo_bytes') and (version_compare(PHP_VERSION, '5.3.4') >= 0)) {
 			for ($i=0; $i < $length; $i++) {
 				$token .= $pool[self::crypto_rand_secure(0, $max)];
@@ -264,7 +264,7 @@ class vmCrypt {
 	static function crypto_rand_secure($min, $max)
 	{
 		if (function_exists('openssl_random_pseudo_bytes') and (version_compare(PHP_VERSION, '5.3.4') >= 0)) {
-			$range = $max - $min + 1;	//This is important, else we do not use the whole set.
+			$range = $max - $min;
 			//if ($range < 1) return $min; // not so random...
 			$log = ceil(log($range, 2));
 			$bytes = (int) ($log / 8) + 1; // length in bytes

@@ -17,7 +17,7 @@
 			if(count($this->cart->cartData['VatTax']) < 2) {
 				reset($this->cart->cartData['VatTax']);
 				$taxd = current($this->cart->cartData['VatTax']);
-				$tax = $taxd['calc_name'] .' '. rtrim(trim($taxd['calc_value'],'0'),'.').'%';
+				$tax = shopFunctionsF::getTaxNameWithValue($taxd['calc_name'],$taxd['calc_value']);
 			}
 		}
 		?>
@@ -345,7 +345,7 @@ if(!empty($this->cart->cartData)){
 			foreach( $this->cart->cartData['VatTax'] as $vatTax ) {
 				if(!empty($vatTax['result'])) {
 					echo '<tr class="sectiontableentry'.$i.'">';
-					echo '<td colspan="4" align="right">'.$vatTax['calc_name'].' '.rtrim(trim($vatTax['calc_value'],'0'),'.').'%</td>';
+					echo '<td colspan="4" align="right">'.shopFunctionsF::getTaxNameWithValue($vatTax['calc_name'],$vatTax['calc_value']). '</td>';
 					echo '<td align="right"><span class="priceColor2">'.$this->currencyDisplay->createPriceDiv( 'taxAmount', '', $vatTax['result'], FALSE, false, 1.0,false,true ).'</span></td>';
 					echo '<td></td><td></td>';
 					echo '</tr>';

@@ -908,8 +908,6 @@ class VmConfig {
 				if (!$confTable->bindChecknStore($confData)) {
 					vmError('storeConfig was not able to store config');
 				}
-			} else {
-				self::$_virtuemart_vendor_id = 1;
 			}
 		}
 	}

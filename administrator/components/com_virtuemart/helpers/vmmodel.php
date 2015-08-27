@@ -840,7 +840,7 @@ class VmModel extends vObject{
 		if($err=$db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
- 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q '.$db->getQuery() );
+ 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q '.$db->getQuery() );
 
 		if($this->_withCount){
 

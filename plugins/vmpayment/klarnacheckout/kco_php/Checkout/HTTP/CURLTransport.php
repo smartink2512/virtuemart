@@ -158,8 +158,8 @@ class Klarna_Checkout_HTTP_CURLTransport implements
             array(&$curlHeaders, 'processHeader')
         );
 
-        $curl->setOption(CURLOPT_SSL_VERIFYHOST, 0);
-        $curl->setOption(CURLOPT_SSL_VERIFYPEER, 0);
+        $curl->setOption(CURLOPT_SSL_VERIFYHOST, 2);
+        $curl->setOption(CURLOPT_SSL_VERIFYPEER, true);
 
         // Override specific set options
         foreach ($this->options as $option => $value) {
