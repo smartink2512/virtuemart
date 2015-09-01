@@ -977,9 +977,7 @@ sleep(2);
 		if ($klarna_checkout_ordermanagement) {
 			//$klarnaCheckoutInterface->acknowledge($klarna_checkout_ordermanagement);
 			$klarna_checkout_ordermanagement->fetch();
-			$klarna_checkout_ordermanagement->updateMerchantReferences([
-				"merchant_reference1" => $vm_payment_data['order_number']
-			]);
+			$klarna_checkout_ordermanagement->updateMerchantReferences(array("merchant_reference1" => $vm_payment_data['order_number']));
 			$return = $klarnaCheckoutInterface->acknowledge($klarna_checkout_ordermanagement);
 			if($return)
 			$klarnaCheckoutInterface->getStoreInternalData($klarna_checkout_ordermanagement,$dbValues);

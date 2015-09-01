@@ -258,7 +258,7 @@ class vmJsApi{
 			}
 		}
 
-		if (VmConfig::get('minified', false) and strpos($path, '//') === FALSE and file_exists($file_exit_path.'/'. $filemin)) $file=$filemin;
+		//if (VmConfig::get('minified', false) and strpos($path, '//') === false and file_exists($file_exit_path.'/'. $filemin)) $file=$filemin;
 
 		return $path.'/'.$file ;
 	}

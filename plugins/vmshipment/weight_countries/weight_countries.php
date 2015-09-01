@@ -291,8 +291,30 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			$country_cond = true;
 		}
 
-		$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond + (int)$country_cond;
-		if($allconditions === 5){
+		$cat_cond = true;
+		if($method->categories or $method->blocking_categories){
+			if($method->categories)$cat_cond = false;
+			//vmdebug('hmm, my value',$method);
+			//if at least one product is  in a certain category, display this shipment
+			if(!is_array($method->categories)) $method->categories = array($method->categories);
+			if(!is_array($method->blocking_categories)) $method->blocking_categories = array($method->blocking_categories);
+			//Gather used cats
+			foreach($cart->products as $product){
+				if(array_intersect($product->categories,$method->categories)){
+					$cat_cond = true;
+					//break;
+				}
+				if(array_intersect($product->categories,$method->blocking_categories)){
+					$cat_cond = false;
+					break;
+				}
+			}
+			//if all products in a certain category, display the shipment
+			//if a product has a certain category, DO NOT display the shipment
+		}
+
+		$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond + (int)$country_cond + (int)$cat_cond;
+		if($allconditions === 6){
 			$result[$hash] = true;
 			return TRUE;
 		} else {

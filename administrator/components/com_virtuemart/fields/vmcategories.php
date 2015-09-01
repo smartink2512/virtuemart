@@ -34,16 +34,21 @@ class JFormFieldVmcategories extends JFormField {
 
 	// This line is required to keep Joomla! 1.6/1.7 from complaining
 	protected function getInput() {
-		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart');
 
-		$categorylist = ShopFunctions::categoryListTree(array($this->value));
+		if(!is_array($this->value))$this->value = array($this->value);
+		$categorylist = ShopFunctions::categoryListTree($this->value);
 
-		$html = '<select class="inputbox"   name="' . $this->name . '" >';
-		$html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
+		$name = $this->name;
+		if($this->multiple){
+			$name = $this->name;
+			$this->multiple = ' multiple="multiple" ';
+		}
+
+		$html = '<select class="inputbox"   name="' . $name . '" '.$this->multiple.' >';
+		if(!$this->multiple)$html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
 		$html .= $categorylist;
 		$html .= "</select>";
 		return $html;

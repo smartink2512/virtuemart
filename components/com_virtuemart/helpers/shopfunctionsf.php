@@ -698,17 +698,8 @@ class shopFunctionsF {
 
 	static public function getTaxNameWithValue($name, $value){
 
-		/*$brnr = explode('.',(string)$value);
-		if (isset($brnr[1])) {
-			$brnr[1] = $brnr[1] + 0; 	//removes useless zero digits
-			if(empty($brnr[1])){
-				$value = $brnr[0];
-			} else {
-				$value = $brnr[0].'.'.$brnr[1];
-			}
-		}*/
-		$value = rtrim(trim($value,'0'),'.').'%';
-
+		$value = rtrim(trim($value,'0'),'.');
+		if(empty($value)) return $name;
 		if(strpos($name,(string)$value)!==false){
 			$tax = $name;
 		} else {

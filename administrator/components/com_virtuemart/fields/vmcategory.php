@@ -39,12 +39,13 @@ class JFormFieldVmCategory extends JFormField
 	 * @since	1.6
 	 */
 
-     function getInput() {
-        $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-        $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-		 VmConfig::loadConfig();
-		 VmConfig::loadJLang('com_virtuemart');
-	     $categorylist = ShopFunctions::categoryListTree(array($this->value));
+     protected function getInput() {
+
+		VmConfig::loadConfig();
+		VmConfig::loadJLang('com_virtuemart');
+
+	    $categorylist = ShopFunctions::categoryListTree(array($this->value));
+
         $html = '<select class="inputbox"   name="' . $this->name . '" >';
         $html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
         $html .= $categorylist;

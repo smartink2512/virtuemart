@@ -26,6 +26,33 @@ if ($this->doctype != 'invoice') {
 } elseif ( ! VmConfig::get('show_tax')) {
     $colspan -= 1;
 }
+
+$handled = array();
+$discountsBill = false;
+$taxBill = false;
+$vats = 0;
+foreach($this->orderDetails['calc_rules'] as $rule){
+	if(isset($sumRules[$rule->virtuemart_calc_id]) or $rule->calc_kind=='payment' or $rule->calc_kind=='shipment'){
+		continue;
+	}
+	$handled[$rule->virtuemart_calc_id] = true;
+	$r = new stdClass();
+	$r->calc_result = $rule->calc_amount;
+	$r->calc_amount = $rule->calc_amount;
+	$r->calc_rule_name = $rule->calc_rule_name;
+	$r->calc_kind = $rule->calc_kind;
+	$r->calc_value = $rule->calc_value;
+
+	if($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'DATaxRulesBill'){
+		$discountsBill[$rule->virtuemart_calc_id] = $r;
+	}
+	if($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax'){
+		$r->label = shopFunctionsF::getTaxNameWithValue($rule->calc_rule_name,$rule->calc_value);
+		$taxBill[$rule->virtuemart_calc_id] = $r;
+	}
+}
+
+
  ?>
 <table class="html-email" width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
@@ -38,7 +65,17 @@ if ($this->doctype != 'invoice') {
 		<td align="right" width="6%"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></strong></td>
 		<?php if ($this->doctype == 'invoice') { ?>
 		<?php if ( VmConfig::get('show_tax')) { ?>
-		<td align="right" width="10%" ><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></strong></td>
+		<td align="right" width="10%" ><strong><?php
+		if(count($taxBill)==1){
+			reset($taxBill);
+			$t = current($taxBill);
+			echo shopFunctionsF::getTaxNameWithValue($t->calc_rule_name,$t->calc_value);
+		} else {
+			echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX');
+		}
+
+
+		?></strong></td>
 		  <?php } ?>
 		<td align="right" width="11%"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL_DISCOUNT_AMOUNT') ?></strong></td>
 		<td align="right" width="11%"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
@@ -137,55 +174,19 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 <?php  } ?>
 
 <?php
-	$sumRules = array();
-	$handled = array();
-	$discountsBill = false;
-	$taxBill = false;
-	foreach($this->orderDetails['calc_rules'] as $rule){
-		if(isset($sumRules[$rule->virtuemart_calc_id]) or $rule->calc_kind=='payment' or $rule->calc_kind=='shipment'){
-			continue;
-		}
-		$handled[$rule->virtuemart_calc_id] = true;
-		$sumRules[$rule->virtuemart_calc_id] = new stdClass();
-		$sumRules[$rule->virtuemart_calc_id]->calc_result = $rule->calc_amount;
-		$sumRules[$rule->virtuemart_calc_id]->calc_amount = $rule->calc_amount;
-		$sumRules[$rule->virtuemart_calc_id]->calc_rule_name = $rule->calc_rule_name;
-		$sumRules[$rule->virtuemart_calc_id]->calc_kind = $rule->calc_kind;
-		if($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'DATaxRulesBill'){
-			$discountsBill = true;
-		}
-		if($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax'){
-			$taxBill = true;
-		}
-		$sumRules[$rule->virtuemart_calc_id]->label = shopFunctionsF::getTaxNameWithValue($rule->calc_rule_name,$rule->calc_value);
-		/*$brnr = explode('.',(string)$rule->calc_value);
-		if (isset($brnr[1])) {
-			$brnr[1] = $brnr[1] +0;
-			$sumRules[$rule->virtuemart_calc_id]->calc_value = $brnr[0].'.'.$brnr[1];
-		} else {
-			$sumRules[$rule->virtuemart_calc_id]->calc_value = $rule->calc_value;
-		}
-		$sumRules[$rule->virtuemart_calc_id]->calc_value = $rule->calc_value + 0; //removes useless zero digits
-		if(strpos($rule->calc_rule_name,(string)$sumRules[$rule->virtuemart_calc_id]->calc_value)!==false){
-			$sumRules[$rule->virtuemart_calc_id]->label = $rule->calc_rule_name;
-		} else {
-			$sumRules[$rule->virtuemart_calc_id]->label = $rule->calc_rule_name.' '.$sumRules[$rule->virtuemart_calc_id]->calc_value.'%';
-		}*/
-	}
 
-	if($discountsBill){
-		foreach($sumRules as $rule){
-			if ($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'DATaxRulesBill') { ?>
-				<tr >
-					<td colspan="6" align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
-					<?php if ( VmConfig::get('show_tax')) { ?>
-						<td align="right"> </td>
-					<?php } ?>
-					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
-					<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
-				</tr>
-				<?php
-			}
+
+	if(count($discountsBill)>0){
+		foreach($discountsBill as $rule){ ?>
+			<tr >
+				<td colspan="6" align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
+				<?php if ( VmConfig::get('show_tax')) { ?>
+					<td align="right"> </td>
+				<?php } ?>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -223,13 +224,13 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 	</tr>
 	<?php
 
-	if($taxBill){
+	if(count($taxBill)>0){
 		?><tr >
 			<td colspan="7"  align="right" class="pricePad"><?php echo vmText::_('COM_VIRTUEMART_TOTAL_INCL_TAX') ?> </td>
 			<td></td>
 			<td></td>
 		</tr><?php
-		foreach($sumRules as $rule){
+		foreach($taxBill as $rule){
 			if ($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax' ) { ?>
 				<tr >
 					<td colspan="6"  align="right" class="pricePad"><?php echo $rule->label ?> </td>
