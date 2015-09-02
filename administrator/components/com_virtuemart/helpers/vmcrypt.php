@@ -76,7 +76,7 @@ class vmCrypt {
 
 		$key = self::_checkCreateKeyFile($date);
 
-		return base64_decode ($key);
+		return $key;
 
 	}
 
@@ -136,44 +136,50 @@ class vmCrypt {
 					//$usedKey = $values;
 					$key = $values['key'];
 				}
-
-				vmdebug('Use key file ',$key);
+				if(!isset($values['b64'])){
+					return self::_createKeyFile($keyPath);
+				}
+				//vmdebug('Use key file ',$key);
 				//include($keyPath .DS. $usedKey.'.php');
 			} else {
 				$usedKey = end($existingKeys);
 				$key = $usedKey['key'];
+				if(!isset($usedKey['b64'])){
+					return self::_createKeyFile($keyPath);
+				}
 			}
+			//vmdebug('Length of key',strlen($key));
 			//vmTime('my time','check');
 			return $key;
 		} else {
+			return self::_createKeyFile($keyPath);
+		}
+	}
 
-			$usedKey = date("ymd");
-			$filename = $keyPath . DS . $usedKey . '.ini';
-			if (!JFile::exists ($filename)) {
 
-				/*$token = vRequest::getHash(JUserHelper::genRandomPassword());
+	private static function _createKeyFile($keyPath){
 
-				$salt = JUserHelper::getSalt('crypt-md5');
-				$hashedToken = md5($token . $salt)  ;
-				$key = base64_encode($hashedToken);*/
-				$key = base64_encode(self::getToken());
+		$usedKey = date("ymd");
+		$filename = $keyPath . DS . $usedKey . '.ini';
+		if (!JFile::exists ($filename)) {
 
-				$date = JFactory::getDate();
-				$today = $date->toUnix();
-				//$key = pack('H*',$key);
-				$content = ';<?php die(); */
+			$key = self::getToken();
+
+			$date = JFactory::getDate();
+			$today = $date->toUnix();
+			$content = ';<?php die(); */
 						[keys]
 						key = "'.$key.'"
 						unixtime = "'.$today.'"
 						date = "'.date("Y-m-d H:i:s").'"
+						b64 = "0"
 						; */ ?>';
-				$result = JFile::write($filename, $content);
-				//vmTime('my time','check');
-				return $key;
-			}
+			$result = JFile::write($filename, $content);
+
+			return $key;
+		} else {
+			return false;
 		}
-		//vmTime('my time','check');
-		//return pack('H*',$key);
 	}
 
 	private static function _getEncryptSafepath () {
@@ -238,53 +244,125 @@ class vmCrypt {
 			$pool.= "abcdefghijklmnopqrstuvwxyz";
 			$pool.= "0123456789";
 		}
-
 		$max = strlen($pool);
-		if (function_exists('openssl_random_pseudo_bytes') and (version_compare(PHP_VERSION, '5.3.4') >= 0)) {
-			for ($i=0; $i < $length; $i++) {
-				$token .= $pool[self::crypto_rand_secure(0, $max)];
-			}
-		} else {
-			for ($i=0; $i < $length; $i++) {
-				$token .= $pool[mt_rand(0, $max)];
-			}
+
+		for ($i=0; $i < $length; $i++) {
+
+			$token .= $pool[self::crypto_rand_secure_cover($max)];
 		}
 
 		return $token;
 	}
 
-	/**
-	 * http://stackoverflow.com/questions/1846202/php-how-to-generate-a-random-unique-alphanumeric-string or
-	 * http://us1.php.net/manual/en/function.openssl-random-pseudo-bytes.php#104322
-	 * @author Max Milbers
-	 * @param $min
-	 * @param $max
-	 * @return mixed
-	 */
-	static function crypto_rand_secure($min, $max)
-	{
-		if (function_exists('openssl_random_pseudo_bytes') and (version_compare(PHP_VERSION, '5.3.4') >= 0)) {
-			$range = $max - $min;
-			//if ($range < 1) return $min; // not so random...
-			$log = ceil(log($range, 2));
-			$bytes = (int) ($log / 8) + 1; // length in bytes
-			$bits = (int) $log + 1; // length in bits
-			$filter = (int) (1 << $bits) - 1; // set all lower bits to 1
-			do {
-					$rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-					$rnd = $rnd & $filter; // discard irrelevant bits
-			} while ($rnd >= $range);
+	static function crypto_rand_secure_cover($range) {
 
-			return $min + $rnd;
-		} else {
-			//return mt_rand(0,$max);
-			//$h = vRequest::getHash($seed);
-			//echo '<br> '.$h;
-			//return vRequest::getHash(mt_rand(0,255));
-		}
+		//$range = $max - $min;
+		//if ($range < 1) return $min; // not so random...
+		$log = ceil( log( $range, 2 ) );
+		$bytes = (int)($log/8) + 1; // length in bytes
+		$bits = (int)$log + 1; // length in bits
+		$filter = (int)(1 << $bits) - 1; // set all lower bits to 1
+		do {
+			$rnd = hexdec( bin2hex( self::crypto_rand_secure( $bytes ) ) );
+			$rnd = $rnd & $filter; // discard irrelevant bits
+		} while( $rnd>=$range );
 
+		return $rnd;
 	}
 
+	/**
+	 * Returns random bytes of the desired length
+	 * The function with "CAPICOM" is not tested and there for other who may need and fix it.
+	 * @author Max Milbers
+	 * @param $r
+	 * @param int $gen
+	 * @return string
+	 */
+	static function crypto_rand_secure($r, $gen = 0) {
 
+		$bytes = '';
+		static $used = false;
+
+		if((strlen($bytes) < $r) && function_exists('openssl_random_pseudo_bytes')) {
+			$bytes = openssl_random_pseudo_bytes($r);
+			if(!$used){
+				vmdebug('with openssl_random_pseudo_bytes',$bytes); $used = true;
+			}
+		}
+
+		if((strlen($bytes) < $r) && function_exists('mcrypt_create_iv'))
+		{
+			// Use MCRYPT_RAND on Windows hosts with PHP < 5.3.7, otherwise use MCRYPT_DEV_URANDOM
+			// (http://bugs.php.net/55169).
+			$flag = (version_compare(PHP_VERSION, '5.3.7', '<') && strncasecmp(PHP_OS, 'WIN', 3) == 0) ? MCRYPT_RAND : MCRYPT_DEV_URANDOM ;
+			$bytes = mcrypt_create_iv($r,$flag);
+			if(!$used){
+				vmdebug('with mcrypt_create_iv',$bytes); $used = true;
+			}
+		}
+
+		if((strlen($bytes) < $r) && is_readable('/dev/urandom') && ($urandom = fopen('/dev/urandom', 'rb')) !== false) {
+			$bytes = fread($urandom, $r);
+			fclose($urandom);
+			if(!$used){
+				vmdebug('with urandom',$bytes); $used = true;
+			}
+		}
+
+		/*if ((strlen($bytes) < $r) && class_exists('COM')) {
+			// Officially deprecated in Windows 7
+			// http://msdn.microsoft.com/en-us/library/aa388182%28v=vs.85%29.aspx
+			try
+			{
+				// @noinspection PhpUndefinedClassInspection
+				$CAPI_Util = new COM('CAPICOM.Utilities.1');
+				if(is_callable(array($CAPI_Util,'GetRandom')))
+				{
+					// @noinspection PhpUndefinedMethodInspection
+					$bytes = $CAPI_Util->GetRandom($r,0);
+					$bytes = base64_decode($bytes);
+				}
+			}
+			catch (Exception $e){
+			}
+			if(!$used){
+				vmdebug('with CAPICOM',$bytes); $used = true;
+			}
+		}*/
+
+		if (strlen($bytes) < $r) {
+
+			for($j=0;$j<$r;$j+=16){
+				$mt_rand = mt_rand();
+				/*$getmypid = '';
+				if (function_exists('getmypid'))
+					$getmypid .= getmypid();*/
+				$memory_get_usage = 1/memory_get_usage();
+				$ms = microtime(true);
+				$frac = (int)substr((string)$ms - floor($ms),2);
+
+				$random_state = $frac+$mt_rand+$memory_get_usage;
+				$t = sha1( $random_state ,true);
+				if($j+16>$r){
+					$rest = $r-$j;
+					$ran = mt_rand(0,15-$rest);
+					$bytes .= substr($t,$ran,$rest);
+				} else {
+					$bytes .= $t;
+				}
+			}
+		}
+
+		//*/
+		/*if (strlen($bytes) < $r) {
+			// do something to warn system owner that
+			// pseudorandom generator is missing
+			vmdebug('crypto_rand_secure pseudorandom generator is missing',$bytes);
+		} else {
+			//vmdebug('crypto_rand_secure pseudorandom bytes '.$bytes);
+		}*/
+
+		return $bytes;
+	}
 
 }

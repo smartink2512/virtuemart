@@ -130,12 +130,14 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		if($cart->getInCheckOut()){
 			vRequest::setVar('checkout',true);
 		}
+
 		$cart->saveCartFieldsInCart();
 
 		if($cart->updateProductCart()){
 			vmInfo('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY');
 		}
 
+		//Maybe better in line 133
 		$STsameAsBT = vRequest::getInt('STsameAsBT', vRequest::getInt('STsameAsBTjs',false));
 		if($STsameAsBT){
 			$cart->STsameAsBT = $STsameAsBT;

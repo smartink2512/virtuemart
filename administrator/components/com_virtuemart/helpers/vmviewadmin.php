@@ -288,7 +288,7 @@ class VmViewAdmin extends JViewLegacy {
 				$childproducts = $productModel->getProductChilds($id) ? $productModel->getProductChilds($id) : '';
 			}
 
-            $token = JSession::getFormToken();
+			$token = vRequest::getFormToken();
 			$j = '
 			jQuery(function($) {
 				var oldflag = "";

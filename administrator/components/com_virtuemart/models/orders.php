@@ -1435,15 +1435,15 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	}
 
 	/**
-	 *
+	 * Creates a standard order password
 	 */
 	 static public function genStdOrderPass(){
 		if(!class_exists('vmCrypt'))
 			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-		 $codeAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-		 $codeAlphabet.= "abcdefghijkmnopqrstuvwxyz";
-		 $codeAlphabet.= "123456789";
-		return 'p_'.vmCrypt::getToken(VmConfig::get('randpw',5),$codeAlphabet);
+		 $chrs = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+		 $chrs.= "abcdefghijkmnopqrstuvwxyz";
+		 $chrs.= "123456789";
+		return 'p_'.vmCrypt::getToken(VmConfig::get('randpw',8),$chrs);
 	 }
 
 	/**
@@ -1475,12 +1475,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * Generate a unique ordernumber. This is done in a similar way as VM1.1.x, although
 	 * the reason for this is unclear to me :-S
 	 * @deprecated
-	 * @author Oscar van Eijk
 	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	static public function generateOrderNumber($uid = 0,$length=10, $virtuemart_vendor_id=1)
-	{
+	static public function generateOrderNumber($uid = 0,$length=4, $virtuemart_vendor_id=1) {
 
 		$db = JFactory::getDBO();
 
