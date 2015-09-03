@@ -483,8 +483,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 */
 	public function plgVmRetrieveIPN () {
 		// check if table exists
-		$query = 'SHOW TABLES LIKE "' . $this->_tablename . '"';
 		$db = JFactory::getDBO();
+		$query = 'SHOW TABLES LIKE "%' . str_replace('#__', $db->getPrefix(), $this->_tablename) . '"';
+
 		$db->setQuery($query);
 		if(!$db->loadResult()){
 			return false;
