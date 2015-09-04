@@ -1088,6 +1088,9 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		if(isset($this->modified_on)){
 			$date = JFactory::getDate($this->modified_on);
 			$date = $date->toUnix();
+		} else if(isset($this->created_on)){
+			$date = JFactory::getDate($this->modified_on);
+			$date = $date->toUnix();
 		} else {
 			$date = 0;
 		}

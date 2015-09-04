@@ -129,13 +129,22 @@ class VirtueMartModelOrders extends VmModel {
 
         // If the user is not logged in, we will check the order number and order pass
         if(empty($cuid)){
+			$sess = JFactory::getSession();
+			$orderNumber = vRequest::getString('order_number',$orderNumber);
+			$tries = $sess->get('getOrderDetails.'.$orderNumber,0);
+			if($tries>5){
+				vmDebug ('Too many tries, Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
+				return false;
+			}
             // If the user is not logged in, we will check the order number and order pass
             if ($orderPass = vRequest::getString('order_pass',$orderPass)){
-                $orderNumber = vRequest::getString('order_number',$orderNumber);
+
                 $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
                 if(empty($orderId)){
                     echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderPass,$orderNumber);
+					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderPass,$orderNumber,$tries);
+					$tries++;
+					$sess->set('getOrderDetails.'.$orderNumber,$tries);
                     return false;
                 }
                 $orderDetails = $this->getOrder($orderId);
@@ -150,7 +159,7 @@ class VirtueMartModelOrders extends VmModel {
             $orderDetails = $this->getOrder($virtuemart_order_id);
 
 			$user = JFactory::getUser();
-			if(!$user->authorise('core.admin','com_virtuemart')){
+			if(!vmAccess::manager('orders')){
                 if(!isset($orderDetails['details']['BT']->virtuemart_user_id)){
                     $orderDetails['details']['BT']->virtuemart_user_id = 0;
                 }

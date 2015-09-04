@@ -64,8 +64,12 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			//PDF needs xhtml links
 			$this->useXHTML = true;
 
+			$app = JFactory::getApplication();
 			// Create the invoice PDF file on disk and send that back
 			$orderDetails = $this->getOrderDetails();
+			if(!$orderDetails){
+				$app->redirect(JRoute::_('/index.php?option=com_virtuemart'));
+			}
 			$fileLocation = $this->getInvoicePDF($orderDetails, 'invoice',$layout);
 			$fileName = basename ($fileLocation);
 
@@ -122,7 +126,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 				}
 				fclose ($fp);
 
-				JFactory::getApplication()->close();
+				$app->close();
 
 			} else {
 				// TODO: Error message
@@ -132,10 +136,15 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 	}
 
 	public function getOrderDetails() {
+
 		$orderModel = VmModel::getModel('orders');
-		$orderDetails = 0;
+
+		return $orderModel->getMyOrderDetails();
+		/*$orderDetails = 0;
+
 		// If the user is not logged in, we will check the order number and order pass
 		if ($orderPass = vRequest::getString('order_pass',false) and $orderNumber = vRequest::getString('order_number',false)){
+
 			$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
 			if(empty($orderId)){
 				vmDebug ('Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
@@ -165,7 +174,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 				}
 			}
 		}
-		return $orderDetails;
+		return $orderDetails;*/
 	}
 
 

@@ -30,7 +30,7 @@ class vmCrypt {
 			// create a random IV to use with CBC encoding
 			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 			$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-
+vmdebug('the used key '.$key);
 			return base64_encode ($iv.mcrypt_encrypt (MCRYPT_RIJNDAEL_256, $key, $string, MCRYPT_MODE_CBC,$iv));
 		} else {
 			return base64_encode ($string);
@@ -106,7 +106,7 @@ class vmCrypt {
 								}
 
 							} else {
-								vmdebug('Resource says there is file, but does not exists? '.$keyPath .DS. $file);
+								//vmdebug('Resource says there is file, but does not exists? '.$keyPath .DS. $file);
 							}
 						} else {
 							//vmdebug('Directory in they keyfolder?  '.$keyPath .DS. $file);
@@ -136,47 +136,56 @@ class vmCrypt {
 					//$usedKey = $values;
 					$key = $values['key'];
 				}
-				if(!isset($values['b64'])){
-					return self::_createKeyFile($keyPath);
+				if(!isset($usedKey['b64']) or $usedKey['b64']){
+					$key = base64_decode($key);
 				}
-				//vmdebug('Use key file ',$key);
-				//include($keyPath .DS. $usedKey.'.php');
+
 			} else {
 				$usedKey = end($existingKeys);
 				$key = $usedKey['key'];
-				if(!isset($usedKey['b64'])){
-					return self::_createKeyFile($keyPath);
+				//No key means, we wanna encrypt something, when it has not the new attribute,
+				//it is an old key and must be replaced
+				$ksize = VmConfig::get('keysize',24);
+				if(empty($key) or !isset($usedKey['b64']) or !isset($usedKey['size']) or $usedKey['size']!=$ksize){
+					$key = self::_createKeyFile($keyPath,$ksize);
+					$existingKeys[$key['unixtime']] = $key;
+					return $key['key'];
 				}
 			}
+
 			//vmdebug('Length of key',strlen($key));
 			//vmTime('my time','check');
 			return $key;
 		} else {
-			return self::_createKeyFile($keyPath);
+			$key = self::_createKeyFile($keyPath,VmConfig::get('keysize',24));
+			$existingKeys[$key['unixtime']] = $key;
+			return $key['key'];
 		}
 	}
 
 
-	private static function _createKeyFile($keyPath){
+	private static function _createKeyFile($keyPath, $size = 32){
 
 		$usedKey = date("ymd");
 		$filename = $keyPath . DS . $usedKey . '.ini';
 		if (!JFile::exists ($filename)) {
 
-			$key = self::getToken();
-
+			$key = self::crypto_rand_secure($size);
+			vmdebug('create key file ',$size);
 			$date = JFactory::getDate();
 			$today = $date->toUnix();
+			$dat = date("Y-m-d H:i:s");
 			$content = ';<?php die(); */
 						[keys]
 						key = "'.$key.'"
 						unixtime = "'.$today.'"
-						date = "'.date("Y-m-d H:i:s").'"
+						date = "'.$dat.'"
 						b64 = "0"
+						size = "'.$size.'"
 						; */ ?>';
 			$result = JFile::write($filename, $content);
 
-			return $key;
+			return array('key'=>$key,'unixtime'=>$today,'date'=>$dat,'b64'=>0,'size'=>$size);
 		} else {
 			return false;
 		}
@@ -254,7 +263,7 @@ class vmCrypt {
 		return $token;
 	}
 
-	static function crypto_rand_secure_cover($range) {
+	static function crypto_rand_secure_cover($range,$byte=false) {
 
 		//$range = $max - $min;
 		//if ($range < 1) return $min; // not so random...
@@ -263,12 +272,19 @@ class vmCrypt {
 		$bits = (int)$log + 1; // length in bits
 		$filter = (int)(1 << $bits) - 1; // set all lower bits to 1
 		do {
-			$rnd = hexdec( bin2hex( self::crypto_rand_secure( $bytes ) ) );
-			$rnd = $rnd & $filter; // discard irrelevant bits
-		} while( $rnd>=$range );
+			if($byte){
+				$rnd = self::crypto_rand_secure( $bytes ) ;
+			} else {
+				$rnd = hexdec( bin2hex( self::crypto_rand_secure( $bytes ) ) );
+				$rnd = $rnd & $filter; // discard irrelevant bits
+			}
 
+
+		} while( $rnd>=$range );
+		//vmdebug('crypto_rand_secure_cover '.$rnd);
 		return $rnd;
 	}
+
 
 	/**
 	 * Returns random bytes of the desired length
@@ -278,7 +294,7 @@ class vmCrypt {
 	 * @param int $gen
 	 * @return string
 	 */
-	static function crypto_rand_secure($r, $gen = 0) {
+	static function crypto_rand_secure($r) {
 
 		$bytes = '';
 		static $used = false;
@@ -302,8 +318,8 @@ class vmCrypt {
 		}
 
 		if((strlen($bytes) < $r) && is_readable('/dev/urandom') && ($urandom = fopen('/dev/urandom', 'rb')) !== false) {
-			$bytes = fread($urandom, $r);
-			fclose($urandom);
+			$bytes = @fread($urandom, $r);
+			@fclose($urandom);
 			if(!$used){
 				vmdebug('with urandom',$bytes); $used = true;
 			}
@@ -328,7 +344,7 @@ class vmCrypt {
 			if(!$used){
 				vmdebug('with CAPICOM',$bytes); $used = true;
 			}
-		}*/
+		}//*/
 
 		if (strlen($bytes) < $r) {
 
@@ -347,12 +363,14 @@ class vmCrypt {
 					$rest = $r-$j;
 					$ran = mt_rand(0,15-$rest);
 					$bytes .= substr($t,$ran,$rest);
+					//vmdebug('mt_rand substr '.$bytes,$t);
 				} else {
 					$bytes .= $t;
+					//vmdebug('just added it '.$bytes,$t);
 				}
 			}
 		}
-
+		//vmdebug('returning '.$bytes.' '.base64_encode($bytes));
 		//*/
 		/*if (strlen($bytes) < $r) {
 			// do something to warn system owner that

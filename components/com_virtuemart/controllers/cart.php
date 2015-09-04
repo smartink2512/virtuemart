@@ -421,7 +421,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$red = JRoute::_('index.php?option=com_virtuemart&view=cart');
 		}
 
-		//$id = vmAccess::getBgManagerId();
+		$id = vmAccess::getBgManagerId();
 		$current = JFactory::getUser( );;
 		$manager = vmAccess::manager('user');
 		if(!$manager){
@@ -430,7 +430,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			return false;
 		}
 
-		/*$userID = vRequest::getCmd('userID');
+		$userID = vRequest::getCmd('userID');
 		if($manager and !empty($userID) and $userID!=$current->id ){
 			if($userID == $id){
 
@@ -439,7 +439,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 				$app->redirect($red);
 			}
-		}*/
+		}
 
 		$searchShopper = vRequest::getString('searchShopper');
 
