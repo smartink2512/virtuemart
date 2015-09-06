@@ -76,8 +76,7 @@ class VirtuemartControllerProduct extends VmController {
 			}
 
 		} else  {
-			$user = JFactory::getUser();
-			if($user->authorise('vm.html','com_virtuemart')){
+			if(vmAccess::manager('html')){
 				$data['product_desc'] = vRequest::getHtml('product_desc','');
 				$data['product_s_desc'] = vRequest::getHtml('product_s_desc','');
 				$data['customtitle'] = vRequest::getHtml('customtitle','');

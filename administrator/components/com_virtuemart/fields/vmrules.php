@@ -257,6 +257,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 	}
 
 	public function vmRulesJ25(){
+
 		// Initialise some field attributes.
 		$section = $this->element['section'] ? (string)$this->element['section'] : '';
 		$component = $this->element['component'] ? (string)$this->element['component'] : '';

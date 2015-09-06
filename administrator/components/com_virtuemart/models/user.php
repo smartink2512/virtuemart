@@ -360,7 +360,7 @@ class VirtueMartModelUser extends VmModel {
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
 
 			$cUser = JFactory::getUser();
-			if($usersConfig->get('allowUserRegistration') == '0' and !(vmAccess::manager() or $cUser->authorise('vm.user', 'com_virtuemart')) ) {
+			if($usersConfig->get('allowUserRegistration') == '0' and !(vmAccess::manager('user')) ) {
 				VmConfig::loadJLang('com_virtuemart');
 				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;
@@ -502,8 +502,7 @@ class VirtueMartModelUser extends VmModel {
 		$usertable = $this->getTable('vmusers');
 		$alreadyStoredUserData = $usertable->load($this->_id);
 
-		$user = JFactory::getUser();
-		if(!$user->authorise('core.admin','com_virtuemart')){
+		if(!vmAccess::manager('core')){
 			unset($data['virtuemart_vendor_id']);
 			unset($data['user_is_vendor']);
 		} else {
@@ -1077,10 +1076,8 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * @return boolean True is the remove was successful, false otherwise.
 	 */
-	function remove($userIds)
-	{
-		$user = JFactory::getUser();
-		$su = $user->authorise('core.admin','com_virtuemart');
+	function remove($userIds) {
+
 		if(vmAccess::manager('user')){
 
 			$userInfo = $this->getTable('userinfos');

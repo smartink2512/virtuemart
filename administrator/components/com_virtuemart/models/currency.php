@@ -62,8 +62,13 @@ class VirtueMartModelCurrency extends VmModel {
 		$where = array();
 
 		$user = JFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart') ){
-			$where[]  = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
+		$shared = '';
+		if(vmAccess::manager() ){
+			$shared = 'OR `shared`="1"';
+		}
+		$vendorId = vmAccess::isSuperVendor();
+		if($vendorId){
+			$where[]  = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" '.$shared.')';
 		}
 
 		if(empty($search)){

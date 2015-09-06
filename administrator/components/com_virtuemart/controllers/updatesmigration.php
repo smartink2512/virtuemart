@@ -52,7 +52,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		vRequest::vmCheckToken();
 		//Hardcore Block, we may do that better later
 		$user = JFactory::getUser();
-		if(!$user->authorise('core.admin','com_virtuemart') ){
+		if(!vmAccess::manager('core') ){
 			$msg = 'Forget IT';
 			$this->setRedirect('index.php?option=com_virtuemart', $msg);
 		}

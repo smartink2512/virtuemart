@@ -2220,7 +2220,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 	function _modifyColumn($_act, $_col, $_type = '', $_col2 = '') {
 
 		$user = JFactory::getUser();
-		if(!$user->authorise('core.admin','com_virtuemart')) return false;
+		if(!vmAccess::manager('core')) return false;
 
 		$_sql = 'ALTER TABLE `' . $this->_tbl . '` ';
 

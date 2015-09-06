@@ -229,7 +229,7 @@ class VirtueMartViewCart extends VmView {
 			$this->userList = $this->getUserList();
 		}
 
-		if(VmConfig::get('oncheckout_ajax')){
+		if(VmConfig::get('oncheckout_ajax',false)){
 
 			vmJsApi::jDynUpdate();
 

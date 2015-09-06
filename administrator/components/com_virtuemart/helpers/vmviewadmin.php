@@ -531,8 +531,7 @@ class VmViewAdmin extends JViewLegacy {
 	public function showVendors(){
 
 		if($this->showVendors===null){
-			$user=JFactory::getUser();
-			if(VmConfig::get('multix','none')!='none' and $user->authorise('core.admin','com_virtuemart')){
+			if(VmConfig::get('multix','none')!='none' and vmAccess::manager('managevendors')){
 				$this->showVendors = true;
 			} else {
 				$this->showVendors = false;

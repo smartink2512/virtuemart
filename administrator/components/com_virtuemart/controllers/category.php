@@ -39,7 +39,7 @@ class VirtuemartControllerCategory extends VmController {
 	function save($data = 0){
 
 		//ACL
-		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+		if (!vmAccess::manager('category.edit')) {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
@@ -60,7 +60,7 @@ class VirtuemartControllerCategory extends VmController {
 	public function orderUp()
 	{
 		//ACL
-		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+		if (!vmAccess::manager('category.edit')) {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 
@@ -98,7 +98,7 @@ class VirtuemartControllerCategory extends VmController {
 	public function orderDown()
 	{
 		//ACL
-		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+		if (!vmAccess::manager('category.edit')) {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
@@ -134,7 +134,7 @@ class VirtuemartControllerCategory extends VmController {
 	public function saveOrder()
 	{
 		//ACL
-		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+		if (!vmAccess::manager('category.edit')) {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		

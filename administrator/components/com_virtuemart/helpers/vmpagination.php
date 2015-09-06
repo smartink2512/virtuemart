@@ -661,7 +661,14 @@ class VmPagination extends vObject {
 		}
 		else
 		{
-			return "<a title=\"" . $item->text . "\" href=\"" . $item->link . "\" class=\"pagenav\">" . $item->text . "</a>";
+
+			$rel = '';
+			if($item->text==vmText::_('JNEXT')){
+				$rel = 'rel="next"';
+			} else if($item->text==vmText::_('JPREV')){
+				$rel = 'rel="prev"';
+			}
+			return '<a '.$rel.' title="' . $item->text . '" href="' . $item->link . '" class="pagenav">' . $item->text . '</a>';
 		}
 	}
 

@@ -303,7 +303,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   KEY `published` (`published`),
   KEY `shared` (`shared`),
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  KEY `currency_code_3` (`currency_code_3`),
+  UNIQUE KEY `currency_code_3` (`currency_code_3`),
   KEY `currency_numeric_code` (`currency_numeric_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store currencies';
 
