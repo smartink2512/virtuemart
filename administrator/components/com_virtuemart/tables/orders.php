@@ -39,6 +39,7 @@ class TableOrders extends VmTableData {
 	/** @var int Order number */
 	var $order_number = NULL;
 	var $order_pass = NULL;
+	var $order_create_invoice_pass = 0;
 	var $customer_number = NULL;
 	/** @var decimal Order total */
 	var $order_total = 0.00000;

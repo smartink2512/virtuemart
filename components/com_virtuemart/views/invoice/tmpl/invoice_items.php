@@ -175,8 +175,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 
 <?php
 
-
-	if(count($discountsBill)>0){
+	if($discountsBill){
 		foreach($discountsBill as $rule){ ?>
 			<tr >
 				<td colspan="6" align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
@@ -224,7 +223,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 	</tr>
 	<?php
 
-	if(count($taxBill)>0){
+	if($taxBill){
 		?><tr >
 			<td colspan="7"  align="right" class="pricePad"><?php echo vmText::_('COM_VIRTUEMART_TOTAL_INCL_TAX') ?> </td>
 			<td></td>

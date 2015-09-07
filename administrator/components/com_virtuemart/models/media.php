@@ -377,10 +377,10 @@ vmdebug('storeMedia',$data);
 
 		$data['virtuemart_media_id'] = $this->getId();
 		if(!vmAccess::manager('media.edit')){
-			vmWarn('Insufficient permission to store category');
+			vmWarn('Insufficient permission to store media');
 			return false;
 		} else if( empty($data['virtuemart_media_id']) and !vmAccess::manager('media.create')){
-			vmWarn('Insufficient permission to create category');
+			vmWarn('Insufficient permission to create media');
 			return false;
 		}
 

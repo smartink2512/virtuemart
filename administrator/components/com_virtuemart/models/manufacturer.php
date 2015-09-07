@@ -73,10 +73,10 @@ class VirtueMartModelManufacturer extends VmModel {
 	public function store(&$data) {
 
 		if(!vmAccess::manager('manufacturer.edit')){
-			vmWarn('Insufficient permission to store category');
+			vmWarn('Insufficient permission to store manufacturer');
 			return false;
 		} else if( empty($data['virtuemart_manufacturer_id']) and !vmAccess::manager('manufacturer.create')){
-			vmWarn('Insufficient permission to create category');
+			vmWarn('Insufficient permission to create manufacturer');
 			return false;
 		}
 		// Setup some place holders

@@ -272,12 +272,10 @@ vmdebug('the used key '.$key);
 		$bits = (int)$log + 1; // length in bits
 		$filter = (int)(1 << $bits) - 1; // set all lower bits to 1
 		do {
-			if($byte){
-				$rnd = self::crypto_rand_secure( $bytes ) ;
-			} else {
-				$rnd = hexdec( bin2hex( self::crypto_rand_secure( $bytes ) ) );
-				$rnd = $rnd & $filter; // discard irrelevant bits
-			}
+
+			$rnd = hexdec( bin2hex( self::crypto_rand_secure( $bytes ) ) );
+			$rnd = $rnd & $filter; // discard irrelevant bits
+
 
 
 		} while( $rnd>=$range );

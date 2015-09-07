@@ -994,6 +994,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if(empty($_orderData->order_pass)){
 			$_orderData->order_pass = $this->genStdOrderPass();
 		}
+		if(empty($_orderData->order_create_invoice_pass)){
+			$_orderData->order_create_invoice_pass = $this->genStdCreateInvoicePass();
+		}
 
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);
@@ -1455,6 +1458,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		return 'p_'.vmCrypt::getToken(VmConfig::get('randpw',8),$chrs);
 	 }
 
+	static public function genStdCreateInvoicePass(){
+		if(!class_exists('vmCrypt'))
+			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+		return vmCrypt::getToken(24);
+	}
+
 	/**
 	 * Generate a unique ordernumber using getHumanToken, which is a random token
 	 * with only upper case chars and without 0 and O to prevent missreadings
@@ -1523,7 +1532,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$result = $db->loadAssoc();
 
 		if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-		if(!$result or   empty($result['invoice_number']) ){
+		if(!$result or empty($result['invoice_number']) ){
 
 			$data['virtuemart_order_id'] = $orderDetails['virtuemart_order_id'];
 
@@ -1542,9 +1551,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			    $orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
 				if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice); //for backward compatibility 2.0.8e
 			    $pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
-			    $force_create_invoice=vRequest::getInt('create_invoice', 0);
+			    $force_create_invoice=vRequest::getCmd('create_invoice', -1);
 			    // florian : added if pdf invoice are enabled
-			    if ( in_array($orderDetails['order_status'],$orderstatusForInvoice)  or $pdfInvoice==1  or $force_create_invoice==1 ){
+
+			    if ( in_array($orderDetails['order_status'],$orderstatusForInvoice)  or $pdfInvoice==1  or $force_create_invoice==$orderDetails['order_create_invoice_pass'] ){
 					$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_vendor_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 					$db->setQuery($q);
 
@@ -1640,7 +1650,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
 			if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice);   // for backward compatibility 2.0.8e
 			$pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
-			$force_create_invoice=vRequest::getInt('create_invoice', 0);
+			$force_create_invoice=vRequest::getInt('create_invoice', -1);
 			//TODO we need an array of orderstatus
 			if ( (in_array($order['details']['BT']->order_status,$orderstatusForInvoice))  or $pdfInvoice==1  or $force_create_invoice==1 ){
 				if (!shopFunctions::InvoiceNumberReserved($invoiceNumberDate[0])) {
@@ -1991,6 +2001,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$dispatcher = JDispatcher::getInstance();
 		$_orderData->order_number = $this->genStdOrderNumber($_orderData->virtuemart_vendor_id);
 		$_orderData->order_pass = $this->genStdOrderPass();
+		$_orderData->order_create_invoice_pass = $this->genStdCreateInvoicePass();
 
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);

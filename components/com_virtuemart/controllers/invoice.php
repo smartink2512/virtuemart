@@ -71,6 +71,9 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 				$app->redirect(JRoute::_('/index.php?option=com_virtuemart'));
 			}
 			$fileLocation = $this->getInvoicePDF($orderDetails, 'invoice',$layout);
+			if(!$fileLocation){
+				$app->redirect(JRoute::_('/index.php?option=com_virtuemart'),'Invoice not created');
+			}
 			$fileName = basename ($fileLocation);
 
 			if (file_exists ($fileLocation)) {
@@ -212,7 +215,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		$orderModel = VmModel::getModel('orders');
 		$invoiceNumberDate=array();
 		if (!  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
-		    return 0;
+		    return false;
 		}
 
 		if(!empty($invoiceNumberDate[0])){
