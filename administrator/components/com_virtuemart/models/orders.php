@@ -793,6 +793,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $inputOrder['customer_notified'], $inputOrder['comments']);
 
+			//We need a new invoice, therefore rename the old one.
+			if($old_order_status!=$data->order_status){
+				$this->renameInvoice($data->virtuemart_order_id);
+			}
+
 			// When the plugins did not already notified the user, do it here (the normal way)
 			//Attention the ! prevents at the moment that an email is sent. But it should used that way.
 // 			if (!$inputOrder['customer_notified']) {
@@ -809,6 +814,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					}
 				}
 			}
+
+
 			return true;
 		} else {
 			return false;
@@ -1461,7 +1468,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	static public function genStdCreateInvoicePass(){
 		if(!class_exists('vmCrypt'))
 			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-		return vmCrypt::getToken(24);
+		return vmCrypt::getToken(8);
 	}
 
 	/**
@@ -2054,18 +2061,18 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if(!file_exists($invoice_name_src)){
 			// may be it was already deleted when changing order items
-			$data['invoice_number'] = "";
+			$data['invoice_number'] = $table->invoice_number;
 			//$data['invoice_number'] = $data['invoice_number'].' not found.';
 		} else {
 			$date = date("Ymd");
 			// We change the invoice number in the invoice table only. The order's invoice number is not modified!
-			$data['invoice_number'] = $table->invoice_number.'_'.$date;
+			$data['invoice_number'] = $table->invoice_number.'_'.$date.'_'.$table->order_status;
 			// We the sanitized file name as the invoice number might contain strange characters like 2015/01.
-			$invoice_name_dst = $path.DS.$name.'_deprecated'.$date.'.pdf';
+			$invoice_name_dst = $path.DS.$name.'_deprecated'.$date.'_'.$table->order_status.'.pdf';
 
 			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if (!JFile::move($invoice_name_src, $invoice_name_dst)) {
-				vmError ('Could not rename Invoice '.$invoice_name_src.'to '. $invoice_name_dst );
+				vmError ('Could not rename Invoice '.$invoice_name_src.' to '. $invoice_name_dst );
 			}
 		}
 

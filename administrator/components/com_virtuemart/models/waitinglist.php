@@ -132,7 +132,7 @@ class VirtueMartModelWaitingList extends VmModel {
 	function adduser ($data) {
 
 		vRequest::vmCheckToken('Invalid Token, in adduser to waitinglist');
-		JSession::checkToken () or jexit ('');
+		vRequest::vmCheckToken() or jexit ('');
 
 		$field = $this->getTable ('waitingusers');
 

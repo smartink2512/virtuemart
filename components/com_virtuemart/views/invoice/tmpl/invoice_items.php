@@ -32,7 +32,7 @@ $discountsBill = false;
 $taxBill = false;
 $vats = 0;
 foreach($this->orderDetails['calc_rules'] as $rule){
-	if(isset($sumRules[$rule->virtuemart_calc_id]) or $rule->calc_kind=='payment' or $rule->calc_kind=='shipment'){
+	if(isset($sumRules[$rule->virtuemart_calc_id])){	// or $rule->calc_kind=='payment' or $rule->calc_kind=='shipment'){
 		continue;
 	}
 	$handled[$rule->virtuemart_calc_id] = true;
@@ -46,10 +46,17 @@ foreach($this->orderDetails['calc_rules'] as $rule){
 	if($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'DATaxRulesBill'){
 		$discountsBill[$rule->virtuemart_calc_id] = $r;
 	}
-	if($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax'){
+	if($rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'VatTax' or $rule->calc_kind=='payment' or $rule->calc_kind=='shipment'){
+		//vmdebug('method rule',$rule);
 		$r->label = shopFunctionsF::getTaxNameWithValue($rule->calc_rule_name,$rule->calc_value);
-		$taxBill[$rule->virtuemart_calc_id] = $r;
+		if(isset($taxBill[$rule->virtuemart_calc_id])){
+			$taxBill[$rule->virtuemart_calc_id]->calc_amount += $r->calc_amount;
+		} else {
+			$taxBill[$rule->virtuemart_calc_id] = $r;
+		}
+
 	}
+
 }
 
 

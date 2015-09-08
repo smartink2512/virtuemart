@@ -411,7 +411,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 * @author Maik Künnemann
 	 */
 	public function changeShopper() {
-		JSession::checkToken () or jexit ('Invalid Token');
+		vRequest::vmCheckToken() or jexit ('Invalid Token');
 		$app = JFactory::getApplication();
 
 		$redirect = vRequest::getString('redirect',false);
