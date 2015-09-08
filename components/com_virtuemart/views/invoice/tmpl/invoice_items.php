@@ -37,7 +37,7 @@ foreach($this->orderDetails['calc_rules'] as $rule){
 	}
 	$handled[$rule->virtuemart_calc_id] = true;
 	$r = new stdClass();
-	$r->calc_result = $rule->calc_amount;
+	$r->calc_result = $rule->calc_result;
 	$r->calc_amount = $rule->calc_amount;
 	$r->calc_rule_name = $rule->calc_rule_name;
 	$r->calc_kind = $rule->calc_kind;
@@ -241,7 +241,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 				<tr >
 					<td colspan="6"  align="right" class="pricePad"><?php echo $rule->label ?> </td>
 					<?php if ( VmConfig::get('show_tax')) {  ?>
-						<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->currency); ?></td>
+						<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_result, $this->currency); ?></td>
 					<?php } ?>
 					<td align="right"></td>
 					<td align="right"></td>
