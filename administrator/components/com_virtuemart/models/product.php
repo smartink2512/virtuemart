@@ -983,7 +983,7 @@ class VirtueMartModelProduct extends VmModel {
 		$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$productId.'" ';
 
 		if($front){
-			if(count($virtuemart_shoppergroup_ids)>0){
+			if($virtuemart_shoppergroup_ids and count($virtuemart_shoppergroup_ids)>0){
 				$q .= ' AND (';
 				$sqrpss = '';
 				foreach($virtuemart_shoppergroup_ids as $sgrpId){

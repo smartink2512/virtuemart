@@ -1150,7 +1150,7 @@ class VirtueMartCart {
 			if(!$this->virtuemart_order_id){
 				if (($this->virtuemart_order_id = $orderModel->createOrderFromCart($this)) === false) {
 					$mainframe = JFactory::getApplication();
-					vmError('No order created '.$orderModel->getError());
+					//vmError('No order created '.$orderModel->getError());
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );
 				}
 			}

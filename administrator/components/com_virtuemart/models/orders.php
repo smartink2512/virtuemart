@@ -794,7 +794,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $inputOrder['customer_notified'], $inputOrder['comments']);
 
 			//We need a new invoice, therefore rename the old one.
-			if($old_order_status!=$data->order_status){
+			$inv_os = VmConfig::get('inv_os',array('C'));
+			if(!is_array($inv_os)) $inv_os = array($inv_os);
+			if($old_order_status!=$data->order_status and in_array($data->order_status,$inv_os)){
 				$this->renameInvoice($data->virtuemart_order_id);
 			}
 
