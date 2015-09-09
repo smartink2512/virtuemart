@@ -126,11 +126,12 @@ class VirtueMartViewProductdetails extends VmView {
 					}
 					if (!empty($custom->layout_pos)) {
 						$product->customfieldsSorted[$custom->layout_pos][] = $custom;
-						unset($product->customfields[$k]);
+					} else {
+						$product->customfieldsSorted['normal'][] = $custom;
 					}
+					unset($product->customfields);
 				}
-				$product->customfieldsSorted['normal'] = $product->customfields;
-				unset($product->customfields);
+
 			}
 
 			$product->event = new stdClass();
