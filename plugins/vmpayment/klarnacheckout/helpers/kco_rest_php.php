@@ -24,8 +24,8 @@ defined('_JEXEC') or die('Restricted access');
 class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckout {
 	var $_currentMethod;
 
-	function __construct($method) {
-		$this->_currentMethod = $method;
+	function __construct($method,$country_code_3, $currency_code_3) {
+		parent::__construct($method,$country_code_3, $currency_code_3) ;
 		/*
 		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'kco_rest_php/Klarna'.DS.'Rest'.DS.'Resource.php');
 		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarnacheckout'.DS.'kco_rest_php/Klarna'.DS.'Rest'.DS.'Checkout'.DS.'Order.php');
@@ -242,9 +242,8 @@ class KlarnaCheckoutHelperKCO_rest_php extends KlarnaCheckoutHelperKlarnaCheckou
 	 * Order management
 
 	 */
-	public function getUpdateOrderPaymentAction(&$order, $old_order_status, $payments) {
+	public function getUpdateOrderPaymentAction($new_order_status, $old_order_status, $payments) {
 
-		$new_order_status = $order['details']['BT']->order_status;
 		$lastPayment = $payments[(count($payments)) - 1];
 		$klarna_status = $lastPayment->klarna_status;
 		$actions = array('activate', 'cancelReservation', 'changeReservation', 'creditInvoice', 'Refund');

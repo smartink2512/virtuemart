@@ -22,6 +22,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 class  KlarnaCheckoutHelperKlarnaCheckout {
+	function __construct($method, $country_code_3, $currency_code_3) {
+		$this->_currentMethod = $method;
+		$this->country_code_3 = $country_code_3;
+		$this->currency_code_3 = $currency_code_3;
+	}
+
+
 	function getVatTaxProduct($vatTax) {
 		$countRules = count($vatTax);
 		if ($countRules == 0) {
