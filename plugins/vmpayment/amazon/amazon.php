@@ -60,7 +60,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->_tablepkey = 'id';
 		$this->_tableId = 'id';
 		$varsToPush = $this->getVarsToPush();
-		//$this->setEncryptedFields(array('params'));
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
 		$this->setCryptedFields(array('accessKey', 'secretKey'));
@@ -484,7 +483,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	public function plgVmRetrieveIPN () {
 		// check if table exists
 		$db = JFactory::getDBO();
-		$query = 'SHOW TABLES LIKE "%' . str_replace('#__', $db->getPrefix(), $this->_tablename) . '"';
+		$query = 'SHOW TABLES LIKE "' . str_replace('#__', $db->getPrefix(), $this->_tablename) . '"';
 
 		$db->setQuery($query);
 		if(!$db->loadResult()){
@@ -662,6 +661,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			$getAuthorizationDetails = $getAuthorizationDetailsResult->getAuthorizationDetails();
 
 			$this->updateAuthorizeBillingAddressInOrder($getAuthorizationDetails, $order);
+
+			$amazonState = $amazonHelperAuthorizationDetailsResponse->onResponseUpdateOrderHistory($order);
 
 		}
 	}
