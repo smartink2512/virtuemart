@@ -53,7 +53,7 @@ class VirtueMartModelOrders extends VmModel {
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_pass`="'.$db->escape($orderPass).'" AND `order_number`="'.$db->escape($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
-		if(empty($orderId)) vmdebug('getOrderIdByOrderPass no Order found $orderNumber = '.$orderNumber.' $orderPass = '.$orderPass);
+		if(empty($orderId)) vmdebug('getOrderIdByOrderPass no Order found $orderNumber = '.$orderNumber.' $orderPass = '.$orderPass.' $q = '.$q);
 		return $orderId;
 
 	}
@@ -142,7 +142,7 @@ class VirtueMartModelOrders extends VmModel {
                 $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
                 if(empty($orderId)){
                     echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderPass,$orderNumber,$tries);
+					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderNumber, $orderPass, $tries);
 					$tries++;
 					$sess->set('getOrderDetails.'.$orderNumber,$tries);
                     return false;
@@ -1464,7 +1464,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		 $chrs = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 		 $chrs.= "abcdefghijkmnopqrstuvwxyz";
 		 $chrs.= "123456789";
-		return 'p_'.vmCrypt::getToken(VmConfig::get('randpw',8),$chrs);
+		return 'p_'.vmCrypt::getToken(VmConfig::get('randOrderPw',8),$chrs);
 	 }
 
 	static public function genStdCreateInvoicePass(){
