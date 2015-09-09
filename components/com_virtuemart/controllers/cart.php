@@ -463,9 +463,13 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 		$usermodel = VmModel::getModel('user');
 		$data = $usermodel->getUserAddressList(vRequest::getCmd('userID'), 'BT');
-		foreach($data[0] as $k => $v) {
-			$data[$k] = $v;
+
+		if(isset($data[0])){
+			foreach($data[0] as $k => $v) {
+				$data[$k] = $v;
+			}
 		}
+
 		$cart->BT['email'] = $newUser->email;
 
 		$cart->ST = 0;

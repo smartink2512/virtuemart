@@ -312,7 +312,6 @@ class VirtueMartModelMedia extends VmModel {
 			$data = array_merge($data,$dataI['media']);
 		}
 
-vmdebug('storeMedia',$data);
 		if(empty($data['media_action'])){
 			$data['media_action'] = 'none';
 		}

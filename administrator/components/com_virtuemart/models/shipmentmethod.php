@@ -150,16 +150,16 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 */
 	public function store(&$data) {
 
+		if ($data) {
+			$data = (array)$data;
+		}
+
 		if(!vmAccess::manager('shipmentmethod.edit')){
 			vmWarn('Insufficient permissions to store shipmentmethod');
 			return false;
 		} else if( empty($data['virtuemart_shipment_id']) and !vmAccess::manager('shipmentmethod.create')){
 			vmWarn('Insufficient permission to create shipmentmethod');
 			return false;
-		}
-
-		if ($data) {
-			$data = (array)$data;
 		}
 
 		if(!empty($data['params'])){

@@ -330,6 +330,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($virtuemart_category_id > 0) {
 			$joinCategory = TRUE;
 			$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
+			
 		} else if ($isSite) {
 			if (!VmConfig::get('show_uncat_parent_products',TRUE)) {
 				$joinCategory = TRUE;

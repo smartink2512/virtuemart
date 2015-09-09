@@ -30,9 +30,10 @@ class vmCrypt {
 			// create a random IV to use with CBC encoding
 			$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 			$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-vmdebug('the used key '.$key);
+			//vmdebug('vmCrypt encrypt the used key '.$key);
 			return base64_encode ($iv.mcrypt_encrypt (MCRYPT_RIJNDAEL_256, $key, $string, MCRYPT_MODE_CBC,$iv));
 		} else {
+			vmdebug('vmCrypt no mcrypt_encrypt available');
 			return base64_encode ($string);
 		}
 
@@ -45,7 +46,7 @@ vmdebug('the used key '.$key);
 		$key = self::_getKey ($date);
 		if(!empty($key)){
 			$ciphertext_dec = base64_decode($string);
-			if(function_exists('mcrypt_encrypt')){
+			if(function_exists('mcrypt_decrypt')){
 				$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 				//vmdebug('decrypt $iv_size', $iv_size ,MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 				// retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
@@ -54,15 +55,16 @@ vmdebug('the used key '.$key);
 				$ciphertext_dec = substr($ciphertext_dec, $iv_size);
 				//vmdebug('decrypt $iv_dec',$iv_dec,$ciphertext_dec);
 				if(empty($iv_dec) and empty($ciphertext_dec)){
-					vmdebug('Seems something not encrytped should be decrypted, return default ',$string);
+					//vmdebug('Seems something not encrytped should be decrypted, return default ',$string);
 					return $string;
 				} else {
 					$mcrypt_decrypt = mcrypt_decrypt (MCRYPT_RIJNDAEL_256, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
-
+					//vmdebug('vmCrypt mcrypt_decrypt available '.$mcrypt_decrypt,$ciphertext_dec);
 					return rtrim ($mcrypt_decrypt, "\0");
 				}
 
 			} else {
+				vmdebug('vmCrypt no mcrypt_encrypt available');
 				return $ciphertext_dec;
 			}
 
@@ -132,11 +134,12 @@ vmdebug('the used key '.$key);
 						vmdebug('$unixDate '.$unixDate.' >= $date '.$date);
 						continue;
 					}
-					vmdebug('$unixDate < $date');
-					//$usedKey = $values;
+					vmdebug('$unixDate < $date '.$date);
 					$key = $values['key'];
+					$usedKey = $values;
 				}
 				if(!isset($usedKey['b64']) or $usedKey['b64']){
+					vmdebug('Doing base64_decode ',$usedKey);
 					$key = base64_decode($key);
 				}
 
@@ -171,6 +174,7 @@ vmdebug('the used key '.$key);
 		if (!JFile::exists ($filename)) {
 
 			$key = self::crypto_rand_secure($size);
+
 			vmdebug('create key file ',$size);
 			$date = JFactory::getDate();
 			$today = $date->toUnix();
@@ -263,7 +267,25 @@ vmdebug('the used key '.$key);
 		return $token;
 	}
 
-	static function crypto_rand_secure_cover($range,$byte=false) {
+	static function getFilteredBytes($size = 32, $filter = '"'){
+
+		$key = self::crypto_rand_secure($size);
+		$i = 0;
+
+		if(!is_array($filter)) $filter = array($filter);
+		foreach ($filter as $f){
+			while(strpos($key,$f)!==false){
+				$pos = strpos($key,$f);
+				$r = self::crypto_rand_secure(1);
+				$key[$pos] = $r;
+				if($i++>=($size*2))break;
+			}
+		}
+
+		return $key;
+	}
+
+	static function crypto_rand_secure_cover($range) {
 
 		//$range = $max - $min;
 		//if ($range < 1) return $min; // not so random...
@@ -275,8 +297,6 @@ vmdebug('the used key '.$key);
 
 			$rnd = hexdec( bin2hex( self::crypto_rand_secure( $bytes ) ) );
 			$rnd = $rnd & $filter; // discard irrelevant bits
-
-
 
 		} while( $rnd>=$range );
 		//vmdebug('crypto_rand_secure_cover '.$rnd);

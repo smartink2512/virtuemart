@@ -40,7 +40,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'license'     => array('', 'char'),
 			'committ'   => array(0,'int'),
 			'only_cart' => array(1,'int'),
-            'dev' => array(0,'int'),
+            'dev' => array(1,'int'),
 			'avatax_virtuemart_country_id'  => array(0,'int'),
             'avatax_virtuemart_state_id'  => array(0,'int'),
 			'accrual'		=> array(0,'int'),

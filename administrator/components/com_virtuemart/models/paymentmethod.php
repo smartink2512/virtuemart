@@ -147,16 +147,16 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 */
     public function store(&$data){
 
+		if ($data) {
+			$data = (array)$data;
+		}
+
 		if(!vmAccess::manager('paymentmethod.edit')){
 			vmWarn('Insufficient permissions to store paymentmethod');
 			return false;
 		} else if( empty($data['virtuemart_payment_id']) and !vmAccess::manager('paymentmethod.create')){
 			vmWarn('Insufficient permission to create paymentmethod');
 			return false;
-		}
-
-		if ($data) {
-			$data = (array)$data;
 		}
 
 		if(!empty($data['params'])){

@@ -983,7 +983,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 				self::bindParameterable($this, $this->_xParams, $this->_varsToPushParam);
 			}
 			if($this->_cryptedFields){
-				$this->encryptFields($this);
+				$this->decryptFields($this);
 			}
 			//vmTime('loaded by cache '.$this->_pkey.' '.$this->_slugAutoName.' '.$oid,'vmtableload');
 			return $this;
@@ -1070,7 +1070,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 
 		if($this->_cryptedFields){
-			$this->encryptFields();
+			$this->decryptFields();
 		}
 		//if($this->_translatable) vmTime('loaded '.$this->_langTag.' '.$mainTable.' '.$oid ,'vmtableload');
 		$this->_ltmp = false;
@@ -1081,15 +1081,22 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		return $this->_loaded;
 	}
 
+	/**
+	 * Typo, had wrong name
+	 */
 	function encryptFields(){
+		$this->decryptFields();
+	}
+
+	function decryptFields(){
 		if(!class_exists('vmCrypt')){
 			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 		}
-		if(isset($this->modified_on)){
+		if(isset($this->modified_on) and $this->modified_on!='0000-00-00 00:00:00'){
 			$date = JFactory::getDate($this->modified_on);
 			$date = $date->toUnix();
-		} else if(isset($this->created_on)){
-			$date = JFactory::getDate($this->modified_on);
+		} else if(isset($this->created_on) and $this->created_on!='0000-00-00 00:00:00'){
+			$date = JFactory::getDate($this->created_on);
 			$date = $date->toUnix();
 		} else {
 			$date = 0;
@@ -1098,8 +1105,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		foreach($this->_cryptedFields as $field){
 			if(isset($this->$field)){
 				$this->$field = vmCrypt::decrypt($this->$field, $date);
+				vmdebug('Field '.$field.' encrypted = '.$this->$field);
 			}
-
 		}
 	}
 

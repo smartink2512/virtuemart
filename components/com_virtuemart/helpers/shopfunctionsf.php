@@ -381,10 +381,12 @@ class shopFunctionsF {
 				foreach ($customfields as $k => $custom) {
 					if (!empty($custom->layout_pos)  ) {
 						$customfieldsSorted[$custom->layout_pos][] = $custom;
-						unset($customfields[$k]);
+					} else {
+						$customfieldsSorted['normal'][] = $custom;
 					}
+					unset($customfields[$k]);
 				}
-				$customfieldsSorted['normal'] = $customfields;
+
 				$product->customfieldsSorted = $customfieldsSorted;
 				unset($product->customfields);
 				$products[$i] = $product;
