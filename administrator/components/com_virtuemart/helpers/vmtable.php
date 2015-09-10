@@ -1105,7 +1105,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		foreach($this->_cryptedFields as $field){
 			if(isset($this->$field)){
 				$this->$field = vmCrypt::decrypt($this->$field, $date);
-				vmdebug('Field '.$field.' encrypted = '.$this->$field);
+				vmdebug($this->_tbl.' Field '.$field.' encrypted = '.$this->$field);
 			}
 		}
 	}

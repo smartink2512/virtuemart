@@ -956,10 +956,10 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$_psType = ucfirst ($this->_psType);
 
-		if(isset($c[$this->_psType][$method->$idN])){
+		/*if(isset($c[$this->_psType][$method->$idN])){
 			$cart_prices = array_merge($cart_prices,$c[$this->_psType][$method->$idN]);
 			return $cart_prices['salesPrice' . $_psType];
-		}
+		}*/
 
 		if (!class_exists ('calculationHelper')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
@@ -1073,7 +1073,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
-		$c[$this->_psType][$method->$idN] = $cart_prices;
+		//$c[$this->_psType][$method->$idN] =& $cart_prices;
 		//if($_psType='Shipment')vmTrace('setCartPrices '.$cart_prices['salesPrice' . $_psType]);
 		return $cart_prices['salesPrice' . $_psType];
 

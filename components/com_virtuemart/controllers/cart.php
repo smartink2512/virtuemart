@@ -181,8 +181,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		if(!empty($coupon_code)){
 			$msg = $cart->setCouponCode($coupon_code);
 			if($msg) vmInfo($msg);
+			$cart->setOutOfCheckout();
 		}
-
 
 		if ($html) {
 			$this->display();
@@ -342,20 +342,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 */
 	public function setcoupon() {
 
-		/* Get the coupon_code of the cart */
-		$coupon_code = vRequest::getString('coupon_code', '');
-
-		$cart = VirtueMartCart::getCart();
-		if ($cart) {
-			$this->couponCode = '';
-
-			if (!empty($coupon_code)) {
-				$app = JFactory::getApplication();
-				$msg = $cart->setCouponCode($coupon_code);
-				$cart->setOutOfCheckout();
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE),$msg);
-			}
-		}
+		$this->updatecart();
 	}
 
 

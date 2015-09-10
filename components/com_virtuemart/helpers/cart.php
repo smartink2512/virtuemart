@@ -103,7 +103,7 @@ class VirtueMartCart {
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public static function getCart($forceNew=false, $options = array(), $cartData=NULL) {
+	public static function &getCart($forceNew=false, $options = array(), $cartData=NULL) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')) require(VMPATH_LIBS . DS . 'joomla' . DS . 'database' . DS . 'table.php');
@@ -211,6 +211,7 @@ class VirtueMartCart {
 			if(count(self::$_cart->cartProductsData) >0 and empty(self::$_cart->vendorId)){
 				self::$_cart->vendorId = 1;
 			}
+			vmdebug('Created new cart');
 		}
 
 		return self::$_cart;
@@ -766,13 +767,16 @@ class VirtueMartCart {
 		if(empty($coupon_code) or $coupon_code == vmText::_('COM_VIRTUEMART_COUPON_CODE_ENTER')) {
 			$this->couponCode = '';
 			return false;
+		} else if($this->couponCode==$coupon_code) {
+			return;
 		}
 
 		if (!class_exists('CouponHelper')) {
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'coupon.php');
 		}
 
-		$this->getCartPrices(true);
+		$this->prepareCartData();
+		//$this->getCartPrices();
 
 		if(!in_array($coupon_code,$this->_triesValidateCoupon)){
 			$this->_triesValidateCoupon[] = $coupon_code;
@@ -793,6 +797,8 @@ class VirtueMartCart {
 			return $msg;
 		}
 		$this->couponCode = $coupon_code;
+		//$this->getCartPrices(true);
+		$this->prepareCartData(true);
 		$this->setCartIntoSession(true);
 		return vmText::_('COM_VIRTUEMART_CART_COUPON_VALID');
 	}
@@ -1511,6 +1517,7 @@ class VirtueMartCart {
 				$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
 			}
 			$this->_calculated = true;
+			//$this->setCartIntoSession();
 		}
 		return $this->cartPrices;
 	}

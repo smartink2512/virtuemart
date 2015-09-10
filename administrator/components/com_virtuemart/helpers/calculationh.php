@@ -66,7 +66,7 @@ class calculationHelper {
 	private function __construct() {
 		$this->_db = JFactory::getDBO();
 		$this->_app = JFactory::getApplication();
-
+		$this->_cart =& VirtuemartCart::getCart();
 		//We store in UTC and use here of course also UTC
 		$jnow = JFactory::getDate();
 		$this->_now = $jnow->toSQL();
@@ -102,7 +102,7 @@ class calculationHelper {
 	static public function getInstance() {
 		if (!is_object(self::$_instance)) {
 			self::$_instance = new calculationHelper();
-
+			vmdebug('Created new Calculator Instance');
 		} else {
 			//We store in UTC and use here of course also UTC
 			$jnow = JFactory::getDate();
@@ -622,13 +622,14 @@ class calculationHelper {
 	public function getCheckoutPrices(&$cart) {
 
 		//vmdebug('in function getCheckoutPrices in function getCheckoutPrices');
-		$this->_cart = &$cart;
+		//$this->_cart = &$cart;
 		$this->inCart = TRUE;
 		//$pricesPerId = array();
 
 		$resultWithTax = 0.0;
 		$resultWithOutTax = 0.0;
 		$this->_cart->cartData['VatTax'] = array();
+		$this->_cart->cartPrices = array();
 		$this->_cart->cartPrices['basePrice'] = 0;
 		$this->_cart->cartPrices['basePriceWithTax'] = 0;
 		$this->_cart->cartPrices['discountedPriceWithoutTax'] = 0;
@@ -668,6 +669,7 @@ class calculationHelper {
 			//vmdebug('getCheckoutPrices ',$productPrice['salesPrice']);
 			$selectedPrice = $this->_cart->products[$cprdkey]->selectedPrice;
 			$this->_cart->products[$cprdkey]->allPrices[$selectedPrice] = array_merge($this->_cart->products[$cprdkey]->allPrices[$selectedPrice],$productPrice);
+
 			$this->_cart->cartPrices[$cprdkey] = $productPrice; //$this->_cart->products[$cprdkey]->allPrices[$selectedPrice];
 
 			$this->_amountCart += $this->_cart->products[$cprdkey]->quantity;
@@ -879,11 +881,12 @@ class calculationHelper {
 		$cartdiscountAfterTax = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['DATaxRulesBill'], $toDisc));
 		$this->_cart->cartPrices['withTax'] = $toDisc + $cartdiscountAfterTax;
 
+		vmSetStartTime('methods');
 		if(!$shipmentCalculated){
 			$this->calculateShipmentPrice();
 		}
-
 		$this->calculatePaymentPrice();
+		vmTime('Time consumed for shipment/payment plugins','methods');
 
 		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cart->cartPrices['billSub'] = $this->_cart->cartPrices['basePrice'] + $this->_cart->cartPrices['shipmentValue'] + $this->_cart->cartPrices['paymentValue'];
 		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cart->cartPrices['billDiscountAmount'] = $this->_cart->cartPrices['discountAmount'] + $cartdiscountBeforeTax + $cartdiscountAfterTax;// + $this->_cart->cartPrices['shipmentValue'] + $this->_cart->cartPrices['paymentValue'] ;
@@ -916,6 +919,7 @@ class calculationHelper {
 						}
 					}
 					if (isset($vattax['calc_value']) && isset($vattax['percentage'])) {
+						if(!isset($vattax['DBTax'])) $vattax['DBTax'] = 0.0;
 						$vattax['discountTaxAmount'] = round(($totalDiscountToTax * $vattax['percentage'] + $vattax['DBTax']) / (100 + $vattax['calc_value']) * $vattax['calc_value'],$this->_currencyDisplay->_priceConfig['taxAmount'][1]);
 					}
 					if (isset($vattax['discountTaxAmount'])) $this->_cart->cartPrices['billTaxAmount'] += $vattax['discountTaxAmount'];
@@ -956,6 +960,7 @@ class calculationHelper {
 			if (!isset($vattax['calc_name'])) $vattax['calc_name'] = $this->getCalcRuleData($vattax['virtuemart_calc_id'])->calc_name;
 			if (!isset($vattax['calc_value'])) $vattax['calc_value'] = $this->getCalcRuleData($vattax['virtuemart_calc_id'])->calc_value;
 		}
+
 		foreach ($this->_cart->cartData['taxRulesBill'] as &$rule) {
 			$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'] = isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result']) ? $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'] : 0;
 			$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'] += round($this->_cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff'],$this->_currencyDisplay->_priceConfig['salesPrice'][1]);
@@ -963,6 +968,8 @@ class calculationHelper {
 			if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_name'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_name'] = $rule['calc_name'];
 			if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_value'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_value'] = $rule['calc_value'];
 		}
+
+
 	}
 
 
@@ -1003,7 +1010,7 @@ class calculationHelper {
 		if (!($_data = CouponHelper::getCouponDetails($_code))) {
 			return; // TODO give some error here
 		}
-		vmdebug('my  coupon data',$_data);
+
 		$_value_is_total = ($_data->percent_or_total == 'total');
 
 		$this->_cart->cartData['couponCode'] = $_code;

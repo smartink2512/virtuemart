@@ -93,7 +93,8 @@ JHtml::_ ('behavior.formvalidation');
 
 <?php
 
-vmJsApi::addJScript('updDynamicListeners',"
+if(VmConfig::get('oncheckout_ajax',false)){
+	vmJsApi::addJScript('updDynamicListeners',"
 if (typeof Virtuemart.containerSelector === 'undefined') Virtuemart.containerSelector = '#cart-view';
 if (typeof Virtuemart.container === 'undefined') Virtuemart.container = jQuery(Virtuemart.containerSelector);
 
@@ -101,6 +102,8 @@ jQuery(document).ready(function() {
 	if (Virtuemart.container)
 		Virtuemart.updDynFormListeners();
 }); ");
+}
+
 
 vmJsApi::addJScript('vm.checkoutFormSubmit',"
 Virtuemart.bCheckoutButton = function(e) {
