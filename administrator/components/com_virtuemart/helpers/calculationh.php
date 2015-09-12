@@ -66,7 +66,7 @@ class calculationHelper {
 	private function __construct() {
 		$this->_db = JFactory::getDBO();
 		$this->_app = JFactory::getApplication();
-		$this->_cart =& VirtuemartCart::getCart();
+		//$this->_cart =& VirtuemartCart::getCart();
 		//We store in UTC and use here of course also UTC
 		$jnow = JFactory::getDate();
 		$this->_now = $jnow->toSQL();
@@ -622,7 +622,7 @@ class calculationHelper {
 	public function getCheckoutPrices(&$cart) {
 
 		//vmdebug('in function getCheckoutPrices in function getCheckoutPrices');
-		//$this->_cart = &$cart;
+		$this->_cart =& $cart;
 		$this->inCart = TRUE;
 		//$pricesPerId = array();
 
