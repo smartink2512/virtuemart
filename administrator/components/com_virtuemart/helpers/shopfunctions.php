@@ -614,7 +614,7 @@ class ShopFunctions {
 						$categoryName = $category->category_name;
 						if(VmConfig::get('full_catname_tree',0)) {
 							if (!empty($categoryParentName)) {
-								$categoryName =$categoryParentName.', '.$category->category_name;
+								$categoryName =$categoryParentName.' | '.$category->category_name;
 							}
 						} else {
 							$categoryTree .= str_repeat (' - ', ($level - 1));
