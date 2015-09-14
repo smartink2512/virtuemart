@@ -92,7 +92,24 @@ $i = 0;
 						<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST')?></th>
 						<th style="text-align: left !important;"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK')?></th>
 						<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK')?></th>
-						<?php foreach($customs as $custom){ ?>
+						<?php
+						$js='';
+						$disabled='';
+						foreach($customs as $custom){
+							$attrib = $custom->customfield_value;
+
+							if ($attrib=='product_name') {
+								$js='
+									jQuery(document).ready(function($) {
+										jQuery(\'input[class~="productname"]\').on(\'keyup change\', function(event) {
+											id= "#"+jQuery(this).attr("id")+"1";
+											jQuery(id).val(jQuery(this).val());
+										});
+									});
+									';
+								vmJsApi::addJScript('vm.childProductName', $js);
+							}
+							?>
 							<th style="text-align: left !important;">
 								<?php echo vmText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',vmText::_('COM_VIRTUEMART_'.strtoupper($custom->customfield_value)))?>
 							</th>
@@ -107,7 +124,7 @@ $i = 0;
 								<?php echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($child->product_name),'target' => '_blank')) ?>
 								<!--input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][slug]" id="child<?php echo $child->virtuemart_product_id ?>slug" value="<?php echo $child->slug ?>" /-->
 							</td>
-							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo $child->product_name ?>" /></td>
+							<td><input type="text" class="inputbox productname" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo $child->product_name ?>" /></td>
 							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_gtin]" id="child<?php echo $child->virtuemart_product_id ?>product_gtin" size="32" maxlength="64"value="<?php echo $child->product_gtin ?>" /></td>
 
 							<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->allPrices[$child->selectedPrice]['product_price'] ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->allPrices[$child->selectedPrice]['virtuemart_product_price_id'] ?>"  ></td>
@@ -115,15 +132,22 @@ $i = 0;
 							<td><?php echo $child->product_ordered ?></td>
 							<?php foreach($customs as $custom){
 								$attrib = $custom->customfield_value;
+
 								if(isset($child->$attrib)){
 									$childAttrib = $child->$attrib;
 								} else {
 									//vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$child);
 									$childAttrib = $child->product_name;
 								}
+								$disabled = '';
+								$id = '';
+								if($attrib == 'product_name'){
+									$disabled='disabled="disabled"';
+									$id = ' id="child'.$child->virtuemart_product_id.'product_name1"';
+								}
 								//vmdebug(' $attrib '.$attrib,$child,$childAttrib);
 								?>
-								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][<?php echo $attrib ?>]" size="20" value="<?php echo $childAttrib ?>" /></td>
+								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][<?php echo $attrib ?>]" size="20" value="<?php echo $childAttrib ?>" <?php echo $disabled.$id ?>/></td>
 							<?php
 							}
 							?>

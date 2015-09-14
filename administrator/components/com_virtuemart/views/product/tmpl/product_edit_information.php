@@ -108,11 +108,10 @@ $i=0;
 				<?php echo vmText::_('COM_VIRTUEMART_CATEGORY_S') ?>
 			</td>
 			<td>
-				<select class="inputbox" id="categories" name="categories[]" multiple="multiple"  data-placeholder="<?php echo vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS')  ?>" size="10">
+				<select class="inputbox width100" id="categories" name="categories[]" multiple="multiple"  data-placeholder="<?php echo vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS')  ?>" size="100">
 					<option value=""><?php echo vmText::_('COM_VIRTUEMART_UNCATEGORIZED') ?></option>
 					<?php echo $this->category_tree; ?>
-				</select>
-			</td>
+				</select>			</td>
 			<?php
 			// It is important to have all product information in the form, since we do not preload the parent
 			// I place the ordering here, maybe we make it editable later.

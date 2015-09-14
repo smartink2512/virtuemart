@@ -185,7 +185,7 @@ class ShopFunctions {
 		$manufacturerModel = VmModel::getModel ('manufacturer');
 		$manufacturers = $manufacturerModel->getManufacturers (FALSE, TRUE);
 		//$attrs = array('style'=>"width: 210px");
-
+		$attrs['class'] = 'width100';
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
 			if($name=='virtuemart_manufacturer_id')	$name.= '[]';
@@ -574,7 +574,7 @@ class ShopFunctions {
 	 * @param int 		$level 		Internally used for recursion
 	 * @return string 	$category_tree HTML: Category tree list
 	 */
-	static public function categoryListTreeLoop ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array(), $isSite, $vendorId, $vmlang) {
+	static public function categoryListTreeLoop ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array(), $isSite, $vendorId, $vmlang,$categoryParentName='') {
 
 		self::$counter++;
 
@@ -611,14 +611,20 @@ class ShopFunctions {
 						//IE7 suffers from a bug, which makes disabled option fields selectable
 					} else {
 						$categoryTree .= '<option ' . $selected . ' ' . $disabled . ' value="' . $childId . '">';
-						$categoryTree .= str_repeat (' - ', ($level - 1));
-
-						$categoryTree .= $category->category_name . '</option>';
+						$categoryName = $category->category_name;
+						if(VmConfig::get('full_catname_tree',0)) {
+							if (!empty($categoryParentName)) {
+								$categoryName =$categoryParentName.', '.$category->category_name;
+							}
+						} else {
+							$categoryTree .= str_repeat (' - ', ($level - 1));
+						}
+						$categoryTree .= $categoryName . '</option>';
 					}
 				}
 
 				if ($categoryModel->hasChildren ($childId)) {
-					self::categoryListTreeLoop ($selectedCategories, $childId, $level, $disabledFields,$isSite, $vendorId, $vmlang);
+					self::categoryListTreeLoop ($selectedCategories, $childId, $level, $disabledFields,$isSite, $vendorId, $vmlang, $category->category_name);
 				}
 
 			}

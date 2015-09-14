@@ -84,6 +84,6 @@ if (count($this->orderlist) == 0) {
 	?>
 	</table>
 </div>
-	</div>
-</div>
 <?php } ?>
+
+
