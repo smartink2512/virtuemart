@@ -69,12 +69,13 @@ class VirtuemartControllerPlugin extends JControllerLegacy {
 				// Change the suggested filename.
 				JResponse::setHeader ('Content-Disposition', 'attachment;filename="' . $type . '.json"');
 				echo json_encode ($render);
+				jExit();
 			}
 			else {
 				echo $render;
+				jExit();
 			}
 		} else {
-			jExit();
 		}
 
 	}
