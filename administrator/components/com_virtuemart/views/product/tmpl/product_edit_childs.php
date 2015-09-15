@@ -133,11 +133,11 @@ $i = 0;
 							<?php foreach($customs as $custom){
 								$attrib = $custom->customfield_value;
 
-								if(isset($child->$attrib)){
+								if(property_exists($child,$attrib)){
 									$childAttrib = $child->$attrib;
 								} else {
-									//vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$child);
-									$childAttrib = $child->product_name;
+									vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$child);
+									$childAttrib = '';//$child->product_name;
 								}
 								$disabled = '';
 								$id = '';

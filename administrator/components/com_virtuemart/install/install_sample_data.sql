@@ -71,7 +71,7 @@ INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_pare
  (16, 9, 3, 'X', 0, 0, 0, '','Editor','Show extra conditions','Testimonial', 'Use the texteditor to display extra text at predefined positions','', 1, 1),
  (17, 0, 0, 'D', 1, 0, 0, 'addtocart','Date','Show date','Next delivery', '','', 1, 1),
  (18, 0, 0, 'T', 0, 0, 0, 'addtocart','Time','Show time','Workshop at ', '','', 1, 1),
- (20, 0, 0, 'A', 0, 0, 0, 'ontop','Generic Child Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
+ (20, 0, 0, 'A', 1, 0, 0, 'ontop','Generic Child Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
  (21, 0, 0, 'C', 1, 0, 0, 'addtocart','Multi Variant','Also with tooltip','', 'Use admin lists for faster product editing','usecanonical="1"|showlabels="0"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1);
 
 INSERT IGNORE INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `published`) VALUES

@@ -60,6 +60,7 @@ class VirtueMartCart {
 
 	var $lists = null;
 	var $order_number=null; // added to solve emptying cart for payment notification
+	var $order_pass=null;
 	var $virtuemart_order_id = false;
 	var $customer_number=null;
 	var $cartAdv = false;

@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 if ($show_product_list) {
 	?>
-	<div id="hiddencontainer" style=" display: none; ">
+	<div id="hiddencontainer" class="hiddencontainer" style=" display: none; ">
 		<div class="vmcontainer">
 			<div class="product_row">
 				<span class="quantity"></span>&nbsp;x&nbsp;<span class="product_name"></span>

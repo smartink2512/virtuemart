@@ -617,8 +617,14 @@ class VirtueMartCustomFieldRenderer {
 							}
 						}
 						elseif (($productCustom->field_type == 'A')) {
+							if(!property_exists($product,$productCustom->customfield_value)){
+								$productDB = VmModel::getModel('product')->getProduct($product->virtuemart_product_id);
+								if($productDB){
+									$attr = $productCustom->customfield_value;
+									$product->$attr = $productDB->$attr;
+								}
+							}
 							$value = vmText::_( $product->{$productCustom->customfield_value} );
-							//vmdebug('Customfield A',$productCustom,$productCustom->customfield_value);
 						}
 						elseif (($productCustom->field_type == 'C')) {
 
