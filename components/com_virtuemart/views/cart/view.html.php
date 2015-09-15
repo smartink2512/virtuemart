@@ -506,6 +506,12 @@ class VirtueMartViewCart extends VmView {
 	}
 
 	static public function addCheckRequiredJs(){
+
+		$updF = '';
+		if( VmConfig::get('oncheckout_ajax',false)) {
+			$updF = 'Virtuemart.updForm();';
+		}
+
 		$j='jQuery(document).ready(function(){
 
     jQuery(".output-shipto").find(":radio").change(function(){
@@ -533,7 +539,7 @@ class VirtueMartViewCart extends VmView {
         	var form = jQuery("#checkoutFormSubmit");
         	form.attr("task","checkout");
 
-			Virtuemart.updForm();
+			'.$updF.'
 			form.submit();
         	//jQuery(this).vm2front("stopVmLoading");
         }

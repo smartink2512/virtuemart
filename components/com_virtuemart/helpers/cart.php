@@ -938,12 +938,6 @@ class VirtueMartCart {
 		//This prevents that people checkout twice
 		$this->setCartIntoSession(false,true);
 
-		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
-		if (count($this->cartProductsData) ===0 and $this->_redirect) {
-			$this->_inCheckOut = false;
-			return $this->redirecter('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
-		}
-
 		// Check if a minimun purchase value is set
 		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
 			$this->_inCheckOut = false;
@@ -1070,6 +1064,12 @@ class VirtueMartCart {
 			//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
 			//the advantage, that plugins can easily deal with it.
 			//$this->BT = array_merge((array)$this->BT,(array)$this->cartfields);
+		}
+
+		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
+		if (count($this->cartProductsData) == 0) {
+			$this->_inCheckOut = false;
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart', vmText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		}
 
 		//Show cart and checkout data overview
