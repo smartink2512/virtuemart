@@ -315,7 +315,7 @@ class VirtueMartModelMedia extends VmModel {
 		if(empty($data['media_action'])){
 			$data['media_action'] = 'none';
 		}
-
+		vmdebug('storeMedia',$data);
 		//the active media id is not empty, so there should be something done with it
 		if( (!empty($data['active_media_id']) and isset($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
 
@@ -345,8 +345,6 @@ class VirtueMartModelMedia extends VmModel {
 			}
 
 		}
-
-		if(empty($data['virtuemart_media_id'])) return false;
 
 		if(!empty($data['mediaordering'])){
 			asort($data['mediaordering']);

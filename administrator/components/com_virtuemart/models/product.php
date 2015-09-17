@@ -1802,7 +1802,7 @@ class VirtueMartModelProduct extends VmModel {
 				if (!$isChild){
 					//$pricesToStore['basePrice'] = $data['mprices']['basePrice'][$k];
 					$pricesToStore['product_override_price'] = $data['mprices']['product_override_price'][$k];
-					$pricesToStore['override'] = (int)$data['mprices']['override'][$k];
+					$pricesToStore['override'] = isset($data['mprices']['override'][$k])?(int)$data['mprices']['override'][$k]:0;
 					$pricesToStore['virtuemart_shoppergroup_id'] = (int)$data['mprices']['virtuemart_shoppergroup_id'][$k];
 					$pricesToStore['product_tax_id'] = (int)$data['mprices']['product_tax_id'][$k];
 					$pricesToStore['product_discount_id'] = (int)$data['mprices']['product_discount_id'][$k];

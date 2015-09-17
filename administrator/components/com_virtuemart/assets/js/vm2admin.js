@@ -292,7 +292,7 @@
             });
 
             container.delegate(".edit-24-grey", "click", function () {
-
+alert('Muhuhu');
                 var data = jQuery(this).parent().find("input").val();
                 jQuery.getJSON("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id=" + data,
                     function (datas, textStatus) {
@@ -302,7 +302,7 @@
                             jQuery("#file_title").html(datas.file_title);
 							var lang = datas.file_lang.split(',');
 							jQuery("#active_languages").val(lang).trigger("liszt:updated");
-                            if (datas.published == 1) jQuery("#adminForm [name=media_published]").attr('checked', true);
+                            if (datas.published == 1) jQuery("#adminForm [name='media[media_published]']").attr('checked', true);
                             else jQuery("#adminForm [name=media_published]").attr('checked', false);
                             if (datas.file_is_downloadable == 0) {
                                 jQuery("#media_rolesfile_is_displayable").attr('checked', true);
@@ -312,13 +312,13 @@
                                 //jQuery("#adminForm [name=media_roles]").filter("value='file_is_displayable'").attr('checked', false);
                                 jQuery("#media_rolesfile_is_downloadable").attr('checked', true);
                             }
-                            jQuery("#adminForm [name=file_title]").val(datas.file_title);
-                            jQuery("#adminForm [name=file_description]").val(datas.file_description);
-                            jQuery("#adminForm [name=file_meta]").val(datas.file_meta);
-							jQuery("#adminForm [name=file_class]").val(datas.file_class);
-                            jQuery("#adminForm [name=file_url]").val(datas.file_url);
-                            jQuery("#adminForm [name=file_url_thumb]").val(datas.file_url_thumb);
-                            jQuery("[name=active_media_id]").val(datas.virtuemart_media_id);
+                            jQuery("#adminForm [name='media[file_title]']").val(datas.file_title);
+                            jQuery("#adminForm [name='media[file_description]']").val(datas.file_description);
+                            jQuery("#adminForm [name='media[file_meta]']").val(datas.file_meta);
+							jQuery("#adminForm [name='media[file_class]']").val(datas.file_class);
+                            jQuery("#adminForm [name='media[file_url]']").val(datas.file_url);
+                            jQuery("#adminForm [name='media[file_url_thumb]']").val(datas.file_url_thumb);
+                            jQuery("[name='media[active_media_id]']").val(datas.virtuemart_media_id);
                             if (typeof datas.file_url_thumb !== "undefined") {
                                 jQuery("#vm_thumb_image").attr("src", datas.file_root + datas.file_url_thumb);
                             }

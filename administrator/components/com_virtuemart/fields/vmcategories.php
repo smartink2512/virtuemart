@@ -32,7 +32,6 @@ class JFormFieldVmcategories extends JFormField {
 
 	var $type = 'vmcategories';
 
-	// This line is required to keep Joomla! 1.6/1.7 from complaining
 	protected function getInput() {
 
 		VmConfig::loadConfig();
@@ -40,7 +39,7 @@ class JFormFieldVmcategories extends JFormField {
 
 		if(!is_array($this->value))$this->value = array($this->value);
 		$categorylist = ShopFunctions::categoryListTree($this->value);
-
+vmdebug('JFormFieldVmcategories',$categorylist);
 		$name = $this->name;
 		if($this->multiple){
 			$name = $this->name;
