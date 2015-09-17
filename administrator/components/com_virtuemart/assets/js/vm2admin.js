@@ -292,7 +292,6 @@
             });
 
             container.delegate(".edit-24-grey", "click", function () {
-alert('Muhuhu');
                 var data = jQuery(this).parent().find("input").val();
                 jQuery.getJSON("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id=" + data,
                     function (datas, textStatus) {
