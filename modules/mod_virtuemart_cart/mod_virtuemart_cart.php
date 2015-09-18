@@ -34,6 +34,6 @@ vmJsApi::cssSite();
 $moduleclass_sfx 	= $params->get('moduleclass_sfx', '');
 $show_price 		= (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
 $show_product_list 	= (bool)$params->get( 'show_product_list', 1 ); // Display the Product Price?
-require(JModuleHelper::getLayoutPath('mod_virtuemart_cart_multi'));
+require(JModuleHelper::getLayoutPath('mod_virtuemart_cart'));
 echo vmJsApi::writeJS();
  ?>
