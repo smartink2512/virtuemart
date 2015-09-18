@@ -1925,7 +1925,6 @@ class VirtueMartModelProduct extends VmModel {
 
 			// Process the images
 			$mediaModel = VmModel::getModel ('Media');
-
 			$mediaModel->storeMedia ($data, 'product');
 
 		}

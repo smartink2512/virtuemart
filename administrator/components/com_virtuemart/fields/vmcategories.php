@@ -39,7 +39,7 @@ class JFormFieldVmcategories extends JFormField {
 
 		if(!is_array($this->value))$this->value = array($this->value);
 		$categorylist = ShopFunctions::categoryListTree($this->value);
-vmdebug('JFormFieldVmcategories',$categorylist);
+
 		$name = $this->name;
 		if($this->multiple){
 			$name = $this->name;

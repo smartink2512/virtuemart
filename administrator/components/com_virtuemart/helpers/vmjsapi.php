@@ -288,7 +288,7 @@ class vmJsApi{
 
 		if(JVM_VERSION<3){
 			if(VmConfig::get('google_jquery',true)){
-				self::addJScript('jquery.min','//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',false,false, false, '');
+				self::addJScript('jquery.min','//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js',false,false, false, '');
 				self::addJScript( 'jquery-migrate.min',false,false,false,'');
 			} else {
 				self::addJScript( 'jquery.min',false,false,false,'');
@@ -438,11 +438,11 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 				$box = "
 //<![CDATA[
 	jQuery(document).ready(function($) {
-		$('div".$container."').hide();
+		jQuery('div".$container."').hide();
 		var con = $('div".$container."').html();
-		$('a".$activator."').click(function(event) {
+		jQuery('a".$activator."').click(function(event) {
 			event.preventDefault();
-			$.fancybox ({ div: '".$container."', content: con });
+			jQuery.fancybox ({ div: '".$container."', content: con });
 		});
 	});
 
@@ -454,10 +454,10 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 				$box = "
 //<![CDATA[
 	jQuery(document).ready(function($) {
-		$('div".$container."').hide();
-		$('a".$activator."').click(function(event) {
+		jQuery('div".$container."').hide();
+		jQuery('a".$activator."').click(function(event) {
 			event.preventDefault();
-			$.facebox( { div: '".$container."' }, 'my-groovy-style');
+			jQuery.facebox( { div: '".$container."' }, 'my-groovy-style');
 		});
 	});
 
