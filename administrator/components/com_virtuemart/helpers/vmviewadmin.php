@@ -324,7 +324,7 @@ class VmViewAdmin extends JViewLegacy {
 										var tmce_ver=window.tinyMCE.majorVersion;
 									}
 									if (tmce_ver>="4") {
-										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execCommand("mceSetContent", false,val);
+										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.get(key).execCommand("mceSetContent", false,val);
 										else if (data.structure !== "empty") cible.val(val);
 									} else {
 										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
