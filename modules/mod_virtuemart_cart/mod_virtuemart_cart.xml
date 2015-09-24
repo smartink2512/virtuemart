@@ -10,7 +10,8 @@
     <description>MOD_VIRTUEMART_CART_DESC</description>
     <files>
         <filename module="mod_virtuemart_cart">mod_virtuemart_cart.php</filename>
-        <filename>tmpl/default.php</filename>
+        <folder>assets</folder>
+        <folder>tmpl</folder>
         <folder>language</folder>
     </files>
 

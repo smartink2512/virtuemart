@@ -259,6 +259,15 @@ Virtuemart.containerSelector = '.productdetails-view';";
 
 vmJsApi::addJScript('ajaxContent',$j);
 
+$j = "jQuery(document).ready(function($) {
+	jQuery('body').vm2front('stopVmLoading');
+	jQuery('[data-dynamic-update=\"1\"]').on('click change' , function() {
+		jQuery(this).vm2front('startVmLoading');
+	});
+	});";
+
+vmJsApi::addJScript('vmPreloader',$j);
+
 echo vmJsApi::writeJS();
 
 if ($this->product->prices['salesPrice'] > 0) {

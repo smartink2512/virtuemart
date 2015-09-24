@@ -243,32 +243,35 @@ class VirtueMartCustomFieldRenderer {
 					$selectedFound = false;
 
 					$parentStock = 0;
-					foreach ($uncatChildren as $k => $child) {
-						if(!isset($child[$customfield->customfield_value])){
-							vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
-						} else {
+					if($uncatChildren){
+						foreach ($uncatChildren as $k => $child) {
+							if(!isset($child[$customfield->customfield_value])){
+								vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
+							} else {
 
-							$productChild = $productModel->getProduct((int)$child['virtuemart_product_id'],false);
-							if(!$productChild) continue;
-							$available = $productChild->product_in_stock - $productChild->product_ordered;
-							if(VmConfig::get('stockhandle','none')=='disableit_children' and $available <= 0){
-								continue;
+								$productChild = $productModel->getProduct((int)$child['virtuemart_product_id'],false);
+								if(!$productChild) continue;
+								$available = $productChild->product_in_stock - $productChild->product_ordered;
+								if(VmConfig::get('stockhandle','none')=='disableit_children' and $available <= 0){
+									continue;
+								}
+								$parentStock += $available;
+								$priceStr = '';
+								if($customfield->wPrice){
+									//$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
+									$productPrices = $calculator->getProductPrices ($productChild);
+									$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
+								}
+								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value].$priceStr);
+								if($selected==$child['virtuemart_product_id']){
+									$selectedFound = true;
+									vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
+								}
+								//vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
 							}
-							$parentStock += $available;
-							$priceStr = '';
-							if($customfield->wPrice){
-								//$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
-								$productPrices = $calculator->getProductPrices ($productChild);
-								$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
-							}
-							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value].$priceStr);
-							if($selected==$child['virtuemart_product_id']){
-								$selectedFound = true;
-								vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
-							}
-							//vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
 						}
 					}
+
 					if(!$selectedFound){
 						$pos = array_search($customfield->virtuemart_product_id, $product->allIds);
 						if(isset($product->allIds[$pos-1])){

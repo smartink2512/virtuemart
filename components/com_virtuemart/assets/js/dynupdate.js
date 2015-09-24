@@ -19,7 +19,7 @@ jQuery(function($) {
 
         if(Virtuemart.isUpdatingContent) return false;
         Virtuemart.isUpdatingContent = true;
-        urlSuf='tmpl=component&format=raw';
+        urlSuf='tmpl=component&format=html';
         var glue = '&';
         if(url.indexOf('&') == -1 && url.indexOf('?') == -1){
 			glue = '?';
@@ -35,7 +35,6 @@ jQuery(function($) {
 					Virtuemart.container.html(el.html());
                     Virtuemart.updateCartListener();
                     Virtuemart.updateDynamicUpdateListeners();
-                    //Virtuemart.updateCartListener();
 
 					if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners();
 					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();

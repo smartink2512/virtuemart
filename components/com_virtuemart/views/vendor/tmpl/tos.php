@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	<?php
 	}
-?>	</h1></div>
+?>	</h1>
 
 
 	<?php // vendor Description
@@ -49,3 +49,4 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->linkcontact ?>
 
 	<br class="clear" />
+</div>

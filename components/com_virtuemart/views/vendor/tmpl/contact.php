@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<div class="vendor-details-view">
+<div class="vendor-details-view vendor-details-view-contact">
 	<h1><?php echo $this->vendor->vendor_store_name;
 	if (!empty($this->vendor->images[0])) { ?>
 		<div class="vendor-image">

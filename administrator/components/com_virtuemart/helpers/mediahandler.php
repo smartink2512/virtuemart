@@ -940,14 +940,14 @@ class VmMediaHandler {
 
 			source: medialink,
 			select: function(event, ui){
-				$('#ImagesContainer').append(ui.item.label);
+				jQuery('#ImagesContainer').append(ui.item.label);
 				//$(this).autocomplete( 'option' , 'source' , '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 
 			},
 			minLength:1,
 			html: true
 		});
-		 $('.js-pages').click(function (e) {
+		 jQuery('.js-pages').click(function (e) {
 			e.preventDefault();
 			if (searchMedia.val() =='') {
 				searchMedia.val(' ');
@@ -958,20 +958,20 @@ class VmMediaHandler {
 			searchMedia.autocomplete( 'option' , 'source' , medialink+'&start='+media.start );
 			searchMedia.autocomplete( 'search');
 		});
-		$('#ImagesContainer').sortable({
+		jQuery('#ImagesContainer').sortable({
 			update: function(event, ui) {
 				$(this).find('.ordering').each(function(index,element) {
 					$(element).val(index);
-					//console.log(index+' ');
-
 				});
 
 			}
 		});
-		$('#upload').change( function (){
-				if ($('#media_action0').is(':checked') ) $('#media_actionupload').attr('checked', true);
-			});
-
+		jQuery('[name=\"upload\"]').on ('change', function (){
+			var rr = jQuery(this).parent().find(\"[name='media[media_action]']:checked\");
+			if (typeof jQuery(rr[0]).val() != 'undefined' && jQuery(rr[0]).val() == 0) {
+				var rs = jQuery(this).parent().find(\"[id='media[media_action]upload']\").attr('checked', true);
+			}
+		});
 
 	});
 	";

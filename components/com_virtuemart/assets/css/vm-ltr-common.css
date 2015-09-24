@@ -326,34 +326,26 @@ textarea.virtuemart{
   padding: 5px 5px 4px;
 }
 
-.vm-button-correct,.vm-button-correct:hover,.vm-button-correct:visited{
-  font-size: 19px;
-  font-weight: 700;
-  display: inline-block;
-  text-decoration: none;
-  color: #777;
-}
-
 .vm-button-correct,.vm-button-correct:link,.vm-button-correct:visited{
+  display: inline-block;
+	font-size: 19px;
+	font-weight: 700;
+  text-decoration: none;
+  text-align: center;
   background: #0077b3;
-  background-position: 0 -160px;
   color: #fff;
-  border: solid #00669a 1px;
+  border: 1px solid #00669a;
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   cursor: pointer;
-  text-align: center;
   letter-spacing: 1px;
-  display: inline-block;
   text-decoration: none;
   padding: 6px 12px 3px;
 }
 
 .vm-button-correct:hover{
-  background-position: 0 -200px;
   color: #f2f2f2;
-  text-decoration: none;
 }
 
 .width1{
