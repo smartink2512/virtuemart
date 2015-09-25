@@ -624,7 +624,7 @@ class ShopFunctions {
 				}
 
 				if ($categoryModel->hasChildren ($childId)) {
-					self::categoryListTreeLoop ($selectedCategories, $childId, $level, $disabledFields,$isSite, $vendorId, $vmlang, $category->category_name);
+					self::categoryListTreeLoop ($selectedCategories, $childId, $level, $disabledFields,$isSite, $vendorId, $vmlang, $categoryName);
 				}
 
 			}
