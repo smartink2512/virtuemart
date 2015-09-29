@@ -23,40 +23,21 @@ if($ask_recommened_loaded) return '';
 
 $product = $viewData['product'];
 
-if(VmConfig::get('usefancy',1)){
-	
-	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
-	vmJsApi::css('jquery.fancybox-1.3.4');
-	$Modal ="
-			$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
-              event.preventDefault();
-		      $.fancybox({
-		        href: $(this).attr('href'),
-		        type: 'iframe',
-		        height: 550
-		        });
-		      });
-			";
-	
-} else {
-	
-	vmJsApi::addJScript( 'facebox', false );
-	vmJsApi::css( 'facebox' );
-    $Modal ="
-    		$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
-		      event.preventDefault();
-		      $.facebox({
-		        iframe: $(this).attr('href'),
-		        rev: 'iframe|550|550'
-		        });
-		      });
-    		"; 
-}
+vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
+vmJsApi::css('jquery.fancybox-1.3.4');
+$Modal ="
+		JQuery('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
+		  event.preventDefault();
+		  JQuery.fancybox({
+			href: JQuery(this).attr('href'),
+			type: 'iframe',
+			height: 550
+			});
+		  });
+		";
 
 vmJsApi::addJScript('popups',"
-//<![CDATA[
 	jQuery(document).ready(function($) {
 		".$Modal."
 	});
-//]]>
 ");

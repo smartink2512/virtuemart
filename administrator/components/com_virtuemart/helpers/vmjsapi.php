@@ -350,21 +350,10 @@ class vmJsApi{
 
 		if(VmConfig::get('addtocart_popup',1)){
 			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
-			if(VmConfig::get('usefancy',1)){
-				$jsVars .= "usefancy = true;";
-				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
-				vmJsApi::css('jquery.fancybox-1.3.4');
-			} else {//This is just there for the backward compatibility
-				$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
-				$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
-				$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
-				$jsVars .= "closeImage = '".$closeimage."' ; \n";
-				//This is necessary though and should not be removed without rethinking the whole construction
+			$jsVars .= "usefancy = true;";
+			vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
+			vmJsApi::css('jquery.fancybox-1.3.4');
 
-				$jsVars .= "usefancy = false;";
-				vmJsApi::addJScript( 'facebox' );
-				vmJsApi::css( 'facebox' );
-			}
 		}
 
 		self::addJScript('jsVars',$jsVars);
@@ -417,6 +406,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		VmJsApi::jSite();
 		self::addJScript('vm.countryState'.$prefix,'
 //<![CDATA[
+		vmSiteurl = "'.JURI::root().'";'."\n".'
 		jQuery( function($) {
 			$("#'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});
@@ -432,7 +422,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 	static function popup($container,$activator){
 		static $jspopup;
 		if (!$jspopup) {
-			if(VmConfig::get('usefancy',1)){
+
 				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false);
 				vmJsApi::css('jquery.fancybox-1.3.4');
 				$box = "
@@ -448,27 +438,12 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 
 //]]>
 ";
-			} else {
-				vmJsApi::addJScript ('facebox',false,false);
-				vmJsApi::css ('facebox');
-				$box = "
-//<![CDATA[
-	jQuery(document).ready(function($) {
-		jQuery('div".$container."').hide();
-		jQuery('a".$activator."').click(function(event) {
-			event.preventDefault();
-			jQuery.facebox( { div: '".$container."' }, 'my-groovy-style');
-		});
-	});
 
-//]]>
-";
-			}
 
 			$document = JFactory::getDocument ();
 			self::addJScript('box',$box);
 			//$document->addScriptDeclaration ($box);
-			$document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
+			//$document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 			$jspopup = true;
 		}

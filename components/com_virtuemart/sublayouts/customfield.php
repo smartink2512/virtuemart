@@ -296,7 +296,7 @@ class VirtueMartCustomFieldRenderer {
 
 					if($customfield->parentOrderable==0){
 						if($product->virtuemart_product_id==$customfield->virtuemart_product_id){
-							$product->orderable = FALSE;
+							$product->orderable = false;
 						} else {
 							$product->product_in_stock = $parentStock;
 						}
@@ -614,7 +614,13 @@ class VirtueMartCustomFieldRenderer {
 						elseif (($productCustom->field_type == 'S')) {
 
 							if($productCustom->is_list and $productCustom->is_input){
-								$value = vmText::_($params);
+								if($productCustom->is_list==2){
+									$value = vmText::_($productCustom->customfield_value);
+								} else {
+									$value = vmText::_($params);
+								}
+
+								vmdebug('renderCustomfieldsCart',$productCustom);
 							} else {
 								$value = vmText::_($productCustom->customfield_value);
 							}

@@ -2257,7 +2257,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		switch ($_check_act) {
 			case 'ADD':
 			case 'CRE': // Create
-				$_sql .= "ADD $_col $_type ";
+				$_sql .= 'ADD `'.$_col.'` '.$_type.' ';
 				break;
 			case 'DRO': // Drop
 			case 'DEL': // Delete
@@ -2273,14 +2273,14 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 				// NOT NULL not allowed for deleted columns
 				//$t_type = str_ireplace(' NOT ', '', $_type);
-			$_sql .= "CHANGE $_col $_col2 $_type ";
+			$_sql .= 'CHANGE `'.$_col.'` `'.$_col2.'` '.$_type.' ';
 				//was: $_sql .= "DROP $_col ";
 				break;
 			case 'MOD': // Modify
 			case 'UPD': // Update
 			case 'CHA': // Change
 				if (empty($col2)) $_col2 = $_col; // change type only
-				$_sql .= "CHANGE $_col $_col2 $_type ";
+				$_sql .= 'CHANGE `'.$_col.'` `'.$_col2.'` '.$_type.' ';
 				break;
 		}
 

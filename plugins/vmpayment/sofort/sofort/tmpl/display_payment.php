@@ -17,22 +17,14 @@ defined ('_JEXEC') or die();
  */
 if (!empty($viewData['payment_logo_link'] )) {
 
-	if(VmConfig::get('usefancy',1)){
-		vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack');
-		vmJsApi::css('jquery.fancybox-1.3.4');
-		$box = "$.fancybox({
-				href: '" .$viewData['payment_logo_link']  . "',
-				type: 'iframe',
-				height: '550'
-			});";
-	} else {
-		vmJsApi::addJScript( 'facebox' );
-		vmJsApi::css( 'facebox' );
-		$box = "$.facebox({
-				iframe: '" .$viewData['payment_logo_link']  . "',
-				rev: 'iframe|550|550'
-			});";
-	}
+	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::css('jquery.fancybox-1.3.4');
+	$box = "jQuery.fancybox({
+			href: '" .$viewData['payment_logo_link']  . "',
+			type: 'iframe',
+			height: '550'
+		});";
+
 	$document = JFactory::getDocument();
 	$document->addScriptDeclaration("
 //<![CDATA[

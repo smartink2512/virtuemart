@@ -106,7 +106,7 @@ foreach ($viewData['products'] as $type => $products ) {
 			</div>
 			<?php //echo $rowsHeight[$row]['customs'] ?>
 			<div class="vm3pr-<?php echo $rowsHeight[$row]['customfields'] ?>"> <?php
-				echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'rowHeights'=>$rowsHeight[$row])); ?>
+				echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$product,'rowHeights'=>$rowsHeight[$row], 'position' => array('ontop', 'addtocart'))); ?>
 			</div>
 
 			<div class="vm-details-button">

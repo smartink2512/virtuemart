@@ -46,7 +46,7 @@ if (typeof Virtuemart === "undefined")
 			});
 
 			if (byAjax.length >0) {
-				jQuery.getJSON('index.php?option=com_virtuemart&view=state&format=json&virtuemart_country_id=' + byAjax,
+				jQuery.getJSON(window.vmSiteurl + 'index.php?option=com_virtuemart&view=state&format=json&virtuemart_country_id=' + byAjax,
 						function(result){
 
 						var virtuemart_state_id = jQuery('#'+prefix+'virtuemart_state_id');

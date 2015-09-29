@@ -251,9 +251,11 @@ class VirtueMartModelProduct extends VmModel {
 
 		//$isSite = $app->isSite ();
 		$isSite = true;
-		if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::getVendorId()) ){
+		if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::manager('product')) ){
 			$isSite = false;
 		}
+
+		$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
 
 		if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
@@ -277,10 +279,9 @@ class VirtueMartModelProduct extends VmModel {
 					//if (strpos ($searchField, '`') !== FALSE){
 						//$searchField = '`l`.'.$searchField;
 					$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
-					if($app->isSite() and VmConfig::$defaultLang!=VmConfig::$vmlang and !VmConfig::get('prodOnlyWLang',false)){
+					if($langFback){
 						$filter_search[] =  '`ld`.'.$searchField . ' LIKE ' . $keywords_plural;
 						if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-
 							$filter_search[] =  '`ljd`.'.$searchField . ' LIKE ' . $keywords_plural;
 						}
 					}
@@ -294,7 +295,6 @@ class VirtueMartModelProduct extends VmModel {
 				} else {
 					$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
 					$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
-
 
 					//$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
 				}
@@ -524,9 +524,8 @@ class VirtueMartModelProduct extends VmModel {
 		$joinedTables = array();
 
 		//This option switches between showing products without the selected language or only products with language.
-		if($app->isSite() and !VmConfig::get('prodOnlyWLang',false)){
+		if( $app->isSite() ){	//and !VmConfig::get('prodOnlyWLang',false)){
 			//Maybe we have to join the language to order by product name, description, etc,...
-
 			$productLangFields = array('product_s_desc','product_desc','product_name','metadesc','metakey','slug');
 			foreach($productLangFields as $field){
 				if(strpos($orderBy,$field,6)!==FALSE){
@@ -544,7 +543,7 @@ class VirtueMartModelProduct extends VmModel {
 		$selectLang = '';
 		if ($joinLang or count($langFields)>0 ) {
 
-			if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			if($langFback){
 
 				$this->useLback = true;
 				$this->useJLback = false;

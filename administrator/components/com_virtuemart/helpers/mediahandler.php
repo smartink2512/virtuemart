@@ -331,6 +331,10 @@ class VmMediaHandler {
 	 */
 	public function determineFoldersToTest(){
 
+		if(VmAccess::manager('core')){
+			$r = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
+			$this->addFoldersToTest($r);
+		}
 		$file_path = str_replace('/',DS,$this->file_url_folder);
 		if($this->file_is_forSale){
 			$this->addFoldersToTest($file_path);
@@ -364,6 +368,7 @@ class VmMediaHandler {
 
 		$style = 'text-align:left;margin-left:20px;';
 		$result = '<div class="vmquote" style="'.$style.'">';
+
 		foreach( $this->_foldersToTest as $dir ) {
 			$result .= $dir . ' :: ';
 			$result .= is_writable( $dir )

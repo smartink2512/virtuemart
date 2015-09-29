@@ -72,10 +72,7 @@ Virtuemart.cartEffect = function(form) {
 
 	var dat = form.serialize();
 
-	if(usefancy){
-
-        jQuery.fancybox.showActivity();
-	}
+    jQuery.fancybox.showActivity();
 
     jQuery.ajax({
         type: "POST",
@@ -94,26 +91,19 @@ Virtuemart.cartEffect = function(form) {
 		} else {
 			var txt = "<H4>"+vmCartError+"</H4>"+datas.msg;
 		}
-		if(usefancy){
-            jQuery.fancybox({
-					"titlePosition" : 	"inside",
-					"transitionIn"	:	"fade",
-					"transitionOut"	:	"fade",
-					"changeFade"    :   "fast",
-					"type"			:	"html",
-					"autoCenter"    :   true,
-					"closeBtn"      :   false,
-					"closeClick"    :   false,
-					"content"       :   txt
-				}
-			);
-		} else {
-            jQuery.facebox.settings.closeImage = closeImage;
-            jQuery.facebox.settings.loadingImage = loadingImage;
-			//$.facebox.settings.faceboxHtml = faceboxHtml;
-            jQuery.facebox({ text: txt }, 'my-groovy-style');
-		}
 
+        jQuery.fancybox({
+                "titlePosition" : 	"inside",
+                "transitionIn"	:	"fade",
+                "transitionOut"	:	"fade",
+                "changeFade"    :   "fast",
+                "type"			:	"html",
+                "autoCenter"    :   true,
+                "closeBtn"      :   false,
+                "closeClick"    :   false,
+                "content"       :   txt
+            }
+        );
 
 		Virtuemart.productUpdate();
 	});
