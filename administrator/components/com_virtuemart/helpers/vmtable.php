@@ -2244,13 +2244,11 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			if (!$res) {
 				vmdebug('_modifyColumn Command was ' . $_check_act . ' column does not exist, changed to ADD');
 				$_check_act = 'ADD';
-
 			}
 		} else {
 			if ($res) {
 				vmdebug('_modifyColumn Command was ' . $_check_act . ' column already exists, changed to MOD');
 				$_check_act = 'UPD';
-
 			}
 		}
 
@@ -2262,7 +2260,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			case 'DRO': // Drop
 			case 'DEL': // Delete
 				//stAn, i strongly do not recommend to delete customer information only because a field was deleted
-				if (empty($_col2)){
+				if (empty($_col2)) {
+
 					$_col2 = $_col . '_DELETED_' . time();
 					vmInfo('Be aware the column of table '.$this->_tbl.' is not deleted, only renamed to '.$_col2);
 				}

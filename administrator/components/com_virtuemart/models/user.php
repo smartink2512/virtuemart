@@ -1156,16 +1156,17 @@ class VirtueMartModelUser extends VmModel {
 		if ($search) {
 			$where = ' WHERE ';
 			$db = JFactory::getDbo();
-			$searchArray = array('ju.name','username','email','shopper_group_name');	// removed ,'usertype' should be handled by extra dropdown
+			$searchArray = array('ju.name','ju.username','ju.email','shopper_group_name');	// removed ,'usertype' should be handled by extra dropdown
+			$userFieldsValid = array();
 			if($tableToUse!='juser'){
 
 				if(!class_exists('TableUserinfos'))require(VMPATH_ADMIN.DS.'tables'.DS.'userinfos.php');
 
 				$userfieldTable = new TableUserinfos($db);
 				$userfieldFields = get_object_vars($userfieldTable);
-				$userFieldSearchArray = array('company','first_name','last_name');
+				$userFieldSearchArray = array('company','first_name','last_name','address_1','zip','city','phone_1');
 				//We must validate if the userfields actually exists, they could be removed
-				$userFieldsValid = array();
+
 				foreach($userFieldSearchArray as $ufield){
 					if(array_key_exists($ufield,$userfieldFields)){
 						$userFieldsValid[] = $ufield;
@@ -1194,7 +1195,7 @@ class VirtueMartModelUser extends VmModel {
 				$select .= ' , ui.name as uiname ';
 			}
 
-			foreach($searchArray as $ufield){
+			foreach($userFieldsValid as $ufield){
 				$select .= ' , '.$ufield;
 			}
 		}

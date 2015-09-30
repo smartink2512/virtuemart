@@ -94,8 +94,7 @@ class VirtueMartModelMedia extends VmModel {
 					$id = $virtuemart_media_id;
 				}
 				if(!empty($id)){
-					if (!array_key_exists ($id, $_medias)) {
-
+					if (!isset($_medias[$id])) {
 						$data->load((int)$id);
 						if($app->isSite()){
 							if($data->published==0){

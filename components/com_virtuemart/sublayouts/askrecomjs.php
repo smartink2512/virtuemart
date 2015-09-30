@@ -26,10 +26,10 @@ $product = $viewData['product'];
 vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
 vmJsApi::css('jquery.fancybox-1.3.4');
 $Modal ="
-		JQuery('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
+		jQuery('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
 		  event.preventDefault();
-		  JQuery.fancybox({
-			href: JQuery(this).attr('href'),
+		  jQuery.fancybox({
+			href: jQuery(this).attr('href'),
 			type: 'iframe',
 			height: 550
 			});

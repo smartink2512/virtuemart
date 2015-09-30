@@ -314,7 +314,7 @@ class Migrator extends VmModel{
 			if($media->file_type == $type){
 				//Somehow we must use here the right char encoding, so that it works below
 				// in line 320
-				$knownNames[] = $media->file_url;
+				$knownNames[$media->file_url] = 1;
 			}
 		}
 
@@ -357,7 +357,7 @@ class Migrator extends VmModel{
 
 							//We port all type of media, regardless the extension
 							if($filetype == 'file'){
-								if(!in_array($relUrlName, $knownNames)){
+								if(!isset($knownNames[$relUrlName])){
 									$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
 								}
 							}else {
