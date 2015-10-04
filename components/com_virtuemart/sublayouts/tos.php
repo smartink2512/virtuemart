@@ -32,7 +32,7 @@ if($app->isSite()){
 if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 echo VmHtml::checkbox ($_prefix.$field['name'], $tos, 1, 0, 'class="terms-of-service required"', 'tos');
 
-if (VmConfig::get ('oncheckout_show_legal_info', 1) and $app->isSite()) {
+if ( $app->isSite() ) {
 ?>
 <div class="terms-of-service">
 	<label for="tos">

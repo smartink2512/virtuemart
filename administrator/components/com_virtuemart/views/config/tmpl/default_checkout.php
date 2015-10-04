@@ -66,7 +66,7 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO','oncheckout_show_legal_info',VmConfig::get('oncheckout_show_legal_info',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER','oncheckout_show_register',VmConfig::get('oncheckout_show_register',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED','oncheckout_only_registered',VmConfig::get('oncheckout_only_registered',0));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES','oncheckout_show_images',VmConfig::get('oncheckout_show_images',0));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES','oncheckout_show_images',VmConfig::get('oncheckout_show_images',1));
 
 
 		$attrlist = 'class="inputbox" multiple="multiple" ';

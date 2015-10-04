@@ -42,7 +42,7 @@ class Migrator extends VmModel{
 			@ini_set( 'max_execution_time', 60 );
 		}
 
-		$this->maxScriptTime = VmConfig::getExecutionTime()*0.80-1;	//Lets use 30% of the execution time as reserve to store the progress
+		$this->maxScriptTime = VmConfig::getExecutionTime()*0.95-3;	//Lets use 3 seconds of the execution time as reserve to store the progress
 
 		$jrmemory_limit= vRequest::getInt('memory_limit');
 		if(!empty($jrmemory_limit)){

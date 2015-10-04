@@ -154,6 +154,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		foreach($rows as $fields){
 			$store = '';
+			if(empty($fields['customfield_params'])) continue;
+
 			$json = @json_decode($fields['customfield_params']);
 
 			if($json){
@@ -161,7 +163,10 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 				$vars = get_object_vars($json);
 
 				foreach($vars as $key=>$value){
-					$store .= $key . '=' . vmJsApi::safe_json_encode($value) . '|';
+					if(!empty($key)){
+						$store .= $key . '=' . vmJsApi::safe_json_encode($value) . '|';
+					}
+
 				}
 
 				if(!empty($store)){

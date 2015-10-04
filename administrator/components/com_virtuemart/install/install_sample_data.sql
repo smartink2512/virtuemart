@@ -62,17 +62,21 @@ INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_pare
  (01, 0, 0, 'R', 0, 0, 0, 'related_products','COM_VIRTUEMART_RELATED_PRODUCTS','COM_VIRTUEMART_RELATED_PRODUCTS_TIP','COM_VIRTUEMART_RELATED_PRODUCTS_DESC', 'related_products','wPrice="1"|wImage="1"|wDescr="1"|', 1, 1),
  (02, 0, 0, 'Z', 0, 0, 0, 'related_categories','COM_VIRTUEMART_RELATED_CATEGORIES','COM_VIRTUEMART_RELATED_CATEGORIES_TIP','COM_VIRTUEMART_RELATED_CATEGORIES_DESC', 'related_categories','wImage="1"|wDescr="1"|', 1, 1),
  (09, 0, 0, 'G', 0, 0, 0, '','Group','Group','set of cart attribute', '','', 1, 1),
- (10, 0, 0, 'S', 0, 0, 0, '','String','Also with tooltip','Property', 'Display characteristic product attributes in a standarized format','', 1, 1),
- (11, 9, 1, 'S', 1, 0, 0, '','String, attribute','Use values seperated by ; to directly select the value in the backend','Property', '','', 1, 1),
- (12, 0, 0, 'S', 1, 0, 1, '','String, list','Use values seperated by ; to directly select the value in the backend','Property', 'Cotton;Wool;Flax;Nylon;Polyester','', 1, 1),
+ (10, 0, 0, 'S', 0, 0, 0, '','String','Also with tooltip','', 'Display characteristic product attributes in a standarized format','', 1, 1),
+ (11, 9, 1, 'S', 1, 0, 0, '','String, attribute','Use values seperated by ; to directly select the value in the backend','', '','', 1, 1),
+ (12, 0, 0, 'S', 1, 0, 1, '','String, list','Use values seperated by ; to directly select the value in the backend','', 'Cotton;Wool;Flax;Nylon;Polyester','', 1, 1),
  (13, 0, 0, 'S', 1, 1, 0, 'addtocart','String, is input','Select a variant','', 'Combine Customfields of the same type to create flexible selections (dropdowns, radio lists)','', 1, 1),
  (14, 0, 0, 'S', 1, 1, 2, 'addtocart','String, admin list','Select a variant','', 'Cotton;Wool;Flax;Nylon;Polyester','', 1, 1),
  (15, 9, 0, 'M', 1, 0, 1, '','Media, list','Also with tooltip','extra Image', '20;21;22;23;24','', 1, 1),
  (16, 9, 3, 'X', 0, 0, 0, '','Editor','Show extra conditions','Testimonial', 'Use the texteditor to display extra text at predefined positions','', 1, 1),
  (17, 0, 0, 'D', 1, 0, 0, 'addtocart','Date','Show date','Next delivery', '','', 1, 1),
  (18, 0, 0, 'T', 0, 0, 0, 'addtocart','Time','Show time','Workshop at ', '','', 1, 1),
- (20, 0, 0, 'A', 1, 0, 0, 'ontop','Generic Child Variant','Also with tooltip','Property', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
- (21, 0, 0, 'C', 1, 0, 0, 'addtocart','Multi Variant','Also with tooltip','', 'Use admin lists for faster product editing','usecanonical="1"|showlabels="0"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1);
+ (20, 0, 0, 'A', 1, 0, 0, 'ontop','Generic Child Variant','Also with tooltip','', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
+ (21, 0, 0, 'C', 1, 0, 0, 'addtocart','Multi Variant','Also with tooltip','', 'Use admin lists for faster product editing','usecanonical="1"|showlabels="0"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1),
+ (22, 0, 0, 'M', 1, 1, 0, 'addtocart','Media, paid','Also with tooltip','paid extra Image', '','width="0"|height="0"|addEmpty="1"|selectType="1"|', 1, 1),
+ (23, 0, 0, 'S', 1, 1, 0, 'addtocart','String, is input alt','Select a variant','', 'Combine Customfields of the same type to create flexible selections (dropdowns, radio lists)','', 1, 1),
+ (24, 0, 0, 'P', 0, 0, 0, '','Property','','', '','', 0, 1);
+
 
 INSERT IGNORE INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `published`) VALUES
   (1, 1);
@@ -228,7 +232,11 @@ INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield
 	(203, 207, 16, 0, 202, '<p>Advanced PATTERN content <br />&gt;&gt; This customfields are assigned in parent product.<br /><br />Enable overrides in plugin customfields and set your new content.<br />You can add customfields additional to inherited.</p>', NULL, 2, ''),
 	(204, 207, 10, 0, 201, 'Override for string 2', NULL, 1, ''),
 	(205, 207, 10, 200, 0, 'Disables string 1 of parent', NULL, 0, ''),
-	(206, 207, 15, 0, 0, '1', NULL, 3, 'width="0"|height="0"|');
+	(206, 207, 15, 0, 0, '21', NULL, 3, ''),
+	(276, 207, 13, 0, 0, 'A Variant', 0.00001, 10, ''),
+	(277, 207, 13, 0, 0, 'B Variant', 5.00, 11, ''),
+	(278, 207, 13, 0, 0, 'C Variant', 10.00, 12, ''),
+	(279, 207, 13, 0, 0, 'D Variant', -5.00, 13, '');
 
 INSERT IGNORE INTO `#__virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`, `ordering`) VALUES
 	(203, 21, 1),
@@ -257,23 +265,28 @@ INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `product_p
 	(172, 170, 'GCCV', 0, 12, NULL, 1, 0),
 	(173, 172, 'GCV-A', 0, 13, NULL, 1, 1),
 	(174, 172, 'GCV-B', 0, 14, NULL, 1, 2),
-	(175, 172, 'GCV-C', 0, 15, NULL, 1, 3);
+	(175, 172, 'GCV-C', 0, 15, NULL, 1, 3),
+	(176, 170, 'CSIV', 0, 11, NULL, 1, 0);
 
 INSERT IGNORE INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `slug`, `product_s_desc`, `product_desc`) VALUES
   (170, 'PATTERN Product variants', 'pattern-product-variants', '', ''),
-	(171, 'Customfield string &#38; image variants', 'customfield-string-image-variants', '', ''),
-	(172, 'Generic child variant', 'generic-child-cart-variant', 'Default product generic child variant and cart variant.', '<p>Showcase to present the combination of product price, child variant price, and cart variant price:<br /><br />Child variant -&gt; full overrideable genuine product</p>\r\n<p>Cart variant -&gt; easy to use variant, add price, no stock control</p>'),
+	(171, 'Customfield string', 'customfield-string', '', ''),
+	(172, 'Generic child variant', 'generic-child-cart-variant', 'Default product generic child variant and cart variant.', '<p>Showcase to present the combination of product price, child variant price, and cart variant price:<br /><br />Child variant -&gt; full overrideable genuine product, stock control per variant</p>\r\n<p>Cart variant -&gt; easy to use variant, add price, no stock control</p>'),
 	(173, 'generic child variant A', 'generic-child-variant-a', '', ''),
 	(174, 'generic child variant B', 'generic-child-variant-b', 'Default product generic child variant and cart variant.', '<p>This product is a showcase to present the combination of product price, child variant price, and cart variant price.<br /><br />Cart variant -&gt; easy to use, add price (+0.50€) no variant stock control</p>\r\n<p><br />Child variant -&gt; full overrideable genuine product as variant</p>'),
-	(175, 'generic child variant C', 'generic-child-variant-c', 'Default product generic child variant and cart variant.', '<p>This product is a showcase to present the combination of product price, child variant price, and cart variant price.<br /><br />Cart variant -&gt; easy to use, add price (+0.50€) no variant stock control</p>\r\n<p><br />Child variant -&gt; full overrideable genuine product as variant</p>');
+	(175, 'generic child variant C', 'generic-child-variant-c', 'Default product generic child variant and cart variant.', '<p>This product is a showcase to present the combination of product price, child variant price, and cart variant price.<br /><br />Cart variant -&gt; easy to use, add price (+0.50€) no variant stock control</p>\r\n<p><br />Child variant -&gt; full overrideable genuine product as variant</p>'),
+	(176, 'Customfield image variant', 'customfield-image-variant', 'Product image variant', '<p>This product is a showcase for customfield image variant as shopper selection</p>');
 
 INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_product_id`, `virtuemart_category_id`, `ordering`) VALUES
 	(170, 11, 0),
 	(171, 11, 1),
-	(172, 11, 2);
+	(172, 11, 3),
+	(176, 11, 10);
 
 INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`, `virtuemart_custom_id`, `disabler`, `override`, `customfield_value`, `customfield_price`, `ordering`, `customfield_params`) VALUES
-	(171, 69, 0, 0, '6', 1.000000, 3, 'width="0"|height="0"|'),
+  (171, 10, 0, 0, 'My customfield string content', NULL, 0, ''),
+  (171, 12, 0, 0, 'My customfield cart string content', NULL, 0, ''),
+  (171, 69, 0, 0, '6', 1.000000, 3, 'width="0"|height="0"|'),
 	(171, 69, 0, 0, '7', 3.000000, 5, 'width="0"|height="0"|'),
 	(171, 69, 0, 0, '8', 2.000000, 4, 'width="0"|height="0"|'),
 	(171, 14, 0, 0, 'Cotton', NULL, 1, ''),
@@ -281,7 +294,9 @@ INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`
 	(171, 14, 0, 0, 'Flax', 7.000000, 3, ''),
 	(171, 13, 0, 0, 'Advanced', NULL, 0, ''),
 	(171, 13, 0, 0, 'Expert', 4.900000, 3, ''),
-	(172, 20, 0, 0, 'product_sku', NULL, 0, 'withParent="0"|parentOrderable="0"|wPrice=0|');
+	(172, 20, 0, 0, 'product_sku', NULL, 0, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
+	(176, 22, 0, 0, '21', 10.00, 2, ''),
+	(176, 22, 0, 0, '22', 5.00, 1, '');
 
 INSERT IGNORE INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_product_id`, `rates`, `ratingcount`, `rating`, `published`) VALUES
   (170, 170, 5, 1, 4.6, 1),
@@ -357,21 +372,13 @@ INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield
 	(406, 153, 16, 0, 0, '<p>Wear pattern data field using customfield editor.</p>', NULL, 6, ''),
 	(407, 154, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 0, ''),
 	(408, 154, 10, 0, 0, 'Machine-washable', NULL, 3, ''),
-	(409, 154, 14, 0, 0, 'Cotton', NULL, 2, ''),
-	(410, 154, 14, 0, 0, 'Wool', NULL, 2, ''),
-	(411, 154, 14, 0, 0, 'Flax', NULL, 2, ''),
-	(412, 154, 20, 0, 0, 'product_sku', NULL, 1, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
-	(413, 154, 13, 0, 0, 'Silver Buttons', 0.00001, 1, ''),
+  (412, 154, 20, 0, 0, 'product_sku', NULL, 1, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
+	(413, 154, 13, 0, 0, 'Silver Buttons', 0.00001, 2, ''),
 	(414, 154, 13, 0, 0, 'Gold Buttons', 10, 2, ''),
 	(415, 155, 20, 0, 0, 'product_sku', NULL, 0, 'withParent="0"|parentOrderable="0"|wPrice=0|'),
 	(416, 155, 11, 0, 0, 'Stiched genuine VM logo, color: black', NULL, 1, ''),
 	(417, 155, 12, 0, 0, 'Flax', NULL, 2, ''),
 	(418, 155, 10, 0, 0, 'Machine-washable', NULL, 3, ''),
-  (419, 155, 13, 0, 0, 'Machine made', 0.00001, 1, ''),
-	(420, 155, 13, 0, 0, 'Hand made ', 10.00, 2, ''),
-	(421, 155, 14, 0, 0, '10D', 0.00001, 1, ''),
-	(422, 155, 14, 0, 0, '20D', 10.00, 2, ''),
-	(423, 155, 14, 0, 0, '30D', 16.00, 3, ''),
 	(425, 156, 14, 0, 404, 'Wool', 7.99, 5, ''),
 	(426, 156, 14, 0, 0, 'Flax', 12.99, 6, ''),
 	(427, 156, 14, 0, 0, 'Nylon', 0.0, 3, ''),
@@ -385,7 +392,7 @@ INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield
 	(435, 158, 14, 0, 0, 'Cotton', 0.0, 3, ''),
 	(436, 158, 14, 0, 0, 'Wool', 35.83333, 3, ''),
 	(437, 158, 14, 0, 0, 'Flax', 15.83333, 3, ''),
-	(438, 158, 16, 0, 404, '<p>Wear pattern data field using customfield editor, Skirt "Knock-Rock."</p>', NULL, 4, ''),
+  (438, 158, 16, 0, 404, '<p>Wear pattern data field using customfield editor, Skirt "Knock-Rock."</p>', NULL, 4, ''),
 	(439, 159, 10, 0, 0, '', NULL, 1, ''),
 	(440, 159, 16, 0, 0, '<p>Example text for customfield editor position default.</p>', NULL, 2, ''),
 	(441, 159, 11, 0, 0, '', NULL, 0, ''),
@@ -405,7 +412,31 @@ INSERT IGNORE INTO `#__virtuemart_product_customfields` (`virtuemart_customfield
   (455, 162, 14, 0, 0, 'Waxed', 10.00, 2, ''),
   (456, 162, 13, 0, 0, 'Size: M', NULL, 2, ''),
   (457, 162, 13, 0, 0, 'Size: L', NULL, 1, ''),
-  (458, 162, 13, 0, 0, 'Size: XL', NULL, 3, '');
+  (458, 162, 13, 0, 0, 'Size: XL', NULL, 3, ''),
+  (473, 195, 14, 0, 0, 'Cotton', NULL, 2, ''),
+	(474, 195, 14, 0, 0, 'Wool', NULL, 2, ''),
+	(475, 195, 14, 0, 0, 'Flax', NULL, 2, ''),
+	(477, 195, 13, 0, 413, 'Silver Buttons', 0.00001, 2, ''),
+	(478, 195, 13, 0, 414, 'Gold Buttons', 10.00, 2, ''),
+	(479, 196, 14, 0, 0, 'Cotton', NULL, 2, ''),
+	(480, 196, 14, 0, 0, 'Wool', NULL, 2, ''),
+	(481, 196, 14, 0, 0, 'Flax', NULL, 2, ''),
+	(483, 196, 13, 0, 413, 'Silver Buttons', 0.00001, 2, ''),
+	(484, 196, 13, 0, 414, 'Gold Buttons', 14.00, 2, ''),
+ 	(459, 197, 23, 0, 0, '5D', 0.00001, 2, ''),
+ 	(460, 197, 23, 0, 0, '10D', 5.00, 2, ''),
+ 	(461, 197, 13, 0, 0, 'Industry made', 0.00001, 5, ''),
+ 	(462, 197, 13, 0, 0, 'Hand made', 20.00, 6, ''),
+ 	(463, 198, 23, 0, 0, '20D', 5.00, 2, ''),
+ 	(464, 198, 23, 0, 0, '30D', 10.00, 3, ''),
+ 	(465, 198, 23, 0, 0, '40D', 15.00, 4, ''),
+ 	(466, 198, 13, 0, 0, 'Industry made', 0.00001, 5, ''),
+ 	(467, 198, 13, 0, 0, 'Hand made', 20.00, 6, ''),
+  (468, 199, 23, 0, 0, '30D', 10.00, 2, ''),
+ 	(469, 199, 23, 0, 0, '40D', 20.00, 3, ''),
+ 	(470, 199, 23, 0, 0, '50D', 30.00, 4, ''),
+ 	(471, 199, 13, 0, 0, 'Industry made', 0.00001, 5, ''),
+ 	(472, 199, 13, 0, 0, 'Hand made', 25.00, 6, '');
 
 INSERT IGNORE INTO `#__virtuemart_product_prices` (`virtuemart_product_id`, `product_price`, `product_currency`) VALUES
 	(161, 15.833330, 47),
