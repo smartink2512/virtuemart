@@ -174,7 +174,15 @@ defined('_JEXEC') or die('Restricted access');
 <div style="clear:both;"></div>
 
 <?php
-$jsonLink = JURI::root(false).'administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
+$admin = '';
+$app = JFactory::getApplication();
+$l = 'index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
+if($app->isAdmin()){
+	$jsonLink = JURI::root(false).'administrator/'.$l;
+} else {
+	$jsonLink = JRoute::_($l);
+}
+
 
 $jsCsort = "
 	nextCustom =".$i.";

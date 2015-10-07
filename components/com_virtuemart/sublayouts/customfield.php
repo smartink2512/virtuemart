@@ -136,30 +136,33 @@ class VirtueMartCustomFieldRenderer {
 
 						$options = array();
 						$selected = false;
-						foreach($dropdowns[$k] as $i=> $elem){
+						if(isset($dropdowns[$k])){
+							foreach($dropdowns[$k] as $i=> $elem){
 
-							$elem = trim((string)$elem);
-							$text = $elem;
+								$elem = trim((string)$elem);
+								$text = $elem;
 
-							if($soption->clabel!='' and in_array($soption->voption,VirtueMartModelCustomfields::$dimensions) ){
-								$rd = $soption->clabel;
-								if(is_numeric($rd) and is_numeric($elem)){
-									$text = number_format(round((float)$elem,(int)$rd),$rd);
+								if($soption->clabel!='' and in_array($soption->voption,VirtueMartModelCustomfields::$dimensions) ){
+									$rd = $soption->clabel;
+									if(is_numeric($rd) and is_numeric($elem)){
+										$text = number_format(round((float)$elem,(int)$rd),$rd);
+									}
+									//vmdebug('($dropdowns[$k] in DIMENSION value = '.$elem.' r='.$rd.' '.$text);
+								} else if  ($soption->voption === 'clabels' and $soption->clabel!='') {
+									$text = vmText::_($elem);
 								}
-								//vmdebug('($dropdowns[$k] in DIMENSION value = '.$elem.' r='.$rd.' '.$text);
-							} else if  ($soption->voption === 'clabels' and $soption->clabel!='') {
-								$text = vmText::_($elem);
-							}
 
-							if($elem=='0'){
-								$text = vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION');
-							}
-							$options[] = array('value'=>$elem,'text'=>$text);
+								if($elem=='0'){
+									$text = vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION');
+								}
+								$options[] = array('value'=>$elem,'text'=>$text);
 
-							if($productSelection and $productSelection[$k] == $elem){
-								$selected = $elem;
+								if($productSelection and $productSelection[$k] == $elem){
+									$selected = $elem;
+								}
 							}
 						}
+
 
 						if(empty($selected)){
 							$product->orderable=false;

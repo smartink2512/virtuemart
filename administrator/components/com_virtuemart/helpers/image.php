@@ -27,17 +27,22 @@ class VmImage extends VmMediaHandler {
 			$oldFileUrl = $this->file_url;
 			$file_name = $this->uploadFile($this->file_url_folder);
 			if($file_name){
+
 				if($file_name!=$oldFileUrl && !empty($this->filename)){
 					$this->deleteFile($oldFileUrl);
 				}
 				$this->file_url = $this->file_url_folder.$file_name;
 				$this->filename = $file_name;
 
-				$oldFileUrlThumb = $this->file_url_thumb;
-				$this->file_url_thumb = $this->createThumb();
-				if($this->file_url_thumb!=$oldFileUrlThumb){
-					$this->deleteFile($oldFileUrlThumb);
+				if(!empty($this->file_url_thumb)){
+					$oldFileUrlThumb = $this->file_url_thumb;
+
+					$this->file_url_thumb = $this->createThumb();
+					if($this->file_url_thumb!=$oldFileUrlThumb){
+						$this->deleteFile($oldFileUrlThumb);
+					}
 				}
+
 			}
 		} //creating the thumbnail image
 		else if( $data['media_action'] == 'create_thumb' ){

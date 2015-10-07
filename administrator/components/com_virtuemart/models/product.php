@@ -2236,7 +2236,7 @@ class VirtueMartModelProduct extends VmModel {
 	 *
 	 * notice by Max Milbers html tags should never be in a model. This function should be moved to a helper or simular,...
 	 *
-	 * @author Kohl Patrick
+	 * @author Kohl Patrick, Max Milbers
 	 * @access public
 	 * @param $fieds from config Back-end
 	 * @return $orderByList
@@ -2244,11 +2244,15 @@ class VirtueMartModelProduct extends VmModel {
 	 **/
 	function getOrderByList ($virtuemart_category_id = FALSE) {
 
-		$getArray = vRequest::getGet();
+		$getArray = vRequest::getGet(FILTER_SANITIZE_STRING);
 
 		$fieldLink = '';
 
 		foreach ($getArray as $key => $value) {
+
+			$key = vRequest::filter($key,FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
+			$value = vRequest::filter($value,FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
+
 			if (is_array ($value)) {
 				foreach ($value as $k => $v) {
 					if( $v == '') continue;

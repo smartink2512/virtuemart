@@ -602,77 +602,11 @@ class VmMediaHandler {
 	 * @return name of the uploaded file
 	 */
 	function uploadFile($urlfolder,$overwrite = false){
-
-		if(empty($urlfolder) OR strlen($urlfolder)<2){
-			vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
-			return false;
-		}
-		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		$media = vRequest::getFiles('upload');
-		if(empty($media)){
-			vmError('Recieved no data for upload','Recieved no data for upload');
-			vmdebug('no data in uploadFile ',$_FILES);
-			return false;
-		}
-
-		$app = JFactory::getApplication();
-		switch ($media['error']) {
-			case 0:
-				$path_folder = str_replace('/',DS,$urlfolder);
-
-				//Sadly it does not work to upload unicode files,
-				// the ä for example is stored on windows as Ã¤, this seems to be a php issue (maybe a config setting)
-			/*	$dotPos = strrpos($media['name'],'.');
-				$safeMediaName = vmFile::makeSafe( $media['name'] );
-				if($dotPos!==FALSE){
-					$mediaPure = substr($media['name'],0,$dotPos);
-					$mediaExtension = strtolower(substr($media['name'],$dotPos));
-				}
-			*/
-
-				$safeMediaName = vmFile::makeSafe( $media['name'] );
-				$media['name'] = $safeMediaName;
-
-				$mediaPure = JFile::stripExt($media['name']);
-				$mediaExtension = '.'.strtolower(JFile::getExt($media['name']));
-				vmdebug('uploadFile $safeMediaName',$media['name'],$safeMediaName,$mediaPure,$mediaExtension);
-
-				if(!$overwrite){
-					while (file_exists(VMPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
-						$mediaPure = $mediaPure.rand(1,9);
-					}
-				}
-
-				$media['name'] = $this->file_name =$mediaPure.$mediaExtension;
-				if($this->file_is_forSale==0){
-					JFile::upload($media['tmp_name'],VMPATH_ROOT.DS.$path_folder.$media['name']);
-				} else {
-					JFile::upload($media['tmp_name'],$path_folder.$media['name']);
-				}
-
-				$this->file_mimetype = $media['type'];
-				$this->media_published = 1;
-				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',VMPATH_ROOT.DS.$path_folder.$media['name']));
-				return $media['name'];
-
-			case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_UPLOAD_MAX_FILESIZE',$media['name'],$media['tmp_name']), 'warning');
-				break;
-			case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_MAX_FILE_SIZE',$media['name'],$media['tmp_name']), 'warning');
-				break;
-			case 3: //uploaded file was only partially uploaded
-				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_PARTIALLY',$media['name'],$media['tmp_name']), 'warning');
-				break;
-			case 4: //no file was uploaded
-				//$vmLogger->warning( "You have not selected a file/image for upload." );
-				break;
-			default: //a default error, just in case!  :)
-				//$vmLogger->warning( "There was a problem with your upload." );
-				break;
-		}
-		return false;
+		if(!class_exists('vmUploader')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmuploader.php');
+		$r = vmUploader::uploadFile($urlfolder,$this,$overwrite);
+		return $r;
 	}
+
 
 	/**
 	 * Deletes a file
@@ -730,6 +664,7 @@ class VmMediaHandler {
 			$file_name = $this->uploadFile($this->file_url_folder,true);
 			$this->file_name = $file_name;
 			$this->file_url = $this->file_url_folder.$this->file_name;
+
 			if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
 				$this->deleteFile($oldFileUrl);
 			}
@@ -1191,10 +1126,10 @@ $html .='</td>';
 			//vmdebug('my displayFileHandler ',$this,$file_url_thumb);
 
 			if($this->file_url_thumb == $file_url_thumb){
-				$this->file_url_thumb = vmText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$file_url_thumb);
+				$file_url_thumb = vmText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$file_url_thumb);
 			}
 		}
-		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
+		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly,$file_url_thumb);
 
 		$this->addMediaAttributesByType();
 
@@ -1290,10 +1225,11 @@ $html .='</td>';
 	 * @param string $descr
 	 * @param string $name
 	 */
-	private function displayRow($descr, $name,$readonly=''){
+	private function displayRow($descr, $name,$readonly='',$value = null){
+		$v = (isset($value))? $value: $this->$name;
 		$html = '<tr>
 	<td class="labelcell">'.vmText::_($descr).'</td>
-	<td> <input type="text" '.$readonly.' class="inputbox" name="media['.$name.']" size="70" value="'.$this->$name.'" /></td>
+	<td> <input type="text" '.$readonly.' class="inputbox" name="media['.$name.']" size="70" value="'.$v.'" /></td>
 </tr>';
 		return $html;
 	}

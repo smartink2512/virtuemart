@@ -298,8 +298,19 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		} else {
 			$concatStr = 'o.order_number';
 		}
+
+// quorvia added phone, zip, city and shipping details and ST data
 		$select = " o.*, ".$concatStr." AS order_name "
-		.',u.email as order_email,pm.payment_name AS payment_method ';
+            .',u.email as order_email,
+            pm.payment_name AS payment_method,
+            u.company AS company,
+            u.city AS city,
+            u.zip AS zip,
+            u.phone_1 AS phone,
+            st.company AS st_company,
+            st.city AS st_city,
+            st.zip AS st_zip,
+            u.customer_note AS customer_note';
 		$from = $this->getOrdersListQuery();
 
 		$where = array();
@@ -353,6 +364,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$searchFields[] = 'u.phone_1';
 			$searchFields[] = 'u.address_1';
 			$searchFields[] = 'u.zip';
+//quorvia addedd  ST data searches
+			$searchFields[] = 'st.company';
+			$searchFields[] = 'st.last_name';
+			$searchFields[] = 'st.city';
+			$searchFields[] = 'st.zip';
 			$where[] = implode (' LIKE '.$search.' OR ', $searchFields) . ' LIKE '.$search.' ';
 			//$where[] = ' ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
 		}
@@ -389,13 +405,22 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/**
 	 * List of tables to include for the product query
 	 */
-	private function getOrdersListQuery()
+	private function getOrdersListQuery() {
+//		return ' FROM #__virtuemart_orders as o
+//			LEFT JOIN #__virtuemart_order_userinfos as u
+//			ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
+//			LEFT JOIN #__virtuemart_paymentmethods_'.VmConfig::$vmlang.' as pm
+//			ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id ';
+//	}
+//QUORVIA  ST data to this list
 	{
 		return ' FROM #__virtuemart_orders as o
-			LEFT JOIN #__virtuemart_order_userinfos as u
-			ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
-			LEFT JOIN #__virtuemart_paymentmethods_'.VmConfig::$vmlang.' as pm
-			ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id ';
+				LEFT JOIN #__virtuemart_order_userinfos as u
+				ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
+				LEFT JOIN #__virtuemart_order_userinfos as st
+				ON st.virtuemart_order_id = o.virtuemart_order_id AND st.address_type="ST"
+				LEFT JOIN #__virtuemart_paymentmethods_'.VmConfig::$vmlang.' as pm
+				ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id';
 	}
 
 
@@ -407,6 +432,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	public function updateSingleItem($virtuemart_order_item_id, &$orderdata, $orderUpdate = false)
 	{
+		$virtuemart_order_item_id = (int)$virtuemart_order_item_id;
 		//vmdebug('updateSingleItem',$virtuemart_order_item_id,$orderdata);
 		$table = $this->getTable('order_items');
 		if(!empty($virtuemart_order_item_id)){
@@ -494,21 +520,22 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$table->bindChecknStore($data);
 
 		if ( $orderUpdate ) {
-			if ( empty($data['order_item_sku']) )
+
+			if ( empty($data['order_item_sku']) and !empty($virtuemart_order_item_id) )
 			{
 				//update product identification
 				$db = JFactory::getDBO();
 				$prolang = '#__virtuemart_products_' . VmConfig::$vmlang;
 				$oi = " #__virtuemart_order_items";
 				$protbl = "#__virtuemart_products";
-				$sql = "UPDATE $oi, $protbl,  $prolang" .
-					" SET $oi.order_item_sku=$protbl.product_sku, $oi.order_item_name=$prolang.product_name ".
-					" WHERE $oi.virtuemart_product_id=$protbl.virtuemart_product_id " . 
-					" and $oi.virtuemart_product_id=$prolang.virtuemart_product_id " .
-					" and $oi.virtuemart_order_item_id=$virtuemart_order_item_id";
+				$sql = 'UPDATE '.$oi.', '.$protbl.', '.$prolang .
+					' SET '.$oi.'.order_item_sku='.$protbl.'.product_sku, '.$oi.'.order_item_name='.$prolang.'.product_name
+					 WHERE '.$oi.'.virtuemart_product_id='.$protbl.'.virtuemart_product_id
+					 and '.$oi.'.virtuemart_product_id='.$prolang.'.virtuemart_product_id
+					 and '.$oi.'.virtuemart_order_item_id='.(int)$virtuemart_order_item_id;
 				$db->setQuery($sql);
 				if ($db->execute() === false) {
-					vmError($db->getError());
+					vmError('updateSingleItem '.$sql,'Error updating order');
 				}	
 			}
 		}
@@ -518,7 +545,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//but in general, shipment and payment would be tractated as another items of the order
 		//in datas they are not, bu okay we have it here and functional
 		//moreover we can compute all aggregate values here via one aggregate SQL
-		if ( $orderUpdate )
+		if ( $orderUpdate and !empty( $table->virtuemart_order_id))
 		{
 			$db = JFactory::getDBO();
 			$ordid = $table->virtuemart_order_id;
@@ -555,10 +582,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			if ( $os!="" )
 			{
-				$sql = "UPDATE `#__virtuemart_orders` SET `order_shipment`=$os,`order_shipment_tax`=$ost WHERE  `virtuemart_order_id`=$ordid";
+				$sql = 'UPDATE `#__virtuemart_orders` SET `order_shipment`="'.$os.'",`order_shipment_tax`="'.$ost.'" WHERE  `virtuemart_order_id`="'.$ordid.'"';
 				$db->setQuery($sql);
 				if ($db->execute() === false) {
-					vmError('updateSingleItem '.$db->getError().' and '.$sql);
+					vmError('updateSingleItem Error updating order_shipment '.$sql);
 				}
 			}
 
@@ -567,30 +594,28 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$opt = vRequest::getString('order_payment_tax');
 			if ( $op!="" )
 			{
-				$sql = "UPDATE `#__virtuemart_orders` SET `order_payment`=$op,`order_payment_tax`=$opt WHERE  `virtuemart_order_id`=$ordid";
+				$sql = 'UPDATE `#__virtuemart_orders` SET `order_payment`="'.$op.'",`order_payment_tax`="'.$opt.'" WHERE  `virtuemart_order_id`="'.$ordid.'"';
 				$db->setQuery($sql);
 				if ($db->execute() === false) {
-					vmError('updateSingleItem '.$db->getError().' and '.$sql);
+					vmError('updateSingleItem Error updating order payment'.$sql);
 				}
 			}
 
-			$sql = "
-					UPDATE `#__virtuemart_orders` 
-					SET 
-					`order_total`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)+`order_shipment`+`order_shipment_tax`+`order_payment`+`order_payment_tax`+$calc_rules_amount,
-					`order_discountAmount`=(SELECT sum(product_subtotal_discount) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
-					`order_billDiscountAmount`=`order_discountAmount`+$calc_rules_discount_amount,
-					`order_salesPrice`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
-					`order_tax`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
-					`order_subtotal`=(SELECT sum(ROUND(product_item_price, ". $rounding .")*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),";
+			$sql = 'UPDATE `#__virtuemart_orders` SET '.
+					'`order_total`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.')+`order_shipment`+`order_shipment_tax`+`order_payment`+`order_payment_tax`+'.$calc_rules_amount.',
+					`order_discountAmount`=(SELECT sum(product_subtotal_discount) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.'),
+					`order_billDiscountAmount`=`order_discountAmount`+'.$calc_rules_discount_amount.',
+					`order_salesPrice`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.'),
+					`order_tax`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.'),
+					`order_subtotal`=(SELECT sum(ROUND(product_item_price, '. $rounding .')*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.'),';
 
 			if(vRequest::getString('calculate_billTaxAmount')) {
-				$sql .= "`order_billTaxAmount`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)+`order_shipment_tax`+`order_payment_tax`+$calc_rules_tax_amount";
+				$sql .= '`order_billTaxAmount`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.')+`order_shipment_tax`+`order_payment_tax`+ '.$calc_rules_tax_amount.' ';
 			} else {
-				$sql .= "`order_billTaxAmount`=".vRequest::getString('order_billTaxAmount');
+				$sql .= '`order_billTaxAmount`="'.vRequest::getString('order_billTaxAmount').'"';
 			}
 
-			$sql .= " WHERE  `virtuemart_order_id`=$ordid";
+			$sql .= ' WHERE  `virtuemart_order_id`='.$ordid;
 
 			$db->setQuery($sql); 
 			if ($db->execute() === false) {

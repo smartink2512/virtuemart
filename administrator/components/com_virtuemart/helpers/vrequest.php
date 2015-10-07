@@ -210,6 +210,12 @@ class vRequest {
 
 	public static function filter($var,$filter,$flags,$array=false){
 		if($array or is_array($var)){
+			if(!is_array($var)) $var = array($var);
+			$a = array();
+			foreach($var as $k=>$v){
+				$a[filter_var($k, $filter, $flags)] = filter_var($v, $filter, $flags);
+			}
+			return $a;
 			return filter_var_array($var, $filter);
 		}
 		else {
@@ -246,6 +252,7 @@ class vRequest {
 	}
 	
 	public static function getFiles( $name, $filter = FILTER_SANITIZE_STRING, $flags = FILTER_FLAG_STRIP_LOW){
+		if(empty($_FILES[$name])) return false;
 		return  self::filter($_FILES[$name], $filter, $flags);
 	}
 

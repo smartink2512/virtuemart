@@ -215,8 +215,8 @@ class VirtueMartModelMedia extends VmModel {
 			$mainTable = '`#__virtuemart_medias`';
 			$selectFields[] = ' `virtuemart_media_id` ';
 
-			$user = JFactory::getUser();
-			if(!$user->authorise('core.admin','com_virtuemart') and !$user->authorise('core.manager','com_virtuemart')){
+
+			if(!vmAccess::manager('managevendors')){
 				$vendorId = vmAccess::isSuperVendor();
 				$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
 			}
@@ -314,7 +314,7 @@ class VirtueMartModelMedia extends VmModel {
 		if(empty($data['media_action'])){
 			$data['media_action'] = 'none';
 		}
-		vmdebug('storeMedia',$data);
+
 		//the active media id is not empty, so there should be something done with it
 		if( (!empty($data['active_media_id']) and isset($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
 

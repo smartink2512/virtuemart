@@ -66,58 +66,7 @@ defined('_JEXEC') or die('Restricted access');?>
 	</table>
 </fieldset>
 
-<fieldset>
-	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_EMAILS'); ?></legend>
-	<table class="admintable">
-		<tr>
-			<td class="key">
-					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT'); ?>
-					</span>
-			</td>
-			<td>
-				<select name="order_mail_html" id="order_mail_html">
-					<option value="0" <?php if (VmConfig::get('order_mail_html') == '0') {
-						echo 'selected="selected"';
-					} ?>>
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_TEXT'); ?>
-					</option>
-					<option value="1" <?php if (VmConfig::get('order_mail_html') == '1') {
-						echo 'selected="selected"';
-					} ?>>
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_HTML'); ?>
-					</option>
-				</select>
-			</td>
-		</tr>
-		<?php
-			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR','useVendorEmail',VmConfig::get('useVendorEmail',0));
-		?>
 
-		<?php /*?>		<!-- NOT YET -->
-	    <!--tr>
-		    <td class="key">
-			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT_EXPLAIN'); ?>">
-			<label for="mail_from_recipient"><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT') ?></span>
-			    </span>
-		    </td>
-		    <td>
-			    <?php echo VmHTML::checkbox('mail_from_recipient', VmConfig::get('mail_from_recipient',0)); ?>
-		    </td>
-	    </tr>
-	    <tr>
-		    <td class="key">
-			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER_EXPLAIN'); ?>">
-			<label for="mail_from_setsender"><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER') ?></span>
-			    </span>
-		    </td>
-		    <td>
-			    <?php echo VmHTML::checkbox('mail_from_setsender', VmConfig::get('mail_from_setsender',0)); ?>
-		    </td>
-	    </tr --><?php */?>
-
-	</table>
-</fieldset>
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_ADVANCED'); ?></legend>

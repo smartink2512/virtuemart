@@ -756,6 +756,8 @@ class VirtueMartModelUserfields extends VmModel {
 
 			foreach ($_selection as $_fld) {
 
+				$yOffset = 0;
+
 				if(!empty($_userDataIn) and isset($_fld->default) and $_fld->default!=''){
 					if(is_array($_userDataIn)){
 						if(!isset($_userDataIn[$_fld->name]))
@@ -906,29 +908,16 @@ class VirtueMartModelUserfields extends VmModel {
 							. $readonly . ' /> ';
 							$_return['fields'][$_fld->name]['hidden'] = true;
 							break;
-						case 'date':
-						case 'age_verification':
-							//echo JHtml::_('behavior.calendar');
-							/*
-							 * TODO We must add the joomla.javascript here that contains the calendar,
-							 * since Joomla does not load it when there's no user logged in.
-							 * Gotta find out why... some security issue or a bug???
-							 * Note by Oscar
-							 */
-							// if ($_userData === null) { // Not logged in
-							// $_doc = JFactory::getDocument();
-							// $_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
-							// }
+
 							$currentYear= date('Y');
-
-						//	$calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
-						//	$_return['fields'][$_fld->name]['formcode'] = $calendar ;
-
-							//if(empty($_return['fields'][$_fld->name]['value'])){
-							//	$_return['fields'][$_fld->name]['value'] = "1912-01-01 00:00:00";
-							//}                                                     jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
+							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field',false,$currentYear.':'. ($currentYear+1));
+							break;
+						case 'age_verification':
 							// Year range MUST start 100 years ago, for birthday
-							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
+							$yOffset = 100;
+						case 'date':
+							$currentYear= date('Y');
+							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field',false,($currentYear-$yOffset).':'.$currentYear);
 							break;
 						case 'emailaddress':
 							if( JFactory::getApplication()->isSite()) {
