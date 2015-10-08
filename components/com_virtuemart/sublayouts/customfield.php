@@ -236,7 +236,7 @@ class VirtueMartCustomFieldRenderer {
 
 					$options = array();
 
-					if(!$customfield->withParent or ($customfield->withParent and $customfield->parentOrderable)){
+					if(!$customfield->withParent){
 						$options[0] = $emptyOption;
 						$options[0]->value = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE);
 						//$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
