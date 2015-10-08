@@ -307,6 +307,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
             u.city AS city,
             u.zip AS zip,
             u.phone_1 AS phone,
+            st.address_type AS st_type,
             st.company AS st_company,
             st.city AS st_city,
             st.zip AS st_zip,
@@ -405,15 +406,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/**
 	 * List of tables to include for the product query
 	 */
-	private function getOrdersListQuery() {
-//		return ' FROM #__virtuemart_orders as o
-//			LEFT JOIN #__virtuemart_order_userinfos as u
-//			ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
-//			LEFT JOIN #__virtuemart_paymentmethods_'.VmConfig::$vmlang.' as pm
-//			ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id ';
-//	}
-//QUORVIA  ST data to this list
-	{
+	private function getOrdersListQuery()	{
 		return ' FROM #__virtuemart_orders as o
 				LEFT JOIN #__virtuemart_order_userinfos as u
 				ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"

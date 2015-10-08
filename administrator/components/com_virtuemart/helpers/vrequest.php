@@ -211,11 +211,17 @@ class vRequest {
 	public static function filter($var,$filter,$flags,$array=false){
 		if($array or is_array($var)){
 			if(!is_array($var)) $var = array($var);
-			$a = array();
+
 			foreach($var as $k=>$v){
-				$a[filter_var($k, $filter, $flags)] = filter_var($v, $filter, $flags);
+				if(!empty($k) and is_numeric($k)){
+					$t = filter_var($k, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+					if($t!==$k){
+						$var[$t] = $v;
+						unset($var[$k]);
+						vmdebug('unset invalid key',$k,$t);
+					}
+				}
 			}
-			return $a;
 			return filter_var_array($var, $filter);
 		}
 		else {
@@ -232,11 +238,13 @@ class vRequest {
 	 * @return mixed cleaned $_REQUEST
 	 */
 	public static function getRequest( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
-		return  self::filter($_REQUEST, $filter, $flags,true);
+		return self::filter($_REQUEST, $filter, $flags,true);
+		//return  filter_var_array($_REQUEST, $filter);
 	}
 	
 	public static function getPost( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
-		return  self::filter($_POST, $filter, $flags,true);
+		//return self::filter($_POST, $filter, $flags,true);
+		return  filter_var_array($_POST, $filter);
 	}
 	
 	public static function getGet( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){

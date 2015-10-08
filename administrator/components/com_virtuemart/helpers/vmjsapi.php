@@ -343,7 +343,7 @@ class vmJsApi{
 
 		$Get = vRequest::getGet();
 		if(!empty($Get['Itemid'])){
-			$jsVars .= "Itemid = '&Itemid=".$Get['Itemid']."';\n";
+			$jsVars .= "Itemid = '&Itemid=".(int)$Get['Itemid']."';\n";
 		} else {
 			$jsVars .= 'Itemid = "";'."\n";
 		}
