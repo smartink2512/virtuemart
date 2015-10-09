@@ -138,8 +138,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 
 		//Maybe better in line 133
-		$STsameAsBT = vRequest::getInt('STsameAsBT', vRequest::getInt('STsameAsBTjs',false));
-		if($STsameAsBT){
+		$STsameAsBT = vRequest::getInt('STsameAsBT', null);
+		if(isset($STsameAsBT)){
 			$cart->STsameAsBT = $STsameAsBT;
 		}
 

@@ -70,7 +70,7 @@
         <action name="vm.media.edit" title="JACTION_EDIT" description="" />
         <action name="vm.media.create" title="JACTION_CREATE" description="" />
         <action name="vm.media.delete" title="JACTION_DELETE" description="" />
-        <action name="vm.media.potdang" title="COM_VIRTUEMART_MEDIA_POTENTIAL_DANGEROUS" description="" />
+        <action name="vm.media.potdang" title="COM_VIRTUEMART_MEDIA_POTENTIAL_DANGEROUS" description="COM_VIRTUEMART_MEDIA_POTENTIAL_DANGEROUS_DESC" />
     </section>
     <section name="method">
         <action name="vm.shipmentmethod" title="COM_VIRTUEMART_SHIPMENTMETHOD_S" description="" />

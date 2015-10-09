@@ -798,11 +798,16 @@ class VmModel extends vObject{
 	 * @param string $filter_order_Dir
 	 */
 
-	public function exeSortSearchListQuery($object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
+	public function exeSortSearchListQuery($object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false ){
 
 		$db = JFactory::getDbo();
 		//and the where conditions
-		$joinedTables .="\n".$whereString."\n".$groupBy."\n".$orderBy.' '.$filter_order_Dir ;
+		if(empty($filter_order_Dir)){
+			$joinedTables .="\n".$whereString."\n".$groupBy."\n".$orderBy ;
+		} else {
+			$joinedTables .="\n".$whereString."\n".$groupBy."\n".$orderBy.' '.$filter_order_Dir ;
+		}
+		vmdebug('my $limitStart $joinedTables ',$joinedTables,$filter_order_Dir );
 
 		if($nbrReturnProducts){
 			$limitStart = 0;

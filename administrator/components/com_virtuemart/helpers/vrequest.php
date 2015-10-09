@@ -211,22 +211,29 @@ class vRequest {
 	public static function filter($var,$filter,$flags,$array=false){
 		if($array or is_array($var)){
 			if(!is_array($var)) $var = array($var);
-
-			foreach($var as $k=>$v){
-				if(!empty($k) and is_numeric($k)){
-					$t = filter_var($k, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-					if($t!==$k){
-						$var[$t] = $v;
-						unset($var[$k]);
-						vmdebug('unset invalid key',$k,$t);
-					}
-				}
-			}
-			return filter_var_array($var, $filter);
+			self::recurseFilter($var,$filter);
+			return $var;
 		}
 		else {
 			return filter_var($var, $filter, $flags);
 		}
+	}
+
+	public static function recurseFilter(&$var,$filter){
+		foreach($var as $k=>&$v){
+			if(!empty($k) and !is_numeric($k)){
+				$t = filter_var($k, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+				if($t!=$k){
+					$var[$t] = $v;
+					unset($var[$k]);
+					vmdebug('unset invalid key',$k,$t);
+				}
+			}
+			if(!empty($v) and is_array($v) and count($v)>1){
+				self::iter($v,$filter);
+			}
+		}
+		filter_var_array($var, $filter);
 	}
 
 	/**
@@ -243,8 +250,7 @@ class vRequest {
 	}
 	
 	public static function getPost( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
-		//return self::filter($_POST, $filter, $flags,true);
-		return  filter_var_array($_POST, $filter);
+		return self::filter($_POST, $filter, $flags,true);
 	}
 	
 	public static function getGet( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){

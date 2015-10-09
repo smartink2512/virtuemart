@@ -15,7 +15,7 @@
 
 class vmUploader {
 
-	static $ft = null;
+	static $fT = null;
 	static $MimeTypes = null;
 
 	static function getMime2ExtArray(){
@@ -165,13 +165,13 @@ class vmUploader {
 		return self::$MimeTypes;
 	}
 
-	static function getExt2MimeArray(){
+	static function getSafeExt2MimeArray(){
 
 		if(self::$fT===null){
 			self::$fT = array();
-			self::$fT['swf'] = 'application/x-shockwave-flash';
+
+			self::$fT['txt'] = 'text/plain';
 			self::$fT['pdf'] = 'application/pdf';
-			self::$fT['exe'] = 'application/octet-stream';
 			self::$fT['zip'] = 'application/zip';
 			self::$fT['doc'] = 'application/msword';
 			self::$fT['xls'] = 'application/vnd.ms-excel';
@@ -257,8 +257,6 @@ class vmUploader {
 					return false;
 				}
 
-				vmdebug('uploadFile $safeMediaName',$media['name'],$safeMediaName,$mediaPure,$mediaExtension);
-
 				if(!$overwrite){
 					$i = 0;
 					while (file_exists(VMPATH_ROOT.DS.$path_folder.$mediaPure.'.'.$mediaExtension) and $i<20) {
@@ -280,17 +278,19 @@ class vmUploader {
 
 					$m2ext = self::getMime2ExtArray();
 					$realMime = self::getMimeType($media['tmp_name']);
-					if($rExt = array_search($realMime,$m2ext)!==false){
 
-						$hless = self::getExt2MimeArray();
-						//We unset the unsecure extensions.
-						unset($hless['exe']);
-						unset($hless['swf']);
-						vmdebug('Recognised nonimage, not safe ext', self::$ft,$hless);
+					vmdebug('Uploading file $realMime',$realMime,$m2ext);
+					if(isset($m2ext[$realMime])){
+					//if($rExt = array_search($realMime,$m2ext)!==false){
+						$rExt = $m2ext[$realMime];
+						$hless = self::getSafeExt2MimeArray();
+						vmdebug('Recognised nonimage, not safe ext',$rExt,$hless);
 						//$rExt = $hless[$realMime];
-						if(!isset($hl[$rExt])){
-							vmError('Invalid media type, you are not allowed to store non images, image type does not fit to extension '.$media['name']);
+						if(!isset($hless[$rExt])){
+							vmError('Invalid media type, you are not allowed to upload this file, file type does not fit to mime '.$media['name']);
 							return false;
+						} else {
+							vmdebug('Uploading file ',$hless[$rExt]);
 						}
 					} else {
 						return false;

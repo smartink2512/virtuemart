@@ -76,7 +76,7 @@ class VirtuemartViewOrderstatus extends VmViewAdmin {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$this->orderStatusList = $model->getOrderStatusList();
+			$this->orderStatusList = $model->getOrderStatusList(false);
 			$this->pagination = $model->getPagination();
 		}
 

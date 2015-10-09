@@ -1238,7 +1238,7 @@ class vmAccess {
 	}
 
 
-	static public function manager($task=0, $uid = 0) {
+	static public function manager($task=0, $uid = 0, $and = false) {
 
 		if(self::$_site === null) {
 			$app = JFactory::getApplication();
@@ -1275,11 +1275,12 @@ class vmAccess {
 						foreach($task as $t){
 							if($user->authorise('vm.'.$t, 'com_virtuemart')){
 								self::$_manager[$h] = true;
+								if(!$and) break;
 							}
-							/*else {
+							else if($and) {
 								self::$_manager[$h] = false;
 								break;
-							}*/
+							}
 						}
 					}
 				}

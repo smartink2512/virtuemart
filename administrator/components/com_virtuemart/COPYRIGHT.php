@@ -20,7 +20,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 <pre>
 
 <strong>Copyright:</strong>
-Since VM2 is a derived work of VM1, we list them beyond, some rests of them may be in the code.
+Since VM2/VM3 is a derived work of VM1, we list them beyond, some rests of them may be in the code.
 VirtueMart derives from copyrighted works licensed under the GNU General
 Public License.  This version has been modified pursuant to the
 GNU General Public License as of September 15, 2005, and as distributed,

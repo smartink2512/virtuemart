@@ -41,7 +41,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 		if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 		$orderStatusModel=VmModel::getModel('orderstatus');
-		$orderStates = $orderStatusModel->getOrderStatusList();
+		$orderStates = $orderStatusModel->getOrderStatusList(true);
 
 		$this->SetViewTitle( 'ORDER');
 

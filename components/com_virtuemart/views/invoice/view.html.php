@@ -215,7 +215,7 @@ class VirtuemartViewInvoice extends VmView {
 		// Create an array to allow orderlinestatuses to be translated
 		// We'll probably want to put this somewhere in ShopFunctions..
 		$orderStatusModel = VmModel::getModel('orderstatus');
-		$_orderstatuses = $orderStatusModel->getOrderStatusList();
+		$_orderstatuses = $orderStatusModel->getOrderStatusList(true);
 		$orderstatuses = array();
 		foreach ($_orderstatuses as $_ordstat) {
 			$orderstatuses[$_ordstat->order_status_code] = vmText::_($_ordstat->order_status_name);

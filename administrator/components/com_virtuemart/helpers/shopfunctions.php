@@ -98,10 +98,8 @@ class ShopFunctions {
 	 */
 	static public function renderVendorList ($vendorId, $name = 'virtuemart_vendor_id') {
 
-		//if (Vmconfig::get ('multix', 'none') == 'none') $vendorId = 1;
-
 		$view = vRequest::getCmd('view',false);
-		if(!vmAccess::manager(array($view,'managevendors'))) {
+		if(!vmAccess::manager(array($view,'managevendors'),0,true)) {
 			if (empty($vendorId)) {
 				$vendor = vmText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');
 			} else {
@@ -993,7 +991,7 @@ class ShopFunctions {
 			'product_price', '`p`.product_special', '`p`.product_sales', '`p`.product_availability', '`p`.product_available_date',
 			'`p`.product_height', '`p`.product_width', '`p`.product_length', '`p`.product_lwh_uom',
 			'`p`.product_weight', '`p`.product_weight_uom', '`p`.product_in_stock', '`p`.low_stock_notification',
-			'`p`.modified_on',
+			'`p`.modified_on', '`p`.product_gtin',
 			'`p`.product_unit', '`p`.product_packaging', '`p`.virtuemart_product_id', 'pc.ordering');
 
 			//other possible fields

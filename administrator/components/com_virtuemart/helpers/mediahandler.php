@@ -174,7 +174,7 @@ class VmMediaHandler {
 
 		$data = $media->processAttributes($data);
 		$data = $media->processAction($data);
-
+		if($data===false) return false;
 		$attribsImage = get_object_vars($media);
 		foreach($attribsImage as $k=>$v){
 			$data[$k] = $v;
@@ -655,6 +655,7 @@ class VmMediaHandler {
 			$this->file_url='';
 			$this->file_url_thumb='';
 			$file_name = $this->uploadFile($this->file_url_folder);
+			if ($file_name===false) return false;
 			$this->file_name = $file_name;
 			$this->file_url = $this->file_url_folder.$this->file_name;
 		}
@@ -662,6 +663,7 @@ class VmMediaHandler {
 			$oldFileUrl = $this->file_url;
 			$oldFileUrlThumb = $this->file_url_thumb;
 			$file_name = $this->uploadFile($this->file_url_folder,true);
+			if ($file_name===false) return false;
 			$this->file_name = $file_name;
 			$this->file_url = $this->file_url_folder.$this->file_name;
 
@@ -676,6 +678,7 @@ class VmMediaHandler {
 			$oldFileUrlThumb = $this->file_url_thumb;
 			$oldFileUrl = $this->file_url_folder_thumb;
 			$file_name = $this->uploadFile($this->file_url_folder_thumb,true);
+			if ($file_name===false) return false;
 			$this->file_name = $file_name;
 			$this->file_url_thumb = $this->file_url_folder_thumb.$this->file_name;
 			if($this->file_url_thumb!=$oldFileUrl&& !empty($this->file_name)){
@@ -855,11 +858,11 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 * @param array $fileIds
 	 */
-	public function displayFilesHandler($fileIds,$type){
+	public function displayFilesHandler($fileIds,$type,$vendorId = 0){
 
 		VmConfig::loadJLang('com_virtuemart_media');
 		$html = $this->displayFileSelection($fileIds,$type);
-		$html .= $this->displayFileHandler();
+		$html .= $this->displayFileHandler($vendorId);
 
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 		$this->_db->setQuery('SELECT FOUND_ROWS()');
@@ -1050,7 +1053,7 @@ class VmMediaHandler {
 	 *
 	 * @param string $imageArgs html atttributes, Just for displaying the fullsized image
 	 */
-	public function displayFileHandler(){
+	public function displayFileHandler($vendorId = 0){
 
 		VmConfig::loadJLang('com_virtuemart_media');
 
@@ -1121,6 +1124,7 @@ $html .='</td>';
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL','file_url',$readonly);
 
 		//remove the file_url_thumb in case it is standard
+		$file_url_thumb = '';
 		if(!empty($this->file_url_thumb) and is_a($this,'VmImage')) {
 			$file_url_thumb = $this->createThumbFileUrl();
 			//vmdebug('my displayFileHandler ',$this,$file_url_thumb);
@@ -1169,9 +1173,9 @@ $html .='</td>';
 		}
 
 		if(VmConfig::get('multix','none')!='none'){
-			if(empty($this->virtuemart_vendor_id)){
+			if(empty($this->virtuemart_vendor_id) and $vendorId === 0){
 				$vendorId = vmAccess::isSuperVendor();
-			} else {
+			} else if(empty($vendorId)) {
 				$vendorId = $this->virtuemart_vendor_id;
 			}
 			if (!class_exists('ShopFunctions'))

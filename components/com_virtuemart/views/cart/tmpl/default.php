@@ -128,27 +128,29 @@ jQuery(document).ready(function($) {
 });
 	");
 
-vmJsApi::addJScript('vm.STisBT',"
-	jQuery(document).ready(function($) {
+if( !VmConfig::get('oncheckout_ajax',false)) {
+	vmJsApi::addJScript('vm.STisBT',"
+		jQuery(document).ready(function($) {
 
-		if ( $('#STsameAsBTjs').is(':checked') ) {
-			$('#output-shipto-display').hide();
-		} else {
-			$('#output-shipto-display').show();
-		}
-		$('#STsameAsBTjs').click(function(event) {
-			if($(this).is(':checked')){
-				$('#STsameAsBT').val('1') ;
+			if ( $('#STsameAsBTjs').is(':checked') ) {
 				$('#output-shipto-display').hide();
 			} else {
-				$('#STsameAsBT').val('0') ;
 				$('#output-shipto-display').show();
 			}
-			var form = jQuery('#checkoutFormSubmit');
-			form.submit();
+			$('#STsameAsBTjs').click(function(event) {
+				if($(this).is(':checked')){
+					$('#STsameAsBT').val('1') ;
+					$('#output-shipto-display').hide();
+				} else {
+					$('#STsameAsBT').val('0') ;
+					$('#output-shipto-display').show();
+				}
+				var form = jQuery('#checkoutFormSubmit');
+				form.submit();
+			});
 		});
-	});
-");
+	");
+}
 
 $this->addCheckRequiredJs();
 

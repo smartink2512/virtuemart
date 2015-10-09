@@ -30,7 +30,7 @@ class JFormFieldOrderstatus extends JFormField {
 		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
 		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 		$model = VmModel::getModel ('Orderstatus');
-		$orderStatus = $model->getOrderStatusList ();
+		$orderStatus = $model->getOrderStatusList (true);
 		foreach ($orderStatus as $orderState) {
 			$orderState->order_status_name = vmText::_ ($orderState->order_status_name);
 		}

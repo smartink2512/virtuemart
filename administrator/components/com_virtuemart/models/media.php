@@ -356,6 +356,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		//set the relations
 		$table = $this->getTable($type.'_medias');
+		vmdebug('my data before storing media',$data);
 		// Bind the form fields to the country table
 		$table->bindChecknStore($data);
 
@@ -387,7 +388,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		$table->bind($data);
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$data['file_type']); //this does not store the media, it process the actions and prepares data
-
+		if($data===false) return $table->virtuemart_media_id;
 		// workarround for media published and product published two fields in one form.
 		$tmpPublished = false;
 		if (isset($data['media_published'])){

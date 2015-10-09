@@ -516,9 +516,11 @@ class VirtueMartViewCart extends VmView {
 
     jQuery(".output-shipto").find(":radio").change(function(){
         var form = jQuery("#checkoutFormSubmit");
-        jQuery(this).vm2front("startVmLoading");
-		document.checkoutForm.submit();
+		form.attr("task","checkout");
+		'.$updF.'
+		form.submit();
     });
+
     jQuery("#checkoutForm").change(function(){
 
 		jQuery("#checkoutFormSubmit").attr("name","checkout");
@@ -534,14 +536,11 @@ class VirtueMartViewCart extends VmView {
        		}
     	});
         if(count==hit){
-        	//jQuery(this).vm2front("startVmLoading");
-
         	var form = jQuery("#checkoutFormSubmit");
         	form.attr("task","checkout");
 
 			'.$updF.'
 			form.submit();
-        	//jQuery(this).vm2front("stopVmLoading");
         }
     });
 

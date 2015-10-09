@@ -51,13 +51,18 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 * Retrieve a list of order statuses from the database.
 	 * @return object List of order status objects
 	 */
-	function getOrderStatusList()
+	function getOrderStatusList($published=true)
 	{
 
 		if (vRequest::getCmd('view') !== 'orderstatus') $ordering = ' order by `ordering` ';
 		else $ordering = $this->_getOrdering();
 		$this->_noLimit=true;
-		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$ordering);
+		if($published){	
+			$published = 'WHERE published = "1"';
+		} else {
+			$published = '';
+		}
+		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`',$published,'',$ordering);
 		// 		vmdebug('order data',$this->_data);
 		return $this->_data ;
 	}

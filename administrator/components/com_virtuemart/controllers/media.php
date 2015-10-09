@@ -67,7 +67,7 @@ class VirtuemartControllerMedia extends VmController {
 		if(empty($data['file_type'])){
 			$data['file_type'] = $data['media_attributes'];
 		}
-vmdebug('my media in controller save media',$data);
+
 		$msg = '';
 		if ($id = $fileModel->store($data)) {
 			$msg = vmText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');

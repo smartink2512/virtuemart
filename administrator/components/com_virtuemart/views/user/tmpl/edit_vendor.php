@@ -91,7 +91,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo vmText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 			</legend>
 			<?php
-				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->virtuemart_media_id,'vendor');
+			vmdebug('$this->vendor->virtuemart_vendor_id',$this->vendor->virtuemart_vendor_id);
+				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->virtuemart_media_id,'vendor',$this->vendor->virtuemart_vendor_id);
 			?>
 
 
