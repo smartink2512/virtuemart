@@ -1597,7 +1597,6 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 				$tableLangKeys = array('product_name','product_s_desc','product_desc');
-				vmdebug('my $orderByNameMain', $orderByNameMain,$orderByValue,$product->$orderByNameMain);
 				if(isset($product->$orderByNameMain)){
 					$orderByValue = $product->$orderByNameMain;
 					if(isset($sp[0])){

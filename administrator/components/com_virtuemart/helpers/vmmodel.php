@@ -807,7 +807,7 @@ class VmModel extends vObject{
 		} else {
 			$joinedTables .="\n".$whereString."\n".$groupBy."\n".$orderBy.' '.$filter_order_Dir ;
 		}
-		vmdebug('my $limitStart $joinedTables ',$joinedTables,$filter_order_Dir );
+		//vmdebug('my $limitStart $joinedTables ',$joinedTables,$filter_order_Dir );
 
 		if($nbrReturnProducts){
 			$limitStart = 0;

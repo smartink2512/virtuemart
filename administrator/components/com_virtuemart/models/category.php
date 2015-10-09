@@ -154,13 +154,13 @@ class VirtueMartModelCategory extends VmModel {
 			if($useCache){
 				$cache = JFactory::getCache('com_virtuemart_cats','callback');
 				$cache->setCaching(true);
-				vmdebug('Calling cache getChildCategoryListObject');
+				//vmdebug('Calling cache getChildCategoryListObject');
 				$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListObject' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
 			} else {
 				$_childCategoryList[$key] = VirtueMartModelCategory::getChildCategoryListObject($vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
 			}
 
-			vmTime('Time to load cats '.(int)$useCache,'com_virtuemart_cats');
+			//vmTime('Time to load cats '.(int)$useCache,'com_virtuemart_cats');
 		}
 
 		return $_childCategoryList[$key];

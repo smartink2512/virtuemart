@@ -1110,7 +1110,7 @@ $html .='</td>';
 
 		$html .= '</tr>';
 
-		if(vmAccess::manager('media')){
+		if(!vmAccess::manager('media')){
 			$readonly = 'readonly';
 		} else {
 			$readonly = '';

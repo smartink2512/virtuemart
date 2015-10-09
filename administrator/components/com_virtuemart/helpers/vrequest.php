@@ -230,7 +230,7 @@ class vRequest {
 				}
 			}
 			if(!empty($v) and is_array($v) and count($v)>1){
-				self::iter($v,$filter);
+				self::recurseFilter($v,$filter);
 			}
 		}
 		filter_var_array($var, $filter);
