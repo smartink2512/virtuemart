@@ -186,7 +186,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->search_type = vRequest::getVar ('search_type', '');
 
-		$this->searchcustoms = vRequest::getInt ('customfields');
+		$this->searchcustoms = vRequest::getInt ('customfields', false, true);
 
 		$this->searchplugin = vRequest::getInt ('custom_parent_id', 0);
 
@@ -1588,7 +1588,6 @@ class VirtueMartModelProduct extends VmModel {
 					} else {
 						$product->product_price = 0.0;
 					}
-					vmdebug('my product_price added', $product->product_price);
 				}
 
 				if(strpos($orderByNameMain,'.')){
