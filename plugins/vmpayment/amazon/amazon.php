@@ -3216,12 +3216,12 @@ jQuery().ready(function($) {
 
 		$url = '';
 		if (in_array($region, $region_europe)) {
-			if ($this->_method->shop_mode == 'sandbox') {
+			if ($this->_currentMethod->shop_mode == 'sandbox') {
 				$url = 'https://static-eu.payments-amazon.com/OffAmazonPayments/' . strtolower($region) . '/sandbox/js/Widgets.js';
 			} else {
 				$url = 'https://static-eu.payments-amazon.com/OffAmazonPayments/' . strtolower($region) . '/js/Widgets.js';
 			}
-			$url .= '?sellerId=' . $this->_method->sellerId;
+			$url .= '?sellerId=' . $this->_currentMethod->sellerId;
 		} else {
 			if ($this->_currentMethod->environment == 'sandbox') {
 				$url = $this->_currentMethod->sandbox_signin;
