@@ -144,10 +144,11 @@ browse_search_fields=array:`p`.product_sku|category_name|category_description|mf
 ##Check stock
     addtocart_popup=1
     check_stock=0
-    automatic_payment=1
-    automatic_shipment=1
-    agree_to_tos_onorder=0
+    automatic_payment=0
+    automatic_shipment=0
     oncheckout_opc=1
+    oncheckout_ajax=1
+    oncheckout_show_steps=1
     oncheckout_show_legal_info=1
     oncheckout_show_register=1
     oncheckout_show_steps=0

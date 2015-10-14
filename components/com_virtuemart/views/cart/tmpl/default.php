@@ -153,9 +153,6 @@ if( !VmConfig::get('oncheckout_ajax',false)) {
 }
 
 $this->addCheckRequiredJs();
-
-
-
 echo vmJsApi::writeJS();
 
 ?>

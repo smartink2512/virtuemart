@@ -1633,7 +1633,7 @@ class VirtueMartModelProduct extends VmModel {
 				if(!empty($alreadyFound)) $alreadyFound = 'AND p.`virtuemart_product_id`!="'.$alreadyFound.'"';
 				$qm = $alreadyFound.' AND '.$whereorderByName.' '.$op.' "'.$orderByValue.'"  ORDER BY '.$orderByName.' LIMIT 1';
 				$db->setQuery ($q.$qm);
-				vmdebug('getneighbors '.$q.$qm);
+				//vmdebug('getneighbors '.$q.$qm);
 				if ($result = $db->loadAssocList ()) {
 					$neighbor = $result;
 					$alreadyFound = $result[0]['virtuemart_product_id'];

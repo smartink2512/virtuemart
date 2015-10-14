@@ -134,7 +134,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		$mainframe = JFactory::getApplication();
 
-		$msg = false;
+		$msg = true;
 		$data = vRequest::getPost(FILTER_SANITIZE_STRING);
 		$register = isset($_REQUEST['register']);
 

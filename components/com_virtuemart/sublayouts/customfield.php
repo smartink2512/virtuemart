@@ -623,7 +623,6 @@ class VirtueMartCustomFieldRenderer {
 									$value = vmText::_($params);
 								}
 
-								vmdebug('renderCustomfieldsCart',$productCustom);
 							} else {
 								$value = vmText::_($productCustom->customfield_value);
 							}

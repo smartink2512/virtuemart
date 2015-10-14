@@ -1,6 +1,8 @@
 if (typeof Virtuemart === "undefined")
 	Virtuemart = {};
 
+Virtuemart.stopSendtocart = false;
+
 Virtuemart.setproducttype = function(form, id) {
 	form.view = null;
 	var datas = form.serialize();
@@ -148,10 +150,10 @@ Virtuemart.decrQuantity = (function(event) {
 
 Virtuemart.addtocart = function (e){
 
-
     var targ;
     if (!e) e = window.event;
     e.preventDefault();
+
     if(e.hasOwnProperty('stopSendtocart') && e.stopSendtocart == true){
         return false;
     }
@@ -164,6 +166,12 @@ Virtuemart.addtocart = function (e){
         Virtuemart.sendtocart(e.data.cart);
         return false;
     }
+};
+
+Virtuemart.quantityErrorAlert = function(e) {
+	var me = jQuery(this);
+	e.preventDefault();
+	Virtuemart.checkQuantity(this, me.attr("step"), me.attr("data-errStr"));
 };
 
 Virtuemart.product = function(carts) {
@@ -182,10 +190,6 @@ Virtuemart.product = function(carts) {
 		//Fallback for layouts lower than 2.0.18b
 		if(isNaN(Ste)) { Ste = 1; }
 
-        var quantityErrorAlert = function() {
-            var me = jQuery(this);
-            Virtuemart.checkQuantity(this, me.attr("step"), me.attr("data-errStr"));
-        };
 
         plus
             .off('click', Virtuemart.incrQuantity)
@@ -204,11 +208,10 @@ Virtuemart.product = function(carts) {
             .on('change', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
 
         quantity
-            .off('keyup', Virtuemart.eventsetproducttype)
-            .on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype)
-            .off('change submit', quantityErrorAlert)
-            .on('change submit', quantityErrorAlert);
-
+            .off('click blur submit', Virtuemart.quantityErrorAlert)
+            .on('click blur submit', Virtuemart.quantityErrorAlert)
+			.off('keyup', Virtuemart.eventsetproducttype)
+			.on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
 
         this.action ="#";
         //addtocart = cart.find('input[name="addtocart"]');
