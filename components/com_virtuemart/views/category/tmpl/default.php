@@ -62,7 +62,7 @@ if (!empty($this->keyword)) {
 
 		<!--BEGIN Search Box -->
 		<div class="virtuemart_search">
-			<?php echo $this->searchcustom ?>
+			<?php echo $this->searchCustomList ?>
 			<br/>
 			<?php echo $this->searchCustomValues ?>
 			<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>

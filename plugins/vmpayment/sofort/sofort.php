@@ -381,11 +381,19 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$sofortLib_Notification = new SofortLib_Notification();
 		$transactionId = $sofortLib_Notification->getNotification();
 
+		if($sofortLib_Notification->isError()){
+			$this->debugLog('SOFORT notification return Error '.$sofortLib_Notification->getError(),'plgVmOnPaymentNotification', 'error');
+		}
 		//no valid parameters/xml
-		if (empty($transactionId) || $sofortLib_Notification->isError()) {
+		if (empty($transactionId)) {
 			$this->debugLog('no transaction ID for order number'. $order_number,'plgVmOnPaymentNotification', 'error');
+
+		}
+
+		if (empty($transactionId) || $sofortLib_Notification->isError()) {
 			return FALSE;
 		}
+
 		$this->debugLog( $transactionId, 'plgVmOnPaymentNotification Transaction ID ','debug');
 
 		$sofortLib_TransactionData = new SofortLib_TransactionData(trim($this->_currentMethod->configuration_key));

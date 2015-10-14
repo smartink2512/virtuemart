@@ -27,7 +27,6 @@ if (!class_exists('VmView'))
  * Product details
  *
  * @package VirtueMart
- * @author RolandD
  * @author Max Milbers
  */
 class VirtueMartViewProductdetails extends VmView {
@@ -146,17 +145,16 @@ class VirtueMartViewProductdetails extends VmView {
 
 
 			if (isset($product->min_order_level) && (int) $product->min_order_level > 0) {
-				$min_order_level = $product->min_order_level;
+				$this->min_order_level = $product->min_order_level;
 			} else {
-				$min_order_level = 1;
+				$this->min_order_level = 1;
 			}
-			$this->assignRef('min_order_level', $min_order_level);
+
 			if (isset($product->step_order_level) && (int) $product->step_order_level > 0) {
-				$step_order_level = $product->step_order_level;
+				$this->step_order_level = $product->step_order_level;
 			} else {
-				$step_order_level = 1;
+				$this->step_order_level = 1;
 			}
-			$this->assignRef('step_order_level', $step_order_level);
 
 			// Load the neighbours
 			if (VmConfig::get('product_navigation', 1)) {

@@ -186,7 +186,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->search_type = vRequest::getVar ('search_type', '');
 
-		$this->searchcustoms = vRequest::getInt ('customfields', false, true);
+		$this->searchcustoms = vRequest::getVar ('customfields', false, true);
 
 		$this->searchplugin = vRequest::getInt ('custom_parent_id', 0);
 
@@ -309,7 +309,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-// 		vmdebug('my $this->searchcustoms ',$this->searchcustoms);
+
 		if (!empty($this->searchcustoms)) {
 			$joinCustom = TRUE;
 			foreach ($this->searchcustoms as $key => $searchcustom) {
@@ -420,47 +420,51 @@ class VirtueMartModelProduct extends VmModel {
 					$where[] = ' p.`product_special`="1" '; // TODO Change  to  a  individual button
 					$orderBy = 'ORDER BY RAND()';
 				} else {
-					$orderBy = 'ORDER BY p.`product_special` '.$filterOrderDir.',`virtuemart_product_id` '.$filterOrderDir;
+					$orderBy = 'ORDER BY p.`product_special` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
 				}
 				break;
 			case 'category_name':
-				$orderBy = ' ORDER BY `category_name` '.$filterOrderDir;
+				$orderBy = ' ORDER BY `category_name` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
 				$joinCategory = TRUE;
 				$joinCatLang = true;
 				break;
 			case 'category_description':
-				$orderBy = ' ORDER BY `category_description` '.$filterOrderDir;
+				$orderBy = ' ORDER BY `category_description` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
 				$joinCategory = TRUE;
 				$joinCatLang = true;
 				break;
 			case 'mf_name':
 			case '`l`.mf_name':
-				$orderBy = ' ORDER BY `mf_name` '.$filterOrderDir.',`virtuemart_product_id` '.$filterOrderDir;
+				$orderBy = ' ORDER BY `mf_name` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
 				$joinMf = TRUE;
 				$joinMfLang = true;
 				break;
 			case 'ordering':
 			case 'pc.ordering':
-				$orderBy = ' ORDER BY `pc`.`ordering` '.$filterOrderDir;
+				$orderBy = ' ORDER BY `pc`.`ordering` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
 				$joinCategory = TRUE;
 				break;
 			case 'pc.ordering,product_name':
-				$orderBy = ' ORDER BY `pc`.`ordering` '.$filterOrderDir.',`product_name` '.$filterOrderDir;
+				$orderBy = ' ORDER BY `pc`.`ordering` '.$filterOrderDir.', `product_name` '.$filterOrderDir;
 				$joinCategory = TRUE;
 				$joinLang = true;
 				break;
 			case 'product_price':
-				$orderBy = ' ORDER BY `product_price` '.$filterOrderDir.',`virtuemart_product_id` '.$filterOrderDir;
+				$orderBy = ' ORDER BY `product_price` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
 				$ff_select_price = ' , IF(pp.override, pp.product_override_price, pp.product_price) as product_price ';
 				$joinPrice = TRUE;
 				break;
 			case 'created_on':
 			case '`p`.created_on':
-				$orderBy = ' ORDER BY p.`created_on` '.$filterOrderDir.',`product_name` '.$filterOrderDir;
+				$orderBy = ' ORDER BY p.`created_on` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
 				break;
 			default;
 				if (!empty($this->filter_order)) {
-					$orderBy = ' ORDER BY '.$this->filter_order.' ' . $filterOrderDir . ' ';
+					$orderBy = ' ORDER BY '.$this->filter_order.' ' . $filterOrderDir ;
+					if($this->filter_order!='virtuemart_product_id'){
+						$orderBy .= ', `virtuemart_product_id` '.$filterOrderDir;
+					}
+
 				}
 				break;
 		}
@@ -478,13 +482,13 @@ class VirtueMartModelProduct extends VmModel {
 					$orderBy = 'ORDER BY RAND()';
 					break;
 				case 'latest':
-					$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '` DESC';
+					$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '` DESC, `virtuemart_product_id` DESC';;
 					break;
 				case 'random':
 					$orderBy = ' ORDER BY RAND() '; //LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 					break;
 				case 'topten':
-					$orderBy = ' ORDER BY p.`product_sales` DESC'; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+					$orderBy = ' ORDER BY p.`product_sales` DESC, `virtuemart_product_id` DESC'; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 					$joinPrice = true;
 					$where[] = 'pp.`product_price`>"0.0" ';
 				break;
@@ -1546,7 +1550,7 @@ class VirtueMartModelProduct extends VmModel {
 		$oldDir = $this->filter_order_Dir;
 
 
-		if($this->filter_order_Dir=='DESC'){
+		if($this->filter_order_Dir=='ASC'){
 			$direction = 'DESC';
 			$op = '<=';
 		} else {
@@ -1581,7 +1585,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 				$orderByNameMain = trim(str_replace('`','',$orderByNameMain));
-				vmdebug('my $orderByNameMain', $orderByNameMain);
+
 				if($orderByNameMain=='product_price'){
 					if(isset($product->prices['product_price'])){
 						$product->product_price = $product->prices['product_price'];
@@ -1609,14 +1613,19 @@ class VirtueMartModelProduct extends VmModel {
 
 			$selectLang = ' `l`.`product_name`';
 
-			$q = 'SELECT p.`virtuemart_product_id`,'.$selectLang.' FROM `#__virtuemart_products` as p';
+			$q = 'SELECT p.`virtuemart_product_id`,'.$selectLang.','.$whereorderByName.' FROM `#__virtuemart_products` as p';
 
 			$joinT = '';
 			if(is_array($queryArray[1])){
 				$joinT = implode('',$queryArray[1]);
 			}
 
-			$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
+			/*if(strpos($orderByName,'virtuemart_product_id')!==false){
+				$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`'.$op.'"'.$product->virtuemart_product_id.'" ';
+			} else {*/
+				$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
+			//}
+
 
 			$alreadyFound = '';
 			foreach ($neighbors as &$neighbor) {
@@ -1624,7 +1633,7 @@ class VirtueMartModelProduct extends VmModel {
 				if(!empty($alreadyFound)) $alreadyFound = 'AND p.`virtuemart_product_id`!="'.$alreadyFound.'"';
 				$qm = $alreadyFound.' AND '.$whereorderByName.' '.$op.' "'.$orderByValue.'"  ORDER BY '.$orderByName.' LIMIT 1';
 				$db->setQuery ($q.$qm);
-				//vmdebug('getneighbors '.$q.$qm);
+				vmdebug('getneighbors '.$q.$qm);
 				if ($result = $db->loadAssocList ()) {
 					$neighbor = $result;
 					$alreadyFound = $result[0]['virtuemart_product_id'];

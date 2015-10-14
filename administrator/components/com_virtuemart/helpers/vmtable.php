@@ -1789,7 +1789,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
 
-		$cid = vRequest::getInt($this->_pkeyForm,vRequest::getInt($this->_cidName,false));
+		$cid = vRequest::getInt($this->_pkeyForm,vRequest::getInt($this->_pkey,false));
+
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {

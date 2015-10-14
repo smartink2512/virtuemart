@@ -91,16 +91,20 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		$layout = vRequest::getCmd('layout','edit');
 
-
 		if($cart->_fromCart or $cart->getInCheckOut()){
-			vmdebug('saveUser _fromCart',(int)$cart->_fromCart);
+
 			$msg = $this->saveData($cart);
 			$task = '';
-			if ($cart->getInCheckOut()){
-				$task = '&task=checkout';
-				vmdebug('saveUser InCheckOut',(int)$cart->_fromCart);
+			vmdebug('saveUser _fromCart',(int)$cart->_fromCart,(int)$msg);
+			if(!$msg){
+				$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'.$task, FALSE) , $msg);
+			} else {
+				if ($cart->getInCheckOut()){
+					$task = '&task=checkout';
+
+				}
+				$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) , $msg);
 			}
-			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) , $msg);
 		} else {
 			$msg = $this->saveData(false);
 			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
@@ -130,7 +134,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		$mainframe = JFactory::getApplication();
 
-		$msg = '';
+		$msg = false;
 		$data = vRequest::getPost(FILTER_SANITIZE_STRING);
 		$register = isset($_REQUEST['register']);
 
@@ -170,6 +174,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		if($data['address_type'] == 'ST' and !$currentUser->guest){
 			$ret = $userModel->storeAddress($data);
+			$msg = (is_array($ret)) ? $ret['message'] : $ret;
 			if($cartObj and !empty($ret)){
 				$cartObj->selected_shipto = $ret;
 				$cartObj->setCartIntoSession();
@@ -215,11 +220,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 					$session = JFactory::getSession();
 					$session->set('user', $current);
 				}
+				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 			}
 
-
 			if($currentUser->guest==1 and ($register or !$cartObj )){
-				$msg = (is_array($ret)) ? $ret['message'] : $ret;
+
 				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );
 
@@ -235,8 +240,12 @@ class VirtueMartControllerUser extends JControllerLegacy
 				}
 			}
 		}
-
-		return $msg;
+		
+		if(isset($ret['success'])){
+			return $ret['success'];
+		} else {
+			return $msg;
+		}
 	}
 
 

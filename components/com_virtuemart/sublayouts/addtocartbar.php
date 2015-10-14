@@ -38,6 +38,14 @@ if(!empty($product->min_order_level) and $init<$product->min_order_level){
 $step=1;
 if (!empty($product->step_order_level)){
 	$step=$product->step_order_level;
+	if(!empty($init)){
+		if($init<$step){
+			$init = $step;
+		} else {
+			$init = ceil($init/$step) * $step;
+
+		}
+	}
 	if(empty($product->min_order_level) and !isset($viewData['init'])){
 		$init = $step;
 	}

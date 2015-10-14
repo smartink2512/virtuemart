@@ -97,7 +97,7 @@ jQuery(function($) {
 			}
 			carturlcmp += glue+urlSuf;
 		}
-		console.log('Virtuemart.updForm url',event);
+
 		cartform.submit(function() {
 			jQuery(this).vm2front("startVmLoading");
 			if(Virtuemart.isUpdatingContent) return false;

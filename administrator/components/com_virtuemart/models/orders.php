@@ -223,10 +223,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
     product_final_price, product_basePriceWithTax, product_discountedPriceWithoutTax, product_priceWithoutTax, product_subtotal_with_tax, product_subtotal_discount, product_tax, product_attribute, order_status, p.product_available_date, p.product_availability,
     intnotes, virtuemart_category_id, p.product_mpn
    FROM (#__virtuemart_order_items i
-   LEFT JOIN #__virtuemart_products p
-   ON p.virtuemart_product_id = i.virtuemart_product_id)
-                        LEFT JOIN #__virtuemart_product_categories c
-                        ON p.virtuemart_product_id = c.virtuemart_product_id
+   		LEFT JOIN #__virtuemart_products p
+   		ON p.virtuemart_product_id = i.virtuemart_product_id)
+   LEFT JOIN #__virtuemart_product_categories c
+   ON p.virtuemart_product_id = c.virtuemart_product_id
    WHERE `virtuemart_order_id`="'.$virtuemart_order_id.'" group by `virtuemart_order_item_id`';
 //group by `virtuemart_order_id`'; Why ever we added this, it makes trouble, only one order item is shown then.
 // without group by we get the product 3 times, when it is in 3 categories and similar, so we need a group by
@@ -1803,6 +1803,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if (!$item->load($orderLineId)) {
 			return false;
 		}
+
+		$this->handleStockAfterStatusChangedPerProduct('X', $item->order_status, $item,$item->product_quantity);
+
 		//TODO Why should the stock change, when the order is deleted? Paypal? Valerie?
 		if ($item->delete($orderLineId)) {
 			return true;
@@ -1824,6 +1827,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$table = $this->getTable($this->_maintablename);
 
 		foreach($ids as $id) {
+			$order = $this->getOrder($id);
+
+			if(!empty($order['items'])){
+				foreach($order['items'] as $it){
+					$this->removeOrderLineItem($it);
+				}
+			}
 
 			$this->removeOrderItems($id);
 

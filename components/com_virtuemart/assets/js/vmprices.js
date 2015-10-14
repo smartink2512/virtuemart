@@ -206,8 +206,8 @@ Virtuemart.product = function(carts) {
         quantity
             .off('keyup', Virtuemart.eventsetproducttype)
             .on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype)
-            .off('blur click change submit', quantityErrorAlert)
-            .on('blur click change submit', quantityErrorAlert);
+            .off('change submit', quantityErrorAlert)
+            .on('change submit', quantityErrorAlert);
 
 
         this.action ="#";

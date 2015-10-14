@@ -66,6 +66,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 			'payment_currency'            => 'char(3)',
 			'email_currency'              => 'char(3)',
 			'cost_per_transaction'        => 'decimal(10,2)',
+			'cost_min_transaction'        => 'decimal(10,2)',
 			'cost_percent_total'          => 'decimal(10,2)',
 			'tax_id'                      => 'smallint(1)'
 		);
@@ -104,6 +105,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
 		$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
+		$dbValues['cost_min_transaction'] = $method->cost_min_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $currency_code_3;
 		$dbValues['email_currency'] = $email_currency;

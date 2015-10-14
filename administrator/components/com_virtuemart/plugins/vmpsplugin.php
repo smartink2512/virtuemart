@@ -921,7 +921,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		}
 		$cartPrice = !empty($cart->cartPrices['withTax'])? $cart->cartPrices['withTax']:$cart->cartPrices['salesPrice'];
-		return ($method->cost_per_transaction + ($cartPrice * $method->cost_percent_total * 0.01));
+		$cost_percent = $cartPrice * $method->cost_percent_total * 0.01;
+		$min = !empty($method->cost_min_transaction)? $method->cost_min_transaction: 0.0;
+		return ($method->cost_per_transaction + (($cost_percent < $min) ? $method->cost_min_transaction : $cost_percent));
 	}
 
 
@@ -987,6 +989,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 
 			$cart_prices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
+			$cart_prices[$this->_psType . 'Value'] = ($cart_prices[$this->_psType . 'Value'] < $method->cost_min_transaction) ? $method->cost_min_transaction + $method->cost_per_transaction : $cart_prices[$this->_psType . 'Value'];
 		}
 
 		if(!isset($cart_prices['salesPrice' . $_psType])) $cart_prices['salesPrice' . $_psType] = $cart_prices[$this->_psType . 'Value'];
@@ -1051,6 +1054,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		if(empty($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
+		if(empty($method->cost_min_transaction)) $method->cost_min_transaction = 0.0;
 		if(empty($method->cost_percent_total)) $method->cost_percent_total = 0.0;
 
 		if (count ($taxrules) > 0 ) {
