@@ -154,6 +154,10 @@ Virtuemart.addtocart = function (e){
     if (!e) e = window.event;
     e.preventDefault();
 
+    if(!Virtuemart.quantityErrorAlert(e)){
+        return false;
+    }
+
     if(e.hasOwnProperty('stopSendtocart') && e.stopSendtocart == true){
         return false;
     }
@@ -170,8 +174,11 @@ Virtuemart.addtocart = function (e){
 
 Virtuemart.quantityErrorAlert = function(e) {
 	var me = jQuery(this);
-	e.preventDefault();
-	Virtuemart.checkQuantity(this, me.attr("step"), me.attr("data-errStr"));
+    e.preventDefault();
+	if(me.is('input')){
+        return Virtuemart.checkQuantity(this, me.attr("step"), me.attr("data-errStr"));
+	}
+	return true;
 };
 
 Virtuemart.product = function(carts) {
@@ -185,11 +192,10 @@ Virtuemart.product = function(carts) {
 		radio = cart.find('input:radio:not(.no-vm-bind)'),
 		virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 		quantity = cart.find('.quantity-input');
-
 		var Ste = parseInt(quantityInput.attr("step"));
 		//Fallback for layouts lower than 2.0.18b
 		if(isNaN(Ste)) { Ste = 1; }
-
+        this.action ="#";
 
         plus
             .off('click', Virtuemart.incrQuantity)
@@ -213,12 +219,12 @@ Virtuemart.product = function(carts) {
 			.off('keyup', Virtuemart.eventsetproducttype)
 			.on('keyup', {cart:cart,virtuemart_product_id:virtuemart_product_id},Virtuemart.eventsetproducttype);
 
-        this.action ="#";
-        //addtocart = cart.find('input[name="addtocart"]');
-        addtocart = cart.find('button[name="addtocart"], input[name="addtocart"], a[name="addtocart"]');
 
-        jQuery(addtocart).off('click',Virtuemart.addtocart);
-        jQuery(addtocart).on('click',{cart:cart},Virtuemart.addtocart);
+        var addtocart = cart.find('button[name="addtocart"], input[name="addtocart"], a[name="addtocart"]');
+
+        addtocart
+            .off('click submit',Virtuemart.addtocart)
+            .on('click submit',{cart:cart},Virtuemart.addtocart);
 
 	});
 }
@@ -230,7 +236,7 @@ Virtuemart.checkQuantity = function (obj,step,myStr) {
 
     if (remainder  != 0) {
         //myStr = "'.vmText::_ ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED').'";
-        alert(myStr.replace("%s",step));
+        if(!isNaN(myStr)) alert(myStr.replace("%s",step));
         if(quantity!=remainder && quantity>remainder){
             obj.value = quantity-remainder;
         } else {

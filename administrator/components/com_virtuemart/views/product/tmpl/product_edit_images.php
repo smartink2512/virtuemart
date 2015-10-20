@@ -34,13 +34,13 @@ defined('_JEXEC') or die('Restricted access');
 			//echo '<div width="100px">'.vmText::_('COM_VIRTUEMART_RTB_AD').'</div>';
 			$jlang =JFactory::getLanguage();
 			$tag = $jlang->getTag();
-			$imgUrl = 'http://www.removethebackground.de//images/logoremove.png';
+			$imgUrl = 'http://www.pixelz.com/images/gmail.png';
 			if(strpos($tag,'de')!==FALSE){
-				$url = 'http://www.removethebackground.de/virtuemart.aspx';
+				$url = 'http://de.pixelz.com/virtuemart/';
 			} else if(strpos($tag,'fr')!==FALSE){
-				$url = 'http://www.removethebackground.fr/virtuemart.aspx';
+				$url = 'http://fr.pixelz.com/virtuemart/';
 			} else {
-				$url = 'http://www.removethebackground.co.uk/virtuemart.aspx';
+				$url = 'http://uk.pixelz.com/virtuemart/';
 			}
 			echo '<a href="'.$url.'" target="_blank" alt="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"><img  style="width: 150px;" src="'.$imgUrl.'" title="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"></a>';
 		?>

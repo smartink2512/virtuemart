@@ -495,7 +495,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 
 		//Small ugly hack to make registering optional //do we still need that? YES !  notice by Max Milbers
-		if($layoutName !='edit' and $register and $type == 'BT'  and VmConfig::get('oncheckout_show_register',1) ){
+		if($register and $type == 'BT' and VmConfig::get('oncheckout_show_register',1) and !VmConfig::get('oncheckout_only_registered',1) ){
 			vmdebug('Going to set core fields unrequired');
 			foreach($userFields as $field){
 				if(in_array($field->name,$corefields)){
@@ -1108,9 +1108,8 @@ class VirtueMartModelUserfields extends VmModel {
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		$result = $db->loadResult();
-		$error = $db->getErrorMsg();
-		if(!empty($error)){
-			vmError('userfields getIfRequired '.$error,'Programmer used an unknown userfield '.$fieldname);
+		if(empty($result)){
+			vmError('userfields getIfRequired '.$q,'Programmer used an unknown userfield '.$fieldname);
 		}
 
 		return $result;

@@ -99,7 +99,7 @@ class TableUserinfos extends VmTableData {
 		if (!empty($this->virtuemart_userinfo_id)) {
 			$this->virtuemart_userinfo_id = (int)$this->virtuemart_userinfo_id;
 
-			if(!vmAccess::manager('core')){
+			if(!vmAccess::manager('user.edit')){
 				$q = "SELECT virtuemart_user_id
 										FROM #__virtuemart_userinfos
 										WHERE virtuemart_userinfo_id = ".$this->virtuemart_userinfo_id;

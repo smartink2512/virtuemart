@@ -329,8 +329,19 @@ class VirtueMartModelProduct extends VmModel {
 
 		if ($virtuemart_category_id > 0) {
 			$joinCategory = TRUE;
-			$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
-			
+			if(true){
+				$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
+			} else {
+				/*GJC add subcat products*/
+				$catmodel = VmModel::getModel ('category');
+				$childcats = $catmodel->getChildCategoryList(1, $virtuemart_category_id,null, null, true);
+				$cats = $virtuemart_category_id;
+				foreach($childcats as $childcat){
+					$cats .= ','.$childcat->virtuemart_category_id;
+				}
+				$joinCategory = TRUE;
+				$where[] = ' `pc`.`virtuemart_category_id` IN ('.$cats.') ';
+			}
 		} else if ($isSite) {
 			if (!VmConfig::get('show_uncat_parent_products',TRUE)) {
 				$joinCategory = TRUE;

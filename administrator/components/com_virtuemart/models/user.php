@@ -66,23 +66,25 @@ class VirtueMartModelUser extends VmModel {
 		//anonymous sets to 0 for a new entry
 		if(empty($user->id)){
 			$userId = 0;
-			//echo($this->_id,'Recognized anonymous case');
+			//vmdebug('Recognized anonymous case');
 		} else {
 			//not anonymous, but no cid means already registered user edit own data
 			if(empty($cid)){
 				$userId = $user->id;
-				// vmdebug('setId setCurrent $user',$user->get('id'));
+				//vmdebug('setId setCurrent $user',$user->get('id'));
 			} else {
 				if($cid != $user->id){
 					$user = JFactory::getUser();
-					if(vmAccess::manager('user')){
+					if(vmAccess::manager(array('user','user.edit'))){
 						$userId = $cid;
+						//vmdebug('setId is Manager',$userId);
 					} else {
 						vmError('Blocked attempt setId '.$cid.' '.$user->id);
 						$userId = $user->id;
 					}
 				}else {
 					$userId = $user->id;
+					//vmdebug('setId setCurrent $user',$user->get('id'));
 				}
 			}
 		}
@@ -236,9 +238,6 @@ class VirtueMartModelUser extends VmModel {
 	public function store(&$data){
 
 		$message = '';
-		$user = '';
-		$newId = 0;
-
 		vRequest::vmCheckToken('Invalid Token, while trying to save user');
 
 		if(empty($data)){
@@ -335,7 +334,7 @@ class VirtueMartModelUser extends VmModel {
 			unset($data['password2']);
 		}
 
-		if(!$user->authorise('core.admin','com_virtuemart')){
+		if(!vmAccess::manager('core')){
 			$whiteDataToBind = array();
 			if(isset($data['name'])) $whiteDataToBind['name'] = $data['name'];
 			if(isset($data['username'])) $whiteDataToBind['username'] = $data['username'];
@@ -344,6 +343,7 @@ class VirtueMartModelUser extends VmModel {
 			if(isset($data['editor'])) $whiteDataToBind['editor'] = $data['editor'];
 			if(isset($data['password'])) $whiteDataToBind['password'] = $data['password'];
 			if(isset($data['password2'])) $whiteDataToBind['password2'] = $data['password2'];
+			unset($data['isRoot']);
 		} else {
 			$whiteDataToBind = $data;
 		}
@@ -555,15 +555,17 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			// Bind the form fields to the table
-			if(!empty($data['virtuemart_shoppergroup_id'])){
-				$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
-				$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
-				$res = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
-				if(!$res){
-					vmError('Set shoppergroup error');
-					$noError = false;
-				}
+			if(!isset($data['virtuemart_shoppergroup_id'])){
+				$data['virtuemart_shoppergroup_id'] = array();
 			}
+			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
+			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+			$res = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+			if(!$res){
+				vmError('Set shoppergroup error');
+				$noError = false;
+			}
+
 		}
 
 		if($trigger){

@@ -103,9 +103,6 @@ class VirtuemartControllerUser extends VmController {
 		$viewType = $document->getType();
 		$view = $this->getView('user', $viewType);
 
-		$_currentUser = JFactory::getUser();
-// TODO sortout which check is correctt.....
-//		if (!$_currentUser->authorise('administration', 'manage', 'components', 'com_users')) {
 		if (!vmAccess::manager('user.edit')) {
 			$msg = vmText::_('_NOT_AUTH');
 		} else {
@@ -126,6 +123,17 @@ class VirtuemartControllerUser extends VmController {
 			$data['vendor_letter_header_html'] = vRequest::getHtml('vendor_letter_header_html');
 			$data['vendor_letter_footer_html'] = vRequest::getHtml('vendor_letter_footer_html');
 
+			$ids = vRequest::getInt('virtuemart_user_id');
+
+			if($ids){
+				if(is_array($ids) and isset($ids[0])){
+					$model->setId((int)$ids[0]);
+					vmdebug('my user controller set '.(int)$ids[0],$ids);
+				} else{
+					$model->setId((int)$ids);
+					vmdebug('my user controller set '.(int)$ids,$ids);
+				}
+			}
 			$ret=$model->store($data);
 			if(!$ret){
 				$msg = '';

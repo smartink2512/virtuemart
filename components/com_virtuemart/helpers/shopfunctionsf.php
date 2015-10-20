@@ -644,8 +644,14 @@ class shopFunctionsF {
 				$replyTo[0] = $view->orderDetails['details']['BT']->email;
 				$replyTo[1] = $view->orderDetails['details']['BT']->first_name.' '.$view->orderDetails['details']['BT']->last_name;
 			} else {
-				$replyTo[0] = $view->user->email;
-				$replyTo[1] = $view->user->name;
+				if (isset($view->user->email) and $view->user->name) {
+					$replyTo[0] = $view->user->email;
+					$replyTo[1] = $view->user->name;
+				} else {
+					$replyTo[0] = $view->user['email'];
+					$replyTo[1] = $view->user['name'];
+				}
+
 			}
 
 			$mailer->addReplyTo( $replyTo );

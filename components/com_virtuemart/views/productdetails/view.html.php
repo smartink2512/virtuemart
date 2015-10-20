@@ -168,12 +168,12 @@ class VirtueMartViewProductdetails extends VmView {
 				$mans = array();
 				// Gebe die Hersteller aus
 				foreach($this->product->virtuemart_manufacturer_id as $manufacturer_id) {
-
-					$mans[] = $manModel->getManufacturer( $manufacturer_id );
+					$manufacturer = $manModel->getManufacturer( $manufacturer_id );
+					$manModel->addImages($manufacturer, 1);
+					$mans[]=$manufacturer;
 				}
 				$this->product->manufacturers = $mans;
 			}
-
 			// Load the category
 			$category_model = VmModel::getModel('category');
 

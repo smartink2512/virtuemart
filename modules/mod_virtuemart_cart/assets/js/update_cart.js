@@ -1,10 +1,13 @@
-(function($){
-	$.fn.customUpdateVirtueMartCartModule = function(el, options){
+if (typeof Virtuemart === "undefined")
+	Virtuemart = {};
+
+jQuery(function($) {
+	Virtuemart.customUpdateVirtueMartCartModule = function(el, options){
 		var base 	= this;
 		var $this	= $(this);
 		base.$el 	= $(".vmCartModule");
 
-		base.options 	= $.extend({}, $.fn.customUpdateVirtueMartCartModule.defaults, options);		
+		base.options 	= $.extend({}, Virtuemart.customUpdateVirtueMartCartModule.defaults, options);
 			
 		base.init = function(){
 			$.ajaxSetup({ cache: false })
@@ -31,18 +34,13 @@
 		base.init();
 	};
 	// Definition Of Defaults
-	$.fn.customUpdateVirtueMartCartModule.defaults = {
+	Virtuemart.customUpdateVirtueMartCartModule.defaults = {
 		name1: 'value1'
 	};
 
-})(jQuery);
+});
 
 jQuery(document).ready(function( $ ) {
-	$("body").live("updateVirtueMartCartModule", function(e) {
-		$().customUpdateVirtueMartCartModule();
-	});
-});
-jQuery( document ).ready(function( $ ) {
-// Code that uses jQuery's $ can follow here.
-	
+	jQuery(document).off("updateVirtueMartCartModule","body",Virtuemart.customUpdateVirtueMartCartModule);
+	jQuery(document).on("updateVirtueMartCartModule","body",Virtuemart.customUpdateVirtueMartCartModule);
 });

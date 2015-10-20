@@ -1,6 +1,5 @@
 <?php
 /**
- *TODO Improve the CSS , ADD CATCHA ?
  * Show the form Ask a Question
  *
  * @package	VirtueMart
@@ -35,7 +34,7 @@ vmJsApi::addJScript('askform','
 
 $vendorModel = VmModel::getModel ('vendor');
 $this->vendor = $vendorModel->getVendor ($this->product->virtuemart_vendor_id);
-
+$ask_comment="";
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo vmText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );

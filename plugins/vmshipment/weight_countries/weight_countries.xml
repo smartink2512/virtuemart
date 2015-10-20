@@ -23,7 +23,7 @@
                         label="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS"
                        size="40"
                        default="" hide_default="1" hide_none="true"
-                       stripext="0" exclude="index.html" />
+                       stripext="0" exclude="index.html"
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS_DESC"/>
             </fieldset>
             <fieldset name="restrictions">

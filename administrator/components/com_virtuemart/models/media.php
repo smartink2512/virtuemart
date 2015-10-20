@@ -356,7 +356,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		//set the relations
 		$table = $this->getTable($type.'_medias');
-		vmdebug('my data before storing media',$data);
+		//vmdebug('my data before storing media',$data);
 		// Bind the form fields to the country table
 		$table->bindChecknStore($data);
 
