@@ -48,7 +48,12 @@ class SofortLib_Notification extends SofortLib_Abstract {
 	 */
 	public function getNotification($source = 'php://input') {
 		$data = file_get_contents($source);
-		
+		if (empty($data)) {
+			$error = error_get_last();
+			$this->log(__CLASS__.' <- '. $error['message']);
+			$this->errors['error']['message'] = 'file_get_contents of '.$source.' returned NULL';
+			return false;
+		}
 		//we don't really need a huge parser, simply extract the transaction-id
 		if (!preg_match('#<transaction>([0-9a-z-]+)</transaction>#i', $data, $matches)) {
 			$this->log(__CLASS__.' <- '.$data);

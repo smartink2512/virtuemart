@@ -89,7 +89,11 @@
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </field>
-
+        <field name="sofort_log" type="radio" default="0" label="VMPAYMENT_SOFORT_NOTIFICATION_LOG"
+               description="VMPAYMENT_SOFORT_NOTIFICATION_LOG_TIP">
+            <option value="0">COM_VIRTUEMART_NO</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+        </field>
     </fieldset>
     </fields>
     </vmconfig>

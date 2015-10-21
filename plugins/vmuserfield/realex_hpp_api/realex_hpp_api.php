@@ -25,13 +25,14 @@ if (!class_exists('vmUserfieldPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmuserfieldtypeplugin.php');
 }
 define('USERFIELD_REALEX', 1);
+
 class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 
 	var $varsToPush = array();
 
 	const REALEX_FOLDERNAME = "realex_hpp_api";
 
-	function __construct (& $subject, $config) {
+	function __construct(& $subject, $config) {
 
 		parent::__construct($subject, $config);
 
@@ -46,7 +47,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	/**
 	 * @return string
 	 */
-	public function getVmPluginCreateTableSQL () {
+	public function getVmPluginCreateTableSQL() {
 
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "%' . str_replace('#__', '', $this->_tablename) . '"';
@@ -75,23 +76,23 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	/**
 	 * @return array
 	 */
-	function getTableSQLFields () {
+	function getTableSQLFields() {
 
 		$SQLfields = array(
-			'id'                       => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
-			'virtuemart_user_id'       => 'int(1) UNSIGNED',
-			'merchant_id'              => 'varchar(128)',
+			'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+			'virtuemart_user_id' => 'int(1) UNSIGNED',
+			'merchant_id' => 'varchar(128)',
 			// Realvault CCs are associated with a Merchant ID and not payment method
-			'realex_hpp_api_saved_pmt_type'    => 'varchar(20)',
-			'realex_hpp_api_saved_pmt_ref'     => 'char(50)',
-			'realex_hpp_api_saved_pmt_digits'  => 'varchar(128)',
+			'realex_hpp_api_saved_pmt_type' => 'varchar(20)',
+			'realex_hpp_api_saved_pmt_ref' => 'char(50)',
+			'realex_hpp_api_saved_pmt_digits' => 'varchar(128)',
 			'realex_hpp_api_saved_pmt_expdate' => 'varchar(16)',
-			'realex_hpp_api_saved_pmt_name'    => 'char(255)',
+			'realex_hpp_api_saved_pmt_name' => 'char(255)',
 		);
 		return $SQLfields;
 	}
 
-	function plgVmDeclarePluginParamsUserfield ($type, $name, $id, &$data) {
+	function plgVmDeclarePluginParamsUserfield($type, $name, $id, &$data) {
 
 		return $this->declarePluginParams($type, $name, $id, $data);
 	}
@@ -104,9 +105,9 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * @author Valérie Isaksen
 	 *
 	 */
-	function plgVmOnStoreInstallPluginTable ($type, $data) {
+	function plgVmOnStoreInstallPluginTable($type, $data) {
 
-		if($type==$this->_type and !empty($data->name)){
+		if ($type == $this->_type and !empty($data->name)) {
 			return $this->onStoreInstallPluginTable($type, $data->name);
 		} else {
 			return false;
@@ -124,7 +125,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * @author Valérie Isaksen
 	 */
 
-	public function plgVmOnUserfieldDisplay ($_prefix, $field, $userId, &$return) {
+	public function plgVmOnUserfieldDisplay($_prefix, $field, $userId, &$return) {
 
 		if ('plugin' . $this->_name != $field->type) {
 			return;
@@ -137,7 +138,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 
 	}
 
-	public function plgVmOnPaymentDisplay ($fieldtype, $userId, &$storedCreditCards) {
+	public function plgVmOnPaymentDisplay($fieldtype, $userId, &$storedCreditCards) {
 
 		if ('plugin' . $this->_name != $fieldtype) {
 			return;
@@ -148,7 +149,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 
 	}
 
-	public function plgVmPrepareUserfieldDataSave ($fieldType, $fieldName, $post, &$value, $params) {
+	public function plgVmPrepareUserfieldDataSave($fieldType, $fieldName, $post, &$value, $params) {
 
 		if ('plugin' . $this->_name != $fieldType) {
 			return;
@@ -176,7 +177,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * Delete a stored card
 	 * To remove a card from the RealVault system
 	 */
-	function deleteStoredCards ($card_ids) {
+	function deleteStoredCards($card_ids) {
 
 		$db = JFactory::getDBO();
 		foreach ($card_ids as $card_id) {
@@ -194,12 +195,12 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 				$query = 'DELETE FROM `' . $this->_tablename . '` WHERE `id`=' . $card_id . ' AND `virtuemart_user_id`=' . $storedCC['virtuemart_user_id'];
 				$db->setQuery($query);
 				$db->query();
-				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_DELETED', $storedCC['realex_hpp_api_saved_pmt_name'],$storedCC['realex_hpp_api_saved_pmt_digits'], $expDate['mm'], $expDate['yy']));
+				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_DELETED', $storedCC['realex_hpp_api_saved_pmt_name'], $storedCC['realex_hpp_api_saved_pmt_digits'], $expDate['mm'], $expDate['yy']));
 
 			} else {
 				$vendorId = 1;
 				$vendor_link = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $vendorId);
-				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_NOT_DELETED', $storedCC['realex_hpp_api_saved_pmt_name'],$storedCC['realex_hpp_api_saved_pmt_digits'], $expDate['mm'], $expDate['yy'], $vendor_link));
+				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_NOT_DELETED', $storedCC['realex_hpp_api_saved_pmt_name'], $storedCC['realex_hpp_api_saved_pmt_digits'], $expDate['mm'], $expDate['yy'], $vendor_link));
 
 			}
 
@@ -210,7 +211,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * Delete a stored card
 	 * To remove a card from the RealVault system
 	 */
-	function updateStoredCards ($card_ids) {
+	function updateStoredCards($card_ids) {
 		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
 		foreach ($card_ids as $card_id) {
@@ -238,12 +239,12 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 				$query = 'UPDATE  `' . $this->_tablename . '` SET `realex_hpp_api_saved_pmt_name`="' . $storedCC['realex_hpp_api_saved_pmt_name'] . '" , `realex_hpp_api_saved_pmt_expdate`="' . $storedCC['realex_hpp_api_saved_pmt_expdate'] . '" WHERE `id`=' . $card_id . ' AND `virtuemart_user_id`=' . $storedCC['virtuemart_user_id'];
 				$db->setQuery($query);
 				$db->query();
-				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_UPDATED', $storedCC['realex_hpp_api_saved_pmt_name'],$storedCC['realex_hpp_api_saved_pmt_digits'], $updatedMonth, $updatedYear));
+				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_UPDATED', $storedCC['realex_hpp_api_saved_pmt_name'], $storedCC['realex_hpp_api_saved_pmt_digits'], $updatedMonth, $updatedYear));
 
 			} else {
 				$vendorId = 1;
 				$vendor_link = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $vendorId);
-				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_NOT_UPDATED', $storedCC['realex_hpp_api_saved_pmt_name'],$storedCC['realex_hpp_api_saved_pmt_digits'], $updatedMonth, $updatedYear, $vendor_link));
+				vmInfo(vmText::sprintf('VMUSERFIELD_REALEX_HPP_API_CARD_NOT_UPDATED', $storedCC['realex_hpp_api_saved_pmt_name'], $storedCC['realex_hpp_api_saved_pmt_digits'], $updatedMonth, $updatedYear, $vendor_link));
 
 			}
 
@@ -256,14 +257,14 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * @param $expdate
 	 * @return mixed
 	 */
-	function explodeExpDate ($expdate) {
+	function explodeExpDate($expdate) {
 		$date['mm'] = substr($expdate, 0, 2);
 		$date['yy'] = substr($expdate, -2);
 		return $date;
 	}
 
 
-	function onShowUserDisplayUserfield ($userId, $fieldName) {
+	function onShowUserDisplayUserfield($userId, $fieldName) {
 		if ($userId == 0) {
 			return;
 		}
@@ -282,9 +283,9 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 
 			$deleteUpdateAuthorized = true;
 			$html = $this->renderByLayout("creditcardlist", array(
-			                                                     "storedCreditCards"      => $storedCreditCards,
-			                                                     'deleteUpdateAuthorized' => $deleteUpdateAuthorized
-			                                                ));
+				"storedCreditCards" => $storedCreditCards,
+				'deleteUpdateAuthorized' => $deleteUpdateAuthorized
+			));
 		} elseif ($view == 'order') {
 			$userlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $userId, FALSE);
 			$html = JHTML::_('link', JRoute::_($userlink, FALSE), JText::_('VMUSERFIELD_REALEX_HPP_API_MANAGE_CARDS'), array('title' => JText::_('VMUSERFIELD_REALEX_HPP_API_MANAGE_CARDS')));
@@ -294,7 +295,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 		return $html;
 	}
 
-	private function getStoredCreditCards ($userId) {
+	private function getStoredCreditCards($userId) {
 		if (!($storedCreditCards = $this->_getInternalData($userId))) {
 			return '';
 		}
@@ -307,7 +308,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * check if the expired Date is ok
 	 * @param $storedCreditCards
 	 */
-	function isValidExpiredDate ($creditCards) {
+	function isValidExpiredDate($creditCards) {
 		if (!class_exists('Creditcard')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
 		}
@@ -324,9 +325,19 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * @param string $order_number
 	 * @return mixed|string
 	 */
-	function _getInternalData ($userId) {
+	function _getInternalData($userId) {
 
 		$db = JFactory::getDBO();
+
+		$prefix = $db->getPrefix();
+		$query = 'SHOW TABLES LIKE "' . str_replace('#__', $prefix, $this->_tablename) . '"';
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		if (!$result) {
+			return NULL;
+		}
+
 		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
 		$q .= ' `virtuemart_user_id` = "' . $userId . '"';
 		$q .= ' ORDER BY `modified_on` DESC ';
@@ -341,7 +352,7 @@ class plgVmUserfieldRealex_hpp_api extends vmUserfieldPlugin {
 	 * @param string $order_number
 	 * @return mixed|string
 	 */
-	function getStoredCCInfo ($card_id) {
+	function getStoredCCInfo($card_id) {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` ';

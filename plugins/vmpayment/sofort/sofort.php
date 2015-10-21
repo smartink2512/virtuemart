@@ -158,12 +158,13 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 		}
 		$sofort = new SofortLib_Multipay(trim($this->_currentMethod->configuration_key));
+		$this->sofortLog($sofort);
 		$sofort->setVersion(self::RELEASE);
 		$sofort->setAmount($totalInPaymentCurrency['value'], $currency_code_3);
 		$sofort->setReason($order['details']['BT']->order_number);
 		$sofort->setSuccessUrl(self::getSuccessUrl($order));
 		$sofort->setAbortUrl(self::getCancelUrl($order));
-		$sofort->setNotificationUrl(self::getNotificationUrl($security, $order['details']['BT']->order_number));
+		$sofort->setNotificationUrl(self::getNotificationUrl($security, $order));
 		$sofort->setSofortueberweisung();
 		$sofort->setSofortueberweisungCustomerprotection($this->_currentMethod->buyer_protection);
 
@@ -357,6 +358,15 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
+		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
+
+		//$this->_debug=true;
+		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
+			return FALSE;
+		}
 		$order_number = vRequest::getString('on', '');
 		if (empty($order_number)) {
 			return FALSE;
@@ -369,16 +379,15 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		$this->debugLog('OK','plgVmOnPaymentNotification', 'debug');
 
-		$this->_currentMethod = $this->getVmPluginMethod($payments[0]->virtuemart_paymentmethod_id);
-		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
-			return FALSE;
-		}
+
 		if (!class_exists('SofortLib')) {
 			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 
 		}
 
 		$sofortLib_Notification = new SofortLib_Notification();
+		$this->sofortLog($sofortLib_Notification);
+
 		$transactionId = $sofortLib_Notification->getNotification();
 
 		if($sofortLib_Notification->isError()){
@@ -397,6 +406,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$this->debugLog( $transactionId, 'plgVmOnPaymentNotification Transaction ID ','debug');
 
 		$sofortLib_TransactionData = new SofortLib_TransactionData(trim($this->_currentMethod->configuration_key));
+		$this->sofortLog($sofortLib_TransactionData);
 		$sofortLib_TransactionData->setTransaction($transactionId)->sendRequest();
 
 		// check that secret , and order are identical
@@ -904,9 +914,9 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		return  JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . vRequest::getInt('Itemid').'&lang='.vRequest::getCmd('lang','');
 	}
 
-	static function   getNotificationUrl ($security, $order_number) {
+	static function   getNotificationUrl ($security, $order) {
 
-		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number .'&lang='.vRequest::getCmd('lang','');
+		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&security=" . $security .'&lang='.vRequest::getCmd('lang','');
 	}
 
 	static function getSecurityKey () {
@@ -915,6 +925,29 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		return SofortLib_SofortueberweisungClassic::generatePassword();
 	}
+
+	function sofortLog($sofortLib){
+		if ($this->_currentMethod->sofort_log) {
+			$sofortLib->setLogEnabled();
+			if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+			$logFileName=$this->getLogFileName();
+			$path = JFactory::getConfig()->get('log_path', VMPATH_ROOT . "/log" ).'/'.$logFileName.'.log.php';
+			if (!JFile::exists($path)) {
+				// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
+				// from Joomla log file
+				$head = "#\n";
+				$head .= '#<?php die("Forbidden."); ?>'."\n";
+				$fp = fopen ($logFileName, 'a');
+				if ($fp) {
+					if ($head) {
+						fwrite ($fp,  $head);
+					}
+			}
+			}
+			$sofortLib->setLogfilePath($path) ;
+		}
+	}
+
 }
 
 // No closing tag

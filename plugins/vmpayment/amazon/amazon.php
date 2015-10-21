@@ -1278,7 +1278,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 		} catch (Exception $e) {
 			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
-			return;
+			return NULL;
 		}
 		$this->loadHelperClass('amazonHelperGetAuthorizationDetailsResponse');
 		$amazonHelperGetAuthorizationDetailsResponse = new amazonHelperGetAuthorizationDetailsResponse($getAuthorizationDetailsResponse, $this->_currentMethod);
@@ -1897,6 +1897,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			return false;
 		}
 		$authorizationDetailsResponse = $this->getAuthorizationDetails($amazonAuthorizationId, $order);
+
+		if (!$authorizationDetailsResponse) return NULL; //catch errors
 		$this->loadHelperClass('amazonHelperGetAuthorizationDetailsResponse');
 		$amazonHelperAuthorizationDetailsResponse = new amazonHelperGetAuthorizationDetailsResponse($authorizationDetailsResponse, $this->_currentMethod);
 		$authorizationState = $amazonHelperAuthorizationDetailsResponse->getState();
@@ -1913,7 +1915,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	 */
 	private function canDoCapture ($payments, $order) {
 		$authorizationState = $this->getAuthorizationState($payments, $order);
-
+if (!$authorizationState) return false;
 		if ($authorizationState != 'Open') {
 			vmInfo(vmText::sprintf('VMPAYMENT_AMAZON_UPDATEPAYMENT_CANTDOCAPTURE', $authorizationState));
 			return false;
@@ -3026,7 +3028,7 @@ jQuery().ready(function($) {
 			$client = new OffAmazonPaymentsNotifications_Client();
 			$notification = $client->parseRawMessage($headers, $body);
 		} catch (OffAmazonPaymentsNotifications_InvalidMessageException $e) {
-			$this->debugLog($e->getMessage() . __FUNCTION__ . ' $body', 'error');
+			$this->debugLog($e->getMessage() .' '. __FUNCTION__ . ' $body', 'error');
 			header("HTTP/1.1 503 Service Unavailable");
 			exit(0);
 		}
