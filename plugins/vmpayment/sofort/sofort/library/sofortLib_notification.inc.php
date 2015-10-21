@@ -50,8 +50,8 @@ class SofortLib_Notification extends SofortLib_Abstract {
 		$data = file_get_contents($source);
 		if (empty($data)) {
 			$error = error_get_last();
-			$this->log(__CLASS__.' <- '. $error['message']);
-			$this->errors['error']['message'] = 'file_get_contents of '.$source.' returned NULL';
+			$this->log(__CLASS__.' <- '.var_dump($error,true));
+			$this->errors['error']['message'] = 'file_get_contents in getNotification returned NULL';
 			return false;
 		}
 		//we don't really need a huge parser, simply extract the transaction-id
