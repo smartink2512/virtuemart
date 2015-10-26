@@ -164,6 +164,11 @@ class vRequest {
 		return self::get($name, $default, FILTER_VALIDATE_EMAIL,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 	}
 
+	public static function filterUrl($url){
+		$url = urldecode($url);
+		$url = self::filter($url,FILTER_SANITIZE_URL,'');
+		return self::filter($url,FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW);
+	}
 
 	/**
 	 * Main filter function, called by the others with set Parameters

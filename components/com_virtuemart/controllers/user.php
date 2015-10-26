@@ -97,17 +97,17 @@ class VirtueMartControllerUser extends JControllerLegacy
 			$task = '';
 			vmdebug('saveUser _fromCart',(int)$cart->_fromCart,(int)$msg);
 			if(!$msg){
-				$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'.$task, FALSE) , $msg);
+				$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'.$task, FALSE) );
 			} else {
 				if ($cart->getInCheckOut()){
 					$task = '&task=checkout';
 
 				}
-				$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) , $msg);
+				$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) );
 			}
 		} else {
 			$msg = $this->saveData(false);
-			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
+			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE) );
 		}
 
 	}
@@ -116,7 +116,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		$msg = $this->saveData(false);
 		$layout = 'edit';// vRequest::getCmd('layout','edit');
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE) );
 
 	}
 

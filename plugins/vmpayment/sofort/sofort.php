@@ -152,7 +152,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$security = self::getSecurityKey();
 		$dbValues['security'] = $security;
 
-		$this->debugLog('comes from'.(int)$doRedirect.' order number'.$order['details']['BT']->order_number, "sendTransactionRequest ", 'debug');
+		$this->debugLog('comes from '.(int)$doRedirect.' order number'.$order['details']['BT']->order_number, "sendTransactionRequest ", 'debug');
 
 		if (!class_exists('SofortLib')) {
 			require(VMPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');

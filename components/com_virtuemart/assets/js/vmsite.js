@@ -105,18 +105,30 @@ if (typeof Virtuemart === "undefined")
             if (msg===undefined) {
                 msg='';
             }
-			jQuery("body").addClass("vmLoading");
-			//jQuery("body").fadeIn( 400 );
-			jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
+            Virtuemart.startVmLoading(msg);
         },
         stopVmLoading: function() {
-            if( jQuery("body").hasClass("vmLoading") ){
-              jQuery("body").removeClass("vmLoading");
-              jQuery('div.vmLoadingDiv').remove();
-            }
+			Virtuemart.stopVmLoading();
         }
 
 
+	};
+
+	Virtuemart.startVmLoading = function(e) {
+
+		if (e.data.msg===undefined) {
+			e.data.msg='';
+		}
+		jQuery("body").addClass("vmLoading");
+		//jQuery("body").fadeIn( 400 );
+		jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+e.data.msg+"</div></div>");
+	};
+
+	Virtuemart.stopVmLoading = function() {
+		if( jQuery("body").hasClass("vmLoading") ){
+			jQuery("body").removeClass("vmLoading");
+			jQuery('div.vmLoadingDiv').remove();
+		}
 	};
 
 	$.fn.vm2front = function( method ) {

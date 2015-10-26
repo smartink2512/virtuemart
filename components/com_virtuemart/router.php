@@ -46,6 +46,26 @@ function virtuemartBuildRoute(&$query) {
 	//vmdebug('virtuemartBuildRoute $jmenu',$helper->query,$helper->activeMenu,$helper->menuVmitems);
 	if(isset($query['langswitch'])) unset($query['langswitch']);
 
+
+/*	//a bit hacky, but should work
+	$oLang = VmConfig::$vmlang;
+	$app = JFactory::getApplication();
+	if($l = $app->getUserState('language',false)){
+		vmdebug('hm getUserState',$query);
+	}
+	if(isset($query['language'])){
+		//vmdebug('hm',$query);
+		VmConfig::$vmlang = $query['language'];
+	} else if($l = vRequest::getCmd('language',false)){
+		$alangs = (array)VmConfig::get('active_languages',array());
+		$l = strtolower(strtr($l,'-','_'));
+		if(in_array($l, $alangs)) {
+			vmdebug('hm re',$query);
+			VmConfig::$vmlang = $l;
+		}
+
+	}
+*/
 	if(isset($query['view'])){
 		$view = $query['view'];
 		unset($query['view']);
@@ -284,7 +304,7 @@ function virtuemartBuildRoute(&$query) {
 		default ;
 			$segments[] = $view;
 
-
+			//VmConfig::$vmlang = $oLang;
 	}
 
 
@@ -1121,6 +1141,7 @@ class vmrouterHelper {
 
 		$db = JFactory::getDbo();
 		foreach($links as $link) {
+			$link = vRequest::filterUrl($link);
 			$q = 'SELECT * FROM `#__menu` WHERE `link` LIKE "'. $link .'" and published = "1" and `language` = "'. $jLangTag .'"';
 			$db->setQuery( $q );
 			$items = $db->loadObjectList();

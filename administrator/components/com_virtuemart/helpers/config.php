@@ -1327,9 +1327,10 @@ class vmURI{
 	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
 
 		if(!class_exists('JFilterInput')) require (VMPATH_LIBS.DS.'joomla'.DS.'filter'.DS.'input.php');
-		$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
+		//$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		if($JURIInstance===0)$JURIInstance = JURI::getInstance();
-		return $_filter->clean($JURIInstance->toString($parts));
+		//return $_filter->clean($JURIInstance->toString($parts));
+		return vRequest::filterUrl($JURIInstance->toString($parts));
 	}
 }
 

@@ -260,11 +260,11 @@ Virtuemart.containerSelector = '.productdetails-view';";
 vmJsApi::addJScript('ajaxContent',$j);
 
 $j = "jQuery(document).ready(function($) {
-	jQuery('body').vm2front('stopVmLoading');
-	jQuery('[data-dynamic-update=\"1\"]').on('click change' , function() {
-		jQuery(this).vm2front('startVmLoading');
-	});
-	});";
+	Virtuemart.stopVmLoading();
+	var msg = '';
+	jQuery('a[data-dynamic-update=\"1\"]').off('click', Virtuemart.startVmLoading).on('click', {msg:msg}, Virtuemart.startVmLoading);
+	jQuery('[data-dynamic-update=\"1\"]').off('change', Virtuemart.startVmLoading).on('change', {msg:msg}, Virtuemart.startVmLoading);
+});";
 
 vmJsApi::addJScript('vmPreloader',$j);
 

@@ -341,7 +341,7 @@ class VirtuemartViewCategory extends VmView {
 			if($categoryId!==-1){
 				$link .= '&virtuemart_category_id='.$categoryId;
 			}
-			if($manId!==-1){
+			if($manId!==-1 and !empty($manId)){
 				$link .= '&virtuemart_manufacturer_id='.$manId;
 			}
 

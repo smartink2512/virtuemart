@@ -59,7 +59,9 @@ class VirtuemartControllerMedia extends VmController {
 		$data = array_merge(vRequest::getRequest(),vRequest::get('media'));
 
 		//$data['file_title'] = vRequest::getVar('file_title','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['file_description'] = vRequest::getHtml('media[file_description]','');
+		if(!empty($data['file_description'])){
+			$data['file_description'] = JComponentHelper::filterText($data['file_description']); //vRequest::filter(); vRequest::getHtml('file_description','');
+		}
 
 		/*$data['media_action'] = vRequest::getCmd('media[media_action]');
 		$data['media_attributes'] = vRequest::getCmd('media[media_attributes]');
