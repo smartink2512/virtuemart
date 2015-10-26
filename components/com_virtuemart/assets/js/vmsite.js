@@ -105,23 +105,25 @@ if (typeof Virtuemart === "undefined")
             if (msg===undefined) {
                 msg='';
             }
-            Virtuemart.startVmLoading(msg);
+            var tmp = new Object();
+            tmp.data = new Object();
+			tmp.data.msg===msg;
+            Virtuemart.startVmLoading(tmp);
         },
         stopVmLoading: function() {
 			Virtuemart.stopVmLoading();
         }
 
-
 	};
 
 	Virtuemart.startVmLoading = function(e) {
-
-		if (e.data.msg===undefined) {
-			e.data.msg='';
+		var msg='';
+		if (e.data.msg!==undefined) {
+			msg = e.data.msg;
 		}
 		jQuery("body").addClass("vmLoading");
 		//jQuery("body").fadeIn( 400 );
-		jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+e.data.msg+"</div></div>");
+		jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
 	};
 
 	Virtuemart.stopVmLoading = function() {
