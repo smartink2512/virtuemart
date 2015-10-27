@@ -171,7 +171,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$jlang = JFactory::getLanguage ();
 		$lang = $jlang->getTag ();
 		$langArray = explode ("-", $lang);
-		$lang = strtolower ($langArray[1]);
+		$lang = strtolower ($langArray[0]);
 		$sofort->setLanguageCode($lang);
 
 		$sofort->sendRequest();
@@ -916,7 +916,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 	static function   getNotificationUrl ($security, $order) {
 
-		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&security=" . $security .'&lang='.vRequest::getCmd('lang','');
+		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&security=" . $security .'&lang='.vRequest::getCmd('lang','');
 	}
 
 	static function getSecurityKey () {
