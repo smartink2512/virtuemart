@@ -102,7 +102,7 @@ jQuery(function($) {
 			jQuery(this).vm2front("startVmLoading");
 			if(Virtuemart.isUpdatingContent) return false;
 			Virtuemart.isUpdatingContent = true;
-			console.log('my form submit url',carturlcmp);
+			//console.log('my form submit url',carturlcmp);
 			jQuery.ajax({
 				type: "POST",
 				url: carturlcmp,

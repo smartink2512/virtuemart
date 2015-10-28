@@ -1831,7 +1831,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			if(!empty($order['items'])){
 				foreach($order['items'] as $it){
-					$this->removeOrderLineItem($it);
+					$this->removeOrderLineItem($it->virtuemart_order_item_id);
 				}
 			}
 

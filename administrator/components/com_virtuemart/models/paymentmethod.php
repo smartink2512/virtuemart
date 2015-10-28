@@ -110,17 +110,43 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 * @return object List of calculation rule objects
 	 */
 	public function getPayments($onlyPublished=false, $noLimit=false) {
+
 		$where = array();
 		if ($onlyPublished) {
-			$where[] = ' `#__virtuemart_paymentmethods`.`published` = 1';
+			$where[] = ' `published` = 1';
 		}
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$select = ' * FROM `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ';
-		$joinedTables = ' JOIN `#__virtuemart_paymentmethods`   USING (`virtuemart_paymentmethod_id`) ';
-		$datas =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
+
+		$joins = ' FROM `#__virtuemart_paymentmethods` as i ';
+
+		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			$langFields = array('payment_name','payment_desc');
+
+			$useJLback = false;
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$jDefLang.'` as ljd';
+				$useJLback = true;
+			}
+
+			$select = ' i.*';
+			foreach($langFields as $langField){
+				$expr2 = 'ld.'.$langField;
+				if($useJLback){
+					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+				}
+				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+			}
+			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_paymentmethod_id`)';
+			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l using (`virtuemart_paymentmethod_id`)';
+		} else {
+			$select = ' * ';
+			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l USING (`virtuemart_paymentmethod_id`) ';
+		}
+
+		$datas =$this->exeSortSearchListQuery(0,$select,$joins,$whereString,' ',$this->_getOrdering() );
 
 		if(isset($datas)){
 
@@ -197,7 +223,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
-			//Add a hook here for other shipment methods, checking the data of the choosed plugin
+			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
 			$retValues = $dispatcher->trigger('plgVmOnStoreInstallPaymentPluginTable', array(  $data['payment_jplugin_id']));
 
@@ -251,7 +277,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 	function remove($ids){
 		if(!vmAccess::manager('paymentmethod.delete')){
-			vmWarn('Insufficient permissions to remove shipmentmethod');
+			vmWarn('Insufficient permissions to remove paymentmethod');
 			return false;
 		}
 		return parent::remove($ids);

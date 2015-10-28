@@ -383,9 +383,6 @@ class vmJsApi{
 	}
 
 	static function jDynUpdate() {
-		if (!VmConfig::get ('jdynupdate', TRUE) and !self::isAdmin()) {
-			return FALSE;
-		}
 
 		self::addJScript('dynupdate',false,false);
 		self::addJScript('updDynamicListeners',"

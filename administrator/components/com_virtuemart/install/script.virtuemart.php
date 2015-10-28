@@ -47,6 +47,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 			if(!class_exists('VmConfig')) require_once($this->path .'/helpers/config.php');
 			VmConfig::loadConfig(false,true);
+			if(!class_exists('VmTable')) require_once($this->path .'/helpers/vmtable.php');
+			if(!class_exists('VmModel')) require_once($this->path .'/helpers/vmmodel.php');
 			VmTable::addIncludePath($this->path.DS.'tables');
 			VmModel::addIncludePath($this->path.DS.'models');
 

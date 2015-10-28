@@ -181,7 +181,7 @@ class VirtueMartCustomFieldRenderer {
 						}
 
 						$attribs = array('class'=>'vm-chzn-select cvselection no-vm-bind','data-dynamic-update'=>'1','style'=>'min-width:70px;');
-						if('productdetails' != vRequest::getCmd('view')){
+						if('productdetails' != vRequest::getCmd('view') or !VmConfig::get ('jdynupdate', TRUE)){
 							$attribs['reload'] = '1';
 						}
 

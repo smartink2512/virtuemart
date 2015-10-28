@@ -661,7 +661,7 @@ class GenericTableUpdater extends VmModel{
 			}
 			if (!empty($query)) {
 				$this->_db->setQuery($query);
-				$msg = 'alterTable '.$action.' '.$tablename.'.'.$fieldname.' : ';
+				$msg = 'alterTable '.$action.' '.$tablename.'.'.$fieldname;
 				if(!$this->_db->execute() ){
 					vmError( $msg, $msg.$query );
 				} else {

@@ -249,24 +249,26 @@ $j = 'jQuery(document).ready(function($) {
 //vmJsApi::addJScript('recalcReady',$j);
 
 /** GALT
-	 * Notice for Template Developers!
-	 * Templates must set a Virtuemart.container variable as it takes part in
-	 * dynamic content update.
-	 * This variable points to a topmost element that holds other content.
-	 */
+ * Notice for Template Developers!
+ * Templates must set a Virtuemart.container variable as it takes part in
+ * dynamic content update.
+ * This variable points to a topmost element that holds other content.
+ */
 $j = "Virtuemart.container = jQuery('.productdetails-view');
 Virtuemart.containerSelector = '.productdetails-view';";
 
 vmJsApi::addJScript('ajaxContent',$j);
 
-$j = "jQuery(document).ready(function($) {
+if(VmConfig::get ('jdynupdate', TRUE)){
+	$j = "jQuery(document).ready(function($) {
 	Virtuemart.stopVmLoading();
 	var msg = '';
 	jQuery('a[data-dynamic-update=\"1\"]').off('click', Virtuemart.startVmLoading).on('click', {msg:msg}, Virtuemart.startVmLoading);
 	jQuery('[data-dynamic-update=\"1\"]').off('change', Virtuemart.startVmLoading).on('change', {msg:msg}, Virtuemart.startVmLoading);
 });";
 
-vmJsApi::addJScript('vmPreloader',$j);
+	vmJsApi::addJScript('vmPreloader',$j);
+}
 
 echo vmJsApi::writeJS();
 

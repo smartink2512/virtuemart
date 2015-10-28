@@ -124,7 +124,9 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$html = array();
 		$method_name = $this->_psType . '_name';
+
 		foreach ($this->methods as $method) {
+
 			if ($this->checkConditions ($cart, $method, $cart->cartPrices)) {
 
 				// the price must not be overwritten directly in the cart
@@ -468,10 +470,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		$user = $usermodel->getUser ();
 		$user->shopper_groups = (array)$user->shopper_groups;
 
-		if(empty($vendorId)) $vendorId = 1;
 		$db = JFactory::getDBO ();
 		if(empty($vendorId)) $vendorId = 1;
-		$select = 'SELECT l.*, v.*, ';
+		$select = 'SELECT i.*, ';
 
 		$extPlgTable = '#__extensions';
 		$extField1 = 'extension_id';
@@ -483,33 +484,58 @@ abstract class vmPSPlugin extends vmPlugin {
 		if(!VmConfig::$vmlang){
 			VmConfig::setdbLanguageTag();
 		}
-		$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods_' . VmConfig::$vmlang . '` as l ';
-		$q .= ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS v   USING (`virtuemart_' . $this->_psType . 'method_id`) ';
-		$q .= ' LEFT JOIN `' . $extPlgTable . '` as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';
-		$q .= ' LEFT OUTER JOIN `#__virtuemart_' . $this->_psType . 'method_shoppergroups` AS s ON v.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
-		$q .= ' WHERE v.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
-	    						AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR v.`virtuemart_vendor_id` = "0" OR v.`shared` = "1")
+
+		$joins = array();
+		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			$langFields = array($this->_psType.'_name',$this->_psType.'_desc');
+
+			$useJLback = false;
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'_'.VmConfig::$jDefLang.'` as ljd';
+				$useJLback = true;
+			}
+
+			foreach($langFields as $langField){
+				$expr2 = 'ld.'.$langField;
+				if($useJLback){
+					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+				}
+				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+			}
+			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_'.$this->_psType.'method_id`)';
+			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l using (`virtuemart_'.$this->_psType.'method_id`)';
+		} else {
+			$select .= ', l.* ';
+			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l using (`virtuemart_'.$this->_psType.'method_id`)';
+		}
+
+		$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods' . '` as i ';
+
+		//$joins[] = ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS i USING (`virtuemart_' . $this->_psType . 'method_id`) ';
+		$joins[]= ' LEFT JOIN `' . $extPlgTable . '` as j ON j.`' . $extField1 . '` =  i.`' . $this->_psType . '_jplugin_id` ';
+		$joins[]= ' LEFT OUTER JOIN `#__virtuemart_' . $this->_psType . 'method_shoppergroups` AS s ON i.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
+
+		$q .= implode(' '."\n",$joins);
+		$q .= ' WHERE i.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
+	    						AND  (i.`virtuemart_vendor_id` = "' . $vendorId . '" OR i.`virtuemart_vendor_id` = "0" OR i.`shared` = "1")
 	    						AND  (';
 
 		foreach ($user->shopper_groups as $groups) {
 			$q .= ' s.`virtuemart_shoppergroup_id`= "' . (int)$groups . '" OR';
 		}
-		$q .= ' (s.`virtuemart_shoppergroup_id`) IS NULL ) GROUP BY v.`virtuemart_' . $this->_psType . 'method_id` ORDER BY v.`ordering`';
+		$q .= ' (s.`virtuemart_shoppergroup_id`) IS NULL ) GROUP BY i.`virtuemart_' . $this->_psType . 'method_id` ORDER BY i.`ordering`';
 
 		$db->setQuery ($q);
 
 		$this->methods = $db->loadObjectList ();
 
-		$err = $db->getErrorMsg ();
-		if (!empty($err)) {
-			vmError ('Error reading getPluginMethods ' . $err);
-		}
 		if ($this->methods) {
 			foreach ($this->methods as $method) {
 				VmTable::bindParameterable ($method, $this->_xParams, $this->_varsToPushParam);
 			}
+		} else if($this->methods===false){
+			vmError ('Error reading getPluginMethods ' . $q);
 		}
-		//vmdebug('getPluginMethods',count ($this->methods), $this->_name);
 		return count ($this->methods);
 	}
 

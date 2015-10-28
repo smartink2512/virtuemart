@@ -118,14 +118,36 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 */
 	public function getShipments() {
 
-		$table = '#__extensions';
-		$enable = 'enabled';
-		$ext_id = 'extension_id';
-
 		$whereString = '';
-		$select = ' * FROM `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ';
-		$joinedTables = ' JOIN `#__virtuemart_shipmentmethods`   USING (`virtuemart_shipmentmethod_id`) ';
-		$datas =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
+
+		$joins = ' FROM `#__virtuemart_shipmentmethods` as i ';
+
+		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			$langFields = array('shipment_name','shipment_desc');
+
+			$useJLback = false;
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$jDefLang.'` as ljd';
+				$useJLback = true;
+			}
+
+			$select = ' i.*';
+			foreach($langFields as $langField){
+				$expr2 = 'ld.'.$langField;
+				if($useJLback){
+					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+				}
+				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+			}
+			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_shipmentmethod_id`)';
+			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l using (`virtuemart_shipmentmethod_id`)';
+		} else {
+			$select = ' * ';
+			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l USING (`virtuemart_shipmentmethod_id`) ';
+		}
+
+
+		$datas =$this->exeSortSearchListQuery(0,$select,$joins,$whereString,' ',$this->_getOrdering() );
 
 		if(isset($datas)){
 			if(!class_exists('shopfunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');

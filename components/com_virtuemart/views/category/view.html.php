@@ -131,7 +131,7 @@ class VirtuemartViewCategory extends VmView {
 
 				$this->products = $productModel->getProducts ($ids);
 				//$products = $productModel->getProductsInCategory($this->categoryId);
-				$productModel->addImages($this->products,1);
+				$productModel->addImages($this->products, VmConfig::get('prodimg_browse',1) );
 
 				if ($this->products) {
 					$currency = CurrencyDisplay::getInstance( );

@@ -332,7 +332,7 @@ class VirtuemartControllerOrders extends VmController {
 		$msg = '';
 		$orderId = vRequest::getInt('orderId', '');
 		// TODO $orderLineItem as int ???
-		$orderLineItem = vRequest::getVar('orderLineId', '');
+		$orderLineItem = vRequest::getInt('orderLineId', '');
 
 		$model->removeOrderLineItem($orderLineItem);
 
