@@ -692,6 +692,10 @@ table.cart-summary tr th{
   padding: 6px 2px 3px;
 }
 
+.cart-summary .vm-price-value {
+  white-space: nowrap;
+}
+
 .cart-summary tr td {
   padding: 5px 3px 2px;
 }
