@@ -248,12 +248,17 @@ class VirtueMartCustomFieldRenderer {
 					$parentStock = 0;
 					if($uncatChildren){
 						foreach ($uncatChildren as $k => $child) {
-							if(!isset($child[$customfield->customfield_value])){
+							/*if(!isset($child[$customfield->customfield_value])){
 								vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
-							} else {
+							} else {*/
 
-								$productChild = $productModel->getProduct((int)$child['virtuemart_product_id'],false);
+								$productChild = $productModel->getProduct((int)$child,false);
+
 								if(!$productChild) continue;
+								if(!isset($productChild->{$customfield->customfield_value})){
+									vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
+									continue;
+								}
 								$available = $productChild->product_in_stock - $productChild->product_ordered;
 								if(VmConfig::get('stockhandle','none')=='disableit_children' and $available <= 0){
 									continue;
@@ -265,13 +270,13 @@ class VirtueMartCustomFieldRenderer {
 									$productPrices = $calculator->getProductPrices ($productChild);
 									$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
 								}
-								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value].$priceStr);
-								if($selected==$child['virtuemart_product_id']){
+								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $productChild->virtuemart_product_id), 'text' => $productChild->{$customfield->customfield_value}.$priceStr);
+								if($selected==$child){
 									$selectedFound = true;
 									vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
 								}
 								//vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
-							}
+							//}
 						}
 					}
 

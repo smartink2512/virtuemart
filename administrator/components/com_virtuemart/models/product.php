@@ -2581,12 +2581,10 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 	public function getUncategorizedChildren ($withParent) {
 
-		if (empty($this->_uncategorizedChildren[$this->_id])) {
+		if (!isset($this->_uncategorizedChildren[$this->_id])) {
 
 			//Todo add check for shoppergroup depended product display
-			$q = 'SELECT * FROM `#__virtuemart_products` as p
-				LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as pl
-				USING (`virtuemart_product_id`)
+			$q = 'SELECT `virtuemart_product_id` FROM `#__virtuemart_products` as p
 				LEFT JOIN `#__virtuemart_product_categories` as pc
 				USING (`virtuemart_product_id`) ';
 
@@ -2610,7 +2608,12 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY p.pordering ASC';
 			$db = JFactory::getDbo();
 			$db->setQuery ($q);
-			$this->_uncategorizedChildren[$this->_id] = $db->loadAssocList ();
+			$r = $db->loadColumn();
+			if($r and count($r)>0){
+				$this->_uncategorizedChildren[$this->_id] = $r;
+			} else {
+				$this->_uncategorizedChildren[$this->_id] = array();
+			}
 
 			$err = $db->getErrorMsg ();
 			if (!empty($err)) {

@@ -325,7 +325,7 @@ class VirtueMartViewProductdetails extends VmView {
 			vmJsApi::chosenDropDowns();
 
 //This must be loaded after the customfields are rendered (they may need to overwrite the handlers)
-			if (VmConfig::get ('jdynupdate', TRUE) or self::isAdmin()) {
+			if (VmConfig::get ('jdynupdate', TRUE) or $app->isAdmin()) {
 				vmJsApi::jDynUpdate();
 			}
 
