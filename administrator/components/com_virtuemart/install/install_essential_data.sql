@@ -71,6 +71,90 @@ INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_stat
 (null, 'F', 'COM_VIRTUEMART_ORDER_STATUS_COMPLETED', '', 'R',7, 1),
 (null, 'D', 'COM_VIRTUEMART_ORDER_STATUS_DENIED', '', 'A',8, 1);
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `#__virtuemart_userinfos`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
+  `virtuemart_userinfo_id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
+  `address_type` char(2) NOT NULL DEFAULT '',
+  `address_type_name` varchar(32) NOT NULL DEFAULT '',
+  `company` varchar(64),
+  `title` varchar(32),
+  `last_name` varchar(96),
+  `first_name` varchar(96),
+  `middle_name` varchar(96),
+  `phone_1` varchar(32),
+  `phone_2` varchar(32),
+  `fax` varchar(32),
+  `address_1` varchar(96) NOT NULL DEFAULT '',
+  `address_2` varchar(64),
+  `city` varchar(96) NOT NULL DEFAULT '',
+  `virtuemart_state_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_country_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `zip` varchar(32) NOT NULL DEFAULT '',
+  `agreed` tinyint(1) NOT NULL DEFAULT '0',
+  `tos` tinyint(1) NOT NULL DEFAULT '0',
+  `customer_note` varchar(5000) NOT NULL DEFAULT '',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(1) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(1) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`virtuemart_userinfo_id`),
+  KEY `i_virtuemart_user_id` (`virtuemart_userinfo_id`,`virtuemart_user_id`),
+  KEY `virtuemart_user_id` (`virtuemart_user_id`,`address_type`),
+  KEY `address_type` (`address_type`),
+  KEY `address_type_name` (`address_type_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Customer Information, BT = BillTo and ST = ShipTo';
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `#__virtuemart_order_userinfos`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
+  `virtuemart_order_userinfo_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_order_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
+  `address_type` char(2),
+  `address_type_name` varchar(32),
+  `company` varchar(64),
+  `title` varchar(32),
+  `last_name` varchar(96),
+  `first_name` varchar(96),
+  `middle_name` varchar(96),
+  `phone_1` varchar(32),
+  `phone_2` varchar(32),
+  `fax` varchar(32),
+  `address_1` varchar(96) NOT NULL DEFAULT '',
+  `address_2` varchar(64) ,
+  `city` varchar(96) NOT NULL DEFAULT '',
+  `virtuemart_state_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_country_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `zip` varchar(32) NOT NULL DEFAULT '',
+  `email` varchar(128),
+  `agreed` tinyint(1) NOT NULL DEFAULT '0',
+  `tos` tinyint(1) NOT NULL DEFAULT '0',
+  `customer_note` varchar(5000)  NOT NULL DEFAULT '',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(1) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(1) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`virtuemart_order_userinfo_id`),
+  KEY `virtuemart_order_id` (`virtuemart_order_id`),
+  KEY `virtuemart_user_id` (`virtuemart_user_id`,`address_type`),
+  KEY `address_type` (`address_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Stores the BillTo and ShipTo Information at order time' AUTO_INCREMENT=1 ;
+
+
+
+
 --
 -- Dumping data for table `#__virtuemart_userfields`
 --

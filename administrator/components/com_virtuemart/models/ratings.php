@@ -45,14 +45,25 @@ class VirtueMartModelRatings extends VmModel {
 
 		$layout = vRequest::getString('layout','default');
 		$task = vRequest::getCmd('task','default');
+		vmdebug('my layout',$layout,$task);
 		if($layout == 'list_reviews' or $task == 'listreviews'){
 			vmdebug('in review list');
-			$myarray = array('pr.created_on','virtuemart_rating_review_id','vote');
-			$this->removevalidOrderingFieldName('created_on');
-			$this->removevalidOrderingFieldName('product_name');
-			$this->removevalidOrderingFieldName('virtuemart_rating_id');
-			$this->removevalidOrderingFieldName('rating');
-			$this->_selectedOrdering = 'pr.created_on';
+			if($task == 'add'){
+				$myarray = array('r.created_on','virtuemart_rating_review_id','vote');
+				$this->removevalidOrderingFieldName('created_on');
+				$this->removevalidOrderingFieldName('product_name');
+				$this->removevalidOrderingFieldName('virtuemart_rating_id');
+				$this->removevalidOrderingFieldName('rating');
+				$this->_selectedOrdering = 'r.created_on';
+			} else {
+				$myarray = array('pr.created_on','virtuemart_rating_review_id','vote');
+				$this->removevalidOrderingFieldName('created_on');
+				$this->removevalidOrderingFieldName('product_name');
+				$this->removevalidOrderingFieldName('virtuemart_rating_id');
+				$this->removevalidOrderingFieldName('rating');
+				$this->_selectedOrdering = 'pr.created_on';
+			}
+
 		} else {
 			$myarray = array('created_on','product_name','virtuemart_rating_id');
 			$this->removevalidOrderingFieldName('pr.created_on');

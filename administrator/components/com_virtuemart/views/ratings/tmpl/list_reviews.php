@@ -60,7 +60,7 @@ $option = vRequest::getCmd('option');
 	</thead>
 	<tbody>
 	<?php
-	if (count($this->reviewslist) > 0) {
+	if (!empty($this->reviewslist) and count($this->reviewslist) > 0) {
 		$i = 2;
 		//$k = 0;
 		$keyword = vRequest::getCmd('keyword');

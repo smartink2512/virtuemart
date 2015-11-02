@@ -845,7 +845,7 @@ class VmModel extends vObject{
 		if($err=$db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
- 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q '.str_replace('#__',$db->getPrefix(),$db->getQuery()) );
+ 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q '.str_replace('#__',$db->getPrefix(),$db->getQuery()) );
 
 		if($this->_withCount){
 

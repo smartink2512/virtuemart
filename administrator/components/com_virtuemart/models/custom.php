@@ -142,7 +142,6 @@ class VirtueMartModelCustom extends VmModel {
 			if (!empty($data->custom_parent_id)){
 				$g = $this->getCustom($data->custom_parent_id);
 				$data->group_title = $g->custom_title;
-				vmdebug('My group title '.$data->group_title);
 			}
 			else {
 				$data->group_title =  '-' ;
