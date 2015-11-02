@@ -675,7 +675,7 @@ class GenericTableUpdater extends VmModel{
 		$this->_db->setQuery($q);
 		$exEngine = $this->_db->loadResult();
 
-		if(!empty($engine) and strtoupper($exEngine)!=strtoupper($engine)){
+		if(VmConfig::get('updEngine',true) and !empty($engine) and strtoupper($exEngine)!=strtoupper($engine)){
 			$q = 'ALTER TABLE '.$tablename.' ENGINE='.$engine;
 			$this->_db->setQuery($q);
 			$this->_db->execute();

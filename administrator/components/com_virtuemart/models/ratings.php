@@ -69,7 +69,7 @@ class VirtueMartModelRatings extends VmModel {
      */
     public function getRatings() {
 
-     	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l`
+     	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `pr`
      			USING (`virtuemart_product_id`) ';
 
 		$whereString = '';
@@ -81,7 +81,7 @@ class VirtueMartModelRatings extends VmModel {
 			}
 		}
 
-     	$this->_data = $this->exeSortSearchListQuery(0,' r.*,l.`product_name` ',$tables,$whereString,'',$this->_getOrdering());
+     	$this->_data = $this->exeSortSearchListQuery(0,' r.*,pr.`product_name` ',$tables,$whereString,'',$this->_getOrdering());
 
      	return $this->_data;
     }

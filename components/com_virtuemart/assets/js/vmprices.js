@@ -70,14 +70,12 @@ Virtuemart.sendtocart = function (form){
 }
 
 Virtuemart.cartEffect = function(form) {
-	var $ = jQuery ;
 
 	var dat = form.serialize();
 
 	if(usefancy){
 		jQuery.fancybox.showActivity();
 	}
-
 
     jQuery.ajax({
         type: "POST",
@@ -110,9 +108,6 @@ Virtuemart.cartEffect = function(form) {
 				}
 			);
 		} else {
-			jQuery.facebox.settings.closeImage = closeImage;
-			jQuery.facebox.settings.loadingImage = loadingImage;
-			//$.facebox.settings.faceboxHtml = faceboxHtml;
 			jQuery.facebox( txt , 'my-groovy-style');
 		}
 

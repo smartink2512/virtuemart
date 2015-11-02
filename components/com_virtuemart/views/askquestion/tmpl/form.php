@@ -23,8 +23,8 @@ $max = VmConfig::get('asks_maximum_comment_length', 2000) ;
 vmJsApi::JvalideForm();
 vmJsApi::addJScript('askform','
 	jQuery(function($){
-			$("#askform").validationEngine("attach");
-			$("#comment").keyup( function () {
+			jQuery("#askform").validationEngine("attach");
+			jQuery("#comment").keyup( function () {
 				var result = $(this).val();
 					$("#counter").val( result.length );
 			});

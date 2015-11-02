@@ -90,9 +90,9 @@ $customs = $this->customs->items;
 				<td><?php
 
                             $lang = JFactory::getLanguage();
-                            $text = $lang->hasKey($custom->custom_parent_title) ? vmText::_($custom->custom_parent_title) : $custom->custom_parent_title;
+                            $text = $lang->hasKey($custom->group_title) ? vmText::_($custom->group_title) : $custom->group_title;
 
-                                echo JHtml::_('link', JRoute::_($link,FALSE),$text, array('title' => vmText::_('COM_VIRTUEMART_FILTER_BY').' '.htmlentities($text))); ?></td>
+                            echo JHtml::_('link', JRoute::_($link,FALSE),$text, array('title' => vmText::_('COM_VIRTUEMART_FILTER_BY').' '.htmlentities($text))); ?></td>
 
 				<!-- Product name -->
 				<?php

@@ -138,9 +138,14 @@ class VirtueMartModelCustom extends VmModel {
 		$field_types = self::getCustomTypes() ;
 
 		foreach ($datas->items as $key => & $data) {
-	  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = $this->getCustomParentTitle($data->custom_parent_id);
+
+			if (!empty($data->custom_parent_id)){
+				$g = $this->getCustom($data->custom_parent_id);
+				$data->group_title = $g->custom_title;
+				vmdebug('My group title '.$data->group_title);
+			}
 			else {
-				$data->custom_parent_title =  '-' ;
+				$data->group_title =  '-' ;
 			}
 			if(!empty($field_types[$data->field_type ])){
 				$data->field_type_display = vmText::_( $field_types[$data->field_type ] );
@@ -154,13 +159,6 @@ class VirtueMartModelCustom extends VmModel {
 		return $datas;
     }
 
-	public function getCustomParentTitle ($custom_parent_id) {
-
-		$q = 'SELECT custom_title FROM `#__virtuemart_customs` WHERE virtuemart_custom_id =' . (int)$custom_parent_id;
-		$db = JFactory::getDBO();
-		$db->setQuery ($q);
-		return $db->loadResult ();
-	}
 
 	/**
 	 * Displays a possibility to select created custom

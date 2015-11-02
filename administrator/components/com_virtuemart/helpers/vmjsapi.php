@@ -334,7 +334,7 @@ class vmJsApi{
 
 		vmJsApi::jSite();
 
-		$closeimage = JURI::root( TRUE ).'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
+
 
 		$jsVars = "";
 		$jsVars .= "vmSiteurl = '".JURI::root()."' ;\n";
@@ -351,14 +351,13 @@ class vmJsApi{
 		if(VmConfig::get('addtocart_popup',1)){
 			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
 			if(VmConfig::get('usefancy',1)){
-			$jsVars .= "usefancy = true;";
-			vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
-			vmJsApi::css('jquery.fancybox-1.3.4');
+				$jsVars .= "usefancy = true;";
+				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
+				vmJsApi::css('jquery.fancybox-1.3.4');
 			} else {//This is just there for the backward compatibility
 				$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
 				$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
-				$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
-				$jsVars .= "closeImage = '".$closeimage."' ; \n";
+
 				//This is necessary though and should not be removed without rethinking the whole construction
 
 				$jsVars .= "usefancy = false;";
