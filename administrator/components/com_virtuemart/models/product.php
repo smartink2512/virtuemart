@@ -2384,7 +2384,7 @@ class VirtueMartModelProduct extends VmModel {
 						$fieldWithoutPrefix = $field;
 					}
 
-					$text = vmText::_ ('COM_VIRTUEMART_' . strtoupper ($fieldWithoutPrefix));
+					$text = vmText::_ ('COM_VIRTUEMART_' . strtoupper (str_replace(array(',',' '),array('_',''),$fieldWithoutPrefix)));
 
 					$field = explode('.',$field);
 					if(isset($field[1])){

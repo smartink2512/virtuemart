@@ -18,6 +18,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+if(VmConfig::get('usefancy',1)){
 
 vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack', false);
 vmJsApi::css('jquery.fancybox-1.3.4');
@@ -42,9 +43,24 @@ Virtuemart.updateImageEventListeners = function() {
 		jQuery(".main-image a").attr("href",src );
 		jQuery(".main-image a").attr("title",this.alt );
 		jQuery(".main-image .vm-img-desc").html(this.alt);
+		}); 
+	}
+	';
+} else {
+	vmJsApi::addJScript( 'facebox',false );
+	vmJsApi::css( 'facebox' );
+	$document = JFactory::getDocument ();
+	$imageJS = '
+	jQuery(document).ready(function() {
+		Virtuemart.updateImageEventListeners()
 	});
+	Virtuemart.updateImageEventListeners = function() {
+		jQuery("a[rel=vm-additional-images]").facebox();
+		var imgtitle = jQuery("span.vm-img-desc").text();
+		jQuery("#facebox span").html(imgtitle);
+	}
+	';
 }
-';
 
 vmJsApi::addJScript('imagepopup',$imageJS);
 

@@ -479,6 +479,10 @@ class VirtueMartCustomFieldRenderer {
 					} else if($attr == 'product_weight') {
 						$dim = $product->product_weight_uom;
 					}
+					if(!isset($product->$attr)){
+						logInfo('customfield.php: case P, property '.$attr.' does not exists. virtuemart_custom_id: '.$customfield->virtuemart_custom_id);
+						break;
+					}
 					$val= $product->$attr;
 					if($customfield->round!=''){
 						$val = round($val,$customfield->round);

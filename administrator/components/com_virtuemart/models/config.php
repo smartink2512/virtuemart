@@ -325,7 +325,7 @@ class VirtueMartModelConfig extends VmModel {
 				$fieldWithoutPrefix = substr($field, $dotps+1);
 			}
 
-			$text = vmText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+			$text = vmText::_('COM_VIRTUEMART_'.strtoupper(str_replace(array(',',' '),array('_',''),$fieldWithoutPrefix))) ;
 
 			if ($type == 'browse_orderby_fields' or $type == 'browse_cat_orderby_field'){
 				$searchFields->select[] =  JHtml::_('select.option', $field, $text) ;

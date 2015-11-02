@@ -3,7 +3,7 @@
 <project name="Build VirtueMart" default="VIRTUEMART_AND_FULLINSTALLER" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="3.0.11.2"/>
+    <property name="vm.version" value="3.0.11.4"/>
     <property name="joomla.version" value="2.5.28"/>
     <property name="svn.lastrevision" value="9030"/>
     <property name="PHING.VM.CODENAME" value="Corvus Corax"/>

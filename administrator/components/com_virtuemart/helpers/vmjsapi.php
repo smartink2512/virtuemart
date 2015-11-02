@@ -350,10 +350,21 @@ class vmJsApi{
 
 		if(VmConfig::get('addtocart_popup',1)){
 			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
+			if(VmConfig::get('usefancy',1)){
 			$jsVars .= "usefancy = true;";
 			vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
 			vmJsApi::css('jquery.fancybox-1.3.4');
+			} else {//This is just there for the backward compatibility
+				$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
+				$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
+				$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
+				$jsVars .= "closeImage = '".$closeimage."' ; \n";
+				//This is necessary though and should not be removed without rethinking the whole construction
 
+				$jsVars .= "usefancy = false;";
+				vmJsApi::addJScript( 'facebox' );
+				vmJsApi::css( 'facebox' );
+			}
 		}
 
 		self::addJScript('jsVars',$jsVars);
@@ -402,13 +413,10 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		}
 		VmJsApi::jSite();
 		self::addJScript('vm.countryState'.$prefix,'
-//<![CDATA[
 		vmSiteurl = "'.JURI::root().'";'."\n".'
 		jQuery( function($) {
 			$("#'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
-		});
-//]]>
-		');
+		});	');
 		$JcountryStateList[$prefix] = TRUE;
 		return;
 	}
@@ -419,11 +427,10 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 	static function popup($container,$activator){
 		static $jspopup;
 		if (!$jspopup) {
-
+			if(VmConfig::get('usefancy',1)){
 				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false);
 				vmJsApi::css('jquery.fancybox-1.3.4');
 				$box = "
-//<![CDATA[
 	jQuery(document).ready(function($) {
 		jQuery('div".$container."').hide();
 		var con = $('div".$container."').html();
@@ -432,15 +439,22 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			jQuery.fancybox ({ div: '".$container."', content: con });
 		});
 	});
-
-//]]>
 ";
+			} else {
+				vmJsApi::addJScript ('facebox',false,false);
+				vmJsApi::css ('facebox');
+				$box = "
+	jQuery(document).ready(function($) {
+		jQuery('div".$container."').hide();
+		jQuery('a".$activator."').click(function(event) {
+			event.preventDefault();
+			jQuery.facebox( { div: '".$container."' }, 'my-groovy-style');
+		});
+	});
+";
+			}
 
-
-			$document = JFactory::getDocument ();
 			self::addJScript('box',$box);
-			//$document->addScriptDeclaration ($box);
-			//$document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 			$jspopup = true;
 		}
@@ -496,11 +510,9 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			return;
 		}
 		self::addJScript('vEngine', "
-//<![CDATA[
 			jQuery(document).ready(function() {
 				jQuery('".$name."').validationEngine();
 			});
-//]]>
 "  );
 		if ($jvalideForm) {
 			return;
@@ -530,14 +542,6 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		JHtml::_ ('behavior.formvalidation');	//j2
 		//JHtml::_('behavior.formvalidator');	//j3
 
-		/*vmJsApi::addJScript('/media/system/js/core.js',false,false);
-		vmJsApi::addJScript('html5fallback',false,false);
-		self::jQuery();
-		// Add validate.js language strings
-		JText::script('JLIB_FORM_FIELD_INVALID');
-
-		JHtml::_('script', 'system/punycode.js', false, true);
-		JHtml::_('script', 'system/validate.js', false, true);*/
 
 
 		$regfields = array('username', 'name');
@@ -626,7 +630,6 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 
 
 		$js = "
-//<![CDATA[
 		var ccErrors = new Array ()
 		ccErrors [0] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_UNKNOWN_TYPE') ). "';
 		ccErrors [1] =  '" . addslashes( vmText::_("COM_VIRTUEMART_CREDIT_CARD_NO_NUMBER") ). "';
@@ -634,7 +637,6 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		ccErrors [3] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_NUMBER')) . "';
 		ccErrors [4] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_WRONG_DIGIT')) . "';
 		ccErrors [5] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_EXPIRE_DATE')) . "';
-//]]>
 		";
 
 		self::addJScript('creditcard',$js);
@@ -692,9 +694,12 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		if ($yearRange) {
 			$yearRange = 'yearRange: "' . $yearRange . '",';
 		}
-		if ($date == "0000-00-00 00:00:00") {
+
+		$test = (int) str_replace(array('-',' ',':'),'',$date);
+		if(empty($test)){
 			$date = 0;
 		}
+
 		if (empty($id)) {
 			$id = str_replace(array('[]','[',']'),'.',$name);
 			$id = str_replace('..','.',$id);
@@ -726,10 +731,9 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		}
 
 		self::addJScript('datepicker','
-//<![CDATA[
 			jQuery(document).ready( function($) {
-			$(document).on( "focus",".datepicker", function() {
-				$( this ).datepicker({
+			jQuery(document).on( "focus",".datepicker", function() {
+				jQuery( this ).datepicker({
 					changeMonth: true,
 					changeYear: true,
 					'.$yearRange.'
@@ -739,10 +743,9 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 				});
 			});
 			jQuery(document).on( "click",".js-date-reset", function() {
-				$(this).prev("input").val("'.vmText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
+				jQuery(this).prev("input").val("'.vmText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
 			});
 		});
-//]]>
 		');
 
 

@@ -98,7 +98,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 				$fieldWithoutPrefix = substr($field, $dotps+1);
 			}
 
-			$text = vmText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+			$text = vmText::_('COM_VIRTUEMART_'.strtoupper(str_replace(array(',',' '),array('_',''),$fieldWithoutPrefix))) ;
 			$orderByFieldsCat[] =  JHtml::_('select.option', $field, $text) ;
 		}
 

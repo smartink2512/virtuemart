@@ -23,9 +23,10 @@ if($ask_recommened_loaded) return '';
 
 $product = $viewData['product'];
 
-vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
-vmJsApi::css('jquery.fancybox-1.3.4');
-$Modal ="
+if(VmConfig::get('usefancy',1)){
+	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
+	vmJsApi::css('jquery.fancybox-1.3.4');
+	$Modal ="
 		jQuery('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
 		  event.preventDefault();
 		  jQuery.fancybox({
@@ -35,6 +36,20 @@ $Modal ="
 			});
 		  });
 		";
+} else {
+	
+	vmJsApi::addJScript( 'facebox', false );
+	vmJsApi::css( 'facebox' );
+    $Modal ="
+    		jQuery('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
+		      event.preventDefault();
+		      jQuery.facebox({
+		        ajax: jQuery(this).attr('href'),
+		        rev: 'iframe|550|550'
+		        });
+		      });
+    		"; 
+}
 
 vmJsApi::addJScript('popups',"
 	jQuery(document).ready(function($) {
