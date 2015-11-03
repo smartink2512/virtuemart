@@ -358,7 +358,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
-		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
 
 		//$this->_debug=true;
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {

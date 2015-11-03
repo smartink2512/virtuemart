@@ -48,11 +48,11 @@ class SofortLib_Notification extends SofortLib_Abstract {
 	 */
 	public function getNotification($source = 'php://input') {
 		$data = file_get_contents($source);
-		$this->log(__CLASS__.' DATA FROM <- file_get_contents'.var_dump($data,true));
-		$this->log(__CLASS__.' <- FROM _POST '.var_dump($_POST,true));
+		$this->log(__CLASS__.' DATA FROM <- file_get_contents'.var_export($data,true));
+		$this->log(__CLASS__.' <- FROM _POST '.var_export($_POST,true));
 		if (empty($data)) {
 			$error = error_get_last();
-			$this->log(__CLASS__.' <- '.var_dump($error,true));
+			$this->log(__CLASS__.' <- '.var_export($error,true));
 			$this->errors['error']['message'] = 'file_get_contents in getNotification returned NULL';
 			return false;
 		}
