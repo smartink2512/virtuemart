@@ -276,9 +276,10 @@ class VmMediaHandler {
 
 		$this->determineFoldersToTest();
 
-		if(!empty($this->file_url) && empty($this->file_url_thumb)){
+		//Do we need this?
+		/*if(!empty($this->file_url) && empty($this->file_url_thumb)){
 			$this->displayMediaThumb('',true,'',false);
-		}
+		}*/
 
 
 	}
@@ -478,9 +479,7 @@ class VmMediaHandler {
 		if(!empty($this->file_url_thumb)){
 			$file_url_thumb = $this->file_url_thumb;
 		} else if(is_a($this,'VmImage')) {
-
-			$file_url_thumb = $this->createThumbFileUrl();
-
+			$file_url_thumb = $this->createThumbFileUrl($width,$height);
 		} else {
 			$file_url_thumb = '';
 		}
@@ -501,16 +500,14 @@ class VmMediaHandler {
 
 		if ((empty($file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 
-			if(empty($width)) $width = VmConfig::get('img_width', 90);
-			if(empty($height)) $height = VmConfig::get('img_height', 90);
 			$file_url_thumb = $this->createThumb($width,$height);
 			$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
 
 		}
-		$this->file_url_thumb = $file_url_thumb;
+		//$this->file_url_thumb = $file_url_thumb;
 
 		if($withDescr) $withDescr = $this->file_description;
-		if (empty($this->file_url_thumb) || !file_exists($media_path)) {
+		if (empty($file_url_thumb) || !file_exists($media_path)) {
 			return $this->getIcon($imageArgs,$lightbox,$return,$withDescr,$absUrl);
 		}
 
