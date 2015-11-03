@@ -24,32 +24,34 @@ defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS'); ?></legend>
 <table class="admintable">
-<?php
+	<?php
+	echo VmHTML::row('raw','COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT',ShopFunctions::renderWeightUnitList('weight_unit_default', VmConfig::get('weight_unit_default')));
+	echo VmHTML::row('raw','COM_VIRTUEMART_LWH_UNIT_DEFAULT',ShopFunctions::renderLWHUnitList('lwh_unit_default', VmConfig::get('lwh_unit_default')));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_SHOW_PRINTICON','show_printicon',VmConfig::get('show_printicon',1));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_PDF_ICON_SHOW','pdf_icon',VmConfig::get('pdf_icon',0));
+?>
+</table>
+</fieldset>
+<fieldset>
+<legend><?php echo vmText::_('COM_VIRTUEMART_CFG_RECOMMEND_ASK'); ?></legend>
+<table class="admintable">
+<?php
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND','show_emailfriend',VmConfig::get('show_emailfriend',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_RECCOMEND_UNATUH','recommend_unauth',VmConfig::get('recommend_unauth',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_ASK_QUESTION_CAPTCHA','ask_captcha',VmConfig::get('ask_captcha',0));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_ASK_QUESTION_SHOW','ask_question',VmConfig::get('ask_question',0));
-
 	echo VmHTML::row('input','COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH','asks_minimum_comment_length',VmConfig::get('asks_minimum_comment_length',50),'class="inputbox"','',4,4);
 	echo VmHTML::row('input','COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH','asks_maximum_comment_length',VmConfig::get('asks_maximum_comment_length',2000),'class="inputbox"','',5,5);
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_COUPONS_ENABLE','coupons_enable',VmConfig::get('coupons_enable',0));
-	echo VmHTML::row('checkbox','COM_VIRTUEMART_VM_ERROR_HANDLING_ENABLE','handle_404',VmConfig::get('handle_404',1));
 ?>
-<tr>
-	<td class="key">
-<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
-	<label for="coupons_default_expire">
-		<?php echo vmText::_('COM_VIRTUEMART_COUPONS_EXPIRE'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<?php
-		// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
+</table>
+</fieldset>
+<fieldset>
+<legend><?php echo vmText::_('COM_VIRTUEMART_COUPONS_ENABLE'); ?></legend>
+	<table class="admintable">
+		<?php echo VmHTML::row('checkbox','COM_VIRTUEMART_COUPONS_ENABLE','coupons_enable',VmConfig::get('coupons_enable',0));
+
 		$_defaultExpTime = array(
-			'1,D' => '1 ' . vmText::_('COM_VIRTUEMART_DAY')
+		'1,D' => '1 ' . vmText::_('COM_VIRTUEMART_DAY')
 		, '1,W' => '1 ' . vmText::_('COM_VIRTUEMART_WEEK')
 		, '2,W' => '2 ' . vmText::_('COM_VIRTUEMART_WEEK_S')
 		, '1,M' => '1 ' . vmText::_('COM_VIRTUEMART_MONTH')
@@ -57,41 +59,11 @@ defined('_JEXEC') or die('Restricted access');?>
 		, '6,M' => '6 ' . vmText::_('COM_VIRTUEMART_MONTH_S')
 		, '1,Y' => '1 ' . vmText::_('COM_VIRTUEMART_YEAR')
 		);
-		echo VmHTML::selectList('coupons_default_expire', VmConfig::get('coupons_default_expire'), $_defaultExpTime);
-		?>
-	</td>
-</tr>
-	<?php
-	$attrlist = 'class="inputbox" multiple="multiple" ';
-	echo VmHTML::row('genericlist','COM_VIRTUEMART_COUPONS_REMOVE',$this->os_Options,'cp_rm[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('cp_rm',array('C')), 'cp_rm',true);
-
+		echo VmHTML::row('raw','COM_VIRTUEMART_COUPONS_EXPIRE',VmHTML::selectList('coupons_default_expire', VmConfig::get('coupons_default_expire'), $_defaultExpTime));
+		$attrlist = 'class="inputbox" multiple="multiple" ';
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_COUPONS_REMOVE',$this->os_Options,'cp_rm[]',$attrlist, 'order_status_code', 'order_status_name', VmConfig::get('cp_rm',array('C')), 'cp_rm',true);
 	?>
-
-<tr>
-	<td class="key">
-<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT_EXPLAIN'); ?>">
-	<label for="weight_unit_default">
-		<?php echo vmText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<?php echo ShopFunctions::renderWeightUnitList('weight_unit_default', VmConfig::get('weight_unit_default')); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT_EXPLAIN'); ?>">
-	<label for="weight_unit_default">
-		<?php echo vmText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<?php echo ShopFunctions::renderLWHUnitList('lwh_unit_default', VmConfig::get('lwh_unit_default')); ?>
-	</td>
-</tr>
-</table>
+	</table>
 </fieldset>
 <fieldset>
 <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LISTING'); ?></legend>

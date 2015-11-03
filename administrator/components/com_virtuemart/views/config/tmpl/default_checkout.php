@@ -15,28 +15,7 @@
  * @version $Id$
  */
 defined('_JEXEC') or die('Restricted access');
-$js = '
-		jQuery(document).ready(function( $ ) {
-				if ( $("#oncheckout_opc").is(\':checked\') ) {
-					$(".not_opc_param").hide();
-				} else {
-					$(".not_opc_param").show();
-				}
-			 $("#oncheckout_opc").click(function() {
-				if ( $("#oncheckout_opc").is(\':checked\') ) {
-					$(".not_opc_param").hide();
-				} else {
-					$(".not_opc_param").show();
-				}
-			});
-		});
-	';
-vmJsApi::addJScript('hideNotOPC',$js);
 
-/*
- <table width="100%">
-<tr>
-<td valign="top" width="50%"> */
 ?>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS'); ?></legend>
@@ -46,24 +25,10 @@ vmJsApi::addJScript('hideNotOPC',$js);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_POPUP_REL','popup_rel',VmConfig::get('popup_rel',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CHECKOUT_OPC','oncheckout_opc',VmConfig::get('oncheckout_opc',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_OPC_AJAX','oncheckout_ajax',VmConfig::get('oncheckout_ajax',1));
-		?>
-
-		<tr class="not_opc_param">
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
-					<label for="oncheckout_show_steps">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_show_steps', VmConfig::get('oncheckout_show_steps',1)); ?>
-			</td>
-		</tr> <?php
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS','oncheckout_show_steps',VmConfig::get('oncheckout_show_steps',1));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT',$this->listShipment,'set_automatic_shipment','','virtuemart_shipmentmethod_id','shipment_name',VmConfig::get('set_automatic_shipment',0));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT',$this->listPayment,'set_automatic_payment','','virtuemart_paymentmethod_id','payment_name',VmConfig::get('set_automatic_payment',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER','agree_to_tos_onorder',VmConfig::get('agree_to_tos_onorder',1));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO','oncheckout_show_legal_info',VmConfig::get('oncheckout_show_legal_info',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER','oncheckout_show_register',VmConfig::get('oncheckout_show_register',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED','oncheckout_only_registered',VmConfig::get('oncheckout_only_registered',0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES','oncheckout_show_images',VmConfig::get('oncheckout_show_images',1));

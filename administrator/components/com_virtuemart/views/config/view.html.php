@@ -71,8 +71,10 @@ class VirtuemartViewConfig extends VmViewAdmin {
 		$this->os_Options = $this->osWoP_Options = $this->osDel_Options = $this->orderStatusModel->getOrderStatusNames();
 		$emptyOption = JHtml::_ ('select.option', -1, vmText::_ ('COM_VIRTUEMART_NONE'), 'order_status_code', 'order_status_name');
 
-		unset($this->osWoP_Options['P']);
 		array_unshift ($this->os_Options, $emptyOption);
+
+		unset($this->osWoP_Options['P']);
+		array_unshift ($this->osWoP_Options, $emptyOption);
 
 		$deldate_inv = JHtml::_ ('select.option', 'm', vmText::_ ('COM_VIRTUEMART_DELDATE_INV'), 'order_status_code', 'order_status_name');
 		unset($this->osDel_Options['P']);
