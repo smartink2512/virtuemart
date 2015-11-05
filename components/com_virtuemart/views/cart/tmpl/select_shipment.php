@@ -32,7 +32,7 @@ if($this->cart->getInCheckOut()){
 	$buttonclass = 'default';
 }
 ?>
-<form method="post" id="userForm" name="chooseShipmentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
+<form method="post" id="shipmentForm" name="chooseShipmentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
 	<?php
 	} else {
 		$headerLevel = 3;
@@ -40,9 +40,9 @@ if($this->cart->getInCheckOut()){
 	}
 
 	if($this->cart->virtuemart_shipmentmethod_id){
-		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECTED_SHIPMENT_SELECT').'</h'.$headerLevel.'>';
+		echo '<h'.$headerLevel.' class="vm-shipment-header-selected">'.vmText::_('COM_VIRTUEMART_CART_SELECTED_SHIPMENT_SELECT').'</h'.$headerLevel.'>';
 	} else {
-		echo '<h'.$headerLevel.'>'.vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT').'</h'.$headerLevel.'>';
+		echo '<h'.$headerLevel.' class="vm-shipment-header-select">'.vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT').'</h'.$headerLevel.'>';
 	}
 
 
