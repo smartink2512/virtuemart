@@ -74,7 +74,7 @@ INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_pare
  (20, 0, 0, 'A', 1, 0, 0, 'ontop','Generic Child Variant','Also with tooltip','', 'Use admin lists for faster product editing','withParent="0"|parentOrderable="0"|wPrice="1"|', 1, 1),
  (21, 0, 0, 'C', 1, 0, 0, 'addtocart','Multi Variant','Also with tooltip','', 'Use admin lists for faster product editing','usecanonical="1"|showlabels="0"|sCustomId="11"|selectoptions="0"|clabels="0"|options="0"|', 1, 1),
  (22, 0, 0, 'M', 1, 1, 0, 'addtocart','Media, paid','Also with tooltip','paid extra Image', '','width="0"|height="0"|addEmpty="0"|selectType="1"|', 1, 1),
- (23, 0, 0, 'S', 1, 1, 0, 'addtocart','String, is input alt','Select a variant','', 'Combine Customfields of the same type to create flexible selections (dropdowns, radio lists)','', 1, 1),
+ (23, 0, 0, 'S', 1, 1, 0, 'addtocart','String, is input alternative','Select a variant','', 'Combine Customfields of the same type to create flexible selections (dropdowns, radio lists)','', 1, 1),
  (24, 0, 0, 'P', 0, 0, 0, '','Property','','', '','', 0, 1);
 
 

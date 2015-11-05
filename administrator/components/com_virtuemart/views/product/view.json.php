@@ -89,7 +89,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			WHERE (`custom_parent_id`='.$id.') ';
 			$q .= 'order by `ordering` asc';
 			$this->db->setQuery($q);
-			$ids = $this->db->loadResult();
+			$ids = $this->db->loadColumn();
 			if($ids){
 				array_unshift($ids,$id);
 			} else {
@@ -97,7 +97,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			}
 
 			foreach($ids as $k => $i){
-				$p = $model->getCustom($id);
+				$p = $model->getCustom($i);
 				if($p){
 					$p->value = $p->custom_value;
 					$rows[] = $p;
