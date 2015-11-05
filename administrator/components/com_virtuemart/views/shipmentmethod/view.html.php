@@ -74,7 +74,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 			 $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
 			 $this->assignRef('vendor_currency', $currency->currency_symbol);
 
-			 if(Vmconfig::get('multix','none')!=='none'){
+			if($this->showVendors()){
 					$vendorList= ShopFunctions::renderVendorList($shipment->virtuemart_vendor_id);
 					$this->assignRef('vendorList', $vendorList);
 			 }

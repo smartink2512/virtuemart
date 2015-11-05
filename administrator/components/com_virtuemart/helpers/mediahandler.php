@@ -476,13 +476,7 @@ class VmMediaHandler {
 			}
 		}
 
-		if(!empty($this->file_url_thumb)){
-			$file_url_thumb = $this->file_url_thumb;
-		} else if(is_a($this,'VmImage')) {
-			$file_url_thumb = $this->createThumbFileUrl($width,$height);
-		} else {
-			$file_url_thumb = '';
-		}
+		$file_url_thumb = $this -> getFileUrlThumb($width, $height);
 
 		$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
 
@@ -507,12 +501,25 @@ class VmMediaHandler {
 		//$this->file_url_thumb = $file_url_thumb;
 
 		if($withDescr) $withDescr = $this->file_description;
+
 		if (empty($file_url_thumb) || !file_exists($media_path)) {
 			return $this->getIcon($imageArgs,$lightbox,$return,$withDescr,$absUrl);
 		}
 
 		if($return) return $this->displayIt($file_url_thumb, $file_alt, $imageArgs,$lightbox,$effect,$withDescr,$absUrl);
 
+	}
+
+	function getFileUrlThumb($width = 0,$height = 0){
+
+		if(!empty($this->file_url_thumb)){
+			$file_url_thumb = $this->file_url_thumb;
+		} else if(is_a($this,'VmImage')) {
+			$file_url_thumb = $this->createThumbFileUrl($width,$height);
+		} else {
+			$file_url_thumb = '';
+		}
+		return $file_url_thumb;
 	}
 
 	/**
@@ -658,7 +665,7 @@ class VmMediaHandler {
 		}
 		else if( $data['media_action'] == 'replace' ){
 			$oldFileUrl = $this->file_url;
-			$oldFileUrlThumb = $this->file_url_thumb;
+			$oldFileUrlThumb = $this->getFileUrlThumb();
 			$file_name = $this->uploadFile($this->file_url_folder,true);
 			if ($file_name===false) return false;
 			$this->file_name = $file_name;
@@ -672,7 +679,7 @@ class VmMediaHandler {
 		}
 		else if( $data['media_action'] == 'replace_thumb' ){
 
-			$oldFileUrlThumb = $this->file_url_thumb;
+			$oldFileUrlThumb = $this->getFileUrlThumb();
 			$oldFileUrl = $this->file_url_folder_thumb;
 			$file_name = $this->uploadFile($this->file_url_folder_thumb,true);
 			if ($file_name===false) return false;
@@ -681,7 +688,6 @@ class VmMediaHandler {
 			if($this->file_url_thumb!=$oldFileUrl&& !empty($this->file_name)){
 				$this->deleteFile($oldFileUrlThumb);
 			}
-
 		}
 		else if( $data['media_action'] == 'delete' ){
 			//TODO this is complex, we must assure that the media entry gets also deleted.
@@ -961,10 +967,19 @@ class VmMediaHandler {
 		if (isset($image->file_url)) {
 			$image->file_root = JURI::root(true).'/';
 			$image->msg =  'OK';
+			$file_url_thumb = $image->getFileUrlThumb();
+			//vmdebug('Muh ',$file_url_thumb,$media_path);
+			/*if(!empty($image->file_url_thumb)){
+				$file_url_thumb = $image->file_url_thumb;
+			} else if(is_a($this,'VmImage')) {
+				$file_url_thumb = $image->createThumbFileUrl();
+			} else {
+				$file_url_thumb = '';
+			}*/
 			return  '<div  class="vm_thumb_image"><input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]">
 			<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
 		<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'" href="'.JURI::root(true).'/'.$image->file_url.'" >
-		<img src="' . JURI::root(true).'/'.$image->file_url_thumb . '" alt="' . $image->file_title . '"  />
+		<img src="' . JURI::root(true).'/'.$file_url_thumb . '" alt="' . $image->file_title . '"  />
 		</a><div class="vmicon vmicon-16-remove" title="'.vmText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.vmText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
 		} else {
 			$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;
@@ -984,13 +999,10 @@ class VmMediaHandler {
 
 		foreach ($list['images'] as $key =>$image) {
 			$htmlImages ='';
+			$image->file_url_thumb = $image->getFileUrlThumb();
 			if ($image->file_url_thumb > "0" ) {
-				/*$htmlImages .= '<div class="vm_thumb_image">
-				<span><a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >'
-				.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span></a>';*/
 				$htmlImages .= '<div class="vm_thumb_image">
-				<span>'
-					.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span>';
+				<span>'.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span>';
 			} else {
 				$htmlImages .=  '<div class="vm_thumb_image">'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 			}
@@ -1037,7 +1049,6 @@ class VmMediaHandler {
 			$list['total'] = $db->loadResult();
 
 			$list['images'] = $model->createMediaByIds($virtuemart_media_ids, $type);
-
 			return $list;
 		}
 		else return array();

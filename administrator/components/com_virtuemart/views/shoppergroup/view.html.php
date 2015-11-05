@@ -50,8 +50,9 @@ class VirtuemartViewShopperGroup extends VmViewAdmin {
 			$shoppergroup = $model->getShopperGroup();
 			$this->SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
 
-			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
-			$this->assignRef('vendorList',	$vendors);
+			if($this->showVendors()){
+				$this->vendorList = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
+			}
 
 			$this->assignRef('shoppergroup',	$shoppergroup);
 

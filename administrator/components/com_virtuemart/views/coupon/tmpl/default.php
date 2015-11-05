@@ -33,7 +33,7 @@ AdminUIHelper::startAdminArea($this);
 						<input type="text" name="filter_ratings" value="<?php echo vRequest::getVar('filter_ratings', ''); ?>" />
 						<button class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 						<button class="btn btn-small" onclick="document.adminForm.filter_ratings.value='';"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
-						<?php if(VmConfig::get('multix','none')!='none'){
+						<?php if($this->showVendors()){
 							echo Shopfunctions::renderVendorList(vmAccess::getVendorId());
 						} ?>
 					</td>

@@ -84,11 +84,25 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				require(VMPATH_ADMIN . DS . 'models' . DS . 'custom.php');
 			}
 			$fieldTypes = VirtueMartModelCustom::getCustomTypes();
-			$query = 'SELECT *,`custom_value` as value FROM `#__virtuemart_customs`
-			WHERE (`virtuemart_custom_id`='.$id.' or `custom_parent_id`='.$id.') ';
-			$query .= 'order by `ordering` asc';
-			$this->db->setQuery($query);
-			$rows = $this->db->loadObjectlist();
+			$model = VmModel::getModel('custom');
+			$q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs`
+			WHERE (`custom_parent_id`='.$id.') ';
+			$q .= 'order by `ordering` asc';
+			$this->db->setQuery($q);
+			$ids = $this->db->loadResult();
+			if($ids){
+				array_unshift($ids,$id);
+			} else {
+				$ids = array($id);
+			}
+
+			foreach($ids as $k => $i){
+				$p = $model->getCustom($id);
+				if($p){
+					$p->value = $p->custom_value;
+					$rows[] = $p;
+				}
+			}
 
 			$html = array ();
 			foreach ($rows as $field) {

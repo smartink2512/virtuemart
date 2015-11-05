@@ -34,7 +34,12 @@ AdminUIHelper::startAdminArea($this);
 			<td align="left">
 			<?php echo $this->displayDefaultViewSearch() ?>
 			</td>
-
+			<td>
+			<select class="inputbox" id="top_category_id" name="top_category_id" onchange="this.form.submit(); return false;">
+				<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_TOP_CATEGORY')) ; ?></option>
+				<?php echo $this->category_tree; ?>
+			</select>
+			</td>
 		</tr>
 	</table>
 	</div>

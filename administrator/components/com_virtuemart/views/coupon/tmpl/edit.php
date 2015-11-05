@@ -44,9 +44,10 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
  			<?php echo VmHTML::row('input','COM_VIRTUEMART_COUPON_VALUE_VALID_AT','coupon_value_valid', $this->coupon->coupon_value_valid, 'class="inputbox"','',10,255,' ' . $this->vendor_currency ); ?>
 			<?php echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_START',  vmJsApi::jDate($this->coupon->coupon_start_date , 'coupon_start_date') ); ?>
 			<?php echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_EXPIRY', vmJsApi::jDate($this->coupon->coupon_expiry_date,'coupon_expiry_date') ); ?>
-			<?php echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', Shopfunctions::renderVendorList(vmAccess::getVendorId()) ); ?>
-
-			;
+			<?php if($this->showVendors()){
+				echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', Shopfunctions::renderVendorList(vmAccess::getVendorId()) );
+			}
+			?>
 	    </table>
 	</fieldset>
     <input type="hidden" name="virtuemart_coupon_id" value="<?php echo $this->coupon->virtuemart_coupon_id; ?>" />

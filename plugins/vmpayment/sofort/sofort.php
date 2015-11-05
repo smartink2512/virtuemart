@@ -395,7 +395,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		//no valid parameters/xml
 		if (empty($transactionId)) {
-			$this->debugLog('no transaction ID for order number'. $order_number,'plgVmOnPaymentNotification', 'error');
+			$this->debugLog('no transaction ID for order number '. $order_number,'plgVmOnPaymentNotification', 'error');
 
 		}
 

@@ -86,7 +86,7 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			//Nice fix by Joe, the 4. param prevents setting an category itself as child
 			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id), 0, 0, (array) $category->virtuemart_category_id);
 
-			if(Vmconfig::get('multix','none')!=='none'){
+			if($this->showVendors()){
 				$vendorList= ShopFunctions::renderVendorList($category->virtuemart_vendor_id);
 				$this->assignRef('vendorList', $vendorList);
 			}
@@ -105,7 +105,12 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,'category_name');
 
-			$categories = $model->getCategoryTree(0,0,false,$this->lists['search']);
+			$topCategory=vRequest::getInt('top_category_id',0);
+			$category_tree = ShopFunctions::categoryListTree(array($topCategory));
+			$this->assignRef('category_tree', $category_tree);
+
+
+			$categories = $model->getCategoryTree($topCategory,0,false,$this->lists['search']);
 			$this->assignRef('categories', $categories);
 
 			$pagination = $model->getPagination();

@@ -88,7 +88,8 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			$notoggle = ''; // (in_array($this->userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
 
 			// Vendor selection
-			if(Vmconfig::get('multix','none')!=='none'){
+			$this->lists['vendors'] = '';
+			if($this->showVendors()){
 				$lists['vendors']= ShopFunctions::renderVendorList($this->userField->virtuemart_vendor_id);
 			}
 

@@ -156,8 +156,8 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->checkout_link_html = '<button type="submit" id="checkoutFormSubmit" name="'.$this->checkout_task.'" value="1" class="vm-button-correct" '.$dynUpdate.' ><span>' . $text . '</span> </button>';
 
-
-			if (VmConfig::get('oncheckout_opc', 1)) {
+			$forceMethods=vRequest::getInt('forceMethods',false);
+			if (VmConfig::get('oncheckout_opc', 1) or $forceMethods) {
 				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 				JPluginHelper::importPlugin('vmshipment');
 				JPluginHelper::importPlugin('vmpayment');

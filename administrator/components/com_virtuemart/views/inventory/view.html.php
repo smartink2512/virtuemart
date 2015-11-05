@@ -47,7 +47,7 @@ class VirtuemartViewInventory extends VmViewAdmin {
 		// Create filter
 		$this->addStandardDefaultViewLists($model);
 
-		$this->inventorylist = $model->getProductListing();
+		$this->inventorylist = $model->getProductListing(false,false,false,false);
 
 		$this->pagination = $model->getPagination();
 

@@ -92,7 +92,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 			$this->vmPPaymentList = self::renderInstalledPaymentPlugins($payment->payment_jplugin_id);
 			$this->shopperGroupList = ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true);
 
-			if(Vmconfig::get('multix','none')!=='none'){
+			if($this->showVendors()){
 				$vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
 				$this->assignRef('vendorList', $vendorList);
 			}

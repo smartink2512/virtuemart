@@ -73,14 +73,14 @@ class VirtueMartModelCustom extends VmModel {
      * @param string $mime mime type of custom, use for exampel image
      * @return customobject
      */
-    function getCustom($id = 0){
+    function getCustom($id = 0, $field = 0){
 
 		if(!empty($id)) $this->_id = (int)$id;
 
     	if(empty($this->_cache[$this->_id])){
 
     		$this->_cache[$this->_id] = $this->getTable('customs');
-			$this->_cache[$this->_id]->load($this->_id);
+			$this->_cache[$this->_id]->load($this->_id,$field);
 
 		    $this->_cache[$this->_id]->_varsToPushParam = self::getVarsToPush($this->_cache[$this->_id]->field_type);
 

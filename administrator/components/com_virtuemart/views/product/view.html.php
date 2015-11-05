@@ -136,7 +136,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				// Load the vendors
 				$vendor_model = VmModel::getModel('vendor');
 
-				if(Vmconfig::get('multix','none')!=='none'){
+				$lists['vendors'] = '';
+				if($this->showVendors()){
 					$lists['vendors'] = Shopfunctions::renderVendorList($product->virtuemart_vendor_id);
 				}
 				// Load the currencies
@@ -369,12 +370,15 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$vendor_model = VmModel::getModel('vendor');
 			$productreviews = VmModel::getModel('ratings');
 
-			$loaded_virtuemart_manufacturer_id = array();
 			$this->mfTable = $model->getTable ('manufacturers');
 
 			$this->catTable = $model->getTable ('categories');
 
-			$this->lists['vendors'] = Shopfunctions::renderVendorList(vmAccess::getVendorId());
+			$this->lists['vendors'] = '';
+			if($this->showVendors()){
+				$this->lists['vendors'] = Shopfunctions::renderVendorList(vmAccess::getVendorId());
+			}
+
 
 			foreach ($productlist as $virtuemart_product_id => $product) {
 				$product->mediaitems = count($product->virtuemart_media_id);
