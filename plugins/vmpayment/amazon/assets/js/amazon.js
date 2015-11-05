@@ -139,7 +139,7 @@ var amazonPayment = {
 
 
         updateCart: function () {
-            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=updatecartJS&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang;
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=updatecartJS&forceMethods=1&virtuemart_paymentmethod_id=' + amazonPayment.virtuemart_paymentmethod_id + vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = "";
@@ -186,7 +186,7 @@ var amazonPayment = {
                 }
             }
             // VM3 is updateJS
-            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=updatecartJS&virtuemart_shipmentmethod_id=' + virtuemart_shipmentmethod_id + vmLang;
+            var url = vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=cart&task=updatecartJS&forceMethods=1&virtuemart_shipmentmethod_id=' + virtuemart_shipmentmethod_id + vmLang;
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = '';

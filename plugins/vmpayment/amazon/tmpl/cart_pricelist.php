@@ -246,11 +246,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	}
 } ?>
 
-<?php if ( 	VmConfig::get('oncheckout_opc',true) or
-	!VmConfig::get('oncheckout_show_steps',false) or
-	(!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) and
-		!empty($this->cart->virtuemart_shipmentmethod_id) )
-) { ?>
+<?php if (!empty($this->cart->virtuemart_shipmentmethod_id) ) { ?>
 	<tr class="sectiontableentry1" style="vertical-align:top;">
 		<?php if (!$this->cart->automaticSelectedShipment) { ?>
 			<td colspan="4" align="left">
@@ -271,12 +267,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		<td style="align:right;vertical-align:middle;"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->cartPrices['salesPriceShipment'], FALSE); ?> </td>
 	</tr>
 <?php } ?>
-<?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 and
-	( 	VmConfig::get('oncheckout_opc',true) or
-		!VmConfig::get('oncheckout_show_steps',false) or
-		( (!VmConfig::get('oncheckout_opc',true) and VmConfig::get('oncheckout_show_steps',false) ) and !empty($this->cart->virtuemart_paymentmethod_id))
-	)
-) { ?>
+<?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 and !empty($this->cart->virtuemart_paymentmethod_id)) { ?>
 	<tr class="sectiontableentry1" style="vertical-align:top;">
 		<?php if (!$this->cart->automaticSelectedPayment) { ?>
 			<td colspan="4" style="align:left;vertical-align:top;">
