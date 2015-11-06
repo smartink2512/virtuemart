@@ -104,4 +104,3 @@ class OpenSslVerifySignature implements VerifySignature
         return $cert;
     }
 }
-?>

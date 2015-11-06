@@ -1168,7 +1168,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				if(!$db->loadResult()) {
 					$order_userinfosTable=$orderModel->getTable('order_userinfos');
 				}
-
+				$order_userinfosTable->emptyCache();
 				$order_userinfosTable->load($order['details']['BT']->virtuemart_order_id, 'virtuemart_order_id', " AND address_type='ST'");
 				if (!$order_userinfosTable->bindChecknStore($ST, true)) {
 					vmError($order_userinfosTable->getError());

@@ -139,4 +139,3 @@ class XmlNotificationParser
         return $notification;
     }
 }
-?>

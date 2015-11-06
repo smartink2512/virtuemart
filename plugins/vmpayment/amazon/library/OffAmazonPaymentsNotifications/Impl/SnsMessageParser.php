@@ -56,6 +56,7 @@ class SnsMessageParser
     private static function _validateHeaders($headers)
     {
         // Quickly check that this is a sns message
+        $headers=array_change_key_case($headers);
         if (!array_key_exists('x-amz-sns-message-type', $headers)) {
             throw new OffAmazonPaymentsNotifications_InvalidMessageException(
                 "Error with message - header " .
@@ -108,4 +109,3 @@ class SnsMessageParser
         $snsMsg->setNotificationMetadata($notificationMetadata);
     }
 }
-?>
