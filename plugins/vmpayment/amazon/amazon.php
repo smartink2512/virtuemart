@@ -2533,18 +2533,33 @@ jQuery().ready(function($) {
 		return;
 	}
 
-
+	/**
+	 * plgVmDisplayListFEPayment
+	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
+	 *
+	 * @param object  $cart Cart object
+	 * @param integer $selected ID of the method selected
+	 * @return boolean True on success, false on failures, null when this plugin was not selected.
+	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
+	 *
+	 * @author Valerie Isaksen
+	 */
+	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+		return $this->displayListFE($cart, $selected, $htmlIn);
+	}
 
 	/**
 	 * Used when the vmOPC is set to OFF
 	 * @param $cart
 	 * @param $payment_advertise
 	 * @return null
+	 * In case OPC is off: the login widget is displayed on the cart, and on the payment list
 	 */
 	function plgVmOnCheckoutAdvertise($cart, &$payment_advertise) {
-
+		if (vmConfig::get('oncheckout_opc')==0) {
 			$html=NULL;
 			$this->displayListFE($cart, $cart->virtuemart_paymentmethod_id, $html);
+		}
 
 	}
 	/**
