@@ -64,12 +64,12 @@ class shopFunctionsF {
 
 	static public function getLastVisitedItemId ($default = 0) {
 		$session = JFactory::getSession();
-		return $session->get( 'vmlastvisItemid', $default, 'vm' );
+		return $session->get( 'vmlastvisitedItemid', $default, 'vm' );
 	}
 
 	static public function setLastVisitedItemId ($id) {
 		$session = JFactory::getSession();
-		return $session->set( 'vmlastvisItemid', (int)$id, 'vm' );
+		return $session->set( 'vmlastvisitedItemid', (int)$id, 'vm' );
 	}
 
 	static public function getLastVisitedManuId () {

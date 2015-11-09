@@ -29,7 +29,7 @@ Virtuemart.cvFind = function(event) {
 				if(selection[i2]==event.data.variants[index][i2+1]){
 					hitcount++;
 					if(hitcount == (selection.length-runs)){
-						var url = event.data.variants[index][0];
+						var url = event.data.variants[index][0].replace(/amp;/g, '');
 						jQuery(this).attr('url',url);
 						jQuery(this).val(url);
 						if(jQuery(this).attr('reload')){

@@ -210,7 +210,9 @@ class SofortLib {
 			if ($paymentMethod == 'all') {
 				foreach ($message as $key => $error) {
 					if (is_array($error) && !empty($error)){
-						return 'Error: '.$error[0]['code'].':'.$error[0]['message'];
+						$code = isset($error[0]['code'])? $error[0]['code']:'';
+						$message = isset($error[0]['message'])? $error[0]['message']:'';
+						return 'Error: '.$code.': '.$message;
 					}
 				}
 			} else {

@@ -57,6 +57,7 @@ class VirtueMartCart {
 
 	var $couponCode = '';
 	var $order_language = '';
+	var $orderDetails = 0;
 
 	var $lists = null;
 	var $order_number=null; // added to solve emptying cart for payment notification
@@ -136,7 +137,7 @@ class VirtueMartCart {
 			if (!empty($cartSession)) {
 
 				if(isset($sessionCart->cartProductsData)){
-					self::$_cart->cartProductsData = $sessionCart->cartProductsData;
+					self::$_cart->cartProductsData 				= $sessionCart->cartProductsData;
 					self::$_cart->vendorId	 					= $sessionCart->vendorId;
 					self::$_cart->lastVisitedCategoryId	 		= $sessionCart->lastVisitedCategoryId;
 					self::$_cart->virtuemart_shipmentmethod_id	= $sessionCart->virtuemart_shipmentmethod_id;
@@ -890,6 +891,7 @@ class VirtueMartCart {
 		$this->checkoutData(false);
 		if ($this->_dataValidated == $cHash) {
 			$this->_confirmDone = true;
+			$this->orderDetails = 0;
 			$this->confirmedOrder();
 		} else {
 			$this->_dataValidated = false;
@@ -1175,6 +1177,8 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmcustom');
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmpayment');
+
+			$this->orderDetails = $orderDetails;
 
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $orderDetails));
 
