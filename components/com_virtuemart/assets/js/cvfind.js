@@ -45,6 +45,7 @@ Virtuemart.cvFind = function(event) {
 		runs++;
 		//console.log('Could not find product for selection '+runs);
 	}
+
 	return false;
 };
 

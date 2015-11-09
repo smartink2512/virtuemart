@@ -202,7 +202,7 @@ class VirtueMartCustomFieldRenderer {
 
 						if($ignore and in_array($product_id,$ignore)){continue;}
 
-						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid);
+						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid,false);
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
 					}
 
@@ -270,7 +270,8 @@ class VirtueMartCustomFieldRenderer {
 									$productPrices = $calculator->getProductPrices ($productChild);
 									$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
 								}
-								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $productChild->virtuemart_product_id), 'text' => $productChild->{$customfield->customfield_value}.$priceStr);
+								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $productChild->virtuemart_product_id,false), 'text' => $productChild->{$customfield->customfield_value}.$priceStr);
+
 								if($selected==$child){
 									$selectedFound = true;
 									vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
@@ -297,8 +298,14 @@ class VirtueMartCustomFieldRenderer {
 
 					$url = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.
 					$virtuemart_category_id .'&virtuemart_product_id='. $selected;
-					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="vm-chzn-select no-vm-bind" data-dynamic-update="1" ', "value", "text",
-					JRoute::_ ($url,false),$idTag);
+					$attribs['option.key.toHtml'] = false;
+					$attribs['id'] = $idTag;
+					$attribs['list.attr'] = 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="vm-chzn-select no-vm-bind" data-dynamic-update="1" ';
+					$attribs['list.translate'] = false;
+					$attribs['option.key'] = 'value';
+					$attribs['option.text'] = 'text';
+					$attribs['list.select'] = JRoute::_ ($url,false);
+					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, $attribs);
 
 					vmJsApi::chosenDropDowns();
 

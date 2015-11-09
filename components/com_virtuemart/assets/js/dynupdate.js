@@ -72,6 +72,7 @@ jQuery(function($) {
             url = jQuery(this).val();
         }
         if(url!=null){
+			url = url.replace(/amp;/g, '');
             Virtuemart.setBrowserNewState(url);
             Virtuemart.updateContent(url);
         }

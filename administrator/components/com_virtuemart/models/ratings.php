@@ -45,7 +45,7 @@ class VirtueMartModelRatings extends VmModel {
 
 		$layout = vRequest::getString('layout','default');
 		$task = vRequest::getCmd('task','default');
-		vmdebug('my layout',$layout,$task);
+
 		if($layout == 'list_reviews' or $task == 'listreviews'){
 			vmdebug('in review list');
 			if($task == 'add'){
