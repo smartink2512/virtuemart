@@ -1108,7 +1108,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		$result = $db->loadResult();
-		if(empty($result)){
+		if(!isset($result)){
 			vmError('userfields getIfRequired '.$q,'Programmer used an unknown userfield '.$fieldname);
 		}
 

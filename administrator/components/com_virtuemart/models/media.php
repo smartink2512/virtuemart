@@ -106,7 +106,6 @@ class VirtueMartModelMedia extends VmModel {
 						$mime		= empty($data->file_mimetype)? $mime:$data->file_mimetype;
 						if($app->isSite()){
 							$selectedLangue = explode(",", $data->file_lang);
-							//vmdebug('selectedLangue',$selectedLangue);
 							$lang =  JFactory::getLanguage();
 							if(in_array($lang->getTag(), $selectedLangue) || $data->file_lang == '') {
 								$_medias[$id] = VmMediaHandler::createMedia($data,$file_type,$mime);

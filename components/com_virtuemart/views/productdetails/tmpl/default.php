@@ -192,7 +192,7 @@ echo $this->loadTemplate('images');
 	echo $this->product->event->beforeDisplayContent; ?>
 
 	<?php
-	//echo $this->product->product_in_stock;
+	//echo ($this->product->product_in_stock - $this->product->product_ordered);
 	// Product Description
 	if (!empty($this->product->product_desc)) {
 	    ?>

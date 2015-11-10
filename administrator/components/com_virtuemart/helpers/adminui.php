@@ -49,7 +49,6 @@ class AdminUIHelper {
 		vmJsApi::css('chosen');
 		vmJsApi::css('jquery.fancybox-1.3.4');
 		vmJsApi::css('ui/jquery.ui.all');
-		$modalJs="jQuery('.modal').fancybox();";
 	}
 
 	if($view!='virtuemart') {
@@ -75,7 +74,6 @@ class AdminUIHelper {
 				jQuery('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie);
 			}
 			jQuery('#content-box [title]').vm2admin('tips',tip_image);
-			".$modalJs."
 			jQuery('.reset-value').click( function(e){
 				e.preventDefault();
 				none = '';

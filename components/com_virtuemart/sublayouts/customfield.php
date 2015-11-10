@@ -152,7 +152,7 @@ class VirtueMartCustomFieldRenderer {
 									$text = vmText::_($elem);
 								}
 
-								if($elem=='0'){
+								if(empty($elem)){
 									$text = vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION');
 								}
 								$options[] = array('value'=>$elem,'text'=>$text);
@@ -312,13 +312,8 @@ class VirtueMartCustomFieldRenderer {
 					if($customfield->parentOrderable==0){
 						if($product->virtuemart_product_id==$customfield->virtuemart_product_id){
 							$product->orderable = false;
-						} else {
 							$product->product_in_stock = $parentStock;
 						}
-
-					} else {
-
-
 					}
 
 					$dynChilds++;

@@ -156,7 +156,7 @@ function virtuemartBuildRoute(&$query) {
 		case 'productdetails';
 
 			$virtuemart_product_id = false;
-			if (isset($jmenu['virtuemart_product_id'][ $query['virtuemart_product_id'] ] ) ) {
+			if (isset($jmenu['virtuemart_product_id']) and isset($jmenu['virtuemart_product_id'][ $query['virtuemart_product_id'] ] ) ) {
 				$query['Itemid'] = $jmenu['virtuemart_product_id'][$query['virtuemart_product_id']];
 				unset($query['virtuemart_product_id']);
 				unset($query['virtuemart_category_id']);

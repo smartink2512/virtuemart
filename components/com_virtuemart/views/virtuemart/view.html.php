@@ -58,7 +58,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		if(!VmConfig::get('shop_is_offline',0)){
 
-			if( ShopFunctionsF::isFEmanager('vm.product.edit') ){
+			if( ShopFunctionsF::isFEmanager('product.edit') ){
 				$add_product_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=0&manage=1' ;
 				$add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT', 'edit', false, false);
 			} else {
