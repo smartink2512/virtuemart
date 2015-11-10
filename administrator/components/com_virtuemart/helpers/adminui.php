@@ -49,7 +49,7 @@ class AdminUIHelper {
 		vmJsApi::css('chosen');
 		vmJsApi::css('jquery.fancybox-1.3.4');
 		vmJsApi::css('ui/jquery.ui.all');
-		//$modalJs="jQuery('.modal').fancybox();";
+		$modalJs="jQuery('.modal').fancybox();";
 	}
 
 	if($view!='virtuemart') {
