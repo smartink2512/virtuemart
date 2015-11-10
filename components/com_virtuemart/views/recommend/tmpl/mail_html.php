@@ -66,7 +66,7 @@ defined('_JEXEC') or die('');
 									?>
 									<td width="30%" align="center">
 										<a href="<?php  echo $product_link ?>">
-											<img src="<?php  echo JURI::root () . $this->product->file_url_thumb ?>" />
+											<?php echo $this->product->images[0]->displayMediaThumb('',false,'',true,false,true); ?>
 										</a>
 									</td>
 									<td width="70%" valign="top">
