@@ -47,6 +47,7 @@ class amazonHelperCaptureNotification extends amazonHelper {
 			// default value
 			$order_history['customer_notified'] = 1;
 			if ($amazonState == 'Completed') {
+				$order_history['customer_notified'] = 0;
 				$order_history['order_status'] = $this->_currentMethod->status_capture;
 				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_NOTIFICATION');
 

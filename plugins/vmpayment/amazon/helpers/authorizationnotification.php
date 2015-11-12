@@ -70,17 +70,17 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 				$order_history['order_status'] = $this->_currentMethod->status_authorization;
 				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_OPEN');
 			} elseif ($amazonState == 'Declined') {
+				$order_history['customer_notified'] = 1;
 				if ($reasonCode == 'InvalidPaymentMethod') {
-					$order_history['customer_notified'] = 0;
 					if ($this->_currentMethod->soft_decline == 'soft_decline_enabled') {
 						$order_history['comments'] = $this->getSoftDeclinedComment();
 						$order_history['order_status'] = $this->_currentMethod->status_orderconfirmed;
-						$order_history['customer_notified'] = 1;
 					} else {
 						$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_INVALIDPAYMENTMETHOD', $reasonCode);
 						$order_history['order_status'] = $this->_currentMethod->status_cancel;
 					}
 				} elseif ($reasonCode == 'AmazonRejected') {
+					$order_history['customer_notified'] = 1;
 					$order_history['order_status'] = $this->_currentMethod->status_cancel;
 					$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED', $reasonCode);
 				} elseif ($reasonCode == 'TransactionTimedOut') {
