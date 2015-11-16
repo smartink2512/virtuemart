@@ -637,7 +637,7 @@ class VmPagination extends vObject {
 	/**
 	 * Method to create an active pagination link to the item
 	 *
-	 * @param   JPaginationObject  &$item  The object with which to make an active link.
+	 * @param   vPaginationObject  &$item  The object with which to make an active link.
 	 *
 	 * @return   string  HTML link
 	 *
@@ -716,7 +716,7 @@ class VmPagination extends vObject {
 			}
 		}
 
-		$data->all = new JPaginationObject(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
+		$data->all = new vPaginationObject(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
 		if (!$this->_viewall)
 		{
 			$data->all->base = '0';
@@ -724,8 +724,8 @@ class VmPagination extends vObject {
 		}
 
 		// Set the start and previous data objects.
-		$data->start = new JPaginationObject(JText::_('JLIB_HTML_START'), $this->prefix);
-		$data->previous = new JPaginationObject(JText::_('JPREV'), $this->prefix);
+		$data->start = new vPaginationObject(JText::_('JLIB_HTML_START'), $this->prefix);
+		$data->previous = new vPaginationObject(JText::_('JPREV'), $this->prefix);
 
 		if ($this->get('pages.current') > 1)
 		{
@@ -741,8 +741,8 @@ class VmPagination extends vObject {
 		}
 
 		// Set the next and end data objects.
-		$data->next = new JPaginationObject(JText::_('JNEXT'), $this->prefix);
-		$data->end = new JPaginationObject(JText::_('JLIB_HTML_END'), $this->prefix);
+		$data->next = new vPaginationObject(JText::_('JNEXT'), $this->prefix);
+		$data->end = new vPaginationObject(JText::_('JLIB_HTML_END'), $this->prefix);
 
 		if ($this->get('pages.current') < $this->get('pages.total'))
 		{
@@ -763,7 +763,7 @@ class VmPagination extends vObject {
 			// Set the empty for removal from route
 			//$offset = $offset == 0 ? '' : $offset;
 
-			$data->pages[$i] = new JPaginationObject($i, $this->prefix);
+			$data->pages[$i] = new vPaginationObject($i, $this->prefix);
 			if ($i != $this->get('pages.current') || $this->_viewall)
 			{
 				$data->pages[$i]->base = $offset;
@@ -781,7 +781,7 @@ class VmPagination extends vObject {
  * @subpackage  HTML
  * @since       11.1
  */
-class JPaginationObject extends JObject
+class vPaginationObject extends JObject
 {
 	/**
 	 * @var    string  The link text.

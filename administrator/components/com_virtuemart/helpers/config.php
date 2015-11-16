@@ -495,7 +495,9 @@ class VmConfig {
 	public static $vmlangTag = '';
 	public static $vmlangSef = '';
 	public static $langs = array();
+	public static $jLangCount = 1;
 	public static $langCount = 0;
+
 	public static $mType = 'info';
 	var $_params = array();
 	var $_raw = array();
@@ -926,6 +928,16 @@ class VmConfig {
 
 		$langs = (array)self::get('active_languages',array());
 		self::$langCount = count($langs);
+
+		self::$jLangCount = 1;
+		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
+		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
+			$languages = JLanguageHelper::getLanguages('lang_code');
+			$ltag = JFactory::getLanguage()->getTag();
+			self::$vmlangSef = $languages[$ltag]->sef;
+			self::$jLangCount = count($languages);
+		}
+
 		$siteLang = vRequest::getString('vmlang',false );
 
 		$params = JComponentHelper::getParams('com_languages');
@@ -977,17 +989,12 @@ class VmConfig {
 				}
 			}
 
-			// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
-			if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
-				$languages = JLanguageHelper::getLanguages('lang_code');
-				$ltag = JFactory::getLanguage()->getTag();
-				self::$vmlangSef = $languages[$ltag]->sef;
-			}
+
 		}
 
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr($defaultLang,'-','_'));
-		vmdebug('$siteLang: '.$siteLang.' self::$vmlangSef: '.self::$vmlangSef.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
+		vmdebug('LangCount: '.self::$langCount.' $siteLang: '.$siteLang.' self::$vmlangSef: '.self::$vmlangSef.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );
 

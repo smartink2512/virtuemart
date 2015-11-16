@@ -982,15 +982,9 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method, $progressive = true) {
 
-		static $c = array();
 		$idN = 'virtuemart_'.$this->_psType.'method_id';
 
 		$_psType = ucfirst ($this->_psType);
-
-		/*if(isset($c[$this->_psType][$method->$idN])){
-			$cart_prices = array_merge($cart_prices,$c[$this->_psType][$method->$idN]);
-			return $cart_prices['salesPrice' . $_psType];
-		}*/
 
 		if (!class_exists ('calculationHelper')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');

@@ -122,17 +122,6 @@ class VirtuemartViewInvoice extends VmView {
 			VmConfig::loadJLang('com_virtuemart_orders',true, $orderDetails['details']['BT']->order_language);
 		}
 
-		//QuicknDirty, caching of the result VirtueMartModelCustomfields::calculateModificators must be deleted,
-		/*if(!empty($orderDetails['items']) and is_array($orderDetails['items'])){
-
-			$nbPr = count($orderDetails['items']);
-
-			for($k = 0; $k<$nbPr ;$k++){
-				$orderDetails['items'][$k]->modificatorSum = null;
-			}
-			vmdebug('$nbPr',$nbPr);
-		}*/
-
 		$this->assignRef('orderDetails', $orderDetails);
         // if it is order print, invoice number should not be created, either it is there, either it has not been created
 		if(empty($this->invoiceNumber) and !$order_print){
@@ -210,8 +199,6 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('shopperName', $shopperName);
 		$this->assignRef('civility', $civility);
 
-
-
 		// Create an array to allow orderlinestatuses to be translated
 		// We'll probably want to put this somewhere in ShopFunctions..
 		$orderStatusModel = VmModel::getModel('orderstatus');
@@ -225,10 +212,13 @@ class VirtuemartViewInvoice extends VmView {
 
 		$_itemStatusUpdateFields = array();
 		$_itemAttributesUpdateFields = array();
-		foreach($orderDetails['items'] as $_item) {
+
+		$pM = VmModel::getModel('product');
+		foreach($orderDetails['items'] as $k => $_item) {
 // 			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHtml::_('select.genericlist', $orderstatuses, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
 			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] =  $_item->order_status;
-
+			$product = $pM->getProduct($_item->virtuemart_product_id);
+			$orderDetails['items'][$k]->virtuemart_media_id = $product->virtuemart_media_id;
 		}
 
 		if (empty($orderDetails['shipmentName']) ) {

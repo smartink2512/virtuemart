@@ -1311,6 +1311,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$productRules = $_cart->cartPrices[$key][$calculation_kind];
 
 				foreach($productRules as $rule){
+					if(empty($rule[4])){
+						continue;
+					}
 					$orderCalcRules = $this->getTable('order_calc_rules');
 					$orderCalcRules->virtuemart_order_calc_rule_id= null;
 					$orderCalcRules->virtuemart_calc_id= $rule[7];
@@ -1377,57 +1380,71 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if(!empty($_cart->virtuemart_paymentmethod_id)){
 
-			$orderCalcRules = $this->getTable('order_calc_rules');
-			$calcModel = VmModel::getModel('calc');
-			$calcModel->setId($_cart->cartPrices['payment_calc_id']);
-			$calc = $calcModel->getCalc();
-			$orderCalcRules->virtuemart_order_calc_rule_id = null;
-			$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
-			$orderCalcRules->calc_kind = 'payment';
-			$orderCalcRules->calc_rule_name = $calc->calc_name;
-			$orderCalcRules->calc_amount = $_cart->cartPrices['paymentTax'];
-			$orderCalcRules->calc_value = $calc->calc_value;
-			$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
-			$orderCalcRules->calc_currency = $calc->calc_currency;
-			$orderCalcRules->calc_params = $calc->calc_params;
-			$orderCalcRules->virtuemart_vendor_id = $calc->virtuemart_vendor_id;
-			$orderCalcRules->virtuemart_order_id = $order_id;
-			if (!$orderCalcRules->check()) {
-				return false;
-			}
+			if(empty($_cart->cartPrices['payment_calc_id'])){
 
-			// Save the record to the database
-			if (!$orderCalcRules->store()) {
-				return false;
-			}
+			} else {
+				$orderCalcRules = $this->getTable('order_calc_rules');
+				$calcModel = VmModel::getModel('calc');
+				$calcModel->setId($_cart->cartPrices['payment_calc_id']);
+				$calc = $calcModel->getCalc();
+				if(empty($calc->calc_currency) or empty($calc->calc_value)) {
 
+				} else {
+					$orderCalcRules->virtuemart_order_calc_rule_id = null;
+					$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
+					$orderCalcRules->calc_kind = 'payment';
+					$orderCalcRules->calc_rule_name = $calc->calc_name;
+					$orderCalcRules->calc_amount = $_cart->cartPrices['paymentTax'];
+					$orderCalcRules->calc_value = $calc->calc_value;
+					$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
+					$orderCalcRules->calc_currency = $calc->calc_currency;
+					$orderCalcRules->calc_params = $calc->calc_params;
+					$orderCalcRules->virtuemart_vendor_id = $calc->virtuemart_vendor_id;
+					$orderCalcRules->virtuemart_order_id = $order_id;
+					if (!$orderCalcRules->check()) {
+
+					} else {
+						// Save the record to the database
+						if (!$orderCalcRules->store()) {
+							return false;
+						}
+					}
+				}
+			}
 		}
 
 		if(!empty($_cart->virtuemart_shipmentmethod_id)){
 
-			$orderCalcRules = $this->getTable('order_calc_rules');
-			$calcModel = VmModel::getModel('calc');
-			$calcModel->setId($_cart->cartPrices['shipment_calc_id']);
-			$calc = $calcModel->getCalc();
+			if(empty($_cart->cartPrices['shipment_calc_id'])){
 
-			$orderCalcRules->virtuemart_order_calc_rule_id = null;
-			$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
-			$orderCalcRules->calc_kind = 'shipment';
-			$orderCalcRules->calc_rule_name = $calc->calc_name;
-			$orderCalcRules->calc_amount = $_cart->cartPrices['shipmentTax'];
-			$orderCalcRules->calc_value = $calc->calc_value;
-			$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
-			$orderCalcRules->calc_currency = $calc->calc_currency;
-			$orderCalcRules->calc_params = $calc->calc_params;
-			$orderCalcRules->virtuemart_vendor_id = $calc->virtuemart_vendor_id;
-			$orderCalcRules->virtuemart_order_id = $order_id;
-			if (!$orderCalcRules->check()) {
-				return false;
-			}
+			} else {
+				$orderCalcRules = $this->getTable('order_calc_rules');
+				$calcModel = VmModel::getModel('calc');
+				$calcModel->setId($_cart->cartPrices['shipment_calc_id']);
+				$calc = $calcModel->getCalc();
+				if(empty($calc->calc_currency) or empty($calc->calc_value)) {
 
-			// Save the record to the database
-			if (!$orderCalcRules->store()) {
-				return false;
+				} else {
+					$orderCalcRules->virtuemart_order_calc_rule_id = null;
+					$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
+					$orderCalcRules->calc_kind = 'shipment';
+					$orderCalcRules->calc_rule_name = $calc->calc_name;
+					$orderCalcRules->calc_amount = $_cart->cartPrices['shipmentTax'];
+					$orderCalcRules->calc_value = $calc->calc_value;
+					$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
+					$orderCalcRules->calc_currency = $calc->calc_currency;
+					$orderCalcRules->calc_params = $calc->calc_params;
+					$orderCalcRules->virtuemart_vendor_id = $calc->virtuemart_vendor_id;
+					$orderCalcRules->virtuemart_order_id = $order_id;
+					if (!$orderCalcRules->check()) {
+						return false;
+					} else {
+						// Save the record to the database
+						if (!$orderCalcRules->store()) {
+							return false;
+						}
+					}
+				}
 			}
 		}
 

@@ -1018,72 +1018,83 @@ class vmrouterHelper {
 	private function setMenuItemId(){
 
 		$home 	= false ;
-		$component	= JComponentHelper::getComponent('com_virtuemart');
+		static $mCache = array() ;
 
-		$db			= JFactory::getDBO();
 		$fallback = '';
 		$jLangTag = $this->Jlang->getTag();
+		$h = VmConfig::$vmlangTag;
 		if($jLangTag!=VmConfig::$vmlangTag){
 			$fallback= 'or language = "'.$jLangTag.'"';
+			$h .= $jLangTag;
 		}
-		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.VmConfig::$vmlangTag.'" '.$fallback.' )'  ;
-		$db->setQuery($query);
-
-		$this->menuVmitems= $db->loadObjectList();
-		$homeid =0;
-
-
-		if(empty($this->menuVmitems)){
-			VmConfig::loadJLang('com_virtuemart', true);
-			vmWarn(vmText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
+		vmdebug('Use setMenuItemId');
+		if(isset($mCache[$h]['mI'])) {
+			$this->menuVmitems = self::$mCache[$h]['mI'];
+			$this->menu = self::$mCache[$h]['m'];
+			vmdebug('Use cache');
 		} else {
+			$db			= JFactory::getDBO();
+			$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.VmConfig::$vmlangTag.'" '.$fallback.' )'  ;
+			$db->setQuery($query);
+			$this->menuVmitems = $db->loadObjectList();
 
-			// Search  Virtuemart itemID in joomla menu
-			foreach ($this->menuVmitems as $item)	{
+			$homeid =0;
 
-				$linkToSplit= explode ('&',$item->link);
+			if(empty($this->menuVmitems)){
+				$mCache[$h]['mI'] = false;
+				VmConfig::loadJLang('com_virtuemart', true);
+				vmWarn(vmText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
+			} else {
 
-				$link =array();
-				foreach ($linkToSplit as $tosplit) {
-					$splitpos = strpos($tosplit, '=');
-					$link[ (substr($tosplit, 0, $splitpos) ) ] = substr($tosplit, $splitpos+1);
+				// Search  Virtuemart itemID in joomla menu
+				foreach ($this->menuVmitems as $item)	{
+
+					$linkToSplit= explode ('&',$item->link);
+
+					$link =array();
+					foreach ($linkToSplit as $tosplit) {
+						$splitpos = strpos($tosplit, '=');
+						$link[ (substr($tosplit, 0, $splitpos) ) ] = substr($tosplit, $splitpos+1);
+					}
+
+					//This is fix to prevent entries in the errorlog.
+					if(!empty($link['view'])){
+						$view = $link['view'] ;
+						if (array_key_exists($view,$this->dbview) ){
+							$dbKey = $this->dbview[$view];
+						}
+						else {
+							$dbKey = false ;
+						}
+
+						if ( isset($link['virtuemart_'.$dbKey.'_id']) && $dbKey ){
+							$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
+						}
+						elseif ($home == $view ) continue;
+						else $this->menu[$view]= $item->id ;
+
+						if ((int)$item->home === 1) {
+							$home = $view;
+							$homeid = $item->id;
+						}
+					} else {
+						vmdebug('my item with empty $link["view"]',$item);
+						vmError('$link["view"] is empty');
+					}
 				}
-
-				//This is fix to prevent entries in the errorlog.
-				if(!empty($link['view'])){
-					$view = $link['view'] ;
-					if (array_key_exists($view,$this->dbview) ){
-						$dbKey = $this->dbview[$view];
-					}
-					else {
-						$dbKey = false ;
-					}
-
-					if ( isset($link['virtuemart_'.$dbKey.'_id']) && $dbKey ){
-						$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
-					}
-					elseif ($home == $view ) continue;
-					else $this->menu[$view]= $item->id ;
-
-					if ((int)$item->home === 1) {
-						$home = $view;
-						$homeid = $item->id;
-					}
-				} else {
-					vmdebug('my item with empty $link["view"]',$item);
-					vmError('$link["view"] is empty');
-				}
-
+				$mCache[$h]['mI'] = $this->menuVmitems;
 			}
-		}
 
 
-		// init unsetted views  to defaut front view or nothing(prevent duplicates routes)
-		if ( !isset( $this->menu['virtuemart']) ) {
-			if (isset ($this->menu['virtuemart_category_id'][0]) ) {
-				$this->menu['virtuemart'] = $this->menu['virtuemart_category_id'][0] ;
-			}else $this->menu['virtuemart'] = $homeid;
+			// init unsetted views  to defaut front view or nothing(prevent duplicates routes)
+			if ( !isset( $this->menu['virtuemart']) ) {
+				if (isset ($this->menu['virtuemart_category_id'][0]) ) {
+					$this->menu['virtuemart'] = $this->menu['virtuemart_category_id'][0] ;
+				} else $this->menu['virtuemart'] = $homeid;
+			}
+			$mCache[$h]['m'] = $this->menu;
 		}
+
 	}
 
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */
@@ -1117,6 +1128,10 @@ class vmrouterHelper {
 	 */
 	public function getMenuCatItemId($virtuemart_category_id) {
 
+		static $cache = array();
+		if(isset($cache[$virtuemart_category_id])) {
+			return $cache[$virtuemart_category_id];
+		}
 		$itemID = '';
 
 		$virtuemart_manufacturer_id = isset($this->query['virtuemart_manufacturer_id']) ? $this->query['virtuemart_manufacturer_id'] : vRequest::getInt('virtuemart_manufacturer_id',0);
@@ -1134,29 +1149,34 @@ class vmrouterHelper {
 			'&showcategory='.$showcategory.
 			'&showproducts='.$showproducts.
 			'&productsublayout='.$productsublayout;
-		$links[] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
+		if(!empty($virtuemart_manufacturer_id)){
+			$links[] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
 			'&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id.'%';
+		}
+
 		$links[] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
 			'&virtuemart_manufacturer_id=0%';
 
 		$db = JFactory::getDbo();
 		foreach($links as $link) {
 			$link = vRequest::filterUrl($link);
-			$q = 'SELECT * FROM `#__menu` WHERE `link` LIKE "'. $link .'" and published = "1" and `language` = "'. $jLangTag .'"';
+
+			$q = 'SELECT * FROM `#__menu` WHERE `link` LIKE "'. $link .'" and published = "1" and (`language` = "'. $jLangTag .'" OR `language` = "*") ORDER BY `language`';
+
 			$db->setQuery( $q );
 			$items = $db->loadObjectList();
 			if(empty($items)) {
-				$q = 'SELECT * FROM `#__menu` WHERE `link` LIKE "'. $link .'" and published = "1" and `language` = "*"';
+			/*	$q = 'SELECT * FROM `#__menu` WHERE `link` LIKE "'. $link .'" and published = "1" and `language` = "*"';
 				$db->setQuery( $q );
-				$items = $db->loadObjectList();
+				$items = $db->loadObjectList();*/
 			}
 			if(!empty($items)) break;
 		}
-
+		$cache[$virtuemart_category_id] = false;
 		if(!empty($items[0]->id)) {
 			$itemID = $items[0]->id;
 		}
-
+		$cache[$virtuemart_category_id] = $itemID;
 		return $itemID;
 	}
 

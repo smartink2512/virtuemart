@@ -125,7 +125,7 @@ class VmView extends JViewLegacy{
 		}
 
 		$lang = '';
-		if(VmConfig::$langCount>1 and !empty(VmConfig::$vmlangSef)){
+		if(VmConfig::$jLangCount>1 and !empty(VmConfig::$vmlangSef)){
 			$lang = '&lang='.VmConfig::$vmlangSef;
 		}
 

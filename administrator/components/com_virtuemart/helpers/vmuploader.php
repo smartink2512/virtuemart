@@ -267,7 +267,14 @@ class vmUploader {
 
 				$media['name'] = $obj->file_name = $mediaPure.'.'.$mediaExtension;
 
-				$type = exif_imagetype($media['tmp_name']);
+				if(function_exists('exif_imagetype')){
+					$type = exif_imagetype($media['tmp_name']);
+				} else if(vmAccess::manager('media.potdang')){
+					$type = $mediaExtension;
+				} else {
+					$type = false;
+				}
+
 				if($type){
 					vmdebug('Recognised image');
 					if(!self::checkMediaType($type,$mediaExtension)){

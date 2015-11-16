@@ -229,18 +229,31 @@ class VirtuemartViewCategory extends VmView {
 				shopFunctionsF::triggerContentPlugin($category, 'category','category_description');
 			}
 
+			$metadesc = '';
+			$metakey = '';
+			$metarobot = '';
+
+			if(isset($menu->params)){
+				$metadesc = $menu->params->get('menu-meta_description');
+				$metakey = $menu->params->get('menu-meta_keywords');
+				$metarobot = $menu->params->get('robots');
+			}
+
 			if ($category->metadesc) {
-				$document->setDescription( $category->metadesc );
+				$metadesc = $category->metadesc;
 			}
 			if ($category->metakey) {
-				$document->setMetaData('keywords', $category->metakey);
+				$metakey = $category->metakey;
 			}
 			if ($category->metarobot) {
-				$document->setMetaData('robots', $category->metarobot);
+				$metarobot = $category->metarobot;
 			}
 
+			$document->setDescription( $metadesc );
+			$document->setMetaData('keywords', $metakey);
+			$document->setMetaData('robots', $metarobot);
 
-			if ($app->getCfg('MetaAuthor') == '1') {
+			if ($app->getCfg('MetaAuthor') == '1' and !empty($category->metaauthor)) {
 				$document->setMetaData('author', $category->metaauthor);
 			}
 

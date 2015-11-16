@@ -694,8 +694,6 @@ vmJsApi::addJScript('ordergui',$j);
 		}
 		?>
 
-
-
 			<tr>
 				<td align="right" colspan="5"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment); ?>
@@ -710,22 +708,35 @@ vmJsApi::addJScript('ordergui',$j);
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment+$this->orderbt->order_shipment_tax); ?></td>
 
 			</tr>
-			 <tr>
+			<tr>
 				<td align="right" colspan="5"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment); ?>
+				<td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment); ?>
 					<input class='orderedit' type="text" size="8" name="order_payment" value="<?php echo $this->orderbt->order_payment; ?>"/>
 				</td>
-				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax); ?>
+				<td align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax); ?>
 					<input class='orderedit' type="text" size="12" name="order_payment_tax" value="<?php echo $this->orderbt->order_payment_tax; ?>"/>
 				</td>
-				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax); ?></td>
+				<td align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax); ?></td>
 
-			 </tr>
+			</tr>
 
-
+			<?php
+				foreach($this->orderdetails['calc_rules'] as $rule){
+					if($rule->calc_kind!='VatTax') continue;
+					?><tr >
+					<td colspan="5" align="right"  ><?php echo $rule->calc_rule_name ?> </td>
+					<td align="right" colspan="3" > </td>
+					<td align="right"  style="padding-right: 5px;">
+						<?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?>
+						<input class='orderedit' type="text" size="8" name="calc_rules[<?php echo $rule->calc_kind ?>][<?php echo $rule->virtuemart_order_calc_rule_id ?>]" value="<?php echo $rule->calc_amount; ?>"/>
+					</td>
+					<td align="right" colspan="2" > </td>
+					</tr><?php
+				}
+			?>
 			<tr>
 				<td align="right" colspan="5"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?>:</strong></td>
 				<td align="right" style="padding-right: 5px;">&nbsp;</td>
