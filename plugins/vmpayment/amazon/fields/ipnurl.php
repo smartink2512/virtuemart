@@ -41,8 +41,8 @@ class JFormFieldIpnURL extends JFormField {
 		$string = '<div class="' . $this->class . '">';
 		$string .= '<div class="">' . $https . ' <br /></div>';
 		if (strcmp($https,$http) !==0){
-			$string .= '<div class="ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br /></div>';
-			$string .= $http;
+			$string .= '<div class="ipn-sandbox">' . vmText::_('VMPAYMENT_AMAZON_OR') . '<br />';
+			$string .= $http. '</div>';
 		}
 		$string .= "</div>";
 			return $string;
