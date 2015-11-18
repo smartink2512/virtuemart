@@ -83,7 +83,7 @@ $task = '';
 if ($this->cart->getInCheckOut()){
 	//$task = '&task=checkout';
 }
-$url = 'index.php?option=com_virtuemart&view='.$rview.$task;;
+$url = JRoute::_ ('index.php?option=com_virtuemart&view='.$rview.$task, $this->useXHTML, $this->useSSL);
 
 echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
@@ -105,7 +105,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 	<?php renderControlButtons($this,$rview); ?>
 
 <?php // captcha addition
-	if(VmConfig::get ('reg_captcha')){
+	if(VmConfig::get ('reg_captcha') && JFactory::getUser()->guest == 1){
 		JHTML::_('behavior.framework');
 		JPluginHelper::importPlugin('captcha');
 		$captcha_visible = vRequest::getVar('captcha');
