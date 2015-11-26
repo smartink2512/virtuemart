@@ -78,6 +78,7 @@ class TableVendors extends VmTableData {
 		);
 
 		$varsToPushParam = array(
+			'max_cats_per_product'=>array(1,'int'),
 			'vendor_min_pov'=>array(0.0,'float'),
 			'vendor_min_poq'=>array(1,'int'),
 			'vendor_freeshipment'=>array(0.0,'float'),

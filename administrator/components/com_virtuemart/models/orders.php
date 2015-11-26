@@ -158,7 +158,6 @@ class VirtueMartModelOrders extends VmModel {
             }
             $orderDetails = $this->getOrder($virtuemart_order_id);
 
-			$user = JFactory::getUser();
 			if(!vmAccess::manager('orders')){
                 if(!isset($orderDetails['details']['BT']->virtuemart_user_id)){
                     $orderDetails['details']['BT']->virtuemart_user_id = 0;
@@ -196,17 +195,17 @@ class VirtueMartModelOrders extends VmModel {
 			WHERE o.virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['details'] = $db->loadObjectList('address_type');
-		if($order['details']){
+		if($order['details'] and isset($order['details']['BT'])){
 			$concat = array();
-			if(isset($order['details']['BT']->company))  $concat[]= $order['details']['BT']->company;
-			if(isset($order['details']['BT']->first_name))  $concat[]= $order['details']['BT']->first_name;
-			if(isset($order['details']['BT']->middle_name))  $concat[]= $order['details']['BT']->middle_name;
-			if(isset($order['details']['BT']->last_name))  $concat[]= $order['details']['BT']->last_name;
+			if(!empty($order['details']['BT']->company))  $concat[]= $order['details']['BT']->company;
+			if(!empty($order['details']['BT']->first_name))  $concat[]= $order['details']['BT']->first_name;
+			if(!empty($order['details']['BT']->middle_name))  $concat[]= $order['details']['BT']->middle_name;
+			if(!empty($order['details']['BT']->last_name))  $concat[]= $order['details']['BT']->last_name;
 			$order['details']['BT']->order_name = '';
 			foreach($concat as $c){
-				$order['details']['BT']->order_name .= $c;
+				$order['details']['BT']->order_name .= trim($c).' ';
 			}
-			$order['details']['BT']->order_name = htmlspecialchars(strip_tags(htmlspecialchars_decode($order['details']['BT']->order_name)));
+			$order['details']['BT']->order_name = trim(htmlspecialchars(strip_tags(htmlspecialchars_decode($order['details']['BT']->order_name))));
 		}
 
 		// Get the order history
@@ -319,7 +318,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$virtuemart_vendor_id = vmAccess::isSuperVendor();
 		if(vmAccess::manager('managevendors')){
-			vmdebug('Vendor is core.admin and should see all');
+			vmdebug('Vendor has managevendors and should see all');
 			$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',$virtuemart_vendor_id);
 			if($virtuemart_vendor_id){
 				$where[]= ' o.virtuemart_vendor_id = "'.$virtuemart_vendor_id.'" ';
@@ -1515,7 +1514,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param integer $virtuemart_vendor_id For the correct count
 	 * @return string A unique ordernumber
 	 */
-	static public function genStdOrderNumber($virtuemart_vendor_id=1){
+	static public function genStdOrderNumber($virtuemart_vendor_id=1, $length = 1){
 
 		$db = JFactory::getDBO();
 
@@ -1528,7 +1527,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if(!class_exists('vmCrypt'))
 			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-		$str = vmCrypt::getHumanToken(VmConfig::get('randOrderNr',4)).'0'.$c;
+		$str = vmCrypt::getHumanToken(VmConfig::get('randOrderNr',$length)).'0'.$c;
 
 		return $str;
 	}
@@ -1541,21 +1540,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @return string A unique ordernumber
 	 */
 	static public function generateOrderNumber($uid = 0,$length=4, $virtuemart_vendor_id=1) {
-
-		$db = JFactory::getDBO();
-
-		$q = 'SELECT COUNT(1) FROM #__virtuemart_orders WHERE `virtuemart_vendor_id`="'.$virtuemart_vendor_id.'"';
-		$db->setQuery($q);
-
-		//We can use that here, because the order_number is free to set, the invoice_number must often follow special rules
-		$count = $db->loadResult();
-		$count = $count + (int)VM_ORDER_OFFSET;
-
-		if(!class_exists('vmCrypt'))
-			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
-		$data = vmCrypt::getHumanToken($length).'0'.$count;
-
-		return $data;
+		return self::genStdOrderNumber($virtuemart_vendor_id, $length);
 	}
 
 /*
@@ -1765,6 +1750,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @return boolean True of remove was successful, false otherwise
 	 */
 	function saveOrderLineItem($data) {
+
+		if(vmAccess::manager('orders.edit')) {
+			return false;
+		}
+
 		$table = $this->getTable('order_items');
 
 		//Done in the table already
@@ -1789,6 +1779,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		$table->bindChecknStore($data);
 		return true;
+
 	}
 
 
@@ -1797,6 +1788,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	*@var $virtuemart_order_id Order to clear
 	*/
 	function removeOrderItems ($virtuemart_order_id){
+
+		if(vmAccess::manager('orders.edit')) {
+			return false;
+		}
 		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' .(int) $virtuemart_order_id;
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
@@ -1807,6 +1802,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 		return true;
 	}
+
 	/**
 	 * Remove an order line item.
 	 *
@@ -1815,6 +1811,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @return boolean True of remove was successful, false otherwise
 	 */
 	function removeOrderLineItem($orderLineId) {
+
+		if(vmAccess::manager('orders.edit')) {
+			return false;
+		}
 
 		$item = $this->getTable('order_items');
 		if (!$item->load($orderLineId)) {
@@ -1841,6 +1841,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	public function remove($ids) {
 
+		if(vmAccess::manager('orders.edit')) {
+			return false;
+		}
+
 		$table = $this->getTable($this->_maintablename);
 
 		foreach($ids as $id) {
@@ -1855,12 +1859,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$this->removeOrderItems($id);
 
 			$q = "DELETE FROM `#__virtuemart_order_histories`
-				WHERE `virtuemart_order_id`=".$id;
+			WHERE `virtuemart_order_id`=".$id;
 			$this->_db->setQuery($q);
 			$this->_db->execute();
 
 			$q = "DELETE FROM `#__virtuemart_order_calc_rules`
-				WHERE `virtuemart_order_id`=".$id;
+			WHERE `virtuemart_order_id`=".$id;
 			$this->_db->setQuery($q);
 			$this->_db->execute();
 
@@ -1871,8 +1875,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				return false;
 			}
 		}
-
 		return true;
+
 	}
 
 
@@ -1882,9 +1886,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	* @author Maik Künnemann
 	* @return boolean True is the update was successful, otherwise false.
 	*/ 
-	public function UpdateOrderHead($virtuemart_order_id, $_orderData)
-	{
+	public function UpdateOrderHead($virtuemart_order_id, $_orderData) {
 
+		if(!vmAccess::manager('orders.edit')){
+			return false;
+		}
 		$orderTable = $this->getTable('orders');
 		$orderTable->load($virtuemart_order_id);
 

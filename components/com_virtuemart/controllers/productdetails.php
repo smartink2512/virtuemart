@@ -66,7 +66,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		JSession::checkToken () or jexit ('Invalid Token');
 
 		$app = JFactory::getApplication ();
-		if(!VmConfig::get('ask_question',false)){
+		if(!VmConfig::get('ask_question',false) and !VmConfig::get ('askprice', 1)){
 			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . vRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
 		}
 

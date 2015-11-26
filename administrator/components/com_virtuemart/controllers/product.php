@@ -94,15 +94,6 @@ class VirtuemartControllerProduct extends VmController {
 				}
 			}
 
-			//Why we have this?
-			$multix = Vmconfig::get('multix','none');
-			if( $multix != 'none' ){
-				//in fact this shoudl be used, when the mode is administrated and the system is so that
-				//every product must be approved by an admin.
-				unset($data['published']);
-				//unset($data['childs']);
-			}
-
 		}
 		parent::save($data);
 	}

@@ -24,7 +24,7 @@ JHtml::_('behavior.formvalidation');
 JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
 
-<?php vmJsApi::vmValidator(); ?>
+<?php //vmJsApi::vmValidator($this->userDetails->JUser->guest,$this->userFields); ?>
 
 <h1><?php echo $this->page_title ?></h1>
 <?php echo shopFunctionsF::getLoginForm(false); ?>

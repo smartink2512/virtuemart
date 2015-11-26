@@ -495,14 +495,16 @@ class VirtueMartModelUserfields extends VmModel {
 
 
 		//Small ugly hack to make registering optional //do we still need that? YES !  notice by Max Milbers
-		if($register and $type == 'BT' and VmConfig::get('oncheckout_show_register',1) and !VmConfig::get('oncheckout_only_registered',1) ){
+		if($register and $type == 'BT' and VmConfig::get('oncheckout_show_register',1) and !VmConfig::get('oncheckout_only_registered',1) and $layoutName!='edit'){
 			vmdebug('Going to set core fields unrequired');
 			foreach($userFields as $field){
 				if(in_array($field->name,$corefields)){
+					if($field->required){
+						$field->register = 1;
+					}
 					$field->required = 0;
 					$field->value = '';
 					$field->default = '';
-
 				}
 			}
 		}
@@ -518,6 +520,11 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
+
+		JPluginHelper::importPlugin('vmuserfield');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('plgVmOnGetUserfields', array($type, &$userFields));
+
 		$c[$h] = $userFields;
 		return $userFields;
 	}
@@ -779,6 +786,7 @@ class VirtueMartModelUserfields extends VmModel {
 				,'hidden' => false
 				,'formcode' => ''
 				,'description' => vmText::_($_fld->description)
+				,'register' => (isset($_fld->register)? $_fld->register:0)
 				);
 
 

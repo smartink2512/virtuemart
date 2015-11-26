@@ -198,6 +198,15 @@ class VirtueMartModelVendor extends VmModel {
 		}
 		if(empty($data['vendor_name'])) $data['vendor_name'] = $data['vendor_store_name'];
 
+		if(!vmAccess::manager('managevendors')){
+			if(empty($oldVendorId)){
+				$data['max_cats_per_product'] = 1;
+			} else {
+				$table->load($oldVendorId);
+				$data['max_cats_per_product'] = $table->max_cats_per_product;
+			}
+		}
+
 		$res = $table->bindChecknStore ($data);
 		if(!$res) {
 			vmError ('Error storing vendor');

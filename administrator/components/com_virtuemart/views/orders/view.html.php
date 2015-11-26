@@ -184,6 +184,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			$orderStatusModel =VmModel::getModel('orderstatus');
 			$orderstates = vRequest::getCmd('order_status_code','');
 			$this->lists['state_list'] = $orderStatusModel->renderOSList($orderstates,'order_status_code',FALSE,' onchange="this.form.submit();" ');
+			$this->lists['bulk_state_list'] = $orderStatusModel->renderOSList($orderstates,'order_status_code_bulk',FALSE,'id="order_status_code_bulk" onchange="set2status();" ');
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
@@ -233,6 +234,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 			/* Toolbar */
 			//JToolBarHelper::customX( 'CreateOrderHead', 'new','new','New',false);
+
 			JToolBarHelper::save('updatestatus', vmText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
 			if (vmAccess::manager('orders.delete')) {

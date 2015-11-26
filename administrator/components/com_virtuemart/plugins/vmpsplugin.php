@@ -239,14 +239,13 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
-			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+			. 'WHERE `virtuemart_order_id` = ' . (int)$virtuemart_order_id;
 		$db->setQuery ($q);
-		$err =$db->getErrorMsg ();
 		if (!($pluginInfo = $db->loadObject ())) {
 			vmdebug ('Attention, ' . $this->_tablename . ' has not any entry for order_id = '.$virtuemart_order_id);
-			if(!empty($err)){
-				vmWarn ('Attention, ' . $this->_tablename . ' has not any entry for order_id = '.$virtuemart_order_id. ' err = '.$err);
-			}
+			//if(!empty($err)){
+			//	vmWarn ('Attention, ' . $this->_tablename . ' has not any entry for order_id = '.$virtuemart_order_id. ' err = '.$err);
+			//}
 
 			return NULL;
 		}
@@ -550,7 +549,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
-			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+			. 'WHERE `virtuemart_order_id` = ' . (int)$virtuemart_order_id;
 
 		$db->setQuery ($q);
 		$methodData = $db->loadObject ();
@@ -569,7 +568,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
-			. 'WHERE `virtuemart_order_id` = "' . $virtuemart_order_id. '" '
+			. 'WHERE `virtuemart_order_id` = "' . (int)$virtuemart_order_id. '" '
 			. 'ORDER BY `id` ASC';
 
 		$db->setQuery ($q);
@@ -648,7 +647,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$db = JFactory::getDBO ();
 		$q = 'SELECT `' . $this->_psType . '_name` '
 			. 'FROM #__virtuemart_' . $this->_psType . 'methods '
-			. 'WHERE ' . $this->_idName . ' = "' . $virtuemart_method_id . '" ';
+			. 'WHERE ' . $this->_idName . ' = "' . (int)$virtuemart_method_id . '" ';
 		$db->setQuery ($q);
 		return $db->loadResult (); // TODO Error check
 	}
@@ -928,7 +927,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$html = '';
 		$db = JFactory::getDBO ();
 		if (!empty($tax_id)) {
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
+			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . (int)$tax_id . '" ';
 			$db->setQuery ($q);
 			$taxrule = $db->loadObject ();
 
@@ -939,6 +938,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
+		if(!isset($method->cost_percent_total)) $method->cost_percent_total = 0.0;
 		if (preg_match ('/%$/', $method->cost_percent_total)) {
 			$method->cost_percent_total = substr ($method->cost_percent_total, 0, -1);
 		} else {
@@ -947,6 +947,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		}
 		$cartPrice = !empty($cart->cartPrices['withTax'])? $cart->cartPrices['withTax']:$cart->cartPrices['salesPrice'];
+
+		if(!isset($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
+
 		$costs = $method->cost_per_transaction + $cartPrice * $method->cost_percent_total * 0.01;
 		if(!empty($method->cost_min_transaction) and $method->cost_min_transaction!='' and $costs < $method->cost_min_transaction){
 			return $method->cost_min_transaction;
@@ -998,6 +1001,9 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if($this->_psType=='payment'){
 			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
+
+			if(!isset($method->cost_percent_total)) $method->cost_percent_total = 0.0;
+			if(!isset($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
 
 			if(!$progressive){
 				//Simple

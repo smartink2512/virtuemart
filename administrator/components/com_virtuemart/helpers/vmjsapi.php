@@ -531,7 +531,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		$jvalideForm = $name;
 	}
 
-	static public function vmValidator ($guest=null){
+	static public function vmValidator ($guest=null, $userFields = 0){
 
 		if(!isset($guest)){
 			$guest = JFactory::getUser()->guest;
@@ -541,14 +541,22 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		JHtml::_ ('behavior.formvalidation');	//j2
 		//JHtml::_('behavior.formvalidator');	//j3
 
-
-
-		$regfields = array('username', 'name');
-		if($guest){
-			$regfields[] = 'password';
-			$regfields[] = 'password2';
+		$regfields = array();
+		if(empty($userFields)){
+			$regfields = array('username', 'name');
+			if($guest){
+				$regfields[] = 'password';
+				$regfields[] = 'password2';
+			}
+		} else {
+			foreach($userFields as $field){
+				if(!empty($field['register'])){
+					$regfields[] = $field['name'];
+				}
+			}
 		}
 
+		vmdebug('vmValidator $regfields',$regfields);
 		$jsRegfields = implode("','",$regfields);
 		$js = "function myValidator(f, r) {
 
@@ -573,11 +581,14 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			} else {
 				//dirty Hack for country dropdown
 				var cField = jQuery('#virtuemart_country_id');
-				if(typeof cField!=='undefined'){
+				if(typeof cField!=='undefined' && cField.length > 0){
 					if(cField.attr('required')=='required' && cField.attr('aria-required')=='true'){
-						chznField = jQuery('#virtuemart_country_id_chzn');
+						var chznField = jQuery('#virtuemart_country_id_chzn');
 						var there = chznField.attr('class');
-						var ind = there.indexOf('required');
+						var ind = false;
+						if(there.length>0){
+							ind = there.indexOf('required');
+						}
 						var results = 0;
 						if(cField.attr('aria-invalid')=='true' && ind==-1){
 							chznField.attr('class', there + ' required');
@@ -587,7 +598,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 							chznField.attr('class', res);
 						}
 						chznField = jQuery('#virtuemart_state_id_chzn');
-						if(typeof chznField!=='undefined'){
+						if(typeof chznField!=='undefined' && chznField.length > 0){
 							if(results===0){
 								results = chznField.find('.chzn-results li').length;
 							}

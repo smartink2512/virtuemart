@@ -130,7 +130,7 @@ class VirtuemartViewUser extends VmView {
 
 			$userFields = $userFields[$virtuemart_userinfo_id];
 		}
-
+		//vmdebug('my userfields ',$userFields);
 		$this->virtuemart_userinfo_id = $virtuemart_userinfo_id;
 
 		$this->assignRef('userFields', $userFields);
@@ -209,8 +209,8 @@ class VirtuemartViewUser extends VmView {
 				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 			}
 		}
-
-		vmJsApi::vmValidator($this->userDetails->JUser->guest);
+		//vmdebug('My fields',$userFields['fields']);
+		vmJsApi::vmValidator($this->userDetails->JUser->guest,$userFields['fields']);
 
 		$this->add_product_link="";
 		$this->manage_link="";
@@ -358,7 +358,7 @@ class VirtuemartViewUser extends VmView {
     }
 
 	public function vmValidator (){
-		vmJsApi::vmValidator($this->userDetails->JUser->guest);
+		vmJsApi::vmValidator($this->userDetails->JUser->guest,$this->userFields['fields']);
 	}
 
     /**

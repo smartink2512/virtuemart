@@ -1239,7 +1239,7 @@ class vmAccess {
 					}
 				}
 			}
-			if(self::$_virtuemart_vendor_id[$uid] == -1) vmdebug('isSuperVendor Not a vendor');
+			if(self::$_virtuemart_vendor_id[$uid] <= 0) vmdebug('isSuperVendor Not a vendor');
 		}
 		return self::$_virtuemart_vendor_id[$uid];
 	}

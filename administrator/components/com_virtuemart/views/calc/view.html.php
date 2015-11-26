@@ -38,7 +38,6 @@ class VirtuemartViewCalc extends VmViewAdmin {
 
 		$model = VmModel::getModel('calc');
 
-		//@todo should be depended by loggedVendor
 		$this->vendorId = vmAccess::getVendorId();
 
 		$this->SetViewTitle();

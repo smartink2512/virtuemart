@@ -269,8 +269,6 @@ class vmUploader {
 
 				if(function_exists('exif_imagetype')){
 					$type = exif_imagetype($media['tmp_name']);
-				} else if(vmAccess::manager('media.potdang')){
-					$type = $mediaExtension;
 				} else {
 					$type = false;
 				}
@@ -278,7 +276,7 @@ class vmUploader {
 				if($type){
 					vmdebug('Recognised image');
 					if(!self::checkMediaType($type,$mediaExtension)){
-						vmError('Invalid media, image type does not fit to extension '.$media['name']);
+						vmError('Invalid media, image type does not fit to extension '.$media['name'].' '.$type.'!='.$mediaExtension);
 						return false;
 					}
 				} else if(!vmAccess::manager('media.potdang')){

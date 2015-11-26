@@ -1936,9 +1936,16 @@ class VirtueMartModelProduct extends VmModel {
 			$data = $this->updateXrefAndChildTables ($data, 'product_manufacturers');
 
 			if (!empty($data['categories']) && count ($data['categories']) > 0) {
+				if(VmConfig::get('multix','none')!='none' and !vmAccess::manager('managevendors')){
+					$vendorId = vmAccess::isSuperVendor();
+					$vM = VmModel::getModel('vendor');
+					$ven = $vM->getVendor($vendorId);
+					while($ven->max_cats_per_product<count($data['categories'])){
+						array_pop($data['categories']);
+					}
+				}
 				$data['virtuemart_category_id'] = $data['categories'];
-			}
-			else {
+			} else {
 				$data['virtuemart_category_id'] = array();
 			}
 			$data = $this->updateXrefAndChildTables ($data, 'product_categories');
