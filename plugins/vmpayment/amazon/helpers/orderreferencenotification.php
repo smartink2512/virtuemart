@@ -31,14 +31,14 @@ class amazonHelperOrderReferenceNotification extends amazonHelper {
 		$order_history = array();
 		$amazonState = "";
 		$reasonCode = "";
-		if (!$this->amazonData->isSetCaptureDetails()) {
+		if (!$this->amazonData->isSetOrderReference()) {
 			return NULL;
 		}
-		$details = $this->amazonData->getCaptureDetails();
-		if (!$details->isSetCaptureStatus()) {
+		$orderReference = $this->amazonData->getOrderReference();
+		if (!$orderReference->isSetAmazonOrderReferenceId()) {
 			return NULL;
 		}
-		$status = $details->getCaptureStatus();
+		$status =$orderReference->isSetOrderReferenceStatus();
 		if (!$status->isSetState()) {
 			return NULL;
 		}
