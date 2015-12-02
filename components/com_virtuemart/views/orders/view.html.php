@@ -140,7 +140,7 @@ class VirtuemartViewOrders extends VmView {
 			}
 			$this->prepareVendor();
 
-			$vendorId = 1;
+
 			$emailCurrencyId = $orderDetails['details']['BT']->user_currency_id;
 			$exchangeRate = FALSE;
 			if (!class_exists ('vmPSPlugin')) {
@@ -152,7 +152,8 @@ class VirtuemartViewOrders extends VmView {
 			if (!class_exists ('CurrencyDisplay')) {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 			}
-			$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $vendorId);
+
+			$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $orderDetails['details']['BT']->virtuemart_vendor_id);
 			if ($emailCurrencyId) {
 				$currency->exchangeRateShopper = $orderDetails['details']['BT']->user_currency_rate;
 			}

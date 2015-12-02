@@ -263,6 +263,7 @@ class VirtueMartModelUser extends VmModel {
 		$gid = $user->get('gid'); // Save original gid
 
 		// Preformat and control user datas by plugin
+		JPluginHelper::importPlugin('vmextended');
 		JPluginHelper::importPlugin('vmuserfield');
 		$dispatcher = JDispatcher::getInstance();
 
@@ -284,7 +285,7 @@ class VirtueMartModelUser extends VmModel {
 				$data['email'] = $email;
 			}
 		} else {
-			$data['email'] =  vRequest::getEmail('email', '');
+			$data['email'] =  vRequest::filter($data['email'],FILTER_VALIDATE_EMAIL,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 		}
 		//$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
 
@@ -299,7 +300,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 		} else {
-			$data['name'] = vRequest::getWord('name', '');
+			$data['name'] = vRequest::filter($data['name'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW);
 
 		}
 		$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
@@ -309,7 +310,7 @@ class VirtueMartModelUser extends VmModel {
 			if(!empty($username)){
 				$data['username'] = $username;
 			} else {
-				$data['username'] = vRequest::getWord('username', '');
+				$data['username'] = vRequest::filter($data['username'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW);
 			}
 		}
 
@@ -529,6 +530,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if($trigger){
+			JPluginHelper::importPlugin('vmextended');
 			JPluginHelper::importPlugin('vmshopper');
 			$dispatcher = JDispatcher::getInstance();
 

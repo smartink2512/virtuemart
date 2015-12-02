@@ -71,7 +71,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 			$orderbt ->invoiceNumber = $orderModel->getInvoiceNumber($orderbt->virtuemart_order_id);
 
-			$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
+			$currency = CurrencyDisplay::getInstance(0,$order['details']['BT']->virtuemart_vendor_id);
 
 			$this->assignRef('currency', $currency);
 

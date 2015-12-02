@@ -1751,7 +1751,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	function saveOrderLineItem($data) {
 
-		if(vmAccess::manager('orders.edit')) {
+		if(!vmAccess::manager('orders.edit')) {
 			return false;
 		}
 
@@ -1789,7 +1789,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	*/
 	function removeOrderItems ($virtuemart_order_id){
 
-		if(vmAccess::manager('orders.edit')) {
+		if(!vmAccess::manager('orders.edit')) {
 			return false;
 		}
 		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' .(int) $virtuemart_order_id;
@@ -1812,7 +1812,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	function removeOrderLineItem($orderLineId) {
 
-		if(vmAccess::manager('orders.edit')) {
+		if(!vmAccess::manager('orders.edit')) {
 			return false;
 		}
 
@@ -1841,7 +1841,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	public function remove($ids) {
 
-		if(vmAccess::manager('orders.edit')) {
+		if(!vmAccess::manager('orders.edit')) {
 			return false;
 		}
 

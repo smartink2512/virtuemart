@@ -671,15 +671,17 @@ class GenericTableUpdater extends VmModel{
 			$after = ' AFTER `'.$fieldname.'`';
 		}
 
-		$q = 'SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_NAME = "'.$tablename.'" ';
-		$this->_db->setQuery($q);
-		$exEngine = $this->_db->loadResult();
+		if(VmConfig::get('updEngine',true)){
+			$q = 'SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_NAME = "'.$tablename.'" ';
+			$this->_db->setQuery( $q );
+			$exEngine = $this->_db->loadResult();
 
-		if(VmConfig::get('updEngine',true) and !empty($engine) and strtoupper($exEngine)!=strtoupper($engine)){
-			$q = 'ALTER TABLE '.$tablename.' ENGINE='.$engine;
-			$this->_db->setQuery($q);
-			$this->_db->execute();
-			vmdebug('Changed engine '.$exEngine.' of table '.$tablename.' to '.$engine,$exEngine);
+			if(!empty($engine) and strtoupper( $exEngine ) != strtoupper( $engine )) {
+				$q = 'ALTER TABLE '.$tablename.' ENGINE='.$engine;
+				$this->_db->setQuery( $q );
+				$this->_db->execute();
+				vmdebug( 'Changed engine '.$exEngine.' of table '.$tablename.' to '.$engine, $exEngine );
+			}
 		}
 
 		if($dropped != 0 or $altered !=0 or $added!=0){

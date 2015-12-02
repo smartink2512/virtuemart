@@ -1940,9 +1940,12 @@ class VirtueMartModelProduct extends VmModel {
 					$vendorId = vmAccess::isSuperVendor();
 					$vM = VmModel::getModel('vendor');
 					$ven = $vM->getVendor($vendorId);
-					while($ven->max_cats_per_product<count($data['categories'])){
-						array_pop($data['categories']);
+					if($ven->max_cats_per_product>=0){
+						while($ven->max_cats_per_product<count($data['categories'])){
+							array_pop($data['categories']);
+						}
 					}
+
 				}
 				$data['virtuemart_category_id'] = $data['categories'];
 			} else {

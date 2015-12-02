@@ -111,7 +111,7 @@ class vmJsApi{
 		foreach(self::$_jsAdd as $name => &$jsToAdd){
 
 			if($jsToAdd['written']) continue;
-			if(!$jsToAdd['script'] or strpos($jsToAdd['script'],'/')===0 and strpos($jsToAdd['script'],'//<![CDATA[')!==0){ //strpos($script,'/')===0){
+			if($jsToAdd['inline'] or !$jsToAdd['script'] or (strpos($jsToAdd['script'],'/')===0 and strpos($jsToAdd['script'],'//<![CDATA[')!==0)){ //strpos($script,'/')===0){
 
 				if(!$jsToAdd['script']){
 					$file = $name;
@@ -132,12 +132,20 @@ class vmJsApi{
 				$ver = '';
 				if(!empty($jsToAdd['ver'])) $ver = '?vmver='.$jsToAdd['ver'];
 
+				$document = JFactory::getDocument();
 				if($jsToAdd['inline']){
-					$html .= '<script type="text/javascript" src="'.$file .$ver.'"></script>';
+					//$html .= '<script type="text/javascript" src="'.$file .$ver.'"></script>';
 					/*$content = file_get_contents(VMPATH_ROOT.$file);
 					$html .= '<script type="text/javascript" >'.$content.'</script>';*/
+					$script = trim($jsToAdd['script']);
+					if(!empty($script)) {
+						$script = trim( $script, chr( 13 ) );
+						$script = trim( $script, chr( 10 ) );
+						$document->addScriptDeclaration( $script );
+						//$document->addScript( $script,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
+					}
 				} else {
-					$document = JFactory::getDocument();
+
 					$document->addScript( $file .$ver,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
 				}
 
@@ -288,21 +296,32 @@ class vmJsApi{
 
 		if(JVM_VERSION<3){
 			if(VmConfig::get('google_jquery',true)){
-				self::addJScript('jquery.min','//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js',false,false, false, '');
-				self::addJScript( 'jquery-migrate.min',false,false,false,'');
+				self::addJScript('jquery.min','//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js',false,false, false, '1.11.3');
+				self::addJScript( 'jquery-migrate.min',false,false,false,false,'');
 			} else {
-				self::addJScript( 'jquery.min',false,false,false,'');
-				self::addJScript( 'jquery-migrate.min',false,false,false,'');
+				self::addJScript( 'jquery.min',false,false,false,false,'1.11.0');
+				self::addJScript( 'jquery-migrate.min',false,false,false,false,'');
 			}
 		}
 
 		self::jQueryUi();
 
-		self::addJScript( 'jquery.noconflict',false,false,true,'');
+		self::addJScript( 'jquery.noconflict',false,false,true,false,'');
 		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
 		if(JVM_VERSION<3){
 			JFactory::getApplication()->set('jquery',TRUE);
 		}
+
+		$v = "vmSiteurl = '".JURI::root()."' ;\n";
+		$v .= 'vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
+		$v .= 'vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
+		$itemId = vRequest::getInt('Itemid',false,'GET');
+		if(!empty($itemId)){
+			$v .= "Itemid = '&Itemid=".$itemId."';\n";
+		} else {
+			$v .= 'Itemid = "";'."\n";
+		}
+		vmJsApi::addJScript('vm.vars',$v,false,true,true);
 
 		return TRUE;
 	}
@@ -310,11 +329,11 @@ class vmJsApi{
 	static function jQueryUi(){
 
 		if(VmConfig::get('google_jquery', false)){
-			self::addJScript('jquery-ui.min', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js', false, false, false, '');
+			self::addJScript('jquery-ui.min', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js', false, false, false, '1.9.2');
 		} else {
-			self::addJScript('jquery-ui.min', false, false, false,'');
+			self::addJScript('jquery-ui.min', false, false, false, false,'1.9.2');
 		}
-		self::addJScript('jquery.ui.autocomplete.html', false, false, false,'');
+		self::addJScript('jquery.ui.autocomplete.html', false, false, false, false,'');
 	}
 
 	// Virtuemart product and price script
@@ -335,38 +354,10 @@ class vmJsApi{
 		vmJsApi::jSite();
 
 
-
-		$jsVars = "";
-		$jsVars .= "vmSiteurl = '".JURI::root()."' ;\n";
-		$jsVars .= 'vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
-		$jsVars .= 'vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
-
-		$Get = vRequest::getGet();
-		if(!empty($Get['Itemid'])){
-			$jsVars .= "Itemid = '&Itemid=".(int)$Get['Itemid']."';\n";
-		} else {
-			$jsVars .= 'Itemid = "";'."\n";
+		if(VmConfig::get('addtocart_popup',1)) {
+			self::loadPopUpLib();
 		}
 
-		if(VmConfig::get('addtocart_popup',1)){
-			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
-			if(VmConfig::get('usefancy',1)){
-				$jsVars .= "usefancy = true;";
-				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
-				vmJsApi::css('jquery.fancybox-1.3.4');
-			} else {//This is just there for the backward compatibility
-				$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
-				$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
-
-				//This is necessary though and should not be removed without rethinking the whole construction
-
-				$jsVars .= "usefancy = false;";
-				vmJsApi::addJScript( 'facebox' );
-				vmJsApi::css( 'facebox' );
-			}
-		}
-
-		self::addJScript('jsVars',$jsVars);
 		vmJsApi::addJScript( 'vmprices',false,false);
 
 		$onReady = 'jQuery(document).ready(function($) {
@@ -420,43 +411,60 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		return;
 	}
 
+	static function loadPopUpLib(){
+
+		static $done = false;
+		if ($done) return true;
+
+		$jsVars = "";
+		$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
+
+		if(VmConfig::get('usefancy',1)){
+			$jsVars .= "usefancy = true;";
+			vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false,false,false,'1.3.4');
+			vmJsApi::css('jquery.fancybox-1.3.4');
+		} else {//This is just there for the backward compatibility
+			$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
+			$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
+
+			//This is necessary though and should not be removed without rethinking the whole construction
+			$jsVars .= "usefancy = false;";
+			vmJsApi::addJScript( 'facebox', false, false, false, false, '' );
+			vmJsApi::css( 'facebox' );
+		}
+
+		self::addJScript('jsVars',$jsVars);
+		$done = true;
+	}
+
 	/**
 	 * Creates popup, fancy or other for TOS
 	 */
 	static function popup($container,$activator){
-		static $jspopup;
-		if (!$jspopup) {
-			if(VmConfig::get('usefancy',1)){
-				vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false);
-				vmJsApi::css('jquery.fancybox-1.3.4');
-				$box = "
-	jQuery(document).ready(function($) {
-		jQuery('div".$container."').hide();
-		var con = $('div".$container."').html();
-		jQuery('a".$activator."').click(function(event) {
-			event.preventDefault();
-			jQuery.fancybox ({ div: '".$container."', content: con });
-		});
-	});
-";
-			} else {
-				vmJsApi::addJScript ('facebox',false,false);
-				vmJsApi::css ('facebox');
-				$box = "
-	jQuery(document).ready(function($) {
-		jQuery('div".$container."').hide();
-		jQuery('a".$activator."').click(function(event) {
-			event.preventDefault();
-			jQuery.facebox( { div: '".$container."' }, 'my-groovy-style');
-		});
-	});
-";
-			}
 
-			self::addJScript('box',$box);
+		static $done = false;
+		if ($done) return true;
 
-			$jspopup = true;
+		self::loadPopUpLib();
+		if(VmConfig::get('usefancy',1)) {
+			$exeL = "jQuery.fancybox ({ div: '".$container."', content: con });";
+		} else {
+			$exeL = "jQuery.facebox( { div: '".$container."' }, 'my-groovy-style');";
 		}
+
+		$box = "
+jQuery(document).ready(function($) {
+	jQuery('div".$container."').hide();
+	var con = jQuery('div".$container."').html();
+	jQuery('a".$activator."').click(function(event) {
+		event.preventDefault();
+		".$exeL."
+	});
+});
+";
+		self::addJScript('box',$box);
+		$done = true;
+
 		return;
 	}
 
@@ -556,7 +564,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			}
 		}
 
-		vmdebug('vmValidator $regfields',$regfields);
+		//vmdebug('vmValidator $regfields',$regfields);
 		$jsRegfields = implode("','",$regfields);
 		$js = "function myValidator(f, r) {
 

@@ -990,8 +990,8 @@ class VmModel extends vObject{
 		}
 
 		return $ok;
-
 	}
+
 	/**
 	 * Original From Joomla Method to move a weblink
 	 * @ Author Kohl Patrick

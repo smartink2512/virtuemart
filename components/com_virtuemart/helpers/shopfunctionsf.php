@@ -437,6 +437,15 @@ class shopFunctionsF {
 			} else {
 				$customs = 0;
 			}
+			$position = 'ontop';
+			if(!empty($product->customfieldsSorted[$position])){
+				foreach($product->customfieldsSorted[$position] as $custom){
+					if($custom->field_type=='A'){
+						$customs++;
+					}
+				}
+			}
+
 			$rowHeights[$row]['customfields'][] = $customs;
 			$rowHeights[$row]['product_s_desc'][] = empty($product->product_s_desc)? 0:1;
 			$rowHeights[$row]['avail'][] = empty($product->product_availability)? 0:1;

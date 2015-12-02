@@ -200,7 +200,7 @@ class VirtueMartModelVendor extends VmModel {
 
 		if(!vmAccess::manager('managevendors')){
 			if(empty($oldVendorId)){
-				$data['max_cats_per_product'] = 1;
+				$data['max_cats_per_product'] = -1;
 			} else {
 				$table->load($oldVendorId);
 				$data['max_cats_per_product'] = $table->max_cats_per_product;

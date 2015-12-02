@@ -118,6 +118,7 @@ class TableProducts extends VmTable {
 
 		$this->setParameterable('product_params',$varsToPushParam);
 		$this->_updateNulls = true;
+		$this->published = VmConfig::get('product.published',1);
 	}
 
 }

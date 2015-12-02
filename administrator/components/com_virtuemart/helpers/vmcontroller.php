@@ -43,10 +43,10 @@ class VmController extends JControllerLegacy{
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
 		$this->mainLangKey = vmText::_('COM_VIRTUEMART_'.strtoupper($this->_cname));
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
-		$task = explode ('.',vRequest::getCmd( 'task'));
+		$t = vRequest::getCmd( 'task');
+		$task = explode ('.',$t);
 		if ($task[0] == 'toggle') {
-			$val = (isset($task[2])) ? $task[2] : NULL;
-			$this->toggle($task[1],$val);
+			$this->registerTask($t,'toggle');
 		}
 
 	}
@@ -234,6 +234,12 @@ class VmController extends JControllerLegacy{
 	public function toggle($field,$val=null){
 
 		vRequest::vmCheckToken();
+
+		$task = explode ('.',vRequest::getCmd( 'task'));
+		if ($task[0] == 'toggle') {
+			$val = (isset($task[2])) ? $task[2] : NULL;
+			$field = $task[1];
+		}
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle($field, $val, $this->_cidName, 0, $this->_cname)) {

@@ -86,7 +86,7 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 			$revenueBasic = $reportModel->getRevenue(60,true);
 			$this->report = $revenueBasic['report'];
 
-			vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false,'' );
+			vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false, false, '' );
 			vmJsApi::addJScript('vm.stats_chart',$revenueBasic['js'],false,true);
 			vmTime('Created report','report');
 		}

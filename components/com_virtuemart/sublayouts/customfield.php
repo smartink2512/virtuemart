@@ -205,16 +205,15 @@ class VirtueMartCustomFieldRenderer {
 						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid,false);
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
 					}
-
-					vmJsApi::addJScript('cvfind',false,false);
+					$hash = md5(implode('',$tags));
+					vmJsApi::addJScript('cvfind',false,false,true,false,$hash);
 
 					$jsVariants = implode(',',$jsArray);
-					$j = "
-						jQuery('#".implode(',#',$tags)."').off('change',Virtuemart.cvFind);
-						jQuery('#".implode(',#',$tags)."').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
-					";
-					$hash = md5(implode('',$tags));
-					vmJsApi::addJScript('cvselvars'.$hash,$j,false);
+					$j = "jQuery(document).ready(function() {
+							jQuery('#".implode(',#',$tags)."').off('change',Virtuemart.cvFind);
+							jQuery('#".implode(',#',$tags)."').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
+						});";
+					vmJsApi::addJScript('cvselvars'.$hash,$j,false,true,false,$hash);
 
 					//Now we need just the JS to reload the correct product
 					$customfield->display = $html;
