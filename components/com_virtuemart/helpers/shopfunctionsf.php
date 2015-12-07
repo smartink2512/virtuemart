@@ -153,9 +153,10 @@ class shopFunctionsF {
 		$countryModel = VmModel::getModel ('country');
 		$countries = $countryModel->getCountries (TRUE, TRUE, FALSE);
 		$attrs = array();
-		$name = 'country_name';
-		$id = 'virtuemart_country_id';
-		$idA = $_prefix . 'virtuemart_country_id';
+		$optText = 'country_name';
+		$optKey = 'virtuemart_country_id';
+		$name = $_prefix.'virtuemart_country_id';
+		$idTag = $_prefix.$idTag;
 		$attrs['class'] = 'virtuemart_country_id';
 		$attrs['class'] = 'vm-chzn-select';
 		// Load helpers and  languages files
@@ -179,8 +180,8 @@ class shopFunctionsF {
 		$i=0;
 		foreach ($sorted_countries as  $key=>$value) {
 			$countries_list[$i] = new stdClass();
-			$countries_list[$i]->$id = $key;
-			$countries_list[$i]->$name = $value;
+			$countries_list[$i]->$optKey = $key;
+			$countries_list[$i]->$optText = $value;
 			$i++;
 		}
 
@@ -190,9 +191,9 @@ class shopFunctionsF {
 
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
-			$idA .= '[]';
+			$name .= '[]';
 		} else {
-			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $optKey, $optText);
 			array_unshift ($countries_list, $emptyOption);
 		}
 
@@ -203,7 +204,7 @@ class shopFunctionsF {
 			$attrs[$_a[0]] = $_a[1];
 		}
 
-		return JHtml::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId, $idTag);
+		return JHtml::_ ('select.genericlist', $countries_list, $name, $attrs, $optKey, $optText, $countryId, $idTag);
 	}
 
 	/**

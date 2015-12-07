@@ -531,7 +531,7 @@ jQuery(document).ready(function($) {
 		$jvalideForm = $name;
 	}
 
-	static public function vmValidator ($guest=null, $userFields = 0){
+	static public function vmValidator ($guest=null, $userFields = 0, $prefiks=''){
 
 		if(!isset($guest)){
 			$guest = JFactory::getUser()->guest;
@@ -560,17 +560,17 @@ jQuery(document).ready(function($) {
 		$jsRegfields = implode("','",$regfields);
 		$js = "
 
-	function setDropdownRequiredByResult(id){
+	function setDropdownRequiredByResult(id,prefiks){
 
-		//console.log('setDropdownRequiredByResult ',id);
-		var cField = jQuery('#'+id+'_field');
+		console.log('setDropdownRequiredByResult '+prefiks+id);
+		var cField = jQuery('#'+prefiks+id+'_field');
 		if(typeof cField!=='undefined' && cField.length > 0){
-			var chznField = jQuery('#'+id+'_field_chzn');
+			var chznField = jQuery('#'+prefiks+id+'_field_chzn');
 			var results = chznField.find('.chzn-results li').length;
 			if(results<2){
 				cField.removeClass('required');
 				cField.removeAttr('required');
-				var lField = jQuery('[for=\"'+id+'_field\"]');
+				var lField = jQuery('[for=\"'+prefiks+id+'_field\"]');
 				if (typeof lField!=='undefined') {
 					lField.removeClass('invalid');
 					lField.attr('aria-invalid', 'false');
@@ -583,14 +583,14 @@ jQuery(document).ready(function($) {
 		}
 	}
 
-	function setChznRequired(id){
+	function setChznRequired(id,prefiks){
 		//console.log('setChznRequired ',id);
-		var cField = jQuery('#'+id+'_field');
+		var cField = jQuery('#'+prefiks+id+'_field');
 		if(typeof cField!=='undefined' && cField.length > 0){
 
-			var chznField = jQuery('#'+id+'_field_chzn');
+			var chznField = jQuery('#'+prefiks+id+'_field_chzn');
 			var aField = chznField.find('a');
-			var lField = jQuery('[for=\"'+id+'_field\"]');
+			var lField = jQuery('[for=\"'+prefiks+id+'_field\"]');
 
 			if(cField.attr('aria-invalid')=='true'){
 				//console.log('setChznRequired set invalid');
@@ -614,8 +614,15 @@ jQuery(document).ready(function($) {
 			requ = 'required';
 		}
 
-		setDropdownRequiredByResult('virtuemart_country_id');
-		setDropdownRequiredByResult('virtuemart_state_id');
+		setDropdownRequiredByResult('virtuemart_country_id','');
+		setDropdownRequiredByResult('virtuemart_state_id','');
+
+		var prefiks = '".$prefiks."';
+		if(prefiks!=''){
+			setDropdownRequiredByResult('virtuemart_country_id',prefiks);
+			setDropdownRequiredByResult('virtuemart_state_id',prefiks);
+		}
+
 
 		if (document.formvalidator.isValid(f)) {
 			if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
@@ -624,9 +631,12 @@ jQuery(document).ready(function($) {
 				return true;	//sents the form, we dont use js.submit()
 			}
 		} else {
-			setChznRequired('virtuemart_country_id');
-			setChznRequired('virtuemart_state_id');
-
+			setChznRequired('virtuemart_country_id','');
+			setChznRequired('virtuemart_state_id','');
+			if(prefiks!=''){
+				setChznRequired('virtuemart_country_id',prefiks);
+				setChznRequired('virtuemart_state_id',prefiks);
+			}
 			if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
 				jQuery('#recaptcha_wrapper').show();
 			}

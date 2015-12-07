@@ -188,11 +188,11 @@ class VirtuemartViewUser extends VmView {
 		$pathway_text = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 		if (!$this->userDetails->JUser->get('id')) {
 			if ($this->cart->_fromCart or $this->cart->getInCheckOut()) {
-			if ($this->address_type == 'BT') {
-				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
-			} else {
-				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
-			}
+				if ($this->address_type == 'BT') {
+					$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+				} else {
+					$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+				}
 			} else {
 			if ($this->address_type == 'BT') {
 				$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
@@ -210,7 +210,12 @@ class VirtuemartViewUser extends VmView {
 			}
 		}
 		//vmdebug('My fields',$userFields['fields']);
-		vmJsApi::vmValidator($this->userDetails->JUser->guest,$userFields['fields']);
+
+		$prefiks = '';
+		if($this->address_type=='ST'){
+			$prefiks = 'shipto_';
+		}
+		vmJsApi::vmValidator($this->userDetails->JUser->guest,$userFields['fields'],$prefiks);
 
 		$this->add_product_link="";
 		$this->manage_link="";
@@ -358,7 +363,11 @@ class VirtuemartViewUser extends VmView {
     }
 
 	public function vmValidator (){
-		vmJsApi::vmValidator($this->userDetails->JUser->guest,$this->userFields['fields']);
+		$prefiks = '';
+		if($this->address_type['ST']){
+			$prefiks = 'shipto_';
+		}
+		vmJsApi::vmValidator($this->userDetails->JUser->guest,$this->userFields['fields'],$prefiks);
 	}
 
     /**

@@ -165,7 +165,10 @@ class vRequest {
 	}
 
 	public static function filterUrl($url){
-		$url = urldecode($url);
+		if(!is_array($url)){
+			$url = urldecode($url);
+		}
+
 		$url = self::filter($url,FILTER_SANITIZE_URL,'');
 		return self::filter($url,FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW);
 	}
@@ -238,7 +241,7 @@ class vRequest {
 				self::recurseFilter($v,$filter);
 			}
 		}
-		filter_var_array($var, $filter);
+		//filter_var_array($var, $filter);
 	}
 
 	/**
