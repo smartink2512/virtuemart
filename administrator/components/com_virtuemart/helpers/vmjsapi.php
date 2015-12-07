@@ -361,15 +361,8 @@ class vmJsApi{
 		vmJsApi::addJScript( 'vmprices',false,false);
 
 		$onReady = 'jQuery(document).ready(function($) {
-	Virtuemart.product(jQuery("form.product"));
-
-	/*$("form.js-recalculate").each(function(){
-		if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
-			var id= $(this).find(\'input[name="virtuemart_product_id[]"]\').val();
-			Virtuemart.setproducttype($(this),id);
-
-		}
-	});*/
+		Virtuemart.addtocart_popup = "'.VmConfig::get('addtocart_popup',1).'"'." ; \n".'
+		Virtuemart.product(jQuery("form.product"));
 });';
 		vmJsApi::addJScript('ready.vmprices',$onReady);
 		$jPrice = TRUE;
@@ -405,7 +398,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		self::addJScript('vm.countryState'.$prefix,'
 		vmSiteurl = "'.JURI::root().'";'."\n".'
 		jQuery( function($) {
-			$("#'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
+			$("#'.$prefix.'virtuemart_country_id_field").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id_field",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});	');
 		$JcountryStateList[$prefix] = TRUE;
 		return;
@@ -417,7 +410,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		if ($done) return true;
 
 		$jsVars = "";
-		$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
+		//$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
 
 		if(VmConfig::get('usefancy',1)){
 			$jsVars .= "usefancy = true;";
@@ -429,7 +422,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 
 			//This is necessary though and should not be removed without rethinking the whole construction
 			$jsVars .= "usefancy = false;";
-			vmJsApi::addJScript( 'facebox', false, false, false, false, '' );
+			vmJsApi::addJScript( 'facebox', false, true, true, false, '' );
 			vmJsApi::css( 'facebox' );
 		}
 
@@ -475,8 +468,7 @@ jQuery(document).ready(function($) {
 			$be = self::isAdmin();
 			if(VmConfig::get ('jchosen', 0) or $be){
 				vmJsApi::addJScript('chosen.jquery.min',false,false);
-				if(!$be) {
-					//vmJsApi::jDynUpdate();
+				if(!$be and !vRequest::getInt('manage',false)) {
 					vmJsApi::addJScript('vmprices');
 				}
 				vmJsApi::css('chosen');
@@ -566,7 +558,54 @@ jQuery(document).ready(function($) {
 
 		//vmdebug('vmValidator $regfields',$regfields);
 		$jsRegfields = implode("','",$regfields);
-		$js = "function myValidator(f, r) {
+		$js = "
+
+	function setDropdownRequiredByResult(id){
+
+		//console.log('setDropdownRequiredByResult ',id);
+		var cField = jQuery('#'+id+'_field');
+		if(typeof cField!=='undefined' && cField.length > 0){
+			var chznField = jQuery('#'+id+'_field_chzn');
+			var results = chznField.find('.chzn-results li').length;
+			if(results<2){
+				cField.removeClass('required');
+				cField.removeAttr('required');
+				var lField = jQuery('[for=\"'+id+'_field\"]');
+				if (typeof lField!=='undefined') {
+					lField.removeClass('invalid');
+					lField.attr('aria-invalid', 'false');
+					//console.log('Remove invalid lfield',id);
+				}
+			} else if(cField.attr('aria-required')=='true'){
+				cField.addClass('required');
+				cField.attr('required','required');
+			}
+		}
+	}
+
+	function setChznRequired(id){
+		//console.log('setChznRequired ',id);
+		var cField = jQuery('#'+id+'_field');
+		if(typeof cField!=='undefined' && cField.length > 0){
+
+			var chznField = jQuery('#'+id+'_field_chzn');
+			var aField = chznField.find('a');
+			var lField = jQuery('[for=\"'+id+'_field\"]');
+
+			if(cField.attr('aria-invalid')=='true'){
+				//console.log('setChznRequired set invalid');
+				aField.addClass('invalid');
+				lField.addClass('invalid');
+			} else {
+				//console.log('setChznRequired set valid');
+				aField.removeClass('invalid');
+				lField.removeClass('invalid');
+			}
+		}
+	}
+
+
+	function myValidator(f, r) {
 
 		var regfields = ['".$jsRegfields."'];
 
@@ -575,59 +614,23 @@ jQuery(document).ready(function($) {
 			requ = 'required';
 		}
 
-		for	(i = 0; i < regfields.length; i++) {
-			var elem = jQuery('#'+regfields[i]+'_field');
-			elem.attr('class', requ);
-		}
+		setDropdownRequiredByResult('virtuemart_country_id');
+		setDropdownRequiredByResult('virtuemart_state_id');
 
 		if (document.formvalidator.isValid(f)) {
-				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
-					jQuery('#recaptcha_wrapper').show();
-				} else {
-					return true;	//sents the form, we dont use js.submit()
-				}
+			if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
+				jQuery('#recaptcha_wrapper').show();
 			} else {
-				//dirty Hack for country dropdown
-				var cField = jQuery('#virtuemart_country_id');
-				if(typeof cField!=='undefined' && cField.length > 0){
-					if(cField.attr('required')=='required' && cField.attr('aria-required')=='true'){
-						var chznField = jQuery('#virtuemart_country_id_chzn');
-						var there = chznField.attr('class');
-						var ind = false;
-						if(there.length>0){
-							ind = there.indexOf('required');
-						}
-						var results = 0;
-						if(cField.attr('aria-invalid')=='true' && ind==-1){
-							chznField.attr('class', there + ' required');
-							results = 2;
-						} else if(ind!=-1){
-							var res = there.slice(0,ind);
-							chznField.attr('class', res);
-						}
-						chznField = jQuery('#virtuemart_state_id_chzn');
-						if(typeof chznField!=='undefined' && chznField.length > 0){
-							if(results===0){
-								results = chznField.find('.chzn-results li').length;
-							}
+				return true;	//sents the form, we dont use js.submit()
+			}
+		} else {
+			setChznRequired('virtuemart_country_id');
+			setChznRequired('virtuemart_state_id');
 
-							there = chznField.attr('class');
-							ind = there.indexOf('required');
-							var sel = jQuery('#virtuemart_state_id').val();
-							if(sel==0 && ind==-1 && results>1){
-								chznField.attr('class', there + ' required');
-							} else if(ind!=-1 && (results<2 || sel!=0)){
-								var res = there.slice(0,ind);
-								chznField.attr('class', res);
-							}
-						}
-					}
-				}
-
-				if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
-					jQuery('#recaptcha_wrapper').show();
-				}
-				var msg = '" .addslashes (vmText::_ ('COM_VIRTUEMART_MISSING_REQUIRED_JS'))."';
+			if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
+				jQuery('#recaptcha_wrapper').show();
+			}
+			var msg = '" .addslashes (vmText::_ ('COM_VIRTUEMART_MISSING_REQUIRED_JS'))."';
 			alert(msg + ' ');
 		}
 		return false;

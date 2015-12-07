@@ -42,6 +42,9 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 						<textarea class="element-hidden vm-order_comment vm-showable" name="comments" cols="5" rows="5"></textarea>
 						<?php echo JHtml::_ ('link', '#', vmText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 					</td>
+					<td>
+						<?php echo $this->lists['vendors'] ?>
+					</td>
 				</tr>
 			</table>
 		</div>

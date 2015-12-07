@@ -816,7 +816,7 @@ class VirtueMartModelUserfields extends VmModel {
 							$attrib = array('style'=>"width: ".$_fld->size."px");
 						}
 						$_return['fields'][$_fld->name]['formcode'] =
-							ShopFunctionsF::renderCountryList($_return['fields'][$_fld->name]['value'], false, $attrib , $_prefix, $_fld->required);
+							ShopFunctionsF::renderCountryList($_return['fields'][$_fld->name]['value'], false, $attrib , $_prefix, $_fld->required,'virtuemart_country_id_field');
 
 						if(!empty($_return['fields'][$_fld->name]['value'])){
 							// Translate the value from ID to name
@@ -854,7 +854,8 @@ class VirtueMartModelUserfields extends VmModel {
 						$_prefix,
 						false,
 						$_fld->required,
-							$attrib
+							$attrib,
+						'virtuemart_state_id_field'
 						);
 
 
@@ -999,7 +1000,10 @@ class VirtueMartModelUserfields extends VmModel {
 								$_attribs['readonly'] = 'readonly';
 							}
 							if ($_fld->required) {
-								$_attribs['class'] = 'required';
+								if(!isset($_attribs['class'])){
+									$_attribs['class'] = '';
+								}
+								$_attribs['class'] .= ' required';
 							}
 
 							if ($_fld->type == 'radio' or $_fld->type == 'select') {
@@ -1042,7 +1046,10 @@ class VirtueMartModelUserfields extends VmModel {
 									break;
 								case 'multiselect':
 									$_attribs['multiple'] = 'multiple';
-									$_attribs['class'] = 'vm-chzn-select';
+									if(!isset($_attribs['class'])){
+										$_attribs['class'] = '';
+									}
+									$_attribs['class'] .= ' vm-chzn-select';
 									$field_values="";
 									$_return['fields'][$_fld->name]['formcode'] = JHtml::_('select.genericlist', $_values, $_prefix.$_fld->name.'[]', $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									$separator_form = '<br />';
@@ -1056,7 +1063,10 @@ class VirtueMartModelUserfields extends VmModel {
 
 									break;
 								case 'select':
-									$_attribs['class'] = 'vm-chzn-select';
+									if(!isset($_attribs['class'])){
+										$_attribs['class'] = '';
+									}
+									$_attribs['class'] .= ' vm-chzn-select';
 									if ($_fld->size) {
 										$_attribs['style']= "width: ".$_fld->size."px";
 									}

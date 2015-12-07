@@ -350,7 +350,7 @@ class VirtuemartModelReport extends VmModel {
 // 		$this->whereItem;
 		/* WHERE differences with orders and items from orders are only date periods and ordering */
 		$whereString = $this->whereItem . $this->dates;
-		vmdebug('getRevenueSortListOrderQuery '.$select,$whereString);
+		//vmdebug('getRevenueSortListOrderQuery '.$select,$whereString);
 		return $this->exeSortSearchListQuery (1, $select, $joinedTables, $whereString, $groupBy, $orderBy);
 
 	}

@@ -770,6 +770,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `product_parent_id` (`product_parent_id`),
   KEY `product_special` (`product_special`),
+  KEY `product_in_stock` (`product_in_stock`),
+  KEY `product_ordered` (`product_ordered`),
   KEY `published` (`published`),
   KEY `pordering` (`pordering`),
   KEY `created_on` (`created_on`),

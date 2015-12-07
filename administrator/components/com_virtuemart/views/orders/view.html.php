@@ -189,6 +189,10 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 			$this->assignRef('orderstatuses', $orderStates);
 
+			if($this->showVendors()){
+				$this->lists['vendors'] = Shopfunctions::renderVendorList(VmAccess::getVendorId());
+			}
+
 			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
 
 			/* Apply currency This must be done per order since it's vendor specific */

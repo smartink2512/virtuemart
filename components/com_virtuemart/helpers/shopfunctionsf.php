@@ -148,7 +148,7 @@ class shopFunctionsF {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	static public function renderCountryList ($countryId = 0, $multiple = FALSE, $_attrib = array(), $_prefix = '', $required = 0) {
+	static public function renderCountryList ($countryId = 0, $multiple = FALSE, $_attrib = array(), $_prefix = '', $required = 0, $idTag = 'virtuemart_country_id') {
 
 		$countryModel = VmModel::getModel ('country');
 		$countries = $countryModel->getCountries (TRUE, TRUE, FALSE);
@@ -203,7 +203,7 @@ class shopFunctionsF {
 			$attrs[$_a[0]] = $_a[1];
 		}
 
-		return JHtml::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
+		return JHtml::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId, $idTag);
 	}
 
 	/**
@@ -217,7 +217,7 @@ class shopFunctionsF {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0,$attribs=array()) {
+	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0,$attribs=array(),$idTag = 'virtuemart_state_id') {
 
 		if (is_array ($stateId)) {
 			$stateId = implode (",", $stateId);
@@ -225,7 +225,13 @@ class shopFunctionsF {
 
 		vmJsApi::JcountryStateList ($stateId,$_prefix);
 
-		$attrs['class'] = 'vm-chzn-select';
+		if(!isset($attrs['class'])){
+			$attrs['class'] = '';
+		}
+		if(!empty($required)){
+			$attrs['class'] .= ' required';
+		}
+		$attrs['class'] .= ' vm-chzn-select';
 		if ($multiple) {
 			$attrs['name'] = $_prefix . 'virtuemart_state_id[]';
 			$attrs['multiple'] = 'multiple';
@@ -238,7 +244,7 @@ class shopFunctionsF {
 		}
 
 		$attrString= JArrayHelper::toString($attrs);
-		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrString . '>
+		$listHTML = '<select  id="'.$_prefix.$idTag.'" ' . $attrString . '>
 						<option value="">' . vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 

@@ -319,7 +319,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$virtuemart_vendor_id = vmAccess::isSuperVendor();
 		if(vmAccess::manager('managevendors')){
 			vmdebug('Vendor has managevendors and should see all');
-			$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',$virtuemart_vendor_id);
+			$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',false);
 			if($virtuemart_vendor_id){
 				$where[]= ' o.virtuemart_vendor_id = "'.$virtuemart_vendor_id.'" ';
 			}
@@ -336,7 +336,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			} else {
 				//We map here as fallback to vendor 1.
 				$where[]= ' u.virtuemart_user_id = ' . (int)$uid;
-
 			}
 		} else {
 			//A normal user is only allowed to see its own orders, we map $uid to the user id
@@ -1514,7 +1513,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param integer $virtuemart_vendor_id For the correct count
 	 * @return string A unique ordernumber
 	 */
-	static public function genStdOrderNumber($virtuemart_vendor_id=1, $length = 1){
+	static public function genStdOrderNumber($virtuemart_vendor_id=1, $length = 4){
 
 		$db = JFactory::getDBO();
 

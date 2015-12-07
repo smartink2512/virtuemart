@@ -84,11 +84,15 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 			vRequest::setvar('task','');
 			$myCurrencyDisplay = CurrencyDisplay::getInstance();
 			$revenueBasic = $reportModel->getRevenue(60,true);
-			$this->report = $revenueBasic['report'];
+			$this->report = '';
+			if(!empty($revenueBasic['report'])){
+				$this->report = $revenueBasic['report'];
 
-			vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false, false, '' );
-			vmJsApi::addJScript('vm.stats_chart',$revenueBasic['js'],false,true);
-			vmTime('Created report','report');
+				vmJsApi::addJScript( "jsapi","//google.com/jsapi",false,false, false, '' );
+				vmJsApi::addJScript('vm.stats_chart',$revenueBasic['js'],false,true);
+				vmTime('Created report','report');
+			}
+
 		}
 
 		//if($layout=='default'){
