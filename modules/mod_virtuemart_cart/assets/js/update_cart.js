@@ -11,7 +11,7 @@ jQuery(function($) {
 			
 		base.init = function(){
 			$.ajaxSetup({ cache: false })
-			$.getJSON(window.vmSiteurl + "index.php?option=com_virtuemart&nosef=1&view=cart&task=viewJS&format=json" + window.vmLang,
+			$.getJSON(Virtuemart.vmSiteurl + "index.php?option=com_virtuemart&nosef=1&view=cart&task=viewJS&format=json" + Virtuemart.vmLang,
 				function (datas, textStatus) {
 					base.$el.each(function( index ,  module ) {
 						if (datas.totalProduct > 0) {

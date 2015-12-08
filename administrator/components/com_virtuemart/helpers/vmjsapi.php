@@ -312,9 +312,11 @@ class vmJsApi{
 			JFactory::getApplication()->set('jquery',TRUE);
 		}
 
-		$v = "vmSiteurl = '".JURI::root()."' ;\n";
-		$v .= 'vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
-		$v .= 'vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
+		$v = 'if (typeof Virtuemart === "undefined")
+	Virtuemart = {};';
+		$v = "Virtuemart.vmSiteurl = '".JURI::root()."' ;\n";
+		$v .= 'Virtuemart.vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
+		$v .= 'Virtuemart.vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
 		$itemId = vRequest::getInt('Itemid',false,'GET');
 		if(!empty($itemId)){
 			$v .= "Itemid = '&Itemid=".$itemId."';\n";
@@ -360,7 +362,19 @@ class vmJsApi{
 
 		vmJsApi::addJScript( 'vmprices',false,false);
 
-		$onReady = 'jQuery(document).ready(function($) {
+		//Fallbacks!
+		$jsVars = "";
+		$jsVars .= "vmSiteurl = '".JURI::root()."' ;\n";
+		$jsVars .= 'vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
+		$jsVars .= 'vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
+
+		$Get = vRequest::getGet();
+		if(!empty($Get['Itemid'])){
+			$jsVars .= "Itemid = '&Itemid=".(int)$Get['Itemid']."';\n";
+		} else {
+			$jsVars .= 'Itemid = "";'."\n";
+		}
+		$onReady = $jsVars. 'jQuery(document).ready(function($) {
 		Virtuemart.addtocart_popup = "'.VmConfig::get('addtocart_popup',1).'"'." ; \n".'
 		Virtuemart.product(jQuery("form.product"));
 });';
