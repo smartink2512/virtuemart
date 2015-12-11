@@ -22,6 +22,21 @@ class amazonHelperCaptureResponse extends amazonHelper {
 	public function onResponseUpdateOrderHistory ($order) {
 
 	}
+	/**
+	 * @return mixed
+	 */
+	function getState () {
+
+		$captureDetails = $this->amazonData->getCaptureResult()->getCaptureDetails();
+		if ($captureDetails->isSetCaptureStatus()) {
+			$captureStatus = $captureDetails->getCaptureStatus();
+			if ($captureStatus->isSetState()) {
+				return  $captureStatus->getState();
+			}
+		}
+
+		return NULL;
+	}
 
 	function getStoreInternalData () {
 		$amazonInternalData = new stdClass();

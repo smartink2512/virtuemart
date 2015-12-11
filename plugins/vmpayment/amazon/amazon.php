@@ -1828,6 +1828,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->_amount = $orderModelData['details']['BT']->order_total;
 		$this->_order_number = $this->getUniqueReferenceId($orderModelData['details']['BT']->order_number);
 
+
 		if ($order->order_status == $this->_currentMethod->status_refunded and $this->canDoRefund($payments, $orderModelData)) {
 			return $this->refundPayment($payments, $orderModelData);
 		} elseif ($order->order_status == $this->_currentMethod->status_capture and $this->canDoCapture($payments, $orderModelData)) {
@@ -1950,6 +1951,7 @@ if (!$authorizationState) return false;
 	}
 
 	private function capturePayment ($payments, $order) {
+
 		$amazonAuthorizationId = $this->getAmazonAuthorizationId($payments);
 
 		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CaptureRequest');
@@ -1992,6 +1994,16 @@ if (!$authorizationState) return false;
 		//$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, TRUE);
 		$storeInternalData = $amazonHelperCaptureResponse->getStoreInternalData();
 		$this->storeAmazonInternalData($order, $captureRequest, $captureResponse, NULL, $this->renderPluginName($this->_currentMethod), $storeInternalData, NULL, $this->_amount);
+
+		$amazonState=$amazonHelperCaptureResponse->getState();
+		if ($amazonState=="Completed") {
+			$amazonOrderReferenceId = $this->getAmazonOrderReferenceId($payments);
+			if (!$amazonOrderReferenceId) {
+				vmError('VMPAYMENT_AMAZON_UPDATEPAYMENT_NOAMAZONORDERREFERENCEID');
+				return;
+			}
+			$this->closeOrderReference ($amazonOrderReferenceId, $order);
+		}
 
 
 		return $amazonCaptureId;
@@ -2083,7 +2095,19 @@ if (!$authorizationState) return false;
 		vmError(vmText::_('VMPAYMENT_AMAZON_UPDATEPAYMENT_NOAMAZONAUTHORIZATIONID'));
 		return false;
 	}
+		/**
+		 *
+		 */
+		function getAmazonOrderReferenceId($payments) {
 
+			//$payments_reverse = array_reverse($payments);
+			foreach ($payments as $payment) {
+				if (!empty($payment->amazonOrderReferenceId) and ($payment->amazonOrderReferenceId != NULL) ) {
+					return $payment->amazonOrderReferenceId;
+				}
+			}
+			return NULL;
+		}
 	/**
 	 * if amount = 0 then it is a full capture
 	 * otherwise it is a partial capture
@@ -3168,7 +3192,27 @@ jQuery().ready(function($) {
 	 * @param $order
 	 */
 
-	function closeOrderReference ($amazonOrderReferenceId, $order) {
+	function closeOrderReference ($amazonOrderReferenceId, $order, $closeReason='VMPAYMENT_AMAZON_CLOSE_REASON_ORDER_COMPLETE') {
+		$this->loadAmazonClass('OffAmazonPaymentsService_Model_CloseOrderReferenceRequest');
+		$client = $this->getOffAmazonPaymentsService_Client();
+		if ($client==NULL) return;
+		try {
+			$closeOrderReferenceRequest = new OffAmazonPaymentsService_Model_CloseOrderReferenceRequest();
+			$closeOrderReferenceRequest->setSellerId($this->_currentMethod->sellerId);
+			$closeOrderReferenceRequest->setAmazonOrderReferenceId($amazonOrderReferenceId);
+			$closeOrderReferenceRequest->setClosureReason(vmText::_($closeReason));
+			$closeOrderReferenceResponse = $client->closeOrderReference($closeOrderReferenceRequest);
+
+		} catch (Exception $e) {
+			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
+			return;
+		}
+
+		$this->loadHelperClass('amazonHelpercloseOrderReferenceResponse');
+		$amazonHelperCloseOrderReferenceResponse = new amazonHelpercloseOrderReferenceResponse($closeOrderReferenceResponse, $this->_currentMethod);
+		$storeInternalData = $amazonHelperCloseOrderReferenceResponse->getStoreInternalData();
+		$this->storeAmazonInternalData($order, $closeOrderReferenceRequest, $closeOrderReferenceResponse, NULL, NULL, $storeInternalData);
+
 
 
 		return;
