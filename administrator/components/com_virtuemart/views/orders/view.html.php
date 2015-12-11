@@ -188,7 +188,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
-
+			$this->lists['vendors']='';
 			if($this->showVendors()){
 				$this->lists['vendors'] = Shopfunctions::renderVendorList(VmAccess::getVendorId());
 			}
