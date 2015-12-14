@@ -45,5 +45,5 @@ $currencyDisplay = CurrencyDisplay::getInstance();
 
 $virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id',$currencyDisplay->_vendorCurrency) );
 
-require(JModuleHelper::getLayoutPath('mod_virtuemart_currencies'));
-    ?>
+require JModuleHelper::getLayoutPath('mod_virtuemart_currencies', $params->get('layout', 'default'));
+
