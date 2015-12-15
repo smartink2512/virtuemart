@@ -358,7 +358,7 @@ class VirtuemartViewCategory extends VmView {
 				$link .= '&virtuemart_manufacturer_id='.$manId;
 			}
 
-			$document->addHeadLink( JRoute::_($link, FALSE) , 'canonical', 'rel', '' );
+			$document->addHeadLink( JUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($link, FALSE) , 'canonical', 'rel', '' );
 
 		}
 	}

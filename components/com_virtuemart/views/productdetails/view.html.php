@@ -216,12 +216,13 @@ class VirtueMartViewProductdetails extends VmView {
 						break;
 					}
 				}
+
 				// Set Canonic link
 				if($isCustomVariant !==false and !empty($isCustomVariant->usecanonical) and !empty($product->product_parent_id)){
 					$parent = $product_model ->getProduct($product->product_parent_id);
-					$document->addHeadLink(JRoute::_($parent->canonical, FALSE), 'canonical', 'rel', '');
+					$document->addHeadLink( JUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($parent->canonical), 'canonical', 'rel', '');
 				} else {
-					$document->addHeadLink(JRoute::_($product->canonical, FALSE), 'canonical', 'rel', '');
+					$document->addHeadLink( JUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($product->canonical), 'canonical', 'rel', '');
 				}
 
 			} else if($format == 'pdf'){
