@@ -219,9 +219,9 @@ class VirtueMartViewProductdetails extends VmView {
 				// Set Canonic link
 				if($isCustomVariant !==false and !empty($isCustomVariant->usecanonical) and !empty($product->product_parent_id)){
 					$parent = $product_model ->getProduct($product->product_parent_id);
-					$document->addHeadLink($parent->canonical, 'canonical', 'rel', '');
+					$document->addHeadLink(JRoute::_($parent->canonical, FALSE), 'canonical', 'rel', '');
 				} else {
-					$document->addHeadLink($product->canonical, 'canonical', 'rel', '');
+					$document->addHeadLink(JRoute::_($product->canonical, FALSE), 'canonical', 'rel', '');
 				}
 
 			} else if($format == 'pdf'){
