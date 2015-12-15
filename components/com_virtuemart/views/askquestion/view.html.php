@@ -92,7 +92,7 @@ class VirtueMartViewAskquestion extends VmView {
 		// Set Canonic link
 		$format = vRequest::getCmd('format', 'html');
 		if ($format == 'html') {
-			$document->addHeadLink ($product->canonical, 'canonical', 'rel', '');
+			$document->addHeadLink (JRoute::_($product->canonical, FALSE), 'canonical', 'rel', '');
 		}
 
 		// Set the titles
