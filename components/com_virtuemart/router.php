@@ -167,6 +167,7 @@ function virtuemartBuildRoute(&$query) {
 					$virtuemart_product_id = $query['virtuemart_product_id'];
 					unset($query['virtuemart_product_id']);
 				}
+
 				if($helper->full){
 					if(empty( $query['virtuemart_category_id'])){
 						$query['virtuemart_category_id'] = $helper->getParentProductcategory($virtuemart_product_id);
@@ -812,10 +813,16 @@ class vmrouterHelper {
 		$db = JFactory::getDBO();
 		$catModel = VmModel::getModel('category');
 
+		$parent_ids = array();
+
 		if($parent_ids = $catModel->getCategoryRecurse($virtuemart_category_id,$catMenuId)){
-			$parent_ids = array_reverse($parent_ids) ;
-		} else {
-			$parent_ids = array();
+			if($this->full) {
+				$parent_ids = array_reverse($parent_ids) ;
+			} else {
+				$t = $parent_ids[0];
+				$parent_ids = array();
+				$parent_ids[] = $t;
+			}
 		}
 
 		//vmdebug('Router getCategoryNames getCategoryRecurse finished '.$virtuemart_category_id,$parent_ids);

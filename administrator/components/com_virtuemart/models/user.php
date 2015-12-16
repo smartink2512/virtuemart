@@ -438,7 +438,10 @@ class VirtueMartModelUser extends VmModel {
 				if ($usersConfig->get('sendpassword', 1)) {
 					$password=$user->password_clear;
 				}
-				$this->sendRegistrationEmail($user,$password, $doUserActivation);
+
+				$doVendor = $usersConfig->get('mail_to_admin', true);
+
+				$this->sendRegistrationEmail($user,$password, $doUserActivation, $doVendor);
 				if ($doUserActivation ) {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
 				} else {
@@ -1053,7 +1056,7 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Christopher Roussel
 	 * @author Valérie Isaksen
 	 */
-	private function sendRegistrationEmail($user, $password, $doUserActivation){
+	private function sendRegistrationEmail($user, $password, $doUserActivation, $doVendor=true){
 		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$vars = array('user' => $user);
 
@@ -1067,11 +1070,9 @@ class VirtueMartModelUser extends VmModel {
 
 			$vars['activationLink'] = $activationLink;
 		}
-		$vars['doVendor']=true;
+		//$vars['doVendor']=!$doVendor;
 		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)
-		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
-
-
+		shopFunctionsF::renderMail('user', $user->get('email'), $vars, NULL, !$doVendor);
 
 	}
 
@@ -1136,7 +1137,7 @@ class VirtueMartModelUser extends VmModel {
 			$q = 'DELETE FROM #__virtuemart_userinfos  WHERE virtuemart_user_id="'. $this->_id .'" AND virtuemart_userinfo_id="'. (int)$virtuemart_userinfo_id .'"';
 			$db->setQuery($q);
 			if($db->execute()){
-				vmInfo('Address has been successfully deleted.');
+				vmInfo('COM_VIRTUEMART_ADDRESS_DELETED');
 				return true;
 			}
 		}

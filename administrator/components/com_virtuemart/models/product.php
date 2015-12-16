@@ -887,6 +887,7 @@ class VirtueMartModelProduct extends VmModel {
 			$attribs = get_object_vars ($parentProduct);
 
 			foreach ($attribs as $k=> $v) {
+				if (strpos($k, "\0")===0) continue;
 				if ('product_in_stock' != $k and 'product_ordered' != $k) {// Do not copy parent stock into child
 					if (strpos ($k, '_') !== 0 and empty($child->$k)) {
 						$child->$k = $v;
@@ -2064,6 +2065,9 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$product->slug = $product->slug . '-' . $id;
 		$product->originId = $id;
+		$product->published=0;
+		$product->product_sales=0;
+		$product->product_ordered=0;
 		$newId = $this->store ($product);
 		$product->virtuemart_product_id = $newId;
 		JPluginHelper::importPlugin ('vmcustom');

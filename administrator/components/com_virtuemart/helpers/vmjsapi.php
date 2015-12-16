@@ -314,7 +314,7 @@ class vmJsApi{
 
 		$v = 'if (typeof Virtuemart === "undefined")
 	Virtuemart = {};';
-		$v = "Virtuemart.vmSiteurl = '".JURI::root()."' ;\n";
+		$v .= "Virtuemart.vmSiteurl = '".JURI::root()."' ;\n";
 		$v .= 'Virtuemart.vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
 		$v .= 'Virtuemart.vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
 		$itemId = vRequest::getInt('Itemid',false,'GET');
