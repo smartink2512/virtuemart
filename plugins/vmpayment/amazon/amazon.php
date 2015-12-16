@@ -3050,7 +3050,7 @@ jQuery().ready(function($) {
 			return;
 		}
 		// Fetch all HTTP request headers
-		$headers = getallheaders();
+		$headers = $this->getallheaders();
 		$body = file_get_contents('php://input');
 		$this->debugLog(var_export($headers, true), 'AMAZON IPN HEADERS debug', 'debug');
 		$this->debugLog(var_export($body, true), 'AMAZON IPN BODY debug', 'debug');
