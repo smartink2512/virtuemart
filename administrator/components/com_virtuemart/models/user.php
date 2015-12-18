@@ -439,9 +439,9 @@ class VirtueMartModelUser extends VmModel {
 					$password=$user->password_clear;
 				}
 
-				$doVendor = $usersConfig->get('mail_to_admin', true);
+				//$doVendor = (boolean) $usersConfig->get('mail_to_admin', true);
 
-				$this->sendRegistrationEmail($user,$password, $doUserActivation, $doVendor);
+				$this->sendRegistrationEmail($user,$password, $doUserActivation);
 				if ($doUserActivation ) {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
 				} else {
@@ -1056,7 +1056,7 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Christopher Roussel
 	 * @author Valérie Isaksen
 	 */
-	private function sendRegistrationEmail($user, $password, $doUserActivation, $doVendor=true){
+	private function sendRegistrationEmail($user, $password, $doUserActivation){
 		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$vars = array('user' => $user);
 
@@ -1072,7 +1072,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 		//$vars['doVendor']=!$doVendor;
 		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)
-		shopFunctionsF::renderMail('user', $user->get('email'), $vars, NULL, !$doVendor);
+		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 
 	}
 
