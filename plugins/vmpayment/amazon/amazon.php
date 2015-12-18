@@ -2041,12 +2041,15 @@ if (!$authorizationState) return false;
 		} catch (Exception $e) {
 			$msg = $e->getMessage();
 			$log = "An exception was thrown when trying to refund payment:" . $e->getMessage() . "\n" . $e->getTraceAsString();
-			while ($e = $e->getPrevious()) {
-				$log .= ("Caused by: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "");
-				$msg .= "Reason: " . $e->getMessage() . "<br />";
-				$log .= "\n";
+			if ($this->_currentMethod->debug) {
+				while ($e = $e->getPrevious()) {
+					$log .= ("Caused by: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "");
+					$msg .= "Reason: " . $e->getMessage() . "<br />";
+					$log .= "\n";
+				}
+				$this->debugLog($log, __FUNCTION__, 'debug');
 			}
-			$this->debugLog($log, __FUNCTION__, 'debug');
+
 			vmError(__FUNCTION__ . ' ' . $msg);
 			return false;
 		}
