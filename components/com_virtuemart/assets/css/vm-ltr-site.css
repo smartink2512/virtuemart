@@ -862,7 +862,7 @@ ul.VMmenu,.VMmenu ul,.VMmenu li{
   margin-bottom: 25px;
 }
 
-.main-image,.featured-view .product,.latest-view .product,.topten-view .product,.recent-view .product,.related-products-view .product,.center, span.center{
+.main-image,.featured-view .product,.latest-view .product,.topten-view .product,.recent-view .product,.related-products-view .product{
   text-align: center;
 }
 
@@ -966,7 +966,7 @@ span.addtocart-button input.addtocart-button:hover, span.addtocart-button input.
   height: auto;
 }
 
-.display-number,.control-buttons,.right{
+.display-number,.control-buttons{
   text-align:right !important;
   margin: 0 8px 0 0;
 }
@@ -1286,12 +1286,7 @@ div[class*="-view"] .row{
   width: 100%;
   background: rgba(255, 255, 255, 0.3) url('../images/vm-preloader.gif') 50% 45% no-repeat;
 }
-/* When the body has the loading class, we turn
-   the scrollbar off with overflow:hidden
 
-.vmLoading {
-  overflow: hidden;
-}
 /* Anytime the body has the loading class, our
    modal element will be visible */
 
