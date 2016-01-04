@@ -251,7 +251,7 @@ class VirtueMartCustomFieldRenderer {
 								vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
 							} else {*/
 
-								$productChild = $productModel->getProduct((int)$child,false);
+								$productChild = $productModel->getProduct((int)$child,true);
 
 								if(!$productChild) continue;
 								if(!isset($productChild->{$customfield->customfield_value})){

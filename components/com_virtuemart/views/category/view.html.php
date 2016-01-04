@@ -131,7 +131,8 @@ class VirtuemartViewCategory extends VmView {
 
 				$this->products = $productModel->getProducts ($ids);
 				//$products = $productModel->getProductsInCategory($this->categoryId);
-				$productModel->addImages($this->products, VmConfig::get('prodimg_browse',1) );
+				$imgAmount = VmConfig::get('prodimg_browse',1);
+				$productModel->addImages($this->products, $imgAmount );
 
 				if ($this->products) {
 					$currency = CurrencyDisplay::getInstance( );
@@ -211,8 +212,8 @@ class VirtuemartViewCategory extends VmView {
 					$pathway->addItem(strip_tags(vmText::_($c->category_name)),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id, FALSE));
 				}
 			}
-
-			$categoryModel->addImages($category,1);
+			$catImgAmount = VmConfig::get('catimg_browse',1);
+			$categoryModel->addImages($category,$catImgAmount);
 
 			if(!isset($menu->query['showcategory'])) $menu->query['showcategory'] = 1;
 			$this->showcategory = vRequest::getInt('showcategory',$menu->query['showcategory']);
@@ -220,7 +221,7 @@ class VirtuemartViewCategory extends VmView {
 			if($this->showcategory){
 			//if($category->category_layout == 'categories' or ($this->categoryId >0 and $virtuemart_manufacturer_id <1)){
 				$category->children = $categoryModel->getChildCategoryList( $vendorId, $this->categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
-				$categoryModel->addImages($category->children,1);
+				$categoryModel->addImages($category->children,$catImgAmount);
 			} else {
 				$category->children = false;
 			}
