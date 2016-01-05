@@ -34,17 +34,10 @@
           description="MOD_VIRTUEMART_CATEGORY_SUBLEVEL_DESC"
         />
         <field
-          name="layout"
-          type="filelist"
-          label="MOD_VIRTUEMART_CATEGORY_LAYOUT"
-          description="MOD_VIRTUEMART_CATEGORY_LAYOUT_DESC"
-          directory="/modules/mod_virtuemart_category/tmpl"
-          default="default"
-          hide_default="1"
-          hide_none="1"
-          stripext="1"
-          filter="\.php$"
-          exclude="^_"
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC"
         />
         <field
           name="cache"
