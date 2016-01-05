@@ -454,6 +454,11 @@ class calculationHelper {
 			$this->productPrices['DATax'][$datax['virtuemart_calc_id']] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published'],$datax['calc_currency'],$datax['calc_params'], $datax['virtuemart_vendor_id'], $datax['virtuemart_calc_id']);
 		}
 
+		$this->productPrices['Marge'] = array();
+		foreach($this->rules['Marge'] as $marge){
+			$this->productPrices['Marge'][$marge['virtuemart_calc_id']] =  array($marge['calc_name'],$marge['calc_value'],$marge['calc_value_mathop'],$marge['calc_shopper_published'],$marge['calc_currency'],$marge['calc_params'], $marge['virtuemart_vendor_id'], $marge['virtuemart_calc_id']);
+		}
+
 		if(!empty($this->rules['VatTax'])){
 			if(empty($this->_cart->cartData['VatTax'])){
 				$this->_cart->cartData['VatTax'] = array();
