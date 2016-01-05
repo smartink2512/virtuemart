@@ -21,7 +21,6 @@ class amazonHelperRefundResponse extends amazonHelper {
 	}
 
 	public function onResponseUpdateOrderHistory ($order) {
-
 	}
 
 	function getStoreInternalData () {

@@ -191,7 +191,7 @@ class amazonHelperOrderReferenceNotification extends amazonHelper {
 				$contents .= $this->getRow("CaptureStatus: ", $more);
 			}
 			if ($orderReference->isSetCreationTimestamp()) {
-				$contents .= $this->getRow("CreationTimestamp: ", $orderReference->getSoftDescriptor());
+				$contents .= $this->getRow("CreationTimestamp: ", $orderReference->getCreationTimestamp());
 			}
 			if ($orderReference->isSetExpirationTimestamp()) {
 				$contents .= $this->getRow("ExpirationTimestamp: ", $orderReference->getExpirationTimestamp());

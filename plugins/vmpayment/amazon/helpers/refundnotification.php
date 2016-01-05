@@ -25,17 +25,14 @@ class amazonHelperRefundNotification extends amazonHelper {
 		$amazonState = "";
 		$reasonCode = "";
 		if (!$this->amazonData->isSetRefundDetails()) {
-			$this->debugLog('NO isSetRefundDetails' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return;
 		}
 		$details = $this->amazonData->getRefundDetails();
 		if (!$details->isSetRefundStatus()) {
-			$this->debugLog('NO isSetRefundStatus' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return;
 		}
 		$status = $details->getRefundStatus();
 		if (!$status->isSetState()) {
-			$this->debugLog('NO isSetState' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return;
 		}
 		$amazonState = $status->getState();
@@ -51,7 +48,7 @@ class amazonHelperRefundNotification extends amazonHelper {
 		} elseif ($amazonState == 'Declined') {
 			$order_history['customer_notified'] = 0;
 			$order_history['comments'] = vmText::sprintf('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_DECLINED', $reasonCode);
-			$order_history['order_status'] = $order['details']['BT']->order_status;
+			$order_history['order_status'] =  $this->_currentMethod->status_refund_declined;
 
 		} elseif ($amazonState == 'Pending') {
 			$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_REFUND_PENDING');

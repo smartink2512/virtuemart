@@ -172,6 +172,11 @@
                        label="VMPAYMENT_AMAZON_CONF_STATUS_REFUND"
                        description="VMPAYMENT_AMAZON_CONF_STATUS_REFUND_TIP"/>
 
+                <field name="status_refund_declined" class="status_refund_declined" type="vmorderstate" scope="com_virtuemart"
+                       default="D"
+                       label="VMPAYMENT_AMAZON_CONF_STATUS_REFUND_DECLINED"
+                       description="VMPAYMENT_AMAZON_CONF_STATUS_REFUND_DECLINED_TIP"/>
+
                 <field name="status_cancel" class="status_cancel" type="vmorderstate" scope="com_virtuemart"
                        default="X"
                        label="VMPAYMENT_AMAZON_CONF_STATUS_CANCEL"
@@ -268,7 +273,7 @@
                        description=""/>
                 <field type="vmtitle" class="level2" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_SIGN_IN"
                        description=""/>
-                <field name="sign_in_widget_size" type="radio" default="medium"
+                <field name="sign_in_widget_size" type="radio" default="large"
                        label="VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_SIZE">
                     <option value="medium">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_SIZE_MEDIUM</option>
                     <option value="large">VMPAYMENT_AMAZON_CONF_SIGN_IN_WIDGET_SIZE_LARGE</option>
@@ -283,7 +288,7 @@
 
                 <field class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_ADDRESSBOOK"
                        description=""/>
-                <field name="addressbook_designWidth" type="text" default="400"
+                <field name="addressbook_designWidth" type="text" default="350"
                        label="VMPAYMENT_AMAZON_CONF_ADDRESSBOOK_DESIGNWIDTH"
                        description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
                 <field name="addressbook_designHeight" type="text" default="260"
@@ -292,7 +297,7 @@
 
                 <field class="level2" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_WALLET"
                        description=""/>
-                <field name="wallet_designWidth" type="text" default="400"
+                <field name="wallet_designWidth" type="text" default="350"
                        label="VMPAYMENT_AMAZON_CONF_WALLET_DESIGNWIDTH"
                        description="VMPAYMENT_AMAZON_CONF_DESIGNWIDTH_TIP"/>
                 <field name="wallet_designHeight" type="text" default="260"

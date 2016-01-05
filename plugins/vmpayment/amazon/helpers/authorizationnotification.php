@@ -41,18 +41,15 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		$previousAmazonState = $lastPayment->amazon_response_state;
 
 		if (!$this->amazonData->isSetAuthorizationDetails()) {
-			$this->debugLog('NO isSetAuthorizationDetails' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return false;
 		}
 		$authorizationDetails = $this->amazonData->getAuthorizationDetails();
 		if (!$authorizationDetails->isSetAuthorizationStatus()) {
-			$this->debugLog('NO isSetAuthorizationStatus' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return false;
 		}
 
 		$authorizationStatus = $authorizationDetails->getAuthorizationStatus();
 		if (!$authorizationStatus->isSetState()) {
-			$this->debugLog('NO isSetState' . __FUNCTION__ . var_export($this->amazonData, true), 'error');
 			return false;
 		}
 		$amazonState = $authorizationStatus->getState();
@@ -178,9 +175,12 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 	 * @return bool|string
 	 */
 	public function onNotificationNextOperation($order, $payments, $amazonState) {
-		$state = array('Pending', 'Open', 'Declined', 'Closed');
-		if (in_array($amazonState, $state)) {
+		$getAuthorizationDetailsState = array('Pending', 'Open', 'Closed');
+		$cancelPaymentState = array('Declined');
+		if (in_array($amazonState, $getAuthorizationDetailsState)) {
 			return 'onNotificationGetAuthorizationDetails';
+		} elseif (in_array($amazonState, $cancelPaymentState)) {
+			return 'cancelPayment';
 		}
 		return false;
 	}

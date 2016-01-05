@@ -55,7 +55,6 @@ class amazonHelperGetOrderReferenceDetailsResponse extends amazonHelper {
 				}elseif($amazonState=='Closed'){
 					//itshouldalwaysbethecaseiftheCaptureNow==true
 					if(!($orderReferenceDetails->isSetCaptureNow()and$orderReferenceDetails->getCaptureNow())){
-						$this->debugLog('SYNCHRONOUS,captureNow,andAmazonStateisNOTCLOSED'.__FUNCTION__.var_export($authorizeResponse,true),'error');
 						return$amazonState;
 					}
 					$order_history['order_status']=$this->_currentMethod->status_capture;

@@ -54,7 +54,6 @@ class amazonHelperGetCaptureDetailsResponse extends amazonHelper {
 				} elseif ($amazonState == 'Closed') {
 					// it should always be the case if the CaptureNow == true
 					if (!($captureDetails->isSetCaptureNow() and $captureDetails->getCaptureNow())) {
-						$this->debugLog('SYNCHRONOUS , capture Now, and Amazon State is NOT CLOSED' . __FUNCTION__ . var_export($authorizeResponse, true), 'error');
 						return $amazonState;
 					}
 					$order_history['order_status'] = $this->_currentMethod->status_capture;
