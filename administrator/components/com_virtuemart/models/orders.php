@@ -1300,7 +1300,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$productKeys = array_keys($_cart->products);
 
-		$calculation_kinds = array('DBTax','Tax','VatTax','DATax');
+		$calculation_kinds = array('DBTax','Tax','VatTax','DATax','Marge');
 
 		foreach($productKeys as $key){
 			foreach($calculation_kinds as $calculation_kind) {
