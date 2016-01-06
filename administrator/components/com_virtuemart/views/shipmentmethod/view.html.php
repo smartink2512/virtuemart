@@ -134,7 +134,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
 		if(empty($result)){
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app -> enqueueMessage(vmText::_('COM_VIRTUEMART_NO_SHIPMENT_PLUGINS_INSTALLED'));
 		}
 

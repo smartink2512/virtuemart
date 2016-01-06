@@ -62,7 +62,7 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	public function setId($cid){
 
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 		//anonymous sets to 0 for a new entry
 		if(empty($user->id)){
 			$userId = 0;
@@ -74,7 +74,7 @@ class VirtueMartModelUser extends VmModel {
 				//vmdebug('setId setCurrent $user',$user->get('id'));
 			} else {
 				if($cid != $user->id){
-					$user = JFactory::getUser();
+					$user = vFactory::getUser();
 					if(vmAccess::manager(array('user','user.edit'))){
 						$userId = $cid;
 						//vmdebug('setId is Manager',$userId);
@@ -109,7 +109,7 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 	public function getCurrentUser(){
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 		$this->setUserId($user->id);
 		return $this->getUser();
 	}
@@ -157,7 +157,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 		if(empty($this->_data->shopper_groups)) $this->_data->shopper_groups = array();
 
-		$site = JFactory::getApplication ()->isSite ();
+		$site = vFactory::getApplication ()->isSite ();
 		if ($site) {
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 			$shoppergroupmodel->appendShopperGroups($this->_data->shopper_groups,$this->_data->JUser,$site);
@@ -252,12 +252,12 @@ class VirtueMartModelUser extends VmModel {
 			$new = true;
 			$user = new JUser();	//thealmega http://forum.virtuemart.net/index.php?topic=99755.msg393758#msg393758
 		} else {
-			$cUser = JFactory::getUser();
+			$cUser = vFactory::getUser();
 			if(!vmAccess::manager('user.edit') and $cUser->id!=$this->_id){
 				vmWarn('Insufficient permission');
 				return false;
 			}
-			$user = JFactory::getUser($this->_id);
+			$user = vFactory::getUser($this->_id);
 		}
 
 		$gid = $user->get('gid'); // Save original gid
@@ -360,7 +360,7 @@ class VirtueMartModelUser extends VmModel {
 			// But it is possible for admins and storeadmins to save
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
 
-			$cUser = JFactory::getUser();
+			$cUser = vFactory::getUser();
 			if($usersConfig->get('allowUserRegistration') == '0' and !(vmAccess::manager('user')) ) {
 				VmConfig::loadJLang('com_virtuemart');
 				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
@@ -632,7 +632,7 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function storeAddress(&$data){
 
-		$user =JFactory::getUser();
+		$user =vFactory::getUser();
 
 		$userinfo = $this->getTable('userinfos');
 
@@ -661,7 +661,7 @@ class VirtueMartModelUser extends VmModel {
 				WHERE `virtuemart_user_id` = '.$userId.'
 				AND `address_type` = "BT"';
 
-				$db = JFactory::getDbo();
+				$db = vFactory::getDbo();
 				$db->setQuery($q);
 				$total = $db->loadColumn();
 
@@ -703,7 +703,7 @@ class VirtueMartModelUser extends VmModel {
 
 					$userinfo->load($dataST['virtuemart_userinfo_id']);
 
-					$user = JFactory::getUser();
+					$user = vFactory::getUser();
 					if($userinfo->virtuemart_user_id!=$user->id){
 						vmError('Hacking attempt as admin?','Hacking attempt store address');
 						return false;
@@ -733,7 +733,7 @@ class VirtueMartModelUser extends VmModel {
 
 			$userinfo->bindChecknStore($userfielddata);
 
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			if($app->isSite()){
 				if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 				$cart = VirtuemartCart::getCart();
@@ -860,7 +860,7 @@ class VirtueMartModelUser extends VmModel {
 
 		}
 
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 		$manager = vmAccess::manager();
 
 		// Format the data
@@ -933,7 +933,7 @@ class VirtueMartModelUser extends VmModel {
 
 			if($data->virtuemart_user_id!==0 and !$isVendor){
 
-				$user = JFactory::getUser();
+				$user = vFactory::getUser();
 				if(!vmAccess::manager()){
 					if($data->virtuemart_user_id!=$this->_id){
 						vmError('Blocked attempt loading userinfo, you got logged');
@@ -1161,7 +1161,7 @@ class VirtueMartModelUser extends VmModel {
 		$where = array();
 		if ($search) {
 			$where = ' WHERE ';
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$searchArray = array('ju.name','ju.username','ju.email','shopper_group_name');	// removed ,'usertype' should be handled by extra dropdown
 			$userFieldsValid = array();
 			if($tableToUse!='juser'){
@@ -1242,7 +1242,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$result = false;
 		if($superVendor){
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$search = vRequest::getUword('usersearch','');
 			if(!empty($search)){
 				$search = ' WHERE (`name` LIKE "%'.$search.'%" OR `username` LIKE "%'.$search.'%" OR `customer_number` LIKE "%'.$search.'%")';
@@ -1259,7 +1259,7 @@ class VirtueMartModelUser extends VmModel {
 					$search .=  ' AND ( vmu.user_is_vendor = 0 OR (vmu.virtuemart_vendor_id) IS NULL)';
 				}
 			}
-			$current = JFactory::getUser();
+			$current = vFactory::getUser();
 			$hiddenUserID = $adminID ? $adminID : $current->id;
 			if(!empty($search)){
 				$search .= ' AND ju.id!= "'.$hiddenUserID.'" ';
@@ -1282,7 +1282,7 @@ class VirtueMartModelUser extends VmModel {
 
 			if($adminID){
 
-				$user = JFactory::getUser($adminID);
+				$user = vFactory::getUser($adminID);
 				if($current->id!=$user->id){
 					$toAdd = new stdClass();
 					$toAdd->id = $user->id;
@@ -1429,7 +1429,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
-		//$app = JFactory::getApplication();
+		//$app = vFactory::getApplication();
 		//$app -> enqueueMessage($db->getQuery());
 		$objlist = $db->loadObjectList();
 		// 		vmdebug('getAclGroupIndentedTree',$objlist);

@@ -827,7 +827,7 @@ class shopFunctionsF {
 
 		$component	= JComponentHelper::getComponent('com_virtuemart');
 
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$q = 'SELECT * FROM `#__menu` WHERE `component_id` = "'. $component->id .'" and `language` = "'. $lang .'"';
 		$db->setQuery( $q );
 		$items = $db->loadObjectList();

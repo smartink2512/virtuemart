@@ -121,7 +121,7 @@ class VirtueMartModelOrders extends VmModel {
      */
     public function getMyOrderDetails($orderID = 0, $orderNumber = false, $orderPass = false){
 
-        $_currentUser = JFactory::getUser();
+        $_currentUser = vFactory::getUser();
         $cuid = $_currentUser->get('id');
 
 		$orderDetails = false;
@@ -339,7 +339,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		} else {
 			//A normal user is only allowed to see its own orders, we map $uid to the user id
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$uid = (int)$user->id;
 			$where = array();
 		}
@@ -856,7 +856,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			return false;
 		}
 
-		$usr = JFactory::getUser();
+		$usr = vFactory::getUser();
 		//$prices = $cart->getCartPrices();
 		if (($orderID = $this->_createOrder($cart, $usr)) == 0) {
 			vmError('Couldn\'t create order','Couldn\'t create order');
@@ -976,7 +976,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if($_cart->_inConfirm){
 			$order = false;
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$q = 'SELECT * FROM `#__virtuemart_orders` ';
 			if(!empty($_cart->virtuemart_order_id)){
 				$db->setQuery($q . ' WHERE `order_number`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P" ');
@@ -1710,7 +1710,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 		//quicknDirty to prevent that an email is sent twice
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if($app->isSite()){
 			if (!class_exists('VirtueMartCart'))
 				require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -2068,7 +2068,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$db = JFactory::getDBO();
 		$_orderID = $db->insertid();
 
-		$_usr  = JFactory::getUser();
+		$_usr  = vFactory::getUser();
 		if (!$this->_writeUserInfo($_orderID, $_usr, array())) {
 			vmError('Problem writing user info to order');
 		}

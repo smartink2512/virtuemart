@@ -95,7 +95,7 @@ class AdminUIHelper {
 		   $bar = JToolbar::getInstance('toolbar');
 			?><div class="toolbar-box" style="height: 84px;position: relative;"><?php echo $bar->render()?></div>
 		<?php } ?>
-    <?php $hideMenu = JFactory::getApplication()->input->cookie->getString('vmmenu', 'show') === 'hide' ? ' menu-collapsed': ''; ?>
+    <?php $hideMenu = vFactory::getApplication()->input->cookie->getString('vmmenu', 'show') === 'hide' ? ' menu-collapsed': ''; ?>
     <div class="virtuemart-admin-area<?php echo $hideMenu ?>">
 		<div class="toggler vmicon-show<?php echo $hideMenu ?>"></div>
 			<div class="menu-wrapper<?php echo $hideMenu ?>" id="menu-wrapper">
@@ -227,7 +227,7 @@ class AdminUIHelper {
 
 		$moduleId = vRequest::getInt ( 'module_id', 0 );
 		$menuItems = AdminUIHelper::_getAdminMenu ( $moduleId );
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$isSite = $app->isSite();
 		?>
 		<div id="admin-ui-menu" class="admin-ui-menu">

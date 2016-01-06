@@ -129,7 +129,7 @@ class VirtueMartModelRatings extends VmModel {
 			$ratings_data->virtuemart_product_id = $virtuemart_product_id;
 
 			/* User ID */
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$ratings_data->virtuemart_user_id = $user->id;
 		}
 
@@ -220,7 +220,7 @@ class VirtueMartModelRatings extends VmModel {
 
     function getReviewByProduct($product_id,$userId=0){
    		if(empty($userId)){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$userId = $user->id;
     	}
 		if(!empty($userId)){
@@ -243,7 +243,7 @@ class VirtueMartModelRatings extends VmModel {
 
 	function getReviewsByProduct($product_id){
    		if(empty($userId)){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$userId = $user->id;
     	}
 		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" ';
@@ -262,7 +262,7 @@ class VirtueMartModelRatings extends VmModel {
     function getVoteByProduct($product_id,$userId=0){
 
     	if(empty($userId)){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$userId = $user->id;
     	}
 		$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
@@ -282,9 +282,9 @@ class VirtueMartModelRatings extends VmModel {
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',0);
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if( $app->isSite() ){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$userId = $user->id;
 			$allowReview = $this->allowReview($virtuemart_product_id);
 			$allowRating = $this->allowRating($virtuemart_product_id);
@@ -374,7 +374,7 @@ class VirtueMartModelRatings extends VmModel {
 				$data['review_editable'] = 0;
 				// Check if ratings are auto-published (set to 0 prevent injected by user)
 				//
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				if( $app->isSite() ){
 
 					if (VmConfig::get ('reviews_autopublish', 1)) {
@@ -517,7 +517,7 @@ class VirtueMartModelRatings extends VmModel {
 			//show only registered
 			else {
 				if ($show == 'registered') {
-					$user = JFactory::getUser ();
+					$user = vFactory::getUser ();
 					return !empty($user->id);
 				}
 				//show only registered && who bought the product
@@ -536,7 +536,7 @@ class VirtueMartModelRatings extends VmModel {
 							require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 						}
 						$key = vmCrypt::encrypt('productBought'.$product_id);
-						$count = JFactory::getApplication()->input->cookie->getString($key, false);
+						$count = vFactory::getApplication()->input->cookie->getString($key, false);
 						if($count){
 							//check, somehow broken, atm
 							$v = vmCrypt::encrypt($key);
@@ -546,7 +546,7 @@ class VirtueMartModelRatings extends VmModel {
 						}
 
 						if(!$count){
-							$user = JFactory::getUser ();
+							$user = vFactory::getUser ();
 
 							$rr_os=VmConfig::get('rr_os',array('C'));
 							if(!is_array($rr_os)) $rr_os = array($rr_os);

@@ -64,11 +64,11 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				}
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
-				//$user = JFactory::getUser();
+				//$user = vFactory::getUser();
 				$superVendor =  vmAccess::isSuperVendor();
 				if( $superVendor !=1 and $superVendor!=$product->virtuemart_vendor_id){
 					vmdebug('Product view.html.php '.$superVendor,$product->virtuemart_vendor_id);
-					JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart&view=virtuemart', vmText::_('COM_VIRTUEMART_ALERTNOTAUTHOR'), 'error');
+					vFactory::getApplication()->redirect( 'index.php?option=com_virtuemart&view=virtuemart', vmText::_('COM_VIRTUEMART_ALERTNOTAUTHOR'), 'error');
 				}
 				if(!empty($product->product_parent_id)){
 					$product_parent= $model->getProductSingle($product->product_parent_id,false);
@@ -197,7 +197,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				$lists['OrderStatus'] = $orderstatusModel->renderOSList(array(),'order_status',TRUE);
 
 				// Add the virtuemart_shoppergroup_ids
-				$cid = JFactory::getUser()->id;
+				$cid = vFactory::getUser()->id;
 
 				$this->activeShoppergroups = shopfunctions::renderGuiList($cid,'shoppergroups','shopper_group_name','category','vmuser_shoppergroups','virtuemart_user_id');
 				if(!empty($this->activeShoppergroups) ){
@@ -258,7 +258,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 					if($product->canonCatId) $canonLink = '&virtuemart_category_id='.$product->canonCatId;
 
 					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
-					if(JFactory::getApplication()->isSite()){
+					if(vFactory::getApplication()->isSite()){
 						$bar = JToolBar::getInstance('toolbar');
 						$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE_TO_PRODUCT', juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID);
 					}
@@ -343,7 +343,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model,'created_on');
 
 			if($cI = vRequest::getInt('virtuemart_category_id',false)){
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				//$old_state = $app->getUserState('virtuemart_category_id');
 				$old_state = $app->getUserState('virtuemart_category_id');
 				if(empty($old_state) or $old_state!=$cI){

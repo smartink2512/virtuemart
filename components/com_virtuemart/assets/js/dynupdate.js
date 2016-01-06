@@ -17,38 +17,38 @@ jQuery(function($) {
     Virtuemart.isUpdatingContent = false;
     Virtuemart.updateContent = function(url, callback) {
 
-        if(Virtuemart.isUpdatingContent) return false;
-        Virtuemart.isUpdatingContent = true;
-        urlSuf='tmpl=component&format=html';
-        var glue = '&';
-        if(url.indexOf('&') == -1 && url.indexOf('?') == -1){
+		if(Virtuemart.isUpdatingContent) return false;
+		Virtuemart.isUpdatingContent = true;
+		urlSuf='tmpl=component&format=html';
+		var glue = '&';
+		if(url.indexOf('&') == -1 && url.indexOf('?') == -1){
 			glue = '?';
-        }
-        url += glue+urlSuf;
+		}
+		url += glue+urlSuf;
 		jQuery.ajax({
-            url: url,
-            dataType: 'html',
-            success: function(data) {
-              var title = $(data).filter('title').text();
-              $('title').text(title);
-              var el = $(data).find(Virtuemart.containerSelector);
-      				if (! el.length) el = $(data).filter(Virtuemart.containerSelector);
-      				if (el.length) {
-      					Virtuemart.container.html(el.html());
-                Virtuemart.updateCartListener();
-                Virtuemart.updateDynamicUpdateListeners();
+			url: url,
+			dataType: 'html',
+			success: function(data) {
+				var title = $(data).filter('title').text();
+				$('title').text(title);
+				var el = $(data).find(Virtuemart.containerSelector);
+				if (! el.length) el = $(data).filter(Virtuemart.containerSelector);
+					if (el.length) {
+					Virtuemart.container.html(el.html());
+					Virtuemart.updateCartListener();
+					Virtuemart.updateDynamicUpdateListeners();
 
-      					if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners();
-      					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
-      				}
-      				Virtuemart.isUpdatingContent = false;
-      				if (callback && typeof(callback) === "function") {
-      					callback();
-      				}
-            }
-        });
-        Virtuemart.isUpdatingContent = false;
-    }
+					if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners();
+					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
+				}
+				Virtuemart.isUpdatingContent = false;
+				if (callback && typeof(callback) === "function") {
+					callback();
+				}
+			}
+		});
+		Virtuemart.isUpdatingContent = false;
+	}
 
     // GALT: this method could be renamed into more general "updateEventListeners"
     // and all other VM init scripts placed in here.

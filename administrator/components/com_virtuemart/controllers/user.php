@@ -78,7 +78,7 @@ class VirtuemartControllerUser extends VmController {
 
 	function editshop(){
 
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 		//the virtuemart_user_id var gets overriden in the edit function, when not set. So we must set it here
 		vRequest::setVar('virtuemart_user_id', (int)$user->id);
 		$this->edit();

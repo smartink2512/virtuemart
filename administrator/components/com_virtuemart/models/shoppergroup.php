@@ -117,7 +117,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			$db->setQuery($q);
 
 			if(!$res = $db->loadObject()){
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				$app->enqueueMessage('Attention no standard shopper group set '.$db->getErrorMsg());
 				$default[$vendorId][$kind] = false;
 			} else {

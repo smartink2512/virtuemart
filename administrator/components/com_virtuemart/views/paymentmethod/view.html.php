@@ -46,7 +46,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 			require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 		}
 
-		$this->user = JFactory::getUser();
+		$this->user = vFactory::getUser();
 		$model = VmModel::getModel('paymentmethod');
 
 		// TODO logo
@@ -127,7 +127,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 		$db->setQuery($q);
 		$result = $db->loadAssocList('extension_id');
 		if(empty($result)){
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app -> enqueueMessage(vmText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
 		}
 

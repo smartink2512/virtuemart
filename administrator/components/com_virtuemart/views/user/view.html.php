@@ -39,7 +39,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
-		$currentUser = JFactory::getUser();
+		$currentUser = vFactory::getUser();
 
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
@@ -47,7 +47,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 		if($task == 'editshop'){
 			$isSuperOrVendor = vmAccess::isSuperVendor();
 			if(empty($isSuperOrVendor)){
-				JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+				vFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 			} else {
 				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 				$userId = VirtueMartModelVendor::getUserIdByVendorId($isSuperOrVendor);

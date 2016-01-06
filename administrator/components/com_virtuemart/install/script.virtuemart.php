@@ -398,7 +398,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					$this->_db->setQuery($q);
 
 					if(!$this->_db->execute()){
-						$app = JFactory::getApplication();
+						$app = vFactory::getApplication();
 						$app->enqueueMessage('Error: Install alterTable '.$this->_db->getErrorMsg() );
 						$ok = false;
 					}
@@ -683,7 +683,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 					$this->_db->setQuery($query);
 					if(!$this->_db->execute()){
-						$app = JFactory::getApplication();
+						$app = vFactory::getApplication();
 						$app->enqueueMessage('Error: Install alterTable '.$this->_db->getErrorMsg() );
 						$ok = false;
 					}
@@ -713,7 +713,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$query = 'ALTER TABLE `'.$table.'` ADD '.$field.' '.$fieldType;
 				$this->_db->setQuery($query);
 				if(!$this->_db->execute()){
-					$app = JFactory::getApplication();
+					$app = vFactory::getApplication();
 					$app->enqueueMessage('Error: Install checkAddFieldToTable '.$this->_db->getErrorMsg() );
 					return false;
 				} else {
@@ -838,7 +838,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						if (( $file != '.' ) && ( $file != '..' )) {
 							if ( is_dir($src .DS. $file) ) {
 								if(!JFolder::create($dst . DS . $file)){
-									$app = JFactory::getApplication ();
+									$app = vFactory::getApplication ();
 									$app->enqueueMessage ('Couldnt create folder ' . $dst . DS . $file);
 								}
 								$this->recurse_copy($src .DS. $file,$dst .DS. $file);
@@ -846,12 +846,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							else {
 								if(JFile::exists($dst .DS. $file)){
 									if(!JFile::delete($dst .DS. $file)){
-										$app = JFactory::getApplication();
+										$app = vFactory::getApplication();
 										$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
 									}
 								}
 								if(!JFile::move($src .DS. $file,$dst .DS. $file)){
-									$app = JFactory::getApplication();
+									$app = vFactory::getApplication();
 									$app -> enqueueMessage('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
 								}
 							}
@@ -863,7 +863,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				}
 			}
 
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app -> enqueueMessage('Couldnt read dir '.$dir.' source '.$src);
 
 		}

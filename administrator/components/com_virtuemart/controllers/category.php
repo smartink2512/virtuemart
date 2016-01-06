@@ -40,7 +40,7 @@ class VirtuemartControllerCategory extends VmController {
 
 		//ACL
 		if (!vmAccess::manager('category.edit')) {
-			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			vFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
 		$data = vRequest::getRequest();
@@ -61,7 +61,7 @@ class VirtuemartControllerCategory extends VmController {
 	{
 		//ACL
 		if (!vmAccess::manager('category.edit')) {
-			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			vFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 
 		// Check token
@@ -99,7 +99,7 @@ class VirtuemartControllerCategory extends VmController {
 	{
 		//ACL
 		if (!vmAccess::manager('category.edit')) {
-			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			vFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
 		// Check token
@@ -135,7 +135,7 @@ class VirtuemartControllerCategory extends VmController {
 	{
 		//ACL
 		if (!vmAccess::manager('category.edit')) {
-			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			vFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
 		// Check for request forgeries

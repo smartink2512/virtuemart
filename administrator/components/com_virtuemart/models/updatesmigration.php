@@ -53,10 +53,10 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 		$virtuemart_user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
 		if (isset($virtuemart_user_id) && $virtuemart_user_id > 0) {
-		    $this->_user = JFactory::getUser($virtuemart_user_id);
+		    $this->_user = vFactory::getUser($virtuemart_user_id);
 		}
 		else {
-		    $this->_user = JFactory::getUser();
+		    $this->_user = vFactory::getUser();
 		}
 		return $this->_user->id;
     }
@@ -406,7 +406,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    return false;
 		}
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		foreach ($tables as $table) {
 
 		    $db->setQuery('DROP TABLE ' . $table);
@@ -577,7 +577,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	 */
 	function resetThumbs(){
 
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$q = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb`=""';
 
 		$db->setQuery($q);

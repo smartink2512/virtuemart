@@ -232,7 +232,7 @@ class vmUploader {
 			return false;
 		}
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		switch ($media['error']) {
 			case 0:
 				$path_folder = str_replace('/',DS,$urlfolder);

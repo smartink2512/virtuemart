@@ -42,7 +42,7 @@ class CurrencyDisplay {
 
 	private function __construct ($vendorId = 0){
 
-		$this->_app = JFactory::getApplication();
+		$this->_app = vFactory::getApplication();
 		if(empty($vendorId)) $vendorId = 1;
 
 		$vendorM = VmModel::getModel('vendor');

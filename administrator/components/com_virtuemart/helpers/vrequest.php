@@ -193,7 +193,7 @@ class vRequest {
 			} else if($source=='GET'){
 				$source = $_GET;
 				if(JVM_VERSION>2){
-					$router = JFactory::getApplication()->getRouter();
+					$router = vFactory::getApplication()->getRouter();
 					$vars = $router->getVars();
 					if($router->getMode() and !empty($vars)){
 						$source = array_merge($_GET,$vars);
@@ -264,7 +264,7 @@ class vRequest {
 	public static function getGet( $filter = FILTER_SANITIZE_SPECIAL_CHARS, $flags = FILTER_FLAG_ENCODE_LOW ){
 		$source = $_GET;
 		if(JVM_VERSION>2){
-			$router = JFactory::getApplication()->getRouter();
+			$router = vFactory::getApplication()->getRouter();
 			$vars = $router->getVars();
 			if($router->getMode() and !empty($vars)){
 				$source = array_merge($_GET,$vars);
@@ -314,7 +314,7 @@ class vRequest {
 
 			if ($session->isNew()){
 				// Redirect to login screen.
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				$app->redirect(JRoute::_('index.php'), vmText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
 				$app->close();
 				return false;
@@ -327,7 +327,7 @@ class vRequest {
 					$redirectMsg =  vmText::_($redirectMsg);
 				}
 				// Redirect to login screen.
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				$session->close();
 				$app->redirect(JRoute::_('index.php'), $redirectMsg);
 				$app->close();
@@ -342,7 +342,7 @@ class vRequest {
 	public static function getFormToken($fNew = false){
 
 		$sess = JFactory::getSession();
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 
 		if(empty($user->id)) $user->id = 0;
 		if(!class_exists('vmCrypt'))

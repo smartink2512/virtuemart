@@ -34,14 +34,11 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 		$this->event_clean_cache = 'onContentCleanCache';
 
 		$this->_cidName = $cidName;
-
-		if (!class_exists( 'vFactory' ))
-			require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vfactory.php');
 	}
 
 	protected static $_loadedClasses = array();
 
-	public static function getInstance($type, $prefix = '', $config = array(), $single = false) {
+	public static function getInstance($type, $prefix = '', $config = array(), $single = true) {
 
 		vmSetStartTime('getInstance');
 		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
@@ -54,13 +51,14 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 		if (self::loader($type, $prefix,$class)){
 			if(!$single or !isset(self::$_loadedClasses[$class])){
 				if($prefix=='Table'){
-
 					self::$_loadedClasses[$class] = new $class(vFactory::$_db);
 				} else {
 					self::$_loadedClasses[$class] = new $class($config);
 				}
+
+				//vmTime('getInstance '.(int)$single.' '.$prefix.' '.$type,'getInstance');
 			}
-			vmTime('getInstance '.$type.' '.$prefix,'getInstance');
+
 			return self::$_loadedClasses[$class];
 		} else {
 			vmWarn(vmText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $class));
@@ -96,7 +94,7 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 			vmError('empty path in addIncludePath','empty path in addIncludePath');
 			return false;
 		}
-		
+
 		if (!isset(self::$_paths[$prefix])) self::$_paths[$prefix] = array();
 		$path = vRequest::filterPath($path);
 		if (!in_array($path, self::$_paths[$prefix])) {

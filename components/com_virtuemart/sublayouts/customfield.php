@@ -93,7 +93,7 @@ class VirtueMartCustomFieldRenderer {
 						$q .= ' OR (`product_in_stock` - `product_ordered`) <= "0"';
 					}
 					$q .= ');';
-					$db = JFactory::getDbo();
+					$db = vFactory::getDbo();
 					$db->setQuery($q);
 					$ignore = $db->loadColumn();
 					//vmdebug('my q '.$q,$ignore);

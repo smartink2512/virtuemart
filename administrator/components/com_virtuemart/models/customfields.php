@@ -91,7 +91,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	function getCustomEmbeddedProductCustomFields($productIds,$virtuemart_custom_id=0,$cartattribute=-1,$forcefront=FALSE){
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$db= JFactory::getDBO ();
 		$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
 

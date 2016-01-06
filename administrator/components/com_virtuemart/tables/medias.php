@@ -178,7 +178,7 @@ class TableMedias extends VmTable {
 			}
 		}
 
-//		$app = JFactory::getApplication();
+//		$app = vFactory::getApplication();
 
 		//vmError('Checking '.$this->file_url);
 
@@ -200,7 +200,7 @@ class TableMedias extends VmTable {
 			}
 			if (function_exists ('mime_content_type')) {
 				$ok = TRUE;
-				$app = JFactory::getApplication ();
+				$app = vFactory::getApplication ();
 
 				if (!$this->file_is_forSale) {
 					$this->file_mimetype = mime_content_type (JPATH_ROOT . DS . $rel_path);

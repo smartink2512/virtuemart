@@ -58,7 +58,7 @@ class VirtueMartModelVendor extends VmModel {
 	 */
 	static function getLoggedVendor ($ownerOnly = TRUE) {
 
-		$user = JFactory::getUser ();
+		$user = vFactory::getUser ();
 		$userId = $user->id;
 		if (isset($userId)) {
 			$vendorId = self::getVendorId ('user', $userId, $ownerOnly);
@@ -168,7 +168,7 @@ class VirtueMartModelVendor extends VmModel {
 		$table = $this->getTable ('vendors');
 
 		/*	if(!$table->checkDataContainsTableFields($data)){
-		 $app = JFactory::getApplication();
+		 $app = vFactory::getApplication();
 		 //$app->enqueueMessage('Data contains no Info for vendor, storing not needed');
 		 return $this->_id;
 	 	}*/

@@ -19,15 +19,15 @@
  *
  * http://virtuemart.net
  */
-// Load the view framework
-jimport( 'joomla.application.component.view');
+
 // Load default helpers
 if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 if (!class_exists('AdminUIHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'adminui.php');
 if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
+if (!class_exists('vView')) require(VMPATH_ADMIN.DS.'vmf'.DS.'vview.php');
 
-class VmViewAdmin extends JViewLegacy {
+class VmViewAdmin extends vView {
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
 	 * @author Max Milbers
@@ -56,7 +56,7 @@ class VmViewAdmin extends JViewLegacy {
 			//or $this->canDo->get('core.admin')
 			//or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
 
-			if(JFactory::getApplication()->isSite()){
+			if(vFactory::getApplication()->isSite()){
 				$unoverridable = array('category','manufacturer','user');	//This views have the same name and must not be overridable
 				if(!in_array($view,$unoverridable)){
 					if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
@@ -78,7 +78,7 @@ class VmViewAdmin extends JViewLegacy {
 			}
 			return true;
 		} else {
-			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			vFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 
 	}
@@ -111,7 +111,7 @@ class VmViewAdmin extends JViewLegacy {
 		JToolBarHelper::spacer('2');
 		self::showACLPref($view);
 		self::showHelp ( $showHelp);
-		if(JFactory::getApplication()->isSite()){
+		if(vFactory::getApplication()->isSite()){
 			$bar = JToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}
@@ -180,7 +180,7 @@ class VmViewAdmin extends JViewLegacy {
 		$option = vRequest::getCmd('option');
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$this->lists[$name] = $app->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
 
 		$this->lists['filter_order'] = $this->getValidFilterOrder($app,$model,$view,$default_order);
@@ -380,7 +380,7 @@ class VmViewAdmin extends JViewLegacy {
 			$this->langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
 		}
 
-		if(JFactory::getApplication()->isSite()){
+		if(vFactory::getApplication()->isSite()){
 			$bar = JToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}
@@ -406,7 +406,7 @@ class VmViewAdmin extends JViewLegacy {
 
 		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$doc = JFactory::getDocument();
 		$doc->setTitle($app->getCfg('sitename'). ' - ' .vmText::_('JADMINISTRATION').' - '.strip_tags($msg));
 	}
@@ -426,7 +426,7 @@ class VmViewAdmin extends JViewLegacy {
 			<input type="hidden" name="filter_order_Dir" value="'.$this->lists['filter_order_Dir'].'" />';
 		}
 
-		if(vRequest::get('manage',false) or JFactory::getApplication()->isSite()){
+		if(vRequest::get('manage',false) or vFactory::getApplication()->isSite()){
 			$hidden .='<input type="hidden" name="manage" value="1" />';
 		}
 		return  $hidden.'

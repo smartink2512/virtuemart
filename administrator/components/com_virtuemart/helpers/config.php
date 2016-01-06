@@ -22,11 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 //defined('_JEXEC') or define('_JEXEC', 1);
 
-$app = JFactory::getApplication();
-$admin = '';
-if(!$app->isSite()){
-	$admin = DS.'administrator';//echo('in administrator');
-}
+
 
 if(defined('JPATH_ROOT')){	//We are in joomla
 	defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', JPATH_ROOT);
@@ -57,10 +53,20 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', $vmPathLibraries);
 defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
-defined ('VMPATH_BASE') or define ('VMPATH_BASE',VMPATH_ROOT.$admin);
+
 defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN.DS.'plugins');
 defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT.DS.'plugins' );
 defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT.DS.'modules' );
+
+if (!class_exists( 'vFactory' ))
+	require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vfactory.php');
+$app = vFactory::getApplication();
+$admin = '';
+if(!$app->isSite()){
+	$admin = DS.'administrator';//echo('in administrator');
+}
+
+defined ('VMPATH_BASE') or define ('VMPATH_BASE',VMPATH_ROOT.$admin);
 defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.DS.'templates' );
 
 defined ('VMPATH_COMPONENT') or define( 'VMPATH_COMPONENT', VMPATH_BASE .DS. 'components'.DS.'com_virtuemart' );
@@ -82,6 +88,8 @@ defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 
 require(VMPATH_ADMIN.DS.'version.php');
 defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
+
+
 
 if(!class_exists('VmTable')){
 	require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtable.php');
@@ -115,7 +123,7 @@ if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php')
 
 function vmInfo($publicdescr,$value=NULL){
 
-	$app = JFactory::getApplication();
+	$app = vFactory::getApplication();
 
 	$msg = '';
 	$type = VmConfig::$mType;//'info';
@@ -162,7 +170,7 @@ function vmAdminInfo($publicdescr,$value=NULL){
 
 	if(VmConfig::$echoAdmin){
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 			$lang = JFactory::getLanguage();
@@ -195,7 +203,7 @@ function vmAdminInfo($publicdescr,$value=NULL){
 function vmWarn($publicdescr,$value=NULL){
 
 
-	$app = JFactory::getApplication();
+	$app = vFactory::getApplication();
 	$msg = '';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
@@ -267,7 +275,7 @@ function vmError($descr,$publicdescr=''){
 
 	if(!empty($msg)){
 		VmConfig::$maxMessageCount++;
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$app ->enqueueMessage($msg,'error');
 		return $msg;
 	}
@@ -286,7 +294,7 @@ function vmError($descr,$publicdescr=''){
 function vmdebug($debugdescr,$debugvalues=NULL){
 
 	if(VMConfig::showDebug()  ){
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 			if($debugvalues!==NULL){
@@ -308,7 +316,7 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 				logInfo($debugdescr,'vmdebug');
 			}else {
 				VmConfig::$maxMessageCount++;
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
 			}
 
@@ -339,7 +347,7 @@ function vmTrace($notice,$force=FALSE){
 		} else if(VmConfig::$logDebug){
 			logInfo($body,$notice);
 		} else {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app ->enqueueMessage($notice.' '.$body.' ');
 		}
 
@@ -408,7 +416,7 @@ function logInfo ($text, $type = 'message') {
 			if (!JFolder::create($log_path)) {
 				if (VmConfig::$echoAdmin){
 					$msg = 'Could not create path ' . $log_path . ' to store log information. Check your folder ' . $log_path . ' permissions.';
-					$app = JFactory::getApplication();
+					$app = vFactory::getApplication();
 					$app->enqueueMessage($msg, 'error');
 				}
 				return;
@@ -417,7 +425,7 @@ function logInfo ($text, $type = 'message') {
 		if (!is_writable($log_path)) {
 			if (VmConfig::$echoAdmin){
 				$msg = 'Path ' . $log_path . ' to store log information is not writable. Check your folder ' . $log_path . ' permissions.';
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				$app->enqueueMessage($msg, 'error');
 			}
 			return;
@@ -453,7 +461,7 @@ function logInfo ($text, $type = 'message') {
 		} else {
 			if (VmConfig::$echoAdmin){
 				$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				$app->enqueueMessage($msg, 'error');
 			}
 		}
@@ -538,7 +546,7 @@ class VmConfig {
 
 	static function echoAdmin(){
 		if(self::$echoAdmin===FALSE){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 				self::$echoAdmin = true;
 			} else {
@@ -799,7 +807,7 @@ class VmConfig {
 		if(!class_exists('VirtueMartModelConfig')) require(VMPATH_ADMIN .'/models/config.php');
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$db = JFactory::getDBO();
 
 		self::$installed = true;
@@ -883,7 +891,7 @@ class VmConfig {
 		}
 
 		if(!self::$installed){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			if($user->authorise('core.admin','com_virtuemart') and ($install or $redirected)){
 				VmConfig::$_jpConfig->set('dangeroustools',1);
 			}
@@ -896,7 +904,7 @@ class VmConfig {
 
 	static public function storeConfig(){
 
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 		if($user->authorise('core.admin','com_virtuemart')){
 			$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
 			if($installed){
@@ -952,7 +960,7 @@ class VmConfig {
 			self::$jDefLang = strtolower(strtr($defaultLang,'-','_'));
 		}
 
-		if( JFactory::getApplication()->isSite()){
+		if( vFactory::getApplication()->isSite()){
 			if (!$siteLang) {
 				jimport('joomla.language.helper');
 				$siteLang = JFactory::getLanguage()->getTag();
@@ -1034,7 +1042,7 @@ class VmConfig {
 			}
 
 		} else {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app -> enqueueMessage('VmConfig get, empty key given');
 		}
 
@@ -1047,7 +1055,7 @@ class VmConfig {
 			self::loadConfig();
 		}
 
-		if($admin = JFactory::getUser()->authorise('core.admin', 'com_virtuemart')){
+		if($admin = vFactory::getUser()->authorise('core.admin', 'com_virtuemart')){
 			if (!empty(self::$_jpConfig->_params)) {
 				self::$_jpConfig->_params[$key] = $value;
 			}
@@ -1195,7 +1203,7 @@ class vmAccess {
 			} else {
 				$ui = $uid;
 			}
-			self::$_cu[$uid] = JFactory::getUser($ui);
+			self::$_cu[$uid] = vFactory::getUser($ui);
 		}
 
 		return self::$_cu[$uid];
@@ -1211,7 +1219,7 @@ class vmAccess {
 	static public function isSuperVendor($uid = 0){
 
 		if(self::$_site === null) {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			self::$_site = $app->isSite();
 		}
 
@@ -1227,7 +1235,7 @@ class vmAccess {
 				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` as `au`
 				WHERE `au`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
 
-				$db= JFactory::getDbo();
+				$db= vFactory::getDbo();
 				$db->setQuery($q);
 				$virtuemart_vendor_id = $db->loadResult();
 
@@ -1252,7 +1260,7 @@ class vmAccess {
 	static public function manager($task=0, $uid = 0, $and = false) {
 
 		if(self::$_site === null) {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			self::$_site = $app->isSite();
 		}
 
@@ -1304,7 +1312,7 @@ class vmAccess {
 	public static function getVendorId($task=0, $uid = 0, $name = 'virtuemart_vendor_id'){
 
 		if(self::$_site === null) {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			self::$_site = $app->isSite();
 		}
 

@@ -34,7 +34,7 @@ class vmJsApi{
 	private static function isAdmin(){
 
 		if(!isset(self::$_be)){
-			self::$_be = JFactory::getApplication()->isAdmin();
+			self::$_be = vFactory::getApplication()->isAdmin();
 		}
 		return self::$_be;
 	}
@@ -277,7 +277,7 @@ class vmJsApi{
 
 		if(JVM_VERSION<3){
 			//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
-			if (JFactory::getApplication ()->get ('jquery')) {
+			if (vFactory::getApplication ()->get ('jquery')) {
 				return FALSE;
 			} else {
 
@@ -309,7 +309,7 @@ class vmJsApi{
 		self::addJScript( 'jquery.noconflict',false,false,true,false,'');
 		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
 		if(JVM_VERSION<3){
-			JFactory::getApplication()->set('jquery',TRUE);
+			vFactory::getApplication()->set('jquery',TRUE);
 		}
 
 		$v = 'if (typeof Virtuemart === "undefined")
@@ -548,7 +548,7 @@ jQuery(document).ready(function($) {
 	static public function vmValidator ($guest=null, $userFields = 0, $prefiks=''){
 
 		if(!isset($guest)){
-			$guest = JFactory::getUser()->guest;
+			$guest = vFactory::getUser()->guest;
 		}
 
 		// Implement Joomla's form validation

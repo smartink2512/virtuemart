@@ -50,24 +50,12 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	private function checkPermissionForTools(){
 		vRequest::vmCheckToken();
-		//Hardcore Block, we may do that better later
-		$user = JFactory::getUser();
 		if(!vmAccess::manager('core') ){
 			$msg = 'Forget IT';
 			$this->setRedirect('index.php?option=com_virtuemart', $msg);
 		}
 
 		return true;
-	}
-
-	/**
-	 * Akeeba release system tasks
-	 * Update
-	 * @author Max Milbers
-	 */
-	function liveUpdate(){
-
-		$this->setRedirect('index.php?option=com_virtuemart&view=liveupdate.', 'Akeeba release system');
 	}
 
 	/**
@@ -147,7 +135,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` LEFT JOIN `#__virtuemart_customs` USING (`virtuemart_custom_id`) ';
 		$q = 'SELECT `virtuemart_customfield_id`,`customfield_params` FROM `#__virtuemart_product_customfields` ';
 		$q .= ' WHERE `customfield_params`!="" ';
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 
 		$rows = $db->loadAssocList();
@@ -166,7 +154,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 					if(!empty($key)){
 						$store .= $key . '=' . vmJsApi::safe_json_encode($value) . '|';
 					}
-
 				}
 
 				if(!empty($store)){
@@ -193,12 +180,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 		if(VmConfig::get('dangeroustools', false)){
 
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 
-			/*$q = 'SELECT customfield_id ';
-			$q .= 'FROM `#__virtuemart_product_customfields` as pc WHERE
-					LEFT JOIN `#__virtuemart_products` as c using (`virtuemart_product_id`) ';
-			$q .= 'WHERE c.product_parent_id =';*/
 			$q = ' SELECT `product_parent_id` FROM `#__virtuemart_products`
 					INNER JOIN `#__virtuemart_product_customfields` as pc using (`virtuemart_product_id`)
 					WHERE `product_parent_id` != "0" GROUP BY `product_parent_id` ';
@@ -249,10 +232,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 				$db->execute();
 			}
 
-			/*$q = 'SELECT `virtuemart_customfield_id`
-					FROM `#__virtuemart_product_customfields` as pc
-					LEFT JOIN `#__virtuemart_products` as c using (`virtuemart_product_id`)';
-			$q .= ' WHERE c.product_parent_id != "0" AND ';*/
 		} else {
 			$msg = $this->_getMsgDangerousTools();
 		}
@@ -428,7 +407,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$jConfig['MetaDesc'] = 'VirtueMart works with Joomla! - the dynamic portal engine and content management system';
 			$jConfig['MetaKeys'] = 'virtuemart, vm2, joomla, Joomla';
 
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$return = $jConfModel->save($jConfig);
 
 			// Check the return value.

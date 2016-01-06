@@ -35,7 +35,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 		$option = vRequest::getCmd( 'option');
-		$mainframe = JFactory::getApplication() ;
+		$mainframe = vFactory::getApplication() ;
 
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');

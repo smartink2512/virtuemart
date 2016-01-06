@@ -65,7 +65,7 @@ class calculationHelper {
 	 */
 	private function __construct() {
 		$this->_db = JFactory::getDBO();
-		$this->_app = JFactory::getApplication();
+		$this->_app = vFactory::getApplication();
 		//$this->_cart =& VirtuemartCart::getCart();
 		//We store in UTC and use here of course also UTC
 		$jnow = JFactory::getDate();
@@ -216,7 +216,7 @@ class calculationHelper {
 		if (!empty($shopperGroupIds)) {
 			$this->_shopperGroupId = $shopperGroupIds;
 		} else {
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$this->_shopperGroupId = array();
 			if (!empty($user->id)) {
 				$this->_db->setQuery('SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
@@ -232,7 +232,7 @@ class calculationHelper {
 			}
 			if(!$this->_shopperGroupId) $this->_shopperGroupId = array();
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-			$site = JFactory::getApplication ()->isSite ();
+			$site = vFactory::getApplication ()->isSite ();
 			$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
 		}
 	}

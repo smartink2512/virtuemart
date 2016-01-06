@@ -190,7 +190,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$tplpath = VmConfig::get('vmtemplate',0);
 		if(!empty($tplpath) and is_numeric($tplpath)){
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$tplpath.'" ';
 			$db->setQuery($query);
 			$res = $db->loadAssoc();

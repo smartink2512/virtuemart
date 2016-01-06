@@ -38,7 +38,7 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 
-		if(JFactory::getApplication()->isSite()){
+		if(vFactory::getApplication()->isSite()){
 			$bar = JToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}

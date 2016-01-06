@@ -114,7 +114,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if ($this->getPluginMethods ($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				vmAdminInfo ('displayListFE cartVendorId=' . $cart->vendorId);
-				$app = JFactory::getApplication ();
+				$app = vFactory::getApplication ();
 				$app->enqueueMessage (vmText::_ ('COM_VIRTUEMART_CART_NO_' . strtoupper ($this->_psType)));
 				return FALSE;
 			} else {
@@ -1169,7 +1169,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			vRequest::setVar ('html', $html);
 		} elseif ($returnValue == 0) {
 			// error while processing the payment
-			$mainframe = JFactory::getApplication ();
+			$mainframe = vFactory::getApplication ();
 			$mainframe->enqueueMessage ($html);
 			$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), vmText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 		}

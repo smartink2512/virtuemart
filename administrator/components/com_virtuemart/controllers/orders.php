@@ -57,7 +57,7 @@ class VirtuemartControllerOrders extends VmController {
 
 		$q = 'SELECT `product_attribute` FROM `#__virtuemart_order_items` LIMIT ';
 		$do = true;
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$start = 0;
 		$hunk  = 1000;
 		while($do){

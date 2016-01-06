@@ -152,7 +152,7 @@ class Img2Thumb	{
 
 						$orig_img = imagecreatefromgif($filename);
 					} else {
-						$app = JFactory::getApplication();
+						$app = vFactory::getApplication();
 						$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by gif');
 						return false;
 					}
@@ -167,7 +167,7 @@ class Img2Thumb	{
 						}
 
 					} else {
-						$app = JFactory::getApplication();
+						$app = vFactory::getApplication();
 						$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by jpg');
 						return false;
 					}
@@ -176,7 +176,7 @@ class Img2Thumb	{
 					if( function_exists("imagecreatefrompng") ) {
 						$orig_img = imagecreatefrompng($filename);
 					} else {
-						$app = JFactory::getApplication();
+						$app = vFactory::getApplication();
 						$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by png');
 						return false;
 					}

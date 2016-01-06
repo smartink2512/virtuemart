@@ -28,7 +28,7 @@ class GenericTableUpdater extends VmModel{
 
 	public function __construct(){
 
-		$this->_app = JFactory::getApplication();
+		$this->_app = vFactory::getApplication();
 		$this->_db = JFactory::getDBO();
 		// 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
@@ -515,7 +515,7 @@ class GenericTableUpdater extends VmModel{
 			if(!empty($query)){
 				$this->_db->setQuery($query);
 				if(!$this->_db->execute()){
-					$this->_app = JFactory::getApplication();
+					$this->_app = vFactory::getApplication();
 					$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$name.': '.$this->_db->getErrorMsg() );
 				} else {
  					//vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
@@ -559,7 +559,7 @@ class GenericTableUpdater extends VmModel{
 		$dropped = 0;
 		$altered = 0;
 		$added = 0;
-		$this->_app = JFactory::getApplication();
+		$this->_app = vFactory::getApplication();
 
 		$demandFieldNames = array();
 		foreach($fields as $i=>$line){

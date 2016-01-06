@@ -128,7 +128,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	public function getManufacturers($onlyPublished=false, $noLimit=false, $getMedia=false) {
 
 		$this->_noLimit = $noLimit;
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$option	= 'com_virtuemart';
 
 		$view = vRequest::getCmd('view','');

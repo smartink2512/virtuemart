@@ -71,7 +71,7 @@ class VirtuemartViewManufacturer extends VmViewAdmin {
 		}
 		else {
 
-			$mainframe = JFactory::getApplication();
+			$mainframe = vFactory::getApplication();
 
 			$categoryFilter = $categoryModel->getCategoryFilter();
 

@@ -243,7 +243,7 @@ class ShopFunctions {
 		}
 
 		$q = 'SELECT * FROM `#__template_styles` WHERE `client_id`="0"';
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 
 		$jtemplates = $db->loadObjectList();
@@ -263,7 +263,7 @@ class ShopFunctions {
 		$qry = 'SELECT ordering AS value, '.$fieldname.' AS text'
 			. ' FROM #__virtuemart_'.$table.' '.$where
 			. ' ORDER BY '.$orderingField;
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$db->setQuery($qry);
 		$orderStatusList = $db -> loadAssocList();
 		foreach($orderStatusList as &$text){
@@ -551,7 +551,7 @@ class ShopFunctions {
 
 			$cache = JFactory::getCache ('com_virtuemart_cats');
 			$cache->setCaching (1);
-			$app = JFactory::getApplication ();
+			$app = vFactory::getApplication ();
 			$vendorId = vmAccess::isSuperVendor();
 			self::$categoryTree[$hash] = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
 

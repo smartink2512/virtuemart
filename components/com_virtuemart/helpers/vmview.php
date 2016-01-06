@@ -20,10 +20,10 @@ defined('_JEXEC') or die('');
  * http://virtuemart.net
  */
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if (!class_exists('vView')) require(VMPATH_ADMIN.DS.'vmf'.DS.'vview.php');
 // Load default helpers
 
-class VmView extends JViewLegacy{
+class VmView extends vView{
 
 	var $isMail = false;
 	var $isPdf = false;

@@ -19,8 +19,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
-
+if (!class_exists('vView')) require(VMPATH_ADMIN.DS.'vmf'.DS.'vview.php');
 /**
  * HTML View class for the VirtueMart Component
  *
@@ -119,7 +118,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 		$this->assignRef('orderst', $orderst);
 		$this->assignRef('virtuemart_shipmentmethod_id', $orderbt->virtuemart_shipmentmethod_id);
 
-		error_reporting(0);
+		//error_reporting(0);
 		parent::display($tpl);
 	}
 

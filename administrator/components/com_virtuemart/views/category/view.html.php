@@ -45,7 +45,7 @@ class VirtuemartViewCategory extends VmViewAdmin {
 		$task = vRequest::getCmd('task',$layoutName);
 		$this->assignRef('task', $task);
 
-		$this->user = $user = JFactory::getUser();
+		$this->user = $user = vFactory::getUser();
 		if ($layoutName == 'edit') {
 
 			$category = $model->getCategory('',false);

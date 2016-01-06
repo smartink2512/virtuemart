@@ -74,7 +74,7 @@ class VirtueMartModelWaitingList extends VmModel {
 		$waiting_users = $this->getWaitingusers ($virtuemart_product_id);
 
 		/* Load the product details */
-		$db = JFactory::getDbo ();
+		$db = vFactory::getDbo ();
 		$q = "SELECT l.product_name,product_in_stock FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` l
 				JOIN `#__virtuemart_products` p ON p.virtuemart_product_id=l.virtuemart_product_id
 			   WHERE p.virtuemart_product_id = " . $virtuemart_product_id;

@@ -61,7 +61,7 @@ class VirtueMartModelCurrency extends VmModel {
 
 		$where = array();
 
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 		$shared = '';
 		if(vmAccess::manager() ){
 			$shared = 'OR `shared`="1"';
@@ -104,7 +104,7 @@ class VirtueMartModelCurrency extends VmModel {
 			}
 		}
 		if(!isset($currencies[$vendorId])){
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$q = 'SELECT `vendor_accepted_currencies`, `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
 			$db->setQuery($q);
 			$vendor_currency = $db->loadAssoc();

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if (!class_exists('vView')) require(VMPATH_ADMIN.DS.'vmf'.DS.'vview.php');
 
 /**
  * Json View class for the VirtueMart Component
@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author  Patrick Kohl
  */
-class VirtuemartViewCustom extends JViewLegacy {
+class VirtuemartViewCustom extends vView {
 
 	/* json object */
 	private $json = null;

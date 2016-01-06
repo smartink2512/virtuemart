@@ -40,7 +40,7 @@ class VirtuemartModelReport extends VmModel {
 
 		$this->setDatePresets ();
 
-		$app = JFactory::getApplication ();
+		$app = vFactory::getApplication ();
 		$this->period = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
 		//$post = vRequest::get ('post');
@@ -441,7 +441,7 @@ class VirtuemartModelReport extends VmModel {
 		$select = '';
 		$options = array(JHtml::_ ('select.option', 'none', '- ' . vmText::_ ('COM_VIRTUEMART_REPORT_SET_PERIOD') . ' -', 'text', 'value'));
 
-		$app = JFactory::getApplication ();
+		$app = vFactory::getApplication ();
 		$select = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
 		foreach ($this->date_presets as $name => $value) {

@@ -627,7 +627,7 @@ class VmMediaHandler {
 
 		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		$file_path = VMPATH_ROOT.DS.str_replace('/',DS,$url);
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		$msg_path = '';
 

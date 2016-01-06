@@ -122,7 +122,7 @@ class VmPagination extends vObject {
 
 	function getLimitBox ($sequence = 0) {
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		// Initialize variables
 		$limits = array();
@@ -395,7 +395,7 @@ class VmPagination extends vObject {
 	 */
 	public function getPagesLinks()
 	{
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		// Build the page navigation list.
 		$data = $this->_buildDataObject();
@@ -509,7 +509,7 @@ class VmPagination extends vObject {
 	 */
 	public function getListFooter()
 	{
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		$list = array();
 		$list['prefix'] = $this->prefix;
@@ -645,7 +645,7 @@ class VmPagination extends vObject {
 	 */
 	protected function _item_active(&$item)
 	{
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if ($app->isAdmin())
 		{
 			if ($item->base > 0)
@@ -683,7 +683,7 @@ class VmPagination extends vObject {
 	 */
 	protected function _item_inactive(&$item)
 	{
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if ($app->isAdmin())
 		{
 			return "<span>" . $item->text . "</span>";

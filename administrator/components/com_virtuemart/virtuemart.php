@@ -44,7 +44,7 @@ if($_controller) {
 		$results = $dispatcher->trigger('onVmAdminController', array($_controller));
 
 		if (empty($results)) {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: Couldnt find file '.$_controller);
 			$app->redirect('index.php?option=com_virtuemart');
 		} else {
@@ -56,7 +56,7 @@ if($_controller) {
 		}
 	}
 } else {
-	$app = JFactory::getApplication();
+	$app = vFactory::getApplication();
 	$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: No controller given '.$_controller);
 	$app->redirect('index.php?option=com_virtuemart');
 }
@@ -68,7 +68,7 @@ if($exe){
 	$_class = 'VirtueMartController'.ucfirst($_controller);
 	if(!class_exists($_class)){
 		vmError('Serious Error could not find controller '.$_class,'Serious error, could not find class');
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: No controller given '.$_controller);
 		$app->redirect('index.php?option=com_virtuemart');
 	}

@@ -92,17 +92,23 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = $query['keyword'];
 				unset($query['keyword']);
 			}
+
 			if ( isset($query['virtuemart_category_id']) ) {
-				$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
-				if ($categoryRoute->route) {
-					$segments[] = $categoryRoute->route;
+				$categoryRoute = null;
+				if($helper->full or !isset($query['virtuemart_product_id'])){
+					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
+					if ($categoryRoute->route) {
+						$segments[] = $categoryRoute->route;
+					}
 				}
+
 				$menuCatItemId = $helper->getMenuCatItemId($query['virtuemart_category_id']);
 				if(!empty($menuCatItemId)) {
 					$query['Itemid'] = $menuCatItemId;
 				} else if(isset($query['virtuemart_category_id']) and isset($jmenu['virtuemart_category_id'][$query['virtuemart_category_id']])) {
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$query['virtuemart_category_id']];
 				} else {
+					if($categoryRoute===null) $categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
 					//http://forum.virtuemart.net/index.php?topic=121642.0
 					if (!empty($categoryRoute->itemId)) {
 						$query['Itemid'] = $categoryRoute->itemId;
@@ -911,7 +917,7 @@ class vmrouterHelper {
 
 			//If product is child then get parent category ID
 			if ($parent_id and $parent_id!=$id) {
-				$db = JFactory::getDbo();
+				$db = vFactory::getDbo();
 				$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories`  ' .
 					' WHERE `virtuemart_product_id` = ' . $parent_id;
 				$db->setQuery($query);
@@ -1164,7 +1170,7 @@ class vmrouterHelper {
 		$links[] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id.
 			'&virtuemart_manufacturer_id=0%';
 
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		foreach($links as $link) {
 			$link = vRequest::filterUrl($link);
 

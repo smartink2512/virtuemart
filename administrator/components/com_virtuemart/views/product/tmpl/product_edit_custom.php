@@ -175,7 +175,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 $admin = '';
-$app = JFactory::getApplication();
+$app = vFactory::getApplication();
 $l = 'index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
 if($app->isAdmin()){
 	$jsonLink = JURI::root(false).'administrator/'.$l;

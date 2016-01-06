@@ -584,7 +584,7 @@ class VirtueMartModelCategory extends VmModel {
 			    return false;
 			}
 
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
 			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`customfield_value` = "' . $cid . '" AND `field_type`= "Z"';
 			$db->setQuery($q);
@@ -681,7 +681,7 @@ class VirtueMartModelCategory extends VmModel {
 	public function getParentsList($virtuemart_category_id) {
 
 		$db = JFactory::getDBO();
-		$menu = JFactory::getApplication()->getMenu();
+		$menu = vFactory::getApplication()->getMenu();
 		$parents = array();
 		if (empty($query['Itemid'])) {
 			$menuItem = $menu->getActive();

@@ -108,7 +108,7 @@ class TableUserinfos extends VmTableData {
 
 				if (count($total) > 0) {
 
-					$userId = JFactory::getUser()->id;
+					$userId = vFactory::getUser()->id;
 					if($total[0]!=$userId){
 						vmError('Hacking attempt uid check, you got logged');
 						echo 'Hacking attempt uid check, you got logged';
@@ -140,7 +140,7 @@ class TableUserinfos extends VmTableData {
 		}
 
 		if(empty($this->virtuemart_user_id)){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			if(!empty($user->id)){
 				$this->virtuemart_user_id = $user->id;
 			}

@@ -68,7 +68,7 @@ class VmTemplate {
 			AND e.client_id=s.client_id
 			WHERE s.client_id = '.$client_id.'
 			AND e.enabled = 1 AND s.home = 1';
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$db->setQuery( $q );
 			$template = $db->loadAssoc();
 		}
@@ -87,7 +87,7 @@ class VmTemplate {
 
 		if(!isset(self::$_templates[$id])){
 			$q = 'SELECT id, home,`template`,`params` FROM `#__template_styles` WHERE `id`="'.$id.'" ';
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$db->setQuery($q);
 			self::$_templates[$id] = $db->loadAssoc();
 			if(!self::$_templates[$id]){

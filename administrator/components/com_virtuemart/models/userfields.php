@@ -443,7 +443,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$register = false;
 
 		if(VmConfig::get('oncheckout_show_register',1) and $type=='BT'){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			if(!empty($user)){
 				if(empty($user->id)){
 					$register = true;
@@ -929,9 +929,9 @@ class VirtueMartModelUserfields extends VmModel {
 							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field',false,($currentYear-$yOffset).':'.$currentYear);
 							break;
 						case 'emailaddress':
-							if( JFactory::getApplication()->isSite()) {
+							if( vFactory::getApplication()->isSite()) {
 								if(empty($_return['fields'][$_fld->name]['value'])) {
-									$_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
+									$_return['fields'][$_fld->name]['value'] = vFactory::getUser()->email;
 								}
 							}							// 							vmdebug('emailaddress',$_fld);
 						case 'text':

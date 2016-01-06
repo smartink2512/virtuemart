@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-$mainframe = JFactory::getApplication();
+$mainframe = vFactory::getApplication();
 ?>
 <table class="adminform">
 	<tr>

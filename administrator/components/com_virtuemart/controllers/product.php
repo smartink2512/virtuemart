@@ -231,7 +231,7 @@ class VirtuemartControllerProduct extends VmController {
 			$q = 'SELECT `product_name` FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` ';
 			$q .= ' WHERE `virtuemart_product_id` IN (' . implode(',', $cids) . ')';
 
-			$db = JFactory::getDbo();
+			$db = vFactory::getDbo();
 			$db->setQuery($q);
 
 			$productNames = $db->loadColumn();

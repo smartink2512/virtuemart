@@ -27,7 +27,7 @@ class Migrator extends VmModel{
 
 	public function __construct(){
 
-		$this->_app = JFactory::getApplication();
+		$this->_app = vFactory::getApplication();
 		$this->_db = JFactory::getDBO();
 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
@@ -995,7 +995,7 @@ class Migrator extends VmModel{
 
 		$alreadyKnownIds = $this->getMigrationProgress('products');
 		$oldToNewCats = $this->getMigrationProgress('cats');
-		// 		$user = JFactory::getUser();
+		// 		$user = vFactory::getUser();
 
 		//$oldtonewProducts = array();
 		$oldtonewManus = $this->getMigrationProgress('manus');
@@ -1848,7 +1848,7 @@ class Migrator extends VmModel{
 
 		$prefix = '#_';
 		$oldtable = '#__vm_product';
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$db->setQuery("SELECT product_sku, attribute FROM " . $oldtable . " WHERE ( attribute IS NULL or attribute <> '') ");
 		$rows = $db->loadObjectList();
 
