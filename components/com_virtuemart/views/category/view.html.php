@@ -44,7 +44,7 @@ class VirtuemartViewCategory extends VmView {
 
 		$document = JFactory::getDocument();
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$pathway = $app->getPathway();
 
 		if (!class_exists('VmImage'))
@@ -164,7 +164,7 @@ class VirtuemartViewCategory extends VmView {
 					$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
 				}
 
-				$user = JFactory::getUser();
+				$user = vFactory::getUser();
 				$this->showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
 
 			}

@@ -42,7 +42,7 @@ class VirtueMartControllerVendor extends JControllerLegacy
 		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		$model = VmModel::getModel('vendor');
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$vars = array();
 		$min = VmConfig::get('asks_minimum_comment_length', 50)+1;
 		$max = VmConfig::get('asks_maximum_comment_length', 2000)-1 ;
@@ -60,14 +60,14 @@ class VirtueMartControllerVendor extends JControllerLegacy
 		if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
 		$userId = VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
 
-		//$vendorUser = JFactory::getUser($userId);
+		//$vendorUser = vFactory::getUser($userId);
 
 		if ( $commentSize<$min || $commentSize>$max || !$validMail ) {
 			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=vendor&task=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id , FALSE),vmText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
 			return ;
 		}
 
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 
 		$fromMail = vRequest::getVar('email');	//is sanitized then
 		$fromName = vRequest::getVar('name','');//is sanitized then

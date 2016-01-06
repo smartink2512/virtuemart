@@ -44,7 +44,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			$document = JFactory::getDocument();
 
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 
 			$menus	= $app->getMenu();
 			$menu = $menus->getActive();
@@ -261,7 +261,7 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 
 			// Load the user details
-			$this->user = JFactory::getUser();
+			$this->user = vFactory::getUser();
 
 			// More reviews link
 			$uri = JURI::getInstance();
@@ -291,7 +291,7 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 
 
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			$showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
 			$this->assignRef('showBasePrice', $showBasePrice);
 

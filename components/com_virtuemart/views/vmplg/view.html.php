@@ -26,7 +26,7 @@ if(!class_exists('VmView'))require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
 class VirtueMartViewVmplg extends VmView {
 
 	public function display($tpl = null) {
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
 		$layoutName = $this->getLayout();

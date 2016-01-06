@@ -47,7 +47,7 @@ class VirtuemartViewVendor extends VmView {
 	function display($tpl = null) {
 
 		$document = JFactory::getDocument();
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$layoutName = $this->getLayout();
 
@@ -84,7 +84,7 @@ class VirtuemartViewVendor extends VmView {
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_VENDOR_TOS'));
 			}
 			elseif ($layoutName=='contact') {
-				$user = JFactory::getUser();
+				$user = vFactory::getUser();
 				$document->setTitle( vmText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
 				$pathway->addItem(vmText::_('COM_VIRTUEMART_VENDOR_CONTACT'));
 				$this->assignRef('user', $user);

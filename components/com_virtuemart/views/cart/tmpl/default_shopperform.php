@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="2" style="border:0px;"></td>
 			<td colspan="2" style="border:0px;">
 				<?php if($this->adminID && $currentUser != $this->adminID) { ?>
-					<b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.JFactory::getUser($this->adminID)->name; ?></b>
+					<b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.vFactory::getUser($this->adminID)->name; ?></b>
 				<?php } ?>
 				<?php echo JHtml::_( 'form.token' ); ?>
 			</td>

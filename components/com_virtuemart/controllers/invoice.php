@@ -64,7 +64,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			//PDF needs xhtml links
 			$this->useXHTML = true;
 
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			// Create the invoice PDF file on disk and send that back
 			$orderDetails = $this->getOrderDetails();
 			if(!$orderDetails){
@@ -158,7 +158,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 
 		if($orderDetails==0) {
 
-			$_currentUser = JFactory::getUser();
+			$_currentUser = vFactory::getUser();
 			$cuid = $_currentUser->get('id');
 
 			// If the user is logged in, we will check if the order belongs to him
@@ -191,7 +191,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		$pdf->AddPage();
 		$pdf->PrintContents(vmText::_('COM_VIRTUEMART_PDF_SAMPLEPAGE'));
 		$pdf->Output("vminvoice_sample.pdf", 'I');
-		JFactory::getApplication()->close();
+		vFactory::getApplication()->close();
 	}
 
 	function getInvoicePDF($orderDetails = 0, $viewName='invoice', $layout='invoice', $format='html', $force = false){

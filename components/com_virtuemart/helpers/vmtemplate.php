@@ -54,7 +54,7 @@ class VmTemplate {
 	public static function getDefaultTemplate($client_id = 0){
 
 		if(self::$_home[$client_id]) return self::$_home[$client_id];
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		if(!$client_id and $app->isSite()){
 			$template = $app->getTemplate(true);
@@ -130,7 +130,7 @@ class VmTemplate {
 			}
 		}
 
-		if( (!empty($template) and $template!='default') or JFactory::getApplication()->isAdmin()){
+		if( (!empty($template) and $template!='default') or vFactory::getApplication()->isAdmin()){
 			self::setTemplate( $template );
 		}
 
@@ -208,7 +208,7 @@ class VmTemplate {
 		}
 
 		if(is_dir( VMPATH_ROOT.DS.'templates'.DS.$template )) {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			if($app->isSite()) $app->setTemplate($template,$registry);
 
 		} else {

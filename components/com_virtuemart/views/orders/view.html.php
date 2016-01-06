@@ -31,7 +31,7 @@ class VirtuemartViewOrders extends VmView {
 	public function display($tpl = null)
 	{
 
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$task = vRequest::getCmd('task', 'list');
 
@@ -39,7 +39,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$this->setLayout($layoutName);
 
-		$_currentUser = JFactory::getUser();
+		$_currentUser = vFactory::getUser();
 		$document = JFactory::getDocument();
 
 		if(!empty($tpl)){

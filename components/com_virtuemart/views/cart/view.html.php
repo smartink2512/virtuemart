@@ -41,7 +41,7 @@ class VirtueMartViewCart extends VmView {
 	public function display($tpl = null) {
 
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		$this->prepareContinueLink();
 		if (VmConfig::get('use_as_catalog',0)) {
@@ -219,7 +219,7 @@ class VirtueMartViewCart extends VmView {
 
 		if ($this->cart->_inConfirm) vmInfo('COM_VIRTUEMART_IN_CONFIRM');
 
-		$current = JFactory::getUser();
+		$current = vFactory::getUser();
 		$this->allowChangeShopper = false;
 		$this->adminID = false;
 		if(VmConfig::get ('oncheckout_change_shopper')){
@@ -281,7 +281,7 @@ class VirtueMartViewCart extends VmView {
 					vmdebug('lSelectShipment $found_shipment_method === 0 show error');
 					$ok = false;
 				} else {
-					$mainframe = JFactory::getApplication();
+					$mainframe = vFactory::getApplication();
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT'), vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST'));
 				}
 			}
@@ -342,7 +342,7 @@ class VirtueMartViewCart extends VmView {
 				if (VmConfig::get('oncheckout_opc', 1)) {
 					$ok = false;
 				} else {
-					$mainframe = JFactory::getApplication();
+					$mainframe = vFactory::getApplication();
 					$mainframe->redirect( JRoute::_( 'index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' ), vmText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST') );
 				}
 			}
@@ -415,7 +415,7 @@ class VirtueMartViewCart extends VmView {
 		if (empty($shipments)) {
 
 			$text = '';
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			if(vmAccess::manager() or vmAccess::isSuperVendor()) {
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=shipmentmethod';

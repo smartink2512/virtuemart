@@ -270,7 +270,7 @@ class shopFunctionsF {
 
 			for ($_i = 0; $_i < count ($_addressList); $_i++) {
 				if (empty($_addressList[$_i]->virtuemart_user_id)) {
-					$_addressList[$_i]->virtuemart_user_id = JFactory::getUser ()->id;
+					$_addressList[$_i]->virtuemart_user_id = vFactory::getUser ()->id;
 				}
 				if (empty($_addressList[$_i]->virtuemart_userinfo_id)) {
 					$_addressList[$_i]->virtuemart_userinfo_id = 0;
@@ -685,7 +685,7 @@ class shopFunctionsF {
 			$sender[1] = $view->vendor->vendor_name;
 		} else {
 			// use default joomla's mail sender
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$sender[0] = $app->getCfg( 'mailfrom' );
 			$sender[1] = $app->getCfg( 'fromname' );
 			if(empty($sender[0])){

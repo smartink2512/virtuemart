@@ -21,7 +21,7 @@ if(!empty($this->errorMsg)){
 	echo '<div>'.$this->errorMsg.'</div>';
 }
 
-$messageQueue = JFactory::getApplication()->getMessageQueue();
+$messageQueue = vFactory::getApplication()->getMessageQueue();
 foreach ($messageQueue as $message) {
 	echo '<div>'.$message['message'].'</div>';
 }

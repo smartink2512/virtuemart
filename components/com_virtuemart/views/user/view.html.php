@@ -56,7 +56,7 @@ class VirtuemartViewUser extends VmView {
 
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$layoutName = $this->getLayout();
 		if ($layoutName == 'login') {
@@ -320,7 +320,7 @@ class VirtuemartViewUser extends VmView {
 
     function lUser() {
 
-		$currentUser = JFactory::getUser();
+		$currentUser = vFactory::getUser();
 		// Can't block myself TODO I broke that, please retest if it is working again
 		$this->lists['canBlock'] = ($currentUser->authorise('com_users', 'block user') && ($this->_model->getId() != $this->_cuid));
 		$this->lists['canSetMailopt'] = $currentUser->authorise('workflow', 'email_events');

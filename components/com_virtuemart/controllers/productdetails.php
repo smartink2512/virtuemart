@@ -65,7 +65,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		JSession::checkToken () or jexit ('Invalid Token');
 
-		$app = JFactory::getApplication ();
+		$app = vFactory::getApplication ();
 		if(!VmConfig::get('ask_question',false) and !VmConfig::get ('askprice', 1)){
 			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . vRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
 		}
@@ -108,7 +108,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			return;
 		}
 
-		if(JFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
+		if(vFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
 			$recaptcha = vRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
@@ -125,7 +125,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			}
 		}
 
-		$user = JFactory::getUser ();
+		$user = vFactory::getUser ();
 		if (empty($user->id)) {
 			$fromMail = vRequest::getVar ('email'); //is sanitized then
 			$fromName = vRequest::getVar ('name', ''); //is sanitized then
@@ -175,12 +175,12 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		JSession::checkToken () or jexit ('Invalid Token');
 
-		$app = JFactory::getApplication ();
+		$app = vFactory::getApplication ();
 		if(!VmConfig::get('show_emailfriend',false)){
 			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . vRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
 		}
 
-		if(JFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
+		if(vFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
 			$recaptcha = vRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();

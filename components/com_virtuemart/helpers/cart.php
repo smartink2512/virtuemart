@@ -120,7 +120,7 @@ class VirtueMartCart {
 				if (!empty($cartSession)) {
 					$sessionCart = (object)json_decode( $cartSession ,true);
 
-					if(empty($sessionCart->cartProductsData) or ($sessionCart->_guest and $sessionCart->_guest!=JFactory::getUser()->guest)){
+					if(empty($sessionCart->cartProductsData) or ($sessionCart->_guest and $sessionCart->_guest!=vFactory::getUser()->guest)){
 						self::$_cart->loadCart($sessionCart);
 					}
 				}
@@ -270,7 +270,7 @@ class VirtueMartCart {
 	 * @author Max Milbers
 	 */
 	public function loadCart(&$existingSession){
-		$currentUser = JFactory::getUser();
+		$currentUser = vFactory::getUser();
 		if(!$currentUser->guest and $existingSession){
 			$model = new VmModel();
 			$carts = $model->getTable('carts');
@@ -318,7 +318,7 @@ class VirtueMartCart {
 	}
 
 	public function storeCart($cartDataToStore = false){
-		$currentUser = JFactory::getUser();
+		$currentUser = vFactory::getUser();
 		if(!$currentUser->guest){
 			$model = new VmModel();
 			$carts = $model->getTable('carts');
@@ -345,7 +345,7 @@ class VirtueMartCart {
 		if(!empty($this->virtuemart_cart_id)){
 			$carts->delete($this->virtuemart_cart_id,'virtuemart_cart_id');
 		} else {
-			$currentUser = JFactory::getUser();
+			$currentUser = vFactory::getUser();
 			if(!empty($currentUser->id)) {
 				$carts->delete($currentUser->id);
 			}
@@ -401,7 +401,7 @@ class VirtueMartCart {
 
 		//private variables
 		//We nee to store this, so that we now if a user logged in before
-		$sessionCart->_guest						= JFactory::getUser()->guest;
+		$sessionCart->_guest						= vFactory::getUser()->guest;
 		$sessionCart->_inCheckOut 					= $this->_inCheckOut;
 		$sessionCart->_inConfirm					= $this->_inConfirm;
 		$sessionCart->_dataValidated				= $this->_dataValidated;
@@ -831,7 +831,7 @@ class VirtueMartCart {
 					break;
 				} else if ($_retVal === false ) {
 					if ($redirect) {
-						$mainframe = JFactory::getApplication();
+						$mainframe = vFactory::getApplication();
 						$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
 						break;
 					} else {
@@ -864,7 +864,7 @@ class VirtueMartCart {
 					break;
 				} else if ($_retVal === false ) {
 					if ($redirect) {
-						$app = JFactory::getApplication();
+						$app = vFactory::getApplication();
 						$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
 						break;
 					} else {
@@ -883,7 +883,7 @@ class VirtueMartCart {
 		$cHash = $this->getCartHash();
 		if($cHash != $this->_dataValidated){
 			$this->_dataValidated = false;
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$this->getLayoutUrlString(), FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_CHANGED'));
 		}
 
@@ -895,7 +895,7 @@ class VirtueMartCart {
 			$this->confirmedOrder();
 		} else {
 			$this->_dataValidated = false;
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$this->getLayoutUrlString(), FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
@@ -903,7 +903,7 @@ class VirtueMartCart {
 	private function redirecter($relUrl,$redirectMsg){
 
 		$this->_dataValidated = false;
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if($this->_redirect and !$this->_redirected and !$this->_redirect_disabled){
 			$this->_redirected = true;
 			$this->setCartIntoSession(true);
@@ -951,7 +951,7 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
 		}
 
-		$currentUser = JFactory::getUser();
+		$currentUser = vFactory::getUser();
 		if(!empty($this->STsameAsBT) or (!$currentUser->guest and empty($this->selected_shipto))){	//Guest
 			$this->ST = $this->BT;
 		} else {
@@ -1091,7 +1091,7 @@ class VirtueMartCart {
 
 			$this->setCartIntoSession(true);
 			if ($this->_redirect) {
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$layoutName, FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 			} else {
 				return true;
@@ -1158,7 +1158,7 @@ class VirtueMartCart {
 
 			if(!$this->virtuemart_order_id){
 				if (($this->virtuemart_order_id = $orderModel->createOrderFromCart($this)) === false) {
-					$mainframe = JFactory::getApplication();
+					$mainframe = vFactory::getApplication();
 					//vmError('No order created '.$orderModel->getError());
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );
 				}
@@ -1190,7 +1190,7 @@ class VirtueMartCart {
 
 				/*foreach($orderDetails['items'] as $product){
 					//We set a cookie for guests to allow that they can rate/review a product without logging in.
-					$app = JFactory::getApplication();
+					$app = vFactory::getApplication();
 					$key = 'productBought'.$product->virtuemart_product_id;
 					$v = vmCrypt::encrypt($key);
 					$app->input->cookie->set($key,$v,time() + $lifetime,'/');
@@ -1334,7 +1334,7 @@ class VirtueMartCart {
 			$this->STsameAsBT = 0;
 		} else { // BT
 			if(empty($data['email'])){
-				$jUser = JFactory::getUser();
+				$jUser = vFactory::getUser();
 				$address['email'] = $jUser->email;
 			}
 		}
@@ -1645,7 +1645,7 @@ class VirtueMartCart {
 	private function checkForQuantities($product, &$quantity=0) {
 
 		$stockhandle = VmConfig::get('stockhandle','none');
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		// Check for a valid quantity
 		if (!is_numeric( $quantity)) {
 			$errorMsg = vmText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);

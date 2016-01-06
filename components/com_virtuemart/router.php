@@ -49,7 +49,7 @@ function virtuemartBuildRoute(&$query) {
 
 /*	//a bit hacky, but should work
 	$oLang = VmConfig::$vmlang;
-	$app = JFactory::getApplication();
+	$app = vFactory::getApplication();
 	if($l = $app->getUserState('language',false)){
 		vmdebug('hm getUserState',$query);
 	}
@@ -1114,7 +1114,7 @@ class vmrouterHelper {
 	private function setActiveMenu(){
 		if ($this->activeMenu === null ) {
 
-			$app		= JFactory::getApplication();
+			$app		= vFactory::getApplication();
 			$menu		= $app->getMenu('site');
 			if ($Itemid = vRequest::getInt('Itemid',false) ) {
 				$menuItem = $menu->getItem($Itemid);

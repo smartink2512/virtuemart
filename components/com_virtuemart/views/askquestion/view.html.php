@@ -39,14 +39,14 @@ class VirtueMartViewAskquestion extends VmView {
 	 */
 	function display ($tpl = NULL) {
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if(!VmConfig::get('ask_question',false) and !VmConfig::get('askprice',false)){
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart','Disabled function'));
 		}
 
 		$this->login = '';
 		if(!VmConfig::get('recommend_unauth',false)){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			if($user->guest){
 				$this->login = shopFunctionsF::getLoginForm(false);
 			}
@@ -61,7 +61,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$this->assignRef ('show_prices', $show_prices);
 		$document = JFactory::getDocument ();
 
-		$mainframe = JFactory::getApplication ();
+		$mainframe = vFactory::getApplication ();
 		$pathway = $mainframe->getPathway ();
 		$task = vRequest::getCmd ('task');
 
@@ -128,7 +128,7 @@ class VirtueMartViewAskquestion extends VmView {
 		// for askquestion
 		$pathway->addItem (vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
-		$this->user = JFactory::getUser ();
+		$this->user = vFactory::getUser ();
 
 		if ($product->metadesc) {
 			$document->setDescription ($product->metadesc);
@@ -155,7 +155,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$this->setLayout ('mail_html_question');
 		$this->comment = vRequest::getString ('comment');
 
-		$this->user = JFactory::getUser ();
+		$this->user = vFactory::getUser ();
 		if (empty($this->user->id)) {
 			$fromMail = vRequest::getEmail ('email'); //is sanitized then
 			$fromName = vRequest::getVar ('name', ''); //is sanitized then

@@ -16,7 +16,7 @@ $_prefix = $viewData['prefix'];
 $field = $viewData['field'];
 $tos = $field['value'];
 
-$app = JFactory::getApplication();
+$app = vFactory::getApplication();
 if($app->isSite()){
 	vmJsApi::popup('#full-tos','#terms-of-service');
 	if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');

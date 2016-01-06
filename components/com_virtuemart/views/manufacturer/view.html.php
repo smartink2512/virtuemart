@@ -34,7 +34,7 @@ class VirtuemartViewManufacturer extends VmView {
 	function display($tpl = null) {
 
 		$document = JFactory::getDocument();
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 
 		if (!class_exists('VmImage'))

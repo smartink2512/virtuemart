@@ -132,14 +132,14 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 */
 	private function saveData($cartObj) {
 
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 
 		$msg = true;
 		$data = vRequest::getPost(FILTER_SANITIZE_STRING);
 		$register = isset($_REQUEST['register']);
 
 		$userModel = VmModel::getModel('user');
-		$currentUser = JFactory::getUser();
+		$currentUser = vFactory::getUser();
 
 		if(empty($data['address_type'])){
 			$data['address_type'] = vRequest::getCmd('addrtype','BT');
@@ -216,7 +216,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 				if($switch){ //and VmConfig::get ('oncheckout_change_shopper')){
 					//update session
-					$current = JFactory::getUser($ret['newId']);
+					$current = vFactory::getUser($ret['newId']);
 					$session = JFactory::getSession();
 					$session->set('user', $current);
 				}
@@ -290,7 +290,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 * @author Maik Künnemann
 	 */
 	function checkCaptcha($retUrl){
-		if(JFactory::getUser()->guest==1 and VmConfig::get ('reg_captcha')){
+		if(vFactory::getUser()->guest==1 and VmConfig::get ('reg_captcha')){
 			$recaptcha = vRequest::getVar ('recaptcha_response_field');
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();

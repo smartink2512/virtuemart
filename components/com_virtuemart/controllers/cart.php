@@ -33,7 +33,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function __construct() {
 		parent::__construct();
 		if (VmConfig::get('use_as_catalog', 0)) {
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app->redirect('index.php');
 		} else {
 			if (!class_exists('VirtueMartCart'))
@@ -62,7 +62,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			}
 
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . $ItemIdLink, FALSE);
-			$app = JFactory::getApplication();
+			$app = vFactory::getApplication();
 			$app ->redirect($continue_link,'This is a catalogue, you cannot acccess the cart');
 		}
 
@@ -143,7 +143,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$cart->STsameAsBT = $STsameAsBT;
 		}
 
-		$currentUser = JFactory::getUser();
+		$currentUser = vFactory::getUser();
 		if(!$currentUser->guest){
 			$cart->selected_shipto = vRequest::getVar('shipto', $cart->selected_shipto);
 			if(!empty($cart->selected_shipto)){
@@ -224,7 +224,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 * @access public
 	 */
 	public function add() {
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		if (VmConfig::get('use_as_catalog', 0)) {
 			$msg = vmText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
 			$type = 'error';
@@ -376,7 +376,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 * @access public
 	 */
 	public function delete() {
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		/* Load the cart helper */
 		$cart = VirtueMartCart::getCart();
 		if ($cart->removeProductCart())
@@ -389,7 +389,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 	public function getManager(){
 		$id = vmAccess::getBgManagerId();
-		return JFactory::getUser( $id );
+		return vFactory::getUser( $id );
 	}
 
 	/**
@@ -399,7 +399,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 */
 	public function changeShopper() {
 		vRequest::vmCheckToken() or jexit ('Invalid Token');
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 
 		$redirect = vRequest::getString('redirect',false);
 		if($redirect){
@@ -409,7 +409,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 
 		$id = vmAccess::getBgManagerId();
-		$current = JFactory::getUser( );;
+		$current = vFactory::getUser( );;
 		$manager = vmAccess::manager('user');
 		if(!$manager){
 			$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
@@ -443,7 +443,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			$session->set('vmAdminID', vmCrypt::encrypt($current->id));
 		}
-		$newUser = JFactory::getUser($userID);
+		$newUser = vFactory::getUser($userID);
 		$session->set('user', $newUser);
 
 		//update cart data

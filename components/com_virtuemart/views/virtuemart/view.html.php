@@ -44,7 +44,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_terms_of_service');
 		}
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		$menus = $app->getMenu();
 		$menu = $menus->getActive();
 

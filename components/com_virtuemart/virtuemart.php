@@ -52,7 +52,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	if(!$manage) $session->set('manage', 0,'vm');
 
 	$feViews = array('askquestion','cart','invoice','pdf','pluginresponse','productdetails','recommend','vendor','vmplg');
-	$app = JFactory::getApplication();
+	$app = vFactory::getApplication();
 	if($manage and $task!='feed' and !in_array($_controller,$feViews)){
 
 		if	( shopFunctionsF::isFEmanager() ) {

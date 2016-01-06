@@ -37,7 +37,7 @@ class virtuemartViewrecommend extends VmView {
 	*/
 	function display($tpl = null) {
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if(!VmConfig::get('show_emailfriend',false)){
 
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart'));
@@ -45,7 +45,7 @@ class virtuemartViewrecommend extends VmView {
 
 		$this->login = '';
 		if(!VmConfig::get('recommend_unauth',false)){
-			$user = JFactory::getUser();
+			$user = vFactory::getUser();
 			if($user->guest){
 				$this->login = shopFunctionsF::getLoginForm(false);
 				//$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
@@ -73,7 +73,7 @@ class virtuemartViewrecommend extends VmView {
 		/* add javascript for price and cart */
 		//vmJsApi::jPrice();
 
-		$mainframe = JFactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$task = vRequest::getCmd('task');
 
@@ -130,7 +130,7 @@ class virtuemartViewrecommend extends VmView {
 		/* Check for editing access */
 		/** @todo build edit page */
 		/* Load the user details */
-		$this->user = JFactory::getUser();
+		$this->user = vFactory::getUser();
 
 		if ($this->product->metadesc) {
 			$document->setDescription( $this->product->metadesc );
@@ -172,7 +172,7 @@ class virtuemartViewrecommend extends VmView {
 		$layout = $this->getLayout();
 		//if($layout != 'form' and $layout != 'mail_confirmed'){
 
-		$user = JFactory::getUser ();
+		$user = vFactory::getUser ();
 		$vars['user'] = array('name' => $user->name, 'email' =>  $user->email);
 
 		$vars['vendorEmail'] = $user->email;

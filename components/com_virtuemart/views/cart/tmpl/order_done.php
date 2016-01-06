@@ -27,7 +27,7 @@ $this->html = vRequest::get('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED') 
 echo $this->html;
 
 if (vRequest::getBool('display_loginform',true)) {
-	$cuser = JFactory::getUser();
+	$cuser = vFactory::getUser();
 	if (!$cuser->guest) echo shopFunctionsF::getLoginForm();
 }
 echo '</div>';

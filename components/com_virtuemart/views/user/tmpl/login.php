@@ -33,7 +33,7 @@ if (empty($this->url)){
 }
 //$url = JRoute::_($url, $this->useXHTML, $this->useSSL);
 
-$user = JFactory::getUser();
+$user = vFactory::getUser();
 
 if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
