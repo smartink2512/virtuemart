@@ -59,7 +59,7 @@ abstract class vmExtendedPlugin extends vmPlugin {
 		parent::__construct($subject, $config);
 		$this->_path = VMPATH_ROOT .DS. 'plugins' .DS.$this->getName();
 
-		//$lang = JFactory::getLanguage();
+		//$lang = vFactory::getLanguage();
 		//$lang->load('plg_vmextended_'.$this->getName(),JPATH_ADMINISTRATOR);
 
 	}

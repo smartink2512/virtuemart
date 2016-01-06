@@ -47,7 +47,7 @@ class VirtueMartControllerVirtuemart extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false){
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$viewName = vRequest::getCmd('view', 'virtuemart');
 		$viewLayout = vRequest::getCmd('layout', 'default');
@@ -68,7 +68,7 @@ class VirtueMartControllerVirtuemart extends JControllerLegacy
 		$this->virtuemartFeed = vmRSS::getVirtueMartRssFeed();
 		$this->extensionsFeed = vmRSS::getExtensionsRssFeed();
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$headData = $document->getHeadData();
 		$headData['scripts'] = array();
 		$document->setHeadData($headData);

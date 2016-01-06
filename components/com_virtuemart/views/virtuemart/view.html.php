@@ -54,7 +54,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			ShopFunctionsF::setLastVisitedItemId($itemId);
 		}
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 
 		if(!VmConfig::get('shop_is_offline',0)){
 

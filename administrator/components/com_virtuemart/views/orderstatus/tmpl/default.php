@@ -79,7 +79,7 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 				<td align="left">
 					<?php
-					$lang =JFactory::getLanguage();
+					$lang =vFactory::getLanguage();
 					if ($lang->hasKey($row->order_status_name)) {
 						echo '<a href="' . $editlink . '">'. vmText::_($row->order_status_name) .'</a> ('.$row->order_status_name.')';
 					} else {

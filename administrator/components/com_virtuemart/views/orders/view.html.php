@@ -221,24 +221,6 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 			}
 
-			//update order items button
-			/*$q = 'SELECT * FROM #__virtuemart_order_items WHERE `product_discountedPriceWithoutTax` IS NULL ';
-			$db = JFactory::getDBO();
-			$db->setQuery($q);
-			//$res = $db->loadRow();
-			if(true) {
-				JToolBarHelper::custom('updateCustomsOrderItems', 'new', 'new', vmText::_('COM_VIRTUEMART_REPORT_UPDATEORDERITEMS'),false);
-				vmError('COM_VIRTUEMART_UPDATEORDERITEMS_WARN');
-			}*/
-			/*
-			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
-			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle
-			 * the arguments.
-			 */
-
-			/* Toolbar */
-			//JToolBarHelper::customX( 'CreateOrderHead', 'new','new','New',false);
-
 			JToolBarHelper::save('updatestatus', vmText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
 			if (vmAccess::manager('orders.delete')) {

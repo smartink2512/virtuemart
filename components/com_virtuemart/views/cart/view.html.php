@@ -50,7 +50,7 @@ class VirtueMartViewCart extends VmView {
 		}
 
 		$pathway = $app->getPathway();
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		$this->layoutName = $this->getLayout();
@@ -202,7 +202,7 @@ class VirtueMartViewCart extends VmView {
 				$this->setLayout( strtolower( $this->layoutName ) );
 			}
 			//set order language
-			$lang = JFactory::getLanguage();
+			$lang = vFactory::getLanguage();
 			$order_language = $lang->getTag();
 			$this->assignRef('order_language',$order_language);
 		}

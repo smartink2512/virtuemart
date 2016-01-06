@@ -113,7 +113,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	 * @return object List of category to build filter select box
 	 */
 	function getCategoryFilter(){
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$query = 'SELECT `virtuemart_manufacturercategories_id` as `value`, `mf_category_name` as text'
 				.' FROM `#__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'`';
 		$db->setQuery($query);

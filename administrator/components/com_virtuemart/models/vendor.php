@@ -132,7 +132,7 @@ class VirtueMartModelVendor extends VmModel {
 		if (empty($vendorId)) {
 			return;
 		} else {
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 			$query = 'SELECT `virtuemart_user_id` FROM `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`=' . (int)$vendorId;
 			$db->setQuery ($query);
 			$result = $db->loadResult ();
@@ -255,7 +255,7 @@ class VirtueMartModelVendor extends VmModel {
 	static function getVendorCurrency ($_vendorId) {
 
 		if(!isset(self::$_vendorCurrencies[$_vendorId])){
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 
 			$q = 'SELECT *  FROM `#__virtuemart_currencies` AS c
 			, `#__virtuemart_vendors` AS v
@@ -277,7 +277,7 @@ class VirtueMartModelVendor extends VmModel {
 	function getVendorCategories () {
 
 		$_q = 'SELECT * FROM `#__vm_vendor_category`';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery ($_q);
 		return $db->loadObjectList ();
 	}
@@ -289,7 +289,7 @@ class VirtueMartModelVendor extends VmModel {
 		}
 		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$q = "SELECT `virtuemart_user_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`='.$virtuemart_order_id'";
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery ($q);
 
 //		if($db->next_record()){
@@ -326,7 +326,7 @@ class VirtueMartModelVendor extends VmModel {
 		$value = (int)$value;
 
 		//static call used, so we need our own db instance
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		switch ($type) {
 			case 'order':
 				$q = 'SELECT virtuemart_vendor_id FROM #__virtuemart_order_items WHERE virtuemart_order_id=' . $value;
@@ -367,7 +367,7 @@ class VirtueMartModelVendor extends VmModel {
 	 * @author Max Milbers
 	 */
 	public function getVendorName ($virtuemart_vendor_id = 1) {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$query = 'SELECT `vendor_store_name` FROM `#__virtuemart_vendors_' . VmConfig::$vmlang . '` WHERE `virtuemart_vendor_id` = "' . (int)$virtuemart_vendor_id . '" ';
 		$db->setQuery ($query);
 		if ($db->execute ()) {
@@ -388,7 +388,7 @@ class VirtueMartModelVendor extends VmModel {
 		$virtuemart_user_id = self::getUserIdByVendorId ((int)$virtuemart_vendor_id);
 		if (!empty($virtuemart_user_id)) {
 			$query = 'SELECT `email` FROM `#__users` WHERE `id` = "' . $virtuemart_user_id . '" ';
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery ($query);
 			if ($db->execute ()) {
 				return $db->loadResult ();

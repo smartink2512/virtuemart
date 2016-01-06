@@ -49,7 +49,7 @@ abstract class vmUserfieldPlugin extends vmPlugin {
 	// add params fields in object by name
 	
 	function AddUserfieldParameterByPlgName($plgName){
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		if(empty($this->_db)) $this->_db = vFactory::getDbo();
 		$q = 'SELECT `userfield_params` FROM `#__virtuemart_userfields` WHERE `type` = "plugin' . $plgName.'"';
 		$this->_db->setQuery($q);
 		$params = $this->_db->loadResult();

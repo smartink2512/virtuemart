@@ -31,7 +31,7 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 	function display($tpl = null) {
 
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		$option = vRequest::getCmd('option');
 
 		//Load helpers

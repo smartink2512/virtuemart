@@ -39,7 +39,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 	    ?>
 	    <table class="admintable">
 		<?php
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		$text = $lang->hasKey($this->orderStatus->order_status_name) ? ' (' . vmText::_($this->orderStatus->order_status_name) . ')' : ' ';
 
 		echo VmHTML::row('input', 'COM_VIRTUEMART_ORDER_STATUS_NAME', 'order_status_name', $this->orderStatus->order_status_name, 'class="inputbox"', '', 50, 50, $text);

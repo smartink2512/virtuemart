@@ -38,7 +38,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	public function getIdbyCodeAndVendorId($jpluginId,$vendorId=1){
 	 	if(!$jpluginId) return 0;
 	 	$q = 'SELECT `virtuemart_paymentmethod_id` FROM #__virtuemart_paymentmethods WHERE `payment_jplugin_id` = "'.$jpluginId.'" AND `virtuemart_vendor_id` = "'.$vendorId.'" ';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -78,7 +78,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				}
 
 				if(isset($this->_cache[$this->_id]->modified_on)){
-					$date = JFactory::getDate($this->_cache[$this->_id]->modified_on);
+					$date = vFactory::getDate($this->_cache[$this->_id]->modified_on);
 					$date = $date->toUnix();
 				} else {
 					$date = 0;
@@ -154,7 +154,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			foreach ($datas as &$data){
 				/* Add the paymentmethod shoppergroups */
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$data->virtuemart_paymentmethod_id.'"';
-				$db = JFactory::getDBO();
+				$db = vFactory::getDbo();
 				$db->setQuery($q);
 				$data->virtuemart_shoppergroup_ids = $db->loadColumn();
 
@@ -201,7 +201,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		if(isset($data['payment_jplugin_id'])){
 
 			$q = 'SELECT `element` FROM `#__extensions` WHERE `extension_id` = "'.$data['payment_jplugin_id'].'"';
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery($q);
 			$data['payment_element'] = $db->loadResult();
 

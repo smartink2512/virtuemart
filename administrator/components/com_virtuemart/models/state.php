@@ -96,7 +96,7 @@ class VirtueMartModelState extends VmModel {
 		$countryId = (int)$countryId;
 		$stateId = (int)$stateId;
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
 		if($db->loadResult()){

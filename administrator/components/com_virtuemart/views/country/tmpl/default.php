@@ -85,7 +85,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
 			$country_string= vmText::_($prefix.$row->country_3_code); ?>
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name ?> </a>&nbsp;
 			<?php
-			$lang =JFactory::getLanguage();
+			$lang =vFactory::getLanguage();
 			if ($lang->hasKey($prefix.$row->country_3_code)) {
 				echo "(".$country_string.") ";
 			}

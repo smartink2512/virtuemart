@@ -124,7 +124,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 
 	function renderInstalledShipmentPlugins($selected)
 	{
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$table = '#__extensions';
 		$enable = 'enabled';

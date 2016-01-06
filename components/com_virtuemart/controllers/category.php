@@ -42,7 +42,7 @@ class VirtueMartControllerCategory extends JControllerLegacy {
 			$view->display();
 		} else {
 			// Display it all
-			$document = JFactory::getDocument();
+			$document = vFactory::getDocument();
 			$viewType = $document->getType();
 			$viewName = vRequest::getCmd('view', $this->default_view);
 			$viewLayout = vRequest::getCmd('layout', 'default');

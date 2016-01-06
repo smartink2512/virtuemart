@@ -109,7 +109,7 @@ static function vmGetCharset() {
 			foreach ($passedArgs as $k => $v) {
 			    $args[] = &$passedArgs[$k];
 			}
-		$lang =JFactory::getLanguage();
+		$lang =vFactory::getLanguage();
 		if($lang->hasKey($label.'_TIP')){
 			$label = '<span class="hasTip" title="'.htmlentities(vmText::_($label.'_TIP')).'">'.vmText::_($label).'</span>' ;
 		} //Fallback
@@ -139,7 +139,7 @@ static function vmGetCharset() {
 	}
 	/* simple value display */
 	static function value( $value ){
-		$lang =JFactory::getLanguage();
+		$lang =vFactory::getLanguage();
 		return $lang->hasKey($value) ? vmText::_($value) : $value;
 	}
 
@@ -612,7 +612,7 @@ static function vmGetCharset() {
 	 * @param string $value
 	 */
 	public static function editor($name,$value,$size='100%',$height='300',$hide = array('pagebreak', 'readmore')){
-		$editor =JFactory::getEditor();
+		$editor = vFactory::getEditor();
 		return $editor->display($name, $value, $size, $height, null, null ,$hide )  ;
 	}
 

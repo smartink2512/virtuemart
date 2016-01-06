@@ -53,32 +53,32 @@ class shopFunctionsF {
 	}
 
 	static public function getLastVisitedCategoryId ($default = 0) {
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->get( 'vmlastvisitedcategoryid', $default, 'vm' );
 	}
 
 	static public function setLastVisitedCategoryId ($categoryId) {
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->set( 'vmlastvisitedcategoryid', (int)$categoryId, 'vm' );
 	}
 
 	static public function getLastVisitedItemId ($default = 0) {
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->get( 'vmlastvisitedItemid', $default, 'vm' );
 	}
 
 	static public function setLastVisitedItemId ($id) {
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->set( 'vmlastvisitedItemid', (int)$id, 'vm' );
 	}
 
 	static public function getLastVisitedManuId () {
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->get( 'vmlastvisitedmanuid', 0, 'vm' );
 	}
 
 	static public function setLastVisitedManuId ($manuId) {
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->set( 'vmlastvisitedmanuid', (int)$manuId, 'vm' );
 	}
 
@@ -119,7 +119,7 @@ class shopFunctionsF {
 	static public function getOrderStatusName ($_code) {
 
 		static $orderNames = array();
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$_code = $db->escape ($_code);
 		if(!isset($orderNames[$_code])){
 			$_q = 'SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = "' . $_code . '"';
@@ -167,7 +167,7 @@ class shopFunctionsF {
 		vmJsApi::chosenDropDowns();
 
 		$sorted_countries = array();
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		$prefix="COM_VIRTUEMART_COUNTRY_";
 		foreach ($countries as  $country) {
 			$country_string = $lang->hasKey($prefix.$country->country_3_code) ?   vmText::_($prefix.$country->country_3_code)  : $country->country_name;
@@ -337,7 +337,7 @@ class shopFunctionsF {
 	 */
 	static public function addProductToRecent ($productId) {
 
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$products_ids = $session->get( 'vmlastvisitedproductids', array(), 'vm' );
 		$key = array_search( $productId, $products_ids );
 		if($key !== FALSE) {
@@ -363,7 +363,7 @@ class shopFunctionsF {
 	 */
 	public function getRecentProductIds () {
 
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->get( 'vmlastvisitedproductids', array(), 'vm' );
 	}
 

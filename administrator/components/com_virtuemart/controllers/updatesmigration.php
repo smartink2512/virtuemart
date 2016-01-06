@@ -678,7 +678,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 	function storeMigrationOptionsInSession(){
 
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 
 		$session->set('migration_task', vRequest::getString('task',''), 'vm');
 		$session->set('migration_default_category_browse', vRequest::getString('migration_default_category_browse',''), 'vm');

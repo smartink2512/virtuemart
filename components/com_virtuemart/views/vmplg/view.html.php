@@ -28,7 +28,7 @@ class VirtueMartViewVmplg extends VmView {
 	public function display($tpl = null) {
 		$mainframe = vFactory::getApplication();
 		$pathway = $mainframe->getPathway();
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$layoutName = $this->getLayout();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 		parent::display($tpl);

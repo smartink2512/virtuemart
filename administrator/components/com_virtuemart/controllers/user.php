@@ -99,7 +99,7 @@ class VirtuemartControllerUser extends VmController {
 	 */
 	function save($data = 0){
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('user', $viewType);
 

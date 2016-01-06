@@ -253,7 +253,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				//if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
 				if(!empty($product->virtuemart_product_id)){
 					if (!class_exists ('shopFunctionsF')) require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-					$menuItemID = shopFunctionsF::getMenuItemId(JFactory::getLanguage()->getTag());
+					$menuItemID = shopFunctionsF::getMenuItemId(vFactory::getLanguage()->getTag());
 					$canonLink='';
 					if($product->canonCatId) $canonLink = '&virtuemart_category_id='.$product->canonCatId;
 
@@ -285,7 +285,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				//$this->addStandardDefaultViewCommands();
 				$this->addStandardDefaultViewLists($catmodel,'category_name');
 
-				$session = JFactory::getSession();
+				$session = vFactory::getSession();
 				$reset = $session->get('reset_pag', false, 'vm');
 				$limit = '';
 				if($reset){
@@ -490,7 +490,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 	static function displayLinkToChildList($product_id, $product_name) {
 
-        $db = JFactory::getDBO();
+        $db = vFactory::getDbo();
         $db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
 		if ($result = $db->loadResult()){
 			$result = vmText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
@@ -500,7 +500,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 	static function displayLinkToParent($product_parent_id) {
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
 		if ($parent = $db->loadObject()){
 			$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', htmlentities($parent->product_name));

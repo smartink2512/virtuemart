@@ -1012,12 +1012,7 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 			$values[] = $this->quote($v);
 		}
 
-		// Create the base insert statement.
-		$query = $this->getQuery(true)
-			->insert($this->quoteName($table))
-			->columns($fields)
-			->values(implode(',', $values));
-
+		$query = 'INSERT '.$this->quoteName($table).' ('.implode(',', $fields).') VALUES ('.implode(',', $values).') ';
 		// Set the query and execute the insert.
 		$this->setQuery($query);
 

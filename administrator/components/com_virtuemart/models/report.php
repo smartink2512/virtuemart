@@ -61,7 +61,7 @@ class VirtuemartModelReport extends VmModel {
 
 	function correctTimeOffset(&$inputDate){
 
-		$config = JFactory::getConfig();
+		$config = vFactory::getConfig();
 		$this->siteOffset = $config->get('offset');
 
 		$date = new JDate($inputDate);
@@ -78,7 +78,7 @@ class VirtuemartModelReport extends VmModel {
 		$this->from_period = vRequest::getVar ('from_period', $this->date_presets['last30']['from']);
 		$this->until_period = vRequest::getVar ('until_period', $this->date_presets['last30']['until']);
 
-		$config = JFactory::getConfig();
+		$config = vFactory::getConfig();
 		$siteOffset = $config->get('offset');
 		$this->siteTimezone = new DateTimeZone($siteOffset);
 
@@ -95,7 +95,7 @@ class VirtuemartModelReport extends VmModel {
 		$this->from_period = $this->date_presets[$this->period]['from'];
 		$this->until_period = $this->date_presets[$this->period]['until'];
 
-		$config = JFactory::getConfig();
+		$config = vFactory::getConfig();
 		$siteOffset = $config->get('offset');
 		$this->siteTimezone = new DateTimeZone($siteOffset);
 
@@ -106,7 +106,7 @@ class VirtuemartModelReport extends VmModel {
 	function  getItemsByRevenue ($revenue) {
 
 		$q = 'select SUM(`product_quantity`) as product_quantity from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ' . $this->whereItem . ' CAST(' . $this->intervals . ' AS DATE) = CAST("' . $revenue['intervals'] . '" AS DATE) ';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery ($q);
 
 		return $db->loadResult ();
@@ -137,7 +137,7 @@ class VirtuemartModelReport extends VmModel {
 		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', FALSE);
 
 		if($cache){
-			$c = JFactory::getCache ('com_virtuemart_revenue');
+			$c = vFactory::getCache ('com_virtuemart_revenue');
 			$c->setCaching (1);
 			$c->setLifeTime($cache);
 			return $c->call (array('VirtuemartModelReport', 'getRevenueDiag'),$vendorId,$orderstates,$intervals,$filterorders,$orderdir,$virtuemart_product_id,$this->from_period,$this->until_period);
@@ -264,7 +264,7 @@ class VirtuemartModelReport extends VmModel {
 			$query = 'SELECT `order_status_code`
 				FROM `#__virtuemart_orderstates`
 				WHERE published=1 ';
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery ($query);
 			$list = $db->loadColumn ();
 			foreach ($orderstates as $val) {
@@ -368,7 +368,7 @@ class VirtuemartModelReport extends VmModel {
 	 */
 	function getOrderItems ($noLimit = FALSE) {
 
-		// $db = JFactory::getDBO();
+		// $db = vFactory::getDbo();
 
 		$query = "SELECT `product_name`, `product_sku`, ";
 		$query .= "i.created_on as order_date, ";
@@ -400,7 +400,7 @@ class VirtuemartModelReport extends VmModel {
 			return $this->date_presets;
 		}
 		// set date presets
-		$curDate = JFactory::getDate ();
+		$curDate = vFactory::getDate ();
 		$curDate = $curDate->toUnix ();
 		$curDate = mktime (0, 0, 0, date ('m', $curDate), date ('d', $curDate), date ('Y', $curDate));
 		$monday = (date ('w', $curDate) == 1) ? $curDate : strtotime ('last Monday', $curDate);
@@ -471,7 +471,7 @@ class VirtuemartModelReport extends VmModel {
 
 	public function updateOrderItems () {
 		$q = 'UPDATE #__virtuemart_order_items SET `product_discountedPriceWithoutTax`=( (IF(product_final_price is NULL, 0.00,product_final_price)   - IF(product_tax is NULL, 0.00,product_tax)  )) WHERE `product_discountedPriceWithoutTax` IS NULL';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		$db->execute();
 	}

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea($this);
-$editor = JFactory::getEditor();
+$editor = vFactory::getEditor();
 
 ?>
 

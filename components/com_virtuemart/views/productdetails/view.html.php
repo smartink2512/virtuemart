@@ -42,7 +42,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			$this->assignRef('show_prices', $show_prices);
 
-			$document = JFactory::getDocument();
+			$document = vFactory::getDocument();
 
 			$app = vFactory::getApplication();
 

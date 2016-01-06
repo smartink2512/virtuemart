@@ -40,7 +40,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 
 		$tplnames = $db->loadResult();
@@ -73,7 +73,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 
 		$tplnames = $db->loadResult();
@@ -255,7 +255,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @return object List of content objects
 	 */
 	function getContentLinks() {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$query = 'SELECT `id`, CONCAT(`title`, " (", `title_alias`, ")") AS text FROM `#__content` ';
 		$query .= 'ORDER BY `id`';
@@ -270,7 +270,7 @@ class VirtueMartModelConfig extends VmModel {
 	function getActiveLanguages($active_languages, $name = 'active_languages[]') {
 
 		$activeLangs = array() ;
-		$language =JFactory::getLanguage();
+		$language =vFactory::getLanguage();
 		$jLangs = $language->getKnownLanguages(VMPATH_ROOT);
 
 		foreach ($jLangs as $jLang) {
@@ -484,7 +484,7 @@ class VirtueMartModelConfig extends VmModel {
 			$result = $updater->createLanguageTables();
 		}
 
-		$cache = JFactory::getCache();
+		$cache = vFactory::getCache();
 		$cache->clean('com_virtuemart_cats');
 		$cache->clean('mod_virtuemart_product');
 		$cache->clean('mod_virtuemart_category');
@@ -501,7 +501,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	static public function checkConfigTableExists(){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart_configs"';
 		$db->setQuery($query);
 		$configTable = $db->loadResult();
@@ -515,7 +515,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	static public function checkVirtuemartInstalled(){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
 		$db->setQuery($query);
 		$vmTables = $db->loadColumn();
@@ -538,7 +538,7 @@ class VirtueMartModelConfig extends VmModel {
 	static public function installVMconfigTable(){
 		vmdebug('installVMconfigTable');
 		$qry = self::getCreateConfigTableQuery();
-		$_db = JFactory::getDBO();
+		$_db = vFactory::getDbo();
 		$_db->setQuery($qry);
 		return $_db->execute();
 	}

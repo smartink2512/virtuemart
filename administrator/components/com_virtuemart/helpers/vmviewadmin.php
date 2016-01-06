@@ -279,7 +279,7 @@ class VmViewAdmin extends vView {
 					}
 				}
 			}
-			JFactory::getDocument()->addStyleDeclaration($flagCss);
+			vFactory::getDocument()->addStyleDeclaration($flagCss);
 
 			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
 
@@ -367,7 +367,7 @@ class VmViewAdmin extends vView {
 			})';
 			vmJsApi::addJScript('vmlang', $j);
 		} else {
-			$jlang = JFactory::getLanguage();
+			$jlang = vFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
 			$defautName = $selectedLangue;
 			$flagImg = $selectedLangue;
@@ -407,7 +407,7 @@ class VmViewAdmin extends vView {
 		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
 		$app = vFactory::getApplication();
-		$doc = JFactory::getDocument();
+		$doc = vFactory::getDocument();
 		$doc->setTitle($app->getCfg('sitename'). ' - ' .vmText::_('JADMINISTRATION').' - '.strip_tags($msg));
 	}
 
@@ -504,7 +504,7 @@ class VmViewAdmin extends vView {
 		if (!class_exists( 'VmConfig' )) require(VMPATH_ADMIN .'/helpers/config.php');
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart_help');
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		$key=  'COM_VIRTUEMART_HELP_'.$view.$task;
 		 if ($lang->hasKey($key)) {
 				$help_url  = vmText::_($key)."?tmpl=component";

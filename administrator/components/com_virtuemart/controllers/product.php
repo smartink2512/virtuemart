@@ -136,7 +136,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		vRequest::vmCheckToken();
 
-		$app = Jfactory::getApplication();
+		$app = vFactory::getApplication();
 
 		$model = VmModel::getModel('product');
 
@@ -179,7 +179,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		$virtuemart_shoppergroup_ids = vRequest::getInt('virtuemart_shoppergroup_id');
 
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$cids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
 
 		$productModel = VmModel::getModel('product');
@@ -199,7 +199,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		$virtuemart_cat_ids = vRequest::getInt('cid', array() );
 
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$cids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
 
 		$productModel = VmModel::getModel('product');
@@ -218,10 +218,10 @@ class VirtuemartControllerProduct extends VmController {
 		$cids = vRequest::getInt('virtuemart_product_id');
 
 		if(empty($cids)){
-			$session = JFactory::getSession();
+			$session = vFactory::getSession();
 			$cids = json_decode($session->get('vm_product_ids', '', 'vm'),true);
 		} else {
-			$session = JFactory::getSession();
+			$session = vFactory::getSession();
 			$session->set('vm_product_ids', json_encode($cids),'vm');
 			$session->set('reset_pag', true,'vm');
 
@@ -240,7 +240,7 @@ class VirtuemartControllerProduct extends VmController {
 		}
 
 		$this->addViewPath(VMPATH_ADMIN . DS . 'views');
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
 
@@ -255,7 +255,7 @@ class VirtuemartControllerProduct extends VmController {
 	 * @author Max Milbers
 	 */
 	public function CloneProduct() {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 
 		$view = $this->getView('product', 'html');
 
@@ -293,7 +293,7 @@ class VirtuemartControllerProduct extends VmController {
 	 * @author Max Milbers
 	 */
 	public function addRating() {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 
 		// Get the product ID
 		$cids = vRequest::getInt($this->_cidName, vRequest::getInt('virtuemart_product_id'));

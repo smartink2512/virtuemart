@@ -753,10 +753,10 @@ class VmTable extends vTable implements JObservableInterface, JTableInterface {
 			require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 		}
 		if(isset($this->modified_on) and $this->modified_on!='0000-00-00 00:00:00'){
-			$date = JFactory::getDate($this->modified_on);
+			$date = vFactory::getDate($this->modified_on);
 			$date = $date->toUnix();
 		} else if(isset($this->created_on) and $this->created_on!='0000-00-00 00:00:00'){
-			$date = JFactory::getDate($this->created_on);
+			$date = vFactory::getDate($this->created_on);
 			$date = $date->toUnix();
 		} else {
 			$date = 0;

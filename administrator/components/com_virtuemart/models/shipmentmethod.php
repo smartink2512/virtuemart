@@ -86,7 +86,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				}
 
 				if(isset($this->_cache[$this->_id]->modified_on)){
-					$date = JFactory::getDate($this->_cache[$this->_id]->modified_on);
+					$date = vFactory::getDate($this->_cache[$this->_id]->modified_on);
 					$date = $date->toUnix();
 				} else {
 					$date = 0;
@@ -154,7 +154,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			foreach ($datas as &$data){
 				// Add the shipment shoppergroups
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$data->virtuemart_shipmentmethod_id.'"';
-				$db = JFactory::getDBO();
+				$db = vFactory::getDbo();
 				$db->setQuery($q);
 				$data->virtuemart_shoppergroup_ids = $db->loadColumn();
 			}
@@ -201,7 +201,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		$ext_id = 'extension_id';
 
 		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['shipment_jplugin_id'].'"';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		$data['shipment_element'] = $db->loadResult();
 

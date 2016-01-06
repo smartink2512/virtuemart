@@ -125,7 +125,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 	}
 
 	private function listIt($ps){
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT virtuemart_'.$ps.'method_id,'.$ps.'_name
 FROM #__virtuemart_'.$ps.'methods
 INNER JOIN #__virtuemart_'.$ps.'methods_'.VmConfig::$vmlang.' USING (virtuemart_'.$ps.'method_id)
@@ -147,7 +147,7 @@ WHERE published="1"';
 
 	private function checkVmUserVendor(){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$multix = Vmconfig::get('multix','none');
 
 		$q = 'select * from #__virtuemart_vmusers where user_is_vendor = 1';// and virtuemart_vendor_id '.$vendorWhere.' limit 1';

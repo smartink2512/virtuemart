@@ -16,7 +16,7 @@
 * @version $Id: default_tools.php 4007 2011-08-31 07:31:35Z alatak $
 */
 
-$session = JFactory::getSession();
+$session = vFactory::getSession();
 
 ?>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >

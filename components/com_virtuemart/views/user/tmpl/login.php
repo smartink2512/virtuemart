@@ -40,7 +40,7 @@ JHtml::_('behavior.formvalidation');
 
 	//Extra login stuff, systems like openId and plugins HERE
     if (JPluginHelper::isEnabled('authentication', 'openid')) {
-        $lang = JFactory::getLanguage();
+        $lang = vFactory::getLanguage();
         $lang->load('plg_authentication_openid', JPATH_ADMINISTRATOR);
         $langScript = '
 //<![CDATA[

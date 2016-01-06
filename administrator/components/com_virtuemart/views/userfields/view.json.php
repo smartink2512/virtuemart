@@ -31,7 +31,7 @@ if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmi
 class VirtuemartViewUserfields extends VmViewAdmin {
 
 	function display($tpl = null) {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		if ( $field = vRequest::getVar('field') ) {
 			if (strpos($field, 'plugin') !==false) {
 

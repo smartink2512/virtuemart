@@ -68,7 +68,7 @@ class virtuemartViewrecommend extends VmView {
 			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 		/* add javascript for price and cart */
 		//vmJsApi::jPrice();

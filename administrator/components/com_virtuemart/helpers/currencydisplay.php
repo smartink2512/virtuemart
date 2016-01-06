@@ -378,7 +378,7 @@ class CurrencyDisplay {
 		else {
 			static $currency_exchange_rate = array();
 			if(!isset($currency_exchange_rate[$currency])){
-				$db = JFactory::getDBO();
+				$db = vFactory::getDbo();
 				$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 				$db->setQuery($q);
 				$currency_exchange_rate[$currency] = (float)$db->loadResult();

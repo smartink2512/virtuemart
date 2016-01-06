@@ -120,7 +120,7 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 		if($search){
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$where[] = ' `custom_title` LIKE '.$search;
 		}
@@ -196,7 +196,7 @@ class VirtueMartModelCustom extends VmModel {
 		if ($ID = vRequest::getInt ('virtuemart_custom_id', 0)) {
 			$q .= ' AND `virtuemart_custom_id`!=' . (int)$ID;
 		}
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery ($q);
 
 		$result = $db->loadObjectList ();
@@ -212,7 +212,7 @@ class VirtueMartModelCustom extends VmModel {
 	 * @return unknown|multitype:
 	 */
 	function getParentList ($excludedId = 0) {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery (' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="G" and virtuemart_custom_id!=' . $excludedId);
 		return $db->loadObjectList ();
 	}
@@ -252,7 +252,7 @@ class VirtueMartModelCustom extends VmModel {
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		// delete existings from modelXref and table customfields
 		foreach ($datas as $child_id =>$fields) {
 			$fields['virtuemart_'.$table.'_id']=$child_id;
@@ -297,7 +297,7 @@ class VirtueMartModelCustom extends VmModel {
 			$tb = '#__extensions';
 			$ext_id = 'extension_id';
 
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 
 			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
 			$db->setQuery($q);

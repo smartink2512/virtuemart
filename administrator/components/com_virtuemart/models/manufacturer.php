@@ -88,7 +88,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$mediaModel = VmModel::getModel('Media');
 		$mediaModel->storeMedia($data,'manufacturer');
 
-		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+		$cache = vFactory::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
 		return $table->virtuemart_manufacturer_id;
 	}
@@ -108,7 +108,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	 * @return object List of manufacturer to build filter select box
 	 */
 	function getManufacturerDropdown() {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$query = "SELECT `virtuemart_manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
 						FROM `#__virtuemart_manufacturers_".VmConfig::$vmlang."` ORDER BY `mf_name` ASC";
 		$db->setQuery($query);
@@ -152,7 +152,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$joinedTables = ' FROM `#__virtuemart_manufacturers` as m';
 		$select = ' `m`.*';
 		if ( $search && $search != 'true') {
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);
 			$where[] .= ' LOWER( `mf_name` ) LIKE '.$search;
@@ -206,7 +206,7 @@ LEFT JOIN `#__virtuemart_manufacturers_'.$vmlang.'` as l using (`virtuemart_manu
 			$query .= ' AND c.`virtuemart_category_id` =' . (int)$virtuemart_category_id;
 		}
 		$query .= ' ORDER BY `mf_name`';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery ($query);
 		return $db->loadObjectList ();
 	}

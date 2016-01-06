@@ -79,7 +79,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			vmdebug('setStoreOwner $userId = '.$userId.' by determineStoreOwner');
 		}
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_user_id`= "' . $userId . '" ');
 		$oldUserId = $db->loadResult();
 
@@ -183,7 +183,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		vmError(vmText::_('Problems execution of SQL File '.$filename));
 	} else {
 		//update jplugin_id from shipment and payment
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `extension_id` FROM #__extensions WHERE element = "weight_countries" AND folder = "vmshipment"';
 		$db->setQuery($q);
 		$shipment_plg_id = $db->loadResult();
@@ -258,7 +258,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 		$query .= "	      PRIMARY KEY (`id`)
 	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='" . $tableComment . "' AUTO_INCREMENT=1 ;";
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($query);
 		if (!$db->execute ()) {
 			vmError ( $className.'::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
@@ -348,7 +348,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 		// Create an array of queries from the sql file
 		jimport('joomla.installer.helper');
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$queries = $db->splitSql(file_get_contents($sqlfile));
 
 		if (count($queries) == 0) {
@@ -396,8 +396,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      * @return True if successful, false otherwise
      */
     function removeAllVMTables() {
-		$db = JFactory::getDBO();
-		$config = JFactory::getConfig();
+		$db = vFactory::getDbo();
+		$config = vFactory::getConfig();
 
 		$prefix = $config->get('dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
@@ -445,7 +445,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$filename = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';
 		$this->execSQLFile($filename);
 		$tables = array('categories','manufacturers','manufacturercategories','paymentmethods','products','shipmentmethods','vendors');
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$prefix = $db->getPrefix();
 		foreach ($tables as $table) {
 			$query = 'SHOW TABLES LIKE "'.$prefix.'virtuemart_'.$table.'_%"';
@@ -475,7 +475,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	 */
 	public function updateJoomlaUpdateServer( $type, $element, $dst, $group=''  ){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$extensionXmlFileName = self::getExtensionXmlFileName($type, $element, $dst );
 		$xml=simplexml_load_file($extensionXmlFileName);
 

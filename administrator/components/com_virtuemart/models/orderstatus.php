@@ -84,9 +84,14 @@ class VirtueMartModelOrderstatus extends VmModel {
 				$published = '';
 			}
 			$q = 'SELECT `order_status_name`,`order_status_code` FROM `#__virtuemart_orderstates` '.$published.'order by `ordering` ';
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery($q);
 			$orderStatusNames = $db->loadAssocList('order_status_code');
+			if($orderStatusNames){
+				foreach($orderStatusNames as $k=>$v){
+					$orderStatusNames[$k]['order_status_name'] = vmText::_ ($v['order_status_name']);
+				}
+			}
 		}
 
 		return $orderStatusNames;
@@ -115,13 +120,14 @@ class VirtueMartModelOrderstatus extends VmModel {
 		$hash = md5($hashValue.$name.$attrs);
 		if (!isset($this->_renderStatusList[$hash])) {
 			$orderStates = $this->getOrderStatusNames();
+
 			$emptyOption = JHtml::_ ('select.option', -1, vmText::_ ($langkey), 'order_status_code', 'order_status_name');
 			array_unshift ($orderStates, $emptyOption);
 			if ($multiple) {
 				$attrs .=' size="'.count($orderStates).'" ';
 			}
 
-			$this->_renderStatusList[$hash] = JHtml::_('select.genericlist', $orderStates, $idA, $attrs, 'order_status_code', 'order_status_name', $value,$id,true);
+			$this->_renderStatusList[$hash] = JHtml::_('select.genericlist', $orderStates, $idA, $attrs, 'order_status_code', 'order_status_name', $value,$id,false);
 		}
 		return $this->_renderStatusList[$hash] ;
 	}

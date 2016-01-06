@@ -33,7 +33,7 @@ $js = '
 			});
 		});
 	';
-$document = JFactory::getDocument();
+$document = vFactory::getDocument();
 vmJsApi::addJScript('show_prices',$js,true);
 ?>
 <table>

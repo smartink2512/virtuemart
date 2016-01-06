@@ -29,7 +29,7 @@ class GenericTableUpdater extends VmModel{
 	public function __construct(){
 
 		$this->_app = vFactory::getApplication();
-		$this->_db = JFactory::getDBO();
+		$this->_db = vFactory::getDbo();
 		// 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
 
@@ -47,7 +47,7 @@ class GenericTableUpdater extends VmModel{
 
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
 
-		$config = JFactory::getConfig();
+		$config = vFactory::getConfig();
 		$this->_prefix = $config->get('dbprefix');
 
 		$this->reCreaPri = VmConfig::get('reCreaPri',0);

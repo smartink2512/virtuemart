@@ -40,11 +40,11 @@ class VirtuemartViewInvoice extends VmView {
 	public function display($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 		/* It would be so nice to be able to load the override of the FE additionally from here
 		 * joomlaWantsThisFolder\language\overrides\en-GB.override.ini
-		 * $jlang =JFactory::getLanguage();
+		 * $jlang =vFactory::getLanguage();
 		$tag = $jlang->getTag();
 		$jlang->load('override', 'language/overrides',$tag,true);*/
 

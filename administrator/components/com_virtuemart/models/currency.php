@@ -76,7 +76,7 @@ class VirtueMartModelCurrency extends VmModel {
 		}
 		// add filters
 		if($search){
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$where[] = '`currency_name` LIKE '.$search.' OR `currency_code_2` LIKE '.$search.' OR `currency_code_3` LIKE '.$search;
 		}
@@ -142,7 +142,7 @@ class VirtueMartModelCurrency extends VmModel {
 	 * @return object List of currency objects
 	 */
 	function getCurrencies($vendorId=1) {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `ordering`,`#__virtuemart_currencies`.`currency_name`';
 		$db->setQuery($q);
 		return $db->loadObjectList();

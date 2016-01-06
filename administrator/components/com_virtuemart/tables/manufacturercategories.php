@@ -63,7 +63,7 @@ class TableManufacturercategories extends VmTable {
 	function checkManufacturer($categoryId = 0)
 	{
 		if($categoryId > 0) {
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 
 			$q = 'SELECT count(*)'
 				.' FROM #__virtuemart_manufacturers'

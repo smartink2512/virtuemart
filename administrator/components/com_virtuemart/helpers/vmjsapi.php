@@ -132,7 +132,7 @@ class vmJsApi{
 				$ver = '';
 				if(!empty($jsToAdd['ver'])) $ver = '?vmver='.$jsToAdd['ver'];
 
-				$document = JFactory::getDocument();
+				$document = vFactory::getDocument();
 				if($jsToAdd['inline']){
 					//$html .= '<script type="text/javascript" src="'.$file .$ver.'"></script>';
 					/*$content = file_get_contents(VMPATH_ROOT.$file);
@@ -205,7 +205,7 @@ class vmJsApi{
 
 		$file = vmJsApi::setPath( $namespace, $path, $version='', $minified, 'css');
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$document->addStyleSheet($file.'?vmver='.VM_REV);
 		$loaded[$namespace] = TRUE;
 
@@ -532,7 +532,7 @@ jQuery(document).ready(function($) {
 		}
 		vmJsApi::addJScript( 'jquery.validationEngine');
 
-		$lg = JFactory::getLanguage();
+		$lg = vFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);
 		$vlePath = vmJsApi::setPath('languages/jquery.validationEngine-'.$lang, FALSE , '' ,$minified = NULL ,   'js', true);
 		if(!file_exists($vlePath) or is_dir($vlePath)){
@@ -703,7 +703,7 @@ jQuery(document).ready(function($) {
 		if ($cssSite) return;
 
 		// Get the Page direction for right to left support
-		$document = JFactory::getDocument ();
+		$document = vFactory::getDocument ();
 		$direction = $document->getDirection ();
 		$cssFile = 'vmsite-' . $direction ;
 
@@ -795,7 +795,7 @@ jQuery(document).ready(function($) {
 
 
 		vmJsApi::css('ui/jquery.ui.all');
-		$lg = JFactory::getLanguage();
+		$lg = vFactory::getLanguage();
 		$lang = $lg->getTag();
 
 		$vlePath = vmJsApi::setPath('i18n/jquery.ui.datepicker-'.$lang, FALSE , '' ,$minified = NULL ,   'js', true);
@@ -838,7 +838,7 @@ jQuery(document).ready(function($) {
 		if($done) return;
 		$done = true;
 
-		$config = JFactory::getConfig();
+		$config = vFactory::getConfig();
 		$refTime = ($config->get('lifetime') );
 
 		// the longest refresh period is 30 min to prevent integer overflow.

@@ -74,7 +74,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		static $_customFieldById = array();
 
 		if(!isset($_customFieldById[$virtuemart_customfield_id])){
-			$db= JFactory::getDBO ();
+			$db= vFactory::getDbo ();
 			$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
 			if($virtuemart_customfield_id){
 				$q .= ' WHERE `virtuemart_customfield_id` ="' . (int)$virtuemart_customfield_id . '"';
@@ -92,7 +92,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	function getCustomEmbeddedProductCustomFields($productIds,$virtuemart_custom_id=0,$cartattribute=-1,$forcefront=FALSE){
 
 		$app = vFactory::getApplication();
-		$db= JFactory::getDBO ();
+		$db= vFactory::getDbo ();
 		$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
 
 		static $_customFieldByProductId = array();
@@ -656,7 +656,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					if(empty($field->custom_value)){
 						$q = 'SELECT `virtuemart_media_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
 					AND (`virtuemart_vendor_id`= "' . $virtuemart_vendor_id . '" OR `shared` = "1")';
-						$db = JFactory::getDBO();
+						$db = vFactory::getDbo();
 						$db->setQuery ($q);
 						$options = $db->loadObjectList ();
 					} else {
@@ -684,9 +684,9 @@ class VirtueMartModelCustomfields extends VmModel {
 			//'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
 			case 'X':
         // Not sure why this block is needed to get it to work when editing the customfield (the subsequent block works fine when creating it, ie. in JS)
-				$document = JFactory::getDocument();
+				$document = vFactory::getDocument();
 				if (get_class($document) == 'JDocumentHTML') {
-					$editor = JFactory::getEditor();
+					$editor = vFactory::getEditor();
 					return '</td><td>'.$editor->display('field['.$row.'][customfield_value]',$field->customfield_value, '550', '400', '60', '20', false);
 				}
 				return $priceInput . '</td><td><textarea class="mceInsertContentNew" name="field[' . $row . '][customfield_value]" id="field-' . $row . '-customfield_value">' . $field->customfield_value . '</textarea>
@@ -723,7 +723,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				} // special case it's category ID !
 
 				$q = 'SELECT * FROM `#__virtuemart_categories_' . VmConfig::$vmlang . '` INNER JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `virtuemart_category_id`= "' . (int)$field->customfield_value . '" ';
-				$db = JFactory::getDBO();
+				$db = vFactory::getDbo();
 				$db->setQuery ($q);
 				//echo $db->_sql;
 				if ($category = $db->loadObject ()) {
@@ -772,7 +772,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public static function displayProductCustomfieldFE (&$product, &$customfields) {
 
-		$session = JFactory::getSession ();
+		$session = vFactory::getSession ();
 		$virtuemart_category_id = $session->get ('vmlastvisitedcategoryid', 0, 'vm');
 
 
@@ -850,7 +850,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if (!class_exists ('TableMedias'))
 			require(VMPATH_ADMIN . DS . 'tables' . DS . 'medias.php');
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$data = new TableMedias($db);
 		$data->load ((int)$media_id);
 		if(!empty($data->file_type)){
@@ -968,7 +968,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!in_array($table,$tableWhiteList)) return false;
 
 		// Get old IDS
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
 		$old_customfield_ids = $db->loadColumn();
 		if (array_key_exists('field', $datas)) {

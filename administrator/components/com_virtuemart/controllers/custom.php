@@ -70,7 +70,7 @@ class VirtuemartControllerCustom extends VmController {
 	* @author Max Milbers
 	*/
 	public function createClone() {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 
 		/* Load the view object */
 		$view = $this->getView('custom', 'html');

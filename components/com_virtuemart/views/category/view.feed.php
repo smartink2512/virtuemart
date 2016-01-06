@@ -35,7 +35,7 @@ class VirtuemartViewCategory extends VmView {
 			}
 		}
 
-		$doc = JFactory::getDocument ();
+		$doc = vFactory::getDocument ();
 
 		if (!class_exists('VmImage'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');

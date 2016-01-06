@@ -64,11 +64,11 @@ class calculationHelper {
 	 * @author Geraint
 	 */
 	private function __construct() {
-		$this->_db = JFactory::getDBO();
+		$this->_db = vFactory::getDbo();
 		$this->_app = vFactory::getApplication();
 		//$this->_cart =& VirtuemartCart::getCart();
 		//We store in UTC and use here of course also UTC
-		$jnow = JFactory::getDate();
+		$jnow = vFactory::getDate();
 		$this->_now = $jnow->toSQL();
 		$this->_nullDate = $this->_db->getNullDate();
 
@@ -105,7 +105,7 @@ class calculationHelper {
 			vmdebug('Created new Calculator Instance');
 		} else {
 			//We store in UTC and use here of course also UTC
-			$jnow = JFactory::getDate();
+			$jnow = vFactory::getDate();
 			self::$_instance->_now = $jnow->toSQL();
 		}
 		return self::$_instance;

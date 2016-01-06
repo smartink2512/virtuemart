@@ -60,7 +60,7 @@ class VirtuemartControllerTranslate extends VmController {
 
 		$lang = vRequest::getvar('lg');
 		$langs = VmConfig::get('active_languages',array()) ;
-		$language=JFactory::getLanguage();
+		$language=vFactory::getLanguage();
 
 		if (!in_array($lang, $langs) ) {
 			$json['msg'] = 'Invalid language ! '.$lang;
@@ -110,7 +110,7 @@ class VirtuemartControllerTranslate extends VmController {
 			$json['msg'] = vmText::_('COM_VIRTUEMART_SELECTED_LANG').':'.$lang;
 
 		} else {
-			$db =JFactory::getDBO();
+			$db =vFactory::getDbo();
 
 			$json['structure'] = 'empty' ;
 			$db->setQuery('SHOW COLUMNS FROM '.$tableName);

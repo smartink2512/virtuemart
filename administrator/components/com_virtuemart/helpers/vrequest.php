@@ -78,7 +78,7 @@ class vRequest {
 
 		$unicodeslugs = VmConfig::get('transliterateSlugs',false);
 		if($unicodeslugs){
-			$lang = JFactory::getLanguage();
+			$lang = vFactory::getLanguage();
 			$str = $lang->transliterate($str);
 		}
 
@@ -310,7 +310,7 @@ class vRequest {
 				}
 			}
 
-			$session = JFactory::getSession();
+			$session = vFactory::getSession();
 
 			if ($session->isNew()){
 				// Redirect to login screen.
@@ -341,7 +341,7 @@ class vRequest {
 
 	public static function getFormToken($fNew = false){
 
-		$sess = JFactory::getSession();
+		$sess = vFactory::getSession();
 		$user = vFactory::getUser();
 
 		if(empty($user->id)) $user->id = 0;

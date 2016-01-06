@@ -49,7 +49,7 @@ class VirtuemartViewReport extends VmViewAdmin {
 
 		//update order items button
 		/*$q = 'SELECT * FROM #__virtuemart_order_items WHERE `product_discountedPriceWithoutTax` IS NULL ';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		$res = $db->loadRow();
 		if($res) {

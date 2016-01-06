@@ -65,7 +65,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 
 
 		// Get the explicit rules for this asset.
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__assets'));
@@ -251,7 +251,7 @@ class JFormFieldVmRules extends JFormFieldRules {
                  margin-left:0;
            }
         ";
-		JFactory::getDocument()->addStyleDeclaration($css);
+		vFactory::getDocument()->addStyleDeclaration($css);
 
 		return implode("\n", $html);
 	}
@@ -278,7 +278,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 
 
 		// Get the explicit rules for this asset.
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__assets'));
@@ -466,7 +466,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 			. (int)vRequest::getInt('jpanesliders_permissions-sliders' . $component, '0', 'cookie') . ", show: "
 			. (int)vRequest::getInt('jpanesliders_permissions-sliders' . $component, '0', 'cookie') . ", alwaysHide:true, opacity: false}); });";
 
-		JFactory::getDocument()->addScriptDeclaration($js);
+		vFactory::getDocument()->addScriptDeclaration($js);
 
 		return implode("\n", $html);
 	}

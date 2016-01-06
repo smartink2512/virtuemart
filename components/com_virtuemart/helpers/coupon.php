@@ -48,7 +48,7 @@ abstract class CouponHelper
 			}
 		}
 		if(empty($couponData)){
-			$_db = JFactory::getDBO();
+			$_db = vFactory::getDbo();
 			$_q = 'SELECT IFNULL( NOW() >= `coupon_start_date` OR `coupon_start_date`="0000-00-00 00:00:00" , 1 ) AS started
     				, `coupon_start_date`
     				,  IFNULL (`coupon_expiry_date`!="0000-00-00 00:00:00" and NOW() > `coupon_expiry_date`,0) AS `ended`
@@ -65,7 +65,7 @@ abstract class CouponHelper
 			return vmText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
 		}
 		if ($couponData->coupon_used) {
-			$session = JFactory::getSession();
+			$session = vFactory::getSession();
 			$session_id = $session->getId();
 			if ($couponData->coupon_used != $session_id) {
 				return vmText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
@@ -99,7 +99,7 @@ abstract class CouponHelper
 	 */
 	static public function getCouponDetails($_code)
 	{
-		$_db = JFactory::getDBO();
+		$_db = vFactory::getDbo();
 		$_q = 'SELECT `percent_or_total` '
 			. ', `coupon_type` '
 			. ', `coupon_value` '
@@ -137,7 +137,7 @@ abstract class CouponHelper
 				return true;
 			}
 		}
-		$_db = JFactory::getDBO();
+		$_db = vFactory::getDbo();
 		$_q = 'DELETE FROM `#__virtuemart_coupons` '
 			. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
 		$_db->setQuery($_q);
@@ -161,11 +161,11 @@ abstract class CouponHelper
 				}
 			}
 		}
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$coupon_used = $session->getId();
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		if (!$in_use) {
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$q = 'SELECT `coupon_used` '
 				. 'FROM `#__virtuemart_coupons` '
 				. 'WHERE `coupon_code` = "' . $db->escape($code) . '"';

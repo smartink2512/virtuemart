@@ -48,7 +48,7 @@ class VirtueMartModelWorldzones extends VmModel {
      */
 	function getShipmentZone()
 	{
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		if (empty($this->_data)) {
 			$query = 'SELECT * ';
@@ -75,7 +75,7 @@ class VirtueMartModelWorldzones extends VmModel {
      */
     function getWorldZonesSelectList()
     {
-    	$db = JFactory::getDBO();
+    	$db = vFactory::getDbo();
 
     	$query = 'SELECT `virtuemart_worldzone_id`, `zone_name` ';
 		$query .= 'FROM `#__virtuemart_worldzones`';

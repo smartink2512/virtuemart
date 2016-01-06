@@ -55,7 +55,7 @@ class ShopFunctions {
 		$table = $model->getTable($table);
 
 		if(!is_array($idList)){
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 			$q = 'SELECT `' . $table->getPKey() . '` FROM `#__virtuemart_' . $db->escape ($tableXref) . '` WHERE ' . $db->escape ($tableSecondaryKey) . ' = "' . (int)$idList . '"';
 			$db->setQuery ($q);
 			$idList = $db->loadColumn ();
@@ -103,7 +103,7 @@ class ShopFunctions {
 			if (empty($vendorId)) {
 				$vendor = vmText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');
 			} else {
-				$db = JFactory::getDBO ();
+				$db = vFactory::getDbo ();
 				$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
 				$db->setQuery ($q);
 				$vendor = $db->loadResult ();
@@ -117,7 +117,7 @@ class ShopFunctions {
 
 	static public function renderVendorFullVendorList($vendorId, $multiple = false, $name = 'virtuemart_vendor_id'){
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 
 		$q = 'SELECT `virtuemart_vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
 		$db->setQuery ($q);
@@ -549,7 +549,7 @@ class ShopFunctions {
 		$hash = crc32(implode('.',$selectedCategories).':'.$cid.':'.$level.implode('.',$disabledFields));
 		if (empty(self::$categoryTree[$hash])) {
 
-			$cache = JFactory::getCache ('com_virtuemart_cats');
+			$cache = vFactory::getCache ('com_virtuemart_cats');
 			$cache->setCaching (1);
 			$app = vFactory::getApplication ();
 			$vendorId = vmAccess::isSuperVendor();
@@ -648,7 +648,7 @@ class ShopFunctions {
 		}
 
 		$id = (int)$id;
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 
 		$q = 'SELECT `' . $db->escape ($fld) . '` AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$id;
 		$db->setQuery ($q);
@@ -669,7 +669,7 @@ class ShopFunctions {
 		if (empty($name)) {
 			return 0;
 		}
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 
 		if (strlen ($name) === 2) {
 			$fieldname = 'country_2_code';
@@ -700,7 +700,7 @@ class ShopFunctions {
 		if (empty($id)) {
 			return '';
 		}
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT ' . $db->escape ($fld) . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = "' . (int)$id . '"';
 		$db->setQuery ($q);
 		$r = $db->loadObject ();
@@ -720,7 +720,7 @@ class ShopFunctions {
 		if (empty($name)) {
 			return 0;
 		}
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		if (strlen ($name) === 2) {
 			$fieldname = 'state_2_code';
 		} else {
@@ -751,7 +751,7 @@ class ShopFunctions {
 		}
 
 		$id = (int)$id;
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT  *   FROM `#__virtuemart_calcs` WHERE virtuemart_calc_id = ' . (int)$id;
 		$db->setQuery ($q);
 		return $db->loadAssoc ();
@@ -775,7 +775,7 @@ class ShopFunctions {
 		static $currencyNameById = array();
 		if(!isset($currencyNameById[$id][$fld])){
 			$id = (int)$id;
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 
 			$q = 'SELECT ' . $db->escape ($fld) . ' AS fld FROM `#__virtuemart_currencies` WHERE virtuemart_currency_id = ' . (int)$id;
 			$db->setQuery ($q);
@@ -800,7 +800,7 @@ class ShopFunctions {
 		}
 		static $currencyIdByName = array();
 		if(!isset($currencyIdByName[$name])){
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 			if (strlen ($name) === 2) {
 				$fieldname = 'currency_code_2';
 			} else {

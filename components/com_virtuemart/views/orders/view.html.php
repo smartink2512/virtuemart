@@ -40,7 +40,7 @@ class VirtuemartViewOrders extends VmView {
 		$this->setLayout($layoutName);
 
 		$_currentUser = vFactory::getUser();
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 
 		if(!empty($tpl)){
 			$format = $tpl;
@@ -201,7 +201,7 @@ class VirtuemartViewOrders extends VmView {
 			$this->orderstatuses[$_ordstat->order_status_code] = vmText::_($_ordstat->order_status_name);
 		}
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		// this is no setting in BE to change the layout !

@@ -35,9 +35,9 @@ class VirtuemartViewCustom extends vView {
 
 	function display($tpl = null) {
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		if ( $virtuemart_media_id = vRequest::getInt('virtuemart_media_id') ) {
-			//$db = JFactory::getDBO();
+			//$db = vFactory::getDbo();
 			$query='SELECT `file_url`,`file_title` FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
 			$db->setQuery( $query );
 			$json = $db->loadObject();

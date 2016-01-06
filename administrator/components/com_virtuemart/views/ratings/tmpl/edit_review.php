@@ -78,7 +78,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
         	</td>
 		<td width="76%" align="left">
 	<?php
-	$editor = JFactory::getEditor();
+	$editor = vFactory::getEditor();
 	echo $editor->display('comment', $this->rating->comment, '100%', '100', '60', '20',false);?>
 	</td>
 	</tr>

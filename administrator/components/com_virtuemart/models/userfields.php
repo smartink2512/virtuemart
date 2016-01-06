@@ -264,7 +264,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$plgName = substr($data['type'],6);
 			$q = 'SELECT `' . $ext_id . '` FROM `' . $tb . '` WHERE `folder` = "vmuserfield" and `state`="0" AND `element` = "'.$plgName.'"';
 
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery($q);
 			$data['userfield_jplugin_id'] = $db->loadResult();
 			JPluginHelper::importPlugin('vmuserfield');
@@ -387,7 +387,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 			  // stAn, next line doesn't work, because it tries to delete by the virtuemart_userfield_id instead of virtuemart_userfield_value_id
 			  // $msg = $fieldvalue->delete($originalvalues->virtuemart_userfield_value_id);
-			  $db = JFactory::getDBO();
+			  $db = vFactory::getDbo();
 			  $q = 'DELETE from `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_value_id` = ' . (int)$originalvalues[$i]->virtuemart_userfield_value_id.' and `virtuemart_userfield_id` = '.(int)$_id;
 
 			  $db->setQuery($q);
@@ -821,7 +821,7 @@ class VirtueMartModelUserfields extends VmModel {
 						if(!empty($_return['fields'][$_fld->name]['value'])){
 							// Translate the value from ID to name
 							$_return['fields'][$_fld->name]['virtuemart_country_id'] = (int)$_return['fields'][$_fld->name]['value'];
-							$db = JFactory::getDBO ();
+							$db = vFactory::getDbo ();
 							$q = 'SELECT * FROM `#__virtuemart_countries` WHERE virtuemart_country_id = "' . (int)$_return['fields'][$_fld->name]['value'] . '"';
 							$db->setQuery ($q);
 							$r = $db->loadAssoc();
@@ -862,7 +862,7 @@ class VirtueMartModelUserfields extends VmModel {
 						if(!empty($_return['fields'][$_fld->name]['value'])){
 							// Translate the value from ID to name
 							$_return['fields'][$_fld->name]['virtuemart_state_id'] = (int)$_return['fields'][$_fld->name]['value'];
-							$db = JFactory::getDBO ();
+							$db = vFactory::getDbo ();
 							$q = 'SELECT * FROM `#__virtuemart_states` WHERE virtuemart_state_id = "' . (int)$_return['fields'][$_fld->name]['value'] . '"';
 							$db->setQuery ($q);
 							$r = $db->loadAssoc();
@@ -954,7 +954,7 @@ class VirtueMartModelUserfields extends VmModel {
 							break;
 						case 'editorta':
 							jimport( 'joomla.html.editor' );
-							$editor = JFactory::getEditor();
+							$editor = vFactory::getEditor();
 							$_return['fields'][$_fld->name]['formcode'] = $editor->display($_prefix.$_fld->name, $_return['fields'][$_fld->name]['value'], '150', '100', $_fld->cols, $_fld->rows,  array('pagebreak', 'readmore'));
 							break;
 						case 'checkbox':
@@ -1123,7 +1123,7 @@ class VirtueMartModelUserfields extends VmModel {
 	function getIfRequired($fieldname) {
 
 		$q = 'SELECT `required` FROM #__virtuemart_userfields WHERE `name` = "'.$fieldname.'" ';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		$result = $db->loadResult();
 		if(!isset($result)){
@@ -1259,7 +1259,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function _getFilter()
 	{
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		if ($search = vRequest::getCmd('search', false)) {
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);

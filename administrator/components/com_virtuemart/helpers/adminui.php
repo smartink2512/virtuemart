@@ -188,7 +188,7 @@ class AdminUIHelper {
 	 * @param int $moduleId Id of the module to filter on
 	 */
 	static function _getAdminMenu($moduleId = 0) {
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$menuArr = array ();
 
 		$filter [] = "jmmod.published='1'";

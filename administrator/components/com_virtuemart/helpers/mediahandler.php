@@ -868,7 +868,7 @@ class VmMediaHandler {
 		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler($vendorId);
 
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		if(empty($this->_db)) $this->_db = vFactory::getDbo();
 		$this->_db->setQuery('SELECT FOUND_ROWS()');
 		$imagetotal = $this->_db->loadResult();
 		//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
@@ -1025,7 +1025,7 @@ class VmMediaHandler {
 	 */
 	static function getImagesList($type = '',$limit=0, $max=16) {
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$list = array();
 		$vendorId = vmAccess::isSuperVendor();
 		$q='SELECT SQL_CALC_FOUND_ROWS `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `published`=1

@@ -28,7 +28,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 	public function display ($tpl = NULL) {
 
-		$doc = JFactory::getDocument ();
+		$doc = vFactory::getDocument ();
 
 		$show_prices = VmConfig::get ('show_prices', 1);
 		if ($show_prices == '1') {

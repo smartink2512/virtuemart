@@ -30,7 +30,7 @@ class JFormFieldVmOrderState extends JFormFieldList {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
 		$options = array();
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$query = 'SELECT `order_status_code` AS value, `order_status_name` AS text
                  FROM `#__virtuemart_orderstates`

@@ -89,7 +89,7 @@ $customs = $this->customs->items;
 				?>
 				<td><?php
 
-                            $lang = JFactory::getLanguage();
+                            $lang = vFactory::getLanguage();
                             $text = $lang->hasKey($custom->group_title) ? vmText::_($custom->group_title) : $custom->group_title;
 
                             echo JHtml::_('link', JRoute::_($link,FALSE),$text, array('title' => vmText::_('COM_VIRTUEMART_FILTER_BY').' '.htmlentities($text))); ?></td>

@@ -115,7 +115,7 @@ class VirtueMartCart {
 			self::$_cart = new VirtueMartCart;
 
 			if (empty($cartData)) {
-				$session = JFactory::getSession($options);
+				$session = vFactory::getSession($options);
 				$cartSession = $session->get('vmcart', 0, 'vm');
 				if (!empty($cartSession)) {
 					$sessionCart = (object)json_decode( $cartSession ,true);
@@ -131,7 +131,7 @@ class VirtueMartCart {
 			$userModel = VmModel::getModel('user');
 			self::$_cart->user = $userModel->getCurrentUser();
 
-			$lang = JFactory::getLanguage();
+			$lang = vFactory::getLanguage();
 			self::$_cart->order_language = $lang->getTag();
 
 			if (!empty($cartSession)) {
@@ -361,7 +361,7 @@ class VirtueMartCart {
 	 */
 	public function setCartIntoSession($storeDb = false, $forceWrite = false) {
 
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 
 		if($storeDb){
 			$this->storeCart();
@@ -424,7 +424,7 @@ class VirtueMartCart {
 	 * @access public
 	 */
 	public function removeCartFromSession() {
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$session->set('vmcart', 0, 'vm');
 	}
 
@@ -750,7 +750,7 @@ class VirtueMartCart {
 	* @return mixed if found the category ID else null
 	*/
 	public function getCardCategoryId($virtuemart_product_id) {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = ' . (int) $virtuemart_product_id . ' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();

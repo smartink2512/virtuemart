@@ -121,7 +121,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 
 	function renderInstalledPaymentPlugins($selected){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment" and `state`="0"  ORDER BY `ordering`,`name` ASC';
 		$db->setQuery($q);

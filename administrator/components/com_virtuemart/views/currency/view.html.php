@@ -41,8 +41,6 @@ class VirtuemartViewCurrency extends VmViewAdmin {
 
 		$model = VmModel::getModel();
 
-
-		$config = JFactory::getConfig();
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 			$cid	= vRequest::getInt( 'cid' );

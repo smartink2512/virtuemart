@@ -59,7 +59,7 @@ class VirtueMartViewAskquestion extends VmView {
 			}
 		}
 		$this->assignRef ('show_prices', $show_prices);
-		$document = JFactory::getDocument ();
+		$document = vFactory::getDocument ();
 
 		$mainframe = vFactory::getApplication ();
 		$pathway = $mainframe->getPathway ();

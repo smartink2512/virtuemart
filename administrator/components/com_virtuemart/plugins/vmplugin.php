@@ -95,7 +95,7 @@ abstract class vmPlugin extends JPlugin {
 
 	static public function loadJLang($fname,$type,$name){
 
-		$jlang =JFactory::getLanguage();
+		$jlang =vFactory::getLanguage();
 		$tag = $jlang->getTag();
 
 
@@ -254,7 +254,7 @@ abstract class vmPlugin extends JPlugin {
 			return TRUE;
 		}
 		else {
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 
 			$q = 'SELECT vm.* FROM `' . $this->_configTable . '` AS vm,
 						#__extensions AS j WHERE vm.`' . $this->_idName . '` = "' . $id . '"
@@ -288,7 +288,7 @@ abstract class vmPlugin extends JPlugin {
 			return TRUE;
 		}
 		else {
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 
 			$q = 'SELECT vm.* FROM `' . $this->_configTable . '` AS vm,
 						#__extensions AS j WHERE vm.`' . $this->_psType . '_jplugin_id`  = "' . $jplugin_id . '"
@@ -316,7 +316,7 @@ abstract class vmPlugin extends JPlugin {
 		if (!empty($this->_jid)) {
 			return $this->_jid;
 		}
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 
 		$q = 'SELECT j.`extension_id` AS c FROM #__extensions AS j
 					WHERE j.element = "' . $this->_name . '" AND j.`folder` = "' . $this->_type . '"';
@@ -357,7 +357,7 @@ abstract class vmPlugin extends JPlugin {
 			$loggablefields = $this->getTableSQLLoggablefields();
 			$tablesFields = array_merge($SQLfields, $loggablefields);
 
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$query = 'SHOW TABLES LIKE "%' . str_replace('#__', $db->getPrefix(), $this->_tablename) . '"';
 			$db->setQuery($query);
 			$result = $db->loadResult();
@@ -547,7 +547,7 @@ abstract class vmPlugin extends JPlugin {
 	protected function getVmPluginMethod ($int, $cache = true) {
 
 		if ($this->_vmpCtable === 0 || !$cache) {
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 
 			if (!class_exists ($this->_configTableClassName)) {
 				require(VMPATH_ADMIN . DS . 'tables' . DS . $this->_configTableFileName . '.php');
@@ -622,7 +622,7 @@ abstract class vmPlugin extends JPlugin {
 		if (!class_exists ('VmTableData')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtabledata.php');
 		}
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$table = new VmTableData($tableName, $tableId, $db);
 		foreach ($tableFields as $field) {
 			$table->$field = 0;

@@ -38,7 +38,7 @@ class VirtueMartModelWaitingList extends VmModel {
 		//Sanitize param
 		$virtuemart_product_id = (int)$virtuemart_product_id;
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT * FROM `#__virtuemart_waitingusers`
 				LEFT JOIN `#__users` ON `virtuemart_user_id` = `id`
 				WHERE `virtuemart_product_id`=' . $virtuemart_product_id . '

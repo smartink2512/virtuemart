@@ -57,7 +57,7 @@ class VirtuemartControllerRatings extends VmController {
 		vRequest::setVar('layout', 'edit_review');
 
 		if(empty($view)){
-			$document = JFactory::getDocument();
+			$document = vFactory::getDocument();
 			$viewType = $document->getType();
 			$view = $this->getView($this->_cname, $viewType);
 		}

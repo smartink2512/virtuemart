@@ -198,7 +198,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Max Milbers
 	 */
 	public function getLastProductOrdering($default = 0){
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->get('vmlastproductordering', $default, 'vm');
 	}
 
@@ -206,7 +206,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Max Milbers
 	 */
 	public function setLastProductOrdering($ordering){
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		return $session->set('vmlastproductordering', (string) $ordering, 'vm');
 	}
 
@@ -504,7 +504,7 @@ class VirtueMartModelProduct extends VmModel {
 					$where[] = 'pp.`product_price`>"0.0" ';
 				break;
 				case 'recent':
-					$rSession = JFactory::getSession();
+					$rSession = vFactory::getSession();
 					$rIds = $rSession->get('vmlastvisitedproductids', array(), 'vm'); // get recent viewed from browser session
 					return $rIds;
 			}
@@ -985,7 +985,7 @@ class VirtueMartModelProduct extends VmModel {
 		$db = vFactory::getDbo();
 		if(!isset($this->_nullDate))$this->_nullDate = $db->getNullDate();
 		if(!isset($this->_now)){
-			$jnow = JFactory::getDate();
+			$jnow = vFactory::getDate();
 			$this->_now = $jnow->toSQL();
 		}
 
@@ -1556,7 +1556,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function getNeighborProducts ($product, $onlyPublished = TRUE, $max = 1) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$neighbors = array('previous' => '', 'next' => '');
 
 		$oldDir = $this->filter_order_Dir;
@@ -1969,7 +1969,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 
-		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+		$cache = vFactory::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
 		
 		return $product_data->virtuemart_product_id;
@@ -2006,7 +2006,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		// created_on , modified_on
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 
 		$db->setQuery ('SELECT `product_name`,`slug`,`virtuemart_vendor_id` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
 		$parent = $db->loadObject ();
@@ -2098,7 +2098,7 @@ class VirtueMartModelProduct extends VmModel {
 	
 	private function productPricesClone ($virtuemart_product_id) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = "SELECT * FROM `#__virtuemart_product_prices`";
 		$q .= " WHERE `virtuemart_product_id` = " . $virtuemart_product_id;
 		$db->setQuery ($q);
@@ -2123,7 +2123,7 @@ class VirtueMartModelProduct extends VmModel {
 	/* look if whe have a product type */
 	private function productCustomsfieldsClone ($virtuemart_product_id) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = "SELECT * FROM `#__virtuemart_product_customfields`";
 		$q .= " WHERE `virtuemart_product_id` = " . $virtuemart_product_id;
 		$db->setQuery ($q);
@@ -2336,7 +2336,7 @@ class VirtueMartModelProduct extends VmModel {
 			vmSetStartTime('mcaching');
 			$mlang=(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1);
 			if(true){
-				$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+				$cache = vFactory::getCache('com_virtuemart_cat_manus','callback');
 				$cache->setCaching(true);
 				$manufacturers = $cache->call( array( 'VirtueMartModelManufacturer', 'getManufacturersOfProductsInCategory' ),$virtuemart_category_id,VmConfig::$vmlang,$mlang);
 				vmTime('Manufacturers by Cache','mcaching');
@@ -2669,7 +2669,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		if (empty($product_id)) {
 			return array();
 		}
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$db->setQuery (' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_' . VmConfig::$vmlang . '`
 			JOIN `#__virtuemart_products` as C using (`virtuemart_product_id`)
 			WHERE `product_parent_id` =' . (int)$product_id);
@@ -2682,7 +2682,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		if (empty($product_id)) {
 			return array();
 		}
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$db->setQuery (' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` =' . (int)$product_id.' ORDER BY pordering, created_on ASC');
 
 		return $db->loadColumn ();

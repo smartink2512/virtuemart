@@ -35,7 +35,7 @@ if (empty ( $this->product )) {
 	echo vmText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else {
-	$session = JFactory::getSession();
+	$session = vFactory::getSession();
 	$sessData = $session->get('askquestion', 0, 'vm');
 	if(!empty($this->login)){
 		echo $this->login;

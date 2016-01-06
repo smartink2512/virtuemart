@@ -69,7 +69,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 
 		if ($layoutName == 'edit' || $layoutName == 'edit_shipto') {
 
-			$editor = JFactory::getEditor();
+			$editor = vFactory::getEditor();
 
 			if (!class_exists('VmImage'))
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');

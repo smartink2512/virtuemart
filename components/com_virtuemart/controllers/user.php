@@ -45,7 +45,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = array()){
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$viewName = vRequest::getCmd('view', 'user');
 		$viewLayout = vRequest::getCmd('layout', 'default');
@@ -217,7 +217,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 				if($switch){ //and VmConfig::get ('oncheckout_change_shopper')){
 					//update session
 					$current = vFactory::getUser($ret['newId']);
-					$session = JFactory::getSession();
+					$session = vFactory::getSession();
 					$session->set('user', $current);
 				}
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;

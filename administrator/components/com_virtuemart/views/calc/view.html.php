@@ -52,7 +52,7 @@ class VirtuemartViewCalc extends VmViewAdmin {
 			$isNew = ($calc->virtuemart_calc_id < 1);
 			if ($isNew) {
 				$calc->virtuemart_vendor_id = $this->vendorId;
-				$db = JFactory::getDBO();
+				$db = vFactory::getDbo();
 				//get default currency of the vendor, if not set get default of the shop
 				$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "'.$this->vendorId.'"';
 				$db->setQuery($q);

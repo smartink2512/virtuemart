@@ -152,7 +152,7 @@ class VirtueMartModelCategory extends VmModel {
 			vmSetStartTime('com_virtuemart_cats');
 
 			if($useCache){
-				$cache = JFactory::getCache('com_virtuemart_cats','callback');
+				$cache = vFactory::getCache('com_virtuemart_cats','callback');
 				$cache->setCaching(true);
 				//vmdebug('Calling cache getChildCategoryListObject');
 				$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListObject' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
@@ -229,7 +229,7 @@ class VirtueMartModelCategory extends VmModel {
 		$query .= ' AND c.`published` = 1 ';
 		$query .= ' ORDER BY '.$selectedOrdering.' '.$orderDir;
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery( $query);
 		$childList = $db->loadObjectList();
 		//vmdebug('getChildCategoryListObject in model category ',$query,$childList);
@@ -340,7 +340,7 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		if( !empty( $keyword ) ) {
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$keyword = '"%' . $db->escape( $keyword, true ) . '%"' ;
 			//$keyword = $db->Quote($keyword, false);
 			$where[] = ' ( category_name LIKE '.$keyword.'
@@ -376,7 +376,7 @@ class VirtueMartModelCategory extends VmModel {
 	*/
 	public function countProducts($cat_id=0) {
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$vendorId = 1;
 		if ($cat_id > 0) {
 			$q = 'SELECT count(#__virtuemart_products.virtuemart_product_id) AS total
@@ -408,7 +408,7 @@ class VirtueMartModelCategory extends VmModel {
 		$row->load($id);
 
 		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_category_categories` WHERE `category_child_id` = '. (int)$row->virtuemart_category_id ;
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($query);
 		$parent = $db->loadObject();
 
@@ -437,7 +437,7 @@ class VirtueMartModelCategory extends VmModel {
 				  ON c.`virtuemart_category_id` = cx.`category_child_id`
 			      WHERE c.`virtuemart_category_id` = %s';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		// update ordering values
 		for( $i=0; $i < $total; $i++ ) {
 
@@ -492,7 +492,7 @@ class VirtueMartModelCategory extends VmModel {
      */
     public function getRelationInfo( $virtuemart_category_id = 0 ){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
     	$query = 'SELECT `category_parent_id`, `ordering`
     			  FROM `#__virtuemart_category_categories`
     			  WHERE `category_child_id` = '. (int)$virtuemart_category_id;
@@ -640,7 +640,7 @@ class VirtueMartModelCategory extends VmModel {
     }
 
 	public function clearCategoryRelatedCaches(){
-		$cache = JFactory::getCache();
+		$cache = vFactory::getCache();
 		$cache->clean('com_virtuemart_cats');
 		$cache->clean('mod_virtuemart_product');
 		$cache->clean('mod_virtuemart_category');
@@ -656,7 +656,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		static $hasChildrenCache=array();
 		if(!isset($hasChildrenCache[$virtuemart_category_id])){
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$q = "SELECT `category_child_id`
 			FROM `#__virtuemart_category_categories`
 			WHERE `category_parent_id` = ".(int)$virtuemart_category_id;
@@ -680,7 +680,7 @@ class VirtueMartModelCategory extends VmModel {
 	 */
 	public function getParentsList($virtuemart_category_id) {
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$menu = vFactory::getApplication()->getMenu();
 		$parents = array();
 		if (empty($query['Itemid'])) {
@@ -750,7 +750,7 @@ class VirtueMartModelCategory extends VmModel {
 		if(isset($resId[$hash])){
 			$ids = $resId[$hash];
 		} else{
-			$db	= JFactory::getDBO();
+			$db	= vFactory::getDbo();
 			$q = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
 				FROM  #__virtuemart_category_categories AS `xref`
 				WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;

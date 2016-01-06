@@ -40,7 +40,7 @@ class convertECB {
 	function convert( $amountA, $currA='', $currB='', $a2rC = true, $relatedCurrency = 'EUR') {
 
 		// cache subfolder(group) 'convertECB', cache method: callback
-		$cache= JFactory::getCache('convertECB','callback');
+		$cache= vFactory::getCache('convertECB','callback');
 
 		// save configured lifetime
 		@$lifetime=$cache->lifetime;
@@ -48,7 +48,7 @@ class convertECB {
 		$cache->setLifeTime(360); // check 4 time per day
 
 		// save cache conf
-		$conf = JFactory::getConfig();
+		$conf = vFactory::getConfig();
 
 		// check if cache is enabled in configuration
 		$cacheactive = $conf->get('caching');

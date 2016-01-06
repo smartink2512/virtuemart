@@ -33,7 +33,7 @@ class VirtuemartViewState extends vView {
 	function display($tpl = null) {
 
 		$states = array();
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		//retrieving countries id
 		$country_ids = vRequest::getString('virtuemart_country_id');
 		$country_ids = explode(',', $country_ids);

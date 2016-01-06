@@ -186,7 +186,7 @@ class VirtueMartModelRatings extends VmModel {
      	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`
       WHERE virtuemart_rating_review_id="'.(int)$cids[0].'" ' ;
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		vmdebug('getReview',$db->getQuery());
 		return $db->loadObject();
@@ -205,7 +205,7 @@ class VirtueMartModelRatings extends VmModel {
 		if($onlyPublished){
 			$q .= 'AND `published`="1" ';
 		}
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		return $db->loadObject();
 
@@ -225,7 +225,7 @@ class VirtueMartModelRatings extends VmModel {
     	}
 		if(!empty($userId)){
 			$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery($q);
 			return $db->loadObject();
 		} else {
@@ -247,7 +247,7 @@ class VirtueMartModelRatings extends VmModel {
 			$userId = $user->id;
     	}
 		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" ';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		return $db->loadObjectList();
     }
@@ -266,7 +266,7 @@ class VirtueMartModelRatings extends VmModel {
 			$userId = $user->id;
     	}
 		$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		return $db->loadObject();
 
@@ -473,7 +473,7 @@ class VirtueMartModelRatings extends VmModel {
 	* @return int
 	*/
 	public function countReviewsForProduct($pid) {
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = "SELECT COUNT(*) AS total
 			FROM #__virtuemart_rating_reviews
 			WHERE virtuemart_product_id=".(int)$pid;
@@ -551,7 +551,7 @@ class VirtueMartModelRatings extends VmModel {
 							$rr_os=VmConfig::get('rr_os',array('C'));
 							if(!is_array($rr_os)) $rr_os = array($rr_os);
 
-							$db = JFactory::getDBO ();
+							$db = vFactory::getDbo ();
 							$q = 'SELECT COUNT(*) as total FROM `#__virtuemart_orders` AS o LEFT JOIN `#__virtuemart_order_items` AS oi ';
 							$q .= 'ON `o`.`virtuemart_order_id` = `oi`.`virtuemart_order_id` ';
 							$q .= 'WHERE o.virtuemart_user_id > 0 AND o.virtuemart_user_id = "' . $user->id . '" AND oi.virtuemart_product_id = "' . $product_id . '" ';

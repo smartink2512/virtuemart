@@ -91,7 +91,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			vmError(vmText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_CANT_MAKE_DEFAULT',$group->shopper_group_name,$id));
 			return false;
 		}
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0 WHERE `default`<"2"');
 		if (!$db->execute()) return ;
 		$db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = "'.$kind.'" WHERE virtuemart_shoppergroup_id='.(int)$id);
@@ -113,7 +113,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			if($onlyPublished){
 				$q .= ' AND `published`="1" ';
 			}
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery($q);
 
 			if(!$res = $db->loadObject()){
@@ -161,7 +161,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	}
 
 	function mergeSessionSgrps(&$ids){
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$shoppergroup_ids = $session->get('vm_shoppergroups_add',array(),'vm');
 
 		$ids = array_merge($ids,(array)$shoppergroup_ids);
@@ -171,7 +171,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	}
 
 	function removeSessionSgrps(&$ids){
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$shoppergroup_ids_remove = $session->get('vm_shoppergroups_remove',0,'vm');
 		if($shoppergroup_ids_remove!==0){
 
@@ -210,7 +210,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 		$defaultSgId = $this->getDefault(0);
 		$anonymSgId = $this->getDefault(1);
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		foreach($ids as $id){
 
 			//Test if shoppergroup is default
@@ -257,7 +257,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	 */
   	static function getShoppergroupById($id, $default_group = false) {
     	$virtuemart_vendor_id = 1;
-    	$db = JFactory::getDBO();
+    	$db = vFactory::getDbo();
 
     	$q =  'SELECT `#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`, `#__virtuemart_shoppergroups`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__virtuemart_shoppergroups`';
 

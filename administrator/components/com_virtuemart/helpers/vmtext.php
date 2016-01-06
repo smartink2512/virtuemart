@@ -53,7 +53,7 @@ class vmText
 	 */
 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		if (is_array($jsSafe))
 		{
 			if (array_key_exists('interpretBackSlashes', $jsSafe))
@@ -107,7 +107,7 @@ class vmText
 	 */
 	public static function sprintf($string)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		$args = func_get_args();
 		$count = count($args);
 		if ($count > 0)

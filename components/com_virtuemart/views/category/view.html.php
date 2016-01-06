@@ -42,7 +42,7 @@ class VirtuemartViewCategory extends VmView {
 
 		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 
 		$app = vFactory::getApplication();
 		$pathway = $app->getPathway();
@@ -370,7 +370,7 @@ class VirtuemartViewCategory extends VmView {
 	public function getSearchCustom() {
 
 		$emptyOption  = array('virtuemart_custom_id' =>0, 'custom_title' => vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
-		$this->_db =JFactory::getDBO();
+		$this->_db =vFactory::getDbo();
 		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
 		$this->options = $this->_db->loadAssocList();
 		$this->custom_parent_id = 0;

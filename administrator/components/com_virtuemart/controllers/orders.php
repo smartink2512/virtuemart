@@ -166,7 +166,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updatestatus() {
 
-		$app = Jfactory::getApplication();
+		$app = vFactory::getApplication();
 		$lastTask = vRequest::getCmd('last_task');
 
 		if(!vmAccess::manager('orders.status')){
@@ -218,7 +218,7 @@ class VirtuemartControllerOrders extends VmController {
 			$view->display();
 			return false;
 		}
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 
 		$data = vRequest::getRequest();
 		$model = VmModel::getModel();
@@ -260,12 +260,12 @@ class VirtuemartControllerOrders extends VmController {
 
 		$model->deleteInvoice($_orderID);
 
-		$app = Jfactory::getApplication();
+		$app = vFactory::getApplication();
 		$app->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
 
 	public function updateOrderHead() {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		if(!vmAccess::manager('orders.edit')) {
 			vmInfo('Restricted');
 			$view = $this->getView('orders', 'html');
@@ -282,7 +282,7 @@ class VirtuemartControllerOrders extends VmController {
 	}
 
 	public function CreateOrderHead() {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 		if(!vmAccess::manager('orders.create')) {
 			vmInfo( 'Restricted' );
 			$view = $this->getView( 'orders', 'html' );

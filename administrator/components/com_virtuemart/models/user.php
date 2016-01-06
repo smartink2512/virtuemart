@@ -144,7 +144,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if(!empty($this->_data)) return $this->_data;
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
@@ -215,7 +215,7 @@ class VirtueMartModelUser extends VmModel {
 	function getContactDetails()
 	{
 		if ($this->_id) {
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
 			$_contacts = $db->loadObjectList();
 			if (count($_contacts) > 0) {
@@ -377,7 +377,7 @@ class VirtueMartModelUser extends VmModel {
 
 			$user->groups[] = $newUsertype;
 
-			$date = JFactory::getDate();
+			$date = vFactory::getDate();
 			$user->set('registerDate', $date->toSQL());
 
 			// If user activation is turned on, we need to set the activation information
@@ -780,7 +780,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$required  = 0;
 		$missingFields = array();
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		foreach ($neededFields as $field) {
 
 			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
@@ -886,7 +886,7 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 	function getBTuserinfo_id($id = 0){
-		if(empty($db)) $db = JFactory::getDBO();
+		if(empty($db)) $db = vFactory::getDbo();
 
 		if($id == 0){
 			$id = $this->_id;
@@ -1131,7 +1131,7 @@ class VirtueMartModelUser extends VmModel {
 
 	function removeAddress($virtuemart_userinfo_id){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		if ( isset($virtuemart_userinfo_id) and $this->_id != 0 ) {
 			//$userModel -> deleteAddressST();
@@ -1312,7 +1312,7 @@ class VirtueMartModelUser extends VmModel {
 	function _getFilter()
 	{
 		if ($search = vRequest::getString('search', false)) {
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);
 			$searchArray = array('name','username','email','usertype','shopper_group_name');
@@ -1383,7 +1383,7 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function getSuperAdminCount(){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		if(JVM_VERSION>1){
 			$q = ' SELECT COUNT(us.id)  FROM #__users as us '.
 				' INNER JOIN #__user_usergroup_map as um ON us.id = um.user_id ' .
@@ -1427,7 +1427,7 @@ class VirtueMartModelUser extends VmModel {
 		$query .= 'GROUP BY `node`.`' . $name . '` ';
 		$query .= ' ORDER BY `node`.`lft`';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($query);
 		//$app = vFactory::getApplication();
 		//$app -> enqueueMessage($db->getQuery());

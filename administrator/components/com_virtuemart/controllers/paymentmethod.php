@@ -68,7 +68,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 	 * @author Valérie Isaksen
 	 */
 	public function ClonePayment() {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 
 		/* Load the view object */
 		$view = $this->getView('paymentmethod', 'html');

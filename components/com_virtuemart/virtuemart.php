@@ -47,7 +47,7 @@ if(VmConfig::get('shop_is_offline',0)){
 // 	$task = vRequest::getCmd('task',vRequest::getCmd('layout',$_controller) );		$this makes trouble!
 	$task = vRequest::getCmd('task','') ;
 
-	$session = JFactory::getSession();
+	$session = vFactory::getSession();
 	$manage = vRequest::getCmd('manage',$session->get('manage', false,'vm'));
 	if(!$manage) $session->set('manage', 0,'vm');
 
@@ -61,7 +61,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			vRequest::setVar('tmpl','component') ;
 
 			VmConfig::loadJLang('com_virtuemart');
-			$jlang = JFactory::getLanguage();
+			$jlang = vFactory::getLanguage();
 			$tag = $jlang->getTag();
 			$jlang->load('', JPATH_ADMINISTRATOR,$tag,true);
 			VmConfig::loadJLang('com_virtuemart');
@@ -132,7 +132,7 @@ if (class_exists($_class)) {
 } else {
     vmDebug('VirtueMart controller not found: '. $_class);
     if (VmConfig::get('handle_404',1)) {
-    	$mainframe = Jfactory::getApplication();
+    	$mainframe = vFactory::getApplication();
     	$mainframe->redirect(JRoute::_ ('index.php?option=com_virtuemart&view=virtuemart', FALSE));
     } else {
     	JError::raise(E_ERROR,'404','Not found');

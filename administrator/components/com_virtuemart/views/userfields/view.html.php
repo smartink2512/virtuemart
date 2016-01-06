@@ -48,7 +48,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 		$lists['coreFields'] = $model->getCoreFields();
 
 		if ($layoutName == 'edit') {
-			$this->editor = JFactory::getEditor();
+			$this->editor = vFactory::getEditor();
 
 			$this->userField = $model->getUserfield();
 			//vmdebug('user plugin $this->userField',$this->userField);
@@ -123,7 +123,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 				$i = 1;
 			} else {
 				$lists['userfield_values'] = '';
-				$lang =JFactory::getLanguage();
+				$lang =vFactory::getLanguage();
 				for ($i = 0; $i < $n; $i++) {
 					$translate= $lang->hasKey($userFieldValues[$i]->fieldtitle) ? " (".vmText::_($userFieldValues[$i]->fieldtitle).")" : "";
 					$lists['userfield_values'] .=
@@ -267,7 +267,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 		$ext_id = 'extension_id';
 		$enable = 'enabled';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
  		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmuserfield" ';
 		$db->setQuery($q);
 		$userfieldplugins = $db->loadAssocList($ext_id);

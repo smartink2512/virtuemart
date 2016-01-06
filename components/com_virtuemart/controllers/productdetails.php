@@ -113,7 +113,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
-			$session = JFactory::getSession();
+			$session = vFactory::getSession();
 			if(!$res[0]){
 				$askquestionform = array('name' => vRequest::getVar ('name'), 'email' => vRequest::getVar ('email'), 'comment' => vRequest::getString ('comment'));
 				$session->set('askquestion', $askquestionform, 'vm');
@@ -185,7 +185,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			JPluginHelper::importPlugin('captcha');
 			$dispatcher = JDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
-			$session = JFactory::getSession();
+			$session = vFactory::getSession();
 			if(!$res[0]){
 				$mailrecommend = array('email' => vRequest::getVar ('email'), 'comment' => vRequest::getString ('comment'));
 				$session->set('mailrecommend', $mailrecommend, 'vm');
@@ -317,7 +317,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		}
 
 		// Get the document object.
-		$document = JFactory::getDocument ();
+		$document = vFactory::getDocument ();
 		// stAn: setName works in JDocumentHTML and not JDocumentRAW
 		if (method_exists($document, 'setName')){
 			$document->setName ('recalculate');

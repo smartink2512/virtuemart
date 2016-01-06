@@ -73,7 +73,7 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	 * @author Valérie Isaksen
 	 */
 	public function CloneShipment() {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = vFactory::getApplication();
 
 		/* Load the view object */
 		$view = $this->getView('shipmentmethod', 'html');

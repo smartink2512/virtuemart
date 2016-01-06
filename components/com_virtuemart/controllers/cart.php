@@ -66,7 +66,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$app ->redirect($continue_link,'This is a catalogue, you cannot acccess the cart');
 		}
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$tmpl = vRequest::getCmd('tmpl',false);
 		if ($viewType == 'raw' and $tmpl == 'component') {
@@ -436,7 +436,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 
 		//update session
-		$session = JFactory::getSession();
+		$session = vFactory::getSession();
 		$adminID = $session->get('vmAdminID');
 		if(!isset($adminID)) {
 			if(!class_exists('vmCrypt'))

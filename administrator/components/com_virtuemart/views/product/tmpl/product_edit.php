@@ -20,10 +20,10 @@
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea($this);
 
-$document = JFactory::getDocument();
+$document = vFactory::getDocument();
 
 vmJsApi::JvalideForm();
-$this->editor = JFactory::getEditor();
+$this->editor = vFactory::getEditor();
 
 ?>
 

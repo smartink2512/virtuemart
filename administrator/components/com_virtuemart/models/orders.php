@@ -49,7 +49,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function getOrderIdByOrderPass($orderNumber,$orderPass){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_pass`="'.$db->escape($orderPass).'" AND `order_number`="'.$db->escape($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
@@ -63,7 +63,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public static function getOrderIdByOrderNumber($orderNumber){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$db->escape($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
@@ -77,7 +77,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function getOrderNumber($virtuemart_order_id){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE virtuemart_order_id="'.(int)$virtuemart_order_id.'"  ';
 		$db->setQuery($q);
 		$OrderNumber = $db->loadResult();
@@ -100,7 +100,7 @@ class VirtueMartModelOrders extends VmModel {
 			$arrow ='<';
 		}
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`'.$arrow.(int)$order_id;
 		$q.= ' ORDER BY `virtuemart_order_id` '.$direction ;
 		$db->setQuery($q);
@@ -129,7 +129,7 @@ class VirtueMartModelOrders extends VmModel {
 
         // If the user is not logged in, we will check the order number and order pass
         if(empty($cuid)){
-			$sess = JFactory::getSession();
+			$sess = vFactory::getSession();
 			$orderNumber = vRequest::getString('order_number',$orderNumber);
 			$tries = $sess->get('getOrderDetails.'.$orderNumber,0);
 			if($tries>5){
@@ -181,7 +181,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		//sanitize id
 		$virtuemart_order_id = (int)$virtuemart_order_id;
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$order = array();
 
 		// Get the order details
@@ -349,7 +349,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 
 		if ($search = vRequest::getString('search', false)){
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$search = str_replace(' ','%',$search);
 
@@ -454,7 +454,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if ( $orderUpdate and !empty($data['virtuemart_order_item_id'])) {
 
 			//get tax calc_value of product VatTax
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$sql = "SELECT `calc_value` FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = ".$data['virtuemart_order_id']." AND `virtuemart_order_item_id` = ".$data['virtuemart_order_item_id']." AND `calc_kind` = 'VatTax' ";
 			$db->setQuery($sql);
 			$taxCalcValue = $db->loadResult();
@@ -463,7 +463,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				if(!$taxCalcValue){
 					//Could be a new item, missing the tax rules, we try to get one of another product.
 					//get tax calc_value of product VatTax
-					$db = JFactory::getDBO();
+					$db = vFactory::getDbo();
 					$sql = "SELECT `calc_value` FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = ".$data['virtuemart_order_id']." AND `calc_kind` = 'VatTax' ";
 					$db->setQuery($sql);
 					$taxCalcValue = $db->loadResult();
@@ -515,7 +515,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			if ( empty($data['order_item_sku']) and !empty($virtuemart_order_item_id) )
 			{
 				//update product identification
-				$db = JFactory::getDBO();
+				$db = vFactory::getDbo();
 				$prolang = '#__virtuemart_products_' . VmConfig::$vmlang;
 				$oi = " #__virtuemart_order_items";
 				$protbl = "#__virtuemart_products";
@@ -538,7 +538,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//moreover we can compute all aggregate values here via one aggregate SQL
 		if ( $orderUpdate and !empty( $table->virtuemart_order_id))
 		{
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$ordid = $table->virtuemart_order_id;
 			///vmdebug('my order table ',$table);
 			//cartRules
@@ -745,7 +745,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			if(strpos($del_date_type,'os')!==FALSE){	//for example osS
 				$os = substr($del_date_type,2);
 				if($data->order_status == $os){
-					$date = JFactory::getDate();
+					$date = vFactory::getDate();
 					$data->delivery_date = $date->toSQL();
 				}
 			} else {
@@ -790,7 +790,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$q = 'SELECT virtuemart_order_item_id
 												FROM #__virtuemart_order_items
 												WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
-					$db = JFactory::getDBO();
+					$db = vFactory::getDbo();
 					$db->setQuery($q);
 					$order_items = $db->loadObjectList();
 					if ($order_items) {
@@ -987,7 +987,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 			if(VmConfig::get('reuseorders',true) and !$order){
-				$jnow = JFactory::getDate();
+				$jnow = vFactory::getDate();
 				$jnow->sub(new DateInterval('PT1H'));
 				$minushour = $jnow->toSQL();
 				$q .= ' WHERE `customer_number`= "'.$_orderData->customer_number.'" ';
@@ -1026,7 +1026,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		if (!empty($_cart->couponCode)) {
 			//set the virtuemart_order_id in the Request for 3rd party coupon components (by Seyi and Max)
@@ -1046,7 +1046,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	private function getVendorCurrencyId($vendorId){
 		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.$vendorId.'" ';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 		$vendorCurrency =  $db->loadResult();
 		return $vendorCurrency;
@@ -1097,7 +1097,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
 		$_userInfoData['address_type'] = 'BT';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = ' SELECT `virtuemart_order_userinfo_id` FROM `#__virtuemart_order_userinfos` ';
 		$q .= ' WHERE `virtuemart_order_id` = "'.$_id.'" AND `address_type` = "BT" ';
 		$db->setQuery($q);
@@ -1147,7 +1147,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if($newState == $oldState) return;
 		// $StatutWhiteList = array('P','C','X','R','S','N');
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery('SELECT * FROM `#__virtuemart_orderstates` ');
 		$StatutWhiteList = $db->loadAssocList('order_status_code');
 		// new product is statut N
@@ -1515,7 +1515,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	static public function genStdOrderNumber($virtuemart_vendor_id=1, $length = 4){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$q = 'SELECT COUNT(1) FROM #__virtuemart_orders WHERE `virtuemart_vendor_id`="'.$virtuemart_vendor_id.'"';
 		$db->setQuery($q);
@@ -1549,7 +1549,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	function createInvoiceNumber($orderDetails, &$invoiceNumber){
 
 		$orderDetails = (array)$orderDetails;
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		if(!isset($orderDetails['virtuemart_order_id'])){
 			vmWarn('createInvoiceNumber $orderDetails has no virtuemart_order_id ',$orderDetails);
 			vmdebug('createInvoiceNumber $orderDetails has no virtuemart_order_id ',$orderDetails);
@@ -1617,7 +1617,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	function getInvoiceNumber($virtuemart_order_id){
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `invoice_number` FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$virtuemart_order_id.'" ';
 		$db->setQuery($q);
 		return $db->loadresult();
@@ -1792,7 +1792,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			return false;
 		}
 		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' .(int) $virtuemart_order_id;
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($q);
 
 		if ($db->execute() === false) {
@@ -1969,7 +1969,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		// Update Payment Method
 		if($_orderData['old_virtuemart_paymentmethod_id'] != $_orderData['virtuemart_paymentmethod_id']) {
 
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$db->setQuery( 'SELECT `payment_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
 					WHERE `#__virtuemart_paymentmethods`.`virtuemart_paymentmethod_id` = `#__virtuemart_orders`.`virtuemart_paymentmethod_id` AND `virtuemart_order_id` = ' . $virtuemart_order_id );
 			$paymentTable = '#__virtuemart_payment_plg_'. $db->loadResult();
@@ -2065,7 +2065,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$_orderID = $db->insertid();
 
 		$_usr  = vFactory::getUser();

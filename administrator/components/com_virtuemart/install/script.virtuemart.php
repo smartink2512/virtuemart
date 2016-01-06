@@ -57,7 +57,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function checkIfUpdate(){
 
 			$update = false;
-			$this->_db = JFactory::getDBO();
+			$this->_db = vFactory::getDbo();
 			$q = 'SHOW TABLES LIKE "'.$this->_db->getPrefix().'virtuemart_adminmenuentries"'; //=>jos_virtuemart_shipment_plg_weight_countries
 			$this->_db->setQuery($q);
 			if($this->_db->loadResult()){
@@ -229,10 +229,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
 			//Delete Cache
-			$cache = JFactory::getCache();
+			$cache = vFactory::getCache();
 			$cache->clean();
 
-			$this->_db = JFactory::getDBO();
+			$this->_db = vFactory::getDbo();
 
 			if(empty($this->path)) $this->path = VMPATH_ADMIN;
 
@@ -326,7 +326,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		private function isUpdateToVm3(){
 
 			if(empty($this->_db)) {
-				$this->_db = JFactory::getDBO();
+				$this->_db = vFactory::getDbo();
 			}
 
 			$tablename = '#__virtuemart_product_customfields';
@@ -350,7 +350,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if( $multix == 'none'){
 
 				if(empty($this->_db)){
-					$this->_db = JFactory::getDBO();
+					$this->_db = vFactory::getDbo();
 				}
 
 				$q = 'SELECT `virtuemart_user_id` FROM #__virtuemart_orders WHERE virtuemart_vendor_id = "0" ';
@@ -382,7 +382,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		private function adjustDefaultOrderStates(){
 
 			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
+				$this->_db = vFactory::getDbo();
 			}
 
 			$order_stock_handles = array('P'=>'R', 'C'=>'R', 'X'=>'A', 'R'=>'A', 'S'=>'O');
@@ -411,7 +411,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		private function updateAdminMenuEntries(){
 
 			$sqlfile = VMPATH_ADMIN .DS. 'install' .DS. 'install_essential_data.sql';
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$queries = $db->splitSql(file_get_contents($sqlfile));
 
 			if (count($queries) == 0) {
@@ -577,7 +577,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		private function migrateCustoms(){
 
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$q = 'UPDATE `#__virtuemart_product_customfields` SET `published`= "1"  WHERE `published`="0" ';
 			$db->setQuery($q);
 			$db->execute();
@@ -670,7 +670,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$ok = true;
 
 			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
+				$this->_db = vFactory::getDbo();
 			}
 
 			$query = 'SHOW COLUMNS FROM `'.$tablename.'` ';
@@ -734,7 +734,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" ';
 
-			$this->_db = JFactory::getDbo();
+			$this->_db = vFactory::getDbo();
 			$this->_db->setQuery($q);
 			$res = $this->_db ->loadResult();
 
@@ -874,49 +874,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
-	}
-
-	/**
-	 * Legacy j1.5 function to use the 1.6 class install/update
-	 *
-	 * @return boolean True on success
-	 * @deprecated
-	 */
-	function com_install() {
-		$vmInstall = new com_virtuemartInstallerScript();
-		$upgrade = $vmInstall->checkIfUpdate();
-
-		if(version_compare(JVERSION,'1.6.0','ge')) {
-			// Joomla! 1.6 code here
-		} else {
-			// Joomla! 1.5 code here
-			$method = ($upgrade) ? 'update' : 'install';
-			$vmInstall->$method();
-			$vmInstall->postflight($method);
-		}
-
-
-		return true;
-	}
-
-	/**
-	 * Legacy j1.5 function to use the 1.6 class uninstall
-	 *
-	 * @return boolean True on success
-	 * @deprecated
-	 */
-	function com_uninstall() {
-		$vmInstall = new com_virtuemartInstallerScript();
-		// 		$vmInstall->preflight('uninstall');
-
-		if(version_compare(JVERSION,'1.6.0','ge')) {
-			// Joomla! 1.6 code here
-		} else {
-			$vmInstall->uninstall();
-			$vmInstall->postflight('uninstall');
-		}
-
-		return true;
 	}
 
 } // if(defined)

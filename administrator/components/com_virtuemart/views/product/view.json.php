@@ -38,7 +38,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 		$this->type = vRequest::getCmd('type', false);
 		$this->row = vRequest::getInt('row', false);
-		$this->db = JFactory::getDBO();
+		$this->db = vFactory::getDbo();
 		$this->model = VmModel::getModel('Customfields') ;
 
 	}

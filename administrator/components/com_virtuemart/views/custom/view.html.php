@@ -146,7 +146,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 
 	function renderInstalledCustomPlugins($selected)
 	{
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$table = '#__extensions';
 		$enable = 'enabled';

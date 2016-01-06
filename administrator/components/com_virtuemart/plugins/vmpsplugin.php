@@ -237,7 +237,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	private function getOrderMethodNamebyOrderId ($virtuemart_order_id) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . (int)$virtuemart_order_id;
 		$db->setQuery ($q);
@@ -322,7 +322,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	private function getOrderPluginName ($order_number, $pluginmethod_id) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE `order_number` = "' . $order_number . '"
 		AND `' . $this->_idName . '` =' . $pluginmethod_id;
 		$db->setQuery ($q);
@@ -469,7 +469,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$user = $usermodel->getUser ();
 		$user->shopper_groups = (array)$user->shopper_groups;
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		if(empty($vendorId)) $vendorId = 1;
 		$select = 'SELECT i.*, ';
 
@@ -547,7 +547,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDataByOrderId ($virtuemart_order_id) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . (int)$virtuemart_order_id;
 
@@ -566,7 +566,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDatasByOrderId ($virtuemart_order_id) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = "' . (int)$virtuemart_order_id. '" '
 			. 'ORDER BY `id` ASC';
@@ -585,7 +585,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDataByOrderNumber ($order_number) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `order_number`="'.$db->escape($order_number).'"';
 
@@ -604,7 +604,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDatasByOrderNumber ($order_number) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `order_number`="'.$db->escape($order_number).'"';
 
@@ -644,7 +644,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getThisName ($virtuemart_method_id) {
 
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		$q = 'SELECT `' . $this->_psType . '_name` '
 			. 'FROM #__virtuemart_' . $this->_psType . 'methods '
 			. 'WHERE ' . $this->_idName . ' = "' . (int)$virtuemart_method_id . '" ';
@@ -693,11 +693,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		if ($message == NULL) {
 			$message = vmText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
 		}
-		JFactory::getMailer()->sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
+		vFactory::getMailer()->sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
 
 		$query = 'SELECT name, email, sendEmail FROM #__users WHERE sendEmail=1';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
@@ -707,7 +707,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		foreach ($rows as $row) {
 			if ($row->sendEmail) {
 				$message = html_entity_decode($message, ENT_QUOTES);
-				JFactory::getMailer()->sendMail($vendorEmail, $vendorName, $row->email, $subject, $message);
+				vFactory::getMailer()->sendMail($vendorEmail, $vendorName, $row->email, $subject, $message);
 			}
 		}
 	}
@@ -802,7 +802,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	protected function getHtmlRow ($key, $value, $class = '') {
 
-		$lang = JFactory::getLanguage ();
+		$lang = vFactory::getLanguage ();
 		$key_text = '';
 		$complete_key = strtoupper ($this->_type . '_' . $key);
 
@@ -882,19 +882,19 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {
 			// 	    if (!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 			$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 
 			$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
 			$db->setQuery ($q);
 			$method->payment_currency = $db->loadResult ();
 		} elseif (isset($method->payment_currency) and $method->payment_currency== -1) {
 			$vendorId = 1;
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 // the select list should include the vendor currency which is the currency in which the product prices are displayed by default.
 			$q  = 'SELECT CONCAT(`vendor_accepted_currencies`, ",",`vendor_currency`) AS all_currencies, `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`='.$vendorId;
 			$db->setQuery($q);
 			$vendor_currency = $db->loadAssoc();
-			$mainframe = Jfactory::getApplication();
+			$mainframe = vFactory::getApplication();
 			$method->payment_currency = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', $vendor_currency['vendor_currency']) );
 		}
 
@@ -906,7 +906,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!isset($method->email_currency)  or $method->email_currency=='vendor') {
 			// 	    if (!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
 			$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 
 			$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
 			$db->setQuery ($q);
@@ -925,7 +925,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	function displayTaxRule ($tax_id) {
 
 		$html = '';
-		$db = JFactory::getDBO ();
+		$db = vFactory::getDbo ();
 		if (!empty($tax_id)) {
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . (int)$tax_id . '" ';
 			$db->setQuery ($q);
@@ -1032,7 +1032,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		} else if (!empty($method->tax_id)) {
 			$cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;
 
-			$db = JFactory::getDBO ();
+			$db = vFactory::getDbo ();
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
 			$db->setQuery ($q);
 			$taxrules = $db->loadAssocList ();
@@ -1224,7 +1224,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		 */
 	function emptyCartFromStorageSession ($session_id, $order_number) {
 
-		$conf = JFactory::getConfig ();
+		$conf = vFactory::getConfig();
 		$handler = $conf->get ('session_handler', 'none');
 
 		$config['session_name'] = 'site';

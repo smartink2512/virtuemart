@@ -54,7 +54,7 @@ class VirtueMartModelCountry extends VmModel {
     function getCountryByCode($code) {
 
 		if(empty($code)) return false;
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$countryCodeLength = strlen($code);
 		switch ($countryCodeLength) {
@@ -99,7 +99,7 @@ class VirtueMartModelCountry extends VmModel {
 		if ($onlyPublished) $where[] = '`published` = 1';
 
 		if($filterCountry){
-			$db = JFactory::getDBO();
+			$db = vFactory::getDbo();
 			$filterCountryS = '"%' . $db->escape( $filterCountry, true ) . '%"' ;
 			$where[] = '`country_name` LIKE '.$filterCountryS.' OR `country_2_code` LIKE '.$filterCountryS.' OR `country_3_code` LIKE '.$filterCountryS;
 		}

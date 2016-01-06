@@ -176,7 +176,7 @@ class vmCrypt {
 			$key = self::crypto_rand_secure($size);
 
 			vmdebug('create key file ',$size);
-			$date = JFactory::getDate();
+			$date = vFactory::getDate();
 			$today = $date->toUnix();
 			$dat = date("Y-m-d H:i:s");
 			$content = ';<?php die(); */

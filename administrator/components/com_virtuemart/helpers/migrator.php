@@ -28,7 +28,7 @@ class Migrator extends VmModel{
 	public function __construct(){
 
 		$this->_app = vFactory::getApplication();
-		$this->_db = JFactory::getDBO();
+		$this->_db = vFactory::getDbo();
 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
 
@@ -1470,7 +1470,7 @@ class Migrator extends VmModel{
 
 	private function _changeToStamp($dateIn){
 
-		$date = JFactory::getDate($dateIn);
+		$date = vFactory::getDate($dateIn);
 		return $date->toSQL();
 	}
 
@@ -1478,7 +1478,7 @@ class Migrator extends VmModel{
 
 		$currInt = '';
 		if(!empty($curr)){
-			$this->_db = JFactory::getDBO();
+			$this->_db = vFactory::getDbo();
 			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`="' . $this->_db->escape($curr) . '"';
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
@@ -1511,7 +1511,7 @@ class Migrator extends VmModel{
 	 */
 	private function _getStartLimit($name){
 
-		$this->_db = JFactory::getDBO();
+		$this->_db = vFactory::getDbo();
 
 		$q = 'SELECT `'.$name.'` FROM `#__virtuemart_migration_oldtonew_ids` WHERE id="1" ';
 
@@ -1732,7 +1732,7 @@ class Migrator extends VmModel{
 	function portCurrency(){
 
 		$this->setRedirect($this->redirectPath);
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$q = 'SELECT `virtuemart_currency_id`,
 		  `currency_name`,
 		  `currency_code_2`,
@@ -1778,7 +1778,7 @@ class Migrator extends VmModel{
 		// Initialise variables.
 		$return = true;
 
-		$this->_db = JFactory::getDBO();
+		$this->_db = vFactory::getDbo();
 
 		// Get the tables in the database.
 		if ($tables = $this->_db->getTableList()) {

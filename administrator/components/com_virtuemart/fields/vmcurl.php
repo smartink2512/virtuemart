@@ -17,6 +17,9 @@ defined('_JEXEC') or die('Restricted access');
  */
 jimport('joomla.form.formfield');
 
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
 class JFormFieldVmCurl extends JFormField {
 
 	var $type = 'vmcurl';
@@ -44,7 +47,7 @@ class JFormFieldVmCurl extends JFormField {
  });
  ";
 
-				$doc = JFactory::getDocument();
+				$doc = vFactory::getDocument();
 				$doc->addScriptDeclaration($js);
 				return '<span id="vmcurl"></span>';
 

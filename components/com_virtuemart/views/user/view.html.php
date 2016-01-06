@@ -228,7 +228,7 @@ class VirtuemartViewUser extends VmView {
 			$this->add_product_link = $this->linkIcon($aplnk, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
 		}
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$document->setTitle($pathway_text);
 		$pathway->additem($pathway_text);
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');

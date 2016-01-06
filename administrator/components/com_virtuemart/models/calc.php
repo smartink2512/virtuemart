@@ -100,7 +100,7 @@ class VirtueMartModelCalc extends VmModel {
 		// add filters
 		if ($onlyPublished) $where[] = '`published` = 1';
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		if($search){
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$where[] = ' `calc_name` LIKE '.$search.' OR `calc_descr` LIKE '.$search.' OR `calc_value` LIKE '.$search.' ';
@@ -144,15 +144,15 @@ class VirtueMartModelCalc extends VmModel {
 
 		$table = $this->getTable('calcs');
 
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		// Convert selected dates to MySQL format for storing.
-		$startDate = JFactory::getDate($data['publish_up']);
+		$startDate = vFactory::getDate($data['publish_up']);
 		$data['publish_up'] = $startDate->toSQL();
 
 		if (empty($data['publish_down']) || trim($data['publish_down']) == vmText::_('COM_VIRTUEMART_NEVER')){
 			$data['publish_down']	= $db->getNullDate();
 		} else {
-			$expireDate = JFactory::getDate($data['publish_down']);
+			$expireDate = vFactory::getDate($data['publish_down']);
 			$data['publish_down']	= $expireDate->toSQL();
 		}
 
@@ -196,10 +196,10 @@ class VirtueMartModelCalc extends VmModel {
 	static function getRule($kind){
 
 		if (!is_array($kind)) $kind = array($kind);
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		$nullDate		= $db->getNullDate();
-		$now			= JFactory::getDate()->toSQL();
+		$now			= vFactory::getDate()->toSQL();
 
 		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';
 		foreach ($kind as $field){

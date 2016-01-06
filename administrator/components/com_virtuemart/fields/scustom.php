@@ -24,7 +24,7 @@ class JFormFieldScustom extends JFormField {
 		$cModel->_noLimit = true;
 		$q = 'SELECT `virtuemart_custom_id` AS value, custom_title AS text FROM `#__virtuemart_customs` WHERE custom_parent_id="0" AND field_type = "S" ';
 		$q .= ' AND `published`=1';
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		$db->setQuery ($q);
 		$l = $db->loadObjectList ();
 		$eOpt = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NONE'));

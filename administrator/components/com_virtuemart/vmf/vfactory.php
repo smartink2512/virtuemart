@@ -336,9 +336,11 @@ class vFactory {
 	{
 		JLog::add(__METHOD__ . ' is deprecated. Use JEditor directly.', JLog::WARNING, 'deprecated');
 
-		if (!class_exists('JEditor'))
-		{
-			throw new BadMethodCallException('JEditor not found');
+		if (!class_exists('JEditor')) {
+			jimport('joomla.html.editor');
+			if (!class_exists('JEditor')) {
+				throw new BadMethodCallException( 'JEditor not found' );
+			}
 		}
 
 		// Get the editor configuration setting

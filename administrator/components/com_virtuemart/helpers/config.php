@@ -129,7 +129,7 @@ function vmInfo($publicdescr,$value=NULL){
 	$type = VmConfig::$mType;//'info';
 
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		if($value!==NULL){
 
 			$args = func_get_args();
@@ -173,7 +173,7 @@ function vmAdminInfo($publicdescr,$value=NULL){
 		$app = vFactory::getApplication();
 
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
-			$lang = JFactory::getLanguage();
+			$lang = vFactory::getLanguage();
 			if($value!==NULL){
 
 				$args = func_get_args();
@@ -206,7 +206,7 @@ function vmWarn($publicdescr,$value=NULL){
 	$app = vFactory::getApplication();
 	$msg = '';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 		if($value!==NULL){
 
 			$args = func_get_args();
@@ -246,7 +246,7 @@ function vmWarn($publicdescr,$value=NULL){
 function vmError($descr,$publicdescr=''){
 
 	$msg = '';
-	$lang = JFactory::getLanguage();
+	$lang = vFactory::getLanguage();
 	$descr = $lang->_($descr);
 	$adminmsg =  'vmError: '.$descr;
 	if (empty($descr)) {
@@ -407,7 +407,7 @@ function logInfo ($text, $type = 'message') {
 	if($file===null){
 		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
-		$config = JFactory::getConfig();
+		$config = vFactory::getConfig();
 		$log_path = $config->get('log_path', VMPATH_ROOT . "/log" );
 		$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 
@@ -455,7 +455,7 @@ function logInfo ($text, $type = 'message') {
 				fwrite ($fp,  $head);
 			}
 
-			fwrite ($fp, "\n" . JFactory::getDate()->format ('Y-m-d H:i:s'));
+			fwrite ($fp, "\n" . vFactory::getDate()->format ('Y-m-d H:i:s'));
 			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
 			fclose ($fp);
 		} else {
@@ -626,7 +626,7 @@ class VmConfig {
 			vmdebug('Show All Errors');
 
 		} else {
-			$jconfig = JFactory::getConfig();
+			$jconfig = vFactory::getConfig();
 			$errep = $jconfig->get('error_reporting');
 			if ( $errep == 'default' or $force) {
 				$ret[0] = ini_set('display_errors', 0);
@@ -701,7 +701,7 @@ class VmConfig {
 	 */
 	static public function loadJLang($name,$site=false,$tag=0){
 
-		$jlang = JFactory::getLanguage();
+		$jlang = vFactory::getLanguage();
 		if(empty($tag))$tag = $jlang->getTag();
 
 		$path = $basePath = VMPATH_ADMIN;
@@ -742,7 +742,7 @@ class VmConfig {
 	 */
 	static public function loadModJLang($name){
 
-		$jlang =JFactory::getLanguage();
+		$jlang =vFactory::getLanguage();
 		$tag = $jlang->getTag();
 
 		$path = $basePath = JPATH_VM_MODULES.DS.$name;
@@ -808,7 +808,7 @@ class VmConfig {
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
 		$app = vFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 
 		self::$installed = true;
 		$install = vRequest::getInt('install',false);
@@ -818,7 +818,7 @@ class VmConfig {
 
 		if(empty($configTable) ){
 			self::$installed = false;
-			$jlang =JFactory::getLanguage();
+			$jlang =vFactory::getLanguage();
 			$selectedLang = $jlang->getTag();
 
 			if(empty($selectedLang)){
@@ -876,7 +876,7 @@ class VmConfig {
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
 		}
 
-		self::$_secret = JFactory::getConfig()->get('secret');
+		self::$_secret = vFactory::getConfig()->get('secret');
 
 		self::$_jpConfig->_params['sctime'] = microtime(TRUE);
 		self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
@@ -945,7 +945,7 @@ class VmConfig {
 		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
 		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
 			$languages = JLanguageHelper::getLanguages('lang_code');
-			$ltag = JFactory::getLanguage()->getTag();
+			$ltag = vFactory::getLanguage()->getTag();
 			self::$vmlangSef = $languages[$ltag]->sef;
 			self::$jLangCount = count($languages);
 		}
@@ -963,7 +963,7 @@ class VmConfig {
 		if( vFactory::getApplication()->isSite()){
 			if (!$siteLang) {
 				jimport('joomla.language.helper');
-				$siteLang = JFactory::getLanguage()->getTag();
+				$siteLang = vFactory::getLanguage()->getTag();
 			}
 		} else {
 			if(!$siteLang){
@@ -1175,7 +1175,7 @@ class vmAccess {
 	static public function getBgManagerId(){
 
 		if(!isset(self::$_cuId)){
-			$cuId = JFactory::getSession()->get('vmAdminID',null);
+			$cuId = vFactory::getSession()->get('vmAdminID',null);
 			//echo $cuId;
 			if($cuId) {
 				if(!class_exists('vmCrypt'))

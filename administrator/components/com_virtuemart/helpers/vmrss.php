@@ -24,7 +24,7 @@ class vmRSS{
 	 */
 	static public function getCPsRssFeed($rssUrl,$max, $cache_time=2880) {  // 2880 = 2days
 
-		$cache = JFactory::getCache ('com_virtuemart_rss');
+		$cache = vFactory::getCache ('com_virtuemart_rss');
 
 		$cache->setLifeTime($cache_time);
 		$cache->setCaching (1);

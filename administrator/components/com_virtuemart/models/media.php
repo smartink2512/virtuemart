@@ -106,7 +106,7 @@ class VirtueMartModelMedia extends VmModel {
 						$mime		= empty($data->file_mimetype)? $mime:$data->file_mimetype;
 						if($app->isSite()){
 							$selectedLangue = explode(",", $data->file_lang);
-							$lang =  JFactory::getLanguage();
+							$lang =  vFactory::getLanguage();
 							if(in_array($lang->getTag(), $selectedLangue) || $data->file_lang == '') {
 								$_medias[$id] = VmMediaHandler::createMedia($data,$file_type,$mime);
 								if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $_medias[$id]->product_name = $virtuemart_media_id->product_name;
@@ -173,7 +173,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		$this->_noLimit = $noLimit;
 
-		if(empty($db)) $db = JFactory::getDBO();
+		if(empty($db)) $db = vFactory::getDbo();
 
 		$query = '';
 

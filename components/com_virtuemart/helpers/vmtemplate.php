@@ -105,7 +105,7 @@ class VmTemplate {
 
 		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
 		$template = VmConfig::get( 'vmtemplate', 0 );
-		$db = JFactory::getDBO();
+		$db = vFactory::getDbo();
 		//Set specific category template
 		if(!empty($catTpl) && empty($prodTpl)) {
 			if(is_Int( $catTpl )) {
