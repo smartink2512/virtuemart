@@ -18,10 +18,11 @@
  *
  * http://virtuemart.net
  */
-jimport('joomla.application.component.controller');
+if(!class_exists('vController')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vcontroller.php');
+
 if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 
-class VmController extends JControllerLegacy{
+class VmController extends vController {
 
 	protected $_cidName = 0;
 	protected $_cname = 0;
@@ -34,7 +35,9 @@ class VmController extends JControllerLegacy{
 	public function __construct($cidName='cid', $config=array()) {
 		parent::__construct($config);
 
-		 $this->_cidName = $cidName;
+		$this->_cidName = $cidName;
+
+		$this->basePath = VMPATH_BASE .DS. 'components' .DS. 'com_virtuemart';
 
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
@@ -67,20 +70,20 @@ class VmController extends JControllerLegacy{
 	*/
 	public function display($cachable = false, $urlparams = false)
 	{
-		$document	= JFactory::getDocument();
+		$document	= vFactory::getDocument();
 		$viewType	= $document->getType();
 
 		$viewName	= vRequest::getCmd('view', $this->default_view);
 		$viewLayout	= vRequest::getCmd('layout', 'default');
 
 		if(vRequest::getCmd('manage')){
-			$this->addViewPath(VMPATH_ADMIN . DS . 'views');
+			$this->addIncludePath(VMPATH_ADMIN . DS . 'views', 'view');
 			$this->basePath = VMPATH_ROOT.'/administrator/components/com_virtuemart';
 		}
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
 
-		$app = JFactory::getApplication();
+		$app = vFactory::getApplication();
 		if($app->isSite()){
 			$view->addTemplatePath(VMPATH_ADMIN.DS.'views'.DS.$viewName.DS.'tmpl');
 		}
@@ -90,15 +93,15 @@ class VmController extends JControllerLegacy{
 
 		$view->assignRef('document', $document);
 
-		$conf = JFactory::getConfig();
+		$conf = vFactory::getConfig();
 
 		// Display the view
 		if ($cachable && $viewType != 'feed' && $conf->get('caching') >= 1) {
 			$option	= vRequest::getCmd('option');
-			$cache	= JFactory::getCache($option, 'view');
+			$cache	= vFactory::getCache($option, 'view');
 
 			if (is_array($urlparams)) {
-				$app = JFactory::getApplication();
+				$app = vFactory::getApplication();
 
 				$registeredurlparams = $app->get('registeredurlparams');
 
@@ -137,8 +140,8 @@ class VmController extends JControllerLegacy{
 		vRequest::setVar('view', $this->_cname);
 		vRequest::setVar('layout', $layout);
 
-		$this->addViewPath(VMPATH_ADMIN . DS . 'views');
-		$document = JFactory::getDocument();
+		$this->addIncludePath(VMPATH_ADMIN . DS . 'views', 'view');
+		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
 
@@ -171,7 +174,7 @@ class VmController extends JControllerLegacy{
 
 		$redir = $this->redirectPath;
 
-		if( JFactory::getApplication()->isSite()){
+		if( vFactory::getApplication()->isSite()){
 			$redir .= '&tmpl=component';
 		}
 
@@ -331,7 +334,7 @@ class VmController extends JControllerLegacy{
 		if (!$model->saveorder($cid, $order)) {
 			$msg = 'error';
 		} else {
-			if(JFactory::getApplication()->isAdmin() and VmConfig::showDebug()){
+			if(vFactory::getApplication()->isAdmin() and VmConfig::showDebug()){
 				$msg = vmText::sprintf('COM_VIRTUEMART_NEW_ORDERING_SAVEDF',$this->mainLangKey);
 			} else {
 				$msg = vmText::sprintf('COM_VIRTUEMART_NEW_ORDERING_SAVED');

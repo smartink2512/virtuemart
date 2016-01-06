@@ -63,6 +63,8 @@ defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT.DS.'plugins'
 defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT.DS.'modules' );
 defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.DS.'templates' );
 
+defined ('VMPATH_COMPONENT') or define( 'VMPATH_COMPONENT', VMPATH_BASE .DS. 'components'.DS.'com_virtuemart' );
+
 //legacy
 defined ('JPATH_VM_SITE') or define('JPATH_VM_SITE', VMPATH_SITE );
 defined ('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', VMPATH_ADMIN);
@@ -905,6 +907,8 @@ class VmConfig {
 				$confData['virtuemart_config_id'] = 1;
 
 				$confData['config'] = VmConfig::$_jpConfig->toString();
+				VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables','Table');
+				vFactory::getDbo();
 				$confTable = VmTable::getInstance('configs', 'Table', array());
 
 				if (!$confTable->bindChecknStore($confData)) {
