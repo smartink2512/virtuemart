@@ -100,6 +100,7 @@ if (!class_exists ('VmModel')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
 }
 
+if(!class_exists('vController')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vcontroller.php');
 if(!class_exists('vRequest')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vrequest.php');
 if(!class_exists('vmText')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php');
@@ -962,7 +963,6 @@ class VmConfig {
 
 		if( vFactory::getApplication()->isSite()){
 			if (!$siteLang) {
-				jimport('joomla.language.helper');
 				$siteLang = vFactory::getLanguage()->getTag();
 			}
 		} else {

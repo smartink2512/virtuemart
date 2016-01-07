@@ -56,15 +56,6 @@ class VmViewAdmin extends vView {
 			//or $this->canDo->get('core.admin')
 			//or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
 
-			if(vFactory::getApplication()->isSite()){
-				$unoverridable = array('category','manufacturer','user');	//This views have the same name and must not be overridable
-				if(!in_array($view,$unoverridable)){
-					if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
-					$template = VmTemplate::getDefaultTemplate();
-					$this->addTemplatePath (VMPATH_ROOT . DS. 'templates' . DS . $template['template'] . DS. 'html' . DS . 'com_virtuemart' .DS . $this->_name);
-				}
-			}
-
 			$result = $this->loadTemplate($tpl);
 			if ($result instanceof Exception) {
 				return $result;
@@ -251,7 +242,6 @@ class VmViewAdmin extends vView {
 
 			if ($editView =='user') $editView ='vendor';
 
-			jimport('joomla.language.helper');
             $this->lang = vRequest::getVar('vmlang', $this->lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('VMPATH_ROOT'), true);

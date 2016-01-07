@@ -18,8 +18,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the controller framework
-jimport('joomla.application.component.controller');
 
 /**
  * Controller for the cart view
@@ -27,7 +25,7 @@ jimport('joomla.application.component.controller');
  * @package VirtueMart
  * @subpackage Cart
  */
-class VirtueMartControllerCart extends JControllerLegacy {
+class VirtueMartControllerCart extends vController {
 
 
 	public function __construct() {

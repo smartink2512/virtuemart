@@ -19,9 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the controller framework
-jimport('joomla.application.component.controller');
-
 /**
  * Controller for the plugin response view
  *
@@ -30,7 +27,7 @@ jimport('joomla.application.component.controller');
  * @author Valérie Isaksen
  *
  */
-class VirtueMartControllerVmplg extends JControllerLegacy {
+class VirtueMartControllerVmplg extends vController {
 
     /**
      * Construct the cart

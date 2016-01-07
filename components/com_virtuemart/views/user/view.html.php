@@ -75,7 +75,7 @@ class VirtuemartViewUser extends VmView {
 		$this->_model = VmModel::getModel('user');
 
 		//$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
-		$editor = JFactory::getEditor();
+		$editor = vFactory::getEditor();
 
 		$virtuemart_user_id = vRequest::getInt('virtuemart_user_id',false);
 		if($virtuemart_user_id and is_array($virtuemart_user_id)) $virtuemart_user_id = $virtuemart_user_id[0];

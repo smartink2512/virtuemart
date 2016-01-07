@@ -19,15 +19,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the controller framework
-jimport('joomla.application.component.controller');
-
 /**
 * Class Description
 *
 * @package VirtueMart
 */
-class VirtueMartControllerCategory extends JControllerLegacy {
+class VirtueMartControllerCategory extends vController {
 
     public function __construct() {
      	 parent::__construct();

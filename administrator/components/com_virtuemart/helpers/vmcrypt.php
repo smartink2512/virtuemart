@@ -223,7 +223,7 @@ class vmCrypt {
 		if ($created) {
 			return TRUE;
 		}
-		$uri = JFactory::getURI ();
+		$uri = vFactory::getURI ();
 		$link = $uri->root () . 'administrator/index.php?option=com_virtuemart&view=config';
 		VmError (vmText::sprintf ('COM_VIRTUEMART_CANNOT_STORE_CONFIG', $folderName, '<a href="' . $link . '">' . $link . '</a>', vmText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
 		return FALSE;

@@ -645,7 +645,7 @@ class shopFunctionsF {
 		ob_end_clean();
 
 		$subject = (isset($view->subject)) ? $view->subject : vmText::_( 'COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT' );
-		$mailer = JFactory::getMailer();
+		$mailer = vFactory::getMailer();
 		$mailer->addRecipient( $recipient );
 		$mailer->setSubject(  html_entity_decode( $subject , ENT_QUOTES, 'UTF-8') );
 		$mailer->isHTML( VmConfig::get( 'order_mail_html', TRUE ) );
@@ -689,7 +689,7 @@ class shopFunctionsF {
 			$sender[0] = $app->getCfg( 'mailfrom' );
 			$sender[1] = $app->getCfg( 'fromname' );
 			if(empty($sender[0])){
-				$config = JFactory::getConfig();
+				$config = vFactory::getConfig();
 				$sender = array( $config->get( 'mailfrom' ), $config->get( 'fromname' ) );
 			}
 		}

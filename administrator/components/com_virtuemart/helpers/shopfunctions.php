@@ -1055,7 +1055,7 @@ class ShopFunctions {
 		}
 
 		$warn = false;
-		$uri = JFactory::getURI();
+		$uri = vFactory::getURI();
 
 		VmConfig::loadJLang('com_virtuemart');
 		if(empty($safePath)){
@@ -1146,7 +1146,7 @@ class ShopFunctions {
 			$html .= vmText::_($order_info['order_item_status_name']);
 			$html .= '</td>
 			<td class="order_number">';
-				$uri = JFactory::getURI();
+				$uri = vFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
 				$html .= JHtml::_ ('link', $link, $order_info['order_number'], array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
 			$first=FALSE;

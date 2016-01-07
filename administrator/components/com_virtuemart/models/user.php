@@ -388,8 +388,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			if ($doUserActivation ) {
-				jimport('joomla.user.helper');
-				$user->set('activation', vRequest::getHash( JUserHelper::genRandomPassword()) );
+				$user->set('activation', vRequest::getHash( vmCrypt::getHumanToken(VmConfig::get('randOrderPw',8))));
 				$user->set('block', '1');
 				//$user->set('lastvisitDate', '0000-00-00 00:00:00');
 			}
@@ -1066,9 +1065,7 @@ class VirtueMartModelUser extends VmModel {
 		$vars['password'] = $password;
 
 		if ($doUserActivation) {
-			jimport('joomla.user.helper');
 			$activationLink = 'index.php?option=com_users&task=registration.activate&token='.$user->get('activation');
-
 			$vars['activationLink'] = $activationLink;
 		}
 		//$vars['doVendor']=!$doVendor;

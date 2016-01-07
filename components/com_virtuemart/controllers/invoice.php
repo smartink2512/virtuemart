@@ -22,15 +22,13 @@ defined('_JEXEC') or die('Restricted access for invoices');
 if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 if(!class_exists('VmPdf'))require(VMPATH_SITE.DS.'helpers'.DS.'vmpdf.php');
 
-// Load the controller framework
-jimport('joomla.application.component.controller');
 
 /**
  * VirtueMart Component Controller
  *
  * @package		VirtueMart
  */
-class VirtueMartControllerInvoice extends JControllerLegacy
+class VirtueMartControllerInvoice extends vController
 {
 
 	public function __construct()

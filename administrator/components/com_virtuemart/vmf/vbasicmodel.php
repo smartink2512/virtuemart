@@ -97,6 +97,7 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 
 		if (!isset(self::$_paths[$prefix])) self::$_paths[$prefix] = array();
 		$path = vRequest::filterPath($path);
+		vmTrace('my layout ');
 		if (!in_array($path, self::$_paths[$prefix])) {
 			array_unshift(self::$_paths[$prefix], $path);
 		}

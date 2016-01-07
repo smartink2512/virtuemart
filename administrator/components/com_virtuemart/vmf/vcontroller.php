@@ -237,7 +237,7 @@ class vController extends vBasicModel implements vIController{
 			$this->_name = $this->getName();
 		}
 		$this->basePath = VMPATH_COMPONENT;
-		$this->addIncludePath($this->basePath . '/views','view');
+		//$this->addIncludePath($this->basePath . '/views','view');
 
 		$this->registerDefaultTask('display');
 		$this->default_view = $this->getName();

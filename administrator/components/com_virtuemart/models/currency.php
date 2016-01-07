@@ -112,7 +112,7 @@ class VirtueMartModelCurrency extends VmModel {
 				$vendor_currency['vendor_accepted_currencies'] = $vendor_currency['vendor_currency'];
 				vmWarn('No accepted currencies defined');
 				if(empty($vendor_currency['vendor_accepted_currencies'])) {
-					$uri = JFactory::getURI();
+					$uri = vFactory::getURI();
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
 					vmWarn(vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 					$currencies[$vendorId] = false;

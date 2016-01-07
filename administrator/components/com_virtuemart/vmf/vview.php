@@ -46,6 +46,7 @@ abstract class vView extends vBasicModel implements vIView {
 
 		$filename = $type . '.php';
 		foreach(self::$_paths[$prefix] as $p) {
+			//vmdebug('my layout ',self::$_paths[$prefix]);
 			if(file_exists( $p.DS.$filename )) {
 				return $p.DS.$filename;
 			}
@@ -77,10 +78,23 @@ abstract class vView extends vBasicModel implements vIView {
 		|| $lang->load('tpl_' . $template, VMPATH_THEMES . "/$template", null, false, true);
 
 		$name = strtolower(substr(get_class($this),14));
-		$this->addIncludePath(VMPATH_COMPONENT . DS . 'views' .DS. $name .DS. 'tmpl','view');
-		$this->addIncludePath(VMPATH_BASE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtumart' .DS. $name,'view');
 
-		//return $this->render($tpl);
+		$site =vFactory::getApplication()->isSite();
+		$manage = vRequest::getCmd ( 'manage',false);
+
+		if($manage or !$site){
+			$this->addIncludePath(VMPATH_ADMIN . DS . 'views' .DS. $name .DS. 'tmpl','view');
+			$unoverridable = array('category','manufacturer','user');	//This views have the same name and must not be overridable
+			if(!in_array($name,$unoverridable)){
+				if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+				$template = VmTemplate::getDefaultTemplate();
+				$this->addIncludePath (VMPATH_ROOT . DS. 'templates' . DS . $template['template'] . DS. 'html' . DS . 'com_virtuemart' .DS . $name,'view');
+			}
+		} else {
+
+			$this->addIncludePath(VMPATH_COMPONENT . DS . 'views' .DS. $name .DS. 'tmpl','view');
+			$this->addIncludePath(VMPATH_BASE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtumart' .DS. $name,'view');
+		}
 
 		// Clean the file name
 		$tpl = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl) : $tpl;
@@ -89,7 +103,7 @@ abstract class vView extends vBasicModel implements vIView {
 
 		$this->_layoutPath = $this->layoutLoader($file,'view');
 
-		vmdebug('my layout '.$file,$this->layout);
+		vmdebug('my layout '.$file,$this->_layoutPath);
 		if ($this->_layoutPath != false)
 		{
 			// Unset so as not to introduce into template scope

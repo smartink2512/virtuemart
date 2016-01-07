@@ -232,25 +232,7 @@ class vFactory {
 		return self::$_cache[$hash];
 	}
 
-	/**
-	 * Get an authorization object
-	 *
-	 * Returns the global {@link JAccess} object, only creating it
-	 * if it doesn't already exist.
-	 *
-	 * @return  JAccess object
-	 *
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use JAccess directly.
-	 */
-	public static function getACL() {
-		JLog::add(__METHOD__ . ' is deprecated. Use JAccess directly.', JLog::WARNING, 'deprecated');
 
-		if (!self::$_acl){
-			self::$_acl = new JAccess;
-		}
-
-		return self::$_acl;
-	}
 
 	/**
 	 * Get a mailer object.
@@ -353,5 +335,8 @@ class vFactory {
 		return JEditor::getInstance($editor);
 	}
 
-
+	public static function getURI($uri = 'SERVER') {
+		jimport('joomla.environment.uri');
+		return JURI::getInstance($uri);
+	}
 }

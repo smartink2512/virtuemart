@@ -16,14 +16,12 @@
  * @version $Id: plugin.php 2641 2010-11-09 19:25:13Z milbo $
  */
 
-jimport ('joomla.application.component.controller');
-
 /**
  * VirtueMart default administrator controller
  *
  * @package        VirtueMart
  */
-class VirtuemartControllerPlugin extends JControllerLegacy {
+class VirtuemartControllerPlugin extends vController {
 
 	/**
 	 * Method to render the plugin datas

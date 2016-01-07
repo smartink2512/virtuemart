@@ -339,15 +339,11 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		}
 
 		if(!VmConfig::$vmlang){
-			$params = JComponentHelper::getParams('com_languages');
-			$lang = $params->get('site', 'en-GB');//use default joomla
-			$lang = strtolower(strtr($lang,'-','_'));
-		} else {
-			$lang = VmConfig::$vmlang;
+			VmConfig::setdbLanguageTag();
 		}
+		$lang = VmConfig::$vmlang;
 
 		// Create an array of queries from the sql file
-		jimport('joomla.installer.helper');
 		$db = vFactory::getDbo();
 		$queries = $db->splitSql(file_get_contents($sqlfile));
 

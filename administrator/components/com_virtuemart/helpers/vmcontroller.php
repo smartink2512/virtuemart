@@ -83,10 +83,6 @@ class VmController extends vController {
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
 
-		$app = vFactory::getApplication();
-		if($app->isSite()){
-			$view->addTemplatePath(VMPATH_ADMIN.DS.'views'.DS.$viewName.DS.'tmpl');
-		}
 
 		// Set the layout
 		$view->setLayout($viewLayout);
