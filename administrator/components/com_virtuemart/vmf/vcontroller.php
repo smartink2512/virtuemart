@@ -308,32 +308,63 @@ class vController extends vBasicModel implements vIController{
 	 * @note    Replaces _createView.
 	 * @throws  Exception
 	 */
-	protected function createView($name, $prefix = '', $type = '', $config = array())
-	{
+	//protected function createView($name, $prefix = '', $type = '', $config = array())
+	static public function createView($name,$prefix,$config = array()) {
+
+		$type = isset($config['type'])?$config['type']:'html';
 		// Clean the view name
-		$name = preg_replace('/[^A-Z0-9_]/i', '', $name);
-		$this->addIncludePath($this->basePath . '/views/'.$name,'view');
+		$view = preg_replace('/[^A-Z0-9_]/i', '', $name);
 
 		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 		$type = strtolower($type);
 		$prefix = preg_replace('/[^A-Z0-9_]/i', '', $prefix);
 
-		$class = $prefix . ucfirst($name);
+		$class = $prefix . ucfirst($view);
 
-		if (!class_exists($class)) {
-			self::loader('view.'.$type, 'view',$class);
-		}
-		$single = false;
+		//$single = false;
+		if(empty(self::$_loadedClasses[$class])){
 
-		if (class_exists($class)){
-			if(!$single or empty(self::$_loadedClasses[$class])){
-				self::$_loadedClasses[$class] = new $class($config);
+			//$admin =vFactory::getApplication()->isAdmin();
+			$manage = vRequest::getCmd ( 'manage',false);
+
+			//We add the viewpath
+			if($manage){
+				self::addIncludePath(VMPATH_ADMIN . DS . 'views' .DS. $name,'view');
+			} else {
+				self::addIncludePath(VMPATH_COMPONENT . DS . 'views' .DS. $name,'view');
 			}
-			return self::$_loadedClasses[$class];
-		} else {
-			vmWarn(vmText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $class));
-			return false;
+
+			if (!class_exists($class)) {
+				self::loader('view.'.$type, 'view',$class);
+			}
+
+			if (class_exists($class)){
+				self::$_loadedClasses[$class] = self::getInstance($name,$prefix );
+
+				$name = strtolower($view);
+
+				if($manage){
+					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_ADMIN . DS . 'views' .DS. $name .DS. 'tmpl');
+					$unoverridable = array('category', 'manufacturer', 'user','virtuemart');    //This views have the same name and must not be overridable
+					if(!in_array( $name, $unoverridable )) {
+						if(!class_exists( 'VmTemplate' )) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+						$template = VmTemplate::getDefaultTemplate();
+						self::$_loadedClasses[$class]->addLayoutPath( $name, VMPATH_ROOT.DS.'templates'.DS.$template['template'].DS.'html'.DS.'com_virtuemart'.DS.$name, 'view' );
+					}
+				} else {
+					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_COMPONENT . DS . 'views' .DS. $name .DS. 'tmpl');
+					$template = vFactory::getApplication()->getTemplate();
+					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_BASE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtuemart' .DS. $name);
+				}
+			} else {
+				VmConfig::$echoDebug=1;
+				vmdebug('createView '.$class,self::$_paths);
+				vmWarn(vmText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $class));
+				return false;
+			}
 		}
+
+		return self::$_loadedClasses[$class];
 
 	}
 
@@ -358,7 +389,6 @@ class vController extends vBasicModel implements vIController{
 		$viewLayout = $this->input->get('layout', 'default', 'string');
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
-
 
 		$view->document = $document;
 
@@ -506,29 +536,25 @@ class vController extends vBasicModel implements vIController{
 	public function getView($name = '', $type = '', $prefix = '', $config = array())
 	{
 		// @note We use self so we only access stuff in this class rather than in all classes.
-		if (!isset(self::$views))
-		{
+		if (!isset(self::$views)) {
 			self::$views = array();
 		}
 
-		if (empty($name))
-		{
+		if (empty($name)) {
 			$name = $this->getName();
 		}
 
-		if (empty($prefix))
-		{
+		if (empty($prefix)) {
 			$prefix = $this->getName() . 'View';
 		}
 
-		if (empty(self::$views[$name][$type][$prefix]))
-		{
-			if ($view = $this->createView($name, $prefix, $type, $config))
-			{
-				self::$views[$name][$type][$prefix] = & $view;
-			}
-			else
-			{
+		if(!class_exists('vView'))
+			require(VMPATH_ADMIN. DS. 'vmf' .DS. 'vview.php');
+
+		if (empty(self::$views[$name][$type][$prefix])) {
+			if (self::$views[$name][$type][$prefix] = $this->createView($name,$prefix,array('type'=>$type))) {
+				//self::$views[$name][$type][$prefix] = & $view;
+			} else {
 				$response = 500;
 				$app = vFactory::getApplication();
 
@@ -540,12 +566,11 @@ class vController extends vBasicModel implements vIController{
 				 * view type that matches the file's extension (the most
 				 * likely scenario).
 				 */
-				if ($app->get('sef_rewrite'))
-				{
+				if ($app->get('sef_rewrite')) {
 					$response = 404;
 				}
 
-				throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_VIEW_NOT_FOUND', $name, $type, $prefix), $response);
+				//throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_VIEW_NOT_FOUND', $name, $type, $prefix), $response);
 			}
 		}
 

@@ -137,7 +137,7 @@ if (VmConfig::get ('coupons_enable')) {
 <tr class="sectiontableentry2">
 	<td colspan="4" align="left">
 		<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
-		echo $this->loadTemplate ('coupon');
+		echo $this->renderLayout ('coupon');
 		} ?>
 
 		<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
@@ -235,7 +235,7 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 		if (!empty($this->layoutName) and $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {
 				$previouslayout = $this->setLayout('select');
-				echo $this->loadTemplate('shipment');
+				echo $this->renderLayout('shipment');
 				$this->setLayout($previouslayout);
 			} else {
 				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
@@ -275,7 +275,7 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 		if (!empty($this->layoutName) && $this->layoutName == 'default') {
 			if (VmConfig::get('oncheckout_opc', 0)) {
 				$previouslayout = $this->setLayout('select');
-				echo $this->loadTemplate('payment');
+				echo $this->renderLayout('payment');
 				$this->setLayout($previouslayout);
 			} else {
 				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');

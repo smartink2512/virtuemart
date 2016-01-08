@@ -5,7 +5,7 @@ abstract class vView extends vBasicModel implements vIView {
 
 	protected $layout = 'default';
 
-	protected $paths;
+
 
 	protected $_output = null;
 
@@ -42,33 +42,47 @@ abstract class vView extends vBasicModel implements vIView {
 		return $this->layout;
 	}
 
-	public function layoutLoader($type, $prefix){
+	/*public function addLayoutPath($p){
+		$this->addIncludePath($p, 'view');
+	}*/
+	protected $paths;
+
+	public function addLayoutPath($view,$path) {
+
+		if (empty($path)){
+			vmError('empty path in addIncludePath','empty path in addIncludePath');
+			return false;
+		}
+
+		if (!isset(self::$_paths['layout'][$view])){
+			self::$_paths['layout'][$view] = array();
+		}
+
+		$path = vRequest::filterPath($path);
+		if (!in_array($path, self::$_paths['layout'][$view])) {
+			array_unshift(self::$_paths['layout'][$view], $path);
+		}
+
+		return self::$_paths['layout'][$view];
+	}
+
+	public function layoutLoader($type){
 
 		$filename = $type . '.php';
-		foreach(self::$_paths[$prefix] as $p) {
-			//vmdebug('my layout ',self::$_paths[$prefix]);
+		$name = strtolower(substr(get_class($this),14));
+		foreach(self::$_paths['layout'][$name] as $p) {
 			if(file_exists( $p.DS.$filename )) {
+				//vmdebug('layoutLoader my layout '.$filename.' selected path. '.$p,self::$_paths['layout']);
 				return $p.DS.$filename;
 			}
 		}
-
+		VmConfig::$echoDebug = 1;
+		vmdebug('layoutLoader couldnt find path for '.$filename,self::$_paths['layout']);
 		return false;
 	}
 
-	/**
-	 * Load a template file -- first look in the templates folder for an override
-	 *
-	 * @param   string  $tpl  The name of the template source file; automatically searches the template paths and compiles as needed.
-	 *
-	 * @return  string  The output of the the template script.
-	 *
-	 * @since   3.2
-	 * @throws  Exception
-	 */
-	public function loadTemplate($tpl = null) {
+	public function renderLayout($lyt = null){
 
-		//VmConfig::$echoDebug = 1;
-		// Clear prior output
 		$this->_output = null;
 		$template = vFactory::getApplication()->getTemplate();
 
@@ -77,37 +91,18 @@ abstract class vView extends vBasicModel implements vIView {
 		$lang->load('tpl_' . $template, VMPATH_BASE, null, false, true)
 		|| $lang->load('tpl_' . $template, VMPATH_THEMES . "/$template", null, false, true);
 
-		$name = strtolower(substr(get_class($this),14));
-
-		$site =vFactory::getApplication()->isSite();
-		$manage = vRequest::getCmd ( 'manage',false);
-
-		if($manage or !$site){
-			$this->addIncludePath(VMPATH_ADMIN . DS . 'views' .DS. $name .DS. 'tmpl','view');
-			$unoverridable = array('category','manufacturer','user');	//This views have the same name and must not be overridable
-			if(!in_array($name,$unoverridable)){
-				if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
-				$template = VmTemplate::getDefaultTemplate();
-				$this->addIncludePath (VMPATH_ROOT . DS. 'templates' . DS . $template['template'] . DS. 'html' . DS . 'com_virtuemart' .DS . $name,'view');
-			}
-		} else {
-
-			$this->addIncludePath(VMPATH_COMPONENT . DS . 'views' .DS. $name .DS. 'tmpl','view');
-			$this->addIncludePath(VMPATH_BASE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtumart' .DS. $name,'view');
-		}
-
 		// Clean the file name
-		$tpl = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl) : $tpl;
-		$file = $this->layout . (isset($tpl) ? '_' . $tpl : $tpl);
+		$lyt = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $lyt) : $lyt;
+		$file = $this->layout . (isset($lyt) ? '_' . $lyt : $lyt);
 		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $file);
 
-		$this->_layoutPath = $this->layoutLoader($file,'view');
+		$this->_layoutPath = $this->layoutLoader($file);
 
-		vmdebug('my layout '.$file,$this->_layoutPath);
+		//vmdebug('my layout '.$file,$this->_layoutPath);
 		if ($this->_layoutPath != false)
 		{
 			// Unset so as not to introduce into template scope
-			unset($tpl);
+			unset($lyt);
 			unset($file);
 
 			// Never allow a 'this' property
@@ -130,10 +125,25 @@ abstract class vView extends vBasicModel implements vIView {
 			return $this->_output;
 		} else {
 			VmConfig::$echoDebug = 1;
-			vmdebug( 'My path $file '.$file,self::$_paths); die;
+			vmdebug( 'renderLayout My path $file '.$file,self::$_paths['layout']); die;
 			throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
 		}
 	}
+
+	/**
+	 * Load a template file -- first look in the templates folder for an override
+	 *
+	 * @param   string  $tpl  The name of the template source file; automatically searches the template paths and compiles as needed.
+	 *
+	 * @return  string  The output of the the template script.
+	 *
+	 * @since   3.2
+	 * @throws  Exception
+	 */
+	public function loadTemplate($lyt = null) {
+		return $this->renderLayout($lyt);
+	}
+
 
 	/**
 	 * Method to set the view layout.

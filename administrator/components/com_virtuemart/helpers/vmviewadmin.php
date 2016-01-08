@@ -56,7 +56,7 @@ class VmViewAdmin extends vView {
 			//or $this->canDo->get('core.admin')
 			//or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
 
-			$result = $this->loadTemplate($tpl);
+			$result = $this->renderLayout($tpl);
 			if ($result instanceof Exception) {
 				return $result;
 			}

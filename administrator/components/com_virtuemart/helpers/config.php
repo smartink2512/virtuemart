@@ -94,7 +94,7 @@ defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
 if(!class_exists('VmTable')){
 	require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtable.php');
 }
-VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables');
+VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables','Table');
 
 if (!class_exists ('VmModel')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
@@ -547,12 +547,7 @@ class VmConfig {
 
 	static function echoAdmin(){
 		if(self::$echoAdmin===FALSE){
-			$user = vFactory::getUser();
-			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
-				self::$echoAdmin = true;
-			} else {
-				self::$echoAdmin = false;
-			}
+			self::$echoAdmin = vmAccess::manager();
 		}
 	}
 
@@ -567,7 +562,7 @@ class VmConfig {
 				$dev = VmConfig::get('vmdev',0);
 			}
 
-			//$debug = 'all';	//this is only needed, when you want to debug THIS file
+			$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
 				if(VmConfig::$echoAdmin){

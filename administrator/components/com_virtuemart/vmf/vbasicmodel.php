@@ -38,7 +38,7 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 
 	protected static $_loadedClasses = array();
 
-	public static function getInstance($type, $prefix = '', $config = array(), $single = true) {
+	public static function getInstance($type, $prefix = '', $config = array(), $single = false) {
 
 		vmSetStartTime('getInstance');
 		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
@@ -80,7 +80,8 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 		} else {
 			return true;
 		}
-
+		VmConfig::$echoDebug = 1;
+		vmdebug('loader file not found '.$p.DS.$filename,self::$_paths[$prefix]);
 		return false;
 	}
 
@@ -97,8 +98,8 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 
 		if (!isset(self::$_paths[$prefix])) self::$_paths[$prefix] = array();
 		$path = vRequest::filterPath($path);
-		vmTrace('my layout ');
 		if (!in_array($path, self::$_paths[$prefix])) {
+			//if($prefix=='view')vmTrace('addIncludePath');
 			array_unshift(self::$_paths[$prefix], $path);
 		}
 

@@ -109,7 +109,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_SHOPPERS'); ?></legend>
-		<?php echo $this->loadTemplate('customer'); ?>
+		<?php echo $this->renderLayout('customer'); ?>
 </fieldset>
 
 

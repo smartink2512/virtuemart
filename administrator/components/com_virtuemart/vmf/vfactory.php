@@ -15,6 +15,7 @@ class vFactory {
 	static $_cache = false;
 	static $_dates = false;
 	static $_config = false;
+	static $mailer = false;
 
 	public static function getConfig($file = null, $type = 'PHP', $namespace = '') {
 

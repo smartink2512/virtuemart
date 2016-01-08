@@ -239,7 +239,6 @@ class VirtuemartControllerProduct extends VmController {
 			vmInfo('COM_VIRTUEMART_PRODUCT_XREF_NAMES',implode(', ',$productNames));
 		}
 
-		$this->addViewPath(VMPATH_ADMIN . DS . 'views');
 		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);

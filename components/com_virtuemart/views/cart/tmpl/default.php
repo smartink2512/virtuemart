@@ -49,7 +49,7 @@ JHtml::_ ('behavior.formvalidation');
 
 	// This displays the form to change the current shopper
 	if ($this->allowChangeShopper){
-		echo $this->loadTemplate ('shopperform');
+		echo $this->renderLayout ('shopperform');
 	}
 
 
@@ -61,9 +61,9 @@ JHtml::_ ('behavior.formvalidation');
 			echo shopFunctions::renderVendorFullVendorList($this->cart->vendorId);
 			?><input type="submit" name="updatecart" title="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" class="button"  style="margin-left: 10px;"/><?php
 		}
-		echo $this->loadTemplate ('address');
+		echo $this->renderLayout ('address');
 		// This displays the pricelist MUST be done with tables, because it is also used for the emails
-		echo $this->loadTemplate ('pricelist');
+		echo $this->renderLayout ('pricelist');
 
 		if (!empty($this->checkoutAdvertise)) {
 			?> <div id="checkout-advertise-box"> <?php
@@ -77,7 +77,7 @@ JHtml::_ ('behavior.formvalidation');
 			?></div><?php
 		}
 
-		echo $this->loadTemplate ('cartfields');
+		echo $this->renderLayout ('cartfields');
 
 		?> <div class="checkout-button-top"> <?php
 			echo $this->checkout_link_html;

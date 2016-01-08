@@ -76,13 +76,7 @@ class VmController extends vController {
 		$viewName	= vRequest::getCmd('view', $this->default_view);
 		$viewLayout	= vRequest::getCmd('layout', 'default');
 
-		if(vRequest::getCmd('manage')){
-			$this->addIncludePath(VMPATH_ADMIN . DS . 'views', 'view');
-			$this->basePath = VMPATH_ROOT.'/administrator/components/com_virtuemart';
-		}
-
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
-
 
 		// Set the layout
 		$view->setLayout($viewLayout);
@@ -136,7 +130,6 @@ class VmController extends vController {
 		vRequest::setVar('view', $this->_cname);
 		vRequest::setVar('layout', $layout);
 
-		$this->addIncludePath(VMPATH_ADMIN . DS . 'views', 'view');
 		$document = vFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);

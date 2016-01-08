@@ -220,13 +220,13 @@ class vLanguage {
 
 		ksort($paths);
 		$path = reset($paths);
-		vmdebug('before !class_exists($class) ',$paths,$class);
+		//vmdebug('before !class_exists($class) ',$paths,$class);
 		while (!class_exists($class) && $path)
 		{
-			vmdebug('!class_exists($class) ',$class);
+			//vmdebug('!class_exists($class) ',$class);
 			if (file_exists($path))
 			{
-				vmdebug('__construct require_once ',$path);
+				//vmdebug('__construct require_once ',$path);
 				require $path;
 			}
 

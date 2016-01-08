@@ -240,10 +240,11 @@ class VirtueMartControllerInvoice extends vController
 		//We come from the be, so we need to load the FE language
 		VmConfig::loadJLang('com_virtuemart',true);
 
-		$this->addViewPath( VMPATH_SITE.DS.'views' );
+		$this->addIncludePath( VMPATH_SITE.DS.'views'.DS.$viewName);
 		$view = $this->getView($viewName, $format);
 		$this->writeJs = false;
-		$view->addTemplatePath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
+		//$view->addTemplatePath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
+		$view->addLayoutPath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl');
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$template = VmTemplate::loadVmTemplateStyle();
@@ -252,7 +253,7 @@ class VirtueMartControllerInvoice extends vController
 		if(!empty($templateName)){
 			$TemplateOverrideFolder = JPATH_SITE.DS."templates".DS.$templateName.DS."html".DS."com_virtuemart".DS."invoice";
 			if(file_exists($TemplateOverrideFolder)){
-				$view->addTemplatePath( $TemplateOverrideFolder);
+				$view->addLayoutPath( $TemplateOverrideFolder);
 			}
 		}
 

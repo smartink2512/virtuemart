@@ -822,9 +822,8 @@ class vmrouterHelper {
 		if($parent_ids = $catModel->getCategoryRecurse($virtuemart_category_id,$catMenuId)){
 			if($this->full) {
 				$parent_ids = array_reverse($parent_ids) ;
-			} else {
+			} else if(isset($parent_ids[0])){
 				$t = $parent_ids[0];
-				$parent_ids = array();
 				$parent_ids[] = $t;
 			}
 		}

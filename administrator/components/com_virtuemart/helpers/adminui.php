@@ -151,7 +151,7 @@ class AdminUIHelper {
 
 		foreach ( $load_template as $tab_content => $tab_title ) {
 			$html .= '<div class="tabs" title="' . vmText::_ ( $tab_title ) . '">';
-			$html .= $view->loadTemplate ( $tab_content );
+			$html .= $view->renderLayout ( $tab_content );
 			$html .= '<div class="clear"></div></div>';
 		}
 		$html .= '</div>';

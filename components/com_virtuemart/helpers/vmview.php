@@ -35,7 +35,7 @@ class VmView extends vView{
 			$this->writeJs = false;
 		}
 
-		$result = $this->loadTemplate($tpl);
+		$result = $this->renderLayout($tpl);
 		if ($result instanceof Exception) {
 			return $result;
 		}

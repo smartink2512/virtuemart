@@ -235,7 +235,7 @@ $i=0;
 		        <?php /* <span class="vmicon vmicon-16-new price-clone" ></span> */ ?>
                 <span class="vmicon vmicon-16-remove price-remove"></span>
 				<?php //echo vmText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER');
-				echo $this->loadTemplate ('price'); ?>
+				echo $this->renderLayout ('price'); ?>
 			 </td>
         </tr>
 			<?php

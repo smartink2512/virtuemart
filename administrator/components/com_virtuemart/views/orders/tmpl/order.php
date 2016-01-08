@@ -280,7 +280,7 @@ vmJsApi::addJScript('ordergui',$j);
 				<a href="#" class="show_element"><span class="vmicon vmicon-16-editadd"></span><?php echo vmText::_('COM_VIRTUEMART_ORDER_UPDATE_STATUS') ?></a>
 				<div style="display: none; background: white; z-index: 100;"
 					class="element-hidden vm-absolute"
-					id="updateOrderStatus"><?php echo $this->loadTemplate('editstatus'); ?>
+					id="updateOrderStatus"><?php echo $this->renderLayout('editstatus'); ?>
 				</div>
 				</td>
 			</tr>

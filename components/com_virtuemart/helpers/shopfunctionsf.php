@@ -34,7 +34,8 @@ class shopFunctionsF {
 		if($show == 1) {
 
 			if(!class_exists( 'VirtuemartViewUser' )) require(VMPATH_SITE.DS.'views'.DS.'user'.DS.'view.html.php');
-			$view = new VirtuemartViewUser();
+			$view = vController::createView('user','VirtuemartView');
+
 			$view->setLayout( 'login' );
 			$view->assignRef( 'show', $show );
 
@@ -521,24 +522,25 @@ class shopFunctionsF {
 
 		$controller = new VirtueMartControllerVirtuemart();
 		// refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-		$controller->addViewPath( VMPATH_SITE.DS.'views' );
+		//$controller->addViewPath( VMPATH_SITE.DS.'views' );
 
+		//refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
+		//$view->addTemplatePath( VMPATH_SITE.'/views/'.$viewName.'/tmpl' );
+		$controller->addIncludePath(VMPATH_SITE.'/views/'.$viewName);
 		$view = $controller->getView( $viewName, 'html' );
 		if(!$controllerName) $controllerName = $viewName;
 		$controllerClassName = 'VirtueMartController'.ucfirst( $controllerName );
 		if(!class_exists( $controllerClassName )) require(VMPATH_SITE.DS.'controllers'.DS.$controllerName.'.php');
 
-		//refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-		$view->addTemplatePath( VMPATH_SITE.'/views/'.$viewName.'/tmpl' );
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$template = VmTemplate::loadVmTemplateStyle();
 		VmTemplate::setTemplate($template);
 		if($template){
 			if(is_array($template) and isset($template['template'])){
-				$view->addTemplatePath( VMPATH_ROOT.DS.'templates'.DS.$template['template'].DS.'html'.DS.'com_virtuemart'.DS.$viewName );
+				$view->addLayoutPath( $viewName, VMPATH_ROOT.DS.'templates'.DS.$template['template'].DS.'html'.DS.'com_virtuemart'.DS.$viewName );
 			} else {
-				$view->addTemplatePath( VMPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
+				$view->addLayoutPath( $viewName, VMPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName );
 			}
 		}
 
@@ -786,7 +788,7 @@ class shopFunctionsF {
 		$i = 1;
 		foreach( $load_template as $tab_content => $tab_title ) {
 			$html .= '<div id="tab-'.$i.'" class="tabs" title="'.vmText::_( $tab_title ).'">';
-			$html .= $view->loadTemplate( $tab_content );
+			$html .= $view->renderLayout( $tab_content );
 			$html .= '<div class="clear"></div>
 			    </div>';
 			$i++;

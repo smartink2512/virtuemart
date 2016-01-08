@@ -50,7 +50,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('VmTable')) require_once($this->path .'/helpers/vmtable.php');
 			if(!class_exists('VmModel')) require_once($this->path .'/helpers/vmmodel.php');
 			VmTable::addIncludePath($this->path.DS.'tables','Table');
-			VmModel::addIncludePath($this->path.DS.'models','Model');
+			VmModel::addIncludePath($this->path.DS.'models','VirtueMartModel');
 
 		}
 
