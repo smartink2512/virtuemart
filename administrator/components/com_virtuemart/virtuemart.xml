@@ -61,6 +61,7 @@
             <folder>plugins</folder>
             <folder>tables</folder>
             <folder>views</folder>
+            <folder>vmf</folder>
         </files>
     </administration>
     <updateservers>

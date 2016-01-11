@@ -39,7 +39,8 @@ class VirtueMartViewPdf extends VmView
 			$viewName = vRequest::getCmd('view','productdetails');
 			$class= 'VirtueMartView'.ucfirst($viewName);
 			if(!class_exists($class)) require(VMPATH_SITE.DS.'views'.DS.$viewName.DS.'view.html.php');
-			$view = new $class ;
+
+			$view = vController::createView($viewName,'VirtueMartView'); //new $class ;
 
 			$view->display($tpl);
 		}
