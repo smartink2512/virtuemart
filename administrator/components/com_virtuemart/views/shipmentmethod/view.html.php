@@ -27,14 +27,14 @@ if(!class_exists('VmViewAdmin'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmi
  *
  * @package	VirtueMart
  * @subpackage Shipment
- * @author RickG
+ * @author Max Milbers, Valérie Isaksen
  */
 class VirtuemartViewShipmentmethod extends VmViewAdmin {
 
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->addHelperPath(VMPATH_ADMIN.DS.'helpers');
+		//$this->addHelperPath(VMPATH_ADMIN.DS.'helpers');
 
 		if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 

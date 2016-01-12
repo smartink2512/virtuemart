@@ -37,7 +37,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->addHelperPath(VMPATH_ADMIN.DS.'helpers');
+		//$this->addHelperPath(VMPATH_ADMIN.DS.'helpers');
 
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
