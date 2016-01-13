@@ -126,8 +126,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->update($loadVm);
 			}
 			$_REQUEST['install'] = 1;
-			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('vFolder')) require($this->path .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
+			if(!class_exists('vFile')) require($this->path .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 
 			$this -> joomlaSessionDBToMediumText();
 
@@ -201,10 +201,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function createIndexFolder($path){
 
-			if(JFolder::create($path)) {
-				/*if(!JFile::exists($path .DS. 'index.html')){
-					JFile::copy(VMPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
-				}*/
+			if(vFolder::create($path)) {
 				return true;
 			}
 			return false;
@@ -225,8 +222,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->install($loadVm);
 			}
 
-			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 
 			//Delete Cache
 			$cache = vFactory::getCache();
@@ -296,7 +293,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			//copy sampel media
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
-			if(JFolder::exists($src)){
+			if(vFolder::exists($src)){
 				$dst = VMPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
 				$this->recurse_copy($src,$dst);
 			}
@@ -313,11 +310,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		private function deleteSwfUploader(){
 			if(JVM_VERSION>0){
-				if( JFolder::exists(VMPATH_ROOT. DS. 'media' .DS. 'system'. DS. 'swf')){
-					JFolder::delete(VMPATH_ROOT. DS. 'media' .DS. 'system'. DS. 'swf');
+				if( vFolder::exists(VMPATH_ROOT. DS. 'media' .DS. 'system'. DS. 'swf')){
+					vFolder::delete(VMPATH_ROOT. DS. 'media' .DS. 'system'. DS. 'swf');
 				}
-				if( JFile::exists(VMPATH_ROOT. DS. 'administrator' .DS. 'language' .DS. 'en-GB'. DS. 'en-GB.com_virtuemart.sys.ini')){
-					JFile::delete(VMPATH_ROOT. DS. 'administrator' .DS. 'language' .DS. 'en-GB'. DS. 'en-GB.com_virtuemart.sys.ini');
+				if( vFile::exists(VMPATH_ROOT. DS. 'administrator' .DS. 'language' .DS. 'en-GB'. DS. 'en-GB.com_virtuemart.sys.ini')){
+					vFile::delete(VMPATH_ROOT. DS. 'administrator' .DS. 'language' .DS. 'en-GB'. DS. 'en-GB.com_virtuemart.sys.ini');
 				}
 
 			}
@@ -829,7 +826,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		private function recurse_copy($src,$dst ) {
 
 			$dir = '';
-			if(JFolder::exists($src)){
+			if(vFolder::exists($src)){
 				$dir = opendir($src);
 				$this->createIndexFolder($dst);
 
@@ -837,20 +834,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					while(false !== ( $file = readdir($dir)) ) {
 						if (( $file != '.' ) && ( $file != '..' )) {
 							if ( is_dir($src .DS. $file) ) {
-								if(!JFolder::create($dst . DS . $file)){
+								if(!vFolder::create($dst . DS . $file)){
 									$app = vFactory::getApplication ();
 									$app->enqueueMessage ('Couldnt create folder ' . $dst . DS . $file);
 								}
 								$this->recurse_copy($src .DS. $file,$dst .DS. $file);
 							}
 							else {
-								if(JFile::exists($dst .DS. $file)){
-									if(!JFile::delete($dst .DS. $file)){
+								if(vFile::exists($dst .DS. $file)){
+									if(!vFile::delete($dst .DS. $file)){
 										$app = vFactory::getApplication();
 										$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
 									}
 								}
-								if(!JFile::move($src .DS. $file,$dst .DS. $file)){
+								if(!vFile::move($src .DS. $file,$dst .DS. $file)){
 									$app = vFactory::getApplication();
 									$app -> enqueueMessage('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
 								}
@@ -858,7 +855,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						}
 					}
 					closedir($dir);
-					if (is_dir($src)) JFolder::delete($src);
+					if (is_dir($src)) vFolder::delete($src);
 					return true;
 				}
 			}

@@ -228,19 +228,17 @@ class TableMedias extends VmTable {
 
 			}
 			else {*/
-				if (!class_exists ('JFile')) {
-					require(VMPATH_LIBS . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
-				}
+				if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 
 				if (!$this->file_is_forSale) {
 					$lastIndexOfSlash = strrpos ($this->file_url, '/');
 					$name = substr ($this->file_url, $lastIndexOfSlash + 1);
-					$file_extension = strtolower (JFile::getExt ($name));
+					$file_extension = strtolower (vFile::getExt ($name));
 				}
 				else {
 					$lastIndexOfSlash = strrpos ($this->file_url, DS);
 					$name = substr ($this->file_url, $lastIndexOfSlash + 1);
-					$file_extension = strtolower (JFile::getExt ($name));
+					$file_extension = strtolower (vFile::getExt ($name));
 				}
 
 				if (empty($name)) {

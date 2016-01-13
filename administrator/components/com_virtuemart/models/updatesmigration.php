@@ -582,7 +582,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		if(!empty($err)){
 			vmError('resetThumbs Update entries failed ',$err);
 		}
-		jimport('joomla.filesystem.folder');
+
 		$tmpimg_resize_enable = VmConfig::get('img_resize_enable',1);
 
 		VmConfig::set('img_resize_enable',0);
@@ -609,13 +609,13 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		if(!empty($resized)) $resized = DS.$resized;
 		$typePath = VmConfig::get($type);
 		if(!empty($typePath)){
-			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
 			$path = VMPATH_ROOT.DS.str_replace('/',DS,$typePath).$resized;
-			$msg = JFolder::delete($path);
+			$msg = vFolder::delete($path);
 			if(!$msg){
 				vmWarn('Problem deleting '.$type);
 			}
-			$msg = JFolder::create($path);
+			$msg = vFolder::create($path);
 			return $msg;
 		} else {
 

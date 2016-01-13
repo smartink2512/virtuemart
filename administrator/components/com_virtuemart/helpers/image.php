@@ -185,13 +185,11 @@ class VmImage extends VmMediaHandler {
 
 		$elements = explode(DS,$path);
 		$examine = VMPATH_ROOT;
-		if(!class_exists('JFolder')){
-			require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
-		}
+		if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
 		foreach($elements as $piece){
 			$examine = $examine.DS.$piece;
-			if(!JFolder::exists($examine)){
-				JFolder::create($examine);
+			if(!vFolder::exists($examine)){
+				vFolder::create($examine);
 				vmInfo('create folder for resized image '.$examine);
 			}
 		}

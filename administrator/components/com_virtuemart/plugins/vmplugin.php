@@ -701,7 +701,7 @@ abstract class vmPlugin extends JPlugin {
 
 	private function _getLayoutPath ($pluginName, $group, $layout = 'default') {
 		$layoutPath=$templatePathWithGroup=$defaultPathWithGroup='';
-		jimport ('joomla.filesystem.file');
+
 		// First search in the new system
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$vmStyle = VmTemplate::loadVmTemplateStyle();
@@ -710,11 +710,12 @@ abstract class vmPlugin extends JPlugin {
 		$defaultPath          = VMPATH_ROOT . DS . 'plugins' . DS . $group . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
 		$defaultPathWithGroup = VMPATH_ROOT . DS . 'plugins' . DS . $group . DS . $pluginName . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
 
-		if (JFile::exists ($templatePath)) {
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+		if (vFile::exists ($templatePath)) {
 			$layoutPath= $templatePath;
-		} elseif (JFile::exists ($defaultPath)) {
+		} elseif (vFile::exists ($defaultPath)) {
 			$layoutPath= $defaultPath;
-		} elseif (JFile::exists ($defaultPathWithGroup)) {
+		} elseif (vFile::exists ($defaultPathWithGroup)) {
 			$layoutPath = $defaultPathWithGroup;
 		}
 		if (empty($layoutPath)) {

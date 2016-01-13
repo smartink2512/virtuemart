@@ -2122,8 +2122,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			// We the sanitized file name as the invoice number might contain strange characters like 2015/01.
 			$invoice_name_dst = $path.DS.$name.'_deprecated'.$date.'_'.$table->order_status.'.pdf';
 
-			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			if (!JFile::move($invoice_name_src, $invoice_name_dst)) {
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+			if (!vFile::move($invoice_name_src, $invoice_name_dst)) {
 				vmError ('Could not rename Invoice '.$invoice_name_src.' to '. $invoice_name_dst );
 			}
 		}

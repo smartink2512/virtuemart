@@ -129,9 +129,9 @@ class VmMediaHandler {
 	 */
 	static public function createMedia($table,$type='',$file_mimetype=''){
 
-		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 
-		$extension = strtolower(JFile::getExt($table->file_url));
+		$extension = strtolower(vFile::getExt($table->file_url));
 
 		$isImage = self::isImage($extension);
 
@@ -226,7 +226,7 @@ class VmMediaHandler {
 			$this->file_name = '';
 			$this->file_extension = '';
 		} else {
-			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 
 			if($this->file_is_forSale==1){
 
@@ -242,22 +242,22 @@ class VmMediaHandler {
 			}
 
 			if(!empty($name) && $name !=='/'){
-				$this->file_name = JFile::stripExt($name);
+				$this->file_name = vFile::stripExt($name);
 				//$this->file_extension = strtolower(JFile::getExt($name));
-				$this->file_extension = strtolower(JFile::getExt($name));
+				$this->file_extension = strtolower(vFile::getExt($name));
 
 				//Ensure using right directory
 				$file_url = $this->getMediaUrlByView($type).$name;
 
 				if($this->file_is_forSale==1){
-					if(JFile::exists($file_url)){
+					if(vFile::exists($file_url)){
 						$this->file_url = $file_url;
 					} else {
 					//	vmdebug('MediaHandler, file does not exist in safepath '.$file_url);
 					}
 				} else {
 					$pathToTest = VMPATH_ROOT.DS.str_replace('/',DS,$file_url);
-					if(JFile::exists($pathToTest)){
+					if(vFile::exists($pathToTest)){
 						$this->file_url = $file_url;
 					} else {
 					//	vmdebug('MediaHandler, file does not exist in '.$pathToTest);
@@ -625,7 +625,7 @@ class VmMediaHandler {
 			return false;
 		}
 
-		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 		$file_path = VMPATH_ROOT.DS.str_replace('/',DS,$url);
 		$app = vFactory::getApplication();
 
@@ -635,7 +635,7 @@ class VmMediaHandler {
 			$msg_path = $file_path;
 		}
 
-		if($res = JFile::delete( $file_path )){
+		if($res = vFile::delete( $file_path )){
 			$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_DELETE_OK',$msg_path));
 		} else {
 			$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_DELETE_ERR',$res.' '.$msg_path));
@@ -738,8 +738,8 @@ class VmMediaHandler {
 			vmdebug('the Urls',$data['media_roles'],$typelessUrl,$this->file_url_folder.$this->file_name);
 			if(!file_exists($this->file_url_folder.$this->file_name) and file_exists($typelessUrl)){
 				vmdebug('Execute move');
-				if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-				JFile::move($typelessUrl, $this->file_url_folder.$this->file_name);
+				if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+				vFile::move($typelessUrl, $this->file_url_folder.$this->file_name);
 			}
 		}
 

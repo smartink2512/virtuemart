@@ -35,10 +35,6 @@ class VirtuemartViewLog extends VmViewAdmin {
 
 	function display ($tpl = null) {
 
-		// Load the helper(s)
-
-
-		jimport('joomla.filesystem.file');
 		$config = vFactory::getConfig();
 		$log_path = $config->get('log_path', VMPATH_ROOT . "/log");
 		$layoutName = vRequest::getCmd('layout', 'default');
@@ -52,9 +48,9 @@ class VirtuemartViewLog extends VmViewAdmin {
 			JToolBarHelper::cancel();
 
 		} else {
-			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
 
-			$this->logFiles = JFolder::files($log_path, $filter = '.', true, false, array('index.html'));
+			$this->logFiles = vFolder::files($log_path, $filter = '.', true, false, array('index.html'));
 
 			$this->SetViewTitle('LOG');
 			$this->path = $log_path;

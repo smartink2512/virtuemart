@@ -100,11 +100,11 @@ class VmView extends vView{
 		// get the template and default paths for the layout if the site template has a layout override, use it
 		$templatePath = JPATH_SITE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtuemart' . DS . 'sublayouts' . DS . $name . '.php';
 
-		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		if (JFile::exists ($templatePath)) {
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+		if (vFile::exists ($templatePath)) {
 			$lPath =  $templatePath;
 		} else {
-			if (JFile::exists (VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php')) {
+			if (vFile::exists (VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php')) {
 				$lPath = VMPATH_SITE . DS . 'sublayouts' . DS . $name . '.php';
 			}
 		}

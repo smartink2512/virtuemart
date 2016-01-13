@@ -722,7 +722,7 @@ class VmTable extends vTable implements JObservableInterface, JTableInterface {
 		if($this->_ltmp){
 			//vmdebug('Set Ltmp '.$this->_ltmp.' back to false');
 			$this->_langTag = $this->_ltmp;
-			$this->_cache['l'][$this->_lhash] = self::$_cache['l'][$this->_tempHash] = $this->loadFieldValues(false);
+			$this->_cache['l'][$this->_lhash] = $this->_cache['l'][$this->_tempHash] = $this->loadFieldValues(false);
 		}
 		else {
 			$this->_cache['l'][$this->_lhash] = $this->loadFieldValues(false);

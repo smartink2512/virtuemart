@@ -401,8 +401,6 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
-		if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
-
 		$safePath = trim($config->get('forSale_path'));
 		if(!empty($safePath)){
 			if(DS!='/' and strpos($safePath,'/')!==false){
@@ -449,10 +447,10 @@ class VirtueMartModelConfig extends VmModel {
 		$safePath = shopFunctions::checkSafePath($safePath);
 
 		if(!empty($safePath)){
-
-			$exists = JFolder::exists($safePath.'invoices');
+			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
+			$exists = vFolder::exists($safePath.'invoices');
 			if(!$exists){
-				$created = JFolder::create($safePath.'invoices');
+				$created = vFolder::create($safePath.'invoices');
 				if($created){
 					vmInfo('COM_VIRTUEMART_SAFE_PATH_INVOICE_CREATED');
 				} else {
@@ -568,8 +566,8 @@ class VirtueMartModelConfig extends VmModel {
 		$_datafile = VMPATH_ADMIN.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
 			if (file_exists(VMPATH_ADMIN.DS.'virtuemart_defaults.cfg-dist')) {
-				if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',VMPATH_ADMIN);
+				if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+				vFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',VMPATH_ADMIN);
 			} else {
 				vmWarn('The data file with the default configuration could not be found. You must configure the shop manually.');
 				return FALSE;

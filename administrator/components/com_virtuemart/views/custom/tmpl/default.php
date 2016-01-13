@@ -18,8 +18,6 @@
 
 AdminUIHelper::startAdminArea($this);
 
-jimport('joomla.filesystem.file');
-
 /* Get the component name */
 $option = vRequest::getCmd('option');
 

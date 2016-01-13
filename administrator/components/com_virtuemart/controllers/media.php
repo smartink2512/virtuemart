@@ -127,10 +127,11 @@ class VirtuemartControllerMedia extends VmController {
 			}
 		}
 
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 		foreach($results as $filetype => $files){
 			foreach($files as $file){
-				$new = JFile::stripExt($file);
-				if(!JFile::exists($file)){
+				$new = vFile::stripExt($file);
+				if(!vFile::exists($file)){
 					$succ = rename ($path.$file,$path.$new.'.'.$filetype);
 				}
 			}

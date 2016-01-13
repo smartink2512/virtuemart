@@ -224,7 +224,7 @@ class vmUploader {
 			vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
 			return false;
 		}
-		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 		$media = vRequest::getFiles('upload');
 		if(empty($media) or !isset($media['error']) ){
 			vmError('Recieved no data for upload','Recieved no data for upload');
@@ -250,8 +250,8 @@ class vmUploader {
 				$safeMediaName = vmFile::makeSafe( $media['name'] );
 				$media['name'] = $safeMediaName;
 
-				$mediaPure = JFile::stripExt($media['name']);
-				$mediaExtension = strtolower(JFile::getExt($media['name']));
+				$mediaPure = vFile::stripExt($media['name']);
+				$mediaExtension = strtolower(vFile::getExt($media['name']));
 				if(empty($mediaExtension)){
 					vmError('Invalid media; no extension '.$media['name']);
 					return false;
@@ -303,9 +303,9 @@ class vmUploader {
 				}
 
 				if($obj->file_is_forSale==0){
-					JFile::upload($media['tmp_name'],VMPATH_ROOT.DS.$path_folder.$media['name']);
+					vFile::upload($media['tmp_name'],VMPATH_ROOT.DS.$path_folder.$media['name']);
 				} else {
-					JFile::upload($media['tmp_name'],$path_folder.$media['name']);
+					vFile::upload($media['tmp_name'],$path_folder.$media['name']);
 				}
 
 				$obj->file_mimetype = $media['type'];

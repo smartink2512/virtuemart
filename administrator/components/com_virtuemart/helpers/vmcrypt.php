@@ -83,7 +83,6 @@ class vmCrypt {
 	}
 
 	private static function _checkCreateKeyFile($date){
-		jimport('joomla.filesystem.file');
 
 		vmSetStartTime('check');
 		static $existingKeys = false;
@@ -91,13 +90,14 @@ class vmCrypt {
 		$keyPath = self::_getEncryptSafepath ();
 
 		if(!$existingKeys){
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 			$dir = opendir($keyPath);
 			if(is_resource($dir)){
 				$existingKeys = array();
 				while(false !== ( $file = readdir($dir)) ) {
 					if (( $file != '.' ) && ( $file != '..' )) {
 						if ( !is_dir($keyPath .DS. $file)) {
-							$ext = Jfile::getExt($file);
+							$ext = vFile::getExt($file);
 							if($ext=='ini' and file_exists($keyPath .DS. $file)){
 								$content = parse_ini_file($keyPath .DS. $file);
 								if($content and is_array($content) and isset($content['unixtime'])){
@@ -171,7 +171,8 @@ class vmCrypt {
 
 		$usedKey = date("ymd");
 		$filename = $keyPath . DS . $usedKey . '.ini';
-		if (!JFile::exists ($filename)) {
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+		if (!vFile::exists ($filename)) {
 
 			$key = self::crypto_rand_secure($size);
 
@@ -187,7 +188,7 @@ class vmCrypt {
 						b64 = "0"
 						size = "'.$size.'"
 						; */ ?>';
-			$result = JFile::write($filename, $content);
+			$result = vFile::write($filename, $content);
 
 			return array('key'=>$key,'unixtime'=>$today,'date'=>$dat,'b64'=>0,'size'=>$size);
 		} else {
@@ -204,22 +205,19 @@ class vmCrypt {
 			return NULL;
 		}
 		$encryptSafePath = $safePath . self::ENCRYPT_SAFEPATH;
-		//echo 'my $encryptSafePath '.$encryptSafePath;
-		//if(!JFolder::exists($encryptSafePath)){
-			self::createEncryptFolder($encryptSafePath);
-		//}
+		self::createEncryptFolder($encryptSafePath);
 		return $encryptSafePath;
 	}
 
 	private static function createEncryptFolder ($folderName) {
 
-		//$folderName = self::_getEncryptSafepath ();
+		if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
 
-		$exists = JFolder::exists ($folderName);
+		$exists = vFolder::exists ($folderName);
 		if ($exists) {
 			return TRUE;
 		}
-		$created = JFolder::create ($folderName);
+		$created = vFolder::create ($folderName);
 		if ($created) {
 			return TRUE;
 		}

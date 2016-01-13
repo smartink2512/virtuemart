@@ -117,7 +117,6 @@ Virtuemart.bCheckoutButton = function(e) {
 	var div = '<input name=\"'+name+'\" value=\"1\" type=\"hidden\">';
 
 	jQuery('#checkoutForm').append(div);
-	//Virtuemart.updForm();
 	jQuery('#checkoutForm').submit();
 }
 jQuery(document).ready(function($) {

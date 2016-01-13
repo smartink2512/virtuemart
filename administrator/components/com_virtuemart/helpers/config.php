@@ -406,15 +406,15 @@ function logInfo ($text, $type = 'message') {
 	$head = false;
 
 	if($file===null){
-		if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+
 
 		$config = vFactory::getConfig();
 		$log_path = $config->get('log_path', VMPATH_ROOT . "/log" );
 		$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 
 		if (!is_dir($log_path)) {
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($log_path)) {
+			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
+			if (!vFolder::create($log_path)) {
 				if (VmConfig::$echoAdmin){
 					$msg = 'Could not create path ' . $log_path . ' to store log information. Check your folder ' . $log_path . ' permissions.';
 					$app = vFactory::getApplication();
@@ -431,8 +431,8 @@ function logInfo ($text, $type = 'message') {
 			}
 			return;
 		}
-
-		if (!JFile::exists($file)) {
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+		if (!vFile::exists($file)) {
 			// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
 			// from Joomla log file
 			$head = "#\n";
