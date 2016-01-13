@@ -932,7 +932,8 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 			$logFileName=$this->getLogFileName();
 			$path = JFactory::getConfig()->get('log_path', VMPATH_ROOT . "/log" ).'/'.$logFileName.'.log.php';
-			if (!JFile::exists($path)) {
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+			if (!vFile::exists($path)) {
 				// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
 				// from Joomla log file
 				$head = "#\n";

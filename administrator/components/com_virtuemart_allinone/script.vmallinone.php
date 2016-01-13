@@ -60,7 +60,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 		public function vmInstall ($dontMove=0) {
 
 
-			jimport ('joomla.filesystem.file');
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 			jimport ('joomla.installer.installer');
 
 			VmConfig::loadJLang('com_virtuemart');
@@ -384,14 +384,14 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 			$moneybookers_variants=array('', '_acc', '_did','_gir','_idl','_obt', '_pwy','_sft', '_wlt');
 			foreach ($moneybookers_variants as $moneybookers_variant) {
 				$folder=$path.DS.'moneybookers'.$moneybookers_variant;
-				if (JFolder::exists($folder) ) {
-					if (!JFolder::delete($folder)) {
+				if (vFolder::exists($folder) ) {
+					if (!vFolder::delete($folder)) {
 						$app->enqueueMessage ("Failed to delete ". $folder." folder");
 					}
 				}
 				$lang_file=	  JPATH_ROOT . DS."administrator". DS . "language". DS. 'en-GB'. DS.'en-GB.plg_vmpayment_moneybookers'.$moneybookers_variant."ini";
-				if (JFile::exists ($lang_file) ){
-					if (!JFile::delete ($lang_file)) {
+				if (vFile::exists ($lang_file) ){
+					if (!vFile::delete ($lang_file)) {
 						$app->enqueueMessage ('Couldnt delete ' . $lang_file);
 						return false;
 					}
@@ -816,20 +816,20 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 				while (FALSE !== ($file = readdir ($dir))) {
 					if (($file != '.') && ($file != '..')) {
 						if (is_dir ($src . DS . $file)) {
-							if(!JFolder::create($dst . DS . $file)){
+							if(!vFolder::create($dst . DS . $file)){
 								$app = JFactory::getApplication ();
 								$app->enqueueMessage ('Couldnt create folder ' . $dst . DS . $file);
 							}
 							$this->recurse_copy ($src . DS . $file, $dst . DS . $file);
 						} else {
-							if (JFile::exists ($dst . DS . $file)) {
-								if (!JFile::delete ($dst . DS . $file)) {
+							if (vFile::exists ($dst . DS . $file)) {
+								if (!vFile::delete ($dst . DS . $file)) {
 									$app = JFactory::getApplication ();
 									$app->enqueueMessage ('Couldnt delete ' . $dst . DS . $file);
 									return false;
 								}
 							}
-							if (!JFile::move ($src . DS . $file, $dst . DS . $file)) {
+							if (!vFile::move ($src . DS . $file, $dst . DS . $file)) {
 								$app = JFactory::getApplication ();
 								$app->enqueueMessage ('Couldnt move ' . $src . DS . $file . ' to ' . $dst . DS . $file);
 								return false;
@@ -839,7 +839,7 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 				}
 				closedir ($dir);
 				if (is_dir ($src)) {
-					JFolder::delete ($src);
+					vFolder::delete ($src);
 				}
 			} else {
 				$app = JFactory::getApplication ();
@@ -862,11 +862,8 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 		 *
 		 */
 		public function createIndexFolder ($path) {
-
-			if (JFolder::create ($path)) {
-				/*if (!JFile::exists ($path . DS . 'index.html')) {
-					JFile::copy (JPATH_ROOT . DS . 'components' . DS . 'index.html', $path . DS . 'index.html');
-				}*/
+			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
+			if (vFolder::create ($path)) {
 				return TRUE;
 			}
 			return FALSE;

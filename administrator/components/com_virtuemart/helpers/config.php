@@ -562,7 +562,7 @@ class VmConfig {
 				$dev = VmConfig::get('vmdev',0);
 			}
 
-			$debug = 'all';	//this is only needed, when you want to debug THIS file
+			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
 				if(VmConfig::$echoAdmin){
