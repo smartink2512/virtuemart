@@ -107,9 +107,7 @@ class VirtueMartModelUserfields extends VmModel {
 				if (is_array($value)) $value = implode("|*|",$value);
 				break;
 			case 'age_verification':
-				$value = vRequest::getInt('birthday_selector_year')
-				.'-'.vRequest::getInt('birthday_selector_month')
-				.'-'.vRequest::getInt('birthday_selector_day');
+				$value =vRequest::getString($fieldName, '');
 				break;
 			case 'textarea':
 				$value = vRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);

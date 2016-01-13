@@ -95,17 +95,23 @@ if($option=='com_virtuemart'){
 		<?php
 		}
 		$class="";
-		if (vRequest::get('view','')=='install') {
 			if (JVM_VERSION < 3) {
 				$class = "button";
 			} else {
 				$class = "btn";
 			}
-		}
 		?>
 		<tr>
-			<td><span class="<?php echo $class ?>">
-				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
+			<td><p>
+				<?php
+				if (vRequest::get('layout','')=='insfinished') {
+					VmConfig::loadJLang('com_virtuemart_install');
+
+					echo vmText::_('COM_VIRTUEMART_INSTALL_MORE_LANGUAGES');
+				} ?>
+				</p>
+				<span class="<?php echo $class ?>">
+					<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
 				</span>
 			</td>
 		</tr>

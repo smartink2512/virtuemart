@@ -392,7 +392,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			//Caching should be enabled, set to files and for 15 minutes
 			if(JVM_VERSION>2){
 				if (!class_exists( 'ConfigModelCms' )) require(VMPATH_ROOT.DS.'components'.DS.'com_config'.DS.'model'.DS.'cms.php');
-				if (!class_exists( 'ConfigModelForm' )) require(VMPATH_ROOT.DS.'components'.DS.'com_config'.DS.'model'.DS.'application.php');
+				if (!class_exists( 'ConfigModelForm' )) require(VMPATH_ROOT.DS.'components'.DS.'com_config'.DS.'model'.DS.'form.php');
+				if (!class_exists( 'ConfigModelConfig' )) require(VMPATH_ROOT.DS.'components'.DS.'com_config'.DS.'model'.DS.'config.php');
 				if (!class_exists( 'ConfigModelApplication' )) require(VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_config'.DS.'model'.DS.'application.php');
 			} else {
 				if (!class_exists( 'ConfigModelApplication' )) require(VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_config'.DS.'models'.DS.'application.php');
