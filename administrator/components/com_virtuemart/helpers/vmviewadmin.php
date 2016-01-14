@@ -38,9 +38,6 @@ class VmViewAdmin extends vView {
 	protected $canDo;
 	var $writeJs = true;
 
-	function __construct($config = array()) {
-		parent::__construct($config);
-	}
 	
 	/*
 	* Override the display function to include ACL
@@ -271,7 +268,7 @@ class VmViewAdmin extends vView {
 			}
 			vFactory::getDocument()->addStyleDeclaration($flagCss);
 
-			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
+			$this->langList = vHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
 
 
 			if ($editView =='product') {
@@ -363,7 +360,7 @@ class VmViewAdmin extends vView {
 			$flagImg = $selectedLangue;
 			if(isset($languagesByCode[$selectedLangue])){
 				$defautName = $langs[$selectedLangue]['name'];
-				$flagImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
+				$flagImg= vHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
 			} else {
 				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));
 			}

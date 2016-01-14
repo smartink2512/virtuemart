@@ -978,7 +978,7 @@ class vLanguage {
 			$class = @ $step['class'];
 
 			// We're looking for something outside of language.php
-			if ($class != 'JLanguage' && $class != 'JText')
+			if ($class != 'vLanguage' && $class != 'vmText')
 			{
 				$info['function'] = @ $step['function'];
 				$info['class'] = $class;

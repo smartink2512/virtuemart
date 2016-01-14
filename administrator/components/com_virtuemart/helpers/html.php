@@ -13,6 +13,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+if (!class_exists( 'vHtml' )) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
+
 /**
  * HTML Helper
  *
@@ -235,7 +237,7 @@ static function vmGetCharset() {
 									   $translate = false)
 	{
 		// Set default options
-		$options = array_merge(JHtml::$formatOptions, array('format.depth' => 0, 'id' => false));
+		$options = array_merge(vHtml::$formatOptions, array('format.depth' => 0, 'id' => false));
 		if (is_array($attribs) && func_num_args() == 3)
 		{
 			// Assume we have an options array
@@ -323,7 +325,7 @@ static function vmGetCharset() {
 	public static function options($arr, $optKey = 'value', $optText = 'text', $selected = null, $translate = false)
 	{
 		$options = array_merge(
-			JHtml::$formatOptions,
+			vHtml::$formatOptions,
 			self::$_optionDefaults['option'],
 			array('format.depth' => 0, 'groups' => true, 'list.select' => null, 'list.translate' => false)
 		);
@@ -566,7 +568,7 @@ static function vmGetCharset() {
 	 * @return string
 	 */
 	static function radio( $name, $radios, $default,$key='value',$text='text') {
-		return '<fieldset class="radio">'.JHtml::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</fieldset>';
+		return '<fieldset class="radio">'.vHtml::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</fieldset>';
 	}
 	/**
 	 * Creating rows with boolean list
@@ -578,7 +580,7 @@ static function vmGetCharset() {
 	 *
 	 */
 	public static function booleanlist (  $name, $value,$class='class="inputbox"'){
-		return '<fieldset class="radio">'.JHtml::_( 'select.booleanlist',  $name , $class , $value).'</fieldset>' ;
+		return '<fieldset class="radio">'.vHtml::_( 'select.booleanlist',  $name , $class , $value).'</fieldset>' ;
 	}
 
 	/**
