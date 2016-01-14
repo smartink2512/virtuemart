@@ -5,8 +5,9 @@
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="3.1.0"/>
     <property name="joomla.version" value="2.5.28"/>
-    <property name="svn.lastrevision" value="9117"/>
-    <property name="PHING.VM.CODENAME" value="Blue Corvus"/>
+    <property name="joomlaj3.version" value="3.4.8"/>
+    <!--property name="svn.lastrevision" value="9117"/-->
+    <property name="PHING.VM.CODENAME" value="Test Full J3 installer"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
     <target name="title">
@@ -36,6 +37,8 @@
     <property name="vm.extract.filename" value="${component.name}.${vm.version}_extract_first"/>
     <property name="full.extract.filename" value="VirtueMart${vm.version}_Joomla_${joomla.version}-Stable-Full_Package"/>
     <property name="joomla.folder.from" value="${joomla.path}"/>
+    <property name="fullj3.extract.filename" value="VirtueMart${vm.version}_Joomla_${joomlaj3.version}-Stable-Full_Package"/>
+    <property name="joomlaj3.folder.from" value="${joomlaj3.path}"/>
 
     <property name="vm.folder.from" value="${export.to}"/>
     <property name="readme.file.from" value="${export.to}/vm_build"/>
@@ -53,6 +56,8 @@
     <property name="full.folder.to" value="${package.abspath}/${component.name}.${vm.version}/${full.extract.filename}"/>
     <property name="fullzip.folder.to" value="${package.folder}"/>
 
+    <property name="fullj3.folder.to" value="${package.abspath}/${component.name}.${vm.version}/${fullj3.extract.filename}"/>
+    <property name="fullj3zip.folder.to" value="${package.folder}"/>
 
     <property name="package.admin.aio" value="${package.folder.aio}/admin"/>
     <property name="package.plugins.aio" value="${package.admin.aio}/plugins"/>
@@ -141,6 +146,7 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
+        <exclude name="**/installationJ3/**"/>
         <exclude name="**/vm_update/**"/>
         <exclude name="**/vm_build/**"/>
         <exclude name="**/payzen/**"/>
@@ -183,6 +189,61 @@
         <exclude name="**/zh-TW/**"/>
         <exclude name="index.html"/>
     </fileset>
+
+    <!-- ===============================================  -->
+    <!-- Target: FOR J3, exclude  installation folder -->
+    <!-- ================================================  -->
+    <fileset dir="${export.to}" id='vm_fullj3_installer_files.refid' defaultexcludes="true" >
+        <include name="**"/>
+        <exclude name=".svn"/>
+        <exclude name=".DS_Store"/>
+        <exclude name=".phpstorm.meta.php"/>
+        <exclude name="**/vm_update/**"/>
+        <exclude name="**/vm_build/**"/>
+        <exclude name="**/payzen/**"/>
+        <exclude name="**/systempay/**"/>
+        <exclude name="**/vm_update/**"/>
+        <exclude name="**/ar-AA/**"/>
+        <exclude name="**/bg-BG/**"/>
+        <exclude name="**/bs-BA/**"/>
+        <exclude name="**/ca-ES/**"/>
+        <exclude name="**/cs-CZ/**"/>
+        <exclude name="**/da-DK/**"/>
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/en-US/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/el-GR/**"/>
+        <exclude name="**/et-EE/**"/>
+        <exclude name="**/fa-IR/**"/>
+        <exclude name="**/fi-FI/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/hu-HU/**"/>
+        <exclude name="**/id-ID/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/lt-LT/**"/>
+        <exclude name="**/nb-NO/**"/>
+        <exclude name="**/no-NO/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/pt-PT/**"/>
+        <exclude name="**/ro-RO/**"/>
+        <exclude name="**/ru-RU/**"/>
+        <exclude name="**/sk-SK/**"/>
+        <exclude name="**/sl-SI/**"/>
+        <exclude name="**/sr-YU/**"/>
+        <exclude name="**/sv-SE/**"/>
+        <exclude name="**/tr-TR/**"/>
+        <exclude name="**/uk-UA/**"/>
+        <exclude name="**/th-TH/**"/>
+        <exclude name="**/zh-CN/**"/>
+        <exclude name="**/zh-TW/**"/>
+        <exclude name="index.html"/>
+        <exclude name="**/installation/**"/>
+        <exclude name="**/installationJ3/**"/>
+    </fileset>
+
+
     <!-- ============================================  -->
     <!--  FILESET ALL FUL INSTALLER FILES -->
     <!-- ============================================  -->
@@ -194,6 +255,13 @@
         <exclude name="index.html"/>
     </fileset>
 
+    <fileset dir="${joomlaj3.folder.from}" id='joomla_fullj3_installer_files.refid' defaultexcludes="true" >
+        <include name="**"/>
+        <exclude name=".svn"/>
+        <exclude name=".DS_Store"/>
+        <exclude name="uploader.swf"/>
+        <exclude name="index.html"/>
+    </fileset>
 
     <!-- ============================================  -->
     <!--  FILESET ALL MAIN COMPONENT FILES -->
@@ -297,9 +365,9 @@
     <fileset dir="${package.admin.aio}" id='script.aio.refid' defaultexcludes="true">
         <include name="script.vmallinone.php"/>
     </fileset>
-    <!-- ============================================  -->
-    <!-- TARGET: copy all files for the FULL INSTALLER -->
-    <!-- ============================================  -->
+    <!-- =======================================================  -->
+    <!-- TARGET: copy all files for the FULL INSTALLER JOOMLA 2.5 -->
+    <!-- =======================================================  -->
     <target name="full_installer_files">
 
         <echo msg="Copying ALL Joomla FILES From folder ${joomla.folder.from} TO ${full.folder.to} "/>
@@ -319,7 +387,7 @@
             </then>
         </if>
 
-        <echo msg="Copying ALL VM FILES From folder ${vm.folder.from} TO ${full.folder.to} "/>
+        <echo msg="Copying ALL VM FILES without installationJ3 From folder ${vm.folder.from} TO ${full.folder.to} "/>
         <copy todir="${full.folder.to}" overwrite="true">
             <fileset refid="vm_full_installer_files.refid"/>
             <filterchain>
@@ -329,6 +397,39 @@
 
     </target>
 
+    <!-- ====================================================  -->
+    <!-- TARGET: copy all files for the FULL INSTALLER JOOMLA3 -->
+    <!-- ====================================================  -->
+    <target name="fullj3_installer_files">
+
+        <echo msg="Copying ALL Joomla FILES From folder ${joomlaj3.folder.from} TO ${fullj3.folder.to} "/>
+        <copy todir="${fullj3.folder.to}" overwrite="true">
+            <fileset refid="joomla_fullj3_installer_files.refid"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
+        </copy>
+
+
+        <echo msg="Copying ALL VM FILES without installation* folders From folder ${vm.folder.from} TO ${fullj3.folder.to} "/>
+        <copy todir="${fullj3.folder.to}" overwrite="true">
+            <fileset refid="vm_fullj3_installer_files.refid"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
+        </copy>
+
+        <echo msg="J3: copy and rename installationJ3 folder From folder ${vm.folder.from} TO ${fullj3.folder.to} "/>
+        <copy todir="${fullj3.folder.to}/installation" overwrite="true">
+            <fileset dir="${export.to}/installationJ3">
+                <exclude name=".svn"/>
+                <exclude name=".DS_Store"/>
+                <exclude name="index.html"/>
+            </fileset>
+        </copy>
+
+
+    </target>
 
     <!-- ============================================  -->
     <!-- TARGET: copy all files for the MAIN component                           -->
@@ -469,6 +570,19 @@
 
         <echo msg="Cleaning Full directory OK! ${full.folder.to}"/>
     </target>
+    <target name="clean_fullj3_installer"  >
+        <available file="${fullj3.folder.to}" property="fullj3.folder.exists" value="1"/>
+        <if>
+            <equals arg1="${fullj3.folder.exists}" arg2="1"/>
+            <then>
+                <echo message="Deleting existing FULL folder: ${fullj3.folder.to}..."/>
+                <delete dir="${fullj3.folder.to}"/>
+            </then>
+        </if>
+
+        <echo msg="Cleaning Full J3 directory OK! ${fullj3.folder.to}"/>
+    </target>
+
 
 
     <target name="full_installer" depends="clean_full_installer,full_installer_files">
@@ -482,6 +596,20 @@
             </fileset>
         </zip>
         <echo msg="Full installer compressed OK!"/>
+
+    </target>
+
+    <target name="fullj3_installer" depends="clean_fullj3_installer, fullj3_installer_files">
+
+        <echo msg="ZIP ${package.abspath}/${fullj3.extract.filename}.zip FROM ${fullj3.folder.to}"/>
+        <zip destfile="${fullj3zip.folder.to}/${fullj3.extract.filename}.zip">
+            <fileset dir="${fullj3.folder.to}">
+                <include name="**"/>
+                <exclude name=".svn"/>
+                <exclude name=".DS_Store"/>
+            </fileset>
+        </zip>
+        <echo msg="Full installer For Joomla3 and VM3 compressed OK!"/>
 
     </target>
     <target name="Main" depends="main_files">
@@ -542,6 +670,12 @@
         <echo msg="FULLINSTALLER_ALONE DONE!"/>
     </target>
 
+    <target name="FULLINSTALLER_J3" depends="title, clean ,  svn.export, fullj3_installer">
+        <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
+        <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>
+
+        <echo msg="FULLINSTALLER_ALONE DONE!"/>
+    </target>
 
     <target name="VIRTUEMART_AND_FULLINSTALLER" depends="title, clean , svn.export, Main, AIO, full_installer">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
