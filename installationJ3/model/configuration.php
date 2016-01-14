@@ -138,7 +138,7 @@ class InstallationModelConfiguration extends JModelBase
 		$registry->set('tmp_path', JPATH_ROOT . '/tmp');
 
 		// Session setting.
-		$registry->set('lifetime', 60);
+		$registry->set('lifetime', 30);
 		$registry->set('session_handler', 'database');
 
 		// Generate the configuration class string buffer.
