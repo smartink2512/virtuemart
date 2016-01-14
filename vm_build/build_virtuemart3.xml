@@ -6,8 +6,8 @@
     <property name="vm.version" value="3.1.0"/>
     <property name="joomla.version" value="2.5.28"/>
     <property name="joomlaj3.version" value="3.4.8"/>
-    <!--property name="svn.lastrevision" value="9117"/-->
-    <property name="PHING.VM.CODENAME" value="Test Full J3 installer"/>
+    <property name="svn.lastrevision" value="9117"/>
+    <property name="PHING.VM.CODENAME" value="Blue Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
     <target name="title">
@@ -47,7 +47,6 @@
     <!-- DESTINATION -->
 
     <property name="package.folder" value="${package.abspath}/${component.name}.${vm.version}_extract_first"/>
-
 
     <property name="package.folder.main" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.${vm.version}"/>
     <property name="package.folder.aio" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.aio.${vm.version}"/>
@@ -669,6 +668,7 @@
 
         <echo msg="FULLINSTALLER_ALONE DONE!"/>
     </target>
+
 
     <target name="FULLINSTALLER_J3" depends="title, clean ,  svn.export, fullj3_installer">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
