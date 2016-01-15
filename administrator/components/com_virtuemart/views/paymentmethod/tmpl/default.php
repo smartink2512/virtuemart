@@ -69,7 +69,7 @@ AdminUIHelper::startAdminArea($this);
 		for ($i=0, $n=count( $this->payments ); $i < $n; $i++) {
 
 			$row = $this->payments[$i];
-			$checked = JHtml::_('grid.id', $i, $row->virtuemart_paymentmethod_id);
+			$checked = vHtml::_('grid.id', $i, $row->virtuemart_paymentmethod_id);
 			$published = $this->gridPublished( $row, $i );
 			if($this->showVendors){
 				$shared = $this->toggle($row->shared, $i, 'toggle.shared');

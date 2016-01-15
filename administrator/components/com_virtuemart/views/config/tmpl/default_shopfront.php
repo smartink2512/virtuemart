@@ -119,7 +119,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . vmText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . vmText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
 
 		<div class="clr"></div>
-		<?php echo JHtml::_('list.images', 'image', VmConfig::get('rised_availability'), " ", $this->imagePath); ?>
+		<?php echo vHtml::_('list.images', 'image', VmConfig::get('rised_availability'), " ", $this->imagePath); ?>
 		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . vmText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2', $this->imagePath) ?>"></span>
 
 		<div class="clr"></div>

@@ -28,7 +28,7 @@ $keyword = vRequest::getCmd('keyword', null);
 <div id="header">
 	<div>
 		<?php
-			if (vRequest::getInt('virtuemart_product_id', false)) echo JHtml::_('link', JRoute::_('index.php?option='.$option.'&view=custom',FALSE), vmText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
+			if (vRequest::getInt('virtuemart_product_id', false)) echo vHtml::_('link', JRoute::_('index.php?option='.$option.'&view=custom',FALSE), vmText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 		echo $this->customsSelect ;
 		echo vmText::_('COM_VIRTUEMART_SEARCH_LBL') .' '.vmText::_('COM_VIRTUEMART_TITLE') ?>&nbsp;
 		<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
@@ -57,7 +57,7 @@ $customs = $this->customs->items;
 		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
 		<?php if(!empty($this->custom_parent_id)){
 			echo '<th style="min-width:80px;width:8%;align:center;" >'.$this->sort('ordering');
-			echo JHtml::_('grid.order',  $customs ).'</th>';
+			echo vHtml::_('grid.order',  $customs ).'</th>';
 		}
 		?>
 		<th style="max-width:80px;align:center;" ><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
@@ -72,7 +72,7 @@ $customs = $this->customs->items;
 		$k = 0;
 		foreach ($customs as $key => $custom) {
 
-			$checked = JHtml::_('grid.id', $i , $custom->virtuemart_custom_id,false,'virtuemart_custom_id');
+			$checked = vHtml::_('grid.id', $i , $custom->virtuemart_custom_id,false,'virtuemart_custom_id');
 			if (!is_null($custom->virtuemart_custom_id))
 			{
 				$published = $this->gridPublished( $custom, $i );
@@ -90,7 +90,7 @@ $customs = $this->customs->items;
                             $lang = vFactory::getLanguage();
                             $text = $lang->hasKey($custom->group_title) ? vmText::_($custom->group_title) : $custom->group_title;
 
-                            echo JHtml::_('link', JRoute::_($link,FALSE),$text, array('title' => vmText::_('COM_VIRTUEMART_FILTER_BY').' '.htmlentities($text))); ?></td>
+                            echo vHtml::_('link', JRoute::_($link,FALSE),$text, array('title' => vmText::_('COM_VIRTUEMART_FILTER_BY').' '.htmlentities($text))); ?></td>
 
 				<!-- Product name -->
 				<?php
@@ -98,7 +98,7 @@ $customs = $this->customs->items;
 				if ($custom->is_cart_attribute) $cartIcon=  'default';
 							 else  $cartIcon= 'default-off';
 				?>
-				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), vmText::_($custom->custom_title), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($custom->custom_title))); ?></td>
+				<td><?php echo vHtml::_('link', JRoute::_($link, FALSE), vmText::_($custom->custom_title), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($custom->custom_title))); ?></td>
 				<td><?php echo vmText::_($custom->custom_desc); ?></td>
 				<td><?php echo vmText::_($custom->field_type_display); ?></td>
 				<td><span class="vmicon vmicon-16-<?php echo $cartIcon ?>"></span></td>
@@ -151,7 +151,7 @@ $customs = $this->customs->items;
 <input type="hidden" name="filter_order" value="<?php //echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php //echo $this->lists['order_Dir']; ?>" />
 
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo vHtml::_( 'form.token' ); ?>
 </form>
 <?php AdminUIHelper::endAdminArea();
 /// DRAG AND DROP PRODUCT ORDER HACK

@@ -283,7 +283,7 @@ class vmJsApi{
 
 			}
 		} else {
-			JHtml::_('jquery.framework');
+			//vHtml::_('jquery.framework');
 			//return true;
 		}
 
@@ -551,9 +551,13 @@ jQuery(document).ready(function($) {
 			$guest = vFactory::getUser()->guest;
 		}
 
+		//Goal is to use, so long we use mootools again
+		//self::JvalideForm('#userForm');
+
 		// Implement Joomla's form validation
-		JHtml::_ ('behavior.formvalidation');	//j2
-		//JHtml::_('behavior.formvalidator');	//j3
+		//vHtml::_ ('behavior.formvalidation');	//j2
+		vHtml::_('behavior.formvalidator');	//j3
+
 
 		$regfields = array();
 		if(empty($userFields)){
@@ -637,7 +641,7 @@ jQuery(document).ready(function($) {
 			setDropdownRequiredByResult('virtuemart_state_id',prefiks);
 		}
 
-
+		console.log('my this',this,document);
 		if (document.formvalidator.isValid(f)) {
 			if (jQuery('#recaptcha_wrapper').is(':hidden') && (r == true)) {
 				jQuery('#recaptcha_wrapper').show();
@@ -759,7 +763,7 @@ jQuery(document).ready(function($) {
 		$jsDateFormat = str_replace($search, $replace, $dateFormat);
 
 		if ($date) {
-			$formatedDate = JHtml::_('date', $date, $dateFormat );
+			$formatedDate = vHtml::_('date', $date, $dateFormat );
 		}
 		else {
 			$formatedDate = vmText::_('COM_VIRTUEMART_NEVER');
@@ -821,13 +825,16 @@ jQuery(document).ready(function($) {
 		if (!strcmp ($date, '0000-00-00 00:00:00')) {
 			return vmText::_ ('COM_VIRTUEMART_NEVER');
 		}
+
+		if (!class_exists( 'vHtml' )) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
+
 		If ($joomla) {
-			$formatedDate = JHtml::_('date', $date, vmText::_('DATE_FORMAT_'.$format));
+			$formatedDate = vHtml::_('date', $date, vmText::_('DATE_FORMAT_'.$format));
 		} else {
 
 			$J16 = "_J16";
 
-			$formatedDate = JHtml::_('date', $date, vmText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
+			$formatedDate = vHtml::_('date', $date, vmText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
 		}
 		return $formatedDate;
 	}

@@ -65,7 +65,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 
 				$userFieldValues = array();
 				$attribs = '';
-				$lists['type'] = JHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $this->userField->type);
+				$lists['type'] = vHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $this->userField->type);
 			} else { // Update existing userfield
 				// Ordering dropdown
 
@@ -97,21 +97,21 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			$shoppergroup_model = VmModel::getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
 			array_unshift($shoppergroup_list,'0');
-			$lists['shoppergroups'] = JHtml::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $this->userField->get('virtuemart_shoppergroup_id'));
+			$lists['shoppergroups'] = vHtml::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $this->userField->get('virtuemart_shoppergroup_id'));
 
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
 				$ages[] = array('key' => $i, 'value' => $i.' '.vmText::_('COM_VIRTUEMART_YEAR_S'));
 			}
-			$lists['minimum_age'] = JHtml::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $this->userField->get('minimum_age', 18));
+			$lists['minimum_age'] = vHtml::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $this->userField->get('minimum_age', 18));
 
 			// Web address types
 			$webaddress_types = array(
 				 array('key' => 0, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_URL_ONLY'))
 				,array('key' => 2, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_HYPERTEXT_URL'))
 			);
-			$lists['webaddresstypes'] = JHtml::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $this->userField->get('webaddresstype'));
+			$lists['webaddresstypes'] = vHtml::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $this->userField->get('webaddresstype'));
 
 			// Userfield values
 			if (($n = count($userFieldValues)) < 1) {

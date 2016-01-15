@@ -51,7 +51,7 @@ AdminUIHelper::startAdminArea($this);
 		for ($i=0, $n=count( $this->manufacturerCategories ); $i < $n; $i++) {
 			$row = $this->manufacturerCategories[$i];
 
-			$checked = JHtml::_('grid.id', $i, $row->virtuemart_manufacturercategories_id);
+			$checked = vHtml::_('grid.id', $i, $row->virtuemart_manufacturercategories_id);
 			$published = $this->gridPublished( $row, $i );
 
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturercategories&task=edit&virtuemart_manufacturercategories_id=' . $row->virtuemart_manufacturercategories_id);

@@ -66,10 +66,10 @@ class VirtuemartViewInventory extends VmViewAdmin {
 		}
 
 		$options = array();
-		$options[] = JHtml::_('select.option', '', vmText::_('COM_VIRTUEMART_DISPLAY_STOCK').':');
-		$options[] = JHtml::_('select.option', 'stocklow', vmText::_('COM_VIRTUEMART_STOCK_LEVEL_LOW'));
-		$options[] = JHtml::_('select.option', 'stockout', vmText::_('COM_VIRTUEMART_STOCK_LEVEL_OUT'));
-		$this->lists['stockfilter'] = JHtml::_('select.genericlist', $options, 'search_type', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', vRequest::getVar('search_type'));
+		$options[] = vHtml::_('select.option', '', vmText::_('COM_VIRTUEMART_DISPLAY_STOCK').':');
+		$options[] = vHtml::_('select.option', 'stocklow', vmText::_('COM_VIRTUEMART_STOCK_LEVEL_LOW'));
+		$options[] = vHtml::_('select.option', 'stockout', vmText::_('COM_VIRTUEMART_STOCK_LEVEL_OUT'));
+		$this->lists['stockfilter'] = vHtml::_('select.genericlist', $options, 'search_type', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', vRequest::getVar('search_type'));
 		$this->lists['filter_product'] = vRequest::getVar('filter_product');
 
 		/* Toolbar */

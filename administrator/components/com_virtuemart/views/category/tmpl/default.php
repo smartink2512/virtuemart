@@ -68,7 +68,7 @@ AdminUIHelper::startAdminArea($this);
 
 			<th style="min-width:80px;width:8%;align:center;">
 				<?php echo $this->sort( 'c.ordering' , 'COM_VIRTUEMART_ORDERING') ?>
-				<?php echo JHtml::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
+				<?php echo vHtml::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
 			<th align="center" >
 				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
@@ -98,7 +98,7 @@ AdminUIHelper::startAdminArea($this);
 
 		foreach($this->categories as $i=>$cat){
 
-			$checked = JHtml::_('grid.id', $i, $cat->virtuemart_category_id);
+			$checked = vHtml::_('grid.id', $i, $cat->virtuemart_category_id);
 			$published = $this->gridPublished( $cat, $i );
 
 			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id, FALSE);
@@ -190,10 +190,8 @@ AdminUIHelper::startAdminArea($this);
 </div>
 
 	<?php
-
-	echo $this->addStandardHiddenToForm($this->_name,$this->task);
-
-	  ?>
+		echo $this->addStandardHiddenToForm();
+	?>
 </form>
 
 <?php

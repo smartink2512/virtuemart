@@ -44,11 +44,11 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 
             $title = (vmText::_("COM_VIRTUEMART_RATING_TITLE").' : '. $i . '/' . $this->max_rating) ;
 			$stars  = '<span class="floatleft vmiconFE vm2-stars'.$i.'" title="'.$title.'"></span>';
-			$rating_options[] = JHtml::_('select.option',$i,$stars);
+			$rating_options[] = vHtml::_('select.option',$i,$stars);
 
 		}
 		vmdebug('my $this->rating ',$this->rating);
-		echo JHtml::_('select.radiolist', $rating_options, 'vote', 'id="vote" class="inputbox"', 'value', 'text', $this->rating->vote);
+		echo vHtml::_('select.radiolist', $rating_options, 'vote', 'id="vote" class="inputbox"', 'value', 'text', $this->rating->vote);
 		?>
 		</fieldset></td>
 	</tr>
@@ -90,7 +90,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 			<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		</td>
 		<td><fieldset class="radio">
-			<?php echo JHtml::_('select.booleanlist', 'published', '', $this->rating->published); ?>
+			<?php echo vHtml::_('select.booleanlist', 'published', '', $this->rating->published); ?>
 		</fieldset></td>
 	</tr>
 </table>

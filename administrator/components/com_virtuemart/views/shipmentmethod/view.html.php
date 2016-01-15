@@ -142,7 +142,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 			$sh['name'] = vmText::_($sh['name']);
 		}
 		$attribs='style= "width: 300px;"';
-		return JHtml::_('select.genericlist', $result, 'shipment_jplugin_id', $attribs, $ext_id, 'name', $selected);
+		return vHtml::_('select.genericlist', $result, 'shipment_jplugin_id', $attribs, $ext_id, 'name', $selected);
 	}
 
 }

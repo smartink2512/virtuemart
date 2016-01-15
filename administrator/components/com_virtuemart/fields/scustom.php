@@ -14,7 +14,7 @@ class JFormFieldScustom extends JFormField {
 
 	function getInput() {
 		VmConfig::loadConfig();
-		return JHtml::_('select.genericlist',  $this->_getStringCustoms(), $this->name, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
+		return vHtml::_('select.genericlist',  $this->_getStringCustoms(), $this->name, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
 	}
 
 	private function _getStringCustoms() {
@@ -27,7 +27,7 @@ class JFormFieldScustom extends JFormField {
 		$db = vFactory::getDbo();
 		$db->setQuery ($q);
 		$l = $db->loadObjectList ();
-		$eOpt = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NONE'));
+		$eOpt = vHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NONE'));
 		array_unshift($l,$eOpt);
 
 		return $l;

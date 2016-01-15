@@ -54,7 +54,7 @@ class JFormFieldVmCurrencies extends JFormFieldList {
 		$db->setQuery($query);
 		$values = $db->loadObjectList();
 		foreach ($values as $v) {
-			$options[] = JHtml::_('select.option', $v->value, $v->text);
+			$options[] = vHtml::_('select.option', $v->value, $v->text);
 		}
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

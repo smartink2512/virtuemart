@@ -94,7 +94,7 @@ class VirtueMartModelConfig extends VmModel {
 	static function getLayouts($dirs,$type=0,$ignore=0){
 
 		$result = array();
-		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
+		$emptyOption = vHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
 		$result[] = $emptyOption;
 
 		$alreadyAddedFile = array();
@@ -112,7 +112,7 @@ class VirtueMartModelConfig extends VmModel {
 							}
 							if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
 								$alreadyAddedFile[] = $file;
-								$result[] = JHtml::_('select.option', $path_info['filename'], $path_info['filename']);
+								$result[] = vHtml::_('select.option', $path_info['filename'], $path_info['filename']);
 							}
 						}
 
@@ -153,7 +153,7 @@ class VirtueMartModelConfig extends VmModel {
 			$manual = array('courier','freemono','helvetica');
 			foreach($manual as $file){
 				if (file_exists($dir . DS . $file . '.php')) {
-					$result[] = JHtml::_('select.option',$file, vmText::_($file.' (standard)'));
+					$result[] = vHtml::_('select.option',$file, vmText::_($file.' (standard)'));
 				}
 			}
 		} else {
@@ -161,7 +161,7 @@ class VirtueMartModelConfig extends VmModel {
 				$fontxml = @simpleXML_load_file($file);
 				if ($fontxml) {
 					if (file_exists($dir . DS . $fontxml->filename . '.php')) {
-						$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+						$result[] = vHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
 					} else {
 						vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
 					}
@@ -213,7 +213,7 @@ class VirtueMartModelConfig extends VmModel {
 				while (false !== ($file = readdir($handle))) {
 					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
 						if (filetype($dir.DS.$file) != 'dir') {
-							$result[] = JHtml::_('select.option', $file, vmText::_(str_replace('.php', '', $file)));
+							$result[] = vHtml::_('select.option', $file, vmText::_(str_replace('.php', '', $file)));
 						}
 					}
 				}
@@ -238,7 +238,7 @@ class VirtueMartModelConfig extends VmModel {
 				if ($file != "." && $file != ".." && $file != '.svn') {
 					$info = pathinfo($file);
 					if ((filetype($dir.DS.$file) == 'file') && ($info['extension'] == 'php')) {
-						$result[] = JHtml::_('select.option', $file, vmText::_($file));
+						$result[] = vHtml::_('select.option', $file, vmText::_($file));
 					}
 				}
 			}
@@ -275,10 +275,10 @@ class VirtueMartModelConfig extends VmModel {
 
 		foreach ($jLangs as $jLang) {
 			$jlangTag = strtolower(strtr($jLang['tag'],'-','_'));
-			$activeLangs[] = JHtml::_('select.option', $jLang['tag'] , $jLang['name']) ;
+			$activeLangs[] = vHtml::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
-		return JHtml::_('select.genericlist', $activeLangs, $name, 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
+		return vHtml::_('select.genericlist', $activeLangs, $name, 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
 
@@ -328,7 +328,7 @@ class VirtueMartModelConfig extends VmModel {
 			$text = vmText::_('COM_VIRTUEMART_'.strtoupper(str_replace(array(',',' '),array('_',''),$fieldWithoutPrefix))) ;
 
 			if ($type == 'browse_orderby_fields' or $type == 'browse_cat_orderby_field'){
-				$searchFields->select[] =  JHtml::_('select.option', $field, $text) ;
+				$searchFields->select[] =  vHtml::_('select.option', $field, $text) ;
 			}
 			$searchFields->checkbox .= '<li><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label></li>';
 		}

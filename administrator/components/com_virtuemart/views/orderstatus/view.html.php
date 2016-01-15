@@ -68,7 +68,7 @@ class VirtuemartViewOrderstatus extends VmViewAdmin {
 			// Vendor selection
 			$vendor_model = VmModel::getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
-			$this->lists['vendors'] = JHtml::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $this->orderStatus->virtuemart_vendor_id);
+			$this->lists['vendors'] = vHtml::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $this->orderStatus->virtuemart_vendor_id);
 
 			$this->addStandardEditViewCommands();
 		} else {

@@ -63,7 +63,7 @@ $option = vRequest::getCmd('option');
 		$k = 0;
 		$keyword = vRequest::getCmd('keyword');
 		foreach ($this->ratingslist as $key => $review) {
-			$checked = JHtml::_('grid.id', $i , $review->virtuemart_rating_id);
+			$checked = vHtml::_('grid.id', $i , $review->virtuemart_rating_id);
 			$published = $this->gridPublished( $review, $i );
 
 			?>
@@ -72,10 +72,10 @@ $option = vRequest::getCmd('option');
 				<td class="admin-checkbox"><?php echo $checked; ?></td>
 				<!-- Username + time -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=listreviews&virtuemart_product_id='.$review->virtuemart_product_id; ?>
-				<td><?php echo JHtml::_('link', $link,vmJsApi::date($review->created_on,'LC2',true) , array("title" => vmText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
+				<td><?php echo vHtml::_('link', $link,vmJsApi::date($review->created_on,'LC2',true) , array("title" => vmText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<!-- Product name -->
 				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id ; ?>
-				<td><?php echo JHtml::_('link', JRoute::_($link), $review->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($review->product_name))); ?></td>
+				<td><?php echo vHtml::_('link', JRoute::_($link), $review->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($review->product_name))); ?></td>
 				<!-- Stars rating -->
 				<td align="center">
 					

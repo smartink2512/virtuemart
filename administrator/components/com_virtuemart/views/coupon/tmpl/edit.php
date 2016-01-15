@@ -33,13 +33,13 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 
 			<?php
 				$radioOptions = array();
-				$radioOptions[] = JHtml::_('select.option', 'percent', vmText::_('COM_VIRTUEMART_COUPON_PERCENT'));
-				$radioOptions[] = JHtml::_('select.option', 'total', vmText::_('COM_VIRTUEMART_COUPON_TOTAL'));
+				$radioOptions[] = vHtml::_('select.option', 'percent', vmText::_('COM_VIRTUEMART_COUPON_PERCENT'));
+				$radioOptions[] = vHtml::_('select.option', 'total', vmText::_('COM_VIRTUEMART_COUPON_TOTAL'));
 				echo VmHTML::row('radio','COM_VIRTUEMART_COUPON_PERCENT_TOTAL','percent_or_total',$radioOptions,$this->coupon->percent_or_total); ?>
 			<?php
 				$listOptions = array();
-				$listOptions[] = JHtml::_('select.option', 'permanent', vmText::_('COM_VIRTUEMART_COUPON_TYPE_PERMANENT'));
-				$listOptions[] = JHtml::_('select.option', 'gift', vmText::_('COM_VIRTUEMART_COUPON_TYPE_GIFT'));
+				$listOptions[] = vHtml::_('select.option', 'permanent', vmText::_('COM_VIRTUEMART_COUPON_TYPE_PERMANENT'));
+				$listOptions[] = vHtml::_('select.option', 'gift', vmText::_('COM_VIRTUEMART_COUPON_TYPE_GIFT'));
 				 echo VmHTML::row('select','COM_VIRTUEMART_COUPON_TYPE', 'coupon_type', $listOptions ,$this->coupon->coupon_type,'','value', 'text',false) ; ?>
  			<?php echo VmHTML::row('input','COM_VIRTUEMART_COUPON_VALUE_VALID_AT','coupon_value_valid', $this->coupon->coupon_value_valid, 'class="inputbox"','',10,255,' ' . $this->vendor_currency ); ?>
 			<?php echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_START',  vmJsApi::jDate($this->coupon->coupon_start_date , 'coupon_start_date') ); ?>

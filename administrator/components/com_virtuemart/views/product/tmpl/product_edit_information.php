@@ -29,7 +29,7 @@ $i=0;
 	<legend><?php
 		$parentRel = '';
 		if ($this->product->product_parent_id) {
-			$parentRel = vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_PARENT',JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
+			$parentRel = vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_PARENT',vHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
 				($this->product_parent->product_name), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($this->product_parent->product_name))).' =&gt; ');
 		}
 		echo vmText::sprintf('COM_VIRTUEMART_PRODUCT_INFORMATION',$parentRel);
@@ -93,7 +93,7 @@ $i=0;
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
+				<?php echo vHtml::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
 			</td>
 			<td>
 				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?>
@@ -184,7 +184,7 @@ $i=0;
 			$this->product->allPrices[$k] = array_merge($this->product->allPrices[$k],$this->calculatedPrices);
 
 			$currency_model = VmModel::getModel ('currency');
-			$this->lists['currencies'] = JHtml::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->product->allPrices[$k]['product_currency']);
+			$this->lists['currencies'] = vHtml::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->product->allPrices[$k]['product_currency']);
 
 			$DBTax = ''; //vmText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 			foreach ($calculator->rules['DBTax'] as $rule) {

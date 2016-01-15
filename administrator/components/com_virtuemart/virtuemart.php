@@ -46,7 +46,7 @@ if($_controller) {
 		if (empty($results)) {
 			$app = vFactory::getApplication();
 			$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: Couldnt find file '.$_controller);
-			$app->redirect('index.php?option=com_virtuemart');
+			//$app->redirect('index.php?option=com_virtuemart');
 		} else {
 			foreach($results as $res){
 				if($res){

@@ -169,7 +169,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 		}
 		return VmHTML::select( 'custom_jplugin_id', $results, $selected,"",$ext_id, 'name');
 
-		//return JHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
+		//return vHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
 	}
 
 	/**
@@ -236,7 +236,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 
 		$options = array();
 		foreach ($field_types as $optionName=> $langkey) {
-			$options[] = JHtml::_ ('select.option', $optionName, vmText::_ ($langkey));
+			$options[] = vHtml::_ ('select.option', $optionName, vmText::_ ($langkey));
 		}
 		return $options;
 	}

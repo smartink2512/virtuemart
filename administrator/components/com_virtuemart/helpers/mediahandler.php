@@ -581,7 +581,7 @@ class VmMediaHandler {
 		}
 
 		if($lightbox){
-			$image = '<img src="' . $root.$file_url . '" alt="' . $file_alt . '" ' . $args . ' />';//JHtml::image($file_url, $file_alt, $imageArgs);
+			$image = '<img src="' . $root.$file_url . '" alt="' . $file_alt . '" ' . $args . ' />';//vHtml::image($file_url, $file_alt, $imageArgs);
 			if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
 			if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) and substr( $this->file_url, 0, 4) != "http") $href = JURI::root() .$this->file_url ;
 			else $href = $file_url ;
@@ -1003,7 +1003,7 @@ class VmMediaHandler {
 			$image->file_url_thumb = $image->getFileUrlThumb();
 			if ($image->file_url_thumb > "0" ) {
 				$htmlImages .= '<div class="vm_thumb_image">
-				<span>'.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span>';
+				<span>'.vHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span>';
 			} else {
 				$htmlImages .=  '<div class="vm_thumb_image">'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 			}
@@ -1113,7 +1113,7 @@ $html .='</td>';
 
 		$html .= '<td rowspan = "8" min-width = "'.(VmConfig::get('img_width',90)+10).'px" overflow="hidden">';
 		$thumbArgs = array('class'=>'vm_thumb_image','style'=>'overflow: auto;'.$imgWidth.$imgHeight);
-		$html .= $this->displayMediaThumb($thumbArgs); //JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
+		$html .= $this->displayMediaThumb($thumbArgs); //vHtml::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		// $html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		$html .= '</td>';
 
@@ -1144,7 +1144,7 @@ $html .='</td>';
 
 		$html .= '<tr>
 				<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
-				<td><fieldset class="checkboxes">'.JHtml::_('select.radiolist', $this->getOptions($this->_mRoles), 'media[media_roles]', '', 'value', 'text', $this->media_role).'</fieldset></td></tr>';
+				<td><fieldset class="checkboxes">'.vHtml::_('select.radiolist', $this->getOptions($this->_mRoles), 'media[media_roles]', '', 'value', 'text', $this->media_role).'</fieldset></td></tr>';
 
 		// 			$html .= '<tr><td class="labelcell">'.VmHTML::checkbox('file_is_forSale', $this->file_is_forSale);
 		// 			$html .= VmHTML::checkbox('file_is_downloadable', $this->file_is_downloadable);
@@ -1161,7 +1161,7 @@ $html .='</td>';
 			}
 			$html .= '<tr>
 					<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
-					<td><fieldset class="checkboxes">'.JHtml::_('select.radiolist', $this->getOptions($this->_mLocation), 'media[media_attributes]', '', 'value', 'text', $mediaattribtemp).'</fieldset></td></tr>';
+					<td><fieldset class="checkboxes">'.vHtml::_('select.radiolist', $this->getOptions($this->_mLocation), 'media[media_attributes]', '', 'value', 'text', $mediaattribtemp).'</fieldset></td></tr>';
 		}
 
 
@@ -1197,7 +1197,7 @@ $html .='</td>';
 
 		$html .= '<fieldset class="checkboxes">' ;
 		$html .= '<legend>'.vmText::_('COM_VIRTUEMART_FILE_UPLOAD').'</legend>';
-		$html .= vmText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHtml::_('select.radiolist', $this->getOptions($this->_actions), 'media[media_action]', '', 'value', 'text', 0).'<br /><br style="clear:both" />';
+		$html .= vmText::_('COM_VIRTUEMART_IMAGE_ACTION'). vHtml::_('select.radiolist', $this->getOptions($this->_actions), 'media[media_action]', '', 'value', 'text', 0).'<br /><br style="clear:both" />';
 
 
 		$html .= vmText::_('COM_VIRTUEMART_FILE_UPLOAD').' <input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
@@ -1222,7 +1222,7 @@ $html .='</td>';
 
 		$options=array();
 		foreach($optionsarray as $optionName=>$langkey){
-			$options[] = JHtml::_('select.option',  $optionName, vmText::_( $langkey ) );
+			$options[] = vHtml::_('select.option',  $optionName, vmText::_( $langkey ) );
 		}
 		return $options;
 	}

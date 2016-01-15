@@ -214,7 +214,7 @@ static function vmGetCharset() {
 	 * @param   mixed    $attribs    Additional HTML attributes for the <select> tag. This
 	 *                               can be an array of attributes, or an array of options. Treated as options
 	 *                               if it is the last argument passed. Valid options are:
-	 *                               Format options, see {@see JHtml::$formatOptions}.
+	 *                               Format options, see {@see vHtml::$formatOptions}.
 	 *                               Selection options, see {@see JHtmlSelect::options()}.
 	 *                               list.attr, string|array: Additional attributes for the select
 	 *                               element.
@@ -287,7 +287,7 @@ static function vmGetCharset() {
 	 * @param   mixed    $optKey     If a string, this is the name of the object variable for
 	 *                               the option value. If null, the index of the array of objects is used. If
 	 *                               an array, this is a set of options, as key/value pairs. Valid options are:
-	 *                               -Format options, {@see JHtml::$formatOptions}.
+	 *                               -Format options, {@see vHtml::$formatOptions}.
 	 *                               -groups: Boolean. If set, looks for keys with the value
 	 *                                "&lt;optgroup>" and synthesizes groups from them. Deprecated. Defaults
 	 *                                true for backwards compatibility.

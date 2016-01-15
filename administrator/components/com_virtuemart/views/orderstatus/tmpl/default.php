@@ -45,7 +45,7 @@ AdminUIHelper::startAdminArea($this);
 			</th>
 			<th>
 			<?php  echo $this->sort('ordering')  ?>
-			<?php echo JHtml::_('grid.order',  $this->orderStatusList ); ?>
+			<?php echo vHtml::_('grid.order',  $this->orderStatusList ); ?>
 			</th>
 			<th width="20">
 				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
@@ -60,14 +60,14 @@ AdminUIHelper::startAdminArea($this);
 			$row = $this->orderStatusList[$i];
 			$published = $this->gridPublished( $row, $i );
 
-			$checked = JHtml::_('grid.id', $i, $row->virtuemart_orderstate_id);
+			$checked = vHtml::_('grid.id', $i, $row->virtuemart_orderstate_id);
 
 			$coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));
 			$image = 'admin/checked_out.png';
-			$image = JHtml::_('image', $image, vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'),'',true);
+			$image = vHtml::_('image', $image, vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'),'',true);
 			$checked = ($coreStatus) ?
 				'<span class="hasTip" title="'. vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE').'">'. $image .'</span>' :
-				JHtml::_('grid.id', $i, $row->virtuemart_orderstate_id);
+				vHtml::_('grid.id', $i, $row->virtuemart_orderstate_id);
 
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);

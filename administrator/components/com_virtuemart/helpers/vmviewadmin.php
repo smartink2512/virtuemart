@@ -400,7 +400,7 @@ class VmViewAdmin extends vView {
 
 	function sort($orderby ,$name=null ){
 		if (!$name) $name= 'COM_VIRTUEMART_'.strtoupper ($orderby);
-		return JHtml::_('grid.sort' , vmText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
+		return vHtml::_('grid.sort' , vmText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
 	}
 
 	public function addStandardHiddenToForm($controller=null, $task=''){
@@ -422,7 +422,7 @@ class VmViewAdmin extends vView {
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="controller" value="'.$controller.'" />
 		<input type="hidden" name="view" value="'.$controller.'" />
-		'. JHtml::_( 'form.token' );
+		'. vHtml::_( 'form.token' );
 	}
 
 
@@ -431,16 +431,22 @@ class VmViewAdmin extends vView {
 	 *
 	 * @return string HTML code to write the toggle button
 	 */
-	function toggle( $field, $i, $toggle, $imgY = 'tick.png', $imgX = 'publish_x.png', $untoggleable = false )
+	function toggle( $field, $i, $toggle = 'published', $imgY = 'tick.png', $imgX = 'publish_x.png', $untoggleable = false )
 	{
 
-		$img 	= $field ? $imgY : $imgX;
+		return vHtml::_('grid.toggle', $field, $i, $toggle, $imgY, $imgX, $untoggleable);
+	/*	$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') {
 			// Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
 			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_UNPUBLISHED');
 			$action = $field ? vmText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : vmText::_('COM_VIRTUEMART_PUBLISH_ITEM');
-		} else {
+			/*if (JVM_VERSION < 3){
+				$published = vHtml::_('grid.published', $name, $i );
+			} else {
+				$published = vHtml::_('jgrid.published', $name->published, $i );
+			}//*/
+/*		} else {
 			$task 	= $field ? $toggle.'.0' : $toggle.'.1';
 			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? vmText::_('COM_VIRTUEMART_DISABLE_ITEM') : vmText::_('COM_VIRTUEMART_ENABLE_ITEM');
@@ -453,7 +459,7 @@ class VmViewAdmin extends vView {
 		} else {
 			$attribs='';
 		}
-		$image = JHtml::_('image', $img, $alt, $attribs, true);
+		$image = vHtml::_('image', $img, $alt, $attribs, true);
 
 		if($untoggleable) return $image;
 
@@ -465,17 +471,11 @@ class VmViewAdmin extends vView {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				. '<span class="icon-'.$icon.'"><span>' .'</a>');
 		}
-
-
+*/
 	}
 
 	function gridPublished($name,$i) {
-		if (JVM_VERSION < 3){
-			$published = JHtml::_('grid.published', $name, $i );
-		} else {
-			$published = JHtml::_('jgrid.published', $name->published, $i );
-		}
-		return $published;
+		return self::toggle($name->published,$i);
 	}
 
 	function showhelp(){

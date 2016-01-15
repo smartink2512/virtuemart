@@ -39,6 +39,6 @@ AdminUIHelper::buildTabs ( $this, $tabarray,$this->payment->virtuemart_paymentme
 <input type="hidden" name="xxcontroller" value="paymentmethod" />
 <input type="hidden" name="view" value="paymentmethod" />
 
-<?php echo JHtml::_('form.token'); ?>
+<?php echo vHtml::_('form.token'); ?>
 </form>
     <?php AdminUIHelper::endAdminArea(); ?>

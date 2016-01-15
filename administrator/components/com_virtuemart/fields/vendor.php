@@ -41,6 +41,6 @@ class JFormFieldVendor extends JFormField {
 		$model = VmModel::getModel('vendor');
 
 		$vendors = $model->getVendors(true, true, false);
-		return JHtml::_('select.genericlist', $vendors, $this->name, 'class="inputbox"  size="1"', 'virtuemart_vendor_id', 'vendor_name', $this->value, $this->id);
+		return vHtml::_('select.genericlist', $vendors, $this->name, 'class="inputbox"  size="1"', 'virtuemart_vendor_id', 'vendor_name', $this->value, $this->id);
 	}
 }

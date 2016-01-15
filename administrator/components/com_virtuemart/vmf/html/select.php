@@ -57,7 +57,7 @@ abstract class vHtmlSelect
 	 * @param   mixed    $attribs    Additional HTML attributes for the <select> tag. This
 	 *                               can be an array of attributes, or an array of options. Treated as options
 	 *                               if it is the last argument passed. Valid options are:
-	 *                               Format options, see {@see JHtml::$formatOptions}.
+	 *                               Format options, see {@see vHtml::$formatOptions}.
 	 *                               Selection options, see {@see JHtmlSelect::options()}.
 	 *                               list.attr, string|array: Additional attributes for the select
 	 *                               element.

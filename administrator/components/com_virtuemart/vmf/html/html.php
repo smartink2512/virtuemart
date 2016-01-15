@@ -103,7 +103,7 @@ abstract class vHtml extends vBasicModel
 		$className = $prefix . ucfirst($file);
 
 		if (!class_exists($className)) {
-			self::loader($file,'html','vHtml'.$file);
+			self::loader($file,'html',$className);
 		}
 
 		$toCall = array($className, $func);
@@ -117,7 +117,8 @@ abstract class vHtml extends vBasicModel
 
 			return static::call($toCall, $args);
 		} else {
-			throw new InvalidArgumentException(sprintf('%s::%s not found.', $className, $func), 500);
+			vmTrace('Cant find class '.$className.', function '.$func.' file '.$file);
+			//throw new InvalidArgumentException(sprintf('vHtml %s::%s not found.', $className, $func), 500);
 		}
 	}
 
@@ -280,9 +281,10 @@ abstract class vHtml extends vBasicModel
 		}
 		else
 		{
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
 			// Extract extension and strip the file
-			$strip = JFile::stripExt($file);
-			$ext   = JFile::getExt($file);
+			$strip = vFile::stripExt($file);
+			$ext   = vFile::getExt($file);
 
 			// Prepare array of files
 			$includes = array();
@@ -309,7 +311,7 @@ abstract class vHtml extends vBasicModel
 			if ($relative)
 			{
 				// Get the template
-				$template = JFactory::getApplication()->getTemplate();
+				$template = vFactory::getApplication()->getTemplate();
 
 				// For each potential files
 				foreach ($potential as $strip)
@@ -317,7 +319,7 @@ abstract class vHtml extends vBasicModel
 					$files = array();
 
 					// Detect debug mode
-					if ($detect_debug && JFactory::getConfig()->get('debug'))
+					if ($detect_debug && vFactory::getConfig()->get('debug'))
 					{
 						/*
 						 * Detect if we received a file in the format name.min.ext
@@ -509,7 +511,7 @@ abstract class vHtml extends vBasicModel
 					 */
 					foreach ($files as $file)
 					{
-						$path = JPATH_ROOT . "/$file";
+						$path = VMPATH_ROOT . "/$file";
 
 						if (file_exists($path))
 						{
@@ -599,7 +601,7 @@ abstract class vHtml extends vBasicModel
 	 *
 	 * @see     JBrowser
 	 * @since   1.5
-	 *
+	 */
 	public static function stylesheet($file, $attribs = array(), $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
 		$includes = static::includeRelativeFiles('css', $file, $relative, $detect_browser, $detect_debug);
@@ -646,16 +648,19 @@ abstract class vHtml extends vBasicModel
 	 *
 	 * @see     vHtml::stylesheet()
 	 * @since   1.5
-	 *
+	 */
 	public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
+		vmTrace('Wie '.$file);
+		vmJsApi::addJScript('/media/system/js/'.$file);
+
 		// Include MooTools framework
-		if ($framework)
+		/*if ($framework)
 		{
 			static::_('behavior.framework');
-		}
+		}*/
 
-		$includes = static::includeRelativeFiles('js', $file, $relative, $detect_browser, $detect_debug);
+		/*$includes = static::includeRelativeFiles('js', $file, $relative, $detect_browser, $detect_debug);
 
 		// If only path is required
 		if ($path_only)
@@ -682,7 +687,7 @@ abstract class vHtml extends vBasicModel
 			{
 				$document->addScript($include);
 			}
-		}
+		}*/
 	}
 
 	/**

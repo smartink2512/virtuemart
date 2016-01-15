@@ -41,7 +41,7 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 					<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY')) ; ?></option>
 					<?php echo $this->category_tree; ?>
 				</select>
-					 <?php echo JHtml::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox" onchange="document.adminForm.submit(); return false;"', 'value', 'text',
+					 <?php echo vHtml::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox" onchange="document.adminForm.submit(); return false;"', 'value', 'text',
 					 	$this->model->virtuemart_manufacturer_id );
 					?>
 
@@ -91,7 +91,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
                 <th style="min-width:<?php echo $imgWidth ?>px;width:5%;"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
 		<th><?php echo $this->sort('product_sku') ?></th>
 		<th width="90px" ><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE') ; ?></th>
-<?php /*		<th><?php echo JHtml::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th> */ ?>
+<?php /*		<th><?php echo vHtml::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th> */ ?>
 <th width="15%"><?php echo vmText::_( 'COM_VIRTUEMART_CATEGORY'); ?></th>
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
@@ -99,7 +99,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 		if( $this->virtuemart_category_id ) { ?>
 			<th style="min-width:100px;width:5%;">
 				<?php echo $this->sort('pc.ordering', 'COM_VIRTUEMART_FIELDMANAGER_REORDER'); ?>
-				<?php echo JHtml::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
+				<?php echo vHtml::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
 		<th width="10%"><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
@@ -118,9 +118,8 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 		$k = 0;
 		$keyword = vRequest::getCmd('keyword');
 		foreach ($this->productlist as $key => $product) {
-			$checked = JHtml::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
-			$published = JHtml::_('grid.published', $product, $i );
-			$published = $this->gridPublished( $product, $i );
+			$checked = vHtml::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
+			$published = $this->toggle( $product->published, $i, 'published');
 
 			$is_featured = $this->toggle($product->product_special, $i,'toggle.product_special');
 			$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id;
@@ -135,7 +134,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 				if(empty($product->product_name)){
 					$product->product_name = 'Language Missing id '.$product->virtuemart_product_id;
 				}
-				echo JHtml::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '. htmlentities($product->product_name))); ?>
+				echo vHtml::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '. htmlentities($product->product_name))); ?>
 					<!-- </span>  -->
 				</td>
 
@@ -164,12 +163,12 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 						// Product list should be ordered
 						$this->model->addImages($product,1);
 						$img = '<span >('.$product->mediaitems.')</span>'.$product->images[0]->displayMediaThumb('class="vm_mini_image"',false );
-						//echo JHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
+						//echo vHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
 					} else {
-						//echo JHtml::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name) );
+						//echo vHtml::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name) );
 						$img = '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')';
 					}
-					echo JHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.htmlentities($product->product_name)));
+					echo vHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.htmlentities($product->product_name)));
 					?>
 					</td>
 				<!-- Product SKU -->
@@ -203,7 +202,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 
 				<!-- Reviews -->
 				<?php $link = vRequest::vmSpecialChars('index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id); ?>
-				<td align="center" ><?php echo JHtml::_('link', $link, $product->reviews); ?></td>
+				<td align="center" ><?php echo vHtml::_('link', $link, $product->reviews); ?></td>
 				<td align="center" >
 					<?php
 						echo $is_featured;

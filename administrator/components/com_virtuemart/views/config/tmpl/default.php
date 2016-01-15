@@ -41,7 +41,7 @@ AdminUIHelper::buildTabs ( $this,  array (
 	type="hidden" name="option" value="com_virtuemart" /> <input
 	type="hidden" name="view" value="config" />
 <?php
-echo JHtml::_ ( 'form.token' );
+echo vHtml::_ ( 'form.token' );
 ?>
 </form>
 <?php

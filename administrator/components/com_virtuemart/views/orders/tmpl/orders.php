@@ -40,7 +40,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 						<?php echo VmHTML::checkbox ('customer_send_comment', 1) . vmText::_ ('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 						<?php echo VmHTML::checkbox ('update_lines', 1) . vmText::_ ('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
 						<textarea class="element-hidden vm-order_comment vm-showable" name="comments" cols="5" rows="5"></textarea>
-						<?php echo JHtml::_ ('link', '#', vmText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
+						<?php echo vHtml::_ ('link', '#', vmText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 					</td>
 					<td>
 						<?php echo $this->lists['vendors'] ?>
@@ -77,7 +77,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 			$keyword = vRequest::getCmd ('keyword');
 ;
 			foreach ($this->orderslist as $key => $order) {
-				$checked = JHtml::_ ('grid.id', $i, $order->virtuemart_order_id);
+				$checked = vHtml::_ ('grid.id', $i, $order->virtuemart_order_id);
 				?>
 			<tr class="row<?php echo $k; ?>">
 				<!-- Checkbox -->
@@ -86,13 +86,13 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				<?php
 				$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order->virtuemart_order_id;
 				?>
-				<td><?php echo JHtml::_ ('link', JRoute::_ ($link, FALSE), $order->order_number, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order->order_number)); ?></td>
+				<td><?php echo vHtml::_ ('link', JRoute::_ ($link, FALSE), $order->order_number, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order->order_number)); ?></td>
 
 				<td>
 					<?php
 					if ($order->virtuemart_user_id) {
 						$userlink = JROUTE::_ ('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $order->virtuemart_user_id, FALSE);
-						echo JHtml::_ ('link', JRoute::_ ($userlink, FALSE), $order->order_name, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' .  $order->order_name));
+						echo vHtml::_ ('link', JRoute::_ ($userlink, FALSE), $order->order_name, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' .  $order->order_name));
 					} else {
 						echo $order->order_name;
 					}
@@ -137,12 +137,12 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				<td><?php echo vmJsApi::date ($order->modified_on, 'LC2', TRUE); ?></td>
 				<!-- Status -->
 				<td style="position:relative;">
-					<?php echo JHtml::_ ('select.genericlist', $this->orderstatuses, "orders[" . $order->virtuemart_order_id . "][order_status]", 'class="orderstatus_select"', 'order_status_code', 'order_status_name', $order->order_status, 'order_status' . $i, TRUE); ?>
+					<?php echo vHtml::_ ('select.genericlist', $this->orderstatuses, "orders[" . $order->virtuemart_order_id . "][order_status]", 'class="orderstatus_select"', 'order_status_code', 'order_status_name', $order->order_status, 'order_status' . $i, TRUE); ?>
 					<input type="hidden" name="orders[<?php echo $order->virtuemart_order_id; ?>][current_order_status]" value="<?php echo $order->order_status; ?>"/>
 					<input type="hidden" name="orders[<?php echo $order->virtuemart_order_id; ?>][coupon_code]" value="<?php echo $order->coupon_code; ?>"/>
 					<br/>
 					<textarea class="element-hidden vm-order_comment vm-showable" name="orders[<?php echo $order->virtuemart_order_id; ?>][comments]" cols="5" rows="5"></textarea>
-					<?php echo JHtml::_ ('link', '#', vmText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
+					<?php echo vHtml::_ ('link', '#', vmText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 				</td>
 				<!-- Update -->
 				<td><?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][customer_notified]', 0) . vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
@@ -153,7 +153,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				</td>
 				<!-- Total -->
 				<td><?php echo $order->order_total; ?></td>
-				<td><?php echo JHtml::_ ('link', JRoute::_ ($link, FALSE), $order->virtuemart_order_id, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_ID') . ' ' . $order->virtuemart_order_id)); ?></td>
+				<td><?php echo vHtml::_ ('link', JRoute::_ ($link, FALSE), $order->virtuemart_order_id, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_ID') . ' ' . $order->virtuemart_order_id)); ?></td>
 
 			</tr>
 				<?php

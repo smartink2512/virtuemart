@@ -28,6 +28,7 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 	defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', JPATH_ROOT);
 	if(version_compare(JVERSION,'3.0.0','ge')) {
 		defined('JVM_VERSION') or define ('JVM_VERSION', 3);
+		defined('VM_USE_BOOTSTRAP') or define ('VM_USE_BOOTSTRAP', 1);
 	}
 	if(version_compare(JVERSION,'1.7.0','ge')) {
 		defined('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
@@ -50,6 +51,7 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 	$vmPathLibraries = '';
 }
 
+defined('VM_USE_BOOTSTRAP') or define ('VM_USE_BOOTSTRAP', 0);
 defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', $vmPathLibraries);
 defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );

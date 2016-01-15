@@ -61,7 +61,7 @@ AdminUIHelper::startAdminArea($this);
 			$row = $this->shipments[$i];
 			$published = $this->gridPublished($row, $i);
 			//$row->published = 1;
-			$checked = JHtml::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
+			$checked = vHtml::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
 			if ($this->showVendors) {
 				$shared = $this->toggle($row->shared, $i, 'toggle.shared');
 			}
@@ -72,7 +72,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<?php echo JHtml::_('link', $editlink, vmText::_($row->shipment_name)); ?>
+					<?php echo vHtml::_('link', $editlink, vmText::_($row->shipment_name)); ?>
 					<?php if ($set_automatic_shipment == $row->virtuemart_shipmentmethod_id) {
 						?><i class="icon-featured"></i><?php
 					}
@@ -85,7 +85,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $row->shipmentShoppersList; ?>
 				</td>
                                 <td align="left">
-					<?php echo $row->shipment_element; //JHtml::_('link', $editlink, vmText::_($row->shipment_element)); ?>
+					<?php echo $row->shipment_element; //vHtml::_('link', $editlink, vmText::_($row->shipment_element)); ?>
 				</td>
 				<td align="left">
 					<?php echo vmText::_($row->ordering); ?>

@@ -75,7 +75,7 @@ AdminUIHelper::startAdminArea($this);
 			</th>
 			<th>
 			<?php echo $this->sort('ordering','COM_VIRTUEMART_FIELDMANAGER_REORDER') ?>
-			<?php echo JHtml::_('grid.order',  $this->userfieldsList ); ?>
+			<?php echo vHtml::_('grid.order',  $this->userfieldsList ); ?>
 			</th>
 			 <th><?php echo $this->sort('virtuemart_userfield_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
@@ -87,9 +87,9 @@ AdminUIHelper::startAdminArea($this);
 
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = 'admin/checked_out.png';
-			$image = JHtml::_('image', $image, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'),null,true);
-			//$checked = '<div style="position: relative;">'.JHtml::_('grid.id', $i, null,$row->virtuemart_userfield_id);
-			$checked = JHtml::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
+			$image = vHtml::_('image', $image, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'),null,true);
+			//$checked = '<div style="position: relative;">'.vHtml::_('grid.id', $i, null,$row->virtuemart_userfield_id);
+			$checked = vHtml::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
 			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
 			$checked .= '</div>';
 			$checked_out = $coreField ? 'style="position: relative;"' : '';
@@ -99,7 +99,6 @@ AdminUIHelper::startAdminArea($this);
 				
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&virtuemart_userfield_id=' . $row->virtuemart_userfield_id);
 			$required = $this->toggle($row->required, $i, 'toggle.required','tick.png','publish_x.png',$coreField );
-//			$published = JHtml::_('grid.published', $row, $i);
 			$published = $this->toggle($row->published, $i, 'toggle.published','tick.png','publish_x.png', $coreField);
 			$registration = $this->toggle($row->cart, $i, 'toggle.cart','tick.png','publish_x.png', $coreField);
 			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment','tick.png','publish_x.png', $coreField);

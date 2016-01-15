@@ -27,7 +27,7 @@ AdminUIHelper::startAdminArea($this);
 <div class="col50">
 	<fieldset>
 <?php /*	<legend><?php echo vmText::_('COM_VIRTUEMART_STATE_DETAILS'); ?></legend> */?>
-	<legend><?php echo JHtml::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. vmText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
+	<legend><?php echo vHtml::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. vmText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
 	<table class="admintable">
 		<?php
 		echo VmHTML::row('input', 'COM_VIRTUEMART_STATE_NAME', 'state_name', $this->state->state_name,'class="required" size="50"');
@@ -40,7 +40,7 @@ AdminUIHelper::startAdminArea($this);
 				</label>
 			</td>
 			<td>
-				<?php echo JHtml::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->state->virtuemart_worldzone_id); ?>
+				<?php echo vHtml::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->state->virtuemart_worldzone_id); ?>
 			</td>
 		</tr>
 		<?php

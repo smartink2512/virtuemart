@@ -70,7 +70,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
 	    for ($i=0, $n=count( $this->countries ); $i < $n; $i++) {
 		$row = $this->countries[$i];
 
-		$checked = JHtml::_('grid.id', $i, $row->virtuemart_country_id);
+		$checked = vHtml::_('grid.id', $i, $row->virtuemart_country_id);
 		$published = $this->gridPublished( $row, $i );
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=country&task=edit&cid[]=' . $row->virtuemart_country_id);
 		$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
@@ -129,7 +129,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
     <input type="hidden" name="view" value="country" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <?php echo JHtml::_( 'form.token' ); ?>
+    <?php echo vHtml::_( 'form.token' ); ?>
 </form>
 
 

@@ -100,8 +100,8 @@ class VirtuemartViewUser extends VmViewAdmin {
 			$this->lists['canBlock'] = ($currentUser->authorise('com_users', 'block user')
 			&& ($userDetails->JUser->get('id') != $currentUser->get('id'))); // Can't block myself
 			$this->lists['canSetMailopt'] = $currentUser->authorise('workflow', 'email_events');
-			$this->lists['block'] = JHtml::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$this->lists['sendEmail'] = JHtml::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$this->lists['block'] = vHtml::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$this->lists['sendEmail'] = vHtml::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$this->lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
@@ -129,13 +129,13 @@ class VirtuemartViewUser extends VmViewAdmin {
 			// Load the required scripts
 			if (count($userFieldsBT['scripts']) > 0) {
 				foreach ($userFieldsBT['scripts'] as $_script => $_path) {
-					JHtml::script($_script, $_path);
+					vHtml::script($_script, $_path);
 				}
 			}
 			// Load the required stylesheets
 			if (count($userFieldsBT['links']) > 0) {
 				foreach ($userFieldsBT['links'] as $_link => $_path) {
-					JHtml::stylesheet($_link, $_path);
+					vHtml::stylesheet($_link, $_path);
 				}
 			}
 

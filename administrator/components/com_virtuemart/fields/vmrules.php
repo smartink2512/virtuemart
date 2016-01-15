@@ -35,7 +35,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 	protected function getInput() {
 
 		VmConfig::loadConfig();
-		JHtml::_('behavior.tooltip');
+		//vHtml::_('behavior.tooltip');
 		if(JVM_VERSION<3){
 			return $this->vmRulesJ25();
 		} else {
@@ -279,11 +279,14 @@ class JFormFieldVmRules extends JFormFieldRules {
 
 		// Get the explicit rules for this asset.
 		$db = vFactory::getDbo();
-		$query = $db->getQuery(true);
+		/*$query = $db->getQuery(true);
 		$query->select($db->quoteName('id'));
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name') . ' = ' . $db->quote($component));
-		$db->setQuery($query);
+		$db->setQuery($query);*/
+
+		$q = 'SELECT `id` FROM `#__assets` WHERE `name` = "'.$component.'"';
+		$db->setQuery($q);
 		$assetId = (int)$db->loadResult();
 		if ($error = $db->getErrorMsg()) {
 			vmError($error);

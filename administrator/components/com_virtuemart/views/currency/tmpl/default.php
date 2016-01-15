@@ -75,7 +75,7 @@ AdminUIHelper::startAdminArea($this);
 	    for ($i=0, $n=count( $this->currencies ); $i < $n; $i++) {
 		$row = $this->currencies[$i];
 
-		$checked = JHtml::_('grid.id', $i, $row->virtuemart_currency_id);
+		$checked = vHtml::_('grid.id', $i, $row->virtuemart_currency_id);
 			$published = $this->gridPublished( $row, $i );
 
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=currency&task=edit&cid[]=' . $row->virtuemart_currency_id);
@@ -131,7 +131,7 @@ AdminUIHelper::startAdminArea($this);
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-    <?php echo JHtml::_( 'form.token' ); ?>
+    <?php echo vHtml::_( 'form.token' ); ?>
 </form>
 
 

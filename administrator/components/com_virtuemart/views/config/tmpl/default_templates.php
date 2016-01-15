@@ -64,8 +64,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWPRICES', 'feed_cat_show_prices', VmConfig::get('feed_cat_show_prices', 0));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWDESC', 'feed_cat_show_description', VmConfig::get('feed_cat_show_description', 0));
 		$options = array();
-		$options[] = JHtml::_('select.option', 'product_s_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
-		$options[] = JHtml::_('select.option', 'product_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
+		$options[] = vHtml::_('select.option', 'product_s_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
+		$options[] = vHtml::_('select.option', 'product_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_FEED_DESCRIPTION_TYPE', $options, 'feed_cat_description_type', 'size=1', 'value', 'text', VmConfig::get('feed_cat_description_type',0));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEED_MAX_TEXT_LENGTH','feed_cat_max_text_length',VmConfig::get('feed_cat_max_text_length','500'),"","",4);
 		?>
@@ -144,8 +144,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWDESC','feed_home_show_description', VmConfig::get('feed_home_show_description',0));
 
 		$options = array();
-		$options[] = JHtml::_('select.option', 'product_s_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
-		$options[] = JHtml::_('select.option', 'product_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
+		$options[] = vHtml::_('select.option', 'product_s_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
+		$options[] = vHtml::_('select.option', 'product_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_FEED_DESCRIPTION_TYPE', $options, 'feed_home_description_type', 'size=1', 'value', 'text', VmConfig::get('feed_home_description_type'));
 
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEED_MAX_TEXT_LENGTH','feed_home_max_text_length', VmConfig::get('feed_home_max_text_length',500),'',10,10);

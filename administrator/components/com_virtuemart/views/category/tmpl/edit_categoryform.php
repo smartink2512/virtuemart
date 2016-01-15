@@ -38,7 +38,7 @@ $mainframe = vFactory::getApplication();
 					<td>
 						<?php
 							$categoryShared = isset($this->relationInfo->category_shared) ? $this->relationInfo->category_shared : 1;
-							echo JHtml::_('select.booleanlist', 'shared', $categoryShared, $categoryShared);
+							echo vHtml::_('select.booleanlist', 'shared', $categoryShared, $categoryShared);
 						?>
 					</td>
 				</tr>

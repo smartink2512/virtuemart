@@ -38,7 +38,7 @@ class JFormFieldVmTaxes extends JFormField {
 		return ShopFunctions::renderTaxList($this->value, $this->name, '');
 
 		// $class = 'multiple="true" size="10"';
-		// return JHtml::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+		// return vHtml::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
 	}
 
 }

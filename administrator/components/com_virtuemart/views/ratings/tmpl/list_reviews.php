@@ -66,22 +66,22 @@ $option = vRequest::getCmd('option');
 		$keyword = vRequest::getCmd('keyword');
 		foreach ($this->reviewslist as $key => $review) {
 
-			$checked = JHtml::_('grid.id', $i , $review->virtuemart_rating_review_id ,null, 'virtuemart_rating_review_id');
-			$published = JHtml::_('grid.published', $review, $i);
+			$checked = vHtml::_('grid.id', $i , $review->virtuemart_rating_review_id ,null, 'virtuemart_rating_review_id');
+			$published = $this->toggle( $review->published, $i, 'published');
 			?>
 			<tr class="row<?php echo ($i)%2 ; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Username + time -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=edit_review&virtuemart_rating_review_id='.$review->virtuemart_rating_review_id; ?>
-				<td><?php echo JHtml::_('link', $link, $review->customer.' ('.vmJsApi::date($review->created_on,'LC2',true).')', array("title" => vmText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
+				<td><?php echo vHtml::_('link', $link, $review->customer.' ('.vmJsApi::date($review->created_on,'LC2',true).')', array("title" => vmText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<!-- Product name TODO Add paren_id in LINK ? not existing here -->
 				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id ?>
-				<td><?php echo JHtml::_('link', JRoute::_($link), $review->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($review->product_name))); ?></td>
+				<td><?php echo vHtml::_('link', JRoute::_($link), $review->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($review->product_name))); ?></td>
 				<!-- Stars rating -->
 				<td align="center">
 					
-					<?php // echo JHtml::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->vote).'.gif',$review->vote,array("title" => (vmText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->vote . ' :: ' . $this->max_rating)));
+					<?php // echo vHtml::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->vote).'.gif',$review->vote,array("title" => (vmText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->vote . ' :: ' . $this->max_rating)));
 					$maxrating = VmConfig::get('vm_maximum_rating_scale', 5);
 				    $ratingwidth = round($review->review_rating) * 24;
 				    ?>

@@ -167,14 +167,14 @@ class vPath
 		if (strpos($path, '..') !== false)
 		{
 			// Don't translate
-			throw new Exception('JPath::check Use of relative paths not permitted', 20);
+			throw new Exception('vPath::check Use of relative paths not permitted', 20);
 		}
 
 		$path = self::clean($path);
 
 		if ((VMPATH_ROOT != '') && strpos($path, self::clean(VMPATH_ROOT)) !== 0)
 		{
-			throw new Exception('JPath::check Snooping out of bounds @ ' . $path, 20);
+			throw new Exception('vPath::check Snooping out of bounds @ ' . $path, 20);
 		}
 
 		return $path;
@@ -195,7 +195,7 @@ class vPath
 	{
 		if (!is_string($path) && !empty($path))
 		{
-			throw new UnexpectedValueException('JPath::clean: $path is not a string.');
+			throw new UnexpectedValueException('vPath::clean: $path is not a string.');
 		}
 
 		$path = trim($path);

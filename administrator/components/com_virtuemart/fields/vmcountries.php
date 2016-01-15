@@ -42,7 +42,7 @@ class JFormFieldVmCountries extends JFormFieldList {
 		$db->setQuery($query);
 		$values = $db->loadObjectList();
 		foreach ($values as $v) {
-			$options[] = JHtml::_('select.option', $v->value, $v->text);
+			$options[] = vHtml::_('select.option', $v->value, $v->text);
 		}
 
 		//BAD $class = 'multiple="true" size="10"';

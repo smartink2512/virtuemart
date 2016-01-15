@@ -69,14 +69,14 @@ class VirtuemartViewConfig extends VmViewAdmin {
 		$this->orderStatusModel= VmModel::getModel('orderstatus');
 
 		$this->os_Options = $this->osWoP_Options = $this->osDel_Options = $this->orderStatusModel->getOrderStatusNames();
-		$emptyOption = JHtml::_ ('select.option', -1, vmText::_ ('COM_VIRTUEMART_NONE'), 'order_status_code', 'order_status_name');
+		$emptyOption = vHtml::_ ('select.option', -1, vmText::_ ('COM_VIRTUEMART_NONE'), 'order_status_code', 'order_status_name');
 
 		array_unshift ($this->os_Options, $emptyOption);
 
 		unset($this->osWoP_Options['P']);
 		array_unshift ($this->osWoP_Options, $emptyOption);
 
-		$deldate_inv = JHtml::_ ('select.option', 'm', vmText::_ ('COM_VIRTUEMART_DELDATE_INV'), 'order_status_code', 'order_status_name');
+		$deldate_inv = vHtml::_ ('select.option', 'm', vmText::_ ('COM_VIRTUEMART_DELDATE_INV'), 'order_status_code', 'order_status_name');
 		unset($this->osDel_Options['P']);
 		array_unshift ($this->osDel_Options, $deldate_inv);
 		array_unshift ($this->osDel_Options, $emptyOption);
@@ -101,7 +101,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 			}
 
 			$text = vmText::_('COM_VIRTUEMART_'.strtoupper(str_replace(array(',',' '),array('_',''),$fieldWithoutPrefix))) ;
-			$orderByFieldsCat[] =  JHtml::_('select.option', $field, $text) ;
+			$orderByFieldsCat[] =  vHtml::_('select.option', $field, $text) ;
 		}
 
 		$this->orderByFieldsCat = $orderByFieldsCat;
@@ -138,9 +138,9 @@ WHERE published="1"';
 			return array();
 		}
 		if(empty($options)) $options = array();
-		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NOPREF'),'virtuemart_'.$ps.'method_id',$ps.'_name');
+		$emptyOption = vHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_NOPREF'),'virtuemart_'.$ps.'method_id',$ps.'_name');
 		array_unshift($options,$emptyOption);
-		$emptyOption = JHtml::_('select.option', '-1', vmText::_('COM_VIRTUEMART_NONE'),'virtuemart_'.$ps.'method_id',$ps.'_name');
+		$emptyOption = vHtml::_('select.option', '-1', vmText::_('COM_VIRTUEMART_NONE'),'virtuemart_'.$ps.'method_id',$ps.'_name');
 		array_unshift($options,$emptyOption);
 		return $options;
 	}

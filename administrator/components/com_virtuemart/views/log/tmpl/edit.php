@@ -24,7 +24,7 @@ AdminUIHelper::startAdminArea($this);
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="log" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo vHtml::_( 'form.token' ); ?>
 </form>
 <pre class="code">
 	<ol class="logline">

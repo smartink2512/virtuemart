@@ -82,7 +82,7 @@ AdminUIHelper::startAdminArea($this);
 		for ($i=0, $n=count( $this->calcs ); $i < $n; $i++) {
 
 			$row = $this->calcs[$i];
-			$checked = JHtml::_('grid.id', $i, $row->virtuemart_calc_id);
+			$checked = vHtml::_('grid.id', $i, $row->virtuemart_calc_id);
 			$published = $this->toggle($row->published, $i, 'toggle.published');
 
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=calc&task=edit&cid[]=' . $row->virtuemart_calc_id);
@@ -129,12 +129,12 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 				<?php /*				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_shopper_published')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? vmText::_('COM_VIRTUEMART_YES') : vmText::_('COM_VIRTUEMART_NO');?>">
-						<?php echo JHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
+						<?php echo vHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
 				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_vendor_published')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? vmText::_('COM_VIRTUEMART_YES') : vmText::_('COM_VIRTUEMART_NO');?>">
-						<?php echo JHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
+						<?php echo vHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td> */  ?>
 				<td>
