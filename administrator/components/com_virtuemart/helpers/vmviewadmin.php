@@ -423,7 +423,7 @@ class VmViewAdmin extends vView {
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="controller" value="'.$controller.'" />
 		<input type="hidden" name="view" value="'.$controller.'" />
-		'. vHtml::_( 'form.token' );
+		'. vHtml::token();
 	}
 
 

@@ -1087,4 +1087,12 @@ abstract class vHtml extends vBasicModel
 
 		return '{' . implode(',', $elements) . '}';
 	}
+	
+		/**
+	 * Adjusted for VMF
+	 * @return string
+	 */
+	public static function token() {
+		return '<input type="hidden" name="' . vRequest::getFormToken(). '" value="1" />';
+	}
 }
