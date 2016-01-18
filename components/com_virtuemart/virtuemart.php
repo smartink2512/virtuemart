@@ -23,11 +23,12 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'compo
 
 VmConfig::loadConfig();
 
-if (!class_exists( 'vHtml' )) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
+
 
 vmRam('Start');
 vmSetStartTime('Start');
 
+VmConfig::loadJLang('lib_joomla',true);
 VmConfig::loadJLang('com_virtuemart', true);
 
 

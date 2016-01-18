@@ -32,13 +32,8 @@ AdminUIHelper::buildTabs ( $this, $tabarray,$this->payment->virtuemart_paymentme
 
 
     <!-- Hidden Fields -->
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->payment->virtuemart_paymentmethod_id; ?>" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="xxcontroller" value="paymentmethod" />
-<input type="hidden" name="view" value="paymentmethod" />
+    <?php echo $this->addStandardHiddenToForm(); ?>
+    <input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->payment->virtuemart_paymentmethod_id; ?>" />
 
-<?php echo vHtml::_('form.token'); ?>
 </form>
     <?php AdminUIHelper::endAdminArea(); ?>

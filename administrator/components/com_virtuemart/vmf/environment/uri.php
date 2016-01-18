@@ -9,10 +9,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-//use Joomla\Uri\Uri;
-
-//if(!interface_exists('UriInterface'))require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'UriInterface.php');
-if(!class_exists('UriHelper')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'UriHelper.php');
 
 /**
  * JUri Class

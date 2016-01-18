@@ -105,6 +105,7 @@ if (!class_exists ('VmModel')) {
 if(!class_exists('vController')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vcontroller.php');
 if(!class_exists('vRequest')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vrequest.php');
 if(!class_exists('vmText')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtext.php');
+if(!class_exists('vHtml')) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
 if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php');
 if(!class_exists('vUri')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'uri.php');
 

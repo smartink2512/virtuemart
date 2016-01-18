@@ -31,7 +31,9 @@ vUri::root(null, str_ireplace('/administrator', '', JUri::base(true)));
 
 $_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'));
 
+VmConfig::loadJLang('lib_joomla',true);
 VmConfig::loadJLang('com_virtuemart');
+
 $exe = true;
 //VmConfig::$echoDebug=true;
 // Require specific controller if requested

@@ -416,6 +416,7 @@ class VmViewAdmin extends vView {
 		if(vRequest::get('manage',false) or vFactory::getApplication()->isSite()){
 			$hidden .='<input type="hidden" name="manage" value="1" />';
 		}
+
 		return  $hidden.'
 		<input type="hidden" name="task" value="'.$task.'" />
 		<input type="hidden" name="option" value="'.$option.'" />

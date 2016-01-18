@@ -33,7 +33,6 @@ AdminUIHelper::buildTabs ( $this, $tabarray , $this->shipment->virtuemart_shipme
     <!-- Hidden Fields -->
 	<?php echo $this->addStandardHiddenToForm(); ?>
 <input type="hidden" name="virtuemart_shipmentmethod_id" value="<?php echo $this->shipment->virtuemart_shipmentmethod_id; ?>" />
-<input type="hidden" name="xxcontroller" value="shipmentmethod" />
 
 </form>
     <?php AdminUIHelper::endAdminArea(); ?>
