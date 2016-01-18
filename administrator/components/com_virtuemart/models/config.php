@@ -639,7 +639,7 @@ class VirtueMartModelConfig extends VmModel {
 		$dangerousTools = VirtueMartModelConfig::readConfigFile(true);
 
 		if( $dangerousTools){
-			$link = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
+			$link = vUri::root() . 'administrator/index.php?option=com_virtuemart&view=config';
 			$lang = vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
 			VmInfo($lang);
 		}

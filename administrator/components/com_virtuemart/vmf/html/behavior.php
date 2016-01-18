@@ -24,49 +24,6 @@ abstract class vHtmlBehavior
 	 */
 	protected static $loaded = array();
 
-	/**
-	 * Method to load the MooTools framework into the document head
-	 *
-	 * If debugging mode is on an uncompressed version of MooTools is included for easier debugging.
-	 *
-	 * @param   boolean  $extras  Flag to determine whether to load MooTools More in addition to Core
-	 * @param   mixed    $debug   Is debugging mode on? [optional]
-	 *
-	 * @return  void
-	 *
-	 * @since   1.6
-	 */
-	public static function framework($extras = false, $debug = null) {
-
-		$type = $extras ? 'more' : 'core';
-
-		// Only load once
-		if (!empty(static::$loaded[__METHOD__][$type]))
-		{
-			return;
-		}
-
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = vFactory::getConfig();
-			$debug = $config->get('debug');
-		}
-
-		if ($type != 'core' && empty(static::$loaded[__METHOD__]['core']))
-		{
-			static::framework(false, $debug);
-		}
-
-		vHtml::_('script', 'system/mootools-' . $type . '.js', false, true, false, false, $debug);
-
-		// Keep loading core.js for BC reasons
-		static::core();
-
-		static::$loaded[__METHOD__][$type] = true;
-
-		return;
-	}
 
 	/**
 	 * Method to load core.js into the document head.
@@ -89,39 +46,6 @@ abstract class vHtmlBehavior
 		static::$loaded[__METHOD__] = true;
 
 		return;
-	}
-
-	/**
-	 * Add unobtrusive JavaScript support for image captions.
-	 *
-	 * @param   string  $selector  The selector for which a caption behaviour is to be applied.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 */
-	public static function caption($selector = 'img.caption')
-	{
-		// Only load once
-		if (isset(static::$loaded[__METHOD__][$selector]))
-		{
-			return;
-		}
-
-		// Include jQuery
-		vHtml::_('jquery.framework');
-
-		vHtml::_('script', 'system/caption.js', false, true);
-
-		// Attach caption to document
-		JFactory::getDocument()->addScriptDeclaration(
-			"jQuery(window).on('load',  function() {
-				new JCaption('" . $selector . "');
-			});"
-		);
-
-		// Set static array
-		static::$loaded[__METHOD__][$selector] = true;
 	}
 
 	/**
@@ -151,40 +75,6 @@ abstract class vHtmlBehavior
 		vmText::script('JLIB_FORM_FIELD_INVALID');
 
 		vHtml::_('script', 'validate.js', false, true);
-		static::$loaded[__METHOD__] = true;
-	}
-
-	/**
-	 * Add unobtrusive JavaScript support for submenu switcher support
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 */
-	public static function switcher()
-	{
-		// Only load once
-		if (isset(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// Include jQuery
-		vHtml::_('jquery.framework');
-
-		vHtml::_('script', 'system/switcher.js', true, true);
-
-		$script = "
-			document.switcher = null;
-			jQuery(function($){
-				var toggler = document.getElementById('submenu');
-				var element = document.getElementById('config-document');
-				if (element) {
-					document.switcher = new JSwitcher(toggler, element);
-				}
-			});";
-
-		JFactory::getDocument()->addScriptDeclaration($script);
 		static::$loaded[__METHOD__] = true;
 	}
 
@@ -360,44 +250,6 @@ abstract class vHtmlBehavior
 		return;
 	}
 
-	/**
-	 * JavaScript behavior to allow shift select in grids
-	 *
-	 * @param   string  $id  The id of the form for which a multiselect behaviour is to be applied.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.7
-	 */
-	public static function multiselect($id = 'adminForm')
-	{
-		// Only load once
-		if (isset(static::$loaded[__METHOD__][$id]))
-		{
-			return;
-		}
-
-		// Include core
-		static::core();
-
-		// Include jQuery
-		vHtml::_('jquery.framework');
-
-		vHtml::_('script', 'system/multiselect.js', false, true);
-
-		// Attach multiselect to document
-		JFactory::getDocument()->addScriptDeclaration(
-			"jQuery(document).ready(function() {
-				Joomla.JMultiSelect('" . $id . "');
-			});"
-		);
-
-		// Set static array
-		static::$loaded[__METHOD__][$id] = true;
-
-		return;
-	}
-
 
 	/**
 	 * Add unobtrusive JavaScript support for a calendar control.
@@ -417,7 +269,7 @@ abstract class vHtmlBehavior
 		$document = JFactory::getDocument();
 		$tag = JFactory::getLanguage()->getTag();
 
-		vHtml::_('stylesheet', 'system/calendar-jos.css', array(' title' => JText::_('JLIB_HTML_BEHAVIOR_GREEN'), ' media' => 'all'), true);
+		vHtml::_('stylesheet', 'system/calendar-jos.css', array(' title' => vmText::_('JLIB_HTML_BEHAVIOR_GREEN'), ' media' => 'all'), true);
 		vHtml::_('script', $tag . '/calendar.js', false, true);
 		vHtml::_('script', $tag . '/calendar-setup.js', false, true);
 
@@ -495,63 +347,6 @@ abstract class vHtmlBehavior
 		);
 
 		static::$loaded[__METHOD__] = true;
-	}
-
-	/**
-	 * Keep session alive, for example, while editing or creating an article.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.5
-	 */
-/*	public static function keepalive()
-	{
-		// Only load once
-		if (isset(static::$loaded[__METHOD__]))
-		{
-			return;
-		}
-
-		// If the handler is not 'Database', we set a fixed, small refresh value (here: 5 min)
-		if (JFactory::getConfig()->get('session_handler') != 'database')
-		{
-			$refresh_time = 300000;
-		}
-		else
-		{
-			$life_time    = JFactory::getConfig()->get('lifetime') * 60000;
-			$refresh_time = ($life_time <= 60000) ? 45000 : $life_time - 60000;
-
-			// The longest refresh period is one hour to prevent integer overflow.
-			if ($refresh_time > 3600000 || $refresh_time <= 0)
-			{
-				$refresh_time = 3600000;
-			}
-		}
-
-		// If we are in the frontend or logged in as a user, we can use the ajax component to reduce the load
-		if (JFactory::getApplication()->isSite() || !JFactory::getUser()->guest)
-		{
-			$url = JUri::base(true) . '/index.php?option=com_ajax&format=json';
-		}
-		else
-		{
-			$url = JUri::base(true) . '/index.php';
-		}
-
-		$script = 'window.setInterval(function(){';
-		$script .= 'var r;';
-		$script .= 'try{';
-		$script .= 'r=window.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP")';
-		$script .= '}catch(e){}';
-		$script .= 'if(r){r.open("GET","' . $url . '",true);r.send(null)}';
-		$script .= '},' . $refresh_time . ');';
-
-		JFactory::getDocument()->addScriptDeclaration($script);
-
-		static::$loaded[__METHOD__] = true;
-
-		return;
 	}
 
 	/**
@@ -636,11 +431,11 @@ abstract class vHtmlBehavior
 
 		$js = "jQuery(function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
 			" else {top.location = self.location; }});";
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$document->addStyleDeclaration('html { display:none }');
 		$document->addScriptDeclaration($js);
 
-		JFactory::getApplication()->setHeader('X-Frame-Options', 'SAMEORIGIN');
+		vFactory::getApplication()->setHeader('X-Frame-Options', 'SAMEORIGIN');
 
 		static::$loaded[__METHOD__] = true;
 	}
@@ -664,7 +459,7 @@ abstract class vHtmlBehavior
 
 		$jsscript = 1;
 
-		// To keep the code simple here, run strings through JText::_() using array_map()
+		// To keep the code simple here, run strings through vmText::_() using array_map()
 		$callback = array('vmText','_');
 		$weekdays_full = array_map(
 			$callback, array(
@@ -691,39 +486,39 @@ abstract class vHtmlBehavior
 		);
 
 		// This will become an object in Javascript but define it first in PHP for readability
-		$today = " " . JText::_('JLIB_HTML_BEHAVIOR_TODAY') . " ";
+		$today = " " . vmText::_('JLIB_HTML_BEHAVIOR_TODAY') . " ";
 		$text = array(
-			'INFO'           => JText::_('JLIB_HTML_BEHAVIOR_ABOUT_THE_CALENDAR'),
+			'INFO'           => vmText::_('JLIB_HTML_BEHAVIOR_ABOUT_THE_CALENDAR'),
 			'ABOUT'          => "DHTML Date/Time Selector\n"
 				. "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n"
 				. "For latest version visit: http://www.dynarch.com/projects/calendar/\n"
 				. "Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details."
 				. "\n\n"
-				. JText::_('JLIB_HTML_BEHAVIOR_DATE_SELECTION')
-				. JText::_('JLIB_HTML_BEHAVIOR_YEAR_SELECT')
-				. JText::_('JLIB_HTML_BEHAVIOR_MONTH_SELECT')
-				. JText::_('JLIB_HTML_BEHAVIOR_HOLD_MOUSE'),
+				. vmText::_('JLIB_HTML_BEHAVIOR_DATE_SELECTION')
+				. vmText::_('JLIB_HTML_BEHAVIOR_YEAR_SELECT')
+				. vmText::_('JLIB_HTML_BEHAVIOR_MONTH_SELECT')
+				. vmText::_('JLIB_HTML_BEHAVIOR_HOLD_MOUSE'),
 			'ABOUT_TIME'      => "\n\n"
 				. "Time selection:\n"
 				. "- Click on any of the time parts to increase it\n"
 				. "- or Shift-click to decrease it\n"
 				. "- or click and drag for faster selection.",
-			'PREV_YEAR'       => JText::_('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU'),
-			'PREV_MONTH'      => JText::_('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU'),
-			'GO_TODAY'        => JText::_('JLIB_HTML_BEHAVIOR_GO_TODAY'),
-			'NEXT_MONTH'      => JText::_('JLIB_HTML_BEHAVIOR_NEXT_MONTH_HOLD_FOR_MENU'),
-			'SEL_DATE'        => JText::_('JLIB_HTML_BEHAVIOR_SELECT_DATE'),
-			'DRAG_TO_MOVE'    => JText::_('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE'),
+			'PREV_YEAR'       => vmText::_('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU'),
+			'PREV_MONTH'      => vmText::_('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU'),
+			'GO_TODAY'        => vmText::_('JLIB_HTML_BEHAVIOR_GO_TODAY'),
+			'NEXT_MONTH'      => vmText::_('JLIB_HTML_BEHAVIOR_NEXT_MONTH_HOLD_FOR_MENU'),
+			'SEL_DATE'        => vmText::_('JLIB_HTML_BEHAVIOR_SELECT_DATE'),
+			'DRAG_TO_MOVE'    => vmText::_('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE'),
 			'PART_TODAY'      => $today,
-			'DAY_FIRST'       => JText::_('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST'),
+			'DAY_FIRST'       => vmText::_('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST'),
 			'WEEKEND'         => JFactory::getLanguage()->getWeekEnd(),
-			'CLOSE'           => JText::_('JLIB_HTML_BEHAVIOR_CLOSE'),
-			'TODAY'           => JText::_('JLIB_HTML_BEHAVIOR_TODAY'),
-			'TIME_PART'       => JText::_('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE'),
+			'CLOSE'           => vmText::_('JLIB_HTML_BEHAVIOR_CLOSE'),
+			'TODAY'           => vmText::_('JLIB_HTML_BEHAVIOR_TODAY'),
+			'TIME_PART'       => vmText::_('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE'),
 			'DEF_DATE_FORMAT' => "%Y-%m-%d",
-			'TT_DATE_FORMAT'  => JText::_('JLIB_HTML_BEHAVIOR_TT_DATE_FORMAT'),
-			'WK'              => JText::_('JLIB_HTML_BEHAVIOR_WK'),
-			'TIME'            => JText::_('JLIB_HTML_BEHAVIOR_TIME')
+			'TT_DATE_FORMAT'  => vmText::_('JLIB_HTML_BEHAVIOR_TT_DATE_FORMAT'),
+			'WK'              => vmText::_('JLIB_HTML_BEHAVIOR_WK'),
+			'TIME'            => vmText::_('JLIB_HTML_BEHAVIOR_TIME')
 		);
 
 		return 'Calendar._DN = ' . json_encode($weekdays_full) . ';'

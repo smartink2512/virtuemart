@@ -86,7 +86,7 @@ class VirtueMartModelWaitingList extends VmModel {
 			return FALSE;
 		}
 		*/
-		$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
+		$url = vUri::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
 		$vars['link'] = '<a href="'. $url.'">'. $item->product_name.'</a>';
 
 

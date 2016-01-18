@@ -220,9 +220,9 @@ class VirtueMartViewProductdetails extends VmView {
 				// Set Canonic link
 				if($isCustomVariant !==false and !empty($isCustomVariant->usecanonical) and !empty($product->product_parent_id)){
 					$parent = $product_model ->getProduct($product->product_parent_id);
-					$document->addHeadLink( JUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($parent->canonical), 'canonical', 'rel', '');
+					$document->addHeadLink( vUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($parent->canonical), 'canonical', 'rel', '');
 				} else {
-					$document->addHeadLink( JUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($product->canonical), 'canonical', 'rel', '');
+					$document->addHeadLink( vUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($product->canonical), 'canonical', 'rel', '');
 				}
 
 			} else if($format == 'pdf'){
@@ -254,7 +254,7 @@ class VirtueMartViewProductdetails extends VmView {
 			$superVendor = vmAccess::isSuperVendor();
 
 			if($superVendor == 1 or $superVendor==$product->virtuemart_vendor_id or ($superVendor)){
-				$edit_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&manage=1&view=product&task=edit&virtuemart_product_id=' . $product->virtuemart_product_id;
+				$edit_link = vUri::root() . 'index.php?option=com_virtuemart&tmpl=component&manage=1&view=product&task=edit&virtuemart_product_id=' . $product->virtuemart_product_id;
 				$this->edit_link = $this->linkIcon($edit_link, 'COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT', 'edit', false, false);
 			} else {
 				$this->edit_link = "";
@@ -264,7 +264,7 @@ class VirtueMartViewProductdetails extends VmView {
 			$this->user = vFactory::getUser();
 
 			// More reviews link
-			$uri = JURI::getInstance();
+			$uri = vUri::getInstance();
 			$uri->setVar('showall', 1);
 			$uristring = vmURI::getCleanUrl();
 			$this->assignRef('more_reviews', $uristring);

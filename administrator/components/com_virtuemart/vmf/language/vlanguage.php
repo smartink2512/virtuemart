@@ -952,7 +952,7 @@ class vLanguage {
 	}
 
 	/**
-	 * Determine who called JLanguage or JText.
+	 * Determine who called JLanguage or vmText.
 	 *
 	 * @return  array  Caller information.
 	 *

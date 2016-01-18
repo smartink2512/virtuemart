@@ -126,7 +126,7 @@ abstract class vView extends vBasicModel implements vIView {
 		} else {
 			VmConfig::$echoDebug = 1;
 			vmdebug( 'renderLayout My path $file '.$file,self::$_paths['layout']); die;
-			throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
+			throw new Exception(vmText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
 		}
 	}
 

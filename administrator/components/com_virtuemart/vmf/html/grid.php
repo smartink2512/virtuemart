@@ -202,10 +202,10 @@ abstract class vHtmlGrid {
 	 * By default the filter shows only published and unpublished items
 	 *
 	 * @param   string  $filter_state  The initial filter state
-	 * @param   string  $published     The JText string for published
-	 * @param   string  $unpublished   The JText string for Unpublished
-	 * @param   string  $archived      The JText string for Archived
-	 * @param   string  $trashed       The JText string for Trashed
+	 * @param   string  $published     The vmText string for published
+	 * @param   string  $unpublished   The vmText string for Unpublished
+	 * @param   string  $archived      The vmText string for Archived
+	 * @param   string  $trashed       The vmText string for Trashed
 	 *
 	 * @return  string
 	 *
@@ -213,16 +213,16 @@ abstract class vHtmlGrid {
 	 */
 	public static function state($filter_state = '*', $published = 'Published', $unpublished = 'Unpublished', $archived = null, $trashed = null)
 	{
-		$state = array('' => '- ' . JText::_('JLIB_HTML_SELECT_STATE') . ' -', 'P' => JText::_($published), 'U' => JText::_($unpublished));
+		$state = array('' => '- ' . vmText::_('JLIB_HTML_SELECT_STATE') . ' -', 'P' => vmText::_($published), 'U' => vmText::_($unpublished));
 
 		if ($archived)
 		{
-			$state['A'] = JText::_($archived);
+			$state['A'] = vmText::_($archived);
 		}
 
 		if ($trashed)
 		{
-			$state['T'] = JText::_($trashed);
+			$state['T'] = vmText::_($trashed);
 		}
 
 		return vHtml::_(
@@ -252,7 +252,7 @@ abstract class vHtmlGrid {
 	{
 		return '<a href="javascript:saveorder('
 			. (count($rows) - 1) . ', \'' . $task . '\')" rel="tooltip" class="saveorder btn btn-micro pull-right" title="'
-			. JText::_('JLIB_HTML_SAVE_ORDER') . '"><span class="icon-menu-2"></span></a>';
+			. vmText::_('JLIB_HTML_SAVE_ORDER') . '"><span class="icon-menu-2"></span></a>';
 	}
 
 	/**
@@ -273,7 +273,7 @@ abstract class vHtmlGrid {
 		{
 			vHtml::_('bootstrap.tooltip');
 
-			$date = vHtml::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_LC1'));
+			$date = vHtml::_('date', $row->checked_out_time, vmText::_('DATE_FORMAT_LC1'));
 			$time = vHtml::_('date', $row->checked_out_time, 'H:i');
 
 			$hover = '<span class="editlinktip hasTooltip" title="' . vHtml::tooltipText('JLIB_HTML_CHECKED_OUT', $row->editor) . '<br />' . $date . '<br />'

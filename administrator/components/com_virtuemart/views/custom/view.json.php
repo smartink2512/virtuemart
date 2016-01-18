@@ -42,7 +42,7 @@ class VirtuemartViewCustom extends vView {
 			$db->setQuery( $query );
 			$json = $db->loadObject();
 			if (isset($json->file_url)) {
-				$json->file_url = JURI::root().$json->file_url;
+				$json->file_url = vUri::root().$json->file_url;
 				$json->msg =  'OK';
 				echo vmJsApi::safe_json_encode($json);
 			} else {

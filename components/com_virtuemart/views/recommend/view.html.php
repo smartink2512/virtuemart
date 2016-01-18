@@ -90,7 +90,7 @@ class virtuemartViewrecommend extends VmView {
 		/* Set Canonic link */
 		$format = vRequest::getCmd('format', 'html');
 		if ($format == 'html') {
-			$document->addHeadLink( JUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($this->product->link) , 'canonical', 'rel', '' );
+			$document->addHeadLink( vUri::getInstance()->toString(array('scheme', 'host', 'port')).JRoute::_($this->product->link) , 'canonical', 'rel', '' );
 		}
 
 		/* Set the titles */

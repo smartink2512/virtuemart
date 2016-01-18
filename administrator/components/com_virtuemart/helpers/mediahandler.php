@@ -95,7 +95,7 @@ class VmMediaHandler {
 		}
 
 		if($choosed && empty($relUrl)){
-			$link =JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
+			$link =vUri::root() . 'administrator/index.php?option=com_virtuemart&view=config';
 			vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type,$link );
 			//Todo add general media_path to config
 			//$relUrl = VmConfig::get('media_path');
@@ -566,9 +566,9 @@ class VmMediaHandler {
 		else $desc='';
 		$root='';
 		if($absUrl){
-			$root = JURI::root(false);
+			$root = vUri::root(false);
 		} else {
-			$root = JURI::root(true).'/';
+			$root = vUri::root(true).'/';
 		}
 
 		$args = '';
@@ -583,7 +583,7 @@ class VmMediaHandler {
 		if($lightbox){
 			$image = '<img src="' . $root.$file_url . '" alt="' . $file_alt . '" ' . $args . ' />';//vHtml::image($file_url, $file_alt, $imageArgs);
 			if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
-			if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) and substr( $this->file_url, 0, 4) != "http") $href = JURI::root() .$this->file_url ;
+			if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) and substr( $this->file_url, 0, 4) != "http") $href = vUri::root() .$this->file_url ;
 			else $href = $file_url ;
 			if ($this->file_is_downloadable) {
 				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.$desc.'</a>';
@@ -877,7 +877,7 @@ class VmMediaHandler {
 
 		$j .="
 		jQuery(document).ready(function($){
-		var medialink = '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
+		var medialink = '". vUri::root(false) ."administrator/index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
 		var media = $('#searchMedia').data();
 		var searchMedia = $('input#searchMedia');
 		searchMedia.click(function () {
@@ -888,7 +888,7 @@ class VmMediaHandler {
 			source: medialink,
 			select: function(event, ui){
 				jQuery('#ImagesContainer').append(ui.item.label);
-				//$(this).autocomplete( 'option' , 'source' , '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+				//$(this).autocomplete( 'option' , 'source' , '". vUri::root(false) ."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 
 			},
 			minLength:1,
@@ -966,7 +966,7 @@ class VmMediaHandler {
 	function displayImage($image ,$key) {
 
 		if (isset($image->file_url)) {
-			$image->file_root = JURI::root(true).'/';
+			$image->file_root = vUri::root(true).'/';
 			$image->msg =  'OK';
 			$file_url_thumb = $image->getFileUrlThumb();
 			//vmdebug('Muh ',$file_url_thumb);
@@ -979,8 +979,8 @@ class VmMediaHandler {
 			}*/
 			return  '<div  class="vm_thumb_image"><input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]">
 			<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
-		<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'" href="'.JURI::root(true).'/'.$image->file_url.'" >
-		<img src="' . JURI::root(true).'/'.$file_url_thumb . '" alt="' . $image->file_title . '"  />
+		<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'" href="'.vUri::root(true).'/'.$image->file_url.'" >
+		<img src="' . vUri::root(true).'/'.$file_url_thumb . '" alt="' . $image->file_title . '"  />
 		</a><div class="vmicon vmicon-16-remove" title="'.vmText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.vmText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
 		} else {
 			$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;

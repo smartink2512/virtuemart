@@ -44,7 +44,7 @@ defined('_JEXEC') or die('');
 		<tr>
 			<td valign="top" align="center" style="padding: 15px 25px;">
 
-				<img src="<?php  echo JURI::root () . $this->vendor->images[0]->file_url ?>" />
+				<img src="<?php  echo vUri::root () . $this->vendor->images[0]->file_url ?>" />
 
 				<table  border="0" cellpadding="0" cellspacing="0" class="html-email" width="100%">
 
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('');
 								<tr>
 									<?php
 									$menuItemID = shopFunctionsF::getMenuItemId(vFactory::getLanguage()->getTag());
-									$product_link = JURI::root().'index.php?option=com_virtuemart&view=productdetails
+									$product_link = vUri::root().'index.php?option=com_virtuemart&view=productdetails
 													&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&Itemid=' . $menuItemID;
 									?>
 									<td width="30%" align="center">

@@ -106,6 +106,7 @@ if(!class_exists('vController')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vcontroll
 if(!class_exists('vRequest')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vrequest.php');
 if(!class_exists('vmText')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php');
+if(!class_exists('vUri')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'uri.php');
 
 /**
  * Where type can be one of
@@ -846,7 +847,7 @@ class VmConfig {
 					$link = 'index.php?option=com_virtuemart&view=updatesmigration&redirected=1';
 
 					if($app->isSite()){
-						$link = JURI::root(true).'/administrator/'.$link;
+						$link = vUri::root(true).'/administrator/'.$link;
 					} else {
 						if(empty($msg)) $msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
 					}
@@ -1344,7 +1345,7 @@ class vmURI{
 
 		if(!class_exists('JFilterInput')) require (VMPATH_LIBS.DS.'joomla'.DS.'filter'.DS.'input.php');
 		//$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
-		if($JURIInstance===0)$JURIInstance = JURI::getInstance();
+		if($JURIInstance===0)$JURIInstance = vUri::getInstance();
 		//return $_filter->clean($JURIInstance->toString($parts));
 		return vRequest::filterUrl($JURIInstance->toString($parts));
 	}

@@ -257,10 +257,10 @@ class VirtuemartViewProduct extends VmViewAdmin {
 					$canonLink='';
 					if($product->canonCatId) $canonLink = '&virtuemart_category_id='.$product->canonCatId;
 
-					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
+					$text = '<a href="'.vUri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
 					if(vFactory::getApplication()->isSite()){
 						$bar = JToolBar::getInstance('toolbar');
-						$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE_TO_PRODUCT', juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID);
+						$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE_TO_PRODUCT', vUri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID);
 					}
 				} else {
 					$text = $product->product_name.$sku;

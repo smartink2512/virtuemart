@@ -81,7 +81,7 @@ $option = vRequest::getCmd('option');
 				<!-- Stars rating -->
 				<td align="center">
 					
-					<?php // echo vHtml::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->vote).'.gif',$review->vote,array("title" => (vmText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->vote . ' :: ' . $this->max_rating)));
+					<?php // echo vHtml::_('image', vUri::root().'/components/com_virtuemart/assets/images/stars/'.round($review->vote).'.gif',$review->vote,array("title" => (vmText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->vote . ' :: ' . $this->max_rating)));
 					$maxrating = VmConfig::get('vm_maximum_rating_scale', 5);
 				    $ratingwidth = round($review->review_rating) * 24;
 				    ?>

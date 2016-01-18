@@ -913,7 +913,7 @@ class shopFunctionsF {
 			$path = $sPath.self::getInvoiceFolderName().DS.self::getInvoiceName($orderInfo->invoiceNumber).'.pdf';
 			//$path .= preg_replace('/[^A-Za-z0-9_\-\.]/', '_', 'vm'.$layout.'_'.$orderInfo->invoiceNumber.'.pdf');
 			if(file_exists($path)){
-				$link = JURI::root(true).'/index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&order_number='.$orderInfo->order_number.'&order_pass='.$orderInfo->order_pass;
+				$link = vUri::root(true).'/index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&order_number='.$orderInfo->order_number.'&order_pass='.$orderInfo->order_pass;
 				$pdf_link = "<a href=\"javascript:void window.open('".$link."', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 				$pdf_link .= JHtml::_('image',$icon, vmText::_($descr), NULL, true);
 				$pdf_link .= '</a>';

@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<?php echo vHtml::_('list.images', 'image', $this->product->product_availability, " ", $this->imagePath); ?>
 			<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.vmText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
 		</td>
-		<td><img border="0" id="imagelib" alt="<?php echo vmText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->product->product_availability) echo JURI::root(true).$this->imagePath.$this->product->product_availability;?>"/></td>
+		<td><img border="0" id="imagelib" alt="<?php echo vmText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->product->product_availability) echo vUri::root(true).$this->imagePath.$this->product->product_availability;?>"/></td>
 
 	</tr>
 </table>
@@ -119,7 +119,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	jQuery('#image').change( function() {
 		var $newimage = jQuery(this).val();
 		jQuery('#product_availability').val($newimage);
-		jQuery('#imagelib').attr({ src:'<?php echo JURI::root(true).$this->imagePath ?>'+$newimage, alt:$newimage });
+		jQuery('#imagelib').attr({ src:'<?php echo vUri::root(true).$this->imagePath ?>'+$newimage, alt:$newimage });
 		});
 	jQuery('.js-change-stock').change( function() {
 

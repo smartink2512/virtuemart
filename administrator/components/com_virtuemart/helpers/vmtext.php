@@ -35,7 +35,7 @@ class vmText
 	protected static $strings = array();
 
 	/**
-	 * Translates a string into the current language. This just jText of joomla 2.5.x
+	 * Translates a string into the current language. This just vmText of joomla 2.5.x
 	 *
 	 * Examples:
 	 * <script>alert(Joomla.vmText._('<?php echo vmText::_("JDEFAULT", array("script"=>true));?>'));</script>
@@ -138,6 +138,46 @@ class vmText
 			return call_user_func_array('sprintf', $args);
 		}
 		return '';
+	}
+
+	/**
+	 * Translate a string into the current language and stores it in the JavaScript language store.
+	 *
+	 * @param   string   $string                The vmText key.
+	 * @param   boolean  $jsSafe                Ensure the output is JavaScript safe.
+	 * @param   boolean  $interpretBackSlashes  Interpret \t and \n.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	public static function script($string = null, $jsSafe = false, $interpretBackSlashes = true)
+	{
+		if (is_array($jsSafe))
+		{
+			if (array_key_exists('interpretBackSlashes', $jsSafe))
+			{
+				$interpretBackSlashes = (boolean) $jsSafe['interpretBackSlashes'];
+			}
+
+			if (array_key_exists('jsSafe', $jsSafe))
+			{
+				$jsSafe = (boolean) $jsSafe['jsSafe'];
+			}
+			else
+			{
+				$jsSafe = false;
+			}
+		}
+
+		// Add the string to the array if not null.
+		if ($string !== null)
+		{
+			// Normalize the key and translate the string.
+			self::$strings[strtoupper($string)] = vFactory::getLanguage()->_($string, $jsSafe, $interpretBackSlashes);
+		}
+
+		return self::$strings;
 	}
 
 }

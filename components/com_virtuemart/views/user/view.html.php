@@ -220,11 +220,11 @@ class VirtuemartViewUser extends VmView {
 		$this->add_product_link="";
 		$this->manage_link="";
 		if(ShopFunctionsF::isFEmanager() ){
-			$mlnk = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&manage=1' ;
+			$mlnk = vUri::root() . 'index.php?option=com_virtuemart&tmpl=component&manage=1' ;
 			$this->manage_link = $this->linkIcon($mlnk, 'JACTION_MANAGE', 'new', false, false, true, true);
 		}
 		if(ShopFunctionsF::isFEmanager('product.edit')){
-			$aplnk = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&view=product&task=edit&virtuemart_product_id=0&manage=1' ;
+			$aplnk = vUri::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&view=product&task=edit&virtuemart_product_id=0&manage=1' ;
 			$this->add_product_link = $this->linkIcon($aplnk, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
 		}
 

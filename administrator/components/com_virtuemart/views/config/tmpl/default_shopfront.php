@@ -124,7 +124,7 @@ defined('_JEXEC') or die('Restricted access');?>
 
 		<div class="clr"></div>
 		<img border="0" id="imagelib" alt="<?php echo vmText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if (VmConfig::get('rised_availability')) {
-			echo JURI::root(true) . $this->imagePath . VmConfig::get('rised_availability');
+			echo vUri::root(true) . $this->imagePath . VmConfig::get('rised_availability');
 		}?>"/>
 	</fieldset>
 	<fieldset>
@@ -164,7 +164,7 @@ vmJsApi::addJScript('vm.imagechange','
 	jQuery("#image").change(function () {
 		var $newimage = jQuery(this).val();
 		jQuery("#product_availability").val($newimage);
-		jQuery("#imagelib").attr({ src:"'.JURI::root(true) . $this->imagePath.'" + $newimage, alt:$newimage });
+		jQuery("#imagelib").attr({ src:"'.vUri::root(true) . $this->imagePath.'" + $newimage, alt:$newimage });
 	});');
 ?>
 

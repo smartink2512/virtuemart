@@ -396,7 +396,7 @@ class VirtueMartViewCart extends VmView {
 
 			$text = '';
 			if(vmAccess::manager() or vmAccess::isSuperVendor()) {
-				$link = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
+				$link = vUri::root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
 				$text = vmText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');
 			}
 

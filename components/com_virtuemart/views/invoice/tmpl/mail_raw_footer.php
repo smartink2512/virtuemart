@@ -25,7 +25,7 @@ if (empty($this->vendor)) {
 		$this->vendor = $vendorModel->getVendor();
 }
 
-$link = JURI::root(). 'index.php?option=com_virtuemart' ;
+$link = vUri::root(). 'index.php?option=com_virtuemart' ;
 
 echo "\n\n";
 $link= JHtml::_('link', $link, $this->vendor->vendor_name) ;

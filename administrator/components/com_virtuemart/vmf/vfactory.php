@@ -337,7 +337,63 @@ class vFactory {
 	}
 
 	public static function getURI($uri = 'SERVER') {
-		jimport('joomla.environment.uri');
-		return JURI::getInstance($uri);
+		if(!class_exists('vUri')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'uri.php');
+		return vURI::getInstance($uri);
+	}
+
+	/**
+	 * Creates a new stream object with appropriate prefix
+	 *
+	 * @param   boolean  $use_prefix   Prefix the connections for writing
+	 * @param   boolean  $use_network  Use network if available for writing; use false to disable (e.g. FTP, SCP)
+	 * @param   string   $ua           UA User agent to use
+	 * @param   boolean  $uamask       User agent masking (prefix Mozilla)
+	 *
+	 * @return  JStream
+	 *
+	 * @see JStream
+	 * @since   11.1
+	 */
+	public static function getStream($use_prefix = true, $use_network = true, $ua = null, $uamask = false)
+	{
+		jimport('joomla.filesystem.stream');
+
+		// Setup the context; Joomla! UA and overwrite
+		$context = array();
+		$version = new JVersion;
+		// set the UA for HTTP and overwrite for FTP
+		$context['http']['user_agent'] = $version->getUserAgent($ua, $uamask);
+		$context['ftp']['overwrite'] = true;
+
+		if ($use_prefix)
+		{
+			$FTPOptions = JClientHelper::getCredentials('ftp');
+			$SCPOptions = JClientHelper::getCredentials('scp');
+
+			if ($FTPOptions['enabled'] == 1 && $use_network)
+			{
+				$prefix = 'ftp://' . $FTPOptions['user'] . ':' . $FTPOptions['pass'] . '@' . $FTPOptions['host'];
+				$prefix .= $FTPOptions['port'] ? ':' . $FTPOptions['port'] : '';
+				$prefix .= $FTPOptions['root'];
+			}
+			elseif ($SCPOptions['enabled'] == 1 && $use_network)
+			{
+				$prefix = 'ssh2.sftp://' . $SCPOptions['user'] . ':' . $SCPOptions['pass'] . '@' . $SCPOptions['host'];
+				$prefix .= $SCPOptions['port'] ? ':' . $SCPOptions['port'] : '';
+				$prefix .= $SCPOptions['root'];
+			}
+			else
+			{
+				$prefix = VMPATH_ROOT . '/';
+			}
+
+			$retval = new JStream($prefix, VMPATH_ROOT, $context);
+		}
+		else
+		{
+			$retval = new JStream('', '', $context);
+		}
+
+		return $retval;
 	}
 }

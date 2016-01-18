@@ -23,7 +23,7 @@ $li = "\n";
 echo vmText::sprintf('COM_VIRTUEMART_WELCOME_USER', $this->user->name) . $li . $li;
 
 if (!empty($this->activationLink)) {
-    $activationLink = '<a class="default" href="' . JURI::root() . $this->activationLink . '>' . vmText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT') . '</a>';
+    $activationLink = '<a class="default" href="' . vUri::root() . $this->activationLink . '>' . vmText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT') . '</a>';
 }
 echo $activationLink . $li;
 echo vmText::_('COM_VIRTUEMART_SHOPPER_REGISTRATION_DATA') . $li;

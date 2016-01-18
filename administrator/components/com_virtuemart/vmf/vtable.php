@@ -173,7 +173,7 @@ abstract class vTable extends vBasicModel implements vITable {
 		// If the source value is not an array or object return false.
 		if (!is_object($src) && !is_array($src))
 		{
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			$e = new Exception(vmText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 			vmError($e);
 			return false;
 		}

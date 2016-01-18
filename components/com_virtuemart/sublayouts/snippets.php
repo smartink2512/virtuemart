@@ -18,7 +18,7 @@ if($viewData['showRating']){
   "@type": "Product",
   "name": "<?php echo $product->product_name; ?>",
   <?php if ( $product->images[0]->virtuemart_media_id > 0) { ?>
-  "image": "<?php echo JURI::root().$product->images[0]->file_url; ?>",
+  "image": "<?php echo vUri::root().$product->images[0]->file_url; ?>",
   <?php } ?>
   <?php if (!empty($product->product_s_desc)) { ?>
   "description": "<?php echo strip_tags($product->product_s_desc); ?>",

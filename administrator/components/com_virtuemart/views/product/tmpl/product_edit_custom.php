@@ -178,7 +178,7 @@ $admin = '';
 $app = vFactory::getApplication();
 $l = 'index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
 if($app->isAdmin()){
-	$jsonLink = JURI::root(false).'administrator/'.$l;
+	$jsonLink = vUri::root(false).'administrator/'.$l;
 } else {
 	$jsonLink = JRoute::_($l);
 }
@@ -235,7 +235,7 @@ $jsCsort = "
 			jQuery('#custom_products').trigger('sortupdate');
 			nextCustom++;
 			jQuery(this).autocomplete( 'option' , 'source' , '".$jsonLink."&type=relatedproducts&row='+nextCustom )
-			jQuery('input#relatedproductsSearch').autocomplete( 'option' , 'source' , '".JURI::root(false)."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
+			jQuery('input#relatedproductsSearch').autocomplete( 'option' , 'source' , '".vUri::root(false)."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
 		},
 		minLength:1,
 		html: true
@@ -248,7 +248,7 @@ $jsCsort = "
 			jQuery('#custom_categories').trigger('sortupdate');
 			nextCustom++;
 			jQuery(this).autocomplete( 'option' , 'source' , '".$jsonLink."&type=relatedcategories&row='+nextCustom )
-			jQuery('input#relatedcategoriesSearch').autocomplete( 'option' , 'source' , '".JURI::root(false)."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+			jQuery('input#relatedcategoriesSearch').autocomplete( 'option' , 'source' , '".vUri::root(false)."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 		},
 		minLength:1,
 		html: true

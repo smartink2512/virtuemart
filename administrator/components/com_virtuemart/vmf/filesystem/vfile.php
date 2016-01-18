@@ -93,18 +93,18 @@ class vFile
 		// Check src path
 		if (!is_readable($src))
 		{
-			JLog::add(JText::sprintf('JLIB_FILESYSTEM_ERROR_JFILE_FIND_COPY', $src), JLog::WARNING, 'jerror');
+			JLog::add(vmText::sprintf('JLIB_FILESYSTEM_ERROR_JFILE_FIND_COPY', $src), JLog::WARNING, 'jerror');
 
 			return false;
 		}
 
-		/*if ($use_streams)
+		if ($use_streams)
 		{
-			$stream = JFactory::getStream();
+			$stream = vFactory::getStream();
 
 			if (!$stream->copy($src, $dest))
 			{
-				JLog::add(JText::sprintf('JLIB_FILESYSTEM_ERROR_JFILE_STREAMS', $src, $dest, $stream->getError()), JLog::WARNING, 'jerror');
+				JLog::add(vmText::sprintf('JLIB_FILESYSTEM_ERROR_JFILE_STREAMS', $src, $dest, $stream->getError()), JLog::WARNING, 'jerror');
 
 				return false;
 			}
@@ -112,7 +112,7 @@ class vFile
 			return true;
 		}
 		else
-		{*/
+		{
 			$FTPOptions['enabled'] = 0;
 			if(JVM_VERSION!==0){
 				$FTPOptions = JClientHelper::getCredentials('ftp');
@@ -145,7 +145,7 @@ class vFile
 			{
 				if (!@ copy($src, $dest))
 				{
-					JLog::add(JText::_('JLIB_FILESYSTEM_ERROR_COPY_FAILED'), JLog::WARNING, 'jerror');
+					JLog::add(vmText::_('JLIB_FILESYSTEM_ERROR_COPY_FAILED'), JLog::WARNING, 'jerror');
 
 					return false;
 				}
@@ -154,7 +154,7 @@ class vFile
 			}
 
 			return $ret;
-		//}
+		}
 	}
 
 	/**
@@ -223,7 +223,7 @@ class vFile
 			else
 			{
 				$filename = basename($file);
-				JLog::add(JText::sprintf('JLIB_FILESYSTEM_DELETE_FAILED', $filename), JLog::WARNING, 'jerror');
+				JLog::add(vmText::sprintf('JLIB_FILESYSTEM_DELETE_FAILED', $filename), JLog::WARNING, 'jerror');
 
 				return false;
 			}
@@ -257,16 +257,16 @@ class vFile
 		// Check src path
 		if (!is_readable($src))
 		{
-			return JText::_('JLIB_FILESYSTEM_CANNOT_FIND_SOURCE_FILE');
+			return vmText::_('JLIB_FILESYSTEM_CANNOT_FIND_SOURCE_FILE');
 		}
 
-		/*if ($use_streams)
+		if ($use_streams)
 		{
-			$stream = JFactory::getStream();
+			$stream = vFactory::getStream();
 
 			if (!$stream->move($src, $dest))
 			{
-				JLog::add(JText::sprintf('JLIB_FILESYSTEM_ERROR_JFILE_MOVE_STREAMS', $stream->getError()), JLog::WARNING, 'jerror');
+				JLog::add(vmText::sprintf('JLIB_FILESYSTEM_ERROR_JFILE_MOVE_STREAMS', $stream->getError()), JLog::WARNING, 'jerror');
 
 				return false;
 			}
@@ -274,7 +274,7 @@ class vFile
 			return true;
 		}
 		else
-		{*/
+		{
 			$FTPOptions['enabled'] = 0;
 			if(JVM_VERSION!==0){
 				$FTPOptions = JClientHelper::getCredentials('ftp');
@@ -292,7 +292,7 @@ class vFile
 				// Use FTP rename to simulate move
 				if (!$ftp->rename($src, $dest))
 				{
-					JLog::add(JText::_('JLIB_FILESYSTEM_ERROR_RENAME_FILE'), JLog::WARNING, 'jerror');
+					JLog::add(vmText::_('JLIB_FILESYSTEM_ERROR_RENAME_FILE'), JLog::WARNING, 'jerror');
 
 					return false;
 				}
@@ -301,14 +301,14 @@ class vFile
 			{
 				if (!@ rename($src, $dest))
 				{
-					JLog::add(JText::_('JLIB_FILESYSTEM_ERROR_RENAME_FILE'), JLog::WARNING, 'jerror');
+					JLog::add(vmText::_('JLIB_FILESYSTEM_ERROR_RENAME_FILE'), JLog::WARNING, 'jerror');
 
 					return false;
 				}
 			}
 
 			return true;
-		//}
+		}
 	}
 
 	/**
@@ -338,7 +338,7 @@ class vFile
 
 		if (false === $fh = fopen($filename, 'rb', $incpath))
 		{
-			JLog::add(JText::sprintf('JLIB_FILESYSTEM_ERROR_READ_UNABLE_TO_OPEN_FILE', $filename), JLog::WARNING, 'jerror');
+			JLog::add(vmText::sprintf('JLIB_FILESYSTEM_ERROR_READ_UNABLE_TO_OPEN_FILE', $filename), JLog::WARNING, 'jerror');
 
 			return false;
 		}
@@ -408,16 +408,16 @@ class vFile
 			}
 		}
 
-		/*if ($use_streams)
+		if ($use_streams)
 		{
-			$stream = JFactory::getStream();
+			$stream = vFactory::getStream();
 
 			// Beef up the chunk size to a meg
 			$stream->set('chunksize', (1024 * 1024));
 
 			if (!$stream->writeFile($file, $buffer))
 			{
-				JLog::add(JText::sprintf('JLIB_FILESYSTEM_ERROR_WRITE_STREAMS', $file, $stream->getError()), JLog::WARNING, 'jerror');
+				JLog::add(vmText::sprintf('JLIB_FILESYSTEM_ERROR_WRITE_STREAMS', $file, $stream->getError()), JLog::WARNING, 'jerror');
 
 				return false;
 			}
@@ -425,7 +425,7 @@ class vFile
 			return true;
 		}
 		else
-		{*/
+		{
 			$FTPOptions['enabled'] = 0;
 			if(JVM_VERSION!==0){
 				$FTPOptions = JClientHelper::getCredentials('ftp');
@@ -448,7 +448,7 @@ class vFile
 			}
 
 			return $ret;
-		//}
+		}
 	}
 
 	/**
@@ -480,7 +480,7 @@ class vFile
 
 			if (!$isSafe)
 			{
-				JLog::add(JText::sprintf('JLIB_FILESYSTEM_ERROR_WARNFS_ERR03', $dest), JLog::WARNING, 'jerror');
+				JLog::add(vmText::sprintf('JLIB_FILESYSTEM_ERROR_WARNFS_ERR03', $dest), JLog::WARNING, 'jerror');
 
 				return false;
 			}
@@ -499,13 +499,13 @@ class vFile
 			$folderObject->create($baseDir);
 		}
 
-		/*if ($use_streams)
+		if ($use_streams)
 		{
-			$stream = FFactory::getStream();
+			$stream = vFactory::getStream();
 
 			if (!$stream->upload($src, $dest))
 			{
-				JLog::add(JText::sprintf('JLIB_FILESYSTEM_ERROR_UPLOAD', $stream->getError()), JLog::WARNING, 'jerror');
+				JLog::add(vmText::sprintf('JLIB_FILESYSTEM_ERROR_UPLOAD', $stream->getError()), JLog::WARNING, 'jerror');
 
 				return false;
 			}
@@ -513,7 +513,7 @@ class vFile
 			return true;
 		}
 		else
-		{*/
+		{
 			$FTPOptions['enabled'] = 0;
 			if(JVM_VERSION!==0){
 				$FTPOptions = JClientHelper::getCredentials('ftp');
@@ -536,7 +536,7 @@ class vFile
 				}
 				else
 				{
-					JLog::add(JText::_('JLIB_FILESYSTEM_ERROR_WARNFS_ERR02'), JLog::WARNING, 'jerror');
+					JLog::add(vmText::_('JLIB_FILESYSTEM_ERROR_WARNFS_ERR02'), JLog::WARNING, 'jerror');
 				}
 			}
 			else
@@ -550,17 +550,17 @@ class vFile
 					}
 					else
 					{
-						JLog::add(JText::_('JLIB_FILESYSTEM_ERROR_WARNFS_ERR01'), JLog::WARNING, 'jerror');
+						JLog::add(vmText::_('JLIB_FILESYSTEM_ERROR_WARNFS_ERR01'), JLog::WARNING, 'jerror');
 					}
 				}
 				else
 				{
-					JLog::add(JText::_('JLIB_FILESYSTEM_ERROR_WARNFS_ERR02'), JLog::WARNING, 'jerror');
+					JLog::add(vmText::_('JLIB_FILESYSTEM_ERROR_WARNFS_ERR02'), JLog::WARNING, 'jerror');
 				}
 			}
 
 			return $ret;
-		//}
+		}
 	}
 
 	/**
@@ -579,31 +579,4 @@ class vFile
 		return is_file($pathObject->clean($file));
 	}
 
-	/**
-	 * Returns the name, without any path.
-	 *
-	 * @param   string  $file  File path
-	 *
-	 * @return  string  filename
-	 *
-	 * @since   11.1
-	 * @deprecated  13.3 (Platform) & 4.0 (CMS) - Use basename() instead.
-	 */
-	public static function getName($file)
-	{
-		JLog::add(__METHOD__ . ' is deprecated. Use native basename() syntax.', JLog::WARNING, 'deprecated');
-
-		// Convert back slashes to forward slashes
-		$file = str_replace('\\', '/', $file);
-		$slash = strrpos($file, '/');
-
-		if ($slash !== false)
-		{
-			return substr($file, $slash + 1);
-		}
-		else
-		{
-			return $file;
-		}
-	}
 }

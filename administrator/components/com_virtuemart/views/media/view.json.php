@@ -46,7 +46,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 			$this->json = $image[0];
 			//echo json_encode($this->json);
 			if (isset($this->json->file_url)) {
-				$this->json->file_root = JURI::root(true).'/';
+				$this->json->file_root = vUri::root(true).'/';
 				$this->json->msg =  'OK';
 				echo vmJsApi::safe_json_encode($this->json);
 			} else {

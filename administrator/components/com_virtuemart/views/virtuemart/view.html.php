@@ -98,7 +98,7 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 		//if($layout=='default'){
 			$j = 'jQuery("#feed").ready(function(){
 				var datas = "";
-				vmSiteurl = "'. JURI::root( ) .'"
+				vmSiteurl = "'. vUri::root( ) .'"
 				jQuery.ajax({
 						type: "GET",
 						async: true,

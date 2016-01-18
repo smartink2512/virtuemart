@@ -519,7 +519,7 @@ class vDatabaseDriverMysqli extends vDatabaseDriver
 
 		if (!is_object($this->connection))
 		{
-			JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
+			JLog::add(vmText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database');
 			throw new RuntimeException($this->errorMsg, $this->errorNum);
 		}
 
@@ -599,7 +599,7 @@ class vDatabaseDriverMysqli extends vDatabaseDriver
 				// If connect fails, ignore that exception and throw the normal exception.
 				catch (RuntimeException $e)
 				{
-					JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+					JLog::add(vmText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
 					throw new RuntimeException($this->errorMsg, $this->errorNum);
 				}
 
@@ -609,7 +609,7 @@ class vDatabaseDriverMysqli extends vDatabaseDriver
 			// The server was not disconnected.
 			else
 			{
-				JLog::add(JText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
+				JLog::add(vmText::sprintf('JLIB_DATABASE_QUERY_FAILED', $this->errorNum, $this->errorMsg), JLog::ERROR, 'database-error');
 				throw new RuntimeException($this->errorMsg, $this->errorNum);
 			}
 		}

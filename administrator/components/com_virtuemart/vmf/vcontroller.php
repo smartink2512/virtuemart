@@ -459,7 +459,7 @@ class vController extends vBasicModel implements vIController{
 		}
 		else
 		{
-			throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $task), 404);
+			throw new Exception(vmText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $task), 404);
 		}
 
 		// Record the actual task being fired
@@ -488,7 +488,7 @@ class vController extends vBasicModel implements vIController{
 
 			if (!preg_match('/(.*)Controller/i', get_class($this), $r))
 			{
-				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_CONTROLLER_GET_NAME'), 500);
+				throw new Exception(vmText::_('JLIB_APPLICATION_ERROR_CONTROLLER_GET_NAME'), 500);
 			}
 
 			$this->_name = strtolower($r[1]);
@@ -571,7 +571,7 @@ class vController extends vBasicModel implements vIController{
 					$response = 404;
 				}
 
-				//throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_VIEW_NOT_FOUND', $name, $type, $prefix), $response);
+				//throw new Exception(vmText::sprintf('JLIB_APPLICATION_ERROR_VIEW_NOT_FOUND', $name, $type, $prefix), $response);
 			}
 		}
 

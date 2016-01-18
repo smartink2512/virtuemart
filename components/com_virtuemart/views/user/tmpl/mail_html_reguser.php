@@ -50,7 +50,7 @@ $li = '<br />';
 				    <br />
 				    <?php
 				    if (!empty($this->activationLink)) {
-					$activationLink = '<a class="default" href="' . JURI::root() . $this->activationLink . '">' . vmText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT') . '</a>';
+					$activationLink = '<a class="default" href="' . vUri::root() . $this->activationLink . '">' . vmText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT') . '</a>';
 					echo $li;
 					echo $activationLink . $li;
 				    }

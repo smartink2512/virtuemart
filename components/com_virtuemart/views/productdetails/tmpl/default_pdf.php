@@ -103,12 +103,12 @@ if (empty ( $this->product )) {
 				/* TO DO add width and height to the image */
 				if (!empty($this->product->product_availability)) { ?>
 				<div class="availability">
-					<?php echo JHtml::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
+					<?php echo JHtml::image(vUri::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
 				</div>
 				<?php } ?>
 
 				<?php // Ask a question about this product
-				$url = JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
+				$url = JRoute::_(vUri::root().'index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
 				<div class="ask-a-question">
 					<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 				</div>
@@ -117,7 +117,7 @@ if (empty ( $this->product )) {
 				if(VmConfig::get('show_manufacturers', 1) && !empty($this->product->virtuemart_manufacturer_id[0])) { ?>
 				<div class="manufacturer">
 				<?php
-					$link = JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id='.$this->product->virtuemart_manufacturer_id[0].'&tmpl=component');
+					$link = JRoute::_(vUri::root().'index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id='.$this->product->virtuemart_manufacturer_id[0].'&tmpl=component');
 					$text = $this->product->mf_name;
 
 					/* Avoid JavaScript on PDF Output */
@@ -193,7 +193,7 @@ if (empty ( $this->product )) {
 	if($this->allowRating || $this->showReview) {
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$ratingsShow = VmConfig::get('vm_num_ratings_show',3); // TODO add  vm_num_ratings_show in vmConfig
-		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
+		$starsPath = vUri::root().VmConfig::get('assets_general_path').'images/stars/';
 		$stars = array();
 		$showall = vRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {

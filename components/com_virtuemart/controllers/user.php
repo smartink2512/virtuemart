@@ -259,7 +259,7 @@ class VirtueMartControllerUser extends vController
 			$cart->setOutOfCheckout();
 			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE)  );
 		} else {
-			$return = JURI::base();
+			$return = vUri::base();
 			$this->setRedirect( $return );
 		}
 

@@ -9,8 +9,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-jimport('joomla.environment.browser');
-
 
 /**
  * Utility class for all HTML drawing classes
@@ -352,7 +350,7 @@ abstract class vHtml extends vBasicModel
 						if (file_exists($path))
 						{
 							$md5 = dirname($path) . '/MD5SUM';
-							$includes[] = JUri::base(true) . "/templates/$template/$folder/$file" .
+							$includes[] = vUri::base(true) . "/templates/$template/$folder/$file" .
 								(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 							break;
@@ -377,7 +375,7 @@ abstract class vHtml extends vBasicModel
 									if (file_exists($path))
 									{
 										$md5 = dirname($path) . '/MD5SUM';
-										$includes[] = JUri::root(true) . "/media/$extension/$element/$folder/$file" .
+										$includes[] = vUri::root(true) . "/media/$extension/$element/$folder/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 										break;
@@ -389,7 +387,7 @@ abstract class vHtml extends vBasicModel
 									if (file_exists($path))
 									{
 										$md5 = dirname($path) . '/MD5SUM';
-										$includes[] = JUri::root(true) . "/media/$extension/$folder/$element/$file" .
+										$includes[] = vUri::root(true) . "/media/$extension/$folder/$element/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 										break;
@@ -401,7 +399,7 @@ abstract class vHtml extends vBasicModel
 									if (file_exists($path))
 									{
 										$md5 = dirname($path) . '/MD5SUM';
-										$includes[] = JUri::root(true) . "/templates/$template/$folder/system/$element/$file" .
+										$includes[] = vUri::root(true) . "/templates/$template/$folder/system/$element/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 										break;
@@ -413,7 +411,7 @@ abstract class vHtml extends vBasicModel
 									if (file_exists($path))
 									{
 										$md5 = dirname($path) . '/MD5SUM';
-										$includes[] = JUri::root(true) . "/media/system/$folder/$element/$file" .
+										$includes[] = vUri::root(true) . "/media/system/$folder/$element/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 										break;
@@ -427,7 +425,7 @@ abstract class vHtml extends vBasicModel
 									if (file_exists($path))
 									{
 										$md5 = dirname($path) . '/MD5SUM';
-										$includes[] = JUri::root(true) . "/media/$extension/$folder/$file" .
+										$includes[] = vUri::root(true) . "/media/$extension/$folder/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 										break;
@@ -439,7 +437,7 @@ abstract class vHtml extends vBasicModel
 									if (file_exists($path))
 									{
 										$md5 = dirname($path) . '/MD5SUM';
-										$includes[] = JUri::root(true) . "/templates/$template/$folder/system/$file" .
+										$includes[] = vUri::root(true) . "/templates/$template/$folder/system/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 										break;
@@ -451,7 +449,7 @@ abstract class vHtml extends vBasicModel
 									if (file_exists($path))
 									{
 										$md5 = dirname($path) . '/MD5SUM';
-										$includes[] = JUri::root(true) . "/media/system/$folder/$file" .
+										$includes[] = vUri::root(true) . "/media/system/$folder/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 										break;
@@ -466,7 +464,7 @@ abstract class vHtml extends vBasicModel
 								if (file_exists($path))
 								{
 									$md5 = dirname($path) . '/MD5SUM';
-									$includes[] = JUri::root(true) . "/media/system/$folder/$file" .
+									$includes[] = vUri::root(true) . "/media/system/$folder/$file" .
 											(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 									break;
@@ -516,7 +514,7 @@ abstract class vHtml extends vBasicModel
 						if (file_exists($path))
 						{
 							$md5 = dirname($path) . '/MD5SUM';
-							$includes[] = JUri::root(true) . "/$file" .
+							$includes[] = vUri::root(true) . "/$file" .
 								(file_exists($md5) ? ('?' . file_get_contents($md5)) : '');
 
 							break;
@@ -651,7 +649,6 @@ abstract class vHtml extends vBasicModel
 	 */
 	public static function script($file, $framework = false, $relative = false, $path_only = false, $detect_browser = true, $detect_debug = true)
 	{
-		vmTrace('Wie '.$file);
 		vmJsApi::addJScript('/media/system/js/'.$file);
 
 		// Include MooTools framework
@@ -769,7 +766,7 @@ abstract class vHtml extends vBasicModel
 		// If no format is given use the default locale based format.
 		if (!$format)
 		{
-			$format = JText::_('DATE_FORMAT_LC1');
+			$format = vmText::_('DATE_FORMAT_LC1');
 		}
 		// $format is an existing language key
 		elseif (vFactory::getLanguage()->hasKey($format))
@@ -864,7 +861,7 @@ abstract class vHtml extends vBasicModel
 	 *
 	 * @param   string  $title      The title of the tooltip (or combined '::' separated string).
 	 * @param   string  $content    The content to tooltip.
-	 * @param   int     $translate  If true will pass texts through JText.
+	 * @param   int     $translate  If true will pass texts through vmText.
 	 * @param   int     $escape     If true will pass texts through htmlspecialchars.
 	 *
 	 * @return  string  The tooltip string
@@ -885,7 +882,7 @@ abstract class vHtml extends vBasicModel
 				list($title, $content) = explode('::', $title, 2);
 			}
 
-			// Pass texts through JText if required.
+			// Pass texts through vmText if required.
 			if ($translate)
 			{
 				$title = vmText::_($title);

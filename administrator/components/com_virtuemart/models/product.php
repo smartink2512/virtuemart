@@ -959,10 +959,10 @@ class VirtueMartModelProduct extends VmModel {
 				if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
 					$child->availability = vmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. vHtml::_('date', $child->product_available_date, vmText::_('DATE_FORMAT_LC4'));
 				} else if ($stockhandle == 'risetime' and VmConfig::get('rised_availability') and empty($child->product_availability)) {
-					$child->availability =  (file_exists(VMPATH_ROOT . DS . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability'))) ? vHtml::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')) : vmText::_(VmConfig::get('rised_availability'));
+					$child->availability =  (file_exists(VMPATH_ROOT . DS . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability'))) ? vHtml::image(vUri::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')) : vmText::_(VmConfig::get('rised_availability'));
 
 				} else if (!empty($child->product_availability)) {
-					$child->availability = (file_exists(VMPATH_ROOT . DS . VmConfig::get('assets_general_path') . 'images/availability/' . $child->product_availability)) ? vHtml::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $child->product_availability, $child->product_availability, array('class' => 'availability')) : vmText::_($child->product_availability);
+					$child->availability = (file_exists(VMPATH_ROOT . DS . VmConfig::get('assets_general_path') . 'images/availability/' . $child->product_availability)) ? vHtml::image(vUri::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $child->product_availability, $child->product_availability, array('class' => 'availability')) : vmText::_($child->product_availability);
 				}
 			}
 			else if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
@@ -2565,7 +2565,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		$db->setQuery ($q);
 		$vars = $db->loadAssoc ();
 
-		$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
+		$url = vUri::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
 		$link = '<a href="'. $url.'">'. $vars['product_name'].'</a>';
 		$vars['subject'] = vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
 		$vars['mailbody'] =vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);

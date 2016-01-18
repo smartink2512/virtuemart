@@ -831,7 +831,7 @@ class VmTable extends vTable implements JObservableInterface, JTableInterface {
 
 		// If the store failed return false.
 		if (!$ok) {
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+			$e = new Exception(vmText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $this->_db->getErrorMsg()));
 			vmError($e);
 			return false;
 		}
@@ -889,7 +889,7 @@ class VmTable extends vTable implements JObservableInterface, JTableInterface {
 			$this->_db->setQuery($q);
 			if (!$this->_db->execute())
 			{
-				$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID', $this->_db->getErrorMsg()));
+				$e = new Exception(vmText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID', $this->_db->getErrorMsg()));
 				vmError($e);
 				return false;
 			}
@@ -1176,7 +1176,7 @@ class VmTable extends vTable implements JObservableInterface, JTableInterface {
 		// If the source value is not an array or object return false.
 		if (!is_object($src) && !is_array($src))
 		{
-			$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+			$e = new Exception(vmText::sprintf('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
 			vmError($e);
 			return false;
 		}

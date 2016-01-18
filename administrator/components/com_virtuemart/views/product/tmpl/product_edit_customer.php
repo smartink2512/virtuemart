@@ -163,7 +163,7 @@ $i = 0;
 </table>
 <script type="text/javascript">
 
-	var $customerMailLink = '<?php echo JURI::root () . '/index.php?option=com_virtuemart&view=productdetails&task=sentproductemailtoshoppers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
+	var $customerMailLink = '<?php echo vUri::root () . '/index.php?option=com_virtuemart&view=productdetails&task=sentproductemailtoshoppers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerMailNotifyLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=ajax_notifyUsers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerListNotifyLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=ajax_waitinglist&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';

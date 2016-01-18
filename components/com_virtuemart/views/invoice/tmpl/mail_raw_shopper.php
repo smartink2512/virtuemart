@@ -44,7 +44,7 @@ if ($this->orderDetails['history'][$nb - 1]->customer_notified && !(empty($this-
     echo "\n\n";
 
     echo "\n\n";
-    echo vmText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER_LINK') . ' : ' . JURI::root() . 'index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $this->orderDetails['details']['BT']->order_number . '&order_pass=' . $this->orderDetails['details']['BT']->order_pass . "\n";
+    echo vmText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER_LINK') . ' : ' . vUri::root() . 'index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $this->orderDetails['details']['BT']->order_number . '&order_pass=' . $this->orderDetails['details']['BT']->order_pass . "\n";
 
     if (!empty($this->orderDetails['details']['BT']->customer_note)) {
 	echo "\n" . strip_tags(vmText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_QUESTION', $this->orderDetails['details']['BT']->customer_note));

@@ -112,3 +112,19 @@ interface vIOrderable {
 	function checkFilterOrder($toCheck);
 	function checkFilterDir($toCheck);
 }
+
+interface vIUri {
+	public function __toString();
+	public function toString(array $parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'));
+	public function hasVar($name);
+	public function getVar($name, $default = null);
+	public function getQuery($toArray = false);
+	public function getScheme();
+	public function getUser();
+	public function getPass();
+	public function getHost();
+	public function getPort();
+	public function getPath();
+	public function getFragment();
+	public function isSSL();
+}

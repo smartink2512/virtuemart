@@ -54,7 +54,7 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			$text='';
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
 			if(!empty($category->virtuemart_category_id)){
-				$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category->virtuemart_category_id.'" target="_blank" >'. $name.'<span class="vm2-modallink"></span></a>';
+				$text = '<a href="'.vUri::root().'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category->virtuemart_category_id.'" target="_blank" >'. $name.'<span class="vm2-modallink"></span></a>';
 			}
 
 			$this->SetViewTitle('CATEGORY',$text);

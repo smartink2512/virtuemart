@@ -43,7 +43,7 @@ defined('_JEXEC') or die('');
 	<table  border="0" cellpadding="0" cellspacing="0" class="html-email">
 	<tr>
 		<td valign="top">
-			<img src="<?php  echo JURI::root () . $this->vendor->images[0]->file_url ?>" />
+			<img src="<?php  echo vUri::root () . $this->vendor->images[0]->file_url ?>" />
 		</td>
 		<td>
 			<?php echo $this->vendorAddress; ?>
@@ -77,7 +77,7 @@ defined('_JEXEC') or die('');
 	echo '<br/><br/>';
 
 	/* GENERAL FOOTER FOR ALL MAILS */
-		$link = JURI::root().'index.php?option=com_virtuemart';
+		$link = vUri::root().'index.php?option=com_virtuemart';
 
 		echo vmText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.$link.'">'.$this->vendor->vendor_name.'</a>';
 	echo '<br/>';

@@ -127,9 +127,9 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('orderdetails', $orderDetails);
 
 			if($_currentUser->guest){
-				$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&order_pass=' . vRequest::getString('order_pass',false) .'&order_number='.vRequest::getString('order_number',false);
+				$details_url = vUri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&order_pass=' . vRequest::getString('order_pass',false) .'&order_number='.vRequest::getString('order_number',false);
 			} else {
-				$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&virtuemart_order_id=' . $this->orderdetails['details']['BT']->virtuemart_order_id;
+				$details_url = vUri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&virtuemart_order_id=' . $this->orderdetails['details']['BT']->virtuemart_order_id;
 			}
 			$this->assignRef('details_url', $details_url);
 

@@ -38,9 +38,9 @@ foreach ($this->userFields['fields'] as $userField) {
 
 echo $li;
 
-echo JURI::root() . 'index.php?option=com_virtuemart&view=user' . $li;
+echo vUri::root() . 'index.php?option=com_virtuemart&view=user' . $li;
 
 echo $li;
-//echo JURI::root() . 'index.php?option=com_virtuemart&view=user&virtuemart_user_id=' . $this->_models['user']->_id . ' ' . $li;
-//echo JURI::root() . 'index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id . ' ' . $li;
+//echo vUri::root() . 'index.php?option=com_virtuemart&view=user&virtuemart_user_id=' . $this->_models['user']->_id . ' ' . $li;
+//echo vUri::root() . 'index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id . ' ' . $li;
 ?>

@@ -122,7 +122,7 @@ class vmJsApi{
 				if(strpos($file,'/')!==0){
 					$file = vmJsApi::setPath($file,false,'');
 				} else if(strpos($file,'//')!==0){
-					$file = JURI::root(true).$file;
+					$file = vUri::root(true).$file;
 				}
 
 				if(empty($file)){
@@ -225,7 +225,7 @@ class vmJsApi{
 
 	/**
 	 * Set file path(look in template if relative path)
-	 * @author Patrick
+	 * @author Max Milbers, Patrick
 	 */
 	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js', $absolute_path=false)
 	{
@@ -253,7 +253,7 @@ class vmJsApi{
 			if ($absolute_path) {
 				$path = VMPATH_BASE .'/'.$path;
 			} else {
-				$path = JURI::root(TRUE) .'/'.$path;
+				$path = vUri::root(true) .'/'.$path;
 			}
 
 		}
@@ -262,7 +262,7 @@ class vmJsApi{
 			if ($absolute_path) {
 				$path = VMPATH_BASE .'/'.$path;
 			} else {
-				$path = JURI::root(TRUE) .'/'.$path;
+				$path = vUri::root(true) .'/'.$path;
 			}
 		}
 
@@ -314,7 +314,7 @@ class vmJsApi{
 
 		$v = 'if (typeof Virtuemart === "undefined")
 	Virtuemart = {};';
-		$v .= "Virtuemart.vmSiteurl = '".JURI::root()."' ;\n";
+		$v .= "Virtuemart.vmSiteurl = '".vUri::root()."' ;\n";
 		$v .= 'Virtuemart.vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
 		$v .= 'Virtuemart.vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
 		$itemId = vRequest::getInt('Itemid',false,'GET');
@@ -364,7 +364,7 @@ class vmJsApi{
 
 		//Fallbacks!
 		$jsVars = "";
-		$jsVars .= "vmSiteurl = '".JURI::root()."' ;\n";
+		$jsVars .= "vmSiteurl = '".vUri::root()."' ;\n";
 		$jsVars .= 'vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
 		$jsVars .= 'vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
 
@@ -410,7 +410,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		}
 		VmJsApi::jSite();
 		self::addJScript('vm.countryState'.$prefix,'
-		vmSiteurl = "'.JURI::root().'";'."\n".'
+		vmSiteurl = "'.vUri::root().'";'."\n".'
 		jQuery( function($) {
 			$("#'.$prefix.'virtuemart_country_id_field").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id_field",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});	');

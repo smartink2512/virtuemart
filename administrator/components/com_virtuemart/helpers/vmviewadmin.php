@@ -257,7 +257,7 @@ class VmViewAdmin extends vView {
 						$img=$languagesByCode[$key]->image;
 					}
 					$image_flag= VMPATH_ROOT."/media/mod_languages/images/".$img.".gif";
-					$image_flag_url= JURI::root()."media/mod_languages/images/".$img.".gif";
+					$image_flag_url= vUri::root()."media/mod_languages/images/".$img.".gif";
 
 					if (!file_exists ($image_flag)) {
 						vmerror(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );

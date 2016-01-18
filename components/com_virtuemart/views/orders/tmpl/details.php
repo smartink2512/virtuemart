@@ -18,12 +18,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
+JHtml::stylesheet('vmpanels.css', vUri::root().'components/com_virtuemart/assets/css/');
 if($this->print){
 	?>
 
 		<body onload="javascript:print();">
-		<div class="vm-orders-vendor-image"><img src="<?php  echo JURI::root() . $this-> vendor->images[0]->file_url ?>"></div>
+		<div class="vm-orders-vendor-image"><img src="<?php  echo vUri::root() . $this-> vendor->images[0]->file_url ?>"></div>
 		<h2><?php  echo $this->vendor->vendor_store_name; ?></h2>
 		<?php  echo $this->vendor->vendor_name .' - '.$this->vendor->vendor_phone ?>
 		<h1><?php echo vmText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>

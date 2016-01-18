@@ -59,7 +59,7 @@ abstract class vHtmlJGrid
 				JHtml::_('bootstrap.tooltip');
 
 				$title = $enabled ? $active_title : $inactive_title;
-				$title = $translate ? JText::_($title) : $title;
+				$title = $translate ? vmText::_($title) : $title;
 				$title = vHtml::tooltipText($title, '', 0);
 			} else {
 				JHtml::_('behavior.tooltip');
@@ -79,9 +79,9 @@ abstract class vHtmlJGrid
 			} else {
 				$html[] = '<a class="jgrid' . ($tip ? ' hasTip' : '') . '"';
 				$html[] = ' href="javascript:void(0);" onclick="return listItemTask(\'' . $checkbox . $i . '\',\'' . $prefix . $task . '\')"';
-				$html[] = ' title="' . addslashes(htmlspecialchars($translate ? JText::_($active_title) : $active_title, ENT_COMPAT, 'UTF-8')) . '">';
+				$html[] = ' title="' . addslashes(htmlspecialchars($translate ? vmText::_($active_title) : $active_title, ENT_COMPAT, 'UTF-8')) . '">';
 				$html[] = '<span class="state ' . $active_class . '">';
-				$html[] = $text ? ('<span class="text">' . ($translate ? JText::_($text):$text) . '</span>') : '';
+				$html[] = $text ? ('<span class="text">' . ($translate ? vmText::_($text):$text) . '</span>') : '';
 				$html[] = '</span>';
 				$html[] = '</a>';
 			}
@@ -105,9 +105,9 @@ abstract class vHtmlJGrid
 				$html[] = '</a>';
 			} else {
 				$html[] = '<a class="jgrid' . ($tip ? ' hasTip' : '') . '"';
-				$html[] = ' title="' . addslashes(htmlspecialchars($translate ? JText::_($inactive_title) : $inactive_title, ENT_COMPAT, 'UTF-8')) . '">';
+				$html[] = ' title="' . addslashes(htmlspecialchars($translate ? vmText::_($inactive_title) : $inactive_title, ENT_COMPAT, 'UTF-8')) . '">';
 				$html[] = '<span class="state ' . $inactive_class . '">';
-				$html[] = $text ? ('<span class="text">' . ($translate ? JText::_($text) : $text) . '</span>') :'';
+				$html[] = $text ? ('<span class="text">' . ($translate ? vmText::_($text) : $text) . '</span>') :'';
 				$html[] = '</span>';
 				$html[] = '</a>';
 			}
@@ -265,12 +265,12 @@ abstract class vHtmlJGrid
 			$prefix = array_key_exists('prefix', $options) ? $options['prefix'] : '';
 		}
 
-		$text = $editorName . '<br />' . JHtml::_('date', $time, JText::_('DATE_FORMAT_LC')) . '<br />' . JHtml::_('date', $time, 'H:i');
-		$active_title = JHtml::tooltipText(JText::_('JLIB_HTML_CHECKIN'), $text, 0);
-		$inactive_title = JHtml::tooltipText(JText::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
+		$text = $editorName . '<br />' . JHtml::_('date', $time, vmText::_('DATE_FORMAT_LC')) . '<br />' . JHtml::_('date', $time, 'H:i');
+		$active_title = JHtml::tooltipText(vmText::_('JLIB_HTML_CHECKIN'), $text, 0);
+		$inactive_title = JHtml::tooltipText(vmText::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
 
 		return static::action(
-			$i, 'checkin', $prefix, JText::_('JLIB_HTML_CHECKED_OUT'), html_entity_decode($active_title, ENT_QUOTES, 'UTF-8'),
+			$i, 'checkin', $prefix, vmText::_('JLIB_HTML_CHECKED_OUT'), html_entity_decode($active_title, ENT_QUOTES, 'UTF-8'),
 			html_entity_decode($inactive_title, ENT_QUOTES, 'UTF-8'), true, 'checkedout', 'checkedout', $enabled, false, $checkbox
 		);
 	}

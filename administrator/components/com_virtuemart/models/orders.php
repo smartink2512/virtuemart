@@ -1698,7 +1698,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if(is_object($res) or !$res){
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
-			vmdebug('notifyCustomer function shopFunctionsF::renderMail throws JException');
+			vmdebug('notifyCustomer function shopFunctionsF::renderMail throws Exception');
 			$res = 0;
 		} //We need this, to prevent that a false alert is thrown.
 		else if ($res and $res!=-1) {
