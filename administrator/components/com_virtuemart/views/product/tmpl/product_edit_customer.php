@@ -192,7 +192,7 @@ $i = 0;
 				}
 				var $max_number = jQuery('input[name=notify_number]').val();
 
-				jQuery.post($customerMailNotifyLink, { subject:$subject, mailbody:$body, max_number:$max_number, token:'<?php echo JSession::getFormToken() ?>' },
+				jQuery.post($customerMailNotifyLink, { subject:$subject, mailbody:$body, max_number:$max_number, token:'<?php echo vRequest::getFormToken() ?>' },
 					function (data) {
 						alert('<?php echo addslashes (vmText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')); ?>');
 						jQuery.getJSON($customerListNotifyLink, {tmpl:'component', no_html:1},
@@ -225,7 +225,7 @@ $i = 0;
 				}
 				else {
 					var $statut = jQuery('select#order_status').val();
-					jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:'<?php echo JSession::getFormToken() ?>' },
+					jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:'<?php echo vRequest::getFormToken() ?>' },
 						function (data) {
 							alert('<?php echo addslashes (vmText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')); ?>');
 							//jQuery("#customers-list-msg").html('<strong><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')?></strong>');

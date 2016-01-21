@@ -58,11 +58,14 @@ class VirtuemartViewCustom extends VmViewAdmin {
 
 			$this->SetViewTitle('PRODUCT_CUSTOM_FIELD', $this->custom->custom_title);
 
+			if (!class_exists('vForm'))	require(VMPATH_ADMIN . DS . 'vmf' . DS . 'form' . DS . 'form.php');
+			vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+
 			$selected=0;
 			$this->custom->form = false;
 			if(!empty($this->custom->custom_jplugin_id)) {
+
 				VmConfig::loadJLang('plg_vmpsplugin', false);
-				vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 				$selected = $this->custom->custom_jplugin_id;
 				// Get the payment XML.
 				$formFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins'.DS. 'vmcustom' .DS. $this->custom->custom_element . DS . $this->custom->custom_element . '.xml');
@@ -79,7 +82,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 				$varsToPush = VirtueMartModelCustom::getVarsToPush($this->custom->field_type);
 
 				if(!empty($varsToPush)){
-					vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+
 					$formString = '<vmconfig>'.chr(10).'<fields name="params">'.chr(10).'<fieldset name="extraParams">'.chr(10);
 
 					foreach($varsToPush as $key => $push){

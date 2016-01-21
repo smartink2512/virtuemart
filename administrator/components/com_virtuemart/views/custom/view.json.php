@@ -69,7 +69,8 @@ class VirtuemartViewCustom extends vView {
 				if (!class_exists('vmPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmplugin.php');
 				$filename = 'plg_vmcustom_' .  $this->jCustom->element;
 				vmPlugin::loadJLang($filename,'vmcustom',$this->jCustom->element);
-
+				if (!class_exists('vForm'))
+					require(VMPATH_ADMIN . DS . 'vmf' . DS . 'form' . DS . 'form.php');
 				$this->custom = VmModel::getModel('custom')->getCustom();
 				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
 				$this->custom->form = vForm::getInstance($this->jCustom->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');

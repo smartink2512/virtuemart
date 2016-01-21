@@ -26,7 +26,7 @@ AdminUIHelper::startAdminArea($this);
 	<?php
 	$this->addHidden('view', 'custom');
 	$this->addHidden('task', '');
-	$this->addHidden(JSession::getFormToken(), 1);
+	$this->addHidden(vRequest::getFormToken(), 1);
 	$this->addHidden('custom_jplugin_id', $this->custom->custom_jplugin_id);
 	$this->addHidden('custom_element', $this->custom->custom_element);
 //if ($this->custom->custom_parent_id) $this->customfields->addHidden('custom_parent_id',$this->custom->custom_parent_id);

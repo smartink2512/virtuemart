@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 			<?php 
 			/*if (isset($this->waitinglist) && count($this->waitinglist) > 0) { 
-				$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&'.JSession::getFormToken().'=1' );
+				$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&'.vRequest::getFormToken().'=1' );
 
 
 					<a href="<?php echo $link ?>">

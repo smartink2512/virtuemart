@@ -24,8 +24,15 @@ if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS.
  * @link   http://www.w3.org/TR/html5/forms.html
  * @since  11.1
  */
-class vForm
-{
+
+//Legacy support for JForms
+if(JVM_VERSION>0){
+	if(!class_exists('JForm')) jimport('joomla.form.form');
+} else {
+	class JForm{};
+}
+
+class vForm extends JForm{
 	/**
 	 * @var    Registry
 	 */

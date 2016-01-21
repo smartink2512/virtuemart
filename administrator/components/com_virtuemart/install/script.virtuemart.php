@@ -803,7 +803,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$res  = VirtueMartModelConfig::checkConfigTableExists();
 
 				if(!empty($res)){
-					vRequest::setVar(JSession::getFormToken(), '1');
+					vRequest::setVar(vRequest::getFormToken(), '1');
 					$config = VmModel::getModel('config');
 
 					$config->setDangerousToolsOff();
