@@ -14,9 +14,9 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-JFormHelper::loadFieldClass('list');
+vFormHelper::loadFieldClass('list');
 jimport('joomla.form.formfield');
-class JFormFieldVmOrderState extends JFormFieldList {
+class vFormFieldVmOrderState extends vFormFieldList {
 
 	/**
 	 * The form field type.

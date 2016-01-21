@@ -29,6 +29,7 @@ if (JVM_VERSION < 3){
 }
 
 if ($form) {
+
 	$fieldSets = $form->getFieldsets();
 	if (!empty($fieldSets)) {
 		?>
@@ -51,9 +52,13 @@ if ($form) {
 				?>
 
 				<?php $i=0; ?>
-				<?php foreach ($form->getFieldset($name) as $field) { ?>
-					<?php if (!$field->hidden) {
-						?>
+				<?php foreach ($form->getFieldset($name) as $field) {
+
+					if (!$field->hidden) {
+						vmdebug('my $form', $name,$field->label);
+						//$tr = vmText::_($field->label);
+						//$tr =$l->_(trim($field->label));
+						//vmdebug('my lang',$field->label,$tr); ?>
 						<div class="<?php echo $control_group_class ?>">
 							<div class="<?php echo $control_label_class ?>">
 								<?php echo $field->label; ?>

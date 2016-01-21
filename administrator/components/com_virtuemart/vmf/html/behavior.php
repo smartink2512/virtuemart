@@ -136,7 +136,7 @@ abstract class vHtmlBehavior
 		vHtml::_('jquery.framework');
 
 		// Attach tooltips to document
-		JFactory::getDocument()->addScriptDeclaration(
+		vFactory::getDocument()->addScriptDeclaration(
 			"jQuery(function($) {
 			 $('$selector').each(function() {
 				var title = $(this).attr('title');
@@ -180,7 +180,7 @@ abstract class vHtmlBehavior
 	 */
 	public static function modal($selector = 'a.modal', $params = array())
 	{
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 
 		// Load the necessary files if they haven't yet been loaded
 		if (!isset(static::$loaded[__METHOD__]))
@@ -266,8 +266,8 @@ abstract class vHtmlBehavior
 			return;
 		}
 
-		$document = JFactory::getDocument();
-		$tag = JFactory::getLanguage()->getTag();
+		$document = vFactory::getDocument();
+		$tag = vFactory::getLanguage()->getTag();
 
 		vHtml::_('stylesheet', 'system/calendar-jos.css', array(' title' => vmText::_('JLIB_HTML_BEHAVIOR_GREEN'), ' media' => 'all'), true);
 		vHtml::_('script', $tag . '/calendar.js', false, true);
@@ -303,7 +303,7 @@ abstract class vHtmlBehavior
 
 		vHtml::_('script', 'jui/jquery.minicolors.min.js', false, true);
 		vHtml::_('stylesheet', 'jui/jquery.minicolors.css', false, true);
-		JFactory::getDocument()->addScriptDeclaration("
+		vFactory::getDocument()->addScriptDeclaration("
 				jQuery(document).ready(function (){
 					jQuery('.minicolors').each(function() {
 						jQuery(this).minicolors({
@@ -339,7 +339,7 @@ abstract class vHtmlBehavior
 
 		vHtml::_('script', 'jui/jquery.simplecolors.min.js', false, true);
 		vHtml::_('stylesheet', 'jui/jquery.simplecolors.css', false, true);
-		JFactory::getDocument()->addScriptDeclaration("
+		vFactory::getDocument()->addScriptDeclaration("
 				jQuery(document).ready(function (){
 					jQuery('select.simplecolors').simplecolors();
 				});
@@ -383,7 +383,7 @@ abstract class vHtmlBehavior
 
 		$terms = str_replace('"', '\"', $terms);
 
-		$document = JFactory::getDocument();
+		$document = vFactory::getDocument();
 		$document->addScriptDeclaration("
 			jQuery(function ($) {
 				var start = document.getElementById('" . $start . "');
@@ -511,7 +511,7 @@ abstract class vHtmlBehavior
 			'DRAG_TO_MOVE'    => vmText::_('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE'),
 			'PART_TODAY'      => $today,
 			'DAY_FIRST'       => vmText::_('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST'),
-			'WEEKEND'         => JFactory::getLanguage()->getWeekEnd(),
+			'WEEKEND'         => vFactory::getLanguage()->getWeekEnd(),
 			'CLOSE'           => vmText::_('JLIB_HTML_BEHAVIOR_CLOSE'),
 			'TODAY'           => vmText::_('JLIB_HTML_BEHAVIOR_TODAY'),
 			'TIME_PART'       => vmText::_('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE'),

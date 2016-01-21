@@ -22,7 +22,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'compo
 if (!class_exists('ShopFunctions'))
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 
-class JFormFieldVmWeightunit extends JFormField {
+class vFormFieldVmWeightunit extends vFormField {
 
 	/**
 	 * Element name

@@ -18,7 +18,7 @@ require(VMPATH_ADMIN . DS . 'tables' . DS . 'categories.php');
  *
  *
  */
-class JFormFieldProduct extends JFormField
+class vFormFieldProduct extends vFormField
 {
 	/**
 	 * The form field type.

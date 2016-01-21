@@ -14,8 +14,8 @@ defined ('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id: $
  */
-JFormHelper::loadFieldClass('filelist');
-class JFormFieldVMFiles extends JFormFieldFileList {
+vFormHelper::loadFieldClass('filelist');
+class vFormFieldVMFiles extends vFormFieldFileList {
 
 	/**
 	 * Element name

@@ -242,7 +242,7 @@ class vController extends vBasicModel implements vIController{
 		$this->registerDefaultTask('display');
 		$this->default_view = $this->getName();
 
-		self::addIncludePath(VMPATH_ADMIN.DS.'vmf'.DS.'html','html');
+		vBasicModel::addIncludePath(VMPATH_ADMIN.DS.'vmf'.DS.'html','html');
 	}
 
 

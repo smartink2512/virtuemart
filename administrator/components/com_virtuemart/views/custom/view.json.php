@@ -72,7 +72,7 @@ class VirtuemartViewCustom extends vView {
 
 				$this->custom = VmModel::getModel('custom')->getCustom();
 				$varsToPush = vmPlugin::getVarsToPushByXML($formFile,'customForm');
-				$this->custom->form = JForm::getInstance($this->jCustom->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+				$this->custom->form = vForm::getInstance($this->jCustom->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 				$this->custom->params = new stdClass();
 
 				foreach($varsToPush as $k => $field){

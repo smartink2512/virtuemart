@@ -28,7 +28,7 @@ jimport('joomla.form.formfield');
  *
  *
  */
-class JFormFieldVmproductsublayout extends JFormField
+class vFormFieldVmproductsublayout extends vFormField
 {
 	var $type = 'layout';
 

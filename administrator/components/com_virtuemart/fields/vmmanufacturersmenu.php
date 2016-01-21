@@ -28,7 +28,7 @@ if (!class_exists('VirtueMartModelManufacturer'))
  * Should be that way
  */
 
-class JFormFieldManufacturersmenu extends JFormField {
+class vFormFieldManufacturersmenu extends vFormField {
 
 
 	var $_name = 'manufacturersmenu';

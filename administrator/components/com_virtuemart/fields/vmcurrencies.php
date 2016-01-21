@@ -19,13 +19,13 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
- * So It should be an extension of JFormField
+ * So It should be an extension of vFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
 
-JFormHelper::loadFieldClass('list');
+vFormHelper::loadFieldClass('list');
 
-class JFormFieldVmCurrencies extends JFormFieldList {
+class vFormFieldVmCurrencies extends vFormFieldList {
 
 	/**
 	 * The form field type.

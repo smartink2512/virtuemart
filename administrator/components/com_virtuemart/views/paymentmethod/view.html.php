@@ -70,7 +70,9 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 
 			VmConfig::loadJLang('plg_vmpsplugin', false);
 
-			JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+			if (!class_exists('vForm'))
+				require(VMPATH_ADMIN . DS . 'vmf' . DS . 'form' . DS . 'form.php');
+			vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 
 			$payment = $model->getPayment();
 
@@ -78,7 +80,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 			$formFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins'. DS. 'vmpayment' .DS. $payment->payment_element .DS. $payment->payment_element . '.xml');
 			if (file_exists($formFile)){
 
-				$payment->form = JForm::getInstance($payment->payment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+				$payment->form = vForm::getInstance($payment->payment_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 				$payment->params = new stdClass();
 				$varsToPush = vmPlugin::getVarsToPushFromForm($payment->form);
 				VmTable::bindParameterableToSubField($payment,$varsToPush);

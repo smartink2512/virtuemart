@@ -22,7 +22,7 @@ if (!class_exists('ShopFunctions'))
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 
 
-class JFormFieldVmTaxes extends JFormField {
+class vFormFieldVmTaxes extends vFormField {
 
 	/**
 	 * The form field type.

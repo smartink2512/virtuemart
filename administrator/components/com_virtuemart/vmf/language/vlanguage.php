@@ -389,6 +389,7 @@ class vLanguage {
 		}
 		if(!class_exists('vLanguageTransliterate')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'language' .DS. 'transliterate.php');
 		$string = vLanguageTransliterate::utf8_latin_to_ascii($string);
+		if(!class_exists('vString')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vstring.php');
 		$string = vString::strtolower($string);
 
 		return $string;

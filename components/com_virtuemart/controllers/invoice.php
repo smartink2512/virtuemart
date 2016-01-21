@@ -244,7 +244,7 @@ class VirtueMartControllerInvoice extends vController
 		$view = $this->getView($viewName, $format);
 		$this->writeJs = false;
 		//$view->addTemplatePath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
-		$view->addLayoutPath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl');
+		$view->addLayoutPath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl','view');
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$template = VmTemplate::loadVmTemplateStyle();

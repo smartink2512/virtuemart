@@ -103,8 +103,8 @@ class shopFunctionsF {
 	 */
 	static function renderFormField($type){
 		//Get custom field
-		JFormHelper::addFieldPath(VMPATH_ADMIN . DS . 'fields');
-		$types = JFormHelper::loadFieldType($type, false);
+		vFormHelper::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+		$types = vFormHelper::loadFieldType($type, false);
 		return $types->getOptions();
 	}
 
@@ -494,7 +494,7 @@ class shopFunctionsF {
 		if (!class_exists ('VmView'))
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'vmview.php');
 		$lPath = VmView::getVmSubLayoutPath ($name);
-
+		if($viewData!==0) $displayData =&$viewData;
 		if($lPath){
 			ob_start ();
 			include ($lPath);
@@ -526,7 +526,7 @@ class shopFunctionsF {
 
 		//refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		//$view->addTemplatePath( VMPATH_SITE.'/views/'.$viewName.'/tmpl' );
-		$controller->addIncludePath(VMPATH_SITE.'/views/'.$viewName);
+		$controller->addIncludePath(VMPATH_SITE.'/views/'.$viewName,'view');
 		$view = $controller->getView( $viewName, 'html' );
 		if(!$controllerName) $controllerName = $viewName;
 		$controllerClassName = 'VirtueMartController'.ucfirst( $controllerName );

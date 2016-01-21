@@ -41,7 +41,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 		$layoutName = vRequest::getCmd('layout', 'default');
-		$model = VmModel::getModel();
+		$model = VmModel::getModel('userfields');
 
 		// The list of fields which can't be toggled
 		//$lists['coreFields']= array( 'name','username', 'email', 'password', 'password2' );
@@ -230,7 +230,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 		if(!class_exists('vmUserfieldPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmuserfieldtypeplugin.php');
 
 		VmConfig::loadJLang('plg_vmpsplugin', false);
-		JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+		vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 		//$selected = $this->userField->userfield_jplugin_id;
 		//vmdebug('renderUserfieldPlugin $this->userField->element',$this->userField->type,$this->userField->element);
 		$this->userField->element = substr($this->userField->type, 6);
@@ -240,7 +240,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 		$formFile	= vRequest::filterPath( $path );
 		if (file_exists($formFile)){
 
-			$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+			$this->userField->form = vForm::getInstance($this->userField->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 			$this->userField->params = new stdClass();
 			$varsToPush = vmPlugin::getVarsToPushFromForm($this->userField->form);
 			VmTable::bindParameterableToSubField($this->userField,$varsToPush);

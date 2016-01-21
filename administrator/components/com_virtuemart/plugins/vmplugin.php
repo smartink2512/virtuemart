@@ -95,7 +95,7 @@ abstract class vmPlugin extends JPlugin {
 
 	static public function loadJLang($fname,$type,$name){
 
-		$jlang =vFactory::getLanguage();
+		$jlang = vFactory::getLanguage();
 		$tag = $jlang->getTag();
 
 
@@ -104,7 +104,7 @@ abstract class vmPlugin extends JPlugin {
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$fname.'.ini';
 			if(!file_exists($testpath)){
-				$epath = JPATH_ADMINISTRATOR;
+				$epath = VMPATH_ADMINISTRATOR;
 			} else {
 				$epath = $path;
 			}
@@ -113,10 +113,11 @@ abstract class vmPlugin extends JPlugin {
 
 		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$fname.'.ini';
 		if(!file_exists($testpath)){
-			$path = JPATH_ADMINISTRATOR;
+			$path = VMPATH_ADMINISTRATOR;
 		}
 
 		$jlang->load($fname, $path,$tag,true);
+
 	}
 
 	function setPluginLoggable($set=TRUE){
@@ -140,7 +141,7 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 	/**
-	 * This function gets the parameters of a plugin from the given JForm $form.
+	 * This function gets the parameters of a plugin from the given vForm $form.
 	 * This is used for the configuration GUI in the BE.
 	 * Attention: the xml Params must be always a subset of the varsToPushParams declared in the constructor
 	 * @param $form
@@ -183,7 +184,10 @@ abstract class vmPlugin extends JPlugin {
 	 * @return array
 	 */
 	static public function getVarsToPushByXML ($xmlFile,$name){
-		$form = JForm::getInstance($name, $xmlFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+		if(!class_exists('vForm')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'form.php');
+		vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+		vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields' .DS. 'jfields');
+		$form = vForm::getInstance($name, $xmlFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 		return vmPlugin::getVarsToPushFromForm($form);
 	}
 

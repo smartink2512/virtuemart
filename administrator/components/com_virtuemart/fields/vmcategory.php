@@ -21,14 +21,15 @@ if (!class_exists('ShopFunctions'))
     require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('TableCategories'))
     require(VMPATH_ADMIN . DS . 'tables' . DS . 'categories.php');
-jimport('joomla.form.formfield');
+if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
+
 
 /**
  * Supports a modal category picker.
  *
  *
  */
-class JFormFieldVmCategory extends JFormField
+class vFormFieldVmCategory extends vFormField
 {
 	var $type = 'category';
 
@@ -46,7 +47,7 @@ class JFormFieldVmCategory extends JFormField
 
 	    $categorylist = ShopFunctions::categoryListTree(array($this->value));
 
-        $html = '<select class="inputbox"   name="' . $this->name . '" >';
+        $html = '<select class="inputbox" name="' . $this->name . '" >';
         $html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
         $html .= $categorylist;
         $html .="</select>";
@@ -54,4 +55,17 @@ class JFormFieldVmCategory extends JFormField
 
     }
 
+}
+
+if(JVM_VERSION>0){
+    //could be written abstract with eval
+    jimport('joomla.form.formfield');
+    class JFormFieldVmCategory extends vFormFieldVmCategory{
+
+        public function __construct($form = null){
+            parent::__construct($form);
+            vBasicModel::addIncludePath(VMPATH_ADMIN.DS.'vmf'.DS.'html','html');
+            VmConfig::loadJLang('com_virtuemart');
+        }
+    }
 }

@@ -34,7 +34,7 @@ class VmModel extends vModel{
 	static function getModel($name=false){
 
 		if (!$name){
-			$name = vRequest::getCmd('view','');
+			$name = vRequest::getCmd('view', vRequest::getCmd('controller',''));
 		}
 		$name = strtolower($name);
 		self::addIncludePath(VMPATH_ADMIN.DS.'models','VirtueMartModel');

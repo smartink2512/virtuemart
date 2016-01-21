@@ -176,7 +176,7 @@ abstract class vModel extends vBasicModel implements vITableable, vIStorable, vI
 	public function getTable($name = '', $prefix = 'Table', $options = array())
 	{
 		if (empty($name)) {
-			$name = $this->getName();
+			$name = $this->_maintablename;
 		}
 
 		$name = preg_replace('/[^A-Z0-9_]/i', '', $name);

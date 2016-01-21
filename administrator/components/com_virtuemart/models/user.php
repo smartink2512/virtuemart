@@ -341,6 +341,7 @@ class VirtueMartModelUser extends VmModel {
 			if(isset($data['username'])) $whiteDataToBind['username'] = $data['username'];
 			if(isset($data['email'])) $whiteDataToBind['email'] = $data['email'];
 			if(isset($data['language'])) $whiteDataToBind['language'] = $data['language'];
+			if(isset($data['admin_language'])) $whiteDataToBind['admin_language'] = $data['admin_language'];
 			if(isset($data['editor'])) $whiteDataToBind['editor'] = $data['editor'];
 			if(isset($data['password'])) $whiteDataToBind['password'] = $data['password'];
 			if(isset($data['password2'])) $whiteDataToBind['password2'] = $data['password2'];

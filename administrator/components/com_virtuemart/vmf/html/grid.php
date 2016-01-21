@@ -167,7 +167,7 @@ abstract class vHtmlGrid {
 	 */
 	public static function checkedOut(&$row, $i, $identifier = 'id')
 	{
-		$user = JFactory::getUser();
+		$user = vFactory::getUser();
 		$userid = $user->get('id');
 
 		if ($row instanceof vTable)

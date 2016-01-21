@@ -9,7 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-JFormHelper::loadFieldClass('rules');
+vFormHelper::loadFieldClass('rules');
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
@@ -18,7 +18,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'compo
  * This is an overload of the core Rules form field
  * It address the issue where several rules cannot be used in the same configuration file
  */
-class JFormFieldVmRules extends JFormFieldRules {
+class vFormFieldVmRules extends vFormFieldRules {
 	/**
 	 * The form field type.
 	 *

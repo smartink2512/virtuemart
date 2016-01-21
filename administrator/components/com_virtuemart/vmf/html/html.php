@@ -623,7 +623,7 @@ abstract class vHtml extends vBasicModel
 		// If inclusion is required
 		else
 		{
-			$document = JFactory::getDocument();
+			$document = vFactory::getDocument();
 
 			foreach ($includes as $include)
 			{
@@ -678,7 +678,7 @@ abstract class vHtml extends vBasicModel
 		// If inclusion is required
 		else
 		{
-			$document = JFactory::getDocument();
+			$document = vFactory::getDocument();
 
 			foreach ($includes as $include)
 			{
@@ -727,14 +727,14 @@ abstract class vHtml extends vBasicModel
 	public static function date($input = 'now', $format = null, $tz = true, $gregorian = false)
 	{
 		// Get some system objects.
-		$config = JFactory::getConfig();
-		$user = JFactory::getUser();
+		$config = vFactory::getConfig();
+		$user = vFactory::getUser();
 
 		// UTC date converted to user time zone.
 		if ($tz === true)
 		{
 			// Get a date object based on UTC.
-			$date = JFactory::getDate($input, 'UTC');
+			$date = vFactory::getDate($input, 'UTC');
 
 			// Set the correct time zone based on the user configuration.
 			$date->setTimeZone(new DateTimeZone($user->getParam('timezone', $config->get('offset'))));
@@ -743,7 +743,7 @@ abstract class vHtml extends vBasicModel
 		elseif ($tz === false)
 		{
 			// Get a date object based on UTC.
-			$date = JFactory::getDate($input, 'UTC');
+			$date = vFactory::getDate($input, 'UTC');
 
 			// Set the correct time zone based on the server configuration.
 			$date->setTimeZone(new DateTimeZone($config->get('offset')));
@@ -751,13 +751,13 @@ abstract class vHtml extends vBasicModel
 		// No date conversion.
 		elseif ($tz === null)
 		{
-			$date = JFactory::getDate($input);
+			$date = vFactory::getDate($input);
 		}
 		// UTC date converted to given time zone.
 		else
 		{
 			// Get a date object based on UTC.
-			$date = JFactory::getDate($input, 'UTC');
+			$date = vFactory::getDate($input, 'UTC');
 
 			// Set the correct time zone based on the server configuration.
 			$date->setTimeZone(new DateTimeZone($tz));
@@ -955,7 +955,7 @@ abstract class vHtml extends vBasicModel
 		static::_('bootstrap.tooltip');
 
 		// Format value when not nulldate ('0000-00-00 00:00:00'), otherwise blank it as it would result in 1970-01-01.
-		if ($value && $value != JFactory::getDbo()->getNullDate())
+		if ($value && $value != vFactory::getDbo()->getNullDate())
 		{
 			$tz = date_default_timezone_get();
 			date_default_timezone_set('UTC');
@@ -973,7 +973,7 @@ abstract class vHtml extends vBasicModel
 		// Only display the triggers once for each control.
 		if (!in_array($id, $done))
 		{
-			$document = JFactory::getDocument();
+			$document = vFactory::getDocument();
 			$document
 				->addScriptDeclaration(
 				'jQuery(document).ready(function($) {Calendar.setup({
@@ -986,7 +986,7 @@ abstract class vHtml extends vBasicModel
 			// Alignment (defaults to "Bl")
 			align: "Tl",
 			singleClick: true,
-			firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
+			firstDay: ' . vFactory::getLanguage()->getFirstDay() . '
 			});});'
 			);
 			$done[] = $id;

@@ -84,12 +84,6 @@ abstract class vView extends vBasicModel implements vIView {
 	public function renderLayout($lyt = null){
 
 		$this->_output = null;
-		$template = vFactory::getApplication()->getTemplate();
-
-		// Load the language file for the template
-		$lang = vFactory::getLanguage();
-		$lang->load('tpl_' . $template, VMPATH_BASE, null, false, true)
-		|| $lang->load('tpl_' . $template, VMPATH_THEMES . "/$template", null, false, true);
 
 		// Clean the file name
 		$lyt = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $lyt) : $lyt;
@@ -141,6 +135,13 @@ abstract class vView extends vBasicModel implements vIView {
 	 * @throws  Exception
 	 */
 	public function loadTemplate($lyt = null) {
+
+		// Load the language file for the template
+		$template = vFactory::getApplication()->getTemplate();
+		$lang = vFactory::getLanguage();
+		$lang->load('tpl_' . $template, VMPATH_BASE, null, false, true)
+		|| $lang->load('tpl_' . $template, VMPATH_THEMES . "/$template", null, false, true);
+
 		return $this->renderLayout($lyt);
 	}
 

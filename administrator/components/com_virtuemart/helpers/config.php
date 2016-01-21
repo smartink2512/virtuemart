@@ -51,9 +51,10 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 	$vmPathLibraries = '';
 }
 
-defined('VM_USE_BOOTSTRAP') or define ('VM_USE_BOOTSTRAP', 0);
+defined ('VM_USE_BOOTSTRAP') or define ('VM_USE_BOOTSTRAP', 0);
 defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', $vmPathLibraries);
 defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
+defined ('VMPATH_ADMINISTRATOR') or define ('VMPATH_ADMINISTRATOR',	VMPATH_ROOT . '/administrator');
 defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
 
 defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN.DS.'plugins');
@@ -496,7 +497,7 @@ class VmConfig {
 	public static $loaded = FALSE;
 
 	public static $maxMessageCount = 0;
-	public static $maxMessage = 100;
+	public static $maxMessage = 300;
 	public static $echoDebug = FALSE;
 	public static $logDebug = FALSE;
 	public static $logFileName = 'com_virtuemart';
@@ -712,9 +713,9 @@ class VmConfig {
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
-				$epath = JPATH_ADMINISTRATOR;
+				$epath = VMPATH_ADMINISTRATOR;
 				if($site){
-					$epath = JPATH_SITE;
+					$epath = VMPATH_ROOT;
 				}
 			} else {
 				$epath = $path;
@@ -724,9 +725,9 @@ class VmConfig {
 
 		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
 		if(!file_exists($testpath)){
-			$path = JPATH_ADMINISTRATOR;
+			$path = VMPATH_ADMINISTRATOR;
 			if($site){
-				$path = JPATH_SITE;
+				$path = VMPATH_ROOT;
 			}
 		}
 

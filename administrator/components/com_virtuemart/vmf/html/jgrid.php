@@ -213,27 +213,27 @@ abstract class vHtmlJGrid
 
 		if (!array_key_exists('published', $config) || $config['published'])
 		{
-			$options[] = JHtml::_('select.option', '1', 'JPUBLISHED');
+			$options[] = vHtml::_('select.option', '1', 'JPUBLISHED');
 		}
 
 		if (!array_key_exists('unpublished', $config) || $config['unpublished'])
 		{
-			$options[] = JHtml::_('select.option', '0', 'JUNPUBLISHED');
+			$options[] = vHtml::_('select.option', '0', 'JUNPUBLISHED');
 		}
 
 		if (!array_key_exists('archived', $config) || $config['archived'])
 		{
-			$options[] = JHtml::_('select.option', '2', 'JARCHIVED');
+			$options[] = vHtml::_('select.option', '2', 'JARCHIVED');
 		}
 
 		if (!array_key_exists('trash', $config) || $config['trash'])
 		{
-			$options[] = JHtml::_('select.option', '-2', 'JTRASHED');
+			$options[] = vHtml::_('select.option', '-2', 'JTRASHED');
 		}
 
 		if (!array_key_exists('all', $config) || $config['all'])
 		{
-			$options[] = JHtml::_('select.option', '*', 'JALL');
+			$options[] = vHtml::_('select.option', '*', 'JALL');
 		}
 
 		return $options;
@@ -255,7 +255,11 @@ abstract class vHtmlJGrid
 	 */
 	public static function checkedout($i, $editorName, $time, $prefix = '', $enabled = false, $checkbox = 'cb')
 	{
-		JHtml::_('bootstrap.tooltip');
+		if(VM_USE_BOOTSTRAP === 1){
+			JHtml::_('bootstrap.tooltip');
+		} else {
+			vHtml::_('behavior.tooltip');
+		}
 
 		if (is_array($prefix))
 		{
@@ -265,9 +269,9 @@ abstract class vHtmlJGrid
 			$prefix = array_key_exists('prefix', $options) ? $options['prefix'] : '';
 		}
 
-		$text = $editorName . '<br />' . JHtml::_('date', $time, vmText::_('DATE_FORMAT_LC')) . '<br />' . JHtml::_('date', $time, 'H:i');
-		$active_title = JHtml::tooltipText(vmText::_('JLIB_HTML_CHECKIN'), $text, 0);
-		$inactive_title = JHtml::tooltipText(vmText::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
+		$text = $editorName . '<br />' . vHtml::_('date', $time, vmText::_('DATE_FORMAT_LC')) . '<br />' . vHtml::_('date', $time, 'H:i');
+		$active_title = vHtml::tooltipText(vmText::_('JLIB_HTML_CHECKIN'), $text, 0);
+		$inactive_title = vHtml::tooltipText(vmText::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
 
 		return static::action(
 			$i, 'checkin', $prefix, vmText::_('JLIB_HTML_CHECKED_OUT'), html_entity_decode($active_title, ENT_QUOTES, 'UTF-8'),

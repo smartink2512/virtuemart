@@ -459,7 +459,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$db->setQuery($sql);
 			$taxCalcValue = $db->loadResult();
 
-			if($data['calculate_product_tax']) {
+			if(!empty($data['calculate_product_tax'])) {
 				if(!$taxCalcValue){
 					//Could be a new item, missing the tax rules, we try to get one of another product.
 					//get tax calc_value of product VatTax
@@ -805,7 +805,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 
-			$inputOrder['comments'] = trim($inputOrder['comments']);
+			if(!empty($inputOrder['comments']))$inputOrder['comments'] = trim($inputOrder['comments']);
+			if(empty($inputOrder['customer_notified'])) $inputOrder['customer_notified'] = 0;
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $inputOrder['customer_notified'], $inputOrder['comments']);
 

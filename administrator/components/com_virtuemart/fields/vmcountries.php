@@ -16,10 +16,10 @@ defined('_JEXEC') or die();
  * @version $Id: $
  */
 
-JFormHelper::loadFieldClass('list');
+vFormHelper::loadFieldClass('list');
 jimport('joomla.form.formfield');
 
-class JFormFieldVmCountries extends JFormFieldList {
+class vFormFieldVmCountries extends vFormFieldList {
 
 	/**
 	 * Element name

@@ -43,8 +43,8 @@ abstract class vHtmlList
 				. ".options[selectedIndex].value} else {document.imagelib.src='media/system/images/blank.png'}\"";
 		}
 
-		$imageFiles = new DirectoryIterator(JPATH_SITE . '/' . $directory);
-		$images = array(vHtml::_('select.option', '', JText::_('JOPTION_SELECT_IMAGE')));
+		$imageFiles = new DirectoryIterator(VMPATH_ROOT . '/' . $directory);
+		$images = array(vHtml::_('select.option', '', vmText::_('JOPTION_SELECT_IMAGE')));
 
 		foreach ($imageFiles as $file)
 		{
@@ -86,7 +86,7 @@ abstract class vHtmlList
 	 */
 	public static function genericordering($query, $chop = 30)
 	{
-		$db = JFactory::getDbo();
+		$db = vFactory::getDbo();
 		$options = array();
 		$db->setQuery($query);
 
@@ -94,18 +94,19 @@ abstract class vHtmlList
 
 		if (empty($items))
 		{
-			$options[] = vHtml::_('select.option', 1, JText::_('JOPTION_ORDER_FIRST'));
+			$options[] = vHtml::_('select.option', 1, vmText::_('JOPTION_ORDER_FIRST'));
 
 			return $options;
 		}
 
-		$options[] = vHtml::_('select.option', 0, '0 ' . JText::_('JOPTION_ORDER_FIRST'));
+		$options[] = vHtml::_('select.option', 0, '0 ' . vmText::_('JOPTION_ORDER_FIRST'));
+		if(!class_exists('vString')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vstring.php');
 
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
 			$items[$i]->text = vmText::_($items[$i]->text);
 
-			if (JString::strlen($items[$i]->text) > $chop)
+			if (vString::strlen($items[$i]->text) > $chop)
 			{
 				$text = vString::substr($items[$i]->text, 0, $chop) . "...";
 			}
@@ -117,7 +118,7 @@ abstract class vHtmlList
 			$options[] = vHtml::_('select.option', $items[$i]->value, $items[$i]->value . '. ' . $text);
 		}
 
-		$options[] = vHtml::_('select.option', $items[$i - 1]->value + 1, ($items[$i - 1]->value + 1) . ' ' . JText::_('JOPTION_ORDER_LAST'));
+		$options[] = vHtml::_('select.option', $items[$i - 1]->value + 1, ($items[$i - 1]->value + 1) . ' ' . vmText::_('JOPTION_ORDER_LAST'));
 
 		return $options;
 	}

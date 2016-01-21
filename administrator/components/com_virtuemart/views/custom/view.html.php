@@ -62,13 +62,13 @@ class VirtuemartViewCustom extends VmViewAdmin {
 			$this->custom->form = false;
 			if(!empty($this->custom->custom_jplugin_id)) {
 				VmConfig::loadJLang('plg_vmpsplugin', false);
-				JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+				vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 				$selected = $this->custom->custom_jplugin_id;
 				// Get the payment XML.
 				$formFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins'.DS. 'vmcustom' .DS. $this->custom->custom_element . DS . $this->custom->custom_element . '.xml');
 				if (file_exists($formFile)){
 
-					$this->custom->form = JForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+					$this->custom->form = vForm::getInstance($this->custom->custom_element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->custom->params = new stdClass();
 					$varsToPush = vmPlugin::getVarsToPushFromForm($this->custom->form);
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
@@ -79,7 +79,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 				$varsToPush = VirtueMartModelCustom::getVarsToPush($this->custom->field_type);
 
 				if(!empty($varsToPush)){
-					JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+					vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 					$formString = '<vmconfig>'.chr(10).'<fields name="params">'.chr(10).'<fieldset name="extraParams">'.chr(10);
 
 					foreach($varsToPush as $key => $push){
@@ -105,7 +105,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 						$formString .= chr(10).'</field>'.chr(10);
 					}
 					$formString .= '</fieldset>'.chr(10).'</fields>'.chr(10).'</vmconfig>';
-					$this->custom->form = JForm::getInstance($this->custom->field_type, $formString, array(),false, '//vmconfig | //config[not(//vmconfig)]');
+					$this->custom->form = vForm::getInstance($this->custom->field_type, $formString, array(),false, '//vmconfig | //config[not(//vmconfig)]');
 					$this->custom->params = new stdClass();
 					VmTable::bindParameterableToSubField($this->custom,$varsToPush);
 					$this->custom->form->bind($this->custom->getProperties());

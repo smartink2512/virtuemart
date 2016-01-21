@@ -29,7 +29,7 @@ jimport('joomla.form.formfield');
  *
  *
  */
-class JFormFieldVendor extends JFormField {
+class vFormFieldVendor extends vFormField {
 
 	var $type = 'vendor';
 	

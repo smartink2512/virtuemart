@@ -8,7 +8,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'compo
 /**
  * Creates dropdown for selecting a string customfield
  */
-class JFormFieldScustom extends JFormField {
+class vFormFieldScustom extends vFormField {
 
 	var $type = 'scustom';
 

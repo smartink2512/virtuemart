@@ -29,7 +29,7 @@ jimport('joomla.form.formfield');
  *
  *
  */
-class JFormFieldVmLayout extends JFormField
+class vFormFieldVmLayout extends vFormField
 {
 	var $type = 'layout';
 

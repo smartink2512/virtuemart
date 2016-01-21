@@ -177,7 +177,7 @@ class VmTable extends vTable implements JObservableInterface, JTableInterface {
 
 
 	/**
-	 * Maps the parameters to a subfield. usefull for the JForm
+	 * Maps the parameters to a subfield. usefull for the vForm
 	 * @author Max Milbers
 	 * @param $obj
 	 * @param $varsToPush

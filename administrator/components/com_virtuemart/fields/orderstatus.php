@@ -15,7 +15,7 @@ defined ('_JEXEC') or die();
  * @version $Id:$
  */
 
-class JFormFieldOrderstatus extends JFormField {
+class vFormFieldOrderstatus extends vFormField {
 	var $type = 'orderstatus';
 	function getInput () {
 

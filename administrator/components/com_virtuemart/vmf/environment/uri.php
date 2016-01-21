@@ -649,6 +649,7 @@ class vUri implements vIUri
 	{
 		if (empty(static::$instances[$uri]))
 		{
+
 			// Are we obtaining the URI from the server?
 			if ($uri == 'SERVER')
 			{
