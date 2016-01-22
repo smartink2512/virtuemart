@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Implement Joomla's form validation
-vHtml::_('behavior.formvalidation');
+vHtml::_('behavior.formvalidator');
 vHtml::stylesheet('vmpanels.css', vUri::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
 

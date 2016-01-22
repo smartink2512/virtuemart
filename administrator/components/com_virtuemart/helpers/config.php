@@ -564,29 +564,19 @@ class VmConfig {
 				$dev = $override;
 			} else {
 				$debug = VmConfig::get('debug_enable','none');
-				$dev = VmConfig::get('vmdev',0);
+				$dev = VmConfig::get('vmdev','none');
 			}
 
 			//$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
-			if($debug === 'admin' ){
-				if(VmConfig::$echoAdmin){
-					self::$_debug = TRUE;
-				} else {
-					self::$_debug = FALSE;
-				}
+			self::$_debug = FALSE;
+			if($debug === 'admin' and VmConfig::$echoAdmin){
+				self::$_debug = TRUE;
 			}
 			// 2 show debug to anyone
-			else {
-				if ($debug === 'all') {
+			else if ($debug === 'all') {
 					self::$_debug = TRUE;
-				}
-				// else dont show debug
-				else {
-					self::$_debug = FALSE;
-				}
 			}
-
 
 			if ($dev === 'all') {
 				self::setErrRepDebug();
@@ -595,7 +585,6 @@ class VmConfig {
 			} else if($dev === 'none'){
 				self::setErrRepDefault();
 			}
-
 		}
 
 		return self::$_debug;

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidator');
 
 $js = "
 	jQuery(document).ready(function($) {

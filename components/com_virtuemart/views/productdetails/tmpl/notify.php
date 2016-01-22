@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 // Implement Joomla's form validation
-vHtml::_('behavior.formvalidation');
+vHtml::_('behavior.formvalidator');
 ?>
 <div class="vm-wrap">
   <h1><?php echo vmText::_('COM_VIRTUEMART_CART_NOTIFY') ?></h1>

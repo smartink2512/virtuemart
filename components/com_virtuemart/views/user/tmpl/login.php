@@ -36,7 +36,7 @@ if (empty($this->url)){
 $user = vFactory::getUser();
 
 if ($this->show and $user->id == 0  ) {
-vHtml::_('behavior.formvalidation');
+vHtml::_('behavior.formvalidator');
 
 	//Extra login stuff, systems like openId and plugins HERE
     if (JPluginHelper::isEnabled('authentication', 'openid')) {
