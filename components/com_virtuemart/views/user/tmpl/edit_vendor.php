@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 </label>
 							</td>
 							<td>
-								<?php echo JHtml::_('Select.genericlist', $this->currencies, 'vendor_currency', 'class="vm-chzn-select"', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
+								<?php echo vHtml::_('Select.genericlist', $this->currencies, 'vendor_currency', 'class="vm-chzn-select"', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
 							</td>
 						</tr>
 						<tr>
@@ -95,7 +95,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 </label>
 							</td>
 							<td>
-								<?php echo JHtml::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple="multiple" class="vm-chzn-select"', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
+								<?php echo vHtml::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple="multiple" class="vm-chzn-select"', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
 							</td>
 						</tr>
 					</table>

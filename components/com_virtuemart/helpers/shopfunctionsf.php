@@ -194,7 +194,7 @@ class shopFunctionsF {
 			$attrs['multiple'] = 'multiple';
 			$name .= '[]';
 		} else {
-			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $optKey, $optText);
+			$emptyOption = vHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $optKey, $optText);
 			array_unshift ($countries_list, $emptyOption);
 		}
 
@@ -205,7 +205,7 @@ class shopFunctionsF {
 			$attrs[$_a[0]] = $_a[1];
 		}
 
-		return JHtml::_ ('select.genericlist', $countries_list, $name, $attrs, $optKey, $optText, $countryId, $idTag);
+		return vHtml::_ ('select.genericlist', $countries_list, $name, $attrs, $optKey, $optText, $countryId, $idTag);
 	}
 
 	/**
@@ -915,7 +915,7 @@ class shopFunctionsF {
 			if(file_exists($path)){
 				$link = vUri::root(true).'/index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&order_number='.$orderInfo->order_number.'&order_pass='.$orderInfo->order_pass;
 				$pdf_link = "<a href=\"javascript:void window.open('".$link."', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
-				$pdf_link .= JHtml::_('image',$icon, vmText::_($descr), NULL, true);
+				$pdf_link .= vHtml::_('image',$icon, vmText::_($descr), NULL, true);
 				$pdf_link .= '</a>';
 				$html = $pdf_link;
 			}

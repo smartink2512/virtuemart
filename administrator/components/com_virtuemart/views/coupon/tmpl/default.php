@@ -127,13 +127,7 @@ AdminUIHelper::startAdminArea($this);
 	    </tfoot>
 	</table>
     </div>
-
-    <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="controller" value="coupon" />
-    <input type="hidden" name="view" value="coupon" />
-    <input type="hidden" name="task" value="" />
-    <input type="hidden" name="boxchecked" value="0" />
-    <?php echo vHtml::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 

@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 
 				$currentUser = $this->cart->user->virtuemart_user_id;
-				echo JHtml::_('Select.genericlist', $this->userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser,'userIDcart');
+				echo vHtml::_('Select.genericlist', $this->userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser,'userIDcart');
 				?>
 			</td>
 			<td style="border:0px;">
@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php if($this->adminID && $currentUser != $this->adminID) { ?>
 					<b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.vFactory::getUser($this->adminID)->name; ?></b>
 				<?php } ?>
-				<?php echo JHtml::_( 'form.token' ); ?>
+				<?php echo vHtml::token(); ?>
 			</td>
 		</tr>
 	</table>

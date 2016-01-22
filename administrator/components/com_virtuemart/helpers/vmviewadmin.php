@@ -418,11 +418,11 @@ class VmViewAdmin extends vView {
 		}
 
 		return  $hidden.'
-		<input type="hidden" name="task" value="'.$task.'" />
 		<input type="hidden" name="option" value="'.$option.'" />
-		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="controller" value="'.$controller.'" />
 		<input type="hidden" name="view" value="'.$controller.'" />
+		<input type="hidden" name="task" value="'.$task.'" />
+		<input type="hidden" name="boxchecked" value="0" />
 		'. vHtml::token();
 	}
 
@@ -432,47 +432,8 @@ class VmViewAdmin extends vView {
 	 *
 	 * @return string HTML code to write the toggle button
 	 */
-	function toggle( $field, $i, $toggle = 'published', $imgY = 'tick.png', $imgX = 'publish_x.png', $untoggleable = false )
-	{
-
+	function toggle( $field, $i, $toggle = 'published', $imgY = 'tick.png', $imgX = 'publish_x.png', $untoggleable = false ) {
 		return vHtml::_('grid.toggle', $field, $i, $toggle, $imgY, $imgX, $untoggleable);
-	/*	$img 	= $field ? $imgY : $imgX;
-		if ($toggle == 'published') {
-			// Stay compatible with grid.published
-			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_UNPUBLISHED');
-			$action = $field ? vmText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : vmText::_('COM_VIRTUEMART_PUBLISH_ITEM');
-			/*if (JVM_VERSION < 3){
-				$published = vHtml::_('grid.published', $name, $i );
-			} else {
-				$published = vHtml::_('jgrid.published', $name->published, $i );
-			}//*/
-/*		} else {
-			$task 	= $field ? $toggle.'.0' : $toggle.'.1';
-			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_DISABLED');
-			$action = $field ? vmText::_('COM_VIRTUEMART_DISABLE_ITEM') : vmText::_('COM_VIRTUEMART_ENABLE_ITEM');
-		}
-
-		$img = 'admin/' . $img;
-
-		if ($untoggleable) {
-			$attribs='style="opacity: 0.6;"';
-		} else {
-			$attribs='';
-		}
-		$image = vHtml::_('image', $img, $alt, $attribs, true);
-
-		if($untoggleable) return $image;
-
-		if (JVM_VERSION < 3){
-			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-					. $image .'</a>');
-		} else {
-			$icon 	= $field ? 'publish' : 'unpublish';
-			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				. '<span class="icon-'.$icon.'"><span>' .'</a>');
-		}
-*/
 	}
 
 	function gridPublished($name,$i) {

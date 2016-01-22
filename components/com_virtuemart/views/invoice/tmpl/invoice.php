@@ -17,7 +17,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::stylesheet('vmpanels.css', vUri::root() . 'components/com_virtuemart/assets/css/');
+vHtml::stylesheet('vmpanels.css', vUri::root() . 'components/com_virtuemart/assets/css/');
 if ($this->getLayout() == "invoice") {
 	$document = vFactory::getDocument();
 	$document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') . ' ' . $this->orderDetails['details']['BT']->order_number . ' ' . $this->vendor->vendor_store_name);

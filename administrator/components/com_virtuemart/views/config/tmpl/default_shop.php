@@ -79,14 +79,14 @@ defined('_JEXEC') or die('Restricted access');?>
 				'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 			);
 			echo VmHTML::row('radiolist','COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG','debug_enable',VmConfig::get('debug_enable','none'), $optDebug);
-			echo VmHTML::row('radiolist','COM_VIRTUEMART_CFG_DEV','vmdev',VmConfig::get('vmdev',0), $optDebug);
+
+			array_unshift($optDebug,vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_DEFAULT'));
+			echo VmHTML::row('radiolist','COM_VIRTUEMART_CFG_DEV','vmdev',VmConfig::get('vmdev','none'), $optDebug);
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS','dangeroustools',VmConfig::get('dangeroustools',0));
 			echo VmHTML::row('input','COM_VIRTUEMART_REV_PROXY_VAR','revproxvar',VmConfig::get('revproxvar',''));
 			$optMultiX = array(
 				'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_NONE'),
 				'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_ADMIN')
-
-				// 				'all'	=> vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 			);
 			echo VmHTML::row('radiolist','COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX','multix',VmConfig::get('multix','none'), $optMultiX);
 		$optMultiX = array(
@@ -94,7 +94,6 @@ defined('_JEXEC') or die('Restricted access');?>
 			'byproduct' => vmText::_('COM_VIRTUEMART_CFG_MULTIX_CART_BYPRODUCT'),
 			'byvendor' => vmText::_('COM_VIRTUEMART_CFG_MULTIX_CART_BYVENDOR'),
 			'byselection' => vmText::_('COM_VIRTUEMART_CFG_MULTIX_CART_BYSELECTION')
-			// 				'all'	=> vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 		);
 		echo VmHTML::row('radiolist','COM_VIRTUEMART_CFG_MULTIX_CART','multixcart',VmConfig::get('multixcart',0), $optMultiX);
 

@@ -46,7 +46,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 			?>
 						</span>
 		<?php } ?>
-		<?php echo JHtml::link ($prow->url, $prow->product_name);
+		<?php echo vHtml::link ($prow->url, $prow->product_name);
 			echo $this->customfieldsModel->CustomsFieldCartDisplay ($prow);
 		 ?>
 
@@ -238,7 +238,7 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 				echo $this->renderLayout('shipment');
 				$this->setLayout($previouslayout);
 			} else {
-				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
+				echo vHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
 			}
 		} else {
 			echo vmText::_ ('COM_VIRTUEMART_CART_SHIPPING');
@@ -278,7 +278,7 @@ if ( 	VmConfig::get('oncheckout_opc',true) or
 				echo $this->renderLayout('payment');
 				$this->setLayout($previouslayout);
 			} else {
-				echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
+				echo vHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
 			}
 		} else {
 		echo vmText::_ ('COM_VIRTUEMART_CART_PAYMENT');

@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JHtml::stylesheet('vmpanels.css', vUri::root().'components/com_virtuemart/assets/css/');
+vHtml::stylesheet('vmpanels.css', vUri::root().'components/com_virtuemart/assets/css/');
 if($this->print){
 	?>
 
@@ -55,7 +55,7 @@ if($this->print){
 	$details_link = "<a href=\"javascript:void window.open('$this->details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 	//$details_link .= '<span class="hasTip print_32" title="' . vmText::_('COM_VIRTUEMART_PRINT') . '">&nbsp;</span></a>';
 	$button = 'system/printButton.png';
-	$details_link .= JHtml::_('image',$button, vmText::_('COM_VIRTUEMART_PRINT'), NULL, true);
+	$details_link .= vHtml::_('image',$button, vmText::_('COM_VIRTUEMART_PRINT'), NULL, true);
 	$details_link  .=  '</a>';
 	echo $details_link;
 	$this->orderdetails['details']['BT']->invoiceNumber = VmModel::getModel('orders')->getInvoiceNumber($this->orderdetails['details']['BT']->virtuemart_order_id);

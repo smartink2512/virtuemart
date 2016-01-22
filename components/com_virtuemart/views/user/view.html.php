@@ -306,14 +306,14 @@ class VirtuemartViewUser extends VmView {
 		// Load the required scripts
 		if (count($userFields['scripts']) > 0) {
 			foreach ($userFields['scripts'] as $_script => $_path) {
-			JHtml::script($_script, $_path);
+			vHtml::script($_script, $_path);
 			}
 		}
 
 		// Load the required styresheets
 		if (count($userFields['links']) > 0) {
 			foreach ($userFields['links'] as $_link => $_path) {
-			JHtml::stylesheet($_link, $_path);
+			vHtml::stylesheet($_link, $_path);
 			}
 		}
     }
@@ -324,8 +324,8 @@ class VirtuemartViewUser extends VmView {
 		// Can't block myself TODO I broke that, please retest if it is working again
 		$this->lists['canBlock'] = ($currentUser->authorise('com_users', 'block user') && ($this->_model->getId() != $this->_cuid));
 		$this->lists['canSetMailopt'] = $currentUser->authorise('workflow', 'email_events');
-		$this->_lists['block'] = JHtml::_('select.booleanlist', 'block', 'class="inputbox"', $this->userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-		$this->_lists['sendEmail'] = JHtml::_('select.booleanlist', 'sendEmail', 'class="inputbox"', $this->userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+		$this->_lists['block'] = vHtml::_('select.booleanlist', 'block', 'class="inputbox"', $this->userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+		$this->_lists['sendEmail'] = vHtml::_('select.booleanlist', 'sendEmail', 'class="inputbox"', $this->userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 
 		$this->_lists['params'] = $this->userDetails->JUser->getParameters(true);
 

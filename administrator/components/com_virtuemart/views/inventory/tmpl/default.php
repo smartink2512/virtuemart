@@ -100,13 +100,6 @@ AdminUIHelper::startAdminArea($this);
 	</tfoot>
 	</table>
 </div>
-<!-- Hidden Fields -->
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="inventory" />
-<input type="hidden" name="boxchecked" value="0" />
-<?php echo vHtml::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>

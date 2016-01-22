@@ -141,17 +141,11 @@ $customs = $this->customs->items;
 	</tfoot>
 	</table>
 <!-- Hidden Fields -->
-<input type="hidden" name="task" value="" />
+
 <?php if (vRequest::getInt('virtuemart_product_id', false)) { ?>
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo vRequest::getInt('virtuemart_product_id',0); ?>" />
 <?php } ?>
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="custom" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php //echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php //echo $this->lists['order_Dir']; ?>" />
-
-<?php echo vHtml::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 <?php AdminUIHelper::endAdminArea();
 /// DRAG AND DROP PRODUCT ORDER HACK

@@ -20,8 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Implement Joomla's form validation
-JHtml::_('behavior.formvalidation');
-JHtml::stylesheet('vmpanels.css', vUri::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
+vHtml::_('behavior.formvalidation');
+vHtml::stylesheet('vmpanels.css', vUri::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
 
 <?php //vmJsApi::vmValidator($this->userDetails->JUser->guest,$this->userFields); ?>
@@ -74,7 +74,7 @@ if($this->userDetails->virtuemart_user_id!=0) {
 
 // captcha addition
 if(VmConfig::get ('reg_captcha')){
-	JHTML::_('behavior.framework');
+	vHtml::_('behavior.framework');
 	JPluginHelper::importPlugin('captcha');
 	$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 	?>
@@ -85,6 +85,6 @@ if(VmConfig::get ('reg_captcha')){
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo vHtml::token(); ?>
 </form>
 

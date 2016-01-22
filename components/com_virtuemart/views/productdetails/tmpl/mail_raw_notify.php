@@ -34,7 +34,7 @@ echo "\n";
 $link = vUri::root().'index.php?option=com_virtuemart';
 
 echo "\n\n";
-$link= JHtml::_('link', $link, $this->vendor->vendor_name) ;
+$link= vHtml::_('link', $link, $this->vendor->vendor_name) ;
 
 //	echo vmText::_('COM_VIRTUEMART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
 /* GENERAL FOOTER FOR ALL MAILS */

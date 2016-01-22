@@ -33,7 +33,7 @@ echo "\n";
 $link = vUri::root().'index.php?option=com_virtuemart';
 
 echo "\n\n";
-$link= JHTML::_('link', $link, $this->vendor->vendor_name) ;
+$link= vHtml::_('link', $link, $this->vendor->vendor_name) ;
 
 
 /* GENERAL FOOTER FOR ALL MAILS */
@@ -46,5 +46,5 @@ echo vmText::sprintf('COM_VIRTUEMART_RECOMMEND_MAIL_MSG', $this->product->produc
 
 $link = vUri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id ;
 
-echo '<br /><b>'.JHTML::_('link',$link, $this->product->product_name).'</b>';
+echo '<br /><b>'.vHtml::_('link',$link, $this->product->product_name).'</b>';
 include(VMPATH_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'mail_html_footer.php');

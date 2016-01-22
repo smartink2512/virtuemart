@@ -90,7 +90,7 @@ if (empty ( $this->product )) {
 					<div class="submit">
 						<?php // captcha addition
 						if(VmConfig::get ('ask_captcha') && vFactory::getUser()->guest == 1){
-							JHTML::_('behavior.framework');
+							vHtml::_('behavior.framework');
 							JPluginHelper::importPlugin('captcha');
 							$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 							?>
@@ -117,7 +117,7 @@ if (empty ( $this->product )) {
 					<input type="hidden" name="option" value="com_virtuemart" />
 					<input type="hidden" name="virtuemart_category_id" value="<?php echo vRequest::getInt('virtuemart_category_id'); ?>" />
 					<input type="hidden" name="task" value="mailAskquestion" />
-					<?php echo JHTML::_( 'form.token' ); ?>
+					<?php echo vHtml::token(); ?>
 				</form>
 
 			</div>

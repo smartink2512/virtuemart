@@ -19,8 +19,8 @@
 defined ('_JEXEC') or die('Restricted access');
 
 // Implement Joomla's form validation
-JHtml::_ ('behavior.formvalidation');
-JHtml::stylesheet ('vmpanels.css', vUri::root () . 'components/com_virtuemart/assets/css/');
+vHtml::_ ('behavior.formvalidation');
+vHtml::stylesheet ('vmpanels.css', vUri::root () . 'components/com_virtuemart/assets/css/');
 
 if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 $this->cart = VirtueMartCart::getCart();
@@ -106,7 +106,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 <?php // captcha addition
 	if(VmConfig::get ('reg_captcha') && vFactory::getUser()->guest == 1){
-		JHTML::_('behavior.framework');
+		vHtml::_('behavior.framework');
 		JPluginHelper::importPlugin('captcha');
 		$captcha_visible = vRequest::getVar('captcha');
 		$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
@@ -142,10 +142,11 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 	<input type="hidden" name="task" value="saveUser"/>
 	<input type="hidden" name="layout" value="<?php echo $this->getLayout (); ?>"/>
 	<input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>"/>
+	<input type="hidden" name="language" value="<?php echo VmConfig::$vmlangTag ?>">
 	<?php if (!empty($this->virtuemart_userinfo_id)) {
 		echo '<input type="hidden" name="shipto_virtuemart_userinfo_id" value="' . (int)$this->virtuemart_userinfo_id . '" />';
 	}
-	echo JHtml::_ ('form.token');
+	echo vHtml::token();
 	?>
 
 </fieldset>

@@ -185,7 +185,7 @@ class VirtueMartCustomFieldRenderer {
 							$attribs['reload'] = '1';
 						}
 
-						$html .= JHtml::_ ('select.genericlist', $options, $fieldname, $attribs , "value", "text", $selected,$idTagK);
+						$html .= vHtml::_ ('select.genericlist', $options, $fieldname, $attribs , "value", "text", $selected,$idTagK);
 						$tags[] = $idTagK;
 					}
 
@@ -304,7 +304,7 @@ class VirtueMartCustomFieldRenderer {
 					$attribs['option.key'] = 'value';
 					$attribs['option.text'] = 'text';
 					$attribs['list.select'] = JRoute::_ ($url,false);
-					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, $attribs);
+					$html .= vHtml::_ ('select.genericlist', $options, $fieldname, $attribs);
 
 					vmJsApi::chosenDropDowns();
 
@@ -396,7 +396,7 @@ class VirtueMartCustomFieldRenderer {
 
 							$currentValue = $customfield->customfield_value;
 
-							$customfield->display = JHtml::_ ($selectType, $options, $customProductDataName.'[' . $customfield->virtuemart_customfield_id . ']', $class, 'value', 'text', $currentValue,$idTag);
+							$customfield->display = vHtml::_ ($selectType, $options, $customProductDataName.'[' . $customfield->virtuemart_customfield_id . ']', $class, 'value', 'text', $currentValue,$idTag);
 						} else {
 							if($type == 'M'){
 								$customfield->display =  VirtueMartModelCustomfields::displayCustomMedia ($customfield->customfield_value,'product',$customfield->width,$customfield->height);
@@ -448,7 +448,7 @@ class VirtueMartCustomFieldRenderer {
 							}
 
 
-							$customfields[$selectList[$customfield->virtuemart_custom_id]]->display = JHtml::_ ($selectType, $customfields[$selectList[$customfield->virtuemart_custom_id]]->options,
+							$customfields[$selectList[$customfield->virtuemart_custom_id]]->display = vHtml::_ ($selectType, $customfields[$selectList[$customfield->virtuemart_custom_id]]->options,
 							$customfields[$selectList[$customfield->virtuemart_custom_id]]->customProductDataName,
 							$class, 'virtuemart_customfield_id', 'text', $default->customfield_value,$idTag);	//*/
 						} else {
@@ -513,7 +513,7 @@ class VirtueMartCustomFieldRenderer {
 						if ($media_id = $db->loadResult ()) {
 							$thumb = VirtueMartModelCustomfields::displayCustomMedia ($media_id,'category',$customfield->width,$customfield->height);
 						}
-						$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name,'target'=>'_blank'));
+						$customfield->display = vHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name,'target'=>'_blank'));
 					}
 
 					break;

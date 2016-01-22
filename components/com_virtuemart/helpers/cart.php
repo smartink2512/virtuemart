@@ -1572,7 +1572,7 @@ class VirtueMartCart {
 					$product -> quantity = $productdata['quantity'];
 
 					// No full link because Mail want absolute path and in shop is better relative path
-					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHtml::link($url, $product->product_name);
+					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//vHtml::link($url, $product->product_name);
 					$product->cart_item_id = $k ;
 
 					if ( VmConfig::get('oncheckout_show_images')){
@@ -1728,7 +1728,7 @@ class VirtueMartCart {
 
 			//Create product URL
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$category_id, FALSE);
-			$data->products[$i]['product_name'] = JHtml::link($url, $product->product_name);
+			$data->products[$i]['product_name'] = vHtml::link($url, $product->product_name);
 
 			if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
 

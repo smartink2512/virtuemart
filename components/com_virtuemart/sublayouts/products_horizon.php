@@ -86,7 +86,7 @@ foreach ($viewData['products'] as $type => $products ) {
 
 
 				<div class="vm-product-descr-container-<?php echo $rowsHeight[$row]['product_s_desc'] ?>">
-					<h2><?php echo JHtml::link ($product->link.$ItemidStr, $product->product_name); ?></h2>
+					<h2><?php echo vHtml::link ($product->link.$ItemidStr, $product->product_name); ?></h2>
 					<?php if(!empty($rowsHeight[$row]['product_s_desc'])){
 					?>
 					<p class="product_s_desc">
@@ -112,8 +112,8 @@ foreach ($viewData['products'] as $type => $products ) {
 			<div class="vm-details-button">
 				<?php // Product Details Button
 				$link = empty($product->link)? $product->canonical:$product->link;
-				echo JHtml::link($link.$ItemidStr,vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
-				//echo JHtml::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id , FALSE), vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
+				echo vHtml::link($link.$ItemidStr,vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
+				//echo vHtml::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id , FALSE), vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
 				?>
 			</div>
 

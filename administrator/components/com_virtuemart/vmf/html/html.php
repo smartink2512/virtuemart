@@ -1088,7 +1088,7 @@ abstract class vHtml extends vBasicModel
 		return '{' . implode(',', $elements) . '}';
 	}
 	
-		/**
+	/**
 	 * Adjusted for VMF
 	 * @return string
 	 */

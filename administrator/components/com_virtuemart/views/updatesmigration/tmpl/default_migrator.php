@@ -105,10 +105,7 @@ echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_FLY','migration_default_
 ?>
 
 </table>
-    <!-- Hidden Fields -->
-    <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="view" value="updatesmigration" />
-	<?php echo vHtml::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm('updatesmigration'); ?>
 </form>
 
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
@@ -128,10 +125,7 @@ echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_FLY','migration_default_
 </tr>
 </table>
 
-<!-- Hidden Fields -->
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="updatesmigration" />
-<?php echo vHtml::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm('updatesmigration'); ?>
 </form>
 <?php /*
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >

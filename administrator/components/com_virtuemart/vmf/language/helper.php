@@ -33,7 +33,7 @@ class vLanguageHelper
 		$list = array();
 
 		// Cache activation
-		$langs = JLanguage::getKnownLanguages($basePath);
+		$langs = vLanguage::getKnownLanguages($basePath);
 
 		if ($installed) {
 			$db = vFactory::getDbo();

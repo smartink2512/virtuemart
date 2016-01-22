@@ -87,12 +87,9 @@ vmJsApi::addJScript( 'orderstatus', "
 </fieldset>
 
 <!-- Hidden Fields -->
-<input type="hidden" name="task" value="updatestatus" />
+<?php echo $this->addStandardHiddenToForm('orders','updatestatus'); ?>
 <input type="hidden" name="last_task" value="updatestatus" />
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="orders" />
 <input type="hidden" name="coupon_code" value="<?php echo $this->orderbt->coupon_code; ?>" />
 <input type="hidden" name="current_order_status" value="<?php echo $this->currentOrderStat; ?>" />
 <input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
-<?php echo vHtml::_( 'form.token' ); ?>
 </form>

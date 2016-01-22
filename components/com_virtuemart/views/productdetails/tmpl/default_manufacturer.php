@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		// Avoid JavaScript on PDF Output
 		if (!$this->writeJs) {
-			$mans[] = JHtml::_('link', $link, $name);
+			$mans[] = vHtml::_('link', $link, $name);
 		} else {
 			$mans[] = '<a class="manuModal" rel="{handler: \'iframe\', size: {x: 700, y: 850}}" href="'.$link .'">'.$name.'</a>';
 		}

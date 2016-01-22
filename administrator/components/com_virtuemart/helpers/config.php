@@ -587,36 +587,32 @@ class VmConfig {
 				}
 			}
 
-			if($dev === 'admin' ){
-				if(VmConfig::$echoAdmin){
-					$dev = TRUE;
-				} else {
-					$dev = FALSE;
-				}
-			}
-			// 2 show debug to anyone
-			else {
-				if ($dev === 'all') {
-					$dev = TRUE;
-				}
-				// else dont show debug
-				else {
-					$dev = FALSE;
-				}
-			}
 
-			self::setErrorReporting($dev);
+			if ($dev === 'all') {
+				self::setErrRepDebug();
+			} else if($dev === 'admin' and VmConfig::$echoAdmin){
+				self::setErrRepDebug();
+			} else if($dev === 'none'){
+				self::setErrRepDefault();
+			}
 
 		}
 
 		return self::$_debug;
 	}
 
-	static function setErrorReporting($dev,$force = false){
+	static function setErrRepDefault($force=false){
+		$jconfig = vFactory::getConfig();
+		$errep = $jconfig->get('error_reporting');
+		if ( $errep == 'default' or $force) {
+			$ret[0] = ini_set('display_errors', 0);
+			$ret[1] = error_reporting(E_ERROR | E_WARNING | E_PARSE);
+		}
+	}
 
-		$ret = array();
-		if($dev){
-			$ret[0] = ini_set('display_errors', '-1');
+	static function setErrRepDebug(){
+		$ret[0] = ini_set('display_errors', '-1');
+		if(VM_VERSION<3){
 			if(version_compare(phpversion(),'5.4.0','<' )){
 				vmdebug('PHP 5.3');
 				$ret[1] = error_reporting( E_ALL ^ E_STRICT );
@@ -624,18 +620,18 @@ class VmConfig {
 				vmdebug('PHP 5.4');
 				$ret[1] = error_reporting( E_ALL );
 			}
-			vmdebug('Show All Errors');
-
 		} else {
-			$jconfig = vFactory::getConfig();
-			$errep = $jconfig->get('error_reporting');
-			if ( $errep == 'default' or $force) {
-				$ret[0] = ini_set('display_errors', 0);
-				$ret[1] = error_reporting(E_ERROR | E_WARNING | E_PARSE);
+			if(version_compare(phpversion(),'5.4.0','<' )){
+				vmdebug('PHP 5.3');
+				$ret[1] = error_reporting( E_ALL );
+			} else {
+				vmdebug('PHP 5.4');
+				$ret[1] = error_reporting( E_ALL & ~E_STRICT);
 			}
 		}
-		return $ret;
+		vmdebug('Show All Errors');
 	}
+
 
 /**
 	 * Ensures a certain Memory limit for php (if server supports it)

@@ -43,12 +43,12 @@ if(vRequest::getInt('print',false)){ ?>
 	    <?php
 	    if (!empty($this->product->neighbours ['previous'][0])) {
 		$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE);
-		echo JHtml::_('link', $prev_link, $this->product->neighbours ['previous'][0]
+		echo vHtml::_('link', $prev_link, $this->product->neighbours ['previous'][0]
 			['product_name'], array('rel'=>'prev', 'class' => 'previous-page','data-dynamic-update' => '1'));
 	    }
 	    if (!empty($this->product->neighbours ['next'][0])) {
 		$next_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE);
-		echo JHtml::_('link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array('rel'=>'next','class' => 'next-page','data-dynamic-update' => '1'));
+		echo vHtml::_('link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array('rel'=>'next','class' => 'next-page','data-dynamic-update' => '1'));
 	    }
 	    ?>
     	<div class="clear"></div>

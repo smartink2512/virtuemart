@@ -149,12 +149,8 @@ vmJsApi::addJScript('ordergui',$j);
 ?>
 <div style="text-align: left;">
 <form name='adminForm' id="adminForm">
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="option" value="com_virtuemart" />
-		<input type="hidden" name="view" value="orders" />
+		<?php echo $this->addStandardHiddenToForm(); ?>
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
-		<?php echo vHtml::_( 'form.token' ); ?>
-
 
 <table class="adminlist table table-striped" width="100%">
 	<tr>
@@ -596,14 +592,11 @@ vmJsApi::addJScript('ordergui',$j);
 					</td>
 			</tr>
 		<!--/table -->
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="option" value="com_virtuemart" />
-		<input type="hidden" name="view" value="orders" />
+		<?php echo $this->addStandardHiddenToForm(); ?>
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
 		<input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->orderbt->virtuemart_paymentmethod_id; ?>" />
 		<input type="hidden" name="virtuemart_shipmentmethod_id" value="<?php echo $this->orderbt->virtuemart_shipmentmethod_id; ?>" />
 		<input type="hidden" name="order_total" value="<?php echo $this->orderbt->order_total; ?>" />
-		<?php echo vHtml::_( 'form.token' ); ?>
 		</form> <!-- Update linestatus form -->
 		<!--table class="adminlist" cellspacing="0" cellpadding="0" -->
 			<tr>

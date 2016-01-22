@@ -36,7 +36,7 @@ if (empty($this->url)){
 $user = vFactory::getUser();
 
 if ($this->show and $user->id == 0  ) {
-JHtml::_('behavior.formvalidation');
+vHtml::_('behavior.formvalidation');
 
 	//Extra login stuff, systems like openId and plugins HERE
     if (JPluginHelper::isEnabled('authentication', 'openid')) {
@@ -52,7 +52,7 @@ JHtml::_('behavior.formvalidation');
 //]]>
                 ';
 		vmJsApi::addJScript('login_openid',$langScript);
-        JHtml::_('script', 'openid.js');
+        vHtml::_('script', 'openid.js');
     }
 
     $html = '';
@@ -147,7 +147,7 @@ JHtml::_('behavior.formvalidation');
       <input type="hidden" name="task" value="user.login" />
       <input type="hidden" name="option" value="com_users" />
       <input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
-      <?php echo JHtml::_('form.token'); ?>
+      <?php echo vHtml::token(); ?>
     </form>
 
 <?php  } else if ( $user->id ) { ?>
@@ -157,7 +157,7 @@ JHtml::_('behavior.formvalidation');
       <input type="submit" name="Submit" class="button" value="<?php echo vmText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
       <input type="hidden" name="option" value="com_users" />
       <input type="hidden" name="task" value="user.logout" />
-      <?php echo JHtml::_('form.token'); ?>
+      <?php vHtml::token(); ?>
     	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
     </form>
 

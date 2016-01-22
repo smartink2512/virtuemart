@@ -494,7 +494,7 @@ class VirtueMartViewCart extends VmView {
 				: $this->cart->selected_shipto
 			);
 
-			$this->cart->lists['shipTo'] = JHtml::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
+			$this->cart->lists['shipTo'] = vHtml::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
 			$this->cart->lists['billTo'] = empty($addressList[0]->virtuemart_userinfo_id)? 0 : $addressList[0]->virtuemart_userinfo_id;
 		} else {
 			$this->cart->lists['shipTo'] = false;
