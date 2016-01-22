@@ -13,6 +13,7 @@ if(!interface_exists('vIObject'))
 
 if(!class_exists('vObject')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vobject.php');
 if(!class_exists('vRequest')) require(VMPATH_ADMIN .DS. 'helpers' .DS. 'vrequest.php');
+if(!class_exists('vPath')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vpath.php');
 
 abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 
@@ -72,8 +73,8 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 			$filename = $type . '.php';
 			foreach(self::$_paths[$prefix] as $p) {
 				//vmdebug('Testing for '.$p.DS.$filename);
-				if(file_exists( $p.DS.$filename )) {
-					require $p.DS.$filename;
+				if($pf = vPath::find($p,$filename)){
+					require $pf;
 					if (class_exists($class)) return true;
 				}
 			}

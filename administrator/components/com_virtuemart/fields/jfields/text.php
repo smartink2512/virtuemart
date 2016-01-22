@@ -20,45 +20,27 @@ class vFormFieldText extends vFormField
 {
 	/**
 	 * The form field type.
-	 *
 	 * @var    string
-	 *
-	 * @since  11.1
 	 */
 	protected $type = 'Text';
 
 	/**
 	 * The allowable maxlength of the field.
-	 *
-	 * @var    integer
-	 * @since  3.2
 	 */
 	protected $maxLength;
 
 	/**
 	 * The mode of input associated with the field.
-	 *
-	 * @var    mixed
-	 * @since  3.2
 	 */
 	protected $inputmode;
 
 	/**
 	 * The name of the form field direction (ltr or rtl).
-	 *
-	 * @var    string
-	 * @since  3.2
 	 */
 	protected $dirname;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
-	 *
-	 * @param   string  $name  The property name for which to the the value.
-	 *
-	 * @return  mixed  The property value or null.
-	 *
-	 * @since   3.2
 	 */
 	public function __get($name)
 	{
@@ -75,13 +57,6 @@ class vFormFieldText extends vFormField
 
 	/**
 	 * Method to set certain otherwise inaccessible properties of the form field object.
-	 *
-	 * @param   string  $name   The property name for which to the the value.
-	 * @param   mixed   $value  The value of the property.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.2
 	 */
 	public function __set($name, $value)
 	{

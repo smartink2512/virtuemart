@@ -1932,8 +1932,9 @@ class vForm extends JForm{
 	 * @throws  InvalidArgumentException
 	 * @throws  UnexpectedValueException
 	 */
-	protected function validateField(SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
-	{
+
+
+	protected function validateField(SimpleXMLElement $element, $group = null, $value = null, Registry $input = null) {
 		$valid = true;
 
 		// Check if the field is required.
@@ -2004,6 +2005,10 @@ class vForm extends JForm{
 
 		return true;
 	}
+
+
+
+
 
 	/**
 	 * Proxy for {@link vFormHelper::addFieldPath()}.

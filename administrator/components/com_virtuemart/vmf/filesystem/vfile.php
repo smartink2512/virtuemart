@@ -476,6 +476,7 @@ class vFile
 				'size'     => '',
 			);
 
+			$isSafe = true;
 			if (class_exists('JFilterInput') && method_exists('JFilterInput', 'isSafeFile')) {
 				$isSafe = JFilterInput::isSafeFile($descriptor, $safeFileOptions);
 			}

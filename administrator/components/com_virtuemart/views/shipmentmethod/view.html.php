@@ -52,7 +52,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 
 			if (!class_exists('vForm'))
 				require(VMPATH_ADMIN . DS . 'vmf' . DS . 'form' . DS . 'form.php');
-			vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
+			//vForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 
 			$shipment = $model->getShipment();
 

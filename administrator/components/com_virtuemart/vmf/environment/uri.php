@@ -21,69 +21,45 @@ defined('JPATH_PLATFORM') or die;
  */
 class vUri implements vIUri
 {
-	/**
-	 * @var    JUri[]  An array of JUri instances.
-	 * @since  11.1
-	 */
+
 	protected static $instances = array();
 
 	/**
 	 * @var    array  The current calculated base url segments.
-	 * @since  11.1
 	 */
 	protected static $base = array();
 
 	/**
 	 * @var    array  The current calculated root url segments.
-	 * @since  11.1
 	 */
 	protected static $root = array();
 
 	/**
 	 * @var    string  The current url.
-	 * @since  11.1
 	 */
 	protected static $current;
 
 	/**
 	 * @var    string  Original URI
-	 * @since  1.0
 	 */
 	protected $uri = null;
 
-	/**
-	 * @var    string  Protocol
-	 * @since  1.0
-	 */
 	protected $scheme = null;
-
-	/**
-	 * @var    string  Host
-	 * @since  1.0
-	 */
 	protected $host = null;
-
-	/**
-	 * @var    integer  Port
-	 * @since  1.0
-	 */
 	protected $port = null;
 
 	/**
 	 * @var    string  Username
-	 * @since  1.0
 	 */
 	protected $user = null;
 
 	/**
 	 * @var    string  Password
-	 * @since  1.0
 	 */
 	protected $pass = null;
 
 	/**
 	 * @var    string  Path
-	 * @since  1.0
 	 */
 	protected $path = null;
 
@@ -271,16 +247,7 @@ class vUri implements vIUri
 		return $this->host;
 	}
 
-	/**
-	 * Get URI port
-	 * Returns the port number, or null if no port was specified.
-	 *
-	 * @return  integer  The URI port number.
-	 *
-	 * @since   1.0
-	 */
-	public function getPort()
-	{
+	public function getPort() {
 		return (isset($this->port)) ? $this->port : null;
 	}
 
@@ -288,8 +255,6 @@ class vUri implements vIUri
 	 * Gets the URI path string.
 	 *
 	 * @return  string  The URI path string.
-	 *
-	 * @since   1.0
 	 */
 	public function getPath()
 	{
@@ -301,8 +266,6 @@ class vUri implements vIUri
 	 * Everything after the "#".
 	 *
 	 * @return  string  The URI anchor string.
-	 *
-	 * @since   1.0
 	 */
 	public function getFragment()
 	{
@@ -354,7 +317,6 @@ class vUri implements vIUri
 		 * Parse the URI and populate the object fields. If URI is parsed properly,
 		 * set method return value to true.
 		 */
-		//if(!class_exists('UriHelper')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'UriHelper.php');
 		$parts = self::parse_url($uri);
 
 		$retval = ($parts) ? true : false;
@@ -560,50 +522,19 @@ class vUri implements vIUri
 	 *
 	 * @since   1.0
 	 */
-	public function setUser($user)
-	{
+	public function setUser($user) {
 		$this->user = $user;
 	}
 
-	/**
-	 * Set URI password.
-	 *
-	 * @param   string  $pass  The URI password.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function setPass($pass)
-	{
+	public function setPass($pass) {
 		$this->pass = $pass;
 	}
 
-	/**
-	 * Set URI host.
-	 *
-	 * @param   string  $host  The URI host.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function setHost($host)
-	{
+	public function setHost($host) {
 		$this->host = $host;
 	}
 
-	/**
-	 * Set URI port.
-	 *
-	 * @param   integer  $port  The URI port number.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function setPort($port)
-	{
+	public function setPort($port) {
 		$this->port = $port;
 	}
 
@@ -679,9 +610,7 @@ class vUri implements vIUri
 				{
 					/*
 					 * Since we do not have REQUEST_URI to work with, we will assume we are
-					 * running on IIS and will therefore need to work some magic with the SCRIPT_NAME and
-					 * QUERY_STRING environment variables.
-					 *
+					 * running on IIS
 					 * IIS uses the SCRIPT_NAME variable instead of a REQUEST_URI variable... thanks, MS
 					 */
 					$theURI = 'http' . $https . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
@@ -813,8 +742,6 @@ class vUri implements vIUri
 	 * Method to reset class static members for testing and other various issues.
 	 *
 	 * @return  void
-	 *
-	 * @since   11.1
 	 */
 	public static function reset()
 	{
@@ -831,8 +758,6 @@ class vUri implements vIUri
 	 * @param   string  $url  The URL to check.
 	 *
 	 * @return  boolean  True if Internal.
-	 *
-	 * @since   11.1
 	 */
 	public static function isInternal($url)
 	{

@@ -18,21 +18,7 @@ defined('JPATH_PLATFORM') or die;
  */
 class vFormHelper
 {
-	/**
-	 * Array with paths where entities(field, rule, form) can be found.
-	 *
-	 * Array's structure:
-	 * <code>
-	 * paths:
-	 * {ENTITY_NAME}:
-	 * - /path/1
-	 * - /path/2
-	 * </code>
-	 *
-	 * @var    array
-	 * @since  11.1
-	 *
-	 */
+
 	protected static $paths;
 
 	/**
@@ -45,9 +31,6 @@ class vFormHelper
 	 * {ENTITY_NAME}:
 	 * {KEY}: {OBJECT}
 	 * </code>
-	 *
-	 * @var    array
-	 * @since  11.1
 	 */
 	protected static $entities = array();
 
@@ -59,36 +42,6 @@ class vFormHelper
 		vmdebug('getLabel',$layout, $data);
 
 	}
-
-/*	public function loader($field){
-
-		$filename = $field . '.php';
-		$name = strtolower(substr(get_class($this),14));
-		foreach(self::$paths['layout'][$name] as $p) {
-			if(file_exists( $p.DS.$filename )) {
-				//vmdebug('layoutLoader my layout '.$filename.' selected path. '.$p,self::$_paths['layout']);
-				return $p.DS.$filename;
-			}
-		}
-
-		if(!class_exists('vPath')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vpath.php');
-		foreach ($paths as $path)
-		{
-			$file = vPath::find($path, $type);
-			if (!$file) {
-				continue;
-			}
-
-			require $file;
-
-			if (class_exists($class)) {
-				break;
-			}
-		}
-		VmConfig::$echoDebug = 1;
-		vmdebug('layoutLoader couldnt find path for '.$filename,self::$_paths['layout']);
-		return false;
-	}*/
 
 	/**
 	 * Method to load a form field object given a type.
@@ -148,14 +101,11 @@ class vFormHelper
 	}
 
 	/**
-	 * Attempt to import the JFormField class file if it isn't already imported.
+	 * Attempt to import the vFormField class file if it isn't already imported.
 	 * You can use this method outside of vForm for loading a field for inheritance or composition.
 	 *
 	 * @param   string  $type  Type of a field whose class should be loaded.
-	 *
 	 * @return  mixed  Class name on success or false otherwise.
-	 *
-	 * @since   11.1
 	 */
 	public static function loadFieldClass($type)
 	{
@@ -163,34 +113,22 @@ class vFormHelper
 	}
 
 	/**
-	 * Attempt to import the JFormRule class file if it isn't already imported.
-	 * You can use this method outside of vForm for loading a rule for inheritance or composition.
-	 *
-	 * @param   string  $type  Type of a rule whose class should be loaded.
-	 *
-	 * @return  mixed  Class name on success or false otherwise.
-	 *
-	 * @since   11.1
+	 * Attempt to import the vFormRule class file if it isn't already imported.
 	 */
-	public static function loadRuleClass($type)
-	{
+	public static function loadRuleClass($type) {
 		return self::loadClass('rule', $type);
 	}
 
 	/**
 	 * Load a class for one of the form's entities of a particular type.
-	 * Currently, it makes sense to use this method for the "field" and "rule" entities
-	 * (but you can support more entities in your subclass).
 	 *
 	 * @param   string  $entity  One of the form entities (field or rule).
 	 * @param   string  $type    Type of an entity.
 	 *
 	 * @return  mixed  Class name on success or false otherwise.
-	 *
-	 * @since   11.1
 	 */
-	protected static function loadClass($entity, $type)
-	{
+	protected static function loadClass($entity, $type) {
+
 		$prefix = 'v';
 
 		if (strpos($type, '.'))
@@ -256,36 +194,14 @@ class vFormHelper
 			}
 		}
 
-	/*	if(!$found){
-			VmConfig::$echoDebug=true;
-			vmdebug('loadType',$entity,$type, $class,$paths );
-			foreach ($paths as $path) {
-				$file = vPath::find($path, $type);
-				if (!$file) {
-					continue;
-				}
-				vmdebug('foreach loadType',$file,$classJ );
-				require $file;
-
-				if (class_exists($classJ)) {
-					$class = $classJ;
-					break;
-				}
-			}
-		}*/
-
 		// Check for all if the class exists.
 		return class_exists($class) ? $class : false;
 	}
 
 	/**
 	 * Method to add a path to the list of field include paths.
-	 *
 	 * @param   mixed  $new  A path or array of paths to add.
-	 *
 	 * @return  array  The list of paths that have been added.
-	 *
-	 * @since   11.1
 	 */
 	public static function addFieldPath($new = null)
 	{
@@ -293,13 +209,7 @@ class vFormHelper
 	}
 
 	/**
-	 * Method to add a path to the list of form include paths.
-	 *
-	 * @param   mixed  $new  A path or array of paths to add.
-	 *
-	 * @return  array  The list of paths that have been added.
-	 *
-	 * @since   11.1
+	 * For form include paths
 	 */
 	public static function addFormPath($new = null)
 	{
@@ -307,13 +217,7 @@ class vFormHelper
 	}
 
 	/**
-	 * Method to add a path to the list of rule include paths.
-	 *
-	 * @param   mixed  $new  A path or array of paths to add.
-	 *
-	 * @return  array  The list of paths that have been added.
-	 *
-	 * @since   11.1
+	 * For rule include paths.
 	 */
 	public static function addRulePath($new = null)
 	{
@@ -328,11 +232,8 @@ class vFormHelper
 	 * @param   mixed   $new     A path or array of paths to add.
 	 *
 	 * @return  array  The list of paths that have been added.
-	 *
-	 * @since   11.1
 	 */
 	protected static function addPath($entity, $new = null) {
-
 
 		// Reference to an array with paths for current entity
 		self::$paths[$entity];
@@ -343,7 +244,7 @@ class vFormHelper
 			// While we support limited number of entities (form, field and rule)
 			// we can do this simple pluralisation:
 			$entity_pl = $entity . 's';
-
+			self::$paths[$entity][] = VMPATH_ADMIN .DS. $entity_pl;
 			self::$paths[$entity][] = VMPATH_LIBS .DS. 'joomla' .DS. 'form' .DS. $entity_pl;
 		}
 
