@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
  * 	$classes      : (array)   A list of classes
  * 	$position     : (string)  The tooltip position. Bottom for alias
  */
-vmdebug('my $displayData',$displayData);
+//vmdebug('my $displayData',$displayData);
 $text     = $displayData['text'];
 $desc     = $displayData['description'];
 $for      = $displayData['for'];

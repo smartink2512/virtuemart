@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+if(!class_exists('vPluginHelper')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'plugin' .DS. 'helper.php');
+
 use Joomla\Registry\Registry;
 
 /**
@@ -16,7 +18,7 @@ use Joomla\Registry\Registry;
  *
  * @since  1.5
  */
-abstract class JPlugin extends JEvent
+abstract class vPlugin
 {
 	/**
 	 * A Registry object holding the parameters for the plugin
@@ -101,7 +103,7 @@ abstract class JPlugin extends JEvent
 
 			if ($appProperty->isPrivate() === false && is_null($this->app))
 			{
-				$this->app = JFactory::getApplication();
+				$this->app = vFactory::getApplication();
 			}
 		}
 
@@ -112,11 +114,49 @@ abstract class JPlugin extends JEvent
 
 			if ($dbProperty->isPrivate() === false && is_null($this->db))
 			{
-				$this->db = JFactory::getDbo();
+				$this->db = vFactory::getDbo();
 			}
 		}
 
-		parent::__construct($subject);
+		// Register the observer ($this) so we can be notified
+		$subject->attach($this);
+
+		// Set the subject to observe
+		$this->_subject = &$subject;
+	}
+
+	/**
+	 * Method to trigger events.
+	 * The method first generates the even from the argument array. Then it unsets the argument
+	 * since the argument has no bearing on the event handler.
+	 * If the method exists it is called and returns its return value. If it does not exist it
+	 * returns null.
+	 *
+	 * @param   array  &$args  Arguments
+	 *
+	 * @return  mixed  Routine return value
+	 *
+	 * @since   11.1
+	 */
+	public function update(&$args)
+	{
+		// First let's get the event from the argument array.  Next we will unset the
+		// event argument as it has no bearing on the method to handle the event.
+		$event = $args['event'];
+		unset($args['event']);
+
+		/*
+		 * If the method to handle an event exists, call it and return its return
+		 * value.  If it does not exist, return null.
+		 */
+		if (method_exists($this, $event))
+		{
+			return call_user_func_array(array($this, $event), $args);
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -129,16 +169,16 @@ abstract class JPlugin extends JEvent
 	 *
 	 * @since   1.5
 	 */
-	public function loadLanguage($extension = '', $basePath = JPATH_ADMINISTRATOR)
+	public function loadLanguage($extension = '', $basePath = VMPATH_ADMINISTRATOR)
 	{
 		if (empty($extension))
 		{
 			$extension = 'Plg_' . $this->_type . '_' . $this->_name;
 		}
 
-		$lang = JFactory::getLanguage();
+		$lang = vFactory::getLanguage();
 
 		return $lang->load(strtolower($extension), $basePath, null, false, true)
-			|| $lang->load(strtolower($extension), JPATH_PLUGINS . '/' . $this->_type . '/' . $this->_name, null, false, true);
+			|| $lang->load(strtolower($extension), VMPATH_PLUGINS . '/' . $this->_type . '/' . $this->_name, null, false, true);
 	}
 }

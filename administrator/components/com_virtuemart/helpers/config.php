@@ -109,6 +109,8 @@ if(!class_exists('vmText')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vHtml')) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
 if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php');
 if(!class_exists('vUri')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'uri.php');
+if(!class_exists('vEventDispatcher')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'dispatcher.php');
+if(!class_exists('vPlugin')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'plugin' .DS. 'plugin.php');
 
 /**
  * Where type can be one of

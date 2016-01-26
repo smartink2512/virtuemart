@@ -16,10 +16,7 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since  11.1
  */
-class vFormHelper
-{
-
-	protected static $paths;
+class vFormHelper extends vBasicModel{
 
 	/**
 	 * Static array of vForm's entity objects for re-use.
@@ -34,14 +31,6 @@ class vFormHelper
 	 */
 	protected static $entities = array();
 
-	/**
-	 * Method to render a field
-	 */
-	public static function render($layout,$data){
-		VmConfig::$echoDebug=1;
-		vmdebug('getLabel',$layout, $data);
-
-	}
 
 	/**
 	 * Method to load a form field object given a type.
@@ -236,16 +225,15 @@ class vFormHelper
 	protected static function addPath($entity, $new = null) {
 
 		// Reference to an array with paths for current entity
-		self::$paths[$entity];
+		//self::$_paths['fields'][$entity];
 
 		// Add the default entity's search path if not set.
-		if (empty(self::$paths[$entity]))
-		{
+		if (empty(self::$_paths['fields'][$entity])) {
 			// While we support limited number of entities (form, field and rule)
 			// we can do this simple pluralisation:
 			$entity_pl = $entity . 's';
-			self::$paths[$entity][] = VMPATH_ADMIN .DS. $entity_pl;
-			self::$paths[$entity][] = VMPATH_LIBS .DS. 'joomla' .DS. 'form' .DS. $entity_pl;
+			self::$_paths['fields'][$entity][] = VMPATH_ADMIN .DS. $entity_pl;
+			self::$_paths['fields'][$entity][] = VMPATH_LIBS .DS. 'joomla' .DS. 'form' .DS. $entity_pl;
 		}
 
 		// Force the new path(s) to an array.
@@ -254,12 +242,13 @@ class vFormHelper
 		// Add the new paths to the stack if not already there.
 		foreach ($new as $path)
 		{
-			if (!in_array($path, self::$paths[$entity]))
+			if (!in_array($path, self::$_paths['fields'][$entity]))
 			{
-				array_unshift(self::$paths[$entity], trim($path));
+				array_unshift(self::$_paths['fields'][$entity], trim($path));
 			}
 		}
 
-		return self::$paths[$entity];
+		return self::$_paths['fields'][$entity];
 	}
+
 }

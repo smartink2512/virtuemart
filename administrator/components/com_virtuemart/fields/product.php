@@ -11,7 +11,7 @@ require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 
 if (!class_exists('TableCategories'))
 require(VMPATH_ADMIN . DS . 'tables' . DS . 'categories.php');
-
+if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
 
 /**
  * Supports a modal product picker.
@@ -61,4 +61,17 @@ class vFormFieldProduct extends vFormField
 		return $list;
 	}
 
+}
+
+if(JVM_VERSION>0){
+	//could be written abstract with eval
+	jimport('joomla.form.formfield');
+	class JFormFieldProduct extends vFormFieldProduct{
+
+		public function __construct($form = null){
+			parent::__construct($form);
+			vBasicModel::addIncludePath(VMPATH_ADMIN.DS.'vmf'.DS.'html','html');
+			VmConfig::loadJLang('com_virtuemart');
+		}
+	}
 }

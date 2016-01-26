@@ -35,6 +35,7 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 		$this->event_clean_cache = 'onContentCleanCache';
 
 		$this->_cidName = $cidName;
+
 	}
 
 	protected static $_loadedClasses = array();

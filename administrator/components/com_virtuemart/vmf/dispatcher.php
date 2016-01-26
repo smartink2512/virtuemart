@@ -19,7 +19,7 @@ defined('JPATH_PLATFORM') or die;
  * @see    JPlugin
  * @since  12.1
  */
-class JEventDispatcher extends JObject
+class vEventDispatcher extends vObject
 {
 	/**
 	 * An array of Observer objects to notify
@@ -206,7 +206,7 @@ class JEventDispatcher extends JObject
 		}
 		else
 		{
-			if (!($observer instanceof JEvent))
+			if (!($observer instanceof vPlugin))
 			{
 				return;
 			}

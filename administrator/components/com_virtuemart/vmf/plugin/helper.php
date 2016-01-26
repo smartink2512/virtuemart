@@ -14,7 +14,7 @@ defined('JPATH_PLATFORM') or die;
  *
  * @since  1.5
  */
-abstract class JPluginHelper
+abstract class vPluginHelper
 {
 	/**
 	 * A persistent cache of the loaded plugins.
@@ -37,7 +37,7 @@ abstract class JPluginHelper
 	 */
 	public static function getLayoutPath($type, $name, $layout = 'default')
 	{
-		$template = JFactory::getApplication()->getTemplate();
+		$template = vFactory::getApplication()->getTemplate();
 		$defaultLayout = $layout;
 
 		if (strpos($layout, ':') !== false)
@@ -50,9 +50,9 @@ abstract class JPluginHelper
 		}
 
 		// Build the template and base path for the layout
-		$tPath = JPATH_THEMES . '/' . $template . '/html/plg_' . $type . '_' . $name . '/' . $layout . '.php';
-		$bPath = JPATH_PLUGINS . '/' . $type . '/' . $name . '/tmpl/' . $defaultLayout . '.php';
-		$dPath = JPATH_PLUGINS . '/' . $type . '/' . $name . '/tmpl/default.php';
+		$tPath = VMPATH_THEMES . '/' . $template . '/html/plg_' . $type . '_' . $name . '/' . $layout . '.php';
+		$bPath = VMPATH_PLUGINS . '/' . $type . '/' . $name . '/tmpl/' . $defaultLayout . '.php';
+		$dPath = VMPATH_PLUGINS . '/' . $type . '/' . $name . '/tmpl/default.php';
 
 		// If the template has a layout override use it
 		if (file_exists($tPath))
@@ -143,7 +143,7 @@ abstract class JPluginHelper
 	 *
 	 * @since   1.5
 	 */
-	public static function importPlugin($type, $plugin = null, $autocreate = true, JEventDispatcher $dispatcher = null)
+	public static function importPlugin($type, $plugin = null, $autocreate = true, vEventDispatcher $dispatcher = null)
 	{
 		static $loaded = array();
 
@@ -193,33 +193,16 @@ abstract class JPluginHelper
 	 *
 	 * @return  void
 	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use JPluginHelper::import() instead
-	 */
-	protected static function _import($plugin, $autocreate = true, JEventDispatcher $dispatcher = null)
-	{
-		static::import($plugin, $autocreate, $dispatcher);
-	}
-
-	/**
-	 * Loads the plugin file.
-	 *
-	 * @param   object            $plugin      The plugin.
-	 * @param   boolean           $autocreate  True to autocreate.
-	 * @param   JEventDispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
-	 *
-	 * @return  void
-	 *
 	 * @since   3.2
 	 */
-	protected static function import($plugin, $autocreate = true, JEventDispatcher $dispatcher = null)
+	protected static function import($plugin, $autocreate = true, vEventDispatcher $dispatcher = null)
 	{
 		static $paths = array();
 
 		$plugin->type = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->type);
 		$plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
 
-		$path = JPATH_PLUGINS . '/' . $plugin->type . '/' . $plugin->name . '/' . $plugin->name . '.php';
+		$path = VMPATH_PLUGINS . '/' . $plugin->type . '/' . $plugin->name . '/' . $plugin->name . '.php';
 
 		if (!isset($paths[$path]))
 		{
@@ -237,7 +220,7 @@ abstract class JPluginHelper
 					// Makes sure we have an event dispatcher
 					if (!is_object($dispatcher))
 					{
-						$dispatcher = JEventDispatcher::getInstance();
+						$dispatcher = vEventDispatcher::getInstance();
 					}
 
 					$className = 'Plg' . $plugin->type . $plugin->name;
@@ -268,19 +251,6 @@ abstract class JPluginHelper
 	 *
 	 * @return  array  An array of published plugins
 	 *
-	 * @since   1.5
-	 * @deprecated  4.0  Use JPluginHelper::load() instead
-	 */
-	protected static function _load()
-	{
-		return static::load();
-	}
-
-	/**
-	 * Loads the published plugins.
-	 *
-	 * @return  array  An array of published plugins
-	 *
 	 * @since   3.2
 	 */
 	protected static function load()
@@ -290,24 +260,24 @@ abstract class JPluginHelper
 			return static::$plugins;
 		}
 
-		$user = JFactory::getUser();
-		$cache = JFactory::getCache('com_plugins', '');
+		$user = vFactory::getUser();
+		$cache = vFactory::getCache('com_plugins', '');
 
 		$levels = implode(',', $user->getAuthorisedViewLevels());
 
 		if (!(static::$plugins = $cache->get($levels)))
 		{
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
+			$db = vFactory::getDbo();
+			/*$query = $db->getQuery(true)
 				->select('folder AS type, element AS name, params')
 				->from('#__extensions')
 				->where('enabled = 1')
 				->where('type =' . $db->quote('plugin'))
 				->where('state IN (0,1)')
 				->where('access IN (' . $levels . ')')
-				->order('ordering');
-
-			static::$plugins = $db->setQuery($query)->loadObjectList();
+				->order('ordering');*/
+			$q = 'SELECT folder AS type, element AS name, params FROM #__extensions WHERE enabled = 1 AND type ="plugin" AND state IN (0,1) AND access IN (' . $levels . ') ORDER BY ordering';
+			static::$plugins = $db->setQuery($q)->loadObjectList();
 
 			$cache->store(static::$plugins, $levels);
 		}

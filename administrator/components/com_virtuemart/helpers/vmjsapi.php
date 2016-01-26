@@ -275,6 +275,10 @@ class vmJsApi{
 	 */
 	static function jQuery($isSite=-1) {
 
+		static $done = false;
+		if($done){
+			return true;
+		}
 		if(JVM_VERSION<3){
 			//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
 			if (vFactory::getApplication ()->get ('jquery')) {
@@ -283,8 +287,8 @@ class vmJsApi{
 
 			}
 		} else {
-			//vHtml::_('jquery.framework');
-			//return true;
+			JHtml::_('jquery.framework');
+			return true;
 		}
 
 		if($isSite===-1) $isSite = !self::isAdmin();
@@ -324,7 +328,8 @@ class vmJsApi{
 			$v .= 'Itemid = "";'."\n";
 		}
 		vmJsApi::addJScript('vm.vars',$v,false,true,true);
-
+		
+		$done = true;
 		return TRUE;
 	}
 

@@ -902,9 +902,11 @@ abstract class vFormField
 			$options['showonEnabled'] = true;
 		}
 		$l = $this->renderLabelLayout;
-		if(strpos($this->renderLabelLayout,'.')!==FALSE){
+		if (strpos($this->renderLabelLayout,'.')!==FALSE) {
 			$a = explode('.',$this->renderLabelLayout);
 			$l = array_pop($a);
+		} else {
+			$l = 'renderfield';
 		}
 		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		return shopFunctionsF::renderVmSubLayout($l, array('input' => $this->getInput(), 'label' => $this->getLabel(), 'options' => $options));
