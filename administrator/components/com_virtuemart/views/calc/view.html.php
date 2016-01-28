@@ -99,8 +99,8 @@ class VirtuemartViewCalc extends VmViewAdmin {
 
         } else {
 			if($this->showVendors()){
-				JToolBarHelper::custom('toggle.shared.1', 'publish', 'yes', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_ON'), true);
-				JToolBarHelper::custom('toggle.shared.0', 'unpublish', 'no', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_OFF'), true);
+				vToolBarHelper::custom('toggle.shared.1', 'publish', 'yes', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_ON'), true);
+				vToolBarHelper::custom('toggle.shared.0', 'unpublish', 'no', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_OFF'), true);
 			}
 
 			$this->addStandardDefaultViewCommands();
@@ -180,8 +180,8 @@ class VirtuemartViewCalc extends VmViewAdmin {
 		);
 
 		if (!class_exists('vmCalculationPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmcalculationplugin.php');
-		JPluginHelper::importPlugin('vmcalculation');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmcalculation');
+		$dispatcher = vDispatcher::getInstance();
 
 		$answer = $dispatcher->trigger('plgVmAddMathOp', array(&$mathOps));
 

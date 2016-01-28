@@ -59,10 +59,10 @@ class VirtueMartControllerVmplg extends vController {
     function PaymentResponseReceived() {
 
 	if (!class_exists('vmPSPlugin'))
-	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php'); JPluginHelper::importPlugin('vmpayment');
+	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php'); vPluginHelper::importPlugin('vmpayment');
 
 	$return_context = "";
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = vDispatcher::getInstance();
 	$html = "";
 	$paymentResponse = vmText::_('COM_VIRTUEMART_CART_THANKYOU');
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array( 'html' => &$html,&$paymentResponse));
@@ -86,10 +86,10 @@ class VirtueMartControllerVmplg extends vController {
 
 	    if (!class_exists('vmPSPlugin'))
 		    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-	    JPluginHelper::importPlugin('vmshipment');
+	    vPluginHelper::importPlugin('vmshipment');
 
 	    $return_context = "";
-	    $dispatcher = JDispatcher::getInstance();
+	    $dispatcher = vDispatcher::getInstance();
 
 	    $html = "";
 	    $shipmentResponse = vmText::_('COM_VIRTUEMART_CART_THANKYOU');
@@ -120,8 +120,8 @@ class VirtueMartControllerVmplg extends vController {
 	    CouponHelper::setInUseCoupon($cart->couponCode, false);
     }
 
-	JPluginHelper::importPlugin('vmpayment');
-	$dispatcher = JDispatcher::getInstance();
+	vPluginHelper::importPlugin('vmpayment');
+	$dispatcher = vDispatcher::getInstance();
 	$dispatcher->trigger('plgVmOnUserPaymentCancel', array());
 
 	// return to cart view
@@ -149,9 +149,9 @@ class VirtueMartControllerVmplg extends vController {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( VMPATH_ADMIN . DS . 'models' . DS . 'orders.php' );
 
-	JPluginHelper::importPlugin('vmpayment');
+	vPluginHelper::importPlugin('vmpayment');
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = vDispatcher::getInstance();
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array());
 
     }

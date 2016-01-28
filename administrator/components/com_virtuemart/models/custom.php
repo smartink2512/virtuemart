@@ -86,8 +86,8 @@ class VirtueMartModelCustom extends VmModel {
 
 			$this->_cache[$this->_id]->customfield_params = '';
 		    if ($this->_cache[$this->_id]->field_type == 'E') {
-			    JPluginHelper::importPlugin ('vmcustom');
-			    $dispatcher = JDispatcher::getInstance ();
+			    vPluginHelper::importPlugin ('vmcustom');
+			    $dispatcher = vDispatcher::getInstance ();
 			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_cache[$this->_id]));
 		    }
 			//exaample 	vm2 withParent="0"|parentOrderable="0"|
@@ -364,8 +364,8 @@ class VirtueMartModelCustom extends VmModel {
 		}
 		$table->bindChecknStore($data);
 
-		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmcustom');
+		$dispatcher = vDispatcher::getInstance();
 		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('custom' , $data, $table));
 
 		return $table->virtuemart_custom_id ;
@@ -395,8 +395,8 @@ class VirtueMartModelCustom extends VmModel {
 		$xParams = $table->_xParams;
 
 		if ($type == 'E') {
-			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
+			vPluginHelper::importPlugin ('vmcustom');
+			$dispatcher = vDispatcher::getInstance ();
 			//We call here vmplugin->getTablePluginParams which sets the xParam and the varsToPush of the Plugin
 			vmdebug('setParameterableByFieldType before trigger plgVmGetTablePluginParams ',$custom_element, $custom_jplugin_id, $xParams,$varsToPush);
 			$retValue = $dispatcher->trigger ('plgVmGetTablePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));

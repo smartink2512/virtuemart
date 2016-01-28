@@ -9,8 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-if(!class_exists('Registry')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'Registry.php');
-if(!class_exists('vFormHelper')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'helper.php');
+if(!class_exists('Registry')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'registry' .DS. 'Registry.php');
 if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
 
 /**
@@ -29,7 +28,7 @@ if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS.
 if(JVM_VERSION>0){
 	if(!class_exists('JForm')) jimport('joomla.form.form');
 } else {
-	class JForm{};
+	//class JForm{};
 }
 
 class vForm extends JForm{
@@ -1770,10 +1769,11 @@ class vForm extends JForm{
 		$field = $this->loadFieldType($type);
 
 		// If the object could not be loaded, get a text field object.
-		if ($field === false)
-		{
+		if ($field === false) {
+			vmdebug('loadField failed to load FieldType '.$type );
 			$field = $this->loadFieldType('text');
 		}
+
 		if(!$field){
 			VmConfig::$echoDebug=true;
 			vmdebug('loadType',$type, $field );

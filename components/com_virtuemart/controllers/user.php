@@ -289,8 +289,8 @@ class VirtueMartControllerUser extends vController
 	function checkCaptcha($retUrl){
 		if(vFactory::getUser()->guest==1 and VmConfig::get ('reg_captcha')){
 			$recaptcha = vRequest::getVar ('recaptcha_response_field');
-			JPluginHelper::importPlugin('captcha');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('captcha');
+			$dispatcher = vDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
 			if(!$res[0]){
 				$data = vRequest::getPost();

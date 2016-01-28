@@ -23,7 +23,8 @@
 // Load default helpers
 if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 if (!class_exists('AdminUIHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'adminui.php');
-if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
+//if (!class_exists('vToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
+if(!class_exists( 'vToolBarHelper' )) require(VMPATH_ADMIN.DS.'toolbar'.DS.'toolbarhelper.php');
 
 if (!class_exists('vView')) require(VMPATH_ADMIN.DS.'vmf'.DS.'vview.php');
 
@@ -80,27 +81,27 @@ class VmViewAdmin extends vView {
 
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
-		JToolBarHelper::divider();
+		vToolBarHelper::divider();
 		if(vmAccess::manager($view.'.edit.state')){
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
+			vToolBarHelper::publishList();
+			vToolBarHelper::unpublishList();
 		}
 		if(vmAccess::manager($view.'.edit')){
-			JToolBarHelper::editList();
+			vToolBarHelper::editList();
 		}
 		if(vmAccess::manager($view.'.create')){
-			JToolBarHelper::addNew();
+			vToolBarHelper::addNew();
 		}
 		if(vmAccess::manager($view.'.delete')){
-			JToolBarHelper::spacer('10');
-			JToolBarHelper::deleteList();
+			vToolBarHelper::spacer('10');
+			vToolBarHelper::deleteList();
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::spacer('2');
+		vToolBarHelper::divider();
+		vToolBarHelper::spacer('2');
 		self::showACLPref($view);
 		self::showHelp ( $showHelp);
 		if(vFactory::getApplication()->isSite()){
-			$bar = JToolBar::getInstance('toolbar');
+			$bar = vToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}
 
@@ -208,14 +209,14 @@ class VmViewAdmin extends vView {
 
         $view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
-		if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
+		if (!class_exists('vToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
-		JToolBarHelper::divider();
+		vToolBarHelper::divider();
 		if (vmAccess::manager($view.'.edit')) {
-			JToolBarHelper::save();
-			JToolBarHelper::apply();
+			vToolBarHelper::save();
+			vToolBarHelper::apply();
 		}
-		JToolBarHelper::cancel();
+		vToolBarHelper::cancel();
 		self::showHelp();
 		self::showACLPref($view);
 
@@ -260,7 +261,7 @@ class VmViewAdmin extends vView {
 					$image_flag_url= vUri::root()."media/mod_languages/images/".$img.".gif";
 
 					if (!file_exists ($image_flag)) {
-						vmerror(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
+						vmError(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
 					} else {
 						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag_url.") no-repeat 0 0; padding-left:20px !important;}\n";
 					}
@@ -368,7 +369,7 @@ class VmViewAdmin extends vView {
 		}
 
 		if(vFactory::getApplication()->isSite()){
-			$bar = JToolBar::getInstance('toolbar');
+			$bar = vToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}
 	}
@@ -391,7 +392,7 @@ class VmViewAdmin extends vView {
 
 		$taskName = ' <small><small>[ ' . vmText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
 
-		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
+		vToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
 		$app = vFactory::getApplication();
 		$doc = vFactory::getDocument();
@@ -457,7 +458,7 @@ class VmViewAdmin extends vView {
 		$key=  'COM_VIRTUEMART_HELP_'.$view.$task;
 		 if ($lang->hasKey($key)) {
 				$help_url  = vmText::_($key)."?tmpl=component";
-				$bar = JToolBar::getInstance('toolbar');
+				$bar = vToolBar::getInstance('toolbar');
 				$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
 		}
 
@@ -466,8 +467,8 @@ class VmViewAdmin extends vView {
 	function showACLPref(){
 		
 		if (vmAccess::manager('core')) {
-			JToolBarHelper::divider();
-			$bar = JToolBar::getInstance('toolbar');
+			vToolBarHelper::divider();
+			$bar = vToolBar::getInstance('toolbar');
 			if(JVM_VERSION<3){
 				$bar->appendButton('Popup', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component', 875, 550, 0, 0, '');
 			} else {

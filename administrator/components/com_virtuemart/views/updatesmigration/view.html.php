@@ -36,7 +36,7 @@ class VirtuemartViewUpdatesMigration extends VmViewAdmin {
 
 		$latestVersion = vRequest::getVar('latestverison', '');
 
-		JToolBarHelper::title(vmText::_('COM_VIRTUEMART_UPDATE_MIGRATION'), 'head vm_config_48');
+		vToolBarHelper::title(vmText::_('COM_VIRTUEMART_UPDATE_MIGRATION'), 'head vm_config_48');
 
 		if (!class_exists('VmImage'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');

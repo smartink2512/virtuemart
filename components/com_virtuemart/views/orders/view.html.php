@@ -103,14 +103,14 @@ class VirtuemartViewOrders extends VmView {
 
 			$this->shipment_name='';
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmshipment');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmshipment');
+			$dispatcher = vDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_shipmentmethod_id, &$this->shipment_name));
 
 			$this->payment_name='';
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmpayment');
+			$dispatcher = vDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$this->payment_name));
 
 			if($format=='pdf'){
@@ -146,8 +146,8 @@ class VirtuemartViewOrders extends VmView {
 			if (!class_exists ('vmPSPlugin')) {
 				require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			}
-			JPluginHelper::importPlugin ('vmpayment');
-			$dispatcher = JDispatcher::getInstance ();
+			vPluginHelper::importPlugin ('vmpayment');
+			$dispatcher = vDispatcher::getInstance ();
 			$dispatcher->trigger ('plgVmgetEmailCurrency', array($orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$emailCurrencyId));
 			if (!class_exists ('CurrencyDisplay')) {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -175,8 +175,8 @@ class VirtuemartViewOrders extends VmView {
 					if (!class_exists ('vmPSPlugin')) {
 						require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 					}
-					JPluginHelper::importPlugin ('vmpayment');
-					$dispatcher = JDispatcher::getInstance ();
+					vPluginHelper::importPlugin ('vmpayment');
+					$dispatcher = vDispatcher::getInstance ();
 					$dispatcher->trigger ('plgVmgetEmailCurrency', array($order->virtuemart_paymentmethod_id, $order->virtuemart_order_id, &$emailCurrencyId));
 					if (!class_exists ('CurrencyDisplay')) {
 						require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');

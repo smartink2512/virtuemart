@@ -75,8 +75,8 @@ if($this->userDetails->virtuemart_user_id!=0) {
 // captcha addition
 if(VmConfig::get ('reg_captcha')){
 	vHtml::_('behavior.framework');
-	JPluginHelper::importPlugin('captcha');
-	$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
+	vPluginHelper::importPlugin('captcha');
+	$dispatcher = vDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 	?>
 	<div id="dynamic_recaptcha_1"></div>
 <?php

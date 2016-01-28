@@ -46,8 +46,8 @@ class VirtuemartControllerPlugin extends VmController
 		if(!in_array($type,$typeWhiteList)) return false;
 		$name = vRequest::getString('name','');
 
-		JPluginHelper::importPlugin($type, $name);
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin($type, $name);
+		$dispatcher = vDispatcher::getInstance();
 		// if you want only one render simple in the plugin use jExit();
 		// or $render is an array of code to echo as html or json Object!
 		$render = null ;

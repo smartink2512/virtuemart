@@ -74,8 +74,8 @@ class VirtuemartViewInventory extends VmViewAdmin {
 
 		/* Toolbar */
 		$this->SetViewTitle('PRODUCT_INVENTORY');
-		JToolBarHelper::publish();
-		JToolBarHelper::unpublish();
+		vToolBarHelper::publish();
+		vToolBarHelper::unpublish();
 
 		parent::display($tpl);
 	}

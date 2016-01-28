@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea ($this);
 
-JToolBarHelper::title(vmText::_('COM_VIRTUEMART')." ".vmText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'head vm_store_48');
+vToolBarHelper::title(vmText::_('COM_VIRTUEMART')." ".vmText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'head vm_store_48');
 
 $tabs =  array('controlpanel' => 'COM_VIRTUEMART_CONTROL_PANEL' );
 if($this->manager('report')){

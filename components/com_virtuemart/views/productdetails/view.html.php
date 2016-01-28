@@ -300,9 +300,9 @@ class VirtueMartViewProductdetails extends VmView {
 
 			if (!class_exists('vmPSPlugin'))
 				require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmshipment');
-			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmshipment');
+			vPluginHelper::importPlugin('vmpayment');
+			$dispatcher = vDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnProductDisplayShipment', array($product, &$productDisplayShipments));
 			$returnValues = $dispatcher->trigger('plgVmOnProductDisplayPayment', array($product, &$productDisplayPayments));
 

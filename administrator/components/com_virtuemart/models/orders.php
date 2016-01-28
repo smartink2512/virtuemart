@@ -708,16 +708,16 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 
-			JPluginHelper::importPlugin('vmcalculation');
-			JPluginHelper::importPlugin('vmcustom');
+			vPluginHelper::importPlugin('vmcalculation');
+			vPluginHelper::importPlugin('vmcustom');
 
-			JPluginHelper::importPlugin('vmshipment');
-			$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
+			vPluginHelper::importPlugin('vmshipment');
+			$_dispatcher = vDispatcher::getInstance();											//Should we add this? $inputOrder
 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$data,$old_order_status));
 
 			// Payment decides what to do when order status is updated
-			JPluginHelper::importPlugin('vmpayment');
-			$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
+			vPluginHelper::importPlugin('vmpayment');
+			$_dispatcher = vDispatcher::getInstance();											//Should we add this? $inputOrder
 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
 			foreach ($_returnValues as $_returnValue) {
 				if ($_returnValue === true) {
@@ -734,7 +734,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			*/
 			if ($data->order_status == "X") {
 
-				$_dispatcher = JDispatcher::getInstance();
+				$_dispatcher = vDispatcher::getInstance();
 				//Should be renamed to plgVmOnCancelOrder
 				$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
 			}
@@ -823,8 +823,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$this->notifyCustomer( $data->virtuemart_order_id , $inputOrder );
 // 			}
 
-			JPluginHelper::importPlugin('vmcoupon');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcoupon');
+			$dispatcher = vDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmCouponUpdateOrderStatus', array($data, $old_order_status));
 			if(!empty($returnValues)){
 				foreach ($returnValues as $returnValue) {
@@ -1008,8 +1008,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		}
 
-		JPluginHelper::importPlugin('vmshopper');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmshopper');
+		$dispatcher = vDispatcher::getInstance();
 		$plg_datas = $dispatcher->trigger('plgVmOnUserOrder',array(&$_orderData));
 		foreach($plg_datas as $plg_data){
 			// 				$data = array_merge($plg_data,$data);
@@ -1214,8 +1214,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 						if ($productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($customfield_id ) ) {
 							if ($productCustom->field_type == "E") {
 								if(!class_exists('vmCustomPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
-								JPluginHelper::importPlugin('vmcustom');
-								$dispatcher = JDispatcher::getInstance();
+								vPluginHelper::importPlugin('vmcustom');
+								$dispatcher = vDispatcher::getInstance();
 								$dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array(&$tableOrderItems,$param, $productCustom));
 							}
 						}
@@ -1569,9 +1569,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$data['virtuemart_vendor_id'] = $orderDetails['virtuemart_vendor_id'];
 
-			JPluginHelper::importPlugin('vmshopper');
-			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmshopper');
+			vPluginHelper::importPlugin('vmpayment');
+			$dispatcher = vDispatcher::getInstance();
 			// plugin returns invoice number, 0 if it does not want an invoice number to be created by Vm
 			$plg_datas = $dispatcher->trigger('plgVmOnUserInvoice',array($orderDetails,&$data));
 
@@ -1646,9 +1646,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
-		JPluginHelper::importPlugin('vmshipment');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmshipment');
+		vPluginHelper::importPlugin('vmpayment');
+		$dispatcher = vDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $order['details']['BT']->virtuemart_order_id, $order['details']['BT']->virtuemart_shipmentmethod_id, &$shipment_name));
 		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $order['details']['BT']->virtuemart_order_id, $order['details']['BT']->virtuemart_paymentmethod_id, &$payment_name));
 		$order['shipmentName']=$shipment_name;
@@ -1759,8 +1759,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		//Done in the table already
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmshipment');
-		$_dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmshipment');
+		$_dispatcher = vDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipment',array( $data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
@@ -1769,7 +1769,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		}
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
+		vPluginHelper::importPlugin('vmpayment');
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLinePayment',array( $data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
@@ -1961,7 +1961,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = vDispatcher::getInstance();
 
 		if (!class_exists ('CurrencyDisplay')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -1980,7 +1980,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				vmError($db->getError());
 				return false;
 			} else {
-				JPluginHelper::importPlugin('vmpayment');
+				vPluginHelper::importPlugin('vmpayment');
 			}
 
 		}
@@ -1998,7 +1998,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				vmError($db->getError());
 				return false;
 			} else {
-				JPluginHelper::importPlugin('vmshipment');
+				vPluginHelper::importPlugin('vmshipment');
 			}
 
 		}
@@ -2057,8 +2057,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
 
 		$_orderData->order_number ='';
-		JPluginHelper::importPlugin('vmshopper');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmshopper');
+		$dispatcher = vDispatcher::getInstance();
 		$_orderData->order_number = $this->genStdOrderNumber($_orderData->virtuemart_vendor_id);
 		$_orderData->order_pass = $this->genStdOrderPass();
 		$_orderData->order_create_invoice_pass = $this->genStdCreateInvoicePass();
@@ -2077,11 +2077,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$orderModel = VmModel::getModel('orders');
 		$order= $orderModel->getOrder($_orderID);
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = vDispatcher::getInstance();
 
-		JPluginHelper::importPlugin('vmcustom');
-		JPluginHelper::importPlugin('vmshipment');
-		JPluginHelper::importPlugin('vmpayment');
+		vPluginHelper::importPlugin('vmcustom');
+		vPluginHelper::importPlugin('vmshipment');
+		vPluginHelper::importPlugin('vmpayment');
 		if (!class_exists('VirtueMartCart'))
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();

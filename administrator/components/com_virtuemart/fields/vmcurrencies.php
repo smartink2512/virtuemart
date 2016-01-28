@@ -16,17 +16,17 @@ defined('JPATH_PLATFORM') or die;
  * @version $Id: $
  */
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if(!class_exists('VmConfig')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * So It should be an extension of vFormField
- * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
 
 vFormHelper::loadFieldClass('list');
 
 class vFormFieldVmCurrencies extends vFormFieldList {
-
+//class JFormFieldVmCurrencies extends JFormFieldList {
 	/**
 	 * The form field type.
 	 *
@@ -62,4 +62,19 @@ class vFormFieldVmCurrencies extends vFormFieldList {
 		return $options;
 	}
 
+}
+
+//could be written abstract with eval
+if(JVM_VERSION>0){
+	$o = vRequest::getCmd('option',false);
+	if($o=='com_modules' or $o=='com_plugins') {
+		jimport( 'joomla.form.formfield' );
+		class JFormFieldVmCurrencies extends vFormFieldVmCurrencies {
+			public function __construct ($form = null) {
+				parent::__construct( $form );
+				vBasicModel::addIncludePath( VMPATH_ADMIN.DS.'vmf'.DS.'html', 'html' );
+				vFactory::$_lang = JFactory::getLanguage();
+			}
+		}
+	}
 }

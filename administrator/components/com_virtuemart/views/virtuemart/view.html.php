@@ -39,7 +39,7 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 
 
 		if(vFactory::getApplication()->isSite()){
-			$bar = JToolBar::getInstance('toolbar');
+			$bar = vToolBar::getInstance('toolbar');
 			$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0');
 		}
 

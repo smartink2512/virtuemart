@@ -636,8 +636,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($this->searchplugin !== 0) {
-			JPluginHelper::importPlugin('vmcustom');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcustom');
+			$dispatcher = vDispatcher::getInstance();
 			$dispatcher->trigger('plgVmBeforeProductSearch', array(&$select, &$joinedTables, &$where, &$groupBy, &$orderBy,&$joinLang));
 		}
 
@@ -2070,8 +2070,8 @@ class VirtueMartModelProduct extends VmModel {
 		$product->product_ordered=0;
 		$newId = $this->store ($product);
 		$product->virtuemart_product_id = $newId;
-		JPluginHelper::importPlugin ('vmcustom');
-		$dispatcher = JDispatcher::getInstance ();
+		vPluginHelper::importPlugin ('vmcustom');
+		$dispatcher = vDispatcher::getInstance ();
 		$result=$dispatcher->trigger ('plgVmCloneProduct', array($product));
 
 		$langs = VmConfig::get('active_languages', array());
@@ -2232,8 +2232,8 @@ class VirtueMartModelProduct extends VmModel {
 
 			// delete plugin on product delete
 			// $ok must be set to false if an error occurs
-			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
+			vPluginHelper::importPlugin ('vmcustom');
+			$dispatcher = vDispatcher::getInstance ();
 			$dispatcher->trigger ('plgVmOnDeleteProduct', array($id, &$ok));
 		}
 

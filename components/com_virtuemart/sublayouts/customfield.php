@@ -53,8 +53,8 @@ class VirtueMartCustomFieldRenderer {
 
 			if ($customfield->field_type == "E") {
 
-				JPluginHelper::importPlugin ('vmcustom');
-				$dispatcher = JDispatcher::getInstance ();
+				vPluginHelper::importPlugin ('vmcustom');
+				$dispatcher = vDispatcher::getInstance ();
 				$ret = $dispatcher->trigger ('plgVmOnDisplayProductFEVM3', array(&$product, &$customfields[$k]));
 				continue;
 			}
@@ -609,8 +609,8 @@ class VirtueMartCustomFieldRenderer {
 
 						if (!class_exists ('vmCustomPlugin'))
 							require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
-						JPluginHelper::importPlugin ('vmcustom');
-						$dispatcher = JDispatcher::getInstance ();
+						vPluginHelper::importPlugin ('vmcustom');
+						$dispatcher = vDispatcher::getInstance ();
 						$dispatcher->trigger ($trigger.'VM3', array(&$product, &$productCustom, &$tmp));
 					}
 					else {

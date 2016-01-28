@@ -274,8 +274,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
     function restoreSystemDefaults() {
 
-		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmextended');
+		$dispatcher = vDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRemove', $this);
 
 		$filename = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
@@ -298,8 +298,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$updater->createLanguageTables();
 
 
-		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmextended');
+		$dispatcher = vDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
@@ -320,8 +320,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$updater = new GenericTableUpdater();
 		$updater->createLanguageTables();
 
-		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmextended');
+		$dispatcher = vDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
@@ -439,8 +439,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      * @return boolean True if successful, false otherwise.
      */
     function removeAllVMData() {
-		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmextended');
+		$dispatcher = vDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRemove', $this);
 
 		$filename = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';

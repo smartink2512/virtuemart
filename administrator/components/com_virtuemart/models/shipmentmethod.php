@@ -69,8 +69,8 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			}
 
 			if ($this->_cache[$this->_id]->shipment_jplugin_id) {
-				JPluginHelper::importPlugin ('vmshipment');
-				$dispatcher = JDispatcher::getInstance ();
+				vPluginHelper::importPlugin ('vmshipment');
+				$dispatcher = vDispatcher::getInstance ();
 				$blind = 0;
 				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsShipmentVM3', array(&$this->_cache[$this->_id]));
 			}
@@ -215,8 +215,8 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 
 
-			JPluginHelper::importPlugin('vmshipment');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmshipment');
+			$dispatcher = vDispatcher::getInstance();
 			//bad trigger, we should just give it data, so that the plugins itself can check the data to be stored
 			//so this trigger is now deprecated and will be deleted in vm2.2
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsShipment',array( $data['shipment_element'],$data['shipment_jplugin_id'],&$table));
@@ -231,9 +231,9 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		$xrefTable->bindChecknStore($data);
 
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmshipment');
+		vPluginHelper::importPlugin('vmshipment');
 		//Add a hook here for other shipment methods, checking the data of the choosed plugin
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = vDispatcher::getInstance();
 		$retValues = $dispatcher->trigger('plgVmOnStoreInstallShipmentPluginTable', array(  $data['shipment_jplugin_id']));
 
 		return $table->virtuemart_shipmentmethod_id;

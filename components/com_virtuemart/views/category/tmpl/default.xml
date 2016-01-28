@@ -6,7 +6,7 @@
 	<fields name="request">
 		<fieldset name="request"
 			addfieldpath="/administrator/components/com_virtuemart/fields">
-			<field name="virtuemart_category_id" type="vmcategory"
+			<field name="virtuemart_category_id" type="vmcategories" multiple="false"
 				label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_TITLE" required="true"
 				extension="com_virtuemart"
 				description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_TITLE_DESC" />

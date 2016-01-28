@@ -13,9 +13,9 @@
     <filename>tmpl/default.php</filename>
     <folder>language</folder>
   </files>
-  <config>
-    <fields name="params">
-      <fieldset name="basic">
+  <config addfieldpath="/administrator/components/com_virtuemart/fields" >
+    <fields addfieldpath="/administrator/components/com_virtuemart/fields/jfields" name="params" >
+      <fieldset name="basic" >
         <field
           name="text_before"
           type="textarea"
@@ -27,8 +27,9 @@
         />
         <field
           name="product_currency"
-          type="text"
+          type="vmcurrencies"
           default=""
+          multiple="true"
           label="MOD_VIRTUEMART_CURRENCIES_DISPLAY"
           description="MOD_VIRTUEMART_CURRENCIES_DISPLAY_DESC"
         />

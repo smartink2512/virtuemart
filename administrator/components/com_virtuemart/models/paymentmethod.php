@@ -62,8 +62,8 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			}
 
 			if($this->_cache[$this->_id]->payment_jplugin_id){
-				JPluginHelper::importPlugin('vmpayment');
-				$dispatcher = JDispatcher::getInstance();
+				vPluginHelper::importPlugin('vmpayment');
+				$dispatcher = vDispatcher::getInstance();
 				$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsPaymentVM3', array(&$this->_cache[$this->_id]));
 			}
 
@@ -209,8 +209,8 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$db->setQuery($q);
 			$db->execute();
 
-			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmpayment');
+			$dispatcher = vDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id'],&$table));
 
 		}
@@ -222,9 +222,9 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$xrefTable->bindChecknStore($data);
 
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmpayment');
+			vPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = vDispatcher::getInstance();
 			$retValues = $dispatcher->trigger('plgVmOnStoreInstallPaymentPluginTable', array(  $data['payment_jplugin_id']));
 
 		return $table->virtuemart_paymentmethod_id;

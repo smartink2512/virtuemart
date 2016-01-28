@@ -54,7 +54,7 @@ if ($form) {
 				<?php $i=0; ?>
 				<?php foreach ($form->getFieldset($name) as $field) {
 
-					if (!$field->hidden) {
+					if (!$field->hidden) { ?>
 						<div class="<?php echo $control_group_class ?>">
 							<div class="<?php echo $control_label_class ?>">
 								<?php echo $field->label; ?>

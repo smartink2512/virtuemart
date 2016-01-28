@@ -197,8 +197,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!class_exists('VirtueMartModelCustom')) require(VMPATH_ADMIN.DS.'models'.DS.'custom.php');
 
 		if ($obj->field_type == 'E') {
-			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
+			vPluginHelper::importPlugin ('vmcustom');
+			$dispatcher = vDispatcher::getInstance ();
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$obj));
 			if(!empty($obj->_varsToPushParam)){
 				if(empty($obj->_varsToPushParamCustom)) $obj->_varsToPushParamCustom = $obj->_varsToPushParam;
@@ -708,8 +708,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 				}
 				//vmdebug('displayProductCustomfieldBE $field',$field);
-				JPluginHelper::importPlugin ('vmcustom', $field->custom_element);
-				$dispatcher = JDispatcher::getInstance ();
+				vPluginHelper::importPlugin ('vmcustom', $field->custom_element);
+				$dispatcher = vDispatcher::getInstance ();
 				$retValue = '';
 				$dispatcher->trigger ('plgVmOnProductEdit', array($field, $product_id, &$row, &$retValue));
 
@@ -933,8 +933,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					if(!empty($productCustom) and $productCustom->field_type == 'E') {
 
 						if(!class_exists( 'vmCustomPlugin' )) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
-						JPluginHelper::importPlugin( 'vmcustom' );
-						$dispatcher = JDispatcher::getInstance();
+						vPluginHelper::importPlugin( 'vmcustom' );
+						$dispatcher = vDispatcher::getInstance();
 						$dispatcher->trigger( 'plgVmPrepareCartProduct', array(&$product, &$product->customfields[$k], $selected, &$product->modificatorSum) );
 					} else {
 						if($productCustom->customfield_price) {
@@ -1076,8 +1076,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 
 
-		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmcustom');
+		$dispatcher = vDispatcher::getInstance();
 		if (isset($datas['customfield_params']) and is_array($datas['customfield_params'])) {
 			foreach ($datas['customfield_params'] as $key => $plugin_param ) {
 				$dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));

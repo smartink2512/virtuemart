@@ -17,12 +17,10 @@ defined('_JEXEC') or die();
  */
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-
+if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
 if (!class_exists('ShopFunctions'))
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-if (!class_exists('TableCategories'))
-	require(VMPATH_ADMIN . DS . 'tables' . DS . 'categories.php');
-jimport('joomla.form.formfield');
+
 
 /*
  * This element is used by the menu manager
@@ -53,7 +51,21 @@ class vFormFieldVmcategories extends vFormField {
 		return $html;
 	}
 
-
 }
+
+if(JVM_VERSION>0){
+	$o = vRequest::getCmd('option',false);
+	if($o=='com_modules' or $o=='com_plugins') {
+		jimport( 'joomla.form.formfield' );
+		class JFormFieldVmcategories extends vFormFieldVmcategories{
+			public function __construct ($form = null) {
+				parent::__construct( $form );
+				vBasicModel::addIncludePath( VMPATH_ADMIN.DS.'vmf'.DS.'html', 'html' );
+				vFactory::$_lang = JFactory::getLanguage();
+			}
+		}
+	}
+}
+
 
 

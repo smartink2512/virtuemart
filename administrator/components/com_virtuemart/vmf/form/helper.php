@@ -164,7 +164,6 @@ class vFormHelper extends vBasicModel{
 		// Try to find the class file.
 		$type = strtolower($type) . '.php';
 
-		$found = false;
 		if(!class_exists('vPath')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vpath.php');
 		foreach ($paths as $path)
 		{
@@ -176,13 +175,13 @@ class vFormHelper extends vBasicModel{
 			require $file;
 
 			if (class_exists($class)) {
-				break;
+				return $class;
 			} else if(class_exists($classJ)){
-				$class = $classJ;
-				break;
+				return $classJ;
 			}
 		}
-
+		VmConfig::$echoDebug=1;
+		vmdebug('joomla loadClass',$entity, $type,$paths,$class);
 		// Check for all if the class exists.
 		return class_exists($class) ? $class : false;
 	}

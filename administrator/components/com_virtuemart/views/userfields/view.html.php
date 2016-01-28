@@ -80,10 +80,10 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 
 			}
 			$this->assignRef('userFieldPlugin',	$userFieldPlugin);
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-			JToolBarHelper::apply();
-			JToolBarHelper::cancel();
+			vToolBarHelper::divider();
+			vToolBarHelper::save();
+			vToolBarHelper::apply();
+			vToolBarHelper::cancel();
 
 			$notoggle = ''; // (in_array($this->userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
 
@@ -150,28 +150,28 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 			$this->assignRef('userFieldValues', $userFieldValues);
 
 		} else {
-			JToolBarHelper::title( vmText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
-			JToolBarHelper::addNew();
-			JToolBarHelper::editList();
-			JToolBarHelper::divider();
-			JToolBarHelper::custom('toggle.required.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_REQUIRE');
-			JToolBarHelper::custom('toggle.required.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_UNREQUIRE');
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::divider();
+			vToolBarHelper::title( vmText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
+			vToolBarHelper::addNew();
+			vToolBarHelper::editList();
+			vToolBarHelper::divider();
+			vToolBarHelper::custom('toggle.required.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_REQUIRE');
+			vToolBarHelper::custom('toggle.required.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_UNREQUIRE');
+			vToolBarHelper::publishList();
+			vToolBarHelper::unpublishList();
+			vToolBarHelper::divider();
 			$barText = vmText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_HIDE');
 
-			$bar= JToolBar::getInstance( 'toolbar' );
+			$bar= vToolBar::getInstance( 'toolbar' );
 			$bar->appendButton( 'Separator', '"><span class="bartext">'.$barText.'</span><hr style="display: none;' );
 //$bar->appendButton( 'publish', 'upload', $alt, '', 550, 400 );
-			JToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
-			JToolBarHelper::custom('toggle.registration.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
-			JToolBarHelper::custom('toggle.shipment.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
-			JToolBarHelper::custom('toggle.shipment.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
-			JToolBarHelper::custom('toggle.account.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
-			JToolBarHelper::custom('toggle.account.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
-			JToolBarHelper::divider();
-			JToolBarHelper::deleteList();
+			vToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
+			vToolBarHelper::custom('toggle.registration.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
+			vToolBarHelper::custom('toggle.shipment.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
+			vToolBarHelper::custom('toggle.shipment.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
+			vToolBarHelper::custom('toggle.account.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
+			vToolBarHelper::custom('toggle.account.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
+			vToolBarHelper::divider();
+			vToolBarHelper::deleteList();
 
 			$this->addStandardDefaultViewLists($model,'ordering','ASC');
 

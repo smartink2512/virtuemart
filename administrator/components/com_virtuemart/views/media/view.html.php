@@ -58,7 +58,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 
 			$super = vmAccess::isSuperVendor();
 			if($super==1){
-				JToolBarHelper::custom('synchronizeMedia', 'new', 'new', vmText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
+				vToolBarHelper::custom('synchronizeMedia', 'new', 'new', vmText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
 			}
 
 			$this->addStandardDefaultViewCommands();

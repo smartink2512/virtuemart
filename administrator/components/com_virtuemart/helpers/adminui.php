@@ -92,7 +92,7 @@ class AdminUIHelper {
 		<![endif]-->
 		<?php if (!self::$backEnd ){
 		   //JToolBarHelper
-		   $bar = JToolbar::getInstance('toolbar');
+		   $bar = vToolbar::getInstance('toolbar');
 			?><div class="toolbar-box" style="height: 84px;position: relative;"><?php echo $bar->render()?></div>
 		<?php } ?>
     <?php $hideMenu = vFactory::getApplication()->input->cookie->getString('vmmenu', 'show') === 'hide' ? ' menu-collapsed': ''; ?>
@@ -146,7 +146,7 @@ class AdminUIHelper {
 
 		$html = '<div id="admin-ui-tabs">';
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = vDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmBuildTabs', array(&$view, &$load_template));
 
 		foreach ( $load_template as $tab_content => $tab_title ) {

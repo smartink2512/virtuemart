@@ -108,8 +108,8 @@ class VirtueMartControllerProductdetails extends vController {
 
 		if(vFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
 			$recaptcha = vRequest::getVar ('recaptcha_response_field');
-			JPluginHelper::importPlugin('captcha');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('captcha');
+			$dispatcher = vDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
 			$session = vFactory::getSession();
 			if(!$res[0]){
@@ -143,10 +143,10 @@ class VirtueMartControllerProductdetails extends vController {
 		$vendorModel = VmModel::getModel ('vendor');
 		$VendorEmail = $vendorModel->getVendorEmail ($vars['product']->virtuemart_vendor_id);
 
-		JPluginHelper::importPlugin ('system');
-		JPluginHelper::importPlugin ('vmextended');
-		JPluginHelper::importPlugin ('userfield');
-		$dispatcher = JDispatcher::getInstance ();
+		vPluginHelper::importPlugin ('system');
+		vPluginHelper::importPlugin ('vmextended');
+		vPluginHelper::importPlugin ('userfield');
+		$dispatcher = vDispatcher::getInstance ();
 		$dispatcher->trigger ('plgVmOnAskQuestion', array(&$VendorEmail, &$vars, &$view));
 
 		$vars['vendor'] = array('vendor_store_name' => $fromName);
@@ -180,8 +180,8 @@ class VirtueMartControllerProductdetails extends vController {
 
 		if(vFactory::getUser()->guest == 1 and VmConfig::get ('ask_captcha')){
 			$recaptcha = vRequest::getVar ('recaptcha_response_field');
-			JPluginHelper::importPlugin('captcha');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('captcha');
+			$dispatcher = vDispatcher::getInstance();
 			$res = $dispatcher->trigger('onCheckAnswer',$recaptcha);
 			$session = vFactory::getSession();
 			if(!$res[0]){

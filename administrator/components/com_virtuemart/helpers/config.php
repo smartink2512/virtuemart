@@ -109,7 +109,7 @@ if(!class_exists('vmText')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vHtml')) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
 if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php');
 if(!class_exists('vUri')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'uri.php');
-if(!class_exists('vEventDispatcher')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'dispatcher.php');
+if(!class_exists('vDispatcher')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'dispatcher.php');
 if(!class_exists('vPlugin')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'plugin' .DS. 'plugin.php');
 
 /**
@@ -690,6 +690,7 @@ class VmConfig {
 	static public function loadJLang($name,$site=false,$tag=0){
 
 		$jlang = vFactory::getLanguage();
+
 		if(empty($tag))$tag = $jlang->getTag();
 
 		$path = $basePath = VMPATH_ADMIN;
@@ -873,8 +874,8 @@ class VmConfig {
 
 		if($app->isSite()){
 			// try plugins
-			JPluginHelper::importPlugin('vmuserfield');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmuserfield');
+			$dispatcher = vDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInitialise', array());
 		}
 

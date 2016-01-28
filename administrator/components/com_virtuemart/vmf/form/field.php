@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+if(!class_exists('vFormHelper')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'helper.php');
+
 /**
  * Abstract Form Field class for the Joomla Platform.
  *

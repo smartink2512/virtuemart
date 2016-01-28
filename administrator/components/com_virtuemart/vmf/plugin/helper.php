@@ -210,7 +210,8 @@ abstract class vPluginHelper
 			{
 				if (!isset($paths[$path]))
 				{
-					require_once $path;
+					require $path;
+					vmdebug('vPluginHelper import: required file ',$path);
 				}
 
 				$paths[$path] = true;
@@ -220,13 +221,12 @@ abstract class vPluginHelper
 					// Makes sure we have an event dispatcher
 					if (!is_object($dispatcher))
 					{
-						$dispatcher = vEventDispatcher::getInstance();
+						$dispatcher = vDispatcher::getInstance();
 					}
 
 					$className = 'Plg' . $plugin->type . $plugin->name;
 
-					if (class_exists($className))
-					{
+					if (class_exists($className)) {
 						// Load the plugin from the database.
 						if (!isset($plugin->params))
 						{
@@ -236,12 +236,15 @@ abstract class vPluginHelper
 
 						// Instantiate and register the plugin.
 						new $className($dispatcher, (array) ($plugin));
+					} else {
+						vmdebug('vPluginHelper import: class does not exist ',$className);
 					}
 				}
 			}
 			else
 			{
 				$paths[$path] = false;
+				vmdebug('vPluginHelper import: path not found ',$path);
 			}
 		}
 	}
@@ -277,6 +280,7 @@ abstract class vPluginHelper
 				->where('access IN (' . $levels . ')')
 				->order('ordering');*/
 			$q = 'SELECT folder AS type, element AS name, params FROM #__extensions WHERE enabled = 1 AND type ="plugin" AND state IN (0,1) AND access IN (' . $levels . ') ORDER BY ordering';
+
 			static::$plugins = $db->setQuery($q)->loadObjectList();
 
 			$cache->store(static::$plugins, $levels);

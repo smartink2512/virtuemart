@@ -9,6 +9,9 @@
 
 defined('JPATH_PLATFORM') or die;
 
+if(!class_exists('VmConfig')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
+
 /**
  * Form Field class for the Joomla Platform.
  * Supports a one line text field.

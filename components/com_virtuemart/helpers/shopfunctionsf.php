@@ -491,6 +491,7 @@ class shopFunctionsF {
 	 */
 	static public function renderVmSubLayout($name,$viewData=0){
 
+		//vmSetStartTime('renderVmSubLayout');
 		if (!class_exists ('VmView'))
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'vmview.php');
 		$lPath = VmView::getVmSubLayoutPath ($name);
@@ -498,7 +499,9 @@ class shopFunctionsF {
 		if($lPath){
 			ob_start ();
 			include ($lPath);
-			return ob_get_clean();
+			$r = ob_get_clean();
+			//vmTime('Render '.$name,'renderVmSubLayout');
+			return $r;
 		} else {
 			vmdebug('renderVmSubLayout layout not found '.$name);
 		}
@@ -855,8 +858,8 @@ class shopFunctionsF {
 
 	static function triggerContentPlugin(  &$article, $context, $field) {
 	// add content plugin //
-		$dispatcher = JDispatcher::getInstance ();
-		JPluginHelper::importPlugin ('content');
+		$dispatcher = vDispatcher::getInstance ();
+		vPluginHelper::importPlugin ('content');
 		$article->text = $article->$field;
 
 		jimport ('joomla.registry.registry');

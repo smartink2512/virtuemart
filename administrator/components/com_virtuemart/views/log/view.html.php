@@ -45,7 +45,7 @@ class VirtuemartViewLog extends VmViewAdmin {
 			$this->SetViewTitle('LOG', $logFile);
 			$fileContent = file_get_contents($log_path . DS . $logFile);
 			$this->fileContentByLine = explode("\n", $fileContent);
-			JToolBarHelper::cancel();
+			vToolBarHelper::cancel();
 
 		} else {
 			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');

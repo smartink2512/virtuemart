@@ -156,10 +156,10 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 			/* Toolbar */
 			if (JVM_VERSION < 3) { $backward="back"; $list='back';} else {$backward='backward';$list='list';}
-			JToolBarHelper::custom( 'prevItem', $backward,'','COM_VIRTUEMART_ITEM_PREVIOUS',false);
-			JToolBarHelper::custom( 'nextItem', 'forward','','COM_VIRTUEMART_ITEM_NEXT',false);
-			JToolBarHelper::divider();
-			JToolBarHelper::custom( 'cancel', $list,'','COM_VIRTUEMART_ORDER_LIST_LBL',false,false);
+			vToolBarHelper::custom( 'prevItem', $backward,'','COM_VIRTUEMART_ITEM_PREVIOUS',false);
+			vToolBarHelper::custom( 'nextItem', 'forward','','COM_VIRTUEMART_ITEM_NEXT',false);
+			vToolBarHelper::divider();
+			vToolBarHelper::custom( 'cancel', $list,'','COM_VIRTUEMART_ORDER_LIST_LBL',false,false);
 
 		}
 		else if ($curTask == 'editOrderItem') {
@@ -221,11 +221,11 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 			}
 
-			JToolBarHelper::save('updatestatus', vmText::_('COM_VIRTUEMART_UPDATE_STATUS'));
+			vToolBarHelper::save('updatestatus', vmText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
 			if (vmAccess::manager('orders.delete')) {
-				JToolBarHelper::spacer('80');
-				JToolBarHelper::deleteList();
+				vToolBarHelper::spacer('80');
+				vToolBarHelper::deleteList();
 			}
 
 			/* Assign the data */
@@ -235,7 +235,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 		}
 		if(vFactory::getApplication()->isSite()) {
-			$bar = JToolBar::getInstance( 'toolbar' );
+			$bar = vToolBar::getInstance( 'toolbar' );
 			$bar->appendButton( 'Link', 'back', 'COM_VIRTUEMART_LEAVE', 'index.php?option=com_virtuemart&manage=0' );
 		}
 

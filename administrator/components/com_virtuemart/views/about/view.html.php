@@ -22,6 +22,7 @@ defined( '_JEXEC' ) or die('Restricted access');
 // Load the view framework
 if(!class_exists( 'VmViewAdmin' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 
+
 /**
  * HTML View class for the VirtueMart Component
  *
@@ -32,7 +33,7 @@ class VirtuemartViewAbout extends VmViewAdmin {
 
 	function display ($tpl = null) {
 
-		JToolBarHelper::title( vmText::_( 'COM_VIRTUEMART_ABOUT' )."::".vmText::_( 'COM_VIRTUEMART_CONTROL_PANEL' ), 'vm_store_48' );
+		vToolBarHelper::title( vmText::_( 'COM_VIRTUEMART_ABOUT' )."::".vmText::_( 'COM_VIRTUEMART_CONTROL_PANEL' ), 'vm_store_48' );
 
 		parent::display( $tpl );
 	}

@@ -154,3 +154,17 @@ class vFormFieldList extends vFormField
 		return $options;
 	}
 }
+
+/*if(JVM_VERSION>0){
+	//could be written abstract with eval
+	jimport('joomla.form.formfield');
+	class JFormFieldList extends vFormFieldList{
+
+		public function __construct($form = null){
+			parent::__construct($form);
+			vBasicModel::addIncludePath(VMPATH_ADMIN.DS.'vmf'.DS.'html','html');
+			VmConfig::loadJLang('com_virtuemart');
+		}
+	}
+}
+*/

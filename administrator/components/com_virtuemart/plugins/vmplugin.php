@@ -25,6 +25,8 @@ if (!class_exists( 'VmConfig' )) {
 	}
 }
 
+if(!class_exists('vPlugin')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'plugin' .DS. 'plugin.php');
+
 // Load the helper functions that are needed by all plugins
 if (!class_exists ('ShopFunctions')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
@@ -32,9 +34,9 @@ if (!class_exists ('ShopFunctions')) {
 // if (!class_exists('DbScheme'))
 // require(VMPATH_ADMIN . DS . 'helpers' . DS . 'dbscheme.php');
 // Get the plugin library
-jimport ('joomla.plugin.plugin');
+//jimport ('joomla.plugin.plugin');
 
-abstract class vmPlugin extends JPlugin {
+abstract class vmPlugin extends vPlugin {
 
 	// var Must be overriden in every plugin file by adding this code to the constructor:
 	// $this->_name = basename(__FILE, '.php');

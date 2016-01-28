@@ -56,8 +56,8 @@ vHtml::_('behavior.formvalidator');
     }
 
     $html = '';
-    JPluginHelper::importPlugin('vmpayment');
-    $dispatcher = JDispatcher::getInstance();
+    vPluginHelper::importPlugin('vmpayment');
+    $dispatcher = vDispatcher::getInstance();
     $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html, $this->from_cart));
 
     if (is_array($html)) {

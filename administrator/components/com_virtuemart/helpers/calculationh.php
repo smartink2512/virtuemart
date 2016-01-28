@@ -999,8 +999,8 @@ class calculationHelper {
 	 */
 	protected function couponHandler($_code) {
 
-		JPluginHelper::importPlugin('vmcoupon');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmcoupon');
+		$dispatcher = vDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmCouponHandler', array($_code,&$this->_cart->cartData, &$this->_cart->cartPrices));
 		if(!empty($returnValues)){
 			foreach ($returnValues as $returnValue) {
@@ -1247,8 +1247,8 @@ class calculationHelper {
 
 		//Test rules in plugins
 		if(!empty($testedRules) and count($testedRules)>0){
-			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = vDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
 		}
 
@@ -1345,8 +1345,8 @@ class calculationHelper {
 
 		//Test rules in plugins
 		if(!empty($testedRules) and count($testedRules)>0){
-			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = vDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesBill', array(&$this, &$testedRules));
 		}
 
@@ -1363,7 +1363,7 @@ class calculationHelper {
 		// Handling shipment plugins
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
-		JPluginHelper::importPlugin('vm'.$type);
+		vPluginHelper::importPlugin('vm'.$type);
 
 		//We use one trigger to load all possible plugins and store as result an array of the pluginmethods and their display.
 		//we select the first if there is one.
@@ -1372,7 +1372,7 @@ class calculationHelper {
 		//The plugin write the results into the cart array $cartData['$type'] = array($methods);
 		//The methods must have the rendered display
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = vDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmCalculateDisplayedCartOptions'.ucfirst($type),array(&$this->_cart));
 
 		//Plugin return true if no method is configured for the plugin
@@ -1427,11 +1427,11 @@ class calculationHelper {
 		// Handling shipment plugins
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
-		JPluginHelper::importPlugin('vmshipment');
+		vPluginHelper::importPlugin('vmshipment');
 		$this->_cart->checkAutomaticSelectedPlug('shipment');
 		if (empty($this->_cart->virtuemart_shipmentmethod_id)) return;
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = vDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePriceShipment',array(  $this->_cart, &$this->_cart->cartPrices, &$this->_cart->cartData['shipmentName']  ));
 
 		//Plugin return true if shipment rate is still valid false if not any more
@@ -1468,12 +1468,12 @@ class calculationHelper {
 		$this->_cart->cartPrices['payment_calc_id'] = 0;
 
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
+		vPluginHelper::importPlugin('vmpayment');
 
 		$this->_cart->checkAutomaticSelectedPlug('payment');
 		if (empty($this->_cart->virtuemart_paymentmethod_id)) return;
 
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = vDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePricePayment',array( $this->_cart, &$this->_cart->cartPrices, &$this->_cart->cartData['paymentName']  ));
 
 		// Plugin return true if payment plugin is  valid false if not  valid anymore only one value is returned
@@ -1594,8 +1594,8 @@ class calculationHelper {
 			}
 		} else {
 
-			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = vDispatcher::getInstance();
 
 			$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
 			if($calculated){

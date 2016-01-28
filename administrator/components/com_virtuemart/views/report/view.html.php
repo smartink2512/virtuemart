@@ -53,7 +53,7 @@ class VirtuemartViewReport extends VmViewAdmin {
 		$db->setQuery($q);
 		$res = $db->loadRow();
 		if($res) {
-			JToolBarHelper::custom('updateOrderItems', 'new', 'new', vmText::_('COM_VIRTUEMART_REPORT_UPDATEORDERITEMS'),false);
+			vToolBarHelper::custom('updateOrderItems', 'new', 'new', vmText::_('COM_VIRTUEMART_REPORT_UPDATEORDERITEMS'),false);
 			vmError('COM_VIRTUEMART_REPORT_UPDATEORDERITEMS_WARN');
 		}*/
 

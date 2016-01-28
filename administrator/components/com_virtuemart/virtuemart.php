@@ -43,11 +43,9 @@ if($_controller) {
 		require (VMPATH_ADMIN.DS.'controllers'.DS.$_controller.'.php');
 	} else {
 		// try plugins
-
-		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmextended');
+		$dispatcher = vDispatcher::getInstance();
 		$results = $dispatcher->trigger('onVmAdminController', array($_controller));
-
 		if (empty($results)) {
 			$app = vFactory::getApplication();
 			$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: Couldnt find file '.$_controller);
@@ -74,7 +72,6 @@ if($exe){
 	if(!class_exists($_class)){
 		vmError('Serious Error could not find controller '.$_class,'Serious error, could not find class');
 		$app = vFactory::getApplication();
-		$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: No controller given '.$_controller);
 		$app->redirect('index.php?option=com_virtuemart');
 	}
 	$controller = new $_class();

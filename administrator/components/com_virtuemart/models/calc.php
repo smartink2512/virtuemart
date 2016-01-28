@@ -75,8 +75,8 @@ class VirtueMartModelCalc extends VmModel {
 			$xrefTable = $this->getTable('calc_manufacturers');
 			$this->_cache[$this->_id]->virtuemart_manufacturers = $xrefTable->load($this->_id);
 
-			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = vDispatcher::getInstance();
 			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_cache[$this->_id]));
 
   		}
@@ -116,8 +116,8 @@ class VirtueMartModelCalc extends VmModel {
 
 			$data->currencyName = ShopFunctions::getCurrencyByID($data->calc_currency);
 
-			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = vDispatcher::getInstance();
 			$error = $dispatcher->trigger('plgVmGetPluginInternalDataCalcList',array(&$data));
 		}
 
@@ -158,8 +158,8 @@ class VirtueMartModelCalc extends VmModel {
 
 		//Missing in calculation plugins,... plgVmGetTablePluginParams or declare
 		//if ($type == 'E') {
-		/*	JPluginHelper::importPlugin ('vmcalculation');
-			$dispatcher = JDispatcher::getInstance ();
+		/*	vPluginHelper::importPlugin ('vmcalculation');
+			$dispatcher = vDispatcher::getInstance ();
 			//We call here vmplugin->getTablePluginParams which sets the xParam and the varsToPush of the Plugin
 			vmdebug('setParameterableByFieldType before trigger plgVmGetTablePluginParams ',$xParams,$varsToPush);
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
@@ -185,8 +185,8 @@ class VirtueMartModelCalc extends VmModel {
     	$xrefTable->bindChecknStore($data);
 
 		if (!class_exists('vmCalculationPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmcalculationplugin.php');
-		JPluginHelper::importPlugin('vmcalculation');
-		$dispatcher = JDispatcher::getInstance();
+		vPluginHelper::importPlugin('vmcalculation');
+		$dispatcher = vDispatcher::getInstance();
 		//$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array(&$data));
 		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable',array('calculation',$data,$table));
 
@@ -278,8 +278,8 @@ class VirtueMartModelCalc extends VmModel {
 				$ok = false;
 			}
 
-			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			vPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = vDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmDeleteCalculationRow', array( $id));
 
 		}

@@ -19,7 +19,7 @@ defined('JPATH_PLATFORM') or die;
  * @see    JPlugin
  * @since  12.1
  */
-class vEventDispatcher extends vObject
+class vDispatcher extends vObject
 {
 	/**
 	 * An array of Observer objects to notify

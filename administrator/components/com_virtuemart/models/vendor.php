@@ -156,8 +156,8 @@ class VirtueMartModelVendor extends VmModel {
 	 */
 	function store (&$data) {
 
-		JPluginHelper::importPlugin ('vmvendor');
-		$dispatcher = JDispatcher::getInstance ();
+		vPluginHelper::importPlugin ('vmvendor');
+		$dispatcher = vDispatcher::getInstance ();
 		$plg_datas = $dispatcher->trigger ('plgVmOnVendorStore', $data);
 		foreach ($plg_datas as $plg_data) {
 			$data = array_merge ($plg_data);

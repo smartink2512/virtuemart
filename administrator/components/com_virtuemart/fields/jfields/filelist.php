@@ -11,7 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
 if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
-vFormHelper::loadFieldClass('list');
+if(!class_exists('vFormFieldList')) require(VMPATH_ADMIN .DS. 'fields' .DS. 'jfields' .DS. 'list.php');
 
 /**
  * Supports an HTML select list of files

@@ -10,8 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 if(!class_exists('vPluginHelper')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'plugin' .DS. 'helper.php');
-
-use Joomla\Registry\Registry;
+if(!class_exists('Registry')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'registry' .DS. 'Registry.php');
+//use Joomla\Registry\Registry;
 
 /**
  * JPlugin Class
