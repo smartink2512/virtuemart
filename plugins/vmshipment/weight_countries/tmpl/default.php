@@ -27,7 +27,8 @@ if(!empty($viewData['method']->countries) and is_array($viewData['method']->coun
 		echo $country->country_name;
 		//vmdebug('my country ',$country);
 	}
+	echo '</br>';
 }
-echo '</br>';
+
 echo vmtext::sprintf('VMSHIPMENT_WEIGHT_COUNTRIES_WITH_SHIPMENT', $viewData['method']->shipment_name, $currency->priceDisplay($viewData['product']->prices['shipmentPrice']));
 ?>

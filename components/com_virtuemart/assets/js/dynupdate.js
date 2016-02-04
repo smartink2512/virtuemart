@@ -30,7 +30,7 @@ jQuery(function($) {
             dataType: 'html',
             success: function(data) {
               var title = $(data).filter('title').text();
-              $('title').text(title);
+              jQuery('title').text(title);
               var el = $(data).find(Virtuemart.containerSelector);
       				if (! el.length) el = $(data).filter(Virtuemart.containerSelector);
       				if (el.length) {
