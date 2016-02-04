@@ -153,8 +153,7 @@ $i = 0;
 	<tr>
 		<td>
 			<?php
-
-			$aflink = '<a target="_blank" href="http://www.acyba.com/acymailing.html?partner_id=19513"><img title="AcyMailing 2"  src="http://www.acyba.com/images/banners/acymailing_450-109.png" style="width: 150px;" /></a>';
+			$aflink = '<a target="_blank" href="https://www.acyba.com/?partner_id=19513"><img title="AcyMailing2" src="http://www.acyba.com/images/banners/affiliate2.png"/></a>';
 			echo vmText::sprintf('COM_VIRTUEMART_AD_ACY',$aflink);
 			?>
 		</td>
