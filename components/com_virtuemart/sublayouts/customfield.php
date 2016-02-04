@@ -199,7 +199,7 @@ class VirtueMartCustomFieldRenderer {
 						}
 						
 						$fname = $fieldname.'['.$k.']';
-						$html .= vHtml::_ ($selectType, $options, $fname, $attribs , "value", "text", $selected,$idTagK);
+						$html .= JHtml::_ ($selectType, $options, $fname, $attribs , "value", "text", $selected,$idTagK);
 						$tags[] = $idTagK;
 					}
 
