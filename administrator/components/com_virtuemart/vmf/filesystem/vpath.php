@@ -173,13 +173,13 @@ class vPath {
 		{
 			settype($paths, 'array');
 		}
-		vmdebug('find davor',$paths,$file);
+
 		// Start looping through the path set
 		foreach ($paths as $path)
 		{
 			// Get the path to the file
 			$fullname = $path . DS . $file;
-			vmdebug('find',$fullname);
+
 			// Is the path based on a stream?
 			if (strpos($path, '://') === false)
 			{
@@ -190,7 +190,7 @@ class vPath {
 				$path = realpath($path);
 				$fullname = realpath($fullname);
 			}
-			vmdebug('find',$fullname);
+
 			/*
 			 * The substr() check added to make sure that the realpath()
 			 * results in a directory registered so that

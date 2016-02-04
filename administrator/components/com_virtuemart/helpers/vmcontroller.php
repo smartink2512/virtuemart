@@ -151,7 +151,7 @@ class VmController extends vController {
 
 		if($data===0) $data = vRequest::getRequest();
 
-		$model = VmModel::getModel($this->_cname);
+		$model = $this->getModel($this->_cname);
 		$id = $model->store($data);
 
 		$msg = 'failed';
@@ -194,7 +194,7 @@ class VmController extends vController {
 			$msg = vmText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 
 		} else {
-			$model = VmModel::getModel($this->_cname);
+			$model = $this->getModel($this->_cname);
 			$ret = $model->remove($ids);
 
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
@@ -233,7 +233,7 @@ class VmController extends vController {
 			$field = $task[1];
 		}
 
-		$model = VmModel::getModel($this->_cname);
+		$model = $this->getModel($this->_cname);
 		if (!$model->toggle($field, $val, $this->_cidName, 0, $this->_cname)) {
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
 		} else{
@@ -252,7 +252,7 @@ class VmController extends vController {
 
 		vRequest::vmCheckToken();
 
-		$model = VmModel::getModel($this->_cname);
+		$model = $this->getModel($this->_cname);
 
 		if($cidname === 0) $cidname = $this->_cidName;
 
@@ -277,7 +277,7 @@ class VmController extends vController {
 
 		vRequest::vmCheckToken();
 
-		$model = VmModel::getModel($this->_cname);
+		$model = $this->getModel($this->_cname);
 
 		if($cidname === 0) $cidname = $this->_cidName;
 
@@ -296,7 +296,7 @@ class VmController extends vController {
 
 		vRequest::vmCheckToken();
 
-		$model = VmModel::getModel($this->_cname);
+		$model = $this->getModel($this->_cname);
 		$model->move(-1);
 		$msg = vmText::sprintf('COM_VIRTUEMART_STRING_ORDER_UP_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
@@ -306,7 +306,7 @@ class VmController extends vController {
 
 		vRequest::vmCheckToken();
 
-		$model = VmModel::getModel($this->_cname);
+		$model = $this->getModel($this->_cname);
 		$model->move(1);
 		$msg = vmText::sprintf('COM_VIRTUEMART_STRING_ORDER_DOWN_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
@@ -319,7 +319,7 @@ class VmController extends vController {
 		$cid 	= vRequest::getInt( $this->_cidName, vRequest::getInt('cid', array() ) );
 		$order 	= vRequest::getInt( 'order', array() );
 
-		$model = VmModel::getModel($this->_cname);
+		$model = $this->getModel($this->_cname);
 		if (!$model->saveorder($cid, $order)) {
 			$msg = 'error';
 		} else {

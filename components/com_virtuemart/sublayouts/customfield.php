@@ -155,8 +155,11 @@ class VirtueMartCustomFieldRenderer {
 								if(empty($elem)){
 									$text = vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION');
 								}
-								$options[] = array('value'=>$elem,'text'=>$text);
 
+								$o = new stdClass();
+								$o->value = $elem;
+								$o->text = $text;
+								$options[] = $o;
 								if($productSelection and $productSelection[$k] == $elem){
 									$selected = $elem;
 								}
@@ -180,12 +183,22 @@ class VirtueMartCustomFieldRenderer {
 
 						}
 
-						$attribs = array('class'=>'vm-chzn-select cvselection no-vm-bind','data-dynamic-update'=>'1','style'=>'min-width:70px;');
+						$class = 'vm-chzn-select';
+						$selectType = 'select.genericlist';
+
+						if(!empty($customfield->selectType)){
+							$selectType = 'select.radiolist';
+							$class = '';
+						} else {
+							vmJsApi::chosenDropDowns();
+						}
+
+						$attribs = array('class'=>$class.' cvselection no-vm-bind','data-dynamic-update'=>'1','style'=>'min-width:70px;');
 						if('productdetails' != vRequest::getCmd('view') or !VmConfig::get ('jdynupdate', TRUE)){
 							$attribs['reload'] = '1';
 						}
-
-						$html .= vHtml::_ ('select.genericlist', $options, $fieldname, $attribs , "value", "text", $selected,$idTagK);
+						$fname = $fieldname.'['.$k.']';
+						$html .= vHtml::_ ($selectType, $options, $fname, $attribs , "value", "text", $selected,$idTagK);
 						$tags[] = $idTagK;
 					}
 
@@ -210,8 +223,8 @@ class VirtueMartCustomFieldRenderer {
 
 					$jsVariants = implode(',',$jsArray);
 					$j = "jQuery(document).ready(function() {
-							jQuery('#".implode(',#',$tags)."').off('change',Virtuemart.cvFind);
-							jQuery('#".implode(',#',$tags)."').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
+							jQuery('.cvselection').off('change',Virtuemart.cvFind);
+							jQuery('.cvselection').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
 						});";
 					vmJsApi::addJScript('cvselvars'.$hash,$j,false,true,false,$hash);
 
