@@ -3,30 +3,26 @@
 /**
  * Heidelpay response page for Heidelpay plugin
  * @author Heidelberger Paymenrt GmbH <Jens Richter> 
- * @version 13.07
+ * @version 15.09.14
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) Heidelberger Payment GmbH
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
-
  
 include('../../../../configuration.php');
 $config = new JConfig();
-
 //echo $config->password ;
 
 foreach ($_POST as $key => $value) {
 	$key = preg_replace('/_x$/', '', trim($key));
 	$_POST[$key] = $value;
-	
 }
+
 foreach ($_GET as $key => $value) {
 	$key = preg_replace('/_x$/', '', trim($key));
 	$_GET[$key] = $value;
 }
-
-
 
 if ( $_SERVER['SERVER_PORT'] == "443" ) {
 	$Protocol = "https://";
@@ -37,13 +33,12 @@ if ( $_SERVER['SERVER_PORT'] == "443" ) {
 $PATH = preg_replace('@plugins\/vmpayment\/heidelpay\/heidelpay\/heidelpay_response\.php@','', $_SERVER['SCRIPT_NAME']);
 $URL = $_SERVER['HTTP_HOST'] . $PATH ; 
 
-if(ctype_alnum($_GET['on'])){ $on = $_GET['on']; }else{ $on = ''; }
+if(preg_match('/^[A-Za-z0-9 _-]+$/',($_GET['on']))){ $on = $_GET['on']; }else{ $on = ''; }
 $pm			= (int) $_GET['pm'];
 $Itemid	= (int) $_GET['Itemid'];
 
 $redirectURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on='.$on.'&pm='.$pm.'&Itemid='.$Itemid;
 $cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on='.$on.'&pm='.$pm.'&Itemid='.$Itemid;
-
 
 function updateHeidelpay($orderID, $connect, $on, $pm) {
 	$comment="";
