@@ -604,6 +604,12 @@ class VirtueMartModelConfig extends VmModel {
 				continue; // Outside a section or inside the wrong one.
 			}
 
+			$pos = strpos($_line, '//');
+			if ($pos !== FALSE) {
+				$_line = substr($_line,0,$pos);
+				$_line = trim($_line);
+			}
+
 			if (strpos($_line, '=') !== FALSE) {
 
 				$pair = explode('=',$_line);
