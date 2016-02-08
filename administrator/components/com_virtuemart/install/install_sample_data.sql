@@ -55,8 +55,8 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`virtuemart_category_id`, `v
 	(11, 10, 1),
 	(9, 13, 1);
 
-INSERT IGNORE INTO `#__virtuemart_coupons` (`virtuemart_coupon_id`, `coupon_code`, `percent_or_total`, `coupon_type`, `coupon_value`, `coupon_start_date`, `coupon_expiry_date`, `coupon_value_valid`, `coupon_used`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 'Sample Coupon', 'total', 'permanent', 0.01000, '', '', 0.00000, '0', 1, '', 635, '', 635, '', 0);
+INSERT IGNORE INTO `#__virtuemart_coupons` (`virtuemart_coupon_id`, `virtuemart_vendor_id`, `coupon_code`, `percent_or_total`, `coupon_type`, `coupon_value`, `coupon_start_date`, `coupon_expiry_date`, `coupon_value_valid`, `coupon_used`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+	(1, 1,'Sample Coupon', 'total', 'permanent', 0.01000, '', '', 0.00000, '0', 1, '', 635, '', 635, '', 0);
 
 INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `ordering`, `field_type`, `is_cart_attribute`, `is_input`, `is_list`, `layout_pos`, `custom_title`, `custom_tip`, `custom_desc`, `custom_value`, `custom_params`, `show_title`, `published`) VALUES
  (01, 0, 0, 'R', 0, 0, 0, 'related_products','COM_VIRTUEMART_RELATED_PRODUCTS','COM_VIRTUEMART_RELATED_PRODUCTS_TIP','COM_VIRTUEMART_RELATED_PRODUCTS_DESC', 'related_products','wPrice="1"|wImage="1"|wDescr="1"|', 1, 1),
