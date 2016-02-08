@@ -92,17 +92,23 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = $query['keyword'];
 				unset($query['keyword']);
 			}
+
 			if ( isset($query['virtuemart_category_id']) ) {
-				$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
-				if ($categoryRoute->route) {
-					$segments[] = $categoryRoute->route;
+				$categoryRoute = null;
+				if($helper->full or !isset($query['virtuemart_product_id'])){
+					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
+					if ($categoryRoute->route) {
+						$segments[] = $categoryRoute->route;
+					}
 				}
+
 				$menuCatItemId = $helper->getMenuCatItemId($query['virtuemart_category_id']);
 				if(!empty($menuCatItemId)) {
 					$query['Itemid'] = $menuCatItemId;
 				} else if(isset($query['virtuemart_category_id']) and isset($jmenu['virtuemart_category_id'][$query['virtuemart_category_id']])) {
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$query['virtuemart_category_id']];
 				} else {
+					if($categoryRoute===null) $categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
 					//http://forum.virtuemart.net/index.php?topic=121642.0
 					if (!empty($categoryRoute->itemId)) {
 						$query['Itemid'] = $categoryRoute->itemId;
@@ -738,7 +744,7 @@ class vmrouterHelper {
 			self::$_instance= new vmrouterHelper ($query);
 
 			if (self::$limit===null){
-				$mainframe = Jfactory::getApplication(); ;
+				$mainframe = JFactory::getApplication(); ;
 				$view = 'virtuemart';
 				if(isset($query['view'])) $view = $query['view'];
 				self::$limit= $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', VmConfig::get('list_limit', 20), 'int');
@@ -810,17 +816,14 @@ class vmrouterHelper {
 
 		static $categoryNamesCache = array();
 		$strings = array();
-		$db = JFactory::getDBO();
-		$catModel = VmModel::getModel('category');
 
-		$parent_ids = array();
+		$catModel = VmModel::getModel('category');
 
 		if($parent_ids = $catModel->getCategoryRecurse($virtuemart_category_id,$catMenuId)){
 			if($this->full) {
 				$parent_ids = array_reverse($parent_ids) ;
-			} else {
+			} else if(isset($parent_ids[0])){
 				$t = $parent_ids[0];
-				$parent_ids = array();
 				$parent_ids[] = $t;
 			}
 		}
