@@ -1173,7 +1173,7 @@ class vForm extends JForm{
 			}
 
 			// Validate the field.
-			$valid = $this->validateField($field, $group, $value, $input);
+			$valid = $this->validateFieldVM($field, $group, $value, $input);
 
 			// Check for an error.
 			if ($valid instanceof Exception)
@@ -1932,9 +1932,11 @@ class vForm extends JForm{
 	 * @throws  InvalidArgumentException
 	 * @throws  UnexpectedValueException
 	 */
+	protected function validateField(SimpleXMLElement $element, $group = null, $value = null, Joomla\Registry\Registry $input = null) {
+		return $this->validateFieldVM($element, $group, $value, $input);
+	}
 
-
-	protected function validateField(SimpleXMLElement $element, $group = null, $value = null, Registry $input = null) {
+	protected function validateFieldVM(SimpleXMLElement $element, $group = null, $value = null, Registry $input = null) {
 		$valid = true;
 
 		// Check if the field is required.

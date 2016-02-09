@@ -289,6 +289,15 @@ class vController extends vBasicModel implements vIController{
 		}
 	}
 
+	/**
+	 * Fallback to keep compatibility
+	 * @param $path
+	 * @return $this
+	 */
+	public function addViewPath($path) {
+		self::addIncludePath($path, 'view');
+		return $this;
+	}
 
 	/**
 	 * Method to load and return a view object. This method first looks in the

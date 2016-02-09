@@ -775,12 +775,18 @@ abstract class vmPSPlugin extends vmPlugin {
 		if ($pluginSalesPrice) {
 			$costDisplay = $currency->priceDisplay( $pluginSalesPrice );
 			//$costDisplay = '<span class="' . $this->_type . '_cost"> (' . vmText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') . $costDisplay . ")</span>";
-			list($discount, $fee) = explode( '/', vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' ) );
-			if($pluginSalesPrice>=0) {
-				$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$fee.': +'.$costDisplay.")</span>";
-			} else if($pluginSalesPrice<0) {
-				$costDisplay = '<span class="'.$this->_type.'_cost discount"> ('.$discount.': -'.$costDisplay.")</span>";
+			$t = vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' );
+			if(strpos($t,'/',$t!==FALSE)){
+				list($discount, $fee) = explode( '/', vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' ) );
+				if($pluginSalesPrice>=0) {
+					$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$fee.' +'.$costDisplay.")</span>";
+				} else if($pluginSalesPrice<0) {
+					$costDisplay = '<span class="'.$this->_type.'_cost discount"> ('.$discount.' -'.$costDisplay.")</span>";
+				}
+			} else {
+				$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$t.' +'.$costDisplay.")</span>";
 			}
+
 		}
 		$dynUpdate='';
 		if( VmConfig::get('oncheckout_ajax',false)) {
