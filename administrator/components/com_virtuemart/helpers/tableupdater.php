@@ -1,11 +1,13 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 /**
+ * Class to update the tables according to the sql files
+ *
  * @version $Id: tableupdater.php 4657 2011-11-10 12:06:03Z Milbo $
  * @package VirtueMart
  * @subpackage core
  * @author Max Milbers
- * @copyright Copyright (C) 2014 by the virtuemart team - All rights reserved.
+ * @copyright Copyright (C) 2011- 2016 by the virtuemart team - All rights reserved.
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL 2, see COPYRIGHT.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -15,13 +17,6 @@ defined('_JEXEC') or die('Restricted access');
  * http://virtuemart.net
  */
 
-
-/**
- * Class to update the tables according to the install.sql db file
- *
- * @author Milbo
- *
- */
 if(!class_exists('VmModel')) require VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php';
 
 class GenericTableUpdater extends VmModel{
@@ -52,11 +47,6 @@ class GenericTableUpdater extends VmModel{
 
 		$this->reCreaPri = VmConfig::get('reCreaPri',0);
 		$this->reCreaKey = VmConfig::get('reCreaKey',1);
-	}
-
-	public function reOrderChilds(){
-
-		vmdebug('I am in reOrderChilds');
 	}
 
 	var $tables = array( 	'products'=>'virtuemart_product_id',
@@ -524,7 +514,6 @@ class GenericTableUpdater extends VmModel{
 	 * @param unknown_type $fields
 	 * @param unknown_type $command
 	 */
-
 	public function alterColumns($tablename,$tableDef){
 
 		$after =' FIRST';
@@ -570,8 +559,8 @@ class GenericTableUpdater extends VmModel{
 
 			if(in_array($fieldname,$columns)){
 
-			$key=array_search($fieldname, $columns);
-			$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
+				$key=array_search($fieldname, $columns);
+				$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
 
 // 					while (strpos($oldColumn,'  ')){
 // 						str_replace('  ', ' ', $oldColumn);
@@ -583,25 +572,28 @@ class GenericTableUpdater extends VmModel{
 				$oldColumn = strtoupper($oldColumn);
 				$alterCommand = strtoupper(trim($alterCommand));
 
-				// we remove the auto_increment, to be free to set the primary key, but only if there are no keys
-				if($keys and strpos($oldColumn,'AUTO_INCREMENT')===false and strpos($alterCommand,'AUTO_INCREMENT')!==false ){
-					$toRepeat[0] = array($fieldname=>$alterCommand);
-					$toRepeat[1] = false;
-					$alterCommand = trim(str_replace('AUTO_INCREMENT', '',$alterCommand));
-
-					vmdebug('Auto increment found, removed',$toRepeat);
-				}
-
 				if ($oldColumn != $alterCommand ) {
+					$pr = '';
+					//If the field is an auto_increment, we add to the sql the creation of the primary key
+					if(strpos($alterCommand,'AUTO_INCREMENT')!==false ){
+						$pr = ', ADD PRIMARY KEY (`'.$fieldname.'`)';
+						//This function drops the key only if existing
+						$this->dropPrimaryKey($tablename);
+					}
 
-					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand. $after;
+					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand. $after.$pr;
 					$action = 'CHANGE';
 					$altered++;
 					vmdebug('alterColumns '.$tablename,$fieldname,$oldColumn,$alterCommand);
 				}
 			}
 			else {
-				$query = 'ALTER TABLE `'.$tablename.'` ADD '.$fieldname.' '.$alterCommand.' '.$after;
+				$pr = '';
+				if(strpos($alterCommand,'AUTO_INCREMENT')!==false ){
+					$pr = ', ADD PRIMARY KEY (`'.$fieldname.'`)';
+					$this->dropPrimaryKey($tablename);
+				}
+				$query = 'ALTER TABLE `'.$tablename.'` ADD `'.$fieldname.'` '.$alterCommand.' '.$after.$pr;
 				$action = 'ADD';
 				$added++;
  				vmdebug('alterColumns ADD '.$query);
@@ -616,7 +608,7 @@ class GenericTableUpdater extends VmModel{
 					vmInfo( $msg );
 				}
 			}
-			$after = ' AFTER `'.$fieldname.'`';
+			$after = ' AFTER `'.$fieldname.'` ';
 		}
 
 		if($keys){
@@ -650,6 +642,32 @@ class GenericTableUpdater extends VmModel{
 
 		return true;
 
+	}
+
+	/**
+	 * This function drops the key only if existing
+	 * @author Max Milbers
+	 * @param $tablename
+	 * @return bool
+	 */
+	public function dropPrimaryKey($tablename){
+
+		$q = 'SHOW INDEXES FROM `'.$tablename.'` WHERE Key_name = "PRIMARY";';
+		$this->_db->setQuery($q);
+		$this->_db->execute();
+		$res = $this->_db->loadAssoc();
+
+		if($res){
+			$q = 'ALTER TABLE `'.$tablename.'`	DROP PRIMARY KEY;';
+			$this->_db->setQuery($q);
+
+			if(!$this->_db->execute() ){
+				vmError( 'Could not drop Primary for CHANGE '.$q );
+			} else {
+				return true;
+			}
+		}
+		return true;
 	}
 
 	public function deleteColumns($tablename,$fields){
