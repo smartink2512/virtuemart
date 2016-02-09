@@ -281,7 +281,7 @@ class VmViewAdmin extends vView {
 			$j = '
 			jQuery(function($) {
 				var oldflag = "";
-				$("select#vmlang").chosen().change(function() {
+				jQuery("select#vmlang").chosen().change(function() {
 					langCode = $(this).find("option:selected").val();
 					flagClass = "flag-"+langCode;
 					jQuery.ajax({

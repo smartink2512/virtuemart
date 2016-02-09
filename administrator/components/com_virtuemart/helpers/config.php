@@ -859,8 +859,10 @@ class VmConfig {
 			$_value = join('|', $_value);
 			self::$_jpConfig->_raw = $_value;
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
-
-			self::$_jpConfig->storeConfig();
+			VirtueMartModelConfig::storeConfig( self::toString());
+			if($raw = VirtueMartModelConfig::storeConfig( self::toString() )){
+				self::$_jpConfig->_raw = $raw;
+			}
 		} else {
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
 		}
@@ -891,28 +893,21 @@ class VmConfig {
 		return self::$_jpConfig;
 	}
 
-	static public function storeConfig(){
+	/**
+	 * Writes the params as string and escape them before
+	 * @author Max Milbers
+	 */
+	function toString(){
+		$raw = '';
 
-		$user = vFactory::getUser();
-		if($user->authorise('core.admin','com_virtuemart')){
-			$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
-			if($installed){
+		foreach(self::$_jpConfig->_params as $paramkey => $value){
 
-				VirtueMartModelConfig::installVMconfigTable();
-
-				$confData = array();
-				$confData['virtuemart_config_id'] = 1;
-
-				$confData['config'] = VmConfig::$_jpConfig->toString();
-				VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables','Table');
-				vFactory::getDbo();
-				$confTable = VmTable::getInstance('configs', 'Table', array());
-
-				if (!$confTable->bindChecknStore($confData)) {
-					vmError('storeConfig was not able to store config');
-				}
-			}
+			//Texts get broken, when serialized, therefore we do a simple encoding,
+			//btw we need serialize for storing arrays   note by Max Milbers
+			$raw .= $paramkey.'='.json_encode($value).'|';
 		}
+		self::$_jpConfig->_raw = substr($raw,0,-1);
+		return self::$_jpConfig->_raw;
 	}
 
 	 /*
@@ -1111,22 +1106,6 @@ class VmConfig {
 		}
 	}
 
-	/**
-	 * Writes the params as string and escape them before
-	 * @author Max Milbers
-	 */
-	function toString(){
-		$raw = '';
-
-		foreach(self::$_jpConfig->_params as $paramkey => $value){
-
-			//Texts get broken, when serialized, therefore we do a simple encoding,
-			//btw we need serialize for storing arrays   note by Max Milbers
-			$raw .= $paramkey.'='.json_encode($value).'|';
-		}
-		self::$_jpConfig->_raw = substr($raw,0,-1);
-		return self::$_jpConfig->_raw;
-	}
 
 	/**
 	 * Find the currenlty installed version

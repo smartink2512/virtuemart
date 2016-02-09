@@ -18,20 +18,20 @@
 [config]
 ##hidden
 #updEngine=1            //controlls disable automatic updating of the table engine
-#dblayoutstrict
-#dbpsdescsize
-#dbnamesize
-#updelcols  //controlls if columns are deleted
+#dblayoutstrict         //uses "varchar" instead of "text" in the language tables for content
+#dbpsdescsize           /sets the size in "varchar" in the language tables for content description, if dblayoutstrict is activated
+#dbnamesize             //sets the size in "varchar" in the language tables for names, if dblayoutstrict is activated
+#updelcols              //controlls if columns are deleted
 #prodOnlyWLang          //dont use fallbacks for products
 #vm_lfbs                //eg vm_lfbs=it-IT~de-DE; maps the fallback of the it-IT language to de-DE
 #product.published=1    //controlls if new products are automatically published
-#seo_full=1             //with 0 no categories are added to the URL of products
+#seo_full=1
 #keysize            //size of encryption key
 #maskIP
 #reuseorders        //default enabled, prevents creation of pending orders if confirmed later
-#randOrderNr
-#randOrderPw
-#full_catname_tree
+#randOrderNr        //number or rands in the order number
+#randOrderPw        //number or rands in the order password (at least 4)
+#full_catname_tree      //show parent category name in child category in dropdowns
 #pricesbyCurrency       //currency depended selected price; the selected currency determines the selected price of the product if availabe
 
 

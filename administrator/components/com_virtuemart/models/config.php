@@ -601,7 +601,11 @@ class VirtueMartModelConfig extends VmModel {
 			if (!$_switch) {
 				continue; // Outside a section or inside the wrong one.
 			}
-
+			$pos = strpos($_line, '//');
+			if ($pos !== FALSE) {
+				$_line = substr($_line,0,$pos);
+				$_line = trim($_line);
+			}
 			if (strpos($_line, '=') !== FALSE) {
 
 				$pair = explode('=',$_line);
@@ -627,6 +631,33 @@ class VirtueMartModelConfig extends VmModel {
 			return $_configData;
 		}
 	}
+
+	static public function storeConfig($params){
+
+		$user = vFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart')){
+			$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
+			if($installed){
+
+				VirtueMartModelConfig::installVMconfigTable();
+
+				$confData = array();
+				$confData['virtuemart_config_id'] = 1;
+
+				$confData['config'] = $params;
+				VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables','Table');
+				vFactory::getDbo();
+				$confTable = VmTable::getInstance('configs', 'Table', array());
+
+				if (!$confTable->bindChecknStore($confData)) {
+					vmError('storeConfig was not able to store config');
+				}
+				return $confData['config'];
+			}
+		}
+		return false;
+	}
+
 
 	/**
 	 * Dangerous tools get disabled after execution an operation which needed that rights.
