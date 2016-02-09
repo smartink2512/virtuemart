@@ -155,6 +155,7 @@ class GenericTableUpdater extends VmModel{
 
 				}
 			} else {
+				vmdebug('dblayoutstrict false');
 				$fields['vendor_terms_of_service'] = 'text '.$linedefaulttext;
 				$key = array_search('vendor_terms_of_service', $translatableFields);
 				unset($translatableFields[$key]);
@@ -167,20 +168,20 @@ class GenericTableUpdater extends VmModel{
 // 		vmdebug('createLanguageTables ',$translatableFields);
 			foreach($translatableFields as $k => $name){
 				if(strpos($name,'name') !==false ){
-					$fields[$name] = 'char('.VmConfig::get('dbnamesize',180).') '.$linedefault;
+					$fields[$name] = 'varchar('.VmConfig::get('dbnamesize',180).') '.$linedefault;
 				} else if(strpos($name,'metadesc')!==false ){
 					$fields[$name] = 'varchar('.VmConfig::get('dbmetasize',400).') '.$linedefault;
 				} else if(strpos($name,'metatitle')!==false ){
-					$fields[$name] = 'char('.VmConfig::get('dbmetasize',100).') '.$linedefault;
+					$fields[$name] = 'varchar('.VmConfig::get('dbmetasize',100).') '.$linedefault;
 				} else if(strpos($name,'metakey')!==false ){
 					$fields[$name] = 'varchar('.VmConfig::get('dbmetasize',400).') '.$linedefault;
 				} else if(strpos($name,'metaauthor')!==false ){
-					$fields[$name] = 'char(64) '.$linedefault;
+					$fields[$name] = 'varchar(64) '.$linedefault;
 				} else if(strpos($name,'slug')!==false ){
-					$fields[$name] = 'char('.VmConfig::get('dbslugsize',192).') '.$linedefault;
+					$fields[$name] = 'varchar('.VmConfig::get('dbslugsize',192).') '.$linedefault;
 					$slug = true;
 				}else if(strpos($name,'phone')!==false) {
-					$fields[$name] = 'char(26) '.$linedefault;
+					$fields[$name] = 'varchar(26) '.$linedefault;
 				}else if(strpos($name,'desc')!==false) {
 					if(VmConfig::get('dblayoutstrict',true)){
 						$fields[$name] = 'varchar('.VmConfig::get('dbdescsize',19000).') '.$linedefault;
@@ -189,7 +190,7 @@ class GenericTableUpdater extends VmModel{
 					}
 
 				} else {
-					$fields[$name] = 'char(255) '.$linedefault;
+					$fields[$name] = 'varchar(255) '.$linedefault;
 				}
 
 			}
@@ -343,17 +344,11 @@ class GenericTableUpdater extends VmModel{
 				$this->_db->setQuery($q);
 				$this->_db->execute();*/
 
-				if($this->reCreaPri!=0){
-					$this->alterColumns($tablename,$table[0],true);
-					$this->alterKey($tablename,$table[1],true);
-					$this->alterColumns($tablename,$table[0],false);
-				} else {
-					if(!isset($table[3])) $table[3] = 'MyISAM';
-					$this->alterColumns($tablename,$table[0],false,$table[3]);
-					if($this->reCreaKey!=0){
-						$this->alterKey($tablename,$table[1],false);
-					}
-				}
+				if(!isset($table[3])) $table[3] = 'MyISAM';
+
+				if(empty($this->reCreaKey)) $table[1] = false;
+				$this->alterColumns($tablename,$table);
+
 				usleep(10);
 				$this->optimizeTable($tablename);
 				usleep(10);
@@ -362,35 +357,12 @@ class GenericTableUpdater extends VmModel{
 				$this->_db->setQuery($q);
 				$this->_db->execute();*/
 			} else {
-				//vmdebug('Table not existing?',$tablename,$existingtables);
 				$this->createTable($tablename,$table);
-
 			}
 			$i++;
 
 		}
 
-		//We need first a method here to register valid plugin tables
-/* 		$tablesWithLang = array_keys($this->tables); //('categories','manufacturercategories','manufacturers','paymentmethods','shipmentmethods','products','vendors');
-
-// 		$alangs = VmConfig::get('active_languages');
-// 		if(empty($alangs)) $alangs = array(VmConfig::setdbLanguageTag());
-// 		foreach($alangs as $lang){
-// 			foreach($tablesWithLang as $tablewithlang){
-// 				$demandedTables[] = $this->_prefix.'virtuemart_'.$tablewithlang.'_'.$lang;
-// 			}
-// 		}
-// 		$demandedTables[] = $this->_prefix.'virtuemart_configs';
-
-
-// 		$todelete = array();
-// 		foreach ($existingtables as $tablename){
-// 			if(!in_array($tablename,$demandedTables) and strpos($tablename,'_plg_')===false){
-// 				$todelete[] = $tablename;
-// 			}
-// 		}
-// 		$this->dropTables($todelete);
-*/
 	}
 
 	public function optimizeTable($tablename){
@@ -455,7 +427,7 @@ class GenericTableUpdater extends VmModel{
 	}
 
 
-	private function alterKey($tablename,$keys,$reCreatePrimary){
+	private function alterKey($tablename,$keys){
 
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			vmWarn('compareUpdateTable alterKey not finished, please rise execution time and update tables again');
@@ -473,12 +445,12 @@ class GenericTableUpdater extends VmModel{
 
 		$ok=true;
 
+		$primaryFound = false;
 		foreach($eKeys as $i => $eKey) {
 
 			if(strpos( $eKey->Key_name, 'PRIMARY' ) !== false) {
-				if(!$reCreatePrimary) {
-					continue;
-				}
+				$primaryFound = true;
+				continue;
 			}
 			if(empty($eKey->Key_name)) continue;
 
@@ -503,7 +475,7 @@ class GenericTableUpdater extends VmModel{
 
 		foreach($keys as $name =>$value){
 
-			if(!$reCreatePrimary){
+			if($primaryFound and strpos($value,'PRIMARY')!==false){
 				if(strpos($value,'PRIMARY')!==false){
 					continue;
 				}
@@ -521,7 +493,7 @@ class GenericTableUpdater extends VmModel{
  					//vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
 				}
 			}
-		} //*/
+		}
 
 	}
 
@@ -552,46 +524,34 @@ class GenericTableUpdater extends VmModel{
 	 * @param unknown_type $fields
 	 * @param unknown_type $command
 	 */
-	public function alterColumns($tablename,$fields,$reCreatePrimary,$engine='MyISAM'){
-
+	//public function alterColumns($tablename,$fields,$reCreatePrimary,$engine='MyISAM'){
+	public function alterColumns($tablename,$tableDef){
 
 		$after =' FIRST';
 		$dropped = 0;
 		$altered = 0;
 		$added = 0;
+		$toRepeat = false;
 		$this->_app = vFactory::getApplication();
+
+
+		$fields = isset($tableDef[0]) ? $tableDef[0]:false;
+		$keys = isset($tableDef[1]) ? $tableDef[1]:false;
+		$engine = isset($tableDef[3]) ? $tableDef[3]:false;
 
 		$demandFieldNames = array();
 		foreach($fields as $i=>$line){
 			$demandFieldNames[] = $i;
 		}
 
-
-
 		$q = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';	//$q = 'SHOW CREATE TABLE '.$this->_tbl;
 		$this->_db->setQuery($q);
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadColumn(0);
+
 		//vmdebug('alterColumns',$fullColumns);
 		//Attention user_infos is not in here, because it an contain customised fields. #__virtuemart_order_userinfos #__virtuemart_userinfos
 		//This is currently not working as intended, because the config is not deleted before, it is better to create an extra command for this, when we need it later
-		$upDelCols = (int) VmConfig::get('updelcols',0);
-		if($upDelCols==1 and !($tablename==$this->_prefix.'virtuemart_userfields' or $tablename==$this->_prefix.'virtuemart_userinfos' or $tablename==$this->_prefix.'virtuemart_order_userinfos')){
-
-				foreach($columns as $fieldname){
-
-					if(!in_array($fieldname, $demandFieldNames)){
-						$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
-						$action = 'DROP';
-						$dropped++;
-
-						$this->_db->setQuery($query);
-						if(!$this->_db->execute()){
-							vmError('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
-						}
-					}
-				}
-			}
 
 
 		foreach($fields as $fieldname => $alterCommand){
@@ -607,58 +567,46 @@ class GenericTableUpdater extends VmModel{
 				vmdebug('empty alter command '.$fieldname);
 				continue;
 			}
-			// we remove the auto_increment, to be free to set the primary key
-			if(strpos($alterCommand,'AUTO_INCREMENT')!==false and $reCreatePrimary){
-				$alterCommand = str_replace('AUTO_INCREMENT', '',$alterCommand);
-			}
 
 			if(in_array($fieldname,$columns)){
 
-				$key=array_search($fieldname, $columns);
-				$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
-
-				//Attention, we give for a primary the auto_increment back, so we cant decide if a key is used as primary,
-				//but has no auto increment, so wie alter it anytime
-				if(strpos($alterCommand,'AUTO_INCREMENT')!==false and $reCreatePrimary) {
-
-					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
-					$action = 'CHANGE';
-					$altered++;
-// 					vmdebug('$fieldname just auto '.$fieldname,$alterCommand,$oldColumn);
-				} else {
+			$key=array_search($fieldname, $columns);
+			$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
 
 // 					while (strpos($oldColumn,'  ')){
 // 						str_replace('  ', ' ', $oldColumn);
 // 					}
-					while (strpos($alterCommand,'  ')){
-						$alterCommand = str_replace('  ', ' ', trim($alterCommand));
-					}
-// 					str_replace('  ', ' ', $alterCommand);
-// 					$compare = strcasecmp( $oldColumn, $alterCommand);
-// 					$compare = strcasecmp( $oldColumn, $alterCommand);
+				while (strpos($alterCommand,'  ')){
+					$alterCommand = str_replace('  ', ' ', trim($alterCommand));
+				}
 
-// 					if (!empty($compare)) {
-					$oldColumn = strtoupper($oldColumn);
-					$alterCommand = strtoupper(trim($alterCommand));
-				//	vmdebug('reCreateColumnByTableAttributes ',$fullColumns[$key]);
-					if ($oldColumn != $alterCommand ) {
+				$oldColumn = strtoupper($oldColumn);
+				$alterCommand = strtoupper(trim($alterCommand));
 
-						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand. $after;
-						$action = 'CHANGE';
-						$altered++;
-						vmdebug($tablename.' Alter field '.$fieldname.' oldcolumn ',$oldColumn,$alterCommand,$fullColumns[$key]);
+				// we remove the auto_increment, to be free to set the primary key, but only if there are no keys
+				if($keys and strpos($oldColumn,'AUTO_INCREMENT')===false and strpos($alterCommand,'AUTO_INCREMENT')!==false ){
+					$toRepeat[0] = array($fieldname=>$alterCommand);
+					$toRepeat[1] = false;
+					$alterCommand = trim(str_replace('AUTO_INCREMENT', '',$alterCommand));
 
-// 						vmdebug('Alter field new column ',$fullColumns[$key]);
-// 						vmdebug('Alter field new column '.$this->reCreateColumnByTableAttributes($fullColumns[$key])); //,$fullColumns[$key]);
-					}
+					vmdebug('Auto increment found, removed',$toRepeat);
+				}
+
+				if ($oldColumn != $alterCommand ) {
+
+					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand. $after;
+					$action = 'CHANGE';
+					$altered++;
+					vmdebug('alterColumns '.$tablename,$fieldname,$oldColumn,$alterCommand);
 				}
 			}
 			else {
 				$query = 'ALTER TABLE `'.$tablename.'` ADD '.$fieldname.' '.$alterCommand.' '.$after;
 				$action = 'ADD';
 				$added++;
- 				vmdebug('$fieldname '.$fieldname);
+ 				vmdebug('alterColumns ADD '.$query);
 			}
+
 			if (!empty($query)) {
 				$this->_db->setQuery($query);
 				$msg = 'alterTable '.$action.' '.$tablename.'.'.$fieldname;
@@ -669,6 +617,14 @@ class GenericTableUpdater extends VmModel{
 				}
 			}
 			$after = ' AFTER `'.$fieldname.'`';
+		}
+
+		if($keys){
+			$this->alterKey($tablename,$keys,false);
+			if($toRepeat){
+				vmdebug('Created keys, writing now field with autoincrement',$tablename,$toRepeat);
+				$this->alterColumns($tablename,$toRepeat);
+			}
 		}
 
 		if(VmConfig::get('updEngine',true)){
@@ -696,6 +652,38 @@ class GenericTableUpdater extends VmModel{
 
 	}
 
+	public function deleteColumns($tablename,$fields){
+
+		$dropped = 0;
+		$q = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';	//$q = 'SHOW CREATE TABLE '.$this->_tbl;
+		$this->_db->setQuery($q);
+		//$fullColumns = $this->_db->loadObjectList();
+		$columns = $this->_db->loadColumn(0);
+
+		$demandFieldNames = array();
+		foreach($fields as $i=>$line){
+			$demandFieldNames[] = $i;
+		}
+
+		$upDelCols = (int) VmConfig::get('updelcols',0);
+		if($upDelCols==1 and !($tablename==$this->_prefix.'virtuemart_userfields' or $tablename==$this->_prefix.'virtuemart_userinfos' or $tablename==$this->_prefix.'virtuemart_order_userinfos')){
+
+			foreach($columns as $fieldname){
+
+				if(!in_array($fieldname, $demandFieldNames)){
+					$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
+					$action = 'DROP';
+					$dropped++;
+
+					$this->_db->setQuery($query);
+					if(!$this->_db->execute()){
+						vmError('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+					}
+				}
+			}
+		}
+		return $dropped;
+	}
 
 	private function reCreateColumnByTableAttributes($fullColumn){
 
