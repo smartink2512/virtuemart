@@ -381,7 +381,12 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 
 			foreach ($productlist as $virtuemart_product_id => $product) {
-				$product->mediaitems = count($product->virtuemart_media_id);
+				if(empty($product->virtuemart_media_id)){
+					$product->mediaitems = 0;
+				} else {
+					$product->mediaitems = count($product->virtuemart_media_id);
+				}
+
 				$product->reviews = $productreviews->countReviewsForProduct($product->virtuemart_product_id);
 
 				$vendor_model->setId($product->virtuemart_vendor_id);

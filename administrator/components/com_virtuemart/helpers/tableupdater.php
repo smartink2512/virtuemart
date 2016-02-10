@@ -575,13 +575,13 @@ class GenericTableUpdater extends VmModel{
 				if ($oldColumn != $alterCommand ) {
 					$pr = '';
 					//If the field is an auto_increment, we add to the sql the creation of the primary key
-					if(strpos($alterCommand,'AUTO_INCREMENT')!==false ){
+					if( (strpos($alterCommand,'AUTO_INCREMENT')!==false xor strpos($oldColumn,'AUTO_INCREMENT')!==false)){
 						$pr = ', ADD PRIMARY KEY (`'.$fieldname.'`)';
 						//This function drops the key only if existing
 						$this->dropPrimaryKey($tablename);
 					}
 
-					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand. $after.$pr;
+					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand.' '.$after.$pr;
 					$action = 'CHANGE';
 					$altered++;
 					vmdebug('alterColumns '.$tablename,$fieldname,$oldColumn,$alterCommand);
@@ -645,7 +645,7 @@ class GenericTableUpdater extends VmModel{
 	}
 
 	/**
-	 * This function drops the key only if existing
+	 * This function drops the key only if existing and removes before the auto_increment attribute from the column
 	 * @author Max Milbers
 	 * @param $tablename
 	 * @return bool
@@ -658,13 +658,27 @@ class GenericTableUpdater extends VmModel{
 		$res = $this->_db->loadAssoc();
 
 		if($res){
+			//We check if there is an auto_increment field and disable it
+			$q = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` WHERE Extra = "auto_increment";';	//$q = 'SHOW CREATE TABLE '.$this->_tbl;
+			$this->_db->setQuery($q);
+			$column = $this->_db->loadObject();
+			if($column){
+				$old = $this->reCreateColumnByTableAttributes($column);
+				$old = trim(str_replace('AUTO_INCREMENT', '',$old));
+				$q = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$column->Field.'` `'.$column->Field.'` '.$old;
+				$this->_db->setQuery($q);
+				if(!$this->_db->execute() ){
+					vmError( 'Could not alter auto_increment column dropping primary '.$q );
+				}
+			}
+
 			$q = 'ALTER TABLE `'.$tablename.'`	DROP PRIMARY KEY;';
 			$this->_db->setQuery($q);
 
 			if(!$this->_db->execute() ){
 				vmError( 'Could not drop Primary for CHANGE '.$q );
 			} else {
-				return true;
+				vmdebug('dropPrimaryKey '.$tablename);
 			}
 		}
 		return true;
