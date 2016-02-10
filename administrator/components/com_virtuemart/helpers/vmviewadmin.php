@@ -389,10 +389,14 @@ class VmViewAdmin extends vView {
 		}
 
 		$viewText = vmText::_('COM_VIRTUEMART_' . strtoupper($name));
-
 		$taskName = ' <small><small>[ ' . vmText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
+		if(JVM_VERSION<3){
+			vToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
+		} else {
+			if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
+			JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
+		}
 
-		vToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
 		$app = vFactory::getApplication();
 		$doc = vFactory::getDocument();

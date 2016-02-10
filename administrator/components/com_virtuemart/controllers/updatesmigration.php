@@ -659,23 +659,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
-	function reOrderChilds(){
-
-		$this->checkPermissionForTools();
-
-		if(!VmConfig::get('dangeroustools', true)){
-			$msg = $this->_getMsgDangerousTools();
-			$this->setRedirect($this->redirectPath, $msg);
-			return false;
-		}
-
-		$this->storeMigrationOptionsInSession();
-		if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
-		$updater = new GenericTableUpdater();
-		$result = $updater->reOrderChilds();
-
-		$this->setRedirect($this->redirectPath, $result);
-	}
 
 	function storeMigrationOptionsInSession(){
 
