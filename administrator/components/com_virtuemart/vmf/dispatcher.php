@@ -223,7 +223,7 @@ class vDispatcher extends vObject
 			}
 
 			$this->_observers[] = $observer;
-			$methods = array_diff(get_class_methods($observer), get_class_methods('JPlugin'));
+			$methods = array_diff(get_class_methods($observer), get_class_methods('vPlugin'));
 		}
 
 		end($this->_observers);

@@ -355,7 +355,6 @@ abstract class vModel extends vBasicModel implements vITableable, vIStorable, vI
 		if(!in_array($toCheck, $this->_validOrderingFieldName)){
 
 			$break = false;
-			vmSetStartTime();
 			foreach($this->_validOrderingFieldName as $name){
 				if(!empty($name) and strpos($name,$toCheck)!==FALSE){
 					$this->_selectedOrdering = $name;
