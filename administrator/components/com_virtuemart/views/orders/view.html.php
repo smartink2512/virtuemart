@@ -61,7 +61,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			// Get the data
 			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id');
 			$order = $orderModel->getOrder($virtuemart_order_id);
-
+			vmdebug('my order',$order);
 			if(empty($order['details'])){
 				vFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=orders',vmText::_('COM_VIRTUEMART_ORDER_NOTFOUND'));;
 			}

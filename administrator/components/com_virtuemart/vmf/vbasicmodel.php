@@ -97,7 +97,10 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 			vmError('empty path in addIncludePath','empty path in addIncludePath');
 			return false;
 		}
-
+		if(empty($prefix)){
+			VmConfig::$echoDebug=1;
+			vmTrace('addIncludePath empty $prefix');
+		}
 		if (!isset(self::$_paths[$prefix])) self::$_paths[$prefix] = array();
 		$path = vRequest::filterPath($path);
 		if (!in_array($path, self::$_paths[$prefix])) {

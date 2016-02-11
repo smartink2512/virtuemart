@@ -240,7 +240,7 @@ class GenericTableUpdater extends VmModel{
 
 				$tablename = trim(substr($line,$start+1,-3));
 				// 				vmdebug('my $tablename ',$start,$end,$line);
-			} else if($tableDefStarted && strpos($line,'KEY')!==false){
+			} else if($tableDefStarted && (strpos($line,'KEY')!==false or strpos($line,'UNIQUE')!==false)){
 
 				$start = strpos($line,"`");
 				$temp = substr($line,$start+1);
@@ -252,7 +252,7 @@ class GenericTableUpdater extends VmModel{
 				}
 				$tableKeys[$keyName] = $line;
 
-			} else if(strpos($line,'ENGINE')!==false){
+			} else if(strpos($line,'ENGINE')!==false or strpos($line,'COMMENT=')!==false){
 				$tableDefStarted = false;
 
 				$tl = strtolower($line);
@@ -263,7 +263,7 @@ class GenericTableUpdater extends VmModel{
 				} else if(strpos($tl,'memory')!==false){
 					$engine = 'Memory';
 				} else {
-					$engine = '';
+					$engine = 'MyISAM';
 				}
 
 				$start = strpos($line,"COMMENT='");

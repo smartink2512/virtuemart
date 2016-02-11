@@ -77,6 +77,11 @@ class VirtuemartViewInventory extends VmViewAdmin {
 		vToolBarHelper::publish();
 		vToolBarHelper::unpublish();
 
+		/*vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/wfh.js');
+		vmJsApi::addJScript('fixedTableHeader','jQuery(document).ready(function(){
+			jQuery("table").wfhfixMe();
+		});');*/
+
 		parent::display($tpl);
 	}
 

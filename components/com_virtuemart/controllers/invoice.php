@@ -31,13 +31,10 @@ if(!class_exists('VmPdf'))require(VMPATH_SITE.DS.'helpers'.DS.'vmpdf.php');
 class VirtueMartControllerInvoice extends vController
 {
 
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = false;
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 	}
 
 	/**
@@ -140,42 +137,8 @@ class VirtueMartControllerInvoice extends vController
 
 		$orderModel = VmModel::getModel('orders');
 
-		return $orderModel->getMyOrderDetails();
-		/*$orderDetails = 0;
+		return $orderModel->getMyOrderDetails(0,false,false,true);
 
-		// If the user is not logged in, we will check the order number and order pass
-		if ($orderPass = vRequest::getString('order_pass',false) and $orderNumber = vRequest::getString('order_number',false)){
-
-			$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-			if(empty($orderId)){
-				vmDebug ('Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
-				return 0;
-			}
-			$orderDetails = $orderModel->getOrder($orderId);
-		}
-
-		if($orderDetails==0) {
-
-			$_currentUser = vFactory::getUser();
-			$cuid = $_currentUser->get('id');
-
-			// If the user is logged in, we will check if the order belongs to him
-			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id',0) ;
-			if (!$virtuemart_order_id) {
-				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(vRequest::getString('order_number'));
-			}
-			$orderDetails = $orderModel->getOrder($virtuemart_order_id);
-
-			if(!vmAccess::manager('orders') ) {
-				if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
-					if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-						echo 'view '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-						return ;
-					}
-				}
-			}
-		}
-		return $orderDetails;*/
 	}
 
 
@@ -192,7 +155,7 @@ class VirtueMartControllerInvoice extends vController
 		vFactory::getApplication()->close();
 	}
 
-	function getInvoicePDF($orderDetails = 0, $viewName='invoice', $layout='invoice', $format='html', $force = false){
+	function getInvoicePDF($orderDetails, $viewName='invoice', $layout='invoice', $format='html', $force = false){
 // 		$force = true;
 
 		$path = VmConfig::get('forSale_path',0);
@@ -237,14 +200,11 @@ class VirtueMartControllerInvoice extends vController
 			return $path;
 		}
 
-		//We come from the be, so we need to load the FE language
-		VmConfig::loadJLang('com_virtuemart',true);
-
-		$this->addIncludePath( VMPATH_SITE.DS.'views'.DS.$viewName);
+		$this->addIncludePath( VMPATH_SITE.DS.'views'.DS.$viewName,'view');
 		$view = $this->getView($viewName, $format);
 		$this->writeJs = false;
 		//$view->addTemplatePath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
-		$view->addLayoutPath( VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl','view');
+		$view->addLayoutPath( $viewName, VMPATH_SITE.DS.'views'.DS.$viewName.DS.'tmpl');
 
 		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
 		$template = VmTemplate::loadVmTemplateStyle();
