@@ -355,6 +355,11 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 			//Get the list of products
 			$productlist = $model->getProductListing(false,false,false,false,true);
+			$this->filter_product = $model->filter_product;
+
+			$now = getdate();
+			$nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].".".$now["mon"].".".$now["year"];
+			$this->search_date = vRequest::getVar('search_date', $nowstring);
 
 			//The pagination must now always set AFTER the model load the listing
 			$this->pagination = $model->getPagination();
@@ -426,13 +431,13 @@ class VirtuemartViewProduct extends VmViewAdmin {
 							'price' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'),
 							'withoutprice' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE')
 			);
-			$this->lists['search_type'] = VmHTML::selectList('search_type', vRequest::getVar('search_type'),$options);
+			$this->lists['search_type'] = VmHTML::selectList('search_type', $model->search_type,$options);
 
 			/* Search order */
 			$options = array( 	'bf' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
 								'af' => vmText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER')
 			);
-			$this->lists['search_order'] = VmHTML::selectList('search_order', vRequest::getVar('search_order'),$options);
+			$this->lists['search_order'] = VmHTML::selectList('search_order', $model->search_order,$options);
 
 			// Toolbar
 			if (vmAccess::manager('product.edit')) {

@@ -165,26 +165,48 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$filter_order_Dir = strtoupper (vRequest::getCmd ('dir', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
 
+			$this->product_parent_id = vRequest::getInt ('product_parent_id', FALSE);
+			$this->virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', FALSE);
 		}
 		else {
 			$filter_order = strtolower ($app->getUserStateFromRequest ('com_virtuemart.' . $view . '.filter_order', 'filter_order', $this->_selectedOrdering, 'cmd'));
-
 			$filter_order = $this->checkFilterOrder ($filter_order);
 			$filter_order_Dir = strtoupper ($app->getUserStateFromRequest ($option . '.' . $view . '.filter_order_Dir', 'filter_order_Dir', '', 'word'));
-
 			$valid_search_fields = array_unique(array_merge($this->valid_BE_search_fields, $valid_search_fields));
+
+			$view = vRequest::getCmd ('view');
+			$stateTypes = array('virtuemart_category_id'=>'int','virtuemart_manufacturer_id'=>'int','product_parent_id'=>'int','filter_product'=>'string','search_type'=>'string','search_order'=>'string','search_date'=>'string');
+
+			foreach($stateTypes as $type => $filter){
+				$k= 'com_virtuemart.' . $view . '.'.$type;
+				if($filter=='int'){
+					$new_state = vRequest::getInt($type, false);
+				} else {
+					$new_state = vRequest::getVar($type, false);
+				}
+
+				//Dont as me, why we need this
+				if($filter=='int' and $new_state===false) {
+					$this->{$type} = $app->getUserState( $k, '' );
+				} else if($filter!='int' and $new_state==false){
+					$this->{$type} = $app->getUserState($k, '');
+				} else {
+					$app->setUserState( $k,$new_state);
+					$this->{$type} = $new_state;
+				}
+			}
+			$this->keyword = $this->filter_product;
 		}
+
 		$filter_order_Dir = $this->checkFilterDir ($filter_order_Dir);
 
 		$this->filter_order = $filter_order;
 		$this->filter_order_Dir = $filter_order_Dir;
 		$this->valid_search_fields = $valid_search_fields;
 
-		$this->product_parent_id = vRequest::getInt ('product_parent_id', FALSE);
 
-		$this->virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', FALSE);
 
-		$this->search_type = vRequest::getVar ('search_type', '');
+		//$this->search_type = vRequest::getVar ('search_type', '');
 
 		$this->searchcustoms = vRequest::getVar ('customfields', false, true);
 
@@ -396,7 +418,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		// Time filter
 		if ($this->search_type != '') {
-			$search_order = $db->escape (vRequest::getCmd ('search_order') == 'bf' ? '<' : '>');
+			$search_order = $db->escape (vRequest::getCmd ('search_order',$this->search_order) == 'bf' ? '<' : '>');
 			switch ($this->search_type) {
 				case 'parent':
 					$where[] = 'p.`product_parent_id` = "0"';
@@ -1447,9 +1469,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		else {
 			$front = FALSE;
+			//$this->updateRequests();
 		}
 
-		$this->setFilter ();
+
 		if ($filterCategory === TRUE) {
 			if ($category_id) {
 				$this->virtuemart_category_id = $category_id;
@@ -1467,26 +1490,6 @@ class VirtueMartModelProduct extends VmModel {
 		return $products;
 	}
 
-	/**
-	 * overriden getFilter to persist filters
-	 *
-	 * @author OSP
-	 */
-	public function setFilter () {
-
-		$app = vFactory::getApplication ();
-		if (!$app->isSite ()) { //persisted filter only in admin
-			$view = vRequest::getCmd ('view');
-			$mainframe = vFactory::getApplication ();
-			$this->virtuemart_category_id = $mainframe->getUserStateFromRequest ('com_virtuemart.' . $view . '.filter.virtuemart_category_id', 'virtuemart_category_id', 0, 'int');
-			$this->setState ('virtuemart_category_id', $this->virtuemart_category_id);
-			$this->virtuemart_manufacturer_id = $mainframe->getUserStateFromRequest ('com_virtuemart.' . $view . '.filter.virtuemart_manufacturer_id', 'virtuemart_manufacturer_id', 0, 'int');
-			$this->setState ('virtuemart_manufacturer_id', $this->virtuemart_manufacturer_id);
-		}
-		else {
-			$this->virtuemart_category_id = vRequest::getInt ('virtuemart_category_id', FALSE);
-		}
-	}
 
 	/**
 	 * Returns products for given array of ids

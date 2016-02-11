@@ -1391,6 +1391,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$orderCalcRules->calc_result =  $_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'];
 				 }
 			     $orderCalcRules->calc_kind=$calculation_kind;
+			     $orderCalcRules->calc_currency=$rule['calc_currency'];
+			     $orderCalcRules->calc_value=$rule['calc_value'];
 			     $orderCalcRules->calc_mathop=$rule['calc_value_mathop'];
 			     $orderCalcRules->virtuemart_order_id=$order_id;
 			     $orderCalcRules->calc_params=$rule['calc_params'];
