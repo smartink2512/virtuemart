@@ -138,14 +138,14 @@ class VirtueMartModelOrders extends VmModel {
 			if ($orderPass = vRequest::getString('order_pass',$orderPass)){
 				if($tries>5){
 					vmDebug ('Too many tries, Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
-					vmError ('COM_VIRTUEMART_RESTRICTED_ACCESS', 'Too many tries, Invalid order_number/password guest '.$orderNumber.' '.$orderPass );
+					vmError ('Too many tries, Invalid order_number/password guest '.$orderNumber.' '.$orderPass , 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 					return false;
 				}
 				$orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
 				if(empty($orderId)){
 					echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderNumber, $orderPass, $tries);
-					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'),vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass);
+					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 					$tries++;
 					$sess->set('getOrderDetails.'.$orderNumber,$tries);
 					return false;
@@ -169,20 +169,20 @@ class VirtueMartModelOrders extends VmModel {
 					$tries = $sess->get('getOrderDetails.'.$orderNumber,0);
 					if ($orderPass = vRequest::getString('order_pass',$orderPass)){
 						if($tries>5){
-							vmError ('COM_VIRTUEMART_RESTRICTED_ACCESS', 'Too many tries, Invalid order_number/password userid '.$cuid.' '.$virtuemart_order_id );
+							vmError ('Too many tries, Invalid order_number/password userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 							return false;
 						}
 						if($orderDetails['details']['order_pass'] != $orderPass){
 							$tries++;
 							$sess->set('getOrderDetails.'.$orderNumber,$tries);
-							vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'),vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id);
+							vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 							return false;
 						} else {
 							//We could update the invoice with the userid to connect guest orders to the user
 						}
 					}
 				} else if($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'),vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id);
+					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 					return false;
 				}
 			}
@@ -229,10 +229,11 @@ class VirtueMartModelOrders extends VmModel {
 			if(!empty($order['details']['BT']->order_language)) {
 				$olang = $order['details']['BT']->order_language;
 				//VmConfig::setdbLanguageTag();//Todo set language tag to get products in the correct language.
+				VmConfig::loadJLang('com_virtuemart',true, $olang, true);
+				VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang, true);
+				VmConfig::loadJLang('com_virtuemart_orders',true, $olang, true);
 			}
-			VmConfig::loadJLang('com_virtuemart',true, $olang, true);
-			VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang, true);
-			VmConfig::loadJLang('com_virtuemart_orders',true, $olang, true);
+
 		}
 
 		// Get the order history
@@ -1670,8 +1671,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		//Important, the data of the order update mails, payments and invoice should
 		//always be in the database, so using getOrder is the right method
-		$orderModel=VmModel::getModel('orders');
-		$order = $orderModel->getOrder($virtuemart_order_id);
+		$orderModel = VmModel::getModel('orders');
+		$order = $orderModel->getOrder($virtuemart_order_id,true);
 
 		$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
