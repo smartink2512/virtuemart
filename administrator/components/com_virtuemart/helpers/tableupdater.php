@@ -240,7 +240,7 @@ class GenericTableUpdater extends VmModel{
 
 				$tablename = trim(substr($line,$start+1,-3));
 				// 				vmdebug('my $tablename ',$start,$end,$line);
-			} else if($tableDefStarted && strpos($line,'KEY')!==false){
+			} else if($tableDefStarted && (strpos($line,'KEY')!==false or strpos($line,'UNIQUE')!==false)){
 
 				$start = strpos($line,"`");
 				$temp = substr($line,$start+1);

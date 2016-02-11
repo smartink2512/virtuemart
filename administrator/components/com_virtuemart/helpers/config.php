@@ -689,7 +689,7 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false,$tag=0){
+	static public function loadJLang($name,$site=false,$tag=0, $reload = false){
 
 		$jlang = JFactory::getLanguage();
 		if(empty($tag))$tag = $jlang->getTag();
@@ -720,7 +720,7 @@ class VmConfig {
 			}
 		}
 
-		$jlang->load($name, $path,$tag,true);
+		$jlang->load($name, $path,$tag,$reload);
 
 		return $jlang;
 	}

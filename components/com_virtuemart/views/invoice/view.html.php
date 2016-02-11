@@ -41,7 +41,30 @@ class VirtuemartViewInvoice extends VmView {
 	{
 
 		$document = JFactory::getDocument();
-		VmConfig::loadJLang('com_virtuemart_shoppers', true);
+
+		$orderModel = VmModel::getModel('orders');
+		$orderDetails = $this->orderDetails;
+
+		if($orderDetails==0){
+			$orderDetails = $orderModel ->getMyOrderDetails(0,false,false,true);
+			if(!$orderDetails ){
+				echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+				vmdebug('COM_VIRTUEMART_CART_ORDER_NOTFOUND and $orderDetails ',$orderDetails);
+				return;
+			} else if(empty($orderDetails['details'])){
+				echo vmText::_('COM_VIRTUEMART_CART_ORDER_DETAILS_NOTFOUND');
+				return;
+			}
+		}
+
+		if(empty($orderDetails['details'])){
+			echo vmText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
+			return 0;
+		}
+
+		$this->assignRef('orderDetails', $orderDetails);
+
+
 		/* It would be so nice to be able to load the override of the FE additionally from here
 		 * joomlaWantsThisFolder\language\overrides\en-GB.override.ini
 		 * $jlang =JFactory::getLanguage();
@@ -97,32 +120,6 @@ class VirtuemartViewInvoice extends VmView {
 			$order_print=true;
 		}
 
-		$orderModel = VmModel::getModel('orders');
-		$orderDetails = $this->orderDetails;
-
-		if($orderDetails==0){
-			$orderDetails = $orderModel ->getMyOrderDetails();
-			if(!$orderDetails ){
-				echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
-				vmdebug('COM_VIRTUEMART_CART_ORDER_NOTFOUND and $orderDetails ',$orderDetails);
-				return;
-			} else if(empty($orderDetails['details'])){
-				echo vmText::_('COM_VIRTUEMART_CART_ORDER_DETAILS_NOTFOUND');
-				return;
-			}
-		}
-
-		if(empty($orderDetails['details'])){
-			echo vmText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
-			return 0;
-		}
-		if(!empty($orderDetails['details']['BT']->order_language)) {
-			VmConfig::loadJLang('com_virtuemart',true, $orderDetails['details']['BT']->order_language);
-			VmConfig::loadJLang('com_virtuemart_shoppers',true, $orderDetails['details']['BT']->order_language);
-			VmConfig::loadJLang('com_virtuemart_orders',true, $orderDetails['details']['BT']->order_language);
-		}
-
-		$this->assignRef('orderDetails', $orderDetails);
         // if it is order print, invoice number should not be created, either it is there, either it has not been created
 		if(empty($this->invoiceNumber) and !$order_print){
 		    $invoiceNumberDate = array();
