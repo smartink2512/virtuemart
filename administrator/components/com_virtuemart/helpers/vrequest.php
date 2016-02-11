@@ -203,11 +203,11 @@ class vRequest {
 				$source = $_POST;
 			}
 
-			if(!isset($source[$name])){
+			if(isset($source[$name])){
+				return self::filter($source[$name],$filter,$flags);
+			} else {
 				return $default;
 			}
-
-			return self::filter($source[$name],$filter,$flags);
 
 		} else {
 			vmTrace('empty name in vRequest::get');
