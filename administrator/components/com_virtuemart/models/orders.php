@@ -119,76 +119,76 @@ class VirtueMartModelOrders extends VmModel {
      *
      * @return array
      */
-    public function getMyOrderDetails($orderID = 0, $orderNumber = false, $orderPass = false, $userlang=false){
+	public function getMyOrderDetails($orderID = 0, $orderNumber = false, $orderPass = false, $userlang=false){
 
-        $_currentUser = vFactory::getUser();
-        $cuid = $_currentUser->get('id');
+		$_currentUser = vFactory::getUser();
+		$cuid = $_currentUser->get('id');
 
 		$orderDetails = false;
 
-        // If the user is not logged in, we will check the order number and order pass
-        if(empty($cuid)){
+		// If the user is not logged in, we will check the order number and order pass
+		if(empty($cuid)){
 			$sess = vFactory::getSession();
 			$orderNumber = vRequest::getString('order_number',$orderNumber);
 			if(empty($orderNumber)) return false;
 
 			$tries = $sess->get('getOrderDetails.'.$orderNumber,0);
 
-            // If the user is not logged in, we will check the order number and order pass
-            if ($orderPass = vRequest::getString('order_pass',$orderPass)){
+			// If the user is not logged in, we will check the order number and order pass
+			if ($orderPass = vRequest::getString('order_pass',$orderPass)){
 				if($tries>5){
 					vmDebug ('Too many tries, Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
-					vmError ('COM_VIRTUEMART_RESTRICTED_ACCESS', 'Too many tries, Invalid order_number/password guest '.$orderNumber.' '.$orderPass );
+					vmError ('Too many tries, Invalid order_number/password guest '.$orderNumber.' '.$orderPass , 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 					return false;
 				}
-                $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
-                if(empty($orderId)){
-                    echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+				$orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
+				if(empty($orderId)){
+					echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderNumber, $orderPass, $tries);
-					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'),vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass);
+					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 					$tries++;
 					$sess->set('getOrderDetails.'.$orderNumber,$tries);
-                    return false;
-                }
-                $orderDetails = $this->getOrder($orderId,$userlang);
-            }
-        }
-        else {
-            // If the user is logged in, we will check if the order belongs to him
-            $virtuemart_order_id = vRequest::getInt('virtuemart_order_id',$orderID) ;
+					return false;
+				}
+				$orderDetails = $this->getOrder($orderId,$userlang);
+			}
+		}
+		else {
+			// If the user is logged in, we will check if the order belongs to him
+			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id',$orderID) ;
 			$orderNumber = vRequest::getString('order_number');
-            if (!$virtuemart_order_id) {
-                $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($orderNumber);
-            }
-            $orderDetails = $this->getOrder($virtuemart_order_id,$userlang);
+			if (!$virtuemart_order_id) {
+				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($orderNumber);
+			}
+			$orderDetails = $this->getOrder($virtuemart_order_id,$userlang);
 
 			if(!vmAccess::manager('orders')){
-                if(empty($orderDetails['details']['BT']->virtuemart_user_id)) {
+				if(empty($orderDetails['details']['BT']->virtuemart_user_id)) {
 					$sess = vFactory::getSession();
 					$orderNumber = vRequest::getString('order_number',$orderNumber);
 					$tries = $sess->get('getOrderDetails.'.$orderNumber,0);
 					if ($orderPass = vRequest::getString('order_pass',$orderPass)){
 						if($tries>5){
-							vmError ('COM_VIRTUEMART_RESTRICTED_ACCESS', 'Too many tries, Invalid order_number/password userid '.$cuid.' '.$virtuemart_order_id );
+							vmError ('Too many tries, Invalid order_number/password userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 							return false;
 						}
 						if($orderDetails['details']['order_pass'] != $orderPass){
 							$tries++;
 							$sess->set('getOrderDetails.'.$orderNumber,$tries);
-							vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'),vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id);
+							vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 							return false;
 						} else {
 							//We could update the invoice with the userid to connect guest orders to the user
 						}
 					}
 				} else if($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-                    vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'),vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id);
-                    return false;
-                }
-            }
-        }
-        return $orderDetails;
-    }
+					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
+					return false;
+				}
+			}
+		}
+		return $orderDetails;
+	}
 
 	/**
 	 * Load a single order, Attention, this function is not protected! Do the right manangment before, to be certain
@@ -229,9 +229,9 @@ class VirtueMartModelOrders extends VmModel {
 			if(!empty($order['details']['BT']->order_language)) {
 				$olang = $order['details']['BT']->order_language;
 				//VmConfig::setdbLanguageTag();//Todo set language tag to get products in the correct language.
-				VmConfig::loadJLang('com_virtuemart',true, $olang, true);
-				VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang, true);
-				VmConfig::loadJLang('com_virtuemart_orders',true, $olang, true);
+				VmConfig::loadJLang('com_virtuemart',true, $olang);
+				VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang);
+				VmConfig::loadJLang('com_virtuemart_orders',true, $olang);
 			}
 			
 		}
@@ -1673,7 +1673,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//Important, the data of the order update mails, payments and invoice should
 		//always be in the database, so using getOrder is the right method
 		$orderModel=VmModel::getModel('orders');
-		$order = $orderModel->getOrder($virtuemart_order_id);
+		$order = $orderModel->getOrder($virtuemart_order_id,true);
 
 		$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');

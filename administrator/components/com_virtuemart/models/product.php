@@ -2449,7 +2449,7 @@ class VirtueMartModelProduct extends VmModel {
 		else {
 			$prefix = '';
 		}
-
+		$orderby=str_replace(',','_',$orderby);
 		$orderByList = '<div class="orderlistcontainer"><div class="title">' . vmText::_ ('COM_VIRTUEMART_ORDERBY') . '</div><div class="activeOrder"><a title="' . $orderDirTxt . '" href="' . $link . '">' . vmText::_ ('COM_VIRTUEMART_SEARCH_ORDER_' . $orderby) . ' ' . $orderDirTxt . '</a></div>';
 		$orderByList .= $orderByLink . '</div>';
 

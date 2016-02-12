@@ -53,31 +53,31 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 
 defined ('VM_USE_BOOTSTRAP') or define ('VM_USE_BOOTSTRAP', 0);
 defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', $vmPathLibraries);
-defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
-defined ('VMPATH_ADMINISTRATOR') or define ('VMPATH_ADMINISTRATOR',	VMPATH_ROOT . '/administrator');
-defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
+defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT .'/components/com_virtuemart' );
+defined ('VMPATH_ADMINISTRATOR') or define ('VMPATH_ADMINISTRATOR',	VMPATH_ROOT .'/administrator');
+defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT .'/administrator/components/com_virtuemart' );
 
-defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN.DS.'plugins');
-defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT.DS.'plugins' );
-defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT.DS.'modules' );
+defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN .'/plugins');
+defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT .'/plugins' );
+defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT .'/modules' );
 
 if (!class_exists( 'vFactory' ))
-	require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vfactory.php');
+	require(VMPATH_ADMIN .'/vmf/vfactory.php');
 $app = vFactory::getApplication();
 $admin = '';
 if(!$app->isSite()){
-	$admin = DS.'administrator';//echo('in administrator');
+	$admin = '/administrator';//echo('in administrator');
 }
 
 defined ('VMPATH_BASE') or define ('VMPATH_BASE',VMPATH_ROOT.$admin);
-defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.DS.'templates' );
+defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.'/templates' );
 
-defined ('VMPATH_COMPONENT') or define( 'VMPATH_COMPONENT', VMPATH_BASE .DS. 'components'.DS.'com_virtuemart' );
+defined ('VMPATH_COMPONENT') or define( 'VMPATH_COMPONENT', VMPATH_BASE .'/components/com_virtuemart' );
 
 //legacy
 defined ('JPATH_VM_SITE') or define('JPATH_VM_SITE', VMPATH_SITE );
 defined ('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', VMPATH_ADMIN);
-// define( 'VMPATH_ADMIN', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
+// define( 'VMPATH_ADMIN', JPATH_ROOT.'/administrator'.'/components'.'/com_virtuemart' );
 define( 'JPATH_VM_PLUGINS', VMPATH_PLUGINLIBS );
 define( 'JPATH_VM_MODULES', VMPATH_MODULES );
 
@@ -89,28 +89,28 @@ defined('VM_VERSION') or define ('VM_VERSION', 3);
 // and must not be lowered.
 defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 
-require(VMPATH_ADMIN.DS.'version.php');
+require(VMPATH_ADMIN.'/version.php');
 defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
 
 
 
 if(!class_exists('VmTable')){
-	require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtable.php');
+	require(VMPATH_ADMIN .'/helpers/vmtable.php');
 }
-VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables','Table');
+VmTable::addIncludePath(VMPATH_ADMIN .'/tables','Table');
 
 if (!class_exists ('VmModel')) {
-	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
+	require(VMPATH_ADMIN .'/helpers/vmmodel.php');
 }
 
-if(!class_exists('vController')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vcontroller.php');
-if(!class_exists('vRequest')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vrequest.php');
-if(!class_exists('vmText')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmtext.php');
-if(!class_exists('vHtml')) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
-if(!class_exists('vmJsApi')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmjsapi.php');
-if(!class_exists('vUri')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'uri.php');
-if(!class_exists('vDispatcher')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'dispatcher.php');
-if(!class_exists('vPlugin')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'plugin' .DS. 'plugin.php');
+if(!class_exists('vController')) require(VMPATH_ADMIN .'/vmf/vcontroller.php');
+if(!class_exists('vRequest')) require(VMPATH_ADMIN .'/helpers/vrequest.php');
+if(!class_exists('vmText')) require(VMPATH_ADMIN .'/helpers/vmtext.php');
+if(!class_exists('vHtml')) require(VMPATH_ADMIN .'/vmf/html/html.php');
+if(!class_exists('vmJsApi')) require(VMPATH_ADMIN .'/helpers/vmjsapi.php');
+if(!class_exists('vUri')) require(VMPATH_ADMIN .'/vmf/environment/uri.php');
+if(!class_exists('vDispatcher')) require(VMPATH_ADMIN .'/vmf/dispatcher.php');
+if(!class_exists('vPlugin')) require(VMPATH_ADMIN .'/vmf/plugin/plugin.php');
 
 /**
  * Where type can be one of
@@ -420,7 +420,7 @@ function logInfo ($text, $type = 'message') {
 		$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 
 		if (!is_dir($log_path)) {
-			if(!class_exists('vFolder')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfolder.php');
+			if(!class_exists('vFolder')) require(VMPATH_ADMIN .'/vmf/filesystem/vfolder.php');
 			if (!vFolder::create($log_path)) {
 				if (VmConfig::$echoAdmin){
 					$msg = 'Could not create path ' . $log_path . ' to store log information. Check your folder ' . $log_path . ' permissions.';
@@ -438,7 +438,7 @@ function logInfo ($text, $type = 'message') {
 			}
 			return;
 		}
-		if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+		if(!class_exists('vFile')) require(VMPATH_ADMIN .'/vmf/filesystem/vfile.php');
 		if (!vFile::exists($file)) {
 			// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
 			// from Joomla log file
@@ -450,7 +450,7 @@ function logInfo ($text, $type = 'message') {
 
 
 	// Initialise variables.
-	/*if(!class_exists('JClientHelper')) require(VMPATH_LIBS.DS.'joomla'.DS.'client'.DS.'helper.php');
+	/*if(!class_exists('JClientHelper')) require(VMPATH_LIBS.'/joomla'.DS.'client'.DS.'helper.php');
 	$FTPOptions = JClientHelper::getCredentials('ftp');
 	if (!empty($FTPOptions['enabled'] == 0)){
 		//For logging we do not support FTP. For loggin without file permissions using FTP, we need to load the file,..
@@ -687,18 +687,24 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false,$tag=0, $reload = false){
+	static public function loadJLang($name,$site=false,$tag=0){
 
 		$jlang = vFactory::getLanguage();
 
 		if(empty($tag))$tag = $jlang->getTag();
+
+		static $loaded = array();
+		if(isset($loaded[(int)$site.$tag.$name])){
+			vmdebug('lang already cached '.$site.$tag.$name);
+			return $jlang;
+		}
 
 		$path = $basePath = VMPATH_ADMIN;
 		if($site){
 			$path = $basePath = VMPATH_SITE;
 		}
 
-		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name])){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
 				$epath = VMPATH_ADMINISTRATOR;
@@ -709,6 +715,7 @@ class VmConfig {
 				$epath = $path;
 			}
 			$jlang->load($name, $epath, 'en-GB');
+			$loaded[(int)$site.'en-GB'.$name] = true;
 		}
 
 		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
@@ -719,8 +726,8 @@ class VmConfig {
 			}
 		}
 
-		$jlang->load($name, $path,$tag,$reload);
-
+		$jlang->load($name, $path,$tag,true);
+		$loaded[(int)$site.'en-GB'.$name] = true;
 		return $jlang;
 	}
 
