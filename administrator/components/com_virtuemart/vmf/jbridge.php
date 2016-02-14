@@ -27,6 +27,7 @@ class jBridge {
 				require($file);
 			}
 			if(class_exists('JConfig')){
+				if(!class_exists('vObject')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vobject.php');
 				$vo = new vObject();
 				foreach (get_object_vars(new JConfig()) as $k => $v) {
 					$vo->$k = $v;

@@ -1036,6 +1036,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		}
 
+		//lets merge here the userdata from the cart to the order so that it can be used
+		if(!empty($_cart->BT)){
+			foreach($_cart->BT as $k=>$v){
+				$_orderData->$k = $v;
+			}
+		}
+
 		vPluginHelper::importPlugin('vmshopper');
 		JPluginHelper::importPlugin('vmextended');
 		$dispatcher = vDispatcher::getInstance();

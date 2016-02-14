@@ -866,8 +866,7 @@ class VmConfig {
 			$_value = join('|', $_value);
 			self::$_jpConfig->_raw = $_value;
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
-			VirtueMartModelConfig::storeConfig( self::toString());
-			if($raw = VirtueMartModelConfig::storeConfig( self::toString() )){
+			if($raw = VirtueMartModelConfig::storeConfig( self::$_jpConfig->toString() )){
 				self::$_jpConfig->_raw = $raw;
 			}
 		} else {
