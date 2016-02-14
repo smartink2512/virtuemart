@@ -113,7 +113,7 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo vmText::_($row->name); ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo $row->name; ?></a>
 				</td>
 				<td align="left">
 					<?php echo vmText::_($row->title); ?>

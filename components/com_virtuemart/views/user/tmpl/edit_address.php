@@ -83,7 +83,7 @@ $task = '';
 if ($this->cart->getInCheckOut()){
 	//$task = '&task=checkout';
 }
-$url = JRoute::_ ('index.php?option=com_virtuemart&view='.$rview.$task, $this->useXHTML, $this->useSSL);
+$url = 'index.php?option=com_virtuemart&view='.$rview.$task;
 
 echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 

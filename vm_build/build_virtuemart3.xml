@@ -3,9 +3,9 @@
 <project name="Build VirtueMart" default="VIRTUEMART_AND_FULLINSTALLER" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="3.0.13.2"/>
+    <property name="vm.version" value="3.0.13.3"/>
     <property name="joomla.version" value="2.5.29"/>
-    <property name="svn.lastrevision" value="9161"/>
+    <property name="svn.lastrevision" value="9164"/>
     <property name="PHING.VM.CODENAME" value="Blue Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>

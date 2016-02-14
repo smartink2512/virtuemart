@@ -229,11 +229,10 @@ class VirtueMartModelOrders extends VmModel {
 			if(!empty($order['details']['BT']->order_language)) {
 				$olang = $order['details']['BT']->order_language;
 				//VmConfig::setdbLanguageTag();//Todo set language tag to get products in the correct language.
-				VmConfig::loadJLang('com_virtuemart',true, $olang, true);
-				VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang, true);
-				VmConfig::loadJLang('com_virtuemart_orders',true, $olang, true);
+				VmConfig::loadJLang('com_virtuemart',true, $olang);
+				VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang);
+				VmConfig::loadJLang('com_virtuemart_orders',true, $olang);
 			}
-
 		}
 
 		// Get the order history
@@ -1032,6 +1031,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 				//Dirty hack
 				$this->removeOrderItems($order['virtuemart_order_id']);
+			}
+		}
+
+		//lets merge here the userdata from the cart to the order so that it can be used
+		if(!empty($_cart->BT)){
+			foreach($_cart->BT as $k=>$v){
+				$_orderData->$k = $v;
 			}
 		}
 

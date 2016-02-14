@@ -25,7 +25,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 $app = JFactory::getApplication();
 $admin = '';
 if(!$app->isSite()){
-	$admin = DS.'administrator';//echo('in administrator');
+	$admin = '/administrator';//echo('in administrator');
 }
 
 if(defined('JPATH_ROOT')){	//We are in joomla
@@ -55,13 +55,13 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 }
 
 defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', $vmPathLibraries);
-defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
-defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
+defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT.'/components/com_virtuemart' );
+defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT.'/administrator/components/com_virtuemart' );
 defined ('VMPATH_BASE') or define ('VMPATH_BASE',VMPATH_ROOT.$admin);
-defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN.DS.'plugins');
-defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT.DS.'plugins' );
-defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT.DS.'modules' );
-defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.DS.'templates' );
+defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN.'/plugins');
+defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT.'/plugins' );
+defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT.'/modules' );
+defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.'/templates' );
 
 //legacy
 defined ('JPATH_VM_SITE') or define('JPATH_VM_SITE', VMPATH_SITE );
@@ -475,7 +475,7 @@ class VmConfig {
 
 	// instance of class
 	private static $_jpConfig = NULL;
-	private static $_debug = NULL;
+	public static $_debug = NULL;
 	private static $_secret = NULL;
 	public static $_starttime = array();
 	public static $loaded = FALSE;
@@ -689,17 +689,23 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false,$tag=0, $reload = false){
+	static public function loadJLang($name,$site=false,$tag=0){
 
 		$jlang = JFactory::getLanguage();
 		if(empty($tag))$tag = $jlang->getTag();
+
+		static $loaded = array();
+		if(isset($loaded[(int)$site.$tag.$name])){
+			vmdebug('lang already cached '.$site.$tag.$name);
+			return $jlang;
+		}
 
 		$path = $basePath = VMPATH_ADMIN;
 		if($site){
 			$path = $basePath = VMPATH_SITE;
 		}
 
-		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name])){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
 				$epath = JPATH_ADMINISTRATOR;
@@ -710,6 +716,7 @@ class VmConfig {
 				$epath = $path;
 			}
 			$jlang->load($name, $epath, 'en-GB');
+			$loaded[(int)$site.'en-GB'.$name] = true;
 		}
 
 		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
@@ -720,8 +727,8 @@ class VmConfig {
 			}
 		}
 
-		$jlang->load($name, $path,$tag,$reload);
-
+		$jlang->load($name, $path,$tag,true);
+		$loaded[(int)$site.$tag.$name] = true;
 		return $jlang;
 	}
 
