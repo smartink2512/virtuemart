@@ -213,7 +213,7 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 			}
 
 			// Derive the class name from the type.
-			$class = str_ireplace('.php', '', 'JDatabaseDriver' . ucfirst(trim($fileName)));
+			$class = str_ireplace('.php', '', 'vDatabaseDriver' . ucfirst(trim($fileName)));
 
 			// If the class doesn't exist we have nothing left to do but look at the next type. We did our best.
 			if (!class_exists($class))
@@ -260,8 +260,8 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 		if ($options['driver'] == 'mysql' && PHP_MAJOR_VERSION >= 7)
 		{
 			// Check if we have support for the other MySQL drivers
-			$mysqliSupported   = JDatabaseDriverMysqli::isSupported();
-			$pdoMysqlSupported = JDatabaseDriverPdomysql::isSupported();
+			$mysqliSupported   = vDatabaseDriverMysqli::isSupported();
+			$pdoMysqlSupported = false;//vDatabaseDriverPdomysql::isSupported();
 
 			// If neither is supported, then the user cannot use MySQL; throw an exception
 			if (!$mysqliSupported && !$pdoMysqlSupported)
@@ -798,7 +798,7 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 	public function getExporter()
 	{
 		// Derive the class name from the driver.
-		$class = 'JDatabaseExporter' . ucfirst($this->name);
+		$class = 'vDatabaseExporter' . ucfirst($this->name);
 
 		// Make sure we have an exporter class for this driver.
 		if (!class_exists($class))
@@ -824,7 +824,7 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 	public function getImporter()
 	{
 		// Derive the class name from the driver.
-		$class = 'JDatabaseImporter' . ucfirst($this->name);
+		$class = 'vDatabaseImporter' . ucfirst($this->name);
 
 		// Make sure we have an importer class for this driver.
 		if (!class_exists($class))
@@ -854,7 +854,7 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 		if ($new)
 		{
 			// Derive the class name from the driver.
-			$class = 'JDatabaseQuery' . ucfirst($this->name);
+			$class = 'vDatabaseQuery' . ucfirst($this->name);
 
 			// Make sure we have a query class for this driver.
 			if (!class_exists($class))
@@ -885,7 +885,7 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 	public function getIterator($column = null, $class = 'stdClass')
 	{
 		// Derive the class name from the driver.
-		$iteratorClass = 'JDatabaseIterator' . ucfirst($this->name);
+		$iteratorClass = 'vDatabaseIterator' . ucfirst($this->name);
 
 		// Make sure we have an iterator class for this driver.
 		if (!class_exists($iteratorClass))
@@ -1642,7 +1642,7 @@ abstract class vDatabaseDriver implements vDatabaseInterface
 	{
 		$this->sql = $query;
 
-		if ($query instanceof JDatabaseQueryLimitable)
+		if ($query instanceof vDatabaseQueryLimitable)
 		{
 			if (!$limit && $query->limit)
 			{
