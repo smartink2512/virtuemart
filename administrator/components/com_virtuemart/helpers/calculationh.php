@@ -838,7 +838,7 @@ class calculationHelper {
 		}
 
 		// calculate the new subTotal with discounts before tax, necessary for billTotal
-		$toTax = $this->_cart->cartPrices['salesPrice'] + $cartdiscountBeforeTax;
+		$this->_cart->cartPrices['toTax'] = $this->_cart->cartPrices['salesPrice'] + $cartdiscountBeforeTax;
 
 		//Avalara wants to calculate the tax of the shipment. Only disadvantage to set shipping here is that the discounts per bill respectivly the tax per bill
 		// is not considered. Todo create a generic system, for example a param for billing rules, excluding/including shipment/payment
@@ -874,15 +874,15 @@ class calculationHelper {
 				}
 				$rule['subTotal'] += $totalDiscountBeforeTax * $rule['percentage'];
 			} else {
-				$rule['subTotal'] = $toTax;
+				$rule['subTotal'] = $this->_cart->cartPrices['toTax'];
 			}
 		}
 
 		// now each taxRule subTotal is reduced with DBTax and we can calculate the cartTax
-		$cartTax = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['taxRulesBill'], $toTax));
+		$cartTax = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['taxRulesBill'], $this->_cart->cartPrices['toTax']));
 
 		// toDisc is new subTotal after tax, now it comes discount afterTax and we can calculate the final cart price with tax.
-		$toDisc = $toTax + $cartTax;
+		$toDisc = $this->_cart->cartPrices['toTax'] + $cartTax;
 		$cartdiscountAfterTax = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['DATaxRulesBill'], $toDisc));
 		$this->_cart->cartPrices['withTax'] = $toDisc + $cartdiscountAfterTax;
 
@@ -897,7 +897,7 @@ class calculationHelper {
 		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cart->cartPrices['billDiscountAmount'] = $this->_cart->cartPrices['discountAmount'] + $cartdiscountBeforeTax + $cartdiscountAfterTax;// + $this->_cart->cartPrices['shipmentValue'] + $this->_cart->cartPrices['paymentValue'] ;
 		if($this->_cart->cartPrices['salesPriceShipment'] < 0) $this->_cart->cartPrices['billDiscountAmount'] += $this->_cart->cartPrices['salesPriceShipment'];
 		if($this->_cart->cartPrices['salesPricePayment'] < 0) $this->_cart->cartPrices['billDiscountAmount'] += $this->_cart->cartPrices['salesPricePayment'];
-		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cart->cartPrices['billTaxAmount'] = $this->_cart->cartPrices['taxAmount'] + $this->_cart->cartPrices['shipmentTax'] + $this->_cart->cartPrices['paymentTax'] + $cartTax; //+ $this->_cart->cartPrices['withTax'] - $toTax
+		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cart->cartPrices['billTaxAmount'] = $this->_cart->cartPrices['taxAmount'] + $this->_cart->cartPrices['shipmentTax'] + $this->_cart->cartPrices['paymentTax'] + /*($cartdiscountAfterTax + $cartTax);*/ + ($this->_cart->cartPrices['withTax'] - $this->_cart->cartPrices['toTax']);
 
 		//The coupon handling is only necessary if a salesPrice is displayed, otherwise we have a kind of catalogue mode
 		if($this->_currencyDisplay->_priceConfig['salesPrice']){

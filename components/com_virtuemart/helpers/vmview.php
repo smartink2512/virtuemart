@@ -133,7 +133,13 @@ class VmView extends JViewLegacy{
 		$this->continue_link = JURI::root() .'index.php?option=com_virtuemart&view=category' . $categoryStr.$lang.$ItemidStr;
 		$this->continue_link_html = '<a class="continue_link" href="' . $this->continue_link . '">' . vmText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 
-		$this->cart_link = JURI::root().'index.php?option=com_virtuemart&view=cart'.$lang;
+		$juri = JUri::getInstance()->toString(array( 'host', 'port'));
+
+		$scheme = 'http';
+		if(VmConfig::get('useSSL',false)){
+			$scheme .='s';
+		}
+		$this->cart_link = $scheme.'://'.$juri. JURI::root(true).'/index.php?option=com_virtuemart&view=cart'.$lang;
 
 		return;
 	}
