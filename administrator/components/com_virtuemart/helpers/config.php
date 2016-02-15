@@ -354,8 +354,12 @@ function vmRamPeak($notice,$value=NULL){
 }
 
 
-function vmSetStartTime($name='current'){
-	VmConfig::$_starttime[$name] = microtime(TRUE);
+function vmSetStartTime($name='current', $time = 0){
+	if($time === 0){
+		VmConfig::$_starttime[$name] = microtime(TRUE);
+	} else {
+		VmConfig::$_starttime[$name] = $time;
+	}
 }
 
 function vmTime($descr,$name='current'){
