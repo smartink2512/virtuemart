@@ -24,7 +24,7 @@ if (!class_exists( 'VmController' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcon
 if (!class_exists( 'VmModel' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
 
 vmRam('Start');
-vmSetStartTime('Start');
+vmSetStartTime('vmStart');
 
 $_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'));
 
@@ -77,7 +77,7 @@ if($exe){
 // Perform the Request task
 	$controller->execute(vRequest::getCmd('task', $_controller));
 
-	vmTime($_class.' Finished task '.$_controller,'Start');
+	vmTime($_class.' Finished task '.$_controller,'vmStart');
 	vmRam('End');
 	vmRamPeak('Peak');
 	$controller->redirect();

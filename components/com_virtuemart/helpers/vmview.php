@@ -47,7 +47,7 @@ class VmView extends JViewLegacy{
 				echo vmJsApi::writeJS();
 			}
 		}
-		vmTime('vm view Finished task ','Start');
+
 	}
 
 	public function withKeepAlive(){

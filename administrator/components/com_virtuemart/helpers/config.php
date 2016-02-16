@@ -700,7 +700,7 @@ class VmConfig {
 
 		static $loaded = array();
 		if(isset($loaded[(int)$site.$tag.$name])){
-			vmdebug('lang already cached '.$site.$tag.$name);
+			//vmdebug('lang already cached '.$site.$tag.$name);
 			return $jlang;
 		}
 
