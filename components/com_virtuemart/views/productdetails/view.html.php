@@ -85,6 +85,9 @@ class VirtueMartViewProductdetails extends VmView {
 			if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 			$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 
+			$seo_full = VmConfig::get('seo_full',true);
+			if(in_array($last_category_id,$product->categories) && !$seo_full) $product->virtuemart_category_id = $last_category_id;
+
 			$customfieldsModel = VmModel::getModel ('Customfields');
 
 			if ($product->customfields){
@@ -182,7 +185,7 @@ class VirtueMartViewProductdetails extends VmView {
 			if ($category_model) {
 
 				$category = $category_model->getCategory($product->virtuemart_category_id);
-
+				if(in_array($last_category_id,$product->categories) && !$seo_full) $product->category_name = $category->category_name;
 				$category_model->addImages($category, 1);
 				$this->assignRef('category', $category);
 

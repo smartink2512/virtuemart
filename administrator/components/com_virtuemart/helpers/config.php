@@ -371,9 +371,16 @@ function vmRamPeak($notice,$value=NULL){
 	vmdebug($notice.' memory peak '.round(memory_get_peak_usage(TRUE)/(1024*1024),2).'M ',$value);
 }
 
+function vmStartTimer($n='cur'){
+	VmConfig::$_starttime[$n] = microtime(TRUE);
+}
 
-function vmSetStartTime($name='current'){
-	VmConfig::$_starttime[$name] = microtime(TRUE);
+function vmSetStartTime($n='cur', $t = 0){
+	if($t === 0){
+		VmConfig::$_starttime[$n] = microtime(TRUE);
+	} else {
+		VmConfig::$_starttime[$n] = $t;
+	}
 }
 
 function vmTime($descr,$name='current'){
