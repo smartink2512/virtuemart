@@ -6,7 +6,7 @@ defined ('_JEXEC') or die();
  * Heidelpay credit card plugin
  *
  * @author Heidelberger Payment GmbH <Jens Richter>
- * @version 15.09.14
+ * @version 12.05
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) Heidelberger Payment GmbH
@@ -19,7 +19,7 @@ if (!class_exists ('vmPSPlugin')) {
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	public static $_this = FALSE;
-	protected $version = '15.12.16';
+	protected $version = '15.03.18';
 
 	function __construct (& $subject, $config) {
 		//if (self::$_this)
@@ -259,6 +259,20 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$params['ADDRESS.COUNTRY'] = ShopFunctions::getCountryByID ($address->virtuemart_country_id, 'country_2_code');
 		$params['CONTACT.EMAIL'] = $order['details']['BT']->email;
 		$params['CONTACT.IP'] = $_SERVER['REMOTE_ADDR'];
+		
+		if ($method->HEIDELPAY_PAYMENT_TYPE == "VAPAYPAL") {
+			if(!empty($order['details']['ST'])) {
+			$params['NAME.GIVEN'] 		= $order['details']['ST']->first_name;
+			$params['NAME.FAMILY']		= $order['details']['ST']->last_name;
+			if(!empty($order['details']['ST']->company)) $params['NAME.COMPANY'] = $order['details']['ST']->company ;
+			$params['ADDRESS.STREET'] 	= $order['details']['ST']->address_1;
+			isset($order['details']['ST']->address_2) ? $params['ADDRESS.STREET'] .= " " . $order['details']['ST']->address_2 : '';
+			$params['ADDRESS.ZIP'] 		= $order['details']['ST']->zip;
+			$params['ADDRESS.CITY'] 	= $order['details']['ST']->city;
+			$params['ADDRESS.COUNTRY']	= ShopFunctions::getCountryByID ($order['details']['ST']->virtuemart_country_id, 'country_2_code');
+			}
+		}
+		
 		/*
 		* Add debug informations for merchiant support
 		*/
