@@ -10,22 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 
-/**
- * Joomla Platform Database Interface
- *
- * @since  11.2
-*/
-interface vDatabaseInterface
-{
-	/**
-	 * Test to see if the connector is available.
-	 *
-	 * @return  boolean  True on success, false otherwise.
-	 *
-	 * @since   11.2
-	 */
-	public static function isSupported();
-}
+
 
 /**
  * Joomla Platform Database Driver Class
@@ -35,7 +20,7 @@ interface vDatabaseInterface
  * @method      string  q()   q($text, $escape = true)  Alias for quote method
  * @method      string  qn()  qn($name, $as = null)     Alias for quoteName method
  */
-abstract class vDatabaseDriver implements vDatabaseInterface
+abstract class vDatabaseDriver implements vIDataBaseConnector
 {
 	/**
 	 * The name of the database.

@@ -101,8 +101,9 @@ class calculationHelper {
 
 	static public function getInstance() {
 		if (!is_object(self::$_instance)) {
+			vmSetStartTime('calc');
 			self::$_instance = new calculationHelper();
-			vmdebug('Created new Calculator Instance');
+			vmTime('Created new Calculator Instance','calc');
 		} else {
 			//We store in UTC and use here of course also UTC
 			$jnow = vFactory::getDate();

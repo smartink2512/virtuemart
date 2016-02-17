@@ -211,7 +211,7 @@ abstract class vPluginHelper
 				if (!isset($paths[$path]))
 				{
 					require $path;
-					vmdebug('vPluginHelper import: required file ',$path);
+					//vmdebug('vPluginHelper import: required file ',$path);
 				}
 
 				$paths[$path] = true;

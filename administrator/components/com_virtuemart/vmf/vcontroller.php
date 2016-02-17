@@ -368,7 +368,7 @@ class vController extends vBasicModel implements vIController{
 				}
 			} else {
 				VmConfig::$echoDebug=1;
-				vmdebug('createView '.$class,self::$_paths);
+				vmdebug('createView '.$class.' not available' ,self::$_paths);
 				vmWarn(vmText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $class));
 				return false;
 			}

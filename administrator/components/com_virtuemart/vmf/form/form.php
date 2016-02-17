@@ -1809,7 +1809,7 @@ class vForm extends JForm{
 		}
 
 		// Setup the JFormField object.
-		if($field instanceof JFormField){
+		if($field instanceof vFormField){
 			if(function_exists('runkit_method_redefine')){
 				//just an idea to make
 				runkit_method_redefine ( 'JFormField' , 'setForm' , '$form' , '$this->form = $form;
