@@ -65,7 +65,7 @@
 
 
          <field type="vmtitle" default="VMPAYMENT_SOFORT_RESTRICTIONS" level="level1"/>
-         <field name="countries" type="vmcountries" scope="com_virtuemart" default="" label="VMPAYMENT_SOFORT_COUNTRIES"
+         <field name="countries" type="vmcountries" scope="com_virtuemart" default="" multiple="true" label="VMPAYMENT_SOFORT_COUNTRIES"
                description="VMPAYMENT_SOFORT_COUNTRIES_DESC"/>
          <field name="min_amount" type="text" label="VMPAYMENT_SOFORT_MIN_AMOUNT"
                description="VMPAYMENT_SOFORT_MIN_AMOUNT_DESC"/>

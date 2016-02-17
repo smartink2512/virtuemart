@@ -176,12 +176,15 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 			// Load the category
 			$category_model = VmModel::getModel('category');
+			$seo_full = VmConfig::get('seo_full',true);
+			if(in_array($last_category_id,$product->categories) && !$seo_full) $product->virtuemart_category_id = $last_category_id;
 
 			shopFunctionsF::setLastVisitedCategoryId($product->virtuemart_category_id);
 
 			if ($category_model) {
 
 				$category = $category_model->getCategory($product->virtuemart_category_id);
+				if(in_array($last_category_id,$product->categories) && !$seo_full) $product->category_name = $category->category_name;
 
 				$category_model->addImages($category, 1);
 				$this->assignRef('category', $category);
