@@ -277,7 +277,11 @@ if ($link) {
 }
 ?>
 	</div>
-</div><div class="clear"></div>
+</div>
+<span class="hastip" title="<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_PARENTID_TIP') ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_PARENTID') ?></span>
+<input type="text" class="inputbox" name="product_parent_id" id="product_parent_id" value="<?php echo $this->product->product_parent_id; ?>" size="16" maxlength="64" />
+
+<div class="clear"></div>
 
 		<fieldset>
 			<legend>
