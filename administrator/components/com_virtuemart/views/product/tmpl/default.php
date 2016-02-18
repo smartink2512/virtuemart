@@ -29,10 +29,8 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
-<div id="filterbox">
-	<table class="">
-		<tr>
-			<td align="left">
+<span id="filterbox">
+	<span>
 			<?php echo vmText::_('COM_VIRTUEMART_FILTER') ?>:
 				<select class="inputbox" id="virtuemart_category_id" name="virtuemart_category_id" onchange="this.form.submit(); return false;">
 					<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY')) ; ?></option>
@@ -53,11 +51,8 @@ if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_prod
 				<button  class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 				<button  class="btn btn-small" onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
 
-			</td>
-
-		</tr>
-	</table>
-	</div>
+				<?php echo $this->pagination->getLimitBox(); ?>
+	</span>
 	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter(); ?></div>
 
 </div>
@@ -221,7 +216,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 	<tfoot>
 		<tr>
 		<td colspan="16">
-			<?php echo $this->pagination->getListFooter(); ?>
+			<?php echo $this->pagination->getListFooter(false); ?>
 		</td>
 		</tr>
 	</tfoot>

@@ -40,6 +40,9 @@ AdminUIHelper::startAdminArea($this);
 				<?php echo $this->category_tree; ?>
 			</select>
 			</td>
+			<td>
+				<?php echo $this->pagination->getLimitBox(); ?>
+			</td>
 		</tr>
 	</table>
 	</div>
@@ -182,7 +185,7 @@ AdminUIHelper::startAdminArea($this);
 		<tfoot>
 			<tr>
 				<td colspan="10">
-					<?php echo $this->catpagination->getListFooter(); ?>
+					<?php echo $this->catpagination->getListFooter(false); ?>
 				</td>
 			</tr>
 		</tfoot>

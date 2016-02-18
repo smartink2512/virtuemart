@@ -776,7 +776,7 @@ jQuery().ready(function($) {
 	function stringifyArray ($array) {
 		$string = '';
 		foreach ($array as $key => $value) {
-			$string .= $key . "=" . $value . '&';
+			$string .= trim($key) . "=" . trim($value) . '&';
 		}
 		return substr($string, 0, -1);
 	}

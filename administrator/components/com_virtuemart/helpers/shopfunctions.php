@@ -549,12 +549,14 @@ class ShopFunctions {
 		$hash = crc32(implode('.',$selectedCategories).':'.$cid.':'.$level.implode('.',$disabledFields));
 		if (empty(self::$categoryTree[$hash])) {
 
+			$app = JFactory::getApplication ();
 			$cache = JFactory::getCache ('com_virtuemart_cats');
 			$cache->setCaching (1);
-			$app = JFactory::getApplication ();
+
 			$vendorId = vmAccess::isSuperVendor();
 			self::$categoryTree[$hash] = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
 
+			//self::$categoryTree[$hash] = ShopFunctions::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields,$app->isSite(),$vendorId,VmConfig::$vmlang);
 		}
 
 		return self::$categoryTree[$hash];
@@ -574,12 +576,12 @@ class ShopFunctions {
 	 */
 	static public function categoryListTreeLoop ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array(), $isSite, $vendorId, $vmlang,$categoryParentName='') {
 
-		self::$counter++;
-
 		static $categoryTree = '';
-
-		$virtuemart_vendor_id = 1;
-
+		if($level==0) {
+			$categoryTree = '';
+			self::$counter = 0;
+		}
+		self::$counter++;
 		$categoryModel = VmModel::getModel ('category');
 		$level++;
 
