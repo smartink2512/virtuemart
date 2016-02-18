@@ -47,8 +47,8 @@ class JFormFieldVmcategories extends JFormField {
 			$name = $this->name;
 			$this->multiple = ' multiple="multiple" ';
 		}
-		$id = VmHtml::ensureUniqueId($name);
-		$html = '<select id="'.$i.'" class="inputbox"   name="' . $name . '" '.$this->multiple.' >';
+		$id = VmHtml::ensureUniqueId('vmcategories');
+		$html = '<select id="'.$id.'" class="inputbox"   name="' . $name . '" '.$this->multiple.' >';
 		if(!$this->multiple)$html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
 		$html .= $categorylist;
 		$html .= "</select>";
