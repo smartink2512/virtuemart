@@ -41,7 +41,7 @@ AdminUIHelper::startAdminArea($this);
 			</select>
 			</td>
 			<td>
-				<?php echo $this->pagination->getLimitBox(); ?>
+				<?php echo $this->catpagination->getLimitBox(); ?>
 			</td>
 		</tr>
 	</table>
