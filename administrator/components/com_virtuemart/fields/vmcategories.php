@@ -20,7 +20,8 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'compo
 if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
 if (!class_exists('ShopFunctions'))
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-
+if (!class_exists('VmHtml'))
+	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
 /*
  * This element is used by the menu manager
@@ -43,8 +44,8 @@ class vFormFieldVmcategories extends vFormField {
 			$name = $this->name;
 			$this->multiple = ' multiple="multiple" ';
 		}
-
-		$html = '<select class="inputbox"   name="' . $name . '" '.$this->multiple.' >';
+		$id = VmHtml::ensureUniqueId('vmcategories');
+		$html = '<select id="'.$id.'" class="inputbox" name="' . $name . '" '.$this->multiple.' >';
 		if(!$this->multiple)$html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
 		$html .= $categorylist;
 		$html .= "</select>";

@@ -29,21 +29,17 @@ AdminUIHelper::startAdminArea($this);
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
 <div id="filterbox">
-	<table class="">
-		<tr>
-			<td align="left">
-			<?php echo $this->displayDefaultViewSearch() ?>
-			</td>
-			<td>
-			<select class="inputbox" id="top_category_id" name="top_category_id" onchange="this.form.submit(); return false;">
-				<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL')) ; ?></option>
-				<?php echo $this->category_tree; ?>
-			</select>
-			</td>
-		</tr>
-	</table>
-	</div>
-	<div id="resultscounter"><?php echo $this->catpagination->getResultsCounter(); ?></div>
+	<span>
+		<?php echo $this->displayDefaultViewSearch() ?>
+
+		<select class="inputbox" id="top_category_id" name="top_category_id" onchange="this.form.submit(); return false;">
+			<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL')) ; ?></option>
+			<?php echo $this->category_tree; ?>
+		</select>
+		<?php echo $this->catpagination->getLimitBox(); ?>
+	</span>
+</div>
+<div id="resultscounter"><?php echo $this->catpagination->getResultsCounter(); ?></div>
 
 </div>
 
@@ -182,7 +178,7 @@ AdminUIHelper::startAdminArea($this);
 		<tfoot>
 			<tr>
 				<td colspan="10">
-					<?php echo $this->catpagination->getListFooter(); ?>
+					<?php echo $this->catpagination->getListFooter(false); ?>
 				</td>
 			</tr>
 		</tfoot>

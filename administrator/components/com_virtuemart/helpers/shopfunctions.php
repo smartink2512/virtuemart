@@ -10,7 +10,7 @@ defined ('_JEXEC') or die('Direct Access to ' . basename (__FILE__) . ' is not a
  * @subpackage Helpers
  * @author Max Milbers
  * @author Patrick Kohl
- * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 - 2016 VirtueMart Team. All rights reserved.
  * @version $Id$
  */
 class ShopFunctions {
@@ -574,11 +574,12 @@ class ShopFunctions {
 	 */
 	static public function categoryListTreeLoop ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array(), $isSite, $vendorId, $vmlang,$categoryParentName='') {
 
-		self::$counter++;
-
 		static $categoryTree = '';
-
-		$virtuemart_vendor_id = 1;
+		if($level==0) {
+			$categoryTree = '';
+			self::$counter = 0;
+		}
+		self::$counter++;
 
 		$categoryModel = VmModel::getModel ('category');
 		$level++;

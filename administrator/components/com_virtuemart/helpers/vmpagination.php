@@ -159,7 +159,8 @@ class VmPagination extends vObject {
 			}
 
 			$namespace = 'Joomla.';
-			$html = vHtml::_( 'select.genericlist', $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected );
+			$id = VmHtml::ensureUniqueId('limit');
+			$html = vHtml::_( 'select.genericlist', $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected ,$id);
 		} else {
 
 			$getArray = vRequest::getGet();
@@ -206,7 +207,8 @@ class VmPagination extends vObject {
 			$selected = JRoute::_( $link.'&limit='.$selected, false );
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';
 
-			$html = vHtml::_( 'select.genericlist', $limits, '', 'class="inputbox" size="1" '.$js, 'value', 'text', $selected );
+			$id = VmHtml::ensureUniqueId('limit');
+			$html = vHtml::_( 'select.genericlist', $limits, '', 'class="inputbox" size="1" '.$js, 'value', 'text', $selected, $id );
 		}
 		return $html;
 	}
@@ -506,7 +508,7 @@ class VmPagination extends vObject {
 	 *
 	 * @since   11.1
 	 */
-	public function getListFooter()
+	public function getListFooter($lbox=true)
 	{
 		$app = vFactory::getApplication();
 
@@ -515,7 +517,7 @@ class VmPagination extends vObject {
 		$list['limit'] = $this->limit;
 		$list['limitstart'] = $this->limitstart;
 		$list['total'] = $this->total;
-		$list['limitfield'] = $this->getLimitBox();
+		$list['limitfield'] = $lbox? $this->getLimitBox():'';
 		$list['pagescounter'] = $this->getPagesCounter();
 		$list['pageslinks'] = $this->getPagesLinks();
 
