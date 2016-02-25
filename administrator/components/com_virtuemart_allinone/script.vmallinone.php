@@ -139,6 +139,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('VM Payment - Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			$this->installPlugin ('VM Payment - Paybox', 'plugin', 'paybox', 'vmpayment');
 
+			$this->installPlugin ('VM Payment - 2Checkout', 'plugin', 'tco', 'vmpayment');
+
 			$this->installPlugin ('VM Payment - Pay with Amazon', 'plugin', 'amazon', 'vmpayment');
 			$this->installPlugin ('System - Pay with Amazon', 'plugin', 'amazon', 'system');
 
@@ -326,7 +328,8 @@ VALUES (null, \'VIRTUEMART\', \'component\', \'com_virtuemart\', \'\', 1, 1, 1, 
 
 			if($jId){
 				//now lets check if there are menue entries
-				$db->setQuery('SELECT `id` FROM `#__menu` WHERE `menutype` = "main" AND `path`="com-virtuemart"');
+				//$db->setQuery('SELECT `id` FROM `#__menu` WHERE `menutype` = "main" AND `path`="com-virtuemart"');
+				$db->setQuery('SELECT `id` FROM `#__menu` WHERE `menutype` = "main" AND `path` = "com-virtuemart"');
 
 				if($id = $db->loadResult()){
 					$db->setQuery('UPDATE `#__menu` SET `component_id`="'.$jId.'", `language`="*" WHERE `id` = "'.$id.'" ');

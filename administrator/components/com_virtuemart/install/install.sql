@@ -323,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `custom_title` varchar(255) NOT NULL DEFAULT '' COMMENT 'field title',
   `show_title` tinyint(1) NOT NULL DEFAULT '1',
   `custom_tip` varchar(255) NOT NULL DEFAULT '' COMMENT 'tip',
-  `custom_value` varchar(2000) COMMENT 'default value',
+  `custom_value` varchar(2200) COMMENT 'default value',
   `custom_desc` varchar(255) COMMENT 'description or unit',
   `field_type` varchar(2) NOT NULL DEFAULT '0' COMMENT 'S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden',
   `is_list` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'list of values',
