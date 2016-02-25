@@ -32,7 +32,7 @@ jimport('joomla.form.formfield');
 class JFormFieldcategories extends JFormFieldList {
 
 	var $type = 'categories';
-
+	var $class = '';
 
 	protected function getInput() {
 		//VmConfig::loadJLang('com_virtuemart');

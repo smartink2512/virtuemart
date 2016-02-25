@@ -185,10 +185,7 @@ class VirtueMartModelProduct extends VmModel {
 					$new_state = vRequest::getVar($type, false);
 				}
 
-				//Dont as me, why we need this
-				if($filter=='int' and $new_state===false) {
-					$this->{$type} = $app->getUserState( $k, '' );
-				} else if($filter!='int' and $new_state==false){
+				if($new_state==false and $new_state!=''){
 					$this->{$type} = $app->getUserState($k, '');
 				} else {
 					$app->setUserState( $k,$new_state);

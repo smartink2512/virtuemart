@@ -42,13 +42,13 @@ class VirtuemartViewMedia extends VmViewAdmin {
 
 			$model = VmModel::getModel('Media');
 			$image = $model->createMediaByIds($virtuemart_media_id);
-			if(is_object($image[0])){
+			if(isset($image[0]) and is_object($image[0])){
 				$image[0]->file_url_thumb_dyn = $image[0] -> getFileUrlThumb();
-				//echo '<pre>'.print_r($image,1).'</pre>';
+
 				$this->json = $image[0];
 				//echo json_encode($this->json);
 				if (isset($this->json->file_url)) {
-					$this->json->file_root = vUri::root(true).'/';
+					$this->json->file_root = JURI::root(true).'/';
 					$this->json->msg =  'OK';
 					echo vmJsApi::safe_json_encode($this->json);
 				} else {
@@ -56,7 +56,6 @@ class VirtuemartViewMedia extends VmViewAdmin {
 					echo @json_encode($this->json);
 				}
 			}
-
 		}
 		else {
 			if (!class_exists('VmMediaHandler')) require(VMPATH_ADMIN.DS.'helpers'.DS.'mediahandler.php');

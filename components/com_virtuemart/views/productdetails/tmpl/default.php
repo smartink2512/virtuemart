@@ -33,7 +33,7 @@ if(vRequest::getInt('print',false)){ ?>
 <body onload="javascript:print();">
 <?php } ?>
 
-<div class="productdetails-view productdetails" itemscope itemtype="http://schema.org/Product">
+<div class="productdetails-view productdetails" >
 
     <?php
     // Product Navigation
@@ -196,7 +196,7 @@ echo $this->loadTemplate('images');
 	// Product Description
 	if (!empty($this->product->product_desc)) {
 	    ?>
-        <div class="product-description" itemprop="description">
+        <div class="product-description" >
 	<?php /** @todo Test if content plugins modify the product description */ ?>
     	<span class="title"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE') ?></span>
 	<?php echo $this->product->product_desc; ?>

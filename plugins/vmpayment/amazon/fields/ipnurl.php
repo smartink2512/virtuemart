@@ -26,10 +26,11 @@ jimport('joomla.form.formfield');
 class JFormFieldIpnURL extends JFormField {
 
 	var $type = 'ipnurl';
+	var $class = 'ipnurl level3';
 
 	protected function getInput() {
 		$cid = vRequest::getvar('cid', NULL, 'array');
-		if (is_Array($cid)) {
+		if (is_array($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
 			$virtuemart_paymentmethod_id = $cid;
