@@ -40,7 +40,23 @@ class VirtueMartModelOrders extends VmModel {
 		parent::__construct();
 		$this->setMainTable('orders');
 		$this->addvalidOrderingFieldName(array('order_name','order_email','payment_method','virtuemart_order_id' ) );
+		$this->populateState();
+	}
 
+	function populateState () {
+		$type = 'search';
+		$k= 'com_virtuemart.orders.'.$type;
+
+		$ts = vRequest::getString($type, false);
+		$app = JFactory::getApplication();
+
+		if($ts===false){
+			$this->{$type} = $app->getUserState($k, '');
+		} else {
+			$app->setUserState( $k,$ts);
+			$this->{$type} = $ts;
+		}
+		$this->__state_set = true;
 	}
 
 	/**
@@ -375,10 +391,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 
-		if ($search = vRequest::getString('search', false)){
+		if ($this->search){
 			$db = JFactory::getDBO();
-			$search = '"%' . $db->escape( $search, true ) . '%"' ;
-			$search = str_replace(' ','%',$search);
+			$this->search = '"%' . $db->escape( $this->search, true ) . '%"' ;
+			$this->search = str_replace(' ','%',$this->search);
 
 			$searchFields = array();
 			$searchFields[] = 'u.first_name';
@@ -395,7 +411,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$searchFields[] = 'st.last_name';
 			$searchFields[] = 'st.city';
 			$searchFields[] = 'st.zip';
-			$where[] = implode (' LIKE '.$search.' OR ', $searchFields) . ' LIKE '.$search.' ';
+			$where[] = implode (' LIKE '.$this->search.' OR ', $searchFields) . ' LIKE '.$this->search.' ';
 			//$where[] = ' ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
 		}
 

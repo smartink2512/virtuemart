@@ -244,8 +244,8 @@ class VirtueMartViewProductdetails extends VmView {
 			$this->showReview = $ratingModel->showReview($product->virtuemart_product_id);
 			$this->rating_reviews='';
 			if ($this->showReview) {
-				$this->review = $ratingModel->getReviewByProduct($product->virtuemart_product_id);
-				$this->rating_reviews = $ratingModel->getReviews($product->virtuemart_product_id);
+				$this->review = $ratingModel->getProductReviewForUser($product->virtuemart_product_id);
+				$this->rating_reviews = $ratingModel->getReviews($product->virtuemart_product_id, 0, VmConfig::get( 'vm_num_ratings_show', 3 ));
 			}
 
 			if ($this->showRating) {

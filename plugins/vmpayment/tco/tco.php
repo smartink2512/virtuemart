@@ -103,8 +103,6 @@ class plgVmPaymentTco extends vmPSPlugin {
         $return_context = $session->getId();
         $this->_debug = $method->debug;
 
-        if (!class_exists('VirtueMartModelOrders'))
-            require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
         if (!class_exists('VirtueMartModelCurrency'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
@@ -121,7 +119,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         $vendorModel->addImages($vendor, 1);
         $this->getPaymentCurrency($method);
         $q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $db->setQuery($q);
         $currency_code_3 = $db->loadResult();
 
@@ -139,7 +137,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         $testReq = $method->debug == 1 ? 'YES' : 'NO';
         $post_variables = array(
             "sid" => $tcoDetails['seller_id'],
-            "x_receipt_link_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&o_id={$order['details']['BT']->order_number}"),
+            "x_receipt_link_url" => JRoute::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&o_id={$order['details']['BT']->order_number}"),
             "merchant_order_id" => $order['details']['BT']->order_number,
             "custom" => $return_context,
             "cart_order_id" => JText::_('VMPAYMENT_TCO_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,

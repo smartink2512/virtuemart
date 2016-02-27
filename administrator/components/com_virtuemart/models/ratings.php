@@ -141,7 +141,7 @@ class VirtueMartModelRatings extends VmModel {
 	 * @param $virtuemart_product_id
 	 * @return null
 	 */
-	function getReviews($virtuemart_product_id, $virtuemart_vendor_id = 0){
+	function getReviews($virtuemart_product_id, $virtuemart_vendor_id = 0, $num_reviews = false){
 
 	    if (empty($virtuemart_product_id)) {
 		    return NULL;
@@ -165,7 +165,7 @@ class VirtueMartModelRatings extends VmModel {
 			if(!empty($virtuemart_vendor_id)){
 				$whereString .= ' AND `p`.virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
 			}
-			$reviews[$hash] = $this->exeSortSearchListQuery(0,$select,$tables,$whereString,'',$this->_getOrdering());
+			$reviews[$hash] = $this->exeSortSearchListQuery(0,$select,$tables,$whereString,'',$this->_getOrdering(), $num_reviews);
 		}
 
 
@@ -211,6 +211,8 @@ class VirtueMartModelRatings extends VmModel {
 
     }
 
+
+
     /**
      * gets a review by a product id
      *
@@ -218,7 +220,7 @@ class VirtueMartModelRatings extends VmModel {
      * @param int $product_id
      */
 
-    function getReviewByProduct($product_id,$userId=0){
+    function getProductReviewForUser($product_id,$userId=0){
    		if(empty($userId)){
 			$user = JFactory::getUser();
 			$userId = $user->id;
@@ -233,6 +235,13 @@ class VirtueMartModelRatings extends VmModel {
 		}
 
     }
+
+	/**
+	 * @deprecated
+	 */
+	function getReviewByProduct($product_id,$userId=0){
+		return $this->getProductReviewForUser($product_id,$userId);
+	}
 
     /**
      * gets a reviews by a product id
@@ -391,7 +400,7 @@ class VirtueMartModelRatings extends VmModel {
 
 				}
 
-				$review = $this->getReviewByProduct($data['virtuemart_product_id'],$userId);
+				$review = $this->getProductReviewForUser($data['virtuemart_product_id'],$userId);
 
 				if(!empty($review->review_rates)){
 					$data['review_rates'] = $review->review_rates + $data['vote'];
