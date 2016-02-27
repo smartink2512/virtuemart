@@ -164,11 +164,10 @@ vmJsApi::addJScript('ordergui',$j);
 		<a href="#" onClick="javascript:resetOrderHead(event);" ><span class="icon-nofloat vmicon vmicon-16-cancel"></span>
 		<?php echo vmText::_('COM_VIRTUEMART_ORDER_RESET'); ?></a>
 					</span>
-		<!--
-		&nbsp;&nbsp;
-		<a class="createOrder" href="#"><span class="icon-nofloat vmicon vmicon-16-new"></span>
-		<?php echo vmText::_('COM_VIRTUEMART_ORDER_CREATE'); ?></a>
-		-->
+		<?php // echo vmText::_('COM_VIRTUEMART_ORDER_CREATE'); ?></a>
+
+		<?php $this->createPrintLinks($this->orderbt,$print_link,$deliverynote_link,$invoice_link);
+		echo '<span style="float:right">'.$print_link; echo $deliverynote_link; echo $invoice_link.'</span'; ?>
 		</td>
 	</tr>
 </table>
@@ -184,13 +183,13 @@ vmJsApi::addJScript('ordergui',$j);
 			</tr>
 			</thead>
 			<?php
-				$print_url = vUri::root().'index.php?option=com_virtuemart&view=invoice&layout=invoice&tmpl=component&virtuemart_order_id=' . $this->orderbt->virtuemart_order_id . '&order_number=' .$this->orderbt->order_number. '&order_pass=' .$this->orderbt->order_pass;
+/*				$print_url = vUri::root().'index.php?option=com_virtuemart&view=invoice&layout=invoice&tmpl=component&virtuemart_order_id=' . $this->orderbt->virtuemart_order_id . '&order_number=' .$this->orderbt->order_number. '&order_pass=' .$this->orderbt->order_pass;
 				$print_link = "<a title=\"".vmText::_('COM_VIRTUEMART_PRINT')."\" href=\"javascript:void window.open('$print_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
-				$print_link .=   $this->orderbt->order_number . ' </a>';
+				$print_link .=   $this->orderbt->order_number . ' </a>';*/
 			?>
 			<tr>
 				<td class="key"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
-				<td><?php echo  $print_link;?></td>
+				<td><?php echo $this->orderbt->order_number; ?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_PASS') ?></strong></td>

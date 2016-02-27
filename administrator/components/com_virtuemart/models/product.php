@@ -90,7 +90,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->initialiseRequests ();
 
 		//This is just done now for the moment for developing, the idea is of course todo this only when needed.
-		$this->updateRequests ();
+		$this->populateState ();
 
 	}
 
@@ -131,21 +131,21 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	/**
+	 * @deprecated
+	 */
+	function updateRequests () {
+		$this->populateState();
+	}
+
+	/**
 	 * This functions updates the variables of the model which are used in the sortSearchListQuery
 	 *  with the variables from the Request
 	 *
 	 * @author Max Milbers
 	 */
-	function updateRequests () {
+	function populateState () {
 
-		$this->keyword = vRequest::getString('keyword','');	//vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 
-		if ($this->keyword === '') {
-			$this->keyword = vRequest::getString('filter_product','');//vRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
-			vRequest::setVar('filter_product',$this->keyword);
-		} else {
-			vRequest::setVar('keyword',$this->keyword);
-		}
 
 		$app = vFactory::getApplication ();
 		$option = 'com_virtuemart';
@@ -167,6 +167,16 @@ class VirtueMartModelProduct extends VmModel {
 
 			$this->product_parent_id = vRequest::getInt ('product_parent_id', FALSE);
 			$this->virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', FALSE);
+
+			$this->keyword = vRequest::getString('keyword','');	//vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
+
+			if ($this->keyword === '') {
+				$this->keyword = vRequest::getString('filter_product','');//vRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
+				vRequest::setVar('filter_product',$this->keyword);
+			} else {
+				vRequest::setVar('keyword',$this->keyword);
+			}
+
 		}
 		else {
 			$filter_order = strtolower ($app->getUserStateFromRequest ('com_virtuemart.' . $view . '.filter_order', 'filter_order', $this->_selectedOrdering, 'cmd'));
@@ -185,13 +195,14 @@ class VirtueMartModelProduct extends VmModel {
 					$new_state = vRequest::getVar($type, false);
 				}
 
-				if($new_state==false and $new_state!=''){
+				if($new_state===false){
 					$this->{$type} = $app->getUserState($k, '');
 				} else {
 					$app->setUserState( $k,$new_state);
 					$this->{$type} = $new_state;
 				}
 			}
+
 			$this->keyword = $this->filter_product;
 		}
 
@@ -211,6 +222,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		//$this->virtuemart_vendor_id = vmAccess::isSuperVendor();
 		$this->virtuemart_vendor_id = vmAccess::getVendorId();
+		$this->__state_set = true;
 	}
 
 	/**
