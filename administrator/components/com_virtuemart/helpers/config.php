@@ -78,7 +78,7 @@ defined('VM_VERSION') or define ('VM_VERSION', 3);
 // and must not be lowered.
 defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 
-require(VMPATH_ADMIN.DS.'version.php');
+if(!class_exists('vmVersion')) require(VMPATH_ADMIN.DS.'version.php');
 defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
 
 if(!class_exists('VmTable')){

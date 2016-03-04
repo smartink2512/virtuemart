@@ -4,11 +4,11 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 
 /**
  *
- * @author Craig Christenson
+ * @author Craig Christenson, Max Milbers
  * @version $Id: tco.php$
  * @package VirtueMart
  * @subpackage payment
- * @copyright Copyright (C) 2015 VirtueMart - All rights reserved.
+ * @copyright Copyright (C) 2015 - 2016 VirtueMart - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -104,7 +104,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         $this->_debug = $method->debug;
 
         if (!class_exists('VirtueMartModelCurrency'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+            require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 
         $new_status = '';
 
@@ -112,7 +112,7 @@ class plgVmPaymentTco extends vmPSPlugin {
                 $address = ((isset($order['details']['BT'])) ? $order['details']['BT'] : $order['details']['ST']);
 
         if (!class_exists('TableVendors'))
-        require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
+        require(VMPATH_ADMIN . DS . 'table' . DS . 'vendors.php');
         $vendorModel = VmModel::getModel('Vendor');
         $vendorModel->setId(1);
         $vendor = $vendorModel->getVendor();
@@ -130,7 +130,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         $tcoDetails = $this->_getTcoDetails($method);
 
         if (empty($tcoDetails['seller_id'])) {
-            vmInfo(JText::_('VMPAYMENT_TCO_SELLER_ID_NOT_SET'));
+            vmInfo(vmText::_('VMPAYMENT_TCO_SELLER_ID_NOT_SET'));
             return false;
         }
 
@@ -140,7 +140,7 @@ class plgVmPaymentTco extends vmPSPlugin {
             "x_receipt_link_url" => JRoute::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&o_id={$order['details']['BT']->order_number}"),
             "merchant_order_id" => $order['details']['BT']->order_number,
             "custom" => $return_context,
-            "cart_order_id" => JText::_('VMPAYMENT_TCO_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
+            "cart_order_id" => vmText::_('VMPAYMENT_TCO_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
             "total" => $totalInPaymentCurrency,
             "currency_code" => $currency_code_3,
             "first_name" => $address->first_name,
@@ -184,7 +184,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         foreach ($post_variables as $name => $value) {
             $html.= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
         }
-        $html.= '<input type="submit" id="tco_submit" class="vm-button-correct" style="display:none" value="' . JText::_('VMPAYMENT_TCO_BUTTON_MESSAGE') . '" />';
+        $html.= '<input type="submit" id="tco_submit" class="vm-button-correct" style="display:none" value="' . vmText::_('VMPAYMENT_TCO_BUTTON_MESSAGE') . '" />';
         $html.= '</form></div><br />';
 
         if ($method->direct_checkout == 1) {
@@ -194,7 +194,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         vmJsApi::addJScript('vm.paymentFormAutoSubmit', '
   			jQuery(document).ready(function($){
    				jQuery("body").addClass("vmLoading");
-  				var msg="'.JText::_('VMPAYMENT_TCO_REDIRECT_MESSAGE').'";
+  				var msg="'.vmText::_('VMPAYMENT_TCO_REDIRECT_MESSAGE').'";
    				jQuery("body").append("<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">"+msg+"</div></div>");
     			jQuery("#vmPaymentForm").submit();
     			window.setTimeout("jQuery(\'.vmLoadingDiv\').hide();",5000);
@@ -219,9 +219,9 @@ class plgVmPaymentTco extends vmPSPlugin {
 
     function plgVmOnPaymentResponseReceived(&$html) {
 
-        $virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-        $order_number = JRequest::getVar('on', 0);
-        $vendorId = 0;
+        $virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
+        $order_number = vRequest::getVar('on', 0);  //?
+
         if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
             return null; // Another method was selected, do nothing
         }
@@ -232,39 +232,41 @@ class plgVmPaymentTco extends vmPSPlugin {
         require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
         if (!class_exists('shopFunctionsF'))
         require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-        if (!class_exists('VirtueMartModelOrders'))
-        require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
-        $tco_data = JRequest::get('request');
+		// setup response html
+        VmConfig::loadJLang('com_virtuemart');
+        $modelOrder = VmModel::getModel('orders');
+        
+        $tco_data = vRequest::getRequest();
         $payment_name = $this->renderPluginName($method);
 
+        
+        
         if (!empty($tco_data)) {
             vmdebug('plgVmOnPaymentResponseReceived', $tco_data);
             $order_number = $tco_data['merchant_order_id'];
             $return_context = $tco_data['custom'];
             $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-            $customer_order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
-            $customer_total = (number_format((float)$customer_order['details']['BT']->order_total, 2, '.', ''));
-            $payment_name = $this->renderPluginName($method);
 
             if ($virtuemart_order_id) {
+                $order = $modelOrder->getOrder($virtuemart_order_id);
+                $customer_total = (number_format((float)$order['details']['BT']->order_total, 2, '.', ''));
+                $payment_name = $this->renderPluginName($method);
+
                 $order['customer_notified']=1;
                 $order['order_status'] = $this->_getPaymentStatus($method, $tco_data['key'], $tco_data['order_number'], $customer_total);
-                $order['comments'] = JText::sprintf('VMPAYMENT_TCO_PAYMENT_STATUS_CONFIRMED', $order_number);
+                $order['comments'] = vmText::sprintf('VMPAYMENT_TCO_PAYMENT_STATUS_CONFIRMED', $order_number);
                 // send the email ONLY if payment has been accepted
-                $modelOrder = VmModel::getModel('orders');
-                $order = $modelOrder->getOrder($virtuemart_order_id);
+
                 $nb_history = count($order['history']);
                 if ($order['history'][$nb_history - 1]->order_status_code != $order['order_status']) {
                     $this->_storeTcoInternalData($method, $tco_data, $virtuemart_order_id);
                     $this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
                     $order['virtuemart_order_id'] = $virtuemart_order_id;
-                    $order['comments'] = JText::sprintf('VMPAYMENT_TCO_EMAIL_SENT');
+                    $order['comments'] = vmText::sprintf('VMPAYMENT_TCO_EMAIL_SENT');
                     $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
                 }
 
-                // setup response html
-                VmConfig::loadJLang('com_virtuemart');
+               
                 $html = $this->_getPaymentResponseHtml($tco_data, $payment_name);
                 $link=	JRoute::_("index.php?option=com_virtuemart&view=orders&layout=details&order_number=".$order['details']['BT']->order_number."&order_pass=".$order['details']['BT']->order_pass, false) ;
         		$html .='<br />
@@ -287,7 +289,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         if (!class_exists('VirtueMartModelOrders'))
         require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-        $order_number = JRequest::getVar('on');
+        $order_number = vRequest::getVar('on');
         if (!$order_number)
         return false;
         $db = JFactory::getDBO();
@@ -310,7 +312,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         $db = JFactory::getDBO();
         $query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
         $db->setQuery($query);
-        $columns = $db->loadResultArray(0);
+        $columns = $db->loadColumn(0);
         $post_msg = '';
         foreach ($tco_data as $key => $value) {
             $post_msg .= $key . "=" . $value . "<br />";

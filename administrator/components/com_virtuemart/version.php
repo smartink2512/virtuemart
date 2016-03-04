@@ -17,7 +17,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 
 
-if( !class_exists( 'vmVersion' ) ) {
+
 	/** Version information */
 	class vmVersion {
 		/** @var string Product */
@@ -52,7 +52,7 @@ if( !class_exists( 'vmVersion' ) ) {
 				. vmVersion::$RELTIME . " " . vmVersion::$RELTZ;
 		}
 	}
-}
+
 
 
 
