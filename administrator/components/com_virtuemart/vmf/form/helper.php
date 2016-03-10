@@ -164,7 +164,7 @@ class vFormHelper extends vBasicModel{
 		// Try to find the class file.
 		$type = strtolower($type) . '.php';
 
-		if(!class_exists('vPath')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vpath.php');
+		if(!class_exists('vPath')) require(VMPATH_ADMIN .'/vmf/filesystem/vpath.php');
 		foreach ($paths as $path)
 		{
 			$file = vPath::find($path, $type);
@@ -231,8 +231,8 @@ class vFormHelper extends vBasicModel{
 			// While we support limited number of entities (form, field and rule)
 			// we can do this simple pluralisation:
 			$entity_pl = $entity . 's';
-			self::$_paths['fields'][$entity][] = VMPATH_ADMIN .DS. $entity_pl;
-			self::$_paths['fields'][$entity][] = VMPATH_LIBS .DS. 'joomla' .DS. 'form' .DS. $entity_pl;
+			self::$_paths['fields'][$entity][] = VMPATH_ADMIN .'/'. $entity_pl;
+			self::$_paths['fields'][$entity][] = VMPATH_LIBS .'/joomla/form/' .$entity_pl;
 		}
 
 		// Force the new path(s) to an array.

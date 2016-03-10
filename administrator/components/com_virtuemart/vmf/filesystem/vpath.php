@@ -178,7 +178,7 @@ class vPath {
 		foreach ($paths as $path)
 		{
 			// Get the path to the file
-			$fullname = $path . DS . $file;
+			$fullname = $path . '/' . $file;
 
 			// Is the path based on a stream?
 			if (strpos($path, '://') === false)

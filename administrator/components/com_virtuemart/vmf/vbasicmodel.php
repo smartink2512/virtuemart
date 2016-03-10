@@ -9,11 +9,11 @@
  */
 
 if(!interface_exists('vIObject'))
-	require(VMPATH_ADMIN. DS. 'vmf' .DS. 'vinterfaces.php');
+	require(VMPATH_ADMIN .'/vmf/vinterfaces.php');
 
-if(!class_exists('vObject')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vobject.php');
-if(!class_exists('vRequest')) require(VMPATH_ADMIN .DS. 'helpers' .DS. 'vrequest.php');
-if(!class_exists('vPath')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vpath.php');
+if(!class_exists('vObject')) require(VMPATH_ADMIN .'/vmf/vobject.php');
+if(!class_exists('vRequest')) require(VMPATH_ADMIN .'/helpers/vrequest.php');
+if(!class_exists('vPath')) require(VMPATH_ADMIN .'/vmf/filesystem/vpath.php');
 
 abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 
@@ -83,7 +83,7 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 			return true;
 		}
 		VmConfig::$echoDebug = 1;
-		vmdebug('loader file not found '.$p.DS.$filename,self::$_paths[$prefix]);
+		vmdebug('loader file not found '.$p.'/'.$filename,self::$_paths[$prefix]);
 		return false;
 	}
 

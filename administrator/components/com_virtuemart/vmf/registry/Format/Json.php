@@ -10,7 +10,7 @@
 
 //use Joomla\Registry\AbstractRegistryFormat;
 //use Joomla\String\String;
-if(!class_exists('vString')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vstring.php');
+if(!class_exists('vString')) require(VMPATH_ADMIN .'/vmf/vstring.php');
 /**
  * JSON format handler for Registry.
  *

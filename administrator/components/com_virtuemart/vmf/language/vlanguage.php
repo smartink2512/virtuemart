@@ -387,9 +387,9 @@ class vLanguage {
 		{
 			return call_user_func($this->transliterator, $string);
 		}
-		if(!class_exists('vLanguageTransliterate')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'language' .DS. 'transliterate.php');
+		if(!class_exists('vLanguageTransliterate')) require(VMPATH_ADMIN .'/vmf/language/transliterate.php');
 		$string = vLanguageTransliterate::utf8_latin_to_ascii($string);
-		if(!class_exists('vString')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vstring.php');
+		if(!class_exists('vString')) require(VMPATH_ADMIN .'/vmf/vstring.php');
 		$string = vString::strtolower($string);
 
 		return $string;

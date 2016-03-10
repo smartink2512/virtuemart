@@ -9,7 +9,7 @@
  */
 
 if(!class_exists('vBasicModel'))
-	require(VMPATH_ADMIN. DS. 'vmf' .DS. 'vbasicmodel.php');
+	require(VMPATH_ADMIN .'/vmf/vbasicmodel.php');
 
 abstract class vTable extends vBasicModel implements vITable {
 
@@ -283,7 +283,7 @@ abstract class vTable extends vBasicModel implements vITable {
 
 			$langs = VmConfig::get('active_languages', array());
 			if (!$langs) $langs[] = VmConfig::$vmlang;
-			if (!class_exists('VmTableData')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtabledata.php');
+			if (!class_exists('VmTableData')) require(VMPATH_ADMIN .'/helpers/vmtabledata.php');
 			foreach ($langs as $lang) {
 				$lang = strtolower(strtr($lang, '-', '_'));
 				$langError = $this->checkAndDelete($this->_tbl . '_' . $lang);

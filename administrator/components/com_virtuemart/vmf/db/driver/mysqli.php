@@ -10,7 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 if(!class_exists('vDatabaseDriver'))
-	require(VMPATH_ADMIN. DS. 'vmf' .DS. 'db' .DS. 'driver.php');
+	require(VMPATH_ADMIN .'/vmf/db/driver.php');
 
 /**
  * MySQLi database driver

@@ -9,7 +9,7 @@
 */
 
 if(!class_exists('vBasicModel'))
-	require(VMPATH_ADMIN. DS. 'vmf' .DS. 'vbasicmodel.php');
+	require(VMPATH_ADMIN .'/vmf/vbasicmodel.php');
 
 class vController extends vBasicModel implements vIController{
 	/**
@@ -242,7 +242,7 @@ class vController extends vBasicModel implements vIController{
 		$this->registerDefaultTask('display');
 		$this->default_view = $this->getName();
 
-		vBasicModel::addIncludePath(VMPATH_ADMIN.DS.'vmf'.DS.'html','html');
+		vBasicModel::addIncludePath(VMPATH_ADMIN.'/vmf/html','html');
 	}
 
 
@@ -339,9 +339,9 @@ class vController extends vBasicModel implements vIController{
 
 			//We add the viewpath
 			if($manage){
-				self::addIncludePath(VMPATH_ADMIN . DS . 'views' .DS. $name,'view');
+				self::addIncludePath(VMPATH_ADMIN.'/views/'.$name,'view');
 			} else {
-				self::addIncludePath(VMPATH_COMPONENT . DS . 'views' .DS. $name,'view');
+				self::addIncludePath(VMPATH_COMPONENT.'/views/'.$name,'view');
 			}
 
 			if (!class_exists($class)) {
@@ -354,17 +354,17 @@ class vController extends vBasicModel implements vIController{
 				$name = strtolower($view);
 
 				if($manage){
-					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_ADMIN . DS . 'views' .DS. $name .DS. 'tmpl');
+					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_ADMIN .'/views/'. $name . '/tmpl');
 					$unoverridable = array('category', 'manufacturer', 'user','virtuemart');    //This views have the same name and must not be overridable
 					if(!in_array( $name, $unoverridable )) {
-						if(!class_exists( 'VmTemplate' )) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+						if(!class_exists( 'VmTemplate' )) require(VMPATH_SITE.'/helpers/vmtemplate.php');
 						$template = VmTemplate::getDefaultTemplate();
-						self::$_loadedClasses[$class]->addLayoutPath( $name, VMPATH_ROOT.DS.'templates'.DS.$template['template'].DS.'html'.DS.'com_virtuemart'.DS.$name, 'view' );
+						self::$_loadedClasses[$class]->addLayoutPath( $name, VMPATH_ROOT.'/templates/'.$template['template'].'/html/com_virtuemart/'.$name, 'view' );
 					}
 				} else {
-					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_COMPONENT . DS . 'views' .DS. $name .DS. 'tmpl');
+					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_COMPONENT.'/views/'. $name . '/tmpl');
 					$template = vFactory::getApplication()->getTemplate();
-					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_BASE . DS . 'templates' . DS . $template . DS . 'html' . DS . 'com_virtuemart' .DS. $name);
+					self::$_loadedClasses[$class]->addLayoutPath($name, VMPATH_BASE . '/templates/' . $template . '/html/com_virtuemart/'. $name);
 				}
 			} else {
 				VmConfig::$echoDebug=1;
@@ -559,7 +559,7 @@ class vController extends vBasicModel implements vIController{
 		}
 
 		if(!class_exists('vView'))
-			require(VMPATH_ADMIN. DS. 'vmf' .DS. 'vview.php');
+			require(VMPATH_ADMIN .'/vmf/vview.php');
 
 		if (empty(self::$views[$name][$type][$prefix])) {
 			if (self::$views[$name][$type][$prefix] = $this->createView($name,$prefix,array('type'=>$type))) {

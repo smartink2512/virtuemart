@@ -9,8 +9,8 @@
 //namespace VMF\Registry;
 
 //use Joomla\Utilities\ArrayHelper;
-if(!class_exists('Json')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'registry' .DS. 'Format' .DS. 'Json.php');
-if(!class_exists('ini')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'registry' .DS. 'Format' .DS. 'Ini.php');
+if(!class_exists('Json')) require(VMPATH_ADMIN .'/vmf/registry/Format/Json.php');
+if(!class_exists('ini')) require(VMPATH_ADMIN .'/vmf/registry/Format/Ini.php');
 /**
  * Abstract Format for Registry
  *
@@ -45,7 +45,7 @@ abstract class AbstractRegistryFormat
 		{
 			//$class = '\\Joomla\\Registry\\Format\\' . ucfirst($type);
 			$class =  ucfirst($type);
-			if(!class_exists($class)) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'registry' .DS. 'Format' .DS. $class.'.php');
+			if(!class_exists($class)) require(VMPATH_ADMIN .'/vmf/registry/Format/'. $class.'.php');
 
 			if (!class_exists($class))
 			{

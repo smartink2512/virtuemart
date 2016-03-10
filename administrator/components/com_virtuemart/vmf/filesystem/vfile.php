@@ -9,7 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-if(!class_exists('vPath')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vpath.php');
+if(!class_exists('vPath')) require(VMPATH_ADMIN .'/vmf/filesystem/vpath.php');
 
 /**
  * A File handling class

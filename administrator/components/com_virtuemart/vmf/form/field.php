@@ -9,7 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-if(!class_exists('vFormHelper')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'helper.php');
+if(!class_exists('vFormHelper')) require(VMPATH_ADMIN .'/vmf/form/helper.php');
 
 /**
  * Abstract Form Field class for the Joomla Platform.
@@ -337,7 +337,7 @@ abstract class vFormField
 		// Detect the field type if not set
 		if (!isset($this->type))
 		{
-			if(!class_exists('vString')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vstring.php');
+			if(!class_exists('vString')) require(VMPATH_ADMIN .'/vmf/vstring.php');
 			$parts = vString::fromCamelCase(get_called_class(), true);
 
 			if ($parts[0] == 'v')
@@ -728,7 +728,7 @@ abstract class vFormField
 			$a = explode('.',$this->renderLabelLayout);
 			$l = array_pop($a);
 		}
-		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.'/helpers/shopfunctionsf.php');
 		return shopFunctionsF::renderVmSubLayout($l, $displayData);
 		//return JLayoutHelper::render($this->renderLabelLayout, $displayData);
 	}
@@ -910,7 +910,7 @@ abstract class vFormField
 		} else {
 			$l = 'renderfield';
 		}
-		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.'/helpers/shopfunctionsf.php');
 		return shopFunctionsF::renderVmSubLayout($l, array('input' => $this->getInput(), 'label' => $this->getLabel(), 'options' => $options));
 		//return JLayoutHelper::render($this->renderLayout, array('input' => $this->getInput(), 'label' => $this->getLabel(), 'options' => $options));
 	}

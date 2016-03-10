@@ -279,7 +279,7 @@ abstract class vHtml extends vBasicModel
 		}
 		else
 		{
-			if(!class_exists('vFile')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+			if(!class_exists('vFile')) require(VMPATH_ADMIN .'/vmf/filesystem/vfile.php');
 			// Extract extension and strip the file
 			$strip = vFile::stripExt($file);
 			$ext   = vFile::getExt($file);

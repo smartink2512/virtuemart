@@ -9,7 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-if(!class_exists('vPath')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vpath.php');
+if(!class_exists('vPath')) require(VMPATH_ADMIN .'/vmf/filesystem/vpath.php');
 
 /**
  * A Folder handling class
@@ -49,8 +49,8 @@ abstract class vFolder
 		}
 
 		// Eliminate trailing directory separators, if any
-		$src = rtrim($src, DS);
-		$dest = rtrim($dest, DS);
+		$src = rtrim($src, '/');
+		$dest = rtrim($dest, '/');
 
 		if (!self::exists($src))
 		{
@@ -343,7 +343,7 @@ abstract class vFolder
 		$files = self::files($path, '.', false, true, array(), array());
 
 		if (!empty($files)) {
-			if(!class_exists('vFile')) require( VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+			if(!class_exists('vFile')) require( VMPATH_ADMIN .'/vmf/filesystem/vfile.php');
 			$file = new vFile;
 
 			if ($file->delete($files) !== true)
@@ -361,7 +361,7 @@ abstract class vFolder
 			if (is_link($folder))
 			{
 				// Don't descend into linked directories, just delete the link.
-				if(!class_exists('vFile')) require( VMPATH_ADMIN .DS. 'vmf' .DS. 'filesystem' .DS. 'vfile.php');
+				if(!class_exists('vFile')) require( VMPATH_ADMIN .'/vmf/filesystem/vfile.php');
 				$file = new vFile;
 
 				if ($file->delete($folder) !== true)

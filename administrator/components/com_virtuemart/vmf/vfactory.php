@@ -22,13 +22,13 @@ class vFactory {
 		if (!self::$_config) {
 			if(defined('JPATH_PLATFORM') ){
 				if (!class_exists( 'VmConfig' ))
-					require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+					require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/config.php');
 				if(!class_exists('jBridge'))
-					require(VMPATH_ADMIN. DS. 'vmf' .DS. 'jbridge.php');
+					require(VMPATH_ADMIN .'/vmf/jbridge.php');
 				self::$_config = JBridge::getConfig();
 			} else {
 				if(!class_exists('wpBridge'))
-					require(VMPATH_ADMIN. DS. 'vmf' .DS. 'wpbridge.php');
+					require(VMPATH_ADMIN .'/vmf/wpbridge.php');
 				self::$_config = wpBridge::getConfig();
 			}
 		}
@@ -54,7 +54,7 @@ class vFactory {
 
 			try {
 				if(!class_exists('vDatabaseDriverMysqli'))
-					require(VMPATH_ADMIN. DS. 'vmf' .DS. 'db' .DS. 'driver' .DS. 'mysqli.php');
+					require(VMPATH_ADMIN .'/vmf/db/driver/mysqli.php');
 				self::$_db = vDatabaseDriverMysqli::getInstance($options);
 			}
 			catch (RuntimeException $e) {
@@ -74,7 +74,7 @@ class vFactory {
 		if(!isset(self::$_apps[$id])){
 			if(JVM_VERSION===0){
 				if(!class_exists('wpBridge'))
-					require(VMPATH_ADMIN. DS. 'vmf' .DS. 'wpbridge.php');
+					require(VMPATH_ADMIN .'/vmf/wpbridge.php');
 				self::$_apps[$id] = wpBridge::getInstance();
 				//self::$_apps[$id] = vBasicModel::getInstance('vApp');
 			} else {
@@ -187,7 +187,7 @@ class vFactory {
 			$locale = $conf->get('language');
 			$debug = $conf->get('debug_lang');
 
-			if(!class_exists('vLanguage')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'language' .DS. 'vlanguage.php');
+			if(!class_exists('vLanguage')) require(VMPATH_ADMIN .'/vmf/language/vlanguage.php');
 			self::$_lang = vLanguage::getInstance($locale, $debug);
 		}
 
@@ -337,7 +337,7 @@ class vFactory {
 	}
 
 	public static function getURI($uri = 'SERVER') {
-		if(!class_exists('vUri')) require(VMPATH_ADMIN. DS. 'vmf' .DS. 'environment' .DS. 'uri.php');
+		if(!class_exists('vUri')) require(VMPATH_ADMIN .'/vmf/environment/uri.php');
 		return vURI::getInstance($uri);
 	}
 

@@ -71,9 +71,9 @@ abstract class vView extends vBasicModel implements vIView {
 		$filename = $type . '.php';
 		$name = strtolower(substr(get_class($this),14));
 		foreach(self::$_paths['layout'][$name] as $p) {
-			if(file_exists( $p.DS.$filename )) {
+			if(file_exists( $p.'/'.$filename )) {
 				//vmdebug('layoutLoader my layout '.$filename.' selected path. '.$p,self::$_paths['layout']);
-				return $p.DS.$filename;
+				return $p.'/'.$filename;
 			}
 		}
 		VmConfig::$echoDebug = 1;

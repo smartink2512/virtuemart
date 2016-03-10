@@ -9,8 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
-if(!class_exists('Registry')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'registry' .DS. 'Registry.php');
-if(!class_exists('vFormField')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'form' .DS. 'field.php');
+if(!class_exists('Registry')) require(VMPATH_ADMIN .'/vmf/registry/Registry.php');
+if(!class_exists('vFormField')) require(VMPATH_ADMIN .'/vmf/form/field.php');
 
 /**
  * Form Class for the Joomla Platform.
@@ -1348,7 +1348,7 @@ class vForm extends JForm{
 					// Otherwise if it doesn't start with "/" prepend the prefix of the current site.
 					elseif (substr($value, 0, 1) != '/')
 					{
-						$value = JUri::root(true) . '/' . $value;
+						$value = vUri::root(true) . '/' . $value;
 					}
 				}
 

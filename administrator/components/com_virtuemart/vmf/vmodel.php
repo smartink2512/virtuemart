@@ -13,10 +13,10 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 if(!class_exists('vBasicModel'))
-	require(VMPATH_ADMIN. DS. 'vmf' .DS. 'vbasicmodel.php');
+	require(VMPATH_ADMIN.'/vmf/vbasicmodel.php');
 
 if (!class_exists( 'vFactory' ))
-	require(VMPATH_ADMIN .DS.'vmf'.DS.'vfactory.php');
+	require(VMPATH_ADMIN.'/vmf/vfactory.php');
 
 /**
  *	Interface for model
@@ -400,7 +400,7 @@ abstract class vModel extends vBasicModel implements vITableable, vIStorable, vI
 	 */
 	public function getPagination($perRow = 5) {
 
-		if(!class_exists('VmPagination')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmpagination.php');
+		if(!class_exists('VmPagination')) require(VMPATH_ADMIN.'/helpers/vmpagination.php');
 		if(empty($this->_limit) ){
 			$this->setPaginationLimits();
 		}
@@ -594,7 +594,7 @@ abstract class vModel extends vBasicModel implements vITableable, vIStorable, vI
 
 			//just an idea
 			if(isset($this->_cache[$this->_id]->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
-				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
+				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.'/models/vendor.php');
 				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
 		}

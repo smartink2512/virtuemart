@@ -100,7 +100,7 @@ abstract class vHtmlList
 		}
 
 		$options[] = vHtml::_('select.option', 0, '0 ' . vmText::_('JOPTION_ORDER_FIRST'));
-		if(!class_exists('vString')) require(VMPATH_ADMIN .DS. 'vmf' .DS. 'vstring.php');
+		if(!class_exists('vString')) require(VMPATH_ADMIN .'/vmf/vstring.php');
 
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
