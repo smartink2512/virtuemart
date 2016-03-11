@@ -782,7 +782,7 @@ class VmPagination extends vObject {
  * @subpackage  HTML
  * @since       11.1
  */
-class vPaginationObject extends JObject
+class vPaginationObject extends vObject
 {
 	/**
 	 * @var    string  The link text.

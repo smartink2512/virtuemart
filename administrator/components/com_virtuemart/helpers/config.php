@@ -51,66 +51,14 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 	$vmPathLibraries = '';
 }
 
-defined ('VM_USE_BOOTSTRAP') or define ('VM_USE_BOOTSTRAP', 0);
 defined ('VMPATH_LIBS') or define ('VMPATH_LIBS', $vmPathLibraries);
-defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT .'/components/com_virtuemart' );
+
 defined ('VMPATH_ADMINISTRATOR') or define ('VMPATH_ADMINISTRATOR',	VMPATH_ROOT .'/administrator');
-defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ROOT .'/administrator/components/com_virtuemart' );
-
-defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN .'/plugins');
-defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT .'/plugins' );
-defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT .'/modules' );
-
+defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', VMPATH_ADMINISTRATOR .'/components/com_virtuemart' );
 if (!class_exists( 'vFactory' ))
 	require(VMPATH_ADMIN .'/vmf/vfactory.php');
-$app = vFactory::getApplication();
-$admin = '';
-if(!$app->isSite()){
-	$admin = '/administrator';//echo('in administrator');
-}
-
-defined ('VMPATH_BASE') or define ('VMPATH_BASE',VMPATH_ROOT.$admin);
-defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.'/templates' );
-
-defined ('VMPATH_COMPONENT') or define( 'VMPATH_COMPONENT', VMPATH_BASE .'/components/com_virtuemart' );
-
-//legacy
-defined ('JPATH_VM_SITE') or define('JPATH_VM_SITE', VMPATH_SITE );
-defined ('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', VMPATH_ADMIN);
-// define( 'VMPATH_ADMIN', JPATH_ROOT.'/administrator'.'/components'.'/com_virtuemart' );
-define( 'JPATH_VM_PLUGINS', VMPATH_PLUGINLIBS );
-define( 'JPATH_VM_MODULES', VMPATH_MODULES );
 
 
-defined('VM_VERSION') or define ('VM_VERSION', 3);
-
-//This number is for obstruction, similar to the prefix jos_ of joomla it should be avoided
-//to use the standard 7, choose something else between 1 and 99, it is added to the ordernumber as counter
-// and must not be lowered.
-defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
-
-require(VMPATH_ADMIN.'/version.php');
-defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
-
-
-
-if(!class_exists('VmTable')){
-	require(VMPATH_ADMIN .'/helpers/vmtable.php');
-}
-VmTable::addIncludePath(VMPATH_ADMIN .'/tables','Table');
-
-if (!class_exists ('VmModel')) {
-	require(VMPATH_ADMIN .'/helpers/vmmodel.php');
-}
-
-if(!class_exists('vController')) require(VMPATH_ADMIN .'/vmf/vcontroller.php');
-if(!class_exists('vRequest')) require(VMPATH_ADMIN .'/helpers/vrequest.php');
-if(!class_exists('vmText')) require(VMPATH_ADMIN .'/helpers/vmtext.php');
-if(!class_exists('vHtml')) require(VMPATH_ADMIN .'/vmf/html/html.php');
-if(!class_exists('vmJsApi')) require(VMPATH_ADMIN .'/helpers/vmjsapi.php');
-if(!class_exists('vUri')) require(VMPATH_ADMIN .'/vmf/environment/uri.php');
-if(!class_exists('vDispatcher')) require(VMPATH_ADMIN .'/vmf/dispatcher.php');
-if(!class_exists('vPlugin')) require(VMPATH_ADMIN .'/vmf/plugin/plugin.php');
 
 /**
  * Where type can be one of
@@ -457,7 +405,7 @@ function logInfo ($text, $type = 'message') {
 
 
 	// Initialise variables.
-	/*if(!class_exists('JClientHelper')) require(VMPATH_LIBS.'/joomla'.DS.'client'.DS.'helper.php');
+	/*if(!class_exists('JClientHelper')) require(VMPATH_LIBS.'/joomla/client/helper.php');
 	$FTPOptions = JClientHelper::getCredentials('ftp');
 	if (!empty($FTPOptions['enabled'] == 0)){
 		//For logging we do not support FTP. For loggin without file permissions using FTP, we need to load the file,..
@@ -531,11 +479,72 @@ class VmConfig {
 
 	private function __construct() {
 
+		self::echoAdmin();
+
 		if(function_exists('mb_ereg_replace')){
 			mb_regex_encoding('UTF-8');
 			mb_internal_encoding('UTF-8');
 		}
-		self::echoAdmin();
+
+		vmSetStartTime('includefiles');
+
+		defined ('VM_USE_BOOTSTRAP') or define ('VM_USE_BOOTSTRAP', 0);
+		defined ('VMPATH_SITE') or define ('VMPATH_SITE', VMPATH_ROOT .'/components/com_virtuemart' );
+
+		defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', VMPATH_ADMIN .'/plugins');
+		defined ('VMPATH_PLUGINS') or define ('VMPATH_PLUGINS', VMPATH_ROOT .'/plugins' );
+		defined ('VMPATH_MODULES') or define ('VMPATH_MODULES', VMPATH_ROOT .'/modules' );
+
+
+		$app = vFactory::getApplication();
+		$admin = '';
+		if(!$app->isSite()){
+			$admin = '/administrator';//echo('in administrator');
+		}
+
+		defined ('VMPATH_BASE') or define ('VMPATH_BASE',VMPATH_ROOT.$admin);
+		defined ('VMPATH_THEMES') or define ('VMPATH_THEMES', VMPATH_ROOT.$admin.'/templates' );
+
+		defined ('VMPATH_COMPONENT') or define( 'VMPATH_COMPONENT', VMPATH_BASE .'/components/com_virtuemart' );
+
+//legacy
+		defined ('JPATH_VM_SITE') or define('JPATH_VM_SITE', VMPATH_SITE );
+		defined ('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', VMPATH_ADMIN);
+// define( 'VMPATH_ADMIN', JPATH_ROOT.'/administrator'.'/components'.'/com_virtuemart' );
+		define( 'JPATH_VM_PLUGINS', VMPATH_PLUGINLIBS );
+		define( 'JPATH_VM_MODULES', VMPATH_MODULES );
+
+
+		defined('VM_VERSION') or define ('VM_VERSION', 3);
+
+//This number is for obstruction, similar to the prefix jos_ of joomla it should be avoided
+//to use the standard 7, choose something else between 1 and 99, it is added to the ordernumber as counter
+// and must not be lowered.
+		defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
+
+
+
+		if(!class_exists('vmVersion')) require(VMPATH_ADMIN.'/version.php');
+		defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
+
+//if(!class_exists('vRequest')) require(VMPATH_ADMIN .'/helpers/vrequest.php');
+		if(!class_exists('vmText')) require(VMPATH_ADMIN .'/helpers/vmtext.php');
+
+		if(!class_exists('vController')) require(VMPATH_ADMIN .'/vmf/vcontroller.php');
+		if(!class_exists('VmTable')){
+			require(VMPATH_ADMIN .'/helpers/vmtable.php');
+			VmTable::addIncludePath(VMPATH_ADMIN .'/tables','Table');
+		}
+		if(!class_exists('VmModel')) require(VMPATH_ADMIN .'/helpers/vmmodel.php');
+		if(!class_exists('vUri')) require(VMPATH_ADMIN .'/vmf/environment/uri.php');
+
+		//if(!class_exists('vHtml')) require(VMPATH_ADMIN .'/vmf/html/html.php');
+		if(!class_exists('vmJsApi')) require(VMPATH_ADMIN .'/helpers/vmjsapi.php');
+
+		if(!class_exists('vDispatcher')) require(VMPATH_ADMIN .'/vmf/dispatcher.php');
+		if(!class_exists('vPlugin')) require(VMPATH_ADMIN .'/vmf/plugin/plugin.php');
+
+
 		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
 		//But 15 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
 		ini_set('serialize_precision',16);
@@ -545,6 +554,7 @@ class VmConfig {
 		} else {
 			self::$mType = 'notice';
 		}
+		vmTime('Time to create Config', 'includefiles');
 	}
 
 	static function getStartTime(){
@@ -576,7 +586,7 @@ class VmConfig {
 				$dev = VmConfig::get('vmdev','none');
 			}
 
-			//$debug = 'all';	//this is only needed, when you want to debug THIS file
+			$debug = 'all';	//this is only needed, when you want to debug THIS file
 			// 1 show debug only to admins
 			self::$_debug = FALSE;
 			if($debug === 'admin' and VmConfig::$echoAdmin){
@@ -712,11 +722,12 @@ class VmConfig {
 		}
 
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name])){
-			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini';
+			$testpath = $basePath.'/language/en-GB/en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
-				$epath = VMPATH_ADMINISTRATOR;
 				if($site){
 					$epath = VMPATH_ROOT;
+				} else {
+					$epath = VMPATH_ADMINISTRATOR;
 				}
 			} else {
 				$epath = $path;
@@ -725,16 +736,17 @@ class VmConfig {
 			$loaded[(int)$site.'en-GB'.$name] = true;
 		}
 
-		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini';
+		$testpath = $basePath.'/language/'.$tag.'/'.$tag.'.'.$name.'.ini';
 		if(!file_exists($testpath)){
-			$path = VMPATH_ADMINISTRATOR;
 			if($site){
 				$path = VMPATH_ROOT;
+			} else {
+				$path = VMPATH_ADMINISTRATOR;
 			}
 		}
 
 		$jlang->load($name, $path,$tag,true);
-		$loaded[(int)$site.'en-GB'.$name] = true;
+		$loaded[(int)$site.$tag.$name] = true;
 		return $jlang;
 	}
 
@@ -748,16 +760,16 @@ class VmConfig {
 		$jlang =vFactory::getLanguage();
 		$tag = $jlang->getTag();
 
-		$path = $basePath = JPATH_VM_MODULES.DS.$name;
+		$path = $basePath = JPATH_VM_MODULES.'/'.$name;
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-			if(!file_exists($basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$name.'.ini')){
+			if(!file_exists($basePath.'/language/en-GB/en-GB.'.$name.'.ini')){
 				$path = JPATH_ADMINISTRATOR;
 			}
 			$jlang->load($name, $path, 'en-GB');
-			$path = $basePath = JPATH_VM_MODULES.DS.$name;
+			$path = $basePath = JPATH_VM_MODULES.'/'.$name;
 		}
 
-		if(!file_exists($basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$name.'.ini')){
+		if(!file_exists($basePath.'/language/'.$tag.'/'.$tag.'.'.$name.'.ini')){
 			$path = JPATH_ADMINISTRATOR;
 		}
 		$jlang->load($name, $path,$tag,true);
@@ -1159,7 +1171,7 @@ class vmAccess {
 			//echo $cuId;
 			if($cuId) {
 				if(!class_exists('vmCrypt'))
-					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+					require(VMPATH_ADMIN.'/helpers/vmcrypt.php');
 				$cuId = vmCrypt::decrypt( $cuId );
 				if(empty($cuId)){
 					$cuId = null;
@@ -1325,7 +1337,7 @@ class vmURI{
 
 	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
 
-		if(!class_exists('JFilterInput')) require (VMPATH_LIBS.DS.'joomla'.DS.'filter'.DS.'input.php');
+		if(!class_exists('JFilterInput')) require (VMPATH_LIBS.'/joomla/filter/input.php');
 		//$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		if($JURIInstance===0)$JURIInstance = vUri::getInstance();
 		//return $_filter->clean($JURIInstance->toString($parts));

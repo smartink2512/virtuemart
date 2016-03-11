@@ -152,7 +152,7 @@ class VirtueMartModelProduct extends VmModel {
 		$view = 'product';
 
 		$valid_search_fields = VmConfig::get ('browse_search_fields');
-		if ($app->isSite ()) {
+		if ($app->isSite() and !vRequest::getInt('manage',false)) {
 			$filter_order = vRequest::getString ('orderby', "0");
 
 			if($filter_order == "0"){
@@ -185,7 +185,7 @@ class VirtueMartModelProduct extends VmModel {
 			$valid_search_fields = array_unique(array_merge($this->valid_BE_search_fields, $valid_search_fields));
 
 			$view = vRequest::getCmd ('view');
-			$stateTypes = array('virtuemart_category_id'=>'int','virtuemart_manufacturer_id'=>'int','product_parent_id'=>'int','filter_product'=>'string','search_type'=>'string','search_order'=>'string','search_date'=>'string');
+			$stateTypes = array('virtuemart_category_id'=>'int','virtuemart_manufacturer_id'=>'int','product_parent_id'=>'int','filter_product'=>'string','search_type'=>'string','search_order'=>'string','search_date'=>'string','virtuemart_vendor_id' => 'int');
 
 			foreach($stateTypes as $type => $filter){
 				$k= 'com_virtuemart.' . $view . '.'.$type;

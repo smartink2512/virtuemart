@@ -39,6 +39,8 @@ please contact the leader of the author team of VirtueMart (max|at|virtuemart.ne
 
 VirtueMart includes or is derivative of works distributed under the following copyright notices:
 
+Any file without special notice in the VMF folder is derived work from Joomla, copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+
 Administrator Icons
 ----
 Copyright:	2008 Simon Josephson (http://www.artatwork.com.au)

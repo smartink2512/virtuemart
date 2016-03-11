@@ -16,15 +16,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.net
 */
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/config.php');
 
 VmConfig::loadConfig();
 vmRam('Start');
 vmSetStartTime('Start');
 //VmConfig::showDebug('all');
 
-if (!class_exists( 'VmController' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
-//if (!class_exists( 'VmModel' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
+if (!class_exists( 'VmController' )) require(VMPATH_ADMIN.'/helpers/vmcontroller.php');
+//if (!class_exists( 'VmModel' )) require(VMPATH_ADMIN.DS.'helpers/vmmodel.php');
 
 //Setup vUri
 vUri::root(null, str_ireplace('/administrator', '', JUri::base(true)));

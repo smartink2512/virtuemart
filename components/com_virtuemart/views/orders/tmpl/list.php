@@ -26,12 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 <h1><?php echo vmText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></h1>
 <?php
 if (count($this->orderlist) == 0) {
-	//echo vmText::_('COM_VIRTUEMART_ACC_NO_ORDER');
-	 echo shopFunctionsF::getLoginForm(false,true);
-	?>
-		</div>
-	</div>
-	<?php
+	 echo shopFunctionsF::getLoginForm(false,true); 
 } else {
  ?>
 <div id="editcell">
@@ -85,5 +80,6 @@ if (count($this->orderlist) == 0) {
 	</table>
 </div>
 <?php } ?>
-
+	</div>
+</div>
 

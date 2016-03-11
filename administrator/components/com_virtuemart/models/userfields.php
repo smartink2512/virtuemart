@@ -745,7 +745,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$_userData=(array)($_userData);
 		}
 
-		//if(!class_exists('ShopFunctions')) require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
+		if (!class_exists( 'vHtml' )) require(VMPATH_ADMIN.DS.'vmf'.DS.'html'.DS.'html.php');
 		$_return = array(
 				 'fields' => array()
 		,'functions' => array()

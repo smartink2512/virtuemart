@@ -298,6 +298,11 @@ width:100%
 	border:solid 0px #ddd;
 }
 
+/* For chosen.js in modules for example currency dropdown */
+.slide .module_content, .moduletable_js   {
+	overflow: visible !important;
+}
+
 #right .moduletable_js
 {
 	border:0
