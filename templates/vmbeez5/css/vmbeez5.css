@@ -96,8 +96,8 @@ width: 100%;
 
 #line
 {
-text-align:right;
-margin-bottom:5px 10px 20px 5px;
+	text-align:right;
+	margin-bottom:5px 10px 20px 5px;
     position: absolute;
     left: 0;
     display: block;
@@ -296,6 +296,10 @@ width:100%
 .moduletable_js
 {
 	border:solid 0px #ddd;
+}
+
+.slide .module_content, .moduletable_js   {
+	overflow: visible !important;
 }
 
 #right .moduletable_js
