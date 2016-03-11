@@ -367,25 +367,16 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			$db = JFactory::getDBO ();
 
-			$q = 'UPDATE `#__extensions` SET `ordering`= 5 WHERE `folder` ="vmpayment"';
+			$q = 'UPDATE `#__extensions` SET `ordering`= 20 WHERE `folder` ="vmpayment"';
 			$db->setQuery($q);
 			$db->query();
 
-			$q = 'UPDATE `#__extensions` SET `ordering`= 1 WHERE `element` ="klarna"';
-			$db->setQuery($q);
-			$db->query();
-
-			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="sofort"';
-			$db->setQuery($q);
-			$db->query();
-
-			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="sofort_ideal"';
-			$db->setQuery($q);
-			$db->query();
-
-			$q = 'UPDATE `#__extensions` SET `ordering`= 3 WHERE `element` ="paypal"';
-			$db->setQuery($q);
-			$db->query();
+			$order = array('paypal','tco','amazon','realex_hpp_api','sofort','sofort_ideal','klarna','paybox','heidelpay','skrill','klikandpay');
+			foreach($order as $o=>$el){
+				$q = 'UPDATE `#__extensions` SET `ordering`= "'.$o.'" WHERE `element` ="'.$el.'"';
+				$db->setQuery($q);
+				$db->query();
+			}
 
 			$q = 'UPDATE `#__extensions` SET `ordering`= 100 WHERE `element` ="payzen"';
 			$db->setQuery($q);

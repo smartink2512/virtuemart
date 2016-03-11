@@ -196,6 +196,13 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	   		$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
 	  	}
 
+		$tCon = array('min_amount','max_amount','cost_per_transaction','cost_min_transaction','cost_percent_total');
+		foreach($tCon as $f){
+			if(!empty($data[$f])){
+				$data[$f] = str_replace(array(',',' '),array('.',''),$data[$f]);
+			}
+		}
+
 		$table = $this->getTable('paymentmethods');
 
 		if(isset($data['payment_jplugin_id'])){
@@ -212,7 +219,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id'],&$table));
-
+			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginPayment',array( &$data,&$table));
 		}
 
 		$table->bindChecknStore($data);

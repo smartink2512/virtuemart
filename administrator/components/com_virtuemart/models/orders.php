@@ -279,9 +279,17 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$customfieldModel = VmModel::getModel('customfields');
 		$pModel = VmModel::getModel('product');
 		foreach($order['items'] as &$item){
-			$item->customfields = array();
+
 			$ids = array();
+
 			$product = $pModel->getProduct($item->virtuemart_product_id);
+			$pvar = get_object_vars($product);
+			foreach ( $pvar as $k => $v) {
+				if (!isset($item->$k) and '_' != substr($k, 0, 1)) {
+					$item->$k = $v;
+				}
+			}
+
 			if(!empty($item->product_attribute)){
 				//Format now {"9":7,"20":{"126":{"comment":"test1"},"127":{"comment":"t2"},"128":{"comment":"topic 3"},"129":{"comment":"4 44 4 4 44 "}}}
 				//$old = '{"46":" <span class=\"costumTitle\">Cap Size<\/span><span class=\"costumValue\" >S<\/span>","109":{"textinput":{"comment":"test"}}}';
@@ -290,6 +298,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$myCustoms = @json_decode($item->product_attribute,true);
 				$myCustoms = (array) $myCustoms;
 
+				$item->customfields = array();
 				foreach($myCustoms as $custom){
 					if(!is_array($custom)){
 						$custom = array( $custom =>false);
@@ -302,6 +311,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 			if(!empty($product->customfields)){
+				if(!isset($item->customfields)) $item->customfields = array();
 				foreach($product->customfields as $customfield){
 					if(!in_array($customfield->virtuemart_customfield_id,$ids) and $customfield->field_type=='E' and ($customfield->is_input or $customfield->is_cart_attribute)){
 						$item->customfields[] = $customfield;

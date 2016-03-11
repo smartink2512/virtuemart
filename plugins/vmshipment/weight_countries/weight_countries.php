@@ -569,13 +569,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if (!empty($this->_psType) and !$this->selectedThis ($this->_psType, $name, $id)) {
 			return FALSE;
 		} else {
-			$toConvert = array('weight_start','weight_stop','orderamount_start','orderamount_stop');
-			foreach($toConvert as $field){
-
-				if(!empty($data[$field])){
-					$data[$field] = str_replace(array(',',' '),array('.',''),$data[$field]);
-				} else {
-					unset($data[$field]);
+			$tCon = array('weight_start','weight_stop','orderamount_start','orderamount_stop','shipment_cost','package_fee');
+			foreach($tCon as $f){
+				if(!empty($data[$f])){
+					$data[$f] = str_replace(array(',',' '),array('.',''),$data[$f]);
 				}
 			}
 
