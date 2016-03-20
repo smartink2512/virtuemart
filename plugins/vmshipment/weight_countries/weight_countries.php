@@ -43,6 +43,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$this->tableFields = array_keys ($this->getTableSQLFields ());
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
+		$this->setConvertable(array('orderamount_start','orderamount_stop','shipment_cost','package_fee'));
 		//vmdebug('Muh constructed plgVmShipmentWeight_countries',$varsToPush);
 	}
 

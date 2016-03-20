@@ -70,17 +70,18 @@ if($this->userDetails->virtuemart_user_id!=0) {
 
  } else {
     echo $this->loadTemplate ( 'shopper' );
+	// captcha addition
+	if(VmConfig::get ('reg_captcha')){
+		vHtml::_('behavior.framework');
+		vPluginHelper::importPlugin('captcha');
+		$dispatcher = vDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
+		?>
+		<div id="dynamic_recaptcha_1"></div>
+		<?php
+	}
  }
 
-// captcha addition
-if(VmConfig::get ('reg_captcha')){
-	vHtml::_('behavior.framework');
-	vPluginHelper::importPlugin('captcha');
-	$dispatcher = vDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
-	?>
-	<div id="dynamic_recaptcha_1"></div>
-<?php
-}
+
 // end of captcha addition
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />

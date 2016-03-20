@@ -23,6 +23,8 @@ if (!class_exists ('vmPlugin')) {
 
 abstract class vmPSPlugin extends vmPlugin {
 
+	protected $_toConvert = false;
+
 	function __construct (& $subject, $config) {
 
 		parent::__construct ($subject, $config);
@@ -43,7 +45,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		return self::getVarsToPushByXML($this->_xmlFile,$this->_name.'Form');
 	}
 
-
+	public function setConvertable($toConvert) {
+		$this->_toConvert = $toConvert;
+	}
 
 	/**
 	 * check if it is the correct type
@@ -461,10 +465,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	protected function getPluginMethods ($vendorId) {
 
-		if (!class_exists ('VirtueMartModelUser')) {
-			require(VMPATH_ADMIN . DS . 'models' . DS . 'user.php');
-		}
-
 		$usermodel = VmModel::getModel ('user');
 		$user = $usermodel->getUser ();
 		$user->shopper_groups = (array)$user->shopper_groups;
@@ -776,7 +776,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$costDisplay = $currency->priceDisplay( $pluginSalesPrice );
 			//$costDisplay = '<span class="' . $this->_type . '_cost"> (' . vmText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') . $costDisplay . ")</span>";
 			$t = vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' );
-			if(strpos($t,'/',$t!==FALSE)){
+			if(strpos($t,'/')!==FALSE){
 				list($discount, $fee) = explode( '/', vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' ) );
 				if($pluginSalesPrice>=0) {
 					$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$fee.' +'.$costDisplay.")</span>";
@@ -1007,12 +1007,23 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$calculator = calculationHelper::getInstance ();
 
+		if($this->_toConvert){
+			$calculator = calculationHelper::getInstance ();
+			foreach($this->_toConvert as $c){
+				if(isset($method->$c)){
+					$method->$c = $calculator->_currencyDisplay->convertCurrencyTo($method->currency_id,$method->$c,true);
+				} else {
+					$method->$c = 0.0;
+				}
+
+			}
+		}
 		$cart_prices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
 		if(!isset($cart_prices[$this->_psType . 'Value'])) $cart_prices[$this->_psType . 'Value'] = 0.0;
 		if(!isset($cart_prices[$this->_psType . 'Tax'])) $cart_prices[$this->_psType . 'Tax'] = 0.0;
 
 		if($this->_psType=='payment'){
-			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
+			$cartTotalAmountOrig = $this->getCartAmount($cart_prices);
 
 			if(!isset($method->cost_percent_total)) $method->cost_percent_total = 0.0;
 			if(!isset($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;

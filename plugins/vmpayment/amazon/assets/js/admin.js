@@ -101,9 +101,11 @@ jQuery().ready(function ($) {
         var environment = $('#params_environment').val();
         $('.sandbox_error_simulation').parents('.control-group').hide();
         $('.ipn-sandbox').hide();
+        $('.sandbox_warning').hide();
         if (environment === 'sandbox') {
             $('.sandbox_error_simulation').parents('.control-group').show();
             $('.ipn-sandbox').show();
+            $('.sandbox_warning').show();
         }
     }
 

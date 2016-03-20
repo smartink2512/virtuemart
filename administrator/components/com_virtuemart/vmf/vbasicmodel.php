@@ -40,24 +40,20 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 
 	protected static $_loadedClasses = array();
 
-	public static function getInstance($type, $prefix = '', $config = array(), $single = false) {
+	public static function getInstance($type, $prefix = '', $config = array(), $new = true) {
 
 		vmSetStartTime('getInstance');
 		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 		$type = strtolower($type);
 		$class = $prefix . ucfirst($type);
 
-		/*if (!class_exists($class)) {
-			self::loader($type, $prefix,$class);
-		}*/
 		if (self::loader($type, $prefix,$class)){
-			if(!$single or !isset(self::$_loadedClasses[$class])){
+			if($new or !isset(self::$_loadedClasses[$class])){
 				if($prefix=='Table'){
 					self::$_loadedClasses[$class] = new $class(vFactory::$_db);
 				} else {
 					self::$_loadedClasses[$class] = new $class($config);
 				}
-
 				//vmTime('getInstance '.(int)$single.' '.$prefix.' '.$type,'getInstance');
 			}
 
@@ -72,18 +68,18 @@ abstract class vBasicModel extends vObject implements vILoadable, vICacheable{
 
 		if (!class_exists($class)){
 			$filename = $type . '.php';
-			foreach(self::$_paths[$prefix] as $p) {
+			//foreach(self::$_paths[$prefix] as $p) {
 				//vmdebug('Testing for '.$p.DS.$filename);
-				if($pf = vPath::find($p,$filename)){
+				if($pf = vPath::find(self::$_paths[$prefix],$filename)){
 					require $pf;
 					if (class_exists($class)) return true;
 				}
-			}
+			//}
 		} else {
 			return true;
 		}
 		VmConfig::$echoDebug = 1;
-		vmdebug('loader file not found '.$p.'/'.$filename,self::$_paths[$prefix]);
+		vmdebug('loader file not found '.$pf,self::$_paths[$prefix]);
 		return false;
 	}
 

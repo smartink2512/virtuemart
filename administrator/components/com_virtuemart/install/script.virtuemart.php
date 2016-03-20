@@ -741,37 +741,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return $ok;
 		}
 
-		/**
-		 *
-		 * @author Max Milbers
-		 * @param unknown_type $table
-		 * @param unknown_type $field
-		 * @param unknown_type $action
-		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
-		 */
-		private function checkAddFieldToTable($table,$field,$fieldType){
-
-			$query = 'SHOW COLUMNS FROM `'.$table.'` ';
-			$this->_db->setQuery($query);
-			$columns = $this->_db->loadColumn(0);
-
-			if(!in_array($field,$columns)){
-
-
-				$query = 'ALTER TABLE `'.$table.'` ADD '.$field.' '.$fieldType;
-				$this->_db->setQuery($query);
-				if(!$this->_db->execute()){
-					$app = vFactory::getApplication();
-					$app->enqueueMessage('Error: Install checkAddFieldToTable '.$this->_db->getErrorMsg() );
-					return false;
-				} else {
-					vmdebug('checkAddFieldToTable added '.$field);
-					return true;
-				}
-			}
-			return false;
-		}
-
 
 		/**
 		* Checks if both types of default shoppergroups are set

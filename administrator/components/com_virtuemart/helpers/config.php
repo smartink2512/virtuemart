@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  *  Then always use the defined paths below to ensure future stability
  */
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-//defined('_JEXEC') or define('_JEXEC', 1);
+
 
 
 
@@ -48,6 +48,7 @@ if(defined('JPATH_ROOT')){	//We are in joomla
 } else {
 	defined ('JVM_VERSION') or define ('JVM_VERSION', 0);
 	defined ('VMPATH_ROOT') or define ('VMPATH_ROOT', dirname( __FILE__ ));
+	defined('_JEXEC') or define('_JEXEC', 1);
 	$vmPathLibraries = '';
 }
 

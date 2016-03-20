@@ -39,6 +39,6 @@ class VmModel extends vModel{
 		$name = strtolower($name);
 		self::addIncludePath(VMPATH_ADMIN.DS.'models','VirtueMartModel');
 		$conf = array();
-		return self::getInstance($name,'VirtueMartModel',$conf,true);
+		return self::getInstance($name,'VirtueMartModel',$conf,false);
 	}
 }

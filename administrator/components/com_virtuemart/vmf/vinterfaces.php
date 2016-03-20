@@ -64,7 +64,7 @@ interface vITableable {
 }
 
 interface vILoadable {
-	static function getInstance($type, $prefix = '', $config = array(), $single = false);
+	static function getInstance($type, $prefix = '', $config = array(), $snew = true);
 	static function addIncludePath($path, $prefix = '');
 }
 

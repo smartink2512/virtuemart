@@ -41,7 +41,7 @@ class VirtuemartControllerVirtuemart extends VmController {
 	public function disableDangerousTools(){
 
 		$data = vRequest::getRequest();
-		$config = VmModel::getInstance('config', 'VirtueMartModel', array(), true);
+		$config = VmModel::getInstance('config', 'VirtueMartModel', array(), false);
 		$config->setDangerousToolsOff();
 		$this->display();
 	}
