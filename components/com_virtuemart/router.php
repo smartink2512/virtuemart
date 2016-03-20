@@ -672,7 +672,7 @@ function virtuemartParseRoute($segments) {
 			}
 		} else {
 			$catId = $helper->getCategoryId ($last_elem ,$helper->activeMenu->virtuemart_category_id);
-			if($catId!==false){
+			if($catId!=false){
 				$vars['virtuemart_category_id'] = $catId;
 				$vars['view'] = 'category' ;
 			}

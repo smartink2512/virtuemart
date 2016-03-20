@@ -97,6 +97,15 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 				$this->assignRef('vendorList', $vendorList);
 			}
 
+			$currency_model = VmModel::getModel ('currency');
+			$currencies = $currency_model->getCurrencies ();
+
+			$currency = VirtueMartModelVendor::getVendorCurrency ($payment->virtuemart_vendor_id);
+			$this->assignRef('vendor_currency', $currency->currency_symbol);
+
+			if(empty($payment->currency_id)) $payment->currency_id = $currency->virtuemart_currency_id;
+			$this->currencyList = JHtml::_ ('select.genericlist', $currencies, 'currency_id', '', 'virtuemart_currency_id', 'currency_name', $payment->currency_id);
+
 			$this->addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
 		} else {
 			JToolBarHelper::custom('clonepayment', 'copy', 'copy', vmText::_('COM_VIRTUEMART_PAYMENT_CLONE'), true);

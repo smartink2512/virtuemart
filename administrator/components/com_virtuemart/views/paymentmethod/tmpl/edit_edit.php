@@ -31,6 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_PAYMENT_CLASS_NAME', $this->vmPPaymentList ); ?>
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_PAYMENTMETHOD_FORM_SHOPPER_GROUP', $this->shopperGroupList ); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_LIST_ORDER','ordering',$this->payment->ordering,'class="inputbox"','',4,4); ?>
+		<?php echo VmHTML::row('raw', 'COM_VIRTUEMART_CURRENCY', $this->currencyList); ?>
 	    <?php
 	    if ($this->showVendors()) {
 			echo VmHTML::row('raw', 'COM_VIRTUEMART_VENDOR', $this->vendorList);

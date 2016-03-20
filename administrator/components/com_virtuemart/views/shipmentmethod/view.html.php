@@ -70,9 +70,8 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 			 if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
-			 $vendor_id = 1;
-			 $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
-			 $this->assignRef('vendor_currency', $currency->currency_symbol);
+
+
 
 			if($this->showVendors()){
 					$vendorList= ShopFunctions::renderVendorList($shipment->virtuemart_vendor_id);
@@ -82,6 +81,15 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 			$this->pluginList = self::renderInstalledShipmentPlugins($shipment->shipment_jplugin_id);
 			$this->assignRef('shipment', $shipment);
 			$this->shopperGroupList = ShopFunctions::renderShopperGroupList($shipment->virtuemart_shoppergroup_ids,true);
+
+			$currency_model = VmModel::getModel ('currency');
+			$currencies = $currency_model->getCurrencies ();
+
+			$currency = VirtueMartModelVendor::getVendorCurrency ($shipment->virtuemart_vendor_id);
+			$this->assignRef('vendor_currency', $currency->currency_symbol);
+
+			if(empty($shipment->currency_id)) $shipment->currency_id = $currency->virtuemart_currency_id;
+			$this->currencyList = JHtml::_ ('select.genericlist', $currencies, 'currency_id', '', 'virtuemart_currency_id', 'currency_name', $shipment->currency_id);
 
 			$this->addStandardEditViewCommands($shipment->virtuemart_shipmentmethod_id);
 

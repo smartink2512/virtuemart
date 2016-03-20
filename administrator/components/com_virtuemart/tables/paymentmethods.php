@@ -51,6 +51,8 @@ class TablePaymentmethods extends VmTable {
     /** @var string parameter of the paymentmethod */
     var $payment_params = 0;
 
+    var $currency_id = 0;
+
     /** @var string ordering */
     var $ordering = '';
 
