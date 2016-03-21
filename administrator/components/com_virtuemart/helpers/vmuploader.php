@@ -303,9 +303,9 @@ class vmUploader {
 				}
 
 				if($obj->file_is_forSale==0){
-					vFile::upload($media['tmp_name'],VMPATH_ROOT.DS.$path_folder.$media['name'], false, vmAccess::manager('core'));
+					vFile::upload($media['tmp_name'],VMPATH_ROOT.DS.$path_folder.$media['name'], false, vmAccess::manager('media.trusteduploader'));
 				} else {
-					vFile::upload($media['tmp_name'],$path_folder.$media['name'], false, vmAccess::manager('core'));
+					vFile::upload($media['tmp_name'],$path_folder.$media['name'], false, vmAccess::manager('media.trusteduploader'));
 				}
 
 
