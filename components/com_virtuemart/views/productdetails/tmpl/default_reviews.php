@@ -26,7 +26,7 @@ if ($this->allowRating || $this->allowReview || $this->showRating || $this->show
 	$maxrating = VmConfig::get( 'vm_maximum_rating_scale', 5 );
 	$ratingsShow = VmConfig::get( 'vm_num_ratings_show', 3 ); // TODO add  vm_num_ratings_show in vmConfig
 	$stars = array();
-	$showall = vRequest::getBool( 'showall', FALSE );
+	//$showall = vRequest::getBool( 'showall', FALSE );
 	$ratingWidth = $maxrating*24;
 	for( $num = 0; $num<=$maxrating; $num++ ) {
 		$stars[] = '
@@ -208,7 +208,7 @@ if ($this->showReview) {
 					<?php
 				}
 				$i++;
-				if ($i == $ratingsShow && !$showall) {
+				if ($i == $ratingsShow && !$this->showall) {
 					/* Show all reviews ? */
 					if ($reviews_published >= $ratingsShow) {
 						$attribute = array('class'=> 'details', 'title'=> vmText::_ ('COM_VIRTUEMART_MORE_REVIEWS'));

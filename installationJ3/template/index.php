@@ -25,7 +25,6 @@ JHtml::_('script', 'installation/template/js/installation.js');
 // Load the JavaScript translated messages
 JText::script('INSTL_PROCESS_BUSY');
 JText::script('INSTL_FTP_SETTINGS_CORRECT');
-
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">

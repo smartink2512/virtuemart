@@ -23,6 +23,7 @@ if(!empty($Itemid)){
 	$ItemidStr = '&Itemid='.$Itemid;
 }
 
+
 foreach ($viewData['products'] as $type => $products ) {
 
 	$rowsHeight = shopFunctionsF::calculateProductRowsHeights($products,$currency,$products_per_row);
@@ -32,6 +33,10 @@ foreach ($viewData['products'] as $type => $products ) {
 <div class="<?php echo $type ?>-view">
   <h4><?php echo $productTitle ?></h4>
 		<?php // Start the Output
+    } else if(count($viewData['products'])>1 and count($products)>0){
+    $productTitle = vmText::_('COM_VIRTUEMART_'.strtoupper($type).'_PRODUCT'); ?>
+<div class="<?php echo $type ?>-view">
+  <h4><?php echo $productTitle ?></h4><?php
     }
 
 	// Calculating Products Per Row
@@ -44,7 +49,10 @@ foreach ($viewData['products'] as $type => $products ) {
 	$row = 1;
 
 	foreach ( $products as $product ) {
-
+		if(!is_object($product) or empty($product->link)) {
+			//vmdebug('$product',$product);
+			continue;
+		}
 		// Show the horizontal seperator
 		if ($col == 1 && $nb > $products_per_row) { ?>
 	<div class="horizontal-separator"></div>

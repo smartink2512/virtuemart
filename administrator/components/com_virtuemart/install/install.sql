@@ -925,6 +925,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_reviews` (
   `review_editable` tinyint(1) NOT NULL DEFAULT '1',
   `lastip` char(50) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
+  `customer` varchar(128) NOT NULL DEFAULT '',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(1) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -932,7 +933,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_reviews` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_rating_review_id`),
-  UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`),
+  KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`),
   KEY `created_on` (`created_on`),
   KEY `created_by` (`created_by`),
   KEY `published` (`published`)
@@ -976,7 +977,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_rating_vote_id`),
-  UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`),
+  KEY `virtuemart_product_id` (`virtuemart_product_id`,`created_by`),
   KEY `created_by` (`created_by`),
   KEY `created_on` (`created_on`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Stores all ratings for a product';

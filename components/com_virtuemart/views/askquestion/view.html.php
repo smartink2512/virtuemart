@@ -52,13 +52,13 @@ class VirtueMartViewAskquestion extends VmView {
 			}
 		}
 
-		$show_prices = VmConfig::get ('show_prices', 1);
-		if ($show_prices == '1') {
+		$this->show_prices = (int)VmConfig::get ('show_prices', 1);
+		if ($this->show_prices) {
 			if (!class_exists ('calculationHelper')) {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 			}
 		}
-		$this->assignRef ('show_prices', $show_prices);
+
 		$document = vFactory::getDocument ();
 
 		$mainframe = vFactory::getApplication ();

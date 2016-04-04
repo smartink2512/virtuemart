@@ -89,10 +89,10 @@ class VmViewAdmin extends vView {
 		if(vmAccess::manager($view.'.edit')){
 			vToolBarHelper::editList();
 		}
-		if(vmAccess::manager($view.'.create')){
+		if($showNew and vmAccess::manager($view.'.create')){
 			vToolBarHelper::addNew();
 		}
-		if(vmAccess::manager($view.'.delete')){
+		if($showDelete and vmAccess::manager($view.'.delete')){
 			vToolBarHelper::spacer('10');
 			vToolBarHelper::deleteList();
 		}

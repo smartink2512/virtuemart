@@ -65,7 +65,7 @@ abstract class vmPlugin extends vPlugin {
 	protected $_debug = FALSE;
 	protected $_loggable = FALSE;
 	protected $_cryptedFields = false;
-
+	protected $_toConvertDec = false;
 	/**
 	 * Constructor
 	 *
@@ -87,6 +87,21 @@ abstract class vmPlugin extends vPlugin {
 		$this->_tableChecked = FALSE;
 		$this->_xmlFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins' .DS. $this->_type .DS.  $this->_name . DS. $this->_name . '.xml');
 
+	}
+
+	public function setConvertDecimal($toConvert) {
+		$this->_toConvertDec = $toConvert;
+	}
+
+	public function convertDec(&$data){
+
+		if($this->_toConvertDec){
+			foreach($tCon as $f){
+				if(!empty($data[$f])){
+					$data[$f] = str_replace(array(',',' '),array('.',''),$data[$f]);
+				}
+			}
+		}
 	}
 
 	public function loadJLangThis($fname,$type=0,$name=0){

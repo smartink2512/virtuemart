@@ -149,48 +149,72 @@ class VirtueMartModelRatings extends VmModel {
 		static $reviews = array();
 		$hash = VmConfig::$vmlang.$virtuemart_product_id.$this->_selectedOrderingDir.$this->_selectedOrdering;
 		if(!isset($reviews[$hash])){
-			$vendorId = '';
+			$jKind = 'INNER';
+			if($virtuemart_vendor_id){
+				$jKind = 'LEFT';
+			}
 
-			$select = '`u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, `u`.`name` AS customer, `pr`.`published`';
+			//$select = '`u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, IFNULL(`u`.`name`, `pr`.`customer`) AS customer, `pr`.`published`';
 			$tables = ' FROM `#__virtuemart_rating_reviews` AS `pr`
-		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
-		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ON `l`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` ';
+			'.$jKind.' JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ON `l`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` ';
 			if(!empty($virtuemart_vendor_id)){
 				$tables .= 'LEFT JOIN `#__virtuemart_products` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` ';
 			}
-			$tables .= '
-		LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`';
+			$tables .= self::$_jTables;
 
-			$whereString = ' WHERE  `l`.`virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
+			$whereString = ' WHERE  `pr`.`virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
 			if(!empty($virtuemart_vendor_id)){
 				$whereString .= ' AND `p`.virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
 			}
-			$reviews[$hash] = $this->exeSortSearchListQuery(0,$select,$tables,$whereString,'',$this->_getOrdering(), '', $num_reviews);
+
+			$reviews[$hash] = $this->exeSortSearchListQuery(0,self::$_select,$tables,$whereString,'',$this->_getOrdering(), '', $num_reviews);
 		}
 
 
      	return $reviews[$hash];
     }
 
+	private static $_select = ' `u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, IFNULL(`u`.`name`, `pr`.`customer`) AS customer ';
+	private static $_jTables = ' LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on
+			(`pr`.`virtuemart_rating_vote_id` IS NOT NULL AND `rv`.`virtuemart_rating_vote_id`=`pr`.`virtuemart_rating_vote_id` ) XOR
+			(`pr`.`virtuemart_rating_vote_id` IS NULL AND (`rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`) )
+			LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id` ';
+
 	/**
 	 * @author Max Milbers
 	 * @param $cids
 	 * @return mixed@
 	 */
-	function getReview($cids){
+	function getReview($cids, $new = false){
 
-       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
-		LEFT JOIN `#__virtuemart_userinfos` AS `u`
-     	ON `pr`.`created_by` = `u`.`virtuemart_user_id`
-		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p`
-     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
-		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`
-      WHERE virtuemart_rating_review_id="'.(int)$cids[0].'" ' ;
-		$db = vFactory::getDbo();
-		$db->setQuery($q);
-		vmdebug('getReview',$db->getQuery());
-		return $db->loadObject();
-    }
+		if($new){
+			$t = $this->getTable('products');
+			$t->load($cids);
+			$t->customer = '';
+			$t->vote = '';
+			$t->comment = '';
+			$t->virtuemart_rating_review_id = null;
+			$t->virtuemart_rating_vote_id = null;
+			$t->created_by_alias = '';
+			return $t;
+		} else {
+
+			$q = 'SELECT '.self::$_select.' FROM `#__virtuemart_rating_reviews` AS `pr`
+		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ON `l`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`';
+			$q .= self::$_jTables;
+			$q .= 'WHERE virtuemart_rating_review_id="'.(int)$cids[0].'" ' ;
+
+
+			$db = vFactory::getDBO();
+			$db->setQuery($q);
+			$r = $db->loadObject();
+			if(!$r){
+				vmdebug('getReview',$db->getQuery());
+			}
+			return $r;
+		}
+
+	}
 
 
     /**
@@ -281,156 +305,200 @@ class VirtueMartModelRatings extends VmModel {
 
     }
 
+	function getAverageVotesByProductId($prId){
+		$q = 'SELECT AVG(vote) FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.(int)$prId.'" ';
+		$db = vFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadResult();
+	}
+
+	function getVoteById($id){
+		$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_rating_vote_id` = "'.(int)$id.'"  ';
+		$db = vFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadObject();
+	}
+
     /**
     * Save a rating
     * @author  Max Milbers
     */
-    public function saveRating($data=0) {
+	public function saveRating($data=0) {
 
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',0);
+		if(empty($virtuemart_product_id)) {
+			vmError( 'Cant save rating/review/vote without vote/product_id' );
+			return FALSE;
+		}
+
+		if(empty($data)) $data = vRequest::getPost();
 
 		$app = vFactory::getApplication();
 		if( $app->isSite() ){
 			$user = vFactory::getUser();
-			$userId = $user->id;
+			$data['created_by'] = $user->id;
 			$allowReview = $this->allowReview($virtuemart_product_id);
 			$allowRating = $this->allowRating($virtuemart_product_id);
 		} else {
-			$userId = $data['created_by'];
+			if(empty($data['created_by']) and !empty($data['customer']) and vmAccess::manager('ratings')){
+				//$userId = -1;
+				$data['created_by'] = -1;
+			} else {
+				//$userId = $data['created_by'];
+			}
+
 			$allowReview = true;
 			$allowRating = true;
 		}
+		vmdebug('bindChecknStore rating_votes',$data);
+
+		if($allowRating){
+			//normalize the rating
+			if ($data['vote'] < 0) {
+				$data['vote'] = 0;
+			}
+			if ($data['vote'] > ($maxrating + 1)) {
+				$data['vote'] = $maxrating;
+			}
+
+			$data['lastip'] = ShopFunctions::getClientIP();;
+			vmdebug('muh',$data['lastip']);
+			$maskIP = VmConfig::get('maskIP','last');
+			if($maskIP=='last'){
+				$rpos = strrpos($data['lastip'],'.');
+				$data['lastip'] = substr($data['lastip'],0,($rpos+1)).'xx';
+			}
+
+			$data['vote'] = (int) $data['vote'];
+
+			$rating = $this->getRatingByProduct($data['virtuemart_product_id']);
+			vmdebug('$rating',$rating);
 
 
-		if(!empty($virtuemart_product_id)){
-			//if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
+			if($data['created_by']>0 ){
+				$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$data['created_by']);
+				vmdebug('getVoteByProduct $vote',$vote);
 
-			if(empty($data)) $data = vRequest::getPost();
+			} else if(!empty($data['virtuemart_rating_vote_id'])){
+				$vote = $this->getVoteById($data['virtuemart_rating_vote_id']);
+				vmdebug('getVoteById $vote',$vote);
+			} else {
+				$vote = false;
+			}
 
-			if($allowRating){
-				//normalize the rating
-				if ($data['vote'] < 0) {
-					$data['vote'] = 0;
+			$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
+
+			if(isset($data['vote'])){
+				$votesTable = $this->getTable('rating_votes');
+				vmdebug('bindChecknStore rating_votes',$data);
+				$res = $votesTable->bindChecknStore($data,TRUE);
+				if(!$res){
+					vmError(get_class( $this ).'::Error store votes ');
 				}
-				if ($data['vote'] > ($maxrating + 1)) {
-					$data['vote'] = $maxrating;
-				}
+			}
 
-				$data['lastip'] = $_SERVER['REMOTE_ADDR'];
+			if(!empty($rating->rates) && empty($vote) ){
+				$data['rates'] = $rating->rates + $data['vote'];
+				$data['ratingcount'] = $rating->ratingcount+1;
+				//$data['rating'] = $data['rates']/$data['ratingcount'];
+			}
+			else {
+				if (!empty($rating->rates) && !empty($vote->vote)) {
+					$data['rates'] = $rating->rates - $vote->vote + $data['vote'];
+					$data['ratingcount'] = $rating->ratingcount;
+					//Lets recalculate it
+					//$data['rating'] = $this->getAverageVotesByProductId($data['virtuemart_product_id']);
 
-				$data['vote'] = (int) $data['vote'];
-
-				$rating = $this->getRatingByProduct($data['virtuemart_product_id']);
-				vmdebug('$rating',$rating);
-				$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$userId);
-				vmdebug('$vote',$vote);
-
-				$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
-
-				if(isset($data['vote'])){
-					$votesTable = $this->getTable('rating_votes');
-					$res = $votesTable->bindChecknStore($data,TRUE);
-					if(!$res){
-						vmError(get_class( $this ).'::Error store votes ');
-					}
-				}
-
-				if(!empty($rating->rates) && empty($vote) ){
-					$data['rates'] = $rating->rates + $data['vote'];
-					$data['ratingcount'] = $rating->ratingcount+1;
 				}
 				else {
-					if (!empty($rating->rates) && !empty($vote->vote)) {
-						$data['rates'] = $rating->rates - $vote->vote + $data['vote'];
-						$data['ratingcount'] = $rating->ratingcount;
-					}
-					else {
-						$data['rates'] = $data['vote'];
-						$data['ratingcount'] = 1;
-					}
-				}
-
-				if(empty($data['rates']) || empty($data['ratingcount']) ){
-					$data['rating'] = 0;
-				} else {
-					$data['rating'] = $data['rates']/$data['ratingcount'];
-				}
-
-				$data['virtuemart_rating_id'] = empty($rating->virtuemart_rating_id)? 0: $rating->virtuemart_rating_id;
-				vmdebug('saveRating $data',$data);
-				$rating = $this->getTable('ratings');
-				$res = $rating->bindChecknStore($data,TRUE);
-				if(!$res){
-					vmError(get_class( $this ).'::Error store rating ');
+					//$data['rating'] = $data['rates'] = $data['vote'];
+					$data['ratingcount'] = 1;
 				}
 			}
 
-			if($allowReview and !empty($data['comment'])){
-				//if(!empty($data['comment'])){
-				$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
+			$data['rating'] = $this->getAverageVotesByProductId($data['virtuemart_product_id']);
+			/*if(empty($data['rates']) || empty($data['ratingcount']) ){
+				$data['rating'] = 0;
+			} else {
+				$data['rating'] = $data['rates']/$data['ratingcount'];
+			}*/
 
-				// no HTML TAGS but permit all alphabet
-				$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$data['comment']);//remove all html tags
-				$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
-				$value = trim(str_replace('"', ' ', $value),"'") ;
-				$data['comment'] =	(string)preg_replace('#^\'#si','',$value);//replace ' at start
-				$data['comment'] = nl2br($data['comment']);  // keep returns
-				//set to defaut value not used (prevent hack)
-				$data['review_ok'] = 0;
-				$data['review_rating'] = 0;
-				$data['review_editable'] = 0;
-				// Check if ratings are auto-published (set to 0 prevent injected by user)
-				//
-				$app = vFactory::getApplication();
-				if( $app->isSite() ){
-
-					if (VmConfig::get ('reviews_autopublish', 1)) {
-						$data['published'] = 1;
-					} else {
-						$model = new VmModel();
-						$product = $model->getTable('products');
-						$product->load($data['virtuemart_product_id']);
-						$vendorId = vmAccess::isSuperVendor();
-						if(!vmAccess::manager() or $vendorId!=$product->virtuemart_vendor_id){
-							$data['published'] = 0;
-						}
-					}
-
-				}
-
-				$review = $this->getProductReviewForUser($data['virtuemart_product_id'],$userId);
-
-				if(!empty($review->review_rates)){
-					$data['review_rates'] = $review->review_rates + $data['vote'];
-				} else {
-					$data['review_rates'] = $data['vote'];
-				}
-
-				if(!empty($review->review_ratingcount)){
-					$data['review_ratingcount'] = $review->review_ratingcount+1;
-				} else {
-					$data['review_ratingcount'] = 1;
-				}
-
-				$data['review_rating'] = $data['review_rates']/$data['review_ratingcount'];
-
-				$data['virtuemart_rating_review_id'] = empty($review->virtuemart_rating_review_id)? 0: $review->virtuemart_rating_review_id;
-
-				$reviewTable = $this->getTable('rating_reviews');
-				$res = $reviewTable->bindChecknStore($data,TRUE);
-				if(!$res){
-					vmError(get_class( $this ).'::Error store review ');
-				}
+			$data['virtuemart_rating_id'] = empty($rating->virtuemart_rating_id)? 0: $rating->virtuemart_rating_id;
+			vmdebug('saveRating $data to table ratings',$data);
+			$rating = $this->getTable('ratings');
+			$res = $rating->bindChecknStore($data,TRUE);
+			if(!$res){
+				vmError(get_class( $this ).'::Error store rating ');
 			}
-			return $data['virtuemart_rating_review_id'];
-		} else{
-			vmError('Cant save rating/review/vote without vote/product_id');
-			return FALSE;
 		}
 
+		if($allowReview and !empty($data['comment'])){
+			//if(!empty($data['comment'])){
+			$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
+
+			// no HTML TAGS but permit all alphabet
+			$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$data['comment']);//remove all html tags
+			$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+			$value = trim(str_replace('"', ' ', $value),"'") ;
+			$data['comment'] =	(string)preg_replace('#^\'#si','',$value);//replace ' at start
+			$data['comment'] = nl2br($data['comment']);  // keep returns
+			//set to defaut value not used (prevent hack)
+			$data['review_ok'] = 0;
+			$data['review_rating'] = 0;
+			$data['review_editable'] = 0;
+			// Check if ratings are auto-published (set to 0 prevent injected by user)
+			//
+			$app = vFactory::getApplication();
+			if( $app->isSite() ){
+
+				if (VmConfig::get ('reviews_autopublish', 1)) {
+					$data['published'] = 1;
+				} else {
+					$model = new VmModel();
+					$product = $model->getTable('products');
+					$product->load($data['virtuemart_product_id']);
+					$vendorId = vmAccess::isSuperVendor();
+					if(!vmAccess::manager() or $vendorId!=$product->virtuemart_vendor_id){
+						$data['published'] = 0;
+					}
+				}
+
+			}
+
+			if($data['created_by']>0 ){
+				$review = $this->getProductReviewForUser($data['virtuemart_product_id'],$data['created_by']);
+			} else if(!empty($data['virtuemart_rating_review_id'])){
+				$review = $this->getReview(array($data['virtuemart_rating_review_id']));
+			}
+
+
+			if(!empty($review->review_rates)){
+				$data['review_rates'] = $review->review_rates + $data['vote'];
+			} else {
+				$data['review_rates'] = $data['vote'];
+			}
+
+			if(!empty($review->review_ratingcount)){
+				$data['review_ratingcount'] = $review->review_ratingcount+1;
+			} else {
+				$data['review_ratingcount'] = 1;
+			}
+
+			$data['review_rating'] = $data['vote'];// $data['review_rates']/$data['review_ratingcount'];
+
+			$data['virtuemart_rating_review_id'] = empty($review->virtuemart_rating_review_id)? 0: $review->virtuemart_rating_review_id;
+
+			$reviewTable = $this->getTable('rating_reviews');
+			$res = $reviewTable->bindChecknStore($data,TRUE);
+			if(!$res){
+				vmError(get_class( $this ).'::Error store review ');
+			}
+		}
+		return $data['virtuemart_rating_review_id'];
 	}
+
     /**
     * removes a product and related table entries
     *

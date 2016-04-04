@@ -1467,13 +1467,9 @@ class VirtueMartModelProduct extends VmModel {
 		$app = vFactory::getApplication ();
 		if ($app->isSite ()) {
 			$front = TRUE;
-
 			if (!vmAccess::manager()) {
 				$onlyPublished = TRUE;
-				$show_prices = VmConfig::get ('show_prices', 1);
-				if (empty($show_prices)) {
-					$withCalc = FALSE;
-				}
+				$withCalc = (int)VmConfig::get ('show_prices', 1);
 			}
 		}
 		else {
@@ -1808,6 +1804,7 @@ class VirtueMartModelProduct extends VmModel {
 		//We prevent with this line, that someone is storing a product as its own parent
 		if(!empty($product_data->product_parent_id) and $product_data->product_parent_id == $data['virtuemart_product_id']){
 			$product_data->product_parent_id = 0;
+			unset($data['product_parent_id']);
 		}
 
 		$stored = $product_data->bindChecknStore ($data, false);

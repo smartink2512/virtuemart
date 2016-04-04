@@ -52,7 +52,20 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 		?>
 		</fieldset></td>
 	</tr>
-		<!-- Review comment -->
+	<tr>
+		<td width="24%" align="left" valign="top">
+			<?php echo vmText::_('COM_VIRTUEMART_USER_ALIAS'); ?>
+		</td>
+		<td width="76%" align="left">
+			<input type="text" value="<?php echo $this->rating->customer; ?>" size="32" class="inputbox" name="customer" maxlength="128"  />
+		</td>
+		<td width="24%" align="left" valign="top">
+			<?php echo vmText::_('COM_VIRTUEMART_USER_ID'); ?>
+		</td>
+		<td width="76%" align="left">
+			<input type="text" value="<?php echo $this->rating->created_by; ?>" size="32" class="inputbox" name="created_by" maxlength="128"  />
+		</td>
+	</tr>
 	<tr>
 		<td width="24%" align="left" valign="top">
 			<?php echo vmText::_('COM_VIRTUEMART_REVIEW'); ?>
@@ -100,7 +113,6 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 	<?php echo $this->addStandardHiddenToForm(); ?>
 <input type="hidden" name="virtuemart_rating_review_id" value="<?php echo $this->rating->virtuemart_rating_review_id; ?>" />
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->rating->virtuemart_product_id; ?>" />
-<input type="hidden" name="created_by" value="<?php echo $this->rating->created_by; ?>" />
 
 </form>
 

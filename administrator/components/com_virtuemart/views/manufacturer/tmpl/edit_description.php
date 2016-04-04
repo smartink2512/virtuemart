@@ -38,4 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 
 	</table>
 	</fieldset>
+	<fieldset>
+		<legend><?php echo vmText::_('COM_VIRTUEMART_METAINFO') ?></legend>
+		<?php echo shopFunctions::renderMetaEdit($this->manufacturer); ?>
+	</fieldset>
 </div>

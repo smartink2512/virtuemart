@@ -90,11 +90,13 @@ class VirtueMartModelState extends VmModel {
 	 * @author Max Milbers
 	 * @return String Attention, this function gives a 0=false back in case of success
 	 */
-	public static function testStateCountry($countryId,$stateId)
+	public static function testStateCountry(&$countryId,&$stateId)
 	{
 
 		$countryId = (int)$countryId;
 		$stateId = (int)$stateId;
+
+		if(empty($countryId)) return true;
 
 		$db = vFactory::getDbo();
 		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';

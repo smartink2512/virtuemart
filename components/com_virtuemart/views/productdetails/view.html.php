@@ -38,9 +38,7 @@ class VirtueMartViewProductdetails extends VmView {
 		 */
 		function display($tpl = null) {
 
-			$show_prices = VmConfig::get('show_prices', 1);
-
-			$this->assignRef('show_prices', $show_prices);
+			$this->show_prices = (int)VmConfig::get('show_prices', 1);
 
 			$document = vFactory::getDocument();
 

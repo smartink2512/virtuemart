@@ -44,6 +44,12 @@ class TableManufacturers extends VmTable {
     /** @var string manufacturer URL */
 	var $mf_url = '';
 
+	var $customtitle = '';
+	var $metakey = '';
+	var $metadesc = '';
+	var $metarobot = '';
+	var $metaauthor = '';
+
 	/** @var int published or unpublished */
 	var $published = 1;
 
@@ -57,7 +63,7 @@ class TableManufacturers extends VmTable {
 
 		$this->setUniqueName('mf_name');
 		$this->setLoggable();
-		$this->setTranslatable(array('mf_name','mf_email','mf_desc','mf_url'));
+		$this->setTranslatable(array('mf_name','mf_email','mf_desc','mf_url','metadesc','metakey','customtitle'));
 		$this->setSlug('mf_name');
 		$this->setTableShortCut('m');
 	}

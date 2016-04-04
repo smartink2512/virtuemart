@@ -130,7 +130,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		$method_name = $this->_psType . '_name';
 
 		foreach ($this->methods as $method) {
-
 			if ($this->checkConditions ($cart, $method, $cart->cartPrices)) {
 
 				// the price must not be overwritten directly in the cart
@@ -987,6 +986,29 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	}
 
+	function convertToVendorCurrency(&$method){
+
+		if($this->_toConvert){
+			$idN = 'virtuemart_'.$this->_psType.'method_id';
+
+			if(!isset($method->converted)){
+
+				$calculator = calculationHelper::getInstance ();
+				foreach($this->_toConvert as $c){
+					if(isset($method->$c)){
+						$method->$c = $calculator->_currencyDisplay->convertCurrencyTo($method->currency_id,$method->$c,true);
+					} else {
+						$method->$c = 0.0;
+					}
+
+				}
+				$method->converted = 1;
+
+			}
+		}
+
+	}
+
 	/**
 	 * @param VirtueMartCart $cart
 	 * @param $cart_prices
@@ -997,26 +1019,14 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method, $progressive = true) {
 
-		$idN = 'virtuemart_'.$this->_psType.'method_id';
-
-		$_psType = ucfirst ($this->_psType);
-
 		if (!class_exists ('calculationHelper')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
-
 		$calculator = calculationHelper::getInstance ();
 
+		$_psType = ucfirst ($this->_psType);
 		if($this->_toConvert){
-			$calculator = calculationHelper::getInstance ();
-			foreach($this->_toConvert as $c){
-				if(isset($method->$c)){
-					$method->$c = $calculator->_currencyDisplay->convertCurrencyTo($method->currency_id,$method->$c,true);
-				} else {
-					$method->$c = 0.0;
-				}
-
-			}
+			$this->convertToVendorCurrency($method);
 		}
 		$cart_prices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
 		if(!isset($cart_prices[$this->_psType . 'Value'])) $cart_prices[$this->_psType . 'Value'] = 0.0;

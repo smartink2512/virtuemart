@@ -72,6 +72,28 @@ class VirtuemartViewManufacturer extends VmView {
 
 			$this->setLayout('details');
 
+			if ($manufacturer->metadesc) {
+				$document->setDescription( strip_tags(html_entity_decode($manufacturer->metadesc,ENT_QUOTES)) );
+			} else {
+				$document->setDescription( strip_tags(html_entity_decode($manufacturer->mf_name,ENT_QUOTES))  );
+			}
+
+			if ($manufacturer->metakey) {
+				$document->setMetaData('keywords', $manufacturer->metakey);
+			}
+
+			if ($manufacturer->metarobot) {
+				$document->setMetaData('robots', $manufacturer->metarobot);
+			}
+
+			$app = JFactory::getApplication();
+			if ($app->getCfg('MetaTitle') == '1') {
+				$document->setMetaData('title', $manufacturer->mf_name);  //Maybe better product_name
+			}
+			if ($app->getCfg('MetaAuthor') == '1') {
+				$document->setMetaData('author', $manufacturer->metaauthor);
+			}
+
 		} else {
 			$document->setTitle(vmText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
 			$manufacturers = $model->getManufacturers(true, true,  true);

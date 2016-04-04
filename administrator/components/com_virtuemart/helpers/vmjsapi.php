@@ -316,18 +316,7 @@ class vmJsApi{
 			vFactory::getApplication()->set('jquery',TRUE);
 		}
 
-		$v = 'if (typeof Virtuemart === "undefined")
-	Virtuemart = {};';
-		$v .= "Virtuemart.vmSiteurl = '".vUri::root()."' ;\n";
-		$v .= 'Virtuemart.vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
-		$v .= 'Virtuemart.vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
-		$itemId = vRequest::getInt('Itemid',false,'GET');
-		if(!empty($itemId)){
-			$v .= "Itemid = '&Itemid=".$itemId."';\n";
-		} else {
-			$v .= 'Itemid = "";'."\n";
-		}
-		vmJsApi::addJScript('vm.vars',$v,false,true,true);
+		self::vmVariables();
 		
 		$done = true;
 		return TRUE;
@@ -343,6 +332,27 @@ class vmJsApi{
 		self::addJScript('jquery.ui.autocomplete.html', false, false, false, false,'');
 	}
 
+	static function vmVariables(){
+
+		static $e = true;
+		if($e){
+			$v = 'if (typeof Virtuemart === "undefined")
+	Virtuemart = {};';
+			$v .= "Virtuemart.vmSiteurl = vmSiteurl = '".vUri::root()."' ;\n";
+			$v .= 'Virtuemart.vmLang = vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
+			$v .= 'Virtuemart.vmLangTag = vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
+			$itemId = vRequest::getInt('Itemid',false,'GET');
+			if(!empty($itemId)){
+				$v .= "Itemid = '&Itemid=".$itemId."';\n";
+			} else {
+				$v .= 'Itemid = "";'."\n";
+			}
+			$v .= 'Virtuemart.addtocart_popup = "'.VmConfig::get('addtocart_popup',1).'"'." ; \n";
+			vmJsApi::addJScript('vm.vars',$v,false,true,true);
+			$e = false;
+		}
+	}
+
 	// Virtuemart product and price script
 	static function jPrice() {
 
@@ -355,6 +365,7 @@ class vmJsApi{
 			return;
 		}
 		vmJsApi::jQuery();
+		self::vmVariables();
 
 		VmConfig::loadJLang( 'com_virtuemart', true );
 
@@ -367,20 +378,8 @@ class vmJsApi{
 
 		vmJsApi::addJScript( 'vmprices',false,false);
 
-		//Fallbacks!
-		$jsVars = "";
-		$jsVars .= "vmSiteurl = '".vUri::root()."' ;\n";
-		$jsVars .= 'vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
-		$jsVars .= 'vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
-
-		$Get = vRequest::getGet();
-		if(!empty($Get['Itemid'])){
-			$jsVars .= "Itemid = '&Itemid=".(int)$Get['Itemid']."';\n";
-		} else {
-			$jsVars .= 'Itemid = "";'."\n";
-		}
-		$onReady = $jsVars. 'jQuery(document).ready(function($) {
-		Virtuemart.addtocart_popup = "'.VmConfig::get('addtocart_popup',1).'"'." ; \n".'
+		self::vmVariables();
+		$onReady = 'jQuery(document).ready(function($) {
 		Virtuemart.product(jQuery("form.product"));
 });';
 		vmJsApi::addJScript('ready.vmprices',$onReady);
@@ -417,7 +416,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		self::addJScript('vm.countryState'.$prefix,'
 		vmSiteurl = "'.vUri::root().'";'."\n".'
 		jQuery( function($) {
-			$("#'.$prefix.'virtuemart_country_id_field").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id_field",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
+			jQuery("#'.$prefix.'virtuemart_country_id_field").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id_field",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});	');
 		$JcountryStateList[$prefix] = TRUE;
 		return;
@@ -497,7 +496,7 @@ jQuery(document).ready(function($) {
 				if($be or vRequest::getInt('manage',false)){
 					$selector = 'jQuery("select")';
 				} else {
-					$selector = 'jQuery(".vm-chzn-select")';
+					$selector = 'jQuery("select.vm-chzn-select")';
 				}
 
 				$script =

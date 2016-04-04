@@ -77,14 +77,18 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 				$this->pagination = $model->getPagination();
 
-				$this->addStandardDefaultViewCommands(false,true);
+				$this->addStandardDefaultViewCommands(true,true);
 				break;
+			case 'add':
+					$new = true;
+					$cids = vRequest::getInt('virtuemart_product_id',0);
 			case 'edit_review':
 
+				$this->setLayout('edit_review');
 				vToolBarHelper::divider();
 
 				// Get the data
-				$this->rating = $model->getReview($cids);
+				$this->rating = $model->getReview($cids,$new);
 				if(!empty($this->rating)){
 					$this->SetViewTitle('REVIEW_RATE',$this->rating->product_name." (". $this->rating->customer.")" );
 
