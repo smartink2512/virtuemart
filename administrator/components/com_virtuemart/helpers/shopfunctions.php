@@ -1219,6 +1219,7 @@ class ShopFunctions {
 				foreach (explode(',', $_SERVER[$key]) as $ip) {
 					// trim for safety measures
 					$ip = trim($ip);
+					vmdebug('getClientIP',$ip);
 					// attempt to validate IP
 					if (self::validateIp($ip)) {
 						return $ip;

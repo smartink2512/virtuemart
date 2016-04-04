@@ -1464,13 +1464,9 @@ class VirtueMartModelProduct extends VmModel {
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
 			$front = TRUE;
-
 			if (!vmAccess::manager()) {
 				$onlyPublished = TRUE;
-				$show_prices = VmConfig::get ('show_prices', 1);
-				if (empty($show_prices)) {
-					$withCalc = FALSE;
-				}
+				$withCalc = (int)VmConfig::get ('show_prices', 1);
 			}
 		}
 		else {

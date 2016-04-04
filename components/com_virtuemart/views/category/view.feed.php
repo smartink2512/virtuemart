@@ -28,8 +28,8 @@ class VirtuemartViewCategory extends VmView {
 
 	public function display ($tpl = NULL) {
 
-		$show_prices = VmConfig::get ('show_prices', 1);
-		if ($show_prices == '1') {
+		$show_prices = (int)VmConfig::get ('show_prices', 1);
+		if ($show_prices) {
 			if (!class_exists ('calculationHelper')) {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 			}

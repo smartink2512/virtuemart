@@ -42,9 +42,7 @@ if (empty($this->keyword) and !empty($this->category)) {
 // Show child categories
 if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 	if (!empty($this->category->haschildren)) {
-
 		echo ShopFunctionsF::renderVmSubLayout('categories',array('categories'=>$this->category->children));
-
 	}
 }
 
@@ -79,7 +77,7 @@ if (!empty($this->keyword)) {
 
 <?php // Show child categories
 
-	?>
+if(!empty($this->orderByList)) { ?>
 <div class="orderby-displaynumber">
 	<div class="floatleft vm-order-list">
 		<?php echo $this->orderByList['orderby']; ?>
@@ -91,23 +89,27 @@ if (!empty($this->keyword)) {
 	</div>
 	<div class="floatright display-number"><?php echo $this->vmPagination->getResultsCounter ();?><br/><?php echo $this->vmPagination->getLimitBox ($this->category->limit_list_step); ?></div>
 
-
 	<div class="clear"></div>
 </div> <!-- end of orderby-displaynumber -->
+<?php } ?>
 
 <h1><?php echo vmText::_($this->category->category_name); ?></h1>
 
 	<?php
 	if (!empty($this->products)) {
-	$products = array();
-	$products[0] = $this->products;
-	echo shopFunctionsF::renderVmSubLayout($this->productsLayout,array('products'=>$products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));
+		//revert of the fallback in the view.html.php, will be removed vm3.2
+		if($this->fallback){
+			$p = $this->products;
+			$this->products = array();
+			$this->products[0] = $p;
+			vmdebug('Refallback');
+		}
 
-	?>
+	echo shopFunctionsF::renderVmSubLayout($this->productsLayout,array('products'=>$this->products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));
 
-<div class="vm-pagination vm-pagination-bottom"><?php echo $this->vmPagination->getPagesLinks (); ?><span class="vm-page-counter"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
-
-	<?php
+	if(!empty($this->orderByList)) { ?>
+		<div class="vm-pagination vm-pagination-bottom"><?php echo $this->vmPagination->getPagesLinks (); ?><span class="vm-page-counter"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
+	<?php }
 } elseif (!empty($this->keyword)) {
 	echo vmText::_ ('COM_VIRTUEMART_NO_RESULT') . ($this->keyword ? ' : (' . $this->keyword . ')' : '');
 }

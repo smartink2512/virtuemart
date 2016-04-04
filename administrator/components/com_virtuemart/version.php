@@ -37,7 +37,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 		/** @var string Revision */
 		static $REVISION = '${PHING.VM.REVISION}';
 		/** @var string Copyright Text */
-		static $COPYRIGHT = 'Copyright (C) 2005-2014 VirtueMart Development Team  - All rights reserved.';
+		static $COPYRIGHT = '${PHING.VM.COPYRIGHT}';
 		/** @var string URL */
 		static $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free ecommerce framework released under the GNU/GPL2 License.';
 

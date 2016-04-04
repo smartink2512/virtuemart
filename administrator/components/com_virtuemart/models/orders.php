@@ -284,8 +284,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$product = $pModel->getProduct($item->virtuemart_product_id);
 			$pvar = get_object_vars($product);
+
 			foreach ( $pvar as $k => $v) {
-				if (!isset($item->$k) and '_' != substr($k, 0, 1)) {
+				if (!isset($item->$k) and isset($product->$k) and '_' != substr($k, 0, 1)) {
 					$item->$k = $v;
 				}
 			}
@@ -1019,7 +1020,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->order_pass = '';
 
 		$_orderData->order_language = $_cart->order_language;
-		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
+		$_orderData->ip_address = ShopFunctions::getClientIP();;
 
 		$maskIP = VmConfig::get('maskIP','last');
 		if($maskIP=='last'){

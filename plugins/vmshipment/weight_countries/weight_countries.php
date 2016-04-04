@@ -239,7 +239,14 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if(isset($result[$hash])){
 			return $result[$hash];
 		}
+
 		$this->convert ($method);
+
+		if($this->_toConvert){
+			$this->convertToVendorCurrency($method);
+		}
+
+
 		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
 
 		$countries = array();

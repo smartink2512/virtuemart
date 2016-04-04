@@ -38,44 +38,6 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function __construct() {
 		parent::__construct();
-
-		$task = vRequest::getVar('task');
-
-	}
-
-	function edit($layout=0){
-		$this->listreviews();
-	}
-
-	/**
-	 * Generic edit task
-	 */
-	function edit_review(){
-
-		vRequest::setVar('controller', $this->_cname);
-		vRequest::setVar('view', $this->_cname);
-		vRequest::setVar('layout', 'edit_review');
-
-		if(empty($view)){
-			$document = JFactory::getDocument();
-			$viewType = $document->getType();
-			$view = $this->getView($this->_cname, $viewType);
-		}
-
-		parent::display();
-	}
-
-	/**
-	 * lits the reviews
-	 */
-	public function listreviews(){
-
-		/* Create the view object */
-		$view = $this->getView('ratings', 'html');
-
-		$view->setLayout('list_reviews');
-
-		$view->display();
 	}
 
 	/**

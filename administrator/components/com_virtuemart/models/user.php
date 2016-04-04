@@ -777,21 +777,22 @@ class VirtueMartModelUser extends VmModel {
 		$i = 0;
 
 		$return = true;
-
+		$untested = true;
 		$required  = 0;
 		$missingFields = array();
 		$lang = JFactory::getLanguage();
 		foreach ($neededFields as $field) {
 
 			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
-			if ($field->name == 'virtuemart_state_id') {
+			if ($field->name == 'virtuemart_state_id' or $field->name == 'virtuemart_country_id' and $untested) {
+				$untested = false;
 				if (!class_exists('VirtueMartModelState')) require(VMPATH_ADMIN . DS . 'models' . DS . 'state.php');
 				if(!empty($data['virtuemart_country_id'])){
 					if(!isset($data['virtuemart_state_id'])) $data['virtuemart_state_id'] = 0;
 
 					if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
 						//The state is invalid, so we set the state 0 here.
-						$data['virtuemart_state_id'] = 0;
+						//$data['virtuemart_state_id'] = 0;
 						vmdebug('State was not fitting to country, set virtuemart_state_id to 0');
 					} else if(empty($data['virtuemart_state_id'])){
 						vmdebug('virtuemart_state_id is empty, but valid (country has not states, set to unrequired');
@@ -1071,7 +1072,9 @@ class VirtueMartModelUser extends VmModel {
 
 			$vars['activationLink'] = $activationLink;
 		}
-		//$vars['doVendor']=!$doVendor;
+
+		$usersConfig = JComponentHelper::getParams( 'com_users' );
+		$vars['doVendor']= (boolean)$usersConfig->get('mail_to_admin');
 		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)
 		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 

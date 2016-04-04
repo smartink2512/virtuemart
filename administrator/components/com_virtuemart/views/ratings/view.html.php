@@ -53,6 +53,8 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 		/* Get the task */
 		$task = vRequest::getCmd('task');
+		$new = false;
+		vmdebug('my task',$task);
 		switch ($task) {
 			case 'edit':
 				/* Get the data
@@ -61,7 +63,8 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 				break;*/
 			case 'listreviews':
-				/* Get the data */
+
+				$this->setLayout('list_reviews');
 				$this->addStandardDefaultViewLists($model);
 				$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
@@ -77,14 +80,19 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 				$this->pagination = $model->getPagination();
 
-				$this->addStandardDefaultViewCommands(false,true);
+				$this->addStandardDefaultViewCommands(true,true);
 				break;
-			case 'edit_review':
 
+			case 'add':
+				$new = true;
+				$cids = vRequest::getInt('virtuemart_product_id',0);
+			case 'edit_review':
+				$this->setLayout('edit_review');
 				JToolBarHelper::divider();
 
 				// Get the data
-				$this->rating = $model->getReview($cids);
+				$this->rating = $model->getReview($cids,$new);
+				vmdebug('$this->rating',$this->rating);
 				if(!empty($this->rating)){
 					$this->SetViewTitle('REVIEW_RATE',$this->rating->product_name." (". $this->rating->customer.")" );
 
@@ -105,7 +113,7 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 				$this->ratingslist = $model->getRatings();
 				$this->pagination = $model->getPagination();
-
+				vmdebug('Got default');
 				break;
 		}
 		parent::display($tpl);

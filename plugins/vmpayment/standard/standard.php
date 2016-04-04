@@ -36,7 +36,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$this->_tableId = 'id';
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
-
+		$this->setConvertable(array('min_amount','max_amount','cost_per_transaction','cost_min_transaction'));
+		$this->setConvertDecimal(array('min_amount','max_amount','cost_per_transaction','cost_min_transaction','cost_percent_total'));
 	}
 
 	/**
@@ -209,7 +210,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$amount = $this->getCartAmount($cart_prices);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-
+		if($this->_toConvert){
+			$this->convertToVendorCurrency($method);
+		}
 		//vmdebug('standard checkConditions',  $amount, $cart_prices['salesPrice'],  $cart_prices['salesPriceCoupon']);
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR

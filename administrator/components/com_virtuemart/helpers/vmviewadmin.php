@@ -100,10 +100,10 @@ class VmViewAdmin extends JViewLegacy {
 		if(vmAccess::manager($view.'.edit')){
 			JToolBarHelper::editList();
 		}
-		if(vmAccess::manager($view.'.create')){
+		if($showNew and vmAccess::manager($view.'.create')){
 			JToolBarHelper::addNew();
 		}
-		if(vmAccess::manager($view.'.delete')){
+		if($showDelete and vmAccess::manager($view.'.delete')){
 			JToolBarHelper::spacer('10');
 			JToolBarHelper::deleteList();
 		}

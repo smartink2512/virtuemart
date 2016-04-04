@@ -87,6 +87,8 @@ defined('_JEXEC') or die('Restricted access');
 				<div id="output-shipto-display">
 					<?php
 					foreach ($this->cart->STaddress['fields'] as $item) {
+
+						if($item['name']=='shipto_address_type_name') continue;
 						if (!empty($item['value'])) {
 							?>
 							<!-- <span class="titles"><?php echo $item['title'] ?></span> -->

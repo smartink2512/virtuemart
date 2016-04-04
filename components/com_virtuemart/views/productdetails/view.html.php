@@ -38,9 +38,7 @@ class VirtueMartViewProductdetails extends VmView {
 		 */
 		function display($tpl = null) {
 
-			$show_prices = VmConfig::get('show_prices', 1);
-
-			$this->assignRef('show_prices', $show_prices);
+			$this->show_prices = (int)VmConfig::get('show_prices', 1);
 
 			$document = JFactory::getDocument();
 
@@ -245,7 +243,14 @@ class VirtueMartViewProductdetails extends VmView {
 			$this->rating_reviews='';
 			if ($this->showReview) {
 				$this->review = $ratingModel->getProductReviewForUser($product->virtuemart_product_id);
-				$this->rating_reviews = $ratingModel->getReviews($product->virtuemart_product_id, 0, VmConfig::get( 'vm_num_ratings_show', 3 ));
+				$this->showall = vRequest::getBool( 'showall', FALSE );
+				if($this->showall){
+					$limit = 50;
+				} else {
+					$limit = VmConfig::get( 'vm_num_ratings_show', 3 );
+				}
+
+				$this->rating_reviews = $ratingModel->getReviews($product->virtuemart_product_id, 0, $limit);
 			}
 
 			if ($this->showRating) {
@@ -334,7 +339,7 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 
 
-			if ($show_prices == '1') {
+			if ($this->show_prices) {
 				if (!class_exists('calculationHelper'))
 					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 				vmJsApi::jPrice();
