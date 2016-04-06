@@ -650,27 +650,34 @@ class shopFunctionsF {
 		$mailer->setSubject(  html_entity_decode( $subject , ENT_QUOTES, 'UTF-8') );
 		$mailer->isHTML( VmConfig::get( 'order_mail_html', TRUE ) );
 		$mailer->setBody( $body );
-
+		$replyTo = array();
+		$replyToName = array();
+ 
 		if(!$noVendorMail) {
 			$replyTo[0] = $view->vendorEmail;
-			$replyTo[1] = $view->vendor->vendor_name;
-			$mailer->addReplyTo( $replyTo );
+			$replyToName[0] = $view->vendor->vendor_name;
 		} else {
-			if(isset($view->orderDetails['details']) and isset($view->orderDetails['details']['BT'])){
+			if(isset($view->orderDetails['details']) && isset($view->orderDetails['details']['BT'])) {
 				$replyTo[0] = $view->orderDetails['details']['BT']->email;
-				$replyTo[1] = $view->orderDetails['details']['BT']->first_name.' '.$view->orderDetails['details']['BT']->last_name;
+				$replyToName[0] = $view->orderDetails['details']['BT']->first_name . ' ' . $view->orderDetails['details']['BT']->last_name;
 			} else {
-				if (isset($view->user->email) and $view->user->name) {
+				if(isset($view->user->email) && $view->user->name) {
 					$replyTo[0] = $view->user->email;
-					$replyTo[1] = $view->user->name;
+					$replyToName[0] = $view->user->name;
 				} else {
 					$replyTo[0] = $view->user['email'];
-					$replyTo[1] = $view->user['name'];
+					$replyToName[0] = $view->user['name'];
 				}
-
 			}
-
-			$mailer->addReplyTo( $replyTo );
+		}
+ 
+		if(count($replyTo)) {
+			if(version_compare(JVERSION, '3.5', 'ge')) {
+				$mailer->addReplyTo($replyTo, $replyToName);
+			} else {
+				$replyTo[1] = $replyToName[0];
+				$mailer->addReplyTo($replyTo);
+			}
 		}
 		if(isset($view->mediaToSend)) {
 			foreach( (array)$view->mediaToSend as $media ) {
@@ -694,8 +701,16 @@ class shopFunctionsF {
 			}
 		}
 		$mailer->setSender( $sender );
-
-		return $mailer->Send();
+		
+		try {
+		$return = $mailer->Send();
+		}
+		catch (Exception $e)
+		{
+			// this will take care of the error message
+			return false; 
+		}
+		return $return; 
 	}
 
 

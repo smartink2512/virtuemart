@@ -121,7 +121,6 @@ class VirtuemartViewCategory extends VmView {
 
 				$this->perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
 				$imgAmount = VmConfig::get('prodimg_browse',1);
-				vmdebug('$menu->query',$menu->query);
 
 				$opt = array('featured','latest','topten','recent');
 				foreach($opt as $o){
@@ -134,22 +133,26 @@ class VirtuemartViewCategory extends VmView {
 					}
 				}
 
+			$this->vmPagination = '';
+			$this->orderByList = '';
 				if($this->showproducts){
-// Load the products in the given category
-					$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
+					if (vRequest::getInt('dynamic',false)) {
+						$id = vRequest::getInt('virtuemart_product_id',false);
+						$p = $productModel->getProduct ($id);
+						$pa = array();
+						$pa[] = $p;
+						$this->products['0'][] = $p;
+					} else {
+						// Load the products in the given category
+						$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
+						$this->vmPagination = $productModel->getPagination($this->perRow);
+						$this->orderByList = $productModel->getOrderByList($this->categoryId);
+						$this->products['0'] = $productModel->getProducts ($ids);
+					}
 
-					$this->vmPagination = $productModel->getPagination($this->perRow);
-
-					$this->orderByList = $productModel->getOrderByList($this->categoryId);
-
-					$this->products['0'] = $productModel->getProducts ($ids);
 					$productModel->addImages($this->products['0'], $imgAmount );
 
-				} else {
-					$this->vmPagination = '';
-					$this->orderByList = '';
 				}
-
 
 				if ($this->products) {
 					$this->currency = CurrencyDisplay::getInstance( );
@@ -257,6 +260,8 @@ class VirtuemartViewCategory extends VmView {
 				$category->category_layout = $menu->query['categorylayout'];
 			}
 
+			vmJsApi::jPrice();
+
 			$productsLayout = VmConfig::get('productsublayout','products');
 			if(empty($productsLayout)) $productsLayout = 'products';
 			$this->productsLayout = empty($menu->query['productsublayout'])? $productsLayout:$menu->query['productsublayout'];
@@ -313,6 +318,10 @@ class VirtuemartViewCategory extends VmView {
 
 		if ($this->app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);
+		}
+
+		if (VmConfig::get ('jdynupdate', TRUE)) {
+			vmJsApi::jDynUpdate();
 		}
 
 		parent::display($tpl);

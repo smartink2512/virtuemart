@@ -72,7 +72,7 @@ foreach ($viewData['products'] as $type => $products ) {
 
     // Show Products ?>
 	<div class="product vm-col<?php echo ' vm-col-' . $products_per_row . $show_vertical_separator ?>">
-		<div class="spacer">
+		<div class="spacer product-container">
 			<div class="vm-product-media-container">
 
 					<a title="<?php echo $product->product_name ?>" href="<?php echo $product->link.$ItemidStr; ?>">

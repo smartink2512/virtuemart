@@ -130,8 +130,9 @@ class VirtueMartCustomFieldRenderer {
 						}
 					}
 
-					$tags = array();
+					$view = vRequest::getCmd('view','productdetails');
 
+					$tags = array();
 					foreach($customfield->selectoptions as $k => $soption){
 
 						$options = array();
@@ -212,11 +213,12 @@ class VirtueMartCustomFieldRenderer {
 					$jsArray = array();
 
 					$url = '';
+
 					foreach($customfield->options as $product_id=>$variants){
 
 						if($ignore and in_array($product_id,$ignore)){continue;}
 
-						$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid,false);
+						$url = JRoute::_('index.php?option=com_virtuemart&view='.$view.'&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid,false);
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
 					}
 					$hash = md5(implode('',$tags));
@@ -224,8 +226,8 @@ class VirtueMartCustomFieldRenderer {
 
 					$jsVariants = implode(',',$jsArray);
 					$j = "jQuery(document).ready(function() {
-							jQuery('.cvselection').off('change',Virtuemart.cvFind);
-							jQuery('.cvselection').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
+							jQuery('#".implode(',#',$tags)."').off('change',Virtuemart.cvFind);
+							jQuery('#".implode(',#',$tags)."').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
 						});";
 					vmJsApi::addJScript('cvselvars'.$hash,$j,false,true,false,$hash);
 
