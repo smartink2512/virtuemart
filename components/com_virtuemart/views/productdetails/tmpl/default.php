@@ -272,7 +272,7 @@ Virtuemart.containerSelector = '.productdetails-view';";
 	vmJsApi::addJScript('vmPreloader',$j);
 }
 
-
+echo vmJsApi::writeJS();
 
 if ($this->product->prices['salesPrice'] > 0) {
   echo shopFunctionsF::renderVmSubLayout('snippets',array('product'=>$this->product, 'currency'=>$this->currency, 'showRating'=>$this->showRating));

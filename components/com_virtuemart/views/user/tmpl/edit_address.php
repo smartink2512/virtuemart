@@ -116,7 +116,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			<?php if(!VmConfig::get ('oncheckout_only_registered')) { ?>
 				<span class="userfields_info"><?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_CAPTCHA'); ?></span>
 			<?php } ?>
-			<div id="dynamic_recaptcha_1" class="g-recaptcha" data-sitekey=""></div>
+			<div id="dynamic_recaptcha_1"></div>
 		</fieldset>
 <?php }
 	// end of captcha addition

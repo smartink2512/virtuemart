@@ -396,7 +396,7 @@ class vmJsApi{
 jQuery(document).ready(function() { // GALT: Start listening for dynamic content update.
 	// If template is aware of dynamic update and provided a variable let's
 	// set-up the event listeners.
-	if (Virtuemart.container)
+	//if (Virtuemart.container)
 		Virtuemart.updateDynamicUpdateListeners();
 
 }); ");
