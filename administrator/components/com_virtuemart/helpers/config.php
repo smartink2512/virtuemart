@@ -945,7 +945,9 @@ class VmConfig {
 		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
 			$languages = JLanguageHelper::getLanguages('lang_code');
 			$ltag = JFactory::getLanguage()->getTag();
-			self::$vmlangSef = $languages[$ltag]->sef;
+			if(isset($languages[$ltag])){
+				self::$vmlangSef = $languages[$ltag]->sef;
+			}
 			self::$jLangCount = count($languages);
 		}
 

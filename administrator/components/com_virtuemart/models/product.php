@@ -219,6 +219,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		//$this->virtuemart_vendor_id = vmAccess::isSuperVendor();
 		$this->virtuemart_vendor_id = vmAccess::getVendorId();
+		vmdebug('Product model my $this->virtuemart_vendor_id',$this->virtuemart_vendor_id);
 		$this->__state_set = true;
 	}
 

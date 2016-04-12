@@ -902,7 +902,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 										$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
 									}
 								}
-								if(!JFile::move($src .DS. $file,$dst .DS. $file)){
+								if(!JFile::copy($src .DS. $file,$dst .DS. $file)){
 									$app = JFactory::getApplication();
 									$app -> enqueueMessage('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
 								}

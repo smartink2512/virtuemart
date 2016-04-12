@@ -402,7 +402,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 }); ");
 	}
 
-	static function JcountryStateList($stateIds, $prefix='') {
+	static function JcountryStateList($stateIds, $prefix='', $suffix='_field') {
 		static $JcountryStateList = array();
 		if (isset($JcountryStateList[$prefix]) or !VmConfig::get ('jsite', TRUE)) {
 			return;
@@ -410,7 +410,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		VmJsApi::jSite();
 		self::addJScript('vm.countryState'.$prefix,'
 		jQuery( function($) {
-			jQuery("#'.$prefix.'virtuemart_country_id_field").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id_field",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
+			jQuery("#'.$prefix.'virtuemart_country_id'.$suffix.'").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id'.$suffix.'",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});	');
 		$JcountryStateList[$prefix] = TRUE;
 		return;

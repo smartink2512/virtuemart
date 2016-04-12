@@ -371,8 +371,11 @@ class VirtueMartModelRatings extends VmModel {
 				$data['vote'] = $maxrating;
 			}
 
-			$data['lastip'] = ShopFunctions::getClientIP();;
-			vmdebug('muh',$data['lastip']);
+			if (!class_exists ('ShopFunctions')){
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+			}
+			$data['lastip'] = ShopFunctions::getClientIP();
+
 			$maskIP = VmConfig::get('maskIP','last');
 			if($maskIP=='last'){
 				$rpos = strrpos($data['lastip'],'.');

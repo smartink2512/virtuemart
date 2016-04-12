@@ -126,7 +126,7 @@ $i=0;
 			<td>
 				<?php echo $this->shoppergroupList; ?>
 			</td>
-			<?php if(Vmconfig::get('multix','none')!=='none') { ?>
+			<?php if($this->showVendors()) { ?>
 			<td>
 				<?php echo vmText::_('COM_VIRTUEMART_VENDOR') ?>
 			</td>
