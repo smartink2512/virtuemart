@@ -37,6 +37,8 @@ class VirtuemartViewCategory extends VmView {
 		$this->show_prices  = (int)VmConfig::get('show_prices',1);
 		if($this->show_prices){
 			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
+			if (!class_exists('CurrencyDisplay'))
+				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
 		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');

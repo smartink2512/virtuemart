@@ -139,13 +139,14 @@ class virtuemartViewrecommend extends VmView {
 			$document->setMetaData('keywords', $this->product->metakey);
 		}
 
-
 		if ($mainframe->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title', $this->product->product_s_desc);  //Maybe better product_name
 		}
 		if ($mainframe->getCfg('MetaAuthor') == '1') {
 			$document->setMetaData('author', $this->product->metaauthor);
 		}
+
+		$this->captcha = shopFunctionsF::renderCaptcha('ask_captcha');
 
 		parent::display($tpl);
 	}

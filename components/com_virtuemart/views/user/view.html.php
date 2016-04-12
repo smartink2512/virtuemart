@@ -238,6 +238,8 @@ class VirtuemartViewUser extends VmView {
 
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
+		$this->captcha = shopFunctionsF::renderCaptcha();
+
 		parent::display($tpl);
     }
 
@@ -419,6 +421,7 @@ class VirtuemartViewUser extends VmView {
 
 		parent::display();
     }
+
 
 }
 

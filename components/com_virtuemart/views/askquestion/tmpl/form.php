@@ -89,14 +89,7 @@ if (empty ( $this->product )) {
 
 					<div class="submit">
 						<?php // captcha addition
-						if(VmConfig::get ('ask_captcha') && JFactory::getUser()->guest == 1){
-							JHTML::_('behavior.framework');
-							JPluginHelper::importPlugin('captcha');
-							$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
-							?>
-							<div id="dynamic_recaptcha_1"></div>
-						<?php 
-						}
+							echo $this->captcha;
 						// end of captcha addition 
 						?>
             <div>

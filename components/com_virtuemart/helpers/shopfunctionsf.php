@@ -218,13 +218,13 @@ class shopFunctionsF {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0,$attribs=array(),$idTag = 'virtuemart_state_id') {
+	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0,$attribs=array(),$idTag = 'virtuemart_state_id', $suffix='_field') {
 
 		if (is_array ($stateId)) {
 			$stateId = implode (",", $stateId);
 		}
 
-		vmJsApi::JcountryStateList ($stateId,$_prefix);
+		vmJsApi::JcountryStateList ($stateId,$_prefix, $suffix);
 
 		if(!isset($attrs['class'])){
 			$attrs['class'] = '';
@@ -948,5 +948,23 @@ class shopFunctionsF {
 		}
 	}
 
+	static public function renderCaptcha($config = 'reg_captcha',$id = 'dynamic_recaptcha_1'){
 
+		if(VmConfig::get ($config) and JFactory::getUser()->guest==1 ){
+
+			JPluginHelper::importPlugin('captcha');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onInit',$id);
+			if(version_compare(JVERSION, '3.5', 'ge')){
+				$plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
+				$params = new JRegistry($plugin->params);
+				if ($params->get('version') != '1.0') {
+					return '<div id="jform_captcha" class="g-recaptcha  required" data-sitekey="'.$params->get('public_key').'" data-theme="'.$params->get('theme2').'" data-size="normal"></div>';
+				}
+			}
+			JHTML::_('behavior.framework');
+			return '<div id="'.$id.'"></div>';
+		}
+		return '';
+	}
 }

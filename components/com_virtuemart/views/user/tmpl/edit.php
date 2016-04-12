@@ -70,16 +70,16 @@ if($this->userDetails->virtuemart_user_id!=0) {
 
  } else {
     echo $this->loadTemplate ( 'shopper' );
-
+	echo $this->captcha;
 	// captcha addition
-	if(VmConfig::get ('reg_captcha')){
+	/*if(VmConfig::get ('reg_captcha')){
 		JHTML::_('behavior.framework');
 		JPluginHelper::importPlugin('captcha');
 		$dispatcher = JDispatcher::getInstance(); $dispatcher->trigger('onInit','dynamic_recaptcha_1');
 		?>
 		<div id="dynamic_recaptcha_1"></div>
 		<?php
-	}
+	}*/
  }
 
 // end of captcha addition

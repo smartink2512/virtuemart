@@ -147,6 +147,8 @@ class VirtueMartViewAskquestion extends VmView {
 			$document->setMetaData ('author', $product->metaauthor);
 		}
 
+		$this->captcha = shopFunctionsF::renderCaptcha('ask_captcha');
+
 		parent::display ($tpl);
 	}
 
