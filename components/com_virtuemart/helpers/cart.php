@@ -318,8 +318,9 @@ class VirtueMartCart {
 	}
 
 	public function storeCart($cartDataToStore = false){
+		$adminID = vmAccess::getBgManagerId();
 		$currentUser = JFactory::getUser();
-		if(!$currentUser->guest){
+		if(!$currentUser->guest && (!$adminID || $adminID == $currentUser->id)){
 			$model = new VmModel();
 			$carts = $model->getTable('carts');
 			if(!$cartDataToStore) $cartDataToStore = json_encode($this->getCartDataToStore());

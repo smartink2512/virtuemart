@@ -106,11 +106,13 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 <?php // captcha addition
 	if(VmConfig::get ('reg_captcha') && JFactory::getUser()->guest == 1){
-		//!VmConfig::get ('oncheckout_only_registered') and
-
+		$captcha_visible = vRequest::getVar('captcha');
+		$hide_captcha = (VmConfig::get ('oncheckout_only_registered') or $captcha_visible) ? '' : 'style="display: none;"';
 		?>
-		<fieldset id="recaptcha_wrapper" >
-			<span class="userfields_info"><?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_CAPTCHA'); ?></span>
+		<fieldset id="recaptcha_wrapper" <?php echo $hide_captcha ?>>
+			<?php if(!VmConfig::get ('oncheckout_only_registered')) { ?>
+				<span class="userfields_info"><?php echo vmText::_ ('COM_VIRTUEMART_USER_FORM_CAPTCHA'); ?></span>
+			<?php } ?>
 			<?php
 			echo $this->captcha; ?>
 		</fieldset>
