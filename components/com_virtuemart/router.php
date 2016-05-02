@@ -1016,7 +1016,7 @@ class vmrouterHelper {
 		if(!isset($prodIds[$hash])){
 			$db->setQuery($q);
 			$prodIds[$hash]['virtuemart_product_id'] = $db->loadResult();
-			if(empty($categoryName)){
+			if(empty($categoryName) and empty($virtuemart_category_id)){
 				$prodIds[$hash]['virtuemart_category_id'] = false;
 			} else {
 				$prodIds[$hash]['virtuemart_category_id'] = $this->getCategoryId($categoryName,$virtuemart_category_id ) ;

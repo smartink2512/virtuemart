@@ -89,7 +89,8 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 			$this->assignRef('vendor_currency', $currency->currency_symbol);
 
 			if(empty($shipment->currency_id)) $shipment->currency_id = $currency->virtuemart_currency_id;
-			$this->currencyList = JHtml::_ ('select.genericlist', $currencies, 'currency_id', '', 'virtuemart_currency_id', 'currency_name', $shipment->currency_id);
+			$attrs['class'] = 'vm-chzn-select vm-drop';
+			$this->currencyList = JHtml::_ ('select.genericlist', $currencies, 'currency_id', $attrs, 'virtuemart_currency_id', 'currency_name', $shipment->currency_id);
 
 			$this->addStandardEditViewCommands($shipment->virtuemart_shipmentmethod_id);
 

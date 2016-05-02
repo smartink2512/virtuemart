@@ -127,7 +127,7 @@ class ShopFunctions {
 		if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
 		$id = VmHtml::ensureUniqueId('vendor_name'.$vendorId);
 		$idA = $name;
-		$attrs['class'] = 'vm-chzn-select';
+		$attrs['class'] = 'vm-chzn-select vm-drop';
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
@@ -148,15 +148,15 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id', $select_attribute='COM_VIRTUEMART_DRDOWN_AVA2ALL' ) {
+	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id', $select_attribute='COM_VIRTUEMART_DRDOWN_AVA2ALL', $attrs = array() ) {
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
 
-		$attrs = '';
 
-		$attrs['class'] = 'vm-chzn-select';
+		$attrs['class'] = 'vm-chzn-select vm-drop';
+		//if(!isset($attrs['style'])) $attrs['style'] = 'min-width:150px'; //$attrs['style']='width: 200px;';
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
 			$attrs['data-placeholder'] = vmText::_($select_attribute);
@@ -183,7 +183,8 @@ class ShopFunctions {
 		$manufacturerModel = VmModel::getModel ('manufacturer');
 		$manufacturers = $manufacturerModel->getManufacturers (FALSE, TRUE);
 		//$attrs = array('style'=>"width: 210px");
-		$attrs['class'] = 'width100';
+		$attrs['class'] = 'vm-chzn-select vm-drop';
+		//$attrs['style'] = 'min-width:150px';
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
 			if($name=='virtuemart_manufacturer_id')	$name.= '[]';

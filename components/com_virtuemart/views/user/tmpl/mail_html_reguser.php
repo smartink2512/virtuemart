@@ -77,9 +77,9 @@ $li = '<br />';
 				    echo $li.vmText::_('COM_VIRTUEMART_YOUR_ADDRESS')  . $li;
 
 				    foreach ($this->userFields['fields'] as $userField) {
-					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT' && $userField['type'] != 'hidden') {					    echo $userField['title'] . ': ' . $userField['value'] . $li;
-
-					}
+						if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'hidden') {
+							echo $userField['title'] . ': ' . $userField['value'] . $li;
+						}
 				    }
 				    ?>
 				</td>

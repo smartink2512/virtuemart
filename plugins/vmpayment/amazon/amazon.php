@@ -71,7 +71,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$this->loadAmazonClass('OffAmazonPaymentsService_Client');
 		if(!JFactory::getApplication()->isSite()) {
 			vmJsApi::jQuery();
-			JFactory::getDocument()->addScript(JURI::root(true) . '/plugins/vmpayment/amazon/assets/js/admin.js');
+			vmJsApi::addJScript('amazonadmin','/plugins/vmpayment/amazon/assets/js/admin.js');
 			JFactory::getDocument()->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/amazon/assets/css/amazon-admin.css');
 		}
 
@@ -129,6 +129,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		//$cart->setOutOfCheckout();
 		$client = $this->getOffAmazonPaymentsService_Client();
 		if($client == NULL) {
+			vmdebug('renderSignInButton $client == NULL',$client);
 			return;
 		}
 		$buttonWidgetImageURL = $this->getButtonWidgetImageURL();
@@ -345,6 +346,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$config['applicationVersion'] = '${PHING.VM.RELEASE}';
 		$config['region'] = $this->_currentMethod->region;
 		$config['environment'] = $this->_currentMethod->environment;
+		$config['cnName'] = $_SERVER['HTTP_HOST']; //$_SERVER['SERVER_NAME'] //REQUEST_URI
 
 		if($this->_currentMethod->region == "other") {
 			$prefix = $this->_currentMethod->environment;
@@ -409,6 +411,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	private function addWidgetUrlScript($client) {
 		if(!self::$widgetScriptLoaded) {
 			$widgetURL = $client->getMerchantValues()->getWidgetUrl();
+			/*vmdebug('My widget URL',$widgetURL);
+			$widgetURL = substr($widgetURL,6);
+			vmJsApi::addJScript('amazon.widgets',$widgetURL, false, false, false);*/
 			JHTML::script($widgetURL, false);
 			self::$widgetScriptLoaded = true;
 		}
@@ -666,7 +671,12 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 				//$this->vmConfirmedOrder(NULL, $order, FALSE);
 				$getAuthorizationDetailsResult = $authorizationDetailsResponse->getGetAuthorizationDetailsResult();
 				$getAuthorizationDetails = $getAuthorizationDetailsResult->getAuthorizationDetails();
-				$this->closeAuthorization($getAuthorizationDetails->getAmazonAuthorizationId(), $order);
+				if($authorizationState == 'Closed'){
+					$this->closeAuthorization($getAuthorizationDetails->getAmazonAuthorizationId(), $order);
+				} else {
+					vmWarn('VMPAYMENT_AMAZON_COMMENT_STATUS_AUTHORIZATION_DECLINED');
+					$this->cancelPayment($payments,$order);
+				}
 
 				return;
 			}
@@ -1753,6 +1763,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 					}
 
 				} elseif($amazonState == 'Declined') {
+					$this->doCancelPayment($this->_amazonOrderReferenceId);
 					$cart->setOutOfCheckout();
 					$this->leaveAmazonCheckout();
 					$this->redirectToCart(vmText::_('VMPAYMENT_AMAZON_SELECT_ANOTHER_PAYMENT'), true);
@@ -2045,9 +2056,9 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	}
 
 
-		private function doCancelPayment($amazonOrderReferenceId) {
-			$this->cancelPayment(NULL, NULL, $amazonOrderReferenceId);
-		}
+	private function doCancelPayment($amazonOrderReferenceId) {
+		$this->cancelPayment(NULL, NULL, $amazonOrderReferenceId);
+	}
 
 	/**
 	 * @param $payments
@@ -2066,7 +2077,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		$client = $this->getOffAmazonPaymentsService_Client();
 		try {
 			$client->cancelOrderReference($cancelOrderReferenceRequest);
-			$this->debugLog("<pre>" . var_export($cancelOrderReferenceRequest, true) . "</pre>", __FUNCTION__, 'debug');
+			$this->debugLog("cancelPayment <pre>" . var_export($cancelOrderReferenceRequest, true) . "</pre>", __FUNCTION__, 'debug');
 		} catch (Exception $e) {
 			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
 

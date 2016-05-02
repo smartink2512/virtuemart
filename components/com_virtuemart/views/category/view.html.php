@@ -302,12 +302,15 @@ class VirtuemartViewCategory extends VmView {
 		if ($virtuemart_manufacturer_id>0 and !empty($this->products['0'])){
 
 			if (!empty($this->products['0'][0])) $title .=' '.$this->products['0'][0]->mf_name ;
-			$document->setTitle( $title );
 			// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
 			if (!empty($this->products['0'][0]) and isset($category->category_name)) $category->category_name = $this->products['0'][0]->mf_name ;
 
 		}
 
+		$document->setTitle( $title );
+		if ($this->app->getCfg('MetaTitle') == '1') {
+			$document->setMetaData('title',  $title);
+		}
 
 		//Fallback for older layouts, will be removed vm3.2
 		$this->fallback=false;
@@ -315,11 +318,6 @@ class VirtuemartViewCategory extends VmView {
 			$this->products = $this->products['0'];
 			$this->fallback=true;
 			vmdebug('Fallback active');
-		}
-
-
-		if ($this->app->getCfg('MetaTitle') == '1') {
-			$document->setMetaData('title',  $title);
 		}
 
 		if (VmConfig::get ('jdynupdate', TRUE)) {

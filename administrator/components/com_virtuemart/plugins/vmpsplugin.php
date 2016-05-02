@@ -774,7 +774,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if ($pluginSalesPrice) {
 			$costDisplay = $currency->priceDisplay( $pluginSalesPrice );
 			$t = vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' );
-			if(strpos($t,'/',$t!==FALSE)){
+			if(strpos($t,'/')!==FALSE){
 				list($discount, $fee) = explode( '/', vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' ) );
 				if($pluginSalesPrice>=0) {
 					$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$fee.' +'.$costDisplay.")</span>";

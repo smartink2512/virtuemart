@@ -108,7 +108,7 @@ $i=0;
 				<?php echo vmText::_('COM_VIRTUEMART_CATEGORY_S') ?>
 			</td>
 			<td>
-				<select class="inputbox width100" id="categories" name="categories[]" multiple="multiple"  data-placeholder="<?php echo vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS')  ?>" size="100">
+				<select class="vm-drop" id="categories" name="categories[]" multiple="multiple"  data-placeholder="<?php echo vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS')  ?>" size="100" >
 					<option value=""><?php echo vmText::_('COM_VIRTUEMART_UNCATEGORIZED') ?></option>
 					<?php echo $this->category_tree; ?>
 				</select>			</td>

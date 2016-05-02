@@ -339,12 +339,11 @@ class VirtueMartViewProductdetails extends VmView {
 				vmJsApi::jDynUpdate();
 			}
 
-
 			if ($this->show_prices) {
 				if (!class_exists('calculationHelper'))
 					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
-				vmJsApi::jPrice();
 			}
+			vmJsApi::jPrice();
 
 			parent::display($tpl);
     }

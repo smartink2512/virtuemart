@@ -39,7 +39,7 @@ echo $li;
 echo $activationLink . $li;
 
 foreach ($this->userFields['fields'] as $userField) {
-    if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT') {
+    if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'hidden') {
 	echo $userField['title'] . ': ' . $userField['value'] . $li;
 	if ($userField['name'] != 'title' and $userField['name'] != 'first_name' and $userField['name'] != 'middle_name' and $userField['name'] != 'zip') {
 	    echo $li;

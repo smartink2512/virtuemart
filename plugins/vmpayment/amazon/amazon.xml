@@ -155,12 +155,12 @@
 
                 <field name="status_authorization"
                        class="status_authorization" type="vmorderstate"
-                       scope="com_virtuemart" default="C"
+                       scope="com_virtuemart" default="U"
                        label="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION"
                        description="VMPAYMENT_AMAZON_CONF_STATUS_AUTHORIZATION_TIP"/>
 
                 <field name="status_capture" class="status_capture" type="vmorderstate" scope="com_virtuemart"
-                       default="S"
+                       default="C"
                        label="VMPAYMENT_AMAZON_CONF_STATUS_CAPTURE"
                        description="VMPAYMENT_AMAZON_CONF_STATUS_CAPTURE_TIP"/>
 

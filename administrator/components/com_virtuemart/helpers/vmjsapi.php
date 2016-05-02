@@ -108,6 +108,7 @@ class vmJsApi{
 	public static function writeJS(){
 
 		$html = '';
+		$document = JFactory::getDocument();
 		foreach(self::$_jsAdd as $name => &$jsToAdd){
 
 			if($jsToAdd['written']) continue;
@@ -119,9 +120,10 @@ class vmJsApi{
 					$file = $jsToAdd['script'];
 				}
 
-				if(strpos($file,'/')!==0){
+				if(strpos($file,'/')!==0 and !$jsToAdd['inline']){
 					$file = vmJsApi::setPath($file,false,'');
-				} else if(strpos($file,'//')!==0){
+				}
+				else if(strpos($file,'//')!==0){
 					$file = JURI::root(true).$file;
 				}
 
@@ -129,10 +131,7 @@ class vmJsApi{
 					vmdebug('writeJS javascript with empty file',$name,$jsToAdd);
 					continue;
 				}
-				$ver = '';
-				if(!empty($jsToAdd['ver'])) $ver = '?vmver='.$jsToAdd['ver'];
 
-				$document = JFactory::getDocument();
 				if($jsToAdd['inline']){
 					//$html .= '<script type="text/javascript" src="'.$file .$ver.'"></script>';
 					/*$content = file_get_contents(VMPATH_ROOT.$file);
@@ -145,6 +144,8 @@ class vmJsApi{
 						//$document->addScript( $script,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
 					}
 				} else {
+					$ver = '';
+					if(!empty($jsToAdd['ver'])) $ver = '?vmver='.$jsToAdd['ver'];
 
 					$document->addScript( $file .$ver,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
 				}

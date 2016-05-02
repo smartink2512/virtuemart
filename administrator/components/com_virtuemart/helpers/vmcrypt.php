@@ -134,7 +134,7 @@ class vmCrypt {
 						vmdebug('$unixDate '.$unixDate.' >= $date '.$date);
 						continue;
 					}
-					vmdebug('$unixDate < $date '.$date);
+					//vmdebug('$unixDate < $date '.$date);
 					$key = $values['key'];
 					$usedKey = $values;
 				}

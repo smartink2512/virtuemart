@@ -415,7 +415,8 @@ class VirtueMartModelCustom extends VmModel {
 			$varsToPush = array(
 				'withParent'        => array(0, 'int'),
 				'parentOrderable'   => array(0, 'int'),
-				'wPrice'		=> array(0, 'int')
+				'wPrice'		=> array(0, 'int'),
+				'browseajax'	=> array(0, 'int')
 			);
 		} else if($type=='P'){
 			$varsToPush = array(
@@ -425,6 +426,7 @@ class VirtueMartModelCustom extends VmModel {
 			$varsToPush = array(
 				'usecanonical' 	=> array(0, 'int'),
 				'showlabels'	=> array(0, 'int'),
+				'browseajax'	=> array(0, 'int'),
 				'sCustomId'		=> array(0, 'int', 'scustom'),
 				'selectType'	=> array(0, 'int'),
 				'selectoptions'	=> array(0, 'int'),
