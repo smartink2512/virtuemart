@@ -16,14 +16,14 @@ if($viewData['showRating']){
 {
   "@context": "http://schema.org/",
   "@type": "Product",
-  "name": "<?php echo $product->product_name; ?>",
+  "name": "<?php echo str_replace('"', '\\"', $product->product_name); ?>",
   <?php if ( $product->images[0]->virtuemart_media_id > 0) { ?>
   "image": "<?php echo JURI::root().$product->images[0]->file_url; ?>",
   <?php } ?>
   <?php if (!empty($product->product_s_desc)) { ?>
-  "description": "<?php echo strip_tags($product->product_s_desc); ?>",
+  "description": "<?php echo str_replace('"', '\\"', strip_tags($product->product_s_desc)); ?>",
   <?php } elseif (!empty($product->product_desc)) { ?>
-  "description": "<?php echo strip_tags($product->product_desc); ?>",
+  "description": "<?php echo str_replace('"', '\\"', strip_tags($product->product_desc)); ?>",
   <?php } ?>
   <?php if ($viewData['showRating'] && !empty($product->rating)) { ?>
   "aggregateRating":{
