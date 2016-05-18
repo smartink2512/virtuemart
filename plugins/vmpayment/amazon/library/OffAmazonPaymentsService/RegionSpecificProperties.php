@@ -52,9 +52,12 @@ class OffAmazonPaymentsService_RegionSpecificProperties
 		'uk' => 'eu',
 		'us' => 'na'
 	);
-	
-	const WIDGET_FORMAT_STRING = '%s/OffAmazonPayments/%s%s/js/Widgets.js';
+
+	const WIDGET_FORMAT_STRING = '%s/OffAmazonPayments/%s%s/js/Widgets.js?sellerId=%s';
 	const SERVICE_FORMAT_STRING = '%s/OffAmazonPayments%s/%s';
+
+	//const WIDGET_FORMAT_STRING = '%s/OffAmazonPayments/%s%s/js/Widgets.js';
+	//const SERVICE_FORMAT_STRING = '%s/OffAmazonPayments%s/%s';
 	
 	/**
 	 * Return the correct widget url for the javascript widget
@@ -68,10 +71,15 @@ class OffAmazonPaymentsService_RegionSpecificProperties
 	 */
 	public function getWidgetUrlFor($region, $environment, $merchantId, $overrideUrl)
 	{
-		return sprintf(self::WIDGET_FORMAT_STRING, 
+		$u = sprintf(self::WIDGET_FORMAT_STRING,
 					$this->_getWidgetHostFor($region, $overrideUrl), 
 					$this->_getWidgetRegionFor($region), 
-			    	$this->_getWidgetEnvironmentFor($environment, $region));
+			    	$this->_getWidgetEnvironmentFor($environment, $region),
+					urlencode($merchantId));
+					$x = $this->_getWidgetRegionFor($region);
+		$y = $this->_getWidgetEnvironmentFor($environment, $region);
+		//vmdebug('getWidgetUrlFor',$u,$x,$y);
+		return $u;
 	}
 	
 	/**
@@ -195,13 +203,13 @@ class OffAmazonPaymentsService_RegionSpecificProperties
 	 */
 	private function _getWidgetEnvironmentFor($environment, $region)
 	{
-		if(strcasecmp($region, 'us') != 0 && strcasecmp($region, 'na') != 0) {
+		/*if(strcasecmp($region, 'us') != 0 && strcasecmp($region, 'na') != 0) {
 			return ( $this->_isSandbox($environment) ? '/sandbox/lpa' : '/lpa');
-		} else {
+		} else {*/
 			return ( $this->_isSandbox($environment) ? '/sandbox' : '');
-		}
+		//}
 	}
-	
+
 	/**
 	 * Return the correct section name postfix for the
 	 * given environment
