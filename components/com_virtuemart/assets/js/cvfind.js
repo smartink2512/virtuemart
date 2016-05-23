@@ -31,6 +31,7 @@ Virtuemart.cvFind = function(event) {
 	}
 	//console.log('my new ajax container ',Virtuemart.container);
 	var found = false;
+
 	//We check first if it is a radio
 	jQuery(container).find('.cvselection:checked').each(function() {
 		selection[selection.length] = jQuery(this).val();
@@ -58,6 +59,7 @@ Virtuemart.cvFind = function(event) {
 						if(jQuery(this).attr('reload')){
 							window.top.location.href = url;
 						}
+						//console.log('return url '+url);
 						return url;
 					}
 				} else {

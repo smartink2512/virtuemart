@@ -123,6 +123,6 @@ if(!empty($this->orderByList)) { ?>
 $j = "Virtuemart.container = jQuery('.category-view');
 Virtuemart.containerSelector = '.category-view';";
 
-vmJsApi::addJScript('ajaxContent',$j);
+//vmJsApi::addJScript('ajaxContent',$j);
 ?>
 <!-- end browse-view -->

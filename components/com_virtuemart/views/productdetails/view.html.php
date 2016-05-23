@@ -325,7 +325,7 @@ class VirtueMartViewProductdetails extends VmView {
 				$category->category_template = VmConfig::get('categorytemplate');
 			}
 
-			shopFunctionsF::setVmTemplate($this, $category->category_template, $product->product_template, $category->category_product_layout, $product->layout);
+			shopFunctionsF::setVmTemplate($this, $category->category_template, 0, $category->category_product_layout, $product->layout);
 
 			shopFunctionsF::addProductToRecent($virtuemart_product_id);
 

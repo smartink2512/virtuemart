@@ -415,8 +415,8 @@ class VirtuemartViewCategory extends VmView {
 
 	}
 
-	public function handle404($cat){
-		if(empty($cat->slug)){
+	public function handle404($cat = false){
+		if(!$cat or empty($cat->slug)){
 			vmInfo(vmText::_('COM_VIRTUEMART_CAT_NOT_FOUND'));
 		} else {
 			if($cat->virtuemart_id!==0 and !$cat->published){
@@ -426,7 +426,7 @@ class VirtuemartViewCategory extends VmView {
 
 		//Fallback
 		$catLink = '';
-		if ($cat->category_parent_id) {
+		if ($cat and !empty($cat->category_parent_id)) {
 			$catLink = '&view=category&virtuemart_category_id=' .$cat->category_parent_id;
 		} else {
 			$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
