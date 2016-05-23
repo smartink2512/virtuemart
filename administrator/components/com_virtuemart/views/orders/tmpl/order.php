@@ -728,17 +728,32 @@ vmJsApi::addJScript('ordergui',$j);
 			</tr>
 
 			<?php
+				$sumRules = array('VatTax'=>array(), 'taxRulesBill'=>array());
 				foreach($this->orderdetails['calc_rules'] as $rule){
-					if($rule->calc_kind!='VatTax') continue;
-					?><tr >
-					<td colspan="5" align="right"  ><?php echo $rule->calc_rule_name ?> </td>
-					<td align="right" colspan="3" > </td>
-					<td align="right"  style="padding-right: 5px;">
-						<?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?>
-						<input class='orderedit' type="text" size="8" name="calc_rules[<?php echo $rule->calc_kind ?>][<?php echo $rule->virtuemart_order_calc_rule_id ?>]" value="<?php echo $rule->calc_amount; ?>"/>
-					</td>
-					<td align="right" colspan="2" > </td>
-					</tr><?php
+					if($rule->calc_kind!='VatTax' and $rule->calc_kind!='taxRulesBill') continue;
+
+					if(isset($sumRules[$rule->calc_kind][$rule->virtuemart_calc_id])){
+						$sumRules[$rule->calc_kind][$rule->virtuemart_calc_id]->calc_amount += $rule->calc_amount;
+					} else {
+						$sumRules[$rule->calc_kind][$rule->virtuemart_calc_id] = $rule;
+					}
+				}
+				foreach($sumRules as $calc_kind) {
+					foreach( $calc_kind as $rule ) {
+
+						?>
+						<tr>
+						<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
+						<td align="right" colspan="3"></td>
+						<td align="right" style="padding-right: 5px;">
+							<?php echo $this->currency->priceDisplay( $rule->calc_amount ); ?>
+							<input class='orderedit' type="text" size="8"
+								   name="calc_rules[<?php echo $rule->calc_kind ?>][<?php echo $rule->virtuemart_order_calc_rule_id ?>]"
+								   value="<?php echo $rule->calc_amount; ?>"/>
+						</td>
+						<td align="right" colspan="2"></td>
+						</tr><?php
+					}
 				}
 			?>
 			<tr>

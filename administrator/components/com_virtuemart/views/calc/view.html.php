@@ -185,7 +185,7 @@ class VirtuemartViewCalc extends VmViewAdmin {
 
 		$answer = $dispatcher->trigger('plgVmAddMathOp', array(&$mathOps));
 
-		$listHTML = JHtml::_('Select.genericlist', $mathOps, 'calc_value_mathop', '', 'calc_value_mathop', 'calc_value_mathop_name', $selected );
+		$listHTML = JHtml::_('Select.genericlist', $mathOps, 'calc_value_mathop', 'style="width:70px;"', 'calc_value_mathop', 'calc_value_mathop_name', $selected );
 		return $listHTML;
 	}
 

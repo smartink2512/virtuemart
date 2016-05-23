@@ -273,7 +273,7 @@ class calculationHelper {
 	 * After that the function gatherEffectingRulesForProductPrice writes the queries and gets the ids of the rules which affect the product
 	 * The function executeCalculation makes the actual calculation according to the rules
 	 *
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @copyright Copyright (c) 2009 - 2015 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 * @param int $product 	    The product
 	 * @param int $catIds 		When the category is already determined, then it makes sense to pass it, if not the function does it for you

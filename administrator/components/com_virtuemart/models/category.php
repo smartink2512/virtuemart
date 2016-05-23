@@ -61,10 +61,10 @@ class VirtueMartModelCategory extends VmModel {
      *
      * @author RickG, jseros, Max Milbers
      */
-	public function getCategory($virtuemart_category_id=0,$childs=TRUE){
+	public function getCategory($virtuemart_category_id=0,$childs=TRUE, $fe = true){
 
 		if(!empty($virtuemart_category_id)) $this->_id = (int)$virtuemart_category_id;
-		$childs = (int)$childs;
+		//$childs = (int)$childs;
   		if (empty($this->_cache[$this->_id][$childs])) {
    			$this->_cache[$this->_id][$childs] = $this->getTable('categories');
    			$this->_cache[$this->_id][$childs]->load($this->_id);
@@ -72,13 +72,16 @@ class VirtueMartModelCategory extends VmModel {
    			$xrefTable = $this->getTable('category_medias');
    			$this->_cache[$this->_id][$childs]->virtuemart_media_id = $xrefTable->load((int)$this->_id);
 
-   			if(empty($this->_cache[$this->_id][$childs]->category_template)){
-   				$this->_cache[$this->_id][$childs]->category_template = VmConfig::get('categorytemplate');
-   			}
+			if($fe){
+				if(empty($this->_cache[$this->_id][$childs]->category_template)){
+					$this->_cache[$this->_id][$childs]->category_template = VmConfig::get('categorytemplate');
+				}
 
-   			if(empty($this->_cache[$this->_id][$childs]->category_layout)){
-   				$this->_cache[$this->_id][$childs]->category_layout = VmConfig::get('categorylayout');
-   			}
+				if(empty($this->_cache[$this->_id][$childs]->category_layout)){
+					$this->_cache[$this->_id][$childs]->category_layout = VmConfig::get('categorylayout');
+				}
+			}
+
 
    			if($childs){
    				$this->_cache[$this->_id][$childs]->haschildren = $this->hasChildren($this->_id);

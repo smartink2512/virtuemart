@@ -945,9 +945,9 @@ class VirtueMartModelProduct extends VmModel {
 			$child->prices = $child->allPrices[$child->selectedPrice];
 		}
 
-		if (empty($child->product_template)) {
+		/*if (empty($child->product_template)) {
 			$child->product_template = VmConfig::get ('producttemplate');
-		}
+		}*/
 
 		if(!empty($child->canonCatId) ) {
 			// Add the product link  for canonical
@@ -996,6 +996,10 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			else if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
 				$child->availability = vmText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHtml::_('date', $child->product_available_date, vmText::_('DATE_FORMAT_LC4'));
+			}
+
+			if(!isset($child->customfields)){
+				$child->customfields = false;
 			}
 			self::$_products[$productKey] = $child;
 		}
@@ -1609,6 +1613,7 @@ class VirtueMartModelProduct extends VmModel {
 			$orderByName = '`l`.product_name, virtuemart_product_id';
 			$whereorderByName = '`l`.product_name';
 			$orderByValue = $product->product_name;
+			//$orderByValue = $db->escape($product->product_name);
 			if($pos){
 				$orderByName = trim(substr ($queryArray[3],($pos+8)) );
 

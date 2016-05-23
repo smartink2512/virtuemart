@@ -19,7 +19,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'compo
 if (!class_exists('ShopFunctions'))
     require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 
-if(!class_exists('TableManufacturers')) require(VMPATH_ADMIN.DS.'tables'.DS.'vendors.php');
+if(!class_exists('TableVendors')) require(VMPATH_ADMIN.DS.'tables'.DS.'vendors.php');
 if (!class_exists( 'VirtueMartModelVendor' ))
    JLoader::import( 'vendor', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
 jimport('joomla.form.formfield');

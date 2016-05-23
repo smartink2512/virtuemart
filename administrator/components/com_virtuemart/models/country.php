@@ -51,7 +51,7 @@ class VirtueMartModelCountry extends VmModel {
      * @param string $code Country code to lookup
      * @return object Country object from database
      */
-    function getCountryByCode($code) {
+    static function getCountryByCode($code) {
 
 		if(empty($code)) return false;
 		$db = JFactory::getDBO();
@@ -59,13 +59,13 @@ class VirtueMartModelCountry extends VmModel {
 		$countryCodeLength = strlen($code);
 		switch ($countryCodeLength) {
 			case 2:
-			$countryCodeFieldname = 'country_2_code';
+				$fieldname = 'country_2_code';
 			break;
 			case 3:
-			$countryCodeFieldname = 'country_3_code';
+				$fieldname = 'country_3_code';
 			break;
 			default:
-			return false;
+				$fieldname = 'country_name';
 		}
 
 		static $countries = array();
@@ -73,7 +73,7 @@ class VirtueMartModelCountry extends VmModel {
 		if(!isset($countries[$code])){
 			$query = 'SELECT *';
 			$query .= ' FROM `#__virtuemart_countries`';
-			$query .= ' WHERE `' . $countryCodeFieldname . '` = "' . $code . '"';
+			$query .= ' WHERE `' . $fieldname . '` = "' . $db->escape ($code) . '"';
 			$db->setQuery($query);
 			$countries[$code] = $db->loadObject();
 		}

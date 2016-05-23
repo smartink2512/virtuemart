@@ -433,6 +433,75 @@ class GenericTableUpdater extends VmModel{
 		$this->_db->setQuery($query);
 		$eKeys = $this->_db->loadObjectList();
 
+		$tkeys=array();
+		$keyT = $keys;
+
+		//Lets check if something changed
+		foreach($keyT as $name =>$value) {
+			$k = new stdClass();
+			if($p = strpos( $value, 'PRIMARY' ) !== false) {
+				if(strpos( $value, '`' ) !== false) {
+					$spl = explode('`', $value);
+					$k->Key_name =  'PRIMARY';
+					$k->Column_name = $spl[1];
+					$k->Non_unique=0;
+					$tkeys[$k->Key_name] = $k;
+					continue;
+				}
+			}
+
+			if($p = strpos( $value, 'UNIQUE' ) !== false) {
+				$k->Non_unique=0;
+				$value = trim(substr($value,$p));
+			} else {
+				$k->Non_unique=1;
+			}
+
+			if(strpos( $value, '`' ) !== false) {
+				$spl = explode('`', $value);
+
+				//We dont prevent drop and add of double keys
+				if(!isset($spl[5])) {
+
+					$k->Key_name = $spl[1];
+					$k->Column_name = $spl[3];
+					$tkeys[$k->Column_name] = $k;
+				}
+				/*$tkeys[$k->Column_name] = $k;
+				if(isset($spl[5])) {
+					$k2 = clone($k);
+
+					$k2->Column_name = $spl[5];
+					$tkeys[$k2->Column_name] = $k2;
+				}*/
+			}
+		}
+
+		foreach($eKeys as $i => $eKey) {
+
+			if($eKey->Key_name == 'PRIMARY'){
+				$t = $tkeys['PRIMARY'];
+				if($eKey->Column_name==$t->Column_name and $eKey->Non_unique==$t->Non_unique){
+					unset($keys[$eKey->Column_name]);
+					unset($eKeys[$i]);
+				} else {
+					vmdebug('my primary',$eKey);
+				}
+			} else {
+
+				if(isset($tkeys[$eKey->Column_name])) {
+					$t = $tkeys[$eKey->Column_name];
+					if($eKey->Key_name==$t->Key_name and $eKey->Non_unique==$t->Non_unique){
+						unset($keys[$eKey->Key_name]);
+						unset($eKeys[$i]);
+					} else {
+						//vmdebug('my $tkeys',$eKey,$t,$keys[$eKey->Key_name]);
+					}
+				}
+
+			}
+		}
+
 		$ok=true;
 
 		$primaryFound = false;
@@ -492,11 +561,13 @@ class GenericTableUpdater extends VmModel{
 		$oldkey ='';
 
 		if(!empty($keyAttribs->Key_name) && !empty($keyAttribs->Column_name) ){
-			if(strpos($keyAttribs->Key_name,'PRIMARY')!==false){
-				$oldkey = 'PRIMARY KEY (`'.$keyAttribs->Column_name.'`)';
-			} else {
-				$oldkey = 'KEY `'.$keyAttribs->Key_name.'` (`'.$keyAttribs->Column_name.'`)';
+			if(!$keyAttribs->Non_unique){
+				$oldkey = 'UNIQUE ';
+				//$oldkey = 'PRIMARY KEY (`'.$keyAttribs->Column_name.'`)';
 			}
+			//else {
+				$oldkey .= 'KEY `'.$keyAttribs->Key_name.'` (`'.$keyAttribs->Column_name.'`)';
+			//}
 		} else {
 			vmdebug('reCreateKeyByTableAttributes $keyAttribs empty?',$keyAttribs);
 		}

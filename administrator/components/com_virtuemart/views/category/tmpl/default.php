@@ -135,8 +135,9 @@ AdminUIHelper::startAdminArea($this);
 				<td align="left">
 
 					<?php
-
-					echo shopFunctionsF::limitStringByWord(JFilterOutput::cleanText($cat->category_description),200); ?>
+					/*$descr = htmlspecialchars_decode($cat->category_description);
+					echo shopFunctionsF::limitStringByWord(JFilterOutput::cleanText($descr),200);*/
+					echo shopFunctionsF::limitStringByWord($cat->category_description,200); ?>
 				</td>
 				<td>
 					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>

@@ -1033,7 +1033,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$db = JFactory::getDbo();
 			$q = 'SELECT * FROM `#__virtuemart_orders` ';
 			if(!empty($_cart->virtuemart_order_id)){
-				$db->setQuery($q . ' WHERE `order_number`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P" ');
+				$db->setQuery($q . ' WHERE `virtuemart_order_id`= "'.$_cart->virtuemart_order_id.'" AND `order_status` = "P" ');
 				$order = $db->loadAssoc();
 				if(!$order){
 					vmdebug('This should not happen, there is a cart with order_number, but not order stored '.$_cart->virtuemart_order_id);

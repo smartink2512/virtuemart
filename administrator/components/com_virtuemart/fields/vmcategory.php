@@ -43,7 +43,7 @@ class JFormFieldVmCategory extends JFormField
 
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart');
-
+        VmConfig::loadJLang('com_virtuemart_config');
 	    $categorylist = ShopFunctions::categoryListTree(array($this->value));
 
         $html = '<select class="inputbox"   name="' . $this->name . '" >';
