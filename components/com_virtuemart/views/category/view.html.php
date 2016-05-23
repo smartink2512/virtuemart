@@ -121,7 +121,12 @@ class VirtuemartViewCategory extends VmView {
 
 				$this->products = false;
 
-				$this->perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
+				if(!empty($menu->query['showproducts'])){
+					$this->perRow = $menu->query['showproducts'];
+				} else {
+					$this->perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
+				}
+
 				$imgAmount = VmConfig::get('prodimg_browse',1);
 
 				$opt = array('featured','latest','topten','recent');

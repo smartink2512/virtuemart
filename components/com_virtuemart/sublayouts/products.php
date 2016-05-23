@@ -11,7 +11,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-$products_per_row = $viewData['products_per_row'];
+$products_per_row = empty($viewData['products_per_row'])? 1:$viewData['products_per_row'] ;
 $currency = $viewData['currency'];
 $showRating = $viewData['showRating'];
 $verticalseparator = " vertical-separator";

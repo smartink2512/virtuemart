@@ -63,6 +63,19 @@ VALUES
 (33, 1, 63, 64, 1, 'com_finder', 'com_finder', '{"core.admin":{"7":1},"core.manage":{"6":1}}'),
 (34, 1, 65, 66, 1, 'com_joomlaupdate', 'com_joomlaupdate', '{"core.admin":[],"core.manage":[],"core.delete":[],"core.edit.state":[]}');
 
+INSERT INTO `#__assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES
+	(54, 1, 115, 116, 1, 'com_virtuemart', 'VIRTUEMART', '{}'),
+	(55, 1, 117, 118, 1, 'com_virtuemart_allinone', 'VirtueMart_allinone', '{}'),
+	(56, 18, 70, 71, 2, 'com_modules.module.87', 'VM - Administrator Module', '{}'),
+	(57, 18, 72, 73, 2, 'com_modules.module.88', 'VM - Currencies Selector', '{}'),
+	(58, 18, 74, 75, 2, 'com_modules.module.89', 'VM - Featured products', '{}'),
+	(59, 18, 76, 77, 2, 'com_modules.module.90', 'VM - Search in Shop', '{}'),
+	(60, 18, 78, 79, 2, 'com_modules.module.91', 'VM - Manufacturer', '{}'),
+	(61, 18, 80, 81, 2, 'com_modules.module.92', 'VM - Shopping cart', '{}'),
+	(62, 18, 82, 83, 2, 'com_modules.module.93', 'VM - Category', '{}'),
+	(63, 1, 119, 120, 1, 'com_tcpdf', 'tcpdf', '{}');
+
+
 # -------------------------------------------------------
 
 #

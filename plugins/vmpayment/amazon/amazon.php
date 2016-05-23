@@ -430,35 +430,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		vmError($message . " (" . $code . ")", $public_msg);
 	}
 
-	private function  getButtonWidgetImageURL() {
-		$region = $this->_currentMethod->region;
-		$region_europe = array('UK', 'DE');
-
-		$url = '';
-
-		if(in_array($region, $region_europe)) {
-			if($region == "UK") {
-				$domain = "co.uk";
-			} else {
-				$domain = "de";
-			}
-			if($this->_currentMethod->environment == 'sandbox') {
-				$mode = "-sandbox";
-			} else {
-				//TODO
-				$mode = "";
-			}
-			$url = "https://payments" . $mode . ".amazon." . $domain . "/gp/widgets/button?sellerId=" . $this->_currentMethod->sellerId . "&size=" . $this->_currentMethod->sign_in_widget_size . "&color=" . $this->_currentMethod->sign_in_widget_color . "";
-		} else {
-			if($this->_currentMethod->environment == 'sandbox') {
-				$url = $this->_currentMethod->sandbox_signin;
-			} else {
-				$url = $this->_currentMethod->production_signin;
-			}
-		}
-
-		return $url;
-	}
 
 	private function addWidgetUrlScript($client) {
 		if(!self::$widgetScriptLoaded) {
@@ -1487,8 +1458,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 			return FALSE;
 		}
-		$this->debugLog("<pre>" . var_export($setOrderReferenceDetailsRequest, true) . "</pre>", __FUNCTION__, 'debug');
-		$this->debugLog("<pre>" . var_export($setOrderReferenceDetailsResponse, true) . "</pre>", __FUNCTION__, 'debug');
+		//$this->debugLog("<pre>" . var_export($setOrderReferenceDetailsRequest, true) . "</pre>", __FUNCTION__, 'debug');
+		//$this->debugLog("<pre>" . var_export($setOrderReferenceDetailsResponse, true) . "</pre>", __FUNCTION__, 'debug');
 
 		return $setOrderReferenceDetailsResponse;
 	}
@@ -1512,8 +1483,8 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 			$getOrderReferenceDetailsRequest->setAmazonOrderReferenceId($this->_amazonOrderReferenceId);
 
 			$getOrderReferenceDetailsResponse = $client->getOrderReferenceDetails($getOrderReferenceDetailsRequest);
-			$this->debugLog("<pre>" . var_export($getOrderReferenceDetailsRequest, true) . "</pre>", __FUNCTION__, 'debug');
-			$this->debugLog("<pre>" . var_export($getOrderReferenceDetailsResponse, true) . "</pre>", __FUNCTION__, 'debug');
+			//$this->debugLog("<pre>" . var_export($getOrderReferenceDetailsRequest, true) . "</pre>", __FUNCTION__, 'debug');
+			//$this->debugLog("<pre>" . var_export($getOrderReferenceDetailsResponse, true) . "</pre>", __FUNCTION__, 'debug');
 		} catch (Exception $e) {
 			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
 			$this->_session->clearAmazonSession();
@@ -3139,11 +3110,20 @@ $('.amazonDetailsOpener').click(function() {
 
 
 	private function isSameAddress($update_data, $cart) {
-		if($cart->BT['city'] == $update_data['city'] and $cart->BT['virtuemart_country_id'] == $update_data['virtuemart_country_id'] AND $cart->BT['zip'] == $update_data['zip']) {
+		$chck = array('city','virtuemart_country_id', 'zip');
+		foreach($chck as $f){
+			if(!isset($cart->BT[$f]) or !isset($update_data[$f])){
+				return false;
+			} else if($cart->BT[$f] != $update_data[$f]) {
+				return false;
+			}
+		}
+		return true;
+		/*if($cart->BT['city'] == $update_data['city'] and $cart->BT['virtuemart_country_id'] == $update_data['virtuemart_country_id'] AND $cart->BT['zip'] == $update_data['zip']) {
 			return true;
 		}
 
-		return false;
+		return false;*/
 	}
 
 	/**
@@ -3172,10 +3152,27 @@ $('.amazonDetailsOpener').click(function() {
 		$this->loadVmClass('VirtueMartModelOrders', JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 
 		try {
-			$client = new OffAmazonPaymentsNotifications_Client();
+			$config['merchantId'] = $this->_currentMethod->sellerId;
+			$config['accessKey'] = $this->_currentMethod->accessKey;
+			$config['secretKey'] = $this->_currentMethod->secretKey;
+			$config['applicationName'] = 'VirtueMart';
+			$config['applicationVersion'] = '${PHING.VM.RELEASE}';
+			$config['region'] = $this->_currentMethod->region;
+			$config['environment'] = $this->_currentMethod->environment;
+			$config['cnName'] = $this->_currentMethod->cnname;
+			$client = new OffAmazonPaymentsNotifications_Client($config);
+
+			//} catch (OffAmazonPaymentsNotifications_InvalidMessageException $e) {
+		} catch (Exception $e) {
+			$this->debugLog('new OffAmazonPaymentsNotifications_Client throws exception: '.$e->getMessage() . ' ' . __FUNCTION__ . ' $body', 'error');
+			header("HTTP/1.1 503 Service Unavailable");
+			exit(0);
+		}
+
+		try {
 			$notification = $client->parseRawMessage($headers, $body);
-		} catch (OffAmazonPaymentsNotifications_InvalidMessageException $e) {
-			$this->debugLog($e->getMessage() . ' ' . __FUNCTION__ . ' $body', 'error');
+		} catch (Exception $e) {
+			$this->debugLog('OffAmazonPaymentsNotifications_Client parseRawMessage throws exception: '.$e->getMessage() . ' ' . __FUNCTION__ . ' $body', 'error');
 			header("HTTP/1.1 503 Service Unavailable");
 			exit(0);
 		}

@@ -18,7 +18,9 @@
 
 require_once 'OffAmazonPaymentsService/OffAmazonPaymentsService.config.inc.php';
 require_once 'OffAmazonPaymentsService/RegionSpecificProperties.php';
+require_once 'OffAmazonPaymentsService/Regions.php';
 require_once 'OffAmazonPayments/OffAmazonPaymentsServiceUtils.php';
+
 
 class OffAmazonPaymentsService_MerchantValues
 {

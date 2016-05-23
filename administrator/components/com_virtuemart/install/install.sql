@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `virtuemart_custom_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `custom_parent_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_vendor_id` UNSIGNED int(1) NOT NULL DEFAULT '1',
+  `virtuemart_vendor_id` int(1) UNSIGNED NOT NULL DEFAULT '1',
   `custom_jplugin_id` int(1) NOT NULL DEFAULT '0',
   `custom_element` varchar(50) NOT NULL DEFAULT '',
   `admin_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:Display in admin only',
@@ -581,7 +581,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_histories` (
   `modified_by` int(1) NOT NULL DEFAULT '0',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`virtuemart_order_history_id`)
+  PRIMARY KEY (`virtuemart_order_history_id`),
+  KEY `virtuemart_order_id` (`virtuemart_order_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Stores all actions and changes that occur to an order' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -755,7 +756,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_sales` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `product_unit` varchar(8),
   `product_packaging` decimal(8,4) UNSIGNED,
-  `product_params` text NOT NULL DEFAULT '',
+  `product_params` text NOT NULL,
   `hits` int(1) unsigned,
   `intnotes` text,
   `metarobot` varchar(400),
@@ -841,7 +842,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   KEY `virtuemart_product_id` (`virtuemart_product_id`),
   KEY `virtuemart_custom_id` (`virtuemart_custom_id`),
   KEY `published` (`published`),
-  KEY `ordering` (`ordering`)
+  KEY `ordering` (`virtuemart_product_id`,`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
 
 
