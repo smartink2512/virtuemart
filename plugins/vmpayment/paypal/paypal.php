@@ -274,14 +274,13 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 * @param bool               $from_cart
 	 * @return bool|null
 	 */
-	function plgVmDisplayLogin(VirtuemartViewUser $user, &$html, $from_cart = FALSE) {
+	function plgVmDisplayLogin(VmView $view, &$html, $from_cart = FALSE) {
 
 		// only to display it in the cart, not in list orders view
 		if (!$from_cart) {
 			return NULL;
 		}
 
-		$vendorId = 1;
 		if (!class_exists('VirtueMartCart')) {
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}

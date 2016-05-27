@@ -1557,7 +1557,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param string             $from_cart
 	 * @return bool|null
 	 */
-	function plgVmDisplayLogin (VirtuemartViewUser $user, &$html, $from_cart = FALSE) {
+	function plgVmDisplayLogin (VmView $view, &$html, $from_cart = FALSE) {
 
 		// only to display it in the cart, not in list orders view
 		if (!$from_cart) {
