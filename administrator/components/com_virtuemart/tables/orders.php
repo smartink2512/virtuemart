@@ -80,6 +80,11 @@ class TableOrders extends VmTableData {
 	var $user_currency_id = NULL;
 	/** @var char User currency rate */
 	var $user_currency_rate = NULL;
+	/** @var char User currency id */
+	var $payment_currency_id = NULL;
+	/** @var char User currency rate */
+	var $payment_currency_rate = NULL;
+
 	/** @var int Payment method ID */
 	var $virtuemart_paymentmethod_id = NULL;
 	/** @var int Shipment method ID */

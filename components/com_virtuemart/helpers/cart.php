@@ -978,9 +978,17 @@ class VirtueMartCart {
 			}
 		}
 
-		if(VmConfig::get('oncheckout_only_registered',0)) {
+		$usersConfig = JComponentHelper::getParams( 'com_users' );
+		$useractivation = $usersConfig->get( 'useractivation' );
+		if ($currentUser ->block) {
+			if($useractivation!=1){
+				$redirectMsg = vmText::_('JERROR_NOLOGIN_BLOCKED');
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , $redirectMsg);
+			}
+		}
 
-			if(empty($currentUser->id)){
+		if(VmConfig::get('oncheckout_only_registered',0)) {
+			if(empty($currentUser->id)) {
 				$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , $redirectMsg);
 			}

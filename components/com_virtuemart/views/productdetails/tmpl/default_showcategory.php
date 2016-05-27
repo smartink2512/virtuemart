@@ -66,7 +66,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 				    <h2>
 					<a href="<?php echo $caturl ?>" title="<?php echo vmText::_($category->category_name) ?>">
 					    <?php echo vmText::_($category->category_name) ?>
-					    <br />
+					    <br>
 					    <?php
 					    // if ($category->ids) {
 					    echo $category->images[0]->displayMediaThumb("", false);

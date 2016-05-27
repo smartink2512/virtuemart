@@ -627,6 +627,11 @@ jQuery(document).ready(function($) {
 			requ = 'required';
 		}
 
+		for	(i = 0; i < regfields.length; i++) {
+			var elem = jQuery('#'+regfields[i]+'_field');
+			elem.attr('class', requ);
+		}
+
 		setDropdownRequiredByResult('virtuemart_country_id','');
 		setDropdownRequiredByResult('virtuemart_state_id','');
 

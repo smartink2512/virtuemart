@@ -64,15 +64,6 @@ class VirtueMartViewCart extends VmView {
 
 		$this->cart->prepareVendor();
 
-		//Why is this here, when we have view.raw.php
-		/* Valerie: is this used ?
-		if ($format == 'raw') {
-			vRequest::setVar('layout', 'mini_cart');
-			$this->setLayout('mini_cart');
-			$this->prepareContinueLink();
-		}
-		*/
-
 		if ($this->layoutName == 'select_shipment') {
 
 			$this->cart->prepareCartData();
@@ -214,6 +205,9 @@ class VirtueMartViewCart extends VmView {
 
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 
+
+		//We set the valid content time to 2 seconds to prevent that the cart shows wrong entries
+		$document->setMetaData('expires', '1',true);
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 

@@ -23,7 +23,7 @@ defined( '_JEXEC' ) or die('Restricted access');
 
 class shopFunctionsF {
 
-	static public function getLoginForm ($cart = FALSE, $order = FALSE, $url = '') {
+	static public function getLoginForm ($cart = FALSE, $order = FALSE, $url = '', $layout = 'login') {
 
 		$body = '';
 		$show = TRUE;
@@ -32,21 +32,12 @@ class shopFunctionsF {
 			$show = VmConfig::get( 'oncheckout_show_register', 1 );
 		}
 		if($show == 1) {
-
+			//This is deprecated and will be replaced by the commented lines below (vmView instead of VirtuemartViewUser)
 			if(!class_exists( 'VirtuemartViewUser' )) require(VMPATH_SITE.DS.'views'.DS.'user'.DS.'view.html.php');
 			$view = new VirtuemartViewUser();
-			$view->setLayout( 'login' );
-			$view->assignRef( 'show', $show );
-
-			$view->assignRef( 'order', $order );
-			$view->assignRef( 'from_cart', $cart );
-			$view->assignRef( 'url', $url );
-			$view->writeJs = false;
-
-			ob_start();
-			$view->display();
-			$body = ob_get_contents();
-			ob_end_clean();
+			//if(!class_exists( 'vmView' )) require(VMPATH_SITE.DS.'helpers'.DS.'vmview.php');
+			//$view = new vmView();
+			$body = $view->renderVmSubLayout($layout,array('show' => $show, 'order' => $order, 'from_cart' => $cart, 'url' => $url));
 		}
 
 		return $body;

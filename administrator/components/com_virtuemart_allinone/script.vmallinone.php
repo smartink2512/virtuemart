@@ -141,7 +141,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			$this->installPlugin ('VM Payment - 2Checkout', 'plugin', 'tco', 'vmpayment');
 
-			//$this->installPlugin ('VM Payment - Pay with Amazon', 'plugin', 'amazon', 'vmpayment');
+			$this->installPlugin ('VM Payment - Pay with Amazon', 'plugin', 'amazon', 'vmpayment');
 			$this->installPlugin ('System - Pay with Amazon', 'plugin', 'amazon', 'system');
 
 			$this->installPlugin ('VM Payment - Realex HPP & API', 'plugin', 'realex_hpp_api', 'vmpayment');

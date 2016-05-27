@@ -659,12 +659,12 @@ function virtuemartParseRoute($segments) {
 			$vars['layout'] = 'notify';
 			array_pop($segments);
 		}
-		$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id, false);
+		$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id, true);
 
 		//codepyro - removed suffix from router
 		//check if name is a product.
 		//if so then its a product load the details page
-		if(isset($product['virtuemart_product_id'])) {
+		if(!empty($product['virtuemart_product_id'])) {
 			$vars['view'] = 'productdetails';
 			$vars['virtuemart_product_id'] = $product['virtuemart_product_id'];
 			if(isset($product['virtuemart_category_id'])) {
@@ -980,7 +980,10 @@ class vmrouterHelper {
 	/* get product and category ID */
 	public function getProductId($names,$virtuemart_category_id = NULL, $seo_sufix = true ){
 		$productName = array_pop($names);
-		if($seo_sufix and !empty($this->seo_sufix_size) ){
+		if($this->use_seo_suffix and !empty($this->seo_sufix_size) ){
+			if(substr($productName, -(int)$this->seo_sufix_size ) !== $this->seo_sufix) {
+				return array('virtuemart_product_id' =>0, 'virtuemart_category_id' => false);
+			}
 			$productName =  substr($productName, 0, -(int)$this->seo_sufix_size );
 		}
 

@@ -672,24 +672,9 @@ class ShopFunctions {
 		if (empty($name)) {
 			return 0;
 		}
-		VmModel::getInstance('country');
-
-		return VirtueMartModelCountry::getCountryByCode($name->virtuemart_country_id);
-	/*	$db = JFactory::getDBO ();
-
-		if (strlen ($name) === 2) {
-			$fieldname = 'country_2_code';
-		} else {
-			if (strlen ($name) === 3) {
-				$fieldname = 'country_3_code';
-			} else {
-				$fieldname = 'country_name';
-			}
-		}
-		$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `' . $fieldname . '` = "' . $db->escape ($name) . '"';
-		$db->setQuery ($q);
-		$r = $db->loadResult ();
-		return $r;*/
+		VmModel::getModel('country');
+		$c = VirtueMartModelCountry::getCountryByCode($name);
+		return $c -> virtuemart_country_id;
 	}
 
 	/**

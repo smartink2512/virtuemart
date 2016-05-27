@@ -168,7 +168,7 @@ function refresh_counter() {
 		</form>
 	<?php
 	} else if(!$review_editable) {
-		echo '<strong>'.vmText::_( 'COM_VIRTUEMART_DEAR' ).$this->user->name.',</strong><br />';
+		echo '<strong>'.vmText::_( 'COM_VIRTUEMART_DEAR' ).$this->user->name.',</strong><br>';
 		echo vmText::_( 'COM_VIRTUEMART_REVIEW_ALREADYDONE' );
 	}
 }

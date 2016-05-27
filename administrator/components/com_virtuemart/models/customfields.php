@@ -249,8 +249,8 @@ class VirtueMartModelCustomfields extends VmModel {
 			$classBox = 'class="readonly"';
 		}
 		$linkLabel = $line['parent_id'] .'->'. $line['vm_product_id'].' ';
-		$html = '<tr class="row'.(($i+1)%2).'">';
-		$html .= '<td>'.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $linkLabel.$child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->slug)).'</td>';
+		$html = '<tr class="row'.(($i+1)%2).' removable">';
+		$html .= '<td>'.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $linkLabel.$child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->slug)).'<span class="vmicon vmicon-16-move"></span></td>';
 		if($showSku) $html .= '<td><input '.$readonly.' '.$classBox.' type="text" name="childs['.$child->virtuemart_product_id.'][product_sku]" id="child'.$child->virtuemart_product_id.'product_sku" size="20" maxlength="64" value="'.$child->product_sku .'" /></td>';
 		$html .= '<td><input '.$readonly.' '.$classBox.' type="text" name="childs['.$child->virtuemart_product_id.'][product_gtin]" id="child'.$child->virtuemart_product_id.'product_gtin" size="13" maxlength="13" value="'.$child->product_gtin .'" /></td>';
 		/*$html .= 	'<input type="hidden" name="childs['.$child->virtuemart_product_id .'][product_name]" id="child'.$child->virtuemart_product_id .'product_name" value="'.$child->product_name .'" />
@@ -551,7 +551,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= '</div>
 					</div><div class="clear"></div>';
 				//vmdebug('my $field->selectoptions',$field->selectoptions,$field->options);
-				$html .= '<table id="syncro">';
+				$html .= '<table id="mvo">';
+				$html .= '<thead>';
 				$html .= '<tr>
 <th style="text-align: left !important;width:130px;">#</th>';
 				if($showSku){
@@ -565,7 +566,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					$html .= '<th>'.vmText::_('COM_VIRTUEMART_'.strtoupper($option->voption)).'</th>';
 				}
 				$html .= '</tr>';
-
+				$html .= '</thead>';
+				$html .= '<tbody id="syncro">';
 
 
 				if(isset($childIds[$product_id])){
@@ -574,9 +576,17 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 				}
 
-
+				$html .= '</tbody>';
 				$html .= '</table>';
 
+				$jsCsort = "
+	nextCustom =".$i.";
+
+	jQuery(document).ready(function(){
+		jQuery('#syncro').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
+});
+";
+				vmJsApi::addJScript('cvSort',$jsCsort);
 				return $html;
 				// 					return 'Automatic Childvariant creation (later you can choose here attributes to show, now product name) </td><td>';
 				break;

@@ -746,10 +746,10 @@ vmJsApi::addJScript('ordergui',$j);
 						<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
 						<td align="right" colspan="3"></td>
 						<td align="right" style="padding-right: 5px;">
-							<?php echo $this->currency->priceDisplay( $rule->calc_amount ); ?>
+							<?php echo $this->currency->priceDisplay( $rule->calc_result ); ?>
 							<input class='orderedit' type="text" size="8"
 								   name="calc_rules[<?php echo $rule->calc_kind ?>][<?php echo $rule->virtuemart_order_calc_rule_id ?>]"
-								   value="<?php echo $rule->calc_amount; ?>"/>
+								   value="<?php echo $rule->calc_result; ?>"/>
 						</td>
 						<td align="right" colspan="2"></td>
 						</tr><?php

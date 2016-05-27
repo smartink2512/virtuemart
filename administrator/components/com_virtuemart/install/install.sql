@@ -543,6 +543,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_status` char(1),
   `user_currency_id` smallint(1),
   `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.00000',
+  `payment_currency_id` smallint(1),
+  `payment_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.00000',
   `virtuemart_paymentmethod_id` int(1) UNSIGNED,
   `virtuemart_shipmentmethod_id` int(1) UNSIGNED,
   `delivery_date` varchar(200),

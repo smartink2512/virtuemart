@@ -745,7 +745,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$plugin_desc = $this->_psType . '_desc';
 		$description = '';
 		$logosFieldName = $this->_psType . '_logos';
-		$logos = $plugin->$logosFieldName;
+		$logos = property_exists($plugin,$logosFieldName)? $plugin->$logosFieldName:array();
 		if (!empty($logos)) {
 			$return = $this->displayLogos ($logos) . ' ';
 		}
