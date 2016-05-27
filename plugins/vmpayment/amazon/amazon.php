@@ -1595,20 +1595,20 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	private function confirmOrderReference($client, $order) {
 
 		$this->loadHelperClass('amazonHelperConfirmOrderReferenceResponse');
+		$confirmOrderReferenceResponse = '';
 		try {
 			$confirmOrderReferenceRequest = new OffAmazonPaymentsService_Model_ConfirmOrderReferenceRequest();
 			$confirmOrderReferenceRequest->setAmazonOrderReferenceId($this->_amazonOrderReferenceId);
 			$confirmOrderReferenceRequest->setSellerId($this->_currentMethod->sellerId);
 			$confirmOrderReferenceResponse = $client->confirmOrderReference($confirmOrderReferenceRequest);
-			$this->debugLog("<pre>" . var_export($confirmOrderReferenceRequest, true) . "</pre>", __FUNCTION__, 'debug');
 
 		} catch (Exception $e) {
 			// here we may have an error code when "Invalid Payment Method", "The OrderReferenceId xxx has constraints PaymentPlanNotSet and cannot be confirmed."
 			$this->amazonError(__FUNCTION__ . ' ' . $e->getMessage(), $e->getCode());
-
+			$this->debugLog("<pre>" . var_export($confirmOrderReferenceRequest, true) . "</pre>", __FUNCTION__, 'debug');
+			$this->debugLog("<pre>" . var_export($confirmOrderReferenceResponse, true) . "</pre>", __FUNCTION__, 'debug');
 			return false;
 		}
-		$this->debugLog("<pre>" . var_export($confirmOrderReferenceResponse, true) . "</pre>", __FUNCTION__, 'debug');
 
 		$amazonHelperconfirmOrderReferenceResponse = new amazonHelperConfirmOrderReferenceResponse($confirmOrderReferenceResponse, $this->_currentMethod);
 		$amazonHelperconfirmOrderReferenceResponse->onResponseUpdateOrderHistory($order);
@@ -3145,8 +3145,7 @@ $('.amazonDetailsOpener').click(function() {
 		// Fetch all HTTP request headers
 		$headers = $this->getallheaders();
 		$body = file_get_contents('php://input');
-		$this->debugLog(var_export($headers, true), 'AMAZON IPN HEADERS debug', 'debug');
-		$this->debugLog(var_export($body, true), 'AMAZON IPN BODY debug', 'debug');
+
 
 		$this->loadAmazonClass('OffAmazonPaymentsNotifications_Client');
 		$this->loadVmClass('VirtueMartModelOrders', JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
@@ -3165,6 +3164,8 @@ $('.amazonDetailsOpener').click(function() {
 			//} catch (OffAmazonPaymentsNotifications_InvalidMessageException $e) {
 		} catch (Exception $e) {
 			$this->debugLog('new OffAmazonPaymentsNotifications_Client throws exception: '.$e->getMessage() . ' ' . __FUNCTION__ . ' $body', 'error');
+			$this->debugLog(var_export($headers, true), 'AMAZON IPN HEADERS debug', 'debug');
+			$this->debugLog(var_export($body, true), 'AMAZON IPN BODY debug', 'debug');
 			header("HTTP/1.1 503 Service Unavailable");
 			exit(0);
 		}
@@ -3173,6 +3174,8 @@ $('.amazonDetailsOpener').click(function() {
 			$notification = $client->parseRawMessage($headers, $body);
 		} catch (Exception $e) {
 			$this->debugLog('OffAmazonPaymentsNotifications_Client parseRawMessage throws exception: '.$e->getMessage() . ' ' . __FUNCTION__ . ' $body', 'error');
+			$this->debugLog(var_export($headers, true), 'AMAZON IPN HEADERS debug', 'debug');
+			$this->debugLog(var_export($body, true), 'AMAZON IPN BODY debug', 'debug');
 			header("HTTP/1.1 503 Service Unavailable");
 			exit(0);
 		}
@@ -3447,7 +3450,7 @@ $('.amazonDetailsOpener').click(function() {
 
 			return FALSE;
 		}
-		$this->debugLog($orderReferenceDetailsResponse, 'getOrderReferenceDetailsResponse', 'debug');
+		//$this->debugLog($orderReferenceDetailsResponse, 'getOrderReferenceDetailsResponse', 'debug');
 
 		return $orderReferenceDetailsResponse;
 	}
