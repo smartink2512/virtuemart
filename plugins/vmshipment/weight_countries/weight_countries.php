@@ -434,22 +434,18 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 
+		if(!isset($cart)){
+			$cart = VirtueMartCart::getCart();
+			$cart->products['virtual'] = $product;
+			$cart->_productAdded = true;
+			$cart->prepareCartData();
+		}
+
 		foreach ($this->methods as $this->_currentMethod) {
 
 			if($this->_currentMethod->show_on_pdetails){
-				if(!isset($cart)){
-					$cart = VirtueMartCart::getCart();
-					$cart->prepareCartData();
-				}
-				$prices=array('salesPrice'=>0.0);
-				if(isset($cart->cartPrices)){
-					$prices['salesPrice'] = $cart->cartPrices['salesPrice'];
-				}
-				if(isset($product->prices)){
-					$prices['salesPrice'] += $product->prices['salesPrice'];
-				}
 
-				if($this->checkConditions($cart,$this->_currentMethod,$prices,$product)){
+				if($this->checkConditions($cart,$this->_currentMethod,$cart->cartPrices,$product)){
 
 					$product->prices['shipmentPrice'] = $this->getCosts($cart,$this->_currentMethod,$cart->cartPrices);
 
@@ -465,8 +461,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 					$html = $this->renderByLayout( 'default', array("method" => $this->_currentMethod, "cart" => $cart,"product" => $product,"currency" => $currency) );
 				}
 			}
-
 		}
+		unset($cart->products['virtual']);
+		$cart->_productAdded = true;
+		$cart->prepareCartData();
 
 		$productDisplayShipments[] = $html;
 
@@ -603,6 +601,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				vmWarn('VMSHIPMENT_WEIGHT_COUNTRIES_NBPRODUCTS_CONDITION_WRONG');
 			}
 
+			$data['show_on_pdetails'] = (int) $data['show_on_pdetails'];
 			return $this->setOnTablePluginParams ($name, $id, $table);
 		}
 	}
