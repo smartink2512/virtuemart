@@ -270,13 +270,11 @@
             });
 
             jQuery("#admin-ui-tabs").delegate("div.4remove", "click", function () {
-                console.log('remove',this);
                 jQuery(this).closest(".vm_thumb_image").fadeOut("500", function () {
                     jQuery(this).remove();
                 });
             });
             jQuery("#admin-ui-tabs").delegate("span.4remove", "click", function () {
-                console.log('remove 2',this);
                 jQuery(this).closest(".removable").fadeOut("500", function () {
                     jQuery(this).remove()
                 });

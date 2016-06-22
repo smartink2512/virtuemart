@@ -33,12 +33,14 @@
 		<action name="vm.custom.edit" title="COM_VM_CUSTOM_EDIT" description="COM_VM_CUSTOM_EDIT_TIP" />
 		<action name="vm.custom.create" title="COM_VM_CUSTOM_CREATE" description="COM_VM_CUSTOM_CREATE_TIP" />
 		<action name="vm.custom.delete" title="COM_VM_CUSTOM_DELETE" description="COM_VM_CUSTOM_DELETE_TIP" />
+		<action name="vm.custom.edit.state" title="COM_VM_CUSTOM_EDITSTATE" description="COM_VM_CUSTOM_EDITSTATE_TIP" />
 	</section>
 	<section name="component">
 		<action name="vm.calc" title="COM_VM_CALC_MANAGE" description="COM_VM_CALC_MANAGE_TIP" />
 		<action name="vm.calc.edit" title="COM_VM_CALC_EDIT" description="COM_VM_CALC_EDIT_TIP" />
 		<action name="vm.calc.create" title="COM_VM_CALC_CREATE" description="COM_VM_CALC_CREATE_TIP" />
 		<action name="vm.calc.delete" title="COM_VM_CALC_DELETE" description="COM_VM_CALC_DELETE_TIP" />
+		<action name="vm.calc.edit.state" title="COM_VM_CALC_EDITSTATE" description="COM_VM_CALC_EDITSTATE_TIP" />
 	</section>
 	<section name="component">
 		<action name="vm.manufacturer" title="COM_VM_MANU_MANAGE" description="COM_VM_MANU_MANAGE_TIP" />
