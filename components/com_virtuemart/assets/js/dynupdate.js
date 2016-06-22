@@ -41,6 +41,14 @@ jQuery(function($) {
 
 					if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners();
 					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
+					//Virtuemart.product(jQuery("form.product"));
+
+					$("form.js-recalculate").each(function(){
+						 if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
+							 var id= $(this).find('input[name="virtuemart_product_id[]"]').val();
+							 Virtuemart.setproducttype($(this),id);
+						 }
+					 });
 				}
 				Virtuemart.isUpdatingContent = false;
 				if (callback && typeof(callback) === "function") {
