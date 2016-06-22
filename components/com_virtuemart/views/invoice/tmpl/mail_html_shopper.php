@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
   </tr>
   <tr>
     <td colspan="3"><p>
-				<?php echo vmText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_TOTAL_ORDER',$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->currency) ); ?></p></td>
+				<?php echo vmText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_TOTAL_ORDER',$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->user_currency_id) ); ?></p></td>
   </tr>
 	<tr>
   <td colspan="3"><p>

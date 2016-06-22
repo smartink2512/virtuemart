@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 // TODO Temp fix !!!!! *********************************>>>
 //$skuPrint = echo sprintf( "%64.64s",strtoupper (vmText::_('COM_VIRTUEMART_SKU') ) ) ;
 // Head of table
-echo strip_tags(vmText::sprintf('COM_VIRTUEMART_ORDER_PRINT_TOTAL', $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->currency))) . "\n";
+echo strip_tags(vmText::sprintf('COM_VIRTUEMART_ORDER_PRINT_TOTAL', $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->user_currency_id))) . "\n";
 echo sprintf("%'-64.64s", '') . "\n";
 echo vmText::_('COM_VIRTUEMART_ORDER_ITEM') . "\n";
 foreach ($this->orderDetails['items'] as $item) {
@@ -57,7 +57,7 @@ foreach ($this->orderDetails['items'] as $item) {
 
     echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . $item->product_final_price;
     if (VmConfig::get('show_tax')) {
-	echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') . ':' . $this->currency->priceDisplay($item->product_tax,$this->currency) . ')' . "\n";
+	echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') . ':' . $this->currency->priceDisplay($item->product_tax,$this->user_currency_id) . ')' . "\n";
     }
     echo "\n";
 }
@@ -66,7 +66,7 @@ echo "\n";
 
 // Coupon
 if (!empty($this->orderDetails['details']['BT']->coupon_code)) {
-    echo vmText::_('COM_VIRTUEMART_COUPON_DISCOUNT') . ':' . $this->orderDetails['details']['BT']->coupon_code . ' ' . vmText::_('COM_VIRTUEMART_PRICE') . ':' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->coupon_discount,$this->currency);
+    echo vmText::_('COM_VIRTUEMART_COUPON_DISCOUNT') . ':' . $this->orderDetails['details']['BT']->coupon_code . ' ' . vmText::_('COM_VIRTUEMART_PRICE') . ':' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->coupon_discount,$this->user_currency_id);
     echo "\n";
 }
 
@@ -74,35 +74,35 @@ if (!empty($this->orderDetails['details']['BT']->coupon_code)) {
 
 foreach ($this->orderDetails['calc_rules'] as $rule) {
     if ($rule->calc_kind == 'DBTaxRulesBill') {
-	echo $rule->calc_rule_name . $this->currency->priceDisplay($rule->calc_amount, $this->currency) . "\n";
+	echo $rule->calc_rule_name . $this->currency->priceDisplay($rule->calc_amount, $this->user_currency_id) . "\n";
     } elseif ($rule->calc_kind == 'taxRulesBill') {
-	echo $rule->calc_rule_name . ' ' . $this->currency->priceDisplay($rule->calc_amount,$this->currency) . "\n";
+	echo $rule->calc_rule_name . ' ' . $this->currency->priceDisplay($rule->calc_amount,$this->user_currency_id) . "\n";
     } elseif ($rule->calc_kind == 'DATaxRulesBill') {
-	echo $rule->calc_rule_name . ' ' . $this->currency->priceDisplay($rule->calc_amount,$this->currency) . "\n";
+	echo $rule->calc_rule_name . ' ' . $this->currency->priceDisplay($rule->calc_amount,$this->user_currency_id) . "\n";
     }
 }
 
 
 echo strtoupper(vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING')) . ' (' . strip_tags(str_replace("<br />", "\n", $this->orderDetails['shipmentName'])) . ' ) ' . "\n";
-echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment,$this->currency);
+echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment,$this->user_currency_id);
 if (VmConfig::get('show_tax')) {
-    echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment_tax,$this->currency) . ')';
+    echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment_tax,$this->user_currency_id) . ')';
 }
 echo "\n";
 echo strtoupper(vmText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT')) . ' (' . strip_tags(str_replace("<br />", "\n", $this->orderDetails['paymentName'])) . ' ) ' . "\n";
-echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ':' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment,$this->currency);
+echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ':' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment,$this->user_currency_id);
 if (VmConfig::get('show_tax')) {
-    echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment_tax,$this->currency) . ')';
+    echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment_tax,$this->user_currency_id) . ')';
 }
 echo "\n";
 
 echo sprintf("%'-64.64s", '') . "\n";
 // total order
-echo vmText::_('COM_VIRTUEMART_MAIL_SUBTOTAL_DISCOUNT_AMOUNT') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billDiscountAmount,$this->currency) . "\n";
+echo vmText::_('COM_VIRTUEMART_MAIL_SUBTOTAL_DISCOUNT_AMOUNT') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billDiscountAmount,$this->user_currency_id) . "\n";
 
-echo strtoupper(vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL')) . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->currency) . "\n";
+echo strtoupper(vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL')) . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->user_currency_id) . "\n";
 if (VmConfig::get('show_tax')) {
-    echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billTaxAmount,$this->currency) . ')' . "\n";
+    echo ' (' . vmText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billTaxAmount,$this->user_currency_id) . ')' . "\n";
 }
 echo "\n";
 

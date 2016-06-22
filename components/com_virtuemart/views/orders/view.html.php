@@ -146,19 +146,23 @@ class VirtuemartViewOrders extends VmView {
 			if (!class_exists ('vmPSPlugin')) {
 				require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			}
-			JPluginHelper::importPlugin ('vmpayment');
-			$dispatcher = JDispatcher::getInstance ();
-			$dispatcher->trigger ('plgVmgetEmailCurrency', array($orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$emailCurrencyId));
+
 			if (!class_exists ('CurrencyDisplay')) {
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 			}
+			/*
+			 * Deprecated trigger will be renamed or removed
+			 */
+			JPluginHelper::importPlugin ('vmpayment');
+			$dispatcher = JDispatcher::getInstance ();
+			$dispatcher->trigger ('plgVmgetEmailCurrency', array($orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$emailCurrencyId));
 
 			$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $orderDetails['details']['BT']->virtuemart_vendor_id);
 			if ($emailCurrencyId) {
 				$currency->exchangeRateShopper = $orderDetails['details']['BT']->user_currency_rate;
 			}
 			$this->assignRef ('currency', $currency);
-
+			$this->user_currency_id = $emailCurrencyId;
 		} else { // 'list' -. default
 			$this->useSSL = VmConfig::get('useSSL',0);
 			$this->useXHTML = false;
@@ -168,6 +172,9 @@ class VirtuemartViewOrders extends VmView {
 				$this->orderlist = array();
 			} else {
 				$this->orderlist = $orderModel->getOrdersList($_currentUser->get('id'), TRUE);
+				if (!class_exists ('CurrencyDisplay')) {
+						require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
+				}
 				foreach ($this->orderlist as $k =>$order) {
 					$vendorId = 1;
 					$emailCurrencyId = $order->user_currency_id;
@@ -178,9 +185,7 @@ class VirtuemartViewOrders extends VmView {
 					JPluginHelper::importPlugin ('vmpayment');
 					$dispatcher = JDispatcher::getInstance ();
 					$dispatcher->trigger ('plgVmgetEmailCurrency', array($order->virtuemart_paymentmethod_id, $order->virtuemart_order_id, &$emailCurrencyId));
-					if (!class_exists ('CurrencyDisplay')) {
-						require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
-					}
+					
 					$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $vendorId);
 					$this->assignRef ('currency', $currency);
 					if ($emailCurrencyId) {

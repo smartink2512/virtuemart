@@ -80,7 +80,7 @@ if ($this->doctype == 'invoice') {
 <?php if ($this->doctype == 'invoice') { ?>
      <tr>
 	<td class="orders-key"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
-	<td class="orders-key" align="left"><strong><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->currency); ?></strong></td>
+	<td class="orders-key" align="left"><strong><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total,$this->user_currency_id); ?></strong></td>
     </tr>
 <?php } ?>
 
