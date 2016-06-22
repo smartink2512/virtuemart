@@ -118,7 +118,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	</td>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=optimizeDatabase&'.JSession::getFormToken().'=1' ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_UPDATEDATABASE_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( vmText::_('COM_VIRTUEMART_OPTIMIZE_DATABASE_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48"></span>
 	    <br />
             <?php echo vmText::_('COM_VIRTUEMART_OPTIMIZE_DATABASE'); ?>

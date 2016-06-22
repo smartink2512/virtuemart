@@ -460,6 +460,23 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, 'Database updated');
 	}
 
+	function optimizeDatabase(){
+		vRequest::vmCheckToken();
+		$db = JFactory::getDbo();
+		$q = $db->getQuery(true);
+		$q = 'OPTIMIZE TABLE' . $db->quoteName('#__virtuemart_products');
+		$db->setQuery($q);
+		$db->execute();
+		$q = $db->getQuery(true);
+		$q = 'OPTIMIZE TABLE' . $db->quoteName('#__virtuemart_product_categories');
+		$db->setQuery($q);
+		$db->execute();
+		$q = 'OPTIMIZE TABLE' . $db->quoteName('#__virtuemart_categories');
+		$db->setQuery($q);
+		$db->execute();
+		$this->setRedirect($this->redirectPath, 'Database updated');
+	}
+
 	/**
 	 * This is executing the update table commands to adjust joomla tables to the latest layout
 	 * @author Max Milbers
