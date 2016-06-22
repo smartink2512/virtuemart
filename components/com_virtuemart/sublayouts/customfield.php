@@ -325,7 +325,7 @@ class VirtueMartCustomFieldRenderer {
 					if($customfield->browseajax){
 						$och = ' data-dynamic-update="1"';
 					} else {
-						$och = ' onchange="window.top.location.href=this.options[this.selectedIndex].value"';
+						$och = ' data-dynamic-update="1" onchange="window.top.location.href=this.options[this.selectedIndex].value"';
 					}
 					$attribs['list.attr'] = 'size="1" class="vm-chzn-select no-vm-bind avselection"'.$och;
 					$attribs['list.translate'] = false;

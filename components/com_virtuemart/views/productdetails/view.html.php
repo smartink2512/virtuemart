@@ -270,8 +270,7 @@ class VirtueMartViewProductdetails extends VmView {
 			$this->user = JFactory::getUser();
 
 			// More reviews link
-			$uri = JURI::getInstance();
-			$uri->setVar('showall', 1);
+			vRequest::setVar('showall', 1);
 			$uristring = vmURI::getCleanUrl();
 			$this->assignRef('more_reviews', $uristring);
 

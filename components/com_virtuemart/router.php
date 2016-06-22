@@ -137,15 +137,15 @@ function virtuemartBuildRoute(&$query) {
 
 			// Joomla replace before route limitstart by start but without SEF this is start !
 			if ( isset($query['limitstart'] ) ) {
-				$limitstart = $query['limitstart'] ;
+				$limitstart = (int)$query['limitstart'] ;
 				unset($query['limitstart']);
 			}
 			if ( isset($query['start'] ) ) {
-				$start = $query['start'] ;
+				$start = (int)$query['start'] ;
 				unset($query['start']);
 			}
 			if ( isset($query['limit'] ) ) {
-				$limit = $query['limit'] ;
+				$limit = (int)$query['limit'] ;
 				unset($query['limit']);
 			}
 			if ($start !== null &&  $limitstart!== null ) {
@@ -362,7 +362,7 @@ function virtuemartParseRoute($segments) {
 		// limitstart is swapped by joomla to start ! See includes/route.php
 		if ($start = $results[0]-1) $vars['limitstart'] = $start;
 		else $vars['limitstart'] = 0 ;
-		$vars['limit'] = $results[1]-$results[0]+1;
+		$vars['limit'] = (int)$results[1]-$results[0]+1;
 
 	} else {
 		$vars['limitstart'] = 0 ;
@@ -654,7 +654,7 @@ function virtuemartParseRoute($segments) {
 
 	if(!isset($vars['virtuemart_product_id'])) {
 
-		$vars['view'] = 'productdetails';
+		//$vars['view'] = 'productdetails';	//Must be commmented, because else we cannot call custom views per extended plugin
 		if($last_elem=='notify') {
 			$vars['layout'] = 'notify';
 			array_pop($segments);

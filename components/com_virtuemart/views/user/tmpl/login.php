@@ -5,6 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage User
+* @deprecated use the sublayout instead
 * @author Max Milbers, George Kostopoulos
 *
 * @link http://www.virtuemart.net

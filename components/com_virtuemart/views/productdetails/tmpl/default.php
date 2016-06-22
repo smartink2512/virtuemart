@@ -237,8 +237,6 @@ if (VmConfig::get('showCategory', 1)) {
 }
 
 $j = 'jQuery(document).ready(function($) {
-	Virtuemart.product(jQuery("form.product"));
-
 	$("form.js-recalculate").each(function(){
 		if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
 			var id= $(this).find(\'input[name="virtuemart_product_id[]"]\').val();

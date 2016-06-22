@@ -35,12 +35,10 @@ class VirtuemartViewCategory extends VmView {
 	public function display($tpl = null) {
 
 		$this->show_prices  = (int)VmConfig::get('show_prices',1);
-		if($this->show_prices){
-			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
-			if (!class_exists('CurrencyDisplay'))
-				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
-		}
 
+		if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
+		if (!class_exists('CurrencyDisplay'))
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		$document = JFactory::getDocument();
@@ -121,8 +119,8 @@ class VirtuemartViewCategory extends VmView {
 
 				$this->products = false;
 
-				if(!empty($menu->query['showproducts'])){
-					$this->perRow = $menu->query['showproducts'];
+				if(!empty($menu->query['products_per_row'])){
+					$this->perRow = $menu->query['products_per_row'];
 				} else {
 					$this->perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
 				}
