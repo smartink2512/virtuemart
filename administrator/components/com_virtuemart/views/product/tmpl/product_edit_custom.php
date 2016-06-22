@@ -140,7 +140,7 @@ jQuery('#customfieldsTable').find('input').each(function(i){
 						$tables['categories'] .=  '
 							<div class="vm_thumb_image">
 								<span class="vmicon vmicon-16-move"></span>
-								<div class="vmicon vmicon-16-remove"></div>
+								<div class="vmicon vmicon-16-remove 4remove"></div>
 								<span>'.$customfield->display.'</span>
 								'.VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
@@ -150,7 +150,7 @@ jQuery('#customfieldsTable').find('input').each(function(i){
 						$tables['products'] .=  '
 							<div class="vm_thumb_image">
 								<span class="vmicon vmicon-16-move"></span>
-								<div class="vmicon vmicon-16-remove"></div>
+								<div class="vmicon vmicon-16-remove 4remove"></div>
 								<span>'.$customfield->display.'</span>
 								'.VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
@@ -199,7 +199,7 @@ jQuery('#customfieldsTable').find('input').each(function(i){
 								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>';
 						if($customfield->virtuemart_product_id==$this->product->virtuemart_product_id or $customfield->override!=0){
 							$tables['fields'] .= '<span class="vmicon vmicon-16-move"></span>
-							<span class="vmicon vmicon-16-remove"></span>';
+							<span class="vmicon vmicon-16-remove 4remove"></span>';
 						}
 						$tables['fields'] .= VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 						.'</td>

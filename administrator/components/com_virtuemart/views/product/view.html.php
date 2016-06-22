@@ -355,7 +355,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 					$old_state = $app->setUserState('virtuemart_category_id',$cI);
 				}
 			}
-			$superVendor = vmAccess::getVendorId();
+
+			$superVendor = vmAccess::isSuperVendor();
 			if(empty($superVendor)){
 				$productlist = array();
 				$this->filter_product = $model->filter_product;
@@ -389,7 +390,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 			$this->lists['vendors'] = '';
 			if($this->showVendors()){
-				$this->lists['vendors'] = Shopfunctions::renderVendorList($superVendor);
+				$this->lists['vendors'] = Shopfunctions::renderVendorList(vmAccess::getVendorId());
 			}
 
 

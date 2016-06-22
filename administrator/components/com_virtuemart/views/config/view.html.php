@@ -39,6 +39,9 @@ class VirtuemartViewConfig extends VmViewAdmin {
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
+		if(!class_exists('JFolder'))
+			require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+
 		$model = VmModel::getModel();
 		$usermodel = VmModel::getModel('user');
 

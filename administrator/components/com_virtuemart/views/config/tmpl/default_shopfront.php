@@ -119,7 +119,11 @@ defined('_JEXEC') or die('Restricted access');?>
 		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . vmText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . vmText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
 
 		<div class="clr"></div>
-		<?php echo JHtml::_('list.images', 'image', VmConfig::get('rised_availability'), " ", $this->imagePath); ?>
+		<?php if(!empty($this->imagePath) and JFolder::exists(VMPATH_ROOT . $this->imagePath)) {
+			echo JHtml::_('list.images', 'image', VmConfig::get('rised_availability'), " ", $this->imagePath);
+		} else {
+			echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH_MISSING');
+		}?>
 		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . vmText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2', $this->imagePath) ?>"></span>
 
 		<div class="clr"></div>

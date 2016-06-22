@@ -586,7 +586,7 @@ vmJsApi::addJScript('ordergui',$j);
 						-->
 						<a class="updateOrderItemStatus" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></a>
 						&nbsp;&nbsp;
-						<a href="#" onClick="javascript:cancelEdit(event);" ><span class="icon-nofloat vmicon vmicon-16-remove"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
+						<a href="#" onClick="javascript:cancelEdit(event);" ><span class="icon-nofloat vmicon vmicon-16-remove 4remove"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 						&nbsp;&nbsp;
 						<a href="#" onClick="javascript:enableEdit(event);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_EDIT'); ?></a>
 						&nbsp;&nbsp;

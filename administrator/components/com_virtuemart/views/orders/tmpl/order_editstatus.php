@@ -74,7 +74,7 @@ vmJsApi::addJScript( 'orderstatus', "
 		<a href="#" class="orderStatFormSubmit" >
 			<span class="icon-nofloat vmicon vmicon-16-save"></span>&nbsp;<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></a>&nbsp;&nbsp;&nbsp;
 		<a href="#" title="<?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?>" onClick="javascript:cancelOrderStatFormEdit(event);" class="show_element[updateOrderStatus]">
-			<span class="icon-nofloat vmicon vmicon-16-remove"></span>&nbsp;<?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
+			<span class="icon-nofloat vmicon vmicon-16-remove 4remove"></span>&nbsp;<?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 		</td>
 <!--
 		<input type="submit" value="<?php echo vmText::_('COM_VIRTUEMART_SAVE');?>" style="font-size: 10px" />

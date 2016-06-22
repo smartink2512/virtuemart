@@ -45,6 +45,9 @@ $mainframe = JFactory::getApplication();
 				-->
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_NAME','category_name',$this->category->category_name,'class="required"'); ?>
 					<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->category->published); ?>
+					<?php if($this->showVendors() ){
+						echo VmHTML::row('checkbox','COM_VIRTUEMART_SHARED', 'shared', $this->category->shared );
+					} ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_SLUG','slug',$this->category->slug); ?>
 					<?php echo VmHTML::row('editor','COM_VIRTUEMART_DESCRIPTION','category_description',$this->category->category_description); ?>
 				</table>

@@ -30,7 +30,7 @@ $i=0;
 		$parentRel = '';
 		if ($this->product->product_parent_id) {
 			$parentRel = vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_PARENT',JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
-				($this->product_parent->product_name), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.htmlentities($this->product_parent->product_name))).' =&gt; ');
+				($this->product_parent->product_name), array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.vRequest::vmSpecialChars($this->product_parent->product_name))).' =&gt; ');
 		}
 		echo vmText::sprintf('COM_VIRTUEMART_PRODUCT_INFORMATION',$parentRel);
 		echo ' id: '.$this->product->virtuemart_product_id ?>

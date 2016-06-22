@@ -154,7 +154,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 								<span class="vmicon vmicon-16-move"></span>
-								<span class="vmicon vmicon-16-remove"></span>
+								<span class="vmicon vmicon-16-remove 4remove"></span>
 
 						'.$this->model->setEditCustomHidden($field, $this->row).'
 					 	</td>
@@ -211,7 +211,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$display = $this->model->displayProductCustomfieldBE($custom,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
 				<span class="vmicon vmicon-16-move"></span>
-				<div class="vmicon vmicon-16-remove"></div>
+				<div class="vmicon vmicon-16-remove 4remove"></div>
 				<span>'.$display.'</span>
 				'.$this->model->setEditCustomHidden($custom, $this->row).'
 				</div>';

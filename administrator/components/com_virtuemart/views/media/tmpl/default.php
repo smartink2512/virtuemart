@@ -67,8 +67,13 @@ $productfileslist = $this->files;
 		$onlyMissing = vRequest::getCmd('missing',false);
 		foreach ($productfileslist as $key => $productfile) {
 
-			$rel_path = str_replace('/',DS,$productfile->file_url_folder);
-			$fullSizeFilenamePath = VMPATH_ROOT.DS.$rel_path.$productfile->file_name.'.'.$productfile->file_extension;
+			if($productfile->file_is_forSale){
+				$fullSizeFilenamePath = $productfile->file_url_folder.$productfile->file_name.'.'.$productfile->file_extension;
+			} else {
+				$rel_path = str_replace('/',DS,$productfile->file_url_folder);
+				$fullSizeFilenamePath = VMPATH_ROOT.DS.$rel_path.$productfile->file_name.'.'.$productfile->file_extension;
+			}
+
 			if($onlyMissing){
 				if(file_exists($fullSizeFilenamePath)){
 					continue;
@@ -110,7 +115,7 @@ $productfileslist = $this->files;
 					} else {
 						$file_url = $productfile->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
 						$file_alt = vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$productfile->file_description;
-						vmdebug('check path $file_url',$file_url);
+						vmdebug('check path $file_url',$file_url,$fullSizeFilenamePath);
 						echo $productfile->displayIt($file_url, $file_alt,'',false);
 					}
 

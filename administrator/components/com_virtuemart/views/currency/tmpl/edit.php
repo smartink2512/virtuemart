@@ -30,7 +30,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 	<fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_CURRENCY_DETAILS'); ?></legend>
 	<table class="admintable">
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NAME','currency_name',$this->currency->currency_name,'class="required"'); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NAME','currency_name',vRequest::vmSpecialChars($this->currency->currency_name),'class="required"'); ?>
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->currency->published); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE','currency_exchange_rate',$this->currency->currency_exchange_rate,'class="inputbox"','',6); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_2','currency_code_2',$this->currency->currency_code_2,'class="inputbox"','',2,2); ?>
@@ -40,8 +40,8 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_DECIMALS','currency_decimal_place',$this->currency->currency_decimal_place,'class="inputbox"','',20,20); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_DECIMALSYMBOL','currency_decimal_symbol',$this->currency->currency_decimal_symbol,'class="inputbox"','',10,10); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_THOUSANDS','currency_thousands',$this->currency->currency_thousands,'class="inputbox"','',10,10); ?>
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY','currency_positive_style',$this->currency->currency_positive_style,'class="inputbox"','',50,50); ?>
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY','currency_negative_style',$this->currency->currency_negative_style,'class="inputbox"','',50,50); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY','currency_positive_style',vRequest::vmSpecialChars($this->currency->currency_positive_style),'class="inputbox"','',50,50); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY','currency_negative_style',vRequest::vmSpecialChars($this->currency->currency_negative_style),'class="inputbox"','',50,50); ?>
 
 	</table>
 	<?php echo vmText::_('COM_VIRTUEMART_CURRENCY_DISPLAY_EXPL'); ?>
