@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 class VirtueMartCart {
 
 	var $products = array();
-	var $_productAdded = false;
+	var $_productAdded = true;
 	var $_calculated = false;
 	var $_inCheckOut = false;
 	var $_inConfirm = false;
@@ -1564,7 +1564,7 @@ class VirtueMartCart {
 						continue;
 					}
 					$productdata['quantity'] = (int)$productdata['quantity'];
-					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,FALSE,TRUE,$productdata['quantity']);
+					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,true,false,$productdata['quantity']);
 					if(empty($productTemp->virtuemart_product_id)){
 						vmError('prepareCartData virtuemart_product_id is empty','The product is no longer available');
 						unset($this->cartProductsData[$k]);
