@@ -1181,13 +1181,16 @@ class ShopFunctions {
 		return $html;
 	}
 
-	static function getAvailabilityIconUrl ($vmtemplate){
-		if(!empty($vmtemplate) and is_array($vmtemplate)) $vmtemplate = $vmtemplate['template'];
+	static function getAvailabilityIconUrl ($vmtemplate) {
 
-		if(is_Dir(VMPATH_ROOT.DS.'templates'.DS.$vmtemplate.DS.'images'.DS.'availability'.DS)){
+		if(!empty($vmtemplate) and is_array( $vmtemplate )) $vmtemplate = $vmtemplate['template'];
+
+		if(is_Dir( VMPATH_ROOT.DS.'templates'.DS.$vmtemplate.DS.'images'.DS.'availability'.DS )) {
 			return '/templates/'.$vmtemplate.'/images/availability/';
-		} else {
+		} else if(is_Dir(VMPATH_ROOT.'/'.VmConfig::get('assets_general_path').'images/availability/')){
 			return '/'.VmConfig::get('assets_general_path').'images/availability/';
+		}else {
+			return '';
 		}
 	}
 

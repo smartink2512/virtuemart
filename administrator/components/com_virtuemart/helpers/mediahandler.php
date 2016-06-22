@@ -476,6 +476,16 @@ class VmMediaHandler {
 			}
 		}
 
+
+		if($this->file_is_forSale){
+			$toChk = $this->file_url;
+		} else {
+			$toChk = VMPATH_ROOT.'/'.$this->file_url;
+		}
+		if(!JFile::exists($toChk)){
+			vmError(vmText::sprintf('COM_VIRTUEMART_FILE_NOT_FOUND',$toChk),vmText::sprintf('COM_VIRTUEMART_FILE_NOT_FOUND',''));
+		}
+
 		$file_url_thumb = $this -> getFileUrlThumb($width, $height);
 
 		$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
@@ -974,7 +984,7 @@ class VmMediaHandler {
 			<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
 		<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'" href="'.JURI::root(true).'/'.$image->file_url.'" >
 		<img src="' . JURI::root(true).'/'.$file_url_thumb . '" alt="' . $image->file_title . '"  />
-		</a><div class="vmicon vmicon-16-remove" title="'.vmText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.vmText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
+		</a><div class="vmicon vmicon-16-remove 4remove" title="'.vmText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.vmText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
 		} else {
 			$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;
 			return  '<div  class="vm_thumb_image"><b>'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$fileTitle.'</div>';
@@ -1000,7 +1010,7 @@ class VmMediaHandler {
 			} else {
 				$htmlImages .=  '<div class="vm_thumb_image">'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 			}
-			$Images[$key ]['label'] = $htmlImages.'<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id['.$image->virtuemart_media_id.']"><input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value=""><div class="vmicon vmicon-16-remove" title="remove"></div><div title="edit image information" class="edit-24-grey"></div></div>';
+			$Images[$key ]['label'] = $htmlImages.'<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id['.$image->virtuemart_media_id.']"><input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value=""><div class="vmicon vmicon-16-remove 4remove" title="remove"></div><div title="edit image information" class="edit-24-grey"></div></div>';
 			$Images[$key ]['value'] = $image->file_title.' :: '.$image->virtuemart_media_id;
 		}
 		//$list['htmlImages'] = $htmlImages;

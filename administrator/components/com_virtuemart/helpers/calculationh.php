@@ -300,8 +300,7 @@ class calculationHelper {
 		if (is_object($product)) {
 
 			if(!empty($product->allPrices[$product->selectedPrice])){
-				$prices = $product->allPrices[$product->selectedPrice];
-				//mdebug('my prices in getProductPrices',$prices);
+				$prices = $this->productPrices = $product->allPrices[$product->selectedPrice];
 				$costPrice = $prices['product_price'];
 				$this->productCurrency = $prices['product_currency'];
 				$override = $prices['override'];
@@ -315,7 +314,7 @@ class calculationHelper {
 			$this->_cats = isset($product->categories)? $product->categories: array();
 			$this->_product = $product;
 			$this->_product->amount = $amount;	//temporary quantity
-			$this->productPrices = array();
+			//$this->productPrices = array();
 			if(!isset($this->_product->quantity)) $this->_product->quantity = 1;
 
 			$this->_manufacturerId = !empty($product->virtuemart_manufacturer_id) ? $product->virtuemart_manufacturer_id:0;

@@ -62,9 +62,9 @@ class VmHtml{
 			$quote_style = constant($quote_style);
 		}
 		if( $use_entities ) {
-			$string = @htmlentities( $string, constant($quote_style), self::vmGetCharset() );
+			$string = @htmlentities( $string, constant($quote_style), 'UTF-8' );
 		} else {
-			$string = @htmlspecialchars( $string, $quote_style, self::vmGetCharset() );
+			$string = @htmlspecialchars( $string, $quote_style, 'UTF-8' );
 		}
 		return $string;
 	}
@@ -73,18 +73,14 @@ class VmHtml{
 	/**
 	 * Returns the charset string from the global _ISO constant
 	 *
+	 * @deprecated
 	 * @return string UTF-8 by default
 	 * @since 1.0.5
 	 */
-static function vmGetCharset() {
-		$iso = explode( '=', @constant('_ISO') );
-		if( !empty( $iso[1] )) {
-			return $iso[1];
-		}
-		else {
-			return 'UTF-8';
-		}
+	static function vmGetCharset() {
+		return 'UTF-8';
 	}
+
 
     /**
      * Generate HTML code for a row using VmHTML function
