@@ -229,7 +229,7 @@ if (!defined('K_TCPDF_CALLS_IN_HTML')) {
 }
 
 if (!defined('K_TCPDF_THROW_EXCEPTION_ERROR')) {
-	define('K_TCPDF_THROW_EXCEPTION_ERROR', false);
+	define('K_TCPDF_THROW_EXCEPTION_ERROR', true);
 }
 
 if (!defined('K_TIMEZONE')) {
