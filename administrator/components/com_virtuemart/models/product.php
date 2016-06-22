@@ -783,16 +783,16 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		$this->setState ('limit', $limit);
-		$this->setState ($limitString, $limit);
+		$this->setState ('limit', (int)$limit);
+		$this->setState ($limitString, (int)$limit);
 		$this->_limit = $limit;
 
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
 		//This functions assures that the steps of limitstart fit with the limit
 		$limitStart = ceil ((float)$limitStart / (float)$limit) * $limit;
 
-		$this->setState ('limitstart', $limitStart);
-		$this->setState ($limitStartString, $limitStart);
+		$this->setState ('limitstart', (int)$limitStart);
+		$this->setState ($limitStartString, (int)$limitStart);
 
 		$this->_limitStart = $limitStart;
 
@@ -861,6 +861,7 @@ class VirtueMartModelProduct extends VmModel {
 				return false;
 			} else {
 				//vmTime('getProduct return cached clone','getProduct');
+				//vmdebug('getProduct cached',self::$_products[$checkedProductKey[1]]->prices);
 				return clone(self::$_products[$checkedProductKey[1]]);
 			}
 		}
@@ -1007,8 +1008,9 @@ class VirtueMartModelProduct extends VmModel {
 		if(!self::$_products[$productKey]){
 			return false;
 		} else {
+			//vmdebug('getProduct fresh',$child);
 			//vmTime('getProduct loaded ','getProduct');
-			return clone(self::$_products[$productKey]);
+			return $child;//clone(self::$_products[$productKey]);
 		}
 
 	}
@@ -1065,6 +1067,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
 		$product->allPrices = $this->loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front);
+
 		$i = 0;
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
@@ -1106,7 +1109,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product->selectedPrice = null;
 		if(!empty($product->allPrices) and is_array($product->allPrices)){
 			$emptySpgrpPrice = 0;
-			//vmdebug('Set selectedPrice to ',$product->allPrices);
+
 			foreach($product->allPrices as $k=>$price){
 
 				if(empty($price['price_quantity_start'])){
@@ -1673,7 +1676,7 @@ class VirtueMartModelProduct extends VmModel {
 			foreach ($neighbors as &$neighbor) {
 
 				if(!empty($alreadyFound)) $alreadyFound = 'AND p.`virtuemart_product_id`!="'.$alreadyFound.'"';
-				$qm = $alreadyFound.' AND '.$whereorderByName.' '.$op.' "'.$orderByValue.'"  ORDER BY '.$orderByName.' LIMIT 1';
+				$qm = $alreadyFound.' AND '.$whereorderByName.' '.$op.' "'.$db->quote($orderByValue).'"  ORDER BY '.$orderByName.' LIMIT 1';
 				$db->setQuery ($q.$qm);
 				//vmdebug('getneighbors '.$q.$qm);
 				if ($result = $db->loadAssocList ()) {

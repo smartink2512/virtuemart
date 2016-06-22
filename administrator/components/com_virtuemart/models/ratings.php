@@ -33,6 +33,12 @@ class VirtueMartModelRatings extends VmModel {
 
 	var $_productBought = array();
 
+	private static $_select = TRUE; //' `u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, IFNULL(`u`.`name`, `pr`.`customer`) AS customer ';
+	private static $_jTables = ' LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on
+			(`pr`.`virtuemart_rating_vote_id` IS NOT NULL AND `rv`.`virtuemart_rating_vote_id`=`pr`.`virtuemart_rating_vote_id` ) XOR
+			(`pr`.`virtuemart_rating_vote_id` IS NULL AND (`rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`) )
+			LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id` ';
+
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -73,6 +79,32 @@ class VirtueMartModelRatings extends VmModel {
 		}
 		$this->addvalidOrderingFieldName($myarray);
 
+
+	}
+
+	public static function getSelect(){
+
+		if(self::$_select === TRUE){
+			$collate= '';
+			$collateMb4= '';
+			if(JVM_VERSION>=3){
+				$c = JFactory::getConfig();
+				$db = JFactory::getDbo();
+
+				$q = 'select COLLATION_NAME from information_schema.columns where TABLE_SCHEMA = "'.$c->get('db').'"
+				and TABLE_NAME = "'.str_replace('#__',$db->getPrefix(),'#__users').'"
+				and COLUMN_NAME = "name";';
+				$db->setQuery($q);
+				$r = $db->loadResult();
+				if($r!='utf8_general_ci'){
+					$collate= 'COLLATE utf8_general_ci';
+					$collateMb4= 'COLLATE utf8mb4_general_ci';
+				}
+				//vmdebug('my r',$db->getQuery(),$r);
+			}
+			self::$_select = ' `u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, IFNULL(`u`.`name` '.$collateMb4.', `pr`.`customer` '.$collate.') AS customer ';
+		}
+		return self::$_select;
 	}
 
     /**
@@ -171,7 +203,7 @@ class VirtueMartModelRatings extends VmModel {
 			if(!empty($virtuemart_vendor_id)){
 				$whereString .= ' AND `p`.virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';
 			}
-
+			self::$_select = self::getSelect();
 			$reviews[$hash] = $this->exeSortSearchListQuery(0,self::$_select,$tables,$whereString,'',$this->_getOrdering(), '', $num_reviews);
 		}
 
@@ -179,11 +211,7 @@ class VirtueMartModelRatings extends VmModel {
      	return $reviews[$hash];
     }
 
-	private static $_select = ' `u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, IFNULL(`u`.`name`, `pr`.`customer`) AS customer ';
-	private static $_jTables = ' LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on
-			(`pr`.`virtuemart_rating_vote_id` IS NOT NULL AND `rv`.`virtuemart_rating_vote_id`=`pr`.`virtuemart_rating_vote_id` ) XOR
-			(`pr`.`virtuemart_rating_vote_id` IS NULL AND (`rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`) )
-			LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id` ';
+
 	/**
 	 * @author Max Milbers
 	 * @param $cids
@@ -202,7 +230,7 @@ class VirtueMartModelRatings extends VmModel {
 			$t->created_by_alias = '';
 			return $t;
 		} else {
-			
+			self::$_select = self::getSelect();
 			$q = 'SELECT '.self::$_select.' FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ON `l`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`';
 		$q .= self::$_jTables;

@@ -378,7 +378,6 @@ class VirtueMartModelConfig extends VmModel {
 			$length = strlen($url);
 
 			if($length<=1){
-				vmdebug('Urlkey was TOO SHORT '.$urlkey.' = '.$url.' and length '.$length,$_raw[$urlkey]);
 				unset($config->_params[$urlkey]);
 				continue;
 			}
@@ -477,7 +476,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		VmConfig::loadConfig(true);
 
-		$d = array_diff($oldLangs,$active_langs);
+		$d = array_diff($active_langs,$oldLangs);
 		if(!empty($d)){
 			if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();

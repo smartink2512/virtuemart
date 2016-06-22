@@ -333,10 +333,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		//the option "is_cart_attribute" gives the possibility to set a price, there is no sense to set a price,
 		//if the custom is not stored in the order.
 		if ($field->is_input) {
-			if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
-			if(!class_exists('VirtueMartModelCurrency')) require(VMPATH_ADMIN.DS.'models'.DS.'currency.php');
 			$vendor_model = VmModel::getModel('vendor');
-			//$virtuemart_vendor_id = 1;
 			$vendor = $vendor_model->getVendor($virtuemart_vendor_id);
 			$currency_model = VmModel::getModel('currency');
 			$vendor_currency = $currency_model->getCurrency($vendor->vendor_currency);
@@ -482,7 +479,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$html .= '<textarea name="field[' . $row . '][selectoptions]['.$k.'][values]" rows="5" cols="35" style="float:none;margin:5px 5px 0;" >'.$soption->values.'</textarea>';
 
 					if($k>0){
-						$html .='<span class="vmicon vmicon-16-remove"></span>';
+						$html .='<span class="vmicon vmicon-16-remove 4remove"></span>';
 					} else {
 
 					}
