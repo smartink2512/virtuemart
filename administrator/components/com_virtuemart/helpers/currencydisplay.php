@@ -110,8 +110,8 @@ class CurrencyDisplay {
 				self::$_instance[$h]->_currency_id = $currencyId;
 			}
 
-			$vendorM = VmModel::getModel('currency');
-			$style = $vendorM->getData((int)self::$_instance[$h]->_currency_id);
+			$curM = VmModel::getModel('currency');
+			$style = $curM->getData((int)self::$_instance[$h]->_currency_id);
 
 			if(!empty($style)){
 				self::$_instance[$h]->setCurrencyDisplayToStyleStr($style);

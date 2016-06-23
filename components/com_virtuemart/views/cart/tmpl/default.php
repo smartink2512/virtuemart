@@ -46,7 +46,7 @@ JHtml::_ ('behavior.formvalidation');
 
 	<?php
 	$uri = vmURI::getCleanUrl();
-	$uri = str_replace('&tmpl=component','',$uri);
+	$uri = str_replace(array('?tmpl=component','&tmpl=component'),'',$uri);
 	echo shopFunctionsF::getLoginForm ($this->cart, FALSE,$uri);
 
 	// This displays the form to change the current shopper
