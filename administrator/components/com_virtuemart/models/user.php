@@ -526,7 +526,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 		if(empty($alreadyStoredUserData->customer_number)){
 			if(empty($data['customer_number'])){
-				$data['customer_number'] = strtoupper(substr($data['username'],0,2)).substr(md5($data['username']),0,9);
+				$data['customer_number'] = strtoupper(substr($data['username'],0,2)).substr(md5($data['username']),0,7);
 				//We set this data so that vmshopper plugin know if they should set the customer number
 				$data['customer_number_bycore'] = 1;
 			}

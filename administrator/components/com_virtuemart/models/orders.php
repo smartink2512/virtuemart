@@ -1610,7 +1610,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	static public function generateOrderNumber($uid = 0,$length=4, $virtuemart_vendor_id=1) {
+	static public function generateOrderNumber($uid = 0,$length=5, $virtuemart_vendor_id=1) {
 		return self::genStdOrderNumber($virtuemart_vendor_id, $length);
 	}
 

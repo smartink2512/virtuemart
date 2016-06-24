@@ -1230,7 +1230,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `virtuemart_user_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
-  `customer_number` char(32),
+  `customer_number` varchar(32),
   `virtuemart_paymentmethod_id` int(1) UNSIGNED,
   `virtuemart_shipmentmethod_id` int(1) UNSIGNED,
   `agreed` tinyint(1) NOT NULL DEFAULT '0',
