@@ -229,6 +229,28 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total, $this->user_currency_id); ?></strong></td>
 	</tr>
 	<?php
+	if($this->doVendor){
+		$comp = $this->orderDetails['details']['BT']->order_currency;
+	} else {
+		$comp = $this->user_currency_id;
+	}
+	if(!empty($this->orderDetails['details']['BT']->payment_currency_rate)
+		and $this->orderDetails['details']['BT']->payment_currency_id!=$comp and $this->orderDetails['details']['BT']->payment_currency_rate!=1.0){
+	?><tr>
+		<td align="right" class="pricePad" colspan="7"><strong><?php echo vmText::_('COM_VM_TOTAL_IN_PAYMENT_CURRENCY') ?></strong></td>
+		<td align="right" class="pricePad" colspan="2"><?php
+
+			if($this->orderDetails['details']['BT']->order_currency==$this->orderDetails['details']['BT']->user_currency_id and $this->orderDetails['details']['BT']->user_currency_id!=$this->orderDetails['details']['BT']->payment_currency_id){
+				echo $this->orderDetails['details']['BT']->payment_currency_rate;
+			} else if ($this->orderDetails['details']['BT']->order_currency==$this->orderDetails['details']['BT']->payment_currency_id and $this->orderDetails['details']['BT']->payment_currency_id!=$this->orderDetails['details']['BT']->user_currency_id){
+				echo $this->orderDetails['details']['BT']->user_currency_rate;
+			}
+			echo ' <strong>';
+			echo $this->currencyP->priceDisplay($this->orderDetails['details']['BT']->order_total, $this->orderDetails['details']['BT']->payment_currency_id); ?>
+			</strong></td>
+		</tr>
+		<?php
+	}
 
 	if($taxBill){
 		?><tr >

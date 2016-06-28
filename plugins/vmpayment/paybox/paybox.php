@@ -728,13 +728,9 @@ class plgVmpaymentPaybox extends vmPSPlugin {
 	function getEmailCurrency(&$method) {
 
 		if (!isset($method->email_currency)  or $method->email_currency == 'vendor') {
-			// 	    if (!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN . DS . 'models' . DS . 'vendor.php');
-			$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
-			$db = JFactory::getDBO();
-
-			$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
-			$db->setQuery($q);
-			return $db->loadResult();
+			$vendor_model = VmModel::getModel('vendor');
+			$vendor = $vendor_model->getVendor($method->virtuemart_vendor_id);
+			return $vendor->vendor_currency;
 		} else {
 			return $method->payment_currency; // either the vendor currency, either same currency as payment
 		}

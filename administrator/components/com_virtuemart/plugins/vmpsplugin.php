@@ -910,8 +910,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!isset($method->email_currency)  or $method->email_currency=='vendor') {
 			$vendor_model = VmModel::getModel('vendor');
 			$vendor = $vendor_model->getVendor($method->virtuemart_vendor_id);
-			$method->payment_currency = $vendor->vendor_currency;
-			return $method->payment_currency;
+			return $vendor->vendor_currency;
 		} else {
 			return $method->payment_currency; // either the vendor currency, either same currency as payment
 		}

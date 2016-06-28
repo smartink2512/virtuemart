@@ -698,6 +698,9 @@ class shopFunctionsF {
 		}
 		catch (Exception $e)
 		{
+			VmConfig::$logDebug = true;
+			vmdebug('Error sending mail ',$e);
+			vmError('Error sending mail ');
 			// this will take care of the error message
 			return false; 
 		}

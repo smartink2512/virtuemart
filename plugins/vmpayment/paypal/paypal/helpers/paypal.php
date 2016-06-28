@@ -67,7 +67,7 @@ class PaypalHelperPaypal {
 		//$this->_method->payment_currency = $this->paypalPlugin->getPaymentCurrency($this->_method);
 		$this->currency_code_3 = shopFunctions::getCurrencyByID($this->_method->payment_currency, 'currency_code_3');
 		if($this->_method->payment_currency==-1){
-			$this->debugLog(array($this->_method->payment_currency,$this->currency_code_3), '__construct '.get_class($this). ' payment currency and code3', 'debug', false);vmTrace('HIIIER');
+			$this->debugLog(array($this->_method->payment_currency,$this->currency_code_3), '__construct '.get_class($this). ' payment currency and code3', 'debug', false);
 		}
 
 	}

@@ -75,6 +75,40 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		return $SQLfields;
 	}
 
+
+	static function getPaymentCurrency (&$method, $selectedUserCurrency = false) {
+
+		if (empty($method->payment_currency)) {
+			$vendor_model = VmModel::getModel('vendor');
+			$vendor = $vendor_model->getVendor($method->virtuemart_vendor_id);
+			$method->payment_currency = $vendor->vendor_currency;
+			return $method->payment_currency;
+		} else {
+
+			$vendor_model = VmModel::getModel( 'vendor' );
+			$vendor_currencies = $vendor_model->getVendorAndAcceptedCurrencies( $method->virtuemart_vendor_id );
+
+			if(!$selectedUserCurrency) {
+				if($method->payment_currency == -1) {
+					$mainframe = JFactory::getApplication();
+					$selectedUserCurrency = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id', vRequest::getInt( 'virtuemart_currency_id', $vendor_currencies['vendor_currency'] ) );
+				} else {
+					$selectedUserCurrency = $method->payment_currency;
+				}
+			}
+
+			$vendor_currencies['all_currencies'] = explode(',', $vendor_currencies['all_currencies']);
+			if(in_array($selectedUserCurrency,$vendor_currencies['all_currencies'])){
+				$method->payment_currency = $selectedUserCurrency;
+			} else {
+				$method->payment_currency = $vendor_currencies['vendor_currency'];
+			}
+
+			return $method->payment_currency;
+		}
+
+	}
+
 	/**
 	 *
 	 *
@@ -96,7 +130,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
 
-		$this->getPaymentCurrency($method);
+		$this->getPaymentCurrency($method, $order['details']['BT']->payment_currency_id);
 		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
 		$email_currency = $this->getEmailCurrency($method);
 
@@ -394,19 +428,17 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		if (!$this->selectedThisElement($method->payment_element)) {
 			return FALSE;
 		}
-		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
-			// JError::raiseWarning(500, $db->getErrorMsg());
-			return '';
+
+		if(empty($method->email_currency)){
+
+		} else if($method->email_currency == 'vendor'){
+			$vendor_model = VmModel::getModel('vendor');
+			$vendor = $vendor_model->getVendor($method->virtuemart_vendor_id);
+			$emailCurrencyId = $vendor->vendor_currency;
+		} else if($method->email_currency == 'payment'){
+			$emailCurrencyId = $this->getPaymentCurrency($method);
 		}
-		if (empty($payments[0]->email_currency)) {
-			$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
-			$db = JFactory::getDBO();
-			$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
-			$db->setQuery($q);
-			$emailCurrencyId = $db->loadResult();
-		} else {
-			$emailCurrencyId = $payments[0]->email_currency;
-		}
+
 
 	}
 	/**

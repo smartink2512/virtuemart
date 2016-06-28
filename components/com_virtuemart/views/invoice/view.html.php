@@ -148,22 +148,50 @@ class VirtuemartViewInvoice extends VmView {
 
 		$virtuemart_vendor_id = $orderDetails['details']['BT']->virtuemart_vendor_id;
 
-		$user_currency_id = $orderDetails['details']['BT']->user_currency_id;
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+		$vendorModel->addImages($vendor);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
+		if (VmConfig::get ('enable_content_plugin', 0)) {
+			if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
+			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
+			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_legal_info');
+		}
+
+		$this->assignRef('vendor', $vendor);
+
+
+
+		$this->user_currency_id = $orderDetails['details']['BT']->user_currency_id;
+
 		/*
 		 * Deprecated trigger will be renamed or removed
 		 */
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		  JPluginHelper::importPlugin('vmpayment');
 	    $dispatcher = JDispatcher::getInstance();
-	    $dispatcher->trigger('plgVmgetEmailCurrency',array( $orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$user_currency_id));
+	    $dispatcher->trigger('plgVmgetEmailCurrency',array( $orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$this->user_currency_id));
+
 		if(!class_exists('CurrencyDisplay')) require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance($user_currency_id,$virtuemart_vendor_id);
-			if ($user_currency_id) {
-				$currency->exchangeRateShopper=$orderDetails['details']['BT']->user_currency_rate;
-			}
-		$this->assignRef('currency', $currency);
-		$this->assignRef('user_currency_id', $user_currency_id);
-vmdebug('user_currency_id', $user_currency_id);
+		$this->currency = CurrencyDisplay::getInstance($this->user_currency_id,$virtuemart_vendor_id);
+		if ($this->user_currency_id) {
+			$this->currency->exchangeRateShopper=$orderDetails['details']['BT']->user_currency_rate;
+		}
+
+		if($vendor->vendor_currency!=$this->user_currency_id){
+			$this->currencyV = CurrencyDisplay::getInstance($vendor->vendor_currency,$virtuemart_vendor_id);
+		} else {
+			$this->currencyV = $this->currency;
+		}
+
+		if($this->user_currency_id != $orderDetails['details']['BT']->payment_currency_id){
+			$this->currencyP = CurrencyDisplay::getInstance($orderDetails['details']['BT']->payment_currency_id,$virtuemart_vendor_id);
+			$this->currencyP->exchangeRateShopper = $orderDetails['details']['BT']->payment_currency_rate;
+		} else {
+			$this->currencyP = $this->currency;
+		}
+
 		//Create BT address fields
 		$userFieldsModel = VmModel::getModel('userfields');
 		$_userFields = $userFieldsModel->getUserFields(
@@ -236,18 +264,7 @@ vmdebug('user_currency_id', $user_currency_id);
 
 		}
 
-		$vendorModel = VmModel::getModel('vendor');
-		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
-		$vendorModel->addImages($vendor);
-		$vendor->vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
-		if (VmConfig::get ('enable_content_plugin', 0)) {
-			if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
-			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
-			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_legal_info');
-		}
 
-		$this->assignRef('vendor', $vendor);
 
 		if (strpos($layout,'mail') !== false) {
 			$lineSeparator="<br />";
@@ -268,12 +285,10 @@ vmdebug('user_currency_id', $user_currency_id);
 
 		if (strpos($layout,'mail') !== false) {
 		    if ($this->doVendor) {
-		    	$currencyV = CurrencyDisplay::getInstance($vendor->vendor_currency,$virtuemart_vendor_id);
-		    	 //Old text key COM_VIRTUEMART_MAIL_SUBJ_VENDOR_C
-			    $this->subject = vmText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_VENDOR_'.$orderDetails['details']['BT']->order_status, $this->shopperName, strip_tags($currencyV->priceDisplay($orderDetails['details']['BT']->order_total,$vendor->vendor_currency)), $orderDetails['details']['BT']->order_number);
+			    $this->subject = vmText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_VENDOR_'.$orderDetails['details']['BT']->order_status, $this->shopperName, strip_tags($this->currencyV->priceDisplay($orderDetails['details']['BT']->order_total)), $orderDetails['details']['BT']->order_number);
 			    $recipient = 'vendor';
 		    } else {
-			    $this->subject = vmText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_SHOPPER_'.$orderDetails['details']['BT']->order_status, $vendor->vendor_store_name, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total, $user_currency_id)), $orderDetails['details']['BT']->order_number );
+			    $this->subject = vmText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_SHOPPER_'.$orderDetails['details']['BT']->order_status, $vendor->vendor_store_name, strip_tags($this->currency->priceDisplay($orderDetails['details']['BT']->order_total, $this->user_currency_id)), $orderDetails['details']['BT']->order_number );
 			    $recipient = 'shopper';
 		    }
 		    $this->assignRef('recipient', $recipient);

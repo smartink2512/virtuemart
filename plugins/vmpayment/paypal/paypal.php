@@ -385,50 +385,40 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return $html;
 	}
 
-	/**
-	 * @param      $method
-	 * @param bool $getCurrency
-	 */
 	static function getPaymentCurrency (&$method, $selectedUserCurrency = false) {
 
-		static $pcId = TRUE;
-		if($pcId === TRUE){
-			//$pcId = false;
-			if (empty($method->payment_currency)) {
-				$vendor_model = VmModel::getModel('vendor');
-				$vendor = $vendor_model->getVendor($method->virtuemart_vendor_id);
-				$method->payment_currency = $vendor->vendor_currency;
-			} else {	//if (isset($method->payment_currency) ){ 	// and $method->payment_currency== -1) {
+		if (empty($method->payment_currency)) {
+			$vendor_model = VmModel::getModel('vendor');
+			$vendor = $vendor_model->getVendor($method->virtuemart_vendor_id);
+			$method->payment_currency = $vendor->vendor_currency;
+			return $method->payment_currency;
+		} else {
 
-				$vendor_model = VmModel::getModel('vendor');
-				$vendor_currencies = $vendor_model->getVendorAndAcceptedCurrencies($method->virtuemart_vendor_id);
-				if(!$selectedUserCurrency){
-					if($method->payment_currency== -1){
-						$mainframe = JFactory::getApplication();
-						$selectedUserCurrency = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id', $vendor_currencies['vendor_currency']) );
+			$vendor_model = VmModel::getModel( 'vendor' );
+			$vendor_currencies = $vendor_model->getVendorAndAcceptedCurrencies( $method->virtuemart_vendor_id );
 
-					} else if (!empty($method->payment_currency)){
-						$selectedUserCurrency = $method->payment_currency;
-					} else {
-						$selectedUserCurrency = $vendor_currencies['vendor_currency'];
-					}
-				}
-				/*else if (!empty($method->payment_currency)){
-					$selectedUserCurrency = $method->payment_currency;
-				}*/
-
-				$vendor_currencies['all_currencies'] = explode(',', $vendor_currencies['all_currencies']);
-				if(in_array($selectedUserCurrency,$vendor_currencies['all_currencies'])){
-					$method->payment_currency = $selectedUserCurrency;
+			if(!$selectedUserCurrency) {
+				if($method->payment_currency == -1) {
+					$mainframe = JFactory::getApplication();
+					$selectedUserCurrency = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id', vRequest::getInt( 'virtuemart_currency_id', $vendor_currencies['vendor_currency'] ) );
 				} else {
-					$method->payment_currency = $vendor_currencies['vendor_currency'];
+					$selectedUserCurrency = $method->payment_currency;
 				}
 			}
-			$pcId = $method->payment_currency;
-			vmdebug('setPaymentCurrency $method->payment_currency',$method->payment_currency);
+
+			$vendor_currencies['all_currencies'] = explode(',', $vendor_currencies['all_currencies']);
+			if(in_array($selectedUserCurrency,$vendor_currencies['all_currencies'])){
+				$method->payment_currency = $selectedUserCurrency;
+			} else {
+				$method->payment_currency = $vendor_currencies['vendor_currency'];
+			}
+
+			return $method->payment_currency;
 		}
-		return $pcId;
+
 	}
+
+
 
 	/**
 	 *
@@ -452,16 +442,18 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}
 		$html='';
-		$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod,$order['details']['BT']->user_currency_id);
+		$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod,$order['details']['BT']->payment_currency_id);
 		//$this->_currentMethod->payment_currency=$order['details']['BT']->user_currency_id;
 		$email_currency = $this->getEmailCurrency($this->_currentMethod);
 
 		$payment_name = $this->renderPluginName($this->_currentMethod, $order);
 
 		$paypalInterface = $this->_loadPayPalInterface();
+
 		$paypalInterface->debugLog('order number: ' . $order['details']['BT']->order_number, 'plgVmConfirmedOrder', 'debug');
 		$paypalInterface->setCart($cart);
 		$paypalInterface->setOrder($order);
+
 		$paypalInterface->setTotal($order['details']['BT']->order_total);
 		$paypalInterface->loadCustomerData();
 
@@ -617,25 +609,34 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	function plgVmgetEmailCurrency($virtuemart_paymentmethod_id, $virtuemart_order_id, &$emailCurrencyId) {
 
-		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
-		if (!$this->selectedThisElement($this->_currentMethod->payment_element)) {
+		if (!$this->selectedThisElement($method->payment_element)) {
 			return FALSE;
 		}
-		if (!($payments = $this->_getPaypalInternalData($virtuemart_order_id))) {
+		/*if (!($payments = $this->_getPaypalInternalData($virtuemart_order_id))) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
-		}
-		if (empty($payments[0]->email_currency)) {
+		}*/
+		$emailCurrencyId = $this -> getEmailCurrency($method);
+		return $emailCurrencyId;
+
+	}
+
+	function getEmailCurrency (&$method) {
+
+		if(empty($method->email_currency) or $method->email_currency == 'vendor'){
 			$vendor_model = VmModel::getModel('vendor');
-			$vendor_currencies = $vendor_model->getVendorAndAcceptedCurrencies($this->_currentMethod->virtuemart_vendor_id);
-			$emailCurrencyId = $vendor_currencies['vendor_currency'];
-
-		} else {
-			$emailCurrencyId = $payments[0]->email_currency;
+			$vendor = $vendor_model->getVendor($method->virtuemart_vendor_id);
+			$emailCurrencyId = $vendor->vendor_currency;
+		} else if($method->email_currency == 'payment'){
+			$emailCurrencyId = $this->getPaymentCurrency($method);
 		}
+		else if($method->email_currency == 'user'){
 
+		}
+		return $emailCurrencyId;
 	}
 
 	/**

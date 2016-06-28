@@ -42,7 +42,6 @@ class CurrencyDisplay {
 
 	private function __construct ($vendorId = 0){
 
-		$this->_app = JFactory::getApplication();
 		if(empty($vendorId)) $vendorId = 1;
 
 		$vendorM = VmModel::getModel('vendor');
@@ -98,9 +97,9 @@ class CurrencyDisplay {
 			self::$_instance[$h] = new CurrencyDisplay($vendorId);
 
 			if(empty($currencyId)){
-
-				if(self::$_instance[$h]->_app->isSite()){
-					self::$_instance[$h]->_currency_id = self::$_instance[$h]->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id', 0));
+				$app = JFactory::getApplication();
+				if($app->isSite()){
+					self::$_instance[$h]->_currency_id = $app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vRequest::getInt('virtuemart_currency_id', 0));
 				}
 				if(empty(self::$_instance[$h]->_currency_id)){
 					self::$_instance[$h]->_currency_id = self::$_instance[$h]->_vendorCurrency;
@@ -230,14 +229,8 @@ class CurrencyDisplay {
 	 */
 	public function getCurrencyForDisplay( $currencyId=0 ){
 
-		if(empty($currencyId)){
-			$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
-			if(empty($currencyId)){
-				$currencyId = $this->_vendorCurrency;
-			}
-		}
 
-		return $currencyId;
+		return $this->_currency_id;
 	}
 
 	/**
