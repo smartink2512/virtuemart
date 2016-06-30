@@ -33,6 +33,13 @@
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
+            <field name="showsearch" type="radio" default="1"
+                   label="COM_VM_CATEGORY_FIELD_SELECT_SHOWSEARCH"
+                   extension="com_virtuemart"
+                   description="COM_VM_CATEGORY_FIELD_SELECT_SHOWSEARCH_TIP" >
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
             <field name="productsublayout" type="vmproductsublayout"
                    label="COM_VIRTUEMART_CFG_PRODUCTS_SUBLAYOUT" required="true"
                    extension="com_virtuemart"

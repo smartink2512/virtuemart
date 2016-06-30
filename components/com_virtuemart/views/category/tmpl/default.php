@@ -40,7 +40,7 @@ if (empty($this->keyword) and !empty($this->category)) {
 }
 
 // Show child categories
-if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
+if ($this->showcategory and empty($this->keyword)) {
 	if (!empty($this->category->haschildren)) {
 		echo ShopFunctionsF::renderVmSubLayout('categories',array('categories'=>$this->category->children));
 	}
@@ -51,7 +51,7 @@ if($this->showproducts){
 <div class="browse-view">
 <?php
 
-if (!empty($this->keyword)) {
+if ($this->showsearch or !empty($this->keyword)) {
 	//id taken in the view.html.php could be modified
 	$category_id  = vRequest::getInt ('virtuemart_category_id', 0); ?>
 	<h3><?php echo $this->keyword; ?></h3>

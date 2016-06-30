@@ -219,7 +219,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		//$this->virtuemart_vendor_id = vmAccess::isSuperVendor();
 		$this->virtuemart_vendor_id = vmAccess::getVendorId();
-		vmdebug('Product model my $this->virtuemart_vendor_id',$this->virtuemart_vendor_id);
+
 		$this->__state_set = true;
 	}
 
@@ -286,6 +286,20 @@ class VirtueMartModelProduct extends VmModel {
 
 		$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
 
+		if (!empty($this->searchcustoms)) {
+			$joinCustom = TRUE;
+			foreach ($this->searchcustoms as $key => $searchcustom) {
+				if(empty($searchcustom)) continue;
+				$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`customfield_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
+				//$custom_search_value[] = 'pf.`customfield_value` like "%' . $db->escape ($searchcustom, TRUE) . '%"';
+				//$custom_search_key[] = 'pf.`virtuemart_custom_id`="' . (int)$key . '"';
+			}
+			if(!empty($custom_search)){
+				$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
+				//$where[] = " ( " . implode (' AND ', $custom_search_value) . " AND (".implode (' OR ', $custom_search_key).")) ";
+			}
+		}
+
 		if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
 			$keyword = vRequest::filter(html_entity_decode($this->keyword, ENT_QUOTES, "UTF-8"),FILTER_SANITIZE_STRING,FILTER_FLAG_ENCODE_LOW);
@@ -336,15 +350,6 @@ class VirtueMartModelProduct extends VmModel {
 				$langFields[] = 'product_name';
 				//If they have no check boxes selected it will default to product name at least.
 			}
-		}
-
-
-		if (!empty($this->searchcustoms)) {
-			$joinCustom = TRUE;
-			foreach ($this->searchcustoms as $key => $searchcustom) {
-				$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`customfield_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
-			}
-			$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
 		}
 
 		if($isSite and !VmConfig::get('use_as_catalog',0)) {
@@ -618,6 +623,10 @@ class VirtueMartModelProduct extends VmModel {
 
 		$select = ' p.`virtuemart_product_id`'.$ff_select_price.$selectLang.' FROM `#__virtuemart_products` as p ';
 
+		if ($this->searchcustoms) {
+			$joinedTables[] = ' INNER JOIN `#__virtuemart_product_customfields` as pf ON p.`virtuemart_product_id` = pf.`virtuemart_product_id` ';
+		}
+
 		if ($joinShopper == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_shoppergroups` as ps ON p.`virtuemart_product_id` = `ps`.`virtuemart_product_id` ';
 			//$joinedTables[] = ' LEFT OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id` ';
@@ -644,9 +653,6 @@ class VirtueMartModelProduct extends VmModel {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
 		}
 
-		if ($this->searchcustoms) {
-			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_customfields` as pf ON p.`virtuemart_product_id` = pf.`virtuemart_product_id` ';
-		}
 
 		if ($this->searchplugin !== 0) {
 			if (!empty($PluginJoinTables)) {

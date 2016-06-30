@@ -330,6 +330,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:hidden',
   `is_cart_attribute` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Add attributes to cart',
   `is_input` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Add input to cart',
+  `searchable` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Available as search filter',
   `layout_pos` varchar(24) COMMENT 'Layout Position',
   `custom_params` varchar(17000)  NOT NULL DEFAULT '',
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valid for all vendors?',
@@ -348,6 +349,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   KEY `field_type` (`field_type`),
   KEY `is_cart_attribute` (`is_cart_attribute`),
   KEY `is_input` (`is_input`),
+  KEY `searchable` (`searchable`),
   KEY `shared` (`shared`),
   KEY `published` (`published`),
   KEY `ordering` (`ordering`)

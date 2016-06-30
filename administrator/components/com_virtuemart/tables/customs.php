@@ -67,7 +67,7 @@ class TableCustoms extends VmTable {
 
 	/** @var int(1)  1= cart attributes and price added to cart */
 	var $is_cart_attribute		= 0;
-
+	var $searchable = 0;
 	var $layout_pos = '';
 
 	/** @var int custom published or not */
