@@ -38,16 +38,11 @@ class VirtueMartViewVirtueMart extends VmView {
 		$vendorModel->setId($vendorId);
 		$this->vendor = $vendorModel->getVendor();
 
-		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		if (VmConfig::get ('enable_content_plugin', 0)) {
-			shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_store_desc');
-			shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_terms_of_service');
-		}
-
 		$app = JFactory::getApplication();
 		$menus = $app->getMenu();
 		$menu = $menus->getActive();
 
+		if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if(!empty($menu->id)){
 			ShopFunctionsF::setLastVisitedItemId($menu->id);
 		} else if($itemId = vRequest::getInt('Itemid',false)){
@@ -57,6 +52,12 @@ class VirtueMartViewVirtueMart extends VmView {
 		$document = JFactory::getDocument();
 
 		if(!VmConfig::get('shop_is_offline',0)){
+
+
+			if (VmConfig::get ('enable_content_plugin', 0)) {
+				shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_store_desc');
+				shopFunctionsF::triggerContentPlugin($this->vendor, 'vendor','vendor_terms_of_service');
+			}
 
 			if( ShopFunctionsF::isFEmanager('product.edit') ){
 				$add_product_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=0&manage=1' ;

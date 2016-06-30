@@ -1217,6 +1217,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if(!function_exists('EnsureIsArray')) require(VMAVALARA_PATH.DS.'AvaTax.php');	// include in all Avalara Scripts
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
+		if(!class_exists('TaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'TaxRequest.class.php');
 		if(!class_exists('CancelTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'CancelTaxRequest.class.php');
 
 		$this->newATConfig($calc);

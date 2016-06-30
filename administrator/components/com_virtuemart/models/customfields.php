@@ -725,14 +725,14 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			/* related category*/
 			case 'Z':
-				if (!$product_id or empty($field->customfield_value)) {
+				if (empty($field->customfield_value)) {
 					return '';
 				} // special case it's category ID !
 
 				$q = 'SELECT * FROM `#__virtuemart_categories_' . VmConfig::$vmlang . '` INNER JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `virtuemart_category_id`= "' . (int)$field->customfield_value . '" ';
 				$db = JFactory::getDBO();
 				$db->setQuery ($q);
-				//echo $db->_sql;
+
 				if ($category = $db->loadObject ()) {
 					$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias` WHERE `virtuemart_category_id`= "' . (int)$field->customfield_value . '" ';
 					$db->setQuery ($q);

@@ -898,7 +898,7 @@ class vmrouterHelper {
 		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
 			$q = 'SELECT IFNULL(l.`virtuemart_category_id`,ld.`virtuemart_category_id`) as `virtuemart_category_id` ';
 			$q .= ' FROM `#__virtuemart_categories_'.VmConfig::$defaultLang.'` AS `ld` ';
-			$q .= ' LEFT JOIN `#__virtuemart_categories_' .VmConfig::$vmlang . '` as l using (`virtuemart_category_id`) ';
+			$q .= ' LEFT JOIN `#__virtuemart_categories_' .VmConfig::$vmlang . '` as l ON (ld.`virtuemart_category_id`=l.`virtuemart_category_id`) ';
 			$q .= ' WHERE IFNULL(l.`slug`,ld.`slug`) = "'.$db->escape($slug).'" ';
 			$hash = md5(VmConfig::$defaultLang.$slug.VmConfig::$defaultLang);
 		} else {
@@ -1003,9 +1003,9 @@ class vmrouterHelper {
 
 			$q = 'SELECT IFNULL(l.`virtuemart_product_id`,'.$select2.') as `virtuemart_product_id` ';
 			$q .= ' FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ';
-			$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`) ';
+			$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld ON (l.`virtuemart_product_id`=ld.`virtuemart_product_id`) ';
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd using (`virtuemart_product_id`) ';
+				$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd ON (l.`virtuemart_product_id`=ljd.`virtuemart_product_id`) ';
 			}
 			$q .= ' WHERE IFNULL(l.`slug`,'.$where2.') = "'.$db->escape($productName).'" ';
 			$hash = md5(VmConfig::$defaultLang.$productName.VmConfig::$vmlang);

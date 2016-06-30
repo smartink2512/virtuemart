@@ -29,9 +29,9 @@ vmSetStartTime('vmStart');
 
 VmConfig::loadJLang('com_virtuemart', true);
 
-
-if(VmConfig::get('shop_is_offline',0)){
-	//$cache->setCaching (1);
+$_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart')) ;
+$task = vRequest::getCmd('task','') ;
+if(VmConfig::get('shop_is_offline',0) and $task!='feed' and $_controller!='virtuemart'){	//yes, quickndirty
 	$_controller = 'virtuemart';
 	require (VMPATH_SITE.DS.'controllers'.DS.'virtuemart.php');
 	vRequest::setVar('view', 'virtuemart');
@@ -43,10 +43,10 @@ if(VmConfig::get('shop_is_offline',0)){
 	if(!class_exists('VmImage')) require(VMPATH_ADMIN.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	if(!class_exists('shopFunctionsF'))require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
-	$_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart')) ;
+
 	$trigger = 'onVmSiteController';
 // 	$task = vRequest::getCmd('task',vRequest::getCmd('layout',$_controller) );		$this makes trouble!
-	$task = vRequest::getCmd('task','') ;
+
 
 	$session = JFactory::getSession();
 	$manage = vRequest::getCmd('manage',$session->get('manage', false,'vm'));

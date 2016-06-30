@@ -44,7 +44,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 	}
 	function display($tpl = null) {
 
-		$filter = vRequest::getVar('q', vRequest::getVar('term', false) );
+		$filter = trim(vRequest::getVar('q', vRequest::getVar('term', '') ));
 
 		$id = vRequest::getInt('id', false);
 		$virtuemart_product_id = vRequest::getInt('virtuemart_product_id',array());
@@ -59,21 +59,22 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				FROM #__virtuemart_products_".VmConfig::$vmlang."
 				 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)";
-			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->escape( $filter, true ) ."%' or product_sku LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
+			if (!empty($filter)) $query .= " WHERE product_name LIKE '%". $this->db->escape( $filter, true ) ."%' or product_sku LIKE '%". $this->db->escape( $filter, true ) ."%'";
 			self::setRelatedHtml($product_id,$query,'R');
 		}
 		else if ($this->type=='relatedcategories')
 		{
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories_".VmConfig::$vmlang;
-			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
+			if (!empty($filter)) $query .= " WHERE category_name LIKE '%". $this->db->escape(  $filter, true ) ."%'";
 			self::setRelatedHtml($product_id,$query,'Z');
 		}
 		else if ($this->type=='custom')
 		{
 			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";
-			if ($filter) $query .= " WHERE custom_title LIKE '%".$filter."%' limit 0,50";
+			if (!empty($filter)) $query .= " WHERE custom_title LIKE '%".$filter."%' ";
+			$query .= " limit 0,50";
 			$this->db->setQuery($query);
 			$this->json['value'] = $this->db->loadObjectList();
 			$this->json['ok'] = 1 ;
@@ -192,8 +193,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 	}
 
 	function setRelatedHtml($product_id,$query,$fieldType) {
-
-		$this->db->setQuery($query);
+//VmConfig::$echoDebug=true;
+		$this->db->setQuery($query.' limit 0,50');
 		$this->json = $this->db->loadObjectList();
 
 		$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="'.$fieldType.'" ';
@@ -204,11 +205,14 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			return false;
 		}
 		$custom->virtuemart_product_id = $product_id;
-		foreach ($this->json as &$related) {
+		/*$m = count($this->json);
+		vmdebug('setRelatedHtml '.str_replace('#__',$this->db->getPrefix(),$this->db->getQuery()),$m);*/
+		foreach ($this->json as $k=>$related) {
 
 			$custom->customfield_value = $related->id;
 
 			$display = $this->model->displayProductCustomfieldBE($custom,$related->id,$this->row);
+
 			$html = '<div class="vm_thumb_image">
 				<span class="vmicon vmicon-16-move"></span>
 				<div class="vmicon vmicon-16-remove 4remove"></div>
@@ -216,7 +220,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				'.$this->model->setEditCustomHidden($custom, $this->row).'
 				</div>';
 
-			$related->label = $html;
+			$this->json[$k]->label = $html;
 
 		}
 	}
