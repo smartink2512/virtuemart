@@ -97,7 +97,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->searchcustom = '';
 		$this->searchCustomValues = '';
 
-		if(!isset($menu->query['showsearch'])) $menu->query['showsearch'] = VmConfig::get ('showsearch', 1);
+		if(!isset($menu->query['showsearch'])) $menu->query['showsearch'] = VmConfig::get ('showsearch', false);
 		$this->showsearch = vRequest::getInt('showsearch',$menu->query['showsearch']);
 
 		if($keyword or $this->showsearch){

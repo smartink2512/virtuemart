@@ -54,17 +54,27 @@ if($this->showproducts){
 if ($this->showsearch or !empty($this->keyword)) {
 	//id taken in the view.html.php could be modified
 	$category_id  = vRequest::getInt ('virtuemart_category_id', 0); ?>
-	<h3><?php echo $this->keyword; ?></h3>
+	<h3><?php echo vmText::_('COM_VIRTUEMART_SEARCH_KEYWORD_FOR') . $this->keyword; ?></h3>
 
 	<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 
 		<!--BEGIN Search Box -->
 		<div class="virtuemart_search">
-			<?php echo $this->searchCustomList ?>
-			<br/>
-			<?php echo $this->searchCustomValues ?>
-			<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
-			<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+			<?php if(!empty($this->searchCustomList)) { ?>
+			<div class="vm-search-custom-list">
+				<?php echo $this->searchCustomList ?>
+			</div>
+			<?php } ?>
+
+			<?php if(!empty($this->searchCustomValues)) { ?>
+			<div class="vm-search-custom-values">
+				<?php echo $this->searchCustomValues ?>
+			</div>
+			<?php } ?>
+			<div class="vm-search-custom-search-input">
+				<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
+				<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+			</div>
 		</div>
 		<input type="hidden" name="search" value="true"/>
 		<input type="hidden" name="view" value="category"/>
