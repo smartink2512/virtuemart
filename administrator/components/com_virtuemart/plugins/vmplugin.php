@@ -94,7 +94,7 @@ abstract class vmPlugin extends JPlugin {
 	public function convertDec(&$data){
 
 		if($this->_toConvertDec){
-			foreach($tCon as $f){
+			foreach($this->_toConvertDec as $f){
 				if(!empty($data[$f])){
 					$data[$f] = str_replace(array(',',' '),array('.',''),$data[$f]);
 				}
