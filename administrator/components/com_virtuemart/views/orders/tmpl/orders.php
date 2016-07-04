@@ -22,7 +22,7 @@ AdminUIHelper::startAdminArea ($this);
 $styleDateCol = 'style="width:5%;min-width:110px"';
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=orders" method="post" name="adminForm" id="adminForm">
 	<div id="header">
 		<div id="filterbox">
 			<table>

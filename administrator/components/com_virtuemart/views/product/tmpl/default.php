@@ -27,7 +27,7 @@ AdminUIHelper::startAdminArea($this);
 if ($product_parent_id=vRequest::getInt('product_parent_id', false))   $col_product_name='COM_VIRTUEMART_PRODUCT_CHILDREN_LIST'; else $col_product_name='COM_VIRTUEMART_PRODUCT_NAME';
 
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=product" method="post" name="adminForm" id="adminForm">
 <div id="header">
 <span id="filterbox">
 	<span>

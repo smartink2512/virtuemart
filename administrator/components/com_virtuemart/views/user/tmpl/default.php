@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea($this);
 
 ?>
-<form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=user' );?>" method="post" name="adminForm" id="adminForm">
 	<div id="header">
 	<div id="filterbox">
 		<table>

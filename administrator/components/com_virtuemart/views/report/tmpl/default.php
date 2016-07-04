@@ -27,7 +27,7 @@ else $addDateInfo = false;
 //JHtml::_('behavior.framework', true);
 
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=report" method="post" name="adminForm" id="adminForm">
     <div id="header">
         <h2><?php echo vmText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) ); ?></h2>
         <div id="filterbox">

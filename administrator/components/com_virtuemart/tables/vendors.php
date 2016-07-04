@@ -114,6 +114,7 @@ class TableVendors extends VmTableData {
 			
 			'vendor_letter_add_tos' => array(0,'int'),
 			'vendor_letter_add_tos_newpage' => array(1,'int'),
+			'vendor_letter_for_product_pdf' => array(0,'int'),
 
 			'vendor_mail_width' => array(640, 'int'),
 			'vendor_mail_header' => array(1, 'int'),

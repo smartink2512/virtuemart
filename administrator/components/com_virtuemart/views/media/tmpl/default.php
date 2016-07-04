@@ -24,7 +24,7 @@ jimport('joomla.filesystem.file');
 $option = vRequest::getCmd('option');
 
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=media" method="post" name="adminForm" id="adminForm">
 	<div id="header">
 		<div id="filterbox">
 		<table>

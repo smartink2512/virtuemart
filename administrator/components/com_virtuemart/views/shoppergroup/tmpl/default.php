@@ -23,7 +23,7 @@ AdminUIHelper::startAdminArea($this);
 
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=shoppergroup" method="post" name="adminForm" id="adminForm">
   <div id="editcell">
 	  <table class="adminlist table table-striped" cellspacing="0" cellpadding="0">
 		<thead>

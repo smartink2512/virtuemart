@@ -23,7 +23,7 @@ AdminUIHelper::startAdminArea($this);
 $states = vmText::_('COM_VIRTUEMART_STATE_S');
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=country" method="post" name="adminForm" id="adminForm">
 	<div id="header">
 	<div id="filterbox">
 		<table>

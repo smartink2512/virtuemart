@@ -26,7 +26,7 @@ $option = vRequest::getCmd('option');
 /* Load some variables */
 $keyword = vRequest::getCmd('keyword', null);
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=custom" method="post" name="adminForm" id="adminForm">
 <div id="header">
 	<div>
 		<?php

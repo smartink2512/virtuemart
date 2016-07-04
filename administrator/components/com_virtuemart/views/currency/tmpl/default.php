@@ -23,7 +23,7 @@ AdminUIHelper::startAdminArea($this);
 
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=currency" method="post" name="adminForm" id="adminForm">
     <table>
 	<tr>
 	    <td width="100%">

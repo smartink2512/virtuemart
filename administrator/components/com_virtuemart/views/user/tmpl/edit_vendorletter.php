@@ -108,6 +108,8 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 							'vendor_letter_add_tos', $this->vendor->vendor_letter_add_tos); ?> 
 						<?php echo VmHTML::row('checkbox', 'COM_VIRTUEMART_VENDOR_LETTER_ADD_TOS_PAGEBREAK', 
 							'vendor_letter_add_tos_newpage', $default=$this->vendor->vendor_letter_add_tos_newpage); ?> 
+						<?php echo VmHTML::row('checkbox', 'COM_VIRTUEMART_VENDOR_LETTER_FOR_PRODUCT_PDF', 
+							'vendor_letter_for_product_pdf', $default=$this->vendor->vendor_letter_for_product_pdf); ?> 
 					</table>
 				</fieldset>
 			</td>

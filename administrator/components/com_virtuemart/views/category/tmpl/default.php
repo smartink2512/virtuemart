@@ -26,7 +26,7 @@ AdminUIHelper::startAdminArea($this);
 
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_virtuemart&view=category" method="post" name="adminForm" id="adminForm">
 <div id="header">
 <div id="filterbox">
 	<table class="">
