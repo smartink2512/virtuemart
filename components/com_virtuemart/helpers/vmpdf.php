@@ -260,6 +260,7 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 			$headertxt .= '<div id="vmdoc-header" class="vmdoc-header">' . $this->replace_variables($headerdata['string']) . '</div>';
 			$currentCHRF = $this->getCellHeightRatio();
 			$this->setCellHeightRatio($this->vendor->vendor_letter_header_cell_height_ratio);
+			$this->tcpdf6 = JFile::exists(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 
 			if ($this->rtl) {
 				$this->x = $this->w - $this->original_rMargin;
@@ -273,7 +274,6 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 				if (!class_exists ('JFile')) {
 					require(VMPATH_LIBS . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
-				$this->tcpdf6 = JFile::exists(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
 				if($this->tcpdf6){
 					if (!class_exists ('TCPDF_IMAGES')) {
 						require(VMPATH_LIBS.DS.'tcpdf'.DS.'include'.DS.'tcpdf_images.php');
@@ -303,11 +303,17 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 			// header string
 			$this->SetFont($headerfont[0], $headerfont[1], $headerfont[2]);
 			$this->SetX($header_x);
-			
+
 			$this->writeHTMLCell($cw, /*$cell_height*/0, $this->x, $this->header_margin, $headertxt, '', /*$ln=*/2, false, /*$reseth*/true, '', /*$autopadding=*/true);
 			// print an ending header line
 			if ($this->vendor->vendor_letter_header_line == 1) {
-				$this->SetLineStyle(array('width' => 0.85 / $this->k, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $headerdata['line_color']));
+				if($this->tcpdf6){
+					$getAllSpotColors = TCPDF::getAllSpotColors();
+					$vlheaderlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_header_line_color,$getAllSpotColors);
+				} else {
+					$vlheaderlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_header_line_color);
+				}
+				$this->SetLineStyle(array('width' => 0.85 / $this->k, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $vlheaderlcolor));
 				$this->SetY(max($imgy,$this->y));
 				if ($this->rtl) {
 					$this->SetX($this->original_rMargin);
