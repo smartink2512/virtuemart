@@ -48,7 +48,7 @@ class VirtueMartViewPdf extends VmView
 
 			if($vendor->vendor_letter_for_product_pdf) {
 				ob_start();
-				$view->display();
+				$view->display($tpl);
 				$html = ob_get_contents();
 				ob_end_clean();
 
