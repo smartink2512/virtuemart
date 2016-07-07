@@ -56,7 +56,11 @@ class VirtueMartViewPdf extends VmView
 				$pdf = new VmVendorPDF();
 				$pdf->AddPage();
 				$pdf->PrintContents($html);
-				$pdf->Output($viewName, 'I');
+
+				$doc = JFactory::getDocument();
+				$page_title = $doc->getTitle();
+
+				$pdf->Output($page_title .'.pdf', 'I');
 				JFactory::getApplication()->close();
 			} else {
 				$view->display($tpl);
