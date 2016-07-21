@@ -356,7 +356,12 @@ class VirtueMartModelConfig extends VmModel {
 		//We create a fresh config
 		$config = VmConfig::loadConfig(false,true);
 
-
+		foreach($data as $k => $dat){
+			if(is_array($dat)){
+				continue;
+			}
+			$data[$k] = trim($dat);
+		}
 
 		//We load the config file
 		$_raw = self::readConfigFile(FALSE);

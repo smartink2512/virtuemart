@@ -197,12 +197,23 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!class_exists('VirtueMartModelCustom')) require(VMPATH_ADMIN.DS.'models'.DS.'custom.php');
 
 		if ($obj->field_type == 'E') {
-			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
-			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$obj));
-			if(!empty($obj->_varsToPushParam)){
-				if(empty($obj->_varsToPushParamCustom)) $obj->_varsToPushParamCustom = $obj->_varsToPushParam;
-				if(empty($obj->_varsToPushParamCustomField)) $obj->_varsToPushParamCustomField = $obj->_varsToPushParam;
+			if(!empty($obj->virtuemart_custom_id)){
+				static $varsToPushPlg = array();
+				if(isset($varsToPushPlg[$obj->virtuemart_custom_id])){
+					$obj->_varsToPushParam = $varsToPushPlg[$obj->virtuemart_custom_id];
+				} else {
+					JPluginHelper::importPlugin ('vmcustom');
+					$dispatcher = JDispatcher::getInstance ();
+					$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$obj));
+					$varsToPushPlg[$obj->virtuemart_custom_id] = false;
+					if(!empty($obj->_varsToPushParam)){
+						$varsToPushPlg[$obj->virtuemart_custom_id] = $obj->_varsToPushParam;
+					}
+				}
+				if(!empty($obj->_varsToPushParam)){
+					if(empty($obj->_varsToPushParamCustom)) $obj->_varsToPushParamCustom = $obj->_varsToPushParam;
+					if(empty($obj->_varsToPushParamCustomField)) $obj->_varsToPushParamCustomField = $obj->_varsToPushParam;
+				}
 			}
 		} else {
 			$obj->_varsToPushParamCustom = VirtueMartModelCustom::getVarsToPush($fieldtype);

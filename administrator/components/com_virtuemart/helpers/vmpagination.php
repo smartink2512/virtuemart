@@ -128,6 +128,8 @@ class VmPagination extends vObject {
 		$limits = array();
 		$selected = $this->limit;
 
+		if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
+
 		// Build the select list
 		if($app->isAdmin()) {
 
