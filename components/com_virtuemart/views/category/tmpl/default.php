@@ -54,12 +54,10 @@ if($this->showproducts){
 if ($this->showsearch or !empty($this->keyword)) {
 	//id taken in the view.html.php could be modified
 	$category_id  = vRequest::getInt ('virtuemart_category_id', 0); ?>
-	<h3><?php echo vmText::_('COM_VIRTUEMART_SEARCH_KEYWORD_FOR') . $this->keyword; ?></h3>
 
-	<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
-
-		<!--BEGIN Search Box -->
-		<div class="virtuemart_search">
+	<!--BEGIN Search Box -->
+	<div class="virtuemart_search">
+		<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 			<?php if(!empty($this->searchCustomList)) { ?>
 			<div class="vm-search-custom-list">
 				<?php echo $this->searchCustomList ?>
@@ -74,16 +72,30 @@ if ($this->showsearch or !empty($this->keyword)) {
 			<div class="vm-search-custom-search-input">
 				<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
 				<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+				<span class="vm-search-descr"> <?php echo vmText::_('COM_VM_SEARCH_DESC') ?></span>
 			</div>
-		</div>
-		<input type="hidden" name="search" value="true"/>
-		<input type="hidden" name="view" value="category"/>
-		<input type="hidden" name="option" value="com_virtuemart"/>
-		<input type="hidden" name="virtuemart_category_id" value="<?php echo $category_id; ?>"/>
 
-	</form>
+			<!-- input type="hidden" name="showsearch" value="true"/ -->
+			<input type="hidden" name="view" value="category"/>
+			<input type="hidden" name="option" value="com_virtuemart"/>
+			<input type="hidden" name="virtuemart_category_id" value="<?php echo $category_id; ?>"/>
+			<input type="hidden" name="Itemid" value="<?php echo $this->Itemid; ?>"/>
+		</form>
+	</div>
 	<!-- End Search Box -->
-<?php  } ?>
+<?php
+	/*if(!empty($this->keyword)){
+		?><h3><?php echo vmText::sprintf('COM_VM_SEARCH_KEYWORD_FOR', $this->keyword); ?></h3><?php
+	}*/
+	$j = 'jQuery(document).ready(function() {
+
+jQuery(".changeSendForm")
+	.off("change",Virtuemart.sendCurrForm)
+    .on("change",Virtuemart.sendCurrForm);
+})';
+
+	vmJsApi::addJScript('sendFormChange',$j);
+} ?>
 
 <?php // Show child categories
 
