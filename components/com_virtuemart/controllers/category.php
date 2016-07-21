@@ -37,10 +37,10 @@ class VirtueMartControllerCategory extends JControllerLegacy {
 
 	public function display($cachable = false, $urlparams = false)  {
 
-		if (vRequest::getvar('search')) {
+	/*	if (vRequest::getvar('search')) {
 			$view = $this->getView('category', 'html');
 			$view->display();
-		} else {
+		} else {*/
 			// Display it all
 			$document = JFactory::getDocument();
 			$viewType = $document->getType();
@@ -52,7 +52,7 @@ class VirtueMartControllerCategory extends JControllerLegacy {
 			$view->assignRef('document', $document);
 
 			$view->display();
-		}
+		//}
 		if($categoryId = vRequest::getInt('virtuemart_category_id',0)){
 			shopFunctionsF::setLastVisitedCategoryId($categoryId);
 		}

@@ -149,7 +149,7 @@ class VirtueMartModelProduct extends VmModel {
 		$option = 'com_virtuemart';
 		$view = 'product';
 
-		$valid_search_fields = VmConfig::get ('browse_search_fields');
+		$valid_search_fields = VmConfig::get ('browse_search_fields',array());
 		if ($app->isSite () and !vRequest::getInt('manage',false)) {
 			$filter_order = vRequest::getString ('orderby', "0");
 
@@ -576,6 +576,10 @@ class VirtueMartModelProduct extends VmModel {
 					break;
 				}
 			}
+			if(self::$_alreadyLoadedIds){
+				$where[] = ' p.`virtuemart_product_id`!='.implode(' AND p.`virtuemart_product_id`!=',self::$_alreadyLoadedIds).' ';
+				//$where[] = ' p.`virtuemart_product_id` NOT IN ('.implode(',',self::$_alreadyLoadedIds).') ';
+			}
 
 		} else {
 			$joinLang = true;
@@ -836,6 +840,7 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	static $_products = array();
+	static $_alreadyLoadedIds = array();
 	/**
 	 * This function creates a product with the attributes of the parent.
 	 *
@@ -1498,6 +1503,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$ids = $this->sortSearchListQuery ($onlyPublished, $this->virtuemart_category_id, $group, $nbrReturnProducts);
 
+		if($ids){
+			self::$_alreadyLoadedIds = array_merge(self::$_alreadyLoadedIds,$ids);
+		}
+		vmdebug('my self::$_alreadyLoadedIds',self::$_alreadyLoadedIds);
 		//quickndirty hack for the BE list, we can do that, because in vm2.1 this is anyway fixed correctly
 		$this->listing = TRUE;
 		$products = $this->getProducts ($ids, $front, $withCalc, $onlyPublished, $single);
@@ -1682,7 +1691,7 @@ class VirtueMartModelProduct extends VmModel {
 			foreach ($neighbors as &$neighbor) {
 
 				if(!empty($alreadyFound)) $alreadyFound = 'AND p.`virtuemart_product_id`!="'.$alreadyFound.'"';
-				$qm = $alreadyFound.' AND '.$whereorderByName.' '.$op.' "'.$db->quote($orderByValue).'"  ORDER BY '.$orderByName.' LIMIT 1';
+				$qm = $alreadyFound.' AND '.$whereorderByName.' '.$op.' "'.$db->escape($orderByValue).'"  ORDER BY '.$orderByName.' LIMIT 1';
 				$db->setQuery ($q.$qm);
 				//vmdebug('getneighbors '.$q.$qm);
 				if ($result = $db->loadAssocList ()) {
