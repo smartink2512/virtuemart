@@ -1218,6 +1218,23 @@ a:hover .vm-img-desc{
   width: 5%;
   text-align: center;
 }
+
+.vm-search-custom-values-group {
+  display: block;
+  float: left;
+  background-color: #f2f2f2;
+  margin: 4px;
+  padding: 4px;
+}
+
+span.vm-search-descr {
+  display: block;
+}
+
+.vm-search-custom-search-input input.inputbox {
+  margin: 0;
+}
+
 /* some more styles */
 
 .buttonBar-right{
@@ -1233,7 +1250,7 @@ a:hover .vm-img-desc{
 
 div.product {
   float: left;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   min-width: 220px;
 }
 
@@ -1402,6 +1419,10 @@ div[class*="-view"] .row{
 	clear:left
 }
 
+.spacer.product-container {
+  border: 1px solid #ddd;
+  margin: 2px;
+}
 
 @media all and (max-width: 980px) {
   div#nav {
