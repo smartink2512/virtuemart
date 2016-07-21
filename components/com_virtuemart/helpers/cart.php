@@ -364,9 +364,7 @@ class VirtueMartCart {
 
 		$session = JFactory::getSession();
 
-		if($storeDb){
-			$this->storeCart();
-		}
+
 		$sessionCart = $this->getCartDataToStore();
 		$sessionCart = json_encode($sessionCart);
 		$session->set('vmcart', $sessionCart,'vm');
@@ -374,6 +372,10 @@ class VirtueMartCart {
 		if($forceWrite){
 			session_write_close();
 			session_start();
+		}
+
+		if($storeDb){
+			$this->storeCart();
 		}
 	}
 

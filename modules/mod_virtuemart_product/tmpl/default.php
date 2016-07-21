@@ -26,7 +26,7 @@ if ($products_per_row > 1) {
 				<div class="spacer">
 					<?php
 					if (!empty($product->images[0])) {
-						$image = $product->images[0]->displayMediaThumb ('class="featuredProductImage" border="0"', FALSE);
+						$image = $product->images[0]->displayMediaThumb ('class="featuredProductImage"', FALSE);
 					} else {
 						$image = '';
 					}
@@ -78,7 +78,7 @@ if ($products_per_row > 1) {
 			<li class="<?php echo $pwidth ?> <?php echo $float ?>">
 				<?php
 				if (!empty($product->images[0])) {
-					$image = $product->images[0]->displayMediaThumb ('class="featuredProductImage" border="0"', FALSE);
+					$image = $product->images[0]->displayMediaThumb ('class="featuredProductImage"', FALSE);
 				} else {
 					$image = '';
 				}
