@@ -81,6 +81,7 @@ Virtuemart.cartEffect = function(form) {
         type: "POST",
         cache: false,
         dataType: "json",
+        timeout: "20000",
         url: Virtuemart.vmSiteurl + "index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json"+Virtuemart.vmLang+window.Itemid,
         data: dat
     }).done(
@@ -111,8 +112,7 @@ Virtuemart.cartEffect = function(form) {
 			jQuery.facebox( txt , 'my-groovy-style');
 		}
 
-
-		Virtuemart.productUpdate();
+        jQuery('body').trigger('updateVirtueMartCartModule');
 	});
 
 }

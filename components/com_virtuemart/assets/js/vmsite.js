@@ -247,4 +247,11 @@ var Virtuemart = window.Virtuemart || {};
 		}
 	};
 
+	Virtuemart.sendCurrForm = function(event){
+		event.preventDefault();
+		var f = event.currentTarget.length > 0 ? $(event.currentTarget[0].form) : $();
+		/*var acti = jQuery(f).attr(\'action\');
+		jQuery(f).attr(\'action\', acti+"&tmpl=component");*/
+		f.submit();
+	}
 })(jQuery)
