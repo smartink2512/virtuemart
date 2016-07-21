@@ -30,7 +30,12 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'compo
 VmConfig::loadConfig();
 VmConfig::loadJLang('mod_virtuemart_currencies', true);
 vmJsApi::jQuery();
-$mainframe = Jfactory::getApplication();
+
+VmConfig::loadJLang( 'com_virtuemart', true );
+vmJsApi::jSite();
+vmJsApi::addJScript( 'vmprices',false,false);
+
+$mainframe = JFactory::getApplication();
 $vendorId = vRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');
 
