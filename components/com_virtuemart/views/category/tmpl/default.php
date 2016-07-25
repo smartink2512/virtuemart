@@ -72,6 +72,7 @@ if ($this->showsearch or !empty($this->keyword)) {
 			<div class="vm-search-custom-search-input">
 				<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
 				<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+				<?php //echo VmHtml::checkbox ('searchAllCats', (int)$this->searchAllCats, 1, 0, 'class="changeSendForm"'); ?>
 				<span class="vm-search-descr"> <?php echo vmText::_('COM_VM_SEARCH_DESC') ?></span>
 			</div>
 

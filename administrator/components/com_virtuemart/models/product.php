@@ -126,7 +126,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->filter_order_Dir = VmConfig::get('prd_brws_orderby_dir', 'ASC');
 
 		$this->_uncategorizedChildren = null;
-
+		$this->searchAllCats = false;
 		$this->virtuemart_vendor_id = 0;
 	}
 
@@ -174,7 +174,7 @@ class VirtueMartModelProduct extends VmModel {
 			} else {
 				vRequest::setVar('keyword',$this->keyword);
 			}
-
+			$this->searchAllCats = $app->getUserStateFromRequest('com_virtuemart.customfields.searchAllCats','searchAllCats',false);
 		}
 		else {
 			$filter_order = strtolower ($app->getUserStateFromRequest ('com_virtuemart.' . $view . '.filter_order', 'filter_order', $this->_selectedOrdering, 'cmd'));
@@ -285,7 +285,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
-
+		vmdebug('Lang fallback active?',(int)$langFback);
 		if (!empty($this->searchcustoms)) {
 			$joinCustom = TRUE;
 			foreach ($this->searchcustoms as $key => $searchcustom) {
@@ -297,6 +297,9 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($custom_search)){
 				$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
 				//$where[] = " ( " . implode (' AND ', $custom_search_value) . " AND (".implode (' OR ', $custom_search_key).")) ";
+				if($this->searchAllCats){
+					$virtuemart_category_id = FALSE;
+				}
 			}
 		}
 
@@ -586,7 +589,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$selectLang = '';
-		if ($joinLang or count($langFields)>0 ) {
+		if ($joinLang or count($langFields)>0 or ($app->isSite() and VmConfig::get('prodOnlyWLang',false)) ){
 
 			if($langFback){
 
@@ -1506,7 +1509,7 @@ class VirtueMartModelProduct extends VmModel {
 		if($ids){
 			self::$_alreadyLoadedIds = array_merge(self::$_alreadyLoadedIds,$ids);
 		}
-		vmdebug('my self::$_alreadyLoadedIds',self::$_alreadyLoadedIds);
+
 		//quickndirty hack for the BE list, we can do that, because in vm2.1 this is anyway fixed correctly
 		$this->listing = TRUE;
 		$products = $this->getProducts ($ids, $front, $withCalc, $onlyPublished, $single);

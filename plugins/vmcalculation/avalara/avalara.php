@@ -44,7 +44,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'avatax_virtuemart_country_id'  => array(0,'int'),
             'avatax_virtuemart_state_id'  => array(0,'int'),
 			'accrual'		=> array(0,'int'),
-			'prevCheckoutAddInv' => array(1,'int')
+			'prevCheckoutAddInv' => array(1,'int'),
+			'taxfreightcode' => array('','char')
 		);
 
 		$this->setConfigParameterable ('calc_params', $varsToPush);
@@ -135,6 +136,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
         $html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ACCRUAL','accrual',$calc->accrual);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_DEV','dev',$calc->dev);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_PREVCHECKOUT_AD_INVALID','prevCheckoutAddInv',$calc->prevCheckoutAddInv);
+		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_TAXFREIGHTCODE','taxfreightcode',$calc->taxfreightcode);
 		$label = 'VMCALCULATION_AVALARA_VADDRESS';
 		$lang =JFactory::getLanguage();
 		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.vmText::_($label.'_TIP').'">'.vmText::_($label).'</span>' : vmText::_($label) ;
@@ -697,6 +699,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$shipment['amount'] = 1;
 				$shipment['price'] = $prices['shipmentValue'];              //decimal // TotalAmmount
 				$shipment['discount'] = 0.0;
+				$shipment['shipment'] = 1;
 				$products[] = $shipment;
 			}
 
@@ -930,6 +933,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					}
 				}
 			}
+
 			//$line->setTaxCode("");             //string
 			$line->setQty($product['amount']);                 //decimal
 			$line->setAmount($sign * $product['price'] * $product['amount']);              //decimal // TotalAmmount
@@ -958,6 +962,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				//$line->setTaxOverride(self::$vmadd['taxOverride']);
 			}
 
+			if(!empty($product['shipment'])){
+				if(!empty($calc->taxfreightcode)) $line->setTaxCode($calc->taxfreightcode);
+			}
 			$lines[] = $line;
 		}
 		$this->newATConfig($calc);
@@ -1147,6 +1154,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$shipment['amount'] = 1;
 			$shipment['price'] = $orderDetails['details']['BT']->order_shipment;              //decimal // TotalAmmount
 			$shipment['discount'] = 0.0;
+			$shipment['shipment'] = 1;
 			$products[] = $shipment;
 		}
 		$products['discountAmount'] = $orderDetails['details']['BT']->order_discountAmount - $orderDetails['details']['BT']->coupon_discount;

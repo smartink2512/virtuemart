@@ -249,9 +249,13 @@ var Virtuemart = window.Virtuemart || {};
 
 	Virtuemart.sendCurrForm = function(event){
 		event.preventDefault();
-		var f = event.currentTarget.length > 0 ? $(event.currentTarget[0].form) : $();
+		if(event.currentTarget.length > 0){
+			$(event.currentTarget[0].form.submit());
+		} else {
+			var f = jQuery(event.currentTarget).closest('form');
+			f.submit();
+		}
 		/*var acti = jQuery(f).attr(\'action\');
 		jQuery(f).attr(\'action\', acti+"&tmpl=component");*/
-		f.submit();
 	}
 })(jQuery)

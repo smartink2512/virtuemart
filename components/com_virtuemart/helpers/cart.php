@@ -213,7 +213,7 @@ class VirtueMartCart {
 			if(count(self::$_cart->cartProductsData) >0 and empty(self::$_cart->vendorId)){
 				self::$_cart->vendorId = 1;
 			}
-			vmdebug('Created new cart');
+			//vmdebug('Created new cart',self::$_cart->vendorId);
 		}
 
 		return self::$_cart;

@@ -123,6 +123,9 @@ class VirtuemartViewCategory extends VmView {
 			vmTime('getSearchCustom after setUserState','getSearchCustom');
 			$this->getSearchCustom();
 			vmTime('getSearchCustom End','getSearchCustom');
+			$this->searchAllCats = $app->getUserStateFromRequest('com_virtuemart.customfields.searchAllCats','searchAllCats',false);
+			//$app->setUserState('com_virtuemart.customfields.searchAllCats',$f);
+
 		} else {
 			$app = JFactory::getApplication();
 			$app->setUserState('com_virtuemart.customfields','');
