@@ -428,6 +428,11 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			return false;
 		}
 
+		//Delete VM menues
+		$q = 'DELETE FROM #__menu WHERE `link` = "%option=com_virtuemart%" ';
+		$db->setQuery($q);
+		$db->execute();
+
 		return true;
     }
 
