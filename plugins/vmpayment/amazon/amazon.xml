@@ -48,9 +48,9 @@
                 <field name="secretKey" class="required" type="password" size="100" default=""
                        label="VMPAYMENT_AMAZON_CONF_SECRET_KEY"
                        description="VMPAYMENT_AMAZON_CONF_SECRET_KEY_TIP"/>
-                <field name="cnname" class="required" type="cnname" size="100" default=""
+                <!-- field name="cnname" class="required" type="cnname" size="100" default=""
                        label="VMPAYMENT_AMAZON_CONF_CNNAME"
-                       description="VMPAYMENT_AMAZON_CONF_CNNAME_TIP"/>
+                       description="VMPAYMENT_AMAZON_CONF_CNNAME_TIP"/ -->
                 <!-- OPTIONS       -->
                 <!-- ============ -->
                 <field class="level1" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ACCOUNT_OPTIONS"/>

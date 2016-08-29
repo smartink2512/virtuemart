@@ -47,7 +47,14 @@ class amazonHelperCaptureNotification extends amazonHelper {
 			// default value
 			$order_history['customer_notified'] = 0;
 			if ($amazonState == 'Completed') {
-				$order_history['customer_notified'] = 0;
+
+				unset($order_history['customer_notified']);
+				$notify = VmConfig::get('email_os_s',array('U','C','S','R','X'));
+				if(!is_array($notify)) $notify = array($notify);
+				if ( in_array((string) $this->_currentMethod->status_capture,$notify) ){
+					$order_history['customer_notified'] = 1;
+				}
+
 				$order_history['order_status'] = $this->_currentMethod->status_capture;
 				$order_history['comments'] = vmText::_('VMPAYMENT_AMAZON_COMMENT_STATUS_CAPTURE_NOTIFICATION');
 
@@ -75,6 +82,7 @@ class amazonHelperCaptureNotification extends amazonHelper {
 			$orderModel = VmModel::getModel('orders');
 			$orderModel->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order_history, false);
 		}
+		return $amazonState;
 	}
 
 
