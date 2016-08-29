@@ -49,6 +49,9 @@ class JFormFieldProduct extends JFormField
 		require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
 		$productModel = VmModel::getModel('Product');
 		$productModel->_noLimit = true;
+		if(vmAccess::manager('managevendors')){
+			$productModel->virtuemart_vendor_id = 0;
+		}
 		$products = $productModel->getProductListing(false, false, false, false, true,false);
 		$productModel->_noLimit = false;
 		$i = 0;

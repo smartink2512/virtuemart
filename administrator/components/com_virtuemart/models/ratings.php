@@ -96,11 +96,10 @@ class VirtueMartModelRatings extends VmModel {
 				and COLUMN_NAME = "name";';
 				$db->setQuery($q);
 				$r = $db->loadResult();
-				//if($r!='utf8_general_ci'){
+				if($r){
 					$collate= 'COLLATE '.str_replace('mb4','',$r);
 					$collateMb4= 'COLLATE '.$r;
-				//}
-				//vmdebug('my r',$db->getQuery(),$r);
+				}
 			}
 			self::$_select = ' `u`.*,`pr`.*,`l`.`product_name`,`rv`.`vote`, IFNULL(`u`.`name` '.$collateMb4.', `pr`.`customer` '.$collate.') AS customer ';
 		}

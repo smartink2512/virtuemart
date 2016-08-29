@@ -1110,8 +1110,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$customfield->virtuemart_customfield_id = '0';
 		if (!isset($customfield->virtuemart_product_id))
 			$customfield->virtuemart_product_id = '';
-		$html = '
-			<input type="hidden" value="' . $customfield->field_type . '" name="field[' . $i . '][field_type]" />
+		$html = '<input type="hidden" value="' . $customfield->field_type . '" name="field[' . $i . '][field_type]" />
 			<input type="hidden" value="' . $customfield->custom_element . '" name="field[' . $i . '][custom_element]" />
 			<input type="hidden" value="' . $customfield->custom_jplugin_id . '" name="field[' . $i . '][custom_jplugin_id]" />
 			<input type="hidden" value="' . $customfield->virtuemart_custom_id . '" name="field[' . $i . '][virtuemart_custom_id]" />

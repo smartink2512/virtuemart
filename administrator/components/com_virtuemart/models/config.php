@@ -353,9 +353,6 @@ class VirtueMartModelConfig extends VmModel {
 		//$oldLangs = $config->get('active_languages');
 		$oldLangs = VmConfig::get('active_languages');
 
-		//We create a fresh config
-		$config = VmConfig::loadConfig(false,true);
-
 		foreach($data as $k => $dat){
 			if(is_array($dat)){
 				continue;
@@ -363,8 +360,11 @@ class VirtueMartModelConfig extends VmModel {
 			$data[$k] = trim($dat);
 		}
 
+		//We create a fresh config
+		$config = VmConfig::loadConfig(false,true);
+
 		//We load the config file
-		$_raw = self::readConfigFile(FALSE);
+		$_raw = self::readConfigFile();
 		$_value = join('|', $_raw);
 		//We set the config file values as parameters into the config
 		$config->setParams($_value);
@@ -648,20 +648,26 @@ class VirtueMartModelConfig extends VmModel {
 	 */
 	function setDangerousToolsOff(){
 
-		$dangerousTools = VirtueMartModelConfig::readConfigFile(true);
+		if(self::checkConfigTableExists()){
 
-		if( $dangerousTools){
-			$link = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
-			$lang = vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
-			VmInfo($lang);
-		}
-		else {
-			if(self::checkConfigTableExists()){
-				$data['dangeroustools'] = 0;
-				$data['virtuemart_config_id'] = 1;
-				$this->store($data);
+			$config = VmConfig::loadConfig();
+			$config->dangeroustools = 0;
+
+			$data['virtuemart_config_id'] = 1;
+			$data['config'] = $config->toString();
+
+			vmdebug('my config data to store ',$data);
+			$confTable = $this->getTable('configs');
+			$confTable->bindChecknStore($data);
+
+			VmConfig::loadConfig(true);
+			if(VmConfig::get('dangeroustools',false)){
+				$link = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
+				$lang = vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
+				VmInfo($lang);
 			}
 		}
+
 	}
 
 	public function remove($id) {

@@ -285,7 +285,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
-		vmdebug('Lang fallback active?',(int)$langFback);
+		//vmdebug('Lang fallback active?',(int)$langFback);
 		if (!empty($this->searchcustoms)) {
 			$joinCustom = TRUE;
 			foreach ($this->searchcustoms as $key => $searchcustom) {
@@ -991,6 +991,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
+
 		$stockhandle = VmConfig::get('stockhandle', 'none');
 		$app = JFactory::getApplication ();
 		if ($app->isSite () and $stockhandle == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
@@ -1018,6 +1019,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			self::$_products[$productKey] = $child;
 		}
+
+
 
 		if(!self::$_products[$productKey]){
 			return false;
@@ -2298,7 +2301,7 @@ class VirtueMartModelProduct extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getPrice ($product, $quantity) {
+	public function getPrice ($product, $quantity, $ctype=-1) {
 
 		if (!is_object ($product)) {
 			$product = $this->getProduct ($product, TRUE, FALSE, TRUE,$quantity);
@@ -2307,7 +2310,7 @@ class VirtueMartModelProduct extends VmModel {
 		if (empty($product->customfields) and !empty($product->allIds)) {
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$product->modificatorSum = null;
-			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
+			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds,0,$ctype);
 		}
 
 		// Loads the product price details

@@ -1073,6 +1073,13 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		} else {
 
+			if ( !isset($cart->cartData['taxRulesBill']) ) {
+				$cart->cartData['taxRulesBill'] = array();
+			}
+			if ( !isset($cart->cartData['DBTaxRulesBill']) ) {
+				$cart->cartData['DBTaxRulesBill'] = array();
+			}
+			// end code addition
 			$taxrules = array_merge($cart->cartData['VatTax'],$cart->cartData['taxRulesBill']);
 			$cartdiscountBeforeTax = $calculator->roundInternal($calculator->cartRuleCalculation($cart->cartData['DBTaxRulesBill'], $cart->cartPrices['salesPrice']));
 

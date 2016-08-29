@@ -72,7 +72,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
 			$orderbt = $order['details']['BT'];
-			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
+			$orderst = $order['details']['ST'];//(array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 			$orderbt ->invoiceNumber = $orderModel->getInvoiceNumber($orderbt->virtuemart_order_id);
 
 			$currency = CurrencyDisplay::getInstance(0,$order['details']['BT']->virtuemart_vendor_id);
@@ -215,12 +215,11 @@ class VirtuemartViewOrders extends VmViewAdmin {
 					}
 				    //This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
 				    if (!array_key_exists('curr'.$currency, $_currencies)) {
-
 					    $_currencies['curr'.$currency] = CurrencyDisplay::getInstance($currency,$order->virtuemart_vendor_id);
 				    }
 
-				    $order->order_total = $_currencies['curr'.$currency]->priceDisplay($order->order_total);
-				    $order->invoiceNumber = $model->getInvoiceNumber($order->virtuemart_order_id);
+					$orderslist[$virtuemart_order_id]->order_total = $_currencies['curr'.$currency]->priceDisplay($order->order_total);
+					$orderslist[$virtuemart_order_id]->invoiceNumber = $model->getInvoiceNumber($order->virtuemart_order_id);
 			    }
 
 			}

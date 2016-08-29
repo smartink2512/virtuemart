@@ -344,6 +344,14 @@ class vmJsApi{
 				$v .= 'Itemid = "";'."\n";
 			}
 			$v .= 'Virtuemart.addtocart_popup = "'.VmConfig::get('addtocart_popup',1).'"'." ; \n";
+			if(VmConfig::get('usefancy',1)) {
+				$v .= "usefancy = true;\n";
+			} else {//This is just there for the backward compatibility
+				$v .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
+				$v .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
+				//This is necessary though and should not be removed without rethinking the whole construction
+				$v .= "usefancy = false;";
+			}
 			vmJsApi::addJScript('vm.vars',$v,false,true,true);
 			$e = false;
 		}
@@ -355,7 +363,7 @@ class vmJsApi{
 		if(!VmConfig::get( 'jprice', TRUE ) and !self::isAdmin()) {
 			return FALSE;
 		}
-		static $jPrice;
+		static $jPrice = false;
 		// If exist exit
 		if($jPrice) {
 			return;
@@ -409,10 +417,16 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			return;
 		}
 		VmJsApi::jSite();
+
+/*		jQuery(document).ready(function() {
+			jQuery('".$name."').validationEngine();
+		});
+*/
 		self::addJScript('vm.countryState'.$prefix,'
-		jQuery( function($) {
+		jQuery(document).ready( function($) {
 			jQuery("#'.$prefix.'virtuemart_country_id'.$suffix.'").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id'.$suffix.'",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
-		});	');
+		});
+		');
 		$JcountryStateList[$prefix] = TRUE;
 		return;
 	}
@@ -422,24 +436,25 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		static $done = false;
 		if ($done) return true;
 
-		$jsVars = "";
+		//$jsVars = "";
 		//$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
 
+		self::vmVariables();
 		if(VmConfig::get('usefancy',1)){
-			$jsVars .= "usefancy = true;";
+			//$jsVars .= "usefancy = true;";
 			vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false,false,false,'1.3.4');
 			vmJsApi::css('jquery.fancybox-1.3.4');
 		} else {//This is just there for the backward compatibility
-			$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
+			/*$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
 			$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
 
 			//This is necessary though and should not be removed without rethinking the whole construction
-			$jsVars .= "usefancy = false;";
+			$jsVars .= "usefancy = false;";*/
 			vmJsApi::addJScript( 'facebox', false, true, true, false, '' );
 			vmJsApi::css( 'facebox' );
 		}
 
-		self::addJScript('jsVars',$jsVars);
+		//self::addJScript('jsVars',$jsVars);
 		$done = true;
 	}
 
@@ -504,7 +519,10 @@ jQuery(document).ready(function($) {
 			jQuery(this).chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text,disable_search_threshold: 5, width: swidth});
 		});
 	}
-	Virtuemart.updateChosenDropdownLayout();';
+	jQuery(document).ready( function($) {
+		Virtuemart.updateChosenDropdownLayout();
+	});
+	';
 
 				self::addJScript('updateChosen',$script);
 			}
@@ -574,16 +592,26 @@ jQuery(document).ready(function($) {
 		$js = "
 
 	function setDropdownRequiredByResult(id,prefiks){
+		//console.log('setDropdownRequiredByResult '+prefiks+id);
+		var results = 0;
 
-		console.log('setDropdownRequiredByResult '+prefiks+id);
 		var cField = jQuery('#'+prefiks+id+'_field');
 		if(typeof cField!=='undefined' && cField.length > 0){
+			var lField = jQuery('[for=\"'+prefiks+id+'_field\"]');
 			var chznField = jQuery('#'+prefiks+id+'_field_chzn');
-			var results = chznField.find('.chzn-results li').length;
+
+			if(chznField.length > 0) {
+			// in case of chznFields
+				results = chznField.find('.chzn-results li').length;
+			} else {
+				//native selectboxes
+				results = cField.find('option').length;
+			}
+
 			if(results<2){
 				cField.removeClass('required');
 				cField.removeAttr('required');
-				var lField = jQuery('[for=\"'+prefiks+id+'_field\"]');
+			
 				if (typeof lField!=='undefined') {
 					lField.removeClass('invalid');
 					lField.attr('aria-invalid', 'false');
@@ -592,6 +620,9 @@ jQuery(document).ready(function($) {
 			} else if(cField.attr('aria-required')=='true'){
 				cField.addClass('required');
 				cField.attr('required','required');
+
+				lField.addClass('invalid');
+				lField.attr('aria-invalid', 'true');
 			}
 		}
 	}
@@ -602,17 +633,19 @@ jQuery(document).ready(function($) {
 		if(typeof cField!=='undefined' && cField.length > 0){
 
 			var chznField = jQuery('#'+prefiks+id+'_field_chzn');
-			var aField = chznField.find('a');
-			var lField = jQuery('[for=\"'+prefiks+id+'_field\"]');
+			if(chznField.length > 0) {
+				var aField = chznField.find('a');
+				var lField = jQuery('[for=\"'+prefiks+id+'_field\"]');
 
-			if(cField.attr('aria-invalid')=='true'){
-				//console.log('setChznRequired set invalid');
-				aField.addClass('invalid');
-				lField.addClass('invalid');
-			} else {
-				//console.log('setChznRequired set valid');
-				aField.removeClass('invalid');
-				lField.removeClass('invalid');
+				if(cField.attr('aria-invalid')=='true'){
+					//console.log('setChznRequired set invalid');
+					aField.addClass('invalid');
+					lField.addClass('invalid');
+				} else {
+					//console.log('setChznRequired set valid');
+					aField.removeClass('invalid');
+					lField.removeClass('invalid');
+				}
 			}
 		}
 	}
@@ -851,7 +884,7 @@ jQuery(document).ready(function($) {
 		}
 
 		$url = 'index.php?option=com_virtuemart&view=virtuemart&task=keepalive';
-		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'";var minlps = "'.$minlps.'";',false,true);
-		vmJsApi::addJScript('vmkeepalive',false, true, true);
+		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'";var minlps = "'.$minlps.'";',false,true,true);
+		vmJsApi::addJScript('vmkeepalive',false, true, false);
 	}
 }

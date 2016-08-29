@@ -474,6 +474,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
+		if(!isset($data['password'])) $data['password'] = '';
 		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>true);
 
 	}

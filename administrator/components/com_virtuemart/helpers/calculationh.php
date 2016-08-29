@@ -482,7 +482,6 @@ class calculationHelper {
 
 		foreach($this->productPrices as $k => &$price){
 			if(!is_array($price) and !empty($price) and is_numeric($price)){
-				vmdebug('round price $k',$k,$price);
 				$price = round($price,$this->_internalDigits-4);
 			}
 		}

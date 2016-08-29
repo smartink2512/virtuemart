@@ -139,7 +139,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 		//$field->custom_params = $custom_params;
 		//vmdebug('$this->_varsToPushParam '.$this->_name,$this->_varsToPushParam );
 		foreach ($this->_varsToPushParam as $k => $v) {
-			if (!isset($this->params->$k)) {
+			if (!isset($this->params->$k) and isset($field->$k)) {
 				$this->params->$k = $field->$k;
 			}
 		}
