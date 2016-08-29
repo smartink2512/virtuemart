@@ -735,6 +735,13 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return NULL;
 		}
 
+		$method = $this->getPluginMethod($virtuemart_paymentmethod_id);
+		$oM = VmModel::getModel('orders');
+		$theorder = $oM->getOrder($virtuemart_order_id);
+		if ($theorder['details']['BT']->order_status == $method->status_success || $theorder['details']['BT']->order_status == $method->status_pending ||   $theorder['details']['BT']->order_status == $method->status_capture) {
+			return NULL;
+		}
+
 		VmInfo(vmText::_('VMPAYMENT_PAYPAL_PAYMENT_CANCELLED'));
 		$session = JFactory::getSession();
 		$return_context = $session->getId();

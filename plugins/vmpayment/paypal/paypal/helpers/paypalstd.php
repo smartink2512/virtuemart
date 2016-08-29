@@ -301,14 +301,38 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			}
 		}
 
-		$post_variables["handling_cart"] = $this->getHandlingAmount();
+		$discount = $this->addRulesBill($this->cart->cartData['DBTaxRulesBill']);
+
+		$post_variables["handling_cart"] = 0;
+		$post_variables["handling_cart"] += $this->addRulesBill($this->cart->cartData['taxRulesBill']);
+
+		$discount += $this->addRulesBill($this->cart->cartData['DATaxRulesBill']);
+		if(!empty($discount)){
+			$post_variables["discount_amount_cart"] = abs($discount);
+		}
+
+
 		$post_variables["handling_cart"] += vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceShipment'], $this->_method->payment_currency);
+		$post_variables["handling_cart"] += vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPricePayment'], $this->_method->payment_currency);
+
 		$post_variables['currency_code'] = $this->currency_code_3;
 		if (!empty($this->cart->cartPrices['salesPriceCoupon'])) {
 			$post_variables['discount_amount_cart'] = abs(vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPriceCoupon'], $this->_method->payment_currency));
 		}
 		$pricesCurrency = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 	}
+
+	/**
+	 * @return value
+	 */
+/*	function getHandlingAmount () {
+		$handling = 0;
+		$handling += $this->addRulesBill($this->cart->cartData['DBTaxRulesBill']);
+		$handling += $this->addRulesBill($this->cart->cartData['taxRulesBill']);
+		$handling += $this->addRulesBill($this->cart->cartData['DATaxRulesBill']);
+		$handling += vmPSPlugin::getAmountValueInCurrency($this->cart->cartPrices['salesPricePayment'], $this->_method->payment_currency);
+		return $handling;
+	}*/
 
 	function getExtraPluginInfo() {
 		return;
