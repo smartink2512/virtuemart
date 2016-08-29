@@ -85,7 +85,7 @@ class VirtuemartViewOrders extends VmView {
 			, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
 			);
 			$orderbt = $orderDetails['details']['BT'];
-			$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
+			$orderst = $orderDetails['details']['ST'];//(array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
 			$this->userfields = $userFieldsModel->getUserFieldsFilled(
 			$_userFields
 			,$orderbt

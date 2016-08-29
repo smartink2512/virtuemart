@@ -204,7 +204,7 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('userfields', $userfields);
 
 		//Create ST address fields
-		$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderDetails['details']['BT'];
+		$orderst = $orderDetails['details']['ST'];
 
 		$shipmentFieldset = $userFieldsModel->getUserFields(
 				 'shipment'

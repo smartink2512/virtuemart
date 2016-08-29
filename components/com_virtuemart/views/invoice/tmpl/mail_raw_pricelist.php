@@ -49,7 +49,7 @@ foreach ($this->orderDetails['items'] as $item) {
 	if (!class_exists('VirtueMartModelCustomfields'))
 	    require(VMPATH_ADMIN . DS . 'models' . DS . 'customfields.php');
 	$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item, 'FE');
-	echo "\n" . $product_attribute . "\n";
+	echo "\n" . strip_tags($product_attribute) . "\n";
     //}
     if (!empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price) {
 	echo $item->product_basePriceWithTax . "\n";

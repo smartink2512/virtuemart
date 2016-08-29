@@ -152,7 +152,7 @@ JHtml::_('behavior.formvalidation');
 
 <?php  } else if ( $user->id ) { ?>
 
-	  <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="login" id="form-login">
+	  <form action="<?php echo $url; ?>" method="post" name="login" id="form-login">
       <?php echo vmText::sprintf( 'COM_VIRTUEMART_HINAME', $user->name ); ?>
       <input type="submit" name="Submit" class="button" value="<?php echo vmText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
       <input type="hidden" name="option" value="com_users" />

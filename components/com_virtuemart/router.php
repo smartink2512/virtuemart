@@ -113,7 +113,7 @@ function virtuemartBuildRoute(&$query) {
 					if (!empty($categoryRoute->itemId)) {
 						$query['Itemid'] = $categoryRoute->itemId;
 					} else {
-						$query['Itemid'] = vRequest::get('Itemid',false);
+						$query['Itemid'] = $helper->itemId;
 					}
 				}
 				unset($query['virtuemart_category_id']);
@@ -217,7 +217,7 @@ function virtuemartBuildRoute(&$query) {
 			break;
 		case 'user';
 
-			if ( isset($jmenu['user']) ) $query['Itemid'] = $jmenu['user'];
+			if ( isset($jmenu['user']) and !isset($query['Itemid']) ) $query['Itemid'] = $jmenu['user'];
 			else {
 				$segments[] = $helper->lang('user') ;
 				$query['Itemid'] = $jmenu['virtuemart'];
@@ -754,6 +754,9 @@ class vmrouterHelper {
 
 			$this->seo_sufix = '';
 			$this->seo_sufix_size = 0;
+
+			$this->Itemid = vRequest::get('Itemid',false);
+			$this->template = JFactory::getApplication()->getTemplate(true);
 			$this->setMenuItemId();
 			$this->setActiveMenu();
 			$this->use_id = VmConfig::get('seo_use_id', false);
@@ -767,6 +770,8 @@ class vmrouterHelper {
 			$this->edit = ('edit' == vRequest::getCmd('task') or vRequest::getInt('manage')=='1');
 			// if language switcher we must know the $query
 			$this->query = $query;
+
+
 		}
 
 	}
@@ -926,7 +931,8 @@ class vmrouterHelper {
 
 		if(!isset($productNamesCache[$id])){
 
-			$pr = $pModel->getProduct($id, true, false);
+			//Adding shoppergroup could be needed
+			$pr = $pModel->getProduct($id, TRUE, FALSE, TRUE, 1, 0, 0);
 			if(!$pr or empty($pr->slug)){
 				$productNamesCache[$id] = false;
 			} else {
@@ -1103,7 +1109,7 @@ class vmrouterHelper {
 				VmConfig::loadJLang('com_virtuemart', true);
 				vmWarn(vmText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 			} else {
-
+				//vmdebug('my menuVmItems',$this->template,$this->menuVmitems);
 				// Search  Virtuemart itemID in joomla menu
 				foreach ($this->menuVmitems as $item)	{
 
@@ -1125,11 +1131,28 @@ class vmrouterHelper {
 							$dbKey = false ;
 						}
 
-						if ( isset($link['virtuemart_'.$dbKey.'_id']) && $dbKey ){
-							$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
+						if ( $dbKey and isset($link['virtuemart_'.$dbKey.'_id']) ){
+							if(!isset($this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ])){
+								$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
+							} else {
+								//vmdebug('This menu item exists two times',$item,$this->template->id);
+								if($item->template_style_id==$this->template->id){
+									$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
+								}
+							}
 						}
 						elseif ($home == $view ) continue;
-						else $this->menu[$view]= $item->id ;
+						else {
+							if(!isset($this->menu[$view])){
+								$this->menu[$view]= $item->id ;
+							} else {
+								//vmdebug('This menu item exists two times',$item,$this->template->id);
+								if($item->template_style_id==$this->template->id){
+									$this->menu[$view]= $item->id ;
+								}
+							}
+
+						}
 
 						if ((int)$item->home === 1) {
 							$home = $view;
@@ -1161,8 +1184,8 @@ class vmrouterHelper {
 
 			$app		= JFactory::getApplication();
 			$menu		= $app->getMenu('site');
-			if ($Itemid = vRequest::getInt('Itemid',false) ) {
-				$menuItem = $menu->getItem($Itemid);
+			if ($this->Itemid ) {
+				$menuItem = $menu->getItem($this->Itemid);
 			} else {
 				$menuItem = $menu->getActive();
 			}

@@ -181,9 +181,9 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 		function replace_variables($txt) {
 			// TODO: Implement more Placeholders (ordernr, invoicenr, etc.)
 			// Use PageNo rather than getAliasNumPage, since the alias will be misaligned (spaced like the {:npn:} text rather than the final number)
-			$txt = str_replace('{vm:pagenum}', $this->/*getAliasNumPage*/PageNo(), $txt);
+			$txt = str_replace('{vm:pagenum}', $this->PageNo(), $txt);
 			// Can't use getNumPages, because when this is evaluated, we don't know the final number of pages (getNumPages is always equal to the current page numbe)
-			$txt = str_replace('{vm:pagecount}', $this->getAliasNbPages/*getNumPages*/(), $txt);
+			$txt = str_replace('{vm:pagecount}', $this->getAliasNbPages(), $txt);
 			$txt = str_replace('{vm:vendorname}', $this->vendor->vendor_store_name, $txt);
 			$imgrepl='';
 			if (!empty($this->vendor->images)) {
@@ -303,8 +303,8 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 			// header string
 			$this->SetFont($headerfont[0], $headerfont[1], $headerfont[2]);
 			$this->SetX($header_x);
-
-			$this->writeHTMLCell($cw, /*$cell_height*/0, $this->x, $this->header_margin, $headertxt, '', /*$ln=*/2, false, /*$reseth*/true, '', /*$autopadding=*/true);
+			
+			$this->writeHTMLCell($cw, 0, $this->x, $this->header_margin, $headertxt, '', 2, false, true, '', true);
 			// print an ending header line
 			if ($this->vendor->vendor_letter_header_line == 1) {
 				if($this->tcpdf6){

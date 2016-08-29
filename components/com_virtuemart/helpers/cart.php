@@ -898,6 +898,7 @@ class VirtueMartCart {
 			$this->confirmedOrder();
 		} else {
 			$this->_dataValidated = false;
+			$this->_confirmDone = false;
 			$app = JFactory::getApplication();
 			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$this->getLayoutUrlString(), FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
@@ -1655,6 +1656,26 @@ class VirtueMartCart {
 	 */
 	private function checkForQuantities($product, &$quantity=0) {
 
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('vmcustom');
+		// return null to proceed with further VM rules
+		// return true to not validate the quantity with OPC or VM
+		// return false to return errorMsg
+		//if to allow to adjust the current quantity
+		$adjustQ = false; 
+		$errorMsg = ''; 
+		$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckStock', array(  &$this, &$product, &$quantity, &$errorMsg, &$adjustQ));
+		
+		foreach ($retValues as $v) {
+			if ($v === false) {
+				vmInfo($errorMsg,$product->product_name);
+				return false; 
+			}
+			if ($v === true) {
+				return true; 
+			}
+		}
+	
 		$stockhandle = VmConfig::get('stockhandle','none');
 		$mainframe = JFactory::getApplication();
 		// Check for a valid quantity

@@ -15,20 +15,31 @@ Virtuemart.cvFind = function(event) {
 	event.preventDefault();
 	var selection = [];
 
-	//var container = jQuery('.product-field-display');
+	var runs=0;
 	//We ensure with this, to get the right product, if more than one is displayed
 	var container = jQuery(event.currentTarget);
-	while(!container.hasClass('product-field-display')){
+	while(!container.hasClass('product-field-display') && runs<=20){
 		container = container.parent();
+		runs++;
 	}
-
+	if(runs>20){
+		console.log('Could not find parent');
+		return false;
+	}
 	Virtuemart.container = container;
 	if(typeof Virtuemart.containerSelector === typeof undefined) Virtuemart.containerSelector = '.product-container';
 	var cl = Virtuemart.containerSelector.substring(1);
 
-	while(!Virtuemart.container.hasClass(cl)){
+	runs=0;
+	while(!Virtuemart.container.hasClass(cl) && runs<=20){
 		Virtuemart.container = Virtuemart.container.parent();
+		runs++;
 	}
+	if(runs>20){
+		console.log('Could not find parent');
+		return false;
+	}
+
 	//console.log('my new ajax container ',Virtuemart.container);
 	var found = false;
 
@@ -43,7 +54,7 @@ Virtuemart.cvFind = function(event) {
 		});
 	}
 
-	var index=0, i2=0, hitcount=0, runs=0;
+	var index=0, i2=0, hitcount=0;
 	//to ensure that an url is set, set the url of first product
 	jQuery(this).prop('url',event.data.variants[0][0]);
 	for	(runs = 0; runs < selection.length; index++) {

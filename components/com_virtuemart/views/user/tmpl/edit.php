@@ -24,20 +24,28 @@ JHtml::_('behavior.formvalidation');
 JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
 
-<?php //vmJsApi::vmValidator($this->userDetails->JUser->guest,$this->userFields); ?>
+<?php
+$url = vmURI::getCleanUrl();
+$cancelUrl = $url.'?task=cancel';
+if(!JFactory::getConfig()->get('sef',0)){
+	$cancelUrl = $url.'&task=cancel';
+}
+?>
 
 <h1><?php echo $this->page_title ?></h1>
-<?php echo shopFunctionsF::getLoginForm(false); ?>
+<?php echo shopFunctionsF::getLoginForm(false,false,$url); ?>
 
 <?php if($this->userDetails->virtuemart_user_id==0) {
 	echo '<h2>'.vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG').'</h2>';
-}?>
-<form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
+}
+
+?>
+<form method="post" id="adminForm" name="userForm" action="<?php echo $url ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, true);" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
-<button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=cancel', FALSE); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
+<button class="button" type="reset" onclick="window.location.href='<?php echo $cancelUrl ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
     <?php } ?>
 <?php // Loading Templates in Tabs
 if($this->userDetails->virtuemart_user_id!=0) {

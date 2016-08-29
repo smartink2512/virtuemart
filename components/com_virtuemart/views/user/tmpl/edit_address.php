@@ -81,7 +81,7 @@ function renderControlButtons($view,$rview){
 
 $task = '';
 if ($this->cart->getInCheckOut()){
-	//$task = '&task=checkout';
+	$task = '&task=checkout';
 }
 $url = 'index.php?option=com_virtuemart&view='.$rview.$task;
 
