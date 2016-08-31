@@ -57,8 +57,8 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$this->_cache[$this->_id]->load((int)$this->_id);
 
 			if(empty($this->_cache->virtuemart_vendor_id)){
-				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
-				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+				//if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
+				$this->_cache[$this->_id]->virtuemart_vendor_id = vmAccess::getVendorId('paymentmethod.edit');
 			}
 
 			if($this->_cache[$this->_id]->payment_jplugin_id){

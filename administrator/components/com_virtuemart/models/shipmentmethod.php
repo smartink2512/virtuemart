@@ -64,8 +64,8 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 
 			if(empty($this->_cache[$this->_id]->virtuemart_vendor_id)){
-				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
-				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
+				//if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
+				$this->_cache[$this->_id]->virtuemart_vendor_id = vmAccess::getVendorId('vm.shipmentmethod.edit');;
 			}
 
 			if ($this->_cache[$this->_id]->shipment_jplugin_id) {

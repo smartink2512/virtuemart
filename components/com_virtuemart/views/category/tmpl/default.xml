@@ -72,9 +72,9 @@
                 <option value="0">JNO</option>
             </field>
             <field name="latest_rows" type="text"
-                   label="COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS"
+                   label="COM_VIRTUEMART_ADMIN_CFG_LAT_PROD_ROWS"
                    extension="com_virtuemart"
-                   description="COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS_TIP" />
+                   description="COM_VIRTUEMART_ADMIN_CFG_LAT_PROD_ROWS_EXPLAIN" />
 
             <field name="topten" type="radio" default="0"
                    label="COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN"

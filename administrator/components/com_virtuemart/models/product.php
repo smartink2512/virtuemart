@@ -541,8 +541,7 @@ class VirtueMartModelProduct extends VmModel {
 					$where[] = 'pp.`product_price`>"0.0" ';
 				break;
 				case 'recent':
-					$rSession = JFactory::getSession();
-					$rIds = $rSession->get('vmlastvisitedproductids', array(), 'vm'); // get recent viewed from browser session
+					$rIds = shopFunctionsF::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
 					return $rIds;
 			}
 			// 			$joinCategory 	= false ; //creates error
@@ -1506,6 +1505,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		else {
 			$this->virtuemart_category_id = FALSE;
+		}
+		if($group == 'recent'){
+			$rIds = shopFunctionsF::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
+			return $rIds;
 		}
 		$ids = $this->sortSearchListQuery ($onlyPublished, $this->virtuemart_category_id, $group, $nbrReturnProducts);
 

@@ -277,7 +277,7 @@ class VirtueMartCustomFieldRenderer {
 
 								if(!$productChild) continue;
 								if(!isset($productChild->{$customfield->customfield_value})){
-									vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
+									vmdebug('The child has no value at index '.$child);
 									continue;
 								}
 								$available = $productChild->product_in_stock - $productChild->product_ordered;

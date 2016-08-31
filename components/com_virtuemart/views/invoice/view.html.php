@@ -206,10 +206,15 @@ class VirtuemartViewInvoice extends VmView {
 		//Create ST address fields
 		$orderst = $orderDetails['details']['ST'];
 
+		$skips = array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') ;
+		if(empty($orderDetails['details']['has_ST'])){
+			$skips[] = 'address_type_name';
+		}
+
 		$shipmentFieldset = $userFieldsModel->getUserFields(
 				 'shipment'
 				, array() // Default switches
-				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+				, $skips
 		);
 
 		$shipmentfields = $userFieldsModel->getUserFieldsFilled( $shipmentFieldset ,$orderst );

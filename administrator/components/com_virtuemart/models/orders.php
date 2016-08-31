@@ -1746,6 +1746,19 @@ class VirtueMartModelOrders extends VmModel {
 		$vars['url'] = 'url';
 		if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 
+
+		if(!empty($vars['orderDetails']['details']) and !empty($vars['orderDetails']['details']['BT']->order_language)) {
+			VmConfig::loadJLang('com_virtuemart',true,$vars['orderDetails']['details']['BT']->order_language);
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$vars['orderDetails']['details']['BT']->order_language);
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE,$vars['orderDetails']['details']['BT']->order_language);
+			vmdebug('With order language ',$vars['orderDetails']['details']['BT']->order_language);
+			vmTrace('notifyCustomer');
+		}
+		else {
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		}
+
 		$virtuemart_vendor_id = $order['details']['BT']->virtuemart_vendor_id;
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);

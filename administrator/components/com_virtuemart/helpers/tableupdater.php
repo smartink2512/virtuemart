@@ -69,8 +69,7 @@ class GenericTableUpdater extends VmModel{
 		if(empty($langs)){
 			$langs = VmConfig::get('active_languages');
 			if(empty($langs)){
-				$params = JComponentHelper::getParams('com_languages');
-				$langs = (array)$params->get('site', 'en-GB');
+				$langs = (array)VmConfig::$defaultLang;
 			}
 		}
 

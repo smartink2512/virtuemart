@@ -337,9 +337,7 @@ class shopFunctionsF {
 		array_unshift( $products_ids, $productId );
 		$products_ids = array_unique( $products_ids );
 
-		$recent_products_rows = (int)VmConfig::get('recent_products_rows', 1);
-		$products_per_row = (int)VmConfig::get('homepage_products_per_row',3);
-		$maxSize = (int)$products_per_row * $recent_products_rows;
+		$maxSize = (int)VmConfig::get('max_recent_products', 10);
 		if(count( $products_ids )>$maxSize) {
 			array_splice( $products_ids, $maxSize );
 		}
@@ -352,10 +350,14 @@ class shopFunctionsF {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getRecentProductIds () {
+	static public function getRecentProductIds ($nbr = 3) {
 
 		$session = JFactory::getSession();
-		return $session->get( 'vmlastvisitedproductids', array(), 'vm' );
+		$ids = $session->get( 'vmlastvisitedproductids', array(), 'vm' );
+		if(count( $ids )>$nbr) {
+			array_splice( $products_ids, $nbr );
+		}
+		return $ids;
 	}
 
 	static public function sortLoadProductCustomsStockInd(&$products,$pModel){
@@ -620,14 +622,21 @@ class shopFunctionsF {
 
 		VmConfig::loadJLang('com_virtuemart',true);
 
+		//should be removed here, function is abstract
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		if($noVendorMail and !empty($view->orderDetails) and !empty($view->orderDetails['details']['BT']->order_language)) {
 			VmConfig::loadJLang('com_virtuemart',true,$view->orderDetails['details']['BT']->order_language);
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$view->orderDetails['details']['BT']->order_language);
 			VmConfig::loadJLang('com_virtuemart_orders',TRUE,$view->orderDetails['details']['BT']->order_language);
-		} else {
+			vmdebug('With order language ',$view->orderDetails['details']['BT']->order_language);
+			vmTrace('sendVmMail');
+		}
+		else {
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		}
+		//until here
 
 		ob_start();
 
