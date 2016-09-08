@@ -140,20 +140,28 @@ var amazonPayment = {
 
 
         updateCart: function (url,ship) {
+            cartform = jQuery("#checkoutForm");
 
             jQuery.getJSON(url,
                 function (datas, textStatus) {
                     var cartview = "";
+                    var sel = '#amazonCartDiv';
+                    var cont = jQuery(sel);
                     if (datas.msg) {
                         datas.msg = datas.msg.replace('amazonHeader', 'amazonHeaderHide');
                         if(ship)datas.msg = datas.msg.replace('amazonShipmentNotFoundDiv', 'amazonShipmentNotFoundDivHide');
                         /*for (var i = 0; i < datas.msg.length; i++) {
                             cartview += datas.msg[i].toString();
                         }*/
-                        var el = jQuery(datas).find(Virtuemart.containerSelector);
-                        if (! el.length) el = jQuery(datas).filter(Virtuemart.containerSelector);
+                        var el = jQuery(datas.msg).find(sel);
+                        if (! el.length) el = jQuery(datas.msg).filter(sel);
                         if (el.length) {
-                            Virtuemart.container.html(el.html());
+                            cont.html(el.html());
+                        }
+                        el = jQuery(datas.msg).find('#cart-js');
+                        if (! el.length) el = jQuery(datas.msg).filter('#cart-js');
+                        if (el.length) {
+                            jQuery('#cart-js').html(el.html());
                         }
                         //jQuery('#amazonCartDiv').html(cartview);
                         jQuery('#amazonHeaderHide').html('');

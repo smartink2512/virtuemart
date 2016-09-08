@@ -117,8 +117,8 @@ class amazonHelperAuthorizationNotification extends amazonHelper {
 		}
 		$virtuemart_vendor_id = 1;
 		$vendorModel = VmModel::getModel('vendor');
-		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vendorModel->setId($virtuemart_vendor_id);
+		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vendorFields = $vendorModel->getVendorAddressFields($virtuemart_vendor_id);
 		$vendorEmail = $vendorFields['fields']['email']['value'];
 		if (isset($vendorFields['fields']['phone_1']['value'])) {

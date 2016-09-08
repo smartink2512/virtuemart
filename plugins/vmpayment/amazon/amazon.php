@@ -214,6 +214,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 
 	private function renderAddressbookWallet($readOnlyWidgets = false) {
 		//if ($this->getRenderAddressDoneFromSession()) { return;}
+		if(vRequest::getCmd('task')=='updatecartJS') return '';
 		$this->loadVmClass('VirtueMartCart', JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$this->setCartLayout($cart);
@@ -1276,7 +1277,6 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 		}
 		if($amazonAddress->isSetPhone()) {
 			$userInfoData['phone_1'] = $amazonAddress->getPhone();
-
 		}
 		if($all) {
 			if($amazonAddress->isSetAddressLine1()) {
@@ -3023,9 +3023,9 @@ $('.amazonDetailsOpener').click(function() {
 		$prefix = 'shipto_';
 		$update_data = $this->getUserInfoFromAmazon($physicalDestination, $prefix);
 		$update_data ['address_type'] = 'ST';
-		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE, $prefix);
 		$cart->STsameAsBT = false;
-		$cart->setCartIntoSession();
+		$cart->saveAddressInCart($update_data, $update_data['address_type'], TRUE, $prefix);
+		//$cart->setCartIntoSession();
 
 		$return['error'] = 'addressUpdated';
 
