@@ -980,6 +980,11 @@ class VmMediaHandler {
 			$image->msg =  'OK';
 			$file_url_thumb = $image->getFileUrlThumb();
 
+			$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$image->file_url_thumb);
+			if ((empty($image->file_url_thumb) || !file_exists($media_path)) && is_a($image,'VmImage')) {
+				$file_url_thumb = $image->createThumb();
+			}
+
 			return  '<div  class="vm_thumb_image"><input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]">
 			<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
 		<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'" href="'.JURI::root(true).'/'.$image->file_url.'" >
@@ -1004,6 +1009,11 @@ class VmMediaHandler {
 		foreach ($list['images'] as $key =>$image) {
 			$htmlImages ='';
 			$image->file_url_thumb = $image->getFileUrlThumb();
+
+			$media_path = VMPATH_ROOT.DS.str_replace('/',DS,$image->file_url_thumb);
+			if ((empty($image->file_url_thumb) || !file_exists($media_path)) && is_a($image,'VmImage')) {
+				$file_url_thumb = $image->createThumb();
+			}
 			if ($image->file_url_thumb > "0" ) {
 				$htmlImages .= '<div class="vm_thumb_image">
 				<span>'.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span>';

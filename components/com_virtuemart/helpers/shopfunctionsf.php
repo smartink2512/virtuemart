@@ -355,7 +355,7 @@ class shopFunctionsF {
 		$session = JFactory::getSession();
 		$ids = $session->get( 'vmlastvisitedproductids', array(), 'vm' );
 		if(count( $ids )>$nbr) {
-			array_splice( $products_ids, $nbr );
+			array_splice( $ids, $nbr );
 		}
 		return $ids;
 	}
@@ -391,6 +391,10 @@ class shopFunctionsF {
 				unset($product->customfields);
 				$products[$i] = $product;
 			} else {
+				if(!is_object($productItem)){
+					vmdebug('my product is just id',$productItem);
+					continue;
+				}
 				$productItem->stock = $pModel->getStockIndicator($productItem);
 				$products[$i] = $productItem;
 			}

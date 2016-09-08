@@ -427,7 +427,7 @@ INNER JOIN #__virtuemart_product_categories as cat ON (pc.virtuemart_product_id=
 		if(!empty($this->categoryId)){
 			$q1 .= ' virtuemart_category_id="'.$this->categoryId.'" and';
 		}
-		$q1 .= ' searchable="1" GROUP BY c.virtuemart_custom_id';
+		$q1 .= ' searchable="1" and (field_type="S" or field_type="P") GROUP BY c.virtuemart_custom_id';
 
 		$db->setQuery($q1);
 		$this->selected = $db->loadObjectList();
@@ -484,12 +484,12 @@ INNER JOIN #__virtuemart_product_categories as cat ON (pc.virtuemart_product_id=
 					$n = 'customfields['.$selected->virtuemart_custom_id.']';
 					$this->searchCustomValues .= vmText::_( $selected->custom_title ).' <input name="'.$n.'" class="inputbox vm-chzn-select" type="text" size="20" value="'.$v.'"/>';
 				} else {
-
-					$db->setQuery('SELECT `custom_value` as virtuemart_custom_id,`custom_value` as custom_title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$selected->virtuemart_custom_id);
-					$valueOptions= $this->_db->loadAssocList();
+				//Atm not written for other field types
+				/*	$db->setQuery('SELECT `customfield_value` as virtuemart_custom_id,`custom_value` as custom_title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$selected->virtuemart_custom_id);
+					$valueOptions= $db->loadAssocList();
 
 					$valueOptions = array_merge(array($emptyOption), $valueOptions);
-					$this->searchCustomValues .= '<div class="vm-search-custom-values-group"><div class="vm-search-title">'. vmText::_($selected->custom_title).'</div> '.JHtml::_('select.genericlist', $valueOptions, 'customfields['.$selected->virtuemart_custom_id.']', 'class="inputbox vm-chzn-select"', 'virtuemart_custom_id', 'custom_title', 0) . '</div>';
+					$this->searchCustomValues .= '<div class="vm-search-custom-values-group"><div class="vm-search-title">'. vmText::_($selected->custom_title).'</div> '.JHtml::_('select.genericlist', $valueOptions, 'customfields['.$selected->virtuemart_custom_id.']', 'class="inputbox vm-chzn-select"', 'virtuemart_custom_id', 'custom_title', 0) . '</div>';*/
 
 				}
 			}

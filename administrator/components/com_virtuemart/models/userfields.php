@@ -267,6 +267,11 @@ class VirtueMartModelUserfields extends VmModel {
 			$db = JFactory::getDBO();
 			$db->setQuery($q);
 			$data['userfield_jplugin_id'] = $db->loadResult();
+
+			$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE `extension_id` = "'.$data['userfield_jplugin_id'].'"';
+			$db->setQuery($q);
+			$db->execute();
+
 			JPluginHelper::importPlugin('vmuserfield');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmOnBeforeUserfieldSave',array( $plgName , &$data, &$field ) );
