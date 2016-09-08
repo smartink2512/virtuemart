@@ -64,7 +64,12 @@ class PaypalHelperPaypal {
 		$vendorModel->addImages($vendor, 1);
 		$this->vendor = $vendor;
 
-		//$this->_method->payment_currency = $this->paypalPlugin->getPaymentCurrency($this->_method);
+
+		if(empty($this->_method->payment_currency)){
+			$this->_method->payment_currency = $this->paypalPlugin->getPaymentCurrency($this->_method);
+			//$this->debugLog($this->_method->payment_currency, '__construct PaypalHelperPaypal payment_currency '.get_class($this), 'debug');
+		}
+
 		$this->currency_code_3 = shopFunctions::getCurrencyByID($this->_method->payment_currency, 'currency_code_3');
 		if($this->_method->payment_currency==-1){
 			$this->debugLog(array($this->_method->payment_currency,$this->currency_code_3), '__construct '.get_class($this). ' payment currency and code3', 'debug', false);

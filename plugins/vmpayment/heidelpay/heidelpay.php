@@ -22,8 +22,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 	protected $version = '16.02.15';
 
 	function __construct (& $subject, $config) {
-		//if (self::$_this)
-		//   return self::$_this;
+
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -34,7 +33,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
-		//self::$_this = $this;
+
 	}
 
 	public function getVmPluginCreateTableSQL () {
@@ -113,12 +112,6 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		return $_html;
 	}
 
-	function plgVmOnConfirmedOrderStorePaymentData ($virtuemart_order_id, $orderData, $priceData) {
-		if (!$this->selectedThisPayment ($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
-			return NULL; // Another method was selected, do nothing
-		}
-		return FALSE;
-	}
 
 	function plgVmConfirmedOrder($cart, $order) {
 		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_paymentmethod_id))) {
@@ -587,7 +580,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 
 	protected function getLang () {
-		$language =& JFactory::getLanguage ();
+		$language = JFactory::getLanguage ();
 		$tag = strtolower (substr ($language->get ('tag'), 0, 2));
 		return $tag;
 	}

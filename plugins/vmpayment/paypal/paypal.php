@@ -368,7 +368,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->_currentMethod->paypalproduct == 'exp') {
 				$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod);
-				$paypalInterface = $this->_loadPayPalInterface();
+				//$paypalInterface = $this->_loadPayPalInterface();
+				$paypalInterface = new PaypalHelperPayPalExp($this->_currentMethod, $this);
 
 				$button = $paypalInterface->getExpressCheckoutButton();
 				$html .= $this->renderByLayout('expcheckout',
@@ -815,7 +816,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		static $paypalInterface = true;
 
-		$this->_currentMethod->paypalproduct = $this->getPaypalProduct($this->_currentMethod);
+		if(empty($this->_currentMethod->paypalproduct)) $this->_currentMethod->paypalproduct = $this->getPaypalProduct($this->_currentMethod);
 
 		if($paypalInterface === true){
 			if ($this->_currentMethod->paypalproduct == 'std') {
@@ -1241,7 +1242,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($this->_currentMethod->paypalproduct == 'std') {
 			return null;
 		}
-		$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod,$order['details']['BT']->payment_currency_id);
+
+		$oModel = VmModel::getModel('orders');
+		$orderModelData = $oModel->getOrder($order->virtuemart_order_id);
+
+		$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod,$orderModelData['details']['BT']->payment_currency_id);
 		$payment = end($payments);
 		if ($this->_currentMethod->payment_action == 'Authorization' and $order->order_status == $this->_currentMethod->status_capture) {
 			$paypalInterface = $this->_loadPayPalInterface();

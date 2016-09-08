@@ -366,8 +366,12 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		foreach ($showOrderBEFields as $key => $showOrderBEField) {
 			$field = $prefix . $showOrderBEField;
 			// only displays if there is a value or the value is different from 0.00 and the value
-			if ($payment->$field) {
-				$html .= $this->paypalPlugin->getHtmlRowBE($prefix . $key, $payment->$field);
+			if (isset($payment->$field)) {
+				if($payment->$field){
+					$html .= $this->paypalPlugin->getHtmlRowBE($prefix . $key, $payment->$field);
+				}
+			} else {
+				//$this->debugLog($payment, 'onShowOrderBEPaymentByFields: missing field '.$field, 'debug');
 			}
 		}
 
