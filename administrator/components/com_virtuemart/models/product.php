@@ -1507,13 +1507,12 @@ class VirtueMartModelProduct extends VmModel {
 			$this->virtuemart_category_id = FALSE;
 		}
 		if($group == 'recent'){
-			$rIds = shopFunctionsF::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
-			return $rIds;
-		}
-		$ids = $this->sortSearchListQuery ($onlyPublished, $this->virtuemart_category_id, $group, $nbrReturnProducts);
-
-		if($ids){
-			self::$_alreadyLoadedIds = array_merge(self::$_alreadyLoadedIds,$ids);
+			$ids = shopFunctionsF::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
+		} else {
+			$ids = $this->sortSearchListQuery ($onlyPublished, $this->virtuemart_category_id, $group, $nbrReturnProducts);
+			if($ids){
+				self::$_alreadyLoadedIds = array_merge(self::$_alreadyLoadedIds,$ids);
+			}
 		}
 
 		//quickndirty hack for the BE list, we can do that, because in vm2.1 this is anyway fixed correctly

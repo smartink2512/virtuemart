@@ -73,6 +73,11 @@ class GenericTableUpdater extends VmModel{
 			}
 		}
 
+		foreach($langs as $i => $lang){
+			$lang = strtolower(strtr($lang,'-','_'));
+			if(empty($lang))unset($langs[$i]);
+		}
+
 		$langTables = array();
 		//Todo add the mb_ stuff here
 		// 		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');

@@ -39,13 +39,20 @@ class convertECB {
 	 */
 	function convert( $amountA, $currA='', $currB='', $a2rC = true, $relatedCurrency = 'EUR') {
 
-		// cache subfolder(group) 'convertECB', cache method: callback
-		$cache= JFactory::getCache('convertECB','callback');
+		if($currA==$currB){
+			return $amountA;
+		}
 
-		$cache->setLifeTime(360); // check 4 time per day
-		$cache->setCaching(1); //enable caching
+		static $globalCurrencyConverter = false;
+		if(!$globalCurrencyConverter){
+			// cache subfolder(group) 'convertECB', cache method: callback
+			$cache= JFactory::getCache('convertECB','callback');
 
-		$globalCurrencyConverter = $cache->call( array( 'convertECB', 'getSetExchangeRates' ),$this->document_address );
+			$cache->setLifeTime(360); // check 4 time per day
+			$cache->setCaching(1); //enable caching
+
+			$globalCurrencyConverter = $cache->call( array( 'convertECB', 'getSetExchangeRates' ),$this->document_address );
+		}
 
 		if(!$globalCurrencyConverter ){
 			return $amountA;

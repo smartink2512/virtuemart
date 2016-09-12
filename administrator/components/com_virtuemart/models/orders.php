@@ -242,7 +242,7 @@ class VirtueMartModelOrders extends VmModel {
 			}
 			$order['details']['BT']->order_name = trim(htmlspecialchars(strip_tags(htmlspecialchars_decode($order['details']['BT']->order_name))));
 
-			if(isset($orderDetails['details']['ST'])){
+			if(isset($order['details']['ST'])){
 				$order['details']['has_ST'] = true;
 			} else {
 				$order['details']['has_ST'] = false;

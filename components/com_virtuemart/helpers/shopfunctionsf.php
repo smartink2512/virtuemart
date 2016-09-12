@@ -391,10 +391,7 @@ class shopFunctionsF {
 				unset($product->customfields);
 				$products[$i] = $product;
 			} else {
-				if(!is_object($productItem)){
-					vmdebug('my product is just id',$productItem);
-					continue;
-				}
+
 				$productItem->stock = $pModel->getStockIndicator($productItem);
 				$products[$i] = $productItem;
 			}

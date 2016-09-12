@@ -960,7 +960,7 @@ class VmConfig {
 			$defaultLang = $params->get('language', 'en-GB');//use default joomla
 		}
 
-		if(self::$jDefLang = self::get('vmDefLang',false)){
+		if(self::$jDefLang == self::get('vmDefLang',false)){
 			self::$jDefLang = strtolower(strtr(self::$jDefLang,'-','_'));
 		} else {
 			self::$jDefLang = strtolower(strtr($defaultLang,'-','_'));
