@@ -20,6 +20,21 @@
 
 defined ('_JEXEC') or die('Restricted access');
 
+if(vRequest::getInt('dynamic')){
+	if (!empty($this->products)) {
+		if($this->fallback){
+			$p = $this->products;
+			$this->products = array();
+			$this->products[0] = $p;
+			vmdebug('Refallback');
+		}
+
+		echo shopFunctionsF::renderVmSubLayout($this->productsLayout,array('products'=>$this->products,'currency'=>$this->currency,'products_per_row'=>$this->perRow,'showRating'=>$this->showRating));
+
+	}
+
+	return ;
+}
 ?> <div class="category-view"> <?php
 $js = "
 jQuery(document).ready(function () {
@@ -143,9 +158,11 @@ if(!empty($this->orderByList)) { ?>
 </div>
 
 <?php
-$j = "Virtuemart.container = jQuery('.category-view');
-Virtuemart.containerSelector = '.category-view';";
+if(VmConfig::get ('jdynupdate', TRUE)){
+	$j = "Virtuemart.container = jQuery('.category-view');
+	Virtuemart.containerSelector = '.category-view';";
 
-//vmJsApi::addJScript('ajaxContent',$j);
+	//vmJsApi::addJScript('ajaxContent',$j);
+}
 ?>
 <!-- end browse-view -->

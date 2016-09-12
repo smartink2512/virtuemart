@@ -67,8 +67,11 @@ Virtuemart.cvFind = function(event) {
 						var url = event.data.variants[index][0].replace(/amp;/g, '');
 						jQuery(this).attr('url',url);
 						jQuery(this).val(url);
+
 						if(jQuery(this).attr('reload')){
+							Virtuemart.isUpdatingContent = true;
 							window.top.location.href = url;
+							return false;
 						}
 						//console.log('return url '+url);
 						return url;

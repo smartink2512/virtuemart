@@ -256,7 +256,9 @@ if(VmConfig::get ('jdynupdate', TRUE)){
 	 * This variable points to a topmost element that holds other content.
 	 */
 	$j = "Virtuemart.container = jQuery('.productdetails-view');
-Virtuemart.containerSelector = '.productdetails-view';";
+Virtuemart.containerSelector = '.productdetails-view';
+//Virtuemart.recalculate = true;	//Activate this line to recalculate your product after ajax
+";
 
 	vmJsApi::addJScript('ajaxContent',$j);
 

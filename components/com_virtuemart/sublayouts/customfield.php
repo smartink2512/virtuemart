@@ -130,8 +130,6 @@ class VirtueMartCustomFieldRenderer {
 						}
 					}
 
-					$view = vRequest::getCmd('view','productdetails');
-
 					$class = 'vm-chzn-select';
 					$selectType = 'select.genericlist';
 
@@ -144,10 +142,18 @@ class VirtueMartCustomFieldRenderer {
 						$dom = 'select';
 					}
 
-					$attribs = array('class'=>$class.' cvselection no-vm-bind','data-dynamic-update'=>'1','style'=>'min-width:70px;');
-					if('productdetails' != $view or !VmConfig::get ('jdynupdate', TRUE)){
-						$attribs['reload'] = '1';
-						$view = 'productdetails';
+					$attribs = array('class'=>$class.' cvselection no-vm-bind','style'=>'min-width:70px;');
+
+					$view = 'productdetails';
+					$attribs['reload'] = '1';
+					if(VmConfig::get ('jdynupdate', TRUE)){
+						$view = vRequest::getCmd('view','productdetails');
+						if($view == 'productdetails' or ($customfield->browseajax and $view == 'category')){
+							$attribs['data-dynamic-update'] = '1';
+							unset($attribs['reload']);
+						} else {
+							$view = 'productdetails';
+						}
 					}
 
 					foreach($customfield->selectoptions as $k => $soption){
@@ -188,7 +194,7 @@ class VirtueMartCustomFieldRenderer {
 						if(empty($selected)){
 							$product->orderable=false;
 						}
-						$idTagK = $idTag.'cvard'.$k;
+						//$idTagK = $idTag.'cvard'.$k;
 						if($customfield->showlabels){
 							if( in_array($soption->voption,VirtueMartModelCustomfields::$dimensions) ){
 								$soption->slabel = vmText::_('COM_VIRTUEMART_'.strtoupper($soption->voption));
@@ -200,7 +206,7 @@ class VirtueMartCustomFieldRenderer {
 							}
 
 						}
-
+						$idTagK = '[';	//Joomla workaround to get a list without id
 						$attribs['cvsel'] = 'field' . $customfield->virtuemart_customfield_id ;
 						$fname = $fieldname.'['.$k.']';
 						$html .= JHtml::_ ($selectType, $options, $fname, $attribs , "value", "text", $selected,$idTagK);
@@ -266,6 +272,23 @@ class VirtueMartCustomFieldRenderer {
 					$selected = vRequest::getInt ('virtuemart_product_id',0);
 					$selectedFound = false;
 
+					$view = 'productdetails';
+					$attribs['reload'] = '1';
+					if(VmConfig::get ('jdynupdate', TRUE)){
+						$view = vRequest::getCmd('view','productdetails');
+						if($view == 'productdetails' or ($customfield->browseajax and $view == 'category')){
+							$attribs['data-dynamic-update'] = '1';
+							unset($attribs['reload']);
+						} else {
+							$view = 'productdetails';
+						}
+					}
+
+					$Itemid = vRequest::getInt('Itemid',''); // '&Itemid=127';
+					if(!empty($Itemid)){
+						$Itemid = '&Itemid='.$Itemid;
+					}
+
 					$parentStock = 0;
 					if($uncatChildren){
 						foreach ($uncatChildren as $k => $child) {
@@ -291,7 +314,7 @@ class VirtueMartCustomFieldRenderer {
 									$productPrices = $calculator->getProductPrices ($productChild);
 									$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
 								}
-								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $productChild->virtuemart_product_id,false), 'text' => $productChild->{$customfield->customfield_value}.$priceStr);
+								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view='.$view.'&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $productChild->virtuemart_product_id,false), 'text' => $productChild->{$customfield->customfield_value}.$priceStr);
 
 								if($selected==$child){
 									$selectedFound = true;
@@ -317,23 +340,43 @@ class VirtueMartCustomFieldRenderer {
 						}
 					}
 
-					$url = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.
+					$url = 'index.php?option=com_virtuemart&view='.$view.'&virtuemart_category_id='.
 					$virtuemart_category_id .'&virtuemart_product_id='. $selected;
 					$attribs['option.key.toHtml'] = false;
-					$attribs['id'] = $idTag;
+					$attribs['id'] = '[';//$idTag;
+
+
+					/*$attribs['reload'] = '1';
+					if(VmConfig::get ('jdynupdate', TRUE)){
+						$view = vRequest::getCmd('view','productdetails');
+						if($view == 'productdetails' or ($customfield->browseajax and $view == 'category')){
+							$attribs['data-dynamic-update'] = '1';
+							unset($attribs['reload']);
+						}
+					}*/
+
 					$och = '';
-					if($customfield->browseajax){
-						$och = ' data-dynamic-update="1"';
+					if(!empty($attribs['reload'])){
+						$och = ' onchange="window.top.location.href=this.options[this.selectedIndex].value" reload=1';
+						unset($attribs['reload']);
 					} else {
-						$och = ' data-dynamic-update="1" onchange="window.top.location.href=this.options[this.selectedIndex].value"';
+						$och = ' data-dynamic-update="1"';
+						unset($attribs['data-dynamic-update']);
 					}
+					/*if($customfield->browseajax and VmConfig::get ('jdynupdate', TRUE) and ($view == 'productdetails' or $view == 'category') ){
+						$och = ' onchange="window.top.location.href=this.options[this.selectedIndex].value" reload=1';
+					} else {
+						$och = ' data-dynamic-update="1"';
+					}*/
 					$attribs['list.attr'] = 'size="1" class="vm-chzn-select no-vm-bind avselection"'.$och;
 					$attribs['list.translate'] = false;
 					$attribs['option.key'] = 'value';
 					$attribs['option.text'] = 'text';
 					$attribs['list.select'] = JRoute::_ ($url,false);
-					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, $attribs);
 
+					$idTagK = '[';
+					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, $attribs);
+					//vmdebug('My view $attribs',$attribs,$html);
 					vmJsApi::chosenDropDowns();
 
 					if($customfield->parentOrderable==0){
@@ -346,6 +389,15 @@ class VirtueMartCustomFieldRenderer {
 					$dynChilds++;
 					$customfield->display = $html;
 
+					vmJsApi::addJScript('avfind',false,false,true);
+
+					if($customfield->browseajax){
+						$j = "jQuery(document).ready(function() {
+							jQuery('select.avselection').off('change',Virtuemart.avFind);
+							jQuery('select.avselection').on('change',{},Virtuemart.avFind);
+						});";
+						vmJsApi::addJScript('avselvars',$j,false,true,false);
+					}
 					break;
 
 				/*Date variant*/

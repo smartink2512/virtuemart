@@ -15,6 +15,8 @@ jQuery(function($) {
     // Add to cart and other scripts may check this variable and return while
     // the content is being updated.
     Virtuemart.isUpdatingContent = false;
+	Virtuemart.recalculate = false;
+
     Virtuemart.updateContent = function(url, callback) {
 
         if(Virtuemart.isUpdatingContent) return false;
@@ -43,12 +45,15 @@ jQuery(function($) {
 					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
 					//Virtuemart.product(jQuery("form.product"));
 
-					$("form.js-recalculate").each(function(){
-						 if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
-							 var id= $(this).find('input[name="virtuemart_product_id[]"]').val();
-							 Virtuemart.setproducttype($(this),id);
-						 }
-					 });
+					if(Virtuemart.recalculate) {
+						$("form.js-recalculate").each(function(){
+							if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
+								var id= $(this).find('input[name="virtuemart_product_id[]"]').val();
+								Virtuemart.setproducttype($(this),id);
+							}
+						});
+					}
+
 				}
 				Virtuemart.isUpdatingContent = false;
 				if (callback && typeof(callback) === "function") {

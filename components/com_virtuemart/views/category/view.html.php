@@ -55,6 +55,13 @@ class VirtuemartViewCategory extends VmView {
 			//$title .=' ('.$keyword.')';
 		}
 
+		if( ShopFunctionsF::isFEmanager('product.edit') ){
+			$add_product_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=0&manage=1' ;
+			$add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT', 'edit', false, false);
+		} else {
+			$add_product_link = "";
+		}
+		$this->assignRef('add_product_link', $add_product_link);
 
 		$menus	= $this->app->getMenu();
 		$menu = $menus->getActive();
@@ -141,19 +148,22 @@ class VirtuemartViewCategory extends VmView {
 			$vendorId = $category->virtuemart_vendor_id;
 
 
-				$ratingModel = VmModel::getModel('ratings');
-				$productModel->withRating = $this->showRating = $ratingModel->showRating();
+			$ratingModel = VmModel::getModel('ratings');
+			$productModel->withRating = $this->showRating = $ratingModel->showRating();
 
-				$this->products = false;
+			$this->products = false;
 
-				if(!empty($menu->query['products_per_row'])){
-					$this->perRow = $menu->query['products_per_row'];
-				} else {
-					$this->perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
-				}
+			if(!empty($menu->query['products_per_row'])){
+				$this->perRow = $menu->query['products_per_row'];
+			} else {
+				$this->perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
+			}
 
-				$imgAmount = VmConfig::get('prodimg_browse',1);
+			$imgAmount = VmConfig::get('prodimg_browse',1);
 
+			$dynamic = vRequest::getInt('dynamic',false);
+
+			if(!$dynamic){
 				$opt = array('featured','latest','topten','recent');
 				foreach($opt as $o){
 
@@ -164,61 +174,69 @@ class VirtuemartViewCategory extends VmView {
 						$productModel->addImages($this->products[$o],$imgAmount);
 					}
 				}
+			}
+
 
 			$this->vmPagination = '';
 			$this->orderByList = '';
-				if($this->showproducts){
-					if (vRequest::getInt('dynamic',false)) {
-						$id = vRequest::getInt('virtuemart_product_id',false);
-						$p = $productModel->getProduct ($id);
-						$pa = array();
-						$pa[] = $p;
-						$this->products['0'][] = $p;
-					} else {
-						// Load the products in the given category
-						$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
-						$this->vmPagination = $productModel->getPagination($this->perRow);
-						$this->orderByList = $productModel->getOrderByList($this->categoryId);
-						$this->products['0'] = $productModel->getProducts ($ids);
-					}
 
-					$productModel->addImages($this->products['0'], $imgAmount );
 
+			if($this->showproducts){
+
+				if ($dynamic) {
+
+					$id = vRequest::getInt('virtuemart_product_id',false);
+					$p = $productModel->getProduct ($id);
+					$pa = array();
+					$pa[] = $p;
+					$this->products['0'][] = $p;
+
+				} else {
+					// Load the products in the given category
+					$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
+					$this->vmPagination = $productModel->getPagination($this->perRow);
+					$this->orderByList = $productModel->getOrderByList($this->categoryId);
+					$this->products['0'] = $productModel->getProducts ($ids);
 				}
 
-				if ($this->products) {
-					$this->currency = CurrencyDisplay::getInstance( );
-					$display_stock = VmConfig::get('display_stock',1);
-					$showCustoms = VmConfig::get('show_pcustoms',1);
-					if($display_stock or $showCustoms){
+				$productModel->addImages($this->products['0'], $imgAmount );
 
-						if(!$showCustoms){
-							foreach($this->products as $pType => $productSeries){
-								foreach($productSeries as $i => $productItem){
-									$this->products[$pType][$i]->stock = $productModel->getStockIndicator($productItem);
-								}
+			}
+
+			if ($this->products) {
+				$this->currency = CurrencyDisplay::getInstance( );
+				$display_stock = VmConfig::get('display_stock',1);
+				$showCustoms = VmConfig::get('show_pcustoms',1);
+				if($display_stock or $showCustoms){
+
+					if(!$showCustoms){
+						foreach($this->products as $pType => $productSeries){
+							foreach($productSeries as $i => $productItem){
+								$this->products[$pType][$i]->stock = $productModel->getStockIndicator($productItem);
 							}
-						} else {
-							if (!class_exists ('vmCustomPlugin')) {
-								require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
-							}
-							foreach($this->products as $pType => $productSeries) {
-								shopFunctionsF::sortLoadProductCustomsStockInd($this->products[$pType],$productModel);
-							}
+						}
+					} else {
+						if (!class_exists ('vmCustomPlugin')) {
+							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+						}
+						//vmdebug('My products ',$this->products);
+						foreach($this->products as $pType => $productSeries) {
+							shopFunctionsF::sortLoadProductCustomsStockInd($this->products[$pType],$productModel);
 						}
 					}
 				}
+			}
 
-				// Add feed links
-				if ($this->products  && VmConfig::get('feed_cat_published', 0)==1) {
-					$link = '&format=feed&limitstart=';
-					$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-					$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
-					$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-					$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
-				}
+			// Add feed links
+			if ($this->products  && VmConfig::get('feed_cat_published', 0)==1) {
+				$link = '&format=feed&limitstart=';
+				$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+				$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
+				$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+				$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
+			}
 
-				$this->showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
+			$this->showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
 
 
 

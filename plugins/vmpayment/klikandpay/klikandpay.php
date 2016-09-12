@@ -849,7 +849,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		');
 
 		$html = '';
-		if ($this->_method->debug) {
+		if ($this->_currentMethod->debug) {
 			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" target="paypal">';
 		} else {
 			$html .= '<form action="' . $server . '" method="post" name="vm_klikandpay_form" id="vmPaymentForm" accept-charset="UTF-8">';
@@ -859,7 +859,7 @@ class plgVmpaymentKlikandpay extends vmPSPlugin {
 		foreach ($post_variables as $name => $value) {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
-		if ($this->_method->debug) {
+		if ($this->_currentMethod->debug) {
 
 			$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to PayPal" />
