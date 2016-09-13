@@ -19,8 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminUIHelper::startAdminArea($this);
-
 ?>
 
 <fieldset>
@@ -99,8 +97,3 @@ if(!empty($this->virtuemart_userinfo_id)){
 
 </fieldset>
 
-<?php
-
-	AdminUIHelper::endAdminArea();
-
-?>
