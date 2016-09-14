@@ -28,12 +28,14 @@ class VmView extends JViewLegacy{
 	var $isMail = false;
 	var $isPdf = false;
 	var $writeJs = true;
+	var $useSSL = 0;
 
 	public function display($tpl = null) {
 
 		if($this->isMail or $this->isPdf){
 			$this->writeJs = false;
 		}
+		$this->useSSL = VmConfig::get('useSSL', 0);
 
 		$result = $this->loadTemplate($tpl);
 		if ($result instanceof Exception) {

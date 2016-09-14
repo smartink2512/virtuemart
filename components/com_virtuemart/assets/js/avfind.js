@@ -14,21 +14,23 @@ if (typeof Virtuemart === "undefined")
 Virtuemart.avFind = function(event) {
 	event.preventDefault();
 
-	var runs=0;
+	var runs= 0, maxruns = 20;
 	//We ensure with this, to get the right product, if more than one is displayed
 	var container = jQuery(event.currentTarget);
-	while(!container.hasClass('product-field-display') && runs<=20){
+	while(!container.hasClass('product-field-display') && runs<=maxruns){
 		container = container.parent();
 		runs++;
 	}
-	if(runs>20){
+	if(runs>maxruns){
 		console.log('Could not find parent');
 		return false;
 	}
 	Virtuemart.container = container;
-	if(typeof Virtuemart.containerSelector === typeof undefined) Virtuemart.containerSelector = '.product-container';
-	var cl = Virtuemart.containerSelector.substring(1);
+	/*if(typeof Virtuemart.containerSelector === typeof undefined) Virtuemart.containerSelector = '.product-container';
+	var cl = Virtuemart.containerSelector.substring(1);*/
 
+	var cl = 'product-container';
+	Virtuemart.containerSelector = '.'+cl;
 	while(!Virtuemart.container.hasClass(cl)){
 		Virtuemart.container = Virtuemart.container.parent();
 	}
@@ -54,8 +56,8 @@ Virtuemart.avFind = function(event) {
 		});
 	}
 
-	Virtuemart.setBrowserNewState(url);
-	Virtuemart.updateContent(url);
+	//Virtuemart.setBrowserNewState(url);
+	//Virtuemart.updateContent(url);
 
 	return url;
 

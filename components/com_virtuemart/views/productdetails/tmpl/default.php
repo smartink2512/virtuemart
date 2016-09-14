@@ -33,7 +33,7 @@ if(vRequest::getInt('print',false)){ ?>
 <body onload="javascript:print();">
 <?php } ?>
 
-<div class="productdetails-view productdetails" >
+<div class="product-container productdetails-view productdetails" >
 
     <?php
     // Product Navigation

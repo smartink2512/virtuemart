@@ -75,7 +75,7 @@ if ($products_per_row > 1) {
 
 		<ul class="vmproduct<?php echo $params->get ('moduleclass_sfx'); ?> productdetails">
 			<?php foreach ($products as $product) : ?>
-			<li class="<?php echo $pwidth ?> <?php echo $float ?> product-container">
+			<li class="product-container <?php echo $pwidth ?> <?php echo $float ?> product-container">
 				<?php
 				if (!empty($product->images[0])) {
 					$image = $product->images[0]->displayMediaThumb ('class="featuredProductImage"', FALSE);
