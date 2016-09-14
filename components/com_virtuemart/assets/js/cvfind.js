@@ -27,8 +27,7 @@ Virtuemart.cvFind = function(event) {
 		return false;
 	}
 	Virtuemart.container = container;
-	/*if(typeof Virtuemart.containerSelector === typeof undefined) Virtuemart.containerSelector = '.product-container';
-	var cl = Virtuemart.containerSelector.substring(1);*/
+
 
 	runs=0;
 	var cl = 'product-container';

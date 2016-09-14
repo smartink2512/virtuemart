@@ -26,8 +26,7 @@ Virtuemart.avFind = function(event) {
 		return false;
 	}
 	Virtuemart.container = container;
-	/*if(typeof Virtuemart.containerSelector === typeof undefined) Virtuemart.containerSelector = '.product-container';
-	var cl = Virtuemart.containerSelector.substring(1);*/
+
 
 	var cl = 'product-container';
 	Virtuemart.containerSelector = '.'+cl;
