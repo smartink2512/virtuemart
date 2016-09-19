@@ -794,6 +794,7 @@ class VmConfig {
 
 		if($fresh){
 			self::$_jpConfig = new VmConfig();
+			self::setdbLanguageTag();
 			return self::$_jpConfig;
 		}
 		vmSetStartTime('loadConfig');

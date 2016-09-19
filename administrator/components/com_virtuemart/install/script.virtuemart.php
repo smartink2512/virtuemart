@@ -284,6 +284,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->checkAddDefaultShoppergroups();
 
 			//$this->adjustDefaultOrderStates();
+			$this->addMissingOrderstati();
 
 			$this->fixOrdersVendorId();
 
@@ -377,6 +378,48 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				}
 
 			}
+
+		}
+
+		private function addMissingOrderstati(){
+
+			if(empty($this->_db)){
+				$this->_db = JFactory::getDBO();
+			}
+
+			$q = '';
+
+			$qc = 'SELECT * FROM `#__virtuemart_orderstates` WHERE `order_status_code`="F"';
+			$this->_db->setQuery($qc);
+			$f = $this->_db->loadResult();
+			if(!$f) {
+				$q .= "(null, 'F', 'COM_VIRTUEMART_ORDER_STATUS_COMPLETED', '', 'R',7, 1)";
+			}
+
+			$qc = 'SELECT * FROM `#__virtuemart_orderstates` WHERE `order_status_code`="D"';
+			$this->_db->setQuery($qc);
+			$d = $this->_db->loadResult();
+
+			if(!$d) {
+				if(!empty($q)) {
+					$q .= ',';
+				}
+				$q .= "(null, 'D', 'COM_VIRTUEMART_ORDER_STATUS_DENIED', '', 'A',8, 1)";
+			}
+
+			if(!empty($q)) {
+				$qi = "INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_status_code`, `order_status_name`, `order_status_description`, `order_stock_handle`, `ordering`, `virtuemart_vendor_id`) VALUES ".$q.";";
+
+				$this->_db->setQuery($qi);
+
+				if(!$this->_db->execute()){
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('Error: Insert Orderstati '.$qi );
+					$ok = false;
+				}
+			}
+
+
 
 		}
 
