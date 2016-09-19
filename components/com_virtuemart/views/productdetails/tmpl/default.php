@@ -265,8 +265,8 @@ Virtuemart.containerSelector = '.productdetails-view';
 	$j = "jQuery(document).ready(function($) {
 	Virtuemart.stopVmLoading();
 	var msg = '';
-	jQuery('a[data-dynamic-update=\"1\"]').off('click', Virtuemart.startVmLoading).on('click', {msg:msg}, Virtuemart.startVmLoading);
-	jQuery('[data-dynamic-update=\"1\"]').off('change', Virtuemart.startVmLoading).on('change', {msg:msg}, Virtuemart.startVmLoading);
+	$('a[data-dynamic-update=\"1\"]').off('click', Virtuemart.startVmLoading).on('click', {msg:msg}, Virtuemart.startVmLoading);
+	$('[data-dynamic-update=\"1\"]').off('change', Virtuemart.startVmLoading).on('change', {msg:msg}, Virtuemart.startVmLoading);
 });";
 
 	vmJsApi::addJScript('vmPreloader',$j);

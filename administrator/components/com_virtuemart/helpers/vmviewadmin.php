@@ -41,7 +41,7 @@ class VmViewAdmin extends JViewLegacy {
 	function __construct($config = array()) {
 		parent::__construct($config);
 	}
-	
+
 	/*
 	* Override the display function to include ACL
 	* Redirect to the control panel when user does not have access
@@ -51,8 +51,8 @@ class VmViewAdmin extends JViewLegacy {
 		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
 		if ($view == 'virtuemart' //Virtuemart view is always allowed since this is the page we redirect to in case the user does not have the rights
-			or $view == 'about' //About view always displayed
-			or $this->manager($view) ) {
+		or $view == 'about' //About view always displayed
+		or $this->manager($view) ) {
 			//or $this->canDo->get('core.admin')
 			//or $this->canDo->get('vm.'.$view) ) { //Super administrators always have access
 
@@ -204,10 +204,10 @@ class VmViewAdmin extends JViewLegacy {
 
 	/**
 	 * Add simple search to form
-	* @param $searchLabel text to display before searchbox
-	* @param $name 		 lists and id name
-	* ??vmText::_('COM_VIRTUEMART_NAME')
-	*/
+	 * @param $searchLabel text to display before searchbox
+	 * @param $name 		 lists and id name
+	 * ??vmText::_('COM_VIRTUEMART_NAME')
+	 */
 
 	function displayDefaultViewSearch($searchLabel='COM_VIRTUEMART_NAME',$name ='search') {
 		return vmText::_('COM_VIRTUEMART_FILTER') . ' ' . vmText::_($searchLabel) . ':
@@ -218,7 +218,7 @@ class VmViewAdmin extends JViewLegacy {
 
 	function addStandardEditViewCommands($id = 0,$object = null) {
 
-        $view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
+		$view = vRequest::getCmd('view', vRequest::getCmd('controller','virtuemart'));
 
 		if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
@@ -234,7 +234,7 @@ class VmViewAdmin extends JViewLegacy {
 		if($view != 'shipmentmethod' and $view != 'paymentmethod' and $view != 'media') $validate = true; else $validate = false;
 		$this->addJsJoomlaSubmitButton($validate);
 
-        $editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
+		$editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
 		$params = JComponentHelper::getParams('com_languages');
 
 		$selectedLangue = $params->get('site', 'en-GB');
@@ -252,7 +252,7 @@ class VmViewAdmin extends JViewLegacy {
 			if ($editView =='user') $editView ='vendor';
 
 			jimport('joomla.language.helper');
-            $this->lang = vRequest::getVar('vmlang', $this->lang);
+			$this->lang = vRequest::getVar('vmlang', $this->lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('VMPATH_ROOT'), true);
 			$activeVmLangs = (vmconfig::get('active_languages') );
@@ -296,7 +296,7 @@ class VmViewAdmin extends JViewLegacy {
 				$("select#vmlang").chosen().change(function() {
 					langCode = $(this).find("option:selected").val();
 					flagClass = "flag-"+langCode;
-					jQuery.ajax({
+					$.ajax({
 						type: "GET",
 						cache: false,
         				dataType: "json",
@@ -318,7 +318,7 @@ class VmViewAdmin extends JViewLegacy {
 							if (data.fields !== "error" ) {
 								if (data.structure == "empty") alert(data.msg);
 								$.each(data.fields , function(key, val) {
-									cible = jQuery("#"+key);
+									cible = $("#"+key);
 									if (oldflag !== "") cible.parent().removeClass(oldflag)
 									var tmce_ver = 0;
 									if(typeof window.tinyMCE!=="undefined"){
@@ -472,11 +472,11 @@ class VmViewAdmin extends JViewLegacy {
 
 		if (JVM_VERSION < 3){
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-					. $image .'</a>');
+			. $image .'</a>');
 		} else {
 			$icon 	= $field ? 'publish' : 'unpublish';
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				. '<span class="icon-'.$icon.'"><span>' .'</a>');
+			. '<span class="icon-'.$icon.'"><span>' .'</a>');
 		}
 
 
@@ -506,16 +506,16 @@ class VmViewAdmin extends JViewLegacy {
 		VmConfig::loadJLang('com_virtuemart_help');
 		$lang = JFactory::getLanguage();
 		$key=  'COM_VIRTUEMART_HELP_'.$view.$task;
-		 if ($lang->hasKey($key)) {
-				$help_url  = vmText::_($key)."?tmpl=component";
-				$bar = JToolBar::getInstance('toolbar');
-				$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
+		if ($lang->hasKey($key)) {
+			$help_url  = vmText::_($key)."?tmpl=component";
+			$bar = JToolBar::getInstance('toolbar');
+			$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
 		}
 
 	}
 
 	function showACLPref(){
-		
+
 		if (vmAccess::manager('core')) {
 			JToolBarHelper::divider();
 			$bar = JToolBar::getInstance('toolbar');

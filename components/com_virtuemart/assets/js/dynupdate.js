@@ -28,14 +28,14 @@ jQuery(function($) {
         }
         url += glue+urlSuf;
 
-		jQuery.ajax({
+		$.ajax({
             url: url,
             dataType: 'html',
             success: function(data) {
 				var title = $(data).filter('title').text();
-				jQuery('title').text(title);
-				var el = jQuery(data).find(Virtuemart.containerSelector);
-				if (! el.length) el = jQuery(data).filter(Virtuemart.containerSelector);
+				$('title').text(title);
+				var el = $(data).find(Virtuemart.containerSelector);
+				if (! el.length) el = $(data).filter(Virtuemart.containerSelector);
 				if (el.length) {
 					Virtuemart.container.html(el.html());
 					Virtuemart.updateCartListener();
@@ -43,7 +43,7 @@ jQuery(function($) {
 
 					if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners();
 					if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
-					//Virtuemart.product(jQuery("form.product"));
+					//Virtuemart.product($("form.product"));
 
 					if(Virtuemart.recalculate) {
 						$("form.js-recalculate").each(function(){
@@ -68,24 +68,24 @@ jQuery(function($) {
     // and all other VM init scripts placed in here.
     Virtuemart.updateCartListener = function() {
         // init VM's "Add to Cart" scripts
-		Virtuemart.product(jQuery(".product"));
-        //Virtuemart.product(jQuery("form.product"));
-		jQuery('body').trigger('updateVirtueMartProductDetail');
-        //jQuery('body').trigger('ready');
+		Virtuemart.product($(".product"));
+        //Virtuemart.product($("form.product"));
+		$('body').trigger('updateVirtueMartProductDetail');
+        //$('body').trigger('ready');
     }
 
     Virtuemart.updL = function (event) {
         event.preventDefault();
-        var url = jQuery(this).attr('href');
+        var url = $(this).attr('href');
         Virtuemart.setBrowserNewState(url);
         Virtuemart.updateContent(url);
     }
 
     Virtuemart.upd = function(event) {
         event.preventDefault();
-        var url = jQuery(this).attr('url');
+        var url = $(this).attr('url');
         if (typeof url === typeof undefined || url === false) {
-            url = jQuery(this).val();
+            url = $(this).val();
         }
         if(url!=null){
 			url = url.replace(/amp;/g, '');
@@ -96,10 +96,10 @@ jQuery(function($) {
 
 	Virtuemart.updForm = function(event) {
 
-		cartform = jQuery("#checkoutForm");
+		cartform = $("#checkoutForm");
 		carturl = cartform.attr('action');
 		if (typeof carturl === typeof undefined || carturl === false) {
-			carturl = jQuery(this).attr('url');
+			carturl = $(this).attr('url');
 			console.log('my form no action url, try attr url ',cartform);
 			if (typeof carturl === typeof undefined || carturl === false) {
 				carturl = 'index.php?option=com_virtuemart&view=cart'; console.log('my form no action url, try attr url ',carturl);
@@ -116,11 +116,11 @@ jQuery(function($) {
 		}
 
 		cartform.submit(function() {
-			jQuery(this).vm2front("startVmLoading");
+			$(this).vm2front("startVmLoading");
 			if(Virtuemart.isUpdatingContent) return false;
 			Virtuemart.isUpdatingContent = true;
 			//console.log('my form submit url',carturlcmp);
-			jQuery.ajax({
+			$.ajax({
 				type: "POST",
 				url: carturlcmp,
 				dataType: "html",
@@ -135,8 +135,8 @@ jQuery(function($) {
 					}
 
 
-					var el = jQuery(datas).find(Virtuemart.containerSelector);
-					if (! el.length) el = jQuery(datas).filter(Virtuemart.containerSelector);
+					var el = $(datas).find(Virtuemart.containerSelector);
+					if (! el.length) el = $(datas).filter(Virtuemart.containerSelector);
 					if (el.length) {
 						Virtuemart.container.html(el.html());
 						//Virtuemart.updateCartListener();
@@ -148,7 +148,7 @@ jQuery(function($) {
 					}
 					Virtuemart.setBrowserNewState(carturl);
 					Virtuemart.isUpdatingContent = false;
-					jQuery(this).vm2front("stopVmLoading");
+					$(this).vm2front("stopVmLoading");
 					if (typeof window._klarnaCheckout !== "undefined"){
 						window._klarnaCheckout(function (api) {
 							console.log(' updateSnippet suspend');
@@ -159,12 +159,12 @@ jQuery(function($) {
 				error: function(datas) {
 					alert('Error updating cart');
 					Virtuemart.isUpdatingContent = false;
-					jQuery(this).vm2front("stopVmLoading");
+					$(this).vm2front("stopVmLoading");
 				},
 				statusCode: {
 					404: function() {
 						Virtuemart.isUpdatingContent = false;
-						jQuery(this).vm2front("stopVmLoading");
+						$(this).vm2front("stopVmLoading");
 						alert( "page not found" );
 					}
 				}
@@ -175,14 +175,14 @@ jQuery(function($) {
 
 	Virtuemart.updFormS = function(event) {
 		Virtuemart.updForm();
-		jQuery("#checkoutForm").submit();
+		$("#checkoutForm").submit();
 	}
 
 	Virtuemart.updDynFormListeners = function() {
 
-		jQuery('#checkoutForm').find('*[data-dynamic-update=1]').each(function(i, el) {
+		$('#checkoutForm').find('*[data-dynamic-update=1]').each(function(i, el) {
 			var nodeName = el.nodeName;
-			el = jQuery(el);
+			el = $(el);
 			//console.log('updDynFormListeners ' + nodeName, el);
 			switch (nodeName) {
 				case 'BUTTON':
@@ -199,9 +199,9 @@ jQuery(function($) {
 	}
 
     Virtuemart.updateDynamicUpdateListeners = function() {
-        jQuery('*[data-dynamic-update=1]').each(function(i, el) {
+        $('*[data-dynamic-update=1]').each(function(i, el) {
             var nodeName = el.nodeName;
-            el = jQuery(el);
+            el = $(el);
             //console.log('updateDynamicUpdateListeners '+nodeName, el);
             switch (nodeName) {
                 case 'A':

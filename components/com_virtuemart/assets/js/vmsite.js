@@ -11,8 +11,7 @@
 var Virtuemart = window.Virtuemart || {};
 
 (function($) {
-	var undefined,
-		methods = {
+	var methods = {
 			_cache: {},
 			list: function(options) {
 				if (typeof Virtuemart.vmSiteurl === 'undefined') Virtuemart.vmSiteurl = '';

@@ -459,7 +459,6 @@ class VirtueMartModelCustomfields extends VmModel {
 							foreach($added as $add){
 								if($add == $value){
 									$found = true;
-									vmdebug('Found true due $soption->values');
 								}
 							}
 							if(!$found){
@@ -516,13 +515,10 @@ class VirtueMartModelCustomfields extends VmModel {
 				</fieldset>';
 
 				vmJsApi::addJScript('new_ramification',"
-	jQuery( function($) {
+	jQuery(document).ready(function($) {
 		$('#new_ramification_bt').click(function() {
-			var Prod = $('.new_ramification');//obsolete?
-
-			var voption = jQuery('#voption').val();
-			var label = jQuery('#vlabel').val();
-				//console.log ('my label '+label);
+			var voption = $('#voption').val();
+			var label = $('#vlabel').val();
 			form = document.getElementById('adminForm');
 			var newdiv = document.createElement('div');
 			newdiv.innerHTML = '<input type=\"text\" value=\"'+voption+'\" name=\"field[" . $row . "][selectoptions][".$k."][voption]\" /><input type=\"text\" value=\"'+label+'\" name=\"field[" . $row . "][selectoptions][".$k."][clabel]\" />';
@@ -590,8 +586,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				$jsCsort = "
 	nextCustom =".$i.";
 
-	jQuery(document).ready(function(){
-		jQuery('#syncro').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
+	jQuery(document).ready(function($){
+		$('#syncro').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
 });
 ";
 				vmJsApi::addJScript('cvSort',$jsCsort);

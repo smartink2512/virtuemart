@@ -27,28 +27,28 @@ if(VmConfig::get('usefancy',1)){
 	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
 	vmJsApi::css('jquery.fancybox-1.3.4');
 	$Modal ="
-		jQuery('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
+		$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
 		  event.preventDefault();
-		  jQuery.fancybox({
-			href: jQuery(this).attr('href'),
+		  $.fancybox({
+			href: $(this).attr('href'),
 			type: 'iframe',
 			height: 550
 			});
 		  });
 		";
 } else {
-	
+
 	vmJsApi::addJScript( 'facebox', false );
 	vmJsApi::css( 'facebox' );
     $Modal ="
-    		jQuery('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
+    		$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
 		      event.preventDefault();
-		      jQuery.facebox({
-		        ajax: jQuery(this).attr('href'),
+		      $.facebox({
+		        ajax: $(this).attr('href'),
 		        rev: 'iframe|550|550'
 		        });
 		      });
-    		"; 
+    		";
 }
 
 vmJsApi::addJScript('popups',"

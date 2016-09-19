@@ -8,7 +8,7 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved by the author.
+ * @copyright Copyright (c) 2011-2016 VirtueMart Team. All rights reserved by the author.
  */
 
 defined('_JEXEC') or die();
@@ -253,14 +253,14 @@ class VmMediaHandler {
 					if(JFile::exists($file_url)){
 						$this->file_url = $file_url;
 					} else {
-					//	vmdebug('MediaHandler, file does not exist in safepath '.$file_url);
+						//	vmdebug('MediaHandler, file does not exist in safepath '.$file_url);
 					}
 				} else {
 					$pathToTest = VMPATH_ROOT.DS.str_replace('/',DS,$file_url);
 					if(JFile::exists($pathToTest)){
 						$this->file_url = $file_url;
 					} else {
-					//	vmdebug('MediaHandler, file does not exist in '.$pathToTest);
+						//	vmdebug('MediaHandler, file does not exist in '.$pathToTest);
 					}
 				}
 
@@ -886,7 +886,7 @@ class VmMediaHandler {
 		jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
 		$j .="
-		jQuery(document).ready(function($){
+	jQuery(document).ready(function($){
 		var medialink = '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
 		var media = $('#searchMedia').data();
 		var searchMedia = $('input#searchMedia');
@@ -894,42 +894,37 @@ class VmMediaHandler {
 			if (media.start>0) media.start=0;
 		});
 		searchMedia.autocomplete({
-
 			source: medialink,
 			select: function(event, ui){
-				jQuery('#ImagesContainer').append(ui.item.label);
+				$('#ImagesContainer').append(ui.item.label);
 				//$(this).autocomplete( 'option' , 'source' , '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
-
 			},
 			minLength:1,
 			html: true
 		});
-		 jQuery('.js-pages').click(function (e) {
+		$('.js-pages').click(function (e) {
 			e.preventDefault();
 			if (searchMedia.val() =='') {
 				searchMedia.val(' ');
 				media.start = 0;
 			} else if ($(this).hasClass('js-next')) media.start = media.start+16 ;
 			else if (media.start > 0) media.start = media.start-16 ;
-
 			searchMedia.autocomplete( 'option' , 'source' , medialink+'&start='+media.start );
 			searchMedia.autocomplete( 'search');
 		});
-		jQuery('#ImagesContainer').sortable({
+		$('#ImagesContainer').sortable({
 			update: function(event, ui) {
 				$(this).find('.ordering').each(function(index,element) {
 					$(element).val(index);
 				});
-
 			}
 		});
-		jQuery('[name=\"upload\"]').on ('change', function (){
-			var rr = jQuery(this).parent().find(\"[name='media[media_action]']:checked\");
-			if (typeof jQuery(rr[0]).val() != 'undefined' && jQuery(rr[0]).val() == 0) {
-				var rs = jQuery(this).parent().find(\"[id='media[media_action]upload']\").attr('checked', true);
+		$('[name=\"upload\"]').on ('change', function (){
+			var rr = $(this).parent().find(\"[name='media[media_action]']:checked\");
+			if (typeof $(rr[0]).val() != 'undefined' && $(rr[0]).val() == 0) {
+				var rs = $(this).parent().find(\"[id='media[media_action]upload']\").attr('checked', true);
 			}
 		});
-
 	});
 	";
 		vmJsApi::addJScript('mediahandler',$j);
@@ -1105,11 +1100,11 @@ class VmMediaHandler {
 	<label for="published">'. vmText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 </td>
 <td>';
-	if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
-	$html .= VmHtml::checkbox('media[media_published]',$checked,1,0,'class="inputbox"','media[media_published]') ;
-	//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
+		if(!class_exists('VmHtml')) require(VMPATH_ADMIN.DS.'helpers'.DS.'html.php');
+		$html .= VmHtml::checkbox('media[media_published]',$checked,1,0,'class="inputbox"','media[media_published]') ;
+		//<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 
-$html .='</td>';
+		$html .='</td>';
 		$imgWidth = VmConfig::get('img_width','');
 		if(!empty($imgWidth)){
 			$imgWidth = 'width:'.VmConfig::get('img_width',90).'px;';

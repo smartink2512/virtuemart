@@ -384,7 +384,7 @@ class vmJsApi{
 		self::vmVariables();
 		$onReady = 'jQuery(document).ready(function($) {
 
-		Virtuemart.product(jQuery("form.product"));
+		Virtuemart.product($("form.product"));
 });';
 		vmJsApi::addJScript('ready.vmprices',$onReady);
 		$jPrice = TRUE;
@@ -419,12 +419,12 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		VmJsApi::jSite();
 
 /*		jQuery(document).ready(function() {
-			jQuery('".$name."').validationEngine();
+			$('".$name."').validationEngine();
 		});
 */
 		self::addJScript('vm.countryState'.$prefix,'
 		jQuery(document).ready( function($) {
-			jQuery("#'.$prefix.'virtuemart_country_id'.$suffix.'").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id'.$suffix.'",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
+			$("#'.$prefix.'virtuemart_country_id'.$suffix.'").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id'.$suffix.'",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});
 		');
 		$JcountryStateList[$prefix] = TRUE;
@@ -468,16 +468,16 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 
 		self::loadPopUpLib();
 		if(VmConfig::get('usefancy',1)) {
-			$exeL = "jQuery.fancybox ({ div: '".$container."', content: con });";
+			$exeL = "$.fancybox ({ div: '".$container."', content: con });";
 		} else {
-			$exeL = "jQuery.facebox( { div: '".$container."' }, 'my-groovy-style');";
+			$exeL = "$.facebox( { div: '".$container."' }, 'my-groovy-style');";
 		}
 
 		$box = "
 jQuery(document).ready(function($) {
-	jQuery('div".$container."').hide();
-	var con = jQuery('div".$container."').html();
-	jQuery('a".$activator."').click(function(event) {
+	$('div".$container."').hide();
+	var con = $('div".$container."').html();
+	$('a".$activator."').click(function(event) {
 		event.preventDefault();
 		".$exeL."
 	});
@@ -519,8 +519,8 @@ jQuery(document).ready(function($) {
 			jQuery(this).chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text,disable_search_threshold: 5, width: swidth});
 		});
 	}
-	jQuery(document).ready( function($) {
-		Virtuemart.updateChosenDropdownLayout();
+	jQuery(document).ready( function() {
+		Virtuemart.updateChosenDropdownLayout($);
 	});
 	';
 
@@ -540,8 +540,8 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		self::addJScript('vEngine', "
-			jQuery(document).ready(function() {
-				jQuery('".$name."').validationEngine();
+			jQuery(document).ready(function($) {
+				$('".$name."').validationEngine();
 			});
 "  );
 		if ($jvalideForm) {
@@ -611,7 +611,7 @@ jQuery(document).ready(function($) {
 			if(results<2){
 				cField.removeClass('required');
 				cField.removeAttr('required');
-			
+
 				if (typeof lField!=='undefined') {
 					lField.removeClass('invalid');
 					lField.attr('aria-invalid', 'false');
@@ -813,9 +813,9 @@ jQuery(document).ready(function($) {
 		}
 
 		self::addJScript('datepicker','
-			jQuery(document).ready( function($) {
-			jQuery(document).on( "focus",".datepicker", function() {
-				jQuery( this ).datepicker({
+		jQuery(document).ready( function($) {
+			$(document).on( "focus",".datepicker", function() {
+				$( this ).datepicker({
 					changeMonth: true,
 					changeYear: true,
 					'.$yearRange.'
@@ -824,8 +824,8 @@ jQuery(document).ready(function($) {
 					altFormat: "yy-mm-dd"
 				});
 			});
-			jQuery(document).on( "click",".js-date-reset", function() {
-				jQuery(this).prev("input").val("'.vmText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
+			$(document).on( "click",".js-date-reset", function() {
+				$(this).prev("input").val("'.vmText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
 			});
 		});
 		');

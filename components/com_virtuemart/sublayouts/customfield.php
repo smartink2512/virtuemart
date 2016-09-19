@@ -17,7 +17,7 @@ defined ('_JEXEC') or die('Restricted access');
 class VirtueMartCustomFieldRenderer {
 
 
-	
+
 	static function renderCustomfieldsFE(&$product,&$customfields,$virtuemart_category_id){
 
 
@@ -237,9 +237,9 @@ class VirtueMartCustomFieldRenderer {
 
 					$selector = $dom."[cvsel=\"".$attribs['cvsel']."\"]";
 					$hash = md5($selector);
-					$j = "jQuery(document).ready(function() {
-							jQuery('".$selector."').off('change',Virtuemart.cvFind);
-							jQuery('".$selector."').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
+					$j = "jQuery(document).ready(function($) {
+							$('".$selector."').off('change',Virtuemart.cvFind);
+							$('".$selector."').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
 						});";
 					vmJsApi::addJScript('cvselvars'.$hash,$j,false,true,false,$hash);
 
@@ -296,31 +296,31 @@ class VirtueMartCustomFieldRenderer {
 								vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
 							} else {*/
 
-								$productChild = $productModel->getProduct((int)$child,true);
+							$productChild = $productModel->getProduct((int)$child,true);
 
-								if(!$productChild) continue;
-								if(!isset($productChild->{$customfield->customfield_value})){
-									vmdebug('The child has no value at index '.$child);
-									continue;
-								}
-								$available = $productChild->product_in_stock - $productChild->product_ordered;
-								if(VmConfig::get('stockhandle','none')=='disableit_children' and $available <= 0){
-									continue;
-								}
-								$parentStock += $available;
-								$priceStr = '';
-								if($customfield->wPrice){
-									//$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
-									$productPrices = $calculator->getProductPrices ($productChild);
-									$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
-								}
-								$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view='.$view.'&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $productChild->virtuemart_product_id,false), 'text' => $productChild->{$customfield->customfield_value}.$priceStr);
+							if(!$productChild) continue;
+							if(!isset($productChild->{$customfield->customfield_value})){
+								vmdebug('The child has no value at index '.$child);
+								continue;
+							}
+							$available = $productChild->product_in_stock - $productChild->product_ordered;
+							if(VmConfig::get('stockhandle','none')=='disableit_children' and $available <= 0){
+								continue;
+							}
+							$parentStock += $available;
+							$priceStr = '';
+							if($customfield->wPrice){
+								//$product = $productModel->getProductSingle((int)$child['virtuemart_product_id'],false);
+								$productPrices = $calculator->getProductPrices ($productChild);
+								$priceStr =  ' (' . $currency->priceDisplay ($productPrices['salesPrice']) . ')';
+							}
+							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view='.$view.'&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $productChild->virtuemart_product_id,false), 'text' => $productChild->{$customfield->customfield_value}.$priceStr);
 
-								if($selected==$child){
-									$selectedFound = true;
-									vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
-								}
-								//vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
+							if($selected==$child){
+								$selectedFound = true;
+								vmdebug($customfield->virtuemart_product_id.' $selectedFound by vRequest '.$selected);
+							}
+							//vmdebug('$child productId ',$child['virtuemart_product_id'],$customfield->customfield_value,$child);
 							//}
 						}
 					}
@@ -392,9 +392,9 @@ class VirtueMartCustomFieldRenderer {
 					vmJsApi::addJScript('avfind',false,false,true);
 
 					if($customfield->browseajax){
-						$j = "jQuery(document).ready(function() {
-							jQuery('select.avselection').off('change',Virtuemart.avFind);
-							jQuery('select.avselection').on('change',{},Virtuemart.avFind);
+						$j = "jQuery(document).ready(function($) {
+							$('select.avselection').off('change',Virtuemart.avFind);
+							$('select.avselection').on('change',{},Virtuemart.avFind);
 						});";
 						vmJsApi::addJScript('avselvars',$j,false,true,false);
 					}
