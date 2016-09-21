@@ -955,17 +955,10 @@ class VmConfig {
 		$siteLang = vRequest::getString('vmlang',false );
 
 		$params = JComponentHelper::getParams('com_languages');
-		if(JVM_VERSION<3){
-			$defaultLang = $params->get('site', 'en-GB');//use default joomla
-		} else {
-			$defaultLang = $params->get('language', 'en-GB');//use default joomla
-		}
+		$defaultLang = $params->get('site', 'en-GB');//use default joomla
 
-		if(self::$jDefLang == self::get('vmDefLang',false)){
-			self::$jDefLang = strtolower(strtr(self::$jDefLang,'-','_'));
-		} else {
 			self::$jDefLang = strtolower(strtr($defaultLang,'-','_'));
-		}
+
 
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {

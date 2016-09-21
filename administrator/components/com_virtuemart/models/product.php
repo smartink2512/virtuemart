@@ -1905,6 +1905,9 @@ class VirtueMartModelProduct extends VmModel {
 						require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 					}
 					$calculator = calculationHelper::getInstance ();
+					if(isset($data['mprices']['salesPrice'][$k])){
+						$data['mprices']['salesPrice'][$k] = str_replace(array(',',' '),array('.',''),$data['mprices']['salesPrice'][$k]);
+					}
 					$pricesToStore['salesPrice'] = $data['mprices']['salesPrice'][$k];
 					$pricesToStore['product_price'] = $data['mprices']['product_price'][$k] = $calculator->calculateCostprice ($this->_id, $pricesToStore);
 					unset($data['mprices']['use_desired_price'][$k]);

@@ -19,7 +19,7 @@
  */
 defined('_JEXEC') or die();
 $doc = JFactory::getDocument();
-$doc->addScript(JURI::root(true) . '/plugins/vmuserfield/realex_hpp_api/realex_hpp_api/assets/js/site.js');
+//$doc->addScript(JURI::root(true) . '/plugins/vmuserfield/realex_hpp_api/realex_hpp_api/assets/js/site.js');
 $doc->addStyleSheet(JURI::root(true) . '/plugins/vmuserfield/realex_hpp_api/realex_hpp_api/assets/css/realex.css');
 $storedCreditCards = $viewData['storedCreditCards'];
 ?>
@@ -82,11 +82,12 @@ $storedCreditCards = $viewData['storedCreditCards'];
 			<?php if ($viewData['deleteUpdateAuthorized']) { ?>
 				<div class="releax_delete_cc">
 					<?php
-					$checked_deleted = JHTML::_('grid.id', $i, $storedCreditCard->id, null, 'realex_card_delete_ids'); ?><?php  echo $checked_deleted ?><?php echo vmText::_('VMUSERFIELD_REALEX_HPP_API_DELETE_CARD') ?>
+					$checked_deleted = VmHtml::checkbox ('realex_card_delete_ids', 0, $storedCreditCard->id, 0, 'aria-invalid="false"',false);
+					echo $checked_deleted ?><?php echo vmText::_('VMUSERFIELD_REALEX_HPP_API_DELETE_CARD') ?>
 				</div>
 				<div class="releax_update_cc">
 					<?php
-					$checked_updated = JHTML::_('grid.id', $i, $storedCreditCard->id, null, 'realex_card_update_ids');
+					$checked_updated = VmHtml::checkbox ('realex_card_update_ids', 0, $storedCreditCard->id, 0, 'aria-invalid="false"',false);
 					echo $checked_updated ?><?php echo vmText::_('VMUSERFIELD_REALEX_HPP_API_UPDATE_CARD') ?>
 				</div>
 			<?php

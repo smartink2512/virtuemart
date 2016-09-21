@@ -376,6 +376,20 @@ class VirtueMartModelRatings extends VmModel {
 			$data['created_by'] = $user->id;
 			$allowReview = $this->allowReview($virtuemart_product_id);
 			$allowRating = $this->allowRating($virtuemart_product_id);
+
+			if (VmConfig::get ('reviews_autopublish', 1)) {
+				$data['published'] = 1;
+			} else {
+				$model = new VmModel();
+				$product = $model->getTable('products');
+				$product->load($data['virtuemart_product_id']);
+				$vendorId = vmAccess::isSuperVendor();
+				if(!vmAccess::manager() or $vendorId!=$product->virtuemart_vendor_id){
+					$data['published'] = 0;
+				}
+			}
+
+
 		} else {
 			if(empty($data['created_by']) and !empty($data['customer']) and vmAccess::manager('ratings')){
 				//$userId = -1;
@@ -488,22 +502,7 @@ class VirtueMartModelRatings extends VmModel {
 			$data['review_editable'] = 0;
 			// Check if ratings are auto-published (set to 0 prevent injected by user)
 			//
-			$app = JFactory::getApplication();
-			if( $app->isSite() ){
 
-				if (VmConfig::get ('reviews_autopublish', 1)) {
-					$data['published'] = 1;
-				} else {
-					$model = new VmModel();
-					$product = $model->getTable('products');
-					$product->load($data['virtuemart_product_id']);
-					$vendorId = vmAccess::isSuperVendor();
-					if(!vmAccess::manager() or $vendorId!=$product->virtuemart_vendor_id){
-						$data['published'] = 0;
-					}
-				}
-
-			}
 
 			if($data['created_by']>0 ){
 				$review = $this->getProductReviewForUser($data['virtuemart_product_id'],$data['created_by']);

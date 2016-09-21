@@ -232,14 +232,30 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 
-	private function sortChildIds ($product_id, $childIds, $sorted=array()){
+	private function sortChildIds ($product_id, $childIds, $options, $sorted=array()){
 
+		static $asorted = array();
 		//vmdebug('sortChildIds',$product_id, $childIds);
+		if(!empty($options)){
+			foreach($options as $id => $v){
+				if($product_id!=$id){
+					$sorted[] = array('parent_id'=>$product_id,'vm_product_id'=>$id);
+					$asorted[$id] = 1;
+				}
+
+			}
+
+		}
+
 		foreach($childIds as $childIdKey => $childs){
 			if(!is_array($childs)){
-				$sorted[] = array('parent_id'=>$product_id,'vm_product_id'=>$childs);
+
+				if(empty($asorted[$childs])){
+					$sorted[] = array('parent_id'=>$product_id,'vm_product_id'=>$childs);
+				}
+
 				if(isset($childIds[$childs]) and is_array($childIds[$childs])){
-					$sorted = self::sortChildIds($childs, $childIds[$childs], $sorted);
+					$sorted = self::sortChildIds($childs, $childIds[$childs], $options, $sorted);
 					//unset($childIds[$childs]);
 				}
 			} else {
@@ -408,9 +424,11 @@ class VirtueMartModelCustomfields extends VmModel {
 				$sorted = array();
 
 				$productModel->getAllProductChildIds($product_id,$childIds);
+
 				if(isset($childIds[$product_id])){
-					$sorted = self::sortChildIds($product_id,$childIds[$product_id]);
+					$sorted = self::sortChildIds($product_id,$childIds[$product_id],$field->options);
 				}
+
 				array_unshift($sorted,  array('parent_id' => $product_id, 'vm_product_id' => $product_id));
 
 				$showSku = true;
