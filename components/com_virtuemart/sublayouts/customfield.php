@@ -86,7 +86,7 @@ class VirtueMartCustomFieldRenderer {
 					} else {
 						$productSelection = false;
 					}
-					$stockhandle = VmConfig::get('stockhandle', 'none');
+					$stockhandle = $product->product_stockhandle ? $product->product_stockhandle : VmConfig::get('stockhandle','none');
 
 					$q = 'SELECT `virtuemart_product_id` FROM #__virtuemart_products WHERE product_parent_id = "'.$customfield->virtuemart_product_id.'" and ( published = "0" ';
 					if($stockhandle == 'disableit'){

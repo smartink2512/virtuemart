@@ -17,6 +17,9 @@
  */
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
+
+$stockhandle = $this->product->product_stockhandle ? $this->product->product_stockhandle : VmConfig::get ('stockhandle', 0);
+
 $i = 0;
 ?>
 <table class="adminform">
@@ -29,7 +32,7 @@ $i = 0;
 				'notify'  => vmText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'),
 			);
 			$mail_default = 'notify';
-			if (VmConfig::get ('stockhandle', 0) != 'disableadd' or empty($this->waitinglist)) {
+			if ($stockhandle != 'disableadd' or empty($this->waitinglist)) {
 				echo '<input type="hidden" name="customer_email_type" value="customer" id="customer_email_type0">';
 			}
 			else {
@@ -106,7 +109,7 @@ $i = 0;
 
 			<div id="customer-mail-notify-list">
 
-				<?php if (VmConfig::get ('stockhandle', 0) == 'disableadd' && !empty($this->waitinglist)) { ?>
+				<?php if ($stockhandle == 'disableadd' && !empty($this->waitinglist)) { ?>
 				<div style="font-weight:bold;"><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'); ?></div>
 				<table class="adminlist table" cellspacing="0" cellpadding="0">
 					<thead>

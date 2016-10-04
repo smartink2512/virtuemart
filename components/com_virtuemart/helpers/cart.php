@@ -1676,7 +1676,7 @@ class VirtueMartCart {
 			}
 		}
 	
-		$stockhandle = VmConfig::get('stockhandle','none');
+		$stockhandle = $product->product_stockhandle ? $product->product_stockhandle : VmConfig::get('stockhandle','none');
 		$mainframe = JFactory::getApplication();
 		// Check for a valid quantity
 		if (!is_numeric( $quantity)) {

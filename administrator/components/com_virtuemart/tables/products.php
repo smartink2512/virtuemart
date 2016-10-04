@@ -58,6 +58,7 @@ class TableProducts extends VmTable {
 	/** @var int File thumbnail image width */
 	var $product_in_stock	= 0;
 	var $product_ordered		= 0;
+	var $product_stockhandle	= 0;
 	/** @var int File thumbnail image width */
 	var $low_stock_notification	= 0;
 	/** @var int File thumbnail image width */
@@ -66,6 +67,7 @@ class TableProducts extends VmTable {
 	var $product_availability	= null;
 	/** @var int File thumbnail image width */
 	var $product_special	= null;
+	var $product_remaining_stock	= null;
 
 	/** @var int product internal ordering, it is for the ordering for child products under a parent null */
 	var $pordering = null;
