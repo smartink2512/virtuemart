@@ -100,9 +100,14 @@ class VirtueMartModelConfig extends VmModel {
 		$alreadyAddedFile = array();
 		foreach($dirs as $dir){
 
+			if(!is_dir($dir)){
+				$m = 'Attention directoy is not accessible (does not exists or wrong rights) ';
+				vmError($m.$dir,$m);
+				continue;
+			}
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
-					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_Dir($file)){
+					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_dir($file)){
 						if( (empty($ignore) or (is_array($ignore) and !in_array($file,$ignore)) ) and ( (!empty($type) and strpos($file,$type)===0) or (empty($type) and strpos($file,'_')==0)) ){
 							//Handling directly for extension is much cleaner
 							$path_info = pathinfo($file);

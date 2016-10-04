@@ -1254,7 +1254,7 @@ class VirtueMartCart {
 	 * @author Valerie Cartan Isaksen
 	 *
 	 */
-	static public function emptyCartValues(&$cart){
+	static public function emptyCartValues(&$cart, $session = true){
 
 		//We delete the old stuff
 		$cart->products = array();
@@ -1276,9 +1276,10 @@ class VirtueMartCart {
 		$cart->productsQuantity=array();
 		$cart->virtuemart_order_id = null;
 
-		$cart->deleteCart();
-		$cart->setCartIntoSession(false,true);
-
+		if($session){
+			$cart->deleteCart();
+			$cart->setCartIntoSession(false,true);
+		}
 	}
 
 	function saveCartFieldsInCart(){

@@ -34,7 +34,6 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		$vendorModel = VmModel::getModel('vendor');
 
-		$vendorIdUser = vmAccess::isSuperVendor();
 		$vendorModel->setId($vendorId);
 		$this->vendor = $vendorModel->getVendor();
 

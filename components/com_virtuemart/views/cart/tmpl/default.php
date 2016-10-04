@@ -8,7 +8,7 @@
  * @author Max Milbers
  *
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2016 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -50,7 +50,7 @@ JHtml::_ ('behavior.formvalidation');
 	echo shopFunctionsF::getLoginForm ($this->cart, FALSE,$uri);
 
 	// This displays the form to change the current shopper
-	if ($this->allowChangeShopper){
+	if ($this->allowChangeShopper and !$this->isPdf){
 		echo $this->loadTemplate ('shopperform');
 	}
 
@@ -58,7 +58,7 @@ JHtml::_ ('behavior.formvalidation');
 	$taskRoute = '';
 	?><form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 		<?php
-		if(VmConfig::get('multixcart')=='byselection'){
+		if(!$this->isPdf and VmConfig::get('multixcart')=='byselection'){
 			if (!class_exists('ShopFunctions')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 			echo shopFunctions::renderVendorFullVendorList($this->cart->vendorId);
 			?><input type="submit" name="updatecart" title="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" class="button"  style="margin-left: 10px;"/><?php

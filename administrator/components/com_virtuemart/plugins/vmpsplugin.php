@@ -1269,23 +1269,69 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (empty($sessionStored)) {
 			return;
 		}
-		$sessionStorageDecoded = self::session_decode ($sessionStored);
-
-		$vm_namespace = '__vm';
-		$cart_name = 'vmcart';
-		if (isset ($sessionStorageDecoded[$vm_namespace] )) { // vm session is there
-			$vm_sessionStorage = $sessionStorageDecoded[$vm_namespace];
-			if (isset ($vm_sessionStorage[$cart_name])) { // vm cart session is there
-				unset($sessionStorageDecoded[$vm_namespace][$cart_name]);
-					//$sessionStorageDecoded[$vm_namespace][$cart_name] = json_encode ($cart);
-					$sessionStorageEncoded = self::session_encode ($sessionStorageDecoded);
-					$sessionStorage->write ($session_id, $sessionStorageEncoded);
-				//}
-			}
+		$sess2store = $this->_emptyCartFromStorageSession($sessionStored);
+		if(!empty($sess2store)){
+			$sessionStorage->write ($session_id, $sess2store);
 		}
+
 	}
 
+	function _emptyCartFromStorageSession ($data) {
 
+		if(strlen($data)<8) return false;
+		$t = substr($data,7);
+		if(empty($t)) return false;
+
+		$unserb64enc = unserialize($t);
+
+		if(!empty($unserb64enc)){
+			$unser = base64_decode($unserb64enc);
+			$unsunser = unserialize($unser);
+			if($unsunser===FALSE){
+				$m = 'Unserialize failed';
+				vmError($m,$m);
+				return false;
+			} else {
+				$cl = strtolower(get_class($unsunser));
+				if(JVM_VERSION<3){
+					$cld = 'jregistry';
+				} else {
+					$cld = 'joomla\registry\registry';
+				}
+
+				if($cl != $cld){
+					$m = 'Wrong class in Session, check your installation, update your joomla
+					 '.$cl;
+					vmError($m, $m);
+					return false;
+				}
+			}
+
+			$vmObj = $unsunser->get('__vm',false);
+			$tcart = json_decode($vmObj->vmcart);
+			if(empty($tcart) or json_last_error()!=JSON_ERROR_NONE){
+				return false;
+			}
+			if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
+			if($tcart->virtuemart_cart_id){
+				$model = new VmModel();
+				$carts = $model->getTable('carts');
+				if(!empty($tcart->virtuemart_cart_id)){
+					$carts->delete($tcart->virtuemart_cart_id,'virtuemart_cart_id');
+				}
+			}
+			VirtuemartCart::emptyCartValues($tcart,false);
+
+			$vmObj->vmcart = json_encode($tcart);
+			$unsunser->set('__vm',$vmObj);
+
+			$runser = serialize($unsunser);
+			$runserb64enc = base64_encode($runser);
+			$rt = serialize($runserb64enc);
+			return 'joomla|'.$rt;
+		}
+
+	}
 
 
 	private static function session_decode ($session_data) {
