@@ -22,7 +22,7 @@ Virtuemart.avFind = function(event) {
 		runs++;
 	}
 	if(runs>maxruns){
-		console.log('Could not find parent');
+		console.log('AV: Could not find parent container product-field-display');
 		return false;
 	}
 	Virtuemart.container = container;
@@ -30,8 +30,13 @@ Virtuemart.avFind = function(event) {
 
 	var cl = 'product-container';
 	Virtuemart.containerSelector = '.'+cl;
-	while(!Virtuemart.container.hasClass(cl)){
+	while(!Virtuemart.container.hasClass(cl) && runs<=maxruns){
 		Virtuemart.container = Virtuemart.container.parent();
+		runs++;
+	}
+	if(runs>maxruns){
+		console.log('AV: Could not find product-container');
+		return false;
 	}
 	//console.log('my new ajax container ',Virtuemart.container);
 	url = false;
@@ -54,9 +59,6 @@ Virtuemart.avFind = function(event) {
 			jQuery(this).val(url);
 		});
 	}
-
-	//Virtuemart.setBrowserNewState(url);
-	//Virtuemart.updateContent(url);
 
 	return url;
 

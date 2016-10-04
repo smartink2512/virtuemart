@@ -8,7 +8,9 @@
  * @copyright  Copyright (c) 2014-2016 VirtueMart Team. All rights reserved.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
-var Virtuemart = window.Virtuemart || {};
+if (typeof Virtuemart === "undefined")
+	Virtuemart = {};
+//var Virtuemart = window.Virtuemart || {};
 
 (function($) {
 	var methods = {

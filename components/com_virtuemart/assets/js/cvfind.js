@@ -23,7 +23,7 @@ Virtuemart.cvFind = function(event) {
 		runs++;
 	}
 	if(runs>maxruns){
-		console.log('Could not find parent');
+		console.log('CV: Could not find parent container product-field-display');
 		return false;
 	}
 	Virtuemart.container = container;
@@ -37,7 +37,7 @@ Virtuemart.cvFind = function(event) {
 		runs++;
 	}
 	if(runs>maxruns){
-		console.log('Could not find parent');
+		console.log('CV: Could not find product-container');
 		return false;
 	}
 
@@ -68,13 +68,12 @@ Virtuemart.cvFind = function(event) {
 						var url = event.data.variants[index][0].replace(/amp;/g, '');
 						jQuery(this).attr('url',url);
 						jQuery(this).val(url);
-
 						if(jQuery(this).attr('reload')){
 							Virtuemart.isUpdatingContent = true;
 							window.top.location.href = url;
 							return false;
 						}
-						//console.log('return url '+url);
+						//console.log('CV: return url '+url);
 						return url;
 					}
 				} else {
@@ -83,7 +82,7 @@ Virtuemart.cvFind = function(event) {
 			}
 		}
 		runs++;
-		//console.log('Could not find product for selection '+runs);
+		//console.log('CV: Could not find product for selection '+runs);
 	}
 
 	return false;

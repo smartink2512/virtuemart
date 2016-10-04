@@ -16,6 +16,8 @@ jQuery(function($) {
     // the content is being updated.
     Virtuemart.isUpdatingContent = false;
 	Virtuemart.recalculate = false;
+	Virtuemart.recalculate = false;
+	Virtuemart.setBrowserState = true;
 
     Virtuemart.updateContent = function(url, callback) {
 
@@ -220,6 +222,8 @@ jQuery(function($) {
     var everPushedHistory = false;
     var everFiredPopstate = false;
     Virtuemart.setBrowserNewState = function (url) {
+    	if(!Virtuemart.setBrowserState) return false;
+
         if (typeof window.onpopstate == "undefined")
             return;
         var stateObj = {
