@@ -35,8 +35,8 @@ foreach ($this->cart->products as $pkey => $prow) {
 ?>
 
 <tr valign="top" class="sectiontableentry<?php echo $i ?>">
-	<input type="hidden" name="cartpos[]" value="<?php echo $pkey ?>">
 	<td class="vm-cart-item-name" >
+	  <input type="hidden" name="cartpos[]" value="<?php echo $pkey ?>">
 		<?php if ($prow->virtuemart_media_id) { ?>
 		<span class="cart-images">
 						 <?php
