@@ -358,7 +358,7 @@ class VirtueMartModelProduct extends VmModel {
 		if($isSite and !VmConfig::get('use_as_catalog',0)) {
 			if(VmConfig::get('stockhandle_discontinued_products',false)){
 				$product_stockhandle = $this->getProductStockhandle();
-				if ($product_stockhandle->disableit_children && $product_stockhandle->disableit) {
+				if (($product_stockhandle->disableit_children || VmConfig::get('stockhandle','none') == "disableit_children") && ($product_stockhandle->disableit || VmConfig::get('stockhandle','none') == "disableit")) {
 					$where[] = ' CASE
 									WHEN (p.`product_stockhandle` = "0" AND "'. VmConfig::get('stockhandle','none') .'" = "disableit_children") OR (p.`product_stockhandle` = "disableit_children")
 										THEN ((p.`product_in_stock` - p.`product_ordered`) >"0" OR (children.`product_in_stock` - children.`product_ordered`) > "0")
@@ -367,24 +367,19 @@ class VirtueMartModelProduct extends VmModel {
 									ELSE 1
 								 END = 1 ';
 					$joinChildren = TRUE;
-				} else if ($product_stockhandle->disableit_children) {
+				} else if ($product_stockhandle->disableit_children || VmConfig::get('stockhandle','none') == "disableit_children") {
 					$where[] = ' CASE
 									WHEN (p.`product_stockhandle` = "0" AND "'. VmConfig::get('stockhandle','none') .'" = "disableit_children") OR (p.`product_stockhandle` = "disableit_children")
 										THEN ((p.`product_in_stock` - p.`product_ordered`) >"0" OR (children.`product_in_stock` - children.`product_ordered`) > "0")
 									ELSE 1
 								 END = 1 ';
 					$joinChildren = TRUE;
-				} else if ($product_stockhandle->disableit) {
+				} else if ($product_stockhandle->disableit || VmConfig::get('stockhandle','none') == "disableit") {
 					$where[] = ' CASE
 									WHEN (p.`product_stockhandle` = "0" AND "'. VmConfig::get('stockhandle','none') .'" = "disableit") OR (p.`product_stockhandle` = "disableit")
 										THEN p.`product_in_stock` - p.`product_ordered` > "0"
 									ELSE 1
 								 END = 1 ';
-				} else if (VmConfig::get('stockhandle','none') == "disableit_children") {
-					$where[] = ' ( (p.`product_in_stock` - p.`product_ordered`) >"0" OR (children.`product_in_stock` - children.`product_ordered`) > "0") ';
-					$joinChildren = TRUE;
-				} else if (VmConfig::get('stockhandle','none')=='disableit') {
-					$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';
 				}
 			} else if (VmConfig::get('stockhandle','none') == "disableit_children") {
 				$where[] = ' ( (p.`product_in_stock` - p.`product_ordered`) >"0" OR (children.`product_in_stock` - children.`product_ordered`) > "0") ';
@@ -2716,14 +2711,12 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			$app = JFactory::getApplication ();
 			if ($app->isSite () && !VmConfig::get ('use_as_catalog', 0) && VmConfig::get ('stockhandle_discontinued_products', false)) {
 				$product_stockhandle = $this->getProductStockhandle();
-				if ($product_stockhandle->disableit) {
+				if ($product_stockhandle->disableit || VmConfig::get ('stockhandle', 'none') == 'disableit') {
 					$q .= ' AND ( CASE
 									WHEN (p.`product_stockhandle` = "0" AND "'. VmConfig::get('stockhandle','none') .'" = "disableit") OR (p.`product_stockhandle` = "disableit")
 										THEN p.`product_in_stock`>"0"
 									ELSE 1
 								  END = 1 ) ';
-				} else if (VmConfig::get ('stockhandle', 'none') == 'disableit') {
-					$q .= ' AND p.`product_in_stock`>"0" ';
 				}
 			} else if ($app->isSite () && !VmConfig::get ('use_as_catalog', 0) && VmConfig::get ('stockhandle', 'none') == 'disableit') {
 				$q .= ' AND p.`product_in_stock`>"0" ';
