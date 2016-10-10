@@ -601,7 +601,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				vmWarn('VMSHIPMENT_WEIGHT_COUNTRIES_NBPRODUCTS_CONDITION_WRONG');
 			}
 
-			$data['show_on_pdetails'] = (int) $data['show_on_pdetails'];
+			//$data['show_on_pdetails'] = (int) $data['show_on_pdetails'];
 			return $this->setOnTablePluginParams ($name, $id, $table);
 		}
 	}

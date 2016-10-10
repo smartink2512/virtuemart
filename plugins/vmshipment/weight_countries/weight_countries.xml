@@ -27,11 +27,12 @@
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS_DESC"/>
             </fieldset>
             <fieldset name="restrictions">
-                <field name="show_on_pdetails" type="radio" scope="com_virtuemart" default="1"
-                               label="VMSHIPMENT_WEIGHT_COUNTRIES_SHOW_ON_PRDETAILS"
-                               description="VMSHIPMENT_WEIGHT_COUNTRIES_SHOW_ON_PRDETAILS_TIP">
-                            <option value="0">COM_VIRTUEMART_NO</option>
-                            <option value="1">COM_VIRTUEMART_YES</option>
+                <field name="show_on_pdetails" type="radio" default="0"
+                        label="VMSHIPMENT_WEIGHT_COUNTRIES_SHOW_ON_PRDETAILS"
+                        extension="com_virtuemart"
+                        description="VMSHIPMENT_WEIGHT_COUNTRIES_SHOW_ON_PRDETAILS_TIP">
+                    <option value="0">COM_VIRTUEMART_NO</option>
+                    <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
                 <field name="categories" value_field="category_name" type="vmcategories" multiple="true" size="10" default="" label="VMSHIPMENT_WEIGHT_CATEGORIES"
                        description="VMSHIPMENT_WEIGHT_CATEGORIES_DESC"/>
