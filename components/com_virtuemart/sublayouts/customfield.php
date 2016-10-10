@@ -231,17 +231,23 @@ class VirtueMartCustomFieldRenderer {
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';
 					}
 
-					vmJsApi::addJScript('cvfind',false,false,true,false);
+					vmJsApi::addJScript('cvfind');
+
+					$BrowserNewState =  '';
+					if($view != 'productdetails'){
+						$BrowserNewState = 'Virtuemart.setBrowserState = false;';
+					}
 
 					$jsVariants = implode(',',$jsArray);
 
 					$selector = $dom."[cvsel=\"".$attribs['cvsel']."\"]";
 					$hash = md5($selector);
 					$j = "jQuery(document).ready(function($) {
+							".$BrowserNewState."
 							$('".$selector."').off('change',Virtuemart.cvFind);
 							$('".$selector."').on('change', { variants:[".$jsVariants."] },Virtuemart.cvFind);
 						});";
-					vmJsApi::addJScript('cvselvars'.$hash,$j,false,true,false,$hash);
+					vmJsApi::addJScript('cvselvars'.$hash,$j,true,false,false,$hash);
 
 					//Now we need just the JS to reload the correct product
 					$customfield->display = $html;
@@ -263,12 +269,6 @@ class VirtueMartCustomFieldRenderer {
 
 					$options = array();
 
-					if(!$customfield->withParent){
-						$options[0] = $emptyOption;
-						$options[0]->value = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE);
-						//$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
-					}
-
 					$selected = vRequest::getInt ('virtuemart_product_id',0);
 					$selectedFound = false;
 
@@ -287,6 +287,12 @@ class VirtueMartCustomFieldRenderer {
 					$Itemid = vRequest::getInt('Itemid',''); // '&Itemid=127';
 					if(!empty($Itemid)){
 						$Itemid = '&Itemid='.$Itemid;
+					}
+
+					if(!$customfield->withParent){
+						$options[0] = $emptyOption;
+						$options[0]->value = JRoute::_ ('index.php?option=com_virtuemart&view='.$view.'&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE);
+						//$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
 					}
 
 					$parentStock = 0;
@@ -346,15 +352,6 @@ class VirtueMartCustomFieldRenderer {
 					$attribs['id'] = '[';//$idTag;
 
 
-					/*$attribs['reload'] = '1';
-					if(VmConfig::get ('jdynupdate', TRUE)){
-						$view = vRequest::getCmd('view','productdetails');
-						if($view == 'productdetails' or ($customfield->browseajax and $view == 'category')){
-							$attribs['data-dynamic-update'] = '1';
-							unset($attribs['reload']);
-						}
-					}*/
-
 					$och = '';
 					if(!empty($attribs['reload'])){
 						$och = ' onchange="window.top.location.href=this.options[this.selectedIndex].value" reload=1';
@@ -389,14 +386,20 @@ class VirtueMartCustomFieldRenderer {
 					$dynChilds++;
 					$customfield->display = $html;
 
-					vmJsApi::addJScript('avfind',false,false,true);
+					vmJsApi::addJScript('avfind');
+
+					$BrowserNewState =  '';
+					if($view != 'productdetails'){
+						$BrowserNewState = 'Virtuemart.setBrowserState = false;';
+					}
 
 					if($customfield->browseajax){
 						$j = "jQuery(document).ready(function($) {
+							".$BrowserNewState."
 							$('select.avselection').off('change',Virtuemart.avFind);
 							$('select.avselection').on('change',{},Virtuemart.avFind);
 						});";
-						vmJsApi::addJScript('avselvars',$j,false,true,false);
+						vmJsApi::addJScript('avselvars',$j,true);
 					}
 					break;
 
