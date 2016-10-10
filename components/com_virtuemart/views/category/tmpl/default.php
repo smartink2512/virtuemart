@@ -46,6 +46,12 @@ jQuery(document).ready(function () {
 ";
 vmJsApi::addJScript('vm.hover',$js);
 
+if ($this->show_store_desc and !empty($this->vendor->vendor_store_desc)) { ?>
+	<div class="vendor-store-desc">
+		<?php echo $this->vendor->vendor_store_desc; ?>
+	</div>
+<?php }
+
 if (empty($this->keyword) and !empty($this->category)) {
 	?>
 <div class="category_description">
@@ -57,7 +63,7 @@ if (empty($this->keyword) and !empty($this->category)) {
 // Show child categories
 if ($this->showcategory and empty($this->keyword)) {
 	if (!empty($this->category->haschildren)) {
-		echo ShopFunctionsF::renderVmSubLayout('categories',array('categories'=>$this->category->children));
+		echo ShopFunctionsF::renderVmSubLayout('categories',array('categories'=>$this->category->children, 'categories_per_row'=>$this->categories_per_row));
 	}
 }
 

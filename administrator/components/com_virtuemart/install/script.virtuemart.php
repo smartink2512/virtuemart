@@ -285,7 +285,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			//$this->adjustDefaultOrderStates();
 			$this->addMissingOrderstati();
-
+			$this->adjustMenuParamsCategoryView();
 			$this->fixOrdersVendorId();
 
 			$this->updateAdminMenuEntries();
@@ -418,9 +418,69 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					$ok = false;
 				}
 			}
+		}
 
+		private function adjustMenuParamsCategoryView(){
 
+			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
+			$this->_db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart"');
+			$jId = $this->_db->loadResult();
+
+			if($jId){
+
+				$q = 'SELECT * FROM #__menu WHERE component_id = "'.$jId.'" AND client_id="0" and link like "%view=category%" ';
+				$this->_db->setQuery($q);
+				$menues = $this->_db->loadAssocList();
+				//vmdebug('my menues',$menues);
+
+				foreach($menues as $menu){
+					$linkOrig = $menu['link'];
+					$menu['link'] = 'index.php?option=com_virtuemart&view=category';
+					$link = str_replace('index.php?option=com_virtuemart&view=category','',$linkOrig);
+					if(strlen($link)>1){
+						vmdebug('Updating link',$link);
+						$registry = new JRegistry;
+						$registry->loadString($menu['params']);
+
+						$paramsLink = explode('&',$link);
+						foreach($paramsLink as $param){
+							if(strpos($param,'=')!==FALSE){
+								$spl = explode('=',$param);
+								if(!empty($spl[0]) and isset($spl[1])){
+									if($spl[0]!='virtuemart_category_id' and $spl[0]!='virtuemart_manufacturer_id'){
+										$registry->set($spl[0], $spl[1]);
+									} else {
+										$menu['link'] .= '&'.$spl[0].'='.$spl[1];
+									}
+								} else {
+									vmdebug('Key empty ',$spl);
+								}
+							}
+						}
+						$params = (string)$registry;
+					} else {
+						$params = $menu['params'];
+					}
+
+					if($linkOrig!=$menu['link'] and $menu['params']!=$params){
+						$q = 'UPDATE #__menu' .
+						' SET link = "'.$menu['link'].'", params = "'.$this->_db->escape($params).'"'.
+						' WHERE id = '.(int) $menu['id'];
+						$this->_db->setQuery( $q);
+
+						if (!$this->_db->query()) {
+							$m = 'Updating vm category menu failed '.$q;
+							vmError($m, $m);
+						} else {
+							vmdebug('Updated menu $menu '.$menu['id'],$menu['link'],$param);
+						}
+					} else {
+						vmdebug('Menu dont need update '.$menu['id']);
+					}
+
+				}
+			}
 		}
 
 		private function adjustDefaultOrderStates(){
