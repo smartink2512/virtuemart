@@ -4,7 +4,7 @@ var vmKeepAlive = function() {
         var lastUpd = 0,kAlive = 0,minlps = 1,stopped = true;
         var sessMSec = 60 * 1000 * parseFloat(sessMin);
         var interval = (sessMSec - 40000) * 0.99;
-        console.log('keepAlive each '+interval+' minutes and maxlps '+maxlps);
+        console.log('keepAlive each '+interval/60000+' minutes and maxlps '+maxlps);
         var tKeepAlive = function($) {
             if(stopped){
                 kAlive = 1;

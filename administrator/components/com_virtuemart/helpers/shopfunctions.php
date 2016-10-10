@@ -976,7 +976,7 @@ class ShopFunctions {
 
 		if (!isset($filterArray)) {
 
-			$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku','product_mpn',
+			$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku','`p`.product_mpn',
 			'product_s_desc', 'product_desc','`l`.slug',
 			'category_name', 'category_description', 'mf_name',
 			'product_price', '`p`.product_special', '`p`.product_sales', '`p`.product_availability', '`p`.product_available_date',

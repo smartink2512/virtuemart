@@ -40,6 +40,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		$this->row = vRequest::getInt('row', false);
 		$this->db = JFactory::getDBO();
 		$this->model = VmModel::getModel('Customfields') ;
+		
 
 	}
 	function display($tpl = null) {
@@ -181,6 +182,13 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$html = ShopFunctions::renderProductShopperList($productShoppers);
 			$this->json['value'] = $html;
 
+		} else if ($this->type=='getCategoriesTree') {
+			$this->ProductModel = VmModel::getModel();
+			$product = $this->ProductModel->getProductSingle($virtuemart_product_id,false);
+			$html = ShopFunctions::categoryListTree($product->categories);
+			$this->json['value'] = $html;
+			
+			
 		} else $this->json['ok'] = 0 ;
 
 		if ( empty($this->json)) {
@@ -192,6 +200,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 	}
 
+	
+	
 	function setRelatedHtml($product_id,$query,$fieldType) {
 //VmConfig::$echoDebug=true;
 		$this->db->setQuery($query.' limit 0,50');

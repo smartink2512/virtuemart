@@ -109,8 +109,7 @@ $i=0;
 			</td>
 			<td>
 				<select class="vm-drop" id="categories" name="categories[]" multiple="multiple"  data-placeholder="<?php echo vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS')  ?>" size="100" >
-					<option value=""><?php echo vmText::_('COM_VIRTUEMART_UNCATEGORIZED') ?></option>
-					<?php echo $this->category_tree; ?>
+
 				</select>			</td>
 			<?php
 			// It is important to have all product information in the form, since we do not preload the parent
@@ -327,3 +326,25 @@ if ($link) {
 		}
 	?>
 </script>
+<?php 
+vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad',"
+		jQuery(document).ready(function($) {	
+			$('#categories_chzn').remove();	
+			$('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\"><div style=\"text-align:center;\">Loading...</div><img src=\"components/com_virtuemart/assets/images/vm-preloader.gif\"></div>').insertAfter('select#categories')	
+			$.ajax({
+                type: 'GET',
+                url: 'index.php',
+                data: 'option=com_virtuemart&view=product&type=getCategoriesTree&virtuemart_product_id=".$this->product->virtuemart_product_id."&format=json',
+                success:function(json){
+					$('select#categories').switchClass('chzn-done','chzn-select');
+					$('select#categories').html('<option value=\"\">".vmText::_('COM_VIRTUEMART_UNCATEGORIZED')."</option>'+json.value);
+					$('#pro-tech_ajax_load').remove();	
+					$('select#categories').chosen();		
+				}
+			});		
+		});		
+");	
+			
+	
+echo vmJsApi::writeJS();	
+?>

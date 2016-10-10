@@ -87,8 +87,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 
 				// Get the category tree
-				if (isset($product->categories)) $this->category_tree = ShopFunctions::categoryListTree($product->categories);
-				else $this->category_tree = ShopFunctions::categoryListTree();
+				if (isset($product->categories)) $this->category_tree = '';//ShopFunctions::categoryListTree($product->categories);
+				else $this->category_tree = '';//ShopFunctions::categoryListTree();
 
 				//Fallback for categories inherited by parent to correctly calculate the prices
 				if(empty($product->categories) and !empty($product_parent->categories)){
@@ -375,7 +375,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 			//Get the category tree
 			$categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
-			$category_tree = ShopFunctions::categoryListTree(array($categoryId));
+			$category_tree = '';//ShopFunctions::categoryListTree(array($categoryId));
 			$this->assignRef('category_tree', $category_tree);
 
 			//Load the product price
