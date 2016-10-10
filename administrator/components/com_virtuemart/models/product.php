@@ -726,7 +726,7 @@ class VirtueMartModelProduct extends VmModel {
 		vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filterOrderDir, $nbrReturnProducts);
 
-		vmTime('sortSearchQuery products','sortSearchQuery');
+		vmTime('sortSearchQuery products group: '.$group,'sortSearchQuery');
 		//vmdebug('exeSortSearchLIstquery orderby ',$product_ids);
 		return $product_ids;
 
@@ -2391,6 +2391,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$fieldLink = '';
 
+		$Itemid = '';
 		foreach ($getArray as $key => $value) {
 
 			$key = vRequest::filter($key,FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
@@ -2405,11 +2406,15 @@ class VirtueMartModelProduct extends VmModel {
 			else {
 				if($key=='dir' or $key=='orderby') continue;
 				if($value == '') continue;
+				if($key=='Itemid'){
+					$Itemid = '&' . urlencode($key) . '=' . urlencode($value);
+					continue;
+				}
 				$fieldLink .= '&' . urlencode($key) . '=' . urlencode($value);
 			}
 		}
 
-		$fieldLink = 'index.php?'. ltrim ($fieldLink,'&');
+		$fieldLink = 'index.php?'. ltrim ($fieldLink,'&') ;
 
 		$orderDirLink = '';
 		$orderDirConf = VmConfig::get ('prd_brws_orderby_dir');
@@ -2433,7 +2438,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$manuM = VmModel::getModel('manufacturer');
 			vmSetStartTime('mcaching');
-			$mlang=(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1);
+			$mlang=(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1);
 			if(true){
 				$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
 				$cache->setCaching(true);
@@ -2446,8 +2451,8 @@ class VirtueMartModelProduct extends VmModel {
 
 			// manufacturer link list
 			$manufacturerLink = '';
-			$virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', '');
-			if ($virtuemart_manufacturer_id != '') {
+			$virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', 0);
+			if (!empty($virtuemart_manufacturer_id)) {
 				$manufacturerTxt = '&virtuemart_manufacturer_id=' . $virtuemart_manufacturer_id;
 			}
 
@@ -2460,7 +2465,8 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				if (count ($manufacturers) > 1) {
 					foreach ($manufacturers as $mf) {
-						$link = JRoute::_ ($fieldLink . '&virtuemart_manufacturer_id=' . $mf->virtuemart_manufacturer_id . $orderbyTxt . $orderDirLink,FALSE);
+						$l = str_replace($manufacturerTxt,'',$fieldLink) . '&virtuemart_manufacturer_id=' . $mf->virtuemart_manufacturer_id . $orderbyTxt . $orderDirLink . $Itemid;
+						$link = JRoute::_ ($l,FALSE);
 						if ($mf->virtuemart_manufacturer_id != $virtuemart_manufacturer_id) {
 							$manufacturerLink .= '<div><a title="' . $mf->mf_name . '" href="' . $link . '">' . $mf->mf_name . '</a></div>';
 						}
@@ -2505,7 +2511,7 @@ class VirtueMartModelProduct extends VmModel {
 					} else {
 						$field = $field[0];
 					}
-					$link = JRoute::_ ($fieldLink . $manufacturerTxt . '&orderby=' . $field,FALSE);
+					$link = JRoute::_ ($fieldLink . $manufacturerTxt . '&orderby=' . $field . $Itemid,FALSE);
 
 					$orderByLink .= '<div><a title="' . $text . '" href="' . $link . '">' . $text . '</a></div>';
 				}
@@ -2528,7 +2534,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$orderDirTxt = vmText::_ ('COM_VIRTUEMART_'.$orderDir);
 
-		$link = JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink . $manufacturerTxt,FALSE);
+		$link = JRoute::_ ($fieldLink . $manufacturerTxt . $orderbyTxt . $orderDirLink . $Itemid,FALSE);
 
 		// full string list
 		if ($orderby == '') {
