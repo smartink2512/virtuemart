@@ -11,10 +11,7 @@
 if (typeof Virtuemart === "undefined")
 	Virtuemart = {};
 
-Virtuemart.cvFind = function(event) {
-	event.preventDefault();
-	var selection = [];
-
+Virtuemart.findContainers = function(event){
 	var runs= 0, maxruns = 20;
 	//We ensure with this, to get the right product, if more than one is displayed
 	var container = jQuery(event.currentTarget);
@@ -28,7 +25,6 @@ Virtuemart.cvFind = function(event) {
 	}
 	Virtuemart.container = container;
 
-
 	runs=0;
 	var cl = 'product-container';
 	Virtuemart.containerSelector = '.'+cl;
@@ -40,6 +36,14 @@ Virtuemart.cvFind = function(event) {
 		console.log('CV: Could not find product-container');
 		return false;
 	}
+	return container;
+}
+
+Virtuemart.cvFind = function(event) {
+	event.preventDefault();
+	var selection = [];
+
+	var container = Virtuemart.findContainers(event);
 
 	//console.log('my new ajax container ',Virtuemart.container);
 	var found = false;
@@ -86,6 +90,36 @@ Virtuemart.cvFind = function(event) {
 	}
 
 	return false;
+};
+
+Virtuemart.avFind = function(event) {
+	event.preventDefault();
+
+	var container = Virtuemart.findContainers(event);
+	//console.log('my new ajax container ',Virtuemart.container);
+	url = false;
+	found = false;
+	//We check first if it is a radio
+	jQuery(container).find('.avselection:checked').each(function() {
+		found = true;
+		url = jQuery(this).attr('url');
+		if (typeof url === typeof undefined || url === false) {
+			url = jQuery(this).val();
+		}
+		jQuery(this).val(url);
+	});
+	if(!found){
+		jQuery(container).find('.avselection').each(function() {
+			url = jQuery(this).attr('url');
+			if (typeof url === typeof undefined || url === false) {
+				url = jQuery(this).val();
+			}
+			jQuery(this).val(url);
+		});
+	}
+
+	return url;
+
 };
 
 

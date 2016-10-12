@@ -67,7 +67,7 @@ class TableProducts extends VmTable {
 	var $product_availability	= null;
 	/** @var int File thumbnail image width */
 	var $product_special	= null;
-	var $product_remaining_stock	= null;
+	var $product_discontinued	= null;
 
 	/** @var int product internal ordering, it is for the ordering for child products under a parent null */
 	var $pordering = null;

@@ -38,10 +38,11 @@ class amazonHelperOrderReferenceNotification extends amazonHelper {
 		if (!$orderReference->isSetAmazonOrderReferenceId()) {
 			return NULL;
 		}
-		$status =$orderReference->isSetOrderReferenceStatus();
-		if (!$status->isSetState()) {
+		$status = $orderReference->isSetOrderReferenceStatus();
+		if (!$status) {
 			return NULL;
 		}
+		$status =$orderReference->getOrderReferenceStatus();
 		$amazonState = $status->getState();
 
 		if (!$status->isSetReasonCode()) {

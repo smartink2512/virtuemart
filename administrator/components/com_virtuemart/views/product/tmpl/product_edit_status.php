@@ -78,36 +78,33 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<input type="text" class="inputbox"  name="max_order_level" value="<?php echo $this->product->max_order_level; ?>" size="10" />
 		</td>
 	</tr>
-	<tr class="row1">
-		<th style="text-align:right;">
-			<?php echo vmText::_('COM_VIRTUEMART_CFG_POOS_ENABLE') ?>
-		</th>
-		<td colspan="3">
-			<?php
-			$options = array(
+	<?php if(VmConfig::get('stockhandle_products',false)){ ?>
+		<tr class="row1">
+			<th style="text-align:right;">
+				<?php echo vmText::_('COM_VIRTUEMART_CFG_POOS_ENABLE') ?>
+			</th>
+			<td colspan="3">
+				<?php
+				$options = array(
 				'0' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_GLOBAL'),
 				'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
 				'disableit' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT'),
 				'disableit_children' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT_CHILDREN'),
 				'disableadd' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_ADD'),
 				'risetime' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_RISE_AVATIME')
-			);
-			echo VmHTML::selectList('product_stockhandle', $this->product->product_stockhandle, $options);
-			?>
-		</td>
-	</tr>
+				);
+				echo VmHTML::selectList('product_stockhandle', $this->product->product_stockhandle, $options);
+				?>
+			</td>
+		</tr>
+	<?php } ?>
+
 	<tr class="row0">
 		<th style="text-align:right;">
 			<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABLE_DATE') ?>
 		</th>
 		<td>
 			<?php echo vmJsApi::jDate($this->product->product_available_date, 'product_available_date'); ?>
-		</td>
-		<th style="text-align:right;">
-			<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_REMAINING_STOCK') ?>
-		</th>
-		<td>
-			<?php echo VmHTML::checkbox('product_remaining_stock', $this->product->product_remaining_stock); ?>
 		</td>
 	</tr>
 	<tr class="row1">

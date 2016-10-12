@@ -210,8 +210,11 @@ class VirtueMartCart {
 
 			//We need to check for the amount of products. A cart in Multix mode using the first product
 			// to determine the vendorId is a valid if there is no product in the cart
-			if(count(self::$_cart->cartProductsData) >0 and empty(self::$_cart->vendorId)){
+			$cp = count(self::$_cart->cartProductsData);
+			if( $cp >0 and empty(self::$_cart->vendorId)){
 				self::$_cart->vendorId = 1;
+			} else if ($cp == 0 and !empty($multixcart)) {
+				self::$_cart->vendorId = 0;
 			}
 			//vmdebug('Created new cart',self::$_cart->vendorId);
 		}
@@ -1677,7 +1680,7 @@ class VirtueMartCart {
 			}
 		}
 	
-		$stockhandle = VmConfig::get('stockhandle_discontinued_products', false) && $product->product_stockhandle ? $product->product_stockhandle : VmConfig::get('stockhandle','none');
+		$stockhandle = VmConfig::get('stockhandle_products', false) && $product->product_stockhandle ? $product->product_stockhandle : VmConfig::get('stockhandle','none');
 		$mainframe = JFactory::getApplication();
 		// Check for a valid quantity
 		if (!is_numeric( $quantity)) {

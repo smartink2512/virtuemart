@@ -101,9 +101,9 @@ defined('_JEXEC') or die('Restricted access');?>
 			</span>
 		</div>
 		<div>
-			<?php echo VmHTML::checkbox('stockhandle_discontinued_products', VmConfig::get('stockhandle_discontinued_products')); ?>
+			<?php echo VmHTML::checkbox('stockhandle_products', VmConfig::get('stockhandle_products')); ?>
 			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_POOS_DISCONTINUED_PRODUCTS_TIP'); ?>">
-				<label for="stockhandle_discontinued_products">
+				<label for="stockhandle_products">
 					<?php echo vmText::_('COM_VIRTUEMART_CFG_POOS_DISCONTINUED_PRODUCTS'); ?>
 				</label>
 			</span>
