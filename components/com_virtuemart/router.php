@@ -771,30 +771,31 @@ class vmrouterHelper {
 				$this->Itemid = $query['Itemid'];
 			} else {
 				$this->Itemid = vRequest::getInt('Itemid',false);
-				if(!$this->Itemid){
-					vmdebug('There is no requested itemid');
-					$jLangTag = $this->Jlang->getTag();
-					/*$fallback ='';
-					if($jLangTag!=VmConfig::$vmlangTag){
-						$fallback= 'or language = "'.$jLangTag.'"';
-					}*/
-					$db = JFactory::getDbo();
-					$q = 'SELECT `id` FROM `#__menu` WHERE `home`="1" and (language="*" or language = "'.$jLangTag.'" ) ORDER BY `language` DESC';
-					$db->setQuery($q);
-					$this->Itemid = $db->loadResult();
-					vmdebug('Loaded home Itemid');
-				}
-				if(!$this->Itemid) {
-					vmdebug( 'There is still no itemid' );
-					$this->Itemid = '';
-				}
 			}
 			$this->template = JFactory::getApplication()->getTemplate(true);
 			if(empty($this->template) or !isset($this->template->id)){
 				$this->template->id = 0;
 			}
-			$this->setMenuItemId();
 			$this->setActiveMenu();
+			if(!$this->Itemid){
+
+				$jLangTag = $this->Jlang->getTag();
+				/*$fallback ='';
+				if($jLangTag!=VmConfig::$vmlangTag){
+					$fallback= 'or language = "'.$jLangTag.'"';
+				}*/
+				$db = JFactory::getDbo();
+				$q = 'SELECT `id` FROM `#__menu` WHERE `home`="1" and (language="*" or language = "'.$jLangTag.'" ) ORDER BY `language` DESC';
+				$db->setQuery($q);
+				$this->Itemid = $db->loadResult();
+				vmdebug('There is no requested itemid loaded home Itemid',$this->Itemid);
+			}
+			if(!$this->Itemid) {
+				vmdebug( 'There is still no itemid' );
+				$this->Itemid = '';
+			}
+			$this->setMenuItemId();
+
 			$this->use_id = VmConfig::get('seo_use_id', false);
 			$this->use_seo_suffix = VmConfig::get('use_seo_suffix', true);
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
