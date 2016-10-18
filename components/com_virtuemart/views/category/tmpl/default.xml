@@ -98,6 +98,19 @@
                    extension="com_virtuemart"
                    description="COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS_TIP" />
 
+            <field name="discontinued" type="list"
+                   label="COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED"
+                   extension="com_virtuemart"
+                   description="COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED_TIP" >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="discontinued_rows" type="text"
+                   label="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS"
+                   extension="com_virtuemart"
+                   description="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS_TIP" />
+
             <field name="latest" type="list"
                    label="COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST"
                    extension="com_virtuemart"
@@ -214,6 +227,19 @@
                    label="COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS"
                    extension="com_virtuemart"
                    description="COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS_TIP" />
+
+            <field name="stf_discontinued" type="list"
+                   label="COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED"
+                   extension="com_virtuemart"
+                   description="COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED_TIP" >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field name="stf_discontinued_rows" type="text"
+                   label="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS"
+                   extension="com_virtuemart"
+                   description="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS_TIP" />
 
             <field name="stf_latest" type="list"
                    label="COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST"

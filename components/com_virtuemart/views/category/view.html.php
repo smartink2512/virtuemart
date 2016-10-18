@@ -131,7 +131,7 @@ class VirtuemartViewCategory extends VmView {
 			}
 		}
 		vmdebug('my t',$t);//*/
-		$paramNames = array('itemid'=>'', 'categorylayout'=>'', 'show_store_desc'=>'0', 'showcategory_desc'=>'', 'showcategory'=>VmConfig::get('show_categories',1), 'categories_per_row'=>VmConfig::get('categories_per_row',3), 'showproducts'=>'1', 'showsearch'=>'1', 'productsublayout'=>VmConfig::get('productsublayout', 0), 'products_per_row'=>VmConfig::get('products_per_row', 3), 'featured'=>'', 'featured_rows'=>'', 'latest'=>'', 'latest_rows'=>'', 'topten'=>'', 'topten_rows'=>'', 'recent'=>'', 'recent_rows'=>'');
+		$paramNames = array('itemid'=>'', 'categorylayout'=>'', 'show_store_desc'=>'0', 'showcategory_desc'=>'', 'showcategory'=>VmConfig::get('show_categories',1), 'categories_per_row'=>VmConfig::get('categories_per_row',3), 'showproducts'=>'1', 'showsearch'=>'1', 'productsublayout'=>VmConfig::get('productsublayout', 0), 'products_per_row'=>VmConfig::get('products_per_row', 3), 'featured'=>'', 'featured_rows'=>'', 'latest'=>'', 'latest_rows'=>'', 'topten'=>'', 'topten_rows'=>'', 'recent'=>'', 'recent_rows'=>'', 'discontinued'=>'', 'discontinued_rows'=>'');
 
 		$prefix = '';
 
@@ -200,7 +200,7 @@ class VirtuemartViewCategory extends VmView {
 			$dynamic = vRequest::getInt('dynamic',false);
 
 			if(!$dynamic){
-				$opt = array('featured','latest','topten','recent');
+				$opt = array('featured','discontinued','latest','topten','recent');
 				foreach($opt as $o){
 
 					//Lets check, if we use the new Frontpages settings

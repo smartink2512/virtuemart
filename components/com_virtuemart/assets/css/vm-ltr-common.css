@@ -111,7 +111,7 @@ td.pricePad{
 /* hide inline style as class END */
 /* general style - needs to be at the beginning so it can be overwritten by specific style later */
 
-.additional-images,.featured-view .product-price,.latest-view .product-price,.topten-view .product-price,.recent-view .product-price,.output-billto,.output-shipto{
+.additional-images,.featured-view .product-price,.discontinued-view .product-price,.latest-view .product-price,.topten-view .product-price,.recent-view .product-price,.output-billto,.output-shipto{
   margin: 10px 0;
 }
 
@@ -131,7 +131,7 @@ span.variant-name, span.custom-variant-name{
   margin-bottom: 5px;
 }
 
-.category-view .row .category .spacer,.featured-view .spacer,.latest-view .spacer,.topten-view .spacer,.recent-view .spacer,.related-products-view .spacer,.browse-view .row .product .spacer{
+.category-view .row .category .spacer,.featured-view .spacer,.discontinued-view .spacer,.latest-view .spacer,.topten-view .spacer,.recent-view .spacer,.related-products-view .spacer,.browse-view .row .product .spacer{
   padding: 6px;
 }
 
@@ -141,7 +141,7 @@ span.variant-name, span.custom-variant-name{
   padding: 0;
 }*/
 
-.featured-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.recent-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{
+.featured-view .spacer span,.discontinued-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.recent-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{
   font-size: 13px;
   color: #666;
 }

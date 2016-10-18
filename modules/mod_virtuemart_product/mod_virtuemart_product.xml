@@ -35,6 +35,7 @@
           description="MOD_VIRTUEMART_PRODUCT_DISPLAY_DESC"
           >
           <option value="featured">MOD_VIRTUEMART_PRODUCT_FEATURED_PRODUCTS</option>
+          <option value="discontinued">MOD_VIRTUEMART_PRODUCT_DISCONTINUED_PRODUCTS</option>
           <option value="latest">MOD_VIRTUEMART_PRODUCT_LATEST_PRODUCTS</option>
           <option value="random">MOD_VIRTUEMART_PRODUCT_RANDOM_PRODUCTS</option>
           <option value="topten">MOD_VIRTUEMART_PRODUCT_BEST_SALES</option>

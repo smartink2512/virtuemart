@@ -554,6 +554,10 @@ class VirtueMartModelProduct extends VmModel {
 					$where[] = 'p.`product_special`="1" ';
 					$orderBy = 'ORDER BY RAND()';
 					break;
+				case 'discontinued':
+					$where[] = 'p.`product_discontinued`="1" ';
+					$orderBy = 'ORDER BY RAND()';
+					break;
 				case 'latest':
 					$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '` DESC, `virtuemart_product_id` DESC';;
 					break;

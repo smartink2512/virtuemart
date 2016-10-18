@@ -317,7 +317,7 @@ span.addtocart-button input.addtocart-button-disabled {
   letter-spacing: 1px;
 }
 
-.browse-view span.addtocart-button-disabled, .featured-view span.addtocart-button-disabled, .latest-view span.addtocart-button-disabled, .topten-view span.addtocart-button-disabled, .recent-view span.addtocart-button-disabled, .related-products-view span.addtocart-button-disabled, .browse-view span.addtocart-button-disabled, .addtocart-button-disabled {
+.browse-view span.addtocart-button-disabled, .featured-view span.addtocart-button-disabled, .discontinued-view span.addtocart-button-disabled, .latest-view span.addtocart-button-disabled, .topten-view span.addtocart-button-disabled, .recent-view span.addtocart-button-disabled, .related-products-view span.addtocart-button-disabled, .browse-view span.addtocart-button-disabled, .addtocart-button-disabled {
   display: inline-block;
   padding: 16px;
   border: 1px solid #ddd;
@@ -349,7 +349,7 @@ span.addtocart-button input.addtocart-button-disabled {
   height: auto;
 }
 
-.featured-view h4,.latest-view h4,.topten-view h4,.recent-view h4,.related-products-view h4{
+.featured-view h4,.discontinued-view h4,.latest-view h4,.topten-view h4,.recent-view h4,.related-products-view h4{
   font-size: 14px;
   margin: 0 0 8px;
   padding: 0;
@@ -845,7 +845,7 @@ ul.VMmenu,.VMmenu ul,.VMmenu li{
   margin: 6px 4px 0 0;
 }
 
-.featured-view .vm2-lowstock, .featured-view .vm2-nostock, .featured-view .vm2-normalstock, .latest-view .vm2-lowstock, .latest-view .vm2-nostock, .latest-view .vm2-normalstock, .topten-view .vm2-lowstock, .topten-view .vm2-nostock, .topten-view .vm2-normalstock, .recent-view .vm2-lowstock, .recent-view .vm2-nostock, .recent-view .vm2-normalstock, .related-view .vm2-lowstock, .related-view .vm2-nostock, .related-view .vm2-normalstock{
+.featured-view .vm2-lowstock, .featured-view .vm2-nostock, .featured-view .vm2-normalstock, .discontinued-view .vm2-lowstock, .discontinued-view .vm2-nostock, .discontinued-view .vm2-normalstock, .latest-view .vm2-lowstock, .latest-view .vm2-nostock, .latest-view .vm2-normalstock, .topten-view .vm2-lowstock, .topten-view .vm2-nostock, .topten-view .vm2-normalstock, .recent-view .vm2-lowstock, .recent-view .vm2-nostock, .recent-view .vm2-normalstock, .related-view .vm2-lowstock, .related-view .vm2-nostock, .related-view .vm2-normalstock{
   float: right;
   margin: 6px 4px 0 0;
 }
@@ -859,11 +859,11 @@ ul.VMmenu,.VMmenu ul,.VMmenu li{
   display: inline-block;
 }
 
-.vendor-store-desc,.category-view,.featured-view,.latest-view,.topten-view,.recent-view,.related-products-view,.browse-view,.order-view{
+.vendor-store-desc,.category-view,.featured-view,.discontinued-view,.latest-view,.topten-view,.recent-view,.related-products-view,.browse-view,.order-view{
   margin-bottom: 25px;
 }
 
-.main-image,.featured-view .product,.latest-view .product,.topten-view .product,.recent-view .product,.related-products-view .product{
+.main-image,.featured-view .product,.discontinued-view .product,.latest-view .product,.topten-view .product,.recent-view .product,.related-products-view .product{
   text-align: center;
 }
 
@@ -928,7 +928,7 @@ ul.VMmenu,.VMmenu ul,.VMmenu li{
   max-width: 100%;
   max-height: 260px;
 }
-/*.main-image img.product-image,.featured-view .spacer img,.latest-view .spacer img,.topten-view .spacer img,.recent-view .spacer img{max-width:100%;height:auto;width:auto;}*/
+/*.main-image img.product-image,.featured-view .spacer img,.discontinued-view .spacer img,.latest-view .spacer img,.topten-view .spacer img,.recent-view .spacer img{max-width:100%;height:auto;width:auto;}*/
 
 .browseProductImage {
   max-height: 90px;
@@ -952,11 +952,11 @@ span.addtocart-button input.addtocart-button:hover, span.addtocart-button input.
   color: #f2f2f2;
 }
 
-.category-view .row .category .spacer,.featured-view .spacer,.latest-view .spacer,.topten-view .spacer,.recent-view .spacer,.related-products-view .spacer,.browse-view .row .product .spacer{
+.category-view .row .category .spacer,.featured-view .spacer,.discontinued-view .spacer,.latest-view .spacer,.topten-view .spacer,.recent-view .spacer,.related-products-view .spacer,.browse-view .row .product .spacer{
   padding: 6px;
 }
 
-.featured-view .spacer h3,.latest-view .spacer h3,.topten-view .spacer h3,.recent-view .spacer h3,.related-products-view .spacer h3{
+.featured-view .spacer h3,.discontinued-view .spacer h3,.latest-view .spacer h3,.topten-view .spacer h3,.recent-view .spacer h3,.related-products-view .spacer h3{
   font-size: 14px;
   margin: 0 0 3px;
   padding: 0;
