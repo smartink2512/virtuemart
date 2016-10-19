@@ -272,6 +272,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
 
+				VmJsApi::chosenDropDowns();
+				$this->ajaxCategoryDropDown('categories');
 
 				break;
 
@@ -373,10 +375,13 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			//The pagination must now always set AFTER the model load the listing
 			$this->pagination = $model->getPagination();
 
+			VmJsApi::chosenDropDowns();
+
 			//Get the category tree
-			$categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
-			$category_tree = '';//ShopFunctions::categoryListTree(array($categoryId));
+			$this->categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
+			$category_tree = '';// ShopFunctions::categoryListTree(array($this->categoryId));
 			$this->assignRef('category_tree', $category_tree);
+			$this->ajaxCategoryDropDown('virtuemart_category_id');
 
 			//Load the product price
 			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
@@ -527,6 +532,54 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		}
 	}
 
+	public function ajaxCategoryDropDown($id){
+
+		$param = '';
+		if(!empty($this->categoryId)){
+			$param = '&virtuemart_category_id='.$this->categoryId;
+		} else if(!empty($this->product->virtuemart_product_id)){
+			$param = '&virtuemart_product_id='.$this->product->virtuemart_product_id;
+		}
+		$j = "
+	Virtuemart.startVmLoading = function(a) {
+		var msg = '';
+		/*if (typeof a.data.msg !== 'undefined') {
+			msg = a.data.msg;
+		}*/
+		jQuery('body').addClass('vmLoading');
+		if (!jQuery('div.vmLoadingDiv').length) {
+			jQuery('body').append('<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">' + msg + '</div></div>');
+		}
+	};
+
+	Virtuemart.stopVmLoading = function() {
+		if (jQuery('body').hasClass('vmLoading')) {
+			jQuery('body').removeClass('vmLoading');
+			jQuery('div.vmLoadingDiv').remove();
+		}
+	};
+
+jQuery(document).ready(function($) {
+		$('#".$id."_chzn').remove();
+		Virtuemart.startVmLoading('Loading categories');
+		$('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\"></div>').insertAfter('select#".$id."');
+		$.ajax({
+			type: 'GET',
+			url: 'index.php',
+			data: 'option=com_virtuemart&view=product&type=getCategoriesTree".$param."&format=json',
+			success:function(json){
+				$('select#".$id."').switchClass('chzn-done','chzn-select');
+				$('select#".$id."').html('<option value=\"\">".vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY'))."</option>'+json.value);
+				$('#pro-tech_ajax_load').remove();
+				$('select#".$id."').chosen();
+				Virtuemart.stopVmLoading();
+			}
+		});
+	});
+";
+		vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad', $j);
+
+	}
 }
 
 //pure php no closing tag

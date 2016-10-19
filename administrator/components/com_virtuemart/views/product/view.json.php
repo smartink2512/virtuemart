@@ -183,9 +183,18 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$this->json['value'] = $html;
 
 		} else if ($this->type=='getCategoriesTree') {
-			$this->ProductModel = VmModel::getModel();
-			$product = $this->ProductModel->getProductSingle($virtuemart_product_id,false);
-			$html = ShopFunctions::categoryListTree($product->categories);
+			if(!empty($product_id)){
+				$this->ProductModel = VmModel::getModel();
+				$product = $this->ProductModel->getProductSingle($virtuemart_product_id,false);
+				$categories = $product->categories;
+			} else {
+				$categories = vRequest::getInt('virtuemart_category_id',array());
+				if(!is_array($categories)){
+					$categories = (array) $categories;
+				}
+			}
+
+			$html = ShopFunctions::categoryListTree($categories);
 			$this->json['value'] = $html;
 			
 			

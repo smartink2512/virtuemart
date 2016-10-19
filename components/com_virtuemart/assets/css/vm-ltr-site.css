@@ -1302,7 +1302,7 @@ div[class*="-view"] .row{
   left: 0;
   height: 100%;
   width: 100%;
-  background: rgba(255, 255, 255, 0.3) url('../images/vm-preloader.gif') 50% 45% no-repeat;
+  background: rgba(255, 255, 255, 0.2) url('../images/vm-preloader.gif') 50% 45% no-repeat;
 }
 
 /* Anytime the body has the loading class, our

@@ -328,7 +328,7 @@ if ($link) {
 	?>
 </script>
 <?php 
-vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad',"
+/*vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad',"
 		jQuery(document).ready(function($) {	
 			$('#categories_chzn').remove();	
 			$('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\"><div style=\"text-align:center;\">Loading...</div><img src=\"components/com_virtuemart/assets/images/vm-preloader.gif\"></div>').insertAfter('select#categories')	
@@ -340,12 +340,12 @@ vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad',"
 					$('select#categories').switchClass('chzn-done','chzn-select');
 					$('select#categories').html('<option value=\"\">".vmText::_('COM_VIRTUEMART_UNCATEGORIZED')."</option>'+json.value);
 					$('#pro-tech_ajax_load').remove();	
-					$('select#categories').chosen();		
+					$('select#categories').chosen();
 				}
 			});		
 		});		
-");	
+");	//*/
 			
 	
-echo vmJsApi::writeJS();	
+//echo vmJsApi::writeJS();
 ?>
