@@ -643,8 +643,10 @@ class VirtueMartCustomFieldRenderer {
 
 		if(empty($variantmods)){
 			$productDB = VmModel::getModel('product')->getProduct($product->virtuemart_product_id);
-			if($productDB){
+			if($productDB and isset($productDB->customfields)){
 				$product->customfields = $productDB->customfields;
+			} else {
+				$product->customfields = array();
 			}
 		}
 		if(!is_array($variantmods)){

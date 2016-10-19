@@ -258,7 +258,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication ();
 		$db = JFactory::getDbo();
-		
+
 		//User Q.Stanley said that removing group by is increasing the speed of product listing in a bigger shop (10k products) by factor 60
 		//So what was the reason for that we have it? TODO experiemental, find conditions for the need of group by
 		$groupBy = ' group by p.`virtuemart_product_id` ';
@@ -323,7 +323,7 @@ class VirtueMartModelProduct extends VmModel {
 				else if ($searchField == 'product_name' or $searchField == 'product_s_desc' or $searchField == 'product_desc' or $searchField == 'slug' ){
 					$langFields[] = $searchField;
 					//if (strpos ($searchField, '`') !== FALSE){
-						//$searchField = '`l`.'.$searchField;
+					//$searchField = '`l`.'.$searchField;
 					$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
 					if($langFback){
 						$filter_search[] =  '`ld`.'.$searchField . ' LIKE ' . $keywords_plural;
@@ -568,7 +568,7 @@ class VirtueMartModelProduct extends VmModel {
 					$orderBy = ' ORDER BY p.`product_sales` DESC, `virtuemart_product_id` DESC'; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 					$joinPrice = true;
 					$where[] = 'pp.`product_price`>"0.0" ';
-				break;
+					break;
 				case 'recent':
 					$rIds = shopFunctionsF::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
 					return $rIds;
@@ -583,12 +583,12 @@ class VirtueMartModelProduct extends VmModel {
 		/*if ($onlyPublished and !empty($this->virtuemart_vendor_id) and vRequest::get('manage',false) and vmAccess::isSuperVendor()) {
 			$where[] = ' p.`virtuemart_vendor_id` = "'.$this->virtuemart_vendor_id.'" ';
 		} else {*/
-			if(!empty($onlyPublished) and $isSite){
-				$where[] = ' p.`published`="1" ';
-			}
-			if(!empty($this->virtuemart_vendor_id)){
-				$where[] = ' p.`virtuemart_vendor_id` = "'.$this->virtuemart_vendor_id.'" ';
-			}
+		if(!empty($onlyPublished) and $isSite){
+			$where[] = ' p.`published`="1" ';
+		}
+		if(!empty($this->virtuemart_vendor_id)){
+			$where[] = ' p.`virtuemart_vendor_id` = "'.$this->virtuemart_vendor_id.'" ';
+		}
 		//}
 
 
@@ -978,7 +978,7 @@ class VirtueMartModelProduct extends VmModel {
 				if ('product_in_stock' != $k and 'product_ordered' != $k) {// Do not copy parent stock into child
 					if (strpos ($k, '_') !== 0 and empty($child->$k)) {
 						$child->$k = $v;
-					//	vmdebug($child->product_parent_id.' $child->$k',$child->$k);
+						//	vmdebug($child->product_parent_id.' $child->$k',$child->$k);
 					}
 				}
 			}
@@ -1335,6 +1335,7 @@ class VirtueMartModelProduct extends VmModel {
 						}
 
 						$this->categoryId = vRequest::getInt('virtuemart_category_id', 0);
+
 						if(empty($this->categoryId)){
 							if(!empty($menu->query['virtuemart_category_id'])){
 								$this->categoryId = $menu->query['virtuemart_category_id'];
@@ -1347,6 +1348,7 @@ class VirtueMartModelProduct extends VmModel {
 						if ($this->categoryId!==0 and in_array ($this->categoryId, $product->categories)) {
 							$product->virtuemart_category_id = $this->categoryId;
 						}
+
 						if ($this->categoryId!==0 and $this->categoryId!=$product->canonCatId){
 							if(in_array($this->categoryId,$public_cats)){
 								$product->virtuemart_category_id = $this->categoryId;
@@ -1362,7 +1364,7 @@ class VirtueMartModelProduct extends VmModel {
 						$product->virtuemart_category_id = $virtuemart_category_id;
 					} else if(!empty($product->canonCatId)) {
 						$product->virtuemart_category_id = $product->canonCatId;
-					//} else if (!$front and !empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
+						//} else if (!$front and !empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
 						//why the restriction why we should use it for BE only?
 					} else if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
 						$product->virtuemart_category_id = $product->categories[0];
@@ -1742,7 +1744,7 @@ class VirtueMartModelProduct extends VmModel {
 			/*if(strpos($orderByName,'virtuemart_product_id')!==false){
 				$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`'.$op.'"'.$product->virtuemart_product_id.'" ';
 			} else {*/
-				$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
+			$q .= $joinT . ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND p.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
 			//}
 
 
@@ -1841,15 +1843,15 @@ class VirtueMartModelProduct extends VmModel {
 		JFactory::getApplication ()->redirect ('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . vRequest::getInt ('virtuemart_category_id', 0));
 	}
 
-    /**
-     * Store a product
-     *
-     * @author Max Milbers
-     * @param $product reference
-     * @param bool $isChild Means not that the product is child or not. It means if the product should be threated as child
-     * @return bool
-     */
-    public function store (&$product) {
+	/**
+	 * Store a product
+	 *
+	 * @author Max Milbers
+	 * @param $product reference
+	 * @param bool $isChild Means not that the product is child or not. It means if the product should be threated as child
+	 * @return bool
+	 */
+	public function store (&$product) {
 
 		vRequest::vmCheckToken();
 
@@ -2082,7 +2084,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
-		
+
 		return $product_data->virtuemart_product_id;
 	}
 
@@ -2163,6 +2165,9 @@ class VirtueMartModelProduct extends VmModel {
 			vmWarn('Insufficient permission to create product');
 			return false;
 		}
+
+		//We only want to clone not inherited properties
+		//$product = $this->getProduct ($id, FALSE, FALSE, FALSE);
 		$product = $this->getProductSingle ($id, FALSE);
 		$product->field = $this->productCustomsfieldsClone ($id);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
@@ -2206,7 +2211,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		return $product->virtuemart_product_id;
 	}
-	
+
 	private function productPricesClone ($virtuemart_product_id) {
 
 		$db = JFactory::getDBO ();
@@ -2657,8 +2662,8 @@ class VirtueMartModelProduct extends VmModel {
 			if ($signInStock == '+') {
 
 				$db->setQuery ('SELECT (IFNULL(`product_in_stock`,"0")+IFNULL(`product_ordered`,"0")) < IFNULL(`low_stock_notification`,"0") '
-						. 'FROM `#__virtuemart_products` '
-						. 'WHERE `virtuemart_product_id` = ' . $id
+				. 'FROM `#__virtuemart_products` '
+				. 'WHERE `virtuemart_product_id` = ' . $id
 				);
 				if ($db->loadResult () == 1) {
 					$this->lowStockWarningEmail( $id) ;
@@ -2667,48 +2672,48 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 	}
-function lowStockWarningEmail($virtuemart_product_id) {
+	function lowStockWarningEmail($virtuemart_product_id) {
 
-	if(VmConfig::get('lstockmail',TRUE)){
-		if (!class_exists ('shopFunctionsF')) {
-			require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-		}
+		if(VmConfig::get('lstockmail',TRUE)){
+			if (!class_exists ('shopFunctionsF')) {
+				require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			}
 
-		/* Load the product details */
-		$q = "SELECT l.product_name,product_in_stock,virtuemart_vendor_id FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` l
+			/* Load the product details */
+			$q = "SELECT l.product_name,product_in_stock,virtuemart_vendor_id FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` l
 				JOIN `#__virtuemart_products` p ON p.virtuemart_product_id=l.virtuemart_product_id
 			   WHERE p.virtuemart_product_id = " . $virtuemart_product_id;
-		$db = JFactory::getDbo();
-		$db->setQuery ($q);
-		$vars = $db->loadAssoc ();
+			$db = JFactory::getDbo();
+			$db->setQuery ($q);
+			$vars = $db->loadAssoc ();
 
-		$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
-		$link = '<a href="'. $url.'">'. $vars['product_name'].'</a>';
-		$vars['subject'] = vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
-		$vars['mailbody'] =vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
+			$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
+			$link = '<a href="'. $url.'">'. $vars['product_name'].'</a>';
+			$vars['subject'] = vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
+			$vars['mailbody'] =vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
 
-		$virtuemart_vendor_id = 1;
-		if(Vmconfig::get('multix','none')!=='none'){
-			$virtuemart_vendor_id = $vars['virtuemart_vendor_id'];
+			$virtuemart_vendor_id = 1;
+			if(Vmconfig::get('multix','none')!=='none'){
+				$virtuemart_vendor_id = $vars['virtuemart_vendor_id'];
+			}
+
+			$vendorModel = VmModel::getModel ('vendor');
+			$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
+			$vendorModel->addImages ($vendor);
+			$vars['vendor'] = $vendor;
+
+			$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
+			$vars['vendorEmail'] = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
+
+			$vars['user'] =  $vendor->vendor_store_name ;
+			shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', TRUE) ;
+
+			return TRUE;
+		} else {
+			return FALSE;
 		}
 
-		$vendorModel = VmModel::getModel ('vendor');
-		$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
-		$vendorModel->addImages ($vendor);
-		$vars['vendor'] = $vendor;
-
-		$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
-		$vars['vendorEmail'] = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
-
-		$vars['user'] =  $vendor->vendor_store_name ;
-		shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', TRUE) ;
-
-		return TRUE;
-	} else {
-		return FALSE;
 	}
-
-}
 
 	public function getUncategorizedChildren ($withParent) {
 
