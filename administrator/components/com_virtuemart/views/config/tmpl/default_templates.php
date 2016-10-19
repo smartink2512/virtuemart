@@ -26,7 +26,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE',$this->jTemplateList, 'vmtemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('vmtemplate', 'default'));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE',$this->jTemplateList, 'categorytemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('categorytemplate', 'default'));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORYDESC', 'showcategory_desc', VmConfig::get('showcategory_desc', 1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY', 'showCategory', VmConfig::get('showCategory', 1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_SEARCH', 'showsearch', VmConfig::get('showsearch', 1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS', 'showproducts', VmConfig::get('showproducts', 1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS', 'show_manufacturers', VmConfig::get('show_manufacturers', 1));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CART_LAYOUT', $this->cartLayoutList, 'cartlayout', 'size=1', 'value', 'text', VmConfig::get('cartlayout', 'default'));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT', $this->categoryLayoutList, 'categorylayout', 'size=1', 'value', 'text', VmConfig::get('categorylayout', 0));
@@ -120,7 +123,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS','featured_products_rows', VmConfig::get('featured_products_rows',1),'',4,4);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN','show_topTen', VmConfig::get('show_topTen',1));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PROD_ROWS','topTen_products_rows', VmConfig::get('topTen_products_rows',1),'',4,4);
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT','show_recent', VmConfig::get('show_recent',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT','show_recent', VmConfig::get('show_recent',0));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_REC_PROD_ROWS','recent_products_rows', VmConfig::get('recent_products_rows',1),'',4,4);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST','show_latest', VmConfig::get('show_latest',1));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_LAT_PROD_ROWS','latest_products_rows', VmConfig::get('latest_products_rows',1),'',4,4);

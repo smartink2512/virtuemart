@@ -131,7 +131,24 @@ class VirtuemartViewCategory extends VmView {
 			}
 		}
 		vmdebug('my t',$t);//*/
-		$paramNames = array('itemid'=>'', 'categorylayout'=>'', 'show_store_desc'=>'0', 'showcategory_desc'=>'', 'showcategory'=>VmConfig::get('show_categories',1), 'categories_per_row'=>VmConfig::get('categories_per_row',3), 'showproducts'=>'1', 'showsearch'=>'1', 'productsublayout'=>VmConfig::get('productsublayout', 0), 'products_per_row'=>VmConfig::get('products_per_row', 3), 'featured'=>'', 'featured_rows'=>'', 'latest'=>'', 'latest_rows'=>'', 'topten'=>'', 'topten_rows'=>'', 'recent'=>'', 'recent_rows'=>'', 'discontinued'=>'', 'discontinued_rows'=>'');
+		$paramNames = array('itemid'=>'',
+				'categorylayout' => VmConfig::get('categorylayout', 0),
+				'show_store_desc' => VmConfig::get('show_store_desc',1),
+				'showcategory_desc' => VmConfig::get('showcategory_desc', 1),
+				'showcategory' => VmConfig::get('showCategory',1),
+				'categories_per_row' => VmConfig::get('categories_per_row',3),
+				'showproducts' => VmConfig::get('showproducts',1),
+				'showsearch' => VmConfig::get('showsearch',1),
+				'productsublayout' => VmConfig::get('productsublayout', 0),
+				'products_per_row' => VmConfig::get('products_per_row', 3),
+				'featured' => VmConfig::get('show_featured',1),
+				'featured_rows' => VmConfig::get('featured_products_rows',1),
+				'latest' => VmConfig::get('show_latest',1),
+				'latest_rows' => VmConfig::get('latest_products_rows',1),
+				'topten' => VmConfig::get('show_topTen',1),
+				'topten_rows' => VmConfig::get('topTen_products_rows',1),
+				'recent' => VmConfig::get('show_recent',0),
+				'recent_rows' => VmConfig::get('recent_products_rows',1));
 
 		$prefix = '';
 
