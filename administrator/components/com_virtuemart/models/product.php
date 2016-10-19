@@ -2163,7 +2163,7 @@ class VirtueMartModelProduct extends VmModel {
 			vmWarn('Insufficient permission to create product');
 			return false;
 		}
-		$product = $this->getProduct ($id, FALSE, FALSE, FALSE);
+		$product = $this->getProductSingle ($id, FALSE);
 		$product->field = $this->productCustomsfieldsClone ($id);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->mprices = $this->productPricesClone ($id);
