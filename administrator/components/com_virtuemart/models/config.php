@@ -645,6 +645,32 @@ class VirtueMartModelConfig extends VmModel {
 		}
 	}
 
+	static public function storeConfig($params){
+
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart')){
+			$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
+			if($installed){
+
+				VirtueMartModelConfig::installVMconfigTable();
+
+				$confData = array();
+				$confData['virtuemart_config_id'] = 1;
+
+				$confData['config'] = $params;
+				VmTable::addIncludePath(VMPATH_ADMIN.DS.'tables','Table');
+				JFactory::getDbo();
+				$confTable = VmTable::getInstance('configs', 'Table', array());
+
+				if (!$confTable->bindChecknStore($confData)) {
+					vmError('storeConfig was not able to store config');
+				}
+				return $confData['config'];
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Dangerous tools get disabled after execution an operation which needed that rights.
 	 * This is the function actually doing it.
