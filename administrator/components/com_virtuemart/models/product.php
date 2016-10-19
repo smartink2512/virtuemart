@@ -1314,6 +1314,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if (!empty($product->categories) and is_array ($product->categories)){
 				if ($front) {
+
 					if (!class_exists ('shopFunctionsF')) {
 						require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 					}
@@ -1324,18 +1325,25 @@ class VirtueMartModelProduct extends VmModel {
 						static $menu = null;
 						if(!isset($menu)){
 							$app = JFactory::getApplication();
-							$menus	= $app->getMenu();
-							$menu = $menus->getActive();
+							$menus	= $app->getMenu('site');
+							$this->Itemid = vRequest::getInt('Itemid',false);
+							if ($this->Itemid ) {
+								$menu = $menus->getItem($this->Itemid);
+							} else {
+								$menu = $menus->getActive();
+							}
 						}
 
-						$this->categoryId = vRequest::getInt('virtuemart_category_id', -1);
-						if($this->categoryId === -1 and !empty($menu->query['virtuemart_category_id'])){
-							$this->categoryId = $menu->query['virtuemart_category_id'];
-							//vRequest::setVar('virtuemart_category_id',$this->categoryId);
-						} else if ( $this->categoryId === -1){
-							$this->categoryId = ShopFunctionsF::getLastVisitedCategoryId();
+						$this->categoryId = vRequest::getInt('virtuemart_category_id', 0);
+						if(empty($this->categoryId)){
+							if(!empty($menu->query['virtuemart_category_id'])){
+								$this->categoryId = $menu->query['virtuemart_category_id'];
+							} else {
+								$this->categoryId = ShopFunctionsF::getLastVisitedCategoryId();
+							}
 						}
-												//$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
+
+						//$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
 						if ($this->categoryId!==0 and in_array ($this->categoryId, $product->categories)) {
 							$product->virtuemart_category_id = $this->categoryId;
 						}
