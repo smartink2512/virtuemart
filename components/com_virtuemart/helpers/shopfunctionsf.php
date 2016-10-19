@@ -608,6 +608,21 @@ class shopFunctionsF {
 		return VmTemplate::setVmTemplate($view, $catTpl, $prodTpl, $catLayout, $prodLayout);
 	}
 
+	static public function loadOrderLanguages($language = false){
+
+		VmConfig::loadJLang('com_virtuemart',true);
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		if($language) {
+			VmConfig::loadJLang('com_virtuemart', true, $language);
+			VmConfig::loadJLang('com_virtuemart_shoppers', TRUE, $language);
+			VmConfig::loadJLang('com_virtuemart_orders', TRUE, $language);
+			vmdebug('With order language ', $language);
+			vmTrace('loadOrderLanguages');
+		}
+
+	}
+
 	/**
 	 * With this function you can use a view to sent it by email.
 	 * Just use a task in a controller
@@ -621,23 +636,12 @@ class shopFunctionsF {
 
 		VmConfig::ensureMemoryLimit(96);
 
-		VmConfig::loadJLang('com_virtuemart',true);
-
-		//should be removed here, function is abstract
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		if($noVendorMail and !empty($view->orderDetails) and !empty($view->orderDetails['details']['BT']->order_language)) {
-			VmConfig::loadJLang('com_virtuemart',true,$view->orderDetails['details']['BT']->order_language);
-			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$view->orderDetails['details']['BT']->order_language);
-			VmConfig::loadJLang('com_virtuemart_orders',TRUE,$view->orderDetails['details']['BT']->order_language);
-			vmdebug('With order language ',$view->orderDetails['details']['BT']->order_language);
-			vmTrace('sendVmMail');
+			self::loadOrderLanguages($view->orderDetails['details']['BT']->order_language);
+		} else {
+			self::loadOrderLanguages();
 		}
-		else {
-			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
-		}
-		//until here
+
 
 		ob_start();
 

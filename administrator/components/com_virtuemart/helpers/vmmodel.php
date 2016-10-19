@@ -21,7 +21,7 @@ defined('_JEXEC') or die();
 
 define('USE_SQL_CALC_FOUND_ROWS' , true);
 
-if(!class_exists('vObject')) require(VMPATH_ADMIN .DS. 'helpers' .DS. 'vobject.php');
+if(!class_exists('vObject')) require(VMPATH_ADMIN .'/helpers/vobject.php');
 
 class VmModel extends vObject{
 
@@ -530,7 +530,7 @@ class VmModel extends vObject{
 		if(empty(self::$_vmmodels[strtolower($className)])){
 			if( !class_exists($className) ){
 
-				$modelPath = VMPATH_ADMIN.DS."models".DS.$name.".php";
+				$modelPath = VMPATH_ADMIN .'/models/'.$name.'.php';
 
 				if( file_exists($modelPath) ){
 					require( $modelPath );
@@ -709,7 +709,7 @@ class VmModel extends vObject{
 	 */
 	public function getPagination($perRow = 5) {
 
-		if(!class_exists('VmPagination')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmpagination.php');
+		if(!class_exists('VmPagination')) require(VMPATH_ADMIN .'/helpers/vmpagination.php');
 		if(empty($this->_limit) ){
 			$this->setPaginationLimits();
 		}
@@ -908,7 +908,7 @@ class VmModel extends vObject{
 
 			//just an idea
 			if(isset($this->_cache[$this->_id]->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
-				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN.DS.'models'.DS.'vendor.php');
+				if(!class_exists('VirtueMartModelVendor')) require(VMPATH_ADMIN .'/models/vendor.php');
 				$this->_cache[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
 		}

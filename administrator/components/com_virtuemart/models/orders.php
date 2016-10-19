@@ -250,15 +250,21 @@ class VirtueMartModelOrders extends VmModel {
 			}
 		}
 
-
+		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if($userlang){
 			if(!empty($order['details']['BT']->order_language)) {
 				$olang = $order['details']['BT']->order_language;
-				//VmConfig::setdbLanguageTag();//Todo set language tag to get products in the correct language.
+				shopFunctionsF::loadOrderLanguages($olang);
+
+				/*////VmConfig::setdbLanguageTag();//Todo set language tag to get products in the correct language.
 				VmConfig::loadJLang('com_virtuemart',true, $olang);
 				VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang);
-				VmConfig::loadJLang('com_virtuemart_orders',true, $olang);
+				VmConfig::loadJLang('com_virtuemart_orders',true, $olang);*/
+			} else {
+				shopFunctionsF::loadOrderLanguages();
 			}
+		} else {
+			shopFunctionsF::loadOrderLanguages();
 		}
 
 		// Get the order history
@@ -1746,17 +1752,10 @@ class VirtueMartModelOrders extends VmModel {
 		$vars['url'] = 'url';
 		if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 
-
 		if(!empty($vars['orderDetails']['details']) and !empty($vars['orderDetails']['details']['BT']->order_language)) {
-			VmConfig::loadJLang('com_virtuemart',true,$vars['orderDetails']['details']['BT']->order_language);
-			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$vars['orderDetails']['details']['BT']->order_language);
-			VmConfig::loadJLang('com_virtuemart_orders',TRUE,$vars['orderDetails']['details']['BT']->order_language);
-			vmdebug('With order language ',$vars['orderDetails']['details']['BT']->order_language);
-			vmTrace('notifyCustomer');
-		}
-		else {
-			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+			shopFunctionsF::loadOrderLanguages($vars['orderDetails']['details']['BT']->order_language);
+		} else {
+			shopFunctionsF::loadOrderLanguages();
 		}
 
 		$virtuemart_vendor_id = $order['details']['BT']->virtuemart_vendor_id;
