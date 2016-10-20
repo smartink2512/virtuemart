@@ -109,7 +109,7 @@
             <field name="discontinued_rows" type="text"
                    label="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS"
                    extension="com_virtuemart"
-                   description="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS_TIP" />
+                   description="COM_VIRTUEMART_ADMIN_CFG_PER_ROW_TIP" />
 
             <field name="latest" type="list"
                    label="COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST"
@@ -239,7 +239,7 @@
             <field name="stf_discontinued_rows" type="text"
                    label="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS"
                    extension="com_virtuemart"
-                   description="COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS_TIP" />
+                   description="COM_VIRTUEMART_ADMIN_CFG_PER_ROW_TIP" />
 
             <field name="stf_latest" type="list"
                    label="COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST"
