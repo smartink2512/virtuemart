@@ -41,6 +41,9 @@ AdminUIHelper::startAdminArea($this);
 				<?php echo vmText::_('COM_VIRTUEMART_ORDER_STATUS_STOCK_HANDLE'); ?>
 			</th>
 			<th>
+				<?php echo vmText::_('COM_VIRTUEMART_ORDER_STATUS_COLOR'); ?>
+			</th>
+			<th>
 				<?php echo vmText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 			</th>
 			<th>
@@ -92,6 +95,15 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 				<td align="left">
 					<?php echo  vmText::_($this->stockHandelList[$row->order_stock_handle]); ?>
+				</td>
+				<?php
+				$colorStyle = '';
+				if ($row->order_status_color) {
+					$colorStyle = 'style="background-color:' . $row->order_status_color.'"';
+				}
+				?>
+				<td align="left" <?php echo $colorStyle ?>>
+					<?php echo vmText::_($row->order_status_color); ?>
 				</td>
 				<td align="left">
 					<?php echo vmText::_($row->order_status_description); ?>

@@ -520,10 +520,44 @@ class VmHtml{
 	}
 
 	/**
+	 * @author Joomla
+	 */
+	function color($name, $value) {
+
+		//$class     = $this->class;
+		//$required  = $this->required ? ' required aria-required="true"' : '';
+		//$disabled  = $this->disabled ? ' disabled' : '';
+		//$autofocus = $this->autofocus ? ' autofocus' : '';
+
+		$color = strtolower($value);
+
+		if (!$color || in_array($color, array('none', 'transparent'))) {
+			$color = 'none';
+		} elseif ($color['0'] != '#') {
+			$color = '#' . $color;
+		}
+
+		JHtml::_('behavior.simplecolorpicker');
+		$class = ' class="' . trim('minicolors') . '"';
+
+		// Including fallback code for HTML5 non supported browsers.
+		JHtml::_('jquery.framework');
+		JHtml::_('script', 'system/html5fallback.js', false, true);
+
+		JHtml::_('behavior.colorpicker');
+
+		return '<input type="text" name="' . $name . '" ' . ' value="'
+		. htmlspecialchars($color, ENT_COMPAT, 'UTF-8') . '"' . $class
+		. '/>';
+
+	}
+
+
+
+	/**
 	 * Creates a Radio Input List
 	 *
-	 * @param string $name
-	 * @param string $value default value
+	 * @param string $name	 * @param string $value default value
 	 * @param string $arr
 	 * @param string $extra
 	 * @return string

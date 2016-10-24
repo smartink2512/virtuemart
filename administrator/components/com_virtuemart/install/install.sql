@@ -670,6 +670,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orderstates` (
   `virtuemart_vendor_id` int(1) UNSIGNED NOT NULL DEFAULT '1',
   `order_status_code` char(1) NOT NULL DEFAULT '',
   `order_status_name` varchar(64),
+  `order_status_color` varchar(64),
   `order_status_description` varchar(20000),
   `order_stock_handle` char(1) NOT NULL DEFAULT 'A',
   `ordering` int(1) NOT NULL DEFAULT '0',

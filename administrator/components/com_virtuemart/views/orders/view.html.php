@@ -192,6 +192,12 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
+			$orderStatesColors=array();
+			foreach($orderStates as $orderState) {
+				$orderStatesColors[$orderState->order_status_code]=$orderState->order_status_color;
+			}
+			$this->assignRef('orderStatesColors', $orderStatesColors);
+
 			$this->lists['vendors']='';
 			if($this->showVendors()){
 				$this->lists['vendors'] = Shopfunctions::renderVendorList(VmAccess::getVendorId());

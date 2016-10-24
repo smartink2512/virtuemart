@@ -38,6 +38,8 @@ class TableOrderstates extends VmTable {
 	/** @var boolean */
 	/** @var char Order status Code */
 	var $order_status_code			= '';
+	/** @var char Order status Color */
+	var $order_status_color			= '';
 	/** @var string Order status name*/
 	var $order_status_name			= null;
 	/** @var string Order status description */

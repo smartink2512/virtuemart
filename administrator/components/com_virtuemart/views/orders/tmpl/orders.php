@@ -59,6 +59,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 			<th width="26%"><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
 			<th width="18%"><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
 			<th width="18%"><?php echo $this->sort ('payment_method', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')  ?></th>
+			<th width="18%"><?php echo $this->sort('shipment_method', 'COM_VIRTUEMART_ORDER_PRINT_SHIPMENT_LBL') ?></th>
 			<th style="min-width:110px;width:5%;"><?php echo vmText::_ ('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
 			<th class="admin-dates"><?php echo $this->sort ('created_on', 'COM_VIRTUEMART_ORDER_CDATE')  ?></th>
 			<th class="admin-dates"><?php echo $this->sort ('modified_on', 'COM_VIRTUEMART_ORDER_LIST_MDATE')  ?></th>
@@ -75,7 +76,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 			$i = 0;
 			$k = 0;
 			$keyword = vRequest::getCmd ('keyword');
-;
+
 			foreach ($this->orderslist as $key => $order) {
 				$checked = JHtml::_ ('grid.id', $i, $order->virtuemart_order_id);
 				?>
@@ -105,6 +106,8 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				</td>
 				<!-- Payment method -->
 				<td><?php echo $order->payment_method; ?></td>
+				<!-- Shipment method -->
+				<td><?php echo $order->shipment_method; ?></td>
 				<!-- Print view -->
 				<?php
 					$this->createPrintLinks($order,$print_link,$deliverynote_link,$invoice_link);
@@ -115,11 +118,16 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				<!-- Last modified -->
 				<td><?php echo vmJsApi::date ($order->modified_on, 'LC2', TRUE); ?></td>
 				<!-- Status -->
-				<td style="position:relative;">
+				<?php
+				$colorStyle = '';
+				if ($this->orderStatesColors[$order->order_status]) {
+					$colorStyle = "background-color:" . $this->orderStatesColors[$order->order_status];
+				}
+				?>
+				<td style="position:relative;<?php echo $colorStyle ?>">
 					<?php echo JHtml::_ ('select.genericlist', $this->orderstatuses, "orders[" . $order->virtuemart_order_id . "][order_status]", 'class="orderstatus_select"', 'order_status_code', 'order_status_name', $order->order_status, 'order_status' . $i, TRUE); ?>
 					<input type="hidden" name="orders[<?php echo $order->virtuemart_order_id; ?>][current_order_status]" value="<?php echo $order->order_status; ?>"/>
-					<input type="hidden" name="orders[<?php echo $order->virtuemart_order_id; ?>][coupon_code]" value="<?php echo $order->coupon_code; ?>"/>
-					<br/>
+					<input type="hidden" name="orders[<?php echo $order->virtuemart_order_id; ?>][coupon_code]" value="<?php echo $order->coupon_code; ?>"/>					<br/>
 					<textarea class="element-hidden vm-order_comment vm-showable" name="orders[<?php echo $order->virtuemart_order_id; ?>][comments]" cols="5" rows="5"></textarea>
 					<?php echo JHtml::_ ('link', '#', vmText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 				</td>

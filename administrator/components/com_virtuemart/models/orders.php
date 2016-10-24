@@ -39,7 +39,7 @@ class VirtueMartModelOrders extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('orders');
-		$this->addvalidOrderingFieldName(array('order_name','order_email','payment_method','virtuemart_order_id' ) );
+		$this->addvalidOrderingFieldName(array('order_name','order_email','payment_method','shipment_method','virtuemart_order_id' ) );
 		$this->populateState();
 	}
 
@@ -374,6 +374,7 @@ class VirtueMartModelOrders extends VmModel {
 		$select = " o.*, ".$concatStr." AS order_name "
             .',u.email as order_email,
             pm.payment_name AS payment_method,
+            sm.shipment_name AS shipment_method,
             u.company AS company,
             u.city AS city,
             u.zip AS zip,
@@ -475,7 +476,9 @@ class VirtueMartModelOrders extends VmModel {
 				LEFT JOIN #__virtuemart_order_userinfos as st
 				ON st.virtuemart_order_id = o.virtuemart_order_id AND st.address_type="ST"
 				LEFT JOIN #__virtuemart_paymentmethods_'.VmConfig::$vmlang.' as pm
-				ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id';
+				ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id
+				LEFT JOIN #__virtuemart_shipmentmethods_'.VmConfig::$vmlang.' as sm
+				ON o.virtuemart_shipmentmethod_id = sm.virtuemart_shipmentmethod_id';
 	}
 
 
