@@ -847,6 +847,9 @@ jQuery().ready(function($) {
 			'tpeweb.paybox.com', //serveur primaire
 			'tpeweb1.paybox.com' //serveur secondaire
 		);
+		static $c = null;
+		if(isset($c)) return $c;
+
 		foreach ($servers as $server) {
 			$doc = new DOMDocument();
 			$doc->loadHTMLFile('https://' . $server . '/load.html');
@@ -857,10 +860,11 @@ jQuery().ready(function($) {
 				$server_status = $element->textContent;
 			}
 			if ($server_status == "OK") {
+				$c = $server;
 				return $server;
 			}
 		}
-
+		$c = FALSE;
 		$this->plugin->debugLog('getPayboxServerAvailable : no server are available' . var_export($servers, true), 'error');
 		return FALSE;
 	}
