@@ -143,7 +143,7 @@ class VirtuemartViewCategory extends VmView {
 				'products_per_row' => VmConfig::get('products_per_row', 3),
 				'featured' => VmConfig::get('show_featured',1),
 				'featured_rows' => VmConfig::get('featured_products_rows',1),
-				'discontinued' => VmConfig::get('show_discontinued',1),
+				'discontinued' => VmConfig::get('show_discontinued',0),
 				'discontinued_rows' => VmConfig::get('discontinued_products_rows',1),
 				'latest' => VmConfig::get('show_latest',1),
 				'latest_rows' => VmConfig::get('latest_products_rows',1),

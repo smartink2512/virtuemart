@@ -56,8 +56,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 		<tr>
 			<th class="admin-checkbox"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)"/></th>
 			<th width="8%"><?php echo $this->sort ('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
-			<th width="26%"><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
-			<th width="18%"><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
+			<th width="26%"><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME').' / '; echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
 			<th width="18%"><?php echo $this->sort ('payment_method', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')  ?></th>
 			<th width="18%"><?php echo $this->sort('shipment_method', 'COM_VIRTUEMART_ORDER_PRINT_SHIPMENT_LBL') ?></th>
 			<th style="min-width:110px;width:5%;"><?php echo vmText::_ ('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
@@ -79,6 +78,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 
 			foreach ($this->orderslist as $key => $order) {
 				$checked = JHtml::_ ('grid.id', $i, $order->virtuemart_order_id);
+				vmdebug('My order',$order);
 				?>
 			<tr class="row<?php echo $k; ?>">
 				<!-- Checkbox -->
@@ -87,8 +87,10 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				<?php
 				$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order->virtuemart_order_id;
 				?>
-				<td><?php echo JHtml::_ ('link', JRoute::_ ($link, FALSE), $order->order_number, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order->order_number)); ?></td>
-
+				<td><?php echo JHtml::_ ('link', JRoute::_ ($link, FALSE), $order->order_number, array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order->order_number));
+				echo '<br>';
+				echo $order->invoiceNumber; ?>
+				</td>
 				<td>
 					<?php
 					if ($order->virtuemart_user_id) {
@@ -97,13 +99,11 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 					} else {
 						echo $order->order_name;
 					}
-					?>
-				</td>
-				<td>
-					<?php
+					echo '<br>';
 					echo $order->order_email;
 					?>
 				</td>
+
 				<!-- Payment method -->
 				<td><?php echo $order->payment_method; ?></td>
 				<!-- Shipment method -->

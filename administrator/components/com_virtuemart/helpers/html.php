@@ -522,12 +522,7 @@ class VmHtml{
 	/**
 	 * @author Joomla
 	 */
-	function color($name, $value) {
-
-		//$class     = $this->class;
-		//$required  = $this->required ? ' required aria-required="true"' : '';
-		//$disabled  = $this->disabled ? ' disabled' : '';
-		//$autofocus = $this->autofocus ? ' autofocus' : '';
+	static function color($name, $value) {
 
 		$color = strtolower($value);
 
@@ -537,12 +532,15 @@ class VmHtml{
 			$color = '#' . $color;
 		}
 
-		JHtml::_('behavior.simplecolorpicker');
-		$class = ' class="' . trim('minicolors') . '"';
-
 		// Including fallback code for HTML5 non supported browsers.
-		JHtml::_('jquery.framework');
-		JHtml::_('script', 'system/html5fallback.js', false, true);
+		vmJsApi::jQuery();
+
+		if (JVM_VERSION > 1) {
+			$class = ' class="minicolors"';
+		} else {
+			$class = ' class="input-colorpicker"';
+			JHtml::_('script', 'system/html5fallback.js', false, true);
+		}
 
 		JHtml::_('behavior.colorpicker');
 
