@@ -36,6 +36,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED','show_featured', VmConfig::get('show_featured',1));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS','featured_products_rows', VmConfig::get('featured_products_rows',1),'',4,4);
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED','show_discontinued', VmConfig::get('show_discontinued',1));
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS','discontinued_products_rows', VmConfig::get('discontinued_products_rows',1),'',4,4);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN','show_topTen', VmConfig::get('show_topTen',1));
 		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PROD_ROWS','topTen_products_rows', VmConfig::get('topTen_products_rows',1),'',4,4);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT','show_recent', VmConfig::get('show_recent',0));
