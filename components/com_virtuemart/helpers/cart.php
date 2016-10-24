@@ -88,7 +88,7 @@ class VirtueMartCart {
 	var $useSSL = 1;
 
 	public function __construct() {
-		$this->useSSL = VmConfig::get('useSSL',0);
+		$this->useSSL = vmURI::useSSL();
 		$this->useXHTML = false;
 		$this->cartProductsData = array();
 		$this->layout = VmConfig::get('cartlayout','default');
@@ -1571,7 +1571,8 @@ class VirtueMartCart {
 						continue;
 					}
 					$productdata['quantity'] = (int)$productdata['quantity'];
-					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,true,false,$productdata['quantity']);
+					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,TRUE,TRUE,$productdata['quantity']);
+
 					if(empty($productTemp->virtuemart_product_id)){
 						vmError('prepareCartData virtuemart_product_id is empty','The product is no longer available');
 						unset($this->cartProductsData[$k]);

@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <h3><?php echo vmText::_ ('COM_VIRTUEMART_CART_CHANGE_SHOPPER'); ?></h3>
 
-<form action="<?php echo JRoute::_ ('index.php'); ?>" method="post" class="inline">
+<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart'); ?>" method="post" class="inline">
 	<table cellspacing="0" cellpadding="0" border="0" style="border:0px !important;">
 		<tr style="border:0px;">
 			<td  style="border:0px;">

@@ -495,6 +495,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$cache = JFactory::getCache();
 		$cache->clean('com_virtuemart_cats');
+		$cache->clean('com_virtuemart_cat_childs');
 		$cache->clean('mod_virtuemart_product');
 		$cache->clean('mod_virtuemart_category');
 		$cache->clean('com_virtuemart_rss');

@@ -41,7 +41,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			if (!class_exists('calculationHelper'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'calculationh.php');
 		}
-		$this->useSSL = VmConfig::get('useSSL', 0);
+		$this->useSSL = vmURI::useSSL();	//VmConfig::get('useSSL', 0);
 		$this->useXHTML = false;
 
 	}
@@ -412,6 +412,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$current = JFactory::getUser( );;
 		$manager = vmAccess::manager('user');
 		if(!$manager){
+			vmdebug('Not manager ',$id,$current);
 			$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 			$app->redirect($red);
 			return false;
@@ -421,7 +422,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		if($manager and !empty($userID) and $userID!=$current->id ){
 			if($userID == $id){
 
-			} else if(vmAccess::manager('user',$userID)){
+			} else if(vmAccess::manager('core',$userID)){
+				vmdebug('Manager want to change to  '.$userID,$id,$current);
 			//if($newUser->authorise('core.admin', 'com_virtuemart') or $newUser->authorise('vm.user', 'com_virtuemart')){
 				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
 				$app->redirect($red);
@@ -443,13 +445,20 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
 			$session->set('vmAdminID', vmCrypt::encrypt($current->id));
 		}
-		$newUser = JFactory::getUser($userID);
-		$session->set('user', $newUser);
+
+		if(!empty($userID)){
+			$newUser = JFactory::getUser($userID);
+			$session->set('user', $newUser);
+		} else {
+			$newUser = new stdClass();
+			$newUser->email = '';
+		}
+
 
 		//update cart data
 		$cart = VirtueMartCart::getCart();
 		$usermodel = VmModel::getModel('user');
-		$data = $usermodel->getUserAddressList(vRequest::getCmd('userID'), 'BT');
+		$data = $usermodel->getUserAddressList($userID, 'BT');
 
 		if(isset($data[0])){
 			foreach($data[0] as $k => $v) {
@@ -468,7 +477,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')');
 
 		if(empty($userID)){
-			$red = JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT');
+			$red = JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT&new=1');
 			$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY','');
 		}
 

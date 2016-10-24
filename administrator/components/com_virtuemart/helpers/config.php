@@ -1419,6 +1419,16 @@ class vmURI{
 		//return $_filter->clean($JURIInstance->toString($parts));
 		return vRequest::filterUrl($JURIInstance->toString($parts));
 	}
+
+	static function useSSL (){
+		static $useSSL = null;
+
+		if(isset($useSSL)) return $useSSL;
+
+		$jconf = JFactory::getConfig();
+		$useSSL = VmConfig::get('useSSL', 0) or $jconf->get('force_ssl')=='2';
+		return $useSSL;
+	}
 }
 
 

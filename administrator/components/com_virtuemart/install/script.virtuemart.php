@@ -473,12 +473,74 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							$m = 'Updating vm category menu failed '.$q;
 							vmError($m, $m);
 						} else {
-							vmdebug('Updated menu $menu '.$menu['id'],$menu['link'],$param);
+							vmdebug('Updated menu $menu '.$menu['id'],$linkOrig,$menu['link'],$param);
 						}
 					} else {
 						vmdebug('Menu dont need update '.$menu['id']);
 					}
 
+				}
+
+				$q = 'SELECT * FROM #__menu WHERE component_id = "'.$jId.'" AND client_id="0" and link like "%view=virtuemart%" ';
+				$this->_db->setQuery($q);
+				$menues = $this->_db->loadAssocList();
+
+				foreach($menues as $menu){
+					$linkOrig = $menu['link'];
+					$menu['link'] = 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=0&virtuemart_manufacturer_id=0';
+
+					$registry = new JRegistry;
+					$registry->loadString($menu['params']);
+
+					if(strpos($linkOrig,'productsublayout')){
+						vmdebug('Found productsublayout in the link');
+						$productsublayout = str_replace('index.php?option=com_virtuemart&view=virtuemart&productsublayout=','',$linkOrig);
+					} else {
+						$productsublayout = Vmconfig::get('productsublayout',0 );
+					}
+
+					$paramNames = array(
+					'categorylayout' => VmConfig::get('vmlayout', 0),
+					'show_store_desc' => VmConfig::get('show_store_desc',1),
+					'showcategory_desc' => VmConfig::get('showcategory_desc', 1),
+					'showcategory' => VmConfig::get('show_categories',1),
+					'categories_per_row' => VmConfig::get('homepage_categories_per_row',3),
+					'showproducts' => '0',
+					'showsearch' => '0',
+					'productsublayout' => $productsublayout,
+					'products_per_row' => VmConfig::get('homepage_products_per_row', 3),
+					'featured' => VmConfig::get('show_featured',1),
+					'featured_rows' => VmConfig::get('featured_products_rows',1),
+					'discontinued' => VmConfig::get('show_discontinued',1),
+					'discontinued_rows' => VmConfig::get('discontinued_products_rows',1),
+					'latest' => VmConfig::get('show_latest',1),
+					'latest_rows' => VmConfig::get('latest_products_rows',1),
+					'topten' => VmConfig::get('show_topTen',1),
+					'topten_rows' => VmConfig::get('topTen_products_rows',1),
+					'recent' => VmConfig::get('show_recent',0),
+					'recent_rows' => VmConfig::get('recent_products_rows',1));
+
+					foreach($paramNames as $key => $default){
+						$registry->set($key, $default);
+					}
+
+					$params = (string)$registry;
+
+					if($linkOrig!=$menu['link'] and $menu['params']!=$params){
+						$q = 'UPDATE #__menu' .
+						' SET link = "'.$menu['link'].'", params = "'.$this->_db->escape($params).'"'.
+						' WHERE id = '.(int) $menu['id'];
+						$this->_db->setQuery( $q);
+
+						if (!$this->_db->query()) {
+							$m = 'Updating vm category menu failed '.$q;
+							vmError($m, $m);
+						} else {
+							vmdebug('Updated menu $menu '.$menu['id'],$menu['link'],$param);
+						}
+					} else {
+						vmdebug('Menu dont need update '.$menu['id']);
+					}
 				}
 			}
 		}

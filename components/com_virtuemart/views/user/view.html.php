@@ -51,7 +51,7 @@ class VirtuemartViewUser extends VmView {
      */
     function display($tpl = null) {
 
-		$this->useSSL = VmConfig::get('useSSL', 0);
+		$this->useSSL = vmURI::useSSL();
 		$this->useXHTML = false;
 
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
@@ -382,7 +382,7 @@ class VirtuemartViewUser extends VmView {
 
     public function renderMailLayout($doVendor, $recipient) {
 
-		$this->useSSL = VmConfig::get('useSSL', 0);
+		$this->useSSL = vmURI::useSSL();
 		$this->useXHTML = true;
 
 		$userFieldsModel = VmModel::getModel('UserFields');

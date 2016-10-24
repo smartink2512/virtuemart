@@ -780,10 +780,6 @@ class vmrouterHelper {
 			if(!$this->Itemid){
 
 				$jLangTag = $this->Jlang->getTag();
-				/*$fallback ='';
-				if($jLangTag!=VmConfig::$vmlangTag){
-					$fallback= 'or language = "'.$jLangTag.'"';
-				}*/
 				$db = JFactory::getDbo();
 				$q = 'SELECT `id` FROM `#__menu` WHERE `home`="1" and (language="*" or language = "'.$jLangTag.'" ) ORDER BY `language` DESC';
 				$db->setQuery($q);
@@ -1203,6 +1199,15 @@ class vmrouterHelper {
 									$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
 								}
 							}
+						} else {
+							if(!isset($this->menu[$dbKey])){
+								$this->menu[$dbKey] = $item->id;
+							} else {
+								//vmdebug('This menu item exists two times',$item,$this->template->id);
+								if($item->template_style_id==$this->template->id){
+									$this->menu[$dbKey] = $item->id;
+								}
+							}
 						}
 					}
 
@@ -1249,7 +1254,7 @@ class vmrouterHelper {
 		}
 
 		$mCache[$h.$this->Itemid] = $this->menu;
-		vmdebug('my mneu '.$this->Itemid,$this->menu);
+		vmdebug('my mneu '.$h.$this->Itemid,$this->menu);
 
 	}
 

@@ -46,47 +46,35 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	<fieldset>
 	    <legend><?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DETAILS'); ?></legend>
 	    <table class="admintable">
+			<?php
+			echo VmHTML::row('input', 'COM_VIRTUEMART_SHOPPERGROUP_NAME', 'shopper_group_name', $this->shoppergroup->shopper_group_name,'class="required"');
+			echo VmHTML::row('booleanlist', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->shoppergroup->published);
+			/*if($this->showVendors() ){
+				echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
+			}*/
+			if ($this->shoppergroup->default == 1) {
+				?>
+				<tr>
+					<td width="110" class="key">
+					<label for="default">
+						<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
+						<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>
+						</span>
+					</label>
+					</td>
+					<td>
+						<?php echo JHtml::_('image','menu/icon-16-default.png', vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true); ?>
+					</td>
+				</tr>
+		    <?php }
+			echo VmHTML::row('textarea', 'COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION', 'shopper_group_desc', $this->shoppergroup->shopper_group_desc);
 
-		<?php echo VmHTML::row('input', 'COM_VIRTUEMART_SHOPPERGROUP_NAME', 'shopper_group_name', $this->shoppergroup->shopper_group_name,'class="required"'); ?>
-		<?php echo VmHTML::row('booleanlist', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->shoppergroup->published); ?>
-		<?php /*
-		  <tr>
-		  <td width="110" class="key">
-		  <label for="virtuemart_vendor_id">
-		  <?php echo vmText::_('COM_VIRTUEMART_VENDOR'); ?>
-		  </label>
-		  </td>
-		  <td>
-		  <?php echo $this->vendorList; ?>
-		  </td>
-		  </tr>
-		 *
-		 */
-		?>
-		<?php
-		if ($this->shoppergroup->default == 1) {
-		    ?>
-    		<tr>
-    		    <td width="110" class="key">
-    			<label for="default">
-    			    <span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
-				    <?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>
-    			    </span>
-    			</label>
-    		    </td>
-    		    <td>
-					<?php echo JHtml::_('image','menu/icon-16-default.png', vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true); ?>
-    		    </td>
-    		</tr>
-		    <?php } ?>
-		<?php echo VmHTML::row('textarea', 'COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION', 'shopper_group_desc', $this->shoppergroup->shopper_group_desc); ?>
-
-		<?php if ($this->shoppergroup->default < 1) {
-			echo VmHTML::row('checkbox', 'COM_VIRTUEMART_SHOPPERGROUP_ADDITIONAL', 'sgrp_additional', $this->shoppergroup->sgrp_additional);
-		} else {
-			echo '<tr></tr>';
-		}
-		?>
+			if ($this->shoppergroup->default < 1) {
+				echo VmHTML::row('checkbox', 'COM_VIRTUEMART_SHOPPERGROUP_ADDITIONAL', 'sgrp_additional', $this->shoppergroup->sgrp_additional);
+			} else {
+				echo '<tr></tr>';
+			}
+			?>
 	    </table>
 	</fieldset>
 
@@ -94,28 +82,12 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	    <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend>
 
 	    <table class="admintable">
-		<tr>
-		    <td>
-<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY'); ?>
-		    </td>
-		    <td>
-<?php
-			     $attributes='id="custom_price_display"';
-			    echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display,1,0,$attributes) ?>
-		    </td>
-		</tr>
+			<?php
+			$attributes='id="custom_price_display"';
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY', 'custom_price_display', $this->shoppergroup->custom_price_display,1,0,$attributes ); ?>
 		</table>
 		<table class="admintable" id="show_hide_prices">
-		<tr>
-		    <td>
-			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
-<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES'); ?>
-		    </td>
-		    <td>
-<?php echo VmHTML::checkbox('show_prices', $this->shoppergroup->show_prices); ?>
-		    </td>
-		</tr>
-
+<?php	echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES', 'show_prices', $this->shoppergroup->show_prices ); ?>
 		    <tr>
 			<th></th>
 			<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>

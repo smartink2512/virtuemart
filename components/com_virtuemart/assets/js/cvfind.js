@@ -4,7 +4,7 @@
  * @package	VirtueMart
  * @subpackage Javascript Library
  * @author Max Milbers
- * @copyright Copyright (c) 2014 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2014-16 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 

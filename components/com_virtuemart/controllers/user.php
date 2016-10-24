@@ -33,7 +33,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	public function __construct()
 	{
 		parent::__construct();
-		$this->useSSL = VmConfig::get('useSSL',0);
+		$this->useSSL = vmURI::useSSL();
 		$this->useXHTML = false;
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	}
@@ -71,8 +71,37 @@ class VirtueMartControllerUser extends JControllerLegacy
 		if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = true;
-		$cart->setCartIntoSession();
 
+		$new = vRequest::getInt('new',false);
+		if($new){
+			$sess = JFactory::getSession();
+			$vmAdminId = $sess->get('vmAdminID','');
+			if(!empty($vmAdminId)){
+				if(!class_exists('vmCrypt'))
+					require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcrypt.php');
+				$adminId = vmCrypt::decrypt($vmAdminId);
+				vmdebug('Shoppergroup switcher activ',$vmAdminId,$adminId);
+				if($adminId){
+					if(vmAccess::manager('user',$adminId)) {
+
+						vmdebug( 'Lets register a new user by our admin' );
+						$newUser = JFactory::getUser( 0 );
+						$sess->set( 'user', $newUser );
+
+						//update cart data
+						$cart = VirtueMartCart::getCart();
+						$cart->BT = 0;
+						$cart->ST = 0;
+						$cart->STsameAsBT = 1;
+						$cart->selected_shipto = 0;
+						$cart->virtuemart_shipmentmethod_id = 0;
+						//$cart->saveAddressInCart($data, 'BT');
+					}
+				}
+			}
+		}
+
+		$cart->setCartIntoSession();
 		// Display it all
 		$view->display();
 

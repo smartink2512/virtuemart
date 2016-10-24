@@ -35,7 +35,7 @@ class VmView extends JViewLegacy{
 		if($this->isMail or $this->isPdf){
 			$this->writeJs = false;
 		}
-		$this->useSSL = VmConfig::get('useSSL', 0);
+		$this->useSSL = vmURI::useSSL();
 
 		$result = $this->loadTemplate($tpl);
 		if ($result instanceof Exception) {
@@ -135,13 +135,15 @@ class VmView extends JViewLegacy{
 		$this->continue_link = JURI::root() .'index.php?option=com_virtuemart&view=category' . $categoryStr.$lang.$ItemidStr;
 		$this->continue_link_html = '<a class="continue_link" href="' . $this->continue_link . '">' . vmText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 
-		$juri = JUri::getInstance()->toString(array( 'host', 'port'));
+		$juri = JUri::getInstance();
+		$uri = $juri->toString(array( 'host', 'port'));
 
-		$scheme = 'http';
-		if(VmConfig::get('useSSL',false)){
+		$scheme = $juri->toString(array( 'scheme'));
+		$scheme = substr($scheme,0,-3);
+		if($scheme!='https' and VmConfig::get('useSSL',false)){
 			$scheme .='s';
 		}
-		$this->cart_link = $scheme.'://'.$juri. JURI::root(true).'/index.php?option=com_virtuemart&view=cart'.$lang;
+		$this->cart_link = $scheme.'://'.$uri. JURI::root(true).'/index.php?option=com_virtuemart&view=cart'.$lang;
 
 		return;
 	}

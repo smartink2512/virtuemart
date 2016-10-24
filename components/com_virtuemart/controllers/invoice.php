@@ -36,7 +36,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 	public function __construct()
 	{
 		parent::__construct();
-		$this->useSSL = VmConfig::get('useSSL',0);
+		$this->useSSL = vmURI::useSSL();
 		$this->useXHTML = false;
 	}
 

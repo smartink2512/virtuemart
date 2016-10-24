@@ -108,6 +108,7 @@ class vmJsApi{
 	public static function writeJS(){
 
 		$html = '';
+		$headInline = '';
 		$document = JFactory::getDocument();
 		foreach(self::$_jsAdd as $name => &$jsToAdd){
 
@@ -140,7 +141,8 @@ class vmJsApi{
 					if(!empty($script)) {
 						$script = trim( $script, chr( 13 ) );
 						$script = trim( $script, chr( 10 ) );
-						$document->addScriptDeclaration( $script );
+						$headInline .= $script. chr(13);
+
 						//$document->addScript( $script,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
 					}
 				} else {
@@ -166,6 +168,9 @@ class vmJsApi{
 			}
 			$html .= chr(13);
 			$jsToAdd['written'] = true;
+		}
+		if(!empty($headInline)){
+			$document->addScriptDeclaration( '//<![CDATA[ '.chr(10).$headInline.' //]]>'.chr(10) );
 		}
 		return $html;
 	}
@@ -887,4 +892,19 @@ jQuery(document).ready(function($) {
 		vmJsApi::addJScript('keepAliveTime','var sessMin = '.$refTime.';var vmAliveUrl = "'.$url.'";var maxlps = "'.$maxlps.'";var minlps = "'.$minlps.'";',false,true,true);
 		vmJsApi::addJScript('vmkeepalive',false, true, false);
 	}
+
+	static function ajaxCategoryDropDown($id, $param, $emptyOpt){
+
+		vmJsApi::addJScript('ajax_catree');
+		$j = "jQuery(document).ready(function($) {
+	jQuery(document).ready(function($) {
+		Virtuemart.emptyCatOpt = '".$emptyOpt."';
+		Virtuemart.param = '".$param."';
+		Virtuemart.loadCategoryTree('".$id."');
+	});
+});
+";
+		vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad', $j, false, true, true);
+	}
+
 }

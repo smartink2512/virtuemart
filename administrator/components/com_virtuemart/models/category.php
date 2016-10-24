@@ -152,10 +152,10 @@ class VirtueMartModelCategory extends VmModel {
 		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id.$selectedOrdering.$orderDir.VmConfig::$vmlang ;
 		//We have here our internal key to preven calling of the cache
 		if (! array_key_exists ($key,$_childCategoryList)){
-			vmSetStartTime('com_virtuemart_cats');
+			vmSetStartTime('com_virtuemart_cat_childs');
 
 			if($useCache){
-				$cache = JFactory::getCache('com_virtuemart_cats','callback');
+				$cache = JFactory::getCache('com_virtuemart_cat_childs','callback');
 				$cache->setCaching(true);
 				//vmdebug('Calling cache getChildCategoryListObject');
 				$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListObject' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
@@ -163,7 +163,7 @@ class VirtueMartModelCategory extends VmModel {
 				$_childCategoryList[$key] = VirtueMartModelCategory::getChildCategoryListObject($vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
 			}
 
-			//vmTime('Time to load cats '.(int)$useCache,'com_virtuemart_cats');
+			vmTime('Time to load cats '.(int)$useCache,'com_virtuemart_cat_childs');
 		}
 
 		return $_childCategoryList[$key];
@@ -645,6 +645,7 @@ class VirtueMartModelCategory extends VmModel {
 	public function clearCategoryRelatedCaches(){
 		$cache = JFactory::getCache();
 		$cache->clean('com_virtuemart_cats');
+		$cache->clean('com_virtuemart_cat_childs');
 		$cache->clean('mod_virtuemart_product');
 		$cache->clean('mod_virtuemart_category');
 	}

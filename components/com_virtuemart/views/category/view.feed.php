@@ -37,40 +37,51 @@ class VirtuemartViewCategory extends VmView {
 			}
 		}
 
+		$catId = vRequest::getInt('virtuemart_category_id', 0);
+		$manId = vRequest::getInt('virtuemart_manufacturer_id', 0);
+		$isHome = !($catId or $manId);
+		if($isHome){
+			$feedtype = 'feed_home';
+		} else {
+			$feedtype = 'feed_cat';
+		}
+
 		if (!class_exists('VmImage'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 		$productModel = VmModel::getModel ('product');
 		$categoryId = vRequest::getInt ('virtuemart_category_id', false);
-		$feed_show_prices = VmConfig::get ('feed_cat_show_prices', 0);
-		$feed_show_images = VmConfig::get ('feed_cat_show_images', 0);
-		$feed_show_description = VmConfig::get ('feed_cat_show_description', 0);
-		$feed_description_type = VmConfig::get ('feed_cat_description_type', 'product_s_desc');
-		$feed_max_text_length = VmConfig::get ('feed_cat_max_text_length', 0);
+		$feed_show_prices = VmConfig::get ($feedtype .'_show_prices', 0);
+		$feed_show_images = VmConfig::get ($feedtype .'_show_images', 0);
+		$feed_show_description = VmConfig::get ($feedtype .'_show_description', 0);
+		$feed_description_type = VmConfig::get ($feedtype .'_description_type', 'product_s_desc');
+		$feed_max_text_length = VmConfig::get ($feedtype .'_max_text_length', 0);
+
 		// Load the products in the given category
 		$products = $productModel->getProductsInCategory ($categoryId);
 
-		$products = array();
-		$featured = array();
-		$latest = array();
-		$topten = array();
+		if($isHome){
 
-		if (VmConfig::get ('feed_featured_published', 1)) {
-			$featured_nb = VmConfig::get('feed_featured_nb',3);
-			$featured = $productModel->getProductListing ('featured', $featured_nb);
+			$featured = array();
+			$latest = array();
+			$topten = array();
+
+			if (VmConfig::get ('feed_featured_published', 1)) {
+				$featured_nb = VmConfig::get('feed_featured_nb',3);
+				$featured = $productModel->getProductListing ('featured', $featured_nb);
+			}
+
+			if (VmConfig::get ('feed_latest_published', 1)) {
+				$latest_nb = VmConfig::get('feed_latest_nb',3);
+				$latest = $productModel->getProductListing ('latest', $latest_nb);
+			}
+
+			if ( VmConfig::get ('feed_topten_published', 1)) {
+				$topTen_nb = VmConfig::get('feed_topten_nb',3);
+				$topten = $productModel->getProductListing ('topten',$topTen_nb);
+			}
+
+			$products = array_merge ($products, $featured, $latest, $topten);
 		}
-
-		if (VmConfig::get ('feed_latest_published', 1)) {
-			$latest_nb = VmConfig::get('feed_latest_nb',3);
-			$latest = $productModel->getProductListing ('latest', $latest_nb);
-		}
-
-		if ( VmConfig::get ('feed_topten_published', 1)) {
-			$topTen_nb = VmConfig::get('feed_topten_nb',3);
-			$topten = $productModel->getProductListing ('topten',$topTen_nb);
-		}
-
-		$products = array_merge ($products, $featured, $latest, $topten);
-
 
 		if ($feed_show_images == 1) {
 			$productModel->addImages ($products, 1);
@@ -78,7 +89,6 @@ class VirtuemartViewCategory extends VmView {
 		if ($products && $feed_show_prices == 1) {
 			$currency = CurrencyDisplay::getInstance ();
 		}
-
 
 		foreach ($products as $product) {
 			$title = $this->escape ($product->product_name);
@@ -132,4 +142,8 @@ class VirtuemartViewCategory extends VmView {
 		}
 	}
 
+	public function isVirtuemartHome(){
+
+
+	}
 }

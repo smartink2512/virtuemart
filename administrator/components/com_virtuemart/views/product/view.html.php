@@ -540,45 +540,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		} else if(!empty($this->product->virtuemart_product_id)){
 			$param = '&virtuemart_product_id='.$this->product->virtuemart_product_id;
 		}
-		$j = "
-	Virtuemart.startVmLoading = function(a) {
-		var msg = '';
-		/*if (typeof a.data.msg !== 'undefined') {
-			msg = a.data.msg;
-		}*/
-		jQuery('body').addClass('vmLoading');
-		if (!jQuery('div.vmLoadingDiv').length) {
-			jQuery('body').append('<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">' + msg + '</div></div>');
-		}
-	};
-
-	Virtuemart.stopVmLoading = function() {
-		if (jQuery('body').hasClass('vmLoading')) {
-			jQuery('body').removeClass('vmLoading');
-			jQuery('div.vmLoadingDiv').remove();
-		}
-	};
-
-jQuery(document).ready(function($) {
-		$('#".$id."_chzn').remove();
-		Virtuemart.startVmLoading('Loading categories');
-		$('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\"></div>').insertAfter('select#".$id."');
-		$.ajax({
-			type: 'GET',
-			url: 'index.php',
-			data: 'option=com_virtuemart&view=product&type=getCategoriesTree".$param."&format=json',
-			success:function(json){
-				$('select#".$id."').switchClass('chzn-done','chzn-select');
-				$('select#".$id."').html('<option value=\"\">".vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY'))."</option>'+json.value);
-				$('#pro-tech_ajax_load').remove();
-				$('select#".$id."').chosen();
-				Virtuemart.stopVmLoading();
-			}
-		});
-	});
-";
-		vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad', $j);
-
+		$eOpt = vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY'));
+		vmJsApi::ajaxCategoryDropDown($id, $param, $eOpt);
 	}
 }
 

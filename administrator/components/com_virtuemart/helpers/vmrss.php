@@ -45,7 +45,7 @@ class vmRSS{
 				self::$extFeeds = self::getCPsRssFeed( "http://extensions.virtuemart.net/?format=feed&type=rss", $items,$cache_time );
 				//self::$extFeeds =  self::getRssFeed("http://extensions.virtuemart.net/?format=feed&type=rss", 15);
 			} catch (Exception $e) {
-				echo 'Where not able to parse extension feed';
+				echo 'Were not able to parse extension feed';
 			}
 		}
 		return self::$extFeeds;
