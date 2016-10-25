@@ -137,18 +137,39 @@ echo $this->loadTemplate('images');
 		?>
 
 		<?php
-		echo shopFunctionsF::renderVmSubLayout('rating',array('showRating'=>$this->showRating,'product'=>$this->product));
+		echo shopFunctionsF::renderVmSubLayout('rating', array('showRating' => $this->showRating, 'product' => $this->product));
 
-		if (is_array($this->productDisplayShipments)) {
-		    foreach ($this->productDisplayShipments as $productDisplayShipment) {
-			echo $productDisplayShipment . '<br />';
-		    }
+
+		$productDisplayTypes = array('productDisplayShipments', 'productDisplayPayments');
+		foreach ($productDisplayTypes as $productDisplayType) {
+			if (is_array($this->$productDisplayType)) {
+				foreach ($this->$productDisplayType as $productDisplay) {
+					if (is_array($productDisplay)) {
+						foreach ($productDisplay as $virtuemart_shipmentmethod_id =>$productDisplayHtml) {
+							?>
+							<div class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1).'-'.$virtuemart_shipmentmethod_id ?>">
+								<?php
+								echo $productDisplayHtml;
+								?>
+							</div>
+							<?php
+						}
+					} else {
+						if ($productDisplay) {
+							?>
+							<div class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1).'-'.$virtuemart_shipmentmethod_id ?>">
+								<?php
+								echo $productDisplay;
+								?>
+							</div>
+							<?php
+						}
+					}
+				}
+			}
 		}
-		if (is_array($this->productDisplayPayments)) {
-		    foreach ($this->productDisplayPayments as $productDisplayPayment) {
-			echo $productDisplayPayment . '<br />';
-		    }
-		}
+
+
 
 		//In case you are not happy using everywhere the same price display fromat, just create your own layout
 		//in override /html/fields and use as first parameter the name of your file

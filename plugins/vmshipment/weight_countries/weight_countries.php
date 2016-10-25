@@ -459,7 +459,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 						}
 					}
 
-					$html = $this->renderByLayout( 'default', array("method" => $this->_currentMethod, "cart" => $cart,"product" => $product,"currency" => $currency) );
+					$html[$this->_currentMethod->virtuemart_shipmentmethod_id] = $this->renderByLayout( 'default', array("method" => $this->_currentMethod, "cart" => $cart,"product" => $product,"currency" => $currency) );
 				}
 			}
 		}
