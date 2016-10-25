@@ -112,11 +112,11 @@ class VirtueMartModelRatings extends VmModel {
     public function getRatings() {
 
      	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `pr`
-     			USING (`virtuemart_product_id`) ';
+     			ON r.`virtuemart_product_id` = pr.`virtuemart_product_id` ';
 
 		$whereString = '';
 		if(VmConfig::get('multix','none')!='none'){
-			$tables .= ' LEFT JOIN  `#__virtuemart_products` as p USING (`virtuemart_product_id`)';
+			$tables .= ' LEFT JOIN  `#__virtuemart_products` as p ON r.`virtuemart_product_id` = p.`virtuemart_product_id`';
 			$virtuemart_vendor_id = vmAccess::getVendorId();
 			if(!empty($virtuemart_vendor_id)){
 				$whereString = ' WHERE virtuemart_vendor_id="'.$virtuemart_vendor_id.'"';

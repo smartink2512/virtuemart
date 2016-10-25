@@ -57,16 +57,16 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		//$customfield = $this->model->getcustomfield();
 		/* Get the task */
 		if ($this->type=='relatedproducts') {
-			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-				FROM #__virtuemart_products_".VmConfig::$vmlang."
-				 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)";
+			$query = "SELECT l.virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+				FROM #__virtuemart_products_".VmConfig::$vmlang." as l
+				 JOIN `#__virtuemart_products` AS p ON p.virtuemart_product_id=l.virtuemart_product_id";
 			if (!empty($filter)) $query .= " WHERE product_name LIKE '%". $this->db->escape( $filter, true ) ."%' or product_sku LIKE '%". $this->db->escape( $filter, true ) ."%'";
 			self::setRelatedHtml($product_id,$query,'R');
 		}
 		else if ($this->type=='relatedcategories')
 		{
-			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
-				FROM #__virtuemart_categories_".VmConfig::$vmlang;
+			$query = "SELECT l.virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
+				FROM #__virtuemart_categories_".VmConfig::$vmlang." as l";
 			if (!empty($filter)) $query .= " WHERE category_name LIKE '%". $this->db->escape(  $filter, true ) ."%'";
 			self::setRelatedHtml($product_id,$query,'Z');
 		}
@@ -219,10 +219,14 @@ class VirtuemartViewProduct extends VmViewAdmin {
 	
 	
 	function setRelatedHtml($product_id,$query,$fieldType) {
-//VmConfig::$echoDebug=true;
+
+
 		$this->db->setQuery($query.' limit 0,50');
 		$this->json = $this->db->loadObjectList();
-
+		if(!($this->json)){
+			echo('setRelatedHtml '.$query);
+			return;
+		}
 		$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="'.$fieldType.'" ';
 		$this->db->setQuery($query);
 		$custom = $this->db->loadObject();

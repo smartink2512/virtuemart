@@ -129,9 +129,9 @@ class VirtuemartViewConfig extends VmViewAdmin {
 
 	private function listIt($ps){
 		$db = JFactory::getDBO();
-		$q = 'SELECT virtuemart_'.$ps.'method_id,'.$ps.'_name
-FROM #__virtuemart_'.$ps.'methods
-INNER JOIN #__virtuemart_'.$ps.'methods_'.VmConfig::$vmlang.' USING (virtuemart_'.$ps.'method_id)
+		$q = 'SELECT m.virtuemart_'.$ps.'method_id, l.'.$ps.'_name
+FROM #__virtuemart_'.$ps.'methods as m
+INNER JOIN #__virtuemart_'.$ps.'methods_'.VmConfig::$vmlang.' as l ON l.virtuemart_'.$ps.'method_id = m.virtuemart_'.$ps.'method_id
 WHERE published="1"';
 		$db->setQuery($q);
 

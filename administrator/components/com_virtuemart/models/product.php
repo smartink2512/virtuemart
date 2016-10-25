@@ -1298,6 +1298,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$product->canonCatId = false;
 			$public_cats = array();
+			$product->categories = array();
 			if(!empty($product->categoryItem)){
 				$tmp = array();
 				foreach($product->categoryItem as $category){
@@ -1645,10 +1646,37 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				if ($i > $maxNumber) {
 					vmdebug ('Better not to display more than ' . $maxNumber . ' products');
-					return $products;
+					break;
 				}
 			}
 		}
+
+		//GJC	test if cat deep search
+		if(VmConfig::get('deep_cat',false)){
+
+			$set_categoryId = vRequest::getInt('virtuemart_category_id', -1);
+			$cat_deep_search = true;
+			if($cat_deep_search && $set_categoryId != -1 ){
+				foreach ($products as $product) {
+
+					$catmodel = VmModel::getModel ('category');
+					$childcats = $catmodel->getChildCategoryList(1, $set_categoryId,null, null, true);
+					$testcats = array($set_categoryId);
+					foreach($childcats as $childcat) {
+						$testcats[] = $childcat->virtuemart_category_id;
+					}
+					foreach($product->categoryItem as $catItem){
+						$product_categories[] = $catItem['virtuemart_category_id'];
+					}
+					$found_cat = array_intersect ($testcats, $product_categories);
+					$found_cat = array_values($found_cat);
+					if(!empty($found_cat[0])) {
+						$product->link = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id  . '&virtuemart_category_id=' . $found_cat[0];
+					}
+				}
+			}
+		}
+
 
 		return $products;
 	}
@@ -2304,7 +2332,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$db = JFactory::getDbo();
 			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
-			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`customfield_value` = "' . $id . '" AND `field_type`= "R"';
+			$q .= 'LEFT JOIN `#__virtuemart_customs`as c ON c.virtuemart_custom_id=pc.virtuemart_custom_id WHERE pc.`customfield_value` = "' . $id . '" AND `field_type`= "R"';
 			$db->setQuery($q);
 			$list = $db->loadColumn();
 
@@ -2720,15 +2748,15 @@ class VirtueMartModelProduct extends VmModel {
 		if (!isset($this->_uncategorizedChildren[$this->_id])) {
 
 			//Todo add check for shoppergroup depended product display
-			$q = 'SELECT `virtuemart_product_id` FROM `#__virtuemart_products` as p
+			$q = 'SELECT p.`virtuemart_product_id` FROM `#__virtuemart_products` as p
 				LEFT JOIN `#__virtuemart_product_categories` as pc
-				USING (`virtuemart_product_id`) ';
+				ON p.`virtuemart_product_id` = pc.`virtuemart_product_id` ';
 
 			if ($withParent) {
-				$q .= ' WHERE (`product_parent_id` = "' . $this->_id . '"  OR `virtuemart_product_id` = "' . $this->_id . '") ';
+				$q .= ' WHERE (p.`product_parent_id` = "' . $this->_id . '"  OR p.`virtuemart_product_id` = "' . $this->_id . '") ';
 			}
 			else {
-				$q .= ' WHERE `product_parent_id` = "' . $this->_id . '" ';
+				$q .= ' WHERE p.`product_parent_id` = "' . $this->_id . '" ';
 			}
 
 			$app = JFactory::getApplication ();
@@ -2749,7 +2777,7 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= ' AND p.`published`="1"';
 			}
 
-			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY p.pordering ASC';
+			$q .= ' GROUP BY p.`virtuemart_product_id` ORDER BY p.pordering ASC';
 			$db = JFactory::getDbo();
 			$db->setQuery ($q);
 			$r = $db->loadColumn();
@@ -2800,8 +2828,8 @@ class VirtueMartModelProduct extends VmModel {
 			return array();
 		}
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_' . VmConfig::$vmlang . '`
-			JOIN `#__virtuemart_products` as C using (`virtuemart_product_id`)
+		$db->setQuery (' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` as l
+			JOIN `#__virtuemart_products` as p ON p.virtuemart_product_id = l.virtuemart_product_id
 			WHERE `product_parent_id` =' . (int)$product_id);
 		return $db->loadObjectList ();
 
@@ -2930,7 +2958,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$q = 'SELECT ou.* , oi.product_quantity , o.order_number, o.order_status, oi.`order_status` AS order_item_status ,
 		o.virtuemart_order_id FROM `#__virtuemart_order_userinfos` as ou
-			JOIN `#__virtuemart_order_items` AS oi USING (`virtuemart_order_id`)
+			JOIN `#__virtuemart_order_items` AS oi ON oi.`virtuemart_order_id` = ou.`virtuemart_order_id`
 			JOIN `#__virtuemart_orders` AS o ON o.`virtuemart_order_id` =  oi.`virtuemart_order_id`
 			WHERE ou.`address_type`="BT" AND oi.`virtuemart_product_id`=' . (int)$product_id;
 		if (count ($orderStates) !== count ($states)) {

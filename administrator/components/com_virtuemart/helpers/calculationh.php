@@ -139,10 +139,10 @@ class calculationHelper {
 		                        AND ( publish_down = "' . $this->_nullDate . '" OR publish_down >= "' . $this->_now . '" )
 										OR `for_override` = "1" )';
 			//*/
-			$q = 'SELECT * FROM #__virtuemart_calcs ';
+			$q = 'SELECT * FROM #__virtuemart_calcs as c';
 			$shopperGrpJoin = '';
 			if(!empty($this->_shopperGroupId) and count($this->_shopperGroupId)>0){
-				$q .= ' LEFT JOIN #__virtuemart_calc_shoppergroups using(virtuemart_calc_id)';
+				$q .= ' LEFT JOIN #__virtuemart_calc_shoppergroups as cs ON cs.virtuemart_calc_id=c.virtuemart_calc_id ';
 				$shopperGrpJoin = "\n AND (";
 				foreach($this->_shopperGroupId as $gr){
 					$shopperGrpJoin .= ' virtuemart_shoppergroup_id = '.(int)$gr. ' OR';
@@ -152,7 +152,7 @@ class calculationHelper {
 
 			$countryGrpJoin = '';
 			if(!empty($this->_deliveryCountry)){
-				$q .= ' LEFT JOIN #__virtuemart_calc_countries using(virtuemart_calc_id) ';
+				$q .= ' LEFT JOIN #__virtuemart_calc_countries as cc ON cc.virtuemart_calc_id=c.virtuemart_calc_id ';
 				$countryGrpJoin = "\n AND (";
 				$countryGrpJoin .= ' virtuemart_country_id = '.(int)$this->_deliveryCountry;
 				$countryGrpJoin .=' OR (virtuemart_country_id) IS NULL) ';
@@ -160,7 +160,7 @@ class calculationHelper {
 
 			$stateGrpJoin = '';
 			if(!empty($this->_deliveryState)){
-				$q .= ' LEFT JOIN #__virtuemart_calc_states using(virtuemart_calc_id) ';
+				$q .= ' LEFT JOIN #__virtuemart_calc_states as cst ON cst.virtuemart_calc_id=c.virtuemart_calc_id ';
 				$stateGrpJoin = "\n AND (";
 				$stateGrpJoin .= ' virtuemart_state_id = '.(int)$this->_deliveryState;
 				$stateGrpJoin .=' OR (virtuemart_state_id) IS NULL) ';
@@ -178,6 +178,7 @@ class calculationHelper {
 
 			$allrules = $this->_db->loadAssocList();
 
+			if(!$allrules) return;
 			//By Maik, key of array is directly virtuemart_calc_id
 			foreach ($allrules as $rule){
 				//$rul = $this->_calcModel->getCalc($rule['virtuemart_calc_id']);

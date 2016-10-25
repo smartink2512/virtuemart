@@ -163,7 +163,7 @@ class VirtueMartModelCategory extends VmModel {
 				$_childCategoryList[$key] = VirtueMartModelCategory::getChildCategoryListObject($vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
 			}
 
-			vmTime('Time to load cats '.(int)$useCache,'com_virtuemart_cat_childs');
+			//vmTime('Time to load cats '.(int)$useCache,'com_virtuemart_cat_childs');
 		}
 
 		return $_childCategoryList[$key];
@@ -218,7 +218,7 @@ class VirtueMartModelCategory extends VmModel {
 		} else {
 			$query = 'SELECT l.*
 					FROM `#__virtuemart_categories_'.$lang.'` as l
-					INNER JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
+					INNER JOIN `#__virtuemart_categories` as c ON l.`virtuemart_category_id` = c.`virtuemart_category_id` ';
 		}
 
 		$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on c.`virtuemart_category_id` = cx.`category_child_id` ';
@@ -315,8 +315,8 @@ class VirtueMartModelCategory extends VmModel {
 
 		$select = ' c.`virtuemart_category_id`, category_description, category_name, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
-		$joinedTables = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` l
-				  JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`)
+		$joinedTables = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l
+				  JOIN `#__virtuemart_categories` AS c ON l.`virtuemart_category_id` = c.`virtuemart_category_id`
 				  LEFT JOIN `#__virtuemart_category_categories` AS cx
 				  ON l.`virtuemart_category_id` = cx.`category_child_id` ';
 
@@ -589,7 +589,7 @@ class VirtueMartModelCategory extends VmModel {
 
 			$db = JFactory::getDbo();
 			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
-			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`customfield_value` = "' . $cid . '" AND `field_type`= "Z"';
+			$q .= 'LEFT JOIN `#__virtuemart_customs`as c ON pc.`virtuemart_custom_id` = c.`virtuemart_custom_id` WHERE pc.`customfield_value` = "' . $cid . '" AND `field_type`= "Z"';
 			$db->setQuery($q);
 			$list = $db->loadColumn();
 
