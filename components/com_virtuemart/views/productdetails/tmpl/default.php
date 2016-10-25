@@ -142,29 +142,26 @@ echo $this->loadTemplate('images');
 
 		$productDisplayTypes = array('productDisplayShipments', 'productDisplayPayments');
 		foreach ($productDisplayTypes as $productDisplayType) {
-			if (is_array($this->$productDisplayType)) {
-				foreach ($this->$productDisplayType as $productDisplay) {
-					if (is_array($productDisplay)) {
-						foreach ($productDisplay as $virtuemart_shipmentmethod_id =>$productDisplayHtml) {
-							?>
-							<div class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1).'-'.$virtuemart_shipmentmethod_id ?>">
-								<?php
-								echo $productDisplayHtml;
-								?>
-							</div>
-							<?php
-						}
-					} else {
-						if ($productDisplay) {
-							?>
-							<div class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1).'-'.$virtuemart_shipmentmethod_id ?>">
-								<?php
-								echo $productDisplay;
-								?>
-							</div>
-							<?php
-						}
-					}
+
+			if (!is_array($this->$productDisplayType)) {
+				$this->$productDisplayType = array($this->$productDisplayType);
+			}
+
+			foreach ($this->$productDisplayType as $productDisplay) {
+
+				if (!is_array($this->$productDisplayType)) {
+					$this->$productDisplayType = array($this->$productDisplayType);
+				}
+
+				foreach ($productDisplay as $virtuemart_shipmentmethod_id => $productDisplayHtml) {
+					?>
+					<div
+						class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1) . '-' . $virtuemart_shipmentmethod_id ?>">
+						<?php
+						echo $productDisplayHtml;
+						?>
+					</div>
+					<?php
 				}
 			}
 		}
