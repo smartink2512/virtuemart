@@ -127,7 +127,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 			$useJLback = false;
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$jDefLang.'` as ljd';
+				$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
 				$useJLback = true;
 			}
 
@@ -139,11 +139,11 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				}
 				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 			}
-			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_paymentmethod_id`)';
-			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l using (`virtuemart_paymentmethod_id`)';
+			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$defaultLang.'` as ON ld.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
+			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
 		} else {
 			$select = ' * ';
-			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l USING (`virtuemart_paymentmethod_id`) ';
+			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id` ';
 		}
 
 		$datas =$this->exeSortSearchListQuery(0,$select,$joins,$whereString,' ',$this->_getOrdering() );

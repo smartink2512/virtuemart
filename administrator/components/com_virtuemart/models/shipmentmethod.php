@@ -127,7 +127,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 			$useJLback = false;
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$jDefLang.'` as ljd';
+				$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
 				$useJLback = true;
 			}
 
@@ -139,11 +139,11 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				}
 				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 			}
-			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_shipmentmethod_id`)';
-			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l using (`virtuemart_shipmentmethod_id`)';
+			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$defaultLang.'` as ON ld.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
+			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
 		} else {
 			$select = ' * ';
-			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l USING (`virtuemart_shipmentmethod_id`) ';
+			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id` ';
 		}
 
 

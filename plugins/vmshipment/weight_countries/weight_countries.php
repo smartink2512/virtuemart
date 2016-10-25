@@ -434,17 +434,18 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 
-		if(!isset($cart)){
-			$cart = VirtueMartCart::getCart();
-			$cart->products['virtual'] = $product;
-			$cart->_productAdded = true;
-			$cart->prepareCartData();
-		}
+
 
 		foreach ($this->methods as $this->_currentMethod) {
 
 			if($this->_currentMethod->show_on_pdetails){
 
+				if(!isset($cart)){
+					$cart = VirtueMartCart::getCart();
+					$cart->products['virtual'] = $product;
+					$cart->_productAdded = true;
+					$cart->prepareCartData();
+				}
 				if($this->checkConditions($cart,$this->_currentMethod,$cart->cartPrices,$product)){
 
 					$product->prices['shipmentPrice'] = $this->getCosts($cart,$this->_currentMethod,$cart->cartPrices);

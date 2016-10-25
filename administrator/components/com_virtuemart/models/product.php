@@ -630,13 +630,13 @@ class VirtueMartModelProduct extends VmModel {
 
 
 				if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-					$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd using (`virtuemart_product_id`)';
+					$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd ON ljd.`virtuemart_product_id` = p.`virtuemart_product_id`';
 					$method = 'LEFT';
 					$this->useJLback = true;
 				}
 
-				$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld using (`virtuemart_product_id`)';
-				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+				$joinedTables[] = ' '.$method.' JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld ON ld.`virtuemart_product_id` = p.`virtuemart_product_id`';
+				$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ON l.`virtuemart_product_id` = p.`virtuemart_product_id`';
 
 				$langFields = array_unique($langFields);
 
@@ -651,7 +651,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			} else {
 				$this->useLback = false;
-				$joinedTables[] = ' INNER JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
+				$joinedTables[] = ' INNER JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ON l.`virtuemart_product_id` = p.`virtuemart_product_id`';
 			}
 
 		}

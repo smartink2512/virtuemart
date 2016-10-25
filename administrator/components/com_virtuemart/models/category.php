@@ -195,7 +195,7 @@ class VirtueMartModelCategory extends VmModel {
 			$useJLback = false;
 			$method = 'INNER';
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins[] = ' '.$method.' JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd using (`virtuemart_category_id`)';
+				$joins[] = ' '.$method.' JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_category_id` = c.`virtuemart_category_id`';
 				$method = 'LEFT';
 				$useJLback = true;
 			}
@@ -210,8 +210,8 @@ class VirtueMartModelCategory extends VmModel {
 			$from = ' FROM `#__virtuemart_categories` as c';
 
 
-			$joins[] = ' '.$method.' JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_category_id`)';
-			$joins[] = ' LEFT JOIN `#__virtuemart_categories_'.$lang.'` as l using (`virtuemart_category_id`)';
+			$joins[] = ' '.$method.' JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_category_id` = c.`virtuemart_category_id`';
+			$joins[] = ' LEFT JOIN `#__virtuemart_categories_'.$lang.'` as l ON l.`virtuemart_category_id` = c.`virtuemart_category_id`';
 			$query = $select.$from.implode(' ',$joins);
 
 

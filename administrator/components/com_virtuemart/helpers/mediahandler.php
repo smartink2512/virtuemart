@@ -483,6 +483,7 @@ class VmMediaHandler {
 			$toChk = VMPATH_ROOT.'/'.$this->file_url;
 		}
 		if(!JFile::exists($toChk)){
+			vmdebug('Media file does not exists',$toChk);
 			vmError(vmText::sprintf('COM_VIRTUEMART_FILE_NOT_FOUND',$toChk));
 		}
 

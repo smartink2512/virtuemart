@@ -489,7 +489,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 			$useJLback = false;
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'_'.VmConfig::$jDefLang.'` as ljd';
+				$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
 				$useJLback = true;
 			}
 
@@ -500,11 +500,11 @@ abstract class vmPSPlugin extends vmPlugin {
 				}
 				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 			}
-			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$defaultLang.'` as ld using (`virtuemart_'.$this->_psType.'method_id`)';
-			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l using (`virtuemart_'.$this->_psType.'method_id`)';
+			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
+			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
 		} else {
 			$select .= ', l.* ';
-			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l using (`virtuemart_'.$this->_psType.'method_id`)';
+			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
 		}
 
 		$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods' . '` as i ';
