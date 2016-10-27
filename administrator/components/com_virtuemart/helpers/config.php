@@ -165,7 +165,7 @@ class vmDefines {
 	}
 }
 
-//In WP, we run the define, when we render vm, in Joomla we have to rund them here
+//In WP, we run the define, when we render vm, in Joomla we have to run them here
 if(defined('JVERSION')){
 	VmDefines::defines(JFactory::getApplication()->getName());
 }
@@ -365,8 +365,8 @@ function vmError($descr,$publicdescr=''){
  * @param unknown_type $values
  */
 function vmdebug($debugdescr,$debugvalues=NULL){
-
-	if(VmConfig::showDebug()  ){
+	//VmConfig::$_debug = true;
+	if(VmConfig::$_debug ){
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 			if($debugvalues!==NULL){
 				$args = func_get_args();
@@ -628,7 +628,7 @@ class VmConfig {
 
 	static function echoAdmin(){
 		if(self::$echoAdmin===FALSE){
-			self::$echoAdmin = vmAccess::manager();
+			self::$echoAdmin = vmAccess::manager('core.manage');
 		}
 	}
 
@@ -638,6 +638,7 @@ class VmConfig {
 			if($override) {
 				$debug = $override;
 				$dev = $override;
+
 			} else {
 				$debug = VmConfig::get('debug_enable','none');
 				$dev = VmConfig::get('vmdev','none');
@@ -949,7 +950,10 @@ class VmConfig {
 		} else {
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
 		}
+
 		self::echoAdmin();
+		self::showDebug();
+
 		self::$_secret = JFactory::getConfig()->get('secret');
 
 		self::$_jpConfig->_params['sctime'] = microtime(TRUE);

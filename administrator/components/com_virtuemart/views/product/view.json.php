@@ -213,7 +213,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		}
 
 		echo vmJsApi::safe_json_encode($this->json);
-
+		jExit();
 	}
 
 	

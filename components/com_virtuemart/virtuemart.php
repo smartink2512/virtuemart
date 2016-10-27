@@ -127,7 +127,7 @@ if (class_exists($_class)) {
     //vmTime($_class.' Finished task '.$task,'Start');
     vmRam('End');
     vmRamPeak('Peak');
-	vmTime('vm view Finished task ','vmStart');
+	vmTime('"'.$_class.'" Finished task ','vmStart');
     /* Redirect if set by the controller */
     $controller->redirect();
 } else {

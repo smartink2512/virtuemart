@@ -463,9 +463,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				}
 			}
 		}
-		unset($cart->products['virtual']);
-		$cart->_productAdded = true;
-		$cart->prepareCartData();
+		if(isset($cart)){
+			unset($cart->products['virtual']);
+			$cart->_productAdded = true;
+			$cart->prepareCartData();
+		}
+
 
 		$productDisplayShipments[] = $html;
 
