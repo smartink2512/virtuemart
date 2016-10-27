@@ -1135,12 +1135,12 @@ class vmrouterHelper {
 
 		$db			= JFactory::getDBO();
 
-		$q = 'SELECT * FROM `#__menu` WHERE `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.$jLangTag.'" ) ORDER BY `language` DESC';
+		$q = 'SELECT * FROM `#__menu` WHERE `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.$jLangTag.'" ) ';
 
 		if($this->byMenu === 1 and !empty($this->Itemid)) {
 			$q .= ' and `menutype` = (SELECT `menutype` FROM `#__menu` WHERE `id` = "'.$this->Itemid.'") ';
 		}
-
+		$q .= ' ORDER BY `language` DESC';
 		$db->setQuery($q);
 		$menuVmitems = $db->loadObjectList();
 
