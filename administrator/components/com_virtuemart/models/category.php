@@ -710,7 +710,7 @@ class VirtueMartModelCategory extends VmModel {
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
 				$joins = ' FROM `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd';
 				$method = ' LEFT JOIN';
-				$as .= ' using (`virtuemart_category_id`)';
+				$as .= ' ON ld.`virtuemart_category_id`= ljd.`virtuemart_category_id` ';
 				$useJLback = true;
 			}
 			$select = 'SELECT `virtuemart_category_id`';
@@ -722,7 +722,7 @@ class VirtueMartModelCategory extends VmModel {
 				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 			}
 			$joins .= ' '.$method.' `#__virtuemart_categories_'.VmConfig::$defaultLang.'` '.$as;
-			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l using (`virtuemart_category_id`)';
+			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id`= ld.`virtuemart_category_id` ';
 
 		}
 
@@ -753,7 +753,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		if(isset($resId[$hash])){
 			$ids = $resId[$hash];
-		} else{
+		} else if (!empty($virtuemart_category_id)){
 			$db	= JFactory::getDBO();
 			$q = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
 				FROM  #__virtuemart_category_categories AS `xref`
