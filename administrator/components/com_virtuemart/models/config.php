@@ -688,7 +688,6 @@ class VirtueMartModelConfig extends VmModel {
 			$data['virtuemart_config_id'] = 1;
 			$data['config'] = $config->toString();
 
-			vmdebug('my config data to store ',$data);
 			$confTable = $this->getTable('configs');
 			$confTable->bindChecknStore($data);
 

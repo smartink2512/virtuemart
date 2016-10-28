@@ -60,9 +60,9 @@
                    extension="com_virtuemart"
                    description="COM_VIRTUEMART_ADMIN_CFG_PER_ROW_TIP" />
             <field name="showproducts" type="list" default=""
-                   label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_SHOWPROD"
+                   label="COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS"
                    extension="com_virtuemart"
-                   description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_SHOWPROD_DESC" >
+                   description="COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS_TIP" >
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
@@ -191,9 +191,9 @@
                    extension="com_virtuemart"
                    description="COM_VIRTUEMART_ADMIN_CFG_PER_ROW_TIP" />
             <field name="stf_showproducts" type="list" default=""
-                   label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_SHOWPROD"
+                   label="COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS"
                    extension="com_virtuemart"
-                   description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_SHOWPROD_DESC" >
+                   description="COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS_TIP" >
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>

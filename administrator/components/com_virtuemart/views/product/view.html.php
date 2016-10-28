@@ -432,6 +432,15 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				if (!empty($product->virtuemart_manufacturer_id[0])) {
 					$product->manuList = shopfunctions::renderGuiList($product->virtuemart_manufacturer_id,'manufacturers','mf_name','manufacturer');
 				}
+
+				$product->parent_link = '';
+				if ($product->product_parent_id ) {
+					$product->parent_link = VirtuemartViewProduct::displayLinkToParent($product->product_parent_id);
+				}
+
+				$product->childlist_link = VirtuemartViewProduct::displayLinkToChildList($product->virtuemart_product_id , $product->product_name);
+
+				//vmdebug('my '.$product->parent_link);
 			}
 
 			$mf_model = VmModel::getModel('manufacturer');
@@ -514,22 +523,42 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 	static function displayLinkToChildList($product_id, $product_name) {
 
-        $db = JFactory::getDBO();
-        $db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
-		if ($result = $db->loadResult()){
-			$result = vmText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
-			echo JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',htmlentities($product_name)) ));
+		static $c = array();
+		if(!isset($c[$product_id])){
+			$db = JFactory::getDBO();
+			$db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
+			if ($result = $db->loadResult()){
+				$result = vmText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
+				$c[$product_id] =  JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',htmlentities($product_name)) ));
+
+			} else {
+				$c[$product_id] = '';
+			}
 		}
+		
+		return $c[$product_id];
 	}
 
 	static function displayLinkToParent($product_parent_id) {
 
-		$db = JFactory::getDBO();
-		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` as l JOIN `#__virtuemart_products` AS p ON p.virtuemart_product_id=l.virtuemart_product_id WHERE p.`virtuemart_product_id` = "'.$product_parent_id.'"');
-		if ($parent = $db->loadObject()){
-			$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', htmlentities($parent->product_name));
-			echo JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
+		static $c = array();
+		if(!isset($c[$product_parent_id])){
+
+			$db = JFactory::getDBO();
+			$q = ' SELECT * FROM `#__virtuemart_products` AS p JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` as l ON p.virtuemart_product_id=l.virtuemart_product_id WHERE p.`virtuemart_product_id` = "'.$product_parent_id.'"';
+			$db->setQuery($q);
+			if ($parent = $db->loadObject()){
+				$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', htmlentities($parent->product_name));
+				$c[$product_parent_id] = JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
+
+			} else {
+				$c[$product_parent_id] = '';
+				vmdebug('my '.$q);
+			}
+
 		}
+
+		return $c[$product_parent_id];
 	}
 
 	public function ajaxCategoryDropDown($id){

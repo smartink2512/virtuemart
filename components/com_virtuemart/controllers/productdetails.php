@@ -316,7 +316,6 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			}
 		}
 
-		// Get the document object.
 		$document = JFactory::getDocument ();
 		// stAn: setName works in JDocumentHTML and not JDocumentRAW
 		if (method_exists($document, 'setName')){

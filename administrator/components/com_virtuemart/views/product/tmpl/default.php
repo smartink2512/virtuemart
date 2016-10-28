@@ -133,14 +133,13 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 
                 <?php if (!$product_parent_id ) { ?>
 				<td><?php
-					if ($product->product_parent_id  ) {
-						VirtuemartViewProduct::displayLinkToParent($product->product_parent_id);
-					}
+					//if ($product->product_parent_id  ) {
+						echo $product->parent_link;
+					//}
 					?></td>
-				<!-- Vendor name -->
-                                <?php } ?>
+				<?php } ?>
 				<td><?php
-						 VirtuemartViewProduct::displayLinkToChildList($product->virtuemart_product_id , $product->product_name);
+						echo $product->childlist_link;
                                                  ?>
                                 </td>
 				<!-- Media -->

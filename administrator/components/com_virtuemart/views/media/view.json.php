@@ -36,7 +36,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 	function display($tpl = null) {
 		$document =JFactory::getDocument();
 		$document->setMimeEncoding( 'application/json' );
-
+		header ('Content-Type: application/json');
 		if ($virtuemart_media_id = vRequest::getInt('virtuemart_media_id')) {
 			//JResponse::setHeader( 'Content-Disposition', 'attachment; filename="media'.$virtuemart_media_id.'.json"' );
 

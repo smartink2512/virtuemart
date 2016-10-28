@@ -139,24 +139,26 @@ echo $this->loadTemplate('images');
 		<?php
 		echo shopFunctionsF::renderVmSubLayout('rating', array('showRating' => $this->showRating, 'product' => $this->product));
 
-
 		$productDisplayTypes = array('productDisplayShipments', 'productDisplayPayments');
 		foreach ($productDisplayTypes as $productDisplayType) {
 
-			if (!is_array($this->$productDisplayType)) {
+			if(empty($productDisplay)){
+				continue;
+			} else if (!is_array($this->$productDisplayType)) {
 				$this->$productDisplayType = array($this->$productDisplayType);
 			}
 
 			foreach ($this->$productDisplayType as $productDisplay) {
 
-				if (!is_array($this->$productDisplayType)) {
+				if(empty($productDisplay)){
+					continue;
+				} else if (!is_array($this->$productDisplayType)){
 					$this->$productDisplayType = array($this->$productDisplayType);
 				}
 
-				foreach ($productDisplay as $virtuemart_shipmentmethod_id => $productDisplayHtml) {
+				foreach ($productDisplay as $virtuemart_shipmentmethod_id =>$productDisplayHtml) {
 					?>
-					<div
-						class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1) . '-' . $virtuemart_shipmentmethod_id ?>">
+					<div class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1).'-'.$virtuemart_shipmentmethod_id ?>">
 						<?php
 						echo $productDisplayHtml;
 						?>
@@ -165,8 +167,6 @@ echo $this->loadTemplate('images');
 				}
 			}
 		}
-
-
 
 		//In case you are not happy using everywhere the same price display fromat, just create your own layout
 		//in override /html/fields and use as first parameter the name of your file
