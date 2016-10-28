@@ -74,6 +74,7 @@ class TablePaymentmethods extends VmTable {
 	$this->setLoggable();
 	$this->setTranslatable(array('payment_name', 'payment_desc'));
 	$this->setSlug('payment_name');
+	$this->setTableShortCut('paym');
 // 	$this->setUniqueName('ordering');
     }
 
