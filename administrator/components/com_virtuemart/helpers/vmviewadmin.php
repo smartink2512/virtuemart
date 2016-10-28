@@ -283,12 +283,6 @@ class VmViewAdmin extends JViewLegacy {
 
 			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
 
-
-			if ($editView =='product') {
-				$productModel = VmModel::getModel('product');
-				$childproducts = $productModel->getProductChilds($id) ? $productModel->getProductChilds($id) : '';
-			}
-
 			$token = vRequest::getFormToken();
 			$j = '
 			jQuery(function($) {
@@ -339,9 +333,12 @@ class VmViewAdmin extends JViewLegacy {
 
 							} else alert(data.msg);';
 
-			if($editView =='product' && !empty($childproducts)) {
-				foreach($childproducts as $child) {
-					$j .= 'jQuery.ajax({
+			if($editView =='product') {
+				$productModel = VmModel::getModel('product');
+				$childproducts = $productModel->getProductChilds($id);
+				if(!empty($childproducts)){
+					foreach($childproducts as $child) {
+						$j .= 'jQuery.ajax({
         						type: "GET",
 								cache: false,
         						dataType: "json",
@@ -357,7 +354,9 @@ class VmViewAdmin extends JViewLegacy {
 										}
 									)
 								';
+					}
 				}
+
 			}
 
 			$j .= 'oldflag = flagClass ;

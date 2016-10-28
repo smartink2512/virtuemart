@@ -139,9 +139,11 @@ class calculationHelper {
 		                        AND ( publish_down = "' . $this->_nullDate . '" OR publish_down >= "' . $this->_now . '" )
 										OR `for_override` = "1" )';
 			//*/
-			$q = 'SELECT * FROM #__virtuemart_calcs as c';
+			$select = 'SELECT c.*';
+			$q = ' FROM #__virtuemart_calcs as c';
 			$shopperGrpJoin = '';
 			if(!empty($this->_shopperGroupId) and count($this->_shopperGroupId)>0){
+				//$select .= ', cs.virtuemart_shoppergroup_id';
 				$q .= ' LEFT JOIN #__virtuemart_calc_shoppergroups as cs ON cs.virtuemart_calc_id=c.virtuemart_calc_id ';
 				$shopperGrpJoin = "\n AND (";
 				foreach($this->_shopperGroupId as $gr){
@@ -152,6 +154,7 @@ class calculationHelper {
 
 			$countryGrpJoin = '';
 			if(!empty($this->_deliveryCountry)){
+				//$select .= ', cc.virtuemart_country_id';
 				$q .= ' LEFT JOIN #__virtuemart_calc_countries as cc ON cc.virtuemart_calc_id=c.virtuemart_calc_id ';
 				$countryGrpJoin = "\n AND (";
 				$countryGrpJoin .= ' virtuemart_country_id = '.(int)$this->_deliveryCountry;
@@ -160,6 +163,7 @@ class calculationHelper {
 
 			$stateGrpJoin = '';
 			if(!empty($this->_deliveryState)){
+				//$select .= ', cst.virtuemart_state_id';
 				$q .= ' LEFT JOIN #__virtuemart_calc_states as cst ON cst.virtuemart_calc_id=c.virtuemart_calc_id ';
 				$stateGrpJoin = "\n AND (";
 				$stateGrpJoin .= ' virtuemart_state_id = '.(int)$this->_deliveryState;
@@ -174,7 +178,7 @@ class calculationHelper {
 
 			$q .= $shopperGrpJoin . $countryGrpJoin . $stateGrpJoin;
 
-			$this->_db->setQuery($q);
+			$this->_db->setQuery($select . $q);
 
 			$allrules = $this->_db->loadAssocList();
 

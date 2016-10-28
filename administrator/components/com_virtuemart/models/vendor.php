@@ -336,9 +336,13 @@ class VirtueMartModelVendor extends VmModel {
 			return 0;
 		}
 
+		static $c = array();
 		//sanitize input params
 		$value = (int)$value;
-
+		$h = $value.$type.$ownerOnly;
+		if(isset($c[$h])){
+			return $c[$h];
+		}
 		//static call used, so we need our own db instance
 		$db = JFactory::getDBO ();
 		switch ($type) {
@@ -360,18 +364,14 @@ class VirtueMartModelVendor extends VmModel {
 				$q = 'SELECT virtuemart_vendor_id FROM #__virtuemart_products WHERE virtuemart_product_id=' . $value;
 				break;
 		}
+
 		$db->setQuery ($q);
-		$virtuemart_vendor_id = $db->loadResult ();
-		if ($virtuemart_vendor_id) {
-			return $virtuemart_vendor_id;
+		$c[$h] = $db->loadResult ();
+		if ($c[$h]) {
+			return $c[$h];
 		} else {
+			$c[$h] = 0;
 			return 0;
-//			if($type!='user'){
-//				return 0;
-//			} else {
-//				JError::raiseNotice(1, 'No virtuemart_vendor_id found for '.$value.' on '.$type.' check.');
-//				return 0;
-//			}
 		}
 	}
 
