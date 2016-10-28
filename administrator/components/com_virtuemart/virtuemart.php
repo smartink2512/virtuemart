@@ -78,7 +78,7 @@ if($exe){
 // Perform the Request task
 	$controller->execute(vRequest::getCmd('task', $_controller));
 
-	vmTime($_class.' Finished task '.$_controller,'vmStart');
+	vmTime('"'.$_class.'" Finished task '.$_controller,'vmStart');
 	vmRam('End');
 	vmRamPeak('Peak');
 	$controller->redirect();

@@ -182,7 +182,6 @@ function virtuemartBuildRoute(&$query) {
 				}
 
 				if($helper->full){
-
 					if(empty( $query['virtuemart_category_id'])){
 						$query['virtuemart_category_id'] = $helper->getParentProductcategory($virtuemart_product_id);
 					}
@@ -967,19 +966,30 @@ class vmrouterHelper {
 	public function getProductName($id){
 
 		static $productNamesCache = array();
-		$pModel = VmModel::getModel('product');
+		static $suffix = '';
 
 		if(!isset($productNamesCache[$id])){
+			if($this->use_seo_suffix){
+				$suffix = $this->seo_sufix;
+			}
+			$checkedProductKey= VirtueMartModelProduct::checkIfCached($id);
+			if($checkedProductKey[0]){
+				if(VirtueMartModelProduct::$_products[$checkedProductKey[1]]===false){
+					$productNamesCache[$id] = false;
+				} else if(isset(VirtueMartModelProduct::$_products[$checkedProductKey[1]])){
+					$productNamesCache[$id] = VirtueMartModelProduct::$_products[$checkedProductKey[1]]->slug.$suffix;
+				}
+				vmdebug('getProductName self::$_products Cache',$id,$productNamesCache[$id]);
+			}
 
-			//Adding shoppergroup could be needed
-			$pr = $pModel->getProduct($id, TRUE, FALSE, TRUE, 1, 0, 0);
-			if(!$pr or empty($pr->slug)){
-				$productNamesCache[$id] = false;
-			} else {
-				if($this->use_seo_suffix){
-					$productNamesCache[$id] = $pr->slug.$this->seo_sufix;
+			if(!isset($productNamesCache[$id])){
+				$pModel = VmModel::getModel('product');
+				//Adding shoppergroup could be needed
+				$pr = $pModel->getProduct($id, TRUE, FALSE, TRUE, 1, 0, 0);
+				if(!$pr or empty($pr->slug)){
+					$productNamesCache[$id] = false;
 				} else {
-					$productNamesCache[$id] = $pr->slug;
+					$productNamesCache[$id] = $pr->slug.$suffix;
 				}
 			}
 		}
@@ -992,21 +1002,30 @@ class vmrouterHelper {
 	public function getParentProductcategory($id){
 
 		static $parProdCat= array();
-
+		static $catPar = array();
 		if(!isset($parProdCat[$id])){
 			VmModel::getModel('product');
 			$parent_id = VirtueMartModelProduct::getProductParentId($id);
 
 			//If product is child then get parent category ID
 			if ($parent_id and $parent_id!=$id) {
-				$db = JFactory::getDbo();
-				$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories`  ' .
+
+				if(!isset($catPar[$parent_id])){
+					$db = JFactory::getDbo();
+					$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories`  ' .
 					' WHERE `virtuemart_product_id` = ' . $parent_id;
-				$db->setQuery($query);
+					$db->setQuery($query);
+					//$catPar[$parent_id] =
+					$parProdCat[$id] = $catPar[$parent_id] = $db->loadResult();
+					vmdebug('getParentProductcategory executed sql for '.$id, $parProdCat[$id]);
+				} else {
+					$parProdCat[$id] = $catPar[$parent_id];
+					vmdebug('getParentProductcategory $catPar[$parent_id] Cached ',$id );
+				}
 
 				//When the child and parent id is the same, this creates a deadlock
 				//add $counter, dont allow more then 10 levels
-				if (!$parProdCat[$id] = $db->loadResult()){
+				if (!$parProdCat[$id]){
 					$this->counter++;
 					if($this->counter<10){
 						$this->getParentProductcategory($parent_id) ;
@@ -1254,8 +1273,6 @@ class vmrouterHelper {
 		}
 
 		$mCache[$h.$this->Itemid] = $this->menu;
-		vmdebug('my mneu '.$h.$this->Itemid,$this->menu);
-
 	}
 
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */

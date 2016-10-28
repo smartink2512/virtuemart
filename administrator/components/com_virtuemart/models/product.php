@@ -855,26 +855,49 @@ class VirtueMartModelProduct extends VmModel {
 		return array($this->_limitStart, $this->_limit);
 	}
 
-	public function checkIfCached($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1,$virtuemart_shoppergroup_ids = 0){
 
-		if($virtuemart_shoppergroup_ids !=0 and is_array($virtuemart_shoppergroup_ids)){
-			$virtuemart_shoppergroup_idsString = implode('.',$virtuemart_shoppergroup_ids);
+
+	static public function checkIfCached($virtuemart_product_id, $front = NULL, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1,$virtuemart_shoppergroup_ids = 0, $withRating = 0){
+
+		if(!isset($front) and isset(self::$_cacheOpt[$virtuemart_product_id])){
+			$front = self::$_cacheOpt[$virtuemart_product_id]->front;
+			$withCalc = self::$_cacheOpt[$virtuemart_product_id]->withCalc;
+			$onlyPublished = self::$_cacheOpt[$virtuemart_product_id]->onlyPublished;
+			$quantity = self::$_cacheOpt[$virtuemart_product_id]->quantity;
+			$virtuemart_shoppergroup_ids = self::$_cacheOpt[$virtuemart_product_id]->virtuemart_shoppergroup_ids;
+			$withRating = self::$_cacheOpt[$virtuemart_product_id]->withRating;
 		} else {
-			$virtuemart_shoppergroup_idsString = $virtuemart_shoppergroup_ids;
+			$front = !empty($front)?TRUE:0;
+			$withCalc = $withCalc?TRUE:0;
+			$onlyPublished = $onlyPublished?TRUE:0;
+			$withRating = $withRating?TRUE:0;
+
+			$opt = new stdClass();
+			$opt->virtuemart_product_id = (int)$virtuemart_product_id;
+			$opt->front = $front;
+			$opt->withCalc = $withCalc;
+			$opt->onlyPublished = $onlyPublished;
+			$opt->quantity = (int)$quantity;
+
+			if($virtuemart_shoppergroup_ids !=0 and is_array($virtuemart_shoppergroup_ids)){
+				$virtuemart_shoppergroup_ids = implode('.',$virtuemart_shoppergroup_ids);
+			} else {
+				$virtuemart_shoppergroup_ids = $virtuemart_shoppergroup_ids?TRUE:0;;
+			}
+
+			$opt->virtuemart_shoppergroup_ids = $virtuemart_shoppergroup_ids;
+			$opt->withRating = $withRating;
+			self::$_cacheOpt[$virtuemart_product_id] = $opt;
 		}
 
-		$front = $front?TRUE:0;
-		$withCalc = $withCalc?TRUE:0;
-		$onlyPublished = $onlyPublished?TRUE:0;
-		$this->withRating = $this->withRating?TRUE:0;
 
-		$productKey = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.$withCalc.$this->withRating;
+		$productKey = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_ids.':'.$withCalc.$withRating;
 
 		if (array_key_exists ($productKey, self::$_products)) {
 			//vmdebug('getProduct, take from cache : '.$productKey);
 			return  array(true,$productKey);
 		} else if(!$withCalc){
-			$productKeyTmp = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_idsString.':'.TRUE.$this->withRating;
+			$productKeyTmp = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_ids.':'.TRUE.$withRating;
 			if (array_key_exists ($productKeyTmp,  self::$_products)) {
 				//vmdebug('getProduct, take from cache full product '.$productKeyTmp);
 				return  array(true,$productKeyTmp);
@@ -886,6 +909,8 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	static $_products = array();
+	static $_cacheOpt = array();
+	static $_cacheOptSingle = array();
 	static $_alreadyLoadedIds = array();
 	/**
 	 * This function creates a product with the attributes of the parent.
@@ -912,7 +937,8 @@ class VirtueMartModelProduct extends VmModel {
 				$virtuemart_product_id = $this->_id;
 			}
 		}
-		$checkedProductKey= $this->checkIfCached($virtuemart_product_id, $front, $withCalc, $onlyPublished, $quantity,$virtuemart_shoppergroup_ids);
+
+		$checkedProductKey= $this->checkIfCached($virtuemart_product_id, $front, $withCalc, $onlyPublished, $quantity,$virtuemart_shoppergroup_ids,$this->withRating);
 		if($checkedProductKey[0]){
 			if(self::$_products[$checkedProductKey[1]]===false){
 				return false;
@@ -929,7 +955,7 @@ class VirtueMartModelProduct extends VmModel {
 			vmError ('Memory limit reached in model product getProduct() ' . $virtuemart_product_id);
 			return false;
 		}
-		$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,true,$virtuemart_shoppergroup_ids);
+		$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,false,$virtuemart_shoppergroup_ids);
 
 		if (!$child->published && $onlyPublished) {
 			self::$_products[$productKey] = false;
@@ -997,8 +1023,11 @@ class VirtueMartModelProduct extends VmModel {
 		$child->virtuemart_product_id = $pId;
 		$child->product_parent_id = $ppId;
 
+if(!isset($child->selectedPrice) or empty($child->allPrices)){
+				$child->selectedPrice = 0;
+				$child->allPrices[$child->selectedPrice] = $this->fillVoidPrice();
+			}
 		if ($withCalc) {
-
 			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
 			$child->prices = $child->allPrices[$child->selectedPrice];
 		}
@@ -1132,8 +1161,8 @@ class VirtueMartModelProduct extends VmModel {
 		$product_parent_id = $product->product_parent_id;
 		//vmdebug('getRawProductPrices',$product->allPrices);
 		//Check for all prices to inherited by parent products
-		if(($front or $withParent) and !empty($product_parent_id)) {
-
+		if( $withParent and !empty($product_parent_id)) {
+			vmdebug('getRawProductPrices load parent prices for '.$productId,$product_parent_id);
 			while ( $product_parent_id and (empty($product->allPrices) or count($product->allPrices)==0) ) {
 				$runtime = microtime (TRUE) - $this->starttime;
 				if ($runtime >= $this->maxScriptTime) {
@@ -1153,6 +1182,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				if(!isset($product->allPrices['salesPrice']) and $product_parent_id!=0){
 					$product_parent_id = $this->getProductParentId($product_parent_id);
+					vmdebug('Get parent id for allPrices ',$product_parent_id);
 				}
 			}
 		}
@@ -1212,11 +1242,51 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 
-		if(!isset($product->selectedPrice) or empty($product->allPrices)){
-			$product->selectedPrice = 0;
-			$product->allPrices[$product->selectedPrice] = $this->fillVoidPrice();
+	}
+
+	static public function checkIfCachedSingle($virtuemart_product_id, $front = NULL, $quantity = 1, $withParent=false,$virtuemart_shoppergroup_ids=0){
+
+		if(!isset($front) and isset(self::$_cacheOptSingle[$virtuemart_product_id])){
+			$front = self::$_cacheOptSingle[$virtuemart_product_id]->front;
+			$withParent = self::$_cacheOptSingle[$virtuemart_product_id]->withParent;
+			$quantity = self::$_cacheOptSingle[$virtuemart_product_id]->quantity;
+			$virtuemart_shoppergroup_ids = self::$_cacheOptSingle[$virtuemart_product_id]->virtuemart_shoppergroup_ids;
+		} else {
+
+			//$virtuemart_shoppergroup_ids = 0;
+			if(is_array($virtuemart_shoppergroup_ids)){
+				$virtuemart_shoppergroup_ids = implode('.',$virtuemart_shoppergroup_ids);
+			}
+
+			$front = $front?TRUE:0;
+			$withParent = $withParent?TRUE:0;
+
+			$opt = new stdClass();
+			$opt->virtuemart_product_id = (int)$virtuemart_product_id;
+			$opt->front = $front;
+			$opt->withParent = $withParent;
+			$opt->quantity = (int)$quantity;
+			$opt->virtuemart_shoppergroup_ids = $virtuemart_shoppergroup_ids;
+
+			self::$_cacheOptSingle[$virtuemart_product_id] = $opt;
 		}
 
+
+		$productKey = $virtuemart_product_id.':'.$virtuemart_shoppergroup_ids.':'.$quantity.':'.$front;
+
+		if (array_key_exists ($productKey, self::$_productsSingle)) {
+			//vmdebug('getProduct, take from cache : '.$productKey);
+			return  array(true,$productKey);
+		/*} else if(!$withCalc){
+			$productKeyTmp = $virtuemart_product_id.':'.$front.$onlyPublished.':'.$quantity.':'.$virtuemart_shoppergroup_ids.':'.TRUE.$withRating;
+			if (array_key_exists ($productKeyTmp,  self::$_products)) {
+				//vmdebug('getProduct, take from cache full product '.$productKeyTmp);
+				return  array(true,$productKeyTmp);
+			}*/
+		} else {
+			//vmdebug('getProduct, not cached '.$productKey);
+			return array(false,$productKey);
+		}
 	}
 
 	var $withRating = false;
@@ -1229,28 +1299,34 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if($virtuemart_shoppergroup_ids===0){
-			$usermodel = VmModel::getModel ('user');
-			$currentVMuser = $usermodel->getCurrentUser ();
-			if(!is_array($currentVMuser->shopper_groups)){
-				$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
+			if(isset($this->cUserShprGroups)){
+				$virtuemart_shoppergroup_ids = $this->cUserShprGroups;
 			} else {
-				$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
+				$usermodel = VmModel::getModel ('user');
+				$cUserShprGroups = $usermodel->getCurrentUser()->shopper_groups;
+				if(is_array($cUserShprGroups)){
+					$this->cUserShprGroups = $virtuemart_shoppergroup_ids = $cUserShprGroups;
+				} else {
+					$this->cUserShprGroups = $virtuemart_shoppergroup_ids = (array)$cUserShprGroups;
+				}
 			}
 		}
 
-		$virtuemart_shoppergroup_idsString = 0;
-		if(!empty($virtuemart_shoppergroup_ids) and is_array($virtuemart_shoppergroup_ids)){
-			$virtuemart_shoppergroup_idsString = implode('.',$virtuemart_shoppergroup_ids);
-		} else if(!empty($virtuemart_shoppergroup_ids)){
-			$virtuemart_shoppergroup_idsString = $virtuemart_shoppergroup_ids;
+		$checkedProductKey = $this->checkIfCachedSingle($virtuemart_product_id, $front, $quantity, $withParent, $virtuemart_shoppergroup_ids);
+		if($checkedProductKey[0]){
+			if(self::$_productsSingle[$checkedProductKey[1]]===false){
+				return false;
+			} else {
+				//vmTime('getProduct return cached clone','getProduct');
+				//vmdebug('getProduct cached',self::$_products[$checkedProductKey[1]]->prices);
+				return clone(self::$_productsSingle[$checkedProductKey[1]]);
+			}
 		}
+		$productKey = $checkedProductKey[1];
 
-		$front = $front?TRUE:0;
-		$productKey = $virtuemart_product_id.':'.$virtuemart_shoppergroup_idsString.':'.$quantity.':'.$front;
-
-		if (array_key_exists ($productKey, self::$_productsSingle)) {
+		/*if (array_key_exists ($productKey, self::$_productsSingle)) {
 			return clone(self::$_productsSingle[$productKey]);
-		}
+		}*/
 
 		if (!empty($this->_id)) {
 
@@ -1275,6 +1351,8 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
+			//We prestore the result, so we can directly load the product parent id by cache
+			self::$_productsSingle[$productKey] = $product;
 			$this->getRawProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front,$withParent);
 
 			$xrefTable = $this->getTable ('product_manufacturers');
@@ -2828,8 +2906,8 @@ class VirtueMartModelProduct extends VmModel {
 			return array();
 		}
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` as l
-			JOIN `#__virtuemart_products` as p ON p.virtuemart_product_id = l.virtuemart_product_id
+		$db->setQuery (' SELECT p.virtuemart_product_id, l.product_name FROM `#__virtuemart_products` as p
+			JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ON p.virtuemart_product_id = l.virtuemart_product_id
 			WHERE `product_parent_id` =' . (int)$product_id);
 		return $db->loadObjectList ();
 
@@ -2880,18 +2958,37 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 
-	static function getProductParentId ($product_parent_id) {
+	static function getProductParentId ($product_id) {
 
-		if (empty($product_parent_id)) {
+		if (empty($product_id)) {
 			return 0;
 		}
 		static $parentCache = array();
-		if(!isset($parentCache[$product_parent_id])){
-			$db = JFactory::getDbo();
-			$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . (int)$product_parent_id);
-			$parentCache[$product_parent_id] = $db->loadResult ();
+		if(!isset($parentCache[$product_id])){
+			//Check if product got already loaded
+			$checkedProductKey= self::checkIfCachedSingle($product_id);
+
+			if($checkedProductKey[0]){
+				if(self::$_productsSingle[$checkedProductKey[1]]===false){
+					$parentCache[$product_id] = false;
+				} else if(isset(self::$_productsSingle[$checkedProductKey[1]]->product_parent_id)){
+					$parentCache[$product_id] = self::$_productsSingle[$checkedProductKey[1]]->product_parent_id;
+				}
+				vmdebug('getProductParentId self::$_products Cache',$product_id,$parentCache[$product_id]);
+			}
+
+			if(!isset($parentCache[$product_id])){
+				$db = JFactory::getDbo();
+				$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . (int)$product_id);
+				$parentCache[$product_id] = $db->loadResult ();
+				vmdebug('getProductParentId executed sql for '.$product_id,$checkedProductKey,self::$_productsSingle);
+				//vmTrace('getProductParentId executed sql for '.$product_id);
+			}
+
+		} else {
+			vmdebug('getProductParentId $parentCache',$product_id,$parentCache[$product_id]);
 		}
-		return $parentCache[$product_parent_id];
+		return $parentCache[$product_id];
 	}
 
 
