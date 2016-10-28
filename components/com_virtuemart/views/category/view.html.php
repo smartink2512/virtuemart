@@ -214,11 +214,21 @@ class VirtuemartViewCategory extends VmView {
 
 			$this->perRow = empty($category->products_per_row)? $this->products_per_row:$category->products_per_row;
 
-			$imgAmount = VmConfig::get('prodimg_browse',1);
+			$this->vmPagination = '';
+			$this->orderByList = '';
 
+			$imgAmount = VmConfig::get('prodimg_browse',1);
 			$dynamic = vRequest::getInt('dynamic',false);
 
-			if(!$dynamic){
+			if ($dynamic) {
+
+				$id = vRequest::getInt('virtuemart_product_id',false);
+				$p = $productModel->getProduct ($id);
+				$this->products['0'][] = $p;
+				$productModel->addImages($this->products['0'], $imgAmount );
+
+			} else {
+
 				$opt = array('featured','discontinued','latest','topten','recent');
 				foreach($opt as $o){
 
@@ -228,36 +238,18 @@ class VirtuemartViewCategory extends VmView {
 						$productModel->addImages($this->products[$o],$imgAmount);
 					}
 				}
-			}
-
-
-			$this->vmPagination = '';
-			$this->orderByList = '';
-
-
-			if($this->showproducts){
-
-				if ($dynamic) {
-
-					$id = vRequest::getInt('virtuemart_product_id',false);
-					$p = $productModel->getProduct ($id);
-					$pa = array();
-					$pa[] = $p;
-					$this->products['0'][] = $p;
-
-				} else {
+				if($this->showproducts) {
 					// Load the products in the given category
 					$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
 					$this->vmPagination = $productModel->getPagination($this->perRow);
 					$this->orderByList = $productModel->getOrderByList($this->categoryId);
 					$this->products['0'] = $productModel->getProducts ($ids);
+					$productModel->addImages($this->products['0'], $imgAmount );
 				}
-
-				$productModel->addImages($this->products['0'], $imgAmount );
-
 			}
 
 			if ($this->products) {
+
 				$this->currency = CurrencyDisplay::getInstance( );
 				$display_stock = VmConfig::get('display_stock',1);
 				$showCustoms = VmConfig::get('show_pcustoms',1);

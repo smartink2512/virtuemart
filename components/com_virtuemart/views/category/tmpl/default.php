@@ -67,7 +67,7 @@ if ($this->showcategory and empty($this->keyword)) {
 	}
 }
 
-if($this->showproducts){
+if (!empty($this->products)) {
 ?>
 <div class="browse-view">
 <?php
