@@ -188,6 +188,7 @@ font-weight: normal;
 .ui-widget-header h2{margin:0;padding:0}
 .ui-autocomplete{width:600px;height:300px}
 .ui-autocomplete li{background:none repeat scroll 0 0 #FFF;display:inline;float:left;list-style:none outside none;position:relative;margin:0;padding:0}
+.ui-autocomplete li a{border:none !important}
 .vmpayment_description,.vmshipment_description{margin-left:2px}
 /* #plugin-Container{display:table} */
 .vm2-modallink{height:16px;margin-left:3px;width:16px;display:inline-block;background:url(../images/admin_ui/icon_external_link.gif) no-repeat scroll left top transparent}

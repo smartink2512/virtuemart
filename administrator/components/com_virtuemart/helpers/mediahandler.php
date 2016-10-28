@@ -1012,7 +1012,7 @@ class VmMediaHandler {
 			}
 			if ($image->file_url_thumb > "0" ) {
 				$htmlImages .= '<div class="vm_thumb_image">
-				<span>'.JHtml::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span>';
+				<span>'.JHtml::image($image->file_url_thumb,$image->file_title, ' title="'.$image->file_title.'" class="vm_thumb" ').'</span>';
 			} else {
 				$htmlImages .=  '<div class="vm_thumb_image">'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 			}
