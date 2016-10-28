@@ -18,14 +18,14 @@ Virtuemart.startVmLoading = function(a) {
 	/*if (typeof a.data.msg !== 'undefined') {
 	 msg = a.data.msg;
 	 }*/
-	jQuery('body').addClass('vmLoading');
+	jQuery('#pro-tech_ajax_load').addClass('vmLoading');
 	if (!jQuery('div.vmLoadingDiv').length) {
 		jQuery('body').append('<div class=\"vmLoadingDiv\"><div class=\"vmLoadingDivMsg\">' + msg + '</div></div>');
 	}
 };
 
 Virtuemart.stopVmLoading = function() {
-	if (jQuery('body').hasClass('vmLoading')) {
+	if (jQuery('#pro-tech_ajax_load').hasClass('vmLoading')) {
 		jQuery('body').removeClass('vmLoading');
 		jQuery('div.vmLoadingDiv').remove();
 	}
@@ -33,8 +33,9 @@ Virtuemart.stopVmLoading = function() {
 
 Virtuemart.loadCategoryTree = function(id){
 	jQuery('#'+id+'_chzn').remove();
+	jQuery('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\">Loading</div>').insertAfter('select#'+id);
 	Virtuemart.startVmLoading('Loading categories');
-	jQuery('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\"></div>').insertAfter('select#'+id);
+
 	jQuery.ajax({
 		type: 'GET',
 		url: 'index.php',

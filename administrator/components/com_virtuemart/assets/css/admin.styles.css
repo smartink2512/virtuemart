@@ -92,14 +92,14 @@ table.adminlist td.order{width:100px !important;}
 ol.logline {margin: 15px 0;padding: 0 0 0 20px;background: #F7F7F7; border: 1px solid #CCC;}
 ol.logline li {margin: 0 0 0 20px;padding: 5px 10px 5px 10px;list-style: decimal-leading-zero;word-wrap: break-word;border-left: 1px solid #CCC;background: #FFF;}
 
-.vmLoadingDiv {
-	display: none;
-	position: fixed;
+.vmLoading {
+	display: block;
+	/*position: fixed;*/
 	z-index: 1000;
 	top: 0;
 	left: 0;
-	height: 100%;
-	width: 100%;
+/*	height: 100%;
+	width: 100%;*/
 	background: rgba(255, 255, 255, 0.0) url('../../../../../components/com_virtuemart/assets/images/vm-preloader.gif') 50% 45% no-repeat;
 }
 
