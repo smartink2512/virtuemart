@@ -1568,13 +1568,9 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 		if(empty($virtuemart_product_id)) return false;
 
 		if(!isset($prodCats[$virtuemart_product_id])){
+
 			$categories = array();
-			$db = JFactory::getDbo();
-
-			$q = 'SELECT * FROM `#__virtuemart_product_categories`  WHERE `virtuemart_product_id` = ' . (int)$virtuemart_product_id;
-			$db->setQuery ($q);
-			$categoryIds = $db->loadAssocList();
-
+			$categoryIds = self::getProductCategoryIds($virtuemart_product_id);
 			$catTable = $this->getTable('categories');
 
 			foreach($categoryIds as $categoryId){
@@ -1589,6 +1585,18 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 		return $prodCats[$virtuemart_product_id];
 	}
 
+	static public function getProductCategoryIds ($id) {
+
+		static $c = array();
+		if(!isset($c[$id])){
+			$db = JFactory::getDbo();
+
+			$q = 'SELECT * FROM `#__virtuemart_product_categories`  WHERE `virtuemart_product_id` = ' . (int)$id;
+			$db->setQuery ($q);
+			$c[$id] = $db->loadAssocList();
+		}
+		return $c[$id];
+	}
 
 	/**
 	 * Get the products in a given category
@@ -2981,7 +2989,7 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 				$db = JFactory::getDbo();
 				$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . (int)$product_id);
 				$parentCache[$product_id] = $db->loadResult ();
-				vmdebug('getProductParentId executed sql for '.$product_id,$checkedProductKey,self::$_productsSingle);
+				vmdebug('getProductParentId executed sql for '.$product_id,$checkedProductKey);
 				//vmTrace('getProductParentId executed sql for '.$product_id);
 			}
 

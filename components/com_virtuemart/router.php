@@ -1004,20 +1004,34 @@ class vmrouterHelper {
 		static $parProdCat= array();
 		static $catPar = array();
 		if(!isset($parProdCat[$id])){
-			VmModel::getModel('product');
+			$pm = VmModel::getModel('product');
 			$parent_id = VirtueMartModelProduct::getProductParentId($id);
 
 			//If product is child then get parent category ID
 			if ($parent_id and $parent_id!=$id) {
 
 				if(!isset($catPar[$parent_id])){
-					$db = JFactory::getDbo();
-					$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories`  ' .
-					' WHERE `virtuemart_product_id` = ' . $parent_id;
-					$db->setQuery($query);
-					//$catPar[$parent_id] =
-					$parProdCat[$id] = $catPar[$parent_id] = $db->loadResult();
-					vmdebug('getParentProductcategory executed sql for '.$id, $parProdCat[$id]);
+
+					$checkedProductKey= VirtueMartModelProduct::checkIfCached($parent_id);
+
+					if($checkedProductKey[0]){
+						if(VirtueMartModelProduct::$_products[$checkedProductKey[1]]===false){
+							//$parentCache[$product_id] = false;
+						} else if(isset(VirtueMartModelProduct::$_products[$checkedProductKey[1]]->virtuemart_category_id)){
+							$parProdCat[$id] = $catPar[$parent_id] = VirtueMartModelProduct::$_products[$checkedProductKey[1]]->virtuemart_category_id;
+						}
+					} else {
+
+						$ids = VirtueMartModelProduct::getProductCategoryIds($parent_id);
+						if(isset($ids[0])){
+							$parProdCat[$id] = $catPar[$parent_id] = $ids[0]['virtuemart_category_id'];
+						} else {
+							$parProdCat[$id] = $catPar[$parent_id] = false;
+						}
+						//->loadResult();
+						vmdebug('Router getParentProductcategory executed sql for '.$id, $parProdCat[$id]);
+					}
+
 				} else {
 					$parProdCat[$id] = $catPar[$parent_id];
 					vmdebug('getParentProductcategory $catPar[$parent_id] Cached ',$id );

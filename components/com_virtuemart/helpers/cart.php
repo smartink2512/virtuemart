@@ -754,12 +754,11 @@ class VirtueMartCart {
 	* @author RolandD, Patrick Kohl
 	* @access public
 	* @return mixed if found the category ID else null
+	* @deprecated, useless function, already done in the product model
+	*
 	*/
 	public function getCardCategoryId($virtuemart_product_id) {
-		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = ' . (int) $virtuemart_product_id . ' LIMIT 1';
-		$db->setQuery($q);
-		return $db->loadResult();
+		return 0;
 	}
 
 	/**
@@ -1761,10 +1760,8 @@ class VirtueMartCart {
 
 		foreach ($this->products as $i=>$product){
 
-			$category_id = $this->getCardCategoryId($product->virtuemart_product_id);
-
 			//Create product URL
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$category_id, FALSE);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id, FALSE);
 			$data->products[$i]['product_name'] = JHtml::link($url, $product->product_name);
 
 			if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');

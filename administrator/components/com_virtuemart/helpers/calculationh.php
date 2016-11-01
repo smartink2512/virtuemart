@@ -973,7 +973,7 @@ class calculationHelper {
 
 		foreach ($this->_cart->cartData['taxRulesBill'] as &$rule) {
 			$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'] = isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result']) ? $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'] : 0;
-			$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'] += round($this->_cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff'],$this->_currencyDisplay->_priceConfig['salesPrice'][1]);
+			$this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'] += $this->roundInternal($this->_cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff']);
 			if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['virtuemart_calc_id'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['virtuemart_calc_id'] = $rule['virtuemart_calc_id'];
 			if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_name'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_name'] = $rule['calc_name'];
 			if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_value'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['calc_value'] = $rule['calc_value'];
@@ -1066,7 +1066,8 @@ class calculationHelper {
 				$cOut = $this->interpreteMathOp($rule, $cIn);
 				//vmdebug('my cout ',$cIn,$cOut,$TaxID,$rule);
 				$this->_cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff'] = $this->roundInternal($this->roundInternal($cOut) - $cIn);
-				$discount += round($this->_cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff'],$this->_currencyDisplay->_priceConfig['salesPrice'][1]);
+				//$discount += round($this->_cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff'],$this->_currencyDisplay->_priceConfig['salesPrice'][1]);
+				$discount += $this->roundInternal($this->_cart->cartPrices[$rule['virtuemart_calc_id'] . 'Diff']);
 				//vmdebug('my cout ',$cOut,$discount,$rule['subTotal'],$TaxID);
 				if(isset($rule['subTotal']) and $TaxID != 0 and $DBTax == true) {
 					if(isset($rule['subTotalPerTaxID'][$TaxID])) {
