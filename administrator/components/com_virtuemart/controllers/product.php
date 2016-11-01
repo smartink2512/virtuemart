@@ -178,14 +178,28 @@ class VirtuemartControllerProduct extends VmController {
 
 	public function massxref_sgrps_exe(){
 
-		$virtuemart_shoppergroup_ids = vRequest::getInt('virtuemart_shoppergroup_id');
+		$virtuemart_shoppergroup_ids = vRequest::getInt('virtuemart_shoppergroup_id', array() );
+		$massxref_task = vRequest::getCmd('massxref_task', 'replace' );
 
 		$session = JFactory::getSession();
-		$cids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
+		$pids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
 
 		$productModel = VmModel::getModel('product');
-		foreach($cids as $cid){
-			$data = array('virtuemart_product_id' => $cid, 'virtuemart_shoppergroup_id' => $virtuemart_shoppergroup_ids);
+
+		foreach($pids as $pid){
+			if ($massxref_task != 'replace') {
+				$db = JFactory::getDBO ();
+				$db->setQuery (' SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_product_shoppergroups` WHERE `virtuemart_product_id` =' . (int)$pid);
+				$pcats = $db->loadColumn ();
+				if ($massxref_task == 'add') {
+					$massxref_sgrps = array_unique(array_merge($virtuemart_shoppergroup_ids, $pcats));
+				} else if ($massxref_task == 'remove') {
+					$massxref_sgrps = array_diff($pcats, $virtuemart_shoppergroup_ids);
+				}
+			} else {
+				$massxref_sgrps = $virtuemart_shoppergroup_ids;
+			}
+			$data = array('virtuemart_product_id' => $pid, 'virtuemart_shoppergroup_id' => $massxref_sgrps);
 			$data = $productModel->updateXrefAndChildTables ($data, 'product_shoppergroups');
 		}
 
@@ -199,13 +213,27 @@ class VirtuemartControllerProduct extends VmController {
 	public function massxref_cats_exe(){
 
 		$virtuemart_cat_ids = vRequest::getInt('cid', array() );
+		$massxref_task = vRequest::getCmd('massxref_task', 'replace' );
 
 		$session = JFactory::getSession();
-		$cids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
+		$pids = json_decode($session->get('vm_product_ids', array(), 'vm'),true);
 
 		$productModel = VmModel::getModel('product');
-		foreach($cids as $cid){
-			$data = array('virtuemart_product_id' => $cid, 'virtuemart_category_id' => $virtuemart_cat_ids);
+
+		foreach($pids as $pid){
+			if ($massxref_task != 'replace') {
+				$db = JFactory::getDBO ();
+				$db->setQuery (' SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` =' . (int)$pid);
+				$pcats = $db->loadColumn ();
+				if ($massxref_task == 'add') {
+					$massxref_cats = array_unique(array_merge($virtuemart_cat_ids, $pcats));
+				} else if ($massxref_task == 'remove') {
+					$massxref_cats = array_diff($pcats, $virtuemart_cat_ids);
+				}
+			} else {
+				$massxref_cats = $virtuemart_cat_ids;
+			}
+			$data = array('virtuemart_product_id' => $pid, 'virtuemart_category_id' => $massxref_cats);
 			$data = $productModel->updateXrefAndChildTables ($data, 'product_categories',TRUE);
 		}
 

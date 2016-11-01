@@ -28,6 +28,27 @@ AdminUIHelper::startAdminArea($this);
 
 <form action="index.php?option=com_virtuemart&view=category" method="post" name="adminForm" id="adminForm">
 <div id="header">
+<?php if ($this->task=='massxref_cats' or $this->task=='massxref_cats_exe') : ?>
+<div id="massxref_task">
+	<table class="">
+		<tr>
+			<td align="left">
+				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_XREF_TASK') ?>
+			</td>
+			<td>
+				<?php
+				$options = array(
+				'replace' => vmText::_('COM_VIRTUEMART_PRODUCT_XREF_TASK_REPLACE'),
+				'add' => vmText::_('COM_VIRTUEMART_PRODUCT_XREF_TASK_ADD'),
+				'remove' => vmText::_('COM_VIRTUEMART_PRODUCT_XREF_TASK_REMOVE')
+				);
+				echo VmHTML::selectList('massxref_task', 'replace', $options);
+				?>
+			</td>
+		</tr>
+	</table>
+</div>
+<?php endif; ?>
 <div id="filterbox">
 	<table class="">
 		<tr>
