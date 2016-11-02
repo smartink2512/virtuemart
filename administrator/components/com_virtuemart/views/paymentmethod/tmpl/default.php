@@ -33,34 +33,34 @@ AdminUIHelper::startAdminArea($this);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th >
-				<?php echo $this->sort('payment_name', 'COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
+				<?php echo $this->sort('l.payment_name', 'COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
 			</th>
 			 <th>
 				<?php echo vmText::_('COM_VIRTUEMART_PAYMENT_LIST_DESCRIPTION_LBL'); ?>
 			</th>
 			<?php if($this->showVendors()){ ?>
 			<th >
-				<?php echo $this->sort('virtuemart_vendor_id', 'COM_VIRTUEMART_VENDOR');  ?>
+				<?php echo $this->sort('i.virtuemart_vendor_id', 'COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }?>
 
 			<th  >
 				<?php echo vmText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
 			</th>
 			<th >
-				<?php echo $this->sort('payment_element', 'COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
+				<?php echo $this->sort('i.payment_element', 'COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
 			</th>
 			<th  >
-				<?php echo $this->sort('ordering', 'COM_VIRTUEMART_LIST_ORDER'); ?>
+				<?php echo $this->sort('i.ordering', 'COM_VIRTUEMART_LIST_ORDER'); ?>
 			</th>
 			<th >
-				<?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?>
+				<?php echo $this->sort('i.published', 'COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 			<?php if($this->showVendors){ ?>
 			<th width="10">
 				<?php echo vmText::_('COM_VIRTUEMART_SHARED'); ?>
 			</th>
 			<?php } ?>
-			 <th><?php echo $this->sort('virtuemart_paymentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
+			 <th><?php echo $this->sort('i.virtuemart_paymentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>
 		<?php

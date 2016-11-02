@@ -32,26 +32,26 @@ AdminUIHelper::startAdminArea($this);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th>
-				<?php echo $this->sort('shipment_name', 'COM_VIRTUEMART_SHIPMENT_NAME_LBL'); ?>
+				<?php echo $this->sort('l.shipment_name', 'COM_VIRTUEMART_SHIPMENT_NAME_LBL'); ?>
 			</th>
                         <th>
-				<?php echo vmText::_('COM_VIRTUEMART_SHIPMENT_LIST_DESCRIPTION_LBL'); ?>
+				<?php echo vmText::_('l.COM_VIRTUEMART_SHIPMENT_LIST_DESCRIPTION_LBL'); ?>
 			</th>
                         <th width="20">
 				<?php echo vmText::_('COM_VIRTUEMART_SHIPPING_SHOPPERGROUPS'); ?>
 			</th>
                         <th>
-				<?php echo $this->sort('shipment_element', 'COM_VIRTUEMART_SHIPMENTMETHOD'); ?>
+				<?php echo $this->sort('i.shipment_element', 'COM_VIRTUEMART_SHIPMENTMETHOD'); ?>
 			</th>
 			<th>
-				<?php echo $this->sort('ordering', 'COM_VIRTUEMART_LIST_ORDER'); ?>
+				<?php echo $this->sort('i.ordering', 'COM_VIRTUEMART_LIST_ORDER'); ?>
 			</th>
-			<th width="20"><?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?></th>
+			<th width="20"><?php echo $this->sort('i.published', 'COM_VIRTUEMART_PUBLISHED'); ?></th>
 			<?php if($this->showVendors()){ ?>
 				<th width="20">
 				<?php echo vmText::_( 'COM_VIRTUEMART_SHARED')  ?>
 				</th><?php }  ?>
-			 <th><?php echo $this->sort('virtuemart_shipmentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
+			 <th><?php echo $this->sort('i.virtuemart_shipmentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>
 		<?php

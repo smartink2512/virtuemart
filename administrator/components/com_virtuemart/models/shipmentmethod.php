@@ -45,6 +45,11 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('shipmentmethods');
+
+		$this->_validOrderingFieldName = array();
+		$this->_validOrderingFieldName = array('i.virtuemart_shipmentmethod_id','i.virtuemart_vendor_id',
+		'l.shipment_name','l.shipment_desc','i.currency_id','i.ordering','i.shared', 'i.published');
+
 		$this->_selectedOrdering = 'i.ordering';
 		$this->setToggleName('shared');
 	}
