@@ -200,7 +200,7 @@ class VirtuemartViewInvoice extends VmView {
 				, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
 		);
 
-		$userfields = $userFieldsModel->getUserFieldsFilled( $_userFields ,$orderDetails['details']['BT']);
+		$userfields = $userFieldsModel->getUserFieldsFilled( $_userFields, $orderDetails['details']['BT']);
 		$this->assignRef('userfields', $userfields);
 
 		//Create ST address fields
@@ -217,7 +217,7 @@ class VirtuemartViewInvoice extends VmView {
 				, $skips
 		);
 
-		$shipmentfields = $userFieldsModel->getUserFieldsFilled( $shipmentFieldset ,$orderst );
+		$shipmentfields = $userFieldsModel->getUserFieldsFilled( $shipmentFieldset, $orderst );
 		$this->assignRef('shipmentfields', $shipmentfields);
 
 		$civility="";

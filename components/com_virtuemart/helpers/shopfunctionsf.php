@@ -608,19 +608,20 @@ class shopFunctionsF {
 		return VmTemplate::setVmTemplate($view, $catTpl, $prodTpl, $catLayout, $prodLayout);
 	}
 
-	static public function loadOrderLanguages($language = false){
-
-		VmConfig::loadJLang('com_virtuemart',true);
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
-		if($language) {
-			VmConfig::loadJLang('com_virtuemart', true, $language);
-			VmConfig::loadJLang('com_virtuemart_shoppers', TRUE, $language);
-			VmConfig::loadJLang('com_virtuemart_orders', TRUE, $language);
-			vmdebug('With order language ', $language);
-			vmTrace('loadOrderLanguages');
+	static public function loadOrderLanguages($language = 0){
+		static $c = array();
+		static $lastLangTag = 0;
+		if(!isset($c[$language]) or $language!=$lastLangTag){
+			VmConfig::loadJLang('com_virtuemart',true);
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+			if($language) {
+				VmConfig::loadJLang('com_virtuemart', true, $language, true);
+				VmConfig::loadJLang('com_virtuemart_shoppers', TRUE, $language, true);
+				VmConfig::loadJLang('com_virtuemart_orders', TRUE, $language, true);
+				//vmTrace('loadOrderLanguages '.$language);
+			}
 		}
-
 	}
 
 	/**

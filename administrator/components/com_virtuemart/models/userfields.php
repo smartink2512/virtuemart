@@ -61,7 +61,6 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$this->_selectedOrdering = 'ordering';
 		$this->_selectedOrderingDir = 'ASC';
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	}
 
 
@@ -743,6 +742,20 @@ class VirtueMartModelUserfields extends VmModel {
 	 * </pre>
 	 */
 	public function getUserFieldsFilled($_selection, &$_userDataIn = null, $_prefix = ''){
+
+		static $lastLangTag = 0;
+		$langTag = 0;
+		$useCache = true;
+		if(!empty($_userDataIn->order_language)){
+			$langTag = $_userDataIn->order_language;
+			if($lastLangTag!=$langTag){
+				$useCache = false;
+			}
+		}
+
+		$lastLangTag = $langTag;
+
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE,$langTag,$useCache);
 
 		//We copy the input data to prevent that objects become arrays
 		if(empty($_userDataIn)){

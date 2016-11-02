@@ -762,16 +762,17 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false,$tag=0){
+	static public function loadJLang($name, $site = false, $tag = 0, $cache = true){
 
 		$jlang = JFactory::getLanguage();
 
-		if(empty($tag))$tag = $jlang->getTag();
-
 		static $loaded = array();
-		if(isset($loaded[(int)$site.$tag.$name])){
-			vmdebug('lang already cached '.$site.$tag.$name);
-			return $jlang;
+		if($cache and empty($tag)){
+			$tag = $jlang->getTag();
+			if(isset($loaded[(int)$site.$tag.$name])){
+				vmdebug('lang already cached '.$site.$tag.$name);
+				return $jlang;
+			}
 		}
 
 		$path = $basePath = VMPATH_ADMIN;
