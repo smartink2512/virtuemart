@@ -238,7 +238,7 @@ class VirtuemartViewCategory extends VmView {
 						$productModel->addImages($this->products[$o],$imgAmount);
 					}
 				}
-				if($this->showproducts) {
+				if($this->showproducts or $keyword) {
 					// Load the products in the given category
 					$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
 					$this->vmPagination = $productModel->getPagination($this->perRow);

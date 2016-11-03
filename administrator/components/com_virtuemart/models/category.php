@@ -67,10 +67,15 @@ class VirtueMartModelCategory extends VmModel {
 		//$childs = (int)$childs;
   		if (empty($this->_cache[$this->_id][$childs])) {
    			$this->_cache[$this->_id][$childs] = $this->getTable('categories');
-   			$this->_cache[$this->_id][$childs]->load($this->_id);
+   			if(!empty($this->_id)){
+				$this->_cache[$this->_id][$childs]->load($this->_id);
 
-   			$xrefTable = $this->getTable('category_medias');
-   			$this->_cache[$this->_id][$childs]->virtuemart_media_id = $xrefTable->load((int)$this->_id);
+				$xrefTable = $this->getTable('category_medias');
+				$this->_cache[$this->_id][$childs]->virtuemart_media_id = $xrefTable->load((int)$this->_id);
+   			} else {
+				$this->_cache[$this->_id][$childs]->virtuemart_media_id = false;
+   			}
+
 
 			if($fe){
 				if(empty($this->_cache[$this->_id][$childs]->category_template)){

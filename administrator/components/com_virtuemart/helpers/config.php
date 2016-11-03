@@ -1416,12 +1416,20 @@ class vmAccess {
 
 class vmURI{
 
+	static function getGetUrl (){
+		$get = vRequest::getGet();
+		$url = 'index.php?';
+		foreach($get as $k => $v){
+			$url .= $k.'='.$v.'&';
+		}
+		$url = rtrim($url,'&');
+		$fUrl = vRequest::filterUrl($url);
+		return $fUrl;
+	}
+
 	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
 
-		if(!class_exists('JFilterInput')) require (VMPATH_LIBS.'/joomla/filter/input.php');
-		//$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		if($JURIInstance===0)$JURIInstance = JUri::getInstance();
-		//return $_filter->clean($JURIInstance->toString($parts));
 		return vRequest::filterUrl($JURIInstance->toString($parts));
 	}
 

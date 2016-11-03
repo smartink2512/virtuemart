@@ -803,7 +803,7 @@ class vmrouterHelper {
 			// if language switcher we must know the $query
 			$this->query = $query;
 
-
+			VmModel::getModel('product');
 		}
 
 	}
@@ -972,6 +972,7 @@ class vmrouterHelper {
 			if($this->use_seo_suffix){
 				$suffix = $this->seo_sufix;
 			}
+
 			$checkedProductKey= VirtueMartModelProduct::checkIfCached($id);
 			if($checkedProductKey[0]){
 				if(VirtueMartModelProduct::$_products[$checkedProductKey[1]]===false){
@@ -1004,7 +1005,6 @@ class vmrouterHelper {
 		static $parProdCat= array();
 		static $catPar = array();
 		if(!isset($parProdCat[$id])){
-			$pm = VmModel::getModel('product');
 			$parent_id = VirtueMartModelProduct::getProductParentId($id);
 
 			//If product is child then get parent category ID
