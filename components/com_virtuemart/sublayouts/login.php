@@ -27,7 +27,7 @@ if (!isset( $this->order )) $this->order = FALSE ;
 
 
 if (empty($this->url)){
-	$url = vmURI::getCleanUrl();
+	$url = vmURI::getGetUrl(true);
 } else{
 	$url = $this->url;
 }

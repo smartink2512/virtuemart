@@ -25,11 +25,9 @@ JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets
 ?>
 
 <?php
-$url = vmURI::getCleanUrl();
-$cancelUrl = $url.'?task=cancel';
-if(!JFactory::getConfig()->get('sef',0)){
-	$cancelUrl = $url.'&task=cancel';
-}
+$url = vmURI::getGetUrl();
+$cancelUrl = JRoute::_($url.'&task=cancel');
+$url = JRoute::_($url);
 ?>
 
 <h1><?php echo $this->page_title ?></h1>

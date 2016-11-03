@@ -45,7 +45,7 @@ JHtml::_ ('behavior.formvalidation');
 
 
 	<?php
-	$uri = vmURI::getCleanUrl();
+	$uri = vmURI::getGetUrl(true);
 	$uri = str_replace(array('?tmpl=component','&tmpl=component'),'',$uri);
 	echo shopFunctionsF::getLoginForm ($this->cart, FALSE,$uri);
 

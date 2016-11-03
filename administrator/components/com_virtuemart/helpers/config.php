@@ -1421,15 +1421,28 @@ class vmAccess {
 
 class vmURI{
 
-	static function getGetUrl (){
-		$get = vRequest::getGet();
+	static function getGetUrl ($route = false){
+		$get = vRequest::getGet(FILTER_SANITIZE_URL);
+		//vmdebug('my get',$get);
 		$url = 'index.php?';
 		foreach($get as $k => $v){
-			$url .= $k.'='.$v.'&';
+			$k = vRequest::filterUrl($k);
+			if(is_array($v)){
+				foreach($v as $ka => $va){
+					$url .= $k.'['.vRequest::filterUrl($ka).']='.vRequest::filterUrl($va).'&';
+				}
+
+			} else {
+				$url .= $k.'='.vRequest::filterUrl($v).'&';
+			}
+
 		}
 		$url = rtrim($url,'&');
-		$fUrl = vRequest::filterUrl($url);
-		return $fUrl;
+		if ($route){
+			$url = JRoute::_($url);
+		}
+		vmdebug('getGetUrl',$url);
+		return $url;
 	}
 
 	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
