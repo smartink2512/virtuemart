@@ -2520,6 +2520,13 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 
 		$getArray = vRequest::getGet(FILTER_SANITIZE_STRING);
 
+		if (!isset($getArray['view'])) {
+			$getArray['view'] = 'category';
+		}
+		if (!isset($getArray['virtuemart_category_id'])) {
+			$getArray['virtuemart_category_id'] = 0;
+		}
+
 		$fieldLink = '';
 
 		$Itemid = '';
@@ -2588,13 +2595,13 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 			}
 
 			if (count ($manufacturers) > 0) {
-				$manufacturerLink = '<div class="orderlist">';
-				if ($virtuemart_manufacturer_id > 0) {
-					$allLink = str_replace($manufacturerTxt,$fieldLink,'');
-					$allLink .= '&virtuemart_manufacturer_id=0';
-					$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($allLink . $orderbyTxt . $orderDirLink , FALSE) . '">' . vmText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
-				}
 				if (count ($manufacturers) > 1) {
+					$manufacturerLink = '<div class="orderlist">';
+					if ($virtuemart_manufacturer_id > 0) {
+						$allLink = str_replace($manufacturerTxt,$fieldLink,'');
+						$allLink .= '&virtuemart_manufacturer_id=0';
+						$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($allLink . $orderbyTxt . $orderDirLink , FALSE) . '">' . vmText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
+					}
 					foreach ($manufacturers as $mf) {
 						$l = str_replace($manufacturerTxt,'',$fieldLink) . '&virtuemart_manufacturer_id=' . $mf->virtuemart_manufacturer_id . $orderbyTxt . $orderDirLink . $Itemid;
 						$link = JRoute::_ ($l,FALSE);
@@ -2605,6 +2612,7 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 							$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . $mf->mf_name . '</div>';
 						}
 					}
+					$manufacturerLink .= '</div>';
 				}
 				elseif ($virtuemart_manufacturer_id > 0) {
 					$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . $manufacturers[0]->mf_name . '</div>';
@@ -2612,7 +2620,6 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 				else {
 					$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="Order"> ' . $manufacturers[0]->mf_name . '</div>';
 				}
-				$manufacturerLink .= '</div>';
 			}
 		}
 
@@ -2687,7 +2694,7 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 		$orderByList .= $orderByLink . '</div>';
 
 		$manuList = '';
-		if (VmConfig::get ('show_manufacturers')) {
+		if (VmConfig::get ('show_manufacturers') && count ($manufacturers) > 0) {
 			if (empty ($currentManufacturerLink)) {
 				$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . vmText::_ ('COM_VIRTUEMART_SEARCH_SELECT_MANUFACTURER') . '</div>';
 			}
