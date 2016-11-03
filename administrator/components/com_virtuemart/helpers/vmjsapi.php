@@ -88,7 +88,7 @@ class vmJsApi{
 	 * @param bool $defer	http://peter.sh/experiments/asynchronous-and-deferred-javascript-execution-explained/
 	 * @param bool $async
 	 */
-	public static function addJScript($name, $script = false, $defer = true, $async = false, $inline = false, $ver = VM_REV){
+	public static function addJScript($name, $script = false, $defer = true, $async = false, $inline = false, $ver = 0){
 		self::$_jsAdd[$name]['script'] = trim($script);
 		self::$_jsAdd[$name]['defer'] = $defer;
 		self::$_jsAdd[$name]['async'] = $async;
@@ -147,7 +147,11 @@ class vmJsApi{
 					}
 				} else {
 					$ver = '';
-					if(!empty($jsToAdd['ver'])) $ver = '?vmver='.$jsToAdd['ver'];
+					if($jsToAdd['ver']===0){
+						$ver = '?vmver='.VM_JS_VER;
+					} else if(!empty($jsToAdd['ver'])) {
+						$ver = '?vmver='.$jsToAdd['ver'];
+					}
 
 					$document->addScript( $file .$ver,"text/javascript",$jsToAdd['defer'],$jsToAdd['async'] );
 				}

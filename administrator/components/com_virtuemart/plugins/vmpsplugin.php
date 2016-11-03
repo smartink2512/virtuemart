@@ -489,7 +489,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 			$useJLback = false;
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
+				$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
 				$useJLback = true;
 			}
 

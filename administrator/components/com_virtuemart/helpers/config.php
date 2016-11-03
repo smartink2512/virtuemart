@@ -127,8 +127,12 @@ class vmDefines {
 		defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
 
 
+
 		if(!class_exists('vmVersion')) require(VMPATH_ADMIN.'/version.php');
 		defined('VM_REV') or define('VM_REV',vmVersion::$REVISION);
+
+		$v = hash('crc32b',(VMPATH_ROOT.VM_REV));
+		defined('VM_JS_VER') or define('VM_JS_VER', $v);
 
 		if(!class_exists('vRequest')) require(VMPATH_ADMIN .'/helpers/vrequest.php');
 		if(!class_exists('vmText')) require(VMPATH_ADMIN .'/helpers/vmtext.php');
@@ -1031,7 +1035,8 @@ class VmConfig {
 
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
-		if(self::$jDefLang = self::get('vmDefLang',false)){
+		self::$jDefLang = self::get('vmDefLang',false);
+		if(self::$jDefLang){
 			self::$jDefLang = strtolower(strtr(self::$jDefLang,'-','_'));
 		} else {
 			self::$jDefLang = strtolower(strtr($defaultLang,'-','_'));
