@@ -220,22 +220,28 @@ class VirtuemartViewCategory extends VmView {
 			$imgAmount = VmConfig::get('prodimg_browse',1);
 			$dynamic = vRequest::getInt('dynamic',false);
 
+			$legacy = VmConfig::get('legacylayouts',false);
 			if ($dynamic) {
 
 				$id = vRequest::getInt('virtuemart_product_id',false);
 				$p = $productModel->getProduct ($id);
 				$this->products['0'][] = $p;
 				$productModel->addImages($this->products['0'], $imgAmount );
-
+				$this->orderByList = array('orderby' => '', 'manufacturer' => '');
+				if($legacy) {
+					$this->vmPagination = $productModel->getPagination($this->perRow);
+				}
 			} else {
 
-				$opt = array('featured','discontinued','latest','topten','recent');
-				foreach($opt as $o){
+				if(!$legacy) {
+					$opt = array('featured', 'discontinued', 'latest', 'topten', 'recent');
+					foreach( $opt as $o ) {
 
-					//Lets check, if we use the new Frontpages settings
-					if(!empty($this->$o) and !empty($this->{$o.'_rows'})){
-						$this->products[$o] = $productModel->getProductListing($o, $this->perRow * $this->{$o.'_rows'});
-						$productModel->addImages($this->products[$o],$imgAmount);
+						//Lets check, if we use the new Frontpages settings
+						if(!empty($this->$o) and !empty($this->{$o.'_rows'})) {
+							$this->products[$o] = $productModel->getProductListing( $o, $this->perRow*$this->{$o.'_rows'} );
+							$productModel->addImages( $this->products[$o], $imgAmount );
+						}
 					}
 				}
 				if($this->showproducts or $keyword) {

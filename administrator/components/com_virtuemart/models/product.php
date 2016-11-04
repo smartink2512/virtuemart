@@ -570,7 +570,7 @@ class VirtueMartModelProduct extends VmModel {
 					$where[] = 'pp.`product_price`>"0.0" ';
 					break;
 				case 'recent':
-					$rIds = shopFunctionsF::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
+					$rIds = self::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
 					return $rIds;
 			}
 			// 			$joinCategory 	= false ; //creates error
@@ -1647,7 +1647,7 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 			$this->virtuemart_category_id = FALSE;
 		}
 		if($group == 'recent'){
-			$ids = shopFunctionsF::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
+			$ids = self::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
 		} else {
 			$ids = $this->sortSearchListQuery ($onlyPublished, $this->virtuemart_category_id, $group, $nbrReturnProducts);
 			if($ids){
@@ -3100,6 +3100,44 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 			$shoppers[$key]['nb_orders']++;
 		}
 		return $shoppers;
+	}
+
+	/**
+	 *
+	 * @author Max Milbers
+	 */
+	static public function addProductToRecent ($productId) {
+
+		$session = JFactory::getSession();
+		$products_ids = $session->get( 'vmlastvisitedproductids', array(), 'vm' );
+		$key = array_search( $productId, $products_ids );
+		if($key !== FALSE) {
+			unset($products_ids[$key]);
+		}
+		array_unshift( $products_ids, $productId );
+		$products_ids = array_unique( $products_ids );
+
+		$maxSize = (int)VmConfig::get('max_recent_products', 10);
+		if(count( $products_ids )>$maxSize) {
+			array_splice( $products_ids, $maxSize );
+		}
+
+		return $session->set( 'vmlastvisitedproductids', $products_ids, 'vm' );
+	}
+
+	/**
+	 * Gives ids the recently by the shopper visited products
+	 *
+	 * @author Max Milbers
+	 */
+	static public function getRecentProductIds ($nbr = 3) {
+
+		$session = JFactory::getSession();
+		$ids = $session->get( 'vmlastvisitedproductids', array(), 'vm' );
+		if(count( $ids )>$nbr) {
+			array_splice( $ids, $nbr );
+		}
+		return $ids;
 	}
 }
 // No closing tag

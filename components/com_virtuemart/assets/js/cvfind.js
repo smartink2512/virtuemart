@@ -27,14 +27,26 @@ Virtuemart.findContainers = function(event){
 
 	runs=0;
 	var cl = 'product-container';
+	var byL = Virtuemart.containerSelector;
 	Virtuemart.containerSelector = '.'+cl;
 	while(!Virtuemart.container.hasClass(cl) && runs<=maxruns){
 		Virtuemart.container = Virtuemart.container.parent();
 		runs++;
 	}
 	if(runs>maxruns){
-		console.log('CV: Could not find product-container');
-		return false;
+		Virtuemart.container = container;
+		Virtuemart.containerSelector = byL;
+		cl = Virtuemart.containerSelector.substring(1);
+		runs = 0;
+		while(!Virtuemart.container.hasClass(cl) && runs<=maxruns){
+			Virtuemart.container = Virtuemart.container.parent();
+			runs++;
+		}
+		if(runs>maxruns){
+			console.log('CV: Could not find product-container '+byL,container);
+			return false;
+		}
+
 	}
 	return container;
 }
