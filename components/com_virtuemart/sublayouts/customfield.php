@@ -90,7 +90,7 @@ class VirtueMartCustomFieldRenderer {
 
 					$q = 'SELECT `virtuemart_product_id` FROM #__virtuemart_products WHERE product_parent_id = "'.$customfield->virtuemart_product_id.'" and ( published = "0" ';
 					if($stockhandle == 'disableit'){
-						$q .= ' AND (`product_in_stock` - `product_ordered`) > "0"';
+						$q .= ' AND (`product_in_stock` - `product_ordered`) <= "0"';
 					}
 					$q .= ');';
 					$db = JFactory::getDbo();
