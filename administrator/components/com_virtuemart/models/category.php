@@ -705,36 +705,45 @@ class VirtueMartModelCategory extends VmModel {
 		$select = 'SELECT `virtuemart_category_id`, `category_name`';
 		$method = 'FROM';
 		$joins = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l';
-		$where = 'WHERE `virtuemart_category_id`= ';
+		$wpre = '';
 		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-			$langFields = array('category_name');
+			$langFields = array('virtuemart_category_id','category_name');
 
 			$useJLback = false;
 			$joins = '';
 			$as='as ld';
+			$wpre = 'ld.';
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
 				$joins = ' FROM `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd';
 				$method = ' LEFT JOIN';
 				$as .= ' ON ld.`virtuemart_category_id`= ljd.`virtuemart_category_id` ';
 				$useJLback = true;
+				$wpre = 'ljd.';
 			}
-			$select = 'SELECT `virtuemart_category_id`';
+			$select = 'SELECT ';
+
+			$c = '';
 			foreach($langFields as $langField){
 				$expr2 = 'ld.'.$langField;
 				if($useJLback){
 					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
 				}
-				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+				$select .= $c.' IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+				$c = ',';
 			}
 			$joins .= ' '.$method.' `#__virtuemart_categories_'.VmConfig::$defaultLang.'` '.$as;
 			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id`= ld.`virtuemart_category_id` ';
 
 		}
 
+		$where = 'WHERE '.$wpre.'`virtuemart_category_id`= ';
 		$q = $select.' '.$joins.' '.$where;
 
 		foreach ($parents_id as $id ) {
 			$db->setQuery($q.(int)$id);
+			if($db->getErrorMsg()){
+				vmError('Error in sql ',$db->getErrorMsg());
+			}
 			$parents[] = $db->loadObject();
 		}
 		return $parents;

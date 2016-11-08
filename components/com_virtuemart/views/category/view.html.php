@@ -138,7 +138,7 @@ class VirtuemartViewCategory extends VmView {
 				'showcategory' => VmConfig::get('showCategory',1),
 				'categories_per_row' => VmConfig::get('categories_per_row',3),
 				'showproducts' => VmConfig::get('showproducts',1),
-				'showsearch' => VmConfig::get('showsearch',1),
+				'showsearch' => VmConfig::get('showsearch',0),
 				'productsublayout' => VmConfig::get('productsublayout', 0),
 				'products_per_row' => VmConfig::get('products_per_row', 3),
 				'featured' => VmConfig::get('show_featured',1),
@@ -399,12 +399,11 @@ class VirtuemartViewCategory extends VmView {
 
 			vmJsApi::jPrice();
 
-			$this->productsLayout = VmConfig::get('productsublayout','products');
+			$this->productsLayout = 'products'; //VmConfig::get('productsublayout','products');
 			if(!empty($this->productsublayout)){
 				$this->productsLayout = $this->productsublayout;
-			} else if(empty($this->productsLayout)){
-				$this->productsLayout = 'products';
 			}
+
 
 			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		} else {

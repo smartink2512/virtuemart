@@ -20,10 +20,11 @@
     <fields name="params" addfieldpath="/administrator/components/com_virtuemart/fields">
         <fieldset name="DISPLAY" >
 
-            <field name="storefront" type="radio" default="0"
+            <field name="storefront" type="radio" default=""
                    label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_STOREFRONT"
                    extension="com_virtuemart"
                    description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_STOREFRONT_DESC" >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>

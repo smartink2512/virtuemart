@@ -144,7 +144,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				}
 				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 			}
-			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$defaultLang.'` as ON ld.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
+			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
 			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
 		} else {
 			$select = ' * ';

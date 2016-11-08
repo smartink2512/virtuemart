@@ -464,6 +464,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	protected function getPluginMethods ($vendorId) {
 
+		if(!empty($this->methods)) {
+			return count($this->methods);
+		}
 		$usermodel = VmModel::getModel ('user');
 		$user = $usermodel->getUser ();
 		$user->shopper_groups = (array)$user->shopper_groups;
@@ -523,8 +526,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		$q .= ' (s.`virtuemart_shoppergroup_id`) IS NULL ) GROUP BY i.`virtuemart_' . $this->_psType . 'method_id` ORDER BY i.`ordering`';
 
-		$db->setQuery ($q);
 
+		$db->setQuery ($q);
 		$this->methods = $db->loadObjectList ();
 
 		if ($this->methods) {
@@ -534,7 +537,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		} else if($this->methods===false){
 			vmError ('Error reading getPluginMethods ' . $q);
 		}
-		return count ($this->methods);
+
+		return count($this->methods);
 	}
 
 	/**
@@ -851,6 +855,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		foreach ($this->methods as $method) {
 			if ($nb = (int)$this->checkConditions ($cart, $method, $cart_prices)) {
+
 				$nbMethod = $nbMethod + $nb;
 				$idName = $this->_idName;
 				$method_id = $method->$idName;

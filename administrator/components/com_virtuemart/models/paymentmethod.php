@@ -143,7 +143,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				}
 				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
 			}
-			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$defaultLang.'` as ON ld.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
+			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
 			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
 		} else {
 			$select = ' * ';
