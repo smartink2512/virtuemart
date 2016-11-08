@@ -35,7 +35,7 @@ AdminUIHelper::startAdminArea($this);
 				<?php echo $this->sort('l.shipment_name', 'COM_VIRTUEMART_SHIPMENT_NAME_LBL'); ?>
 			</th>
                         <th>
-				<?php echo vmText::_('l.COM_VIRTUEMART_SHIPMENT_LIST_DESCRIPTION_LBL'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_SHIPMENT_LIST_DESCRIPTION_LBL'); ?>
 			</th>
                         <th width="20">
 				<?php echo vmText::_('COM_VIRTUEMART_SHIPPING_SHOPPERGROUPS'); ?>

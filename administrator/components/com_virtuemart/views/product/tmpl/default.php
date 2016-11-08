@@ -88,7 +88,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
 		$num_rows = 0;
-		if( $this->virtuemart_category_id ) { ?>
+		if( $this->categoryId ) { ?>
 			<th style="min-width:100px;width:5%;">
 				<?php echo $this->sort('pc.ordering', 'COM_VIRTUEMART_FIELDMANAGER_REORDER'); ?>
 				<?php echo JHtml::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
@@ -176,7 +176,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 					echo $product->categoriesList;
 				?></td>
 				<!-- Reorder only when category ID is present -->
-				<?php if ($this->virtuemart_category_id ) { ?>
+				<?php if ($this->categoryId ) { ?>
 					<td class="order" >
 						<span class="vmicon vmicon-16-move"></span>
 						<span><?php echo $this->pagination->vmOrderUpIcon( $i, $product->ordering, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP')  ); ?></span>
@@ -230,7 +230,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 
 // DONE BY stephanbais
 /// DRAG AND DROP PRODUCT ORDER HACK
-if ($this->virtuemart_category_id ) { ?>
+if ($this->categoryId ) { ?>
 	<script>
 		jQuery(function() {
 

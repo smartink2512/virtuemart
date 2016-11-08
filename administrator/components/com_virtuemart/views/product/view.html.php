@@ -378,7 +378,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			VmJsApi::chosenDropDowns();
 
 			//Get the category tree
-			$this->categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
+			$this->virtuemart_category_id=$this->categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
+
 			$category_tree = '';// ShopFunctions::categoryListTree(array($this->categoryId));
 			$this->assignRef('category_tree', $category_tree);
 			$this->ajaxCategoryDropDown('virtuemart_category_id');
@@ -477,7 +478,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 
 			$this->assignRef('productlist', $productlist);
-			$this->assignRef('virtuemart_category_id', $categoryId);
+
 			$this->assignRef('model', $model);
 
 			break;

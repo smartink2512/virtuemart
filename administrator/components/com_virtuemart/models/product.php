@@ -991,7 +991,12 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			//$child->allIds[] = $child->product_parent_id;
 			if(!empty($child->product_parent_id)) $child->allIds[] = $child->product_parent_id;
-			$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity);
+
+			$withPrice = true;
+			if(isset($child->selectedPrice)){
+				$withPrice = false;
+			}
+			$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity, false, 0, $withPrice);
 			if ($child->product_parent_id === $parentProduct->product_parent_id) {
 				vmError('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
 				vmTrace('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
@@ -1023,10 +1028,11 @@ class VirtueMartModelProduct extends VmModel {
 		$child->virtuemart_product_id = $pId;
 		$child->product_parent_id = $ppId;
 
-if(!isset($child->selectedPrice) or empty($child->allPrices)){
-				$child->selectedPrice = 0;
-				$child->allPrices[$child->selectedPrice] = $this->fillVoidPrice();
-			}
+		if(!isset($child->selectedPrice) or empty($child->allPrices)){
+			$child->selectedPrice = 0;
+			$child->allPrices[$child->selectedPrice] = $this->fillVoidPrice();
+		}
+
 		if ($withCalc) {
 			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
 			$child->prices = $child->allPrices[$child->selectedPrice];
@@ -1155,7 +1161,7 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 
 		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
 		$product->allPrices = $this->loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front);
-
+		vmdebug('getRawProductPrices prices '.$productId,$product->allPrices);
 		$i = 0;
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
@@ -1244,13 +1250,14 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 
 	}
 
-	static public function checkIfCachedSingle($virtuemart_product_id, $front = NULL, $quantity = 1, $withParent=false,$virtuemart_shoppergroup_ids=0){
+	static public function checkIfCachedSingle($virtuemart_product_id, $front = NULL, $quantity = 1, $withParent=false,$virtuemart_shoppergroup_ids=0, $prices = true){
 
 		if(!isset($front) and isset(self::$_cacheOptSingle[$virtuemart_product_id])){
 			$front = self::$_cacheOptSingle[$virtuemart_product_id]->front;
 			$withParent = self::$_cacheOptSingle[$virtuemart_product_id]->withParent;
 			$quantity = self::$_cacheOptSingle[$virtuemart_product_id]->quantity;
 			$virtuemart_shoppergroup_ids = self::$_cacheOptSingle[$virtuemart_product_id]->virtuemart_shoppergroup_ids;
+			$prices = self::$_cacheOptSingle[$virtuemart_product_id]->prices;
 		} else {
 
 			//$virtuemart_shoppergroup_ids = 0;
@@ -1260,19 +1267,19 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 
 			$front = $front?TRUE:0;
 			$withParent = $withParent?TRUE:0;
-
+			$prices = $prices?TRUE:0;
 			$opt = new stdClass();
 			$opt->virtuemart_product_id = (int)$virtuemart_product_id;
 			$opt->front = $front;
 			$opt->withParent = $withParent;
 			$opt->quantity = (int)$quantity;
 			$opt->virtuemart_shoppergroup_ids = $virtuemart_shoppergroup_ids;
-
+			$opt->prices = $prices;
 			self::$_cacheOptSingle[$virtuemart_product_id] = $opt;
 		}
 
 
-		$productKey = $virtuemart_product_id.':'.$virtuemart_shoppergroup_ids.':'.$quantity.':'.$front;
+		$productKey = $virtuemart_product_id.':'.$virtuemart_shoppergroup_ids.':'.$quantity.':'.$front.':'.$prices;
 
 		if (array_key_exists ($productKey, self::$_productsSingle)) {
 			//vmdebug('getProduct, take from cache : '.$productKey);
@@ -1292,7 +1299,7 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 	var $withRating = false;
 	static $_productsSingle = array();
 
-	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1, $withParent=false,$virtuemart_shoppergroup_ids=0) {
+	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1, $withParent=false,$virtuemart_shoppergroup_ids=0, $prices = true) {
 
 		if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
@@ -1312,7 +1319,7 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 			}
 		}
 
-		$checkedProductKey = $this->checkIfCachedSingle($virtuemart_product_id, $front, $quantity, $withParent, $virtuemart_shoppergroup_ids);
+		$checkedProductKey = $this->checkIfCachedSingle($virtuemart_product_id, $front, $quantity, $withParent, $virtuemart_shoppergroup_ids, $prices);
 		if($checkedProductKey[0]){
 			if(self::$_productsSingle[$checkedProductKey[1]]===false){
 				return false;
@@ -1353,7 +1360,9 @@ if(!isset($child->selectedPrice) or empty($child->allPrices)){
 
 			//We prestore the result, so we can directly load the product parent id by cache
 			self::$_productsSingle[$productKey] = $product;
-			$this->getRawProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front,$withParent);
+
+			if($prices) $this->getRawProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front,$withParent);
+
 
 			$xrefTable = $this->getTable ('product_manufacturers');
 			$product->virtuemart_manufacturer_id = $xrefTable->load ((int)$this->_id);
