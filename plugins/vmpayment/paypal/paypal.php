@@ -179,6 +179,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'template' => array('', 'char'),
 			'add_prices_api' => array('', 'int'),
 
+			'noStandardChoice' => array('1','int')
 		);
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
@@ -1332,6 +1333,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 				$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod);
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
+
+				if ($this->_currentMethod->noStandardChoice and $this->_currentMethod->payment_type=='_xclick'){
+					continue;
+				}
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);
 
 

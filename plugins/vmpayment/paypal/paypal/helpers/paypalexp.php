@@ -747,7 +747,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$addressST['shipto_address_1'] = $this->response['SHIPTOSTREET'];
 		$addressST['shipto_city'] = $this->response['SHIPTOCITY'];
 		$addressST['shipto_zip'] = $this->response['SHIPTOZIP'];
-		$addressST['shipto_virtuemart_state_id'] = ShopFunctions::getStateIDByName($this->response['SHIPTOSTATE']);
+		$addressST['shipto_virtuemart_state_id'] = !empty($this->response['SHIPTOSTATE'])? ShopFunctions::getStateIDByName($this->response['SHIPTOSTATE']): '';
 		$addressST['shipto_virtuemart_country_id'] = ShopFunctions::getCountryIDByName($this->response['SHIPTOCOUNTRYCODE']);
 		$this->cart->STsameAsBT = 0;
 		$this->cart->setCartIntoSession();

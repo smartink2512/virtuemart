@@ -144,11 +144,14 @@ class VirtuemartControllerProduct extends VmController {
 		$cids = vRequest::getInt($this->_cidName, vRequest::getint('virtuemart_product_id',false));
 		if(!is_array($cids) and $cids > 0){
 			$cids = array($cids);
+		} else {
+			$cids = array_unique($cids);
 		}
 		$target = vRequest::getCmd('target',false);
 
 		$msgtype = 'info';
 		foreach($cids as $cid){
+			$cid = (int) $cid;
 			if ($id=$model->createChild($cid)){
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
 
@@ -292,9 +295,10 @@ class VirtuemartControllerProduct extends VmController {
 		$msgtype = '';
 
 		$cids = vRequest::getInt($this->_cidName, vRequest::getInt('virtuemart_product_id'));
-
+		$cids = array_unique($cids);
 		foreach($cids as $cid){
-			if ($model->createClone($cid)) {
+			$cid = (int) $cid;
+			if ($cid and $model->createClone($cid)) {
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
 			} else {
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');

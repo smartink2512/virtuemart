@@ -83,6 +83,7 @@ function virtuemartBuildRoute(&$query) {
 			if ( !empty($query['virtuemart_manufacturer_id'])  ) {
 				$segments[] = $helper->lang('manufacturer').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
 				//unset($query['virtuemart_manufacturer_id']);
+				vmdebug('category',$segments,$query['virtuemart_manufacturer_id']);
 			}
 			if ( isset($query['search'])  ) {
 				$segments[] = $helper->lang('search') ;
@@ -802,6 +803,8 @@ class vmrouterHelper {
 			$this->edit = ('edit' == vRequest::getCmd('task') or vRequest::getInt('manage')=='1');
 			// if language switcher we must know the $query
 			$this->query = $query;
+
+			$this->langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
 		}
 
 	}
@@ -1114,8 +1117,24 @@ class vmrouterHelper {
 		if(empty($manId)) return false;
 		if(!isset($manNamesCache[$manId])){
 			$db = JFactory::getDBO();
-			$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` WHERE virtuemart_manufacturer_id='.(int)$manId;
-			$db->setQuery($query);
+			$s = '`slug`';
+			$from = 'FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ';
+			$pre = 'l';
+			if($this->langFback){
+				$s2 = 'ld.`slug`';
+				$pre = 'ld';
+				$from .= ' RIGHT JOIN `#__virtuemart_manufacturers_' .VmConfig::$defaultLang . '` as ld ON (l.`virtuemart_manufacturer_id`=ld.`virtuemart_manufacturer_id`)';
+
+				if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+					$s2 = 'IFNULL(ld.`slug`, ljd.`slug`)';
+					$pre = 'ljd';
+					$from .= ' RIGHT JOIN `#__virtuemart_manufacturers_' .VmConfig::$jDefLang . '` as ljd ON (l.`virtuemart_manufacturer_id`=ljd.`virtuemart_manufacturer_id`)';
+				}
+				$s = 'IFNULL(l.`slug`,'.$s2.') as slug';
+			}
+			//$query = 'SELECT '.$s.' FROM '.$from.' WHERE '.$pre.'.virtuemart_manufacturer_id='.(int)$manId;
+			$q = 'SELECT '.$s.' '.$from.' WHERE '.$pre.'.virtuemart_manufacturer_id='.(int)$manId;;
+			$db->setQuery($q);
 			$manNamesCache[$manId] = $db->loadResult();
 		}
 
@@ -1126,9 +1145,20 @@ class vmrouterHelper {
 	/* Get Manufacturer id */
 	public function getManufacturerId($slug ){
 		$db = JFactory::getDBO();
-		$query = "SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_".VmConfig::$vmlang."` WHERE `slug` LIKE '".$db->escape($slug)."' ";
-		$db->setQuery($query);
 
+		$s = '`virtuemart_manufacturer_id`';
+		$from = 'FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ';
+		$where = 'l.slug';
+		if($this->langFback){
+			$s2 = 'ld.`virtuemart_manufacturer_id`';
+			$s = 'IFNULL(l.`virtuemart_manufacturer_id`,'.$s2.') as virtuemart_manufacturer_id';
+
+			$from .= ' RIGHT JOIN `#__virtuemart_manufacturers_' .VmConfig::$defaultLang . '` as ld ON (l.`virtuemart_manufacturer_id`=ld.`virtuemart_manufacturer_id`)';
+
+			$where = 'IFNULL(l.slug,ld.slug)';
+		}
+		$q = 'SELECT '.$s.' '.$from.' WHERE '.$where.' LIKE "'.$db->escape($slug).'"';
+		$db->setQuery($q);
 		return $db->loadResult();
 
 	}
@@ -1164,10 +1194,15 @@ class vmrouterHelper {
 			//vmdebug('Found cached menu',$h.$this->Itemid);
 			return;
 		}
+		$user = JFactory::getUser();
+		$auth = array_unique($user->getAuthorisedViewLevels());
+		//$auth = $user->getAuthorisedViewLevels();
+		//vmdebug('my auth',$auth);
+		$andAccess = ' AND ( access="' . implode ('" OR access="', $auth) . '" ) ';;
 
 		$db			= JFactory::getDBO();
 
-		$q = 'SELECT * FROM `#__menu` WHERE `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.$jLangTag.'" ) ';
+		$q = 'SELECT * FROM `#__menu` WHERE `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.$jLangTag.'" )'.$andAccess;
 
 		if($this->byMenu === 1 and !empty($this->Itemid)) {
 			$q .= ' and `menutype` = (SELECT `menutype` FROM `#__menu` WHERE `id` = "'.$this->Itemid.'") ';

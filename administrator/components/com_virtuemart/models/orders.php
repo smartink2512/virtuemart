@@ -129,84 +129,63 @@ class VirtueMartModelOrders extends VmModel {
 		return 0 ;
 	}
 
-    /**
-     * This is a proxy function to return an order safely, we may set the getOrder function to private
-     * Maybe the right place would be the controller, cause there are JRequests in it. But for a fast solution,
-     * still better than to have it 3-4 times in the view.html.php of the views.
-     * @author Max Milbers
-     *
-     * @return array
-     */
+	/**
+	 * This is a proxy function to return an order safely, we may set the getOrder function to private
+	 * Maybe the right place would be the controller, cause there are JRequests in it. But for a fast solution,
+	 * still better than to have it 3-4 times in the view.html.php of the views.
+	 * @author Max Milbers
+	 *
+	 * @return array
+	 */
 	public function getMyOrderDetails($orderID = 0, $orderNumber = false, $orderPass = false, $userlang=false){
 
 		$_currentUser = JFactory::getUser();
 		$cuid = $_currentUser->get('id');
 
-		$orderDetails = false;
+		$virtuemart_order_id = vRequest::getInt('virtuemart_order_id',$orderID) ;
+		$orderNumber = vRequest::getString('order_number',$orderNumber);
 
-		// If the user is not logged in, we will check the order number and order pass
-		if(empty($cuid)){
-			$sess = JFactory::getSession();
-			$orderNumber = vRequest::getString('order_number',$orderNumber);
-			if(empty($orderNumber)) return false;
-
-			$tries = $sess->get('getOrderDetails.'.$orderNumber,0);
-
-			// If the user is not logged in, we will check the order number and order pass
-			if ($orderPass = vRequest::getString('order_pass',$orderPass)){
-				if($tries>5){
-					vmDebug ('Too many tries, Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
-					vmError ('Too many tries, Invalid order_number/password guest '.$orderNumber.' '.$orderPass , 'COM_VIRTUEMART_RESTRICTED_ACCESS');
-					return false;
-				}
-				$orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
-				if(empty($orderId)){
-					echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-					vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderNumber, $orderPass, $tries);
-					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
-					$tries++;
-					$sess->set('getOrderDetails.'.$orderNumber,$tries);
-					return false;
-				}
-				$orderDetails = $this->getOrder($orderId,$userlang);
-			}
+		$sess = JFactory::getSession();
+		$tries = $sess->get('getOrderDetails.'.$orderNumber.$virtuemart_order_id,0);
+		if($tries>5){
+			vmDebug ('Too many tries, Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
+			vmError ('Too many tries, Invalid order_number/password guest '.$orderNumber.' '.$orderPass , 'COM_VIRTUEMART_RESTRICTED_ACCESS');
+			return false;
 		}
-		else {
-			// If the user is logged in, we will check if the order belongs to him
-			$virtuemart_order_id = vRequest::getInt('virtuemart_order_id',$orderID) ;
-			$orderNumber = vRequest::getString('order_number');
-			if (!$virtuemart_order_id) {
+
+		//Extra check, when a user is logged in, else we use the guest method
+		if(!empty($cuid)){
+			if (!$virtuemart_order_id and $orderNumber) {
 				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($orderNumber);
 			}
-			$orderDetails = $this->getOrder($virtuemart_order_id,$userlang);
-
-			if(!vmAccess::manager('orders')){
-				if(empty($orderDetails['details']['BT']->virtuemart_user_id)) {
-					$sess = JFactory::getSession();
-					$orderNumber = vRequest::getString('order_number',$orderNumber);
-					$tries = $sess->get('getOrderDetails.'.$orderNumber,0);
-					if ($orderPass = vRequest::getString('order_pass',$orderPass)){
-						if($tries>5){
-							vmError ('Too many tries, Invalid order_number/password userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
-							return false;
-						}
-						if($orderDetails['details']['order_pass'] != $orderPass){
-							$tries++;
-							$sess->set('getOrderDetails.'.$orderNumber,$tries);
-							vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
-							return false;
-						} else {
-							//We could update the invoice with the userid to connect guest orders to the user
-						}
-					}
-				} else if($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-					vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by userid '.$cuid.' '.$virtuemart_order_id, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
-					return false;
+			if(!empty($virtuemart_order_id)){
+				$orderDetails = $this->getOrder($virtuemart_order_id,$userlang);
+				if($orderDetails['details']['BT']->virtuemart_user_id == $cuid or vmAccess::manager('orders')) {
+					$sess->set('getOrderDetails.'.$orderNumber.$virtuemart_order_id,0);
+					return $orderDetails;
 				}
 			}
 		}
-		return $orderDetails;
+
+		$orderPass = vRequest::getString('order_pass',$orderPass);
+
+		if (!empty($orderNumber) and !empty($orderPass)){
+
+			$orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
+			if($orderId){
+				$sess->set('getOrderDetails.'.$orderNumber.$virtuemart_order_id,0);
+				return $this->getOrder($orderId,$userlang);
+			}
+		}
+		$tries++;
+		$sess->set('getOrderDetails.'.$orderNumber.$virtuemart_order_id,$tries);
+
+		vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderNumber, $orderPass, $tries);
+		vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
+		echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+		return false;
 	}
+
 
 	/**
 	 * Load a single order, Attention, this function is not protected! Do the right manangment before, to be certain
