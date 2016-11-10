@@ -182,5 +182,28 @@ WHERE published="1"';
 		$revproxvar = VmConfig::get('revproxvar','');
 		if(!empty($revproxvar)) vmdebug('My server variable ',$_SERVER);
 	}
+
+	function rowShopFrontSet($label, $name, $name2 = 0, $name3 = 0, $defRow = 1){
+
+		$lang =JFactory::getLanguage();
+		if($lang->hasKey($label.'_TIP')){
+			$label = '<span class="hasTip" title="'.htmlentities(vmText::_($label.'_TIP')).'">'.vmText::_($label).'</span>' ;
+		} //Fallback
+		else if($lang->hasKey($label.'_EXPLAIN')){
+			$label = '<span class="hasTip" title="'.htmlentities(vmText::_($label.'_EXPLAIN')).'">'.vmText::_($label).'</span>' ;
+		} else {
+			$label = vmText::_($label);
+		}
+
+		$h = '<tr>';
+		$h .= '<td class="key">
+				'.$label.'
+			</td>';
+		$h .= '<td>'.VmHtml::checkbox($name, VmConfig::get($name, 1)).'</td>';
+		$h .= '<td>'.VmHtml::input($name2, VmConfig::get($name2, $defRow),'class="inputbox"','',4,4).'</td>';
+		if($name3 !== 0)$h .= '<td>'.VmHtml::checkbox($name3, VmConfig::get($name3, 0)).'</td>';
+		$h .= '</tr>';
+		return $h;
+	}
 }
 // pure php no closing tag

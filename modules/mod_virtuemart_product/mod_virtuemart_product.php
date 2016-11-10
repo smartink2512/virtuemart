@@ -67,7 +67,7 @@ $vendorId = vRequest::getInt('vendorid', 1);
 if ($filter_category ) $filter_category = TRUE;
 
 $productModel = VmModel::getModel('Product');
-
+VirtueMartModelProduct::$omitLoaded = $params->get( 'omitLoaded', 0);
 $products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id);
 $productModel->addImages($products);
 

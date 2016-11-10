@@ -27,23 +27,26 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC','show_store_desc', VmConfig::get('show_store_desc',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORYDESC', 'showcategory_desc', VmConfig::get('showcategory_desc', 1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_SEARCH', 'showsearch', VmConfig::get('showsearch', 1));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY', 'showCategory', VmConfig::get('showCategory', 1));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW', 'categories_per_row', VmConfig::get('categories_per_row', 3),'class="inputbox"','',4,4);
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS', 'showproducts', VmConfig::get('showproducts', 1));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW', 'products_per_row', VmConfig::get('products_per_row', 3),'class="inputbox"','',4,4);
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS', 'show_manufacturers', VmConfig::get('show_manufacturers', 1));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MANUFACTURER_PER_ROW', 'manufacturer_per_row', VmConfig::get('manufacturer_per_row', 3),'class="inputbox"','',4,4);
 
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED','show_featured', VmConfig::get('show_featured',1));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS','featured_products_rows', VmConfig::get('featured_products_rows',1),'',4,4);
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED','show_discontinued', VmConfig::get('show_discontinued',1));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_DISC_PROD_ROWS','discontinued_products_rows', VmConfig::get('discontinued_products_rows',1),'',4,4);
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN','show_topTen', VmConfig::get('show_topTen',1));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PROD_ROWS','topTen_products_rows', VmConfig::get('topTen_products_rows',1),'',4,4);
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT','show_recent', VmConfig::get('show_recent',0));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_REC_PROD_ROWS','recent_products_rows', VmConfig::get('recent_products_rows',1),'',4,4);
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST','show_latest', VmConfig::get('show_latest',1));
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_LAT_PROD_ROWS','latest_products_rows', VmConfig::get('latest_products_rows',1),'',4,4);
+		echo '<tr><td></td>
+<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_SHOW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_SHOW').'</span></td>
+<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_PER_ROWS_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_PER_ROWS').'</span></td>
+<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></td>
+</tr>';
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY', 'showCategory', 'categories_per_row', 0, 3);
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS', 'showproducts', 'products_per_row', 'omitLoaded', 3);
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS', 'show_manufacturers','manufacturer_per_row', 0, 3);
+
+		echo '<tr><td></td>
+<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_SHOW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_SHOW').'</span></td>
+<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_ROWS_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_ROWS').'</span></td>
+<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></td>
+</tr>';
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED', 'show_featured', 'featured_products_rows', 'omitLoaded');
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED', 'show_discontinued', 'discontinued_products_rows', 'omitLoaded_discontinued');
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN', 'show_topTen', 'topTen_products_rows', 'omitLoaded_topTen');
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT', 'show_recent', 'recent_products_rows', 'omitLoaded_recent');
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST', 'show_latest', 'latest_products_rows', 'omitLoaded_latest');
 		?>
 	</table>
 </fieldset>
@@ -85,14 +88,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_TITLE'); ?></legend>
 	<table class="admintable table-striped">
 		<?php
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH','assets_general_path',VmConfig::get('assets_general_path',''),'class="inputbox"','',60,260);
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH','media_category_path',VmConfig::get('media_category_path',''),'class="inputbox"','',60,260);
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH','media_product_path',VmConfig::get('media_product_path',''),'class="inputbox"','',60,260);
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH','media_manufacturer_path',VmConfig::get('media_manufacturer_path',''),'class="inputbox"','',60,260);
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_VENDOR_PATH','media_vendor_path',VmConfig::get('media_vendor_path',''),'class="inputbox"','',60,260);
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH','forSale_path',VmConfig::get('forSale_path',''),'class="inputbox"','',60,260);
-		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH_THUMB','forSale_path_thumb',VmConfig::get('forSale_path_thumb',''),'class="inputbox"','',60,260);
 
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_ADDITIONAL_IMAGES', 'add_img_main', VmConfig::get('add_img_main'));
 		if (function_exists('imagecreatefromjpeg')) {
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING', 'img_resize_enable', VmConfig::get('img_resize_enable', 1));
 			echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH', 'img_width', VmConfig::get('img_width', 90),"","",4);
@@ -109,7 +106,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE',$this->noimagelist, 'no_image_set', 'size=1', 'value', 'text', VmConfig::get('no_image_set'));
 		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND',$this->noimagelist, 'no_image_found', 'size=1', 'value', 'text', VmConfig::get('no_image_found'));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_ADDITIONAL_IMAGES', 'add_img_main', VmConfig::get('add_img_main'));
+
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH','forSale_path',VmConfig::get('forSale_path',''),'class="inputbox"','',50,260);
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH_THUMB','forSale_path_thumb',VmConfig::get('forSale_path_thumb',''),'class="inputbox"','',50,260);
+
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH','assets_general_path',VmConfig::get('assets_general_path',''),'class="inputbox"','',50,260);
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH','media_category_path',VmConfig::get('media_category_path',''),'class="inputbox"','',50,260);
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH','media_product_path',VmConfig::get('media_product_path',''),'class="inputbox"','',50,260);
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH','media_manufacturer_path',VmConfig::get('media_manufacturer_path',''),'class="inputbox"','',50,260);
+		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_MEDIA_VENDOR_PATH','media_vendor_path',VmConfig::get('media_vendor_path',''),'class="inputbox"','',50,260);
+
 		?>
 	</table>
 </fieldset>

@@ -92,6 +92,7 @@ class VirtueMartModelProduct extends VmModel {
 		//This is just done now for the moment for developing, the idea is of course todo this only when needed.
 		$this->populateState ();
 
+		self::$omitLoaded = VmConfig::get('omitLoaded',false);
 	}
 
 	var $keyword = "0";
@@ -165,7 +166,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$this->product_parent_id = vRequest::getInt ('product_parent_id', FALSE);
 			$this->virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', FALSE);
-
+			vmdebug('Current virtuemart_manufacturer_id',vRequest::getGet());
 			$this->keyword = vRequest::getString('keyword','');	//vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 
 			if ($this->keyword === '') {
@@ -607,7 +608,7 @@ class VirtueMartModelProduct extends VmModel {
 					break;
 				}
 			}
-			if(self::$_alreadyLoadedIds){
+			if(self::$omitLoaded and self::$_alreadyLoadedIds){
 				$where[] = ' p.`virtuemart_product_id`!='.implode(' AND p.`virtuemart_product_id`!=',self::$_alreadyLoadedIds).' ';
 				//$where[] = ' p.`virtuemart_product_id` NOT IN ('.implode(',',self::$_alreadyLoadedIds).') ';
 			}
@@ -912,6 +913,8 @@ class VirtueMartModelProduct extends VmModel {
 	static $_cacheOpt = array();
 	static $_cacheOptSingle = array();
 	static $_alreadyLoadedIds = array();
+	static $omitLoaded = false;
+
 	/**
 	 * This function creates a product with the attributes of the parent.
 	 *
@@ -1030,7 +1033,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if(!isset($child->selectedPrice) or empty($child->allPrices)){
 			$child->selectedPrice = 0;
-			$child->allPrices[$child->selectedPrice] = $this->fillVoidPrice();
+			$child->prices = $child->allPrices[$child->selectedPrice] = $this->fillVoidPrice();
 		}
 
 		if ($withCalc) {
@@ -1161,7 +1164,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
 		$product->allPrices = $this->loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front);
-		vmdebug('getRawProductPrices prices '.$productId,$product->allPrices);
+
 		$i = 0;
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
@@ -2286,6 +2289,10 @@ class VirtueMartModelProduct extends VmModel {
 
 		if(!vmAccess::manager('product.create')){
 			vmWarn('Insufficient permission to create product');
+			return false;
+		}
+		if(empty($id)){
+			vmWarn('Cannot clone product with empty id');
 			return false;
 		}
 

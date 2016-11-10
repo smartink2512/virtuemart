@@ -49,6 +49,17 @@
           description="MOD_VIRTUEMART_PRODUCT_MAX_ITEMS_DESC"
         />
         <field
+                name="omitLoaded"
+                type="list"
+                default=""
+                label="COM_VM_ADMIN_CFG_OMIT"
+                description="COM_VM_ADMIN_CFG_OMIT_TIP"
+                >
+          <option value="">JGLOBAL_USE_GLOBAL</option>
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
+        <field
           name="products_per_row"
           type="text"
           default="1"
