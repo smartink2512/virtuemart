@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea($this);
 
 // Implement Joomla's form validation
-JHtml::_('behavior.formvalidation')
+vmJsApi::vmValidator();
 ?>
 <style type="text/css">
 .invalid {

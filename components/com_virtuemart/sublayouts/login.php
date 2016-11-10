@@ -36,7 +36,7 @@ if (empty($this->url)){
 $user = JFactory::getUser();
 
 if ($this->show and $user->id == 0  ) {
-JHtml::_('behavior.formvalidation');
+    vmJsApi::vmValidator();
 
 	//Extra login stuff, systems like openId and plugins HERE
     if (JPluginHelper::isEnabled('authentication', 'openid')) {

@@ -578,8 +578,11 @@ jQuery(document).ready(function($) {
 		}
 
 		// Implement Joomla's form validation
-		JHtml::_ ('behavior.formvalidation');	//j2
-		//JHtml::_('behavior.formvalidator');	//j3
+		if(version_compare(JVERSION, '3.0.0', 'ge')) {
+			JHtml::_('behavior.formvalidator');
+		} else {
+			JHtml::_('behavior.formvalidation');
+		}
 
 		$regfields = array();
 		if(empty($userFields)){

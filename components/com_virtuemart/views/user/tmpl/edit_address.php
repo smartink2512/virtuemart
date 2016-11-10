@@ -19,7 +19,7 @@
 defined ('_JEXEC') or die('Restricted access');
 
 // Implement Joomla's form validation
-JHtml::_ ('behavior.formvalidation');
+vmJsApi::vmValidator();
 JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/assets/css/');
 
 if (!class_exists('VirtueMartCart')) require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');

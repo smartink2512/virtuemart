@@ -1441,7 +1441,7 @@ class vmURI{
 		if ($route){
 			$url = JRoute::_($url);
 		}
-		vmdebug('getGetUrl',$url);
+		//vmdebug('getGetUrl',$url);
 		return $url;
 	}
 
