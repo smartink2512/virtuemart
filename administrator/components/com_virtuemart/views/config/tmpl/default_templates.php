@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_ROWS_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_ROWS').'</span></td>
 <td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></td>
 </tr>';
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED', 'show_featured', 'featured_products_rows', 'omitLoaded');
+		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED', 'show_featured', 'featured_products_rows', 'omitLoaded_featured');
 		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED', 'show_discontinued', 'discontinued_products_rows', 'omitLoaded_discontinued');
 		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN', 'show_topTen', 'topTen_products_rows', 'omitLoaded_topTen');
 		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT', 'show_recent', 'recent_products_rows', 'omitLoaded_recent');

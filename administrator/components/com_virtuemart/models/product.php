@@ -166,7 +166,6 @@ class VirtueMartModelProduct extends VmModel {
 
 			$this->product_parent_id = vRequest::getInt ('product_parent_id', FALSE);
 			$this->virtuemart_manufacturer_id = vRequest::getInt ('virtuemart_manufacturer_id', FALSE);
-			vmdebug('Current virtuemart_manufacturer_id',vRequest::getGet());
 			$this->keyword = vRequest::getString('keyword','');	//vRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 
 			if ($this->keyword === '') {

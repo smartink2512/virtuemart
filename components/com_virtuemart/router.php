@@ -83,7 +83,6 @@ function virtuemartBuildRoute(&$query) {
 			if ( !empty($query['virtuemart_manufacturer_id'])  ) {
 				$segments[] = $helper->lang('manufacturer').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
 				//unset($query['virtuemart_manufacturer_id']);
-				vmdebug('category',$segments,$query['virtuemart_manufacturer_id']);
 			}
 			if ( isset($query['search'])  ) {
 				$segments[] = $helper->lang('search') ;
@@ -108,19 +107,13 @@ function virtuemartBuildRoute(&$query) {
 				if(isset($jmenu['virtuemart_category_id'][$catId][$manId])) {
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$catId][$manId];
 				} else {
-					/*vmdebug('Use fallback getMenuCatItemId ',$catId,$manId,$jmenu['virtuemart_category_id']);
-					$menuCatItemId = $helper->getMenuCatItemId($catId,$manId);
-					if(!empty($menuCatItemId)) {
-						$query['Itemid'] = $menuCatItemId;
-					} else {*/
-						if($categoryRoute===null) $categoryRoute = $helper->getCategoryRoute($catId,$manId);
-						//http://forum.virtuemart.net/index.php?topic=121642.0
-						if (!empty($categoryRoute->Itemid)) {
-							$query['Itemid'] = $categoryRoute->Itemid;
-						} else {
-							$query['Itemid'] = $helper->Itemid;
-						}
-					//}
+					if($categoryRoute===null) $categoryRoute = $helper->getCategoryRoute($catId,$manId);
+					//http://forum.virtuemart.net/index.php?topic=121642.0
+					if (!empty($categoryRoute->Itemid)) {
+						$query['Itemid'] = $categoryRoute->Itemid;
+					} else {
+						$query['Itemid'] = $helper->Itemid;
+					}
 				}
 
 				unset($query['virtuemart_category_id']);
