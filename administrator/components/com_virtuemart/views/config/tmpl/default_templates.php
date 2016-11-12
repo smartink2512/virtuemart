@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 		echo '<tr><td></td>
 <td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_SHOW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_SHOW').'</span></td>
-<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_PER_ROWS_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_PER_ROWS').'</span></td>
+<td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_PER_ROW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_PER_ROW').'</span></td>
 <td><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></td>
 </tr>';
 		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY', 'showCategory', 'categories_per_row', 0, 3);
