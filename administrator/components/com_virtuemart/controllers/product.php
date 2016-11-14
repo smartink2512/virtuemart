@@ -158,7 +158,7 @@ class VirtuemartControllerProduct extends VmController {
 
 				if($target=='parent'){
 					vmdebug('toParent');
-					$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$cids[0];
+					$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$cid;
 				} else {
 					$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$id;
 				}

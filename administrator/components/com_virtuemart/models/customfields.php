@@ -177,7 +177,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					if($forcefront and $field->disabler){
 						unset($productCustoms[$k]);
 					} else {
-						VirtueMartModelCustomfields::bindCustomEmbeddedFieldParams($field,$field->field_type);
+						VirtueMartModelCustomfields::bindCustomEmbeddedFieldParams($productCustoms[$k],$field->field_type);
 					}
 
 				} else{
@@ -403,7 +403,12 @@ class VirtueMartModelCustomfields extends VmModel {
 				} else if(is_array($field->selectoptions)){
 					$field->selectoptions = (object)$field->selectoptions;
 				}
-				$field->options = (object)$field->options;
+
+
+				if(!empty($field->options) and is_array($field->options)){
+					$field->options = (object)$field->options;
+				}
+
 
 				$optAttr = array();
 
@@ -591,7 +596,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= '</thead>';
 				$html .= '<tbody id="syncro">';
 
-
+				$i=0;
 				if(isset($childIds[$product_id])){
 					foreach($sorted as $i=>$line){
 						$html .= self::renderProductChildLine($i,$line,$field,$productModel,$row,$showSku);
@@ -602,7 +607,6 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= '</table>';
 
 				$jsCsort = "
-	nextCustom =".$i.";
 
 	jQuery(document).ready(function($){
 		$('#syncro').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});

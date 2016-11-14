@@ -71,7 +71,7 @@
     <property name="svn.main.path" value="virtuemart"/>
 
     <svnlastrevision
-            svnpath="{$svn.path}"
+            svnpath="${svn.path}"
             repositoryurl="${svn.main.repository}"
             propertyname="svn.lastrevision"/>
 
