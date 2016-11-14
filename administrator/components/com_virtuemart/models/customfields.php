@@ -492,7 +492,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$soption->values = implode("\n",$added);
 
-					foreach($added as &$value){
+					foreach($added as $value){
 						$options[] = array('value' => $value ,'text' =>$value);
 					}
 
@@ -1052,7 +1052,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						//for testing
 						foreach($fields['options'] as $prodId => $lvalue){
 							if($prodId == $id) continue;
-							$db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ="'.$prodId.'" AND `virtuemart_custom_id`="'.$sCustId.'" '  );
+							$db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ="'.$prodId.'" AND `virtuemart_custom_id`="'.(int)$sCustId.'" '  );
 							$strIds = $db->loadColumn();
 							$i=0;
 							foreach($lvalue as $k=>$value) {
@@ -1060,10 +1060,10 @@ class VirtueMartModelCustomfields extends VmModel {
 								if(!empty($labels[$k])) {
 									$ts = array();
 									$ts['field_type'] = 'S';
-									$ts['virtuemart_product_id'] = $prodId;
-									$ts['virtuemart_custom_id'] = $sCustId;
+									$ts['virtuemart_product_id'] = (int)$prodId;
+									$ts['virtuemart_custom_id'] = (int)$sCustId;
 									if(isset($strIds[$i])){
-										$ts['virtuemart_customfield_id'] = $strIds[$i];
+										$ts['virtuemart_customfield_id'] = (int)$strIds[$i];
 										unset( $strIds[$i++] );
 									}
 									$ts['customfield_value'] = $value;

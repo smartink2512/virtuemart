@@ -1171,7 +1171,8 @@ class VirtueMartCart {
 			$orderModel = VmModel::getModel('orders');
 
 			if(!$this->virtuemart_order_id){
-				if (($this->virtuemart_order_id = $orderModel->createOrderFromCart($this)) === false) {
+				$this->virtuemart_order_id = $orderModel->createOrderFromCart($this);
+				if (!$this->virtuemart_order_id) {
 					$mainframe = JFactory::getApplication();
 					//vmError('No order created '.$orderModel->getError());
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );

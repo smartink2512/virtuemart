@@ -600,7 +600,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		//$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
 		// error while processing the payment
 		$mainframe = JFactory::getApplication();
-		$mainframe->enqueueMessage($html);
+		vmWarn($html);
 		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment', FALSE), vmText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 	}
 
@@ -715,8 +715,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			//$html.= "</ul>";
 		}
 		if (!$this->_cc_valid && $enqueueMessage && $force) {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($html);
+			vmWarn($html);
 			$force=false;
 		}
 
