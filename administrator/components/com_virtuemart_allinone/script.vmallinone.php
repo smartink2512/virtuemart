@@ -553,7 +553,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$loggablefields = $plugin->getTableSQLLoggablefields ();
 					$tablesFields = array_merge ($SQLfields, $loggablefields);
 					$update[$tablename] = array($tablesFields, array(), array());
-					vmdebug ('install plugin', $update);
+					//vmdebug ('install plugin', $update);
 					$app->enqueueMessage (get_class ($this) . ':: VirtueMart2 update ' . $tablename);
 
 					if (!class_exists ('GenericTableUpdater')) {

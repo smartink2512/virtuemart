@@ -199,10 +199,11 @@ WHERE published="1"';
 		$h .= '<td class="key">
 				'.$label.'
 			</td>';
-		$h .= '<td>'.VmHtml::checkbox($name, VmConfig::get($name, 1)).'</td>';
+		$h .= '<td style="text-align: center;">'.VmHtml::checkbox($name, VmConfig::get($name, 1)).'</td>';
 		$h .= '<td>'.VmHtml::input($name2, VmConfig::get($name2, $defRow),'class="inputbox"','',4,4).'</td>';
-		if($name3 !== 0)$h .= '<td>'.VmHtml::checkbox($name3, VmConfig::get($name3, 0)).'</td>';
-		$h .= '</tr>';
+		$h .= '<td style="text-align: center;">';
+		if($name3 !== 0) $h .= VmHtml::checkbox($name3, VmConfig::get($name3, 0));
+		$h .= "</td>\n</tr>";
 		return $h;
 	}
 }

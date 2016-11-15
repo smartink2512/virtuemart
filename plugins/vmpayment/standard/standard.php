@@ -136,6 +136,13 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
 
+		if (!empty($method->payment_info)) {
+			$lang = JFactory::getLanguage ();
+			if ($lang->hasKey ($method->payment_info)) {
+				$method->payment_info = vmText::_ ($method->payment_info);
+			}
+		}
+
 		$dbValues['payment_name'] = $this->renderPluginName ($method) . '<br />' . $method->payment_info;
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
 		$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
@@ -147,15 +154,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
-		$payment_info='';
-		if (!empty($method->payment_info)) {
-			$lang = JFactory::getLanguage ();
-			if ($lang->hasKey ($method->payment_info)) {
-				$payment_info = vmText::_ ($method->payment_info);
-			} else {
-				$payment_info = $method->payment_info;
-			}
-		}
+
 		if (!class_exists ('VirtueMartModelCurrency')) {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'currency.php');
 		}

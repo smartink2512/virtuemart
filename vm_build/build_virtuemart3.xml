@@ -5,7 +5,7 @@
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="3.0.18.3"/>
     <property name="joomla.version" value="3.6.2"/>
-    <property name="svn.lastrevision" value="9360"/>
+    <property name="svn.lastrevision" value="9375"/>
     <property name="PHING.VM.CODENAME" value="Blue Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
@@ -437,7 +437,7 @@
             <then>
                 <echo message="Export from svn"/>
                 <svnexport
-                        svnpath="{$svn.path}"
+                        svnpath="${svn.path}"
                         nocache="true"
                         repositoryurl="${svn.main.repository}"
                         todir="${export.to}"/>

@@ -2153,6 +2153,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (!empty($data['childs'])) {
 			foreach ($data['childs'] as $productId => $child) {
+				if(empty($productId)) continue;
 				if($productId!=$data['virtuemart_product_id']){
 
 					if(empty($child['product_parent_id'])) $child['product_parent_id'] = $data['virtuemart_product_id'];

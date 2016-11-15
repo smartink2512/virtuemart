@@ -91,11 +91,13 @@ class VirtueMartModelConfig extends VmModel {
 		return self::getLayouts($dirs,0,$ignore);
 	}
 
-	static function getLayouts($dirs,$type=0,$ignore=0){
+	static function getLayouts($dirs,$type=0,$ignore=0, $emptyOption = true){
 
 		$result = array();
-		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
-		$result[] = $emptyOption;
+		if($emptyOption){
+			$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
+			$result[] = $emptyOption;
+		}
 
 		$alreadyAddedFile = array();
 		foreach($dirs as $dir){

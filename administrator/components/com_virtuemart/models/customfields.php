@@ -238,6 +238,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		//vmdebug('sortChildIds',$product_id, $childIds);
 		if(!empty($options)){
 			foreach($options as $id => $v){
+				if(empty($id)) continue;
 				if($product_id!=$id){
 					$sorted[] = array('parent_id'=>$product_id,'vm_product_id'=>$id);
 					$asorted[$id] = 1;
@@ -597,7 +598,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= '<tbody id="syncro">';
 
 				$i=0;
-				if(isset($childIds[$product_id])){
+				if($sorted and is_array($sorted) ){
 					foreach($sorted as $i=>$line){
 						$html .= self::renderProductChildLine($i,$line,$field,$productModel,$row,$showSku);
 					}
