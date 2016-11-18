@@ -166,6 +166,8 @@ class vmDefines {
 		if(!class_exists('vUser')) require(VMPATH_ADMIN .'/vmf/user/user.php');
 		//vmTime('Time to create Config', 'includefiles');
 */
+		//Force Joomla to use the FE overrides
+		//defined('JPATH_SITE') or define('JPATH_SITE','VMPATH_SITE');
 	}
 }
 
@@ -585,6 +587,7 @@ class VmConfig {
 	public static $vmLangSelected = false;	//desired by user
 	public static $defaultLang = false;
 	public static $jDefLang = false;
+	public static $jDefLangTag = false;
 	public static $vmlangTag = '';
 	public static $vmlangSef = '';
 	public static $langs = array();
@@ -716,28 +719,80 @@ class VmConfig {
 		if($memory_limit<$minMemory)  @ini_set( 'memory_limit', $minMemory.'M' );
 	}
 
+	static function getMemoryLimitBytes(){
+		static $mLimit;
+		if($mLimit===null){
+			$mL = ini_get('memory_limit');
+			$mLimit = 0;
+			if(!empty($mL)){
+				$u = strtoupper(substr($mL,-1));
+				$mLimit = (int)substr($mL,0,-1);
+				if($mLimit>0){
+					if($u == 'M' or $u == 'MB'){
+						$mLimit *= 1048576;
+					} else if($u == 'G' or $u == 'GB'){
+						$mLimit *= 1073741824;
+					} else if($u == 'K' or $u == 'KB'){
+						$mLimit *= 1024;
+					}
+					$mLimit = (int) $mLimit - 5242880; // 5 MB reserve
+					if($mLimit<=0){
+						$mLimit = 1;
+						$m = 'Increase your php memory limit, which is must too low to run VM, your current memory limit is set as '.$mL.' = '.$mLimit.'B';
+						vmError($m,$m);
+					}
+				}
+			}
+
+			if($mLimit<=0) $mLimit = 2147483648;
+			vmdebug('My Memory Limit in Bytes '.$mLimit);
+		}
+
+		return $mLimit;
+	}
+
 	/**
 	 * Returns the PHP memory limit of the server in MB, regardless the used unit
 	 * @author Max Milbers
 	 * @return float|int PHP memory limit in MB
 	 */
+
 	static function getMemoryLimit(){
+		static $mLimit;
+		if($mLimit===null){
+			$mL = ini_get('memory_limit');
+			$mLimit = 0;
+			if(!empty($mL)){
+				$u = strtoupper(substr($mL,-1));
+				$mLimit = (int)substr($mL,0,-1);
+				if($mLimit>0){
 
-		$iniValue = ini_get('memory_limit');
+					if($u == 'M'){
+						//$mLimit = $mLimit * 1048576;
+					} else if($u == 'G'){
+						$mLimit *= 1024;
+					} else if($u == 'K'){
+						$mLimit *= 0.0009765625; //*1024
+					} else {
+						$mLimit = $mLimit / 1048576.0;
+					}
+					$mLimit = (int) $mLimit - 5; // 5 MB reserve
+					if($mLimit<=0){
+						$mLimit = 1;
+						$m = 'Increase your php memory limit, which is must too low to run VM, your current memory limit is set as '.$mL.' ='.$mLimit.'MB';
+						vmError($m,$m);
+					}
+				}
+			}
 
-		if($iniValue<=0) return 2048;	//We assume 2048MB as unlimited setting
-		$iniValue = strtoupper($iniValue);
-		if(strpos($iniValue,'M')!==FALSE){
-			$memory_limit = (int) substr($iniValue,0,-1);
-		} else if(strpos($iniValue,'K')!==FALSE){
-			$memory_limit = (int) substr($iniValue,0,-1) / 1024.0;
-		} else if(strpos($iniValue,'G')!==FALSE){
-			$memory_limit = (int) substr($iniValue,0,-1) * 1024.0;
-		} else {
-			$memory_limit = (int) $iniValue / 1048576.0;
+			if($mLimit<=0) $mLimit = 2048;
+			vmdebug('My Memory Limit in MB '.$mLimit);
 		}
-		return $memory_limit;
+
+		return $mLimit;
 	}
+
+
 
 	static function ensureExecutionTime($minTime=0){
 
@@ -771,13 +826,18 @@ class VmConfig {
 		$jlang = JFactory::getLanguage();
 
 		static $loaded = array();
-		if($cache and empty($tag)){
+
+		if(empty($tag)) {
 			$tag = $jlang->getTag();
-			if(isset($loaded[(int)$site.$tag.$name])){
-				vmdebug('lang already cached '.$site.$tag.$name);
-				return $jlang;
-			}
 		}
+
+		if($cache and isset($loaded[(int)$site.$tag.$name])){
+			vmdebug('lang already cached '.$site.$tag.$name);
+			return $jlang;
+		} else {
+
+		}
+
 
 		$path = $basePath = VMPATH_ADMIN;
 		if($site){
@@ -1011,9 +1071,9 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @return string valid langtag
 	 */
-	static public function setdbLanguageTag() {
+	static public function setdbLanguageTag($siteLang = false) {
 
-		if (self::$vmlang) {
+		if (self::$vmlang and !$siteLang) {
 			return self::$vmlang;
 		}
 
@@ -1021,26 +1081,34 @@ class VmConfig {
 		self::$langCount = count($langs);
 
 		self::$jLangCount = 1;
+
+		$siteLang = vRequest::getString('vmlang',$siteLang );
+
 		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
 		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
 			$languages = JLanguageHelper::getLanguages('lang_code');
-			$ltag = JFactory::getLanguage()->getTag();
-			if(isset($languages[$ltag])){
-				self::$vmlangSef = $languages[$ltag]->sef;
-			}
 			self::$jLangCount = count($languages);
+			if(isset($languages[$siteLang])){
+				self::$vmlangSef = $languages[$siteLang]->sef;
+			} else {
+				$ltag = JFactory::getLanguage()->getTag();
+				if(isset($languages[$ltag])){
+					self::$vmlangSef = $languages[$ltag]->sef;
+				}
+			}
 		}
 
-		$siteLang = vRequest::getString('vmlang',false );
-
-		$params = JComponentHelper::getParams('com_languages');
-		$defaultLang = $params->get('site', 'en-GB');//use default joomla
-		self::$jDefLang = self::get('vmDefLang',false);
-		if(self::$jDefLang){
-			self::$jDefLang = strtolower(strtr(self::$jDefLang,'-','_'));
-		} else {
-			self::$jDefLang = strtolower(strtr($defaultLang,'-','_'));
+		if(self::$jDefLang===false){
+			$params = JComponentHelper::getParams('com_languages');
+			self::$jDefLangTag = $params->get('site', 'en-GB');//use default joomla
+			self::$jDefLang = self::get('vmDefLang',false);
+			if(self::$jDefLang){
+				self::$jDefLang = strtolower(strtr(self::$jDefLang,'-','_'));
+			} else {
+				self::$jDefLang = strtolower(strtr(self::$jDefLangTag,'-','_'));
+			}
 		}
+
 
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
@@ -1048,14 +1116,14 @@ class VmConfig {
 			}
 		} else {
 			if(!$siteLang){
-				$siteLang = $defaultLang;
+				$siteLang = self::$jDefLangTag;
 			}
 		}
 
 		self::$vmLangSelected = $siteLang;
 		if(!in_array($siteLang, $langs)) {
 			if(count($langs)===0){
-				$siteLang = $defaultLang;
+				$siteLang = self::$jDefLangTag;
 			} else {
 				$siteLang = $langs[0];
 			}
@@ -1076,7 +1144,7 @@ class VmConfig {
 						}
 					}
 					if(isset($fbsAssoc[$siteLang])){
-						$defaultLang = $fbsAssoc[$siteLang];
+						self::$jDefLangTag = $fbsAssoc[$siteLang];
 					}
 					self::set('fbsAssoc',$fbsAssoc);
 				}
@@ -1086,7 +1154,7 @@ class VmConfig {
 		}
 
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
-		self::$defaultLang = strtolower(strtr($defaultLang,'-','_'));
+		self::$defaultLang = strtolower(strtr(self::$jDefLangTag,'-','_'));
 		vmdebug('LangCount: '.self::$langCount.' $siteLang: '.$siteLang.' self::$vmlangSef: '.self::$vmlangSef.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );
@@ -1213,7 +1281,7 @@ class VmConfig {
 	 * @return String of the currently installed version
 	 */
 	static function getInstalledVersion($includeDevStatus=FALSE) {
-		return vmVersion::$RELEASE;
+		return vmVersion::$RELEASE.' '.vmVersion::$CODENAME.' '.vmVersion::$REVISION;
 	}
 
 	/**

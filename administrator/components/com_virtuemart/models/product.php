@@ -54,13 +54,8 @@ class VirtueMartModelProduct extends VmModel {
 		parent::__construct ('virtuemart_product_id');
 		$this->setMainTable ('products');
 		$this->starttime = microtime (TRUE);
-		$this->maxScriptTime = VmConfig::getExecutionTime() * 0.95 - 1;
-		$memoryLimit = ini_get('memory_limit');
-		if($memoryLimit!=-1){
-			$this->memory_limit = (int) substr($memoryLimit,0,-1) -4; // 4 MB reserve
-		} else {
-			$this->memory_limit = '1024M';
-		}
+		$this->maxScriptTime = VmConfig::getExecutionTime() * 0.99 - 2;
+
 
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
@@ -93,6 +88,8 @@ class VirtueMartModelProduct extends VmModel {
 		$this->populateState ();
 
 		self::$omitLoaded = VmConfig::get('omitLoaded',false);
+
+		$this->memory_limit = VmConfig::getMemoryLimitBytes();
 	}
 
 	var $keyword = "0";
@@ -952,8 +949,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$productKey = $checkedProductKey[1];
 
-		if ($this->memory_limit<$mem = round(memory_get_usage(FALSE)/(1024*1024),2)) {
-			vmdebug ('Memory limit reached in model product getProduct('.$virtuemart_product_id.'), consumed: '.$mem.'M');
+		if ($this->memory_limit<$mem = memory_get_usage(FALSE)) {
+			vmdebug ('Memory limit reached in model product getProduct('.$virtuemart_product_id.'), consumed: '.round($mem,2).'M');
 			vmError ('Memory limit reached in model product getProduct() ' . $virtuemart_product_id);
 			return false;
 		}

@@ -12,15 +12,6 @@ defined ('_JEXEC') or die('Restricted access');
  */
 
 
-$max_execution_time = ini_get ('max_execution_time');
-if ((int)$max_execution_time < 120) {
-	@ini_set ('max_execution_time', '120');
-}
-$memory_limit = (int)substr (ini_get ('memory_limit'), 0, -1);
-if ($memory_limit < 128) {
-	@ini_set ('memory_limit', '128M');
-}
-
 // hack to prevent defining these twice in 1.6 installation
 if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
@@ -47,6 +38,8 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				JFactory::getApplication()->enqueueMessage('Update the VirtueMart Core first ');
 				return false;
 			}
+			VmConfig::ensureMemoryLimit(128);
+			VmConfig::ensureExecutionTime(120);
 		}
 
 		public function install () {

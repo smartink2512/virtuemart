@@ -46,10 +46,10 @@ $session = JFactory::getSession();
 		@ini_set( 'max_execution_time', $max_execution_time );
 
 		echo '<br />';
-		$memory_limit = ini_get('memory_limit');
-		echo 'memory_limit '.$memory_limit;
+		$memory_limit = VmConfig::getMemoryLimit();
+		echo 'memory_limit '.$memory_limit.'MB';
 		echo '<br />';
-		if($memory_limit!=='128MB'){
+		//if($memory_limit<128){
 
 // 			@ini_set( 'memory_limit', '128MB' );
 // 			$new_memory_limit = ini_get('memory_limit');
@@ -59,7 +59,7 @@ $session = JFactory::getSession();
 				echo vmText::_('COM_VIRTUEMART_UPDATE_MIGRATION_CHANGE_MEMORY_LIMIT').'<input class="inputbox" type="text" name="memory_limit" size="15" value="'.$memory_limit.'" />';
 // 			}
 // 			@ini_set( 'max_execution_time', $memory_limit );
-		}
+		//}
 
 		?>
 	</td>

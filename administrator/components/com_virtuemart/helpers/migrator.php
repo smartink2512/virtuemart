@@ -46,16 +46,13 @@ class Migrator extends VmModel{
 
 		$jrmemory_limit= vRequest::getInt('memory_limit');
 		if(!empty($jrmemory_limit)){
-			@ini_set( 'memory_limit', $jrmemory_limit.'M' );
+			VmConfig::ensureMemoryLimit($jrmemory_limit);
 		} else {
 			VmConfig::ensureMemoryLimit(128);
 		}
 
-		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) - (14 * 1024 * 1024)  ;		//Lets use 11MB for joomla
-		// 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
-		//$this->maxMemoryLimit = $this -> return_bytes('20M');
+		$this->maxMemoryLimit = VmConfig::getMemoryLimitBytes() - (14 * 1024 * 1024)  ;		//Lets use 14MB for joomla
 
-		// 		ini_set('memory_limit','35M');
 		$q = 'SELECT `id` FROM `#__virtuemart_migration_oldtonew_ids` ';
 		$this->_db->setQuery($q);
 		$res = $this->_db->loadResult();
@@ -69,22 +66,6 @@ class Migrator extends VmModel{
 		}
 
 		$this->_keepOldProductIds = VmConfig::get('keepOldProductIds',FALSE);
-	}
-
-	private function return_bytes($val) {
-		$val = trim($val);
-		$last = strtolower($val[strlen($val)-1]);
-		switch($last) {
-			// The 'G' modifier is available since PHP 5.1.0
-			case 'g':
-				$val *= 1024;
-			case 'm':
-				$val *= 1024;
-			case 'k':
-				$val *= 1024;
-		}
-
-		return $val;
 	}
 
 	function getMigrationProgress($group){

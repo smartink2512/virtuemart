@@ -78,7 +78,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 
 			foreach ($this->orderslist as $key => $order) {
 				$checked = JHtml::_ ('grid.id', $i, $order->virtuemart_order_id);
-				vmdebug('My order',$order);
+				//vmdebug('My order',$order);
 				?>
 			<tr class="row<?php echo $k; ?>">
 				<!-- Checkbox -->

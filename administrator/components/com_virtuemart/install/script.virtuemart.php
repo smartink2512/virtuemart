@@ -9,14 +9,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-//Maybe it is possible to set this within the xml file note by Max Milbers
-$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
-if(!empty($memory_limit) and $memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 
-$maxtime = (int) ini_get('max_execution_time');
-if($maxtime < 140){
-	@ini_set( 'max_execution_time', '140' );
-}
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VMPATH_ROOT') or define('VMPATH_ROOT', JPATH_ROOT);
@@ -52,6 +45,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			VmTable::addIncludePath($this->path.DS.'tables');
 			VmModel::addIncludePath($this->path.DS.'models');
 
+			//Maybe it is possible to set this within the xml file note by Max Milbers
+			VmConfig::ensureMemoryLimit(128);
+			VmConfig::ensureExecutionTime(140);
 		}
 
 		public function checkIfUpdate(){

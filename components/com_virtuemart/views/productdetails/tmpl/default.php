@@ -152,8 +152,8 @@ echo $this->loadTemplate('images');
 
 				if(empty($productDisplay)){
 					continue;
-				} else if (!is_array($this->$productDisplayType)){
-					$this->$productDisplayType = array($this->$productDisplayType);
+				} else if (!is_array($productDisplay)){
+					$productDisplay = array($productDisplay);
 				}
 
 				foreach ($productDisplay as $virtuemart_shipmentmethod_id =>$productDisplayHtml) {

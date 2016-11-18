@@ -40,7 +40,7 @@ class GenericTableUpdater extends VmModel{
 
 		VmConfig::ensureMemoryLimit(128);
 
-		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
+		$this->maxMemoryLimit = VmConfig::getMemoryLimitBytes() * 0.85;
 
 		$config = JFactory::getConfig();
 		$this->_prefix = $config->get('dbprefix');
@@ -850,23 +850,6 @@ class GenericTableUpdater extends VmModel{
 			return '';
 		}
 	}
-
-	private function return_bytes($val) {
-		$val = trim($val);
-		$last = strtolower($val[strlen($val)-1]);
-		switch($last) {
-			// The 'G' modifier is available since PHP 5.1.0
-			case 'g':
-				$val *= 1024;
-			case 'm':
-				$val *= 1024;
-			case 'k':
-				$val *= 1024;
-		}
-
-		return $val;
-	}
-
 
 	function loadCountListContinue($q,$startLimit,$maxItems,$msg){
 
