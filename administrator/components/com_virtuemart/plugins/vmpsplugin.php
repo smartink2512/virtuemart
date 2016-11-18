@@ -24,6 +24,7 @@ if (!class_exists ('vmPlugin')) {
 abstract class vmPSPlugin extends vmPlugin {
 
 	protected $_toConvert = false;
+	public $methods = null;
 
 	function __construct (& $subject, $config) {
 
@@ -464,9 +465,15 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	protected function getPluginMethods ($vendorId) {
 
-		if(!empty($this->methods)) {
+		static $mC = array();
+
+		$h = $vendorId.$this->_psType.$this->_name;
+		if(isset($mC[$h])) {
+			$this->methods = $mC[$h];
+			vmdebug('getPluginMethods return cached '.$h);
 			return count($this->methods);
 		}
+
 		$usermodel = VmModel::getModel ('user');
 		$user = $usermodel->getUser ();
 		$user->shopper_groups = (array)$user->shopper_groups;
@@ -534,10 +541,13 @@ abstract class vmPSPlugin extends vmPlugin {
 			foreach ($this->methods as $method) {
 				VmTable::bindParameterable ($method, $this->_xParams, $this->_varsToPushParam);
 			}
-		} else if($this->methods===false){
+		} else if($this->methods===null or empty($this->methods)){
+			$this->methods = array();
 			vmError ('Error reading getPluginMethods ' . $q);
 		}
 
+		$mC[$h] = $this->methods;
+		vmdebug('getPluginMethods my query ',str_replace('#__',$db->getPrefix(),$db->getQuery()));
 		return count($this->methods);
 	}
 

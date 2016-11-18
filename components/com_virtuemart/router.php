@@ -748,6 +748,7 @@ class vmrouterHelper {
 
 		if (!$this->router_disabled = VmConfig::get('seo_disabled', false)) {
 
+			$this->_db = JFactory::getDbo();
 			$this->seo_translate = VmConfig::get('seo_translate', false);
 
 			if ( $this->seo_translate ) {
@@ -903,14 +904,15 @@ class vmrouterHelper {
 			$parent_ids[] = $catId;
 		}
 
-		//vmdebug('Router getCategoryNames getCategoryRecurse finished '.$virtuemart_category_id,$parent_ids);
+		vmdebug('Router getCategoryNames getCategoryRecurse finished '.$catId,$parent_ids);
 		foreach ($parent_ids as $id ) {
 			if(!isset($categoryNamesCache[$id])){
 				$cat = $catModel->getCategory($id,0);
 				if(!empty($cat->published)){
 					$categoryNamesCache[$id] = $cat->slug;
 					$strings[] = $cat->slug;
-				} else {
+				} else if(!empty($id)){
+					vmdebug('router.php getCategoryNames set 404 for id '.$id,$cat);
 					$categoryNamesCache[$id] = '404';
 					$strings[] = '404';
 				}
@@ -931,7 +933,14 @@ class vmrouterHelper {
 	 * $virtuemart_category_ids is joomla menu virtuemart_category_id
 	 */
 	public function getCategoryId($slug,$catId ){
-		$db = JFactory::getDBO();
+
+		$catIds = $this->getFieldOfObjectWithLangFallBack('#__virtuemart_categories_','virtuemart_category_id','slug',$slug);
+		if (!$catIds) {
+			$catIds = $catId;
+		}
+
+		return $catIds;
+		/*$db = JFactory::getDBO();
 		static $catIds = array();
 		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
 			$q = 'SELECT IFNULL(l.`virtuemart_category_id`,ld.`virtuemart_category_id`) as `virtuemart_category_id` ';
@@ -953,7 +962,7 @@ class vmrouterHelper {
 			}
 		}
 
-		return $catIds[$hash] ;
+		return $catIds[$hash] ;*/
 	}
 
 	/* Get URL safe Product name */
@@ -1061,38 +1070,13 @@ class vmrouterHelper {
 			$productName =  substr($productName, 0, -(int)$this->seo_sufix_size );
 		}
 
-		$product = array();
+		static $prodIds = array();
 		$categoryName = end($names);
 
-		$db = JFactory::getDBO();
-		$q = '';
-		static $prodIds = array();
-		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-			$select2 = 'ld.`virtuemart_product_id`';
-			$where2 = 'ld.`slug`';
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$select2 = 'IFNULL(ld.`virtuemart_product_id`,ljd.`virtuemart_product_id`)';
-				$where2 = 'IFNULL(ld.`slug`,ljd.`slug`)';
-			}
-
-			$q = 'SELECT IFNULL(l.`virtuemart_product_id`,'.$select2.') as `virtuemart_product_id` ';
-			$q .= ' FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `l` ';
-			$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$defaultLang . '` as ld ON (l.`virtuemart_product_id`=ld.`virtuemart_product_id`) ';
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$q .= ' RIGHT JOIN `#__virtuemart_products_' .VmConfig::$jDefLang . '` as ljd ON (l.`virtuemart_product_id`=ljd.`virtuemart_product_id`) ';
-			}
-			$q .= ' WHERE IFNULL(l.`slug`,'.$where2.') = "'.$db->escape($productName).'" ';
-			$hash = md5(VmConfig::$defaultLang.$productName.VmConfig::$vmlang);
-		} else {
-			$q = 'SELECT p.`virtuemart_product_id` ';
-			$q .= ' FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p` ';
-			$q .= ' WHERE `slug` = "'.$db->escape($productName).'" ';
-			$hash = md5($productName.VmConfig::$vmlang);
-		}
+		$hash = md5($productName.VmConfig::$vmlang);
 
 		if(!isset($prodIds[$hash])){
-			$db->setQuery($q);
-			$prodIds[$hash]['virtuemart_product_id'] = $db->loadResult();
+			$prodIds[$hash]['virtuemart_product_id'] = $this->getFieldOfObjectWithLangFallBack('#__virtuemart_products_', 'virtuemart_product_id', 'slug', $productName);
 			if(empty($categoryName) and empty($catId)){
 				$prodIds[$hash]['virtuemart_category_id'] = false;
 			} else {
@@ -1106,71 +1090,67 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getManufacturerName($manId ){
 
-		static $manNamesCache = array();
-		if(empty($manId)) return false;
-		if(!isset($manNamesCache[$manId])){
-			$db = JFactory::getDBO();
-			$s = '`slug`';
-			$from = 'FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ';
-			$pre = 'l';
-			if($this->langFback){
-				$s2 = 'ld.`slug`';
-				$pre = 'ld';
-				$from .= ' RIGHT JOIN `#__virtuemart_manufacturers_' .VmConfig::$defaultLang . '` as ld ON (l.`virtuemart_manufacturer_id`=ld.`virtuemart_manufacturer_id`)';
-
-				if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-					$s2 = 'IFNULL(ld.`slug`, ljd.`slug`)';
-					$pre = 'ljd';
-					$from .= ' RIGHT JOIN `#__virtuemart_manufacturers_' .VmConfig::$jDefLang . '` as ljd ON (l.`virtuemart_manufacturer_id`=ljd.`virtuemart_manufacturer_id`)';
-				}
-				$s = 'IFNULL(l.`slug`,'.$s2.') as slug';
-			}
-			//$query = 'SELECT '.$s.' FROM '.$from.' WHERE '.$pre.'.virtuemart_manufacturer_id='.(int)$manId;
-			$q = 'SELECT '.$s.' '.$from.' WHERE '.$pre.'.virtuemart_manufacturer_id='.(int)$manId;;
-			$db->setQuery($q);
-			$manNamesCache[$manId] = $db->loadResult();
-		}
-
-		return $manNamesCache[$manId];
-
+		return $this->getFieldOfObjectWithLangFallBack('#__virtuemart_manufacturers_','slug','virtuemart_manufacturer_id',(int)$manId);
 	}
 
 	/* Get Manufacturer id */
 	public function getManufacturerId($slug ){
-		$db = JFactory::getDBO();
 
-		$s = '`virtuemart_manufacturer_id`';
-		$from = 'FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ';
-		$where = 'l.slug';
-		if($this->langFback){
-			$s2 = 'ld.`virtuemart_manufacturer_id`';
-			$s = 'IFNULL(l.`virtuemart_manufacturer_id`,'.$s2.') as virtuemart_manufacturer_id';
-
-			$from .= ' RIGHT JOIN `#__virtuemart_manufacturers_' .VmConfig::$defaultLang . '` as ld ON (l.`virtuemart_manufacturer_id`=ld.`virtuemart_manufacturer_id`)';
-
-			$where = 'IFNULL(l.slug,ld.slug)';
-		}
-		$q = 'SELECT '.$s.' '.$from.' WHERE '.$where.' LIKE "'.$db->escape($slug).'"';
-		$db->setQuery($q);
-		return $db->loadResult();
-
+		return $this->getFieldOfObjectWithLangFallBack('#__virtuemart_manufacturers_','virtuemart_manufacturer_id','slug',$slug);
 	}
 	/* Get URL safe Manufacturer name */
 	public function getVendorName($virtuemart_vendor_id ){
-		$db = JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_vendors_'.VmConfig::$vmlang.'` WHERE `virtuemart_vendor_id`='.(int)$virtuemart_vendor_id;
-		$db->setQuery($query);
 
-		return $db->loadResult();
-
+		return $this->getFieldOfObjectWithLangFallBack('#__virtuemart_vendors_','slug','virtuemart_vendor_id',(int)$virtuemart_vendor_id);
 	}
 	/* Get Manufacturer id */
 	public function getVendorId($slug ){
-		$db = JFactory::getDBO();
-		$query = "SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vendors_".VmConfig::$vmlang."` WHERE `slug` LIKE '".$db->escape($slug)."' ";
-		$db->setQuery($query);
 
-		return $db->loadResult();
+		return $this->getFieldOfObjectWithLangFallBack('#__virtuemart_vendors_','virtuemart_vendor_id','slug',$slug);
+	}
+
+	public function getFieldOfObjectWithLangFallBack($table, $idname, $wherename, $value){
+
+		static $ids = array();
+		$value = trim($value);
+		$hash = substr($table,14,-1).VmConfig::$vmlang.$wherename.$value;
+		if(isset($ids[$hash])){
+			vmdebug('getFieldOfObjectWithLangFallBack return cached',$hash);
+			return $ids[$hash];
+		}
+
+		if($this->langFback){
+
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$select2 = 'IFNULL(ld.`'.$idname.'`,ljd.`'.$idname.'`)';
+				$where2 = 'IFNULL(ld.`'.$wherename.'`,ljd.`'.$wherename.'`)';
+				$tables = $table.VmConfig::$jDefLang.' as ljd LEFT JOIN '.$table.VmConfig::$defaultLang .' as ld ON ljd.`'.$idname.'`=ld.`'.$idname.'`
+				LEFT JOIN '.$table.VmConfig::$vmlang.' as l ON ljd.`'.$idname.'`=l.`'.$idname.'` ';
+			} else {
+				$select2 = 'ld.`'.$idname.'`';
+				$where2 = 'ld.`'.$wherename.'`';
+				$tables = $table.VmConfig::$defaultLang .' as ld LEFT JOIN '.$table.VmConfig::$vmlang.' as l ON ld.`'.$idname.'`=l.`'.$idname.'`';
+			}
+			$select = 'IFNULL(l.`'.$idname.'`,'.$select2.') as `'.$idname.'` ';
+			$wherenames = 'IFNULL(l.`'.$wherename.'`,'.$where2.')';
+
+		} else {
+			$select = $idname;
+			$tables = $table.VmConfig::$vmlang;
+			$wherenames = $wherename;
+		}
+
+		$q = 'SELECT '.$select.' FROM '.$tables.' WHERE '.$wherenames.' = "'.$this->_db->escape($value).'"';
+		$this->_db->setQuery($q);
+		vmdebug('getFieldOfObjectWithLangFallBack my query ',str_replace('#__',$this->_db->getPrefix(),$this->_db->getQuery()));
+		$ids[$hash] = $this->_db->loadResult();
+		if($err = $this->_db->getErrorMsg()){
+			vmError('Error in slq router.php function getFieldOfObjectWithLangFallBack '.$err);
+		}
+		if($ids[$hash]===null){
+			$ids[$hash] = false;
+		}
+		return $ids[$hash];
 	}
 
 	/* Set $this->menu with the Item ID from Joomla Menus */
