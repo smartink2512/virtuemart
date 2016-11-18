@@ -755,6 +755,8 @@ class VirtueMartModelCategory extends VmModel {
 
 		static $resId = array();
 
+		if(empty($virtuemart_category_id)) return array();
+
 		if($idsArr and !is_array($idsArr)){
 			$idsArr = array();
 			$this->categoryRecursed = 0;

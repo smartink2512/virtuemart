@@ -112,11 +112,11 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model,'category_name');
 
 			$topCategory=vRequest::getInt('top_category_id',0);
-			$category_tree = ShopFunctions::categoryListTree(array($topCategory));
+			$category_tree = '';//ShopFunctions::categoryListTree(array($topCategory));
 			$this->assignRef('category_tree', $category_tree);
 
 			$param = '';
-			if(!empty($this->categoryId)){
+			if(!empty($topCategory)){
 				$param = '&top_category_id='.$topCategory;
 			}
 			vmJsApi::ajaxCategoryDropDown('top_category_id', $param, vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL'));

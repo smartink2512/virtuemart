@@ -547,6 +547,9 @@ class ShopFunctions {
 
 	static public function categoryListTree ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array()) {
 
+		if(!is_array($selectedCategories)){
+			$selectedCategories = array($selectedCategories);
+		}
 		$hash = crc32(implode('.',$selectedCategories).':'.$cid.':'.$level.implode('.',$disabledFields));
 		if (empty(self::$categoryTree[$hash])) {
 

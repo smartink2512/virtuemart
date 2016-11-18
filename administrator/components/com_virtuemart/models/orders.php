@@ -230,18 +230,9 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		if($userlang){
-			if(!empty($order['details']['BT']->order_language)) {
-				$olang = $order['details']['BT']->order_language;
-				shopFunctionsF::loadOrderLanguages($olang);
-
-				/*////VmConfig::setdbLanguageTag();//Todo set language tag to get products in the correct language.
-				VmConfig::loadJLang('com_virtuemart',true, $olang);
-				VmConfig::loadJLang('com_virtuemart_shoppers',true, $olang);
-				VmConfig::loadJLang('com_virtuemart_orders',true, $olang);*/
-			} else {
-				shopFunctionsF::loadOrderLanguages();
-			}
+		if( $userlang and !empty($order['details']['BT']->order_language) ){
+			$olang = $order['details']['BT']->order_language;
+			shopFunctionsF::loadOrderLanguages($olang);
 		} else {
 			shopFunctionsF::loadOrderLanguages();
 		}

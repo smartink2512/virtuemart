@@ -619,8 +619,11 @@ class shopFunctionsF {
 				VmConfig::loadJLang('com_virtuemart', true, $language, true);
 				VmConfig::loadJLang('com_virtuemart_shoppers', TRUE, $language, true);
 				VmConfig::loadJLang('com_virtuemart_orders', TRUE, $language, true);
+
+				VmConfig::setdbLanguageTag($language);
 				//vmTrace('loadOrderLanguages '.$language);
 			}
+
 		}
 	}
 

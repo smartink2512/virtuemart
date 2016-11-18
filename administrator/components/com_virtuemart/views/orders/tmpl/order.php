@@ -221,6 +221,9 @@ vmJsApi::addJScript('ordergui',$j);
 					} else {
 						echo $this->orderbt->first_name.' '.$this->orderbt->last_name;
 					}
+					if( !empty($this->orderbt->order_language) and $this->orderbt->order_language!=VmConfig::$vmlangTag ) {
+						echo '<span style="float: right;"> '.$this->orderbt->order_language. ' </span>';
+					}
 					?>
 				</td>
 			</tr>
