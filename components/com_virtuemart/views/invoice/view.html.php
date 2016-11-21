@@ -250,8 +250,14 @@ class VirtuemartViewInvoice extends VmView {
 		foreach($orderDetails['items'] as $k => $_item) {
 // 			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHtml::_('select.genericlist', $orderstatuses, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
 			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] =  $_item->order_status;
-			$product = $pM->getProduct($_item->virtuemart_product_id);
-			$orderDetails['items'][$k]->virtuemart_media_id = $product->virtuemart_media_id;
+			if(!empty($_item->virtuemart_product_id)){
+				$product = $pM->getProduct($_item->virtuemart_product_id);
+				if(!empty($product->virtuemart_media_id)){
+					$orderDetails['items'][$k]->virtuemart_media_id = $product->virtuemart_media_id;
+				}
+			} else {
+				$product->virtuemart_media_id = false;
+			}
 		}
 
 		if (empty($orderDetails['shipmentName']) ) {

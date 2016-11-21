@@ -185,7 +185,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return FALSE;
 		}
 		
-		//$cart_prices_name = $this->renderPluginName ($method);
+		$cart_prices_name = $this->renderPluginName ($method);
 
 		$this->setCartPrices ($cart, $cart_prices, $method);
 
