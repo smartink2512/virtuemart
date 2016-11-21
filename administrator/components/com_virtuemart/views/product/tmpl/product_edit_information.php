@@ -290,18 +290,17 @@ if ($link) {
 			<textarea style="width: 100%;" class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6"><?php echo $this->product->intnotes; ?></textarea>
 		</fieldset>
 
+<?php
 
-
-<script type="text/javascript">
-    jQuery(document).ready(function () {
+$j = 'jQuery(document).ready(function () {
         jQuery("#mainPriceTable").dynoTable({
-            removeClass:'.price-remove', //remove class name in  table
-            cloneClass:'.price-clone', //Custom cloner class name in  table
-            addRowTemplateId:'#productPriceRowTmpl', //Custom id for  row template
-            addRowButtonId:'#add_new_price', //Click this to add a price
+            removeClass: ".price-remove", //remove class name in  table
+            cloneClass: ".price-clone", //Custom cloner class name in  table
+            addRowTemplateId: "#productPriceRowTmpl", //Custom id for  row template
+            addRowButtonId: "#add_new_price", //Click this to add a price
             lastRowRemovable:true, //let the table be empty.
             orderable:true, //prices can be rearranged
-            dragHandleClass:".price_ordering", //class for the click and draggable drag handle
+            dragHandleClass: ".price_ordering", //class for the click and draggable drag handle
             onRowRemove:function () {
             },
             onRowClone:function () {
@@ -313,39 +312,6 @@ if ($link) {
             onRowReorder:function () {
             }
         });
-    });
-
-</script>
-
-<script type="text/javascript">
-	var tax_rates = new Array();
-	<?php
-		if( property_exists($this, 'taxrates') && is_array( $this->taxrates )) {
-			foreach( $this->taxrates as $key => $tax_rate ) {
-				echo 'tax_rates["'.$tax_rate->tax_rate_id.'"] = '.$tax_rate->tax_rate."\n";
-			}
-		}
-	?>
-</script>
-<?php 
-/*vmJsApi::addJScript('pro-tech.AjaxCategoriesLoad',"
-		jQuery(document).ready(function($) {	
-			$('#categories_chzn').remove();	
-			$('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\"><div style=\"text-align:center;\">Loading...</div><img src=\"components/com_virtuemart/assets/images/vm-preloader.gif\"></div>').insertAfter('select#categories')	
-			$.ajax({
-                type: 'GET',
-                url: 'index.php',
-                data: 'option=com_virtuemart&view=product&type=getCategoriesTree&virtuemart_product_id=".$this->product->virtuemart_product_id."&format=json',
-                success:function(json){
-					$('select#categories').switchClass('chzn-done','chzn-select');
-					$('select#categories').html('<option value=\"\">".vmText::_('COM_VIRTUEMART_UNCATEGORIZED')."</option>'+json.value);
-					$('#pro-tech_ajax_load').remove();	
-					$('select#categories').chosen();
-				}
-			});		
-		});		
-");	//*/
-			
-	
-//echo vmJsApi::writeJS();
+    });';
+vmJsApi::addJScript('dynotable_ini',$j);
 ?>

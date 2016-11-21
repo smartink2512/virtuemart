@@ -26,9 +26,6 @@ vmJsApi::JvalideForm();
 $this->editor = JFactory::getEditor();
 
 ?>
-
-
-
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" id="adminForm">
 
 <?php // Loading Templates in Tabs
@@ -57,5 +54,32 @@ AdminUIHelper::buildTabs ( $this,  $tabarray, $this->product->virtuemart_product
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 
 </form>
-<?php AdminUIHelper::endAdminArea(); ?>
-<?php //$document->addScriptDeclaration( 'jQuery(window).load(function(){ jQuery.ajaxSetup({ cache: false }); })'); ?>
+<?php AdminUIHelper::endAdminArea();
+
+vmJsApi::addJScript( '/administrator/components/com_virtuemart/assets/js/products.js', false, false );
+
+$app = JFactory::getApplication();
+$l = 'index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
+if($app->isAdmin()){
+	$jsonLink = JURI::root(false).'administrator/'.$l;
+} else {
+	$jsonLink = JRoute::_($l);
+}
+
+$j = 'if (typeof Virtuemart === "undefined")
+	Virtuemart = {};
+	Virtuemart.nextCustom ="'.count($this->product->customfields).'";
+	Virtuemart.jsonLink ="'.$jsonLink.'";
+	Virtuemart.virtuemart_product_id ="'.$this->product->virtuemart_product_id.'";
+	Virtuemart.urlDomain = "'.JURI::root ().'";
+	Virtuemart.msgsent = "'.addslashes (vmText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')).'";
+	Virtuemart.enterSubj = "'.vmText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ENTER_SUBJECT').'";
+	Virtuemart.enterBody = "'.vmText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ENTER_BODY').'";
+	Virtuemart.customfields;
+	Virtuemart.prdcustomer;
+	Virtuemart.edit_status;
+	';
+vmJsApi::addJScript('onReadyProduct',$j);
+
+
+//$document->addScriptDeclaration( 'jQuery(window).load(function(){ jQuery.ajaxSetup({ cache: false }); })'); ?>

@@ -17,24 +17,9 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-		$js = '
-	jQuery(document).ready(function( $ ) {
-			if ( $("#custom_price_display").is(\':checked\') ) {
-				$("#show_hide_prices").show();
-			} else {
-				$("#show_hide_prices").hide();
-			}
-		 $("#custom_price_display").click(function() {
-			if ( $("#custom_price_display").is(\':checked\') ) {
-				$("#show_hide_prices").show();
-			} else {
-				$("#show_hide_prices").hide();
-			}
-		});
-	});
-	';
 
-vmJsApi::addJScript('hidePrices',$js);
+$js = 'Virtuemart.showprices;';
+vmJsApi::addJScript('show_prices',$js,true);
 AdminUIHelper::startAdminArea($this);
 AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 ?>
@@ -83,7 +68,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 
 	    <table class="admintable">
 			<?php
-			$attributes='id="custom_price_display"';
+			$attributes='id="show_prices"';
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY', 'custom_price_display', $this->shoppergroup->custom_price_display,1,0,$attributes ); ?>
 		</table>
 		<table class="admintable" id="show_hide_prices">

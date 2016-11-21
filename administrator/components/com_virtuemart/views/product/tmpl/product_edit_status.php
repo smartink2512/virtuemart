@@ -132,24 +132,3 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 
 
-
-<script type="text/javascript">
-	jQuery('#image').change( function() {
-		var $newimage = jQuery(this).val();
-		jQuery('#product_availability').val($newimage);
-		jQuery('#imagelib').attr({ src:'<?php echo JURI::root(true).$this->imagePath ?>'+$newimage, alt:$newimage });
-		});
-	jQuery('.js-change-stock').change( function() {
-
-		var in_stock = jQuery('.js-change-stock[name="product_in_stock"]');
-		var ordered = jQuery('.js-change-stock[name="product_ordered"]');
-		var product_in_stock= parseInt(in_stock.val());
-		if ( oldstock == "undefined") var oldstock = product_in_stock ;
-		var product_ordered=parseInt(ordered.val());
-		if (product_in_stock>product_ordered && product_in_stock!=oldstock )
-			jQuery('#notify_users').attr('checked','checked');
-		else jQuery('#notify_users').attr('checked',false);
-	});
-</script>
-
-

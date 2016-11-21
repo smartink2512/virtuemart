@@ -4,9 +4,9 @@
  *
  * @package	VirtueMart
  * @subpackage Orders
- * @author Oscar van Eijk
+ * @author Oscar van Eijk, Max Milbers
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2016 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -26,125 +26,15 @@ JPluginHelper::importPlugin('vmshopper');
 JPluginHelper::importPlugin('vmshipment');
 JPluginHelper::importPlugin('vmpayment');
 
-vmJsApi::addJScript( 'orderedit',"
-		jQuery( function($) {
+$jsOrderStatusShopperEmail = '""';
+$j = 'if (typeof Virtuemart === "undefined")
+	Virtuemart = {};
+	Virtuemart.confirmDelete = "'.addslashes( vmText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_JS') ).'";
+	onReadyOrder();
+	var editingItem = 0;';
+vmJsApi::addJScript('onReadyOrder',$j);
 
-			$('.orderedit').hide();
-			$('.ordereditI').show();
-			$('.orderedit').css('backgroundColor', 'lightgray');
-
-			jQuery('.updateOrderItemStatus').click(function() {
-				document.orderItemForm.task.value = 'updateOrderItemStatus';
-				document.orderItemForm.submit();
-				return false
-			});
-
-			jQuery('select#virtuemart_paymentmethod_id').change(function(){
-				jQuery('span#delete_old_payment').show();
-				jQuery('input#delete_old_payment').attr('checked','checked');
-			});
-
-		});
-
-		function enableEdit(e)
-		{
-			jQuery('.orderedit').each( function()
-			{
-				var d = jQuery(this).css('visibility')=='visible';
-				jQuery(this).toggle();
-				jQuery('.orderedit').css('backgroundColor', d ? 'white' : 'lightgray');
-				jQuery('.orderedit').css('color', d ? 'blue' : 'black');
-			});
-			jQuery('.ordereditI').each( function()
-			{
-				jQuery(this).toggle();
-			});
-			e.preventDefault();
-		};
-
-		function addNewLine(e,i) {
-
-			var row = jQuery('#itemTable').find('#lItemRow').html();
-			var needle = 'item_id['+i+']';
-			//var needle = new RegExp('item_id['+i+']','igm');
-			while (row.indexOf(needle) !== -1){
-				row = row.replace(needle,'item_id[0]');
-			}
-
-			//alert(needle);
-			jQuery('#itemTable').find('#lItemRow').after('<tr>'+row+'</tr>');
-			e.preventDefault();
-		};
-
-		function cancelEdit(e) {
-			jQuery('#orderItemForm').each(function(){
-				this.reset();
-			});
-			jQuery('.selectItemStatusCode')
-				.find('option:selected').prop('selected', true)
-				.end().trigger('liszt:updated');
-			jQuery('.orderedit').hide();
-			jQuery('.ordereditI').show();
-			e.preventDefault();
-		}
-
-		function resetOrderHead(e) {
-			jQuery('#orderForm').each(function(){
-				this.reset();
-			});
-			jQuery('select#virtuemart_paymentmethod_id')
-				.find('option:selected').prop('selected', true)
-				.end().trigger('liszt:updated');
-			jQuery('select#virtuemart_shipmentmethod_id')
-				.find('option:selected').prop('selected', true)
-				.end().trigger('liszt:updated');
-			e.preventDefault();
-		}
-
-		");
-
-$j = "
-jQuery('.show_element').click(function() {
-  jQuery('.element-hidden').toggle();
-  jQuery('select').trigger('chosen:updated');
-  return false;
-});
-jQuery('.updateOrderItemStatus').click(function() {
-	document.orderItemForm.task.value = 'updateOrderItemStatus';
-	document.orderItemForm.submit();
-	return false;
-});
-jQuery('.updateOrder').click(function() {
-	document.orderForm.submit();
-	return false;
-});
-jQuery('.createOrder').click(function() {
-	document.orderForm.task.value = 'CreateOrderHead';
-	document.orderForm.submit();
-	return false;
-});
-jQuery('.newOrderItem').click(function() {
-	document.orderItemForm.task.value = 'newOrderItem';
-	document.orderItemForm.submit();
-	return false;
-});
-jQuery('.orderStatFormSubmit').click(function() {
-	//document.orderStatForm.task.value = 'updateOrderItemStatus';
-	document.orderStatForm.submit();
-
-	return false;
-});
-
-function confirmation(destnUrl) {
-	var answer = confirm('".addslashes( vmText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_JS') )."');
-if (answer) {
-	window.location = destnUrl;
-	}
-}
-
-var editingItem = 0;
-";
-vmJsApi::addJScript('ordergui',$j);
+vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.js',false,false);
 
 ?>
 <div style="text-align: left;">
@@ -480,12 +370,12 @@ vmJsApi::addJScript('ordergui',$j);
 			$lId = count($this->orderdetails['items'])==$i? 'id="lItemRow"':'';
 			?>
 			<tr valign="top" <?php echo $lId?>><?php /*id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">*/ ?>
-				<!--<td>
+				<td>
 					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
 					<a class="vmicon vmicon-16-bug" title="<?php echo vmText::_('remove'); ?>" onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');"></a>
 
 					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHtml::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, true); ?></a>
-				</td> -->
+				</td>
 				<td>
 					<?php echo ($i++)?>
 				</td>
@@ -593,7 +483,15 @@ vmJsApi::addJScript('ordergui',$j);
 						&nbsp;&nbsp;
 						<a href="#" onClick="javascript:enableEdit(event);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_EDIT'); ?></a>
 						&nbsp;&nbsp;
-						<a href="#" onClick="javascript:addNewLine(event,<?php echo $this->orderdetails['items'][0]->virtuemart_order_item_id ?>);"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo '&nbsp;'. vmText::_('JTOOLBAR_NEW'); ?></a>
+						<?php
+							if(isset($this->orderdetails['items'][0])){
+								$oId = $this->orderdetails['items'][0]->virtuemart_order_item_id;
+							} else {
+								$oId = 0;
+							}
+
+						?>
+						<a href="#" onClick="javascript:addNewLine(event,<?php echo $oId ?>);"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo '&nbsp;'. vmText::_('JTOOLBAR_NEW'); ?></a>
 					</td>
 
 					<td colspan="6">
@@ -827,10 +725,7 @@ vmJsApi::addJScript('ordergui',$j);
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea();
 
-
-?>
-
-
+/*
 <script type="text/javascript">
 
 
@@ -841,4 +736,5 @@ AdminUIHelper::endAdminArea();
 	// return false
 // });
 
-</script>
+</script>*/
+?>

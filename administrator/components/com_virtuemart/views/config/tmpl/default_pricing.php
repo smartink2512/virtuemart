@@ -17,23 +17,8 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$js = '
-		jQuery(document).ready(function( $ ) {
-				if ( $("#show_prices").is(\':checked\') ) {
-					$("#show_hide_prices").show();
-				} else {
-					$("#show_hide_prices").hide();
-				}
-			 $("#show_prices").click(function() {
-				if ( $("#show_prices").is(\':checked\') ) {
-					$("#show_hide_prices").show();
-				} else {
-					$("#show_hide_prices").hide();
-				}
-			});
-		});
-	';
-$document = JFactory::getDocument();
+
+$js = 'Virtuemart.showprices;';
 vmJsApi::addJScript('show_prices',$js,true);
 ?>
 <table>

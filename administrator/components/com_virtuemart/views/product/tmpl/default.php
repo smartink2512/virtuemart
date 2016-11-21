@@ -230,38 +230,11 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 
 // DONE BY stephanbais
 /// DRAG AND DROP PRODUCT ORDER HACK
-if ($this->categoryId ) { ?>
-	<script>
-		jQuery(function() {
-
-			jQuery( ".adminlist" ).sortable({
-				handle: ".vmicon-16-move",
-				items: 'tr:not(:first,:last)',
-				opacity: 0.8,
-				update: function() {
-					var i = 1;
-					jQuery(function updatenr(){
-						jQuery('input.ordering').each(function(idx) {
-							jQuery(this).val(idx);
-						});
-					});
-
-					jQuery(function updaterows() {
-						jQuery(".order").each(function(index){
-							var row = jQuery(this).parent('td').parent('tr').prevAll().length;
-							jQuery(this).val(row);
-							i++;
-						});
-
-					});
-				}
-
-			});
-		});
-	</script>
-
-<?php }
-
+if ($this->categoryId ) {
+	vmJsApi::addJScript( '/administrator/components/com_virtuemart/assets/js/products.js', false, false );
+	//vmJsApi::addJScript( 'sortableProducts', 'Virtuemart.sortableProducts;' );
+	vmJsApi::addJScript('sortable','Virtuemart.sortable;');
+}
 
 /// END PRODUCT ORDER HACK
 ?>

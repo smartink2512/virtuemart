@@ -19,13 +19,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$app = JFactory::getApplication();
-$l = 'index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
-if($app->isAdmin()){
-	$jsonLink = JURI::root(false).'administrator/'.$l;
-} else {
-	$jsonLink = JRoute::_($l);
-}
+
 
 
 
@@ -39,89 +33,7 @@ if($app->isAdmin()){
 			$tables= array('categories'=>'','products'=>'','fields'=>'','customPlugins'=>'',);
 			if (isset($this->product->customfields)) {
 				$customfieldsModel = VmModel::getModel('customfields');
-				$i = count($this->product->customfields);
-				$jsCsort = "
-	nextCustom =".$i.";
 
-	jQuery(document).ready(function(){
-		jQuery('#custom_field').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
-		// Need to declare the update routine outside the sortable() function so
-		// that it can be called when adding new customfields
-		jQuery('#custom_field').bind('sortupdate', function(event, ui) {
-			jQuery(this).find('.ordering').each(function(index,element) {
-				jQuery(element).val(index);
-			});
-		});
-		jQuery('#custom_categories').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
-		jQuery('#custom_categories').bind('sortupdate', function(event, ui) {
-			jQuery(this).find('.ordering').each(function(index,element) {
-				jQuery(element).val(index);
-			});
-		});
-		jQuery('#custom_products').sortable({cursorAt: { top: 0, left: 0 },handle: '.vmicon-16-move'});
-		jQuery('#custom_products').bind('sortupdate', function(event, ui) {
-			jQuery(this).find('.ordering').each(function(index,element) {
-				jQuery(element).val(index);
-			});
-		});
-	});
-	jQuery('select#customlist').chosen().change(function() {
-		selected = jQuery(this).find( 'option:selected').val() ;
-		jQuery.getJSON('".$jsonLink."&type=fields&id='+selected+'&row='+nextCustom,
-		function(data) {
-			jQuery.each(data.value, function(index, value){
-				jQuery('#custom_field').append(value);
-				jQuery('#custom_field').trigger('sortupdate');
-			});
-		});
-		nextCustom++;
-	});
-
-	jQuery.each(jQuery('.cvard'), function(i,val){
-		jQuery(val).chosen().change(function() {
-			quantity = jQuery(this).parent().find('input[type=\"hidden\"]');
-			quantity.val(jQuery(this).val());
-		});
-	});
-
-	jQuery('input#relatedproductsSearch').autocomplete({
-		source: '".$jsonLink."&type=relatedproducts&row='+nextCustom,
-		select: function(event, ui){
-			jQuery('#custom_products').append(ui.item.label);
-			jQuery('#custom_products').trigger('sortupdate');
-			nextCustom++;
-			jQuery(this).autocomplete( 'option' , 'source' , '".$jsonLink."&type=relatedproducts&row='+nextCustom )
-		},
-		minLength:1,
-		html: true
-	});
-	jQuery('input#relatedcategoriesSearch').autocomplete({
-
-		source: '".$jsonLink."&type=relatedcategories&row='+nextCustom,
-		select: function(event, ui){
-			jQuery('#custom_categories').append(ui.item.label);
-			jQuery('#custom_categories').trigger('sortupdate');
-			nextCustom++;
-			jQuery(this).autocomplete( 'option' , 'source' , '".$jsonLink."&type=relatedcategories&row='+nextCustom )
-		},
-		minLength:1,
-		html: true
-	});
-
-
-eventNames = 'click.remove keydown.remove change.remove focus.remove'; // all events you wish to bind to
-
-function removeParent() {jQuery('#customfieldsParent').remove(); }
-
-jQuery('#customfieldsTable').find('input').each(function(i){
-	current = jQuery(this);
-	current.click(function(){
-			jQuery('#customfieldsParent').remove();
-		});
-});
-
-";
-				vmJsApi::addJScript('cSort',$jsCsort);
 
 				$i=0;
 

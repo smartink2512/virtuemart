@@ -5,9 +5,9 @@
  *
  * @package    VirtueMart
  * @subpackage
- * @author
+ * @author VirtueMart Team, Max Milbers
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2016 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -164,75 +164,15 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 </form>
 <?php AdminUIHelper::endAdminArea ();
 
-$j = 'function set2status(){
-
-	var newStatus = jQuery("#order_status_code_bulk").val();
-
-	var customer_notified = jQuery("input[name=\'customer_notified\']").is( ":checked" );
-	var customer_send_comment = jQuery("input[name=\'customer_send_comment\']").is( ":checked" );
-	var update_lines = jQuery("input[name=\'update_lines\']").is( ":checked" );
-	var comments = jQuery("textarea[name=\'comments\']").val();
-
-	field = document.getElementsByName("cid[]");
-	var fname = "";
-	var sel = 0;
-	for (i = 0; i < field.length; i++){
-		if (field[i].checked){
-			fname = "orders[" + field[i].value + "]";
-			jQuery("input[name=\'"+fname+"[customer_notified]\']").prop("checked",customer_notified);
-			jQuery("input[name=\'"+fname+"[customer_send_comment]\']").prop("checked",customer_send_comment);
-			jQuery("input[name=\'"+fname+"[update_lines]\']").prop("checked",update_lines);
-			jQuery("textarea[name=\'"+fname+"[comments]\']").text(comments);
-			console.log("Mist ",jQuery("input[name=\'"+fname+"[comments]\']"));
-			jQuery("#order_status"+i).val(newStatus).trigger("chosen:updated").trigger("liszt:updated");
-		}
-	}
-
-}';
-vmJsApi::addJScript('set2status',$j);
-
-$j = "jQuery('.show_comment').click(function() {
-		jQuery(this).prev('.element-hidden').show();
-		return false
-		});
-		jQuery('.element-hidden').mouseleave(function() {
-		jQuery(this).hide();
-		});
-		jQuery('.element-hidden').mouseout(function() {
-		jQuery(this).hide();
-	});";
-vmJsApi::addJScript('show_comment',$j);
-
 $orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
 if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
 $jsOrderStatusShopperEmail = vmJsApi::safe_json_encode($orderstatusForShopperEmail);
 
-$j ='
-	jQuery(document).ready(function() {
-		jQuery(".orderstatus_select").change( function() {
+$j = 'if (typeof Virtuemart === "undefined")
+	Virtuemart = {};
+	Virtuemart.orderstatus = '.$jsOrderStatusShopperEmail.';
+	onReadyOrders();';
+vmJsApi::addJScript('onReadyOrders',$j);
 
-			var name = jQuery(this).attr("name");
-			var brindex = name.indexOf("orders[");
-			if ( brindex >= 0){
-				//yeh, yeh, maybe not the most elegant way, but it does, what it should
-				var s = name.indexOf("[")+1;
-				var e = name.indexOf("]");
-				var id = name.substring(s,e);
-
-				var orderstatus = '.$jsOrderStatusShopperEmail.';
-				var selected = jQuery(this).val();
-				var selStr = "[name=\"orders["+id+"][customer_notified]\"]";
-				var elem = jQuery(selStr);
-
-				if(jQuery.inArray(selected, orderstatus)!=-1){
-					elem.attr("checked",true);
-					// for the checkbox    
-					jQuery(this).parent().parent().find("input[name=\"cid[]\"]").attr("checked",true);
-				} else {
-					elem.attr("checked",false);
-				}
-			}
-		});
-	});';
-
-vmJsApi::addJScript('setChecksByOrderStatus',$j);
+vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.js',false,false);
+?>

@@ -99,21 +99,23 @@ $i = 0;
 								$attrib = $custom->customfield_value;
 
 								if ($attrib=='product_name') {
-									$js='
-									jQuery(document).ready(function($) {
-										$(\'input[class~="productname"]\').on(\'keyup change\', function(event) {
-											id= "#"+$(this).attr("id")+"1";
-											$(id).val($(this).val());
-										});
-									});
-									';
-									vmJsApi::addJScript('vm.childProductName', $js);
+									$js = true;
 								}
 								?>
 								<th style="text-align: left !important;">
 									<?php echo vmText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',vmText::_('COM_VIRTUEMART_'.strtoupper($custom->customfield_value)))?>
 								</th>
-							<?php } ?>
+							<?php }
+							if($js){
+								$js='jQuery(document).ready(function($) {
+										$(\'input[class~="productname"]\').on(\'keyup change\', function(event) {
+											id= "#"+$(this).attr("id")+"1";
+											$(id).val($(this).val());
+										});
+									});';
+								vmJsApi::addJScript('vm.childProductName', $js);
+							}
+							?>
 							<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_ORDERING')?></th>
 							<th style="text-align: left !important;" width="5%"><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED')?></th>
 						</tr>

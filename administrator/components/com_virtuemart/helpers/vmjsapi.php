@@ -427,10 +427,6 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		}
 		VmJsApi::jSite();
 
-/*		jQuery(document).ready(function() {
-			$('".$name."').validationEngine();
-		});
-*/
 		self::addJScript('vm.countryState'.$prefix,'
 		jQuery(document).ready( function($) {
 			$("#'.$prefix.'virtuemart_country_id'.$suffix.'").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id'.$suffix.'",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
@@ -445,25 +441,15 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 		static $done = false;
 		if ($done) return true;
 
-		//$jsVars = "";
-		//$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
-
 		self::vmVariables();
 		if(VmConfig::get('usefancy',1)){
-			//$jsVars .= "usefancy = true;";
 			vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false,false,false,'1.3.4');
 			vmJsApi::css('jquery.fancybox-1.3.4');
-		} else {//This is just there for the backward compatibility
-			/*$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
-			$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
-
-			//This is necessary though and should not be removed without rethinking the whole construction
-			$jsVars .= "usefancy = false;";*/
+		} else {
 			vmJsApi::addJScript( 'facebox', false, true, true, false, '' );
 			vmJsApi::css( 'facebox' );
 		}
 
-		//self::addJScript('jsVars',$jsVars);
 		$done = true;
 	}
 
