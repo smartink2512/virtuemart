@@ -127,26 +127,32 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		}
 
-		$html = array();
-		$method_name = $this->_psType . '_name';
 
+		$mname = $this->_psType . '_name';
+		$idN = 'virtuemart_'.$this->_psType.'method_id';
+
+		$ret = FALSE;
 		foreach ($this->methods as $method) {
-			if ($this->checkConditions ($cart, $method, $cart->cartPrices)) {
+			if(!isset($htmlIn[$this->_psType][$method->$idN])) {
+				if ($this->checkConditions ($cart, $method, $cart->cartPrices)) {
 
-				// the price must not be overwritten directly in the cart
-				$prices = $cart->cartPrices;
-				$methodSalesPrice = $this->setCartPrices ($cart, $prices ,$method);
+					// the price must not be overwritten directly in the cart
+					$prices = $cart->cartPrices;
+					$methodSalesPrice = $this->setCartPrices ($cart, $prices ,$method);
 
-				$method->$method_name = $this->renderPluginName ($method);
-				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
+					//This makes trouble, because $method->$mname is used in  renderPluginName to render the Name, so it must not be called twice!
+					$method->$mname = $this->renderPluginName ($method);
+
+					$htmlIn[$this->_psType][$method->$idN] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
+
+					$ret = TRUE;
+				}
+			} else {
+				$ret = TRUE;
 			}
 		}
-		if (!empty($html)) {
-			$htmlIn[] = $html;
-			return TRUE;
-		}
 
-		return FALSE;
+		return $ret;
 	}
 
 	/*
@@ -179,7 +185,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return FALSE;
 		}
 		
-		$cart_prices_name = $this->renderPluginName ($method);
+		//$cart_prices_name = $this->renderPluginName ($method);
 
 		$this->setCartPrices ($cart, $cart_prices, $method);
 
@@ -536,18 +542,20 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db->setQuery ($q);
 		$this->methods = $db->loadObjectList ();
-
+		if($err = $db->getErrorMsg()){
+			vmError('Error in slq vmpsplugin.php function getPluginMethods '.$err);
+		}
 		if ($this->methods) {
 			foreach ($this->methods as $method) {
 				VmTable::bindParameterable ($method, $this->_xParams, $this->_varsToPushParam);
 			}
 		} else if($this->methods===null or empty($this->methods)){
 			$this->methods = array();
-			vmError ('Error reading getPluginMethods ' . $q);
+			//vmError ('Error reading getPluginMethods ' . $q);
 		}
 
 		$mC[$h] = $this->methods;
-		vmdebug('getPluginMethods my query ',str_replace('#__',$db->getPrefix(),$db->getQuery()));
+		//vmdebug('getPluginMethods my query ',str_replace('#__',$db->getPrefix(),$db->getQuery()));
 		return count($this->methods);
 	}
 
@@ -755,6 +763,13 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	protected function renderPluginName ($plugin) {
 
+		static $c = array();
+		$idN = 'virtuemart_'.$this->_psType.'method_id';
+
+		if(isset($c[$this->_psType][$plugin->$idN])){
+			return $c[$this->_psType][$plugin->$idN];
+		}
+
 		$return = '';
 		$plugin_name = $this->_psType . '_name';
 		$plugin_desc = $this->_psType . '_desc';
@@ -767,8 +782,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!empty($plugin->$plugin_desc)) {
 			$description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc . '</span>';
 		}
-		$pluginName = $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' . $description;
-		return $pluginName;
+		$c[$this->_psType][$plugin->$idN] = $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' . $description;
+
+		return $c[$this->_psType][$plugin->$idN];
 	}
 
 	protected function getPluginHtml ($plugin, $selectedPlugin, $pluginSalesPrice) {
@@ -1337,7 +1353,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 			VirtuemartCart::emptyCartValues($tcart,false);
 
-			$vmObj->vmcart = json_encode($tcart);
+			$vmObj->vmcart = vmJsApi::safe_json_encode($tcart);
 			$unsunser->set('__vm',$vmObj);
 
 			$runser = serialize($unsunser);

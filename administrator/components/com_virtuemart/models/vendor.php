@@ -258,9 +258,8 @@ class VirtueMartModelVendor extends VmModel {
 			$db = JFactory::getDBO ();
 
 			$q = 'SELECT *  FROM `#__virtuemart_currencies` AS c
-			, `#__virtuemart_vendors` AS v
-			WHERE v.virtuemart_vendor_id = ' . (int)$_vendorId . '
-			AND   v.vendor_currency = c.virtuemart_currency_id';
+			LEFT JOIN `#__virtuemart_vendors` AS v ON  c.virtuemart_currency_id = v.vendor_currency
+			WHERE v.virtuemart_vendor_id = "' . (int)$_vendorId . '"';
 			$db->setQuery ($q);
 			self::$_vendorCurrencies[$_vendorId] = $db->loadObject ();
 		}

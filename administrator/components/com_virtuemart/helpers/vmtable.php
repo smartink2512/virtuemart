@@ -973,7 +973,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 		$hashVarsToPush = '';
 		if (!empty($this->_varsToPushParam)) {
-			$hashVarsToPush = json_encode($this->_varsToPushParam);
+			$hashVarsToPush = vmJsApi::safe_json_encode($this->_varsToPushParam);
 		}
 		$this->_lhash = md5($oid. $select . $k . $mainTable . $andWhere . $hashVarsToPush);
 		//$this->showFullColumns();

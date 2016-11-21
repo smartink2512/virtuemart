@@ -53,7 +53,7 @@ class VirtuemartViewMedia extends VmViewAdmin {
 					echo vmJsApi::safe_json_encode($this->json);
 				} else {
 					$this->json->msg =  '<b>'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
-					echo @json_encode($this->json);
+					echo @vmJsApi::safe_json_encode($this->json);
 				}
 			}
 		}

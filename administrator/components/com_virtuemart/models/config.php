@@ -630,7 +630,7 @@ class VirtueMartModelConfig extends VmModel {
 						$pair[1] = substr($pair[1],6);
 						$pair[1] = explode('|',$pair[1]);
 					}
-					$_line = $pair[0].'='.json_encode($pair[1]);
+					$_line = $pair[0].'='.vmJsApi::safe_json_encode($pair[1]);
 
 				} else {
 					$_line = $pair[0].'=';

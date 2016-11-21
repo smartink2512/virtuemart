@@ -1334,7 +1334,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod);
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 
-				if ($this->_currentMethod->noStandardChoice and $this->_currentMethod->payment_type=='_xclick'){
+				if ($this->_currentMethod->noStandardChoice and $this->_currentMethod->paypalproduct=='exp'){
 					continue;
 				}
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);

@@ -970,7 +970,7 @@ class VirtueMartModelOrders extends VmModel {
 				$taxes[$k]['calc_value'] = $VatTax['calc_value'];
 				$taxes[$k]['result'] = $VatTax['result'];
 			}
-			$_orderData->order_billTax = json_encode($taxes);
+			$_orderData->order_billTax = vmJsApi::safe_json_encode($taxes);
 		}
 
 		if (!empty($_cart->couponCode)) {

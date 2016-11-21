@@ -904,7 +904,7 @@ class vmrouterHelper {
 			$parent_ids[] = $catId;
 		}
 
-		vmdebug('Router getCategoryNames getCategoryRecurse finished '.$catId,$parent_ids);
+		//vmdebug('Router getCategoryNames getCategoryRecurse finished '.$catId,$parent_ids);
 		foreach ($parent_ids as $id ) {
 			if(!isset($categoryNamesCache[$id])){
 				$cat = $catModel->getCategory($id,0);
@@ -940,29 +940,6 @@ class vmrouterHelper {
 		}
 
 		return $catIds;
-		/*$db = JFactory::getDBO();
-		static $catIds = array();
-		if(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-			$q = 'SELECT IFNULL(l.`virtuemart_category_id`,ld.`virtuemart_category_id`) as `virtuemart_category_id` ';
-			$q .= ' FROM `#__virtuemart_categories_'.VmConfig::$defaultLang.'` AS `ld` ';
-			$q .= ' LEFT JOIN `#__virtuemart_categories_' .VmConfig::$vmlang . '` as l ON (ld.`virtuemart_category_id`=l.`virtuemart_category_id`) ';
-			$q .= ' WHERE IFNULL(l.`slug`,ld.`slug`) = "'.$db->escape($slug).'" ';
-			$hash = md5(VmConfig::$defaultLang.$slug.VmConfig::$defaultLang);
-		} else {
-			$q = "SELECT `virtuemart_category_id`
-				FROM  `#__virtuemart_categories_".VmConfig::$vmlang."`
-				WHERE `slug` = '".$db->escape($slug)."' ";
-			$hash = md5($slug.VmConfig::$defaultLang);
-		}
-
-		if(!isset($catIds[$hash])){
-			$db->setQuery($q);
-			if (!$catIds[$hash] = $db->loadResult()) {
-				$catIds[$hash] = $catId;
-			}
-		}
-
-		return $catIds[$hash] ;*/
 	}
 
 	/* Get URL safe Product name */
@@ -1142,7 +1119,7 @@ class vmrouterHelper {
 
 		$q = 'SELECT '.$select.' FROM '.$tables.' WHERE '.$wherenames.' = "'.$this->_db->escape($value).'"';
 		$this->_db->setQuery($q);
-		vmdebug('getFieldOfObjectWithLangFallBack my query ',str_replace('#__',$this->_db->getPrefix(),$this->_db->getQuery()));
+		//vmdebug('getFieldOfObjectWithLangFallBack my query ',str_replace('#__',$this->_db->getPrefix(),$this->_db->getQuery()));
 		$ids[$hash] = $this->_db->loadResult();
 		if($err = $this->_db->getErrorMsg()){
 			vmError('Error in slq router.php function getFieldOfObjectWithLangFallBack '.$err);

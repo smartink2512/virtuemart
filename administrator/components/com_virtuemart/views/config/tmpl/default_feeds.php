@@ -19,32 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/* ?>
-
-<fieldset>
-    <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SETTINGS') ?></legend>
-    <table class="admintable">
-		<?php
-		//echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE', 'feed_published', VmConfig::get('feed_published', 0));
-		//may add this
-		//echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_CACHE', 'feed_cache', VmConfig::get('feed_cache', 0));
-		//echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEED_CACHETIME', 'feed_cachetime', VmConfig::get('feed_cachetime', 0));
-		//echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_FEED_TITLE', 'feed_title', VmConfig::get('feed_title', 0));
-
-		//echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWIMAGES', 'feed_show_images', VmConfig::get('feed_show_images', 0));
-		//echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWPRICES', 'feed_show_prices', VmConfig::get('feed_show_prices', 0));
-		//echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWDESC', 'feed_show_description', VmConfig::get('feed_show_description', 0));
-
-		$options = array();
-		$options[] = JHtml::_('select.option', 'product_s_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
-		$options[] = JHtml::_('select.option', 'product_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
-		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_FEED_DESCRIPTION_TYPE', $options, 'feed_description_type', 'size=1', 'value', 'text', VmConfig::get('feed_description_type'));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_LIMITTEXT', 'feed_limittext', VmConfig::get('feed_limittext', 0));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_FEED_MAX_TEXT_LENGTH', 'feed_max_text_length', VmConfig::get('feed_max_text_length', 0));
-		?>
-    </table>
-</fieldset>
-*/ ?>
+?>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_HOME_FEED_SETTINGS'); ?></legend>
 	<table class="admintable">

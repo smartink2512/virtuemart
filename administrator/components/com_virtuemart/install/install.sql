@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_category_medias` (
   `virtuemart_media_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `ordering` (`ordering`),
+  KEY `ordering` (`virtuemart_category_id`, `ordering`),
   UNIQUE KEY `virtuemart_category_id` (`virtuemart_category_id`,`virtuemart_media_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -847,10 +847,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   `locked_by` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_customfield_id`),
-  KEY `virtuemart_product_id` (`virtuemart_product_id`),
+  KEY `virtuemart_product_id` (`virtuemart_product_id`,`ordering`),
   KEY `virtuemart_custom_id` (`virtuemart_custom_id`),
   KEY `published` (`published`),
-  KEY `ordering` (`virtuemart_product_id`,`ordering`)
+  KEY `ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
 
 
@@ -866,7 +866,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_medias` (
   `ordering` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_media_id`),
-  KEY `ordering` (`ordering`)
+  KEY `ordering` (`virtuemart_product_id`, `ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
@@ -911,7 +911,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `locked_by` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_product_price_id`),
   KEY `virtuemart_product_id` (`virtuemart_product_id`),
-  KEY `product_price` (`virtuemart_product_id`),
+  KEY `product_price` (`product_price`),
   KEY `virtuemart_shoppergroup_id` (`virtuemart_shoppergroup_id`),
   KEY `product_price_publish_up` (`product_price_publish_up`),
   KEY `product_price_publish_down` (`product_price_publish_down`),

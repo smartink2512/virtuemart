@@ -47,7 +47,7 @@ class VirtuemartViewCustom extends JViewLegacy {
 				echo vmJsApi::safe_json_encode($json);
 			} else {
 				$json->msg =  '<b>'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
-				echo json_encode($json);
+				echo vmJsApi::safe_json_encode($json);
 			}
 		}
 		elseif ( $custom_jplugin_id = vRequest::getInt('custom_jplugin_id') ) {

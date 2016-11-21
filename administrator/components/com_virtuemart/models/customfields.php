@@ -110,9 +110,9 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 
 		if(is_array($productIds) and count($productIds)>0){
-			$q .= 'WHERE `virtuemart_product_id` IN ('.implode(',', $productIds).')';
+			$q .= 'WHERE field.`virtuemart_product_id` IN ('.implode(',', $productIds).')';
 		} else if(!empty($productIds)){
-			$q .= 'WHERE `virtuemart_product_id` = "'.$productIds.'" ';
+			$q .= 'WHERE field.`virtuemart_product_id` = "'.$productIds.'" ';
 		} else {
 			return $productCustomsCached;
 		}
@@ -139,7 +139,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				//$q .= ' GROUP BY c.`virtuemart_custom_id`';
 			}
 
-			$q .= ' ORDER BY field.`ordering`,`virtuemart_custom_id` ASC';
+			$q .= ' ORDER BY field.`ordering` ASC';
 		}
 
 		$db->setQuery ($q);
