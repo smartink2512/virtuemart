@@ -286,7 +286,12 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 				echo '				</label>'."\n";
 				echo '			</td>'."\n";
 				echo '			<td>'."\n";
-				echo '				'.$_field['formcode']."\n";
+				if ($_field['type'] === 'hidden') {
+					echo '				'.htmlentities($_field['value'],ENT_COMPAT | ENT_HTML401, ini_get("default_charset"), false)."\n";
+				}
+				else {
+					echo '				'.$_field['formcode']."\n";
+				}
 				echo '			</td>'."\n";
 				echo '		</tr>'."\n"; //*/
 			/*	$fn = $_field['name'];
@@ -322,7 +327,12 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 				echo '				</label>'."\n";
 				echo '			</td>'."\n";
 				echo '			<td>'."\n";
-				echo '				'.$_field['formcode']."\n";
+				if ($_field['type'] === 'hidden') {
+					echo '				'.htmlentities($_field['value'],ENT_COMPAT | ENT_HTML401, ini_get("default_charset"), false)."\n";
+				}
+				else {
+					echo '				'.$_field['formcode']."\n";
+				}
 				echo '			</td>'."\n";
 				echo '		</tr>'."\n";
 			}

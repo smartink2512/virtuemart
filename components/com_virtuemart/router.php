@@ -47,25 +47,6 @@ function virtuemartBuildRoute(&$query) {
 	if(isset($query['langswitch'])) unset($query['langswitch']);
 
 
-/*	//a bit hacky, but should work
-	$oLang = VmConfig::$vmlang;
-	$app = JFactory::getApplication();
-	if($l = $app->getUserState('language',false)){
-		vmdebug('hm getUserState',$query);
-	}
-	if(isset($query['language'])){
-		//vmdebug('hm',$query);
-		VmConfig::$vmlang = $query['language'];
-	} else if($l = vRequest::getCmd('language',false)){
-		$alangs = (array)VmConfig::get('active_languages',array());
-		$l = strtolower(strtr($l,'-','_'));
-		if(in_array($l, $alangs)) {
-			vmdebug('hm re',$query);
-			VmConfig::$vmlang = $l;
-		}
-
-	}
-*/
 	if(isset($query['view'])){
 		$view = $query['view'];
 		unset($query['view']);
@@ -960,7 +941,7 @@ class vmrouterHelper {
 				} else if(isset(VirtueMartModelProduct::$_products[$checkedProductKey[1]])){
 					$productNamesCache[$id] = VirtueMartModelProduct::$_products[$checkedProductKey[1]]->slug.$suffix;
 				}
-				vmdebug('getProductName self::$_products Cache',$id,$productNamesCache[$id]);
+				//vmdebug('getProductName self::$_products Cache',$id,$productNamesCache[$id]);
 			}
 
 			if(!isset($productNamesCache[$id])){

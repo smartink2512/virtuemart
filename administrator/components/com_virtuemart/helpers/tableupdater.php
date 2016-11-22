@@ -40,7 +40,7 @@ class GenericTableUpdater extends VmModel{
 
 		VmConfig::ensureMemoryLimit(128);
 
-		$this->maxMemoryLimit = self::getMemoryLimitBytes() * 0.99;
+		$this->maxMemoryLimit = VmConfig::getMemoryLimit() * 0.99 * 1048576;
 
 		$config = JFactory::getConfig();
 		$this->_prefix = $config->get('dbprefix');
@@ -57,41 +57,6 @@ class GenericTableUpdater extends VmModel{
 
 									'paymentmethods'=>'virtuemart_paymentmethod_id',
 									'shipmentmethods'=>'virtuemart_shipmentmethod_id');
-
-	/*
-	 * We need this function here, else the updater throws an error, seems to use old file while updating
-	 */
-	static function getMemoryLimitBytes(){
-		static $mLimit;
-		if($mLimit===null){
-			$mL = ini_get('memory_limit');
-			$mLimit = 0;
-			if(!empty($mL)){
-				$u = strtoupper(substr($mL,-1));
-				$mLimit = (int)substr($mL,0,-1);
-				if($mLimit>0){
-					if($u == 'M' or $u == 'MB'){
-						$mLimit *= 1048576;
-					} else if($u == 'G' or $u == 'GB'){
-						$mLimit *= 1073741824;
-					} else if($u == 'K' or $u == 'KB'){
-						$mLimit *= 1024;
-					}
-					$mLimit = (int) $mLimit - 5242880; // 5 MB reserve
-					if($mLimit<=0){
-						$mLimit = 1;
-						$m = 'Increase your php memory limit, which is must too low to run VM, your current memory limit is set as '.$mL.' = '.$mLimit.'B';
-						vmError($m,$m);
-					}
-				}
-			}
-
-			if($mLimit<=0) $mLimit = 2147483648;
-			vmdebug('My Memory Limit in Bytes '.$mLimit);
-		}
-
-		return $mLimit;
-	}
 
 	/**
 	 *

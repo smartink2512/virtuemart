@@ -523,7 +523,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
 		}
 
-		$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods' . '` as i ';
+		$q = $select . "\n FROM   `#__virtuemart_" . $this->_psType . 'methods' . '` as i ';
 
 		//$joins[] = ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS i USING (`virtuemart_' . $this->_psType . 'method_id`) ';
 		$joins[]= ' LEFT JOIN `' . $extPlgTable . '` as j ON j.`' . $extField1 . '` =  i.`' . $this->_psType . '_jplugin_id` ';

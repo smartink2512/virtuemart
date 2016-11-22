@@ -52,7 +52,7 @@ if ($this->show_store_desc and !empty($this->vendor->vendor_store_desc)) { ?>
 	</div>
 <?php }
 
-if (empty($this->keyword) and !empty($this->category)) {
+if (!empty($this->showcategory_desc) and empty($this->keyword) and !empty($this->category)) {
 	?>
 <div class="category_description">
 	<?php echo $this->category->category_description; ?>

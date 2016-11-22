@@ -171,10 +171,10 @@ Virtuemart.addtocart = function (e){
     if (targ.nodeType == 3) // defeat Safari bug
         targ = targ.parentNode;
 
-    if (jQuery(targ).prop("type") == "submit" ||  jQuery(targ).prop("type") == "image" ) {
+    //if (jQuery(targ).prop("type") == "submit" ||  jQuery(targ).prop("type") == "image" ) {
         Virtuemart.sendtocart(e.data.cart);
         return false;
-    }
+    //}
 };
 
 Virtuemart.quantityErrorAlert = function(e) {

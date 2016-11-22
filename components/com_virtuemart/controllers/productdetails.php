@@ -258,8 +258,8 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 				shopFunctionsF::sendRatingEmailToVendor($data);
 			}
 		}
-
-		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id, FALSE), $msg);
+		$virtuemart_category_id = vRequest::getInt('virtuemart_category_id',0);
+		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id.'&virtuemart_category_id='.$virtuemart_category_id, FALSE), $msg);
 
 	}
 

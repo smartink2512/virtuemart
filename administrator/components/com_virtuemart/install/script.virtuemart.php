@@ -46,8 +46,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			VmModel::addIncludePath($this->path.DS.'models');
 
 			//Maybe it is possible to set this within the xml file note by Max Milbers
-			VmConfig::ensureMemoryLimit(128);
-			VmConfig::ensureExecutionTime(140);
+			VmConfig::ensureMemoryLimit(256);
+			VmConfig::ensureExecutionTime(300);
 		}
 
 		public function checkIfUpdate(){
