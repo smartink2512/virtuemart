@@ -821,7 +821,7 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name, $site = false, $tag = 0, $cache = true){
+	static public function loadJLang($name, $site = false, $tag = 0, $cache = true, $fallback = true){
 
 		$jlang = JFactory::getLanguage();
 
@@ -832,7 +832,7 @@ class VmConfig {
 		}
 
 		if($cache and isset($loaded[(int)$site.$tag.$name])){
-			vmdebug('lang already cached '.$site.$tag.$name);
+			//vmdebug('lang already cached '.(int)$site.$tag.$name);
 			return $jlang;
 		} else {
 
@@ -844,7 +844,7 @@ class VmConfig {
 			$path = $basePath = VMPATH_SITE;
 		}
 
-		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name])){
+		if($fallback and $tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name]) and VmConfig::get('enableEnglish', true) ){
 			$testpath = $basePath.'/language/en-GB/en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
 				if($site){

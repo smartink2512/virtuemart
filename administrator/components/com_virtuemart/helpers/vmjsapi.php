@@ -216,7 +216,7 @@ class vmJsApi{
 		$file = vmJsApi::setPath( $namespace, $path, $version='', $minified, 'css');
 
 		$document = JFactory::getDocument();
-		$document->addStyleSheet($file.'?vmver='.VM_REV);
+		$document->addStyleSheet($file.'?vmver='.VM_JS_VER);
 		$loaded[$namespace] = TRUE;
 
 	}
