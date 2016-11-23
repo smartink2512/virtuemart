@@ -141,6 +141,9 @@ class VirtuemartControllerUser extends VmController {
 				$msg = $ret['message'];
 			}
 
+			if(!isset($data['virtuemart_shoppergroup_id'])){
+				$data['virtuemart_shoppergroup_id'] = array();
+			}
 		}
 		$cmd = vRequest::getCmd('task');
 		$lastTask = vRequest::getCmd('last_task');

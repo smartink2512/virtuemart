@@ -554,7 +554,8 @@ class VirtueMartModelUser extends VmModel {
 			$noError = false;
 		}
 
-		if(vmAccess::manager()){
+		if(vmAccess::manager('user.edit')){
+
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 			if(empty($this->_defaultShopperGroup)){
 				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault(0);
@@ -564,10 +565,10 @@ class VirtueMartModelUser extends VmModel {
 				$data['virtuemart_shoppergroup_id'] = array();
 			}
 
-			// Bind the form fields to the table
-			if(!isset($data['virtuemart_shoppergroup_id'])){
+			//We can't do that here, because it deletes the shoppergroup of users with "user.edit" permissions when they checkout
+			/*if(!isset($data['virtuemart_shoppergroup_id'])){
 				$data['virtuemart_shoppergroup_id'] = array();
-			}
+			}*/
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
 			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
 			$res = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);

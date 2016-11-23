@@ -241,6 +241,11 @@ class VirtueMartControllerUser extends JControllerLegacy
 				if(!empty($cart->vendorId) and $cart->vendorId!=1){
 					$data['vendorId'] = $cart->vendorId;
 				}
+
+				if(!$cartObj and !isset($data['virtuemart_shoppergroup_id']) and vmAccess::manager('user.edit')){
+					$data['virtuemart_shoppergroup_id'] = array();
+				}
+
 				$ret = $userModel->store($data);
 
 				if($switch){ //and VmConfig::get ('oncheckout_change_shopper')){
