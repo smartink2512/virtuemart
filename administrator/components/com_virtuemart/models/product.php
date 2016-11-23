@@ -2871,12 +2871,12 @@ class VirtueMartModelProduct extends VmModel {
 				if ($product_stockhandle->disableit || VmConfig::get ('stockhandle', 'none') == 'disableit') {
 					$q .= ' AND ( CASE
 									WHEN (p.`product_stockhandle` = "0" AND "'. VmConfig::get('stockhandle','none') .'" = "disableit") OR (p.`product_stockhandle` = "disableit")
-										THEN p.`product_in_stock`>"0"
+										THEN (p.`product_in_stock` - p.`product_ordered`) > "0"
 									ELSE 1
 								  END = 1 ) ';
 				}
 			} else if ($app->isSite () && !VmConfig::get ('use_as_catalog', 0) && VmConfig::get ('stockhandle', 'none') == 'disableit') {
-				$q .= ' AND p.`product_in_stock`>"0" ';
+				$q .= ' AND (p.`product_in_stock` - p.`product_ordered`) > "0" ';
 			}
 
 			if ($app->isSite ()) {
