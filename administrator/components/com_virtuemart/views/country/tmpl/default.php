@@ -58,7 +58,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
 				<?php echo $this->sort('country_3_code') ?>
 		    </th>
 		    <th width="20">
-				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+			    <?php echo $this->sort('published' , 'COM_VIRTUEMART_PUBLISHED') ?>
 		    </th>
 			<th width="20">
 				<?php echo $this->sort('virtuemart_country_id') ?>
