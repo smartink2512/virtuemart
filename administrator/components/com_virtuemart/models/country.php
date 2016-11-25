@@ -108,7 +108,7 @@ class VirtueMartModelCountry extends VmModel {
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
 		$ordering = $this->_getOrdering();
-		$hash = $filterCountry.$this->_selectedOrderingDir.(int)$onlyPublished.$this->_selectedOrdering.(int)$noLimit;
+		$hash = $filterCountry.(int)$onlyPublished.$ordering.(int)$noLimit;
 		if(!isset($countries[$hash])){
 			$countries[$hash] = $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$ordering);
 		}
