@@ -40,7 +40,7 @@ foreach($this->userFields['fields'] as $field) {
 		} //else {
 			?>
 			<fieldset>
-			<span class="userfields_info"><?php echo $field['title'] ?></span>
+			<legend class="userfields_info"><?php echo $field['title'] ?></legend>
 
 			<?php
 			$closeDelimiter = true;
