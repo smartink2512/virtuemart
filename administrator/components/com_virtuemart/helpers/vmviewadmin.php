@@ -275,7 +275,7 @@ class VmViewAdmin extends JViewLegacy {
 					if (!file_exists ($image_flag)) {
 						vmerror(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
 					} else {
-						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag_url.") no-repeat 0 0; padding-left:20px !important;}\n";
+						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag_url.") no-repeat 0 0 !important; padding-left:20px !important;}\n";
 					}
 				}
 			}
@@ -319,7 +319,7 @@ class VmViewAdmin extends JViewLegacy {
 										var tmce_ver=window.tinyMCE.majorVersion;
 									}
 									if (tmce_ver>="4") {
-										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) {
+										if ((cible.parent().addClass(flagClass).children().hasClass("mce_editable") || cible.parent().children().hasClass("wf-editor")) && data.structure !== "empty" ) {
 											tinyMCE.get(key).execCommand("mceSetContent", false,val);
 											cible.val(val);
 										} else if (data.structure !== "empty") cible.val(val);
