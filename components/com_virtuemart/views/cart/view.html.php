@@ -453,12 +453,7 @@ class VirtueMartViewCart extends VmView {
 
 		if($this->cart->user->virtuemart_user_id){
 			$addressList = array();
-			$newBT = '<a href="index.php'
-				.'?option=com_virtuemart'
-				.'&view=user'
-				.'&task=editaddresscart'
-				.'&addrtype=BT'
-				. '">'.vmText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a></br>';
+			$newBT = vmText::_('COM_VIRTUEMART_ACC_BILL_DEF') . '<br/>';
 			foreach($this->cart->user->userInfo as $userInfo){
 				$address = $userInfo->loadFieldValues(false);
 				if($address->address_type=='BT'){
@@ -466,13 +461,7 @@ class VirtueMartViewCart extends VmView {
 					$address->address_type_name = $newBT;
 					array_unshift($addressList,$address);
 				} else {
-					$address->address_type_name = '<a href="index.php'
-					.'?option=com_virtuemart'
-					.'&view=user'
-					.'&task=editaddresscart'
-					.'&addrtype=ST'
-					.'&virtuemart_userinfo_id='.$address->virtuemart_userinfo_id
-					. '" rel="nofollow">'.$address->address_type_name.'</a></br>';
+					$address->address_type_name = !empty($address->zip) ? $address->address_type_name . ' - ' . $address->zip : $address->address_type_name . '<br/>';
 					$addressList[] = $address;
 				}
 			}
