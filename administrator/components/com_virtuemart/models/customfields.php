@@ -722,7 +722,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			case 'X':
         // Not sure why this block is needed to get it to work when editing the customfield (the subsequent block works fine when creating it, ie. in JS)
 				$document = JFactory::getDocument();
-				if (get_class($document) == 'JDocumentHTML') {
+				if (strcasecmp(get_class($document),'JDocumentHTML') === 0) {
 					$editor = JFactory::getEditor();
 					return '</td><td>'.$editor->display('field['.$row.'][customfield_value]',$field->customfield_value, '550', '400', '60', '20', false);
 				}
