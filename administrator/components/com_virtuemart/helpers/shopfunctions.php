@@ -163,7 +163,6 @@ class ShopFunctions {
 			if($name=='virtuemart_shoppergroup_id'){
 				$name.= '[]';
 			}
-			$attrs['required'] = 'required';
 		} else {
 			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);

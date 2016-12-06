@@ -3099,7 +3099,14 @@ class VirtueMartModelProduct extends VmModel {
 			$key = $productShopper['email'];
 			if (!array_key_exists ($key, $shoppers)) {
 				$shoppers[$key]['phone'] = !empty($productShopper['phone_1']) ? $productShopper['phone_1'] : (!empty($productShopper['phone_2']) ? $productShopper['phone_2'] : '-');
-				$shoppers[$key]['name'] = $productShopper['first_name'] . ' ' . $productShopper['last_name'];
+				$name = '';
+				if(isset($productShopper['first_name'])){
+					$name = $productShopper['first_name'];
+				}
+				if(isset($productShopper['last_name'])){
+					$name .= ' ' .$productShopper['last_name'];
+				}
+				$shoppers[$key]['name'] = trim($name);
 				$shoppers[$key]['email'] = $productShopper['email'];
 				$shoppers[$key]['mail_to'] = 'mailto:' . $productShopper['email'];
 				$shoppers[$key]['nb_orders'] = 0;

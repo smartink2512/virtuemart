@@ -27,8 +27,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</legend>
 					<table class="admintable">
 						<?php
-						echo VmHTML::row('input','COM_VIRTUEMART_STORE_FORM_STORE_NAME','vendor_store_name',$this->vendor->vendor_store_name);
 						echo VmHTML::row('input','COM_VIRTUEMART_STORE_FORM_COMPANY_NAME','vendor_name',$this->vendor->vendor_name);
+						echo VmHTML::row('input','COM_VIRTUEMART_STORE_FORM_STORE_NAME','vendor_store_name',$this->vendor->vendor_store_name);
 						echo VmHTML::row('input','COM_VIRTUEMART_PRODUCT_FORM_URL','vendor_url',$this->vendor->vendor_url);
 						echo VmHTML::row('input','COM_VIRTUEMART_STORE_FORM_MPOV','vendor_min_pov',$this->vendor->vendor_min_pov);
 						if(VmConfig::get('multix','none')!='none' and vmAccess::manager('managevendors')){

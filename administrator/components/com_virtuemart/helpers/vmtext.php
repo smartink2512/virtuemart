@@ -34,6 +34,14 @@ class vmText
 	 */
 	protected static $strings = array();
 
+	protected static $lang = array();
+
+	public static function setLang($lang){
+		/*$m = $lang->getTag();
+		vmdebug('vmText set lang',$m);*/
+		self::$lang = $lang;
+	}
+
 	/**
 	 * Translates a string into the current language. This just jText of joomla 2.5.x
 	 *
@@ -53,7 +61,7 @@ class vmText
 	 */
 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = self::$lang;
 		if (is_array($jsSafe))
 		{
 			if (array_key_exists('interpretBackSlashes', $jsSafe))
@@ -107,7 +115,7 @@ class vmText
 	 */
 	public static function sprintf($string)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = self::$lang;
 		$args = func_get_args();
 		$count = count($args);
 		if ($count > 0)

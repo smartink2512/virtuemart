@@ -811,6 +811,7 @@ class VmConfig {
 		return $max_execution_time;
 	}
 
+	static $languages = array();
 	/**
 	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used
@@ -823,21 +824,27 @@ class VmConfig {
 	 */
 	static public function loadJLang($name, $site = false, $tag = 0, $cache = true, $fallback = true){
 
-		$jlang = JFactory::getLanguage();
-
 		static $loaded = array();
-
+		//VmConfig::$echoDebug  = 1;
 		if(empty($tag)) {
-			$tag = $jlang->getTag();
+			$l = JFactory::getLanguage();
+			$tag = $l->getTag();
+			if(!isset(self::$languages[$tag])){
+				self::$languages[$tag] = $l;
+			}
+		} else {
+			if(!isset(self::$languages[$tag])){
+				self::$languages[$tag] = JLanguage::getInstance($tag, false);
+			}
 		}
 
 		if($cache and isset($loaded[(int)$site.$tag.$name])){
 			//vmdebug('lang already cached '.(int)$site.$tag.$name);
-			return $jlang;
+			vmText::setLang(self::$languages[$tag]);
+			return self::$languages[$tag];
 		} else {
 
 		}
-
 
 		$path = $basePath = VMPATH_ADMIN;
 		if($site){
@@ -855,7 +862,7 @@ class VmConfig {
 			} else {
 				$epath = $path;
 			}
-			$jlang->load($name, $epath, 'en-GB');
+			self::$languages[$tag]->load($name, $epath, 'en-GB');
 			$loaded[(int)$site.'en-GB'.$name] = true;
 		}
 
@@ -868,9 +875,11 @@ class VmConfig {
 			}
 		}
 
-		$jlang->load($name, $path,$tag,true);
+		self::$languages[$tag]->load($name, $path,$tag,true);
 		$loaded[(int)$site.$tag.$name] = true;
-		return $jlang;
+		vmdebug('loaded '.$name,$tag);
+		vmText::setLang(self::$languages[$tag]);
+		return self::$languages[$tag];
 	}
 
 	/**
