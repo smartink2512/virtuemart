@@ -175,6 +175,11 @@ class VmModel extends vObject{
 		}
 		$this->_db = JFactory::getDbo();
 		$this->setToggleName('published');
+		$this->debug = FALSE;
+	}
+
+	function setDebugSql($b){
+		$this->debug = (int) $b;
 	}
 
 	static private $_vmmodels = array();
@@ -806,7 +811,6 @@ class VmModel extends vObject{
 		} else {
 			$joinedTables .="\n".$whereString."\n".$groupBy."\n".$orderBy.' '.$filter_order_Dir ;
 		}
-		//vmdebug('my $limitStart $joinedTables ',$joinedTables,$filter_order_Dir );
 
 		if($nbrReturnProducts){
 			$limitStart = 0;
@@ -844,7 +848,7 @@ class VmModel extends vObject{
 		if($err=$db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
- 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',str_replace('#__',$db->getPrefix(),$db->getQuery()) );
+ 		if($this->debug === 1) vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',str_replace('#__',$db->getPrefix(),$db->getQuery()) );
 
 		if($this->_withCount){
 

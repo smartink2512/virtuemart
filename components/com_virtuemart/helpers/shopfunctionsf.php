@@ -609,31 +609,20 @@ class shopFunctionsF {
 	}
 
 	static public function loadOrderLanguages($language = 0){
-		static $c = array();
-		static $lastLangTag = -1;
-		if(!isset($c[$language]) or $language!=$lastLangTag){
-			$s = TRUE;
-			$fallback = ($language !='en-GB')? true: false;
-			$lastLangTag = $language;
-			$cache = false;
 
-			VmConfig::loadJLang('com_virtuemart', $s, 0, $cache, $fallback);
-			VmConfig::loadJLang('com_virtuemart_shoppers', $s, 0, $cache, $fallback);
-			VmConfig::loadJLang('com_virtuemart_orders', $s, 0, $cache, $fallback);
-			VmConfig::loadJLang('com_virtuemart_override', $s, 0, $cache, $fallback);
+		$s = TRUE;
+		$fallback = true;// ($language !='en-GB')? true: false;
+		$lastLangTag = $language;
+		$cache = true;
 
-			if($language) {
-				$cache = false;
-				$fallback = false;
-				VmConfig::loadJLang('com_virtuemart', $s, $language, $cache, $fallback);
-				VmConfig::loadJLang('com_virtuemart_shoppers', $s, $language, $cache, $fallback);
-				VmConfig::loadJLang('com_virtuemart_orders', $s, $language, $cache, $fallback);
-				VmConfig::loadJLang('com_virtuemart_override',$s, $language, $cache, $fallback);
-				VmConfig::setdbLanguageTag($language);
-			}
+		VmConfig::loadJLang('com_virtuemart', $s, $language, $cache, $fallback);
+		VmConfig::loadJLang('com_virtuemart_shoppers', $s, $language, $cache, $fallback);
+		VmConfig::loadJLang('com_virtuemart_orders', $s, $language, $cache, $fallback);
+		VmConfig::loadJLang('com_virtuemart_override',$s, $language, $cache, $fallback);
+		VmConfig::setdbLanguageTag($language);
 
-		}
 	}
+
 
 	/**
 	 * With this function you can use a view to sent it by email.

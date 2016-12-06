@@ -29,7 +29,7 @@ class GenericTableUpdater extends VmModel{
 		$this->starttime = microtime(true);
 
 		$max_execution_time = VmConfig::getExecutionTime();
-		$jrmax_execution_time= vRequest::getInt('max_execution_time',300);
+		$jrmax_execution_time= vRequest::getInt('max_execution_time',900);
 
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
@@ -38,9 +38,9 @@ class GenericTableUpdater extends VmModel{
 
 		$this->maxScriptTime = VmConfig::getExecutionTime() * 0.90-1;	//Lets use 10% of the execution time as reserve to store the progress
 
-		VmConfig::ensureMemoryLimit(128);
+		VmConfig::ensureMemoryLimit(256);
 
-		$this->maxMemoryLimit = VmConfig::getMemoryLimit() * 0.99 * 1048576;
+		$this->maxMemoryLimit = (VmConfig::getMemoryLimit() * 0.99 * 1048576) - 6291456;	//6 MB Reserve
 
 		$config = JFactory::getConfig();
 		$this->_prefix = $config->get('dbprefix');

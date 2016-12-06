@@ -815,11 +815,12 @@ class VirtueMartModelOrders extends VmModel {
 				/*if($task=='edit'){
 					$update_lines = vRequest::getInt('update_lines');
 				} else /*/
-				if ($task=='updatestatus' and $view=='orders') {
+
+				if ($task==='updatestatus' and $view==='orders') {
 					$lines = vRequest::getVar('orders');
 					$update_lines = $lines[$virtuemart_order_id]['update_lines'];
 				} else {
-					$update_lines = 1;
+
 				}
 
 				if($update_lines==1){
@@ -1082,8 +1083,6 @@ class VirtueMartModelOrders extends VmModel {
 
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);
-
-		$db = JFactory::getDBO();
 
 		if (!empty($_cart->couponCode)) {
 			//set the virtuemart_order_id in the Request for 3rd party coupon components (by Seyi and Max)

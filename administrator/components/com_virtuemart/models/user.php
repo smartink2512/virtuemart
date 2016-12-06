@@ -363,7 +363,8 @@ class VirtueMartModelUser extends VmModel {
 			$cUser = JFactory::getUser();
 			if($usersConfig->get('allowUserRegistration') == '0' and !(vmAccess::manager('user')) ) {
 				VmConfig::loadJLang('com_virtuemart');
-				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
+				$msg = vmText::_ ('COM_VIRTUEMART_ACCESS_FORBIDDEN'). ' allowUserRegistration in joomla disabled';
+				vmError($msg, $msg);
 				return;
 			}
 			// Initialize new usertype setting

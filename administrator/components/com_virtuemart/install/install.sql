@@ -563,7 +563,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   KEY `virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `order_number` (`order_number`),
   KEY `virtuemart_paymentmethod_id` (`virtuemart_paymentmethod_id`),
-  KEY `virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`)
+  KEY `virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`),
+  KEY `created_on` (`created_on`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Used to store all orders' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -865,6 +866,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_medias` (
   `virtuemart_media_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY `virtuemart_media_id` (`virtuemart_media_id`),
   UNIQUE KEY `virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_media_id`),
   KEY `ordering` (`virtuemart_product_id`, `ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
