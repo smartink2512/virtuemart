@@ -19,7 +19,7 @@ if (!class_exists ('vmPSPlugin')) {
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	public static $_this = FALSE;
-	protected $version = '16.02.15';
+	protected $version = '16.11.07';
 
 	function __construct (& $subject, $config) {
 
@@ -112,6 +112,12 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		return $_html;
 	}
 
+	function plgVmOnConfirmedOrderStorePaymentData ($virtuemart_order_id, $orderData, $priceData) {
+		if (!$this->selectedThisPayment ($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
+			return NULL; // Another method was selected, do nothing
+		}
+		return FALSE;
+	}
 
 	function plgVmConfirmedOrder($cart, $order) {
 		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_paymentmethod_id))) {
@@ -613,6 +619,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt ($ch, CURLOPT_USERAGENT, "php ctpepost");
+			curl_setopt ($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
 
 			$this->response = curl_exec ($ch);
 			$this->error = curl_error ($ch);
