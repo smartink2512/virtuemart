@@ -1571,7 +1571,8 @@ class VirtueMartCart {
 						continue;
 					}
 					$productdata['quantity'] = (int)$productdata['quantity'];
-					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,TRUE,TRUE,$productdata['quantity']);
+					//Important, must not use calculation, would lead to wrong prices, because the full cart is not know yet.
+					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id'],TRUE,FALSE,TRUE,$productdata['quantity']);
 
 					if(empty($productTemp->virtuemart_product_id)){
 						vmError('prepareCartData virtuemart_product_id is empty','The product is no longer available');

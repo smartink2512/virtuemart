@@ -156,9 +156,9 @@ echo $this->loadTemplate('images');
 					$productDisplay = array($productDisplay);
 				}
 
-				foreach ($productDisplay as $virtuemart_shipmentmethod_id =>$productDisplayHtml) {
+				foreach ($productDisplay as $virtuemart_method_id =>$productDisplayHtml) {
 					?>
-					<div class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1).'-'.$virtuemart_shipmentmethod_id ?>">
+					<div class="<?php echo substr($productDisplayType, 0, -1) ?> <?php echo substr($productDisplayType, 0, -1).'-'.$virtuemart_method_id ?>">
 						<?php
 						echo $productDisplayHtml;
 						?>

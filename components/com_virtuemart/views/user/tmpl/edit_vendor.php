@@ -27,6 +27,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo vmText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 					</legend>
 					<table class="admintable">
+                        <tr>
+                            <td class="key">
+                                <label for="vendor_name">
+									<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_COMPANY_NAME'); ?>:
+                                </label>
+                            </td>
+                            <td>
+                                <input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->vendor->vendor_name; ?>" />
+                            </td>
+                        </tr>
 						<tr>
 							<td class="key">
                 <label for="vendor_store_name">
@@ -35,16 +45,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_store_name" id="vendor_store_name" size="50" value="<?php echo $this->vendor->vendor_store_name; ?>" />
-							</td>
-						</tr>
-						<tr>
-							<td class="key">
-                <label for="vendor_name">
-								<?php echo vmText::_('COM_VIRTUEMART_STORE_FORM_COMPANY_NAME'); ?>:
-                </label>
-							</td>
-							<td>
-								<input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->vendor->vendor_name; ?>" />
 							</td>
 						</tr>
 						<tr>

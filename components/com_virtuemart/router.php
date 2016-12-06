@@ -156,6 +156,7 @@ function virtuemartBuildRoute(&$query) {
 					unset($query['virtuemart_product_id']);
 				}
 
+				unset($query['Itemid']);
 				if($helper->full){
 					if(empty( $query['virtuemart_category_id'])){
 						$query['virtuemart_category_id'] = $helper->getParentProductcategory($virtuemart_product_id);
@@ -165,15 +166,36 @@ function virtuemartBuildRoute(&$query) {
 					if(!empty( $catId)){
 						$categoryRoute = $helper->getCategoryRoute($catId,$manId);
 						if ($categoryRoute->route) $segments[] = $categoryRoute->route;
-						if ($categoryRoute->Itemid) $query['Itemid'] = $categoryRoute->Itemid;
-						else $query['Itemid'] = $jmenu['virtuemart'];
+						if($helper->useGivenItemid and $helper->rItemid){
+							if($helper->checkItemid()){
+								$query['Itemid'] = $helper->rItemid;
+							}
+						}
+						if(!isset($query['Itemid'])){
+							if ($categoryRoute->Itemid) $query['Itemid'] = $categoryRoute->Itemid;
+							else $query['Itemid'] = $jmenu['virtuemart'];
+						}
+
 					} else {
-						$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0][0];
+						//$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0][0];
 					}
 				} else {
 					//Itemid is needed even if seo_full = 0
-					$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0][0];
+					//$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0][0];
 				}
+				if(!isset($query['Itemid'])){
+
+					if($helper->useGivenItemid and $helper->rItemid){
+						if($helper->checkItemid()){
+							$query['Itemid'] = $helper->rItemid;
+						}
+					}
+					if(!isset($query['Itemid'])){
+						//Itemid is needed even if seo_full = 0
+						$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0][0];
+					}
+				}
+
 				unset($query['limitstart']);
 				unset($query['limit']);
 				unset($query['virtuemart_category_id']);
@@ -241,7 +263,7 @@ function virtuemartBuildRoute(&$query) {
 				}
 				unset ($query['task'] , $query['addrtype']);
 			}
-
+vmdebug('Router buildRoute case user query and segments',$query,$segments);
 			break;
 		case 'vendor';
 			/* VM208 */
@@ -326,6 +348,7 @@ function virtuemartParseRoute($segments) {
 		for ($i = 0; $i < $total; $i=$i+2) {
 			$vars[ $segments[$i] ] = $segments[$i+1];
 		}
+		if(isset($vars[ 'start'])) $vars[ 'limitstart'] = $vars[ 'start'];
 		return $vars;
 	}
 
@@ -742,11 +765,14 @@ class vmrouterHelper {
 			$this->seo_sufix = '';
 			$this->seo_sufix_size = 0;
 
+			$this->rItemid = vRequest::getInt('Itemid',false);
 			if(!empty($query['Itemid'])){
 				$this->Itemid = $query['Itemid'];
 			} else {
-				$this->Itemid = vRequest::getInt('Itemid',false);
+				$this->Itemid = $this->rItemid;
 			}
+
+			$this->useGivenItemid = VmConfig::get('useGivenItemid',false);
 			$this->template = JFactory::getApplication()->getTemplate(true);
 			if(empty($this->template) or !isset($this->template->id)){
 				$this->template->id = 0;
@@ -1111,6 +1137,33 @@ class vmrouterHelper {
 		return $ids[$hash];
 	}
 
+	/**
+	 * TODO caching
+	 * @return bool
+	 */
+	public function checkItemid(){
+
+		$jLangTag = $this->Jlang->getTag();
+
+		$user = JFactory::getUser();
+		$auth = array_unique($user->getAuthorisedViewLevels());
+		//$auth = $user->getAuthorisedViewLevels();
+		//vmdebug('my auth',$auth);
+		$andAccess = ' AND ( access="' . implode ('" OR access="', $auth) . '" ) ';
+
+		$q = 'SELECT * FROM `#__menu` WHERE `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.$jLangTag.'" )'.$andAccess;
+
+		$q .= ' and `id` = "'.$this->Itemid.'" ';
+
+		$q .= ' ORDER BY `language` DESC';
+
+		$db			= JFactory::getDBO();
+		$db->setQuery($q);
+		$res = $db->loadResult();
+		//vmdebug('checkItemid $res ', $q, $res);
+		return boolval($res);
+	}
+
 	/* Set $this->menu with the Item ID from Joomla Menus */
 	private function setMenuItemId(){
 
@@ -1129,7 +1182,7 @@ class vmrouterHelper {
 		$auth = array_unique($user->getAuthorisedViewLevels());
 		//$auth = $user->getAuthorisedViewLevels();
 		//vmdebug('my auth',$auth);
-		$andAccess = ' AND ( access="' . implode ('" OR access="', $auth) . '" ) ';;
+		$andAccess = ' AND ( access="' . implode ('" OR access="', $auth) . '" ) ';
 
 		$db			= JFactory::getDBO();
 
