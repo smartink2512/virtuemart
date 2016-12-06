@@ -73,34 +73,38 @@ class VirtuemartModelReport extends VmModel {
 	/*
 	* Set Start & end Date
 	*/
-	function  setPeriod () {
+	function setPeriod () {
 
 		$this->from_period = vRequest::getVar ('from_period', $this->date_presets['last30']['from']);
 		$this->until_period = vRequest::getVar ('until_period', $this->date_presets['last30']['until']);
 
 		$config = JFactory::getConfig();
 		$siteOffset = $config->get('offset');
-		$this->siteTimezone = new DateTimeZone($siteOffset);
-
+		$this->siteTimezone = $siteTimezone = new DateTimeZone($siteOffset);
 		$this->correctTimeOffset($this->from_period);
 		$this->correctTimeOffset($this->until_period);
+		vmdebug('setPeriod',$this->siteTimezone,$this->until_period );
 
 	}
 
 	/*
 	* Set Start & end Date if Var peroid
 	*/
-	function  setPeriodByPreset () {
+	function setPeriodByPreset () {
 
 		$this->from_period = $this->date_presets[$this->period]['from'];
 		$this->until_period = $this->date_presets[$this->period]['until'];
 
 		$config = JFactory::getConfig();
 		$siteOffset = $config->get('offset');
-		$this->siteTimezone = new DateTimeZone($siteOffset);
+		$this->siteTimezone = $siteTimezone = new DateTimeZone($siteOffset);
 
 		$this->correctTimeOffset($this->from_period);
+
+		$this->siteTimezone = new DateTimeZone($siteOffset + 24);
 		$this->correctTimeOffset($this->until_period);
+
+		$this->siteTimezone = $siteTimezone;
 	}
 
 	function  getItemsByRevenue ($revenue) {
@@ -213,11 +217,16 @@ class VirtuemartModelReport extends VmModel {
 		$joinedTables = '';
 		$where = array();
 
+		$until_period = $this->until_period;
 		// group always by intervals (day,week, ... or ID) and set grouping and defaut ordering
 		switch ($intervals) {
 
 			case 'day':
 				$this->intervals = 'DATE( o.created_on )';
+				$date = new JDate($this->until_period);
+				$twenty4h = new DateInterval('PT24H');
+				$date->add($twenty4h);
+				$until_period = $date->format('Y-m-d H:i:s',true);
 				break;
 			case 'week':
 				$this->intervals = 'WEEK( o.created_on )';
@@ -236,7 +245,7 @@ class VirtuemartModelReport extends VmModel {
 // 		if(!empty($this->intervals)){
 // 			$orderBy = $this->_getOrdering('o.`created_on`');
 // 		}
-		$selectFields['intervals'] = $this->intervals . ' AS intervals, CAST( o.`created_on` AS DATE ) AS created_on';
+		$selectFields['intervals'] = $this->intervals . ' AS intervals, o.`created_on` AS created_on';
 
 		if($intervals=='product_s'){
 
@@ -256,7 +265,7 @@ class VirtuemartModelReport extends VmModel {
 		$selectFields[] = 'SUM(product_discountedPriceWithoutTax * product_quantity) as order_subtotal_netto';
 		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal_brutto';
 
-		$this->dates = ' DATE( o.created_on ) BETWEEN "' . $this->from_period . '" AND "' . $this->until_period . '" ';
+		$this->dates = ' o.created_on BETWEEN "' . $this->from_period . '" AND "' . $until_period . '" ';
 
 		$statusList = array();
 		// Filter by status
@@ -351,6 +360,7 @@ class VirtuemartModelReport extends VmModel {
 		/* WHERE differences with orders and items from orders are only date periods and ordering */
 		$whereString = $this->whereItem . $this->dates;
 		//vmdebug('getRevenueSortListOrderQuery '.$select,$whereString);
+		$this->setDebugSQL(true);
 		return $this->exeSortSearchListQuery (1, $select, $joinedTables, $whereString, $groupBy, $orderBy);
 
 	}
