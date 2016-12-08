@@ -511,6 +511,36 @@ class shopFunctionsF {
 	//TODO this is quirk, why it is using here $noVendorMail, but everywhere else it is using $doVendor => this make logic trouble
 	static public function renderMail ($viewName, $recipient, $vars = array(), $controllerName = NULL, $noVendorMail = FALSE,$useDefault=true) {
 
+		self::loadOrderLanguages();
+
+		$view = self::prepareViewForMail($viewName, $vars, $controllerName);
+		$user = self::sendVmMail( $view, $recipient, $noVendorMail );
+
+		if(isset($view->doVendor) && !$noVendorMail) {
+			//We need to ensure the language for the vendor here
+			VmConfig::setLanguageByTag(VmConfig::$jDefLangTag);
+			if(isset($view->orderDetails)){
+
+				$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','C','R','X'));
+				if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
+
+				$order = $view->orderDetails;
+				if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
+					self::sendVmMail( $view, $view->vendorEmail, TRUE );
+				}else{
+					$user = -1;
+				}
+			} else {
+				self::sendVmMail( $view, $view->vendorEmail, TRUE );
+			}
+
+		}
+
+		return $user;
+
+	}
+
+	public static function prepareViewForMail($viewName, $vars, $controllerName = false) {
 		if(!class_exists( 'VirtueMartControllerVirtuemart' )) require(VMPATH_SITE.DS.'controllers'.DS.'virtuemart.php');
 
 		$controller = new VirtueMartControllerVirtuemart();
@@ -540,47 +570,7 @@ class shopFunctionsF {
 			$view->$key = $val;
 		}
 
-		$user = FALSE;
-		if(isset($vars['orderDetails'])){
-
-			//If the vRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
-			//$name = 'orders['.$order['details']['BT']->virtuemart_order_id.'][customer_notified]';
-			//$customer_notified = vRequest::getVar($name,-1);
-			if(!$useDefault and isset($vars['newOrderData']['customer_notified']) and $vars['newOrderData']['customer_notified']==1 ){
-				$user = self::sendVmMail( $view, $recipient, $noVendorMail );
-				vmdebug('renderMail by overwrite');
-			} else {
-				$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
-				if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
-				if ( in_array((string) $vars['orderDetails']['details']['BT']->order_status,$orderstatusForShopperEmail) ){
-					$user = self::sendVmMail( $view, $recipient, $noVendorMail );
-					vmdebug('renderMail by default');
-				} else{
-					$user = -1;
-				}
-			}
-		} else {
-			$user = self::sendVmMail( $view, $recipient, $noVendorMail );
-		}
-
-		if(isset($view->doVendor) && !$noVendorMail) {
-			if(isset($vars['orderDetails'])){
-				$order = $vars['orderDetails'];
-				$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','C','R','X'));
-				if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
-				if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
-					self::sendVmMail( $view, $view->vendorEmail, TRUE );
-				}else{
-					$user = -1;
-				}
-			} else {
-				self::sendVmMail( $view, $view->vendorEmail, TRUE );
-			}
-
-		}
-
-		return $user;
-
+		return $view;
 	}
 
 	/**
@@ -612,14 +602,13 @@ class shopFunctionsF {
 
 		$s = TRUE;
 		$fallback = true;// ($language !='en-GB')? true: false;
-		$lastLangTag = $language;
 		$cache = true;
 
-		VmConfig::loadJLang('com_virtuemart', $s, $language, $cache, $fallback);
-		VmConfig::loadJLang('com_virtuemart_shoppers', $s, $language, $cache, $fallback);
-		VmConfig::loadJLang('com_virtuemart_orders', $s, $language, $cache, $fallback);
-		VmConfig::loadJLang('com_virtuemart_override',$s, $language, $cache, $fallback);
-		VmConfig::setdbLanguageTag($language);
+		VmConfig::loadJLang('com_virtuemart', $s, $language, $cache);
+		VmConfig::loadJLang('com_virtuemart_shoppers', $s, $language, $cache);
+		VmConfig::loadJLang('com_virtuemart_orders', $s, $language, $cache);
+		VmConfig::loadJLang('com_virtuemart_override',$s, $language, $cache);
+		VmConfig::setLanguageByTag($language);
 
 	}
 
@@ -633,16 +622,9 @@ class shopFunctionsF {
 	 * @param bool $vendor true for notifying vendor of user action (e.g. registration)
 	 */
 
-	private static function sendVmMail (&$view, $recipient, $noVendorMail = FALSE) {
+	public static function sendVmMail (&$view, $recipient, $noVendorMail = FALSE) {
 
 		VmConfig::ensureMemoryLimit(96);
-
-		if($noVendorMail and !empty($view->orderDetails) and !empty($view->orderDetails['details']['BT']->order_language)) {
-			self::loadOrderLanguages($view->orderDetails['details']['BT']->order_language);
-		} else {
-			self::loadOrderLanguages();
-		}
-
 
 		ob_start();
 
@@ -919,7 +901,20 @@ class shopFunctionsF {
 	 * @return The full filename of the invoice/deliverynote without file extension, sanitized not to contain problematic characters like /
 	 */
 	static function getInvoiceName($invoice_number, $layout='invoice'){
+
+		$tmpT = false;
+		if(VmConfig::get('invoiceNameInShopLang',true)){
+			$tmpT = vmText::getLangTag();
+			if($tmpT!=VmConfig::$jDefLangTag){
+				//ensure that the invoice is written in shop language
+				vmdebug('invoiceNameInShopLang VmConfig::$jDefLangTag '.VmConfig::$jDefLangTag,$tmpT);
+				VmConfig::loadJLang('com_virtuemart_orders', true, VmConfig::$jDefLangTag);
+			}
+		}
 		$prefix = vmText::_('COM_VIRTUEMART_FILEPREFIX_'.strtoupper($layout));
+		if($tmpT!=false){
+			VmConfig::setLanguageByTag($tmpT);
+		}
 		if($prefix == 'COM_VIRTUEMART_FILEPREFIX_'.strtoupper($layout)){
 			$prefix = 'vm'.$layout.'_';
 		}

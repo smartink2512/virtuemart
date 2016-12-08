@@ -360,18 +360,14 @@ class VirtueMartCustomFieldRenderer {
 						$och = ' data-dynamic-update="1"';
 						unset($attribs['data-dynamic-update']);
 					}
-					/*if($customfield->browseajax and VmConfig::get ('jdynupdate', TRUE) and ($view == 'productdetails' or $view == 'category') ){
-						$och = ' onchange="window.top.location.href=this.options[this.selectedIndex].value" reload=1';
-					} else {
-						$och = ' data-dynamic-update="1"';
-					}*/
+
 					$attribs['list.attr'] = 'size="1" class="vm-chzn-select no-vm-bind avselection"'.$och;
 					$attribs['list.translate'] = false;
 					$attribs['option.key'] = 'value';
 					$attribs['option.text'] = 'text';
 					$attribs['list.select'] = JRoute::_ ($url,false);
 
-					$idTagK = '[';
+
 					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, $attribs);
 					//vmdebug('My view $attribs',$attribs,$html);
 					vmJsApi::chosenDropDowns();
@@ -434,6 +430,7 @@ class VirtueMartCustomFieldRenderer {
 							if(!empty($customfield->is_input)){
 								vmJsApi::chosenDropDowns();
 								$class = 'class="vm-chzn-select"';
+								$idTag = '[';
 							}
 						} else {
 							$selectType = 'select.radiolist';
@@ -448,6 +445,7 @@ class VirtueMartCustomFieldRenderer {
 							if(!empty($customfield->is_input)){
 								vmJsApi::chosenDropDowns();
 								$class = 'class="vm-chzn-select"';
+								$idTag = '[';
 							}
 						}
 					}

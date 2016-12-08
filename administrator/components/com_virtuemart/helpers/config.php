@@ -588,6 +588,7 @@ class VmConfig {
 	public static $defaultLang = false;
 	public static $jDefLang = false;
 	public static $jDefLangTag = false;
+	public static $jSelLangTag = false;
 	public static $vmlangTag = '';
 	public static $vmlangSef = '';
 	public static $langs = array();
@@ -811,7 +812,7 @@ class VmConfig {
 		return $max_execution_time;
 	}
 
-	static $languages = array();
+
 	/**
 	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used
@@ -822,26 +823,27 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name, $site = false, $tag = 0, $cache = true, $fallback = true){
+	static public function loadJLang($name, $site = false, $tag = 0, $cache = true){
 
 		static $loaded = array();
 		//VmConfig::$echoDebug  = 1;
 		if(empty($tag)) {
-			$l = JFactory::getLanguage();
-			$tag = $l->getTag();
-			if(!isset(self::$languages[$tag])){
-				self::$languages[$tag] = $l;
-			}
-		} else {
-			if(!isset(self::$languages[$tag])){
-				self::$languages[$tag] = JLanguage::getInstance($tag, false);
+			$tag = self::$jSelLangTag;
+		}
+		if(!isset(vmText::$languages[$tag])) {
+			if($tag == self::$jSelLangTag) {
+				vmText::$languages[$tag] = JFactory::getLanguage();
+				vmdebug('loadJLang created $l->getTag '.(int)$site.$tag.$name);
+			} else {
+				vmText::$languages[$tag] = JLanguage::getInstance($tag, false);
+				vmTrace('loadJLang created JLanguage::getInstance '.(int)$site.$tag.$name);
 			}
 		}
 
 		if($cache and isset($loaded[(int)$site.$tag.$name])){
 			//vmdebug('lang already cached '.(int)$site.$tag.$name);
-			vmText::setLang(self::$languages[$tag]);
-			return self::$languages[$tag];
+			self::setLanguageByTag($tag);
+			return vmText::$languages[$tag];
 		} else {
 
 		}
@@ -851,7 +853,7 @@ class VmConfig {
 			$path = $basePath = VMPATH_SITE;
 		}
 
-		if($fallback and $tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name]) and VmConfig::get('enableEnglish', true) ){
+		if($tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name]) and VmConfig::get('enableEnglish', true) ){
 			$testpath = $basePath.'/language/en-GB/en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
 				if($site){
@@ -862,7 +864,7 @@ class VmConfig {
 			} else {
 				$epath = $path;
 			}
-			self::$languages[$tag]->load($name, $epath, 'en-GB');
+			vmText::$languages[$tag]->load($name, $epath, 'en-GB');
 			$loaded[(int)$site.'en-GB'.$name] = true;
 		}
 
@@ -875,11 +877,11 @@ class VmConfig {
 			}
 		}
 
-		self::$languages[$tag]->load($name, $path,$tag,true);
+		vmText::$languages[$tag]->load($name, $path,$tag,true);
 		$loaded[(int)$site.$tag.$name] = true;
 		vmdebug('loaded '.$name,$tag);
-		vmText::setLang(self::$languages[$tag]);
-		return self::$languages[$tag];
+		vmText::setLangTag($tag);
+		return vmText::$languages[$tag];
 	}
 
 	/**
@@ -968,7 +970,7 @@ class VmConfig {
 			self::$installed = false;
 			$jlang = JFactory::getLanguage();
 			$selectedLang = $jlang->getTag();
-
+			self::loadJLang('com_virtuemart');
 			if(empty($selectedLang)){
 				$selectedLang = $jlang->getDefault();
 			}
@@ -1074,6 +1076,22 @@ class VmConfig {
 		return self::$_jpConfig->_raw;
 	}
 
+	static public function setLanguageByTag($tag){
+
+		vmText::setLangTag($tag);
+		$langs = (array)self::get('active_languages',array());
+		if(!in_array($tag, $langs)) {
+			vmdebug('setLanguageByTag tag not in activa language list ',$tag);
+			if(count($langs)===0){
+				$tag = self::$jDefLangTag;
+			} else {
+				$tag = $langs[0];
+			}
+		}
+		self::$vmlang = strtolower(strtr($tag,'-','_'));
+
+	}
+
 	 /*
 	 * Set defaut language tag for translatable table
 	 *
@@ -1093,6 +1111,8 @@ class VmConfig {
 
 		$siteLang = vRequest::getString('vmlang',$siteLang );
 
+		if(!self::$jSelLangTag) self::$jSelLangTag = JFactory::getLanguage()->getTag();
+
 		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
 		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
 			$languages = JLanguageHelper::getLanguages('lang_code');
@@ -1100,9 +1120,9 @@ class VmConfig {
 			if(isset($languages[$siteLang])){
 				self::$vmlangSef = $languages[$siteLang]->sef;
 			} else {
-				$ltag = JFactory::getLanguage()->getTag();
-				if(isset($languages[$ltag])){
-					self::$vmlangSef = $languages[$ltag]->sef;
+
+				if(isset($languages[self::$jSelLangTag])){
+					self::$vmlangSef = $languages[self::$jSelLangTag]->sef;
 				}
 			}
 		}
@@ -1121,7 +1141,7 @@ class VmConfig {
 
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
-				$siteLang = JFactory::getLanguage()->getTag();
+				$siteLang = self::$jSelLangTag;
 			}
 		} else {
 			if(!$siteLang){

@@ -153,13 +153,17 @@ class VirtueMartModelOrders extends VmModel {
 			return false;
 		}
 
+		if($userlang){
+			shopFunctionsF::loadOrderLanguages($userlang);
+		}
+
 		//Extra check, when a user is logged in, else we use the guest method
 		if(!empty($cuid)){
 			if (!$virtuemart_order_id and $orderNumber) {
 				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($orderNumber);
 			}
 			if(!empty($virtuemart_order_id)){
-				$orderDetails = $this->getOrder($virtuemart_order_id,$userlang);
+				$orderDetails = $this->getOrder($virtuemart_order_id);
 				if($orderDetails['details']['BT']->virtuemart_user_id == $cuid or vmAccess::manager('orders')) {
 					$sess->set('getOrderDetails.'.$orderNumber.$virtuemart_order_id,0);
 					return $orderDetails;
@@ -174,7 +178,7 @@ class VirtueMartModelOrders extends VmModel {
 			$orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
 			if($orderId){
 				$sess->set('getOrderDetails.'.$orderNumber.$virtuemart_order_id,0);
-				return $this->getOrder($orderId,$userlang);
+				return $this->getOrder($orderId);
 			}
 		}
 		$tries++;
@@ -191,7 +195,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * Load a single order, Attention, this function is not protected! Do the right manangment before, to be certain
      * we suggest to use getMyOrderDetails
 	 */
-	public function getOrder($virtuemart_order_id, $userlang=false){
+	public function getOrder($virtuemart_order_id){
 
 		//sanitize id
 		$virtuemart_order_id = (int)$virtuemart_order_id;
@@ -227,14 +231,6 @@ class VirtueMartModelOrders extends VmModel {
 				$order['details']['has_ST'] = false;
 				$order['details']['ST'] =&$order['details']['BT'];
 			}
-		}
-
-		if(!class_exists('shopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		if( $userlang and !empty($order['details']['BT']->order_language) ){
-			$olang = $order['details']['BT']->order_language;
-			shopFunctionsF::loadOrderLanguages($olang);
-		} else {
-			shopFunctionsF::loadOrderLanguages();
 		}
 
 		// Get the order history
@@ -815,12 +811,10 @@ class VirtueMartModelOrders extends VmModel {
 				/*if($task=='edit'){
 					$update_lines = vRequest::getInt('update_lines');
 				} else /*/
-
+				$update_lines = 1;
 				if ($task==='updatestatus' and $view==='orders') {
 					$lines = vRequest::getVar('orders');
 					$update_lines = $lines[$virtuemart_order_id]['update_lines'];
-				} else {
-
 				}
 
 				if($update_lines==1){
@@ -1698,8 +1692,12 @@ class VirtueMartModelOrders extends VmModel {
 
 		//Important, the data of the order update mails, payments and invoice should
 		//always be in the database, so using getOrder is the right method
-		$orderModel = VmModel::getModel('orders');
-		$order = $orderModel->getOrder($virtuemart_order_id,true);
+
+		//Lets set the language to the shop language
+		shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
+		$order = $this->getOrder($virtuemart_order_id);
+		$vars['orderDetails']=$order;
+
 
 		$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
@@ -1715,8 +1713,6 @@ class VirtueMartModelOrders extends VmModel {
 			$vars['newOrderData'] = (array)$newOrderData;
 		}
 
-		$vars['orderDetails']=$order;
-
 		//$vars['includeComments'] = vRequest::getVar('customer_notified', array());
 		//I think this is misleading, I think it should always ask for example $vars['newOrderData']['doVendor'] directly
 		//Using this function garantue us that it is always there. If the vendor should be informed should be done by the plugins
@@ -1724,42 +1720,58 @@ class VirtueMartModelOrders extends VmModel {
 		$vars['url'] = 'url';
 		if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 
-		if(!empty($vars['orderDetails']['details']) and !empty($vars['orderDetails']['details']['BT']->order_language)) {
-			shopFunctionsF::loadOrderLanguages($vars['orderDetails']['details']['BT']->order_language);
-		} else {
-			shopFunctionsF::loadOrderLanguages();
+		$invoice = $this->createInvoiceByOrder($order);
+		if($invoice){
+			$vars['mediaToSend'][] = $invoice;
 		}
 
 		$virtuemart_vendor_id = $order['details']['BT']->virtuemart_vendor_id;
 		$vendorModel = VmModel::getModel('vendor');
-		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
-		$vars['vendor'] = $vendor;
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
 
-		// florian : added if pdf invoice are enabled
-		$invoiceNumberDate = array();
-		if ($orderModel->createInvoiceNumber($order['details']['BT'], $invoiceNumberDate )) {
-			$orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
-			if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice);   // for backward compatibility 2.0.8e
-			$pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
-			$force_create_invoice=vRequest::getInt('create_invoice', -1);
-			//TODO we need an array of orderstatus
-			if ( (in_array($order['details']['BT']->order_status,$orderstatusForInvoice))  or $pdfInvoice==1  or $force_create_invoice==1 ){
-				if (!shopFunctions::InvoiceNumberReserved($invoiceNumberDate[0])) {
-					if(!class_exists('VirtueMartControllerInvoice')) require( VMPATH_SITE.DS.'controllers'.DS.'invoice.php' );
-					$controller = new VirtueMartControllerInvoice( array(
-						'model_path' => VMPATH_SITE.DS.'models',
-						'view_path' => VMPATH_SITE.DS.'views'
-					));
-					$vars['mediaToSend'][] = $controller->getInvoicePDF($order);
-				}
-			}
+		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+		$vars['vendor'] = $vendor;
 
+		//Mail for vendor
+		$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','C','R','X'));
+		if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
+
+		if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
+			//shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
+			//VmConfig::setLanguageByTag(VmConfig::$jDefLangTag);
+			$view = shopFunctionsF::prepareViewForMail('invoice', $vars);
+			$res = shopFunctionsF::sendVmMail( $view, $view->vendorEmail, TRUE );
 		}
 
 		// Send the email
-		$res = shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'],$this->useDefaultEmailOrderStatus);
+		//$res = shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'],$this->useDefaultEmailOrderStatus);
+		$sendMail = false;
+		if(!$this->useDefaultEmailOrderStatus and isset($vars['newOrderData']['customer_notified']) and $vars['newOrderData']['customer_notified']==1){
+			$sendMail = true;
+		} else {
+			$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
+			if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
+			if ( in_array((string) $vars['orderDetails']['details']['BT']->order_status,$orderstatusForShopperEmail) ){
+				$sendMail = true;
+				vmdebug('renderMail by default orderstati');
+			}
+		}
+
+		if($sendMail){
+			if(!empty($vars['orderDetails']['details']) and !empty($vars['orderDetails']['details']['BT']->order_language)) {
+				$orderLang = $vars['orderDetails']['details']['BT']->order_language;
+				shopFunctionsF::loadOrderLanguages($orderLang);
+
+				$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+				$vars['vendor'] = $vendor;
+				$vars['orderDetails'] = $this->getOrder($virtuemart_order_id);
+			}
+
+			$view = shopFunctionsF::prepareViewForMail('invoice', $vars);
+			$res = shopFunctionsF::sendVmMail( $view, $order['details']['BT']->email, false );
+
+		}
 
 		if(is_object($res) or !$res){
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
@@ -1771,6 +1783,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		if($res!=-1){
+			VmConfig::setLanguageByTag(VmConfig::$jSelLangTag);
 			vmInfo( vmText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 		}
 
@@ -1785,6 +1798,43 @@ class VirtueMartModelOrders extends VmModel {
 		return true;
 	}
 
+	public function createInvoiceByOrder($order){
+
+		if(!isset($order['details']['BT'])) return false;
+
+		$inv = false;
+		// florian : added if pdf invoice are enabled
+		$invoiceNumberDate = array();
+		if ($this->createInvoiceNumber($order['details']['BT'], $invoiceNumberDate )) {
+			$orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
+			if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice);   // for backward compatibility 2.0.8e
+			$pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
+			$force_create_invoice=vRequest::getInt('create_invoice', -1);
+			//TODO we need an array of orderstatus
+			if ( (in_array($order['details']['BT']->order_status,$orderstatusForInvoice))  or $pdfInvoice==1  or $force_create_invoice==1 ){
+				if (!shopFunctions::InvoiceNumberReserved($invoiceNumberDate[0])) {
+					if(!class_exists('VirtueMartControllerInvoice')) require( VMPATH_SITE.DS.'controllers'.DS.'invoice.php' );
+					$controller = new VirtueMartControllerInvoice( array(
+					'model_path' => VMPATH_SITE.DS.'models',
+					'view_path' => VMPATH_SITE.DS.'views'
+					));
+					$lTag = vmText::getLangTag();
+
+					if(VmConfig::get('invoiceInUserLang', false) and !empty($orderLang)){
+						shopFunctionsF::loadOrderLanguages($orderLang);
+						$order = $this->getOrder($order['details']->virtuemart_order_id);
+
+					} else {
+						shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
+					}
+					$inv = $controller->getInvoicePDF($order);
+					VmConfig::setLanguageByTag($lTag);
+				}
+			}
+
+		}
+		return $inv;
+	}
 
 	/**
 	 * Retrieve the details for an order line item.

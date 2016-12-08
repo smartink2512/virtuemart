@@ -100,8 +100,6 @@ class VirtuemartModelReport extends VmModel {
 		$this->siteTimezone = $siteTimezone = new DateTimeZone($siteOffset);
 
 		$this->correctTimeOffset($this->from_period);
-
-		$this->siteTimezone = new DateTimeZone($siteOffset + 24);
 		$this->correctTimeOffset($this->until_period);
 
 		$this->siteTimezone = $siteTimezone;

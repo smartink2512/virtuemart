@@ -33,13 +33,16 @@ class vmText
 	 * @since  11.1
 	 */
 	protected static $strings = array();
+	public static $languages = array();
+	protected static $tag = '';
 
-	protected static $lang = array();
+	public static function setLangTag($tag){
+		vmdebug('vmText set lang',$tag);
+		self::$tag = $tag;
+	}
 
-	public static function setLang($lang){
-		/*$m = $lang->getTag();
-		vmdebug('vmText set lang',$m);*/
-		self::$lang = $lang;
+	public static function getLangTag(){
+		return self::$tag;
 	}
 
 	/**
@@ -61,7 +64,14 @@ class vmText
 	 */
 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
-		$lang = self::$lang;
+		if(!isset(self::$languages[self::$tag])){
+			VmConfig::$echoDebug = 1;
+			echo '<pre> vmText self::$languages has no '.self::$tag;
+			debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,10);
+			echo '</pre>';
+
+		}
+		$lang = self::$languages[self::$tag];
 		if (is_array($jsSafe))
 		{
 			if (array_key_exists('interpretBackSlashes', $jsSafe))
@@ -115,7 +125,7 @@ class vmText
 	 */
 	public static function sprintf($string)
 	{
-		$lang = self::$lang;
+		$lang = self::$languages[self::$tag];
 		$args = func_get_args();
 		$count = count($args);
 		if ($count > 0)
