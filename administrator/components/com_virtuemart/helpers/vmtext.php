@@ -37,6 +37,10 @@ class vmText
 	protected static $tag = '';
 
 	public static function setLangTag($tag){
+		if(empty($tag) or $tag == 1){
+			vmTrace('vmText::setLangTag tag empty or '.$tag);
+			return;
+		}
 		vmdebug('vmText set lang',$tag);
 		self::$tag = $tag;
 	}

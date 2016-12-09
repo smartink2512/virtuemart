@@ -35,6 +35,8 @@
 #pricesbyCurrency       //currency depended selected price; the selected currency determines the selected price of the product if availabe
 #vm_num_ratings_show     //amojunt of ratings to show
 #invoiceInUserLang
+#invoiceNameInShopLang
+#debug_mail
 
 useSSL=0
 dangeroustools=0

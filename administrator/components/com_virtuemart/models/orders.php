@@ -1693,11 +1693,13 @@ class VirtueMartModelOrders extends VmModel {
 		//Important, the data of the order update mails, payments and invoice should
 		//always be in the database, so using getOrder is the right method
 
+
 		//Lets set the language to the shop language
 		shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
 		$order = $this->getOrder($virtuemart_order_id);
-		$vars['orderDetails']=$order;
 
+
+		$vars['orderDetails']=$order;
 
 		$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
@@ -1820,13 +1822,6 @@ class VirtueMartModelOrders extends VmModel {
 					));
 					$lTag = vmText::getLangTag();
 
-					if(VmConfig::get('invoiceInUserLang', false) and !empty($orderLang)){
-						shopFunctionsF::loadOrderLanguages($orderLang);
-						$order = $this->getOrder($order['details']->virtuemart_order_id);
-
-					} else {
-						shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
-					}
 					$inv = $controller->getInvoicePDF($order);
 					VmConfig::setLanguageByTag($lTag);
 				}

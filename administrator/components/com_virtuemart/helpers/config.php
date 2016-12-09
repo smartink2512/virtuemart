@@ -828,7 +828,7 @@ class VmConfig {
 		static $loaded = array();
 		//VmConfig::$echoDebug  = 1;
 		if(empty($tag)) {
-			$tag = self::$jSelLangTag;
+			$tag = vmText::getLangTag();//self::$jSelLangTag;
 		}
 		if(!isset(vmText::$languages[$tag])) {
 			if($tag == self::$jSelLangTag) {
@@ -840,7 +840,8 @@ class VmConfig {
 			}
 		}
 
-		if($cache and isset($loaded[(int)$site.$tag.$name])){
+		$h = (int)$site.$tag.$name;
+		if($cache and isset($loaded[$h])){
 			//vmdebug('lang already cached '.(int)$site.$tag.$name);
 			self::setLanguageByTag($tag);
 			return vmText::$languages[$tag];
@@ -878,8 +879,8 @@ class VmConfig {
 		}
 
 		vmText::$languages[$tag]->load($name, $path,$tag,true);
-		$loaded[(int)$site.$tag.$name] = true;
-		vmdebug('loaded '.$name,$tag);
+		$loaded[$h] = true;
+		vmdebug('loaded '.$h);
 		vmText::setLangTag($tag);
 		return vmText::$languages[$tag];
 	}
@@ -1078,6 +1079,12 @@ class VmConfig {
 
 	static public function setLanguageByTag($tag){
 
+		//VmConfig::$echoDebug = 1;
+		if(empty($tag) or $tag == 1){
+			vmTrace('setLanguageByTag tag empty or 1'.$tag);
+			return;
+		}
+		vmdebug('setLanguageByTag',$tag);
 		vmText::setLangTag($tag);
 		$langs = (array)self::get('active_languages',array());
 		if(!in_array($tag, $langs)) {
@@ -1181,7 +1188,7 @@ class VmConfig {
 
 
 		}
-
+		vmText::setLangTag(self::$jSelLangTag);
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr(self::$jDefLangTag,'-','_'));
 		vmdebug('LangCount: '.self::$langCount.' $siteLang: '.$siteLang.' self::$vmlangSef: '.self::$vmlangSef.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);

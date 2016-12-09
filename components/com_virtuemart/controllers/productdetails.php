@@ -358,6 +358,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		$model = VmModel::getModel ('waitinglist');
 		if (!$model->adduser ($data)) {
+			$msg = 'Notify Customer; Could not add user to waiting list';
 			$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $data['virtuemart_product_id'], FALSE), $msg);
 		} else {
 			$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', vmText::_ ('COM_VIRTUEMART_CART_NOTIFY'));

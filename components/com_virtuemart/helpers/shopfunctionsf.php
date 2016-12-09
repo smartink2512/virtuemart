@@ -603,7 +603,7 @@ class shopFunctionsF {
 		$s = TRUE;
 		$fallback = true;// ($language !='en-GB')? true: false;
 		$cache = true;
-
+		VmConfig::loadJLang('com_virtuemart', 0, $language, $cache);
 		VmConfig::loadJLang('com_virtuemart', $s, $language, $cache);
 		VmConfig::loadJLang('com_virtuemart_shoppers', $s, $language, $cache);
 		VmConfig::loadJLang('com_virtuemart_orders', $s, $language, $cache);
@@ -689,18 +689,25 @@ class shopFunctionsF {
 			}
 		}
 		$mailer->setSender( $sender );
-		
-		try {
-		$return = $mailer->Send();
+
+		if(VmConfig::get('debug_mail',false)){
+			vmdebug('The mail to send subject '.$subject.' to '.$recipient.' from ',$sender,$body);
+			return false;
+		} else {
+			try {
+				$return = $mailer->Send();
+			}
+			catch (Exception $e)
+			{
+				VmConfig::$logDebug = true;
+				vmdebug('Error sending mail ',$e);
+				vmError('Error sending mail ');
+				// this will take care of the error message
+				return false;
+			}
+
 		}
-		catch (Exception $e)
-		{
-			VmConfig::$logDebug = true;
-			vmdebug('Error sending mail ',$e);
-			vmError('Error sending mail ');
-			// this will take care of the error message
-			return false; 
-		}
+
 		return $return; 
 	}
 

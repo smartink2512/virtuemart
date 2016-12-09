@@ -80,25 +80,25 @@ class VirtueMartModelVendor extends VmModel {
 
 		if(!empty($vendor_id)) $this->_id = (int)$vendor_id;
 
-		if (empty($this->_cache[$this->_id])) {
+		if (empty($this->_cache[$this->_id][VmConfig::$vmlang])) {
 
-			$this->_cache[$this->_id] = $this->getTable ('vendors');
-			$this->_cache[$this->_id]->load ($this->_id);
+			$this->_cache[$this->_id][VmConfig::$vmlang] = $this->getTable ('vendors');
+			$this->_cache[$this->_id][VmConfig::$vmlang]->load ($this->_id);
 // 			vmdebug('getVendor',$this->_id,$this->_data);
 			// Convert ; separated string into array
-			if ($this->_cache[$this->_id]->vendor_accepted_currencies) {
-				$this->_cache[$this->_id]->vendor_accepted_currencies = explode (',', $this->_cache[$this->_id]->vendor_accepted_currencies);
+			if ($this->_cache[$this->_id][VmConfig::$vmlang]->vendor_accepted_currencies) {
+				$this->_cache[$this->_id][VmConfig::$vmlang]->vendor_accepted_currencies = explode (',', $this->_cache[$this->_id][VmConfig::$vmlang]->vendor_accepted_currencies);
 			} else {
-				$this->_cache[$this->_id]->vendor_accepted_currencies = array();
+				$this->_cache[$this->_id][VmConfig::$vmlang]->vendor_accepted_currencies = array();
 			}
 
 			//Todo, check this construction
 			$xrefTable = $this->getTable ('vendor_medias');
-			$this->_cache[$this->_id]->virtuemart_media_id = $xrefTable->load ($this->_id);
+			$this->_cache[$this->_id][VmConfig::$vmlang]->virtuemart_media_id = $xrefTable->load ($this->_id);
 
 		}
 
-		return $this->_cache[$this->_id];
+		return $this->_cache[$this->_id][VmConfig::$vmlang];
 	}
 
 	/**
