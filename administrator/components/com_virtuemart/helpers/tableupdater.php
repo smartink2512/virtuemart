@@ -67,7 +67,7 @@ class GenericTableUpdater extends VmModel{
 	public function createLanguageTables($langs=0){
 
 		if(empty($langs)){
-			$langs = VmConfig::get('active_languages');
+			$langs = VmConfig::get('active_languages',array(VmConfig::$jDefLang));
 			if(empty($langs)){
 				$langs = (array)VmConfig::$defaultLang;
 			}

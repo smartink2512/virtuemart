@@ -971,7 +971,7 @@ class VmConfig {
 			self::$installed = false;
 			$jlang = JFactory::getLanguage();
 			$selectedLang = $jlang->getTag();
-			self::loadJLang('com_virtuemart');
+			self::loadJLang('com_virtuemart', $selectedLang);
 			if(empty($selectedLang)){
 				$selectedLang = $jlang->getDefault();
 			}
@@ -1086,7 +1086,7 @@ class VmConfig {
 		}
 		vmdebug('setLanguageByTag',$tag);
 		vmText::setLangTag($tag);
-		$langs = (array)self::get('active_languages',array());
+		$langs = (array)self::get('active_languages',array(self::$jDefLang));
 		if(!in_array($tag, $langs)) {
 			vmdebug('setLanguageByTag tag not in activa language list ',$tag);
 			if(count($langs)===0){
@@ -1111,14 +1111,13 @@ class VmConfig {
 			return self::$vmlang;
 		}
 
-		$langs = (array)self::get('active_languages',array());
-		self::$langCount = count($langs);
-
 		self::$jLangCount = 1;
 
 		$siteLang = vRequest::getString('vmlang',$siteLang );
 
-		if(!self::$jSelLangTag) self::$jSelLangTag = JFactory::getLanguage()->getTag();
+		$l = JFactory::getLanguage();
+		self::$jSelLangTag = $l->getTag();
+		vmText::$languages[self::$jSelLangTag] = $l;
 
 		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
 		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
@@ -1145,6 +1144,8 @@ class VmConfig {
 			}
 		}
 
+		$langs = (array)self::get('active_languages',array(self::$jDefLang));
+		self::$langCount = count($langs);
 
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
@@ -1189,11 +1190,13 @@ class VmConfig {
 
 		}
 		vmText::setLangTag(self::$jSelLangTag);
+
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr(self::$jDefLangTag,'-','_'));
 		vmdebug('LangCount: '.self::$langCount.' $siteLang: '.$siteLang.' self::$vmlangSef: '.self::$vmlangSef.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', self::$vmlang );
+
 
 		return self::$vmlang;
 	}

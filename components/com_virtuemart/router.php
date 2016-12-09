@@ -1022,7 +1022,7 @@ class vmrouterHelper {
 
 				} else {
 					$parProdCat[$id] = $catPar[$parent_id];
-					vmdebug('getParentProductcategory $catPar[$parent_id] Cached ',$id );
+					//vmdebug('getParentProductcategory $catPar[$parent_id] Cached ',$id );
 				}
 
 				//When the child and parent id is the same, this creates a deadlock
@@ -1099,7 +1099,7 @@ class vmrouterHelper {
 		$value = trim($value);
 		$hash = substr($table,14,-1).VmConfig::$vmlang.$wherename.$value;
 		if(isset($ids[$hash])){
-			vmdebug('getFieldOfObjectWithLangFallBack return cached',$hash);
+			//vmdebug('getFieldOfObjectWithLangFallBack return cached',$hash);
 			return $ids[$hash];
 		}
 

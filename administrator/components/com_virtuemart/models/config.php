@@ -474,7 +474,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$active_langs = $config->get('active_languages');
 		if(empty($active_langs)){
-			$active_langs = array(VmConfig::$vmlangTag);
+			$active_langs = array(VmConfig::$jDefLangTag);
 			$config->set('active_languages',$active_langs);
 		}
 

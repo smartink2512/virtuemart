@@ -247,7 +247,7 @@ class VmViewAdmin extends JViewLegacy {
 		}
 
 		// only add if ID and view not null
-		if ($editView and ($id or VmConfig::get('prodOnlyWLang',false)) and (count(vmconfig::get('active_languages'))>1) ) {
+		if ($editView and ($id or VmConfig::get('prodOnlyWLang',false)) and (count(VmConfig::get('active_languages', array(VmConfig::$jDefLang)))>1) ) {
 
 			if ($editView =='user') $editView ='vendor';
 
@@ -255,7 +255,7 @@ class VmViewAdmin extends JViewLegacy {
 			$this->lang = vRequest::getVar('vmlang', $this->lang);
 			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('VMPATH_ROOT'), true);
-			$activeVmLangs = (vmconfig::get('active_languages') );
+			$activeVmLangs = (VmConfig::get('active_languages', array(VmConfig::$jDefLang)) );
 			$flagCss="";
 			foreach ($languages as $k => &$joomlaLang) {
 				if (!in_array($joomlaLang['value'], $activeVmLangs) ) {

@@ -2317,7 +2317,7 @@ class VirtueMartModelProduct extends VmModel {
 		$dispatcher = JDispatcher::getInstance ();
 		$result=$dispatcher->trigger ('plgVmCloneProduct', array($product));
 
-		$langs = VmConfig::get('active_languages', array());
+		$langs = VmConfig::get('active_languages', array(VmConfig::$jDefLang));
 		if ($langs and count($langs)>1){
 			$langTable = $this->getTable('products');
 			foreach($langs as $lang){
@@ -3002,19 +3002,19 @@ class VirtueMartModelProduct extends VmModel {
 				} else if(isset(self::$_productsSingle[$checkedProductKey[1]]->product_parent_id)){
 					$parentCache[$product_id] = self::$_productsSingle[$checkedProductKey[1]]->product_parent_id;
 				}
-				vmdebug('getProductParentId self::$_products Cache',$product_id,$parentCache[$product_id]);
+				//vmdebug('getProductParentId self::$_products Cache',$product_id,$parentCache[$product_id]);
 			}
 
 			if(!isset($parentCache[$product_id])){
 				$db = JFactory::getDbo();
 				$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . (int)$product_id);
 				$parentCache[$product_id] = $db->loadResult ();
-				vmdebug('getProductParentId executed sql for '.$product_id,$checkedProductKey);
+				//vmdebug('getProductParentId executed sql for '.$product_id,$checkedProductKey);
 				//vmTrace('getProductParentId executed sql for '.$product_id);
 			}
 
 		} else {
-			vmdebug('getProductParentId $parentCache',$product_id,$parentCache[$product_id]);
+			//vmdebug('getProductParentId $parentCache',$product_id,$parentCache[$product_id]);
 		}
 		return $parentCache[$product_id];
 	}
