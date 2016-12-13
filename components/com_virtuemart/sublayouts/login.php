@@ -27,12 +27,12 @@ if (!isset( $this->order )) $this->order = FALSE ;
 
 
 if (empty($this->url)){
-	$url = vmURI::getGetUrl(true);
+	$url = vmURI::getCurrentUrlBy('request');
 } else{
 	$url = $this->url;
 }
 //$url = JRoute::_($url, $this->useXHTML, $this->useSSL);
-
+vmdebug('My Url in loginform',$url);
 $user = JFactory::getUser();
 
 if ($this->show and $user->id == 0  ) {

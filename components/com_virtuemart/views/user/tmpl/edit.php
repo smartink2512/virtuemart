@@ -25,13 +25,12 @@ JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets
 ?>
 
 <?php
-$url = vmURI::getGetUrl();
+$url = vmURI::getCurrentUrlBy('request');
 $cancelUrl = JRoute::_($url.'&task=cancel');
-$url = JRoute::_($url);
 ?>
 
 <h1><?php echo $this->page_title ?></h1>
-<?php echo shopFunctionsF::getLoginForm(false,false,$url); ?>
+<?php echo shopFunctionsF::getLoginForm(false,false); ?>
 
 <?php if($this->userDetails->virtuemart_user_id==0) {
 	echo '<h2>'.vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG').'</h2>';

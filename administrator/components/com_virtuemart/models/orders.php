@@ -1760,6 +1760,7 @@ class VirtueMartModelOrders extends VmModel {
 			}
 		}
 
+		$res = true;
 		if($sendMail){
 			if(!empty($vars['orderDetails']['details']) and !empty($vars['orderDetails']['details']['BT']->order_language)) {
 				$orderLang = $vars['orderDetails']['details']['BT']->order_language;

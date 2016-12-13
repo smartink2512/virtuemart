@@ -519,21 +519,7 @@ class shopFunctionsF {
 		if(isset($view->doVendor) && !$noVendorMail) {
 			//We need to ensure the language for the vendor here
 			VmConfig::setLanguageByTag(VmConfig::$jDefLangTag);
-			if(isset($view->orderDetails)){
-
-				$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','C','R','X'));
-				if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
-
-				$order = $view->orderDetails;
-				if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
-					self::sendVmMail( $view, $view->vendorEmail, TRUE );
-				}else{
-					$user = -1;
-				}
-			} else {
-				self::sendVmMail( $view, $view->vendorEmail, TRUE );
-			}
-
+			self::sendVmMail( $view, $view->vendorEmail, TRUE );
 		}
 
 		return $user;

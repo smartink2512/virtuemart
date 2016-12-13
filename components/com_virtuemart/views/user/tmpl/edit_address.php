@@ -89,7 +89,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 ?>
 
-<form method="post" id="userForm" name="userForm" class="form-validate" action="#" >
+<form method="post" id="userForm" name="userForm" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL) ?>" >
 <fieldset>
 	<h2><?php
 		if ($this->address_type == 'BT') {

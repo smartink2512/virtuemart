@@ -49,7 +49,7 @@ vmJsApi::vmValidator();
 
 
 	<?php
-	$uri = vmURI::getGetUrl(true);
+	$uri = vmUri::getCurrentUrlBy('get');
 	$uri = str_replace(array('?tmpl=component','&tmpl=component'),'',$uri);
 	echo shopFunctionsF::getLoginForm ($this->cart, FALSE,$uri);
 

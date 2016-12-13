@@ -1118,6 +1118,7 @@ class VmConfig {
 		$l = JFactory::getLanguage();
 		self::$jSelLangTag = $l->getTag();
 		vmText::$languages[self::$jSelLangTag] = $l;
+		vmText::setLangTag(self::$jSelLangTag);
 
 		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
 		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
@@ -1189,7 +1190,7 @@ class VmConfig {
 
 
 		}
-		vmText::setLangTag(self::$jSelLangTag);
+
 
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		self::$defaultLang = strtolower(strtr(self::$jDefLangTag,'-','_'));
@@ -1528,8 +1529,66 @@ class vmAccess {
 
 class vmURI{
 
-	static function getGetUrl ($route = false){
+	static function getCurrentUrlBy ($source = 'request',$route = false, $white = true){
+
+
+		$vars = array('option', 'view', 'controller', 'task', 'virtuemart_category_id', 'virtuemart_manufacturer_id', 'virtuemart_product_id', 'virtuemart_user_id', 'addrtype', 'virtuemart_user_info', 'virtuemart_currency_id', 'layout', 'format', 'limitstart', 'limit', 'lang', 'language', 'keyword', 'virtuemart_order_id', 'order_number', 'order_pass', 'tmpl', 'usersearch', 'manage', 'orderby', 'dir', 'Itemid');
+
+
+		$url = 'index.php?';
+		if($white){
+			if(is_array($white) ){
+				$vars = array_merge($vars, $white);
+			}
+			foreach ($vars as $k){
+				$v = vRequest::getVar($k);
+				if(isset($v)){
+					$v = vRequest::filterUrl($v);
+					if(is_array($v)){
+						foreach($v as $ka => $va){
+							$url .= $k.'['.vRequest::filterUrl($ka).']='.vRequest::filterUrl($va).'&';
+						}
+					} else {
+						$url .= $k.'='.$v.'&';
+					}
+				}
+
+			}
+		} else {
+
+			if($source==='request'){
+				$get = vRequest::getRequest(FILTER_SANITIZE_URL);
+			} else if($source=='get'){
+				$get = vRequest::getGet(FILTER_SANITIZE_URL);
+			} else {
+				$get = vRequest::getPost(FILTER_SANITIZE_URL);
+			}
+			vmdebug('my request',$get);
+
+			foreach($get as $k => $v){
+				$k = vRequest::filterUrl($k);
+				if(is_array($v)){
+					foreach($v as $ka => $va){
+						$url .= $k.'['.vRequest::filterUrl($ka).']='.vRequest::filterUrl($va).'&';
+					}
+				} else {
+					$url .= $k.'='.vRequest::filterUrl($v).'&';
+				}
+
+			}
+		}
+
+		$url = rtrim($url,'&');
+		if ($route){
+			$url = JRoute::_($url);
+		}
+		vmdebug('getCurrentUrlBy '.$url);
+		return $url;
+	}
+
+	static function getGetUrl ($route = false, $white = false){
 		$get = vRequest::getGet(FILTER_SANITIZE_URL);
+
 		//vmdebug('my get',$get);
 		$url = 'index.php?';
 		foreach($get as $k => $v){
@@ -1548,7 +1607,7 @@ class vmURI{
 		if ($route){
 			$url = JRoute::_($url);
 		}
-		//vmdebug('getGetUrl',$url);
+		vmdebug('getGetUrl',$url);
 		return $url;
 	}
 
