@@ -23,6 +23,7 @@ defined('_JEXEC') or die();
 
 class calculationHelper {
 
+
 	protected $_db;
 	protected $_shopperGroupId;
 	var $_cats;
@@ -482,6 +483,15 @@ class calculationHelper {
 					if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['taxAmount'] = $this->productPrices['taxAmount'] * $this->_product->amount;
 					if(!isset($this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'])) $this->_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['subTotal'] = $this->productPrices['salesPrice'] * $this->_product->amount;
 				}
+			}
+		}
+
+		$tots = array('salesPrice', 'discountedPriceWithoutTax', 'priceWithoutTax', 'discountAmount', 'taxAmount');
+		foreach($tots as $name){
+			if(isset($this->productPrices[$name])){
+				$this->productPrices[$name.'Tt'] = $this->productPrices[$name] * $amount;
+			} else {
+				$this->productPrices[$name.'Tt'] = 0.0;
 			}
 		}
 

@@ -790,7 +790,7 @@ class VirtueMartModelUserfields extends VmModel {
 				? vmText::_($_fld->default)
 				: $_userData[$_fld->name]); 
 				
-				if ((!empty($valueN)) && (is_string($valueN))) $valueN = htmlentities($valueN,ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+				if ((!empty($valueN)) && (is_string($valueN))) $valueN = htmlentities($valueN,ENT_COMPAT, 'UTF-8', false);
 				
 				$_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name

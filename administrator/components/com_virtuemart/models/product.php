@@ -564,7 +564,7 @@ class VirtueMartModelProduct extends VmModel {
 				case 'topten':
 					$orderBy = ' ORDER BY p.`product_sales` DESC, `virtuemart_product_id` DESC'; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 					$joinPrice = true;
-					$where[] = 'pp.`product_price`>"0.0" ';
+					$where[] = 'pp.`product_price`>"0.001" ';
 					break;
 				case 'recent':
 					$rIds = self::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
@@ -1033,7 +1033,14 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($withCalc) {
-			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
+
+			if(JFactory::getApplication()->isSite()){
+				if($quantity < $child->min_order_level){
+					$quantity = $child->min_order_level;
+				}
+			}
+
+			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, $quantity);
 			$child->prices = $child->allPrices[$child->selectedPrice];
 		}
 

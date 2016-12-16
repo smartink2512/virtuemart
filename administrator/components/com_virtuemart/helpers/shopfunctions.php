@@ -498,6 +498,9 @@ class ShopFunctions {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 		}
 		if(is_object($array)) $array = get_object_vars($array);
+		if(!isset($array[$name])) $array[$name] = 0;
+		if(!isset($array[$name . 'Text'])) $array[$name . 'Text'] = 0;
+		if(!isset($array[$name . 'Rounding'])) $array[$name . 'Rounding'] = -1;
 		$html =
 			'<tr>
 				<td class="key">

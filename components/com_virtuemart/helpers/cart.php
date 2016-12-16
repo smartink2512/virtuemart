@@ -1772,7 +1772,7 @@ class VirtueMartCart {
 			$data->products[$i]['customProductData'] = VirtueMartModelCustomfields::CustomsFieldCartModDisplay($product);
 			$data->products[$i]['product_sku'] = $product->product_sku;
 			$data->products[$i]['prices'] = $currencyDisplay->priceDisplay( $product->allPrices[$product->selectedPrice]['subtotal']);
-			if($withProductImages) $data->products[$i]['image']= $product->images[0]->displayMediaThumb ('', FALSE);
+			if($withProductImages and !empty($product->images[0])) $data->products[$i]['image']= $product->images[0]->displayMediaThumb ('', FALSE);
 
 			// other possible option to use for display
 			$data->products[$i]['subtotal'] = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['subtotal']);

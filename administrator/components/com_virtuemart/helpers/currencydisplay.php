@@ -40,6 +40,11 @@ class CurrencyDisplay {
 	var $_vendorCurrency_code_3 = 0;
 	var $_vendorCurrency_numeric = 0;
 
+	public static $priceNames = array('basePrice','variantModification','basePriceVariant',
+	'basePriceWithTax','discountedPriceWithoutTax', 'discountedPriceWithoutTaxTt',
+	'salesPrice', 'salesPriceTt', 'priceWithoutTax', 'priceWithoutTaxTt',
+	'salesPriceWithDiscount','discountAmount','discountAmountTt','taxAmount', 'taxAmountTt','unitPrice');
+
 	private function __construct ($vendorId = 0){
 
 		if(empty($vendorId)) $vendorId = 1;
@@ -66,6 +71,7 @@ class CurrencyDisplay {
 			$this->_currencyConverter = new convertECB();
 
 		}
+
 
 	}
 
@@ -178,16 +184,11 @@ class CurrencyDisplay {
 
 		}
 
-		$priceFieldsRoots = array('basePrice','variantModification','basePriceVariant',
-			'basePriceWithTax','discountedPriceWithoutTax',
-			'salesPrice','priceWithoutTax',
-			'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
-
 		if($sprgrp){
 
 			if($sprgrp->custom_price_display){
 				if($sprgrp->show_prices){
-					foreach($priceFieldsRoots as $name){
+					foreach(self::$priceNames as $name){
 						$show = (int)$sprgrp->$name;
 						$text = (int)$sprgrp->{$name.'Text'};
 						$round = (int)$sprgrp->{$name.'Rounding'};
@@ -199,7 +200,7 @@ class CurrencyDisplay {
 				}
 			} else {
 				if(VmConfig::get('show_prices', 1)){
-					foreach($priceFieldsRoots as $name){
+					foreach(self::$priceNames as $name){
 						$show = VmConfig::get($name,0);
 						$text = VmConfig::get($name.'Text',0);
 						$round = VmConfig::get($name.'Rounding',$this->_nbDecimal);
@@ -213,7 +214,7 @@ class CurrencyDisplay {
 		}
 
 		if(!count($this->_priceConfig)){
-			foreach($priceFieldsRoots as $name){
+			foreach(self::$priceNames as $name){
 				$this->_priceConfig[$name] = array(0,0,0);
 			}
 		}

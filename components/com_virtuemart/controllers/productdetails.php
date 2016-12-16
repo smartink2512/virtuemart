@@ -305,12 +305,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		}
 		$currency = CurrencyDisplay::getInstance ();
 
-		$priceFieldsRoots = array('basePrice','variantModification','basePriceVariant',
-			'basePriceWithTax','discountedPriceWithoutTax',
-			'salesPrice','priceWithoutTax',
-			'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
-
-		foreach ($priceFieldsRoots as $name) {
+		foreach (CurrencyDisplay::$priceNames as $name) {
 			if(isset($prices[$name])){
 				$priceFormated[$name] = $currency->createPriceDiv ($name, '', $prices, TRUE);
 			}

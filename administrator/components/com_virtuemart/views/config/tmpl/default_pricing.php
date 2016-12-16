@@ -45,27 +45,11 @@ vmJsApi::addJScript('show_prices',$js,true);
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES','show_prices',VmConfig::get('show_prices',1),1,0,'id="show_prices"');
 					?>
 				</table>
-				<table class="admintable" id="show_hide_prices">
-					<tr>
-						<th></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
-					</tr>
-					<?php
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'variantModification', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'basePriceVariant', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'discountedPriceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX', 0);
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'priceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX', 0);
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT', 0);
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'basePriceWithTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'salesPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'salesPriceWithDiscount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'discountAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
-					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'unitPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_UNITPRICE');
-					?>
-				</table>
+				<?php
+				$params = $this->config->_params;
+				$showPricesLine = false;
+				include(VMPATH_ADMIN .'/views/config/tmpl/default_priceconfig.php');
+                ?>
 			</fieldset>
 		</td>
 	</tr>

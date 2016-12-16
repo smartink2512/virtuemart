@@ -71,28 +71,13 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 			$attributes='id="show_prices"';
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY', 'custom_price_display', $this->shoppergroup->custom_price_display,1,0,$attributes ); ?>
 		</table>
-		<table class="admintable" id="show_hide_prices">
-<?php	echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES', 'show_prices', $this->shoppergroup->show_prices ); ?>
-		    <tr>
-			<th></th>
-			<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
-			<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
-			<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
-		    </tr>
-<?php
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'variantModification', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'basePriceVariant', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'basePriceWithTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'discountedPriceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'salesPriceWithDiscount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'salesPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'priceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'discountAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'unitPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_UNITPRICE');
-?>
-		</table>
+
+        <?php
+		$params = $this->shoppergroup;
+		$show_prices = $this->shoppergroup->show_prices;
+		$showPricesLine = true;
+            include(VMPATH_ADMIN .'/views/config/tmpl/default_priceconfig.php');
+        ?>
 
 	</fieldset>
     </div>

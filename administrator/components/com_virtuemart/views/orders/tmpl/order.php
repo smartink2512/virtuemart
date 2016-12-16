@@ -287,7 +287,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 				echo '			</td>'."\n";
 				echo '			<td>'."\n";
 				if ($_field['type'] === 'hidden') {
-					echo '				'.htmlentities($_field['value'],ENT_COMPAT | ENT_HTML401, 'UTF-8', false)."\n";
+					echo '				'.htmlentities($_field['value'],ENT_COMPAT, 'UTF-8', false)."\n";
 				}
 				else {
 					echo '				'.$_field['formcode']."\n";
@@ -328,7 +328,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 				echo '			</td>'."\n";
 				echo '			<td>'."\n";
 				if ($_field['type'] === 'hidden') {
-					echo '				'.htmlentities($_field['value'],ENT_COMPAT | ENT_HTML401, 'UTF-8', false)."\n";
+					echo '				'.htmlentities($_field['value'],ENT_COMPAT, 'UTF-8', false)."\n";
 				}
 				else {
 					echo '				'.$_field['formcode']."\n";
