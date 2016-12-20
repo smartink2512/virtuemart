@@ -842,7 +842,6 @@ class VmConfig {
 
 		$h = (int)$site.$tag.$name;
 		if($cache and isset($loaded[$h])){
-			//vmdebug('lang already cached '.(int)$site.$tag.$name);
 			self::setLanguageByTag($tag);
 			return vmText::$languages[$tag];
 		} else {
@@ -854,7 +853,7 @@ class VmConfig {
 			$path = $basePath = VMPATH_SITE;
 		}
 
-		if($tag!='en-GB' and !isset($loaded[(int)$site.'en-GB'.$name]) and VmConfig::get('enableEnglish', true) ){
+		if($tag!='en-GB' and VmConfig::get('enableEnglish', true) ){
 			$testpath = $basePath.'/language/en-GB/en-GB.'.$name.'.ini';
 			if(!file_exists($testpath)){
 				if($site){
@@ -865,8 +864,7 @@ class VmConfig {
 			} else {
 				$epath = $path;
 			}
-			vmText::$languages[$tag]->load($name, $epath, 'en-GB');
-			$loaded[(int)$site.'en-GB'.$name] = true;
+			vmText::$languages[$tag]->load($name, $epath, 'en-GB', true, false);
 		}
 
 		$testpath = $basePath.'/language/'.$tag.'/'.$tag.'.'.$name.'.ini';
@@ -878,7 +876,7 @@ class VmConfig {
 			}
 		}
 
-		vmText::$languages[$tag]->load($name, $path,$tag,true);
+		vmText::$languages[$tag]->load($name, $path, $tag, true, false);
 		$loaded[$h] = true;
 		vmdebug('loaded '.$h);
 		vmText::setLangTag($tag);
@@ -1081,7 +1079,7 @@ class VmConfig {
 
 		//VmConfig::$echoDebug = 1;
 		if(empty($tag) or $tag == 1){
-			vmTrace('setLanguageByTag tag empty or 1'.$tag);
+			vmTrace('setLanguageByTag tag empty or '.$tag);
 			return;
 		}
 		vmdebug('setLanguageByTag',$tag);

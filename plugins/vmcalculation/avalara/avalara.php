@@ -167,10 +167,17 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	//	$html .= VmHTML::row('checkbox','VMCALCULATION_ISTRAXX_AVALARA_TRACE','trace',$calc->trace);
 
 		$html .= '</table>';
-		if ($calc->activated) {
-			$html .= $this->ping($calc);
+		if(!class_exists('SoapClient')){
+			vmWarn('Please enable the SOAP client in your php configuration.');
+		} else {
+			if ($calc->activated) {
+				$html .= $this->ping($calc);
+			}
 		}
+
 		$html .= vmText::_('VMCALCULATION_AVALARA_MANUAL').'</fieldset>';
+
+
 		return TRUE;
 	}
 
@@ -324,7 +331,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$err .='last request: '. $client->__getLastRequest().'<br />';
 			$err .='last response: '. $client->__getLastResponse().'<br />';
 			vmError($err);
-			avadebug('AvaTax the ping throws exception ',$exception);
+			avadebug('AvaTax the ping throws exception ',$exception->getMessage());
 		}
 
 		return $html;

@@ -91,7 +91,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 	<?php } ?>
 	<td class="vm-cart-item-discount" ><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('discountAmount', '', $prow->prices, FALSE, FALSE, $prow->quantity, false, true) . "</span>" ?></td>
 	<td class="vm-cart-item-total">
-		<?php //vmdebug('hm',$prow->prices,$this->cart->cartPrices[$pkey]);
+		<?php
 		if (VmConfig::get ('checkout_show_origprice', 1) && !empty($prow->prices['basePriceWithTax']) && $prow->prices['basePriceWithTax'] != $prow->prices['salesPrice']) {
 			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceWithTax', '', $prow->prices, TRUE, FALSE, $prow->quantity) . '</span><br />';
 		}

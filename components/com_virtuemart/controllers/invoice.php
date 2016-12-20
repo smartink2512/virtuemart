@@ -203,9 +203,10 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			return $path;
 		}
 
-		if(VmConfig::get('invoiceInUserLang', false) and !empty($orderLang)){
+		if(VmConfig::get('invoiceInUserLang', false) and !empty($orderDetails['details']) and !empty($orderDetails['details']['BT']->order_language)) {
+			$orderLang = $orderDetails['details']['BT']->order_language;
 			shopFunctionsF::loadOrderLanguages($orderLang);
-			$orderDetails = $this->getOrder($orderDetails->virtuemart_order_id);
+			$orderDetails = $orderModel->getOrder($orderDetails['details']['BT']->virtuemart_order_id);
 		} else {
 			shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
 		}

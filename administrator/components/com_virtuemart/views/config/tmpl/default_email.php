@@ -42,6 +42,8 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<?php
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR','useVendorEmail',VmConfig::get('useVendorEmail',0));
+		echo VmHTML::row('checkbox','COM_VM_CFG_INVOICE_IN_USER_LANG','invoiceInUserLang',VmConfig::get('invoiceInUserLang',0));
+		echo VmHTML::row('checkbox','COM_VM_CFG_DEBUG_MAIL','debug_mail',VmConfig::get('debug_mail',0));
 		?>
 
 		<?php /*?>		<!-- NOT YET -->

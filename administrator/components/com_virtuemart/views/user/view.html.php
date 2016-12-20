@@ -155,7 +155,6 @@ class VirtuemartViewUser extends VmViewAdmin {
 				}
 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
 				$this->assignRef('shipToFields', $userFieldsST);
-				vmdebug('hm ST $virtuemart_userinfo_id',$virtuemart_userinfo_id);
 			}
 
 			$this->assignRef('shipToId', $virtuemart_userinfo_id);

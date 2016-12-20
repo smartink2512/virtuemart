@@ -587,14 +587,13 @@ class shopFunctionsF {
 	static public function loadOrderLanguages($language = 0){
 
 		$s = TRUE;
-		$fallback = true;// ($language !='en-GB')? true: false;
 		$cache = true;
+		VmConfig::setLanguageByTag($language);
+
 		VmConfig::loadJLang('com_virtuemart', 0, $language, $cache);
 		VmConfig::loadJLang('com_virtuemart', $s, $language, $cache);
 		VmConfig::loadJLang('com_virtuemart_shoppers', $s, $language, $cache);
 		VmConfig::loadJLang('com_virtuemart_orders', $s, $language, $cache);
-		VmConfig::loadJLang('com_virtuemart_override',$s, $language, $cache);
-		VmConfig::setLanguageByTag($language);
 
 	}
 
@@ -677,7 +676,7 @@ class shopFunctionsF {
 		$mailer->setSender( $sender );
 
 		if(VmConfig::get('debug_mail',false)){
-			vmdebug('The mail to send subject '.$subject.' to '.$recipient.' from ',$sender,$body);
+			vmInfo('The mail to send subject '.$subject.' to '.$recipient.' from '.$sender[0].' '.$sender[1].'<br>'.$body);
 			return false;
 		} else {
 			try {

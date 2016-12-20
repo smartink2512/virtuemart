@@ -19,7 +19,7 @@
 defined ('_JEXEC') or die('Restricted access');
 $product = $viewData['product'];
 $currency = $viewData['currency'];
-vmdebug('hm',$product->prices);
+
 ?>
 <div class="product-price" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 	<?php

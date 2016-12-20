@@ -153,9 +153,9 @@ class VirtueMartModelOrders extends VmModel {
 			return false;
 		}
 
-		if($userlang){
+		/*if($userlang){
 			shopFunctionsF::loadOrderLanguages($userlang);
-		}
+		}*/
 
 		//Extra check, when a user is logged in, else we use the guest method
 		if(!empty($cuid)){
@@ -1765,7 +1765,6 @@ class VirtueMartModelOrders extends VmModel {
 			if(!empty($vars['orderDetails']['details']) and !empty($vars['orderDetails']['details']['BT']->order_language)) {
 				$orderLang = $vars['orderDetails']['details']['BT']->order_language;
 				shopFunctionsF::loadOrderLanguages($orderLang);
-
 				$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 				$vars['vendor'] = $vendor;
 				$vars['orderDetails'] = $this->getOrder($virtuemart_order_id);

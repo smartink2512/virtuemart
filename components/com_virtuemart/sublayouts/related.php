@@ -11,6 +11,11 @@ if($customfield->wPrice){
 	$currency = calculationHelper::getInstance()->_currencyDisplay;
 	echo $currency->createPriceDiv ('salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $related->prices);
 }
+
+if($customfield->waddtocart){
+	echo shopFunctionsF::renderVmSubLayout('addtocart',array('product'=>$related,'rowHeights'=>1, 'position' => array('ontop', 'addtocart')));
+}
+
 if($customfield->wDescr){
 	echo '<p class="product_s_desc">'.$related->product_s_desc.'</p>';
 }
