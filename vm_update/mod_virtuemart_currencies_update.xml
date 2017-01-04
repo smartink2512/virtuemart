@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
+<update>
+    <name>VirtueMart Currency module</name>
+    <description>VirtueMart Currency module</description>
+    <element>mod_virtuemart_currencies</element>
+    <type>module</type>
+    <version>${PHING.VM.RELEASE}</version>
+    <client>0</client>
+    <infourl title="${PHING.VM.INFURLTITLE}">${PHING.VM.INFURL}</infourl>
 
-    <!--update>
-        <name>mod_virtuemart_currencies</name>
-        <description>mod_virtuemart_currencies</description>
-       <element>mod_virtuemart_currencies</element>
-        <type>module</type>
-        <version>2.6.2</version>
-        <client>0</client>
+    <downloads>
+        <!--downloadurl type="full" format="zip">http://dev.virtuemart.net/attachments/download/XXX/plg_vmpayment_paypal.${PHING.VM.RELEASE}.zip</downloadurl-->
+    </downloads>
 
-
-        <infourl title="VirtueMart URL">http://dev.virtuemart.net/attachments/download/XXX/plg_vmpayment_paypal.${PHING.VM.RELEASE}.zip</infourl>
-        <downloads>
-            <downloadurl type="full" format="zip">http://dev.virtuemart.net/attachments/download/XXX/plg_vmpayment_paypal.${PHING.VM.RELEASE}.zip</downloadurl>
-        </downloads>
-
-        <maintainer>VirtueMart Team</maintainer>
-        <maintainerurl>http://virtuemart.net</maintainerurl>
-        <targetplatform name="joomla" version="2.5" />
-    </update-->
-
+    <maintainer>${PHING.VM.MAINTAINER}</maintainer>
+    <maintainerurl>${PHING.VM.MAINTAINERURL}</maintainerurl>
+    <targetplatform name="joomla" version=".*" />
+</update>
 </updates>

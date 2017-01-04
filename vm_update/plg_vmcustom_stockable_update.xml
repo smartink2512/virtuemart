@@ -16,7 +16,7 @@
 
         <maintainer>VirtueMart Team</maintainer>
         <maintainerurl>http://virtuemart.net</maintainerurl>
-        <targetplatform name="joomla" version="2.5" />
+        <targetplatform name="joomla" version=".*" />
     </update-->
 
 </updates>
