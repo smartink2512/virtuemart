@@ -7,7 +7,7 @@
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorEmail>max|at|virtuemart.net</authorEmail>
-    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>
     <copyright>Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>

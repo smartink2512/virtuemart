@@ -7,7 +7,7 @@
  * @subpackage
  * @author Max Milbers
  * @todo handle child products
- * @link http://www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  * @copyright Copyright (c) 2015 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant

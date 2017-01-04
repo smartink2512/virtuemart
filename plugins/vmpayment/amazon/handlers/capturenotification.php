@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * @subpackage vmpayment
  * @version $Id: capturenotification.php 8685 2015-02-05 18:40:30Z alatak $
  * @author Valérie Isaksen
- * @link http://www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *

@@ -9,7 +9,7 @@
  *
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  *
- * www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  */
 
 class mod_virtuemart_product {

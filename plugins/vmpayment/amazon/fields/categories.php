@@ -7,7 +7,7 @@ defined('_JEXEC') or die();
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @version $Id: categories.php 8229 2014-08-23 16:56:12Z alatak $
- * @link http://www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  * @copyright Copyright (c) 2004 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant

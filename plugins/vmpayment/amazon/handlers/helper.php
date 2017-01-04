@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . 'is not allo
  * @subpackage vmpayment Amazon
  * @version $Id: helper.php 8585 2014-11-25 11:11:13Z alatak $
  * @author Valérie Isaksen
- * @link http://www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  * @copyright Copyright (c) 2014 - ${PHING.VM.RELDATE} VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *

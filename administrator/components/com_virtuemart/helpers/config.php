@@ -1527,7 +1527,7 @@ class vmAccess {
 
 class vmURI{
 
-	static function getCurrentUrlBy ($source = 'request',$route = false, $white = true){
+	static function getCurrentUrlBy ($source = 'request',$route = false, $white = true, $ignore = false){
 
 
 		$vars = array('option', 'view', 'controller', 'task', 'virtuemart_category_id', 'virtuemart_manufacturer_id', 'virtuemart_product_id', 'virtuemart_user_id', 'addrtype', 'virtuemart_user_info', 'virtuemart_currency_id', 'layout', 'format', 'limitstart', 'limit', 'lang', 'language', 'keyword', 'virtuemart_order_id', 'order_number', 'order_pass', 'tmpl', 'usersearch', 'manage', 'orderby', 'dir', 'Itemid');

@@ -11,7 +11,7 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
 *
-* www.virtuemart.net
+* @link ${PHING.VM.MAINTAINERURL}
 */
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);

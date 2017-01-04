@@ -3,8 +3,9 @@
 <project name="Build VirtueMart" default="VIRTUEMART_AND_FULLINSTALLER" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="3.0.18.6"/>
-    <property name="joomla.version" value="3.6.4"/>
+    <property name="vm.version.main" value="3.0.18"/>
+    <property name="vm.version" value="3.0.18"/>
+    <property name="joomla.version" value="3.6.5"/>
     <property name="svn.lastrevision" value="9404"/>
     <property name="PHING.VM.CODENAME" value="Blue Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
@@ -62,7 +63,7 @@
     <property name="package.language.aio" value="${package.admin.aio}/language"/>
     <property name="package.libraries.aio" value="${package.admin.aio}/libraries"/>
 
-
+    <property name="update.xmls" value="${package.abspath}/vm_update"/>
 
     <!-- ============================================  -->
     <!-- SVN EXPORT variables -->
@@ -93,6 +94,9 @@
     <property name="PHING.VM.COPYRIGHT" value="Copyright (C) 2004 - ${PHING.VM.YEAR} Virtuemart Team. All rights reserved."/>
     <property name="PHING.VM.LICENSE" value="http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL"/>
 
+    <property name="PHING.VM.MAINTAINER" value="The VirtueMart Team"/>
+    <property name="PHING.VM.MAINTAINERURL" value="https://virtuemart.net"/>
+    <property name="PHING.VM.MAINRELEASE" value="${vm.version.main}"/>
 
     <!-- ============================================  -->
     <!-- DELETE OLD VERSION IF EXIST -->
@@ -141,11 +145,11 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
         <exclude name=".phpstorm.meta.php"/>
-        <exclude name="**/vm_update/**"/>
+        <!--exclude name="**/vm_update/**"/ -->
         <exclude name="**/vm_build/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
-        <exclude name="**/vm_update/**"/>
+        <!--exclude name="**/vm_update/**"/ -->
         <exclude name="**/ar-AA/**"/>
         <exclude name="**/bg-BG/**"/>
         <exclude name="**/bs-BA/**"/>
@@ -285,7 +289,7 @@
         <exclude name="**/systempay/**"/>
         <exclude name="index.html"/>
     </fileset>
- <fileset dir="${libraries.path}" id='libraries.aio.refid' defaultexcludes="true">
+    <fileset dir="${libraries.path}" id='libraries.aio.refid' defaultexcludes="true">
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
@@ -293,6 +297,14 @@
      <exclude name="index.html"/>
     </fileset>
 
+    <fileset dir="${update.xmls}" id='update.xmls' defaultexcludes="true">
+        <include name="**"/>
+        <exclude name=".svn"/>
+        <exclude name=".DS_Store"/>
+        <exclude name="**/payzen/**"/>
+        <exclude name="**/systempay/**"/>
+        <exclude name="index.html"/>
+    </fileset>
 
     <fileset dir="${package.admin.aio}" id='script.aio.refid' defaultexcludes="true">
         <include name="script.vmallinone.php"/>

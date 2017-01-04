@@ -3,7 +3,7 @@
     <name>VM - Calculation Avalara Tax</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>Max Milbers</author>
-    <authorUrl>http://virtuemart.net</authorUrl>
+    <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>
     <copyright>Copyright (C) 2013 iStraxx UG (haftungsbeschränkt). All rights reserved</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
@@ -13,7 +13,7 @@
     </languages>
     <files>
         <filename plugin="avalara">avalara.php</filename>
-        <filename plugin="avalara">AvaTax.php</filename>
+        <filename>AvaTax.php</filename>
         <folder>classes</folder>
         <folder>language</folder>
     </files>

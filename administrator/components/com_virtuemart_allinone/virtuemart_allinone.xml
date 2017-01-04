@@ -5,7 +5,7 @@
     <copyright>Copyright (C) 2004-2015 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <author>The VirtueMart Development Team</author>
-    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>
     <version status="${PHING.VM.DEV_STATUS}">${PHING.VM.RELEASE}</version>
 
     <scriptfile>script.vmallinone.php</scriptfile>

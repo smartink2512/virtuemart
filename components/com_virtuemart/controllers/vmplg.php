@@ -7,7 +7,7 @@
  * @package	VirtueMart
  * @subpackage pluginResponse
  * @author Valérie Isaksen
- * @link http://www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  * @copyright Copyright (c) 2004 - 2014 VirtueMart Team and authors. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant

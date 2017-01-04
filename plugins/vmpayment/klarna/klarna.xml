@@ -3,7 +3,7 @@
     <name>Klarna</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
-    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>

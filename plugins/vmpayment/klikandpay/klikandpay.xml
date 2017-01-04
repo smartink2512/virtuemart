@@ -3,11 +3,11 @@
     <name>VM Payment - klikandpay</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
-    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <!--version>${PHING.VM.RELEASE}</version-->
-    <version>Beta1</version>
+    <version>${PHING.VM.RELEASE}</version>
     <description><![CDATA[<a href="http://klikandpay.com" target="_blank">klikandpay</a> ]]>
     </description>
 

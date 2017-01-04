@@ -3,7 +3,7 @@
   <name>mod_virtuemart_product</name>
   <creationDate>${PHING.VM.RELDATE}</creationDate>
   <author>The VirtueMart Development Team</author>
-  <authorUrl>http://www.virtuemart.net</authorUrl>
+  <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>
   <copyright>${PHING.VM.COPYRIGHT}</copyright>
   <license>${PHING.VM.LICENSE}</license>
   <version>${PHING.VM.RELEASE}</version>
