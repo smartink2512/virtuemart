@@ -496,7 +496,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			j.`params`, j.`custom_data`, j.`system_data`, j.`checked_out`, j.`checked_out_time`, j.`state`,  s.virtuemart_shoppergroup_id ';
 
 		if(!VmConfig::$vmlang){
-			VmConfig::setdbLanguageTag();
+			vmLanguage::initialise();
 		}
 
 		$joins = array();

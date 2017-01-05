@@ -128,11 +128,12 @@ class VmView extends JViewLegacy{
 		}
 
 		if(VmConfig::get('sef_for_cart_links', false)){
+			$this->useSSL = vmURI::useSSL();
 			$this->continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryStr.$ItemidStr);
-			$this->cart_link = JRoute::_('index.php?option=com_virtuemart&view=cart');
+			$this->cart_link = JRoute::_('index.php?option=com_virtuemart&view=cart',false,$this->useSSL);
 		} else {
 			$lang = '';
-			if(VmConfig::$jLangCount>1 and !empty(VmConfig::$vmlangSef)){
+			if(VmLanguage::$jLangCount>1 and !empty(VmConfig::$vmlangSef)){
 				$lang = '&lang='.VmConfig::$vmlangSef;
 			}
 

@@ -583,17 +583,16 @@ class VmConfig {
 	public static $echoAdmin = FALSE;
 	const LOGFILEEXT = '.log.php';
 
+	public static $langs = array();
+	public static $langCount = 0;
+
 	public static $vmlang = false;	//actually selected
-	public static $vmLangSelected = false;	//desired by user
+	public static $vmlangTag = '';
+	public static $vmlangSef = '';
+
 	public static $defaultLang = false;
 	public static $jDefLang = false;
 	public static $jDefLangTag = false;
-	public static $jSelLangTag = false;
-	public static $vmlangTag = '';
-	public static $vmlangSef = '';
-	public static $langs = array();
-	public static $jLangCount = 1;
-	public static $langCount = 0;
 
 	public static $mType = 'info';
 	var $_params = array();
@@ -813,103 +812,12 @@ class VmConfig {
 	}
 
 
-	/**
-	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
-	 * and the path are already set and the correct order is used
-	 * We use first the english language, then the default
-	 *
-	 * @author Max Milbers
-	 * @static
-	 * @param $name
-	 * @return bool
-	 */
 	static public function loadJLang($name, $site = false, $tag = 0, $cache = true){
-
-		static $loaded = array();
-		//VmConfig::$echoDebug  = 1;
-		if(empty($tag)) {
-			$tag = vmText::getLangTag();//self::$jSelLangTag;
-		}
-		if(!isset(vmText::$languages[$tag])) {
-			if($tag == self::$jSelLangTag) {
-				vmText::$languages[$tag] = JFactory::getLanguage();
-				vmdebug('loadJLang created $l->getTag '.(int)$site.$tag.$name);
-			} else {
-				vmText::$languages[$tag] = JLanguage::getInstance($tag, false);
-				vmTrace('loadJLang created JLanguage::getInstance '.(int)$site.$tag.$name);
-			}
-		}
-
-		$h = (int)$site.$tag.$name;
-		if($cache and isset($loaded[$h])){
-			self::setLanguageByTag($tag);
-			return vmText::$languages[$tag];
-		} else {
-
-		}
-
-		$path = $basePath = VMPATH_ADMIN;
-		if($site){
-			$path = $basePath = VMPATH_SITE;
-		}
-
-		if($tag!='en-GB' and VmConfig::get('enableEnglish', true) ){
-			$testpath = $basePath.'/language/en-GB/en-GB.'.$name.'.ini';
-			if(!file_exists($testpath)){
-				if($site){
-					$epath = VMPATH_ROOT;
-				} else {
-					$epath = VMPATH_ADMINISTRATOR;
-				}
-			} else {
-				$epath = $path;
-			}
-			vmText::$languages[$tag]->load($name, $epath, 'en-GB', true, false);
-		}
-
-		$testpath = $basePath.'/language/'.$tag.'/'.$tag.'.'.$name.'.ini';
-		if(!file_exists($testpath)){
-			if($site){
-				$path = VMPATH_ROOT;
-			} else {
-				$path = VMPATH_ADMINISTRATOR;
-			}
-		}
-
-		vmText::$languages[$tag]->load($name, $path, $tag, true, false);
-		$loaded[$h] = true;
-		vmdebug('loaded '.$h);
-		vmText::setLangTag($tag);
-		return vmText::$languages[$tag];
+		return vmLanguage::loadJLang($name, $site, $tag, $cache);
 	}
-
-	/**
-	 * @static
-	 * @author Max Milbers, Valerie Isaksen
-	 * @param $name
-	 */
 	static public function loadModJLang($name){
-
-		$jlang =JFactory::getLanguage();
-		$tag = $jlang->getTag();
-
-		$path = $basePath = JPATH_VM_MODULES.'/'.$name;
-		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
-			if(!file_exists($basePath.'/language/en-GB/en-GB.'.$name.'.ini')){
-				$path = JPATH_ADMINISTRATOR;
-			}
-			$jlang->load($name, $path, 'en-GB');
-			$path = $basePath = JPATH_VM_MODULES.'/'.$name;
-		}
-
-		if(!file_exists($basePath.'/language/'.$tag.'/'.$tag.'.'.$name.'.ini')){
-			$path = JPATH_ADMINISTRATOR;
-		}
-		$jlang->load($name, $path,$tag,true);
-
-		return $jlang;
+		return vmLanguage::loadModJLang($name);
 	}
-
 
 	/**
 	 * Loads the configuration and works as singleton therefore called static. The call using the program cache
@@ -941,7 +849,7 @@ class VmConfig {
 
 		if($fresh){
 			self::$_jpConfig = new VmConfig();
-			self::setdbLanguageTag();
+			vmLanguage::initialise();
 			return self::$_jpConfig;
 		}
 		vmSetStartTime('loadConfig');
@@ -984,9 +892,9 @@ class VmConfig {
 				//VmConfig::$_debug=true;
 				//vmdebug('my option',$option,$_REQUEST);
 				//if($option!='com_languages'){
-					$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
-					//$link = 'index.php?option=com_installer&view=languages&redirected=1';
-					//$app->redirect($link,$msg);
+				$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
+				//$link = 'index.php?option=com_installer&view=languages&redirected=1';
+				//$app->redirect($link,$msg);
 				//}
 				$app->enqueueMessage($msg);
 			}
@@ -1032,7 +940,9 @@ class VmConfig {
 		self::$_secret = JFactory::getConfig()->get('secret');
 
 		self::$_jpConfig->_params['sctime'] = microtime(TRUE);
-		self::$_jpConfig->_params['vmlang'] = self::setdbLanguageTag();
+
+		vmLanguage::initialise();
+		self::$_jpConfig->_params['vmlang'] = self::$vmlang;
 
 		vmTime('time to load config','loadConfig');
 
@@ -1073,131 +983,6 @@ class VmConfig {
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
 		return self::$_jpConfig->_raw;
-	}
-
-	static public function setLanguageByTag($tag){
-
-		//VmConfig::$echoDebug = 1;
-		if(empty($tag) or $tag == 1){
-			vmTrace('setLanguageByTag tag empty or '.$tag);
-			return;
-		}
-		vmdebug('setLanguageByTag',$tag);
-		vmText::setLangTag($tag);
-		$langs = (array)self::get('active_languages',array(self::$jDefLang));
-		if(!in_array($tag, $langs)) {
-			vmdebug('setLanguageByTag tag not in activa language list ',$tag);
-			if(count($langs)===0){
-				$tag = self::$jDefLangTag;
-			} else {
-				$tag = $langs[0];
-			}
-		}
-		self::$vmlang = strtolower(strtr($tag,'-','_'));
-
-	}
-
-	 /*
-	 * Set defaut language tag for translatable table
-	 *
-	 * @author Max Milbers
-	 * @return string valid langtag
-	 */
-	static public function setdbLanguageTag($siteLang = false) {
-
-		if (self::$vmlang and !$siteLang) {
-			return self::$vmlang;
-		}
-
-		self::$jLangCount = 1;
-
-		$siteLang = vRequest::getString('vmlang',$siteLang );
-
-		$l = JFactory::getLanguage();
-		self::$jSelLangTag = $l->getTag();
-		vmText::$languages[self::$jSelLangTag] = $l;
-		vmText::setLangTag(self::$jSelLangTag);
-
-		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
-		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
-			$languages = JLanguageHelper::getLanguages('lang_code');
-			self::$jLangCount = count($languages);
-			if(isset($languages[$siteLang])){
-				self::$vmlangSef = $languages[$siteLang]->sef;
-			} else {
-
-				if(isset($languages[self::$jSelLangTag])){
-					self::$vmlangSef = $languages[self::$jSelLangTag]->sef;
-				}
-			}
-		}
-
-		if(self::$jDefLang===false){
-			$params = JComponentHelper::getParams('com_languages');
-			self::$jDefLangTag = $params->get('site', 'en-GB');//use default joomla
-			self::$jDefLang = self::get('vmDefLang',false);
-			if(self::$jDefLang){
-				self::$jDefLang = strtolower(strtr(self::$jDefLang,'-','_'));
-			} else {
-				self::$jDefLang = strtolower(strtr(self::$jDefLangTag,'-','_'));
-			}
-		}
-
-		$langs = (array)self::get('active_languages',array(self::$jDefLang));
-		self::$langCount = count($langs);
-
-		if( JFactory::getApplication()->isSite()){
-			if (!$siteLang) {
-				$siteLang = self::$jSelLangTag;
-			}
-		} else {
-			if(!$siteLang){
-				$siteLang = self::$jDefLangTag;
-			}
-		}
-
-		self::$vmLangSelected = $siteLang;
-		if(!in_array($siteLang, $langs)) {
-			if(count($langs)===0){
-				$siteLang = self::$jDefLangTag;
-			} else {
-				$siteLang = $langs[0];
-			}
-		}
-		self::$vmlangTag = $siteLang;
-
-		if(count($langs)>1){
-			$lfbs = self::get('vm_lfbs');
-			vmdebug('my lfbs '.$lfbs);
-			if(!empty($lfbs)){
-				$pairs = explode(';',$lfbs);
-				if($pairs and count($pairs)>0){
-					$fbsAssoc = array();
-					foreach($pairs as $pair){
-						$kv = explode('~',$pair);
-						if($kv and count($kv)===2){
-							$fbsAssoc[$kv[0]] = $kv[1];
-						}
-					}
-					if(isset($fbsAssoc[$siteLang])){
-						self::$jDefLangTag = $fbsAssoc[$siteLang];
-					}
-					self::set('fbsAssoc',$fbsAssoc);
-				}
-			}
-
-
-		}
-
-
-		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
-		self::$defaultLang = strtolower(strtr(self::$jDefLangTag,'-','_'));
-		vmdebug('LangCount: '.self::$langCount.' $siteLang: '.$siteLang.' self::$vmlangSef: '.self::$vmlangSef.' self::$_jpConfig->lang '.self::$vmlang.' DefLang '.self::$defaultLang);
-		//@deprecated just fallback
-		defined('VMLANG') or define('VMLANG', self::$vmlang );
-
-
-		return self::$vmlang;
 	}
 
 	/**
@@ -1333,6 +1118,230 @@ class VmConfig {
 	static public function isSuperVendor($uid = 0){
 		return vmAccess::isSuperVendor($uid);
 	}
+}
+
+class vmLanguage {
+
+	public static $jSelLangTag = false;
+
+	public static $jLangCount = 1;
+
+	public static $languages = array();
+	protected static $tag = '';
+
+	static public function initialise($siteLang = false){
+
+		if(self::$jSelLangTag!==false){
+			return ;
+		}
+
+		self::$jLangCount = 1;
+
+		//Determine the shop default language (default joomla site language)
+		if(VmConfig::$jDefLang===false){
+
+			VmConfig::$jDefLangTag = VmConfig::get('vmDefLang',false);
+			if(!VmConfig::$jDefLangTag) {
+				if (class_exists('JComponentHelper') && (method_exists('JComponentHelper', 'getParams'))) {
+					$params = JComponentHelper::getParams('com_languages');
+					VmConfig::$jDefLangTag = $params->get('site', 'en-GB');
+				} else {
+					VmConfig::$jDefLangTag = 'en-GB';//use default joomla
+					vmError('JComponentHelper not found');
+				}
+			}
+
+			VmConfig::$jDefLang = strtolower(strtr(VmConfig::$jDefLangTag,'-','_'));
+		}
+
+		$l = JFactory::getLanguage();
+		//Set the "joomla selected language tag" and the joomla language to vmText
+		self::$jSelLangTag = $l->getTag();
+		VmText::setLanguage($l);
+
+		if( JFactory::getApplication()->isAdmin()){
+			$siteLang = vRequest::getString('vmlang',$siteLang );
+			if (!$siteLang) {
+				$siteLang = self::$jSelLangTag;
+			}
+		} else {
+			if(!$siteLang){
+				$siteLang = VmConfig::$jDefLangTag;
+			}
+		}
+
+		$langs = (array)VmConfig::get('active_languages',array(VmConfig::$jDefLang));
+		VmConfig::$langCount = count($langs);
+		if(!in_array($siteLang, $langs)) {
+			if(count($langs)===0){
+				$siteLang = VmConfig::$jDefLangTag;
+			} else {
+				$siteLang = $langs[0];
+			}
+		}
+
+		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
+		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
+			$languages = JLanguageHelper::getLanguages('lang_code');
+			self::$jLangCount = count($languages);
+			if(isset($languages[$siteLang])){
+				VmConfig::$vmlangSef = $languages[$siteLang]->sef;
+			} else {
+
+				if(isset($languages[self::$jSelLangTag])){
+					VmConfig::$vmlangSef = $languages[self::$jSelLangTag]->sef;
+				}
+			}
+		}
+
+		VmConfig::$vmlangTag = $siteLang;
+		VmConfig::$vmlang = strtolower(strtr($siteLang,'-','_'));
+
+		if(count($langs)>1){
+			$lfbs = VmConfig::get('vm_lfbs');
+			vmdebug('my lfbs '.$lfbs);
+			if(!empty($lfbs)){
+				$pairs = explode(';',$lfbs);
+				if($pairs and count($pairs)>0){
+					$fbsAssoc = array();
+					foreach($pairs as $pair){
+						$kv = explode('~',$pair);
+						if($kv and count($kv)===2){
+							$fbsAssoc[$kv[0]] = $kv[1];
+						}
+					}
+					if(isset($fbsAssoc[$siteLang])){
+						VmConfig::$jDefLangTag = $fbsAssoc[$siteLang];
+					}
+					self::set('fbsAssoc',$fbsAssoc);
+				}
+			}
+		}
+
+		VmConfig::$defaultLang = strtolower(strtr(VmConfig::$jDefLangTag,'-','_'));
+		vmdebug('LangCount: '.VmConfig::$langCount.' $siteLang: '.$siteLang.' VmConfig::$vmlangSef: '.VmConfig::$vmlangSef.' self::$_jpConfig->lang '.VmConfig::$vmlang.' DefLang '.VmConfig::$defaultLang);
+		//@deprecated just fallback
+		defined('VMLANG') or define('VMLANG', VmConfig::$vmlang );
+
+	}
+
+	/*
+	* Set defaut language tag for translatable table
+	*
+	* @author Max Milbers
+	* @return string valid langtag
+	*/
+	static public function setdbLanguageTag($siteLang = false) {
+		return self::initialise();
+	}
+
+	static public function getLanguage($tag = 0){
+
+		if(empty($tag)) {
+			$tag = self::$jSelLangTag;
+		}
+
+		if(!isset(self::$languages[$tag])) {
+			if($tag == self::$jSelLangTag) {
+				self::$languages[$tag] = JFactory::getLanguage();
+				//vmdebug('loadJLang created $l->getTag '.(int)$site.$tag.$name);
+			} else {
+				self::$languages[$tag] = JLanguage::getInstance($tag, false);
+				//vmTrace('loadJLang created JLanguage::getInstance '.(int)$site.$tag.$name);
+			}
+		}
+		return self::$languages[$tag];
+	}
+
+	/**
+	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
+	 * and the path are already set and the correct order is used
+	 * We use first the english language, then the default
+	 *
+	 * @author Max Milbers
+	 * @static
+	 * @param $name
+	 * @return bool
+	 */
+	static public function loadJLang($name, $site = false, $tag = 0, $cache = true){
+
+		static $loaded = array();
+		//VmConfig::$echoDebug  = 1;
+		if(empty($tag)) {
+			$tag = self::$jSelLangTag;
+		}
+		self::getLanguage($tag);
+
+		$h = (int)$site.$tag.$name;
+		if($cache and isset($loaded[$h])){
+			vmText::setLanguage(self::$languages[$tag]);
+			return self::$languages[$tag];
+		} else {
+
+		}
+
+		$path = $basePath = VMPATH_ADMIN;
+		if($site){
+			$path = $basePath = VMPATH_SITE;
+		}
+
+		if($tag!='en-GB' and VmConfig::get('enableEnglish', true) ){
+			$testpath = $basePath.'/language/en-GB/en-GB.'.$name.'.ini';
+			if(!file_exists($testpath)){
+				if($site){
+					$epath = VMPATH_ROOT;
+				} else {
+					$epath = VMPATH_ADMINISTRATOR;
+				}
+			} else {
+				$epath = $path;
+			}
+			self::$languages[$tag]->load($name, $epath, 'en-GB', true, false);
+		}
+
+		$testpath = $basePath.'/language/'.$tag.'/'.$tag.'.'.$name.'.ini';
+		if(!file_exists($testpath)){
+			if($site){
+				$path = VMPATH_ROOT;
+			} else {
+				$path = VMPATH_ADMINISTRATOR;
+			}
+		}
+
+		self::$languages[$tag]->load($name, $path, $tag, true, false);
+		$loaded[$h] = true;
+		vmdebug('loaded '.$h);
+		vmText::setLanguage(self::$languages[$tag]);
+		return self::$languages[$tag];
+	}
+
+	/**
+	 * @static
+	 * @author Max Milbers, Valerie Isaksen
+	 * @param $name
+	 */
+	static public function loadModJLang($name){
+
+		$tag = self::$jSelLangTag;
+		self::getLanguage($tag);
+
+		$path = $basePath = JPATH_VM_MODULES.'/'.$name;
+		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
+			if(!file_exists($basePath.'/language/en-GB/en-GB.'.$name.'.ini')){
+				$path = JPATH_ADMINISTRATOR;
+			}
+			self::$languages[$tag]->load($name, $path, 'en-GB');
+			$path = $basePath = JPATH_VM_MODULES.'/'.$name;
+		}
+
+		if(!file_exists($basePath.'/language/'.$tag.'/'.$tag.'.'.$name.'.ini')){
+			$path = JPATH_ADMINISTRATOR;
+		}
+		self::$languages[$tag]->load($name, $path,$tag,true);
+
+		return self::$languages[$tag];
+	}
+
 }
 
 class vmAccess {

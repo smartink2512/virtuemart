@@ -172,7 +172,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	}
 
 	if(!VmConfig::$vmlang){
-		VmConfig::setdbLanguageTag();
+		vmLanguage::initialise();
 	}
 
 	$lang = VmConfig::$vmlang;

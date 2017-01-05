@@ -235,10 +235,8 @@ class VmViewAdmin extends JViewLegacy {
 		$this->addJsJoomlaSubmitButton($validate);
 
 		$editView = vRequest::getCmd('view',vRequest::getCmd('controller','' ) );
-		$params = JComponentHelper::getParams('com_languages');
-
-		$selectedLangue = $params->get('site', 'en-GB');
-		$this->lang = strtolower(strtr($selectedLangue,'-','_'));
+		$selectedLangue = VmConfig::$vmlangTag;
+		$this->lang = vmConfig::$vmlang;
 
 		// Get all the published languages defined in Language manager > Content
 		$allLanguages	= JLanguageHelper::getLanguages();

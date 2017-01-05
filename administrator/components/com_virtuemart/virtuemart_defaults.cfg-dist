@@ -31,12 +31,14 @@
 #reuseorders        //default enabled, prevents creation of pending orders if confirmed later
 #randOrderNr
 #randOrderPw
+#sef_for_cart_links
 #full_catname_tree
 #pricesbyCurrency       //currency depended selected price; the selected currency determines the selected price of the product if availabe
 #vm_num_ratings_show     //amojunt of ratings to show
 #invoiceInUserLang
 #invoiceNameInShopLang
 #debug_mail
+
 
 useSSL=0
 dangeroustools=0

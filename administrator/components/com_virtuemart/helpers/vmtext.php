@@ -33,20 +33,11 @@ class vmText
 	 * @since  11.1
 	 */
 	protected static $strings = array();
-	public static $languages = array();
-	protected static $tag = '';
+	protected static $language = false;
 
-	public static function setLangTag($tag){
-		if(empty($tag) or $tag == 1){
-			vmTrace('vmText::setLangTag tag empty or '.$tag);
-			return;
-		}
-		vmdebug('vmText set lang',$tag);
-		self::$tag = $tag;
-	}
 
-	public static function getLangTag(){
-		return self::$tag;
+	public static function setLanguage($l){
+		self::$language = $l;
 	}
 
 	/**
@@ -68,14 +59,14 @@ class vmText
 	 */
 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
-		if(!isset(self::$languages[self::$tag])){
+		if(!isset(self::$language)){
 			VmConfig::$echoDebug = 1;
-			echo '<pre> vmText self::$languages has no '.self::$tag;
+			echo '<pre> vmText self::$languages has no '.self::$language;
 			debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,10);
 			echo '</pre>';
 
 		}
-		$lang = self::$languages[self::$tag];
+
 		if (is_array($jsSafe))
 		{
 			if (array_key_exists('interpretBackSlashes', $jsSafe))
@@ -97,12 +88,12 @@ class vmText
 		}
 		if ($script)
 		{
-			self::$strings[$string] = $lang->_($string, $jsSafe, $interpretBackSlashes);
+			self::$strings[$string] = self::$language->_($string, $jsSafe, $interpretBackSlashes);
 			return $string;
 		}
 		else
 		{
-			return $lang->_($string, $jsSafe, $interpretBackSlashes);
+			return self::$language->_($string, $jsSafe, $interpretBackSlashes);
 		}
 	}
 
@@ -129,14 +120,14 @@ class vmText
 	 */
 	public static function sprintf($string)
 	{
-		$lang = self::$languages[self::$tag];
+
 		$args = func_get_args();
 		$count = count($args);
 		if ($count > 0)
 		{
 			if (is_array($args[$count - 1]))
 			{
-				$args[0] = $lang->_(
+				$args[0] = self::$language->_(
 					$string, array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
 					array_key_exists('interpretBackSlashes', $args[$count - 1]) ? $args[$count - 1]['interpretBackSlashes'] : true
 				);
@@ -151,7 +142,7 @@ class vmText
 			{
 				foreach($args as &$arg){
 					//vmdebug('my sprintf $arg',$arg);
-					$arg = $lang->_($arg);
+					$arg = self::$language->_($arg);
 					$arg = preg_replace('/\[\[%([0-9]+):[^\]]*\]\]/', '%\1$s', $arg);
 				}
 

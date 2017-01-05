@@ -7,7 +7,7 @@
  * @subpackage Config
  * @author Max Milbers
  * @author RickG
- * @link http://www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
@@ -213,7 +213,7 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
-		$result = '';
+		$result = array();
 
 		foreach($dirs as $dir){
 			if ($handle = opendir($dir)) {
@@ -238,7 +238,7 @@ class VirtueMartModelConfig extends VmModel {
 	 */
 	function getCurrencyConverterList() {
 		$dir = VMPATH_ADMIN.DS.'plugins'.DS.'currency_converter';
-		$result = '';
+		$result = array();
 
 		if ($handle = opendir($dir)) {
 			while (false !== ($file = readdir($handle))) {

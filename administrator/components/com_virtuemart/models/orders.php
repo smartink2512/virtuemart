@@ -1785,7 +1785,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		if($res!=-1){
-			VmConfig::setLanguageByTag(VmConfig::$jSelLangTag);
+			VmConfig::setLanguageByTag(vmLanguage::$jSelLangTag);
 			vmInfo( vmText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 		}
 

@@ -6,7 +6,7 @@
  * @package    VirtueMart
  * @subpackage
  * @author Max Milbers, Patrick Kohl, Valerie Isaksen
- * @link http://www.virtuemart.net
+ * @link ${PHING.VM.MAINTAINERURL}
  * @copyright Copyright (c) 2004 - 2014 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
@@ -804,6 +804,9 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			if(empty($category->products_per_row)){
 				$category->products_per_row = VmConfig::get ('products_per_row', 3);
+			}
+			if(empty($category->products_per_row)){
+				$category->products_per_row = 1;
 			}
 			$rest = $suglimit%$category->products_per_row;
 			$limit = $suglimit - $rest;
@@ -2550,7 +2553,7 @@ class VirtueMartModelProduct extends VmModel {
 		$fieldLink = '';
 
 		$Itemid = '';
-		foreach ($getArray as $key => $value) {
+		/*foreach ($getArray as $key => $value) {
 
 			$key = vRequest::filter($key,FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
 			$value = vRequest::filter($value,FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
@@ -2572,8 +2575,10 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		$fieldLink = 'index.php?'. ltrim ($fieldLink,'&') ;
+		$fieldLink1 = 'index.php?'. ltrim ($fieldLink,'&') ;*/
 
+		$fieldLink = vmURI::getCurrentUrlBy();
+		vmdebug('getOrderByList ', $fieldLink);
 		$orderDirLink = '';
 		$orderDirConf = VmConfig::get ('prd_brws_orderby_dir');
 		$orderDir = vRequest::getCmd ('dir', $orderDirConf);
