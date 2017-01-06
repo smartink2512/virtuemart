@@ -811,6 +811,15 @@ class VmConfig {
 		return $max_execution_time;
 	}
 
+	/*
+	* Set defaut language tag for translatable table
+	*
+	* @author Max Milbers
+	* @return string valid langtag
+	*/
+	static public function setdbLanguageTag($siteLang = false) {
+		return vmLanguage::initialise();
+	}
 
 	static public function loadJLang($name, $site = false, $tag = 0, $cache = true){
 		return vmLanguage::loadJLang($name, $site, $tag, $cache);
@@ -1157,7 +1166,9 @@ class vmLanguage {
 		$l = JFactory::getLanguage();
 		//Set the "joomla selected language tag" and the joomla language to vmText
 		self::$jSelLangTag = $l->getTag();
-		VmText::setLanguage($l);
+		self::$languages[self::$jSelLangTag] = $l;
+		vmText::$language = $l;
+		//VmText::setLanguage($l);
 
 		if( JFactory::getApplication()->isAdmin()){
 			$siteLang = vRequest::getString('vmlang',$siteLang );
@@ -1224,35 +1235,41 @@ class vmLanguage {
 			}
 		}
 
+		self::setLanguage(VmConfig::$vmlangTag);
+
 		VmConfig::$defaultLang = strtolower(strtr(VmConfig::$jDefLangTag,'-','_'));
 		vmdebug('LangCount: '.VmConfig::$langCount.' $siteLang: '.$siteLang.' VmConfig::$vmlangSef: '.VmConfig::$vmlangSef.' self::$_jpConfig->lang '.VmConfig::$vmlang.' DefLang '.VmConfig::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', VmConfig::$vmlang );
 	}
 
-	/*
-	* Set defaut language tag for translatable table
-	*
-	* @author Max Milbers
-	* @return string valid langtag
-	*/
-	static public function setdbLanguageTag($siteLang = false) {
-		return self::initialise();
+
+
+	static public function setLanguage($tag){
+
+		if(!isset(self::$languages[$tag])) {
+			self::getLanguage($tag);
+		}
+		if(!empty(self::$languages[$tag])) {
+			vmdebug('Set language '.$tag. ' '.self::$languages[$tag]->getTag());
+			vmText::$language = self::$languages[$tag];
+			//vmText::setLanguage(self::$languages[$tag]);
+		}
 	}
 
 	static public function getLanguage($tag = 0){
 
 		if(empty($tag)) {
-			$tag = self::$jSelLangTag;
+			$tag = self::$vmlangTag;	//When the tag was changed, the jSelLangTag would be wrong
 		}
 
 		if(!isset(self::$languages[$tag])) {
 			if($tag == self::$jSelLangTag) {
 				self::$languages[$tag] = JFactory::getLanguage();
-				//vmdebug('loadJLang created $l->getTag '.(int)$site.$tag.$name);
+				vmdebug('loadJLang created $l->getTag '.$tag);
 			} else {
 				self::$languages[$tag] = JLanguage::getInstance($tag, false);
-				//vmTrace('loadJLang created JLanguage::getInstance '.(int)$site.$tag.$name);
+				vmdebug('loadJLang created JLanguage::getInstance '.$tag);
 			}
 		}
 		return self::$languages[$tag];
@@ -1273,13 +1290,13 @@ class vmLanguage {
 		static $loaded = array();
 		//VmConfig::$echoDebug  = 1;
 		if(empty($tag)) {
-			$tag = self::$jSelLangTag;
+			$tag = VmConfig::$vmlangTag;
 		}
 		self::getLanguage($tag);
 
 		$h = (int)$site.$tag.$name;
 		if($cache and isset($loaded[$h])){
-			vmText::setLanguage(self::$languages[$tag]);
+			vmText::$language = self::$languages[$tag];
 			return self::$languages[$tag];
 		} else {
 
@@ -1315,8 +1332,9 @@ class vmLanguage {
 
 		self::$languages[$tag]->load($name, $path, $tag, true, false);
 		$loaded[$h] = true;
-		vmdebug('loaded '.$h);
-		vmText::setLanguage(self::$languages[$tag]);
+		vmdebug('loaded '.$h.' '.self::$languages[$tag]->getTag());
+		vmText::$language = self::$languages[$tag];
+		//vmText::setLanguage(self::$languages[$tag]);
 		return self::$languages[$tag];
 	}
 
@@ -1327,7 +1345,7 @@ class vmLanguage {
 	 */
 	static public function loadModJLang($name){
 
-		$tag = self::$jSelLangTag;
+		$tag = VmConfig::$vmlangTag;
 		self::getLanguage($tag);
 
 		$path = $basePath = JPATH_VM_MODULES.'/'.$name;

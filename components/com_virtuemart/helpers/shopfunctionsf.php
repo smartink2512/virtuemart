@@ -676,7 +676,12 @@ class shopFunctionsF {
 		$mailer->setSender( $sender );
 
 		if(VmConfig::get('debug_mail',false)){
-			vmInfo('The mail to send subject '.$subject.' to '.$recipient.' from '.$sender[0].' '.$sender[1].'<br>'.$body);
+			if(VmConfig::showDebug()){
+				vmdebug('The mail to send subject '.$subject.' to '.$recipient.' from '.$sender[0].' '.$sender[1].' '.vmText::$language->getTag().'<br>'.$body);
+			} else {
+				vmInfo('The mail to send subject '.$subject.' to '.$recipient.' from '.$sender[0].' '.$sender[1].'<br>'.$body);
+			}
+
 			return false;
 		} else {
 			try {

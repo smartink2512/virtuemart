@@ -33,11 +33,11 @@ class vmText
 	 * @since  11.1
 	 */
 	protected static $strings = array();
-	protected static $language = false;
+	public static $language = false;
 
 
-	public static function setLanguage($l){
-		self::$language = $l;
+	public static function setLanguage(&$l){
+		self::$language =$l;
 	}
 
 	/**

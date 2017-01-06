@@ -585,7 +585,7 @@ class VirtueMartModelOrders extends VmModel {
 			{
 				foreach($calc_rules as $calc_kind => $calc_rule) {
 					foreach($calc_rule as $virtuemart_order_calc_rule_id => $calc_amount) {
-						$sql = 'UPDATE `#__virtuemart_order_calc_rules` SET `calc_amount`="'.$calc_amount.'" WHERE `virtuemart_order_calc_rule_id`="'.$virtuemart_order_calc_rule_id.'"';
+						$sql = 'UPDATE `#__virtuemart_order_calc_rules` SET `calc_result`="'.$calc_amount.'" WHERE `virtuemart_order_calc_rule_id`="'.$virtuemart_order_calc_rule_id.'"';
 						$db->setQuery($sql);
 						if(isset($calc_amount)) $calc_rules_amount += $calc_amount;
 						if ($calc_kind == 'DBTaxRulesBill' || $calc_kind == 'DATaxRulesBill') {
@@ -636,7 +636,7 @@ class VirtueMartModelOrders extends VmModel {
 					`order_subtotal`=(SELECT sum(ROUND(product_item_price, '. $rounding .')*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.'),';
 
 			if(vRequest::getString('calculate_billTaxAmount')) {
-				$sql .= '`order_billTaxAmount`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`='.$ordid.')+`order_shipment_tax`+`order_payment_tax`+ '.$calc_rules_tax_amount.' ';
+				$sql .= '`order_billTaxAmount`= `order_shipment_tax`+`order_payment_tax`+ '.$calc_rules_tax_amount.' + '.$calc_rules_amount;
 			} else {
 				$sql .= '`order_billTaxAmount`="'.vRequest::getString('order_billTaxAmount').'"';
 			}
