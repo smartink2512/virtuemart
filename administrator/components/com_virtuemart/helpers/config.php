@@ -1170,6 +1170,12 @@ class vmLanguage {
 			}
 		}
 
+		self::setLanguageByTag($siteLang);
+
+	}
+
+	static public function setLanguageByTag($siteLang){
+
 		$langs = (array)VmConfig::get('active_languages',array(VmConfig::$jDefLang));
 		VmConfig::$langCount = count($langs);
 		if(!in_array($siteLang, $langs)) {
@@ -1222,7 +1228,6 @@ class vmLanguage {
 		vmdebug('LangCount: '.VmConfig::$langCount.' $siteLang: '.$siteLang.' VmConfig::$vmlangSef: '.VmConfig::$vmlangSef.' self::$_jpConfig->lang '.VmConfig::$vmlang.' DefLang '.VmConfig::$defaultLang);
 		//@deprecated just fallback
 		defined('VMLANG') or define('VMLANG', VmConfig::$vmlang );
-
 	}
 
 	/*

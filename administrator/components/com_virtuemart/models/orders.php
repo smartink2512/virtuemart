@@ -575,10 +575,11 @@ class VirtueMartModelOrders extends VmModel {
 			$ordid = $table->virtuemart_order_id;
 			///vmdebug('my order table ',$table);
 			//cartRules
-			$calc_rules = vRequest::getVar('calc_rules','', '', 'array');
+			$calc_rules = vRequest::getVar('calc_rules',false);
 			$calc_rules_amount = 0;
 			$calc_rules_discount_amount = 0;
 			$calc_rules_tax_amount = 0;
+
 
 			if(!empty($calc_rules))
 			{
@@ -593,6 +594,7 @@ class VirtueMartModelOrders extends VmModel {
 						if ($calc_kind == 'taxRulesBill') {
 							$calc_rules_tax_amount += $calc_amount;
 						}
+						vmdebug('updateSingleItem',$sql);
 						if ($db->execute() === false) {
 							vmError($db->getError());
 						}
@@ -1785,7 +1787,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		if($res!=-1){
-			VmConfig::setLanguageByTag(vmLanguage::$jSelLangTag);
+			vmLanguage::setLanguageByTag(vmLanguage::$jSelLangTag);
 			vmInfo( vmText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 		}
 
@@ -1820,10 +1822,10 @@ class VirtueMartModelOrders extends VmModel {
 					'model_path' => VMPATH_SITE.DS.'models',
 					'view_path' => VMPATH_SITE.DS.'views'
 					));
-					$lTag = vmText::getLangTag();
+					$lTag = VmConfig::$vmlangTag;
 
 					$inv = $controller->getInvoicePDF($order);
-					VmConfig::setLanguageByTag($lTag);
+					vmLanguage::setLanguageByTag($lTag);
 				}
 			}
 

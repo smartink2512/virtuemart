@@ -142,6 +142,7 @@ function enableEdit(e)
 		jQuery(this).toggle();
 		jQuery('.orderedit').css('backgroundColor', d ? 'white' : 'lightgray');
 		jQuery('.orderedit').css('color', d ? 'blue' : 'black');
+		jQuery('.orderedit').css('width', d ? '100' : '100');
 	});
 	jQuery('.ordereditI').each( function()
 	{

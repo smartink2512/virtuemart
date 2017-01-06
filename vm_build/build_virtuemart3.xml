@@ -4,7 +4,7 @@
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version.main" value="3.0.18"/>
-    <property name="vm.version" value="3.0.18"/>
+    <property name="vm.version" value="3.0.18.8"/>
     <property name="joomla.version" value="3.6.5"/>
     <property name="svn.lastrevision" value="9404"/>
     <property name="PHING.VM.CODENAME" value="Blue Corvus"/>
@@ -63,7 +63,7 @@
     <property name="package.language.aio" value="${package.admin.aio}/language"/>
     <property name="package.libraries.aio" value="${package.admin.aio}/libraries"/>
 
-    <property name="update.xmls" value="${package.abspath}/vm_update"/>
+    <property name="update.xmls" value="${vm.folder.from}/vm_update"/>
 
     <!-- ============================================  -->
     <!-- SVN EXPORT variables -->
@@ -97,6 +97,10 @@
     <property name="PHING.VM.MAINTAINER" value="The VirtueMart Team"/>
     <property name="PHING.VM.MAINTAINERURL" value="https://virtuemart.net"/>
     <property name="PHING.VM.MAINRELEASE" value="${vm.version.main}"/>
+
+    <property name="PHING.VM.INFURLTITLE" value="Use the AIO (All in once) installer to update this plugin "/>
+    <property name="PHING.VM.INFURL" value="https://docs.virtuemart.net/tutorials/installation-migration-upgrade/226-update-single-plugin-delivered-by-aio.html"/>
+
 
     <!-- ============================================  -->
     <!-- DELETE OLD VERSION IF EXIST -->
@@ -309,10 +313,20 @@
     <fileset dir="${package.admin.aio}" id='script.aio.refid' defaultexcludes="true">
         <include name="script.vmallinone.php"/>
     </fileset>
+
     <!-- ============================================  -->
     <!-- TARGET: copy all files for the FULL INSTALLER -->
     <!-- ============================================  -->
     <target name="full_installer_files">
+
+        <echo msg="Copying Update.xml FILES From folder ${joomla.folder.from} TO ${full.folder.to} "/>
+        <copy todir="${package.folder}/updatexmls" overwrite="true">
+            <fileset refid="update.xmls"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
+        </copy>
+        <delete dir="${package.folder}/vm_update"/>
 
         <echo msg="Copying ALL Joomla FILES From folder ${joomla.folder.from} TO ${full.folder.to} "/>
         <copy todir="${full.folder.to}" overwrite="true">

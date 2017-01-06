@@ -518,7 +518,7 @@ class shopFunctionsF {
 
 		if(isset($view->doVendor) && !$noVendorMail) {
 			//We need to ensure the language for the vendor here
-			VmConfig::setLanguageByTag(VmConfig::$jDefLangTag);
+			vmLanguage::setLanguageByTag(VmConfig::$jDefLangTag);
 			self::sendVmMail( $view, $view->vendorEmail, TRUE );
 		}
 
@@ -588,7 +588,7 @@ class shopFunctionsF {
 
 		$s = TRUE;
 		$cache = true;
-		VmConfig::setLanguageByTag($language);
+		vmLanguage::setLanguageByTag($language);
 
 		VmConfig::loadJLang('com_virtuemart', 0, $language, $cache);
 		VmConfig::loadJLang('com_virtuemart', $s, $language, $cache);
@@ -896,7 +896,7 @@ class shopFunctionsF {
 
 		$tmpT = false;
 		if(VmConfig::get('invoiceNameInShopLang',true)){
-			$tmpT = vmText::getLangTag();
+			$tmpT = VmConfig::$vmlangTag;
 			if($tmpT!=VmConfig::$jDefLangTag){
 				//ensure that the invoice is written in shop language
 				vmdebug('invoiceNameInShopLang VmConfig::$jDefLangTag '.VmConfig::$jDefLangTag,$tmpT);
@@ -905,7 +905,7 @@ class shopFunctionsF {
 		}
 		$prefix = vmText::_('COM_VIRTUEMART_FILEPREFIX_'.strtoupper($layout));
 		if($tmpT!=false){
-			VmConfig::setLanguageByTag($tmpT);
+			vmLanguage::setLanguageByTag($tmpT);
 		}
 		if($prefix == 'COM_VIRTUEMART_FILEPREFIX_'.strtoupper($layout)){
 			$prefix = 'vm'.$layout.'_';

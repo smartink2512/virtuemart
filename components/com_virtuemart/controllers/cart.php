@@ -282,10 +282,14 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 			if(!$products or count($products) == 0){
 				$product_name = vRequest::get('pname');
-				$virtuemart_product_id = vRequest::getInt('pid');
-				if($product_name && $virtuemart_product_id) {
+				if(is_array($virtuemart_product_ids)){
+					$pId = $virtuemart_product_ids[0];
+				} else {
+					$pId = $virtuemart_product_ids;
+				}
+				if($product_name && $pId) {
 					$view->product_name = $product_name;
-					$view->virtuemart_product_id = $virtuemart_product_id;
+					$view->virtuemart_product_id = $pId;
 				} else {
 					$this->json->stat = '2';
 				}
