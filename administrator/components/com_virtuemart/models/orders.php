@@ -1695,8 +1695,11 @@ class VirtueMartModelOrders extends VmModel {
 		//Important, the data of the order update mails, payments and invoice should
 		//always be in the database, so using getOrder is the right method
 
-
-		//Lets set the language to the shop language
+		$vendorModel = VmModel::getModel('vendor');
+		//Lets set the language to the BE default of the main vendor
+		//$vendorUserId = $vendorModel->getUserIdByVendorId(1);
+		//$vu = JFactory::getUser($vendorUserId);
+		//$vLang = $vu->getParam('admin_language',VmConfig::$jDefLangTag);
 		shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
 		$order = $this->getOrder($virtuemart_order_id);
 
@@ -1730,7 +1733,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		$virtuemart_vendor_id = $order['details']['BT']->virtuemart_vendor_id;
-		$vendorModel = VmModel::getModel('vendor');
+
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
 

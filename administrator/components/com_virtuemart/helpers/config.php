@@ -410,12 +410,12 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 
 }
 
-function vmTrace($notice,$force=FALSE){
+function vmTrace($notice,$force=FALSE, $args = 10){
 
 	if($force || (VMConfig::showDebug() ) ){
 		ob_start();
 		echo '<pre>';
-		debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,10);
+		debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,$args);
 
 		echo '</pre>';
 		$body = ob_get_contents();
@@ -884,19 +884,16 @@ class VmConfig {
 
 		if(empty($configTable) ){
 			self::$installed = false;
-			$jlang = JFactory::getLanguage();
-			$selectedLang = $jlang->getTag();
-			self::loadJLang('com_virtuemart', $selectedLang);
-			if(empty($selectedLang)){
-				$selectedLang = $jlang->getDefault();
-			}
+			vmLanguage::initialise();
+			self::loadJLang('com_virtuemart');
+
 
 			$q = 'SELECT `element` FROM `#__extensions` WHERE type = "language" and enabled = "1"';
 			$db->setQuery($q);
 			$knownLangs = $db->loadColumn();
 			//vmdebug('Selected language '.$selectedLang.' $knownLangs ',$knownLangs);
 
-			if($app->isAdmin() and !$redirected and !in_array($selectedLang,$knownLangs)){
+			if($app->isAdmin() and !$redirected and !in_array(vmLanguage::$currLangTag,$knownLangs)){
 				//$option = vRequest::getVar('option');
 				//VmConfig::$_debug=true;
 				//vmdebug('my option',$option,$_REQUEST);
@@ -928,6 +925,7 @@ class VmConfig {
 		}
 
 		if(empty(self::$_jpConfig->_raw)){
+			vmLanguage::initialise();
 			$_value = VirtueMartModelConfig::readConfigFile();
 			if (!$_value) {
 				vmError('Serious error, config file could not be read');
@@ -943,14 +941,13 @@ class VmConfig {
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
 		}
 
+		vmLanguage::initialise();
 		self::echoAdmin();
 		self::showDebug();
 
 		self::$_secret = JFactory::getConfig()->get('secret');
 
 		self::$_jpConfig->_params['sctime'] = microtime(TRUE);
-
-		vmLanguage::initialise();
 		self::$_jpConfig->_params['vmlang'] = self::$vmlang;
 
 		vmTime('time to load config','loadConfig');
@@ -1132,12 +1129,15 @@ class VmConfig {
 class vmLanguage {
 
 	public static $jSelLangTag = false;
-
+	public static $currLangTag = false;
 	public static $jLangCount = 1;
-
 	public static $languages = array();
-	protected static $tag = '';
 
+	/**
+	 * Initialises the vm language class. Attention the vm debugger is not working in this function, because the right checks are done after the language
+	 * initialisiation.
+	 * @param bool $siteLang
+	 */
 	static public function initialise($siteLang = false){
 
 		if(self::$jSelLangTag!==false){
@@ -1170,16 +1170,17 @@ class vmLanguage {
 		vmText::$language = $l;
 		//VmText::setLanguage($l);
 
+		$siteLang = self::$currLangTag = self::$jSelLangTag;
 		if( JFactory::getApplication()->isAdmin()){
 			$siteLang = vRequest::getString('vmlang',$siteLang );
 			if (!$siteLang) {
 				$siteLang = self::$jSelLangTag;
 			}
-		} else {
+		} /*else {
 			if(!$siteLang){
 				$siteLang = VmConfig::$jDefLangTag;
 			}
-		}
+		}*/
 
 		self::setLanguageByTag($siteLang);
 
@@ -1187,14 +1188,19 @@ class vmLanguage {
 
 	static public function setLanguageByTag($siteLang){
 
+		if(empty($siteLang)){
+			$siteLang = self::$currLangTag;
+		}
+		self::setLanguage($siteLang);
+
 		$langs = (array)VmConfig::get('active_languages',array(VmConfig::$jDefLang));
 		VmConfig::$langCount = count($langs);
 		if(!in_array($siteLang, $langs)) {
-			if(count($langs)===0){
-				$siteLang = VmConfig::$jDefLangTag;
-			} else {
+			//if(count($langs)===0){
+			$siteLang = VmConfig::$jDefLangTag;
+			/*} else {
 				$siteLang = $langs[0];
-			}
+			}*/
 		}
 
 		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
@@ -1235,7 +1241,7 @@ class vmLanguage {
 			}
 		}
 
-		self::setLanguage(VmConfig::$vmlangTag);
+		//self::setLanguage(VmConfig::$vmlangTag);
 
 		VmConfig::$defaultLang = strtolower(strtr(VmConfig::$jDefLangTag,'-','_'));
 		vmdebug('LangCount: '.VmConfig::$langCount.' $siteLang: '.$siteLang.' VmConfig::$vmlangSef: '.VmConfig::$vmlangSef.' self::$_jpConfig->lang '.VmConfig::$vmlang.' DefLang '.VmConfig::$defaultLang);
@@ -1255,12 +1261,14 @@ class vmLanguage {
 			vmText::$language = self::$languages[$tag];
 			//vmText::setLanguage(self::$languages[$tag]);
 		}
+		self::$currLangTag = $tag;
+		vmdebug('vmText is now set to '.$tag);
 	}
 
 	static public function getLanguage($tag = 0){
 
 		if(empty($tag)) {
-			$tag = self::$vmlangTag;	//When the tag was changed, the jSelLangTag would be wrong
+			$tag = VmConfig::$vmlangTag;	//When the tag was changed, the jSelLangTag would be wrong
 		}
 
 		if(!isset(self::$languages[$tag])) {
@@ -1290,7 +1298,7 @@ class vmLanguage {
 		static $loaded = array();
 		//VmConfig::$echoDebug  = 1;
 		if(empty($tag)) {
-			$tag = VmConfig::$vmlangTag;
+			$tag = self::$currLangTag;
 		}
 		self::getLanguage($tag);
 
@@ -1302,9 +1310,10 @@ class vmLanguage {
 
 		}
 
-		$path = $basePath = VMPATH_ADMIN;
 		if($site){
 			$path = $basePath = VMPATH_SITE;
+		} else {
+			$path = $basePath = VMPATH_ADMIN;
 		}
 
 		if($tag!='en-GB' and VmConfig::get('enableEnglish', true) ){
@@ -1330,7 +1339,7 @@ class vmLanguage {
 			}
 		}
 
-		self::$languages[$tag]->load($name, $path, $tag, true, false);
+		self::$languages[$tag]->load($name, $path, $tag, true, true);
 		$loaded[$h] = true;
 		vmdebug('loaded '.$h.' '.self::$languages[$tag]->getTag());
 		vmText::$language = self::$languages[$tag];
@@ -1345,7 +1354,7 @@ class vmLanguage {
 	 */
 	static public function loadModJLang($name){
 
-		$tag = VmConfig::$vmlangTag;
+		$tag = self::$currLangTag;;
 		self::getLanguage($tag);
 
 		$path = $basePath = JPATH_VM_MODULES.'/'.$name;
