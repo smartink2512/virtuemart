@@ -143,6 +143,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'max_amount' => array('', 'float'),
 			'publishup' => array('', 'char'),
 			'publishdown' => array('', 'char'),
+			'virtuemart_shipmentmethod_ids' => array('', 'int'),
 
 			//discount
 			'cost_per_transaction' => array('', 'float'),
@@ -1061,6 +1062,25 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				return FALSE;
 			}
 		}
+
+
+		if (!empty($activeMethod->virtuemart_shipmentmethod_ids)) {
+
+			if (!is_array($activeMethod->virtuemart_shipmentmethod_ids)) {
+				$activeMethod->virtuemart_shipmentmethod_ids = array($activeMethod->virtuemart_shipmentmethod_ids);
+			}
+			vmdebug('Check for shipment method ',$cart->virtuemart_shipmentmethod_id,$activeMethod->virtuemart_shipmentmethod_ids);
+			if(empty($cart->virtuemart_shipmentmethod_id)){
+				return false;
+			} else {
+				if(!in_array($cart->virtuemart_shipmentmethod_id,$activeMethod->virtuemart_shipmentmethod_ids)){
+					vmdebug('Check for shipment method shipment method not allowed for paypal',$cart->virtuemart_shipmentmethod_id,$activeMethod->virtuemart_shipmentmethod_ids);
+					return false;
+				}
+				vmdebug('Check for shipment method for paypal PASSED');
+			}
+		}
+
 		$this->convert_condition_amount($activeMethod);
 
 		$address = $cart->getST();
@@ -1078,6 +1098,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$countries = $activeMethod->countries;
 			}
 		}
+
 		// probably did not gave his BT:ST address
 		if (!is_array($address)) {
 			$address = array();
