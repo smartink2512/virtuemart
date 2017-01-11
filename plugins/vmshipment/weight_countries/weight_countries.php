@@ -446,7 +446,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 					$cart->_productAdded = true;
 					$cart->prepareCartData();
 				}
-				if($this->checkConditions($cart,$this->_currentMethod,$cart->cartPrices,$product)){
+				if($this->checkConditions($cart,$this->_currentMethod,$cart->cartPrices)){
 
 					$product->prices['shipmentPrice'] = $this->getCosts($cart,$this->_currentMethod,$cart->cartPrices);
 
@@ -536,11 +536,26 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 */
 	function plgVmOnCheckAutomaticSelectedShipment (VirtueMartCart $cart, array $cart_prices, &$shipCounter) {
 
-		if ($shipCounter > 1) {
-			return 0;
+		return $this->onCheckAutomaticSelected ($cart, $cart_prices, $shipCounter);
+	}
+
+	function plgVmOnCheckoutCheckDataShipment(VirtueMartCart $cart){
+
+		if(empty($cart->virtuemart_shipmentmethod_id)) return false;
+
+		$virtuemart_vendor_id = 1; //At the moment one, could make sense to use the cart vendor id
+		if ($this->getPluginMethods($virtuemart_vendor_id) === 0) {
+			return FALSE;
 		}
 
-		return $this->onCheckAutomaticSelected ($cart, $cart_prices, $shipCounter);
+		foreach ($this->methods as $this->_currentMethod) {
+			if($cart->virtuemart_shipmentmethod_id == $this->_currentMethod->virtuemart_shipmentmethod_id){
+				if(!$this->checkConditions($cart,$this->_currentMethod,$cart->cartPrices)){
+					return false;
+				}
+				break;
+			}
+		}
 	}
 
 	/**

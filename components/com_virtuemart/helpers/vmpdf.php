@@ -100,6 +100,8 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 			
 			// set document information
 			$this->SetCreator(vmText::_('COM_VIRTUEMART_PDF_CREATOR'));
+
+			$this->vendorImage = '';
 			if(empty($this->vendor->images[0])){
 				vmError('Vendor image given path empty ');
 			} else if(empty($this->vendor->images[0]->file_url_folder) or empty($this->vendor->images[0]->file_name) or empty($this->vendor->images[0]->file_extension) ){

@@ -518,7 +518,11 @@ class shopFunctionsF {
 
 		if(isset($view->doVendor) && !$noVendorMail) {
 			//We need to ensure the language for the vendor here
-			vmLanguage::setLanguageByTag(VmConfig::$jDefLangTag);
+			$vendorUserId = VmModel::getModel('vendor')->getUserIdByVendorId(1);
+			$vu = JFactory::getUser($vendorUserId);
+			$vLang = $vu->getParam('admin_language',VmConfig::$jDefLangTag);
+
+			vmLanguage::setLanguageByTag($vLang);
 			self::sendVmMail( $view, $view->vendorEmail, TRUE );
 		}
 

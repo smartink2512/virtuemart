@@ -735,6 +735,7 @@ class calculationHelper {
 			foreach($this->_cart->cartData['DBTaxRulesBill'] as &$dbrule){
 				$applyRule = FALSE;
 				if(!empty($dbrule['calc_categories']) || !empty($dbrule['virtuemart_manufacturers'])){
+					if(!isset($dbrule['subTotal'])) $dbrule['subTotal'] = 0.0;
 					$setCat = !empty($dbrule['calc_categories']) ? array_intersect($dbrule['calc_categories'],$product->categories) : array();
 					$setMan = !empty($dbrule['virtuemart_manufacturers']) ? array_intersect($dbrule['virtuemart_manufacturers'],$product->virtuemart_manufacturer_id) : array();
 					if(!empty($dbrule['calc_categories']) && !empty($dbrule['virtuemart_manufacturers'])) {
@@ -894,10 +895,10 @@ class calculationHelper {
 		}
 
 		// now each taxRule subTotal is reduced with DBTax and we can calculate the cartTax
-		$cartTax = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['taxRulesBill'], $this->_cart->cartPrices['toTax']));
+		$this->_cart->cartPrices['cartTax'] = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['taxRulesBill'], $this->_cart->cartPrices['toTax']));
 
 		// toDisc is new subTotal after tax, now it comes discount afterTax and we can calculate the final cart price with tax.
-		$toDisc = $this->_cart->cartPrices['toTax'] + $cartTax;
+		$toDisc = $this->_cart->cartPrices['toTax'] + $this->_cart->cartPrices['cartTax'];
 		$cartdiscountAfterTax = $this->roundInternal($this->cartRuleCalculation($this->_cart->cartData['DATaxRulesBill'], $toDisc));
 		$this->_cart->cartPrices['withTax'] = $toDisc + $cartdiscountAfterTax;
 
@@ -912,7 +913,7 @@ class calculationHelper {
 		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cart->cartPrices['billDiscountAmount'] = $this->_cart->cartPrices['discountAmount'] + $cartdiscountBeforeTax + $cartdiscountAfterTax;// + $this->_cart->cartPrices['shipmentValue'] + $this->_cart->cartPrices['paymentValue'] ;
 		if($this->_cart->cartPrices['salesPriceShipment'] < 0) $this->_cart->cartPrices['billDiscountAmount'] += $this->_cart->cartPrices['salesPriceShipment'];
 		if($this->_cart->cartPrices['salesPricePayment'] < 0) $this->_cart->cartPrices['billDiscountAmount'] += $this->_cart->cartPrices['salesPricePayment'];
-		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cart->cartPrices['billTaxAmount'] = $this->_cart->cartPrices['taxAmount'] + $this->_cart->cartPrices['shipmentTax'] + $this->_cart->cartPrices['paymentTax'] + /*($cartdiscountAfterTax + $cartTax);*/ + ($this->_cart->cartPrices['withTax'] - $this->_cart->cartPrices['toTax']);
+		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cart->cartPrices['billTaxAmount'] = $this->_cart->cartPrices['taxAmount'] + $this->_cart->cartPrices['shipmentTax'] + $this->_cart->cartPrices['paymentTax'] + $this->_cart->cartPrices['cartTax'];
 
 		//The coupon handling is only necessary if a salesPrice is displayed, otherwise we have a kind of catalogue mode
 		if($this->_currencyDisplay->_priceConfig['salesPrice']){
@@ -1458,7 +1459,7 @@ class calculationHelper {
 		if (!$shipmentValid) {
 			vmdebug('calculateShipmentPrice $shipment INVALID set cart->virtuemart_shipmentmethod_id = 0 ',$this->_cart->virtuemart_shipmentmethod_id);
 			$this->_cart->virtuemart_shipmentmethod_id = 0;
-			$this->_cart->setCartIntoSession();
+			$this->_cart->setCartIntoSession(false,true);
 		}
 
 		return $this->_cart->cartPrices;

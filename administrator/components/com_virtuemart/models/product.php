@@ -534,7 +534,10 @@ class VirtueMartModelProduct extends VmModel {
 					if($this->filter_order!='virtuemart_product_id'){
 						$orderBy .= ', `virtuemart_product_id` '.$filterOrderDir;
 					}
-
+					if($this->filter_order=='product_name'){
+						$joinLang = true;
+						$langFields[] = 'product_name';
+					}
 				}
 				break;
 		}

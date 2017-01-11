@@ -200,6 +200,19 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		// If a database object was passed in the configuration array use it, otherwise get the global one from JFactory.
 		$db = isset($config['dbo']) ? $config['dbo'] : JFactory::getDbo();
 
+		if(empty(VmConfig::$vmlang)){
+
+			vmTrace('$vmlang not set',true,20);
+			vmdebug('$vmlang not set',VmConfig::$jDefLangTag);
+			vmError('$vmlang not set',VmConfig::$jDefLangTag);
+
+			VmConfig::$logDebug = true;
+			vmTrace('$vmlang not set',true,20);
+			VmConfig::$logDebug = false;
+
+			vmLanguage::initialise();
+			//return false;
+		}
 		// Instantiate a new table class and return it.
 		return new $tableClass($db);
 	}
@@ -1419,7 +1432,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			} else {
 				$loggedVendorId = vmAccess::isSuperVendor();
 				$user = JFactory::getUser();
-
+				$user_is_vendor = 0;
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);
 
@@ -1478,8 +1491,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 						vmdebug('Non admin is storing using loaded vendor_id');
 					} else {
-						if(empty($this->virtuemart_vendor_id)){
-							$this->virtuemart_vendor_id = $loggedVendorId;
+						if(empty($this->virtuemart_vendor_id) and !empty($user_is_vendor)){
+							$this->virtuemart_vendor_id = vmAccess::isSuperVendor($user->id);
 						}
 						//No id is stored, even users are allowed to use for the storage and vendorId, no change
 					}

@@ -263,7 +263,7 @@ function virtuemartBuildRoute(&$query) {
 				}
 				unset ($query['task'] , $query['addrtype']);
 			}
-vmdebug('Router buildRoute case user query and segments',$query,$segments);
+			//vmdebug('Router buildRoute case user query and segments',$query,$segments);
 			break;
 		case 'vendor';
 			/* VM208 */
