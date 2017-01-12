@@ -108,7 +108,7 @@ class VirtuemartViewCalc extends VmViewAdmin {
 
 			$search = vRequest::getCmd('search', false);
 			$this->calcs = $model->getCalcs(false, false, $search);
-			VmConfig::loadJLang('com_virtuemart_shoppers',true);
+			vmLanguage::loadJLang('com_virtuemart_shoppers',true);
 			foreach ($this->calcs as &$data){
 				$data->calcCategoriesList = shopfunctions::renderGuiList($data->virtuemart_calc_id,'categories','category_name','category','calc_categories','virtuemart_calc_id');
 

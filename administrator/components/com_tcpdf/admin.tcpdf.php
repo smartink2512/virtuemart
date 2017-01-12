@@ -68,7 +68,7 @@ function confirmation(message, destnUrl) {
 			<td align="center" colspan="4">
 				<?php
 				VmConfig::loadConfig();
-				VmConfig::loadJLang('com_virtuemart');
+				vmLanguage::loadJLang('com_virtuemart');
 
 				?>
 				<?php $link = JROUTE::_('index.php?option=com_virtuemart_allinone&task=updateDatabase&' . JSession::getFormToken() . '=1'); ?>

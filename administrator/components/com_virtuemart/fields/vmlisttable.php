@@ -36,7 +36,7 @@ class JFormFieldVmListTable extends JFormFieldList {
 	protected function getOptions() {
 		$options = array();
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 
 		$this->model = $this->getAttribute('model',false);
 		$this->func = $this->getAttribute('func',false);

@@ -784,7 +784,7 @@ class VirtueMartModelOrders extends VmModel {
 					$data->delivery_date = $date->toSQL();
 				}
 			} else {
-				VmConfig::loadJLang('com_virtuemart_orders', true);
+				vmLanguage::loadJLang('com_virtuemart_orders', true);
 				$data->delivery_date = vmText::_('COM_VIRTUEMART_DELDATE_INV');
 			}
 		}

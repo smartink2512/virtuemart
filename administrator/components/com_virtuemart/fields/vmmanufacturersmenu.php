@@ -36,7 +36,7 @@ class JFormFieldManufacturersmenu extends JFormField {
 	function getInput() {
 
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		$model = VmModel::getModel('Manufacturer');
 		$manufacturers = $model->getManufacturers(true, true, false);
 

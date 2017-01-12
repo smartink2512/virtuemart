@@ -500,7 +500,7 @@ class VmViewAdmin extends JViewLegacy {
 		}
 		if (!class_exists( 'VmConfig' )) require(VMPATH_ADMIN .'/helpers/config.php');
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart_help');
+		vmLanguage::loadJLang('com_virtuemart_help');
 		$lang = JFactory::getLanguage();
 		$key=  'COM_VIRTUEMART_HELP_'.$view.$task;
 		if ($lang->hasKey($key)) {

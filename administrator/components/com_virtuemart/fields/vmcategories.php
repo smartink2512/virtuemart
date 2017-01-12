@@ -37,7 +37,7 @@ class JFormFieldVmcategories extends JFormField {
 	protected function getInput() {
 
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 
 		if(!is_array($this->value))$this->value = array($this->value);
 		$categorylist = ShopFunctions::categoryListTree($this->value);

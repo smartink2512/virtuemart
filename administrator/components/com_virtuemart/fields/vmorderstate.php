@@ -30,7 +30,7 @@ class JFormFieldVmOrderState extends JFormFieldList {
 	protected function getOptions() {
 		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 
 		$options = array();
 		$db = JFactory::getDBO();

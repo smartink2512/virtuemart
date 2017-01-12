@@ -1430,8 +1430,9 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 				$this->virtuemart_vendor_id = 1;
 				return true;
 			} else {
-				$loggedVendorId = vmAccess::isSuperVendor();
 				$user = JFactory::getUser();
+				$loggedVendorId = vmAccess::isSuperVendor($user->id);
+				vmdebug('Table '.$this->_tbl.' check '.$loggedVendorId);
 				$user_is_vendor = 0;
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);
@@ -1445,14 +1446,15 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 						self::$_cache[md5($q)] = $virtuemart_vendor_id = $this->_db->loadResult();
 					} else $virtuemart_vendor_id = self::$_cache[md5($q)];
 				} else {
-					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
+					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor`,`virtuemart_user_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
 					if (!isset(self::$_cache[md5($q)])) {
 						$this->_db->setQuery($q);
 						$vmuser = $this->_db->loadRow();
 						self::$_cache[md5($q)] = $vmuser;
 					} else $vmuser = self::$_cache[md5($q)];
 
-					if ($vmuser and count($vmuser) === 2) {
+					vmdebug('Table '.$this->_tbl.' check loaded old entry',$vmuser);
+					if ($vmuser and count($vmuser) === 3) {
 						$virtuemart_vendor_id = $vmuser[0];
 						$user_is_vendor = $vmuser[1];
 
@@ -1464,15 +1466,24 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 							}
 							return true;
 						} else {
+							vmdebug('Table '.$this->_tbl.' check loaded old entry mv mode',$vmuser);
 							if (!$admin) {
-								$rVendorId = vmAccess::isSuperVendor($user->id);
-								$this->virtuemart_vendor_id = $rVendorId;
+								if(!empty($vmuser[2])){
+									$user = JFactory::getUser($vmuser[2]);
+									$loggedVendorId = vmAccess::isSuperVendor($user->id);
+									vmdebug('Table '.$this->_tbl.' check new user '.$loggedVendorId);
+								}
+								$this->virtuemart_vendor_id = $loggedVendorId;
 								return true;
 							}
 						}
 					} else {
 						//New User
 						//vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);//, Set to mainvendor '.$this->virtuemart_vendor_id
+						if(empty($this->user_is_vendor)){
+							$this->virtuemart_vendor_id = 0;
+							return true;
+						}
 					}
 				}
 
@@ -1491,8 +1502,8 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 						vmdebug('Non admin is storing using loaded vendor_id');
 					} else {
-						if(empty($this->virtuemart_vendor_id) and !empty($user_is_vendor)){
-							$this->virtuemart_vendor_id = vmAccess::isSuperVendor($user->id);
+						if(empty($this->virtuemart_vendor_id) ){
+							$this->virtuemart_vendor_id = $loggedVendorId;
 						}
 						//No id is stored, even users are allowed to use for the storage and vendorId, no change
 					}

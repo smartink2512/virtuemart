@@ -287,7 +287,7 @@ class KlarnaHandler {
 	 * @return array
 	 */
 	static function getDataFromEditPayment () {
-		VmConfig::loadJLang('com_virtuemart_shoppers', true);
+		vmLanguage::loadJLang('com_virtuemart_shoppers', true);
 
 		$kIndex = 'klarna_';
 		$klarna['klarna_paymentmethod'] = vRequest::getVar($kIndex . 'paymentmethod');

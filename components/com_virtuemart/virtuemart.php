@@ -27,7 +27,7 @@ vmRam('Start');
 //vmTime('joomla start until Vm is called','joomlaStart');
 vmSetStartTime('vmStart');
 
-VmConfig::loadJLang('com_virtuemart', true);
+vmLanguage::loadJLang('com_virtuemart', true);
 
 $_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart')) ;
 $task = vRequest::getCmd('task','') ;
@@ -61,11 +61,11 @@ if(VmConfig::get('shop_is_offline',0) and $task!='feed' and $_controller!='virtu
 			vRequest::setVar('manage','1');
 			vRequest::setVar('tmpl','component') ;
 
-			VmConfig::loadJLang('com_virtuemart');
+			vmLanguage::loadJLang('com_virtuemart');
 			$jlang = JFactory::getLanguage();
 			$tag = $jlang->getTag();
 			$jlang->load('', JPATH_ADMINISTRATOR,$tag,true);
-			VmConfig::loadJLang('com_virtuemart');
+			vmLanguage::loadJLang('com_virtuemart');
 			$basePath = VMPATH_ADMIN;
 			$trigger = 'onVmAdminController';
 

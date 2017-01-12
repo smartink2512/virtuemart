@@ -41,7 +41,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 		$model = VmModel::getModel();
 		$currentUser = JFactory::getUser();
 
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 
 		$task = vRequest::getCmd('task', 'edit');
 		if($task == 'editshop'){
@@ -233,7 +233,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 
 
 		if(!empty($this->orderlist)){
-			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+			vmLanguage::loadJLang('com_virtuemart_orders',TRUE);
 		}
 		parent::display($tpl);
 	}
@@ -259,7 +259,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 	private function checkTCPDFinstalled(){
 
 		if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
-			VmConfig::loadJLang('com_virtuemart_config');
+			vmLanguage::loadJLang('com_virtuemart_config');
 			vmWarn('COM_VIRTUEMART_TCPDF_NINSTALLED');
 		}
 	}

@@ -149,7 +149,7 @@ class ShopFunctions {
 	 * @return string HTML select option list
 	 */
 	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id', $select_attribute='COM_VIRTUEMART_DRDOWN_AVA2ALL', $attrs = array() ) {
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
@@ -1054,7 +1054,7 @@ class ShopFunctions {
 		$warn = false;
 		$uri = JFactory::getURI();
 
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		if(empty($safePath)){
 			$warn = 'COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET';
 		} else {
@@ -1064,13 +1064,13 @@ class ShopFunctions {
 				$warn = 'COM_VIRTUEMART_WARN_SAFE_PATH_WRONG';
 			} else{
 				if(!is_writable( $safePath )){
-					VmConfig::loadJLang('com_virtuemart_config');
+					vmLanguage::loadJLang('com_virtuemart_config');
 					vmdebug('checkSafePath $safePath not writeable '.$safePath);
 					VmError(vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath)
 						,vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE','',''));
 				} else {
 					if(!is_writable(self::getInvoicePath($safePath) )){
-						VmConfig::loadJLang('com_virtuemart_config');
+						vmLanguage::loadJLang('com_virtuemart_config');
 						vmdebug('checkSafePath $safePath/invoice not writeable '.addslashes($safePath));
 						VmError(vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath)
 						,vmText::sprintf('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE','',''));
@@ -1083,7 +1083,7 @@ class ShopFunctions {
 			$safePath = false;
 			$suggestedPath = shopFunctions::getSuggestedSafePath();
 			$suggestedPath2 = VMPATH_ADMIN.DS.self::generateRandomString(12).DS;
-			VmConfig::loadJLang('com_virtuemart_config');
+			vmLanguage::loadJLang('com_virtuemart_config');
 			$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
 			VmError(vmText::sprintf($warn,vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink,$suggestedPath2));
 		}

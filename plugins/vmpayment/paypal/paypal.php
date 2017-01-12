@@ -473,7 +473,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$dbValues['payment_order_total'] = $paypalInterface->getTotal();
 		$dbValues['tax_id'] = $this->_currentMethod->tax_id;
 		$this->storePSPluginInternalData($dbValues);
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 
 		$paypalInterface->debugLog('Amount/Currency stored ' . $dbValues['payment_order_total'].' paymentcurrency '.$dbValues['payment_currency'].' orderusercurrency'.$order['details']['BT']->user_currency_id, 'plgVmConfirmedOrder', 'message');
 
@@ -657,7 +657,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 
 		// the payment itself should send the parameter needed.
 		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
@@ -682,7 +682,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return '';
 		}
 
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 

@@ -22,7 +22,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 VmConfig::loadConfig();
-VmConfig::loadJLang('mod_virtuemart_product', true);
+vmLanguage::loadJLang('mod_virtuemart_product', true);
 
 // Setting
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display

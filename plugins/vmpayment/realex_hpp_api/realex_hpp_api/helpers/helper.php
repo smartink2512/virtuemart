@@ -1072,7 +1072,7 @@ class  RealexHelperRealex {
 
 		}
 
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 
 		// FROM PAYMENT LOG??? why not from history
 		if ($payments) {

@@ -35,7 +35,7 @@ class JFormFieldVendor extends JFormField {
 	
 	function getInput() {
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
 		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 		$model = VmModel::getModel('vendor');

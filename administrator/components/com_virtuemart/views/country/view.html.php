@@ -33,7 +33,7 @@ class VirtuemartViewCountry extends VmViewAdmin {
 
     function display($tpl = null) {
 
-		VmConfig::loadJLang('com_virtuemart_countries');
+		vmLanguage::loadJLang('com_virtuemart_countries');
 
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');

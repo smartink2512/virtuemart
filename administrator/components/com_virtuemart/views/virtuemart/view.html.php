@@ -35,7 +35,7 @@ class VirtuemartViewVirtuemart extends VmViewAdmin {
 
 		if (!class_exists('VmImage'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders',TRUE);
 
 
 		if(JFactory::getApplication()->isSite()){

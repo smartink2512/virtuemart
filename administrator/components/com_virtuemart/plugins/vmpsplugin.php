@@ -313,7 +313,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return NULL;
 		}
 
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 
 		$html = '<table class="admintable">' . "\n"
 			. '	<thead>' . "\n"
@@ -708,7 +708,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$vendor = $vendorModel->getVendor($vendorId);
 		$vendorEmail = $vendorModel->getVendorEmail($vendorId);
 		$vendorName = $vendorModel->getVendorName($vendorId);
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		if ($subject == NULL) {
 			$subject = vmText::sprintf('COM_VIRTUEMART_ERROR_SUBJECT', $this->_name, $vendor->vendor_store_name);
 		}

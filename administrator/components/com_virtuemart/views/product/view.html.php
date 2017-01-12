@@ -52,8 +52,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				//this was in the controller for the edit tasks, we need this for the access by FE
 				//$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
-				VmConfig::loadJLang('com_virtuemart_orders',TRUE);
-				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+				vmLanguage::loadJLang('com_virtuemart_orders',TRUE);
+				vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 
 				$virtuemart_product_id = vRequest::getInt('virtuemart_product_id');
 

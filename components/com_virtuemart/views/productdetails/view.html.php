@@ -327,7 +327,7 @@ class VirtueMartViewProductdetails extends VmView {
 			VirtueMartModelProduct::addProductToRecent($virtuemart_product_id);
 
 			if(vRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
-			VmConfig::loadJLang('com_virtuemart');
+			vmLanguage::loadJLang('com_virtuemart');
 
 			vmJsApi::chosenDropDowns();
 

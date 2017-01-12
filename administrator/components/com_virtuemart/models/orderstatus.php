@@ -39,7 +39,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 */
 	function __construct() {
 		parent::__construct();
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders',TRUE);
 		$this->setMainTable('orderstates');
 	}
 

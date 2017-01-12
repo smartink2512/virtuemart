@@ -379,7 +379,7 @@ class vmJsApi{
 		}
 		vmJsApi::jQuery();
 
-		VmConfig::loadJLang( 'com_virtuemart', true );
+		vmLanguage::loadJLang( 'com_virtuemart', true );
 
 		vmJsApi::jSite();
 
@@ -706,7 +706,7 @@ jQuery(document).ready(function($) {
 		if ($jCreditCard) {
 			return;
 		}
-		VmConfig::loadJLang('com_virtuemart',true);
+		vmLanguage::loadJLang('com_virtuemart',true);
 
 
 		$js = "

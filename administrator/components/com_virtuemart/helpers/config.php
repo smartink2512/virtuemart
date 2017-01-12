@@ -887,7 +887,6 @@ class VmConfig {
 			vmLanguage::initialise();
 			self::loadJLang('com_virtuemart');
 
-
 			$q = 'SELECT `element` FROM `#__extensions` WHERE type = "language" and enabled = "1"';
 			$db->setQuery($q);
 			$knownLangs = $db->loadColumn();
@@ -898,7 +897,7 @@ class VmConfig {
 				//VmConfig::$_debug=true;
 				//vmdebug('my option',$option,$_REQUEST);
 				//if($option!='com_languages'){
-				$msg = 'Install your selected language <b>'.$selectedLang.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
+				$msg = 'Install your selected language <b>'.vmLanguage::$currLangTag.'</b> first in <a href="'.$link.'">joomla language manager</a>, just select then the component VirtueMart under menu "component", to proceed with the installation ';
 				//$link = 'index.php?option=com_installer&view=languages&redirected=1';
 				//$app->redirect($link,$msg);
 				//}

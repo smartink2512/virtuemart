@@ -42,8 +42,8 @@ class JFormFieldVmCategory extends JFormField
      protected function getInput() {
 
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart');
-        VmConfig::loadJLang('com_virtuemart_config');
+		vmLanguage::loadJLang('com_virtuemart');
+        vmLanguage::loadJLang('com_virtuemart_config');
 	    $categorylist = ShopFunctions::categoryListTree(array($this->value));
 
         $html = '<select class="inputbox"   name="' . $this->name . '" >';

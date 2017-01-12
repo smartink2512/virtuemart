@@ -153,7 +153,7 @@ class shopFunctionsF {
 		// Load helpers and  languages files
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart_countries');
+		vmLanguage::loadJLang('com_virtuemart_countries');
 		vmJsApi::jQuery();
 		vmJsApi::chosenDropDowns();
 
@@ -594,10 +594,10 @@ class shopFunctionsF {
 		$cache = true;
 		vmLanguage::setLanguageByTag($language);
 
-		VmConfig::loadJLang('com_virtuemart', 0, $language, $cache);
-		VmConfig::loadJLang('com_virtuemart', $s, $language, $cache);
-		VmConfig::loadJLang('com_virtuemart_shoppers', $s, $language, $cache);
-		VmConfig::loadJLang('com_virtuemart_orders', $s, $language, $cache);
+		vmLanguage::loadJLang('com_virtuemart', 0, $language, $cache);
+		vmLanguage::loadJLang('com_virtuemart', $s, $language, $cache);
+		vmLanguage::loadJLang('com_virtuemart_shoppers', $s, $language, $cache);
+		vmLanguage::loadJLang('com_virtuemart_orders', $s, $language, $cache);
 
 	}
 
@@ -909,7 +909,7 @@ class shopFunctionsF {
 			if($tmpT!=VmConfig::$jDefLangTag){
 				//ensure that the invoice is written in shop language
 				vmdebug('invoiceNameInShopLang VmConfig::$jDefLangTag '.VmConfig::$jDefLangTag,$tmpT);
-				VmConfig::loadJLang('com_virtuemart_orders', true, VmConfig::$jDefLangTag);
+				vmLanguage::loadJLang('com_virtuemart_orders', true, VmConfig::$jDefLangTag);
 			}
 		}
 		$prefix = vmText::_('COM_VIRTUEMART_FILEPREFIX_'.strtoupper($layout));

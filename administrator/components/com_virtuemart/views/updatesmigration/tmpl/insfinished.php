@@ -22,8 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
-VmConfig::loadJLang('com_virtuemart.sys');
-VmConfig::loadJLang('com_virtuemart');
+vmLanguage::loadJLang('com_virtuemart.sys');
+vmLanguage::loadJLang('com_virtuemart');
 
 $update = vRequest::getInt('update',0);
 $option = vRequest::getString('option');

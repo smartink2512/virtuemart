@@ -29,7 +29,7 @@ vmSetStartTime('vmStart');
 
 $_controller = vRequest::getCmd('view', vRequest::getCmd('controller', 'virtuemart'));
 
-VmConfig::loadJLang('com_virtuemart');
+vmLanguage::loadJLang('com_virtuemart');
 $exe = true;
 //VmConfig::$echoDebug=true;
 // Require specific controller if requested

@@ -54,7 +54,7 @@ class VirtuemartViewUser extends VmView {
 		$this->useSSL = vmURI::useSSL();
 		$this->useXHTML = false;
 
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
@@ -267,7 +267,7 @@ class VirtuemartViewUser extends VmView {
 	    }
 	}
 		if($this->_orderList){
-			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+			vmLanguage::loadJLang('com_virtuemart_orders',TRUE);
 		}
 	$this->assignRef('orderlist', $this->_orderList);
     }

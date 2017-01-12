@@ -61,7 +61,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
 
-			VmConfig::loadJLang('com_virtuemart');
+			vmLanguage::loadJLang('com_virtuemart');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcustom');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');

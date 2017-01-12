@@ -35,7 +35,7 @@ class JFormFieldcategories extends JFormFieldList {
 	var $class = '';
 
 	protected function getInput() {
-		//VmConfig::loadJLang('com_virtuemart');
+		//vmLanguage::loadJLang('com_virtuemart');
 		$categorylist = ShopFunctions::categoryListTree(array($this->value));
 
 		$html = '<select multiple="true" class="inputbox ' .  $this->class . '"   name="' . $this->name   . '" >';

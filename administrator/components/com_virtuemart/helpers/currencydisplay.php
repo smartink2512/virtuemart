@@ -121,7 +121,7 @@ class CurrencyDisplay {
 			if(!empty($style)){
 				self::$_instance[$h]->setCurrencyDisplayToStyleStr($style);
 			} else {
-				VmConfig::loadJLang('com_virtuemart');
+				vmLanguage::loadJLang('com_virtuemart');
 
 				if(empty(self::$_instance[$h]->_currency_id)){
 					$link = JURI::root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';

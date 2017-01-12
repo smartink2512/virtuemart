@@ -233,7 +233,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         if (!class_exists('shopFunctionsF'))
         require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		// setup response html
-        VmConfig::loadJLang('com_virtuemart');
+        vmLanguage::loadJLang('com_virtuemart');
         $modelOrder = VmModel::getModel('orders');
         
         $tco_data = vRequest::getRequest();
@@ -365,7 +365,7 @@ class plgVmPaymentTco extends vmPSPlugin {
         if (!($paymentTable = $this->getDataByOrderId ($virtuemart_order_id))) {
 			return NULL;
 		}
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		$html = '<table class="adminlist table">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();
 		$html .= $this->getHtmlRowBE ('COM_VIRTUEMART_PAYMENT_NAME', $paymentTable->payment_name);

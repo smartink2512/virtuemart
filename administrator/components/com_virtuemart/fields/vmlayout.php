@@ -44,7 +44,7 @@ class JFormFieldVmLayout extends JFormField
   
 	function getInput() {
 
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 
 		$this->view = (string) $this->element['view'];
 		if(empty($this->view)){

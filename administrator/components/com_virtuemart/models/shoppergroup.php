@@ -64,7 +64,7 @@ class VirtueMartModelShopperGroup extends VmModel {
      */
     function getShopperGroups($onlyPublished=false, $noLimit = false) {
 
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 	    $query = 'SELECT * FROM `#__virtuemart_shoppergroups`  ';
 		if($onlyPublished){
 			$query .= ' WHERE `published` = "1" ';
@@ -107,7 +107,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 				if(!$res = $this->getShopperGroup($res->virtuemart_shoppergroup_id)){
 
 				}
-				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+				vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 				$res->shopper_group_name = vmText::_($res->shopper_group_name);
 				$res->shopper_group_desc = vmText::_($res->shopper_group_desc);
 				//vmdebug('my default shoppergroup ',$res);

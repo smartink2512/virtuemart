@@ -37,7 +37,7 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	 * @access	public
 	 */
 	function __construct() {
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders',TRUE);
 		parent::__construct();
 	}
 

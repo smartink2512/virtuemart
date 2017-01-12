@@ -53,8 +53,8 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 		$curTask = vRequest::getCmd('task');
 		if ($curTask == 'edit') {
-			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-			VmConfig::loadJLang('com_virtuemart_orders', true);
+			vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
+			vmLanguage::loadJLang('com_virtuemart_orders', true);
 
 			//For getOrderStatusName
 			if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');

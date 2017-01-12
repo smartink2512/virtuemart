@@ -123,8 +123,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 			return FALSE;
 		}
 
-		VmConfig::loadJLang('com_virtuemart',true);
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart',true);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
@@ -204,7 +204,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		if (!($paymentTable = $this->getDataByOrderId ($virtuemart_order_id))) {
 			return NULL;
 		}
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 
 		$html = '<table class="adminlist table">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();

@@ -523,7 +523,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 * @return string
 	 */
 	function _getPaymentResponseHtml ($method, $order, $payments) {
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 		if (!class_exists('CurrencyDisplay')) {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
@@ -532,7 +532,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders',TRUE);
 
 		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$order['details']['BT']->order_currency);
 		$cart = VirtueMartCart::getCart();
@@ -696,7 +696,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		$htmla = array();
 		$html = '';
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		$currency = CurrencyDisplay::getInstance();
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->cartPrices)) {

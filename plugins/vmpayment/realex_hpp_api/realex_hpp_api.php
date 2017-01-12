@@ -150,7 +150,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$dbValues['tax_id'] = $this->_currentMethod->tax_id;
 		$this->storePSPluginInternalData($dbValues);
 
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 
 		$selectedCCParams = array();
 		if ($this->_currentMethod->integration == 'redirect') {
@@ -326,7 +326,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(VMPATH_ADMIN . DS . 'models' . DS . 'orders.php');
 		}
-		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		vmLanguage::loadJLang('com_virtuemart_orders', TRUE);
 
 		// the payment itself should send the parameter needed.
 		$virtuemart_paymentmethod_id = vRequest::getInt('pm', 0);
@@ -345,7 +345,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 
 		$payments = $this->getDatasByOrderId($virtuemart_order_id);
 
-		VmConfig::loadJLang('com_virtuemart');
+		vmLanguage::loadJLang('com_virtuemart');
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 

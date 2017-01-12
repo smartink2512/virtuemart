@@ -48,7 +48,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
-			VmConfig::loadJLang('plg_vmpsplugin', false);
+			vmLanguage::loadJLang('plg_vmpsplugin', false);
 
 			JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 
@@ -101,7 +101,7 @@ class VirtuemartViewShipmentmethod extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model);
 
 			$this->shipments = $model->getShipments();
-			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+			vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 
 			foreach ($this->shipments as &$data){
 				// Write the first 5 shoppergroups in the list

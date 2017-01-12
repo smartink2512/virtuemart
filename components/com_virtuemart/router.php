@@ -756,7 +756,7 @@ class vmrouterHelper {
 			$this->seo_translate = VmConfig::get('seo_translate', false);
 
 			if ( $this->seo_translate ) {
-				$this->Jlang = VmConfig::loadJLang('com_virtuemart.sef',true);
+				$this->Jlang = vmLanguage::loadJLang('com_virtuemart.sef',true);
 			} else {
 				$this->Jlang = JFactory::getLanguage();
 			}
@@ -1201,7 +1201,7 @@ class vmrouterHelper {
 		if(empty($menuVmitems)){
 			$mCache[$h.$this->Itemid] = false;
 			vmdebug('my $menuVmitems ',$q,$menuVmitems);
-			VmConfig::loadJLang('com_virtuemart', true);
+			vmLanguage::loadJLang('com_virtuemart', true);
 			vmWarn(vmText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 			//vmdebug('my menuVmItems',$this->template,$menuVmitems);

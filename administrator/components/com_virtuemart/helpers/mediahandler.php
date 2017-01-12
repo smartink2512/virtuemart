@@ -875,7 +875,7 @@ class VmMediaHandler {
 	 */
 	public function displayFilesHandler($fileIds,$type,$vendorId = 0){
 
-		VmConfig::loadJLang('com_virtuemart_media');
+		vmLanguage::loadJLang('com_virtuemart_media');
 		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler($vendorId);
 
@@ -1036,7 +1036,7 @@ class VmMediaHandler {
 	 */
 	public function displayFileHandler($vendorId = 0){
 
-		VmConfig::loadJLang('com_virtuemart_media');
+		vmLanguage::loadJLang('com_virtuemart_media');
 
 		$this->addHiddenByType();
 

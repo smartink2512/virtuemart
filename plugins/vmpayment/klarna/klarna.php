@@ -1298,7 +1298,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		} else {
 			VmInfo (vmText::_ ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_OK'));
 		}
-		VmConfig::loadJLang('com_virtuemart_shoppers', true);
+		vmLanguage::loadJLang('com_virtuemart_shoppers', true);
 
 		$klarna_required_not_found = array();
 		// TEST that all required Klarna shopper fields are there, if not create them
@@ -1323,7 +1323,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$data['shipment'] = 0;
 			$data['vNames'] = array();
 			$data['vValues'] = array();
-			VmConfig::loadJLang('com_virtuemart_shoppers', true);
+			vmLanguage::loadJLang('com_virtuemart_shoppers', true);
 
 			foreach ($klarna_required_not_found as $requiredfield) {
 				$data['name'] = $requiredfield;

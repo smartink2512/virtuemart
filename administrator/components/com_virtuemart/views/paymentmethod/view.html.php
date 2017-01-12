@@ -68,7 +68,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 			if (!class_exists('VmImage'))
 				require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
-			VmConfig::loadJLang('plg_vmpsplugin', false);
+			vmLanguage::loadJLang('plg_vmpsplugin', false);
 
 			JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 
@@ -115,7 +115,7 @@ class VirtuemartViewPaymentMethod extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model);
 
 			$this->payments = $model->getPayments();
-			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+			vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 
 			foreach ($this->payments as &$data){
 				// Write the first 5 shoppergroups in the list

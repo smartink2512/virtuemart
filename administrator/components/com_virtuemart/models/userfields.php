@@ -748,7 +748,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	public function getUserFieldsFilled($_selection, &$_userDataIn = null, $_prefix = ''){
 
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 
 		//We copy the input data to prevent that objects become arrays
 		if(empty($_userDataIn)){

@@ -35,7 +35,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 	protected function getInput() {
 
 		VmConfig::loadConfig();
-		VmConfig::loadJLang('com_virtuemart_perms');
+		vmLanguage::loadJLang('com_virtuemart_perms');
 		JHtml::_('behavior.tooltip');
 		if(JVM_VERSION<3){
 			return $this->vmRulesJ25();
