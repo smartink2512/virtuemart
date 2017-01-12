@@ -2553,35 +2553,10 @@ class VirtueMartModelProduct extends VmModel {
 			$getArray['virtuemart_category_id'] = 0;
 		}
 
-		$fieldLink = '';
-
 		$Itemid = '';
-		/*foreach ($getArray as $key => $value) {
 
-			$key = vRequest::filter($key,FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
-			$value = vRequest::filter($value,FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_ENCODE_LOW);
+		$fieldLink = vmURI::getCurrentUrlBy('request', false, true, array('orderby','dir'));
 
-			if (is_array ($value)) {
-				foreach ($value as $k => $v) {
-					if( $v == '') continue;
-					$fieldLink .= '&' . urlencode($key) . '[' . urlencode($k) . ']' . '=' . urlencode($v);
-				}
-			}
-			else {
-				if($key=='dir' or $key=='orderby') continue;
-				if($value == '') continue;
-				if($key=='Itemid'){
-					$Itemid = '&' . urlencode($key) . '=' . urlencode($value);
-					continue;
-				}
-				$fieldLink .= '&' . urlencode($key) . '=' . urlencode($value);
-			}
-		}
-
-		$fieldLink1 = 'index.php?'. ltrim ($fieldLink,'&') ;*/
-
-		$fieldLink = vmURI::getCurrentUrlBy();
-		vmdebug('getOrderByList ', $fieldLink);
 		$orderDirLink = '';
 		$orderDirConf = VmConfig::get ('prd_brws_orderby_dir');
 		$orderDir = vRequest::getCmd ('dir', $orderDirConf);
@@ -2590,10 +2565,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$orderbyTxt = '';
-		$orderby = vRequest::getString ('orderby', VmConfig::get ('browse_orderby_field'));
+		$orderbyCfg = VmConfig::get ('browse_orderby_field');
+		$orderby = vRequest::getString ('orderby', $orderbyCfg);
 		$orderby = $this->checkFilterOrder ($orderby);
 
-		$orderbyCfg = VmConfig::get ('browse_orderby_field');
 		if ($orderby != $orderbyCfg) {
 			$orderbyTxt = '&orderby=' . $orderby;
 		}
@@ -2684,7 +2659,6 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$orderByLink .= '</div>';
 		}
-
 
 		if($orderDir == 'ASC'){
 			$orderDir = 'DESC';

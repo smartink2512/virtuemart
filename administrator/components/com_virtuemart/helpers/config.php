@@ -1578,6 +1578,9 @@ class vmURI{
 			if(is_array($white) ){
 				$vars = array_merge($vars, $white);
 			}
+			if(is_array($ignore) ){
+				$vars = array_diff($vars, $ignore);
+			}
 			foreach ($vars as $k){
 				$v = vRequest::getVar($k);
 				if(isset($v)){

@@ -119,7 +119,7 @@ latest_products_rows=1
     
 ##Product order settings
 
-browse_orderby_field=pc.ordering
+browse_orderby_field=pc.ordering,product_name
 browse_cat_orderby_field=c.ordering,category_name
 browse_orderby_fields=array:`p`.product_sku|category_name|mf_name|product_name|pc.ordering
 
