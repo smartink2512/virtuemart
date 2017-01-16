@@ -220,7 +220,7 @@ class VirtuemartViewCategory extends VmView {
 			$imgAmount = VmConfig::get('prodimg_browse',1);
 			$dynamic = vRequest::getInt('dynamic',false);
 
-			$legacy = VmConfig::get('legacylayouts',false);
+			$legacy = VmConfig::get('legacylayouts',1);
 			if ($dynamic) {
 
 				$id = vRequest::getInt('virtuemart_product_id',false);

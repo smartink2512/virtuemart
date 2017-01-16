@@ -1221,8 +1221,8 @@ class vmLanguage {
 
 		if(count($langs)>1){
 			$lfbs = VmConfig::get('vm_lfbs');
-			vmdebug('my lfbs '.$lfbs);
 			if(!empty($lfbs)){
+				vmdebug('my lfbs '.$lfbs);
 				$pairs = explode(';',$lfbs);
 				if($pairs and count($pairs)>0){
 					$fbsAssoc = array();
@@ -1235,7 +1235,7 @@ class vmLanguage {
 					if(isset($fbsAssoc[$siteLang])){
 						VmConfig::$jDefLangTag = $fbsAssoc[$siteLang];
 					}
-					self::set('fbsAssoc',$fbsAssoc);
+					VmConfig::set('fbsAssoc',$fbsAssoc);
 				}
 			}
 		}

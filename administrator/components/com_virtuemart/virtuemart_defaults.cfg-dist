@@ -103,6 +103,7 @@ show_recent=1
 recent_products_rows=1
 show_latest=1
 latest_products_rows=1
+legacylayouts=0
 
 ##Paths
     assets_general_path=components/com_virtuemart/assets/
