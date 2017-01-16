@@ -929,7 +929,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	function sofortLog($sofortLib){
 		if ($this->_currentMethod->sofort_log) {
 			$sofortLib->setLogEnabled();
-			if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+			if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 			$logFileName=$this->getLogFileName();
 			$path = JFactory::getConfig()->get('log_path', VMPATH_ROOT . "/log" ).'/'.$logFileName.'.log.php';
 			if (!JFile::exists($path)) {

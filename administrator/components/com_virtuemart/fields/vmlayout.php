@@ -16,7 +16,7 @@
  */
 defined('JPATH_BASE') or die;
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 VmConfig::loadConfig();
 if (!class_exists('ShopFunctions'))
     require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');

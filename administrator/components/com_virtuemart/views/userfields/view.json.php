@@ -53,7 +53,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 				// Get the payment XML.
 				$formFile	= vRequest::filterPath( $path );
 				if (file_exists($formFile)){
-					if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+					if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 					if (!class_exists ('VmTable')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmtable.php');
 
 					$this->userField->form = JForm::getInstance($this->userField->element, $formFile, array(),false, '//vmconfig | //config[not(//vmconfig)]');

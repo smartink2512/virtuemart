@@ -555,23 +555,26 @@ class VirtueMartModelUser extends VmModel {
 			$noError = false;
 		}
 
-		if(vmAccess::manager('user.edit')){
+		if(vmAccess::manager('user.edit') and !empty($data['virtuemart_shoppergroup_set'])){
 
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 			if(empty($this->_defaultShopperGroup)){
 				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault(0);
 			}
 
+			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
 			if(empty($data['virtuemart_shoppergroup_id']) or $data['virtuemart_shoppergroup_id']==$this->_defaultShopperGroup->virtuemart_shoppergroup_id){
 				$data['virtuemart_shoppergroup_id'] = array();
 			}
 
-			//We can't do that here, because it deletes the shoppergroup of users with "user.edit" permissions when they checkout
+			//We can't do that here, because we could else not set "no shoppergroup"
 			/*if(!isset($data['virtuemart_shoppergroup_id'])){
 				$data['virtuemart_shoppergroup_id'] = array();
 			}*/
+
+
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
-			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+
 			$res = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
 			if(!$res){
 				vmError('Set shoppergroup error');

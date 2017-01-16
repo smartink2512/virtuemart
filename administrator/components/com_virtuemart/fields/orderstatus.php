@@ -18,13 +18,9 @@ defined ('_JEXEC') or die();
 class JFormFieldOrderstatus extends JFormField {
 	var $type = 'orderstatus';
 	function getInput () {
+		
+		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 
-		defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-
-		if (!class_exists ('VmModel')) {
-			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
-		}
 		VmConfig::loadConfig ();
 		vmLanguage::loadJLang('com_virtuemart');
 		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');

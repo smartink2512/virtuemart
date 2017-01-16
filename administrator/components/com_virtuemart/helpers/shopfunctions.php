@@ -169,6 +169,7 @@ class ShopFunctions {
 		}
 
 		$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $name, $attrs, 'virtuemart_shoppergroup_id', 'shopper_group_name', $shopperGroupId,false,true);
+		$listHTML .= '<input name="virtuemart_shoppergroup_set" value="1" type="hidden">';
 		return $listHTML;
 	}
 

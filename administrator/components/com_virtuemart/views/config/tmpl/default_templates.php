@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_DEPRECATED'); ?></legend>
 		<table class="admintable">
 			<?php
-			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_LEGACYLAYOUTS','legacylayouts', VmConfig::get('legacylayouts',0));
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_LEGACYLAYOUTS','legacylayouts', VmConfig::get('legacylayouts',1));
 			echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT',$this->vmLayoutList, 'vmlayout', 'size=1', 'value', 'text', VmConfig::get('vmlayout',0));
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORIES','show_categories', VmConfig::get('show_categories',1));
 			echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW','homepage_categories_per_row', VmConfig::get('homepage_categories_per_row',3),'',4,4);

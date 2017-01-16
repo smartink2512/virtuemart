@@ -26,7 +26,7 @@ class PlgSystemAmazon extends JPlugin {
 
 	function onAfterRender () {
 		defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 		VmConfig::loadConfig();
 
 		$fileName = JPATH_ROOT.DS.'plugins'.DS.'system'.DS.'amazon'.DS.'touch.php';
