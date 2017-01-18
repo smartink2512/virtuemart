@@ -131,13 +131,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 				return FALSE;
 			}
 		}
-		$html = array();
+
 		$method_name = $this->_psType . '_name';
 
 		vmLanguage::loadJLang('com_virtuemart', true);
 		vmJsApi::jCreditCard();
-		$htmla = '';
-		$html = array();
+		$htmla = array();
+		$html = '';
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->cartPrices)) {
 				$cartPrices=$cart->cartPrices;

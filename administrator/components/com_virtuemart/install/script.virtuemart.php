@@ -11,9 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 
-defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-defined('VMPATH_ROOT') or define('VMPATH_ROOT', JPATH_ROOT);
-defined('VMPATH_ADMIN') or define('VMPATH_ADMIN', VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
+
 
 
 
@@ -33,19 +31,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * Sets the paths and loads VMFramework config
 		 */
 		public function loadVm() {
-// 			$this->path = JInstaller::getInstance()->getPath('extension_administrator');
-
-			if(empty($this->path)){
-				$this->path = VMPATH_ADMIN;
+ 			$this->source_path = JInstaller::getInstance()->getPath('source');
+			if(!empty($this->source_path)){
+				defined('VMPATH_ROOT') or define('VMPATH_ROOT', $this->source_path);
+			} else {
+				defined('VMPATH_ROOT') or define('VMPATH_ROOT', JPATH_ROOT);
 			}
+			defined('VMPATH_ADMIN') or define('VMPATH_ADMIN', VMPATH_ROOT .'/administrator/components/com_virtuemart');
+			$this->path = VMPATH_ADMIN;
+
 			if(!class_exists('VmConfig')) require_once($this->path .'/helpers/config.php');
 			VmConfig::loadConfig(false,true);
-			vmLanguage::loadJLang('com_virtuemart');
+			VmConfig::loadJLang('com_virtuemart');
 
 			if(!class_exists('VmTable')) require_once($this->path .'/helpers/vmtable.php');
 			if(!class_exists('VmModel')) require_once($this->path .'/helpers/vmmodel.php');
-			VmTable::addIncludePath($this->path.DS.'tables');
-			VmModel::addIncludePath($this->path.DS.'models');
+			VmTable::addIncludePath($this->path .'/tables');
+			VmModel::addIncludePath($this->path .'/models');
 
 			//Maybe it is possible to set this within the xml file note by Max Milbers
 			VmConfig::ensureMemoryLimit(256);
@@ -300,7 +302,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->recurse_copy($src,$dst);
 			}
 
-			$model->updateJoomlaUpdateServer('component','com_virtuemart', $this->path.DS.'virtuemart.xml');
+			$model->updateJoomlaUpdateServer('component','com_virtuemart', $this->source_path.DS.'virtuemart.xml');
 
 			//fix joomla BE menu
 			$this->checkFixJoomlaBEMenuEntries();

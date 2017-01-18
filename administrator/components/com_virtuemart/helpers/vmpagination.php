@@ -349,7 +349,7 @@ class VmPagination extends vObject {
 		$html = null;
 		if ($this->get('pages.total') > 1)
 		{
-			$html .= JText::sprintf('JLIB_HTML_PAGE_CURRENT_OF_TOTAL', $this->get('pages.current'), $this->get('pages.total'));
+			$html .= vmText::sprintf('JLIB_HTML_PAGE_CURRENT_OF_TOTAL', $this->get('pages.current'), $this->get('pages.total'));
 		}
 		return $html;
 	}
@@ -380,12 +380,12 @@ class VmPagination extends vObject {
 		// If there are results found.
 		if ($this->total > 0)
 		{
-			$msg = JText::sprintf('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
+			$msg = vmText::sprintf('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
 			$html .= "\n" . $msg;
 		}
 		else
 		{
-			$html .= "\n" . JText::_('JLIB_HTML_NO_RECORDS_FOUND');
+			$html .= "\n" . vmText::_('JLIB_HTML_NO_RECORDS_FOUND');
 		}
 
 		return $html;
@@ -603,7 +603,7 @@ class VmPagination extends vObject {
 	{
 		$html = "<div class=\"list-footer\">\n";
 
-		$html .= "\n<div class=\"limit\">" . JText::_('JGLOBAL_DISPLAY_NUM') . $list['limitfield'] . "</div>";
+		$html .= "\n<div class=\"limit\">" . vmText::_('JGLOBAL_DISPLAY_NUM') . $list['limitfield'] . "</div>";
 		$html .= $list['pageslinks'];
 		$html .= "\n<div class=\"counter\">" . $list['pagescounter'] . "</div>";
 
@@ -721,7 +721,7 @@ class VmPagination extends vObject {
 			}
 		}
 
-		$data->all = new vPaginationObject(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
+		$data->all = new vPaginationObject(vmText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
 		if (!$this->_viewall)
 		{
 			$data->all->base = '0';
@@ -729,8 +729,8 @@ class VmPagination extends vObject {
 		}
 
 		// Set the start and previous data objects.
-		$data->start = new vPaginationObject(JText::_('JLIB_HTML_START'), $this->prefix);
-		$data->previous = new vPaginationObject(JText::_('JPREV'), $this->prefix);
+		$data->start = new vPaginationObject(vmText::_('JLIB_HTML_START'), $this->prefix);
+		$data->previous = new vPaginationObject(vmText::_('JPREV'), $this->prefix);
 
 		if ($this->get('pages.current') > 1)
 		{
@@ -746,8 +746,8 @@ class VmPagination extends vObject {
 		}
 
 		// Set the next and end data objects.
-		$data->next = new vPaginationObject(JText::_('JNEXT'), $this->prefix);
-		$data->end = new vPaginationObject(JText::_('JLIB_HTML_END'), $this->prefix);
+		$data->next = new vPaginationObject(vmText::_('JNEXT'), $this->prefix);
+		$data->end = new vPaginationObject(vmText::_('JLIB_HTML_END'), $this->prefix);
 
 		if ($this->get('pages.current') < $this->get('pages.total'))
 		{
