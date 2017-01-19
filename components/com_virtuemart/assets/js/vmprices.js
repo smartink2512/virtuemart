@@ -6,7 +6,19 @@ Virtuemart.stopSendtocart = false;
 Virtuemart.setproducttype = function(form, id) {
 	form.view = null;
 	var datas = form.serialize();
-	var prices = form.parents(".productdetails").find(".product-price");
+
+	var runs= 0, maxruns = 20;
+	var container = form;
+	while(!container.hasClass('product-container') && !container.hasClass('product-field-display')  && runs<=maxruns){
+		container = container.parent();
+		runs++;
+	}
+	if(runs>maxruns){
+		console.log('setproducttype: Could not find parent container product-container nor product-field-display');
+		return false;
+	}
+
+	var prices = container.find(".product-price");
 	if (0 == prices.length) {
 		prices = jQuery("#productPrice" + id);
 	}

@@ -6,7 +6,7 @@ defined ('_JEXEC') or die();
  * Heidelpay credit card plugin
  *
  * @author Heidelberger Payment GmbH <Jens Richter>
- * @version 16.02.15
+ * @version 16.12.16
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) Heidelberger Payment GmbH
@@ -167,7 +167,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 		$params['PRESENTATION.AMOUNT'] = $totalInPaymentCurrency;
 		$params['PRESENTATION.CURRENCY'] = $currency_code_3;
-		$params['FRONTEND.LANGUAGE'] = vmLanguage::$jSelLangTag;
+		$params['FRONTEND.LANGUAGE'] = vmConfig::$vmlangTag;
 		$params['CRITERION.LANG'] = $params['FRONTEND.LANGUAGE'];
 		$params['IDENTIFICATION.TRANSACTIONID'] = $order['details']['BT']->order_number;
 		/*
