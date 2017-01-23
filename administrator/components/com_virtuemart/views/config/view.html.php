@@ -93,7 +93,6 @@ class VirtuemartViewConfig extends VmViewAdmin {
 		$this->orderByFieldsProduct = $model->getProductFilterFields('browse_orderby_fields');
 
 		VmModel::getModel('category');
-
 		foreach (VirtueMartModelCategory::$_validOrderingFields as $key => $field ) {
 			if($field=='c.category_shared') continue;
 			$fieldWithoutPrefix = $field;
@@ -183,7 +182,7 @@ WHERE published="1"';
 		if(!empty($revproxvar)) vmdebug('My server variable ',$_SERVER);
 	}
 
-	function rowShopFrontSet($label, $name, $name2 = 0, $name3 = 0, $defRow = 1){
+	static public function rowShopFrontSet($params, $label, $name, $name2, $name3 = 0, $default = 1){
 
 		$lang =JFactory::getLanguage();
 		if($lang->hasKey($label.'_TIP')){
@@ -199,10 +198,10 @@ WHERE published="1"';
 		$h .= '<td class="key">
 				'.$label.'
 			</td>';
-		$h .= '<td style="text-align: center;">'.VmHtml::checkbox($name, VmConfig::get($name, 1)).'</td>';
-		$h .= '<td>'.VmHtml::input($name2, VmConfig::get($name2, $defRow),'class="inputbox"','',4,4).'</td>';
+		$h .= '<td style="text-align: center;">'.VmHtml::checkbox($name, $params->get($name, 1)).'</td>';
+		$h .= '<td>'.VmHtml::input($name2, $params->get($name2, $default),'class="inputbox"','',4,4).'</td>';
 		$h .= '<td style="text-align: center;">';
-		if($name3 !== 0) $h .= VmHtml::checkbox($name3, VmConfig::get($name3, 0));
+		if($name3 !== 0) $h .= VmHtml::checkbox($name3, $params->get($name3, 0));
 		$h .= "</td>\n</tr>";
 		return $h;
 	}

@@ -30,6 +30,21 @@ class VirtueMartViewVirtueMart extends VmView {
 
 	public function display($tpl = null) {
 
+		//For BC, we convert first the new config param names to the old ones
+		VmConfig::set('show_featured', VmConfig::get('featured'));
+		VmConfig::set('show_discontinued', VmConfig::get('discontinued'));
+		VmConfig::set('show_topTen', VmConfig::get('topten'));
+		VmConfig::set('show_recent', VmConfig::get('recent'));
+		VmConfig::set('show_latest', VmConfig::get('latest'));
+
+		VmConfig::set('featured_products_rows', VmConfig::get('featured_rows'));
+		VmConfig::set('discontinued_products_rows', VmConfig::get('discontinued_rows'));
+		VmConfig::set('topTen_products_rows', VmConfig::get('topten_rows'));
+		VmConfig::set('recent_products_rows', VmConfig::get('recent_rows'));
+		VmConfig::set('latest_products_rows', VmConfig::get('latest_rows'));
+		VmConfig::set('omitLoaded_topTen', VmConfig::get('omitLoaded_topten'));
+		VmConfig::set('showCategory', VmConfig::get('showcategory'));
+
 		$vendorId = vRequest::getInt('vendorid', 1);
 
 		$vendorModel = VmModel::getModel('vendor');
@@ -85,35 +100,35 @@ class VirtueMartViewVirtueMart extends VmView {
 			
 			$products_per_row = VmConfig::get('homepage_products_per_row',3);
 			
-			$featured_products_rows = VmConfig::get('featured_products_rows',1);
+			$featured_products_rows = VmConfig::get('featured_rows',1);
 			$featured_products_count = $products_per_row * $featured_products_rows;
 
-			if (!empty($featured_products_count) and VmConfig::get('show_featured', 1)) {
+			if (!empty($featured_products_count) and VmConfig::get('featured', 1)) {
 				$this->products['featured'] = $productModel->getProductListing('featured', $featured_products_count);
 				$productModel->addImages($this->products['featured'],1);
 			}
 			
-			$latest_products_rows = VmConfig::get('latest_products_rows');
+			$latest_products_rows = VmConfig::get('latest_rows');
 			$latest_products_count = $products_per_row * $latest_products_rows;
 
-			if (!empty($latest_products_count) and VmConfig::get('show_latest', 1)) {
+			if (!empty($latest_products_count) and VmConfig::get('latest', 1)) {
 				$this->products['latest']= $productModel->getProductListing('latest', $latest_products_count);
 				$productModel->addImages($this->products['latest'],1);
 			}
 
-			$topTen_products_rows = VmConfig::get('topTen_products_rows');
+			$topTen_products_rows = VmConfig::get('topten_rows');
 			$topTen_products_count = $products_per_row * $topTen_products_rows;
 			
-			if (!empty($topTen_products_count) and VmConfig::get('show_topTen', 1)) {
+			if (!empty($topTen_products_count) and VmConfig::get('topten', 1)) {
 				$this->products['topten']= $productModel->getProductListing('topten', $topTen_products_count);
 				$productModel->addImages($this->products['topten'],1);
 			}
 			
-			$recent_products_rows = VmConfig::get('recent_products_rows');
+			$recent_products_rows = VmConfig::get('recent_rows');
 			$recent_products_count = $products_per_row * $recent_products_rows;
 
 			
-			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1) ) {
+			if (!empty($recent_products_count) and VmConfig::get('recent', 1) ) {
 				$recent_products = $productModel->getProductListing('recent');
 				if(!empty($recent_products)){
 					$this->products['recent']= $productModel->getProductListing('recent', $recent_products_count);

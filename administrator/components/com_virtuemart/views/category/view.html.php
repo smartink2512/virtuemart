@@ -48,8 +48,11 @@ class VirtuemartViewCategory extends VmViewAdmin {
 		$this->user = $user = JFactory::getUser();
 		if ($layoutName == 'edit') {
 
+			vmLanguage::loadJLang('com_virtuemart_config');
+
 			$category = $model->getCategory('', false, false);
 
+			if(!class_exists('VirtuemartViewConfig')) require (VMPATH_ADMIN .'/views/config/view.html.php');
 			// Toolbar
 			$text='';
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
@@ -72,16 +75,28 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			$this->assignRef('parent', $parent);
 
 			if(!class_exists('ShopFunctions'))require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
-			$templateList = ShopFunctions::renderTemplateList(vmText::_('COM_VIRTUEMART_CATEGORY_TEMPLATE_DEFAULT'));
 
-			$this->assignRef('jTemplateList', $templateList);
+			$this->jTemplateList = ShopFunctions::renderTemplateList(vmText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
+
+			$cmodel = VmModel::getModel('config');
+			$this->vmLayoutList = $cmodel->getLayoutList('virtuemart');
+
+			$this->cartLayoutList = $cmodel->getLayoutList('cart',array('padded.php','perror.php'));
+			$this->categoryLayoutList = $cmodel->getLayoutList('category');
+
+			$this->productLayoutList = $cmodel->getLayoutList('productdetails');
+
+			$this->productsFieldList  = $cmodel->getFieldList('products');
 
 
-			$categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
-			$this->assignRef('categoryLayouts', $categoryLayoutList);
+			//$templateList = ShopFunctions::renderTemplateList(vmText::_('COM_VIRTUEMART_CATEGORY_TEMPLATE_DEFAULT'));
+			//$this->assignRef('jTemplateList', $templateList);
 
-			$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
-			$this->assignRef('productLayouts', $productLayouts);
+			//$categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
+			//$this->assignRef('categoryLayouts', $categoryLayoutList);
+
+			//$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
+			//$this->assignRef('productLayouts', $productLayouts);
 
 			//Nice fix by Joe, the 4. param prevents setting an category itself as child
 			$categorylist = '';//ShopFunctions::categoryListTree(array($parent->virtuemart_category_id), 0, 0, (array) $category->virtuemart_category_id);

@@ -28,6 +28,7 @@ $editor = JFactory::getEditor();
 
 <?php // Loading Templates in Tabs
 AdminUIHelper::buildTabs ( $this, array (	'categoryform' 	=> 	'COM_VIRTUEMART_CATEGORY_FORM_LBL',
+                                            'categoryparams' 	=> 	'COM_MENUS_DISPLAY_FIELDSET_LABEL',
 									'images' 	=> 	'COM_VIRTUEMART_IMAGES'
 									 ),$this->category->virtuemart_category_id );
 ?>

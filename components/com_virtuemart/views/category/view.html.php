@@ -34,6 +34,22 @@ class VirtuemartViewCategory extends VmView {
 
 	public function display($tpl = null) {
 
+		//For BC, we convert first the new config param names to the old ones
+		//Attention, this will be removed around 2018.
+		VmConfig::set('show_featured', VmConfig::get('featured'));
+		VmConfig::set('show_discontinued', VmConfig::get('discontinued'));
+		VmConfig::set('show_topTen', VmConfig::get('topten'));
+		VmConfig::set('show_recent', VmConfig::get('recent'));
+		VmConfig::set('show_latest', VmConfig::get('latest'));
+
+		VmConfig::set('featured_products_rows', VmConfig::get('featured_rows'));
+		VmConfig::set('discontinued_products_rows', VmConfig::get('discontinued_rows'));
+		VmConfig::set('topTen_products_rows', VmConfig::get('topten_rows'));
+		VmConfig::set('recent_products_rows', VmConfig::get('recent_rows'));
+		VmConfig::set('latest_products_rows', VmConfig::get('latest_rows'));
+		VmConfig::set('omitLoaded_topTen', VmConfig::get('omitLoaded_topten'));
+		VmConfig::set('showCategory', VmConfig::get('showcategory'));
+
 		$this->show_prices  = (int)VmConfig::get('show_prices',1);
 
 		if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
@@ -50,9 +66,8 @@ class VirtuemartViewCategory extends VmView {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 		// set search and keyword
-		if ($keyword = vRequest::getString('keyword', false)){//uword('keyword', false, ' ,-,+,.,_')) {
-			$pathway->addItem($keyword);
-			//$title .=' ('.$keyword.')';
+		if ($this->keyword = vRequest::getString('keyword', false)){//uword('keyword', false, ' ,-,+,.,_')) {
+			$pathway->addItem($this->keyword);
 		}
 
 		if( ShopFunctionsF::isFEmanager('product.edit') ){
@@ -119,62 +134,75 @@ class VirtuemartViewCategory extends VmView {
 		}
 		if($this->categoryId===-1) $this->categoryId = 0;
 
-		/*$reqCatId = vRequest::getInt('virtuemart_category_id', 0);
-
-		$reg = new JRegistry;
-		$reg->loadString($menu->params);
-		$params = $reg->toArray();
-		$t = '';
-		/*foreach($params as $k => $v){
-			if(strpos($k,'stf_')===0){
-				$t .= "'".substr($k,4)."', ";
-			}
-		}
-		vmdebug('my t',$t);//*/
-		$paramNames = array('itemid'=>'',
-				'categorylayout' => VmConfig::get('categorylayout', 0),
-				'show_store_desc' => VmConfig::get('show_store_desc',1),
-				'showcategory_desc' => VmConfig::get('showcategory_desc', 1),
-				'showcategory' => VmConfig::get('showCategory',1),
-				'categories_per_row' => VmConfig::get('categories_per_row',3),
-				'showproducts' => VmConfig::get('showproducts',1),
-				'showsearch' => VmConfig::get('showsearch',0),
-				'productsublayout' => VmConfig::get('productsublayout', 0),
-				'products_per_row' => VmConfig::get('products_per_row', 3),
-				'featured' => VmConfig::get('show_featured',1),
-				'featured_rows' => VmConfig::get('featured_products_rows',1),
-				'discontinued' => VmConfig::get('show_discontinued',0),
-				'discontinued_rows' => VmConfig::get('discontinued_products_rows',1),
-				'latest' => VmConfig::get('show_latest',1),
-				'latest_rows' => VmConfig::get('latest_products_rows',1),
-				'topten' => VmConfig::get('show_topTen',1),
-				'topten_rows' => VmConfig::get('topTen_products_rows',1),
-				'recent' => VmConfig::get('show_recent',0),
-				'recent_rows' => VmConfig::get('recent_products_rows',1));
-
 		$prefix = '';
 
 		if(isset($menu->query['virtuemart_category_id']) and $menu->query['virtuemart_category_id']!=$this->categoryId) {
 			$prefix = 'stf_';
 		}
 
-		foreach($paramNames as $k => $v){
-			$this->$k = $menu->params->get($prefix.$k,$v);
-		}
-		$this->storefront = $menu->params->get('storefront');
-		$this->perRow = $this->products_per_row;
+		$paramNames = array('itemid'=>'',
+		'categorylayout' => VmConfig::get('categorylayout', 0),
+		'show_store_desc' => VmConfig::get('show_store_desc',1),
+		'showcategory_desc' => VmConfig::get('showcategory_desc', 1),
+		'showcategory' => VmConfig::get('showCategory',1),
+		'categories_per_row' => VmConfig::get('categories_per_row',3),
+		'showproducts' => VmConfig::get('showproducts',1),
+		'showsearch' => VmConfig::get('showsearch',0),
+		'productsublayout' => VmConfig::get('productsublayout', 0),
+		'products_per_row' => VmConfig::get('products_per_row', 3),
+		'featured' => VmConfig::get('featured',1),
+		'featured_rows' => VmConfig::get('featured_rows',1),
+		'discontinued' => VmConfig::get('discontinued',0),
+		'discontinued_rows' => VmConfig::get('discontinued_rows',1),
+		'latest' => VmConfig::get('latest',1),
+		'latest_rows' => VmConfig::get('latest_rows',1),
+		'topten' => VmConfig::get('topTen',1),
+		'topten_rows' => VmConfig::get('topTen_rows',1),
+		'recent' => VmConfig::get('recent',0),
+		'recent_rows' => VmConfig::get('recent_rows',1));
+
+/*		$catParams =
+    [limit_list_step] => 0
+    [limit_list_initial] => 0
+    [metadesc] =>
+    [customtitle] =>
+    [metakey] =>
+    [metarobot] =>
+    [metaauthor] => ;*/
 
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
 
-
 		$category = $categoryModel->getCategory($this->categoryId);
+		//vmdebug('my category',$category);
+
+
+		foreach($paramNames as $k => $v){
+			if(!isset($category->$k) or $category->$k==''){
+				$this->$k = $menu->params->get($prefix.$k,$v);
+			} else if(isset($category->$k)){
+				$this->$k = $category->$k;
+			}
+		}
+
+		$this->storefront = $menu->params->get('storefront',0);
+		$this->perRow = $this->products_per_row;
+		$this->perRow = empty($category->products_per_row)? $this->products_per_row:$category->products_per_row;
+
+		$vendorId = $category->virtuemart_vendor_id;
+
+		$ratingModel = VmModel::getModel('ratings');
+		$productModel->withRating = $this->showRating = $ratingModel->showRating();
+
+		$this->products = false;
+
+		$this->vmPagination = '';
+		$this->orderByList = '';
 
 		$this->searchcustom = '';
 		$this->searchCustomValues = '';
 
-
-		if($keyword or $this->showsearch){
+		if($this->keyword or $this->showsearch){
 			vmSetStartTime('getSearchCustom');
 			$customfields = vRequest::getString('customfields');
 			$app = JFactory::getApplication();
@@ -196,228 +224,197 @@ class VirtuemartViewCategory extends VmView {
 			$app->setUserState('com_virtuemart.customfields','');
 		}
 
-		$this->assignRef('keyword', $keyword);
+		$imgAmount = VmConfig::get('prodimg_browse',1);
+		$dynamic = vRequest::getInt('dynamic',false);
 
+		$legacy = VmConfig::get('legacylayouts',1);
+		if ($dynamic) {
 
-
-		if(!empty($category)){
-
-			$vendorId = $category->virtuemart_vendor_id;
-
-
-			$ratingModel = VmModel::getModel('ratings');
-			$productModel->withRating = $this->showRating = $ratingModel->showRating();
-
-			$this->products = false;
-
-
-
-			$this->perRow = empty($category->products_per_row)? $this->products_per_row:$category->products_per_row;
-
-			$this->vmPagination = '';
-			$this->orderByList = '';
-
-			$imgAmount = VmConfig::get('prodimg_browse',1);
-			$dynamic = vRequest::getInt('dynamic',false);
-
-			$legacy = VmConfig::get('legacylayouts',1);
-			if ($dynamic) {
-
-				$id = vRequest::getInt('virtuemart_product_id',false);
-				$p = $productModel->getProduct ($id);
-				$this->products['0'][] = $p;
-				$productModel->addImages($this->products['0'], $imgAmount );
-				$this->orderByList = array('orderby' => '', 'manufacturer' => '');
-				if($legacy) {
-					$this->vmPagination = $productModel->getPagination($this->perRow);
-				}
-			} else {
-
-				if(!$legacy) {
-					$opt = array('featured', 'discontinued', 'latest', 'topten', 'recent');
-					foreach( $opt as $o ) {
-
-						VirtueMartModelProduct::$omitLoaded = VmConfig::get('omitLoaded_'.$o);
-						//Lets check, if we use the new Frontpages settings
-						if(!empty($this->$o) and !empty($this->{$o.'_rows'})) {
-							$this->products[$o] = $productModel->getProductListing( $o, $this->perRow*$this->{$o.'_rows'} );
-							$productModel->addImages( $this->products[$o], $imgAmount );
-						}
-					}
-				}
-				if($this->showproducts or $keyword) {
-
-					if(!$keyword) VirtueMartModelProduct::$omitLoaded = VmConfig::get('omitLoaded');
-					// Load the products in the given category
-					$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
-					$this->vmPagination = $productModel->getPagination($this->perRow);
-					$this->orderByList = $productModel->getOrderByList($this->categoryId);
-					$this->products['0'] = $productModel->getProducts ($ids);
-					$productModel->addImages($this->products['0'], $imgAmount );
-				}
+			$id = vRequest::getInt('virtuemart_product_id',false);
+			$p = $productModel->getProduct ($id);
+			$this->products['0'][] = $p;
+			$productModel->addImages($this->products['0'], $imgAmount );
+			$this->orderByList = array('orderby' => '', 'manufacturer' => '');
+			if($legacy) {
+				$this->vmPagination = $productModel->getPagination($this->perRow);
 			}
-
-			if ($this->products) {
-
-				$this->currency = CurrencyDisplay::getInstance( );
-				$display_stock = VmConfig::get('display_stock',1);
-				$showCustoms = VmConfig::get('show_pcustoms',1);
-				if($display_stock or $showCustoms){
-
-					if(!$showCustoms){
-						foreach($this->products as $pType => $productSeries){
-							foreach($productSeries as $i => $productItem){
-								$this->products[$pType][$i]->stock = $productModel->getStockIndicator($productItem);
-							}
-						}
-					} else {
-						if (!class_exists ('vmCustomPlugin')) {
-							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
-						}
-						//vmdebug('My products ',$this->products);
-						foreach($this->products as $pType => $productSeries) {
-							shopFunctionsF::sortLoadProductCustomsStockInd($this->products[$pType],$productModel);
-						}
-					}
-				}
-			}
-
-			// Add feed links
-			if ($this->products  && VmConfig::get('feed_cat_published', 0)==1) {
-				$link = '&format=feed&limitstart=';
-				$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-				$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
-				$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-				$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
-			}
-
-			$this->showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
-
-
-
-			//No redirect here, for category id = 0 means show ALL categories! note by Max Milbers
-			if ((!empty($this->categoryId) and $this->categoryId!==-1 ) and (empty($category->slug) or !$category->published)) {
-
-				$this->handle404();
-			}
-
-			shopFunctionsF::setLastVisitedCategoryId($this->categoryId);
-			shopFunctionsF::setLastVisitedManuId($virtuemart_manufacturer_id);
-
-			// Add the category name to the pathway
-			if ($category->parents) {
-				foreach ($category->parents as $c){
-					$pathway->addItem(strip_tags(vmText::_($c->category_name)),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id, FALSE));
-				}
-			}
-			$catImgAmount = VmConfig::get('catimg_browse',1);
-			$categoryModel->addImages($category,$catImgAmount);
-
-			//$this->showcategory = vRequest::getInt('showcategory',true);
-			if($this->showcategory){
-			//if($category->category_layout == 'categories' or ($this->categoryId >0 and $virtuemart_manufacturer_id <1)){
-				$category->children = $categoryModel->getChildCategoryList( $vendorId, $this->categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
-				$categoryModel->addImages($category->children,$catImgAmount);
-			} else {
-				$category->children = false;
-			}
-
-			if (VmConfig::get('enable_content_plugin', 0)) {
-				shopFunctionsF::triggerContentPlugin($category, 'category','category_description');
-			}
-
-
-			$metadesc = '';
-			$metakey = '';
-			$metarobot = '';
-			$metaauthor = '';
-			if(isset($menu->params)){
-				$metadesc = $menu->params->get('menu-meta_description');
-				$metakey = $menu->params->get('menu-meta_keywords');
-				$metarobot = $menu->params->get('robots');
-			}
-
-			if(($this->storefront and empty($prefix)) or $this->show_store_desc){
-
-				$vendorModel = VmModel::getModel('vendor');
-
-				$vendorModel->setId(1);
-				$this->vendor = $vendorModel->getVendor(1);
-				if($this->storefront and empty($prefix)){
-					if(empty($this->vendor->customtitle)){
-
-						if ($menu){
-							$menuTitle = $menu->params->get('page_title');
-							if(empty($menuTitle)) {
-								$menuTitle = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
-							}
-							$category->customtitle = $menuTitle;	//$document->setTitle($menuTitle);
-						} else {
-							$title = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
-							$category->customtitle = $title; 	//$document->setTitle($title);
-						}
-					} else {
-						$category->customtitle = $this->vendor->customtitle;//$document->setTitle($this->vendor->customtitle);
-					}
-
-
-					if(!empty($this->vendor->metadesc)) $metadesc = $this->vendor->metadesc;
-					if(!empty($this->vendor->metakey)) $metakey = $this->vendor->metakey;
-					if(!empty($this->vendor->metarobot)) $metarobot = $this->vendor->metarobot;
-					if(!empty($this->vendor->metaauthor)) $metaauthor = $this->vendor->metaauthor;
-
-				}
-
-			} else {
-
-				if ($category->metadesc) {
-					$metadesc = $category->metadesc;
-				}
-				if ($category->metakey) {
-					$metakey = $category->metakey;
-				}
-				if ($category->metarobot) {
-					$metarobot = $category->metarobot;
-				}
-
-
-				if ($this->app->getCfg('MetaAuthor') == '1' and !empty($category->metaauthor)) {
-					$metaauthor = $category->metaauthor;
-				}
-			}
-
-			$document->setMetaData('description',$metadesc);
-			$document->setMetaData('keywords', $metakey);
-			$document->setMetaData('robots', $metarobot);
-			$document->setMetaData('author', $metaauthor);
-
-			if(empty($category->category_template)){
-				$category->category_template = VmConfig::get('categorytemplate');
-			}
-
-			if(!empty($this->categorylayout)){
-			//if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$this->categoryId){
-				$category->category_layout = $this->categorylayout;
-			}
-
-			vmJsApi::jPrice();
-
-			$this->productsLayout = 'products'; //VmConfig::get('productsublayout','products');
-			if(!empty($this->productsublayout)){
-				$this->productsLayout = $this->productsublayout;
-			}
-
-
-			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		} else {
-			//Backward compatibility
-			if(!isset($category)) {
-				$category = new stdClass();
-				$category->category_name = '';
-				$category->category_description= '';
-				$category->haschildren= false;
+
+			if(!$legacy) {
+				$opt = array('featured', 'discontinued', 'latest', 'topten', 'recent');
+				foreach( $opt as $o ) {
+
+					VirtueMartModelProduct::$omitLoaded = VmConfig::get('omitLoaded_'.$o);
+					//Lets check, if we use the new Frontpages settings
+					if(!empty($this->$o) and !empty($this->{$o.'_rows'})) {
+						$this->products[$o] = $productModel->getProductListing( $o, $this->perRow*$this->{$o.'_rows'} );
+						$productModel->addImages( $this->products[$o], $imgAmount );
+					}
+				}
+			}
+			if($this->showproducts or $this->keyword) {
+
+				if(!$this->keyword) VirtueMartModelProduct::$omitLoaded = VmConfig::get('omitLoaded');
+				// Load the products in the given category
+				$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
+				$this->vmPagination = $productModel->getPagination($this->perRow);
+				$this->orderByList = $productModel->getOrderByList($this->categoryId);
+				$this->products['0'] = $productModel->getProducts ($ids);
+				$productModel->addImages($this->products['0'], $imgAmount );
 			}
 		}
+
+		if ($this->products) {
+
+			$this->currency = CurrencyDisplay::getInstance( );
+			$display_stock = VmConfig::get('display_stock',1);
+			$showCustoms = VmConfig::get('show_pcustoms',1);
+			if($display_stock or $showCustoms){
+
+				if(!$showCustoms){
+					foreach($this->products as $pType => $productSeries){
+						foreach($productSeries as $i => $productItem){
+							$this->products[$pType][$i]->stock = $productModel->getStockIndicator($productItem);
+						}
+					}
+				} else {
+					if (!class_exists ('vmCustomPlugin')) {
+						require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+					}
+					//vmdebug('My products ',$this->products);
+					foreach($this->products as $pType => $productSeries) {
+						shopFunctionsF::sortLoadProductCustomsStockInd($this->products[$pType],$productModel);
+					}
+				}
+			}
+		}
+
+		// Add feed links
+		if ($this->products  && VmConfig::get('feed_cat_published', 0)==1) {
+			$link = '&format=feed&limitstart=';
+			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+			$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
+			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+			$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
+		}
+
+		$this->showBasePrice = (vmAccess::manager() or vmAccess::isSuperVendor());
+
+		//No redirect here, for category id = 0 means show ALL categories! note by Max Milbers
+		if ((!empty($this->categoryId) and $this->categoryId!==-1 ) and (empty($category->slug) or !$category->published)) {
+
+			$this->handle404();
+		}
+
+		shopFunctionsF::setLastVisitedCategoryId($this->categoryId);
+		shopFunctionsF::setLastVisitedManuId($virtuemart_manufacturer_id);
+
+		// Add the category name to the pathway
+		if ($category->parents) {
+			foreach ($category->parents as $c){
+				$pathway->addItem(strip_tags(vmText::_($c->category_name)),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id, FALSE));
+			}
+		}
+		$catImgAmount = VmConfig::get('catimg_browse',1);
+		$categoryModel->addImages($category,$catImgAmount);
+
+		//$this->showcategory = vRequest::getInt('showcategory',true);
+		if($this->showcategory){
+		//if($category->category_layout == 'categories' or ($this->categoryId >0 and $virtuemart_manufacturer_id <1)){
+			$category->children = $categoryModel->getChildCategoryList( $vendorId, $this->categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
+			$categoryModel->addImages($category->children,$catImgAmount);
+		} else {
+			$category->children = false;
+		}
+
+		if (VmConfig::get('enable_content_plugin', 0)) {
+			shopFunctionsF::triggerContentPlugin($category, 'category','category_description');
+		}
+
+
+		$metadesc = '';
+		$metakey = '';
+		$metarobot = '';
+		$metaauthor = '';
+		if(isset($menu->params)){
+			$metadesc = $menu->params->get('menu-meta_description');
+			$metakey = $menu->params->get('menu-meta_keywords');
+			$metarobot = $menu->params->get('robots');
+		}
+
+		if(($this->storefront and empty($prefix)) or $this->show_store_desc){
+
+			$vendorModel = VmModel::getModel('vendor');
+
+			$vendorModel->setId(1);
+			$this->vendor = $vendorModel->getVendor(1);
+			if($this->storefront and empty($prefix)){
+				if(empty($this->vendor->customtitle)){
+
+					if ($menu){
+						$menuTitle = $menu->params->get('page_title');
+						if(empty($menuTitle)) {
+							$menuTitle = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
+						}
+						$category->customtitle = $menuTitle;	//$document->setTitle($menuTitle);
+					} else {
+						$title = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
+						$category->customtitle = $title; 	//$document->setTitle($title);
+					}
+				} else {
+					$category->customtitle = $this->vendor->customtitle;//$document->setTitle($this->vendor->customtitle);
+				}
+
+
+				if(!empty($this->vendor->metadesc)) $metadesc = $this->vendor->metadesc;
+				if(!empty($this->vendor->metakey)) $metakey = $this->vendor->metakey;
+				if(!empty($this->vendor->metarobot)) $metarobot = $this->vendor->metarobot;
+				if(!empty($this->vendor->metaauthor)) $metaauthor = $this->vendor->metaauthor;
+
+			}
+
+		} else {
+
+			if ($category->metadesc) {
+				$metadesc = $category->metadesc;
+			}
+			if ($category->metakey) {
+				$metakey = $category->metakey;
+			}
+			if ($category->metarobot) {
+				$metarobot = $category->metarobot;
+			}
+
+
+			if ($this->app->getCfg('MetaAuthor') == '1' and !empty($category->metaauthor)) {
+				$metaauthor = $category->metaauthor;
+			}
+		}
+
+		$document->setMetaData('description',$metadesc);
+		$document->setMetaData('keywords', $metakey);
+		$document->setMetaData('robots', $metarobot);
+		$document->setMetaData('author', $metaauthor);
+
+		if(empty($category->category_template)){
+			$category->category_template = VmConfig::get('categorytemplate');
+		}
+
+		if(!empty($this->categorylayout)){
+		//if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$this->categoryId){
+			$category->category_layout = $this->categorylayout;
+		}
+
+		vmJsApi::jPrice();
+
+		$this->productsLayout = 'products'; //VmConfig::get('productsublayout','products');
+		if(!empty($this->productsublayout)){
+			$this->productsLayout = $this->productsublayout;
+		}
+
+
+		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
+		//}
 
 		$this->assignRef('category', $category);
 
@@ -435,8 +432,8 @@ class VirtuemartViewCategory extends VmView {
 	  	if(vRequest::getInt('error')){
 			$title .=' '.vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
-		if(!empty($keyword)){
-			$title .=' ('.strip_tags(htmlspecialchars_decode($keyword)).')';
+		if(!empty($this->keyword)){
+			$title .=' ('.strip_tags(htmlspecialchars_decode($this->keyword)).')';
 		}
 
 		if ($virtuemart_manufacturer_id>0 and !empty($this->products['0'])){

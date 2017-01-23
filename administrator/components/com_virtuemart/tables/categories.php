@@ -53,7 +53,7 @@ class TableCategories extends VmTable {
 	var $ordering		= 0;
 
 	var $shared 		= 0;
-
+	var $cat_params = '';
 	/** @var int category limit step*/
 	var $limit_list_step 	 = 0;
 	/** @var int category limit initial */
@@ -85,6 +85,34 @@ class TableCategories extends VmTable {
 		$this->setObligatoryKeys('category_name');
 		$this->setLoggable();
 		$this->setTranslatable(array('category_name','category_description','metadesc','metakey','customtitle'));
+
+		$varsToPushParam = array(
+					'show_store_desc' => array('','int'),
+					'showcategory_desc' => array('','int'),
+					'showcategory' => array('','int'),
+					'categories_per_row' => array('','int'),
+					'showproducts' => array('','int'),
+					'omitLoaded' => array('','int'),
+					'showsearch' => array('','int'),
+					'productsublayout' => array('','int'),
+					'products_per_row' => array('','int'),
+					'featured' => array('','int'),
+					'featured_rows' => array('','int'),
+					'omitLoaded_featured' => array('','int'),
+					'discontinued' => array('','int'),
+					'discontinued_rows' => array('','int'),
+					'omitLoaded_discontinued' => array('','int'),
+					'latest' => array('','int'),
+					'latest_rows' => array('','int'),
+					'omitLoaded_latest' => array('','int'),
+					'topten' => array('','int'),
+					'topten_rows' => array('','int'),
+					'omitLoaded_topten' => array('','int'),
+					'recent' => array('','int'),
+					'recent_rows' => array('','int'),
+					'omitLoaded_recent' => array('','int')
+		);
+		$this->setParameterable('cat_params',$varsToPushParam);
 		$this->setSlug('category_name');
 		$this->setTableShortCut('c');
 	}

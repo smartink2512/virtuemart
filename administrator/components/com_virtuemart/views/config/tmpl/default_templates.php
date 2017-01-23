@@ -16,59 +16,31 @@
  * @version $Id: default_templates.php 7073 2013-07-15 16:24:50Z Milbo $
  */
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+$params = VmConfig::loadConfig();
+
+?>
 <table width="100%">
 <tr>
 <td valign="top" width="50%">
-<fieldset>
-	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS'); ?></legend>
-	<table class="admintable">
-		<?php
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC','show_store_desc', VmConfig::get('show_store_desc',1));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORYDESC', 'showcategory_desc', VmConfig::get('showcategory_desc', 1));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_SEARCH', 'showsearch', VmConfig::get('showsearch', 1));
-		echo '</table>';
-		echo '<table class="admintable">';
-		echo '<tr><th style="min-width:240px;width:76%;"></th>
-<th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_SHOW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_SHOW').'</span></th>
-<th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_PER_ROW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_PER_ROW').'</span></th>
-<th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></th>
-</tr>';
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY', 'showCategory', 'categories_per_row', 0, 3);
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS', 'showproducts', 'products_per_row', 'omitLoaded', 3);
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS', 'show_manufacturers','manufacturer_per_row', 0, 3);
-		echo '</table>';
 
-		echo '<table class="admintable">';
-		echo '<tr><th style="min-width:240px;width:76%;"></th>
-<th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_SHOW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_SHOW').'</span></th>
-<th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_ROWS_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_ROWS').'</span></th>
-<th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></th>
-</tr>';
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED', 'show_featured', 'featured_products_rows', 'omitLoaded_featured');
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_DISCONTINUED', 'show_discontinued', 'discontinued_products_rows', 'omitLoaded_discontinued');
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN', 'show_topTen', 'topTen_products_rows', 'omitLoaded_topTen');
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT', 'show_recent', 'recent_products_rows', 'omitLoaded_recent');
-		echo $this->rowShopFrontSet('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST', 'show_latest', 'latest_products_rows', 'omitLoaded_latest');
-		?>
-	</table>
-</fieldset>
+    <?php require (VMPATH_ADMIN .'/views/config/tmpl/template_params.php'); ?>
 
-	<fieldset>
-		<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_LAYOUT_SETTINGS'); ?></legend>
-		<table class="admintable">
+    <fieldset>
+        <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_LAYOUT_SETTINGS'); ?></legend>
+        <table class="admintable">
 			<?php
-
 			echo VmHTML::row('genericlist','COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE',$this->jTemplateList, 'vmtemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('vmtemplate', 'default'));
 			echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE',$this->jTemplateList, 'categorytemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('categorytemplate', 'default'));
 
 			echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CART_LAYOUT', $this->cartLayoutList, 'cartlayout', 'size=1', 'value', 'text', VmConfig::get('cartlayout', 'default'));
 			echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT', $this->categoryLayoutList, 'categorylayout', 'size=1', 'value', 'text', VmConfig::get('categorylayout', 0));
-			echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_PRODUCTS_SUBLAYOUT', $this->productsFieldList, 'productsublayout', 'size=1', 'value', 'text', VmConfig::get('productsublayout', 'products'));
+			echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_PRODUCTS_SUBLAYOUT', $this->productsFieldList, 'productsublayout', 'size=1', 'value', 'text', VmConfig::get('productsublayout', 0));
 			echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LAYOUT', $this->productLayoutList, 'productlayout', 'size=1', 'value', 'text', VmConfig::get('productlayout', 0));
+
 			?>
-		</table>
-	</fieldset>
+        </table>
+    </fieldset>
 
 	<fieldset>
 		<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_DEPRECATED'); ?></legend>

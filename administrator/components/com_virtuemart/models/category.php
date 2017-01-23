@@ -76,7 +76,6 @@ class VirtueMartModelCategory extends VmModel {
 				$this->_cache[$this->_id][$childs]->virtuemart_media_id = false;
    			}
 
-
 			if($fe){
 				if(empty($this->_cache[$this->_id][$childs]->category_template)){
 					$this->_cache[$this->_id][$childs]->category_template = VmConfig::get('categorytemplate');
@@ -87,6 +86,9 @@ class VirtueMartModelCategory extends VmModel {
 				}
 			}
 
+			$this->_cache[$this->_id][$childs]->categorytemplate = $this->_cache[$this->_id][$childs]->category_template;
+			$this->_cache[$this->_id][$childs]->categorylayout = $this->_cache[$this->_id][$childs]->category_layout;
+			$this->_cache[$this->_id][$childs]->productlayout = $this->_cache[$this->_id][$childs]->category_product_layout;
 
    			if($childs){
    				$this->_cache[$this->_id][$childs]->haschildren = $this->hasChildren($this->_id);
@@ -544,6 +546,10 @@ class VirtueMartModelCategory extends VmModel {
 		if(VmConfig::get('productlayout') == $data['category_product_layout']){
 			$data['category_product_layout'] = 0;
 		}
+
+		$data['category_template'] = $data['categorytemplate'];
+		$data['category_layout'] = $data['categorylayout'];
+		$data['category_product_layout'] = $data['productlayout'];
 
 		$table->bindChecknStore($data);
 

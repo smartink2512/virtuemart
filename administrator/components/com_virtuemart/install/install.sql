@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `limit_list_step` char(32),
   `limit_list_initial` smallint(1) UNSIGNED,
   `hits` int(1) unsigned NOT NULL DEFAULT '0',
+  `cat_params` varchar(17000) NOT NULL DEFAULT '',
   `metarobot` char(40) NOT NULL DEFAULT '',
   `metaauthor` char(64) NOT NULL DEFAULT '',
   `ordering` int(1) NOT NULL DEFAULT '0',

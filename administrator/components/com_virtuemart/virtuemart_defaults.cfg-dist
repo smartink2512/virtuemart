@@ -83,7 +83,7 @@ product_navigation=1
 display_stock=1
 vmtemplate=0
 categorytemplate=0
-showCategory=1
+showcategory=1
 categorylayout=0
 categories_per_row=3
 productlayout=0
@@ -93,16 +93,14 @@ llimit_init_FE=24
 vmlayout=0
 show_store_desc=1
 show_categories=1
-homepage_categories_per_row=3
-homepage_products_per_row=3
-show_featured=1
-featured_products_rows=1
-show_topTen=1
-topTen_products_rows=1
-show_recent=1
-recent_products_rows=1
-show_latest=1
-latest_products_rows=1
+
+featured_rows=1
+topten=1
+topten_rows=1
+recent=1
+recent_rows=1
+latest=1
+latest_rows=1
 legacylayouts=0
 
 ##Paths

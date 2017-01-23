@@ -315,8 +315,10 @@ class VirtueMartViewProductdetails extends VmView {
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnProductDisplayShipment', array($product, &$this->productDisplayShipments));
-			$returnValues = $dispatcher->trigger('plgVmOnProductDisplayPayment', array($product, &$this->productDisplayPayments));
+
+			$productC = clone($product);
+			$returnValues = $dispatcher->trigger('plgVmOnProductDisplayShipment', array($productC, &$this->productDisplayShipments));
+			$returnValues = $dispatcher->trigger('plgVmOnProductDisplayPayment', array($productC, &$this->productDisplayPayments));
 
 			if (empty($category->category_template)) {
 				$category->category_template = VmConfig::get('categorytemplate');

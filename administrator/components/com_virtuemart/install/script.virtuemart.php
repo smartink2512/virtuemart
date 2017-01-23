@@ -36,6 +36,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				defined('VMPATH_ROOT') or define('VMPATH_ROOT', $this->source_path);
 			} else {
 				defined('VMPATH_ROOT') or define('VMPATH_ROOT', JPATH_ROOT);
+				$this->source_path = VMPATH_ROOT .'/administrator/components/com_virtuemart';
 			}
 			defined('VMPATH_ADMIN') or define('VMPATH_ADMIN', VMPATH_ROOT .'/administrator/components/com_virtuemart');
 			$this->path = VMPATH_ADMIN;
@@ -219,7 +220,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function update ($loadVm = true) {
 
-			if($loadVm) $this->loadVm();
+			//if($loadVm)
+			$this->loadVm($loadVm);
 
 			if(!$this->checkIfUpdate()){
 				return $this->install($loadVm);
@@ -308,9 +310,42 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->checkFixJoomlaBEMenuEntries();
 
 			$this->deleteSwfUploader();
+
+			$this->updateOldConfigEntries();
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
+		}
+
+		private function updateOldConfigEntries(){
+
+			$config = VmConfig::loadConfig();
+			if(VmConfig::get('featured','none') == 'none'){
+				$config->set('featured', $config->get('show_featured', 1));
+				$config->set('discontinued', $config->get('show_discontinued', 0));
+				$config->set('topten', $config->get('show_topTen', 0));
+				$config->set('recent', $config->get('show_recent', 0));
+				$config->set('latest', $config->get('show_latest', 0));
+
+				$config->set('featured_rows', $config->get('featured_products_rows',1));
+				$config->set('discontinued_rows', $config->get('discontinued_products_rows',1));
+				$config->set('topten_rows', $config->get('topTen_products_rows',1));
+				$config->set('recent_rows', $config->get('recent_products_rows',1));
+				$config->set('latest_rows', $config->get('latest_products_rows',1));
+
+				$config->set('omitLoaded_topten', $config->get('omitLoaded_topTen',1));
+				$config->set('showcategory', $config->get('showCategory',1));
+
+				$data['virtuemart_config_id'] = 1;
+				$data['config'] = $config->toString();
+
+				$confTable = VmModel::getModel('config')->getTable('configs');
+				$confTable->bindChecknStore($data);
+
+				VmConfig::loadConfig(true);
+			}
+
+
 		}
 
 		private function deleteSwfUploader(){
