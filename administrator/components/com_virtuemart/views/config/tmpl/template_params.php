@@ -18,18 +18,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$options = array();
+if(vRequest::getCmd('view')!='config'){
+	$options[] = JHtml::_('select.option', '',  vmText::_('JGLOBAL_USE_GLOBAL'));
+}
+$options[] = JHtml::_('select.option', '0',  vmText::_('JNO'));
+$options[] = JHtml::_('select.option', '1', vmText::_('JYES'));
+
+VirtuemartViewConfig::$options = $options;
+//vmdebug('my options',$options);
+//echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE',$this->jTemplateList, 'categorytemplate', 'size=1 width=200', 'value', 'name', $this->category->get('categorytemplate', 'default'));
 ?>
 
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS'); ?></legend>
 	<table class="admintable">
 		<?php
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC','show_store_desc', $params->get('show_store_desc',1));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORYDESC', 'showcategory_desc', $params->get('showcategory_desc', 1));
-		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_SEARCH', 'showsearch', $params->get('showsearch', 1));
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC',$options, 'show_store_desc', '', 'value', 'text', $params->get('show_store_desc',1));
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORYDESC',$options, 'showcategory_desc', '', 'value', 'text', $params->get('showcategory_desc',1));
+		echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_SHOW_SEARCH',$options, 'showsearch', '', 'value', 'text', $params->get('showsearch',1));
+
 		echo '</table>';
 		echo '<table class="admintable">';
-		echo '<tr><th style="min-width:160px;width:76%;"></th>
+		echo '<tr><th style="min-width:160px;width:70%;"></th>
 <th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_SHOW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_SHOW').'</span></th>
 <th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_PER_ROW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_PER_ROW').'</span></th>
 <th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></th>
@@ -40,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 		echo '</table>';
 
 		echo '<table class="admintable">';
-		echo '<tr><th style="min-width:160px;width:76%;"></th>
+		echo '<tr><th style="min-width:160px;width:70%;"></th>
 <th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_SHOW_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_SHOW').'</span></th>
 <th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_ROWS_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_ROWS').'</span></th>
 <th style="min-width:40px;width:8%;text-align: center;"><span class="hasTip" title="'.htmlentities(vmText::_('COM_VM_ADMIN_CFG_OMIT_TIP')).'">'.vmText::_('COM_VM_ADMIN_CFG_OMIT').'</span></th>

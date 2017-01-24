@@ -26,7 +26,10 @@ $params = $this->category;
 <table class="adminform" >
         <tr valign="top">
             <td>
-				<?php require (VMPATH_ADMIN .'/views/config/tmpl/template_params.php'); ?>
+				<?php
+				$type = 'genericlist';
+				require (VMPATH_ADMIN .'/views/config/tmpl/template_params.php');
+				?>
             </td>
             <td>
             <fieldset>

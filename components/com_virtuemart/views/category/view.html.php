@@ -174,7 +174,6 @@ class VirtuemartViewCategory extends VmView {
 		$productModel = VmModel::getModel('product');
 
 		$category = $categoryModel->getCategory($this->categoryId);
-		//vmdebug('my category',$category);
 
 
 		foreach($paramNames as $k => $v){

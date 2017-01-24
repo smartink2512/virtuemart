@@ -95,7 +95,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$result = array();
 		if($emptyOption){
-			$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
+			$emptyOption = JHtml::_('select.option', '', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
 			$result[] = $emptyOption;
 		}
 

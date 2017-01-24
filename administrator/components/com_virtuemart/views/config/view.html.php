@@ -182,6 +182,7 @@ WHERE published="1"';
 		if(!empty($revproxvar)) vmdebug('My server variable ',$_SERVER);
 	}
 
+	static $options = array();
 	static public function rowShopFrontSet($params, $label, $name, $name2, $name3 = 0, $default = 1){
 
 		$lang =JFactory::getLanguage();
@@ -198,10 +199,13 @@ WHERE published="1"';
 		$h .= '<td class="key">
 				'.$label.'
 			</td>';
-		$h .= '<td style="text-align: center;">'.VmHtml::checkbox($name, $params->get($name, 1)).'</td>';
+		//$h .= '<td style="text-align: center;">'.VmHtml::checkbox($name, $params->get($name, 1)).'</td>';
+		$h .= '<td style="text-align: center;">'.JHtml::_ ('Select.genericlist', self::$options, $name, '', 'value', 'text', $params->get($name, 1)).'</td>';
+
+
 		$h .= '<td>'.VmHtml::input($name2, $params->get($name2, $default),'class="inputbox"','',4,4).'</td>';
 		$h .= '<td style="text-align: center;">';
-		if($name3 !== 0) $h .= VmHtml::checkbox($name3, $params->get($name3, 0));
+		if($name3 !== 0) $h .= JHtml::_ ('Select.genericlist', self::$options, $name3, '', 'value', 'text', $params->get($name3, 1));
 		$h .= "</td>\n</tr>";
 		return $h;
 	}

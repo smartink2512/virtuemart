@@ -24,7 +24,10 @@ $params = VmConfig::loadConfig();
 <tr>
 <td valign="top" width="50%">
 
-    <?php require (VMPATH_ADMIN .'/views/config/tmpl/template_params.php'); ?>
+    <?php
+    $type = 'checkbox';
+    require (VMPATH_ADMIN .'/views/config/tmpl/template_params.php');
+    ?>
 
     <fieldset>
         <legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_LAYOUT_SETTINGS'); ?></legend>

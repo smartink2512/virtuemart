@@ -545,7 +545,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 		$virtuemart_vendor_id = 1; //At the moment one, could make sense to use the cart vendor id
 		if ($this->getPluginMethods($virtuemart_vendor_id) === 0) {
-			return FALSE;
+			return NULL;
 		}
 
 		foreach ($this->methods as $this->_currentMethod) {
