@@ -271,9 +271,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			// More reviews link
 			//vRequest::setVar('showall', 1);
-			$uristring = JRoute::_(vmURI::getGetUrl().'&showall=1');
-
-			$this->assignRef('more_reviews', $uristring);
+			$this->more_reviews = JRoute::_(vmURI::getCurrentUrlBy('get').'&showall=1');
 
 			if ($product->metadesc) {
 				$document->setDescription( strip_tags(html_entity_decode($product->metadesc,ENT_QUOTES)) );

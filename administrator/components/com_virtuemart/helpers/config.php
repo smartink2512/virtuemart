@@ -814,18 +814,25 @@ class VmConfig {
 	}
 
 	/*
-	* Set defaut language tag for translatable table
-	*
+	* Set default language tag for translatable table
+	* @deprecated please use vmLanguage::setLanguageByTag
 	* @author Max Milbers
 	* @return string valid langtag
 	*/
 	static public function setdbLanguageTag($siteLang = false) {
-		return vmLanguage::initialise();
+		return vmLanguage::setLanguageByTag($siteLang);
 	}
 
+	/**
+	 * @deprecated please use vmLanguage::loadJLang
+	 */
 	static public function loadJLang($name, $site = false, $tag = 0, $cache = true){
 		return vmLanguage::loadJLang($name, $site, $tag, $cache);
 	}
+
+	/**
+	 * @deprecated please usevmLanguage::loadModJLang
+	 */
 	static public function loadModJLang($name){
 		return vmLanguage::loadModJLang($name);
 	}
@@ -1323,9 +1330,7 @@ class vmURI{
 
 	static function getCurrentUrlBy ($source = 'request',$route = false, $white = true, $ignore = false){
 
-
 		$vars = array('option', 'view', 'controller', 'task', 'virtuemart_category_id', 'virtuemart_manufacturer_id', 'virtuemart_product_id', 'virtuemart_user_id', 'addrtype', 'virtuemart_user_info', 'virtuemart_currency_id', 'layout', 'format', 'limitstart', 'limit', 'lang', 'language', 'keyword', 'virtuemart_order_id', 'order_number', 'order_pass', 'tmpl', 'usersearch', 'manage', 'orderby', 'dir', 'Itemid');
-
 
 		$url = 'index.php?';
 		if($white){
@@ -1347,18 +1352,16 @@ class vmURI{
 						$url .= $k.'='.$v.'&';
 					}
 				}
-
 			}
 		} else {
 
-			if($source==='request'){
+			if($source=='request'){
 				$get = vRequest::getRequest(FILTER_SANITIZE_URL);
 			} else if($source=='get'){
 				$get = vRequest::getGet(FILTER_SANITIZE_URL);
 			} else {
 				$get = vRequest::getPost(FILTER_SANITIZE_URL);
 			}
-			vmdebug('my request',$get);
 
 			foreach($get as $k => $v){
 				$k = vRequest::filterUrl($k);
@@ -1369,7 +1372,6 @@ class vmURI{
 				} else {
 					$url .= $k.'='.vRequest::filterUrl($v).'&';
 				}
-
 			}
 		}
 
@@ -1381,29 +1383,13 @@ class vmURI{
 		return $url;
 	}
 
-	static function getGetUrl ($route = false, $white = false){
-		$get = vRequest::getGet(FILTER_SANITIZE_URL);
-
-		//vmdebug('my get',$get);
-		$url = 'index.php?';
-		foreach($get as $k => $v){
-			$k = vRequest::filterUrl($k);
-			if(is_array($v)){
-				foreach($v as $ka => $va){
-					$url .= $k.'['.vRequest::filterUrl($ka).']='.vRequest::filterUrl($va).'&';
-				}
-
-			} else {
-				$url .= $k.'='.vRequest::filterUrl($v).'&';
-			}
-
-		}
-		$url = rtrim($url,'&');
-		if ($route){
-			$url = JRoute::_($url);
-		}
-		vmdebug('getGetUrl',$url);
-		return $url;
+	/**
+	 * @deprecated  use getCurrentUrlBy instead
+	 * @param bool $route
+	 * @return string
+	 */
+	static function getGetUrl ($route = false){
+		return self::getCurrentUrlBy('get',$route, false);
 	}
 
 	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
