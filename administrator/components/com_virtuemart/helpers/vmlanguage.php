@@ -135,7 +135,7 @@ class vmLanguage {
 
 
 
-	static public function setLanguage($tag){
+	static private function setLanguage($tag){
 
 		if(!isset(self::$languages[$tag])) {
 			self::getLanguage($tag);

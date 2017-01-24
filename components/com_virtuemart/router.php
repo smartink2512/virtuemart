@@ -755,11 +755,11 @@ class vmrouterHelper {
 			$this->_db = JFactory::getDbo();
 			$this->seo_translate = VmConfig::get('seo_translate', false);
 
-			if ( $this->seo_translate ) {
+			//if ( $this->seo_translate ) {
 				$this->Jlang = vmLanguage::loadJLang('com_virtuemart.sef',true);
-			} else {
+			/*} else {
 				$this->Jlang = JFactory::getLanguage();
-			}
+			}*/
 
 			$this->byMenu =  (int)VmConfig::get('router_by_menu', 0);
 			$this->seo_sufix = '';
@@ -812,11 +812,16 @@ class vmrouterHelper {
 
 	public static function getInstance(&$query = null) {
 
-		defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-		if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
-
-		VmConfig::loadConfig();
 		if (!self::$_instance){
+
+			$lang_code = JFactory::getApplication()->input->get('language', null);  //this is set by languageFilterPlugin
+			if (!empty($lang_code)) {  // by default it returns a full language tag such as nl-NL
+				if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+				VmConfig::loadConfig();    // this is needed in case VmConfig was not yet loaded before
+				if(VmConfig::$vmlangTag!=$lang_code){
+					vmLanguage::setLanguageByTag($lang_code); //this is needed if VmConfig was called in incompatible context and thus current VmConfig::$vmlang IS INCORRECT
+				}
+			}
 			self::$_instance= new vmrouterHelper ($query);
 
 			if (self::$limit===null){

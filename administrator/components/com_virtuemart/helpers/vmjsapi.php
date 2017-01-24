@@ -446,7 +446,7 @@ jQuery(document).ready(function() { // GALT: Start listening for dynamic content
 			vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false,false,false,false,'1.3.4');
 			vmJsApi::css('jquery.fancybox-1.3.4');
 		} else {
-			vmJsApi::addJScript( 'facebox', false, true, true, false, '' );
+			vmJsApi::addJScript( 'facebox', false, false, false, false, '' );
 			vmJsApi::css( 'facebox' );
 		}
 
