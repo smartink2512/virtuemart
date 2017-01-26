@@ -48,7 +48,7 @@ class TableCategories extends VmTable {
 	var $category_product_layout		= null;
 
 	/** @var integer Products to show per row  */
-	var $products_per_row		= null;
+	var $products_per_row		= '';
 	/** @var int Category order */
 	var $ordering		= 0;
 
@@ -95,7 +95,7 @@ class TableCategories extends VmTable {
 					'omitLoaded' => array('','int'),
 					'showsearch' => array('','int'),
 					'productsublayout' => array('','int'),
-					'products_per_row' => array('','int'),
+				/*	'products_per_row' => array('','int'),*/
 					'featured' => array('','int'),
 					'featured_rows' => array('','int'),
 					'omitLoaded_featured' => array('','int'),

@@ -241,7 +241,7 @@ class ShopFunctions {
 			$defaulttemplate[0] = new stdClass;
 			$defaulttemplate[0]->name = $defaultText;
 			$defaulttemplate[0]->directory = 0;
-			$defaulttemplate[0]->value = 'default';
+			$defaulttemplate[0]->value = '';
 		}
 
 		$q = 'SELECT * FROM `#__template_styles` WHERE `client_id`="0"';

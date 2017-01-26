@@ -195,7 +195,7 @@ class VirtueMartModelConfig extends VmModel {
 		//TODO set config value here
 		$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 
-		$tplpath = VmConfig::get('vmtemplate',0);
+		$tplpath = VmConfig::get('vmtemplate','');
 		if(!empty($tplpath) and is_numeric($tplpath)){
 			$db = JFactory::getDbo();
 			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$tplpath.'" ';
@@ -207,7 +207,7 @@ class VirtueMartModelConfig extends VmModel {
 				$tplpath = $res['template'];
 			}
 		}
-		if($tplpath){
+		if(!empty($tplpath){
 			if(is_dir(VMPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
 				$dirs[] = VMPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';
 			}

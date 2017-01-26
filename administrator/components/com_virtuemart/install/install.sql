@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `category_template` char(128),
   `category_layout` char(64),
   `category_product_layout` char(64),
-  `products_per_row` tinyint(1),
+  `products_per_row` char(1) NOT NULL DEFAULT '',
   `limit_list_step` char(32),
   `limit_list_initial` smallint(1) UNSIGNED,
   `hits` int(1) unsigned NOT NULL DEFAULT '0',

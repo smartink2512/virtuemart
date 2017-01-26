@@ -185,8 +185,8 @@ class VirtuemartViewCategory extends VmView {
 		}
 
 		$this->storefront = $menu->params->get('storefront',0);
-		$this->perRow = $this->products_per_row;
-		$this->perRow = empty($category->products_per_row)? $this->products_per_row:$category->products_per_row;
+
+		$this->perRow = $this->products_per_row = empty($category->products_per_row)? $menu->params->get($prefix.'products_per_row',$paramNames['products_per_row']):$category->products_per_row;
 
 		$vendorId = $category->virtuemart_vendor_id;
 

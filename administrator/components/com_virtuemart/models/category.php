@@ -533,9 +533,10 @@ class VirtueMartModelCategory extends VmModel {
 		$table = $this->getTable('categories');
 
 		if ( !array_key_exists ('category_template' , $data ) ){
-			$data['category_template'] = $data['category_layout'] = $data['category_product_layout'] = 0 ;
+			$data['category_template'] = $data['category_layout'] = $data['category_product_layout'] = '' ;
 		}
-		if(VmConfig::get('categorytemplate') == $data['category_template'] ){
+
+		/*if(VmConfig::get('categorytemplate') == $data['category_template'] ){
 			$data['category_template'] = 0;
 		}
 
@@ -545,7 +546,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		if(VmConfig::get('productlayout') == $data['category_product_layout']){
 			$data['category_product_layout'] = 0;
-		}
+		}*/
 
 		$data['category_template'] = $data['categorytemplate'];
 		$data['category_layout'] = $data['categorylayout'];
