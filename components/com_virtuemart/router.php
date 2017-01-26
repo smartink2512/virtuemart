@@ -813,14 +813,11 @@ class vmrouterHelper {
 	public static function getInstance(&$query = null) {
 
 		if (!self::$_instance){
-
+			if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+			VmConfig::loadConfig();    // this is needed in case VmConfig was not yet loaded before
 			$lang_code = JFactory::getApplication()->input->get('language', null);  //this is set by languageFilterPlugin
-			if (!empty($lang_code)) {  // by default it returns a full language tag such as nl-NL
-				if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
-				VmConfig::loadConfig();    // this is needed in case VmConfig was not yet loaded before
-				if(VmConfig::$vmlangTag!=$lang_code){
-					vmLanguage::setLanguageByTag($lang_code); //this is needed if VmConfig was called in incompatible context and thus current VmConfig::$vmlang IS INCORRECT
-				}
+			if (!empty($lang_code) and VmConfig::$vmlangTag!=$lang_code) {  // by default it returns a full language tag such as nl-NL
+				vmLanguage::setLanguageByTag($lang_code); //this is needed if VmConfig was called in incompatible context and thus current VmConfig::$vmlang IS INCORRECT
 			}
 			self::$_instance= new vmrouterHelper ($query);
 

@@ -36,7 +36,7 @@ if (!empty($product->customfieldsSorted[$position])) {
 		$custom_title = null;
 		foreach ($product->customfieldsSorted[$position] as $field) {
 			if ( $field->is_hidden || empty($field->display)) continue; //OSP http://forum.virtuemart.net/index.php?topic=99320.0
-			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
+			?><div class="product-field product-field-type-<?php echo $field->field_type ?> product-container">
 				<?php if (!$customTitle and $field->custom_title != $custom_title and $field->show_title) { ?>
 					<span class="product-fields-title-wrapper"><span class="product-fields-title"><strong><?php echo vmText::_ ($field->custom_title) ?></strong></span>
 						<?php if ($field->custom_tip) {

@@ -9,7 +9,7 @@ Virtuemart.setproducttype = function(form, id) {
 
 	var runs= 0, maxruns = 20;
 	var container = form;
-	while(!container.hasClass('product-container') && !container.hasClass('product-field-display')  && runs<=maxruns){
+	while(!container.hasClass('product-container') && !container.hasClass('productdetails') && !container.hasClass('vm-product-details-container')  && runs<=maxruns){
 		container = container.parent();
 		runs++;
 	}
