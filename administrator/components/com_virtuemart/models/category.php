@@ -341,6 +341,7 @@ class VirtueMartModelCategory extends VmModel {
 			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_category_id` = c.`virtuemart_category_id`';
 			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = c.`virtuemart_category_id`';
 		} else {
+			$select .= ', category_description, category_name';
 			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = c.`virtuemart_category_id` ';
 		}
 
