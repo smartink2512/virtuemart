@@ -320,17 +320,40 @@ class VirtueMartModelCategory extends VmModel {
 
 		static $cats = array();
 
-		$select = ' c.`virtuemart_category_id`, category_description, category_name, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
+		$select = ' i.`virtuemart_category_id`, i.`ordering`, i.`published`, cx.`category_child_id`, cx.`category_parent_id`, i.`shared` ';
 
-		$joinedTables = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l
+		$joins = ' FROM `#__virtuemart_categories` as i ';
+		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+			$langFields = array('category_description','category_name');
+
+			$useJLback = false;
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_category_id` = i.`virtuemart_paymentmethod_id`';
+				$useJLback = true;
+			}
+			foreach($langFields as $langField){
+				$expr2 = 'ld.'.$langField;
+				if($useJLback){
+					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+				}
+				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+			}
+			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_category_id` = i.`virtuemart_category_id`';
+			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = i.`virtuemart_category_id`';
+		} else {
+			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = i.`virtuemart_category_id` ';
+		}
+
+		$joins .= ' LEFT JOIN `#__virtuemart_category_categories` AS cx ON i.`virtuemart_category_id` = cx.`category_child_id`';
+		/*$joinedTables = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l
 				  JOIN `#__virtuemart_categories` AS c ON l.`virtuemart_category_id` = c.`virtuemart_category_id`
 				  LEFT JOIN `#__virtuemart_category_categories` AS cx
-				  ON l.`virtuemart_category_id` = cx.`category_child_id` ';
+				  ON l.`virtuemart_category_id` = cx.`category_child_id` ';*/
 
 		$where = array();
 
 		if( $onlyPublished ) {
-			$where[] = " c.`published` = 1 ";
+			$where[] = " i.`published` = 1 ";
 		}
 		if( $parentId !== false ){
 			$where[] = ' cx.`category_parent_id` = '. (int)$parentId;
@@ -346,13 +369,12 @@ class VirtueMartModelCategory extends VmModel {
 
 		if($vendorId!=1){
 
-			$where[] = ' (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';
+			$where[] = ' (i.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR i.`shared` = "1") ';
 		}
 
 		if( !empty( $keyword ) ) {
 			$db = JFactory::getDBO();
 			$keyword = '"%' . $db->escape( $keyword, true ) . '%"' ;
-			//$keyword = $db->Quote($keyword, false);
 			$where[] = ' ( category_name LIKE '.$keyword.'
 							   OR category_description LIKE '.$keyword.') ';
 		}
@@ -364,14 +386,14 @@ class VirtueMartModelCategory extends VmModel {
 			$whereString = 'WHERE 1 ';
 		}
 
-		if(trim($this->_selectedOrdering) == 'c.ordering'){
-			$this->_selectedOrdering = 'c.ordering, category_name';
+		if(trim($this->_selectedOrdering) == 'i.ordering'){
+			$this->_selectedOrdering = 'i.ordering, category_name';
 		}
 		$ordering = $this->_getOrdering();
 
 		$hash = md5($keyword.'.'.(int)$parentId.VmConfig::$vmlang.(int)$childId.$this->_selectedOrderingDir.(int)$vendorId.$this->_selectedOrdering);
 		if(!isset($cats[$hash])){
-			$cats[$hash] = $this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'GROUP BY virtuemart_category_id',$ordering );
+			$cats[$hash] = $this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joins,$whereString,'GROUP BY virtuemart_category_id',$ordering );
 		}
 
 		return $cats[$hash];
@@ -535,18 +557,6 @@ class VirtueMartModelCategory extends VmModel {
 		if ( !array_key_exists ('category_template' , $data ) ){
 			$data['category_template'] = $data['category_layout'] = $data['category_product_layout'] = '' ;
 		}
-
-		/*if(VmConfig::get('categorytemplate') == $data['category_template'] ){
-			$data['category_template'] = 0;
-		}
-
-		if(VmConfig::get('categorylayout') == $data['category_layout']){
-			$data['category_layout'] = 0;
-		}
-
-		if(VmConfig::get('productlayout') == $data['category_product_layout']){
-			$data['category_product_layout'] = 0;
-		}*/
 
 		$data['category_template'] = $data['categorytemplate'];
 		$data['category_layout'] = $data['categorylayout'];

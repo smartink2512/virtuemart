@@ -77,7 +77,7 @@ class vmLanguage {
 		}
 		self::setLanguage($siteLang);
 
-		$langs = (array)VmConfig::get('active_languages',array(VmConfig::$jDefLang));
+		$langs = (array)VmConfig::get('active_languages',array(VmConfig::$jDefLangTag));
 		VmConfig::$langCount = count($langs);
 		if(!in_array($siteLang, $langs)) {
 			//if(count($langs)===0){

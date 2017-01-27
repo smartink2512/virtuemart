@@ -141,17 +141,21 @@ class VirtueMartModelConfig extends VmModel {
 
 		$dir = VMPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
 		$result = array();
-		if(function_exists('glob')){
-			$specfiles = glob($dir.DS."*_specs.xml");
-			/*if(empty($specfiles) and is_dir($dir)){
-				vmWarn('No fonts _specs.xml files found in '.$dir);
-			}*/
-		} else {
-			$specfiles = array();
-			$manual = array('courier_specs.xml','freemono_specs.xml','helvetica_specs.xml');
-			foreach($manual as $file){
-				if(file_exists($dir.DS.$file)){
-					$specfiles[] = $dir.DS.$file;
+
+		$dir_iterator = new RecursiveDirectoryIterator($dir);
+		$files = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+
+		$specfiles = array();
+		$needle = '_specs.xml';
+		$needlelth = strlen($needle);
+
+		foreach ($files as $file) {
+
+			if($file->isFile() and $file->getExtension()=='xml'){
+				$fn = $file->getBasename();
+				$l =  strlen($fn) - $needlelth;
+				if(strripos($fn, $needle) === $l){
+					$specfiles[] = $file->getPathname();
 				}
 			}
 		}
@@ -195,7 +199,8 @@ class VirtueMartModelConfig extends VmModel {
 		//TODO set config value here
 		$dirs[] = VMPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 
-		$tplpath = VmConfig::get('vmtemplate','');
+		if(!class_exists('VmTemplate')) require(VMPATH_SITE.DS.'helpers'.DS.'vmtemplate.php');
+		$tplpath = VmConfig::get('vmtemplate',VmTemplate::getDefaultTemplate());
 		if(!empty($tplpath) and is_numeric($tplpath)){
 			$db = JFactory::getDbo();
 			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$tplpath.'" ';
@@ -207,7 +212,8 @@ class VirtueMartModelConfig extends VmModel {
 				$tplpath = $res['template'];
 			}
 		}
-		if(!empty($tplpath){
+
+		if(!empty($tplpath)){
 			if(is_dir(VMPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
 				$dirs[] = VMPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';
 			}
