@@ -863,11 +863,11 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @param $force boolean Forces the function to load the config from the db
 	 */
-	static public function loadConfig($force = FALSE,$fresh = FALSE) {
+	static public function loadConfig($force = FALSE,$fresh = FALSE, $lang = true) {
 
 		if($fresh){
 			self::$_jpConfig = new VmConfig();
-			vmLanguage::initialise();
+			if($lang)vmLanguage::initialise();
 			return self::$_jpConfig;
 		}
 		vmSetStartTime('loadConfig');
@@ -949,7 +949,7 @@ class VmConfig {
 			self::$_jpConfig->setParams(self::$_jpConfig->_raw);
 		}
 
-		vmLanguage::initialise();
+		if($lang)vmLanguage::initialise();
 		self::echoAdmin();
 		self::showDebug();
 
