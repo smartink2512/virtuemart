@@ -1072,6 +1072,10 @@ td.orders-key{
   padding-bottom: 10px;
 }
 
+.product-related-products img, .product-related-categories img {
+  margin: 0 auto;
+}
+
 .product-fields .product-field-type-P{
   clear: both;
   border-bottom: 1px solid #EEEEEE;
@@ -1087,7 +1091,7 @@ td.orders-key{
   text-align: left;
 }
 
-.product-field-type-R{
+.product-field-type-R, .product-field-type-Z{
   float: left;
   margin: 0 16px;
 }
@@ -1136,7 +1140,7 @@ a:hover .vm-img-desc{
 }
 /* Custom Field Images */
 
-.product-fields .product-field,.product-related-categories .product-field {
+.product-fields .product-field{
   width: 100%;
   float: left;
   display: inline-block;
