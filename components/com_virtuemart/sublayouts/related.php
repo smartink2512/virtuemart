@@ -14,7 +14,8 @@ echo JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetail
 if($customfield->wPrice){
 	?> <div class="product-price" id="productPrice<?php echo $related->virtuemart_product_id ?>"> <?php
 	$currency = calculationHelper::getInstance()->_currencyDisplay;
-	echo $currency->createPriceDiv ('salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $related->prices);
+	echo shopFunctionsF::renderVmSubLayout('prices',array('product'=>$related,'currency'=>$currency));
+	//echo $currency->createPriceDiv ('salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $related->prices);
 	?></div><div class="clear"></div><?php
 }
 

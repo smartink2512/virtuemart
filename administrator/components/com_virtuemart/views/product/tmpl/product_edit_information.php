@@ -292,7 +292,7 @@ if ($link) {
 
 <?php
 
-$j = 'jQuery(document).ready(function () {
+$j = 'jQuery(document).ready(function ($) {
         jQuery("#mainPriceTable").dynoTable({
             removeClass: ".price-remove", //remove class name in  table
             cloneClass: ".price-clone", //Custom cloner class name in  table
@@ -306,6 +306,10 @@ $j = 'jQuery(document).ready(function () {
             onRowClone:function () {
             },
             onRowAdd:function () {
+                //$(\'select\').chosen(\'destroy\');
+                //Virtuemart.updateChosenDropdownLayout($);
+                //$(".chzn-single").chosen();
+               // $(\'select\').trigger(\'chosen:updated\');
             },
             onTableEmpty:function () {
             },

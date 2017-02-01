@@ -60,11 +60,7 @@ class vmLanguage {
 			if (!$siteLang) {
 				$siteLang = self::$jSelLangTag;
 			}
-		} /*else {
-			if(!$siteLang){
-				$siteLang = VmConfig::$jDefLangTag;
-			}
-		}*/
+		}
 
 		self::setLanguageByTag($siteLang);
 
@@ -191,7 +187,12 @@ class vmLanguage {
 			vmText::$language = self::$languages[$tag];
 			return self::$languages[$tag];
 		} else {
-
+			if(!isset(self::$languages[$tag])){
+				vmdebug('No language loaded '.$tag.' '.$name);
+				VmConfig::$logDebug = true;
+				vmTrace('No language loaded '.$tag.' '.$name,true);
+				return false ;
+			}
 		}
 
 		if($site){

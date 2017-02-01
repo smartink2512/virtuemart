@@ -30,9 +30,9 @@ AdminUIHelper::startAdminArea($this);
 				<tr>
 					<td align="left" width="100%">
 						<?php echo vmText::_('COM_VIRTUEMART_FILTER'); ?>:
-						<input type="text" name="filter_ratings" value="<?php echo vRequest::getVar('filter_ratings', ''); ?>" />
-						<button class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
-						<button class="btn btn-small" onclick="document.adminForm.filter_ratings.value='';"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
+                        <input type="text" name="filter_coupon" value="<?php echo vRequest::getVar('filter_coupon', ''); ?>" />
+                        <button class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+                        <button class="btn btn-small" onclick="document.adminForm.filter_coupon.value='';"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
 						<?php if($this->showVendors()){
 							echo Shopfunctions::renderVendorList(vmAccess::getVendorId());
 						} ?>

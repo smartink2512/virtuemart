@@ -323,7 +323,7 @@ class VirtueMartModelCategory extends VmModel {
 		$select = ' c.`virtuemart_category_id`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
 		$joins = ' FROM `#__virtuemart_categories` as c ';
-		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
+		if(VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1){
 			$langFields = array('category_description','category_name');
 
 			$useJLback = false;

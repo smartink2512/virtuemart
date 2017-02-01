@@ -1145,15 +1145,13 @@ class vmrouterHelper {
 	 */
 	public function checkItemid(){
 
-		$jLangTag = $this->Jlang->getTag();
-
 		$user = JFactory::getUser();
 		$auth = array_unique($user->getAuthorisedViewLevels());
 		//$auth = $user->getAuthorisedViewLevels();
 		//vmdebug('my auth',$auth);
 		$andAccess = ' AND ( access="' . implode ('" OR access="', $auth) . '" ) ';
 
-		$q = 'SELECT * FROM `#__menu` WHERE `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.$jLangTag.'" )'.$andAccess;
+		$q = 'SELECT * FROM `#__menu` WHERE `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.vmLanguage::$jSelLangTag.'" )'.$andAccess;
 
 		$q .= ' and `id` = "'.$this->Itemid.'" ';
 
@@ -1172,7 +1170,7 @@ class vmrouterHelper {
 		$home 	= false ;
 		static $mCache = array();
 
-		$jLangTag = $this->Jlang->getTag();
+		$jLangTag = vmLanguage::$jSelLangTag;
 		$h = $jLangTag;
 
 		if(isset($mCache[$h.$this->Itemid])){

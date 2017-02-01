@@ -101,8 +101,8 @@ class VirtuemartViewCoupon extends VmViewAdmin {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$coupons = $model->getCoupons();
-			$this->assignRef('coupons',	$coupons);
+			$filter_coupon = vRequest::getString('filter_coupon', false);
+			$this->coupons = $model->getCoupons($filter_coupon);
 
 			$this->pagination = $model->getPagination();
 

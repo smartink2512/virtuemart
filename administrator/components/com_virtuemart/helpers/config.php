@@ -422,15 +422,18 @@ function vmTrace($notice,$force=FALSE, $args = 10){
 		echo '</pre>';
 		$body = ob_get_contents();
 		ob_end_clean();
-		if(VmConfig::$echoDebug){
-			echo $notice.' <pre>'.$body.'</pre>';
-		} else if(VmConfig::$logDebug){
+		
+		if(VmConfig::$logDebug){
 			logInfo($body,$notice);
-		} else {
+		}
+
+		if(VMConfig::showDebug()){
+			if(VmConfig::$echoDebug){
+				echo $notice.' <pre>'.$body.'</pre>';
+			}
 			$app = JFactory::getApplication();
 			$app ->enqueueMessage($notice.' '.$body.' ');
 		}
-
 	}
 
 }
