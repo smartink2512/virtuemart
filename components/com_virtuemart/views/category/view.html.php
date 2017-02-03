@@ -163,18 +163,14 @@ class VirtuemartViewCategory extends VmView {
 
 /*		$catParams =
     [limit_list_step] => 0
-    [limit_list_initial] => 0
-    [metadesc] =>
-    [customtitle] =>
-    [metakey] =>
-    [metarobot] =>
-    [metaauthor] => ;*/
+    [limit_list_initial] => 0*/
+
 
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
 
 		$category = $categoryModel->getCategory($this->categoryId);
-
+		$this->assignRef('category', $category);
 
 		foreach($paramNames as $k => $v){
 			if(!isset($category->$k) or $category->$k==''){
@@ -330,77 +326,12 @@ class VirtuemartViewCategory extends VmView {
 			shopFunctionsF::triggerContentPlugin($category, 'category','category_description');
 		}
 
-
-		$metadesc = '';
-		$metakey = '';
-		$metarobot = '';
-		$metaauthor = '';
-		if(isset($menu->params)){
-			$metadesc = $menu->params->get('menu-meta_description');
-			$metakey = $menu->params->get('menu-meta_keywords');
-			$metarobot = $menu->params->get('robots');
-		}
-
-		if(($this->storefront and empty($prefix)) or $this->show_store_desc){
-
-			$vendorModel = VmModel::getModel('vendor');
-
-			$vendorModel->setId(1);
-			$this->vendor = $vendorModel->getVendor(1);
-			if($this->storefront and empty($prefix)){
-				if(empty($this->vendor->customtitle)){
-
-					if ($menu){
-						$menuTitle = $menu->params->get('page_title');
-						if(empty($menuTitle)) {
-							$menuTitle = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
-						}
-						$category->customtitle = $menuTitle;	//$document->setTitle($menuTitle);
-					} else {
-						$title = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
-						$category->customtitle = $title; 	//$document->setTitle($title);
-					}
-				} else {
-					$category->customtitle = $this->vendor->customtitle;//$document->setTitle($this->vendor->customtitle);
-				}
-
-
-				if(!empty($this->vendor->metadesc)) $metadesc = $this->vendor->metadesc;
-				if(!empty($this->vendor->metakey)) $metakey = $this->vendor->metakey;
-				if(!empty($this->vendor->metarobot)) $metarobot = $this->vendor->metarobot;
-				if(!empty($this->vendor->metaauthor)) $metaauthor = $this->vendor->metaauthor;
-
-			}
-
-		} else {
-
-			if ($category->metadesc) {
-				$metadesc = $category->metadesc;
-			}
-			if ($category->metakey) {
-				$metakey = $category->metakey;
-			}
-			if ($category->metarobot) {
-				$metarobot = $category->metarobot;
-			}
-
-
-			if ($this->app->getCfg('MetaAuthor') == '1' and !empty($category->metaauthor)) {
-				$metaauthor = $category->metaauthor;
-			}
-		}
-
-		$document->setMetaData('description',$metadesc);
-		$document->setMetaData('keywords', $metakey);
-		$document->setMetaData('robots', $metarobot);
-		$document->setMetaData('author', $metaauthor);
-
 		if(empty($category->category_template)){
 			$category->category_template = VmConfig::get('categorytemplate');
 		}
 
 		if(!empty($this->categorylayout)){
-		//if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$this->categoryId){
+			//if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$this->categoryId){
 			$category->category_layout = $this->categorylayout;
 		}
 
@@ -415,13 +346,86 @@ class VirtuemartViewCategory extends VmView {
 		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		//}
 
-		$this->assignRef('category', $category);
+
+
+/*		[metadesc] => menu-meta_description
+		[customtitle] => page_title
+		[metakey] => menu-meta_keywords
+		[metarobot] => robots
+		[metaauthor] => ;*/
+
+		$customtitle = '';
+		$metadesc = '';
+		$metakey = '';
+		$metarobot = '';
+		$metaauthor = '';
+
+		if(isset($menu->params)){
+			$metadesc = $menu->params->get('menu-meta_description');
+			$metakey = $menu->params->get('menu-meta_keywords');
+			$metarobot = $menu->params->get('robots');
+			$customtitle = $menu->params->get('page_title');
+		}
+
+		if(($this->storefront and empty($prefix)) ){
+
+			$vendorModel = VmModel::getModel('vendor');
+			if(!empty($category->virtuemart_vendor_id)){
+				$vendorModel->setId($category->virtuemart_vendor_id);
+			} else {
+				$vendorModel->setId(1);;
+			}
+
+			$this->vendor = $vendorModel->getVendor(1);
+
+			if($this->storefront and empty($prefix)){
+
+				if(empty($this->vendor->customtitle)){
+					if(empty($customtitle)) {
+						$customtitle = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
+					}
+				} else {
+					$customtitle = $this->vendor->customtitle;
+				}
+
+				if(!empty($this->vendor->metadesc)) $metadesc = $this->vendor->metadesc;
+				if(!empty($this->vendor->metakey)) $metakey = $this->vendor->metakey;
+				if(!empty($this->vendor->metarobot)) $metarobot = $this->vendor->metarobot;
+				if(!empty($this->vendor->metaauthor)) $metaauthor = $this->vendor->metaauthor;
+			}
+		} else {
+
+			if (!empty($category->metadesc)) {
+				$metadesc = $category->metadesc;
+			}
+			if (!empty($category->metakey)) {
+				$metakey = $category->metakey;
+			}
+			if (!empty($category->metarobot)) {
+				$metarobot = $category->metarobot;
+			}
+			if(!empty($category->customtitle)){
+				$customtitle = $category->customtitle;
+			}
+
+			if ($this->app->getCfg('MetaAuthor') == '1' and !empty($category->metaauthor)) {
+				$metaauthor = $category->metaauthor;
+			}
+
+		}
+
+		$document->setMetaData('description',$metadesc);
+		$document->setMetaData('keywords', $metakey);
+		$document->setMetaData('robots', $metarobot);
+		$document->setMetaData('author', $metaauthor);
+
+
 
 	    // Set the titles
-		if (!empty($category->customtitle)) {
-        	$title = strip_tags($category->customtitle);
-     	} elseif (!empty($category->category_name)) {
-     		$title = strip_tags($category->category_name);
+		if (!empty($customtitle)) {
+			$title = strip_tags($customtitle);
+		} elseif (!empty($category->category_name)) {
+			$title = strip_tags($category->category_name);
 		} else {
 			$title = $this->setTitleByJMenu();
 		}

@@ -388,9 +388,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if ($virtuemart_category_id > 0) {
 			$joinCategory = TRUE;
-			if(true){
-				$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
-			} else {
+			if(VmConfig::get('show_subcat_products',false)){
 				/*GJC add subcat products*/
 				$catmodel = VmModel::getModel ('category');
 				$childcats = $catmodel->getChildCategoryList(1, $virtuemart_category_id,null, null, true);
@@ -400,6 +398,8 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$joinCategory = TRUE;
 				$where[] = ' `pc`.`virtuemart_category_id` IN ('.$cats.') ';
+			} else {
+				$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
 			}
 		} else if ($isSite) {
 			if (!VmConfig::get('show_uncat_parent_products',TRUE)) {
@@ -1146,7 +1146,7 @@ class VirtueMartModelProduct extends VmModel {
 		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->escape($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->escape($this->_now) . '" ) )';
 		}
 
-		$q .= ' ORDER BY `product_price` DESC';
+		$q .= ' ORDER BY `product_price` '.VmConfig::get('price_orderby','DESC');
 
 		static $loadedProductPrices = array();
 		$hash = $productId.','.implode('.',$virtuemart_shoppergroup_ids).','.(int)$front; //md5($q);
