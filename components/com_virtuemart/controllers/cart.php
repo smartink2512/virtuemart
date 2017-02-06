@@ -262,12 +262,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		if ($cart) {
 			$view = $this->getView ('cart', 'json');
 			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
-			$categoryLink='';
-			if ($virtuemart_category_id) {
-				$categoryLink = '&view=category&virtuemart_category_id=' . $virtuemart_category_id;
-			}
 
-			$continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
 
 			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id');
 

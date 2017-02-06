@@ -30,7 +30,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * method must be called after preflight
 		 * Sets the paths and loads VMFramework config
 		 */
-		public function loadVm() {
+		public function loadVm($fresh = true) {
  			$this->source_path = JInstaller::getInstance()->getPath('source');
 			if(!empty($this->source_path)){
 				defined('VMPATH_ROOT') or define('VMPATH_ROOT', $this->source_path);
@@ -38,15 +38,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				defined('VMPATH_ROOT') or define('VMPATH_ROOT', JPATH_ROOT);
 				$this->source_path = VMPATH_ROOT .'/administrator/components/com_virtuemart';
 			}
-			defined('VMPATH_ADMIN') or define('VMPATH_ADMIN', VMPATH_ROOT .'/administrator/components/com_virtuemart');
-			$this->path = VMPATH_ADMIN;
 
-			if(!class_exists('VmConfig')) require_once($this->path .'/helpers/config.php');
-			VmConfig::loadConfig(false,true);
+
+			if(!class_exists('VmConfig')) require_once(VMPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+			VmConfig::loadConfig(true,$fresh);
 			VmConfig::loadJLang('com_virtuemart');
 
-			if(!class_exists('VmTable')) require_once($this->path .'/helpers/vmtable.php');
-			if(!class_exists('VmModel')) require_once($this->path .'/helpers/vmmodel.php');
+			$this->path = VMPATH_ADMIN;
+
 			VmTable::addIncludePath($this->path .'/tables');
 			VmModel::addIncludePath($this->path .'/models');
 
@@ -121,11 +120,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function install ($loadVm = true) {
 
-			if($loadVm) $this->loadVm();
-
 			if($this->checkIfUpdate()){
 				return $this->update($loadVm);
 			}
+
+			$this->loadVm(true);
+
 			$_REQUEST['install'] = 1;
 			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
@@ -179,7 +179,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddDefaultShoppergroups();
 
-			$model->updateJoomlaUpdateServer('component','com_virtuemart',$this->path.DS.'virtuemart.xml');
+			$model->updateJoomlaUpdateServer('component','com_virtuemart',$this->source_path.DS.'virtuemart.xml');
 
 			$this->deleteSwfUploader();
 
@@ -220,12 +220,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function update ($loadVm = true) {
 
-			//if($loadVm)
-			$this->loadVm($loadVm);
-
 			if(!$this->checkIfUpdate()){
 				return $this->install($loadVm);
 			}
+
+			$this->loadVm(false);
 
 			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
@@ -236,7 +235,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->_db = JFactory::getDBO();
 
-			if(empty($this->path)) $this->path = VMPATH_ADMIN;
 
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla
@@ -1051,13 +1049,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function postflight ($type, $parent=null) {
 			$_REQUEST['install'] = 0;
 			if ($type != 'uninstall') {
-				$this->loadVm();
+				$this->loadVm(false);
 				//fix joomla BE menu
 				$model = VmModel::getModel('updatesmigration');
 
 
 
-				// 				VmConfig::loadConfig(true);
 				if(!class_exists('VirtueMartModelConfig')) require(VMPATH_ADMIN .'/models/config.php');
 				$res  = VirtueMartModelConfig::checkConfigTableExists();
 

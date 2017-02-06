@@ -144,7 +144,7 @@ class VmView extends JViewLegacy{
 
 			$scheme = $juri->toString(array( 'scheme'));
 			$scheme = substr($scheme,0,-3);
-			if($scheme!='https' and VmConfig::get('useSSL',false)){
+			if($scheme!='https' and $this->useSSL){
 				$scheme .='s';
 			}
 			$this->cart_link = $scheme.'://'.$uri. JURI::root(true).'/index.php?option=com_virtuemart&view=cart'.$lang;

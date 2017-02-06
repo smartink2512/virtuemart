@@ -41,7 +41,7 @@ foreach ($viewData['products'] as $type => $products ) {
 		$col = 2;
 		$nb = 2;
 	} else {
-	$rowsHeight = shopFunctionsF::calculateProductRowsHeights($products,$currency,$products_per_row);
+		$rowsHeight = shopFunctionsF::calculateProductRowsHeights($products,$currency,$products_per_row);
 
 		if( (!empty($type) and count($products)>0) or (count($viewData['products'])>1 and count($products)>0)){
 			$productTitle = vmText::_('COM_VIRTUEMART_'.strtoupper($type).'_PRODUCT'); ?>

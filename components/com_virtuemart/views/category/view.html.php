@@ -227,8 +227,8 @@ class VirtuemartViewCategory extends VmView {
 
 			$id = vRequest::getInt('virtuemart_product_id',false);
 			$p = $productModel->getProduct ($id);
-			$this->products['0'][] = $p;
-			$productModel->addImages($this->products['0'], $imgAmount );
+			$this->products['products'][] = $p;
+			$productModel->addImages($this->products['products'], $imgAmount );
 			$this->orderByList = array('orderby' => '', 'manufacturer' => '');
 			if($legacy) {
 				$this->vmPagination = $productModel->getPagination($this->perRow);
@@ -254,8 +254,8 @@ class VirtuemartViewCategory extends VmView {
 				$ids = $productModel->sortSearchListQuery (TRUE, $this->categoryId);
 				$this->vmPagination = $productModel->getPagination($this->perRow);
 				$this->orderByList = $productModel->getOrderByList($this->categoryId);
-				$this->products['0'] = $productModel->getProducts ($ids);
-				$productModel->addImages($this->products['0'], $imgAmount );
+				$this->products['products'] = $productModel->getProducts ($ids);
+				$productModel->addImages($this->products['products'], $imgAmount );
 			}
 		}
 
@@ -414,6 +414,12 @@ class VirtuemartViewCategory extends VmView {
 
 		}
 
+		if(empty($metadesc)){
+			$qdesc =  strip_tags(html_entity_decode($category->category_description,ENT_QUOTES)) ;
+			$qdesc = shopFunctionsF::limitStringByWord($qdesc,120);
+			$metadesc = $category->category_name . ". ". $qdesc . ' ' .vmText::_('COM_VIRTUEMART_READ_MORE');
+		}
+
 		$document->setMetaData('description',$metadesc);
 		$document->setMetaData('keywords', $metakey);
 		$document->setMetaData('robots', $metarobot);
@@ -439,11 +445,11 @@ class VirtuemartViewCategory extends VmView {
 			$title .=' ('.strip_tags(htmlspecialchars_decode($this->keyword)).')';
 		}
 
-		if ($virtuemart_manufacturer_id>0 and !empty($this->products['0'])){
+		if ($virtuemart_manufacturer_id>0 and !empty($this->products['products'])){
 
-			if (!empty($this->products['0'][0])) $title .=' '.$this->products['0'][0]->mf_name ;
+			if (!empty($this->products['products'][0])) $title .=' '.$this->products['products'][0]->mf_name ;
 			// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
-			if (!empty($this->products['0'][0]) and isset($category->category_name)) $category->category_name = $this->products['0'][0]->mf_name ;
+			if (!empty($this->products['products'][0]) and isset($category->category_name)) $category->category_name = $this->products['products'][0]->mf_name ;
 
 		}
 
@@ -454,8 +460,8 @@ class VirtuemartViewCategory extends VmView {
 
 		//Fallback for older layouts, will be removed vm3.2
 		$this->fallback=false;
-		if(count($this->products)===1 and isset($this->products['0'])){
-			$this->products = $this->products['0'];
+		if(count($this->products)===1 and isset($this->products['products'])){
+			$this->products = $this->products['products'];
 			$this->fallback=true;
 			vmdebug('Fallback active');
 		}

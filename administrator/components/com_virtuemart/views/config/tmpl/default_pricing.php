@@ -33,6 +33,8 @@ vmJsApi::addJScript('show_prices',$js,true);
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_RAPPENRUNDUNG','rappenrundung',VmConfig::get('rappenrundung',0));
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_ROUNDINDIG','roundindig',VmConfig::get('roundindig',1));
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT','cVarswT',VmConfig::get('cVarswT',1));
+
+					echo VmHTML::row('genericlist','COM_VIRTUEMART_ADMIN_CFG_PRICE_ORDERBY',$this->orderDirs, 'price_orderby', '', 'value', 'text', VmConfig::get('price_orderby','DESC'));
 					?>
 				</table>
 			</fieldset>
