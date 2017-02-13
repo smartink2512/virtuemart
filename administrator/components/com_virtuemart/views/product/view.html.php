@@ -414,13 +414,32 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
 
-				if(!empty($product->allPrices[$product->selectedPrice]['product_price']) && !empty($product->allPrices[$product->selectedPrice]['product_currency']) ){
+
+				$product->product_price_display = '';
+				$class = '';
+				if(empty($product->allPrices)) {
+					$model->getRawProductPrices($product,1,array(),false,true);
+					$class = 'class="pr-price-derivated"';
+				}
+				if(!empty($product->allPrices)) {
+					$product->product_price_display = '<span '.$class.'>';
+					foreach($product->allPrices as $price){
+						//vmdebug('my price',$price);
+						$product->product_price_display .= $currencyDisplay->priceDisplay($price['product_price'],(int)$price['product_currency'],1,true) .'<br>';
+					}
+					$product->product_price_display = substr($product->product_price_display,0,-4) . '</span>';
+					/*$product->product_price_display = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['product_price'],(int)$product->allPrices[$product->selectedPrice]['product_currency'],1,true);*/
+				} else {
+					$product->product_price_display = vmText::_('COM_VIRTUEMART_NO_PRICE_SET');
+				}
+
+				/*if(!empty($product->allPrices[$product->selectedPrice]['product_price']) && !empty($product->allPrices[$product->selectedPrice]['product_currency']) ){
 					$product->product_price_display = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['product_price'],(int)$product->allPrices[$product->selectedPrice]['product_currency'],1,true);
 				} else if(!empty($product->allPrices) and count($product->allPrices)>1 ) {
 					$product->product_price_display = vmText::_('COM_VIRTUEMART_MULTIPLE_PRICES');
 				} else {
 					$product->product_price_display = vmText::_('COM_VIRTUEMART_NO_PRICE_SET');
-				}
+				}*/
 
 				// Write the first 5 categories in the list
 				$product->categoriesList = '';

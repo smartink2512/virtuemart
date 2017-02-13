@@ -348,7 +348,11 @@ function virtuemartParseRoute($segments) {
 		for ($i = 0; $i < $total; $i=$i+2) {
 			$vars[ $segments[$i] ] = $segments[$i+1];
 		}
-		if(isset($vars[ 'start'])) $vars[ 'limitstart'] = $vars[ 'start'];
+		if(isset($vars[ 'start'])) {
+			$vars[ 'limitstart'] = $vars[ 'start'];
+		} else {
+			$vars[ 'limitstart'] = 0;
+		}
 		return $vars;
 	}
 

@@ -670,9 +670,12 @@ class VirtueMartModelCustomfields extends VmModel {
 				$options[] = array('value' => 'product_height', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_HEIGHT'));
 				$options[] = array('value' => 'product_weight', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WEIGHT'));
 
-				return '</td><td>'.JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) .
-						'<input type="text" value="' . $field->round . '" name="field[' . $row . '][round]" />';
+				$html = '</td><td>'.JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) ;
+				if($field->round){
+					$html .= '<input type="text" value="' . $field->digits . '" name="field[' . $row . '][round]" />';
+				}
 
+				return $html;
 			/* parent hint, this is a GROUP and should be G not P*/
 			case 'G':
 				return $field->customfield_value . '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" /></td><td>';

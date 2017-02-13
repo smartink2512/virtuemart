@@ -545,6 +545,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if($err = $db->getErrorMsg()){
 			vmError('Error in slq vmpsplugin.php function getPluginMethods '.$err);
 		}
+
 		if ($this->methods) {
 			foreach ($this->methods as $method) {
 				VmTable::bindParameterable ($method, $this->_xParams, $this->_varsToPushParam);
@@ -568,6 +569,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDataByOrderId ($virtuemart_order_id) {
 
+		$t = substr($this->_tablename,3);
+		if(!vmTable::checkTableExists($t)) return false;
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . (int)$virtuemart_order_id;
@@ -587,6 +590,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDatasByOrderId ($virtuemart_order_id) {
 
+		$t = substr($this->_tablename,3);
+		if(!vmTable::checkTableExists($t)) return false;
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = "' . (int)$virtuemart_order_id. '" '
@@ -606,6 +611,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDataByOrderNumber ($order_number) {
 
+		$t = substr($this->_tablename,3);
+		if(!vmTable::checkTableExists($t)) return false;
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `order_number`="'.$db->escape($order_number).'"';
@@ -625,6 +632,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getDatasByOrderNumber ($order_number) {
 
+		$t = substr($this->_tablename,3);
+		if(!vmTable::checkTableExists($t)) return false;
 		$db = JFactory::getDBO ();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `order_number`="'.$db->escape($order_number).'"';

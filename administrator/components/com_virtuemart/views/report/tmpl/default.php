@@ -89,6 +89,9 @@ else $addDateInfo = false;
 	                    <?php echo $this->sort('virtuemart_product_id', 'COM_VIRTUEMART_PRODUCT_ID') ; ?>
                     </th>
 		        <?php
+	                } else /*if(VmConfig::get('multix','none')!='none')*/{
+	                ?><th><?php
+				        echo $this->sort('coupon_discount', 'COM_VIRTUEMART_COUPON') ;
 	                }
 		        ?>
                 </tr>
@@ -131,8 +134,11 @@ else $addDateInfo = false;
 		                <?php echo $r['virtuemart_product_id'];?>
 	                </td>
 
-	         <?php  }
-			    ?>
+	        <?php  } else /*if(VmConfig::get('multix','none')!='none')*/{ ?>
+	                    <td align="center">
+					    <?php echo $r['coupon_discount'] ; ?>
+						</td>
+			<?php  } ?>
 
                 </tr>
                 <?php

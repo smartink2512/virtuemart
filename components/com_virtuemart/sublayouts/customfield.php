@@ -566,8 +566,9 @@ class VirtueMartCustomFieldRenderer {
 						break;
 					}
 					$val= $product->$attr;
-					if($customfield->round!=''){
-						$val = round($val,$customfield->round);
+					if($customfield->round!=0){
+						if(empty($customfield->digits)) $customfield->digits = 0;
+						$val = round($val, (int)$customfield->digits);
 					}
 					if($lkey!=$trValue and strpos($trValue,'%1')!==false) {
 						$customfield->display = vmText::sprintf( $customfield->customfield_value, $val , $dim );

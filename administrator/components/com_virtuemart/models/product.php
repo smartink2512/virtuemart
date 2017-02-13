@@ -1180,7 +1180,7 @@ class VirtueMartModelProduct extends VmModel {
 		//vmdebug('getRawProductPrices',$product->allPrices);
 		//Check for all prices to inherited by parent products
 		if( $withParent and !empty($product_parent_id)) {
-			vmdebug('getRawProductPrices load parent prices for '.$productId,$product_parent_id);
+			//vmdebug('getRawProductPrices load parent prices for '.$productId,$product_parent_id);
 			while ( $product_parent_id and (empty($product->allPrices) or count($product->allPrices)==0) ) {
 				$runtime = microtime (TRUE) - $this->starttime;
 				if ($runtime >= $this->maxScriptTime) {

@@ -692,6 +692,19 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 		return $this->showFullColumns();
 	}
 
+	static public function checkTableExists($table){
+		$db = JFactory::getDBO();
+		$q = 'SHOW TABLES LIKE "'.$db->getPrefix().$table.'"';
+		$db->setQuery($q);
+		$t = $db->loadResult();
+
+		if($t==false){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	function loadFieldValues($array=true){
 
 		$tmp = get_object_vars($this);

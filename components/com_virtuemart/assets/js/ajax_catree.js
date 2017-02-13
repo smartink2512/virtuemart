@@ -33,7 +33,7 @@ Virtuemart.stopVmLoading = function() {
 
 Virtuemart.loadCategoryTree = function(id){
 	jQuery('#'+id+'_chzn').remove();
-	jQuery('<div id=\"pro-tech_ajax_load\" style=\"max-width:220px;\">Loading</div>').insertAfter('select#'+id);
+	jQuery('<div id=\"pro-tech_ajax_load\" style=\"display:inline-block;width:220px;background-color:#ddd;height:25px;line-height:25px;padding:0 10px;box-sizing:border-box;background-size:20px\">Loading</div>').insertAfter('select#'+id);
 	Virtuemart.startVmLoading('Loading categories');
 
 	jQuery.ajax({

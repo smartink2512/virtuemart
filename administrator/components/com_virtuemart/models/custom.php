@@ -420,7 +420,8 @@ class VirtueMartModelCustom extends VmModel {
 			);
 		} else if($type=='P'){
 			$varsToPush = array(
-			'round' 	=> array('', 'int')
+			'round' 	=> array('', 'int'),
+			'digits' 	=> array('', 'string') //actually an int, but the type determines at the moment also the GUI
 			);
 		} else if($type=='C'){
 			$varsToPush = array(

@@ -245,12 +245,18 @@ class VirtuemartModelReport extends VmModel {
 // 		}
 		$selectFields['intervals'] = $this->intervals . ' AS intervals, o.`created_on` AS created_on';
 
+		//$multix = VmConfig::get('multix','none');
+
 		if($intervals=='product_s'){
 
 			$selectFields[] = '`order_item_name`';
 			$selectFields[] = '`virtuemart_product_id`';
+
+			//if($multix=='none') $selectFields[] = 'SUM(product_discountedPriceWithoutTax * product_quantity) as order_subtotal_netto';
+
 			$groupBy = 'GROUP BY `virtuemart_product_id` ';
 		} else {
+			//if($multix=='none') $selectFields[] = 'SUM(order_salesPrice + coupon_discount) as order_subtotal_netto';
 			$groupBy = 'GROUP BY intervals ';
 		}
 
@@ -260,8 +266,11 @@ class VirtuemartModelReport extends VmModel {
 
 		//without tax => netto
 		//$selectFields[] = 'SUM(product_item_price) as order_subtotal';
-		$selectFields[] = 'SUM(product_discountedPriceWithoutTax * product_quantity) as order_subtotal_netto';
+		//if($multix!='none')
+		$selectFields[] = 'SUM( (product_discountedPriceWithoutTax * product_quantity)) as order_subtotal_netto';
+
 		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal_brutto';
+		$selectFields[] = 'SUM(coupon_discount) as coupon_discount';
 
 		$this->dates = ' o.created_on BETWEEN "' . $this->from_period . '" AND "' . $until_period . '" ';
 

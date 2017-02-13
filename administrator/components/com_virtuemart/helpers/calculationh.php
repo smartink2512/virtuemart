@@ -875,7 +875,7 @@ class calculationHelper {
 			$this->couponHandler($this->_cart->couponCode);
 		}
 
-		// now calculate the discount for hole cart and reduce subTotal for each taxRulesBill, to calculate correct tax, also if there are more than one tax rules	
+		// now calculate the discount for whole cart and reduce subTotal for each taxRulesBill, to calculate correct tax, also if there are more than one tax rules
 		$totalDiscountBeforeTax = $this->_cart->cartPrices['salesPriceCoupon'];
 		foreach ($this->_cart->cartData['taxRulesBill'] as $k=>&$rule) {
 

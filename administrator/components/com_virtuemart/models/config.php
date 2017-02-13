@@ -527,16 +527,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	static public function checkConfigTableExists(){
 
-		$db = JFactory::getDBO();
-		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart_configs"';
-		$db->setQuery($query);
-		$configTable = $db->loadResult();
-
-		if(!$configTable){
-			return false;
-		} else {
-			return true;
-		}
+		return vmTable::checkTableExists('virtuemart_configs');
 	}
 
 	static public function checkVirtuemartInstalled(){

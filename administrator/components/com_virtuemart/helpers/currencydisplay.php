@@ -250,7 +250,8 @@ class CurrencyDisplay {
 
 	public function roundForDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb= -1){
 
-		$currencyId = $this->getCurrencyForDisplay($currencyId);
+		if(empty($currencyId)) $currencyId = $this->getCurrencyForDisplay($currencyId);
+
 		if($nb==-1){
 			$nb = $this->_nbDecimal;
 		}

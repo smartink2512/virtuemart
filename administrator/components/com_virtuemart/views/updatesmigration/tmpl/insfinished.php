@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 VmConfig::loadConfig();
 
+if(!class_exists('vmLanguage')) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/vmlanguage.php');
 vmLanguage::loadJLang('com_virtuemart.sys');
 vmLanguage::loadJLang('com_virtuemart');
 

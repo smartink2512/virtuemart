@@ -310,6 +310,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			if (!class_exists('vmPSPlugin'))
 				require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmcalculation');
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
