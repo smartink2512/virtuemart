@@ -518,6 +518,7 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY `pc`.`ordering` '.$filterOrderDir.', `product_name` '.$filterOrderDir;
 				$joinCategory = TRUE;
 				$joinLang = true;
+				$langFields[] = 'product_name';
 				break;
 			case 'product_price':
 				$orderBy = ' ORDER BY `product_price` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
@@ -730,7 +731,7 @@ class VirtueMartModelProduct extends VmModel {
 		vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filterOrderDir, $nbrReturnProducts);
 
-		vmTime('sortSearchQuery products group: '.$group,'sortSearchQuery');
+		vmTime('sortSearchQuery products: '.$group,'sortSearchQuery');
 		//vmdebug('exeSortSearchLIstquery orderby ',$product_ids);
 		return $product_ids;
 

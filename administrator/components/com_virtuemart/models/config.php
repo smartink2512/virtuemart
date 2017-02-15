@@ -141,32 +141,37 @@ class VirtueMartModelConfig extends VmModel {
 
 		$dir = VMPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
 		$result = array();
-
-		$dir_iterator = new RecursiveDirectoryIterator($dir);
-		$files = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-
 		$specfiles = array();
-		$needle = '_specs.xml';
-		$needlelth = strlen($needle);
+		if(is_dir($dir)) {
 
-		foreach ($files as $file) {
+			$dir_iterator = new RecursiveDirectoryIterator( $dir );
+			$files = new RecursiveIteratorIterator( $dir_iterator, RecursiveIteratorIterator::SELF_FIRST );
 
-			if($file->isFile() and $file->getExtension()=='xml'){
-				$fn = $file->getBasename();
-				$l =  strlen($fn) - $needlelth;
-				if(strripos($fn, $needle) === $l){
-					$specfiles[] = $file->getPathname();
+
+			$needle = '_specs.xml';
+			$needlelth = strlen( $needle );
+
+			foreach( $files as $file ) {
+
+				if($file->isFile() and $file->getExtension() == 'xml') {
+					$fn = $file->getBasename();
+					$l = strlen( $fn ) - $needlelth;
+					if(strripos( $fn, $needle ) === $l) {
+						$specfiles[] = $file->getPathname();
+					}
 				}
 			}
 		}
 
 		if(empty($specfiles)){
-			$manual = array('courier','freemono','helvetica');
+			vmLanguage::loadJLang('com_virtuemart_config');
+			vmAdminInfo('COM_VIRTUEMART_TCPDF_NINSTALLED');
+			/*$manual = array('courier','freemono','helvetica');
 			foreach($manual as $file){
 				if (file_exists($dir . DS . $file . '.php')) {
 					$result[] = JHtml::_('select.option',$file, vmText::_($file.' (standard)'));
 				}
-			}
+			}*/
 		} else {
 			foreach ($specfiles as $file) {
 				$fontxml = @simpleXML_load_file($file);

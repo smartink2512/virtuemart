@@ -4,7 +4,7 @@
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version.main" value="3.0.18"/>
-    <property name="vm.version" value="3.0.19.5"/>
+    <property name="vm.version" value="3.0.19.6"/>
     <property name="joomla.version" value="3.6.5"/>
     <property name="svn.lastrevision" value="9445"/>
     <property name="PHING.VM.CODENAME" value="Blue Corvus"/>

@@ -98,7 +98,7 @@ class VirtuemartViewCategory extends VmView {
 		}
 
 		if(empty($menu->params)){
-			$menu->params = JRegistry();
+			$menu->params = new JRegistry();
 		}
 
 		$stf_itemid = $menu->params->get('stf_itemid',false);

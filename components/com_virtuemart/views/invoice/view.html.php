@@ -314,6 +314,10 @@ class VirtuemartViewInvoice extends VmView {
 	function renderMailLayout ($doVendor, $recipient) {
 
 		$this->doVendor=$doVendor;
+
+		//customplugins cannot easily access the view
+		vRequest::setVar('doVendor', $this->doVendor);
+
 		$this->frompdf=false;
 		$this->uselayout = 'mail';
 

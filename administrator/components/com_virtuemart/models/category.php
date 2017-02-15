@@ -323,29 +323,6 @@ class VirtueMartModelCategory extends VmModel {
 		$select = ' c.`virtuemart_category_id`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
 		$joins = ' FROM `#__virtuemart_categories` as c ';
-		if(VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1){
-			$langFields = array('category_description','category_name');
-
-			$useJLback = false;
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_category_id` = c.`virtuemart_paymentmethod_id`';
-				$useJLback = true;
-			}
-			foreach($langFields as $langField){
-				$expr2 = 'ld.'.$langField;
-				if($useJLback){
-					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
-				}
-				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
-			}
-			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_category_id` = c.`virtuemart_category_id`';
-			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = c.`virtuemart_category_id`';
-		} else {
-			$select .= ', category_description, category_name';
-			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = c.`virtuemart_category_id` ';
-		}
-
-		$joins .= ' LEFT JOIN `#__virtuemart_category_categories` AS cx ON c.`virtuemart_category_id` = cx.`category_child_id`';
 
 		$where = array();
 
@@ -369,16 +346,61 @@ class VirtueMartModelCategory extends VmModel {
 			$where[] = ' (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';
 		}
 
+		$langFields = array('category_description','category_name');
+
+		$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
+
+		if($langFback){
+
+			$useJLback = false;
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_category_id` = c.`virtuemart_paymentmethod_id`';
+				$useJLback = true;
+			}
+			foreach($langFields as $langField){
+				$expr2 = 'ld.'.$langField;
+				if($useJLback){
+					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+				}
+				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+			}
+			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_category_id` = c.`virtuemart_category_id`';
+			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = c.`virtuemart_category_id`';
+		} else {
+			$select .= ', category_description, category_name';
+			$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_category_id` = c.`virtuemart_category_id` ';
+		}
+
+		$joins .= ' LEFT JOIN `#__virtuemart_category_categories` AS cx ON c.`virtuemart_category_id` = cx.`category_child_id`';
+
+
+		$whereOr = array();
 		if( !empty( $keyword ) ) {
 			$db = JFactory::getDBO();
 			$keyword = '"%' . $db->escape( $keyword, true ) . '%"' ;
-			$where[] = ' ( category_name LIKE '.$keyword.'
-							   OR category_description LIKE '.$keyword.') ';
+			foreach ($langFields as $langField) {
+				$whereOr[] =  '`l`.'.$langField . ' LIKE ' . $keyword;
+				if($langFback){
+					$whereOr[] =  '`ld`.'.$langField . ' LIKE ' . $keyword;
+					if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+						$whereOr[] =  '`ljd`.'.$langField . ' LIKE ' . $keyword;
+					}
+				}
+			}
 		}
 
 		$whereString = '';
-		if (count($where) > 0){
-			$whereString = ' WHERE '.implode(' AND ', $where) ;
+		if (count($where) > 0 or count($whereOr)){
+			$whereString = ' WHERE ';//.implode(' AND ', $where) .' AND ('.implode(' OR ', $where).')' ;
+			if (count($where) > 0){
+				$whereString .= implode(' AND ', $where);
+				if (count($whereOr) > 0){
+					$whereString .= ' AND ';
+				}
+			}
+			if (count($whereOr) > 0){
+				$whereString .= '('.implode(' OR ', $whereOr).')';
+			}
 		} else {
 			$whereString = 'WHERE 1 ';
 		}
