@@ -136,7 +136,7 @@ class VirtuemartViewCategory extends VmView {
 
 		$prefix = '';
 
-		if(isset($menu->query['virtuemart_category_id']) and $menu->query['virtuemart_category_id']!=$this->categoryId) {
+		if((isset($menu->query['virtuemart_category_id']) and $menu->query['virtuemart_category_id']!=$this->categoryId) or $this->keyword !== false) {
 			$prefix = 'stf_';
 		}
 
@@ -197,7 +197,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->searchcustom = '';
 		$this->searchCustomValues = '';
 
-		if($this->keyword or $this->showsearch){
+		if($this->keyword !== false or $this->showsearch){
 			vmSetStartTime('getSearchCustom');
 			$customfields = vRequest::getString('customfields');
 			$app = JFactory::getApplication();
@@ -247,7 +247,7 @@ class VirtuemartViewCategory extends VmView {
 					}
 				}
 			}
-			if($this->showproducts or $this->keyword) {
+			if($this->showproducts or $this->keyword !== false) {
 
 				if(!$this->keyword) VirtueMartModelProduct::$omitLoaded = VmConfig::get('omitLoaded');
 				// Load the products in the given category
@@ -441,7 +441,7 @@ class VirtuemartViewCategory extends VmView {
 	  	if(vRequest::getInt('error')){
 			$title .=' '.vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
-		if(!empty($this->keyword)){
+		if($this->keyword !== false and !empty($this->keyword)){
 			$title .=' ('.strip_tags(htmlspecialchars_decode($this->keyword)).')';
 		}
 

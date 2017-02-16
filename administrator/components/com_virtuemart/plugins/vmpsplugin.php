@@ -1107,6 +1107,7 @@ abstract class vmPSPlugin extends vmPlugin {
 					$rule['taxAmountOld'] = $rule['taxAmount'];
 					$rule['taxAmount'] = 0;
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+					$rule['psType'] = $this->_psType;
 					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $calculator->roundInternal($calculator->roundInternal($calculator->interpreteMathOp($rule, $rule['subTotal'])) - $rule['subTotal'], 'salesPrice');
 					$cart_prices[$this->_psType . 'Tax'] += $cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']];
 				}
@@ -1145,6 +1146,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 				foreach($taxrules as &$rule){
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $rule['percentage'];
+					$rule['psType'] = $this->_psType;
 
 					if(!isset($cart_prices[$this->_psType . 'Tax'])) $cart_prices[$this->_psType . 'Tax'] = 0.0;
 					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $calculator->roundInternal($calculator->roundInternal($calculator->interpreteMathOp($rule, $rule['subTotal'])) - $rule['subTotal'], 'salesPrice');
@@ -1170,6 +1172,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 				if(isset($rule['subTotalOld'])) $rule['subTotal'] += $rule['subTotalOld'];
 				if(isset($rule['taxAmountOld'])) $rule['taxAmount'] += $rule['taxAmountOld'];
+				if(isset($rule['psType'])) unset($rule['psType']);
 			}
 
 		} else {
