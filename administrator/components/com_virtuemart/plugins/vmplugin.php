@@ -17,20 +17,7 @@ defined ('_JEXEC') or die('Restricted access');
  * @version $Id: vmplugin.php 4599 2011-11-02 18:29:04Z alatak $
  */
 
-if (!class_exists( 'VmConfig' )) {
-	if(file_exists(VMPATH_ADMIN.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php')){
-		require(VMPATH_ADMIN.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-	} else {
-		echo 'Install VirtueMart first'; return;
-	}
-}
 
-// Load the helper functions that are needed by all plugins
-if (!class_exists ('ShopFunctions')) {
-	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
-}
-// if (!class_exists('DbScheme'))
-// require(VMPATH_ADMIN . DS . 'helpers' . DS . 'dbscheme.php');
 // Get the plugin library
 jimport ('joomla.plugin.plugin');
 
@@ -84,6 +71,11 @@ abstract class vmPlugin extends JPlugin {
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
 		$this->_xmlFile	= vRequest::filterPath( VMPATH_ROOT .DS. 'plugins' .DS. $this->_type .DS.  $this->_name . DS. $this->_name . '.xml');
+
+		// Load the helper functions that are needed by all plugins
+		if (!class_exists ('ShopFunctions')) {
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+		}
 
 	}
 

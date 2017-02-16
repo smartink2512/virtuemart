@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
 *
 * Translate controller
@@ -46,14 +46,13 @@ class VirtuemartControllerTranslate extends VmController {
 
 		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','manufacturercategories' =>'manufacturercategories','vendor' =>'vendors', 'paymentmethod' =>'paymentmethods', 'shipmentmethod' =>'shipmentmethods');
 		$tableName = '#__virtuemart_'.$tables[$viewKey].'_'.$dblang;
-
+ 
 		$m = VmModel::getModel('coupon');
 		$table = $m->getTable($tables[$viewKey]);
 		if (empty($table)) {
 		    $json['fields'] = 'error' ;
-			$json['msg'] = 'Table not found '.$viewKey; 
-			echo json_encode($json) ;
-			jexit(  );
+			$json['msg'] = 'Table not found '.$viewKey;
+			return $json;
 		}
 		//Todo create method to load lang fields only
 		$table->load($id);
@@ -94,15 +93,15 @@ class VirtuemartControllerTranslate extends VmController {
 
 		// TODO Test user ?
 		$json= array();
-		$json['fields'] = 'error' ;
-		$json['msg'] = 'Invalid Token';
-		$json['structure'] = 'empty' ;
+
 		
 		if (!vRequest::vmCheckToken(-1)) {
+			$json['fields'] = 'error' ;
+			$json['msg'] = 'Invalid Token';
+			$json['structure'] = 'empty' ;
 			echo json_encode($json) ;
 			jexit(  );
 		}
-		$json= array();
 
 		$lang = vRequest::getVar('lg');
 		$langs = VmConfig::get('active_languages',array(VmConfig::$jDefLang)) ;
@@ -155,10 +154,11 @@ class VirtuemartControllerTranslate extends VmController {
 		else {
 			$json['multiple'] = array(); 
 			foreach ($id as $myid) {
-			  $tomerge = array();
-			  $json = $this->getData($myid, $lang, $viewKey, VmConfig::$vmlang, $tomerge);
-			  $tomerge['requested_id'] = $myid; 
-			  $json['multiple'][] = $tomerge; 
+				$tomerge =  array();
+				$tomerge = $this->getData($myid, $lang, $viewKey, VmConfig::$vmlang,$tomerge);
+				$tomerge['requested_id'] = $myid;
+				$json['lang'] =  VmConfig::$vmlang;
+				$json['multiple'][] = $tomerge;
 			}
 			
 			

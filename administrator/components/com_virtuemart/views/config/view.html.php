@@ -125,6 +125,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 		shopFunctions::checkSafePath();
 		$this -> checkTCPDFinstalled();
 		$this -> checkVmUserVendor();
+
 		//$this -> checkClientIP();
 		parent::display($tpl);
 	}
@@ -160,7 +161,7 @@ WHERE published="1"';
 		$r = $db->loadAssocList();
 
 		if (empty($r)){
-			vmWarn('Your Virtuemart installation contains an error: No user as marked as vendor. Please fix this in your phpMyAdmin and set #__virtuemart_vmusers.user_is_vendor = 1 and #__virtuemart_vmusers.virtuemart_vendor_id = 1 to one of your administrator users. Please update all users to be associated with virtuemart_vendor_id 1.');
+			vmWarn('Your Virtuemart installation contains an error: No user is marked as vendor. Please fix this in your phpMyAdmin and set #__virtuemart_vmusers.user_is_vendor = 1 and #__virtuemart_vmusers.virtuemart_vendor_id = 1 to one of your administrator users.');
 		} else {
 			if($multix=='none' and count($r)!=1){
 				vmWarn('You are using single vendor mode, but it seems more than one user is set as vendor');

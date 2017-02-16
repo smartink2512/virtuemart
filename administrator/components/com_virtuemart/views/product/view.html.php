@@ -44,7 +44,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'image.php');
 
 		$model = VmModel::getModel();
-
+		$this->assignRef('model', $model);
 		// Handle any publish/unpublish
 		switch ($task) {
 			case 'add':
@@ -455,7 +455,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$product->parent_link = '';
 				if ($product->product_parent_id ) {
-					$product->parent_link = VirtuemartViewProduct::displayLinkToParent($product->product_parent_id);
+					$product->parent_link = $this->displayLinkToParent($product->product_parent_id);
 				}
 
 				$product->childlist_link = VirtuemartViewProduct::displayLinkToChildList($product->virtuemart_product_id , $product->product_name);
@@ -498,7 +498,6 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 			$this->assignRef('productlist', $productlist);
 
-			$this->assignRef('model', $model);
 
 			break;
 		}
@@ -559,21 +558,26 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		return $c[$product_id];
 	}
 
-	static function displayLinkToParent($product_parent_id) {
+	function displayLinkToParent($product_parent_id) {
 
-		static $c = array();
+		static $c = array(0=>'');
 		if(!isset($c[$product_parent_id])){
 
-			$db = JFactory::getDBO();
-			$q = ' SELECT * FROM `#__virtuemart_products` AS p JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` as l ON p.virtuemart_product_id=l.virtuemart_product_id WHERE p.`virtuemart_product_id` = "'.$product_parent_id.'"';
+			//$parent = $this->model->getProductSingle($product_parent_id, false, 1, false, 0, false);
+			$parent = $this->model->getProductSingle($product_parent_id, false);
+			//$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
+			/*$db = JFactory::getDBO();
+			$q = ' SELECT * FROM `#__virtuemart_products` AS p INNER JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` as l ON p.virtuemart_product_id=l.virtuemart_product_id WHERE p.`virtuemart_product_id` = "'.$product_parent_id.'"';
 			$db->setQuery($q);
-			if ($parent = $db->loadObject()){
+			if ($parent = $db->loadObject()){//*/
+
+			if (!empty($parent->product_name)){
 				$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', htmlentities($parent->product_name));
 				$c[$product_parent_id] = JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
 
 			} else {
 				$c[$product_parent_id] = '';
-				vmdebug('my '.$q);
+				vmdebug('my link displayLinkToParent '.$product_parent_id,$parent);
 			}
 
 		}

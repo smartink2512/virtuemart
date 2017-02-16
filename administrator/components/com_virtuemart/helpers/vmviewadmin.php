@@ -280,16 +280,15 @@ class VmViewAdmin extends JViewLegacy {
 			
 			$childdata = array(); 
 			$token = vRequest::getFormToken();
-			$childdata['childs'] = array(); 
+			$childdata['id'][] = $id;
+
 			if($editView =='product') {
 				$productModel = VmModel::getModel('product');
-				$childproducts = $productModel->getProductChilds($id);
+				$childproducts = $productModel->getProductChildIds($id);
+
 				if(!empty($childproducts)){
-					$childdata = array(); 
-					
-					foreach($childproducts as $child) {
-						$child->virtuemart_product_id  = (int)$child->virtuemart_product_id; 
-						$childdata['id'][] = $child->virtuemart_product_id; 
+					foreach($childproducts as $ids) {
+						$childdata['id'][] = (int) $ids;
 					}
 					
 					
@@ -299,12 +298,11 @@ class VmViewAdmin extends JViewLegacy {
 			$childdata[$token] = 1; 
 			$childdata['editView'] = $editView; 
 			
-			$childdata['id'][] = $id; 
+
 			
 			//stAn: added json data as needed
 			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;" data-json="'.htmlentities(json_encode($childdata)).'" onchange="javascript: updateLanguageVars(this, event);"', 'value', 'text', $selectedLangue , 'vmlang');
 			//stAn: script can be loaded async and deferred
-			//vmJsApi::addJScript('vmlang', false, true, true);
 			vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/vmlang.js', false, true, true);
 			
 		} else {
