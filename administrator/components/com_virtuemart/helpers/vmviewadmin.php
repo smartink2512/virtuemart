@@ -8,8 +8,8 @@
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author Max Milbers
- * @copyright Copyright (C) 2014-2015 Virtuemart Team. All rights reserved.
+ * @author Max Milbers, Stan Scholz
+ * @copyright Copyright (C) 2014-2017 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -277,91 +277,36 @@ class VmViewAdmin extends JViewLegacy {
 				}
 			}
 			JFactory::getDocument()->addStyleDeclaration($flagCss);
-
-			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;"', 'value', 'text', $selectedLangue , 'vmlang');
-
+			
+			$childdata = array(); 
 			$token = vRequest::getFormToken();
-			$j = '
-			jQuery(function($) {
-				var oldflag = "";
-				$("select#vmlang").chosen().change(function() {
-					langCode = $(this).find("option:selected").val();
-					flagClass = "flag-"+langCode;
-					$.ajax({
-						type: "GET",
-						cache: false,
-        				dataType: "json",
-        				url: "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1",
-    				}).done(
-						function(data) {
-							var items = [];
-
-							var theForm = document.forms["adminForm"];
-							if(typeof theForm.vmlang==="undefined"){
-							 	var input = document.createElement("input");
-								input.type = "hidden";
-								input.name = "vmlang";
-								input.value = langCode;
-								theForm.appendChild(input);
-							} else {
-								theForm.vmlang.value = langCode;
-							}
-							if (data.fields !== "error" ) {
-								if (data.structure == "empty") alert(data.msg);
-								$.each(data.fields , function(key, val) {
-									cible = $("#"+key);
-									if (oldflag !== "") cible.parent().removeClass(oldflag)
-									var tmce_ver = 0;
-									if(typeof window.tinyMCE!=="undefined"){
-										var tmce_ver=window.tinyMCE.majorVersion;
-									}
-									if (tmce_ver>="4") {
-										if ((cible.parent().addClass(flagClass).children().hasClass("mce_editable") || cible.parent().children().hasClass("wf-editor")) && data.structure !== "empty" ) {
-											tinyMCE.get(key).execCommand("mceSetContent", false,val);
-											cible.val(val);
-										} else if (data.structure !== "empty") cible.val(val);
-									} else {
-										if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) {
-											tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
-											cible.val(val);
-										} else if (data.structure !== "empty") cible.val(val);
-									}
-									});
-
-							} else alert(data.msg);';
-
+			$childdata['childs'] = array(); 
 			if($editView =='product') {
 				$productModel = VmModel::getModel('product');
 				$childproducts = $productModel->getProductChilds($id);
 				if(!empty($childproducts)){
+					$childdata = array(); 
+					
 					foreach($childproducts as $child) {
-						$j .= 'jQuery.ajax({
-        						type: "GET",
-								cache: false,
-        						dataType: "json",
-        						url: "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1",
-    					}).done(
-								//	$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1" ,
-										function(data) {
-											cible = jQuery("#child'. $child->virtuemart_product_id .'product_name");
-											if (oldflag !== "") cible.parent().removeClass(oldflag)
-											cible.parent().addClass(flagClass);
-											cible.val(data.fields.product_name);
-											jQuery("#child'. $child->virtuemart_product_id .'slug").val(data.fields["slug"]);
-										}
-									)
-								';
+						$child->virtuemart_product_id  = (int)$child->virtuemart_product_id; 
+						$childdata['id'][] = $child->virtuemart_product_id; 
 					}
+					
+					
 				}
-
 			}
-
-			$j .= 'oldflag = flagClass ;
-						}
-					)
-				});
-			})';
-			vmJsApi::addJScript('vmlang', $j);
+			
+			$childdata[$token] = 1; 
+			$childdata['editView'] = $editView; 
+			
+			$childdata['id'][] = $id; 
+			
+			//stAn: added json data as needed
+			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;" data-json="'.htmlentities(json_encode($childdata)).'" onchange="javascript: updateLanguageVars(this, event);"', 'value', 'text', $selectedLangue , 'vmlang');
+			//stAn: script can be loaded async and deferred
+			//vmJsApi::addJScript('vmlang', false, true, true);
+			vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/vmlang.js', false, true, true);
+			
 		} else {
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();

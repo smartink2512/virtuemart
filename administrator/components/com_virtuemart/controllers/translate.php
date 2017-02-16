@@ -40,55 +40,21 @@ class VirtuemartControllerTranslate extends VmController {
 		parent::__construct();
 
 	}
-
-
-	/**
-	 * Paste the table  in json format
-	 *
-	 */
-	public function paste() {
-
-		// TODO Test user ?
-		$json= array();
-		$json['fields'] = 'error' ;
-		$json['msg'] = 'Invalid Token';
-		$json['structure'] = 'empty' ;
-		if (!vRequest::vmCheckToken(-1)) {
-			echo json_encode($json) ;
-			jexit(  );
-		}
-
-		$lang = vRequest::getvar('lg');
-		$langs = VmConfig::get('active_languages',array(VmConfig::$jDefLang)) ;
-
-		if (!in_array($lang, $langs) ) {
-			$json['msg'] = 'Invalid language ! '.$lang;
-			$json['langs'] = $langs ;
-			echo json_encode($json) ;
-			jexit( );
-		}
-		$lang = strtolower( $lang);
-
-		$dblang= strtr($lang,'-','_');
-		VmConfig::$vmlang = $dblang;
-		$id = vRequest::getInt('id',0);
-
-		$viewKey = vRequest::getCmd('editView');
-		// TODO temp trick for vendor
-		if ($viewKey == 'vendor') $id = 1 ;
+	/* stAn - if this function was in the model, it could be public as well */
+	
+	private function getData($id, $lang, $viewKey, $dblang, $json) {
 
 		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','manufacturercategories' =>'manufacturercategories','vendor' =>'vendors', 'paymentmethod' =>'paymentmethods', 'shipmentmethod' =>'shipmentmethods');
-
-		if ( !array_key_exists($viewKey, $tables) ) {
-			$json['msg'] ="Invalid view ". $viewKey;
-			echo json_encode($json);
-			jExit();
-		}
 		$tableName = '#__virtuemart_'.$tables[$viewKey].'_'.$dblang;
 
 		$m = VmModel::getModel('coupon');
 		$table = $m->getTable($tables[$viewKey]);
-
+		if (empty($table)) {
+		    $json['fields'] = 'error' ;
+			$json['msg'] = 'Table not found '.$viewKey; 
+			echo json_encode($json) ;
+			jexit(  );
+		}
 		//Todo create method to load lang fields only
 		$table->load($id);
 		$vs = $table->loadFieldValues();
@@ -118,6 +84,86 @@ class VirtuemartControllerTranslate extends VmController {
 			$json['fields'] = $fields;
 			$json['msg'] = vmText::sprintf('COM_VIRTUEMART_LANG_IS_EMPTY',$lang ,vmText::_('COM_VIRTUEMART_'.strtoupper( $viewKey)) ) ;
 		}
+		return $json; 
+	}
+	/**
+	 * Paste the table  in json format
+	 *
+	 */
+	public function paste() {
+
+		// TODO Test user ?
+		$json= array();
+		$json['fields'] = 'error' ;
+		$json['msg'] = 'Invalid Token';
+		$json['structure'] = 'empty' ;
+		
+		if (!vRequest::vmCheckToken(-1)) {
+			echo json_encode($json) ;
+			jexit(  );
+		}
+		$json= array();
+
+		$lang = vRequest::getVar('lg');
+		$langs = VmConfig::get('active_languages',array(VmConfig::$jDefLang)) ;
+
+		if (!in_array($lang, $langs) ) {
+			$json['msg'] = 'Invalid language ! '.$lang;
+			$json['langs'] = $langs ;
+			echo json_encode($json) ;
+			jexit( );
+		}
+		vmLanguage::setLanguageByTag($lang);
+		/*$lang = strtolower( $lang);
+
+		$dblang= strtr($lang,'-','_');
+		VmConfig::$vmlang = $dblang;*/
+		
+		//$id = vRequest::getInt('id',0);
+		$id = vRequest::getVar('id',0);
+		if (is_array($id)) {
+			if (count($id) == 1) {
+				 $id = (int)reset($id); 
+			}
+			else {
+			foreach ($id as $k=>$v) { 
+			  $id[$k] = (int)$v; 
+			  if (empty($id[$k])) unset($id[$k]); 
+			}
+			}
+		}
+		else {
+			$id = (int)$id; 
+		}
+
+		$viewKey = vRequest::getCmd('editView');
+		// TODO temp trick for vendor
+		if ($viewKey == 'vendor') $id = 1 ;
+		
+		
+		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','manufacturercategories' =>'manufacturercategories','vendor' =>'vendors', 'paymentmethod' =>'paymentmethods', 'shipmentmethod' =>'shipmentmethods');
+
+		if ( !array_key_exists($viewKey, $tables) ) {
+			$json['msg'] ="Invalid view ". $viewKey;
+			echo json_encode($json);
+			jExit();
+		}
+		
+		if (!is_array($id)) {
+			$json = $this->getData($id, $lang, $viewKey, VmConfig::$vmlang, $json);
+		}
+		else {
+			$json['multiple'] = array(); 
+			foreach ($id as $myid) {
+			  $tomerge = array();
+			  $json = $this->getData($myid, $lang, $viewKey, VmConfig::$vmlang, $tomerge);
+			  $tomerge['requested_id'] = $myid; 
+			  $json['multiple'][] = $tomerge; 
+			}
+			
+			
+		}
+
 		echo vmJsApi::safe_json_encode($json);
 		jExit();
 
