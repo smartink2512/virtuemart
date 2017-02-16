@@ -145,13 +145,13 @@ class VirtueMartModelManufacturer extends VmModel {
 		}
 
 		$where = array();
-		if ($virtuemart_manufacturercategories_id > 0  && $view == 'manufacturers') {
+		if ($virtuemart_manufacturercategories_id > 0  && $view == 'manufacturer') {
 			$where[] .= ' `m`.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 
 		$joinedTables = ' FROM `#__virtuemart_manufacturers` as m';
 		$select = ' `m`.*';
-		if ( $search && $search != 'true' && $view == 'manufacturers') {
+		if ( $search && $search != 'true' && $view == 'manufacturer') {
 			$db = JFactory::getDBO();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);
