@@ -270,7 +270,7 @@ span.cart-images img {
   width: 45px;
 }
 
-span.addtocart-button input.addtocart-button, span.addtocart-button input.notify-button{
+span.addtocart-button span.addtocart-button, span.addtocart-button input.addtocart-button, span.addtocart-button input.notify-button{
   max-width: 100%;
   background: #0077B3;
   color: #fff;

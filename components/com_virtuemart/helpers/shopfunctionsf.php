@@ -83,6 +83,7 @@ class shopFunctionsF {
 	}
 
 	static public function isFEmanager ($task = 0) {
+		if(JFactory::getUser()->guest) return false;
 		return vmAccess::manager($task);
 	}
 
