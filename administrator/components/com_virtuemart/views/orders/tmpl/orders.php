@@ -171,7 +171,10 @@ $jsOrderStatusShopperEmail = vmJsApi::safe_json_encode($orderstatusForShopperEma
 $j = 'if (typeof Virtuemart === "undefined")
 	Virtuemart = {};
 	Virtuemart.orderstatus = '.$jsOrderStatusShopperEmail.';
-	onReadyOrders();';
+	jQuery(document).ready(function() {
+		//Virtuemart.onReadyOrderItems();
+		Virtuemart.onReadyOrderStatus()
+	});';
 vmJsApi::addJScript('onReadyOrders',$j);
 
 vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.js',false,false);

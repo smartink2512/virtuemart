@@ -63,6 +63,7 @@ class VirtuemartControllerUser extends VmController {
 
 	function removeAddressST(){
 
+		vRequest::vmCheckToken();
 		$virtuemart_userinfo_id = vRequest::getInt('virtuemart_userinfo_id');
 		$virtuemart_user_id = vRequest::getInt('virtuemart_user_id');
 
@@ -98,7 +99,7 @@ class VirtuemartControllerUser extends VmController {
 	 * @author Max Milbers
 	 */
 	function save($data = 0){
-
+		vRequest::vmCheckToken();
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('user', $viewType);

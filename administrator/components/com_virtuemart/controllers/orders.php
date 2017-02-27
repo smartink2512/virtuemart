@@ -256,6 +256,9 @@ class VirtuemartControllerOrders extends VmController {
 
 		$_items = vRequest::getVar('item_id',  0, '', 'array');
 
+		//The order editing often needs some correction. So we disable sending of the emails here
+		//Also changed order status per line will not update the inventory. The user must use for the moment the "update Status"
+		$_items['customer_notified'] = 0;
 		$model->updateStatusForOneOrder($_orderID,$_items,true);
 
 		$model->deleteInvoice($_orderID);

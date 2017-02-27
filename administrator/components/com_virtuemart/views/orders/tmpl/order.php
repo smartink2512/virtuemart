@@ -30,7 +30,9 @@ $jsOrderStatusShopperEmail = '""';
 $j = 'if (typeof Virtuemart === "undefined")
 	Virtuemart = {};
 	Virtuemart.confirmDelete = "'.addslashes( vmText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_JS') ).'";
-	onReadyOrder();
+	jQuery(document).ready(function() {
+		Virtuemart.onReadyOrderItems();
+	});
 	var editingItem = 0;';
 vmJsApi::addJScript('onReadyOrder',$j);
 
@@ -55,7 +57,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 		<?php echo vmText::_('COM_VIRTUEMART_ORDER_SAVE_USER_INFO'); ?></a></span>
 		&nbsp;&nbsp;
 				<span class="btn btn-small " >
-		<a href="#" onClick="javascript:resetOrderHead(event);" ><span class="icon-nofloat vmicon vmicon-16-cancel"></span>
+		<a href="#" onClick="javascript:Virtuemart.resetOrderHead(event);" ><span class="icon-nofloat vmicon vmicon-16-cancel"></span>
 		<?php echo vmText::_('COM_VIRTUEMART_ORDER_RESET'); ?></a>
 					</span>
 		<?php // echo vmText::_('COM_VIRTUEMART_ORDER_CREATE'); ?></a>
@@ -383,12 +385,16 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 				<td>
 					<div><?php echo ($i++)?></div>
 					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
-					<a class="vmicon vmicon-16-remove" title="<?php echo vmText::_('remove'); ?>" onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');"></a>
+					<a class="vmicon vmicon-16-remove" title="<?php echo vmText::_('remove'); ?>" onclick="javascript:Virtuemart.confirmation('<?php echo $removeLineLink; ?>');"></a>
 
 				</td>
 				<td>
 					<span class='ordereditI'><?php echo $item->product_quantity; ?></span>
 					<input class='orderedit' type="text" size="3" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_quantity]" value="<?php echo $item->product_quantity; ?>"/>
+					<?php //if(empty($item->virtuemart_product_id)) { ?>
+                    <span class='orderedit'>Product ID:</span>
+                    <input class='orderedit' type="text" size="10" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][virtuemart_product_id]" value="<?php echo $item->virtuemart_product_id; ?>"/>
+					<?php //} ?>
 				</td>
 				<td>
 					<span class='ordereditI'><?php echo $item->order_item_name; ?></span>
@@ -416,10 +422,6 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 								. '</table>';
 						}
 					?>
-					<?php if(empty($item->virtuemart_product_id)) { ?>
-						<span class='orderedit'>Product ID:</span>
-						<input class='orderedit' type="text" size="10" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][virtuemart_product_id]" value="<?php echo $item->virtuemart_product_id; ?>"/>
-					<?php } ?>
 				</td>
 				<td>
 					<span class='ordereditI'><?php echo $item->order_item_sku; ?></span>
@@ -486,19 +488,21 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 						-->
 						<a class="updateOrderItemStatus" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></a>
 						&nbsp;&nbsp;
-						<a href="#" onClick="javascript:cancelEdit(event);" ><span class="icon-nofloat vmicon vmicon-16-remove 4remove"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
+						<a href="#" onClick="javascript:Virtuemart.cancelEdit(event);" ><span class="icon-nofloat vmicon vmicon-16-remove 4remove"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 						&nbsp;&nbsp;
-						<a href="#" onClick="javascript:enableEdit(event);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_EDIT'); ?></a>
+						<a href="#" onClick="javascript:Virtuemart.enableEdit(event);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_EDIT'); ?></a>
 						&nbsp;&nbsp;
 						<?php
-							if(isset($this->orderdetails['items'][0])){
-								$oId = $this->orderdetails['items'][0]->virtuemart_order_item_id;
+							//if(isset($this->orderdetails['items'][0])){
+							//	$oId = $this->orderdetails['items'][0]->virtuemart_order_item_id;
+							if(isset($item->virtuemart_order_item_id)){
+								$oId = $item->virtuemart_order_item_id;
 							} else {
 								$oId = 0;
 							}
 
 						?>
-						<a href="#" onClick="javascript:addNewLine(event,<?php echo $oId ?>);"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo '&nbsp;'. vmText::_('JTOOLBAR_NEW'); ?></a>
+						<a href="#" onClick="javascript:Virtuemart.addNewLine(event,<?php echo $oId ?>);"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo '&nbsp;'. vmText::_('JTOOLBAR_NEW'); ?></a>
 					</td>
 
 					<td colspan="6">
