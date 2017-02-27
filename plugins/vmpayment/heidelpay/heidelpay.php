@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 defined ('_JEXEC') or die();
 
@@ -6,7 +6,7 @@ defined ('_JEXEC') or die();
  * Heidelpay credit card plugin
  *
  * @author Heidelberger Payment GmbH <Jens Richter>
- * @version 16.12.16
+ * @version 17.02.23
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) Heidelberger Payment GmbH
@@ -19,7 +19,7 @@ if (!class_exists ('vmPSPlugin')) {
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	public static $_this = FALSE;
-	protected $version = '16.11.07';
+	protected $version = '17.02.23';
 
 	function __construct (& $subject, $config) {
 

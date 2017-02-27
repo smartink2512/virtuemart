@@ -79,10 +79,10 @@ class JFormFieldGetHeidelpay extends JFormField {
 			$display = ' style="display: none;"';
 			$html = '<a href="#" id="' . $id . '">' . vmText::_('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
 		}
-		$lang = vmLanguage::$jSelLangTag;
+		
 
 		$html .= '<div id="heidelpay_getheidelpay_show_hide" align="' . $display . '" >';
-		$url = "http://demoshops.heidelpay.de/contactform/?campaign=vituemart&shop=vituemart&lang=" . $lang;
+		$url = "http://demoshops.heidelpay.de/contactform/?campaign=vituemart&shop=vituemart";
 		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="1400px" width="300px"></iframe>';
 		$html .= "</div>";
 		return $html;
