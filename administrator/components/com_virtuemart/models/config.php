@@ -506,14 +506,7 @@ class VirtueMartModelConfig extends VmModel {
 			$result = $updater->createLanguageTables();
 		}
 
-		$conf = JFactory::getConfig();
-		$options = array(
-		'defaultgroup'	=> '',
-		'storage' 		=> $conf->get('cache_handler', ''),
-		'caching'		=> true,
-		'cachebase'		=> $conf->get('cache_path', VMPATH_ROOT . '/cache')
-		);
-		$cache = JCache::getInstance('', $options);//*/
+		$cache = VmConfig::getCache();
 		//$cache = JFactory::getCache();
 		$cache->clean('com_virtuemart_cats');
 		$cache->clean('com_virtuemart_cat_childs');

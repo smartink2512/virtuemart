@@ -162,7 +162,7 @@ class VirtueMartModelCategory extends VmModel {
 			vmSetStartTime('com_virtuemart_cat_childs');
 
 			if($useCache){
-				$cache = JFactory::getCache('com_virtuemart_cat_childs','callback');
+				$cache = VmConfig::getCache('com_virtuemart_cat_childs','callback');
 				$cache->setCaching(true);
 				//vmdebug('Calling cache getChildCategoryListObject');
 				$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListObject' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir,VmConfig::$vmlang);
@@ -684,15 +684,8 @@ class VirtueMartModelCategory extends VmModel {
     }
 
 	public function clearCategoryRelatedCaches(){
-		$conf = JFactory::getConfig();
-		$options = array(
-		'defaultgroup'	=> '',
-		'storage' 		=> $conf->get('cache_handler', ''),
-		'caching'		=> true,
-		'cachebase'		=> $conf->get('cache_path', VMPATH_ROOT . '/cache')
-		);
-		//vmdebug('clearCategoryRelatedCaches',JPATH_SITE,VMPATH_SITE);
-		$cache = JCache::getInstance('', $options);
+
+		$cache = VmConfig::getCache();
 		$cache->clean('com_virtuemart_cats');
 		$cache->clean('com_virtuemart_cat_childs');
 		$cache->clean('mod_virtuemart_product');

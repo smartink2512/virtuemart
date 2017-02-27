@@ -290,16 +290,12 @@ class VmViewAdmin extends JViewLegacy {
 					foreach($childproducts as $ids) {
 						$childdata['id'][] = (int) $ids;
 					}
-					
-					
 				}
 			}
 			
 			$childdata[$token] = 1; 
 			$childdata['editView'] = $editView; 
-			
 
-			
 			//stAn: added json data as needed
 			$this->langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox" style="width:176px;" data-json="'.htmlentities(json_encode($childdata)).'" onchange="javascript: updateLanguageVars(this, event);"', 'value', 'text', $selectedLangue , 'vmlang');
 			//stAn: script can be loaded async and deferred

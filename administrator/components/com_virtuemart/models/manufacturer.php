@@ -88,7 +88,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$mediaModel = VmModel::getModel('Media');
 		$mediaModel->storeMedia($data,'manufacturer');
 
-		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+		$cache = VmConfig::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
 		return $table->virtuemart_manufacturer_id;
 	}

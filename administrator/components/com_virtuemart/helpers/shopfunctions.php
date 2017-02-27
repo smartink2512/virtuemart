@@ -558,7 +558,7 @@ class ShopFunctions {
 		if (empty(self::$categoryTree[$hash])) {
 
 			$app = JFactory::getApplication ();
-			$cache = JFactory::getCache ('com_virtuemart_cats');
+			$cache = VmConfig::getCache ('com_virtuemart_cats');
 			$cache->setCaching (1);
 
 			$vendorId = vmAccess::isSuperVendor();

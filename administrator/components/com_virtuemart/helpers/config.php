@@ -740,16 +740,17 @@ class VmConfig {
 					} else if($u == 'K' or $u == 'KB'){
 						$mLimit *= 1024;
 					}
-					$mLimit = (int) $mLimit - 5242880; // 5 MB reserve
-					if($mLimit<=0){
-						$mLimit = 1;
+
+					$mTest = $mLimit - 5242880; // 5 MB reserve
+
+					if($mTest<=0){
 						$m = 'Increase your php memory limit, which is must too low to run VM, your current memory limit is set as '.$mL.' = '.$mLimit.'B';
 						vmError($m,$m);
 					}
 				}
 			}
 
-			if($mLimit<=0) $mLimit = 2147483648;
+			if($mLimit<=0) $mLimit = 2142240768;
 			vmdebug('My Memory Limit in Bytes '.$mLimit);
 		}
 
@@ -815,6 +816,64 @@ class VmConfig {
 		}
 		return $max_execution_time;
 	}
+
+	static private $cache;
+
+	/**
+	 * @deprecated
+	 * @param string $group
+	 * @param string $handler
+	 * @param null $storage
+	 * @return mixed
+	 */
+	public static function getCache($group = '', $handler = 'callback', $storage = null, $site = true)
+	{
+		$hash = md5($group . $handler . $storage);
+
+		if (isset(self::$cache[$hash]))
+		{
+			return self::$cache[$hash];
+		}
+
+		$handler = ($handler == 'function') ? 'callback' : $handler;
+
+		if($site){
+			$p = VMPATH_ROOT;
+		} else {
+			$p = VMPATH_ADMINISTRATOR;
+		}
+		$conf = JFactory::getConfig();
+		$options = array(
+		'defaultgroup'	=> $group,
+		'caching'		=> true,
+		'cachebase'		=> $conf->get('cache_path', $p . '/cache')
+		);
+
+		if (isset($storage)) {
+			$options['storage'] = $storage;
+		} else {
+			$options['storage'] = $conf->get('cache_handler', '');
+		}
+
+		$cache = JCache::getInstance($handler, $options);
+
+		self::$cache[$hash] = $cache;
+
+		return self::$cache[$hash];
+	}
+
+/*	static function getCache(){
+		//JFactory::getCache();
+
+		$conf = JFactory::getConfig();
+		$options = array(
+		'defaultgroup'	=> '',
+		'storage' 		=> $conf->get('cache_handler', ''),
+		'caching'		=> true,
+		'cachebase'		=> $conf->get('cache_path', VMPATH_ROOT . '/cache')
+		);
+		$cache = JCache::getInstance('', $options);
+	}*/
 
 	/*
 	* Set default language tag for translatable table
@@ -1114,7 +1173,7 @@ class VmConfig {
 
 
 	/**
-	 * Find the currenlty installed version
+	 * Find the currently installed version
 	 *
 	 * @author RickG
 	 * @param boolean $includeDevStatus True to include the development status
@@ -1132,6 +1191,10 @@ class VmConfig {
 		return (strpos(JVERSION,'1.5') === 0);
 	}
 
+	/**
+	 * @deprecated
+	 * @return mixed
+	 */
 	static public function isSuperVendor($uid = 0){
 		return vmAccess::isSuperVendor($uid);
 	}

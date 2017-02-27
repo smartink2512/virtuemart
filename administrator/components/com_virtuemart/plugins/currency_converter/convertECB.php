@@ -45,8 +45,7 @@ class convertECB {
 
 		static $globalCurrencyConverter = false;
 		if(!$globalCurrencyConverter){
-			// cache subfolder(group) 'convertECB', cache method: callback
-			$cache= JFactory::getCache('convertECB','callback');
+			$cache = VmConfig::getCache('convertECB');
 
 			$cache->setLifeTime(360); // check 4 time per day
 			$cache->setCaching(1); //enable caching

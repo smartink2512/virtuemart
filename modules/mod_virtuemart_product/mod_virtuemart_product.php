@@ -50,7 +50,7 @@ $cachetime = $params->get( 'vmcachetime', 300 );
 if($cache){
 	vmdebug('Use cache for mod products');
 	$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id.'.'.$category_id;
-	$cache	= JFactory::getCache('mod_virtuemart_product', 'output');
+	$cache	= VmConfig::getCache('mod_virtuemart_product', 'output');
 	$cache->setCaching(1);
 	$cache->setLifeTime($cachetime);
 

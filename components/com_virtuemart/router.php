@@ -846,7 +846,7 @@ class vmrouterHelper {
 
 	public function getCategoryRoute($catId,$manId){
 
-		$cache = JFactory::getCache('_virtuemart','');
+		$cache = VmConfig::getCache('_virtuemart','');
 		$key = $catId. VmConfig::$vmlang . $manId; // internal cache key
 		if (!($CategoryRoute = $cache->get($key))) {
 			$CategoryRoute = $this->getCategoryRouteNocache($catId,$manId);

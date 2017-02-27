@@ -21,9 +21,6 @@ VmConfig::loadConfig();
 
 //VmConfig::showDebug('all');
 
-if (!class_exists( 'VmController' )) require(VMPATH_ADMIN .'/helpers/vmcontroller.php');
-if (!class_exists( 'VmModel' )) require(VMPATH_ADMIN .'/helpers/vmmodel.php');
-
 vmRam('Start');
 vmSetStartTime('vmStart');
 

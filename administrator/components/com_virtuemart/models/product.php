@@ -1542,6 +1542,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product->selectedPrice = 0;
 		$product->allPrices[0] = $this->fillVoidPrice();
 		$product->categories = array();
+
 		if ($front) {
 			$product->link = '';
 			$product->virtuemart_category_id = 0;
@@ -1553,6 +1554,7 @@ class VirtueMartModelProduct extends VmModel {
 			$product->addToCartButton = false;
 		}
 		$product->virtuemart_vendor_id = vmAccess::isSuperVendor();
+
 		return $product;
 	}
 
@@ -2219,7 +2221,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 
-		$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+		$cache = VmConfig::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
 
 		return $product_data->virtuemart_product_id;
@@ -2582,7 +2584,7 @@ class VirtueMartModelProduct extends VmModel {
 			vmSetStartTime('mcaching');
 			$mlang=(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1);
 			if(true){
-				$cache = JFactory::getCache('com_virtuemart_cat_manus','callback');
+				$cache = VmConfig::getCache('com_virtuemart_cat_manus','callback');
 				$cache->setCaching(true);
 				$manufacturers = $cache->call( array( 'VirtueMartModelManufacturer', 'getManufacturersOfProductsInCategory' ),$virtuemart_category_id,VmConfig::$vmlang,$mlang);
 				vmTime('Manufacturers by Cache','mcaching');
