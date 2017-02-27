@@ -50,6 +50,7 @@ class vmAmazonConditions {
 		$lang = JFactory::getLanguage();
 		$tag = strtolower(substr($lang->get('tag'), 0, 2));
 		if(array_key_exists($tag, $this->languages_region) AND $this->languages_region[$tag] == $this->_currentMethod->region) {
+			vmdebug('AMAZON checkConditions isValidLanguage false ',$tag);
 			return true;
 		}
 
@@ -106,6 +107,7 @@ class vmAmazonConditions {
 
 		foreach ($cart->products as $product) {
 			if(array_intersect($exclude_categories, $product->categories)) {
+				vmdebug('AMAZON checkConditions one of the products is not allowed to be payed via amazon ',$product);
 				return false;
 			}
 		}
@@ -129,7 +131,7 @@ class vmAmazonConditions {
 		if(in_array($clientIp, $ip_whitelist)) {
 			return true;
 		}
-
+		vmdebug('AMAZON checkConditions isValidIP false');
 		return false;
 	}
 

@@ -2840,8 +2840,8 @@ $('.amazonDetailsOpener').click(function() {
 			//vmInfo('VMPAYMENT_AMAZON_PAYMENT_NOT_AVAILABLE');
 
 			//$this->unsetCartLayoutAndPaymentMethod($cart);
-			$this->leaveAmazonCheckout(vmText::_('VMPAYMENT_AMAZON_PAYMENT_NOT_AVAILABLE'));
-
+			//$this->leaveAmazonCheckout(vmText::_('VMPAYMENT_AMAZON_PAYMENT_NOT_AVAILABLE'));
+			$this->leaveAmazonCheckout();
 			return FALSE;
 		}
 
