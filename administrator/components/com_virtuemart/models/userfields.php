@@ -789,12 +789,14 @@ class VirtueMartModelUserfields extends VmModel {
 				$valueO = $valueN = (($_userData == null || !array_key_exists($_fld->name, $_userData))
 				? vmText::_($_fld->default)
 				: $_userData[$_fld->name]); 
-				
-				if ((!empty($valueN)) && (is_string($valueN))) $valueN = htmlentities($valueN,ENT_COMPAT, 'UTF-8', false);
+
+				//TODO htmlentites creates problems with non-ascii chars, which exists as htmlentity, for example äöü
+
+				if ((!empty($valueN)) && (is_string($valueN))) $valueN = htmlspecialchars($valueN,ENT_COMPAT, 'UTF-8', false);	//was htmlentities
 				
 				$_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name
-				,'value' => $valueN // htmlentities encoded value for all except editorarea and plugins
+				,'value' => $valueN // htmlspecialchars (was htmlentities) encoded value for all except editorarea and plugins
 				,'unescapedvalue'=> $valueO
 				,'title' => vmText::_($_fld->title)
 				,'type' => $_fld->type

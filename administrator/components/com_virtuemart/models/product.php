@@ -182,8 +182,9 @@ class VirtueMartModelProduct extends VmModel {
 			$valid_search_fields = array_unique(array_merge($this->valid_BE_search_fields, $valid_search_fields));
 
 			$view = vRequest::getCmd ('view');
-			$stateTypes = array('virtuemart_category_id'=>'int','virtuemart_manufacturer_id'=>'int','product_parent_id'=>'int','filter_product'=>'string','search_type'=>'string','search_order'=>'string','search_date'=>'string','virtuemart_vendor_id' => 'int');
+			$stateTypes = array('virtuemart_category_id'=>'int','virtuemart_manufacturer_id'=>'int',/*'product_parent_id'=>'int',*/'filter_product'=>'string','search_type'=>'string','search_order'=>'string','search_date'=>'string','virtuemart_vendor_id' => 'int');
 
+			$this->product_parent_id = vRequest::getInt ('product_parent_id', FALSE);
 			foreach($stateTypes as $type => $filter){
 				$k= 'com_virtuemart.' . $view . '.'.$type;
 				if($filter=='int'){
@@ -2350,6 +2351,7 @@ class VirtueMartModelProduct extends VmModel {
 					}
 				}
 			}
+			$this->store ($product);
 		}
 
 		return $product->virtuemart_product_id;

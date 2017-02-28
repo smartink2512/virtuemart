@@ -210,23 +210,16 @@ class VirtueMartModelCustomfields extends VmModel {
 						$varsToPushPlg[$obj->virtuemart_custom_id] = $obj->_varsToPushParam;
 					}
 				}
-				if(!empty($obj->_varsToPushParam)){
-					if(empty($obj->_varsToPushParamCustom)) $obj->_varsToPushParamCustom = $obj->_varsToPushParam;
-					if(empty($obj->_varsToPushParamCustomField)) $obj->_varsToPushParamCustomField = $obj->_varsToPushParam;
-				}
 			}
 		} else {
-			$obj->_varsToPushParamCustom = VirtueMartModelCustom::getVarsToPush($fieldtype);
-			$obj->_varsToPushParam = $obj->_varsToPushParamCustomField = $obj->_varsToPushParamCustom;
-			//vmdebug('my $obj->_varsToPushParamCustom',$obj->_varsToPushParamCustomField);
+			$obj->_varsToPushParam = VirtueMartModelCustom::getVarsToPush($fieldtype);
 		}
 
 		if(!empty($obj->_varsToPushParam)){
-			//$obj ->_xParams = 'custom_params';
-			VmTable::bindParameterable($obj,'custom_params',$obj->_varsToPushParamCustom);
+			VmTable::bindParameterable($obj,'custom_params',$obj->_varsToPushParam);
 
 			$obj ->_xParams = 'customfield_params';
-			VmTable::bindParameterable($obj,$obj->_xParams,$obj->_varsToPushParamCustomField);
+			VmTable::bindParameterable($obj,$obj->_xParams,$obj->_varsToPushParam);
 		}
 
 	}
@@ -449,11 +442,17 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					if($soption->voption!='clabels'){
 
-						foreach($sorted as $vmProductId){
+						foreach($sorted as $i=>$vmProductId){
 							if(empty($vmProductId) or $vmProductId['vm_product_id']==$product_id){
 								continue;
 							}
 							$product = $productModel->getProductSingle($vmProductId['vm_product_id'],false);
+
+							if(empty($product->virtuemart_vendor_id) and empty($product->slug)){
+								unset($sorted[$i]);
+								continue;
+							}
+
 							$voption = trim($product->{$soption->voption});
 
 							if(!empty($voption)) {
@@ -1094,9 +1093,21 @@ class VirtueMartModelCustomfields extends VmModel {
 						$fields = array_merge ((array)$fields, (array)$datas['customfield_params'][$key]);
 					}
 				}
+
 				$tableCustomfields->_xParams = 'customfield_params';
 				if(!class_exists('VirtueMartModelCustom')) require(VMPATH_ADMIN.DS.'models'.DS.'custom.php');
 				VirtueMartModelCustom::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
+
+				//We do not store default values
+				$paramsTemp = array();
+				foreach($tableCustomfields->_varsToPushParam as $name=>$attrib){
+					if(isset($fields[$name])){
+						$paramsTemp[$name] = $attrib;
+					} else {
+						unset($tableCustomfields->$name);
+					}
+				}
+				$tableCustomfields->_varsToPushParam = $paramsTemp;
 
 				$tableCustomfields->bindChecknStore($fields);
 

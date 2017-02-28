@@ -85,11 +85,6 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds);
 
-
-				// Get the category tree
-				if (isset($product->categories)) $this->category_tree = '';//ShopFunctions::categoryListTree($product->categories);
-				else $this->category_tree = '';//ShopFunctions::categoryListTree();
-
 				//Fallback for categories inherited by parent to correctly calculate the prices
 				if(empty($product->categories) and !empty($product_parent->categories)){
 					$product->categories = $product_parent->categories;

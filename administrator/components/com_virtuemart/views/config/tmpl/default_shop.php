@@ -41,6 +41,16 @@ defined('_JEXEC') or die('Restricted access');?>
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SSL','useSSL',VmConfig::get('useSSL',0));
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_REGISTRATION_CAPTCHA','reg_captcha',VmConfig::get('reg_captcha',0));
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_VM_ERROR_HANDLING_ENABLE','handle_404',VmConfig::get('handle_404',1));
+		$host = JUri::getInstance()->getHost(); ?>
+		<tr>
+			<td class="key">
+				<?php echo vmText::_('COM_VM_EXTSUBSCR_HOST'); ?>
+        </td>
+        <td>
+				<?php echo $host ?>
+        </td>
+        </tr> <?php
+		echo VmHTML::row('input','COM_VM_MEMBER_ACCESSNBR','member_access_number',VmConfig::get('member_access_number',''));
 		?>
 	</table>
 </fieldset>

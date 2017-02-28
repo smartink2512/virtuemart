@@ -441,8 +441,8 @@ class VirtueMartModelCustom extends VmModel {
 			);
 		} else if($type=='M'){
 			$varsToPush = array(
-				'width'		=> array(VmConfig::get('img_width',90), 'string'),
-				'height'	=> array(VmConfig::get('img_width',90), 'string'),
+				'width'		=> array('', 'string'),
+				'height'	=> array('', 'string'),
 				'addEmpty'		=> array(0, 'int'),
 				'selectType'	=> array(1, 'int')
 			);
@@ -452,16 +452,16 @@ class VirtueMartModelCustom extends VmModel {
 				'wPrice'	=> array(0, 'int'),
 				'wImage'	=> array(1, 'int'),
 				'wDescr'	=> array(0, 'int'),
-				'width'		=> array(VmConfig::get('img_width',90), 'string'),
-				'height'	=> array(VmConfig::get('img_width',90), 'string')
+				'width'		=> array('', 'string'),
+				'height'	=> array('', 'string')
 
 			);
 		} else if($type=='Z'){
 			$varsToPush = array(
 				'wImage'	=> array(1, 'int'),
 				'wDescr'	=> array(0, 'int'),
-				'width'		=> array(VmConfig::get('img_width',90), 'string'),
-				'height'	=> array(VmConfig::get('img_width',90), 'string')
+				'width'		=> array('', 'string'),
+				'height'	=> array('', 'string')
 			);
 		}
 		return $varsToPush;

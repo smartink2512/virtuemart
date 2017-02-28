@@ -174,6 +174,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 		{
 			$status = vRequest::getvar('status');
 			$productShoppers=0;
+
 			if ($status) {
 				$productModel = VmModel::getModel('product');
 				$productShoppers = $productModel->getProductShoppersByStatus($product_id ,$status);
@@ -196,6 +197,11 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				}
 			}
 			$own_category_id = vRequest::getInt('own_category_id',false);
+
+			//TODO Why do we not use the states of the model directly?
+			//$productModel = VmModel::getModel('product');
+			//$own_category_id = $productModel->filter_order;
+
 			if($own_category_id){
 				$html = ShopFunctions::categoryListTree($categories, 0, 0, (array) $own_category_id);
 			} else {
