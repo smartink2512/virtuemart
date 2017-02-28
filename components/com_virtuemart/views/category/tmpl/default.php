@@ -61,7 +61,7 @@ if (!empty($this->showcategory_desc) and empty($this->keyword) and !empty($this-
 }
 
 // Show child categories
-if ($this->showcategory and empty($this->keyword)) {
+if ($this->showcategory and $this->keyword === false) {
 	if (!empty($this->category->haschildren)) {
 		echo ShopFunctionsF::renderVmSubLayout('categories',array('categories'=>$this->category->children, 'categories_per_row'=>$this->categories_per_row));
 	}
@@ -72,7 +72,7 @@ if (!empty($this->products)) {
 <div class="browse-view">
 <?php
 
-if ($this->showsearch or !empty($this->keyword)) {
+if ($this->showsearch or $this->keyword !== false) {
 	//id taken in the view.html.php could be modified
 	$category_id  = vRequest::getInt ('virtuemart_category_id', 0); ?>
 
@@ -106,7 +106,7 @@ if ($this->showsearch or !empty($this->keyword)) {
 	</div>
 	<!-- End Search Box -->
 <?php
-	/*if(!empty($this->keyword)){
+	/*if($this->keyword !== false){
 		?><h3><?php echo vmText::sprintf('COM_VM_SEARCH_KEYWORD_FOR', $this->keyword); ?></h3><?php
 	}*/
 	$j = 'jQuery(document).ready(function() {
@@ -154,7 +154,7 @@ if(!empty($this->orderByList)) { ?>
 	if(!empty($this->orderByList)) { ?>
 		<div class="vm-pagination vm-pagination-bottom"><?php echo $this->vmPagination->getPagesLinks (); ?><span class="vm-page-counter"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
 	<?php }
-} elseif (!empty($this->keyword)) {
+} elseif ($this->keyword !== false) {
 	echo vmText::_ ('COM_VIRTUEMART_NO_RESULT') . ($this->keyword ? ' : (' . $this->keyword . ')' : '');
 }
 ?>
