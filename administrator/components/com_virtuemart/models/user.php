@@ -1083,8 +1083,13 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		$usersConfig = JComponentHelper::getParams( 'com_users' );
-		$vars['doVendor']= (boolean)$usersConfig->get('mail_to_admin');
-		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)
+
+		if(empty($usersConfig->get('mail_to_admin'))){
+			unset($vars['doVendor']);	//The construction is due the nasty construction in renderMail
+		} else {
+			$vars['doVendor'] = 1;
+		}
+
 		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 
 	}

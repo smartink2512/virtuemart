@@ -72,7 +72,7 @@ class VirtuemartControllerVirtuemart extends VmController {
 
 		if(!empty($host) AND !empty($ackey)) {
 
-			$link = 'https://extensions.virtuemart.net/support-updates/virtuemart-membership/index.php?option=com_virtuemart&view=plugin&name=istraxx_download_byhost&ackey='.base64_encode( $ackey ).'&host='.$host.'&vmlang='.VmConfig::$vmlangTag.'&sku=VMMS&vmver='.vmVersion::$RELEASE;
+			$link = '//extensions.virtuemart.net/index.php?option=com_virtuemart&view=plugin&name=istraxx_download_byhost&ackey='.base64_encode( $ackey ).'&host='.$host.'&vmlang='.VmConfig::$vmlangTag.'&sku=VMMS&vmver='.vmVersion::$RELEASE;
 
 			$opts = array(
 				'http'=>array(
@@ -82,18 +82,9 @@ class VirtuemartControllerVirtuemart extends VmController {
 				)
 			);
 			$context = stream_context_create($opts);
-			try {
-				$request = file_get_contents('http:'.$link, false, $context);
-			}
-			catch(Exception $e) {
 
-				try {
-					$request = file_get_contents('http:'.$link, false, $context);
-				}
-				catch(Exception $e) {
-					return false;
-				}
-			}
+			$request = file_get_contents('https:'.$link, false, $context);
+
 
 			//VmConfig::$echoDebug=1;
 			//vmdebug('my request ',$request);

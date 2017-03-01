@@ -173,13 +173,11 @@ class AdminUIHelper {
                     type: "GET",
                     cache: true,
                     dataType: "json",
-                    crossDomain: true,
                     url: "index.php?option=com_virtuemart&view=virtuemart&task=getMemberStatus&"+token+"="+1,
                 }).done(
                     function(data) {
                         if(data.html!=="undefined"){
                             var cib = jQuery("#"+token);
-                            //var ver = "";//cib.html();
                             cib.html(data.html);
                             if(data.res=="valid"){
                                 cib = jQuery("#vmver-"+token);

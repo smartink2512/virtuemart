@@ -341,8 +341,8 @@ class vmJsApi{
 
 		static $e = true;
 		if($e){
-			$v = 'if (typeof Virtuemart === "undefined")
-	Virtuemart = {};';
+			$v = 'if (typeof Virtuemart === "undefined"){
+	Virtuemart = {};}'."\n";
 			$v .= "Virtuemart.vmSiteurl = vmSiteurl = '".JURI::root()."' ;\n";
 			$v .= 'Virtuemart.vmLang = vmLang = "&lang='.VmConfig::$vmlangSef.'";'."\n";
 			$v .= 'Virtuemart.vmLangTag = vmLangTag = "'.VmConfig::$vmlangSef.'";'."\n";
@@ -359,7 +359,7 @@ class vmJsApi{
 				$v .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
 				$v .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
 				//This is necessary though and should not be removed without rethinking the whole construction
-				$v .= "usefancy = false;";
+				$v .= "usefancy = false;\n";
 			}
 			vmJsApi::addJScript('vm.vars',$v,false,true,true);
 			$e = false;
