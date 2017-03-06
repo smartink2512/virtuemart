@@ -509,14 +509,14 @@ abstract class vmPlugin extends JPlugin {
 	 * @return bool
 	 */
 	protected function declarePluginParams ($psType, &$data, $blind=0, $blind2=0) {
-
+		
 		if(!empty($this->_psType)){
 			$element = $this->_psType.'_element';
 			$jplugin_id = $this->_psType.'_jplugin_id';
 			if(empty($data->$element)) $data->$element = 0;
 			if(empty($data->$jplugin_id)) $data->$jplugin_id = 0;
 
-			if(!$this->selectedThis($psType,$data->$element,$data->$jplugin_id)){
+			if(!$this->selectedThis($psType,$data->$element)){
 				return FALSE;
 			}
 
