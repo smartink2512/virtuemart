@@ -457,7 +457,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-			$this->_db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart"');
+			$this->_db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart" and state="0"');
 			$jId = $this->_db->loadResult();
 
 			if($jId){
@@ -616,7 +616,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function checkFixJoomlaBEMenuEntries(){
 
 			$db = JFactory::getDbo();
-			$db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart"');
+			$db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart" and state="0"');
 			$jId = $db->loadResult();
 
 			if($jId){

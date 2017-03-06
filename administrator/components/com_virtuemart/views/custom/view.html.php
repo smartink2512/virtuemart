@@ -153,7 +153,7 @@ class VirtuemartViewCustom extends VmViewAdmin {
 		$ext_id = 'extension_id';
 
 		//$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" AND `'.$enable.'`="1" ';
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" ';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" and state="0"';
 		$db->setQuery($q);
 
 		$results = $db->loadAssocList($ext_id);

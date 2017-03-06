@@ -268,7 +268,7 @@ class VirtuemartViewUserfields extends VmViewAdmin {
 		$enable = 'enabled';
 
 		$db = JFactory::getDBO();
- 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmuserfield" ';
+ 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmuserfield" and state="0"';
 		$db->setQuery($q);
 		$userfieldplugins = $db->loadAssocList($ext_id);
 		if(empty($userfieldplugins)){

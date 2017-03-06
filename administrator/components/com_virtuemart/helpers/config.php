@@ -958,7 +958,7 @@ class VmConfig {
 			vmLanguage::initialise();
 			self::loadJLang('com_virtuemart');
 
-			$q = 'SELECT `element` FROM `#__extensions` WHERE type = "language" and enabled = "1"';
+			$q = 'SELECT `element` FROM `#__extensions` WHERE type = "language" and enabled = "1" and state="0"';
 			$db->setQuery($q);
 			$knownLangs = $db->loadColumn();
 			//vmdebug('Selected language '.$selectedLang.' $knownLangs ',$knownLangs);
