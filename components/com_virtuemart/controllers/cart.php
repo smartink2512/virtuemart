@@ -233,6 +233,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
 			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id');
+
 			$error = false;
 			$cart->add($virtuemart_product_ids,$error);
 			if (!$error) {
@@ -256,13 +257,15 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 * @access public
 	 */
 	public function addJS() {
-
+		if(VmConfig::showDebug()) {
+			VmConfig::$echoDebug = 1;
+			ob_start();
+		}
 		$this->json = new stdClass();
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
 			$view = $this->getView ('cart', 'json');
 			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
-
 
 			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id');
 
@@ -294,9 +297,14 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$view->assignRef('products',$products);
 			$view->assignRef('errorMsg',$errorMsg);
 
-			ob_start();
+			if(!VmConfig::showDebug()) {
+				ob_start();
+			}
 			$view->display ();
 			$this->json->msg = ob_get_clean();
+			if(VmConfig::showDebug()) {
+				VmConfig::$echoDebug = 0;
+			}
 		} else {
 			$this->json->msg = '<a href="' . JRoute::_('index.php?option=com_virtuemart', FALSE) . '" >' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 			$this->json->msg .= '<p>' . vmText::_('COM_VIRTUEMART_MINICART_ERROR') . '</p>';

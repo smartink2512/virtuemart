@@ -640,14 +640,14 @@ class VirtueMartCustomFieldRenderer {
 
 		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
 
-		if(empty($variantmods)){
+		//if(empty($variantmods)){
 			$productDB = VmModel::getModel('product')->getProduct($product->virtuemart_product_id);
 			if($productDB and isset($productDB->customfields)){
 				$product->customfields = $productDB->customfields;
 			} else {
 				$product->customfields = array();
 			}
-		}
+		//}
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods,true);
 		}
@@ -657,19 +657,18 @@ class VirtueMartCustomFieldRenderer {
 
 			//We just add the customfields to be shown in the cart to the variantmods
 			if(is_object($prodcustom)){
-				if($prodcustom->is_cart_attribute and !$prodcustom->is_input){
+				if($prodcustom->is_cart_attribute or $prodcustom->is_input){
 					if(!isset($variantmods[$prodcustom->virtuemart_custom_id]) or !is_array($variantmods[$prodcustom->virtuemart_custom_id])){
 						$variantmods[$prodcustom->virtuemart_custom_id] = array();
 					}
-					$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = false;
-
-				} else if(!empty($variantmods) and !empty($variantmods[$prodcustom->virtuemart_custom_id])){
-
+					if(!isset($variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id])){
+						$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = true;
+					}
 				}
 				$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 			}
 		}
-
+		//vmdebug('displayProductCustomfieldSelected ',$variantmods,$productCustoms);
 		foreach ( (array)$variantmods as $custom_id => $customfield_ids) {
 
 			if(!is_array($customfield_ids)){
