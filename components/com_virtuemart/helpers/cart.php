@@ -479,12 +479,16 @@ class VirtueMartCart {
 		$post = vRequest::getRequest();
 
 		if(empty($virtuemart_product_ids)){
-			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id'); //is sanitized then
+			$virtuemart_product_ids = vRequest::getInt('virtuemart_product_id'); //is sanitized
 		}
 
 		if (empty($virtuemart_product_ids)) {
 			vmWarn('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS');
 			return false;
+		} else {
+			if(is_array($virtuemart_product_ids)){
+				$virtuemart_product_ids = array_unique($virtuemart_product_ids);
+			}
 		}
 
 		$products = array();
@@ -550,7 +554,7 @@ class VirtueMartCart {
 
 						if(is_array($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
 							if(!class_exists('vmFilter'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmfilter.php');
-							foreach($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] as &$customData){
+							foreach($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] as $i=>$customData){
 
 								$value = vmFilter::hl( $customData,array('deny_attribute'=>'*'));
 								//to strong
@@ -559,7 +563,7 @@ class VirtueMartCart {
 								$value = JComponentHelper::filterText($value);
 								$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 								$value = trim(str_replace('"', ' ', $value),"'") ;
-								$customData = (string)preg_replace('#^\'#si','',$value);
+								$customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id][$i] = (string)preg_replace('#^\'#si','',$value);
 							}
 						}
 						if(!isset($customProductDataTmp[$customfield->virtuemart_custom_id])) $customProductDataTmp[$customfield->virtuemart_custom_id] = array();

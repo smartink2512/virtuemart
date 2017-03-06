@@ -1,3 +1,20 @@
+<?php
+/**
+ * Layout for the shopping cart
+ *
+ * @package    VirtueMart
+ * @subpackage Cart
+ * @author Max Milbers
+ *
+ * @link ${PHING.VM.MAINTAINERURL}
+ * @copyright Copyright (c) 2004 - 2016 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @version $Id: cart.php 2551 2010-09-30 18:52:40Z milbo $
+ */
+
+// Check to ensure this file is included in Joomla!
+defined ('_JEXEC') or die('Restricted access');
+?>
 <fieldset class="vm-fieldset-pricelist">
 <table
 	class="cart-summary"

@@ -186,6 +186,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderNumber, $orderPass, $tries);
 		vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
+
 		echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 		return false;
 	}
@@ -1701,10 +1702,11 @@ class VirtueMartModelOrders extends VmModel {
 
 		$vendorModel = VmModel::getModel('vendor');
 		//Lets set the language to the BE default of the main vendor
-		//$vendorUserId = $vendorModel->getUserIdByVendorId(1);
-		//$vu = JFactory::getUser($vendorUserId);
-		//$vLang = $vu->getParam('admin_language',VmConfig::$jDefLangTag);
-		shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
+		$vendorUserId = $vendorModel->getUserIdByVendorId(1);
+		$vu = JFactory::getUser($vendorUserId);
+		$vLang = $vu->getParam('admin_language',VmConfig::$jDefLangTag);
+
+		shopFunctionsF::loadOrderLanguages($vLang);
 		$order = $this->getOrder($virtuemart_order_id);
 
 
