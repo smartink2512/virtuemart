@@ -2312,22 +2312,22 @@ class VirtueMartModelProduct extends VmModel {
 
 		//We only want to clone not inherited properties
 		//$product = $this->getProduct ($id, FALSE, FALSE, FALSE);
-		$product = $this->getProductSingle ($id, FALSE);
+		$product = $this->getProductSingle ($id, FALSE, 1, false, 0, false);
 		$product->field = $this->productCustomsfieldsClone ($id);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->mprices = $this->productPricesClone ($id);
+		$product->virtuemart_shoppergroup_id = $product->shoppergroups;
 
-		//Lets check if the user is admin or the mainvendor
-		//Todo, what was the idea behind this? created_on should be always set to new?
-		if(vmAccess::manager()){
-			$product->created_on = "0000-00-00 00:00:00";
-			$product->created_by = 0;
-		}
+
+
+		$product->created_on = "0000-00-00 00:00:00";
+		$product->created_by = 0;
 		$product->slug = $product->slug . '-' . $id;
 		$product->originId = $id;
 		$product->published=0;
 		$product->product_sales=0;
 		$product->product_ordered=0;
+
 		$newId = $this->store ($product);
 		$product->virtuemart_product_id = $newId;
 		JPluginHelper::importPlugin ('vmcustom');
@@ -2347,11 +2347,14 @@ class VirtueMartModelProduct extends VmModel {
 				if($langTable->_loaded){
 					if(!empty($langTable->virtuemart_product_id)){
 						$langTable->virtuemart_product_id = $newId;
-						$langTable->bindChecknStore($langTable);
+						$langTable->created_on = "0000-00-00 00:00:00";
+						$langTable->created_by = 0;
+						$langTable->slug = $langTable->slug . '-' . $id;
+
+						$langTable->bindChecknStore($langTable, false, true);
 					}
 				}
 			}
-			$this->store ($product);
 		}
 
 		return $product->virtuemart_product_id;
@@ -2366,9 +2369,10 @@ class VirtueMartModelProduct extends VmModel {
 		$prices = $db->loadAssocList ();
 
 		if ($prices) {
-			foreach ($prices as $k => &$price) {
+			foreach ($prices as $k => $price) {
 				unset($price['virtuemart_product_id'], $price['virtuemart_product_price_id']);
-				if(empty($mprices[$k])) $mprices[$k] = array();
+				//if(empty($mprices[$k])) $mprices[$k] = array();
+
 				foreach ($price as $i => $value) {
 					if(empty($mprices[$i])) $mprices[$i] = array();
 					$mprices[$i][$k] = $value;

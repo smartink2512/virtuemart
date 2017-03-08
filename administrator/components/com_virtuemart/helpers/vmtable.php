@@ -1547,7 +1547,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 	 * @param boolean $preload You can preload the data here too preserve not updated data
 	 * @return array/obj $data the updated data
 	 */
-	public function bindChecknStore(&$data, $preload = false) {
+	public function bindChecknStore(&$data, $preload = false, $langOnly = false) {
 
 		$tblKey = $this->_tbl_key;
 		$ok = true;
@@ -1642,29 +1642,31 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 			if ($ok) {
 
-				$dataTable->bindChecknStoreNoLang($data, $preload);
-				$this->bind($dataTable);
-				$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
-				//vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
-				if ($ok and $preload) {
-					if (!empty($langTable->$tblKey)) {
-						$id = $langTable->$tblKey;
-						if (!$langTable->load($id)) {
-							$ok = false;
-							vmdebug('Preloading of language table failed, no id given, cannot store ' . $this->_tbl);
-						}
-					} else {
-						if ($ok) {
-							if (!$langTable->bind($data)) {
+				if(!$langOnly){
+					$dataTable->bindChecknStoreNoLang($data, $preload);
+					$this->bind($dataTable);
+					$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
+					//vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
+					if ($ok and $preload) {
+						if (!empty($langTable->$tblKey)) {
+							$id = $langTable->$tblKey;
+							if (!$langTable->load($id)) {
 								$ok = false;
-								vmdebug('Problem in bind ' . get_class($this) . ' ');
+								vmdebug('Preloading of language table failed, no id given, cannot store ' . $this->_tbl);
 							}
-						}
+						} else {
+							if ($ok) {
+								if (!$langTable->bind($data)) {
+									$ok = false;
+									vmdebug('Problem in bind ' . get_class($this) . ' ');
+								}
+							}
 
-						if ($ok) {
-							if (!$langTable->check()) {
-								$ok = false;
-								vmdebug('Check returned false ' . get_class($langTable) . ' ' . $this->_tbl . ' ' . $langTable->_db->getErrorMsg());
+							if ($ok) {
+								if (!$langTable->check()) {
+									$ok = false;
+									vmdebug('Check returned false ' . get_class($langTable) . ' ' . $this->_tbl . ' ' . $langTable->_db->getErrorMsg());
+								}
 							}
 						}
 					}

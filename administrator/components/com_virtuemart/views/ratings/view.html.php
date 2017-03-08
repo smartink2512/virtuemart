@@ -92,7 +92,7 @@ class VirtuemartViewRatings extends VmViewAdmin {
 
 				// Get the data
 				$this->rating = $model->getReview($cids,$new);
-				vmdebug('$this->rating',$this->rating);
+				//vmdebug('$this->rating',$this->rating);
 				if(!empty($this->rating)){
 					$this->SetViewTitle('REVIEW_RATE',$this->rating->product_name." (". $this->rating->customer.")" );
 

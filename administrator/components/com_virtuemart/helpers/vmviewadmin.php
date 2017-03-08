@@ -222,6 +222,12 @@ class VmViewAdmin extends JViewLegacy {
 
 		if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
+		if (vmAccess::manager('product.create')) {
+			JToolBarHelper::custom('createchild', 'new', 'new', vmText::_('COM_VIRTUEMART_PRODUCT_CHILD'), false);
+			JToolBarHelper::custom('cloneproduct', 'copy', 'copy', vmText::_('COM_VIRTUEMART_PRODUCT_CLONE'), false);
+		}
+		JToolBarHelper::custom('addrating', 'default', '', vmText::_('COM_VIRTUEMART_ADD_RATING'), false);
+
 		JToolBarHelper::divider();
 		if (vmAccess::manager($view.'.edit')) {
 			JToolBarHelper::save();

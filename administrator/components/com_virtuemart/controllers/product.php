@@ -295,18 +295,23 @@ class VirtuemartControllerProduct extends VmController {
 		$msgtype = '';
 
 		$cids = vRequest::getInt($this->_cidName, vRequest::getInt('virtuemart_product_id'));
-		$cids = array_unique($cids);
+		if(is_array($cids)){
+			$cids = array_unique($cids);
+		} else {
+			$cids = (array)$cids;
+		}
+		$msg = '';
 		foreach($cids as $cid){
 			$cid = (int) $cid;
-			if ($cid and $model->createClone($cid)) {
-				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
+			if ($cid and $l=$model->createClone($cid)) {
+				$msg .= vmText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
 			} else {
-				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
+				$msg .= vmText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
 				$msgtype = 'error';
 			}
 		}
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product', $msg, $msgtype);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$l, $msg, $msgtype);
 	}
 
 

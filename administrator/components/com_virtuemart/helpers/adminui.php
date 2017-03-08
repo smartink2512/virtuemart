@@ -129,6 +129,13 @@ class AdminUIHelper {
 		}
 		$safePath .= '/vmm.ini';
 
+		preg_match('/[a-z]/', $token, $matches);
+		if(!empty($matches[0][0])){
+			$prefix = $matches[0][0];
+		} else {
+			$prefix = 'a';
+		}
+
 		$nag = '';
 		$dplyVer = 'display: none;';
 		$ackey = VmConfig::get('member_access_number','');
@@ -177,7 +184,7 @@ class AdminUIHelper {
                 }).done(
                     function(data) {
                         if(data.html!=="undefined"){
-                            var cib = jQuery("#"+token);
+                            var cib = jQuery("#'.$prefix.'"+token);
                             cib.html(data.html);
                             if(data.res=="valid"){
                                 cib = jQuery("#vmver-"+token);
@@ -191,13 +198,14 @@ class AdminUIHelper {
 			}
 		}
 
+
 		?>
-        <style>#vmver-<?php echo $token ?> { <?php echo $dplyVer ?>}</style>
+        <style>#<?php echo $prefix ?>vmver-<?php echo $token ?> { <?php echo $dplyVer ?>}</style>
         <div class="vm-installed-version">VirtueMart <?php echo vmVersion::$RELEASE ?></div>
-        <div id="vmver-<?php echo $token ?>" class="vm-installed-version" >
+        <div id="<?php echo $prefix ?>vmver-<?php echo $token ?>" class="vm-installed-version" >
 			<?php echo vmVersion::$CODENAME.' '.vmVersion::$REVISION ?>
         </div>
-        <div id="<?php echo $token ?>">
+        <div id="<?php echo $prefix.$token ?>">
 			<?php echo $nag; ?>
         </div> <?php
 
