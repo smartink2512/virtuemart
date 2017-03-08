@@ -42,12 +42,12 @@ if($option=='com_virtuemart'){
 ?>
 
 	<table
-		width="100%"
+		width="50%"
 		border="0">
 		<tr>
-			<td
+			<td colspan="2"
 				valign="top"><a
-					href="http://virtuemart.net"
+					href="https://virtuemart.net"
 					target="_blank"> <img
 						border="0"
 						align="left" style="margin-right: 20px"
@@ -71,6 +71,9 @@ if($option=='com_virtuemart'){
 				</strong>
 
 			</td>
+			<td>
+				<?php echo vmText::sprintf('COM_VM_INSTALLATION_SOURCE',VMPATH_ROOT); ?>
+            </td>
 		</tr>
 		<?php  if (vRequest::get('view','')=='install') {
 			if (JVM_VERSION < 3) {
@@ -106,19 +109,19 @@ if($option=='com_virtuemart'){
 		?>
 		<tr>
 			<td><span class="<?php echo $class ?>">
-				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
+				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','https://virtuemart.net/community/translations'); ?>
 				</span>
 			</td>
 		</tr>
 		<tr>
 			<td><span class="<?php echo $class ?>">
-				<a href="http://docs.virtuemart.net"><?php echo vmText::_('COM_VIRTUEMART_DOCUMENTATION'); ?></a>
+				<a href="https://docs.virtuemart.net"><?php echo vmText::_('COM_VIRTUEMART_DOCUMENTATION'); ?></a>
 				</span>
 			</td>
 		</tr>
 		<tr>
 			<td><span class="<?php echo $class ?>">
-				<a href="http://extensions.virtuemart.net"><?php echo  vmText::_('COM_VIRTUEMART_EXTENSIONS_MORE'); ?></a>
+				<a href="https://extensions.virtuemart.net"><?php echo  vmText::_('COM_VIRTUEMART_EXTENSIONS_MORE'); ?></a>
 				</span>
 			</td>
 		</tr>

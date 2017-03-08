@@ -159,9 +159,35 @@ class VirtueMartModelManufacturer extends VmModel {
 		}
 
 		$ordering = $this->_getOrdering();
+
+		$langFields = array('mf_name','mf_email','mf_desc','mf_url','slug');
+
+		$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
+
+		if($langFback){
+
+			$useJLback = false;
+			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
+				$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
+				$useJLback = true;
+			}
+			foreach($langFields as $langField){
+				$expr2 = 'ld.'.$langField;
+				if($useJLback){
+					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
+				}
+				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
+			}
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
+		} else {
+			$select .= ', category_description, category_name';
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id` ';
+		}
+
 		//if ( $search && $search != 'true' or strpos($ordering,'mf_')!==FALSE or $ordering == 'm.virtuemart_manufacturer_id' ) {
-			$select .= ',`#__virtuemart_manufacturers_'.VmConfig::$vmlang.'`.*, mc.`mf_category_name` ';
-			$joinedTables .= ' INNER JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` USING (`virtuemart_manufacturer_id`) ';
+			/*$select .= ',`#__virtuemart_manufacturers_'.VmConfig::$vmlang.'`.*, mc.`mf_category_name` ';
+			$joinedTables .= ' INNER JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` USING (`virtuemart_manufacturer_id`) ';*/
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `m`.`virtuemart_manufacturercategories_id` ';
 		//}
 

@@ -514,6 +514,7 @@ class VirtueMartModelConfig extends VmModel {
 		$cache->clean('mod_virtuemart_category');
 		$cache->clean('com_virtuemart_rss');
 		$cache->clean('com_virtuemart_cat_manus');
+		$cache->clean('com_virtuemart_revenue');
 		$cache->clean('convertECB');
 		$cache->clean('_virtuemart');
 		$cache->clean('com_plugins');

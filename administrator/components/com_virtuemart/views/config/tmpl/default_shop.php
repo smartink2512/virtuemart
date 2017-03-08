@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');?>
 			<td class="key">
 				<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_MSG'); ?>
 			</td>
-			<td>
+			<td colspan="2">
 				<textarea rows="6" cols="50" name="offline_message"
 				          style="text-align: left;"><?php echo VmConfig::get('offline_message', 'Our Shop is currently down for maintenance. Please check back again soon.'); ?></textarea>
 			</td>
@@ -49,8 +49,20 @@ defined('_JEXEC') or die('Restricted access');?>
         <td>
 				<?php echo $host ?>
         </td>
-        </tr> <?php
-		echo VmHTML::row('input','COM_VM_MEMBER_ACCESSNBR','member_access_number',VmConfig::get('member_access_number',''));
+        </tr>
+        <tr>
+            <td class="key">
+                <span class="hasTip" title="<?php echo htmlentities(vmText::_('COM_VM_MEMBER_ACCESSNBR_TIP'))?>'"><?php echo vmText::_('COM_VM_MEMBER_ACCESSNBR')?></span>
+            </td>
+            <td>
+                <?php echo VmHTML::input('member_access_number',VmConfig::get('member_access_number','')); ?>
+            </td>
+            <td>
+                <span class="hasTip" title="<?php echo htmlentities(vmText::sprintf('COM_VM_MEMBER_AGREEMENT_TIP',VmConfig::$vmlangTag,vmVersion::$RELEASE))?>'"><?php echo vmText::_('COM_VM_MEMBER_AGREEMENT')?></span>
+            </td>
+        </tr>
+         <?php
+		//echo VmHTML::row('input','COM_VM_MEMBER_ACCESSNBR','member_access_number',VmConfig::get('member_access_number',''));
 		?>
 	</table>
 </fieldset>

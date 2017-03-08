@@ -1303,6 +1303,8 @@ class VirtueMartModelOrders extends VmModel {
 
 			if(!empty($product->customProductData)){
 				$_orderItems->product_attribute = vmJsApi::safe_json_encode($product->customProductData);
+			} else {
+				$_orderItems->product_attribute = '';
 			}
 
 

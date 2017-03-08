@@ -189,6 +189,7 @@ class calculationHelper {
 				//$rul = $this->_calcModel->getCalc($rule['virtuemart_calc_id']);
 				$this->allrules[$this->productVendorId][$rule['calc_kind']][$rule['virtuemart_calc_id']] = $rule;
 			}
+			if ($this->_debug) vmdebug('Calculation rules',$allrules);
 		}
 
 	}
@@ -1184,6 +1185,7 @@ class calculationHelper {
 				}
 				continue;
 			}
+
 			if(!empty($rule['for_override'])){
 				continue;
 			}
@@ -1195,9 +1197,9 @@ class calculationHelper {
 				//vmdebug('loaded cat rules '.$rule['virtuemart_calc_id']);
 			}
 
-//vmdebug('my rule ',$this->allrules[$this->productVendorId][$entrypoint][$i]);
 			$hitsCategory = true;
 			if (isset($this->_cats)) {
+				if ($this->_debug) vmdebug('loaded cat rules ',$this->_cats,$rule['calc_categories']);
 				$hitsCategory = $this->testRulePartEffecting($rule['calc_categories'], $this->_cats);
 			}
 
@@ -1259,6 +1261,8 @@ class calculationHelper {
 					echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
 
 				$testedRules[$rule['virtuemart_calc_id']] = $rule;
+			} else {
+				if ($this->_debug) vmdebug('plgVmInGatherEffectRulesProduct $hitsCategory '.(int)$hitsCategory.' $hitsShopper'.(int)$hitsShopper.' $hitsDeliveryArea'.(int)$hitsDeliveryArea.' '.(int)$hitsManufacturer,$rule);
 			}
 		}
 
@@ -1267,6 +1271,7 @@ class calculationHelper {
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
+			if ($this->_debug) vmdebug('plgVmInGatherEffectRulesProduct rules',$testedRules);
 		}
 
 		return $testedRules;
@@ -1356,7 +1361,7 @@ class calculationHelper {
 					echo '<br/ >Add Checkout rule ' . $rule["virtuemart_calc_id"] . '<br/ >';
 				$testedRules[$rule['virtuemart_calc_id']] = $rule;
 			} else {
-				vmdebug(' NO HIT my _deliveryCountry _deliveryState',(int)$hitsDeliveryArea, (int)$hitsShopper,$this->_shopperGroupId);
+				if ($this->_debug) vmdebug(' NO HIT my _deliveryCountry _deliveryState',(int)$hitsDeliveryArea, (int)$hitsShopper,$this->_shopperGroupId);
 			}
 		}
 
