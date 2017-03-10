@@ -2932,7 +2932,7 @@ class VirtueMartModelProduct extends VmModel {
 			return array();
 		}
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT p.virtuemart_product_id, l.product_name FROM `#__virtuemart_products` as p
+		$db->setQuery (' SELECT p.virtuemart_product_id, l.product_name, p.published, p.product_in_stock, p.product_ordered FROM `#__virtuemart_products` as p*/
 			JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ON p.virtuemart_product_id = l.virtuemart_product_id
 			WHERE `product_parent_id` =' . (int)$product_id);
 		return $db->loadObjectList ();
