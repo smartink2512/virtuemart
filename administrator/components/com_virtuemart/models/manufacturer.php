@@ -181,14 +181,15 @@ class VirtueMartModelManufacturer extends VmModel {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
 		} else {
-			$select .= ', category_description, category_name';
+			$select .= ', l.'.implode(', l.',$langFields);
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id` ';
 		}
 
 		//if ( $search && $search != 'true' or strpos($ordering,'mf_')!==FALSE or $ordering == 'm.virtuemart_manufacturer_id' ) {
 			/*$select .= ',`#__virtuemart_manufacturers_'.VmConfig::$vmlang.'`.*, mc.`mf_category_name` ';
 			$joinedTables .= ' INNER JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` USING (`virtuemart_manufacturer_id`) ';*/
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `m`.`virtuemart_manufacturercategories_id` ';
+		$select .= ',  mc.`mf_category_name`';
+		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `m`.`virtuemart_manufacturercategories_id` ';
 		//}
 
 		if ($onlyPublished) {

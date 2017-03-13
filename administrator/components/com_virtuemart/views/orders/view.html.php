@@ -164,7 +164,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			JToolBarHelper::custom( 'nextItem', 'forward','','COM_VIRTUEMART_ITEM_NEXT',false);
 			JToolBarHelper::divider();
 			JToolBarHelper::custom( 'cancel', $list,'','COM_VIRTUEMART_ORDER_LIST_LBL',false,false);
-
+			self::showhelp();
 		}
 		else if ($curTask == 'editOrderItem') {
 			if(!class_exists('calculationHelper')) require(VMPATH_ADMIN.DS.'helpers'.DS.'calculationh.php');
@@ -254,7 +254,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 				JToolBarHelper::spacer('80');
 				JToolBarHelper::deleteList();
 			}
-
+			self::showhelp();
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
 

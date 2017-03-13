@@ -645,7 +645,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 					if($rule->calc_kind!='VatTax' and $rule->calc_kind!='taxRulesBill') continue;
 
 					if(isset($sumRules[$rule->calc_kind][$rule->virtuemart_calc_id])){
-						$sumRules[$rule->calc_kind][$rule->virtuemart_calc_id]->calc_amount += $rule->calc_amount;
+						$sumRules[$rule->calc_kind][$rule->virtuemart_calc_id]->calc_result += $rule->calc_result;
 					} else {
 						$sumRules[$rule->calc_kind][$rule->virtuemart_calc_id] = $rule;
 					}
@@ -660,7 +660,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 						<td align="right" style="padding-right: 5px;">
 							<?php echo $this->currency->priceDisplay( $rule->calc_result ); ?>
 							<input class='orderedit' type="text" size="8"
-								   name="calc_rules[<?php echo $rule->calc_kind ?>][<?php echo $rule->virtuemart_order_calc_rule_id ?>]"
+								   name="calc_rules[<?php echo $rule->calc_kind ?>][<?php echo $rule->virtuemart_calc_id ?>]"
 								   value="<?php echo $rule->calc_result; ?>"/>
 						</td>
 						<td align="right" colspan="2"></td>

@@ -447,6 +447,7 @@ class VmViewAdmin extends JViewLegacy {
 		vmLanguage::loadJLang('com_virtuemart_help');
 		$lang = JFactory::getLanguage();
 		$key=  'COM_VIRTUEMART_HELP_'.$view.$task;
+
 		if ($lang->hasKey($key)) {
 			$help_url  = vmText::_($key)."?tmpl=component";
 			$bar = JToolBar::getInstance('toolbar');

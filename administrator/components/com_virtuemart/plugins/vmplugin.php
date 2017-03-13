@@ -102,28 +102,31 @@ abstract class vmPlugin extends JPlugin {
 
 	static public function loadJLang($fname,$type,$name){
 
-		$jlang =JFactory::getLanguage();
-		$tag = $jlang->getTag();
-
+		//$jlang = JFactory::getLanguage();
+		//$tag = $jlang->getTag();
+		//if(empty($tag)) {
+			$tag = vmLanguage::$currLangTag;
+		//}
+		vmLanguage::getLanguage($tag);
 
 		$path = $basePath = VMPATH_ROOT .DS. 'plugins' .DS.$type.DS.$name;
 
 		if(VmConfig::get('enableEnglish', true) and $tag!='en-GB'){
 			$testpath = $basePath.DS.'language'.DS.'en-GB'.DS.'en-GB.'.$fname.'.ini';
 			if(!file_exists($testpath)){
-				$epath = JPATH_ADMINISTRATOR;
+				$epath = VMPATH_ADMINISTRATOR;
 			} else {
 				$epath = $path;
 			}
-			$jlang->load($fname, $epath, 'en-GB');
+			vmLanguage::$languages[$tag]->load($fname, $epath, 'en-GB', true, false);
 		}
 
 		$testpath = $basePath.DS.'language'.DS.$tag.DS.$tag.'.'.$fname.'.ini';
 		if(!file_exists($testpath)){
-			$path = JPATH_ADMINISTRATOR;
+			$path = VMPATH_ADMINISTRATOR;
 		}
 
-		$jlang->load($fname, $path,$tag,true);
+		vmLanguage::$languages[$tag]->load($fname, $path,$tag, true, true);
 	}
 
 	function setPluginLoggable($set=TRUE){
