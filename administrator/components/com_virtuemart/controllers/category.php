@@ -68,7 +68,6 @@ class VirtuemartControllerCategory extends VmController {
 		vRequest::vmCheckToken();
 
 		//capturing virtuemart_category_id
-		$id = 0;
 		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {
@@ -106,7 +105,6 @@ class VirtuemartControllerCategory extends VmController {
 		vRequest::vmCheckToken();
 
 		//capturing virtuemart_category_id
-		$id = 0;
 		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {

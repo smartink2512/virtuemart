@@ -289,8 +289,6 @@ class VirtuemartControllerProduct extends VmController {
 	public function CloneProduct() {
 		$mainframe = Jfactory::getApplication();
 
-		$view = $this->getView('product', 'html');
-
 		$model = VmModel::getModel('product');
 		$msgtype = '';
 

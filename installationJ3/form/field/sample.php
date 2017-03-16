@@ -52,7 +52,7 @@ class InstallationFormFieldSample extends JFormFieldRadio
 
 		// Add option to not install sample data.
 		$options[] = JHtml::_('select.option', '',
-			JHtml::_('tooltip', JText::_('INSTL_SITE_INSTALL_SAMPLE_NONE_DESC'), '', '', JText::_('INSTL_SITE_INSTALL_SAMPLE_NONE'))
+		JHtml::_('tooltip', JText::_('INSTL_SITE_INSTALL_SAMPLE_NONE_DESC'), '', '', JText::_('INSTL_SITE_INSTALL_SAMPLE_NONE'))
 		);
 
 		// Build the options list from the list of files.
@@ -61,9 +61,9 @@ class InstallationFormFieldSample extends JFormFieldRadio
 			foreach ($files as $file)
 			{
 				$options[] = JHtml::_('select.option', $file, JFactory::getLanguage()->hasKey($key = 'INSTL_' . ($file = JFile::stripExt($file)) . '_SET') ?
-					JHtml::_('tooltip', JText::_('INSTL_' . strtoupper($file = JFile::stripExt($file)) . '_SET_DESC'), '', '',
-						JText::_('INSTL_' . ($file = JFile::stripExt($file)) . '_SET')
-					) : $file
+				JHtml::_('tooltip', JText::_('INSTL_' . strtoupper($file = JFile::stripExt($file)) . '_SET_DESC'), '', '',
+				JText::_('INSTL_' . ($file = JFile::stripExt($file)) . '_SET')
+				) : $file
 				);
 			}
 		}

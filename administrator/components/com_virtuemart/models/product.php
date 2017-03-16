@@ -1049,8 +1049,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, $quantity);
-			$child->prices = $child->allPrices[$child->selectedPrice];
 		}
+		$child->prices = $child->allPrices[$child->selectedPrice];
 
 		/*if (empty($child->product_template)) {
 			$child->product_template = VmConfig::get ('producttemplate');

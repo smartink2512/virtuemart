@@ -386,17 +386,18 @@ class VirtueMartModelOrders extends VmModel {
 
 			$searchFields = array();
 			$searchFields[] = 'u.first_name';
-			$searchFields[] = 'u.middle_name';
+			//$searchFields[] = 'u.middle_name';
 			$searchFields[] = 'u.last_name';
 			$searchFields[] = 'o.order_number';
 			$searchFields[] = 'u.company';
 			$searchFields[] = 'u.email';
 			$searchFields[] = 'u.phone_1';
 			$searchFields[] = 'u.address_1';
+			$searchFields[] = 'u.city';
 			$searchFields[] = 'u.zip';
 //quorvia addedd  ST data searches
-			$searchFields[] = 'st.company';
 			$searchFields[] = 'st.last_name';
+			$searchFields[] = 'st.company';
 			$searchFields[] = 'st.city';
 			$searchFields[] = 'st.zip';
 			$where[] = implode (' LIKE '.$this->search.' OR ', $searchFields) . ' LIKE '.$this->search.' ';

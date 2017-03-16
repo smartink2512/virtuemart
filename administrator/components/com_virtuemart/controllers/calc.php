@@ -70,7 +70,6 @@ class VirtuemartControllerCalc extends VmController {
 		// Check token
 		vRequest::vmCheckToken();
 
-		$id = 0;
 		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {
@@ -99,8 +98,7 @@ class VirtuemartControllerCalc extends VmController {
 	{
 		// Check token
 		vRequest::vmCheckToken();
-
-		$id = 0;
+		
 		$cid	= vRequest::getInt( 'cid', array() );
 
 		if (isset($cid[0]) && $cid[0]) {

@@ -73,7 +73,6 @@ class VirtuemartControllerUser extends VmController {
 		$userModel->setId($virtuemart_user_id[0]);
 		$userModel->removeAddress($virtuemart_userinfo_id);
 
-		$layout = vRequest::getCmd('layout','edit');
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]='.$virtuemart_user_id[0] );
 	}
 
@@ -100,9 +99,6 @@ class VirtuemartControllerUser extends VmController {
 	 */
 	function save($data = 0){
 		vRequest::vmCheckToken();
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('user', $viewType);
 
 		if (!vmAccess::manager('user.edit')) {
 			$msg = vmText::_('_NOT_AUTH');

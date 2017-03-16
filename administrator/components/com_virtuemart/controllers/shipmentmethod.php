@@ -73,10 +73,8 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	 * @author Valérie Isaksen
 	 */
 	public function CloneShipment() {
-		$mainframe = Jfactory::getApplication();
 
-		/* Load the view object */
-		$view = $this->getView('shipmentmethod', 'html');
+		$app = JFactory::getApplication();
 
 		$model = VmModel::getModel('shipmentmethod');
 		$msgtype = '';
@@ -91,7 +89,7 @@ class VirtuemartControllerShipmentmethod extends VmController {
 			}
 		}
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=shipmentmethod', $msg, $msgtype);
+		$app->redirect('index.php?option=com_virtuemart&view=shipmentmethod', $msg, $msgtype);
 	}
 }
 // pure php no closing tag

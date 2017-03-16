@@ -68,11 +68,8 @@ class VirtuemartControllerPaymentmethod extends VmController {
 	 * @author Valérie Isaksen
 	 */
 	public function ClonePayment() {
-		$mainframe = Jfactory::getApplication();
 
-		/* Load the view object */
-		$view = $this->getView('paymentmethod', 'html');
-
+		$app = JFactory::getApplication();
 		$model = VmModel::getModel('paymentmethod');
 		$msgtype = '';
 
@@ -87,7 +84,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 			}
 		}
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, $msgtype);
+		$app->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, $msgtype);
 	}
 
 }
