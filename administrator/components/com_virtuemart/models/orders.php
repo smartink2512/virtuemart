@@ -490,17 +490,14 @@ class VirtueMartModelOrders extends VmModel {
 		$today = $date->toSQL();
 		//$vatTaxes = array();
 		if ( $orderUpdate and !empty($data['virtuemart_order_item_id'])) {
-
-
+			
 			$taxCalcValue = false;
 			$daTax = 'notset';
-			$virtuemart_order_calc_rule_id = false;
+
 			foreach($itemTaxes as $tax) {
 				if($tax->calc_kind=='VatTax'){
 					$vat = $tax;
 					$taxCalcValue = $vat->calc_value;
-					$virtuemart_order_calc_rule_id = $vat->virtuemart_order_calc_rule_id;
-					vmdebug('updateSingleItem',$taxCalcValue);
 				}
 				if($tax->calc_kind=='DATax'){
 					$daTax = true;
@@ -514,12 +511,13 @@ class VirtueMartModelOrders extends VmModel {
 			if(!$taxCalcValue){
 				//Could be a new item, missing the tax rules, we try to get one of another product.
 				//get tax calc_value of product VatTax
-				$db = JFactory::getFactory();
-				$sql = "SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = ".$data['virtuemart_order_id']." AND `calc_kind` = 'VatTax' ";
+				$db = JFactory::getDbo();
+				$sql = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = "'.$orderdata->virtuemart_order_id.'" AND `calc_kind` = "VatTax" ';
 				$db->setQuery($sql);
-				$vat = $db->loadResult();
+				$vat = $db->loadObject();
 				$taxCalcValue = $vat->calc_value;
-				vmdebug('updateSingleItem $taxCalcValue loaded by fallback',$taxCalcValue);
+				$vat->virtuemart_order_calc_rule_id = 0; 	//We set this here, so that we know the tax is missing and must be inserted
+				vmdebug('updateSingleItem $taxCalcValue loaded by fallback '.$vat->virtuemart_calc_id);
 			}
 
 			//When the product has no discount
@@ -562,23 +560,39 @@ class VirtueMartModelOrders extends VmModel {
 			}
 			$data['product_discountedPriceWithoutTax'] = 0.0;// $data['product_item_price'] - $data['product_subtotal_discount'];
 			$data['product_priceWithoutTax'] = 0.0;
-			vmdebug('updateSingleItem $taxCalcValue',$data);
+
 			if(!empty($vat)){
 				$t = $data['product_tax'] * $data['product_quantity'];
+
 				if(isset($vatTax[$vat->virtuemart_calc_id])) {
 					$vatTax[$vat->virtuemart_calc_id] += $t;
 				} else {
 					$vatTax[$vat->virtuemart_calc_id] = $t;
 				}
 
+				$sql = false;
+
 				if(!empty($vat->virtuemart_order_calc_rule_id)){
 					$sql = 'UPDATE `#__virtuemart_order_calc_rules` SET `calc_result`="'.$t.'", `modified_on` = "'.$today.'" WHERE `virtuemart_order_calc_rule_id`="'.$vat->virtuemart_order_calc_rule_id.'"';
+				} else {
+					$orderCalcRules = $this->getTable('order_calc_rules');
+					$orderCalcRules->bind($vat);
+
+					$orderCalcRules->virtuemart_order_calc_rule_id = 0;
+					$orderCalcRules->calc_result = $t;
+					$orderCalcRules->modified_on = $today;
+					$orderCalcRules->virtuemart_order_item_id = $virtuemart_order_item_id;
+					$orderCalcRules->check();
+					$orderCalcRules->store();
+				}
+				if($sql){
 					$db->setQuery($sql);
 					vmdebug('updateSingleItem $virtuemart_order_calc_rule_id',$sql);
 					if ($db->execute() === false) {
 						vmError($db->getError());
 					}
 				}
+
 			}
 
 			//$data['product_subtotal_discount'] = (round($orderdata->product_final_price, $rounding) - round($data['product_basePriceWithTax'], $rounding)) * $orderdata->product_quantity;
@@ -697,7 +711,7 @@ class VirtueMartModelOrders extends VmModel {
 		return (boolean) (isset($d[$n]) and $d[$n]!=0);
 	}
 
-	public function updateBill($table, $vattax){
+	public function updateBill($virtuemart_order_id, $vattax){
 
 		$this->_currencyDisplay = CurrencyDisplay::getInstance();
 		$rounding = $this->_currencyDisplay->_priceConfig['salesPrice'][1];
@@ -706,10 +720,10 @@ class VirtueMartModelOrders extends VmModel {
 		//but in general, shipment and payment would be tractated as another items of the order
 		//in datas they are not, bu okay we have it here and functional
 		//moreover we can compute all aggregate values here via one aggregate SQL
-		if (!empty( $table->virtuemart_order_id)) {
+		if (!empty( $virtuemart_order_id)) {
 
 			$db = JFactory::getDBO();
-			$ordid = $table->virtuemart_order_id;
+			$ordid = $virtuemart_order_id;
 			///vmdebug('my order table ',$table);
 			//cartRules
 			$calc_rules = vRequest::getVar('calc_rules',false);
@@ -736,6 +750,7 @@ class VirtueMartModelOrders extends VmModel {
 						}
 						else if ($calc_kind == 'VatTax') {
 							$calc_rules_vattax_amount += $calc_amount;
+							vmdebug('My Vattax '.$calc_rules_vattax_amount);
 						}
 					}
 
@@ -938,40 +953,43 @@ class VirtueMartModelOrders extends VmModel {
 			$task= vRequest::getCmd('task',0);
 			$view= vRequest::getCmd('view',0);
 
-			$item_ids = vRequest::getVar('item_id',false);
-			//vmdebug('my itemids',$item_ids);
-			if($item_ids){
+			$item_ids = $inputOrder;
+
+			if($item_ids) {
 
 				//get tax calc_value of product VatTax
 				$db = JFactory::getDBO();
 				$sql = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = "'.$virtuemart_order_id.'" ORDER BY virtuemart_order_item_id';
-				$db->setQuery($sql);
+				$db->setQuery( $sql );
 				$orderCalcs = $db->loadObjectList();
 
 				$vatTaxes = array();
 
-				foreach ($item_ids as $item_id => $order_item_data) {
+				foreach( $item_ids as $item_id => $order_item_data ) {
+
+					if($item_id=='customer_notified') continue;
+
 					$order_item_data['current_order_status'] = $order_item_data['order_status'];
-					if (!isset($order_item_data['comments'])) $order_item_data['comments'] = '';
+					if(!isset( $order_item_data['comments'] )) $order_item_data['comments'] = '';
 					$order_item_data = (object)$order_item_data;
 					$order_item_data->virtuemart_order_id = $virtuemart_order_id;
 
 					//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
-					if(empty($item_id)){
-						$inputOrder['comments'] .= ' '.vmText::sprintf('COM_VIRTUEMART_ORDER_PRODUCT_ADDED',$order_item_data->order_item_name);
+					if(empty( $item_id )) {
+						$inputOrder['comments'] .= ' '.vmText::sprintf( 'COM_VIRTUEMART_ORDER_PRODUCT_ADDED', $order_item_data->order_item_name );
 					}
 					$taxes = array();
-					foreach($orderCalcs as $calc){
+					foreach( $orderCalcs as $calc ) {
 
-						if($calc->virtuemart_order_item_id == $item_id and ($calc->calc_kind == 'VatTax' or $calc->calc_kind == 'DATax')){
+						if($calc->virtuemart_order_item_id == $item_id and ($calc->calc_kind == 'VatTax' or $calc->calc_kind == 'DATax')) {
 							$taxes[] = $calc;
 						}
 					}
 
-					$table = $this->updateSingleItem($item_id, $order_item_data, true, $vatTaxes, $taxes);
+					$table = $this->updateSingleItem( $item_id, $order_item_data, true, $vatTaxes, $taxes );
 				}
 
-				$this->updateBill($table, $vatTaxes);
+				$this->updateBill($virtuemart_order_id, $vatTaxes);
 			} else {
 				/*if($task=='edit'){
 					$update_lines = vRequest::getInt('update_lines');
@@ -992,8 +1010,8 @@ class VirtueMartModelOrders extends VmModel {
 					$order_items = $db->loadObjectList();
 					if ($order_items) {
 // 				vmdebug('updateStatusForOneOrder',$data);
-						foreach ($order_items as $order_item) {
-
+						foreach ($order_items as $item_id=>$order_item) {
+							if($item_id=='customer_notified') continue;
 							//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
 							$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
 						}

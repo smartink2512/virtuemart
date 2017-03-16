@@ -94,7 +94,6 @@ if (typeof Virtuemart === "undefined")
 				return false;
 			});
 			$('.newOrderItem').click(function (event) {
-
 				document.orderItemForm.task.value = 'newOrderItem';
 				document.orderItemForm.submit();
 				return false;
@@ -102,20 +101,28 @@ if (typeof Virtuemart === "undefined")
 			$('.orderStatFormSubmit').click(function () {
 				//document.orderStatForm.task.value = 'updateOrderItemStatus';
 				document.orderStatForm.submit();
-
 				return false;
 			});
-
+			$('.cancelEdit').click(function (event) {
+				Virtuemart.cancelEdit(event);
+			});
+			$('.enableEdit').click(function (event) {
+				Virtuemart.enableEdit(event);
+			});
 		})
 	}
 
-	Virtuemart.confirmation = function (destnUrl) {
+
+	Virtuemart.removeItem = function (e,id){
 		var answer = confirm(Virtuemart.confirmDelete);
 		if (answer) {
-			window.location = destnUrl;
-		}
-	}
+			document.orderItemForm.task.value = 'removeOrderItem';
+			$(document.orderItemForm).append('<input type="hidden" name="orderLineId" value="'+id+'" /> ');
+			document.orderItemForm.submit();
 
+		}
+		e.preventDefault();
+	}
 
 	jQuery(function ($) {
 

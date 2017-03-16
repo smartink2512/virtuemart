@@ -120,7 +120,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				<!-- Status -->
 				<?php
 				$colorStyle = '';
-				if ($this->orderStatesColors[$order->order_status]) {
+				if (!empty($this->orderStatesColors[$order->order_status])) {
 					$colorStyle = "background-color:" . $this->orderStatesColors[$order->order_status];
 				}
 				?>

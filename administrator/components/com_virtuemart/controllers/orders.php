@@ -263,7 +263,7 @@ class VirtuemartControllerOrders extends VmController {
 
 		$model->deleteInvoice($_orderID);
 
-		$app = Jfactory::getApplication();
+		$app = JFactory::getApplication();
 		$app->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
 
@@ -323,21 +323,39 @@ class VirtuemartControllerOrders extends VmController {
 
 		$model = VmModel::getModel();
 		$msg = '';
-		$orderId = vRequest::getInt('orderId', '');
+		$orderId = vRequest::getInt('virtuemart_order_id', '');
 		if(!vmAccess::manager('orders.edit')) {
 			vmInfo( 'Restricted' );
 			$view = $this->getView( 'orders', 'html' );
 			$view->display();
 			return false;
 		}
-		$orderLineItem = vRequest::getInt('orderLineId', '');
+		$orderLineItem = vRequest::getInt('orderLineId', false);
 
-		$model->removeOrderLineItem($orderLineItem);
+		if(!empty($orderId) and !empty($orderLineItem)) {
 
-		$model->deleteInvoice($orderId);
+			$model->removeOrderLineItem($orderLineItem);
+
+			//The order editing often needs some correction. So we disable sending of the emails here
+			//Also changed order status per line will not update the inventory. The user must use for the moment the "update Status"
+			$_items = vRequest::getVar('item_id', 0);
+
+			foreach($_items as $i => $item){
+				if($i == $orderLineItem){
+					unset($_items[$i]);
+					break;
+				}
+			}
+
+			$_items['customer_notified'] = 0;
+			$model->updateStatusForOneOrder($orderId,$_items,true);
+
+			$model->deleteInvoice($orderId);
+		}
 
 		$editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
-		$this->setRedirect($editLink, $msg);
+		$app = JFactory::getApplication();
+		$app->redirect($editLink);
 	}
 
 }

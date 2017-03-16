@@ -384,8 +384,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 			<tr valign="top" <?php echo $lId?>><?php /*id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">*/ ?>
 				<td>
 					<div><?php echo ($i++)?></div>
-					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
-					<a class="vmicon vmicon-16-remove" title="<?php echo vmText::_('remove'); ?>" onclick="javascript:Virtuemart.confirmation('<?php echo $removeLineLink; ?>');"></a>
+					<a href="#" title="<?php echo vmText::_('remove'); ?>" onClick="javascript:Virtuemart.removeItem(event,<?php echo $item->virtuemart_order_item_id; ?>);"><span class="vmicon vmicon-16-remove 4remove"></span></a>
 
 				</td>
 				<td>
@@ -399,12 +398,11 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 				<td>
 					<span class='ordereditI'><?php echo $item->order_item_name; ?></span>
 					<input class='orderedit' type="text"  name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][order_item_name]" value="<?php echo $item->order_item_name; ?>"/><?php
-						//echo $item->order_item_name;
-						//if (!empty($item->product_attribute)) {
-								if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
-								$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'BE');
-							if($product_attribute) echo '<div>'.$product_attribute.'</div>';
-						//}
+
+                        if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
+                        $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'BE');
+                        if($product_attribute) echo '<div>'.$product_attribute.'</div>';
+
 						$_dispatcher = JDispatcher::getInstance();
 						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineBEShipment',array(  $this->orderID,$item->virtuemart_order_item_id));
 						$_plg = '';
@@ -488,9 +486,9 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 						-->
 						<a class="updateOrderItemStatus" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></a>
 						&nbsp;&nbsp;
-						<a href="#" onClick="javascript:Virtuemart.cancelEdit(event);" ><span class="icon-nofloat vmicon vmicon-16-remove 4remove"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
+						<a href="#" class="cancelEdit" ><span class="icon-nofloat vmicon vmicon-16-remove 4remove"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 						&nbsp;&nbsp;
-						<a href="#" onClick="javascript:Virtuemart.enableEdit(event);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_EDIT'); ?></a>
+						<a href="#" class="enableEdit" ><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. vmText::_('COM_VIRTUEMART_EDIT'); ?></a>
 						&nbsp;&nbsp;
 						<?php
 							//if(isset($this->orderdetails['items'][0])){
