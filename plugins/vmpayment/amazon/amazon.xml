@@ -118,12 +118,12 @@
                 <field class="ipnurl level3" name="ipn_url" type="ipnurl" size="100" default="" editable="false" label="VMPAYMENT_AMAZON_CONF_IPN_URL" description="VMPAYMENT_AMAZON_IPN_WARNING"/>
                 <field class="ipn_warning warning" type="vmtitle"
                        default="" description="VMPAYMENT_AMAZON_IPN_WARNING"/>
-                <field class="language_restriction" name="language_restriction" type="list" default="0"
+                <!--field class="language_restriction" name="language_restriction" type="list" default="0"
                        label="VMPAYMENT_AMAZON_CONF_LANGUAGE_RESTRICTION"
                        description="VMPAYMENT_AMAZON_CONF_LANGUAGE_RESTRICTION_TIP" >
                     <option value="1">COM_VIRTUEMART_YES</option>
                     <option value="0">COM_VIRTUEMART_NO</option>
-                </field>
+                </field-->
 
                 <!--field class="region region-other required" type="vmtitle" default="VMPAYMENT_AMAZON_CONF_ENDPOINTS_SECTION" />
                 <field class="region region-other required" size="120" name="sandbox_serviceURL" type="text" default=""
@@ -262,10 +262,10 @@
                        description="VMPAYMENT_AMAZON_CONF_LANGUAGES_TIP"/ -->
                 <field name="ip_whitelist" type="textarea" label="VMPAYMENT_AMAZON_CONF_IP_WHITELIST"
                        description="VMPAYMENT_AMAZON_CONF_IP_WHITELIST_TIP"/>
-                <field name="digital_goods" type="radio" default="0" label="VMPAYMENT_AMAZON_CONF_DIGITAL_GOODS">
+                <!--field name="digital_goods" type="radio" default="0" label="VMPAYMENT_AMAZON_CONF_DIGITAL_GOODS">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
-                </field>
+                </field-->
                 <!-- Template -->
                 <!-- ============ -->
                 <field type="vmtitle" class="level1" default="VMPAYMENT_AMAZON_CONF_TEMPLATE_SECTION"

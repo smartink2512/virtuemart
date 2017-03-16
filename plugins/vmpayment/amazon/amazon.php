@@ -3535,9 +3535,9 @@ $('.amazonDetailsOpener').click(function() {
 	 * @return bool
 	 */
 	private function isOnlyDigitalGoods($cart) {
-		if(!$this->_currentMethod->digital_goods) {
+		/*if(!$this->_currentMethod->digital_goods) {
 			return false;
-		}
+		}*/
 		if($cart) {
 			$weight = $this->getOrderWeight($cart, 'GR');
 		} else {
@@ -3557,9 +3557,9 @@ $('.amazonDetailsOpener').click(function() {
 	 * @return bool
 	 */
 	private function isSomeDigitalGoods($cart) {
-		if(!$this->_currentMethod->digital_goods) {
+		/*if(!$this->_currentMethod->digital_goods) {
 			return false;
-		}
+		}*/
 
 		foreach ($cart->products as $product) {
 			if($product->product_weight == 0) {
