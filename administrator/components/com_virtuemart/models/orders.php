@@ -953,10 +953,10 @@ class VirtueMartModelOrders extends VmModel {
 			$task= vRequest::getCmd('task',0);
 			$view= vRequest::getCmd('view',0);
 
-			$item_ids = $inputOrder;
-
+			//We use the request to recognise, if we are in the order edit or checkout
+			$item_ids = vRequest::getVar('item_id',false);
 			if($item_ids) {
-
+				$item_ids = $inputOrder;	//We use here the inputOrder data, in case an order item got deleted (else it would be readded)
 				//get tax calc_value of product VatTax
 				$db = JFactory::getDBO();
 				$sql = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = "'.$virtuemart_order_id.'" ORDER BY virtuemart_order_item_id';
@@ -991,9 +991,7 @@ class VirtueMartModelOrders extends VmModel {
 
 				$this->updateBill($virtuemart_order_id, $vatTaxes);
 			} else {
-				/*if($task=='edit'){
-					$update_lines = vRequest::getInt('update_lines');
-				} else /*/
+
 				$update_lines = 1;
 				if ($task==='updatestatus' and $view==='orders') {
 					$lines = vRequest::getVar('orders');

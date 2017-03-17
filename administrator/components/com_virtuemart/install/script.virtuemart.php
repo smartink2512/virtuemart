@@ -149,9 +149,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$model->setStoreOwner();
 
-			//copy sampel media
-			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
-			// 			if(version_compare(JVERSION,'1.6.0','ge')) {
+
 
 			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories');
 			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
@@ -169,9 +167,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'typeless');
 
 
-			$dst = VMPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
-
-			$this->recurse_copy($src,$dst);
 
 			if(!class_exists('GenericTableUpdater')) require($this->path . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();

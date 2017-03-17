@@ -182,6 +182,13 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$filename = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	}
 
+	//copy sampel media
+	$src = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
+	// 			if(version_compare(JVERSION,'1.6.0','ge')) {
+	$dst = VMPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+
+	$this->recurse_copy($src,$dst);
+
 	if(!$this->execSQLFile($filename)){
 		vmError(vmText::_('Problems execution of SQL File '.$filename));
 	} else {
@@ -238,6 +245,58 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	return true;
 
     }
+
+	/**
+	 * copy all $src to $dst folder and remove it
+	 *
+	 * @author Max Milbers
+	 * @param String $src path
+	 * @param String $dst path
+	 * @param String $type modules, plugins, languageBE, languageFE
+	 */
+	static public function recurse_copy($src,$dst ) {
+
+		if(!class_exists('JFolder'))
+			require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+		$dir = '';
+		if(JFolder::exists($src)){
+			$dir = opendir($src);
+			JFolder::create($dst);
+
+			if(is_resource($dir)){
+				while(false !== ( $file = readdir($dir)) ) {
+					if (( $file != '.' ) && ( $file != '..' )) {
+						if ( is_dir($src .DS. $file) ) {
+							if(!JFolder::create($dst . DS . $file)){
+								$app = JFactory::getApplication ();
+								$app->enqueueMessage ('Couldnt create folder ' . $dst . DS . $file);
+							}
+							self::recurse_copy($src .DS. $file,$dst .DS. $file);
+						}
+						else {
+							if(JFile::exists($dst .DS. $file)){
+								if(!JFile::delete($dst .DS. $file)){
+									$app = JFactory::getApplication();
+									$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
+								}
+							}
+							if(!JFile::copy($src .DS. $file,$dst .DS. $file)){
+								$app = JFactory::getApplication();
+								$app -> enqueueMessage('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
+							}
+						}
+					}
+				}
+				closedir($dir);
+				if (is_dir($src)) JFolder::delete($src);
+				return true;
+			}
+		}
+
+		$app = JFactory::getApplication();
+		$app -> enqueueMessage('Couldnt read dir '.$dir.' source '.$src);
+
+	}
 
 	function installPluginTable ($className,$tablename,$tableComment) {
 
