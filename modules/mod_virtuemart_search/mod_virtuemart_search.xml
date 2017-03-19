@@ -80,6 +80,13 @@
           <option value="1">Yes</option>
         </field>
         <field
+          name="image_button_file"
+          type="media"
+          default=""
+          label="MOD_VIRTUEMART_SEARCH_BUTTON_IMG"
+          description="MOD_VIRTUEMART_SEARCH_BUTTON_IMG_DESC"
+        />
+        <field
           name="button_text"
           type="text" default=""
           label="MOD_VIRTUEMART_SEARCH_BUTTON_TXT"

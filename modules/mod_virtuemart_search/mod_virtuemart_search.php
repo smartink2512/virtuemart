@@ -23,6 +23,7 @@ vmLanguage::loadJLang ('mod_virtuemart_search', true);
 // Load the virtuemart main parse code
 $button = $params->get ('button', 0);
 $imagebutton = $params->get ('imagebutton', 0);
+$imagepath = $params->get ('image_button_file', '');
 $button_pos = $params->get ('button_pos', 'left');
 $button_text = $params->get ('button_text', vmText::_ ('MOD_VIRTUEMART_SEARCH_GO'));
 $width = intval ($params->get ('width', 20));
