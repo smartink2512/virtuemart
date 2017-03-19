@@ -466,7 +466,6 @@ class VirtueMartModelOrders extends VmModel {
 			$oldOrderStatus = $table->order_status;
 		}
 
-		//vmdebug('my order table ',$virtuemart_order_item_id,$table->virtuemart_order_id);
 		if(empty($oldOrderStatus)){
 			$oldOrderStatus = $orderdata->current_order_status;
 			if($orderUpdate and empty($oldOrderStatus)){
@@ -573,25 +572,25 @@ class VirtueMartModelOrders extends VmModel {
 				$sql = false;
 
 				if(!empty($vat->virtuemart_order_calc_rule_id)){
-					$sql = 'UPDATE `#__virtuemart_order_calc_rules` SET `calc_result`="'.$t.'", `modified_on` = "'.$today.'" WHERE `virtuemart_order_calc_rule_id`="'.$vat->virtuemart_order_calc_rule_id.'"';
-				} else {
-					$orderCalcRules = $this->getTable('order_calc_rules');
-					$orderCalcRules->bind($vat);
-
-					$orderCalcRules->virtuemart_order_calc_rule_id = 0;
-					$orderCalcRules->calc_result = $t;
-					$orderCalcRules->modified_on = $today;
-					$orderCalcRules->virtuemart_order_item_id = $virtuemart_order_item_id;
-					$orderCalcRules->check();
-					$orderCalcRules->store();
-				}
-				if($sql){
+					$sql = 'UPDATE `#__virtuemart_order_calc_rules` SET `calc_result`="'.$vatTax[$vat->virtuemart_calc_id].'",`calc_amount`="'.$t.'", `modified_on` = "'.$today.'" WHERE `virtuemart_order_calc_rule_id`="'.$vat->virtuemart_order_calc_rule_id.'"';
 					$db->setQuery($sql);
 					vmdebug('updateSingleItem $virtuemart_order_calc_rule_id',$sql);
 					if ($db->execute() === false) {
 						vmError($db->getError());
 					}
+				} else {
+					$orderCalcRules = $this->getTable('order_calc_rules');
+					$orderCalcRules->bind($vat);
+
+					$orderCalcRules->virtuemart_order_calc_rule_id = 0;
+					$orderCalcRules->calc_result = $vatTax[$vat->virtuemart_calc_id];
+					$orderCalcRules->calc_amount = $t;
+					$orderCalcRules->modified_on = $today;
+					$orderCalcRules->virtuemart_order_item_id = $virtuemart_order_item_id;
+					$orderCalcRules->check();
+					$orderCalcRules->store();
 				}
+
 
 			}
 
@@ -953,10 +952,11 @@ class VirtueMartModelOrders extends VmModel {
 			$task= vRequest::getCmd('task',0);
 			$view= vRequest::getCmd('view',0);
 
-			//We use the request to recognise, if we are in the order edit or checkout
-			$item_ids = vRequest::getVar('item_id',false);
-			if($item_ids) {
-				$item_ids = $inputOrder;	//We use here the inputOrder data, in case an order item got deleted (else it would be readded)
+			//The item_id of the request is already given as inputOrder by the calling function (controller). inputOrder could be manipulated by the
+			//controller and so we must not use the request data here.
+			$upd_items = vRequest::getVar('item_id',false);
+			if($upd_items) {
+
 				//get tax calc_value of product VatTax
 				$db = JFactory::getDBO();
 				$sql = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = "'.$virtuemart_order_id.'" ORDER BY virtuemart_order_item_id';
@@ -965,7 +965,7 @@ class VirtueMartModelOrders extends VmModel {
 
 				$vatTaxes = array();
 
-				foreach( $item_ids as $item_id => $order_item_data ) {
+				foreach( $inputOrder as $item_id => $order_item_data ) {
 
 					if($item_id=='customer_notified') continue;
 
@@ -986,7 +986,7 @@ class VirtueMartModelOrders extends VmModel {
 						}
 					}
 
-					$table = $this->updateSingleItem( $item_id, $order_item_data, true, $vatTaxes, $taxes );
+					$this->updateSingleItem( $item_id, $order_item_data, true, $vatTaxes, $taxes );
 				}
 
 				$this->updateBill($virtuemart_order_id, $vatTaxes);
@@ -1007,10 +1007,7 @@ class VirtueMartModelOrders extends VmModel {
 					$db->setQuery($q);
 					$order_items = $db->loadObjectList();
 					if ($order_items) {
-// 				vmdebug('updateStatusForOneOrder',$data);
 						foreach ($order_items as $item_id=>$order_item) {
-							if($item_id=='customer_notified') continue;
-							//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
 							$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
 						}
 					}

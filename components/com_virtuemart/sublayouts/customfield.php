@@ -661,9 +661,6 @@ class VirtueMartCustomFieldRenderer {
 					if(!isset($variantmods[$prodcustom->virtuemart_custom_id]) or !is_array($variantmods[$prodcustom->virtuemart_custom_id])){
 						$variantmods[$prodcustom->virtuemart_custom_id] = array();
 					}
-					if(!isset($variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id])){
-						$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = true;
-					}
 				}
 				$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 			}
