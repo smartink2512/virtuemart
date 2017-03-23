@@ -44,9 +44,10 @@ class vmAmazonConditions {
 	 */
 
 	private function isValidLanguage() {
+		return true;
 		/*if(!$this->_currentMethod->language_restriction) {
 			return true;
-		}*/
+		}
 		$lang = JFactory::getLanguage();
 		$tag = strtolower(substr($lang->get('tag'), 0, 2));
 		if(array_key_exists($tag, $this->languages_region) AND $this->languages_region[$tag] == $this->_currentMethod->region) {
@@ -54,7 +55,7 @@ class vmAmazonConditions {
 			return true;
 		}
 
-		return false;
+		return false;*/
 	}
 
 	/**
