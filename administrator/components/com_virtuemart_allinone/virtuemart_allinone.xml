@@ -2,7 +2,7 @@
 <extension method="upgrade" type="component" version="2.5">
     <name>VirtueMart_allinone</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
-    <copyright>Copyright (C) 2004-2015 Virtuemart Team. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2004-2017 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <author>The VirtueMart Development Team</author>
     <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>

@@ -72,12 +72,17 @@ input.readonly{  border: 0 none;}
 
 dl#system-message dd .vmdebug  { font-size:10px; }
 /* Fieldset */
-.virtuemart-admin-area fieldset {border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;
+.virtuemart-admin-area fieldset {
+border-radius: 6px;
+-moz-border-radius: 6px;
+-webkit-border-radius: 6px;
 margin-bottom: 10px;
-    border: 1px #CCC solid;
-    padding: 5px;
-    text-align: left;
+border: 1px #CCC solid;
+padding: 5px;
+text-align: left;
 }
+
+.virtuemart-admin-area .key {min-width: 160px;}
 .virtuemart-admin-area fieldset legend {padding: 0px 10px;width: inherit;border-bottom:0px}
 
 /* Inputs */

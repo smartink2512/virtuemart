@@ -66,7 +66,7 @@ abstract class vmPlugin extends JPlugin {
 
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 
-		$this->loadJLangThis($filename);
+		$this->loadJLangThis($filename); //TODO remove this is not allowed here, else systemplugins derived from vmPlugin throw errors on a multilanguage pages
 
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
