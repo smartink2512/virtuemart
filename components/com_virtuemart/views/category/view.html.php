@@ -97,7 +97,8 @@ class VirtuemartViewCategory extends VmView {
 			}
 		}
 
-		if(empty($menu->params)){
+		if(empty($menu)){
+			$menu = new stdClass;
 			$menu->params = new JRegistry();
 		}
 
@@ -367,7 +368,7 @@ class VirtuemartViewCategory extends VmView {
 			$customtitle = $menu->params->get('page_title');
 		}
 
-		if(($this->storefront and empty($prefix)) ){
+		if(($this->storefront and empty($prefix)) or $this->show_store_desc or empty($this->categoryId)){
 
 			$vendorModel = VmModel::getModel('vendor');
 			if(!empty($category->virtuemart_vendor_id)){
@@ -375,24 +376,24 @@ class VirtuemartViewCategory extends VmView {
 			} else {
 				$vendorModel->setId(1);;
 			}
+			$this->vendor = $vendorModel->getVendor();
+		}
 
-			$this->vendor = $vendorModel->getVendor(1);
+		if(($this->storefront and empty($prefix)) or empty($this->categoryId) ){
 
-			if($this->storefront and empty($prefix)){
-
-				if(empty($this->vendor->customtitle)){
-					if(empty($customtitle)) {
-						$customtitle = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
-					}
-				} else {
-					$customtitle = $this->vendor->customtitle;
+			if(empty($this->vendor->customtitle)){
+				if(empty($customtitle)) {
+					$customtitle = vmText::sprintf('COM_VIRTUEMART_HOME',$this->vendor->vendor_store_name);
 				}
-
-				if(!empty($this->vendor->metadesc)) $metadesc = $this->vendor->metadesc;
-				if(!empty($this->vendor->metakey)) $metakey = $this->vendor->metakey;
-				if(!empty($this->vendor->metarobot)) $metarobot = $this->vendor->metarobot;
-				if(!empty($this->vendor->metaauthor)) $metaauthor = $this->vendor->metaauthor;
+			} else {
+				$customtitle = $this->vendor->customtitle;
 			}
+
+			if(!empty($this->vendor->metadesc)) $metadesc = $this->vendor->metadesc;
+			if(!empty($this->vendor->metakey)) $metakey = $this->vendor->metakey;
+			if(!empty($this->vendor->metarobot)) $metarobot = $this->vendor->metarobot;
+			if(!empty($this->vendor->metaauthor)) $metaauthor = $this->vendor->metaauthor;
+
 		} else {
 
 			if (!empty($category->metadesc)) {
@@ -424,8 +425,6 @@ class VirtuemartViewCategory extends VmView {
 		$document->setMetaData('keywords', $metakey);
 		$document->setMetaData('robots', $metarobot);
 		$document->setMetaData('author', $metaauthor);
-
-
 
 	    // Set the titles
 		if (!empty($customtitle)) {

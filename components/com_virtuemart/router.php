@@ -192,7 +192,11 @@ function virtuemartBuildRoute(&$query) {
 					}
 					if(!isset($query['Itemid'])){
 						//Itemid is needed even if seo_full = 0
-						$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0][0];
+						if(!empty($jmenu['virtuemart'])){
+							$query['Itemid'] = $jmenu['virtuemart'];
+						} else if(!empty($jmenu['virtuemart_category_id'][0]) and !empty($jmenu['virtuemart_category_id'][0][0])){
+							$query['Itemid'] = $jmenu['virtuemart_category_id'][0][0];
+						}
 					}
 				}
 

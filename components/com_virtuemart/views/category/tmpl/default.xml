@@ -24,14 +24,9 @@
                    label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_STOREFRONT"
                    extension="com_virtuemart"
                    description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_STOREFRONT_DESC" >
-                <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
-            <field name="categorylayout" type="vmlayout" view="category"
-                   label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_LAYOUT"
-                   extension="com_virtuemart"
-                   description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_LAYOUT_DESC" />
             <field name="show_store_desc" type="list" default=""
                    label="COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC"
                    extension="com_virtuemart"
@@ -40,6 +35,10 @@
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
             </field>
+            <field name="categorylayout" type="vmlayout" view="category"
+                   label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_LAYOUT"
+                   extension="com_virtuemart"
+                   description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_LAYOUT_DESC" />
             <field name="showcategory_desc" type="list" default=""
                    label="COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORYDESC"
                    extension="com_virtuemart"
