@@ -558,7 +558,8 @@ class VirtueMartModelOrders extends VmModel {
 				$data = self::calculateRow($data, $taxCalcValue, $rounding, $daTax, $withTax, $overwriteDiscount);
 			}
 			$data['product_discountedPriceWithoutTax'] = 0.0;// $data['product_item_price'] - $data['product_subtotal_discount'];
-			$data['product_priceWithoutTax'] = 0.0;
+
+			$data['product_priceWithoutTax'] = $data['product_final_price'] - $data['product_tax'];
 
 			if(!empty($vat)){
 				$t = $data['product_tax'] * $data['product_quantity'];
@@ -572,7 +573,7 @@ class VirtueMartModelOrders extends VmModel {
 				$sql = false;
 
 				if(!empty($vat->virtuemart_order_calc_rule_id)){
-					$sql = 'UPDATE `#__virtuemart_order_calc_rules` SET `calc_result`="'.$vatTax[$vat->virtuemart_calc_id].'",`calc_amount`="'.$t.'", `modified_on` = "'.$today.'" WHERE `virtuemart_order_calc_rule_id`="'.$vat->virtuemart_order_calc_rule_id.'"';
+					$sql = 'UPDATE `#__virtuemart_order_calc_rules` SET `calc_result`="'.$t.'",`calc_amount`="'.$data['product_tax'].'", `modified_on` = "'.$today.'" WHERE `virtuemart_order_calc_rule_id`="'.$vat->virtuemart_order_calc_rule_id.'"';
 					$db->setQuery($sql);
 					vmdebug('updateSingleItem $virtuemart_order_calc_rule_id',$sql);
 					if ($db->execute() === false) {
@@ -583,8 +584,8 @@ class VirtueMartModelOrders extends VmModel {
 					$orderCalcRules->bind($vat);
 
 					$orderCalcRules->virtuemart_order_calc_rule_id = 0;
-					$orderCalcRules->calc_result = $vatTax[$vat->virtuemart_calc_id];
-					$orderCalcRules->calc_amount = $t;
+					$orderCalcRules->calc_result = $t;
+					$orderCalcRules->calc_amount = $data['product_tax'];
 					$orderCalcRules->modified_on = $today;
 					$orderCalcRules->virtuemart_order_item_id = $virtuemart_order_item_id;
 					$orderCalcRules->check();
@@ -657,10 +658,11 @@ class VirtueMartModelOrders extends VmModel {
 			$taxValue = 0.0;
 		}
 
+		$roundIntern = 5;
 		if(VirtueMartModelOrders::isNotEmptyDec($data,'product_basePriceWithTax') and VirtueMartModelOrders::isEmptyDec($data, 'product_item_price') and VirtueMartModelOrders::isEmptyDec($data,'product_final_price')){
 
 			$data['product_item_price'] = $data['product_basePriceWithTax'] * (1 - $taxCalcValue / ($taxCalcValue + 100));
-			$data['product_item_price'] = round($data['product_item_price'], $rounding);
+			$data['product_item_price'] = round($data['product_item_price'], $roundIntern);
 		}
 
 		if(VirtueMartModelOrders::isNotEmptyDec($data,'product_item_price')){
@@ -682,10 +684,10 @@ class VirtueMartModelOrders extends VmModel {
 			}
 		} else if (VirtueMartModelOrders::isNotEmptyDec($data,'product_final_price')){
 			if($daTax){
-				$data['product_item_price'] = round( ($data['product_final_price'] + $data['product_subtotal_discount']) * (1 -  $taxValue / ($taxValue + 100)), $rounding ) ;
+				$data['product_item_price'] = round( ($data['product_final_price'] + $data['product_subtotal_discount']) * (1 -  $taxValue / ($taxValue + 100)), $roundIntern ) ;
 				$data['product_basePriceWithTax'] = round($data['product_item_price'] * (1 + $taxCalcValue/100.0), $rounding );
 			} else {
-				$data['product_item_price'] = round( $data['product_final_price'] * (1 -  $taxValue / ($taxValue + 100)) + $data['product_subtotal_discount'], $rounding );
+				$data['product_item_price'] = round( $data['product_final_price'] * (1 -  $taxValue / ($taxValue + 100)) + $data['product_subtotal_discount'], $roundIntern );
 				$data['product_basePriceWithTax'] = round( $data['product_item_price'] * (1 +  $taxValue/100.0), $rounding );
 			}
 		} else {
@@ -697,7 +699,7 @@ class VirtueMartModelOrders extends VmModel {
 		} else {
 			$data['product_basePriceWithTax'] = round( $data['product_item_price'] * (1 + $taxCalcValue/100.0), $rounding );
 		}
-		$data['product_tax'] = round($data['product_tax'], $rounding);
+		$data['product_tax'] = round($data['product_tax'], $roundIntern);
 
 		return $data;
 	}
@@ -723,9 +725,9 @@ class VirtueMartModelOrders extends VmModel {
 
 			$db = JFactory::getDBO();
 			$ordid = $virtuemart_order_id;
-			///vmdebug('my order table ',$table);
 			//cartRules
 			$calc_rules = vRequest::getVar('calc_rules',false);
+			$calculate_billTaxAmount = vRequest::getInt('calculate_billTaxAmount',false);
 			//$calc_rules_amount = 0;
 			$calc_rules_discount_amount = 0;
 			$calc_rules_tax_amount = 0;
@@ -735,12 +737,13 @@ class VirtueMartModelOrders extends VmModel {
 			{
 				foreach($calc_rules as $calc_kind => $calc_rule) {
 
-					vmdebug('my calc_rule',  $calc_rule,$vattax);
 					foreach($calc_rule as $virtuemart_calc_id => $calc_amount) {
 
-						if(isset($vattax[$virtuemart_calc_id])) $calc_amount = $vattax[$virtuemart_calc_id];
+						if($calculate_billTaxAmount){
+							if(!isset($vattax[$virtuemart_calc_id])) continue;
+							$calc_amount = $vattax[$virtuemart_calc_id];
+						}
 
-						//if(isset($calc_amount)) $calc_rules_amount += $calc_amount;
 						if ($calc_kind == 'DBTaxRulesBill' || $calc_kind == 'DATaxRulesBill') {
 							$calc_rules_discount_amount += $calc_amount;
 						}
@@ -749,11 +752,8 @@ class VirtueMartModelOrders extends VmModel {
 						}
 						else if ($calc_kind == 'VatTax') {
 							$calc_rules_vattax_amount += $calc_amount;
-							vmdebug('My Vattax '.$calc_rules_vattax_amount);
 						}
 					}
-
-
 				}
 			}
 
@@ -2123,6 +2123,15 @@ class VirtueMartModelOrders extends VmModel {
 
 		//TODO Why should the stock change, when the order is deleted? Paypal? Valerie?
 		if ($item->delete($orderLineId)) {
+			/*$q = "DELETE FROM `#__virtuemart_order_histories`
+			WHERE `virtuemart_order_id`=".$id;
+			$this->_db->setQuery($q);
+			$this->_db->execute();*/
+
+			$q = "DELETE FROM `#__virtuemart_order_calc_rules`
+			WHERE `virtuemart_order_item_id`=".$orderLineId;
+			$this->_db->setQuery($q);
+			$this->_db->execute();//*/
 			return true;
 		}
 		else {
