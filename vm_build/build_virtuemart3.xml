@@ -4,9 +4,9 @@
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MAYOR"/>
     <property name="vm.version.main" value="3.2.0"/>
-    <property name="vm.version" value="3.2.0"/>
+    <property name="vm.version" value="3.2.1"/>
     <property name="joomla.version" value="3.6.5"/>
-    <property name="svn.lastrevision" value="9482"/>
+    <property name="svn.lastrevision" value="9483"/>
     <property name="PHING.VM.CODENAME" value="Black Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>

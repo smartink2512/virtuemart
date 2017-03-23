@@ -40,7 +40,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @var integer
 	 */
 	var $products = NULL;
-	var $decimals = array('product_length','product_width','product_height','product_weight','product_packaging');
+	static $decimals = array('product_length','product_width','product_height','product_weight','product_packaging');
 	var $_onlyQuery 	= false;
 
 	/**
@@ -256,7 +256,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication ();
 		$db = JFactory::getDbo();
-
+		//$this->setDebugSql(1);
 		//User Q.Stanley said that removing group by is increasing the speed of product listing in a bigger shop (10k products) by factor 60
 		//So what was the reason for that we have it? TODO experiemental, find conditions for the need of group by
 		$groupBy = ' group by p.`virtuemart_product_id` ';
@@ -387,6 +387,11 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
+		if ($this->product_parent_id) {
+			$where[] = ' p.`product_parent_id` = ' . $this->product_parent_id;
+			$virtuemart_category_id = false;
+		}
+
 		if ($virtuemart_category_id > 0) {
 			$joinCategory = TRUE;
 			if(VmConfig::get('show_subcat_products',false)){
@@ -418,9 +423,7 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' `c`.`published` = 1 ';
 		}
 
-		if ($this->product_parent_id) {
-			$where[] = ' p.`product_parent_id` = ' . $this->product_parent_id;
-		}
+
 
 		if ($isSite) {
 			$usermodel = VmModel::getModel ('user');
@@ -520,6 +523,10 @@ class VirtueMartModelProduct extends VmModel {
 				$joinCategory = TRUE;
 				$joinLang = true;
 				$langFields[] = 'product_name';
+				break;
+			case 'pordering':
+				$orderBy = ' ORDER BY `p`.`pordering` '.$filterOrderDir;
+
 				break;
 			case 'product_price':
 				$orderBy = ' ORDER BY `product_price` '.$filterOrderDir.', `virtuemart_product_id` '.$filterOrderDir;
@@ -1107,6 +1114,12 @@ class VirtueMartModelProduct extends VmModel {
 
 			if(!isset($child->customfields)){
 				$child->customfields = false;
+			}
+
+			foreach(self::$decimals as $decimal){
+				if(empty($child->$decimal)){
+					$child->$decimal = 0.0;
+				}
 			}
 			self::$_products[$productKey] = $child;
 		}
@@ -2028,7 +2041,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		//Set the decimals like product packaging
-		foreach($this->decimals as $decimal){
+		foreach(self::$decimals as $decimal){
 			if (array_key_exists ($decimal, $data)) {
 				if(!empty($data[$decimal])){
 					$data[$decimal] = str_replace(',','.',$data[$decimal]);
@@ -2932,7 +2945,7 @@ class VirtueMartModelProduct extends VmModel {
 			return array();
 		}
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT p.virtuemart_product_id, l.product_name, p.published, p.product_in_stock, p.product_ordered FROM `#__virtuemart_products` as p*/
+		$db->setQuery (' SELECT p.virtuemart_product_id, l.product_name, p.published, p.product_in_stock, p.product_ordered, p.product_sku FROM `#__virtuemart_products` as p
 			JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l ON p.virtuemart_product_id = l.virtuemart_product_id
 			WHERE `product_parent_id` =' . (int)$product_id);
 		return $db->loadObjectList ();

@@ -640,6 +640,10 @@ class VirtueMartCustomFieldRenderer {
 
 		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
 
+		if(!is_array($variantmods)){
+			$variantmods = json_decode($variantmods,true);
+		}
+
 		//if(empty($variantmods)){
 			$productDB = VmModel::getModel('product')->getProduct($product->virtuemart_product_id);
 			if($productDB and isset($productDB->customfields)){
@@ -648,20 +652,21 @@ class VirtueMartCustomFieldRenderer {
 				$product->customfields = array();
 			}
 		//}
-		if(!is_array($variantmods)){
-			$variantmods = json_decode($variantmods,true);
-		}
 
 		$productCustoms = array();
+
 		foreach( (array)$product->customfields as $prodcustom){
 
 			//We just add the customfields to be shown in the cart to the variantmods
 			if(is_object($prodcustom)){
+
+				//We need this here to ensure that broken customdata of order items is shown updated info, or at least displayed,
 				if($prodcustom->is_cart_attribute or $prodcustom->is_input){
-					if(!isset($variantmods[$prodcustom->virtuemart_custom_id]) or !is_array($variantmods[$prodcustom->virtuemart_custom_id])){
-						$variantmods[$prodcustom->virtuemart_custom_id] = array();
+					if(!isset($variantmods[$prodcustom->virtuemart_custom_id])){
+						$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = true;
 					}
 				}
+
 				$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 			}
 		}
