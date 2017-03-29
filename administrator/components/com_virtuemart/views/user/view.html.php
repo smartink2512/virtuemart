@@ -115,7 +115,8 @@ class VirtuemartViewUser extends VmViewAdmin {
 			$this->lists['custnumber'] = $model->getCustomerNumberById();
 
 			// Shipment address(es)
-			$this->lists['shipTo'] = ShopFunctions::generateStAddressList($this,$model,'addST');
+			if(!class_exists('ShopFunctionsF')) require(VMPATH_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+			$this->lists['shipTo'] = shopFunctionsF::generateStAddressList($this, $model, 'addST');
 
 			$new = false;
 			if(vRequest::getInt('new','0')===1){

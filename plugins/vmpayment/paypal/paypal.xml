@@ -254,7 +254,7 @@
                        label="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND"
                        description="VMPAYMENT_PAYPAL_STATUS_PARTIAL_REFUND_TIP"/>
                 <field name="status_denied" type="vmorderstate" scope="com_virtuemart" default="D"
-                       label="VMPAYMENT_PAYPAL_STATUS_DENIED" description="VMPAYMENT_PAYPAL_STATUS_DENIED_TIP"/>
+                       label="COM_VIRTUEMART_ORDER_STATUS_DENIED" description="COM_VIRTUEMART_ORDER_STATUS_DENIED_TIP"/>
 
                 <field class="level1" type="vmtitle" default="VMPAYMENT_PAYPAL_OPTIONAL_PARAMS"/>
 
@@ -289,7 +289,7 @@
                 <field name="publishdown" type="calendar" default="" label="VMPAYMENT_PAYPAL_PUBLISH_DOWN"
                        description="VMPAYMENT_PAYPAL_PUBLISH_UP_DESC"/>
                 <field name="virtuemart_shipmentmethod_ids" type="vmListTable" default="" model="shipmentmethod" func = 'getShipments' lvalue="virtuemart_shipmentmethod_id" ltext="shipment_name" label="VMPAYMENT_PAYPAL_FOR_SHIPMENTS" multiple="true"
-                       description="VMPAYMENT_PAYPAL_FOR_SHIPMENTS_DESC"/>
+                       description="VMPAYMENT_PAYPAL_FOR_SHIPMENTS_TIP"/>
                 <!-- Currencies -->
                 <!-- ============ -->
                 <field type="vmtitle" default="VMPAYMENT_PAYPAL_CURRENCIES_SECTION"
@@ -328,7 +328,7 @@
                 <field name="payment_logos" type="vmfiles" multiple="true" scope="com_virtuemart" label="VMPAYMENT_PAYPAL_LOGOS"
                        description="VMPAYMENT_PAYPAL_LOGOS_DESC" directory="/images/stories/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1" stripext="0" exclude="^_"/>
-                <!--param class="creditcard" name="cvv_images" type="vmfiles" label="VMPAYMENT_PAYPAL_CC_CVVIMAGES" description="VMPAYMENT_PAYPAL_CC_CVVIMAGES_DESC" directory="/images/stories/virtuemart/payment" default="default" hide_default="1" hide_none="1" stripext="0" exclude="^_" / -->
+                <!--param class="creditcard" name="cvv_images" type="vmfiles" label="VMPAYMENT_PAYPAL_CC_CVVIMAGES" description="VMPAYMENT_PAYPAL_CC_CVVIMAGES_DESC" directory="/images/virtuemart/payment" default="default" hide_default="1" hide_none="1" stripext="0" exclude="^_" / -->
                 <field class="std paypallayout" name="logoimg" type="filelist" label="VMPAYMENT_PAYPAL_LOGOIMAGE"
                        description="VMPAYMENT_PAYPAL_LOGOIMAGE_DESC" directory="/images/stories/virtuemart/payment"
                        default="" hide_default="0" hide_none="1" stripext="0" exclude="^_"/>

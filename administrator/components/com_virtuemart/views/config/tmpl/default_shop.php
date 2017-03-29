@@ -101,6 +101,7 @@ defined('_JEXEC') or die('Restricted access');?>
 				'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 			);
 			echo VmHTML::row('radiolist','COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG','debug_enable',VmConfig::get('debug_enable','none'), $optDebug);
+		    echo VmHTML::row('checkbox','COM_VM_CFG_ENABLE_DEBUG_METHODS','debug_enable_methods',VmConfig::get('debug_enable_methods',0));
 			echo VmHTML::row('radiolist','COM_VIRTUEMART_CFG_DEV','vmdev',VmConfig::get('vmdev',0), $optDebug);
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS','dangeroustools',VmConfig::get('dangeroustools',0));
 			echo VmHTML::row('input','COM_VIRTUEMART_REV_PROXY_VAR','revproxvar',VmConfig::get('revproxvar',''));

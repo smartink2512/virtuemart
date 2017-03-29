@@ -128,6 +128,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 			foreach($order['items'] as $_item) {
 				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHtml::_('select.genericlist', $orderStates, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
 
+				$_item->linkedit = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$_item->virtuemart_product_id;
 			}
 
 			if(!isset($_orderStatusList[$orderbt->order_status])){

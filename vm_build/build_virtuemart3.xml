@@ -6,7 +6,7 @@
     <property name="vm.version.main" value="3.2.0"/>
     <property name="vm.version" value="3.2.1"/>
     <property name="joomla.version" value="3.6.5"/>
-    <property name="svn.lastrevision" value="9483"/>
+    <property name="svn.lastrevision" value="9489"/>
     <property name="PHING.VM.CODENAME" value="Black Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
@@ -153,6 +153,9 @@
         <exclude name="**/vm_build/**"/>
         <exclude name="**/payzen/**"/>
         <exclude name="**/systempay/**"/>
+        <exclude name="**/installationj2/**"/>
+        <exclude name="**/installationJ3/**"/>
+        <exclude name="**/vmbeez5/**"/>
         <!--exclude name="**/vm_update/**"/ -->
         <exclude name="**/ar-AA/**"/>
         <exclude name="**/bg-BG/**"/>
