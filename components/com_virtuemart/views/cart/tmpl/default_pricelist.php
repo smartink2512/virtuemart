@@ -322,7 +322,7 @@ if ($this->totalInPaymentCurrency) {
 	<?php
 }
 
-//Show VAT tax seperated
+//Show VAT tax separated
 if(!empty($this->cart->cartData)){
 	if(!empty($this->cart->cartData['VatTax'])){
 		$c = count($this->cart->cartData['VatTax']);

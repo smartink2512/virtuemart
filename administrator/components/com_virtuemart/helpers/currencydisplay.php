@@ -295,6 +295,10 @@ class CurrencyDisplay {
 		return $formattedRounded;
 	}
 
+	public function getFormattedNumber($n,$dec){
+		return number_format((float)$n,(int)$dec,$this->_decimal,$this->_thousands);
+	}
+
 	/**
 	 * function to create a div to show the prices, is necessary for JS
 	 *

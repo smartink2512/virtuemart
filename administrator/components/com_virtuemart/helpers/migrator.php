@@ -1338,7 +1338,7 @@ class Migrator extends VmModel{
 					$q = 'SELECT * FROM `#__vm_order_item` WHERE `order_id` = "'.$order['order_id'].'" ';
 					$this->_db->setQuery($q);
 					$oldItems = $this->_db->loadAssocList();
-					//$this->_app->enqueueMessage('Migration orderhistories: ' . $newId);
+
 					foreach($oldItems as $item){
 						$item['virtuemart_order_id'] = $newId;
 						if(!empty($newproductIds[$item['product_id']])){

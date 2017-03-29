@@ -454,7 +454,6 @@ class VirtueMartCustomFieldRenderer {
 
 						if(!empty($customfield->is_input)){
 
-
 							$options = array();
 
 							if($customfield->addEmpty){
@@ -464,17 +463,17 @@ class VirtueMartCustomFieldRenderer {
 							$values = explode (';', $customfield->custom_value);
 
 							foreach ($values as $key => $val) {
-								if($val == 0 and $customfield->addEmpty){
-									continue;
-								}
+
+								//if($val == 0 and $customfield->addEmpty){
+									//continue;
+								//}
 								if($type == 'M'){
 									$tmp = array('value' => $val, 'text' => VirtueMartModelCustomfields::displayCustomMedia ($val,'product',$customfield->width,$customfield->height));
-									$options[] = (object)$tmp;
 								} else {
-									$options[] = array('value' => $val, 'text' => vmText::_($val));
+									$tmp = array('value' => $val, 'text' => vmText::_($val));
 								}
+								$options[] = (object)$tmp;
 							}
-
 							$currentValue = $customfield->customfield_value;
 
 							$customfield->display = JHtml::_ ($selectType, $options, $customProductDataName.'[' . $customfield->virtuemart_customfield_id . ']', $class, 'value', 'text', $currentValue,$idTag);
@@ -565,10 +564,10 @@ class VirtueMartCustomFieldRenderer {
 						logInfo('customfield.php: case P, property '.$attr.' does not exists. virtuemart_custom_id: '.$customfield->virtuemart_custom_id);
 						break;
 					}
-					$val= $product->$attr;
+					$val = $product->$attr;
 					if($customfield->round!=0){
 						if(empty($customfield->digits)) $customfield->digits = 0;
-						$val = round($val, (int)$customfield->digits);
+						$val = $currency->getFormattedNumber($val,$customfield->digits);
 					}
 					if($lkey!=$trValue and strpos($trValue,'%1')!==false) {
 						$customfield->display = vmText::sprintf( $customfield->customfield_value, $val , $dim );
@@ -663,7 +662,7 @@ class VirtueMartCustomFieldRenderer {
 				//We need this here to ensure that broken customdata of order items is shown updated info, or at least displayed,
 				if($prodcustom->is_cart_attribute or $prodcustom->is_input){
 					if(!isset($variantmods[$prodcustom->virtuemart_custom_id])){
-						$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = true;
+						$variantmods[$prodcustom->virtuemart_custom_id] = $prodcustom->virtuemart_customfield_id;
 					}
 				}
 
