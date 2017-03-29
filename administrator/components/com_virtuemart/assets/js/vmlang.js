@@ -23,19 +23,20 @@ function updateLanguageValues(data, langCode, flagClass) {
 		jQuery.each(data.fields , function(key, val) {
 			cible = jQuery("#"+key);
 			if (window.oldflag !== "") jQuery('.allflags').removeClass(window.oldflag)
-			
-			if (tmce_ver>="4") {
-				if ((cible.parent().addClass('allflags '+flagClass).children().hasClass("mce_editable") || cible.parent().children().hasClass("wf-editor")) && data.structure !== "empty" ) {
-					tinyMCE.get(key).execCommand("mceSetContent", false,val);
-					cible.val(val);
-				} else if (data.structure !== "empty") cible.val(val);
-			} else {
-				if (cible.parent().addClass('allflags '+flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) {
-					tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
-					cible.val(val);
-				} else if (data.structure !== "empty") cible.val(val);
+
+			if (! cible.parent().hasClass(flagClass)) {
+				if (tmce_ver >= "4") {
+					if ((cible.parent().addClass('allflags ' + flagClass).children().hasClass("mce_editable") || cible.parent().children().hasClass("wf-editor")) && data.structure !== "empty") {
+						tinyMCE.get(key).execCommand("mceSetContent", false, val);
+						cible.val(val);
+					} else if (data.structure !== "empty") cible.val(val);
+				} else {
+					if (cible.parent().addClass('allflags ' + flagClass).children().hasClass("mce_editable") && data.structure !== "empty") {
+						tinyMCE.execInstanceCommand(key, "mceSetContent", false, val);
+						cible.val(val);
+					} else if (data.structure !== "empty") cible.val(val);
+				}
 			}
-			
 			//custom for child products: 
 			if (typeof data.requested_id != 'undefined')
 			if (key == 'product_name') {

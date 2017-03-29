@@ -74,7 +74,7 @@ class VirtuemartControllerVirtuemart extends VmController {
 			$link = '//extensions.virtuemart.net/index.php?option=com_virtuemart&view=plugin&name=istraxx_download_byhost&ackey='.base64_encode( $ackey ).'&host='.$host.'&vmlang='.VmConfig::$vmlangTag.'&sku=VMMS&vmver='.vmVersion::$RELEASE;
 
 			$opts = array(
-				'http'=>array(
+				'https'=>array(
 				'method'=>"GET"
 				/*'header'=>"Accept-language: en\r\n" .
 				"Cookie: foo=bar\r\n"*/

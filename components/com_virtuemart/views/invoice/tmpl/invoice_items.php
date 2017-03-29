@@ -256,7 +256,7 @@ foreach($this->orderDetails['items'] as $item) {
 				<tr >
 					<td colspan="6" style="text-align: right;" class="pricePad"><?php echo $rule->label ?> </td>
 					<?php if ( VmConfig::get('show_tax')) {  ?>
-					<td style="text-align: right;"><?php echo $this->currency->priceDisplay($rule->calc_amount, $this->user_currency_id); ?></td>
+					<td style="text-align: right;"><?php echo $this->currency->priceDisplay($rule->calc_result, $this->user_currency_id); ?></td>
 					<?php } ?>
 					<td style="text-align: right;">&nbsp;</td>
 					<td style="text-align: right;">&nbsp;</td>

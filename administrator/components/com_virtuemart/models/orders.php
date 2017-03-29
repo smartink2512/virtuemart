@@ -187,7 +187,7 @@ class VirtueMartModelOrders extends VmModel {
 		vmdebug('getMyOrderDetails COM_VIRTUEMART_RESTRICTED_ACCESS',$orderNumber, $orderPass, $tries);
 		vmError(vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS').' by guest '.$orderNumber.' '.$orderPass, 'COM_VIRTUEMART_RESTRICTED_ACCESS');
 
-		echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+		//echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 		return false;
 	}
 
@@ -557,9 +557,7 @@ class VirtueMartModelOrders extends VmModel {
 			if($data['calculate_product_tax']) {
 				$data = self::calculateRow($data, $taxCalcValue, $rounding, $daTax, $withTax, $overwriteDiscount);
 			}
-			$data['product_discountedPriceWithoutTax'] = 0.0;// $data['product_item_price'] - $data['product_subtotal_discount'];
 
-			$data['product_priceWithoutTax'] = $data['product_final_price'] - $data['product_tax'];
 
 			if(!empty($vat)){
 				$t = $data['product_tax'] * $data['product_quantity'];
@@ -595,8 +593,7 @@ class VirtueMartModelOrders extends VmModel {
 
 			}
 
-			//$data['product_subtotal_discount'] = (round($orderdata->product_final_price, $rounding) - round($data['product_basePriceWithTax'], $rounding)) * $orderdata->product_quantity;
-			$data['product_subtotal_with_tax'] = round($data['product_final_price'], $rounding) * $orderdata->product_quantity;
+
 		}
 
 		if(!empty($table->virtuemart_vendor_id)){
@@ -648,8 +645,15 @@ class VirtueMartModelOrders extends VmModel {
 
 	function calculateRow($data, $taxCalcValue, $rounding, $daTax = true, $withTax = true, $overrideDiscount = false){
 
+		$quantity = $data['product_quantity'];
 		if(empty($data['product_subtotal_discount'])){
 			$data['product_subtotal_discount'] = 0.0;
+		} else {
+			$itemDiscount = $data['product_subtotal_discount'];
+			if($itemDiscount<0.0){
+				$itemDiscount = $itemDiscount * (-1);
+			}
+			$itemDiscount = $itemDiscount/$quantity;
 		}
 
 		$taxValue = $taxCalcValue;
@@ -671,23 +675,23 @@ class VirtueMartModelOrders extends VmModel {
 
 			if($daTax){
 				if($overrideDiscount and VirtueMartModelOrders::isEmptyDec($data,'product_subtotal_discount') and VirtueMartModelOrders::isNotEmptyDec($data,'product_final_price')){
-					$data['product_subtotal_discount'] = $data['product_basePriceWithTax'] - $data['product_final_price'];
+					$itemDiscount = $data['product_basePriceWithTax'] - $data['product_final_price'];
 				} else {
-					$data['product_final_price'] = $data['product_basePriceWithTax'] - $data['product_subtotal_discount'];
+					$data['product_final_price'] = $data['product_basePriceWithTax'] - $itemDiscount;
 				}
 			} else {
 				if($overrideDiscount and VirtueMartModelOrders::isEmptyDec($data,'product_subtotal_discount') and VirtueMartModelOrders::isNotEmptyDec($data,'product_final_price')){
-					$data['product_subtotal_discount'] = round($data['product_item_price'] - $data['product_final_price'] + $data['product_final_price'] * $taxValue/(100 + $taxValue), $rounding);
+					$itemDiscount = round($data['product_item_price'] - $data['product_final_price'] + $data['product_final_price'] * $taxValue/(100 + $taxValue), $rounding);
 				} else {
-					$data['product_final_price'] = round( ($data['product_item_price'] - $data['product_subtotal_discount']) * ((100 + $taxValue)/100.0) , $rounding);
+					$data['product_final_price'] = round( ($data['product_item_price'] - $itemDiscount) * ((100 + $taxValue)/100.0) , $rounding);
 				}
 			}
 		} else if (VirtueMartModelOrders::isNotEmptyDec($data,'product_final_price')){
 			if($daTax){
-				$data['product_item_price'] = round( ($data['product_final_price'] + $data['product_subtotal_discount']) * (1 -  $taxValue / ($taxValue + 100)), $roundIntern ) ;
+				$data['product_item_price'] = round( ($data['product_final_price'] + $itemDiscount) * (1 -  $taxValue / ($taxValue + 100)), $roundIntern ) ;
 				$data['product_basePriceWithTax'] = round($data['product_item_price'] * (1 + $taxCalcValue/100.0), $rounding );
 			} else {
-				$data['product_item_price'] = round( $data['product_final_price'] * (1 -  $taxValue / ($taxValue + 100)) + $data['product_subtotal_discount'], $roundIntern );
+				$data['product_item_price'] = round( $data['product_final_price'] * (1 -  $taxValue / ($taxValue + 100)) + $itemDiscount, $roundIntern );
 				$data['product_basePriceWithTax'] = round( $data['product_item_price'] * (1 +  $taxValue/100.0), $rounding );
 			}
 		} else {
@@ -701,6 +705,25 @@ class VirtueMartModelOrders extends VmModel {
 		}
 		$data['product_tax'] = round($data['product_tax'], $roundIntern);
 
+
+		$data['product_discountedPriceWithoutTax'] = $data['product_item_price'] - ($itemDiscount);
+		//$data['product_discountedPriceWithoutTax'] = $data['product_final_price'] - $data['product_tax'];
+
+		//if($daTax){
+			$data['product_priceWithoutTax'] = $data['product_final_price'] - $data['product_tax'];
+		/*} else {
+			$data['product_priceWithoutTax'] = $data['product_final_price'] - $data['product_tax'];
+		}*/
+
+
+//$data['product_subtotal_discount'] = (round($orderdata->product_final_price, $rounding) - round($data['product_basePriceWithTax'], $rounding)) * $orderdata->product_quantity;
+		$data['product_subtotal_with_tax'] = round($data['product_final_price'], $rounding) * $data['product_quantity'];
+
+		if($data['product_subtotal_discount']<0.0){
+			$itemDiscount = $itemDiscount * (-1);
+		}
+		$data['product_subtotal_discount'] = $quantity * $itemDiscount;
+vmdebug('my prices',$data);
 		return $data;
 	}
 
