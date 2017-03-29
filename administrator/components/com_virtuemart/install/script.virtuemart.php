@@ -151,20 +151,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'shipment');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'payment');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category'.DS.'resized');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer'.DS.'resized');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product'.DS.'resized');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale'.DS.'invoices');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'forSale'.DS.'resized');
-			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'typeless');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'shipment');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'payment');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'category');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'category'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'manufacturer');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'manufacturer'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'product');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'product'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'forSale');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'forSale'.DS.'invoices');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'forSale'.DS.'resized');
+			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'typeless');
 
 
 
@@ -293,7 +293,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//copy sampel media
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
 			if(JFolder::exists($src)){
-				$dst = VMPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+				$dst = VMPATH_ROOT .DS. 'images' .DS. 'virtuemart';
 				$this->recurse_copy($src,$dst);
 			}
 
@@ -1106,7 +1106,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						}
 					}
 					closedir($dir);
-					if (is_dir($src)) JFolder::delete($src);
+					//if (is_dir($src)) JFolder::delete($src);
 					return true;
 				}
 			}

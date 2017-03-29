@@ -756,14 +756,25 @@ abstract class vmPSPlugin extends vmPlugin {
 		$img = "";
 
 		if (!(empty($logo_list))) {
-			$url = JURI::root () . 'images/stories/virtuemart/' . $this->_psType . '/';
+			if(!class_exists('JFolder')){
+				require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			}
+			$url ='/images/virtuemart/' . $this->_psType ;
+
+			if(!JFolder::exists( VMPATH_ROOT .$url)){
+				$url = '/images/stories/virtuemart/' . $this->_psType;
+				if(!JFolder::exists(VMPATH_ROOT .$url)){
+					return $img;
+				}
+			}
+
 			if (!is_array ($logo_list)) {
 				$logo_list = (array)$logo_list;
 			}
 			foreach ($logo_list as $logo) {
 				if(!empty($logo)){
 					$alt_text = substr ($logo, 0, strpos ($logo, '.'));
-					$img .= '<span class="vmCart' . ucfirst($this->_psType) . 'Logo" ><img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" /></span> ';
+					$img .= '<span class="vmCart' . ucfirst($this->_psType) . 'Logo" ><img align="middle" src="' . JUri::root(true).$url.'/'.$logo . '"  alt="' . $alt_text . '" /></span> ';
 				}
 			}
 		}

@@ -309,7 +309,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['LOCALECODE'] = $this->getLocaleCode();
 
 		if ($this->_method->headerimg) {
-			//$post_variables['HDRIMG'] = JURI::base()  . 'images/stories/virtuemart/payment/' . $this->_method->headerimg;
+			//$post_variables['HDRIMG'] = JURI::base()  . 'images/virtuemart/payment/' . $this->_method->headerimg;
 		}
 		if ($this->_method->bordercolor) {
 			$post_variables['CARTBORDERCOLOR'] = str_replace('#', '', strtoupper($this->_method->bordercolor));

@@ -185,7 +185,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	//copy sampel media
 	$src = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
 	// 			if(version_compare(JVERSION,'1.6.0','ge')) {
-	$dst = VMPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+	$dst = VMPATH_ROOT .DS. 'images' .DS. 'virtuemart';
 
 	$this->recurse_copy($src,$dst);
 
@@ -288,7 +288,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 					}
 				}
 				closedir($dir);
-				if (is_dir($src)) JFolder::delete($src);
+				//if (is_dir($src)) JFolder::delete($src);
 				return true;
 			}
 		}

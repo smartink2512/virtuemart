@@ -99,14 +99,14 @@ class VmMediaHandler {
 			vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type,$link );
 			//Todo add general media_path to config
 			//$relUrl = VmConfig::get('media_path');
-			$relUrl = 'images/stories/virtuemart/';
+			$relUrl = self::getStoriesFb().'/';
 			$this->setRole=true;
 			// 		} else if(!$choosed and empty($relUrl) and $this->file_is_forSale==0){
 		} else if(!$choosed and empty($relUrl) ){
 
 			vmWarn('COM_VIRTUEMART_MEDIA_CHOOSE_TYPE',$this->file_title );
 			// 	vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
-			$relUrl = 'images/stories/virtuemart/typeless/';
+			$relUrl = self::getStoriesFb('typeless').'/';
 			$this->setRole=true;
 
 		} else if(!$choosed and $this->file_is_forSale==1){
@@ -115,6 +115,26 @@ class VmMediaHandler {
 		}
 
 		return $relUrl;
+	}
+
+	static function getStoriesFb($suffix = ''){
+		$url = JURI::root () . 'images/virtuemart/'. $suffix ;
+		if(file_exists($url)) {
+			return $url;
+		} else {
+			$urlOld = JURI::root () . 'images/stories/virtuemart/'. $suffix;
+			if(file_exists($urlOld)){
+				return $urlOld;
+			}
+		}
+		if(!class_exists('JFolder')){
+			require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+		}
+		if(JFolder::create($url)) {
+			return $url;
+		} else {
+			return false;
+		}
 	}
 
 	/**

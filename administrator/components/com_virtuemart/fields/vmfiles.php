@@ -26,6 +26,20 @@ class JFormFieldVMFiles extends JFormFieldFileList {
 	var $type  = 'Files';
 
 	protected function getInput() {
+
+		//Fallback for old directories
+		$dir = $this->getAttribute('directory');
+		if(strpos($dir,'images/stories')!==false){
+
+			$dirNew = str_replace('images/stories','images',$dir);
+			if(!class_exists('JFolder')){
+				require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			}
+			if(JFolder::exists(VMPATH_ROOT .$dirNew)){
+				$this->directory = $dirNew;
+			}
+		}
+
 		return parent::getInput();
 	}
 	protected function getOptions(){
