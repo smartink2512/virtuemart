@@ -351,16 +351,38 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		if(VmConfig::get('dangeroustools', true)){
-
+			VmConfig::$_debug=1;
 			$model = $this->getModel('updatesMigration');
 
-			$model->restoreSystemTablesCompletly();
+			$safePath = VmConfig::get('forSale_path');
 
+			$model->restoreSystemTablesCompletly();
 			$sid = $model->setStoreOwner();
 
 			$sampletxt = '';
 			if($sample){
+
 				$model->installSampleData($sid);
+
+				if(!class_exists('VmConfig')) require_once(VMPATH_ADMIN .'/models/config.php');
+				VirtueMartModelConfig::installVMconfigTable();
+
+				if(!class_exists('VirtueMartModelConfig')) require(VMPATH_ADMIN .'/models/config.php');
+				$res  = VirtueMartModelConfig::checkConfigTableExists();
+
+				if($res) {
+					$config = VmConfig::loadConfig(true);
+					$config->set('forSale_path', $safePath);
+
+					$data['virtuemart_config_id'] = 1;
+					$data['config'] = $config->toString();
+
+					$confTable = $model->getTable( 'configs' );
+					$confTable->bindChecknStore( $data );
+
+					VmConfig::loadConfig( true );
+				}
+
 				$sampletxt = ' and sampledata installed';
 			}
 

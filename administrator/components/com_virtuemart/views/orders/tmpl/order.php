@@ -397,9 +397,10 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 				</td>
 				<td>
 					<span class='ordereditI'><?php echo $item->order_item_name; ?></span>
-					<input class='orderedit' type="text"  name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][order_item_name]" value="<?php echo $item->order_item_name; ?>"/><?php
 
-                        if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
+					<input class='orderedit' type="text"  name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][order_item_name]" value="<?php echo $item->order_item_name; ?>"/>
+					<div class="goto-product"><?php echo '<a href="'.$item->linkedit.'" target="_blank">'.vmText::_('COM_VM_GOTO_PRODUCT'); ?></a></div>
+				<?php   if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
                         $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'BE');
                         if($product_attribute) echo '<div>'.$product_attribute.'</div>';
 

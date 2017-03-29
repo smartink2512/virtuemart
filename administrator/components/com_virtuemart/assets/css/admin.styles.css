@@ -114,3 +114,8 @@ ol.logline li {margin: 0 0 0 20px;padding: 5px 10px 5px 10px;list-style: decimal
 	position: relative;
 	top: 50%;
 }
+
+.goto-product {
+	margin: auto;
+	float: right;
+}

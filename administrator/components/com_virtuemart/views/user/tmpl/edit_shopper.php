@@ -291,7 +291,7 @@ function gotocontact(id) {
 			<tr>
 				<td></td>
 				<td valign="top">
-					<img src="<?php echo $mosConfig_live_site;?>/images/stories/<?php echo $this->contactDetails->image; ?>" align="middle" alt="Contact" />
+					<img src="/images/stories/<?php echo $this->contactDetails->image; ?>" align="middle" alt="Contact" />
 				</td>
 			</tr>
 		<?php } ?>
