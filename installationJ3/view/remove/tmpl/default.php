@@ -29,7 +29,7 @@ VmVirtueMart::loadVMLanguage($currentLang);
 	</div>
 	<div class="alert alert-success">
 	<h3><?php echo JText::_('INSTL_COMPLETE_TITLE'); ?></h3>
-	<p><?php echo JText::_('COM_VIRTUEMART_INSTL_COMPLETE_TITLE'); ?></p>
+	<p><?php echo JText::_('COM_VM_INSTL_COMPLETE_TITLE'); ?></p>
 	</div>
 	<div class="alert">
 		<p><?php echo JText::_('INSTL_COMPLETE_REMOVE_INSTALLATION'); ?></p>

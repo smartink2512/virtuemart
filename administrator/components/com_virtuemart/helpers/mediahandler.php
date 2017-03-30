@@ -118,19 +118,22 @@ class VmMediaHandler {
 	}
 
 	static function getStoriesFb($suffix = ''){
-		$url = JURI::root () . 'images/virtuemart/'. $suffix ;
-		if(file_exists($url)) {
-			return $url;
-		} else {
-			$urlOld = JURI::root () . 'images/stories/virtuemart/'. $suffix;
-			if(file_exists($urlOld)){
-				return $urlOld;
-			}
-		}
+
 		if(!class_exists('JFolder')){
 			require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 		}
-		if(JFolder::create($url)) {
+		$url = 'images/virtuemart/'. $suffix ;
+
+		if(JFolder::exists(VMPATH_ROOT .'/'.$url)) {
+			return $url;
+		} else {
+			$urlOld = 'images/stories/virtuemart/'. $suffix;
+			if(JFolder::exists(VMPATH_ROOT .'/'.$urlOld)){
+				return $urlOld;
+			}
+		}
+
+		if(JFolder::create(VMPATH_ROOT .'/'.$url)) {
 			return $url;
 		} else {
 			return false;

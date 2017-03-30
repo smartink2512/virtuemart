@@ -39,5 +39,7 @@ echo $this->media->displayFileHandler();
 echo '</fieldset>';
 echo '</form>';
 
+vmJsApi::addJScript('mediahandler');
+
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea();

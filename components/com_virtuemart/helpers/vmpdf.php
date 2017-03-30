@@ -107,7 +107,7 @@ if(!file_exists(VMPATH_LIBS.DS.'tcpdf'.DS.'tcpdf.php')){
 			} else if(empty($this->vendor->images[0]->file_url_folder) or empty($this->vendor->images[0]->file_name) or empty($this->vendor->images[0]->file_extension) ){
 				vmError('Vendor image given image is not complete '.$this->vendor->images[0]->file_url_folder.$this->vendor->images[0]->file_name.'.'.$this->vendor->images[0]->file_extension);
 			} else if(!empty($this->vendor->images[0]->file_extension) and strtolower($this->vendor->images[0]->file_extension)=='png'){
-				vmError('Warning extension of the image is a png, tpcdf has problems with that in the header, choose a jpg or gif');
+				vmError('Warning extension of the vendor image '.$this->vendor->images[0]->file_name.'is a png, tpcdf has problems with that in the header, choose a jpg or gif');
 			} else {
 				$imagePath = str_replace('/',DS, $this->vendor->images[0]->file_url_folder.$this->vendor->images[0]->file_name.'.'.$this->vendor->images[0]->file_extension);
 				if(!file_exists(VMPATH_ROOT . DS . $imagePath)){
