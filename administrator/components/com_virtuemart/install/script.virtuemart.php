@@ -253,6 +253,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			));
 			$this->alterTable('#__virtuemart_customs',array(
 				'custom_field_desc' => '`custom_desc` char(255) COMMENT \'description or unit\'',
+				'custom_params' => '`custom_params` text  NOT NULL DEFAULT \'\''
 			));
 			$this->alterTable('#__virtuemart_product_customfields',array(
 				'custom_value' => ' `customfield_value` varchar(2500) COMMENT \'field value\'',
