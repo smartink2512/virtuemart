@@ -990,7 +990,7 @@ vmdebug('my prices',$data);
 
 				foreach( $inputOrder as $item_id => $order_item_data ) {
 
-					if($item_id=='customer_notified') continue;
+					if(!empty($item_id) and $item_id=='customer_notified') continue;	//Attention, we need the check against empty, else it continues for "0"
 
 					$order_item_data['current_order_status'] = $order_item_data['order_status'];
 					if(!isset( $order_item_data['comments'] )) $order_item_data['comments'] = '';
