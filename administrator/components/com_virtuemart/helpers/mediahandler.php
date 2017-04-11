@@ -295,7 +295,6 @@ class VmMediaHandler {
 		if($this->file_is_downloadable) $this->media_role = 'file_is_downloadable';
 		if($this->file_is_forSale) $this->media_role = 'file_is_forSale';
 		if(empty($this->media_role)) $this->media_role = 'file_is_displayable';
-		// 		vmdebug('$this->media_role',$this->media_role);
 
 		$this->determineFoldersToTest();
 

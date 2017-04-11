@@ -25,6 +25,14 @@ $document = JFactory::getDocument();
 vmJsApi::JvalideForm();
 $this->editor = JFactory::getEditor();
 
+$origLang = '';
+if(!empty($this->product->_loadedWithLangFallback)){
+	$origLang = '(<span class="allflags flag-'.$this->product->_loadedWithLangFallback.'"></span>)';
+}
+
+$this->origLang = '<span class="langfallback">'.$origLang.'</span>';
+
+
 ?>
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" id="adminForm">
 
