@@ -643,17 +643,19 @@ class VirtueMartCustomFieldRenderer {
 			$variantmods = json_decode($variantmods,true);
 		}
 
-		//if(empty($variantmods)){
+		//We let that here as Fallback
+		if(empty($product->customfields)){
+
 			$productDB = VmModel::getModel('product')->getProduct($product->virtuemart_product_id);
-			if($productDB and isset($productDB->customfields)){
+			if($productDB and $productDB->customfields){
+
 				$product->customfields = $productDB->customfields;
 			} else {
 				$product->customfields = array();
 			}
-		//}
+		}
 
 		$productCustoms = array();
-
 		foreach( (array)$product->customfields as $prodcustom){
 
 			//We just add the customfields to be shown in the cart to the variantmods

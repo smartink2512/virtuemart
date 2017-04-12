@@ -145,7 +145,7 @@ class VirtuemartViewCategory extends VmView {
 		'categorylayout' => VmConfig::get('categorylayout', 0),
 		'show_store_desc' => VmConfig::get('show_store_desc',1),
 		'showcategory_desc' => VmConfig::get('showcategory_desc', 1),
-		'showcategory' => VmConfig::get('showCategory',1),
+		'showcategory' => VmConfig::get('showcategory',1),
 		'categories_per_row' => VmConfig::get('categories_per_row',3),
 		'showproducts' => VmConfig::get('showproducts',1),
 		'showsearch' => VmConfig::get('showsearch',0),
