@@ -354,7 +354,7 @@ class VirtueMartModelCategory extends VmModel {
 
 			$useJLback = false;
 			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_category_id` = c.`virtuemart_paymentmethod_id`';
+				$joins .= ' LEFT JOIN `#__virtuemart_categories_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_category_id` = c.`virtuemart_category_id`';
 				$useJLback = true;
 			}
 			foreach($langFields as $langField){
