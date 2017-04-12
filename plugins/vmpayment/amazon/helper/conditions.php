@@ -128,11 +128,17 @@ class vmAmazonConditions {
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 		}
 		$clientIp = ShopFunctions::getClientIP();
-		$ip_whitelist = explode(";", $this->_currentMethod->ip_whitelist);
-		if(in_array($clientIp, $ip_whitelist)) {
-			return true;
+		if(strpos( $this->_currentMethod->ip_whitelist,';')!==false){
+			$ip_whitelist = explode(";", $this->_currentMethod->ip_whitelist);
+		} else {
+			$ip_whitelist = explode("\n", $this->_currentMethod->ip_whitelist);
 		}
-		vmdebug('AMAZON checkConditions isValidIP false');
+
+		foreach($ip_whitelist as $ip){
+			$ip = trim($ip);
+			if($ip==$clientIp) return true;
+		}
+		vmdebug('AMAZON checkConditions isValidIP false '.$clientIp, $ip_whitelist);
 		return false;
 	}
 

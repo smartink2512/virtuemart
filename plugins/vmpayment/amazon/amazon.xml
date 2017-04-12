@@ -7,7 +7,7 @@
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
-    <description>AMAZON payment plugin</description>
+    <description>AMAZON PAY plugin</description>
     <languages>
         <language tag="en-GB">en-GB.plg_vmpayment_amazon.ini</language>
     </languages>
