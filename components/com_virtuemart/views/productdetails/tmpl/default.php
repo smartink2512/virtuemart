@@ -250,7 +250,7 @@ echo $this->product->event->afterDisplayContent;
 echo $this->loadTemplate('reviews');
 
 // Show child categories
-if (VmConfig::get('showCategory', 1)) {
+if ($this->cat_productdetails)  {
 	echo $this->loadTemplate('showcategory');
 }
 

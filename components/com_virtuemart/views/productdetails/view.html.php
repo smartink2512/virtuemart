@@ -34,7 +34,7 @@ class VirtueMartViewProductdetails extends VmView {
     /**
 		 * Collect all data to show on the template
 		 *
-		 * @author RolandD, Max Milbers
+		 * @author Max Milbers
 		 */
 		function display($tpl = null) {
 
@@ -177,6 +177,16 @@ class VirtueMartViewProductdetails extends VmView {
 
 			shopFunctionsF::setLastVisitedCategoryId($product->virtuemart_category_id);
 
+			if(!empty($menu) ){
+				$t = $menu->params->get('cat_productdetails','');
+				if(!empty($t)){
+					$this->cat_productdetails = $t;
+				}
+			}
+			if(!isset($this->cat_productdetails)){
+				$this->cat_productdetails = VmConfig::get('cat_productdetails',0);
+			}
+
 			if ($category_model) {
 
 				$category = $category_model->getCategory($product->virtuemart_category_id);
@@ -196,8 +206,11 @@ class VirtueMartViewProductdetails extends VmView {
 					}
 				}
 
-				$category->children = $category_model->getChildCategoryList($product->virtuemart_vendor_id, $product->virtuemart_category_id);
-				$category_model->addImages($category->children, 1);
+				if($this->cat_productdetails){
+					$category->children = $category_model->getChildCategoryList($product->virtuemart_vendor_id, $product->virtuemart_category_id);
+					$category_model->addImages($category->children, 1);
+				}
+
 			}
 
 			$pathway->addItem(strip_tags(html_entity_decode($product->product_name,ENT_QUOTES)));
