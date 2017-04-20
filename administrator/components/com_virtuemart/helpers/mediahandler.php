@@ -984,7 +984,9 @@ class VmMediaHandler {
 		$Images = array();
 		$list = VmMediaHandler::getImagesList($types,$page,$max);
 		if (empty($list['images'])){
-			return vmText::_('COM_VIRTUEMART_NO_MEDIA_FILES');
+			$Images[0]['label'] = vmText::_('COM_VIRTUEMART_NO_MEDIA_FILES');
+			$Images[0 ]['value'] = '';
+			return $Images;
 		}
 
 		foreach ($list['images'] as $key =>$image) {
