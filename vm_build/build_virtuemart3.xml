@@ -6,7 +6,7 @@
     <property name="vm.version.main" value="3.2.0"/>
     <property name="vm.version" value="3.2.1"/>
     <property name="joomla.version" value="3.6.5"/>
-    <property name="svn.lastrevision" value="9499"/>
+    <property name="svn.lastrevision" value="9502"/>
     <property name="PHING.VM.CODENAME" value="Black Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
@@ -112,6 +112,17 @@
             <then>
                 <echo message="Deleting existing package folder: ${package.folder}..."/>
                 <delete dir="${package.folder}"/>
+            </then>
+        </if>
+    </target>
+
+    <target name="delete_source_folder" depends="">
+        <available file="${package.abspath}/${component.name}.${vm.version}" property="package.folder.exists" value="1"/>
+        <if>
+            <equals arg1="${package.folder.exists}" arg2="1"/>
+            <then>
+                <echo message="Deleting existing source folder: ${package.abspath}/${component.name}.${vm.version}..."/>
+                <delete dir="${package.abspath}/${component.name}.${vm.version}"/>
             </then>
         </if>
     </target>
@@ -482,7 +493,7 @@
     <!-- ============================================  -->
     <!-- (DEFAULT)  CREATE TAR FILES                -->
     <!-- ============================================  -->
-    <target name="clean" depends="delete_package_folder, delete_export_to_folder, create_package_folder">
+    <target name="clean" depends="delete_package_folder, delete_source_folder, delete_export_to_folder, create_package_folder">
         <echo msg="Cleaning Package directory OK!"/>
     </target>
 
