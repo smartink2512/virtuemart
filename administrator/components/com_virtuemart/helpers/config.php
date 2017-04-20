@@ -396,13 +396,14 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 			}else {
 				VmConfig::$maxMessageCount++;
 				$app = JFactory::getApplication();
-				$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
+				$app ->enqueueMessage('<span class="vmdebug" >'.VmConfig::$maxMessageCount.' vmdebug '.$debugdescr.'</span>');
 			}
 
 		}
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 				$app = JFactory::getApplication();
+
 				$app->enqueueMessage ('Max messages reached', 'info');
 				VmConfig::$maxMessageCount++;
 			}
@@ -596,6 +597,7 @@ class VmConfig {
 	public static $vmlangSef = '';
 
 	public static $defaultLang = false;
+	public static $defaultLangTag = false;
 	public static $jDefLang = false;
 	public static $jDefLangTag = false;
 
@@ -1014,6 +1016,7 @@ class VmConfig {
 		if($lang)vmLanguage::initialise();
 		self::echoAdmin();
 		self::showDebug();
+		vmLanguage::debugLangVars();
 
 		self::$_secret = JFactory::getConfig()->get('secret');
 
@@ -1197,6 +1200,20 @@ class VmConfig {
 	 */
 	static public function isSuperVendor($uid = 0){
 		return vmAccess::isSuperVendor($uid);
+	}
+
+	static private $isSite = null;
+	static public function isSite(){
+
+		if(self::$isSite===null){
+			$app = JFactory::getApplication ();
+			if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::manager('manage'))){
+				self::$isSite = false;
+			} else {
+				self::$isSite = true;
+			}
+		}
+		return self::$isSite;
 	}
 }
 
