@@ -813,7 +813,7 @@ class vmrouterHelper {
 			// if language switcher we must know the $query
 			$this->query = $query;
 
-			$this->langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
+			$this->langFback = vmLanguage::getUseLangFallback();// !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
 		}
 
 	}

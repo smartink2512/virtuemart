@@ -72,13 +72,6 @@ class vmLanguage {
 		}
 		self::setLanguage($siteLang);
 
-		$langs = (array)VmConfig::get('active_languages',array(VmConfig::$jDefLangTag));
-		VmConfig::$langCount = count($langs);
-		if(!in_array($siteLang, $langs)) {
-
-			$siteLang = VmConfig::$jDefLangTag;	//Set to shop language
-		}
-
 		// this code is uses logic derived from language filter plugin in j3 and should work on most 2.5 versions as well
 		if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
 			$languages = JLanguageHelper::getLanguages('lang_code');
@@ -91,6 +84,12 @@ class vmLanguage {
 					VmConfig::$vmlangSef = $languages[self::$jSelLangTag]->sef;
 				}
 			}
+		}
+
+		$langs = (array)VmConfig::get('active_languages',array(VmConfig::$jDefLangTag));
+		VmConfig::$langCount = count($langs);
+		if(!in_array($siteLang, $langs)) {
+			$siteLang = VmConfig::$jDefLangTag;	//Set to shop language
 		}
 
 		VmConfig::$vmlangTag = $siteLang;
@@ -143,10 +142,11 @@ class vmLanguage {
 			$l = VmConfig::$langCount.' Language, default shoplanguage (VmConfig::$jDefLang): '.VmConfig::$jDefLang.' '.VmConfig::$jDefLangTag;
 		} else {
 			$l = VmConfig::$langCount.' Languages, default shoplanguage (VmConfig::$jDefLang): '.VmConfig::$jDefLang.' '.VmConfig::$jDefLangTag;
-			if(VmConfig::$jDefLang!=VmConfig::$defaultLang){
+			//if(VmConfig::$jDefLang!=VmConfig::$defaultLang){
+			if(self::getUseLangFallback()){
 				$l .= ' Fallback language (VmConfig::$defaultLang): '.VmConfig::$defaultLang;
 			}
-			$l .= ' Selected VM language (VmConfig::$vmlang): '.VmConfig::$vmlang.' '.VmConfig::$vmlangTag;
+			$l .= ' Selected VM language (VmConfig::$vmlang): '.VmConfig::$vmlang.' '.VmConfig::$vmlangTag.' SEF: '.VmConfig::$vmlangSef;
 		}
 		vmdebug($l);
 	}

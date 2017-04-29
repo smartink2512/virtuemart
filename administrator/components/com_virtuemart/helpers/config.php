@@ -403,7 +403,6 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 				$app = JFactory::getApplication();
-
 				$app->enqueueMessage ('Max messages reached', 'info');
 				VmConfig::$maxMessageCount++;
 			}
@@ -1413,7 +1412,7 @@ class vmURI{
 
 	static function getCurrentUrlBy ($source = 'request',$route = false, $white = true, $ignore = false){
 
-		$vars = array('option', 'view', 'controller', 'task', 'virtuemart_category_id', 'virtuemart_manufacturer_id', 'virtuemart_product_id', 'virtuemart_user_id', 'addrtype', 'virtuemart_user_info', 'virtuemart_currency_id', 'layout', 'format', 'limitstart', 'limit', 'lang', 'language', 'keyword', 'virtuemart_order_id', 'order_number', 'order_pass', 'tmpl', 'usersearch', 'manage', 'orderby', 'dir', 'Itemid');
+		$vars = array('option', 'view', 'controller', 'task', 'virtuemart_category_id', 'virtuemart_manufacturer_id', 'virtuemart_product_id', 'virtuemart_user_id', 'addrtype', 'virtuemart_user_info', 'virtuemart_currency_id', 'layout', 'format', 'limitstart', 'limit', 'language', 'keyword', 'virtuemart_order_id', 'order_number', 'order_pass', 'tmpl', 'usersearch', 'manage', 'orderby', 'dir', 'Itemid', 'lang');	//TODO Maybe better to remove the 'lang', which keeps the SEF suffix
 
 		$url = 'index.php?';
 		if($white){
@@ -1458,11 +1457,11 @@ class vmURI{
 			}
 		}
 
-		$url = rtrim($url,'&');
+		$url = $urlold = rtrim($url,'&');
 		if ($route){
 			$url = JRoute::_($url);
 		}
-		vmdebug('getCurrentUrlBy '.$url);
+		vmdebug('getCurrentUrlBy ',$urlold,$url);
 		return $url;
 	}
 
@@ -1487,7 +1486,12 @@ class vmURI{
 		if(isset($useSSL)) return $useSSL;
 
 		$jconf = JFactory::getConfig();
-		$useSSL = VmConfig::get('useSSL', 0) or $jconf->get('force_ssl')=='2';
+		if(VmConfig::get('useSSL', 0)!=0 or $jconf->get('force_ssl')=='2'){
+			$useSSL = 1;
+			vmdebug('SSL enabled');
+		} else {
+			$useSSL = 0;
+		}
 		return $useSSL;
 	}
 }
