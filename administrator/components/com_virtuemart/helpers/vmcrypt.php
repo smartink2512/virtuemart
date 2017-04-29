@@ -175,21 +175,22 @@ class vmCrypt {
 
 			$key = self::crypto_rand_secure($size);
 
-			vmdebug('create key file ',$size);
+			vmdebug('create key file '.$size.' '.$key);
 			$date = JFactory::getDate();
 			$today = $date->toUnix();
 			$dat = date("Y-m-d H:i:s");
+			$encb64 = 1;
 			$content = ';<?php die(); */
 						[keys]
-						key = "'.$key.'"
+						key = "'.base64_encode($key).'"
 						unixtime = "'.$today.'"
 						date = "'.$dat.'"
-						b64 = "0"
+						b64 = "'.$encb64.'"
 						size = "'.$size.'"
 						; */ ?>';
 			$result = JFile::write($filename, $content);
 
-			return array('key'=>$key,'unixtime'=>$today,'date'=>$dat,'b64'=>0,'size'=>$size);
+			return array('key'=>$key,'unixtime'=>$today,'date'=>$dat,'b64'=>$encb64,'size'=>$size);
 		} else {
 			return false;
 		}
