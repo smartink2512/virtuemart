@@ -523,7 +523,7 @@ class shopFunctionsF {
 			$vu = JFactory::getUser($vendorUserId);
 			$vLang = $vu->getParam('admin_language',VmConfig::$jDefLangTag);
 
-			vmLanguage::setLanguageByTag($vLang);
+			self::loadOrderLanguages($vLang);
 			self::sendVmMail( $view, $view->vendorEmail, TRUE );
 		}
 

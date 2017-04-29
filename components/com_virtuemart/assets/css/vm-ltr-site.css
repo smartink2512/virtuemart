@@ -1386,7 +1386,7 @@ div[class*="-view"] .row{
 }
 
 .vm-payment-plugin-single label, .vm-shipment-plugin-single label {
-  display: inline-block;
+  display: inline;
 }
 /* Chosen */
 .chzn-container, .chzn-drop{

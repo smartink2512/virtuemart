@@ -246,6 +246,9 @@ class VirtueMartControllerUser extends JControllerLegacy
 					$data['virtuemart_shoppergroup_id'] = array();
 				}
 
+				//important for user registration mail, by Yagendoo
+				if(empty($data['language'])) $data['language'] = VmConfig::$vmlangTag;
+
 				$ret = $userModel->store($data);
 
 				if($switch){ //and VmConfig::get ('oncheckout_change_shopper')){
