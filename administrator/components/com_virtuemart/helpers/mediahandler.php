@@ -104,8 +104,10 @@ class VmMediaHandler {
 			// 		} else if(!$choosed and empty($relUrl) and $this->file_is_forSale==0){
 		} else if(!$choosed and empty($relUrl) ){
 
-			vmWarn('COM_VIRTUEMART_MEDIA_CHOOSE_TYPE',$this->file_title );
-			// 	vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
+			if(empty($this->file_type) and !empty($this->file_url)){
+				vmAdminInfo('COM_VIRTUEMART_MEDIA_CHOOSE_TYPE',$this->file_title );
+				// 	vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
+			}
 			$relUrl = self::getStoriesFb('typeless').'/';
 			$this->setRole=true;
 

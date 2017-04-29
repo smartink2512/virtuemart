@@ -168,6 +168,7 @@ class TableMedias extends VmTable {
 			}
 		}
 		else {
+			vmdebug('Media table check, media has no file_title',$this);
 			vmError (vmText::_ ('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
 			$ok = FALSE;
 		}
