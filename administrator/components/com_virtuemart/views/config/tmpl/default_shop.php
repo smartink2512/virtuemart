@@ -70,12 +70,25 @@ defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_LANGUAGES'); ?></legend>
 	<table class="admintable">
-		<tr>
+	<?php echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ENABLE_ENGLISH','enableEnglish',VmConfig::get('enableEnglish',1)); ?>
+        <tr>
+            <td class="key">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VM_CFG_SHOPLANG_TIP'); ?>">
+						<?php echo vmText::sprintf('COM_VM_CFG_SHOPLANG',VmConfig::$jDefLang); ?>
+					</span>
+            </td>
+
+            <td>
+				<?php echo $this->activeShopLanguage; ?>
+            </td>
+        </tr>
+	    <tr>
 			<td class="key">
 					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_TIP'); ?>">
 						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE'); ?>
 					</span>
 			</td>
+
 			<td>
 				<?php echo $this->activeLanguages; ?>
 			 <span>
@@ -83,7 +96,10 @@ defined('_JEXEC') or die('Restricted access');?>
 				</span></td>
 		</tr>
 		<?php
-			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ENABLE_ENGLISH','enableEnglish',VmConfig::get('enableEnglish',1));
+		echo VmHTML::row('checkbox','COM_VM_CFG_NO_FALLBACK','prodOnlyWLang',VmConfig::get('prodOnlyWLang',0));
+		echo VmHTML::row('checkbox','COM_VM_CFG_DUAL_FALLBACK','dualFallback',VmConfig::get('dualFallback',1));
+		echo VmHTML::row('input','COM_VM_CFG_CUSTOM_FALLBACK','vm_lfbs',VmConfig::get('vm_lfbs',''));
+
 		?>
 
 	</table>

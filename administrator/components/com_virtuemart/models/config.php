@@ -285,7 +285,7 @@ class VirtueMartModelConfig extends VmModel {
 	/*
 	 * Get the joomla list of languages
 	 */
-	function getActiveLanguages($active_languages, $name = 'active_languages[]') {
+	function getActiveLanguages($active_languages, $name = 'active_languages[]', $multiple = true, $placeholder = 'COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL') {
 
 		$activeLangs = array() ;
 		$language =JFactory::getLanguage();
@@ -296,7 +296,15 @@ class VirtueMartModelConfig extends VmModel {
 			$activeLangs[] = JHtml::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
-		return JHtml::_('select.genericlist', $activeLangs, $name, 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
+		if($multiple){
+			$multiple = 'multiple="multiple"';
+		} else {
+			$multiple = '';
+			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ($placeholder));
+			array_unshift ($activeLangs, $emptyOption);
+
+		}
+		return JHtml::_('select.genericlist', $activeLangs, $name, 'size=10  '.$multiple.' data-placeholder="'.vmText::_($placeholder).'"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
 

@@ -88,6 +88,7 @@ class VirtuemartViewConfig extends VmViewAdmin {
 
 		$this->currConverterList = $model->getCurrencyConverterList();
 
+		$this->activeShopLanguage = $model->getActiveLanguages( VmConfig::get('vmDefLang'), 'vmDefLang', false, 'COM_VIRTUEMART_ADMIN_CFG_POOS_GLOBAL' );
 		$this->activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 
 		$this->orderByFieldsProduct = $model->getProductFilterFields('browse_orderby_fields');
