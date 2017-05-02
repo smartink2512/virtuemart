@@ -80,7 +80,7 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 				$checked = JHtml::_ ('grid.id', $i, $order->virtuemart_order_id);
 				//vmdebug('My order',$order);
 				?>
-			<tr class="row<?php echo $k; ?>">
+			<tr class="row<?php echo $k . ' status-'. strtolower($order->order_status); ?>">
 				<!-- Checkbox -->
 				<td class="admin-checkbox"><?php echo $checked; ?></td>
 				<!-- Order id -->
