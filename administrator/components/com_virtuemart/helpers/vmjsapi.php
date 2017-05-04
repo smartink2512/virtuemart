@@ -188,7 +188,7 @@ class vmJsApi{
 	 * @param   boolean  load minified version
 	 * @return  nothing
 	 */
-	public static function js($namespace,$path=FALSE,$version='', $minified = false) {
+	public static function js($namespace, $path=FALSE, $version='', $minified = false) {
 		self::addJScript($namespace,false,false);
 	}
 
@@ -201,7 +201,7 @@ class vmJsApi{
 	 * @return  nothing
 	 */
 
-	public static function css($namespace,$path = FALSE ,$version='', $minified = NULL)
+	public static function css($namespace, $path = FALSE, $version='', $minified = NULL)
 	{
 
 		static $loaded = array();

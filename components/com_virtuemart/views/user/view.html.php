@@ -315,7 +315,7 @@ class VirtuemartViewUser extends VmView {
 		// Load the required styresheets
 		if (count($userFields['links']) > 0) {
 			foreach ($userFields['links'] as $_link => $_path) {
-			JHtml::stylesheet($_link, $_path);
+				vmJsApi::css($_link, $_path);
 			}
 		}
     }

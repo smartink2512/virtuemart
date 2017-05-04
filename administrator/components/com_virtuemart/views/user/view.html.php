@@ -136,7 +136,7 @@ class VirtuemartViewUser extends VmViewAdmin {
 			// Load the required stylesheets
 			if (count($userFieldsBT['links']) > 0) {
 				foreach ($userFieldsBT['links'] as $_link => $_path) {
-					JHtml::stylesheet($_link, $_path);
+					vmJsApi::css($_link, $_path);
 				}
 			}
 

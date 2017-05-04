@@ -86,7 +86,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 			<tr>
 				<td class="key"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
 				<?php
-$orderLink=JURI::root() .'index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$this->orderbt->order_number.'&order_pass='.$this->orderbt->order_pass;
+				$orderLink=JURI::root() .'index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$this->orderbt->order_number.'&order_pass='.$this->orderbt->order_pass;
 
 				?>
 				<td><a href="<?php echo $orderLink ?>" target="_blank" title="<?php echo  vmText::_ ('COM_VIRTUEMART_ORDER_VIEW_ORDER_FRONTEND')?>"><?php echo $this->orderbt->order_number; ?></a></td>
