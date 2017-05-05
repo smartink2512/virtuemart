@@ -1899,17 +1899,13 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if ($loaded) {
 			return;
 		}
-		$assetsPath = VMKLARNAPLUGINWEBROOT . '/klarna/assets/';
-		JHTML::stylesheet ('style.css', $assetsPath . 'css/', FALSE);
-		JHTML::stylesheet ('klarna.css', $assetsPath . 'css/', FALSE);
-		JHTML::script ('klarna_general.js', $assetsPath . 'js/', FALSE);
-		JHTML::script ('klarnaConsentNew.js', 'http://static.klarna.com/external/js/', FALSE);
-		$document = JFactory::getDocument ();
-		/*
-		$document->addScriptDeclaration ('
-		 klarna.ajaxPath = "' . juri::root () . '/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna";
-	');
-		*/
+		$assetsPath = VMKLARNAPLUGINWEBROOT . '/klarna/assets';
+		vmJsApi::css ('style', $assetsPath . '/css');
+		vmJsApi::css ('klarna', $assetsPath . '/css');
+
+		vmJsApi::addJScript('klarna_general', '/'.$assetsPath . '/js/klarna_general.js');
+		vmJsApi::addJScript ('klarnaConsentNew', 'https://static.klarna.com/external/js/klarnaConsentNew.js',false);
+
 		$loaded=true;
 	}
 

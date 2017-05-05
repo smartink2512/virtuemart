@@ -12,7 +12,8 @@
  * other free or open source software licenses.
  */
 
-JHTML::stylesheet('style.css', VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/', false);
+vmJsApi::css ('style', VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/');
+
 JHTML::script('klarna_pp.js', VMKLARNAPLUGINWEBASSETS.'/js/', false);
 JHTML::script('klarnapart.js', 'https://static.klarna.com:444/external/js/', false);
 $document = JFactory::getDocument();
