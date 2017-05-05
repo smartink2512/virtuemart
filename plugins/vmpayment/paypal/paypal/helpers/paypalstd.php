@@ -220,7 +220,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['cmd'] = '_ext-enter';
 		$post_variables['redirect_cmd'] = $payment_type;
 		$post_variables['paymentaction'] = strtolower($this->_method->payment_action);
-		$post_variables['upload'] = '1';
+		$post_variables['upload'] = '1';	//We may need this configurable $this->_method->upload
 		$post_variables['business'] = $this->merchant_email; //Email address or account ID of the payment recipient (i.e., the merchant).
 		$post_variables['receiver_email'] = $this->merchant_email; //Primary email address of the payment recipient (i.e., the merchant
 		$post_variables['order_number'] = $this->order['details']['BT']->order_number;

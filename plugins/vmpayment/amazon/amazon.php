@@ -2877,6 +2877,7 @@ $('.amazonDetailsOpener').click(function() {
 	}
 
 	private function shouldLoginAgain($referenceIdIsOnlyDigitalGoods, $isOnlyDigitalGoods) {
+	return false;	//We need a automatic relog here, I think this is easier to solve with the new Amazon Pay API
 		if(($isOnlyDigitalGoods and $referenceIdIsOnlyDigitalGoods) OR (!$isOnlyDigitalGoods and !$referenceIdIsOnlyDigitalGoods)) {
 			return false;
 		}
