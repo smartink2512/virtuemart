@@ -566,13 +566,13 @@ class VirtueMartModelProduct extends VmModel {
 					$orderBy = 'ORDER BY RAND()';
 					break;
 				case 'latest':
-					$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '` DESC, `virtuemart_product_id` DESC';;
+					$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '` DESC, p.`virtuemart_product_id` DESC';;
 					break;
 				case 'random':
 					$orderBy = ' ORDER BY RAND() '; //LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 					break;
 				case 'topten':
-					$orderBy = ' ORDER BY p.`product_sales` DESC, `virtuemart_product_id` DESC'; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+					$orderBy = ' ORDER BY p.`product_sales` DESC, p.`virtuemart_product_id` DESC'; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 					$joinPrice = true;
 					$where[] = 'pp.`product_price`>"0.001" ';
 					break;
@@ -635,8 +635,10 @@ class VirtueMartModelProduct extends VmModel {
 			$joinedTables = self::joinLangTables($this->_maintable,'p','virtuemart_product_id');
 			$langFields = array_unique($langFields);
 			$langSelects = self::joinLangSelectFields($langFields);
-			$selectLang = ', '.implode(', ',$langSelects);
 
+			if(!empty($langSelects)){
+				$selectLang = ', '.implode(', ',$langSelects);
+			}
 		}
 
 		$select = ' p.`virtuemart_product_id`'.$ff_select_price.$selectLang.' 

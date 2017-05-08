@@ -329,7 +329,7 @@ abstract class vmPlugin extends JPlugin {
 		$db = JFactory::getDBO ();
 
 		$q = 'SELECT j.`extension_id` AS c FROM #__extensions AS j
-					WHERE j.element = "' . $this->_name . '" AND j.`folder` = "' . $this->_type . '"';
+					WHERE j.element = "' . $this->_name . '" AND j.`folder` = "' . $this->_type . '" and `enabled`= "1" and `state`="0" ';
 
 		$db->setQuery ($q);
 		$this->_jid = $db->loadResult ();

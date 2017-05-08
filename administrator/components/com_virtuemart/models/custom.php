@@ -299,41 +299,46 @@ class VirtueMartModelCustom extends VmModel {
 
 			$db = JFactory::getDBO();
 
-			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
-			$db->setQuery($q);
-			$cElement = $db->loadResult();
-			if(empty($cElement)){
 
-				if(!empty($data['virtuemart_custom_id'])){
-					$table->load($data['virtuemart_custom_id']);
-					$cElement = $table->custom_element;
-				} else if(!empty($data['custom_element'])){
-					$cElement = $data['custom_element'];
-				}
-
-				$q = 'SELECT * FROM `' . $tb . '` WHERE `element` = "'.$cElement.'" ';
+			$cElement = '';
+			if(!empty($data['custom_jplugin_id'])){
+				$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'" ';
 				$db->setQuery($q);
-				if($jids=$db->loadAssocList()){
-
-					$newJid = 0;
-					foreach($jids as $jid){
-						$newJid = $jid[$ext_id];
-						if($jid['enabled'] == 1 and $jid['state'] == 0){
-							break;
-						}
-					}
-					vmdebug('Available entries ',$newJid,$jids);
-					if(!empty($newJid)){
-						$q = 'UPDATE `#__virtuemart_customs` SET `custom_jplugin_id`="'.$jid.'" WHERE `custom_jplugin_id` = "'.$data['custom_jplugin_id'].'"';
-						$db->setQuery($q);
-						$db->execute();
-						$data['custom_jplugin_id'] = $newJid;
-						vmInfo('Old Plugin id was not available, updated entries with '.$ext_id.' = '.$newJid.' found for the same element');
-					}
-				} else {
-					vmWarn('could not load custom_element for plugin, testing if current custom_jplugin_id is still available '.$q);
-				}
+				$cElement = $db->loadResult();
 			}
+
+			if(!empty($data['virtuemart_custom_id'])){
+				$table->load($data['virtuemart_custom_id']);
+				$cElement = $table->custom_element;
+			}
+			if(empty($cElement) and !empty($data['custom_element'])){
+				$cElement = $data['custom_element'];
+			}
+
+
+			$q = 'SELECT * FROM `' . $tb . '` WHERE `element` = "'.$cElement.'" ';
+			$db->setQuery($q);
+			if($jids=$db->loadAssocList()){
+
+				$newJid = 0;
+				foreach($jids as $jid){
+					$newJid = $jid[$ext_id];
+					if($jid['enabled'] == 1 and $jid['state'] == 0){
+						break;
+					}
+				}
+				vmdebug('Available entries '.$q,$newJid,$jids);
+				if(!empty($newJid)){
+					$q = 'UPDATE `#__virtuemart_customs` SET `custom_jplugin_id`="'.$jid.'" WHERE `custom_jplugin_id` = "'.$data['custom_jplugin_id'].'"';
+					$db->setQuery($q);
+					$db->execute();
+					$data['custom_jplugin_id'] = $newJid;
+					vmInfo('Old Plugin id was not available, updated entries with '.$ext_id.' = '.$newJid.' found for the same element');
+				}
+			} else {
+				vmWarn('could not load custom_element for plugin, testing if current custom_jplugin_id is still available '.$q);
+			}
+
 
 			if(!empty($cElement)){
 				$data['custom_element'] = $cElement;
