@@ -301,7 +301,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->updateJoomlaUpdateServer('component','com_virtuemart', $this->source_path.DS.'virtuemart.xml');
 
 			//fix joomla BE menu
-			$this->checkFixJoomlaBEMenuEntries();
+			if(version_compare(JVERSION,'3.7.0','ge')) {
+				$this->removeOldMenuLinks();
+			} else {
+				$this->checkFixJoomlaBEMenuEntries();
+			}
+
 
 			$this->deleteSwfUploader();
 
@@ -602,6 +607,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						$ok = false;
 					}
 				}
+			}
+
+		}
+
+		public function removeOldMenuLinks(){
+
+			$db = JFactory::getDbo();
+			$db->setQuery('SELECT `extension_id` FROM `#__extensions` WHERE `type` = "component" AND `element`="com_virtuemart" and state="0"');
+			$jId = $db->loadResult();
+
+			if($jId){
+				$db = JFactory::getDbo();
+				$db->setQuery('DELETE FROM `#__menu` WHERE `component_id` = "'.$jId.'" AND `type` = "component" AND `menutype`="vmadmin"');
+				$db->execute();
 			}
 
 		}
