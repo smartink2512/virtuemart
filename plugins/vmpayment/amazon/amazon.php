@@ -2621,7 +2621,7 @@ $('.amazonDetailsOpener').click(function() {
 
 			$virtuemart_paymentmethod_id = vRequest::getInt('virtuemart_paymentmethod_id');
 			$method = $this->getPluginMethod($virtuemart_paymentmethod_id);
-			vmdebug('plgVmOnStoreInstallPaymentPluginTable', $method, $virtuemart_paymentmethod_id);
+			//vmdebug('plgVmOnStoreInstallPaymentPluginTable', $method, $virtuemart_paymentmethod_id);
 
 			if(!extension_loaded('curl')) {
 				vmError(vmText::sprintf('VMPAYMENT_AMAZON_CONF_MANDATORY_PHP_EXTENSION', 'curl'));
