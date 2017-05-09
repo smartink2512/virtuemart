@@ -89,6 +89,8 @@ abstract class vmPlugin extends JPlugin {
 			foreach($this->_toConvertDec as $f){
 				if(!empty($data[$f])){
 					$data[$f] = str_replace(array(',',' '),array('.',''),$data[$f]);
+				} else if(isset($data[$f])){
+					$data[$f] = 0.0;
 				}
 			}
 		}

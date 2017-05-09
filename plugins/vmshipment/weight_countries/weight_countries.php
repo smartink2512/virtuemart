@@ -119,13 +119,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$values['shipment_weight_unit'] = $method->weight_unit;
 
 		$costs = $this->getCosts($cart,$method,$cart->cartPrices);
-		if(empty($costs)){
-			$values['shipment_cost'] = 0;
-			$values['shipment_package_fee'] = 0;
-		} else {
+		if(!empty($costs)){
 			$values['shipment_cost'] = $method->shipment_cost;
 			$values['shipment_package_fee'] = $method->package_fee;
 		}
+		if(empty($values['shipment_cost'])) $values['shipment_cost'] = 0.0;
+		if(empty($values['shipment_package_fee'])) $values['shipment_package_fee'] = 0.0;
 
 		$values['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($values);

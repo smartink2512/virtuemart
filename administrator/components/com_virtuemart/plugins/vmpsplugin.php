@@ -1037,12 +1037,11 @@ abstract class vmPSPlugin extends vmPlugin {
 
 				$calculator = calculationHelper::getInstance ();
 				foreach($this->_toConvert as $c){
-					if(isset($method->$c)){
+					if(!empty($method->$c)){
 						$method->$c = $calculator->_currencyDisplay->convertCurrencyTo($method->currency_id,$method->$c,true);
 					} else {
 						$method->$c = 0.0;
 					}
-
 				}
 				$method->converted = 1;
 
