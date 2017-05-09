@@ -422,7 +422,7 @@ function vmTrace($notice,$force=FALSE, $args = 10){
 		echo '</pre>';
 		$body = ob_get_contents();
 		ob_end_clean();
-		
+
 		if(VmConfig::$logDebug){
 			logInfo($body,$notice);
 		}
@@ -984,7 +984,7 @@ class VmConfig {
 					if($app->isSite()){
 						$link = JUri::root(true).'/administrator/'.$link;
 					} else {
-						if(empty($msg)) $msg = 'Install Virtuemart first, click on the menu component and select VirtueMart';
+						if(empty($msg)) $msg = 'Install Virtuemart by clicking on one of the two options below.<br>- Install VirtueMart plain OR<br>- install VirtueMart with sample data.<br>After a successful installation choose VirtueMart from the Joomla Menu.';
 					}
 				}
 			}
