@@ -19,7 +19,7 @@
     <vmconfig>
         <fields name="params">
             <fieldset name="template">
-                <field name="shipment_logos" type="vmfiles" multiple="true" directory="/images/stories/virtuemart/shipment"
+                <field name="shipment_logos" type="vmfiles" multiple="true" directory="/images/virtuemart/shipment"
                         label="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS"
                        size="40"
                        default="" hide_default="1" hide_none="true"

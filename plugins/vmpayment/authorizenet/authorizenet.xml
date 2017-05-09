@@ -79,12 +79,12 @@
                 <field type="vmtitle" default="VMPAYMENT_AUTHORIZENET_TEMPLATE_PARAMS" level="level1"/>
                 <field name="payment_logos" type="vmfiles"  multiple="true" label="VMPAYMENT_AUTHORIZENET_LOGOS"
                        description="VMPAYMENT_AUTHORIZENET_LOGOS_DESC"
-                       directory="/images/stories/virtuemart/payment"
+                       directory="/images/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1"
                        stripext="0" exclude="^_"/>
                 <field name="cvv_images" type="vmfiles" label="VMPAYMENT_AUTHORIZENET_CVVIMAGES"
                        description="VMPAYMENT_AUTHORIZENET_CVVIMAGES_DESC"
-                       directory="/images/stories/virtuemart/payment"
+                       directory="/images/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1"
                        stripext="0" exclude="^_"/>
 

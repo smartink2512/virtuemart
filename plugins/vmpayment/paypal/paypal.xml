@@ -326,14 +326,14 @@
                 <field type="vmtitle" default="VMPAYMENT_PAYPAL_LAYOUT_SECTION"
                        description="VMPAYMENT_PAYPAL_LAYOUT_SECTION_DESC"/>
                 <field name="payment_logos" type="vmfiles" multiple="true" scope="com_virtuemart" label="VMPAYMENT_PAYPAL_LOGOS"
-                       description="VMPAYMENT_PAYPAL_LOGOS_DESC" directory="/images/stories/virtuemart/payment"
+                       description="VMPAYMENT_PAYPAL_LOGOS_DESC" directory="/images/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1" stripext="0" exclude="^_"/>
                 <!--param class="creditcard" name="cvv_images" type="vmfiles" label="VMPAYMENT_PAYPAL_CC_CVVIMAGES" description="VMPAYMENT_PAYPAL_CC_CVVIMAGES_DESC" directory="/images/virtuemart/payment" default="default" hide_default="1" hide_none="1" stripext="0" exclude="^_" / -->
                 <field class="std paypallayout" name="logoimg" type="filelist" label="VMPAYMENT_PAYPAL_LOGOIMAGE"
-                       description="VMPAYMENT_PAYPAL_LOGOIMAGE_DESC" directory="/images/stories/virtuemart/payment"
+                       description="VMPAYMENT_PAYPAL_LOGOIMAGE_DESC" directory="/images/virtuemart/payment"
                        default="" hide_default="0" hide_none="1" stripext="0" exclude="^_"/>
                 <field class="std paypallayout" name="headerimg" type="filelist" label="VMPAYMENT_PAYPAL_HEADERIMAGE"
-                       description="VMPAYMENT_PAYPAL_HEADERIMAGE_DESC" directory="/images/stories/virtuemart/payment"
+                       description="VMPAYMENT_PAYPAL_HEADERIMAGE_DESC" directory="/images/virtuemart/payment"
                        default="" hide_default="1" hide_none="0" stripext="0" exclude="^_"/>
                 <field class="warning_headerimg" type="vmtitle" default=""
                        description="VMPAYMENT_PAYPAL_HEADER_IMAGE_WARNING"/>
@@ -384,7 +384,7 @@
                        description="VMPAYMENT_PAYPAL_TEMPLATE_PAGEBG"/>
                 <field class="hosted templateB templateC" type="vmfile" name="bodyBgImg" size="30"
                        label="VMPAYMENT_PAYPAL_BODYBGIMG" description="VMPAYMENT_PAYPAL_BODYBGIMG_DESC"
-                       directory="/images/stories/virtuemart/payment" default="" hide_default="0" hide_none="1"
+                       directory="/images/virtuemart/payment" default="" hide_default="0" hide_none="1"
                        stripext="0"
                        exclude="^_"/>
                 <field class="hosted templateB templateC input-colorpicker" type="text" name="bodyBgColor" size="30"
@@ -436,7 +436,7 @@
                 <field class="hosted templateB" type="vmfile" name="orderSummaryBgImage" size="30"
                        label="VMPAYMENT_PAYPAL_ORDERSUMMARYBGIMAGE"
                        description="VMPAYMENT_PAYPAL_ORDERSUMMARYBGIMAGE_DESC"
-                       directory="/images/stories/virtuemart/payment" default="" hide_default="0" hide_none="1"
+                       directory="/images/virtuemart/payment" default="" hide_default="0" hide_none="1"
                        stripext="0"
                        exclude="^_"/>
 

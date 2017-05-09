@@ -262,7 +262,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		if (empty($this->_method->headerimg) OR $this->_method->headerimg == -1) {
 			$post_variables['image_url'] = $this->getLogoImage();
 		} else {
-			$post_variables['cpp_header_image'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->headerimg;
+			$post_variables['cpp_header_image'] = $this->getLogoImage($this->_method->headerimg);
 		}
 		/*
 		 * The HTML hex code for your principal identifying color.

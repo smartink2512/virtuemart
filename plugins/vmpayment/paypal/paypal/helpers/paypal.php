@@ -355,13 +355,28 @@ class PaypalHelperPaypal {
 		return $extraInfo;
 	}
 
-	public function getLogoImage () {
-		if ($this->_method->logoimg) {
-			return JURI::base() . '/images/stories/virtuemart/payment/' . $this->_method->logoimg;
-		} else {
-			return JURI::base() . $this->vendor->images[0]->file_url;
+	public function getLogoImage ($img = 0) {
+
+		if($img==0){
+			$img = $this->_method->logoimg;
+		}
+		if ($img) {
+			if(!class_exists('JFile')){
+				require(VMPATH_LIBS.'/joomla/filesystem/file.php');
+			}
+			$rUrl = '/images/virtuemart/payment/' . $img;
+			if(!JFile::exists(VMPATH_ROOT .$rUrl)){
+				$rUrl = '/images/stories/virtuemart/payment/' . $img;
+				if(!JFile::exists(VMPATH_ROOT .$rUrl)) {
+					$rUrl = false;
+				}
+			}
+			if($rUrl){
+				return JURI::base() . $rUrl;
+			}
 		}
 
+		return JURI::base() . $this->vendor->images[0]->file_url;
 	}
 
 	public function getRecurringProfileDesc () {

@@ -144,7 +144,7 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		$post_variables['L_BUTTONVAR']['logoFontSize'] = $this->_method->logoFontSize;
 		$post_variables['L_BUTTONVAR']['logoFontColor'] = $this->_method->logoFontColor;
 		if (!empty($this->_method->bodyBgImg[0])) {
-			$post_variables['L_BUTTONVAR']['bodyBgImg'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->bodyBgImg[0];
+			$post_variables['L_BUTTONVAR']['bodyBgImg'] = $this->getLogoImage($this->_method->bodyBgImg[0]);
 
 		}
 		$post_variables['L_BUTTONVAR']['logoImage'] = $this->getLogoImage();
@@ -155,7 +155,7 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		//$post_variables['L_BUTTONVAR']['PageCollapseTextColor'] =    $this->_method->PageCollapseTextColor;
 		$post_variables['L_BUTTONVAR']['orderSummaryBgColor'] = $this->_method->orderSummaryBgColor;
 		if (!empty($this->_method->orderSummaryBgImage[0])) {
-			$post_variables['L_BUTTONVAR']['orderSummaryBgImage'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->orderSummaryBgImage[0];
+			$post_variables['L_BUTTONVAR']['orderSummaryBgImage'] = $this->getLogoImage($this->_method->orderSummaryBgImage[0]);
 		}
 		$post_variables['L_BUTTONVAR']['footerTextColor'] = $this->_method->footerTextColor;
 		$post_variables['L_BUTTONVAR']['footerTextlinkColor'] = $this->_method->footerTextlinkColor;

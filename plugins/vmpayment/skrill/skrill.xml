@@ -63,7 +63,7 @@
                        description=""/>
                 <field name="payment_logos" type="imagelist" label="VMPAYMENT_SKRILL_LOGOS" multiple="true"
                            description="VMPAYMENT_SKRILL_LOGOS_TIP"
-                           directory="/images/stories/virtuemart/payment"
+                           directory="/images/virtuemart/payment"
                            default="" hide_default="1" hide_none="1"
                            stripext="0" exclude="^_"/>
 

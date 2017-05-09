@@ -30,7 +30,7 @@
                 </field>
             </fieldset>
             <fieldset name="template">
-                <field name="payment_logos" type="vmfiles" multiple="true" directory="/images/stories/virtuemart/payment"
+                <field name="payment_logos" type="vmfiles" multiple="true" directory="/images/virtuemart/payment"
                        hide_none="1" label="VMPAYMENT_STANDARD_LOGOS"
                        size="40"
                        description="VMPAYMENT_STANDARD_LOGOS_TIP"/>

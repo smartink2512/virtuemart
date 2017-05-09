@@ -234,7 +234,7 @@
                        description=""/>
                 <field name="payment_logos" type="vmfiles" multiple="true" label="VMPAYMENT_PAYBOX_CONF_LOGOS"
                        description="VMPAYMENT_PAYBOX_CONF_LOGOS_TIP"
-                       directory="/images/stories/virtuemart/payment"
+                       directory="/images/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1"
                        stripext="0" exclude="^_"/>
 
