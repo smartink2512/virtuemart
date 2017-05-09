@@ -52,6 +52,7 @@ class VirtuemartViewUpdatesMigration extends VmViewAdmin {
 			$this->setLayout('install');
 		}
 
+		vmLanguage::loadJLang('com_virtuemart_config');
 		parent::display($tpl);
 	}
 

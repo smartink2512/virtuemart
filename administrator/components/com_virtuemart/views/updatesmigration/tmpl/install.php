@@ -35,21 +35,23 @@ if(!VmConfig::get('dangeroustools', false)){
 $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installComplete&'.JSession::getFormToken().'=1&token='.JSession::getFormToken().'&install=1' ); ?>
 
 <div id="cpanel">
-	<table  >
+
+    <div class="icon"><?php echo vmText::_('COM_VM_INSTALLATION_EXPLAIN')?></div>
+
 
 <div class="icon"><a onclick="javascript:confirmation('<?php echo $link; ?>');">
 		<span class="vmicon48"></span>
-		<br /><?php echo vmText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
+		<br /><?php echo vmText::_('COM_VM_INSTALLATION_FRESH'); ?>
 
 	</a></div>
 
 <?php	$link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installCompleteSamples&'.JSession::getFormToken().'=1&token='.JSession::getFormToken().'&install=1'); ?>
 	<div class="icon"><a onclick="javascript:confirmation('<?php echo $link; ?>');">
 			<span class="vmicon48"></span>
-			<br /><?php echo vmText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE'); ?>
+			<br /><?php echo vmText::_('COM_VM_INSTALLATION_FRESH_AND_SAMPLE'); ?>
 
 		</a></div>
-	</table>
+
 <?php
 AdminUIHelper::endAdminArea();
 ?>

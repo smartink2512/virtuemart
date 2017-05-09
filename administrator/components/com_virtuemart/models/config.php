@@ -599,7 +599,7 @@ class VirtueMartModelConfig extends VmModel {
 				return FALSE;
 			}
 		} else {
-			vmInfo('Taking config from file');
+			vmInfo('Loaded virtuemart default configuration from file virtuemart.cfg');
 		}
 
 		$_section = '[CONFIG]';
