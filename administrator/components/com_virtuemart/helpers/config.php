@@ -984,7 +984,7 @@ class VmConfig {
 					if($app->isSite()){
 						$link = JUri::root(true).'/administrator/'.$link;
 					} else {
-						if(empty($msg)) $msg = 'Install Virtuemart by clicking on one of the two options below.<br>- Install VirtueMart plain OR<br>- install VirtueMart with sample data.<br>After a successful installation choose VirtueMart from the Joomla Menu.';
+						if(empty($msg)) $msg = 'COM_VM_INSTALLATION_INFO';
 					}
 				}
 			}
@@ -1039,7 +1039,10 @@ class VmConfig {
 			if(vmAccess::manager('core.admin') and ($install or $redirected)){
 				VmConfig::$_jpConfig->set('dangeroustools',1);
 			}
-			if(!empty($msg)) $app->enqueueMessage($msg);
+			if(!empty($msg)){
+				vmLanguage::loadJLang('com_virtuemart_config');
+				$app->enqueueMessage(vmText::_($msg, self::$mType));
+			}
 			if(!empty($link)) $app->redirect($link);
 		}
 

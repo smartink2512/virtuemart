@@ -179,7 +179,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			if(!empty($menu) ){
 				$t = $menu->params->get('cat_productdetails','');
-				if(!empty($t)){
+				if($t!=''){
 					$this->cat_productdetails = $t;
 				}
 			}

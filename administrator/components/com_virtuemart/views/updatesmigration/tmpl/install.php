@@ -20,6 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea($this);
+
+vmInfo('COM_VM_INSTALLATION_INFO');
 if(!VmConfig::get('dangeroustools', false)){
 	$uri = JFactory::getURI();
 	$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
@@ -36,7 +38,7 @@ $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=inst
 
 <div id="cpanel">
 
-    <div class="icon"><?php echo vmText::_('COM_VM_INSTALLATION_EXPLAIN')?></div>
+    <div style="text-align: left;padding: 20px;width: 30%;float: left;"><?php echo vmText::_('COM_VM_INSTALLATION_EXPLAIN')?></div>
 
 
 <div class="icon"><a onclick="javascript:confirmation('<?php echo $link; ?>');">
