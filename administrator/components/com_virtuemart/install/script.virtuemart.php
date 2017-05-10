@@ -166,11 +166,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'forSale'.DS.'resized');
 			$this->createIndexFolder(VMPATH_ROOT .DS. 'images'.DS.'virtuemart'.DS.'typeless');
 
+			$this->installLanguageTables();
 
 
-			if(!class_exists('GenericTableUpdater')) require($this->path . DS . 'helpers' . DS . 'tableupdater.php');
-			$updater = new GenericTableUpdater();
-			$updater->createLanguageTables();
 
 			$this->checkAddDefaultShoppergroups();
 
@@ -275,7 +273,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$updater = new GenericTableUpdater();
 
 			$updater->updateMyVmTables();
-			$result = $updater->createLanguageTables();
+			$this->installLanguageTables();
+
 
 			$this->checkAddDefaultShoppergroups();
 
@@ -314,6 +313,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
+		}
+
+		private function installLanguageTables(){
+			VmModel::getModel('config');
+			VirtueMartModelConfig::installLanguageTables();
 		}
 
 		private function updateOldConfigEntries(){

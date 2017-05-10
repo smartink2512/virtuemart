@@ -546,7 +546,7 @@ function logInfo ($text, $type = 'message') {
 			}
 
 			fwrite ($fp, "\n" . JFactory::getDate()->format ('Y-m-d H:i:s'));
-			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+			fwrite ($fp,  " ".strtoupper($type) . ' ' . htmlspecialchars($text));
 			fclose ($fp);
 		} else {
 			if (VmConfig::$echoAdmin){
@@ -979,7 +979,7 @@ class VmConfig {
 			self::$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
 			if(!self::$installed){
 				if(!$redirected and !$install){
-					$link = 'index.php?option=com_virtuemart&view=updatesmigration&redirected=1';
+					$link = 'index.php?option=com_virtuemart&view=updatesmigration&redirected=1&nosafepathcheck=1';
 
 					if($app->isSite()){
 						$link = JUri::root(true).'/administrator/'.$link;
@@ -1041,7 +1041,7 @@ class VmConfig {
 			}
 			if(!empty($msg)){
 				vmLanguage::loadJLang('com_virtuemart_config');
-				$app->enqueueMessage(vmText::_($msg, self::$mType));
+				$app->enqueueMessage(vmText::_($msg), self::$mType);
 			}
 			if(!empty($link)) $app->redirect($link);
 		}

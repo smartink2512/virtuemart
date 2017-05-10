@@ -69,7 +69,7 @@ class VirtuemartControllerConfig extends VmController {
 			$redir = $this->redirectPath;
 		}
 
-		$this->setRedirect($redir.'&vmms=1', $msg);
+		$this->setRedirect($redir.'&vmms=1&nosafepathcheck=1', $msg);
 
 
 	}

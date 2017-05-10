@@ -451,7 +451,7 @@ class VirtueMartModelConfig extends VmModel {
 			}
 			$config->set('forSale_path',$safePath);
 		} else {
-			VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
+			//VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
 		/*	$safePath = VMPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'vmfiles';
 
 			$exists = JFolder::exists($safePath);
@@ -491,10 +491,10 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
+		$conf_langs = self::getContentLanguages();
 		$active_langs = $config->get('active_languages');
 		if(empty($active_langs)){
-			$active_langs = array(VmConfig::$jDefLangTag);
-			$config->set('active_languages',$active_langs);
+			$config->set('active_languages',$conf_langs);
 		}
 
 		//ATM we want to ensure that only one config is used
@@ -509,9 +509,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$d = array_diff($active_langs,$oldLangs);
 		if(!empty($d)){
-			if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
-			$updater = new GenericTableUpdater();
-			$result = $updater->createLanguageTables();
+			$this->installLanguageTables();
 		}
 
 		$cache = VmConfig::getCache();
@@ -530,6 +528,33 @@ class VirtueMartModelConfig extends VmModel {
 		$cache->clean('page');
 
 		return true;
+	}
+
+	static public function getContentLanguages(){
+		$langs = VmConfig::get('active_languages',false);
+		if(empty($langs)){
+			if (class_exists('JLanguageHelper') && (method_exists('JLanguageHelper', 'getLanguages'))) {
+				$languages = JLanguageHelper::getLanguages('lang_code');
+				foreach($languages as $k=>$v){
+					if($v->published==1 and $v->access==1){
+						$langs[] = $k;
+					}
+				}
+			}
+			if(empty($langs)){
+				$langs = array(VmConfig::$jDefLangTag);
+			}
+		}
+		return $langs;
+	}
+
+	static public function installLanguageTables(){
+
+		if(!class_exists('GenericTableUpdater')) require(VMPATH_ADMIN .'/helpers/tableupdater.php');
+		$updater = new GenericTableUpdater();
+		$langs = self::getContentLanguages();
+
+		$updater->createLanguageTables($langs);
 	}
 
 	static public function checkConfigTableExists(){

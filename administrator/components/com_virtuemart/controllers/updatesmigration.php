@@ -428,7 +428,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			if($sample) $model->installSampleData($sid);
 
-			if(!class_exists('VmConfig')) require_once(VMPATH_ADMIN .'/models/config.php');
+			if(!class_exists('VirtueMartModelConfig')) require_once(VMPATH_ADMIN .'/models/config.php');
 			VirtueMartModelConfig::installVMconfigTable();
 
 			//Now lets set some joomla variables
@@ -467,7 +467,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$msg = $this->_getMsgDangerousTools();
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration&layout=insfinished', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration&layout=insfinished&nosafepathcheck=1', $msg);
 	}
 
 	/**
