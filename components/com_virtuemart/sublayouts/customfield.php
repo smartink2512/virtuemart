@@ -692,8 +692,8 @@ class VirtueMartCustomFieldRenderer {
 
 				//We need this here to ensure that broken customdata of order items is shown updated info, or at least displayed,
 				if($prodcustom->is_cart_attribute or $prodcustom->is_input){
-					if(!isset($variantmods[$prodcustom->virtuemart_custom_id])){
-						$variantmods[$prodcustom->virtuemart_custom_id] = $prodcustom->virtuemart_customfield_id;
+					if(!isset($variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id])){
+						$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = $prodcustom->virtuemart_customfield_id;
 					}
 				}
 
@@ -701,7 +701,7 @@ class VirtueMartCustomFieldRenderer {
 			}
 		}
 
-		foreach ( (array)$variantmods as $custom_id => $customfield_ids) {
+		foreach ( (array)$variantmods as $i => $customfield_ids) {
 
 			if(!is_array($customfield_ids)){
 				$customfield_ids = array( $customfield_ids =>false);
