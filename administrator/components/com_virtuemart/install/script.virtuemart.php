@@ -127,8 +127,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->loadVm(true);
 
 			$_REQUEST['install'] = 1;
-			if(!class_exists('JFile')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-			if(!class_exists('JFolder')) require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+			if(!class_exists('JFile')) require(VMPATH_LIBS .'/joomla/filesystem/file.php');
+			if(!class_exists('JFolder')) require(VMPATH_LIBS .'/joomla/filesystem/folder.php');
 
 			$this -> joomlaSessionDBToMediumText();
 

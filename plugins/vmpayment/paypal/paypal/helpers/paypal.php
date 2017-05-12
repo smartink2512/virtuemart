@@ -355,9 +355,9 @@ class PaypalHelperPaypal {
 		return $extraInfo;
 	}
 
-	public function getLogoImage ($img = 0) {
+	public function getLogoImage ($img = null) {
 
-		if($img==0){
+		if(!isset($img)){
 			$img = $this->_method->logoimg;
 		}
 		if ($img) {

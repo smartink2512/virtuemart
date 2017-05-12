@@ -376,7 +376,7 @@ abstract class vmPlugin extends JPlugin {
 			vmdebug('onStoreInstallPluginTable result of table already exists? ',$result);
 			if ($result) {
 				$update[$this->_tablename] = array($tablesFields, array(), array());
-				vmdebug(get_class($this) . ':: VirtueMart2 update ' . $this->_tablename);
+				vmdebug(get_class($this) . ':: VirtueMart update ' . $this->_tablename);
 				if (!class_exists('GenericTableUpdater'))
 					require(VMPATH_ADMIN . DS . 'helpers' . DS . 'tableupdater.php');
 				$updater = new GenericTableUpdater();
