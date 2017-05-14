@@ -1299,7 +1299,7 @@ class vmAccess {
 
 				if ($virtuemart_vendor_id) {
 					self::$_virtuemart_vendor_id[$uid] = $virtuemart_vendor_id;
-					vmdebug('Active vendor '.$virtuemart_vendor_id );
+					vmdebug('Active vendor '.$uid.' '.$virtuemart_vendor_id );
 				} else {
 					if(self::manager('core') or self::manager('managevendors')){
 						vmdebug('Active Mainvendor');
@@ -1309,7 +1309,11 @@ class vmAccess {
 					}
 				}
 			}
-			if(self::$_virtuemart_vendor_id[$uid] <= 0) vmdebug('isSuperVendor Not a vendor');
+			if($uid==0){
+				self::$_virtuemart_vendor_id[$user->id] = self::$_virtuemart_vendor_id[$uid];
+				vmdebug('Set '.$user->id.' to '.self::$_virtuemart_vendor_id[$uid]);
+			}
+			if(self::$_virtuemart_vendor_id[$uid] <= 0) vmdebug('isSuperVendor Not a vendor '.$uid,self::$_virtuemart_vendor_id[$uid]);
 		}
 		return self::$_virtuemart_vendor_id[$uid];
 	}
