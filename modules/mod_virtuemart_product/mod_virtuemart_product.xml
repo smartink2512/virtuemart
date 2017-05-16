@@ -135,6 +135,23 @@
           description="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID_DESC"
         />
         <field
+          name="filter_manufacturer"
+          type="list"
+          default="0"
+          label="MOD_VIRTUEMART_PRODUCT_FILTER_MANUFACTURER"
+          description="MOD_VIRTUEMART_PRODUCT_FILTER_MANUFACTURER_DESC"
+          >
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field
+          name="virtuemart_manufacturer_id"
+          type="manufacturer"
+          value_field="manufacturer_name"
+          label="MOD_VIRTUEMART_PRODUCT_MANUFACTURER_ID"
+          description="MOD_VIRTUEMART_PRODUCT_MANUFACTURER_ID_DESC"
+        />
+        <field
           name="vmcache"
           type="list"
           default="1"

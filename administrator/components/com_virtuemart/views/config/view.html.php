@@ -74,6 +74,9 @@ class VirtuemartViewConfig extends VmViewAdmin {
 		$this->os_Options = $this->osWoP_Options = $this->osDel_Options = $this->orderStatusModel->getOrderStatusNames();
 		$emptyOption = JHtml::_ ('select.option', -1, vmText::_ ('COM_VIRTUEMART_NONE'), 'order_status_code', 'order_status_name');
 
+		$this->userFieldsModel= VmModel::getModel('userfields');
+		$this->emailSf_Options = $this->userFieldsModel->getUserfieldsList('emailaddress');
+
 		array_unshift ($this->os_Options, $emptyOption);
 
 		unset($this->osWoP_Options['P']);

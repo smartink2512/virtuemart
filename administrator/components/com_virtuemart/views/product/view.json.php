@@ -221,8 +221,12 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$productShoppers=0;
 
 			if ($status) {
+				$option = vRequest::getCmd('option');
+				$lists['filter_order'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_orders', 'filter_order', 'email', 'cmd');
+				$lists['filter_order_Dir'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
+
 				$productModel = VmModel::getModel('product');
-				$productShoppers = $productModel->getProductShoppersByStatus($product_id ,$status);
+				$productShoppers = $productModel->getProductShoppersByStatus($product_id ,$status,$lists['filter_order'],$lists['filter_order_Dir']);
 			}
 			if(!class_exists('ShopFunctions'))require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 			$html = ShopFunctions::renderProductShopperList($productShoppers);

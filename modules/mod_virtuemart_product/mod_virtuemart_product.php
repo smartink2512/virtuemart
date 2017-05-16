@@ -29,6 +29,8 @@ $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to disp
 $layout = $params->get('layout','default');
 $category_id = 		$params->get( 'virtuemart_category_id', null ); // Display products from this category only
 $filter_category = 	(bool)$params->get( 'filter_category', 0 ); // Filter the category
+$manufacturer_id = 	$params->get( 'virtuemart_manufacturer_id', null ); // Display products from this manufacturer only
+$filter_manufacturer = 	(bool)$params->get( 'filter_manufacturer', 0 ); // Filter the manufacturer
 $display_style = 	$params->get( 'display_style', "div" ); // Display Style
 $products_per_row = $params->get( 'products_per_row', 1 ); // Display X products per Row
 $show_price = 		(bool)$params->get( 'show_price', 1 ); // Display the Product Price?
@@ -49,7 +51,7 @@ $cachetime = $params->get( 'vmcachetime', 300 );
 //vmdebug('$params for mod products',$params);
 if($cache){
 	vmdebug('Use cache for mod products');
-	$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id.'.'.$category_id;
+	$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id.'.'.$category_id.'.'.$filter_manufacturer.'.'.$manufacturer_id;
 	$cache	= VmConfig::getCache('mod_virtuemart_product', 'output');
 	$cache->setCaching(1);
 	$cache->setLifeTime($cachetime);
@@ -68,7 +70,7 @@ if ($filter_category ) $filter_category = TRUE;
 
 $productModel = VmModel::getModel('Product');
 VirtueMartModelProduct::$omitLoaded = $params->get( 'omitLoaded', 0);
-$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id);
+$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id, $filter_manufacturer, $manufacturer_id);
 $productModel->addImages($products);
 
 if (!class_exists('shopFunctionsF'))

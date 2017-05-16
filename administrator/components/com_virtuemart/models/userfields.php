@@ -48,6 +48,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function __construct() {
 		parent::__construct('virtuemart_userfield_id');
+		vmLanguage::loadJLang('com_virtuemart_shoppers',TRUE);
 		$this->setMainTable('userfields');
 
 		$this->setToggleName('required');
@@ -954,7 +955,7 @@ class VirtueMartModelUserfields extends VmModel {
 							break;
 						case 'emailaddress':
 							if( JFactory::getApplication()->isSite()) {
-								if(empty($_return['fields'][$_fld->name]['value'])) {
+								if(empty($_return['fields'][$_fld->name]['value']) && $_fld->required) {
 									$_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
 								}
 							}							// 							vmdebug('emailaddress',$_fld);
@@ -1275,9 +1276,11 @@ class VirtueMartModelUserfields extends VmModel {
 	 * @author Max Milbers
 	 * @return NULL
 	 */
-	function getUserfieldsList(){
+	function getUserfieldsList($type = false){
 
 		if (!$this->_data) {
+
+			if ($type) vRequest::setVar('type', $type);
 
 			$whereString = $this->_getFilter();
 
@@ -1297,12 +1300,22 @@ class VirtueMartModelUserfields extends VmModel {
 	function _getFilter()
 	{
 		$db = JFactory::getDBO();
+		$where = array();
+
 		if ($search = vRequest::getCmd('search', false)) {
-			$search = '"%' . $db->escape( $search, true ) . '%"' ;
-			//$search = $db->Quote($search, false);
-			return (' WHERE `name` LIKE ' .$search);
+			$where[] = ' `name` LIKE "%' . $db->escape( $search, true ) . '%"' ;
 		}
-		return ('');
+		if ($type = vRequest::getCmd('type', false)) {
+			$where[] = ' `type` = "' . $type . '"' ;
+		}
+
+		if (count ($where) > 0) {
+			$whereString = ' WHERE (' . implode (' AND ', $where) . ') ';
+		} else {
+			$whereString = '';
+		}
+
+		return ($whereString);
 	}
 
 	/**

@@ -34,7 +34,7 @@ $this->origLang = '<span class="langfallback">'.$origLang.'</span>';
 
 
 ?>
-<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" id="adminForm">
+<form method="post" name="adminForm" action="index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>" enctype="multipart/form-data" id="adminForm">
 
 <?php // Loading Templates in Tabs
 $tabarray = array();
@@ -58,7 +58,7 @@ AdminUIHelper::buildTabs ( $this,  $tabarray, $this->product->virtuemart_product
 
 <!-- Hidden Fields -->
 
-	<?php echo $this->addStandardHiddenToForm(); ?>
+	<?php echo $this->addStandardHiddenToForm(null,'edit'); ?>
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 
 </form>

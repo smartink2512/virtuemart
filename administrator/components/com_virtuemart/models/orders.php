@@ -1192,6 +1192,11 @@ vmdebug('my prices',$data);
 			}
 		}
 
+		$shoppergroups = $_cart->user->get('shopper_groups');
+		if (!empty($shoppergroups)) {
+			$_orderData->user_shoppergroups = implode(',', $shoppergroups);
+		}
+
 		if (isset($_cart->paymentCurrency)) {
 			$_orderData->payment_currency_id = $_cart->paymentCurrency ;//$this->getCurrencyIsoCode($_cart->pricesCurrency);
 			$currency = CurrencyDisplay::getInstance($_orderData->payment_currency_id);
@@ -1941,8 +1946,9 @@ vmdebug('my prices',$data);
 
 		$virtuemart_vendor_id = $order['details']['BT']->virtuemart_vendor_id;
 
-		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
-		$vars['vendorEmail'] = $vendorEmail;
+		$vendorEmail = array();
+		$vendorEmail[] = $vars['vendorEmail'] = $vendorModel->getVendorEmail($virtuemart_vendor_id);
+		if (!empty(VmConfig::get('addVendorEmail',''))) $vendorEmail = array_merge($vendorEmail,explode(';',VmConfig::get('addVendorEmail','')));
 
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vars['vendor'] = $vendor;
@@ -1954,8 +1960,8 @@ vmdebug('my prices',$data);
 		if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
 			//shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
 			//VmConfig::setLanguageByTag(VmConfig::$jDefLangTag);
-			$view = shopFunctionsF::prepareViewForMail('invoice', $vars);
-			$res = shopFunctionsF::sendVmMail( $view, $view->vendorEmail, TRUE );
+			$view = shopFunctionsF::prepareViewForMail('invoice', $vars); vmdebug('$vendorEmail',$vendorEmail);
+			$res = shopFunctionsF::sendVmMail( $view, $vendorEmail, TRUE );
 		}
 
 		// Send the email
@@ -1982,8 +1988,15 @@ vmdebug('my prices',$data);
 				$vars['orderDetails'] = $this->getOrder($virtuemart_order_id);
 			}
 
+			$shopperEmail = array();
+			$shopperEmailFields = VmConfig::get('email_sf_s',array('email'));
+			foreach ($shopperEmailFields as $field) {
+				if (!empty($order['details']['BT']->$field)) $shopperEmail[] = $order['details']['BT']->$field;
+			}
+			if (count($shopperEmail) < 1) $shopperEmail[] = $order['details']['BT']->email;
+
 			$view = shopFunctionsF::prepareViewForMail('invoice', $vars);
-			$res = shopFunctionsF::sendVmMail( $view, $order['details']['BT']->email, false );
+			$res = shopFunctionsF::sendVmMail( $view, $shopperEmail, false );
 
 		}
 

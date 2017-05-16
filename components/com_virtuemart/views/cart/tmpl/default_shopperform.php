@@ -59,3 +59,32 @@ defined('_JEXEC') or die('Restricted access');
 	</table>
 </form>
 <br />
+
+<h5><?php echo vmText::_ ('COM_VIRTUEMART_CART_CHANGE_SHOPPERGROUP'); ?></h5>
+
+<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart'); ?>" method="post" class="inline">
+	<table cellspacing="0" cellpadding="0" border="0" style="border:0px !important;">
+		<tr style="border:0px;">
+			<td style="border:0px;">
+				<?php 
+				if ($this->shopperGroupList) {
+					echo $this->shopperGroupList;
+				}
+				?>
+			</td>
+			<td style="border:0px;">
+				<input type="submit" name="changeShopperGroup" title="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?>" class="button"  style="margin-left: 10px;"/>
+				<input type="hidden" name="view" value="cart"/>
+				<input type="hidden" name="task" value="changeShopperGroup"/>
+				<?php echo JHtml::_( 'form.token' ); ?>
+			</td>
+			<?php if (JFactory::getSession()->get('tempShopperGroups', FALSE, 'vm')) { ?>
+			<td style="border:0px;">
+				<input type="reset" title="<?php echo vmText::_('COM_VIRTUEMART_RESET'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_RESET'); ?>" class="button"  style="margin-left: 10px;"
+					onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=resetShopperGroup'); ?>'"/>
+			</td>
+			<?php } ?>
+		</tr>
+	</table>
+</form>
+<br />

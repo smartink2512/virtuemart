@@ -1637,7 +1637,7 @@ vmdebug('$limitStart',$limitStart);
 	 *
 	 * @author Max Milbers
 	 */
-	public function getProductListing ($group = FALSE, $nbrReturnProducts = FALSE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE, $filterCategory = TRUE, $category_id = 0) {
+	public function getProductListing ($group = FALSE, $nbrReturnProducts = FALSE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE, $filterCategory = TRUE, $category_id = 0, $filterManufacturer = TRUE, $manufacturer_id = 0) {
 
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
@@ -1659,6 +1659,14 @@ vmdebug('$limitStart',$limitStart);
 		}
 		else {
 			$this->virtuemart_category_id = FALSE;
+		}
+		if ($filterManufacturer === TRUE) {
+			if ($manufacturer_id) {
+				$this->virtuemart_manufacturer_id = $manufacturer_id;
+			}
+		}
+		else {
+			$this->virtuemart_manufacturer_id = FALSE;
 		}
 		if($group == 'recent'){
 			$ids = self::getRecentProductIds($nbrReturnProducts);	// get recent viewed from browser session
@@ -3051,7 +3059,7 @@ vmdebug('$limitStart',$limitStart);
 	}
 
 
-	public function getProductShoppersByStatus ($product_id, $states) {
+	public function getProductShoppersByStatus ($product_id, $states, $filter_order = 'email', $filter_order_Dir = 'ASC') {
 
 		if (empty($states)) {
 			return FALSE;
@@ -3068,7 +3076,7 @@ vmdebug('$limitStart',$limitStart);
 			return FALSE;
 		}
 
-		$q = 'SELECT ou.* , oi.product_quantity , o.order_number, o.order_status, oi.`order_status` AS order_item_status ,
+		$q = 'SELECT ou.* , oi.product_quantity , o.order_number, o.order_status, o.created_on as order_date, oi.`order_status` AS order_item_status ,
 		o.virtuemart_order_id FROM `#__virtuemart_order_userinfos` as ou
 			JOIN `#__virtuemart_order_items` AS oi ON oi.`virtuemart_order_id` = ou.`virtuemart_order_id`
 			JOIN `#__virtuemart_orders` AS o ON o.`virtuemart_order_id` =  oi.`virtuemart_order_id`
@@ -3076,7 +3084,7 @@ vmdebug('$limitStart',$limitStart);
 		if (count ($orderStates) !== count ($states)) {
 			$q .= ' AND oi.`order_status` IN ( "' . implode ('","', $states) . '") ';
 		}
-		$q .= '  ORDER BY ou.`email` ASC';
+		$q .= '  ORDER BY `'.$filter_order.'` '.$filter_order_Dir;
 		$db = JFactory::getDbo();
 		$db->setQuery ($q);
 		$productShoppers = $db->loadAssocList ();
@@ -3104,6 +3112,7 @@ vmdebug('$limitStart',$limitStart);
 			$shoppers[$key]['order_info'][$i]['order_status'] = $productShopper['order_status'];
 			$shoppers[$key]['order_info'][$i]['order_item_status_name'] = $orderStates[$productShopper['order_item_status']]['order_status_name'];
 			$shoppers[$key]['order_info'][$i]['quantity'] = $productShopper['product_quantity'];
+			$shoppers[$key]['order_info'][$i]['order_date'] = $productShopper['order_date'];
 			$shoppers[$key]['nb_orders']++;
 		}
 		return $shoppers;

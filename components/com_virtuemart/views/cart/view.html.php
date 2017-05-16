@@ -221,6 +221,7 @@ class VirtueMartViewCart extends VmView {
 		}
 		if($this->allowChangeShopper){
 			$this->userList = $this->getUserList();
+			$this->shopperGroupList = $this->getShopperGroupList();
 		}
 
 		if(VmConfig::get('oncheckout_ajax',false)){
@@ -453,6 +454,23 @@ class VirtueMartViewCart extends VmView {
 			}
 		}
 		if(!$result) $this->allowChangeShopper = false;
+		return $result;
+	}
+
+	function getShopperGroupList() {
+
+		$result = false;
+
+		if($this->allowChangeShopper){
+			$userModel = VmModel::getModel('user');
+			$vmUser = $userModel->getCurrentUser();
+
+			$attrs = array();
+			$attrs['style']='width: 220px;';
+			if (!class_exists('ShopFunctions'))	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
+			$result = ShopFunctions::renderShopperGroupList($vmUser->shopper_groups, TRUE, 'virtuemart_shoppergroup_id', 'COM_VIRTUEMART_DRDOWN_AVA2ALL', $attrs);
+		}
+
 		return $result;
 	}
 

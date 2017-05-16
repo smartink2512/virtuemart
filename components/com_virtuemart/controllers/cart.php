@@ -481,6 +481,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->virtuemart_shipmentmethod_id = 0;
 		$cart->saveAddressInCart($data, 'BT');
 
+		$this->resetShopperGroup(false);
+
 		$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')');
 
 		if(empty($userID)){
@@ -490,6 +492,102 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$app->enqueueMessage($msg, 'info');
 		$app->redirect($red);
+	}
+
+	/**
+	 * Change the shopperGroup
+	 *
+	 * @author Maik Künnemann
+	 */
+	public function changeShopperGroup() {
+		vRequest::vmCheckToken() or jexit ('Invalid Token');
+		$app = JFactory::getApplication();
+
+		$redirect = vRequest::getString('redirect',false);
+		if($redirect){
+			$red = $redirect;
+		} else {
+			$red = JRoute::_('index.php?option=com_virtuemart&view=cart');
+		}
+
+		$jUser = JFactory::getUser( );
+		$manager = vmAccess::manager('user');
+		if(!$manager){
+			$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $jUser->name .' ('.$jUser->username.')'), 'error');
+			$app->redirect($red);
+			return false;
+		}
+
+		$userModel = VmModel::getModel('user');
+		$vmUser = $userModel->getCurrentUser();
+
+		$toAdd = array_diff(vRequest::getCmd('virtuemart_shoppergroup_id'), $vmUser->shopper_groups);
+		$toRemove = array_diff($vmUser->shopper_groups, vRequest::getCmd('virtuemart_shoppergroup_id'));
+
+		//update session
+		$session = JFactory::getSession();
+
+		$add = $session->get('vm_shoppergroups_add',array(),'vm');
+		if(!empty($add)){
+			if(!is_array($add)) $add = (array)$add;
+			$toAdd = array_merge($add, $toAdd);
+			$toAdd = array_unique($toAdd);
+		}
+		if(!empty($toRemove)){
+			$toAdd = array_diff($toAdd, $toRemove);
+		}
+		$session->set('vm_shoppergroups_add', $toAdd, 'vm');
+
+		$remove = $session->get('vm_shoppergroups_remove',array(),'vm');
+		if($remove!==0){
+			if(!is_array($remove)) $remove = (array)$remove;
+			$toRemove = array_merge($remove, $toRemove);
+			$toRemove = array_unique($toRemove);
+		}
+		if(!empty($toAdd)){
+			$toRemove = array_diff($toRemove,$toAdd);
+		}
+		$session->set('vm_shoppergroups_remove', $toRemove, 'vm');
+		$session->set('vm_shoppergroups_set.' . $vmUser->virtuemart_user_id, TRUE, 'vm');
+		$session->set('tempShopperGroups', TRUE, 'vm');
+
+		$msg = vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPERGROUP_SUCCESSFULLY');
+
+		$app->enqueueMessage($msg, 'info');
+		$app->redirect($red);
+	}
+
+	public function resetShopperGroup($exeRedirect = true) {
+
+		$app = JFactory::getApplication();
+
+		$redirect = vRequest::getString('redirect',false);
+		if($redirect){
+			$red = $redirect;
+		} else {
+			$red = JRoute::_('index.php?option=com_virtuemart&view=cart');
+		}
+
+		$current = JFactory::getUser( );
+		$manager = vmAccess::manager('user');
+		if(!$manager){
+			$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $current->name .' ('.$current->username.')'), 'error');
+			$app->redirect($red);
+			return false;
+		}
+
+		//update session
+		$session = JFactory::getSession();
+		$session->set('vm_shoppergroups_add', array(), 'vm');
+		$session->set('vm_shoppergroups_remove', array(), 'vm');
+		$session->set('tempShopperGroups', FALSE, 'vm');
+
+		$msg = vmText::sprintf('COM_VIRTUEMART_CART_RESET_SHOPPERGROUP_SUCCESSFULLY');
+
+		if($exeRedirect) {
+			$app->enqueueMessage($msg, 'info');
+			$app->redirect($red);
+		}
 	}
 
 

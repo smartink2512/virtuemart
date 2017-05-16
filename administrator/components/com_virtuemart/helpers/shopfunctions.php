@@ -1157,9 +1157,11 @@ class ShopFunctions {
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
 				$html .= JHtml::_ ('link', $link, $order_info['order_number'], array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
 			$first=FALSE;
-			$html .= '
-					</td>
-				</tr>
+			$html .= '</td>';
+			$html .= '<td class="order_date">';
+			$html .= vmJsApi::date ($order_info['order_date'], 'LC4', TRUE);
+			$html .= '</td>
+			</tr>
 				';
 			}
 			$i = 1 - $i;
