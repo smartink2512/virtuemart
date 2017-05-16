@@ -58,7 +58,6 @@ AdminUIHelper::startAdminArea($this);
 			<td>
 			<select class="inputbox" id="top_category_id" name="top_category_id" onchange="this.form.submit(); return false;">
 				<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL')) ; ?></option>
-				<?php echo $this->category_tree; ?>
 			</select>
 			</td>
 			<td>

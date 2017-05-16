@@ -129,8 +129,6 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model,'category_name');
 
 			$topCategory=vRequest::getInt('top_category_id',0);
-			$category_tree = '';//ShopFunctions::categoryListTree(array($topCategory));
-			$this->assignRef('category_tree', $category_tree);
 
 			$param = '';
 			if(!empty($topCategory)){

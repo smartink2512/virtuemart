@@ -84,7 +84,7 @@ class vmCrypt {
 	private static function _checkCreateKeyFile($date){
 		jimport('joomla.filesystem.file');
 
-		vmSetStartTime('check');
+		vmSetStartTime('_checkCreateKeyFile');
 		static $existingKeys = false;
 
 		$keyPath = self::_getEncryptSafepath ();
@@ -127,6 +127,7 @@ class vmCrypt {
 			ksort($existingKeys);
 			$key = '';
 			$usedKey = '';
+			$uDate = 0;
 			if(!empty($date)){
 
 				foreach($existingKeys as $unixDate=>$values){
@@ -134,13 +135,15 @@ class vmCrypt {
 						vmdebug('$unixDate '.$unixDate.' >= $date '.$date);
 						continue;
 					}
-					//vmdebug('$unixDate < $date '.$date);
+					vmdebug('$unixDate < $date '.$unixDate);
 					$usedKey = $values;
+					$uDate = $unixDate;
 				}
 			}
 
 			if(empty($usedKey)){
 				$usedKey = end($existingKeys);
+				$uDate = key($existingKeys);
 				//No key means, we wanna encrypt something, when it has not the new size,
 				//it is an old key and must be replaced
 				$ksize = VmConfig::get('keysize',24);
@@ -153,13 +156,16 @@ class vmCrypt {
 				}
 			}
 
-			if(!empty($usedKey['key']) and (!isset($usedKey['b64']) or $usedKey['b64'])){
-				vmdebug('Doing base64_decode ');
+			if(!empty($usedKey['key']) and (!isset($usedKey['b64']) or $usedKey['b64']=='1')){
+
 				$key = base64_decode($usedKey['key']);
+				$existingKeys[$uDate]['key'] = $key;
+				$existingKeys[$uDate]['b64'] = 0;
+				//vmdebug('Doing base64_decode '.$usedKey['key']. ' '.$key);
 			} else {
 				$key = $usedKey['key'];
 			}
-			//vmTime('my time','check');
+
 			return $key;
 		} else {
 			$key = self::_createKeyFile($keyPath,VmConfig::get('keysize',24));

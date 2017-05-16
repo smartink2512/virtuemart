@@ -476,7 +476,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$h = $vendorId.$this->_psType.$this->_name;
 		if(isset($mC[$h])) {
 			$this->methods = $mC[$h];
-			vmdebug('getPluginMethods return cached '.$h);
+			//vmdebug('getPluginMethods return cached '.$h);
 			return count($this->methods);
 		}
 

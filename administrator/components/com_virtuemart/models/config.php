@@ -509,7 +509,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$d = array_diff($active_langs,$oldLangs);
 		if(!empty($d)){
-			$this->installLanguageTables();
+			self::installLanguageTables();
 		}
 
 		$cache = VmConfig::getCache();

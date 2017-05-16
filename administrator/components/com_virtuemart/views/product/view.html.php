@@ -305,7 +305,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				$this->setLayout('massxref');
 
 				JToolBarHelper::custom('massxref_cats_exe', 'new', 'new', vmText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT_EXE'), false);
-
+				$this->ajaxCategoryDropDown('top_category_id');
 				break;
 
 			case 'massxref_sgrps':
@@ -380,8 +380,6 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			//Get the category tree
 			$this->virtuemart_category_id=$this->categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was vRequest::getInt('virtuemart_category_id');
 
-			$category_tree = '';// ShopFunctions::categoryListTree(array($this->categoryId));
-			$this->assignRef('category_tree', $category_tree);
 			$this->ajaxCategoryDropDown('virtuemart_category_id');
 
 			//Load the product price
