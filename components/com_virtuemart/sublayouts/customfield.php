@@ -683,7 +683,7 @@ class VirtueMartCustomFieldRenderer {
 				$product->customfields = array();
 			}
 		}
-
+		//vmdebug('renderCustomfieldsCart $variantmods',$variantmods);
 		$productCustoms = array();
 		foreach( (array)$product->customfields as $prodcustom){
 
@@ -692,15 +692,20 @@ class VirtueMartCustomFieldRenderer {
 
 				//We need this here to ensure that broken customdata of order items is shown updated info, or at least displayed,
 				if($prodcustom->is_cart_attribute or $prodcustom->is_input){
-					if(!isset($variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id])){
+
+					//The problem here is that a normal value and an array can be valid. The function should complement, or update the product. So we are not allowed
+					//to override existing values. When the $variantmods array is not set for the key, then we add an array, when the customproto is used more than one time
+					//the missing values are added with an own key.
+					if(!isset($variantmods[$prodcustom->virtuemart_custom_id]) or (is_array($variantmods[$prodcustom->virtuemart_custom_id]) and !isset($variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id])) ){
 						$variantmods[$prodcustom->virtuemart_custom_id][$prodcustom->virtuemart_customfield_id] = $prodcustom->virtuemart_customfield_id;
+						//vmdebug('foreach $variantmods $customfield_id ', $prodcustom->virtuemart_custom_id, $prodcustom->virtuemart_customfield_id,$variantmods);
 					}
 				}
 
 				$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 			}
 		}
-
+		//vmdebug('renderCustomfieldsCart $variantmods foreach',$variantmods);
 		foreach ( (array)$variantmods as $i => $customfield_ids) {
 
 			if(!is_array($customfield_ids)){
@@ -710,7 +715,7 @@ class VirtueMartCustomFieldRenderer {
 			foreach($customfield_ids as $customfield_id=>$params){
 
 				if(empty($productCustoms) or !isset($productCustoms[$customfield_id])){
-					vmdebug('displayProductCustomfieldSelected continue');
+					//vmdebug('displayProductCustomfieldSelected continue',$customfield_id,$productCustoms);
 					continue;
 				}
 				$productCustom = $productCustoms[$customfield_id];

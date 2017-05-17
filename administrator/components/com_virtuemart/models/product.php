@@ -1838,9 +1838,8 @@ vmdebug('$limitStart',$limitStart);
 					if(!empty($t[0])){
 						$orderByNameMain = $t[0];
 					}
-					$orderByNameMain = str_replace(array('DESC','ASC'), '',$orderByNameMain);
 				}
-
+				$orderByNameMain = str_replace(array('DESC','ASC'), '',$orderByNameMain);
 				$orderByNameMain = trim(str_replace('`','',$orderByNameMain));
 
 				if($orderByNameMain=='product_price'){
