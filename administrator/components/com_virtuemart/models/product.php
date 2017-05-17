@@ -3059,7 +3059,7 @@ vmdebug('$limitStart',$limitStart);
 	}
 
 
-	public function getProductShoppersByStatus ($product_id, $states, $filter_order = 'email', $filter_order_Dir = 'ASC') {
+	public function getProductShoppersByStatus ($product_id, $states, $filter_order = 'ou.email', $filter_order_Dir = 'ASC') {
 
 		if (empty($states)) {
 			return FALSE;
@@ -3084,7 +3084,7 @@ vmdebug('$limitStart',$limitStart);
 		if (count ($orderStates) !== count ($states)) {
 			$q .= ' AND oi.`order_status` IN ( "' . implode ('","', $states) . '") ';
 		}
-		$q .= '  ORDER BY `'.$filter_order.'` '.$filter_order_Dir;
+		$q .= '  ORDER BY '.$filter_order.' '.$filter_order_Dir;
 		$db = JFactory::getDbo();
 		$db->setQuery ($q);
 		$productShoppers = $db->loadAssocList ();

@@ -184,10 +184,6 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$product_unit);
 				$lists['product_lwh_uom'] = ShopFunctions::renderLWHUnitList('product_lwh_uom', $product_lwh_uom);
 
-				$option = vRequest::getCmd('option');
-				$lists['filter_order'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_orders', 'filter_order', 'email', 'cmd');
-				$lists['filter_order_Dir'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
-
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = date("Y-m-d") ;
 				}
@@ -198,6 +194,11 @@ class VirtuemartViewProduct extends VmViewAdmin {
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
+
+				$option = vRequest::getCmd('option');
+				$lists['filter_order'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_orders', 'filter_order', 'email', 'cmd');
+				$lists['filter_order_Dir'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
+
 				$productShoppers = $model->getProductShoppersByStatus($product->virtuemart_product_id,vRequest::getvar('status',array('S')),$lists['filter_order'],$lists['filter_order_Dir'] );
 				$this->assignRef('productShoppers', $productShoppers);
 				$orderstatusModel = VmModel::getModel('orderstatus');
