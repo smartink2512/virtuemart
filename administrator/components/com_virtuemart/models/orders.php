@@ -1948,7 +1948,8 @@ vmdebug('my prices',$data);
 
 		$vendorEmail = array();
 		$vendorEmail[] = $vars['vendorEmail'] = $vendorModel->getVendorEmail($virtuemart_vendor_id);
-		if (!empty(VmConfig::get('addVendorEmail',''))) $vendorEmail = array_merge($vendorEmail,explode(';',VmConfig::get('addVendorEmail','')));
+		$addVendorEmails = VmConfig::get('addVendorEmail','');
+		if (!empty($addVendorEmails)) $vendorEmail = array_merge($vendorEmail,explode(';',$addVendorEmails));
 
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vars['vendor'] = $vendor;
