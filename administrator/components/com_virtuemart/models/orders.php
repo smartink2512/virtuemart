@@ -1961,7 +1961,7 @@ vmdebug('my prices',$data);
 		if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
 			//shopFunctionsF::loadOrderLanguages(VmConfig::$jDefLangTag);
 			//VmConfig::setLanguageByTag(VmConfig::$jDefLangTag);
-			$view = shopFunctionsF::prepareViewForMail('invoice', $vars); vmdebug('$vendorEmail',$vendorEmail);
+			$view = shopFunctionsF::prepareViewForMail('invoice', $vars);
 			$res = shopFunctionsF::sendVmMail( $view, $vendorEmail, TRUE );
 		}
 
