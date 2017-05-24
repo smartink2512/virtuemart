@@ -2043,6 +2043,11 @@ vmdebug('$limitStart',$limitStart);
 			unset($data['product_parent_id']);
 		}
 
+		JPluginHelper::importPlugin('vmcustom');
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('plgVmBeforeStoreProduct',array(&$data, &$product_data));
+
 		$stored = $product_data->bindChecknStore ($data, false);
 
 		if(!$stored ){
@@ -2220,6 +2225,8 @@ vmdebug('$limitStart',$limitStart);
 
 		$cache = VmConfig::getCache('com_virtuemart_cat_manus','callback');
 		$cache->clean();
+
+		$dispatcher->trigger('plgVmAfterStoreProduct',array(&$data, &$product_data));
 
 		return $product_data->virtuemart_product_id;
 	}

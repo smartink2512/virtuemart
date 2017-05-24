@@ -86,6 +86,8 @@ $j = 'if (typeof Virtuemart === "undefined")
 	Virtuemart.customfields;
 	Virtuemart.prdcustomer;
 	Virtuemart.edit_status;
+	Virtuemart.imagePath = "'.JURI::root(true).$this->imagePath.'";
+	Virtuemart.token = "'.JSession::getFormToken().'";
 	';
 vmJsApi::addJScript('onReadyProduct',$j);
 

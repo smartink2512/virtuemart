@@ -175,6 +175,11 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->setShipmentMethod($force, !$html);
 		$cart->setPaymentMethod($force, !$html);
 
+		JPluginHelper::importPlugin('vmcustom');
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('plgVmOnUpdateCart',array(&$cart, &$force, &$html));
+
 		$cart->prepareCartData();
 
 		$coupon_code = trim(vRequest::getString('coupon_code', ''));

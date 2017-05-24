@@ -664,6 +664,10 @@ class VirtueMartCart {
 			}
 		}
 
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('plgVmOnAddToCart',array(&$this));
+
 		if ($updateSession== false) return false ;
 		$this->_dataValidated = false;
 		// End Iteration through Prod id's
