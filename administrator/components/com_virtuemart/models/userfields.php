@@ -955,10 +955,19 @@ class VirtueMartModelUserfields extends VmModel {
 							break;
 						case 'emailaddress':
 							if( JFactory::getApplication()->isSite()) {
-								if(empty($_return['fields'][$_fld->name]['value']) && $_fld->required) {
-									$_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
+								if(empty($_return['fields'][$_fld->name]['value'])) {
+									$email_value = JFactory::getUser()->email;
+								}else{
+									$email_value = '';
 								}
-							}							// 							vmdebug('emailaddress',$_fld);
+								$_return['fields'][$_fld->name]['formcode'] = '<input type="email" id="'
+								. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name.'" size="' . $_fld->size
+								. '" value="' . $email_value .'" '
+								. ($_fld->required ? ' class="required validate-email"' : '')
+								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
+								. $readonly . '  /> ';
+							}
+							break;
 						case 'text':
 						case 'webaddress':
 

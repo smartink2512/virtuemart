@@ -110,7 +110,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 					if ($this->orderbt->virtuemart_user_id) {
 						$userlink = JRoute::_ ('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $this->orderbt->virtuemart_user_id);
 						echo $this->orderbt->order_name;
-						echo ' <a href="'.$userlink.'" title="'.vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $this->orderbt->order_name.'"><span class="icon-edit"></span></a>';
+						echo ' <a href="'.$userlink.'" target="_blank" title="'.vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $this->orderbt->order_name.'"><span class="icon-edit"></span></a>';
 					} else {
 						echo $this->orderbt->first_name.' '.$this->orderbt->last_name;
 					}

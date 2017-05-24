@@ -254,7 +254,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	 * @param String $dst path
 	 * @param String $type modules, plugins, languageBE, languageFE
 	 */
-	static public function recurse_copy($src,$dst ) {
+	static public function recurse_copy($src,$dst,$delete = true ) {
 
 		if(!class_exists('JFolder'))
 			require(VMPATH_LIBS.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
@@ -274,7 +274,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 							self::recurse_copy($src .DS. $file,$dst .DS. $file);
 						}
 						else {
-							if(JFile::exists($dst .DS. $file)){
+							if($delete and JFile::exists($dst .DS. $file)){
 								if(!JFile::delete($dst .DS. $file)){
 									$app = JFactory::getApplication();
 									$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);

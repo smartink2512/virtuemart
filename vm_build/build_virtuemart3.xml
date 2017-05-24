@@ -5,8 +5,8 @@
     <property name="releasetype" value="MAYOR"/>
     <property name="vm.version.main" value="3.2.0"/>
     <property name="vm.version" value="3.2.3"/>
-    <property name="joomla.version" value="3.7.0"/>
-    <property name="svn.lastrevision" value="9542"/>
+    <property name="joomla.version" value="3.7.2"/>
+    <property name="svn.lastrevision" value="9550"/>
     <property name="PHING.VM.CODENAME" value="Black Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>
@@ -384,10 +384,16 @@
         <echo msg="Copying SITE COMPONENT files to directory.. "/>
         <copy todir="${package.folder.main}/components/${component.name}">
             <fileset refid="site.main.files"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
         </copy>
         <echo msg="Copying INSTALL files to directory..."/>
         <copy todir="${package.folder.main}/install">
             <fileset refid="install.main.files"/>
+            <filterchain>
+                <expandproperties/>
+            </filterchain>
         </copy>
 
         <echo msg="Copying ADMIN LANGUAGE files to directory..."/>
