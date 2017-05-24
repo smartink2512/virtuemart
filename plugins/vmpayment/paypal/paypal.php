@@ -179,6 +179,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'payment_action' => array('sale', 'char'),
 			'template' => array('', 'char'),
 			'add_prices_api' => array('', 'int'),
+			'offer_credit' => array('', 'int'),
 
 			'noStandardChoice' => array('1','int')
 		);
@@ -365,7 +366,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 */
 	function getExpressCheckoutHtml( $cart) {
 
-
 		$html = '';
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->_currentMethod->paypalproduct == 'exp') {
@@ -373,16 +373,40 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				//$paypalInterface = $this->_loadPayPalInterface();
 				$paypalInterface = new PaypalHelperPayPalExp($this->_currentMethod, $this);
 
+
 				$button = $paypalInterface->getExpressCheckoutButton();
+				$text = 'VMPAYMENT_PAYPAL_EXPCHECKOUT_BUTTON';
+
+
+
+
 				$html .= $this->renderByLayout('expcheckout',
 					array(
-						'text' => vmText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_BUTTON'),
+						'text' => vmText::_($text),
 						'img' => $button['img'],
 						'link' => $button['link'],
+						'offer_credit' => 0,
 						'sandbox' => $this->_currentMethod->sandbox,
 						'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id
 					)
 				);
+
+				if($this->_currentMethod->offer_credit){
+					$button = $paypalInterface->getExpressCheckoutButton(true);
+					$text = 'VMPAYMENT_PAYPAL_CREDITCHECKOUT_BUTTON';
+					$html .= $this->renderByLayout('expcheckout',
+					array(
+						'text' => vmText::_($text),
+						'img' => $button['img'],
+						'link' => $button['link'],
+						'offer_credit' => '1',
+						'sandbox' => $this->_currentMethod->sandbox,
+						'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id
+						)
+					);
+				}
+
+
 			}
 		}
 		return $html;
@@ -1450,6 +1474,25 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return FALSE;
 		}
 		$action = vRequest::getCmd('action');
+		if($action == 'getPayPalCreditOffer'){
+			$link = 'https://www.securecheckout.billmelater.com/paycapture-content/fetch?hash=AU826TU8&content=/bmlweb/ppwpsiw.html';
+
+			$opts = array(
+			'https'=>array(
+			'method'=>"GET"
+			)
+			);
+			$context = stream_context_create($opts);
+
+			$request = file_get_contents($link, false, $context);
+
+			if(!empty($request)) {
+
+				echo $request;
+				jExit();
+			}
+			jExit();
+		}
 		$virtuemart_paymentmethod_id = vRequest::getInt('pm');
 		//Load the method
 		if (!($currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
@@ -1462,8 +1505,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return false;
 		}
 
-			if (!class_exists('VirtueMartCart')) {
-				require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
+			if(!class_exists( 'VirtueMartCart' )) {
+				require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
 			}
 			$cart = VirtueMartCart::getCart();
 			//$cart->prepareCartData();
@@ -1471,18 +1514,18 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$cart->setCartIntoSession();
 			$this->_currentMethod = $currentMethod;
 			$paypalInterface = $this->_loadPayPalInterface();
-			$paypalInterface->setCart($cart);
-			$paypalInterface->setTotal($cart->cartPrices['billTotal']);
+			$paypalInterface->setCart( $cart );
+			$paypalInterface->setTotal( $cart->cartPrices['billTotal'] );
 			$paypalInterface->loadCustomerData();
 			// will perform $this->getExpressCheckoutDetails();
-			$paypalInterface->getExtraPluginInfo($this->_currentMethod);
+			$paypalInterface->getExtraPluginInfo( $this->_currentMethod );
 
-			if (!$paypalInterface->validate()) {
-				VmInfo('VMPAYMENT_PAYPAL_PAYMENT_NOT_VALID');
+			if(!$paypalInterface->validate()) {
+				VmInfo( 'VMPAYMENT_PAYPAL_PAYMENT_NOT_VALID' );
 				return false;
 			} else {
 				$app = JFactory::getApplication();
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vRequest::getInt('Itemid'), false));
+				$app->redirect( JRoute::_( 'index.php?option=com_virtuemart&view=cart&Itemid='.vRequest::getInt( 'Itemid' ), false ) );
 			}
 
 

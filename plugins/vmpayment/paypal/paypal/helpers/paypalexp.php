@@ -97,6 +97,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables = Array();
 		$post_variables['METHOD'] = $paypalMethod;
 		$post_variables['version'] = "104.0";
+		if(!empty($paypalMethod->offer_credit)){
+			$post_variables['version'] = "202.0";
+		}
 		// 104.0 required by Paypal
 		//https://developer.paypal.com/webapps/developer/docs/classic/release-notes/
 		$post_variables['USER'] = $this->api_login_id;
@@ -297,6 +300,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . vRequest::getInt('Itemid') . '&lang=' . vRequest::getCmd('lang', '');
 
+		if(!empty($this->_method->offer_credit)){
+			$post_variables['USERSELECTEDFUNDINGSOURCE'] = 'Finance';
+		}
 
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
@@ -915,7 +921,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 * https://www.paypalobjects.com/IntegrationCenter/ic_express-buttons.html
 	 * @return array
 	 */
-	function getExpressCheckoutButton () {
+	function getExpressCheckoutButton ($credit = false) {
 		$button = array();
 
 		$lang = jFactory::getLanguage();
@@ -926,8 +932,12 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 		// SetExpressCheckout
 		$button['link'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&pm=' . $this->_method->virtuemart_paymentmethod_id;
-		$button['img'] = JURI::root() . 'plugins/vmpayment/' . $this->_method->payment_element . '/' . $this->_method->payment_element . '/assets/images/PP_Buttons_CheckOut_119x24_v3.png';
 
+		if($credit){
+			$button['img'] = 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/ppcredit-logo-small.png ';
+		} else {
+			$button['img'] = JURI::root() . 'plugins/vmpayment/' . $this->_method->payment_element . '/' . $this->_method->payment_element . '/assets/images/PP_Buttons_CheckOut_119x24_v3.png';
+		}
 
 		return $button;
 	}
