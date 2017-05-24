@@ -284,8 +284,13 @@ class vmLanguage {
 
 		static $c = null;
 		if($c===null){
-			$c = VmConfig::$langCount>1 and VmConfig::$defaultLang!=VmConfig::$vmlang and !VmConfig::get('prodOnlyWLang',false) ;
+			if(VmConfig::$langCount>1 and VmConfig::$defaultLang!=VmConfig::$vmlang and !VmConfig::get('prodOnlyWLang',false) ){
+				$c = true;
+			} else {
+				$c = false;
+			}
 		}
+
 		return $c;
 	}
 

@@ -1131,12 +1131,23 @@ class VmMediaHandler {
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL','file_url',$readonly);
 
 		//remove the file_url_thumb in case it is standard
-		$file_url_thumb = '';
 		$file_url_thumb = $this->getFileUrlThumb();
 		if(empty($this->file_url_thumb) and is_a($this,'VmImage')) {
 			$file_url_thumb = vmText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$file_url_thumb);
+			$html .= '<tr>
+	<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB').'</td>
+	<td>
+		<span class="hasTip" title="'.$file_url_thumb.'">
+			<input type="text" '.$readonly.' class="inputbox" name="media[file_url_thumb]" size="50" value="" />
+			<span>'.vmText::sprintf('COM_VIRTUEMART_DEFAULT_URL','').'</span>
+		</span>
+	</td>
+</tr>';
+
+		} else {
+			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly,$file_url_thumb);
 		}
-		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly,$file_url_thumb);
+
 
 		$this->addMediaAttributesByType();
 

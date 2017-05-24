@@ -246,27 +246,26 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->alterTable('#__virtuemart_product_prices',
 				array(
-				'product_price_vdate' => '`product_price_publish_up` DATETIME NULL DEFAULT NULL AFTER `product_currency`',
-				'product_price_edate' => '`product_price_publish_down` DATETIME NULL DEFAULT NULL AFTER `product_price_publish_up`'
+				'product_price_vdate' => '`product_price_publish_up` datetime NOT NULL default \'0000-00-00 00:00:00\' NULL AFTER `product_currency`',
+				'product_price_edate' => '`product_price_publish_down` datetime NOT NULL default \'0000-00-00 00:00:00\' AFTER `product_price_publish_up`'
 			));
 			$this->alterTable('#__virtuemart_customs',array(
-				'custom_field_desc' => '`custom_desc` char(255) COMMENT \'description or unit\'',
-				'custom_params' => '`custom_params` text  NOT NULL DEFAULT \'\''
+				'custom_field_desc' => '`custom_desc` varchar(4095) COMMENT \'description or unit\'',
+				'custom_params' => '`custom_params` text  NOT NULL'
 			));
 			$this->alterTable('#__virtuemart_product_customfields',array(
 				'custom_value' => ' `customfield_value` varchar(2500) COMMENT \'field value\'',
 				'custom_price' => ' `customfield_price` DECIMAL(15,6) COMMENT \'price\'',
-				'custom_param' => ' `customfield_params` varchar(17000) NULL DEFAULT NULL',
-				'idx_custom_value' => ' INDEX `idx_published` (`published`)'
+				'custom_param' => ' `customfield_params` text COMMENT \'Param for Plugins\''
 			));
 
 
 			$this->alterTable('#__virtuemart_userfields',array(
-				'params' => '`userfield_params` varchar(17500) NOT NULL DEFAULT "" COMMENT \'userfield params\'',
+				'params' => '`userfield_params` text',
 			));
 
 			$this->alterTable('#__virtuemart_orders',array(
-				'customer_note' => '`oc_note` varchar(20000) NOT NULL DEFAULT "" COMMENT \'old customer notes\'',
+				'customer_note' => '`oc_note` text NOT NULL DEFAULT "" COMMENT \'old customer notes\'',
 			));
 
 			if(!class_exists('GenericTableUpdater')) require($this->path . DS . 'helpers' . DS . 'tableupdater.php');
@@ -296,6 +295,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$dst = VMPATH_ROOT .DS. 'images' .DS. 'virtuemart';
 				$this->recurse_copy($src,$dst);
 			}
+
+			//copy payment/shipment logos to new directory
+			$dest = VMPATH_ROOT .DS. 'images'.DS.'virtuemart';
+			$src = VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart';
+			if(!JFolder::exists($dest.DS.'payment')){
+				$this->recurse_copy($src.DS.'payment',$dest.DS.'payment');
+			}
+			if(!JFolder::exists($dest.DS.'shipment')){
+				$this->recurse_copy($src.DS.'shipment',$dest.DS.'shipment');
+			}
+
 
 			$model->updateJoomlaUpdateServer('component','com_virtuemart', $this->source_path.DS.'virtuemart.xml');
 
@@ -1098,7 +1108,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param String $dst path
 		 * @param String $type modules, plugins, languageBE, languageFE
 		 */
-		private function recurse_copy($src,$dst ) {
+		private function recurse_copy($src,$dst,$delete = true ) {
 
 			$dir = '';
 			if(JFolder::exists($src)){
@@ -1116,7 +1126,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 								$this->recurse_copy($src .DS. $file,$dst .DS. $file);
 							}
 							else {
-								if(JFile::exists($dst .DS. $file)){
+								if($delete and JFile::exists($dst .DS. $file)){
 									if(!JFile::delete($dst .DS. $file)){
 										$app = JFactory::getApplication();
 										$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
