@@ -94,7 +94,7 @@ Virtuemart.edit_status = jQuery (function($) {
 		jQuery('#image').change( function() {
 			var $newimage = jQuery(this).val();
 			jQuery('#product_availability').val($newimage);
-			jQuery('#imagelib').attr({ src:'<?php echo JURI::root(true).$this->imagePath ?>'+$newimage, alt:$newimage });
+			jQuery('#imagelib').attr({ src:Virtuemart.imagePath+$newimage, alt:$newimage });
 		});
 		jQuery('.js-change-stock').change( function() {
 
@@ -143,7 +143,7 @@ Virtuemart.prdcustomer = jQuery(function($) {
 				}
 				var $max_number = jQuery('input[name=notify_number]').val();
 
-				jQuery.post($customerMailNotifyLink, { subject:$subject, mailbody:$body, max_number:$max_number, token:'<?php echo JSession::getFormToken() ?>' },
+				jQuery.post($customerMailNotifyLink, { subject:$subject, mailbody:$body, max_number:$max_number, token:Virtuemart.token },
 					function (data) {
 						alert(Virtuemart.msgsent);
 						jQuery.getJSON($customerListNotifyLink, {tmpl:'component', no_html:1},
@@ -176,7 +176,7 @@ Virtuemart.prdcustomer = jQuery(function($) {
 				}
 				else {
 					var $statut = jQuery('select#order_status').val();
-					jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:'<?php echo JSession::getFormToken() ?>' },
+					jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:Virtuemart.token },
 						function (data) {
 							alert(Virtuemart.msgsent);
 							//jQuery("#customers-list-msg").html('<strong><?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')?></strong>');

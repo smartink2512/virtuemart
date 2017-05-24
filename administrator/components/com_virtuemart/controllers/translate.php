@@ -83,6 +83,7 @@ class VirtuemartControllerTranslate extends VmController {
 			$fields=array();
 			foreach ($tableDescribe as $key =>$val) $fields[$val['Field']] = $val['Field'] ;
 			$json['fields'] = $fields;
+			VmLanguage::loadJLang('com_virtuemart');
 			$json['msg'] = vmText::sprintf('COM_VIRTUEMART_LANG_IS_EMPTY',$lang ,vmText::_('COM_VIRTUEMART_'.strtoupper( $viewKey)) ) ;
 		}
 		return $json; 
