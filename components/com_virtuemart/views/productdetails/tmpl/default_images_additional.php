@@ -32,6 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 				echo $image->displayMediaThumb('class="product-image" style="cursor: pointer" data-descr="'.$image->file_description.'"',false,'',true,$descr);
 				echo '<a href="'. $image->file_url .'"  class="product-image image-'. $i .'" style="display:none;" title="'. $image->file_meta .'" rel="vm-additional-images"></a>';
 			} else {
+				if(VmConfig::get('add_thumb_use_descr', false)) {
+					$image->file_meta = $image->file_description;
+				}
 				echo $image->displayMediaThumb('',true,"rel='vm-additional-images'",true,$descr);
 			}
 			?>

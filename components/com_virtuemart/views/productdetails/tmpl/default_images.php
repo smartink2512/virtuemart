@@ -21,35 +21,35 @@ defined('_JEXEC') or die('Restricted access');
 
 vmJsApi::loadPopUpLib();
 if(VmConfig::get('usefancy',1)){
-    $imageJS = '
-    jQuery(document).ready(function() {
-        Virtuemart.updateImageEventListeners()
-    });
-    Virtuemart.updateImageEventListeners = function() {
-        ';
-    if( VmConfig::get('add_img_main', 1)){
+	if(VmConfig::get('add_thumb_use_descr', false)){
+		$u = 'descr';
+	} else {
+		$u = 'this.alt';
+	}
 
-        $imageJS .= 'jQuery(".additional-images a.product-image.image-0").removeAttr("rel");
-        jQuery(".additional-images img.product-image").click(function() {
-            jQuery(".additional-images a.product-image").attr("rel","vm-additional-images" );
-            jQuery(this).parent().children("a.product-image").removeAttr("rel");
-            var src = jQuery(this).parent().children("a.product-image").attr("href");
-            jQuery(".main-image img").attr("src",src);
-            jQuery(".main-image img").attr("alt",this.alt );
-            jQuery(".main-image a").attr("href",src );
-            jQuery(".main-image a").attr("title",this.alt );
-            jQuery(".main-image .vm-img-desc").html(this.alt);
-            }); 
-        }';
-    } else {
-        $imageJS .= 'jQuery("a[rel=vm-additional-images]").fancybox({
-                "titlePosition"	: "inside",
-                "transitionIn"	: "elastic",
-                "transitionOut"	: "elastic"
-            });	
-        }';
-    }
-
+$imageJS = '
+jQuery(document).ready(function() {
+	Virtuemart.updateImageEventListeners()
+});
+Virtuemart.updateImageEventListeners = function() {
+	jQuery("a[rel=vm-additional-images]").fancybox({
+		"titlePosition" 	: "inside",
+		"transitionIn"	:	"elastic",
+		"transitionOut"	:	"elastic"
+	});
+	jQuery(".additional-images a.product-image.image-0").removeAttr("rel");
+	jQuery(".additional-images img.product-image").click(function() {
+		jQuery(".additional-images a.product-image").attr("rel","vm-additional-images" );
+		jQuery(this).parent().children("a.product-image").removeAttr("rel");
+		var src = jQuery(this).parent().children("a.product-image").attr("href");
+		jQuery(".main-image img").attr("src",src);
+		jQuery(".main-image img").attr("alt",this.alt );
+		jQuery(".main-image a").attr("href",src );
+		jQuery(".main-image a").attr("title",this.alt );
+		jQuery(".main-image .vm-img-desc").html('.$u.');
+		}); 
+	}
+	';
 } else {
 	$imageJS = '
 	jQuery(document).ready(function() {
