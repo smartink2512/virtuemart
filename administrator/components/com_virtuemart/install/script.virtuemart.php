@@ -297,8 +297,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			//copy payment/shipment logos to new directory
-			$dest = VMPATH_ROOT .DS. 'images'.DS.'virtuemart';
-			$src = VMPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart';
+			$dest = JPATH_ROOT .DS. 'images'.DS.'virtuemart';
+			$src = JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart';
 			if(!JFolder::exists($dest.DS.'payment')){
 				$this->recurse_copy($src.DS.'payment',$dest.DS.'payment');
 			}

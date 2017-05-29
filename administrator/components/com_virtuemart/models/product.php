@@ -2591,7 +2591,8 @@ vmdebug('$limitStart',$limitStart);
 
 			$manuM = VmModel::getModel('manufacturer');
 			vmSetStartTime('mcaching');
-			$mlang=(!VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1);
+			$mlang= vmLanguage::getUseLangFallback();
+
 			if(true){
 				$cache = VmConfig::getCache('com_virtuemart_cat_manus','callback');
 				$cache->setCaching(true);
