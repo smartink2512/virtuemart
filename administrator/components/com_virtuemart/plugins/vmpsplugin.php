@@ -500,36 +500,18 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$joins = array();
-		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-			$langFields = array($this->_psType.'_name',$this->_psType.'_desc');
 
-			$useJLback = false;
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
-				$useJLback = true;
-			}
+		$langFields = array($this->_psType.'_name',$this->_psType.'_desc');
 
-			foreach($langFields as $langField){
-				$expr2 = 'ld.'.$langField;
-				if($useJLback){
-					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
-				}
-				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
-			}
-			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
-			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
-		} else {
-			$select .= ', l.* ';
-			$joins[] = ' LEFT JOIN `#__virtuemart_'.$this->_psType.'methods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_'.$this->_psType.'method_id` = i.`virtuemart_'.$this->_psType.'method_id`';
-		}
+		$select .= ', '.implode(', ',VmModel::joinLangSelectFields($langFields));
 
-		$q = $select . "\n FROM   `#__virtuemart_" . $this->_psType . 'methods' . '` as i ';
+		$joins = VmModel::joinLangTables('#__virtuemart_' . $this->_psType . 'methods','i','virtuemart_' . $this->_psType . 'method_id');
+		array_unshift($joins, ' FROM #__virtuemart_' . $this->_psType . 'methods as i');
 
-		//$joins[] = ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS i USING (`virtuemart_' . $this->_psType . 'method_id`) ';
 		$joins[]= ' LEFT JOIN `' . $extPlgTable . '` as j ON j.`' . $extField1 . '` =  i.`' . $this->_psType . '_jplugin_id` ';
 		$joins[]= ' LEFT OUTER JOIN `#__virtuemart_' . $this->_psType . 'method_shoppergroups` AS s ON i.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
 
-		$q .= implode(' '."\n",$joins);
+		$q = $select.implode(' '."\n",$joins);
 		$q .= ' WHERE i.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
 	    						AND  (i.`virtuemart_vendor_id` = "' . $vendorId . '" OR i.`virtuemart_vendor_id` = "0" OR i.`shared` = "1")
 	    						AND  (';
@@ -541,7 +523,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 
 		$db->setQuery ($q);
-		$this->methods = $db->loadObjectList ();
+		//$this->methods = $db->loadObjectList ();
 		if($err = $db->getErrorMsg()){
 			vmError('Error in slq vmpsplugin.php function getPluginMethods '.$err);
 		}

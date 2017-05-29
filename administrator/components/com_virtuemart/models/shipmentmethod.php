@@ -118,39 +118,26 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	/**
 	 * Retireve a list of shipment from the database.
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 * @return object List of shipment  objects
 	 */
-	public function getShipments() {
+	public function getShipments($onlyPublished=false) {
 
-		$whereString = '';
+		$where = array();
+
+		$langFields = array('shipment_name','shipment_desc');
+
+		$select = 'i.*, '.implode(', ',self::joinLangSelectFields($langFields));
 
 		$joins = ' FROM `#__virtuemart_shipmentmethods` as i ';
+		$joins .= implode(' ',self::joinLangTables($this->_maintable,'i','virtuemart_shipmentmethod_id'));
 
-		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-			$langFields = array('shipment_name','shipment_desc');
-
-			$useJLback = false;
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
-				$useJLback = true;
-			}
-
-			$select = ' i.*';
-			foreach($langFields as $langField){
-				$expr2 = 'ld.'.$langField;
-				if($useJLback){
-					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
-				}
-				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
-			}
-			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
-			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id`';
-		} else {
-			$select = ' * ';
-			$joins .= ' LEFT JOIN `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_shipmentmethod_id` = i.`virtuemart_shipmentmethod_id` ';
+		if ($onlyPublished) {
+			$where[] = ' `published` = 1';
 		}
 
+		$whereString = '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
 		$datas =$this->exeSortSearchListQuery(0,$select,$joins,$whereString,' ',$this->_getOrdering() );
 

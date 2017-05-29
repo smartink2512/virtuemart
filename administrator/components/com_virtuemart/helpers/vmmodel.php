@@ -837,7 +837,7 @@ class VmModel extends vObject{
 		} else {
 			$db->setQuery($q,$limitStart,$limit);
 		}
-
+		if($this->debug === 1) vmdebug('exeSortSearchListQuery my $limitStart '.$limitStart.'  $limit '.$limit.' q ',str_replace('#__',$db->getPrefix(),$db->getQuery()) );
 		if($object == 2){
 			 $this->ids = $db->loadColumn();
 		} else if($object == 1 ){
@@ -848,7 +848,6 @@ class VmModel extends vObject{
 		if($err=$db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
- 		if($this->debug === 1) vmdebug('exeSortSearchListQuery my $limitStart '.$limitStart.'  $limit '.$limit.' q ',str_replace('#__',$db->getPrefix(),$db->getQuery()) );
 
 		if($this->_withCount){
 
@@ -891,7 +890,7 @@ class VmModel extends vObject{
 
 	}
 
-	static public function joinLangTables($tablename, $prefix, $on){
+	static public function joinLangTables($tablename, $prefix, $on, $method = 0){
 
 		static $useFb = null, $useFb2 = null, $isSite = null;
 		if($useFb === null){
@@ -900,27 +899,49 @@ class VmModel extends vObject{
 			$isSite = vmConfig::isSite();
 		}
 
-		$method = 'LEFT';
-		if($isSite and !VmConfig::get('dualFallback',false)){
-			$method = 'INNER';
+		if($method===0){
+			$method = 'LEFT JOIN';
+			if($isSite and (!VmConfig::get('dualFallback',false) or VmConfig::get('prodOnlyWLang',false))){
+				$method = 'INNER JOIN';
+			}
+		} else {
+			if($useFb2){
+				$prefix = 'ljd';
+			} else if($useFb){
+				$prefix = 'ld';
+			} else {
+				$prefix = 'l';
+			}
 		}
 
 		if($useFb2){
-			$joinedTables[] = ' '.$method.' JOIN `'.$tablename.'_' .VmConfig::$jDefLang . '` as ljd ON ljd.`'.$on.'` = '.$prefix.'.`'.$on.'`';
-			$method = 'LEFT';
+			$q = ' '.$method.' `'.$tablename.'_' .VmConfig::$jDefLang . '` as ljd ';
+			if($prefix != 'ljd'){
+				$q .= 'ON ljd.`'.$on.'` = '.$prefix.'.`'.$on.'`';
+			}
+			$joinedTables[] = $q;
+			$method = 'LEFT JOIN';
 		}
 
 		if($useFb){
-			$joinedTables[] = ' '.$method.' JOIN `'.$tablename.'_' .VmConfig::$defaultLang . '` as ld ON ld.`'.$on.'` = '.$prefix.'.`'.$on.'`';
-			$method = 'LEFT';
+			$q = ' '.$method.' `'.$tablename.'_' .VmConfig::$defaultLang . '` as ld ';
+			if($prefix != 'ld'){
+				$q .= 'ON ld.`'.$on.'` = '.$prefix.'.`'.$on.'`';
+			}
+			$joinedTables[] = $q;
+			$method = 'LEFT JOIN';
 		}
 
-		$joinedTables[] = ' '.$method.' JOIN `'.$tablename.'_' . VmConfig::$vmlang . '` as l ON l.`'.$on.'` = '.$prefix.'.`'.$on.'`';
+		$q = ' '.$method.' `'.$tablename.'_' . VmConfig::$vmlang . '` as l ';
+		if($prefix != 'l'){
+			$q .= 'ON l.`'.$on.'` = '.$prefix.'.`'.$on.'`';
+		}
+		$joinedTables[] = $q;
 
 		return $joinedTables;
 	}
 
-	static public function joinLangSelectFields($langFields){
+	static public function joinLangSelectFields($langFields, $as = true){
 
 		static $useFb = null, $useFb2 = null;
 		if($useFb === null){
@@ -937,7 +958,9 @@ class VmModel extends vObject{
 					if($useFb2){
 						$f2 = 'IFNULL(ld.'.$langField.', ljd.'.$langField.')';
 					}
-					$fields[] = 'IFNULL(l.'.$langField.','.$f2.') as '.$langField;
+					$q = 'IFNULL(l.'.$langField.','.$f2.')';
+					if($as) $q .= ' as '.$langField;
+					$fields[] = $q;
 				} else {
 					$fields[] = 'l.'.$langField;
 				}

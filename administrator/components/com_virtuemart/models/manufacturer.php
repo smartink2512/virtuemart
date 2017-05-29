@@ -162,28 +162,10 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$langFields = array('mf_name','mf_email','mf_desc','mf_url','slug');
 
-		$langFback = ( !VmConfig::get('prodOnlyWLang',false) and VmConfig::$defaultLang!=VmConfig::$vmlang and VmConfig::$langCount>1 );
+		$select .= ', '.implode(', ',self::joinLangSelectFields($langFields));
+		$joinedTables .= implode(' ',self::joinLangTables($this->_maintable,'m','virtuemart_manufacturer_id'));
 
-		if($langFback){
 
-			$useJLback = false;
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
-				$useJLback = true;
-			}
-			foreach($langFields as $langField){
-				$expr2 = 'ld.'.$langField;
-				if($useJLback){
-					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
-				}
-				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
-			}
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id`';
-		} else {
-			$select .= ', l.'.implode(', l.',$langFields);
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_manufacturer_id` = m.`virtuemart_manufacturer_id` ';
-		}
 
 		//if ( $search && $search != 'true' or strpos($ordering,'mf_')!==FALSE or $ordering == 'm.virtuemart_manufacturer_id' ) {
 			/*$select .= ',`#__virtuemart_manufacturers_'.VmConfig::$vmlang.'`.*, mc.`mf_category_name` ';
@@ -213,28 +195,35 @@ class VirtueMartModelManufacturer extends VmModel {
 
 	static function getManufacturersOfProductsInCategory($virtuemart_category_id,$vmlang,$mlang = false){
 
-		if($mlang){
-			$query = 'SELECT DISTINCT IFNULL(l.`mf_name`,ld.mf_name) as mf_name,IFNULL(l.`virtuemart_manufacturer_id`,ld.`virtuemart_manufacturer_id`) as virtuemart_manufacturer_id
-FROM `#__virtuemart_manufacturers_'.VmConfig::$defaultLang.'` as ld
-LEFT JOIN `#__virtuemart_manufacturers_'.$vmlang.'` as l using (`virtuemart_manufacturer_id`)';
-			vmdebug('getManufacturersOfProductsInCategory use language fallback');
+		//if($mlang){
+		$useFb = vmLanguage::getUseLangFallback();
+		$useFb2 = vmLanguage::getUseLangFallbackSecondary();
+		if($useFb2){
+			$prefix = 'ljd';
+		} else if($useFb){
+			$prefix = 'ld';
 		} else {
-			$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_' . $vmlang . '` as l';
+			$prefix = 'l';
 		}
-		// if ($mf_virtuemart_product_ids) {
 
-		$query .= ' INNER JOIN `#__virtuemart_product_manufacturers` AS pm using (`virtuemart_manufacturer_id`)';
+		$query = 'SELECT DISTINCT '.$prefix.'.virtuemart_manufacturer_id, ';
+		$langFields = array('mf_name');
+		$query .= ' '.implode(', ',self::joinLangSelectFields($langFields));
+		$query .= ' '.implode(' ',self::joinLangTables('#__virtuemart_manufacturers','m','virtuemart_manufacturer_id','FROM'));
+
+		$query .= ' INNER JOIN `#__virtuemart_product_manufacturers` AS pm ON pm.`virtuemart_manufacturer_id` = '.$prefix.'.`virtuemart_manufacturer_id` ';
 		$query .= ' INNER JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
 		if ($virtuemart_category_id) {
 			$query .= ' INNER JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
 		}
-		$query .= ' WHERE p.`published` =1';
+		$query .= ' WHERE p.`published` = "1"';
 		if ($virtuemart_category_id) {
-			$query .= ' AND c.`virtuemart_category_id` =' . (int)$virtuemart_category_id;
+			$query .= ' AND c.`virtuemart_category_id` = "' . (int)$virtuemart_category_id.'"';
 		}
 		$query .= ' ORDER BY `mf_name`';
 		$db = JFactory::getDBO();
 		$db->setQuery ($query);
+
 		return $db->loadObjectList ();
 	}
 }

@@ -109,46 +109,27 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 * Retireve a list of calculation rules from the database.
 	 *
      * @author Max Milbers
-     * @param string $onlyPuiblished True to only retreive the publish Calculation rules, false otherwise
+     * @param string $onlyPublished True to only retreive the publish Calculation rules, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
 	public function getPayments($onlyPublished=false, $noLimit=false) {
 
 		$where = array();
+
+		$langFields = array('payment_name','payment_desc');
+
+		$select = 'i.*, '.implode(', ',self::joinLangSelectFields($langFields));
+
+		$joins = ' FROM `#__virtuemart_paymentmethods` as i ';
+		$joins .= implode(' ',self::joinLangTables($this->_maintable,'i','virtuemart_paymentmethod_id'));
+
 		if ($onlyPublished) {
 			$where[] = ' `published` = 1';
 		}
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
-
-
-		$joins = ' FROM `#__virtuemart_paymentmethods` as i ';
-
-		if(VmConfig::$defaultLang!=VmConfig::$vmlang and Vmconfig::$langCount>1){
-			$langFields = array('payment_name','payment_desc');
-
-			$useJLback = false;
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$jDefLang.'` as ljd ON ljd.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
-				$useJLback = true;
-			}
-
-			$select = ' i.*';
-			foreach($langFields as $langField){
-				$expr2 = 'ld.'.$langField;
-				if($useJLback){
-					$expr2 = 'IFNULL(ld.'.$langField.',ljd.'.$langField.')';
-				}
-				$select .= ', IFNULL(l.'.$langField.','.$expr2.') as '.$langField.'';
-			}
-			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$defaultLang.'` as ld ON ld.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
-			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id`';
-		} else {
-			$select = ' * ';
-			$joins .= ' LEFT JOIN `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ON l.`virtuemart_paymentmethod_id` = i.`virtuemart_paymentmethod_id` ';
-		}
 
 		$datas =$this->exeSortSearchListQuery(0,$select,$joins,$whereString,' ',$this->_getOrdering() );
 
