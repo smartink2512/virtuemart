@@ -124,7 +124,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 		$cart->_fromCart = true;
 		$cart->_redirected = false;
-		if(vRequest::get('cancel',0)){
+		if(vRequest::getCmd('cancel',0)){
 			$cart->_inConfirm = false;
 		}
 		if($cart->getInCheckOut()){
@@ -284,7 +284,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$this->json->stat = '1';
 
 			if(!$products or count($products) == 0){
-				$product_name = vRequest::get('pname');
+				$product_name = vRequest::getWord('pname');
 				if(is_array($virtuemart_product_ids)){
 					$pId = $virtuemart_product_ids[0];
 				} else {
@@ -296,6 +296,10 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				} else {
 					$this->json->stat = '2';
 				}
+				$view->setLayout('perror');
+			}
+			if(!empty($errorMsg)){
+				$this->json->stat = '2';
 				$view->setLayout('perror');
 			}
 

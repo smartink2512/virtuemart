@@ -47,7 +47,7 @@ VirtuemartViewConfig::$options = $options;
 </tr>';
 		echo VirtuemartViewConfig::rowShopFrontSet($params, 'COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY', 'showcategory', 'categories_per_row', 0, 3);
 		echo VirtuemartViewConfig::rowShopFrontSet($params, 'COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCTS', 'showproducts', 'products_per_row', 'omitLoaded', 3);
-		if(vRequest::get('view')=='config')echo VirtuemartViewConfig::rowShopFrontSet($params, 'COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS', 'show_manufacturers','manufacturer_per_row', 0, 3);
+		if(vRequest::getCmd('view')=='config')echo VirtuemartViewConfig::rowShopFrontSet($params, 'COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS', 'show_manufacturers','manufacturer_per_row', 0, 3);
 		echo '</table>';
 
 		echo '<table class="admintable">';

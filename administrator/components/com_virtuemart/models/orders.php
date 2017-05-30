@@ -357,7 +357,7 @@ class VirtueMartModelOrders extends VmModel {
 		if(empty($uid)){
 			if(VmConfig::get('multix','none')!='none'){
 				if(vmAccess::manager('managevendors')){
-					$virtuemart_vendor_id = vRequest::get('virtuemart_vendor_id',vmAccess::isSuperVendor());
+					$virtuemart_vendor_id = vRequest::getInt('virtuemart_vendor_id',vmAccess::isSuperVendor());
 				} else if( vmAccess::manager('orders')){
 					$virtuemart_vendor_id = vmAccess::isSuperVendor();
 				} else {

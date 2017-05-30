@@ -1208,7 +1208,7 @@ class VmConfig {
 
 		if(self::$isSite===null){
 			$app = JFactory::getApplication ();
-			if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::manager('manage'))){
+			if($app->isAdmin() or (vRequest::getInt('manage',false) and vmAccess::manager('manage'))){
 				self::$isSite = false;
 			} else {
 				self::$isSite = true;

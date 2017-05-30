@@ -315,7 +315,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$app = JFactory::getApplication();
 		$isSite = true;
-		if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::manager('manage')) ){
+		if($app->isAdmin() or (vRequest::getInt('manage',false) and vmAccess::manager('manage')) ){
 			$isSite = false;
 		}
 
@@ -696,20 +696,13 @@ class VirtueMartModelCategory extends VmModel {
 
 		$useFb = vmLanguage::getUseLangFallback();
 		$useFb2 = vmLanguage::getUseLangFallbackSecondary();
-		if($useFb2){
-			$prefix = 'ljd';
-		} else if($useFb){
-			$prefix = 'ld';
-		} else {
-			$prefix = 'l';
-		}
 
-		$langFields = array('category_name');
+		$langFields = array('virtuemart_category_id','category_name');
 
-		$select = 'SELECT '.$prefix.'.`virtuemart_category_id`, '.implode(', ',self::joinLangSelectFields($langFields));
+		$select = 'SELECT '.implode(', ',self::joinLangSelectFields($langFields));
 		$joins = implode(' ',self::joinLangTables('#__virtuemart_categories','c','virtuemart_category_id','FROM'));
 
-		$where = 'WHERE '.$prefix.'.`virtuemart_category_id`= ';
+		$where = 'WHERE '.implode(', ',self::joinLangSelectFields(array('virtuemart_category_id'),false)).' = ';
 		$q = $select.' '.$joins.' '.$where;
 
 		foreach ($parents_id as $id ) {
@@ -719,6 +712,7 @@ class VirtueMartModelCategory extends VmModel {
 			}
 			$parents[] = $db->loadObject();
 		}
+
 		return $parents;
 	}
 

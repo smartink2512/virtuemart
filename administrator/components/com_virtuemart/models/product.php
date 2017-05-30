@@ -277,7 +277,7 @@ class VirtueMartModelProduct extends VmModel {
 		$where = array();
 
 		$isSite = true;
-		if($app->isAdmin() or (vRequest::get('manage',false) and vmAccess::manager('product')) ){
+		if($app->isAdmin() or (vRequest::getInt('manage',false) and vmAccess::manager('product')) ){
 			$isSite = false;
 		}
 
@@ -996,7 +996,7 @@ vmdebug('$limitStart',$limitStart);
 			$attribs = get_object_vars ($parentProduct);
 
 			foreach ($attribs as $k=> $v) {
-				if (strpos($k, "\0")===0) continue;
+				if (!property_exists($parentProduct, $k)) continue;
 				if ('product_in_stock' != $k and 'product_ordered' != $k) {// Do not copy parent stock into child
 					if (strpos ($k, '_') !== 0 and empty($child->$k)) {
 						$child->$k = $v;

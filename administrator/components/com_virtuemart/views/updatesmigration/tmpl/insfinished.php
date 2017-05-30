@@ -75,7 +75,7 @@ if($option=='com_virtuemart'){
 				<?php echo vmText::sprintf('COM_VM_INSTALLATION_SOURCE',htmlspecialchars(VMPATH_ROOT)); ?>
             </td>
 		</tr>
-		<?php  if (vRequest::get('view','')=='install') {
+		<?php  if (vRequest::getCmd('view','')=='install') {
 			if (JVM_VERSION < 3) {
 			$tag="strong";$style='style="color: #C00"';
 			} else {
@@ -99,7 +99,7 @@ if($option=='com_virtuemart'){
 		<?php
 		}
 		$class="";
-		if (vRequest::get('view','')=='install') {
+		if (vRequest::getCmd('view','')=='install') {
 			if (JVM_VERSION < 3) {
 				$class = "button";
 			} else {
