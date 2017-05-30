@@ -68,7 +68,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				if(!empty($product->_loadedWithLangFallback)){
 					vmInfo('COM_VM_LOADED_WITH_LANGFALLBACK',$product->_loadedWithLangFallback);
 				}
-
+				$this->setOrigLang($product);
 				//$user = JFactory::getUser();
 				//$superVendor =  vmAccess::isSuperVendor();
 				//vmdebug('$superVendor by vmAccess::isSuperVendor',$superVendor);

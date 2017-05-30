@@ -371,7 +371,7 @@ class VmViewAdmin extends JViewLegacy {
 			<input type="hidden" name="filter_order_Dir" value="'.$this->lists['filter_order_Dir'].'" />';
 		}
 
-		if(vRequest::get('manage',false) or JFactory::getApplication()->isSite()){
+		if(vRequest::getInt('manage',false) or JFactory::getApplication()->isSite()){
 			$hidden .='<input type="hidden" name="manage" value="1" />';
 		}
 		return  $hidden.'
@@ -496,4 +496,11 @@ class VmViewAdmin extends JViewLegacy {
 		return vmAccess::manager($view);
 	}
 
+	public function setOrigLang($model){
+		$origLang = '';
+		if(!empty($model->_loadedWithLangFallback)){
+			$origLang = '(<span class="allflags flag-'.$model->_loadedWithLangFallback.'"></span>)';
+		}
+		$this->origLang = '<span class="langfallback">'.$origLang.'</span>';
+	}
 }

@@ -523,7 +523,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 
 		$db->setQuery ($q);
-		//$this->methods = $db->loadObjectList ();
+		$this->methods = $db->loadObjectList ();
 		if($err = $db->getErrorMsg()){
 			vmError('Error in slq vmpsplugin.php function getPluginMethods '.$err);
 		}

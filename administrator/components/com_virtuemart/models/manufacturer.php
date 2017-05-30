@@ -206,25 +206,25 @@ class VirtueMartModelManufacturer extends VmModel {
 			$prefix = 'l';
 		}
 
-		$query = 'SELECT DISTINCT '.$prefix.'.virtuemart_manufacturer_id, ';
-		$langFields = array('mf_name');
+		$query = 'SELECT DISTINCT ';
+		$langFields = array('virtuemart_manufacturer_id','mf_name');
 		$query .= ' '.implode(', ',self::joinLangSelectFields($langFields));
 		$query .= ' '.implode(' ',self::joinLangTables('#__virtuemart_manufacturers','m','virtuemart_manufacturer_id','FROM'));
 
 		$query .= ' INNER JOIN `#__virtuemart_product_manufacturers` AS pm ON pm.`virtuemart_manufacturer_id` = '.$prefix.'.`virtuemart_manufacturer_id` ';
 		$query .= ' INNER JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
 		if ($virtuemart_category_id) {
-			$query .= ' INNER JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+			$query .= ' INNER JOIN `#__virtuemart_product_categories` as pc ON pc.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
 		}
 		$query .= ' WHERE p.`published` = "1"';
 		if ($virtuemart_category_id) {
-			$query .= ' AND c.`virtuemart_category_id` = "' . (int)$virtuemart_category_id.'"';
+			$query .= ' AND pc.`virtuemart_category_id` = "' . (int)$virtuemart_category_id.'"';
 		}
 		$query .= ' ORDER BY `mf_name`';
 		$db = JFactory::getDBO();
 		$db->setQuery ($query);
-
-		return $db->loadObjectList ();
+		$r = $db->loadObjectList ();
+		return $r;
 	}
 }
 // pure php no closing tag

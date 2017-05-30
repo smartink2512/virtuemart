@@ -21,12 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea($this);
 $editor = JFactory::getEditor();
-$origLang = '';
-if(!empty($this->category->_loadedWithLangFallback)){
-	$origLang = '(<span class="allflags flag-'.$this->category->_loadedWithLangFallback.'"></span>)';
-}
-
-$this->origLang = '<span class="langfallback">'.$origLang.'</span>';
 ?>
 
 <form action="index.php" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">

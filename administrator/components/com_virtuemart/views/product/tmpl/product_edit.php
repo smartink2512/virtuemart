@@ -25,14 +25,6 @@ $document = JFactory::getDocument();
 vmJsApi::JvalideForm();
 $this->editor = JFactory::getEditor();
 
-$origLang = '';
-if(!empty($this->product->_loadedWithLangFallback)){
-	$origLang = '(<span class="allflags flag-'.$this->product->_loadedWithLangFallback.'"></span>)';
-}
-
-$this->origLang = '<span class="langfallback">'.$origLang.'</span>';
-
-
 ?>
 <form method="post" name="adminForm" action="index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>" enctype="multipart/form-data" id="adminForm">
 

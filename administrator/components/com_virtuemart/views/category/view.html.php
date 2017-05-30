@@ -54,6 +54,7 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			if(!empty($category->_loadedWithLangFallback)){
 				vmInfo('COM_VM_LOADED_WITH_LANGFALLBACK',$category->_loadedWithLangFallback);
 			}
+			$this->setOrigLang($category);
 			if(!class_exists('VirtuemartViewConfig')) require (VMPATH_ADMIN .'/views/config/view.html.php');
 			// Toolbar
 			$text='';

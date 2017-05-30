@@ -52,6 +52,11 @@ class VirtuemartViewManufacturer extends VmViewAdmin {
 
 			$this->manufacturer = $model->getManufacturer();
 
+			if(!empty($this->manufacturer->_loadedWithLangFallback)){
+				vmInfo('COM_VM_LOADED_WITH_LANGFALLBACK',$this->manufacturer->_loadedWithLangFallback);
+			}
+			$this->setOrigLang($this->manufacturer);
+
 			$isNew = ($this->manufacturer->virtuemart_manufacturer_id < 1);
 
 			$model->addImages($this->manufacturer);
