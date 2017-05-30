@@ -17,9 +17,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 echo '<a class="continue" href="' . $this->continue_link . '" >' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-if(!empty($this->errorMsg)){
-	echo '<div>'.$this->errorMsg.'</div>';
-}
 
 $messageQueue = JFactory::getApplication()->getMessageQueue();
 foreach ($messageQueue as $message) {

@@ -167,7 +167,7 @@ class AdminUIHelper {
 			$nag = '
                 <div style="width:auto;background:#FFFBA0;padding:8px 8px 8px 8px;font-size:14px;border:1px solid #FF6A00;">
                     <p style="text-align:left;">Like VirtueMart?</p>
-                    <p style="text-align:right"> => Become a Supporter</p>
+                    <p style="text-align:center;font-weight:bold;">Become a Supporter</p>
                     <p style="text-align:center;">Reliable Security and Advanced Development thanks to our members</p>
                     <p style="text-align:center;"><a href="http://extensions.virtuemart.net/support/virtuemart-supporter-membership-detail" target="_blank" ><button style="width:100%;background:#FF6A00;padding:5px 5px 5px 5px;font-size:15px;">VirtueMart membership<br>Buy now</button></a></p>
                 </div>';
