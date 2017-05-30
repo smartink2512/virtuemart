@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		</tr>
 		<?php
 		echo VmHTML::row('checkbox','COM_VM_CFG_NO_FALLBACK','prodOnlyWLang',VmConfig::get('prodOnlyWLang',0));
-		echo VmHTML::row('checkbox','COM_VM_CFG_DUAL_FALLBACK','dualFallback',VmConfig::get('dualFallback',1));
+		//echo VmHTML::row('checkbox','COM_VM_CFG_DUAL_FALLBACK','dualFallback',VmConfig::get('dualFallback',1));
 		echo VmHTML::row('input','COM_VM_CFG_CUSTOM_FALLBACK','vm_lfbs',VmConfig::get('vm_lfbs',''));
 
 		?>

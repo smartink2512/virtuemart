@@ -100,14 +100,18 @@ class vmLanguage {
 
 		if(count($langs)>1){
 			$lfbs = VmConfig::get('vm_lfbs','');
-			if(count($langs)==2 and VmConfig::$vmlangTag==VmConfig::$defaultLangTag and VmConfig::get('dualFallback',false) ){
+			/*	This cannot work this way, because the SQL would need a union with left and right join, much too expensive.
+			 *	even worse, the old construction would prefer the secondary language over the first. It can be tested using the customfallback
+			 *  for example en-GB~de-DE for en-GB as shop language
+			 * if(count($langs)==2 and VmConfig::$vmlangTag==VmConfig::$defaultLangTag and VmConfig::get('dualFallback',false) ){
 				foreach($langs as $lang){
 					if($lang!=VmConfig::$vmlangTag){
 						VmConfig::$defaultLangTag = $lang;
 						VmConfig::$defaultLang = strtolower(strtr(VmConfig::$defaultLangTag,'-','_'));
 					}
 				}
-			} else if(!empty($lfbs)){
+			} else */
+			if(!empty($lfbs)){
 				vmdebug('my lfbs '.$lfbs);
 				$pairs = explode(';',$lfbs);
 				if($pairs and count($pairs)>0){

@@ -901,7 +901,7 @@ class VmModel extends vObject{
 
 		if($method===0){
 			$method = 'LEFT JOIN';
-			if($isSite and (!VmConfig::get('dualFallback',false) or VmConfig::get('prodOnlyWLang',false))){
+			if($isSite and VmConfig::get('prodOnlyWLang',false)){
 				$method = 'INNER JOIN';
 			}
 		} else {
