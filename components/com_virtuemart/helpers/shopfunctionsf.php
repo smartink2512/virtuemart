@@ -365,7 +365,7 @@ class shopFunctionsF {
 
 		$customfieldsModel = VmModel::getModel ('Customfields');
 		if (!class_exists ('vmCustomPlugin')) {
-			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+			require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 		}
 		foreach($products as $i => $productItem){
 

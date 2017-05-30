@@ -22,7 +22,7 @@ defined('_JEXEC') or die();
  */
 
 if (!class_exists('vmUserfieldPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmuserfieldtypeplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmuserfieldtypeplugin.php');
 }
 define('USERFIELD_REALEX', 1);
 

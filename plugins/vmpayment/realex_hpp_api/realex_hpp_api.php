@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 if (!class_exists('vmPSPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 }
 
 if (!class_exists('RealexHelperRealex')) {
@@ -36,7 +36,7 @@ if (!class_exists('RealexHelperCustomerData')) {
 }
 
 if (!class_exists('vmPSPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 }
 
 class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
@@ -2027,7 +2027,7 @@ class plgVmPaymentRealex_hpp_api extends vmPSPlugin {
 		$name = session_name();
 		$length = 32;
 		for ($i = 0; $i < $length; ++$i) {
-			$token .= $chars[(rand(0, $max))];
+			$token .= $chars[(mt_rand(0, $max))];
 		}
 
 		return md5($token . $name);

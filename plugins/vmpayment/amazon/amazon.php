@@ -22,7 +22,7 @@ if(!class_exists('VmConfig')) {
 }
 
 if(!class_exists('vmPSPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 }
 
 defined ('AMAZON_IGNORE_SSL') or define ('AMAZON_IGNORE_SSL', 0);

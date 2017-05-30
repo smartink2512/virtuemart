@@ -89,7 +89,7 @@ class VirtueMartViewProductdetails extends VmView {
 			if ($product->customfields){
 
 				if (!class_exists ('vmCustomPlugin')) {
-					require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+					require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 				}
 				$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
 			}
@@ -322,7 +322,7 @@ class VirtueMartViewProductdetails extends VmView {
 			$productDisplayPayments = array();
 
 			if (!class_exists('vmPSPlugin'))
-				require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+				require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmcalculation');
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmpayment');

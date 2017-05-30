@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  *
  */
 if (!class_exists('vmPSPlugin'))
-require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
 class plgVmPaymentTco extends vmPSPlugin {
 

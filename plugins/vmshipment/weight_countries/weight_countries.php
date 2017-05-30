@@ -21,7 +21,7 @@ defined ('_JEXEC') or die('Restricted access');
  *
  */
 if (!class_exists ('vmPSPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 }
 
 /**

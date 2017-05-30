@@ -26,7 +26,7 @@ if (!class_exists('ShopFunctions')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'shopfunctions.php');
 }
 if (!class_exists('vmPSPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 }
 
 if (!class_exists('RealexHelperRealex')) {

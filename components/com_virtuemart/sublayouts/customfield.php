@@ -619,7 +619,7 @@ class VirtueMartCustomFieldRenderer {
 						if (!empty($related->customfields)) {
 
 							if (!class_exists ('vmCustomPlugin')) {
-								require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+								require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 							}
 							$customfieldsModel = VmModel::getModel ('customfields');
 							if(empty($customfield->from)) {

@@ -62,7 +62,7 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
     function PaymentResponseReceived() {
 
 	if (!class_exists('vmPSPlugin'))
-	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php'); JPluginHelper::importPlugin('vmpayment');
+	    require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php'); JPluginHelper::importPlugin('vmpayment');
 
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
@@ -88,7 +88,7 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
 		// TODO: not ready yet
 
 	    if (!class_exists('vmPSPlugin'))
-		    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		    require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 	    JPluginHelper::importPlugin('vmshipment');
 
 	    $return_context = "";
@@ -110,7 +110,7 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
     function pluginUserPaymentCancel() {
 
 	if (!class_exists('vmPSPlugin'))
-	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	    require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
 	    require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -144,7 +144,7 @@ class VirtueMartControllerVmplg extends JControllerLegacy {
     function pluginNotification() {
 
 	if (!class_exists('vmPSPlugin'))
-	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	    require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
 	    require(VMPATH_SITE . DS . 'helpers' . DS . 'cart.php');

@@ -102,13 +102,13 @@ class VirtuemartViewOrders extends VmView {
 			);
 
 			$this->shipment_name='';
-			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+			if (!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_shipmentmethod_id, &$this->shipment_name));
 
 			$this->payment_name='';
-			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+			if(!class_exists('vmPSPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$this->payment_name));
@@ -144,7 +144,7 @@ class VirtuemartViewOrders extends VmView {
 			$emailCurrencyId = $orderDetails['details']['BT']->user_currency_id;
 			$exchangeRate = FALSE;
 			if (!class_exists ('vmPSPlugin')) {
-				require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+				require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 			}
 
 			if (!class_exists ('CurrencyDisplay')) {
@@ -180,7 +180,7 @@ class VirtuemartViewOrders extends VmView {
 					$emailCurrencyId = $order->user_currency_id;
 					$exchangeRate = FALSE;
 					if (!class_exists ('vmPSPlugin')) {
-						require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+						require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 					}
 					JPluginHelper::importPlugin ('vmpayment');
 					$dispatcher = JDispatcher::getInstance ();

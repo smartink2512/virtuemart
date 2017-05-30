@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 if (!class_exists('vmPSPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	require(VMPATH_PLUGINLIBS . DS . 'vmpsplugin.php');
 }
 
 if (!class_exists('PaypalHelperPaypal')) {
@@ -245,7 +245,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 * @return bool
 	 */
 	function plgVmOnProductDisplayPayment($product, &$productDisplay) {
-		return;
+		//return;
 		$vendorId = 1;
 		if ($this->getPluginMethods($vendorId) === 0) {
 			return FALSE;

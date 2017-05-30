@@ -275,7 +275,7 @@ class VirtuemartViewCategory extends VmView {
 					}
 				} else {
 					if (!class_exists ('vmCustomPlugin')) {
-						require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+						require(VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php');
 					}
 					//vmdebug('My products ',$this->products);
 					foreach($this->products as $pType => $productSeries) {

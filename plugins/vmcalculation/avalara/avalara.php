@@ -16,7 +16,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  *
  */
 
-if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
+if (!class_exists('vmCalculationPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmcalculationplugin.php');
 
 defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
 
