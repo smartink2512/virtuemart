@@ -1113,28 +1113,11 @@ class vmrouterHelper {
 			return $ids[$hash];
 		}
 
-		if($this->langFback){
+		$select = implode(', ',VmModel::joinLangSelectFields(array($idname), true));
+		$joins = implode(' ',VmModel::joinLangTables(substr($table,0,-1),'i',$idname,'FROM'));
+		$wherenames = implode(', ',VmModel::joinLangSelectFields(array($wherename), false));
+		$q = 'SELECT '.$select.' '.$joins.' WHERE '.$wherenames.' = "'.$this->_db->escape($value).'"';
 
-			if(VmConfig::$defaultLang!=VmConfig::$jDefLang){
-				$select2 = 'IFNULL(ld.`'.$idname.'`,ljd.`'.$idname.'`)';
-				$where2 = 'IFNULL(ld.`'.$wherename.'`,ljd.`'.$wherename.'`)';
-				$tables = $table.VmConfig::$jDefLang.' as ljd LEFT JOIN '.$table.VmConfig::$defaultLang .' as ld ON ljd.`'.$idname.'`=ld.`'.$idname.'`
-				LEFT JOIN '.$table.VmConfig::$vmlang.' as l ON ljd.`'.$idname.'`=l.`'.$idname.'` ';
-			} else {
-				$select2 = 'ld.`'.$idname.'`';
-				$where2 = 'ld.`'.$wherename.'`';
-				$tables = $table.VmConfig::$defaultLang .' as ld LEFT JOIN '.$table.VmConfig::$vmlang.' as l ON ld.`'.$idname.'`=l.`'.$idname.'`';
-			}
-			$select = 'IFNULL(l.`'.$idname.'`,'.$select2.') as `'.$idname.'` ';
-			$wherenames = 'IFNULL(l.`'.$wherename.'`,'.$where2.')';
-
-		} else {
-			$select = $idname;
-			$tables = $table.VmConfig::$vmlang;
-			$wherenames = $wherename;
-		}
-
-		$q = 'SELECT '.$select.' FROM '.$tables.' WHERE '.$wherenames.' = "'.$this->_db->escape($value).'"';
 		$this->_db->setQuery($q);
 		//vmdebug('getFieldOfObjectWithLangFallBack my query ',str_replace('#__',$this->_db->getPrefix(),$this->_db->getQuery()));
 		$ids[$hash] = $this->_db->loadResult();
