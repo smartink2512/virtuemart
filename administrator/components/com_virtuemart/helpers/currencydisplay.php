@@ -340,16 +340,15 @@ class CurrencyDisplay {
 			if($priceOnly){
 				return $priceFormatted;
 			}
-			if($forceNoLabel) {
-				return '<div class="Price'.$name.$vis.'" ><span class="Price'.$name.'" >'.$priceFormatted.'</span></div>';
-			}
-			$descr = '';
-			if($this->_priceConfig[$name][2]) $descr = vmText::_($description);
-			// 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
-			if($switchSequel){
-				return '<div class="Price'.$name.$vis.'"  ><span class="Price'.$name.'" >'.$priceFormatted.'</span>'.$descr.'</div>';
+			if($this->_priceConfig[$name][2] and !$forceNoLabel) {
+				$descr = vmText::_($description);
+				if($switchSequel){
+					return '<div class="Price'.$name.$vis.'"><span class="Price'.$name.'">'.$priceFormatted.'</span>'.$descr.'</div>';
+				} else {
+					return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="Price'.$name.'">'.$priceFormatted.'</span></div>';
+				}
 			} else {
-				return '<div class="Price'.$name.$vis.'"><span class="vm-price-desc">'.$descr.'</span><span class="Price'.$name.'">'.$priceFormatted.'</span></div>';
+				return '<div class="Price'.$name.$vis.'"><span class="Price'.$name.'">'.$priceFormatted.'</span></div>';
 			}
 		}
 
