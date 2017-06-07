@@ -17,6 +17,8 @@
  *
  * http://virtuemart.net
  */
+
+$paypalInterface = $viewData['paypalInterface'];
 ?>
 
 <div style="margin: 8px;">
@@ -24,61 +26,80 @@
     if ($viewData['sandbox'] ) {
         ?>
 		<span style="color:red;font-weight:bold">Sandbox (<?php echo $viewData['virtuemart_paymentmethod_id'] ?>)</span>
+        <?php
+    }
+
+    ?><div class="pp-express"><?php
+		$product = $paypalInterface->getExpressCheckoutButton();
+		$product['text'] = vmText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_BUTTON');
+		?>
+        <a href="<?php echo $product['link'] ?>" title="<?php echo $product['text'] ?>" target="_blank">
+            <img src="<?php echo $product['img'] ?>" align="left" alt="<?php echo $product['text']?>" title="<?php echo $product['text']?>"  >
+        </a>
+    </div>
     <?php
+	if(!empty($viewData['offer_credit'])){
+
+	?><div class="pp-credit"><?php
+
+		$button = $paypalInterface->getExpressCheckoutButton(true);
+		$button['text'] = 'VMPAYMENT_PAYPAL_CREDITCHECKOUT_BUTTON';
+		?>
+		<span style=""><?php echo vmText::_('or'); ?></span>
+        <a href="<?php echo $button['link'] ?>" title="<?php echo $button['text'] ?>" target="_blank">
+            <img src="<?php echo $button['img'] ?>" alt="<?php echo $button['text']?>" title="<?php echo $button['text']?>"  >
+        </a>
+        <?php
+
+
+        static $frame= false;
+        ?>
+        <button class="pp-mark-credit-modal" >
+            <img src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_bml_text.png" /></button>
+        <?php if($frame){
+            echo '<div id="paypal_offer_frame"></div>';
+            $frame = false;
+        }?>
+
+        <?php
     }
     ?>
-<a href="<?php echo $viewData['link'] ?>" title="<?php echo $viewData['text'] ?>">
-    <img src="<?php echo $viewData['img'] ?>" align="left"   alt="<?php echo $viewData['text']?>" title="<?php echo $viewData['text']?>"  >
-</a>
-    <?php
-    if(!empty($viewData['offer_credit'])){
-        $f = "
-        var heightsiz = jQuery(window).height() * 0.9;
-        var widthsiz = jQuery(window).width() * 0.8;
-        var ppframe = jQuery('<div></div>')
-               .html('<iframe id=\"paypal_offer_frame\" style=\"border: 0px;\" src=\"' + page + '\" width=\"100%\" height=\"100%\"></iframe>')
-               .dialog({
-                   autoOpen: false,
-                   closeOnEscape: true,
-                   modal: true,
-                   height: heightsiz,
-                   width: widthsiz,
-                   title: \"Paypal Credit offer\"
-               });";
-$j = '
+    </div>
+		<?php
+		$fcredit = 'var ppframeCredit = jQuery("<div></div>")';
+		$fcredit .= ".html('<iframe id=\"paypal_offer_frame_credit\" style=\"border: 0px;\" src=\"' + ppurlcredit + '\" width=\"100%\" height=\"100%\"></iframe>')";
+		$fcredit .= '.dialog({
+               autoOpen: false,
+               closeOnEscape: true,
+               modal: true,
+               height: heightsiz,
+               width: widthsiz,
+               title: "Paypal Credit offer"
+           });';
+		$j = '
 jQuery(document).ready( function() {
-    var page = Virtuemart.vmSiteurl + "index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=paypal&action=getPayPalCreditOffer&tmpl=component";
-    '.$f.'
+    var page = Virtuemart.vmSiteurl + "index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=paypal&tmpl=component";
+    var heightsiz = jQuery(window).height() * 0.9;
+    var widthsiz = jQuery(window).width() * 0.8;
+    
+    var ppurlcredit = page+"&action=getPayPalCreditOffer";
     
     var bindClose = function(){
-        ppiframe = jQuery("#paypal_offer_frame");
+        ppiframe = jQuery("#paypal_offer_frame_credit");
         closElem = ppiframe.contents().find("a").filter(\':contains("Close")\');;
         closElem.on("click", function() {
             jQuery(".ui-dialog-titlebar-close").click();
         });
     };
 
-    jQuery(".jqmodal").on("click", function(){
-        ppframe.dialog("open");
-        setTimeout(bindClose,1000);
+    jQuery(".pp-mark-credit-modal").on("click", function(){
+    '.$fcredit.'
+        ppframeCredit.dialog("open");
+        setTimeout(bindClose,2000);
     });
+    
     return false;
 });
 ';
+
 vmJsApi::addJScript('paypal_offer',$j);
-
-static $frame= false;
-?>
-        <button class="jqmodal" >
-            <img src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_bml_text.png" /></button>
-            <?php if($frame){
-                echo '<div id="paypal_offer_frame"></div>';
-                $frame = false;
-            }?>
-
-    <?php
-    }
-    ?>
-
-
-    </div>

@@ -255,17 +255,17 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			if ($this->_currentMethod->paypalproduct == 'exp') {
 				$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod);
 				$paypalInterface = $this->_loadPayPalInterface();
-				$product = $paypalInterface->getExpressProduct();
+
 				$productDisplayHtml = $this->renderByLayout('expproduct',
-					array(
-						'text' => vmText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_AVAILABALE'),
-						'img' => $product['img'],
-						'link' => $product['link'],
-						'sandbox' => $this->_currentMethod->sandbox,
-						'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
-					)
+				array(
+				'paypalInterface' => $paypalInterface,
+				'offer_credit' => $this->_currentMethod->offer_credit,
+				'sandbox' => $this->_currentMethod->sandbox,
+				'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+				)
 				);
 				$productDisplay[] = $productDisplayHtml;
+
 
 			}
 		}
@@ -370,41 +370,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->_currentMethod->paypalproduct == 'exp') {
 				$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod);
-				//$paypalInterface = $this->_loadPayPalInterface();
 				$paypalInterface = new PaypalHelperPayPalExp($this->_currentMethod, $this);
-
-
-				$button = $paypalInterface->getExpressCheckoutButton();
-				$text = 'VMPAYMENT_PAYPAL_EXPCHECKOUT_BUTTON';
-
-
-
-
 				$html .= $this->renderByLayout('expcheckout',
-					array(
-						'text' => vmText::_($text),
-						'img' => $button['img'],
-						'link' => $button['link'],
-						'offer_credit' => 0,
-						'sandbox' => $this->_currentMethod->sandbox,
-						'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id
-					)
+				array(
+				'paypalInterface' => $paypalInterface,
+				'offer_credit' => $this->_currentMethod->offer_credit,
+				'sandbox' => $this->_currentMethod->sandbox,
+				'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+				)
 				);
 
-				if($this->_currentMethod->offer_credit){
-					$button = $paypalInterface->getExpressCheckoutButton(true);
-					$text = 'VMPAYMENT_PAYPAL_CREDITCHECKOUT_BUTTON';
-					$html .= $this->renderByLayout('expcheckout',
-					array(
-						'text' => vmText::_($text),
-						'img' => $button['img'],
-						'link' => $button['link'],
-						'offer_credit' => '1',
-						'sandbox' => $this->_currentMethod->sandbox,
-						'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id
-						)
-					);
-				}
 
 
 			}
@@ -1474,16 +1449,33 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return FALSE;
 		}
 		$action = vRequest::getCmd('action');
-		if($action == 'getPayPalCreditOffer'){
-			$link = 'https://www.securecheckout.billmelater.com/paycapture-content/fetch?hash=AU826TU8&content=/bmlweb/ppwpsiw.html';
+
+		$virtuemart_paymentmethod_id = vRequest::getInt('pm');
+		//Load the method
+		if (!($currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+
+		if($action == 'getPayPalCreditOffer' or $action == 'getPayPalOffer'){
+			$this->_currentMethod = $currentMethod;
+			$paypalInterface = new PaypalHelperPayPalExp($this->_currentMethod, $this);
+
+			if($action == 'getPayPalCreditOffer'){
+				$link = 'https://www.securecheckout.billmelater.com/paycapture-content/fetch?hash=AU826TU8&content=/bmlweb/ppwpsiw.html';
+			} else {
+				$exp = $paypalInterface->getExpressProduct();
+
+				$link = $exp['link'];//'https://www.securecheckout.billmelater.com/paycapture-content/fetch?hash=AU826TU8&content=/bmlweb/ppwpsiw.html';
+			}
+
 
 			$opts = array(
 			'https'=>array(
 			'method'=>"GET"
 			)
 			);
-			$context = stream_context_create($opts);
 
+			$context = stream_context_create($opts);
 			$request = file_get_contents($link, false, $context);
 
 			if(!empty($request)) {
@@ -1491,13 +1483,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				echo $request;
 				jExit();
 			}
+
 			jExit();
 		}
-		$virtuemart_paymentmethod_id = vRequest::getInt('pm');
-		//Load the method
-		if (!($currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
-			return NULL; // Another method was selected, do nothing
-		}
+
 		if (!$this->selectedThisElement($currentMethod->payment_element)) {
 			return FALSE;
 		}
