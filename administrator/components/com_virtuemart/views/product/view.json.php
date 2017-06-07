@@ -79,7 +79,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$query .= " \n".implode(" \n",$joinedTables);
 			if (!empty($filter)){
 				$filter = '"%'.$this->db->escape( $filter, true ).'%"';
-				$fields = VmModel::joinLangWhereFields(array('product_name'),$filter);
+				$fields = VmModel::joinLangLikeFields(array('product_name'),$filter);
 				$query .=  ' WHERE '.implode (' OR ', $fields) ;
 				$query .= ' OR product_sku LIKE '.$filter;
 			}
@@ -109,7 +109,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$query .= " \n".implode(" \n",$joinedTables);
 			if (!empty($filter)){
 				$filter = '"%'.$this->db->escape( $filter, true ).'%"';
-				$fields = VmModel::joinLangWhereFields(array('category_name'),$filter);
+				$fields = VmModel::joinLangLikeFields(array('category_name'),$filter);
 				$query .=  ' WHERE '.implode (' OR ', $fields) ;
 			}
 

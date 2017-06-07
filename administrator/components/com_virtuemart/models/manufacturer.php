@@ -152,10 +152,10 @@ class VirtueMartModelManufacturer extends VmModel {
 		$joinedTables = ' FROM `#__virtuemart_manufacturers` as m';
 		$select = ' `m`.*';
 		if ( $search && $search != 'true' && $view == 'manufacturer') {
-			$db = JFactory::getDBO();
-			$search = '"%' . $db->escape( $search, true ) . '%"' ;
-			//$search = $db->Quote($search, false);
-			$where[] .= ' LOWER( `mf_name` ) LIKE '.$search;
+			$fields = self::joinLangLikeField('mf_name','"%'.$search.'%"');
+			if (!empty($fields)) {
+				$where[] = '(' . implode (' OR ', $fields) . ')';
+			}
 		}
 
 		$ordering = $this->_getOrdering();
@@ -165,17 +165,12 @@ class VirtueMartModelManufacturer extends VmModel {
 		$select .= ', '.implode(', ',self::joinLangSelectFields($langFields));
 		$joinedTables .= implode(' ',self::joinLangTables($this->_maintable,'m','virtuemart_manufacturer_id'));
 
-
-
-		//if ( $search && $search != 'true' or strpos($ordering,'mf_')!==FALSE or $ordering == 'm.virtuemart_manufacturer_id' ) {
-			/*$select .= ',`#__virtuemart_manufacturers_'.VmConfig::$vmlang.'`.*, mc.`mf_category_name` ';
-			$joinedTables .= ' INNER JOIN `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` USING (`virtuemart_manufacturer_id`) ';*/
 		$select .= ',  mc.`mf_category_name`';
 		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `m`.`virtuemart_manufacturercategories_id` ';
 		//}
 
 		if ($onlyPublished) {
-			$where[] .= ' `m`.`published` = 1';
+			$where[] = ' `m`.`published` = 1';
 		}
 
 		$groupBy=' ';

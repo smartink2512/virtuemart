@@ -969,16 +969,16 @@ class VmModel extends vObject{
 		return $fields;
 	}
 
-	static public function joinLangWhereFields($langFields, $keyword){
+	static public function joinLangLikeFields($langFields, $keyword){
 		$r = array();
 		foreach ($langFields as $langField) {
-			$t = self::joinLangWhereField($langField, $keyword);
+			$t = self::joinLangLikeField($langField, $keyword);
 			$r = array_merge($r, $t);
 		}
 		return $r;
 	}
 
-	static public function joinLangWhereField($searchField, $keyword){
+	static public function joinLangLikeField($searchField, $keyword){
 
 		static $useFb = null, $useFb2 = null;
 		if($useFb === null){
@@ -991,6 +991,7 @@ class VmModel extends vObject{
 		}
 
 		$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
+		vmdebug('joinLangLikeField',$keyword,$keywords_plural);
 		$filter_search[] =  'l.`'.$searchField . '` LIKE ' . $keywords_plural;
 		if($useFb){
 			$filter_search[] =  'ld.`'.$searchField . '` LIKE ' . $keywords_plural;

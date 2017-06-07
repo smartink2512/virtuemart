@@ -327,7 +327,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 				if($prodLangFB){
-					$fields = self::joinLangWhereField($searchField,$keyword);
+					$fields = self::joinLangLikeField($searchField,$keyword);
 					vmdebug('my search fields',$fields);
 					$filter_search = array_merge($filter_search, $fields);
 				} else {

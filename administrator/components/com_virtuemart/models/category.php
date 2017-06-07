@@ -340,7 +340,7 @@ class VirtueMartModelCategory extends VmModel {
 			$keyword = $db->escape( $keyword, true );
 			$keyword =  '"%' .str_replace(array(' ','-'),'%', $keyword). '%"';
 			//$keyword = $db->escape( $keyword, true );
-			$fields = self::joinLangWhereFields($langFields,$keyword);
+			$fields = self::joinLangLikeFields($langFields,$keyword);
 			$whereOr = array_merge($whereOr, $fields);
 		}
 
