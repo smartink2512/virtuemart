@@ -653,7 +653,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$currentValue = $field->customfield_value;
 					return $priceInput . '</td><td>'.JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', NULL, 'value', 'text', $currentValue) ;
 				} else{
-					return $priceInput . '</td><td><input type="text" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
+					return $priceInput . '</td><td><input type="text" value="' . vmText::_($field->customfield_value) . '" name="field[' . $row . '][customfield_value]" />';
 					break;
 				}
 

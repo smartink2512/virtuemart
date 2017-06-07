@@ -752,7 +752,8 @@ class vmrouterHelper {
 	private static $_instance = false;
 
 	private static $_catRoute = array ();
-
+	public static $byMenu = 0;
+	public static $template = 0;
 	public $CategoryName = array();
 	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','cart' => 'cart','manufacturer' => 'manufacturer','user'=>'user');
 

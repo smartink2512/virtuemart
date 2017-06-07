@@ -103,7 +103,7 @@ Virtuemart.cartEffect = function(form) {
 		if(datas.stat ==1){
 			var txt = datas.msg;
 		} else if(datas.stat ==2){
-			var txt = datas.msg +"<H4>"+form.find(".pname").val()+"</H4>";
+			var txt = datas.msg;
 		} else {
 			var txt = "<H4>"+vmCartError+"</H4>"+datas.msg;
 		}
