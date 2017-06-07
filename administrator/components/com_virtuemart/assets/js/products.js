@@ -196,7 +196,7 @@ Virtuemart.prdcustomer = jQuery(function($) {
 	function populate_customer_list($status) {
 		if ($status == "undefined" || $status == null) $status = '';
 		if($status !=''){
-			jQuery.getJSON($customerListLink, { status:$status  },
+			jQuery.getJSON($customerListLink, { order_status:$status  },
 				function (data) {
 					jQuery("#customers-list").html(data.value);
 				});

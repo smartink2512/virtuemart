@@ -217,7 +217,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$this->json['ok'] = 1 ;
 		} else if ($this->type=='userlist')
 		{
-			$status = vRequest::getvar('status');
+			$status = vRequest::getvar('order_status',array('S'));
 			$productShoppers=0;
 
 			if ($status) {
@@ -228,6 +228,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				$productModel = VmModel::getModel('product');
 				$productShoppers = $productModel->getProductShoppersByStatus($product_id ,$status,$lists['filter_order'],$lists['filter_order_Dir']);
 			}
+
 			if(!class_exists('ShopFunctions'))require(VMPATH_ADMIN.DS.'helpers'.DS.'shopfunctions.php');
 			$html = ShopFunctions::renderProductShopperList($productShoppers);
 			$this->json['value'] = $html;

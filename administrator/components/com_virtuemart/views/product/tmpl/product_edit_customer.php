@@ -28,14 +28,14 @@ $i = 0;
 		<td width="21%" valign="top">
 			<?php
 			$mail_options = array(
-				'customer'=> vmText::_ ('COM_VIRTUEMART_PRODUCT_SHOPPERS'),
-				'notify'  => vmText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'),
+				'customer'=> vmText::_ ('COM_VIRTUEMART_PRODUCT_SHOPPERS')
 			);
-			$mail_default = 'notify';
 			if ($stockhandle != 'disableadd' or empty($this->waitinglist)) {
-				echo '<input type="hidden" name="customer_email_type" value="customer" id="customer_email_type0">';
+				echo VmHtml::radioList ('customer_email_type', 'customer', $mail_options, 'style="display:none;"');
 			}
 			else {
+				$mail_default = 'notify';
+				$mail_options['notify'] = vmText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST');
 				echo VmHtml::radioList ('customer_email_type', $mail_default, $mail_options);
 			}
 			?>
