@@ -542,7 +542,7 @@ INNER JOIN #__virtuemart_product_categories as cat ON (pc.virtuemart_product_id=
 		if(!empty($this->categoryId)){
 			$q1 .= ' virtuemart_category_id="'.$this->categoryId.'" and';
 		}
-		$q1 .= ' searchable="1" and (field_type="S" or field_type="P") GROUP BY c.virtuemart_custom_id';
+		$q1 .= ' searchable="1" and (field_type="S" or field_type="P") and c.published = 1 GROUP BY c.virtuemart_custom_id';
 
 		$db->setQuery($q1);
 		$this->selected = $db->loadObjectList();
