@@ -59,8 +59,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	function __construct(& $subject, $config) {
 
-		//if (self::$_this)
-		//   return self::$_this;
 		parent::__construct($subject, $config);
 
 		$this->customerData = new PaypalHelperCustomerData();
@@ -185,7 +183,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		);
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-		//self::$_this = $this;
 	}
 
 	public function getVmPluginCreateTableSQL() {

@@ -752,8 +752,8 @@ class vmrouterHelper {
 	private static $_instance = false;
 
 	private static $_catRoute = array ();
-	public static $byMenu = 0;
-	public static $template = 0;
+	public $byMenu = 0;
+	public $template = 0;
 	public $CategoryName = array();
 	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','cart' => 'cart','manufacturer' => 'manufacturer','user'=>'user');
 
@@ -1272,7 +1272,7 @@ class vmrouterHelper {
 					}
 				} else {
 					vmdebug('my item with empty $link["view"]',$item);
-					vmError('$link["view"] is empty');
+					//vmError('$link["view"] is empty');
 				}
 			}
 			$mCache[$h.$this->Itemid] = $this->menu;

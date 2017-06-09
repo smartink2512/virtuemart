@@ -524,7 +524,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							vmdebug('Updated menu $menu '.$menu['id'],$linkOrig,$menu['link'],$param);
 						}
 					} else {
-						vmdebug('Menu dont need update '.$menu['id']);
+						//vmdebug('Menu dont need update '.$menu['id']);
 					}
 
 				}
