@@ -3083,6 +3083,10 @@ vmdebug('$limitStart',$limitStart);
 			return FALSE;
 		}
 
+		$validFilter = array('ou.email','ou.first_name','o.order_number','order_date');
+		if(!in_array($filter_order,$validFilter)){
+			$filter_order = 'ou.email';
+		}
 		$q = 'SELECT ou.* , oi.product_quantity , o.order_number, o.order_status, o.created_on as order_date, oi.`order_status` AS order_item_status ,
 		o.virtuemart_order_id FROM `#__virtuemart_order_userinfos` as ou
 			JOIN `#__virtuemart_order_items` AS oi ON oi.`virtuemart_order_id` = ou.`virtuemart_order_id`

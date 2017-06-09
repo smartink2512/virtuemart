@@ -85,8 +85,8 @@ if(VmConfig::get('shop_is_offline',0) and $task!='feed' and $_controller!='virtu
 
 	} elseif($_controller) {
 			if($_controller!='productdetails'){
-				$session->set('manage', 0,'vm');
-				vRequest::setVar('manage','0');
+				//$session->set('manage', 0,'vm');
+				//vRequest::setVar('manage','0');
 			}
 			vmJsApi::jQuery();
 			vmJsApi::jSite();
