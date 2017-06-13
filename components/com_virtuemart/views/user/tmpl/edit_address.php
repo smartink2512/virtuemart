@@ -85,6 +85,11 @@ if ($this->cart->getInCheckOut()){
 }
 $url = 'index.php?option=com_virtuemart&view='.$rview.$task;
 
+?>
+<div class="width30 floatleft vm-cart-header">
+    <div class="payments-signin-button" ></div>
+</div>
+<?php
 echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 ?>

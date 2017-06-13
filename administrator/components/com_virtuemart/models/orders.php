@@ -1979,6 +1979,7 @@ vmdebug('my prices',$data);
 			}
 		}
 
+		shopFunctionsF::loadOrderLanguages(VmConfig::$vmlangTag);
 		$res = true;
 		if($sendMail){
 			if(!empty($vars['orderDetails']['details']) and !empty($vars['orderDetails']['details']['BT']->order_language)) {
