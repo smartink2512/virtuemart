@@ -40,7 +40,7 @@ class plgVmpaymentAmazon extends vmPSPlugin {
 	var $_amazonOrderReferenceId = NULL;
 	const AMAZON_EMPTY_USER_FIELD = "amazon";
 	const AMAZON_EMPTY_USER_FIELD_EMAIL = "dummy@domain.com";
-	const AUTHORIZE_TRANSACTION_TIMEOUT = 60;
+	const AUTHORIZE_TRANSACTION_TIMEOUT = 1440;
 
 	var $_currentMethod = NULL;
 	private $_amount = 0.0;
@@ -2679,6 +2679,19 @@ $('.amazonDetailsOpener').click(function() {
 	}
 
 	/**
+	 *
+	 */
+	 public function displayListFE(VirtueMartCart $cart, $selected = 0, &$htmlIn){
+
+	 	static $c = true;
+	 	if($c){
+	 		parent::displayListFE($cart, $selected, $htmlIn);
+			$c = false;
+	 	}
+
+	 }
+
+	/**
 	 * plgVmDisplayListFEPayment
 	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
 	 *
@@ -2705,6 +2718,33 @@ $('.amazonDetailsOpener').click(function() {
 			$html = NULL;
 			$this->displayListFE($cart, $cart->virtuemart_paymentmethod_id, $html);
 		}
+	}
+
+	function plgVmDisplayLogin(VmView $view, &$html, $from_cart = FALSE) {
+
+		// only to display it in the cart, not in list orders view
+		if(!$from_cart) {
+			return NULL;
+		}
+
+		if(!class_exists( 'VirtueMartCart' )) {
+			require(VMPATH_SITE.DS.'helpers'.DS.'cart.php');
+		}
+
+		$cart = VirtueMartCart::getCart();
+		if($this->getPluginMethods( $cart->vendorId ) === 0) {
+			return FALSE;
+		}
+
+		if(!($selectedMethod = $this->getVmPluginMethod( $cart->virtuemart_paymentmethod_id ))) {
+			return FALSE;
+		}
+		$arrayIn= array();
+		if(empty($cart->prices)){
+
+			$cart->prepareCartData();
+		}
+		$this->displayListFE($cart, $cart->virtuemart_paymentmethod_id, $arrayIn);
 
 	}
 

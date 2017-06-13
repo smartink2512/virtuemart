@@ -382,7 +382,7 @@ function virtuemartParseRoute($segments) {
 	} else {
 		$vars['limitstart'] = 0 ;
 		if(vmrouterHelper::$limit === null){
-			vmrouterHelper::$limit = VmConfig::get('list_limit', 20);
+			vmrouterHelper::$limit = VmConfig::get('llimit_init_FE', 20);
 		}
 		$vars['limit'] = vmrouterHelper::$limit;
 
@@ -564,6 +564,12 @@ function virtuemartParseRoute($segments) {
 			elseif (  $helper->compareKey($segments[0] ,'edit') ) {
 				$vars['layout'] = 'edit' ;      //uncomment and lets test
 			}
+			elseif (  $helper->compareKey($segments[0] ,'pluginresponse') ) {
+				$vars['view'] = 'pluginresponse' ;
+				if(isset($segments[1]))
+				$vars['task'] = $segments[1] ;
+			}
+
 			else $vars['task'] = $segments[0] ;
 		}
 		return $vars;
@@ -834,7 +840,7 @@ class vmrouterHelper {
 				$mainframe = JFactory::getApplication(); ;
 				$view = 'virtuemart';
 				if(isset($query['view'])) $view = $query['view'];
-				self::$limit= $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', VmConfig::get('list_limit', 20), 20, 'int');
+				self::$limit= $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', VmConfig::get('llimit_init_FE', 24), 24, 'int');
 			}
 		}
 		self::$_instance->query = $query;

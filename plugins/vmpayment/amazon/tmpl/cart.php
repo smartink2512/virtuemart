@@ -108,7 +108,7 @@ JHtml::_('behavior.formvalidation');
 				// This displays the pricelist MUST be done with tables, because it is also used for the emails
 				echo $this->loadTemplate('pricelist');
 
-				if (!empty($this->checkoutAdvertise)) {
+				/*if (!empty($this->checkoutAdvertise)) {
 					?>
 					<div id="checkout-advertise-box"> <?php
 					foreach ($this->checkoutAdvertise as $checkoutAdvertise) {
@@ -119,7 +119,7 @@ JHtml::_('behavior.formvalidation');
 					<?php
 					}
 					?></div><?php
-				}
+				}*/
 
 				echo $this->loadTemplate('cartfields');
 
