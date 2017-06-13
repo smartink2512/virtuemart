@@ -69,7 +69,9 @@ $params = VmConfig::loadConfig();
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_ADDITIONAL_IMAGES', 'add_img_main', VmConfig::get('add_img_main'));
 		if (function_exists('imagecreatefromjpeg')) {
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING', 'img_resize_enable', VmConfig::get('img_resize_enable', 1));
-			echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH', 'img_width', VmConfig::get('img_width', 90),"","",4);
+			echo VmHTML::row('input','COM_VM_CFG_MEDIA_WIDTH', 'img_width_full', VmConfig::get('img_width_full', ''),"","",4);
+			echo VmHTML::row('input','COM_VM_CFG_MEDIA_HEIGHT', 'img_height_full', VmConfig::get('img_height_full', 260),"","",4);
+			echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH', 'img_width', VmConfig::get('img_width', ''),"","",4);
 			echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT', 'img_height', VmConfig::get('img_height', 90),"","",4);
 
 		} else { ?>
