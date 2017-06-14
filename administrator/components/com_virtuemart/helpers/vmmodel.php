@@ -83,6 +83,7 @@ class VmModel extends vObject{
 	var $_selectedOrderingDir = 'DESC';
 	private $_withCount = true;
 	var $_noLimit = false;
+	protected $_maxItems = 1000;
 
 	public function __construct($cidName='cid', $config=array()){
 		// Guess the option from the class name (Option)Model(View).
@@ -737,9 +738,13 @@ class VmModel extends vObject{
 			} else {
 				$limit = VmConfig::get ('llimit_init_BE',30);
 			}
-			if(empty($limit)){
-				$limit = 30;
-			}
+		}
+
+		if(empty($limit)){
+			$limit = 24;
+		}
+		if($limit>$this->_maxItems){
+			$limit = $this->_maxItems;
 		}
 
 		$this->setState('limit', $limit);

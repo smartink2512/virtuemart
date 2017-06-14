@@ -1300,7 +1300,8 @@ class vmAccess {
 					self::$_virtuemart_vendor_id[$uid] = $virtuemart_vendor_id;
 					vmdebug('Active vendor '.$uid.' '.$virtuemart_vendor_id );
 				} else {
-					if(self::manager('core') or self::manager('managevendors')){
+					$multix = Vmconfig::get('multix','none');
+					if( ($multix == 'none' and self::manager()) or ($multix != 'none' and (self::manager('core') or self::manager('managevendors')) )){
 						vmdebug('Active Mainvendor');
 						self::$_virtuemart_vendor_id[$uid] = 1;
 					} else {

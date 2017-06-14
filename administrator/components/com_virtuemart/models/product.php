@@ -90,6 +90,8 @@ class VirtueMartModelProduct extends VmModel {
 		self::$omitLoaded = VmConfig::get('omitLoaded',false);
 
 		$this->memory_limit = VmConfig::getMemoryLimitBytes();
+
+		$this->_maxItems = VmConfig::get ('absMaxProducts', 700);
 	}
 
 	var $keyword = "0";
@@ -105,6 +107,7 @@ class VirtueMartModelProduct extends VmModel {
 	private $_autoOrder = 0;
 	private $orderByString = 0;
 	private $listing = FALSE;
+
 
 	/**
 	 * This function resets the variables holding request depended data to the initial values
@@ -1728,7 +1731,7 @@ vmdebug('$limitStart',$limitStart);
 			$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
 		}
 
-		$maxNumber = VmConfig::get ('absMaxProducts', 700);
+		$maxNumber = $this->_maxItems;
 		$products = array();
 		$i = 0;
 		if ($single) {
