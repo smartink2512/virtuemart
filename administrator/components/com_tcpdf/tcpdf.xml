@@ -7,7 +7,7 @@
     <author>Nicola Asuni, The VirtueMart Development Team</author>
     <authorUrl>${PHING.VM.MAINTAINERURL}</authorUrl>
     <description>TCPDF 6.2.12 by Nicola Asuni. Joomla Installer by the VirtueMart Team</description>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
         <!-- Custom un/installer for 1.6 -->
    <scriptfile>script.tcpdf.php</scriptfile>
 	<!-- Custom installer for 1.5 -->
@@ -19,6 +19,7 @@
         <menu>TCPDF</menu>
         <files folder="admin">
             <filename>admin.tcpdf.php</filename>
+            <filename>tcpdf.php</filename>
             <folder>libraries</folder>
         </files>
     </administration>

@@ -46,9 +46,12 @@
  * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
  */
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+if (!class_exists( 'VmConfig' )) {
+	require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
+	VmConfig::loadConfig();
+}
 
-define("K_PATH_MAIN", JPATH_VM_LIBRARIES.DS.'tcpdf'.DS);
+define("K_PATH_MAIN", VMPATH_LIBS.DS.'tcpdf'.DS);
 
 /**
  * URL path to tcpdf installation folder (http://localhost/tcpdf/).
@@ -66,7 +69,7 @@ define ('K_PATH_FONTS', K_PATH_MAIN.'fonts'.DS);
  * Default images directory.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-define ('K_PATH_IMAGES', VMPATH_ROOT.DS);
+define ('K_PATH_IMAGES', VMPATH_ROOT.DS.'images'.DS.'tcpdf'.DS);
 
 /**
  * Deafult image logo used be the default Header() method.

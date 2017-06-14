@@ -6881,7 +6881,14 @@ class TCPDF {
 				$ph = $this->getHTMLUnitToUnits($h, 0, $this->pdfunit, true) * $this->imgscale * $this->k;
 				$imsize = array($pw, $ph);
 			} else {
-				$this->Error('[Image] Unable to get the size of the image: '.$file);
+				$t = VmConfig::$_debug;
+				VmConfig::$_debug = 1;
+				VmConfig::$logDebug = true;
+				vmdebug('TCPDF [Image] Unable to get the size of the image: ',$file);
+				VmConfig::$logDebug = false;
+				VmConfig::$_debug = $t;
+				return;	//By VirtueMart Team*/
+				//$this->Error('[Image] Unable to get the size of the image: '.$file);
 			}
 		}
 		// file hash
