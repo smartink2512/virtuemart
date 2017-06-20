@@ -925,7 +925,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$button = array();
 
 		$lang = jFactory::getLanguage();
-		$lang_iso = str_replace('-', '_', $lang->gettag());
+		$lang_iso = str_replace('-', '_', $lang->getTag());
 		$available_buttons = array('en_US', 'en_GB', 'de_DE', 'es_ES', 'pl_PL', 'nl_NL', 'fr_FR', 'it_IT', 'zn_CN');
 		if (!in_array($lang_iso, $available_buttons)) {
 			$lang_iso = 'en_US';
@@ -936,7 +936,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		if($credit){
 			$button['img'] = 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/ppcredit-logo-small.png ';
 		} else {
-			$button['img'] = JURI::root() . 'plugins/vmpayment/' . $this->_method->payment_element . '/' . $this->_method->payment_element . '/assets/images/PP_Buttons_CheckOut_119x24_v3.png';
+			$button['img'] = JURI::root() . 'plugins/vmpayment/' . $this->_method->payment_element . '/' . $this->_method->payment_element . '/assets/images/de-pp-logo-150px.png';
 		}
 
 		return $button;

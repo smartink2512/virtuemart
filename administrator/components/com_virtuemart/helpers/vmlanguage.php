@@ -156,7 +156,7 @@ class vmLanguage {
 	}
 
 
-	static private function setLanguage($tag){
+	static public function setLanguage($tag){
 
 		if(!isset(self::$languages[$tag])) {
 			self::getLanguage($tag);
@@ -184,7 +184,9 @@ class vmLanguage {
 				self::$languages[$tag] = JLanguage::getInstance($tag, false);
 				vmdebug('loadJLang created JLanguage::getInstance '.$tag);
 			}
+
 		}
+
 		return self::$languages[$tag];
 	}
 
@@ -283,6 +285,7 @@ class vmLanguage {
 
 		return self::$languages[$tag];
 	}
+
 
 	static public function getUseLangFallback(){
 
