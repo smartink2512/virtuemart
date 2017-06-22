@@ -66,6 +66,9 @@ AdminUIHelper::startAdminArea($this);
 				$shared = $this->toggle($row->shared, $i, 'toggle.shared');
 			}
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipmentmethod&task=edit&cid[]='.$row->virtuemart_shipmentmethod_id);
+			if(empty($row->shipment_name)){
+				$row->shipment_name = vmText::sprintf('COM_VM_TRANSLATION_MISSING','virtuemart_shipment_id',$row->virtuemart_shipmentmethod_id);
+			}
 	?>
 			<tr class="row<?php echo $k; ?>">
 				<td class="admin-checkbox">

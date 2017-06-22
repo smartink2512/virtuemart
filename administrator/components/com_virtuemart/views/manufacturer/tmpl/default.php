@@ -82,7 +82,7 @@ AdminUIHelper::startAdminArea($this);
 		<td align="left">
 			<?php
 			if(empty($row->mf_name)){
-				$row->mf_name = 'Language Missing id '.$row->virtuemart_manufacturer_id;
+				$row->mf_name = vmText::sprintf('COM_VM_TRANSLATION_MISSING','virtuemart_manufacturer_id',$row->virtuemart_manufacturer_id);
 			}
 			?>
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->mf_name; ?></a>

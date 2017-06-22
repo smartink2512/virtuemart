@@ -75,6 +75,9 @@ AdminUIHelper::startAdminArea($this);
 				$shared = $this->toggle($row->shared, $i, 'toggle.shared');
 			}
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
+			if(empty($row->payment_name)){
+				$row->payment_name = vmText::sprintf('COM_VM_TRANSLATION_MISSING','virtuemart_paymentmethod_id',$row->virtuemart_paymentmethod_id);
+			}
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 

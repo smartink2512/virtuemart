@@ -125,7 +125,7 @@ if($this->pagination->limit<=$mediaLimit or $totalList<=$mediaLimit){
 					<!--<span style="float:left; clear:left"> -->
   				<?php
 				if(empty($product->product_name)){
-					$product->product_name = 'Language Missing id '.$product->virtuemart_product_id;
+					$product->product_name = vmText::sprintf('COM_VM_TRANSLATION_MISSING','virtuemart_product_id',$product->virtuemart_product_id);
 				}
 				echo JHtml::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '. htmlentities($product->product_name))); ?>
 					<!-- </span>  -->
