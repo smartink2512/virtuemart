@@ -71,7 +71,7 @@ if (!empty($this->product->images)) {
 	<div class="main-image">
 		<?php
 		$width = VmConfig::get('img_width_full', 0);
-		$height = VmConfig::get('img_height_full', 260);
+		$height = VmConfig::get('img_height_full', 0);
 		if(!empty($width) or !empty($height)){
 			echo $image->displayMediaThumb("",true,"rel='vm-additional-images'", true, true, false, $width, $height);
 		} else {

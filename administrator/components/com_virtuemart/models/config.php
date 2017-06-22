@@ -109,12 +109,12 @@ class VirtueMartModelConfig extends VmModel {
 			}
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
-					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_dir($file)){
+					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_dir($dir.DS.$file)){
 						if( (empty($ignore) or (is_array($ignore) and !in_array($file,$ignore)) ) and ( (!empty($type) and strpos($file,$type)===0) or (empty($type) and strpos($file,'_')==0)) ){
 							//Handling directly for extension is much cleaner
 							$path_info = pathinfo($file);
 							if(empty($path_info['extension'])){
-								vmError('Attention file '.$file.' has no extension and directory '.$dir);
+								vmError('Attention file '.$file.' has no extension in directory '.$dir.DS.$file);
 								$path_info['extension'] = '';
 							}
 							if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
