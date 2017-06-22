@@ -107,12 +107,17 @@ class VirtuemartViewVendor extends VmView {
 
 			$menus = $mainframe->getMenu();
 			$menu = $menus->getActive();
-
-			if(isset($menu)){
+			if(!empty($menu)){
 				$metadesc = !empty($menu->params->get('menu-meta_description')) ? $menu->params->get('menu-meta_description') : $metadesc;
 				$metakey = !empty($menu->params->get('menu-meta_keywords')) ? $menu->params->get('menu-meta_keywords') : $metakey;
 				$metarobot = !empty($menu->params->get('robots')) ? $menu->params->get('robots') : $metarobot;
 				$customtitle = !empty($menu->params->get('page_title')) ? $menu->params->get('page_title') : $customtitle;
+				if(!empty($customtitle)){
+					$document->setTitle( $customtitle );
+					if ($mainframe->getCfg('MetaTitle') == '1') {
+						$document->setMetaData('title',  $customtitle);
+					}
+				}
 			}
 
 			$document->setMetaData('description',$metadesc);

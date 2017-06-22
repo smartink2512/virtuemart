@@ -103,10 +103,12 @@ class VirtuemartViewCategory extends VmView {
 		}
 
 		$stf_itemid = $menu->params->get('stf_itemid',false);
-		if(!empty($stf_itemid)){
-			$menu = $menus->getItem($stf_itemid);
+		if(!empty($stf_itemid) ){
+			$mstf=$menus->getItem($stf_itemid);
+			if(!empty($mstf)){
+				$menu = $mstf;
+			}
 		}
-		//vmdebug('My active menu item',$menu);
 
 		ShopFunctionsF::setLastVisitedItemId($itemId);
 		$this->Itemid = $itemId;
@@ -349,24 +351,18 @@ class VirtuemartViewCategory extends VmView {
 
 
 
-/*		[metadesc] => menu-meta_description
-		[customtitle] => page_title
-		[metakey] => menu-meta_keywords
-		[metarobot] => robots
-		[metaauthor] => ;*/
-
 		$customtitle = '';
 		$metadesc = '';
 		$metakey = '';
 		$metarobot = '';
 		$metaauthor = '';
 
-		if(isset($menu->params)){
-			$metadesc = $menu->params->get('menu-meta_description');
-			$metakey = $menu->params->get('menu-meta_keywords');
-			$metarobot = $menu->params->get('robots');
-			$customtitle = $menu->params->get('page_title');
-		}
+
+		$metadesc = $menu->params->get('menu-meta_description');
+		$metakey = $menu->params->get('menu-meta_keywords');
+		$metarobot = $menu->params->get('robots');
+		$customtitle = $menu->params->get('page_title');
+
 
 		if(($this->storefront and empty($prefix)) or $this->show_store_desc or empty($this->categoryId)){
 
