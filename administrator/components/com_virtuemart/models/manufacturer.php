@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('VmModel'))require(VMPATH_ADMIN .'/helpers/vmmodel.php');
 
 /**
  * Model class for VirtueMart Manufacturers
@@ -27,7 +27,6 @@ if(!class_exists('VmModel'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
  * @package VirtueMart
  * @subpackage Manufacturer
  * @author Max Milbers
- * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the ordering with the ordering column
  */
 class VirtueMartModelManufacturer extends VmModel {
 

@@ -42,11 +42,7 @@ else $addDateInfo = false;
                     echo vmText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  vmJsApi::jDate($this->from_period, 'from_period');
                     echo vmText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . vmJsApi::jDate($this->until_period, 'until_period');
                         if(VmConfig::get('multix','none')!='none'){
-                            $vendorId = vmConfig::isSuperVendor();
-                            if(vmAccess::manager('managevendors')){
-                                $vendorId = vRequest::getInt('virtuemart_vendor_id',$vendorId);
-                            }
-                        	echo ShopFunctions::renderVendorList($vendorId);
+                        	echo ShopFunctions::renderVendorList();
                         } ?>
                         <button class="btn btn-small" onclick="this.form.period.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?>
                         </button>

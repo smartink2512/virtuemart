@@ -282,20 +282,11 @@ class VirtueMartModelVendor extends VmModel {
 	}
 
 	/**
-	 * Retrieve a lost of vendor objects
-	 *
-	 * @author Oscar van Eijk
-	 * @return Array with all Vendor objects
+	 * @deprecated
+	 * @param $virtuemart_order_id
+	 * @return int|mixed
 	 */
-	function getVendorCategories () {
-
-		$_q = 'SELECT * FROM `#__vm_vendor_category`';
-		$db = JFactory::getDBO();
-		$db->setQuery ($_q);
-		return $db->loadObjectList ();
-	}
-
-	function getUserIdByOrderId ($virtuemart_order_id) {
+	public function getUserIdByOrderId ($virtuemart_order_id) {
 
 		if (empty ($virtuemart_order_id)) {
 			return 0;

@@ -45,6 +45,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 		$model = VmModel::getModel();
 		$this->assignRef('model', $model);
+		$app = JFactory::getApplication();
+
 		// Handle any publish/unpublish
 		switch ($task) {
 			case 'add':
@@ -76,7 +78,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				vmdebug('$superVendor by vmAccess::getVendorId',$superVendor);
 				if(!empty($product->virtuemart_vendor_id) and $superVendor !=1 and $superVendor!=$product->virtuemart_vendor_id){
 					vmdebug('Product view.html.php '.$superVendor,$product->virtuemart_vendor_id);
-					JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart&view=virtuemart', vmText::_('COM_VIRTUEMART_ALERTNOTAUTHOR'), 'error');
+					$app->redirect( 'index.php?option=com_virtuemart&view=virtuemart', vmText::_('COM_VIRTUEMART_ALERTNOTAUTHOR'), 'error');
 				}
 				if(!empty($product->product_parent_id)){
 					$product_parent= $model->getProductSingle($product->product_parent_id,false);
@@ -196,8 +198,8 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				}
 
 				$option = vRequest::getCmd('option');
-				$lists['filter_order'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_orders', 'filter_order', 'email', 'cmd');
-				$lists['filter_order_Dir'] = JFactory::getApplication()->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
+				$lists['filter_order'] = $app->getUserStateFromRequest($option.'filter_order_orders', 'filter_order', 'email', 'cmd');
+				$lists['filter_order_Dir'] = $app->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
 
 				$order_status = vRequest::getvar('order_status',array('S'));
 				$productShoppers = $model->getProductShoppersByStatus($product->virtuemart_product_id,$order_status,$lists['filter_order'],$lists['filter_order_Dir'] );
@@ -267,7 +269,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 					if($product->canonCatId) $canonLink = '&virtuemart_category_id='.$product->canonCatId;
 
 					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
-					if(JFactory::getApplication()->isSite()){
+					if($app->isSite()){
 						$bar = JToolBar::getInstance('toolbar');
 						$bar->appendButton('Link', 'back', 'COM_VIRTUEMART_LEAVE_TO_PRODUCT', juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID);
 					}
@@ -354,7 +356,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 			$this->addStandardDefaultViewLists($model,'created_on');
 
 			if($cI = vRequest::getInt('virtuemart_category_id',false)){
-				$app = JFactory::getApplication();
+
 				//$old_state = $app->getUserState('virtuemart_category_id');
 				$old_state = $app->getUserState('virtuemart_category_id');
 				if(empty($old_state) or $old_state!=$cI){
@@ -400,7 +402,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 
 			$this->lists['vendors'] = '';
 			if($this->showVendors()){
-				$this->lists['vendors'] = Shopfunctions::renderVendorList(vmAccess::getVendorId());
+				$this->lists['vendors'] = Shopfunctions::renderVendorList();
 			}
 
 

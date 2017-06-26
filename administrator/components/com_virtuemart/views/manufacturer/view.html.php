@@ -34,8 +34,6 @@ class VirtuemartViewManufacturer extends VmViewAdmin {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-
-
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
@@ -49,6 +47,14 @@ class VirtuemartViewManufacturer extends VmViewAdmin {
 
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
+
+			$ids = vRequest::getVar('virtuemart_manufacturer_id',  vRequest::getVar('cid',  0));
+			if($ids){
+				if(is_array($ids) and isset($ids[0])){
+					$ids = $ids[0];
+				}
+				$model->setId($ids);
+			}
 
 			$this->manufacturer = $model->getManufacturer();
 

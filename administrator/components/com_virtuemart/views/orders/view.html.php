@@ -201,7 +201,7 @@ class VirtuemartViewOrders extends VmViewAdmin {
 
 			$this->lists['vendors']='';
 			if($this->showVendors()){
-				$this->lists['vendors'] = Shopfunctions::renderVendorList(VmAccess::getVendorId());
+				$this->lists['vendors'] = Shopfunctions::renderVendorList();
 			}
 
 			if(!class_exists('CurrencyDisplay'))require(VMPATH_ADMIN.DS.'helpers'.DS.'currencydisplay.php');
