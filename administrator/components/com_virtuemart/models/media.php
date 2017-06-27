@@ -215,7 +215,13 @@ class VirtueMartModelMedia extends VmModel {
 			$selectFields[] = ' `virtuemart_media_id` ';
 
 
-			if(!vmAccess::manager('managevendors')){
+			if(vmAccess::manager('managevendors')){
+				$vendorId = vRequest::getInt('virtuemart_vendor_id',false);
+				if(!empty($vendorId)){
+					$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+				}
+
+			} else {
 				$vendorId = vmAccess::isSuperVendor();
 				$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
 			}
