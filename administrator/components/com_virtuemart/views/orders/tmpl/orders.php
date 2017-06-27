@@ -27,28 +27,30 @@ $styleDateCol = 'style="width:5%;min-width:110px"';
 		<div id="filterbox">
 			<table>
 				<tr>
-					<td align="left" style="min-width:480px;width:40%;">
+					<td align="left" style="min-width:420px;width:17%;">
 						<?php echo $this->displayDefaultViewSearch ('COM_VIRTUEMART_ORDER_PRINT_NAME'); ?>
+                        <div id="resultscounter"><?php echo $this->pagination->getResultsCounter (); ?></div>
+					</td>
+					<td align="left" style="min-width:190px;width:21%;">
 						<?php echo vmText::_ ('COM_VIRTUEMART_ORDERSTATUS') . ':' . $this->lists['state_list']; ?>
-
+                    </td>
+					<td align="right" style="min-width:190px;width:25%;max-width:300px;border-style:solid none solid solid;border-width:1px;">
+						<span style="text-align:left"><?php echo vmText::_ ('COM_VIRTUEMART_BULK_ORDERSTATUS') . $this->lists['bulk_state_list']; ?></span>
 					</td>
-					<td align="right" style="min-width:290px;width:30%;">
-						<?php echo vmText::_ ('COM_VIRTUEMART_BULK_ORDERSTATUS') . $this->lists['bulk_state_list']; ?>
-					</td>
-					<td align="left" style="min-width:370px;width:30%;">
-						<?php echo VmHTML::checkbox ('customer_notified', 0) . vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
+					<td align="left" style="min-width:330px;width:22%;border-style:solid solid solid none;border-width:1px;">
+						<?php echo VmHTML::checkbox ('customer_notified', 0) . vmText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?> <br>
 						<?php echo VmHTML::checkbox ('customer_send_comment', 1) . vmText::_ ('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 						<?php echo VmHTML::checkbox ('update_lines', 1) . vmText::_ ('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
 						<textarea class="element-hidden vm-order_comment vm-showable" name="comments" cols="5" rows="5"></textarea>
 						<?php echo JHtml::_ ('link', '#', vmText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 					</td>
-					<td>
+					<td align="right" style="min-width:220px;width:14%;">
 						<?php echo $this->lists['vendors'] ?>
 					</td>
 				</tr>
 			</table>
 		</div>
-		<div id="resultscounter"><?php echo $this->pagination->getResultsCounter (); ?></div>
+
 	</div>
 <div style="text-align: left;">
 	<table class="adminlist table table-striped" cellspacing="0" cellpadding="0">

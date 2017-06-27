@@ -609,7 +609,7 @@ class VirtueMartModelUser extends VmModel {
 
 	public function storeVendorData($data){
 
-		if($data['user_is_vendor']){
+		if($data['user_is_vendor'] and vmAccess::manager('user.editshop')){
 
 			$vendorModel = VmModel::getModel('vendor');
 

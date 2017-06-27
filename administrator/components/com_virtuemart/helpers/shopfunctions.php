@@ -99,11 +99,15 @@ class ShopFunctions {
 	static public function renderVendorList ($vendorId=false, $name = 'virtuemart_vendor_id') {
 
 		$view = vRequest::getCmd('view',false);
-		if($vendorId === false and vmAccess::manager('managevendors')){
-			$vendorId = strtolower (JFactory::getApplication()->getUserStateFromRequest ('com_virtuemart.'.$view.'.virtuemart_vendor_id', 'virtuemart_vendor_id', vmAccess::getVendorId(), 'int'));
-		} else {
-			$vendorId = vmAccess::getVendorId();
+		
+		if($vendorId === false){
+			if(vmAccess::manager('managevendors')){
+				$vendorId = strtolower (JFactory::getApplication()->getUserStateFromRequest ('com_virtuemart.'.$view.'.virtuemart_vendor_id', 'virtuemart_vendor_id', vmAccess::getVendorId(), 'int'));
+			} else{
+				$vendorId = vmAccess::getVendorId();
+			}
 		}
+
 		if(!vmAccess::manager(array($view,'managevendors'),0,true)) {
 			if (empty($vendorId)) {
 				$vendor = vmText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');

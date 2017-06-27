@@ -17,7 +17,11 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+if(!vmAccess::manager('user.editshop')){
+	?><div><?php echo vmText::_('COM_VM_PERM_MISSING_VENDOR');?></div> <?php
+}
+?>
 <!--div class="col50"-->
 	<table class="admintable">
 		<tr>
