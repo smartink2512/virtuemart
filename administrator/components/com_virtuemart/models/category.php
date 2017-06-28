@@ -64,45 +64,69 @@ class VirtueMartModelCategory extends VmModel {
 	public function getCategory($virtuemart_category_id=0,$childs=TRUE, $fe = true){
 
 		if(!empty($virtuemart_category_id)) $this->_id = (int)$virtuemart_category_id;
-		//$childs = (int)$childs;
+		$childs = (int)$childs;
   		if (empty($this->_cache[$this->_id][$childs])) {
-   			$this->_cache[$this->_id][$childs] = $this->getTable('categories');
-   			if(!empty($this->_id)){
-				$this->_cache[$this->_id][$childs]->load($this->_id);
 
-				$xrefTable = $this->getTable('category_medias');
-				$this->_cache[$this->_id][$childs]->virtuemart_media_id = $xrefTable->load((int)$this->_id);
-   			} else {
-				$this->_cache[$this->_id][$childs]->virtuemart_media_id = false;
-   			}
+  			if($childs and !empty($this->_cache[$this->_id][0])){
+				$this->_cache[$this->_id][$childs] = clone($this->_cache[$this->_id][0]);
+				vmdebug('Use category already loaded without children');
+  			} else if(!$childs and !empty($this->_cache[$this->_id][1])){
+  				$t = clone($this->_cache[$this->_id][1]);
+				$t->children = false;
+				$t->haschildren = null;
+				$t->productcount = false;
+				$t->parents = false;
+				$this->_cache[$this->_id][0] = $t;
+				vmdebug('Use category already loaded with children');
+				return $t;
+			} else {
+				vmdebug('Load category '.$this->_id);
+				$this->_cache[$this->_id][$childs] = $this->getTable('categories');
+				if(!empty($this->_id)){
+					$this->_cache[$this->_id][$childs]->load($this->_id);
 
-			if($fe){
-				if(empty($this->_cache[$this->_id][$childs]->category_template)){
-					$this->_cache[$this->_id][$childs]->category_template = VmConfig::get('categorytemplate');
+					$xrefTable = $this->getTable('category_medias');
+					$this->_cache[$this->_id][$childs]->virtuemart_media_id = $xrefTable->load((int)$this->_id);
+				} else {
+					$this->_cache[$this->_id][$childs]->virtuemart_media_id = false;
 				}
 
-				if(empty($this->_cache[$this->_id][$childs]->category_layout)){
-					$this->_cache[$this->_id][$childs]->category_layout = VmConfig::get('categorylayout');
+				if($fe){
+					if(empty($this->_cache[$this->_id][$childs]->category_template)){
+						$this->_cache[$this->_id][$childs]->category_template = VmConfig::get('categorytemplate');
+					}
+
+					if(empty($this->_cache[$this->_id][$childs]->category_layout)){
+						$this->_cache[$this->_id][$childs]->category_layout = VmConfig::get('categorylayout');
+					}
+				} else {
+					/* Get the product count */
+					//$this->_cache[$this->_id][$childs]->productcount = $this->countProducts($this->_id);
 				}
-			}
+				$this->_cache[$this->_id][$childs]->categorytemplate = $this->_cache[$this->_id][$childs]->category_template;
+				$this->_cache[$this->_id][$childs]->categorylayout = $this->_cache[$this->_id][$childs]->category_layout;
+				$this->_cache[$this->_id][$childs]->productlayout = $this->_cache[$this->_id][$childs]->category_product_layout;
+  			}
 
-			$this->_cache[$this->_id][$childs]->categorytemplate = $this->_cache[$this->_id][$childs]->category_template;
-			$this->_cache[$this->_id][$childs]->categorylayout = $this->_cache[$this->_id][$childs]->category_layout;
-			$this->_cache[$this->_id][$childs]->productlayout = $this->_cache[$this->_id][$childs]->category_product_layout;
-
+			$this->_cache[$this->_id][$childs]->children = false;
+			$this->_cache[$this->_id][$childs]->haschildren = null;
+			$this->_cache[$this->_id][$childs]->productcount = false;
+			$this->_cache[$this->_id][$childs]->parents = false;
    			if($childs){
    				$this->_cache[$this->_id][$childs]->haschildren = $this->hasChildren($this->_id);
 
    				/* Get children if they exist */
-   				if ($this->_cache[$this->_id][$childs]->haschildren) $this->_cache[$this->_id][$childs]->children = $this->getCategories(true,$this->_id);
-   				else $this->_cache[$this->_id][$childs]->children = null;
+   				if ($this->_cache[$this->_id][$childs]->haschildren) {
+					//$this->_cache[$this->_id][$childs]->children = $this->getCategories( true, $this->_id );
+					$this->_cache[$this->_id][$childs]->children = $this->getChildCategoryList($this->_cache[$this->_id][$childs]->virtuemart_vendor_id, $this->_id );
+				}
 
-   				/* Get the product count */
-   				$this->_cache[$this->_id][$childs]->productcount = $this->countProducts($this->_id);
 
-   				/* Get parent for breatcrumb */
-   				$this->_cache[$this->_id][$childs]->parents = $this->getParentsList($this->_id);
+				/* Get the product count */
+				$this->_cache[$this->_id][$childs]->productcount = $this->countProducts($this->_id);
 
+				/* Get parent for breatcrumb */
+				$this->_cache[$this->_id][$childs]->parents = $this->getParentsList($this->_id);
    			}
 
   		}

@@ -68,9 +68,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 					    <?php echo vmText::_($category->category_name) ?>
 					    <br>
 					    <?php
-					    // if ($category->ids) {
-					    echo $category->images[0]->displayMediaThumb("", false);
-					    //}
+					    if (!empty($category->images[0])) {
+					        echo $category->images[0]->displayMediaThumb("", false);
+					    }
 					    ?>
 					</a>
 				    </h2>

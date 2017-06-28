@@ -177,6 +177,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			shopFunctionsF::setLastVisitedCategoryId($product->virtuemart_category_id);
 
+
 			if(!empty($menu) ){
 				$t = $menu->params->get('cat_productdetails','');
 				if($t!=''){
@@ -186,13 +187,20 @@ class VirtueMartViewProductdetails extends VmView {
 			if(!isset($this->cat_productdetails)){
 				$this->cat_productdetails = VmConfig::get('cat_productdetails',0);
 			}
+			//Fallback for BC
+			VmConfig::set('showCategory', $this->cat_productdetails);
 
 			if ($category_model) {
 
-				$category = $category_model->getCategory($product->virtuemart_category_id);
+				$category = $category_model->getCategory($product->virtuemart_category_id, $this->cat_productdetails);
+				if($category->parents===false) $category->parents = $category_model->getParentsList($product->virtuemart_category_id);
 				if(in_array($last_category_id,$product->categories) && !$seo_full) $product->category_name = $category->category_name;
 
 				$category_model->addImages($category, 1);
+				if($this->cat_productdetails){
+					$category_model->addImages($category->children, 1);
+				}
+
 				$this->assignRef('category', $category);
 
 				//Seems we dont need this anylonger, destroyed the breadcrumb
@@ -206,10 +214,6 @@ class VirtueMartViewProductdetails extends VmView {
 					}
 				}
 
-				if($this->cat_productdetails){
-					$category->children = $category_model->getChildCategoryList($product->virtuemart_vendor_id, $product->virtuemart_category_id);
-					$category_model->addImages($category->children, 1);
-				}
 
 			}
 
