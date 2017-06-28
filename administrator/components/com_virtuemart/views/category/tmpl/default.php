@@ -163,7 +163,7 @@ AdminUIHelper::startAdminArea($this);
 					echo shopFunctionsF::limitStringByWord($cat->category_description,200); ?>
 				</td>
 				<td>
-					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
+					<?php echo  $this->categories[$i]->productcount;//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo vmText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 				<td align="center" class="vm-order">

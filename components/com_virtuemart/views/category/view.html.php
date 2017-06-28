@@ -316,7 +316,6 @@ class VirtuemartViewCategory extends VmView {
 		$catImgAmount = VmConfig::get('catimg_browse',1);
 		$categoryModel->addImages($category,$catImgAmount);
 
-		//$this->showcategory = vRequest::getInt('showcategory',true);
 		if($this->showcategory){
 		//if($category->category_layout == 'categories' or ($this->categoryId >0 and $virtuemart_manufacturer_id <1)){
 			$category->children = $categoryModel->getChildCategoryList( $vendorId, $this->categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
@@ -334,7 +333,6 @@ class VirtuemartViewCategory extends VmView {
 		}
 
 		if(!empty($this->categorylayout)){
-			//if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$this->categoryId){
 			$category->category_layout = $this->categorylayout;
 		}
 
@@ -347,8 +345,6 @@ class VirtuemartViewCategory extends VmView {
 
 
 		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
-		//}
-
 
 
 		$customtitle = '';
@@ -356,7 +352,6 @@ class VirtuemartViewCategory extends VmView {
 		$metakey = '';
 		$metarobot = '';
 		$metaauthor = '';
-
 
 		$metadesc = $menu->params->get('menu-meta_description');
 		$metakey = $menu->params->get('menu-meta_keywords');

@@ -137,11 +137,12 @@ class VirtuemartViewCategory extends VmViewAdmin {
 			}
 			vmJsApi::ajaxCategoryDropDown('top_category_id', $param, vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL'));
 
-			$categories = $model->getCategoryTree($topCategory,0,false,$this->lists['search']);
-			$this->assignRef('categories', $categories);
+			$this->categories = $model->getCategoryTree($topCategory,0,false,$this->lists['search']);
+			foreach($this->categories as $i=>$c){
+				$this->categories[$i]->productcount = $model->countProducts($this->categories[$i]->virtuemart_category_id);
+			}
 
-			$pagination = $model->getPagination();
-			$this->assignRef('catpagination', $pagination);
+			$this->catpagination = $model->getPagination();
 
 			//we need a function of the FE shopfunctions helper to cut the category descriptions
 			if (!class_exists ('shopFunctionsF')) require(VMPATH_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
