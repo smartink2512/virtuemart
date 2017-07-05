@@ -493,9 +493,20 @@ class VirtueMartModelConfig extends VmModel {
 
 		$conf_langs = self::getContentLanguages();
 		$active_langs = $config->get('active_languages');
+
 		if(empty($active_langs)){
-			$config->set('active_languages',$conf_langs);
+			$active_langs = $conf_langs;
 		}
+
+		if(empty($data['vmDefLang'])){
+			$defl = VmConfig::$jDefLangTag;
+		} else {
+			$defl = $data['vmDefLang'];
+		}
+		$active_langs[] = $defl;
+		$active_langs = array_unique($active_langs);
+		$config->set('active_languages',$active_langs);
+
 
 		//ATM we want to ensure that only one config is used
 		$confData = array();
@@ -509,6 +520,7 @@ class VirtueMartModelConfig extends VmModel {
 
 		$d = array_diff($active_langs,$oldLangs);
 		if(!empty($d)){
+
 			self::installLanguageTables();
 		}
 
