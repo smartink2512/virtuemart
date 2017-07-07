@@ -179,7 +179,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'add_prices_api' => array('', 'int'),
 			'offer_credit' => array('', 'int'),
 
-			'noStandardChoice' => array('1','int')
+			'itemise_in_cart' => array('0','int')
 		);
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
@@ -258,7 +258,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				'paypalInterface' => $paypalInterface,
 				'offer_credit' => $this->_currentMethod->offer_credit,
 				'sandbox' => $this->_currentMethod->sandbox,
-				'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+				'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id
 				)
 				);
 				$productDisplay[] = $productDisplayHtml;
@@ -374,6 +374,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				'offer_credit' => $this->_currentMethod->offer_credit,
 				'sandbox' => $this->_currentMethod->sandbox,
 				'virtuemart_paymentmethod_id' => $this->_currentMethod->virtuemart_paymentmethod_id,
+				'method' => $this->_currentMethod
 				)
 				);
 
@@ -1347,7 +1348,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod);
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 
-				if ($this->_currentMethod->noStandardChoice and $this->_currentMethod->paypalproduct=='exp'){
+				if (!$this->_currentMethod->itemise_in_cart and $this->_currentMethod->paypalproduct=='exp'){
 					continue;
 				}
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);
@@ -1385,6 +1386,58 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	}
 
+	protected function getPluginHtml ($plugin, $selectedPlugin, $pluginSalesPrice) {
+
+		$pluginmethod_id = $this->_idName;
+		$pluginName = $this->_psType . '_name';
+		if ($selectedPlugin == $plugin->$pluginmethod_id) {
+			$checked = 'checked="checked"';
+		} else {
+			$checked = '';
+		}
+
+		if (!class_exists ('CurrencyDisplay')) {
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
+		}
+		$currency = CurrencyDisplay::getInstance ();
+		$costDisplay = "";
+		if ($pluginSalesPrice) {
+			$costDisplay = $currency->priceDisplay( $pluginSalesPrice );
+			$t = vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' );
+			if(strpos($t,'/')!==FALSE){
+				list($discount, $fee) = explode( '/', vmText::_( 'COM_VIRTUEMART_PLUGIN_COST_DISPLAY' ) );
+				if($pluginSalesPrice>=0) {
+					$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$fee.' +'.$costDisplay.")</span>";
+				} else if($pluginSalesPrice<0) {
+					$costDisplay = '<span class="'.$this->_type.'_cost discount"> ('.$discount.' -'.$costDisplay.")</span>";
+				}
+			} else {
+				$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$t.' +'.$costDisplay.")</span>";
+			}
+		}
+		$dynUpdate='';
+		if( VmConfig::get('oncheckout_ajax',false)) {
+			//$url = JRoute::_('index.php?option=com_virtuemart&view=cart&task=updatecart&'. $this->_idName. '='.$plugin->$pluginmethod_id );
+			$dynUpdate=' data-dynamic-update="1" ';
+			if(!class_exists('vmPPButton')) require(VMPATH_PLUGINS .'/vmpayment/paypal/paypal/tmpl/ppbuttons.php');
+
+			$html = vmPPButton::renderCheckoutButton($plugin).'<div class="clear"></div>';
+			/*if($plugin->offer_credit){
+				$img = vmPPButton::getCreditLogo();
+			} else {
+				$img = vmPPButton::getExpressLogo();
+			}
+			$text = '';
+			$logo = '<img src="'.$img.'" alt="'.$text.'" title="'.$text.'" style="width:20%;padding:2px;">';
+			$html = '<div>'. VmText::sprintf('COM_VIRTUEMART_SELECT_BY_LOGO',$plugin->payment_name,$logo).'</div><div class="clear"></div>';*/
+		} else {
+			$html = '<input type="radio"'.$dynUpdate.' name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
+			. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay . "</span></label>\n";
+		}
+
+
+		return $html;
+	}
 
 	/**
 	 * Validate payment on checkout

@@ -97,11 +97,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables = Array();
 		$post_variables['METHOD'] = $paypalMethod;
 		$post_variables['version'] = "104.0";
-		if(!empty($paypalMethod->offer_credit)){
-			$post_variables['version'] = "202.0";
-		}
 		// 104.0 required by Paypal
 		//https://developer.paypal.com/webapps/developer/docs/classic/release-notes/
+
 		$post_variables['USER'] = $this->api_login_id;
 		$post_variables['PWD'] = $this->api_password;
 		$post_variables['BUTTONSOURCE'] = self::BNCODE;;
@@ -302,6 +300,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 		if(!empty($this->_method->offer_credit)){
 			$post_variables['USERSELECTEDFUNDINGSOURCE'] = 'Finance';
+			$post_variables['version'] = "116.0";
 		}
 
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
@@ -934,7 +933,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$button['link'] = JURI::root() . 'index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=' . $this->_method->payment_element . '&action=SetExpressCheckout&pm=' . $this->_method->virtuemart_paymentmethod_id;
 
 		if($credit){
-			$button['img'] = 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/ppcredit-logo-small.png ';
+			$button['img'] = 'https://www.paypalobjects.com/webstatic/en_US/i/buttons/ppcredit-logo-small.png';
 		} else {
 			$button['img'] = JURI::root() . 'plugins/vmpayment/' . $this->_method->payment_element . '/' . $this->_method->payment_element . '/assets/images/de-pp-logo-150px.png';
 		}
@@ -942,10 +941,10 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		return $button;
 	}
 
-	function getExpressProduct () {
+	public function getExpressProduct () {
 
-		$lang = jFactory::getLanguage();
-		$lang_iso = str_replace('-', '_', $lang->gettag());
+		$lang = JFactory::getLanguage();
+		$lang_iso = str_replace('-', '_', $lang->getTag());
 		$paypal_buttonurls = array(
 			'en_US' => 'https://www.paypal.com/en_US/i/logo/PayPal_mark_60x38.gif',
 			'en_GB' => 'https://www.paypal.com/en_GB/i/bnr/horizontal_solution_PP.gif',
@@ -973,9 +972,8 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		}
 		$paypalProduct['link'] = $paypal_infolink[$lang_iso];
 		$paypalProduct['img'] = $paypal_buttonurls[$lang_iso];
+
 		return $paypalProduct;
-
-
 	}
 
 

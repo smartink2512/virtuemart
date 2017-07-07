@@ -159,6 +159,11 @@
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
+                <field class="explayout" name="itemise_in_cart" type="list" default="0"
+                       label="VMPAYMENT_PAYPAL_CART_ITEMISE" description="VMPAYMENT_PAYPAL_CART_ITEMISE_TIP">
+                    <option value="0">COM_VIRTUEMART_NO</option>
+                    <option value="1">COM_VIRTUEMART_YES</option>
+                </field>
                 <field class="explayout" name="offer_credit" type="list" default="0"
                        label="VMPAYMENT_PAYPAL_OFFER_CREDIT" description="VMPAYMENT_PAYPAL_OFFER_CREDIT_TIP">
                     <option value="0">COM_VIRTUEMART_NO</option>
@@ -329,6 +334,8 @@
                 <!-- ============ -->
                 <field type="vmtitle" default="VMPAYMENT_PAYPAL_LAYOUT_SECTION"
                        description="VMPAYMENT_PAYPAL_LAYOUT_SECTION_DESC"/>
+                <field class="explayout" type="note" label="VMPAYMENT_PAYPAL_LOGOS_EXPRESS" description="VMPAYMENT_PAYPAL_LOGOS_EXPRESS_TIP">
+                </field>
                 <field name="payment_logos" type="vmfiles" multiple="true" scope="com_virtuemart" label="VMPAYMENT_PAYPAL_LOGOS"
                        description="VMPAYMENT_PAYPAL_LOGOS_DESC" directory="/images/virtuemart/payment"
                        default="default" hide_default="1" hide_none="1" stripext="0" exclude="^_"/>

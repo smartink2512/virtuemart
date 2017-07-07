@@ -18,6 +18,8 @@
  * http://virtuemart.net
  */
 
+if(!class_exists('vmPPButton')) require(VMPATH_PLUGINS .'/vmpayment/paypal/paypal/tmpl/ppbuttons.php');
+
 $paypalInterface = $viewData['paypalInterface'];
 ?>
 
@@ -29,27 +31,19 @@ $paypalInterface = $viewData['paypalInterface'];
         <?php
     }
 
-    ?><div class="pp-express"><?php
-		$product = $paypalInterface->getExpressCheckoutButton();
-		$product['text'] = vmText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_BUTTON');
-		?>
-        <a href="<?php echo $product['link'] ?>" title="<?php echo $product['text'] ?>" target="_blank">
-            <img src="<?php echo $product['img'] ?>" align="left" alt="<?php echo $product['text']?>" title="<?php echo $product['text']?>"  >
-        </a>
-    </div>
-    <?php
-	if(!empty($viewData['offer_credit'])){
+    if(empty($viewData['offer_credit'])){
+        ?><div class="pp-express"><?php
+        echo vmPPButton::renderCheckoutButton($viewData['method']);
+
+        ?></div>
+        <?php
+        echo '<div class="clear"></div>';
+	} else {
 
 	?><div class="pp-credit"><?php
 
-		$button = $paypalInterface->getExpressCheckoutButton(true);
-		$button['text'] = 'VMPAYMENT_PAYPAL_CREDITCHECKOUT_BUTTON';
-		?>
-		<span style=""><?php echo vmText::_('or'); ?></span>
-        <a href="<?php echo $button['link'] ?>" title="<?php echo $button['text'] ?>" target="_blank">
-            <img src="<?php echo $button['img'] ?>" alt="<?php echo $button['text']?>" title="<?php echo $button['text']?>"  >
-        </a>
-        <?php
+	    echo vmPPButton::renderCheckoutButton($viewData['method']);
+
 
 
         static $frame= false;

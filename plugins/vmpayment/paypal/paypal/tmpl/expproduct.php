@@ -18,6 +18,8 @@
  * http://virtuemart.net
  */
 
+if(!class_exists('vmPPButton')) require(VMPATH_PLUGINS .'/vmpayment/paypal/paypal/tmpl/ppbuttons.php');
+
 $paypalInterface = $viewData['paypalInterface'];
 ?>
 <div style="margin: 8px;">
@@ -28,72 +30,16 @@ $paypalInterface = $viewData['paypalInterface'];
 		<?php
 	}
 
-    ?><div class="pp-mark-express"><?php
-	$product = $paypalInterface->getExpressProduct();
-	$product['text'] = vmText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_AVAILABALE');
-    ?>
-        <a href="<?php echo $product['link'] ?>" title="<?php echo $product['text'] ?>" target="_blank">
-            <img src="<?php echo $product['img'] ?>" align="left" alt="<?php echo $product['text']?>" title="<?php echo $product['text']?>"  >
-        </a>
-    </div>
-<?php
-if(!empty($viewData['offer_credit'])){
-
-    ?><div class="pp-mark-credit"><?php
-    $fcredit = 'var ppframeCredit = jQuery("<div></div>")';
-	$fcredit .= ".html('<iframe id=\"paypal_offer_frame_credit\" style=\"border: 0px;\" src=\"' + ppurlcredit + '\" width=\"100%\" height=\"100%\"></iframe>')";
-    $fcredit .= '.dialog({
-               autoOpen: false,
-               closeOnEscape: true,
-               modal: true,
-               height: heightsiz,
-               width: widthsiz,
-               title: "Paypal Credit offer"
-           });';
-	$j = '
-jQuery(document).ready( function() {
-    var page = Virtuemart.vmSiteurl + "index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=paypal&tmpl=component";
-    var heightsiz = jQuery(window).height() * 0.9;
-    var widthsiz = jQuery(window).width() * 0.8;
-    
-    var ppurlcredit = page+"&action=getPayPalCreditOffer";
-    
-    var bindClose = function(){
-        ppiframe = jQuery("#paypal_offer_frame_credit");
-        closElem = ppiframe.contents().find("a").filter(\':contains("Close")\');;
-        closElem.on("click", function() {
-            jQuery(".ui-dialog-titlebar-close").click();
-        });
-    };
-
-    jQuery(".pp-mark-credit-modal").on("click", function(){
-    '.$fcredit.'
-        ppframeCredit.dialog("open");
-        setTimeout(bindClose,2000);
-    });
-    
-    return false;
-});
-';
-	vmJsApi::addJScript('paypal_offer',$j);
-
-	static $frame= false;
+if(empty($viewData['offer_credit'])) {
+	?><div class="pp-logo"><?php
+	echo vmPPButton::renderMarkAcceptance();
+	?></div><?php
+} else {
 	?>
-    <button class="pp-mark-credit-modal" >
-        <img src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_bml_text.png" /></button>
-	<?php if($frame){
-		echo '<div id="paypal_offer_frame"></div>';
-		$frame = false;
-	}?>
-
-	<?php
+    <div class="pp-mark-credit"><?php
+	    echo vmPPButton::renderMarkCredit();
+	?>
+    </div><?php
 }
- /* ?>
-
-
-        <div>
-            <?php $button = $paypalInterface->getExpressCheckoutButton();
-            vmdebug('my button',$button);
-            ?>
-        </div> */?>
+    ?>
 </div>
