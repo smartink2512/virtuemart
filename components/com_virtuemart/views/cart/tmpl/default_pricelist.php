@@ -133,12 +133,12 @@ foreach ($this->cart->products as $pkey => $prow) {
 
 <?php
 
-$defaultLayout = VmConfig::get('cartlayout', 'default');
+
 if (VmConfig::get ('coupons_enable')) {
 ?>
 <tr class="sectiontableentry2">
 	<td colspan="4" style="text-align: left;">
-		<?php if (!empty($this->layoutName) && $this->layoutName == $defaultLayout) {
+		<?php if (!empty($this->layoutName) && $this->layoutName == $this->cart->layout) {
 		echo $this->loadTemplate ('coupon');
 		} ?>
 		<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
@@ -228,7 +228,7 @@ if (VmConfig::get('oncheckout_opc',true) or
 		<?php
 		echo '<h3>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_SHIPMENT').'</h3>';
 		echo $this->cart->cartData['shipmentName'].'<br/>';
-		if (!empty($this->layoutName) and $this->layoutName == $defaultLayout) {
+		if (!empty($this->layoutName) and $this->layoutName == $this->cart->layout) {
 			if (VmConfig::get('oncheckout_opc', 0)) {
 				$previouslayout = $this->setLayout('select');
 				echo $this->loadTemplate('shipment');
@@ -270,7 +270,7 @@ if (VmConfig::get('oncheckout_opc',true) or
 		<?php
 		echo '<h3>'.vmText::_ ('COM_VIRTUEMART_CART_SELECTED_PAYMENT').'</h3>';
 		echo $this->cart->cartData['paymentName'].'<br/>';
-		if (!empty($this->layoutName) && $this->layoutName == $defaultLayout) {
+		if (!empty($this->layoutName) && $this->layoutName == $this->cart->layout) {
 			if (VmConfig::get('oncheckout_opc', 0)) {
 				$previouslayout = $this->setLayout('select');
 				echo $this->loadTemplate('payment');

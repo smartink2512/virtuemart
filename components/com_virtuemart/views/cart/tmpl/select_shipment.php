@@ -24,7 +24,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 	echo '<div class="checkoutStep" id="checkoutStep2">' . vmText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2') . '</div>';
 }
 
-if ($this->layoutName!='default') {
+if ($this->layoutName!=$this->cart->layout) {
 $headerLevel = 1;
 if($this->cart->getInCheckOut()){
 	$buttonclass = 'button vm-button-correct';
@@ -55,7 +55,7 @@ if($this->cart->getInCheckOut()){
 		} ?>
 		<button name="updatecart" class="<?php echo $buttonclass ?>" type="submit" <?php echo $dynUpdate ?> ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
 
-		<?php   if ($this->layoutName!='default') { ?>
+		<?php   if ($this->layoutName!=$this->cart->layout) { ?>
 			<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 		<?php  } ?>
 	</div>
@@ -78,7 +78,7 @@ if($this->cart->getInCheckOut()){
 	}
 
 
-	if ($this->layoutName!='default') {
+	if ($this->layoutName!=$this->cart->layout) {
 	?> <input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />
 	<input type="hidden" name="task" value="updatecart" />
