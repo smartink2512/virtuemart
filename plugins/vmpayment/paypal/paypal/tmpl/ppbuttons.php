@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004 - 2017 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -44,8 +44,10 @@ class vmPPButton {
 
 		if($method->offer_credit){
 			$img = self::getCreditLogo();
+			$class = 'pp-img-credit';
 		} else {
 			$img = self::getExpressLogo();
+			$class = 'pp-img-express';
 		}
 		//$img = self::getCheckoutLogo($credit);
 
@@ -56,7 +58,7 @@ class vmPPButton {
         }
 
 		$html = '<a href="'.$link.'" title="'.$text.'" >
-    <img src="'.$img.'" align="left" alt="'.$text.'" title="'.$text.'" >
+    <img class="'.$class.'" src="'.$img.'" align="left" alt="'.$text.'" title="'.$text.'" >
 </a>';
 		return $html;
     }

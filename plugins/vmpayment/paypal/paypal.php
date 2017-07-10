@@ -178,7 +178,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'template' => array('', 'char'),
 			'add_prices_api' => array('', 'int'),
 			'offer_credit' => array('', 'int'),
-
 			'itemise_in_cart' => array('0','int')
 		);
 
@@ -318,8 +317,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (isset($cart->cartPrices['salesPrice']) && $cart->cartPrices['salesPrice'] <= 0.0) {
 			return NULL;
 		}
+
 		if (!$this->isExpToken($selectedMethod, $cart))  {
-			$payment_advertise[] = $this->getExpressCheckoutHtml($cart);
+			$payment_advertise[] = $this->getExpressCheckoutHtml($cart, true);
 		}
 
 		return;
@@ -361,11 +361,14 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 * @param $cart
 	 * @return null|string
 	 */
-	function getExpressCheckoutHtml( $cart) {
+	function getExpressCheckoutHtml( $cartm, $adv = false) {
 
 		$html = '';
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->_currentMethod->paypalproduct == 'exp') {
+
+				if($adv and $this->_currentMethod->itemise_in_cart) continue;
+
 				$this->_currentMethod->payment_currency = $this->getPaymentCurrency($this->_currentMethod);
 				$paypalInterface = new PaypalHelperPayPalExp($this->_currentMethod, $this);
 				$html .= $this->renderByLayout('expcheckout',
@@ -377,9 +380,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				'method' => $this->_currentMethod
 				)
 				);
-
-
-
 			}
 		}
 		return $html;
@@ -1417,19 +1417,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		}
 		$dynUpdate='';
 		if( VmConfig::get('oncheckout_ajax',false)) {
-			//$url = JRoute::_('index.php?option=com_virtuemart&view=cart&task=updatecart&'. $this->_idName. '='.$plugin->$pluginmethod_id );
-			$dynUpdate=' data-dynamic-update="1" ';
-			if(!class_exists('vmPPButton')) require(VMPATH_PLUGINS .'/vmpayment/paypal/paypal/tmpl/ppbuttons.php');
 
-			$html = vmPPButton::renderCheckoutButton($plugin).'<div class="clear"></div>';
-			/*if($plugin->offer_credit){
-				$img = vmPPButton::getCreditLogo();
-			} else {
-				$img = vmPPButton::getExpressLogo();
-			}
-			$text = '';
-			$logo = '<img src="'.$img.'" alt="'.$text.'" title="'.$text.'" style="width:20%;padding:2px;">';
-			$html = '<div>'. VmText::sprintf('COM_VIRTUEMART_SELECT_BY_LOGO',$plugin->payment_name,$logo).'</div><div class="clear"></div>';*/
+			$html = $this->renderByLayout('paymentitem', array("method" => $plugin));
+
 		} else {
 			$html = '<input type="radio"'.$dynUpdate.' name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
 			. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay . "</span></label>\n";
