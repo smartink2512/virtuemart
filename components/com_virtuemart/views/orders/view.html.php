@@ -134,8 +134,9 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('details_url', $details_url);
 
 			$tmpl = vRequest::getCmd('tmpl');
+			$dyn = vRequest::getCmd('dynamic');
 			$this->print = false;
-			if($tmpl){
+			if($tmpl and !$dyn){
 				$this->print = true;
 			}
 			$this->prepareVendor();

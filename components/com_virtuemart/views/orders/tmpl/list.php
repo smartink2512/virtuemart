@@ -20,6 +20,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$ajaxUpdate = '';
+if(VmConfig::get ('ajax_order', TRUE)){
+	$ajaxUpdate = 'data-dynamic-update="1"';
+}
+
 ?>
 <div class="vm-wrap">
 	<div class="vm-orders-list">
@@ -57,7 +63,7 @@ if (count($this->orderlist) == 0) {
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">
-					<a href="<?php echo $editlink; ?>" rel="nofollow"><?php echo $row->order_number; ?></a>
+					<a href="<?php echo $editlink; ?>" rel="nofollow" <?php echo $ajaxUpdate?> ><?php echo $row->order_number; ?></a>
 					<?php echo shopFunctionsF::getInvoiceDownloadButton($row) ?>
 				</td>
 				<td align="left">
@@ -81,5 +87,14 @@ if (count($this->orderlist) == 0) {
 </div>
 <?php } ?>
 	</div>
+	<div class="vm-orders-information"></div>
 </div>
+<?php
+if(VmConfig::get ('ajax_order', TRUE)){
+$j = "Virtuemart.containerSelector = '.vm-orders-information';
+Virtuemart.container = jQuery(Virtuemart.containerSelector);";
 
+vmJsApi::addJScript('ajax_order',$j);
+vmJsApi::jDynUpdate();
+}
+?>
