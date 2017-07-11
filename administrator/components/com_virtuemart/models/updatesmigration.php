@@ -67,6 +67,10 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      */
     function setStoreOwner($userId=-1) {
 
+		if(!vmAccess::manager('core')){
+			vmError('You have no rights to performe this action');
+			return false;
+		}
 	    $allowInsert=FALSE;
 
 	    if($userId===-1){
@@ -79,31 +83,33 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			vmdebug('setStoreOwner $userId = '.$userId.' by determineStoreOwner');
 		}
 
-		$db = JFactory::getDBO();
-		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_user_id`= "' . $userId . '" ');
-		$oldUserId = $db->loadResult();
+		$utable = $this->getTable('vmusers');
+		$utable->load($userId);
 
-		if (!empty($oldUserId) and !empty($userId)) {
-		    $db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0" WHERE `virtuemart_vendor_id` ="1" ');
-		    if ($db->execute() == false ) {
-			    vmWarn( 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
-			    return false;
-		    }
+		if(empty($utable->virtuemart_user_id)){
+			$juser=JFactory::getUser($userId);
+			if(!empty($juser->id)){
+				$allowInsert = TRUE;
+			}
+		} else {
+			$oldUserId = $utable->virtuemart_user_id;
+		}
 
-			$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1" WHERE `virtuemart_user_id` ="'.$userId.'" ');
-			if ($db->execute() === false ) {
+		if ( (!empty($oldUserId) and !empty($userId)) or $allowInsert) {
+			$db = JFactory::getDBO();
+			$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0" WHERE `virtuemart_vendor_id` ="1" ');
+			if ($db->execute() == false ) {
 				vmWarn( 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 				return false;
+			}
+		}
+
+		$data = array('virtuemart_user_id' => $userId, 'virtuemart_vendor_id' => "1", 'user_is_vendor' => "1");
+		if($utable->bindChecknStore($data)){
+			if($allowInsert){
+				vmInfo('setStoreOwner VmUser inserted new main vendor has user id  '.$userId);
 			} else {
 				vmInfo('setStoreOwner VmUser updated new main vendor has user id  '.$userId);
-			}
-		} else if($allowInsert){
-			$db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`) VALUES ("' . $userId . '", "1","1")');
-			if ($db->execute() === false ) {
-				vmWarn( 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
-				return false;
-			} else {
-				vmInfo('setStoreOwner VmUser inserted new main vendor has user id  '.$userId);
 			}
 		}
 

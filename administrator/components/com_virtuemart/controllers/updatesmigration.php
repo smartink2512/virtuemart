@@ -351,7 +351,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		if(VmConfig::get('dangeroustools', true)){
-			VmConfig::$_debug=1;
+
 			$model = $this->getModel('updatesMigration');
 
 			$safePath = VmConfig::get('forSale_path');
