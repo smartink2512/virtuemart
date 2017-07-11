@@ -5,8 +5,8 @@
     <property name="releasetype" value="MAYOR"/>
     <property name="vm.version.main" value="3.2.0"/>
     <property name="vm.version" value="3.2.4"/>
-    <property name="joomla.version" value="3.7.2"/>
-    <property name="svn.lastrevision" value="9590"/>
+    <property name="joomla.version" value="3.7.3"/>
+    <property name="svn.lastrevision" value="9597"/>
     <property name="PHING.VM.CODENAME" value="Black Corvus"/>
     <property name="PHING.VM.UPDATEFOLDER" value="vm3"/>
     <property file="build.properties"/>

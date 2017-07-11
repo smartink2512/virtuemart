@@ -1415,13 +1415,17 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$costDisplay = '<span class="'.$this->_type.'_cost fee"> ('.$t.' +'.$costDisplay.")</span>";
 			}
 		}
-		$dynUpdate='';
-		if( VmConfig::get('oncheckout_ajax',false)) {
 
+
+		if ( $plugin->paypalproduct=='exp' and $plugin->itemise_in_cart ){
 			$html = $this->renderByLayout('paymentitem', array("method" => $plugin));
-
 		} else {
-			$html = '<input type="radio"'.$dynUpdate.' name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
+			$dynUpdate='';
+			if( VmConfig::get('oncheckout_ajax',false)) {
+				$dynUpdate=' data-dynamic-update="1" ';
+			}
+
+			$html = '<input type="radio" '.$dynUpdate.' name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
 			. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay . "</span></label>\n";
 		}
 

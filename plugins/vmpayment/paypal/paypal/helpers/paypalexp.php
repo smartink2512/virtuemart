@@ -375,6 +375,11 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$this->customerData->setVar('paypal_response', $this->response);
 			$this->customerData->save();
 			$this->storeAddresses();
+			VmInfo('VMPAYMENT_PAYPAL_PROCEED_CHECKOUT');
+
+			if (!class_exists('VirtueMartCart')) require(VMPATH_SITE .'/helpers/cart.php');
+			$cart = VirtueMartCart::getCart();
+			$cart->checkoutData(true);
 			return true;
 		} else {
 			return false;

@@ -22,14 +22,29 @@ if(!class_exists('vmPPButton')) require(VMPATH_PLUGINS .'/vmpayment/paypal/paypa
 
 $plugin = $viewData['method'];
 
-echo vmPPButton::renderCheckoutButton($plugin).'<div class="clear"></div>';
+if ( $plugin->paypalproduct=='exp' and $plugin->itemise_in_cart ){
 
-/*if($plugin->offer_credit){
-				$img = vmPPButton::getCreditLogo();
-			} else {
-				$img = vmPPButton::getExpressLogo();
-			}
-			$text = '';
-			$logo = '<img src="'.$img.'" alt="'.$text.'" title="'.$text.'" style="width:20%;padding:2px;">';
-			$html = '<div>'. VmText::sprintf('COM_VIRTUEMART_SELECT_BY_LOGO',$plugin->payment_name,$logo).'</div><div class="clear"></div>';*/
-			
+	if(true){
+		echo vmPPButton::renderCheckoutButton($plugin).'<div class="clear"></div>';
+	} else {
+		if($plugin->offer_credit){
+			$img = vmPPButton::getCreditLogo();
+		} else {
+			$img = vmPPButton::getExpressLogo();
+		}
+		$text = '';
+		$logo = '<img src="'.$img.'" alt="'.$text.'" title="'.$text.'" style="width:20%;padding:2px;">';
+		echo '<div>'. VmText::sprintf('COM_VIRTUEMART_SELECT_BY_LOGO',$plugin->payment_name,$logo).'</div><div class="clear"></div>';
+	}
+
+} else {
+	$dynUpdate='';
+	if( VmConfig::get('oncheckout_ajax',false)) {
+		$dynUpdate=' data-dynamic-update="1" ';
+	}
+
+	echo '<input type="radio" '.$dynUpdate.' name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
+	. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay . "</span></label>\n";
+}
+
+
