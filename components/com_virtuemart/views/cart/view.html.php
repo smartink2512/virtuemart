@@ -287,13 +287,6 @@ class VirtueMartViewCart extends VmView {
 			}
 
 		}
-		if(empty($selectedShipment)){
-			if($s_id = VmConfig::get('set_automatic_shipment',false)){
-				$j = 'radiobtn = document.getElementById("shipment_id_'.$s_id.'");
-				if(radiobtn!==null){ radiobtn.checked = true;}';
-				vmJsApi::addJScript('autoShipment',$j);
-			}
-		}
 
 		$shipment_not_found_text = vmText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
@@ -352,13 +345,6 @@ class VirtueMartViewCart extends VmView {
 			}
 		}
 
-		if(empty($selectedPayment)){
-			if($p_id = VmConfig::get('set_automatic_payment',false)){
-				$j = 'radiobtn = document.getElementById("payment_id_'.$p_id.'");
-				if(radiobtn!==null){ radiobtn.checked = true;}';
-				vmJsApi::addJScript('autoPayment',$j);
-			}
-		}
 
 		return $ok;
 	}

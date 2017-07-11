@@ -86,11 +86,24 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		if(!isset($force))$force = VmConfig::get('oncheckout_opc',true);
 		$cart->prepareCartData(false);
 		$html=true;
-		if ($cart->virtuemart_shipmentmethod_id==0 and (($s_id = VmConfig::get('set_automatic_shipment',false)) > 0)){
+
+		if ($cart->virtuemart_shipmentmethod_id==0 and (($s_id = VmConfig::get('set_automatic_shipment',false)) >= 0)){
+			if(empty($s_id)){
+				$methods = VmModel::getModel('Shipmentmethod')->getShipments();
+				if($methods){
+					$s_id = $methods[0]->virtuemart_shipmentmethod_id;
+				}
+			}
 			vRequest::setVar('virtuemart_shipmentmethod_id', $s_id);
 			$cart->setShipmentMethod($force, !$html);
 		}
 		if ($cart->virtuemart_paymentmethod_id==0 and (($s_id = VmConfig::get('set_automatic_payment',false)) > 0) and $cart->products){
+			if(empty($s_id)){
+				$methods = VmModel::getModel('paymentmethod')->getPayments();
+				if($methods){
+					$s_id = $methods[0]->virtuemart_paymentmethod_id;
+				}
+			}
 			vRequest::setVar('virtuemart_paymentmethod_id', $s_id);
 			$cart->setPaymentMethod($force, !$html);
 		}

@@ -29,7 +29,7 @@ jQuery(function($) {
 			glue = '?';
         }
         url += glue+urlSuf;
-
+		$(this).vm2front("startVmLoading");
 		$.ajax({
             url: url,
             dataType: 'html',
@@ -40,6 +40,7 @@ jQuery(function($) {
 				if (! el.length) el = $(data).filter(Virtuemart.containerSelector);
 				if (el.length) {
 					Virtuemart.container.html(el.html());
+
 					Virtuemart.updateCartListener();
 					Virtuemart.updateDynamicUpdateListeners();
 
@@ -55,13 +56,25 @@ jQuery(function($) {
 							}
 						});
 					}
-
 				}
 				Virtuemart.isUpdatingContent = false;
 				if (callback && typeof(callback) === "function") {
 					callback();
 				}
-            }
+				$(this).vm2front("stopVmLoading");
+            },
+			error: function(datas) {
+				alert('Error updating page');
+				Virtuemart.isUpdatingContent = false;
+				$(this).vm2front("stopVmLoading");
+			},
+			statusCode: {
+				404: function() {
+					Virtuemart.isUpdatingContent = false;
+					$(this).vm2front("stopVmLoading");
+					alert( "page not found" );
+				}
+			}
         });
         Virtuemart.isUpdatingContent = false;
     }
@@ -118,10 +131,10 @@ jQuery(function($) {
 		}
 
 		cartform.submit(function() {
-			$(this).vm2front("startVmLoading");
 			if(Virtuemart.isUpdatingContent) return false;
 			Virtuemart.isUpdatingContent = true;
-			//console.log('my form submit url',carturlcmp);
+			$(this).vm2front("startVmLoading");
+
 			$.ajax({
 				type: "POST",
 				url: carturlcmp,
@@ -148,6 +161,7 @@ jQuery(function($) {
 						if (Virtuemart.updateImageEventListeners) Virtuemart.updateImageEventListeners();
 						if (Virtuemart.updateChosenDropdownLayout) Virtuemart.updateChosenDropdownLayout();
 					}
+					jQuery('body').trigger('updateVirtueMartCartModule');
 					Virtuemart.setBrowserNewState(carturl);
 					Virtuemart.isUpdatingContent = false;
 					$(this).vm2front("stopVmLoading");

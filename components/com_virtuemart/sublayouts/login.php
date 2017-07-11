@@ -106,7 +106,7 @@ if ($this->show and $user->id == 0  ) {
 
 
     // XXX style CSS id com-form-login ?>
-    <form id="com-form-login" action="<?php echo $url; ?>" method="post" name="com-login" >
+    <form id="com-form-login" action="<?php echo JUri::root(true).'/'.$url; ?>" method="post" name="com-login" >
       <fieldset class="userdata">
         <?php if (!$this->from_cart ) { ?>
         <div>
@@ -152,7 +152,7 @@ if ($this->show and $user->id == 0  ) {
 
 <?php  } else if ( $user->id ) { ?>
 
-	  <form action="<?php echo $url; ?>" method="post" name="login" id="form-login">
+	  <form action="<?php echo JUri::root(true).'/'.$url; ?>" method="post" name="login" id="form-login">
       <?php echo vmText::sprintf( 'COM_VIRTUEMART_HINAME', $user->name ); ?>
       <input type="submit" name="Submit" class="button" value="<?php echo vmText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
       <input type="hidden" name="option" value="com_users" />
