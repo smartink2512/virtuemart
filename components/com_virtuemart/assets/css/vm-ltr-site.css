@@ -936,6 +936,12 @@ ul.VMmenu,.VMmenu ul,.VMmenu li{
   max-width: 100%;
 }
 
+.browseCategoryImage {
+  max-height: 90px;
+  width: auto;
+  max-width: 100%;
+}
+
 .customer-reviews,.ask-a-question-view .form-field{
   margin: 25px 0 0;
 }

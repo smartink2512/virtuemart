@@ -35,6 +35,11 @@ $category_cellwidth = ' width'.floor ( 100 / $categories_per_row );
 
 // Separator
 $verticalseparator = " vertical-separator";
+
+$ajaxUpdate = '';
+if(VmConfig::get ('ajax_category', TRUE)){
+	$ajaxUpdate = 'data-dynamic-update="1"';
+}
 ?>
 
 <div class="category-view">
@@ -68,11 +73,11 @@ $verticalseparator = " vertical-separator";
     <div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
       <div class="spacer">
         <h2>
-          <a href="<?php echo $caturl ?>" title="<?php echo vmText::_($category->category_name) ?>">
+          <a href="<?php echo $caturl ?>" title="<?php echo vmText::_($category->category_name) ?>" <?php echo $ajaxUpdate?> >
           <?php echo vmText::_($category->category_name) ?>
           <br />
           <?php // if ($category->ids) {
-            echo $category->images[0]->displayMediaThumb("",false);
+            echo $category->images[0]->displayMediaThumb('class="browseCategoryImage"',false);
           //} ?>
           </a>
         </h2>
