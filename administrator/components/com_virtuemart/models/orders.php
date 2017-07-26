@@ -461,9 +461,11 @@ class VirtueMartModelOrders extends VmModel {
 		$virtuemart_order_item_id = (int)$virtuemart_order_item_id;
 		//vmdebug('updateSingleItem',$virtuemart_order_item_id,$orderdata);
 		$table = $this->getTable('order_items');
+		$oldQuantity = 0;
 		if(!empty($virtuemart_order_item_id)){
 			$table->load($virtuemart_order_item_id);
 			$oldOrderStatus = $table->order_status;
+			$oldQuantity = $table->product_quantity;
 		}
 
 		if(empty($oldOrderStatus)){
@@ -638,6 +640,9 @@ class VirtueMartModelOrders extends VmModel {
 			}
 		}
 
+		if(!empty($oldQuantity) and $oldQuantity!=$table->product_quantity){
+			$this->handleStockAfterStatusChangedPerProduct($oldOrderStatus, $oldOrderStatus, $table, $oldQuantity);
+		}
 		$this->handleStockAfterStatusChangedPerProduct($orderdata->order_status, $oldOrderStatus, $table,$table->product_quantity);
 
 		return $table;
@@ -1399,9 +1404,10 @@ vmdebug('my prices',$data);
 	}
 
 
-	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$tableOrderItems, $quantity) {
+	function handleStockAfterStatusChangedPerProduct($newState, $oldState, $tableOrderItems, $quantity) {
 
-		if($newState == $oldState) return;
+		vmdebug( 'handleStockAfterStatusChangedPerProduct '.$oldState.' '.$newState.' '. $quantity, $tableOrderItems->product_quantity);
+		if($newState == $oldState and $quantity == $tableOrderItems->product_quantity) return;
 		// $StatutWhiteList = array('P','C','X','R','S','N');
 		$db = JFactory::getDBO();
 		$db->setQuery('SELECT * FROM `#__virtuemart_orderstates` ');
@@ -1412,7 +1418,7 @@ vmdebug('my prices',$data);
 			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is '.$newState);
 			return ;
 		}
-		//vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
+
 		// P 	Pending
 		// C 	Confirmed
 		// X 	Cancelled
@@ -1449,44 +1455,60 @@ vmdebug('my prices',$data);
 		else if (!$isReserved && $wasReserved ) $product_ordered = '-';
 		else $product_ordered = '=';
 
+		$diff = $tableOrderItems->product_quantity - $quantity;
+
+		if(!empty($diff) and $product_in_stock == '=' and $product_ordered == '='){
+
+			if($isReserved){
+				if($diff>0)	$product_ordered = '+'; else $product_ordered = '-';
+			}
+			if($isOut){
+				if($diff>0)	$product_in_stock = '+'; else $product_ordered = '-';
+			}
+			$quantity = abs($diff);
+		}
+
 		//Here trigger plgVmGetProductStockToUpdateByCustom
 		$productModel = VmModel::getModel('product');
 
 		if (!empty($tableOrderItems->product_attribute)) {
-			if(!class_exists('VirtueMartModelCustomfields'))require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
+			if(!class_exists( 'VirtueMartModelCustomfields' )) require(VMPATH_ADMIN.DS.'models'.DS.'customfields.php');
 			$virtuemart_product_id = $tableOrderItems->virtuemart_product_id;
-			$product_attributes = json_decode($tableOrderItems->product_attribute,true);
-			foreach ($product_attributes as $virtuemart_customfield_id=>$param){
-				if ($param) {
-					if(is_array($param)){
-						reset($param);
-						$customfield_id = key($param);
+			$product_attributes = json_decode( $tableOrderItems->product_attribute, true );
+			foreach( $product_attributes as $virtuemart_customfield_id => $param ) {
+				if($param) {
+					if(is_array( $param )) {
+						reset( $param );
+						$customfield_id = key( $param );
 					} else {
 						$customfield_id = $param;
-					}			
-		
-					if ($customfield_id) {
-						if ($productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($customfield_id ) ) {
-							if ($productCustom->field_type == "E") {
-								if(!class_exists('vmCustomPlugin')) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
-								JPluginHelper::importPlugin('vmcustom');
+					}
+
+					if($customfield_id) {
+						if($productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField( $customfield_id )) {
+							if($productCustom->field_type == "E") {
+								if(!class_exists( 'vmCustomPlugin' )) require(VMPATH_PLUGINLIBS.DS.'vmcustomplugin.php');
+								JPluginHelper::importPlugin( 'vmcustom' );
 								$dispatcher = JDispatcher::getInstance();
-								$dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array(&$tableOrderItems,$param, $productCustom));
+								$dispatcher->trigger( 'plgVmGetProductStockToUpdateByCustom', array(&$tableOrderItems, $param, $productCustom) );
 							}
 						}
 					}
 				}
 			}
-
-			// we can have more then one product in case of pack
-			// in case of child, ID must be the child ID
-			// TO DO use $prod->amount change for packs(eg. 1 computer and 2 HDD)
-			if (is_array($tableOrderItems))	foreach ($tableOrderItems as $prod ) $productModel->updateStockInDB($prod, $quantity,$product_in_stock,$product_ordered);
-			else $productModel->updateStockInDB($tableOrderItems, $quantity,$product_in_stock,$product_ordered);
-
-		} else {
-			$productModel->updateStockInDB ($tableOrderItems, $quantity,$product_in_stock,$product_ordered);
 		}
+
+		// we can have more then one product in case of pack
+		// in case of child, ID must be the child ID
+		// TO DO use $prod->amount change for packs(eg. 1 computer and 2 HDD)
+		if (is_array($tableOrderItems))	{
+			foreach ($tableOrderItems as $prod ) {
+				$productModel->updateStockInDB($prod, $quantity,$product_in_stock,$product_ordered);
+			}
+		} else {
+			$productModel->updateStockInDB($tableOrderItems, $quantity,$product_in_stock,$product_ordered);
+		}
+
 
 	}
 

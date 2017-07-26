@@ -43,13 +43,14 @@ class VirtuemartModelReport extends VmModel {
 		$app = JFactory::getApplication ();
 		$this->period = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
-		//$post = vRequest::get ('post');
-		//vmdebug ('$post ', $post);
-		if (empty($this->period) or $this->period != 'none') {
+		$task = vRequest::getCmd('task',false);
+		if (empty($this->period) or $task == 'setPeriod' ) { //$this->period != 'none') {
 			$this->setPeriodByPreset ();
 		}
 		else {
 			$this->setPeriod ();
+			$this->period = 'none';
+			$app->setUserState('com_virtuemart.revenue.period','none');
 		}
 
 		$this->removevalidOrderingFieldName ('virtuemart_order_id');
@@ -63,6 +64,10 @@ class VirtuemartModelReport extends VmModel {
 
 		$config = JFactory::getConfig();
 		$this->siteOffset = $config->get('offset');
+
+		//This is important to remove already set Timezones
+		$date = new JDate($inputDate);
+		$inputDate = $date->format('Y-m-d',true);
 
 		$date = new JDate($inputDate);
 
@@ -80,7 +85,7 @@ class VirtuemartModelReport extends VmModel {
 
 		$config = JFactory::getConfig();
 		$siteOffset = $config->get('offset');
-		$this->siteTimezone = $siteTimezone = new DateTimeZone($siteOffset);
+		$this->siteTimezone = new DateTimeZone($siteOffset);
 		$this->correctTimeOffset($this->from_period);
 		$this->correctTimeOffset($this->until_period);
 		vmdebug('setPeriod',$this->siteTimezone,$this->until_period );
@@ -97,12 +102,11 @@ class VirtuemartModelReport extends VmModel {
 
 		$config = JFactory::getConfig();
 		$siteOffset = $config->get('offset');
-		$this->siteTimezone = $siteTimezone = new DateTimeZone($siteOffset);
+		$this->siteTimezone = new DateTimeZone($siteOffset);
 
 		$this->correctTimeOffset($this->from_period);
 		$this->correctTimeOffset($this->until_period);
 
-		$this->siteTimezone = $siteTimezone;
 	}
 
 	function  getItemsByRevenue ($revenue) {
@@ -134,7 +138,7 @@ class VirtuemartModelReport extends VmModel {
 
 		$orderstates = vRequest::getVar ('order_status_code', array('C','S'));
 		$intervals = vRequest::getCmd ('intervals', 'day');
-		$filterorders = vRequest::getvar ('filter_order', 'intervals');
+		$filterorders = vRequest::getVar ('filter_order', 'intervals');
 		$orderdir = (vRequest::getCmd ('filter_order_Dir', NULL) == 'desc') ? 'desc' : '';
 		$virtuemart_product_id = vRequest::getInt ('virtuemart_product_id', FALSE);
 
@@ -465,7 +469,7 @@ class VirtuemartModelReport extends VmModel {
 		foreach ($this->date_presets as $name => $value) {
 			$options[] = JHtml::_ ('select.option', $name, vmText::_ ($value['name']), 'text', 'value');
 		}
-		$listHTML = JHtml::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" onchange="this.form.submit();" ', 'text', 'value', $select);
+		$listHTML = JHtml::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" onchange="this.form.task.value=\'setPeriod\';this.form.submit();" ', 'text', 'value', $select);
 		//$listHTML = JHtml::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" ', 'text', 'value', $select);
 
 		return $listHTML;
