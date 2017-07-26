@@ -224,11 +224,9 @@ class VirtuemartViewCategory extends VmView {
 
 		$imgAmount = VmConfig::get('prodimg_browse',1);
 		$dynamic = vRequest::getInt('dynamic',false);
-
+		$id = vRequest::getInt('virtuemart_product_id',false);
 		$legacy = VmConfig::get('legacylayouts',1);
-		if ($dynamic) {
-
-			$id = vRequest::getInt('virtuemart_product_id',false);
+		if ($dynamic and $id) {
 			$p = $productModel->getProduct ($id);
 			$this->products['products'][] = $p;
 			$productModel->addImages($this->products['products'], $imgAmount );

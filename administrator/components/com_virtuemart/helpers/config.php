@@ -861,19 +861,7 @@ class VmConfig {
 
 		return self::$cache[$hash];
 	}
-
-/*	static function getCache(){
-		//JFactory::getCache();
-
-		$conf = JFactory::getConfig();
-		$options = array(
-		'defaultgroup'	=> '',
-		'storage' 		=> $conf->get('cache_handler', ''),
-		'caching'		=> true,
-		'cachebase'		=> $conf->get('cache_path', VMPATH_ROOT . '/cache')
-		);
-		$cache = JCache::getInstance('', $options);
-	}*/
+	
 
 	/*
 	* Set default language tag for translatable table

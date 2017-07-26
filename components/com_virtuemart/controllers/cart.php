@@ -94,8 +94,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 					$s_id = $methods[0]->virtuemart_shipmentmethod_id;
 				}
 			}
-			vRequest::setVar('virtuemart_shipmentmethod_id', $s_id);
-			$cart->setShipmentMethod($force, !$html);
+			if(!empty($s_id)){
+				vRequest::setVar('virtuemart_shipmentmethod_id', $s_id);
+				$cart->setShipmentMethod($force, !$html);
+				$cart->getCartPrices($force);
+			}
+
 		}
 		if ($cart->virtuemart_paymentmethod_id==0 and (($s_id = VmConfig::get('set_automatic_payment',false)) > 0) and $cart->products){
 			if(empty($s_id)){
@@ -104,8 +108,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 					$s_id = $methods[0]->virtuemart_paymentmethod_id;
 				}
 			}
-			vRequest::setVar('virtuemart_paymentmethod_id', $s_id);
-			$cart->setPaymentMethod($force, !$html);
+			if(!empty($s_id)){
+				vRequest::setVar('virtuemart_paymentmethod_id', $s_id);
+				$cart->setPaymentMethod($force, !$html);
+				$cart->getCartPrices($force);
+			}
+
 		}
 
 		$request = vRequest::getRequest();
