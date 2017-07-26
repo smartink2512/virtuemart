@@ -48,29 +48,32 @@ vmJsApi::cssSite();
 
 $cache = $params->get( 'vmcache', true );
 $cachetime = $params->get( 'vmcachetime', 300 );
+$products = false;
 //vmdebug('$params for mod products',$params);
-if($cache){
+
+$productModel = VmModel::getModel('Product');
+
+if($cache and $Product_group=!'recent'){
 	vmdebug('Use cache for mod products');
-	$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id.'.'.$category_id.'.'.$filter_manufacturer.'.'.$manufacturer_id;
+	//$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id.'.'.$category_id.'.'.$filter_manufacturer.'.'.$manufacturer_id;
 	$cache	= VmConfig::getCache('mod_virtuemart_product', 'output');
 	$cache->setCaching(1);
 	$cache->setLifeTime($cachetime);
-
-	if ($output = $cache->get($key)) {
-		echo $output;
-		echo vmJsApi::writeJS();
+	$products = $cache->call( array( 'VirtueMartModelProduct', 'getProductsListing' ),$Product_group, $max_items, $show_price, true, false,$filter_category, $category_id, $filter_manufacturer, $manufacturer_id, $params->get( 'omitLoaded', 0));
+	if ($products) {
 		vmdebug('Use cached mod products');
-		return true;
 	}
 }
 
-$vendorId = vRequest::getInt('vendorid', 1);
+if(!$products){
+	$vendorId = vRequest::getInt('vendorid', 1);
 
-if ($filter_category ) $filter_category = TRUE;
+	if ($filter_category ) $filter_category = TRUE;
 
-$productModel = VmModel::getModel('Product');
-VirtueMartModelProduct::$omitLoaded = $params->get( 'omitLoaded', 0);
-$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id, $filter_manufacturer, $manufacturer_id);
+	VirtueMartModelProduct::$omitLoaded = $params->get( 'omitLoaded', 0);
+	$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id, $filter_manufacturer, $manufacturer_id);
+}
+
 $productModel->addImages($products);
 
 if (!class_exists('shopFunctionsF'))
@@ -91,9 +94,7 @@ require(JModuleHelper::getLayoutPath('mod_virtuemart_product',$layout));
 $output = ob_get_clean();
 echo $output;
 
-if($cache){
-	$cache->store($output, $key);
-}
+
 
 echo vmJsApi::writeJS();
 ?>

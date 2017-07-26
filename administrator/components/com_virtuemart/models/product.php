@@ -1687,6 +1687,13 @@ vmdebug('$limitStart',$limitStart);
 		return $products;
 	}
 
+	public static function getProductsListing ($group = FALSE, $nbrReturnProducts = FALSE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE, $filterCategory = TRUE, $category_id = 0, $filterManufacturer = TRUE, $manufacturer_id = 0, $omit = 0) {
+		$productModel = VmModel::getModel('Product');
+		VirtueMartModelProduct::$omitLoaded = $omit;
+		$products = $productModel->getProductListing($group, $nbrReturnProducts, $withCalc, $onlyPublished, $single, $filterCategory, $category_id, $filterManufacturer, $manufacturer_id);
+		return $products;
+	}
+
 	/**
 	 * overriden getFilter to persist filters
 	 *
@@ -2796,7 +2803,7 @@ vmdebug('$limitStart',$limitStart);
 			$db->query ();
 
 			//The low on stock notification comes now, when the people ordered.
-			//You need to know that the stock is going low before you actually sent the wares, because then you ususally know it already yoursefl
+			//You need to know that the stock is going low before you actually sent the wares, because then you ususally know it already yourself
 			//note by Max Milbers
 			if ($signInStock == '+') {
 
