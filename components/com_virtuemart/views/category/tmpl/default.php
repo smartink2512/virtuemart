@@ -20,7 +20,7 @@
 
 defined ('_JEXEC') or die('Restricted access');
 
-if(vRequest::getInt('dynamic')){
+if (vRequest::getInt('dynamic',false) and vRequest::getInt('virtuemart_product_id',false)) {
 	if (!empty($this->products)) {
 		if($this->fallback){
 			$p = $this->products;
@@ -164,11 +164,12 @@ if(!empty($this->orderByList)) { ?>
 </div>
 
 <?php
-if(VmConfig::get ('jdynupdate', TRUE)){
+if(VmConfig::get ('ajax_category', false)){
 	$j = "Virtuemart.container = jQuery('.category-view');
 	Virtuemart.containerSelector = '.category-view';";
 
-	//vmJsApi::addJScript('ajaxContent',$j);
+	vmJsApi::addJScript('ajax_category',$j);
+	vmJsApi::jDynUpdate();
 }
 ?>
 <!-- end browse-view -->

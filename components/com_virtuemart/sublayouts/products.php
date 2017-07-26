@@ -24,7 +24,8 @@ if(!empty($Itemid)){
 }
 
 $dynamic = false;
-if (vRequest::getInt('dynamic',false)) {
+
+if (vRequest::getInt('dynamic',false) and vRequest::getInt('virtuemart_product_id',false)) {
 	$dynamic = true;
 }
 
@@ -133,7 +134,7 @@ foreach ($viewData['products'] as $type => $products ) {
 				//echo JHtml::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id , FALSE), vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
 				?>
 			</div>
-		<?php if(vRequest::getInt('dynamic')){
+		<?php if($dynamic){
 			echo vmJsApi::writeJS();
 		} ?>
 		</div>
@@ -163,4 +164,8 @@ foreach ($viewData['products'] as $type => $products ) {
     <?php
     // }
     }
-  }
+}
+
+/*if(vRequest::getInt('dynamic')){
+	echo vmJsApi::writeJS();
+}*/ ?>
