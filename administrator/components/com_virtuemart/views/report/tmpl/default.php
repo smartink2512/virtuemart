@@ -110,7 +110,15 @@ else $addDateInfo = false;
                      ?>
                     </td>
                     <td align="center">
-                        <?php echo $r['count_order_id'];?>
+                        <?php
+						if($intervals=='orders'){
+							$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $r['virtuemart_order_id'];
+							echo JHtml::_ ('link', JRoute::_ ($link, FALSE), $r['order_number'], array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $r['order_number'], 'target' => '_blank'));
+
+						} else {
+							echo $r['count_order_id'];
+						}
+                        ?>
                     </td>
                     <td align="center">
                         <?php echo $r['product_quantity'];?>

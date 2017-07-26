@@ -88,7 +88,7 @@ class VirtuemartModelReport extends VmModel {
 		$this->siteTimezone = new DateTimeZone($siteOffset);
 		$this->correctTimeOffset($this->from_period);
 		$this->correctTimeOffset($this->until_period);
-		vmdebug('setPeriod',$this->siteTimezone,$this->until_period );
+		//vmdebug('setPeriod',$this->siteTimezone,$this->until_period );
 
 	}
 
@@ -221,15 +221,32 @@ class VirtuemartModelReport extends VmModel {
 		$where = array();
 
 		$until_period = $this->until_period;
-		// group always by intervals (day,week, ... or ID) and set grouping and defaut ordering
+		// group always by intervals (day,week, ... or ID) and set grouping and default ordering
+
+
+		$date = new JDate($this->until_period);
+		$twenty4h = new DateInterval('PT24H');
+		$date->add($twenty4h);
+		$until_period = $date->format('Y-m-d H:i:s',true);
+
+		$this->intervals = 'o.created_on';
+		$groupBy = 'GROUP BY intervals ';
+
 		switch ($intervals) {
 
+			case 'product_s':
+				$selectFields[] = '`order_item_name`';
+				$selectFields[] = '`virtuemart_product_id`';
+				$this->intervals = 'DATE( o.created_on )';
+				$groupBy = 'GROUP BY `virtuemart_product_id` ';
+				break;
+			case 'orders':
+				$selectFields[] = 'o.virtuemart_order_id';
+				$selectFields[] = 'o.`order_number`';
+				$groupBy = 'GROUP BY o.`virtuemart_order_id` ';
+				break;
 			case 'day':
 				$this->intervals = 'DATE( o.created_on )';
-				$date = new JDate($this->until_period);
-				$twenty4h = new DateInterval('PT24H');
-				$date->add($twenty4h);
-				$until_period = $date->format('Y-m-d H:i:s',true);
 				break;
 			case 'week':
 				$this->intervals = 'WEEK( o.created_on )';
@@ -241,37 +258,14 @@ class VirtuemartModelReport extends VmModel {
 				$this->intervals = 'YEAR( o.created_on )';
 				break;
 			default:
-				// invidual grouping
-				$this->intervals = 'o.created_on';
 				break;
 		}
-// 		if(!empty($this->intervals)){
-// 			$orderBy = $this->_getOrdering('o.`created_on`');
-// 		}
+
+		vmdebug('getRevenueSortListOrderQuery my interval',$intervals,$this->intervals,$filterorders);
 		$selectFields['intervals'] = $this->intervals . ' AS intervals, o.`created_on` AS created_on';
 
 		//$multix = VmConfig::get('multix','none');
 
-		if($intervals=='product_s'){
-
-			$selectFields[] = '`order_item_name`';
-			$selectFields[] = '`virtuemart_product_id`';
-
-			//if($multix=='none') $selectFields[] = 'SUM(product_discountedPriceWithoutTax * product_quantity) as order_subtotal_netto';
-
-			$groupBy = 'GROUP BY `virtuemart_product_id` ';
-		} else {
-			//if($multix=='none') $selectFields[] = 'SUM(order_salesPrice + coupon_discount) as order_subtotal_netto';
-			$groupBy = 'GROUP BY intervals ';
-		}
-
-		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
-		//with tax => brutto
-		//$selectFields[] = 'SUM(product_subtotal_with_tax) as order_total';
-
-		//without tax => netto
-		//$selectFields[] = 'SUM(product_item_price) as order_subtotal';
-		//if($multix!='none')
 		$selectFields[] = 'SUM( (product_discountedPriceWithoutTax * product_quantity)) as order_subtotal_netto';
 
 		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal_brutto';
