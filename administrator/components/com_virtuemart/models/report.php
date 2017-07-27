@@ -225,12 +225,14 @@ class VirtuemartModelReport extends VmModel {
 
 
 		$date = new JDate($this->until_period);
-		$twenty4h = new DateInterval('PT24H');
-		$date->add($twenty4h);
+		//$twenty4h = new DateInterval('PT24H');
+		$d24_1 = new DateInterval('PT86399S');
+		$date->add($d24_1);
 		$until_period = $date->format('Y-m-d H:i:s',true);
 
 		$this->intervals = 'o.created_on';
 		$groupBy = 'GROUP BY intervals ';
+		$weekMode = VmConfig::get('sql_weekmode',false);//'3';	//2 USA, 3 german,
 
 		switch ($intervals) {
 
@@ -249,7 +251,12 @@ class VirtuemartModelReport extends VmModel {
 				$this->intervals = 'DATE( o.created_on )';
 				break;
 			case 'week':
-				$this->intervals = 'WEEK( o.created_on )';
+				if($weekMode===false){
+					$this->intervals = 'WEEK( o.created_on )';
+				} else {
+					$this->intervals = 'WEEK( o.created_on, '.$weekMode.' )';
+				}
+
 				break;
 			case 'month':
 				$this->intervals = 'MONTH( o.created_on )';
@@ -261,7 +268,6 @@ class VirtuemartModelReport extends VmModel {
 				break;
 		}
 
-		vmdebug('getRevenueSortListOrderQuery my interval',$intervals,$this->intervals,$filterorders);
 		$selectFields['intervals'] = $this->intervals . ' AS intervals, o.`created_on` AS created_on';
 
 		//$multix = VmConfig::get('multix','none');
@@ -362,11 +368,8 @@ class VirtuemartModelReport extends VmModel {
 			$this->whereItem = ' WHERE ';
 		}
 
-// 		$this->whereItem;
 		/* WHERE differences with orders and items from orders are only date periods and ordering */
 		$whereString = $this->whereItem . $this->dates;
-		//vmdebug('getRevenueSortListOrderQuery '.$select,$whereString);
-		$this->setDebugSQL(true);
 		return $this->exeSortSearchListQuery (1, $select, $joinedTables, $whereString, $groupBy, $orderBy);
 
 	}

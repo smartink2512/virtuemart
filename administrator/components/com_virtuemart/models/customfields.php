@@ -103,8 +103,12 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach($productIds as $k=>$productId){
 			$hkey = (int)$productId.$hashCwAttribute;
 			if (array_key_exists ($hkey, $_customFieldByProductId)) {
-				//$productCustomsCached = $_customFieldByProductId[$hkey];
-				$productCustomsCached = array_merge($productCustomsCached,$_customFieldByProductId[$hkey]);
+
+				//Must be cloned!
+				foreach($_customFieldByProductId[$hkey] as $ccust){
+					$clonedCache[] = clone($ccust);
+				}
+				$productCustomsCached = array_merge($productCustomsCached,$clonedCache);
 				unset($productIds[$k]);
 			}
 		}

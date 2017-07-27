@@ -92,6 +92,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->memory_limit = VmConfig::getMemoryLimitBytes();
 
 		$this->_maxItems = VmConfig::get ('absMaxProducts', 700);
+
 	}
 
 	var $keyword = "0";
@@ -1591,7 +1592,7 @@ vmdebug('$limitStart',$limitStart);
 			$catTable = $this->getTable('categories');
 
 			foreach($categoryIds as $categoryId){
-				$tmp = (array)$catTable->load($categoryId['virtuemart_category_id']);
+				$tmp = $catTable->load($categoryId['virtuemart_category_id'])->loadFieldValues();
 				$tmp['id'] = $categoryId['id'];
 				$tmp['ordering'] = $categoryId['ordering'];
 				$categories[] = $tmp;
@@ -1642,6 +1643,8 @@ vmdebug('$limitStart',$limitStart);
 	 */
 	public function getProductListing ($group = FALSE, $nbrReturnProducts = FALSE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE, $filterCategory = TRUE, $category_id = 0, $filterManufacturer = TRUE, $manufacturer_id = 0) {
 
+		$products = array();
+		$ids = array();
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
 			$front = TRUE;
@@ -1684,13 +1687,18 @@ vmdebug('$limitStart',$limitStart);
 		$this->listing = TRUE;
 		$products = $this->getProducts ($ids, $front, $withCalc, $onlyPublished, $single);
 		$this->listing = FALSE;
+
 		return $products;
 	}
 
-	public static function getProductsListing ($group = FALSE, $nbrReturnProducts = FALSE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE, $filterCategory = TRUE, $category_id = 0, $filterManufacturer = TRUE, $manufacturer_id = 0, $omit = 0) {
+	public function getProductsListing ($group = FALSE, $nbrReturnProducts = FALSE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE, $filterCategory = TRUE, $category_id = 0, $filterManufacturer = TRUE, $manufacturer_id = 0, $omit = 0) {
+
 		$productModel = VmModel::getModel('Product');
+		$products = array();
 		VirtueMartModelProduct::$omitLoaded = $omit;
-		$products = $productModel->getProductListing($group, $nbrReturnProducts, $withCalc, $onlyPublished, $single, $filterCategory, $category_id, $filterManufacturer, $manufacturer_id);
+		$productModel->_withCount = false;
+		$products = $productModel->getProductListing($group, $nbrReturnProducts, $withCalc, $onlyPublished, $single, $filterCategory, $category_id, $filterManufacturer, $manufacturer_id);//*/
+
 		return $products;
 	}
 
