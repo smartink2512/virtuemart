@@ -193,7 +193,7 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 			}
 			if (!class_exists($tableClass))
 			{
-				vmdebug('Did not find file in ',$paths,$tryThis);
+				vmdebug('Did not find file '.$type.'.php in ',$paths,$tryThis);
 				return false;
 			}
 		}

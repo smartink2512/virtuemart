@@ -506,7 +506,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		//Small ugly hack to make registering optional //do we still need that? YES !  notice by Max Milbers
 		if($register and $type == 'BT' and VmConfig::get('oncheckout_show_register',1) and !VmConfig::get('oncheckout_only_registered',1) and $layoutName!='edit'){
-			vmdebug('Going to set core fields unrequired');
+			//vmdebug('Going to set core fields unrequired');
 			foreach($userFields as $field){
 				if(in_array($field->name,$corefields)){
 					if($field->required){

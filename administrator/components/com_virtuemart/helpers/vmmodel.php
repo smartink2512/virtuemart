@@ -174,7 +174,7 @@ class VmModel extends vObject{
 			}
 
 		}
-		$this->_db = JFactory::getDbo();
+		//$this->_db = JFactory::getDbo();
 		$this->setToggleName('published');
 		$this->debug = FALSE;
 	}
@@ -385,9 +385,12 @@ class VmModel extends vObject{
 	 */
 	public function getTable($name = '', $prefix = 'Table', $options = array())
 	{
-		if (empty($name))
-		{
-			$name = $this->getName();
+		if (empty($name)) {
+			if(empty($this->_maintable)){
+				$name = $this->getName();
+			} else {
+				$name = $this->_maintablename;
+			}
 		}
 
 		if ($table = $this->_createTable($name, $prefix, $options))

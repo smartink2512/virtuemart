@@ -253,7 +253,7 @@ class vmLanguage {
 
 		self::$languages[$tag]->load($name, $path, $tag, true, true);
 		$loaded[$h] = true;
-		vmdebug('loaded '.$h.' '.self::$languages[$tag]->getTag());
+		//vmdebug('loaded '.$h.' '.self::$languages[$tag]->getTag());
 		vmText::$language = self::$languages[$tag];
 		//vmText::setLanguage(self::$languages[$tag]);
 		return self::$languages[$tag];

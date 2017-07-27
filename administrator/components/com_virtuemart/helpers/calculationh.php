@@ -103,7 +103,7 @@ class calculationHelper {
 	static public function getInstance() {
 		if (!is_object(self::$_instance)) {
 			self::$_instance = new calculationHelper();
-			vmdebug('Created new Calculator Instance');
+			//vmdebug('Created new Calculator Instance');
 		} else {
 			//We store in UTC and use here of course also UTC
 			$jnow = JFactory::getDate();

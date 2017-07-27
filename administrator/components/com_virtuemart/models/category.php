@@ -80,7 +80,6 @@ class VirtueMartModelCategory extends VmModel {
 				vmdebug('Use category already loaded with children');
 				return $t;
 			} else {
-				vmdebug('Load category '.$this->_id);
 				$this->_cache[$this->_id][$childs] = $this->getTable('categories');
 				if(!empty($this->_id)){
 					$this->_cache[$this->_id][$childs]->load($this->_id);
