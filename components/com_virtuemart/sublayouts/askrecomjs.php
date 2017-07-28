@@ -24,7 +24,7 @@ if($ask_recommened_loaded) return '';
 $product = $viewData['product'];
 
 if(VmConfig::get('usefancy',1)){
-	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false);
+	vmJsApi::addJScript( 'fancybox/jquery.fancybox-1.3.4.pack',false, false);
 	vmJsApi::css('jquery.fancybox-1.3.4');
 	$Modal ="
 		$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){
@@ -38,7 +38,7 @@ if(VmConfig::get('usefancy',1)){
 		";
 } else {
 
-	vmJsApi::addJScript( 'facebox', false );
+	vmJsApi::addJScript( 'facebox', false, false );
 	vmJsApi::css( 'facebox' );
     $Modal ="
     		$('a.ask-a-question, a.printModal, a.recommened-to-friend, a.manuModal').click(function(event){

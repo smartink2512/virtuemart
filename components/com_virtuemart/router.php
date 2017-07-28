@@ -84,6 +84,7 @@ function virtuemartBuildRoute(&$query) {
 						$segments[] = $categoryRoute->route;
 					}
 				}
+				if(!empty($catId)) $limit = vmrouterHelper::getLimitByCategory($catId);
 
 				if(isset($jmenu['virtuemart_category_id'][$catId][$manId])) {
 					$query['Itemid'] = $jmenu['virtuemart_category_id'][$catId][$manId];
@@ -381,35 +382,28 @@ function virtuemartParseRoute($segments) {
 
 	} else {
 		$vars['limitstart'] = 0 ;
-		if(vmrouterHelper::$limit === null){
-			vmrouterHelper::$limit = VmConfig::get('llimit_init_FE', 20);
-		}
-		$vars['limit'] = vmrouterHelper::$limit;
 
 	}
 
 	if (empty($segments)) {
 		$vars['view'] = 'category';
 		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+		if(!isset($vars['limit'])) $vars['limit'] = vmrouterHelper::getLimitByCategory($vars['virtuemart_category_id'],$vars['view']);
 		return $vars;
 	}
 
 	//Translation of the ordering direction is not really useful and costs just energy
-	if ( end($segments) == 'dirDesc' ){
-		$vars['dir'] ='DESC' ;
-		array_pop($segments);
-		if (empty($segments)) {
-			$vars['view'] = 'category';
-			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
-			return $vars;
+	if ( end($segments) == 'dirDesc' or end($segments) == 'dirAsc' ){
+		if ( end($segments) == 'dirDesc' ) {
+			$vars['dir'] = 'DESC';
+		} else {
+			$vars['dir'] ='ASC' ;
 		}
-	} else
-	if ( end($segments) == 'dirAsc' ){
-		$vars['dir'] ='ASC' ;
 		array_pop($segments);
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			if(!isset($vars['limit'])) $vars['limit'] = vmrouterHelper::getLimitByCategory($vars['virtuemart_category_id'],$vars['view']);
 			return $vars;
 		}
 	}
@@ -423,6 +417,7 @@ function virtuemartParseRoute($segments) {
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			if(!isset($vars['limit'])) $vars['limit'] = vmrouterHelper::getLimitByCategory($vars['virtuemart_category_id'],$vars['view']);
 			return $vars;
 		}
 	}
@@ -453,6 +448,7 @@ function virtuemartParseRoute($segments) {
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			$vars['limit'] = vmrouterHelper::getLimitByCategory($vars['virtuemart_category_id'],$vars['view']);
 			return $vars;
 		}
 
@@ -481,6 +477,7 @@ function virtuemartParseRoute($segments) {
 		}
 		$vars['view'] = 'category';
 		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+		$vars['limit'] = vmrouterHelper::getLimitByCategory($vars['virtuemart_category_id'],$vars['view']);
 		if (empty($segments)) return $vars;
 	}
 	if (end($segments) == 'modal') {
@@ -527,6 +524,9 @@ function virtuemartParseRoute($segments) {
 			else $vars['virtuemart_order_id'] = $segments[1] ;
 			$vars['layout'] = 'details';
 		}
+		if(!isset($vars['limit'])){
+			$vars['limit'] = vmrouterHelper::$limit;
+		}
 		return $vars;
 	}
 	else if ( $helper->compareKey($view,'user') || $helper->activeMenu->view == 'user') {
@@ -572,6 +572,9 @@ function virtuemartParseRoute($segments) {
 
 			else $vars['task'] = $segments[0] ;
 		}
+		if(!isset($vars['limit'])){
+			$vars['limit'] = vmrouterHelper::$limit;
+		}
 		return $vars;
 	}
 	else if ( $helper->compareKey($view,'vendor') || $helper->activeMenu->view == 'vendor') {
@@ -590,6 +593,9 @@ function virtuemartParseRoute($segments) {
 			elseif ( $helper->compareKey($segments[0] ,'details') ) $vars['layout'] = 'details' ;
 		} else $vars['layout'] = 'details' ;
 
+		if(!isset($vars['limit'])){
+			$vars['limit'] = vmrouterHelper::$limit;
+		}
 		return $vars;
 
 	}
@@ -636,6 +642,9 @@ function virtuemartParseRoute($segments) {
 			array_shift($segments);
 		}
 
+		if(!isset($vars['limit'])){
+			$vars['limit'] = vmrouterHelper::$limit;
+		}
 		return $vars;
 	}
 
@@ -696,6 +705,7 @@ function virtuemartParseRoute($segments) {
 			if($catId!=false){
 				$vars['virtuemart_category_id'] = $catId;
 				$vars['view'] = 'category' ;
+				if(!isset($vars['limit'])) $vars['limit'] = vmrouterHelper::getLimitByCategory($vars['virtuemart_category_id'],$vars['view']);
 			}
 		}
 	}
@@ -720,6 +730,7 @@ function virtuemartParseRoute($segments) {
 			$vars['virtuemart_category_id'] = $id;
 			$vars['view'] = 'category' ;
 		}
+		if(!isset($vars['limit'])) $vars['limit'] = vmrouterHelper::getLimitByCategory($vars['virtuemart_category_id'],$vars['view']);
 	}
 	if (!isset($vars['view'])){
 		$vars['view'] = $segments[0] ;
@@ -727,7 +738,7 @@ function virtuemartParseRoute($segments) {
 			$vars['task'] = $segments[1] ;
 		}
 	}
-
+	//vmdebug('my vars from router',$vars);
 	return $vars;
 }
 
@@ -837,10 +848,12 @@ class vmrouterHelper {
 			self::$_instance= new vmrouterHelper ($query);
 
 			if (self::$limit===null){
-				$mainframe = JFactory::getApplication(); ;
+				$app = JFactory::getApplication();
 				$view = 'virtuemart';
 				if(isset($query['view'])) $view = $query['view'];
-				self::$limit= $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', VmConfig::get('llimit_init_FE', 24), 24, 'int');
+
+				//We need to set the default here.
+				self::$limit= $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit', VmConfig::get('llimit_init_FE', 24), 'int');
 			}
 		}
 		self::$_instance->query = $query;
@@ -853,6 +866,27 @@ class vmrouterHelper {
 		}
 
 		return self::$_instance;
+	}
+
+	public static function getLimitByCategory($catId, $view = 'virtuemart'){
+
+		static $c = array();
+
+		if(empty($c[$catId][$view])){
+			$catModel = VmModel::getModel('category');
+			$cat = $catModel->getCategory($catId);
+			//vmdebug('getLimitByCategory '.$cat->limit_list_initial);
+			if(!empty($cat->limit_list_initial)){
+				$initial = $cat->limit_list_initial;
+				vmdebug('limit by category '.$view.' '.$catId.' '.$cat->limit_list_initial);
+			} else {
+				$initial = VmConfig::get('llimit_init_FE', 24);
+			}
+			$app = JFactory::getApplication();
+			$c[$catId][$view] = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',$initial, 'int');
+		}
+		self::$limit = $c[$catId][$view];
+		return self::$limit;
 	}
 
 	public function getCategoryRoute($catId,$manId){

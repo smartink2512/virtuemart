@@ -82,11 +82,11 @@ jQuery(function($) {
     // GALT: this method could be renamed into more general "updateEventListeners"
     // and all other VM init scripts placed in here.
     Virtuemart.updateCartListener = function() {
-        // init VM's "Add to Cart" scripts
-		Virtuemart.product($(".product"));
-        //Virtuemart.product($("form.product"));
+        // init VM's "Add to Cart" scripts should be in a function registered for the trigger, so long, just quickn dirty
+		if (typeof Virtuemart.product !== "undefined"){
+			Virtuemart.product($(".product"));
+		}
 		$('body').trigger('updateVirtueMartProductDetail');
-        //$('body').trigger('ready');
     }
 
     Virtuemart.updL = function (event) {

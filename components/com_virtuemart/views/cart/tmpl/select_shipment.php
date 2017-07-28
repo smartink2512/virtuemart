@@ -45,22 +45,22 @@ if($this->cart->getInCheckOut()){
 		echo '<h'.$headerLevel.' class="vm-shipment-header-select">'.vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT').'</h'.$headerLevel.'>';
 	}
 
+    if($this->extraSafeBtn or $this->layoutName!=$this->cart->layout){
+		?>
+        <div class="buttonBar-right">
+			<?php $dynUpdate = '';
+			if( VmConfig::get('oncheckout_ajax',false)) {
+				$dynUpdate=' data-dynamic-update="1" ';
+			} ?>
+            <button name="updatecart" class="<?php echo $buttonclass ?>" type="submit" <?php echo $dynUpdate ?> ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
 
-	?>
+			<?php   if ($this->layoutName!=$this->cart->layout) { ?>
+                <button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+			<?php  } ?>
+        </div>
+		<?php
+    }
 
-	<div class="buttonBar-right">
-		<?php $dynUpdate = '';
-		if( VmConfig::get('oncheckout_ajax',false)) {
-		$dynUpdate=' data-dynamic-update="1" ';
-		} ?>
-		<button name="updatecart" class="<?php echo $buttonclass ?>" type="submit" <?php echo $dynUpdate ?> ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
-
-		<?php   if ($this->layoutName!=$this->cart->layout) { ?>
-			<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
-		<?php  } ?>
-	</div>
-
-	<?php
 	if ($this->found_shipment_method ) {
 
 		echo '<fieldset class="vm-payment-shipment-select vm-shipment-select">';

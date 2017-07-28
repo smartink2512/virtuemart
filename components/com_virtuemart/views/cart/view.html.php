@@ -64,6 +64,7 @@ class VirtueMartViewCart extends VmView {
 
 		$this->cart->prepareVendor();
 
+		$this->extraSafeBtn = false;
 		if ($this->layoutName == 'select_shipment') {
 
 			$this->cart->prepareCartData();

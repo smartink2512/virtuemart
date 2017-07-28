@@ -164,6 +164,10 @@ class VirtuemartViewOrders extends VmView {
 			}
 			$this->assignRef ('currency', $currency);
 			$this->user_currency_id = $emailCurrencyId;
+
+			if($l = VmConfig::get('layout_order_detail',false)){
+				$this->setLayout( strtolower( $l ) );
+			}
 		} else { // 'list' -. default
 			$this->useSSL = vmURI::useSSL();
 			$this->useXHTML = false;
@@ -195,6 +199,9 @@ class VirtuemartViewOrders extends VmView {
 					$order->currency = $currency;
 					$order->invoiceNumber = $orderModel->getInvoiceNumber($order->virtuemart_order_id);
 					$this->orderlist[$k] = $order;
+				}
+				if($l = VmConfig::get('layout_order_list',false)){
+					$this->setLayout( strtolower( $l ) );
 				}
 			}
 		}
