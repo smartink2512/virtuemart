@@ -107,7 +107,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$data = array('virtuemart_user_id' => $userId, 'virtuemart_vendor_id' => "1", 'user_is_vendor' => "1");
 		if($utable->bindChecknStore($data)){
 			if($allowInsert){
-				vmInfo('setStoreOwner VmUser inserted new main vendor has user id  '.$userId);
+				//vmInfo('setStoreOwner VmUser inserted new main vendor has user id  '.$userId);
 			} else {
 				vmInfo('setStoreOwner VmUser updated new main vendor has user id  '.$userId);
 			}

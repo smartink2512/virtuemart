@@ -50,7 +50,7 @@ JText::script('INSTL_FTP_SETTINGS_CORRECT');
 
 // Add script options
 $this->addScriptOptions('system.installation', array('url' => JRoute::_('index.php')));
-?> 
+?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 	<head>

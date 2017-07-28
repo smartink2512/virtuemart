@@ -2,17 +2,10 @@
 /**
  * @package    Joomla.Installation
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// BOF VIRTUEMART
-defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
-if (!class_exists( 'VmVirtueMart' )) require(JPATH_INSTALLATION.DS.'helper'.DS.'virtuemart.php');
-	$lang = JFactory::getLanguage();
-	$currentLang = $lang->getTag();
-VmVirtueMart::loadVMLanguage($currentLang);
-// EOF VIRTUEMART
 defined('_JEXEC') or die;
 
 /* @var InstallationViewLanguagesHtml $this */
@@ -55,7 +48,6 @@ $version = new JVersion;
 		</div>
 	</div>
 	<h3><?php echo JText::_('INSTL_LANGUAGES'); ?></h3>
-	<h3><?php echo JText::_('COM_VIRTUEMART_INSTL_LANGUAGE_NOW'); ?></h3>
 	<hr class="hr-condensed" />
 	<?php if (!$this->items) : ?>
 		<p><?php echo JText::_('INSTL_LANGUAGES_WARNING_NO_INTERNET') ?></p>
@@ -110,7 +102,7 @@ $version = new JVersion;
   						</td>
 						<td class="center">
 						<?php // Display a Note if language pack version is not equal to Joomla version ?>
-						<?php if (substr($language->version, 0, 3) != $version::RELEASE || substr($language->version, 0, 5) != $currentShortVersion) : ?>
+						<?php if (strpos($language->version, $version::RELEASE) !== 0  || strpos($language->version, $currentShortVersion) !== 0) : ?>
 							<span class="label label-warning hasTooltip" title="<?php echo JText::_('JGLOBAL_LANGUAGE_VERSION_NOT_PLATFORM'); ?>"><?php echo $language->version; ?></span>
 						<?php else : ?>
 							<span class="label label-success"><?php echo $language->version; ?></span>

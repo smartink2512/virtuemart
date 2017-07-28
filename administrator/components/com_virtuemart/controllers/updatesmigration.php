@@ -51,7 +51,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	private function checkPermissionForTools(){
 		vRequest::vmCheckToken();
 		//Hardcore Block, we may do that better later
-		$user = JFactory::getUser();
 		if(!vmAccess::manager('core') ){
 			$msg = 'Forget IT';
 			$this->setRedirect('index.php?option=com_virtuemart', $msg);
@@ -94,9 +93,9 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		$model = $this->getModel('updatesMigration');
 
-		$msg = $model->installSampleData();
+		$model->installSampleData();
 
-		$this->setRedirect($this->redirectPath, $msg);
+		$this->setRedirect($this->redirectPath);
 	}
 
 	/**
