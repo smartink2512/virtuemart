@@ -217,5 +217,44 @@ WHERE published="1"';
 		$h .= "</td>\n</tr>";
 		return $h;
 	}
+
+
+	/**
+	 * Writes a line  for the price configuration
+	 *
+	 * @author Max Milberes
+	 * @param string $name
+	 * @param string $langkey
+	 */
+	static function writePriceConfigLine ($array, $name, $langkey) {
+
+		if (!class_exists ('VmHTML')) {
+			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
+		}
+		if(is_object($array)) $array = get_object_vars($array);
+		if(!isset($array[$name])) $array[$name] = 0;
+		if(!isset($array[$name . 'Text'])) $array[$name . 'Text'] = 0;
+		if(!isset($array[$name . 'Rounding'])) $array[$name . 'Rounding'] = -1;
+		$html =
+		'<tr>
+				<td class="key">
+					<span class="editlinktip hasTip" title="' . vmText::_ ($langkey . '_EXPLAIN') . '">
+						<label>' . vmText::_ ($langkey) .
+		'</label>
+					</span>
+				</td>
+
+				<td>' .
+		VmHTML::checkbox ($name, $array[$name]) . '
+				</td>
+				<td align="center">' .
+		VmHTML::checkbox ($name . 'Text', $array[$name . 'Text']) . '
+				</td>
+				<td align="center">
+				<input type="text" value="' . $array[$name . 'Rounding'] . '" class="inputbox" size="4" name="' . $name . 'Rounding">
+				</td>
+			</tr>';
+		return $html;
+	}
 }
 // pure php no closing tag

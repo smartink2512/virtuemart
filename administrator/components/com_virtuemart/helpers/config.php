@@ -1095,11 +1095,11 @@ class VmConfig {
 			self::loadConfig();
 		}
 
-		if($admin = JFactory::getUser()->authorise('core.admin', 'com_virtuemart')){
+		//if($admin = JFactory::getUser()->authorise('core.admin', 'com_virtuemart')){
 			if (!empty(self::$_jpConfig->_params)) {
 				self::$_jpConfig->_params[$key] = $value;
 			}
-		}
+		//}
 
 	}
 

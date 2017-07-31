@@ -76,6 +76,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 		$params = $this->shoppergroup;
 		$show_prices = $this->shoppergroup->show_prices;
 		$showPricesLine = true;
+		if(!class_exists('VirtuemartViewConfig')) require (VMPATH_ADMIN .'/views/config/view.html.php');
             include(VMPATH_ADMIN .'/views/config/tmpl/default_priceconfig.php');
         ?>
 

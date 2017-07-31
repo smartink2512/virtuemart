@@ -27,22 +27,22 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
 		    </tr>
 <?php
-echo ShopFunctions::writePriceConfigLine($params, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
-echo ShopFunctions::writePriceConfigLine($params, 'variantModification', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
-echo ShopFunctions::writePriceConfigLine($params, 'basePriceVariant', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
-echo ShopFunctions::writePriceConfigLine($params, 'discountedPriceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX', 0);
-echo ShopFunctions::writePriceConfigLine($params, 'discountedPriceWithoutTaxTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX_TT', 0);
-echo ShopFunctions::writePriceConfigLine($params, 'priceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX', 0);
-echo ShopFunctions::writePriceConfigLine($params, 'priceWithoutTaxTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX_TT', 0);
-echo ShopFunctions::writePriceConfigLine($params, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT', 0);
-echo ShopFunctions::writePriceConfigLine($params, 'taxAmountTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT_TT', 0);
-echo ShopFunctions::writePriceConfigLine($params, 'basePriceWithTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
-echo ShopFunctions::writePriceConfigLine($params, 'salesPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
-echo ShopFunctions::writePriceConfigLine($params, 'salesPriceTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_TT');
-echo ShopFunctions::writePriceConfigLine($params, 'salesPriceWithDiscount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
-echo ShopFunctions::writePriceConfigLine($params, 'discountAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
-echo ShopFunctions::writePriceConfigLine($params, 'discountAmountTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT_TT');
-echo ShopFunctions::writePriceConfigLine($params, 'unitPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_UNITPRICE');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'variantModification', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'basePriceVariant', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'discountedPriceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX', 0);
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'discountedPriceWithoutTaxTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX_TT', 0);
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'priceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX', 0);
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'priceWithoutTaxTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX_TT', 0);
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT', 0);
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'taxAmountTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT_TT', 0);
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'basePriceWithTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'salesPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'salesPriceTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_TT');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'salesPriceWithDiscount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'discountAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'discountAmountTt', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT_TT');
+echo VirtuemartViewConfig::writePriceConfigLine($params, 'unitPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_UNITPRICE');
 ?>
 		</table>
 		
