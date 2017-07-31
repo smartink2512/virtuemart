@@ -1186,7 +1186,7 @@ class VirtueMartModelUser extends VmModel {
 				if(!class_exists('TableUserinfos'))require(VMPATH_ADMIN.DS.'tables'.DS.'userinfos.php');
 
 				$userfieldTable = new TableUserinfos($db);
-				$userfieldFields = get_object_vars($userfieldTable);
+				$userfieldFields = $userfieldTable->getProperties();
 				$userFieldSearchArray = array('company','first_name','last_name','address_1','zip','city','phone_1');
 				//We must validate if the userfields actually exists, they could be removed
 

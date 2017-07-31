@@ -37,7 +37,7 @@ class productHelper{
 			$t = new stdClass();
 			foreach ($tmp as $k => $v){
 				// Do not process internal variables
-				if ('_' != substr($k, 0, 1)){
+				if (strpos ($k, '_') !== 0 and property_exists($product, $k)){
 					$t->$k = $v;
 				}
 			}

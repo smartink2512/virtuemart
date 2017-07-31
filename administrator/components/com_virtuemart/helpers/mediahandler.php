@@ -167,8 +167,7 @@ class VmMediaHandler {
 			$media = new VmMediaHandler();
 		}
 
-		$attribsImage = get_object_vars($table);
-
+		$attribsImage = $table->getProperties();
 		foreach($attribsImage as $k=>$v){
 			$media->$k = $v;
 		}

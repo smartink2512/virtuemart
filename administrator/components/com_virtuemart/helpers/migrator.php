@@ -1652,41 +1652,6 @@ class Migrator extends VmModel{
 		return $weightUnitMigrate;
 	}
 
-	/**
-	 * Helper function, was used to determine the difference of an loaded array (from vm19
-	 * and a loaded object of vm2
-	 */
-	private function showVmDiff(){
-
-		$productModel = VmModel::getModel('product');
-		$product = $productModel->getProduct(0);
-
-		$productK = array();
-		$attribsImage = get_object_vars($product);
-
-		foreach($attribsImage as $k => $v){
-			$productK[] = $k;
-		}
-
-		$oldproductK = array();
-		foreach($oldProducts[0] as $k => $v){
-			$oldproductK[] = $k;
-		}
-
-		$notSame = array_diff($productK, $oldproductK);
-		$names = '';
-		foreach($notSame as $name){
-			$names .= $name . ' ';
-		}
-		$this->_app->enqueueMessage('_productPorter  array_intersect ' . $names);
-
-		$notSame = array_diff($oldproductK, $productK);
-		$names = '';
-		foreach($notSame as $name){
-			$names .= $name . ' ';
-		}
-		$this->_app->enqueueMessage('_productPorter  ViceVERSA array_intersect ' . $names);
-	}
 
 	function loadCountListContinue($q,$startLimit,$maxItems,$msg){
 

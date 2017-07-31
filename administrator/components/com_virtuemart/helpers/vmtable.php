@@ -144,9 +144,10 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 		$vars = get_object_vars($this);
 		if ($public) {
-			foreach ($vars as $key => $value) {
-				if ('_' == substr($key, 0, 1)) {
-					unset($vars[$key]);
+
+			foreach ($vars as $k => $v) {
+				if (strpos ($k, '_') === 0 or !property_exists($this, $k)) {
+					unset($vars[$k]);
 				}
 			}
 		}
@@ -708,20 +709,15 @@ class VmTable extends vObject implements JObservableInterface, JTableInterface {
 
 	function loadFieldValues($array=true){
 
-		$tmp = get_object_vars($this);
+
 		if($array){
-			$return = array();
-			foreach ($tmp as $k => $v){
-				// Do not process internal variables
-				if ('_' != substr($k, 0, 1)){
-					$return[$k] = $v;
-				}
-			}
+			$return = $this->getProperties();
 		} else {
+			$tmp = get_object_vars($this);
 			$return = new stdClass();
 			foreach ($tmp as $k => $v){
 				// Do not process internal variables
-				if ('_' != substr($k, 0, 1)){
+				if (strpos ($k, '_') !== 0 and property_exists($this, $k)){
 					$return->$k = $v;
 				}
 			}

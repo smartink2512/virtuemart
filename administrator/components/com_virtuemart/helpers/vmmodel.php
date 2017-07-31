@@ -641,19 +641,11 @@ class VmModel extends vObject{
 
 		// Iterate over the object variables to build the query fields and values.
 		foreach ($dTableArray as $k => $v){
-
 			// Ignore any internal fields.
-			$posUnderLine = strpos ($k,'_');
-
-			if (( $posUnderLine!==false && $posUnderLine === 0) ) {
-				continue;
+			if (strpos ($k, '_') !== 0 and property_exists($defaultTable, $k)) {
+				$this->_validOrderingFieldName[] = $k;
 			}
-
-// 			$this->_validOrderingFieldName[] = $this->_tablePreFix.$k;
-			$this->_validOrderingFieldName[] = $k;
-
 		}
-
 	}
 
 

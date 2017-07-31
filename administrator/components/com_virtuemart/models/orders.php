@@ -269,7 +269,7 @@ class VirtueMartModelOrders extends VmModel {
 				$pvar = get_object_vars($product);
 
 				foreach ( $pvar as $k => $v) {
-					if (!isset($item->$k) and isset($product->$k) and '_' != substr($k, 0, 1)) {
+					if (!isset($item->$k) and strpos ($k, '_') !== 0 and property_exists($product, $k)) {
 						$item->$k = $v;
 					}
 				}
@@ -475,7 +475,7 @@ class VirtueMartModelOrders extends VmModel {
 			}
 		}
 
-		$dataT = get_object_vars($table);
+		$dataT = $table->getProperties();//get_object_vars($table);
 
 		$orderdatacopy = $orderdata;
 		$data = array_merge($dataT,(array)$orderdatacopy);
