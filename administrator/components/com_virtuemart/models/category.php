@@ -69,7 +69,6 @@ class VirtueMartModelCategory extends VmModel {
 
   			if($childs and !empty($this->_cache[$this->_id][0])){
 				$this->_cache[$this->_id][$childs] = clone($this->_cache[$this->_id][0]);
-				vmdebug('Use category already loaded without children');
   			} else if(!$childs and !empty($this->_cache[$this->_id][1])){
   				$t = clone($this->_cache[$this->_id][1]);
 				$t->children = false;
@@ -77,7 +76,7 @@ class VirtueMartModelCategory extends VmModel {
 				$t->productcount = false;
 				$t->parents = false;
 				$this->_cache[$this->_id][0] = $t;
-				vmdebug('Use category already loaded with children');
+				//vmdebug('Use category already loaded with children');
 				return $t;
 			} else {
 				$this->_cache[$this->_id][$childs] = $this->getTable('categories');

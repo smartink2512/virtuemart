@@ -681,10 +681,11 @@ class shopFunctionsF {
 		$mailer->setSender( $sender );
 
 		if(VmConfig::get('debug_mail',false)){
+			if(!is_array($recipient)) $recipient = array($recipient);
 			if(VmConfig::showDebug()){
-				vmdebug('The mail to send subject '.$subject.' to '.$recipient.' from '.$sender[0].' '.$sender[1].' '.vmText::$language->getTag().'<br>'.$body);
+				vmdebug('The mail to send subject '.$subject.' to "'.implode(' ',$recipient).'" from '.$sender[0].' '.$sender[1].' '.vmText::$language->getTag().'<br>'.$body);
 			} else {
-				vmInfo('The mail to send subject '.$subject.' to '.$recipient.' from '.$sender[0].' '.$sender[1].'<br>'.$body);
+				vmInfo('The mail to send subject '.$subject.' to "'.implode(' ',$recipient).'" from '.$sender[0].' '.$sender[1].'<br>'.$body);
 			}
 
 			return false;

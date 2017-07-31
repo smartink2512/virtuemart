@@ -45,7 +45,7 @@ if($this->cart->getInCheckOut()){
 		echo '<h'.$headerLevel.' class="vm-shipment-header-select">'.vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT').'</h'.$headerLevel.'>';
 	}
 
-    if($this->extraSafeBtn or $this->layoutName!=$this->cart->layout){
+    if(VmConfig::get('cart_extraSafeBtn',false) or $this->layoutName!=$this->cart->layout){
 		?>
         <div class="buttonBar-right">
 			<?php $dynUpdate = '';

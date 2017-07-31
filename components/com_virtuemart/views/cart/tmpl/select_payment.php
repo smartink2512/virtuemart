@@ -45,7 +45,7 @@ if($this->cart->virtuemart_paymentmethod_id){
 	echo '<h'.$headerLevel.' class="vm-payment-header-select">'.vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT').'</h'.$headerLevel.'>';
 }
 
-if($this->extraSafeBtn or $this->layoutName!=$this->cart->layout){
+if(VmConfig::get('cart_extraSafeBtn',false) or $this->layoutName!=$this->cart->layout){
 	?>
 
     <div class="buttonBar-right">
