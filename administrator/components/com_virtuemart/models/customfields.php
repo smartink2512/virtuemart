@@ -307,7 +307,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 
 				if(!isset($myoption[$k])){
-					$value = 0;
+					$value = '';
 				} else {
 					$value = trim($myoption[$k]);
 				}
@@ -409,7 +409,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$optAttr = array();
 
-				$optAttr[] = array('value' => '0' ,'text' =>vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+				$optAttr[] = array('value' => '' ,'text' =>vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 				$optAttr[] = array('value' => 'product_name' ,'text' =>vmText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME'));
 				$optAttr[] = array('value' => 'product_sku', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_SKU'));
 				$optAttr[] = array('value' => 'slug', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_ALIAS'));
@@ -439,7 +439,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				if(empty($field->selectoptions)) $field->selectoptions = array();
 				foreach($field->selectoptions as $k=>&$soption){
 					$options = array();
-					$options[] = array('value' => '0' ,'text' =>vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+					$options[] = array('value' => '' ,'text' =>vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 
 					$added = array();
 

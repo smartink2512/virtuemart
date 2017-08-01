@@ -210,7 +210,7 @@ class VirtuemartViewProduct extends VmViewAdmin {
 				// Add the virtuemart_shoppergroup_ids
 				$cid = JFactory::getUser()->id;
 
-				$this->activeShoppergroups = shopfunctions::renderGuiList($cid,'shoppergroups','shopper_group_name','category','vmuser_shoppergroups','virtuemart_user_id');
+				$this->activeShoppergroups = shopfunctions::renderGuiList($cid,'shoppergroups','shopper_group_name','shoppergroup','vmuser_shoppergroups','virtuemart_user_id');
 				if(empty($this->activeShoppergroups) ){
 					$shoppergroupModel = VmModel::getModel('shoppergroup');
 					$this->activeShoppergroups = vmText::_($shoppergroupModel->getDefault(0)->shopper_group_name);

@@ -86,20 +86,21 @@ class VirtueMartCustomFieldRenderer {
 					}
 					$stockhandle = VmConfig::get('stockhandle_products', false) && $product->product_stockhandle ? $product->product_stockhandle : VmConfig::get('stockhandle','none');
 
-					$q = 'SELECT `virtuemart_product_id` FROM #__virtuemart_products WHERE product_parent_id = "'.$customfield->virtuemart_product_id.'" and ( published = "0" ';
+					$q = 'SELECT `virtuemart_product_id` FROM #__virtuemart_products WHERE product_parent_id = "'.$customfield->virtuemart_product_id.'" and ( published = "1" ';
 					if($stockhandle == 'disableit_children'){
-						$q .= ' OR (`product_in_stock` - `product_ordered`) <= "0"';
+						$q .= ' AND (`product_in_stock` - `product_ordered`) > "0" ';
 					}
 					$q .= ');';
 					$db = JFactory::getDbo();
 					$db->setQuery($q);
-					$ignore = $db->loadColumn();
-					//vmdebug('my q '.$q,$ignore);
+					$avail = $db->loadColumn();
+					array_unshift($avail,$product->virtuemart_product_id);
+
 
 					foreach($customfield->options as $product_id=>$variants){
-
-						if($ignore and in_array($product_id,$ignore)){
-							//vmdebug('$customfield->options Product to ignore, continue ',$product_id);
+						static $counter = 0;
+						if(!in_array($product_id,$avail)){
+							vmdebug('$customfield->options Product to ignore, continue ',$product_id);
 							continue;
 						}
 
@@ -107,22 +108,21 @@ class VirtueMartCustomFieldRenderer {
 
 							if(!isset($dropdowns[$k]) or !is_array($dropdowns[$k])) $dropdowns[$k] = array();
 							if(!in_array($variant,$dropdowns[$k])  ){
+
 								if($k==0 or !$productSelection){
 									$dropdowns[$k][] = $variant;
-								} else if($k>0 and $productSelection[$k-1] == $variants[$k-1]){
-									$break=false;
-									for($h=1;$h<=$k;$h++){
-										if($productSelection[$h-1] != $variants[$h-1]){
-											//$ignore[] = $variant;
-											$break=true;
+								} else{
+									if($productSelection[$k-1] == $variants[$k-1]) {
+										$break = false;
+										for( $h = 1; $h<=$k; $h++ ) {
+											if($productSelection[$h - 1] != $variants[$h - 1]) {
+												$break = true;
+											}
+										}
+										if(!$break) {
+											$dropdowns[$k][] = $variant;
 										}
 									}
-									if(!$break){
-										$dropdowns[$k][] = $variant;
-									}
-
-								} else {
-									//	break;
 								}
 							}
 						}
@@ -223,7 +223,7 @@ class VirtueMartCustomFieldRenderer {
 
 					foreach($customfield->options as $product_id=>$variants){
 
-						if($ignore and in_array($product_id,$ignore)){continue;}
+						if(!in_array($product_id,$avail)){continue;}
 
 						$url = JRoute::_('index.php?option=com_virtuemart&view='.$view.'&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id='.$product_id.$Itemid,false);
 						$jsArray[] = '["'.$url.'","'.implode('","',$variants).'"]';

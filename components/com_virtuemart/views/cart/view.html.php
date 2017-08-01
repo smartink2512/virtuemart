@@ -219,6 +219,8 @@ class VirtueMartViewCart extends VmView {
 		if(VmConfig::get ('oncheckout_change_shopper')){
 			$this->allowChangeShopper = vmAccess::manager('user');
 		}
+
+		$this->shopperGroupList = false;
 		if($this->allowChangeShopper){
 			$this->userList = $this->getUserList();
 			$this->shopperGroupList = $this->getShopperGroupList();

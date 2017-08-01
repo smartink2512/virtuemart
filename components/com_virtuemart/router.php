@@ -1311,7 +1311,12 @@ class vmrouterHelper {
 						$homeid = $item->id;
 					}
 				} else {
-					vmdebug('my item with empty $link["view"]',$item);
+					static $msg = array();
+					if(empty($msg[$item])){
+						vmdebug('my item with empty $link["view"]',$item);
+						$msg[$item] = 1;
+					}
+
 					//vmError('$link["view"] is empty');
 				}
 			}

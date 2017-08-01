@@ -385,6 +385,23 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 				$sampletxt = ' and sampledata installed';
 			}
 
+			VirtueMartModelConfig::installLanguageTables();
+
+			$cache = VmConfig::getCache();
+			//$cache = JFactory::getCache();
+			$cache->clean('com_virtuemart_cats');
+			$cache->clean('com_virtuemart_cat_childs');
+			$cache->clean('mod_virtuemart_product');
+			$cache->clean('mod_virtuemart_category');
+			$cache->clean('com_virtuemart_rss');
+			$cache->clean('com_virtuemart_cat_manus');
+			$cache->clean('com_virtuemart_revenue');
+			$cache->clean('convertECB');
+			$cache->clean('_virtuemart');
+			$cache->clean('com_plugins');
+			$cache->clean('_system');
+			$cache->clean('page');
+
 			$msg = '';
 			if(empty($errors)){
 				$msg = 'System succesfull restored'.$sampletxt.', user id of the mainvendor is ' . $sid;
@@ -447,7 +464,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$jConfig['lifetime'] = 60;
 			$jConfig['list_limit'] = 25;
 			$jConfig['MetaDesc'] = 'VirtueMart works with Joomla! - the dynamic portal engine and content management system';
-			$jConfig['MetaKeys'] = 'virtuemart, vm2, joomla, Joomla';
+			$jConfig['MetaKeys'] = 'virtuemart, vm3, joomla, Joomla';
 
 			$app = JFactory::getApplication();
 			$return = $jConfModel->save($jConfig);
