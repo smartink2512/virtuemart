@@ -1128,7 +1128,7 @@ abstract class vmPSPlugin extends vmPlugin {
 					if(!isset($rule['taxAmount'])) $rule['taxAmount'] = 0;
 					if(!isset($rule['DBTax'])) $rule['DBTax'] = 0;
 					if(!isset($rule['percentage']) && $rule['subTotal'] < $cart->cartPrices['salesPrice']) {
-						$rule['percentage'] = ($rule['subTotal'] + $rule['DBTax']) / ($cart->cartPrices['salesPrice'] + $cartdiscountBeforeTax);
+						$rule['percentage'] = ($rule['subTotal'] - $rule['taxAmount'] + $rule['DBTax']) / ($cart->cartPrices['salesPrice'] - $cart->cartPrices['taxAmount'] + $cartdiscountBeforeTax);
 					} else if(!isset($rule['percentage'])) {
 						$rule['percentage'] = 1;
 					}
@@ -1139,12 +1139,15 @@ abstract class vmPSPlugin extends vmPlugin {
 				}
 
 				foreach($taxrules as &$rule){
-					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $rule['percentage'];
+					$shipping_net_rule = $cart_prices[$this->_psType . 'Value'] * $rule['percentage'];
 					$rule['psType'] = $this->_psType;
 
 					if(!isset($cart_prices[$this->_psType . 'Tax'])) $cart_prices[$this->_psType . 'Tax'] = 0.0;
-					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $calculator->roundInternal($calculator->roundInternal($calculator->interpreteMathOp($rule, $rule['subTotal'])) - $rule['subTotal'], 'salesPrice');
-					$cart_prices[$this->_psType . 'Tax'] += $cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']];
+					$rule['subTotal'] = $calculator->roundInternal($calculator->interpreteMathOp($rule, $shipping_net_rule));
+					$shipping_tax_rule = $calculator->roundInternal($rule['subTotal'] - $shipping_net_rule, 'salesPrice');
+					$cart_prices[$this->_psType . 'TaxPerID'][$rule['virtuemart_calc_id']] = $shipping_tax_rule;
+					$cart_prices[$this->_psType . 'Tax'] += $shipping_tax_rule;
+// 					$rule['taxAmount'] = $shipping_tax_rule;
 
 				}
 			}
